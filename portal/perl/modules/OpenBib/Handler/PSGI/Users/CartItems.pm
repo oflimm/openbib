@@ -74,13 +74,13 @@ sub update_item_in_collection {
     my $self = shift;
     my $input_data_ref = shift;
 
-    my $userid  = $self->param('userid')                      || '';    
+    my $userid  = $self->param('userid')                      || '';
     my $user    = $self->param('user');
 
     if ($userid && $userid == $user->{ID}) {
         return $user->update_item_in_collection($input_data_ref);
     }
-    
+
     return;
 }
 
@@ -120,8 +120,9 @@ sub get_number_of_items_in_collection {
     my $self = shift;
 
     my $user = $self->param('user');
-
-    return $user->get_number_of_items_in_collection();
+    my $view = $self->param('view');
+    
+    return $user->get_number_of_items_in_collection({view => $view});
 }
 
 sub get_single_item_in_collection {
@@ -137,8 +138,9 @@ sub get_items_in_collection {
     my $self = shift;
 
     my $user = $self->param('user');
+    my $view = $self->param('view');
 
-    return $user->get_items_in_collection();
+    return $user->get_items_in_collection({view => $view});
 }
 
 sub return_baseurl {

@@ -114,7 +114,7 @@ sub show {
     }
     else {
         if ($user->{ID}) {
-            $recordlist = $user->get_items_in_collection();
+            $recordlist = $user->get_items_in_collection({view => $view});
         }
         else {
             $recordlist = $session->get_items_in_collection()

@@ -627,21 +627,59 @@ sub get_profiledbs_of_usersearchprofileid {
 }
 
 sub get_number_of_items_in_collection {
-    my ($self)=@_;
+    my ($self,$arg_ref)=@_;
 
+    my $view                = exists $arg_ref->{view}
+        ? $arg_ref->{view}                : '';
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $numofitems = $self->get_schema->resultset('UserCartitem')->search_rs(
-        {
-            'userid.id' => $self->{ID},
-        },
-        {
-            join => ['userid'],
-        }
-            
-    )->count;
+    my $numofitems;
+    
+    if ($view){
+        my $databases =  $self->get_schema->resultset('ViewDb')->search(
+            {
+                -or => [
+                    {
+                        'dbid.active'           => 1,
+                        'viewid.viewname'       => $view,
+                    },
+                    {
+                        'dbid.active'           => 1,
+                        'dbid.system'           => { '~' => '^Backend' },
+                    },
+                ],
+            }, 
+            {
+                join     => ['dbid','viewid'],
+                select   => [ 'dbid.id' ],
+                as       => ['dbid'],
+                group_by => ['dbid.id'],
+            }
+        );
 
+        $numofitems = $self->get_schema->resultset('UserCartitem')->search_rs(
+            {
+                'userid.id'       => $self->{ID},
+                'cartitemid.dbname' => { -in => $databases->as_query },
+            },
+            {
+                join => ['userid','cartitemid'],
+            }
+        )->count;
+    }
+    else {
+        $numofitems = $self->get_schema->resultset('UserCartitem')->search_rs(
+            {
+                'userid.id' => $self->{ID},
+            },
+            {
+                join => ['userid'],
+            }
+        )->count;
+    }
+    
     return $numofitems;
 }
 
@@ -3333,8 +3371,16 @@ sub get_litlistentries {
     if ($view){
         my $databases =  $self->get_schema->resultset('ViewDb')->search(
             {
-                'dbid.active'           => 1,
-                'viewid.viewname'       => $view,
+                -or => [
+                    {
+                        'dbid.active'           => 1,
+                        'viewid.viewname'       => $view,
+                    },
+                    {
+                        'dbid.active'           => 1,
+                        'dbid.system'           => { '~' => '^Backend' },
+                    },
+                ],
             }, 
             {
                 join => ['dbid','viewid'],
@@ -3947,7 +3993,7 @@ sub get_single_item_in_collection {
     my $cartitem = $self->get_schema->resultset('UserCartitem')->search_rs(
         {
             'cartitemid.id'  => $listid,
-            'userid.id'             => $self->{ID},
+            'userid.id'      => $self->{ID},
         },
         {
             select => ['cartitemid.dbname','cartitemid.titleid','cartitemid.id','cartitemid.titlecache','cartitemid.tstamp','cartitemid.comment'],
@@ -3973,8 +4019,11 @@ sub get_single_item_in_collection {
 }
 
 sub get_items_in_collection {
-    my ($self)=@_;
+    my ($self,$arg_ref)=@_;
 
+    my $view                = exists $arg_ref->{view}
+        ? $arg_ref->{view}                : '';
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -3982,17 +4031,56 @@ sub get_items_in_collection {
     
     my $recordlist = new OpenBib::RecordList::Title();
 
-    # DBI: "select * from collection where userid = ? order by dbname"
-    my $cartitems = $self->get_schema->resultset('UserCartitem')->search_rs(
-        {
-            'userid.id' => $self->{ID},
-        },
-        {
-            select  => [ 'cartitemid.dbname', 'cartitemid.titleid', 'cartitemid.titlecache', 'cartitemid.id', 'cartitemid.tstamp', 'cartitemid.comment' ],
-            as      => [ 'thisdbname', 'thistitleid', 'thistitlecache', 'thislistid', 'thiststamp', 'thiscomment' ],
-            join    => ['userid','cartitemid'],
-        }
-    );
+    my $cartitems;
+    
+    if ($view){
+        my $databases =  $self->get_schema->resultset('ViewDb')->search(
+            {
+                -or => [
+                    {
+                        'dbid.active'           => 1,
+                        'viewid.viewname'       => $view,
+                    },
+                    {
+                        'dbid.active'           => 1,
+                        'dbid.system'           => { '~' => '^Backend' },
+                    },
+                ],
+            }, 
+            {
+                join => ['dbid','viewid'],
+                select   => [ 'dbid.id' ],
+                as       => ['dbid'],
+                group_by => ['dbid.id'],
+            }
+        );
+
+        $cartitems = $self->get_schema->resultset('UserCartitem')->search_rs(
+            {
+                'userid.id'          => $self->{ID},
+                'cartitemid.dbname'  => { -in => $databases->as_query },
+                
+            },
+            {
+                select  => [ 'cartitemid.dbname', 'cartitemid.titleid', 'cartitemid.titlecache', 'cartitemid.id', 'cartitemid.tstamp', 'cartitemid.comment' ],
+                as      => [ 'thisdbname', 'thistitleid', 'thistitlecache', 'thislistid', 'thiststamp', 'thiscomment' ],
+                join    => ['userid','cartitemid'],
+            }
+        );
+    }
+    else {
+        # DBI: "select * from collection where userid = ? order by dbname"
+        $cartitems = $self->get_schema->resultset('UserCartitem')->search_rs(
+            {
+                'userid.id' => $self->{ID},
+            },
+            {
+                select  => [ 'cartitemid.dbname', 'cartitemid.titleid', 'cartitemid.titlecache', 'cartitemid.id', 'cartitemid.tstamp', 'cartitemid.comment' ],
+                as      => [ 'thisdbname', 'thistitleid', 'thistitlecache', 'thislistid', 'thiststamp', 'thiscomment' ],
+                join    => ['userid','cartitemid'],
+            }
+        );
+    }
 
     foreach my $item ($cartitems->all){
         my $database   = $item->get_column('thisdbname');

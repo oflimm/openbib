@@ -3449,6 +3449,7 @@ sub get_number_of_litlistentries {
                         'dbid.active'           => 1,
                         'dbid.system'           => { '~' => '^Backend' },
                     },
+                ],
             }, 
             {
                 join => ['dbid','viewid'],

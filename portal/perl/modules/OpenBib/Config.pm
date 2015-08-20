@@ -1605,30 +1605,74 @@ sub get_active_views {
 }
 
 sub get_active_databases_of_orgunit {
-    my ($self,$profile,$orgunit) = @_;
+    my ($self,$profile,$orgunit,$view) = @_;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # DBI: "select databaseinfo.dbname from databaseinfo,orgunit_db where databaseinfo.active is true and databaseinfo.id=orgunit_db.dbid and orgunit_db.orgunitid=orgunitinfo.id and orgunitinfo.profileid=profileinfo.id and profileinfo.profilename = ? and orgunitinfo.orgunitname = ? order by databaseinfo.description ASC"
-    my $dbnames = $self->get_schema->resultset('OrgunitDb')->search(
-        {
-            'dbid.active'           => 1,
-            'profileid.profilename' => $profile,
-            'orgunitid.orgunitname' => $orgunit,
-        }, 
-        {
-            select => 'dbid.dbname',
-            as     => 'thisdbname',
-            join => [ 'orgunitid', 'dbid',  ],
-            prefetch => [ { 'orgunitid' => 'profileid' } ],
-            order_by => 'dbid.description',
-            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
-#            columns  => [ qw/dbid.dbname/ ], # columns/group_by -> versch. dbid.dbname 
-#            group_by => [ qw/dbid.dbname/ ], # via group_by und nicht via distinct (Performance)
-        }
-    );
+    my $dbnames;
 
+    if ($view){
+        my $databases =  $self->get_schema->resultset('ViewDb')->search(
+            {
+                -or => [
+                    {
+                        'dbid.active'           => 1,
+                        'viewid.viewname'       => $view,
+                    },
+                    {
+                        'dbid.active'           => 1,
+                        'dbid.system'           => { '~' => '^Backend' },
+                    },
+                ],
+            }, 
+            {
+                join     => ['dbid','viewid'],
+                select   => [ 'dbid.id' ],
+                as       => ['dbid'],
+                group_by => ['dbid.id'],
+            }
+        );
+
+        $dbnames = $self->get_schema->resultset('OrgunitDb')->search(
+            {
+                'dbid.dbname'           => { -in => $databases->as_query },
+                'profileid.profilename' => $profile,
+                'orgunitid.orgunitname' => $orgunit,
+            }, 
+            {
+                select => 'dbid.dbname',
+                as     => 'thisdbname',
+                join => [ 'orgunitid', 'dbid',  ],
+                prefetch => [ { 'orgunitid' => 'profileid' } ],
+                order_by => 'dbid.description',
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
+                #            columns  => [ qw/dbid.dbname/ ], # columns/group_by -> versch. dbid.dbname 
+                #            group_by => [ qw/dbid.dbname/ ], # via group_by und nicht via distinct (Performance)
+            }
+        );
+    }
+    else {
+    # DBI: "select databaseinfo.dbname from databaseinfo,orgunit_db where databaseinfo.active is true and databaseinfo.id=orgunit_db.dbid and orgunit_db.orgunitid=orgunitinfo.id and orgunitinfo.profileid=profileinfo.id and profileinfo.profilename = ? and orgunitinfo.orgunitname = ? order by databaseinfo.description ASC"
+        $dbnames = $self->get_schema->resultset('OrgunitDb')->search(
+            {
+                'dbid.active'           => 1,
+                'profileid.profilename' => $profile,
+                'orgunitid.orgunitname' => $orgunit,
+            }, 
+            {
+                select => 'dbid.dbname',
+                as     => 'thisdbname',
+                join => [ 'orgunitid', 'dbid',  ],
+                prefetch => [ { 'orgunitid' => 'profileid' } ],
+                order_by => 'dbid.description',
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
+                #            columns  => [ qw/dbid.dbname/ ], # columns/group_by -> versch. dbid.dbname 
+                #            group_by => [ qw/dbid.dbname/ ], # via group_by und nicht via distinct (Performance)
+            }
+        );
+    }
+    
     my @dblist=();
 
     while (my $item = $dbnames->next){
@@ -3761,12 +3805,12 @@ sub get_searchprofile_of_view {
 }
 
 sub get_searchprofile_of_orgunit {
-    my ($self,$profilename,$orgunitname)=@_;
+    my ($self,$profilename,$orgunitname,$view)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my @databases = $self->get_active_databases_of_orgunit($profilename,$orgunitname);
+    my @databases = $self->get_active_databases_of_orgunit($profilename,$orgunitname,$view);
 
     $logger->debug("Databases of Orgunit $orgunitname in Profile $profilename: ".join(',',@databases));
 

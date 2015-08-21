@@ -239,13 +239,13 @@ sub show_record {
         return;
     }
     
-    my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
+    my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid, view => $view});
         
     my $targettype    = $user->get_targettype_of_session($session->{ID});
         
     my $singlelitlist = {
         id         => $litlistid,
-        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $queryoptions->get_option('srto'), sorttype => $queryoptions->get_option('srt')}),
+        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $queryoptions->get_option('srto'), sorttype => $queryoptions->get_option('srt'), view => $view}),
         properties => $litlist_properties_ref,
     };
         
@@ -328,13 +328,13 @@ sub show_record_form {
         return $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
     }
 
-    my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
+    my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid, view => $view});
         
     my $targettype    = $user->get_targettype_of_session($session->{ID});
         
     my $singlelitlist = {
         id         => $litlistid,
-        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $queryoptions->get_option('srto'), sorttype => $queryoptions->get_option('srt')}),
+        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $queryoptions->get_option('srto'), sorttype => $queryoptions->get_option('srt'), view => $view}),
         properties => $litlist_properties_ref,
     };
         

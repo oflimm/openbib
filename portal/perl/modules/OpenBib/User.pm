@@ -653,9 +653,9 @@ sub get_number_of_items_in_collection {
             }, 
             {
                 join     => ['dbid','viewid'],
-                select   => [ 'dbid.id' ],
-                as       => ['dbid'],
-                group_by => ['dbid.id'],
+                select   => [ 'dbid.dbname' ],
+                as       => ['dbname'],
+                group_by => ['dbid.dbname'],
             }
         );
 
@@ -3384,9 +3384,9 @@ sub get_litlistentries {
             }, 
             {
                 join => ['dbid','viewid'],
-                select   => [ 'dbid.id' ],
-                as       => ['dbid'],
-                group_by => ['dbid.id'],
+                select   => [ 'dbid.dbname' ],
+                as       => ['dbname'],
+                group_by => ['dbid.dbname'],
             }
         );
 
@@ -3499,9 +3499,9 @@ sub get_number_of_litlistentries {
             }, 
             {
                 join => ['dbid','viewid'],
-                select   => [ 'dbid.id' ],
-                as       => ['dbid'],
-                group_by => ['dbid.id'],
+                select   => [ 'dbid.dbname' ],
+                as       => ['dbname'],
+                group_by => ['dbid.dbname'],
             }
         );
         
@@ -4049,9 +4049,9 @@ sub get_items_in_collection {
             }, 
             {
                 join => ['dbid','viewid'],
-                select   => [ 'dbid.id' ],
-                as       => ['dbid'],
-                group_by => ['dbid.id'],
+                select   => [ 'dbid.dbname' ],
+                as       => ['dbname'],
+                group_by => ['dbid.dbname'],
             }
         );
 

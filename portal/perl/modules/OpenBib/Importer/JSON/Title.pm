@@ -1410,6 +1410,8 @@ sub set_index_document {
 sub cleanup_content {
     my $content = shift;
 
+    return '' unless (defined $content);
+    
     # Make PostgreSQL Happy    
     $content =~ s/\\/\\\\/g;
     $content =~ s/($chars_to_replace)/$char_replacements{$1}/g;

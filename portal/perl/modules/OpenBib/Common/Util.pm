@@ -1564,6 +1564,8 @@ sub gen_bibkey_base {
     foreach my $field (qw/T0100 T0101/){
         next if (!exists $fields_ref->{$field});
         foreach my $part_ref (@{$fields_ref->{$field}}){
+            next unless (defined $part_ref->{content});
+            
             my $single_person = lc($part_ref->{content});
             $single_person    =~ s/[^0-9\p{L}\. ]+//g;
             my ($lastname,$firstname) = split(/\s+/,$single_person);
@@ -1589,8 +1591,8 @@ sub gen_bibkey_base {
         }
     }
 
-    my $persons_ref=(@$authors_ref)?$authors_ref:
-    (@$editors_ref)?$editors_ref:[];
+    my $persons_ref=(defined $authors_ref && @$authors_ref)?$authors_ref:
+    (defined @$editors_ref && @$editors_ref)?$editors_ref:[];
 
     my $author = "";
     $author    = "[".join(",", sort(@$persons_ref))."]" if (defined $persons_ref && @$persons_ref);

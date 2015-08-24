@@ -18,6 +18,7 @@ uniqueidfield: 'upi'
 category_split_chars:
   'title': ';'
   'person': ';'
+  'linked_isbn': ','
 
 # Personen
 person:
@@ -37,6 +38,7 @@ title:
   'title': '0331'
 # 'subtitle': '0370'
   'identifier': '0540'
+  'linked_isbn': '0553'
   'publishingyear': '0425'
   'price': '4211'
   'cover': '2662'
@@ -52,13 +54,8 @@ exclude:
      databases:
         - inst001
         - ebookpda
-        - vubpda
         - ebooks
         - freebooks
-        - nationallizenzen
-        - bestellungen
-        - doab
-        - tmpebooks
         - zbmed
         - inst004
         - inst005
@@ -218,3 +215,8 @@ exclude:
         - inst540
         - inst622
         - inst623
+        - nationallizenzen
+        - bestellungen
+        - doab
+        - tmpebooks
+        - vubpda

@@ -165,10 +165,6 @@ if ($cluster){
     }
 }
 
-$logger->info("### Restarting Apache");
-
-system("sudo /etc/init.d/apache2 restart");
-
 my @threads;
 
 if ($test){

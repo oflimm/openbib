@@ -187,10 +187,21 @@ sub get_subjects {
 
     @tags = ();
     if (@unique_tags) {
+        if ($logger->is_debug){
+            $logger->debug("Unique Tags: ".join(';',@unique_tags));
+        }
+
+        my $tag_count = 0;
         foreach my $tag (@unique_tags){
+            next unless ($tag =~m/^[\p{Alphabetic}]+$/);
+
+            # Due to slow response times for tag lookups we limit to 8 tags
+            
+            last if ($tag_count > 8);
+
             substr($bibkey,0,1)=""; # Remove leading 1
             $url="http://www.bibsonomy.org/api/tags/$tag";
-            $logger->debug("Request: $url");
+            $logger->debug("Tag-Request: $url");
             
             my $response = $self->get_client->get($url)->content;
         
@@ -212,9 +223,13 @@ sub get_subjects {
                     push @tags, $singletag_ref;
                 }
             }
+            $tag_count++;
         }
     }
 
+    if ($logger->is_debug){
+        $logger->debug('Bibsonomy Tags: '.join(';',@tags));
+    }
     return \@tags;
 }
 

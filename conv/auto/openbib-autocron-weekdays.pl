@@ -6,7 +6,7 @@
 #
 #  CRON-Job zum automatischen aktualisieren aller OpenBib-Datenbanken
 #
-#  Dieses File ist (C) 1997-2014 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -187,7 +187,7 @@ autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['ebookpda'
 
 ##############################
 
-$logger->info("### VUBPDA");
+$logger->info("### PRINTPDA");
 
 autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['vubpda','dreierpda'] });
 

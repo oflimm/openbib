@@ -2240,8 +2240,9 @@ sub to_tags {
         foreach my $part_ref (@{$self->{_fields}->{$category}}){
             foreach my $content_part (split('\s+',$part_ref->{content})){
                 push @$keywords_ref, OpenBib::Common::Util::normalize({
-                    tagging => 1,
-                    content => $content_part,
+                    strip_first_stopword => 1,
+                    tagging              => 1,
+                    content              => $content_part,
                 });
             }
         }

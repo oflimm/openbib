@@ -186,7 +186,7 @@ autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['ebookpda'
 
 ##############################
 
-$logger->info("### VUBPDA");
+$logger->info("### PRINTPDA");
 
 autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['vubpda','dreierpda'] });
 

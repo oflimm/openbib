@@ -3010,7 +3010,7 @@ sub del_server {
         # DBI: "delete from serverinfo where id = ?"
         my $serverinfo = $self->get_schema->resultset('Serverinfo')->single({ id => $id });
         
-        my $hostip = $serverinfo->host_ip;
+        my $hostip = $serverinfo->hostip;
 
         if (defined $self->{memc} && $hostip eq $self->get('local_ip')){
             # Flushen in Memcached
@@ -3066,7 +3066,7 @@ sub update_server {
     # DBI: "update serverinfo set active = ? where id = ?"
     my $serverinfo = $self->get_schema->resultset('Serverinfo')->single({ id => $id });
 
-    my $hostip = $serverinfo->host_ip;
+    my $hostip = $serverinfo->hostip;
 
     if (defined $self->{memc} && $hostip eq $self->get('local_ip')){
         # Flushen in Memcached

@@ -27,16 +27,16 @@
 
     # Verfasser konstruieren 
     persons = [] ;
-    FOREACH part IN item.${'P0100'}  ;
+    FOREACH part IN item.${'T0100'}  ;
       persons.push("${part.content}") ;
     END ;
-    FOREACH part IN item.${'P0101'}  ;
+    FOREACH part IN item.${'T0101'}  ;
       persons.push("${part.content}") ;
     END ;
-    FOREACH part IN item.${'C0200'}  ;
+    FOREACH part IN item.${'T0200'}  ;
       persons.push("${part.content}") ;
     END ;
-    FOREACH part IN item.${'C0201'}  ;
+    FOREACH part IN item.${'T0201'}  ;
       persons.push("${part.content}") ;
     END ;
     person = persons.join(' ; ') ;

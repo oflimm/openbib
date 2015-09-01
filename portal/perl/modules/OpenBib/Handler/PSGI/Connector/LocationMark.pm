@@ -219,15 +219,28 @@ sub show_via_sql {
         for (my $i = $offset ; $i <= $endrange ; $i++){
             my $titleid_ref = $sortedtitleids[$i];
             my $id = $titleid_ref->{id};
+
+            my $record =  OpenBib::Record::Title->new({id => $id, database => $database, config => $config})->load_full_record;
+            my $listitem_ref = $record->get_fields;
+            my $holding_ref = $record->get_holding;
             
-            my $listitem_ref = OpenBib::Record::Title->new({id => $id, database => $database, config => $config})->load_full_record->get_fields;
-            
+            # ID setzen:
+            $listitem_ref->{id} = $id;
+
+            if ($logger->is_debug){
+                $logger->debug("Unbereinigter Titel: ".YAML::Dump($listitem_ref));
+            }
+
             # Bereinigung der Signaturen. Alle Signaturen, die nicht zur Grundsignatur gehoeren,
             # werden entfernt.
             my $cleansig_ref = [];
-            foreach my $sig_ref (@{$listitem_ref->{X0014}}){
-                if ($sig_ref->{content}=~m/^$base/){
-                    push @$cleansig_ref, $sig_ref;
+            foreach my $this_holding_ref (@{$holding_ref}){
+                if ($logger->is_debug){
+                    $logger->debug("Unbereinigte Holdings: ".YAML::Dump($this_holding_ref));
+                }
+                
+                if ($this_holding_ref->{'X0014'}{content}=~m/^$base/){
+                    push @$cleansig_ref, { content => $this_holding_ref->{'X0014'}{content} };
                 }
             }
             $listitem_ref->{X0014}=$cleansig_ref;

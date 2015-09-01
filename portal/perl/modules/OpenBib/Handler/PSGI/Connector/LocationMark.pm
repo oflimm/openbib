@@ -316,7 +316,13 @@ sub show_via_searchengine {
         searchreq => 1,
     });
 
-    $searchquery->set_searchfield('markstring',"${base}*",'');
+    my $base_norm = OpenBib::Common::Util::normalize({
+        content   => $base,
+        type      => 'string',
+        searchreq => 1,
+    });
+    
+    $searchquery->set_searchfield('markstring',"${base_norm}*",'');
     $searchquery->set_searchfield('ft0016',$location,'');
 #    $searchquery->set_type('authority');
 

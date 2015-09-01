@@ -2861,6 +2861,15 @@ convtab:
       '1203': 1
       '4400': 1
   lesesaal:
+    inverted_holding:
+      '0016':         # Standort
+        index:
+          'ft0016': 1
+      '0014':         # Signatur
+        index:
+          'mark': 1
+          'markstring': 1
+          'freesearch': 1
     listitemcat:
       'tag': 1
       'litlist': 1

@@ -60,8 +60,8 @@ sub setup {
 
     $self->start_mode('show');
     $self->run_modes(
-        'show'       => 'show_via_sql',
-#        'show'       => 'show_via_searchengine',
+#        'show'       => 'show_via_sql',
+        'show'       => 'show_via_searchengine',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
@@ -308,7 +308,8 @@ sub show_via_searchengine {
     #####################################################################
     # Verbindung zur SQL-Datenbank herstellen
 
-    my $searchquery = OpenBib::SearchQuery->new({r => $r, view => $view, session => $session});
+    my $searchquery = OpenBib::SearchQuery->new({view => $view, session => $session});
+
     $location = OpenBib::Common::Util::normalize({
         content   => $location,
         type      => 'string',
@@ -316,12 +317,16 @@ sub show_via_searchengine {
     });
 
     $searchquery->set_searchfield('markstring',"${base}*",'');
-    $searchquery->set_searchfield('t0016',$location,'');
-    $searchquery->set_type('authority');
+    $searchquery->set_searchfield('ft0016',$location,'');
+#    $searchquery->set_type('authority');
 
     $self->param('searchquery',$searchquery);
 
-    my $searcher = OpenBib::Search::Factory->create_searcher({database => $database."_authority", query => $searchquery, config => $config });
+    if ($logger->is_debug){
+        $logger->debug("SearchQuery:".YAML::Dump($searchquery->get_searchquery));
+    }
+    
+    my $searcher = OpenBib::Search::Factory->create_searcher({database => $database, searchquery => $searchquery, config => $config, options => { 'facets' => 'none', 'dop' => 'and', 'num'=> 100000, 'page' => 1 } });
 
     if ($base && $location){
         $logger->debug("Bestimme Titel zur Grundsignatur '$base' und Standort '$location'");
@@ -332,7 +337,7 @@ sub show_via_searchengine {
             $atime=new Benchmark;
         }
 
-        $searcher->search({options => { 'num'=> 100000, 'page' => 1 } });
+        $searcher->search();
 
         if ($config->{benchmark}) {
             $btime=new Benchmark;
@@ -342,10 +347,12 @@ sub show_via_searchengine {
 
         my @filtered_titleids = ();
 
-        my %have_titleid = ();
-
         my $recordlist = $searcher->get_records_as_json;
 
+        if ($logger->is_debug){
+            $logger->debug("All records found ".YAML::Dump($recordlist));
+        }
+        
         if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
@@ -353,45 +360,48 @@ sub show_via_searchengine {
         }
 
 
+        
         foreach my $item (@{$recordlist}){
-#            $logger->info(YAML::Dump($item));
-            my $titleid = $item->{'X0004'}[0]{content};
-            my $locmark = $item->{'X0014'}[0]{content};
+            $logger->info(YAML::Dump($item));
+            my $titleid = $item->{'id'};
 
-            next if (defined $have_titleid{$titleid});
-            
-            $logger->debug("Found titleid $titleid with location mark $locmark");
-
-            if ($locmark=~m/^$base/){
-                $logger->debug("Location mark $locmark matches base $base");
+            my $correct_locmark = "";
+            foreach my $this_locmark (@{$item->{'X0014'}}){
+                my $locmark = $this_locmark->{content};
                 
-                if ($range_start > 0 && $range_end > 0){
-                    my ($number)=$locmark=~m/^$base(\d+)/;
-                    $logger->debug("Number part is $number");
+                $logger->debug("Found titleid $titleid with location mark $locmark");
+                
+                if ($locmark=~m/^$base/){
+                    $logger->debug("Location mark $locmark matches base $base");
                     
-                    if ($number >= $range_start && $number <= $range_end) {
-                        $logger->debug("Location mark $locmark in Range $range_start - $range_end");
-                        push @filtered_titleids, {
-                            id       => $titleid,
-                            locmark  => $locmark,
-                            base     => $base,
+                    if ($range_start > 0 && $range_end > 0){
+                        my ($number)=$locmark=~m/^$base(\d+)/;
+                        $logger->debug("Number part is $number");
+                        
+                        if ($number >= $range_start && $number <= $range_end) {
+                            $logger->debug("Location mark $locmark in Range $range_start - $range_end");
+                            $correct_locmark = $locmark;
+                        }
+                        else {
+                            $logger->debug("Location mark $locmark NOT in Range $range_start - $range_end");
                         }
                     }
                     else {
-                        $logger->debug("Location mark $locmark NOT in Range $range_start - $range_end");
+                        $logger->debug("No range specified for location mark $locmark ");
+                        $correct_locmark = $locmark;
                     }
                 }
-                else {
-                    $logger->debug("No range specified for location mark $locmark ");
-                    push @filtered_titleids, {
-                        id       => $titleid,
-                        locmark  => $locmark,
-                        base     => $base,
-                    };
-                }
-                # Fertig, wenn entsprechende Signatur gefunden
-                $have_titleid{$titleid} = 1;
             }
+
+            if ($correct_locmark){
+                push @filtered_titleids, {
+                    id       => $titleid,
+                    locmark  => $correct_locmark,
+                    base     => $base,
+                    item     => $item,
+                };
+            }   
+
         }
 
         my @sortedtitleids = sort by_signature @filtered_titleids;
@@ -425,13 +435,14 @@ sub show_via_searchengine {
             $logger->debug("All titles ".YAML::Dump(@sortedtitleids));
         }
         
-        my $endrange = ($offset+$queryoptions->get_option('num') < $#sortedtitleids)?$offset+$queryoptions->get_option('num'):$#sortedtitleids;
+        my $endrange = ($offset+$queryoptions->get_option('num') < $#sortedtitleids)?$offset+$queryoptions->get_option('num'):$#sortedtitleids+1;
         
-        for (my $i = $offset ; $i <= $endrange ; $i++){
-            my $titleid_ref = $sortedtitleids[$i];
-            my $id          = $titleid_ref->{id};
+        for (my $i = $offset ; $i < $endrange ; $i++){
+            my $titleid_ref  = $sortedtitleids[$i];
+            my $id           = $titleid_ref->{id};
+            my $listitem_ref = $titleid_ref->{item};
             
-            my $listitem_ref = OpenBib::Record::Title->new({id => $id, database => $database, config => $config})->load_brief_record->get_fields;
+#            my $listitem_ref = OpenBib::Record::Title->new({id => $id, database => $database, config => $config})->load_brief_record->get_fields;
             
             # Bereinigung der Signaturen. Alle Signaturen, die nicht zur Grundsignatur gehoeren,
             # werden entfernt.
@@ -485,8 +496,8 @@ sub by_signature {
 
 #    $logger->debug("1 L1: $line1 / L2: $line2 / Base: $base");
     
-    my ($zahl1,$rest1)=$line1=~m/$base(\d+)(.*?)/i;
-    my ($zahl2,$rest2)=$line2=~m/$base(\d+)(.*?)/i;
+    my ($zahl1,$rest1)=$line1=~m/$base(\d+)(.*?)$/i;
+    my ($zahl2,$rest2)=$line2=~m/$base(\d+)(.*?)$/i;
 
 #    $logger->debug("2 Z1: $zahl1 / R1: $rest1 / Z2: $zahl2 / R2: $rest2");
     

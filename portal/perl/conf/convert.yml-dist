@@ -1863,6 +1863,15 @@ convtab:
           'bkey': 1
           'freesearch': 1
   lehrbuchsmlg:
+    inverted_holding:
+      '0016':         # Standort
+        index:
+          'ft0016': 1
+      '0014':         # Signatur
+        index:
+          'mark': 1
+          'markstring': 1
+          'freesearch': 1
     inverted_authority_holding:
       '0016':         # Standort
         index:

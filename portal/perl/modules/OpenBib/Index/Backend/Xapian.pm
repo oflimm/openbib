@@ -533,7 +533,7 @@ sub create_document {
                     }
                 }
 
-                ($content) = $content=~m/^\D*?(-?\d+)/;
+                ($content) = $content=~m/^\D*?(-?\d+)/ if (defined $content);
                 
                 if ($content){
 #                    $content = sprintf "%08d",$content;
@@ -590,7 +590,7 @@ sub delete_record {
 sub filter_force_signed_year {
     my ($self, $string) = @_;
     ($string) = $string=~m/^\D*(-?\d\D?\d\D?\d\D?\d)/;
-    $string=~s/[^-0-9]//g;
+    $string=~s/[^-0-9]//g if (defined $string);
     
     return $string;
 }

@@ -13,7 +13,7 @@
 
 <h3>[% signaturdesc %]</h3>
 
-[% USE dumper ; dumper.dump (itemlist) %]
+[%# USE dumper ; dumper.dump (itemlist) %]
 [% IF itemlist.size > 0 %]
 <table>
 <tr><td><b>Verfasser/Personen</b></td><td><b>Titel</b></td><td><b>Jahr</b></td><td><b>Signatur</b></td></tr>

@@ -22,7 +22,7 @@
     super = "";
     # 1. Ueberordnung?
     IF item.${'T5005'}.first.content;
-       super = item.${'T5005'}.first.content;
+       super = from_json(item.${'T5005'}.first.content);
     END;
 
     # Verfasser konstruieren 
@@ -30,13 +30,25 @@
     FOREACH part IN item.${'P0100'}  ;
       persons.push("${part.content}") ;
     END ;
+    FOREACH part IN item.${'T0100'}  ;
+      persons.push("${part.content}") ;
+    END ;
     FOREACH part IN item.${'P0101'}  ;
       persons.push("${part.content}") ;
     END ;
-    FOREACH part IN item.${'C0200'}  ;
+    FOREACH part IN item.${'T0101'}  ;
       persons.push("${part.content}") ;
     END ;
-    FOREACH part IN item.${'C0201'}  ;
+    FOREACH part IN item.${'P0200'}  ;
+      persons.push("${part.content}") ;
+    END ;
+    FOREACH part IN item.${'T0200'}  ;
+      persons.push("${part.content}") ;
+    END ;
+    FOREACH part IN item.${'P0201'}  ;
+      persons.push("${part.content}") ;
+    END ;
+    FOREACH part IN item.${'T0201'}  ;
       persons.push("${part.content}") ;
     END ;
     person = persons.join(' ; ') ;
@@ -57,6 +69,7 @@
 
      person = persons.join(' ; ') ;
     END ;
+
     # Titel konstruieren 
     title = item.${'T0331'}.first.content ;
     IF item.${'T0310'}.first.content ;

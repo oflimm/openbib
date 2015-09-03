@@ -4,7 +4,7 @@
 #
 #  Titel
 #
-#  Dieses File ist (C) 2007-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -41,7 +41,7 @@ use Encode 'decode_utf8';
 use JSON::XS();
 use Log::Log4perl qw(get_logger :levels);
 use SOAP::Lite;
-use Storable;
+use Storable qw(freeze thaw);
 use XML::LibXML;
 use YAML ();
 
@@ -108,8 +108,6 @@ sub new {
     bless ($self, $class);
 
     $logger->debug("Stage 1");
-    
-    $self->connectMemcached;
     
     if (defined $database){
         $self->{database} = $database;
@@ -184,10 +182,13 @@ sub load_full_record {
         $logger->error("Incomplete Record-Information Id: ".((defined $self->{id})?$self->{id}:'none')." Database: ".((defined $self->{database})?$self->{database}:'none'));
         return $self;
     }
+
+    $self->connectMemcached;
+        
     my $memc_key = "record:title:full:$self->{database}:$self->{id}";
 
     my $record;
-    
+
     if ($self->{memc}){
       $record = $self->{memc}->get($memc_key);
 
@@ -244,6 +245,8 @@ sub load_full_record {
     }
 
     $logger->debug("Full record loaded");
+
+    $self->disconnectMemcached;
     
     return $self;
 }
@@ -551,25 +554,41 @@ sub enrich_related_records {
         $atime=new Benchmark;
     }
 
+    $self->connectMemcached;
+        
     my $memc_key = "record:title:enrich_related:$profilename:$viewname:$num:$self->{database}:$self->{id}";
     
     if ($self->{memc}){
         my $related_recordlist = $self->get_related_records;
         
         my $cached_records = $self->{memc}->get($memc_key);
+
+        $logger->debug("Got from memcached ".YAML::Dump($cached_records));
         
         if ($cached_records){
-            $related_recordlist->set_records($cached_records);
+            
+            if ($config->{benchmark}) {
+                my $btime=new Benchmark;
+                my $timeall=timediff($btime,$atime);
+                $logger->info("Zeit fuer das Holen der gecacheten Informationen ist ".timestr($timeall));
+            }
+
+            $related_recordlist->from_serialized_reference($cached_records);
 
             if ($config->{benchmark}) {
                 $btime=new Benchmark;
                 $timeall=timediff($btime,$atime);
-                $logger->info("Total time for is ".timestr($timeall));
+                $logger->info("Zeit fuer : Bestimmung von cached Enrich-Informationen ist ".timestr($timeall));
+                undef $atime;
+                undef $btime;
+                undef $timeall;
             }
             
             $logger->debug("Got recordlist from memcached");
-            
+
             $self->set_related_records($related_recordlist);
+
+            $self->disconnectMemcached;
             
             return $self;
         }
@@ -711,7 +730,9 @@ sub enrich_related_records {
         }
 
         if ($self->{memc}){
-            $self->{memc}->set($memc_key,$related_recordlist->get_records,$config->{memcached_expiration}{'record:title:enrich_related'});
+            my $related_records_ref = $related_recordlist->to_serialized_reference;
+            $logger->debug("Storing ".YAML::Dump($related_records_ref));
+            $self->{memc}->set($memc_key,$related_records_ref,$config->{memcached_expiration}{'record:title:enrich_related'});
         }
         
         $self->set_related_records($related_recordlist);
@@ -727,6 +748,8 @@ sub enrich_related_records {
         undef $timeall;
     }
 
+    $self->disconnectMemcached;
+    
     return $self;
 }
 
@@ -884,25 +907,41 @@ sub enrich_similar_records {
         $atime=new Benchmark;
     }
 
+    $self->connectMemcached;
+            
     my $memc_key = "record:title:enrich_similar:$profilename:$viewname:$self->{database}:$self->{id}";
     
     if ($self->{memc}){
         my $similar_recordlist = $self->get_similar_records;
         
         my $cached_records = $self->{memc}->get($memc_key);
-        
+
+        $logger->debug("Got from memcached ".YAML::Dump($cached_records));
+
         if ($cached_records){
-            $similar_recordlist->set_records($cached_records);
-            
+
+            if ($config->{benchmark}) {
+                my $btime=new Benchmark;
+                my $timeall=timediff($btime,$atime);
+                $logger->info("Zeit fuer das Holen der gecacheten Informationen ist ".timestr($timeall));
+            }
+
+            $similar_recordlist->from_serialized_reference($cached_records);
+
             if ($config->{benchmark}) {
                 $btime=new Benchmark;
                 $timeall=timediff($btime,$atime);
-                $logger->info("Total time for is ".timestr($timeall));
+                $logger->info("Zeit fuer : Bestimmung von cached Enrich-Informationen ist ".timestr($timeall));
+                undef $atime;
+                undef $btime;
+                undef $timeall;
             }
-
+            
             $logger->debug("Got recordlist from memcached");
             
             $self->set_similar_records($similar_recordlist);
+
+            $self->disconnectMemcached;
             
             return $self;
         }
@@ -1013,7 +1052,10 @@ sub enrich_similar_records {
         }
 
         if ($self->{memc}){
-            $self->{memc}->set($memc_key,$similar_recordlist->get_records,$config->{memcached_expiration}{'record:title:enrich_similar'});
+            my $similar_records_ref = $similar_recordlist->to_serialized_reference;
+            $logger->debug("Storing ".YAML::Dump($similar_records_ref));
+
+            $self->{memc}->set($memc_key,$similar_records_ref,$config->{memcached_expiration}{'record:title:enrich_similar'});
         }
 
         $self->set_similar_records($similar_recordlist);
@@ -1025,6 +1067,8 @@ sub enrich_similar_records {
         $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles/Similar Titles ist ".timestr($timeall));
     }
 
+    $self->disconnectMemcached;
+    
     return $self;
 }
 
@@ -1048,6 +1092,8 @@ sub enrich_same_records {
         $atime=new Benchmark;
     }
 
+    $self->connectMemcached;
+            
     my $memc_key = "record:title:enrich_same:$profilename:$viewname:$self->{database}:$self->{id}";
     
     if ($self->{memc}){
@@ -1055,21 +1101,38 @@ sub enrich_same_records {
 
         my $cached_records = $self->{memc}->get($memc_key);
 
+        $logger->debug("Got from memcached ".YAML::Dump($cached_records));
+        
         if ($cached_records){
-            $same_recordlist->set_records($cached_records);
-            
+
+            if ($config->{benchmark}) {
+                my $btime=new Benchmark;
+                my $timeall=timediff($btime,$atime);
+                $logger->info("Zeit fuer das Holen der gecacheten Informationen ist ".timestr($timeall));
+            }
+
+            $same_recordlist->from_serialized_reference($cached_records);
+
             if ($config->{benchmark}) {
                 $btime=new Benchmark;
                 $timeall=timediff($btime,$atime);
-                $logger->info("Total time for is ".timestr($timeall));
+                $logger->info("Zeit fuer : Bestimmung von cached Enrich-Informationen ist ".timestr($timeall));
+                undef $atime;
+                undef $btime;
+                undef $timeall;
             }
             
             $logger->debug("Got recordlist from memcached");
             
             $self->set_same_records($same_recordlist);
+
+            $self->disconnectMemcached;
             
             return $self;
         }
+    }
+    else {
+        $logger->debug("No memcached available");
     }
     
     if (!exists $self->{enrich_schema}){
@@ -1172,7 +1235,10 @@ sub enrich_same_records {
         }
 
         if ($self->{memc}){
-            $self->{memc}->set($memc_key,$same_recordlist->get_records,$config->{memcached_expiration}{'record:title:enrich_same'});
+            my $same_records_ref = $same_recordlist->to_serialized_reference;
+            $logger->debug("Storing ".YAML::Dump($same_records_ref));
+
+            $self->{memc}->set($memc_key,$same_records_ref,$config->{memcached_expiration}{'record:title:enrich_same'});
         }
         
         $self->set_same_records($same_recordlist);
@@ -1184,6 +1250,8 @@ sub enrich_same_records {
         $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles ist ".timestr($timeall));
     }
 
+    $self->connectMemcached;
+    
     return $self;
 }
 
@@ -1206,6 +1274,8 @@ sub load_circulation {
         $atime=new Benchmark;
     }
 
+    $self->connectMemcached;
+            
     my $memc_key = "record:title:circulation:$self->{database}:$self->{id}";
     
     if ($self->{memc}){
@@ -1221,6 +1291,9 @@ sub load_circulation {
             $logger->debug("Got circulation from memcached");
 
             $self->set_circulation($circulation_ref);
+
+            $self->disconnectMemcached;
+            
             return $self;
         }
     }
@@ -1323,6 +1396,8 @@ sub load_circulation {
         $logger->info("Total time for is ".timestr($timeall));
     }
 
+    $self->disconnectMemcached;
+    
     return $self;
 }
 

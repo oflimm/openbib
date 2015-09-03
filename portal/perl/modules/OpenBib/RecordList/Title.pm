@@ -566,6 +566,29 @@ sub set_records {
     return $self;
 }
 
+sub to_serialized_reference {
+    my ($self) = @_;
+
+    my $recordlist_ref = [];
+    
+    foreach my $record ($self->get_records) {
+        push @$recordlist_ref, $record->to_hash;
+    }
+
+    return $recordlist_ref;
+}
+
+sub from_serialized_reference {
+    my ($self,$recordlist_ref)=@_;
+
+    foreach my $record_ref (@$recordlist_ref){
+        $self->add(OpenBib::Record::Title->new->from_hash($record_ref));
+    }
+
+    return $self;
+}
+
+
 sub get_titlecount_per_db {
     my ($self) = @_;
 

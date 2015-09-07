@@ -158,8 +158,8 @@ sub convert_buffer {
 
         $titleid = sprintf "%d", $titleid;
         
-        print "-------------------------------------\n";
-        print "$kateg,$indikator,$type,$content\n";
+#        print "-------------------------------------\n";
+#        print "$kateg,$indikator,$type,$content\n";
         my $is_mex=0;
         
         my $content_ref={};
@@ -193,7 +193,7 @@ sub convert_buffer {
                 my $new_category = $convconfig->{'title'}{$kategind};
                 my $multcount=++$multcount_ref->{$new_category};
 
-                print "Konv: $kategind -> $new_category : $content_ref->{$kategind}\n";
+#                print "Konv: $kategind -> $new_category : $content_ref->{$kategind}\n";
                 
                 push @{$title_ref->{fields}{$new_category}}, {
                     content  => $content_ref->{$kategind},

@@ -104,7 +104,7 @@ $(document).ready(function(){
 [%   END %]
 [% END %]
 
-     <form id="ob-simple_search_form" class="ym-searchform" method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+     <form id="ob-simple_search_form" class="ym-searchform" method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
 
      <input type="hidden" name="num"        value="20" />
      <input type="hidden" name="page"       value="1" />

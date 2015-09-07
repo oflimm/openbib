@@ -69,7 +69,8 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]" class="ym-form">
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html" class="ym-form">
+<input type="hidden" name="l"          value="[% lang %]" />
 <input type="hidden" name="num"        value="20" />
 <input type="hidden" name="page"       value="1" />
 

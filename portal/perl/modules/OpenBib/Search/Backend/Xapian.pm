@@ -147,6 +147,15 @@ sub search {
     if ($logger->is_debug){
         $logger->debug("Options: ".YAML::Dump($options_ref));
     }
+
+    $logger->debug("srt: ".$sorttype);
+    
+    # Wenn srto in srt enthalten, dann aufteilen
+    if ($sorttype =~m/^([^_]+)_([^_]+)$/){
+        $sorttype=$1;
+        $sortorder=$2;
+        $logger->debug("srt Option split: srt = $1, srto = $2");
+    }
     
     # Pagination parameters
     my $page              = (defined $self->{_options}{page})?$self->{_options}{page}:$queryoptions->get_option('page');
@@ -336,6 +345,8 @@ sub search {
     my $enq       = $dbh->enquire($self->{qp}->parse_query($fullquerystring,Search::Xapian::FLAG_WILDCARD|Search::Xapian::FLAG_LOVEHATE|Search::Xapian::FLAG_BOOLEAN|Search::Xapian::FLAG_PHRASE));
 #    my $enq       = $dbh->enquire($self->{qp}->parse_query($fullquerystring,FLAG_WILDCARD|FLAG_BOOLEAN|FLAG_PHRASE));
 
+    $logger->debug("Original sorting: $sorttype / $sortorder");
+    
     # Sorting
     if ($sorttype ne "relevance" || exists $config->{xapian_sorttype_value}{$sorttype}) { # default
         $sortorder = ($sortorder eq "asc")?0:1;

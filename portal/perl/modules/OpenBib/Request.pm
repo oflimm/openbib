@@ -35,6 +35,7 @@ use base qw(Plack::Request);
 use Log::Log4perl qw(get_logger :levels);
 use YAML::Syck;
 use CGI::Cookie;
+use URI::Escape;
 
 sub psgi_header {
     my($self, @header_props) = @_;
@@ -128,6 +129,19 @@ sub args {
     foreach my $param ($self->parameters->keys){
         foreach my $value ($self->parameters->get_all($param)){
             push @parameters, "$param=$value";
+        }
+    }
+
+    return join(";",@parameters);
+}
+
+sub escaped_args {
+    my $self = shift;
+
+    my @parameters = ();
+    foreach my $param ($self->parameters->keys){
+        foreach my $value ($self->parameters->get_all($param)){
+            push @parameters, "$param=".uri_escape_utf8($value);
         }
     }
 

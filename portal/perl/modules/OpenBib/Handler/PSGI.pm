@@ -345,12 +345,12 @@ sub negotiate_content {
                     }
                     
                     $args="?l=".$self->param('lang');
-                    if ($r->args()){
-                        $args="$args;".$r->args();
+                    if ($r->escaped_args()){
+                        $args="$args;".$r->escaped_args();
                     }
                 }
                 else {
-                    $args="?".$r->args();
+                    $args="?".$r->escaped_args();
                 }
 
                 my $path = "";
@@ -385,7 +385,7 @@ sub negotiate_content {
                 
                 my $args = "?l=".$self->param('lang');
                 
-                $args=$args.";".$r->args() if ($r->args());
+                $args=$args.";".$r->escaped_args() if ($r->escaped_args());
 
                 my $dispatch_url = $self->param('scheme')."://".$self->param('servername').$self->param('path').$args;
             
@@ -403,7 +403,7 @@ sub negotiate_content {
         }
         else {
             $logger->debug("No additional negotiation necessary");
-            $logger->debug("Current URL is ".$self->param('path')." with args ".$r->args());
+            $logger->debug("Current URL is ".$self->param('path')." with args ".$r->escaped_args());
         }
     }
     
@@ -455,7 +455,7 @@ sub process_uri {
     my $uri    = $r->request_uri;
     my $path   = $r->path;
     my $scheme = $r->scheme || 'http';
-    my $args   = $r->args;
+    my $args   = $r->escaped_args;
 
     my $forwarded_proto = $r->header('X-Forwarded-Proto');
 
@@ -467,7 +467,7 @@ sub process_uri {
 
     my ($location_uri,$last_uri_element) = $path =~m/^(.+?)\/([^\/]+)$/;
     
-    $logger->debug("Full Internal Path: $path - Last URI Element: $last_uri_element - Args: ".$r->args);
+    $logger->debug("Full Internal Path: $path - Last URI Element: $last_uri_element - Args: ".$r->escaped_args);
     
     if (! $config->strip_view_from_uri($view)){
         $path_prefix = $complete_path_prefix;
@@ -544,8 +544,8 @@ sub personalize_uri {
             
             $dispatch_url .=$path;
             
-            if ($r->args()){
-                $dispatch_url.="?".$r->args();
+            if ($r->escaped_args()){
+                $dispatch_url.="?".$r->escaped_args();
             }
 
             $logger->debug("Dispatching to $dispatch_url");
@@ -585,8 +585,8 @@ sub personalize_uri {
             
             $dispatch_url .=$path;
             
-            if ($r->args()){
-                $dispatch_url.="?".$r->args();
+            if ($r->escaped_args()){
+                $dispatch_url.="?".$r->escaped_args();
             }
 
             $logger->debug("Dispatching to $dispatch_url");
@@ -1428,6 +1428,7 @@ sub to_cgi_hidden_input {
 
     foreach my $arg_ref ($self->to_cgi_params($arg_ref)){
         push @cgiparams, "<input type=\"hidden\" name=\"$arg_ref->{param}\" value=\"".decode_utf8(uri_unescape($arg_ref->{val}))."\" />";
+#        push @cgiparams, "<input type=\"hidden\" name=\"$arg_ref->{param}\" value=\"".uri_escape_utf8($arg_ref->{val})."\" />";
     }   
 
     return join("\n",@cgiparams);
@@ -1569,6 +1570,16 @@ sub redirect {
     }
 
 #    $self->param('status',$status);
+
+#     if ($url=~/\?/){
+#         my ($base,$query) = split("\\?",$url);
+#         my @query_args = ();
+#         foreach my ($key,$value) (split("[&;]",$query)){
+#             push @query_args, $key."=".uri_escape_utf8($value);
+#         }
+#         $query = join(";",@query_args);
+#         $url = $base."?".$query;
+#     }
     
     $self->header_type('redirect');
     $self->header_add('Location' => $url);

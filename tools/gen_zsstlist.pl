@@ -74,6 +74,7 @@ if (!$mode){
   $mode="tex";
 }
 
+print "Generating $sigel\n";
 
 if ($mode ne "tex" && $mode ne "pdf"){
   print "Mode muss enweder tex oder pdf sein.\n";

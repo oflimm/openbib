@@ -55,7 +55,7 @@ while (my $result=$request->fetchrow_hashref()){
     system("cd /var/www/zeitschriftenlisten ; pdflatex --interaction=batchmode /var/www/zeitschriftenlisten/zeitschriften-$sigel.tex");
     system("cd /var/www/zeitschriftenlisten ; pdflatex --interaction=batchmode /var/www/zeitschriftenlisten/zeitschriften-$sigel-bibsort.tex");
     
-    system($config->{tool_dir}."/gen_zsstlist.pl --sigel=$sigel -showall --mode=tex");
+    system($config->{tool_dir}."/gen_zsstlist.pl --sigel=$sigel -showall --enrichnatfile=/opt/openbib/autoconv/pools/instzs/nationallizenzen.csv --mode=tex");
     system("cd /var/www/zeitschriftenlisten ; pdflatex --interaction=batchmode /var/www/zeitschriftenlisten/zeitschriften-$sigel-all.tex");
     system("cd /var/www/zeitschriftenlisten ; pdflatex --interaction=batchmode /var/www/zeitschriftenlisten/zeitschriften-$sigel-all-bibsort.tex");
 }

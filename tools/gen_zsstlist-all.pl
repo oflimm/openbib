@@ -41,7 +41,7 @@ use DBI;
 use YAML;
 
 my $config      = OpenBib::Config->new;
-my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+my $dbinfotable = OpenBib::Config::DatabaseInfoTable->new;
 
 my $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=instzs;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
 

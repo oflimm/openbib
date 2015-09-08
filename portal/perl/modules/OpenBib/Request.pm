@@ -33,6 +33,7 @@ use utf8;
 use base qw(Plack::Request);
 
 use Log::Log4perl qw(get_logger :levels);
+use Encode qw/encode_utf8 decode_utf8/;
 use YAML::Syck;
 use CGI::Cookie;
 use URI::Escape;
@@ -141,7 +142,7 @@ sub escaped_args {
     my @parameters = ();
     foreach my $param ($self->parameters->keys){
         foreach my $value ($self->parameters->get_all($param)){
-            push @parameters, "$param=".uri_escape_utf8($value);
+            push @parameters, "$param=".uri_escape_utf8(decode_utf8($value));
         }
     }
 

@@ -121,38 +121,49 @@ if ($enrichnatfile){
         
         my $moving_wall  = $row->{'moving wall'}; 
         
-        my $bestandsverlauf = "$erstes_jahr"; 
-        if ($erstes_issue){ 
-            if ($erstes_jahr){ 
-                $bestandsverlauf="$bestandsverlauf.$erstes_issue"; 
+        my $bestandsverlauf = "$erstes_jahr";
+
+        if ($erstes_jahr){
+            if ($erstes_volume){ 
+                $bestandsverlauf="$erstes_volume.$bestandsverlauf"; 
             }
-        } 
-        
-        if ($erstes_volume){ 
-            $bestandsverlauf="$bestandsverlauf ($erstes_volume)"; 
-        } 
+            elsif ($erstes_issue){
+                $bestandsverlauf="$erstes_issue.$bestandsverlauf"; 
+            }
+        }
+        else {
+            if ($erstes_volume){ 
+                $bestandsverlauf="$erstes_volume"; 
+            }
+            elsif ($erstes_issue){
+                $bestandsverlauf="$erstes_issue"; 
+            }
+        }
         
         if ($moving_wall){ 
             $bestandsverlauf = "$bestandsverlauf - Moving Wall: $moving_wall"; 
-        } 
-        else { 
-            if ($letztes_jahr){ 
+        }
+        else {
+            if ($letztes_jahr){
+                if ($letztes_volume){
+                    $letztes_jahr="$letztes_volume.$letztes_jahr"; 
+                }
+                elsif ($letzes_issue){
+                    $letztes_jahr="$letztes_issue.$letztes_jahr"; 
+                }
+                
                 $bestandsverlauf="$bestandsverlauf - $letztes_jahr"; 
-            } 
-            
-            if ($letztes_issue){ 
-                if ($letztes_jahr){ 
-                    $bestandsverlauf="$bestandsverlauf.$letztes_issue"; 
-                } 
-                else { 
-                    $bestandsverlauf="$letztes_issue"; 
-                } 
-            } 
-            
-            if ($letztes_volume){ 
-                $bestandsverlauf="$bestandsverlauf ($letztes_volume)"; 
-            } 
-            
+            }
+            else {
+                if ($letztes_volume){
+                    $letztes_jahr="$letzes_volume.$letztes_jahr"; 
+                }
+                elsif ($letzes_issue){
+                    $letztes_jahr="$letztes_issue.$letztes_jahr"; 
+                }
+                
+                $bestandsverlauf="$bestandsverlauf - $letztes_jahr"; 
+            }
         } 
         
         my $verfuegbar  = $row->{'verfuegbar'}; 
@@ -173,6 +184,7 @@ $subset->identify_by_field_content('holding',[{ field => 3330, content => $sigel
 my %titleids = %{$subset->get_titleid};
 
 my $externzahl=0;
+my $natlizzahl=0;
 
 my @recordlist = ();
 
@@ -212,20 +224,21 @@ foreach $titleid (keys %titleids){
     my $is_extern=0;
 
     my $nat_bestandsverlauf = "";
-    
+
+    my $is_natlizenz=0;
     # Nationallizenzen anreichern?
     if ($enrichnatfile){
         my $issns_ref = $record->get_field({ field => 'T0543'});
 
         foreach my $issn_ref (@$issns_ref){
         
-            if (defined $issn_nationallizenzen_ref->{$issn_ref->{content}}){
+            if (!$is_natlizenz && defined $issn_nationallizenzen_ref->{$issn_ref->{content}}){
                 $nat_bestandsverlauf = $issn_nationallizenzen_ref->{$issn_ref->{content}};
 
-                print "Angereichert: $issn_ref->{content} - $nat_bestandsverlauf\n";
+#                $logger->debug("Angereichert: $issn_ref->{content} - $nat_bestandsverlauf");
 
                 push @$mexnormdata_ref, {
-                    'X3330' => { 'content' => 'nationallizenzen' },
+                    'X3330' => { 'content' => 'Nationallizenzen' },
                     #                 'X0016' => [
                     #                     { 'content' => 'Nationallizenzen' },
                     #                 ],
@@ -234,6 +247,7 @@ foreach $titleid (keys %titleids){
                     #                 ],
                     'X1204' => { 'content' => $nat_bestandsverlauf },
                 };
+                $is_natlizenz = 1;
             }
             
         }
@@ -248,11 +262,15 @@ foreach $titleid (keys %titleids){
             }
         }
     }
-    
+
     if ($is_extern == 1){
         $externzahl++;
     }
-
+    
+    if ($is_natlizenz == 1){
+        $natlizzahl++;
+    }
+    
 #    print YAML::Dump($record->get_fields),"\n";
     push @recordlist, $record;
 }
@@ -287,6 +305,7 @@ my $ttdata = {
     showall      => $showall,
     gesamtzahl   => $#recordlist+1,
     externzahl   => $externzahl,
+    natlizzahl   => $natlizzahl,
 
     filterchars  => \&filterchars,
 };

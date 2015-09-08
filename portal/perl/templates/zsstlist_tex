@@ -151,6 +151,9 @@ verzeichnet sind.  \vspace{1cm}
 \begin{description}
 \item[Gesamtzahl der Zeitschriften] [% gesamtzahl %]
 \item[Davon sind auch in anderen Bibliotheken vorhanden] [% externzahl %]
+[% IF natlizzahl %]
+\item[Davon sind auch in den Nationallizenzen vorhanden] [% natlizzahl %]
+[% END %]
 \end{description}
 
 Die Instituts- und Seminarnamen zu den angegebenen Sigeln erhalten Sie

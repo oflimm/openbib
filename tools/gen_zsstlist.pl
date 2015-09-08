@@ -49,19 +49,21 @@ use OpenBib::Catalog::Subset;
 use DBI;
 use Encode qw/decode_utf8 encode decode/;
 use Template;
+use Text::CSV_XS;
 use YAML;
 
 if ($#ARGV < 0){
     print_help();
 }
 
-my ($help,$sigel,$showall,$mode);
+my ($help,$sigel,$showall,$mode,$enrichnatfile);
 
 &GetOptions(
 	    "help"    => \$help,
 	    "sigel=s" => \$sigel,
 	    "mode=s"  => \$mode,
 	    "showall" => \$showall,
+            "enrichnatfile=s" => \$enrichnatfile,
 	    );
 
 if ($help){
@@ -78,8 +80,92 @@ if ($mode ne "tex" && $mode ne "pdf"){
   exit;
 }
 
+my $issn_nationallizenzen_ref = {};
+
+if ($enrichnatfile){
+    my $csv_options = { 
+        'eol' => "\n", 
+        'sep_char' => "\t", 
+        'quote_char' =>  "\"", 
+        'escape_char' => "\"", 
+        
+    }; 
+    
+    open my $in,   "<:utf8",$enrichnatfile; 
+    
+    my $csv = Text::CSV_XS->new($csv_options); 
+    
+    my @cols = @{$csv->getline ($in)}; 
+    my $row = {}; 
+
+    $csv->bind_columns (\@{$row}{@cols}); 
+    
+    while ($csv->getline ($in)){ 
+        my @issns = (); 
+        
+        foreach my $issn (split /\s*;\s*/, $row->{'E-ISSN'}){ 
+            push @issns, $issn; 
+        } 
+        
+        foreach my $issn (split /\s*;\s*/, $row->{'P-ISSN'}){ 
+            push @issns, $issn; 
+        } 
+        
+        my $erstes_jahr   = $row->{'erstes Jahr'}; 
+        my $erstes_volume = $row->{'erstes volume'}; 
+        my $erstes_issue  = $row->{'erstes issue'}; 
+        
+        my $letztes_jahr   = $row->{'letztes Jahr'}; 
+        my $letztes_volume = $row->{'letztes volume'}; 
+        my $letztes_issue  = $row->{'letztes issue'}; 
+        
+        my $moving_wall  = $row->{'moving wall'}; 
+        
+        my $bestandsverlauf = "$erstes_jahr"; 
+        if ($erstes_issue){ 
+            if ($erstes_jahr){ 
+                $bestandsverlauf="$bestandsverlauf.$erstes_issue"; 
+            }
+        } 
+        
+        if ($erstes_volume){ 
+            $bestandsverlauf="$bestandsverlauf ($erstes_volume)"; 
+        } 
+        
+        if ($moving_wall){ 
+            $bestandsverlauf = "$bestandsverlauf - Moving Wall: $moving_wall"; 
+        } 
+        else { 
+            if ($letztes_jahr){ 
+                $bestandsverlauf="$bestandsverlauf - $letztes_jahr"; 
+            } 
+            
+            if ($letztes_issue){ 
+                if ($letztes_jahr){ 
+                    $bestandsverlauf="$bestandsverlauf.$letztes_issue"; 
+                } 
+                else { 
+                    $bestandsverlauf="$letztes_issue"; 
+                } 
+            } 
+            
+            if ($letztes_volume){ 
+                $bestandsverlauf="$bestandsverlauf ($letztes_volume)"; 
+            } 
+            
+        } 
+        
+        my $verfuegbar  = $row->{'verfuegbar'}; 
+        next unless ($verfuegbar eq "Nationallizenz"); 
+        
+        foreach my $issn (@issns){ 
+            $issn_nationallizenzen_ref->{$issn} = $bestandsverlauf; 
+        }
+    }
+}
+
 my $config      = OpenBib::Config->new;
-my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+my $dbinfotable = OpenBib::Config::DatabaseInfoTable->new;
 
 my $subset = new OpenBib::Catalog::Subset("instzs","who_cares");
 $subset->identify_by_field_content('holding',[{ field => 3330, content => $sigel }]);
@@ -125,6 +211,34 @@ foreach $titleid (keys %titleids){
 
     my $is_extern=0;
 
+    my $nat_bestandsverlauf = "";
+    
+    # Nationallizenzen anreichern?
+    if ($enrichnatfile){
+        my $issns_ref = $record->get_field({ field => 'T0543'});
+
+        foreach my $issn_ref (@$issns_ref){
+        
+            if (defined $issn_nationallizenzen_ref->{$issn_ref->{content}}){
+                $nat_bestandsverlauf = $issn_nationallizenzen_ref->{$issn_ref->{content}};
+
+                print "Angereichert: $issn_ref->{content} - $nat_bestandsverlauf\n";
+
+                push @$mexnormdata_ref, {
+                    'X3330' => { 'content' => 'nationallizenzen' },
+                    #                 'X0016' => [
+                    #                     { 'content' => 'Nationallizenzen' },
+                    #                 ],
+                    #                 'X3330' => [
+                    #                     { 'content' => 'nationallizenzen' },
+                    #                 ],
+                    'X1204' => { 'content' => $nat_bestandsverlauf },
+                };
+            }
+            
+        }
+        $record->set_holding($mexnormdata_ref);
+    }
     foreach my $mexitem_ref (@$mexnormdata_ref){
         if (exists $mexitem_ref->{X3330}){
             my $thissigel=$mexitem_ref->{X3330}{content};
@@ -134,7 +248,7 @@ foreach $titleid (keys %titleids){
             }
         }
     }
-
+    
     if ($is_extern == 1){
         $externzahl++;
     }

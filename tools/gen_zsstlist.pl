@@ -341,6 +341,7 @@ my $ttdata = {
     showall      => $showall,
     gesamtzahl   => $#recordlist+1,
     externzahl   => $externzahl,
+    natlizzahl   => $natlizzahl,
 
     filterchars  => \&filterchars,
 };

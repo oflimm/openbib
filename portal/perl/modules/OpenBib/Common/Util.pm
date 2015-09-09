@@ -1056,6 +1056,11 @@ sub normalize {
     
     return "" unless (defined $content);
     
+    $content =~ s/($chars_to_replace)/$char_replacements{$1}/g;
+    
+    # Normalisierung auf Kleinschreibung
+    $content = lc($content);
+
     # Typ Integer kann sofort normiert werden
 
     if ($type eq "integer"){
@@ -1080,11 +1085,6 @@ sub normalize {
         
         return $content;
     }
-
-    $content =~ s/($chars_to_replace)/$char_replacements{$1}/g;
-    
-    # Normalisierung auf Kleinschreibung
-    $content = lc($content);
     
     # Sonderbehandlung verschiedener Kategorien
 

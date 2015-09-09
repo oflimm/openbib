@@ -41,6 +41,7 @@ use URI::Escape qw(uri_escape uri_escape_utf8);
 use Encode 'decode_utf8';
 
 use OpenBib::Catalog;
+use OpenBib::Search::Factory;
 use OpenBib::Search::Backend::Xapian;
 use OpenBib::Search::Util;
 use OpenBib::Record::Title;
@@ -453,14 +454,16 @@ sub show_record_searchindex {
     my $r              = $self->param('r');
     my $config         = $self->param('config');
 
-    my $terms_ref  = OpenBib::Search::Backend::Xapian->get_indexterms({ database => $database, id => $titleid });
-    my $values_ref = OpenBib::Search::Backend::Xapian->get_values({ database => $database, id => $titleid });
+    my $searcher   = OpenBib::Search::Factory->create_searcher({database => $database, config => $config });
 
+    my $terms_ref  = $searcher->get_indexterms({ database => $database, id => $titleid });
+    my $values_ref = $searcher->get_values({ database => $database, id => $titleid });
+    
     my $ttdata = {
         database => $database,
         titleid  => $titleid,
-        terms  => $terms_ref,
-        values => $values_ref,
+        terms    => $terms_ref,
+        values   => $values_ref,
     };
     
     return $self->print_page($config->{'tt_users_titles_record_searchindex_tname'},$ttdata);

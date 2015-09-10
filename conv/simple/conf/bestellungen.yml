@@ -50,6 +50,7 @@ holding:
 
 exclude:
   'by_availability':
-     field: 'isbn'
-     databases:
-        - inst001
+     - # ISBN
+       field: 'isbn'
+       databases:
+          - inst001

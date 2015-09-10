@@ -30,6 +30,13 @@ builder {
         path => qr!^/(css|images|yaml|js)/!,
             root => '/var/www';
 
+    enable "Plack::Middleware::SizeLimit" => (
+        max_unshared_size_in_kb => '4194304', # 4GB
+        # min_shared_size_in_kb => '8192', # 8MB
+        # max_process_size_in_kb => '16384', # 16MB
+        check_every_n_requests => 2
+    );
+
 #    enable 'Debug', panels =>
 #        [ qw(Environment Response Timer Memory Profiler::NYTProf)
 #      ];

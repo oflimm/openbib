@@ -283,27 +283,28 @@ while ($csv->getline ($in)){
     };
     
     if ($convconfig->{exclude}{by_availability}){
-        my $key_field = $convconfig->{exclude}{by_availability}{field};
-        my $content = $row->{$key_field};
-        
-        my @keys = ();
-        if (exists $convconfig->{category_split_chars}{$key_field} && $content=~/$convconfig->{category_split_chars}{$key_field}/){
-            @keys = split($convconfig->{category_split_chars}{$key_field},$content);
+        foreach my $exclude_ref (@{$convconfig->{exclude}{by_availability}}){
+            my $key_field = $exclude_ref->{field};
+            my $content   = $row->{$key_field};
+            
+            my @keys = ();
+            if (exists $convconfig->{category_split_chars}{$key_field} && $content=~/$convconfig->{category_split_chars}{$key_field}/){
+                @keys = split($convconfig->{category_split_chars}{$key_field},$content);
+            }
+            else {
+                $content=~s/\n/ /g;
+                push @keys, $content;
+            }
+            
+            my $databases_ref = $exclude_ref->{databases};
+            
+            if ($enrichmnt->check_availability_by_isbn({isbn => \@keys, databases => $databases_ref })){
+                $logger->info("Titel mit ISBNs ".join(' ',@keys)." bereits in Datenbanken ".join(' ',@$databases_ref)." vorhanden!");
+                $excluded_titles++;
+                next;
+            }        
         }
-        else {
-            $content=~s/\n/ /g;
-            push @keys, $content;
-        }
-        
-        my $databases_ref = $convconfig->{exclude}{by_availability}{databases};
-        
-        if ($enrichmnt->check_availability_by_isbn({isbn => \@keys, databases => $databases_ref })){
-            $logger->info("Titel mit ISBNs ".join(' ',@keys)." bereits in Datenbanken ".join(' ',@$databases_ref)." vorhanden!");
-            $excluded_titles++;
-            next;
-        }        
     }
-
     if ($convconfig->{uniqueidfield}){
         my $id = $row->{$convconfig->{uniqueidfield}};
 

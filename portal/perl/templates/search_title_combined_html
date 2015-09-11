@@ -15,7 +15,7 @@
 
 <p/>
 
-<div class="ym-grid">
+<div class="ym-grid linearize-level-1">
   <div class="ym-g25 ym-gr">
     <div class="ym-gbox">
 [% IF hits > 0 %]

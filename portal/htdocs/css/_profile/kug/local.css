@@ -626,3 +626,497 @@
   }
 
 }
+
+@media screen and (max-width: 1024px) {
+
+  .ob-searchfield_supplement select {
+    width: 150px;
+  }
+  
+  .ob-searchfield {
+
+    width: 650px;
+    height: 80px;
+    padding: 5px;
+    margin: 0px auto 0px auto;
+/*    background: #c8c8c8;*/
+    background: #dfe2e8;
+/*    background: rgba(0,0,0,.2);*/
+    border-radius: 10px;
+    /*
+    -moz-box-shadow: 10px 10px 5px #888;
+    -webkit-box-shadow: 10px 10px 5px #888;
+    box-shadow: 10px 10px 5px #888;
+    -moz-box-shadow: 5px 5px 2px #888;
+    -webkit-box-shadow: 5px 5px 2px #888;
+    box-shadow: 5px 5px 2px #888; */
+    font-size: 110%;
+
+/*    box-shadow: 0 1px 1px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.2);*/
+  }
+
+  .ob-searchfield input[type="text"] {
+    width: 550px;
+    height: 40px;
+    padding: 0px;
+    padding-left: 5px;
+/*    height: 20px;
+    padding: 10px 5px;*/
+    float: left;   
+    font: 18px Arial,Verdana,Helvetica,sans-serif;
+    
+/*    font: bold 15px 'lucida sans', 'trebuchet MS', 'Tahoma';*/
+    border: 0;
+    background: #fff;
+    border-radius: 3px 0 0 3px;     
+  }
+
+  /* Form submit button */
+  .ob-searchfield button {    
+    overflow: visible;
+    position: relative;
+    float: right;
+    top: -22px;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    height: 40px;
+    width: 90px;
+    font: bold 15px/40px 'lucida sans', 'trebuchet MS', 'Tahoma';
+    color: #fff;
+    text-transform: uppercase;
+    background: #41799e; /*#d83c3c;*/
+    border-radius: 0 3px 3px 0;     
+    text-shadow: 0 -1px 0 rgba(0, 0 ,0, .3);
+  }  
+}
+
+@media screen and (max-width: 768px) {   
+    
+  /* Allgemein */
+
+  footer .float-right {
+    display: none;
+
+  }
+
+  .ob-representation {
+    display: none;
+  }
+  
+
+  .ob-titleimage img, .ob-titleimage a, .ob-titleimage {
+    display: none;
+  }
+  
+  .ob-item {
+    height: 125px;
+
+  }
+  
+  .ob-item .ob-thumbnail {
+    display: none;
+  }
+
+  .ob-item .ob-brieftitle {
+    position: absolute;
+    top: 26px;
+    left:20px;
+    width: auto;
+  }
+
+  /*
+  body{
+    background: #fff;
+    margin: 0 0;
+    padding: 0px 0px;
+  }
+      
+  #main {
+    padding: 0px;
+    width:768px;
+    float:left;
+  }
+*/
+  header {
+    height: 90px;
+    background: none;
+    border-bottom: none;
+    margin:0 auto;
+  }
+
+  #imgLogo {
+    margin-top: 0px;
+  }
+  #institutLogo {
+    display: none;
+  }
+  #Logo {
+    display: none;
+  }
+
+  nav {
+    margin-top: 0px;
+    background: #fff;
+  }
+  
+  .ob-searchfield_supplement {
+    display: none;
+  }
+
+  #ob-simplesearch_form {
+    margin-left: 0px;
+    margin-top: -15px;
+  }
+  
+  .ob-searchfield {
+
+    width: 450px;
+    height: 40px;
+    padding: 5px;
+    margin: 0px auto 0px auto;
+/*    background: #c8c8c8;*/
+    background: #dfe2e8;
+/*    background: rgba(0,0,0,.2);*/
+    border-radius: 10px;
+    /*
+    -moz-box-shadow: 10px 10px 5px #888;
+    -webkit-box-shadow: 10px 10px 5px #888;
+    box-shadow: 10px 10px 5px #888;
+    -moz-box-shadow: 5px 5px 2px #888;
+    -webkit-box-shadow: 5px 5px 2px #888;
+    box-shadow: 5px 5px 2px #888; */
+    font-size: 110%;
+
+/*    box-shadow: 0 1px 1px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.2);*/
+  }
+
+  .ob-searchfield input[type="text"] {
+    width: 350px;
+    height: 40px;
+    padding: 0px;
+    padding-left: 5px;
+/*    height: 20px;
+    padding: 10px 5px;*/
+    float: left;   
+    font: 18px Arial,Verdana,Helvetica,sans-serif;
+    
+/*    font: bold 15px 'lucida sans', 'trebuchet MS', 'Tahoma';*/
+    border: 0;
+    background: #fff;
+    border-radius: 3px 0 0 3px;     
+  }
+
+  /* Form submit button */
+  .ob-searchfield button {    
+    overflow: visible;
+    position: relative;
+    float: right;
+    top: -22px;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    height: 40px;
+    width: 90px;
+    font: bold 15px/40px 'lucida sans', 'trebuchet MS', 'Tahoma';
+    color: #fff;
+    text-transform: uppercase;
+    background: #41799e; /*#d83c3c;*/
+    border-radius: 0 3px 3px 0;     
+    text-shadow: 0 -1px 0 rgba(0, 0 ,0, .3);
+  }  
+
+  #uniTitle {
+    padding: 0px;
+    margin-left: 15px;
+    margin-top: 25px;
+    height: 30px;
+  }
+  #usbTitle a {
+    font-size:1.2em;
+
+  }
+
+}
+
+@media screen and (max-width: 480px) {   
+    
+  /* Allgemein */
+/*  
+  body{
+    background: #fff;
+    margin: 0 0;
+    padding: 0px 0px;
+  }
+      
+  #main {
+    padding: 0px;
+    width:480px;
+    float:left;
+  }
+*/
+
+  .ob-reuse_data {
+    display: none;
+  }
+  .ob-litlists {
+    display: none;
+  }
+  .ob-tagging {
+    display: none;
+  }
+
+  .ob-discover_sources {
+    display: none;
+  }
+    
+  .ob-session_history {
+    display: none;
+  }
+  .ob-item {
+    height: 155px;
+
+  }
+
+  .ob-functional_nav {
+    display: none;
+  }
+
+/*
+   .ob-breadcrumb {
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    text-overflow: ellipsis;
+  }
+  */
+   .ob-breadcrumb {
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    text-overflow: ellipsis;
+  }
+
+  
+  header {
+    height: 90px;
+    background: none;
+    border-bottom: none;
+    margin:0 auto;
+  }
+
+  #imgLogo {
+    margin-top: 0px;
+  }
+  #institutLogo {
+    display: none;
+  }
+  #Logo {
+    display: none;
+  }
+
+  nav {
+    margin-top: 0px;
+    background: #fff;
+  }
+  
+  .ob-searchfield_supplement {
+    display: none;
+  }
+
+  #ob-simplesearch_form {
+    margin-left: 0px;
+    margin-top: -15px;
+  }
+  
+  .ob-searchfield {
+
+    width: 290px;
+    height: 40px;
+    padding: 5px;
+    margin: 0px auto 0px auto;
+/*    background: #c8c8c8;*/
+    background: #dfe2e8;
+/*    background: rgba(0,0,0,.2);*/
+    border-radius: 10px;
+    /*
+    -moz-box-shadow: 10px 10px 5px #888;
+    -webkit-box-shadow: 10px 10px 5px #888;
+    box-shadow: 10px 10px 5px #888;
+    -moz-box-shadow: 5px 5px 2px #888;
+    -webkit-box-shadow: 5px 5px 2px #888;
+    box-shadow: 5px 5px 2px #888; */
+    font-size: 110%;
+
+/*    box-shadow: 0 1px 1px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.2);*/
+  }
+
+  .ob-searchfield input[type="text"] {
+    width: 190px;
+    height: 40px;
+    padding: 0px;
+    padding-left: 5px;
+/*    height: 20px;
+    padding: 10px 5px;*/
+    float: left;   
+    font: 18px Arial,Verdana,Helvetica,sans-serif;
+    
+/*    font: bold 15px 'lucida sans', 'trebuchet MS', 'Tahoma';*/
+    border: 0;
+    background: #fff;
+    border-radius: 3px 0 0 3px;     
+  }
+
+  /* Form submit button */
+  .ob-searchfield button {    
+    overflow: visible;
+    position: relative;
+    float: right;
+    top: -22px;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    height: 40px;
+    width: 90px;
+    font: bold 15px/40px 'lucida sans', 'trebuchet MS', 'Tahoma';
+    color: #fff;
+    text-transform: uppercase;
+    background: #41799e; /*#d83c3c;*/
+    border-radius: 0 3px 3px 0;     
+    text-shadow: 0 -1px 0 rgba(0, 0 ,0, .3);
+  }  
+
+  #uniTitle {
+    padding: 0px;
+    margin-left: 15px;
+    margin-top: 25px;
+    height: 30px;
+  }
+  #usbTitle a {
+    font-size:1.2em;
+
+  }
+
+}
+
+@media screen and (max-width: 320px) {   
+    
+  /* Allgemein */
+/*  
+  body{
+    margin: 0 0;
+    padding: 0px 0px;
+  }
+      
+  #main {
+    padding: 0px;
+    width:320px;
+    float:left;
+  }
+*/
+  header {
+    height: 90px;
+    background: none;
+    border-bottom: none;
+    margin:0 auto;
+  }
+
+  #imgLogo {
+    margin-top: 0px;
+  }
+  #institutLogo {
+    display: none;
+  }
+  #Logo {
+    display: none;
+  }
+
+  nav {
+    margin-top: 0px;
+    background: #fff;
+  }
+  
+  .ob-searchfield_supplement {
+    display: none;
+  }
+
+  #ob-simplesearch_form {
+    margin-left: 0px;
+    margin-top: -15px;
+  }
+  
+  .ob-searchfield {
+
+    width: 200px;
+    height: 40px;
+    padding: 5px;
+    margin: 0px auto 0px auto;
+/*    background: #c8c8c8;*/
+    background: #dfe2e8;
+/*    background: rgba(0,0,0,.2);*/
+    border-radius: 10px;
+    /*
+    -moz-box-shadow: 10px 10px 5px #888;
+    -webkit-box-shadow: 10px 10px 5px #888;
+    box-shadow: 10px 10px 5px #888;
+    -moz-box-shadow: 5px 5px 2px #888;
+    -webkit-box-shadow: 5px 5px 2px #888;
+    box-shadow: 5px 5px 2px #888; */
+    font-size: 110%;
+
+/*    box-shadow: 0 1px 1px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.2);*/
+  }
+
+  .ob-searchfield input[type="text"] {
+    width: 100px;
+    height: 40px;
+    padding: 0px;
+    padding-left: 5px;
+/*    height: 20px;
+    padding: 10px 5px;*/
+    float: left;   
+    font: 18px Arial,Verdana,Helvetica,sans-serif;
+    
+/*    font: bold 15px 'lucida sans', 'trebuchet MS', 'Tahoma';*/
+    border: 0;
+    background: #fff;
+    border-radius: 3px 0 0 3px;     
+  }
+
+  /* Form submit button */
+  .ob-searchfield button {    
+    overflow: visible;
+    position: relative;
+    float: right;
+    top: -21px;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    height: 40px;
+    width: 90px;
+    font: bold 15px/40px 'lucida sans', 'trebuchet MS', 'Tahoma';
+    color: #fff;
+    text-transform: uppercase;
+    background: #41799e; /*#d83c3c;*/
+    border-radius: 0 3px 3px 0;     
+    text-shadow: 0 -1px 0 rgba(0, 0 ,0, .3);
+  }  
+
+  #uniTitle {
+    padding: 0px;
+    margin-left: 15px;
+    margin-top: 25px;
+    height: 30px;
+  }
+  #usbTitle a {
+    font-size:1.2em;
+
+  }
+
+  .ob-collectionicon {
+    display: none;
+  }
+
+
+}
+

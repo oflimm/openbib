@@ -158,9 +158,9 @@ $(document).ready(function(){
 
 <div class="ob-category_header">[% dbinfo.get('dbnames').${database}.short %]</div>
 
-<div class="details ym-grid linearize-level-2"><!-- Begin Details -->
+<div class="ym-grid linearize-level-2 details"><!-- Begin Details -->
 <!-- Title begins here -->
-<div class="ob-titleimage ym-g33 ym-gr"><!-- Begin Images -->
+<div class="ym-g33 ym-gr ob-titleimage"><!-- Begin Images -->
   <div class="ym-gbox">
 [% PROCESS common/subtemplate name="titles_record_html_images" %]
   </div>

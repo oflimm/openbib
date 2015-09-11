@@ -18,7 +18,7 @@
   <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
 [% END %]
 
-          <div class="ym-grid ym-equalize">
+          <div class="ym-grid linearize-level-1 ym-equalize">
             <div class="ym-g33 ym-gl">
               <div class="ym-gbox">
 [% PROCESS common/subtemplate name="home_html_bottom_left" %]

@@ -656,7 +656,7 @@
   }
 
   .ob-searchfield input[type="text"] {
-    width: 550px;
+    width: 555px;
     height: 40px;
     padding: 0px;
     padding-left: 5px;
@@ -792,7 +792,7 @@
   }
 
   .ob-searchfield input[type="text"] {
-    width: 350px;
+    width: 355px;
     height: 40px;
     padding: 0px;
     padding-left: 5px;
@@ -930,7 +930,6 @@
   }
   
   .ob-searchfield {
-
     width: 290px;
     height: 40px;
     padding: 5px;
@@ -952,7 +951,7 @@
   }
 
   .ob-searchfield input[type="text"] {
-    width: 190px;
+    width: 195px;
     height: 40px;
     padding: 0px;
     padding-left: 5px;
@@ -1027,10 +1026,20 @@
   #institutLogo {
     display: none;
   }
-  #Logo {
+  
+  #Logo img {
     display: none;
   }
 
+  #Logo {
+    background: url(/images/openbib/unilogo_mobile.png) center no-repeat;
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    top: 200px;
+    left: 5px;    
+  }
+  
   nav {
     margin-top: 0px;
     background: #fff;
@@ -1068,7 +1077,7 @@
   }
 
   .ob-searchfield input[type="text"] {
-    width: 100px;
+    width: 105px;
     height: 40px;
     padding: 0px;
     padding-left: 5px;
@@ -1088,7 +1097,8 @@
     overflow: visible;
     position: relative;
     float: right;
-    top: -21px;
+    top: -22px;
+    margin: 0;
     border: 0;
     padding: 0;
     cursor: pointer;
@@ -1120,3 +1130,9 @@
 
 }
 
+/* Fix vertical Alignment of searchbutton for Chrome*/
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  .ob-searchfield button {    
+    top: -25px;
+  }
+}

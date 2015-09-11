@@ -19,7 +19,7 @@
 | <a href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %]" target="_parent"><b>[% msg.maketext("Abmelden") %] [[% username %]]</b></a></span>
 [%  ELSE %]
           <a [%- IF active_menu == "info" -%]class="active_menu" [%- END -%]href="[% path_prefix %]/[% config.get('info_loc') %]/help.html?l=[% lang %]">[% msg.maketext("Hilfe") %]</a> |
-          <a href="[% IF servername == "kug.ub.uni-koeln.de" %]https://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Anmelden") %]</a>
+          <a href="[% IF servername == "kug.ub.uni-koeln.de" %]https://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Anmelden") %]</a></span>
 [%- END -%]
 [% END %]
 [%END%]

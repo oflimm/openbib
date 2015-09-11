@@ -718,6 +718,9 @@
     display: none;
   }
 
+  .ob-item .ob-title {
+    font-size: 130%;
+  }
   .ob-item .ob-brieftitle {
     position: absolute;
     top: 26px;
@@ -828,10 +831,22 @@
 
   #uniTitle {
     padding: 0px;
-    margin-left: 15px;
+    background-image: url('/images/openbib/unilogo_mobile.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin-left: 10px;
+    margin-top: 25px;
+    height: 45px;
+    
+  }
+  
+  #uniTitle a {
+    padding: 0px;
+    margin-left: 55px;
     margin-top: 25px;
     height: 30px;
   }
+
   #usbTitle a {
     font-size:1.2em;
 
@@ -904,14 +919,27 @@
     border-bottom: none;
     margin:0 auto;
   }
-
+/*
+  #imgLogo {
+    position: absolute;
+    widht: 60px
+    height: 60px;
+    background-image: url('/images/openbib/unilogo_mobile.png');
+    top: 20;
+    left: 20;
+    right: 0;
+    bottom: 0;
+    background-repeat: no-repeat;
+    background-size: contain;
+    z-index: 2;
+  }
+*/
+  
   #imgLogo {
     margin-top: 0px;
   }
+  
   #institutLogo {
-    display: none;
-  }
-  #Logo {
     display: none;
   }
 
@@ -985,12 +1013,6 @@
     text-shadow: 0 -1px 0 rgba(0, 0 ,0, .3);
   }  
 
-  #uniTitle {
-    padding: 0px;
-    margin-left: 15px;
-    margin-top: 25px;
-    height: 30px;
-  }
   #usbTitle a {
     font-size:1.2em;
 
@@ -1031,15 +1053,6 @@
     display: none;
   }
 
-  #Logo {
-    background: url(/images/openbib/unilogo_mobile.png) center no-repeat;
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    top: 200px;
-    left: 5px;    
-  }
-  
   nav {
     margin-top: 0px;
     background: #fff;
@@ -1113,11 +1126,17 @@
   }  
 
   #uniTitle {
+    font-size: 90%;
+    margin-left: 5px;
+  }
+  
+  #uniTitle a {
     padding: 0px;
-    margin-left: 15px;
+    margin-left: 50px;
     margin-top: 25px;
     height: 30px;
   }
+
   #usbTitle a {
     font-size:1.2em;
 

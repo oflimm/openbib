@@ -86,12 +86,17 @@ $(function(){
 // Tabs fuer weitere Informationen
  //$('#ob-additional_title_info > ul').tabs();
 
-// Tabs fuer Suchmaske nach Formaten 
-$('#ob-searchform_types').tabs();
 
-// Tabs fuer Login nach Ziel 
-$('#ob-login_forms').tabs();
+ if($(window).width() > 880){
+   // Tabs fuer Suchmaske nach Formaten 
+   $('#ob-searchform_types').tabs();
+   
+   // Tabs fuer Login nach Ziel   
+   $('#ob-login_forms').tabs();
 
+   // Tabs fuer weitere Informationen
+   $('#ob-additional_title_info').tabs();
+ }
 // Accordion fuer Datenbankauswahl
 //$('.ui-accordion').accordion({ 
 //      autoHeight: false,

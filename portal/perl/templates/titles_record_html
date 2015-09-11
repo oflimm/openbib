@@ -40,7 +40,7 @@
 
 <body>
 
-               <script type="text/javascript">
+<!--               <script type="text/javascript">
                         $(function(){
 
                                 // Tabs
@@ -48,7 +48,7 @@
                                         
                         });
                 </script>
-
+-->
 <script language="JavaScript" type="text/javascript">
 $(document).ready(function(){
     $(".ob-collection").click(function(){

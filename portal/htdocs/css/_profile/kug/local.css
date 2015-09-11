@@ -1131,8 +1131,15 @@
 }
 
 /* Fix vertical Alignment of searchbutton for Chrome*/
+
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   .ob-searchfield button {    
     top: -25px;
+  }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) and (max-width: 1024px) {
+  .ob-searchfield button {    
+    top: -26px;
   }
 }

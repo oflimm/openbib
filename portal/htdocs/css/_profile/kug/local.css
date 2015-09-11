@@ -700,11 +700,24 @@
 
   }
 
+  #ob-same_records, #ob-similar_records {
+    padding: 10px;
+  }
+
+
+    
   .ob-representation {
     display: none;
   }
   
+  #ob-holding_info tr *:nth-child(2) {
+    display: none;
+  }
 
+  #ob-circulation_info tr *:nth-child(2) {
+    display: none;
+  }
+    
   .ob-titleimage img, .ob-titleimage a, .ob-titleimage {
     display: none;
   }

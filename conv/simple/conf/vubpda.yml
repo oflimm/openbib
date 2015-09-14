@@ -46,13 +46,17 @@ title:
 
 exclude:
   'by_availability':
-     - # USBN
+     - # ISBN
        field: 'identifier'
        databases:
           - inst001
           - ebookpda
           - ebooks
           - freebooks
+          - nationallizenzen
+          - bestellungen
+          - doab
+          - tmpebooks
           - zbmed
           - inst004
           - inst005

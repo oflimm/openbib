@@ -87,7 +87,47 @@ $(function(){
  //$('#ob-additional_title_info > ul').tabs();
 
 
- if($(window).width() > 880){
+function resizeScreen(){
+  if ($(window).width() <= 768){
+    $("#ob-facets_all_toggle_do").hide();
+     // und bei Klick Sichtbarkeit togglen
+       $("#ob-facets_all_toggle").click(function(){
+        $("#ob-facets_all_toggle_do").toggle();
+     });
+
+    $("#ob-facets_dbinfo_toggle_do").hide();
+     // und bei Klick Sichtbarkeit togglen
+       $("#ob-facets_dbinfo_toggle").click(function(){
+        $("#ob-facets_dbinfo_toggle_do").toggle();
+     });
+
+    $("#ob-record_title_save_toggle_do").hide();
+     // und bei Klick Sichtbarkeit togglen
+       $("#ob-record_title_save_toggle").click(function(){
+        $("#ob-record_title_save_toggle_do").toggle();
+     });
+       
+    $("#ob-record_title_discover_toggle_do").hide();
+     // und bei Klick Sichtbarkeit togglen
+       $("#ob-record_title_discover_toggle").click(function(){
+        $("#ob-record_title_discover_toggle_do").toggle();
+     });
+       
+    $("#ob-record_title_history_toggle_do").hide();
+     // und bei Klick Sichtbarkeit togglen
+       $("#ob-record_title_history_toggle").click(function(){
+        $("#ob-record_title_history_toggle_do").toggle();
+     });
+  }
+  else {
+    $("#ob-facets_all_toggle_do").show();
+    $("#ob-facets_dbinfo_toggle_do").show();
+    $("#ob-record_title_save_toggle_do").show();
+    $("#ob-record_title_discover_toggle_do").show();
+    $("#ob-record_title_history_toggle_do").show();
+  }
+
+  if($(window).width() > 880){
    // Tabs fuer Suchmaske nach Formaten 
    $('#ob-searchform_types').tabs();
    
@@ -96,7 +136,27 @@ $(function(){
 
    // Tabs fuer weitere Informationen
    $('#ob-additional_title_info').tabs();
- }
+  }
+  else {
+   // Tabs fuer Suchmaske nach Formaten 
+   $('#ob-searchform_types').tabs("destroy");
+   
+   // Tabs fuer Login nach Ziel   
+   $('#ob-login_forms').tabs("destroy");
+
+   // Tabs fuer weitere Informationen
+   $('#ob-additional_title_info').tabs("destroy");
+  }
+
+}
+
+
+// event handler for window resize
+$(window).resize(function(e){
+  resizeScreen();
+});
+resizeScreen();
+
 // Accordion fuer Datenbankauswahl
 //$('.ui-accordion').accordion({ 
 //      autoHeight: false,
@@ -266,6 +326,7 @@ $("#ob-newreview_toggle").click(function(){
 
 // --------------------------------------------------------------------------
 
+ 
 // Begin Togglen / Alle Reviews
 // Zuerst verstecken
 $("#ob-allreviews_do").hide();

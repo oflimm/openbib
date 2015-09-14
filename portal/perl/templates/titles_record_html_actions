@@ -16,8 +16,10 @@
   END ;
 %]
 
-<div class="ob-category_header">[% msg.maketext("Behalten Sie diesen Titel") %]:</div><p/>
+<div class="ob-category_header"><span id="ob-record_title_save_toggle">[% msg.maketext("Behalten Sie diesen Titel") %]:&nbsp;<img class="ob-responsive_toggle_button" style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 
+<div id="ob-record_title_save_toggle_do">
+<p/>
 <img src="[% config.get('share_img') %]" alt="[% msg.maketext("An BibSonomy senden") %]" title="[% msg.maketext("An BibSonomy senden") %]" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/to_bibsonomy.html?l=[% lang %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a><br/>
 <img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" />&nbsp;<a class="ob-collection" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a><br/>
 <img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/mail.html?l=[% lang %];format=Text" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a><br/>
@@ -87,7 +89,7 @@
 
 </fieldset>
 </form>
-</p>
+<p/>
 
 </div><!-- End Litlist do-->
 </div><!-- End Litlist -->
@@ -259,13 +261,14 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 <p/>
 </div><!-- End: Tagging -->
 
+</div><!-- End: ob-record_title_save_toggle -->
 </div><!-- End Reuse -->
 
-<p />
-
 <div class="ob-discover_sources"><!-- Begin Discover-Sources -->
-<div class="ob-category_header">[% msg.maketext("Entdecken Sie weitere Titel &uuml;ber:") %]</div><p/>
+<div class="ob-category_header"><span id="ob-record_title_discover_toggle">[% msg.maketext("Entdecken Sie weitere Titel &uuml;ber:") %]&nbsp;<img class="ob-responsive_toggle_button" style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 
+<div id="ob-record_title_discover_toggle_do">
+<p/>
 
 <!-- Anfang Empfehlungen -->
 [% IF normdata.exists('E4000') %]
@@ -455,9 +458,10 @@ $(document).ready(function(){
 </div>
 </div>
 <p/>
+
+</div><!-- End ob-record_title_discover_toggle_do -->
 </div><!-- End Discover-Sources -->
 
-<p/>
 
 <script type="text/javascript">
 $(document).ready(function(){
@@ -478,8 +482,10 @@ $("#history_toggle").click(function(){
 [% IF recent_titles.get_size > 0 %]
 <div class="ob-session_history"><!-- Begin Historie -->
 
-<div class="ob-category_header" id="history_anchor">[% msg.maketext("Diese Titel interessierten Sie bereits:") %]</div><p/>
+<div class="ob-category_header" id="history_anchor"><span id="ob-record_title_history_toggle">[% msg.maketext("Diese Titel interessierten Sie bereits:") %]&nbsp;<img class="ob-responsive_toggle_button" style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 
+<div id="ob-record_title_history_toggle_do">
+<p/>
 [% FOREACH recent_record IN recent_titles.get_records %]
 [%- item = recent_record.get_fields -%]
 [%# Titel konstruieren %]
@@ -504,6 +510,8 @@ title %]</span></strong></a>, <span class="ob-publisher">[% publisher %]</span> 
 [% END %]
 
 <p/>
+
+</div><!-- End ob-record_title_history_toggle_do -->
 </div><!-- End Session-Historie -->
 [% END %]
 

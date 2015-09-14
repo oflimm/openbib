@@ -1,5 +1,6 @@
+<div id="ob-search_refine">
 [% IF queryoptions.get_option('facets') != 'none' %]
-<div class="ob-facets">
+<div class="ob-facets ob-facets_all">
 [% IF hits <= config.get('xapian_option').maxmatch ;
 
       bklookup    = config.load_bk;
@@ -216,7 +217,9 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 
 [% PROCESS common/subtemplate name="search_radius" %]
 
-<div class="ob-category_header">[% msg.maketext("Treffermenge eingrenzen") %]</div>
+<div class="ob-category_header"><span id="ob-facets_all_toggle">[% msg.maketext("Treffermenge eingrenzen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+
+<div id="ob-facets_all_toggle_do">
 
 [% IF separate_refine %]
 [%# USE dumper;dumper.dump(have_filter)%]
@@ -648,6 +651,8 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [%        END %]
 <!-- End language facet -->
 
+</div> <!-- End: ob-facets_all_toggle_do -->
+
 </form>
 [% ELSE %]
 
@@ -675,9 +680,10 @@ durch zus&auml;tzliche Worte weiter eingrenzen.") %]
 
 <p/>
 [% END # facets=none%]
-<div class="ob-facets">
-<div class="ob-category_header">[% msg.maketext("Datenbank-Empfehlungen") %]</div>
+<div class="ob-facets ob-facets_dbinfo">
+<div class="ob-category_header"><span id="ob-facets_dbinfo_toggle">[% msg.maketext("Datenbank-Empfehlungen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 
+<div id="ob-facets_dbinfo_toggle_do">
 <!-- Anfang Elib DBIS-Empfehlungen -->
 <script language="JavaScript" type="text/javascript">
 $(document).ready(function(){
@@ -687,6 +693,7 @@ $(document).ready(function(){
            $("#ob-dbis_recommendations").html(txt); 
   });
 });
+
 </script>
 
 <p/>
@@ -695,5 +702,9 @@ $(document).ready(function(){
 <span ><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/titles/recommendations.html?l=[% lang %];fs=[% searchquery.get_searchtermstring %]">[% msg.maketext("Weiter zu den Datenbank-Empfehlungen") %]</a></span>
 </div>
 <!-- Ende Elib DBIS-Empfehlungen -->
+
+</div> <!-- End: ob-facets_dbinfo_toggle_do -->
+
+</div>
 
 </div>

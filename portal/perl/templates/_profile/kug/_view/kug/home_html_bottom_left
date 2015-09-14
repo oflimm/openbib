@@ -15,10 +15,13 @@
 
 <p/>
 
+<div id="ob-kuginfo_newsflash">
 [% PROCESS common/subtemplate name="newsflash" %]
 
 [% titlecount = config.get_number_of_titles({profile = sysprofile}) %]
+</div>
 
+<div id="ob-kuginfo_metrics">
 <h3><img style="vertical-align:bottom" src="[% config.get('chart_img') %]" alt="Metrics" />&nbsp[% msg.maketext("Kennzahlen") %]</h3>
 
 <style>
@@ -68,3 +71,4 @@
 </tr>
 </table>
 
+</div>

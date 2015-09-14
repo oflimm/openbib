@@ -888,6 +888,10 @@
   }
 */
 
+  #ob-kuginfo_newsflash {
+    display:none;
+  }
+  
   #ob-footer_info, .ob-footer_seperator {
     display:none;
   }

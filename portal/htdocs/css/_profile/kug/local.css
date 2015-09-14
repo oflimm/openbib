@@ -705,6 +705,10 @@
   }
 
 
+  #ob-footer_systeminfo {
+    display:none;
+  }
+
     
   .ob-representation {
     display: none;
@@ -884,6 +888,10 @@
   }
 */
 
+  #ob-footer_info, .ob-footer_seperator {
+    display:none;
+  }
+  
   .ob-reuse_data {
     display: none;
   }

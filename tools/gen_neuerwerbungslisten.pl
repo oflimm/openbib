@@ -8,7 +8,7 @@
 #  auf Sybase-DBMS via DBD::Proxy fuer Erwerbungsinformationen und
 #  lokal auf zugehoerige bibliogr. Daten via OpenBib::Record::Title
 #
-#  Dieses File ist (C) 2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2011-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -91,7 +91,7 @@ if (!$month || !$year){
 }
 
 our $config      = OpenBib::Config->new;
-our $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+our $dbinfotable = OpenBib::Config::DatabaseInfoTable->new;
 
 $logfile=($logfile)?$logfile:"/var/log/openbib/gen_neuerwerbungslisten.log";
 

@@ -157,7 +157,7 @@ sub connectDB {
     }
     else {
         eval {        
-            $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},$config->{systemdboptions}) or $logger->error_die($DBI::errstr);
+            $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},$config->{systemdboptions});
         };
         
         if ($@){
@@ -274,7 +274,7 @@ Dieses Apache-Singleton enthält Informtionen über alle Standorte
 
  use OpenBib::Config::LocationInfoTable;
 
- my $locinfotable = OpenBib::Config::LocationInfoTable->instance;
+ my $locinfotable = OpenBib::Config::LocationInfoTable->new;
 
  # Bibliothekssigel <-> Bibliotheksname
  my $full_db_info  = $dbinfotable->get("sigel")->{$sigel}->{full};

@@ -7,7 +7,7 @@
 #  Aufbau eines elektronischen Bibliotheksfuehrers im pdf-Format
 #  aus den Informationen in der OpenBib Config-Datenbank
 #
-#  Dieses File ist (C) 2010-2013 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2010-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Diese Datei ist abgeleitet aus der Datei gen_zsstlist.pl
 #
@@ -109,7 +109,7 @@ my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
 $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
 my $config        = OpenBib::Config->new;
-my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
+my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->new;
 my $img_base_path = $config->{image_root_path}."/openbib/geo";
 
 if (! -e $img_base_path){

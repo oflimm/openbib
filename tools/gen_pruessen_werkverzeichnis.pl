@@ -6,7 +6,7 @@
 #
 #  Generierung des Werkverzeichnisses der Sammlung Pruessen in der USB
 #
-#  Dieses File ist (C) 2013 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2013-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -101,7 +101,7 @@ Log::Log4perl::init(\$log4Perl_config);
 my $logger = get_logger();
 
 my $config      = OpenBib::Config->new;
-my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+my $dbinfotable = OpenBib::Config::DatabaseInfoTable->new;
 
 my $catalog = OpenBib::Catalog::Factory->create_catalog({database => 'pruessen' });
 

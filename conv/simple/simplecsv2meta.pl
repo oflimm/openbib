@@ -281,7 +281,8 @@ while ($csv->getline ($in)){
     my $title_ref = {
         'fields' => {},
     };
-    
+
+    my $skip_title = 0;
     if ($convconfig->{exclude}{by_availability}){
         foreach my $exclude_ref (@{$convconfig->{exclude}{by_availability}}){
             my $key_field = $exclude_ref->{field};
@@ -301,10 +302,14 @@ while ($csv->getline ($in)){
             if ($enrichmnt->check_availability_by_isbn({isbn => \@keys, databases => $databases_ref })){
                 $logger->info("Titel mit ISBNs ".join(' ',@keys)." bereits in Datenbanken ".join(' ',@$databases_ref)." vorhanden!");
                 $excluded_titles++;
+                $skip_title = 1;
                 next;
             }        
         }
     }
+
+    next if ($skip_title);
+    
     if ($convconfig->{uniqueidfield}){
         my $id = $row->{$convconfig->{uniqueidfield}};
 

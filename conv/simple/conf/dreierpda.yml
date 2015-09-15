@@ -58,6 +58,11 @@ exclude:
           - ebooks
           - freebooks
           - zbmed
+          - nationallizenzen
+          - bestellungen
+          - doab
+          - tmpebooks
+          - vubpda
           - inst004
           - inst005
           - inst006
@@ -216,11 +221,6 @@ exclude:
           - inst540
           - inst622
           - inst623
-          - nationallizenzen
-          - bestellungen
-          - doab
-          - tmpebooks
-          - vubpda
      - #ISBN
        field: 'linked_isbn'
        databases:
@@ -229,6 +229,11 @@ exclude:
           - ebooks
           - freebooks
           - zbmed
+          - nationallizenzen
+          - bestellungen
+          - doab
+          - tmpebooks
+          - vubpda
           - inst004
           - inst005
           - inst006

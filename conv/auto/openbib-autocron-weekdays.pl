@@ -181,21 +181,21 @@ foreach my $thread (@threads) {
     $logger->info("### -> done with $thread_description");
 }
 
-$logger->info("### EBOOKPDA");
+$logger->info("### Offene Bestellungen");
 
-autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['ebookpda'] });
+autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['bestellungen'] });
 
 ##############################
 
 $logger->info("### PRINTPDA");
 
-autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['vubpda','dreierpda'] });
+autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['dreierpda','vubpda'] });
 
 ##############################
 
-$logger->info("### Offene Bestellungen");
+$logger->info("### EBOOKPDA");
 
-autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['bestellungen'] });
+autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['ebookpda'] });
 
 ##############################
 

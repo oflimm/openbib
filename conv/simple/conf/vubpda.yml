@@ -53,6 +53,7 @@ exclude:
           - ebookpda
           - ebooks
           - freebooks
+          - dreierpda
           - nationallizenzen
           - bestellungen
           - doab

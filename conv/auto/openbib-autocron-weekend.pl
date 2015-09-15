@@ -180,24 +180,23 @@ foreach my $thread (@threads) {
     $logger->info("### -> done with $thread_description");
 }
 
-$logger->info("### EBOOKPDA");
-
-autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['ebookpda'] });
-
-##############################
-
-$logger->info("### PRINTPDA");
-
-autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['vubpda','dreierpda'] });
-
-##############################
-
 $logger->info("### Offene Bestellungen");
 
 autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['bestellungen'] });
 
 ##############################
 
+$logger->info("### PRINTPDA");
+
+autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['dreierpda','vubpda'] });
+
+##############################
+
+$logger->info("### EBOOKPDA");
+
+autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['ebookpda'] });
+
+##############################
 
 $logger->info("### Generating joined searchindexes");
 

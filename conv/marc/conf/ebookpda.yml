@@ -5,6 +5,9 @@ exclude:
         - doab
         - inst001
         - nationallizenzen
+        - bestellungen
+        - dreierpda
+        - vubpda
         - tmpebooks
         - freebooks
         - tusculum

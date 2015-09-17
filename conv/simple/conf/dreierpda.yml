@@ -233,7 +233,6 @@ exclude:
           - bestellungen
           - doab
           - tmpebooks
-          - vubpda
           - inst004
           - inst005
           - inst006
@@ -396,4 +395,3 @@ exclude:
           - bestellungen
           - doab
           - tmpebooks
-          - vubpda

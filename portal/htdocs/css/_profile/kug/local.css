@@ -840,7 +840,7 @@
 
   #ob-simplesearch_form {
     margin-left: 0px;
-    margin-top: -15px;
+    margin-top: -5px;
   }
   
   .ob-searchfield {
@@ -906,7 +906,7 @@
     background-repeat: no-repeat;
     background-size: contain;
     margin-left: 10px;
-    margin-top: 25px;
+    margin-top: 30px;
     height: 45px;
     
   }
@@ -972,6 +972,7 @@
     display: none;
   }
 
+
 /*
    .ob-breadcrumb {
     white-space: nowrap;
@@ -980,13 +981,6 @@
     text-overflow: ellipsis;
   }
   */
-   .ob-breadcrumb {
-    white-space: nowrap;
-    overflow: hidden;
-    width: 100%;
-    text-overflow: ellipsis;
-  }
-
   
   header {
     height: 90px;
@@ -1029,7 +1023,7 @@
 
   #ob-simplesearch_form {
     margin-left: 0px;
-    margin-top: -15px;
+    margin-top: -5px;
   }
   
   .ob-searchfield {
@@ -1088,6 +1082,12 @@
     text-shadow: 0 -1px 0 rgba(0, 0 ,0, .3);
   }  
 
+  #uniTitle {
+    font-size: 90%;
+    margin-left: 5px;
+  }
+  
+  
   #usbTitle a {
     font-size:1.2em;
 
@@ -1139,7 +1139,7 @@
 
   #ob-simplesearch_form {
     margin-left: 0px;
-    margin-top: -15px;
+    margin-top: -5px;
   }
   
   .ob-searchfield {
@@ -1200,11 +1200,6 @@
     text-shadow: 0 -1px 0 rgba(0, 0 ,0, .3);
   }  
 
-  #uniTitle {
-    font-size: 90%;
-    margin-left: 5px;
-  }
-  
   #uniTitle a {
     padding: 0px;
     margin-left: 50px;

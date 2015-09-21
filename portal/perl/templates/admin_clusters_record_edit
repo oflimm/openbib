@@ -107,6 +107,12 @@
 
 </form>
 
+
+[% differences = config.check_cluster_consistency(clusterinfo.id) ;
+
+   USE dumper;dumper.dump(differences);
+%]
+
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->

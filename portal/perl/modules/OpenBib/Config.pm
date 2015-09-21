@@ -4015,6 +4015,52 @@ sub get_description_of_dbrtopic {
     return '';
 }
 
+sub check_cluster_consistency {
+    my $self      = shift;
+    my $clusterid = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+        
+    my $differences_ref       = [];
+    my $serverids_in_cluster_ref = [];
+
+    foreach my $server ($self->get_serverinfo->search({ clusterid => $clusterid }, { order_by => 'id ASC' })->all){
+        push @$serverids_in_cluster_ref, $server->id;
+    }
+
+
+    if ($logger->is_debug){
+        $logger->debug("Server in Cluster".YAML::Dump($serverids_in_cluster_ref));
+    }
+    
+    foreach my $dbinfo_ref ($self->get_active_database_names->all){
+        my $count_ref = { dbname => $dbinfo_ref->dbname, dbid => $dbinfo_ref->id };
+        foreach my $serverid (@$serverids_in_cluster_ref){
+            foreach my $result ($dbinfo_ref->search_related("updatelogs", { serverid => $serverid }, { rows => 1, order_by => 'tstamp_start DESC' } )->all){
+                $count_ref->{server}{$serverid} = $result->title_count;
+            }
+        }
+
+        if ($logger->is_debug){
+            $logger->debug("Comparing ".YAML::Dump($count_ref));
+        }
+
+        my $last_titlecount;
+        foreach my $thisserver (keys %{$count_ref->{server}}){
+            foreach my $titlecount ($count_ref->{server}{$thisserver}){
+                if (defined $last_titlecount && $titlecount != $last_titlecount){
+                    push @$differences_ref, $count_ref;
+
+                    $last_titlecount = $titlecount;
+                }
+            }
+        }
+    }
+
+    return $differences_ref;
+}
+
 sub cleanup_pg_content {
     my $content = shift;
 

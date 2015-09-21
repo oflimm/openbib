@@ -4015,6 +4015,43 @@ sub get_description_of_dbrtopic {
     return '';
 }
 
+sub get_serverinfo_description {
+    my $self      = shift;
+    my $serverid  = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $description = "";
+    foreach my $server ($self->get_serverinfo->search({ id => $serverid }, { order_by => 'id ASC' })->all){
+        if ($server->description){
+            $description = $server->description;
+        }
+    }
+
+    return $description;
+}
+
+sub get_serverids_of_cluster {
+    my $self      = shift;
+    my $clusterid = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+        
+    my $serverids_of_cluster_ref = [];
+
+    foreach my $server ($self->get_serverinfo->search({ clusterid => $clusterid }, { order_by => 'id ASC' })->all){
+        push @$serverids_of_cluster_ref, $server->id;
+    }
+
+    if ($logger->is_debug){
+        $logger->debug("Server in Cluster".YAML::Dump($serverids_of_cluster_ref));
+    }
+    
+    return $serverids_of_cluster_ref;
+}
+    
 sub check_cluster_consistency {
     my $self      = shift;
     my $clusterid = shift;
@@ -4023,20 +4060,12 @@ sub check_cluster_consistency {
     my $logger = get_logger();
         
     my $differences_ref       = [];
-    my $serverids_in_cluster_ref = [];
 
-    foreach my $server ($self->get_serverinfo->search({ clusterid => $clusterid }, { order_by => 'id ASC' })->all){
-        push @$serverids_in_cluster_ref, $server->id;
-    }
-
-
-    if ($logger->is_debug){
-        $logger->debug("Server in Cluster".YAML::Dump($serverids_in_cluster_ref));
-    }
+    my $serverids_of_cluster_ref = $self->get_serverids_of_cluster($clusterid);
     
     foreach my $dbinfo_ref ($self->get_active_database_names->all){
         my $count_ref = { dbname => $dbinfo_ref->dbname, dbid => $dbinfo_ref->id };
-        foreach my $serverid (@$serverids_in_cluster_ref){
+        foreach my $serverid (@$serverids_of_cluster_ref){
             foreach my $result ($dbinfo_ref->search_related("updatelogs", { serverid => $serverid }, { rows => 1, order_by => 'tstamp_start DESC' } )->all){
                 $count_ref->{server}{$serverid} = $result->title_count;
             }
@@ -4049,11 +4078,13 @@ sub check_cluster_consistency {
         my $last_titlecount;
         foreach my $thisserver (keys %{$count_ref->{server}}){
             foreach my $titlecount ($count_ref->{server}{$thisserver}){
+                $logger->debug("Checking titlecount $titlecount of server $thisserver to previous count $last_titlecount");
                 if (defined $last_titlecount && $titlecount != $last_titlecount){
                     push @$differences_ref, $count_ref;
 
-                    $last_titlecount = $titlecount;
+                    $logger->debug("Found difference in database $count_ref->{dbname}");
                 }
+                $last_titlecount = $titlecount;
             }
         }
     }

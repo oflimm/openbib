@@ -99,6 +99,8 @@
 <a href="http://www.ub.uni-koeln.de/bibliotheken/38_429/" target="_blank"><b>&Ouml;ffungszeiten</b></a>
 [% ELSIF thiscirculation.Standort.match('Fachbibliothek Soziologie') %]
 <a href="http://www.ub.uni-koeln.de/bibliotheken/38_132/" target="_blank"><b>&Ouml;ffungszeiten</b></a>
+[% ELSIF thiscirculation.Standort.match('Archäologisches Instsitut') %]
+<a href="http://www.ub.uni-koeln.de/bibliotheken/38_427/" target="_blank"><b>&Ouml;ffungszeiten</b></a>
 [% ELSE %]
 <a href="http://www.ub.uni-koeln.de/bibliothek/zeiten/index_ger.html" target="_blank"><b>&Ouml;ffungszeiten</b></a>
 [% END %]

@@ -110,7 +110,13 @@
 
 [% differences = config.check_cluster_consistency(clusterinfo.id) ;
 
-   USE dumper;dumper.dump(differences);
+   IF differences.size > 0 ;
+%]
+<h4>Inconsistenzen zwischen den Servern dieses Clusters</h4>
+
+[%
+     USE dumper;dumper.dump(differences);
+   END;
 %]
 
         </div>

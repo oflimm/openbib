@@ -126,7 +126,7 @@ Titel auf [% config.get_serverinfo_description(serverid) %]
 </tr>
 [% FOREACH thisdb IN differences %]
 <tr>
-<td>[% thisdb.dbname %]</td>
+<td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% thisdb.dbname %]/updates.html?l=[% lang %]">[% thisdb.dbname %]</a></td>
 [% FOREACH serverid IN serverids %]
 <td>[% thisdb.server.${serverid} %]</td>
 [% END %]

@@ -5,12 +5,12 @@ use strict;
 
 use JSON::XS;
 
-print STDERR "### kmb Erweitere Titeldaten\n";
+print STDERR "### inst428 Erweitere Titeldaten\n";
 
 while (<>){
     my $title_ref = decode_json $_;
 
-    push @{$title_ref->{'locations'}}, "DE-Kn3";
+    push @{$title_ref->{'locations'}}, "DE-38-428";
     push @{$title_ref->{'locations'}}, "DE-38-ZBKUNST";
     
     print encode_json $title_ref, "\n";

@@ -509,12 +509,12 @@ if ($used01buch) {
             my ($d01gsi,$d01ex,$d01zweig,$d01entl,$d01mcopynum,$d01status,$d01skond,$d01ort,$d01abtlg,$d01standort)=@line[0,1,2,3,7,11,12,24,31,55];
             #print "$d01gsi,$d01ex,$d01zweig,$d01mcopynum,$d01ort,$d01abtlg\n";
             foreach my $katkey (@{$titelbuchkey{$d01mcopynum}}) {
-                push @{$buchdaten{$katkey}}, [$d01zweig,$d01ort,$d01abtlg,$d01standort,$d01entl,$d01status,$d01skond,$d01gsi];
+                push @{$buchdaten{$katkey}}, [$d01zweig,$d01ort,$d01abtlg,$d01standort,$d01entl,$d01status,$d01skond,$d01gsi,$d01ex];
             }
         } else {
             my ($d01gsi,$d01ex,$d01zweig,$d01entl,$d01katkey,$d01status,$d01skond,$d01ort,$d01abtlg,$d01standort)=@line[0,1,2,3,7,11,12,24,31,55];
             #print "$d01gsi,$d01ex,$d01zweig,$d01katkey,$d01ort,$d01abtlg\n";
-            push @{$buchdaten{$d01katkey}}, [$d01zweig,$d01ort,$d01abtlg,$d01standort,$d01entl,$d01status,$d01skond,$d01gsi];
+            push @{$buchdaten{$d01katkey}}, [$d01zweig,$d01ort,$d01abtlg,$d01standort,$d01entl,$d01status,$d01skond,$d01gsi,$d01ex];
         }
     }
     close(D01BUCH);
@@ -912,9 +912,14 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
         
         foreach my $buchsatz_ref (@{$buchdaten{$katkey}}) {
             my $mediennr    = $buchsatz_ref->[7];
+            my $ex          = $buchsatz_ref->[8];
             my $signatur    = $buchsatz_ref->[1];
             my $standort    = $zweigstelle{$buchsatz_ref->[0]};
             my $mediastatus;
+
+            if ($ex){
+                $mediennr = $mediennr."#".$ex;
+            }
             
             if ($usestatus){
                 $mediastatus = get_mediastatus($buchsatz_ref) ;

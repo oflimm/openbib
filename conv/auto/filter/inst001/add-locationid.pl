@@ -4,8 +4,22 @@ use warnings;
 use strict;
 
 use JSON::XS;
+use OpenBib::Catalog::Subset;
 
 my $title_locationid_ref = {};
+
+print STDERR "### inst001 Analysiere Teilbestand Kunst\n";
+
+my $zbkunst_title_ref = {};
+
+my $zbkunst_subset = new OpenBib::Catalog::Subset("inst001","zbkunst");
+
+$zbkunst_subset->identify_by_field_content('classification',([ { field => '0800', content => '^20\.' },{ field => '0800', content => '^21\.' },{ field => '0800', content => '^Ku' } ]));
+$zbkunst_subset->identify_by_mark(["^K[1-9]","^XK[1-9]","^AP[1-9]","^KP[1-9]","^1K[1-9]","2K[1-9]"]);
+
+foreach my $zbkunst_titleid (keys %{$zbkunst_subset->get_titleid}){
+    push @{$title_locationid_ref->{$zbkunst_titleid}}, "DE-38-ZBKUNST";
+}
 
 print STDERR "### inst001 Analysiere Exemplardaten\n";
 
@@ -88,7 +102,7 @@ while (<>){
     my $title_ref = decode_json $_;
 
     my $titleid = $title_ref->{id};
-    
+
     if (defined $title_ref->{fields}{'4715'}){
         foreach my $item (@{$title_ref->{fields}{'4715'}}){
             if ($item->{content} eq "edz"){

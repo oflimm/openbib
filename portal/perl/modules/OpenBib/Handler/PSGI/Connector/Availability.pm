@@ -100,17 +100,18 @@ sub show_collection {
 
     my $id_type = $self->identify_type_of_id;
 
+    my $response = "";
     if ($id_type eq "isbn"){
-        $self->show_collection_by_isbn;
+        $response = $self->show_collection_by_isbn;
     }
     elsif ($id_type eq "bibkey"){
-        $self->show_collection_by_bibkey;
+        $response = $self->show_collection_by_bibkey;
     }
     else {
-        $self->show_collection_by_isbn;
+        $response = $self->show_collection_by_isbn;
     }        
 
-    return;
+    return $response;
 }
 
 sub show_collection_by_isbn {

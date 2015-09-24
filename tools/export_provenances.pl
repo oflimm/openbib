@@ -129,7 +129,9 @@ foreach my $title ($titles_with_provenances->all){
 
         my $current_mark = "";
         foreach my $holding_ref (@{$record->get_holding}){
-            if ($holding_ref->{X0010}{content} eq $medianumber){
+            my $this_medianumber = $holding_ref->{X0010}{content};
+            $this_medianumber =~s/# $//;
+            if ($this_medianumber eq $medianumber){
                 $current_mark = $holding_ref->{X0014}{content};
             }
         }

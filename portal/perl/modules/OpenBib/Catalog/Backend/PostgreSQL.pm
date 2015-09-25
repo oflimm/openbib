@@ -739,10 +739,9 @@ sub create_index_document {
     )->count;
     
     if (exists $self->{_conv_config}->{'listitemcat'}{popularity}) {
-
+        $index_doc->add_index('popularity',1, $popularity);
     }
     
-    $index_doc->add_index('popularity',1, $popularity);
     
     my $tags_ref = [];
     {

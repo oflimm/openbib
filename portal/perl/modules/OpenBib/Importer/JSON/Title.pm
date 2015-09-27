@@ -1320,7 +1320,7 @@ sub process {
                 $item_ref->{content} = cleanup_content($content);
             }
 
-            if ($id && $field && $item_ref->{content}){
+            if ($id && $field && defined $item_ref->{content}){
                 $item_ref->{content} = cleanup_content($item_ref->{content});
 
 #                $logger->error("mult fehlt") if (!defined $item_ref->{mult});

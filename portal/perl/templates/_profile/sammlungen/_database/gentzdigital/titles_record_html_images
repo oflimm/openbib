@@ -15,7 +15,7 @@
 #######################################################################
 -%]
 <!-- Anfang Umschlagbilder -->
-[% IF normdata.${"T6054"} ;
+[% IF normdata.defined("T6054") ;
      FOREACH item IN normdata.${"T6054"} ;
        cdm_ptr = item.content ;
        thismult = item.mult ;

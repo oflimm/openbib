@@ -494,6 +494,15 @@ sub browse {
     if ($logger->is_debug){
         $logger->debug("Options: ".YAML::Dump($options_ref));
     }
+
+    $logger->debug("srt: ".$sorttype);
+    
+    # Wenn srto in srt enthalten, dann aufteilen
+    if ($sorttype =~m/^([^_]+)_([^_]+)$/){
+        $sorttype=$1;
+        $sortorder=$2;
+        $logger->debug("srt Option split: srt = $1, srto = $2");
+    }
     
     # Pagination parameters
     my $page              = (defined $self->{_options}{page})?$self->{_options}{page}:$queryoptions->get_option('page');

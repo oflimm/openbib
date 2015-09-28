@@ -49,10 +49,11 @@ use OpenBib::Search::Util;
 
 my $config     = OpenBib::Config->new;
 
-my ($database,$help,$logfile);
+my ($database,$help,$logfile,$filename);
 
 &GetOptions("database=s"      => \$database,
             "logfile=s"       => \$logfile,
+            "filename=s"      => \$filename,
 	    "help"            => \$help
 	    );
 
@@ -61,6 +62,7 @@ if ($help){
 }
 
 $logfile=($logfile)?$logfile:"/var/log/openbib/export_provenances.log";
+$filename=($filename)?$filename:"provenances_$database.json";
 
 my $log4Perl_config = << "L4PCONF";
 log4perl.rootLogger=ERROR, LOGFILE, Screen
@@ -83,7 +85,7 @@ $logger->info("Exporting provenances to JSON");
 
 my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $database});
 
-open(OUT,">provenances_$database.txt");
+open(OUT,">$filename");
 
 my $titles_with_provenances = $catalog->get_schema->resultset('TitleField')->search(
     {

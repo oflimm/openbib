@@ -136,9 +136,9 @@ foreach my $title ($titles_with_provenances->all){
             }
         }
 
-        # GND for families
+        # GND for collections
 
-        my $family_gnd = "";
+        my $collection_gnd = "";
 
         if ($record->has_field('T4306')){
             foreach my $field_ref (@{$record->get_field({ field => 'T4306'})}){
@@ -149,7 +149,7 @@ foreach my $title ($titles_with_provenances->all){
 
                     next unless (defined $this_subject_gnd);
 
-                    ($family_gnd) = $this_subject_gnd =~/.DE-588.(.+)$/;
+                    ($collection_gnd) = $this_subject_gnd =~/.DE-588.(.+)$/;
             }
             }
         }
@@ -198,17 +198,17 @@ foreach my $title ($titles_with_provenances->all){
         
         $provenance_ref->{hbzid}        = $hbzid if ($hbzid);
         $provenance_ref->{medianumber}  = $medianumber if ($medianumber);
-        $provenance_ref->{description}  = $description if ($description);
+        $provenance_ref->{tpro_description}  = $description if ($description);
         $provenance_ref->{sigel}        = $sigel if ($sigel);
         $provenance_ref->{incomplete}   = $incomplete if ($incomplete);
         $provenance_ref->{reference}    = $reference  if ($reference);
         $provenance_ref->{former_mark}  = $former_mark  if ($former_mark);
         $provenance_ref->{current_mark} = $current_mark  if ($current_mark);
-        $provenance_ref->{family_gnd}   = $family_gnd  if ($family_gnd);
+        $provenance_ref->{collection_gnd}   = $collection_gnd  if ($collection_gnd);
         $provenance_ref->{corporatebody_gnd}   = $corp_gnd  if ($corp_gnd);
         $provenance_ref->{person_gnd}   = $person_gnd  if ($person_gnd);
 
-        print OUT encode_json $provenance_ref, "\n";
+        print OUT encode_json $provenance_ref, "\n" if ($corp_gnd || $person_gnd || $collection_gnd);
     }
 }
 

@@ -1,0 +1,97 @@
+[%#-
+#######################################################################
+#
+# Templatename: subnavigation
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Unternavigations-Menu fuer Tabs
+#
+# Parameter active_menu zur Kennzeichnung aktiver Menupunkte:
+#
+# searchmask
+# cloud
+# info
+#
+#######################################################################
+-%]
+[% IF active_menu == "info" %]
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("Informationen") %]</h6>
+ <ul>
+[% IF active_submenu == "sammlung" %]
+  <li class="active"><strong>Weitere Informationen</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/quellen.html?l=[% lang %]">Weitere Informationen</a></li>
+[% END %]
+</ul>
+</nav>
+[% END %]
+[% IF active_menu == "project" %]
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("Projekt") %]</h6>
+ <ul>
+[% IF active_submenu == "ansprechpartner" %]
+  <li class="active"><strong>Ansprechpartner</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/ansprechpartner.html?l=[% lang %]">Ansprechpartner</a></li>
+[% END %]
+</ul>
+</nav>
+[% END %]
+[% IF active_menu == "register" %]
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("Register") %]</h6>
+ <ul>
+[% IF active_submenu == "register_4308" %]
+  <li class="active"><strong>Vorbesitzer Person</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/provenienzen/titles/fields/id/4308.html?l=[% lang %];page=1">Vorbesitzer Person</a></li>
+[% END %]
+[% IF active_submenu == "register_4307" %]
+  <li class="active"><strong>Vorbesitzer K&ouml;rperschaft</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/provenienzen/titles/fields/id/4307.html?l=[% lang %];page=1">Vorbesitzer K&ouml;rperschaft</a></li>
+[% END %]
+[% IF active_submenu == "register_4310" %]
+  <li class="active"><strong>T-PRO Besitzkennzeichen</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/provenienzen/titles/fields/id/4310.html?l=[% lang %];page=1">T-PRO Besitzkennzeichen</a></li>
+[% END %]
+ </ul>
+</nav>
+[% END %]
+[% IF active_menu == "cloud" %]
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("&Uuml;bersichten") %]</h6>
+ <ul>
+[% IF active_submenu == "clouds_year" %]
+  <li class="active"><strong>[% msg.maketext("Jahr") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/year/database/richter.html?l=[% lang %]" title="Jahr">[% msg.maketext("Jahr") %]</a></li>
+[% END %]
+[% IF active_submenu == "clouds_person" %]
+  <li class="active"><strong>[% msg.maketext("Personen") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/person/database/richter.html?l=[% lang %]" title="Personen">[% msg.maketext("Personen") %]</a></li>
+[% END %]
+[% IF active_submenu == "clouds_corporatebody" %]
+  <li class="active"><strong>[% msg.maketext("K&ouml;rperschaften") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/corporatebody/database/richter.html?l=[% lang %]" title="K&ouml;rperschaften">[% msg.maketext("K&ouml;rperschaften") %]</a></li>
+[% END %]
+[% IF active_submenu == "clouds_subject" %]
+  <li class="active"><strong>[% msg.maketext("Schlagwort") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/subject/database/richter.html?l=[% lang %]" title="Schlagwort">[% msg.maketext("Schlagwort") %]</a></li>
+[% END %]
+[% IF active_submenu == "clouds_classification" %]
+  <li class="active"><strong>[% msg.maketext("Systematik") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/classification/database/richter.html?l=[% lang %]" title="Systematik">[% msg.maketext("Systematik") %]</a></li>
+[% END %]
+ </ul>
+</nav>
+[% END %]

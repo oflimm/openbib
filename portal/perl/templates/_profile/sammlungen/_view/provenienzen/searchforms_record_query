@@ -83,7 +83,7 @@ $(document).ready(function(){
     this_searchfield = 't4308';
  -%]
 <div class="ym-fbox-text">
-<label for="[% cgiparam %]">Vorbesitzer Person</label>
+<label for="[% cgiparam %]">[% msg.maketext("Vorbesitzer Person") %]</label>
 <input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
@@ -91,7 +91,7 @@ $(document).ready(function(){
     this_searchfield = 't4307';
  -%]
 <div class="ym-fbox-text">
-<label for="[% cgiparam %]">Vorbesitzer K&ouml;rperschaft</label>
+<label for="[% cgiparam %]">[% msg.maketext("Vorbesitzer K&ouml;rperschaft") %]</label>
 <input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
@@ -99,7 +99,7 @@ $(document).ready(function(){
     this_searchfield = 't4310';
  -%]
 <div class="ym-fbox-text">
-<label for="[% cgiparam %]">T-PRO Besitzkennzeichen</label>
+<label for="[% cgiparam %]">[% msg.maketext("T-PRO Besitzkennzeichen") %]</label>
 <input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 

@@ -14,13 +14,13 @@
 [% PROCESS common/subtemplate name="std_header" %]
 
 [%- IF field == '4308' ;
-       field_description = 'Vorbesitzer Person';
+       field_description = msg.maketext("Vorbesitzer Person");
        searchfield = 'ft4308' ;
     ELSIF field == '4307' ;
-       field_description = 'Vorbesitzer K&ouml;rperschaft';
+       field_description = msg.maketext("Vorbesitzer K&ouml;rperschaft");
        searchfield = 'ft4307' ;
     ELSIF field == '4310' ;
-       field_description = 'T-PRO Besitzkennzeichen';
+       field_description = msg.maketext("T-PRO Besitzkennzeichen");
        searchfield = 'ft4310' ;
     END ; -%]
 

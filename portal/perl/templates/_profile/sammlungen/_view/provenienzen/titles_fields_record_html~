@@ -15,19 +15,13 @@
 
 [%- IF field == '4308' ;
        field_description = 'Vorbesitzer Person';
-       searchfield = 'personstring' ;
+       searchfield = 'ft4308' ;
     ELSIF field == '4307' ;
        field_description = 'Vorbesitzer K&ouml;rperschaft';
-       searchfield = 'corporatebodystring' ;
+       searchfield = 'ft4307' ;
     ELSIF field == '4310' ;
        field_description = 'T-PRO Besitzkennzeichen';
-       searchfield = 'titlestring' ;
-    ELSIF field == '0331' ;
-       field_description = 'Titel';
-       searchfield = 'titlestring' ;
-    ELSIF field == '0425' ;
-       field_description = 'Erscheinungsjahr';
-       searchfield = 'yearstring' ;
+       searchfield = 'ft4310' ;
     END ; -%]
 
 <body>

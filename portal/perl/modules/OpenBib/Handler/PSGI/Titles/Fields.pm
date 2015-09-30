@@ -311,8 +311,10 @@ sub show_record {
         '0101' => 'person',
         '0102' => 'person',
         '0103' => 'person',
+        '4308' => 'person',
         '0200' => 'corporatebody',
         '0201' => 'corporatebody',
+        '4307' => 'corporatebody',
         '0700' => 'classification',
         '0710' => 'subject',
         '0902' => 'subject',
@@ -326,6 +328,7 @@ sub show_record {
         '0937' => 'subject',
         '0942' => 'subject',
         '0947' => 'subject',
+        '4306' => 'subject',
     };
 
     my $contents;

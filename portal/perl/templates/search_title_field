@@ -34,5 +34,8 @@
           "ft0720" = msg.maketext("Provenienz")
           "ft4100" = msg.maketext("E4100")
           "ft4300" = msg.maketext("Externes Schlagwort")
+          "ft4307" = "Vorbesitzer Körperschaft"
+          "ft4308" = "Vorbesitzer Person"
+          "ft4310" = "T-PRO Besitzkennzeichen"
 };
 %]

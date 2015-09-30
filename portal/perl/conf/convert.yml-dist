@@ -756,6 +756,25 @@ convtab:
           'ft4300': 1
         facet:
           'subject': 1
+      '4307':         # Provenienzen Koerperschaften
+        index:
+          'corporatebody': 20
+          'corporatebodystring': 20
+          'freesearch': 20
+          't4307': 1
+          'ft4307': 1
+      '4308':         # Provenienzen Person
+        index:
+          'personbody': 20
+          'personstring': 20
+          'freesearch': 20
+          't4308': 1
+          'ft4308': 1
+      '4310':         # T-PRO Besitzkennzeichen
+        index:
+          'freesearch': 20
+          't4310': 1
+          'ft4310': 1
       '4400':         # Verfuegbarkeit lendable_[immediate|order|weekend] oder presence_[immediate|order]
         index:
           'availabilitystring': 1
@@ -1386,6 +1405,25 @@ convtab:
           'subjectstring': 20
           'freesearch': 20
           'ft4300': 1
+      '4307':         # Provenienzen Koerperschaften
+        index:
+          'corporatebody': 20
+          'corporatebodystring': 20
+          'freesearch': 20
+          't4307': 1
+          'ft4307': 1
+      '4308':         # Provenienzen Person
+        index:
+          'personbody': 20
+          'personstring': 20
+          'freesearch': 20
+          't4308': 1
+          'ft4308': 1
+      '4310':         # T-PRO Besitzkennzeichen
+        index:
+          'freesearch': 20
+          't4310': 1
+          'ft4310': 1
       '4400':         # Verfuegbarkeit lendable_[immediate|order|weekend] oder visible_[immediate|order]
         index:
           'availabilitystring': 1

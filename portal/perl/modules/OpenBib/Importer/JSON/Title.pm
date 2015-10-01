@@ -33,6 +33,7 @@ no warnings 'redefine';
 use utf8;
 
 use Benchmark ':hireswallclock';
+use Digest::MD5 qw(md5_hex);
 use Encode qw/decode_utf8/;
 use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
@@ -184,7 +185,11 @@ sub process {
     
     my $record_ref;
 
+    my $import_hash = "";
+
     if ($json){
+        $import_hash = md5_hex($json);
+        
         eval {
             $record_ref = decode_json $json;
         };
@@ -1305,7 +1310,7 @@ sub process {
     # Primaeren Normdatensatz erstellen und schreiben
     my $popularity = (exists $self->{storage}{listitemdata_popularity}{$id})?$self->{storage}{listitemdata_popularity}{$id}:0;
     
-    push @{$self->{_columns_title}}, [$id,$create_tstamp,$update_tstamp,$titlecache,$popularity];
+    push @{$self->{_columns_title}}, [$id,$create_tstamp,$update_tstamp,$titlecache,$popularity,$import_hash];
     
     # Abhaengige Feldspezifische Saetze erstellen und schreiben
     

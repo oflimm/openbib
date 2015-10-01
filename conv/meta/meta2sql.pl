@@ -35,6 +35,7 @@ use warnings;
 use Benchmark ':hireswallclock';
 use Business::ISBN;
 use DB_File;
+use Digest::MD5 qw(md5_hex);
 use Encode qw/decode_utf8/;
 use Getopt::Long;
 use JSON::XS;
@@ -56,6 +57,10 @@ use OpenBib::Record::Person;
 use OpenBib::Record::Subject;
 use OpenBib::Record::Title;
 use OpenBib::Statistics;
+use OpenBib::Importer::JSON::Person;
+use OpenBib::Importer::JSON::CorporateBody;
+use OpenBib::Importer::JSON::Classification;
+use OpenBib::Importer::JSON::Subject;
 use OpenBib::Importer::JSON::Title;
 
 my %char_replacements = (
@@ -119,7 +124,6 @@ my $dir=`pwd`;
 chop $dir;
 
 my %listitemdata_person         = ();
-my %listitemdata_person_date    = ();
 my %listitemdata_corporatebody  = ();
 my %listitemdata_classification = ();
 my %listitemdata_subject        = ();
@@ -246,190 +250,397 @@ if (exists $conv_config->{local_enrichmnt} && -e "$enrichmntdumpdir/enrichmntdat
     $logger->info("### $database: Lokale Einspielung mit zentralen Anreicherungsdaten aktiviert");
 }
 
+goto WEITER;
+
+##################################################################################################
+
+$logger->info("### $database: Bearbeite meta.person");
+
+my $atime = new Benchmark;
+
+open(IN ,           "<:raw" ,"meta.person"         )     || die "IN konnte nicht geoeffnet werden";
+open(OUT,           ">:utf8","person.dump"         )     || die "OUT konnte nicht geoeffnet werden";
+open(OUTFIELDS,     ">:utf8","person_fields.dump"  )     || die "OUTFIELDS konnte nicht geoeffnet werden";
+
+my $storage_ref = {
+    'listitemdata_person' => \%listitemdata_person,
+    'indexed_person'      => \%indexed_person,
+};
+    
+my $importer = OpenBib::Importer::JSON::Person->new({
+    storage         => $storage_ref,
+    database        => $database,
+});
+
+while (my $jsonline=<IN>){
+
+    eval {
+        $importer->process({
+            json         => $jsonline
+        });
+    };
+
+    if ($@){
+	$logger->error($@," - $jsonline\n");
+	next ;
+    }
+
+    my $columns_ref                = $importer->get_columns;
+    my $columns_fields_ref         = $importer->get_columns_fields;
+
+    foreach my $person_ref (@$columns_ref){
+        print OUT join('',@$person_ref),"\n";
+    }
+    
+    foreach my $person_fields_ref (@$columns_fields_ref){
+        print OUTFIELDS join('',@$person_fields_ref),"\n";
+    }
+    
+    if ($count % 1000 == 0) {
+        my $btime      = new Benchmark;
+        my $timeall    = timediff($btime,$atime);
+        my $resulttime = timestr($timeall,"nop");
+        $resulttime    =~s/(\d+\.\d+) .*/$1/;
+        
+        $atime      = new Benchmark;
+        $logger->info("### $database: $count Personensaetze in $resulttime bearbeitet");
+    } 
+
+    $count++;
+}
+
+close(OUT);
+close(OUTFIELDS);
+close(IN);
+
+unlink "meta.person";
+
+%listitemdata_person = %{$importer->get_storage->{listitemdata_person}};
+%indexed_person      = %{$importer->get_storage->{indexed_person}};
+
+$logger->info("### $database: $count Personensaetze bearbeitet");
+
+##################################################################################################
+
+$logger->info("### $database: Bearbeite meta.corporatebody");
+
+$atime = new Benchmark;
+
+open(IN ,           "<:raw" ,"meta.corporatebody"         )     || die "IN konnte nicht geoeffnet werden";
+open(OUT,           ">:utf8","corporatebody.dump"         )     || die "OUT konnte nicht geoeffnet werden";
+open(OUTFIELDS,     ">:utf8","corporatebody_fields.dump"  )     || die "OUTFIELDS konnte nicht geoeffnet werden";
+
+$storage_ref = {
+    'listitemdata_corporatebody' => \%listitemdata_corporatebody,
+    'indexed_corporatebody'      => \%indexed_corporatebody,
+};
+    
+$importer = OpenBib::Importer::JSON::CorporateBody->new({
+    storage         => $storage_ref,
+    database        => $database,
+});
+
+while (my $jsonline=<IN>){
+
+    eval {
+        $importer->process({
+            json         => $jsonline
+        });
+    };
+
+    if ($@){
+	$logger->error($@," - $jsonline\n");
+	next ;
+    }
+
+    my $columns_ref                = $importer->get_columns;
+    my $columns_fields_ref         = $importer->get_columns_fields;
+
+    foreach my $corporatebody_ref (@$columns_ref){
+        print OUT join('',@$corporatebody_ref),"\n";
+    }
+    
+    foreach my $corporatebody_fields_ref (@$columns_fields_ref){
+        print OUTFIELDS join('',@$corporatebody_fields_ref),"\n";
+    }
+    
+    if ($count % 1000 == 0) {
+        my $btime      = new Benchmark;
+        my $timeall    = timediff($btime,$atime);
+        my $resulttime = timestr($timeall,"nop");
+        $resulttime    =~s/(\d+\.\d+) .*/$1/;
+        
+        $atime      = new Benchmark;
+        $logger->info("### $database: $count Corporatebodyensaetze in $resulttime bearbeitet");
+    } 
+
+    $count++;
+}
+
+close(OUT);
+close(OUTFIELDS);
+close(IN);
+
+unlink "meta.corporatebody";
+
+%listitemdata_corporatebody = %{$importer->get_storage->{listitemdata_corporatebody}};
+%indexed_corporatebody      = %{$importer->get_storage->{indexed_corporatebody}};
+
+$logger->info("### $database: $count Corporatebodyensaetze bearbeitet");
+
+
+##################################################################################################
+
+$logger->info("### $database: Bearbeite meta.classification");
+
+$atime = new Benchmark;
+
+open(IN ,           "<:raw" ,"meta.classification"         )     || die "IN konnte nicht geoeffnet werden";
+open(OUT,           ">:utf8","classification.dump"         )     || die "OUT konnte nicht geoeffnet werden";
+open(OUTFIELDS,     ">:utf8","classification_fields.dump"  )     || die "OUTFIELDS konnte nicht geoeffnet werden";
+
+$storage_ref = {
+    'listitemdata_classification' => \%listitemdata_classification,
+    'indexed_classification'      => \%indexed_classification,
+};
+    
+$importer = OpenBib::Importer::JSON::Classification->new({
+    storage         => $storage_ref,
+    database        => $database,
+});
+
+while (my $jsonline=<IN>){
+
+    eval {
+        $importer->process({
+            json         => $jsonline
+        });
+    };
+
+    if ($@){
+	$logger->error($@," - $jsonline\n");
+	next ;
+    }
+
+    my $columns_ref                = $importer->get_columns;
+    my $columns_fields_ref         = $importer->get_columns_fields;
+
+    foreach my $classification_ref (@$columns_ref){
+        print OUT join('',@$classification_ref),"\n";
+    }
+    
+    foreach my $classification_fields_ref (@$columns_fields_ref){
+        print OUTFIELDS join('',@$classification_fields_ref),"\n";
+    }
+    
+    if ($count % 1000 == 0) {
+        my $btime      = new Benchmark;
+        my $timeall    = timediff($btime,$atime);
+        my $resulttime = timestr($timeall,"nop");
+        $resulttime    =~s/(\d+\.\d+) .*/$1/;
+        
+        $atime      = new Benchmark;
+        $logger->info("### $database: $count Classificationensaetze in $resulttime bearbeitet");
+    } 
+
+    $count++;
+}
+
+close(OUT);
+close(OUTFIELDS);
+close(IN);
+
+unlink "meta.classification";
+
+%listitemdata_classification = %{$importer->get_storage->{listitemdata_classification}};
+%indexed_classification      = %{$importer->get_storage->{indexed_classification}};
+
+$logger->info("### $database: $count Classificationensaetze bearbeitet");
+
+##################################################################################################
+
+$logger->info("### $database: Bearbeite meta.subject");
+
+$atime = new Benchmark;
+
+open(IN ,           "<:raw" ,"meta.subject"         )     || die "IN konnte nicht geoeffnet werden";
+open(OUT,           ">:utf8","subject.dump"         )     || die "OUT konnte nicht geoeffnet werden";
+open(OUTFIELDS,     ">:utf8","subject_fields.dump"  )     || die "OUTFIELDS konnte nicht geoeffnet werden";
+
+$storage_ref = {
+    'listitemdata_subject' => \%listitemdata_subject,
+    'indexed_subject'      => \%indexed_subject,
+};
+    
+$importer = OpenBib::Importer::JSON::Subject->new({
+    storage         => $storage_ref,
+    database        => $database,
+});
+
+while (my $jsonline=<IN>){
+
+    eval {
+        $importer->process({
+            json         => $jsonline
+        });
+    };
+
+    if ($@){
+	$logger->error($@," - $jsonline\n");
+	next ;
+    }
+
+    my $columns_ref                = $importer->get_columns;
+    my $columns_fields_ref         = $importer->get_columns_fields;
+
+    foreach my $subject_ref (@$columns_ref){
+        print OUT join('',@$subject_ref),"\n";
+    }
+    
+    foreach my $subject_fields_ref (@$columns_fields_ref){
+        print OUTFIELDS join('',@$subject_fields_ref),"\n";
+    }
+    
+    if ($count % 1000 == 0) {
+        my $btime      = new Benchmark;
+        my $timeall    = timediff($btime,$atime);
+        my $resulttime = timestr($timeall,"nop");
+        $resulttime    =~s/(\d+\.\d+) .*/$1/;
+        
+        $atime      = new Benchmark;
+        $logger->info("### $database: $count Subjectensaetze in $resulttime bearbeitet");
+    } 
+
+    $count++;
+}
+
+close(OUT);
+close(OUTFIELDS);
+close(IN);
+
+unlink "meta.subject";
+
+%listitemdata_subject = %{$importer->get_storage->{listitemdata_subject}};
+%indexed_subject      = %{$importer->get_storage->{indexed_subject}};
+
+$logger->info("### $database: $count Subjectensaetze bearbeitet");
+
+WEITER:
 my $stammdateien_ref = {
     person => {
-        type               => "person",
         infile             => "meta.person",
         outfile            => "person.dump",
         outfile_fields     => "person_fields.dump",
-        inverted_ref       => $conv_config->{inverted_person},
-        blacklist_ref      => $conv_config->{blacklist_person},
+        class              => "OpenBib::Importer::JSON::Person",
     },
-    
+
     corporatebody => {
         infile             => "meta.corporatebody",
         outfile            => "corporatebody.dump",
         outfile_fields     => "corporatebody_fields.dump",
-        inverted_ref       => $conv_config->{inverted_corporatebody},
-        blacklist_ref      => $conv_config->{blacklist_corporatebody},
+        class              => "OpenBib::Importer::JSON::CorporateBody",
     },
     
     subject => {
         infile             => "meta.subject",
         outfile            => "subject.dump",
         outfile_fields     => "subject_fields.dump",
-        inverted_ref       => $conv_config->{inverted_subject},
-        blacklist_ref      => $conv_config->{blacklist_subject},
+        class              => "OpenBib::Importer::JSON::Subject",
     },
     
     classification => {
         infile             => "meta.classification",
         outfile            => "classification.dump",
         outfile_fields     => "classification_fields.dump",
-        inverted_ref       => $conv_config->{inverted_classification},
-        blacklist_ref      => $conv_config->{blacklist_classification},
+        class              => "OpenBib::Importer::JSON::Classification",
     },
+};
+
+$storage_ref = {
+    'listitemdata_person'         => \%listitemdata_person,
+    'listitemdata_corporatebody'  => \%listitemdata_corporatebody,
+    'listitemdata_classification' => \%listitemdata_classification,
+    'listitemdata_subject'        => \%listitemdata_subject,
+    'listitemdata_holding'        => \%listitemdata_holding,
+    'listitemdata_superid'        => \%listitemdata_superid,
+    'listitemdata_popularity'     => \%listitemdata_popularity,
+    'listitemdata_tags'           => \%listitemdata_tags,
+    'listitemdata_litlists'       => \%listitemdata_litlists,
+    'listitemdata_enriched_years' => \%listitemdata_enriched_years,
+    'enrichmntdata'               => \%enrichmntdata,
+    'indexed_person'              => \%indexed_person,
+    'indexed_corporatebody'       => \%indexed_corporatebody,
+    'indexed_subject'             => \%indexed_subject,
+    'indexed_classification'      => \%indexed_classification,
+    'indexed_holding'             => \%indexed_holding,
 };
 
 foreach my $type (keys %{$stammdateien_ref}) {
     if (-f $stammdateien_ref->{$type}{infile}){
-        $logger->info("### $database: Bearbeite $stammdateien_ref->{$type}{infile} / $stammdateien_ref->{$type}{outfile}");
+        $atime = new Benchmark;
 
+        $count = 0;
+        
+        $logger->info("### $database: Bearbeite $stammdateien_ref->{$type}{infile} / $stammdateien_ref->{$type}{outfile}");
+        
         open(IN ,           "<:raw",$stammdateien_ref->{$type}{infile} )        || die "IN konnte nicht geoeffnet werden";
         open(OUT,           ">:utf8",$stammdateien_ref->{$type}{outfile})        || die "OUT konnte nicht geoeffnet werden";
         open(OUTFIELDS,     ">:utf8",$stammdateien_ref->{$type}{outfile_fields})     || die "OUTFIELDS konnte nicht geoeffnet werden";
+
+        my $class = $stammdateien_ref->{$type}{class};
         
-        my ($category,$mult,$content);
+        $importer = $class->new({
+            storage         => $storage_ref,
+            database        => $database,
+        });
         
-        my $serialid = 1;
-        
-        while (my $jsonline=<IN>) {
-            
-            my $record_ref ;
+        while (my $jsonline=<IN>){
             
             eval {
-                $record_ref = decode_json $jsonline;
+                $importer->process({
+                    json         => $jsonline
+                });
             };
             
             if ($@){
-                $logger->error("Skipping record: $@");
-                next;
+                $logger->error($@," - $jsonline\n");
+                next ;
             }
             
-            my $id         = $record_ref->{id};
-            my $fields_ref = $record_ref->{fields};
+            my $columns_ref                = $importer->get_columns;
+            my $columns_fields_ref         = $importer->get_columns_fields;
             
-            # Primaeren Normdatensatz erstellen und schreiben
+            foreach my $this_column_ref (@$columns_ref){
+                print OUT join('',@$this_column_ref),"\n";
+            }
             
-            my $create_tstamp = "1970-01-01 12:00:00";
+            foreach my $this_column_fields_ref (@$columns_fields_ref){
+                print OUTFIELDS join('',@$this_column_fields_ref),"\n";
+            }
             
-            if (defined $fields_ref->{'0002'} && defined $fields_ref->{'0002'}[0]) {
-                $create_tstamp = $fields_ref->{'0002'}[0]{content};
-                if ($create_tstamp=~/^(\d\d)\.(\d\d)\.(\d\d\d\d)/) {
-                    $create_tstamp=$3."-".$2."-".$1." 12:00:00";
-                }
-            }
-        
-            my $update_tstamp = "1970-01-01 12:00:00";
-        
-            if (exists $fields_ref->{'0003'} && exists $fields_ref->{'0003'}[0]) {
-                $update_tstamp = $fields_ref->{'0003'}[0]{content};
-                if ($update_tstamp=~/^(\d\d)\.(\d\d)\.(\d\d\d\d)/) {
-                    $update_tstamp=$3."-".$2."-".$1." 12:00:00";
-                }            
-            }
-        
-            print OUT "$id$create_tstamp$update_tstamp\n";
-
-            # Ansetzungsformen fuer Kurztitelliste merken
-        
-            my $mainentry;
-        
-            if (exists $fields_ref->{'0800'} && exists $fields_ref->{'0800'}[0] ) {
-                $mainentry = $fields_ref->{'0800'}[0]{content};
-            }
-        
-            if ($mainentry) {
-                if ($type eq "person") {
-                    $listitemdata_person{$id}=$mainentry;
-                } elsif ($type eq "corporatebody") {
-                    $listitemdata_corporatebody{$id}=$mainentry;
-                } elsif ($type eq "classification") {
-                    $listitemdata_classification{$id}=$mainentry;
-                } elsif ($type eq "subject") {
-                    if (defined $fields_ref->{'0800'}[1]) {
-                        # Schlagwortketten zusammensetzen
-                        my @mainentries = ();
-                        foreach my $item (map { $_->[0] }
-                                              sort { $a->[1] <=> $b->[1] }
-                                                  map { [$_, $_->{mult}] } @{$fields_ref->{'0800'}}) {
-                            push @mainentries, $item->{content};
-                            $mainentry = join (' / ',@mainentries);
-                        }
-
-                        $fields_ref->{'0800'} = [
-                            {
-                                content  => $mainentry,
-                                mult     => 1,
-                                subfield => '',
-                            }
-                        ];
-                    }
-                    $listitemdata_subject{$id}=$mainentry;
-                }
-            }
-
-            foreach my $field (keys %{$fields_ref}) {
-                next if ($field eq "id" || defined $stammdateien_ref->{$type}{blacklist_ref}->{$field} );
-                foreach my $item_ref (@{$fields_ref->{$field}}) {
-                    if (exists $stammdateien_ref->{$type}{inverted_ref}{$field}->{index}) {
-                        foreach my $searchfield (keys %{$stammdateien_ref->{$type}{inverted_ref}{$field}->{index}}) {
-                            my $weight = $stammdateien_ref->{$type}{inverted_ref}{$field}->{index}{$searchfield};
-                        
-                            if ($type eq "person") {
-                                my $hash_ref = {};
-                                if (exists $indexed_person{$id}) {
-                                    $hash_ref = $indexed_person{$id};
-                                }
-                                push @{$hash_ref->{$searchfield}{$weight}}, ["P$field",$item_ref->{content}];
-                            
-                                $indexed_person{$id} = $hash_ref;
-                            } elsif ($type eq "corporatebody") {
-                                my $hash_ref = {};
-                                if (exists $indexed_corporatebody{$id}) {
-                                    $hash_ref = $indexed_corporatebody{$id};
-                                }
-                                push @{$hash_ref->{$searchfield}{$weight}}, ["C$field",$item_ref->{content}];
-                            
-                                $indexed_corporatebody{$id} = $hash_ref;
-                            } elsif ($type eq "subject") {
-                                my $hash_ref = {};
-                                if (exists $indexed_subject{$id}) {
-                                    $hash_ref = $indexed_subject{$id};
-                                }
-                                push @{$hash_ref->{$searchfield}{$weight}}, ["S$field",$item_ref->{content}];
-                            
-                                $indexed_subject{$id} = $hash_ref;
-                            } elsif ($type eq "classification") {
-                                my $hash_ref = {};
-                                if (exists $indexed_classification{$id}) {
-                                    $hash_ref = $indexed_classification{$id};
-                                }                        
-                                push @{$hash_ref->{$searchfield}{$weight}}, ["N$field",$item_ref->{content}];
-                            
-                                $indexed_classification{$id} = $hash_ref;
-                            }
-                        }
-                    }
+            if ($count % 1000 == 0) {
+                my $btime      = new Benchmark;
+                my $timeall    = timediff($btime,$atime);
+                my $resulttime = timestr($timeall,"nop");
+                $resulttime    =~s/(\d+\.\d+) .*/$1/;
                 
-                    if ($id && $field && $item_ref->{content}) {
-                        $item_ref->{content} = cleanup_content($item_ref->{content});
-                        # Abhaengige Feldspezifische Saetze erstellen und schreiben
-                        print OUTFIELDS "$serialid$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}\n";
-                        $serialid++;
-                    }
-                }
-            }
-        
+                $atime      = new Benchmark;
+                $logger->info("### $database: $count Saetze in $resulttime mit $class bearbeitet");
+            } 
+            
+            $count++;
         }
-
+        
         close(OUT);
         close(OUTFIELDS);
-
+        
         close(IN);
-
+        
         unlink $stammdateien_ref->{$type}{infile};
-    } else {
+
+        $storage_ref = $importer->get_storage;
+    }
+    else {
         $logger->error("### $database: $stammdateien_ref->{$type}{infile} nicht vorhanden!");
     }
 }
@@ -468,6 +679,8 @@ if (-f "meta.holding"){
     while (my $jsonline=<IN>) {
 
         my $record_ref ;
+
+        my $import_hash = md5_hex($jsonline);
         
         eval {
             $record_ref = decode_json $jsonline;
@@ -483,7 +696,7 @@ if (-f "meta.holding"){
     
         # Primaeren Normdatensatz erstellen und schreiben
     
-        print OUT "$id\n";
+        print OUT "$id$import_hash\n";
     
         # Titelid bestimmen
     
@@ -622,7 +835,7 @@ if ($addsuperpers) {
 
     while (my $jsonline=<IN>) {
         my $record_ref ;
-        
+
         eval {
             $record_ref = decode_json $jsonline;
         };
@@ -707,58 +920,9 @@ my $locationid = $config->get_locationid_of_database($database);
 
 $count = 1;
 
-my $atime = new Benchmark;
+$atime = new Benchmark;
 
-my $serialid = 1;
-
-# my $storage = OpenBib::Container->instance;
-
-# $storage->register('listitemdata_person',\%listitemdata_person);
-# $storage->register('listitemdata_person_date',\%listitemdata_person_date);
-# $storage->register('listitemdata_corporatebody',\%listitemdata_corporatebody);
-# $storage->register('listitemdata_classification',\%listitemdata_classification);
-# $storage->register('listitemdata_subject',\%listitemdata_subject);
-# $storage->register('listitemdata_holding',\%listitemdata_holding);
-# $storage->register('listitemdata_superid',\%listitemdata_superid);
-# $storage->register('listitemdata_popularity',\%listitemdata_popularity);
-# $storage->register('listitemdata_tags',\%listitemdata_tags);
-# $storage->register('listitemdata_litlists',\%listitemdata_litlists);
-# $storage->register('listitemdata_enriched_years',\%listitemdata_enriched_years);
-# $storage->register('enrichmntdata',\%enrichmntdata);
-# $storage->register('indexed_person',\%indexed_person);
-# $storage->register('indexed_corporatebody',\%indexed_corporatebody);
-# $storage->register('indexed_subject',\%indexed_subject);
-# $storage->register('indexed_classification',\%indexed_classification);
-# $storage->register('indexed_holding',\%indexed_holding);
-# $storage->register('stats_enriched_language',$stats_enriched_language);
-# $storage->register('title_title_serialid',$title_title_serialid);
-# $storage->register('title_person_serialid',$title_person_serialid);
-# $storage->register('title_corporatebody_serialid',$title_corporatebody_serialid);
-# $storage->register('title_classification_serialid',$title_classification_serialid);
-# $storage->register('title_subject_serialid',$title_subject_serialid);
-# $storage->register('serialid',$serialid);
-
-my $storage_ref = {
-    'listitemdata_person' => \%listitemdata_person,
-    'listitemdata_person_date' => \%listitemdata_person_date,
-    'listitemdata_corporatebody' => \%listitemdata_corporatebody,
-    'listitemdata_classification' => \%listitemdata_classification,
-    'listitemdata_subject' => \%listitemdata_subject,
-    'listitemdata_holding' => \%listitemdata_holding,
-    'listitemdata_superid' => \%listitemdata_superid,
-    'listitemdata_popularity' => \%listitemdata_popularity,
-    'listitemdata_tags' => \%listitemdata_tags,
-    'listitemdata_litlists' => \%listitemdata_litlists,
-    'listitemdata_enriched_years' => \%listitemdata_enriched_years,
-    'enrichmntdata' => \%enrichmntdata,
-    'indexed_person' => \%indexed_person,
-    'indexed_corporatebody' => \%indexed_corporatebody,
-    'indexed_subject' => \%indexed_subject,
-    'indexed_classification' => \%indexed_classification,
-    'indexed_holding' => \%indexed_holding,
-};
-
-my $importer = OpenBib::Importer::JSON::Title->new({
+$importer = OpenBib::Importer::JSON::Title->new({
     database        => $database,
     addsuperpers    => $addsuperpers,
     addlanguage     => $addlanguage,

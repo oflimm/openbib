@@ -14,7 +14,8 @@ create sequence person_id_seq;
 create table person (
  id            TEXT default nextval('person_id_seq'::regclass),
  tstamp_create TIMESTAMP,
- tstamp_update TIMESTAMP
+ tstamp_update TIMESTAMP,
+ import_hash   TEXT    
 );
 
 drop table IF EXISTS person_fields;
@@ -39,7 +40,8 @@ create sequence corporatebody_id_seq;
 create table corporatebody (
  id            TEXT default nextval('corporatebody_id_seq'::regclass),
  tstamp_create TIMESTAMP,
- tstamp_update TIMESTAMP
+ tstamp_update TIMESTAMP,
+ import_hash   TEXT    
 );
 
 drop table IF EXISTS corporatebody_fields;
@@ -64,7 +66,8 @@ create sequence subject_id_seq;
 create table subject (
  id            TEXT default nextval('subject_id_seq'::regclass),
  tstamp_create TIMESTAMP,
- tstamp_update TIMESTAMP
+ tstamp_update TIMESTAMP,
+ import_hash   TEXT    
 );
 
 drop table IF EXISTS subject_fields;
@@ -89,7 +92,8 @@ create sequence classification_id_seq;
 create table classification (
  id            TEXT default nextval('classification_id_seq'::regclass),
  tstamp_create TIMESTAMP,
- tstamp_update TIMESTAMP
+ tstamp_update TIMESTAMP,
+ import_hash   TEXT    
 );
 
 drop table IF EXISTS classification_fields;
@@ -116,7 +120,8 @@ create table title (
  tstamp_create TIMESTAMP,
  tstamp_update TIMESTAMP,
  titlecache    TEXT,
- popularity    INT
+ popularity    INT,
+ import_hash   TEXT    
 );
 
 drop table IF EXISTS title_fields;
@@ -139,7 +144,8 @@ drop sequence IF EXISTS holding_id_seq;
 create sequence holding_id_seq;
 
 create table holding (
- id            TEXT default nextval('holding_id_seq'::regclass)
+ id            TEXT default nextval('holding_id_seq'::regclass),
+ import_hash   TEXT    
 );
 
 drop table IF EXISTS holding_fields;

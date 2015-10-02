@@ -48,132 +48,6 @@ use OpenBib::Index::Document;
 
 use base 'OpenBib::Importer::JSON';
 
-sub process {
-    my ($self,$arg_ref) = @_;
-
-    my $json      = exists $arg_ref->{json}
-        ? $arg_ref->{json}           : undef;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    return $self unless (defined $json);
-
-    my $database    = $self->{database};
-
-    $logger->debug("Processing JSON: $json");
-
-    # Cleanup
-    $self->{_columns}                = [];
-    $self->{_columns_fields}         = [];
-    
-    my $inverted_ref  = $self->{conv_config}{inverted_subject};
-    my $blacklist_ref = $self->{conv_config}{blacklist_subject};
-    
-    my $record_ref;
-
-    my $import_hash = "";
-
-    if ($json){
-        $import_hash = md5_hex($json);
-        
-        eval {
-            $record_ref = decode_json $json;
-        };
-        
-        if ($@){
-            $logger->error("Skipping record: $@");
-            return;
-        }
-    }
-
-    $logger->debug("JSON decoded");
-    
-    my $id            = $record_ref->{id};
-    my $fields_ref    = $record_ref->{fields};
-
-    # Primaeren Normdatensatz erstellen und schreiben
-            
-    my $create_tstamp = "1970-01-01 12:00:00";
-    
-    if (defined $fields_ref->{'0002'} && defined $fields_ref->{'0002'}[0]) {
-        $create_tstamp = $fields_ref->{'0002'}[0]{content};
-        if ($create_tstamp=~/^(\d\d)\.(\d\d)\.(\d\d\d\d)/) {
-            $create_tstamp=$3."-".$2."-".$1." 12:00:00";
-        }
-    }
-    
-    my $update_tstamp = "1970-01-01 12:00:00";
-    
-    if (exists $fields_ref->{'0003'} && exists $fields_ref->{'0003'}[0]) {
-        $update_tstamp = $fields_ref->{'0003'}[0]{content};
-        if ($update_tstamp=~/^(\d\d)\.(\d\d)\.(\d\d\d\d)/) {
-            $update_tstamp=$3."-".$2."-".$1." 12:00:00";
-        }            
-    }
-
-    push @{$self->{_columns}}, [$id,$create_tstamp,$update_tstamp,$import_hash];
-    
-    # Ansetzungsformen fuer Kurztitelliste merken
-    
-    my $mainentry;
-    
-    if (exists $fields_ref->{'0800'} && exists $fields_ref->{'0800'}[0] ) {
-        $mainentry = $fields_ref->{'0800'}[0]{content};
-    }
-    
-    if ($mainentry) {
-        if (defined $fields_ref->{'0800'}[1]) {
-            # Schlagwortketten zusammensetzen
-            my @mainentries = ();
-            foreach my $item (map { $_->[0] }
-                                  sort { $a->[1] <=> $b->[1] }
-                                      map { [$_, $_->{mult}] } @{$fields_ref->{'0800'}}) {
-                push @mainentries, $item->{content};
-                $mainentry = join (' / ',@mainentries);
-            }
-            
-            $fields_ref->{'0800'} = [
-                {
-                    content  => $mainentry,
-                    mult     => 1,
-                    subfield => '',
-                }
-            ];
-        }
-
-        $self->{storage}{listitemdata_subject}{$id}=$mainentry;
-    }
-    
-    foreach my $field (keys %{$fields_ref}) {
-        next if ($field eq "id" || defined $blacklist_ref->{$field} );
-        foreach my $item_ref (@{$fields_ref->{$field}}) {
-            if (exists $inverted_ref->{$field}->{index}) {
-                foreach my $searchfield (keys %{$inverted_ref->{$field}->{index}}) {
-                    my $weight = $inverted_ref->{$field}->{index}{$searchfield};
-                    
-                    my $hash_ref = {};
-                    if (exists $self->{storage}{indexed_subject}{$id}) {
-                        $hash_ref = $self->{storage}{indexed_subject}{$id};
-                    }
-                    push @{$hash_ref->{$searchfield}{$weight}}, ["S$field",$item_ref->{content}];
-                    
-                    $self->{storage}{indexed_subject}{$id} = $hash_ref;
-                }
-            }
-            
-            if ($id && $field && defined $item_ref->{content}) {
-                $item_ref->{content} = $self->cleanup_content($item_ref->{content});
-                # Abhaengige Feldspezifische Saetze erstellen und schreiben
-                push @{$self->{_columns_fields}}, [$self->{serialid},$id,$field,$item_ref->{mult},$item_ref->{subfield},$item_ref->{content}];
-                $self->{serialid}++;
-            }
-        }
-    }
-    
-    return $self;
-}
-
 sub process_mainentry {
     my ($self,$arg_ref) = @_;
 
@@ -207,6 +81,18 @@ sub process_mainentry {
     }
     
     $self->{storage}{$self->{'listitemdata_authority'}}{$id}=$mainentry;
+}
+
+sub set_defaults {
+    my $self=shift;
+
+    $self->{'field_prefix'}           = 'S';
+    $self->{'indexed_authority'}      = 'indexed_subject';
+    $self->{'listitemdata_authority'} = 'listitemdata_subject';
+    $self->{'inverted_authority'}     = 'inverted_subject';
+    $self->{'blacklist_authority'}    = 'blacklist_subject';
+
+    return $self;
 }
 
 1;

@@ -108,6 +108,9 @@ sub new {
     return $self;
 }
 
+# Common processing method for persons, corporate bodies, classifications and subjects
+# titles implement their own much more complex method
+
 sub process {
     my ($self,$arg_ref) = @_;
 
@@ -152,6 +155,8 @@ sub process {
     my $id            = $record_ref->{id};
     my $fields_ref    = $record_ref->{fields};
 
+    $self->{id}       = $id;
+    
     # Primaeren Normdatensatz erstellen und schreiben
             
     my $create_tstamp = "1970-01-01 12:00:00";
@@ -165,7 +170,7 @@ sub process {
     
     my $update_tstamp = "1970-01-01 12:00:00";
     
-    if (exists $fields_ref->{'0003'} && exists $fields_ref->{'0003'}[0]) {
+    if (defined $fields_ref->{'0003'} && defined $fields_ref->{'0003'}[0]) {
         $update_tstamp = $fields_ref->{'0003'}[0]{content};
         if ($update_tstamp=~/^(\d\d)\.(\d\d)\.(\d\d\d\d)/) {
             $update_tstamp=$3."-".$2."-".$1." 12:00:00";
@@ -178,7 +183,7 @@ sub process {
     
     my $mainentry;
     
-    if (exists $fields_ref->{'0800'} && exists $fields_ref->{'0800'}[0] ) {
+    if (defined $fields_ref->{'0800'} && defined $fields_ref->{'0800'}[0] ) {
         $mainentry = $fields_ref->{'0800'}[0]{content};
     }
     
@@ -189,7 +194,7 @@ sub process {
     foreach my $field (keys %{$fields_ref}) {
         next if ($field eq "id" || defined $blacklist_ref->{$field} );
         foreach my $item_ref (@{$fields_ref->{$field}}) {
-            if (exists $inverted_ref->{$field}->{index}) {
+            if (defined $inverted_ref->{$field}->{index}) {
                 foreach my $searchfield (keys %{$inverted_ref->{$field}->{index}}) {
                     my $weight = $inverted_ref->{$field}->{index}{$searchfield};
                     
@@ -207,6 +212,7 @@ sub process {
                 $item_ref->{content} = $self->cleanup_content($item_ref->{content});
                 # Abhaengige Feldspezifische Saetze erstellen und schreiben
                 push @{$self->{_columns_fields}}, [$self->{serialid},$id,$field,$item_ref->{mult},$item_ref->{subfield},$item_ref->{content}];
+                #push @{$self->{_columns_fields}}, ['',$id,$field,$item_ref->{mult},$item_ref->{subfield},$item_ref->{content}];
                 $self->{serialid}++;
             }
         }
@@ -232,6 +238,12 @@ sub process_mainentry {
     $self->{storage}{$self->{'listitemdata_authority'}}{$id}=$mainentry;
 
     return;
+}
+
+sub get_id {
+    my $self = shift;
+
+    return (defined $self->{id})?$self->{id}:'';
 }
 
 sub get_columns {
@@ -278,11 +290,7 @@ sub cleanup_content {
 sub set_defaults {
     my $self=shift;
 
-    $self->{'field_prefix'}           = 'P';
-    $self->{'indexed_authority'}      = 'indexed_person';
-    $self->{'listitemdata_authority'} = 'listitemdata_person';
-    $self->{'inverted_authority'}     = 'inverted_person';
-    $self->{'blacklist_authority'}    = 'blacklist_person';
+    # Stub: Setting defaults for field_prefix etc.
 
     return $self;
 }

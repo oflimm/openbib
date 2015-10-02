@@ -48,7 +48,7 @@ use OpenBib::Config;
 use OpenBib::Catalog;
 use OpenBib::Catalog::Factory;
 
-my ($database,$sync,$genmex,$help,$keepfiles,$logfile,$loglevel,$updatemaster);
+my ($database,$sync,$genmex,$help,$keepfiles,$logfile,$loglevel,$updatemaster,$incremental);
 
 &GetOptions("database=s"      => \$database,
             "logfile=s"       => \$logfile,
@@ -57,6 +57,7 @@ my ($database,$sync,$genmex,$help,$keepfiles,$logfile,$loglevel,$updatemaster);
             "gen-mex"         => \$genmex,
             "keep-files"      => \$keepfiles,
             "update-master"   => \$updatemaster,
+            "incremental"     => \$incremental,
 	    "help"            => \$help
 	    );
 
@@ -249,7 +250,13 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
         system("$config->{autoconv_dir}/filter/$database/alt_conv.pl $database");
     }
     else {
-        system("cd $rootdir/data/$database ; $meta2sqlexe --loglevel=$loglevel -add-superpers -add-mediatype --add-language --database=$database");
+        my $cmd = "$meta2sqlexe --loglevel=$loglevel -add-superpers -add-mediatype --add-language --database=$database";
+
+        if ($incremental){
+            $cmd.=" -incremental";
+        }
+        
+        system("cd $rootdir/data/$database ; $cmd");
     }
     
     if ($database && -e "$config->{autoconv_dir}/filter/$database/post_conv.pl"){
@@ -264,6 +271,8 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
 
     $logger->info("### $database: Benoetigte Zeit -> $resulttime");     
 }
+
+exit if ($incremental);
 
 # Einladen in temporaere SQL-Datenbank
 
@@ -289,7 +298,6 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
         system("$config->{autoconv_dir}/filter/$database/post_index_off.pl $databasetmp");
     }
     
-
     # Einladen der Daten
     $logger->info("### $database: Einladen der Daten in temporaere Datenbank");
     system("$pgsqlexe -f '$rootdir/data/$database/control.sql' $databasetmp");

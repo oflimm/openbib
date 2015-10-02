@@ -46,21 +46,7 @@ use OpenBib::Conv::Config;
 use OpenBib::Container;
 use OpenBib::Index::Document;
 
-my %char_replacements = (
-    
-    # Zeichenersetzungen
-    "\n"     => "<br\/>",
-    "\r"     => "\\r",
-    ""     => "",
-#    "\x{00}" => "",
-#    "\x{80}" => "",
-#    "\x{87}" => "",
-);
-
-my $chars_to_replace = join '|',
-    keys %char_replacements;
-
-$chars_to_replace = qr/$chars_to_replace/;
+use base 'OpenBib::Importer::JSON';
 
 sub new {
     my ($class,$arg_ref) = @_;
@@ -216,6 +202,9 @@ sub process {
     $logger->debug("JSON decoded");
     my $id            = $record_ref->{id};
     my $fields_ref    = $record_ref->{fields};
+
+    $self->{id}       = $id;
+    
     my $locations_ref; 
 
     if (defined $record_ref->{locations}){
@@ -609,8 +598,9 @@ sub process {
             push @superids, $target_titleid;
             
             if (defined $self->{storage}{listitemdata_superid}{$target_titleid} && $source_titleid && $target_titleid){
-                $supplement = cleanup_content($supplement);
+                $supplement = $self->cleanup_content($supplement);
                 push @{$self->{_columns_title_title}}, [$self->{title_title_serialid},$field,$mult,$source_titleid,$target_titleid,$supplement];
+                #push @{$self->{_columns_title_title}}, ['',$field,$mult,$source_titleid,$target_titleid,$supplement];
                 $self->{title_title_serialid}++;
             }
 
@@ -619,7 +609,7 @@ sub process {
                 # my $title_super = encode_json($self->{storage}{listitemdata_superid}{$target_titleid});
 
                 # $titlecache =~s/\\/\\\\/g; # Escape Literal Backslash for PostgreSQL
-                # $title_super = cleanup_content($title_super);
+                # $title_super = $self->cleanup_content($title_super);
 
                 # Anreicherungen mit 5005 (Titelinformationen der Ueberordnung)
                 push @{$fields_ref->{'5005'}}, {
@@ -653,8 +643,9 @@ sub process {
                 next unless $personid;
                 
                 if (defined $self->{storage}{listitemdata_person}{$personid}){
-                    $supplement = cleanup_content($supplement);
+                    $supplement = $self->cleanup_content($supplement);
                     push @{$self->{_columns_title_person}}, [$self->{title_person_serialid},$field,$mult,$id,$personid,$supplement];
+                    #push @{$self->{_columns_title_person}}, ['',$field,$mult,$id,$personid,$supplement];
                     $self->{title_person_serialid}++;
                 }
                 
@@ -715,8 +706,9 @@ sub process {
                 next unless $corporatebodyid;
                 
                 if (defined $self->{storage}{listitemdata_corporatebody}{$corporatebodyid}){
-                    $supplement = cleanup_content($supplement);
+                    $supplement = $self->cleanup_content($supplement);
                     push @{$self->{_columns_title_corporatebody}}, [$self->{title_corporatebody_serialid},$field,$mult,$id,$corporatebodyid,$supplement];
+                    #push @{$self->{_columns_title_corporatebody}}, ['',$field,$mult,$id,$corporatebodyid,$supplement];
                     $self->{title_corporatebody_serialid}++;
                 }
                 
@@ -779,6 +771,7 @@ sub process {
                 
                 if (defined $self->{storage}{listitemdata_classification}{$classificationid}){
                     push @{$self->{_columns_title_classification}}, [$self->{title_classification_serialid},$field,$mult,$id,$classificationid,$supplement];
+                    #push @{$self->{_columns_title_classification}}, ['',$field,$mult,$id,$classificationid,$supplement];
                     $self->{title_classification_serialid}++;
                 }
                 
@@ -823,8 +816,9 @@ sub process {
                 next unless $subjectid;
                 
                 if (defined $self->{storage}{listitemdata_subject}{$subjectid}){
-                    $supplement = cleanup_content($supplement);
+                    $supplement = $self->cleanup_content($supplement);
                     push @{$self->{_columns_title_subject}}, [$self->{title_subject_serialid},$field,$mult,$id,$subjectid,$supplement];
+                    #push @{$self->{_columns_title_subject}}, ['',$field,$mult,$id,$subjectid,$supplement];
                     $self->{title_subject_serialid}++;
                 }
                 
@@ -1284,7 +1278,7 @@ sub process {
     my $titlecache = encode_json $index_doc->get_data;
     
    # $titlecache =~s/\\/\\\\/g; # Escape Literal Backslash for PostgreSQL
-    $titlecache = cleanup_content($titlecache);
+    $titlecache = $self->cleanup_content($titlecache);
 
    # $titlecache = decode_utf8($titlecache); # UTF8 anstelle Octets(durch encode_json).
     
@@ -1322,16 +1316,17 @@ sub process {
 
             if (ref $item_ref->{content} eq "HASH"){
                 my $content = decode_utf8(encode_json ($item_ref->{content})); # decode_utf8, um doppeltes Encoding durch encode_json und binmode(:utf8) zu vermeiden
-                $item_ref->{content} = cleanup_content($content);
+                $item_ref->{content} = $self->cleanup_content($content);
             }
 
             if ($id && $field && defined $item_ref->{content}){
-                $item_ref->{content} = cleanup_content($item_ref->{content});
+                $item_ref->{content} = $self->cleanup_content($item_ref->{content});
 
 #                $logger->error("mult fehlt") if (!defined $item_ref->{mult});
 #                $logger->error("subfield fehlt") if (!defined $item_ref->{subfield});
                 
                 push @{$self->{_columns_title_fields}}, [$self->{serialid},$id,$field,$item_ref->{mult},$item_ref->{subfield},$item_ref->{content}];
+                #push @{$self->{_columns_title_fields}}, ['',$id,$field,$item_ref->{mult},$item_ref->{subfield},$item_ref->{content}];
                 $self->{serialid}++;
             }
         }
@@ -1412,16 +1407,5 @@ sub set_index_document {
     return $self;
 }
 
-sub cleanup_content {
-    my $content = shift;
-
-    return '' unless (defined $content);
-    
-    # Make PostgreSQL Happy    
-    $content =~ s/\\/\\\\/g;
-    $content =~ s/($chars_to_replace)/$char_replacements{$1}/g;
-            
-    return $content;
-}
 
 1;

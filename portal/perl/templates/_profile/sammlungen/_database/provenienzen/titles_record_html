@@ -229,6 +229,12 @@ $(document).ready(function(){
 </tbody>
 </table>
 
+<p style="height: 10px;"/>
+
+<div class="ob-category_header">[% msg.maketext("Titel") %]</div>
+
+<p style="height: 20px;"/>
+
 [%   PROCESS common/subtemplate name="visible_categories_title" %]
 [%   PROCESS common/subtemplate name="titles_record_html_categories" %]
 

@@ -45,6 +45,7 @@ use MIME::Base64 ();
 use MLDBM qw(DB_File Storable);
 use Storable ();
 
+use OpenBib::Catalog::Factory;
 use OpenBib::Common::Util;
 use OpenBib::Common::Stopwords;
 use OpenBib::Config;
@@ -61,6 +62,7 @@ use OpenBib::Importer::JSON::Person;
 use OpenBib::Importer::JSON::CorporateBody;
 use OpenBib::Importer::JSON::Classification;
 use OpenBib::Importer::JSON::Subject;
+use OpenBib::Importer::JSON::Holding;
 use OpenBib::Importer::JSON::Title;
 
 my %char_replacements = (
@@ -250,313 +252,47 @@ if (exists $conv_config->{local_enrichmnt} && -e "$enrichmntdumpdir/enrichmntdat
     $logger->info("### $database: Lokale Einspielung mit zentralen Anreicherungsdaten aktiviert");
 }
 
-goto WEITER;
-
-##################################################################################################
-
-$logger->info("### $database: Bearbeite meta.person");
-
-my $atime = new Benchmark;
-
-open(IN ,           "<:raw" ,"meta.person"         )     || die "IN konnte nicht geoeffnet werden";
-open(OUT,           ">:utf8","person.dump"         )     || die "OUT konnte nicht geoeffnet werden";
-open(OUTFIELDS,     ">:utf8","person_fields.dump"  )     || die "OUTFIELDS konnte nicht geoeffnet werden";
-
-my $storage_ref = {
-    'listitemdata_person' => \%listitemdata_person,
-    'indexed_person'      => \%indexed_person,
-};
-    
-my $importer = OpenBib::Importer::JSON::Person->new({
-    storage         => $storage_ref,
-    database        => $database,
-});
-
-while (my $jsonline=<IN>){
-
-    eval {
-        $importer->process({
-            json         => $jsonline
-        });
-    };
-
-    if ($@){
-	$logger->error($@," - $jsonline\n");
-	next ;
-    }
-
-    my $columns_ref                = $importer->get_columns;
-    my $columns_fields_ref         = $importer->get_columns_fields;
-
-    foreach my $person_ref (@$columns_ref){
-        print OUT join('',@$person_ref),"\n";
-    }
-    
-    foreach my $person_fields_ref (@$columns_fields_ref){
-        print OUTFIELDS join('',@$person_fields_ref),"\n";
-    }
-    
-    if ($count % 1000 == 0) {
-        my $btime      = new Benchmark;
-        my $timeall    = timediff($btime,$atime);
-        my $resulttime = timestr($timeall,"nop");
-        $resulttime    =~s/(\d+\.\d+) .*/$1/;
-        
-        $atime      = new Benchmark;
-        $logger->info("### $database: $count Personensaetze in $resulttime bearbeitet");
-    } 
-
-    $count++;
-}
-
-close(OUT);
-close(OUTFIELDS);
-close(IN);
-
-unlink "meta.person";
-
-%listitemdata_person = %{$importer->get_storage->{listitemdata_person}};
-%indexed_person      = %{$importer->get_storage->{indexed_person}};
-
-$logger->info("### $database: $count Personensaetze bearbeitet");
-
-##################################################################################################
-
-$logger->info("### $database: Bearbeite meta.corporatebody");
-
-$atime = new Benchmark;
-
-open(IN ,           "<:raw" ,"meta.corporatebody"         )     || die "IN konnte nicht geoeffnet werden";
-open(OUT,           ">:utf8","corporatebody.dump"         )     || die "OUT konnte nicht geoeffnet werden";
-open(OUTFIELDS,     ">:utf8","corporatebody_fields.dump"  )     || die "OUTFIELDS konnte nicht geoeffnet werden";
-
-$storage_ref = {
-    'listitemdata_corporatebody' => \%listitemdata_corporatebody,
-    'indexed_corporatebody'      => \%indexed_corporatebody,
-};
-    
-$importer = OpenBib::Importer::JSON::CorporateBody->new({
-    storage         => $storage_ref,
-    database        => $database,
-});
-
-while (my $jsonline=<IN>){
-
-    eval {
-        $importer->process({
-            json         => $jsonline
-        });
-    };
-
-    if ($@){
-	$logger->error($@," - $jsonline\n");
-	next ;
-    }
-
-    my $columns_ref                = $importer->get_columns;
-    my $columns_fields_ref         = $importer->get_columns_fields;
-
-    foreach my $corporatebody_ref (@$columns_ref){
-        print OUT join('',@$corporatebody_ref),"\n";
-    }
-    
-    foreach my $corporatebody_fields_ref (@$columns_fields_ref){
-        print OUTFIELDS join('',@$corporatebody_fields_ref),"\n";
-    }
-    
-    if ($count % 1000 == 0) {
-        my $btime      = new Benchmark;
-        my $timeall    = timediff($btime,$atime);
-        my $resulttime = timestr($timeall,"nop");
-        $resulttime    =~s/(\d+\.\d+) .*/$1/;
-        
-        $atime      = new Benchmark;
-        $logger->info("### $database: $count Corporatebodyensaetze in $resulttime bearbeitet");
-    } 
-
-    $count++;
-}
-
-close(OUT);
-close(OUTFIELDS);
-close(IN);
-
-unlink "meta.corporatebody";
-
-%listitemdata_corporatebody = %{$importer->get_storage->{listitemdata_corporatebody}};
-%indexed_corporatebody      = %{$importer->get_storage->{indexed_corporatebody}};
-
-$logger->info("### $database: $count Corporatebodyensaetze bearbeitet");
-
-
-##################################################################################################
-
-$logger->info("### $database: Bearbeite meta.classification");
-
-$atime = new Benchmark;
-
-open(IN ,           "<:raw" ,"meta.classification"         )     || die "IN konnte nicht geoeffnet werden";
-open(OUT,           ">:utf8","classification.dump"         )     || die "OUT konnte nicht geoeffnet werden";
-open(OUTFIELDS,     ">:utf8","classification_fields.dump"  )     || die "OUTFIELDS konnte nicht geoeffnet werden";
-
-$storage_ref = {
-    'listitemdata_classification' => \%listitemdata_classification,
-    'indexed_classification'      => \%indexed_classification,
-};
-    
-$importer = OpenBib::Importer::JSON::Classification->new({
-    storage         => $storage_ref,
-    database        => $database,
-});
-
-while (my $jsonline=<IN>){
-
-    eval {
-        $importer->process({
-            json         => $jsonline
-        });
-    };
-
-    if ($@){
-	$logger->error($@," - $jsonline\n");
-	next ;
-    }
-
-    my $columns_ref                = $importer->get_columns;
-    my $columns_fields_ref         = $importer->get_columns_fields;
-
-    foreach my $classification_ref (@$columns_ref){
-        print OUT join('',@$classification_ref),"\n";
-    }
-    
-    foreach my $classification_fields_ref (@$columns_fields_ref){
-        print OUTFIELDS join('',@$classification_fields_ref),"\n";
-    }
-    
-    if ($count % 1000 == 0) {
-        my $btime      = new Benchmark;
-        my $timeall    = timediff($btime,$atime);
-        my $resulttime = timestr($timeall,"nop");
-        $resulttime    =~s/(\d+\.\d+) .*/$1/;
-        
-        $atime      = new Benchmark;
-        $logger->info("### $database: $count Classificationensaetze in $resulttime bearbeitet");
-    } 
-
-    $count++;
-}
-
-close(OUT);
-close(OUTFIELDS);
-close(IN);
-
-unlink "meta.classification";
-
-%listitemdata_classification = %{$importer->get_storage->{listitemdata_classification}};
-%indexed_classification      = %{$importer->get_storage->{indexed_classification}};
-
-$logger->info("### $database: $count Classificationensaetze bearbeitet");
-
-##################################################################################################
-
-$logger->info("### $database: Bearbeite meta.subject");
-
-$atime = new Benchmark;
-
-open(IN ,           "<:raw" ,"meta.subject"         )     || die "IN konnte nicht geoeffnet werden";
-open(OUT,           ">:utf8","subject.dump"         )     || die "OUT konnte nicht geoeffnet werden";
-open(OUTFIELDS,     ">:utf8","subject_fields.dump"  )     || die "OUTFIELDS konnte nicht geoeffnet werden";
-
-$storage_ref = {
-    'listitemdata_subject' => \%listitemdata_subject,
-    'indexed_subject'      => \%indexed_subject,
-};
-    
-$importer = OpenBib::Importer::JSON::Subject->new({
-    storage         => $storage_ref,
-    database        => $database,
-});
-
-while (my $jsonline=<IN>){
-
-    eval {
-        $importer->process({
-            json         => $jsonline
-        });
-    };
-
-    if ($@){
-	$logger->error($@," - $jsonline\n");
-	next ;
-    }
-
-    my $columns_ref                = $importer->get_columns;
-    my $columns_fields_ref         = $importer->get_columns_fields;
-
-    foreach my $subject_ref (@$columns_ref){
-        print OUT join('',@$subject_ref),"\n";
-    }
-    
-    foreach my $subject_fields_ref (@$columns_fields_ref){
-        print OUTFIELDS join('',@$subject_fields_ref),"\n";
-    }
-    
-    if ($count % 1000 == 0) {
-        my $btime      = new Benchmark;
-        my $timeall    = timediff($btime,$atime);
-        my $resulttime = timestr($timeall,"nop");
-        $resulttime    =~s/(\d+\.\d+) .*/$1/;
-        
-        $atime      = new Benchmark;
-        $logger->info("### $database: $count Subjectensaetze in $resulttime bearbeitet");
-    } 
-
-    $count++;
-}
-
-close(OUT);
-close(OUTFIELDS);
-close(IN);
-
-unlink "meta.subject";
-
-%listitemdata_subject = %{$importer->get_storage->{listitemdata_subject}};
-%indexed_subject      = %{$importer->get_storage->{indexed_subject}};
-
-$logger->info("### $database: $count Subjectensaetze bearbeitet");
-
-WEITER:
 my $stammdateien_ref = {
     person => {
         infile             => "meta.person",
         outfile            => "person.dump",
+        deletefile         => "person.delete",
         outfile_fields     => "person_fields.dump",
         class              => "OpenBib::Importer::JSON::Person",
+        type               => "Person",
     },
 
     corporatebody => {
         infile             => "meta.corporatebody",
         outfile            => "corporatebody.dump",
+        deletefile         => "corporatebody.delete",
         outfile_fields     => "corporatebody_fields.dump",
         class              => "OpenBib::Importer::JSON::CorporateBody",
+        type               => "Corporatebody",
     },
     
     subject => {
         infile             => "meta.subject",
         outfile            => "subject.dump",
+        deletefile         => "subjects.delete",
         outfile_fields     => "subject_fields.dump",
         class              => "OpenBib::Importer::JSON::Subject",
+        type               => "Subject",
     },
     
     classification => {
         infile             => "meta.classification",
         outfile            => "classification.dump",
+        deletefile         => "classification.delete",
         outfile_fields     => "classification_fields.dump",
         class              => "OpenBib::Importer::JSON::Classification",
+        type               => "Classification",
     },
 };
 
-$storage_ref = {
+my $atime;
+
+my $storage_ref = {
     'listitemdata_person'         => \%listitemdata_person,
     'listitemdata_corporatebody'  => \%listitemdata_corporatebody,
     'listitemdata_classification' => \%listitemdata_classification,
@@ -575,21 +311,74 @@ $storage_ref = {
     'indexed_holding'             => \%indexed_holding,
 };
 
+my $actions_map_ref = {};
+
 foreach my $type (keys %{$stammdateien_ref}) {
     if (-f $stammdateien_ref->{$type}{infile}){
         $atime = new Benchmark;
 
-        $count = 0;
+        $count = 1;
+
+        my %incremental_status_map      = ();
+        $actions_map_ref             = {};
+        
+        if ($incremental){
+            # Einlesen der neuen Daten aus kompletter Einladedatei und der alten Daten aus der Datenbank.
+
+            my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $database });
+
+            foreach my $result_ref ($catalog->get_schema->resultset($stammdateien_ref->{$type}{type})->search(
+                {},{ select => ['id','import_hash'], result_class => 'DBIx::Class::ResultClass::HashRefInflator',})->all){
+                $incremental_status_map{$result_ref->{id}}{old} = $result_ref->{import_hash};
+            }
+            
+            open(IN ,           "<:raw", $stammdateien_ref->{$type}{infile} )        || die "IN konnte nicht geoeffnet werden";
+
+            my $record_ref;
+            
+            while (my $jsonline = <IN>){
+                my $import_hash = md5_hex($jsonline);
+                
+                eval {
+                    $record_ref = decode_json $jsonline;
+                };
+                
+                if ($@){
+                    $logger->error("Skipping record: $@");
+                    return;
+                }
+
+                my $id = $record_ref->{id};
+                $incremental_status_map{$id}{new} = $import_hash;
+            }
+            
+            close(IN);
+
+            $actions_map_ref = analyze_status_map(\%incremental_status_map);
+
+            open(OUTDELETE,           ">:utf8",$stammdateien_ref->{$type}{deletefile})        || die "OUTDELETE konnte nicht geoeffnet werden";            
+
+            foreach my $id (keys %$actions_map_ref){
+                print OUTDELETE "$id\n" if ($actions_map_ref->{$id} eq "delete" || $actions_map_ref->{$id} eq "change"); 
+            }
+            
+            close(OUTDELETE);
+            
+            if ($logger->is_info){
+                $logger->info("$stammdateien_ref->{$type}{type}".YAML::Dump($actions_map_ref)."\n");
+            }
+        }
+
         
         $logger->info("### $database: Bearbeite $stammdateien_ref->{$type}{infile} / $stammdateien_ref->{$type}{outfile}");
         
-        open(IN ,           "<:raw",$stammdateien_ref->{$type}{infile} )        || die "IN konnte nicht geoeffnet werden";
+        open(IN ,           "<:raw", $stammdateien_ref->{$type}{infile} )        || die "IN konnte nicht geoeffnet werden";
         open(OUT,           ">:utf8",$stammdateien_ref->{$type}{outfile})        || die "OUT konnte nicht geoeffnet werden";
-        open(OUTFIELDS,     ">:utf8",$stammdateien_ref->{$type}{outfile_fields})     || die "OUTFIELDS konnte nicht geoeffnet werden";
+        open(OUTFIELDS,     ">:utf8",$stammdateien_ref->{$type}{outfile_fields}) || die "OUTFIELDS konnte nicht geoeffnet werden";
 
         my $class = $stammdateien_ref->{$type}{class};
         
-        $importer = $class->new({
+        my $importer = $class->new({
             storage         => $storage_ref,
             database        => $database,
         });
@@ -609,6 +398,13 @@ foreach my $type (keys %{$stammdateien_ref}) {
             
             my $columns_ref                = $importer->get_columns;
             my $columns_fields_ref         = $importer->get_columns_fields;
+
+            if ($incremental){
+                if (!defined $actions_map_ref->{$importer->get_id} || $actions_map_ref->{$importer->get_id} eq "delete"){
+                    $columns_ref=[];
+                    $columns_fields_ref=[];
+                }
+            }
             
             foreach my $this_column_ref (@$columns_ref){
                 print OUT join('',@$this_column_ref),"\n";
@@ -650,145 +446,115 @@ foreach my $type (keys %{$stammdateien_ref}) {
 $stammdateien_ref->{holding} = {
     infile             => "meta.holding",
     outfile            => "holding.dump",
+    deletefile         => "holding.delete",
     outfile_fields     => "holding_fields.dump",
     inverted_ref       => $conv_config->{inverted_holding},
+    type               => "Holding",
 };
 
 if (-f "meta.holding"){
     $logger->info("### $database: Bearbeite meta.holding");
 
-    open(IN ,                   "<:raw","meta.holding")               || die "IN konnte nicht geoeffnet werden";
+    open(IN ,                   "<:raw", "meta.holding")               || die "IN konnte nicht geoeffnet werden";
     open(OUT,                   ">:utf8","holding.dump")               || die "OUT konnte nicht geoeffnet werden";
     open(OUTFIELDS,             ">:utf8","holding_fields.dump")        || die "OUTFIELDS konnte nicht geoeffnet werden";
     open(OUTTITLEHOLDING,       ">:utf8","title_holding.dump")         || die "OUTTITLEHOLDING konnte nicht geoeffnet werden";
 
-    my $id;
-    my ($category,$mult,$content);
-
-    $count = 1;
-
     my $atime = new Benchmark;
+    
+    $count = 1;
+    
+    my %incremental_status_map      = ();
+    
+    if ($incremental && 0 == 1){
+        # Einlesen der neuen Daten aus kompletter Einladedatei und der alten Daten aus der Datenbank.
+        
+        my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $database });
+        
+        foreach my $result_ref ($catalog->get_schema->resultset('Holding')->search(
+            {},{ select => ['id','import_hash'], result_class => 'DBIx::Class::ResultClass::HashRefInflator',})->all){
+            $incremental_status_map{$result_ref->{id}}{old} = $result_ref->{import_hash};
+        }
+        
+        open(INHASH ,           "<:raw", $stammdateien_ref->{'holding'}{infile} )        || die "IN konnte nicht geoeffnet werden";
+        
+        my $record_ref;
+        
+        while (my $jsonline = <INHASH>){
+            my $import_hash = md5_hex($jsonline);
+            
+            eval {
+                $record_ref = decode_json $jsonline;
+            };
+            
+            if ($@){
+                $logger->error("Skipping record: $@");
+                return;
+            }
+            
+            my $id = $record_ref->{id};
+            $incremental_status_map{$id}{new} = $import_hash;
+        }
+        
+        close(INHASH);
+        
+        $actions_map_ref = analyze_status_map(\%incremental_status_map);
 
-    my $titleid;
-    my $thisyear = `date +"%Y"`;
-
-    my $serialid = 1;
-
-    my $title_holding_serialid = 1;
-
+        open(OUTDELETE,           ">:utf8",$stammdateien_ref->{'holding'}{deletefile})        || die "OUTDELETE konnte nicht geoeffnet werden";            
+        
+        foreach my $id (keys %$actions_map_ref){
+            print OUTDELETE "$id\n" if ($actions_map_ref->{$id} eq "delete" || $actions_map_ref->{$id} eq "change"); 
+        }
+        
+        close(OUTDELETE);
+        
+        if ($logger->is_info){
+            $logger->info("$stammdateien_ref->{'holding'}{type}".YAML::Dump($actions_map_ref)."\n");
+        }
+    }
+    
+    my $importer = OpenBib::Importer::JSON::Holding->new({
+        storage         => $storage_ref,
+        database        => $database,
+    });
+    
     while (my $jsonline=<IN>) {
 
-        my $record_ref ;
-
-        my $import_hash = md5_hex($jsonline);
-        
         eval {
-            $record_ref = decode_json $jsonline;
+            $importer->process({
+                json         => $jsonline
+            });
         };
         
         if ($@){
-            $logger->error("Skipping record: $@");
-            next;
+            $logger->error($@," - $jsonline\n");
+            next ;
         }
-
-        my $id         = $record_ref->{id};
-        my $fields_ref = $record_ref->{fields};
-    
-        # Primaeren Normdatensatz erstellen und schreiben
-    
-        print OUT "$id$import_hash\n";
-    
-        # Titelid bestimmen
-    
-        my $titleid;
-
-        if (defined $fields_ref->{'0004'} && defined $fields_ref->{'0004'}[0] ) {
-            $titleid = $fields_ref->{'0004'}[0]{content};
-        }
-    
-        # Verknupefungen
-        if ($titleid && $id) {
-            print OUTTITLEHOLDING "$title_holding_serialid$titleid$id\n";
-            $title_holding_serialid++;
-        }
-    
-        foreach my $field (keys %{$fields_ref}) {
-            next if ($field eq "id" || defined $stammdateien_ref->{holding}{blacklist_ref}{$field} );
         
-            foreach my $item_ref (@{$fields_ref->{$field}}) {
-                next unless ($item_ref->{content});
-            
-                if (defined $stammdateien_ref->{holding}{inverted_ref}{$field}->{index}) {
-                    foreach my $searchfield (keys %{$stammdateien_ref->{holding}{inverted_ref}{$field}->{index}}) {
-                        my $weight = $stammdateien_ref->{holding}{inverted_ref}{$field}->{index}{$searchfield};
-                    
-                        my $hash_ref = {};
-                        
-                        if ($titleid) {
-                            if (defined $indexed_holding{$titleid}) {
-                                $hash_ref = $indexed_holding{$titleid};
-                            }
-                    
-                            push @{$hash_ref->{$searchfield}{$weight}}, ["X$field",$item_ref->{content}];
-                            
-                            $indexed_holding{$titleid} = $hash_ref;
-                        }
-                    }
-                }
-            
-                if ($id && $field && $item_ref->{content}) {
-                    $item_ref->{content} = cleanup_content($item_ref->{content});
-                    # Abhaengige Feldspezifische Saetze erstellen und schreiben        
-                    print OUTFIELDS "$serialid$id$field$item_ref->{mult}$item_ref->{subfield}$item_ref->{content}\n";
-                    $serialid++;
-                }
+        my $columns_ref                = $importer->get_columns;
+        my $columns_fields_ref         = $importer->get_columns_fields;
+        my $columns_title_holding_ref  = $importer->get_columns_title_holding;
+
+        if ($incremental && 0 == 1){
+            if ($actions_map_ref->{$importer->get_id} eq "delete"){
+                $columns_ref=[];
+                $columns_fields_ref=[];
+                $columns_title_holding_ref=[];
             }
         }
         
-        # Signatur fuer Kurztitelliste merken
-    
-        if (exists $fields_ref->{'0014'} && $titleid) {
-            my $array_ref= [];
-            if (exists $listitemdata_holding{$titleid}) {
-                $array_ref = $listitemdata_holding{$titleid};
-            }
-            push @$array_ref, $fields_ref->{'0014'}[0]{content};
-            $listitemdata_holding{$titleid}=$array_ref;
+        foreach my $this_column_ref (@$columns_ref){
+            print OUT join('',@$this_column_ref),"\n";
         }
-    
-        # Bestandsverlauf in Jahreszahlen umwandeln
-        if ((defined $fields_ref->{'1204'}) && $titleid) {        
-            my $array_ref=[];
-            if (exists $listitemdata_enriched_years{$titleid}) {
-                $array_ref = $listitemdata_enriched_years{$titleid};
-            }
         
-            foreach my $date (split(";",cleanup_content($fields_ref->{'1204'}[0]{content}))) {
-                if ($date =~/^.*?(\d\d\d\d)[^-]+?\s+-\s+.*?(\d\d\d\d)/) {
-                    my $startyear = $1;
-                    my $endyear   = $2;
-                
-                    $logger->debug("Expanding yearstring $date from $startyear to $endyear");
-                    for (my $year=$startyear;$year<=$endyear; $year++) {
-                        $logger->debug("Adding year $year");
-                        push @$array_ref, $year;
-                    }
-                } elsif ($date =~/^.*?(\d\d\d\d)[^-]+?\s+-/) {
-                    my $startyear = $1;
-                    my $endyear   = $thisyear;
-                    $logger->debug("Expanding yearstring $date from $startyear to $endyear");
-                    for (my $year=$startyear;$year<=$endyear;$year++) {
-                        $logger->debug("Adding year $year");
-                        push @$array_ref, $year;
-                    }                
-                } elsif ($date =~/(\d\d\d\d)/) {
-                    $logger->debug("Not expanding $date, just adding year $1");
-                    push @$array_ref, $1;
-                }
-            }
-
-            $listitemdata_enriched_years{$titleid}=$array_ref;
+        foreach my $this_column_fields_ref (@$columns_fields_ref){
+            print OUTFIELDS join('',@$this_column_fields_ref),"\n";
         }
+
+        foreach my $this_column_title_holding_ref (@$columns_title_holding_ref){
+            print OUTTITLEHOLDING join('',@$this_column_title_holding_ref),"\n";
+        }
+        
     
         if ($count % 1000 == 0) {
             my $btime      = new Benchmark;
@@ -808,6 +574,9 @@ if (-f "meta.holding"){
     close(IN);
 
     unlink "meta.holding";
+
+    $storage_ref = $importer->get_storage;
+
 } else {
     $logger->error("### $database: meta.holding nicht vorhanden!");
 }
@@ -821,9 +590,11 @@ open(OUTTITLECLASSIFICATION,">:utf8","title_classification.dump")  || die "OUTTI
 $stammdateien_ref->{title} = {
     infile             => "meta.title",
     outfile            => "title.dump",
+    deletefile         => "title.delete",
     outfile_fields     => "title_fields.dump",
     inverted_ref       => $conv_config->{inverted_title},
     blacklist_ref      => $conv_config->{blacklist_title},
+    type               => "Title",
 };
 
 if ($addsuperpers) {
@@ -848,7 +619,7 @@ if ($addsuperpers) {
         if (exists $record_ref->{fields}{'0004'}){
             foreach my $item (@{$record_ref->{fields}{'0004'}}){
                 my $superid = $item->{content};
-                $listitemdata_superid{$superid}={};
+                $storage_ref->{listitemdata_superid}{$superid}={};
             }
         }
 
@@ -879,7 +650,7 @@ if ($addsuperpers) {
 
         my $id = $record_ref->{id};
 
-        next unless (exists $listitemdata_superid{$id} && ref  $listitemdata_superid{$id} eq "HASH");
+        next unless (defined $storage_ref->{listitemdata_superid}{$id} && ref  $storage_ref->{listitemdata_superid}{$id} eq "HASH");
 
         # Anreichern mit content;
         foreach my $field ('0100','0101','0102','0103','1800','4308') {
@@ -887,8 +658,8 @@ if ($addsuperpers) {
                 foreach my $item_ref (@{$record_ref->{fields}{$field}}) {
                     my $personid   = $item_ref->{id};
                     
-                    if (exists $listitemdata_person{$personid}) {
-                        $item_ref->{content} = $listitemdata_person{$personid};
+                    if (exists $storage_ref->{listitemdata_person}{$personid}) {
+                        $item_ref->{content} = $storage_ref->{listitemdata_person}{$personid};
                     }
                     else {
                         $logger->error("PER ID $personid doesn't exist in TITLE ID $id");
@@ -897,7 +668,7 @@ if ($addsuperpers) {
             }
         }
 
-        $listitemdata_superid{$id} = $record_ref;
+        $storage_ref->{listitemdata_superid}{$id} = $record_ref;
 
        if ($count % 100000 == 0){
             $logger->info("### $database: $count Titel");
@@ -922,7 +693,56 @@ $count = 1;
 
 $atime = new Benchmark;
 
-$importer = OpenBib::Importer::JSON::Title->new({
+my %incremental_status_map      = ();
+
+if ($incremental){
+    # Einlesen der neuen Daten aus kompletter Einladedatei und der alten Daten aus der Datenbank.
+    
+    my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $database });
+    
+    foreach my $result_ref ($catalog->get_schema->resultset('Title')->search(
+        {},{ select => ['id','import_hash'], result_class => 'DBIx::Class::ResultClass::HashRefInflator',})->all){
+        $incremental_status_map{$result_ref->{id}}{old} = $result_ref->{import_hash};
+    }
+    
+    open(INHASH ,           "<:raw", $stammdateien_ref->{'title'}{infile} )        || die "IN konnte nicht geoeffnet werden";
+    
+    my $record_ref;
+    
+    while (my $jsonline = <INHASH>){
+        my $import_hash = md5_hex($jsonline);
+        
+        eval {
+            $record_ref = decode_json $jsonline;
+        };
+        
+        if ($@){
+            $logger->error("Skipping record: $@");
+            return;
+        }
+        
+        my $id = $record_ref->{id};
+        $incremental_status_map{$id}{new} = $import_hash;
+    }
+    
+    close(INHASH);
+    
+    $actions_map_ref = analyze_status_map(\%incremental_status_map);
+
+    open(OUTDELETE,           ">:utf8",$stammdateien_ref->{'title'}{deletefile})        || die "OUTDELETE konnte nicht geoeffnet werden";            
+    
+    foreach my $id (keys %$actions_map_ref){
+        print OUTDELETE "$id\n" if ($actions_map_ref->{$id} eq "delete" || $actions_map_ref->{$id} eq "change"); 
+    }
+    
+    close(OUTDELETE);
+    
+    if ($logger->is_info){
+        $logger->info("$stammdateien_ref->{'title'}{type}".YAML::Dump($actions_map_ref)."\n");
+    }
+}
+
+my $importer = OpenBib::Importer::JSON::Title->new({
     database        => $database,
     addsuperpers    => $addsuperpers,
     addlanguage     => $addlanguage,
@@ -933,6 +753,17 @@ $importer = OpenBib::Importer::JSON::Title->new({
 
 while (my $jsonline=<IN>){
 
+    eval {
+        my $record_ref = decode_json $jsonline;
+        next if (!defined $actions_map_ref->{$record_ref->{id}} || $actions_map_ref->{$record_ref->{id}} eq "delete");
+    };
+    
+    if ($@){
+        $logger->error("Skipping record: $@");
+        next;
+    }
+
+    
     eval {
         $importer->process({
             json         => $jsonline
@@ -951,7 +782,19 @@ while (my $jsonline=<IN>){
     my $columns_title_subject_ref        = $importer->get_columns_title_subject;
     my $columns_title_ref                = $importer->get_columns_title;
     my $columns_title_fields_ref         = $importer->get_columns_title_fields;
-
+    
+    if ($incremental){
+        if (!defined $actions_map_ref->{$importer->get_id} || $actions_map_ref->{$importer->get_id} eq "delete"){
+            $columns_title_title_ref=[];
+            $columns_title_person_ref=[];
+            $columns_title_corporatebody_ref=[];
+            $columns_title_classification_ref=[];
+            $columns_title_subject_ref=[];
+            $columns_title_ref=[];
+            $columns_title_fields_ref=[];
+        }
+    }
+    
     foreach my $title_title_ref (@$columns_title_title_ref){
        print OUTTITLETITLE join('',@$title_title_ref),"\n";
     }
@@ -981,7 +824,14 @@ while (my $jsonline=<IN>){
     
     my $searchengine = $importer->get_index_document->to_json;
 
-    print SEARCHENGINE "$searchengine\n";
+    if ($incremental){
+        if (defined $actions_map_ref->{$importer->get_id} && ($actions_map_ref->{$importer->get_id} eq "new" || $actions_map_ref->{$importer->get_id} eq "change")){
+            print SEARCHENGINE "$searchengine\n";
+        }
+    }
+    else {
+        print SEARCHENGINE "$searchengine\n";
+    }
     
     if ($count % 1000 == 0) {
         my $btime      = new Benchmark;
@@ -1018,27 +868,214 @@ open(CONTROLINDEXON, ">control_index_on.sql");
 
 # Index und Contstraints werden zentral via pool_drop_index.sql geloescht
 
-foreach my $type (keys %{$stammdateien_ref}){
-    print CONTROL << "ITEMTRUNC";
+# Zunaechst Loeschentabellen anlegen
+
+if ($incremental){
+    foreach my $type ('person','corporatebody','classification','subject','title'){
+        print CONTROL << "DELETETABLE";
+CREATE TABLE ${type}_delete ( id TEXT );
+COPY ${type}_delete FROM '$dir/$stammdateien_ref->{$type}{deletefile}' WITH DELIMITER '' NULL AS '';
+DELETETABLE
+    }
+
+    print CONTROL << "DELETEITEM";
+ALTER TABLE title_title DISABLE TRIGGER ALL;
+ALTER TABLE title_person DISABLE TRIGGER ALL;
+ALTER TABLE title_corporatebody DISABLE TRIGGER ALL;
+ALTER TABLE title_classification DISABLE TRIGGER ALL;
+ALTER TABLE title_subject DISABLE TRIGGER ALL;
+ALTER TABLE title_holding DISABLE TRIGGER ALL;
+ALTER TABLE title DISABLE TRIGGER ALL;
+ALTER TABLE title_fields DISABLE TRIGGER ALL;
+ALTER TABLE person DISABLE TRIGGER ALL;
+ALTER TABLE person_fields DISABLE TRIGGER ALL;
+ALTER TABLE corporatebody DISABLE TRIGGER ALL;
+ALTER TABLE corporatebody_fields DISABLE TRIGGER ALL;
+ALTER TABLE classification DISABLE TRIGGER ALL;
+ALTER TABLE classification_fields DISABLE TRIGGER ALL;
+ALTER TABLE subject DISABLE TRIGGER ALL;
+ALTER TABLE subject_fields DISABLE TRIGGER ALL;
+ALTER TABLE holding DISABLE TRIGGER ALL;
+ALTER TABLE holding_fields DISABLE TRIGGER ALL;
+
+truncate table title_holding;
+
+create table person_fields_tmp (
+ id            BIGSERIAL,
+ personid      TEXT        NOT NULL,
+ field         SMALLINT    NOT NULL,
+ mult          SMALLINT,
+ subfield      VARCHAR(2),
+ content       TEXT        NOT NULL
+);
+
+create table corporatebody_fields_tmp (
+ id               BIGSERIAL,
+ corporatebodyid  TEXT        NOT NULL,
+ field            SMALLINT    NOT NULL,
+ mult             SMALLINT,
+ subfield         VARCHAR(2),
+ content          TEXT        NOT NULL
+);
+
+create table subject_fields_tmp (
+ id            BIGSERIAL,
+ subjectid     TEXT       NOT NULL,
+ field         SMALLINT   NOT NULL,
+ mult          SMALLINT,
+ subfield      VARCHAR(2),
+ content       TEXT       NOT NULL
+);
+
+create table classification_fields_tmp (
+ id                BIGSERIAL,
+ classificationid  TEXT        NOT NULL,
+ field             SMALLINT    NOT NULL,
+ mult              SMALLINT,
+ subfield          VARCHAR(2),
+ content           TEXT        NOT NULL
+);
+
+create table title_fields_tmp (
+ id            BIGSERIAL,
+ titleid       TEXT NOT NULL,
+ field         SMALLINT  NOT NULL,
+ mult          SMALLINT,
+ subfield      VARCHAR(2),
+ content       TEXT NOT NULL
+);
+
+DELETE FROM title_title WHERE source_titleid IN (select id from title_delete);
+DELETE FROM title_person WHERE titleid IN (select id from title_delete);
+DELETE FROM title_corporatebody WHERE titleid IN (select id from title_delete);
+DELETE FROM title_classification WHERE titleid IN (select id from title_delete);
+DELETE FROM title_subject WHERE titleid IN (select id from title_delete);
+DELETEITEM
+}
+    
+foreach my $type ('person','corporatebody','classification','subject','title'){
+    if (!$incremental){
+        print CONTROL << "ITEMTRUNC";
 truncate table $type;
 truncate table ${type}_fields;
 ITEMTRUNC
-    print CONTROL << "ITEM";
+    }
+    
+    if ($incremental){
+        print CONTROL << "DELETEITEM";
+DELETE FROM ${type}_fields WHERE ${type}id IN (select id from ${type}_delete);
+DELETE FROM $type WHERE id IN (select id from ${type}_delete);
+COPY $type FROM '$dir/$stammdateien_ref->{$type}{outfile}' WITH DELIMITER '' NULL AS '';
+COPY ${type}_fields_tmp FROM '$dir/$stammdateien_ref->{$type}{outfile_fields}' WITH DELIMITER '' NULL AS '';
+INSERT INTO ${type}_fields (${type}id,field,mult,subfield,content) select ${type}id,field,mult,subfield,content from ${type}_fields_tmp; 
+DELETEITEM
+    }
+    else {
+        print CONTROL << "ITEM";
 COPY $type FROM '$dir/$stammdateien_ref->{$type}{outfile}' WITH DELIMITER '' NULL AS '';
 COPY ${type}_fields FROM '$dir/$stammdateien_ref->{$type}{outfile_fields}' WITH DELIMITER '' NULL AS '';
 ITEM
+    }
 }
 
+    if (!$incremental){            
 print CONTROL << "TITLEITEMTRUNC";
 truncate table title_title;
 truncate table title_person;
 truncate table title_corporatebody;
 truncate table title_subject;
 truncate table title_classification;
-truncate table title_holding;
 TITLEITEMTRUNC
-    
-print CONTROL << "TITLEITEM";
+}
+
+if ($incremental){
+    print CONTROL << "TITLEITEM";
+truncate table holding, holding_fields cascade;
+
+COPY holding FROM '$dir/$stammdateien_ref->{'holding'}{outfile}' WITH DELIMITER '' NULL AS '';
+COPY holding_fields FROM '$dir/$stammdateien_ref->{'holding'}{outfile_fields}' WITH DELIMITER '' NULL AS '';
+
+create table title_title_tmp (
+id                BIGSERIAL,
+field             SMALLINT,
+mult              SMALLINT,
+source_titleid    TEXT     NOT NULL,
+target_titleid    TEXT     NOT NULL,
+supplement        TEXT
+);
+
+create table title_person_tmp (
+id         BIGSERIAL,
+field      SMALLINT,
+mult       SMALLINT,
+titleid    TEXT         NOT NULL,
+personid   TEXT          NOT NULL,
+supplement TEXT
+);
+
+create table title_corporatebody_tmp (
+id                BIGSERIAL,
+field             SMALLINT,
+mult       SMALLINT,
+titleid           TEXT NOT NULL,
+corporatebodyid   TEXT NOT NULL,
+supplement        TEXT
+);
+
+create table title_subject_tmp (
+id         BIGSERIAL,
+field      SMALLINT,
+mult       SMALLINT,
+titleid    TEXT NOT NULL,
+subjectid  TEXT NOT NULL,
+supplement TEXT
+);
+
+create table title_classification_tmp (
+id                BIGSERIAL,
+field             SMALLINT,
+mult       SMALLINT,
+titleid           TEXT NOT NULL,
+classificationid  TEXT NOT NULL,
+supplement        TEXT
+);
+
+COPY title_title_tmp FROM '$dir/title_title.dump' WITH DELIMITER '' NULL AS '';
+COPY title_person_tmp FROM '$dir/title_person.dump' WITH DELIMITER '' NULL AS '';
+COPY title_corporatebody_tmp FROM '$dir/title_corporatebody.dump' WITH DELIMITER '' NULL AS '';
+COPY title_subject_tmp FROM '$dir/title_subject.dump' WITH DELIMITER '' NULL AS '';
+COPY title_classification_tmp FROM '$dir/title_classification.dump' WITH DELIMITER '' NULL AS '';
+COPY title_holding FROM '$dir/title_holding.dump' WITH DELIMITER '' NULL AS '';
+
+INSERT INTO title_title (field,mult,source_titleid,target_titleid,supplement) select field,mult,source_titleid,target_titleid,supplement from title_title_tmp; 
+INSERT INTO title_person (field,mult,titleid,personid,supplement) select field,mult,titleid,personid,supplement from title_person_tmp; 
+INSERT INTO title_corporatebody (field,mult,titleid,corporatebodyid,supplement) select field,mult,titleid,corporatebodyid,supplement from title_corporatebody_tmp; 
+INSERT INTO title_classification (field,mult,titleid,classificationid,supplement) select field,mult,titleid,classificationid,supplement from title_classification_tmp; 
+INSERT INTO title_subject (field,mult,titleid,subjectid,supplement) select field,mult,titleid,subjectid,supplement from title_subject_tmp; 
+
+ALTER TABLE title_title ENABLE TRIGGER ALL;
+ALTER TABLE title_person ENABLE TRIGGER ALL;
+ALTER TABLE title_corporatebody ENABLE TRIGGER ALL;
+ALTER TABLE title_classification ENABLE TRIGGER ALL;
+ALTER TABLE title_subject ENABLE TRIGGER ALL;
+ALTER TABLE title_holding ENABLE TRIGGER ALL;
+ALTER TABLE title ENABLE TRIGGER ALL;
+ALTER TABLE title_fields ENABLE TRIGGER ALL;
+ALTER TABLE person ENABLE TRIGGER ALL;
+ALTER TABLE person_fields ENABLE TRIGGER ALL;
+ALTER TABLE corporatebody ENABLE TRIGGER ALL;
+ALTER TABLE corporatebody_fields ENABLE TRIGGER ALL;
+ALTER TABLE classification ENABLE TRIGGER ALL;
+ALTER TABLE classification_fields ENABLE TRIGGER ALL;
+ALTER TABLE subject ENABLE TRIGGER ALL;
+ALTER TABLE subject_fields ENABLE TRIGGER ALL;
+ALTER TABLE holding ENABLE TRIGGER ALL;
+ALTER TABLE holding_fields ENABLE TRIGGER ALL;
+
+TITLEITEM
+}
+else {
+    print CONTROL << "TITLEITEM";
 COPY title_title FROM '$dir/title_title.dump' WITH DELIMITER '' NULL AS '';
 COPY title_person FROM '$dir/title_person.dump' WITH DELIMITER '' NULL AS '';
 COPY title_corporatebody FROM '$dir/title_corporatebody.dump' WITH DELIMITER '' NULL AS '';
@@ -1046,6 +1083,7 @@ COPY title_subject FROM '$dir/title_subject.dump' WITH DELIMITER '' NULL AS '';
 COPY title_classification FROM '$dir/title_classification.dump' WITH DELIMITER '' NULL AS '';
 COPY title_holding FROM '$dir/title_holding.dump' WITH DELIMITER '' NULL AS '';
 TITLEITEM
+}
 
 # Index und Contstraints werden zentral via pool_create_index.sql eingerichtet
 
@@ -1062,14 +1100,30 @@ close(CONTROLINDEXON);
 #     untie %listitemdata_superid;
 # }
 
-sub cleanup_content {
-    my $content = shift;
 
-    # Make PostgreSQL Happy    
-    $content =~ s/\\/\\\\/g;
-    $content =~ s/($chars_to_replace)/$char_replacements{$1}/g;
-            
-    return $content;
+sub analyze_status_map {
+   my $status_map_ref = shift;
+
+   my $actions_map_ref = {};
+
+   foreach my $id (keys %$status_map_ref){
+       # Title deleted?
+       if (!defined $status_map_ref->{$id}{new} && defined $status_map_ref->{$id}{old}){
+           $actions_map_ref->{$id} = "delete";
+       }
+       # Title new?
+       elsif (defined $status_map_ref->{$id}{new} && !defined $status_map_ref->{$id}{old}){
+           $actions_map_ref->{$id} = "new";
+       }
+       # Title changed?
+       elsif (defined $status_map_ref->{$id}{new} && defined $status_map_ref->{$id}{old}){
+           if ($status_map_ref->{$id}{new} ne $status_map_ref->{$id}{old}){
+               $actions_map_ref->{$id} = "change";
+           }
+       }
+   }    
+
+   return $actions_map_ref;
 }
 
 sub print_help {

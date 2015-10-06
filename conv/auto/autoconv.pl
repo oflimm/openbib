@@ -48,16 +48,16 @@ use OpenBib::Config;
 use OpenBib::Catalog;
 use OpenBib::Catalog::Factory;
 
-my ($database,$sync,$genmex,$help,$keepfiles,$logfile,$loglevel,$updatemaster,$incremental);
+my ($database,$sync,$help,$keepfiles,$logfile,$loglevel,$updatemaster,$incremental,$reducemem);
 
 &GetOptions("database=s"      => \$database,
             "logfile=s"       => \$logfile,
             "loglevel=s"      => \$loglevel,
 	    "sync"            => \$sync,
-            "gen-mex"         => \$genmex,
             "keep-files"      => \$keepfiles,
             "update-master"   => \$updatemaster,
             "incremental"     => \$incremental,
+            "reduce-mem"      => \$reducemem,
 	    "help"            => \$help
 	    );
 
@@ -93,7 +93,6 @@ my $pooldir       = $rootdir."/pools";
 my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
 my $meta2sqlexe   = "$config->{'conv_dir'}/meta2sql.pl";
 my $meta2mexexe   = "$config->{'conv_dir'}/meta2mex.pl";
-my $meta2waisexe  = "$config->{'conv_dir'}/meta2wais.pl";
 my $pgsqlexe      = "/usr/bin/psql -U $config->{'dbuser'} ";
 
 if (!$database){
@@ -194,11 +193,6 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
         system("mkdir $rootdir/data/$database");
     }
     
-    if ($genmex){
-        $logger->info("### $database: Erzeuge Exemplardaten aus Titeldaten");
-        system("cd $pooldir/$database/ ; zcat meta.title.gz | $meta2mexexe");
-    }
-    
     if ($database && -e "$config->{autoconv_dir}/filter/$database/pre_move.pl"){
         $logger->info("### $database: Verwende Plugin pre_move.pl");
         system("$config->{autoconv_dir}/filter/$database/pre_move.pl $database");
@@ -255,7 +249,11 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
         if ($incremental){
             $cmd.=" -incremental";
         }
-        
+
+        if ($reducemem){
+            $cmd.=" -reduce-mem";
+        }
+
         system("cd $rootdir/data/$database ; $cmd");
     }
     
@@ -272,44 +270,58 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
     $logger->info("### $database: Benoetigte Zeit -> $resulttime");     
 }
 
-exit if ($incremental);
+# Bei Incrementellen Updates wird direkt die produktive Datenbank bzw. der Suchindex on-the-fly aktualisiert.
+if ($incremental){
+    $databasetmp=$database;
+}
+
 
 # Einladen in temporaere SQL-Datenbank
 
 {
     my $atime = new Benchmark;
-        
+
     $logger->info("### $database: Temporaere Datenbank erzeugen");
 
     # Temporaer Zugriffspassword setzen
     system("echo \"*:*:*:$config->{'dbuser'}:$config->{'dbpasswd'}\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
-   
-    $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$databasetmp'"); 
-
-    system("/usr/bin/dropdb -U $config->{'dbuser'} $databasetmp");
-    system("/usr/bin/createdb -U $config->{'dbuser'} -E UTF-8 -O $config->{'dbuser'} $databasetmp");
     
-    $logger->info("### $database: Datendefinition einlesen");
     
-    system("$pgsqlexe -f '$config->{'dbdesc_dir'}/postgresql/pool.sql' $databasetmp");
+#     if ($incremental){
+#         $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$database'"); 
+#         $postgresdbh->do("CREATE DATABASE $databasetmp with template $database owner ".$config->{'dbuser'}); 
+#     }
+#     else {
+    if (!$incremental){
+        $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$databasetmp'");             
 
-    if ($database && -e "$config->{autoconv_dir}/filter/$database/post_index_off.pl"){
+        system("/usr/bin/dropdb -U $config->{'dbuser'} $databasetmp");
+        system("/usr/bin/createdb -U $config->{'dbuser'} -E UTF-8 -O $config->{'dbuser'} $databasetmp");
+    
+        $logger->info("### $database: Datendefinition einlesen");
+        
+        system("$pgsqlexe -f '$config->{'dbdesc_dir'}/postgresql/pool.sql' $databasetmp");
+    }
+    
+    if (!$incremental && $database && -e "$config->{autoconv_dir}/filter/$database/post_index_off.pl"){
         $logger->info("### $database: Verwende Plugin post_index_off.pl");
         system("$config->{autoconv_dir}/filter/$database/post_index_off.pl $databasetmp");
     }
-    
+
     # Einladen der Daten
     $logger->info("### $database: Einladen der Daten in temporaere Datenbank");
     system("$pgsqlexe -f '$rootdir/data/$database/control.sql' $databasetmp");
     
-    if ($database && -e "$config->{autoconv_dir}/filter/$database/post_dbload.pl"){
+    if (!$incremental && $database && -e "$config->{autoconv_dir}/filter/$database/post_dbload.pl"){
         $logger->info("### $database: Verwende Plugin post_dbload.pl");
         system("$config->{autoconv_dir}/filter/$database/post_dbload.pl $databasetmp");
     }
 
     # Index setzen
-    $logger->info("### $database: Index in temporaerer Datenbank aufbauen");
-    system("$pgsqlexe -f '$config->{'dbdesc_dir'}/postgresql/pool_create_index.sql' $databasetmp");
+    if (!$incremental){
+        $logger->info("### $database: Index in temporaerer Datenbank aufbauen");
+        system("$pgsqlexe -f '$config->{'dbdesc_dir'}/postgresql/pool_create_index.sql' $databasetmp");
+    }
     
     if ($database && -e "$config->{autoconv_dir}/filter/$database/post_index_on.pl"){
         $logger->info("### $database: Verwende Plugin post_index_on.pl");
@@ -338,9 +350,17 @@ exit if ($incremental);
 {
     my $atime = new Benchmark;
 
+    my $indexpath    = $config->{xapian_index_base_path}."/$database";
     my $indexpathtmp = $config->{xapian_index_base_path}."/$databasetmp";
-    $logger->info("### $database: Importing data into searchengine");   
-    system("cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl -with-sorting -with-positions --database=$databasetmp --indexpath=$indexpathtmp");
+    $logger->info("### $database: Importing data into searchengine");
+
+    my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl -with-sorting -with-positions --database=$databasetmp --indexpath=$indexpathtmp";
+
+    if ($incremental){
+        $cmd.=" -incremental --deletefile=$rootdir/data/$database/title.delete";
+    }
+    
+    system($cmd);
 
     my $btime      = new Benchmark;
     my $timeall    = timediff($btime,$atime);
@@ -350,14 +370,32 @@ exit if ($incremental);
     $logger->info("### $database: Benoetigte Zeit -> $resulttime");     
 }
 
+exit if ($incremental);
+
+
 # Suchmaschinen-Index fuer Normdaten aufbauen
 
-{
+{    
     my $atime = new Benchmark;
 
     my $authority_indexpathtmp = $config->{xapian_index_base_path}."/$authoritytmp";
-    $logger->info("### $database: Importing authority data into searchengine");   
-    system("$config->{'base_dir'}/conv/authority2xapian.pl -with-sorting -with-positions --database=$database --indexpath=$authority_indexpathtmp");
+
+
+    # Inkrementelle Aktualisierung der Normdatenindizes wird zunaechst nicht realisiert. Es werden immer anhand der aktuellen Daten alle Normdatenindizes neu erzeugt!!!
+    # Zukuenftig kann die inkrementelle Aktualisierung jedoch implementiert werden
+    #if ($incremental && $authority &&& $authoritytmp){
+    #    system("rsync -av --delete $config->{xapian_index_base_path}/$authority/ $config->{xapian_index_base_path}/$authoritytmp/");
+    #}
+    
+    $logger->info("### $database: Importing authority data into searchengine");
+
+    my $cmd = "$config->{'base_dir'}/conv/authority2xapian.pl --loglevel=DEBUG -with-sorting -with-positions --database=$database --indexpath=$authority_indexpathtmp";
+
+    #if ($incremental){
+    #    $cmd.=" -incremental";
+    #}
+    
+    system($cmd);
 
     my $btime      = new Benchmark;
     my $timeall    = timediff($btime,$atime);

@@ -49,7 +49,7 @@ use OpenBib::Config;
 use OpenBib::Index::Factory;
 use OpenBib::Common::Util;
 
-my ($database,$help,$logfile,$withsorting,$withpositions,$loglevel,$indexpath);
+my ($database,$help,$logfile,$withsorting,$withpositions,$loglevel,$indexpath,$incremental,$deletefile);
 
 &GetOptions(
     "indexpath=s"     => \$indexpath,
@@ -58,6 +58,8 @@ my ($database,$help,$logfile,$withsorting,$withpositions,$loglevel,$indexpath);
     "loglevel=s"      => \$loglevel,
     "with-sorting"    => \$withsorting,
     "with-positions"  => \$withpositions,
+    "incremental"     => \$incremental,
+    "deletefile=s"    => \$deletefile,    
     "help"            => \$help
 );
 
@@ -100,23 +102,41 @@ $logger->info("### POOL $database");
 
 open(SEARCHENGINE, "<:raw","searchengine.json"  ) || die "SEARCHENGINE konnte nicht geoeffnet werden";
 
-$logger->info("Loeschung des alten Index fuer Datenbank $database");
+if (!$incremental){
+    $logger->info("Loeschung des alten Index fuer Datenbank $database");
 
-system("rm $indexpath/*");
+    system("rm $indexpath/*");
+}
 
 my $atime = new Benchmark;
 
 {
-    $logger->info("Aufbau eines neuen temporaeren Index fuer Datenbank $database");
-    
-    
+
     $logger->info("Migration der Titelsaetze");
     
     my $count = 1;
 
     {
-        my $indexer = OpenBib::Index::Factory->create_indexer({ database => $database, create_index => 1, index_type => 'readwrite', index_path => $indexpath });
+        my $create_index = 1;
 
+        if ($incremental){
+            $create_index = 0;
+        }
+        
+        my $indexer = OpenBib::Index::Factory->create_indexer({ database => $database, create_index => $create_index, index_type => 'readwrite', index_path => $indexpath });
+
+        if ($incremental){
+            $logger->info("Loeschen der obsoleten Titelsaetze");
+            open (DELETE_IDS,$deletefile);
+            while (my $id = <DELETE_IDS>){
+                chomp($id);
+                $logger->debug("Deleting Record $id");
+                
+                $indexer->delete_record($id);
+            }
+        }
+
+        
         $indexer->set_stopper;
         $indexer->set_termgenerator;
         

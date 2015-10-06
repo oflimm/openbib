@@ -49,7 +49,7 @@ use OpenBib::Config;
 use OpenBib::Index::Factory;
 use OpenBib::Common::Util;
 
-my ($database,$help,$logfile,$withsorting,$withpositions,$loglevel,$indexpath);
+my ($database,$help,$logfile,$withsorting,$withpositions,$loglevel,$indexpath,$incremental);
 
 &GetOptions(
     "indexpath=s"     => \$indexpath,
@@ -58,6 +58,7 @@ my ($database,$help,$logfile,$withsorting,$withpositions,$loglevel,$indexpath);
     "loglevel=s"      => \$loglevel,
     "with-sorting"    => \$withsorting,
     "with-positions"  => \$withpositions,
+    "incremental"     => \$incremental,
     "help"            => \$help
 );
 
@@ -120,7 +121,7 @@ my $conv_config = new OpenBib::Conv::Config({dbname => $database});
 $logger->info("### POOL $database");
 
 $logger->info("Loeschung des alten Index fuer Datenbank $database");
-
+    
 system("rm $indexpath/*");
 
 my $atime = new Benchmark;

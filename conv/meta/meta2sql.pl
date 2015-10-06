@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+!/usr/bin/perl
 
 #####################################################################
 #
@@ -752,17 +752,19 @@ my $importer = OpenBib::Importer::JSON::Title->new({
 });
 
 while (my $jsonline=<IN>){
-
+    my $skip_record = 0;
+    
     eval {
         my $record_ref = decode_json $jsonline;
-        next if (!defined $actions_map_ref->{$record_ref->{id}} || $actions_map_ref->{$record_ref->{id}} eq "delete");
+        $skip_record = 1 if (!defined $actions_map_ref->{$record_ref->{id}} || $actions_map_ref->{$record_ref->{id}} eq "delete");
     };
-    
+
     if ($@){
         $logger->error("Skipping record: $@");
         next;
     }
 
+    next if ($skip_record);
     
     eval {
         $importer->process({
@@ -784,6 +786,8 @@ while (my $jsonline=<IN>){
     my $columns_title_fields_ref         = $importer->get_columns_title_fields;
     
     if ($incremental){
+        # Keine Einlade-Daten herausschreiben, wenn sich nichts geaendert hat oder der Titel geloescht wurde
+        # ggf. unnoetig, da bereits im ersten eval gehandelt.
         if (!defined $actions_map_ref->{$importer->get_id} || $actions_map_ref->{$importer->get_id} eq "delete"){
             $columns_title_title_ref=[];
             $columns_title_person_ref=[];
@@ -873,6 +877,7 @@ open(CONTROLINDEXON, ">control_index_on.sql");
 if ($incremental){
     foreach my $type ('person','corporatebody','classification','subject','title'){
         print CONTROL << "DELETETABLE";
+DROP TABLE IF EXISTS ${type}_delete;
 CREATE TABLE ${type}_delete ( id TEXT );
 COPY ${type}_delete FROM '$dir/$stammdateien_ref->{$type}{deletefile}' WITH DELIMITER '' NULL AS '';
 DELETETABLE
@@ -898,9 +903,18 @@ ALTER TABLE subject_fields DISABLE TRIGGER ALL;
 ALTER TABLE holding DISABLE TRIGGER ALL;
 ALTER TABLE holding_fields DISABLE TRIGGER ALL;
 
-truncate table title_holding;
+TRUNCATE TABLE title_holding;
 
-create table person_fields_tmp (
+DROP TABLE IF EXISTS person_tmp;
+CREATE TABLE person_tmp (
+ id            TEXT default nextval('person_id_seq'::regclass),
+ tstamp_create TIMESTAMP,
+ tstamp_update TIMESTAMP,
+ import_hash   TEXT    
+);
+
+DROP TABLE IF EXISTS person_fields_tmp;
+CREATE TABLE person_fields_tmp (
  id            BIGSERIAL,
  personid      TEXT        NOT NULL,
  field         SMALLINT    NOT NULL,
@@ -909,7 +923,16 @@ create table person_fields_tmp (
  content       TEXT        NOT NULL
 );
 
-create table corporatebody_fields_tmp (
+DROP TABLE IF EXISTS corporatebody_tmp;
+CREATE TABLE corporatebody_tmp (
+ id            TEXT default nextval('corporatebody_id_seq'::regclass),
+ tstamp_create TIMESTAMP,
+ tstamp_update TIMESTAMP,
+ import_hash   TEXT    
+);
+
+DROP TABLE IF EXISTS corporatebody_fields_tmp;
+CREATE TABLE corporatebody_fields_tmp (
  id               BIGSERIAL,
  corporatebodyid  TEXT        NOT NULL,
  field            SMALLINT    NOT NULL,
@@ -918,7 +941,16 @@ create table corporatebody_fields_tmp (
  content          TEXT        NOT NULL
 );
 
-create table subject_fields_tmp (
+DROP TABLE IF EXISTS subject_tmp;
+CREATE TABLE subject_tmp (
+ id            TEXT default nextval('subject_id_seq'::regclass),
+ tstamp_create TIMESTAMP,
+ tstamp_update TIMESTAMP,
+ import_hash   TEXT    
+);
+
+DROP TABLE IF EXISTS subject_fields_tmp;
+CREATE TABLE subject_fields_tmp (
  id            BIGSERIAL,
  subjectid     TEXT       NOT NULL,
  field         SMALLINT   NOT NULL,
@@ -927,7 +959,16 @@ create table subject_fields_tmp (
  content       TEXT       NOT NULL
 );
 
-create table classification_fields_tmp (
+DROP TABLE IF EXISTS classification_tmp;
+CREATE TABLE classification_tmp (
+ id            TEXT default nextval('classification_id_seq'::regclass),
+ tstamp_create TIMESTAMP,
+ tstamp_update TIMESTAMP,
+ import_hash   TEXT    
+);
+
+DROP TABLE IF EXISTS classification_fields_tmp;
+CREATE TABLE classification_fields_tmp (
  id                BIGSERIAL,
  classificationid  TEXT        NOT NULL,
  field             SMALLINT    NOT NULL,
@@ -936,7 +977,18 @@ create table classification_fields_tmp (
  content           TEXT        NOT NULL
 );
 
-create table title_fields_tmp (
+DROP TABLE IF EXISTS title_tmp;
+CREATE TABLE title_tmp (
+ id            TEXT default nextval('title_id_seq'::regclass),
+ tstamp_create TIMESTAMP,
+ tstamp_update TIMESTAMP,
+ titlecache    TEXT,
+ popularity    INT,
+ import_hash   TEXT    
+);
+
+DROP TABLE IF EXISTS title_fields_tmp;
+CREATE TABLE title_fields_tmp (
  id            BIGSERIAL,
  titleid       TEXT NOT NULL,
  field         SMALLINT  NOT NULL,
@@ -956,8 +1008,8 @@ DELETEITEM
 foreach my $type ('person','corporatebody','classification','subject','title'){
     if (!$incremental){
         print CONTROL << "ITEMTRUNC";
-truncate table $type;
-truncate table ${type}_fields;
+TRUNCATE TABLE $type;
+TRUNCATE TABLE ${type}_fields;
 ITEMTRUNC
     }
     
@@ -965,10 +1017,22 @@ ITEMTRUNC
         print CONTROL << "DELETEITEM";
 DELETE FROM ${type}_fields WHERE ${type}id IN (select id from ${type}_delete);
 DELETE FROM $type WHERE id IN (select id from ${type}_delete);
-COPY $type FROM '$dir/$stammdateien_ref->{$type}{outfile}' WITH DELIMITER '' NULL AS '';
+COPY ${type}_tmp FROM '$dir/$stammdateien_ref->{$type}{outfile}' WITH DELIMITER '' NULL AS '';
 COPY ${type}_fields_tmp FROM '$dir/$stammdateien_ref->{$type}{outfile_fields}' WITH DELIMITER '' NULL AS '';
-INSERT INTO ${type}_fields (${type}id,field,mult,subfield,content) select ${type}id,field,mult,subfield,content from ${type}_fields_tmp; 
 DELETEITEM
+        if ($type eq "title"){
+            print CONTROL << "INSERTITEM";
+INSERT INTO $type (id,tstamp_create,tstamp_update,titlecache,popularity,import_hash) select id,tstamp_create,tstamp_update,titlecache,popularity,import_hash from ${type}_tmp; 
+INSERT INTO ${type}_fields (${type}id,field,mult,subfield,content) select ${type}id,field,mult,subfield,content from ${type}_fields_tmp; 
+INSERTITEM
+        }
+        else {
+            print CONTROL << "INSERTITEM";
+INSERT INTO $type (id,tstamp_create,tstamp_update,import_hash) select id,tstamp_create,tstamp_update,import_hash from ${type}_tmp; 
+INSERT INTO ${type}_fields (${type}id,field,mult,subfield,content) select ${type}id,field,mult,subfield,content from ${type}_fields_tmp; 
+INSERTITEM
+        }
+        
     }
     else {
         print CONTROL << "ITEM";
@@ -980,22 +1044,23 @@ ITEM
 
     if (!$incremental){            
 print CONTROL << "TITLEITEMTRUNC";
-truncate table title_title;
-truncate table title_person;
-truncate table title_corporatebody;
-truncate table title_subject;
-truncate table title_classification;
+TRUNCATE TABLE title_title;
+TRUNCATE TABLE title_person;
+TRUNCATE TABLE title_corporatebody;
+TRUNCATE TABLE title_subject;
+TRUNCATE TABLE title_classification;
 TITLEITEMTRUNC
 }
 
 if ($incremental){
     print CONTROL << "TITLEITEM";
-truncate table holding, holding_fields cascade;
+TRUNCATE TABLE holding, holding_fields cascade;
 
 COPY holding FROM '$dir/$stammdateien_ref->{'holding'}{outfile}' WITH DELIMITER '' NULL AS '';
 COPY holding_fields FROM '$dir/$stammdateien_ref->{'holding'}{outfile_fields}' WITH DELIMITER '' NULL AS '';
 
-create table title_title_tmp (
+DROP TABLE IF EXISTS title_title_tmp;
+CREATE TABLE title_title_tmp (
 id                BIGSERIAL,
 field             SMALLINT,
 mult              SMALLINT,
@@ -1004,7 +1069,8 @@ target_titleid    TEXT     NOT NULL,
 supplement        TEXT
 );
 
-create table title_person_tmp (
+DROP TABLE IF EXISTS title_person_tmp;
+CREATE TABLE title_person_tmp (
 id         BIGSERIAL,
 field      SMALLINT,
 mult       SMALLINT,
@@ -1013,7 +1079,8 @@ personid   TEXT          NOT NULL,
 supplement TEXT
 );
 
-create table title_corporatebody_tmp (
+DROP TABLE IF EXISTS title_corporatebody_tmp;
+CREATE TABLE title_corporatebody_tmp (
 id                BIGSERIAL,
 field             SMALLINT,
 mult       SMALLINT,
@@ -1022,7 +1089,8 @@ corporatebodyid   TEXT NOT NULL,
 supplement        TEXT
 );
 
-create table title_subject_tmp (
+DROP TABLE IF EXISTS title_subject_tmp;
+CREATE TABLE title_subject_tmp (
 id         BIGSERIAL,
 field      SMALLINT,
 mult       SMALLINT,
@@ -1031,7 +1099,8 @@ subjectid  TEXT NOT NULL,
 supplement TEXT
 );
 
-create table title_classification_tmp (
+DROP TABLE IF EXISTS title_classification_tmp;
+CREATE TABLE title_classification_tmp (
 id                BIGSERIAL,
 field             SMALLINT,
 mult       SMALLINT,
@@ -1072,6 +1141,23 @@ ALTER TABLE subject_fields ENABLE TRIGGER ALL;
 ALTER TABLE holding ENABLE TRIGGER ALL;
 ALTER TABLE holding_fields ENABLE TRIGGER ALL;
 
+DROP TABLE IF EXISTS title_title_tmp;
+DROP TABLE IF EXISTS title_person_tmp;
+DROP TABLE IF EXISTS title_corporatebody_tmp;
+DROP TABLE IF EXISTS title_subject_tmp;
+DROP TABLE IF EXISTS title_classification_tmp;
+
+DROP TABLE IF EXISTS person_fields_tmp;
+DROP TABLE IF EXISTS corporatebody_fields_tmp;
+DROP TABLE IF EXISTS subject_fields_tmp;
+DROP TABLE IF EXISTS classification_fields_tmp;
+DROP TABLE IF EXISTS title_fields_tmp;
+
+DROP TABLE IF EXISTS person_delete;
+DROP TABLE IF EXISTS corporatebody_delete;
+DROP TABLE IF EXISTS classification_delete;
+DROP TABLE IF EXISTS subject_delete;
+DROP TABLE IF EXISTS title_delete;
 TITLEITEM
 }
 else {

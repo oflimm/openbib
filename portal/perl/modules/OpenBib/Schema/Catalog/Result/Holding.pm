@@ -22,11 +22,28 @@ __PACKAGE__->table("holding");
 =head2 id
 
   data_type: 'text'
+  is_auto_increment: 1
   is_nullable: 0
+  sequence: 'holding_id_seq'
+
+=head2 import_hash
+
+  data_type: 'text'
+  is_nullable: 1
 
 =cut
 
-__PACKAGE__->add_columns("id", { data_type => "text", is_nullable => 0 });
+__PACKAGE__->add_columns(
+  "id",
+  {
+    data_type         => "text",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "holding_id_seq",
+  },
+  "import_hash",
+  { data_type => "text", is_nullable => 1 },
+);
 __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
@@ -62,8 +79,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2013-05-21 14:45:48
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2DMmxjSz9ZD5V5PouSDFdQ
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2015-10-06 12:04:47
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:w5Ctoo6+ylG7WXzxYk4XZw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -31,6 +31,11 @@ __PACKAGE__->table("title_subject");
   data_type: 'smallint'
   is_nullable: 1
 
+=head2 mult
+
+  data_type: 'smallint'
+  is_nullable: 1
+
 =head2 titleid
 
   data_type: 'text'
@@ -59,6 +64,8 @@ __PACKAGE__->add_columns(
     sequence          => "title_subject_id_seq",
   },
   "field",
+  { data_type => "smallint", is_nullable => 1 },
+  "mult",
   { data_type => "smallint", is_nullable => 1 },
   "titleid",
   { data_type => "text", is_foreign_key => 1, is_nullable => 0 },
@@ -102,8 +109,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2013-05-21 14:45:48
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/gUKTNtpPsHiKm7YHvTKtA
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2015-10-06 12:04:47
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:wO+P2oPHgCUGXJ64Y/R9Vw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

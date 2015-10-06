@@ -22,7 +22,9 @@ __PACKAGE__->table("subject");
 =head2 id
 
   data_type: 'text'
+  is_auto_increment: 1
   is_nullable: 0
+  sequence: 'subject_id_seq'
 
 =head2 tstamp_create
 
@@ -34,15 +36,27 @@ __PACKAGE__->table("subject");
   data_type: 'timestamp'
   is_nullable: 1
 
+=head2 import_hash
+
+  data_type: 'text'
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "text", is_nullable => 0 },
+  {
+    data_type         => "text",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "subject_id_seq",
+  },
   "tstamp_create",
   { data_type => "timestamp", is_nullable => 1 },
   "tstamp_update",
   { data_type => "timestamp", is_nullable => 1 },
+  "import_hash",
+  { data_type => "text", is_nullable => 1 },
 );
 __PACKAGE__->set_primary_key("id");
 
@@ -79,8 +93,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2013-05-21 14:45:48
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:H52ZgO9HAteESs46qSwX0w
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2015-10-06 12:04:47
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:I5TpPirBtvcoOmjYd63g6w
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -22,7 +22,9 @@ __PACKAGE__->table("title");
 =head2 id
 
   data_type: 'text'
+  is_auto_increment: 1
   is_nullable: 0
+  sequence: 'title_id_seq'
 
 =head2 tstamp_create
 
@@ -44,11 +46,21 @@ __PACKAGE__->table("title");
   data_type: 'integer'
   is_nullable: 1
 
+=head2 import_hash
+
+  data_type: 'text'
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "text", is_nullable => 0 },
+  {
+    data_type         => "text",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "title_id_seq",
+  },
   "tstamp_create",
   { data_type => "timestamp", is_nullable => 1 },
   "tstamp_update",
@@ -57,6 +69,8 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 1 },
   "popularity",
   { data_type => "integer", is_nullable => 1 },
+  "import_hash",
+  { data_type => "text", is_nullable => 1 },
 );
 __PACKAGE__->set_primary_key("id");
 
@@ -152,7 +166,7 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 title_title_target_titleids
+=head2 title_titles
 
 Type: has_many
 
@@ -161,30 +175,15 @@ Related object: L<OpenBib::Schema::Catalog::Result::TitleTitle>
 =cut
 
 __PACKAGE__->has_many(
-  "title_title_target_titleids",
-  "OpenBib::Schema::Catalog::Result::TitleTitle",
-  { "foreign.target_titleid" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
-=head2 title_title_source_titleids
-
-Type: has_many
-
-Related object: L<OpenBib::Schema::Catalog::Result::TitleTitle>
-
-=cut
-
-__PACKAGE__->has_many(
-  "title_title_source_titleids",
+  "title_titles",
   "OpenBib::Schema::Catalog::Result::TitleTitle",
   { "foreign.source_titleid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2013-05-21 14:45:48
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:1/pXvYzTH31ZtDVelIMAlw
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2015-10-06 12:04:47
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:LDsXHJCZQO97714HubPcww
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

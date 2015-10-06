@@ -166,6 +166,21 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 title_title_target_titleids
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::Catalog::Result::TitleTitle>
+
+=cut
+
+__PACKAGE__->has_many(
+  "title_title_target_titleids",
+  "OpenBib::Schema::Catalog::Result::TitleTitle",
+  { "foreign.target_titleid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 title_titles
 
 Type: has_many
@@ -182,8 +197,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2015-10-06 12:04:47
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:LDsXHJCZQO97714HubPcww
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2015-10-06 12:14:31
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ctxfxY+oUQ8C7IpMoqaF3A
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

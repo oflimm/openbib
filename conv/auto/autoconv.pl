@@ -354,7 +354,7 @@ if ($incremental){
     my $indexpathtmp = $config->{xapian_index_base_path}."/$databasetmp";
     $logger->info("### $database: Importing data into searchengine");
 
-    my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl -with-sorting -with-positions --database=$databasetmp --indexpath=$indexpathtmp";
+    my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl --loglevel=$loglevel -with-sorting -with-positions --database=$databasetmp --indexpath=$indexpathtmp";
 
     if ($incremental){
         $cmd.=" -incremental --deletefile=$rootdir/data/$database/title.delete";
@@ -389,7 +389,7 @@ exit if ($incremental);
     
     $logger->info("### $database: Importing authority data into searchengine");
 
-    my $cmd = "$config->{'base_dir'}/conv/authority2xapian.pl --loglevel=DEBUG -with-sorting -with-positions --database=$database --indexpath=$authority_indexpathtmp";
+    my $cmd = "$config->{'base_dir'}/conv/authority2xapian.pl --loglevel=$loglevel -with-sorting -with-positions --database=$database --indexpath=$authority_indexpathtmp";
 
     #if ($incremental){
     #    $cmd.=" -incremental";

@@ -45,6 +45,7 @@ __PACKAGE__->table("title_title");
 =head2 target_titleid
 
   data_type: 'text'
+  is_foreign_key: 1
   is_nullable: 0
 
 =head2 supplement
@@ -69,13 +70,28 @@ __PACKAGE__->add_columns(
   "source_titleid",
   { data_type => "text", is_foreign_key => 1, is_nullable => 0 },
   "target_titleid",
-  { data_type => "text", is_nullable => 0 },
+  { data_type => "text", is_foreign_key => 1, is_nullable => 0 },
   "supplement",
   { data_type => "text", is_nullable => 1 },
 );
 __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
+
+=head2 target_titleid
+
+Type: belongs_to
+
+Related object: L<OpenBib::Schema::Catalog::Result::Title>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "target_titleid",
+  "OpenBib::Schema::Catalog::Result::Title",
+  { id => "target_titleid" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+);
 
 =head2 source_titleid
 
@@ -93,8 +109,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2015-10-06 12:04:47
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:5c/Wtz9ppNpLonCusr6oOA
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2015-10-06 12:14:31
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:PXAwnM4/yKOYX45mFmDanA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

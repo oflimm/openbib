@@ -578,12 +578,20 @@ sub update_record {
     my $key = $config->{xapian_search}{id}{prefix}.$id;
 
     $self->get_index->replace_document_by_term($key, $new_doc) ;
+
+    return $self;
 }
 
 sub delete_record {
-    my ($self,$key) = @_;
+    my ($self,$id) = @_;
 
-    $self->get_index->delete_document_by_term($key) ;
+    my $config = $self->{config};
+
+    my $key = $config->{xapian_search}{id}{prefix}.$id;
+    
+    $self->get_index->delete_document_by_term($key);
+
+    return $self;
 }
 
 

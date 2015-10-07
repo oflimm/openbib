@@ -486,9 +486,9 @@ if ($loading_error){
     $logger->fatal("### $database: Problem beim Einladen. Exit.");
     $logger->fatal("### $database: Loesche temporaere Datenbank/Index.");
 
-#    $postgresdbh->do("drop database $databasetmp");
+    $postgresdbh->do("drop database $databasetmp");
 
-#    system("rm $config->{xapian_index_base_path}/${databasetmp}/* ; rmdir $config->{xapian_index_base_path}/${databasetmp}");
+    system("rm $config->{xapian_index_base_path}/${databasetmp}/* ; rmdir $config->{xapian_index_base_path}/${databasetmp}");
 
     goto CLEANUP;
 }

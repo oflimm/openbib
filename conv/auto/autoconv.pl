@@ -624,18 +624,19 @@ if ($serverinfo){
 
 sub print_help {
     print << "ENDHELP";
-autoconv.pl - Automatisches Update der Katalogdaten in OpenBib aus dem Metaformat
+autoconv.pl - Automatisches Update eines Katalogs/Suchindex aus dem Metaformat
 
    Optionen:
    -help                 : Diese Informationsseite
        
    -sync                 : Hole Pool automatisch ueber das Netz
-   -gen-mex              : Exemplardaten aus den Titeldaten erzeugen (obsolet)
    --database=...        : Angegebenen Katalog verwenden
    --loglevel=[DEBUG|..] : Loglevel aendern
    --logfile=...         : Logdateinamen aendern
    -update-master        : Aktualisierung Titelzahl/ISBN-Vergabe in zentraler Datenbank
    -keep-files           : Temporaere Dateien in data-Verzeichnis nicht loeschen
+   -reduce-mem           : Reduzierung des Speicherverbrauchs bei der Umwandlung
+   -incremental          : Inkrementelles Update in der aktiven Datenbank/Suchindex
 
    Datenbankabhaengige Filter:
 

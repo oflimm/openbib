@@ -385,22 +385,8 @@ foreach my $type (keys %{$stammdateien_ref}) {
         
         while (my $jsonline=<IN>){
 
-            # Kurz-Check bei inkrementellen Updates
-            if ($incremental){
-                my $skip_record = 0;
-                
-                eval {
-                    my $record_ref = decode_json $jsonline;
-                    $skip_record = 1 if (!defined $actions_map_ref->{$record_ref->{id}} || $actions_map_ref->{$record_ref->{id}} eq "delete");
-                };
-                
-                if ($@){
-                    $logger->error("Skipping record: $@");
-                    next;
-                }
-                
-                next if ($skip_record);
-            }
+            # Kurz-Check bei inkrementellen Updates kann hier nicht angewendet werden, weil auch storage_ref fuer die Titel-Verarbeitung mit
+            # allen Normdateninformationen gefuellt werden muss!!!
             
             eval {
                 $importer->process({
@@ -416,6 +402,11 @@ foreach my $type (keys %{$stammdateien_ref}) {
             my $columns_ref                = $importer->get_columns;
             my $columns_fields_ref         = $importer->get_columns_fields;
 
+            if ($incremental && (!defined $actions_map_ref->{$importer->get_id} || $actions_map_ref->{$importer->get_id} eq "delete")){
+                $columns_ref                = [];
+                $columns_fields_ref         = [];
+            }
+            
             foreach my $this_column_ref (@$columns_ref){
                 print OUT join('',@$this_column_ref),"\n";
             }
@@ -951,7 +942,7 @@ DELETEITEM
 }
     
 foreach my $type ('person','corporatebody','classification','subject','title','holding'){
-    if (!$incremental || $type eq "holding"){
+    if (!$incremental){
         print CONTROL << "ITEMTRUNC";
 TRUNCATE TABLE $type;
 TRUNCATE TABLE ${type}_fields;
@@ -979,7 +970,7 @@ INSERTITEM
         }
         
     }
-    else {
+    elsif (!$incremental) {
         print CONTROL << "ITEM";
 COPY $type FROM '$dir/$stammdateien_ref->{$type}{outfile}' WITH DELIMITER '' NULL AS '';
 COPY ${type}_fields FROM '$dir/$stammdateien_ref->{$type}{outfile_fields}' WITH DELIMITER '' NULL AS '';

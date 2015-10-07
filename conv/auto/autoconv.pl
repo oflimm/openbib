@@ -10,7 +10,7 @@
 #
 #  Andere : Ueber Plugins/Filter realisierbar
 #
-#  Dieses File ist (C) 1997-2013 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -100,7 +100,8 @@ if (!$database){
   exit;
 }
 
-my $databasetmp=$database."tmp";
+my $databasetmp=($incremental)?$database:$database."tmp" ;
+
 my $authority = $database."_authority";
 my $authoritytmp=$authority."tmp";
 
@@ -254,6 +255,8 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
             $cmd.=" -reduce-mem";
         }
 
+        $logger->info("Executing in $rootdir/data/$database : $cmd");
+        
         system("cd $rootdir/data/$database ; $cmd");
     }
     
@@ -269,12 +272,6 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
 
     $logger->info("### $database: Benoetigte Zeit -> $resulttime");     
 }
-
-# Bei Incrementellen Updates wird direkt die produktive Datenbank bzw. der Suchindex on-the-fly aktualisiert.
-if ($incremental){
-    $databasetmp=$database;
-}
-
 
 # Einladen in temporaere SQL-Datenbank
 
@@ -359,6 +356,8 @@ if ($incremental){
     if ($incremental){
         $cmd.=" -incremental --deletefile=$rootdir/data/$database/title.delete";
     }
+
+    $logger->info("Executing: $cmd");
     
     system($cmd);
 
@@ -369,9 +368,6 @@ if ($incremental){
 
     $logger->info("### $database: Benoetigte Zeit -> $resulttime");     
 }
-
-exit if ($incremental);
-
 
 # Suchmaschinen-Index fuer Normdaten aufbauen
 
@@ -391,9 +387,7 @@ exit if ($incremental);
 
     my $cmd = "$config->{'base_dir'}/conv/authority2xapian.pl --loglevel=$loglevel -with-sorting -with-positions --database=$database --indexpath=$authority_indexpathtmp";
 
-    #if ($incremental){
-    #    $cmd.=" -incremental";
-    #}
+    $logger->info("Executing: $cmd");
     
     system($cmd);
 
@@ -447,7 +441,9 @@ exit if ($incremental);
 my $loading_error = 0;
 
 # Konsistenzcheck zwischen Einlade-Daten und eingeladenen Daten in der temporaeren Datenbank
-{
+# Bei inkrementellen Updates wird auf der aktiven Datenbank aktualisiert. Daher ist kein Konsistenzcheck notwendig/moeglich
+
+unless ($incremental){
 
     my $table_map_ref = {
         'Title'               => 'title',
@@ -490,9 +486,9 @@ if ($loading_error){
     $logger->fatal("### $database: Problem beim Einladen. Exit.");
     $logger->fatal("### $database: Loesche temporaere Datenbank/Index.");
 
-    $postgresdbh->do("drop database $databasetmp");
+#    $postgresdbh->do("drop database $databasetmp");
 
-    system("rm $config->{xapian_index_base_path}/${databasetmp}/* ; rmdir $config->{xapian_index_base_path}/${databasetmp}");
+#    system("rm $config->{xapian_index_base_path}/${databasetmp}/* ; rmdir $config->{xapian_index_base_path}/${databasetmp}");
 
     goto CLEANUP;
 }
@@ -501,7 +497,7 @@ else {
 }
 
 # Tabellen aus temporaerer Datenbank in finale Datenbank verschieben
-{
+unless ($incremental){
     my $atime = new Benchmark;
 
     $logger->info("### $database: Tabellen aus temporaerer Datenbank in finale Datenbank verschieben");

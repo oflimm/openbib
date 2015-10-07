@@ -384,6 +384,23 @@ foreach my $type (keys %{$stammdateien_ref}) {
         });
         
         while (my $jsonline=<IN>){
+
+            # Kurz-Check bei inkrementellen Updates
+            if ($incremental){
+                my $skip_record = 0;
+                
+                eval {
+                    my $record_ref = decode_json $jsonline;
+                    $skip_record = 1 if (!defined $actions_map_ref->{$record_ref->{id}} || $actions_map_ref->{$record_ref->{id}} eq "delete");
+                };
+                
+                if ($@){
+                    $logger->error("Skipping record: $@");
+                    next;
+                }
+                
+                next if ($skip_record);
+            }
             
             eval {
                 $importer->process({
@@ -399,13 +416,6 @@ foreach my $type (keys %{$stammdateien_ref}) {
             my $columns_ref                = $importer->get_columns;
             my $columns_fields_ref         = $importer->get_columns_fields;
 
-            if ($incremental){
-                if (!defined $actions_map_ref->{$importer->get_id} || $actions_map_ref->{$importer->get_id} eq "delete"){
-                    $columns_ref=[];
-                    $columns_fields_ref=[];
-                }
-            }
-            
             foreach my $this_column_ref (@$columns_ref){
                 print OUT join('',@$this_column_ref),"\n";
             }
@@ -466,60 +476,13 @@ if (-f "meta.holding"){
     
     my %incremental_status_map      = ();
     
-    if ($incremental && 0 == 1){
-        # Einlesen der neuen Daten aus kompletter Einladedatei und der alten Daten aus der Datenbank.
-        
-        my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $database });
-        
-        foreach my $result_ref ($catalog->get_schema->resultset('Holding')->search(
-            {},{ select => ['id','import_hash'], result_class => 'DBIx::Class::ResultClass::HashRefInflator',})->all){
-            $incremental_status_map{$result_ref->{id}}{old} = $result_ref->{import_hash};
-        }
-        
-        open(INHASH ,           "<:raw", $stammdateien_ref->{'holding'}{infile} )        || die "IN konnte nicht geoeffnet werden";
-        
-        my $record_ref;
-        
-        while (my $jsonline = <INHASH>){
-            my $import_hash = md5_hex($jsonline);
-            
-            eval {
-                $record_ref = decode_json $jsonline;
-            };
-            
-            if ($@){
-                $logger->error("Skipping record: $@");
-                return;
-            }
-            
-            my $id = $record_ref->{id};
-            $incremental_status_map{$id}{new} = $import_hash;
-        }
-        
-        close(INHASH);
-        
-        $actions_map_ref = analyze_status_map(\%incremental_status_map);
-
-        open(OUTDELETE,           ">:utf8",$stammdateien_ref->{'holding'}{deletefile})        || die "OUTDELETE konnte nicht geoeffnet werden";            
-        
-        foreach my $id (keys %$actions_map_ref){
-            print OUTDELETE "$id\n" if ($actions_map_ref->{$id} eq "delete" || $actions_map_ref->{$id} eq "change"); 
-        }
-        
-        close(OUTDELETE);
-        
-        if ($logger->is_info){
-            $logger->info("$stammdateien_ref->{'holding'}{type}".YAML::Dump($actions_map_ref)."\n");
-        }
-    }
-    
     my $importer = OpenBib::Importer::JSON::Holding->new({
         storage         => $storage_ref,
         database        => $database,
     });
     
     while (my $jsonline=<IN>) {
-
+        
         eval {
             $importer->process({
                 json         => $jsonline
@@ -535,14 +498,6 @@ if (-f "meta.holding"){
         my $columns_fields_ref         = $importer->get_columns_fields;
         my $columns_title_holding_ref  = $importer->get_columns_title_holding;
 
-        if ($incremental && 0 == 1){
-            if ($actions_map_ref->{$importer->get_id} eq "delete"){
-                $columns_ref=[];
-                $columns_fields_ref=[];
-                $columns_title_holding_ref=[];
-            }
-        }
-        
         foreach my $this_column_ref (@$columns_ref){
             print OUT join('',@$this_column_ref),"\n";
         }
@@ -550,12 +505,12 @@ if (-f "meta.holding"){
         foreach my $this_column_fields_ref (@$columns_fields_ref){
             print OUTFIELDS join('',@$this_column_fields_ref),"\n";
         }
-
+        
         foreach my $this_column_title_holding_ref (@$columns_title_holding_ref){
             print OUTTITLEHOLDING join('',@$this_column_title_holding_ref),"\n";
         }
         
-    
+        
         if ($count % 1000 == 0) {
             my $btime      = new Benchmark;
             my $timeall    = timediff($btime,$atime);
@@ -752,19 +707,23 @@ my $importer = OpenBib::Importer::JSON::Title->new({
 });
 
 while (my $jsonline=<IN>){
-    my $skip_record = 0;
-    
-    eval {
-        my $record_ref = decode_json $jsonline;
-        $skip_record = 1 if (!defined $actions_map_ref->{$record_ref->{id}} || $actions_map_ref->{$record_ref->{id}} eq "delete");
-    };
 
-    if ($@){
-        $logger->error("Skipping record: $@");
-        next;
+    # Kurz-Check bei inkrementellen Updates
+    if ($incremental){
+        my $skip_record = 0;
+        
+        eval {
+            my $record_ref = decode_json $jsonline;
+            $skip_record = 1 if (!defined $actions_map_ref->{$record_ref->{id}} || $actions_map_ref->{$record_ref->{id}} eq "delete");
+        };
+        
+        if ($@){
+            $logger->error("Skipping record: $@");
+            next;
+        }
+        
+        next if ($skip_record);
     }
-
-    next if ($skip_record);
     
     eval {
         $importer->process({
@@ -784,20 +743,6 @@ while (my $jsonline=<IN>){
     my $columns_title_subject_ref        = $importer->get_columns_title_subject;
     my $columns_title_ref                = $importer->get_columns_title;
     my $columns_title_fields_ref         = $importer->get_columns_title_fields;
-    
-    if ($incremental){
-        # Keine Einlade-Daten herausschreiben, wenn sich nichts geaendert hat oder der Titel geloescht wurde
-        # ggf. unnoetig, da bereits im ersten eval gehandelt.
-        if (!defined $actions_map_ref->{$importer->get_id} || $actions_map_ref->{$importer->get_id} eq "delete"){
-            $columns_title_title_ref=[];
-            $columns_title_person_ref=[];
-            $columns_title_corporatebody_ref=[];
-            $columns_title_classification_ref=[];
-            $columns_title_subject_ref=[];
-            $columns_title_ref=[];
-            $columns_title_fields_ref=[];
-        }
-    }
     
     foreach my $title_title_ref (@$columns_title_title_ref){
        print OUTTITLETITLE join('',@$title_title_ref),"\n";
@@ -1005,15 +950,15 @@ DELETE FROM title_subject WHERE titleid IN (select id from title_delete);
 DELETEITEM
 }
     
-foreach my $type ('person','corporatebody','classification','subject','title'){
-    if (!$incremental){
+foreach my $type ('person','corporatebody','classification','subject','title','holding'){
+    if (!$incremental || $type eq "holding"){
         print CONTROL << "ITEMTRUNC";
 TRUNCATE TABLE $type;
 TRUNCATE TABLE ${type}_fields;
 ITEMTRUNC
     }
     
-    if ($incremental){
+    if ($incremental && $type ne "holding"){
         print CONTROL << "DELETEITEM";
 DELETE FROM ${type}_fields WHERE ${type}id IN (select id from ${type}_delete);
 DELETE FROM $type WHERE id IN (select id from ${type}_delete);

@@ -995,7 +995,7 @@ sub process {
                         next unless (defined $fields_ref->{$field});
                         
                         foreach my $item_ref (@{$fields_ref->{$field}}){
-                            next unless $item_ref->{content};
+                            next unless (defined $item_ref->{content} && length($item_ref->{content}) > 0);
 
                             $index_doc->add_index($searchfield,$weight, ["T$field",$item_ref->{content}]);
 
@@ -1319,7 +1319,7 @@ sub process {
                 $item_ref->{content} = $self->cleanup_content($content);
             }
 
-            if ($id && $field && defined $item_ref->{content}){
+            if ($id && $field && defined $item_ref->{content}  && length($item_ref->{content}) > 0){
                 $item_ref->{content} = $self->cleanup_content($item_ref->{content});
 
 #                $logger->error("mult fehlt") if (!defined $item_ref->{mult});

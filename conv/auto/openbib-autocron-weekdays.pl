@@ -149,6 +149,10 @@ my $blacklist_ref = {
 
 $logger->info("###### Starting automatic update");
 
+$logger->info("### Restarting starman");
+
+system("/usr/bin/sudo /etc/init.d/starman restart");
+
 if ($cluster){
     if ($config->local_server_belongs_to_updatable_cluster()){
         $logger->info("### Updating in cluster mode");

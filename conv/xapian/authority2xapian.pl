@@ -192,7 +192,7 @@ foreach my $authority_file_ref (@authority_files){
                         my $resulttime = timestr($timeall,"nop");
                         $resulttime    =~s/(\d+\.\d+) .*/$1/;
                         $atime         = new Benchmark;
-                        $logger->info("$count Saetze indexiert in $resulttime Sekunden");
+                        $logger->info("$database: $count Saetze indexiert in $resulttime Sekunden");
                     }
                     
                     $count++;

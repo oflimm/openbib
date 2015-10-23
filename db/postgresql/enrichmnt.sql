@@ -39,8 +39,8 @@ create table all_titles_by_isbn (
  isbn          VARCHAR(13)  NOT NULL,
  dbname        VARCHAR(25)  NOT NULL,
  titleid       VARCHAR(255) NOT NULL,
- titlecache    TEXT,
- tstamp        TIMESTAMP
+ tstamp        TIMESTAMP,
+ titlecache    TEXT
 );
 
 drop table IF EXISTS all_titles_by_issn;
@@ -48,8 +48,8 @@ create table all_titles_by_issn (
  issn          VARCHAR(8)   NOT NULL,
  dbname        VARCHAR(25)  NOT NULL,
  titleid       VARCHAR(255) NOT NULL,
- titlecache    TEXT,
- tstamp        TIMESTAMP
+ tstamp        TIMESTAMP,
+ titlecache    TEXT
 );
 
 drop table IF EXISTS all_titles_by_bibkey;
@@ -57,8 +57,8 @@ create table all_titles_by_bibkey (
  bibkey        VARCHAR(33) NOT NULL,
  dbname        VARCHAR(25) NOT NULL,
  titleid       VARCHAR(255) NOT NULL,
- titlecache    TEXT,
- tstamp        TIMESTAMP
+ tstamp        TIMESTAMP,
+ titlecache    TEXT
 );
 
 drop table IF EXISTS all_titles_by_workkey;

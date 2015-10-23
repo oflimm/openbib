@@ -224,17 +224,17 @@ sub filterchars {
 #  $content=~s/#/\\\#/g;
 
   # Entfernen
-  $content=~s/±//g;
-  $content=~s/÷//g;
-  $content=~s/·//g;
-  $content=~s/×//g;
-  $content=~s/¾//g;
-  $content=~s/¬//g;
-  $content=~s/¹//g;
-  $content=~s/_//g;
-  $content=~s/¸//g;
-  $content=~s/þ//g;
-  $content=~s/Ð//g;
+  # $content=~s/±//g;
+  # $content=~s/÷//g;
+  # $content=~s/·//g;
+  # $content=~s/×//g;
+  # $content=~s/¾//g;
+  # $content=~s/¬//g;
+  # $content=~s/¹//g;
+  # $content=~s/_//g;
+  # $content=~s/¸//g;
+  # $content=~s/þ//g;
+  # $content=~s/Ð//g;
   $content=~s/\^/\\\^\{\}/g;
   $content=~s/µ/\$µ\$/g;
   $content=~s/\&amp\;/\\&/g;
@@ -242,7 +242,7 @@ sub filterchars {
   $content=~s/\&/\\&/g;
   $content=~s/\"/\'\'/g;
   $content=~s/\%/\\\%/g;
-  $content=~s/ð/d/g;      # eth
+  # $content=~s/ð/d/g;      # eth
 
   $content = encode("utf8",$content);
   $content=~s/\x{c2}\x{a0}//g;

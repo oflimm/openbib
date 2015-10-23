@@ -48,14 +48,32 @@ use OpenBib::Common::Util;
 use OpenBib::Statistics;
 use OpenBib::Search::Util;
 
+my %char_replacements = (
+    
+    # Zeichenersetzungen
+    "\n"     => "<br\/>",
+    "\r"     => "\\r",
+    ""     => "",
+#    "\x{00}" => "",
+#    "\x{80}" => "",
+#    "\x{87}" => "",
+);
+
+my $chars_to_replace = join '|',
+    keys %char_replacements;
+
+$chars_to_replace = qr/$chars_to_replace/;
+
 my $config     = new OpenBib::Config;
 my $enrichment = new OpenBib::Enrichment;
 
-my ($database,$help,$logfile,$incr);
+my ($database,$help,$logfile,$incr,$bulkinsert,$keepfiles);
 
 &GetOptions("database=s"      => \$database,
             "logfile=s"       => \$logfile,
             "incr"            => \$incr,
+            "bulk-insert"     => \$bulkinsert,
+            "keep-files"      => \$keepfiles,
 	    "help"            => \$help
 	    );
 
@@ -82,6 +100,8 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
+my $pgsqlexe      = "/usr/bin/psql -U $config->{'dbuser'} ";
+
 my @databases=();
 
 # Wenn ein Katalog angegeben wurde, werden nur in ihm die Titel gezaehlt
@@ -100,6 +120,43 @@ else {
 
 
 my $last_insertion_date = 0; # wird fuer inkrementelles Update benoetigt
+
+my $data_dir = $config->{autoconv_dir}."/data/$database";    
+
+if ($bulkinsert){
+    # Temporaer Zugriffspassword setzen
+    system("echo \"*:*:*:$config->{'dbuser'}:$config->{'dbpasswd'}\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
+
+    if (! -d $data_dir){
+        system("mkdir -p $data_dir");
+    }
+
+    open(CONTROL,   ">$data_dir/all_title_control.sql");
+    
+    print CONTROL << "ALLTITLECONTROL";
+DROP TABLE IF EXISTS all_titles_by_workkey_tmp;
+CREATE TEMP TABLE all_titles_by_workkey_tmp (
+ workkey       TEXT NOT NULL,
+ edition       TEXT,
+ dbname        VARCHAR(25) NOT NULL,
+ titleid       VARCHAR(255) NOT NULL,
+ titlecache    TEXT,
+ tstamp        TIMESTAMP
+);
+
+COPY all_titles_by_isbn    FROM '$data_dir/all_title_by_isbn.dump' WITH DELIMITER '' NULL AS '';
+COPY all_titles_by_bibkey  FROM '$data_dir/all_title_by_bibkey.dump' WITH DELIMITER '' NULL AS '';
+COPY all_titles_by_issn    FROM '$data_dir/all_title_by_issn.dump' WITH DELIMITER '' NULL AS '';
+COPY all_titles_by_workkey_tmp FROM '$data_dir/all_title_by_workkey.dump' WITH DELIMITER '' NULL AS '';
+INSERT INTO all_titles_by_workkey (workkey,edition,dbname,titleid,titlecache,tstamp) select workkey,edition,dbname,titleid,titlecache,tstamp from all_titles_by_workkey_tmp; 
+ALLTITLECONTROL
+
+    
+    open(ISBNOUT,   ">:utf8","$data_dir/all_title_by_isbn.dump");
+    open(BIBKEYOUT, ">:utf8","$data_dir/all_title_by_bibkey.dump");
+    open(ISSNOUT,   ">:utf8","$data_dir/all_title_by_issn.dump");
+    open(WORKKEYOUT,">:utf8","$data_dir/all_title_by_workkey.dump");
+}
 
 foreach my $database (@databases){
     $logger->info("### $database: Getting ISBNs from database $database and adding to enrichmntdb");
@@ -220,7 +277,7 @@ foreach my $database (@databases){
             $thisisbn = $isbn13->as_isbn13->as_string;
         }
         else {
-            $logger->error("ISBN $thisisbn nicht gueltig!");
+            $logger->debug("ISBN $thisisbn nicht gueltig!");
 
             if ($thisisbn=~m/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/){
                 $thisisbn="$1$2$3$4$5$6$7$8$9$10$11$12$13";
@@ -229,11 +286,11 @@ foreach my $database (@databases){
                 $thisisbn="$1$2$3$4$5$6$7$8$9$10";
             }
             else {
-                $logger->error("ISBN $thisisbn hat auch nicht die Form einer ISBN. Ignoriert.");
+                $logger->debug("ISBN $thisisbn hat auch nicht die Form einer ISBN. Ignoriert.");
                 next;
             }
             
-            $logger->error("ISBN $thisisbn hat aber zumindest die Form einer ISBN. Verarbeitet.");
+            $logger->debug("ISBN $thisisbn hat aber zumindest die Form einer ISBN. Verarbeitet.");
         }
         
         # Normierung als String
@@ -242,6 +299,7 @@ foreach my $database (@databases){
             content  => $thisisbn,
         });
 
+
         push @$alltitlebyisbn_ref, {
             isbn       => $thisisbn,
             titleid    => $thistitleid,
@@ -249,23 +307,44 @@ foreach my $database (@databases){
             tstamp     => $thisdate,
             titlecache => $thistitlecache,
         };        
-
-
-        if ($isbn_insertcount % 10000 == 0 && @$alltitlebyisbn_ref){
-            $enrichment->get_schema->resultset('AllTitleByIsbn')->populate($alltitlebyisbn_ref);
+        
+        
+        if ($isbn_insertcount && $isbn_insertcount % 10000 == 0 && @$alltitlebyisbn_ref){
+            if ($bulkinsert){
+                foreach my $this_row_ref (@$alltitlebyisbn_ref){
+                    print ISBNOUT $this_row_ref->{isbn}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{tstamp}."".cleanup_content($this_row_ref->{titlecache})."\n";
+                }
+                $logger->info("### $database: $isbn_insertcount ISBN's collected");
+            }
+            else {
+                $enrichment->get_schema->resultset('AllTitleByIsbn')->populate($alltitlebyisbn_ref);
+                $logger->info("### $database: $isbn_insertcount ISBN's inserted");
+            }
             $alltitlebyisbn_ref = [];
-            $logger->info("### $database: $isbn_insertcount ISBN's inserted");
         }
         
         $isbn_insertcount++;
     }
 
     if (@$alltitlebyisbn_ref){
-        $enrichment->get_schema->resultset('AllTitleByIsbn')->populate($alltitlebyisbn_ref);
+        if ($bulkinsert){
+            foreach my $this_row_ref (@$alltitlebyisbn_ref){
+                print ISBNOUT $this_row_ref->{isbn}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{tstamp}."".cleanup_content($this_row_ref->{titlecache})."\n";
+            }
+        }
+        else {
+            $enrichment->get_schema->resultset('AllTitleByIsbn')->populate($alltitlebyisbn_ref);
+        }
+    }
+
+    if ($bulkinsert){
+        close(ISBNOUT);
+        $logger->info("### $database: $isbn_insertcount ISBN's collected");
+    }   
+    else {
+        $logger->info("### $database: $isbn_insertcount ISBN's inserted");
     }
     
-    $logger->info("### $database: $isbn_insertcount ISBN's inserted");
-
     $logger->info("### $database: Getting Bibkeys from database $database and adding to enrichmntdb");
 
     my $all_bibkeys;
@@ -317,19 +396,40 @@ foreach my $database (@databases){
             $bibkey_insertcount++;
         }
 
-        if ($bibkey_insertcount % 10000 == 0 && @$alltitlebybibkey_ref){
-            $enrichment->get_schema->resultset('AllTitleByBibkey')->populate($alltitlebybibkey_ref);
+        if ($bibkey_insertcount && $bibkey_insertcount % 10000 == 0 && @$alltitlebybibkey_ref){
+            if ($bulkinsert){
+                foreach my $this_row_ref (@$alltitlebybibkey_ref){
+                    print BIBKEYOUT $this_row_ref->{bibkey}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{tstamp}."".cleanup_content($this_row_ref->{titlecache})."\n";
+                }
+                $logger->info("### $database: $bibkey_insertcount Bibkeys collected");
+            }
+            else {
+                $enrichment->get_schema->resultset('AllTitleByBibkey')->populate($alltitlebybibkey_ref);
+                $logger->info("### $database: $bibkey_insertcount Bibkeys inserted");
+            }   
             $alltitlebybibkey_ref = [];
-            $logger->info("### $database: $bibkey_insertcount Bibkeys inserted");
         }
 
     }
 
     if (@$alltitlebybibkey_ref){
-        $enrichment->get_schema->resultset('AllTitleByBibkey')->populate($alltitlebybibkey_ref);
+        if ($bulkinsert){
+            foreach my $this_row_ref (@$alltitlebybibkey_ref){
+                print BIBKEYOUT $this_row_ref->{bibkey}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{tstamp}."".cleanup_content($this_row_ref->{titlecache})."\n";
+            }
+        }
+        else {
+            $enrichment->get_schema->resultset('AllTitleByBibkey')->populate($alltitlebybibkey_ref);
+        }
     }
-    
-    $logger->info("### $database: $bibkey_insertcount Bibkeys inserted");
+
+    if ($bulkinsert){
+        close(BIBKEYOUT);
+        $logger->info("### $database: $bibkey_insertcount Bibkeys collected");
+    }   
+    else {
+        $logger->info("### $database: $bibkey_insertcount Bibkeys inserted");
+    }
 
     $logger->info("### $database: Getting ISSNs from database $database and adding to enrichmntdb");
 
@@ -392,20 +492,41 @@ foreach my $database (@databases){
             
             $issn_insertcount++;
 
-            if ($issn_insertcount % 10000 == 0 && @$alltitlebyissn_ref){
-                $enrichment->get_schema->resultset('AllTitleByIssn')->populate($alltitlebyissn_ref);
+            if ($issn_insertcount && $issn_insertcount % 10000 == 0 && @$alltitlebyissn_ref){
+                if ($bulkinsert){
+                    foreach my $this_row_ref (@$alltitlebyissn_ref){
+                        print ISSNOUT $this_row_ref->{issn}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{tstamp}."".cleanup_content($this_row_ref->{titlecache})."\n";
+                    }
+                    $logger->info("### $database: $issn_insertcount ISSNs collected");
+                }
+                else {
+                    $enrichment->get_schema->resultset('AllTitleByIssn')->populate($alltitlebyissn_ref);
+                    $logger->info("### $database: $issn_insertcount ISSNs inserted");
+                }
                 $alltitlebyissn_ref = [];
-                $logger->info("### $database: $issn_insertcount ISSNs inserted");
             }
         }
     }
 
     if (@$alltitlebyissn_ref){
-        $enrichment->get_schema->resultset('AllTitleByIssn')->populate($alltitlebyissn_ref);
+        if ($bulkinsert){
+            foreach my $this_row_ref (@$alltitlebyissn_ref){
+                print ISSNOUT $this_row_ref->{issn}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{tstamp}."".cleanup_content($this_row_ref->{titlecache})."\n";
+            }
+        }
+        else {
+            $enrichment->get_schema->resultset('AllTitleByIssn')->populate($alltitlebyissn_ref);
+        }
+    }
+
+    if ($bulkinsert){
+        close(ISSNOUT);
+        $logger->info("### $database: $issn_insertcount ISSNs collected");
+    }   
+    else {
+        $logger->info("### $database: $issn_insertcount ISSNs inserted");
     }
     
-    $logger->info("### $database: $issn_insertcount ISSNs inserted");
-
     $logger->info("### $database: Getting Workkeys from database $database and adding to enrichmntdb");
 
     my $all_workkeys;
@@ -461,20 +582,56 @@ foreach my $database (@databases){
             $workkey_insertcount++;
         }
 
-        if ($workkey_insertcount % 10000 == 0 && @$alltitlebyworkkey_ref){
-            $enrichment->get_schema->resultset('AllTitleByWorkkey')->populate($alltitlebyworkkey_ref);
+        if ($workkey_insertcount && $workkey_insertcount % 10000 == 0 && @$alltitlebyworkkey_ref){
+            if ($bulkinsert){
+                foreach my $this_row_ref (@$alltitlebyworkkey_ref){
+                    print WORKKEYOUT $this_row_ref->{workkey}."".$this_row_ref->{edition}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".cleanup_content($this_row_ref->{titlecache})."".$this_row_ref->{tstamp}."\n";
+                }
+                $logger->info("### $database: $workkey_insertcount Workkeys collected");
+            }
+            else {
+                $enrichment->get_schema->resultset('AllTitleByWorkkey')->populate($alltitlebyworkkey_ref);
+                $logger->info("### $database: $workkey_insertcount Workkeys inserted");
+            }
             $alltitlebyworkkey_ref = [];
-            $logger->info("### $database: $workkey_insertcount Workkeys inserted");
         }
     }
 
     if (@$alltitlebyworkkey_ref){
-        $enrichment->get_schema->resultset('AllTitleByWorkkey')->populate($alltitlebyworkkey_ref);
+        if ($bulkinsert){
+            foreach my $this_row_ref (@$alltitlebyworkkey_ref){
+                print WORKKEYOUT $this_row_ref->{workkey}."".$this_row_ref->{edition}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".cleanup_content($this_row_ref->{titlecache})."".$this_row_ref->{tstamp}."\n";
+            }
+        }
+        else {
+            $enrichment->get_schema->resultset('AllTitleByWorkkey')->populate($alltitlebyworkkey_ref);
+        }
+    }
+
+    if ($bulkinsert){
+        close(WORKKEYOUT);
+        $logger->info("### $database: $workkey_insertcount Workkeys collected");
+    }   
+    else {
+        $logger->info("### $database: $workkey_insertcount Workkeys inserted");
     }
     
-    $logger->info("### $database: $workkey_insertcount Workkeys inserted");
+    if ($bulkinsert){
+        $logger->info("### $database: Bulk inserting all keys to enrichment database");
+        system("$pgsqlexe -f '$data_dir/all_title_control.sql' $config->{enrichmntdbname}");
 
+        unless ($keepfiles){
+            unlink("$data_dir/all_title_control.sql");
+            unlink("$data_dir/all_title_by_isbn.dump");
+            unlink("$data_dir/all_title_by_bibkey.dump");
+            unlink("$data_dir/all_title_by_issn.dump");
+            unlink("$data_dir/all_title_by_workkey.dump");
+        }
+    }
+
+    $logger->info("### $database: Processing done");
 }
+
 
 sub print_help {
     print << "ENDHELP";
@@ -486,10 +643,22 @@ update_all_isbn_table.pl - Aktualisierung der all_isbn-Tabelle, in der die ISBN'
    -help                 : Diese Informationsseite
        
    --database=...        : Datenbankname
-   -incr                 : Incrementell (sonst alles)
+   -bulk-insert          : Einladen mit DB-Systemtool (COPY)
+   -keep-files           : Einladedateien (bei -bulk-insert) nicht loeschen
 
 
 ENDHELP
     exit;
 }
 
+sub cleanup_content {
+    my ($content) = @_;
+    
+    return '' unless (defined $content);
+    
+    # Make PostgreSQL Happy    
+    $content =~ s/\\/\\\\/g;
+    $content =~ s/($chars_to_replace)/$char_replacements{$1}/g;
+    
+    return $content;
+}

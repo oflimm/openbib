@@ -6,7 +6,7 @@
 #  Aktualisierung der all_titles_by-Tabellen, in der die ISBN's, ISSN's,
 #  BibKeys und WorkKeys aller Titel in allen Kataloge nachgewiesen sind.
 #
-#  Dieses File ist (C) 2008-2014 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -48,7 +48,7 @@ use OpenBib::Common::Util;
 use OpenBib::Statistics;
 use OpenBib::Search::Util;
 
-my $config     = OpenBib::Config->new;
+my $config     = new OpenBib::Config;
 my $enrichment = new OpenBib::Enrichment;
 
 my ($database,$help,$logfile,$incr);
@@ -250,6 +250,13 @@ foreach my $database (@databases){
             titlecache => $thistitlecache,
         };        
 
+
+        if ($isbn_insertcount % 10000 == 0 && @$alltitlebyisbn_ref){
+            $enrichment->get_schema->resultset('AllTitleByIsbn')->populate($alltitlebyisbn_ref);
+            $alltitlebyisbn_ref = [];
+            $logger->info("### $database: $isbn_insertcount ISBN's inserted");
+        }
+        
         $isbn_insertcount++;
     }
 
@@ -309,6 +316,13 @@ foreach my $database (@databases){
             };
             $bibkey_insertcount++;
         }
+
+        if ($bibkey_insertcount % 10000 == 0 && @$alltitlebybibkey_ref){
+            $enrichment->get_schema->resultset('AllTitleByBibkey')->populate($alltitlebybibkey_ref);
+            $alltitlebybibkey_ref = [];
+            $logger->info("### $database: $bibkey_insertcount Bibkeys inserted");
+        }
+
     }
 
     if (@$alltitlebybibkey_ref){
@@ -377,6 +391,12 @@ foreach my $database (@databases){
             };
             
             $issn_insertcount++;
+
+            if ($issn_insertcount % 10000 == 0 && @$alltitlebyissn_ref){
+                $enrichment->get_schema->resultset('AllTitleByIssn')->populate($alltitlebyissn_ref);
+                $alltitlebyissn_ref = [];
+                $logger->info("### $database: $issn_insertcount ISSNs inserted");
+            }
         }
     }
 
@@ -439,6 +459,12 @@ foreach my $database (@databases){
                 titlecache => $thistitlecache,
             };
             $workkey_insertcount++;
+        }
+
+        if ($workkey_insertcount % 10000 == 0 && @$alltitlebyworkkey_ref){
+            $enrichment->get_schema->resultset('AllTitleByWorkkey')->populate($alltitlebyworkkey_ref);
+            $alltitlebyworkkey_ref = [];
+            $logger->info("### $database: $workkey_insertcount Workkeys inserted");
         }
     }
 

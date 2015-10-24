@@ -579,7 +579,7 @@ if ($updatemaster){
 
 # Ansonsten bei jedem Node 
 $logger->info("### $database: Updating All-ISBN table");
-system("$config->{'base_dir'}/bin/update_all_isbn_table.pl --database=$database");
+system("$config->{'base_dir'}/bin/update_all_isbn_table.pl --database=$database -bulk-insert");
 
 CLEANUP:
 

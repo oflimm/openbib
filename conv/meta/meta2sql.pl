@@ -6,7 +6,7 @@
 #
 #  Generierung von SQL-Einladedateien aus dem Meta-Format
 #
-#  Dieses File ist (C) 1997-2014 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -537,6 +537,7 @@ $stammdateien_ref->{title} = {
     infile             => "meta.title",
     outfile            => "title.dump",
     deletefile         => "title.delete",
+    insertfile         => "title.insert",
     outfile_fields     => "title_fields.dump",
     inverted_ref       => $conv_config->{inverted_title},
     blacklist_ref      => $conv_config->{blacklist_title},
@@ -676,12 +677,15 @@ if ($incremental){
     $actions_map_ref = analyze_status_map(\%incremental_status_map);
 
     open(OUTDELETE,           ">:utf8",$stammdateien_ref->{'title'}{deletefile})        || die "OUTDELETE konnte nicht geoeffnet werden";            
+    open(OUTINSERT,           ">:utf8",$stammdateien_ref->{'title'}{insertfile})        || die "OUTINSERT konnte nicht geoeffnet werden";            
     
     foreach my $id (keys %$actions_map_ref){
-        print OUTDELETE "$id\n" if ($actions_map_ref->{$id} eq "delete" || $actions_map_ref->{$id} eq "change"); 
+        print OUTDELETE "$id\n" if ($actions_map_ref->{$id} eq "delete" || $actions_map_ref->{$id} eq "change");
+        print OUTINSERT "$id\n" if ($actions_map_ref->{$id} eq "new" || $actions_map_ref->{$id} eq "change"); 
     }
     
     close(OUTDELETE);
+    close(OUTINSERT);
     
     if ($logger->is_info){
         $logger->info("$stammdateien_ref->{'title'}{type}".YAML::Dump($actions_map_ref)."\n");

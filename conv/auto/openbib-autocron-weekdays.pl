@@ -38,12 +38,13 @@ use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
 use OpenBib::Config;
 
-our ($logfile,$loglevel,$test,$cluster,$maintenance,$updatemaster);
+our ($logfile,$loglevel,$test,$cluster,$maintenance,$updatemaster,$incremental);
 
 &GetOptions(
     "cluster"       => \$cluster,
     "test"          => \$test,
     "maintenance"   => \$maintenance,
+    "incremental"   => \$incremental,
     "logfile=s"     => \$logfile,
     "loglevel=s"    => \$loglevel,
     "update-master" => \$updatemaster,
@@ -187,19 +188,19 @@ foreach my $thread (@threads) {
 
 $logger->info("### Offene Bestellungen");
 
-autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['bestellungen'] });
+autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['bestellungen'] });
 
 ##############################
 
 $logger->info("### PRINTPDA");
 
-autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['dreierpda','vubpda'] });
+autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['dreierpda','vubpda'] });
 
 ##############################
 
 $logger->info("### EBOOKPDA");
 
-autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['ebookpda'] });
+autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['ebookpda'] });
 
 ##############################
 
@@ -248,7 +249,7 @@ sub threadA {
 
     $logger->info("### Standard-Institutskataloge");
 
-    autoconvert({ updatemaster => $updatemaster, blacklist => $blacklist_ref, sync => 1, autoconv => 1});
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, blacklist => $blacklist_ref, sync => 1, autoconv => 1});
     
     return $thread_description;
 }
@@ -260,11 +261,11 @@ sub threadB {
 
     $logger->info("### Master: USB Katalog");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst001'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst001'] });
 
     $logger->info("### Aufgesplittete Kataloge aus USB Katalog");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['usbebooks'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['usbebooks'] });
 
     return $thread_description;
 }
@@ -278,11 +279,11 @@ sub threadC {
 
     # Wegen Interimsloesung: Andere Kataloge, die nicht von aperol geholt werden
 
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['alff','muenzen','totenzettel','umschlaege','zpe','kups','gdea','inst526earchive'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['alff','muenzen','totenzettel','umschlaege','zpe','kups','gdea','inst526earchive'] });
 
     $logger->info("### gentzdigital");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['gentzdigital'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['gentzdigital'] });
     
     system("$config->{'base_dir'}/bin/gen_bestof.pl --database=gentzdigital --type=5 --num=100");
 
@@ -290,109 +291,109 @@ sub threadC {
 
     $logger->info("### Master: inst132master");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst132master'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst132master'] });
 
     ##############################
     
     $logger->info("### Aufgesplittete Kataloge inst132master");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst132'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst132'] });
     
     ##############################
 
     $logger->info("### Master: MEKUTH-Masterkataloge");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst429master','inst448master'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst429master','inst448master'] });
 
     ##############################
     
     $logger->info("### Aufgesplittete Kataloge MEKUTH");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst429','inst448'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst429','inst448'] });
     
     ##############################
 
     $logger->info("### Master: VWL-Masterkataloge");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst103master','inst105master','inst128master','inst157master','inst166master'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst103master','inst105master','inst128master','inst157master','inst166master'] });
 
     ##############################
 
     $logger->info("### Aufgesplittete Kataloge aus VWL-Masterkatalogen");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst103','inst105','inst128','inst157','inst166'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst103','inst105','inst128','inst157','inst166'] });
     
     ##############################
 
     $logger->info("### Master: inst301");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst301'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst301'] });
     
     ##############################
     
     $logger->info("### Aufgesplittete Kataloge inst301");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst303','inst304','inst305','inst306','inst307','inst308','inst309','inst310','inst311','inst312','inst313','inst314','inst315','inst317','inst318','inst319','inst320','inst321','inst324','inst325'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst303','inst304','inst305','inst306','inst307','inst308','inst309','inst310','inst311','inst312','inst313','inst314','inst315','inst317','inst318','inst319','inst320','inst321','inst324','inst325'] });
 
     ##############################
 
     $logger->info("### Master: inst420master");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst420master'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst420master'] });
 
     ##############################
     
     $logger->info("### Aufgesplittete Kataloge inst420");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst420','inst421','inst422','inst423'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst420','inst421','inst422','inst423'] });
     
     ##############################
 
     $logger->info("### Master: inst427master");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst427master'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst427master'] });
 
     ##############################
     
     $logger->info("### Aufgesplittete Kataloge inst427master");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst427'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst427'] });
 
     ##############################
 
     #$logger->info("### Master: inst418master");
     
-    #autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst418master'] });
+    #autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst418master'] });
 
     ##############################
     
     $logger->info("### Aufgesplittete Kataloge inst418master");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst418'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst418'] });
 
     ##############################
 
     $logger->info("### Master: inst323, inst137");
     
-    autoconvert({ updatemaster => $updatemaster, databases => ['inst323','inst137'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, databases => ['inst323','inst137'] });
 
     ##############################
     
     $logger->info("### Sammlungen aus dem Universitaet");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['alekiddr','digitalis'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['alekiddr','digitalis'] });
     
     ##############################
 
     $logger->info("### Master: ZBMED");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['zbmed'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['zbmed'] });
 
     ##############################
     
     $logger->info("### TMPEBOOKS");
     
-    autoconvert({ updatemaster => $updatemaster, databases => ['tmpebooks'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, databases => ['tmpebooks'] });
     
     return $thread_description;
 }
@@ -404,7 +405,7 @@ sub threadTest {
 
     $logger->info("### Openbib");
 
-    autoconvert({ updatemaster => $updatemaster, databases => ['openbib'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, databases => ['openbib'] });
 
     return $thread_description;
 }
@@ -427,6 +428,9 @@ sub autoconvert {
     my $genmex          = exists $arg_ref->{genmex}
         ? $arg_ref->{genmex}                : 0;
 
+    my $incremental     = exists $arg_ref->{incremental}
+        ? $arg_ref->{incremental}           : 0;
+    
     my $autoconv        = exists $arg_ref->{autoconv}
         ? $arg_ref->{autoconv}              : 0;
 
@@ -440,6 +444,7 @@ sub autoconvert {
     push @ac_cmd, "/opt/openbib/autoconv/bin/autoconv.pl";
     push @ac_cmd, "-sync"    if ($sync); 
     push @ac_cmd, "-gen-mex" if ($genmex);
+    push @ac_cmd, "-incremental" if ($incremental);
     push @ac_cmd, "-update-master" if ($updatemaster);
 
     my $ac_cmd_base = join(' ',@ac_cmd);

@@ -1,0 +1,68 @@
+[%#-
+#######################################################################
+#
+# Templatename: mainnavigation
+#
+# Typ         : Subtemplage       
+#
+# Aufgabe:
+#
+# Ausgabe der Hauptmenu-Punkte
+#
+# Parameter active_menu zur Kennzeichnung aktiver Menupunkte:
+#
+# databasechoice
+# searchform
+# searchhistory
+# collection
+# startpage
+# rssfeeds
+# login
+# info
+# tutorial
+#
+#######################################################################
+-%]
+[%- username = user.get_username -%]
+<script>
+$(document).ready(function(){
+  $('#to_focus').val('[% searchquery.get_searchfield('freesearch').val.replace("'","\\'") %]');
+});
+</script>
+
+<nav id="ob-fixed_navigation" [% IF without_navigation_search %]class="ob-hidden"[% END %]>
+
+[% PROCESS common/subtemplate name="searchforms_suggestions" %]
+
+<!--<h4></h4>-->
+
+<form id="ob-simplesearch_form" method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
+
+<input type="hidden" name="num"        value="20" />
+<input type="hidden" name="page"       value="1" /
+<input type="hidden" name="lang"       value="[% lang %]" />
+
+<input type="hidden" name="srt"        value="relevance_desc" />
+<input type="hidden" name="st"         value="1" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+
+
+[%# sysprofile%]
+[%# USE dumper; dumper.dump(config.get_orgunitinfo_overview(sysprofile)) ; %]
+[%# USE dumper; dumper.dump(config.get_orgunitinfo_overview(dbchoice)) ; %]
+<!-- [% msg.maketext("Recherchieren Sie in [_1] Titeln und [_2] Katalogen","${alldbcount.allcount.chunk(-3).join('.')}","${alldbs}") %] -->
+<div class="ob-searchfield ob-clear_floats">
+<input required="required" id="to_focus" class="ym-searchfield" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" size="50" maxlength="200" /><input type="reset" value="" alt="clear" id="ob-simplesearch_reset"/>
+<button type="submit">[% msg.maketext("Suchen") %]</button>
+
+<div class="ob-searchfield_supplement">
+<center>
+[% msg.maketext("in:") %]&nbsp;&nbsp;[% PROCESS common/subtemplate name="searchforms_record_profile" %]&nbsp;&nbsp;|&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get("browse_loc") %]/[% config.get("topics_loc") %].html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a>
+</center>
+</div>
+
+</div>
+</form>
+</nav>
+
+    <!-- end: main navigation -->

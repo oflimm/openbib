@@ -1,8 +1,11 @@
 @media all
 {
-
+  #topnav {
+    z-index:9999;
+  }
+  
   header {
-    padding-bottom:65px;  
+    padding-bottom:150px;  
   }
 
   header #logo {
@@ -10,7 +13,7 @@
     position: absolute;
     top: 0px;
     left: 0px;
-    width: 60%;
+    width: 100%;
   }
 
   header #institution {
@@ -23,12 +26,12 @@
 
 
   #header_logo_image  {
-    background: url(/images/openbib/views/pruessen/logo.png) center no-repeat;
+    background: url(/images/openbib/views/pruessen/pruessen_logo_gross.jpg) center no-repeat;
     position: absolute;
-    width: 462px;
-    height: 100px;
-    top:30px;
-    left: 5px;    
+    width: 1020px;
+    height: 221px;
+    top: 0px;
+    left: 0px;    
   }
 
 

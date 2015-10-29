@@ -57,14 +57,15 @@ if ($dbinfo->protocol eq "ftp" && $dbinfo->remoteuser ne "" && $dbinfo->remotepa
 
 print "### $pool: Datenabzug via http von $url\n";
 system("cd $pooldir/$pool ; rm meta.* ; rm tmp.*");
-system("$wgetexe $ftpauthstring -N -P $pooldir/$pool/ $url ");
+system("$wgetexe $ftpauthstring --no-passive-ftp -N -P $pooldir/$pool/ $url ");
 
 opendir(DIR, "$pooldir/$pool/");
 @FILES= readdir(DIR); 
 
 my $lastdate = 0;
 foreach my $file(@FILES){
-    if ($file=~m/export_mab_HBZ\d\d.K1.F.(\d\d\d\d\d\d\d\d).\d+\.zip/){
+    print "Processing $file\n";
+    if ($file=~m/export_mab_HBZ\d\d.K0.K1.F.(\d\d\d\d\d\d\d\d).\d+\.zip/){
         my $thisdate = $1;
         if ($thisdate > $lastdate){
             $lastdate = $thisdate;
@@ -75,10 +76,10 @@ foreach my $file(@FILES){
 print "Letztes Datum: $lastdate\n";
 
 foreach my $file(@FILES){
-    if ($file=~m/export_mab_HBZ01.K1.F.$lastdate.\d+\.zip/){
+    if ($file=~m/export_mab_HBZ01.K0.K1.F.$lastdate.\d+\.zip/){
         system("unzip -v -p $pooldir/$pool/$file | grep -a ZDB > $pooldir/$pool/tmp.TIT");
     }
-    if ($file=~m/export_mab_HBZ60.K1.F.$lastdate.\d+\.zip/){
+    if ($file=~m/export_mab_HBZ60.K0.K1.F.$lastdate.\d+\.zip/){
         system("unzip -v -p $pooldir/$pool/$file > $pooldir/$pool/tmp.MEX");
     }
 }

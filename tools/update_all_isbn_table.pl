@@ -67,11 +67,11 @@ $chars_to_replace = qr/$chars_to_replace/;
 my $config     = new OpenBib::Config;
 my $enrichment = new OpenBib::Enrichment;
 
-my ($database,$help,$logfile,$incr,$bulkinsert,$keepfiles);
+my ($database,$help,$logfile,$incremental,$bulkinsert,$keepfiles);
 
 &GetOptions("database=s"      => \$database,
             "logfile=s"       => \$logfile,
-            "incr"            => \$incr,
+            "incremental"     => \$incremental,
             "bulk-insert"     => \$bulkinsert,
             "keep-files"      => \$keepfiles,
 	    "help"            => \$help
@@ -159,105 +159,106 @@ ALLTITLECONTROL
 }
 
 foreach my $database (@databases){
+    my @titleids_to_delete = ();
+    my @titleids_to_insert = ();
+    
+    if ($incremental){
+        my $deletefilename = $config->{'autoconv_dir'}."/data/$database/title.delete";
+        my $insertfilename = $config->{'autoconv_dir'}."/data/$database/title.insert";        
+
+        open(TITDEL, $deletefilename);
+        open(TITINS, $insertfilename);
+
+        my %seen_delids = ();
+
+        my $insidx=0;
+        while (my $titleid = <TITINS>){
+            chomp($titleid);
+            push @titleids_to_insert, $titleid;
+            push @titleids_to_delete, $titleid; # Jede 'neue' ID wird zur Sicherheit auch geloescht
+            $seen_delids{$titleid}++;
+            $insidx++;
+        }
+
+        my $delidx=0;
+        while (my $titleid = <TITDEL>){
+            chomp($titleid);
+            push @titleids_to_delete, $titleid unless(defined $seen_delids{$titleid});
+            $seen_delids{$titleid}++;
+            $delidx++;
+        }
+
+        @titleids_to_delete = 
+            
+        $logger->info("### $database: $delidx Titel-ISBNs usw. zu loeschen");
+        $logger->info("### $database: $insidx Titel-ISBNs usw. neu einzufuegen");
+        
+        close(TITDEL);
+        close(TITINS);
+    }
+
     $logger->info("### $database: Getting ISBNs from database $database and adding to enrichmntdb");
 
     my $catalog = new OpenBib::Catalog({ database => $database });
-    
-    if ($incr){
-        $last_insertion_date = $catalog->get_schema->resultset('Title')->get_column('tstamp_create')->max;
-    }
-    
-    if (!$last_insertion_date && $incr){
-        $logger->fatal("Inkrementelle Updates werden fuer die Datenbank $database nicht unterstuetzt");
-        next;
+
+    my $where_ref = { dbname => $database };
+
+    if ($incremental){
+        $logger->info("### $database: Geloeschte oder geaenderte Daten entfernen");
+
+        $where_ref->{titleid} = { -in => \@titleids_to_delete };
     }
     else {
         $logger->info("### $database: Bisherige Daten entfernen");
-        
-        $enrichment->get_schema->resultset('AllTitleByIsbn')->search_rs(
-            {
-                dbname => $database
-            }
-        )->delete;
-
-        $enrichment->get_schema->resultset('AllTitleByBibkey')->search_rs(
-            {
-                dbname => $database
-            }
-        )->delete;
-        
-        $enrichment->get_schema->resultset('AllTitleByIssn')->search_rs(
-            {
-                dbname => $database
-            }
-        )->delete;
-        
-        $enrichment->get_schema->resultset('AllTitleByWorkkey')->search_rs(
-            {
-                dbname => $database
-            }
-        )->delete;
     }
-
-    my $all_isbns;
     
-    if ($incr){
-        $all_isbns = $catalog->get_schema->resultset('Title')->search_rs(
-            {
-                'me.tstamp_create'   => { '>' => $last_insertion_date },
-                -or => [
-                    'title_fields.field' => '0540',
-                    'title_fields.field' => '0553',
-                    'title_fields.field' => '0541',
-                    'title_fields.field' => '0541', # Testweise ff: ISBN_falsch
-                    'title_fields.field' => '0547', # ISMN
-                    'title_fields.field' => '0634', # ISBN Sekundaerform
-                    'title_fields.field' => '1586', # ISBN_dat/www/mnt/_o/r/f
-                    'title_fields.field' => '1587',
-                    'title_fields.field' => '1588',
-                    'title_fields.field' => '1590',
-                    'title_fields.field' => '1591',
-                    'title_fields.field' => '1592',
-                    'title_fields.field' => '1594',
-                    'title_fields.field' => '1595',
-                    'title_fields.field' => '1596',
-                    
-                ],
-            },
-            {
-                select => ['title_fields.titleid','title_fields.content','me.tstamp_create','me.titlecache'],
-                as     => ['thistitleid', 'thisisbn', 'thisdate','thistitlecache'],
-                join =>   ['title_fields'],
-            }
-        );
+    $enrichment->get_schema->resultset('AllTitleByIsbn')->search_rs(
+        $where_ref
+    )->delete;
+    
+    $enrichment->get_schema->resultset('AllTitleByBibkey')->search_rs(
+        $where_ref
+    )->delete;
+    
+    $enrichment->get_schema->resultset('AllTitleByIssn')->search_rs(
+        $where_ref
+    )->delete;
+    
+    $enrichment->get_schema->resultset('AllTitleByWorkkey')->search_rs(
+        $where_ref
+    )->delete;
+    
+    $where_ref = {
+        -or => [
+            'title_fields.field' => '0540',
+            'title_fields.field' => '0553',
+            'title_fields.field' => '0541', # Testweise ff: ISBN_falsch
+            'title_fields.field' => '0547', # ISMN
+            'title_fields.field' => '0634', # ISBN Sekundaerform
+            'title_fields.field' => '1586', # ISBN_dat/www/mnt/_o/r/f
+            'title_fields.field' => '1587',
+            'title_fields.field' => '1588',
+            'title_fields.field' => '1590',
+            'title_fields.field' => '1591',
+            'title_fields.field' => '1592',
+            'title_fields.field' => '1594',
+            'title_fields.field' => '1595',
+            'title_fields.field' => '1596',
+        ],
+    };
+
+    if ($incremental){
+        $where_ref->{'title_fields.titleid'} = { -in => \@titleids_to_insert };
     }
-    else {
-        $all_isbns = $catalog->get_schema->resultset('Title')->search_rs(
-            {
-                -or => [
-                    'title_fields.field' => '0540',
-                    'title_fields.field' => '0553',
-                    'title_fields.field' => '0541', # Testweise ff: ISBN_falsch
-                    'title_fields.field' => '0547', # ISMN
-                    'title_fields.field' => '0634', # ISBN Sekundaerform
-                    'title_fields.field' => '1586', # ISBN_dat/www/mnt/_o/r/f
-                    'title_fields.field' => '1587',
-                    'title_fields.field' => '1588',
-                    'title_fields.field' => '1590',
-                    'title_fields.field' => '1591',
-                    'title_fields.field' => '1592',
-                    'title_fields.field' => '1594',
-                    'title_fields.field' => '1595',
-                    'title_fields.field' => '1596',
-                ],
-            },
-            {
-                select => ['title_fields.titleid','title_fields.content','me.tstamp_create','me.titlecache'],
-                as     => ['thistitleid', 'thisisbn','thisdate','thistitlecache'],
-                join   => ['title_fields'],
-            }
-        );
-    }
+    
+    my $all_isbns = $catalog->get_schema->resultset('Title')->search_rs(
+        $where_ref,
+        {
+            select => ['title_fields.titleid','title_fields.content','me.tstamp_create','me.titlecache'],
+            as     => ['thistitleid', 'thisisbn','thisdate','thistitlecache'],
+            join   => ['title_fields'],
+        }
+    );
 
     my $isbn_insertcount = 0;
     my $alltitlebyisbn_ref = [];
@@ -347,38 +348,25 @@ foreach my $database (@databases){
     
     $logger->info("### $database: Getting Bibkeys from database $database and adding to enrichmntdb");
 
-    my $all_bibkeys;
-
-    if ($incr){
-        $all_bibkeys = $catalog->get_schema->resultset('Title')->search_rs(
-            {
-                'me.tstamp_create'   => { '>' => $last_insertion_date },
-                'title_fields.field' => '5050',
-            },
-            {
-                select => ['title_fields.titleid','title_fields.content','me.tstamp_create','me.titlecache'],
-                as     => ['thistitleid', 'thisbibkey', 'thisdate','thistitlecache'],
-                join =>   ['title_fields'],
-            }
-        );
+    $where_ref = {'title_fields.field' => '5050' };
+    
+    if ($incremental){
+        $where_ref->{'title_fields.titleid'} = { -in => \@titleids_to_insert };
     }
-    else {
-        $all_bibkeys = $catalog->get_schema->resultset('Title')->search_rs(
-            {
-                'title_fields.field' => '5050',
-            },
-            {
-                select => ['title_fields.titleid','title_fields.content','me.tstamp_create','me.titlecache'],
-                as     => ['thistitleid', 'thisbibkey','thisdate','thistitlecache'],
-                join   => ['title_fields'],
-            }
-        );
-    }
+    
+    my $all_bibkeys = $catalog->get_schema->resultset('Title')->search_rs(
+        $where_ref,
+        {
+            select => ['title_fields.titleid','title_fields.content','me.tstamp_create','me.titlecache'],
+            as     => ['thistitleid', 'thisbibkey','thisdate','thistitlecache'],
+            join   => ['title_fields'],
+        }
+    );
 
     my $bibkey_insertcount = 0;
     my $alltitlebybibkey_ref = [];
     foreach my $item ($all_bibkeys->all){
-        my $thistitleid         = $item->get_column('thistitleid');
+        my $thistitleid    = $item->get_column('thistitleid');
         my $thisbibkey     = $item->get_column('thisbibkey');
         my $thistitlecache = $item->get_column('thistitlecache');
         my $thisdate       = $item->get_column('thisdate') || strftime("%Y-%m-%d %T", localtime) ;
@@ -433,33 +421,20 @@ foreach my $database (@databases){
 
     $logger->info("### $database: Getting ISSNs from database $database and adding to enrichmntdb");
 
-    my $all_issns;
+    $where_ref = { 'title_fields.field' => '0543' };
 
-    if ($incr){
-        $all_issns = $catalog->get_schema->resultset('Title')->search_rs(
-            {
-                'me.tstamp_create'   => { '>' => $last_insertion_date },
-                'title_fields.field' => '0543',
-            },
-            {
-                select => ['title_fields.titleid','title_fields.content','me.tstamp_create','me.titlecache'],
-                as     => ['thistitleid', 'thisissn', 'thisdate','thistitlecache'],
-                join =>   ['title_fields'],
-            }
-        );
-    }
-    else {
-        $all_issns = $catalog->get_schema->resultset('Title')->search_rs(
-            {
-                'title_fields.field' => '0543',
-            },
-            {
-                select => ['title_fields.titleid','title_fields.content','me.tstamp_create','me.titlecache'],
-                as     => ['thistitleid', 'thisissn','thisdate','thistitlecache'],
-                join   => ['title_fields'],
-            }
-        );
-    }
+    if ($incremental){
+        $where_ref->{'title_fields.titleid'} = { -in => \@titleids_to_insert };
+    }    
+    
+    my $all_issns = $catalog->get_schema->resultset('Title')->search_rs(
+        $where_ref,
+        {
+            select => ['title_fields.titleid','title_fields.content','me.tstamp_create','me.titlecache'],
+            as     => ['thistitleid', 'thisissn','thisdate','thistitlecache'],
+            join   => ['title_fields'],
+        }
+    );
     
     my $issn_insertcount = 0;
     my $alltitlebyissn_ref = [];
@@ -529,33 +504,21 @@ foreach my $database (@databases){
     
     $logger->info("### $database: Getting Workkeys from database $database and adding to enrichmntdb");
 
-    my $all_workkeys;
+    $where_ref = { 'title_fields.field' => '5055' };
 
-    if ($incr){
-        $all_workkeys = $catalog->get_schema->resultset('Title')->search_rs(
-            {
-                'me.tstamp_create'   => { '>' => $last_insertion_date },
-                'title_fields.field' => '5055',
-            },
-            {
-                select => ['title_fields.titleid','title_fields.content','me.tstamp_create','me.titlecache'],
-                as     => ['thistitleid', 'thisworkkey', 'thisdate','thistitlecache'],
-                join =>   ['title_fields'],
-            }
-        );
-    }
-    else {
-        $all_workkeys = $catalog->get_schema->resultset('Title')->search_rs(
-            {
-                'title_fields.field' => '5055',
-            },
-            {
-                select => ['title_fields.titleid','title_fields.content','me.tstamp_create','me.titlecache'],
-                as     => ['thistitleid', 'thisworkkeybase','thisdate','thistitlecache'],
-                join   => ['title_fields'],
-            }
-        );
-    }
+    if ($incremental){
+        $where_ref->{'title_fields.titleid'} = { -in => \@titleids_to_insert };
+    }    
+
+    
+    my $all_workkeys = $catalog->get_schema->resultset('Title')->search_rs(
+        $where_ref,
+        {
+            select => ['title_fields.titleid','title_fields.content','me.tstamp_create','me.titlecache'],
+            as     => ['thistitleid', 'thisworkkeybase','thisdate','thistitlecache'],
+            join   => ['title_fields'],
+        }
+    );
 
     my $workkey_insertcount = 0;
     my $alltitlebyworkkey_ref = [];

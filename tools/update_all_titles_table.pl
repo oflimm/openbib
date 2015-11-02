@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 #####################################################################
 #
-#  update_all_isbn_table.pl
+#  update_all_titles_table.pl
 #
 #  Aktualisierung der all_titles_by-Tabellen, in der die ISBN's, ISSN's,
 #  BibKeys und WorkKeys aller Titel in allen Kataloge nachgewiesen sind.
@@ -67,21 +67,23 @@ $chars_to_replace = qr/$chars_to_replace/;
 my $config     = new OpenBib::Config;
 my $enrichment = new OpenBib::Enrichment;
 
-my ($database,$help,$logfile,$incremental,$bulkinsert,$keepfiles);
+my ($database,$help,$logfile,$incremental,$bulkinsert,$keepfiles,$deletefilename,$insertfilename);
 
-&GetOptions("database=s"      => \$database,
-            "logfile=s"       => \$logfile,
-            "incremental"     => \$incremental,
-            "bulk-insert"     => \$bulkinsert,
-            "keep-files"      => \$keepfiles,
-	    "help"            => \$help
+&GetOptions("database=s"        => \$database,
+            "logfile=s"         => \$logfile,
+            "incremental"       => \$incremental,
+            "bulk-insert"       => \$bulkinsert,
+            "keep-files"        => \$keepfiles,
+            "delete-filename=s" => \$deletefilename,
+            "insert-filename=s" => \$insertfilename,
+	    "help"              => \$help
 	    );
 
 if ($help){
     print_help();
 }
 
-$logfile=($logfile)?$logfile:'/var/log/openbib/update_all_isbn.log';
+$logfile=($logfile)?$logfile:'/var/log/openbib/update_all_titles.log';
 
 my $log4Perl_config = << "L4PCONF";
 log4perl.rootLogger=INFO, LOGFILE, Screen
@@ -121,19 +123,25 @@ else {
 
 my $last_insertion_date = 0; # wird fuer inkrementelles Update benoetigt
 
-my $data_dir = $config->{autoconv_dir}."/data/$database";    
 
-if ($bulkinsert){
-    # Temporaer Zugriffspassword setzen
-    system("echo \"*:*:*:$config->{'dbuser'}:$config->{'dbpasswd'}\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
+foreach my $database (@databases){
 
-    if (! -d $data_dir){
-        system("mkdir -p $data_dir");
-    }
-
-    open(CONTROL,   ">$data_dir/all_title_control.sql");
+    my $data_dir = $config->{autoconv_dir}."/data/$database";    
     
-    print CONTROL << "ALLTITLECONTROL";
+    my $deletefilename = ($deletefilename)?$deletefilename:$data_dir."/title.delete";
+    my $insertfilename = ($insertfilename)?$insertfilename:$data_dir."/title.insert";
+    
+    if ($bulkinsert){
+        # Temporaer Zugriffspassword setzen
+        system("echo \"*:*:*:$config->{'dbuser'}:$config->{'dbpasswd'}\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
+        
+        if (! -d $data_dir){
+            system("mkdir -p $data_dir");
+        }
+        
+        open(CONTROL,   ">$data_dir/all_title_control.sql");
+        
+        print CONTROL << "ALLTITLECONTROL";
 DROP TABLE IF EXISTS all_titles_by_workkey_tmp;
 CREATE TEMP TABLE all_titles_by_workkey_tmp (
  workkey       TEXT NOT NULL,
@@ -152,20 +160,16 @@ INSERT INTO all_titles_by_workkey (workkey,edition,dbname,titleid,titlecache,tst
 ALLTITLECONTROL
 
     
-    open(ISBNOUT,   ">:utf8","$data_dir/all_title_by_isbn.dump");
-    open(BIBKEYOUT, ">:utf8","$data_dir/all_title_by_bibkey.dump");
-    open(ISSNOUT,   ">:utf8","$data_dir/all_title_by_issn.dump");
-    open(WORKKEYOUT,">:utf8","$data_dir/all_title_by_workkey.dump");
-}
-
-foreach my $database (@databases){
+        open(ISBNOUT,   ">:utf8","$data_dir/all_title_by_isbn.dump");
+        open(BIBKEYOUT, ">:utf8","$data_dir/all_title_by_bibkey.dump");
+        open(ISSNOUT,   ">:utf8","$data_dir/all_title_by_issn.dump");
+        open(WORKKEYOUT,">:utf8","$data_dir/all_title_by_workkey.dump");
+    }
+    
     my @titleids_to_delete = ();
     my @titleids_to_insert = ();
     
     if ($incremental){
-        my $deletefilename = $config->{'autoconv_dir'}."/data/$database/title.delete";
-        my $insertfilename = $config->{'autoconv_dir'}."/data/$database/title.insert";        
-
         open(TITDEL, $deletefilename);
         open(TITINS, $insertfilename);
 
@@ -598,8 +602,8 @@ foreach my $database (@databases){
 
 sub print_help {
     print << "ENDHELP";
-update_all_isbn_table.pl - Aktualisierung der all_isbn-Tabelle, in der die ISBN's aller Kataloge
-                           nachgewiesen sind.
+update_all_titles_table.pl - Aktualisierung der all_titles_by-Tabelle, in der die ISBN's aller Kataloge
+                             nachgewiesen sind.
 
 
    Optionen:
@@ -607,6 +611,10 @@ update_all_isbn_table.pl - Aktualisierung der all_isbn-Tabelle, in der die ISBN'
        
    --database=...        : Datenbankname
    -bulk-insert          : Einladen mit DB-Systemtool (COPY)
+   -incremental          : Nur geaenderte Titel aus vereinheitlichtem Incremental-Updateverfahren
+   --delete-filename=aa  : Fuer -incremental: Dateiname mit IDs der geloeschten und geaenderten Titel
+   --insert-filename=bb  : Fuer -incremental: Dateiname mit IDs der neuen und geaenderten Titel
+
    -keep-files           : Einladedateien (bei -bulk-insert) nicht loeschen
 
 

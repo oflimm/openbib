@@ -51,6 +51,9 @@ $request->execute() or $logger->error($DBI::errstr);;
 
 while (my $result=$request->fetchrow_hashref()){
     my $sigel=$result->{content};
+    # Keine Liste fuer den USB-Bestand
+    next if ($sigel eq "38");
+    
     system($config->{tool_dir}."/gen_zsstlist.pl --sigel=$sigel --mode=tex");
     system("cd /var/www/zeitschriftenlisten ; pdflatex --interaction=batchmode /var/www/zeitschriftenlisten/zeitschriften-$sigel.tex");
     system("cd /var/www/zeitschriftenlisten ; pdflatex --interaction=batchmode /var/www/zeitschriftenlisten/zeitschriften-$sigel-bibsort.tex");

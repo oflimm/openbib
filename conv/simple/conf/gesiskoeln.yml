@@ -37,7 +37,7 @@ subject:
 
 # Titel
 title:
-  'Erf_Datum': '0002'
+#  'Erf_Datum': '0002'
   'Titel': '0331'
   'Untertitel': '0370'
   'Verlagsort': '0410'

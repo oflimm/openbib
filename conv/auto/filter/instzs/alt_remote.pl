@@ -85,5 +85,5 @@ foreach my $file(@FILES){
 }
 
 system("cd $pooldir/$pool; $mab2metaexe --titlefile=tmp.TIT --holdingfile=tmp.MEX --configfile=/opt/openbib/conf/$pool.yml");
-system("cd $pooldir/$pool; gzip meta.*");
+system("cd $pooldir/$pool; gzip meta.* ; rm tmp.*");
 

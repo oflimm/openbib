@@ -35,7 +35,7 @@
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
          <li><a href="#">[% msg.maketext("Themenschwerpunkte") %]</a></li>
-         <li><a href="#" class="lastitem">Erster Weltkrieg (1914-1918)</a></li>
+         <li><a href="#" class="lastitem">Adolph Kolping 1813-1865</a></li>
       </ul>
      </div>
    </div>

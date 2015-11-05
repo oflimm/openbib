@@ -40,6 +40,11 @@
 <ul>
 <li><span  style="font-weight:normal">2015</span>
     <ul>
+[% IF active_submenu == "kolping" %]
+      <li class="active"><strong>Adolph Kolping 1813-1865</strong></li>
+[% ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/kolping.html?l=[% lang %];page=1">Adolph Kolping 1813-1865</a></li>
+[% END %]
 [% IF active_submenu == "preussen" %]
       <li class="active"><strong>200 Jahre Zugehörigkeit des Rheinlandes zu Preußen</strong></li>
 [% ELSE %]

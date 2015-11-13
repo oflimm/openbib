@@ -71,6 +71,11 @@
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/kevelaer.html?l=[% lang %]">Bibliothek des Oratoriums Kevelaeriense</a></li>
 [% END %]
+[% IF active_submenu == "olgkoeln" %]
+  <li class="active"><strong>Oberlandesgericht Köln</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/olgkoeln.html?l=[% lang %]">Oberlandesgericht Köln</a></li>
+[% END %]
 [% IF active_submenu == "koenigswinter" %]
   <li class="active"><strong>Heimatverein Siebengebirge in Königswinter</strong></li>
 [% ELSE %]

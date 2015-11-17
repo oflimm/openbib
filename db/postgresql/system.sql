@@ -318,8 +318,27 @@ CREATE TABLE userinfo (
 
 DROP TABLE IF EXISTS role;
 CREATE TABLE role (
+  id           BIGSERIAL,
+  rolename     TEXT NOT NULL,
+  description  TEXT NOT NULL
+);
+
+DROP TABLE IF EXISTS role_view;
+CREATE TABLE role_view (
   id        BIGSERIAL,
-  name      TEXT NOT NULL
+  roleid    BIGINT NOT NULL,
+  viewid    BIGINT NOT NULL
+);
+
+DROP TABLE IF EXISTS role_right;
+CREATE TABLE role_right (
+  id              BIGSERIAL,
+  roleid          BIGINT NOT NULL,
+  scope           TEXT default '', /* eg admin, admin_clusters, all_scopes */
+  right_create    BOOL default false,
+  right_read      BOOL default false,
+  right_update    BOOL default false,
+  right_delete    BOOL default false
 );
 
 DROP TABLE IF EXISTS user_role;
@@ -328,6 +347,7 @@ CREATE TABLE user_role (
   userid    BIGINT NOT NULL,
   roleid    BIGINT NOT NULL
 );
+
 
 DROP TABLE IF EXISTS user_view;
 CREATE TABLE user_view (

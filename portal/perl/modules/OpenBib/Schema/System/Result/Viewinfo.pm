@@ -107,6 +107,21 @@ __PACKAGE__->add_unique_constraint("uq_viewinfo_viewname", ["viewname"]);
 
 =head1 RELATIONS
 
+=head2 role_views
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::RoleView>
+
+=cut
+
+__PACKAGE__->has_many(
+  "role_views",
+  "OpenBib::Schema::System::Result::RoleView",
+  { "foreign.viewid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 templateinfos
 
 Type: has_many
@@ -203,8 +218,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2015-05-11 15:52:34
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ZzvSqSaxGmWKToLZ8jTyWw
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2015-11-17 15:09:24
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:iW1cNsajC8/qG6Ki1m2oQQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

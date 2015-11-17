@@ -1531,12 +1531,42 @@ sub parse_valid_input {
                             content  => $content,
                         };
                     }
-                    else {
-                        $logger->debug("Can't parse $qparam");
-                    }
                 }
                 $input_params_ref->{$param} = $fields_ref;
             }
+            elsif ($type eq "rights") {
+                my $rights_ref     = $default;
+                my $rights_tmp_ref = {};
+                foreach my $qparam ($query->param){
+                    if ($qparam=~/^([a-zA-Z0-9_]+)\|(right_[a-z]+)$/){
+                        my $scope    = $1;
+                        my $right    = $2;
+                        
+                        my $content  = $query->param($qparam);
+                        
+                        $logger->debug("Got $scope - $right - $content");
+                        
+                        $rights_tmp_ref->{$scope}{$right} = $content;
+                    }
+                }
+
+                # Reorganize
+                foreach my $scope (keys %$rights_tmp_ref){
+                    my $thisrights_ref = {
+                        scope => $scope,
+                        right_create => ($rights_tmp_ref->{$scope}{right_create})?1:0,
+                        right_read   => ($rights_tmp_ref->{$scope}{right_read})?1:0,
+                        right_update => ($rights_tmp_ref->{$scope}{right_update})?1:0,
+                        right_delete => ($rights_tmp_ref->{$scope}{right_delete})?1:0,
+                    };
+
+                    push @$rights_ref, $thisrights_ref;
+                }
+                
+                
+                $input_params_ref->{$param} = $rights_ref;
+            }
+
         }
     }
     

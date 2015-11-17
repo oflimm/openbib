@@ -207,7 +207,7 @@ sub dispatch_args {
                     $rule_specs->{args_to_new}->{PARAMS} = $item->{args}; 
                 }
                 
-                push @{$table_ref}, $rule_specs;                
+                push @{$table_ref}, $rule_specs;
             }
         }
         else {
@@ -225,7 +225,7 @@ sub dispatch_args {
                 $item->{args}->{QUERY} = $args->{args_to_new}->{QUERY};
                 $rule_specs->{args_to_new}->{PARAMS} = $item->{args}; 
             }
-                        
+
             push @{$table_ref}, $rule_specs;
         }
     }

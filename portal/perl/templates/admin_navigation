@@ -210,6 +210,22 @@
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %].html?l=[% lang %]">[% msg.maketext("Statistik") %]</a></li>
 [% END %]
+[% IF active_submenu == "admin_roles" %]
+  <li class="active"><strong>[% msg.maketext("Rollen") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('roles_loc') %].html?l=[% lang %]">[% msg.maketext("Rollen") %]</a></li>
+[% END %]
+[% IF active_submenu == "admin_roles_record" %]
+<li><span style="padding-left:35px">[% roleinfo.description %]</span>
+    <ul>
+[% IF active_subsubmenu == "admin_roles_record_main" %]
+      <li class="active"><strong>[% msg.maketext("Allgemein") %]</strong></li>
+[% ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('roles_loc') %]/id/[% roleinfo.id %]/edit.html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+[% END %]
+    </ul>
+</li>
+[% END %]
 [% IF active_submenu == "admin_users" %]
 <li><span>[% msg.maketext("Nutzerverwaltung") %]</span>
     <ul>

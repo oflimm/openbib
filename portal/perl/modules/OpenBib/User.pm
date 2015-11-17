@@ -4799,7 +4799,7 @@ sub get_info {
         },
         {
             join   => ['roleid'],
-            select => ['roleid.name'],
+            select => ['roleid.rolename'],
             as     => ['thisrolename'],
         }
     );
@@ -4844,7 +4844,7 @@ sub get_all_roles {
     foreach my $role ($roles->all){
         push @$roles_ref, {
             id   => $role->id,
-            role => $role->name,
+            role => $role->rolename,
         };
     }
 
@@ -4871,7 +4871,7 @@ sub get_roles_of_user {
         },
         {
             join   => ['roleid'],
-            select => ['roleid.name'],
+            select => ['roleid.rolename'],
             as     => ['thisrolename'],
         }
     );
@@ -5550,7 +5550,7 @@ sub is_admin {
     # DBI: "select count(ur.userid) as rowcount from userrole as ur, role as r where ur.userid = ? and r.role = 'admin' and r.id=ur.roleid"
     my $count = $self->get_schema->resultset('UserRole')->search(
         {
-            'roleid.name' => 'admin',
+            'roleid.rolename' => 'admin',
             'userid.id'   => $self->{ID},
         },
         {
@@ -5574,8 +5574,8 @@ sub has_role {
     # DBI: "select count(ur.userid) as rowcount from userrole as ur, role as r where ur.userid = ? and r.role = 'admin' and r.id=ur.roleid"
     my $count = $self->get_schema->resultset('UserRole')->search(
         {
-            'roleid.name' => $role,
-            'userid.id'   => $thisuserid,
+            'roleid.rolename' => $role,
+            'userid.id'       => $thisuserid,
         },
         {
             join => ['roleid','userid'],

@@ -153,16 +153,30 @@ sub show_record {
 
     # Shared Args
     my $config           = $self->param('config');
+    my $queryoptions     = $self->param('qopts');
 
     if (!$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
     }
 
     my $serverinfo_ref = $config->get_serverinfo->search_rs({ id => $serverid })->single;
+
+    my $updatelog_ref;
+
+    if ($serverinfo_ref) {
+        $updatelog_ref = $serverinfo_ref->updatelogs->search_rs(
+            undef,
+            {                
+                rows => $queryoptions->get_option('num'),
+                order_by => ['id DESC']
+            }
+        );
+    }
     
     my $ttdata = {
         serverid     => $serverid,
         serverinfo   => $serverinfo_ref,
+        updatelog    => $updatelog_ref,
     };
     
     return $self->print_page($config->{tt_admin_servers_record_tname},$ttdata);

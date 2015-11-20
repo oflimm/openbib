@@ -56,6 +56,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
+[% IF user.has_right({scope = 'admin_clusters', right = 'right_create'}) %]
 <form method="post" action="[% path_prefix %]/[% config.get('profiles_loc') %]" class="ym-form">
 
 <fieldset class="ym-columnar">
@@ -86,14 +87,17 @@
 </form>
 
 <p />
+[% END # right_create %]
 
 [% IF profiles.size > 0 %]
 
 <h3>[% msg.maketext("Bereits existierende Katalog-Profile") %]</h3>
 
+[% IF user.has_right({scope = 'admin_clusters', right = 'right_update'}) %]
 <p>
 [% msg.maketext("Um ein bereits existierendes Katalog-Profil zu bearbeiten klicken Sie bitte auf den Profil-Namen.") %]
 </p>
+[% END %]
 
 <table class="ym-full">
 <thead>
@@ -101,7 +105,21 @@
 </thead>
 <tbody>
 [% FOREACH profile IN profiles.all %]
-<tr><td>[% profile.profilename %]</td><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('profiles_loc') %]/id/[% profile.profilename %]/edit.html?l=[% lang %]">[% profile.description %]</a></td><td><ul>[% FOREACH item IN config.get_profiledbs(profile.profilename) %]<li>[% item %]: [% dbinfo.get('dbnames').${item}.full %]</li>[% END %]</ul></td></tr>
+<tr>
+<td>[% profile.profilename %]</td>
+<td>
+[% IF user.has_right({scope = 'admin_profiles', right = 'right_update'}) %]
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('profiles_loc') %]/id/[% profile.profilename %]/edit.html?l=[% lang %]">[% profile.description %]</a>
+[% ELSIF user.has_right({scope = 'admin_profiles', right = 'right_read'}) %]
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('profiles_loc') %]/id/[% profile.profilename %].html?l=[% lang %]">[% profile.description %]</a>
+[% END %]
+</td>
+<td>
+ <ul>
+[% FOREACH item IN config.get_profiledbs(profile.profilename) %]<li>[% item %]: [% dbinfo.get('dbnames').${item}.full %]</li>[% END %]
+ </ul>
+</td>
+</tr>
 [% END %]
 </tbody>
 </table>

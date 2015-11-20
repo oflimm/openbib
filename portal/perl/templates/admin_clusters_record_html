@@ -56,56 +56,37 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %]" class="ym-form">
-<input type="hidden" name="_method"    value="PUT" />
+<h2>[% clusterinfo.description %]</h2>
 
-<fieldset class="ym-columnar">
+<table class="ym-full">
+<tr>
+<td>[% msg.maketext("Id") %]</td>
+<td>[% clusterinfo.id %]</td>
+</tr>
 
-<legend>[% msg.maketext("Cluster bearbeiten") %]</legend>
+<tr>
+<td>[% msg.maketext("Beschreibung") %]</td>
+<td>[% clusterinfo.description %]</td>
+</tr>
 
-<div class="ym-fbox-text">
-<label for="id">[% msg.maketext("Id") %]</label>
-[% clusterinfo.id %]
-</div>
+<tr>
+<td>[% msg.maketext("Status") %]</td>
+<td>
+[% IF clusterinfo.status == 'updatable' %][% msg.maketext("Akualisierbar") %][% END %]
+[% IF clusterinfo.status == 'updating' %][% msg.maketext("Aktualisieren") %][% END %]
+[% IF clusterinfo.status == 'updated' %][% msg.maketext("Fertig mit Aktualisierung") %][% END %]
+[% IF clusterinfo.status == 'searchable' %][% msg.maketext("Recherchierbar") %][% END %]
+</td>
+</tr>
 
-<div class="ym-fbox-text">
-<label for="description">[% msg.maketext("Beschreibung") %]</label>
-<input type="text" name="description" id="description" value="[% clusterinfo.description %]"/>
-</div>
-
-<div class="ym-fbox-select">
-<label for="status">[% msg.maketext("Status") %]</label>
-  <select name="status" id="status">
-     <option value="updatable" [% IF clusterinfo.status == 'updatable' %]selected="selected"[% END %]>[% msg.maketext("Akualisierbar") %]</option>
-     <option value="updating" [% IF clusterinfo.status == 'updating' %]selected="selected"[% END %]>[% msg.maketext("Aktualisieren") %]</option>
-     <option value="updated" [% IF clusterinfo.status == 'updated' %]selected="selected"[% END %]>[% msg.maketext("Fertig mit Aktualisierung") %]</option>
-     <option value="searchable" [% IF clusterinfo.status == 'searchable' %]selected="selected"[% END %]>[% msg.maketext("Recherchierbar") %]</option>
-  </select>
-</div>
-
-<div class="ym-fbox-select">
-<label for="active">[% msg.maketext("Aktiv") %]</label>
-  <select name="active" id="active">
-     <option value="true" [%- IF clusterinfo.active -%]selected="selected"[%- END -%]>[% msg.maketext("Ja") %]</option>
-     <option value="false" [%- IF NOT clusterinfo.active -%]selected="selected"[%- END -%]>[% msg.maketext("Nein") %]</option>
-  </select>
-</div>
-
-
-<div class="ym-fbox-button">
-<input type="submit" value="[% msg.maketext("Ändern") %]">
-
-[%- IF user.has_right({scope = 'admin_views', right = 'right_delete'}) -%]
-&nbsp;&nbsp;&nbsp;
-
-<a class="ob_button" href="[% path_prefix %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
-[%- END -%]
-</div>
-
-
-</fieldset>
-
-</form>
+<tr>
+<td>[% msg.maketext("Aktiv") %]</td>
+<td>
+[%- IF clusterinfo.active -%][% msg.maketext("Ja") %][%- END -%]
+[%- IF NOT clusterinfo.active -%][% msg.maketext("Nein") %][%- END -%]
+</td>
+</tr>
+</table>
 
 [% differences = config.check_cluster_consistency(clusterinfo.id) ;
 

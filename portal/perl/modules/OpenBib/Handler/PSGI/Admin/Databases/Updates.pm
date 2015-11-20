@@ -95,7 +95,7 @@ sub show_collection {
         return $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
     }
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
     }
     

@@ -61,6 +61,7 @@ sub setup {
     $self->run_modes(
         'show_collection'            => 'show_collection',
         'show_record_form'           => 'show_record_form',
+        'show_record'                => 'show_record',
         'create_record'              => 'create_record',
         'update_record'              => 'update_record',
         'confirm_delete_record'      => 'confirm_delete_record',
@@ -133,7 +134,7 @@ sub show_record {
 
     # Dispatches Args
     my $view             = $self->param('view');
-    my $clusterid        = $self->param('clusterid');
+    my $clusterid        = $self->strip_suffix($self->param('clusterid'));
 
     # Shared Args
     my $config           = $self->param('config');
@@ -142,7 +143,9 @@ sub show_record {
         return $self->print_authorization_error();
     }
 
-    my $clusterinfo_ref = $config->get_clusterinfo->search_rs({ id => $clusterid });
+    $logger->debug("Clusterid: $clusterid");
+    
+    my $clusterinfo_ref = $config->get_clusterinfo->search_rs({ id => $clusterid })->single();;
     
     my $ttdata = {
         clusterid     => $clusterid,

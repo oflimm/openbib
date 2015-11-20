@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Admin::Topics
 #
-#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -89,7 +89,7 @@ sub show_collection {
     my $config         = $self->param('config');
     my $user           = $self->param('user');
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
     }
 
@@ -115,7 +115,7 @@ sub show_collection_form {
     my $config         = $self->param('config');
     my $user           = $self->param('user');
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_update')){
         return $self->print_authorization_error();
     }
 
@@ -142,7 +142,7 @@ sub show_record {
     my $config         = $self->param('config');
     my $user           = $self->param('user');
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
     }
 
@@ -174,7 +174,7 @@ sub show_record_form {
     my $config         = $self->param('config');
     my $user           = $self->param('user');
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_update')){
         return $self->print_authorization_error();
     }
 
@@ -211,7 +211,7 @@ sub create_record {
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_create')){
         return $self->print_authorization_error();
     }
 
@@ -268,7 +268,7 @@ sub update_record {
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_update')){
         return $self->print_authorization_error();
     }
 
@@ -332,7 +332,7 @@ sub delete_record {
     my $lang           = $self->param('lang');
     my $path_prefix    = $self->param('path_prefix');
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_delete')){
         return $self->print_authorization_error();
     }
 

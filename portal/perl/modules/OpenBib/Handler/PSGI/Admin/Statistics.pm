@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Admin::Statistics
 #
-#  Dieses File ist (C) 2004-2014 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -92,7 +92,7 @@ sub show_collection {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
     }
 
@@ -136,7 +136,7 @@ sub show_graph {
     my $month      = $query->param('month')      || '';
     my $day        = $query->param('month')      || '';
     
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
     }
 
@@ -190,7 +190,7 @@ sub show_statistics {
     my $month      = $query->param('month')      || '';
     my $day        = $query->param('day')        || '';
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
     }
 

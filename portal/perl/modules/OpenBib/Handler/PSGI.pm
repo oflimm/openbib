@@ -94,7 +94,7 @@ sub cgiapp_init {
         $logger->error("No Request");
     }
     
-    my $sessionID     = $r->cookies->{sessionID} || '';
+    my $sessionID    = $r->cookies->{sessionID} || '';
 
     my $session      = OpenBib::Session->new({ sessionID => $sessionID , view => $view, config => $config });
 

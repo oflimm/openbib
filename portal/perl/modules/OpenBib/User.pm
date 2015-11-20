@@ -172,6 +172,144 @@ sub set_credentials {
     return;
 }
 
+sub load_privileges {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $userid    = exists $arg_ref->{userid}
+        ? $arg_ref->{userid}             : undef;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $thisuserid = (defined $userid)?$userid:$self->{ID};
+
+    my $role_rights_ref = {};
+    
+    my $user_roles = $self->get_schema->resultset('UserRole')->search(
+        {
+            'userid.id' => $thisuserid,
+        },
+        {
+            select => ['roleid.id'],
+            as     => ['thisroleid'],
+            join   => ['roleid','userid'],
+        }
+    );
+
+    return $role_rights_ref unless ($user_roles);
+    
+    my $role_rights =  $self->get_schema->resultset('RoleRight')->search(
+        {
+            'roleid.id'  => { -in => $user_roles->as_query },
+        },
+        {
+            select       => ['me.scope','me.right_create','me.right_read','me.right_update','me.right_delete'],
+            as           => ['thisscope','thisright_create','thisright_read','thisright_update','thisright_delete'],
+            join         => ['roleid'],
+            order_by     => ['me.scope'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+        }
+    );
+
+    while (my $result_ref = $role_rights->next()){
+        my $thisscope        = $result_ref->{thisscope};
+        my $thisright_create = $result_ref->{thisright_create};
+        my $thisright_read   = $result_ref->{thisright_read};
+        my $thisright_update = $result_ref->{thisright_update};
+        my $thisright_delete = $result_ref->{thisright_delete};
+        
+        $role_rights_ref->{$thisscope}{right_create} = $thisright_create;
+        $role_rights_ref->{$thisscope}{right_read}   = $thisright_read;
+        $role_rights_ref->{$thisscope}{right_update} = $thisright_update;
+        $role_rights_ref->{$thisscope}{right_delete} = $thisright_delete;
+    }
+
+    my $views_ref = {};
+
+    my $role_views = $self->get_schema->resultset('RoleView')->search(
+        {
+            'roleid.id' => { -in => $user_roles->as_query },
+        },
+        {
+            select       => ['viewid.viewname'],
+            as           => ['thisviewname'],
+            join         => ['roleid','viewid'],
+            order_by     => ['viewid.viewname'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+        }
+    );
+
+    while (my $result_ref = $role_views->next()){
+        if ($logger->is_debug){
+            $logger->debug("View: ".YAML::Dump($result_ref));
+        }
+        my $thisviewname = $result_ref->{thisviewname};
+        $views_ref->{$thisviewname} = 1;
+    }
+
+    if ($logger->is_debug){
+        $logger->debug("Restricted Views: ".YAML::Dump($views_ref));
+        $logger->debug("Rights: ".YAML::Dump($role_rights_ref));
+    }
+
+    $self->{restricted_views} = $views_ref;
+    $self->{rights}           = $role_rights_ref;
+    
+    return $self;
+}
+
+sub has_right {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $scope     = exists $arg_ref->{scope}
+        ? $arg_ref->{scope}             : undef;
+
+    my $right     = exists $arg_ref->{right}
+        ? $arg_ref->{right}             : undef;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Allgemeiner Admin darf alles!!!
+    if ($self->is_admin){
+        return 1;
+    }
+    
+    unless (defined $self->{restricted_views} && defined $self->{rights}){
+        $self->load_privileges;
+    }
+
+    if (defined $self->{rights}{$scope}{$right} && $self->{rights}{$scope}{$right} == 1){
+        return 1;
+    }
+
+    return 0;
+}
+
+sub allowed_for_view {
+    my ($self,$viewname)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    unless (defined $self->{restricted_views} && defined $self->{rights}){
+        $self->load_privileges;
+    }
+
+    my $user_allowed_for_view = 0;
+    
+    if (!keys %{$self->{restricted_views}}){
+        $user_allowed_for_view = 1;
+    }
+    elsif (defined $self->{restricted_views}{$viewname} && $self->{restricted_views}{$viewname}){
+        $user_allowed_for_view = 1;
+    }
+
+    return $user_allowed_for_view;
+}
+
 sub user_exists {
     my ($self,$username)=@_;
     
@@ -4838,13 +4976,14 @@ sub get_all_roles {
     $logger->debug("Getting roles");
 
     # DBI: "select * from role"
-    my $roles = $self->get_schema->resultset('Role')->search_rs(undef);
+    my $roles = $self->get_schema->resultset('Roleinfo')->search_rs(undef);
 
     my $roles_ref = [];
     foreach my $role ($roles->all){
         push @$roles_ref, {
-            id   => $role->id,
-            role => $role->rolename,
+            id          => $role->id,
+            rolename    => $role->rolename,
+            description => $role->description,
         };
     }
 

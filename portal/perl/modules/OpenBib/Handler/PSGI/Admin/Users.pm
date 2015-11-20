@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Admin::Users
 #
-#  Dieses File ist (C) 2004-2014 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -84,7 +84,7 @@ sub show_collection {
     # Shared Args
     my $config         = $self->param('config');
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
     }
 
@@ -117,7 +117,7 @@ sub show_record_form {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_update')){
         return $self->print_authorization_error();
     }
 
@@ -142,7 +142,7 @@ sub show_search_form {
     # Shared Args
     my $config         = $self->param('config');
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
     }
     
@@ -178,7 +178,7 @@ sub show_search {
     $args_ref->{surname}    = $query->param('surname') if ($query->param('surname'));
     $args_ref->{commonname} = $query->param('commonname') if ($query->param('commonname'));
     
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
     }
 

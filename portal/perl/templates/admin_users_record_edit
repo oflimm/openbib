@@ -101,7 +101,7 @@
 <label for="roles">[% msg.maketext("Rollen") %]</label>
 <select name="roles" multiple="multiple" size="5">
 [% FOREACH role IN user.get_all_roles %]
-  <option value="[% role.id %]"[% IF userinfo.role.${role.role} %] selected="selected"[% END %]>[% msg.maketext(role.role) %]</option>
+  <option value="[% role.id %]"[% IF userinfo.role.${role.rolename} %] selected="selected"[% END %]>[% role.description %]</option>
 [% END %]
 </select>
 </div>

@@ -112,6 +112,20 @@
 [% PROCESS common/subtemplate name="viewadmin_navigation" %]
 [% END %]
 
-[% IF cgiapp.is_authenticated('admin') %]
+[%
+
+  user_gets_admin_navigation = 0;
+
+  FOREACH scope IN config.get_scopes ;
+     IF scope.match('^admin_') ;
+        IF user.has_right({scope = scope, right = 'right_read'}) || user.has_right({scope = scope, right = 'right_update'}) ;
+          user_gets_admin_navigation = 1;
+        END;
+     END;
+  END;
+
+%]
+
+[% IF user_gets_admin_navigation %]
 [% PROCESS common/subtemplate name="admin_navigation" %]
 [% END %]

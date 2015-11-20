@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Admin::Views
 #
-#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -88,7 +88,7 @@ sub show_collection {
     # Shared Args
     my $config         = $self->param('config');
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
     }
 
@@ -115,7 +115,7 @@ sub show_record {
     my $config         = $self->param('config');
     my $msg            = $self->param('msg');
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
     }
 
@@ -164,7 +164,7 @@ sub create_record {
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_create')){
         return $self->print_authorization_error();
     }
 
@@ -220,7 +220,7 @@ sub show_record_form {
     # Shared Args
     my $config         = $self->param('config');
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_update')){
         return $self->print_authorization_error();
     }
 
@@ -273,7 +273,7 @@ sub update_record {
     my $input_data_ref = $self->parse_valid_input();
     $input_data_ref->{viewname} = $viewname;
         
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_update')){
         return $self->print_authorization_error();
     }
 
@@ -339,7 +339,7 @@ sub delete_record {
     my $path_prefix    = $self->param('path_prefix');
     my $lang           = $self->param('lang');
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_delete')){
         return $self->print_authorization_error();
     }
 

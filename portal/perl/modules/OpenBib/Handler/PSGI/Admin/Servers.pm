@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Admin::Servers
 #
-#  Dieses File ist (C) 2004-2014 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -86,7 +86,7 @@ sub show_collection {
     # Shared Args
     my $config         = $self->param('config');
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
     }
 
@@ -113,7 +113,7 @@ sub show_record_form {
     my $config           = $self->param('config');
     my $queryoptions     = $self->param('qopts');
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_update')){
         return $self->print_authorization_error();
     }
 
@@ -154,7 +154,7 @@ sub show_record {
     # Shared Args
     my $config           = $self->param('config');
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
     }
 
@@ -189,7 +189,7 @@ sub create_record {
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input($self->get_input_definition);
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_create')){
         return $self->print_authorization_error();
     }
 
@@ -238,7 +238,7 @@ sub update_record {
 
     $input_data_ref->{id} = $serverid;
     
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_update')){
         return $self->print_authorization_error();
     }
 
@@ -293,7 +293,7 @@ sub delete_record {
     my $config         = $self->param('config');
     my $path_prefix    = $self->param('path_prefix');
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_delete')){
         return $self->print_authorization_error();
     }
 

@@ -55,6 +55,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
+[% IF user.has_right({scope = 'admin_views', right = 'right_create'}) %]
 <form method="post" action="[% path_prefix %]/[% config.get('roles_loc') %]" class="ym-form">
 <fieldset class="ym-columnar">
 
@@ -83,6 +84,7 @@
 </form>
 
 <p />
+[% END # right_create %]
 
 [%# USE dumper;dumper.dump(serverinfos)%]
 [% IF roleinfos.count > 0 %]
@@ -96,9 +98,17 @@
 <tbody>
 [% FOREACH roleinfo IN roleinfos.all %]
 <tr>
-<td>[% IF roleinfo.rolename == 'admin' %][% roleinfo.rolename %][% ELSE %]<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('roles_loc') %]/id/[% roleinfo.rolename %]/edit.html?l=[% lang %]">[% roleinfo.rolename %]</a>[% END %]</td>
+<td>
+[% IF roleinfo.rolename == 'admin' %][% roleinfo.rolename %][% ELSE %]
+[%   IF user.has_right({scope = 'admin_roles', right = 'right_update'}) %]
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('roles_loc') %]/id/[% roleinfo.rolename %]/edit.html?l=[% lang %]">[% roleinfo.rolename %]</a>
+[%   ELSIF user.has_right({scope = 'admin_roles', right = 'right_read'}) %]
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('roles_loc') %]/id/[% roleinfo.rolename %].html?l=[% lang %]">[% roleinfo.rolename %]</a>
+[%   END %]
+[% END %]
+</td>
 <td>[% roleinfo.description %]</td>
-<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>[% IF roleinfo.rolename != 'admin' %]<form method="post" action="[% path_prefix %]/[% config.get('roles_loc') %]/id/[% roleinfo.rolename %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><input type="submit" value="[% msg.maketext("L&ouml;schen") %]"/></form>[% END %]</td></tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>[% IF roleinfo.rolename != 'admin' && user.has_right({scope = 'admin_roles', right = 'right_delete'}) %]<form method="post" action="[% path_prefix %]/[% config.get('roles_loc') %]/id/[% roleinfo.rolename %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><input type="submit" value="[% msg.maketext("L&ouml;schen") %]"/></form>[% END %]</td></tr>
 [% END %]
 </tbody>
 </table>

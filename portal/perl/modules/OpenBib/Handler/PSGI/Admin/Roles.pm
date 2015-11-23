@@ -160,11 +160,27 @@ sub show_record {
         return $self->print_authorization_error();
     }
 
-    my $roleinfo_ref = $config->get_roleinfo->search_rs({ id => $roleid })->single;
+    my $viewinfo_ref = $config->get_viewinfo_overview();
+    
+    my $roleinfo_ref = $config->get_roleinfo->search_rs({ rolename => $roleid })->single;
+
+    my $selected_views_ref = {};
+    
+    foreach my $viewname ($config->get_views_of_role($roleid)){
+        $selected_views_ref->{$viewname} = 1;
+    }
+
+    my $all_scopes_ref     = $config->get_scopes;
+
+    my $rights_of_role_ref = $config->get_rights_of_role($roleid);
     
     my $ttdata = {
-        roleid     => $roleid,
-        roleinfo   => $roleinfo_ref,
+        roleid           => $roleid,
+        roleinfo         => $roleinfo_ref,
+        viewinfos        => $viewinfo_ref,
+        selected_views   => $selected_views_ref,
+        all_scopes       => $all_scopes_ref,
+        rights_of_role   => $rights_of_role_ref,
     };
     
     return $self->print_page($config->{tt_admin_roles_record_tname},$ttdata);

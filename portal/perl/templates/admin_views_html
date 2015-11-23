@@ -126,7 +126,7 @@
   <td>
 [%   IF user.has_right({scope = 'admin_views', right = 'right_update'}) %]
      <a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %]/edit.html?l=[% lang %]">[% viewinfo.description %]</a>
-[%   ELSIF user.has_right({scope = 'admin_databases', right = 'right_read'}) %]
+[%   ELSIF user.has_right({scope = 'admin_views', right = 'right_read'}) %]
      <a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %].html?l=[% lang %]">[% viewinfo.description %]</a>
 [%   END %]
   </td>

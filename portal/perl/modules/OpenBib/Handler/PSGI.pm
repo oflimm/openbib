@@ -1636,12 +1636,19 @@ sub print_authorization_error {
     if ($self->param('representation') eq "html"){
         # Aufruf-URL
         my $return_uri  = uri_escape($r->request_uri);
-        
+        my $login_url   = "$path_prefix/$config->{login_loc}?redirect_to=$return_uri";
+
         # Return-URL in der Session abspeichern
         
         $logger->debug("Authorization error: Redirecting to $return_uri");
+
+        my $ttdata = {
+            login_url => $login_url,
+        };
         
-        return $self->redirect("$path_prefix/$config->{login_loc}?redirect_to=$return_uri",303);
+        return $self->print_page($config->{tt_authorization_error_tname},$ttdata);
+        
+#        return $self->redirect("$path_prefix/$config->{login_loc}?redirect_to=$return_uri",303);
     }
     else {
         $logger->debug("Authorization error");

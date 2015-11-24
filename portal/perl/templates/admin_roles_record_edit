@@ -36,7 +36,7 @@
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
          <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('roles_loc') %].html?l=[% lang %]">[% msg.maketext("Role") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('roles_loc') %].html?l=[% lang %]">[% msg.maketext("Rolle") %]</a></li>
          <li><a href="#" class="lastitem">[% roleinfo.description %]</a></li>
        </ul>
      </div>
@@ -62,7 +62,7 @@
 
 <fieldset class="ym-columnar">
 
-<legend>[% msg.maketext("Role bearbeiten") %]</legend>
+<legend>[% msg.maketext("Rolle bearbeiten") %]</legend>
 
 <div class="ym-fbox-text">
 <label for="id">[% msg.maketext("Id") %]</label>

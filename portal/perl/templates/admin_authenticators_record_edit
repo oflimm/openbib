@@ -48,7 +48,7 @@
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_authenticators" %]
+[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_authenticators"  active_subsubmenu="admin_authenticators_record_main" %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -56,7 +56,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<form method="post" action="[% path_prefix %]/[% config.get('authenticators_loc') %]/id/[% authenticator_record.id %]" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('authenticators_loc') %]/id/[% authenticatorinfo.id %]" class="ym-form">
 <input type="hidden" name="_method"     value="PUT" />
 
 <fieldset class="ym-columnar">
@@ -65,34 +65,34 @@
 
 <div class="ym-fbox-text">
 <label for="hostname">[% msg.maketext("Hostname") %]</label>
-<input type="text" name="hostname" id="hostname"  value="[% authenticator_record.hostname %]"/>
+<input type="text" name="hostname" id="hostname"  value="[% authenticatorinfo.hostname %]"/>
 </div>
 
 <div class="ym-fbox-text">
 <label for="port">[% msg.maketext("Port") %]</label>
-<input type="text" name="port" id="port"  value="[% authenticator_record.port %]"/>
+<input type="text" name="port" id="port"  value="[% authenticatorinfo.port %]"/>
 </div>
 
 <div class="ym-fbox-text">
 <label for="remoteuser">[% msg.maketext("Nutzername") %]</label>
-<input type="text" name="remoteuser" id="remoteuser"  value="[% authenticator_record.remoteuser %]"/>
+<input type="text" name="remoteuser" id="remoteuser"  value="[% authenticatorinfo.remoteuser %]"/>
 </div>
 
 <div class="ym-fbox-text">
 <label for="dbname">[% msg.maketext("DB-Name") %]</label>
-<input type="text" name="dbname" id="dbname" value="[% authenticator_record.dbname %]"/>
+<input type="text" name="dbname" id="dbname" value="[% authenticatorinfo.dbname %]"/>
 </div>
 
 <div class="ym-fbox-text">
 <label for="description">[% msg.maketext("Beschreibung") %]</label>
-<input type="text" name="description" id="description" value="[% authenticator_record.description %]"/>
+<input type="text" name="description" id="description" value="[% authenticatorinfo.description %]"/>
 </div>
 
 <div class="ym-fbox-select">
 <label for="type">[% msg.maketext("Typ") %]</label>
   <select name="type" id="type">
-    <option value="self" [% IF authenticator_record.type == 'self' %]selected="selected"[% END %]>[% msg.maketext("Selbstregistrierung") %]</option>
-    <option value="olws" [% IF authenticator_record.type == 'olws' %]selected="selected"[% END %]>OLWS</option>
+    <option value="self" [% IF authenticatorinfo.type == 'self' %]selected="selected"[% END %]>[% msg.maketext("Selbstregistrierung") %]</option>
+    <option value="olws" [% IF authenticatorinfo.type == 'olws' %]selected="selected"[% END %]>OLWS</option>
   </select>
 </div>
 
@@ -101,7 +101,7 @@
 
 &nbsp;&nbsp;&nbsp;
 
-<a class="ob_button" href="[% path_prefix %]/[% config.get('authenticators_loc') %]/id/[% authenticator_record.id %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+<a class="ob_button" href="[% path_prefix %]/[% config.get('authenticators_loc') %]/id/[% authenticatorinfo.id %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
 
 </div>
 

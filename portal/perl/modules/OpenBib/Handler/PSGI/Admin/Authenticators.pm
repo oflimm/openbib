@@ -106,8 +106,8 @@ sub show_record {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view             = $self->param('view')                   || '';
-    my $authenticatorid = $self->strip_suffix($self->param('authenticatorid'))       || '';
+    my $view            = $self->param('view');
+    my $authenticatorid = $self->strip_suffix($self->param('authenticatorid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -126,11 +126,17 @@ sub show_record {
     }
 
     $logger->debug("Server: ".$r->get_server_name);
+    $logger->debug("Authenticatorid: ".$authenticatorid);
 
     my $authenticator_ref = $config->get_authenticator_by_id($authenticatorid);
+
+    if ($logger->is_debug){
+        $logger->debug("Authenticator-Info: ".YAML::Dump($authenticator_ref));
+    }
     
     my $ttdata={
-        authenticator_record => $authenticator_ref,
+        authenticatorid   => $authenticatorid,
+        authenticatorinfo => $authenticator_ref,
     };
     
     return $self->print_page($config->{tt_admin_authenticators_record_tname},$ttdata);
@@ -167,7 +173,7 @@ sub show_record_form {
     my $authenticator_ref = $config->get_authenticator_by_id($authenticatorid);
     
     my $ttdata={
-        authenticator_record => $authenticator_ref,
+        authenticatorinfo => $authenticator_ref,
     };
     
     return $self->print_page($config->{tt_admin_authenticators_record_edit_tname},$ttdata);

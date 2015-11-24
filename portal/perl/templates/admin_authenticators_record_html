@@ -1,13 +1,13 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_editauthenticator
+# Templatename: admin_authenticators_record
 #
 # Typ         : Mastertemplate       
 #
 # Aufgabe:
 #
-# Eingabemaske fuer die Meta-Informationen eines Anmeldeziels
+# Ausgabe eines Anmeldeziels
 #
 #######################################################################
 -%]
@@ -36,19 +36,19 @@
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
          <li><a href="[% path_prefix %]/[% config.get('databases_loc') %].html?l=[% lang %]">Administration</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_authenticators_loc') %].html?l=[% lang %]">[% msg.maketext("Anmeldung") %]</a></li>
-         <li><a href="#" class="lastitem">[% authenticator.description %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('authenticators_loc') %].html?l=[% lang %]">[% msg.maketext("Anmeldung") %]</a></li>
+         <li><a href="#" class="lastitem">[% authenticatorinfo.description %]</a></li>
        </ul>
      </div>
     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('admin_authenticators_loc') %]/id/[% authenticator.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('authenticators_loc') %]/id/[% authenticatorinfo.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
     </div>
    </div>
 
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_authenticators" %]
+[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_authenticators_record" active_subsubmenu="admin_authenticators_record_main" %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -56,18 +56,15 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<table width="100%">
-<tr><th>[% msg.maketext("Anmeldeziel") %]</th></tr>
-<tr><td class="boxedclear">
-<table>
-<tr><td><b>[% msg.maketext("Hostname") %]</b></td><td>[% authenticator.hostname %]</td></tr>
-<tr><td><b>[% msg.maketext("Port") %]</b></td><td>[% authenticator.port %]"</td></tr>
-<tr><td><b>[% msg.maketext("Nutzername") %]</b></td><td>[% authenticator.remoteuser %]</td></tr>
-<tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td>[% authenticator.dbname %]</td></tr>
-<tr><td><b>[% msg.maketext("Beschreibung") %]</b></td><td>[% authenticator.description %]</td></tr>
-<tr><td><b>[% msg.maketext("Typ") %]</b></td><td>[% authenticator.type %]</td></tr>
-</table>
-</td></tr>
+<h2>[% msg.maketext("Anmeldeziel") %]: [% authenticatorinfo.description %]</h2>
+
+<table class="ym-full">
+<tr><th>[% msg.maketext("Hostname") %]</th><td>[% authenticatorinfo.hostname %]</td></tr>
+<tr><th>[% msg.maketext("Port") %]</th><td>[% authenticatorinfo.port %]</td></tr>
+<tr><th>[% msg.maketext("Nutzername") %]</th><td>[% authenticatorinfo.remoteuser %]</td></tr>
+<tr><th>[% msg.maketext("DB-Name") %]</th><td>[% authenticatorinfo.dbname %]</td></tr>
+<tr><th>[% msg.maketext("Beschreibung") %]</th><td>[% authenticatorinfo.description %]</td></tr>
+<tr><th>[% msg.maketext("Typ") %]</th><td>[% authenticatorinfo.type %]</td></tr>
 </table>
 
         </div>

@@ -14,8 +14,6 @@
 ../modules/OpenBib/Config/File.pm
 ../modules/OpenBib/Config/LocationInfoTable.pm
 ../modules/OpenBib/Config.pm
-../modules/OpenBib/Connector/OLWS/Admin.pm
-../modules/OpenBib/Connector/OLWS/Enrichment.pm
 ../modules/OpenBib/Container.pm
 ../modules/OpenBib/Conv/Common/Util.pm
 ../modules/OpenBib/Conv/Config.pm
@@ -220,7 +218,7 @@
 ../modules/OpenBib/Schema/System/Result/Registration.pm
 ../modules/OpenBib/Schema/System/Result/Review.pm
 ../modules/OpenBib/Schema/System/Result/Reviewrating.pm
-../modules/OpenBib/Schema/System/Result/Role.pm
+../modules/OpenBib/Schema/System/Result/Roleinfo.pm
 ../modules/OpenBib/Schema/System/Result/Rsscache.pm
 ../modules/OpenBib/Schema/System/Result/Rssinfo.pm
 ../modules/OpenBib/Schema/System/Result/Searchfield.pm
@@ -1964,3 +1962,8 @@
 ../templates/visible_categories_subject
 ../templates/visible_categories_title
 ../templates/zsstlist_tex
+../templates/authorization_error
+../templates/authorization_error_html
+../templates/admin_roles_html
+../templates/admin_roles_record_html
+../templates/admin_roles_record_edit

@@ -5010,14 +5010,14 @@ sub get_roles_of_user {
         },
         {
             join   => ['roleid'],
-            select => ['roleid.rolename'],
-            as     => ['thisrolename'],
+            select => ['roleid.rolename','roleid.description'],
+            as     => ['thisrolename','thisroledescription'],
         }
     );
 
     my $role_ref = {};
     foreach my $userrole ($userroles->all){
-        $role_ref->{$userrole->get_column('thisrolename')}=1;
+        $role_ref->{$userrole->get_column('thisrolename')} = $userrole->get_column('thisroledescription');
     }
 
     if ($logger->is_debug){
@@ -5865,7 +5865,9 @@ sub search {
     if ($roleid) {
         # DBI: "select userid from user_role where roleid=?"
         my $userroles = $self->get_schema->resultset('UserRole')->search(
-            roleid => $roleid,
+            {
+                roleid => $roleid,
+            }
         );
         foreach my $userrole ($userroles->all){
             my $userid = $userrole->get_column('userid');

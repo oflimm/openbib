@@ -75,7 +75,14 @@
       <div class="ob-thumbnail">
       </div> 
       <div class="ob-brieftitle">
-<span class="ob-person">[% IF singleuser.nachname %][% singleuser.nachname %][% END %][% IF singleuser.vorname %], [% singleuser.vorname %][% END %]</span><br /><strong><span class="ob-title"><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/id/[% singleuser.id %]/edit">[% singleuser.username %]</a></span></strong></span><br/>    
+<span class="ob-person">[% IF singleuser.nachname %][% singleuser.nachname %][% END %][% IF singleuser.vorname %], [% singleuser.vorname %][% END %]</span><br />
+<strong><span class="ob-title">
+[%   IF user.has_right({scope = 'admin_users', right = 'right_update'}) %]
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/id/[% singleuser.id %]/edit.html?l=[% lang %]">[% singleuser.username %]</a>
+[%   ELSIF user.has_right({scope = 'admin_users', right = 'right_read'}) %]
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/id/[% singleuser.id %].html?l=[% lang %]">[% singleuser.username %]</a>
+[%   END %]
+</span></strong></span><br/>
       </div>
       <div class="ob-titlemark"></div>
       <div class="ob-titleactions">

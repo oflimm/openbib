@@ -61,6 +61,7 @@ sub setup {
     $self->start_mode('show_collection');
     $self->run_modes(
         'show_collection'           => 'show_collection',
+        'show_record'               => 'show_record',
         'show_record_form'          => 'show_record_form',
         'show_search'               => 'show_search',
         'show_search_form'          => 'show_search_form',
@@ -117,6 +118,8 @@ sub show_record_form {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
+    $self->param('userid',$userid);
+    
     if (!$self->authorization_successful('right_update')){
         return $self->print_authorization_error();
     }
@@ -128,6 +131,43 @@ sub show_record_form {
     };
     
     return $self->print_page($config->{tt_admin_users_record_edit_tname},$ttdata);
+}
+
+sub show_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $userid         = $self->strip_suffix($self->param('userid'));
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+
+    $self->param('userid',$userid);
+    
+    if (!$self->authorization_successful('right_read')){
+        return $self->print_authorization_error();
+    }
+
+    my $userinfo = new OpenBib::User({ID => $userid })->get_info;
+        
+    my $ttdata={
+        userinfo   => $userinfo,
+    };
+    
+    return $self->print_page($config->{tt_admin_users_record_tname},$ttdata);
 }
 
 sub show_search_form {

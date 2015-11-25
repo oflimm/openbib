@@ -1967,3 +1967,4 @@
 ../templates/admin_roles_html
 ../templates/admin_roles_record_html
 ../templates/admin_roles_record_edit
+../templates/admin_templates_record_html

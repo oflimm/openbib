@@ -171,7 +171,7 @@
 [% END %]
 
 
-<h4>[% msg.maketext("Zugeordnete Themengebiete er RVK") %]</h4>
+<h4>[% msg.maketext("Zugeordnete Themengebiete der RVK") %]</h4>
 
 [%-
    classification_selected = {};

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2015-11-25 15:12+0100\n"
+"PO-Revision-Date: 2015-11-25 16:29+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -1105,8 +1105,9 @@ msgstr "All"
 #: ../templates/admin_navigation:276 ../templates/admin_navigation:278
 #: ../templates/admin_navigation:30 ../templates/admin_navigation:301
 #: ../templates/admin_navigation:304 ../templates/admin_navigation:306
-#: ../templates/admin_navigation:32 ../templates/admin_navigation:332
-#: ../templates/admin_navigation:335 ../templates/admin_navigation:337
+#: ../templates/admin_navigation:32 ../templates/admin_navigation:325
+#: ../templates/admin_navigation:327 ../templates/admin_navigation:343
+#: ../templates/admin_navigation:346 ../templates/admin_navigation:348
 #: ../templates/admin_navigation:49 ../templates/admin_navigation:51
 #: ../templates/admin_navigation:67 ../templates/admin_navigation:69
 #: ../templates/admin_navigation:85 ../templates/admin_navigation:87
@@ -1532,6 +1533,7 @@ msgstr ""
 #: ../templates/admin_databases_updates_html:78
 #: ../templates/admin_servers_record_edit:127
 #: ../templates/admin_templates_record_edit:116
+#: ../templates/admin_templates_record_html:98
 #: ../templates/litlists_by_single_topic_include:16
 #: ../templates/users_templates_record_edit:115
 msgid "Anzahl"
@@ -2296,7 +2298,7 @@ msgstr "Already existing roles"
 msgid "Bereits existierende Standorte"
 msgstr "Already existing locations"
 
-#: ../templates/admin_templates_html:111 ../templates/templates_html:58
+#: ../templates/admin_templates_html:113 ../templates/templates_html:58
 msgid "Bereits existierende Templates"
 msgstr "Already existing templates"
 
@@ -3145,6 +3147,7 @@ msgid "Datierung von"
 msgstr "Dating from"
 
 #: ../templates/admin_templates_record_edit:127
+#: ../templates/admin_templates_record_html:109
 #: ../templates/templates_revisions_html:63
 #: ../templates/templates_revisions_record_html:61
 #: ../templates/users_templates_record_edit:126
@@ -3280,7 +3283,7 @@ msgstr "The following external services  are currently being offered:"
 #: ../templates/_profile/sammlungen/search_facet:450
 #: ../templates/_profile/sammlungen/search_facet:451
 #: ../templates/_profile/sammlungen/search_facet:452
-#: ../templates/admin_templates_html:68
+#: ../templates/admin_templates_html:69
 #: ../templates/authority_search_facet:514
 #: ../templates/authority_search_facet:515
 #: ../templates/authority_search_facet:516 ../templates/search_facet:474
@@ -4463,7 +4466,7 @@ msgstr "End"
 #: ../templates/_profile/sammlungen/search_facet:453
 #: ../templates/_profile/sammlungen/search_facet:454
 #: ../templates/_profile/sammlungen/search_facet:455
-#: ../templates/admin_templates_html:69
+#: ../templates/admin_templates_html:70
 #: ../templates/authority_search_facet:517
 #: ../templates/authority_search_facet:518
 #: ../templates/authority_search_facet:519 ../templates/search_facet:477
@@ -6042,9 +6045,11 @@ msgstr "ISSN"
 #: ../templates/admin_servers_record_edit:67
 #: ../templates/admin_sessions_active_html:66
 #: ../templates/admin_sessions_archived_search_html:66
-#: ../templates/admin_templates_html:115
+#: ../templates/admin_templates_html:117
 #: ../templates/admin_templates_record_edit:127
 #: ../templates/admin_templates_record_edit:70
+#: ../templates/admin_templates_record_html:109
+#: ../templates/admin_templates_record_html:67
 #: ../templates/admin_topics_mappings_html:76
 #: ../templates/authenticators_record_html:60 ../templates/clusters_html:62
 #: ../templates/clusters_record_html:60 ../templates/search_title_field:2
@@ -7966,7 +7971,7 @@ msgstr "Artist"
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:326
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:329
 #: ../templates/admin_clusters_html:142 ../templates/admin_roles_html:111
-#: ../templates/admin_servers_html:159 ../templates/admin_templates_html:124
+#: ../templates/admin_servers_html:159 ../templates/admin_templates_html:132
 #: ../templates/titles_record_include:512
 #: ../templates/titlist_item_html_short:328
 #: ../templates/titlist_item_html_short:331
@@ -8793,7 +8798,7 @@ msgstr "Go"
 #: ../templates/admin_servers_record_edit:115
 #: ../templates/admin_templates_record_edit:141
 #: ../templates/admin_templates_record_edit:99
-#: ../templates/admin_topics_record_edit:131
+#: ../templates/admin_topics_record_edit:132
 #: ../templates/admin_views_record_edit:144
 #: ../templates/cartitems_html_actions:160
 #: ../templates/cartitems_html_short:144 ../templates/titles_record_html:322
@@ -9401,8 +9406,9 @@ msgstr "Surname"
 #: ../templates/admin_profiles_record_html:79 ../templates/admin_roles_html:67
 #: ../templates/admin_roles_html:96 ../templates/admin_roles_record_edit:73
 #: ../templates/admin_roles_record_html:69
-#: ../templates/admin_templates_html:115 ../templates/admin_templates_html:74
+#: ../templates/admin_templates_html:117 ../templates/admin_templates_html:75
 #: ../templates/admin_templates_record_edit:85
+#: ../templates/admin_templates_record_html:82
 #: ../templates/cartitems_html_actions:44
 #: ../templates/cartitems_html_actions:63 ../templates/databases_html:92
 #: ../templates/orgunits_html:66 ../templates/orgunits_record_html:64
@@ -9565,7 +9571,7 @@ msgstr "No"
 #: ../templates/admin_profiles_html:79
 #: ../templates/admin_profiles_record_edit:112
 #: ../templates/admin_roles_html:77 ../templates/admin_servers_html:106
-#: ../templates/admin_templates_html:97 ../templates/admin_topics_html:80
+#: ../templates/admin_templates_html:98 ../templates/admin_topics_html:80
 #: ../templates/admin_views_html:98 ../templates/titles_form:86
 #: ../templates/users_litlists_html:84
 #: ../templates/users_searchprofiles_html:69
@@ -9770,7 +9776,7 @@ msgstr "New password"
 msgid "Neues Passwort zusenden"
 msgstr "Send new password"
 
-#: ../templates/admin_templates_html:61
+#: ../templates/admin_templates_html:62
 msgid "Neues Template einrichten"
 msgstr "Create new template"
 
@@ -12135,8 +12141,9 @@ msgstr "Specialized portals"
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/corporate_banner:9
 #: ../templates/_view/filme/corporate_banner:9
 #: ../templates/_view/richter/corporate_banner:5
-#: ../templates/admin_templates_html:121
-#: ../templates/admin_templates_record_edit:76 ../templates/corporate_banner:9
+#: ../templates/admin_templates_html:123
+#: ../templates/admin_templates_record_edit:76
+#: ../templates/admin_templates_record_html:73 ../templates/corporate_banner:9
 #: ../templates/info_journaltocs:47 ../templates/templates_html:70
 #: ../templates/users_templates_html:70
 #: ../templates/users_templates_record_edit:76
@@ -12170,8 +12177,9 @@ msgstr "Language icon for %1"
 #: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:182
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:168
 #: ../templates/_profile/sammlungen/search_facet:180
-#: ../templates/admin_templates_html:115 ../templates/admin_templates_html:66
+#: ../templates/admin_templates_html:117 ../templates/admin_templates_html:67
 #: ../templates/admin_templates_record_edit:75
+#: ../templates/admin_templates_record_html:72
 #: ../templates/authority_search_facet:196 ../templates/persons_record_html:94
 #: ../templates/search_facet:180 ../templates/search_title_field:14
 #: ../templates/search_title_field:29 ../templates/templates_html:62
@@ -18524,15 +18532,20 @@ msgstr "Import Tags to BibSonomy"
 msgid "Tags nach Namen"
 msgstr "Tags by name"
 
+#: ../templates/admin_templates_record_html:62
+msgid "Template"
+msgstr "Template"
+
 #: ../templates/admin_templates_record_edit:67
 #: ../templates/users_templates_record_edit:67
 msgid "Template bearbeiten"
 msgstr "Edit template"
 
-#: ../templates/admin_navigation:324 ../templates/admin_navigation:326
+#: ../templates/admin_navigation:335 ../templates/admin_navigation:337
 #: ../templates/admin_templates_html:39
 #: ../templates/admin_templates_record_delete_confirm:39
 #: ../templates/admin_templates_record_edit:42
+#: ../templates/admin_templates_record_html:42
 #: ../templates/admin_users_record_edit:127 ../templates/templates_html:38
 #: ../templates/templates_revisions_record_delete_confirm:39
 #: ../templates/users_templates_html:39 ../templates/users_templates_html:60
@@ -18552,9 +18565,10 @@ msgstr "Development system - Not intended for regular use"
 #: ../templates/_database/einbaende/titles_record_html:341
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:316
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:306
-#: ../templates/admin_templates_html:92
+#: ../templates/admin_templates_html:93
 #: ../templates/admin_templates_record_edit:127
 #: ../templates/admin_templates_record_edit:90
+#: ../templates/admin_templates_record_html:109
 #: ../templates/templates_record_html:61
 #: ../templates/templates_revisions_html:63
 #: ../templates/templates_revisions_record_html:62
@@ -18618,29 +18632,29 @@ msgstr "Subject"
 msgid "Themengebiet bearbeiten"
 msgstr "Edit subjects"
 
-#: ../templates/admin_topics_record_edit:144
+#: ../templates/admin_topics_record_edit:145
 #: ../templates/topics_record_mapping_html:114
 msgid "Themengebiet(e) der Basisklassifikation zuordnen"
 msgstr "Assign topics to basic classification"
 
-#: ../templates/admin_topics_record_edit:274
+#: ../templates/admin_topics_record_edit:275
 msgid "Themengebiet(e) der DDC zuordnen"
 msgstr "Assign topics to DDC"
 
-#: ../templates/admin_topics_record_edit:177
+#: ../templates/admin_topics_record_edit:178
 #: ../templates/topics_record_mapping_html:164
 msgid "Themengebiet(e) der EZB zuordnen"
 msgstr "Assign topics to EZB subjects"
 
-#: ../templates/admin_topics_record_edit:307
+#: ../templates/admin_topics_record_edit:308
 msgid "Themengebiet(e) der LoC Classification zuordnen"
 msgstr "Assign topics to Library of Congress Classification"
 
-#: ../templates/admin_topics_record_edit:241
+#: ../templates/admin_topics_record_edit:242
 msgid "Themengebiet(e) der Regensburger Verbundklassifikation zuordnen"
 msgstr "Assign topics to Regensburger Verbundklassifikation"
 
-#: ../templates/admin_topics_record_edit:209
+#: ../templates/admin_topics_record_edit:210
 #: ../templates/topics_record_mapping_html:211
 msgid "Themengebiet(e) von DBIS zuordnen"
 msgstr "Assign DBIS subjects"
@@ -18660,12 +18674,12 @@ msgstr "Assign DBIS subjects"
 #: ../templates/admin_topics_mappings_record_html:54
 #: ../templates/admin_topics_mappings_record_html:83
 #: ../templates/admin_topics_record_delete_confirm:39
-#: ../templates/admin_topics_record_edit:147
-#: ../templates/admin_topics_record_edit:180
-#: ../templates/admin_topics_record_edit:212
-#: ../templates/admin_topics_record_edit:244
-#: ../templates/admin_topics_record_edit:277
-#: ../templates/admin_topics_record_edit:310
+#: ../templates/admin_topics_record_edit:148
+#: ../templates/admin_topics_record_edit:181
+#: ../templates/admin_topics_record_edit:213
+#: ../templates/admin_topics_record_edit:245
+#: ../templates/admin_topics_record_edit:278
+#: ../templates/admin_topics_record_edit:311
 #: ../templates/admin_topics_record_edit:89
 #: ../templates/admin_topics_record_html:89 ../templates/browse_html:60
 #: ../templates/browse_topics_html:39 ../templates/browse_topics_html:61
@@ -19503,8 +19517,9 @@ msgstr "Used search type"
 msgid "Vielen Dank f&uuml;r Ihren Besuch."
 msgstr "Thank you for your visit."
 
-#: ../templates/admin_templates_html:115 ../templates/admin_templates_html:83
-#: ../templates/admin_templates_record_edit:80 ../templates/templates_html:62
+#: ../templates/admin_templates_html:117 ../templates/admin_templates_html:84
+#: ../templates/admin_templates_record_edit:80
+#: ../templates/admin_templates_record_html:77 ../templates/templates_html:62
 #: ../templates/templates_record_html:59 ../templates/users_templates_html:64
 #: ../templates/users_templates_record_edit:80
 msgid "View"
@@ -20500,7 +20515,7 @@ msgid "Zugeordnete Themengebiete der LoC Classification"
 msgstr "Library of Congress Classification entries assigned to this topic"
 
 #: ../templates/admin_topics_record_html:174
-msgid "Zugeordnete Themengebiete er RVK"
+msgid "Zugeordnete Themengebiete der RVK"
 msgstr "RVK entries assigned to this topic"
 
 #: ../templates/admin_topics_record_html:153
@@ -21605,12 +21620,12 @@ msgstr "repeated"
 #: ../templates/admin_searchprofiles_record_edit:86
 #: ../templates/admin_servers_record_edit:110
 #: ../templates/admin_topics_record_edit:127
-#: ../templates/admin_topics_record_edit:164
-#: ../templates/admin_topics_record_edit:196
-#: ../templates/admin_topics_record_edit:228
-#: ../templates/admin_topics_record_edit:261
-#: ../templates/admin_topics_record_edit:294
-#: ../templates/admin_topics_record_edit:329
+#: ../templates/admin_topics_record_edit:165
+#: ../templates/admin_topics_record_edit:197
+#: ../templates/admin_topics_record_edit:229
+#: ../templates/admin_topics_record_edit:262
+#: ../templates/admin_topics_record_edit:295
+#: ../templates/admin_topics_record_edit:330
 #: ../templates/admin_views_record_edit:140
 #: ../templates/admin_views_rss_record_edit:92
 #: ../templates/topics_record_mapping_html:144

@@ -133,10 +133,10 @@
 <a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% catalog.dbname %]/updates.html?l=[% lang %]"><img src="[% config.get('chart_img') %]" alt="[% msg.maketext("Aktualisierung") %]" /></a>
 <a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% catalog.dbname %]/rss.html?l=[% lang %]"><img src="[% config.get('rssfeed_img') %]" alt="RSS-Icon" title="RSS"/></a>
 [% IF catalog.locationid.identifier %]
-[%   IF user.has_right({scope = 'admin_databases', right = 'right_update'}) %]
+[%   IF user.has_right({scope = 'admin_locations', right = 'right_update'}) %]
 <a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %]/id/[% catalog.locationid.identifier %]/edit.html?l=[% lang %]"><img src="[% config.get('info_img') %]" alt="[% msg.maketext("Standorte") %]" /></a>
-[%   ELSIF user.has_right({scope = 'admin_databases', right = 'right_read'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %]/id/[% catalog.locationid.identifier %]/edit.html?l=[% lang %]"><img src="[% config.get('info_img') %]" alt="[% msg.maketext("Standorte") %]" /></a>
+[%   ELSIF user.has_right({scope = 'admin_locations', right = 'right_read'}) %]
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %]/id/[% catalog.locationid.identifier %].html?l=[% lang %]"><img src="[% config.get('info_img') %]" alt="[% msg.maketext("Standorte") %]" /></a>
 [%   END %]
 [% END %]
 </td>

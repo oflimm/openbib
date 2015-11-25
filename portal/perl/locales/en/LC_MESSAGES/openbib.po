@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2015-11-24 16:06+0100\n"
+"PO-Revision-Date: 2015-11-25 15:12+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -2300,7 +2300,7 @@ msgstr "Already existing locations"
 msgid "Bereits existierende Templates"
 msgstr "Already existing templates"
 
-#: ../templates/admin_topics_html:91
+#: ../templates/admin_topics_html:93
 msgid "Bereits existierende Themengebiete"
 msgstr "Already existing subjects"
 
@@ -2351,8 +2351,8 @@ msgstr "Description of profession"
 #: ../templates/admin_roles_html:96 ../templates/admin_roles_record_edit:78
 #: ../templates/admin_roles_record_html:74 ../templates/admin_servers_html:125
 #: ../templates/admin_servers_html:72
-#: ../templates/admin_servers_record_edit:77 ../templates/admin_topics_html:74
-#: ../templates/admin_topics_html:99
+#: ../templates/admin_servers_record_edit:77
+#: ../templates/admin_topics_html:101 ../templates/admin_topics_html:75
 #: ../templates/admin_topics_mappings_html:79
 #: ../templates/admin_topics_mappings_record_html:77
 #: ../templates/admin_topics_record_edit:122 ../templates/admin_views_html:119
@@ -2842,10 +2842,6 @@ msgstr "DB-Name"
 msgid "DBIS"
 msgstr "DBIS"
 
-#: ../templates/admin_topics_record_html:146
-msgid "DBIS zugeordnete Themengebiete"
-msgstr "Topics correspondig to DBIS"
-
 #. ("<a    href=\"http://www.mozilla.org/products/firefox/\"    target=\"_blank\">Mozilla Firefox</a>","<a    href=\"javascript:addEngine('KUG','jpg','Academic')
 #: ../templates/home_html_bottom_center:77
 msgid ""
@@ -3182,10 +3178,6 @@ msgstr ""
 "Please note that not all libraries enter single articles into their online "
 "catalogs."
 
-#: ../templates/admin_topics_record_html:77
-msgid "Der Basisklassifikation zugeordnete Themengebiete"
-msgstr "Topics corresponding to basic classification"
-
 #: ../modules/OpenBib/Handler/PSGI/Search.pm:545
 msgid ""
 "Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank "
@@ -3193,10 +3185,6 @@ msgid ""
 msgstr ""
 "This search term has to consist of at least 3 characters if more than one "
 "catalog has been selected for your search request."
-
-#: ../templates/admin_topics_record_html:110
-msgid "Der EZB zugeordnete Themengebiete"
-msgstr "Topics corresponding to EZB"
 
 #: ../modules/OpenBib/Handler/PSGI/Users/LitLists/Item.pm:297
 msgid "Der Eintrag in der Literaturliste existiert nicht"
@@ -7671,6 +7659,12 @@ msgstr "Category"
 #: ../templates/_view/richter/litlists_record_html:61
 #: ../templates/_view/richter/users_litlists_record_edit:46
 #: ../templates/admin_databases_record_edit:103
+#: ../templates/admin_topics_record_html:128
+#: ../templates/admin_topics_record_html:149
+#: ../templates/admin_topics_record_html:170
+#: ../templates/admin_topics_record_html:191
+#: ../templates/admin_topics_record_html:211
+#: ../templates/admin_topics_record_html:231
 #: ../templates/litlists_record_html:60
 #: ../templates/users_litlists_record_edit:59
 #: ../templates/users_litlists_record_html:59
@@ -9571,7 +9565,7 @@ msgstr "No"
 #: ../templates/admin_profiles_html:79
 #: ../templates/admin_profiles_record_edit:112
 #: ../templates/admin_roles_html:77 ../templates/admin_servers_html:106
-#: ../templates/admin_templates_html:97 ../templates/admin_topics_html:79
+#: ../templates/admin_templates_html:97 ../templates/admin_topics_html:80
 #: ../templates/admin_views_html:98 ../templates/titles_form:86
 #: ../templates/users_litlists_html:84
 #: ../templates/users_searchprofiles_html:69
@@ -9780,7 +9774,7 @@ msgstr "Send new password"
 msgid "Neues Template einrichten"
 msgstr "Create new template"
 
-#: ../templates/admin_topics_html:64
+#: ../templates/admin_topics_html:65
 msgid "Neues Themengebiet anlegen"
 msgstr "Create new subject"
 
@@ -13160,7 +13154,7 @@ msgstr "System"
 msgid "Systematik"
 msgstr "Classification"
 
-#: ../templates/admin_topics_html:99 ../templates/topics_html:63
+#: ../templates/admin_topics_html:101 ../templates/topics_html:63
 msgid "Systematik-Gruppen"
 msgstr "Classification groups"
 
@@ -16816,15 +16810,13 @@ msgstr "Full title of source"
 
 #: ../templates/_database/landschaft/visible_categories_title:71
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:72
-#, fuzzy
 msgid "T0598"
-msgstr "Title source"
+msgstr "Footnote of title source"
 
 #: ../templates/_database/landschaft/visible_categories_title:72
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:73
-#, fuzzy
 msgid "T0599"
-msgstr "Title source"
+msgstr "Standardized number of  source"
 
 #: ../templates/_database/bestellungen/visible_categories_title:60
 #: ../templates/_database/inst001/visible_categories_title:56
@@ -17139,25 +17131,21 @@ msgstr "Title in variant spelling"
 
 #: ../templates/_database/landschaft/visible_categories_title:77
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:78
-#, fuzzy
 msgid "T0672"
-msgstr "Title in variant spelling"
+msgstr "Standardized name of author"
 
 #: ../templates/_database/landschaft/visible_categories_title:78
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:79
-#, fuzzy
 msgid "T0673"
-msgstr "Title in variant spelling"
+msgstr "Standardized place"
 
 #: ../templates/_database/landschaft/visible_categories_title:79
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:80
-#, fuzzy
 msgid "T0674"
-msgstr "Title in variant spelling"
+msgstr "Year of original"
 
 #: ../templates/_database/landschaft/visible_categories_title:80
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:81
-#, fuzzy
 msgid "T0675"
 msgstr "Title in variant spelling"
 
@@ -17419,9 +17407,8 @@ msgstr "Media type"
 
 #: ../templates/_database/landschaft/visible_categories_title:82
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:84
-#, fuzzy
 msgid "T0840"
-msgstr "Rererence"
+msgstr "Accordance"
 
 #: ../templates/_database/bestellungen/visible_categories_title:97
 #: ../templates/_database/inst001/visible_categories_title:92
@@ -17836,7 +17823,7 @@ msgstr "Subject headings"
 #: ../templates/_database/landschaft/visible_categories_title:83
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:85
 msgid "T1202"
-msgstr ""
+msgstr "Remark holding"
 
 #: ../templates/_database/inst001/visible_categories_title:110
 #: ../templates/_profile/kug/_database/edz/visible_categories_title:113
@@ -18016,9 +18003,8 @@ msgid "T2663"
 msgstr "USB URL information"
 
 #: ../templates/_database/landschaft/visible_categories_title:36
-#, fuzzy
 msgid "T3000"
-msgstr "Table of contents (HTML)"
+msgstr "Acquisituion (local)"
 
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:29
 msgid "T3000-portrait"
@@ -18045,9 +18031,8 @@ msgid "T3003"
 msgstr "Table of contents (pdf)"
 
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:115
-#, fuzzy
 msgid "T3004"
-msgstr "Table of contents (HTML)"
+msgstr "Remark MAB2"
 
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:32
 #: ../templates/all_categories_title:131
@@ -18615,10 +18600,11 @@ msgstr "Subject-based Integration of other Sources"
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:53
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:53
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:53
-#: ../templates/admin_topics_html:69 ../templates/admin_topics_html:99
+#: ../templates/admin_topics_html:101 ../templates/admin_topics_html:70
 #: ../templates/admin_topics_mappings_html:77
 #: ../templates/admin_topics_mappings_record_html:76
 #: ../templates/admin_topics_record_edit:117
+#: ../templates/admin_topics_record_html:109
 #: ../templates/authority_search_facet:194 ../templates/search_title_field:20
 #: ../templates/topics_html:63 ../templates/topics_mappings_html:75
 #: ../templates/topics_mappings_record_html:74
@@ -18681,10 +18667,7 @@ msgstr "Assign DBIS subjects"
 #: ../templates/admin_topics_record_edit:277
 #: ../templates/admin_topics_record_edit:310
 #: ../templates/admin_topics_record_edit:89
-#: ../templates/admin_topics_record_html:113
-#: ../templates/admin_topics_record_html:149
-#: ../templates/admin_topics_record_html:54
-#: ../templates/admin_topics_record_html:80 ../templates/browse_html:60
+#: ../templates/admin_topics_record_html:89 ../templates/browse_html:60
 #: ../templates/browse_topics_html:39 ../templates/browse_topics_html:61
 #: ../templates/browse_topics_record_html:41 ../templates/info_53:42
 #: ../templates/litlists_by_single_topic_html:47
@@ -19210,7 +19193,7 @@ msgid ""
 "Viewnamen."
 msgstr "To edit an already existing view please select the view name."
 
-#: ../templates/admin_topics_html:94
+#: ../templates/admin_topics_html:96
 msgid ""
 "Um einen bereits existierendes Themengebiet zu bearbeiten klicken Sie bitte "
 "auf den Namen."
@@ -20500,6 +20483,30 @@ msgstr "tag to be replaced"
 msgid "Zugemailte Merkliste"
 msgstr "Mailed list of interest"
 
+#: ../templates/admin_topics_record_html:111
+msgid "Zugeordnete Themengebiete der Basisklassifikation"
+msgstr "Basic classification entries assigned to this topic"
+
+#: ../templates/admin_topics_record_html:194
+msgid "Zugeordnete Themengebiete der DDC"
+msgstr "DDC entries assigned to this topic"
+
+#: ../templates/admin_topics_record_html:131
+msgid "Zugeordnete Themengebiete der EZB"
+msgstr "DBIS entries assigned to this topic"
+
+#: ../templates/admin_topics_record_html:214
+msgid "Zugeordnete Themengebiete der LoC Classification"
+msgstr "Library of Congress Classification entries assigned to this topic"
+
+#: ../templates/admin_topics_record_html:174
+msgid "Zugeordnete Themengebiete er RVK"
+msgstr "RVK entries assigned to this topic"
+
+#: ../templates/admin_topics_record_html:153
+msgid "Zugeordnete Themengebiete von DBIS"
+msgstr "DBIS entries assigned to this topic"
+
 #: ../templates/admin_statistics_client_html:92
 msgid "Zugreifende IP's nach H&auml;ufigkeit"
 msgstr "Accessing IP's by occurence"
@@ -21661,6 +21668,12 @@ msgstr "Overview"
 #: ../templates/users_navigation:100 ../templates/users_navigation:102
 msgid "Überziehungen / Gebühren"
 msgstr "Overdue/Fees"
+
+#~ msgid "Der Basisklassifikation zugeordnete Themengebiete"
+#~ msgstr "Topics corresponding to basic classification"
+
+#~ msgid "Der EZB zugeordnete Themengebiete"
+#~ msgstr "Topics corresponding to EZB"
 
 #~ msgid "Katalog bearbeiten"
 #~ msgstr "Edit catalog"

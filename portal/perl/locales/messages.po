@@ -1178,7 +1178,7 @@ msgstr ""
 msgid "Bereits existierende Templates"
 msgstr ""
 
-#: ../templates/admin_topics_html:91
+#: ../templates/admin_topics_html:93
 msgid "Bereits existierende Themengebiete"
 msgstr ""
 
@@ -1202,7 +1202,7 @@ msgstr ""
 msgid "Berufsbezeichnung"
 msgstr ""
 
-#: ../templates/admin_authenticators_html:121 ../templates/admin_authenticators_html:88 ../templates/admin_authenticators_record_edit:87 ../templates/admin_authenticators_record_html:66 ../templates/admin_clusters_html:109 ../templates/admin_clusters_html:67 ../templates/admin_clusters_record_edit:72 ../templates/admin_databases_html:126 ../templates/admin_databases_html:75 ../templates/admin_databases_record_edit:72 ../templates/admin_databases_record_html:64 ../templates/admin_locations_html:108 ../templates/admin_locations_html:76 ../templates/admin_locations_record_edit:99 ../templates/admin_orgunits_html:66 ../templates/admin_orgunits_record_edit:76 ../templates/admin_orgunits_record_html:69 ../templates/admin_profiles_html:104 ../templates/admin_profiles_html:74 ../templates/admin_profiles_record_edit:107 ../templates/admin_profiles_record_edit:124 ../templates/admin_profiles_record_edit:72 ../templates/admin_profiles_record_html:67 ../templates/admin_profiles_record_html:79 ../templates/admin_roles_html:72 ../templates/admin_roles_html:96 ../templates/admin_roles_record_edit:78 ../templates/admin_roles_record_html:74 ../templates/admin_servers_html:125 ../templates/admin_servers_html:72 ../templates/admin_servers_record_edit:77 ../templates/admin_topics_html:74 ../templates/admin_topics_html:99 ../templates/admin_topics_mappings_html:79 ../templates/admin_topics_mappings_record_html:77 ../templates/admin_topics_record_edit:122 ../templates/admin_views_html:119 ../templates/admin_views_html:74 ../templates/admin_views_record_edit:79 ../templates/admin_views_rss_record_html:52 ../templates/authenticators_html:62 ../templates/authenticators_record_html:61 ../templates/clusters_html:62 ../templates/clusters_record_html:61 ../templates/databases_html:92 ../templates/databases_record_html:62 ../templates/locations_html:108 ../templates/orgunits_html:66 ../templates/orgunits_record_html:68 ../templates/profiles_html:62 ../templates/profiles_record_html:65 ../templates/profiles_record_html:75 ../templates/servers_html:64 ../templates/servers_record_html:62 ../templates/topics_html:63 ../templates/topics_mappings_html:77 ../templates/topics_mappings_record_html:76 ../templates/topics_record_html:108 ../templates/topics_record_html:129 ../templates/topics_record_html:80 ../templates/topics_record_html:89 ../templates/topics_record_mapping_html:83 ../templates/views_html:61 ../templates/views_record_html:62
+#: ../templates/admin_authenticators_html:121 ../templates/admin_authenticators_html:88 ../templates/admin_authenticators_record_edit:87 ../templates/admin_authenticators_record_html:66 ../templates/admin_clusters_html:109 ../templates/admin_clusters_html:67 ../templates/admin_clusters_record_edit:72 ../templates/admin_databases_html:126 ../templates/admin_databases_html:75 ../templates/admin_databases_record_edit:72 ../templates/admin_databases_record_html:64 ../templates/admin_locations_html:108 ../templates/admin_locations_html:76 ../templates/admin_locations_record_edit:99 ../templates/admin_orgunits_html:66 ../templates/admin_orgunits_record_edit:76 ../templates/admin_orgunits_record_html:69 ../templates/admin_profiles_html:104 ../templates/admin_profiles_html:74 ../templates/admin_profiles_record_edit:107 ../templates/admin_profiles_record_edit:124 ../templates/admin_profiles_record_edit:72 ../templates/admin_profiles_record_html:67 ../templates/admin_profiles_record_html:79 ../templates/admin_roles_html:72 ../templates/admin_roles_html:96 ../templates/admin_roles_record_edit:78 ../templates/admin_roles_record_html:74 ../templates/admin_servers_html:125 ../templates/admin_servers_html:72 ../templates/admin_servers_record_edit:77 ../templates/admin_topics_html:101 ../templates/admin_topics_html:75 ../templates/admin_topics_mappings_html:79 ../templates/admin_topics_mappings_record_html:77 ../templates/admin_topics_record_edit:122 ../templates/admin_views_html:119 ../templates/admin_views_html:74 ../templates/admin_views_record_edit:79 ../templates/admin_views_rss_record_html:52 ../templates/authenticators_html:62 ../templates/authenticators_record_html:61 ../templates/clusters_html:62 ../templates/clusters_record_html:61 ../templates/databases_html:92 ../templates/databases_record_html:62 ../templates/locations_html:108 ../templates/orgunits_html:66 ../templates/orgunits_record_html:68 ../templates/profiles_html:62 ../templates/profiles_record_html:65 ../templates/profiles_record_html:75 ../templates/servers_html:64 ../templates/servers_record_html:62 ../templates/topics_html:63 ../templates/topics_mappings_html:77 ../templates/topics_mappings_record_html:76 ../templates/topics_record_html:108 ../templates/topics_record_html:129 ../templates/topics_record_html:80 ../templates/topics_record_html:89 ../templates/topics_record_mapping_html:83 ../templates/views_html:61 ../templates/views_record_html:62
 msgid "Beschreibung"
 msgstr ""
 
@@ -1426,10 +1426,6 @@ msgstr ""
 msgid "DBIS"
 msgstr ""
 
-#: ../templates/admin_topics_record_html:146
-msgid "DBIS zugeordnete Themengebiete"
-msgstr ""
-
 #. ("<a    href=\"http://www.mozilla.org/products/firefox/\"    target=\"_blank\">Mozilla Firefox</a>","<a    href=\"javascript:addEngine('KUG','jpg','Academic')
 #: ../templates/home_html_bottom_center:77
 msgid ""
@@ -1606,16 +1602,8 @@ msgstr ""
 msgid "Denken Sie daran, dass nur wenige Bibliotheken Ihre Aufs&auml;tze in Ihrem Katalog aufnehmen"
 msgstr ""
 
-#: ../templates/admin_topics_record_html:77
-msgid "Der Basisklassifikation zugeordnete Themengebiete"
-msgstr ""
-
 #: ../modules/OpenBib/Handler/PSGI/Search.pm:545
 msgid "Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche im Index ausgewählt wurde."
-msgstr ""
-
-#: ../templates/admin_topics_record_html:110
-msgid "Der EZB zugeordnete Themengebiete"
 msgstr ""
 
 #: ../modules/OpenBib/Handler/PSGI/Users/LitLists/Item.pm:297
@@ -3578,7 +3566,7 @@ msgstr ""
 msgid "Kategorie"
 msgstr ""
 
-#: ../templates/_profile/kug/users_preferences_html:272 ../templates/_view/richter/litlists_record_html:61 ../templates/_view/richter/users_litlists_record_edit:46 ../templates/admin_databases_record_edit:103 ../templates/litlists_record_html:60 ../templates/users_litlists_record_edit:59 ../templates/users_litlists_record_html:59 ../templates/users_preferences_html:282
+#: ../templates/_profile/kug/users_preferences_html:272 ../templates/_view/richter/litlists_record_html:61 ../templates/_view/richter/users_litlists_record_edit:46 ../templates/admin_databases_record_edit:103 ../templates/admin_topics_record_html:128 ../templates/admin_topics_record_html:149 ../templates/admin_topics_record_html:170 ../templates/admin_topics_record_html:191 ../templates/admin_topics_record_html:211 ../templates/admin_topics_record_html:231 ../templates/litlists_record_html:60 ../templates/users_litlists_record_edit:59 ../templates/users_litlists_record_html:59 ../templates/users_preferences_html:282
 msgid "Keine"
 msgstr ""
 
@@ -4147,7 +4135,7 @@ msgstr ""
 msgid "Nein"
 msgstr ""
 
-#: ../templates/admin_authenticators_html:101 ../templates/admin_clusters_html:90 ../templates/admin_databases_html:108 ../templates/admin_databases_rss_html:114 ../templates/admin_databases_rss_record_html:131 ../templates/admin_databases_rss_record_html:188 ../templates/admin_databases_rss_record_html:245 ../templates/admin_databases_rss_record_html:302 ../templates/admin_databases_rss_record_html:74 ../templates/admin_locations_html:90 ../templates/admin_locations_record_edit:138 ../templates/admin_profiles_html:79 ../templates/admin_profiles_record_edit:112 ../templates/admin_roles_html:77 ../templates/admin_servers_html:106 ../templates/admin_templates_html:97 ../templates/admin_topics_html:79 ../templates/admin_views_html:98 ../templates/titles_form:86 ../templates/users_litlists_html:84 ../templates/users_searchprofiles_html:69
+#: ../templates/admin_authenticators_html:101 ../templates/admin_clusters_html:90 ../templates/admin_databases_html:108 ../templates/admin_databases_rss_html:114 ../templates/admin_databases_rss_record_html:131 ../templates/admin_databases_rss_record_html:188 ../templates/admin_databases_rss_record_html:245 ../templates/admin_databases_rss_record_html:302 ../templates/admin_databases_rss_record_html:74 ../templates/admin_locations_html:90 ../templates/admin_locations_record_edit:138 ../templates/admin_profiles_html:79 ../templates/admin_profiles_record_edit:112 ../templates/admin_roles_html:77 ../templates/admin_servers_html:106 ../templates/admin_templates_html:97 ../templates/admin_topics_html:80 ../templates/admin_views_html:98 ../templates/titles_form:86 ../templates/users_litlists_html:84 ../templates/users_searchprofiles_html:69
 msgid "Neu"
 msgstr ""
 
@@ -4275,7 +4263,7 @@ msgstr ""
 msgid "Neues Template einrichten"
 msgstr ""
 
-#: ../templates/admin_topics_html:64
+#: ../templates/admin_topics_html:65
 msgid "Neues Themengebiet anlegen"
 msgstr ""
 
@@ -5571,7 +5559,7 @@ msgstr ""
 msgid "Systematik"
 msgstr ""
 
-#: ../templates/admin_topics_html:99 ../templates/topics_html:63
+#: ../templates/admin_topics_html:101 ../templates/topics_html:63
 msgid "Systematik-Gruppen"
 msgstr ""
 
@@ -6986,7 +6974,7 @@ msgstr ""
 msgid "Thematische Integration weiterer Quellen"
 msgstr ""
 
-#: ../templates/_profile/kug/authority_search_facet:196 ../templates/_profile/kug/search_facet:236 ../templates/_profile/kug/searchforms_record_query:53 ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:53 ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:53 ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:53 ../templates/admin_topics_html:69 ../templates/admin_topics_html:99 ../templates/admin_topics_mappings_html:77 ../templates/admin_topics_mappings_record_html:76 ../templates/admin_topics_record_edit:117 ../templates/authority_search_facet:194 ../templates/search_title_field:20 ../templates/topics_html:63 ../templates/topics_mappings_html:75 ../templates/topics_mappings_record_html:74 ../templates/topics_record_html:76 ../templates/topics_record_mapping_html:83
+#: ../templates/_profile/kug/authority_search_facet:196 ../templates/_profile/kug/search_facet:236 ../templates/_profile/kug/searchforms_record_query:53 ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:53 ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:53 ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:53 ../templates/admin_topics_html:101 ../templates/admin_topics_html:70 ../templates/admin_topics_mappings_html:77 ../templates/admin_topics_mappings_record_html:76 ../templates/admin_topics_record_edit:117 ../templates/admin_topics_record_html:109 ../templates/authority_search_facet:194 ../templates/search_title_field:20 ../templates/topics_html:63 ../templates/topics_mappings_html:75 ../templates/topics_mappings_record_html:74 ../templates/topics_record_html:76 ../templates/topics_record_mapping_html:83
 msgid "Themengebiet"
 msgstr ""
 
@@ -7018,7 +7006,7 @@ msgstr ""
 msgid "Themengebiet(e) von DBIS zuordnen"
 msgstr ""
 
-#: ../templates/_profile/kug/_view/kug/mainnavigation_html:60 ../templates/_profile/kug/_view/lehrbuchsmlg/mainnavigation_html:60 ../templates/_profile/kug/_view/lesesaal/mainnavigation_html:60 ../templates/_profile/kug/mainnavigation_html:60 ../templates/_profile/rheinlandbib/searchforms_record_simple:477 ../templates/_profile/rheinlandbib/searchforms_record_simple:64 ../templates/_view/richter/litlists_record_html:55 ../templates/_view/richter/searchforms_record_simple:83 ../templates/_view/richter/users_litlists_record_edit:40 ../templates/admin_navigation:317 ../templates/admin_navigation:319 ../templates/admin_topics_html:41 ../templates/admin_topics_mappings_html:54 ../templates/admin_topics_mappings_record_html:54 ../templates/admin_topics_mappings_record_html:83 ../templates/admin_topics_record_delete_confirm:39 ../templates/admin_topics_record_edit:147 ../templates/admin_topics_record_edit:180 ../templates/admin_topics_record_edit:212 ../templates/admin_topics_record_edit:244 ../templates/admin_topics_record_edit:277 ../templates/admin_topics_record_edit:310 ../templates/admin_topics_record_edit:89 ../templates/admin_topics_record_html:113 ../templates/admin_topics_record_html:149 ../templates/admin_topics_record_html:54 ../templates/admin_topics_record_html:80 ../templates/browse_html:60 ../templates/browse_topics_html:39 ../templates/browse_topics_html:61 ../templates/browse_topics_record_html:41 ../templates/info_53:42 ../templates/litlists_by_single_topic_html:47 ../templates/litlists_by_single_topic_include:16 ../templates/litlists_by_single_topic_recent_html:48 ../templates/litlists_by_topic_html:39 ../templates/litlists_navigation:34 ../templates/litlists_navigation:36 ../templates/litlists_record_html:54 ../templates/mainnavigation_html:58 ../templates/searchforms_record_simple:77 ../templates/topics_html:40 ../templates/topics_html:60 ../templates/topics_mappings_html:53 ../templates/topics_mappings_record_html:53 ../templates/topics_record_html:53 ../templates/topics_record_mapping_html:117 ../templates/topics_record_mapping_html:167 ../templates/topics_record_mapping_html:214 ../templates/topics_record_mapping_html:54 ../templates/users_litlists_html:99 ../templates/users_litlists_record_edit:53 ../templates/users_litlists_record_html:53
+#: ../templates/_profile/kug/_view/kug/mainnavigation_html:60 ../templates/_profile/kug/_view/lehrbuchsmlg/mainnavigation_html:60 ../templates/_profile/kug/_view/lesesaal/mainnavigation_html:60 ../templates/_profile/kug/mainnavigation_html:60 ../templates/_profile/rheinlandbib/searchforms_record_simple:477 ../templates/_profile/rheinlandbib/searchforms_record_simple:64 ../templates/_view/richter/litlists_record_html:55 ../templates/_view/richter/searchforms_record_simple:83 ../templates/_view/richter/users_litlists_record_edit:40 ../templates/admin_navigation:317 ../templates/admin_navigation:319 ../templates/admin_topics_html:41 ../templates/admin_topics_mappings_html:54 ../templates/admin_topics_mappings_record_html:54 ../templates/admin_topics_mappings_record_html:83 ../templates/admin_topics_record_delete_confirm:39 ../templates/admin_topics_record_edit:147 ../templates/admin_topics_record_edit:180 ../templates/admin_topics_record_edit:212 ../templates/admin_topics_record_edit:244 ../templates/admin_topics_record_edit:277 ../templates/admin_topics_record_edit:310 ../templates/admin_topics_record_edit:89 ../templates/admin_topics_record_html:89 ../templates/browse_html:60 ../templates/browse_topics_html:39 ../templates/browse_topics_html:61 ../templates/browse_topics_record_html:41 ../templates/info_53:42 ../templates/litlists_by_single_topic_html:47 ../templates/litlists_by_single_topic_include:16 ../templates/litlists_by_single_topic_recent_html:48 ../templates/litlists_by_topic_html:39 ../templates/litlists_navigation:34 ../templates/litlists_navigation:36 ../templates/litlists_record_html:54 ../templates/mainnavigation_html:58 ../templates/searchforms_record_simple:77 ../templates/topics_html:40 ../templates/topics_html:60 ../templates/topics_mappings_html:53 ../templates/topics_mappings_record_html:53 ../templates/topics_record_html:53 ../templates/topics_record_mapping_html:117 ../templates/topics_record_mapping_html:167 ../templates/topics_record_mapping_html:214 ../templates/topics_record_mapping_html:54 ../templates/users_litlists_html:99 ../templates/users_litlists_record_edit:53 ../templates/users_litlists_record_html:53
 msgid "Themengebiete"
 msgstr ""
 
@@ -7260,7 +7248,7 @@ msgstr ""
 msgid "Um einen bereits existierenden View zu bearbeiten klicken Sie bitte auf den Viewnamen."
 msgstr ""
 
-#: ../templates/admin_topics_html:94
+#: ../templates/admin_topics_html:96
 msgid "Um einen bereits existierendes Themengebiet zu bearbeiten klicken Sie bitte auf den Namen."
 msgstr ""
 
@@ -7994,6 +7982,30 @@ msgstr ""
 
 #: ../templates/_view/richter/cartitems_mail_html:45 ../templates/cartitems_mail_html:45
 msgid "Zugemailte Merkliste"
+msgstr ""
+
+#: ../templates/admin_topics_record_html:111
+msgid "Zugeordnete Themengebiete der Basisklassifikation"
+msgstr ""
+
+#: ../templates/admin_topics_record_html:194
+msgid "Zugeordnete Themengebiete der DDC"
+msgstr ""
+
+#: ../templates/admin_topics_record_html:131
+msgid "Zugeordnete Themengebiete der EZB"
+msgstr ""
+
+#: ../templates/admin_topics_record_html:214
+msgid "Zugeordnete Themengebiete der LoC Classification"
+msgstr ""
+
+#: ../templates/admin_topics_record_html:174
+msgid "Zugeordnete Themengebiete er RVK"
+msgstr ""
+
+#: ../templates/admin_topics_record_html:153
+msgid "Zugeordnete Themengebiete von DBIS"
 msgstr ""
 
 #: ../templates/admin_statistics_client_html:92

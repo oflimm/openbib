@@ -56,7 +56,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-[% IF user.has_right({scope = 'admin_clusters', right = 'right_create'}) %]
+[% IF user.has_right({scope = 'admin_profiles', right = 'right_create'}) %]
 <form method="post" action="[% path_prefix %]/[% config.get('profiles_loc') %]" class="ym-form">
 
 <fieldset class="ym-columnar">
@@ -93,7 +93,7 @@
 
 <h3>[% msg.maketext("Bereits existierende Katalog-Profile") %]</h3>
 
-[% IF user.has_right({scope = 'admin_clusters', right = 'right_update'}) %]
+[% IF user.has_right({scope = 'admin_profiles', right = 'right_update'}) %]
 <p>
 [% msg.maketext("Um ein bereits existierendes Katalog-Profil zu bearbeiten klicken Sie bitte auf den Profil-Namen.") %]
 </p>

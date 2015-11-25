@@ -55,7 +55,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-[% IF user.has_right({scope = 'admin_views', right = 'right_create'}) %]
+[% IF user.has_right({scope = 'admin_servers', right = 'right_create'}) %]
 <form method="post" action="[% path_prefix %]/[% config.get('servers_loc') %]" class="ym-form">
 <fieldset class="ym-columnar">
 

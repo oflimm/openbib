@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2015-11-24 16:02+0100\n"
+"PO-Revision-Date: 2015-11-25 14:53+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -2352,7 +2352,7 @@ msgstr "Bereits existierende Standorte"
 msgid "Bereits existierende Templates"
 msgstr "Bereits existierende Templates"
 
-#: ../templates/admin_topics_html:91
+#: ../templates/admin_topics_html:93
 msgid "Bereits existierende Themengebiete"
 msgstr "Bereits existierende Themengebiete"
 
@@ -2403,8 +2403,8 @@ msgstr "Berufsbezeichnung"
 #: ../templates/admin_roles_html:96 ../templates/admin_roles_record_edit:78
 #: ../templates/admin_roles_record_html:74 ../templates/admin_servers_html:125
 #: ../templates/admin_servers_html:72
-#: ../templates/admin_servers_record_edit:77 ../templates/admin_topics_html:74
-#: ../templates/admin_topics_html:99
+#: ../templates/admin_servers_record_edit:77
+#: ../templates/admin_topics_html:101 ../templates/admin_topics_html:75
 #: ../templates/admin_topics_mappings_html:79
 #: ../templates/admin_topics_mappings_record_html:77
 #: ../templates/admin_topics_record_edit:122 ../templates/admin_views_html:119
@@ -2896,10 +2896,6 @@ msgstr "DB-Name"
 msgid "DBIS"
 msgstr "DBIS"
 
-#: ../templates/admin_topics_record_html:146
-msgid "DBIS zugeordnete Themengebiete"
-msgstr "DBIS zugeordnete Themengebiete"
-
 #. ("<a    href=\"http://www.mozilla.org/products/firefox/\"    target=\"_blank\">Mozilla Firefox</a>","<a    href=\"javascript:addEngine('KUG','jpg','Academic')
 #: ../templates/home_html_bottom_center:77
 msgid ""
@@ -3259,10 +3255,6 @@ msgstr ""
 "Denken Sie daran, dass nur wenige Bibliotheken Ihre Aufs&auml;tze in Ihrem "
 "Katalog aufnehmen"
 
-#: ../templates/admin_topics_record_html:77
-msgid "Der Basisklassifikation zugeordnete Themengebiete"
-msgstr "Der Basisklassifikation zugeordnete Themengebiete"
-
 #: ../modules/OpenBib/Handler/PSGI/Search.pm:545
 msgid ""
 "Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank "
@@ -3270,10 +3262,6 @@ msgid ""
 msgstr ""
 "Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank "
 "zur Suche im Index ausgewählt wurde."
-
-#: ../templates/admin_topics_record_html:110
-msgid "Der EZB zugeordnete Themengebiete"
-msgstr "Der EZB zugeordnete Themengebiete"
 
 #: ../modules/OpenBib/Handler/PSGI/Users/LitLists/Item.pm:297
 msgid "Der Eintrag in der Literaturliste existiert nicht"
@@ -7944,6 +7932,12 @@ msgstr "Kategorie"
 #: ../templates/_view/richter/litlists_record_html:61
 #: ../templates/_view/richter/users_litlists_record_edit:46
 #: ../templates/admin_databases_record_edit:103
+#: ../templates/admin_topics_record_html:128
+#: ../templates/admin_topics_record_html:149
+#: ../templates/admin_topics_record_html:170
+#: ../templates/admin_topics_record_html:191
+#: ../templates/admin_topics_record_html:211
+#: ../templates/admin_topics_record_html:231
 #: ../templates/litlists_record_html:60
 #: ../templates/users_litlists_record_edit:59
 #: ../templates/users_litlists_record_html:59
@@ -9870,7 +9864,7 @@ msgstr "Nein"
 #: ../templates/admin_profiles_html:79
 #: ../templates/admin_profiles_record_edit:112
 #: ../templates/admin_roles_html:77 ../templates/admin_servers_html:106
-#: ../templates/admin_templates_html:97 ../templates/admin_topics_html:79
+#: ../templates/admin_templates_html:97 ../templates/admin_topics_html:80
 #: ../templates/admin_views_html:98 ../templates/titles_form:86
 #: ../templates/users_litlists_html:84
 #: ../templates/users_searchprofiles_html:69
@@ -10079,7 +10073,7 @@ msgstr "Neues Passwort zusenden"
 msgid "Neues Template einrichten"
 msgstr "Neues Template einrichten"
 
-#: ../templates/admin_topics_html:64
+#: ../templates/admin_topics_html:65
 msgid "Neues Themengebiet anlegen"
 msgstr "Neues Themengebiet anlegen"
 
@@ -13507,7 +13501,7 @@ msgstr "System"
 msgid "Systematik"
 msgstr "Systematik"
 
-#: ../templates/admin_topics_html:99 ../templates/topics_html:63
+#: ../templates/admin_topics_html:101 ../templates/topics_html:63
 msgid "Systematik-Gruppen"
 msgstr "Systematik-Gruppen"
 
@@ -18955,10 +18949,11 @@ msgstr "Thematische Integration weiterer Quellen"
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:53
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:53
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:53
-#: ../templates/admin_topics_html:69 ../templates/admin_topics_html:99
+#: ../templates/admin_topics_html:101 ../templates/admin_topics_html:70
 #: ../templates/admin_topics_mappings_html:77
 #: ../templates/admin_topics_mappings_record_html:76
 #: ../templates/admin_topics_record_edit:117
+#: ../templates/admin_topics_record_html:109
 #: ../templates/authority_search_facet:194 ../templates/search_title_field:20
 #: ../templates/topics_html:63 ../templates/topics_mappings_html:75
 #: ../templates/topics_mappings_record_html:74
@@ -19021,10 +19016,7 @@ msgstr "Themengebiet(e) von DBIS zuordnen"
 #: ../templates/admin_topics_record_edit:277
 #: ../templates/admin_topics_record_edit:310
 #: ../templates/admin_topics_record_edit:89
-#: ../templates/admin_topics_record_html:113
-#: ../templates/admin_topics_record_html:149
-#: ../templates/admin_topics_record_html:54
-#: ../templates/admin_topics_record_html:80 ../templates/browse_html:60
+#: ../templates/admin_topics_record_html:89 ../templates/browse_html:60
 #: ../templates/browse_topics_html:39 ../templates/browse_topics_html:61
 #: ../templates/browse_topics_record_html:41 ../templates/info_53:42
 #: ../templates/litlists_by_single_topic_html:47
@@ -19561,7 +19553,7 @@ msgstr ""
 "Um einen bereits existierenden View zu bearbeiten klicken Sie bitte auf den "
 "Viewnamen."
 
-#: ../templates/admin_topics_html:94
+#: ../templates/admin_topics_html:96
 msgid ""
 "Um einen bereits existierendes Themengebiet zu bearbeiten klicken Sie bitte "
 "auf den Namen."
@@ -20926,6 +20918,30 @@ msgstr "Zu ersetzendes Tag"
 msgid "Zugemailte Merkliste"
 msgstr "Zugemailte Merkliste"
 
+#: ../templates/admin_topics_record_html:111
+msgid "Zugeordnete Themengebiete der Basisklassifikation"
+msgstr "Zugeordnete Themengebiete der Basisklassifikation"
+
+#: ../templates/admin_topics_record_html:194
+msgid "Zugeordnete Themengebiete der DDC"
+msgstr "Zugeordnete Themengebiete der DDC"
+
+#: ../templates/admin_topics_record_html:131
+msgid "Zugeordnete Themengebiete der EZB"
+msgstr "Zugeordnete Themengebiete der EZB"
+
+#: ../templates/admin_topics_record_html:214
+msgid "Zugeordnete Themengebiete der LoC Classification"
+msgstr "Zugeordnete Themengebiete der LoC Classification"
+
+#: ../templates/admin_topics_record_html:174
+msgid "Zugeordnete Themengebiete er RVK"
+msgstr "Zugeordnete Themengebiete er RVK"
+
+#: ../templates/admin_topics_record_html:153
+msgid "Zugeordnete Themengebiete von DBIS"
+msgstr "Zugeordnete Themengebiete von DBIS"
+
 #: ../templates/admin_statistics_client_html:92
 msgid "Zugreifende IP's nach H&auml;ufigkeit"
 msgstr "Zugreifende IP's nach H&auml;ufigkeit"
@@ -22088,6 +22104,12 @@ msgstr "Übersicht"
 #: ../templates/users_navigation:100 ../templates/users_navigation:102
 msgid "Überziehungen / Gebühren"
 msgstr "Überziehungen / Gebühren"
+
+#~ msgid "Der Basisklassifikation zugeordnete Themengebiete"
+#~ msgstr "Der Basisklassifikation zugeordnete Themengebiete"
+
+#~ msgid "Der EZB zugeordnete Themengebiete"
+#~ msgstr "Der EZB zugeordnete Themengebiete"
 
 #~ msgid "Role"
 #~ msgstr "Role"

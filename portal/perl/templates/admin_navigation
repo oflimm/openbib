@@ -318,6 +318,17 @@
 [%   ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('topics_loc') %].html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a></li>
 [%   END %]
+[%   IF active_submenu == "admin_topics_record" %]
+<li><span style="padding-left:35px">[% topic.name %]</span>
+    <ul>
+[%     IF active_subsubmenu == "admin_topics_record_main" %]
+      <li class="active"><strong>[% msg.maketext("Allgemein") %]</strong></li>
+[%     ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('topics_loc') %]/id/[% topics.id %]/edit.html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+[%     END %]
+    </ul>
+</li>
+[%   END %]
 [% END %]
 [% IF user.has_right({scope = 'admin_templates', right = 'right_read'}) || user.has_right({scope = 'admin_templates', right = 'right_update'}) %]
 [%   IF active_submenu == "admin_templates" %]

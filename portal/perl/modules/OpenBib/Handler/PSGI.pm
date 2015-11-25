@@ -804,7 +804,7 @@ sub print_info {
         info_nr  => $infonr,
     };
 
-    retunr $self->print_page($config->{tt_info_message_tname},$ttdata);
+    return $self->print_page($config->{tt_info_message_tname},$ttdata);
 }
 
 sub print_json {

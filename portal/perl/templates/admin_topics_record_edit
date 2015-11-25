@@ -126,10 +126,11 @@
 <div class="ym-fbox-button">
 <input type="submit" value="[% msg.maketext("Ändern") %]" />
 
+[%- IF user.has_right({scope = 'admin_topics', right = 'right_delete'}) -%]
 &nbsp;&nbsp;&nbsp;
 
 <a class="ob_button" href="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
-
+[% END # right_delete %]
 </div>
 
 </fieldset>

@@ -146,12 +146,12 @@ sub show_record {
         return $self->print_authorization_error();
     }
 
-    my $topic_ref = $user->get_topic({ id => $topicid});
+    my $topic_ref   = $user->get_topic({ id => $topicid});
     my $ezb         = OpenBib::Catalog::Factory->create_catalog({database => 'ezb' });;
     my $dbis        = OpenBib::Catalog::Factory->create_catalog({database => 'dbis' });
     
     my $ttdata={
-        topic    => $topic_ref,
+        topic      => $topic_ref,
         ezb        => $ezb,
         dbis       => $dbis,
     };
@@ -178,12 +178,12 @@ sub show_record_form {
         return $self->print_authorization_error();
     }
 
-    my $topic_ref = $user->get_topic({ id => $topicid});
+    my $topic_ref   = $user->get_topic({ id => $topicid});
     my $ezb         = OpenBib::Catalog::Factory->create_catalog({database => 'ezb' });;
     my $dbis        = OpenBib::Catalog::Factory->create_catalog({database => 'dbis' });
     
     my $ttdata={
-        topic    => $topic_ref,
+        topic      => $topic_ref,
         ezb        => $ezb,
         dbis       => $dbis,
     };

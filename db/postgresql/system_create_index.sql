@@ -123,21 +123,21 @@ CREATE INDEX userinfo_nachname ON userinfo (nachname);
 CREATE INDEX userinfo_vorname ON userinfo (vorname);
 CREATE INDEX userinfo_password ON userinfo (password);
 
-ALTER TABLE role ADD PRIMARY KEY (id);
+ALTER TABLE roleinfo ADD PRIMARY KEY (id);
 
 ALTER TABLE role_view ADD PRIMARY KEY (id);
 ALTER TABLE role_view ADD CONSTRAINT fk_roleview_view FOREIGN KEY (viewid) REFERENCES viewinfo (id);
-ALTER TABLE role_view ADD CONSTRAINT fk_roleview_role FOREIGN KEY (roleid) REFERENCES role (id);
+ALTER TABLE role_view ADD CONSTRAINT fk_roleview_role FOREIGN KEY (roleid) REFERENCES roleinfo (id);
 CREATE INDEX role_view_viewid ON role_view (viewid);
 CREATE INDEX role_view_roleid ON role_view (roleid);
 
 ALTER TABLE role_right ADD PRIMARY KEY (id);
-ALTER TABLE role_right ADD CONSTRAINT fk_roleright_role FOREIGN KEY (roleid) REFERENCES role (id);
+ALTER TABLE role_right ADD CONSTRAINT fk_roleright_role FOREIGN KEY (roleid) REFERENCES roleinfo (id);
 CREATE INDEX role_right_roleid ON role_right (roleid);
 
 ALTER TABLE user_role ADD PRIMARY KEY (id);
 ALTER TABLE user_role ADD CONSTRAINT fk_userrole_user FOREIGN KEY (userid) REFERENCES userinfo (id);
-ALTER TABLE user_role ADD CONSTRAINT fk_userrole_role FOREIGN KEY (roleid) REFERENCES role (id);
+ALTER TABLE user_role ADD CONSTRAINT fk_userrole_role FOREIGN KEY (roleid) REFERENCES roleinfo (id);
 CREATE INDEX user_role_userid ON user_role (userid);
 CREATE INDEX user_role_roleid ON user_role (roleid);
 

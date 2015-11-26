@@ -316,8 +316,8 @@ CREATE TABLE userinfo (
  bibsonomy_sync TEXT
 );
 
-DROP TABLE IF EXISTS role;
-CREATE TABLE role (
+DROP TABLE IF EXISTS roleinfo;
+CREATE TABLE roleinfo (
   id           BIGSERIAL,
   rolename     TEXT NOT NULL,
   description  TEXT NOT NULL

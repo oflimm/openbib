@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Admin::Users::Rights::Databases
 #
-#  Dieses File ist (C) 2014 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2014-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -95,7 +95,7 @@ sub update_record {
     # CGI Args
     my @databases      = ($query->param('databases'))?$query->param('databases'):();
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_update')){
         return $self->print_authorization_error();
     }
 

@@ -1,4 +1,4 @@
-#####################################################################
+####################################################################
 #
 #  OpenBib::Config
 #
@@ -2085,6 +2085,117 @@ sub all_servers_of_local_cluster_have_status {
     return $have_status;
 }
 
+sub get_roleinfo {
+    my ($self) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $object = $self->get_schema->resultset('Roleinfo');
+
+    return $object;
+}
+
+sub get_views_of_role {
+    my $self = shift;
+    my $role = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my @views = ();
+
+    my $role_views = $self->get_schema->resultset('RoleView')->search(
+        {
+            'roleid.rolename' => $role,
+        },
+        {
+            select       => ['viewid.viewname'],
+            as           => ['thisviewname'],
+            join         => ['roleid','viewid'],
+            order_by     => ['viewid.viewname'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+        }
+    );
+
+    while (my $result_ref = $role_views->next()){
+        if ($logger->is_debug){
+            $logger->debug("View: ".YAML::Dump($result_ref));
+        }
+        push @views, $result_ref->{thisviewname};
+    }
+
+    return @views;
+}
+
+sub get_rights_of_role {
+    my $self = shift;
+    my $role = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $role_rights_ref = {};
+
+    my $role_rights = $self->get_schema->resultset('RoleRight')->search_rs(
+        {
+            'roleid.rolename' => $role,
+        },
+        {
+            select       => ['me.scope','me.right_create','me.right_read','me.right_update','me.right_delete'],
+            as           => ['thisscope','thisright_create','thisright_read','thisright_update','thisright_delete'],
+            join         => ['roleid'],
+            order_by     => ['me.scope'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+        }
+    );
+
+    while (my $result_ref = $role_rights->next()){
+        if ($logger->is_debug){
+            $logger->debug(YAML::Dump($result_ref));
+        }
+        my $thisscope        = $result_ref->{thisscope};
+        my $thisright_create = $result_ref->{thisright_create};
+        my $thisright_read   = $result_ref->{thisright_read};
+        my $thisright_update = $result_ref->{thisright_update};
+        my $thisright_delete = $result_ref->{thisright_delete};
+        
+        $role_rights_ref->{$thisscope}{right_create} = $thisright_create;
+        $role_rights_ref->{$thisscope}{right_read}   = $thisright_read;
+        $role_rights_ref->{$thisscope}{right_update} = $thisright_update;
+        $role_rights_ref->{$thisscope}{right_delete} = $thisright_delete;
+    }
+
+    return $role_rights_ref;
+}
+
+sub get_roleinfo_overview {
+    my $self   = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $object = $self->get_roleinfo->search_rs(
+        undef,
+        {
+            order_by => 'rolename',
+        }
+    );
+    
+    return $object;
+}
+
+sub get_scopes {
+    my $self       = shift;
+
+    my $scopes_ref = {};
+    foreach my $dispatch_rule (@{$self->get('dispatch_rules')}){
+        $scopes_ref->{$dispatch_rule->{scope}} = 1 if (defined $dispatch_rule->{scope});  
+    }
+
+    return sort keys %$scopes_ref;
+}
+
 sub get_templateinfo_overview {
     my $self       = shift;
     
@@ -2473,7 +2584,7 @@ sub new_locationinfo {
         }
 
         if (@$create_fields_ref){
-            $self->get_schema->resultset('LocationinfoField')->populare($create_fields_ref);
+            $self->get_schema->resultset('LocationinfoField')->populate($create_fields_ref);
         }
 
     }
@@ -3915,6 +4026,206 @@ sub delete_stale_searchprofile_indexes {
         }        
     }
 
+    return;
+}
+
+sub role_exists {
+    my ($self,$rolename) = @_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $rolecount = $self->get_schema->resultset('Roleinfo')->search_rs(
+        {
+            rolename => $rolename,
+        }
+    )->count;
+    
+    return $rolecount;
+}
+
+sub new_role {
+    my ($self,$roleinfo_ref)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $create_args = {};
+
+    if ($roleinfo_ref->{rolename}){
+        $create_args->{rolename} = $roleinfo_ref->{rolename};
+    }
+
+    if ($roleinfo_ref->{description}){
+        $create_args->{description} = $roleinfo_ref->{description};
+    }
+
+    my $new_roleinfo = $self->get_schema->resultset('Roleinfo')->create($create_args);
+
+    return unless ($new_roleinfo);
+    
+    my $roleid = $new_roleinfo->id;
+
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($roleinfo_ref));
+    }
+    
+    if (defined $roleinfo_ref->{views}){
+
+        # Viewverknuepfungen zunaechst loeschen
+        $self->get_schema->resultset('RoleView')->search_rs({ roleid => $roleid})->delete;
+
+        my $create_roleviews_ref = [];
+        foreach my $viewname (@{$roleinfo_ref->{views}}){        
+            my $viewid = $self->get_viewinfo->single({ viewname => $viewname })->id;
+
+            my $thisroleview_ref = {
+                roleid => $roleid,
+                viewid => $viewid,
+            };
+
+            push @$create_roleviews_ref, $thisroleview_ref;
+        }
+
+        if (@$create_roleviews_ref){
+            $self->get_schema->resultset('RoleView')->populate($create_roleviews_ref);
+        }
+
+    }
+    
+    if (defined $roleinfo_ref->{rights}){
+        my $create_rolerights_ref = [];
+        
+        foreach my $thisright_ref (@{$roleinfo_ref->{rights}}){
+
+            $thisright_ref->{roleid} = $roleid;
+
+            push @$create_rolerights_ref, $thisright_ref;
+        }
+
+        if (@$create_rolerights_ref){
+            $self->get_schema->resultset('RoleRight')->populate($create_rolerights_ref);
+        }
+
+    }
+    
+    if ($new_roleinfo){
+#        $self->{memc}->delete('config:roleinfotable') if (defined $self->{memc});
+#        OpenBib::Config::RoleinfoTable->new;
+
+        return $new_roleinfo->id;
+    }
+    
+    return;
+}
+
+sub update_role {
+    my ($self,$roleinfo_ref)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($roleinfo_ref));
+    }
+    
+    my $update_args = {};
+
+    if ($roleinfo_ref->{rolename}){
+        $update_args->{rolename} = $roleinfo_ref->{rolename};
+    }
+    if ($roleinfo_ref->{description}){
+        $update_args->{description} = $roleinfo_ref->{description};
+    }
+
+    my $roleinfo = $self->get_schema->resultset('Roleinfo')->single({ rolename => $roleinfo_ref->{rolename} });
+
+    return unless ($roleinfo);
+    
+    my $roleid   = $roleinfo->id;
+    
+    $roleinfo->update($update_args);
+    
+    eval {
+        $roleinfo->role_views->delete;
+        $roleinfo->role_rights->delete;
+    };
+
+    if ($@){
+        $logger->error("Can't delete Views/Rights: ".$@);
+    }
+
+    if (defined $roleinfo_ref->{views}){
+
+        # Viewverknuepfungen zunaechst loeschen
+        $self->get_schema->resultset('RoleView')->search_rs({ roleid => $roleid})->delete;
+
+        my $update_roleviews_ref = [];
+        foreach my $viewname (@{$roleinfo_ref->{views}}){        
+            my $viewid = $self->get_viewinfo->single({ viewname => $viewname })->id;
+
+            my $thisroleview_ref = {
+                roleid => $roleid,
+                viewid => $viewid,
+            };
+
+            push @$update_roleviews_ref, $thisroleview_ref;
+        }
+
+        if (@$update_roleviews_ref){
+            $self->get_schema->resultset('RoleView')->populate($update_roleviews_ref);
+        }
+
+    }
+    
+    if (defined $roleinfo_ref->{rights}){
+        my $update_rolerights_ref = [];
+        
+        foreach my $thisright_ref (@{$roleinfo_ref->{rights}}){
+
+            $thisright_ref->{roleid} = $roleid;
+
+            if ($logger->is_debug){
+                $logger->debug("Pushing RoleRights: ".YAML::Dump($thisright_ref));
+            }
+            push @$update_rolerights_ref, $thisright_ref;
+        }
+
+        if (@$update_rolerights_ref){
+            $self->get_schema->resultset('RoleRight')->populate($update_rolerights_ref);
+        }
+
+    }
+    
+
+#    $self->{memc}->delete('config:roleinfotable') if (defined $self->{memc});
+#    OpenBib::Config::RoleinfoTable->new;
+    
+    return;
+}
+
+sub delete_role {
+    my ($self,$rolename)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $roleinfo = $self->get_schema->resultset('Roleinfo')->single({ rolename => $rolename });
+
+    eval {
+        $roleinfo->role_views->delete;
+        $roleinfo->role_rights->delete;
+        $roleinfo->delete;
+    };
+
+    if ($@){
+        $logger->error("Can't delete roleinfo: ".$@);
+    }
+
+#    $self->{memc}->delete('config:roleinfotable') if (defined $self->{memc});
+#    OpenBib::Config::RoleinfoTable->new;
+    
     return;
 }
 

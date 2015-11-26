@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Admin::Searchprofiles
 #
-#  Dieses File ist (C) 2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2012-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -86,7 +86,7 @@ sub show_collection {
     # CGI Args
     my $year           = $query->param('year');
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
     }
 
@@ -113,7 +113,7 @@ sub show_record {
     # Shared Args
     my $config         = $self->param('config');
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
     }
 

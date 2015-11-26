@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Admin::Templates.pm
 #
-#  Copyright 2014 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2014-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -81,7 +81,7 @@ sub show_collection {
     # Shared Args
     my $config         = $self->param('config');
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
     }
 
@@ -124,7 +124,7 @@ sub create_record {
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input($self->get_input_definition);
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_create')){
         return $self->print_authorization_error();
     }
 
@@ -175,7 +175,7 @@ sub show_record {
     # CGI Args
     my $numrev         = $query->param('numrev') || 3;
     
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
     }
     
@@ -214,7 +214,7 @@ sub show_record_form {
     # CGI Args
     my $numrev         = $query->param('numrev');
     
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_update')){
         return $self->print_authorization_error();
     }
 
@@ -274,7 +274,7 @@ sub delete_record {
     my $config         = $self->param('config');
     my $msg            = $self->param('msg');
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_delete')){
         return $self->print_authorization_error();
     }
     

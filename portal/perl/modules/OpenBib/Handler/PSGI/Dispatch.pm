@@ -198,16 +198,20 @@ sub dispatch_args {
                     'app' => "$module",
                     'rm'  => "$runmode",
                 };
+
+                if ($item->{scope}){
+                    $item->{args}->{scope} = $item->{scope};
+                }
                 
                 if ($item->{args}){
                     # Request-Object dazu, da sonst ueberschrieben
-                    $item->{args}->{r} = $args->{args_to_new}->{PARAMS}->{r};
-                    $item->{args}->{method} = $args->{args_to_new}->{method};
-                    $item->{args}->{QUERY} = $args->{args_to_new}->{QUERY};
+                    $item->{args}->{r}                   = $args->{args_to_new}->{PARAMS}->{r};
+                    $item->{args}->{method}              = $args->{args_to_new}->{method};
+                    $item->{args}->{QUERY}               = $args->{args_to_new}->{QUERY};
                     $rule_specs->{args_to_new}->{PARAMS} = $item->{args}; 
                 }
                 
-                push @{$table_ref}, $rule_specs;                
+                push @{$table_ref}, $rule_specs;
             }
         }
         else {
@@ -217,15 +221,23 @@ sub dispatch_args {
                 'app' => "$module",
                 'rm'  => "$runmode",
             };
+
+            if ($item->{scope}){
+                $item->{args}->{scope} = $item->{scope};
+            }
             
             if ($item->{args}){
                 # Request-Object dazu, da sonst ueberschrieben
-                $item->{args}->{r} = $args->{args_to_new}->{PARAMS}->{r};
-                $item->{args}->{method} = $args->{args_to_new}->{method};
-                $item->{args}->{QUERY} = $args->{args_to_new}->{QUERY};
+                $item->{args}->{r}                   = $args->{args_to_new}->{PARAMS}->{r};
+                $item->{args}->{method}              = $args->{args_to_new}->{method};
+                $item->{args}->{QUERY}               = $args->{args_to_new}->{QUERY};
                 $rule_specs->{args_to_new}->{PARAMS} = $item->{args}; 
             }
-                        
+            
+#            if ($item->{scope}){
+#                $rule_specs->{args_to_new}->{PARAMS}->{scope} = $item->{scope}; 
+#            }
+            
             push @{$table_ref}, $rule_specs;
         }
     }

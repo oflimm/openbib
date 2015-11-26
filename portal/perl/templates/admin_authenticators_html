@@ -55,6 +55,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
+[% IF user.has_right({scope = 'admin_authenticators', right = 'right_create'}) %]
 <form method="post" action="[% path_prefix %]/[% config.get('authenticators_loc') %]" class="ym-form">
 
 <fieldset class="ym-columnar">
@@ -108,6 +109,7 @@
 </form>
 
 <p />
+[% END # right_create %]
 
 [% authenticators = config.get_authenticators %]
 [% IF authenticators.size > 0 %]
@@ -120,7 +122,20 @@
 </thead>
 <tbody>
 [% FOREACH target IN authenticators %]
-<tr><td>[% target.id %]</td><td>[% target.hostname %]</td><td>[% target.port %]</td><td>[% target.remoteuser %]</td><td>[% target.dbname %]</td><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('authenticators_loc') %]/id/[% target.id %]/edit">[% target.description %]</a></td><td>[% target.type %]</td></tr>
+<tr>
+ <td>[% target.id %]</td>
+ <td>[% target.hostname %]</td>
+ <td>[% target.port %]</td>
+ <td>[% target.remoteuser %]</td>
+ <td>[% target.dbname %]</td>
+ <td>
+[%   IF user.has_right({scope = 'admin_authenticators', right = 'right_update'}) %]
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('authenticators_loc') %]/id/[% target.id %]/edit.html?l=[% lang %]">[% target.description %]</a>
+[%   ELSIF user.has_right({scope = 'admin_authenticators', right = 'right_read'}) %]
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('authenticators_loc') %]/id/[% target.id %].html?l=[% lang %]">[% target.description %]</a>
+[%   END %]
+</td>
+ <td>[% target.type %]</td></tr>
 [% END %]
 </tbody>
 </table>

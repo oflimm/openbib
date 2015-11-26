@@ -55,7 +55,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<form method="get" action="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/search" class="ym-form">
+<form method="get" action="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/search.html" class="ym-form">
 <input type="hidden" name="l" value="[% lang %]"/>
 
 <fieldset class="ym-columnar">
@@ -75,20 +75,12 @@
 </form>
 
 <p />
-[%#
-
-    msg.maketext("admin")     # Administrator
-    msg.maketext("librarian") # Bibliothekar
-    msg.maketext("lecturer")  # Dozent
-    msg.maketext("viewadmin") # Portal-Administrator
-
--%]
 
 <h3>[% msg.maketext("Nutzer mit Rollen") %]</h3>
 
 <ul class="topiclist">
 [% FOREACH role IN user.get_all_roles %]
-<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/search.html?l=[% lang %];roleid=[% role.id %]">[% msg.maketext(role.role) %]</a></li>
+<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/search.html?l=[% lang %];roleid=[% role.id %]">[% role.description %]</a></li>
 [% END %]
 </ul>
 

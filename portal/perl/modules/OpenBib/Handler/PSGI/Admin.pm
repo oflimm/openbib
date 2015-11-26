@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::User
 #
-#  Dieses File ist (C) 2004-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -77,7 +77,7 @@ sub show_collection {
     # Shared Args
     my $config         = $self->param('config');
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
     }
 
@@ -90,21 +90,40 @@ sub show_collection {
 # Authentifizierung wird spezialisiert
 
 sub authorization_successful {
-    my $self   = shift;
-
+    my $self           = shift;
+    my $required_right = shift; # right_create, right_read, right_update, right_delete
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $basic_auth_failure = $self->param('basic_auth_failure') || 0;
-    my $user               = $self->param('user')             || '';
 
+    my $view               = $self->param('view')               || '';
+    my $scope              = $self->param('scope')              || '';
+    my $basic_auth_failure = $self->param('basic_auth_failure') || 0;
+    my $user               = $self->param('user');
+    my $userid             = $self->param('userid')             || $user->{ID} || '';
+
+    my $user_has_required_right = 0;
+
+    # Wird ein zum Zugriff erforderliches Recht uebergeben, dann muessen die Berechtigungen in den Rollen des Nutzers ueberprueft
+    # werden. Hierbei werden etwaige Beschraenkungen auf Views beruecksichtigt.
+    if (defined $required_right){
+        if ($scope && $userid && $self->is_authenticated('user',$userid)){
+            if ($user->allowed_for_view($view)){
+                $user_has_required_right = $user->has_right({ scope => $scope, right => $required_right });
+            }
+        }
+    }
     $logger->debug("Basic http auth failure: $basic_auth_failure");
 
-    if (($basic_auth_failure && !$user->is_admin) || !$self->is_authenticated('admin')){
-        return 0;
+    if ($self->is_authenticated('admin') || $user_has_required_right){
+        return 1;
     }
+    
+#     if (($basic_auth_failure && !$user->is_admin) || !$self->is_authenticated('admin')){
+#         return 0;
+#     }
 
-    return 1;
+    return 0;
 }
 
 1;

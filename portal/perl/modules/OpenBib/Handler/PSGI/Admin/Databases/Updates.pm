@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Admin::Databases::Updates
 #
-#  Dieses File ist (C) 2013 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2013-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -95,6 +95,10 @@ sub show_collection {
         return $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
     }
 
+    if (!$self->authorization_successful('right_read')){
+        return $self->print_authorization_error();
+    }
+    
     my $rssfeed_ref= $config->get_rssfeeds_of_db($dbname);;
     my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $dbname})->single;
 

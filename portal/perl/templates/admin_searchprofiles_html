@@ -61,11 +61,13 @@
 
 <table class="ym-full">
 <thead>
-<tr><th>Id</th><th>[% msg.maketext("# Datenbanken") %]</th><th>[% msg.maketext("Eigener Index") %]</th></tr>
+<tr><th>Id</th><th>[% msg.maketext("# Datenbanken") %]</th></tr>
 </thead>
 <tbody>
 [% FOREACH searchprofile IN searchprofiles %]
-<tr><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('searchprofiles_loc') %]/id/[% searchprofile.id %]/edit.html?l=[% lang %]">[% searchprofile.id %]</a></td><td align="center">[% config.get_databases_of_searchprofile(searchprofile.id).size %]</td><td>[% IF searchprofile.own_index %]Index[% END %]</td></tr>
+<tr>
+<td>
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('searchprofiles_loc') %]/id/[% searchprofile.id %].html?l=[% lang %]">[% searchprofile.id %]</a></td><td align="center">[% config.get_databases_of_searchprofile(searchprofile.id).size %]</td></tr>
 [% END %]
 </tbody>
 </table>

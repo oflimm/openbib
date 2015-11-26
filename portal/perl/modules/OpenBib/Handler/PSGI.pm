@@ -94,7 +94,7 @@ sub cgiapp_init {
         $logger->error("No Request");
     }
     
-    my $sessionID     = $r->cookies->{sessionID} || '';
+    my $sessionID    = $r->cookies->{sessionID} || '';
 
     my $session      = OpenBib::Session->new({ sessionID => $sessionID , view => $view, config => $config });
 
@@ -804,7 +804,7 @@ sub print_info {
         info_nr  => $infonr,
     };
 
-    retunr $self->print_page($config->{tt_info_message_tname},$ttdata);
+    return $self->print_page($config->{tt_info_message_tname},$ttdata);
 }
 
 sub print_json {
@@ -1531,12 +1531,42 @@ sub parse_valid_input {
                             content  => $content,
                         };
                     }
-                    else {
-                        $logger->debug("Can't parse $qparam");
-                    }
                 }
                 $input_params_ref->{$param} = $fields_ref;
             }
+            elsif ($type eq "rights") {
+                my $rights_ref     = $default;
+                my $rights_tmp_ref = {};
+                foreach my $qparam ($query->param){
+                    if ($qparam=~/^([a-zA-Z0-9_]+)\|(right_[a-z]+)$/){
+                        my $scope    = $1;
+                        my $right    = $2;
+                        
+                        my $content  = $query->param($qparam);
+                        
+                        $logger->debug("Got $scope - $right - $content");
+                        
+                        $rights_tmp_ref->{$scope}{$right} = $content;
+                    }
+                }
+
+                # Reorganize
+                foreach my $scope (keys %$rights_tmp_ref){
+                    my $thisrights_ref = {
+                        scope => $scope,
+                        right_create => ($rights_tmp_ref->{$scope}{right_create})?1:0,
+                        right_read   => ($rights_tmp_ref->{$scope}{right_read})?1:0,
+                        right_update => ($rights_tmp_ref->{$scope}{right_update})?1:0,
+                        right_delete => ($rights_tmp_ref->{$scope}{right_delete})?1:0,
+                    };
+
+                    push @$rights_ref, $thisrights_ref;
+                }
+                
+                
+                $input_params_ref->{$param} = $rights_ref;
+            }
+
         }
     }
     
@@ -1606,12 +1636,19 @@ sub print_authorization_error {
     if ($self->param('representation') eq "html"){
         # Aufruf-URL
         my $return_uri  = uri_escape($r->request_uri);
-        
+        my $login_url   = "$path_prefix/$config->{login_loc}?redirect_to=$return_uri";
+
         # Return-URL in der Session abspeichern
         
         $logger->debug("Authorization error: Redirecting to $return_uri");
+
+        my $ttdata = {
+            login_url => $login_url,
+        };
         
-        return $self->redirect("$path_prefix/$config->{login_loc}?redirect_to=$return_uri",303);
+        return $self->print_page($config->{tt_authorization_error_tname},$ttdata);
+        
+#        return $self->redirect("$path_prefix/$config->{login_loc}?redirect_to=$return_uri",303);
     }
     else {
         $logger->debug("Authorization error");

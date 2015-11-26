@@ -31,6 +31,11 @@ __PACKAGE__->table("searchprofile");
   data_type: 'text'
   is_nullable: 1
 
+=head2 own_index
+
+  data_type: 'boolean'
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -43,6 +48,8 @@ __PACKAGE__->add_columns(
   },
   "databases_as_json",
   { data_type => "text", is_nullable => 1 },
+  "own_index",
+  { data_type => "boolean", is_nullable => 1 },
 );
 __PACKAGE__->set_primary_key("id");
 
@@ -109,8 +116,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2015-05-11 15:52:34
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:xKbPVbXH+CGNfUZD67wlFg
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2015-11-17 15:09:24
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:zO4QURYQitGudeQ/1F0ubQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

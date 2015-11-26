@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Admin::Clusters
 #
-#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -61,6 +61,7 @@ sub setup {
     $self->run_modes(
         'show_collection'            => 'show_collection',
         'show_record_form'           => 'show_record_form',
+        'show_record'                => 'show_record',
         'create_record'              => 'create_record',
         'update_record'              => 'update_record',
         'confirm_delete_record'      => 'confirm_delete_record',
@@ -85,7 +86,7 @@ sub show_collection {
     # Shared Args
     my $config         = $self->param('config');
     
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
     }
 
@@ -111,7 +112,7 @@ sub show_record_form {
     # Shared Args
     my $config           = $self->param('config');
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_update')){
         return $self->print_authorization_error();
     }
 
@@ -133,16 +134,18 @@ sub show_record {
 
     # Dispatches Args
     my $view             = $self->param('view');
-    my $clusterid        = $self->param('clusterid');
+    my $clusterid        = $self->strip_suffix($self->param('clusterid'));
 
     # Shared Args
     my $config           = $self->param('config');
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
     }
 
-    my $clusterinfo_ref = $config->get_clusterinfo->search_rs({ id => $clusterid });
+    $logger->debug("Clusterid: $clusterid");
+    
+    my $clusterinfo_ref = $config->get_clusterinfo->search_rs({ id => $clusterid })->single();;
     
     my $ttdata = {
         clusterid     => $clusterid,
@@ -173,7 +176,7 @@ sub create_record {
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input($self->get_input_definition);
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_create')){
         return $self->print_authorization_error();
     }
 
@@ -219,7 +222,7 @@ sub update_record {
 
     $input_data_ref->{id} = $clusterid;
     
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_update')){
         return $self->print_authorization_error();
     }
 
@@ -252,7 +255,7 @@ sub confirm_delete_record {
     my $clusterinfo_ref = $config->get_clusterinfo->search({ id => $clusterid})->single;
 
     my $ttdata={
-        clusterid  => $clusterid,
+        clusterid   => $clusterid,
         clusterinfo => $clusterinfo_ref,
     };
     
@@ -277,7 +280,7 @@ sub delete_record {
     my $config         = $self->param('config');
     my $path_prefix    = $self->param('path_prefix');
 
-    if (!$self->authorization_successful){
+    if (!$self->authorization_successful('right_delete')){
         return $self->print_authorization_error();
     }
 

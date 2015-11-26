@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2015-09-30 09:52+0200\n"
+"PO-Revision-Date: 2015-11-25 16:29+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -18,15 +18,15 @@ msgstr ""
 "X-Generator: Lokalize 1.4\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../modules/OpenBib/Importer/JSON/Title.pm:349
+#: ../modules/OpenBib/Importer/JSON/Title.pm:343
 msgid " map { $_ => 1 } @${enrichmnt_data_ref} "
 msgstr ""
 
-#: ../modules/OpenBib/Importer/JSON/Title.pm:319
+#: ../modules/OpenBib/Importer/JSON/Title.pm:313
 msgid " map { $_ => 1 } @${enrichmnt_isbns_ref} "
 msgstr ""
 
-#: ../modules/OpenBib/Importer/JSON/Title.pm:320
+#: ../modules/OpenBib/Importer/JSON/Title.pm:314
 msgid " map { $_ => 1 } @${enrichmnt_issns_ref} "
 msgstr ""
 
@@ -258,6 +258,11 @@ msgstr "%1 titles are connected with the tag"
 #: ../templates/browse_topics_record_html:101
 msgid "%1 Zeitschriften"
 msgstr "%1 journals/series"
+
+#. ("<a href=\"${login_url}\">","</a>")
+#: ../templates/authorization_error_html:47
+msgid "%1Weiter zur Anmeldung%2"
+msgstr "%1Proceed to login%2"
 
 #: ../templates/info_help:711
 msgid ""
@@ -876,11 +881,11 @@ msgstr "Academic title"
 #: ../templates/_profile/kug/users_preferences_html:295
 #: ../templates/_profile/kug/users_preferences_html:309
 #: ../templates/_profile/kug/users_preferences_html:322
-#: ../templates/admin_clusters_html:107 ../templates/admin_clusters_html:81
+#: ../templates/admin_clusters_html:109 ../templates/admin_clusters_html:82
 #: ../templates/admin_clusters_record_edit:87
-#: ../templates/admin_databases_html:99
+#: ../templates/admin_databases_html:100
 #: ../templates/admin_databases_record_edit:111
-#: ../templates/admin_databases_record_html:55
+#: ../templates/admin_databases_record_html:70
 #: ../templates/admin_databases_rss_html:104
 #: ../templates/admin_databases_rss_html:129
 #: ../templates/admin_databases_rss_record_edit:94
@@ -889,12 +894,12 @@ msgstr "Academic title"
 #: ../templates/admin_databases_rss_record_html:249
 #: ../templates/admin_databases_rss_record_html:306
 #: ../templates/admin_databases_rss_record_html:78
-#: ../templates/admin_navigation:151 ../templates/admin_navigation:153
-#: ../templates/admin_servers_html:123 ../templates/admin_servers_html:97
+#: ../templates/admin_navigation:182 ../templates/admin_navigation:184
+#: ../templates/admin_servers_html:125 ../templates/admin_servers_html:98
 #: ../templates/admin_servers_record_edit:102
 #: ../templates/admin_sessions_active_html:41
 #: ../templates/admin_sessions_active_record_html:41
-#: ../templates/admin_views_html:117 ../templates/admin_views_html:88
+#: ../templates/admin_views_html:119 ../templates/admin_views_html:89
 #: ../templates/admin_views_record_edit:103 ../templates/clusters_html:62
 #: ../templates/clusters_record_html:68 ../templates/databases_record_html:70
 #: ../templates/databases_rss_html:91
@@ -929,26 +934,27 @@ msgstr "Active facets"
 msgid "Aktivieren Sie ihre Kennung"
 msgstr "Activate your account"
 
-#: ../templates/admin_servers_html:133 ../templates/admin_servers_html:78
+#: ../templates/admin_clusters_html:124 ../templates/admin_servers_html:141
+#: ../templates/admin_servers_html:79
 #: ../templates/admin_servers_record_edit:84
 #: ../templates/admin_servers_record_edit:94
 msgid "Aktualisierbar"
 msgstr "Updatable"
 
-#: ../templates/admin_clusters_html:74
+#: ../templates/admin_clusters_html:126 ../templates/admin_clusters_html:75
 #: ../templates/admin_clusters_record_edit:80
-#: ../templates/admin_servers_html:135 ../templates/admin_servers_html:79
+#: ../templates/admin_servers_html:143 ../templates/admin_servers_html:80
 #: ../templates/admin_servers_record_edit:85
 #: ../templates/clusters_record_html:64 ../templates/servers_html:74
 #: ../templates/servers_record_html:65
 msgid "Aktualisieren"
 msgstr "Update"
 
-#: ../templates/admin_databases_html:130 ../templates/admin_databases_html:134
+#: ../templates/admin_databases_html:133 ../templates/admin_databases_html:152
 #: ../templates/admin_databases_updates_html:41
 #: ../templates/admin_databases_updates_html:69
-#: ../templates/admin_navigation:84 ../templates/admin_navigation:86
-#: ../templates/admin_servers_record_edit:123
+#: ../templates/admin_navigation:95 ../templates/admin_navigation:97
+#: ../templates/admin_servers_record_edit:124
 msgid "Aktualisierung"
 msgstr "Update"
 
@@ -1089,22 +1095,28 @@ msgstr "Mirror all tagged titles to BibSonomy"
 msgid "Alles"
 msgstr "All"
 
-#: ../templates/admin_navigation:100 ../templates/admin_navigation:102
-#: ../templates/admin_navigation:119 ../templates/admin_navigation:121
-#: ../templates/admin_navigation:140 ../templates/admin_navigation:142
-#: ../templates/admin_navigation:169 ../templates/admin_navigation:171
-#: ../templates/admin_navigation:217 ../templates/admin_navigation:219
-#: ../templates/admin_navigation:250 ../templates/admin_navigation:252
-#: ../templates/admin_navigation:26 ../templates/admin_navigation:28
-#: ../templates/admin_navigation:42 ../templates/admin_navigation:44
-#: ../templates/admin_navigation:58 ../templates/admin_navigation:60
-#: ../templates/admin_navigation:74 ../templates/admin_navigation:76
+#: ../templates/admin_navigation:113 ../templates/admin_navigation:115
+#: ../templates/admin_navigation:134 ../templates/admin_navigation:137
+#: ../templates/admin_navigation:139 ../templates/admin_navigation:165
+#: ../templates/admin_navigation:168 ../templates/admin_navigation:170
+#: ../templates/admin_navigation:203 ../templates/admin_navigation:205
+#: ../templates/admin_navigation:259 ../templates/admin_navigation:262
+#: ../templates/admin_navigation:264 ../templates/admin_navigation:27
+#: ../templates/admin_navigation:276 ../templates/admin_navigation:278
+#: ../templates/admin_navigation:30 ../templates/admin_navigation:301
+#: ../templates/admin_navigation:304 ../templates/admin_navigation:306
+#: ../templates/admin_navigation:32 ../templates/admin_navigation:325
+#: ../templates/admin_navigation:327 ../templates/admin_navigation:343
+#: ../templates/admin_navigation:346 ../templates/admin_navigation:348
+#: ../templates/admin_navigation:49 ../templates/admin_navigation:51
+#: ../templates/admin_navigation:67 ../templates/admin_navigation:69
+#: ../templates/admin_navigation:85 ../templates/admin_navigation:87
 #: ../templates/admin_statistics_html:42 ../templates/viewadmin_navigation:26
 #: ../templates/viewadmin_navigation:28
 msgid "Allgemein"
 msgstr "General"
 
-#: ../templates/admin_users_html:97
+#: ../templates/admin_users_html:89
 msgid "Allgemeine Angaben"
 msgstr "General informations"
 
@@ -1258,7 +1270,7 @@ msgstr "Old password"
 msgid "Am Umschlag Beteiligte"
 msgstr "Involved in cover"
 
-#: ../templates/admin_clusters_html:115 ../templates/admin_servers_html:143
+#: ../templates/admin_clusters_html:136 ../templates/admin_servers_html:154
 msgid "An"
 msgstr "On"
 
@@ -1422,7 +1434,7 @@ msgstr "Login with valid library card"
 msgid "Anmelden mit registrierter E-Mail-Adresse"
 msgstr "Login with your registered e-mail address"
 
-#: ../templates/admin_authenticators_record_html:60
+#: ../templates/admin_authenticators_record_html:59
 #: ../templates/authenticators_record_html:57
 #: ../templates/login_circulation:69
 msgid "Anmeldeziel"
@@ -1440,7 +1452,7 @@ msgstr "Authenticator"
 #: ../templates/admin_authenticators_record_delete_confirm:39
 #: ../templates/admin_authenticators_record_edit:39
 #: ../templates/admin_authenticators_record_html:39
-#: ../templates/admin_navigation:232 ../templates/admin_navigation:234
+#: ../templates/admin_navigation:293 ../templates/admin_navigation:295
 #: ../templates/authenticators_html:38
 #: ../templates/authenticators_record_html:38
 msgid "Anmeldung"
@@ -1519,8 +1531,9 @@ msgstr ""
 
 #: ../templates/_profile/sammlungen/_view/muenzen/titlist_options:14
 #: ../templates/admin_databases_updates_html:78
-#: ../templates/admin_servers_record_edit:126
+#: ../templates/admin_servers_record_edit:127
 #: ../templates/admin_templates_record_edit:116
+#: ../templates/admin_templates_record_html:98
 #: ../templates/litlists_by_single_topic_include:16
 #: ../templates/users_templates_record_edit:115
 msgid "Anzahl"
@@ -1626,11 +1639,11 @@ msgstr "Number of catalogs (active/total)"
 msgid "Anzahl der Literaturlisten (&ouml;ffentlich/privat)"
 msgstr "Number of literature lists (public/private)"
 
-#: ../templates/admin_statistics_html:71 ../templates/admin_users_html:101
+#: ../templates/admin_statistics_html:71 ../templates/admin_users_html:93
 msgid "Anzahl der Merklisten von Nutzern (Eintr&auml;ge/Nutzer)"
 msgstr "Number of user collection lists (entries/users)"
 
-#: ../templates/admin_statistics_html:69 ../templates/admin_users_html:99
+#: ../templates/admin_statistics_html:69 ../templates/admin_users_html:91
 msgid "Anzahl der Nutzer"
 msgstr "Number of users"
 
@@ -1638,7 +1651,7 @@ msgstr "Number of users"
 msgid "Anzahl der Spezialsichten (aktiv/gesamt)"
 msgstr "Number of views (active/total)"
 
-#: ../templates/admin_statistics_html:70 ../templates/admin_users_html:100
+#: ../templates/admin_statistics_html:70 ../templates/admin_users_html:92
 msgid "Anzahl der Suchprofile von Nutzern"
 msgstr "Number of user search profiles"
 
@@ -1759,7 +1772,7 @@ msgstr "Databases by subject"
 msgid "Aufschl&uuml;sselung der Zeitschriften nach Fachgebieten"
 msgstr "Journals by subject"
 
-#: ../templates/admin_clusters_html:115 ../templates/admin_servers_html:143
+#: ../templates/admin_clusters_html:136 ../templates/admin_servers_html:154
 msgid "Aus"
 msgstr "Off"
 
@@ -1799,7 +1812,7 @@ msgid "Ausleih-/Buchungsdatum"
 msgstr "Date of issue/booking date"
 
 #: ../templates/admin_databases_record_edit:220
-#: ../templates/admin_databases_record_html:89
+#: ../templates/admin_databases_record_html:87
 msgid "Ausleih-Einstellungen"
 msgstr "Circulation options"
 
@@ -1894,12 +1907,12 @@ msgstr "Loan"
 msgid "Auswählen"
 msgstr "Select"
 
-#: ../templates/admin_databases_html:124
+#: ../templates/admin_databases_html:126
 msgid "Auto-Konv"
 msgstr "Auto-conv"
 
 #: ../templates/admin_databases_record_edit:207
-#: ../templates/admin_databases_record_html:81
+#: ../templates/admin_databases_record_html:85
 msgid "Autokonvertierung (cron)"
 msgstr "Auto-conversion (cron)"
 
@@ -2230,6 +2243,10 @@ msgstr "User name"
 msgid "Benutzernummer"
 msgstr "User number"
 
+#: ../templates/admin_roles_record_html:96
+msgid "Berechtigungen"
+msgstr "Rights"
+
 #: ../templates/_profile/sammlungen/_view/muenzen/search_title_field:29
 #: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:64
 #: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:66
@@ -2237,19 +2254,19 @@ msgstr "User number"
 msgid "Bereich"
 msgstr "Area"
 
-#: ../templates/admin_authenticators_html:115
+#: ../templates/admin_authenticators_html:117
 msgid "Bereits existierende Anmeldeziele"
 msgstr "Already existing authentication targets"
 
-#: ../templates/admin_clusters_html:103
+#: ../templates/admin_clusters_html:105
 msgid "Bereits existierende Cluster"
 msgstr "Already existing cluster"
 
-#: ../templates/admin_profiles_html:92
+#: ../templates/admin_profiles_html:94
 msgid "Bereits existierende Katalog-Profile"
 msgstr "Already existing catalog profiles"
 
-#: ../templates/admin_databases_html:120
+#: ../templates/admin_databases_html:122
 msgid "Bereits existierende Kataloge"
 msgstr "Already existing catalogs"
 
@@ -2269,23 +2286,27 @@ msgstr "Already existing catalog profiles"
 msgid "Bereits existierende RSS-Feeds"
 msgstr "Already existing RSS feeds"
 
-#: ../templates/admin_servers_html:119 ../templates/servers_html:61
+#: ../templates/admin_servers_html:121 ../templates/servers_html:61
 msgid "Bereits existierende Rechner zur Lastverteilung"
 msgstr "Already existing server for loadbalancing"
 
-#: ../templates/admin_locations_html:102
+#: ../templates/admin_roles_html:92
+msgid "Bereits existierende Rollen"
+msgstr "Already existing roles"
+
+#: ../templates/admin_locations_html:104
 msgid "Bereits existierende Standorte"
 msgstr "Already existing locations"
 
-#: ../templates/admin_templates_html:111 ../templates/templates_html:58
+#: ../templates/admin_templates_html:113 ../templates/templates_html:58
 msgid "Bereits existierende Templates"
 msgstr "Already existing templates"
 
-#: ../templates/admin_topics_html:91
+#: ../templates/admin_topics_html:93
 msgid "Bereits existierende Themengebiete"
 msgstr "Already existing subjects"
 
-#: ../templates/admin_views_html:109
+#: ../templates/admin_views_html:111
 msgid "Bereits existierende Views"
 msgstr "Already existing views"
 
@@ -2309,33 +2330,35 @@ msgstr "Profession/World-view"
 msgid "Berufsbezeichnung"
 msgstr "Description of profession"
 
-#: ../templates/admin_authenticators_html:119
-#: ../templates/admin_authenticators_html:87
+#: ../templates/admin_authenticators_html:121
+#: ../templates/admin_authenticators_html:88
 #: ../templates/admin_authenticators_record_edit:87
-#: ../templates/admin_authenticators_record_html:67
-#: ../templates/admin_clusters_html:107 ../templates/admin_clusters_html:66
+#: ../templates/admin_authenticators_record_html:66
+#: ../templates/admin_clusters_html:109 ../templates/admin_clusters_html:67
 #: ../templates/admin_clusters_record_edit:72
-#: ../templates/admin_databases_html:124 ../templates/admin_databases_html:74
+#: ../templates/admin_databases_html:126 ../templates/admin_databases_html:75
 #: ../templates/admin_databases_record_edit:72
-#: ../templates/admin_databases_record_html:49
-#: ../templates/admin_locations_html:106 ../templates/admin_locations_html:75
+#: ../templates/admin_databases_record_html:64
+#: ../templates/admin_locations_html:108 ../templates/admin_locations_html:76
 #: ../templates/admin_locations_record_edit:99
 #: ../templates/admin_orgunits_html:66
 #: ../templates/admin_orgunits_record_edit:76
-#: ../templates/admin_orgunits_record_html:67
-#: ../templates/admin_profiles_html:100 ../templates/admin_profiles_html:73
+#: ../templates/admin_orgunits_record_html:69
+#: ../templates/admin_profiles_html:104 ../templates/admin_profiles_html:74
 #: ../templates/admin_profiles_record_edit:107
 #: ../templates/admin_profiles_record_edit:124
 #: ../templates/admin_profiles_record_edit:72
-#: ../templates/admin_profiles_record_html:63
-#: ../templates/admin_profiles_record_html:79
-#: ../templates/admin_servers_html:123 ../templates/admin_servers_html:71
-#: ../templates/admin_servers_record_edit:77 ../templates/admin_topics_html:74
-#: ../templates/admin_topics_html:99
+#: ../templates/admin_profiles_record_html:67
+#: ../templates/admin_profiles_record_html:79 ../templates/admin_roles_html:72
+#: ../templates/admin_roles_html:96 ../templates/admin_roles_record_edit:78
+#: ../templates/admin_roles_record_html:74 ../templates/admin_servers_html:125
+#: ../templates/admin_servers_html:72
+#: ../templates/admin_servers_record_edit:77
+#: ../templates/admin_topics_html:101 ../templates/admin_topics_html:75
 #: ../templates/admin_topics_mappings_html:79
 #: ../templates/admin_topics_mappings_record_html:77
-#: ../templates/admin_topics_record_edit:122 ../templates/admin_views_html:117
-#: ../templates/admin_views_html:73 ../templates/admin_views_record_edit:79
+#: ../templates/admin_topics_record_edit:122 ../templates/admin_views_html:119
+#: ../templates/admin_views_html:74 ../templates/admin_views_record_edit:79
 #: ../templates/admin_views_rss_record_html:52
 #: ../templates/authenticators_html:62
 #: ../templates/authenticators_record_html:61 ../templates/clusters_html:62
@@ -2378,7 +2401,7 @@ msgstr "Description"
 #: ../templates/_profile/kug/_database/ezb/titles_record_html_categories:265
 #: ../templates/_profile/kug/_database/gesiskoeln/titles_record_html_categories:300
 #: ../templates/_profile/kug/_database/gutenberg/titles_record_html_categories:349
-#: ../templates/_profile/kug/_database/inst001/circulation:143
+#: ../templates/_profile/kug/_database/inst001/circulation:146
 #: ../templates/_profile/kug/_database/inst001/holding:18
 #: ../templates/_profile/kug/_database/inst001/titles_record_html_categories:439
 #: ../templates/_profile/kug/_database/inst302/circulation:83
@@ -2580,7 +2603,7 @@ msgstr "BibSonomy API-Key"
 msgid "BibSonomy-API-User"
 msgstr "BibSonomy API-User"
 
-#: ../templates/admin_databases_html:124
+#: ../templates/admin_databases_html:126
 msgid "Bibinfo statt URL / vorhanden"
 msgstr "Libraryinfo instead of URL / available"
 
@@ -2638,7 +2661,7 @@ msgstr "Library"
 msgid "Bibliotheksinformationen"
 msgstr "Library information"
 
-#: ../templates/admin_databases_record_html:54
+#: ../templates/admin_databases_record_html:69
 msgid "Bibliotheksinformationen statt URL"
 msgstr "Library information instead of URL"
 
@@ -2698,7 +2721,7 @@ msgstr "Please enter both start and end dates!"
 msgid "Bitte geben Sie eine alte und neue Kennung ein."
 msgstr "Please enter old and new login."
 
-#: ../modules/OpenBib/Handler/PSGI/Admin/Users.pm:186
+#: ../modules/OpenBib/Handler/PSGI/Admin/Users.pm:226
 msgid "Bitte geben Sie einen Suchbegriff ein."
 msgstr "Please enter your search term"
 
@@ -2727,7 +2750,7 @@ msgstr "Browse by"
 msgid "Browsen"
 msgstr "Browse"
 
-#: ../templates/admin_navigation:199 ../templates/admin_navigation:201
+#: ../templates/admin_navigation:233 ../templates/admin_navigation:235
 #: ../templates/admin_statistics_browser_html:42
 msgid "Browser"
 msgstr "Browser"
@@ -2792,9 +2815,9 @@ msgstr "Chinese"
 
 #: ../templates/admin_clusters_html:39
 #: ../templates/admin_clusters_record_delete_confirm:39
-#: ../templates/admin_clusters_record_edit:39 ../templates/admin_navigation:18
-#: ../templates/admin_navigation:20 ../templates/admin_servers_html:123
-#: ../templates/admin_servers_html:87
+#: ../templates/admin_clusters_record_edit:39 ../templates/admin_navigation:19
+#: ../templates/admin_navigation:21 ../templates/admin_servers_html:125
+#: ../templates/admin_servers_html:88
 #: ../templates/admin_servers_record_edit:92 ../templates/clusters_html:38
 #: ../templates/clusters_html:59 ../templates/clusters_record_html:38
 #: ../templates/clusters_record_html:57 ../templates/servers_html:64
@@ -2806,13 +2829,13 @@ msgstr "Cluster"
 msgid "Cluster bearbeiten"
 msgstr "Edit cluster"
 
-#: ../templates/admin_authenticators_html:119
-#: ../templates/admin_authenticators_html:82
+#: ../templates/admin_authenticators_html:121
+#: ../templates/admin_authenticators_html:83
 #: ../templates/admin_authenticators_record_edit:82
-#: ../templates/admin_authenticators_record_html:66
-#: ../templates/admin_databases_html:124 ../templates/admin_databases_html:69
+#: ../templates/admin_authenticators_record_html:65
+#: ../templates/admin_databases_html:126 ../templates/admin_databases_html:70
 #: ../templates/admin_databases_record_edit:67
-#: ../templates/admin_databases_record_html:48
+#: ../templates/admin_databases_record_html:63
 #: ../templates/databases_record_html:61
 msgid "DB-Name"
 msgstr "DB-Name"
@@ -2820,10 +2843,6 @@ msgstr "DB-Name"
 #: ../templates/topics_record_html:125
 msgid "DBIS"
 msgstr "DBIS"
-
-#: ../templates/admin_topics_record_html:146
-msgid "DBIS zugeordnete Themengebiete"
-msgstr "Topics correspondig to DBIS"
 
 #. ("<a    href=\"http://www.mozilla.org/products/firefox/\"    target=\"_blank\">Mozilla Firefox</a>","<a    href=\"javascript:addEngine('KUG','jpg','Academic')
 #: ../templates/home_html_bottom_center:77
@@ -3088,7 +3107,7 @@ msgstr "DataBaseInformationSystem (DBIS)"
 msgid "Datenbank-Empfehlungen"
 msgstr "Database recommendations"
 
-#: ../templates/admin_profiles_html:100 ../templates/admin_views_html:117
+#: ../templates/admin_profiles_html:104 ../templates/admin_views_html:119
 #: ../templates/profiles_html:62 ../templates/views_html:61
 msgid "Datenbanken"
 msgstr "Databases"
@@ -3128,6 +3147,7 @@ msgid "Datierung von"
 msgstr "Dating from"
 
 #: ../templates/admin_templates_record_edit:127
+#: ../templates/admin_templates_record_html:109
 #: ../templates/templates_revisions_html:63
 #: ../templates/templates_revisions_record_html:61
 #: ../templates/users_templates_record_edit:126
@@ -3135,7 +3155,7 @@ msgid "Datum"
 msgstr "Date"
 
 #: ../templates/admin_databases_updates_html:88
-#: ../templates/admin_servers_record_edit:136
+#: ../templates/admin_servers_record_edit:137
 msgid "Dauer"
 msgstr "Duration"
 
@@ -3161,10 +3181,6 @@ msgstr ""
 "Please note that not all libraries enter single articles into their online "
 "catalogs."
 
-#: ../templates/admin_topics_record_html:77
-msgid "Der Basisklassifikation zugeordnete Themengebiete"
-msgstr "Topics corresponding to basic classification"
-
 #: ../modules/OpenBib/Handler/PSGI/Search.pm:545
 msgid ""
 "Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank "
@@ -3172,10 +3188,6 @@ msgid ""
 msgstr ""
 "This search term has to consist of at least 3 characters if more than one "
 "catalog has been selected for your search request."
-
-#: ../templates/admin_topics_record_html:110
-msgid "Der EZB zugeordnete Themengebiete"
-msgstr "Topics corresponding to EZB"
 
 #: ../modules/OpenBib/Handler/PSGI/Users/LitLists/Item.pm:297
 msgid "Der Eintrag in der Literaturliste existiert nicht"
@@ -3271,7 +3283,7 @@ msgstr "The following external services  are currently being offered:"
 #: ../templates/_profile/sammlungen/search_facet:450
 #: ../templates/_profile/sammlungen/search_facet:451
 #: ../templates/_profile/sammlungen/search_facet:452
-#: ../templates/admin_templates_html:68
+#: ../templates/admin_templates_html:69
 #: ../templates/authority_search_facet:514
 #: ../templates/authority_search_facet:515
 #: ../templates/authority_search_facet:516 ../templates/search_facet:474
@@ -3679,7 +3691,7 @@ msgstr "This title is referenced in Wikipedia under"
 msgid "Dieses Medium ist direkt ausleihbar"
 msgstr "You can directly loan this medium"
 
-#: ../templates/admin_orgunits_html:76 ../templates/orgunits_html:74
+#: ../templates/admin_orgunits_html:84 ../templates/orgunits_html:74
 msgid "Dieses Profil besitzt keine Organisationseinheiten"
 msgstr "This profile has no organizational unit"
 
@@ -4089,9 +4101,7 @@ msgid "Eigenen Review l&ouml;schen"
 msgstr "Remove your review"
 
 #: ../templates/admin_orgunits_record_edit:102
-#: ../templates/admin_searchprofiles_html:64
 #: ../templates/admin_searchprofiles_record_edit:73
-#: ../templates/admin_searchprofiles_record_html:72
 #: ../templates/admin_views_record_edit:131
 msgid "Eigener Index"
 msgstr "Own index"
@@ -4273,6 +4283,10 @@ msgstr "Restrict to main entries (series)"
 msgid "Einloggen"
 msgstr "Log In"
 
+#: ../templates/admin_roles_record_html:79
+msgid "Einschränkung auf View"
+msgstr "Restrict to view"
+
 #: ../templates/_profile/kug/users_preferences_html:156
 #: ../templates/admin_users_record_edit:91
 #: ../templates/users_preferences_html:156
@@ -4452,7 +4466,7 @@ msgstr "End"
 #: ../templates/_profile/sammlungen/search_facet:453
 #: ../templates/_profile/sammlungen/search_facet:454
 #: ../templates/_profile/sammlungen/search_facet:455
-#: ../templates/admin_templates_html:69
+#: ../templates/admin_templates_html:70
 #: ../templates/authority_search_facet:517
 #: ../templates/authority_search_facet:518
 #: ../templates/authority_search_facet:519 ../templates/search_facet:477
@@ -4592,22 +4606,22 @@ msgid "Entfernen"
 msgstr "Remove"
 
 #: ../templates/admin_databases_record_edit:167
-#: ../templates/admin_databases_record_html:71
+#: ../templates/admin_databases_record_html:76
 msgid "Entfernter Nutzername"
 msgstr "Remote username"
 
 #: ../templates/admin_databases_record_edit:157
-#: ../templates/admin_databases_record_html:69
+#: ../templates/admin_databases_record_html:74
 msgid "Entfernter Rechnername"
 msgstr "Remote hostname"
 
 #: ../templates/admin_databases_record_edit:172
-#: ../templates/admin_databases_record_html:72
+#: ../templates/admin_databases_record_html:77
 msgid "Entferntes Passwort"
 msgstr "Remote password"
 
 #: ../templates/admin_databases_record_edit:162
-#: ../templates/admin_databases_record_html:70
+#: ../templates/admin_databases_record_html:75
 msgid "Entferntes Verzeichnis"
 msgstr "Remote directory"
 
@@ -4819,7 +4833,7 @@ msgstr "Advanced search"
 #: ../templates/_database/inst001/circulation:123
 #: ../templates/_database/inst411/circulation:74
 #: ../templates/_profile/kug/_database/edz/circulation:129
-#: ../templates/_profile/kug/_database/inst001/circulation:143
+#: ../templates/_profile/kug/_database/inst001/circulation:146
 #: ../templates/_profile/kug/_database/inst302/circulation:83
 #: ../templates/_profile/kug/_database/islandica/circulation:123
 #: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:129
@@ -4846,7 +4860,11 @@ msgstr "Advanced search"
 msgid "Erwerbungsstatus"
 msgstr "Acquisition status"
 
-#: ../modules/OpenBib/Handler/PSGI/Admin/Authenticators.pm:213
+#: ../templates/admin_roles_record_html:99
+msgid "Erzeugen"
+msgstr "Create"
+
+#: ../modules/OpenBib/Handler/PSGI/Admin/Authenticators.pm:219
 msgid "Es existiert bereits ein Anmeldeziel unter diesem Namen"
 msgstr "There already exists a authentication target with this name"
 
@@ -5021,7 +5039,7 @@ msgstr "No hits available in the catalog for your search request"
 msgid "Es wurde keine Standard-Recherchemaske ausgewählt"
 msgstr "No default search mask selected"
 
-#: ../templates/admin_profiles_html:110 ../templates/profiles_html:72
+#: ../templates/admin_profiles_html:128 ../templates/profiles_html:72
 msgid "Es wurde noch kein Katalog-Profil angelegt"
 msgstr "There is no catalog profile yet."
 
@@ -5045,16 +5063,16 @@ msgid "Event"
 msgstr "Event"
 
 #: ../templates/admin_databases_record_edit:202
-#: ../templates/admin_databases_record_html:79
+#: ../templates/admin_databases_record_html:84
 msgid "Exemplar-Datei"
 msgstr "Holdings-File"
 
-#: ../templates/admin_navigation:156 ../templates/admin_navigation:158
+#: ../templates/admin_navigation:187 ../templates/admin_navigation:189
 #: ../templates/admin_sessions_archived_search_form:42
 msgid "Explorer"
 msgstr "Explorer"
 
-#: ../templates/admin_navigation:179 ../templates/admin_navigation:181
+#: ../templates/admin_navigation:213 ../templates/admin_navigation:215
 msgid "Externe Aufrufe"
 msgstr "Number of external requests"
 
@@ -5241,9 +5259,9 @@ msgstr "Interlibrary loan request"
 msgid "Fernleihe"
 msgstr "Interlibrary loan request"
 
-#: ../templates/admin_clusters_html:75
+#: ../templates/admin_clusters_html:128 ../templates/admin_clusters_html:76
 #: ../templates/admin_clusters_record_edit:81
-#: ../templates/admin_servers_html:137 ../templates/admin_servers_html:80
+#: ../templates/admin_servers_html:145 ../templates/admin_servers_html:81
 #: ../templates/admin_servers_record_edit:86
 #: ../templates/clusters_record_html:65 ../templates/servers_html:76
 #: ../templates/servers_record_html:66
@@ -5651,6 +5669,10 @@ msgstr "Basic settings"
 msgid "Guthaben"
 msgstr "Funds"
 
+#: ../templates/admin_roles_record_html:99
+msgid "Gültigkeitsbereich"
+msgstr "Scope"
+
 #: ../templates/admin_databases_record_edit:150
 msgid "HTTP"
 msgstr "HTTP"
@@ -5941,10 +5963,10 @@ msgstr "high relevance"
 msgid "Home"
 msgstr "Home"
 
-#: ../templates/admin_authenticators_html:119
-#: ../templates/admin_authenticators_html:67
+#: ../templates/admin_authenticators_html:121
+#: ../templates/admin_authenticators_html:68
 #: ../templates/admin_authenticators_record_edit:67
-#: ../templates/admin_authenticators_record_html:63
+#: ../templates/admin_authenticators_record_html:62
 msgid "Hostname"
 msgstr "Hostname"
 
@@ -5972,7 +5994,7 @@ msgstr "Online cataloging"
 msgid "I0235"
 msgstr "Online cataloging since year of acquisition"
 
-#: ../templates/admin_servers_html:123 ../templates/admin_servers_html:66
+#: ../templates/admin_servers_html:125 ../templates/admin_servers_html:67
 #: ../templates/admin_servers_record_edit:72 ../templates/servers_html:64
 #: ../templates/servers_record_html:61
 msgid "IP-Adresse"
@@ -6013,17 +6035,21 @@ msgid "ISSN"
 msgstr "ISSN"
 
 #: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:213
-#: ../templates/admin_clusters_html:107
+#: ../templates/admin_clusters_html:109
 #: ../templates/admin_clusters_record_edit:67
+#: ../templates/admin_roles_record_edit:68
+#: ../templates/admin_roles_record_html:64
 #: ../templates/admin_searchprofiles_record_edit:67
 #: ../templates/admin_searchprofiles_record_html:60
-#: ../templates/admin_servers_html:123
+#: ../templates/admin_servers_html:125
 #: ../templates/admin_servers_record_edit:67
 #: ../templates/admin_sessions_active_html:66
 #: ../templates/admin_sessions_archived_search_html:66
-#: ../templates/admin_templates_html:115
+#: ../templates/admin_templates_html:117
 #: ../templates/admin_templates_record_edit:127
 #: ../templates/admin_templates_record_edit:70
+#: ../templates/admin_templates_record_html:109
+#: ../templates/admin_templates_record_html:67
 #: ../templates/admin_topics_mappings_html:76
 #: ../templates/authenticators_record_html:60 ../templates/clusters_html:62
 #: ../templates/clusters_record_html:60 ../templates/search_title_field:2
@@ -6039,7 +6065,7 @@ msgstr "ISSN"
 msgid "Id"
 msgstr "Id"
 
-#: ../templates/admin_locations_html:106 ../templates/admin_locations_html:70
+#: ../templates/admin_locations_html:108 ../templates/admin_locations_html:71
 #: ../templates/admin_locations_record_edit:94 ../templates/locations_html:108
 msgid "Identifier"
 msgstr "Identifier"
@@ -6302,7 +6328,7 @@ msgid ""
 "aufgef&uuml;hrt."
 msgstr "In the register they can be found by the name of the journal."
 
-#: ../templates/admin_databases_record_html:65
+#: ../templates/admin_databases_record_html:72
 msgid "Import-Einstellungen"
 msgstr "Import-Settings"
 
@@ -6667,7 +6693,7 @@ msgstr "Index search"
 #: ../templates/_profile/kug/mainnavigation_mobile:6
 #: ../templates/_profile/sammlungen/_view/richter/mainnavigation_mobile:4
 #: ../templates/_profile/sammlungen/_view/richter/mainnavigation_mobile:6
-#: ../templates/admin_databases_html:124
+#: ../templates/admin_databases_html:126
 msgid "Info"
 msgstr "Info"
 
@@ -6969,7 +6995,7 @@ msgstr "Integration of BibSonomy"
 msgid "Interaktives Tutorium"
 msgstr "Interactive tutorial"
 
-#: ../templates/admin_navigation:174 ../templates/admin_navigation:176
+#: ../templates/admin_navigation:208 ../templates/admin_navigation:210
 msgid "Interne Aufrufe"
 msgstr "Number of internal requests"
 
@@ -7092,19 +7118,19 @@ msgstr "JSON cannot be parsed"
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:340
 #: ../templates/_view/richter/users_litlists_record_edit:79
 #: ../templates/admin_authenticators_record_delete_confirm:66
-#: ../templates/admin_clusters_html:115 ../templates/admin_clusters_html:83
+#: ../templates/admin_clusters_html:133 ../templates/admin_clusters_html:84
 #: ../templates/admin_clusters_record_delete_confirm:66
 #: ../templates/admin_clusters_record_edit:89
-#: ../templates/admin_databases_html:101 ../templates/admin_databases_html:132
-#: ../templates/admin_databases_html:133
+#: ../templates/admin_databases_html:102 ../templates/admin_databases_html:150
+#: ../templates/admin_databases_html:151
 #: ../templates/admin_databases_record_delete_confirm:66
 #: ../templates/admin_databases_record_edit:113
 #: ../templates/admin_databases_record_edit:210
 #: ../templates/admin_databases_record_edit:226
-#: ../templates/admin_databases_record_html:54
-#: ../templates/admin_databases_record_html:55
-#: ../templates/admin_databases_record_html:81
-#: ../templates/admin_databases_record_html:92
+#: ../templates/admin_databases_record_html:69
+#: ../templates/admin_databases_record_html:70
+#: ../templates/admin_databases_record_html:85
+#: ../templates/admin_databases_record_html:88
 #: ../templates/admin_databases_rss_html:106
 #: ../templates/admin_databases_rss_html:71
 #: ../templates/admin_databases_rss_json:27
@@ -7120,14 +7146,17 @@ msgstr "JSON cannot be parsed"
 #: ../templates/admin_orgunits_record_delete_confirm:68
 #: ../templates/admin_orgunits_record_edit:104
 #: ../templates/admin_profiles_record_delete_confirm:66
+#: ../templates/admin_roles_record_html:103
+#: ../templates/admin_roles_record_html:104
+#: ../templates/admin_roles_record_html:105
+#: ../templates/admin_roles_record_html:106
 #: ../templates/admin_searchprofiles_record_edit:75
-#: ../templates/admin_searchprofiles_record_html:74
-#: ../templates/admin_servers_html:143 ../templates/admin_servers_html:99
+#: ../templates/admin_servers_html:100 ../templates/admin_servers_html:151
 #: ../templates/admin_servers_record_delete_confirm:66
 #: ../templates/admin_servers_record_edit:104
 #: ../templates/admin_templates_record_delete_confirm:66
 #: ../templates/admin_topics_record_delete_confirm:66
-#: ../templates/admin_views_html:127 ../templates/admin_views_html:91
+#: ../templates/admin_views_html:135 ../templates/admin_views_html:92
 #: ../templates/admin_views_record_delete_confirm:66
 #: ../templates/admin_views_record_edit:106
 #: ../templates/admin_views_record_edit:133
@@ -7422,7 +7451,7 @@ msgid "K&ouml;rperschaften/Institutionen"
 msgstr "Corporate body/Institution"
 
 #: ../templates/admin_databases_record_edit:187
-#: ../templates/admin_databases_record_html:76
+#: ../templates/admin_databases_record_html:81
 msgid "K&ouml;rperschafts-Datei"
 msgstr "Corporate body-File"
 
@@ -7491,8 +7520,9 @@ msgstr "Digital card catalog (faculty of arts)"
 #: ../templates/_view/richter/resultlists_choice:109
 #: ../templates/_view/richter/titlist_item_html_short:220
 #: ../templates/acquisition_collection_item_short:244
-#: ../templates/admin_clusters_record_edit:120
-#: ../templates/admin_servers_record_edit:136
+#: ../templates/admin_clusters_record_edit:121
+#: ../templates/admin_databases_record_html:60
+#: ../templates/admin_servers_record_edit:137
 #: ../templates/authlist_item_html_short:60
 #: ../templates/authority_search_facet:189
 #: ../templates/cartitems_html_short:133 ../templates/databases_record_html:58
@@ -7508,11 +7538,6 @@ msgstr "Digital card catalog (faculty of arts)"
 msgid "Katalog"
 msgstr "Catalog"
 
-#: ../templates/admin_databases_record_html:45
-msgid "Katalog bearbeiten"
-msgstr "Edit catalog"
-
-#: ../templates/admin_profiles_record_html:60
 #: ../templates/profiles_record_html:57
 msgid "Katalog-Profil"
 msgstr "Catalog profile"
@@ -7521,7 +7546,7 @@ msgstr "Catalog profile"
 msgid "Katalog-Profil bearbeiten"
 msgstr "Edit catalog profile"
 
-#: ../templates/admin_navigation:92 ../templates/admin_navigation:94
+#: ../templates/admin_navigation:105 ../templates/admin_navigation:107
 #: ../templates/admin_orgunits_html:39
 #: ../templates/admin_orgunits_record_delete_confirm:39
 #: ../templates/admin_orgunits_record_edit:39
@@ -7529,7 +7554,7 @@ msgstr "Edit catalog profile"
 #: ../templates/admin_profiles_html:40
 #: ../templates/admin_profiles_record_delete_confirm:39
 #: ../templates/admin_profiles_record_edit:39
-#: ../templates/admin_profiles_record_html:39 ../templates/admin_views_html:78
+#: ../templates/admin_profiles_record_html:39 ../templates/admin_views_html:79
 #: ../templates/admin_views_record_edit:84 ../templates/orgunits_html:39
 #: ../templates/orgunits_record_html:38 ../templates/profiles_html:39
 #: ../templates/profiles_html:59 ../templates/profiles_record_html:38
@@ -7567,14 +7592,16 @@ msgstr "Choice of catalogs for this view"
 #: ../templates/admin_databases_html:42
 #: ../templates/admin_databases_record_delete_confirm:39
 #: ../templates/admin_databases_record_edit:39
+#: ../templates/admin_databases_record_html:39
 #: ../templates/admin_databases_rss_html:40
 #: ../templates/admin_databases_rss_record_delete_confirm:39
 #: ../templates/admin_databases_rss_record_edit:56
 #: ../templates/admin_databases_updates_html:39
-#: ../templates/admin_navigation:66 ../templates/admin_navigation:68
+#: ../templates/admin_navigation:77 ../templates/admin_navigation:79
 #: ../templates/admin_orgunits_html:66
 #: ../templates/admin_orgunits_record_edit:92
 #: ../templates/admin_profiles_record_edit:124
+#: ../templates/admin_profiles_record_html:79
 #: ../templates/admin_searchprofiles_record_edit:81
 #: ../templates/admin_searchprofiles_record_html:63
 #: ../templates/databases_html:41 ../templates/databases_html:89
@@ -7637,6 +7664,12 @@ msgstr "Category"
 #: ../templates/_view/richter/litlists_record_html:61
 #: ../templates/_view/richter/users_litlists_record_edit:46
 #: ../templates/admin_databases_record_edit:103
+#: ../templates/admin_topics_record_html:128
+#: ../templates/admin_topics_record_html:149
+#: ../templates/admin_topics_record_html:170
+#: ../templates/admin_topics_record_html:191
+#: ../templates/admin_topics_record_html:211
+#: ../templates/admin_topics_record_html:231
 #: ../templates/litlists_record_html:60
 #: ../templates/users_litlists_record_edit:59
 #: ../templates/users_litlists_record_html:59
@@ -7647,7 +7680,7 @@ msgstr "None"
 #: ../templates/_database/inst001/circulation:111
 #: ../templates/_database/inst411/circulation:62
 #: ../templates/_profile/kug/_database/edz/circulation:117
-#: ../templates/_profile/kug/_database/inst001/circulation:130
+#: ../templates/_profile/kug/_database/inst001/circulation:133
 #: ../templates/_profile/kug/_database/inst302/circulation:65
 #: ../templates/_profile/kug/_database/islandica/circulation:111
 #: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:117
@@ -7688,7 +7721,7 @@ msgstr ""
 "No suitable databases found? An <b>%1overview of all available databases%2</"
 "b> can help you?"
 
-#: ../templates/admin_clusters_html:73 ../templates/clusters_record_html:63
+#: ../templates/admin_clusters_html:74 ../templates/clusters_record_html:63
 #: ../templates/servers_html:72 ../templates/servers_record_html:64
 msgid "Keiner"
 msgstr "None"
@@ -7728,7 +7761,7 @@ msgstr "Classification"
 msgid "Klassifizierung"
 msgstr "Classification"
 
-#: ../templates/admin_navigation:194 ../templates/admin_navigation:196
+#: ../templates/admin_navigation:228 ../templates/admin_navigation:230
 #: ../templates/admin_statistics_client_html:42
 msgid "Klienten"
 msgstr "Clients"
@@ -7828,13 +7861,13 @@ msgstr "Context Sensitive Help"
 msgid "Konto migrieren"
 msgstr "Move login"
 
-#: ../templates/admin_navigation:222 ../templates/admin_navigation:224
+#: ../templates/admin_navigation:281 ../templates/admin_navigation:283
 #: ../templates/users_navigation:70 ../templates/users_navigation:72
 msgid "Konto-Migration"
 msgstr "Login migration"
 
 #: ../templates/admin_databases_record_edit:77
-#: ../templates/admin_databases_record_html:50
+#: ../templates/admin_databases_record_html:65
 #: ../templates/databases_record_html:63
 msgid "Kurzbeschreibung"
 msgstr "Short description"
@@ -7937,8 +7970,8 @@ msgstr "Artist"
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/titlist_item_html_short:329
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:326
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:329
-#: ../templates/admin_clusters_html:116 ../templates/admin_servers_html:144
-#: ../templates/admin_templates_html:124
+#: ../templates/admin_clusters_html:142 ../templates/admin_roles_html:111
+#: ../templates/admin_servers_html:159 ../templates/admin_templates_html:132
 #: ../templates/titles_record_include:512
 #: ../templates/titlist_item_html_short:328
 #: ../templates/titlist_item_html_short:331
@@ -8494,6 +8527,10 @@ msgstr ""
 msgid "Leihfristende"
 msgstr "End of loan period"
 
+#: ../templates/admin_roles_record_html:99
+msgid "Lesen"
+msgstr "Read"
+
 #: ../templates/rssfeeds_html:104 ../templates/rssfeeds_html:79
 msgid "Letzte 50 Neuaufnahmen"
 msgstr "Newest 50 catalog entries"
@@ -8749,17 +8786,19 @@ msgstr "Go"
 #: ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_actions:8
 #: ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_short:150
 #: ../templates/admin_authenticators_record_edit:104
-#: ../templates/admin_clusters_record_edit:100
+#: ../templates/admin_clusters_record_edit:101
 #: ../templates/admin_databases_record_edit:252
 #: ../templates/admin_databases_rss_record_edit:109
 #: ../templates/admin_databases_rss_record_html:351
 #: ../templates/admin_locations_record_edit:161
 #: ../templates/admin_orgunits_record_edit:115
 #: ../templates/admin_profiles_record_edit:83
-#: ../templates/admin_servers_record_edit:114
+#: ../templates/admin_roles_record_edit:111
+#: ../templates/admin_roles_record_html:99
+#: ../templates/admin_servers_record_edit:115
 #: ../templates/admin_templates_record_edit:141
 #: ../templates/admin_templates_record_edit:99
-#: ../templates/admin_topics_record_edit:131
+#: ../templates/admin_topics_record_edit:132
 #: ../templates/admin_views_record_edit:144
 #: ../templates/cartitems_html_actions:160
 #: ../templates/cartitems_html_short:144 ../templates/titles_record_html:322
@@ -9362,9 +9401,14 @@ msgstr "Surname"
 #: ../templates/_view/richter/cartitems_html_actions:38
 #: ../templates/_view/richter/cartitems_html_actions:55
 #: ../templates/admin_orgunits_html:66
+#: ../templates/admin_orgunits_record_html:65
 #: ../templates/admin_profiles_record_edit:124
-#: ../templates/admin_templates_html:115 ../templates/admin_templates_html:74
+#: ../templates/admin_profiles_record_html:79 ../templates/admin_roles_html:67
+#: ../templates/admin_roles_html:96 ../templates/admin_roles_record_edit:73
+#: ../templates/admin_roles_record_html:69
+#: ../templates/admin_templates_html:117 ../templates/admin_templates_html:75
 #: ../templates/admin_templates_record_edit:85
+#: ../templates/admin_templates_record_html:82
 #: ../templates/cartitems_html_actions:44
 #: ../templates/cartitems_html_actions:63 ../templates/databases_html:92
 #: ../templates/orgunits_html:66 ../templates/orgunits_record_html:64
@@ -9455,19 +9499,19 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:341
 #: ../templates/_view/richter/users_litlists_record_edit:79
 #: ../templates/admin_authenticators_record_delete_confirm:72
-#: ../templates/admin_clusters_html:115 ../templates/admin_clusters_html:84
+#: ../templates/admin_clusters_html:133 ../templates/admin_clusters_html:85
 #: ../templates/admin_clusters_record_delete_confirm:72
 #: ../templates/admin_clusters_record_edit:90
-#: ../templates/admin_databases_html:102 ../templates/admin_databases_html:132
-#: ../templates/admin_databases_html:133
+#: ../templates/admin_databases_html:103 ../templates/admin_databases_html:150
+#: ../templates/admin_databases_html:151
 #: ../templates/admin_databases_record_delete_confirm:72
 #: ../templates/admin_databases_record_edit:114
 #: ../templates/admin_databases_record_edit:209
 #: ../templates/admin_databases_record_edit:225
-#: ../templates/admin_databases_record_html:54
-#: ../templates/admin_databases_record_html:55
-#: ../templates/admin_databases_record_html:81
-#: ../templates/admin_databases_record_html:92
+#: ../templates/admin_databases_record_html:69
+#: ../templates/admin_databases_record_html:70
+#: ../templates/admin_databases_record_html:85
+#: ../templates/admin_databases_record_html:88
 #: ../templates/admin_databases_rss_html:107
 #: ../templates/admin_databases_rss_html:70
 #: ../templates/admin_databases_rss_json:26
@@ -9483,14 +9527,17 @@ msgstr ""
 #: ../templates/admin_orgunits_record_delete_confirm:74
 #: ../templates/admin_orgunits_record_edit:105
 #: ../templates/admin_profiles_record_delete_confirm:72
+#: ../templates/admin_roles_record_html:103
+#: ../templates/admin_roles_record_html:104
+#: ../templates/admin_roles_record_html:105
+#: ../templates/admin_roles_record_html:106
 #: ../templates/admin_searchprofiles_record_edit:76
-#: ../templates/admin_searchprofiles_record_html:74
-#: ../templates/admin_servers_html:100 ../templates/admin_servers_html:143
+#: ../templates/admin_servers_html:101 ../templates/admin_servers_html:151
 #: ../templates/admin_servers_record_delete_confirm:72
 #: ../templates/admin_servers_record_edit:105
 #: ../templates/admin_templates_record_delete_confirm:72
 #: ../templates/admin_topics_record_delete_confirm:72
-#: ../templates/admin_views_html:127 ../templates/admin_views_html:92
+#: ../templates/admin_views_html:135 ../templates/admin_views_html:93
 #: ../templates/admin_views_record_delete_confirm:72
 #: ../templates/admin_views_record_edit:107
 #: ../templates/admin_views_record_edit:134
@@ -9511,21 +9558,22 @@ msgstr ""
 msgid "Nein"
 msgstr "No"
 
-#: ../templates/admin_authenticators_html:100
-#: ../templates/admin_clusters_html:89 ../templates/admin_databases_html:107
+#: ../templates/admin_authenticators_html:101
+#: ../templates/admin_clusters_html:90 ../templates/admin_databases_html:108
 #: ../templates/admin_databases_rss_html:114
 #: ../templates/admin_databases_rss_record_html:131
 #: ../templates/admin_databases_rss_record_html:188
 #: ../templates/admin_databases_rss_record_html:245
 #: ../templates/admin_databases_rss_record_html:302
 #: ../templates/admin_databases_rss_record_html:74
-#: ../templates/admin_locations_html:89
+#: ../templates/admin_locations_html:90
 #: ../templates/admin_locations_record_edit:138
-#: ../templates/admin_profiles_html:78
+#: ../templates/admin_profiles_html:79
 #: ../templates/admin_profiles_record_edit:112
-#: ../templates/admin_servers_html:105 ../templates/admin_templates_html:97
-#: ../templates/admin_topics_html:79 ../templates/admin_views_html:97
-#: ../templates/titles_form:86 ../templates/users_litlists_html:84
+#: ../templates/admin_roles_html:77 ../templates/admin_servers_html:106
+#: ../templates/admin_templates_html:98 ../templates/admin_topics_html:80
+#: ../templates/admin_views_html:98 ../templates/titles_form:86
+#: ../templates/users_litlists_html:84
 #: ../templates/users_searchprofiles_html:69
 msgid "Neu"
 msgstr "New"
@@ -9611,6 +9659,10 @@ msgstr "Create new literature list"
 msgid "Neue Organisationseinheit anlegen"
 msgstr "Create new organizational unit"
 
+#: ../templates/admin_roles_html:62
+msgid "Neue Rolle hinzuf&uuml;gen"
+msgstr "Add new role"
+
 #: ../templates/_view/richter/logout:55
 msgid "Neue Sitzung beginnen?"
 msgstr "Start new session?"
@@ -9623,11 +9675,11 @@ msgstr "Start new session?"
 msgid "Neue Suche"
 msgstr "New search request"
 
-#: ../templates/admin_clusters_html:61
+#: ../templates/admin_clusters_html:62
 msgid "Neuen Cluster einrichten"
 msgstr "Create new cluster"
 
-#: ../templates/admin_databases_html:64
+#: ../templates/admin_databases_html:65
 msgid "Neuen Katalog anlegen"
 msgstr "Create new catalog"
 
@@ -9635,11 +9687,11 @@ msgstr "Create new catalog"
 msgid "Neuen RSS-Feed einrichten"
 msgstr "Create new RSS feed"
 
-#: ../templates/admin_servers_html:61
+#: ../templates/admin_servers_html:62
 msgid "Neuen Rechner zur Lastverteilung hinzuf&uuml;gen"
 msgstr "Add new server for loadbalancing"
 
-#: ../templates/admin_locations_html:65
+#: ../templates/admin_locations_html:66
 msgid "Neuen Standort anlegen"
 msgstr "Create new location"
 
@@ -9647,7 +9699,7 @@ msgstr "Create new location"
 msgid "Neuen Titel anlegen"
 msgstr "Create new title"
 
-#: ../templates/admin_views_html:63
+#: ../templates/admin_views_html:64
 msgid "Neuen View anlegen"
 msgstr "Create new view"
 
@@ -9662,7 +9714,7 @@ msgstr "New tag name"
 #: ../templates/_database/inst001/circulation:120
 #: ../templates/_database/inst411/circulation:71
 #: ../templates/_profile/kug/_database/edz/circulation:126
-#: ../templates/_profile/kug/_database/inst001/circulation:140
+#: ../templates/_profile/kug/_database/inst001/circulation:143
 #: ../templates/_profile/kug/_database/inst302/circulation:80
 #: ../templates/_profile/kug/_database/islandica/circulation:120
 #: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:126
@@ -9704,11 +9756,11 @@ msgstr "New aquisitions"
 msgid "Neuerwerbungslisten"
 msgstr "New acquisitions"
 
-#: ../templates/admin_authenticators_html:62
+#: ../templates/admin_authenticators_html:63
 msgid "Neues Anmeldeziel anlegen"
 msgstr "Create new authentication target"
 
-#: ../templates/admin_profiles_html:63
+#: ../templates/admin_profiles_html:64
 msgid "Neues Katalog-Profil anlegen"
 msgstr "Create new catalog profile"
 
@@ -9724,11 +9776,11 @@ msgstr "New password"
 msgid "Neues Passwort zusenden"
 msgstr "Send new password"
 
-#: ../templates/admin_templates_html:61
+#: ../templates/admin_templates_html:62
 msgid "Neues Template einrichten"
 msgstr "Create new template"
 
-#: ../templates/admin_topics_html:64
+#: ../templates/admin_topics_html:65
 msgid "Neues Themengebiet anlegen"
 msgstr "Create new subject"
 
@@ -9810,12 +9862,14 @@ msgid "Notationen"
 msgstr "Classification"
 
 #: ../templates/admin_databases_record_edit:192
-#: ../templates/admin_databases_record_html:78
+#: ../templates/admin_databases_record_html:83
 msgid "Notations-Datei"
 msgstr "Classification-File"
 
 #: ../templates/admin_orgunits_html:66
-#: ../templates/admin_orgunits_record_edit:81 ../templates/orgunits_html:66
+#: ../templates/admin_orgunits_record_edit:81
+#: ../templates/admin_orgunits_record_html:73
+#: ../templates/admin_profiles_record_html:79 ../templates/orgunits_html:66
 msgid "Nr"
 msgstr "Number"
 
@@ -9823,7 +9877,7 @@ msgstr "Number"
 msgid "Nutzer"
 msgstr "User"
 
-#: ../templates/admin_users_html:87 ../templates/admin_users_search_form:80
+#: ../templates/admin_users_html:79 ../templates/admin_users_search_form:73
 msgid "Nutzer mit Rollen"
 msgstr "User with special roles"
 
@@ -9870,14 +9924,14 @@ msgstr "Tags"
 msgid "Nutzergenerierte Inhalte"
 msgstr "User generated content"
 
-#: ../templates/admin_authenticators_html:119
-#: ../templates/admin_authenticators_html:77
+#: ../templates/admin_authenticators_html:121
+#: ../templates/admin_authenticators_html:78
 #: ../templates/admin_authenticators_record_edit:77
-#: ../templates/admin_authenticators_record_html:65
+#: ../templates/admin_authenticators_record_html:64
 msgid "Nutzername"
 msgstr "User name"
 
-#: ../templates/admin_navigation:214 ../templates/admin_navigation:229
+#: ../templates/admin_navigation:273 ../templates/admin_navigation:288
 #: ../templates/admin_users_html:39 ../templates/admin_users_migration_html:39
 #: ../templates/admin_users_migration_success_html:39
 #: ../templates/admin_users_record_edit:39
@@ -9899,12 +9953,12 @@ msgid "Nutzungsbedingungen"
 msgstr "Terms of usage"
 
 #: ../templates/admin_databases_record_edit:231
-#: ../templates/admin_databases_record_html:93
+#: ../templates/admin_databases_record_html:89
 msgid "OLWS DB-Name im Lokalsystem"
 msgstr "OLWS DB-name in the local system"
 
 #: ../templates/admin_databases_record_edit:236
-#: ../templates/admin_databases_record_html:94
+#: ../templates/admin_databases_record_html:90
 msgid "OLWS Zugriffs-URL"
 msgstr "OLWS target URL"
 
@@ -9981,6 +10035,7 @@ msgid "Ordnen Sie Ihre Literaturliste thematisch ein"
 msgstr "Classify you literature list thematically"
 
 #: ../templates/admin_orgunits_record_edit:71
+#: ../templates/admin_orgunits_record_html:61
 msgid "Organisationseinheit"
 msgstr "Organizational unit"
 
@@ -10311,7 +10366,7 @@ msgid "Personen"
 msgstr "Persons"
 
 #: ../templates/admin_databases_record_edit:182
-#: ../templates/admin_databases_record_html:75
+#: ../templates/admin_databases_record_html:80
 msgid "Personen-Datei"
 msgstr "Person-File"
 
@@ -10449,10 +10504,10 @@ msgstr "Popularity"
 msgid "Populäre Titel"
 msgstr "Popular titles"
 
-#: ../templates/admin_authenticators_html:119
-#: ../templates/admin_authenticators_html:72
+#: ../templates/admin_authenticators_html:121
+#: ../templates/admin_authenticators_html:73
 #: ../templates/admin_authenticators_record_edit:72
-#: ../templates/admin_authenticators_record_html:64
+#: ../templates/admin_authenticators_record_html:63
 msgid "Port"
 msgstr "Port"
 
@@ -10472,11 +10527,11 @@ msgstr "Primary RSS feed for this view (browser auto-discovery)"
 msgid "Prim&auml;rer Feed f&uuml;r das Browser Auto-Discovery"
 msgstr "Primary RSS feed for this view (browser auto-discovery)"
 
-#: ../templates/admin_views_html:117 ../templates/views_html:61
+#: ../templates/admin_views_html:119 ../templates/views_html:61
 msgid "Profil"
 msgstr "Profile"
 
-#: ../templates/admin_profiles_html:100 ../templates/admin_profiles_html:68
+#: ../templates/admin_profiles_html:104 ../templates/admin_profiles_html:69
 #: ../templates/admin_profiles_record_edit:67
 #: ../templates/admin_profiles_record_html:63 ../templates/profiles_html:62
 #: ../templates/profiles_record_html:61
@@ -10485,6 +10540,7 @@ msgstr "Name of profile"
 
 #: ../templates/_profile/rheinlandbib/searchforms_record_simple:162
 #: ../templates/_profile/usbintern/searchforms_record_profile:21
+#: ../templates/admin_profiles_record_html:59
 #: ../templates/searchforms_record_profile:21
 msgid "Profile"
 msgstr "Profile"
@@ -10555,7 +10611,7 @@ msgid "Projekt"
 msgstr "Project"
 
 #: ../templates/admin_databases_record_edit:147
-#: ../templates/admin_databases_record_html:68
+#: ../templates/admin_databases_record_html:73
 msgid "Protokoll"
 msgstr "Protocol"
 
@@ -10609,9 +10665,10 @@ msgstr "Publications"
 msgid "Quelle:"
 msgstr "Source:"
 
-#: ../templates/admin_navigation:124 ../templates/admin_navigation:126
-#: ../templates/admin_navigation:79 ../templates/admin_navigation:81
-#: ../templates/admin_views_html:117 ../templates/info_tutorials:69
+#: ../templates/admin_navigation:143 ../templates/admin_navigation:146
+#: ../templates/admin_navigation:148 ../templates/admin_navigation:90
+#: ../templates/admin_navigation:92 ../templates/admin_views_html:119
+#: ../templates/info_tutorials:69
 msgid "RSS"
 msgstr "RSS"
 
@@ -10698,7 +10755,7 @@ msgstr "Search the USB portal"
 msgid "Recherche in beliebigen Katalogen"
 msgstr "Search in arbitrary catalogs"
 
-#: ../templates/admin_navigation:189 ../templates/admin_navigation:191
+#: ../templates/admin_navigation:223 ../templates/admin_navigation:225
 #: ../templates/admin_statistics_query_html:42
 msgid "Recherche-Arten"
 msgstr "Search types"
@@ -10713,9 +10770,9 @@ msgstr "Search Options"
 msgid "Recherchemaske"
 msgstr "Search mask"
 
-#: ../templates/admin_clusters_html:76
+#: ../templates/admin_clusters_html:130 ../templates/admin_clusters_html:77
 #: ../templates/admin_clusters_record_edit:82
-#: ../templates/admin_servers_html:139 ../templates/admin_servers_html:81
+#: ../templates/admin_servers_html:147 ../templates/admin_servers_html:82
 #: ../templates/admin_servers_record_edit:87
 #: ../templates/clusters_record_html:66 ../templates/servers_html:78
 #: ../templates/servers_record_html:67
@@ -11010,11 +11067,22 @@ msgid ""
 "Rassengesetze im Jahr 1938."
 msgstr " "
 
+#: ../templates/admin_roles_record_edit:39
+#: ../templates/admin_roles_record_html:39
+#: ../templates/admin_roles_record_html:59
+msgid "Rolle"
+msgstr "Role"
+
+#: ../templates/admin_roles_record_edit:65
+msgid "Rolle bearbeiten"
+msgstr "Edit role"
+
 #: ../templates/admin_users_record_edit:98
 msgid "Rolle zuordnen"
 msgstr "Assign role"
 
-#: ../templates/admin_users_record_edit:101
+#: ../templates/admin_navigation:251 ../templates/admin_navigation:253
+#: ../templates/admin_roles_html:39 ../templates/admin_users_record_edit:101
 msgid "Rollen"
 msgstr "Roles"
 
@@ -11168,7 +11236,7 @@ msgid "Schlagwort suchen"
 msgstr "Search subject"
 
 #: ../templates/admin_databases_record_edit:197
-#: ../templates/admin_databases_record_html:77
+#: ../templates/admin_databases_record_html:82
 msgid "Schlagwort-Datei"
 msgstr "Subject headings-File"
 
@@ -11330,7 +11398,7 @@ msgstr "Page:"
 msgid "Sekunden"
 msgstr "Seconds"
 
-#: ../templates/admin_authenticators_html:94
+#: ../templates/admin_authenticators_html:95
 #: ../templates/admin_authenticators_record_edit:94
 msgid "Selbstregistrierung"
 msgstr "Self registration"
@@ -11354,7 +11422,7 @@ msgid "Serie/Band/Quelle"
 msgstr "Series/Volume/Sources"
 
 #: ../templates/admin_databases_updates_html:88
-#: ../templates/admin_navigation:34 ../templates/admin_navigation:36
+#: ../templates/admin_navigation:41 ../templates/admin_navigation:43
 #: ../templates/admin_servers_html:39
 #: ../templates/admin_servers_record_delete_confirm:39
 #: ../templates/admin_servers_record_edit:39 ../templates/servers_html:39
@@ -11380,7 +11448,7 @@ msgstr "Session-Explorer"
 msgid "Session-ID"
 msgstr "Session-ID"
 
-#: ../templates/admin_navigation:148 ../templates/admin_navigation:163
+#: ../templates/admin_navigation:179 ../templates/admin_navigation:194
 #: ../templates/admin_sessions_active_html:40
 #: ../templates/admin_sessions_active_record_html:40
 #: ../templates/admin_sessions_archived_record_html:40
@@ -11712,7 +11780,7 @@ msgstr "You have to enter one or more tags for your selected titles."
 msgid "Sie müssen einen RSS-Typ eingeben."
 msgstr "You have to enter a RSS type."
 
-#: ../modules/OpenBib/Handler/PSGI/Admin/Servers.pm:197
+#: ../modules/OpenBib/Handler/PSGI/Admin/Servers.pm:211
 msgid "Sie müssen einen Servernamen eingeben."
 msgstr "You have to enter a server name"
 
@@ -11734,7 +11802,7 @@ msgstr ""
 "You have to enter at least the name of an organizational unit and its "
 "description."
 
-#: ../modules/OpenBib/Handler/PSGI/Admin/Authenticators.pm:209
+#: ../modules/OpenBib/Handler/PSGI/Admin/Authenticators.pm:215
 msgid "Sie müssen mindestens eine Beschreibung eingeben."
 msgstr "You have to enter at least a description."
 
@@ -11773,6 +11841,14 @@ msgstr ""
 msgid "Sie sind erfolgreich registriert"
 msgstr "Your registration was successful"
 
+#: ../templates/authorization_error_html:43
+msgid ""
+"Sie sind für diesen Zugriff nicht berechtigt. Bitte melden Sie sich mit "
+"einer priviligierten Kennung an."
+msgstr ""
+"You are not authorized for this kind of access. Please login as a user with "
+"appropriate access rights."
+
 #: ../modules/OpenBib/Handler/PSGI/LitLists.pm:579
 #: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:550
 #: ../modules/OpenBib/Handler/PSGI/Users/LitLists.pm:218
@@ -11809,9 +11885,9 @@ msgstr ""
 "hyphen is read as a space by the search engine. Therefore you can type the "
 "following into the title field:"
 
-#: ../templates/admin_databases_html:89
+#: ../templates/admin_databases_html:90
 #: ../templates/admin_databases_record_edit:91
-#: ../templates/admin_databases_record_html:52
+#: ../templates/admin_databases_record_html:67
 #: ../templates/databases_record_html:65
 msgid "Sigel"
 msgstr "Library-Code"
@@ -12065,8 +12141,9 @@ msgstr "Specialized portals"
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/corporate_banner:9
 #: ../templates/_view/filme/corporate_banner:9
 #: ../templates/_view/richter/corporate_banner:5
-#: ../templates/admin_templates_html:121
-#: ../templates/admin_templates_record_edit:76 ../templates/corporate_banner:9
+#: ../templates/admin_templates_html:123
+#: ../templates/admin_templates_record_edit:76
+#: ../templates/admin_templates_record_html:73 ../templates/corporate_banner:9
 #: ../templates/info_journaltocs:47 ../templates/templates_html:70
 #: ../templates/users_templates_html:70
 #: ../templates/users_templates_record_edit:76
@@ -12100,8 +12177,9 @@ msgstr "Language icon for %1"
 #: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:182
 #: ../templates/_profile/sammlungen/_view/zpe/search_facet:168
 #: ../templates/_profile/sammlungen/search_facet:180
-#: ../templates/admin_templates_html:115 ../templates/admin_templates_html:66
+#: ../templates/admin_templates_html:117 ../templates/admin_templates_html:67
 #: ../templates/admin_templates_record_edit:75
+#: ../templates/admin_templates_record_html:72
 #: ../templates/authority_search_facet:196 ../templates/persons_record_html:94
 #: ../templates/search_facet:180 ../templates/search_title_field:14
 #: ../templates/search_title_field:29 ../templates/templates_html:62
@@ -12243,11 +12321,12 @@ msgstr "Location             "
 msgid "Standort des Buches"
 msgstr "Book Location"
 
-#: ../templates/admin_databases_html:130 ../templates/admin_locations_html:42
+#: ../templates/admin_databases_html:137 ../templates/admin_databases_html:139
+#: ../templates/admin_locations_html:42
 #: ../templates/admin_locations_record_delete_confirm:39
 #: ../templates/admin_locations_record_edit:39
 #: ../templates/admin_locations_record_html:39
-#: ../templates/admin_navigation:50 ../templates/admin_navigation:52
+#: ../templates/admin_navigation:59 ../templates/admin_navigation:61
 #: ../templates/locations_html:41 ../templates/locations_html:63
 #: ../templates/locations_record_html:38
 msgid "Standorte"
@@ -12439,7 +12518,8 @@ msgstr "Edit information about location"
 #: ../templates/_view/richter/subjects_record_html:47
 #: ../templates/_view/richter/users_registrations:37
 #: ../templates/admin_databases_updates_html:88
-#: ../templates/admin_servers_record_edit:136 ../templates/browse_bks_html:37
+#: ../templates/admin_servers_record_edit:137
+#: ../templates/authorization_error_html:24 ../templates/browse_bks_html:37
 #: ../templates/browse_bks_record_databases_html:37
 #: ../templates/browse_bks_record_html:37 ../templates/browse_html:37
 #: ../templates/browse_topics_html:37
@@ -12474,7 +12554,7 @@ msgstr "Edit information about location"
 msgid "Start"
 msgstr "Start"
 
-#: ../templates/admin_navigation:166 ../templates/admin_navigation:211
+#: ../templates/admin_navigation:200 ../templates/admin_navigation:245
 msgid "Statistik"
 msgstr "Statistics"
 
@@ -12489,9 +12569,9 @@ msgstr "Statistics"
 msgid "Statistiken"
 msgstr "Statistics"
 
-#: ../templates/admin_clusters_html:107 ../templates/admin_clusters_html:71
+#: ../templates/admin_clusters_html:109 ../templates/admin_clusters_html:72
 #: ../templates/admin_clusters_record_edit:77
-#: ../templates/admin_servers_html:123 ../templates/admin_servers_html:76
+#: ../templates/admin_servers_html:125 ../templates/admin_servers_html:77
 #: ../templates/admin_servers_record_edit:82 ../templates/clusters_html:62
 #: ../templates/clusters_record_html:62 ../templates/servers_html:64
 #: ../templates/servers_record_html:63
@@ -12936,7 +13016,7 @@ msgstr "Search history"
 msgid "Suchlogik"
 msgstr "Search Operators"
 
-#: ../templates/admin_navigation:134 ../templates/search_history:80
+#: ../templates/admin_navigation:159 ../templates/search_history:80
 msgid "Suchprofil"
 msgstr "Search profile"
 
@@ -12944,7 +13024,7 @@ msgstr "Search profile"
 msgid "Suchprofil bearbeiten"
 msgstr "Edit search profile"
 
-#: ../templates/admin_navigation:132 ../templates/admin_searchprofiles_html:39
+#: ../templates/admin_navigation:157 ../templates/admin_searchprofiles_html:39
 #: ../templates/admin_searchprofiles_record_edit:39
 #: ../templates/admin_searchprofiles_record_html:39
 #: ../templates/searchprofiles_html:38
@@ -12997,9 +13077,9 @@ msgstr "Search radius"
 msgid "Suchradius ändern"
 msgstr "Alter search radius"
 
-#: ../templates/admin_databases_html:80
+#: ../templates/admin_databases_html:81
 #: ../templates/admin_databases_record_edit:82
-#: ../templates/admin_databases_record_html:51
+#: ../templates/admin_databases_record_html:66
 #: ../templates/databases_record_html:64
 msgid "System"
 msgstr "System"
@@ -13082,7 +13162,7 @@ msgstr "System"
 msgid "Systematik"
 msgstr "Classification"
 
-#: ../templates/admin_topics_html:99 ../templates/topics_html:63
+#: ../templates/admin_topics_html:101 ../templates/topics_html:63
 msgid "Systematik-Gruppen"
 msgstr "Classification groups"
 
@@ -16738,15 +16818,13 @@ msgstr "Full title of source"
 
 #: ../templates/_database/landschaft/visible_categories_title:71
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:72
-#, fuzzy
 msgid "T0598"
-msgstr "Title source"
+msgstr "Footnote of title source"
 
 #: ../templates/_database/landschaft/visible_categories_title:72
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:73
-#, fuzzy
 msgid "T0599"
-msgstr "Title source"
+msgstr "Standardized number of  source"
 
 #: ../templates/_database/bestellungen/visible_categories_title:60
 #: ../templates/_database/inst001/visible_categories_title:56
@@ -17061,25 +17139,21 @@ msgstr "Title in variant spelling"
 
 #: ../templates/_database/landschaft/visible_categories_title:77
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:78
-#, fuzzy
 msgid "T0672"
-msgstr "Title in variant spelling"
+msgstr "Standardized name of author"
 
 #: ../templates/_database/landschaft/visible_categories_title:78
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:79
-#, fuzzy
 msgid "T0673"
-msgstr "Title in variant spelling"
+msgstr "Standardized place"
 
 #: ../templates/_database/landschaft/visible_categories_title:79
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:80
-#, fuzzy
 msgid "T0674"
-msgstr "Title in variant spelling"
+msgstr "Year of original"
 
 #: ../templates/_database/landschaft/visible_categories_title:80
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:81
-#, fuzzy
 msgid "T0675"
 msgstr "Title in variant spelling"
 
@@ -17341,9 +17415,8 @@ msgstr "Media type"
 
 #: ../templates/_database/landschaft/visible_categories_title:82
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:84
-#, fuzzy
 msgid "T0840"
-msgstr "Rererence"
+msgstr "Accordance"
 
 #: ../templates/_database/bestellungen/visible_categories_title:97
 #: ../templates/_database/inst001/visible_categories_title:92
@@ -17758,7 +17831,7 @@ msgstr "Subject headings"
 #: ../templates/_database/landschaft/visible_categories_title:83
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:85
 msgid "T1202"
-msgstr ""
+msgstr "Remark holding"
 
 #: ../templates/_database/inst001/visible_categories_title:110
 #: ../templates/_profile/kug/_database/edz/visible_categories_title:113
@@ -17938,9 +18011,8 @@ msgid "T2663"
 msgstr "USB URL information"
 
 #: ../templates/_database/landschaft/visible_categories_title:36
-#, fuzzy
 msgid "T3000"
-msgstr "Table of contents (HTML)"
+msgstr "Acquisituion (local)"
 
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:29
 msgid "T3000-portrait"
@@ -17967,9 +18039,8 @@ msgid "T3003"
 msgstr "Table of contents (pdf)"
 
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:115
-#, fuzzy
 msgid "T3004"
-msgstr "Table of contents (HTML)"
+msgstr "Remark MAB2"
 
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:32
 #: ../templates/all_categories_title:131
@@ -18461,15 +18532,20 @@ msgstr "Import Tags to BibSonomy"
 msgid "Tags nach Namen"
 msgstr "Tags by name"
 
+#: ../templates/admin_templates_record_html:62
+msgid "Template"
+msgstr "Template"
+
 #: ../templates/admin_templates_record_edit:67
 #: ../templates/users_templates_record_edit:67
 msgid "Template bearbeiten"
 msgstr "Edit template"
 
-#: ../templates/admin_navigation:242 ../templates/admin_navigation:244
+#: ../templates/admin_navigation:335 ../templates/admin_navigation:337
 #: ../templates/admin_templates_html:39
 #: ../templates/admin_templates_record_delete_confirm:39
 #: ../templates/admin_templates_record_edit:42
+#: ../templates/admin_templates_record_html:42
 #: ../templates/admin_users_record_edit:127 ../templates/templates_html:38
 #: ../templates/templates_revisions_record_delete_confirm:39
 #: ../templates/users_templates_html:39 ../templates/users_templates_html:60
@@ -18489,9 +18565,10 @@ msgstr "Development system - Not intended for regular use"
 #: ../templates/_database/einbaende/titles_record_html:341
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:316
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:306
-#: ../templates/admin_templates_html:92
+#: ../templates/admin_templates_html:93
 #: ../templates/admin_templates_record_edit:127
 #: ../templates/admin_templates_record_edit:90
+#: ../templates/admin_templates_record_html:109
 #: ../templates/templates_record_html:61
 #: ../templates/templates_revisions_html:63
 #: ../templates/templates_revisions_record_html:62
@@ -18537,10 +18614,11 @@ msgstr "Subject-based Integration of other Sources"
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:53
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:53
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:53
-#: ../templates/admin_topics_html:69 ../templates/admin_topics_html:99
+#: ../templates/admin_topics_html:101 ../templates/admin_topics_html:70
 #: ../templates/admin_topics_mappings_html:77
 #: ../templates/admin_topics_mappings_record_html:76
 #: ../templates/admin_topics_record_edit:117
+#: ../templates/admin_topics_record_html:109
 #: ../templates/authority_search_facet:194 ../templates/search_title_field:20
 #: ../templates/topics_html:63 ../templates/topics_mappings_html:75
 #: ../templates/topics_mappings_record_html:74
@@ -18554,29 +18632,29 @@ msgstr "Subject"
 msgid "Themengebiet bearbeiten"
 msgstr "Edit subjects"
 
-#: ../templates/admin_topics_record_edit:144
+#: ../templates/admin_topics_record_edit:145
 #: ../templates/topics_record_mapping_html:114
 msgid "Themengebiet(e) der Basisklassifikation zuordnen"
 msgstr "Assign topics to basic classification"
 
-#: ../templates/admin_topics_record_edit:274
+#: ../templates/admin_topics_record_edit:275
 msgid "Themengebiet(e) der DDC zuordnen"
 msgstr "Assign topics to DDC"
 
-#: ../templates/admin_topics_record_edit:177
+#: ../templates/admin_topics_record_edit:178
 #: ../templates/topics_record_mapping_html:164
 msgid "Themengebiet(e) der EZB zuordnen"
 msgstr "Assign topics to EZB subjects"
 
-#: ../templates/admin_topics_record_edit:307
+#: ../templates/admin_topics_record_edit:308
 msgid "Themengebiet(e) der LoC Classification zuordnen"
 msgstr "Assign topics to Library of Congress Classification"
 
-#: ../templates/admin_topics_record_edit:241
+#: ../templates/admin_topics_record_edit:242
 msgid "Themengebiet(e) der Regensburger Verbundklassifikation zuordnen"
 msgstr "Assign topics to Regensburger Verbundklassifikation"
 
-#: ../templates/admin_topics_record_edit:209
+#: ../templates/admin_topics_record_edit:210
 #: ../templates/topics_record_mapping_html:211
 msgid "Themengebiet(e) von DBIS zuordnen"
 msgstr "Assign DBIS subjects"
@@ -18590,23 +18668,20 @@ msgstr "Assign DBIS subjects"
 #: ../templates/_view/richter/litlists_record_html:55
 #: ../templates/_view/richter/searchforms_record_simple:83
 #: ../templates/_view/richter/users_litlists_record_edit:40
-#: ../templates/admin_navigation:237 ../templates/admin_navigation:239
+#: ../templates/admin_navigation:317 ../templates/admin_navigation:319
 #: ../templates/admin_topics_html:41
 #: ../templates/admin_topics_mappings_html:54
 #: ../templates/admin_topics_mappings_record_html:54
 #: ../templates/admin_topics_mappings_record_html:83
 #: ../templates/admin_topics_record_delete_confirm:39
-#: ../templates/admin_topics_record_edit:147
-#: ../templates/admin_topics_record_edit:180
-#: ../templates/admin_topics_record_edit:212
-#: ../templates/admin_topics_record_edit:244
-#: ../templates/admin_topics_record_edit:277
-#: ../templates/admin_topics_record_edit:310
+#: ../templates/admin_topics_record_edit:148
+#: ../templates/admin_topics_record_edit:181
+#: ../templates/admin_topics_record_edit:213
+#: ../templates/admin_topics_record_edit:245
+#: ../templates/admin_topics_record_edit:278
+#: ../templates/admin_topics_record_edit:311
 #: ../templates/admin_topics_record_edit:89
-#: ../templates/admin_topics_record_html:113
-#: ../templates/admin_topics_record_html:149
-#: ../templates/admin_topics_record_html:54
-#: ../templates/admin_topics_record_html:80 ../templates/browse_html:60
+#: ../templates/admin_topics_record_html:89 ../templates/browse_html:60
 #: ../templates/browse_topics_html:39 ../templates/browse_topics_html:61
 #: ../templates/browse_topics_record_html:41 ../templates/info_53:42
 #: ../templates/litlists_by_single_topic_html:47
@@ -18681,7 +18756,7 @@ msgstr "Hint: Digital Card Catalog"
 #: ../templates/acquisition_collection:192
 #: ../templates/admin_databases_record_edit:119
 #: ../templates/admin_databases_updates_html:88
-#: ../templates/admin_servers_record_edit:136
+#: ../templates/admin_servers_record_edit:137
 #: ../templates/cartitems_html_full:26 ../templates/home_html_bottom_left:51
 #: ../templates/litlists_record_html:86
 #: ../templates/litlists_record_include:35 ../templates/search_title_field:4
@@ -18792,12 +18867,12 @@ msgstr "Send Entry (List) by Mail"
 msgid "Titel(liste) ausdrucken, bzw. in einer Druckansicht darstellen"
 msgstr "Print Entry (List); Show Print View"
 
-#: ../templates/admin_databases_html:124
+#: ../templates/admin_databases_html:126
 msgid "Titel-Anzahl"
 msgstr "Number of titles"
 
 #: ../templates/admin_databases_record_edit:177
-#: ../templates/admin_databases_record_html:74
+#: ../templates/admin_databases_record_html:79
 msgid "Titel-Datei"
 msgstr "Title-File"
 
@@ -19041,11 +19116,11 @@ msgstr "Tutorials to specific subjects:"
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:179
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:179
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/searchforms_record_query:179
-#: ../templates/admin_authenticators_html:119
-#: ../templates/admin_authenticators_html:92
+#: ../templates/admin_authenticators_html:121
+#: ../templates/admin_authenticators_html:93
 #: ../templates/admin_authenticators_record_edit:92
-#: ../templates/admin_authenticators_record_html:68
-#: ../templates/admin_locations_html:106 ../templates/admin_locations_html:80
+#: ../templates/admin_authenticators_record_html:67
+#: ../templates/admin_locations_html:108 ../templates/admin_locations_html:81
 #: ../templates/admin_locations_record_edit:104
 #: ../templates/authenticators_html:62
 #: ../templates/authenticators_record_html:62
@@ -19112,27 +19187,27 @@ msgstr ""
 msgid "URI ohne View"
 msgstr "URI without view"
 
-#: ../templates/admin_databases_html:94
+#: ../templates/admin_databases_html:95
 #: ../templates/admin_databases_record_edit:96
-#: ../templates/admin_databases_record_html:53
+#: ../templates/admin_databases_record_html:68
 #: ../templates/databases_record_html:66
 msgid "URL"
 msgstr "URL"
 
-#: ../templates/admin_profiles_html:95
+#: ../templates/admin_profiles_html:98
 msgid ""
 "Um ein bereits existierendes Katalog-Profil zu bearbeiten klicken Sie bitte "
 "auf den Profil-Namen."
 msgstr ""
 "To edit an already existing catalog profile please select the profile name."
 
-#: ../templates/admin_views_html:112
+#: ../templates/admin_views_html:114
 msgid ""
 "Um einen bereits existierenden View zu bearbeiten klicken Sie bitte auf den "
 "Viewnamen."
 msgstr "To edit an already existing view please select the view name."
 
-#: ../templates/admin_topics_html:94
+#: ../templates/admin_topics_html:96
 msgid ""
 "Um einen bereits existierendes Themengebiet zu bearbeiten klicken Sie bitte "
 "auf den Namen."
@@ -19442,8 +19517,9 @@ msgstr "Used search type"
 msgid "Vielen Dank f&uuml;r Ihren Besuch."
 msgstr "Thank you for your visit."
 
-#: ../templates/admin_templates_html:115 ../templates/admin_templates_html:83
-#: ../templates/admin_templates_record_edit:80 ../templates/templates_html:62
+#: ../templates/admin_templates_html:117 ../templates/admin_templates_html:84
+#: ../templates/admin_templates_record_edit:80
+#: ../templates/admin_templates_record_html:77 ../templates/templates_html:62
 #: ../templates/templates_record_html:59 ../templates/users_templates_html:64
 #: ../templates/users_templates_record_edit:80
 msgid "View"
@@ -19453,15 +19529,15 @@ msgstr "View"
 msgid "View bearbeiten"
 msgstr "Edit view"
 
-#: ../templates/admin_views_html:117 ../templates/admin_views_html:68
+#: ../templates/admin_views_html:119 ../templates/admin_views_html:69
 #: ../templates/admin_views_record_edit:74
 #: ../templates/admin_views_rss_record_html:51 ../templates/views_html:61
 #: ../templates/views_record_html:59
 msgid "Viewname"
 msgstr "View name"
 
-#: ../templates/admin_navigation:111 ../templates/admin_navigation:113
-#: ../templates/admin_navigation:184 ../templates/admin_navigation:186
+#: ../templates/admin_navigation:126 ../templates/admin_navigation:128
+#: ../templates/admin_navigation:218 ../templates/admin_navigation:220
 #: ../templates/admin_statistics_view_html:42 ../templates/admin_views_html:40
 #: ../templates/admin_views_record_delete_confirm:39
 #: ../templates/admin_views_record_edit:39
@@ -19635,14 +19711,14 @@ msgid "Web"
 msgstr "Web"
 
 #: ../templates/admin_databases_record_edit:241
-#: ../templates/admin_databases_record_html:95
+#: ../templates/admin_databases_record_html:91
 msgid "WebOPAC-URL"
 msgstr "WebOPAC-URL"
 
 #: ../templates/_database/inst001/circulation:100
 #: ../templates/_database/inst411/circulation:53
 #: ../templates/_profile/kug/_database/edz/circulation:106
-#: ../templates/_profile/kug/_database/inst001/circulation:119
+#: ../templates/_profile/kug/_database/inst001/circulation:122
 #: ../templates/_profile/kug/_database/inst001/holding:109
 #: ../templates/_profile/kug/_database/inst302/circulation:54
 #: ../templates/_profile/kug/_database/islandica/circulation:100
@@ -20278,7 +20354,7 @@ msgstr "Library"
 msgid "X4001"
 msgstr "Libraryinfo-URL"
 
-#: ../templates/admin_navigation:204 ../templates/admin_navigation:206
+#: ../templates/admin_navigation:238 ../templates/admin_navigation:240
 #: ../templates/admin_statistics_access_html:42
 msgid "Zahl Recherchen/Sessions"
 msgstr "Number of search requests / sessions"
@@ -20422,6 +20498,30 @@ msgstr "tag to be replaced"
 msgid "Zugemailte Merkliste"
 msgstr "Mailed list of interest"
 
+#: ../templates/admin_topics_record_html:111
+msgid "Zugeordnete Themengebiete der Basisklassifikation"
+msgstr "Basic classification entries assigned to this topic"
+
+#: ../templates/admin_topics_record_html:194
+msgid "Zugeordnete Themengebiete der DDC"
+msgstr "DDC entries assigned to this topic"
+
+#: ../templates/admin_topics_record_html:131
+msgid "Zugeordnete Themengebiete der EZB"
+msgstr "DBIS entries assigned to this topic"
+
+#: ../templates/admin_topics_record_html:214
+msgid "Zugeordnete Themengebiete der LoC Classification"
+msgstr "Library of Congress Classification entries assigned to this topic"
+
+#: ../templates/admin_topics_record_html:174
+msgid "Zugeordnete Themengebiete der RVK"
+msgstr "RVK entries assigned to this topic"
+
+#: ../templates/admin_topics_record_html:153
+msgid "Zugeordnete Themengebiete von DBIS"
+msgstr "DBIS entries assigned to this topic"
+
 #: ../templates/admin_statistics_client_html:92
 msgid "Zugreifende IP's nach H&auml;ufigkeit"
 msgstr "Accessing IP's by occurence"
@@ -20431,13 +20531,18 @@ msgid "Zugreifende IP's nach Region"
 msgstr "Accessing IP's by region"
 
 #: ../templates/admin_databases_record_edit:223
-#: ../templates/admin_databases_record_html:92
+#: ../templates/admin_databases_record_html:88
 msgid "Zugriff &uuml;ber OLWS"
 msgstr "Access via OLWS"
 
 #: ../templates/admin_statistics_access_html:65
 msgid "Zugriffe auf OpenBib"
 msgstr "Number of a requests for OpenBib"
+
+#: ../templates/authorization_error_html:25
+#: ../templates/authorization_error_html:40
+msgid "Zugriffsfehler"
+msgstr "Access violation"
 
 #: ../templates/litlists_navigation:29 ../templates/litlists_navigation:31
 #: ../templates/litlists_navigation:47 ../templates/litlists_navigation:49
@@ -20551,7 +20656,6 @@ msgstr "descending"
 #: ../templates/_profile/rheinlandbib/_view/zuelpich/mainnavigation:50
 #: ../templates/_profile/rheinlandbib/mainnavigation:50
 #: ../templates/_view/richter/mainnavigation:55
-#: ../templates/admin_users_html:80 ../templates/admin_users_search_form:74
 msgid "admin"
 msgstr "Administrator"
 
@@ -20563,7 +20667,7 @@ msgstr "ascending"
 #: ../templates/_database/inst001/circulation:135
 #: ../templates/_database/inst411/circulation:86
 #: ../templates/_profile/kug/_database/edz/circulation:141
-#: ../templates/_profile/kug/_database/inst001/circulation:155
+#: ../templates/_profile/kug/_database/inst001/circulation:158
 #: ../templates/_profile/kug/_database/inst302/circulation:95
 #: ../templates/_profile/kug/_database/islandica/circulation:135
 #: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:141
@@ -20597,7 +20701,7 @@ msgstr "lendable"
 #: ../templates/_database/inst001/circulation:133
 #: ../templates/_database/inst411/circulation:84
 #: ../templates/_profile/kug/_database/edz/circulation:139
-#: ../templates/_profile/kug/_database/inst001/circulation:153
+#: ../templates/_profile/kug/_database/inst001/circulation:156
 #: ../templates/_profile/kug/_database/inst302/circulation:93
 #: ../templates/_profile/kug/_database/islandica/circulation:133
 #: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:139
@@ -20627,7 +20731,7 @@ msgstr "complained to supplier"
 #: ../templates/_database/inst001/circulation:131
 #: ../templates/_database/inst411/circulation:82
 #: ../templates/_profile/kug/_database/edz/circulation:137
-#: ../templates/_profile/kug/_database/inst001/circulation:151
+#: ../templates/_profile/kug/_database/inst001/circulation:154
 #: ../templates/_profile/kug/_database/inst302/circulation:91
 #: ../templates/_profile/kug/_database/islandica/circulation:131
 #: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:137
@@ -20657,7 +20761,7 @@ msgstr "order to supplier cancelled"
 #: ../templates/_database/inst001/circulation:127
 #: ../templates/_database/inst411/circulation:78
 #: ../templates/_profile/kug/_database/edz/circulation:133
-#: ../templates/_profile/kug/_database/inst001/circulation:147
+#: ../templates/_profile/kug/_database/inst001/circulation:150
 #: ../templates/_profile/kug/_database/inst302/circulation:87
 #: ../templates/_profile/kug/_database/islandica/circulation:127
 #: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:133
@@ -20792,7 +20896,7 @@ msgstr "borrowed"
 #: ../templates/_database/inst001/circulation:129
 #: ../templates/_database/inst411/circulation:80
 #: ../templates/_profile/kug/_database/edz/circulation:135
-#: ../templates/_profile/kug/_database/inst001/circulation:149
+#: ../templates/_profile/kug/_database/inst001/circulation:152
 #: ../templates/_profile/kug/_database/inst302/circulation:89
 #: ../templates/_profile/kug/_database/islandica/circulation:129
 #: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:135
@@ -20872,10 +20976,6 @@ msgstr "is a service of  Universitäts- und Stadtbibliothek Köln"
 msgid "ja, seit"
 msgstr "yes, since"
 
-#: ../templates/admin_users_html:82 ../templates/admin_users_search_form:76
-msgid "lecturer"
-msgstr "Lecturer"
-
 #: ../templates/_profile/kug/search_facet:319
 #: ../templates/_profile/sammlungen/_view/einbaende/search_facet:210
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/search_facet:210
@@ -20923,10 +21023,6 @@ msgstr "lendable / by order"
 #: ../templates/authority_search_facet:253 ../templates/search_facet:237
 msgid "lendable_weekend"
 msgstr "lendable / weekend only"
-
-#: ../templates/admin_users_html:81 ../templates/admin_users_search_form:75
-msgid "librarian"
-msgstr "Librarian"
 
 #: ../templates/home_html_bottom_center:23
 #: ../templates/searchforms_record_bottom_center:19
@@ -21454,7 +21550,7 @@ msgstr "very good"
 msgid "usw. usf."
 msgstr "etc."
 
-#: ../templates/admin_users_html:83 ../templates/viewadmin_navigation:15
+#: ../templates/viewadmin_navigation:15
 msgid "viewadmin"
 msgstr "Portal-Administrator"
 
@@ -21519,15 +21615,17 @@ msgstr "repeated"
 #: ../templates/admin_locations_record_edit:157
 #: ../templates/admin_orgunits_record_edit:111
 #: ../templates/admin_profiles_record_edit:78
+#: ../templates/admin_roles_record_edit:107
+#: ../templates/admin_roles_record_html:99
 #: ../templates/admin_searchprofiles_record_edit:86
 #: ../templates/admin_servers_record_edit:110
 #: ../templates/admin_topics_record_edit:127
-#: ../templates/admin_topics_record_edit:164
-#: ../templates/admin_topics_record_edit:196
-#: ../templates/admin_topics_record_edit:228
-#: ../templates/admin_topics_record_edit:261
-#: ../templates/admin_topics_record_edit:294
-#: ../templates/admin_topics_record_edit:329
+#: ../templates/admin_topics_record_edit:165
+#: ../templates/admin_topics_record_edit:197
+#: ../templates/admin_topics_record_edit:229
+#: ../templates/admin_topics_record_edit:262
+#: ../templates/admin_topics_record_edit:295
+#: ../templates/admin_topics_record_edit:330
 #: ../templates/admin_views_record_edit:140
 #: ../templates/admin_views_rss_record_edit:92
 #: ../templates/topics_record_mapping_html:144
@@ -21586,8 +21684,20 @@ msgstr "Overview"
 msgid "Überziehungen / Gebühren"
 msgstr "Overdue/Fees"
 
-#~ msgid "Beziehungen"
-#~ msgstr "Relations"
+#~ msgid "Der Basisklassifikation zugeordnete Themengebiete"
+#~ msgstr "Topics corresponding to basic classification"
+
+#~ msgid "Der EZB zugeordnete Themengebiete"
+#~ msgstr "Topics corresponding to EZB"
+
+#~ msgid "Katalog bearbeiten"
+#~ msgstr "Edit catalog"
+
+#~ msgid "lecturer"
+#~ msgstr "Lecturer"
+
+#~ msgid "librarian"
+#~ msgstr "Librarian"
 
 #~ msgid "Es existiert kein Suchprofil mit dieser ID"
 #~ msgstr "There does not exist a search profile with this id"
@@ -21600,12 +21710,6 @@ msgstr "Overdue/Fees"
 
 #~ msgid "Es existiert bereits ein anderes Template mit diesem Namen und View"
 #~ msgstr "There already exists another template with this name and view"
-
-#~ msgid "Rolle"
-#~ msgstr "Role"
-
-#~ msgid "Rolle bearbeiten"
-#~ msgstr "Edit role"
 
 #, fuzzy
 #~ msgid "Templatename"

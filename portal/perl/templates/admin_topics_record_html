@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Themengebiet bearbeiten' %]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Themengebiet' %]
 
   <body>
 [%
@@ -26,6 +26,41 @@
       };
       bklist.push(thisbk);
     END ;
+  END ;
+
+  rvks         = config.load_rvk;
+
+  rvklist = [];
+  FOREACH rvk IN rvks;
+      thisrvk = {
+        classification   => rvk.key,
+        desc             => rvk.value,
+      };
+      rvklist.push(thisrvk);
+  END ;
+
+  ddcs        = config.load_ddc;
+
+  ddclist = [];
+  FOREACH ddc IN ddcs;
+    IF ddc.key.length == 3;
+      thisddc = {
+        classification   => ddc.key,
+        desc             => ddc.value,
+      };
+      ddclist.push(thisddc);
+    END ;
+  END ;
+
+  lccs        = config.load_lcc;
+
+  lcclist = [];
+  FOREACH lcc IN lccs;
+    thislcc = {
+      classification   => lcc.key,
+      desc             => lcc.value,
+    };
+    lcclist.push(thislcc);
   END ;
 
 %]
@@ -63,7 +98,7 @@
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_topics" %]
+[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_topics_record" active_subsubmenu="admin_topics_record_main" %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -71,21 +106,17 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<div class="boxedclear">
+<h2>[% msg.maketext("Themengebiet") %]: [% topic.name %]</h2>
 
-<table class="ym-full">
-<tr><th>[% msg.maketext("Der Basisklassifikation zugeordnete Themengebiete") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
-<table>
-<tr><td colspan="3"><b>[% msg.maketext("Themengebiete") %]</b></td></tr>
-<tr><td colspan="3">
+<h4>[% msg.maketext("Zugeordnete Themengebiete der Basisklassifikation") %]</h4>
+
 [%
    classification_selected = {};
    FOREACH classification IN user.get_classifications_of_topic({ type => 'bk', topicid => topic.id});
       classification_selected.${classification} = 1;
    END;
 %]
-
+[% IF classification_selected.keys %]
 <ul>
 [% FOREACH bk IN bklist %]
 [%   IF classification_selected.${bk.classification}  %]
@@ -93,84 +124,112 @@
 [%   END %]
 [% END %]
 </ul>
-</td>
-</tr>
-</table>
+[% ELSE %]
+[% msg.maketext("Keine") %]
+[% END %]
 
-</td></tr>
-</table>
+<h4>[% msg.maketext("Zugeordnete Themengebiete der EZB") %]</h4>
 
-</div>
-
-<p/>
-
-<div class="boxedclear">
-
-<table class="ym-full">
-<tr><th>[% msg.maketext("Der EZB zugeordnete Themengebiete") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
-<table>
-<tr><td colspan="3"><b>[% msg.maketext("Themengebiete") %]</b></td></tr>
-<tr><td colspan="3">
 [%-
    classification_selected = {};
    FOREACH classification IN user.get_classifications_of_topic({ type => 'ezb', topicid => topic.id});
       classification_selected.${classification} = 1;
    END;
 -%]
+
+[% IF classification_selected.keys %]
 <ul>
-[% FOREACH ezb_topic IN ezb.get_topics %]
-[%   IF classification_selected.${ezb_topic.notation}  %]
-<li>[% ezb_topic.notation %]: [% ezb_topic.desc %]</li>
+[% FOREACH ezb_topic IN ezb.get_classifications %]
+[%   IF classification_selected.${ezb_topic.name}  %]
+<li>[% ezb_topic.name %]: [% ezb_topic.desc %]</li>
 [%   END %]
 [% END %]
 </ul>
-</td>
+[% ELSE %]
+[% msg.maketext("Keine") %]
+[% END %]
 
 
-</tr>
-</table>
+<h4>[% msg.maketext("Zugeordnete Themengebiete von DBIS") %]</h4>
 
-</td></tr>
-</table>
-
-</form>
-
-</div>
-
-
-<p/>
-<div class="boxedclear">
-
-<table class="ym-full">
-<tr><th>[% msg.maketext("DBIS zugeordnete Themengebiete") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
-<table>
-<tr><td colspan="3"><b>[% msg.maketext("Themengebiete") %]</b></td></tr>
-<tr><td colspan="3">
 [%-
    classification_selected = {};
    FOREACH classification IN user.get_classifications_of_topic({ type => 'dbis', topicid => topic.id});
       classification_selected.${classification} = 1;
    END;
 -%]
+[% IF classification_selected.keys %]
 <ul>
-[% FOREACH dbis_topic IN dbis.get_topics %]
-[%   IF classification_selected.${dbis_topic.notation}  %]
-<li>[% dbis_topic.notation %]: [% dbis_topic.desc %]</li>
+[% FOREACH dbis_topic IN dbis.get_classifications %]
+[%   IF classification_selected.${dbis_topic.name}  %]
+<li>[% dbis_topic.name %]: [% dbis_topic.desc %]</li>
 [%   END %]
 [% END %]
 </ul>
+[% ELSE %]
+[% msg.maketext("Keine") %]
+[% END %]
 
-</td>
-</tr>
-</table>
 
-</td></tr>
-</table>
+<h4>[% msg.maketext("Zugeordnete Themengebiete der RVK") %]</h4>
 
-</form>
-</div>
+[%-
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'rvk', topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+-%]
+[% IF classification_selected.keys %]
+<ul>
+[% FOREACH rvk IN rvklist %]
+[%   IF classification_selected.${rvk.classification}  %]
+<li>[% rvk.classification %]: [% rvk.desc %]</li>
+[%   END %]
+[% END %]
+</ul>
+[% ELSE %]
+[% msg.maketext("Keine") %]
+[% END %]
+
+<h4>[% msg.maketext("Zugeordnete Themengebiete der DDC") %]</h4>
+
+[%-
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'ddc', topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+-%]
+[% IF classification_selected.keys %]
+<ul>
+[% FOREACH ddc IN ddclist %]
+[%   IF classification_selected.${ddc.classification}  %]
+<li>[% ddc.classification %]</li>
+[%   END %]
+[% END %]
+</ul>
+[% ELSE %]
+[% msg.maketext("Keine") %]
+[% END %]
+
+<h4>[% msg.maketext("Zugeordnete Themengebiete der LoC Classification") %]</h4>
+
+[%-
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'lcc', topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+-%]
+[% IF classification_selected.keys %]
+<ul>
+[% FOREACH lcc IN lcclist %]
+[%   IF classification_selected.${lcc.classification}  %]
+<li>[% lcc.classification %]: [% lcc.desc %]</li>
+[%   END %]
+[% END %]
+</ul>
+[% ELSE %]
+[% msg.maketext("Keine") %]
+[% END %]
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

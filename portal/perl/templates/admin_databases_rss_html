@@ -84,6 +84,7 @@ FOREACH feed IN katalog.rssfeeds ;
 END ;
 %]
 
+[% IF user.has_right({scope = 'admin_databases', right = 'right_create'}) %]
 [% IF available_types.size > 0 %]
 <form method="post" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% katalog.dbname %]/rss" class="ym-form">
 
@@ -118,6 +119,7 @@ END ;
 </fieldset>
 </form>
 [% END %]
+[% END # right_create %]
 [%# USE dumper;dumper.dump(katalog)%]
 
 [% IF katalog.rssfeeds.size > 0 %]
@@ -133,7 +135,11 @@ END ;
 <tr  [% IF feed.active == 1 %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]>
 <td>[% feed.id %]</td>
 <td>
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% katalog.dbname %]/rss/id/[% feed.id %]/edit">[% typedescription.${feed.type} %]</a>
+[%   IF user.has_right({scope = 'admin_locations', right = 'right_update'}) %]
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% katalog.dbname %]/rss/id/[% feed.id %]/edit.html?l=[% lang %]">[% typedescription.${feed.type} %]</a>
+[%   ELSIF user.has_right({scope = 'admin_locations', right = 'right_read'}) %]
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% katalog.dbname %]/rss/id/[% feed.id %].html?l=[% lang %]">[% typedescription.${feed.type} %]</a>
+[%   END %]
 </td>
 <!-- <td>[% feed.subtype %]</td>
 <td>[% feed.subtypedesc %]</td>
@@ -143,7 +149,7 @@ END ;
 [% END %]
 </table>
 [% ELSE %]
-[% msg.maketext("Es sind noch keine RSS-Feeds f&uuml;r diesen Katalog eingerichtet.") %]
+<h2>[% msg.maketext("Es sind noch keine RSS-Feeds f&uuml;r diesen Katalog eingerichtet.") %]</h2>
 [% END %]
 </td></tr>
 </table>

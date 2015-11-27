@@ -138,7 +138,7 @@ END ;
 [%   IF user.has_right({scope = 'admin_locations', right = 'right_update'}) %]
 <a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% katalog.dbname %]/rss/id/[% feed.id %]/edit.html?l=[% lang %]">[% typedescription.${feed.type} %]</a>
 [%   ELSIF user.has_right({scope = 'admin_locations', right = 'right_read'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% katalog.dbname %]/rss/id/[% feed.id %].html?l=[% lang %]">[% typedescription.${feed.type} %]</a>
+[% typedescription.${feed.type} %]
 [%   END %]
 </td>
 <!-- <td>[% feed.subtype %]</td>

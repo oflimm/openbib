@@ -56,7 +56,7 @@ if ($help){
     print_help();
 }
 
-my $logfile='/var/log/openbib/split-$pool.log';
+my $logfile="/var/log/openbib/split-$pool.log";
 
 my $log4Perl_config = << "L4PCONF";
 log4perl.rootLogger=ERROR, LOGFILE, Screen

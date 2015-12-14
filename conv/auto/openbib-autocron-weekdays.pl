@@ -361,9 +361,9 @@ sub threadC {
 
     ##############################
 
-    #$logger->info("### Master: inst418master");
+    $logger->info("### Master: inst418master");
     
-    #autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst418master'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst418master'] });
 
     ##############################
     

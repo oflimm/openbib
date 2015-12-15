@@ -7,7 +7,7 @@ use utf8;
 use MediaWiki::API;
 use JSON::XS qw/decode_json encode_json/;
 
-my $mw = MediaWiki::API->new( {api_url => 'http://usbwiki.ub.uni-koeln.de/usbwiki/api.php' } );
+my $mw = MediaWiki::API->new( {api_url => 'https://usbwiki.ub.uni-koeln.de/usbwiki/api.php' } );
 
 my $page = $mw->get_page( { title => 'Tmpebooks - Exkludierte Titel' } );
 
@@ -39,7 +39,16 @@ foreach my $line (split /\n/, $page_content){
 
 
 while (<>){
-    my $title_ref = decode_json $_;
+    my $title_ref;
+
+    eval {
+       $title_ref = decode_json $_;
+    };
+
+    if ($@){
+        print STDERR $@,"\n";
+        next;
+    }
 
     if (defined $excluded_ids{$title_ref->{id}}){
         print STDERR "Titel-ID $title_ref->{id} excluded\n";

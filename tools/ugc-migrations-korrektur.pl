@@ -47,11 +47,12 @@ use YAML::Syck;
 
 my $config      = OpenBib::Config->new;
 
-my ($sourcedatabase,$targetdatabase,$masterdatabase,$targetlocation,$help,$logfile);
+my ($sourcedatabase,$targetdatabase,$masterdatabase,$targetlocation,$targetmarkprefix,$help,$logfile);
 
 &GetOptions("source-database=s"     => \$sourcedatabase,
             "target-database=s"     => \$targetdatabase,
             "target-location=s"     => \$targetlocation,
+            "target-markprefix=s"   => \$targetmarkprefix,
             "master-database=s"     => \$masterdatabase,
             "logfile=s"              => \$logfile,
 	    "help"                   => \$help
@@ -161,6 +162,15 @@ while (my $targettitle_bibkey = $targettitle_bibkeys->next()){
 
 my @target_bibkeys = keys %$bibkey_targettitle_ref;
 
+# Wenn zu einem source_bibkey kein target_bibkey existiert, dann muss die target_titleid ueber die Signatur
+# bestimmt werden und die sourceid gehoert de facto zu den remaining_titleids
+
+foreach my $source_bibkey (@source_bibkeys){
+    if (!defined $bibkey_targettitle_ref->{$source_bibkey} && !$bibkey_targettitle_ref->{$source_bibkey}){
+        push @remaining_titleids, $bibkey_sourcetitle_ref->{$source_bibkey};
+    }
+}
+
 $logger->info("Source Bibkeys: ".YAML::Dump(\@target_bibkeys));
 
 foreach my $target_bibkey (@target_bibkeys){
@@ -180,7 +190,45 @@ foreach my $target_bibkey (@target_bibkeys){
         print YAML::Dump($targettitle->get_fields),"\n";
         print "----------------------------------------------\n";
     }
+    else {
+        push @remaining_titleids, $sourceid;
+    }
     
 }
 
+if (@remaining_titleids){
+    $logger->info("Remaining Titleids: ".$#remaining_titleids);
+}
+else {
+    $logger->info("All Titles found");
+    exit;
+}
 
+my $marks_titleid_ref = {};
+
+foreach my $sourceid (@remaining_titleids){
+    $logger->info("Processing titleid $sourceid");
+    my $sourcetitle = OpenBib::Record::Title->new({id => $sourceid, database => $sourcedatabase})->load_full_record;
+    my @title_marks = ();
+    foreach my $holding_ref (@{$sourcetitle->get_holding}){
+        my $mark = gen_target_mark($targetmarkprefix,$holding_ref->{'X0014'}{content});
+        $marks_titleid_ref->{$mark}=$sourceid;
+    }
+    
+}
+
+print YAML::Dump($marks_titleid_ref);
+
+sub gen_target_mark {
+    my $markprefix = shift;
+    my $mark       = shift;
+
+    $mark = $markprefix."/".$mark;
+
+    $mark=~s/([a-zA-Z]) ([0-9])/$1$2/g;
+    $mark=~s/([0-9]) ([a-zA-Z])/$1$2/g;
+    $mark=~s/([a-zA-Z]) ([a-zA-Z])/$1\/$2/g;
+    $mark=~s/([0-9]) ([0-9])/$1\/$2/g;
+    
+    return $mark;
+}

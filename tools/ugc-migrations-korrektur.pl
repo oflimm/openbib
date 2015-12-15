@@ -162,15 +162,6 @@ while (my $targettitle_bibkey = $targettitle_bibkeys->next()){
 
 my @target_bibkeys = keys %$bibkey_targettitle_ref;
 
-# Wenn zu einem source_bibkey kein target_bibkey existiert, dann muss die target_titleid ueber die Signatur
-# bestimmt werden und die sourceid gehoert de facto zu den remaining_titleids
-
-foreach my $source_bibkey (@source_bibkeys){
-    if (!defined $bibkey_targettitle_ref->{$source_bibkey} && !$bibkey_targettitle_ref->{$source_bibkey}){
-        push @remaining_titleids, $bibkey_sourcetitle_ref->{$source_bibkey};
-    }
-}
-
 $logger->info("Source Bibkeys: ".YAML::Dump(\@target_bibkeys));
 
 foreach my $target_bibkey (@target_bibkeys){
@@ -196,8 +187,18 @@ foreach my $target_bibkey (@target_bibkeys){
     
 }
 
+# Wenn zu einem source_bibkey kein target_bibkey existiert, dann muss die target_titleid ueber die Signatur
+# bestimmt werden und die sourceid gehoert de facto zu den remaining_titleids
+
+foreach my $source_bibkey (@source_bibkeys){
+    if (!defined $bibkey_targettitle_ref->{$source_bibkey} && !$bibkey_targettitle_ref->{$source_bibkey}){
+        push @remaining_titleids, $bibkey_sourcetitle_ref->{$source_bibkey};
+    }
+}
+
 if (@remaining_titleids){
     $logger->info("Remaining Titleids: ".$#remaining_titleids);
+    $logger->info("Proceeding with marks");
 }
 else {
     $logger->info("All Titles found");

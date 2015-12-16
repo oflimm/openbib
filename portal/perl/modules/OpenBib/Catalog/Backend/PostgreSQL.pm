@@ -312,9 +312,10 @@ sub load_full_title_record {
                     'me.id' => $id,
                 },
                 {
-                    select => ['title_fields.field','title_fields.mult','title_fields.subfield','title_fields.content'],
-                    as     => ['thisfield','thismult','thissubfield','thiscontent'],
-                    join   => ['title_fields'],
+                    select   => ['title_fields.field','title_fields.mult','title_fields.subfield','title_fields.content'],
+                    as       => ['thisfield','thismult','thissubfield','thiscontent'],
+                    join     => ['title_fields'],
+                    order_by => ['title_fields.mult ASC'],
                     result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
@@ -356,9 +357,10 @@ sub load_full_title_record {
                     'me.id' => $id,
                 },
                 {
-                    select => ['title_people.field','title_people.mult','title_people.personid','title_people.supplement'],
-                    as     => ['thisfield','thismult','thispersonid','thissupplement'],
-                    join   => ['title_people'],
+                    select   => ['title_people.field','title_people.mult','title_people.personid','title_people.supplement'],
+                    as       => ['thisfield','thismult','thispersonid','thissupplement'],
+                    join     => ['title_people'],
+                    order_by => ['title_people.mult ASC'],
                     result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
@@ -396,6 +398,7 @@ sub load_full_title_record {
                     select => ['title_corporatebodies.field','title_corporatebodies.mult','title_corporatebodies.corporatebodyid','title_corporatebodies.supplement'],
                     as     => ['thisfield','thismult','thiscorporatebodyid','thissupplement'],
                     join   => ['title_corporatebodies'],
+                    order_by => ['title_corporatebodies.mult ASC'],
                     result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
@@ -432,6 +435,7 @@ sub load_full_title_record {
                     select => ['title_subjects.field','title_subjects.mult','title_subjects.subjectid','title_subjects.supplement'],
                     as     => ['thisfield','thismult','thissubjectid','thissupplement'],
                     join   => ['title_subjects'],
+                    order_by => ['title_subjects.mult ASC'],
                     result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
@@ -469,6 +473,7 @@ sub load_full_title_record {
                     select => ['title_classifications.field','title_classifications.mult','title_classifications.classificationid','title_classifications.supplement'],
                     as     => ['thisfield','thismult','thisclassificationid','thissupplement'],
                     join   => ['title_classifications'],
+                    order_by => ['title_classifications.mult ASC'],
                     result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );

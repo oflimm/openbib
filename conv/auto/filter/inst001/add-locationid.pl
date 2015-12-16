@@ -58,6 +58,10 @@ while (<HOLDING>){
         elsif ($location_ref->{content} =~m/^Fachbibliothek Slavistik \/ Slavisches Institut/){
             push @{$title_locationid_ref->{$titleid}}, "DE-38-418";
         }
+        elsif ($location_ref->{content} =~m/^Fachbibliothek Arch.*?ologien \/ .*?Ur- u. Fr.*?geschichte/){
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-426";
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-ARCH";
+        }
         elsif ($location_ref->{content} =~m/^Fachbibliothek Arch.*?ologien \/ Arch.*?ologisches Institut/){
             push @{$title_locationid_ref->{$titleid}}, "DE-38-427";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-ARCH";

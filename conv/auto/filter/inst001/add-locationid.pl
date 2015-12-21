@@ -88,6 +88,9 @@ while (<HOLDING>){
         elsif ($location_ref->{content} =~m/Fachbibliothek Chemie/){
             push @{$title_locationid_ref->{$titleid}}, "DE-38-507";
         }
+        elsif ($location_ref->{content} =~m/inst622/){
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-622";
+        }
 
         if ($location_ref->{content} =~m/^Hauptabteilung/){
             push @{$title_locationid_ref->{$titleid}}, "DE-38";

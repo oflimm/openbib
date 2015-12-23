@@ -580,10 +580,9 @@ if ($updatemaster){
 # Ansonsten bei jedem Node
 my $cmd = "$config->{'base_dir'}/bin/update_all_titles_table.pl --database=$database -bulk-insert";
 
-# TODO: Incrementelle Aenderungen der all_titles_by-Tabellen funktionieren derzeit nicht!
-#if ($incremental){
-#    $cmd.=" -incremental";
-#}
+if ($incremental){
+    $cmd.=" -incremental";
+}
 
 $logger->info("### $database: Updating All-Titles table");
 system($cmd);

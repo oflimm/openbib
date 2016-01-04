@@ -47,15 +47,17 @@ use YAML::Syck;
 
 my $config      = OpenBib::Config->new;
 
-my ($sourcedatabase,$targetdatabase,$masterdatabase,$targetlocation,$targetmarkprefix,$help,$logfile);
+my ($sourcedatabase,$targetdatabase,$masterdatabase,$targetlocation,$migratelitlists,$dryrun,$help,$logfile,$loglevel);
 
 &GetOptions("source-database=s"     => \$sourcedatabase,
             "target-database=s"     => \$targetdatabase,
             "target-location=s"     => \$targetlocation,
-            "target-markprefix=s"   => \$targetmarkprefix,
             "master-database=s"     => \$masterdatabase,
-            "logfile=s"              => \$logfile,
-	    "help"                   => \$help
+	    "migrate-litlists"      => \$migratelitlists,
+	    "dry-run"               => \$dryrun,
+            "logfile=s"             => \$logfile,
+            "loglevel=s"            => \$loglevel,
+	    "help"                  => \$help
 	    );
 
 if ($help || !$sourcedatabase || !$targetdatabase || !$masterdatabase){
@@ -63,9 +65,10 @@ if ($help || !$sourcedatabase || !$targetdatabase || !$masterdatabase){
 }
 
 $logfile=($logfile)?$logfile:'/var/log/openbib/ugc-migrations-korrektur.log';
+$loglevel=($loglevel)?$loglevel:'INFO';
 
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=INFO, LOGFILE, Screen
+log4perl.rootLogger=$loglevel, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append
@@ -101,11 +104,11 @@ while (my $litlist_title = $litlist_titles->next()){
     push @source_titleids, $litlist_title->{titleid};
 }
 
-$logger->info("Source Titleids: ".YAML::Dump(\@source_titleids));
+$logger->debug("$#source_titleids Source Titleids: ".YAML::Dump(\@source_titleids));
 
 my $sourcetitle_bibkeys = $enrichmnt->get_schema->resultset('AllTitleByBibkey')->search(
     {
-        dbname  => $sourcedatabase,
+        dbname  => $masterdatabase,
         titleid => { -in => \@source_titleids },
     },
     {
@@ -119,23 +122,47 @@ my $have_bibkey_ref        = {};
 while (my $sourcetitle_bibkey = $sourcetitle_bibkeys->next()){
     my $bibkey  = $sourcetitle_bibkey->bibkey;
     my $titleid = $sourcetitle_bibkey->titleid;
-    $have_bibkey_ref->{$titleid} = 1;
+
+    $have_bibkey_ref->{$titleid}       = 1;
     $bibkey_sourcetitle_ref->{$bibkey} = $titleid;
+
+    $logger->debug("Found Bibkey $bibkey in title $titleid");
 }
+
+my @source_bibkeys = keys %$bibkey_sourcetitle_ref;
+
+my $source_catalog = OpenBib::Catalog::Factory->create_catalog({ database => $sourcedatabase});
+
+my $remaining_in_source_ref = {};
+
+my $remaining_titleids = $source_catalog->get_schema->resultset('Title')->search(
+    {
+	id => { -in => \@source_titleids },
+    },
+    {
+	column => [ qw/id/ ],
+    }
+    );
+
+while (my $remaining_titleid = $remaining_titleids->next()){
+    $remaining_in_source_ref->{$remaining_titleid->id} = 1;
+}
+
 
 my @remaining_titleids = ();
 
 foreach my $titleid (@source_titleids){
-    if (!defined $have_bibkey_ref->{$titleid}){
+    # Massgeblich sind die uebriggebliebenen Titel, die a) schon migriert sind (NOT remaining_in_source_ref)
+    if (!defined $have_bibkey_ref->{$titleid} && !defined $remaining_in_source_ref->{$titleid}){
         push @remaining_titleids, $titleid;
     }
 }
 
-$logger->info("Source Titleids ohne Bibkey: ".YAML::Dump(\@remaining_titleids));
 
-my @source_bibkeys = keys %$bibkey_sourcetitle_ref;
-
-$logger->info("Source Bibkeys: ".YAML::Dump(\@source_bibkeys));
+if ($logger->is_debug){
+    $logger->debug(($#remaining_titleids+1)." Source Titleids ohne Bibkey: ".YAML::Dump(\@remaining_titleids));
+    $logger->info("Source Bibkeys: ".YAML::Dump(\@source_bibkeys));
+}
 
 my $targettitle_bibkeys = $enrichmnt->get_schema->resultset('AllTitleByBibkey')->search(
     {
@@ -150,11 +177,20 @@ my $targettitle_bibkeys = $enrichmnt->get_schema->resultset('AllTitleByBibkey')-
 my $bibkey_targettitle_ref = {};
 
 while (my $targettitle_bibkey = $targettitle_bibkeys->next()){
-    my $target_record = OpenBib::Record::Title->new({id => $targettitle_bibkey->titleid, database => $targetdatabase})->load_full_record;
+    my $target_titleid = $targettitle_bibkey->titleid;
+
+    $logger->debug("Target-Titleid found: $target_titleid");
+
+    my $target_record = OpenBib::Record::Title->new({id => $target_titleid, database => $targetdatabase})->load_full_record;
 
     my $target_location_is_ok = 0;
+
+    if ($logger->is_debug){
+	$logger->debug("Target-Holding: ".YAML::Dump($target_record->get_holding));
+    }
+
     foreach my $holding_ref (@{$target_record->get_holding}){
-        if ($holding_ref->{X0016}{content} eq $targetlocation){
+        if ($holding_ref->{X0016}{content} =~m/^$targetlocation/){
             $bibkey_targettitle_ref->{$targettitle_bibkey->bibkey} = $targettitle_bibkey->titleid;
         }
     }
@@ -162,7 +198,11 @@ while (my $targettitle_bibkey = $targettitle_bibkeys->next()){
 
 my @target_bibkeys = keys %$bibkey_targettitle_ref;
 
-$logger->info("Source Bibkeys: ".YAML::Dump(\@target_bibkeys));
+if ($logger->is_debug){
+    $logger->info(($#target_bibkeys+1)." Target Bibkeys: ".YAML::Dump(\@target_bibkeys));
+}
+
+my $source2target_mapping_ref = {};
 
 foreach my $target_bibkey (@target_bibkeys){
     my $sourceid;
@@ -173,13 +213,13 @@ foreach my $target_bibkey (@target_bibkeys){
     }
 
     if ($targetid && $sourceid){
-        my $sourcetitle = OpenBib::Record::Title->new({id => $sourceid, database => $sourcedatabase})->load_full_record;
+        my $mastertitle = OpenBib::Record::Title->new({id => $sourceid, database => $masterdatabase})->load_full_record;
         my $targettitle = OpenBib::Record::Title->new({id => $targetid, database => $targetdatabase})->load_full_record;
 
-        print "$sourcedatabase:$sourceid -> $targetdatabase:$targetid\n";
-        print YAML::Dump($sourcetitle->get_fields),"\n";
-        print YAML::Dump($targettitle->get_fields),"\n";
-        print "----------------------------------------------\n";
+        $logger->info("Master: ".$mastertitle->get_field({field => 'T0331', mult => 1}));
+        $logger->info("Target: ".$targettitle->get_field({field => 'T0331', mult => 1}));
+
+	$source2target_mapping_ref->{$sourceid} = $targetid;
     }
     else {
         push @remaining_titleids, $sourceid;
@@ -187,8 +227,7 @@ foreach my $target_bibkey (@target_bibkeys){
     
 }
 
-# Wenn zu einem source_bibkey kein target_bibkey existiert, dann muss die target_titleid ueber die Signatur
-# bestimmt werden und die sourceid gehoert de facto zu den remaining_titleids
+# Wenn zu einem source_bibkey kein target_bibkey existiert, dann gehoert die zugehoerige titleid de facto zu den remaining_titleids
 
 foreach my $source_bibkey (@source_bibkeys){
     if (!defined $bibkey_targettitle_ref->{$source_bibkey} && !$bibkey_targettitle_ref->{$source_bibkey}){
@@ -198,38 +237,36 @@ foreach my $source_bibkey (@source_bibkeys){
 
 if (@remaining_titleids){
     $logger->info("Remaining Titleids: ".$#remaining_titleids);
-    $logger->info("Proceeding with marks");
 }
 else {
     $logger->info("All Titles found");
-    exit;
 }
 
-my $marks_titleid_ref = {};
 
-foreach my $sourceid (@remaining_titleids){
-    $logger->info("Processing titleid $sourceid");
-    my $sourcetitle = OpenBib::Record::Title->new({id => $sourceid, database => $sourcedatabase})->load_full_record;
-    my @title_marks = ();
-    foreach my $holding_ref (@{$sourcetitle->get_holding}){
-        my $mark = gen_target_mark($targetmarkprefix,$holding_ref->{'X0014'}{content});
-        $marks_titleid_ref->{$mark}=$sourceid;
+$logger->info(YAML::Dump($source2target_mapping_ref));
+
+if ($migratelitlists){
+    
+    $litlist_titles = $config->get_schema->resultset('Litlistitem')->search(
+	{
+	    dbname => $sourcedatabase,
+	},
+	);
+    
+    while (my $litlist_title = $litlist_titles->next()){
+	
+	my $source_titleid  = $litlist_title->titleid;
+	my $litlist_titleid = $litlist_title->id;
+
+	if (defined $source2target_mapping_ref->{$source_titleid} && $source2target_mapping_ref->{$source_titleid}){
+	    $logger->info("Changing Litlistitem $litlist_titleid: $sourcedatabase:$source_titleid to $targetdatabase:$source2target_mapping_ref->{$source_titleid}");
+
+	    $litlist_title->update({ dbname => $targetdatabase, titleid => $source2target_mapping_ref->{$source_titleid} }) unless ($dryrun);
+
+	}
+
+
     }
     
-}
 
-print YAML::Dump($marks_titleid_ref);
-
-sub gen_target_mark {
-    my $markprefix = shift;
-    my $mark       = shift;
-
-    $mark = $markprefix."/".$mark;
-
-    $mark=~s/([a-zA-Z]) ([0-9])/$1$2/g;
-    $mark=~s/([0-9]) ([a-zA-Z])/$1$2/g;
-    $mark=~s/([a-zA-Z]) ([a-zA-Z])/$1\/$2/g;
-    $mark=~s/([0-9]) ([0-9])/$1\/$2/g;
-    
-    return $mark;
 }

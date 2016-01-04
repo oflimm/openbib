@@ -219,7 +219,7 @@ sub show_record {
             }   
         }
 
-        if (!$user_owns_litlist){
+        if (!$user_owns_litlist && !$user->is_admin){
             $logger->debug("UserID: $self->{ID} trying to delete litlistid $litlistid");
             
             # Aufruf der privaten Literaturlisten durch "Andere" loggen

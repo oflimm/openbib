@@ -47,13 +47,15 @@ use YAML::Syck;
 
 my $config      = OpenBib::Config->new;
 
-my ($sourcedatabase,$targetdatabase,$masterdatabase,$targetlocation,$migratelitlists,$dryrun,$help,$logfile,$loglevel);
+my ($sourcedatabase,$targetdatabase,$masterdatabase,$targetlocation,$migratelitlists,$migratecartitems,$migratetags,$dryrun,$help,$logfile,$loglevel);
 
 &GetOptions("source-database=s"     => \$sourcedatabase,
             "target-database=s"     => \$targetdatabase,
             "target-location=s"     => \$targetlocation,
             "master-database=s"     => \$masterdatabase,
 	    "migrate-litlists"      => \$migratelitlists,
+	    "migrate-cartitems"     => \$migratecartitems,
+	    "migrate-tags"          => \$migratetags,
 	    "dry-run"               => \$dryrun,
             "logfile=s"             => \$logfile,
             "loglevel=s"            => \$loglevel,
@@ -86,7 +88,9 @@ my $logger = get_logger();
 
 my $enrichmnt = new OpenBib::Enrichment;
 
-$logger->info("1. Durchgang: Gezieltes Sammeln von Informationen fuer $sourcedatabase");
+$logger->info("Gezieltes Sammeln von Informationen fuer $sourcedatabase");
+
+$logger->info("Titleids von Literaturlisten, Merklisten und Tags bestimmen");
 
 my $litlist_titles = $config->get_schema->resultset('Litlistitem')->search(
     {
@@ -98,13 +102,45 @@ my $litlist_titles = $config->get_schema->resultset('Litlistitem')->search(
     }
 );
 
-my @source_titleids = ();
+my $cartitem_titles = $config->get_schema->resultset('Cartitem')->search(
+    {
+        dbname => $sourcedatabase,
+    },
+    {
+        column       => [ qw/titleid/ ],
+        result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+    }
+);
+
+my $tag_titles = $config->get_schema->resultset('TitTag')->search(
+    {
+        dbname => $sourcedatabase,
+    },
+    {
+        column       => [ qw/titleid/ ],
+        result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+    }
+);
+
+my %source_titleid_hash = ();
 
 while (my $litlist_title = $litlist_titles->next()){
-    push @source_titleids, $litlist_title->{titleid};
+    $source_titleid_hash{$litlist_title->{titleid}} = 1;
 }
 
+while (my $cartitem_title = $cartitem_titles->next()){
+    $source_titleid_hash{$cartitem_title->{titleid}} = 1;
+}
+
+while (my $tag_title = $tag_titles->next()){
+    $source_titleid_hash{$tag_title->{titleid}} = 1;
+}
+
+my @source_titleids = keys %source_titleid_hash;
+
 $logger->debug("$#source_titleids Source Titleids: ".YAML::Dump(\@source_titleids));
+
+$logger->info("Bibkeys zu den Titleids von Literaturlisten, Merklisten und Tags");
 
 my $sourcetitle_bibkeys = $enrichmnt->get_schema->resultset('AllTitleByBibkey')->search(
     {
@@ -163,6 +199,8 @@ if ($logger->is_debug){
     $logger->debug(($#remaining_titleids+1)." Source Titleids ohne Bibkey: ".YAML::Dump(\@remaining_titleids));
     $logger->info("Source Bibkeys: ".YAML::Dump(\@source_bibkeys));
 }
+
+$logger->info("Bibkeys und Titelids in der Zieldatenbank $targetdatabase mit Zielstandort $targetlocation suchen");
 
 my $targettitle_bibkeys = $enrichmnt->get_schema->resultset('AllTitleByBibkey')->search(
     {
@@ -246,6 +284,7 @@ else {
 $logger->info(YAML::Dump($source2target_mapping_ref));
 
 if ($migratelitlists){
+    $logger->info("Literaturlisten-Eintraege korrigieren");
     
     $litlist_titles = $config->get_schema->resultset('Litlistitem')->search(
 	{
@@ -262,11 +301,50 @@ if ($migratelitlists){
 	    $logger->info("Changing Litlistitem $litlist_titleid: $sourcedatabase:$source_titleid to $targetdatabase:$source2target_mapping_ref->{$source_titleid}");
 
 	    $litlist_title->update({ dbname => $targetdatabase, titleid => $source2target_mapping_ref->{$source_titleid} }) unless ($dryrun);
-
 	}
-
-
     }
-    
+}
 
+if ($migratecartitems){
+    $logger->info("Merklisten-Eintraege korrigieren");
+    
+    $cartitem_titles = $config->get_schema->resultset('Cartitem')->search(
+	{
+	    dbname => $sourcedatabase,
+	},
+	);
+    
+    while (my $cartitem_title = $cartitem_titles->next()){
+	
+	my $source_titleid   = $cartitem_title->titleid;
+	my $cartitem_titleid = $cartitem_title->id;
+
+	if (defined $source2target_mapping_ref->{$source_titleid} && $source2target_mapping_ref->{$source_titleid}){
+	    $logger->info("Changing Cartitem $cartitem_titleid: $sourcedatabase:$source_titleid to $targetdatabase:$source2target_mapping_ref->{$source_titleid}");
+
+	    $cartitem_title->update({ dbname => $targetdatabase, titleid => $source2target_mapping_ref->{$source_titleid} }) unless ($dryrun);
+	}
+    }
+}
+
+if ($migratetags){
+    $logger->info("Tag-Eintraege korrigieren");
+	
+    my $tag_titles = $config->get_schema->resultset('TitTag')->search(
+	{
+	    dbname => $sourcedatabase,
+	},
+	);
+    
+    while (my $tag_title = $tag_titles->next()){
+	
+	my $source_titleid  = $tag_title->titleid;
+	my $tag_titleid     = $tag_title->id;
+
+	if (defined $source2target_mapping_ref->{$source_titleid} && $source2target_mapping_ref->{$source_titleid}){
+	    $logger->info("Changing Tagsitem $tag_titleid: $sourcedatabase:$source_titleid to $targetdatabase:$source2target_mapping_ref->{$source_titleid}");
+	    
+	    $tag_title->update({ dbname => $targetdatabase, titleid => $source2target_mapping_ref->{$source_titleid} }) unless ($dryrun);
+	}
+    }
 }

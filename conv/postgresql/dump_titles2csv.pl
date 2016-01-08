@@ -93,7 +93,7 @@ my $outputcsv = Text::CSV_XS->new ({
 
 my $out_ref = [];
 
-push @{$out_ref}, ('id','tstamp_create','tstamp_update','Person/Körperschaft','AST','Titel','Zusatz','Auflage','Verlag','Jahr','Gesamttitel','Band','Signatur');
+push @{$out_ref}, ('id','tstamp_create','tstamp_update','Person/Körperschaft','AST','Titel','Zusatz','Auflage','Verlag','Jahr','Gesamttitel','Band','ISBN','ISSN','BibKey','WorkKey','Signatur');
 
 $outputcsv->print($out,$out_ref);
 
@@ -113,6 +113,10 @@ while (my $title=$titles->next){
     my @jahr       = ();
     my @gt         = ();
     my @band       = ();
+    my @isbn       = ();
+    my @issn       = ();
+    my @bibkey     = ();
+    my @workkey    = ();
     my @signatur   = ();
 
     foreach my $item_ref (@{$titlecache_ref->{PC0001}}){
@@ -138,6 +142,26 @@ while (my $title=$titles->next){
     foreach my $item_ref (@{$titlecache_ref->{T0455}}){
         push @band, cleanup_content($item_ref->{content});
     }
+
+    foreach my $item_ref (@{$titlecache_ref->{T0540}}){
+        push @isbn, cleanup_content($item_ref->{content});
+    }
+
+    foreach my $item_ref (@{$titlecache_ref->{T0553}}){
+        push @isbn, cleanup_content($item_ref->{content});
+    }
+
+    foreach my $item_ref (@{$titlecache_ref->{T0543}}){
+        push @issn, cleanup_content($item_ref->{content});
+    }
+
+    foreach my $item_ref (@{$titlecache_ref->{T5050}}){
+        push @bibkey, cleanup_content($item_ref->{content});
+    }
+
+    foreach my $item_ref (@{$titlecache_ref->{T5055}}){
+        push @workkey, cleanup_content($item_ref->{content});
+    }
     
     if (defined $titlecache_ref->{T0424}){
         foreach my $item_ref (@{$titlecache_ref->{T0424}}){
@@ -158,7 +182,7 @@ while (my $title=$titles->next){
     }
 
     
-    push @{$out_ref}, ($title->id,$title->tstamp_create,$title->tstamp_update,join(' ; ',@pers_korp),join(' ; ',@ast),join(' ; ',@titel),join(' ; ',@zusatz),join(' ; ',@auflage),join(' ; ',@verlag),join(' ; ',@jahr),join(' ; ',@gt),join(' ; ',uniq @band),join(' ; ',@signatur));    
+    push @{$out_ref}, ($title->id,$title->tstamp_create,$title->tstamp_update,join(' ; ',@pers_korp),join(' ; ',@ast),join(' ; ',@titel),join(' ; ',@zusatz),join(' ; ',@auflage),join(' ; ',@verlag),join(' ; ',@jahr),join(' ; ',@gt),join(' ; ',uniq @band),,join(' ; ',uniq @isbn),,join(' ; ',uniq @issn),,join(' ; ',uniq @bibkey),,join(' ; ',uniq @workkey),join(' ; ',@signatur));    
 
     $outputcsv->print($out,$out_ref);
 }

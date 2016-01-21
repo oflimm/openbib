@@ -110,6 +110,13 @@ $(document).ready(function(){
 </div>
 [% END %]
 
+[%- cgiparam = searchfield.ft0334.prefix;
+    this_searchfield = 'ft0334';
+ -%]
+<div class="ym-fbox-text">
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0334-pruessen") %]</label>
+<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
 
 [% IF available_searchfields.year.active %]
 [%- cgiparam      = searchfield.yearstring.prefix;

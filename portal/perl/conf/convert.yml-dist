@@ -763,6 +763,10 @@ convtab:
           'freesearch': 20
           't4307': 1
           'ft4307': 1
+          'provenance': 20
+          'provenancestring': 20
+        facet:
+          'provenance': 1
       '4308':         # Provenienzen Person
         index:
           'personbody': 20
@@ -770,6 +774,10 @@ convtab:
           'freesearch': 20
           't4308': 1
           'ft4308': 1
+          'provenance': 20
+          'provenancestring': 20
+        facet:
+          'provenance': 1
       '4310':         # T-PRO Besitzkennzeichen
         index:
           'freesearch': 20
@@ -787,6 +795,12 @@ convtab:
           'freesearch': 1
         facet:
           'mediatype': 1
+      '4700':         # Provenienzen (Sammlungskennzeichnungen, "Koelner Modell")
+        index:
+          'provenance': 20
+          'provenancestring': 20
+        facet:
+          'provenance': 1
       '4710':         # Migriertes Schlagwort
         index:
           'subject': 20

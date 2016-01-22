@@ -19,6 +19,7 @@ CREATE TABLE databaseinfo (
  profileid   BIGINT,
  active      BOOL,
  locationid  BIGINT,
+ parentdbid  BIGINT,
 
 /* Import Configuration */
  protocol           TEXT,

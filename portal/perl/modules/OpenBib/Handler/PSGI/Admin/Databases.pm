@@ -259,8 +259,25 @@ sub update_record {
         if ($location){
             $input_data_ref->{locationid} = $location->id;
         }
+        else {
+            delete $input_data_ref->{locationid};
+        }
     }
 
+    if ($input_data_ref->{parentdbid}){
+        my $parentdb = $config->get_databaseinfo->single({dbname => $input_data_ref->{parentdbid} });
+
+        if ($parentdb){
+            $input_data_ref->{parentdbid} = $parentdb->id;
+        }
+        else {
+            $input_data_ref->{parentdbid} = \'NULL';
+        }
+    }
+    else {
+        $input_data_ref->{parentdbid} = \'NULL';
+    }
+    
     $config->update_databaseinfo($input_data_ref);
 
     if ($self->param('representation') eq "html"){
@@ -449,6 +466,11 @@ sub get_input_definition {
             type     => 'scalar',
         },
         circdb => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        parentdbid => {
             default  => '',
             encoding => 'none',
             type     => 'scalar',

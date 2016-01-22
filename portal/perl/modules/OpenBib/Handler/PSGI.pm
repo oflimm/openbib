@@ -657,7 +657,7 @@ sub negotiate_type {
             $self->param('content_type',$content_type);
             $self->param('representation',$config->{content_type_map}->{$content_type});
         }
-        $logger->debug("content_type: ".$self->param('content_type')." - representation: ".$self->param('representation'));
+        $logger->debug("content_type: ".$self->param('content_type')." - representation: ".$self->param('representation')) if (defined $self->param('content_type') && defined $self->param('represenation'));
     }
     elsif (@accepted_types){
         if ($logger->is_debug){

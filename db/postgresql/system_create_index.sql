@@ -2,6 +2,7 @@ CREATE EXTENSION pgcrypto;
 
 ALTER TABLE databaseinfo ADD PRIMARY KEY (id);
 ALTER TABLE databaseinfo ADD CONSTRAINT uq_databaseinfo_dbname UNIQUE (dbname);
+ALTER TABLE databaseinfo ADD CONSTRAINT fk_databaseinfo_db FOREIGN KEY (parentdbid) REFERENCES databaseinfo (id);
 CREATE INDEX databaseinfo_dbname ON databaseinfo (dbname);
 CREATE INDEX databaseinfo_active ON databaseinfo (active);
 CREATE INDEX databaseinfo_description ON databaseinfo (description);

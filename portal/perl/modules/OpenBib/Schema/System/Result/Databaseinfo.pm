@@ -176,6 +176,12 @@ __PACKAGE__->table("databaseinfo");
   default_value: 0
   is_nullable: 1
 
+=head2 parentdbid
+
+  data_type: 'bigint'
+  is_foreign_key: 1
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -244,6 +250,8 @@ __PACKAGE__->add_columns(
   { data_type => "bigint", default_value => 0, is_nullable => 1 },
   "digitalcount",
   { data_type => "bigint", default_value => 0, is_nullable => 1 },
+  "parentdbid",
+  { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
 );
 __PACKAGE__->set_primary_key("id");
 __PACKAGE__->add_unique_constraint("uq_databaseinfo_dbname", ["dbname"]);
@@ -268,6 +276,41 @@ __PACKAGE__->belongs_to(
     on_delete     => "CASCADE",
     on_update     => "CASCADE",
   },
+);
+
+=head2 parentdbid
+
+Type: belongs_to
+
+Related object: L<OpenBib::Schema::System::Result::Databaseinfo>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "parentdbid",
+  "OpenBib::Schema::System::Result::Databaseinfo",
+  { id => "parentdbid" },
+  {
+    is_deferrable => 1,
+    join_type     => "LEFT",
+    on_delete     => "CASCADE",
+    on_update     => "CASCADE",
+  },
+);
+
+=head2 databaseinfos
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::Databaseinfo>
+
+=cut
+
+__PACKAGE__->has_many(
+  "databaseinfos",
+  "OpenBib::Schema::System::Result::Databaseinfo",
+  { "foreign.parentdbid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
 );
 
 =head2 orgunit_dbs
@@ -361,8 +404,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2015-11-17 15:09:24
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:9wU/kha4zuYlaQcpkSbyqQ
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2016-01-22 11:29:37
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:XSYGPw3ayy8cQPT7Hz48ag
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

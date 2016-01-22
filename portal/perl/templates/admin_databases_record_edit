@@ -79,6 +79,16 @@
 </div>
 
 <div class="ym-fbox-select">
+<label for="parentdbid">[% msg.maketext("Teilbestand von Katalog") %]</label>
+  <select name="parentdbid" id="parentdbid">
+       <option value="" [% IF NOT databaseinfo.parentdbid %]selected[% END %]>[% msg.maketext("Keine") %]</option>
+[% FOREACH thisdbname IN config.get_active_databases.sort %]
+       <option value="[% thisdbname %]" [% IF databaseinfo.parentdbid.dbname == thisdbname %]selected[% END %]>[% thisdbname %]: [% dbinfo.get('dbnames').${thisdbname}.short %]</option>
+[% END %]
+   </select>
+</div>
+
+<div class="ym-fbox-select">
 <label for="system">[% msg.maketext("System") %]</label>
   <select name="system" id="system">
 [% FOREACH source_system IN config.get('source_systems').keys.sort %]

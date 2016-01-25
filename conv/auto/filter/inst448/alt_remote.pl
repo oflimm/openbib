@@ -31,7 +31,7 @@
 
 use OpenBib::Config;
 
-my $config = OpenBib::Config->instance;
+my $config = new OpenBib::Config;
 
 my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";

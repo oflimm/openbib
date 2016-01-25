@@ -269,8 +269,14 @@ sub create_document {
     $self->{_tg}->set_document($doc);
        
     # Katalogname des Satzes recherchierbar machen
-    $doc->add_term($config->{xapian_search}{'fdb'}{prefix}.$thisdbname);
-    $doc->add_term($config->{xapian_search}{'floc'}{prefix}.$self->{_locationid_norm});
+    eval {
+        $doc->add_term($config->{xapian_search}{'fdb'}{prefix}.$thisdbname);
+        $doc->add_term($config->{xapian_search}{'floc'}{prefix}.$self->{_locationid_norm});
+    };
+
+    if ($@){
+        $logger->error($@);
+    }
     
     foreach my $searchfield (keys %{$config->{searchfield}}) {
         
@@ -308,10 +314,22 @@ sub create_document {
                         
                     $logger->debug("ID indexing searchfield $searchfield: $normcontent");
                     # IDs haben keine Position
-                    my $term = $config->{xapian_search}{$config->{searchfield}{$searchfield}{prefix}}{prefix}.$normcontent;
-                    $logger->debug("Term: $term");
+
+                    $normcontent = $config->{xapian_search}{$config->{searchfield}{$searchfield}{prefix}}{prefix}.$normcontent;
                     
-                    $doc->add_term($term);
+                    $logger->debug("Term: $normcontent");
+
+                    # Begrenzung der keys auf DRILLDOWN_MAX_KEY_LEN Zeichen
+                    my $normcontent_octet = encode_utf8($normcontent); 
+                    $normcontent=(length($normcontent_octet) > $FLINT_BTREE_MAX_KEY_LEN)?substr($normcontent_octet,0,$FLINT_BTREE_MAX_KEY_LEN):$normcontent;
+
+                    eval {
+                        $doc->add_term($normcontent);
+                    };
+                    
+                    if ($@){
+                        $logger->error($@);
+                    }
                     
                     # $self->{_tg}->index_text_without_positions($normcontent,$weight,$config->{xapian_search}{$config->{searchfield}{$searchfield}{prefix}}{prefix});
                 }
@@ -347,12 +365,18 @@ sub create_document {
                     next if (!$normcontent);
                     
                     $logger->debug("Fulltext indexing searchfield $searchfield: $normcontent");
+
+                    eval {
+                        if ($withpositions){
+                            $self->{_tg}->index_text($normcontent,$weight,$config->{xapian_search}{$config->{searchfield}{$searchfield}{prefix}}{prefix});
+                        }
+                        else {
+                            $self->{_tg}->index_text_without_positions($normcontent,$weight,$config->{xapian_search}{$config->{searchfield}{$searchfield}{prefix}}{prefix});
+                        }
+                    };
                     
-                    if ($withpositions){
-                        $self->{_tg}->index_text($normcontent,$weight,$config->{xapian_search}{$config->{searchfield}{$searchfield}{prefix}}{prefix});
-                    }
-                    else {
-                        $self->{_tg}->index_text_without_positions($normcontent,$weight,$config->{xapian_search}{$config->{searchfield}{$searchfield}{prefix}}{prefix});
+                    if ($@){
+                        $logger->error($@);
                     }
 
                     my $additionalcontent = "";
@@ -378,13 +402,19 @@ sub create_document {
                         next if (!$normcontent);
                         
                         $logger->debug("Fulltext indexing searchfield $searchfield: $normcontent");
+
+                        eval {
+                            if ($withpositions){
+                                $self->{_tg}->index_text($normcontent,$weight,$config->{xapian_search}{$config->{searchfield}{$searchfield}{prefix}}{prefix});
+                            }
+                            else {
+                                $self->{_tg}->index_text_without_positions($normcontent,$weight,$config->{xapian_search}{$config->{searchfield}{$searchfield}{prefix}}{prefix});
+                            }
+                        };
                         
-                        if ($withpositions){
-                            $self->{_tg}->index_text($normcontent,$weight,$config->{xapian_search}{$config->{searchfield}{$searchfield}{prefix}}{prefix});
-                        }
-                        else {
-                            $self->{_tg}->index_text_without_positions($normcontent,$weight,$config->{xapian_search}{$config->{searchfield}{$searchfield}{prefix}}{prefix});
-                        }
+                        if ($@){
+                            $logger->error($@);
+                        }                        
                     }
                 }
             }
@@ -429,8 +459,14 @@ sub create_document {
                     $normcontent=(length($normcontent_octet) > $FLINT_BTREE_MAX_KEY_LEN)?substr($normcontent_octet,0,$FLINT_BTREE_MAX_KEY_LEN):$normcontent;
                     
                     $logger->debug("String indexing searchfield $searchfield: $normcontent");
+
+                    eval {
+                        $doc->add_term($normcontent);
+                    };
                     
-                    $doc->add_term($normcontent);
+                    if ($@){
+                        $logger->error($@);
+                    }
 
                     my $additionalcontent = "";
                     
@@ -461,8 +497,14 @@ sub create_document {
                         $normcontent=(length($normcontent_octet) > $FLINT_BTREE_MAX_KEY_LEN)?substr($normcontent_octet,0,$FLINT_BTREE_MAX_KEY_LEN):$normcontent;
                         
                         $logger->debug("String indexing searchfield $searchfield: $normcontent");
+
+                        eval {
+                            $doc->add_term($normcontent);
+                        };
                         
-                        $doc->add_term($normcontent);
+                        if ($@){
+                            $logger->error($@);
+                        }
                     }
                 }
             }
@@ -472,9 +514,16 @@ sub create_document {
     # Facetten
     foreach my $type (keys %{$config->{xapian_facet_value}}){
         # Datenbankname
-        $doc->add_value($config->{xapian_facet_value}{$type},encode_utf8($self->{_database})) if ($type eq "database" && $self->{_database});
-        $doc->add_value($config->{xapian_facet_value}{$type},encode_utf8($self->{_locationid})) if ($type eq "location" && $self->{_locationid});
+
+        eval {
+            $doc->add_value($config->{xapian_facet_value}{$type},encode_utf8($self->{_database})) if ($type eq "database" && $self->{_database});
+            $doc->add_value($config->{xapian_facet_value}{$type},encode_utf8($self->{_locationid})) if ($type eq "location" && $self->{_locationid});
+        };
         
+        if ($@){
+            $logger->error($@);
+        }
+
         next if (!defined $index_ref->{"facet_".$type});
         
         my %seen_terms = ();
@@ -483,7 +532,13 @@ sub create_document {
         my $multstring = join("\t",@unique_terms);
         
         $logger->debug("Adding to $type facet $multstring");
-        $doc->add_value($config->{xapian_facet_value}{$type},encode_utf8($multstring)) if ($multstring);
+        eval {
+            $doc->add_value($config->{xapian_facet_value}{$type},encode_utf8($multstring)) if ($multstring);
+        };
+        
+        if ($@){
+            $logger->error($@);
+        }
     }
     
     # Sortierung
@@ -517,7 +572,13 @@ sub create_document {
                 
                 if ($content){
                     $logger->debug("Adding $content as sortvalue");
-                    $doc->add_value($config->{xapian_sorttype_value}{$convconfig->get('sorting')->{$field}{sortfield}},$content);
+                    eval {
+                        $doc->add_value($config->{xapian_sorttype_value}{$convconfig->get('sorting')->{$field}{sortfield}},$content);
+                    };
+                    
+                    if ($@){
+                        $logger->error($@);
+                    }
                 }
             }
             # Bibliogr. Feldinhalte mit Integerwerten
@@ -538,7 +599,14 @@ sub create_document {
                 if ($content){
 #                    $content = sprintf "%08d",$content;
                     $logger->debug("Adding $content as sortvalue");
-                    $doc->add_value($config->{xapian_sorttype_value}{$convconfig->get('sorting')->{$field}{sortfield}},Search::Xapian::sortable_serialise($content));
+
+                    eval {
+                        $doc->add_value($config->{xapian_sorttype_value}{$convconfig->get('sorting')->{$field}{sortfield}},Search::Xapian::sortable_serialise($content));
+                    };
+                    
+                    if ($@){
+                        $logger->error($@);
+                    }
                 }
             }
             # Integerwerte jenseits der bibliogr. Felder, also z.B. popularity
@@ -550,22 +618,45 @@ sub create_document {
                 if ($content){
  #                   $content = sprintf "%08d",$content;
                     $logger->debug("Adding $content as sortvalue");
-                    $doc->add_value($config->{xapian_sorttype_value}{$convconfig->get('sorting')->{$field}{sortfield}},Search::Xapian::sortable_serialise($content));
+
+                    eval {
+                        $doc->add_value($config->{xapian_sorttype_value}{$convconfig->get('sorting')->{$field}{sortfield}},Search::Xapian::sortable_serialise($content));
+                    };
+                    
+                    if ($@){
+                        $logger->error($@);
+                    }
                 }
             }
         }
     }
     
     my $record = encode_json $record_ref;
-    $doc->set_data($record);
-           
+
+    eval {
+        $doc->set_data($record);
+    };
+    
+    if ($@){
+        $logger->error($@);
+    }
+ 
     return $doc;
 }
 
 sub create_record {
     my ($self,$doc) = @_;
 
-    my $docid = $self->get_index->add_document($doc);
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    eval {
+        my $docid = $self->get_index->add_document($doc);
+    };
+    
+    if ($@){
+        $logger->error($@);
+    }
 
     return $self;
 }
@@ -573,11 +664,20 @@ sub create_record {
 sub update_record {
     my ($self,$id,$new_doc) = @_;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
     my $config = $self->{config};
 
     my $key = $config->{xapian_search}{id}{prefix}.$id;
 
-    $self->get_index->replace_document_by_term($key, $new_doc) ;
+    eval {
+        $self->get_index->replace_document_by_term($key, $new_doc) ;
+    };
+    
+    if ($@){
+        $logger->error($@);
+    }
 
     return $self;
 }
@@ -585,11 +685,20 @@ sub update_record {
 sub delete_record {
     my ($self,$id) = @_;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
     my $config = $self->{config};
 
     my $key = $config->{xapian_search}{id}{prefix}.$id;
+
+    eval {
+        $self->get_index->delete_document_by_term($key);
+    };
     
-    $self->get_index->delete_document_by_term($key);
+    if ($@){
+        $logger->error($@);
+    }
 
     return $self;
 }

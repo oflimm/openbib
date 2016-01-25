@@ -31,6 +31,8 @@
           "tagstring" = msg.maketext("Tag")
           "titlestring" = msg.maketext("T0331")
           "litliststring" = msg.maketext("Literaturliste")
+          "provenance" = msg.maketext("Provenienz")
+          "provenancestring" = msg.maketext("Provenienz")
           "ft0720" = msg.maketext("Provenienz")
           "ft4100" = msg.maketext("E4100")
           "ft4300" = msg.maketext("Externes Schlagwort")

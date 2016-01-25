@@ -45,6 +45,14 @@
 </div>
 [% END %]
 
+[%- cgiparam = searchfield.provenance.prefix;
+    this_searchfield = 'provenance';
+ -%]
+<div class="ym-fbox-text">
+<label for="[% cgiparam %]">[% msg.maketext("Provenienz") %]</label>
+<input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+
 [%# IF available_searchfields.topic.active %]
 [%- cgiparam = searchfield.topic.prefix;
     this_searchfield = 'topic';

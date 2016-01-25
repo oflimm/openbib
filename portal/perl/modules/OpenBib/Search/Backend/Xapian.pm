@@ -1010,5 +1010,34 @@ sub parse_query {
     return $self;
 }
 
+sub get_number_of_documents {
+    my ($self,$database)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config       = $self->get_config;
+
+    $database = (defined $database)?$database:
+    (defined $self->{_database})?$self->{_database}:undef;
+
+    return -1 unless $database;
+    
+    my $dbh = undef;
+    
+    eval {
+        $dbh = new Search::Xapian::Database ( $config->{xapian_index_base_path}."/".$database) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+    };
+    
+    if ($@){
+        $logger->error("Initializing with Database: $database - :".$@." not available");
+        return [];
+    }
+
+    
+    return $dbh->get_doccount;
+}       
+    
+
 1;
 

@@ -390,7 +390,7 @@ sub show_via_searchengine {
                     
                     $logger->debug("Found titleid $titleid with location mark $locmark");
                     
-                    if ($locmark=~m/^$base/){
+                    if ($locmark=~m/^$base[^a-zA-Z]/){
                         $logger->debug("Location mark $locmark matches base $base");
                         
                         if ($range_start > 0 && $range_end > 0){

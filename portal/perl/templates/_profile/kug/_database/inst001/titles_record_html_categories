@@ -30,81 +30,46 @@ globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
 rswkswt_done      = {};
 
 sammlungen = {
-   'Slg. Gertrud von le Fort' => {
-                        url => 'http://lefort.ub.uni-koeln.de/'
-                        desc => 'Sammlung Gertrud von le Fort'
-                                 },
-   'Slg. Dante' => {
-                        url => 'http://dante.ub.uni-koeln.de/'
-                        desc => 'Dante-Sammlung (Wilhelm Reiners)'
-                                 },
-   'H.C. Artmann-Sammlung Knupfer' => {
-                        url => 'http://artmann.ub.uni-koeln.de/'
-                        desc => 'H.C. Artmann-Sammlung Knupfer'
-                                 },
-   'Slg. Wilhelm Alff' => {
-                        url => 'http://www.ub.uni-koeln.de/sammlungen/alff/index_ger.html'
-                        desc => 'Sammlung Wilhelm Alff'
-                                 },
-   'Slg. Erkes' => {
-                        url => 'http://www.ub.uni-koeln.de/bibliothek/ssg/islandica/index_ger.html'
-                        desc => 'Sammlung Islandica'
-                                 },
-   'Slg. Islandica' => {
-                        url => 'http://www.ub.uni-koeln.de/bibliothek/ssg/islandica/index_ger.html'
-                        desc => 'Sammlung Islandica'
-                                 },
-   'Slg. Eugen Schmalenbach' => {
-                        url => 'http://schmalenbach.ub.uni-koeln.de/'
-                        desc => 'Sammlung Eugen Schmalenbach'
-                                 },
-   'Slg. Syndikatsbibliothek' => {
-                        url => 'http://syndikatsbibliothek.ub.uni-koeln.de/'
-                        desc => 'Sammlung Syndikatsbibliothek'
-                                 },
-   'Slg. Thomas a Kempis' => {
-                        url => 'http://.ub.uni-koeln.de/'
-                        desc => 'Sammlung Thomas a Kempis'
-                                 },
-   'Slg. Westerholt' => {
-                        url => 'http://www.ub.uni-koeln.de/sammlungen/westerholt/index_ger.html'
-                        desc => 'Sammlung Westerholt'
-                                 },
-   'Slg. Fritz von Westerholt' => {
-                        url => 'http://www.ub.uni-koeln.de/sammlungen/westerholt/index_ger.html'
-                        desc => 'Sammlung Westerholt'
-                                 },
-   'Slg. Wilhelmine von Westerholt' => {
-                        url => 'http://www.ub.uni-koeln.de/sammlungen/westerholt/index_ger.html'
-                        desc => 'Sammlung Westerholt'
-                                 },
+   'Sammlung Dante - Sammlung Wilhelm Reiners' => 'http://dante.ub.uni-koeln.de/'
+   'Sammlung Eugen Schmalenbach' => 'http://schmalenbach.ub.uni-koeln.de/'
+   'Sammlung Evangelische Bibliothek' => 'http://www.ub.uni-koeln.de/sammlungen/ebk/'
+   'Sammlung Fachbibliothek Medienkultur und Theater' => 'http://www.ub.uni-koeln.de/bibliotheken/fb/'
+   'Sammlung Fachbibliothek Schmalenbach' => 'http://www.ub.uni-koeln.de/bibliotheken/fb/'
+   'Sammlung Ferdinand Franz Wallraf' => 'http://wallraf.ub.uni-koeln.de/'
+   'Sammlung Franz Thorbecke' => 'http://www.ub.uni-koeln.de/sammlungen/thorbecke/'
+   'Sammlung Franz Weinkauff' => 'http://weinkauff.ub.uni-koeln.de/'
+   'Sammlung Fred Bänfer' => 'http://www.ub.uni-koeln.de/sammlungen/baenfer/'
+   'Sammlung Friedrich Wilhelm Bäumker' => 'http://baeumker.ub.uni-koeln.de/'
+   'Sammlung Fritz von Westerholt' => 'http://www.ub.uni-koeln.de/sammlungen/westerholt/'
+   'Sammlung Gertrud von Le Fort' => 'http://lefort.ub.uni-koeln.de/'
+   'Sammlung Gertrud von Le Fort' => 'http://lefort.ub.uni-koeln.de/'
+   'Sammlung Gymnasialbibliothek' => 'http://gymnasialbibliothek.ub.uni-koeln.de/'
+   'Sammlung Günter Herterich' => 'http://www.ub.uni-koeln.de/sammlungen/gentz/'
+   'Sammlung H. C. Artmann - Sammlung Karl-Heinz Knupfer' => ''
+   'Sammlung Hanns-Theo Schmitz-Otto' => 'http://schmitzotto.ub.uni-koeln.de/'
+   'Sammlung Heinrich Erkes' => 'http://www.ub.uni-koeln.de/bibliothek/profil/ssg/islandica/'
+   'Sammlung Herbert von Dirksen' => 'http://dirksen.ub.uni-koeln.de/'
+   'Sammlung Hermann Heinrich Becker' => 'http://becker.ub.uni-koeln.de/'
+   'Sammlung Islandica' => 'http://www.ub.uni-koeln.de/bibliothek/profil/ssg/islandica/'
+   'Sammlung Jürgen Scholle' => 'http://www.ub.uni-koeln.de/sammlungen/scholle/'
+   'Sammlung Kölnische Bibliotheksgesellschaft' => 'http://www.koelnische-bibliotheksgesellschaft.de/'
+   'Sammlung Otto Wolff' => 'http://wolff.ub.uni-koeln.de/'
+   'Sammlung Poetica' => 'http://poetica.ub.uni-koeln.de/'
+   'Sammlung Syndikatsbibliothek' => 'http://syndikatsbibliothek.ub.uni-koeln.de/'
+   'Sammlung Thomas a Kempis' => 'http://kempis.ub.uni-koeln.de/'
+   'Sammlung Westerholt' => 'http://www.ub.uni-koeln.de/sammlungen/westerholt/'
+   'Sammlung Wilhelm Alff' => 'http://www.ub.uni-koeln.de/sammlungen/alff/'
+   'Sammlung Wilhelmine von Westerholt' => 'http://www.ub.uni-koeln.de/sammlungen/westerholt/'
 };
 
-classifications  =  [];
-portals          =  [];
-sammlungen_done  =  {};
-
-FOREACH classification IN normset.${"T0700"} ;
-     IF sammlungen.${classification.content}.defined ;
-        url  = sammlungen.${classification.content}.url;
-        desc = sammlungen.${classification.content}.desc;
-        classification.content = "<img style=\"vertical-align:bottom\" src=\"${config.get('home_img')}\" alt=\"Home-Icon\" />&nbsp;<a href=\"${url}\" target=\"_bl
-ank\"><b>${desc}</b></a>" ;
-        IF NOT sammlungen_done.${url} ;
-          portals.push(classification);
-        END ;
-        sammlungen_done.${url} = 1;
+FOREACH sammlungsvermerk IN normdata.${"T4700"} ;
+     IF sammlungen.${sammlungsvermerk.content}.defined ;
+        sammlungsurl = sammlungen.${sammlungsvermerk.content};
+        sammlungsvermerk.content = "<img style=\"vertical-align:bottom\" src=\"${config.get('home_img')}\" alt=\"Home-Icon\" />&nbsp;<a href=\"${sammlungsurl}\" target=\"_bl
+ank\"><b>${sammlungsvermerk.content}</b></a>" ;
      ELSE ;
-        classifications.push(classification);
+        sammlungsvermerk.content = "${sammlungsvermerk.content} (Portal im Aufbau)" ;
      END ;
-END;
-
-IF classifications ;
-  normset.${"T0700"} = classifications;
-END;
-
-IF portals ;
-  normset.${"T4600"} = portals;
 END;
 
 IF normdata.${'T4400'}.first.content == 'online' && NOT normdata.${"T0662"}.first.content && NOT normdata.${"T2662"}.first.content;

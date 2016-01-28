@@ -34,6 +34,7 @@ while (<HOLDING>){
 
     foreach my $location_ref (@{$holding_ref->{fields}{'0016'}}){
         if ($location_ref->{content} =~m/^Humanwiss. Abteilung/){
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-HWA";
         }
         elsif ($location_ref->{content} =~m/^Hauptabteilung\s*\/\s*Lehrbuchsammlung/){
@@ -43,30 +44,37 @@ while (<HOLDING>){
             push @{$title_locationid_ref->{$titleid}}, "DE-38-LS";
         }
         elsif ($location_ref->{content} =~m/Fachbibliothek VWL/){
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-101";
         }
         elsif ($location_ref->{content} =~m/Fachbibliothek Versicherungswiss/){
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-123";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-VERS";
         }
         elsif ($location_ref->{content} =~m/Fachbibliothek Soziologie/){
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-132";
         }
         elsif ($location_ref->{content} =~m/^Philosoph/){
             push @{$title_locationid_ref->{$titleid}}, "DE-38-401";
         }
         elsif ($location_ref->{content} =~m/^Fachbibliothek Slavistik \/ Slavisches Institut/){
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-418";
         }
         elsif ($location_ref->{content} =~m/^Fachbibliothek Arch.*?ologien \/ .*?Ur- u. Fr.*?geschichte/){
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-426";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-ARCH";
         }
         elsif ($location_ref->{content} =~m/^Fachbibliothek Arch.*?ologien \/ Arch.*?ologisches Institut/){
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-427";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-ARCH";
         }
         elsif ($location_ref->{content} =~m/Theaterwiss. Sammlung/){
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-429";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-MEKUTH";
         }
@@ -74,18 +82,22 @@ while (<HOLDING>){
             push @{$title_locationid_ref->{$titleid}}, "DE-38-432";
         }
         elsif ($location_ref->{content} =~m/Inst.*?Medienkultur u. Theater/){
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-448";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-MEKUTH";
         }
         elsif ($location_ref->{content} =~m/^Fachbibliothek Asien \/ China/){
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-450";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-ASIEN";
         }
         elsif ($location_ref->{content} =~m/^Fachbibliothek Asien \/ Japanologie/){
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-459";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-ASIEN";
         }
         elsif ($location_ref->{content} =~m/Fachbibliothek Chemie/){
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-507";
         }
         elsif ($location_ref->{content} =~m/inst622/){
@@ -94,6 +106,7 @@ while (<HOLDING>){
 
         if ($location_ref->{content} =~m/^Hauptabteilung/){
             push @{$title_locationid_ref->{$titleid}}, "DE-38";
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
         }
     }
 
@@ -127,6 +140,7 @@ while (<>){
         foreach my $item (@{$title_ref->{fields}{'4400'}}){
             if ($item->{content} eq "online"){
                 push @{$title_ref->{'locations'}}, "DE-38";
+                push @{$title_ref->{'locations'}}, "DE-38-USBFB";
                 push @{$title_ref->{'locations'}}, "DE-38-101";
                 push @{$title_ref->{'locations'}}, "DE-38-123";
                 push @{$title_ref->{'locations'}}, "DE-38-132";

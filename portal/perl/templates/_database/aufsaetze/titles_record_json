@@ -14,14 +14,21 @@ holdingitems = [];
 FOREACH thisholding IN record.get_holding;
    IF thisholding.${"X4000"}.content.short.match('DE-38-[0-9][0-9][0-9]') ; 
       thissigel      = thisholding.${"X4000"}.content.short.match('DE-38-([0-9][0-9][0-9])').first;
-      thislocationid = thisholding.${"X4000"}.content.short.match('(DE-38-[0-9][0-9][0-9])').first;
+      thislocation   = "";
+
       IF dbinfo.get('sigel').${thissigel}.short ;
-         thisholding.${"X4000"}.content.short = dbinfo.get('sigel').${thissigel}.short;
+         thislocation = dbinfo.get('sigel').${thissigel}.short;
+         thisholding.${"X4000"}.content.short = thislocation;
+
       END;
       IF dbinfo.get('sigel').${thissigel}.full ;
-         thisholding.${"X4000"}.content.full = dbinfo.get('sigel').${thissigel}.full;
+         thislocation = dbinfo.get('sigel').${thissigel}.full;
+         thisholding.${"X4000"}.content.full = thislocation;
+
       END;
-      thisholding.${"X4001"}.content = "http://www.ub.uni-koeln.de/bibliotheken/38_${thissigel}/";
+      thisurl = "http://www.ub.uni-koeln.de/bibliotheken/38_${thissigel}/";
+      thisholding.${"X4001"}.content = thisurl;
+      thisholding.${"X0016"}.content = "<a href=\"${thisurl}\">${thislocation}</a>";
    END;
 
    holdingitems.push(thisholding);

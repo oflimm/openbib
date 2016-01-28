@@ -28,7 +28,7 @@ FOREACH thisholding IN record.get_holding;
       END;
       thisurl = "http://www.ub.uni-koeln.de/bibliotheken/38_${thissigel}/";
       thisholding.${"X4001"}.content = thisurl;
-      thisholding.${"X0016"}.content = "<a href=\"${thisurl}\">${thislocation}</a>";
+      thisholding.${"X0016"}.content = thislocation ; #"<a href=\"${thisurl}\">${thislocation}</a>";
    END;
 
    holdingitems.push(thisholding);

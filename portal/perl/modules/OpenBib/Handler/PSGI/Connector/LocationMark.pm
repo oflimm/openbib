@@ -324,7 +324,7 @@ sub show_via_searchengine {
     });
     
     $searchquery->set_searchfield('markstring',"${base_norm}*",'');
-    $searchquery->set_searchfield('ft0016',$location,'');
+    $searchquery->set_searchfield('ft0016',$location,'') if ($location);
 #    $searchquery->set_type('authority');
 
     $self->param('searchquery',$searchquery);
@@ -333,7 +333,7 @@ sub show_via_searchengine {
         $logger->debug("SearchQuery:".YAML::Dump($searchquery->get_searchquery));
     }
     
-    if ($base && $location){
+    if ($base){
         $logger->debug("Bestimme Titel zur Grundsignatur '$base' und Standort '$location'");
 
         my ($atime,$btime,$timeall);

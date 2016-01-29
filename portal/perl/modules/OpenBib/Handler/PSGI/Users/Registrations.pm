@@ -39,6 +39,7 @@ use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use Captcha::reCAPTCHA;
 use POSIX;
+use MIME::Lite;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
@@ -101,8 +102,10 @@ sub show {
 
     # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
     # Client-IP setzen
+    my $client_ip="";
+    
     if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
-        $r->connection->remote_ip($1);
+        $client_ip=$1;
     }
 
     # TT-Data erzeugen
@@ -149,8 +152,12 @@ sub mail_confirmation {
 
     # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
     # Client-IP setzen
+    # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
+    # Client-IP setzen
+    my $client_ip="";
+    
     if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
-        $r->connection->remote_ip($1);
+        $client_ip=$1;
     }
 
     if ($username eq "" || $password1 eq "" || $password2 eq "") {
@@ -163,23 +170,23 @@ sub mail_confirmation {
     
     # Ueberpruefen, ob es eine gueltige Mailadresse angegeben wurde.
     unless (Email::Valid->address($username)){
-        return $self->print_warning($msg->maketext("Sie haben keine gÃ¼tige Mailadresse eingegeben. Gehen Sie bitte [_1]zurÃ¼ck[_2] und korrigieren Sie Ihre Eingabe","<a href=\"$path_prefix/$config->{selfreg_loc}?action=show\">","</a>"));
+        return $self->print_warning($msg->maketext("Sie haben keine gÃ¼tige Mailadresse eingegeben. Gehen Sie bitte [_1]zurÃ¼ck[_2] und korrigieren Sie Ihre Eingabe","<a href=\"$path_prefix/$config->{users_loc}/$config->{registrations_loc}\">","</a>"));
     }
     
     if ($user->user_exists($username)) {
-        return $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurÃ¼ck[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{selfreg_loc}?action=show\">","</a>"));
+        return $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurÃ¼ck[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"));
     }
     
     # Recaptcha nur verwenden, wenn Zugriffsinformationen vorhanden sind
     if ($config->{recaptcha_private_key}){
         # Recaptcha pruefen
         my $recaptcha_result = $recaptcha->check_answer(
-            $config->{recaptcha_private_key}, $r->connection->remote_ip,
+            $config->{recaptcha_private_key}, $client_ip, #r->connection->remote_ip,
             $recaptcha_challenge, $recaptcha_response
         );
         
         unless ( $recaptcha_result->{is_valid} ) {
-            return $self->print_warning($msg->maketext("Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte [_1]zurÃ¼ck[_2] und versuchen Sie es erneut.","<a href=\"$path_prefix/$config->{selfreg_loc}?action=show\">","</a>"));
+            return $self->print_warning($msg->maketext("Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte [_1]zurÃ¼ck[_2] und versuchen Sie es erneut.","<a href=\"$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"));
         }
     }
 
@@ -287,7 +294,7 @@ sub register {
 
       # Wurde dieser Nutzername inzwischen bereits registriert?
       if ($user->user_exists($username)) {
-        return $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{selfreg_loc}.html\">","</a>"));
+        return $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"));
       }
 
       # OK, neuer Nutzer -> eintragen

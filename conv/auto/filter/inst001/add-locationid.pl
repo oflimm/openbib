@@ -78,9 +78,6 @@ while (<HOLDING>){
             push @{$title_locationid_ref->{$titleid}}, "DE-38-429";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-MEKUTH";
         }
-        elsif ($location_ref->{content} =~m/Thomas-Institut/){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-432";
-        }
         elsif ($location_ref->{content} =~m/Inst.*?Medienkultur u. Theater/){
             push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-448";
@@ -100,8 +97,8 @@ while (<HOLDING>){
             push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-507";
         }
-        elsif ($location_ref->{content} =~m/inst622/){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-622";
+        elsif ($location_ref->{content} =~m/inst(\d\d\d) /){
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-$1";
         }
 
         if ($location_ref->{content} =~m/^Hauptabteilung/){
@@ -135,7 +132,7 @@ while (<>){
         }
     }
 
-    # Online-Medien werden allen Standorten zugewiesen
+    # Online-Medien werden allen (USB/Fachbibliotheks-)Standorten zugewiesen
     if (defined $title_ref->{fields}{'4400'}){
         foreach my $item (@{$title_ref->{fields}{'4400'}}){
             if ($item->{content} eq "online"){

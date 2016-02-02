@@ -1,0 +1,10 @@
+[%-
+
+x = csv.print(r,['dbname','description','count_all','count_journals','count_articles','count_digital']);
+
+FOREACH thisorgunitdb IN orgunitinfo.search_related("orgunit_dbs", {}, {} ) ;
+x = csv.print(r,[thisorgunitdb.dbid.dbname,thisorgunitdb.dbid.description,thisorgunitdb.dbid.allcount,thisorgunitdb.dbid.journalcount,thisorgunitdb.dbid.articlecount,thisorgunitdb.dbid.digitalcount]);
+END ;
+
+-%]
+[%- r.print_buffer -%]

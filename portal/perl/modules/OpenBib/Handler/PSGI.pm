@@ -407,7 +407,8 @@ sub negotiate_content {
         }
     }
     
-
+    $logger->debug("Leaving with representation ".$self->param('representation'));
+    
     return;
 }
 

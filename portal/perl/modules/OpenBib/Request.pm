@@ -192,6 +192,34 @@ sub get_basic_auth_credentials {
     return (401,'','');        
 }
 
+sub print {
+    my ($self,$string) = @_;
+
+    my $logger = get_logger();
+
+    $logger->debug("Input $string");
+    
+    if (!defined $self->{_openbib_print_buffer}){
+        $self->{_openbib_print_buffer} = [];
+    }
+
+    push @{$self->{_openbib_print_buffer}}, $string;
+    
+    return;
+}
+    
+sub print_buffer {
+    my $self = shift;
+
+    my $logger = get_logger();
+
+    if (!defined $self->{_openbib_print_buffer}){
+        $self->{_openbib_print_buffer} = [];
+    }
+
+    return join('',@{$self->{_openbib_print_buffer}});
+}
+
 1;
 __END__
 

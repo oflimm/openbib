@@ -7,3 +7,4 @@ x = csv.print(r,[logentry.serverid.hostip,logentry.tstamp_start,logentry.duratio
 END ;
 
 -%]
+[%- r.print_buffer -%]

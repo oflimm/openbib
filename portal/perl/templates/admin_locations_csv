@@ -29,3 +29,4 @@ FOREACH location IN locations ;
 END ;
 
 -%]
+[%- r.print_buffer -%]

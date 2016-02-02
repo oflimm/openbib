@@ -997,7 +997,7 @@ sub add_default_ttdata {
             'binary'       => 1, # potential newlines inside fields
             'always_quote' => 1,
             'eol'          => "\n",
-#            'sep_char'    => "\t",
+            'sep_char'    => "\t",
         });
         $ttdata->{'csv'}           = $csv;
     }

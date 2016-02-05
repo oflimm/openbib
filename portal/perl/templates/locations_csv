@@ -1,6 +1,6 @@
 [%-
 
-x = csv.print(r,['Identifier','Typ','Beschreibung','Institution','Adresse','Gebaeude','Gemeinsame_Bibliothek','Weitere_Kataloge','Telefon','Fax','Email','Internet','Bibliothekare','Oeffnungszeiten','Bestand_Monos','Bestand_Zeitschriften','Laufende_Zeitschriften','Sammelgebiete','Art_der_Bibliothek','Sigel','Geokoordinaten']);
+x = csv.print(r,['Identifier','Typ','Beschreibung','Institution','Adresse','Gebaeude','Gemeinsame_Bibliothek','Weitere_Kataloge','Telefon','Fax','Email','Internet','Auskunft_Bibliothekare','Oeffnungszeiten','Bestand_Monos','Bestand_Zeitschriften','Laufende_Zeitschriften','Sammelgebiete','Art_der_Bibliothek','Sigel','Geokoordinaten']);
 
 FOREACH location IN locations ;
 

@@ -53,7 +53,7 @@ sub as_psgi {
 
     my $query = $args{args_to_new}->{QUERY};
 
-    $logger->debug("Query: ".ref($query));
+    #$logger->debug("Query: ".ref($query));
 
     # set method for http-tunnel based on _method-CGI-Parameter
     if ($query->param('_method')){
@@ -61,19 +61,19 @@ sub as_psgi {
 
         $query->env->{REQUEST_METHOD} = $query->param('_method');
         
-        if ($logger->is_debug){
-            $logger->debug("Changed method to tunneled ".$query->param('_method'));
-        }
+        #if ($logger->is_debug){
+        #    $logger->debug("Changed method to tunneled ".$query->param('_method'));
+        #}
     }
     
-    $logger->debug("Dispatching as PSGI");
+    #$logger->debug("Dispatching as PSGI");
 
     $args{args_to_new}->{PARAMS}->{r} = $query;
     $args{args_to_new}->{PARAMS}->{QUERY} = $query;
     $args{args_to_new}->{QUERY} = $query;
 
     
-    $logger->debug("ARGS as_psgi: ".Data::Dumper::Dumper(\%args));
+    #$logger->debug("ARGS as_psgi: ".Data::Dumper::Dumper(\%args));
     
     my $psgi_app = $self->SUPER::as_psgi(%args) ;
 
@@ -165,7 +165,7 @@ sub as_psgi {
 sub dispatch_args {
     my ($self, $args) = @_;
 
-    my $logger=get_logger();
+    my $logger = get_logger();
     
     my $configfile  = OpenBib::Config::File->instance;
 

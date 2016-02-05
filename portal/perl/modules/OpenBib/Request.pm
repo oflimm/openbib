@@ -193,7 +193,8 @@ sub get_basic_auth_credentials {
 }
 
 sub print {
-    my ($self,$string) = @_;
+    my $self   = shift;
+    my $string = join('',@_);
 
     my $logger = get_logger();
 

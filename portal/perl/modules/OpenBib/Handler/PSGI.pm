@@ -44,7 +44,7 @@ use JSON::XS;
 use Template;
 use URI::Escape;
 use XML::RSS;
-use Text::CSV_XS;
+use Text::CSV_PP;
 use YAML ();
 
 use OpenBib::Config;
@@ -651,7 +651,7 @@ sub negotiate_type {
     if ($content_type){
         if ($logger->is_debug){
             $logger->debug("Content-Type: |$content_type|");
-            $logger->debug(YAML::Dump($config->{content_type_map}));
+            #$logger->debug(YAML::Dump($config->{content_type_map}));
         }
         
         if ($config->{content_type_map}{$content_type}){
@@ -661,9 +661,9 @@ sub negotiate_type {
         $logger->debug("content_type: ".$self->param('content_type')." - representation: ".$self->param('representation')) if (defined $self->param('content_type') && defined $self->param('represenation'));
     }
     elsif (@accepted_types){
-        if ($logger->is_debug){
-            $logger->debug("Accept: $accept - Types: ".YAML::Dump(\@accepted_types));
-        }
+        #if ($logger->is_debug){
+        #    $logger->debug("Accept: $accept - Types: ".YAML::Dump(\@accepted_types));
+        #}
     
         foreach my $information_type (@accepted_types){
             if ($config->{content_type_map}{$information_type}){
@@ -707,9 +707,9 @@ sub negotiate_language {
     my $lang         = $r->header('Accept-Language') || '';
     my @accepted_languages  = map { ($_)=$_=~/^(..)/} map { (split ";", $_)[0] } split /\*s,\*s/, $lang;
     
-    if ($logger->is_debug){
-        $logger->debug("Accept-Language: $lang - Languages: ".YAML::Dump(\@accepted_languages));
-    }
+    #if ($logger->is_debug){
+    #    $logger->debug("Accept-Language: $lang - Languages: ".YAML::Dump(\@accepted_languages));
+    #}
     
     foreach my $language (@{$config->{lang}}){
         if (any { $_ eq $language } @accepted_languages) {
@@ -822,9 +822,9 @@ sub print_json {
     # Dann Ausgabe des neuen Headers
     $self->header_add('Content-Type' => 'application/json');
 
-    if ($logger->is_debug()){
-        $logger->debug(YAML::Dump($json_ref))
-    }
+    #if ($logger->is_debug()){
+    #    $logger->debug(YAML::Dump($json_ref))
+    #}
 
     return encoder_json($json_ref);
 }
@@ -993,11 +993,10 @@ sub add_default_ttdata {
     }
 
     if ($representation eq "csv"){
-        my $csv = Text::CSV_XS->new ({
+        my $csv = Text::CSV_PP->new ({
             'binary'       => 1, # potential newlines inside fields
             'always_quote' => 1,
             'eol'          => "\n",
-            'sep_char'    => ";",
         });
         $ttdata->{'csv'}           = $csv;
     }
@@ -1337,9 +1336,9 @@ sub to_cgi_params {
         $exclude_ref->{$param} = 1;
     }
 
-    if ($logger->is_debug){
-        $logger->debug("Args".YAML::Dump($arg_ref));
-    }
+    #if ($logger->is_debug){
+    #    $logger->debug("Args".YAML::Dump($arg_ref));
+    #}
 
     my @cgiparams = ();
 
@@ -1375,9 +1374,9 @@ sub to_cgi_params {
         }
     }
 
-    if ($logger->is_debug){
-        $logger->debug("Got cgiparams ".YAML::Dump(\@cgiparams));
-    }
+    #if ($logger->is_debug){
+    #    $logger->debug("Got cgiparams ".YAML::Dump(\@cgiparams));
+    #}
 
     return @cgiparams;
 }
@@ -1421,9 +1420,9 @@ sub to_cgi_hidden_input {
 
     $logger->debug("Modify Querystring as hidden input");
     
-    if ($logger->is_debug){
-        $logger->debug("Args".YAML::Dump($arg_ref));
-    }
+    #if ($logger->is_debug){
+    #    $logger->debug("Args".YAML::Dump($arg_ref));
+    #}
 
     my @cgiparams = ();
 
@@ -1616,9 +1615,9 @@ sub redirect {
     $self->header_add('Location' => $url);
     $self->header_add('Status' => $status);
 
-    if ($logger->is_debug){
-        $logger->debug("Redirect-Headers: ".YAML::Syck::Dump($self->{__HEADER_PROPS}));
-    }
+    #if ($logger->is_debug){
+    #    $logger->debug("Redirect-Headers: ".YAML::Syck::Dump($self->{__HEADER_PROPS}));
+    #}
     
     return;
 }
@@ -1725,9 +1724,9 @@ sub check_http_basic_authentication {
             $self->param('basic_auth_failure',1);
         }
 
-        if ($logger->is_debug){
-            $logger->debug("User post: ".YAML::Dump($user));
-        }
+        #if ($logger->is_debug){
+        #    $logger->debug("User post: ".YAML::Dump($user));
+        #}
         
         # User zurueckchreiben
         $self->param('user',$user);
@@ -1844,10 +1843,10 @@ sub _send_psgi_headersXX {
         # Log4perl logger erzeugen
         my $logger = get_logger();
 
-        if ($logger->is_debug){
-            $logger->debug("Query-Object: ".ref($q));
-            $logger->debug("Type: $type - ".YAML::Dump($self->header_props));
-        }
+        #if ($logger->is_debug){
+        #    $logger->debug("Query-Object: ".ref($q));
+        #    $logger->debug("Type: $type - ".YAML::Dump($self->header_props));
+        #}
         
     return
         $type eq 'redirect' ? $q->psgi_redirect( $self->header_props )

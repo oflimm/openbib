@@ -12,6 +12,7 @@ while (<>){
 
     push @{$title_ref->{'locations'}}, "DE-38-123";
     push @{$title_ref->{'locations'}}, "DE-38-VERS";
+    push @{$title_ref->{'locations'}}, "DE-38-USBFB";
     
     print encode_json $title_ref, "\n";
 }

@@ -56,7 +56,7 @@ if ($dbinfo->protocol eq "ftp" && $dbinfo->remoteuser ne "" && $dbinfo->remotepa
 
 
 print "### $pool: Datenabzug via http von $url\n";
-system("cd $pooldir/$pool ; rm meta.* ; rm tmp.*");
+system("cd $pooldir/$pool ; rm meta.* ; rm tmp.* ; rm export_*");
 system("$wgetexe $ftpauthstring --no-passive-ftp -N -P $pooldir/$pool/ $url ");
 
 opendir(DIR, "$pooldir/$pool/");

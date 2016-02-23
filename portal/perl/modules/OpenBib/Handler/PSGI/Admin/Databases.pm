@@ -471,7 +471,7 @@ sub get_input_definition {
             type     => 'scalar',
         },
         parentdbid => {
-            default  => '',
+            default  => undef,
             encoding => 'none',
             type     => 'scalar',
         },

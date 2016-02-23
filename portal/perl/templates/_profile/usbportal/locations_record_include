@@ -133,6 +133,13 @@ END ;-%]
 </tbody>
 </table>
 
+<p style="font-size:0.8em;">
+<b>Hinweis:</b> Diese Informationen beruhen auf Selbstangaben der
+Campusbibliotheken und entsprechen dem uns jeweils zuletzt mitgeteilten
+Stand. Bitte wenden Sie sich bei etwaigen Unstimmigkeiten direkt an
+das jeweilige Institut.
+</p>
+
 [%- IF locationinfo.fields.${"L0280"}.first.content -%]
 <p>
 <div id="map_canvas" style="width: 100%; height: 600px"></div>

@@ -291,7 +291,7 @@ foreach my $titleid (keys %$title_with_no_children_ref){
 
 print STDERR "### inst001 Erweitere Titeldaten anhand der bestimmten Markierungen\n";
 
-open(LOGGING,">location.log.new3");
+#open(LOGGING,">location.log.new3");
 
 while (<>){
     my $title_ref = decode_json $_;
@@ -299,17 +299,23 @@ while (<>){
     my $titleid = $title_ref->{id};
 
     if (defined $title_locationid{$titleid}){
+        my $mult = 1;
         foreach my $locationid (uniq @{$title_locationid{$titleid}}){
             push @{$title_ref->{'locations'}}, $locationid;
+            push @{$title_ref->{'fields'}{'4230'}}, {
+                content  => $locationid,
+                mult     => $mult++,
+                subfield => '',
+            };
         }
 
-        print LOGGING "$titleid:",join(';',uniq @{$title_locationid{$titleid}}),"\n";
+#        print LOGGING "$titleid:",join(';',uniq @{$title_locationid{$titleid}}),"\n";
     }
     
     print encode_json $title_ref, "\n";
 }
 
-close(LOGGING);
+#close(LOGGING);
 
 sub sigel2isil {
     my $content = shift;

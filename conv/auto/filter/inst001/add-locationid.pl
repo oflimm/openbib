@@ -4,21 +4,42 @@ use warnings;
 use strict;
 
 use JSON::XS;
+use List::MoreUtils qw{uniq};
 use OpenBib::Catalog::Subset;
+use MLDBM qw(DB_File Storable);
+use Storable ();
+use DB_File;
 
-my $title_locationid_ref = {};
+unlink "./title_locationid.db";
+unlink "./title_has_parent.db";
 
-print STDERR "### inst001 Analysiere Teilbestand Kunst\n";
+my %title_locationid             = ();
+my %title_locationid_with_parent = ();
+my %title_has_parent             = ();
 
-my $zbkunst_title_ref = {};
+tie %title_locationid,             'MLDBM', "./title_locationid.db"
+    or die "Could not tie title_locationid.\n";
 
-my $zbkunst_subset = new OpenBib::Catalog::Subset("inst001","zbkunst");
+tie %title_has_parent,             'MLDBM', "./title_has_parent.db"
+    or die "Could not tie title_has_parent.\n";
 
-$zbkunst_subset->identify_by_field_content('classification',([ { field => '0800', content => '^20\.' },{ field => '0800', content => '^21\.' },{ field => '0800', content => '^Ku' } ]));
-$zbkunst_subset->identify_by_mark(["^K[1-9]","^XK[1-9]","^AP[1-9]","^KP[1-9]","^1K[1-9]","2K[1-9]"]);
+my $analyze_zbkunst = 1;
 
-foreach my $zbkunst_titleid (keys %{$zbkunst_subset->get_titleid}){
-    push @{$title_locationid_ref->{$zbkunst_titleid}}, "DE-38-ZBKUNST";
+if ($analyze_zbkunst){
+    print STDERR "### inst001 Analysiere Teilbestand Kunst\n";
+    
+    my $zbkunst_title_ref = {};
+    
+    my $zbkunst_subset = new OpenBib::Catalog::Subset("inst001","zbkunst");
+    
+    $zbkunst_subset->identify_by_field_content('classification',([ { field => '0800', content => '^20\.' },{ field => '0800', content => '^21\.' },{ field => '0800', content => '^Ku' } ]));
+    $zbkunst_subset->identify_by_mark(["^K[1-9]","^XK[1-9]","^AP[1-9]","^KP[1-9]","^1K[1-9]","2K[1-9]"]);
+    
+    foreach my $zbkunst_titleid (keys %{$zbkunst_subset->get_titleid}){
+        my $element_ref = $title_locationid{$zbkunst_titleid};
+        push @{$element_ref}, "DE-38-ZBKUNST";
+        $title_locationid{$zbkunst_titleid} = $element_ref;
+    }
 }
 
 print STDERR "### inst001 Analysiere Exemplardaten\n";
@@ -32,136 +53,335 @@ while (<HOLDING>){
 
     next unless ($titleid);
 
+    my $element_ref = (defined $title_locationid{$titleid})?$title_locationid{$titleid}:[];
+    
     foreach my $location_ref (@{$holding_ref->{fields}{'0016'}}){
         if ($location_ref->{content} =~m/^Humanwiss. Abteilung/){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-HWA";
+            push @{$element_ref}, "DE-38-USBFB";
+            push @{$element_ref}, "DE-38-HWA";
         }
         elsif ($location_ref->{content} =~m/^Hauptabteilung\s*\/\s*Lehrbuchsammlung/){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-LBS";
+            push @{$element_ref}, "DE-38-LBS";
         }
         elsif ($location_ref->{content} =~m/^Hauptabteilung \/ Lesesaal/){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-LS";
+            push @{$element_ref}, "DE-38-LS";
         }
         elsif ($location_ref->{content} =~m/Fachbibliothek VWL/){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-101";
+            push @{$element_ref}, "DE-38-USBFB";
+            push @{$element_ref}, "DE-38-101";
         }
         elsif ($location_ref->{content} =~m/Fachbibliothek Versicherungswiss/){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-123";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-VERS";
+            push @{$element_ref}, "DE-38-USBFB";
+            push @{$element_ref}, "DE-38-123";
+            push @{$element_ref}, "DE-38-VERS";
         }
         elsif ($location_ref->{content} =~m/Fachbibliothek Soziologie/){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-132";
+            push @{$element_ref}, "DE-38-USBFB";
+            push @{$element_ref}, "DE-38-132";
         }
         elsif ($location_ref->{content} =~m/^Philosoph/){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-401";
+            push @{$element_ref}, "DE-38-401";
         }
         elsif ($location_ref->{content} =~m/^Fachbibliothek Slavistik \/ Slavisches Institut/){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-418";
+            push @{$element_ref}, "DE-38-USBFB";
+            push @{$element_ref}, "DE-38-418";
         }
         elsif ($location_ref->{content} =~m/^Fachbibliothek Arch.*?ologien \/ .*?Ur- u. Fr.*?geschichte/){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-426";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-ARCH";
+            push @{$element_ref}, "DE-38-USBFB";
+            push @{$element_ref}, "DE-38-426";
+            push @{$element_ref}, "DE-38-ARCH";
         }
         elsif ($location_ref->{content} =~m/^Fachbibliothek Arch.*?ologien \/ Arch.*?ologisches Institut/){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-427";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-ARCH";
+            push @{$element_ref}, "DE-38-USBFB";
+            push @{$element_ref}, "DE-38-427";
+            push @{$element_ref}, "DE-38-ARCH";
         }
         elsif ($location_ref->{content} =~m/Theaterwiss. Sammlung/){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-429";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-MEKUTH";
+            push @{$element_ref}, "DE-38-USBFB";
+            push @{$element_ref}, "DE-38-429";
+            push @{$element_ref}, "DE-38-MEKUTH";
         }
         elsif ($location_ref->{content} =~m/Inst.*?Medienkultur u. Theater/){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-448";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-MEKUTH";
+            push @{$element_ref}, "DE-38-USBFB";
+            push @{$element_ref}, "DE-38-448";
+            push @{$element_ref}, "DE-38-MEKUTH";
         }
         elsif ($location_ref->{content} =~m/^Fachbibliothek Asien \/ China/){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-450";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-ASIEN";
+            push @{$element_ref}, "DE-38-USBFB";
+            push @{$element_ref}, "DE-38-450";
+            push @{$element_ref}, "DE-38-ASIEN";
         }
         elsif ($location_ref->{content} =~m/^Fachbibliothek Asien \/ Japanologie/){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-459";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-ASIEN";
+            push @{$element_ref}, "DE-38-USBFB";
+            push @{$element_ref}, "DE-38-459";
+            push @{$element_ref}, "DE-38-ASIEN";
         }
         elsif ($location_ref->{content} =~m/Fachbibliothek Chemie/){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-507";
+            push @{$element_ref}, "DE-38-USBFB";
+            push @{$element_ref}, "DE-38-507";
         }
         elsif ($location_ref->{content} =~m/inst(\d\d\d) /){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-$1";
+            push @{$element_ref}, "DE-38-$1";
         }
 
         if ($location_ref->{content} =~m/^Hauptabteilung/){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
+            push @{$element_ref}, "DE-38";
+            push @{$element_ref}, "DE-38-USBFB";
         }
     }
 
     foreach my $mark_ref (@{$holding_ref->{fields}{'0014'}}){
         if ($mark_ref->{content} =~m/^2[4-9]/ || $mark_ref->{content} =~m/^[3-9][0-9]A/){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-SAB";
+            push @{$element_ref}, "DE-38-SAB";
         }
     }
 
+    $title_locationid{$titleid} = $element_ref if (@$element_ref);
 }
 
 close(HOLDING);
 
-print STDERR "### inst001 Analysiere und erweitere Titeldaten\n";
+print STDERR "### inst001 Analysiere Hierarchie-Struktur der Titeldaten und setze titelspezifische Markierung\n";
+
+open(TITLE,"meta.title");
+
+while (<TITLE>){
+    my $title_ref = decode_json $_;
+
+    my $titleid = $title_ref->{id};
+
+    my $element_ref = (defined $title_locationid{$titleid})?$title_locationid{$titleid}:[];
+
+    if (defined $title_ref->{fields}{'0004'}){
+        $title_has_parent{$titleid} = $title_ref->{fields}{'0004'}[0]{content};
+    }
+
+    if (defined $title_ref->{fields}{'4715'}){
+        foreach my $item (@{$title_ref->{fields}{'4715'}}){
+            if ($item->{content} eq "edz"){
+                push @{$element_ref}, "DE-38-EDZ";
+            }
+        }
+    }
+
+    # Zeitschriften anhand besetzter ZDB-ID
+    if (defined $title_ref->{fields}{'0572'}){
+        foreach my $item (@{$title_ref->{fields}{'0012'}}){
+            my @isils = sigel2isil($item->{content});
+            push @{$element_ref}, @isils if (@isils);
+        }
+    }
+    
+    # Online-Medien werden allen (USB/Fachbibliotheks-)Standorten zugewiesen
+    if (defined $title_ref->{fields}{'4400'}){
+        foreach my $item (@{$title_ref->{fields}{'4400'}}){
+            if ($item->{content} eq "online"){
+                push @{$element_ref}, "DE-38";
+                push @{$element_ref}, "DE-38-USBFB";
+                push @{$element_ref}, "DE-38-101";
+                push @{$element_ref}, "DE-38-123";
+                push @{$element_ref}, "DE-38-132";
+                push @{$element_ref}, "DE-38-429";
+                push @{$element_ref}, "DE-38-448";
+                push @{$element_ref}, "DE-38-418";
+                push @{$element_ref}, "DE-38-507";
+                push @{$element_ref}, "DE-38-EDZ";
+                push @{$element_ref}, "DE-38-HWA";
+                push @{$element_ref}, "DE-38-ASIEN";
+                push @{$element_ref}, "DE-38-MEKUTH";
+                push @{$element_ref}, "DE-38-ARCH";
+            }
+        }
+    }
+
+    $title_locationid{$titleid} = $element_ref;
+}
+
+close(TITLE);
+
+print STDERR "### inst001 Hierarchien markieren: Uebergeordnete Titel bekommen Markierung der untergeordneten Titel\n";
+
+my $is_parent_ref         = {};
+my $title_with_no_children_ref = {};
+
+# Eltern bestimmen
+foreach my $child_id (keys %title_has_parent){
+    $is_parent_ref->{$title_has_parent{$child_id}} = 1;
+}
+
+# Titel ohne Kinder bestimmen
+foreach my $titleid (keys %title_has_parent){
+    $title_with_no_children_ref->{$titleid} = 1 if (!defined $is_parent_ref->{$titleid});
+}
+
+foreach my $titleid (keys %$title_with_no_children_ref){
+    my $this_titleid = $titleid;
+
+    next unless (defined $title_locationid{$titleid});
+                 
+    my $level = 0;
+
+    # Kind-Markierungen werden sukzessive auf Eltern uebertragen
+    while (defined $title_has_parent{$this_titleid}){
+        my $parent_titleid = $title_has_parent{$this_titleid};
+
+        # Ggf bereits bestehende Elternmarkierungen werden uebernommen.
+        my $parent_element_ref = (defined $title_locationid{$parent_titleid})?$title_locationid{$parent_titleid}:[];
+
+        # Kind-Markierungen werden hinzugefuegt
+        push @{$parent_element_ref}, @{$title_locationid{$this_titleid}};
+
+        # .. und Gesamt-Eltern-Markierung wieder zurueckgeschrieben
+        $title_locationid{$parent_titleid} = $parent_element_ref;
+
+        # Und weiter zur naechst hoeheren Hierarchieebene.
+        
+        $this_titleid = $parent_titleid;
+
+        # Abbruch bei Ring-Verknuepfungen
+        if ($level > 20){
+            print STDERR "### Ueberordnungen - Abbbruch ! Ebene $level erreicht\n";
+            $this_titleid = -1;
+        }    
+        
+        $level++;
+    }
+}
+
+
+# foreach my $titleid (keys %title_locationid){
+#     my $this_titleid = $titleid;
+
+#     next unless (defined $title_locationid{$titleid});
+                 
+#     my $level = 0;
+
+#     # Markierungen von $this_titleid werden in Gesamtmenge $title_locationid_with_parent kopier
+#     if (defined $title_locationid{$titleid}){
+#         $title_locationid_with_parent{$this_titleid} = $title_locationid{$this_titleid};
+#     }
+
+#     # Kind-Markierungen werden sukzessive auf Eltern uebertragen
+#     while (defined $title_has_parent{$this_titleid}){
+#         my $parent_titleid = $title_has_parent{$this_titleid};
+
+#         # Ggf bereits bestehende Elternmarkierungen werden uebernommen.
+#         my $parent_element_ref = (defined $title_locationid_with_parent{$parent_titleid})?$title_locationid_with_parent{$parent_titleid}:[];
+
+#         # Kind-Markierungen werden hinzugefuegt
+#         push @{$parent_element_ref}, @{$title_locationid_with_parent{$this_titleid}};
+
+#         # .. und Gesamt-Eltern-Markierung wieder zurueckgeschrieben
+#         $title_locationid_with_parent{$parent_titleid} = $parent_element_ref;
+
+#         # Und weiter zur naechst hoeheren Hierarchieebene.
+        
+#         $this_titleid = $parent_titleid;
+
+#         # Abbruch bei Ring-Verknuepfungen
+#         if ($level > 20){
+#             print STDERR "### Ueberordnungen - Abbbruch ! Ebene $level erreicht\n";
+#             $this_titleid = -1;
+#         }    
+        
+#         $level++;
+#     }
+# }
+
+
+print STDERR "### inst001 Erweitere Titeldaten anhand der bestimmten Markierungen\n";
+
+open(LOGGING,">location.log.new3");
 
 while (<>){
     my $title_ref = decode_json $_;
 
     my $titleid = $title_ref->{id};
 
-    if (defined $title_ref->{fields}{'4715'}){
-        foreach my $item (@{$title_ref->{fields}{'4715'}}){
-            if ($item->{content} eq "edz"){
-                push @{$title_ref->{'locations'}}, "DE-38-EDZ";
-            }
+    if (defined $title_locationid{$titleid}){
+        foreach my $locationid (uniq @{$title_locationid{$titleid}}){
+            push @{$title_ref->{'locations'}}, $locationid;
         }
-    }
 
-    # Online-Medien werden allen (USB/Fachbibliotheks-)Standorten zugewiesen
-    if (defined $title_ref->{fields}{'4400'}){
-        foreach my $item (@{$title_ref->{fields}{'4400'}}){
-            if ($item->{content} eq "online"){
-                push @{$title_ref->{'locations'}}, "DE-38";
-                push @{$title_ref->{'locations'}}, "DE-38-USBFB";
-                push @{$title_ref->{'locations'}}, "DE-38-101";
-                push @{$title_ref->{'locations'}}, "DE-38-123";
-                push @{$title_ref->{'locations'}}, "DE-38-132";
-                push @{$title_ref->{'locations'}}, "DE-38-429";
-                push @{$title_ref->{'locations'}}, "DE-38-448";
-                push @{$title_ref->{'locations'}}, "DE-38-418";
-                push @{$title_ref->{'locations'}}, "DE-38-507";
-                push @{$title_ref->{'locations'}}, "DE-38-EDZ";
-                push @{$title_ref->{'locations'}}, "DE-38-HWA";
-                push @{$title_ref->{'locations'}}, "DE-38-ASIEN";
-                push @{$title_ref->{'locations'}}, "DE-38-MEKUTH";
-                push @{$title_ref->{'locations'}}, "DE-38-ARCH";
-            }
-        }
-    }
-
-    my %have_locationid = ();
-
-    foreach my $locationid (@{$title_locationid_ref->{$titleid}}){
-        next if (defined $have_locationid{$locationid});
-        push @{$title_ref->{'locations'}}, $locationid;
-
-        $have_locationid{$locationid} = 1;
+        print LOGGING "$titleid:",join(';',uniq @{$title_locationid{$titleid}}),"\n";
     }
     
     print encode_json $title_ref, "\n";
 }
+
+close(LOGGING);
+
+sub sigel2isil {
+    my $content = shift;
+
+    my @isils = ();
+    
+    if ($content =~m/^38$/){
+        push @isils, "DE-38-USBFB";
+        push @isils, "DE-38";
+    }
+    elsif ($content =~m/38\/101/){
+        push @isils, "DE-38-USBFB";
+        push @isils, "DE-38-101";
+    }
+    elsif ($content =~m/38\/123/){
+        push @isils, "DE-38-USBFB";
+        push @isils, "DE-38-123";
+        push @isils, "DE-38-VERS";
+    }
+    elsif ($content =~m/38\/132/){
+        push @isils, "DE-38-USBFB";
+        push @isils, "DE-38-132";
+    }
+    elsif ($content =~m/^38\/418/){
+        push @isils, "DE-38-USBFB";
+        push @isils, "DE-38-418";
+    }
+    elsif ($content =~m/^38\/426/){
+        push @isils, "DE-38-USBFB";
+        push @isils, "DE-38-426";
+        push @isils, "DE-38-ARCH";
+    }
+    elsif ($content =~m/^38\/427/){
+        push @isils, "DE-38-USBFB";
+        push @isils, "DE-38-427";
+        push @isils, "DE-38-ARCH";
+    }
+    elsif ($content =~m/38\/429/){
+        push @isils, "DE-38-USBFB";
+        push @isils, "DE-38-429";
+        push @isils, "DE-38-MEKUTH";
+    }
+    elsif ($content =~m/38\/448/){
+        push @isils, "DE-38-USBFB";
+        push @isils, "DE-38-448";
+        push @isils, "DE-38-MEKUTH";
+    }
+    elsif ($content =~m/^38\/450/){
+        push @isils, "DE-38-USBFB";
+        push @isils, "DE-38-450";
+        push @isils, "DE-38-ASIEN";
+    }
+    elsif ($content =~m/^38\/459/){
+        push @isils, "DE-38-USBFB";
+        push @isils, "DE-38-459";
+        push @isils, "DE-38-ASIEN";
+    }
+    elsif ($content =~m/38\/507/){
+        push @isils, "DE-38-USBFB";
+        push @isils, "DE-38-507";
+    }
+    elsif ($content =~m/^38\/(\d\d\d)/){
+        push @isils, "DE-38-$1";
+    }
+    else {
+        $content =~s/\//-/g;
+        $content = "DE-$content";
+        push @isils, $content;
+    }
+
+#    print STDERR "ZSST ISILs: ",join(';',@isils),"\n" if (@isils);
+    
+    return @isils;
+}
+

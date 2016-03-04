@@ -277,7 +277,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_databases_[% database %]_anchor">[% msg.maketext("nach Katalog") %]</dt>
 [%             FOREACH termitem IN facets.database ;
-                  LAST IF loop.count > 25 ;
+                  LAST IF loop.count > 250 ;
 %]
 [% IF facets.database.size > 5 && loop.count == 5 %]
 <span id="dd_databases_[% database %]_toggle"></span>
@@ -302,7 +302,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_location_[% database %]_anchor">[% msg.maketext("nach Standort") %]</dt>
 [%             FOREACH termitem IN facets.location ;
-                  LAST IF loop.count > 25 ;
+                  LAST IF loop.count > 250 ;
  %]
 [% IF facets.location.size > 5 && loop.count == 5 %]
 <span id="dd_location_[% database %]_toggle"></span>
@@ -338,7 +338,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 %]
 <dt class="ob-headline" id="dd_availability_[% database %]_anchor">[% msg.maketext("nach Zugriff") %]</dt>
 [%             FOREACH termitem IN facets.availability ;
-                  LAST IF loop.count > 25 ;
+                  LAST IF loop.count > 250 ;
 %]
 [% IF facets.availability.size > 5 && loop.count == 5 %]
 <span id="dd_availability_[% database %]_toggle"></span>
@@ -363,7 +363,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_mediatype_[% database %]_anchor">[% msg.maketext("nach Typ") %]</dt>
 [%             FOREACH termitem IN facets.mediatype ;
-                  LAST IF loop.count > 25 ;
+                  LAST IF loop.count > 250 ;
  %]
 [% IF facets.mediatype.size > 5 && loop.count == 5 %]
 <span id="dd_mediatype_[% database %]_toggle"></span>
@@ -387,7 +387,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_topic_[% database %]_anchor">[% msg.maketext("nach Themengebieten") %]</dt>
 [%             FOREACH termitem IN facets.topic ;
-                  LAST IF loop.count > 25 ;
+                  LAST IF loop.count > 250 ;
  %]
 [% IF facets.topic.size > 5 && loop.count == 5 %]
 <span id="dd_topic_[% database %]_toggle"></span>
@@ -411,7 +411,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_subjects_[% database %]_anchor">[% msg.maketext("nach Themen") %]</dt>
 [%             FOREACH termitem IN facets.subject ;
-                  LAST IF loop.count > 25 ;
+                  LAST IF loop.count > 250 ;
 %]
 [% IF facets.subject.size > 5 && loop.count == 5 %]
 <span id="dd_subjects_[% database %]_toggle"></span>
@@ -435,7 +435,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_year_[% database %]_anchor">[% msg.maketext("nach Jahr") %]</dt>
 [%             FOREACH termitem IN facets.year ;
-                  LAST IF loop.count > 25 ;
+                  LAST IF loop.count > 250 ;
  %]
 [% IF facets.year.size > 5 && loop.count == 5 %]
 <span id="dd_year_[% database %]_toggle"></span>
@@ -463,7 +463,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_classification_[% database %]_anchor">[% msg.maketext("nach Systematik") %]</dt>
 [%             FOREACH termitem IN facets.classification ;
-                  LAST IF loop.count > 25 ;
+                  LAST IF loop.count > 250 ;
  %]
 [% IF facets.classification.size > 5 && loop.count == 5 %]
 <span id="dd_classification_[% database %]_toggle"></span>
@@ -487,7 +487,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_provenance_[% database %]_anchor">[% msg.maketext("nach Provenienz") %]</dt>
 [%             FOREACH termitem IN facets.provenance ;
-                  LAST IF loop.count > 25 ;
+                  LAST IF loop.count > 250 ;
  %]
 [% IF facets.provenance.size > 5 && loop.count == 5 %]
 <span id="dd_provenance_[% database %]_toggle"></span>
@@ -511,7 +511,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_tags_[% database %]_anchor">[% msg.maketext("nach Tags") %]</dt>
 [%             FOREACH termitem IN facets.tag ;
-                  LAST IF loop.count > 25 ;
+                  LAST IF loop.count > 250 ;
  %]
 [% IF facets.tag.size > 5 && loop.count == 5 %]
 <span id="dd_tags_[% database %]_toggle"></span>
@@ -535,7 +535,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_litlists_[% database %]_anchor">[% msg.maketext("nach Literaturliste") %]</dt>
 [%             FOREACH termitem IN facets.litlist ;
-                  LAST IF loop.count > 25 ;
+                  LAST IF loop.count > 250 ;
  %]
 [% IF facets.litlist.size > 5 && loop.count == 5 %]
 <span id="dd_litlists_[% database %]_toggle"></span>
@@ -559,7 +559,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_person_[% database %]_anchor">[% msg.maketext("nach Personen") %]</dt>
 [%             FOREACH termitem IN facets.person ;
-                  LAST IF loop.count > 25 ;
+                  LAST IF loop.count > 250 ;
 %]
 [% IF facets.person.size > 5 && loop.count == 5 %]
 <span id="dd_person_[% database %]_toggle"></span>
@@ -584,7 +584,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <dt class="ob-headline" id="dd_corporatebody_[% database %]_anchor">[% msg.maketext("nach K&ouml;perschaften") %]</dt>
 <tr><td>
 [%             FOREACH termitem IN facets.corporatebody ;
-                  LAST IF loop.count > 25 ;
+                  LAST IF loop.count > 250 ;
 %]
 [% IF facets.corporatebody.size > 5 && loop.count == 5 %]
 <span id="dd_corporatebody_[% database %]_toggle"></span>
@@ -608,7 +608,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_language_[% database%]_anchor">[% msg.maketext("nach Sprache") %]</dt>
 [%             FOREACH termitem IN facets.language ;
-                  LAST IF loop.count > 25 ;
+                  LAST IF loop.count > 250 ;
  %]
 [% IF facets.language.size > 5 && loop.count == 5 %]
 <span id="dd_language_[% database %]_toggle"></span>

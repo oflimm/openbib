@@ -686,7 +686,7 @@ sub enrich_related_records {
         my $titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
             $where_ref,
             {
-                group_by => ['dbname','isbn','tstamp','titleid','titlecache'],
+                group_by => ['dbname','isbn','location','tstamp','titleid','titlecache'],
                 result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 rows => $num,
             }
@@ -695,23 +695,26 @@ sub enrich_related_records {
         while (my $titleitem = $titles->next) {
             my $id         = $titleitem->{titleid};
             my $database   = $titleitem->{dbname};
+            my $location   = $titleitem->{location};
             my $titlecache = $titleitem->{titlecache};
             
-            next if (defined $titles_found_ref->{"$database:$id"});
+            next if (defined $titles_found_ref->{"$database:$id:$location"});
             
             my $ctime;
             my $dtime;
             if ($config->{benchmark}) {
                 $ctime=new Benchmark;
             }
-            
+
             if ($titlecache){
-                $logger->debug("Record from cache");
-                $related_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache));
+                my $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache);
+                $new_record->set_location($location);
+                $related_recordlist->add($new_record);
             }
             else {
-                $logger->debug("Record from database");
-                    $related_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record());
+                my $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record();
+                $new_record->set_location([$location]);
+                $related_recordlist->add($new_record);
             }
             
             if ($config->{benchmark}) {
@@ -720,7 +723,7 @@ sub enrich_related_records {
                     $logger->info("Zeit fuer : Bestimmung von Kurztitel-Information des Titels ist ".timestr($timeall));
             }
             
-            $titles_found_ref->{"$database:$id"} = 1;
+            $titles_found_ref->{"$database:$id:$location"} = 1;
         }
         
         if ($config->{benchmark}) {
@@ -849,7 +852,7 @@ sub enrich_similar_records_old {
         my $titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
             $where_ref,
             {
-                group_by => ['dbname','isbn','tstamp','titleid','titlecache'],
+                group_by => ['dbname','isbn','location','tstamp','titleid','titlecache'],
                 result_class => 'DBIx::Class::ResultClass::HashRefInflator',
             }
         );
@@ -857,15 +860,20 @@ sub enrich_similar_records_old {
         while (my $titleitem = $titles->next) {
             my $id         = $titleitem->{titleid};
             my $database   = $titleitem->{dbname};
+            my $location   = $titleitem->{location};
             my $titlecache = $titleitem->{titlecache};
             
             $logger->debug("Found Title with id $id in database $database");
-            
+
             if ($titlecache){
-                $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache));
+                my $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache);
+                $new_record->set_location($location);
+                $similar_recordlist->add($new_record);
             }
             else {
-                $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record());
+                my $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record();
+                $new_record->set_location([$location]);
+                $similar_recordlist->add($new_record);
             }
         }
         
@@ -1020,7 +1028,7 @@ sub enrich_similar_records {
             $where_ref,
             {
                 order_by => ['edition DESC'],
-                group_by => ['id','dbname','workkey','tstamp','titleid','titlecache'],
+                group_by => ['id','dbname','workkey','location','tstamp','titleid','titlecache'],
                 result_class => 'DBIx::Class::ResultClass::HashRefInflator',
             }
         );
@@ -1029,20 +1037,25 @@ sub enrich_similar_records {
         while (my $titleitem = $titles->next) {
             my $id         = $titleitem->{titleid};
             my $database   = $titleitem->{dbname};
+            my $location   = $titleitem->{location};
             my $titlecache = $titleitem->{titlecache};
 
-            next if (defined $have_title_ref->{"$database:$id"});
+            next if (defined $have_title_ref->{"$database:$id:$location"});
             
-            $logger->debug("Found Title with id $id in database $database");
+            $logger->debug("Found Title with location $location and id $id in database $database");
             
             if ($titlecache){
-                $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache));
+                my $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache);
+                $new_record->set_location($location);
+                $similar_recordlist->add($new_record);
             }
             else {
-                $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record());
+                my $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record();
+                $new_record->set_location([$location]);
+                $similar_recordlist->add($new_record);
             }
             
-            $have_title_ref->{"$database:$id"} = 1;
+            $have_title_ref->{"$database:$id:$location"} = 1;
         }
         
         if ($config->{benchmark}) {
@@ -1200,7 +1213,7 @@ sub enrich_same_records {
         my $same_titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
             $where_ref,
             {
-                group_by => ['titleid','dbname','isbn','tstamp','titlecache'],
+                group_by => ['titleid','dbname','location','isbn','tstamp','titlecache'],
                 result_class => 'DBIx::Class::ResultClass::HashRefInflator',
             }
         );
@@ -1214,18 +1227,23 @@ sub enrich_same_records {
         while (my $item = $same_titles->next) {
             my $id         = $item->{titleid};
             my $database   = $item->{dbname};
+            my $location   = $item->{location};
             my $titlecache = $item->{titlecache};
 
-            next if (defined $have_title_ref->{"$database:$id"});
-            
+            next if (defined $have_title_ref->{"$database:$id:$location"});
+
             if ($titlecache){
-                $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache));
+                my $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache);
+                $new_record->set_location($location);
+                $same_recordlist->add($new_record);
             }
             else {
-                $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record());
+                my $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record();
+                $new_record->set_location([$location]);
+                $same_recordlist->add($new_record);
             }
 
-            $have_title_ref->{"$database:$id"} = 1;
+            $have_title_ref->{"$database:$id:$location"} = 1;
         }
         
         if ($config->{benchmark}) {
@@ -1619,6 +1637,20 @@ sub is_full {
     my ($self)=@_;
 
     return ($self->{_type} eq "full")?1:0;
+}
+
+sub get_location {
+    my ($self)=@_;
+
+    return $self->{_location}
+}
+
+sub set_location {
+    my ($self,$location_ref)=@_;
+
+    $self->{_location} = $location_ref;
+
+    return;
 }
 
 sub get_holding {

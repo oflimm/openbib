@@ -37,6 +37,12 @@ __PACKAGE__->table("all_titles_by_bibkey");
   is_nullable: 0
   size: 255
 
+=head2 location
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 255
+
 =head2 tstamp
 
   data_type: 'timestamp'
@@ -56,6 +62,8 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 0, size => 25 },
   "titleid",
   { data_type => "varchar", is_nullable => 0, size => 255 },
+  "location",
+  { data_type => "varchar", is_nullable => 1, size => 255 },
   "tstamp",
   { data_type => "timestamp", is_nullable => 1 },
   "titlecache",
@@ -63,8 +71,8 @@ __PACKAGE__->add_columns(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2013-05-31 15:08:06
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:gFoJ/rw58HxTJ9byz7JGHA
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2016-02-25 15:01:05
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:6V01AXlR6TvLztVilgzJXA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

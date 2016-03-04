@@ -25,6 +25,15 @@ exclude:
         - inst201
         - inst503
         - nomos
+     locations:
+        - 'doab'
+        - 'DE-38-USBFB'
+        - 'bestellungen'
+        - 'printpda'
+        - 'usbebooks'
+        - 'nomos'
+        
+
   'by_isbn_in_file':
      field: '0540'
      filename: '/opt/openbib/autoconv/pools/ebookpda/exclude_isbns.txt'

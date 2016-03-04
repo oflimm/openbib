@@ -39,6 +39,7 @@ create table all_titles_by_isbn (
  isbn          VARCHAR(13)  NOT NULL,
  dbname        VARCHAR(25)  NOT NULL,
  titleid       VARCHAR(255) NOT NULL,
+ location      VARCHAR(255),
  tstamp        TIMESTAMP,
  titlecache    TEXT
 );
@@ -48,6 +49,7 @@ create table all_titles_by_issn (
  issn          VARCHAR(8)   NOT NULL,
  dbname        VARCHAR(25)  NOT NULL,
  titleid       VARCHAR(255) NOT NULL,
+ location      VARCHAR(255),
  tstamp        TIMESTAMP,
  titlecache    TEXT
 );
@@ -57,6 +59,7 @@ create table all_titles_by_bibkey (
  bibkey        VARCHAR(33) NOT NULL,
  dbname        VARCHAR(25) NOT NULL,
  titleid       VARCHAR(255) NOT NULL,
+ location      VARCHAR(255),
  tstamp        TIMESTAMP,
  titlecache    TEXT
 );
@@ -68,6 +71,7 @@ create table all_titles_by_workkey (
  edition       TEXT,
  dbname        VARCHAR(25) NOT NULL,
  titleid       VARCHAR(255) NOT NULL,
+ location      VARCHAR(255),
  titlecache    TEXT,
  tstamp        TIMESTAMP
 );

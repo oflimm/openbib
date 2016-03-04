@@ -308,6 +308,17 @@ sub process {
         }
     }
 
+    # Locations in Kategorie 4230 ablegen
+
+    foreach my $location (@$locations_ref){
+        my $mult = 1;
+        push @{$fields_ref->{'4230'}}, {
+            mult     => $mult++,
+            subfield => '',
+            content  => $location,
+        };
+    }
+    
     # Zentrale Anreicherungsdaten lokal einspielen
     if ($self->{local_enrichmnt} && (@{$enrichmnt_isbns_ref} || @{$enrichmnt_issns_ref})) {
         @{$enrichmnt_isbns_ref} =  keys %{{ map { $_ => 1 } @${enrichmnt_isbns_ref} }}; # Only unique

@@ -298,9 +298,10 @@ while ($csv->getline ($in)){
             }
             
             my $databases_ref = $exclude_ref->{databases};
+            my $locations_ref = $exclude_ref->{locations};
             
-            if ($enrichmnt->check_availability_by_isbn({isbn => \@keys, databases => $databases_ref })){
-                $logger->info("Titel mit ISBNs ".join(' ',@keys)." bereits in Datenbanken ".join(' ',@$databases_ref)." vorhanden!");
+            if ($enrichmnt->check_availability_by_isbn({isbn => \@keys, databases => $databases_ref, locations => $locations_ref })){
+                $logger->info("Titel mit ISBNs ".join(' ',@keys)." bereits in Datenbanken ".join(' ',@$databases_ref)." mit Standorten ".join(' ',@$locations_ref)." vorhanden!");
                 $excluded_titles++;
                 $skip_title = 1;
                 next;

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2016-01-26 14:34+0100\n"
+"PO-Revision-Date: 2016-02-29 11:40+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -18,15 +18,15 @@ msgstr ""
 "X-Generator: Lokalize 1.4\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../modules/OpenBib/Importer/JSON/Title.pm:343
+#: ../modules/OpenBib/Importer/JSON/Title.pm:354
 msgid " map { $_ => 1 } @${enrichmnt_data_ref} "
 msgstr ""
 
-#: ../modules/OpenBib/Importer/JSON/Title.pm:313
+#: ../modules/OpenBib/Importer/JSON/Title.pm:324
 msgid " map { $_ => 1 } @${enrichmnt_isbns_ref} "
 msgstr ""
 
-#: ../modules/OpenBib/Importer/JSON/Title.pm:314
+#: ../modules/OpenBib/Importer/JSON/Title.pm:325
 msgid " map { $_ => 1 } @${enrichmnt_issns_ref} "
 msgstr ""
 
@@ -79,8 +79,8 @@ msgstr "${category}"
 #: ../templates/_profile/kug/_database/gesiskoeln/titles_record_html_categories:295
 #: ../templates/_profile/kug/_database/gutenberg/titles_record_html_categories:313
 #: ../templates/_profile/kug/_database/gutenberg/titles_record_html_categories:344
-#: ../templates/_profile/kug/_database/inst001/titles_record_html_categories:400
-#: ../templates/_profile/kug/_database/inst001/titles_record_html_categories:434
+#: ../templates/_profile/kug/_database/inst001/titles_record_html_categories:365
+#: ../templates/_profile/kug/_database/inst001/titles_record_html_categories:399
 #: ../templates/_profile/kug/_database/islandica/titles_record_html_categories:400
 #: ../templates/_profile/kug/_database/islandica/titles_record_html_categories:434
 #: ../templates/_profile/kug/_database/jki/titles_record_html_categories:313
@@ -814,7 +814,6 @@ msgid "Abgleich zu BibSonomy"
 msgstr "Mirror to BibSonomy"
 
 #: ../templates/_profile/kug/corporate_banner:19
-#: ../templates/_profile/rheinlandbib/corporate_banner:8
 #: ../templates/_profile/sammlungen/_view/alekiddr/corporate_banner:8
 #: ../templates/_profile/sammlungen/_view/dante/corporate_banner:8
 #: ../templates/_profile/sammlungen/_view/digitalis/corporate_banner:8
@@ -1387,7 +1386,6 @@ msgstr "Create a new literature list: "
 #: ../templates/_profile/kug/corporate_banner:22
 #: ../templates/_profile/kug/login:108 ../templates/_profile/kug/login:144
 #: ../templates/_profile/kug/login:39 ../templates/_profile/kug/login:55
-#: ../templates/_profile/rheinlandbib/corporate_banner:10
 #: ../templates/_profile/sammlungen/_view/alekiddr/corporate_banner:10
 #: ../templates/_profile/sammlungen/_view/dante/corporate_banner:10
 #: ../templates/_profile/sammlungen/_view/digitalis/corporate_banner:10
@@ -2341,8 +2339,8 @@ msgstr "Description of profession"
 #: ../templates/admin_locations_html:108 ../templates/admin_locations_html:76
 #: ../templates/admin_locations_record_edit:99
 #: ../templates/admin_orgunits_html:66
-#: ../templates/admin_orgunits_record_edit:76
-#: ../templates/admin_orgunits_record_html:69
+#: ../templates/admin_orgunits_record_edit:77
+#: ../templates/admin_orgunits_record_html:70
 #: ../templates/admin_profiles_html:104 ../templates/admin_profiles_html:74
 #: ../templates/admin_profiles_record_edit:107
 #: ../templates/admin_profiles_record_edit:124
@@ -2362,7 +2360,7 @@ msgstr "Description of profession"
 #: ../templates/authenticators_html:62
 #: ../templates/authenticators_record_html:61 ../templates/clusters_html:62
 #: ../templates/clusters_record_html:61 ../templates/databases_html:92
-#: ../templates/databases_record_html:62 ../templates/locations_html:108
+#: ../templates/databases_record_html:62 ../templates/locations_html:109
 #: ../templates/orgunits_html:66 ../templates/orgunits_record_html:68
 #: ../templates/profiles_html:62 ../templates/profiles_record_html:65
 #: ../templates/profiles_record_html:75 ../templates/servers_html:64
@@ -2402,7 +2400,7 @@ msgstr "Description"
 #: ../templates/_profile/kug/_database/gutenberg/titles_record_html_categories:349
 #: ../templates/_profile/kug/_database/inst001/circulation:146
 #: ../templates/_profile/kug/_database/inst001/holding:18
-#: ../templates/_profile/kug/_database/inst001/titles_record_html_categories:439
+#: ../templates/_profile/kug/_database/inst001/titles_record_html_categories:404
 #: ../templates/_profile/kug/_database/inst302/circulation:83
 #: ../templates/_profile/kug/_database/islandica/circulation:123
 #: ../templates/_profile/kug/_database/islandica/holding:17
@@ -2473,7 +2471,7 @@ msgstr "Owning library"
 msgid "Besonderheit bei Feldern mit"
 msgstr "Characteristics of fields with"
 
-#: ../modules/OpenBib/Handler/PSGI/Users/Registrations.pm:192
+#: ../modules/OpenBib/Handler/PSGI/Users/Registrations.pm:199
 msgid "Bestaetigen Sie Ihre Registrierung"
 msgstr "Please confirm your registration"
 
@@ -3513,7 +3511,7 @@ msgstr ""
 "The selected user generated content (literature lists, tags, collection "
 "entries) is moved successfully from old to new login."
 
-#: ../modules/OpenBib/Handler/PSGI/Users/Registrations.pm:161
+#: ../modules/OpenBib/Handler/PSGI/Users/Registrations.pm:168
 msgid "Die beiden eingegebenen Passworte stimmen nicht Ã¼berein."
 msgstr "The two passwords you entered are different."
 
@@ -3602,7 +3600,7 @@ msgstr ""
 "This search form offers a variety of search fields and options. Like in the "
 "Simple Search, search engine technology is used here."
 
-#: ../modules/OpenBib/Handler/PSGI/Users/Registrations.pm:308
+#: ../modules/OpenBib/Handler/PSGI/Users/Registrations.pm:315
 msgid "Diese Registrierungs-ID existiert nicht."
 msgstr "This registration ID does not exist."
 
@@ -4099,7 +4097,7 @@ msgstr "Edit your review"
 msgid "Eigenen Review l&ouml;schen"
 msgstr "Remove your review"
 
-#: ../templates/admin_orgunits_record_edit:102
+#: ../templates/admin_orgunits_record_edit:103
 #: ../templates/admin_searchprofiles_record_edit:73
 #: ../templates/admin_views_record_edit:131
 msgid "Eigener Index"
@@ -4118,8 +4116,8 @@ msgstr "Non-default start-uri-path"
 msgid "Ein Beispiel hierfür ist %1dieser Titel%2."
 msgstr "An example is %1this title%2."
 
-#. ("$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{selfreg_loc}?action=show\">","</a>")
-#: ../modules/OpenBib/Handler/PSGI/Users/Registrations.pm:170
+#. ("$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>")
+#: ../modules/OpenBib/Handler/PSGI/Users/Registrations.pm:177
 msgid ""
 "Ein Benutzer mit dem Namen %1 existiert bereits. Haben Sie vielleicht Ihr "
 "Passwort vergessen? Dann gehen Sie bitte %2zurÃ¼ck%3 und lassen es sich "
@@ -4128,8 +4126,8 @@ msgstr ""
 "A user with the name %1 already exists. Did you perhaps forgot your "
 "password? Then go %2back%3 and let it sent by e-mail to you."
 
-#. ("$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{selfreg_loc}.html\">","</a>")
-#: ../modules/OpenBib/Handler/PSGI/Users/Registrations.pm:290
+#. ("$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>")
+#: ../modules/OpenBib/Handler/PSGI/Users/Registrations.pm:297
 msgid ""
 "Ein Benutzer mit dem Namen %1 existiert bereits. Haben Sie vielleicht Ihr "
 "Passwort vergessen? Dann gehen Sie bitte %2zurück%3 und lassen es sich "
@@ -4697,7 +4695,7 @@ msgstr "Years of publication"
 #: ../templates/_profile/kug/_database/ezb/titles_record_html_categories:269
 #: ../templates/_profile/kug/_database/gesiskoeln/titles_record_html_categories:304
 #: ../templates/_profile/kug/_database/gutenberg/titles_record_html_categories:353
-#: ../templates/_profile/kug/_database/inst001/titles_record_html_categories:443
+#: ../templates/_profile/kug/_database/inst001/titles_record_html_categories:408
 #: ../templates/_profile/kug/_database/islandica/titles_record_html_categories:443
 #: ../templates/_profile/kug/_database/jki/titles_record_html_categories:353
 #: ../templates/_profile/kug/_database/lehrbuchsmlg/titles_record_html_categories:443
@@ -5020,7 +5018,7 @@ msgstr "No fees generated."
 msgid "Es sind noch keine RSS-Feeds f&uuml;r diesen Katalog eingerichtet."
 msgstr "Right now there are no RSS-feed for this catalog."
 
-#: ../modules/OpenBib/Handler/PSGI/Users/Registrations.pm:157
+#: ../modules/OpenBib/Handler/PSGI/Users/Registrations.pm:164
 msgid ""
 "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
 msgstr "You either didn't enter a username or less than two passwords "
@@ -6065,7 +6063,7 @@ msgid "Id"
 msgstr "Id"
 
 #: ../templates/admin_locations_html:108 ../templates/admin_locations_html:71
-#: ../templates/admin_locations_record_edit:94 ../templates/locations_html:108
+#: ../templates/admin_locations_record_edit:94 ../templates/locations_html:109
 msgid "Identifier"
 msgstr "Identifier"
 
@@ -7026,7 +7024,7 @@ msgstr "Inventory number"
 #: ../templates/_profile/kug/_database/ezb/titles_record_html_categories:268
 #: ../templates/_profile/kug/_database/gesiskoeln/titles_record_html_categories:303
 #: ../templates/_profile/kug/_database/gutenberg/titles_record_html_categories:352
-#: ../templates/_profile/kug/_database/inst001/titles_record_html_categories:442
+#: ../templates/_profile/kug/_database/inst001/titles_record_html_categories:407
 #: ../templates/_profile/kug/_database/islandica/titles_record_html_categories:442
 #: ../templates/_profile/kug/_database/jki/titles_record_html_categories:352
 #: ../templates/_profile/kug/_database/lehrbuchsmlg/titles_record_html_categories:442
@@ -7143,7 +7141,7 @@ msgstr "JSON cannot be parsed"
 #: ../templates/admin_databases_rss_record_html:90
 #: ../templates/admin_locations_record_delete_confirm:66
 #: ../templates/admin_orgunits_record_delete_confirm:68
-#: ../templates/admin_orgunits_record_edit:104
+#: ../templates/admin_orgunits_record_edit:105
 #: ../templates/admin_profiles_record_delete_confirm:66
 #: ../templates/admin_roles_record_html:103
 #: ../templates/admin_roles_record_html:104
@@ -7571,7 +7569,7 @@ msgstr "Catalog profile"
 msgid "Katalogauswahl"
 msgstr "Choice of catalogs"
 
-#: ../templates/admin_orgunits_record_edit:89
+#: ../templates/admin_orgunits_record_edit:90
 msgid "Katalogauswahl der Organisationseinheit"
 msgstr "Choice of catalogs for this organizational unit"
 
@@ -7598,7 +7596,7 @@ msgstr "Choice of catalogs for this view"
 #: ../templates/admin_databases_updates_html:39
 #: ../templates/admin_navigation:77 ../templates/admin_navigation:79
 #: ../templates/admin_orgunits_html:66
-#: ../templates/admin_orgunits_record_edit:92
+#: ../templates/admin_orgunits_record_edit:93
 #: ../templates/admin_profiles_record_edit:124
 #: ../templates/admin_profiles_record_html:79
 #: ../templates/admin_searchprofiles_record_edit:81
@@ -8715,7 +8713,7 @@ msgstr "Local"
 #: ../templates/_profile/kug/_database/ezb/titles_record_html_categories:267
 #: ../templates/_profile/kug/_database/gesiskoeln/titles_record_html_categories:302
 #: ../templates/_profile/kug/_database/gutenberg/titles_record_html_categories:351
-#: ../templates/_profile/kug/_database/inst001/titles_record_html_categories:441
+#: ../templates/_profile/kug/_database/inst001/titles_record_html_categories:406
 #: ../templates/_profile/kug/_database/islandica/titles_record_html_categories:441
 #: ../templates/_profile/kug/_database/jki/titles_record_html_categories:351
 #: ../templates/_profile/kug/_database/lehrbuchsmlg/titles_record_html_categories:441
@@ -8790,7 +8788,7 @@ msgstr "Go"
 #: ../templates/admin_databases_rss_record_edit:109
 #: ../templates/admin_databases_rss_record_html:351
 #: ../templates/admin_locations_record_edit:161
-#: ../templates/admin_orgunits_record_edit:115
+#: ../templates/admin_orgunits_record_edit:116
 #: ../templates/admin_profiles_record_edit:83
 #: ../templates/admin_roles_record_edit:110
 #: ../templates/admin_roles_record_html:99
@@ -9118,7 +9116,6 @@ msgstr "My KUG"
 msgid "Mein OpenBib"
 msgstr "My OpenBib"
 
-#: ../templates/_profile/rheinlandbib/corporate_banner:7
 #: ../templates/_profile/sammlungen/_view/alekiddr/corporate_banner:7
 #: ../templates/_profile/sammlungen/_view/dante/corporate_banner:7
 #: ../templates/_profile/sammlungen/_view/digitalis/corporate_banner:7
@@ -9401,7 +9398,7 @@ msgstr "Surname"
 #: ../templates/_view/richter/cartitems_html_actions:38
 #: ../templates/_view/richter/cartitems_html_actions:55
 #: ../templates/admin_orgunits_html:66
-#: ../templates/admin_orgunits_record_html:65
+#: ../templates/admin_orgunits_record_html:66
 #: ../templates/admin_profiles_record_edit:124
 #: ../templates/admin_profiles_record_html:79 ../templates/admin_roles_html:67
 #: ../templates/admin_roles_html:96 ../templates/admin_roles_record_edit:72
@@ -9525,7 +9522,7 @@ msgstr ""
 #: ../templates/admin_databases_rss_record_html:84
 #: ../templates/admin_locations_record_delete_confirm:72
 #: ../templates/admin_orgunits_record_delete_confirm:74
-#: ../templates/admin_orgunits_record_edit:105
+#: ../templates/admin_orgunits_record_edit:106
 #: ../templates/admin_profiles_record_delete_confirm:72
 #: ../templates/admin_roles_record_html:103
 #: ../templates/admin_roles_record_html:104
@@ -9867,8 +9864,8 @@ msgid "Notations-Datei"
 msgstr "Classification-File"
 
 #: ../templates/admin_orgunits_html:66
-#: ../templates/admin_orgunits_record_edit:81
-#: ../templates/admin_orgunits_record_html:73
+#: ../templates/admin_orgunits_record_edit:82
+#: ../templates/admin_orgunits_record_html:74
 #: ../templates/admin_profiles_record_html:79 ../templates/orgunits_html:66
 msgid "Nr"
 msgstr "Number"
@@ -10034,12 +10031,12 @@ msgstr "OpenBib versions"
 msgid "Ordnen Sie Ihre Literaturliste thematisch ein"
 msgstr "Classify you literature list thematically"
 
-#: ../templates/admin_orgunits_record_edit:71
-#: ../templates/admin_orgunits_record_html:61
+#: ../templates/admin_orgunits_record_edit:72
+#: ../templates/admin_orgunits_record_html:62
 msgid "Organisationseinheit"
 msgstr "Organizational unit"
 
-#: ../templates/admin_orgunits_record_edit:68
+#: ../templates/admin_orgunits_record_edit:69
 msgid "Organisationseinheit bearbeiten"
 msgstr "Edit organizational unit"
 
@@ -11502,7 +11499,7 @@ msgstr ""
 "Because this version of OpenBib is continously extended error messages are "
 "quite possible."
 
-#: ../modules/OpenBib/Handler/PSGI.pm:767
+#: ../modules/OpenBib/Handler/PSGI.pm:768
 msgid "Sie greifen auf eine nicht autorisierte Session zu"
 msgstr "You are accessing an unauthorized session"
 
@@ -11518,8 +11515,8 @@ msgstr "This medium is already ordered by you"
 msgid "Sie haben dieses Medium bereits vorgemerkt"
 msgstr "This medium is already reserved for you"
 
-#. ("<a href=\"$path_prefix/$config->{selfreg_loc}?action=show\">","</a>")
-#: ../modules/OpenBib/Handler/PSGI/Users/Registrations.pm:182
+#. ("<a href=\"$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>")
+#: ../modules/OpenBib/Handler/PSGI/Users/Registrations.pm:189
 msgid ""
 "Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte %1zurÃ¼ck%2 und "
 "versuchen Sie es erneut."
@@ -11585,8 +11582,8 @@ msgstr "You didn't select a title."
 msgid "Sie haben keine Vormerkungen getätigt."
 msgstr "No reservations available."
 
-#. ("<a href=\"$path_prefix/$config->{selfreg_loc}?action=show\">","</a>")
-#: ../modules/OpenBib/Handler/PSGI/Users/Registrations.pm:166
+#. ("<a href=\"$path_prefix/$config->{users_loc}/$config->{registrations_loc}\">","</a>")
+#: ../modules/OpenBib/Handler/PSGI/Users/Registrations.pm:173
 msgid ""
 "Sie haben keine gÃ¼tige Mailadresse eingegeben. Gehen Sie bitte %1zurÃ¼ck%2 "
 "und korrigieren Sie Ihre Eingabe"
@@ -12288,7 +12285,7 @@ msgstr "Location"
 #: ../templates/_profile/kug/_database/ezb/titles_record_html_categories:266
 #: ../templates/_profile/kug/_database/gesiskoeln/titles_record_html_categories:301
 #: ../templates/_profile/kug/_database/gutenberg/titles_record_html_categories:350
-#: ../templates/_profile/kug/_database/inst001/titles_record_html_categories:440
+#: ../templates/_profile/kug/_database/inst001/titles_record_html_categories:405
 #: ../templates/_profile/kug/_database/islandica/titles_record_html_categories:440
 #: ../templates/_profile/kug/_database/jki/titles_record_html_categories:350
 #: ../templates/_profile/kug/_database/lehrbuchsmlg/titles_record_html_categories:440
@@ -12333,7 +12330,7 @@ msgstr "Book Location"
 #: ../templates/admin_locations_record_edit:39
 #: ../templates/admin_locations_record_html:39
 #: ../templates/admin_navigation:59 ../templates/admin_navigation:61
-#: ../templates/locations_html:41 ../templates/locations_html:63
+#: ../templates/locations_html:41 ../templates/locations_html:64
 #: ../templates/locations_record_html:38
 msgid "Standorte"
 msgstr "Locations"
@@ -18829,6 +18826,12 @@ msgstr "title in this catalog is connected to this corporate body"
 msgid "Titel ist in diesem Katalog mit der Person verknüpft"
 msgstr "title in this catalog is connected to this person"
 
+#: ../templates/titles_record_same_records_html:63
+msgid ""
+"Titel mit der ISBN dieses Titels sind auch an folgenden Standorten vorhanden"
+msgstr ""
+"Titles with this ISBN are also available at the following other locations"
+
 #: ../templates/_profile/usbportal/titles_record_include:107
 msgid ""
 "Titel mit der ISBN dieses Titels sind auch in folgenden anderen KUG-"
@@ -18840,7 +18843,6 @@ msgstr "Titles with this ISBN are also available in the following KUG-catalogs"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:369
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:359
 #: ../templates/titles_record_include:272
-#: ../templates/titles_record_same_records_html:63
 #: ../templates/titles_record_same_records_include:6
 msgid ""
 "Titel mit der ISBN dieses Titels sind auch in folgenden anderen Katalogen "
@@ -19139,7 +19141,7 @@ msgstr "Tutorials to specific subjects:"
 #: ../templates/authenticators_html:62
 #: ../templates/authenticators_record_html:62
 #: ../templates/cartitems_html_actions:105
-#: ../templates/cartitems_html_actions:68 ../templates/locations_html:108
+#: ../templates/cartitems_html_actions:68 ../templates/locations_html:109
 msgid "Typ"
 msgstr "Type"
 
@@ -20482,6 +20484,22 @@ msgstr "Temporary name"
 msgid "Zu Ihrer Suchanfrage konnten keine Treffer gefunden werden."
 msgstr "No titles available for your search request"
 
+#: ../templates/titles_record_similar_records_include:6
+msgid ""
+"Zu diesem Titel existieren andere Ausgaben (andere Sprache, andere Auflage "
+"usw.) an folgenden Standorten"
+msgstr ""
+"For this title other manifestations (other language, other "
+"edition, ...) exist at the following locations"
+
+#: ../templates/titles_record_similar_records_html:63
+msgid ""
+"Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere "
+"Auflage usw.) an den Standorten"
+msgstr ""
+"For this title the following other manifestations (other language, other "
+"edition, ...) exist at the locations"
+
 #: ../templates/_profile/usbportal/titles_record_include:133
 msgid ""
 "Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere "
@@ -20494,8 +20512,6 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:383
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:373
 #: ../templates/titles_record_include:287
-#: ../templates/titles_record_similar_records_html:63
-#: ../templates/titles_record_similar_records_include:6
 msgid ""
 "Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere "
 "Auflage usw.) in den Katalogen"
@@ -21628,7 +21644,7 @@ msgstr "repeated"
 #: ../templates/admin_databases_rss_record_html:351
 #: ../templates/admin_databases_rss_record_html:95
 #: ../templates/admin_locations_record_edit:157
-#: ../templates/admin_orgunits_record_edit:111
+#: ../templates/admin_orgunits_record_edit:112
 #: ../templates/admin_profiles_record_edit:78
 #: ../templates/admin_roles_record_edit:106
 #: ../templates/admin_roles_record_html:99

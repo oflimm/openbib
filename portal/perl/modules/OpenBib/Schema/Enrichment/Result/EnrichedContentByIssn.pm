@@ -37,9 +37,8 @@ __PACKAGE__->table("enriched_content_by_issn");
 
 =head2 subfield
 
-  data_type: 'varchar'
+  data_type: 'smallint'
   is_nullable: 1
-  size: 2
 
 =head2 content
 
@@ -56,14 +55,14 @@ __PACKAGE__->add_columns(
   "field",
   { data_type => "smallint", is_nullable => 0 },
   "subfield",
-  { data_type => "varchar", is_nullable => 1, size => 2 },
+  { data_type => "smallint", is_nullable => 1 },
   "content",
   { data_type => "text", is_nullable => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2013-05-31 15:08:06
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2ZJNJ57L2SsI9955eebqDQ
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2016-02-25 15:01:05
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:VM+7va/4FiX3Yln5jcSR6Q
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

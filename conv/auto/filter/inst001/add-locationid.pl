@@ -302,11 +302,6 @@ while (<>){
         my $mult = 1;
         foreach my $locationid (uniq @{$title_locationid{$titleid}}){
             push @{$title_ref->{'locations'}}, $locationid;
-            push @{$title_ref->{'fields'}{'4230'}}, {
-                content  => $locationid,
-                mult     => $mult++,
-                subfield => '',
-            };
         }
 
 #        print LOGGING "$titleid:",join(';',uniq @{$title_locationid{$titleid}}),"\n";

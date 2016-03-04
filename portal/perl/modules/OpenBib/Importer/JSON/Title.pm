@@ -675,7 +675,7 @@ sub process {
                         supplement => $supplement,
                     }) if (exists $self->{conv_config}{listitemcat}{$field});
                     
-                    push @personcorporatebody, $mainentry;
+                    push @personcorporatebody, $mainentry  unless ($field eq "4308");
                     
 #                    if (exists $inverted_ref->{$field}->{index}) {
                     push @person, $personid;
@@ -739,7 +739,7 @@ sub process {
                         supplement => $supplement,
                     }) if (exists $self->{conv_config}{listitemcat}{$field});
                     
-                    push @personcorporatebody, $mainentry;
+                    push @personcorporatebody, $mainentry unless ($field eq "4307");
                     
 #                    if (exists $inverted_ref->{$field}->{index}) {                    
                         push @corporatebody, $corporatebodyid;

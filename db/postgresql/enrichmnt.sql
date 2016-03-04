@@ -76,6 +76,15 @@ create table all_titles_by_workkey (
  tstamp        TIMESTAMP
 );
 
+drop table IF EXISTS all_titles_by_location;
+create table all_titles_by_location (
+ location      VARCHAR(255) NOT NULL,
+ dbname        VARCHAR(25) NOT NULL,
+ titleid       VARCHAR(255) NOT NULL,
+ tstamp        TIMESTAMP,
+ titlecache    TEXT
+);
+
 -- ISBN's belonging to the same WORK (eg. ThingISBN) --
 drop table IF EXISTS work_by_isbn;
 create table work_by_isbn (

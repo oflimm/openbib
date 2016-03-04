@@ -40,6 +40,12 @@ CREATE INDEX alltitlesbibkey_titleid ON all_titles_by_bibkey (titleid);
 
 -------------------------------------------------
 
+CREATE INDEX alltitleslocation_location ON all_titles_by_location (location);
+CREATE INDEX alltitleslocation_dbname ON all_titles_by_location (dbname);
+CREATE INDEX alltitleslocation_titleid ON all_titles_by_location (titleid);
+
+-------------------------------------------------
+
 ALTER TABLE all_titles_by_workkey ADD PRIMARY KEY (id);
 CREATE INDEX alltitlesworkkey_workkey ON all_titles_by_workkey (workkey);
 CREATE INDEX alltitlessworkkey_dbname ON all_titles_by_workkey (dbname);

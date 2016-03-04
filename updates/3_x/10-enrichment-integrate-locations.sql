@@ -87,3 +87,16 @@ CREATE INDEX alltitlessworkkey_dbname ON all_titles_by_workkey (dbname);
 CREATE INDEX alltitlessworkkey_titleid ON all_titles_by_workkey (titleid);
 CREATE INDEX alltitlessworkkey_location ON all_titles_by_workkey (location);
 CREATE INDEX alltitlessworkkey_edition ON all_titles_by_workkey (edition);
+
+drop table IF EXISTS all_titles_by_location;
+create table all_titles_by_location (
+ location      VARCHAR(255) NOT NULL,
+ dbname        VARCHAR(25) NOT NULL,
+ titleid       VARCHAR(255) NOT NULL,
+ tstamp        TIMESTAMP,
+ titlecache    TEXT
+);
+
+CREATE INDEX alltitleslocation_location ON all_titles_by_location (location);
+CREATE INDEX alltitleslocation_dbname ON all_titles_by_location (dbname);
+CREATE INDEX alltitleslocation_titleid ON all_titles_by_location (titleid);

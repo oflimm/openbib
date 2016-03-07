@@ -538,10 +538,13 @@ sub enrich_related_records {
         ? $arg_ref->{profilename}        : '';
     
     my $viewname = exists $arg_ref->{viewname}
-        ? $arg_ref->{viewname}        : '';
+        ? $arg_ref->{viewname}           : '';
+
+    my $blacklisted_location_ref = exists $arg_ref->{blacklisted_location}
+        ? $arg_ref->{blacklisted_location} : {};
 
     my $num      = exists $arg_ref->{num}
-        ? $arg_ref->{num}             : 20;
+        ? $arg_ref->{num}                : 20;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -697,6 +700,8 @@ sub enrich_related_records {
             my $database   = $titleitem->{dbname};
             my $location   = $titleitem->{location};
             my $titlecache = $titleitem->{titlecache};
+
+            next if (defined $blacklisted_location_ref->{$location});
             
             next if (defined $titles_found_ref->{"$database:$id:$location"});
             

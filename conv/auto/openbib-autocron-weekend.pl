@@ -267,10 +267,10 @@ sub threadA {
     
     ##############################
 
-    $logger->info("### Externe Katalog");
+    $logger->info("### Externe Katalog (OER, OAI, usw.)");
 
 #autoconvert({ sync => 1, databases => ['openlibrary','gutenberg','wikisource_de'] });
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['gutenberg'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['doab','elis','gallica','gdz','gresham_oer','hathitrust','gutenberg','intechopen','khanacademy','khanacademy_de','loc','loviscach_oer','mitocw_oer','nptelhrd_oer','stanford_oer','ucberkeley_oer','ucla_oer','yale_oer','zvdd'] });
 
     $logger->info("### Sammlungen aus dem Universitaet");
     
@@ -293,13 +293,13 @@ sub threadB {
     
     $logger->info("### Aufgesplittete Teil-Kataloge aus USB Katalog");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['lehrbuchsmlg','rheinabt','edz','lesesaal', 'usbhwa', 'dissertationen'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['provenienzen','lehrbuchsmlg','rheinabt','edz','lesesaal', 'usbhwa','usbsab', 'dissertationen'] });
     
     ##############################
     
     $logger->info("### Aufgesplittete Sammlungen aus dem USB Katalog");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['afrikaans','alff','baeumker','becker','dante','digitalis','dirksen','evang','fichte','gabel','gruen','gymnasialbibliothek','islandica','kbg','kempis','kroh','lefort','loeffler','mukluweit','modernedtlit','modernelyrik','nevissen','oidtman','ostasiatica','quint','schia','schirmer','schmalenbach','schneider','syndikatsbibliothek','thorbecke','tietz','tillich','vormweg','wallraf','weinkauff','westerholt','wolff'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['afrikaans','alff','artmann','auslaender','baenfer','baeumker','becker','benelux','bers','conrady','dante','digitalis','dirksen','englaender','evang','fichte','gabel','gruen','gymnasialbibliothek','herbschneider','herterich','hilferding','hinck','hochschulschriften','islandica','kbg','kempis','kroh','lefort','loeffler','mukluweit','modernedtlit','modernelyrik','nevissen','oidtman','ostasiatica','quint','schia','schirmer','schmalenbach','schneider','schmitzotto','scholle','syndikatsbibliothek','thorbecke','tietz','tillich','vormweg','wallraf','weinkauff','westerholt','wolff'] });
 
     return $thread_description;
 }
@@ -399,13 +399,13 @@ sub threadC {
 
     $logger->info("### Sonstige Master-Institutskataloge");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst622master'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst622master','inst401master'] });
 
     ##############################
     
     $logger->info("### Aufgesplittete sonstige Master-Institutskataloge");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst622'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst622','inst401'] });
 
     ##############################
 

@@ -132,6 +132,8 @@ my $blacklist_ref = {
     'inst448master' => 1,
     'inst429' => 1,
     'inst448' => 1,
+    'inst401' => 1,
+    'inst401master' => 1,
     'inst622' => 1,
     'inst622master' => 1,
     'lehrbuchsmlg' => 1,
@@ -377,13 +379,13 @@ sub threadC {
 
     $logger->info("### Sonstige Master-Institutskataloge");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst622master'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst622master','inst401master'] });
 
     ##############################
     
     $logger->info("### Aufgesplittete sonstige Master-Institutskataloge");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst622'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst622','inst401'] });
 
     ##############################
 

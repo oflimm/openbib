@@ -540,8 +540,8 @@ sub enrich_related_records {
     my $viewname = exists $arg_ref->{viewname}
         ? $arg_ref->{viewname}           : '';
 
-    my $blacklisted_location_ref = exists $arg_ref->{blacklisted_location}
-        ? $arg_ref->{blacklisted_location} : {};
+    my $blacklisted_locations_ref = exists $arg_ref->{blacklisted_locations}
+        ? $arg_ref->{blacklisted_locations} : [];
 
     my $num      = exists $arg_ref->{num}
         ? $arg_ref->{num}                : 20;
@@ -685,6 +685,11 @@ sub enrich_related_records {
                 dbname => \@filter_databases,
             };
         }
+
+        if (@$blacklisted_locations_ref){
+            $where_ref->{location} = { -not_in => @$blacklisted_locations_ref
+            };
+        }       
         
         my $titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
             $where_ref,
@@ -701,8 +706,6 @@ sub enrich_related_records {
             my $location   = $titleitem->{location};
             my $titlecache = $titleitem->{titlecache};
 
-            next if (defined $blacklisted_location_ref->{$location});
-            
             next if (defined $titles_found_ref->{"$database:$id:$location"});
             
             my $ctime;

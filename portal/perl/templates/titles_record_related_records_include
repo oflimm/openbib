@@ -1,8 +1,8 @@
 [%
 
-   blacklisted_location = { 'DE-38-USBFB' => 1 };
+   blacklisted_locations = [ 'DE-38-USBFB' ];
 
-   related_records = record.enrich_related_records({ viewname => view, blacklisted_location => blacklisted_location }).get_related_records ;
+   related_records = record.enrich_related_records({ viewname => view, blacklisted_locations => blacklisted_locations }).get_related_records ;
  
    IF related_records.get_size > 0 %]
 <ul>

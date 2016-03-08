@@ -57,7 +57,9 @@
 
 [%
 
-   similar_records = record.enrich_similar_records({ viewname => view }).get_similar_records ;
+   blacklisted_locations = [ 'DE-38-USBFB' ];
+
+   similar_records = record.enrich_similar_records({ viewname => view, blacklisted_locations => blacklisted_locations  }).get_similar_records ;
 
    IF similar_records.get_size > 0 %]
 <h2>[% msg.maketext("Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere Auflage usw.) an den Standorten") %]</h2>

@@ -1,6 +1,8 @@
 [%-
 
-related_records = record.enrich_related_records({ viewname => view }).get_related_records ;
+blacklisted_locations = [ 'DE-38-USBFB' ];
+
+related_records = record.enrich_related_records({ viewname => view, blacklisted_locations => blacklisted_locations }).get_related_records ;
 
 related_records_output = [];
 

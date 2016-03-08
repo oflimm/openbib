@@ -1,6 +1,8 @@
 [%-
 
-similar_records = record.enrich_similar_records({ viewname => view }).get_similar_records ;
+blacklisted_locations = [ 'DE-38-USBFB' ];
+
+similar_records = record.enrich_similar_records({ viewname => view, blacklisted_locations => blacklisted_locations  }).get_similar_records ;
 
 similar_records_output = [];
 

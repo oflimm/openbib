@@ -4,7 +4,7 @@
 #
 #  Titel
 #
-#  Dieses File ist (C) 2007-2015 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2016 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -912,6 +912,9 @@ sub enrich_similar_records {
     my $viewname = exists $arg_ref->{viewname}
         ? $arg_ref->{viewname}        : '';
 
+    my $blacklisted_locations_ref = exists $arg_ref->{blacklisted_locations}
+        ? $arg_ref->{blacklisted_locations} : [];
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
@@ -1031,6 +1034,11 @@ sub enrich_similar_records {
                 dbname     => \@filter_databases,
             };
         }
+
+        if (@$blacklisted_locations_ref){
+            $where_ref->{location} = { -not_in => @$blacklisted_locations_ref
+            };
+        }       
         
         my $titles = $self->{enrich_schema}->resultset('AllTitleByWorkkey')->search_rs(
             $where_ref,
@@ -1102,6 +1110,9 @@ sub enrich_same_records {
     my $viewname = exists $arg_ref->{viewname}
         ? $arg_ref->{viewname}        : '';
 
+    my $blacklisted_locations_ref = exists $arg_ref->{blacklisted_locations}
+        ? $arg_ref->{blacklisted_locations} : [];
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
@@ -1216,6 +1227,11 @@ sub enrich_same_records {
                 ]
             };
         }
+
+        if (@$blacklisted_locations_ref){
+            $where_ref->{location} = { -not_in => @$blacklisted_locations_ref
+            };
+        }       
         
         # DBI: "select distinct id,dbname from all_isbn where isbn=? and dbname != ? and id != ?";
         my $same_titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(

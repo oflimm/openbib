@@ -37,6 +37,7 @@ FOREACH same_record IN same_records.sort({order = 'asc', type = 'title'}).get_re
               href = "${scheme}://${servername}${path_prefix}/${config.get('locations_loc')}/id/${item_location}.json"
         }
         id = item_location            
+        description = locinfo.get('identifier').${item_location}.description  
     };
   END;
 

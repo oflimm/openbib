@@ -29,17 +29,17 @@ FOREACH related_record IN related_records.sort({order = 'asc', type = 'title'}).
       fields = item      
   };
 
-  item_location = related_record.get_location;
+  item_location = related_record.get_locations.first;
 
   IF item_location ;
-    thisrecord.database.location = {
+    thisrecord.locations = [{
         link = {
               rel = 'self'
               href = "${scheme}://${servername}${path_prefix}/${config.get('locations_loc')}/id/${item_location}.json"
         }
         id = item_location
         description = locinfo.get('identifier').${item_location}.description  
-    };
+    }];
   END;
 
   related_records_output.push(thisrecord);

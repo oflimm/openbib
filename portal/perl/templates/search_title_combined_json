@@ -45,18 +45,32 @@
                       fields   = record.get_fields
       };
 
-      locationid = dbinfo.get('locationid').${record.database};
+      item_locations = record.get_locations;
 
-      IF locationid ;
-        thisrecord.database.location = {
-            link = {
-                    rel = 'self'
-                    href = "${scheme}://${servername}${path_prefix}/${config.get('locations_loc')}/id/${locationid}.json"
-            }
-            id = dbinfo.get('locationid').${record.database}
-            
-        };
+      IF NOT item_locations;
+         item_locations = [ dbinfo.get('locationid').${record.database} ];
       END;
+
+      blacklisted_locations = { 'DE-38-USBFB' => 1 };
+
+      item_locations_out = [];
+
+      FOREACH item_location IN item_locations ;
+         NEXT IF blacklisted_locations.${item_location}.defined ;
+
+           this_item_location = {
+             link = {
+                 rel = 'self'
+                 href = "${scheme}://${servername}${path_prefix}/${config.get('locations_loc')}/id/${item_location}.json"
+            }
+           id = item_location 
+           description = locinfo.get('identifier').${item_location}.description  
+        };
+
+        item_locations_out.push(this_item_location); 
+      END;
+
+      thisrecord.locations = item_locations_out;
 
       records.push(thisrecord);
    END ;

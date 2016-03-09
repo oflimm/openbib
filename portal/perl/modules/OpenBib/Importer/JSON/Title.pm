@@ -225,6 +225,10 @@ sub process {
     # Initialisieren und Basisinformationen setzen
     my $index_doc = OpenBib::Index::Document->new({ database => $self->{database}, id => $id, locations => $locations_ref });
 
+    # Locations abspeichern
+
+    $index_doc->add_data("locations",$locations_ref);
+
     # Popularitaet, Tags und Literaturlisten verarbeiten fuer Index-Data
     {
         if (exists $self->{storage}{listitemdata_popularity}{$id}) {

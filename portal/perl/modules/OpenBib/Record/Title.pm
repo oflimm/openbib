@@ -227,6 +227,14 @@ sub load_full_record {
 
     $logger->debug("Setting data from Backend");
     
+    # Location aus 4230 setzen    
+    my $locations_ref = [];
+
+    foreach my $item_ref (@{$fields->{'T4230'}}){
+	push @{$locations_ref}, $item_ref->{content};
+    }
+
+    $self->set_locations($locations_ref);
     $self->set_fields($fields);
     $self->set_holding($holdings);
     $self->set_same_records($same_records);
@@ -300,6 +308,14 @@ sub load_brief_record {
     $fields_ref->{id      } = $id;
     $fields_ref->{database} = $self->{database};
 
+    # Location aus 4230 setzen
+    
+    my $locations_ref = [];
+
+    foreach my $item_ref (@{$fields_ref->{'T4230'}}){
+	push @{$locations_ref}, $item_ref->{content};
+    }
+
     if ($config->{benchmark}) {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);
@@ -311,7 +327,7 @@ sub load_brief_record {
         $logger->debug(YAML::Dump($fields_ref));
     }
 
-    ($self->{_fields},$self->{_exists},$self->{_type})=($fields_ref,$record_exists,'brief');
+    ($self->{_fields},$self->{_locations},$self->{_exists},$self->{_type})=($fields_ref,$locations_ref,$record_exists,'brief');
 
     return $self;
 }
@@ -714,16 +730,17 @@ sub enrich_related_records {
                 $ctime=new Benchmark;
             }
 
+	    my $new_record;
+
             if ($titlecache){
-                my $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache);
-                $new_record->set_location($location);
-                $related_recordlist->add($new_record);
+                $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache);
             }
             else {
-                my $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record();
-                $new_record->set_location([$location]);
-                $related_recordlist->add($new_record);
+                $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record();
             }
+	    
+	    $new_record->set_locations([$location]);
+	    $related_recordlist->add($new_record);
             
             if ($config->{benchmark}) {
                 $dtime=new Benchmark;
@@ -873,16 +890,18 @@ sub enrich_similar_records_old {
             
             $logger->debug("Found Title with id $id in database $database");
 
+	    my $new_record;
+
             if ($titlecache){
-                my $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache);
-                $new_record->set_location($location);
-                $similar_recordlist->add($new_record);
+                $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache);
             }
             else {
-                my $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record();
-                $new_record->set_location([$location]);
-                $similar_recordlist->add($new_record);
+                $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record();
             }
+	    
+	    $new_record->set_locations([$location]);
+	    $similar_recordlist->add($new_record);
+	    
         }
         
         if ($config->{benchmark}) {
@@ -1060,17 +1079,18 @@ sub enrich_similar_records {
             
             $logger->debug("Found Title with location $location and id $id in database $database");
             
+	    my $new_record;
+
             if ($titlecache){
-                my $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache);
-                $new_record->set_location($location);
-                $similar_recordlist->add($new_record);
+                $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache);
             }
             else {
-                my $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record();
-                $new_record->set_location([$location]);
-                $similar_recordlist->add($new_record);
+                $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record();
             }
             
+	    $new_record->set_locations([$location]);
+	    $similar_recordlist->add($new_record);
+
             $have_title_ref->{"$database:$id:$location"} = 1;
         }
         
@@ -1256,16 +1276,17 @@ sub enrich_same_records {
 
             next if (defined $have_title_ref->{"$database:$id:$location"});
 
+	    my $new_record;
+
             if ($titlecache){
-                my $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache);
-                $new_record->set_location($location);
-                $same_recordlist->add($new_record);
+                $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache);
             }
             else {
-                my $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record();
-                $new_record->set_location([$location]);
-                $same_recordlist->add($new_record);
+                $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record();
             }
+
+	    $new_record->set_locations([$location]);
+	    $same_recordlist->add($new_record);
 
             $have_title_ref->{"$database:$id:$location"} = 1;
         }
@@ -1663,18 +1684,26 @@ sub is_full {
     return ($self->{_type} eq "full")?1:0;
 }
 
-sub get_location {
+sub get_locations {
     my ($self)=@_;
 
-    return $self->{_location}
+    return $self->{_locations}
 }
 
-sub set_location {
+sub set_locations {
     my ($self,$location_ref)=@_;
 
-    $self->{_location} = $location_ref;
+    $self->{_locations} = $location_ref;
 
     return;
+}
+
+sub add_location {
+    my ($self,$location)=@_;
+
+    push @{$self->{_locations}}, $location;
+
+    return $self;
 }
 
 sub get_holding {
@@ -1795,6 +1824,11 @@ sub set_fields_from_storable {
 
     if ($logger->is_debug){
         $logger->debug("Got :".YAML::Dump($storable_ref));
+    }
+
+    if (defined $storable_ref->{locations}){
+	$self->{_locations} = $storable_ref->{locations};
+	delete $storable_ref->{locations};
     }
     
     $self->{_fields} = $storable_ref;

@@ -28,6 +28,18 @@ FOREACH same_record IN same_records.sort({order = 'asc', type = 'title'}).get_re
       fields = item      
   };
 
+  item_location = same_record.get_location;
+
+  IF item_location ;
+    thisrecord.database.location = {
+        link = {
+              rel = 'self'
+              href = "${scheme}://${servername}${path_prefix}/${config.get('locations_loc')}/id/${item_location}.json"
+        }
+        id = item_location            
+    };
+  END;
+
   same_records_output.push(thisrecord);
 END ;
 

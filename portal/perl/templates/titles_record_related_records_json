@@ -8,6 +8,7 @@ related_records_output = [];
 
 FOREACH related_record IN related_records.sort({order = 'asc', type = 'title'}).get_records ;
   item = related_record.get_fields ;
+
   item.delete('id','database');
 
   thisdatabase = related_record.database;
@@ -27,6 +28,18 @@ FOREACH related_record IN related_records.sort({order = 'asc', type = 'title'}).
       }
       fields = item      
   };
+
+  item_location = related_record.get_location;
+
+  IF item_location ;
+    thisrecord.database.location = {
+        link = {
+              rel = 'self'
+              href = "${scheme}://${servername}${path_prefix}/${config.get('locations_loc')}/id/${item_location}.json"
+        }
+        id = item_location            
+    };
+  END;
 
   related_records_output.push(thisrecord);
 END ;

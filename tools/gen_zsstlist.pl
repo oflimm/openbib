@@ -6,7 +6,7 @@
 #
 #  Extrahieren der Zeitschriftenliste eines Instituts
 #
-#  Dieses File ist (C) 2006-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2016 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -56,13 +56,15 @@ if ($#ARGV < 0){
     print_help();
 }
 
-my ($help,$sigel,$showall,$mode,$enrichnatfile);
+my ($help,$sigel,$showall,$mode,$enrichnatfile,$bibsort,$marksort);
 
 &GetOptions(
-	    "help"    => \$help,
-	    "sigel=s" => \$sigel,
-	    "mode=s"  => \$mode,
-	    "showall" => \$showall,
+	    "help"     => \$help,
+	    "sigel=s"  => \$sigel,
+	    "mode=s"   => \$mode,
+	    "showall"  => \$showall,
+            "bibsort"  => \$bibsort,
+            "marksort" => \$marksort,
             "enrichnatfile=s" => \$enrichnatfile,
 	    );
 
@@ -316,40 +318,80 @@ $template->process("zsstlist_$mode", $ttdata) || do {
 };
 
 
-# Sortierung nach Urheber, dann Titel
+if ($bibsort){
+    # Sortierung nach Urheber, dann Titel
+    
+    @sortedrecordlist = sort by_sortfield @recordlist;
+    
+    $outputbasename.="-bibsort";
+    
+    my $template = Template->new({
+        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+            INCLUDE_PATH   => $config->{tt_include_path},
+            ABSOLUTE       => 1,
+        }) ],
+        #        INCLUDE_PATH   => $config->{tt_include_path},
+        #        ABSOLUTE       => 1,
+        OUTPUT_PATH   => '/var/www/zeitschriftenlisten',
+        OUTPUT        => "$outputbasename.$mode",
+    });
+    
+    
+    my $ttdata = {
+        bibsort      => 1,
+        sigel        => $sigel,
+        dbinfo       => $dbinfotable,
+        recordlist   => \@sortedrecordlist,
+        showall      => $showall,
+        gesamtzahl   => $#recordlist+1,
+        externzahl   => $externzahl,
+        natlizzahl   => $natlizzahl,
+        
+        filterchars  => \&filterchars,
+    };
+    
+    $template->process("zsstlist_$mode", $ttdata) || do { 
+        print $template->error();
+    };
+}
 
-@sortedrecordlist = sort by_sortfield @recordlist;
+if ($marksort){
+    # Sortierung nach Signatur
+    
+    @sortedrecordlist = sort by_mark @recordlist;
+    
+    $outputbasename.="-marksort";
+    
+    my $template = Template->new({
+        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+            INCLUDE_PATH   => $config->{tt_include_path},
+            ABSOLUTE       => 1,
+        }) ],
+        #        INCLUDE_PATH   => $config->{tt_include_path},
+        #        ABSOLUTE       => 1,
+        OUTPUT_PATH   => '/var/www/zeitschriftenlisten',
+        OUTPUT        => "$outputbasename.$mode",
+    });
+    
+    
+    my $ttdata = {
+        bibsort      => 1,
+        sigel        => $sigel,
+        dbinfo       => $dbinfotable,
+        recordlist   => \@sortedrecordlist,
+        showall      => $showall,
+        gesamtzahl   => $#recordlist+1,
+        externzahl   => $externzahl,
+        natlizzahl   => $natlizzahl,
+        
+        filterchars  => \&filterchars,
+    };
+    
+    $template->process("zsstlist_$mode", $ttdata) || do { 
+        print $template->error();
+    };
+}
 
-$outputbasename.="-bibsort";
-
-my $template = Template->new({
-    LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-        INCLUDE_PATH   => $config->{tt_include_path},
-        ABSOLUTE       => 1,
-    }) ],
-    #        INCLUDE_PATH   => $config->{tt_include_path},
-    #        ABSOLUTE       => 1,
-    OUTPUT_PATH   => '/var/www/zeitschriftenlisten',
-    OUTPUT        => "$outputbasename.$mode",
-});
-
-
-my $ttdata = {
-    bibsort      => 1,
-    sigel        => $sigel,
-    dbinfo       => $dbinfotable,
-    recordlist   => \@sortedrecordlist,
-    showall      => $showall,
-    gesamtzahl   => $#recordlist+1,
-    externzahl   => $externzahl,
-    natlizzahl   => $natlizzahl,
-
-    filterchars  => \&filterchars,
-};
-
-$template->process("zsstlist_$mode", $ttdata) || do { 
-    print $template->error();
-};
 
 sub print_help {
     print "gen-zsstlist.pl - Erzeugen von Zeitschiftenlisten pro Sigel\n\n";
@@ -357,7 +399,9 @@ sub print_help {
     print "  -help                   : Diese Informationsseite\n";
     print "  --sigel=514             : Sigel der Bibliothek\n";
     print "  --mode=[pdf|tex]        : Typ des Ausgabedokumentes\n";
-    print "  -showall                : Alle Sigel/Eigentümer anzeigen\n\n";
+    print "  -showall                : Alle Sigel/Eigentümer anzeigen\n";
+    print "  -bibsort                : Zusätzliche bibliothakar. Sortierung\n";
+    print "  -marksort               : Zusätzliche Sortierung nach Signatur\n\n";
     
     exit;
 }
@@ -464,16 +508,16 @@ sub filterchars {
   return $content;
 }
 
-# sub by_signature {
-#     my %line1=%$a;
-#     my %line2=%$b;
+sub by_mark {
+    my %line1=%{$a->get_fields()};
+    my %line2=%{$b->get_fields()};
 
-#     # Sortierung anhand erster Signatur
-#     my $line1=(exists $line1{X0014}[0]{content} && defined $line1{X0014}[0]{content})?cleanrl($line1{X0014}[0]{content}):"0";
-#     my $line2=(exists $line2{X0014}[0]{content} && defined $line2{X0014}[0]{content})?cleanrl($line2{X0014}[0]{content}):"0";
+    # Sortierung anhand erster Signatur
+    my $line1=(exists $line1{X0014}[0]{content} && defined $line1{X0014}[0]{content})?cleanrl($line1{X0014}[0]{content}):"0";
+    my $line2=(exists $line2{X0014}[0]{content} && defined $line2{X0014}[0]{content})?cleanrl($line2{X0014}[0]{content}):"0";
 
-#     $line1 cmp $line2;
-# }
+    $line1 cmp $line2;
+}
 
 sub by_title {
     my %line1=%{$a->get_fields()};

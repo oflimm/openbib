@@ -44,124 +44,53 @@ use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Record::Title;
 
 use DBI;
+use Log::Log4perl qw(get_logger :levels);
 use Encode qw/decode_utf8 encode decode/;
+use JSON::XS;
 use List::MoreUtils qw/ uniq /;
 use Text::CSV_XS;
 use YAML;
 use DBIx::Class::ResultClass::HashRefInflator;
 
-my ($help,$enrichnatfile);
+my ($help,$logfile,$laufend);
 
 &GetOptions(
-	    "help"     => \$help,
-            "enrichnatfile=s" => \$enrichnatfile,
-	    );
+    "logfile"  => \$logfile,
+    "laufend"  => \$laufend,
+    "help"     => \$help,
+    );
 
 if ($help){
     print_help();
 }
 
-my $issn_nationallizenzen_ref = {};
+$logfile=($logfile)?$logfile:'/var/log/openbib/zeitschriften2csv.log';
 
-if ($enrichnatfile){
-    my $csv_options = { 
-        'eol' => "\n", 
-        'sep_char' => "\t", 
-        'quote_char' =>  "\"", 
-        'escape_char' => "\"", 
-        
-    }; 
-    
-    open my $in,   "<:utf8",$enrichnatfile; 
-    
-    my $csv = Text::CSV_XS->new($csv_options); 
-    
-    my @cols = @{$csv->getline ($in)}; 
-    my $row = {}; 
+my $log4Perl_config = << "L4PCONF";
+log4perl.rootLogger=INFO, LOGFILE, Screen
+log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
+log4perl.appender.LOGFILE.filename=$logfile
+log4perl.appender.LOGFILE.mode=append
+log4perl.appender.LOGFILE.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.LOGFILE.layout.ConversionPattern=%d [%c]: %m%n
+log4perl.appender.Screen=Log::Dispatch::Screen
+log4perl.appender.Screen.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.Screen.layout.ConversionPattern=%d [%c]: %m%n
+L4PCONF
 
-    $csv->bind_columns (\@{$row}{@cols}); 
-    
-    while ($csv->getline ($in)){ 
-        my @issns = (); 
-        
-        foreach my $issn (split /\s*;\s*/, $row->{'E-ISSN'}){ 
-            push @issns, $issn; 
-        } 
-        
-        foreach my $issn (split /\s*;\s*/, $row->{'P-ISSN'}){ 
-            push @issns, $issn; 
-        } 
-        
-        my $erstes_jahr   = $row->{'erstes Jahr'}; 
-        my $erstes_volume = $row->{'erstes volume'}; 
-        my $erstes_issue  = $row->{'erstes issue'}; 
-        
-        my $letztes_jahr   = $row->{'letztes Jahr'}; 
-        my $letztes_volume = $row->{'letztes volume'}; 
-        my $letztes_issue  = $row->{'letztes issue'}; 
-        
-        my $moving_wall  = $row->{'moving wall'}; 
-        
-        my $bestandsverlauf = "$erstes_jahr";
+Log::Log4perl::init(\$log4Perl_config);
 
-        if ($erstes_jahr){
-            if ($erstes_volume){ 
-                $bestandsverlauf="$erstes_volume.$bestandsverlauf"; 
-            }
-            elsif ($erstes_issue){
-                $bestandsverlauf="$erstes_issue.$bestandsverlauf"; 
-            }
-        }
-        else {
-            if ($erstes_volume){ 
-                $bestandsverlauf="$erstes_volume"; 
-            }
-            elsif ($erstes_issue){
-                $bestandsverlauf="$erstes_issue"; 
-            }
-        }
-        
-        if ($moving_wall){ 
-            $bestandsverlauf = "$bestandsverlauf - Moving Wall: $moving_wall"; 
-        }
-        else {
-            if ($letztes_jahr){
-                if ($letztes_volume){
-                    $letztes_jahr="$letztes_volume.$letztes_jahr"; 
-                }
-                elsif ($letztes_issue){
-                    $letztes_jahr="$letztes_issue.$letztes_jahr"; 
-                }
-                
-                $bestandsverlauf="$bestandsverlauf - $letztes_jahr"; 
-            }
-            else {
-                if ($letztes_volume){
-                    $letztes_jahr="$letztes_volume.$letztes_jahr"; 
-                }
-                elsif ($letztes_issue){
-                    $letztes_jahr="$letztes_issue.$letztes_jahr"; 
-                }
-                
-                $bestandsverlauf="$bestandsverlauf - $letztes_jahr"; 
-            }
-        } 
-        
-        my $verfuegbar  = $row->{'verfuegbar'}; 
-        next unless ($verfuegbar eq "Nationallizenz"); 
-        
-        foreach my $issn (@issns){ 
-            $issn_nationallizenzen_ref->{$issn} = $bestandsverlauf; 
-        }
-    }
-}
+# Log4perl logger erzeugen
+my $logger = get_logger();
 
 my $config      = OpenBib::Config->new;
 my $dbinfotable = OpenBib::Config::DatabaseInfoTable->new;
 
 my $out;
 
-open $out, ">:encoding(utf8)", "laufende_zeitschriften.csv";
+my $filename = ($laufend)?'uzk-zeitschriften-laufend.csv':'uzk-zeitschriften.csv';
+
+open $out, ">:encoding(utf8)", $filename;
 
 my $outputcsv = Text::CSV_XS->new ({
     'eol'         => "\n",
@@ -170,41 +99,67 @@ my $outputcsv = Text::CSV_XS->new ({
 
 my $out_ref = [];
 
-push @{$out_ref}, ('id','Bibliothek','Person/Körperschaft','AST','Titel','Zusatz','Auflage','Verlag','ISBN','ISSN','Signatur','Standort','Verlauf');
+push @{$out_ref}, ('ZDB-ID','Bibliothek','Person/Körperschaft','AST','Titel','Zusatz','Verlag','ISSN','Signatur','Standort','Verlauf');
 
 $outputcsv->print($out,$out_ref);
 
 my $catalog = OpenBib::Catalog::Factory->create_catalog({database => 'instzs'});
 
-my $laufende_zeitschriften = $catalog->get_schema->resultset('Holding')->search(
-    {
-	'holding_fields.field' => 1204,
-	-or => [
-	    'holding_fields.content' => { '~' => '- *$' }, 
-	    'holding_fields.content' => { '~' => '- \[[^[]\]$' }, 
-	    ], 
-    },
-    {
-	select => ['holding_fields.content','title_holdings.titleid','me.id'],
-	as     => ['thisverlauf','thistitleid','thisholdingid'],
-	join   => ['holding_fields','title_holdings'],
-        result_class => 'DBIx::Class::ResultClass::HashRefInflator',
 
+my $where_ref = {
+    'title_holdings.titleid' => \'IS NOT NULL',
+};
+
+
+if ($laufend){
+   $where_ref = {
+    'title_holdings.titleid' => \'IS NOT NULL',
+    'holding_fields.field' => 1204,
+    -or => [
+	'holding_fields.content' => { '~' => '- *$' }, 
+	'holding_fields.content' => { '~' => '- \[[^[]\]$' }, 
+	], 
+   };
+}
+
+my $zeitschriften = $catalog->get_schema->resultset('Holding')->search(
+    $where_ref,
+    {
+	select   => ['title_holdings.titleid','me.id','titleid.titlecache'],
+	as       => ['thistitleid','thisholdingid','thistitlecache'],
+	prefetch => ['title_holdings'],
+	group_by => ['title_holdings.titleid','me.id','titleid.titlecache'],
+	join     => ['holding_fields','title_holdings', { 'title_holdings' => 'titleid' }],
+	result_class => 'DBIx::Class::ResultClass::HashRefInflator',
     }
     
     );
 
-while (my $laufende_zeitschrift = $laufende_zeitschriften->next()){
-    my $titleid    = $laufende_zeitschrift->{thistitleid};
-    my $holdingid  = $laufende_zeitschrift->{thisholdingid};
-    my $verlauf    = cleanup_content($laufende_zeitschrift->{thisverlauf});
+my $idx = 1;
 
-#    print STDERR "$titleid / $holdingid -> $verlauf\n";
+while (my $zeitschrift = $zeitschriften->next()){
+    my $titleid    = $zeitschrift->{thistitleid};
+    my $holdingid  = $zeitschrift->{thisholdingid};
+    my $titlecache = $zeitschrift->{thistitlecache};
+
+#    next unless ($titleid && $holdingid && $titlecache);
+
+    my $verlauf;
+
+    my $fields_ref ;
+
+    eval {
+	$fields_ref = JSON::XS::decode_json $titlecache;
+    };
+
+    if ($@){
+	$logger->error($@);
+	$logger->error("$titleid / $holdingid -> $titlecache");
+	next;
+    }
 
     $out_ref = [];    
 
-    my $record = OpenBib::Record::Title->new({ id => $titleid, database => 'instzs'})->load_full_record;
-    
     my @pers_korp  = ();
     my @ast        = ();
     my @titel      = ();
@@ -215,34 +170,10 @@ while (my $laufende_zeitschrift = $laufende_zeitschriften->next()){
     my $standort   = "";
     my $besitzer   = "";
 
-    my $fields_ref   = $record->get_fields;
-    my $holdings_ref = $record->get_holding;
-
-    my $this_holding_ref = {};
-
-#    print YAML::Dump($holdings_ref),"\n";
-
-    foreach my $holding (@$holdings_ref){
-	if ($holding->{id} eq $holdingid){
-	    $signatur = cleanup_content($holding->{'X0014'}{content});
-	    $standort = cleanup_content($holding->{'X0016'}{content});
-	    $besitzer = cleanup_content($holding->{'X3330'}{content});
-	    last;
-	}
-    }
-
-    foreach my $item_ref (@{$fields_ref->{T0200}}){
+    foreach my $item_ref (@{$fields_ref->{PC0001}}){
         push @pers_korp, cleanup_content($item_ref->{content});
     }
-    foreach my $item_ref (@{$fields_ref->{T0201}}){
-        push @pers_korp, cleanup_content($item_ref->{content});
-    }
-    foreach my $item_ref (@{$fields_ref->{T0100}}){
-        push @pers_korp, cleanup_content($item_ref->{content});
-    }
-    foreach my $item_ref (@{$fields_ref->{T0101}}){
-        push @pers_korp, cleanup_content($item_ref->{content});
-    }
+
     foreach my $item_ref (@{$fields_ref->{T0310}}){
         push @ast, cleanup_content($item_ref->{content});
     }
@@ -262,11 +193,44 @@ while (my $laufende_zeitschrift = $laufende_zeitschriften->next()){
         push @issn, cleanup_content($item_ref->{content});
     }
 
-    
-    push @{$out_ref}, ($record->get_id,$besitzer,join(' ; ',@pers_korp),join(' ; ',@ast),join(' ; ',@titel),join(' ; ',@zusatz),join(' ; ',@verlag),join(' ; ',uniq @issn),$signatur,$standort,$verlauf);    
+    my $holdings = $catalog->get_schema->resultset('HoldingField')->search(
+	{
+	    'holdingid' => $holdingid,
+	},
+	{
+	    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+	}
+	);
+
+    while (my $thisholding = $holdings->next()){
+	if ($thisholding->{field} == 16){
+	    $standort = $thisholding->{content};
+	}
+	if ($thisholding->{field} == 14){
+	    $signatur = $thisholding->{content};
+	}
+	if ($thisholding->{field} == 1204){
+	    $verlauf = $thisholding->{content};
+	}
+	if ($thisholding->{field} == 3330){
+	    $besitzer = $thisholding->{content};
+	    if ($besitzer =~/^\d\d\d$/){
+		$besitzer = "38/$besitzer";
+	    }
+	}
+    } 
+
+    next unless ($verlauf);
+
+    push @{$out_ref}, ($titleid,$besitzer,join(' ; ',@pers_korp),join(' ; ',@ast),join(' ; ',@titel),join(' ; ',@zusatz),join(' ; ',@verlag),join(' ; ',uniq @issn),$signatur,$standort,$verlauf);    
 
     $outputcsv->print($out,$out_ref);
 
+    if ($idx % 1000 == 0){
+	$logger->info("$idx Records done");
+    }
+
+    $idx++;
 }
 
 close ($out);
@@ -274,12 +238,7 @@ close ($out);
 sub print_help {
     print "gen-zsstlist.pl - Erzeugen von Zeitschiftenlisten pro Sigel\n\n";
     print "Optionen: \n";
-    print "  -help                   : Diese Informationsseite\n";
-    print "  --sigel=514             : Sigel der Bibliothek\n";
-    print "  --mode=[pdf|tex]        : Typ des Ausgabedokumentes\n";
-    print "  -showall                : Alle Sigel/Eigentümer anzeigen\n";
-    print "  -bibsort                : Zusätzliche bibliothakar. Sortierung\n";
-    print "  -marksort               : Zusätzliche Sortierung nach Signatur\n\n";
+    print "  -help                   : Diese Informationsseite\n\n";
     
     exit;
 }

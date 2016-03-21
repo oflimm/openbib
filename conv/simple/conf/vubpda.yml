@@ -52,6 +52,7 @@ exclude:
           - inst001
           - ebooks
           - freebooks
+          - ebookpda
           - dreierpda
           - nationallizenzen
           - bestellungen

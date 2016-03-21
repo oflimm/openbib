@@ -5,9 +5,8 @@ exclude:
         - doab
         - inst001
         - nationallizenzen
+        - gbvnationallizenzen
         - bestellungen
-        - dreierpda
-        - vubpda
         - tmpebooks
         - freebooks
         - tusculum
@@ -29,7 +28,6 @@ exclude:
         - 'doab'
         - 'DE-38-USBFB'
         - 'bestellungen'
-        - 'printpda'
         - 'usbebooks'
         - 'nomos'
         

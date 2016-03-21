@@ -2,7 +2,7 @@
 
 #####################################################################
 #
-#  laufende_zeitschriften2csv.pl
+#  zeitschriften2csv.pl
 #
 #  Extrahieren der laufenden Zeitschriftenliste eines Instituts
 #  und Ausgabe als CSV-Datei

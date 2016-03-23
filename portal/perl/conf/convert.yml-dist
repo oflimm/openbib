@@ -1105,6 +1105,11 @@ convtab:
           'title': 1
           'titlestring': 1
           'freesearch': 1
+      '0306':         # RDA: Manifestation verkoerperter Werke
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
       '0310':         # AST
         index:
           'title': 1
@@ -1135,7 +1140,17 @@ convtab:
           'title': 40
           'titlestring': 40
           'freesearch': 40
+      '0362':         # RDA Doppelung von 0306: Manifestation verkoerperter Werke
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
       '0370':         # WST
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
+      '0371':         # RDA: erster/frueherer Sachtitel
         index:
           'title': 1
           'titlestring': 1
@@ -1145,6 +1160,13 @@ convtab:
           'title': 1
           'titlestring': 1
           'freesearch': 1
+      '0390':         # RDA: Anaben zum Inhalt
+        index:
+          'freesearch': 1
+          'subject': 1
+          'subjectstring': 1
+        facet:
+          'subject': 1
       '0412':         # Verlag
         index:
           'publisher': 1
@@ -1171,7 +1193,10 @@ convtab:
       '0508':
         index:
           'source': 1
-      '0519':
+      '0519':         # Hochschulschriftenvermerk
+        index:
+          'hss': 1
+      '0520':         # RDA: Hochschulschriftenvermerk
         index:
           'hss': 1
       '0540':         # ISBN
@@ -1223,6 +1248,10 @@ convtab:
           'title': 1
           'titlestring': 1
           'freesearch': 1
+      '0688':         # RDA: Original-Verleger
+        index:
+          'publisher': 1
+          'publisherstring': 1
       '0700':
         index:
           'classificationstring': 1

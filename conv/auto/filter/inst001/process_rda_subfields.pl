@@ -7,6 +7,7 @@ while (<>){
     my $record_ref = decode_json $_;
 
     foreach my $field (keys %{$record_ref->{fields}}){
+        next if ($field eq "0671");
         my $new_field_ref = [];
         foreach my $field_ref (@{$record_ref->{fields}{$field}}){
             if ($field_ref->{content} =~m/¬\$[a-zA-Z0-9] /){

@@ -1135,6 +1135,11 @@ convtab:
           'title': 1
           'titlestring': 1
           'freesearch': 1
+      '0343':         # RDA: Zusatz zum PST
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
       '0361':       # Vorlage beigefuegtes Werk
         index:
           'title': 40

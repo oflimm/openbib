@@ -38,12 +38,13 @@ use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
 use OpenBib::Config;
 
-our ($logfile,$loglevel,$test,$cluster,$maintenance,$updatemaster);
+our ($logfile,$loglevel,$test,$cluster,$maintenance,$updatemaster,$incremental);
 
 &GetOptions(
     "cluster"       => \$cluster,
     "test"          => \$test,
     "maintenance"   => \$maintenance,
+    "incremental"   => \$incremental,
     "logfile=s"     => \$logfile,
     "loglevel=s"    => \$loglevel,
     "update-master" => \$updatemaster,
@@ -257,13 +258,13 @@ sub threadA {
 
     $logger->info("### Standard-Institutskataloge");
 
-    autoconvert({ updatemaster => $updatemaster, blacklist => $blacklist_ref, sync => 1, autoconv => 1});
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, blacklist => $blacklist_ref, sync => 1, autoconv => 1});
 
     ##############################
     
     $logger->info("### Rheinische Bibliotheken");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['bruehl','franzmg','gbroich','gdonck','geistingen','gleuel','hennef','kempen','kwinter','wickrath','xanten','zuelpich'] });
+    autoconvert({updatemaster => $updatemaster, sync => 1, databases => ['bruehl','franzmg','gbroich','gdonck','geistingen','gleuel','hennef','kempen','kwinter','wickrath','xanten','zuelpich'] });
     
     ##############################
 
@@ -288,13 +289,13 @@ sub threadB {
 
     $logger->info("### Master: USB Katalog");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst001'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst001'] });
     
     ##############################
     
     $logger->info("### Aufgesplittete Teil-Kataloge aus USB Katalog");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['provenienzen','lehrbuchsmlg','rheinabt','edz','lesesaal', 'usbhwa','usbsab', 'dissertationen'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['provenienzen','lehrbuchsmlg','rheinabt','edz','lesesaal', 'usbhwa','usbsab', 'dissertationen'] });
     
     ##############################
     
@@ -467,6 +468,9 @@ sub autoconvert {
     my $sync            = exists $arg_ref->{sync}
         ? $arg_ref->{sync}                  : 0;
 
+    my $incremental     = exists $arg_ref->{incremental}
+        ? $arg_ref->{incremental}           : 0;
+
     my $genmex          = exists $arg_ref->{genmex}
         ? $arg_ref->{genmex}                : 0;
 
@@ -483,6 +487,7 @@ sub autoconvert {
     push @ac_cmd, "/opt/openbib/autoconv/bin/autoconv.pl";
     push @ac_cmd, "-sync"    if ($sync); 
     push @ac_cmd, "-gen-mex" if ($genmex);
+    push @ac_cmd, "-incremental" if ($incremental);
     push @ac_cmd, "-update-master" if ($updatemaster);
 
     my $ac_cmd_base = join(' ',@ac_cmd);

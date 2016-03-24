@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2016-02-29 11:37+0100\n"
+"PO-Revision-Date: 2016-03-24 14:43+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -17,15 +17,15 @@ msgstr ""
 "X-Generator: Lokalize 1.4\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../modules/OpenBib/Importer/JSON/Title.pm:354
+#: ../modules/OpenBib/Importer/JSON/Title.pm:358
 msgid " map { $_ => 1 } @${enrichmnt_data_ref} "
 msgstr ""
 
-#: ../modules/OpenBib/Importer/JSON/Title.pm:324
+#: ../modules/OpenBib/Importer/JSON/Title.pm:328
 msgid " map { $_ => 1 } @${enrichmnt_isbns_ref} "
 msgstr ""
 
-#: ../modules/OpenBib/Importer/JSON/Title.pm:325
+#: ../modules/OpenBib/Importer/JSON/Title.pm:329
 msgid " map { $_ => 1 } @${enrichmnt_issns_ref} "
 msgstr ""
 
@@ -827,7 +827,7 @@ msgstr ""
 "aktivierter Suchoption 'UND-Verkn&uuml;pfung innerhalb eines\n"
 "Suchfeldes in den Suchoptionen'"
 
-#: ../templates/admin_databases_record_edit:162
+#: ../templates/admin_databases_record_edit:167
 msgid "API"
 msgstr "API"
 
@@ -1852,7 +1852,7 @@ msgstr "Ausgewählte Titel"
 msgid "Ausleih-/Buchungsdatum"
 msgstr "Ausleih-/Buchungsdatum"
 
-#: ../templates/admin_databases_record_edit:230
+#: ../templates/admin_databases_record_edit:235
 #: ../templates/admin_databases_record_html:87
 msgid "Ausleih-Einstellungen"
 msgstr "Ausleih-Einstellungen"
@@ -1952,7 +1952,7 @@ msgstr "Auswählen"
 msgid "Auto-Konv"
 msgstr "Auto-Konv"
 
-#: ../templates/admin_databases_record_edit:217
+#: ../templates/admin_databases_record_edit:222
 #: ../templates/admin_databases_record_html:85
 msgid "Autokonvertierung (cron)"
 msgstr "Autokonvertierung (cron)"
@@ -3193,7 +3193,7 @@ msgstr "Datenbankinformationssystem"
 msgid "Datenbankinformationssystem (DBIS)"
 msgstr "Datenbankinformationssystem (DBIS)"
 
-#: ../templates/admin_databases_record_edit:154
+#: ../templates/admin_databases_record_edit:159
 msgid "Datenquelle"
 msgstr "Datenquelle"
 
@@ -4752,22 +4752,22 @@ msgstr "Entdecken Sie weitere Titel &uuml;ber:"
 msgid "Entfernen"
 msgstr "Entfernen"
 
-#: ../templates/admin_databases_record_edit:177
+#: ../templates/admin_databases_record_edit:182
 #: ../templates/admin_databases_record_html:76
 msgid "Entfernter Nutzername"
 msgstr "Entfernter Nutzername"
 
-#: ../templates/admin_databases_record_edit:167
+#: ../templates/admin_databases_record_edit:172
 #: ../templates/admin_databases_record_html:74
 msgid "Entfernter Rechnername"
 msgstr "Entfernter Rechnername"
 
-#: ../templates/admin_databases_record_edit:182
+#: ../templates/admin_databases_record_edit:187
 #: ../templates/admin_databases_record_html:77
 msgid "Entferntes Passwort"
 msgstr "Entferntes Passwort"
 
-#: ../templates/admin_databases_record_edit:172
+#: ../templates/admin_databases_record_edit:177
 #: ../templates/admin_databases_record_html:75
 msgid "Entferntes Verzeichnis"
 msgstr "Entferntes Verzeichnis"
@@ -5019,7 +5019,7 @@ msgstr "Erzeugen"
 msgid "Es existiert bereits ein Anmeldeziel unter diesem Namen"
 msgstr "Es existiert bereits ein Anmeldeziel unter diesem Namen"
 
-#: ../modules/OpenBib/Handler/PSGI/Admin/Databases.pm:130
+#: ../modules/OpenBib/Handler/PSGI/Admin/Databases.pm:131
 msgid "Es existiert bereits ein Katalog unter diesem Namen"
 msgstr "Es existiert bereits ein Katalog unter diesem Namen"
 
@@ -5049,9 +5049,9 @@ msgstr "Es existiert bereits ein View unter diesem Namen"
 msgid "Es existiert bereits eine Organisationseinheit unter diesem Namen"
 msgstr "Es existiert bereits eine Organisationseinheit unter diesem Namen"
 
-#: ../modules/OpenBib/Handler/PSGI/Admin/Databases.pm:209
-#: ../modules/OpenBib/Handler/PSGI/Admin/Databases.pm:250
-#: ../modules/OpenBib/Handler/PSGI/Admin/Databases.pm:336
+#: ../modules/OpenBib/Handler/PSGI/Admin/Databases.pm:215
+#: ../modules/OpenBib/Handler/PSGI/Admin/Databases.pm:261
+#: ../modules/OpenBib/Handler/PSGI/Admin/Databases.pm:347
 #: ../modules/OpenBib/Handler/PSGI/Admin/Databases/RSS.pm:105
 #: ../modules/OpenBib/Handler/PSGI/Admin/Databases/RSS.pm:154
 #: ../modules/OpenBib/Handler/PSGI/Admin/Databases/RSS.pm:208
@@ -5217,7 +5217,7 @@ msgstr "Es wurden zuwenige Parameter übergeben."
 msgid "Event"
 msgstr "Event"
 
-#: ../templates/admin_databases_record_edit:212
+#: ../templates/admin_databases_record_edit:217
 #: ../templates/admin_databases_record_html:84
 msgid "Exemplar-Datei"
 msgstr "Exemplar-Datei"
@@ -5339,7 +5339,7 @@ msgstr ""
 "F&uuml;r verschiedene Institute und Seminare der Philosophischen Fakult&auml;"
 "t besteht die M&ouml;glichkeit der Suche in einem %1Online-Kartenkatalog%2"
 
-#: ../templates/admin_databases_record_edit:159
+#: ../templates/admin_databases_record_edit:164
 msgid "FTP"
 msgstr "FTP"
 
@@ -5854,7 +5854,7 @@ msgstr "Guthaben"
 msgid "Gültigkeitsbereich"
 msgstr "Gültigkeitsbereich"
 
-#: ../templates/admin_databases_record_edit:160
+#: ../templates/admin_databases_record_edit:165
 msgid "HTTP"
 msgstr "HTTP"
 
@@ -7395,8 +7395,8 @@ msgstr "JSON konnte nicht geparst werden"
 #: ../templates/admin_databases_html:151
 #: ../templates/admin_databases_record_delete_confirm:66
 #: ../templates/admin_databases_record_edit:123
-#: ../templates/admin_databases_record_edit:220
-#: ../templates/admin_databases_record_edit:236
+#: ../templates/admin_databases_record_edit:225
+#: ../templates/admin_databases_record_edit:241
 #: ../templates/admin_databases_record_html:69
 #: ../templates/admin_databases_record_html:70
 #: ../templates/admin_databases_record_html:85
@@ -7720,7 +7720,7 @@ msgstr "K&ouml;rperschaften"
 msgid "K&ouml;rperschaften/Institutionen"
 msgstr "K&ouml;rperschaften/Institutionen"
 
-#: ../templates/admin_databases_record_edit:197
+#: ../templates/admin_databases_record_edit:202
 #: ../templates/admin_databases_record_html:81
 msgid "K&ouml;rperschafts-Datei"
 msgstr "K&ouml;rperschafts-Datei"
@@ -8973,7 +8973,7 @@ msgstr "Login mit registrierter E-Mail-Adresse"
 msgid "Login ohne Benutzerausweis"
 msgstr "Login ohne Benutzerausweis"
 
-#: ../templates/admin_databases_record_edit:161
+#: ../templates/admin_databases_record_edit:166
 msgid "Lokal"
 msgstr "Lokal"
 
@@ -9067,7 +9067,7 @@ msgstr "Los"
 #: ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_short:150
 #: ../templates/admin_authenticators_record_edit:104
 #: ../templates/admin_clusters_record_edit:101
-#: ../templates/admin_databases_record_edit:262
+#: ../templates/admin_databases_record_edit:267
 #: ../templates/admin_databases_rss_record_edit:109
 #: ../templates/admin_databases_rss_record_html:351
 #: ../templates/admin_locations_record_edit:161
@@ -9802,8 +9802,8 @@ msgstr ""
 #: ../templates/admin_databases_html:151
 #: ../templates/admin_databases_record_delete_confirm:72
 #: ../templates/admin_databases_record_edit:124
-#: ../templates/admin_databases_record_edit:219
-#: ../templates/admin_databases_record_edit:235
+#: ../templates/admin_databases_record_edit:224
+#: ../templates/admin_databases_record_edit:240
 #: ../templates/admin_databases_record_html:69
 #: ../templates/admin_databases_record_html:70
 #: ../templates/admin_databases_record_html:85
@@ -10157,7 +10157,7 @@ msgstr "Notation"
 msgid "Notationen"
 msgstr "Notationen"
 
-#: ../templates/admin_databases_record_edit:202
+#: ../templates/admin_databases_record_edit:207
 #: ../templates/admin_databases_record_html:83
 msgid "Notations-Datei"
 msgstr "Notations-Datei"
@@ -10248,12 +10248,12 @@ msgstr "Nutzung der vorhandenen Views"
 msgid "Nutzungsbedingungen"
 msgstr "Nutzungsbedingungen"
 
-#: ../templates/admin_databases_record_edit:241
+#: ../templates/admin_databases_record_edit:246
 #: ../templates/admin_databases_record_html:89
 msgid "OLWS DB-Name im Lokalsystem"
 msgstr "OLWS DB-Name im Lokalsystem"
 
-#: ../templates/admin_databases_record_edit:246
+#: ../templates/admin_databases_record_edit:251
 #: ../templates/admin_databases_record_html:90
 msgid "OLWS Zugriffs-URL"
 msgstr "OLWS Zugriffs-URL"
@@ -10663,7 +10663,7 @@ msgstr "Person/Körperschaft"
 msgid "Personen"
 msgstr "Personen"
 
-#: ../templates/admin_databases_record_edit:192
+#: ../templates/admin_databases_record_edit:197
 #: ../templates/admin_databases_record_html:80
 msgid "Personen-Datei"
 msgstr "Personen-Datei"
@@ -10908,7 +10908,7 @@ msgstr "Profile"
 msgid "Projekt"
 msgstr "Projekt"
 
-#: ../templates/admin_databases_record_edit:157
+#: ../templates/admin_databases_record_edit:162
 #: ../templates/admin_databases_record_html:73
 msgid "Protokoll"
 msgstr "Protokoll"
@@ -11549,7 +11549,7 @@ msgstr "Schlagwort"
 msgid "Schlagwort suchen"
 msgstr "Schlagwort suchen"
 
-#: ../templates/admin_databases_record_edit:207
+#: ../templates/admin_databases_record_edit:212
 #: ../templates/admin_databases_record_html:82
 msgid "Schlagwort-Datei"
 msgstr "Schlagwort-Datei"
@@ -12153,7 +12153,7 @@ msgstr ""
 "Sie müssen mindestens einen Identifier, dessen Typ und eine Beschreibung "
 "eingeben."
 
-#: ../modules/OpenBib/Handler/PSGI/Admin/Databases.pm:126
+#: ../modules/OpenBib/Handler/PSGI/Admin/Databases.pm:127
 msgid ""
 "Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
 msgstr ""
@@ -19114,7 +19114,6 @@ msgstr "Tip: Digitaler Kartenkatalog"
 #: ../templates/_view/richter/litlists_record_html:87
 #: ../templates/_view/richter/users_litlists_record_edit:122
 #: ../templates/acquisition_collection:192
-#: ../templates/admin_databases_record_edit:129
 #: ../templates/admin_databases_updates_html:88
 #: ../templates/admin_servers_record_edit:137
 #: ../templates/cartitems_html_full:26 ../templates/home_html_bottom_left:51
@@ -19154,6 +19153,14 @@ msgstr "Titel der Liste"
 msgid "Titel der Literaturliste"
 msgstr "Titel der Literaturliste"
 
+#: ../templates/admin_databases_record_edit:129
+msgid "Titel in Datenbank"
+msgstr "Titel in Datenbank"
+
+#: ../templates/admin_databases_record_edit:149
+msgid "Titel in Suchindex"
+msgstr "Titel in Suchindex"
+
 #: ../templates/_profile/kug/info_help:865 ../templates/info_help:963
 msgid "Titel in die Merkliste eintragen"
 msgstr "Titel in die Merkliste eintragen"
@@ -19175,7 +19182,7 @@ msgstr "Titel ist in diesem Katalog mit der Körperschaft verknüpft"
 msgid "Titel ist in diesem Katalog mit der Person verknüpft"
 msgstr "Titel ist in diesem Katalog mit der Person verknüpft"
 
-#: ../templates/titles_record_same_records_html:63
+#: ../templates/titles_record_same_records_html:65
 msgid ""
 "Titel mit der ISBN dieses Titels sind auch an folgenden Standorten vorhanden"
 msgstr ""
@@ -19194,7 +19201,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:369
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:359
 #: ../templates/titles_record_include:272
-#: ../templates/titles_record_same_records_include:6
+#: ../templates/titles_record_same_records_include:8
 msgid ""
 "Titel mit der ISBN dieses Titels sind auch in folgenden anderen Katalogen "
 "vorhanden"
@@ -19239,7 +19246,7 @@ msgstr "Titel(liste) ausdrucken, bzw. in einer Druckansicht darstellen"
 msgid "Titel-Anzahl"
 msgstr "Titel-Anzahl"
 
-#: ../templates/admin_databases_record_edit:187
+#: ../templates/admin_databases_record_edit:192
 #: ../templates/admin_databases_record_html:79
 msgid "Titel-Datei"
 msgstr "Titel-Datei"
@@ -20112,7 +20119,7 @@ msgstr "War diese Rezension hilfreich?"
 msgid "Web"
 msgstr "Web"
 
-#: ../templates/admin_databases_record_edit:251
+#: ../templates/admin_databases_record_edit:256
 #: ../templates/admin_databases_record_html:91
 msgid "WebOPAC-URL"
 msgstr "WebOPAC-URL"
@@ -20919,7 +20926,7 @@ msgstr "Zeitweiser Name"
 msgid "Zu Ihrer Suchanfrage konnten keine Treffer gefunden werden."
 msgstr "Zu Ihrer Suchanfrage konnten keine Treffer gefunden werden."
 
-#: ../templates/titles_record_similar_records_include:6
+#: ../templates/titles_record_similar_records_include:8
 msgid ""
 "Zu diesem Titel existieren andere Ausgaben (andere Sprache, andere Auflage "
 "usw.) an folgenden Standorten"
@@ -20927,7 +20934,7 @@ msgstr ""
 "Zu diesem Titel existieren andere Ausgaben (andere Sprache, andere Auflage "
 "usw.) an folgenden Standorten"
 
-#: ../templates/titles_record_similar_records_html:63
+#: ../templates/titles_record_similar_records_html:65
 msgid ""
 "Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere "
 "Auflage usw.) an den Standorten"
@@ -20995,7 +21002,7 @@ msgstr "Zugreifende IP's nach H&auml;ufigkeit"
 msgid "Zugreifende IP's nach Region"
 msgstr "Zugreifende IP's nach Region"
 
-#: ../templates/admin_databases_record_edit:233
+#: ../templates/admin_databases_record_edit:238
 #: ../templates/admin_databases_record_html:88
 msgid "Zugriff &uuml;ber OLWS"
 msgstr "Zugriff &uuml;ber OLWS"
@@ -22071,7 +22078,7 @@ msgstr "wiederholt"
 
 #: ../templates/admin_authenticators_record_edit:100
 #: ../templates/admin_clusters_record_edit:96
-#: ../templates/admin_databases_record_edit:258
+#: ../templates/admin_databases_record_edit:263
 #: ../templates/admin_databases_rss_record_edit:105
 #: ../templates/admin_databases_rss_record_html:152
 #: ../templates/admin_databases_rss_record_html:209

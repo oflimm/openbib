@@ -978,7 +978,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
 
             if ($signatur) {
                 push @{$holding_ref->{fields}{'0014'}}, {
-                    content  => $signatur,
+                    content  => konv($signatur),
                     mult     => 1,
                     subfield => '',
                 };
@@ -986,7 +986,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
           
             if ($standort) {
                 push @{$holding_ref->{fields}{'0016'}}, {
-                    content  => $standort,
+                    content  => konv($standort),
                     mult     => 1,
                     subfield => '',
                 };

@@ -209,6 +209,13 @@ $logger->info("### Generating joined searchindexes");
 
 system("/opt/openbib/autoconv/bin/autojoinindex_xapian.pl");
 
+$logger->info("###### Updating done");
+
+if ($cluster){
+    $logger->info("### Changing cluster/server-status to updated");
+    $config->update_local_serverstatus("updated");
+}
+
 $logger->info("### Dumping isbns");
 
 system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_usb 2>&1 > /dev/null");
@@ -222,8 +229,6 @@ system("/opt/openbib/bin/bestandsabgleich.pl --selector=ISBN13 --database=inst52
 system("/opt/openbib/bin/bestandsabgleich.pl --selector=ISBN13 --database=inst526 --database=tmpebooks --filename=/var/www.kug/extra/inst526/abgleich-inst526-tmpebooks.csv 2>&1 > /dev/null");
 system("/opt/openbib/bin/bestandsabgleich.pl --selector=ISBN13 --database=inst006 --database=usbebooks --filename=/var/www.kug/extra/inst006/abgleich-inst006-usbebooks.csv 2>&1 > /dev/null");
 system("/opt/openbib/bin/bestandsabgleich.pl --selector=ISBN13 --database=inst006 --database=tmpebooks --filename=/var/www.kug/extra/inst006/abgleich-inst006-tmpebooks.csv 2>&1 > /dev/null");
-
-$logger->info("###### Updating done");
 
 if ($updatemaster && $maintenance){
     $logger->info("### Updating clouds");
@@ -246,10 +251,6 @@ if ($maintenance){
     $logger->info("###### Maintenance done");
 }
 
-if ($cluster){
-    $logger->info("### Changing cluster/server-status to updated");
-    $config->update_local_serverstatus("updated");
-}
 
 sub threadA {
     my $thread_description = shift;

@@ -213,13 +213,18 @@ $logger->info("### Generating joined searchindexes");
 
 system("/opt/openbib/autoconv/bin/autojoinindex_xapian.pl");
 
+$logger->info("###### Updating done");
+
+if ($cluster){
+    $logger->info("### Changing cluster/server-status to updated");
+    $config->update_local_serverstatus("updated");
+}
+
 $logger->info("### Dumping isbns");
 
 system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_usb 2>&1 > /dev/null");
 system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_uni 2>&1 > /dev/null");
 system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_komplett 2>&1 > /dev/null");
-
-$logger->info("###### Updating done");
 
 if ($updatemaster && $maintenance){
     $logger->info("### Updating clouds");
@@ -239,11 +244,6 @@ if ($maintenance){
     system("$config->{'base_dir'}/bin/dump_enrichmnt.pl");
     
     $logger->info("###### Maintenance done");
-}
-
-if ($cluster){
-    $logger->info("### Changing cluster/server-status to updated");
-    $config->update_local_serverstatus("updated");
 }
 
 sub threadA {

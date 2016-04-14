@@ -10,7 +10,7 @@ print STDERR "### inst503 Erweitere Titeldaten\n";
 while (<>){
     my $title_ref = decode_json $_;
 
-    push @{$title_ref->{'locations'}}, "DE-38-501";
+    push @{$title_ref->{'locations'}}, "DE-38-503";
     push @{$title_ref->{'locations'}}, "DE-38-USBFB";
     
     print encode_json $title_ref, "\n";

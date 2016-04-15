@@ -16,8 +16,18 @@
 
    querystring_without_page = cgiapp.to_cgi_querystring({ exclude = ['page'] });
 
-   start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
-   end_range       = nav.current_page*queryoptions.get_option('num');
+   IF hits > 0 ;
+      start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
+      end_range       = nav.current_page*queryoptions.get_option('num');
+   ELSE ;
+      nav.total_entries = 0
+      nav.current_page = 1;
+      nav.first_page = 1;
+      hits = 0;
+      start_range = 0;
+      end_range = 0;
+   END ;
+
    IF end_range >= hits ;
       end_range       = hits;
    END;

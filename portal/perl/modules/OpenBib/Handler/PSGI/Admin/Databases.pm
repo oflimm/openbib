@@ -51,6 +51,7 @@ use OpenBib::QueryOptions;
 use OpenBib::Session;
 use OpenBib::Statistics;
 use OpenBib::User;
+use OpenBib::Search::Factory;
 
 use base 'OpenBib::Handler::PSGI::Admin';
 
@@ -178,9 +179,14 @@ sub show_record {
     if (!$dbinfo_ref){
         $logger->error("Database $dbname couldn't be found.");
     }
+
+    my $searcher   = OpenBib::Search::Factory->create_searcher({database => $dbname, config => $config });
+
+    my $indexed_doc_count = $searcher->get_number_of_documents; 
     
     my $ttdata={
-        databaseinfo => $dbinfo_ref,
+        databaseinfo      => $dbinfo_ref,
+        indexed_doc_count => $indexed_doc_count,
     };
     
     return $self->print_page($config->{tt_admin_databases_record_tname},$ttdata);
@@ -210,9 +216,14 @@ sub show_record_form {
     }
     
     my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $dbname})->single;
+
+    my $searcher   = OpenBib::Search::Factory->create_searcher({database => $dbname, config => $config });
+
+    my $indexed_doc_count = $searcher->get_number_of_documents; 
     
     my $ttdata={
         databaseinfo => $dbinfo_ref,
+        indexed_doc_count => $indexed_doc_count,
     };
     
     return $self->print_page($config->{tt_admin_databases_record_edit_tname},$ttdata);

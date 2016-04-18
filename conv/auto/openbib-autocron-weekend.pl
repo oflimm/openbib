@@ -6,7 +6,7 @@
 #
 #  CRON-Job zum automatischen aktualisieren aller OpenBib-Datenbanken
 #
-#  Dieses File ist (C) 1997-2015 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2016 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -38,12 +38,13 @@ use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
 use OpenBib::Config;
 
-our ($logfile,$loglevel,$test,$cluster,$maintenance,$updatemaster);
+our ($logfile,$loglevel,$test,$cluster,$maintenance,$updatemaster,$incremental);
 
 &GetOptions(
     "cluster"       => \$cluster,
     "test"          => \$test,
     "maintenance"   => \$maintenance,
+    "incremental"   => \$incremental,
     "logfile=s"     => \$logfile,
     "loglevel=s"    => \$loglevel,
     "update-master" => \$updatemaster,
@@ -192,21 +193,28 @@ autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['bestellun
 
 ##############################
 
-$logger->info("### PRINTPDA");
-
-autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['dreierpda','vubpda'] });
-
-##############################
-
 $logger->info("### EBOOKPDA");
 
 autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['ebookpda'] });
 
 ##############################
 
+$logger->info("### PRINTPDA");
+
+autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['dreierpda','vubpda'] });
+
+##############################
+
 $logger->info("### Generating joined searchindexes");
 
 system("/opt/openbib/autoconv/bin/autojoinindex_xapian.pl");
+
+$logger->info("###### Updating done");
+
+if ($cluster){
+    $logger->info("### Changing cluster/server-status to updated");
+    $config->update_local_serverstatus("updated");
+}
 
 $logger->info("### Dumping isbns");
 
@@ -221,8 +229,6 @@ system("/opt/openbib/bin/bestandsabgleich.pl --selector=ISBN13 --database=inst52
 system("/opt/openbib/bin/bestandsabgleich.pl --selector=ISBN13 --database=inst526 --database=tmpebooks --filename=/var/www.kug/extra/inst526/abgleich-inst526-tmpebooks.csv 2>&1 > /dev/null");
 system("/opt/openbib/bin/bestandsabgleich.pl --selector=ISBN13 --database=inst006 --database=usbebooks --filename=/var/www.kug/extra/inst006/abgleich-inst006-usbebooks.csv 2>&1 > /dev/null");
 system("/opt/openbib/bin/bestandsabgleich.pl --selector=ISBN13 --database=inst006 --database=tmpebooks --filename=/var/www.kug/extra/inst006/abgleich-inst006-tmpebooks.csv 2>&1 > /dev/null");
-
-$logger->info("###### Updating done");
 
 if ($updatemaster && $maintenance){
     $logger->info("### Updating clouds");
@@ -245,10 +251,6 @@ if ($maintenance){
     $logger->info("###### Maintenance done");
 }
 
-if ($cluster){
-    $logger->info("### Changing cluster/server-status to updated");
-    $config->update_local_serverstatus("updated");
-}
 
 sub threadA {
     my $thread_description = shift;
@@ -257,20 +259,21 @@ sub threadA {
 
     $logger->info("### Standard-Institutskataloge");
 
-    autoconvert({ updatemaster => $updatemaster, blacklist => $blacklist_ref, sync => 1, autoconv => 1});
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, blacklist => $blacklist_ref, sync => 1, autoconv => 1});
 
     ##############################
     
     $logger->info("### Rheinische Bibliotheken");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['bruehl','franzmg','gbroich','gdonck','geistingen','gleuel','hennef','kempen','kwinter','wickrath','xanten','zuelpich'] });
+    autoconvert({updatemaster => $updatemaster, sync => 1, databases => ['bruehl','franzmg','gbroich','gdonck','geistingen','gleuel','hennef','kempen','kwinter','wickrath','xanten','zuelpich'] });
     
     ##############################
 
-    $logger->info("### Externe Katalog");
+    $logger->info("### Externe Katalog (OER, OAI, usw.)");
 
 #autoconvert({ sync => 1, databases => ['openlibrary','gutenberg','wikisource_de'] });
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['gutenberg'] });
+#    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['doab','elis','gallica','gdz','gresham_oer','hathitrust','gutenberg','intechopen','khanacademy','khanacademy_de','loc','loviscach_oer','mitocw_oer','nptelhrd_oer','stanford_oer','ucberkeley_oer','ucla_oer','yale_oer','zvdd'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['doab'] });
 
     $logger->info("### Sammlungen aus dem Universitaet");
     
@@ -287,19 +290,19 @@ sub threadB {
 
     $logger->info("### Master: USB Katalog");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst001'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst001'] });
     
     ##############################
     
     $logger->info("### Aufgesplittete Teil-Kataloge aus USB Katalog");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['lehrbuchsmlg','rheinabt','edz','lesesaal', 'usbhwa', 'dissertationen'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['provenienzen','lehrbuchsmlg','rheinabt','edz','lesesaal', 'usbhwa','usbsab', 'dissertationen'] });
     
     ##############################
     
     $logger->info("### Aufgesplittete Sammlungen aus dem USB Katalog");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['afrikaans','alff','baeumker','becker','dante','digitalis','dirksen','evang','fichte','gabel','gruen','gymnasialbibliothek','islandica','kbg','kempis','kroh','lefort','loeffler','mukluweit','modernedtlit','modernelyrik','nevissen','oidtman','ostasiatica','quint','schia','schirmer','schmalenbach','schneider','syndikatsbibliothek','thorbecke','tietz','tillich','vormweg','wallraf','weinkauff','westerholt','wolff'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['afrikaans','alff','artmann','auslaender','baenfer','baeumker','becker','benelux','bers','conrady','dante','digitalis','dirksen','englaender','evang','fichte','gabel','gruen','gymnasialbibliothek','herbschneider','herterich','hilferding','hinck','hochschulschriften','islandica','kbg','kempis','kroh','lefort','loeffler','mukluweit','modernedtlit','modernelyrik','nevissen','oidtman','ostasiatica','quint','schia','schirmer','schmalenbach','schneider','schmitzotto','scholle','syndikatsbibliothek','thorbecke','tietz','tillich','vormweg','wallraf','weinkauff','westerholt','wolff'] });
 
     return $thread_description;
 }
@@ -399,13 +402,13 @@ sub threadC {
 
     $logger->info("### Sonstige Master-Institutskataloge");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst622master'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst622master','inst401master'] });
 
     ##############################
     
     $logger->info("### Aufgesplittete sonstige Master-Institutskataloge");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst622'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst622','inst401'] });
 
     ##############################
 
@@ -466,6 +469,9 @@ sub autoconvert {
     my $sync            = exists $arg_ref->{sync}
         ? $arg_ref->{sync}                  : 0;
 
+    my $incremental     = exists $arg_ref->{incremental}
+        ? $arg_ref->{incremental}           : 0;
+
     my $genmex          = exists $arg_ref->{genmex}
         ? $arg_ref->{genmex}                : 0;
 
@@ -482,6 +488,7 @@ sub autoconvert {
     push @ac_cmd, "/opt/openbib/autoconv/bin/autoconv.pl";
     push @ac_cmd, "-sync"    if ($sync); 
     push @ac_cmd, "-gen-mex" if ($genmex);
+    push @ac_cmd, "-incremental" if ($incremental);
     push @ac_cmd, "-update-master" if ($updatemaster);
 
     my $ac_cmd_base = join(' ',@ac_cmd);

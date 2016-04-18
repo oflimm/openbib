@@ -391,7 +391,7 @@ sub get_posts {
                     isbn => $isbn,
                 },
                 {
-                    group_by => ['titleid','dbname','isbn','tstamp','titlecache'],
+                    group_by => ['titleid','location','dbname','isbn','tstamp','titlecache'],
                     result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
@@ -403,15 +403,16 @@ sub get_posts {
             while (my $item = $same_titles->next) {
                 my $id         = $item->{titleid};
                 my $database   = $item->{dbname};
+                my $location    = $item->{location};
                 my $titlecache = $item->{titlecache};
                 
-                next if (defined $have_title_ref->{"$database:$id"});
+                next if (defined $have_title_ref->{"$database:$id:$location"});
                 
                 $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
 
                 $logger->debug("Found with isbn $isbn same item id=$id db=$database");
                 
-                $have_title_ref->{"$database:$id"} = 1;
+                $have_title_ref->{"$database:$id:$location"} = 1;
             }
         }
 
@@ -428,7 +429,7 @@ sub get_posts {
                     bibkey    => $bibkey,
                 },
                 {                        
-                    group_by => ['titleid','dbname','bibkey','tstamp','titlecache'], 
+                    group_by => ['titleid','dbname','location','bibkey','tstamp','titlecache'], 
                }
             );
 
@@ -437,13 +438,14 @@ sub get_posts {
             foreach my $item ($same_titles->all) {
                 my $id         = $item->titleid;
                 my $database   = $item->dbname;
+                my $location   = $item->location;
 
-                next if (defined $have_title_ref->{"$database:$id"});
+                next if (defined $have_title_ref->{"$database:$id:$location"});
                 
                 $logger->debug("Found with bibkey $bibkey same item id=$id db=$database");
                 $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
 
-                $have_title_ref->{"$database:$id"} = 1;
+                $have_title_ref->{"$database:$id:$location"} = 1;
 
             }
             

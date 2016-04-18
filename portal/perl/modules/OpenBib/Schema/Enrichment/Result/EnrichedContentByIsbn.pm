@@ -39,7 +39,7 @@ __PACKAGE__->table("enriched_content_by_isbn");
 
   data_type: 'varchar'
   is_nullable: 1
-  size: 1
+  size: 2
 
 =head2 content
 
@@ -62,8 +62,8 @@ __PACKAGE__->add_columns(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2013-05-31 15:08:06
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:jqI3m5UyiglDWoHMLct9ag
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2016-02-25 15:01:05
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:DJ3R9bRp56YGOWqjDvbD5g
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

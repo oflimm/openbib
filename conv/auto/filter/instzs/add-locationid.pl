@@ -71,6 +71,7 @@ while (<HOLDING>){
         }                
         elsif ($location_ref->{content} eq "38"){
             push @{$title_locationid_ref->{$titleid}}, "DE-38";
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
         }
         elsif ($location_ref->{content} =~/^\d\d\d$/){
             push @{$title_locationid_ref->{$titleid}}, "DE-38-".$location_ref->{content};

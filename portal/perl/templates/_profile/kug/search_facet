@@ -302,7 +302,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <dl class="ob-items">
 <dt class="ob-headline" id="dd_location_[% database %]_anchor">[% msg.maketext("nach Standort") %]</dt>
 [%             FOREACH termitem IN facets.location ;
-                  LAST IF loop.count > 25 ;
+
  %]
 [% IF facets.location.size > 5 && loop.count == 5 %]
 <span id="dd_location_[% database %]_toggle"></span>

@@ -1,9 +1,9 @@
 [%#-
 #######################################################################
 #
-# Templatename: virtualsearch_result_item
+# Templatename: search_title_item_json
 #
-# Typ         : Mastertemplate (2/3)
+# Typ         : Subtemplate (2/3)
 #
 # Aufgabe:
 #
@@ -34,7 +34,7 @@
          url               = dbinfo.get('urls').${record.database}                          
       }
 
-      records.push({ id => record.id, database => thisdatabase, fields => record.get_fields });
+      records.push({ id => record.id, database => thisdatabase, fields => record.get_fields, locations => record.get_locations });
    END ;
 
 

@@ -246,6 +246,7 @@ $yt->query->max_results(50);
 foreach my $channel_ref (@{$convconfig->{channels}}){
     $logger->info("Processing Youtube Channel $channel_ref->{description}");
     
+    eval {
     while(my $playlists = $yt->get_user_playlists($channel_ref->{name})) {
         
         foreach my $playlist (@$playlists) {
@@ -474,7 +475,10 @@ foreach my $channel_ref (@{$convconfig->{channels}}){
             }
         }
     }
-
+    };
+    if ($@){
+	$logger->error(YAML::Dump($@));
+    }
 }
 
 

@@ -16,8 +16,18 @@
 
    querystring_without_page = cgiapp.to_cgi_querystring({ exclude = ['page'] });
 
-   start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
-   end_range       = nav.current_page*queryoptions.get_option('num');
+   IF hits > 0 ;
+      start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
+      end_range       = nav.current_page*queryoptions.get_option('num');
+   ELSE ;
+      nav.total_entries = 0
+      nav.current_page = 1;
+      nav.first_page = 1;
+      hits = 0;
+      start_range = 0;
+      end_range = 0;
+   END ;
+
    IF end_range >= hits ;
       end_range       = hits;
    END;
@@ -45,18 +55,32 @@
                       fields   = record.get_fields
       };
 
-      locationid = dbinfo.get('locationid').${record.database};
+      item_locations = record.get_locations;
 
-      IF locationid ;
-        thisrecord.database.location = {
-            link = {
-                    rel = 'self'
-                    href = "${scheme}://${servername}${path_prefix}/${config.get('locations_loc')}/id/${locationid}.json"
-            }
-            id = dbinfo.get('locationid').${record.database}
-            
-        };
+      IF NOT item_locations;
+         item_locations = [ dbinfo.get('locationid').${record.database} ];
       END;
+
+      blacklisted_locations = { 'DE-38-USBFB' => 1 };
+
+      item_locations_out = [];
+
+      FOREACH item_location IN item_locations ;
+         NEXT IF blacklisted_locations.${item_location}.defined ;
+
+           this_item_location = {
+             link = {
+                 rel = 'self'
+                 href = "${scheme}://${servername}${path_prefix}/${config.get('locations_loc')}/id/${item_location}.json"
+            }
+           id = item_location 
+           description = locinfo.get('identifier').${item_location}.description  
+        };
+
+        item_locations_out.push(this_item_location); 
+      END;
+
+      thisrecord.locations = item_locations_out;
 
       records.push(thisrecord);
    END ;

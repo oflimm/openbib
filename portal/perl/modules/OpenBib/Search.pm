@@ -225,6 +225,26 @@ sub get_facets {
     return {};
 }
 
+sub get_number_of_documents {
+    my ($self,$database)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config       = $self->get_config;
+
+    $database = (defined $database)?$database:
+    (defined $self->{_database})?$self->{_database}:undef;
+
+    return -1 unless $database;
+
+    my $num = 0;
+
+    # Insert Code to get Documents in Index
+    
+    return $num;
+}       
+
 sub DESTROY {
     my $self = shift;
 

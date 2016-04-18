@@ -177,7 +177,7 @@ sub show_collection_by_isbn {
                 isbn => $isbn,
             },
             {
-                group_by => ['tstamp','isbn','dbname','titleid','titlecache'],
+                group_by => ['tstamp','isbn','dbname','titleid','location','titlecache'],
             }
                 
         );

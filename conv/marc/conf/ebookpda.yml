@@ -5,9 +5,8 @@ exclude:
         - doab
         - inst001
         - nationallizenzen
+        - gbvnationallizenzen
         - bestellungen
-        - dreierpda
-        - vubpda
         - tmpebooks
         - freebooks
         - tusculum
@@ -25,6 +24,14 @@ exclude:
         - inst201
         - inst503
         - nomos
+     locations:
+        - 'doab'
+        - 'DE-38-USBFB'
+        - 'bestellungen'
+        - 'usbebooks'
+        - 'nomos'
+        
+
   'by_isbn_in_file':
      field: '0540'
      filename: '/opt/openbib/autoconv/pools/ebookpda/exclude_isbns.txt'

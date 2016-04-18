@@ -55,6 +55,7 @@ exclude:
        databases:
           - inst001
           - ebooks
+          - ebookpda
           - freebooks
           - zbmed
           - nationallizenzen
@@ -224,6 +225,7 @@ exclude:
        databases:
           - inst001
           - ebooks
+          - ebookpda
           - freebooks
           - zbmed
           - nationallizenzen

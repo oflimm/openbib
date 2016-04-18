@@ -4,7 +4,7 @@
 #
 #  Titel
 #
-#  Dieses File ist (C) 2007-2015 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2016 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -227,6 +227,14 @@ sub load_full_record {
 
     $logger->debug("Setting data from Backend");
     
+    # Location aus 4230 setzen    
+    my $locations_ref = [];
+
+    foreach my $item_ref (@{$fields->{'T4230'}}){
+	push @{$locations_ref}, $item_ref->{content};
+    }
+
+    $self->set_locations($locations_ref);
     $self->set_fields($fields);
     $self->set_holding($holdings);
     $self->set_same_records($same_records);
@@ -300,6 +308,14 @@ sub load_brief_record {
     $fields_ref->{id      } = $id;
     $fields_ref->{database} = $self->{database};
 
+    # Location aus 4230 setzen
+    
+    my $locations_ref = [];
+
+    foreach my $item_ref (@{$fields_ref->{'T4230'}}){
+	push @{$locations_ref}, $item_ref->{content};
+    }
+
     if ($config->{benchmark}) {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);
@@ -311,7 +327,7 @@ sub load_brief_record {
         $logger->debug(YAML::Dump($fields_ref));
     }
 
-    ($self->{_fields},$self->{_exists},$self->{_type})=($fields_ref,$record_exists,'brief');
+    ($self->{_fields},$self->{_locations},$self->{_exists},$self->{_type})=($fields_ref,$locations_ref,$record_exists,'brief');
 
     return $self;
 }
@@ -538,10 +554,13 @@ sub enrich_related_records {
         ? $arg_ref->{profilename}        : '';
     
     my $viewname = exists $arg_ref->{viewname}
-        ? $arg_ref->{viewname}        : '';
+        ? $arg_ref->{viewname}           : '';
+
+    my $blacklisted_locations_ref = exists $arg_ref->{blacklisted_locations}
+        ? $arg_ref->{blacklisted_locations} : [];
 
     my $num      = exists $arg_ref->{num}
-        ? $arg_ref->{num}             : 20;
+        ? $arg_ref->{num}                : 20;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -682,11 +701,16 @@ sub enrich_related_records {
                 dbname => \@filter_databases,
             };
         }
+
+        if (@$blacklisted_locations_ref){
+            $where_ref->{location} = { -not_in => @$blacklisted_locations_ref
+            };
+        }       
         
         my $titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
             $where_ref,
             {
-                group_by => ['dbname','isbn','tstamp','titleid','titlecache'],
+                group_by => ['dbname','isbn','location','tstamp','titleid','titlecache'],
                 result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 rows => $num,
             }
@@ -695,24 +719,28 @@ sub enrich_related_records {
         while (my $titleitem = $titles->next) {
             my $id         = $titleitem->{titleid};
             my $database   = $titleitem->{dbname};
+            my $location   = $titleitem->{location};
             my $titlecache = $titleitem->{titlecache};
-            
-            next if (defined $titles_found_ref->{"$database:$id"});
+
+            next if (defined $titles_found_ref->{"$database:$id:$location"});
             
             my $ctime;
             my $dtime;
             if ($config->{benchmark}) {
                 $ctime=new Benchmark;
             }
-            
+
+	    my $new_record;
+
             if ($titlecache){
-                $logger->debug("Record from cache");
-                $related_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache));
+                $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache);
             }
             else {
-                $logger->debug("Record from database");
-                    $related_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record());
+                $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record();
             }
+	    
+	    $new_record->set_locations([$location]);
+	    $related_recordlist->add($new_record);
             
             if ($config->{benchmark}) {
                 $dtime=new Benchmark;
@@ -720,7 +748,7 @@ sub enrich_related_records {
                     $logger->info("Zeit fuer : Bestimmung von Kurztitel-Information des Titels ist ".timestr($timeall));
             }
             
-            $titles_found_ref->{"$database:$id"} = 1;
+            $titles_found_ref->{"$database:$id:$location"} = 1;
         }
         
         if ($config->{benchmark}) {
@@ -849,7 +877,7 @@ sub enrich_similar_records_old {
         my $titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
             $where_ref,
             {
-                group_by => ['dbname','isbn','tstamp','titleid','titlecache'],
+                group_by => ['dbname','isbn','location','tstamp','titleid','titlecache'],
                 result_class => 'DBIx::Class::ResultClass::HashRefInflator',
             }
         );
@@ -857,16 +885,23 @@ sub enrich_similar_records_old {
         while (my $titleitem = $titles->next) {
             my $id         = $titleitem->{titleid};
             my $database   = $titleitem->{dbname};
+            my $location   = $titleitem->{location};
             my $titlecache = $titleitem->{titlecache};
             
             $logger->debug("Found Title with id $id in database $database");
-            
+
+	    my $new_record;
+
             if ($titlecache){
-                $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache));
+                $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache);
             }
             else {
-                $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record());
+                $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record();
             }
+	    
+	    $new_record->set_locations([$location]);
+	    $similar_recordlist->add($new_record);
+	    
         }
         
         if ($config->{benchmark}) {
@@ -896,6 +931,9 @@ sub enrich_similar_records {
     my $viewname = exists $arg_ref->{viewname}
         ? $arg_ref->{viewname}        : '';
 
+    my $blacklisted_locations_ref = exists $arg_ref->{blacklisted_locations}
+        ? $arg_ref->{blacklisted_locations} : [];
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
@@ -1015,12 +1053,17 @@ sub enrich_similar_records {
                 dbname     => \@filter_databases,
             };
         }
+
+        if (@$blacklisted_locations_ref){
+            $where_ref->{location} = { -not_in => @$blacklisted_locations_ref
+            };
+        }       
         
         my $titles = $self->{enrich_schema}->resultset('AllTitleByWorkkey')->search_rs(
             $where_ref,
             {
                 order_by => ['edition DESC'],
-                group_by => ['id','dbname','workkey','tstamp','titleid','titlecache'],
+                group_by => ['id','dbname','workkey','location','tstamp','titleid','titlecache'],
                 result_class => 'DBIx::Class::ResultClass::HashRefInflator',
             }
         );
@@ -1029,20 +1072,26 @@ sub enrich_similar_records {
         while (my $titleitem = $titles->next) {
             my $id         = $titleitem->{titleid};
             my $database   = $titleitem->{dbname};
+            my $location   = $titleitem->{location};
             my $titlecache = $titleitem->{titlecache};
 
-            next if (defined $have_title_ref->{"$database:$id"});
+            next if (defined $have_title_ref->{"$database:$id:$location"});
             
-            $logger->debug("Found Title with id $id in database $database");
+            $logger->debug("Found Title with location $location and id $id in database $database");
             
+	    my $new_record;
+
             if ($titlecache){
-                $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache));
+                $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache);
             }
             else {
-                $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record());
+                $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record();
             }
             
-            $have_title_ref->{"$database:$id"} = 1;
+	    $new_record->set_locations([$location]);
+	    $similar_recordlist->add($new_record);
+
+            $have_title_ref->{"$database:$id:$location"} = 1;
         }
         
         if ($config->{benchmark}) {
@@ -1081,6 +1130,9 @@ sub enrich_same_records {
     my $viewname = exists $arg_ref->{viewname}
         ? $arg_ref->{viewname}        : '';
 
+    my $blacklisted_locations_ref = exists $arg_ref->{blacklisted_locations}
+        ? $arg_ref->{blacklisted_locations} : [];
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
@@ -1195,12 +1247,17 @@ sub enrich_same_records {
                 ]
             };
         }
+
+        if (@$blacklisted_locations_ref){
+            $where_ref->{location} = { -not_in => @$blacklisted_locations_ref
+            };
+        }       
         
         # DBI: "select distinct id,dbname from all_isbn where isbn=? and dbname != ? and id != ?";
         my $same_titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
             $where_ref,
             {
-                group_by => ['titleid','dbname','isbn','tstamp','titlecache'],
+                group_by => ['titleid','dbname','location','isbn','tstamp','titlecache'],
                 result_class => 'DBIx::Class::ResultClass::HashRefInflator',
             }
         );
@@ -1214,18 +1271,24 @@ sub enrich_same_records {
         while (my $item = $same_titles->next) {
             my $id         = $item->{titleid};
             my $database   = $item->{dbname};
+            my $location   = $item->{location};
             my $titlecache = $item->{titlecache};
 
-            next if (defined $have_title_ref->{"$database:$id"});
-            
+            next if (defined $have_title_ref->{"$database:$id:$location"});
+
+	    my $new_record;
+
             if ($titlecache){
-                $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache));
+                $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache);
             }
             else {
-                $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record());
+                $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record();
             }
 
-            $have_title_ref->{"$database:$id"} = 1;
+	    $new_record->set_locations([$location]);
+	    $same_recordlist->add($new_record);
+
+            $have_title_ref->{"$database:$id:$location"} = 1;
         }
         
         if ($config->{benchmark}) {
@@ -1621,6 +1684,28 @@ sub is_full {
     return ($self->{_type} eq "full")?1:0;
 }
 
+sub get_locations {
+    my ($self)=@_;
+
+    return $self->{_locations}
+}
+
+sub set_locations {
+    my ($self,$location_ref)=@_;
+
+    $self->{_locations} = $location_ref;
+
+    return;
+}
+
+sub add_location {
+    my ($self,$location)=@_;
+
+    push @{$self->{_locations}}, $location;
+
+    return $self;
+}
+
 sub get_holding {
     my ($self)=@_;
 
@@ -1739,6 +1824,11 @@ sub set_fields_from_storable {
 
     if ($logger->is_debug){
         $logger->debug("Got :".YAML::Dump($storable_ref));
+    }
+
+    if (defined $storable_ref->{locations}){
+	$self->{_locations} = $storable_ref->{locations};
+	delete $storable_ref->{locations};
     }
     
     $self->{_fields} = $storable_ref;

@@ -33,6 +33,7 @@ no warnings 'redefine';
 use utf8;
 
 use Business::ISBN;
+use DBIx::Class::ResultClass::HashRefInflator;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use Benchmark ':hireswallclock';
@@ -148,6 +149,7 @@ CREATE TEMP TABLE all_titles_by_workkey_tmp (
  edition       TEXT,
  dbname        VARCHAR(25) NOT NULL,
  titleid       VARCHAR(255) NOT NULL,
+ location      VARCHAR(255),
  titlecache    TEXT,
  tstamp        TIMESTAMP
 );
@@ -156,7 +158,7 @@ COPY all_titles_by_isbn    FROM '$data_dir/all_title_by_isbn.dump' WITH DELIMITE
 COPY all_titles_by_bibkey  FROM '$data_dir/all_title_by_bibkey.dump' WITH DELIMITER '' NULL AS '';
 COPY all_titles_by_issn    FROM '$data_dir/all_title_by_issn.dump' WITH DELIMITER '' NULL AS '';
 COPY all_titles_by_workkey_tmp FROM '$data_dir/all_title_by_workkey.dump' WITH DELIMITER '' NULL AS '';
-INSERT INTO all_titles_by_workkey (workkey,edition,dbname,titleid,titlecache,tstamp) select workkey,edition,dbname,titleid,titlecache,tstamp from all_titles_by_workkey_tmp; 
+INSERT INTO all_titles_by_workkey (workkey,edition,dbname,titleid,location,titlecache,tstamp) select workkey,edition,dbname,titleid,location,titlecache,tstamp from all_titles_by_workkey_tmp; 
 ALLTITLECONTROL
 
     
@@ -192,8 +194,6 @@ ALLTITLECONTROL
             $delidx++;
         }
 
-        @titleids_to_delete = 
-            
         $logger->info("### $database: $delidx Titel-ISBNs usw. zu loeschen");
         $logger->info("### $database: $insidx Titel-ISBNs usw. neu einzufuegen");
         
@@ -305,19 +305,49 @@ ALLTITLECONTROL
         });
 
 
-        push @$alltitlebyisbn_ref, {
-            isbn       => $thisisbn,
-            titleid    => $thistitleid,
-            dbname     => $database,
-            tstamp     => $thisdate,
-            titlecache => $thistitlecache,
-        };        
+        my $all_locations = $catalog->get_schema->resultset('Title')->search_rs(
+            {
+                'title_fields.field' => 4230,
+                'me.id'              => $thistitleid,
+            },
+            {
+                select => ['title_fields.content'],
+                as     => ['thislocation'],
+                join   => ['title_fields'],
+                group_by => ['title_fields.content'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+            }
+        );
         
+        if ($all_locations){
+            while (my $this_location = $all_locations->next()){
+                my $location = $this_location->{thislocation};
+                #print STDERR "$thistitleid -> $location\n";
+                push @$alltitlebyisbn_ref, {
+                    isbn       => $thisisbn,
+                    titleid    => $thistitleid,
+                    dbname     => $database,
+                    location   => $location,                    
+                    tstamp     => $thisdate,
+                    titlecache => $thistitlecache,
+                };        
+            }   
+        }
+        else {
+            push @$alltitlebyisbn_ref, {
+                isbn       => $thisisbn,
+                titleid    => $thistitleid,
+                dbname     => $database,
+                location   => '',
+                tstamp     => $thisdate,
+                titlecache => $thistitlecache,
+            };        
+        }
         
         if ($isbn_insertcount && $isbn_insertcount % 10000 == 0 && @$alltitlebyisbn_ref){
             if ($bulkinsert){
                 foreach my $this_row_ref (@$alltitlebyisbn_ref){
-                    print ISBNOUT $this_row_ref->{isbn}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{tstamp}."".cleanup_content($this_row_ref->{titlecache})."\n";
+                    print ISBNOUT $this_row_ref->{isbn}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{location}."".$this_row_ref->{tstamp}."".cleanup_content($this_row_ref->{titlecache})."\n";
                 }
                 $logger->info("### $database: $isbn_insertcount ISBN's collected");
             }
@@ -334,7 +364,7 @@ ALLTITLECONTROL
     if (@$alltitlebyisbn_ref){
         if ($bulkinsert){
             foreach my $this_row_ref (@$alltitlebyisbn_ref){
-                print ISBNOUT $this_row_ref->{isbn}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{tstamp}."".cleanup_content($this_row_ref->{titlecache})."\n";
+                print ISBNOUT $this_row_ref->{isbn}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{location}."".$this_row_ref->{tstamp}."".cleanup_content($this_row_ref->{titlecache})."\n";
             }
         }
         else {
@@ -378,20 +408,51 @@ ALLTITLECONTROL
         if ($thisbibkey){
             $logger->debug("Got Title with id $thistitleid and bibkey $thisbibkey");
 
-            push @$alltitlebybibkey_ref, {
-                bibkey     => $thisbibkey,
-                titleid    => $thistitleid,
-                dbname     => $database,
-                tstamp     => $thisdate,
-                titlecache => $thistitlecache,
-            };
+            my $all_locations = $catalog->get_schema->resultset('Title')->search_rs(
+                {
+                    'title_fields.field' => 4230,
+                    'me.id'              => $thistitleid,
+                },
+                {
+                    select => ['title_fields.content'],
+                    as     => ['thislocation'],
+                    join   => ['title_fields'],
+                    group_by => ['title_fields.content'],
+                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+                }
+            );
+            
+            if ($all_locations){
+                while (my $this_location = $all_locations->next()){
+                    my $location = $this_location->{thislocation};
+                    push @$alltitlebybibkey_ref, {
+                        bibkey     => $thisbibkey,
+                        titleid    => $thistitleid,
+                        dbname     => $database,
+                        location   => $location,
+                        tstamp     => $thisdate,
+                        titlecache => $thistitlecache,
+                    };
+                }
+            }
+            else {
+                push @$alltitlebybibkey_ref, {
+                    bibkey     => $thisbibkey,
+                    titleid    => $thistitleid,
+                    dbname     => $database,
+                    location   => '',
+                    tstamp     => $thisdate,
+                    titlecache => $thistitlecache,
+                };
+            }
+            
             $bibkey_insertcount++;
         }
 
         if ($bibkey_insertcount && $bibkey_insertcount % 10000 == 0 && @$alltitlebybibkey_ref){
             if ($bulkinsert){
                 foreach my $this_row_ref (@$alltitlebybibkey_ref){
-                    print BIBKEYOUT $this_row_ref->{bibkey}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{tstamp}."".cleanup_content($this_row_ref->{titlecache})."\n";
+                    print BIBKEYOUT $this_row_ref->{bibkey}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{location}."".$this_row_ref->{tstamp}."".cleanup_content($this_row_ref->{titlecache})."\n";
                 }
                 $logger->info("### $database: $bibkey_insertcount Bibkeys collected");
             }
@@ -407,7 +468,7 @@ ALLTITLECONTROL
     if (@$alltitlebybibkey_ref){
         if ($bulkinsert){
             foreach my $this_row_ref (@$alltitlebybibkey_ref){
-                print BIBKEYOUT $this_row_ref->{bibkey}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{tstamp}."".cleanup_content($this_row_ref->{titlecache})."\n";
+                print BIBKEYOUT $this_row_ref->{bibkey}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{location}."".$this_row_ref->{tstamp}."".cleanup_content($this_row_ref->{titlecache})."\n";
             }
         }
         else {
@@ -461,20 +522,50 @@ ALLTITLECONTROL
             
             $logger->debug("Got Title with id $thistitleid and ISSN $thisissn");
 
-            push @$alltitlebyissn_ref, {
-                issn       => $thisissn,
-                titleid    => $thistitleid,
-                dbname     => $database,
-                tstamp     => $thisdate,
-                titlecache => $thistitlecache,
-            };
+            my $all_locations = $catalog->get_schema->resultset('Title')->search_rs(
+                {
+                    'title_fields.field' => 4230,
+                    'me.id'              => $thistitleid,
+                },
+                {
+                    select => ['title_fields.content'],
+                    as     => ['thislocation'],
+                    join   => ['title_fields'],
+                    group_by => ['title_fields.content'],
+                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+                }
+            );
+            
+            if ($all_locations){
+                while (my $this_location = $all_locations->next()){
+                    my $location = $this_location->{thislocation};
+                    push @$alltitlebyissn_ref, {
+                        issn       => $thisissn,
+                        titleid    => $thistitleid,
+                        dbname     => $database,
+                        location   => $location,
+                        tstamp     => $thisdate,
+                        titlecache => $thistitlecache,
+                    };
+                }
+            }
+            else {
+                push @$alltitlebyissn_ref, {
+                    issn       => $thisissn,
+                    titleid    => $thistitleid,
+                    dbname     => $database,
+                    location   => '',
+                    tstamp     => $thisdate,
+                    titlecache => $thistitlecache,
+                };
+            }
             
             $issn_insertcount++;
 
             if ($issn_insertcount && $issn_insertcount % 10000 == 0 && @$alltitlebyissn_ref){
                 if ($bulkinsert){
                     foreach my $this_row_ref (@$alltitlebyissn_ref){
-                        print ISSNOUT $this_row_ref->{issn}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{tstamp}."".cleanup_content($this_row_ref->{titlecache})."\n";
+                        print ISSNOUT $this_row_ref->{issn}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{location}."".$this_row_ref->{tstamp}."".cleanup_content($this_row_ref->{titlecache})."\n";
                     }
                     $logger->info("### $database: $issn_insertcount ISSNs collected");
                 }
@@ -490,7 +581,7 @@ ALLTITLECONTROL
     if (@$alltitlebyissn_ref){
         if ($bulkinsert){
             foreach my $this_row_ref (@$alltitlebyissn_ref){
-                print ISSNOUT $this_row_ref->{issn}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{tstamp}."".cleanup_content($this_row_ref->{titlecache})."\n";
+                print ISSNOUT $this_row_ref->{issn}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{location}."".$this_row_ref->{tstamp}."".cleanup_content($this_row_ref->{titlecache})."\n";
             }
         }
         else {
@@ -538,21 +629,52 @@ ALLTITLECONTROL
         if ($thisworkkey){
             $logger->debug("Got Title with id $thistitleid and workkey $thisworkkey");
 
-            push @$alltitlebyworkkey_ref, {
-                workkey    => $thisworkkey,
-                edition    => $edition || 1,
-                titleid    => $thistitleid,
-                dbname     => $database,
-                tstamp     => $thisdate,
-                titlecache => $thistitlecache,
-            };
+            my $all_locations = $catalog->get_schema->resultset('Title')->search_rs(
+                {
+                    'title_fields.field' => 4230,
+                    'me.id'              => $thistitleid,
+                },
+                {
+                    select => ['title_fields.content'],
+                    as     => ['thislocation'],
+                    join   => ['title_fields'],
+                    group_by => ['title_fields.content'],
+                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+                }
+            );
+            
+            if ($all_locations){
+                while (my $this_location = $all_locations->next()){
+                    my $location = $this_location->{thislocation};
+                    push @$alltitlebyworkkey_ref, {
+                        workkey    => $thisworkkey,
+                        edition    => $edition || 1,
+                        titleid    => $thistitleid,
+                        dbname     => $database,
+                        location   => $location,
+                        tstamp     => $thisdate,
+                        titlecache => $thistitlecache,
+                    };
+                }
+            }
+            else {
+                push @$alltitlebyworkkey_ref, {
+                    workkey    => $thisworkkey,
+                    edition    => $edition || 1,
+                    titleid    => $thistitleid,
+                    dbname     => $database,
+                    location   => '',
+                    tstamp     => $thisdate,
+                    titlecache => $thistitlecache,
+                };
+            }
             $workkey_insertcount++;
         }
 
         if ($workkey_insertcount && $workkey_insertcount % 10000 == 0 && @$alltitlebyworkkey_ref){
             if ($bulkinsert){
                 foreach my $this_row_ref (@$alltitlebyworkkey_ref){
-                    print WORKKEYOUT $this_row_ref->{workkey}."".$this_row_ref->{edition}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".cleanup_content($this_row_ref->{titlecache})."".$this_row_ref->{tstamp}."\n";
+                    print WORKKEYOUT $this_row_ref->{workkey}."".$this_row_ref->{edition}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{location}."".cleanup_content($this_row_ref->{titlecache})."".$this_row_ref->{tstamp}."\n";
                 }
                 $logger->info("### $database: $workkey_insertcount Workkeys collected");
             }
@@ -567,7 +689,7 @@ ALLTITLECONTROL
     if (@$alltitlebyworkkey_ref){
         if ($bulkinsert){
             foreach my $this_row_ref (@$alltitlebyworkkey_ref){
-                print WORKKEYOUT $this_row_ref->{workkey}."".$this_row_ref->{edition}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".cleanup_content($this_row_ref->{titlecache})."".$this_row_ref->{tstamp}."\n";
+                print WORKKEYOUT $this_row_ref->{workkey}."".$this_row_ref->{edition}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{location}."".cleanup_content($this_row_ref->{titlecache})."".$this_row_ref->{tstamp}."\n";
             }
         }
         else {

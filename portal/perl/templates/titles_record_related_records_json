@@ -1,11 +1,14 @@
 [%-
 
-related_records = record.enrich_related_records({ viewname => view }).get_related_records ;
+blacklisted_locations = [ 'DE-38-USBFB' ];
+
+related_records = record.enrich_related_records({ viewname => view, blacklisted_locations => blacklisted_locations }).get_related_records ;
 
 related_records_output = [];
 
 FOREACH related_record IN related_records.sort({order = 'asc', type = 'title'}).get_records ;
   item = related_record.get_fields ;
+
   item.delete('id','database');
 
   thisdatabase = related_record.database;
@@ -25,6 +28,19 @@ FOREACH related_record IN related_records.sort({order = 'asc', type = 'title'}).
       }
       fields = item      
   };
+
+  item_location = related_record.get_locations.first;
+
+  IF item_location ;
+    thisrecord.locations = [{
+        link = {
+              rel = 'self'
+              href = "${scheme}://${servername}${path_prefix}/${config.get('locations_loc')}/id/${item_location}.json"
+        }
+        id = item_location
+        description = locinfo.get('identifier').${item_location}.description  
+    }];
+  END;
 
   related_records_output.push(thisrecord);
 END ;

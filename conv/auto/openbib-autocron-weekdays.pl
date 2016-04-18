@@ -6,7 +6,7 @@
 #
 #  CRON-Job zum automatischen aktualisieren aller OpenBib-Datenbanken
 #
-#  Dieses File ist (C) 1997-2015 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2016 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -132,6 +132,8 @@ my $blacklist_ref = {
     'inst448master' => 1,
     'inst429' => 1,
     'inst448' => 1,
+    'inst401' => 1,
+    'inst401master' => 1,
     'inst622' => 1,
     'inst622master' => 1,
     'lehrbuchsmlg' => 1,
@@ -194,15 +196,15 @@ autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync =
 
 ##############################
 
-$logger->info("### PRINTPDA");
-
-autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['dreierpda','vubpda'] });
-
-##############################
-
 $logger->info("### EBOOKPDA");
 
 autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['ebookpda'] });
+
+##############################
+
+$logger->info("### PRINTPDA");
+
+autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['dreierpda','vubpda'] });
 
 ##############################
 
@@ -211,13 +213,18 @@ $logger->info("### Generating joined searchindexes");
 
 system("/opt/openbib/autoconv/bin/autojoinindex_xapian.pl");
 
+$logger->info("###### Updating done");
+
+if ($cluster){
+    $logger->info("### Changing cluster/server-status to updated");
+    $config->update_local_serverstatus("updated");
+}
+
 $logger->info("### Dumping isbns");
 
 system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_usb 2>&1 > /dev/null");
 system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_uni 2>&1 > /dev/null");
 system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_komplett 2>&1 > /dev/null");
-
-$logger->info("###### Updating done");
 
 if ($updatemaster && $maintenance){
     $logger->info("### Updating clouds");
@@ -237,11 +244,6 @@ if ($maintenance){
     system("$config->{'base_dir'}/bin/dump_enrichmnt.pl");
     
     $logger->info("###### Maintenance done");
-}
-
-if ($cluster){
-    $logger->info("### Changing cluster/server-status to updated");
-    $config->update_local_serverstatus("updated");
 }
 
 sub threadA {
@@ -377,13 +379,13 @@ sub threadC {
 
     $logger->info("### Sonstige Master-Institutskataloge");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst622master'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst622master','inst401master'] });
 
     ##############################
     
     $logger->info("### Aufgesplittete sonstige Master-Institutskataloge");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst622'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst622','inst401'] });
 
     ##############################
 

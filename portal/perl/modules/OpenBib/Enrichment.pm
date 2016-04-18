@@ -260,20 +260,30 @@ sub check_availability_by_isbn {
     my $databases_ref  = exists $arg_ref->{databases}
         ? $arg_ref->{databases}        : [];
 
+    my $locations_ref  = exists $arg_ref->{locations}
+        ? $arg_ref->{locations}        : [];
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $logger->debug("Checking ISBNs ".join(' ',@$isbn_ref)." in databases ".join(' ',@$databases_ref));
+    $logger->debug("Checking ISBNs ".join(' ',@$isbn_ref)." in databases ".join(' ',@$databases_ref)." / locations ".join(' ',@$locations_ref));
     
     return 0 unless ($isbn_ref && $databases_ref);
 
     my $is_available =  0;
 
-    my $dbname_args = [];
+    my $dbname_args    = [];
+    my $location_args = [];
 
     foreach my $dbname (@$databases_ref){
         push @$dbname_args, {
             dbname => $dbname,
+        };
+    }
+
+    foreach my $location (@$locations_ref){
+        push @$location_args, {
+            location => $location,
         };
     }
     
@@ -281,12 +291,32 @@ sub check_availability_by_isbn {
         # Normierung auf ISBN13
         my $isbn13 = OpenBib::Common::Util::to_isbn13($isbn);
 
-        my $title_count = $self->get_schema->resultset('AllTitleByIsbn')->search_rs(
-            {
+        my $where_ref = {};
+        
+        if (@$databases_ref && ! @$locations_ref){
+            $where_ref = {
                 isbn => $isbn13,
-                -or => $dbname_args,
-                    
-            }
+                -or  => $dbname_args,
+            };
+        }
+        elsif (!@$databases_ref && @$locations_ref){
+            $where_ref = {
+                isbn => $isbn13,
+                -or  => $location_args,
+            };
+        }
+        elsif (@$databases_ref && @$locations_ref){
+            $where_ref = {
+                isbn => $isbn13,
+                -and => [
+                    -or  => $dbname_args,
+                    -or  => $location_args,
+                ],
+            };
+        }
+        
+        my $title_count = $self->get_schema->resultset('AllTitleByIsbn')->search_rs(
+            $where_ref
         )->count;
 
         $is_available+=$title_count;

@@ -7,7 +7,7 @@
 #  Extrahieren der Zeitschriftenliste eines Instituts anhand aller
 #  im Katalog instzs gefundenen lokalen Sigeln
 #
-#  Dieses File ist (C) 2006-2015 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2016 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -54,11 +54,11 @@ while (my $result=$request->fetchrow_hashref()){
     # Keine Liste fuer den USB-Bestand
     next if ($sigel eq "38");
     
-    system($config->{tool_dir}."/gen_zsstlist.pl --sigel=$sigel --mode=tex");
+    system($config->{tool_dir}."/gen_zsstlist.pl --sigel=$sigel --mode=tex -bibsort");
     system("cd /var/www/zeitschriftenlisten ; pdflatex --interaction=batchmode /var/www/zeitschriftenlisten/zeitschriften-$sigel.tex");
     system("cd /var/www/zeitschriftenlisten ; pdflatex --interaction=batchmode /var/www/zeitschriftenlisten/zeitschriften-$sigel-bibsort.tex");
     
-    system($config->{tool_dir}."/gen_zsstlist.pl --sigel=$sigel -showall --enrichnatfile=/opt/openbib/autoconv/pools/instzs/nationallizenzen.csv --mode=tex");
+    system($config->{tool_dir}."/gen_zsstlist.pl --sigel=$sigel -showall --enrichnatfile=/opt/openbib/autoconv/pools/instzs/nationallizenzen.csv --mode=tex -bibsort");
     system("cd /var/www/zeitschriftenlisten ; pdflatex --interaction=batchmode /var/www/zeitschriftenlisten/zeitschriften-$sigel-all.tex");
     system("cd /var/www/zeitschriftenlisten ; pdflatex --interaction=batchmode /var/www/zeitschriftenlisten/zeitschriften-$sigel-all-bibsort.tex");
 

@@ -225,6 +225,10 @@ sub process {
     # Initialisieren und Basisinformationen setzen
     my $index_doc = OpenBib::Index::Document->new({ database => $self->{database}, id => $id, locations => $locations_ref });
 
+    # Locations abspeichern
+
+    $index_doc->add_data("locations",$locations_ref);
+
     # Popularitaet, Tags und Literaturlisten verarbeiten fuer Index-Data
     {
         if (exists $self->{storage}{listitemdata_popularity}{$id}) {
@@ -308,6 +312,17 @@ sub process {
         }
     }
 
+    # Locations in Kategorie 4230 ablegen
+
+    foreach my $location (@$locations_ref){
+        my $mult = 1;
+        push @{$fields_ref->{'4230'}}, {
+            mult     => $mult++,
+            subfield => '',
+            content  => $location,
+        };
+    }
+    
     # Zentrale Anreicherungsdaten lokal einspielen
     if ($self->{local_enrichmnt} && (@{$enrichmnt_isbns_ref} || @{$enrichmnt_issns_ref})) {
         @{$enrichmnt_isbns_ref} =  keys %{{ map { $_ => 1 } @${enrichmnt_isbns_ref} }}; # Only unique
@@ -664,7 +679,7 @@ sub process {
                         supplement => $supplement,
                     }) if (exists $self->{conv_config}{listitemcat}{$field});
                     
-                    push @personcorporatebody, $mainentry;
+                    push @personcorporatebody, $mainentry  unless ($field eq "4308");
                     
 #                    if (exists $inverted_ref->{$field}->{index}) {
                     push @person, $personid;
@@ -728,7 +743,7 @@ sub process {
                         supplement => $supplement,
                     }) if (exists $self->{conv_config}{listitemcat}{$field});
                     
-                    push @personcorporatebody, $mainentry;
+                    push @personcorporatebody, $mainentry unless ($field eq "4307");
                     
 #                    if (exists $inverted_ref->{$field}->{index}) {                    
                         push @corporatebody, $corporatebodyid;

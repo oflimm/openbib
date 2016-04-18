@@ -24,7 +24,7 @@ __PACKAGE__->table("all_titles_by_workkey");
   data_type: 'bigint'
   is_auto_increment: 1
   is_nullable: 0
-  sequence: 'all_titles_by_workkey_id_seq'
+  sequence: 'all_titles_by_workkey_tmp_id_seq'
 
 =head2 workkey
 
@@ -33,7 +33,7 @@ __PACKAGE__->table("all_titles_by_workkey");
 
 =head2 edition
 
-  data_type: 'bigint'
+  data_type: 'text'
   is_nullable: 1
 
 =head2 dbname
@@ -46,6 +46,12 @@ __PACKAGE__->table("all_titles_by_workkey");
 
   data_type: 'varchar'
   is_nullable: 0
+  size: 255
+
+=head2 location
+
+  data_type: 'varchar'
+  is_nullable: 1
   size: 255
 
 =head2 titlecache
@@ -66,16 +72,18 @@ __PACKAGE__->add_columns(
     data_type         => "bigint",
     is_auto_increment => 1,
     is_nullable       => 0,
-    sequence          => "all_titles_by_workkey_id_seq",
+    sequence          => "all_titles_by_workkey_tmp_id_seq",
   },
   "workkey",
   { data_type => "text", is_nullable => 0 },
   "edition",
-  { data_type => "bigint", is_nullable => 1 },
+  { data_type => "text", is_nullable => 1 },
   "dbname",
   { data_type => "varchar", is_nullable => 0, size => 25 },
   "titleid",
   { data_type => "varchar", is_nullable => 0, size => 255 },
+  "location",
+  { data_type => "varchar", is_nullable => 1, size => 255 },
   "titlecache",
   { data_type => "text", is_nullable => 1 },
   "tstamp",
@@ -84,8 +92,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2014-11-11 10:23:05
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:oLCk+LKeNwRAGvpLGRNLfA
+# Created by DBIx::Class::Schema::Loader v0.07010 @ 2016-02-25 15:01:05
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:+f5wnkbmoQwIJ7imjPV1Wg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

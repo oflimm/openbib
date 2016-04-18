@@ -54,3 +54,5 @@ exclude:
        field: 'isbn'
        databases:
           - inst001
+       locations:
+          - 'DE-38'

@@ -458,12 +458,14 @@ sub show_record_searchindex {
 
     my $terms_ref  = $searcher->get_indexterms({ database => $database, id => $titleid });
     my $values_ref = $searcher->get_values({ database => $database, id => $titleid });
+    my $data_ref   = $searcher->get_data({ database => $database, id => $titleid });
     
     my $ttdata = {
         database => $database,
         titleid  => $titleid,
         terms    => $terms_ref,
         values   => $values_ref,
+	data     => $data_ref,
     };
     
     return $self->print_page($config->{'tt_users_titles_record_searchindex_tname'},$ttdata);

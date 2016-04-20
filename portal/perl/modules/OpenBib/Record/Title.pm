@@ -81,6 +81,9 @@ sub new {
     my $database  = exists $arg_ref->{database}
         ? $arg_ref->{database}       : undef;
 
+    my $locations = exists $arg_ref->{locations}
+        ? $arg_ref->{locations}      : undef;
+
     my $date      = exists $arg_ref->{date}
         ? $arg_ref->{date}           : undef;
 
@@ -111,6 +114,10 @@ sub new {
     
     if (defined $database){
         $self->{database} = $database;
+    }
+
+    if (defined $locations){
+        $self->set_locations($locations);
     }
 
     if (defined $id){

@@ -7,7 +7,7 @@
 #  Abgleich des Bestandes auf Mehrfachbesitz mehrerer Kataloge
 #  anhand des Selektors und Ausgabe in eine csv-Datei
 #
-#  Dieses File ist (C) 2009-2015 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2009-2016 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -47,23 +47,26 @@ use YAML::Syck;
 
 my $config      = OpenBib::Config->new;
 
-my (@databases,$help,$logfile,$selector,$filename);
+my (@locations,$help,$logfile,$loglevel,$selector,$filename);
 
-&GetOptions("database=s@"     => \@databases,
-            "logfile=s"       => \$logfile,
-            "selector=s"      => \$selector,
-            "filename=s"      => \$filename,
-	    "help"            => \$help
-	    );
+&GetOptions(
+    "location=s@"     => \@locations,
+    "logfile=s"       => \$logfile,
+    "loglevel=s"      => \$loglevel,
+    "selector=s"      => \$selector,
+    "filename=s"      => \$filename,
+    "help"            => \$help
+);
 
-if ($help || !@databases || !$selector || !$filename){
+if ($help || !@locations || !$selector || !$filename){
     print_help();
 }
 
-$logfile=($logfile)?$logfile:'/var/log/openbib/bestandsabgleich.log';
+$logfile =($logfile)?$logfile:'/var/log/openbib/bestandsabgleich.log';
+$loglevel=($loglevel)?$loglevel:'ERROR';
 
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=ERROR, LOGFILE, Screen
+log4perl.rootLogger=$loglevel, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append
@@ -81,7 +84,7 @@ my $logger = get_logger();
 
 my $enrichmnt = new OpenBib::Enrichment;
 
-my $common_holdings_ref = $enrichmnt->get_common_holdings({ selector => $selector, databases => \@databases});
+my $common_holdings_ref = $enrichmnt->get_common_holdings({ selector => $selector, locations => \@locations});
 
 my $csv = Text::CSV_XS->new ({
     'eol'         => "\n",
@@ -91,8 +94,8 @@ my $csv = Text::CSV_XS->new ({
 
 #my $csv = new Text::CSV_XS;
 
-my %database_lookup = ();
-map { $database_lookup{$_} = 1 } @databases;
+my %location_lookup = ();
+map { $location_lookup{$_} = 1 } @locations;
 
 my @categories = sort keys %{$common_holdings_ref->[0]};
 
@@ -108,8 +111,8 @@ my $out_ref = [
     'year',    
 ];
 
-foreach my $database (sort @databases){
-    push @$out_ref, $database;
+foreach my $location (sort @locations){
+    push @$out_ref, $location;
 }
 
 $csv->print($fh,$out_ref);
@@ -123,9 +126,9 @@ foreach my $item_ref (@{$common_holdings_ref}){
         $item_ref->{year}
     ];
 
-    foreach my $database (sort @databases){
-        if ($item_ref->{$database}->{loc_mark}){
-            push @$out_ref, $item_ref->{$database}->{loc_mark};
+    foreach my $location (sort @locations){
+        if ($item_ref->{$location}->{loc_mark}){
+            push @$out_ref, $item_ref->{$location}->{loc_mark};
         }
         else {
             push @$out_ref, '-';
@@ -142,7 +145,7 @@ sub print_help {
 bestandsabgleich.pl - Abgleich des Bestandes auf Mehrfachbesitz mehrerer Kataloge anhand des Selektors
                       Ausgabe in eine csv-Datei
 
-    bestandsabgleich.pl --selector=[ISBN13|ISSN|BibKey] --database=db1 --database=db2 --filename=data.csv
+    bestandsabgleich.pl --selector=[ISBN13|ISSN|BibKey] --location=db1 --location=db2 --filename=data.csv
 HELP
 exit;
 }

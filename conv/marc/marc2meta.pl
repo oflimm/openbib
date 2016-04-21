@@ -1110,7 +1110,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
         my $locations_ref = $convconfig->{exclude}{by_availability}{locations};
         
         if ($enrichmnt->check_availability_by_isbn({isbn => \@keys, databases => $databases_ref, locations => $locations_ref })){
-            $logger->info("Titel mit ISBNs ".join(' ',@keys)." bereits in Datenbanken ".join(' ',@$databases_ref)." bzgl. Standorten ".join(' ',@$locations_ref)." vorhanden!");
+            $logger->info("Titel mit ISBNs ".join(' ',@keys)." bereits an Standorten ".join(' ',@$locations_ref)." vorhanden!");
             $excluded_titles++;
             next;
         }        

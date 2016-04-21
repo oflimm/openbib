@@ -28,6 +28,10 @@ exclude:
         - 'doab'
         - 'DE-38-USBFB'
         - 'bestellungen'
+        - 'nationallizenzen'
+        - 'freebooks'
+        - 'tmpebooks'
+        - 'tusculum'
         - 'usbebooks'
         - 'nomos'
         

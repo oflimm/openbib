@@ -93,6 +93,11 @@
 <tr><td>Sortierung</td><td>[% sorttypes.${category} %]</td><td>[% category %]</td><td>[% values.${sorttypes.${category}} %]</td></tr>
 [% END %]
 </table>
+
+<h2>Daten</h2>
+<p>
+[% data %]
+</p>
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->

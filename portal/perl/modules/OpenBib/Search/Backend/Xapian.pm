@@ -654,16 +654,18 @@ sub get_records {
         my $document        = $match->get_document();
         my $titlistitem_ref = decode_json $document->get_data();
 
-        my $id       = $titlistitem_ref->{id};
-        my $database = $titlistitem_ref->{database};
+        my $id            = $titlistitem_ref->{id};
+        my $database      = $titlistitem_ref->{database};
+        my $locations_ref = $titlistitem_ref->{locations}[0]; # ToDo!!! Locations werden im Index falsch abgelegt als Array im Array. 
         delete $titlistitem_ref->{id};
         delete $titlistitem_ref->{database};
+        delete $titlistitem_ref->{locations};
 
         if ($logger->is_debug){
             $logger->debug("Record: ".decode_utf8($document->get_data()) );
         }
         
-        $recordlist->add(new OpenBib::Record::Title({database => $database, id => $id})->set_fields_from_storable($titlistitem_ref));
+        $recordlist->add(new OpenBib::Record::Title({database => $database, id => $id, locations => $locations_ref})->set_fields_from_storable($titlistitem_ref));
     }
 
     return $recordlist;
@@ -869,6 +871,62 @@ sub get_values {
     }
     
     return $values_ref;
+}
+
+sub get_data {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $database          = exists $arg_ref->{database}
+        ? $arg_ref->{database}      : undef;
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id}            : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = $self->get_config;
+
+    my $dbh = undef;
+    
+    eval {
+        $dbh = new Search::Xapian::Database ( $config->{xapian_index_base_path}."/".$database) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+    };
+    
+    if ($@){
+        $logger->error("Initializing with Database: $database - :".$@." not available");
+        return [];
+    }
+
+    my $qp = new Search::Xapian::QueryParser() || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+
+    # Explizites Setzen der Datenbank fuer FLAG_WILDCARD
+    eval {
+        $qp->set_database($dbh);
+    };
+
+    if ($@){
+        $logger->error("Error setting database $database :".$@);
+        return [];
+    }
+    
+    $qp->add_prefix('id', 'Q');
+    $qp->set_default_op(Search::Xapian::OP_AND);
+
+    my $enq  = $dbh->enquire($qp->parse_query("id:$id"));
+
+    my @matches = $enq->matches(0,10);
+
+    my $data;
+    
+    if (scalar(@matches) == 1){
+        my $docid         = $matches[0]->get_docid;;
+        my $document      = $matches[0]->get_document;;
+	
+	$data = $document->get_data;
+    }
+    
+    return $data;
 }
 
 sub parse_query {

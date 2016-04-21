@@ -138,7 +138,7 @@ foreach my $database (@databases){
     
     my %locations_map = ();
 
-    tie %locations_map,        'MLDBM', ""$data_dir/locations_map_${database}.db"
+    tie %locations_map,        'MLDBM', "$data_dir/locations_map_${database}.db"
         or die "Could not tie locations_map_${database}.db\n";
     
     

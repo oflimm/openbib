@@ -6,7 +6,7 @@
 #  Aktualisierung der all_titles_by-Tabellen, in der die ISBN's, ISSN's,
 #  BibKeys und WorkKeys aller Titel in allen Kataloge nachgewiesen sind.
 #
-#  Dieses File ist (C) 2008-2015 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2016 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -127,6 +127,36 @@ my $last_insertion_date = 0; # wird fuer inkrementelles Update benoetigt
 
 foreach my $database (@databases){
 
+    my $catalog = new OpenBib::Catalog({ database => $database });
+
+    $logger->info("### $database: Locations bestimmen");
+    
+    my $locations_map_ref = {};
+
+    my $all_locations = $catalog->get_schema->resultset('TitleField')->search_rs(
+        {
+            'field'    => 4230,
+        },
+        {
+            select => ['titleid','content'],
+            as     => ['thistitleid','thislocation'],
+            group_by => ['titleid','content'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+        }
+    );
+
+    my $loc_count = 0;
+    while (my $this_location = $all_locations->next()){
+        my $location = $this_location->{thislocation};
+        my $titleid  = $this_location->{thistitleid};
+
+        push @{$locations_map_ref->{$titleid}}, $location;
+
+        $loc_count++;
+    }
+
+    $logger->info("### $database: $loc_count Locations gefunden");
+    
     my $data_dir = $config->{autoconv_dir}."/data/$database";    
     
     my $deletefilename = ($deletefilename)?$deletefilename:$data_dir."/title.delete";
@@ -202,8 +232,6 @@ ALLTITLECONTROL
     }
 
     $logger->info("### $database: Getting ISBNs from database $database and adding to enrichmntdb");
-
-    my $catalog = new OpenBib::Catalog({ database => $database });
 
     my $where_ref = { dbname => $database };
 
@@ -304,25 +332,9 @@ ALLTITLECONTROL
             content  => $thisisbn,
         });
 
-
-        my $all_locations = $catalog->get_schema->resultset('Title')->search_rs(
-            {
-                'title_fields.field' => 4230,
-                'me.id'              => $thistitleid,
-            },
-            {
-                select => ['title_fields.content'],
-                as     => ['thislocation'],
-                join   => ['title_fields'],
-                group_by => ['title_fields.content'],
-                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-            }
-        );
         
-        if ($all_locations){
-            while (my $this_location = $all_locations->next()){
-                my $location = $this_location->{thislocation};
-                #print STDERR "$thistitleid -> $location\n";
+        if (defined $locations_map_ref->{$thistitleid}){
+            foreach my $location (@{$locations_map_ref->{$thistitleid}}){
                 push @$alltitlebyisbn_ref, {
                     isbn       => $thisisbn,
                     titleid    => $thistitleid,
@@ -408,23 +420,8 @@ ALLTITLECONTROL
         if ($thisbibkey){
             $logger->debug("Got Title with id $thistitleid and bibkey $thisbibkey");
 
-            my $all_locations = $catalog->get_schema->resultset('Title')->search_rs(
-                {
-                    'title_fields.field' => 4230,
-                    'me.id'              => $thistitleid,
-                },
-                {
-                    select => ['title_fields.content'],
-                    as     => ['thislocation'],
-                    join   => ['title_fields'],
-                    group_by => ['title_fields.content'],
-                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-                }
-            );
-            
-            if ($all_locations){
-                while (my $this_location = $all_locations->next()){
-                    my $location = $this_location->{thislocation};
+            if (defined $locations_map_ref->{$thistitleid}){
+                foreach my $location (@{$locations_map_ref->{$thistitleid}}){
                     push @$alltitlebybibkey_ref, {
                         bibkey     => $thisbibkey,
                         titleid    => $thistitleid,
@@ -522,23 +519,8 @@ ALLTITLECONTROL
             
             $logger->debug("Got Title with id $thistitleid and ISSN $thisissn");
 
-            my $all_locations = $catalog->get_schema->resultset('Title')->search_rs(
-                {
-                    'title_fields.field' => 4230,
-                    'me.id'              => $thistitleid,
-                },
-                {
-                    select => ['title_fields.content'],
-                    as     => ['thislocation'],
-                    join   => ['title_fields'],
-                    group_by => ['title_fields.content'],
-                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-                }
-            );
-            
-            if ($all_locations){
-                while (my $this_location = $all_locations->next()){
-                    my $location = $this_location->{thislocation};
+            if (defined $locations_map_ref->{$thistitleid}){
+                foreach my $location (@{$locations_map_ref->{$thistitleid}}){
                     push @$alltitlebyissn_ref, {
                         issn       => $thisissn,
                         titleid    => $thistitleid,
@@ -629,23 +611,8 @@ ALLTITLECONTROL
         if ($thisworkkey){
             $logger->debug("Got Title with id $thistitleid and workkey $thisworkkey");
 
-            my $all_locations = $catalog->get_schema->resultset('Title')->search_rs(
-                {
-                    'title_fields.field' => 4230,
-                    'me.id'              => $thistitleid,
-                },
-                {
-                    select => ['title_fields.content'],
-                    as     => ['thislocation'],
-                    join   => ['title_fields'],
-                    group_by => ['title_fields.content'],
-                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-                }
-            );
-            
-            if ($all_locations){
-                while (my $this_location = $all_locations->next()){
-                    my $location = $this_location->{thislocation};
+            if (defined $locations_map_ref->{$thistitleid}){
+                foreach my $location (@{$locations_map_ref->{$thistitleid}}){
                     push @$alltitlebyworkkey_ref, {
                         workkey    => $thisworkkey,
                         edition    => $edition || 1,

@@ -41,6 +41,9 @@ use DBI;
 use Getopt::Long;
 use YAML;
 use POSIX qw/strftime/;
+use MLDBM qw(DB_File Storable);
+use Storable ();
+use DB_File;
 
 use OpenBib::Config;
 use OpenBib::Enrichment;
@@ -127,12 +130,18 @@ my $last_insertion_date = 0; # wird fuer inkrementelles Update benoetigt
 
 foreach my $database (@databases){
 
-    my $catalog = new OpenBib::Catalog({ database => $database });
+    my $data_dir = $config->{autoconv_dir}."/data/$database";    
+
+    my $catalog  = new OpenBib::Catalog({ database => $database });
 
     $logger->info("### $database: Locations bestimmen");
     
-    my $locations_map_ref = {};
+    my %locations_map = ();
 
+    tie %locations_map,        'MLDBM', ""$data_dir/locations_map_${database}.db"
+        or die "Could not tie locations_map_${database}.db\n";
+    
+    
     my $all_locations = $catalog->get_schema->resultset('TitleField')->search_rs(
         {
             'field'    => 4230,
@@ -150,14 +159,14 @@ foreach my $database (@databases){
         my $location = $this_location->{thislocation};
         my $titleid  = $this_location->{thistitleid};
 
-        push @{$locations_map_ref->{$titleid}}, $location;
-
+        my $this_locations_ref = (defined $locations_map{$titleid})?$locations_map{$titleid}:[];
+        push @{$this_locations_ref}, $location;
+        $locations_map{$titleid} = $this_locations_ref;
+        
         $loc_count++;
     }
 
     $logger->info("### $database: $loc_count Locations gefunden");
-    
-    my $data_dir = $config->{autoconv_dir}."/data/$database";    
     
     my $deletefilename = ($deletefilename)?$deletefilename:$data_dir."/title.delete";
     my $insertfilename = ($insertfilename)?$insertfilename:$data_dir."/title.insert";
@@ -333,8 +342,8 @@ ALLTITLECONTROL
         });
 
         
-        if (defined $locations_map_ref->{$thistitleid}){
-            foreach my $location (@{$locations_map_ref->{$thistitleid}}){
+        if (defined $locations_map{$thistitleid}){
+            foreach my $location (@{$locations_map{$thistitleid}}){
                 push @$alltitlebyisbn_ref, {
                     isbn       => $thisisbn,
                     titleid    => $thistitleid,
@@ -420,8 +429,8 @@ ALLTITLECONTROL
         if ($thisbibkey){
             $logger->debug("Got Title with id $thistitleid and bibkey $thisbibkey");
 
-            if (defined $locations_map_ref->{$thistitleid}){
-                foreach my $location (@{$locations_map_ref->{$thistitleid}}){
+            if (defined $locations_map{$thistitleid}){
+                foreach my $location (@{$locations_map{$thistitleid}}){
                     push @$alltitlebybibkey_ref, {
                         bibkey     => $thisbibkey,
                         titleid    => $thistitleid,
@@ -519,8 +528,8 @@ ALLTITLECONTROL
             
             $logger->debug("Got Title with id $thistitleid and ISSN $thisissn");
 
-            if (defined $locations_map_ref->{$thistitleid}){
-                foreach my $location (@{$locations_map_ref->{$thistitleid}}){
+            if (defined $locations_map{$thistitleid}){
+                foreach my $location (@{$locations_map{$thistitleid}}){
                     push @$alltitlebyissn_ref, {
                         issn       => $thisissn,
                         titleid    => $thistitleid,
@@ -611,8 +620,8 @@ ALLTITLECONTROL
         if ($thisworkkey){
             $logger->debug("Got Title with id $thistitleid and workkey $thisworkkey");
 
-            if (defined $locations_map_ref->{$thistitleid}){
-                foreach my $location (@{$locations_map_ref->{$thistitleid}}){
+            if (defined $locations_map{$thistitleid}){
+                foreach my $location (@{$locations_map{$thistitleid}}){
                     push @$alltitlebyworkkey_ref, {
                         workkey    => $thisworkkey,
                         edition    => $edition || 1,
@@ -685,7 +694,10 @@ ALLTITLECONTROL
         }
     }
 
+    unlink("$data_dir/locations_map_${database}.db");
+
     $logger->info("### $database: Processing done");
+
 }
 
 

@@ -254,13 +254,13 @@ sub check_availability_by_isbn {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $isbn_ref       = exists $arg_ref->{isbn}
+    my $isbn_ref       = defined $arg_ref->{isbn}
         ? $arg_ref->{isbn}             : [];
 
-    my $databases_ref  = exists $arg_ref->{databases}
+    my $databases_ref  = defined $arg_ref->{databases}
         ? $arg_ref->{databases}        : [];
 
-    my $locations_ref  = exists $arg_ref->{locations}
+    my $locations_ref  = defined $arg_ref->{locations}
         ? $arg_ref->{locations}        : [];
     
     # Log4perl logger erzeugen
@@ -273,7 +273,7 @@ sub check_availability_by_isbn {
     my $is_available =  0;
 
     my $dbname_args    = [];
-    my $location_args = [];
+    my $location_args  = [];
 
     foreach my $dbname (@$databases_ref){
         push @$dbname_args, {
@@ -427,9 +427,9 @@ sub get_common_holdings {
     my $selector            = exists $arg_ref->{selector}
         ? $arg_ref->{selector}         : "ISBN13";
 
-    my $databases_ref       = exists $arg_ref->{databases}
-        ? $arg_ref->{databases}        : ();
-
+    my $locations_ref       = exists $arg_ref->{locations}
+        ? $arg_ref->{locations}        : ();
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -437,7 +437,7 @@ sub get_common_holdings {
 
     my $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd}) or $logger->error_die($DBI::errstr);
 
-    return () unless (@{$databases_ref} && defined $dbh);
+    return () unless (@{$locations_ref} && defined $dbh);
 
     return () unless ($selector eq "ISBN13" || $selector eq "ISSN" || $selector eq "BibKey" || $selector eq "WorkKey");
     
@@ -445,18 +445,18 @@ sub get_common_holdings {
 
     my %all_by_matchkey             = ();
 
-    my $in_select_string = join(',',map {'?'} @{$databases_ref});
+    my $in_select_string = join(',',map {'?'} @{$locations_ref});
     
-    my $sql_string = ($selector eq "ISBN13")?"select * from all_titles_by_isbn where dbname in ($in_select_string)":
-        ($selector eq "ISSN")?"select * from all_titles_by_issn where dbname in ($in_select_string)":
-            ($selector eq "BibKey")?"select * from all_titles_by_bibkey where dbname in ($in_select_string)":
-                ($selector eq "WorkKey")?"select * from all_titles_by_workkey where dbname in ($in_select_string)":"select * from all_titles_by_isbn where dbname in ($in_select_string)";
+    my $sql_string = ($selector eq "ISBN13")?"select * from all_titles_by_isbn where location in ($in_select_string)":
+        ($selector eq "ISSN")?"select * from all_titles_by_issn where location in ($in_select_string)":
+            ($selector eq "BibKey")?"select * from all_titles_by_bibkey where location in ($in_select_string)":
+                ($selector eq "WorkKey")?"select * from all_titles_by_workkey where location in ($in_select_string)":"select * from all_titles_by_isbn where location in ($in_select_string)";
     
     $logger->debug($sql_string);
     
     my $request=$dbh->prepare($sql_string) or $logger->error($DBI::errstr);
     
-    $request->execute(@{$databases_ref}) or $logger->error($DBI::errstr);;
+    $request->execute(@{$locations_ref}) or $logger->error($DBI::errstr);;
 
     my $matchkey_column = ($selector eq "ISBN13")?'isbn':
         ($selector eq "ISSN")?'issn':
@@ -467,27 +467,31 @@ sub get_common_holdings {
     
     while (my $result=$request->fetchrow_hashref){
             
-        if ($result->{titleid} && !defined $all_by_matchkey{$result->{$matchkey_column}}{$result->{dbname}} ){
-            $all_by_matchkey{$result->{$matchkey_column}}{$result->{dbname}} = [ $result->{titleid} ];
+        if ($result->{titleid} && $result->{dbname} && !defined $all_by_matchkey{$result->{$matchkey_column}}{$result->{location}} ){
+            $all_by_matchkey{$result->{$matchkey_column}}{$result->{location}}{$result->{dbname}} = [ $result->{titleid} ];
         }
         elsif ($result->{titleid}) {
-            push @{$all_by_matchkey{$result->{$matchkey_column}}{$result->{dbname}}}, $result->{titleid};
+            push @{$all_by_matchkey{$result->{$matchkey_column}}{$result->{location}}{$result->{dbname}}}, $result->{titleid};
         }
     }
     
     # Einzelbestaende entfernen
     foreach my $matchkey (keys %all_by_matchkey){
-        my @owning_dbs = keys %{$all_by_matchkey{$matchkey}};
+        my @owning_locations = keys %{$all_by_matchkey{$matchkey}};
 
-        if ($#owning_dbs > 0){
-            $logger->debug("$matchkey - $#owning_dbs - ".join(" ; ",@owning_dbs));
+        if ($#owning_locations > 0){
+            $logger->debug("$matchkey - $#owning_locations - ".join(" ; ",@owning_locations));
         }
         
-        if ($#owning_dbs < 1){
+        if ($#owning_locations < 1){
             delete($all_by_matchkey{$matchkey});
         }
     }
 
+    if ($logger->is_debug){
+        $logger->debug("Result: ".YAML::Dump(\%all_by_matchkey));
+    }
+    
     foreach my $matchkey (keys %all_by_matchkey){
         my $this_item_ref = {};
         
@@ -495,40 +499,43 @@ sub get_common_holdings {
         my $title            = "";
         my $title_supplement = "";
         my $year             = "";
-        foreach my $database (@{$databases_ref}){
-            if (exists $all_by_matchkey{$matchkey}{$database}){
+        foreach my $location (@{$locations_ref}){
+            if (exists $all_by_matchkey{$matchkey}{$location}){
                 my @signaturen = ();
-                foreach my $id (@{$all_by_matchkey{$matchkey}{$database}}){
-                    my $record=OpenBib::Record::Title->new({database => $database, id => $id, config => $config})->load_brief_record->get_fields;
-                    if (!$persons){
-                        $persons=$record->{PC0001}[0]{content};
-                    }
-                    
-                    if (!$title){
-                        $title=$record->{T0331}[0]{content};
-                    }
-                    if (!$title_supplement){
-                        if (defined $record->{T0335}[0]{content}){
-                            $title_supplement=$record->{T0335}[0]{content};
+                foreach my $database (keys %{$all_by_matchkey{$matchkey}{$location}}){
+                    foreach my $id (@{$all_by_matchkey{$matchkey}{$location}{$database}}){
+                        my $record=OpenBib::Record::Title->new({database => $database, id => $id, config => $config})->load_brief_record->get_fields;
+                        if (!$persons){
+                            $persons=$record->{PC0001}[0]{content};
                         }
-                    }
-                    if (!$year){
-                        if (defined $record->{T0424}[0]{content}){
-                            $year=$record->{T0424}[0]{content};
+                        
+                        if (!$title){
+                            $title=$record->{T0331}[0]{content};
                         }
-                        elsif (defined $record->{T0425}[0]{content}){
-                            $year=$record->{T0425}[0]{content};
+                        if (!$title_supplement){
+                            if (defined $record->{T0335}[0]{content}){
+                                $title_supplement=$record->{T0335}[0]{content};
+                            }
                         }
-                    }
-
-                    foreach my $signature_ref (@{$record->{X0014}}){
-                        push @signaturen, $signature_ref->{content};
+                        if (!$year){
+                            if (defined $record->{T0424}[0]{content}){
+                                $year=$record->{T0424}[0]{content};
+                            }
+                            elsif (defined $record->{T0425}[0]{content}){
+                                $year=$record->{T0425}[0]{content};
+                            }
+                        }
+                        
+                        foreach my $signature_ref (@{$record->{X0014}}){
+                            push @signaturen, $signature_ref->{content};
+                        }
                     }
                 }
-                $this_item_ref->{$database}{loc_mark} = join(" ; ",@signaturen);
+                
+                $this_item_ref->{$location}{loc_mark} = join(" ; ",@signaturen);
             }
             else {
-                $this_item_ref->{$database}{loc_mark} = "";
+                $this_item_ref->{$location}{loc_mark} = "";
             }
         }
 

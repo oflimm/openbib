@@ -227,7 +227,7 @@ sub process {
 
     # Locations abspeichern
 
-    $index_doc->add_data("locations",$locations_ref);
+    $index_doc->set_data("locations",$locations_ref);
 
     # Popularitaet, Tags und Literaturlisten verarbeiten fuer Index-Data
     {

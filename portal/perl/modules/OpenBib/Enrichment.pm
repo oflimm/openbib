@@ -291,7 +291,9 @@ sub check_availability_by_isbn {
         # Normierung auf ISBN13
         my $isbn13 = OpenBib::Common::Util::to_isbn13($isbn);
 
-        my $where_ref = {};
+        my $where_ref = {
+            isbn => $isbn13,
+        };
         
         if (@$databases_ref && ! @$locations_ref){
             $where_ref = {

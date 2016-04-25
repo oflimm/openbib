@@ -131,7 +131,7 @@ sub fix_data {
     my $data_ref = decode_json $data;
 
     if (ref $data_ref->{locations}[0] eq "ARRAY"){
-        $data_ref->{locations} = $data_ref->{locations][0];
+        $data_ref->{locations} = $data_ref->{locations}[0];
     }
     
     my $new_data = encode_json $data_ref;

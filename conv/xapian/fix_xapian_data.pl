@@ -117,7 +117,7 @@ while ($current_docid <= $last_docid) {
     $dbh->replace_document($current_docid, $doc) unless ($dryrun);
     
     if ($logger->is_debug && $new_data ne $data){
-        $logger->debug("Changed: $current_docid: $data -> ".$doc->get_data);
+        $logger->debug("### $database: Changed $current_docid: $data -> ".$doc->get_data);
     }
 
     $current_docid++;

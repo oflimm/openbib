@@ -8,7 +8,7 @@ create table enriched_content_by_isbn (
  isbn          VARCHAR(13) NOT NULL,
  origin        SMALLINT,
  field         SMALLINT NOT NULL,
- subfield      VARCHAR(2),
+ subfield      VARCHAR(3),
  content       TEXT NOT NULL
 );
 
@@ -18,7 +18,7 @@ create table enriched_content_by_bibkey (
  bibkey        VARCHAR(13) NOT NULL,
  origin        SMALLINT,
  field         SMALLINT NOT NULL,
- subfield      VARCHAR(2),
+ subfield      VARCHAR(3),
  content       TEXT NOT NULL
 );
 
@@ -28,7 +28,7 @@ create table enriched_content_by_issn (
  issn          VARCHAR(13) NOT NULL,
  origin        SMALLINT,
  field         SMALLINT NOT NULL,
- subfield      VARCHAR(2),
+ subfield      VARCHAR(3),
  content       TEXT NOT NULL
 );
 

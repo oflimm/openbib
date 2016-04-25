@@ -95,6 +95,8 @@ my $current_docid = 1;
 
 my $info_message_done = 0;
 
+$logger->info("### $database: Processing Index");
+
 while ($current_docid <= $last_docid) {
 
     

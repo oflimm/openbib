@@ -93,6 +93,8 @@ my $last_docid    = $dbh->get_lastdocid;
 
 my $current_docid = 1;
 
+my $info_message_done = 0;
+
 while ($current_docid <= $last_docid) {
 
     
@@ -115,6 +117,11 @@ while ($current_docid <= $last_docid) {
     $doc->set_data($new_data);
 
     $dbh->replace_document($current_docid, $doc) unless ($dryrun);
+
+    if (!$info_message_done && $new_data ne $data){
+        $logger->info("### $database: Fixing Index");
+        $info_message_done = 1;
+    }
     
     if ($logger->is_debug && $new_data ne $data){
         $logger->debug("### $database: Changed $current_docid: $data -> ".$doc->get_data);

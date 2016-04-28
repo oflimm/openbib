@@ -656,7 +656,7 @@ sub get_records {
 
         my $id            = $titlistitem_ref->{id};
         my $database      = $titlistitem_ref->{database};
-        my $locations_ref = $titlistitem_ref->{locations}[0]; # ToDo!!! Locations werden im Index falsch abgelegt als Array im Array. 
+        my $locations_ref = $titlistitem_ref->{locations};
         delete $titlistitem_ref->{id};
         delete $titlistitem_ref->{database};
         delete $titlistitem_ref->{locations};

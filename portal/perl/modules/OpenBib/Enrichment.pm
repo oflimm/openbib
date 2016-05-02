@@ -453,7 +453,7 @@ sub get_common_holdings {
         ($selector eq "ISSN")?"select * from all_titles_by_issn where location in ($in_select_string)":
             ($selector eq "BibKey")?"select * from all_titles_by_bibkey where location in ($in_select_string)":
                 ($selector eq "WorkKey")?"select * from all_titles_by_workkey where location in ($in_select_string)":"select * from all_titles_by_isbn where location in ($in_select_string)";
-    
+
     $logger->debug($sql_string);
     
     my $request=$dbh->prepare($sql_string) or $logger->error($DBI::errstr);

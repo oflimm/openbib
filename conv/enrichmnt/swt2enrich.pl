@@ -7,7 +7,7 @@
 #  Extrahierung der Schlagworte aus den Daten eines Katalogs
 #  fuer eine Anreicherung per ISBN
 #
-#  Dieses File ist (C) 2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2009-2016 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -56,7 +56,7 @@ my ($help,$importyml,$filename,$logfile,$database);
             "logfile=s"  => \$logfile,
 	    );
 
-if ($help){
+if ($help || !$database){
    print_help();
 }
 
@@ -80,6 +80,8 @@ Log::Log4perl::init(\$log4Perl_config);
 
 # Log4perl logger erzeugen
 my $logger = get_logger();
+
+my $data_dir = $config->{autoconv_dir}."/data/$database";
 
 my $sigel = $config->get_dbinfo({ dbname => $database})->single->sigel;
 
@@ -142,7 +144,7 @@ else {
         push @{$isbn_ref->{"$isbn"}}, $schlagwort;
     }
 
-    YAML::DumpFile("swt-isbn-$database.yml",$isbn_ref);
+    YAML::DumpFile("$data_dir/swt-isbn-$database.yml",$isbn_ref);
 }
 
 $logger->info("Loeschen der bisherigen Daten");

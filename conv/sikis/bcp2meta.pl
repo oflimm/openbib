@@ -48,6 +48,7 @@ use utf8;
 use Encode;
 use Getopt::Long;
 use JSON::XS;
+use Data::Dumper;
 #use MLDBM qw(DB_File Storable);
 use Storable ();
 
@@ -84,12 +85,12 @@ my $subfield_transform_ref = {
 };
 
 our $entl_map_ref = {
-      'X' => 0, # nein
-      ' ' => 1, # ja
-      'L' => 2, # Lesesaal
-      'B' => 3, # Bes. Lesesaal
-      'W' => 4, # Wochenende
-  };
+    'X' => 0, # nein
+    ' ' => 1, # ja
+    'L' => 2, # Lesesaal
+    'B' => 3, # Bes. Lesesaal
+    'W' => 4, # Wochenende
+};
 
 our $updatecode_map_ref = {
     'c' => 'change',
@@ -111,10 +112,10 @@ my %titelbuchkey = ();
 
 if ($reducemem) {
     #tie %buchdaten,        'MLDBM', "./buchdaten.db"
-        #or die "Could not tie buchdaten.\n";
-
+    #or die "Could not tie buchdaten.\n";
+    
     #tie %titelbuchkey,     'MLDBM', "./titelbuchkey.db"
-        #or die "Could not tie titelbuchkey.\n";
+    #or die "Could not tie titelbuchkey.\n";
 }
 
 #goto WEITER;
@@ -136,7 +137,7 @@ while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten,$updatecode) = split ("
 
     chomp($updatecode);
 
-    my %record  = decode_blob('person',$daten);
+    my %record  = decode_blob('person',$daten,$subfield_ref->{person});
 
 #    printf PERSIK "0000:%0d\n", $katkey;
 
@@ -161,8 +162,10 @@ while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten,$updatecode) = split ("
         my $content  = $record{$key};
 
         my $subfield = "";
-        
-        ($content,$subfield) = check_subfield('person',$field,$content) if (defined $subfield_ref->{'person'}{$field});
+
+        if (defined $subfield_ref->{'person'}{$field} && $content =~m/^\((.)\)(.+)/){
+            ($subfield,$content) = ($1,$2);
+        }
         
         my $thiskey = $key;
         my $newkey  = transform_subfield('person',$key,$subfield,$content) if (defined $subfield_ref->{'person'}{$field});
@@ -229,7 +232,7 @@ while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten,$updatecode) = split ("
 
     chomp($updatecode);
 
-    my %record  = decode_blob('corporatebody',$daten);
+    my %record  = decode_blob('corporatebody',$daten,$subfield_ref->{corporatebody});
 
 #    printf KOESIK "0000:%0d\n", $katkey;
 
@@ -254,8 +257,10 @@ while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten,$updatecode) = split ("
         my $content = konv($record{$key});
 
         my $subfield = "";
-        
-        ($content,$subfield) = check_subfield('corporatebody',$field,$content) if (defined $subfield_ref->{'corporatebody'}{$field});
+
+        if (defined $subfield_ref->{'corporatebody'}{$field} && $content =~m/^\((.)\)(.+)/){
+            ($subfield,$content) = ($1,$2);
+        }
         
 #        print KOESIK $key.":".$content."\n" if ($record{$key} !~ /idn:/);
 
@@ -295,7 +300,7 @@ while (my ($katkey,$aktion,$reserv,$ansetzung,$daten,$updatecode) = split ("",<
 
     chomp($updatecode);
 
-    my %record  = decode_blob('classification',$daten);
+    my %record  = decode_blob('classification',$daten,$subfield_ref->{classification});
         
 #    printf SYSSIK "0000:%0d\n", $katkey;
 
@@ -321,7 +326,9 @@ while (my ($katkey,$aktion,$reserv,$ansetzung,$daten,$updatecode) = split ("",<
 
         my $subfield = "";
         
-        ($content,$subfield) = check_subfield('classification',$field,$content) if (defined $subfield_ref->{'classification'}{$field});
+        if (defined $subfield_ref->{'classification'}{$field} && $content =~m/^\((.)\)(.+)/){
+            ($subfield,$content) = ($1,$2);
+        }
         
 #        print SYSSIK $key.":".$content."\n" if ($record{$key} !~ /idn:/);
 
@@ -361,7 +368,7 @@ while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten,$updatecode) = split ("
 
     chomp($updatecode);
 
-    my %record  = decode_blob('subject',$daten);
+    my %record  = decode_blob('subject',$daten,$subfield_ref->{subject});
     
 #    printf SWDSIK "0000:%0d\n", $katkey;
 
@@ -411,7 +418,9 @@ while (my ($katkey,$aktion,$reserv,$id,$ansetzung,$daten,$updatecode) = split ("
 
         my $subfield = "";
         
-        ($content,$subfield) = check_subfield('subject',$field,$content) if (defined $subfield_ref->{'subject'}{$field});
+        if (defined $subfield_ref->{'subject'}{$field} && $content =~m/^\((.)\)(.+)/){
+            ($subfield,$content) = ($1,$2);
+        }
 
 #        print SWDSIK $key.":".$content."\n" if ($record{$key} !~ /idn:/ && $key !~/^0800/);
     
@@ -551,7 +560,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
 
     chomp($updatecode);
 
-    my %record  = decode_blob('title',$daten);
+    my %record  = decode_blob('title',$daten,$subfield_ref->{title});
         
     my $treffer="";
     my $active=0;
@@ -597,7 +606,9 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
             
             my $subfield = "";
             
-            ($content,$subfield) = check_subfield('title',$field,$content) if (defined $subfield_ref->{'title'}{$field});
+            if (defined $subfield_ref->{'title'}{$field} && $content =~m/^\((.)\)(.+)/){
+                ($subfield,$content) = ($1,$2);
+            }
             
             my $line = $key.":".$content."\n";
 #            print TITSIK $line if ($record{$key} !~ /idn:/);
@@ -1252,7 +1263,7 @@ sub konv {
 }
 
 sub decode_blob {
-    my ($type,$BLOB) = @_;
+    my ($type,$BLOB,$subfield_ref) = @_;
 
     my %record = ();
     my $j = length($BLOB);
@@ -1266,27 +1277,35 @@ sub decode_blob {
         my $len = hex(substr($BLOB,$idup+4,4));
         if ( $len < 1000 ) {
             # nicht multiples Feld
+            my $KAT = sprintf "%04d", $kateg;
+
             my $inh = substr($outBLOB,$i+4,$len);
-            if ( $fstab_ref->{$type}[$fnr]{type} eq "V" ) {
-                $inh = hex(substr($BLOB,$idup+8,8));
-                $inh="IDN: $inh";
+
+            if (defined $subfield_ref->{$KAT} && defined $subfield_ref->{$KAT}{substr($inh,0,1)} ) {
+                $inh = "(" . substr($inh,0,1) . ")" . substr($inh,1);
             }
-# Leerzeichen-Indikator entfernen
-#            if ( substr($inh,0,1) eq " " ) {
-#                $inh =~ s/^ //;
-#            }
+            else {
+                if ( $fstab_ref->{$type}[$fnr]{type} eq "V" ) {
+                    $inh = hex(substr($BLOB,$idup+8,8));
+                    $inh="IDN: $inh";
+                }
+            }
+            
+            if ( substr($inh,0,1) eq " " ){
+                $inh =~ s/^ //;
+            }
 
             # Schmutzzeichen weg
             $inh=~s/ //g;
-
-            my $KAT = sprintf "%04d", $kateg;
-
+            
+            
             if ($inh ne "") {
                 $record{$KAT} = $inh;
             }
 
             $i = $i + 4 + $len;
-        } else {
+        }
+        else {
             # multiples Feld
             my $mlen = 65536 - $len;
             my $k = $i + 4;
@@ -1295,34 +1314,43 @@ sub decode_blob {
                 my $kdup = $k*2;
                 my $ulen = hex(substr($BLOB,$kdup,4));
                 if ( $ulen > 0 ) {
-                    my $inh = substr($outBLOB,$k+2,$ulen);
-                    if ( $fstab_ref->{$type}[$fnr]{type} eq "V" ) {
-                        my $verwnr = hex(substr($BLOB,$kdup+4,8));
-                        my $zusatz="";
-                        if ($ulen > 4) {
-                            $zusatz=substr($inh,4,$ulen);
-                            $inh="IDN: $verwnr ;$zusatz";
-                        } else {
-                            $inh="IDN: $verwnr";
+                    my $uKAT = sprintf "%04d.%03d", $kateg, $ukat;
+                    my $inh  = substr($outBLOB,$k+2,$ulen);
+                    
+                    $kateg   = sprintf "%04d", $kateg;
+                    
+                    if (defined $subfield_ref->{$kateg} && defined $subfield_ref->{$kateg}{substr($inh,0,1)} ) {
+                        $inh = "(" . substr($inh,0,1) . ")" . substr($inh,1);
+                    }
+                    else {
+                        if ( $fstab_ref->{$type}[$fnr]{type} eq "V" ) {
+                            my $verwnr = hex(substr($BLOB,$kdup+4,8));
+                            my $zusatz="";
+                            if ($ulen > 4) {
+                                $zusatz=substr($inh,4,$ulen);
+                                $inh="IDN: $verwnr ;$zusatz";
+                            }
+                            else {
+                                $inh="IDN: $verwnr";
+                            }
                         }
                     }
-                    my $uKAT = sprintf "%04d.%03d", $kateg, $ukat;
 
-# Leerzeichen-Indikator entfernen
-#                    if ( substr($inh,0,1) eq " " ) {
-#                        $inh =~ s/^ //;
-#                    }
+                    if ( substr($inh,0,1) eq " " ){
+                        $inh =~ s/^ //;
+                    }
 
-                    # Schmutzzeichen weg
                     $inh=~s/ //g;
-
+                    
                     if ($inh ne "") {
                         $record{$uKAT} = $inh;
                     }
+                    
                 }
                 $ukat++;
                 $k = $k + 2 + $ulen;
             }
+
             $i = $i + 4 + $mlen;
         }
     }
@@ -1377,23 +1405,4 @@ sub transform_subfield {
     }
 
     return;
-}
-
-sub check_subfield {
-    my ($type,$field,$content) = @_;
-
-    my $subfield = "";
-
-    if (defined $subfield_ref->{$type}{$field}){
-        my $subfield_regexp = join "|", map {$_ = $_."\\|?"} keys %{$subfield_ref->{$type}{$field}};
-
-        if ($content=~m/^($subfield_regexp)(.+)$/){
-            $subfield=$1;
-            $content=$2;
-            $subfield =~s/\|//;
-        }
-    }
-
-    
-    return ($content,$subfield);    
 }

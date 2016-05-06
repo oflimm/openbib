@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2016-03-24 14:43+0100\n"
+"PO-Revision-Date: 2016-05-06 10:44+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -1358,7 +1358,7 @@ msgstr "An"
 #: ../templates/titles_record_html_actions:23
 #: ../templates/titles_record_include:350
 #: ../templates/titles_record_include:351
-#: ../templates/titlist_item_html_short:326
+#: ../templates/titlist_item_html_short:350
 msgid "An BibSonomy senden"
 msgstr "An BibSonomy senden"
 
@@ -4745,8 +4745,8 @@ msgstr "Entdecken Sie weitere Titel &uuml;ber:"
 #: ../templates/titles_popular_by_database_html:299
 #: ../templates/titles_popular_by_database_html:302
 #: ../templates/titles_popular_html:293 ../templates/titles_popular_html:296
-#: ../templates/titlist_item_html_short:328
-#: ../templates/titlist_item_html_short:331
+#: ../templates/titlist_item_html_short:352
+#: ../templates/titlist_item_html_short:355
 #: ../templates/users_litlists_html:110
 #: ../templates/users_searchprofiles_html:93
 msgid "Entfernen"
@@ -6873,7 +6873,7 @@ msgstr "In der einfachen Recherche bzw. dem freien Suchfeld"
 #: ../templates/titles_record_html_actions:24
 #: ../templates/titles_record_include:352
 #: ../templates/titles_record_include:353
-#: ../templates/titlist_item_html_short:326
+#: ../templates/titlist_item_html_short:350
 msgid "In die Merkliste"
 msgstr "In die Merkliste"
 
@@ -7803,7 +7803,7 @@ msgstr "Kartenkataloge der Philosophischen Fakultät"
 #: ../templates/titles_popular_by_database_html:281
 #: ../templates/titles_popular_html:278
 #: ../templates/titles_popular_include:157
-#: ../templates/titlist_item_html_short:308
+#: ../templates/titlist_item_html_short:322
 #: ../templates/titlist_item_mobile_short:217
 msgid "Katalog"
 msgstr "Katalog"
@@ -8249,8 +8249,8 @@ msgstr "Künstler"
 #: ../templates/admin_clusters_html:142 ../templates/admin_roles_html:111
 #: ../templates/admin_servers_html:159 ../templates/admin_templates_html:132
 #: ../templates/titles_record_include:512
-#: ../templates/titlist_item_html_short:328
-#: ../templates/titlist_item_html_short:331
+#: ../templates/titlist_item_html_short:352
+#: ../templates/titlist_item_html_short:355
 msgid "L&ouml;schen"
 msgstr "L&ouml;schen"
 
@@ -9475,7 +9475,7 @@ msgstr "Meldung"
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:324
 #: ../templates/titles_popular_by_database_html:297
 #: ../templates/titles_popular_html:291
-#: ../templates/titlist_item_html_short:326
+#: ../templates/titlist_item_html_short:350
 msgid "Merken"
 msgstr "Merken"
 
@@ -12345,7 +12345,7 @@ msgstr "Sigel"
 #: ../templates/searchforms_record_query:126
 #: ../templates/titles_popular_by_database_html:292
 #: ../templates/titles_popular_html:286
-#: ../templates/titlist_item_html_short:321
+#: ../templates/titlist_item_html_short:345
 #: ../templates/users_circulations_borrows_html:67
 #: ../templates/users_circulations_borrows_ics:117
 #: ../templates/users_circulations_orders_html:63
@@ -19818,6 +19818,10 @@ msgstr "Verlinkung und Lastverteilung in OpenBib"
 msgid "Verlinkung und Lastverteilung von OpenBib"
 msgstr "Verlinkung und Lastverteilung von OpenBib"
 
+#: ../templates/titlist_item_html_short:328
+msgid "Verschiedene Standorte"
+msgstr "Verschiedene Standorte"
+
 #: ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions:448
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html_actions:424
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html_actions:424
@@ -20128,7 +20132,7 @@ msgstr "WebOPAC-URL"
 #: ../templates/_database/inst411/circulation:53
 #: ../templates/_profile/kug/_database/edz/circulation:106
 #: ../templates/_profile/kug/_database/inst001/circulation:122
-#: ../templates/_profile/kug/_database/inst001/holding:109
+#: ../templates/_profile/kug/_database/inst001/holding:114
 #: ../templates/_profile/kug/_database/inst302/circulation:54
 #: ../templates/_profile/kug/_database/islandica/circulation:100
 #: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:106

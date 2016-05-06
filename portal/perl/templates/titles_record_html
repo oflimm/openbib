@@ -18,6 +18,21 @@
   holding         = record.get_holding ;
   circulation     = record.load_circulation.get_circulation ; 
 
+  all_locations = record.get_locations;
+
+  # Filter locations
+  locations = [];
+  
+  FOREACH loc IN all_locations ;
+    IF loc.match('^DE-38$') ;
+       locations.push(loc);
+    ELSIF loc.match('^DE-38-[0-9][0-9][0-9]') ;
+       locations.push(loc);
+    ELSIF NOT loc.match('^DE-38-[a-zA-Z]');   
+         locations.push(loc);
+    END;
+  END;
+
   IF record.record_exists;
     record_exists = 1;
   END;
@@ -156,8 +171,17 @@ $(document).ready(function(){
 
 <div class="ob-fulltitle"><!-- Begin Fulltitle -->
 
-<div class="ob-category_header">[% dbinfo.get('dbnames').${database}.short %]</div>
-
+<div class="ob-category_header">
+[%-  IF locations.size >= 1 -%]
+[%      IF locations.size == 1 %]
+         [% locinfo.identifier.${locations.first}.description %]
+[%      ELSIF locations.size > 1 %]
+         [% msg.maketext('Verschiedene Standorte') %]
+[%      END %]
+[%-  ELSE %]
+[%     dbinfo.get('dbnames').${database}.short %]
+[%   END %]
+</div>
 <div class="ym-grid linearize-level-2 details"><!-- Begin Details -->
 <!-- Title begins here -->
 <div class="ym-g33 ym-gr ob-titleimage"><!-- Begin Images -->

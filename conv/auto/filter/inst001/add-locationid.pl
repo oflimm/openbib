@@ -96,6 +96,11 @@ while (<HOLDING>){
             push @{$element_ref}, "DE-38-427";
             push @{$element_ref}, "DE-38-ARCH";
         }
+        elsif ($location_ref->{content} =~m/^Fachbibliothek Arch.*?ologien \/ Forschungsstelle Afrika/){
+            push @{$element_ref}, "DE-38-USBFB";
+            push @{$element_ref}, "DE-38-438";
+            push @{$element_ref}, "DE-38-ARCH";
+        }
         elsif ($location_ref->{content} =~m/Theaterwiss. Sammlung/){
             push @{$element_ref}, "DE-38-USBFB";
             push @{$element_ref}, "DE-38-429";

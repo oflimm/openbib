@@ -5,7 +5,7 @@
 #
 #  Export der Provenienzen in ein JSON-Format
 #
-#  Dieses File ist (C) 2015 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2015-2016 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -100,8 +100,12 @@ my $titles_with_provenances = $catalog->get_schema->resultset('TitleField')->sea
 
 my $provenances_count = 0;
 
+my $title_done_ref = {};
+
 foreach my $title ($titles_with_provenances->all){
     my $titleid = $title->{titleid};
+
+    next if (defined $title_done_ref->{$titleid});
 
     my $record = OpenBib::Record::Title->new({ database => $database, id => $titleid})->load_full_record;
 
@@ -212,6 +216,8 @@ foreach my $title ($titles_with_provenances->all){
 
         print OUT encode_json $provenance_ref, "\n" if ($corp_gnd || $person_gnd || $collection_gnd);
     }
+
+    $title_done_ref->{$titleid} = 1;
 }
 
 

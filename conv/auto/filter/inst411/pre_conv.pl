@@ -41,6 +41,6 @@ my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
 
-print "### $pool: Erweiterung um Inventanummern aus d01buch\n";
+print "### $pool: Erweiterung um Inventarnummern aus d01buch\n";
 
 system("cd $rootdir/data/$pool ; cat meta.holding | $rootdir/filter/$pool/enrich_invnr.pl > meta.holding.tmp ; mv -f meta.holding.tmp meta.holding");

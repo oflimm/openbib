@@ -758,7 +758,13 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
             my $bemerk2  = $bemerkbuf2{$multkey};
             my $sigel    = $besbibbuf{$multkey};
             $sigel=~s!^38/!!;
-            
+
+	    # Leere Saetze ignorieren
+	    if (!$signatur && !$standort && !$inventar){
+		$k++;
+		next;
+	    }
+
             if ($useusbschema) {
                 my $erschverl=$erschverlbufpos{$multkey};
                 $erschverl.=" ".$erschverlbufneg{$multkey} if (exists $erschverlbufneg{$multkey});

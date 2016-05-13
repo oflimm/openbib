@@ -5,6 +5,7 @@ convtab:
   default:
     local_enrichmnt:
       '4100': 1        # BK
+      '4101': 1        # RVK
       '4102': 1        # KUG-Topics
       '4110': 1        # TOC-URL
       '4111': 1        # TOC-Text
@@ -13,6 +14,7 @@ convtab:
       '4201': 1        # Wikipedia
       '4202': 1        # Wikipedia
       '4300': 1        # Fremde Schlagworte
+      '4301': 1        # Fremde Sprachcode
     blacklist_person:
       '0002': 1        # Aufnahmedatum
 #      '0003': 1        # Aenderungsdatum

@@ -50,12 +50,17 @@ while (<HOLDING>){
             push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
         }        
         elsif ($location_ref->{content} eq "429"){
-            push @{$title_locationid_ref->{$titleid}}, "DE-429";
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-429";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-MEKUTH";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
         }
+        elsif ($location_ref->{content} eq "438"){
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-438";
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-ARCH";
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
+        }        
         elsif ($location_ref->{content} eq "448"){
-            push @{$title_locationid_ref->{$titleid}}, "DE-448";
+            push @{$title_locationid_ref->{$titleid}}, "DE-38-448";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-MEKUTH";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
         }

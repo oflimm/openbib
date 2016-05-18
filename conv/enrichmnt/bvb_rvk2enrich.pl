@@ -237,7 +237,7 @@ else {
                 'T0100' => $persons_ref,
             };
 
-            $bibkey = OpenBib::Common::Util::gen_bibkey({ field => $fields_ref });
+            $bibkey = OpenBib::Common::Util::gen_bibkey({ fields => $fields_ref });
         }
             
         my @isbns = ();

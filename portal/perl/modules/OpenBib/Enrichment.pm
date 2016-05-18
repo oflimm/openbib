@@ -104,6 +104,46 @@ sub get_db_histogram_of_occurence {
     return $histogram_ref;
 }
 
+sub init_enriched_content {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $origin            = exists $arg_ref->{origin}
+        ? $arg_ref->{origin}        : undef;
+    my $field             = exists $arg_ref->{field}
+        ? $arg_ref->{field}         : undef;
+    
+    return unless ($field && $origin);
+
+    $self->get_schema->resultset('EnrichedContentByIsbn')->search_rs({ field => $field, origin => $origin })->delete;
+    $self->get_schema->resultset('EnrichedContentByBibkey')->search_rs({ field => $field, origin => $origin })->delete;
+    $self->get_schema->resultset('EnrichedContentByIssn')->search_rs({ field => $field, origin => $origin })->delete;    
+
+    return;
+}
+
+sub add_enriched_content {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $matchkey          = exists $arg_ref->{matchkey}
+        ? $arg_ref->{matchkey}      : undef;
+    my $content_ref       = exists $arg_ref->{content}
+        ? $arg_ref->{content}       : [];
+
+    my $matchkey_map_ref = {
+        'isbn'   => 'EnrichedContentByIsbn',
+        'bibkey' => 'EnrichedContentByBibkey',
+        'issn'   => 'EnrichedContentByIssn',
+    };
+    
+    return unless (defined $matchkey_map_ref->{$matchkey} && @$content_ref);
+       
+    $self->get_schema->resultset($matchkey_map_ref->{$matchkey})->populate($content_ref);
+
+    return;
+}
+
 sub get_enriched_content {
     my ($self,$arg_ref)=@_;
 

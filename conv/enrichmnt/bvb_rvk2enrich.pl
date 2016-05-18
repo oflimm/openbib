@@ -7,7 +7,7 @@
 #  Extrahierung der RVK aus den BVB Open Data Dumps
 #  fuer eine Anreicherung per ISBN
 #
-#  Dieses File ist (C) 2013 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2013-2016 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -103,7 +103,7 @@ $logger->debug("Origin: $origin");
 if ($init){
     $logger->info("Loeschen der bisherigen Daten");
     
-    $enrichment->get_schema->resultset('EnrichedContentByIsbn')->search_rs({ field => '4101', origin => $origin })->delete;
+    $enrichment->init_enriched_content({ field => '4101', origin => $origin });
 }
 
 $logger->info("Bestimmung der Schlagworte");
@@ -135,31 +135,38 @@ if ($importjson){
         $logger->error("JSON-Datei $jsonfile existiert nicht");
         exit;
     }
+
     open(JSON,$jsonfile);
 
     my $count=1;
     
     my $subject_tuple_count = 1;
     
-    my $enrich_data_ref = [];
+    my $enrich_data_by_isbn_ref   = [];
+    my $enrich_data_by_bibkey_ref = [];
     
     $logger->info("Einlesen und -laden der neuen Daten");
 
     while (<JSON>){
         my $subject_ref = decode_json($_);
 
-        push @{$enrich_data_ref}, $subject_ref;
+        push @{$enrich_data_by_isbn_ref},   $subject_ref if (defined $subject_ref->{isbn});
+        push @{$enrich_data_by_bibkey_ref}, $subject_ref if (defined $subject_ref->{bibkey});
+
         $subject_tuple_count++;
         
         if ($count % 1000 == 0){
-            $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
-            $enrich_data_ref = [];
+            $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
+            $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref })  if (@$enrich_data_by_bibkey_ref);
+            $enrich_data_by_isbn_ref   = [];
+            $enrich_data_by_bibkey_ref = [];
         }
         $count++;
     }
 
-    if (@$enrich_data_ref){
-        $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
+    if (@$enrich_data_by_isbn_ref || @$enrich_data_by_bibkey_ref){
+        $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref });
+        $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref });
     }
     
     $logger->info("$subject_tuple_count ISBN-Schlagwort-Tupel eingefuegt");
@@ -177,8 +184,11 @@ else {
     my $count=1;
 
     my $rvk_tuple_count = 1;
+
+    # Logik: Bibkeys werden nur verwendet, wenn es keine ISBNs gibt. Also nicht entweder ISBN oder Bibkey, sondern sowohl ISBN wie auch Bibkey!
     
-    my $enrich_data_ref = [];
+    my $enrich_data_by_isbn_ref = [];
+    my $enrich_data_by_bibkey_ref = [];
     
     $logger->info("Einlesen und -laden der neuen Daten");
     
@@ -187,7 +197,49 @@ else {
         my $encoding = $record->encoding();
         
         $logger->debug("Encoding:$encoding:");
-        
+
+        my $bibkey = "";
+
+        {
+            my $persons_ref = [];
+            my $year_ref    = [];
+            my $title_ref   = [];
+
+            foreach my $fieldno ('100','700'){
+                foreach my $field ($record->field($fieldno)){
+                    my $person = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
+
+                    push @$persons_ref, {
+                        content => $person,
+                    }
+                }
+            }
+            
+            foreach my $field ($record->field('260')){
+                my $year = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('c')):decode_utf8($field->as_string('c'));
+
+                push @$year_ref, {
+                    content => $year,
+                };
+            }
+            
+            foreach my $field ($record->field('245')){
+                my $title = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
+                
+                push @$title_ref, {
+                    content => $title,
+                };
+            }
+
+            my $fields_ref = {
+                'T0331' => $title_ref,
+                'T0425' => $year_ref,
+                'T0100' => $persons_ref,
+            };
+
+            $bibkey = OpenBib::Common::Util::gen_bibkey({ field => $fields_ref });
+        }
+            
         my @isbns = ();
         {
             # ISBN
@@ -236,39 +288,61 @@ else {
                 }
             }
         }
-        
-        # Dublette Schlagworte's entfernen
-        my %seen_terms  = ();
-        my @unique_isbns    = grep { ! $seen_terms{$_} ++ } @isbns;
-        
-        foreach my $isbn (@unique_isbns){
+
+        if (@isbns){
+            # Dublette RVK's entfernen
+            my %seen_terms  = ();
+            my @unique_isbns    = grep { ! $seen_terms{$_} ++ } @isbns;
+            
+            foreach my $isbn (@unique_isbns){
+                foreach my $rvk (@rvks){
+                    $logger->debug("Found $isbn -> $rvk");
+                    my $rvk_ref = {
+                        isbn     => $isbn,
+                        origin   => $origin,
+                        field    => '4101',
+                        subfield => $rvk->{subfield},
+                        content  => $rvk->{content},
+                    };
+                    
+                    print JSON encode_json($rvk_ref),"\n" if ($jsonfile);
+                    
+                    push @{$enrich_data_by_isbn_ref}, $rvk_ref;
+                    $rvk_tuple_count++;
+                }
+            }
+        }
+        elsif ($bibkey){
             foreach my $rvk (@rvks){
-                $logger->debug("Found $isbn -> $rvk");
+                $logger->debug("Found Bibkey $bibkey -> $rvk");
                 my $rvk_ref = {
-                    isbn     => $isbn,
+                    bibkey   => $bibkey,
                     origin   => $origin,
                     field    => '4101',
                     subfield => $rvk->{subfield},
                     content  => $rvk->{content},
                 };
-
+                
                 print JSON encode_json($rvk_ref),"\n" if ($jsonfile);
                 
-                push @{$enrich_data_ref}, $rvk_ref;
+                push @{$enrich_data_by_bibkey_ref}, $rvk_ref;
                 $rvk_tuple_count++;
-            }
+            }            
         }
         
-        if ($count % 1000 == 0){
-            $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref) if ($import);
-            $enrich_data_ref = [];
+        if ($import && $count % 1000 == 0){
+            $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
+            $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref })  if (@$enrich_data_by_bibkey_ref);
+            $enrich_data_by_isbn_ref   = [];
+            $enrich_data_by_bibkey_ref = [];
         }
         $count++;
         
     }
     
-    if (@$enrich_data_ref && $import){
-        $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
+    if ($import && (@$enrich_data_by_isbn_ref || @$enrich_data_by_bibkey_ref) ){
+        $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
+        $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref })  if (@$enrich_data_by_bibkey_ref);
     }
     
     $logger->info("$rvk_tuple_count ISBN-RVK-Tupel eingefuegt");

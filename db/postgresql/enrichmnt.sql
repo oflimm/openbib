@@ -15,7 +15,7 @@ create table enriched_content_by_isbn (
 -- Enriched content by bibkey --
 drop table IF EXISTS enriched_content_by_bibkey;
 create table enriched_content_by_bibkey (
- bibkey        VARCHAR(13) NOT NULL,
+ bibkey        VARCHAR(33) NOT NULL,
  origin        SMALLINT,
  field         SMALLINT NOT NULL,
  subfield      VARCHAR(3),
@@ -25,7 +25,7 @@ create table enriched_content_by_bibkey (
 -- Enriched content by issn --
 drop table IF EXISTS enriched_content_by_issn;
 create table enriched_content_by_issn (
- issn          VARCHAR(13) NOT NULL,
+ issn          VARCHAR(8) NOT NULL,
  origin        SMALLINT,
  field         SMALLINT NOT NULL,
  subfield      VARCHAR(3),

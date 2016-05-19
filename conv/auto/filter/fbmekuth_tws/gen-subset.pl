@@ -76,7 +76,7 @@ Log::Log4perl::init(\$log4Perl_config);
 my $logger = get_logger();
 
 my $subset = new OpenBib::Catalog::Subset("inst001",$pool);
-$subset->identify_by_field_content('title',([ { field => '4230', content => 'DE-38-429' } ]));
+$subset->identify_by_mark('^TWS');
 $subset->write_set;
 
 sub print_help {

@@ -35,6 +35,7 @@ use DBI;
 use Digest::MD5 qw(md5_hex);
 use Encode qw/decode_utf8 encode_utf8/;
 use Log::Log4perl qw(get_logger :levels);
+use MARC::Charset 'marc8_to_utf8';
 use POSIX();
 use String::Tokenizer;
 use YAML ();
@@ -1642,6 +1643,50 @@ sub gen_bibkey {
     else {
         return "";
     }
+}
+
+sub gen_bibkey_from_marc {
+    my ($record,$encoding) = @_;
+
+    my $persons_ref = [];
+    my $year_ref    = [];
+    my $title_ref   = [];
+    
+    foreach my $fieldno ('100','700'){
+	foreach my $field ($record->field($fieldno)){
+	    my $person = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
+	    
+	    push @$persons_ref, {
+		content => $person,
+	    }
+	}
+    }
+    
+    foreach my $field ($record->field('260')){
+	my $year = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('c')):decode_utf8($field->as_string('c'));
+	
+	push @$year_ref, {
+	    content => $year,
+	};
+    }
+    
+    foreach my $field ($record->field('245')){
+	my $title = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
+	
+	push @$title_ref, {
+	    content => $title,
+	};
+    }
+    
+    my $fields_ref = {
+	'T0331' => $title_ref,
+	'T0425' => $year_ref,
+	'T0100' => $persons_ref,
+    };
+    
+    my $bibkey = OpenBib::Common::Util::gen_bibkey({ fields => $fields_ref });
+
+    return $bibkey;
 }
 
 sub gen_workkeys {

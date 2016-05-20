@@ -103,7 +103,7 @@ $logger->debug("Origin: $origin");
 if ($init){
     $logger->info("Loeschen der bisherigen Daten");
     
-    $enrichment->get_schema->resultset('EnrichedContentByIsbn')->search_rs({ field => '4301', origin => $origin })->delete;
+    $enrichment->init_enriched_content({ field => '4301', origin => $origin });
 }
 
 $logger->info("Bestimmung der Sprachcodes");
@@ -141,28 +141,31 @@ if ($importjson){
     
     my $lang_tuple_count = 1;
     
-    my $enrich_data_ref = [];
+    my $enrich_data_by_isbn_ref   = [];
+    my $enrich_data_by_bibkey_ref = [];
     
     $logger->info("Einlesen und -laden der neuen Daten");
 
     while (<JSON>){
-        my $lang_ref = decode_json($_);
+        my $item_ref = decode_json($_);
 
-        push @{$enrich_data_ref}, $lang_ref;
+        push @{$enrich_data_by_isbn_ref},   $item_ref if (defined $item_ref->{isbn});
+        push @{$enrich_data_by_bibkey_ref}, $item_ref if (defined $item_ref->{bibkey});
         $lang_tuple_count++;
         
         if ($count % 1000 == 0){
-            $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
-            $enrich_data_ref = [];
+            $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
+            $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref })  if (@$enrich_data_by_bibkey_ref);
+            $enrich_data_by_isbn_ref   = [];
+            $enrich_data_by_bibkey_ref = [];
         }
         $count++;
     }
 
-    if (@$enrich_data_ref){
-        $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
-    }
+    $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
+    $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref }) if (@$enrich_data_by_bibkey_ref);
     
-    $logger->info("$lang_tuple_count ISBN-Sprach-Tupel eingefuegt");
+    $logger->info("$lang_tuple_count Sprach-Tupel eingefuegt");
 
     if ($jsonfile){
         close(JSON);
@@ -178,7 +181,8 @@ else {
 
     my $lang_tuple_count = 1;
     
-    my $enrich_data_ref = [];
+    my $enrich_data_by_isbn_ref = [];
+    my $enrich_data_by_bibkey_ref = [];
     
     $logger->info("Einlesen und -laden der neuen Daten");
     
@@ -187,6 +191,8 @@ else {
         my $encoding = $record->encoding();
         
         $logger->debug("Encoding:$encoding:");
+
+        my $bibkey = OpenBib::Common::Util::gen_bibkey_from_marc($record,$encoding);
         
         my @isbns = ();
         {
@@ -259,36 +265,59 @@ else {
         # Dublette Schlagworte's entfernen
         my %seen_terms  = ();
         my @unique_langs = grep { ! $seen_terms{$_->{content}} ++ } @langs; 
-        my @unique_isbns    = grep { ! $seen_terms{$_} ++ } @isbns;
         
-        foreach my $isbn (@unique_isbns){
-            foreach my $lang (@unique_langs){
-                $logger->debug("Found $isbn -> $lang");
-                my $lang_ref = {
-                    isbn     => $isbn,
-                    origin   => $origin,
-                    field    => '4301',
-                    subfield => $lang->{subfield},
-                    content  => $lang->{content},
-                };
+        if (@isbns){
+	    my @unique_isbns    = grep { ! $seen_terms{$_} ++ } @isbns;
 
-                print JSON encode_json($lang_ref),"\n" if ($jsonfile);
-                
-                push @{$enrich_data_ref}, $lang_ref;
-                $lang_tuple_count++;
-            }
-        }
+	    foreach my $isbn (@unique_isbns){
+		foreach my $lang (@unique_langs){
+		    $logger->debug("Found $isbn -> $lang");
+		    my $lang_ref = {
+			isbn     => $isbn,
+			origin   => $origin,
+			field    => '4301',
+			subfield => $lang->{subfield},
+			content  => $lang->{content},
+		    };
+		    
+		    print JSON encode_json($lang_ref),"\n" if ($jsonfile);
+		    
+		    push @{$enrich_data_by_isbn_ref}, $lang_ref;
+		    $lang_tuple_count++;
+		}
+	    }
+	}
+        elsif ($bibkey){
+	    foreach my $lang (@unique_langs){
+		$logger->debug("Found $bibkey -> $lang");
+		my $lang_ref = {
+		    bibkey   => $bibkey,
+		    origin   => $origin,
+		    field    => '4301',
+		    subfield => $lang->{subfield},
+		    content  => $lang->{content},
+		};
+		
+		print JSON encode_json($lang_ref),"\n" if ($jsonfile);
+		
+		push @{$enrich_data_by_bibkey_ref}, $lang_ref;
+		$lang_tuple_count++;
+	    }
+	}	
         
-        if ($count % 1000 == 0){
-            $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref) if ($import);
-            $enrich_data_ref = [];
-        }
+	if ($import && $count % 1000 == 0){
+	    $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
+	    $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref })  if (@$enrich_data_by_bibkey_ref);
+	    $enrich_data_by_isbn_ref   = [];
+	    $enrich_data_by_bibkey_ref = [];
+	}
         $count++;
         
     }
     
-    if (@$enrich_data_ref && $import){
-        $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
+    if ($import && (@$enrich_data_by_isbn_ref || @$enrich_data_by_bibkey_ref) ){
+        $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
+        $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref })  if (@$enrich_data_by_bibkey_ref);
     }
     
     $logger->info("$lang_tuple_count ISBN-Sprach-Tupel eingefuegt");

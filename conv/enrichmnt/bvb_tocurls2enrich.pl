@@ -7,7 +7,7 @@
 #  Extrahierung der URLS zu Inhaltsverzeichnissen aus den BVB Open Data Dumps
 #  fuer eine Anreicherung per ISBN
 #
-#  Dieses File ist (C) 2013 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2013-2016 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -103,10 +103,10 @@ $logger->debug("Origin: $origin");
 if ($init){
     $logger->info("Loeschen der bisherigen Daten");
     
-    $enrichment->get_schema->resultset('EnrichedContentByIsbn')->search_rs({ field => '4110', origin => $origin })->delete;
+    $enrichment->init_enriched_content({ field => '4110', origin => $origin });
 }
 
-$logger->info("Bestimmung der Schlagworte");
+$logger->info("Bestimmung der TOC-URLs");
 
 $format=($format)?$format:'USMARC';
 
@@ -141,28 +141,32 @@ if ($importjson){
     
     my $subject_tuple_count = 1;
     
-    my $enrich_data_ref = [];
+    my $enrich_data_by_isbn_ref   = [];
+    my $enrich_data_by_bibkey_ref = [];
     
     $logger->info("Einlesen und -laden der neuen Daten");
 
     while (<JSON>){
-        my $subject_ref = decode_json($_);
+        my $item_ref = decode_json($_);
 
-        push @{$enrich_data_ref}, $subject_ref;
+        push @{$enrich_data_by_isbn_ref},   $item_ref if (defined $item_ref->{isbn});
+        push @{$enrich_data_by_bibkey_ref}, $item_ref if (defined $item_ref->{bibkey});
+
         $subject_tuple_count++;
         
         if ($count % 1000 == 0){
-            $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
-            $enrich_data_ref = [];
+            $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
+            $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref })  if (@$enrich_data_by_bibkey_ref);
+            $enrich_data_by_isbn_ref   = [];
+            $enrich_data_by_bibkey_ref = [];
         }
         $count++;
     }
 
-    if (@$enrich_data_ref){
-        $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
-    }
+    $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
+    $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref }) if (@$enrich_data_by_bibkey_ref);
     
-    $logger->info("$subject_tuple_count ISBN-Schlagwort-Tupel eingefuegt");
+    $logger->info("$subject_tuple_count TOCURL-Tupel eingefuegt");
 
     if ($jsonfile){
         close(JSON);
@@ -178,7 +182,8 @@ else {
 
     my $tocurl_tuple_count = 1;
     
-    my $enrich_data_ref = [];
+    my $enrich_data_by_isbn_ref   = [];
+    my $enrich_data_by_bibkey_ref = [];
     
     $logger->info("Einlesen und -laden der neuen Daten");
     
@@ -188,6 +193,8 @@ else {
         
         $logger->debug("Encoding:$encoding:");
         
+        my $bibkey = OpenBib::Common::Util::gen_bibkey_from_marc($record,$encoding);
+
         my @isbns = ();
         {
             # ISBN
@@ -238,41 +245,63 @@ else {
             }
         }
         
-        # Dublette Schlagworte's entfernen
-        my %seen_terms  = ();
-        my @unique_isbns    = grep { ! $seen_terms{$_} ++ } @isbns;
-        
-        foreach my $isbn (@unique_isbns){
+        if (@isbns){
+	    # Dublette TocURLs entfernen
+	    my %seen_terms  = ();
+	    my @unique_isbns    = grep { ! $seen_terms{$_} ++ } @isbns;
+	    
+	    foreach my $isbn (@unique_isbns){
+		foreach my $tocurl (@tocurls){
+		    $logger->debug("Found $isbn -> $tocurl");
+		    my $tocurl_ref = {
+			isbn     => $isbn,
+			origin   => $origin,
+			field    => '4110',
+			subfield => $tocurl->{subfield},
+			content  => $tocurl->{content},
+		    };
+		    
+		    print JSON encode_json($tocurl_ref),"\n" if ($jsonfile);
+		    
+		    push @{$enrich_data_by_isbn_ref}, $tocurl_ref;
+		    $tocurl_tuple_count++;
+		}
+	    }
+	}
+	elsif ($bibkey){
             foreach my $tocurl (@tocurls){
-                $logger->debug("Found $isbn -> $tocurl");
+                $logger->debug("Found Bibkey $bibkey -> $tocurl");
                 my $tocurl_ref = {
-                    isbn     => $isbn,
+                    bibkey   => $bibkey,
                     origin   => $origin,
                     field    => '4110',
                     subfield => $tocurl->{subfield},
                     content  => $tocurl->{content},
                 };
-
+                
                 print JSON encode_json($tocurl_ref),"\n" if ($jsonfile);
                 
-                push @{$enrich_data_ref}, $tocurl_ref;
+                push @{$enrich_data_by_bibkey_ref}, $tocurl_ref;
                 $tocurl_tuple_count++;
-            }
+            }            
         }
-        
-        if ($count % 1000 == 0){
-            $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref) if ($import);
-            $enrich_data_ref = [];
+           
+        if ($import && $count % 1000 == 0){
+            $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
+            $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref })  if (@$enrich_data_by_bibkey_ref);
+            $enrich_data_by_isbn_ref   = [];
+            $enrich_data_by_bibkey_ref = [];
         }
         $count++;
         
     }
     
-    if (@$enrich_data_ref && $import){
-        $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
+    if ($import && (@$enrich_data_by_isbn_ref || @$enrich_data_by_bibkey_ref) ){
+        $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
+        $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref })  if (@$enrich_data_by_bibkey_ref);
     }
     
-    $logger->info("$tocurl_tuple_count ISBN-TOCURL-Tupel eingefuegt");
+    $logger->info("$tocurl_tuple_count TOCURL-Tupel eingefuegt");
 
     if ($jsonfile){
         close(JSON);

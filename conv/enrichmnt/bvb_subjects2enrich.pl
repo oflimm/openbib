@@ -52,6 +52,7 @@ use OpenBib::Catalog::Factory;
 # Autoflush
 $|=1;
 
+
 my ($help,$format,$use_xml,$importjson,$import,$init,$jsonfile,$inputfile,$logfile,$loglevel);
 
 &GetOptions("help"         => \$help,
@@ -103,7 +104,7 @@ $logger->debug("Origin: $origin");
 if ($init){
     $logger->info("Loeschen der bisherigen Daten");
     
-    $enrichment->get_schema->resultset('EnrichedContentByIsbn')->search_rs({ field => '4300', origin => $origin })->delete;
+    $enrichment->init_enriched_content({ field => '4300', origin => $origin });
 }
 
 $logger->info("Bestimmung der Schlagworte");
@@ -141,28 +142,31 @@ if ($importjson){
     
     my $subject_tuple_count = 1;
     
-    my $enrich_data_ref = [];
+    my $enrich_data_by_isbn_ref   = [];
+    my $enrich_data_by_bibkey_ref = [];
     
     $logger->info("Einlesen und -laden der neuen Daten");
 
     while (<JSON>){
-        my $subject_ref = decode_json($_);
+        my $item_ref = decode_json($_);
 
-        push @{$enrich_data_ref}, $subject_ref;
+        push @{$enrich_data_by_isbn_ref},   $item_ref if (defined $item_ref->{isbn});
+        push @{$enrich_data_by_bibkey_ref}, $item_ref if (defined $item_ref->{bibkey});
         $subject_tuple_count++;
         
         if ($count % 1000 == 0){
-            $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
-            $enrich_data_ref = [];
+            $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
+            $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref })  if (@$enrich_data_by_bibkey_ref);
+            $enrich_data_by_isbn_ref   = [];
+            $enrich_data_by_bibkey_ref = [];
         }
         $count++;
     }
 
-    if (@$enrich_data_ref){
-        $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
-    }
+    $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
+    $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref }) if (@$enrich_data_by_bibkey_ref);
     
-    $logger->info("$subject_tuple_count ISBN-Schlagwort-Tupel eingefuegt");
+    $logger->info("$subject_tuple_count Schlagwort-Tupel eingefuegt");
 
     if ($jsonfile){
         close(JSON);
@@ -178,7 +182,8 @@ else {
 
     my $subject_tuple_count = 1;
     
-    my $enrich_data_ref = [];
+    my $enrich_data_by_isbn_ref = [];
+    my $enrich_data_by_bibkey_ref = [];
     
     $logger->info("Einlesen und -laden der neuen Daten");
     
@@ -187,7 +192,9 @@ else {
         my $encoding = $record->encoding();
         
         $logger->debug("Encoding:$encoding:");
-        
+    
+        my $bibkey = OpenBib::Common::Util::gen_bibkey_from_marc($record,$encoding);
+    
         my @isbns = ();
         {
             # ISBN
@@ -248,40 +255,63 @@ else {
                 }
             }
         }
-        
-        # Dublette Schlagworte's entfernen
-        my %seen_terms  = ();
-        my @unique_subjects = grep { ! $seen_terms{$_->{content}} ++ } @subjects; 
-        my @unique_isbns    = grep { ! $seen_terms{$_} ++ } @isbns;
-        
-        foreach my $isbn (@unique_isbns){
-            foreach my $subject (@unique_subjects){
-                $logger->debug("Found $isbn -> $subject");
-                my $subject_ref = {
-                    isbn     => $isbn,
-                    origin   => $origin,
-                    field    => '4300',
-                    subfield => $subject->{subfield},
-                    content  => $subject->{content},
-                };
 
-                print JSON encode_json($subject_ref),"\n" if ($jsonfile);
-                
-                push @{$enrich_data_ref}, $subject_ref;
-                $subject_tuple_count++;
-            }
-        }
+	# Dublette Schlagworte's entfernen
+	my %seen_terms  = ();
+	my @unique_subjects = grep { ! $seen_terms{$_->{content}} ++ } @subjects; 
         
-        if ($count % 1000 == 0){
-            $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref) if ($import);
-            $enrich_data_ref = [];
+        if (@isbns){
+	    my @unique_isbns    = grep { ! $seen_terms{$_} ++ } @isbns;
+	
+	    foreach my $isbn (@unique_isbns){
+		foreach my $subject (@unique_subjects){
+		    $logger->debug("Found $isbn -> $subject");
+		    my $item_ref = {
+			isbn     => $isbn,
+			origin   => $origin,
+			field    => '4300',
+			subfield => $subject->{subfield},
+			content  => $subject->{content},
+		    };
+		    
+		    print JSON encode_json($item_ref),"\n" if ($jsonfile);
+		    
+		    push @{$enrich_data_by_isbn_ref}, $item_ref;
+		    $subject_tuple_count++;
+		}
+	    }
+	}
+        elsif ($bibkey){
+	    foreach my $subject (@unique_subjects){
+		$logger->debug("Found $bibkey -> $subject");
+		my $item_ref = {
+		    bibkey   => $bibkey,
+		    origin   => $origin,
+		    field    => '4300',
+		    subfield => $subject->{subfield},
+		    content  => $subject->{content},
+		};
+		
+		print JSON encode_json($item_ref),"\n" if ($jsonfile);
+		
+		push @{$enrich_data_by_bibkey_ref}, $item_ref;
+		$subject_tuple_count++;
+	    }
+	}	
+        
+        if ($import && $count % 1000 == 0){
+            $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
+            $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref })  if (@$enrich_data_by_bibkey_ref);
+            $enrich_data_by_isbn_ref   = [];
+            $enrich_data_by_bibkey_ref = [];
         }
         $count++;
         
     }
     
-    if (@$enrich_data_ref && $import){
-        $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
+    if ($import && (@$enrich_data_by_isbn_ref || @$enrich_data_by_bibkey_ref) ){
+        $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
+        $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref })  if (@$enrich_data_by_bibkey_ref);
     }
     
     $logger->info("$subject_tuple_count ISBN-Schlagwort-Tupel eingefuegt");

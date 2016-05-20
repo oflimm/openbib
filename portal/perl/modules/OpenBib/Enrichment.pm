@@ -455,6 +455,47 @@ sub enriched_content_to_bdb {
 #        print "adding content $content to existing field $field;\n";
     }
 
+    $sql_request = "select * from enriched_content_by_bibkey";
+
+    $sql_request.=" where field in ('$in_string')" if ($in_string);
+    
+    $request = $dbh->prepare($sql_request);
+    $request->execute();
+
+    while (my $result = $request->fetchrow_hashref){
+        my $bibkey   = $result->{bibkey};
+        my $field    = $result->{field};
+        my $content  = $result->{content};
+
+        if (! defined $enrichmntdata{$bibkey}){
+            $enrichmntdata{$bibkey} = {
+                "$field" => [ $content ],
+            } ;
+#            print "adding new field $field with content $content\n";
+            next;
+        }
+
+        if (! defined $enrichmntdata{$bibkey}{$field}){
+            my $old_content_ref = $enrichmntdata{$bibkey};
+
+#            print YAML::Dump($old_content_ref),":\n";
+            $old_content_ref->{$field} = [ $content ];
+
+            $enrichmntdata{$bibkey} = $old_content_ref;
+            
+#            print "adding new content $content to field $field;\n";
+            next;
+        }
+
+        my $old_content_ref = $enrichmntdata{$bibkey};
+
+        push @{$old_content_ref->{$field}}, $content;
+
+        $enrichmntdata{$bibkey} = $old_content_ref;
+
+#        print "adding content $content to existing field $field;\n";
+    }
+    
 #    print YAML::Dump(\%enrichmntdata);
     
     $dbh->disconnect;

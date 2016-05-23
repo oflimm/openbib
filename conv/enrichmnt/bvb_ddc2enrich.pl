@@ -102,8 +102,8 @@ $logger->debug("Origin: $origin");
 
 if ($init){
     $logger->info("Loeschen der bisherigen Daten");
-    
-    $enrichment->get_schema->resultset('EnrichedContentByIsbn')->search_rs({ field => '4101', origin => $origin })->delete;
+
+    $enrichment->init_enriched_content({ field => '4103', origin => $origin });
 }
 
 $logger->info("Bestimmung der Schlagworte");
@@ -141,28 +141,31 @@ if ($importjson){
     
     my $subject_tuple_count = 1;
     
-    my $enrich_data_ref = [];
+    my $enrich_data_by_isbn_ref   = [];
+    my $enrich_data_by_bibkey_ref = [];
     
     $logger->info("Einlesen und -laden der neuen Daten");
 
     while (<JSON>){
-        my $subject_ref = decode_json($_);
+        my $item_ref = decode_json($_);
 
-        push @{$enrich_data_ref}, $subject_ref;
+        push @{$enrich_data_by_isbn_ref},   $item_ref if (defined $item_ref->{isbn});
+        push @{$enrich_data_by_bibkey_ref}, $item_ref if (defined $item_ref->{bibkey});
         $subject_tuple_count++;
         
         if ($count % 1000 == 0){
-            $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
-            $enrich_data_ref = [];
+            $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
+            $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref })  if (@$enrich_data_by_bibkey_ref);
+            $enrich_data_by_isbn_ref   = [];
+            $enrich_data_by_bibkey_ref = [];
         }
         $count++;
     }
 
-    if (@$enrich_data_ref){
-        $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
-    }
+    $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
+    $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref }) if (@$enrich_data_by_bibkey_ref);
     
-    $logger->info("$subject_tuple_count ISBN-Schlagwort-Tupel eingefuegt");
+    $logger->info("$subject_tuple_count DDC-Tupel eingefuegt");
 
     if ($jsonfile){
         close(JSON);
@@ -178,7 +181,10 @@ else {
 
     my $ddc_tuple_count = 1;
     
-    my $enrich_data_ref = [];
+    # Logik: Bibkeys werden nur verwendet, wenn es keine ISBNs gibt. Also nicht entweder ISBN oder Bibkey, sondern sowohl ISBN wie auch Bibkey!
+    
+    my $enrich_data_by_isbn_ref = [];
+    my $enrich_data_by_bibkey_ref = [];
     
     $logger->info("Einlesen und -laden der neuen Daten");
     
@@ -187,7 +193,9 @@ else {
         my $encoding = $record->encoding();
         
         $logger->debug("Encoding:$encoding:");
-        
+
+        my $bibkey = OpenBib::Common::Util::gen_bibkey_from_marc($record,$encoding);
+
         my @isbns = ();
         {
             # ISBN
@@ -233,42 +241,64 @@ else {
                 }
             }
         }
-        
-        # Dublette Schlagworte's entfernen
-        my %seen_terms  = ();
-        my @unique_isbns    = grep { ! $seen_terms{$_} ++ } @isbns;
-        
-        foreach my $isbn (@unique_isbns){
+
+        if (@isbns){        
+            # Dublette Schlagworte's entfernen
+            my %seen_terms  = ();
+            my @unique_isbns    = grep { ! $seen_terms{$_} ++ } @isbns;
+            
+            foreach my $isbn (@unique_isbns){
+                foreach my $ddc (@ddcs){
+                    $logger->debug("Found $isbn -> $ddc");
+                    my $ddc_ref = {
+                        isbn     => $isbn,
+                        origin   => $origin,
+                        field    => '4103',
+                        subfield => $ddc->{subfield},
+                        content  => $ddc->{content},
+                    };
+                    
+                    print JSON encode_json($ddc_ref),"\n" if ($jsonfile);
+                    
+                    push @{$enrich_data_by_isbn_ref}, $ddc_ref;
+                    $ddc_tuple_count++;
+                }
+            }
+        }
+        elsif ($bibkey){
             foreach my $ddc (@ddcs){
-                $logger->debug("Found $isbn -> $ddc");
+                $logger->debug("Found $bibkey -> $ddc");
                 my $ddc_ref = {
-                    isbn     => $isbn,
+                    bibkey   => $bibkey,
                     origin   => $origin,
                     field    => '4103',
                     subfield => $ddc->{subfield},
                     content  => $ddc->{content},
                 };
-
+                
                 print JSON encode_json($ddc_ref),"\n" if ($jsonfile);
                 
-                push @{$enrich_data_ref}, $ddc_ref;
+                push @{$enrich_data_by_isbn_ref}, $ddc_ref;
                 $ddc_tuple_count++;
             }
         }
         
-        if ($count % 1000 == 0){
-            $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref) if ($import);
-            $enrich_data_ref = [];
+        if ($import && $count % 1000 == 0){
+            $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
+            $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref })  if (@$enrich_data_by_bibkey_ref);
+            $enrich_data_by_isbn_ref   = [];
+            $enrich_data_by_bibkey_ref = [];
         }
         $count++;
         
     }
     
-    if (@$enrich_data_ref && $import){
-        $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($enrich_data_ref);        
+    if ($import && (@$enrich_data_by_isbn_ref || @$enrich_data_by_bibkey_ref) ){
+        $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
+        $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref })  if (@$enrich_data_by_bibkey_ref);
     }
     
-    $logger->info("$ddc_tuple_count ISBN-DDC-Tupel eingefuegt");
+    $logger->info("$ddc_tuple_count DDC-Tupel eingefuegt");
 
     if ($jsonfile){
         close(JSON);

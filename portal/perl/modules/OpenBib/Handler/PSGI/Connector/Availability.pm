@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Connector::Availability
 #
-#  Dieses File ist (C) 2008-2015 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2016 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -186,16 +186,23 @@ sub show_collection_by_isbn {
             my $id         = $title->titleid;
             my $database   = $title->dbname;
             my $titlecache = $title->titlecache;
+            my $location   = $title->location;
             
             # Verfuegbarkeit ist immer im Kontext des Views zu sehen!
             if ($viewdb_lookup_ref->{$database}){
                 $logger->debug("Adding Title with ID $id in DB $database");
                 
                 if ($titlecache){
-                    $recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->set_fields_from_json($titlecache));
+		    my $record = new OpenBib::Record::Title({ id => $id, database => $database})->set_fields_from_json($titlecache);
+		    $record->set_locations([$location]);
+		    
+                    $recordlist->add($record);
                 }
                 else {
-                    $recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database})->load_brief_record());
+		    my $record = new OpenBib::Record::Title({ id => $id, database => $database})->load_brief_record();
+		    $record->set_locations([$location]);
+
+                    $recordlist->add($record);
                 }
             }
         }

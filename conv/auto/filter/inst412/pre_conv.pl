@@ -41,7 +41,6 @@ my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
 
-print "### $pool: Erweiterung um Standort DE-38-ENGPORTROM sowie Inventarnummern aus d01buch\n";
+print "### $pool: Erweiterung um Standort DE-38-ENGPORTROM\n";
 
 system("cd $rootdir/data/$pool ; cat meta.title | $rootdir/filter/$pool/add-locationid.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
-system("cd $rootdir/data/$pool ; cat meta.holding | $rootdir/filter/$pool/enrich_invnr.pl > meta.holding.tmp ; mv -f meta.holding.tmp meta.holding");

@@ -125,6 +125,10 @@ while (<HOLDING>){
             push @{$element_ref}, "DE-38-USBFB";
             push @{$element_ref}, "DE-38-507";
         }
+        elsif ($location_ref->{content} =~m/inst411 /){
+            push @{$element_ref}, "DE-38-411";
+            push @{$element_ref}, "DE-38-ENGPORTROM"; # Normales Institut mit Spezialview
+        }
         elsif ($location_ref->{content} =~m/inst(\d\d\d) /){
             push @{$element_ref}, "DE-38-$1";
         }

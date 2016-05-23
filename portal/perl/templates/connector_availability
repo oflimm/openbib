@@ -65,14 +65,10 @@
    item_location = record.get_locations.first;
 %]
 <catalogue>
-[% IF dbinfo.get('locationid').${record.database} -%]
-  <isil>[% dbinfo.get('locationid').${record.database} %]</isil>
-[% END -%]
-  <sigel>[% dbinfo.get('dbases').${record.database} %]</sigel>
-  <location>[% locinfo.get('identifier').${item_location}.description %]</location>
+  <isil>[% item_location %]</isil>
   <name>[% record.database %]</name>
   <id>[% record.id %]</id>
-  <description>[% dbinfo.get('dbnames').${record.database}.short %]</description>
+  <description>[% locinfo.get('identifier').${item_location}.description %]</description>
   <permalink>http://[% servername %][% path_prefix %]/[% config.get('databases_loc')%]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]</permalink>
 </catalogue>
 [% END %]

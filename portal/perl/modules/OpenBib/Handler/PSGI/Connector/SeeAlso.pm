@@ -207,10 +207,182 @@ sub show {
                                           ( "ShortName" => $current_service_ref->{description} )
                                       );
         
-        return $server->query($source, $identifier, $format, $callback); # TODO print
+        return $self->_output_seealso($id,$server,$source, $identifier, $format, $callback); # TODO print
     }
 
     return;
+}
+
+# Modified Code because Original Code was broken by switching to PSGI. Original code (C) by Jakob Voss
+sub _output_seealso {
+    my ($self,$id,$server,$source,$identifier,$format,$callback) = @_;
+    
+    my $http = "";
+    
+    if (ref($source) eq "CODE") {
+        $source = new SeeAlso::Source( $source );
+    }
+    croak('First parameter must be a SeeAlso::Source object!')
+        unless defined $source and UNIVERSAL::isa($source, 'SeeAlso::Source');
+
+    if ( ref($identifier) eq 'CODE' ) {
+        $identifier = &$identifier( $id );
+    } elsif (not defined $identifier) {
+        $identifier = $id;
+    }
+    $identifier = new SeeAlso::Identifier( $identifier )
+        unless UNIVERSAL::isa( $identifier, 'SeeAlso::Identifier' );
+
+    $format = "" unless defined $format;
+    $callback = "" unless defined $callback;
+
+    # If everything is ok up to here, we should definitely return some valid stuff
+    $format = "seealso" if ( $format eq "debug" && $server->{debug} == -1 ); 
+    $format = "debug" if ( $format eq "seealso" && $server->{debug} == 1 ); 
+
+    if ($format eq 'opensearchdescription') {
+        $http = $server->openSearchDescription( $source );
+        if ($http) {
+            $self->header_add('Status' => 200);
+            $self->header_add('Content-Type' => 'application/opensearchdescription+xml; charset: utf-8');
+            return $http;
+        }
+    }
+
+    $server->{errors} = (); # clean error list
+    my $response;
+    my $status = 200;
+
+    if ( not $identifier ) {
+        $server->errors( "invalid identifier" );
+        $response = SeeAlso::Response->new;
+    } elsif ($format eq "seealso" or $format eq "debug" or !$server->{formats}{$format}) {
+        eval {
+            local $SIG{'__WARN__'} = sub {
+                $server->errors(shift);
+            };
+            $response = $source->query( $identifier );
+        };
+        if ($@) {
+            $server->errors( $@ );
+            undef $response;
+        } else {
+            if (defined $response && !UNIVERSAL::isa($response, 'SeeAlso::Response')) {
+                $server->errors( ref($source) . "->query must return a SeeAlso::Response object but it did return '" . ref($response) . "'");
+                undef $response;
+            }
+        }
+
+        $response = SeeAlso::Response->new() unless defined $response;
+
+        if ($callback && !($callback =~ /^[a-zA-Z0-9\._\[\]]+$/)) {
+            $server->errors( "Invalid callback name specified" );
+            undef $callback;
+            $status = 400;
+        }
+    } else {
+        $response = SeeAlso::Response->new( $identifier );
+    }
+
+
+    if ( $format eq "seealso" ) {
+        $self->header_add('Status' => $status);
+        $self->header_add('Content-Type' => 'text/javascript; charset: utf-8');
+        $self->header_add('Expires' => $server->{expires}) if ($server->{expires});
+        $http = $response->toJSON($callback);
+    }
+    elsif ( $format eq "debug") {
+        $self->header_add('Status' => $status);
+        $self->header_add('Content-Type' => 'text/javascript; charset: utf-8');
+
+        use Class::ISA;
+        my %vars = ( Server => $server, Source => $source, Identifier => $identifier, Response => $response );
+        foreach my $var (keys %vars) {
+            $http .= "$var is a " .
+                join(", ", map { $_ . " " . $_->VERSION; }
+                Class::ISA::self_and_super_path(ref($vars{$var})))
+            . "\n"
+        }
+        $http .= "\n";
+        $http .= "HTTP response status code is $status\n";
+        $http .= "\nInternally the following errors occured:\n- "
+              . join("\n- ", @{ $server->errors() }) . "\n" if $server->errors();
+        $http .= "*/\n";
+        $http .= $response->toJSON($callback) . "\n";
+    }
+    else { # other unAPI formats
+        # TODO is this properly logged?
+        # TODO: put 'seealso' as format method in the array
+        my $f = $server->{formats}{$format};
+        if ($f) {
+            my $type = $f->{type} . "; charset: utf-8";
+            $self->header_add('Status' => $status);
+            $self->header_add('Content-Type' => $type);
+            
+            $http = $f->{method}($identifier); # TODO: what if this fails?!
+        }
+        else {
+            
+            if ($response->query() ne "") {
+                $status = $response->size ? 300 : 404;
+            }
+
+            $self->header_add('Status' => $status);
+            $self->header_add('Content-Type' => 'application/xml; charset: utf-8');
+            
+            $http = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+            
+            if ($server->{xslt}) {
+                $http .= "<?xml-stylesheet type=\"text/xsl\" href=\"" . $self->_xmlencode($server->{xslt}) . "\"?>\n";
+                $http .= "<?seealso-query-base " . $self->_xmlencode($server->baseURL) . "?>\n";
+            }
+            if ($server->{clientbase}) {
+                $http .= "<?seealso-client-base " . $self->_xmlencode($server->{clientbase}) . "?>\n";
+            }
+            
+            my %formats = %{$server->{formats}};
+            
+            if ( $server->{description} ) {
+                $formats{"opensearchdescription"} = {
+                    type=>"application/opensearchdescription+xml",
+                    docs=>"http://www.opensearch.org/Specifications/OpenSearch/1.1/Draft_3#OpenSearch_description_document"
+                };
+            }
+
+            $http = '<?xml version="1.0" encoding="UTF-8"?>' unless defined $http;
+            my @xml;
+            
+            if ($id ne "") {
+                push @xml, '<formats id="' . $self->_xmlencode($id) . '">';
+            } else {
+                push @xml, '<formats>';
+            }
+            
+            foreach my $name (sort({$b cmp $a} keys(%formats))) {
+                my $format = $formats{$name};
+                my $fstr = "<format name=\"" . $self->_xmlencode($name) . "\" type=\"" . $self->_xmlencode($format->{type}) . "\"";
+                $fstr .= " docs=\"" . $self->_xmlencode($format->{docs}) . "\"" if defined $format->{docs};
+                push @xml, $fstr . " />";
+            }
+            
+            push @xml, '</formats>';    
+            
+            $http = $http . join("\n", @xml) . "\n";
+        }
+    }
+    return $http;
+}
+
+sub _xmlencode {
+    my $self = shift;
+    my $data = shift;
+    if ($data =~ /[\&\<\>"]/) {
+      $data =~ s/\&/\&amp\;/g;
+      $data =~ s/\</\&lt\;/g;
+      $data =~ s/\>/\&gt\;/g;
+      $data =~ s/"/\&quot\;/g;
+    }
+    return $data;
 }
 
 1;

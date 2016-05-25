@@ -152,6 +152,7 @@ my $blacklist_ref = {
     'usbhwa' => 1,
     'usbsab' => 1,
     'vubpda' => 1,
+    'roemkepda' => 1,
     'dreierpda' => 1,
     'wiso' => 1,
 };
@@ -208,7 +209,7 @@ autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync =
 
 $logger->info("### PRINTPDA");
 
-autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['dreierpda','vubpda'] });
+autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['dreierpda','vubpda','roemkepda'] });
 
 ##############################
 

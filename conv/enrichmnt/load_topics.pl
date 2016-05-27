@@ -101,8 +101,6 @@ if ($init){
     $enrichment->init_enriched_content({ field => '4102', origin => $origin });
 }
 
-$logger->info("Bestimmung der TOC-URLs");
-
 if ($importjson){
     if (! -e $jsonfile){
         $logger->error("JSON-Datei $jsonfile existiert nicht");

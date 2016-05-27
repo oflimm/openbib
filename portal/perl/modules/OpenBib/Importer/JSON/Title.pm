@@ -323,55 +323,6 @@ sub process {
         };
     }
     
-    # Zentrale Anreicherungsdaten lokal einspielen
-    if ($self->{local_enrichmnt} && (@{$enrichmnt_isbns_ref} || @{$enrichmnt_issns_ref})) {
-        @{$enrichmnt_isbns_ref} =  keys %{{ map { $_ => 1 } @${enrichmnt_isbns_ref} }}; # Only unique
-        @{$enrichmnt_issns_ref} =  keys %{{ map { $_ => 1 } @${enrichmnt_issns_ref} }}; # Only unique
-        
-        foreach my $field (keys %{$self->{conv_config}{local_enrichmnt}}) {
-            my $enrichmnt_data_ref = [];
-            
-            if (@{$enrichmnt_isbns_ref}) {
-                foreach my $isbn13 (@{$enrichmnt_isbns_ref}) {
-                    my $lookup_ref = $self->{storage}{enrichmntdata}{$isbn13};
-                    $logger->debug("Testing ISBN $isbn13 for field $field");
-                    foreach my $enrich_content  (@{$lookup_ref->{"$field"}}) {
-                        $logger->debug("Enrich field $field for ISBN $isbn13 with $enrich_content");
-                        push @$enrichmnt_data_ref, $enrich_content;
-                    }
-                }
-            }
-            elsif (@{$enrichmnt_issns_ref}) {
-                foreach my $issn (@{$enrichmnt_issns_ref}) {
-                    my $lookup_ref = $self->{storage}{enrichmntdata}{$issn};
-                    
-                    foreach my $enrich_content  (@{$lookup_ref->{"$field"}}) {
-                        $logger->debug("Enrich field $field for ISSN $issn with $enrich_content");
-                        push @$enrichmnt_data_ref, $enrich_content;
-                    }
-                }
-            }
-            
-            if (@{$enrichmnt_data_ref}) {
-                my $mult = 1;
-                
-                foreach my $content (keys %{{ map { $_ => 1 } @${enrichmnt_data_ref} }}) { # unique
-                    $content = decode_utf8($content);
-                    
-                    $logger->debug("Id: $id - Adding $field -> $content");
-
-                    push @{$fields_ref->{$field}}, {
-                        mult      => $mult,
-                        content   => $content,
-                        subfield  => '',
-                    };
-                    
-                    $mult++;
-                }
-            }
-        }
-    }
-
     my $valid_language_available=0;
     my $mult_lang = 1;
     
@@ -893,6 +844,9 @@ sub process {
 
 
     # Bibkey-Kategorie 5050 wird *immer* angereichert, wenn alle relevanten Kategorien enthalten sind. Die Invertierung ist konfigurabel
+
+    my $bibkey = "";
+
     if ((defined $fields_ref->{'0100'} || defined $fields_ref->{'0101'}) && defined $fields_ref->{'0331'} && (defined $fields_ref->{'0424'} || defined $fields_ref->{'0425'})){
 
         my $bibkey_record_ref = {
@@ -908,7 +862,7 @@ sub process {
 
         my $bibkey_base = OpenBib::Common::Util::gen_bibkey_base({ fields => $bibkey_record_ref});
 
-        my $bibkey      = ($bibkey_base)?OpenBib::Common::Util::gen_bibkey({ bibkey_base => $bibkey_base }):"";
+        $bibkey      = ($bibkey_base)?OpenBib::Common::Util::gen_bibkey({ bibkey_base => $bibkey_base }):"";
         
         if ($bibkey) {
             push @{$fields_ref->{'5050'}}, {
@@ -955,6 +909,63 @@ sub process {
                 content   => $workkey,
                 subfield  => '',
             };
+        }
+    }
+
+    # Zentrale Anreicherungsdaten lokal einspielen
+    if ($self->{local_enrichmnt} && (@{$enrichmnt_isbns_ref} || @{$enrichmnt_issns_ref} || $bibkey)) {
+        @{$enrichmnt_isbns_ref} =  keys %{{ map { $_ => 1 } @${enrichmnt_isbns_ref} }}; # Only unique
+        @{$enrichmnt_issns_ref} =  keys %{{ map { $_ => 1 } @${enrichmnt_issns_ref} }}; # Only unique
+        
+        foreach my $field (keys %{$self->{conv_config}{local_enrichmnt}}) {
+            my $enrichmnt_data_ref = [];
+            
+            if (@{$enrichmnt_isbns_ref}) {
+                foreach my $isbn13 (@{$enrichmnt_isbns_ref}) {
+                    my $lookup_ref = $self->{storage}{enrichmntdata}{$isbn13};
+                    $logger->debug("Testing ISBN $isbn13 for field $field");
+                    foreach my $enrich_content  (@{$lookup_ref->{"$field"}}) {
+                        $logger->debug("Enrich field $field for ISBN $isbn13 with $enrich_content");
+                        push @$enrichmnt_data_ref, $enrich_content;
+                    }
+                }
+            }
+            elsif (@{$enrichmnt_issns_ref}) {
+                foreach my $issn (@{$enrichmnt_issns_ref}) {
+                    my $lookup_ref = $self->{storage}{enrichmntdata}{$issn};
+                    
+                    foreach my $enrich_content  (@{$lookup_ref->{"$field"}}) {
+                        $logger->debug("Enrich field $field for ISSN $issn with $enrich_content");
+                        push @$enrichmnt_data_ref, $enrich_content;
+                    }
+                }
+            }
+            elsif ($bibkey){
+                my $lookup_ref = $self->{storage}{enrichmntdata}{$bibkey};
+                    
+                foreach my $enrich_content  (@{$lookup_ref->{"$field"}}) {
+                    $logger->debug("Enrich field $field for Bibkey $bibkey with $enrich_content for id $id");
+                    push @$enrichmnt_data_ref, $enrich_content;
+                }
+            }
+            
+            if (@{$enrichmnt_data_ref}) {
+                my $mult = 1;
+                
+                foreach my $content (keys %{{ map { $_ => 1 } @${enrichmnt_data_ref} }}) { # unique
+                    $content = decode_utf8($content);
+                    
+                    $logger->debug("Id: $id - Adding $field -> $content");
+
+                    push @{$fields_ref->{$field}}, {
+                        mult      => $mult,
+                        content   => $content,
+                        subfield  => '',
+                    };
+                    
+                    $mult++;
+                }
+            }
         }
     }
     

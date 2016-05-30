@@ -126,11 +126,11 @@
         </li>
         <li><b>02.01.05</b> <a [% IF NOT have_classification.${"02.01.05"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.05">Beziehungen einzelner Personen zur USB</a></li>
         <li><b>02.01.06</b> <a [% IF NOT have_classification.${"02.01.06"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.06">Allgemeine Entwicklung seit 1920</a></li>
-        <li><b>02.01.07</b> <a [% IF NOT have_classification.${"02.01.07"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.07">Personal</a></li>
+        <li><b>02.01.07</b> <a [% IF NOT have_classification.${"02.01.07"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.07">Personal</a>
           <ul>
             <li><b>02.01.07.01</b> <a [% IF NOT have_classification.${"02.01.07.01"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.07.01">Allgemein</a></li>
             <li><b>02.01.07.02</b> <a [% IF NOT have_classification.${"02.01.07.02"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.07.02">Einzelne Sparten</a></li>
-            <li><b>02.01.07.03</b> <a [% IF NOT have_classification.${"02.01.07.03"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.07.03>Entwicklung</a></li>
+            <li><b>02.01.07.03</b> <a [% IF NOT have_classification.${"02.01.07.03"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.07.03">Entwicklung</a></li>
           </ul>
         </li>
         <li><b>02.01.08</b> <a [% IF NOT have_classification.${"02.01.08"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.01.08">Einzelne Mitarbeiter der USB und ihrer Vorläufereinrichtungen</a></li>

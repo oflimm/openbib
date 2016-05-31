@@ -711,7 +711,7 @@ sub get_facets {
 
     my %facet_rev_map = ();
 
-    foreach my $facet (keys $config->{xapian_facet_value}){
+    foreach my $facet (keys %{$config->{xapian_facet_value}}){
         $facet_rev_map{$config->{xapian_facet_value}{$facet}} = $facet;
     }
     

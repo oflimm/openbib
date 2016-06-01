@@ -33,7 +33,6 @@ use utf8;
 use Benchmark ':hireswallclock';
 use DBIx::Class::ResultClass::HashRefInflator;
 use Cache::Memcached::libmemcached;
-use Encode 'decode_utf8';
 use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use LWP;
@@ -862,10 +861,10 @@ sub get_rssfeedinfo  {
     my $rssfeedinfo_ref = {};
 
     while (my $item = $feedinfos->next){
-        my $orgunit    = decode_utf8($item->{thisorgunitdescription});
-        my $name       = decode_utf8($item->{thisdbdescription});
-        my $pool       = decode_utf8($item->{thisdbname});
-        my $rsstype    = decode_utf8($item->{thisrsstype});
+        my $orgunit    = $item->{thisorgunitdescription};
+        my $name       = $item->{thisdbdescription};
+        my $pool       = $item->{thisdbname};
+        my $rsstype    = $item->{thisrsstype};
         
         push @{$rssfeedinfo_ref->{$orgunit}},{
             pool     => $pool,
@@ -1759,13 +1758,13 @@ sub get_infomatrix_of_active_databases {
     my @catdb=();
 
     while (my $item = $dbinfos->next){
-        my $category   = decode_utf8($item->{thisorgunitdescription});
-        my $name       = decode_utf8($item->{thisdescription});
-        my $systemtype = decode_utf8($item->{thissystem});
-        my $pool       = decode_utf8($item->{thisdbname});
-        my $url        = decode_utf8($item->{thisurl});
-        my $sigel      = decode_utf8($item->{thissigel});
-        my $locationid = decode_utf8($item->{thislocationid});
+        my $category   = $item->{thisorgunitdescription};
+        my $name       = $item->{thisdescription};
+        my $systemtype = $item->{thissystem};
+        my $pool       = $item->{thisdbname};
+        my $url        = $item->{thisurl};
+        my $sigel      = $item->{thissigel};
+        my $locationid = $item->{thislocationid};
 	
         my $rcolumn;
         

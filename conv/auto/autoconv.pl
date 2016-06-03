@@ -110,6 +110,8 @@ if (!$config->db_exists($database)){
   exit;
 }
 
+my $pg_pid_column = ($config->get('postgresql_version') >= 90200)?'pid':'procpid';
+
 my $dbinfo     = $config->get_databaseinfo->search_rs({ dbname => $database })->single;
 my $serverinfo = $config->get_serverinfo->search_rs({ hostip => $config->{local_ip} })->single;
 
@@ -285,12 +287,12 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
     
     
 #     if ($incremental){
-#         $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$database'"); 
+#         $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.$pg_pid_column) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$database'"); 
 #         $postgresdbh->do("CREATE DATABASE $databasetmp with template $database owner ".$config->{'dbuser'}); 
 #     }
 #     else {
     if (!$incremental){
-        $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$databasetmp'");             
+        $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.$pg_pid_column) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$databasetmp'");             
 
         system("/usr/bin/dropdb -U $config->{'dbuser'} $databasetmp");
         system("/usr/bin/createdb -U $config->{'dbuser'} -E UTF-8 -O $config->{'dbuser'} $databasetmp");
@@ -509,15 +511,15 @@ unless ($incremental){
     
     my $old_database_exists = $result->{dbcount};
 
-    $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$database'");
-    $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '${database}tmp2'");
+    $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.$pg_pid_column) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$database'");
+    $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.$pg_pid_column) FROM pg_stat_activity WHERE pg_stat_activity.datname = '${database}tmp2'");
 
     if ($old_database_exists){
         $postgresdbh->do("DROP database ${database}tmp2");
 	$postgresdbh->do("ALTER database $database RENAME TO ${database}tmp2");
     }
 
-    $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$databasetmp'");
+    $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.$pg_pid_column) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$databasetmp'");
 
     $postgresdbh->do("ALTER database $databasetmp RENAME TO $database");
 

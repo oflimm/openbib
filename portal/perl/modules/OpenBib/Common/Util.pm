@@ -1593,7 +1593,7 @@ sub gen_bibkey_base {
     }
 
     my $persons_ref=(defined $authors_ref && @$authors_ref)?$authors_ref:
-    (defined @$editors_ref && @$editors_ref)?$editors_ref:[];
+    (defined $editors_ref && @$editors_ref)?$editors_ref:[];
 
     my $author = "";
     $author    = "[".join(",", sort(@$persons_ref))."]" if (defined $persons_ref && @$persons_ref);

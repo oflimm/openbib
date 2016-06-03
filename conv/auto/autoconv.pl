@@ -10,7 +10,7 @@
 #
 #  Andere : Ueber Plugins/Filter realisierbar
 #
-#  Dieses File ist (C) 1997-2015 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2016 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -109,6 +109,8 @@ if (!$config->db_exists($database)){
   $logger->fatal("Pool $database existiert nicht");
   exit;
 }
+
+my $pg_pid_column = ($config->get('postgresql_version') >= 90200)?'pid':'procpid';
 
 my $dbinfo     = $config->get_databaseinfo->search_rs({ dbname => $database })->single;
 my $serverinfo = $config->get_serverinfo->search_rs({ hostip => $config->{local_ip} })->single;
@@ -285,12 +287,12 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
     
     
 #     if ($incremental){
-#         $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$database'"); 
+#         $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.$pg_pid_column) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$database'"); 
 #         $postgresdbh->do("CREATE DATABASE $databasetmp with template $database owner ".$config->{'dbuser'}); 
 #     }
 #     else {
     if (!$incremental){
-        $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$databasetmp'");             
+        $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.$pg_pid_column) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$databasetmp'");             
 
         system("/usr/bin/dropdb -U $config->{'dbuser'} $databasetmp");
         system("/usr/bin/createdb -U $config->{'dbuser'} -E UTF-8 -O $config->{'dbuser'} $databasetmp");
@@ -509,15 +511,15 @@ unless ($incremental){
     
     my $old_database_exists = $result->{dbcount};
 
-    $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$database'");
-    $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '${database}tmp2'");
+    $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.$pg_pid_column) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$database'");
+    $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.$pg_pid_column) FROM pg_stat_activity WHERE pg_stat_activity.datname = '${database}tmp2'");
 
     if ($old_database_exists){
         $postgresdbh->do("DROP database ${database}tmp2");
 	$postgresdbh->do("ALTER database $database RENAME TO ${database}tmp2");
     }
 
-    $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$databasetmp'");
+    $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.$pg_pid_column) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$databasetmp'");
 
     $postgresdbh->do("ALTER database $databasetmp RENAME TO $database");
 
@@ -579,10 +581,6 @@ if ($updatemaster){
 
 # Ansonsten bei jedem Node
 my $cmd = "$config->{'base_dir'}/bin/update_all_titles_table.pl --database=$database -bulk-insert";
-
-if ($incremental){
-    $cmd.=" -incremental";
-}
 
 $logger->info("### $database: Updating All-Titles table");
 system($cmd);

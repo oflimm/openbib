@@ -1070,7 +1070,7 @@ sub enrich_similar_records {
             $where_ref,
             {
                 order_by => ['edition DESC'],
-                group_by => ['id','dbname','workkey','location','tstamp','titleid','titlecache'],
+                group_by => ['id','dbname','workkey','edition','location','tstamp','titleid','titlecache'],
                 result_class => 'DBIx::Class::ResultClass::HashRefInflator',
             }
         );
@@ -1859,7 +1859,8 @@ sub set_fields_from_json {
     my $json_ref = {};
 
     eval {
-        $json_ref = JSON::XS::decode_json decode_utf8($json_string);
+#        $json_ref = JSON::XS::decode_json decode_utf8($json_string);
+        $json_ref = JSON::XS::decode_json $json_string;
     };
     
     if ($@){

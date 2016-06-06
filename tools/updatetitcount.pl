@@ -7,7 +7,7 @@
 #  Aktualisierung der Information ueber die Titelanzahl in den
 #  Katalogen
 #
-#  Dieses File ist (C) 2003-20012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2016 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -35,6 +35,7 @@
 use strict;
 use warnings;
 
+use Date::Manip qw/DateCalc ParseDate Delta_Format UnixDate/;
 use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
 
@@ -42,9 +43,10 @@ use OpenBib::Config;
 use OpenBib::Catalog;
 
 # Definition der Programm-Optionen
-my ($database,$loglevel,$logfile);
+my ($database,$loglevel,$logfile,$writeupdatelog);
 
 &GetOptions(
+    "write-updatelog" => \$writeupdatelog,
     "database=s" => \$database,
     "loglevel=s" => \$loglevel,
     "logfile=s"  => \$logfile,    
@@ -139,6 +141,23 @@ foreach my $database (@databases){
 	    }
 	    )->count;
 	
+	if ($writeupdatelog){
+	    my $dbinfo     = $config->get_databaseinfo->search_rs({ dbname => $database })->single;
+	    my $serverinfo = $config->get_serverinfo->search_rs({ hostip => $config->{local_ip} })->single;
+	    
+	    my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $database});
+	    
+	    my $counter = $catalog->get_bibliographic_counters;
+	    
+	    my $tstamp_now = ParseDate("now");
+	    
+	    $counter->{dbid} = $dbinfo->id;
+	    $counter->{tstamp_start} = UnixDate($tstamp_now,"%Y-%m-%d %T");
+	    $counter->{duration} = 0;
+	    
+	    $serverinfo->updatelogs->create($counter);
+	}
+
 	# DBI "update databaseinfo set allcount = ?, journalcount = ?, articlecount = ?, digitalcount = ? where dbname=?"
 	$config->update_databaseinfo(
 	    {

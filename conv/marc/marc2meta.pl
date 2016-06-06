@@ -6,7 +6,7 @@
 #
 #  Konverierung von MARC-Daten in das Meta-Format
 #
-#  Dieses File ist (C) 2009-2014 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2009-2016 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -375,6 +375,23 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
                 my $multcount=++$multcount_ref->{'0541'};
                 
                 push @{$title_ref->{fields}{'0541'}}, {
+                    content  => konv($content_z),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+            }
+
+        }
+        
+        foreach my $field ($record->field('776')){
+            my $content_z = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('z')):decode_utf8($field->as_string('z'));
+
+            $content_z=~s/\s+\(.+?\)\s*$//;
+            
+            if ($content_z){
+                my $multcount=++$multcount_ref->{'0553'};
+                
+                push @{$title_ref->{fields}{'0553'}}, {
                     content  => konv($content_z),
                     subfield => '',
                     mult     => $multcount,

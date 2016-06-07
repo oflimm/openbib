@@ -175,7 +175,7 @@ sub process {
 
     if ($json){
         $import_hash = md5_hex($json);
-        
+
         eval {
             $record_ref = decode_json $json;
         };
@@ -953,8 +953,6 @@ sub process {
                 my $mult = 1;
                 
                 foreach my $content (keys %{{ map { $_ => 1 } @${enrichmnt_data_ref} }}) { # unique
-                    $content = decode_utf8($content);
-                    
                     $logger->debug("Id: $id - Adding $field -> $content");
 
                     push @{$fields_ref->{$field}}, {

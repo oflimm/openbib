@@ -215,14 +215,14 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
         # Verfasser
         foreach my $fieldno ('100','700'){
             foreach my $field ($record->field($fieldno)){
-                my $linkage = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('6')):decode_utf8($field->as_string('6'));
+                my $linkage = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('6')):$field->as_string('6');
                 
                 my $linkage_fields_ref = get_linkage_fields({ record => $record, fieldnumber => $fieldno, linkage => $linkage});
 
                 $field->delete_subfield(code => '6'); # Linkage
-                my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
-                my $content_c = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('c')):decode_utf8($field->as_string('c'));
-                my $content_d = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('d')):decode_utf8($field->as_string('d'));
+                my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
+                my $content_c = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('c')):$field->as_string('c');
+                my $content_d = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('d')):$field->as_string('d');
 
                 $linkage_fields_ref = get_linkage_fields({ record => $record, fieldnumber => $fieldno, linkage => $linkage});
 
@@ -233,9 +233,9 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
                 foreach my $linkage_field (@$linkage_fields_ref){
                     $linkage_field->delete_subfield(code => '6'); # Linkage
 
-                    my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('a')):decode_utf8($linkage_field->as_string('a'));
-                    my $content_c = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('c')):decode_utf8($linkage_field->as_string('c'));
-                    my $content_d = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('d')):decode_utf8($linkage_field->as_string('d'));
+                    my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('a')):$linkage_field->as_string('a');
+                    my $content_c = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('c')):$linkage_field->as_string('c');
+                    my $content_d = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('d')):$linkage_field->as_string('d');
 
                     if ($content_a){
                         $title_ref = add_person($content_a,$content_c,$content_d,$title_ref);
@@ -250,7 +250,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
     {
         foreach my $fieldno ('110','710'){
             foreach my $field ($record->field($fieldno)){
-                my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
+                my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
 
                 if ($content_a){
                     my ($corporatebody_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($content_a);
@@ -286,7 +286,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
 
     {
         foreach my $field ($record->field('082')){
-            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string($field)):decode_utf8($field->as_string($field));
+            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string($field)):$field->as_string($field);
             
             if ($content){            
                 my ($classification_id,$new)=OpenBib::Conv::Common::Util::get_classification_id($content);
@@ -324,13 +324,13 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
         # Schlagwort
         foreach my $fieldno ('650','651'){
             foreach my $field ($record->field($fieldno)){
-                my $linkage = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('6')):decode_utf8($field->as_string('6'));
+                my $linkage = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('6')):$field->as_string('6');
                 
                 my $linkage_fields_ref = get_linkage_fields({ record => $record, fieldnumber => $fieldno, linkage => $linkage});
 
                 $field->delete_subfield(code => '6'); # Linkage
                 
-                my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
+                my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
 
                 if ($content){
                     $title_ref = add_subject($content,$title_ref);
@@ -339,7 +339,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
                 foreach my $linkage_field (@$linkage_fields_ref){
                     $linkage_field->delete_subfield(code => '6'); # Linkage
 
-                    my $content = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('a')):decode_utf8($linkage_field->as_string('a'));
+                    my $content = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('a')):$linkage_field->as_string('a');
 
                     if ($content){
                         $title_ref = add_subject($content,$title_ref);
@@ -355,8 +355,8 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
     {
         # ISBN
         foreach my $field ($record->field('020')){
-            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
-            my $content_z = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('z')):decode_utf8($field->as_string('z'));
+            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
+            my $content_z = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('z')):$field->as_string('z');
 
             $content_a=~s/\s+\(.+?\)\s*$//;
             $content_z=~s/\s+\(.+?\)\s*$//;
@@ -384,7 +384,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
         }
         
         foreach my $field ($record->field('776')){
-            my $content_z = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('z')):decode_utf8($field->as_string('z'));
+            my $content_z = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('z')):$field->as_string('z');
 
             $content_z=~s/\s+\(.+?\)\s*$//;
             
@@ -402,8 +402,8 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
 
         # ISSN
         foreach my $field ($record->field('022')){
-            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
-            my $content_z = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('z')):decode_utf8($field->as_string('z'));
+            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
+            my $content_z = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('z')):$field->as_string('z');
 
             $content_a=~s/\s+\(.+?\)\s*$//;
             $content_z=~s/\s+\(.+?\)\s*$//;
@@ -431,7 +431,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
         }
         
         foreach my $field ($record->field('040')){
-            my $content_b = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('b')):decode_utf8($field->as_string('b'));
+            my $content_b = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('b')):$field->as_string('b');
 
             if ($content_b){
                 my $multcount=++$multcount_ref->{'0015'};
@@ -447,7 +447,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
         # EST
         foreach my $field ($record->field('240')){
                 
-            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string()):decode_utf8($field->as_string());
+            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string()):$field->as_string();
 
             if ($content){
                 my $multcount=++$multcount_ref->{'0304'};
@@ -463,7 +463,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
         # Uebers. HST (Translation)
         foreach my $field ($record->field('242')){
                 
-            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string()):decode_utf8($field->as_string());
+            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string()):$field->as_string();
 
             if ($content){
                 my $multcount=++$multcount_ref->{'0503'};
@@ -479,7 +479,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
         # Sammlungsvermerk (Collective uniform title)
         foreach my $field ($record->field('243')){
                 
-            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string()):decode_utf8($field->as_string());
+            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string()):$field->as_string();
 
             if ($content){
                 my $multcount=++$multcount_ref->{'0300'};
@@ -494,11 +494,11 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
 
         # HST
         foreach my $field ($record->field('245')){                      
-            my $content_b = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('b')):decode_utf8($field->as_string('b'));
-            my $content_c = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('c')):decode_utf8($field->as_string('c'));
-            my $content_h = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('h')):decode_utf8($field->as_string('h'));
-            my $content_n = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('n')):decode_utf8($field->as_string('n'));
-            my $linkage   = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('6')):decode_utf8($field->as_string('6'));
+            my $content_b = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('b')):$field->as_string('b');
+            my $content_c = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('c')):$field->as_string('c');
+            my $content_h = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('h')):$field->as_string('h');
+            my $content_n = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('n')):$field->as_string('n');
+            my $linkage   = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('6')):$field->as_string('6');
             
             # Subfields entfernen
             $field->delete_subfield(code => 'b');
@@ -545,7 +545,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
                 
             }
 
-            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string()):decode_utf8($field->as_string());
+            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string()):$field->as_string();
 
             foreach my $linkage_field (@$linkage_fields_ref){
                 # Subfields entfernen
@@ -563,7 +563,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
                 };
 
                 foreach my $linkage_field (@$linkage_fields_ref){
-                    my $linkage_content_c = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('c')):decode_utf8($linkage_field->as_string('c'));
+                    my $linkage_content_c = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('c')):$linkage_field->as_string('c');
                     
                     if ($linkage_content_c){
                         push @{$title_ref->{fields}{'0359'}}, {
@@ -577,7 +577,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
                     }                
 
 
-                    my $linkage_content_b = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('b')):decode_utf8($linkage_field->as_string('b'));
+                    my $linkage_content_b = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('b')):$linkage_field->as_string('b');
                     
                     if ($linkage_content_b){
                         push @{$title_ref->{fields}{'0335'}}, {
@@ -590,7 +590,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
                         $linkage_field->delete_subfield(code => 'b');
                     }
                     
-                    my $linkage_content = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string()):decode_utf8($linkage_field->as_string());
+                    my $linkage_content = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string()):$linkage_field->as_string();
                     
                     if ($linkage_content){
                         push @{$title_ref->{fields}{'0331'}}, {
@@ -608,10 +608,10 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
         # HST/GT
         if (0 == 1){
         foreach my $field ($record->field('245')){
-            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
-            my $content_c = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('c')):decode_utf8($field->as_string('c'));
-            my $content_n = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('n')):decode_utf8($field->as_string('n'));
-            my $content_p = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('p')):decode_utf8($field->as_string('p'));
+            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
+            my $content_c = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('c')):$field->as_string('c');
+            my $content_n = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('n')):$field->as_string('n');
+            my $content_p = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('p')):$field->as_string('p');
             
             
             $content_p=~s/\s+\/\s+$//; # / am Ende entfernen
@@ -675,7 +675,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
         # Frueherer Titel
         foreach my $field ($record->field('247')){
                 
-            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string()):decode_utf8($field->as_string());
+            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string()):$field->as_string();
 
             if ($content){
                 my $multcount=++$multcount_ref->{'0532'};
@@ -690,7 +690,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
         
         # Auflage
         foreach my $field ($record->field('250')){
-            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
+            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
 
             if ($content_a){
                 my $multcount=++$multcount_ref->{'0403'};
@@ -705,7 +705,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
 
         # Massstab
         foreach my $field ($record->field('255')){
-            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
+            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
 
             if ($content_a){
                 my $multcount=++$multcount_ref->{'0407'};
@@ -720,11 +720,11 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
         
         # Verlag/Verlagsort/Jahr
         foreach my $field ($record->field('260')){
-            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
-            my $content_b = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('b')):decode_utf8($field->as_string('b'));
-            my $content_c = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('c')):decode_utf8($field->as_string('c'));
-            my $content_e = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('e')):decode_utf8($field->as_string('e'));
-            my $content_f = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('f')):decode_utf8($field->as_string('f'));
+            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
+            my $content_b = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('b')):$field->as_string('b');
+            my $content_c = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('c')):$field->as_string('c');
+            my $content_e = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('e')):$field->as_string('e');
+            my $content_f = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('f')):$field->as_string('f');
 
             # Verlagsort
             if ($content_a){
@@ -785,9 +785,9 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
 
         # 260 as RDA
         foreach my $field ($record->field('264')){
-            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
-            my $content_b = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('b')):decode_utf8($field->as_string('b'));
-            my $content_c = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('c')):decode_utf8($field->as_string('c'));
+            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
+            my $content_b = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('b')):$field->as_string('b');
+            my $content_c = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('c')):$field->as_string('c');
 
             # Verlagsort
             if ($content_a){
@@ -826,9 +826,9 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
         
         # 
         foreach my $field ($record->field('300')){
-            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
-            my $content_b = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('b')):decode_utf8($field->as_string('b'));
-            my $content_e = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('e')):decode_utf8($field->as_string('e'));
+            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
+            my $content_b = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('b')):$field->as_string('b');
+            my $content_e = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('e')):$field->as_string('e');
 
             # Kollation
             if ($content_a){
@@ -870,14 +870,14 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
         # Serie
         foreach my $fieldno ('440','490'){
             foreach my $field ($record->field($fieldno)){
-                my $linkage = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('6')):decode_utf8($field->as_string('6'));
+                my $linkage = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('6')):$field->as_string('6');
                 
                 my $linkage_fields_ref = get_linkage_fields({ record => $record, fieldnumber => $fieldno, linkage => $linkage});
 
                 $field->delete_subfield(code => '6'); # Linkage
                 
-                my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string()):decode_utf8($field->as_string());
-                my $content_v = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('v')):decode_utf8($field->as_string('v'));
+                my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string()):$field->as_string();
+                my $content_v = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('v')):$field->as_string('v');
                 
                 if ($content){
                     my $multcount=++$multcount_ref->{'0451'};
@@ -892,7 +892,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
                 foreach my $linkage_field (@$linkage_fields_ref){
                     $linkage_field->delete_subfield(code => '6'); # Linkage
                     
-                    my $content = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string()):decode_utf8($linkage_field->as_string());
+                    my $content = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string()):$linkage_field->as_string();
                     
                     if ($content){
                         my $multcount=++$multcount_ref->{'0451'};
@@ -928,7 +928,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
                 foreach my $linkage_field (@$linkage_fields_ref){
                     $linkage_field->delete_subfield(code => '6'); # Linkage
 
-                    my $content_v = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('v')):decode_utf8($linkage_field->as_string('v'));
+                    my $content_v = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('v')):$linkage_field->as_string('v');
 
                     if ($content_v){
                         my $multcount=++$multcount_ref->{'0089'};
@@ -955,7 +955,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
 
         # Fussnote
         foreach my $field ($record->field('500')){
-            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string):decode_utf8($field->as_string);
+            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string):$field->as_string;
 
             if ($content){
                 my $multcount=++$multcount_ref->{'0501'};
@@ -970,7 +970,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
 
         # HSSVermerk
         foreach my $field ($record->field('502')){
-            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string):decode_utf8($field->as_string);
+            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string):$field->as_string;
 
             if ($content){
                 my $multcount=++$multcount_ref->{'0519'};
@@ -985,7 +985,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
 
         # Angaben zum Inhalt
         foreach my $field ($record->field('505')){
-            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string):decode_utf8($field->as_string);
+            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string):$field->as_string;
 
             if ($content){
                 my $multcount=++$multcount_ref->{'0517'};
@@ -1000,7 +1000,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
         
         # Format
         foreach my $field ($record->field('516')){
-            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string):decode_utf8($field->as_string);
+            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string):$field->as_string;
 
             if ($content){
                 my $multcount=++$multcount_ref->{'0435'};
@@ -1015,7 +1015,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
 
         # Angaben zum Inhalt
         foreach my $field ($record->field('520')){
-            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string):decode_utf8($field->as_string);
+            my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string):$field->as_string;
 
             if ($content){
                 my $multcount=++$multcount_ref->{'0517'};
@@ -1031,7 +1031,7 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
         # WST
         foreach my $fieldno ('720','730','740'){
             foreach my $field ($record->field($fieldno)){
-                my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string):decode_utf8($field->as_string);
+                my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string):$field->as_string;
                 
                 if ($content){
                     my $multcount=++$multcount_ref->{'0370'};
@@ -1050,12 +1050,12 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
             my @content_u = $field->subfield('u');
             my @content_z = $field->subfield('z');
             for (my $idx=0;$idx <= $#content_u; $idx++){
-                my $content_u_string = ($encoding eq "MARC-8")?marc8_to_utf8($content_u[$idx]):decode_utf8($content_u[$idx]);
+                my $content_u_string = ($encoding eq "MARC-8")?marc8_to_utf8($content_u[$idx]):$content_u[$idx];
 
                 my $content_z_string = "" ;
 
                 if ($content_z[$idx]){
-                    $content_z_string = ($encoding eq "MARC-8")?marc8_to_utf8($content_z[$idx]):decode_utf8($content_z[$idx]);
+                    $content_z_string = ($encoding eq "MARC-8")?marc8_to_utf8($content_z[$idx]):$content_z[$idx];
                 }
             
                 if ($content_u_string){
@@ -1082,8 +1082,8 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
 
     { # Exemplardaten
         foreach my $field ($record->field('852')){
-            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
-            my $content_i = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('i')):decode_utf8($field->as_string('i'));
+            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
+            my $content_i = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('i')):$field->as_string('i');
 
             my $holding_ref = {
                 'id'     => $mexid++,
@@ -1222,7 +1222,7 @@ sub get_linkage_fields {
     my ($linkage_fieldnumber,$linkage_count) = $linkage =~m/^(\d\d\d)-(\d+)/;
 
     foreach my $thislinkage_field ($record->field($linkage_fieldnumber)){
-        my $thiscontent_6 = ($encoding eq "MARC-8")?marc8_to_utf8($thislinkage_field->as_string('6')):decode_utf8($thislinkage_field->as_string('6'));            
+        my $thiscontent_6 = ($encoding eq "MARC-8")?marc8_to_utf8($thislinkage_field->as_string('6')):$thislinkage_field->as_string('6');
         
         my ($thislinkage_fieldnumber,$thislinkage_count) = $thiscontent_6 =~m/^(\d\d\d)-(\d+)/;
 

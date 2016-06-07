@@ -89,6 +89,7 @@ my $config = new OpenBib::Config();
 
 my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";
+my $tooldir       = $config->{'tool_dir'};
 
 my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
 my $meta2sqlexe   = "$config->{'conv_dir'}/meta2sql.pl";
@@ -228,7 +229,8 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
     }
     
 }
-    
+
+
 # Konvertierung aus dem Meta- in das SQL-Einladeformat
 
 {
@@ -239,6 +241,14 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
         $logger->info("### $database: Verwende Plugin pre_conv.pl");
         system("$config->{autoconv_dir}/filter/$database/pre_conv.pl $database");
     }
+
+    # Deterministische JSON-Serialisierung erzwingen
+    system("$tooldir/canonify-json.pl < $rootdir/data/$database/meta.title > $rootdir/data/$database/meta.title.tmp ; mv -f $rootdir/data/$database/meta.title.tmp $rootdir/data/$database/meta.title");
+    system("$tooldir/canonify-json.pl < $rootdir/data/$database/meta.person > $rootdir/data/$database/meta.person.tmp ; mv -f $rootdir/data/$database/meta.person.tmp $rootdir/data/$database/meta.person");
+    system("$tooldir/canonify-json.pl < $rootdir/data/$database/meta.subject > $rootdir/data/$database/meta.subject.tmp ; mv -f $rootdir/data/$database/meta.subject.tmp $rootdir/data/$database/meta.subject");
+    system("$tooldir/canonify-json.pl < $rootdir/data/$database/meta.classification > $rootdir/data/$database/meta.classification.tmp ; mv -f $rootdir/data/$database/meta.classification.tmp $rootdir/data/$database/meta.classification");
+    system("$tooldir/canonify-json.pl < $rootdir/data/$database/meta.corporatebody > $rootdir/data/$database/meta.corporatebody.tmp ; mv -f $rootdir/data/$database/meta.corporatebody.tmp $rootdir/data/$database/meta.corporatebody");
+    system("$tooldir/canonify-json.pl < $rootdir/data/$database/meta.holding > $rootdir/data/$database/meta.holding.tmp ; mv -f $rootdir/data/$database/meta.holding.tmp $rootdir/data/$database/meta.holding");
 
     $logger->info("### $database: Konvertierung Exportdateien -> SQL");
 

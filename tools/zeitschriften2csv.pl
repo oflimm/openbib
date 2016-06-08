@@ -128,7 +128,7 @@ my $zeitschriften = $catalog->get_schema->resultset('Holding')->search(
 	select   => ['title_holdings.titleid','me.id','titleid.titlecache'],
 	as       => ['thistitleid','thisholdingid','thistitlecache'],
 	prefetch => ['title_holdings'],
-	group_by => ['title_holdings.titleid','me.id','titleid.titlecache'],
+	group_by => ['title_holdings.id','title_holdings.titleid','me.id','titleid.titlecache'],
 	join     => ['holding_fields','title_holdings', { 'title_holdings' => 'titleid' }],
 	result_class => 'DBIx::Class::ResultClass::HashRefInflator',
     }

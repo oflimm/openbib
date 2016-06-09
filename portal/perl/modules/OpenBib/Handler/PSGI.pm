@@ -1493,12 +1493,7 @@ sub parse_valid_input {
             my $default  = $valid_input_params_ref->{$param}{default};
             
             if ($type eq "scalar"){
-                if ($encoding eq "utf8"){
-                    $input_params_ref->{$param} = decode_utf8($query->param($param)) || $default;
-                }
-                else {
-                    $input_params_ref->{$param} = $query->param($param)  || $default;
-                }
+		$input_params_ref->{$param} = decode_utf8($query->param($param)) || $default;
             }
             # sonst array
             elsif ($type eq "bool"){
@@ -1521,15 +1516,15 @@ sub parse_valid_input {
                         my $subfield = $3;
                         my $mult     = $4;
 
-                        my $content  = $query->param($qparam);
-                        
+                        my $content  = decode_utf8($query->param($qparam));
+
                         $logger->debug("Got $field - $prefix - $subfield - $mult - $content");
 
                         push @{$fields_ref->{$field}}, {
                             subfield => $subfield,
                             mult     => $mult,
                             content  => $content,
-                        };
+                        } if ($content);
                     }
                 }
                 $input_params_ref->{$param} = $fields_ref;
@@ -1542,7 +1537,7 @@ sub parse_valid_input {
                         my $scope    = $1;
                         my $right    = $2;
                         
-                        my $content  = $query->param($qparam);
+                        my $content  = decode_utf8($query->param($qparam));
                         
                         $logger->debug("Got $scope - $right - $content");
                         

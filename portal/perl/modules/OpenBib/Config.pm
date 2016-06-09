@@ -1079,7 +1079,7 @@ sub get_locationinfo_fields {
             mult     => $mult,
             subfield => $subfield,
             content  => $content,
-        };
+        } if ($content);
     }
 
     return $locationinfo_ref;

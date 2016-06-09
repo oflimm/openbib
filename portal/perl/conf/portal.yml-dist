@@ -4,6 +4,8 @@ version: OpenBib 3.1
 # Unter dieser IP wird der lokale Server angesprochen
 local_ip: 127.0.0.1
 
+postgresql_version: '090122' # 9.1.22
+
 # Einstellungen fuer den Zugriff auf die Katalog-Datenbanken
 dbimodule: Pg
 pgdbhost: localhost

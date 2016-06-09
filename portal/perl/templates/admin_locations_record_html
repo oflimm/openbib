@@ -103,20 +103,13 @@ FOREACH category IN categories;
         # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
         # kodiert.
         thiscategory = category ;
-        IF config.get('categorymapping').${locationinfo.database}.$category ;
+        IF config.get('categorymapping').${locationinfo.databaseinfos.dbname}.$category ;
           thiscategory = "${category}-${record.database}" ;
         END;
 -%]
-<tr><td class="ob-field">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
+<tr><th>[% msg.maketext("${thiscategory}") %]</th><td>[% content %]</td></tr>
 [%-   END ;
-     ELSE ;
-        thiscategory = category ;
-        IF config.get('categorymapping').${locationinfo.database}.$category ;
-          thiscategory = "${category}-${record.database}" ;
-        END;
-%]
-<tr><td class="ob-field">[% msg.maketext("${thiscategory}") %]</td><td>[% category %]</td></tr>
-[%-  END ;
+   END ;
 END ;-%]
 </table>
 

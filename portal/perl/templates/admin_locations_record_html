@@ -92,7 +92,7 @@
 [%-
 FOREACH category IN categories;
 
-    IF locationinfo.fields.${category}.size > 0 ;
+    IF locationinfo.fields.${category} ;
       FOREACH item IN locationinfo.fields.$category;
         content  = item.content;
         mult     = item.mult;

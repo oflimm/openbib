@@ -1,5 +1,11 @@
 [%-
 
+view_db_map = {};
+
+FOREACH dbname IN config.get_viewdbs(view);
+  view_db_map.${dbname} = 1;
+END;
+
 all_databases = [] ;
 FOREACH database IN databases.all ;
   this_databaseinfo = {
@@ -20,7 +26,9 @@ FOREACH database IN databases.all ;
 #    count_journals = database.journalscount
 #    count_articles = database.articlecount
   };
-  all_databases.push(this_databaseinfo);
+  IF view_db_map.${database.dbname} ;
+    all_databases.push(this_databaseinfo);
+  END ;
 END;
 
  this_json_output = {

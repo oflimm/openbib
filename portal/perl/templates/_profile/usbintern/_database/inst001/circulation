@@ -141,7 +141,7 @@
 [% END %]
 </td>
 <td>
-[% IF thiscirculation.AquisitionStatuscode >= 0 %]
+[% IF thiscirculation.AquisitionStatuscode > 0 %]
 <strong>Neuerwerbung: </strong><br/>
 [%   IF thiscirculation.AquisitionStatuscode <= 2 %]
 [% msg.maketext("bestellt beim Lieferanten") %]

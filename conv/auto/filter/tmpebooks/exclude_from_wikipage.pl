@@ -62,7 +62,15 @@ while (<>){
 	    last;
 	} 
     }
-    
+
+
+    foreach my $isbn_ref (@{$title_ref->{fields}{'0553'}}){
+	if (defined $excluded_isbns{$isbn_ref->{content}}){
+	    $exclude_title = $isbn_ref->{content}; 
+	    last;
+	} 
+    }
+
     if ($exclude_title){
         print STDERR "Titel mit ISBN $exclude_title excluded\n";
         next;

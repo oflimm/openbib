@@ -1,8 +1,12 @@
 @media all
 {
 
+  #topnav {
+    z-index:9999;
+  }
+  
   header {
-    padding-bottom:50px;  
+    padding-bottom:235px;  
   }
 
   header #logo {
@@ -10,7 +14,7 @@
     position: absolute;
     top: 0px;
     left: 0px;
-    width: 60%;
+    width: 100%;
   }
 
   header #institution {
@@ -25,12 +29,11 @@
   #header_logo_image  {
     background: url(/images/openbib/views/maxbruch/logo.png) center no-repeat;
     position: absolute;
-    width: 339px;
-    height: 100px;
-    top: 15px;
-    left: 5px;    
+    width: 1020px;
+    height: 306px;
+    top: 0px;
+    left: 0px;
   }
-
 
   #header_institution_image {
     background: url(/images/openbib/usblogotrans190.png) center no-repeat;

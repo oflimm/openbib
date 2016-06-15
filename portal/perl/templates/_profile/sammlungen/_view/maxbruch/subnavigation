@@ -21,10 +21,20 @@
 <nav class="ym-vlist">
 <h6 class="ym-vtitle">[% msg.maketext("Informationen") %]</h6>
  <ul>
-[% IF active_submenu == "sammlung" %]
-  <li class="active"><strong>Weitere Informationen</strong></li>
+[% IF active_submenu == "bestand" %]
+  <li class="active"><strong>Details zum Briefbestand</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/quellen.html?l=[% lang %]">Weitere Informationen</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/bestand.html?l=[% lang %]">Details zum Briefbestand</a></li>
+[% END %]
+[% IF active_submenu == "erschliessung" %]
+  <li class="active"><strong>Stand der Erschließung</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/erschliessung.html?l=[% lang %]">Stand der Erschließung</a></li>
+[% END %]
+[% IF active_submenu == "benutzung" %]
+  <li class="active"><strong>Hinweise zur Benutzung</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/benutzung.html?l=[% lang %]">Hinweise zur Benutzung</a></li>
 [% END %]
 </ul>
 </nav>

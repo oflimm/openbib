@@ -35,7 +35,7 @@
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
          <li><a href="#">[% msg.maketext("Informationen") %]</a></li>
-         <li><a href="#" class="lastitem">Münzbestand</a></li>
+         <li><a href="#" class="lastitem">Details zum Briefbestand</a></li>
       </ul>
      </div>
    </div>

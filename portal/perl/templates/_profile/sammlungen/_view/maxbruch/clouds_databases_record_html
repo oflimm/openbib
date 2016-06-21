@@ -53,25 +53,16 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
+<h2>Wortwolken f&uuml;r verschiedene Felder des Bestands</h2>
 <p/>
 
 
-<div class="box info">
-[% msg.maketext("W&auml;hlen Sie einen Wolken-Typ aus, um f&uuml;r diesen eine
-<b>&Uuml;bersicht der 200 am h&auml;ufigsten verwendeten Begriffe bzw.
-Normdaten-Eintr&auml;ge f&uuml;r Schlagworte,
-Systematiken/Notationen, K&ouml;rperschaften/Institutionen sowie Personen</b> in der Form einer
-Wortwolke ([_1]&nbsp;[_2]) zu erhalten. Je mehr Titel mit
-einem Normdaten-Eintrag verkn&uuml;pft wurden, umso grösser wird der zugehörige Normdaten-Eintrag dargestellt.","<img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit
-Wikipedia\" />","<a href=\"http://de.wikipedia.org/wiki/Wortwolke\" target=\"_blank\">engl. tag cloud</a>") %]
-</div>
-
    <ul>
-     <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]">[% msg.maketext("Erscheinungsjahre") %]</a></li>
-     <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/person.html?l=[% lang %]">[% msg.maketext("Personen") %]</a></li>
-     <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/subject.html?l=[% lang %]">[% msg.maketext("Schlagworte") %]</a></li>
+     <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]">[% msg.maketext("Jahr") %]</a></li>
+     <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/person.html?l=[% lang %]">[% msg.maketext("Person") %]</a></li>
+     <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/subject.html?l=[% lang %]">[% msg.maketext("Schlagwort") %]</a></li>
      <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/classification.html?l=[% lang %]">[% msg.maketext("T0700-maxbruch") %]</a></li>
-     <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/corporatebody.html?l=[% lang %]">[% msg.maketext("Körperschaften") %]</a></li>
+     <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/corporatebody.html?l=[% lang %]">[% msg.maketext("Körperschaft") %]</a></li>
    </ul>
 
         </div>

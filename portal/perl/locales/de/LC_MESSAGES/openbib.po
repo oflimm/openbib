@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2016-05-06 10:44+0200\n"
+"PO-Revision-Date: 2016-06-21 09:37+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -17,15 +17,15 @@ msgstr ""
 "X-Generator: Lokalize 1.4\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../modules/OpenBib/Importer/JSON/Title.pm:358
+#: ../modules/OpenBib/Importer/JSON/Title.pm:955
 msgid " map { $_ => 1 } @${enrichmnt_data_ref} "
 msgstr ""
 
-#: ../modules/OpenBib/Importer/JSON/Title.pm:328
+#: ../modules/OpenBib/Importer/JSON/Title.pm:917
 msgid " map { $_ => 1 } @${enrichmnt_isbns_ref} "
 msgstr ""
 
-#: ../modules/OpenBib/Importer/JSON/Title.pm:329
+#: ../modules/OpenBib/Importer/JSON/Title.pm:918
 msgid " map { $_ => 1 } @${enrichmnt_issns_ref} "
 msgstr ""
 
@@ -163,7 +163,6 @@ msgstr "${category}"
 #: ../templates/admin_locations_record_edit:138
 #: ../templates/admin_locations_record_edit:150
 #: ../templates/admin_locations_record_html:110
-#: ../templates/admin_locations_record_html:118
 #: ../templates/admin_locations_record_include:108
 #: ../templates/bibfuehrer_tex:495 ../templates/bibfuehrer_tex:496
 #: ../templates/bibfuehrer_tex:659 ../templates/bibfuehrer_tex:660
@@ -191,7 +190,7 @@ msgstr "${thiscategory}"
 #: ../templates/_database/einbaende/titles_record_html:366
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:341
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:331
-#: ../templates/titles_record_html:342 ../templates/titles_record_include:242
+#: ../templates/titles_record_html:366 ../templates/titles_record_include:242
 msgid ""
 "%1\n"
 "von %2 Nutzer fanden die folgende Rezension hilfreich:"
@@ -399,9 +398,9 @@ msgstr "&Uuml;bernahme dieses Titels in eine neue Literaturliste: "
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_navigation:21
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:41
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:43
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/mainnavigation:48
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/mainnavigation:50
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/subnavigation:63
+#: ../templates/_profile/sammlungen/_view/maxbruch/mainnavigation:48
+#: ../templates/_profile/sammlungen/_view/maxbruch/mainnavigation:50
+#: ../templates/_profile/sammlungen/_view/maxbruch/subnavigation:73
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_navigation:21
 #: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:161
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:31
@@ -883,7 +882,7 @@ msgstr "Abspeichern"
 #: ../templates/_profile/kug/searchforms_record_query:137
 #: ../templates/_profile/kug/users_preferences_html:232
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:177
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:177
+#: ../templates/_profile/sammlungen/_view/maxbruch/searchforms_record_query:177
 #: ../templates/_profile/sammlungen/searchforms_record_query:177
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:129
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:129
@@ -1358,7 +1357,7 @@ msgstr "An"
 #: ../templates/titles_record_html_actions:23
 #: ../templates/titles_record_include:350
 #: ../templates/titles_record_include:351
-#: ../templates/titlist_item_html_short:350
+#: ../templates/titlist_item_html_short:349
 msgid "An BibSonomy senden"
 msgstr "An BibSonomy senden"
 
@@ -1366,7 +1365,7 @@ msgstr "An BibSonomy senden"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:242
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:232
 #: ../templates/_profile/usbportal/titles_record_include:130
-#: ../templates/titles_record_html:248 ../templates/titles_record_include:135
+#: ../templates/titles_record_html:272 ../templates/titles_record_include:135
 #: ../templates/titles_record_include:284
 msgid "Andere Ausgaben"
 msgstr "Andere Ausgaben"
@@ -1774,7 +1773,7 @@ msgstr ""
 #: ../templates/_database/einbaende/titles_record_html:346
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:321
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:311
-#: ../templates/titles_record_html:322 ../templates/titles_record_include:220
+#: ../templates/titles_record_html:346 ../templates/titles_record_include:220
 msgid "Aufnehmen"
 msgstr "Aufnehmen"
 
@@ -1863,7 +1862,7 @@ msgstr "Ausleih-Einstellungen"
 #: ../templates/_profile/sammlungen/_view/gentzdigital/cartitems_html_simple:70
 #: ../templates/_profile/usbportal/titles_record_include:70
 #: ../templates/_view/richter/cartitems_html_simple:62
-#: ../templates/cartitems_html_simple:63 ../templates/titles_record_html:239
+#: ../templates/cartitems_html_simple:63 ../templates/titles_record_html:263
 #: ../templates/titles_record_include:122
 #: ../templates/titles_record_include:144
 msgid "Ausleihe/Exemplare"
@@ -2450,7 +2449,7 @@ msgstr "Beschreibung"
 #: ../templates/_profile/kug/_database/ezb/titles_record_html_categories:265
 #: ../templates/_profile/kug/_database/gesiskoeln/titles_record_html_categories:300
 #: ../templates/_profile/kug/_database/gutenberg/titles_record_html_categories:349
-#: ../templates/_profile/kug/_database/inst001/circulation:146
+#: ../templates/_profile/kug/_database/inst001/circulation:184
 #: ../templates/_profile/kug/_database/inst001/holding:18
 #: ../templates/_profile/kug/_database/inst001/titles_record_html_categories:404
 #: ../templates/_profile/kug/_database/inst302/circulation:83
@@ -2555,7 +2554,7 @@ msgstr "Bestaetigen Sie Ihre Registrierung"
 #: ../templates/_profile/usbportal/visible_categories_location:32
 #: ../templates/_view/richter/cartitems_html_simple:70
 #: ../templates/cartitems_html_simple:65 ../templates/holding:47
-#: ../templates/holding_mobile:17 ../templates/titles_record_html:241
+#: ../templates/holding_mobile:17 ../templates/titles_record_html:265
 #: ../templates/titles_record_include:125
 #: ../templates/titles_record_include:151
 msgid "Bestand"
@@ -2603,14 +2602,14 @@ msgstr "Betriebssystemverteilung"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:301
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:291
 #: ../templates/reviews_edit:216 ../templates/reviews_record_html:69
-#: ../templates/titles_record_html:302 ../templates/titles_record_include:200
+#: ../templates/titles_record_html:326 ../templates/titles_record_include:200
 msgid "Bewertung"
 msgstr "Bewertung"
 
 #: ../templates/_database/einbaende/titles_record_html:270
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:245
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:235
-#: ../templates/titles_record_html:250 ../templates/titles_record_include:138
+#: ../templates/titles_record_html:274 ../templates/titles_record_include:138
 #: ../templates/titles_record_include:178
 msgid "Bewertungen/Rezensionen"
 msgstr "Bewertungen/Rezensionen"
@@ -2618,7 +2617,7 @@ msgstr "Bewertungen/Rezensionen"
 #: ../templates/_database/einbaende/titles_record_html:360
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:335
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:325
-#: ../templates/titles_record_html:336 ../templates/titles_record_include:236
+#: ../templates/titles_record_html:360 ../templates/titles_record_include:236
 msgid "Bewertungen/Rezensionen von Nutzern"
 msgstr "Bewertungen/Rezensionen von Nutzern"
 
@@ -3380,7 +3379,7 @@ msgstr "Deutsch"
 #: ../templates/_view/richter/litlists_record_html_full:241
 #: ../templates/cartitems_html_full:240
 #: ../templates/litlists_record_html_full:241
-#: ../templates/titles_record_html:198 ../templates/titles_record_include:95
+#: ../templates/titles_record_html:222 ../templates/titles_record_include:95
 msgid "Deutsche Wikipedia"
 msgstr "Deutsche Wikipedia"
 
@@ -3795,7 +3794,7 @@ msgstr "Dieser Nutzer ist nicht registriert."
 #: ../templates/_view/richter/litlists_record_html_full:238
 #: ../templates/cartitems_html_full:237
 #: ../templates/litlists_record_html_full:238
-#: ../templates/titles_record_html:194 ../templates/titles_record_include:91
+#: ../templates/titles_record_html:218 ../templates/titles_record_include:91
 msgid "Dieses Buch ist in Wikipedia erw&auml;hnt unter"
 msgstr "Dieses Buch ist in Wikipedia erw&auml;hnt unter"
 
@@ -4047,6 +4046,7 @@ msgstr "E-Mail-Adresse"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:114
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:107
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:104
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:108
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:110
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:106
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:107
@@ -4067,6 +4067,7 @@ msgstr "RVK"
 
 #: ../templates/_database/bestellungen/visible_categories_title:109
 #: ../templates/_database/inst404card/visible_categories_title:108
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:109
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:111
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:108
 #: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:108
@@ -4092,6 +4093,7 @@ msgstr "Themengebiet"
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:112
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:117
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:112
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:118
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:120
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:114
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:117
@@ -4125,6 +4127,7 @@ msgstr "Volltext Inhaltsverzeichnis"
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:113
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:118
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:113
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:119
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:121
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:115
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:118
@@ -4171,6 +4174,7 @@ msgstr "Wikipedia-Artikel (französisch)"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:105
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:105
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:102
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:106
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:108
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:104
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:105
@@ -4211,14 +4215,14 @@ msgstr "Eigene Tags"
 #: ../templates/_database/einbaende/titles_record_html:371
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:346
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:336
-#: ../templates/titles_record_html:347 ../templates/titles_record_include:247
+#: ../templates/titles_record_html:371 ../templates/titles_record_include:247
 msgid "Eigenen Review bearbeiten"
 msgstr "Eigenen Review bearbeiten"
 
 #: ../templates/_database/einbaende/titles_record_html:372
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:347
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:337
-#: ../templates/titles_record_html:348 ../templates/titles_record_include:248
+#: ../templates/titles_record_html:372 ../templates/titles_record_include:248
 msgid "Eigenen Review l&ouml;schen"
 msgstr "Eigenen Review l&ouml;schen"
 
@@ -4274,7 +4278,7 @@ msgstr "Ein Themenbebiet diesen Namens existiert bereits."
 #: ../templates/_profile/kug/_database/bibsonomy/titles_record_html:159
 #: ../templates/_profile/sammlungen/_database/gentzdigital/titles_record_html:176
 #: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html:180
-#: ../templates/titles_record_html:179
+#: ../templates/titles_record_html:203
 msgid "Ein Titel mit dieser ID ist nicht (mehr) in diesem Katalog vorhanden."
 msgstr "Ein Titel mit dieser ID ist nicht (mehr) in diesem Katalog vorhanden."
 
@@ -4631,7 +4635,7 @@ msgstr "Englisch"
 #: ../templates/_view/richter/litlists_record_html_full:246
 #: ../templates/cartitems_html_full:245
 #: ../templates/litlists_record_html_full:246
-#: ../templates/titles_record_html:204 ../templates/titles_record_include:101
+#: ../templates/titles_record_html:228 ../templates/titles_record_include:101
 msgid "Englische Wikipedia"
 msgstr "Englische Wikipedia"
 
@@ -4745,8 +4749,8 @@ msgstr "Entdecken Sie weitere Titel &uuml;ber:"
 #: ../templates/titles_popular_by_database_html:299
 #: ../templates/titles_popular_by_database_html:302
 #: ../templates/titles_popular_html:293 ../templates/titles_popular_html:296
-#: ../templates/titlist_item_html_short:352
-#: ../templates/titlist_item_html_short:355
+#: ../templates/titlist_item_html_short:351
+#: ../templates/titlist_item_html_short:354
 #: ../templates/users_litlists_html:110
 #: ../templates/users_searchprofiles_html:93
 msgid "Entfernen"
@@ -4931,8 +4935,8 @@ msgstr "Erweitere Recherchemaske"
 #: ../templates/_profile/sammlungen/_view/koelnzeitung/searchforms_record_query:68
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:126
 #: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:68
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/mainnavigation:133
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:68
+#: ../templates/_profile/sammlungen/_view/maxbruch/mainnavigation:133
+#: ../templates/_profile/sammlungen/_view/maxbruch/searchforms_record_query:68
 #: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:121
 #: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_advanced:38
 #: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:205
@@ -4984,7 +4988,7 @@ msgstr "Erweiterte Suche"
 #: ../templates/_database/inst001/circulation:123
 #: ../templates/_database/inst411/circulation:74
 #: ../templates/_profile/kug/_database/edz/circulation:129
-#: ../templates/_profile/kug/_database/inst001/circulation:146
+#: ../templates/_profile/kug/_database/inst001/circulation:184
 #: ../templates/_profile/kug/_database/inst302/circulation:83
 #: ../templates/_profile/kug/_database/islandica/circulation:123
 #: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:129
@@ -5312,7 +5316,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:275
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:265
 #: ../templates/_profile/usbportal/titles_record_include:99
-#: ../templates/titles_record_html:276 ../templates/titles_record_include:173
+#: ../templates/titles_record_html:300 ../templates/titles_record_include:173
 msgid ""
 "F&uuml;r die letzten in dieser Zeitschrift ver&ouml;ffentlichten Artikel "
 "bieten wir eine eine %1&Uuml;bersicht%2 an."
@@ -5491,7 +5495,7 @@ msgstr "Fragen und Anmerkungen richten Sie bitte an:"
 #: ../templates/_view/richter/litlists_record_html_full:251
 #: ../templates/cartitems_html_full:250
 #: ../templates/litlists_record_html_full:251
-#: ../templates/titles_record_html:210 ../templates/titles_record_include:107
+#: ../templates/titles_record_html:234 ../templates/titles_record_include:107
 msgid "Franz&ouml;sische Wikipedia"
 msgstr "Franz&ouml;sische Wikipedia"
 
@@ -5553,7 +5557,7 @@ msgstr "Französisch"
 #: ../templates/_profile/sammlungen/_view/koelnzeitung/searchforms_record_query:77
 #: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:2
 #: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:77
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:77
+#: ../templates/_profile/sammlungen/_view/maxbruch/searchforms_record_query:77
 #: ../templates/_profile/sammlungen/_view/muenzen/search_title_field:2
 #: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:222
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_query:72
@@ -6022,7 +6026,7 @@ msgstr "Hier suchen Sie im gesamten Münzbestand"
 #: ../templates/_profile/sammlungen/_view/kapsel/mainnavigation_html:129
 #: ../templates/_profile/sammlungen/_view/koelnzeitung/mainnavigation_html:119
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:124
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/mainnavigation:131
+#: ../templates/_profile/sammlungen/_view/maxbruch/mainnavigation:131
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:114
 #: ../templates/_profile/sammlungen/_view/portrait/mainnavigation:129
 #: ../templates/_profile/sammlungen/_view/provenienzen/mainnavigation:129
@@ -6066,7 +6070,7 @@ msgstr "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 #: ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:141
 #: ../templates/_profile/sammlungen/_view/koelnzeitung/searchforms_record_query:141
 #: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:161
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:271
+#: ../templates/_profile/sammlungen/_view/maxbruch/searchforms_record_query:271
 #: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:359
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_query:137
 #: ../templates/_profile/sammlungen/_view/provenienzen/searchforms_record_query:111
@@ -6198,7 +6202,7 @@ msgstr "IP-Adresse"
 #: ../templates/_profile/kug/searchforms_record_query:97
 #: ../templates/_profile/kug/users_preferences_html:198
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:137
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:137
+#: ../templates/_profile/sammlungen/_view/maxbruch/searchforms_record_query:137
 #: ../templates/_profile/sammlungen/searchforms_record_query:137
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:89
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:89
@@ -6215,7 +6219,7 @@ msgstr "ISBN"
 #: ../templates/_profile/kug/searchforms_record_query:107
 #: ../templates/_profile/kug/users_preferences_html:217
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:147
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:147
+#: ../templates/_profile/sammlungen/_view/maxbruch/searchforms_record_query:147
 #: ../templates/_profile/sammlungen/searchforms_record_query:147
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:99
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:99
@@ -6682,7 +6686,7 @@ msgstr "In OpenBib werden derzeit folgende Arten von RSS-Feeds angeboten:"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:239
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:229
 #: ../templates/_profile/usbportal/titles_record_include:104
-#: ../templates/titles_record_html:247 ../templates/titles_record_include:132
+#: ../templates/titles_record_html:271 ../templates/titles_record_include:132
 #: ../templates/titles_record_include:269
 msgid "In anderen Katalogen"
 msgstr "In anderen Katalogen"
@@ -6873,7 +6877,7 @@ msgstr "In der einfachen Recherche bzw. dem freien Suchfeld"
 #: ../templates/titles_record_html_actions:24
 #: ../templates/titles_record_include:352
 #: ../templates/titles_record_include:353
-#: ../templates/titlist_item_html_short:350
+#: ../templates/titlist_item_html_short:349
 msgid "In die Merkliste"
 msgstr "In die Merkliste"
 
@@ -7023,9 +7027,9 @@ msgstr "Info"
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:31
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:33
 #: ../templates/_profile/sammlungen/_view/lefort/info_sammlung:37
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/mainnavigation:31
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/mainnavigation:33
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/subnavigation:22
+#: ../templates/_profile/sammlungen/_view/maxbruch/mainnavigation:31
+#: ../templates/_profile/sammlungen/_view/maxbruch/mainnavigation:33
+#: ../templates/_profile/sammlungen/_view/maxbruch/subnavigation:22
 #: ../templates/_profile/sammlungen/_view/muenzen/info_bestand:37
 #: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:31
 #: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:33
@@ -7224,7 +7228,7 @@ msgstr "Institut"
 #: ../templates/_profile/kug/authority_search_facet:361
 #: ../templates/_profile/kug/searchforms_record_query:43
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:107
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:107
+#: ../templates/_profile/sammlungen/_view/maxbruch/searchforms_record_query:107
 #: ../templates/_profile/sammlungen/searchforms_record_query:107
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:43
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:43
@@ -7439,7 +7443,7 @@ msgstr "JSON konnte nicht geparst werden"
 #: ../templates/searchforms_record_options:4 ../templates/servers_html:82
 #: ../templates/servers_record_html:77
 #: ../templates/templates_revisions_record_delete_confirm:66
-#: ../templates/titles_record_html:351 ../templates/titles_record_include:251
+#: ../templates/titles_record_html:375 ../templates/titles_record_include:251
 #: ../templates/users_litlists_record_delete_confirm:54
 #: ../templates/users_litlists_record_edit:93
 #: ../templates/users_searchprofiles_record_delete_confirm:54
@@ -7501,9 +7505,9 @@ msgstr "Ja"
 #: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:12
 #: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:25
 #: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:137
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:247
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/subnavigation:66
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/subnavigation:68
+#: ../templates/_profile/sammlungen/_view/maxbruch/searchforms_record_query:247
+#: ../templates/_profile/sammlungen/_view/maxbruch/subnavigation:76
+#: ../templates/_profile/sammlungen/_view/maxbruch/subnavigation:78
 #: ../templates/_profile/sammlungen/_view/muenzen/search_facet:169
 #: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:164
 #: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:166
@@ -7680,8 +7684,8 @@ msgstr "K&ouml;rperschaft"
 #: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:128
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:84
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:86
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/subnavigation:76
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/subnavigation:78
+#: ../templates/_profile/sammlungen/_view/maxbruch/subnavigation:86
+#: ../templates/_profile/sammlungen/_view/maxbruch/subnavigation:88
 #: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:174
 #: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:176
 #: ../templates/_profile/sammlungen/_view/portrait/subnavigation:111
@@ -7951,7 +7955,7 @@ msgstr "Keine"
 #: ../templates/_database/inst001/circulation:111
 #: ../templates/_database/inst411/circulation:62
 #: ../templates/_profile/kug/_database/edz/circulation:117
-#: ../templates/_profile/kug/_database/inst001/circulation:133
+#: ../templates/_profile/kug/_database/inst001/circulation:171
 #: ../templates/_profile/kug/_database/inst302/circulation:65
 #: ../templates/_profile/kug/_database/islandica/circulation:111
 #: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:117
@@ -8042,7 +8046,7 @@ msgstr "Klienten"
 #: ../templates/_profile/kug/searchforms_record_query:127
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:167
 #: ../templates/_profile/sammlungen/_view/digitalis/searchforms_record_query:117
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:167
+#: ../templates/_profile/sammlungen/_view/maxbruch/searchforms_record_query:167
 #: ../templates/_profile/sammlungen/_view/schatzbehalter/searchforms_record_query:117
 #: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:118
 #: ../templates/_profile/sammlungen/searchforms_record_query:167
@@ -8249,8 +8253,8 @@ msgstr "Künstler"
 #: ../templates/admin_clusters_html:142 ../templates/admin_roles_html:111
 #: ../templates/admin_servers_html:159 ../templates/admin_templates_html:132
 #: ../templates/titles_record_include:512
-#: ../templates/titlist_item_html_short:352
-#: ../templates/titlist_item_html_short:355
+#: ../templates/titlist_item_html_short:351
+#: ../templates/titlist_item_html_short:354
 msgid "L&ouml;schen"
 msgstr "L&ouml;schen"
 
@@ -8820,7 +8824,7 @@ msgstr "Letzte 50 Neuaufnahmen"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:236
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:226
 #: ../templates/_profile/usbportal/titles_record_include:96
-#: ../templates/titles_record_html:245 ../templates/titles_record_include:129
+#: ../templates/titles_record_html:269 ../templates/titles_record_include:129
 #: ../templates/titles_record_include:170
 msgid "Letzte Artikel"
 msgstr "Letzte Artikel"
@@ -9081,7 +9085,7 @@ msgstr "Los"
 #: ../templates/admin_topics_record_edit:132
 #: ../templates/admin_views_record_edit:144
 #: ../templates/cartitems_html_actions:160
-#: ../templates/cartitems_html_short:144 ../templates/titles_record_html:322
+#: ../templates/cartitems_html_short:144 ../templates/titles_record_html:346
 #: ../templates/titles_record_include:220
 #: ../templates/topics_record_mapping_html:95
 #: ../templates/users_litlists_html:110
@@ -9118,7 +9122,7 @@ msgstr "Mapping"
 #: ../templates/_view/richter/litlists_record_html_full:238
 #: ../templates/cartitems_html_full:237
 #: ../templates/litlists_record_html_full:238
-#: ../templates/titles_record_html:194 ../templates/titles_record_include:91
+#: ../templates/titles_record_html:218 ../templates/titles_record_include:91
 msgid "Mashup mit Wikipedia"
 msgstr "Mashup mit Wikipedia"
 
@@ -9475,7 +9479,7 @@ msgstr "Meldung"
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/titlist_item_html_short:324
 #: ../templates/titles_popular_by_database_html:297
 #: ../templates/titles_popular_html:291
-#: ../templates/titlist_item_html_short:350
+#: ../templates/titlist_item_html_short:349
 msgid "Merken"
 msgstr "Merken"
 
@@ -9528,8 +9532,8 @@ msgstr "Merken"
 #: ../templates/_profile/sammlungen/_view/koelnzeitung/mainnavigation_html:48
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:51
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:53
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/mainnavigation:58
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/mainnavigation:60
+#: ../templates/_profile/sammlungen/_view/maxbruch/mainnavigation:58
+#: ../templates/_profile/sammlungen/_view/maxbruch/mainnavigation:60
 #: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:46
 #: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:48
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:41
@@ -9846,7 +9850,7 @@ msgstr ""
 #: ../templates/searchforms_record_options:4 ../templates/servers_html:82
 #: ../templates/servers_record_html:78
 #: ../templates/templates_revisions_record_delete_confirm:76
-#: ../templates/titles_record_html:352 ../templates/titles_record_include:252
+#: ../templates/titles_record_html:376 ../templates/titles_record_include:252
 #: ../templates/users_litlists_record_delete_confirm:60
 #: ../templates/users_litlists_record_edit:93
 #: ../templates/users_searchprofiles_record_delete_confirm:60
@@ -9943,7 +9947,7 @@ msgstr "Neue Benutzernummer bzw. E-Mail-Adresse"
 #: ../templates/_database/einbaende/titles_record_html:323
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:298
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:288
-#: ../templates/titles_record_html:299 ../templates/titles_record_include:197
+#: ../templates/titles_record_html:323 ../templates/titles_record_include:197
 msgid "Neue Bewertung/Rezension"
 msgstr "Neue Bewertung/Rezension"
 
@@ -10010,7 +10014,7 @@ msgstr "Neuer Tagname"
 #: ../templates/_database/inst001/circulation:120
 #: ../templates/_database/inst411/circulation:71
 #: ../templates/_profile/kug/_database/edz/circulation:126
-#: ../templates/_profile/kug/_database/inst001/circulation:143
+#: ../templates/_profile/kug/_database/inst001/circulation:181
 #: ../templates/_profile/kug/_database/inst302/circulation:80
 #: ../templates/_profile/kug/_database/islandica/circulation:120
 #: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:126
@@ -10136,7 +10140,7 @@ msgstr "Normdaten-Recherche"
 #: ../templates/_profile/rheinlandbib/clouds_databases_record_html:64
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:127
 #: ../templates/_profile/sammlungen/_view/digitalis/searchforms_record_query:107
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:127
+#: ../templates/_profile/sammlungen/_view/maxbruch/searchforms_record_query:127
 #: ../templates/_profile/sammlungen/_view/schatzbehalter/searchforms_record_query:107
 #: ../templates/_profile/sammlungen/clouds_databases_record_html:64
 #: ../templates/_profile/sammlungen/searchforms_record_query:127
@@ -10610,9 +10614,9 @@ msgstr "Person/Körperschaft"
 #: ../templates/_profile/sammlungen/_view/landschaft/subnavigation:25
 #: ../templates/_profile/sammlungen/_view/landschaft/subnavigation:27
 #: ../templates/_profile/sammlungen/_view/landschaft/titles_fields_record_html:17
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:97
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/subnavigation:71
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/subnavigation:73
+#: ../templates/_profile/sammlungen/_view/maxbruch/searchforms_record_query:97
+#: ../templates/_profile/sammlungen/_view/maxbruch/subnavigation:81
+#: ../templates/_profile/sammlungen/_view/maxbruch/subnavigation:83
 #: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:169
 #: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:171
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_query:86
@@ -10861,10 +10865,10 @@ msgstr "Profile"
 #: ../templates/_profile/sammlungen/_view/gentzdigital/mainnavigation:36
 #: ../templates/_profile/sammlungen/_view/gentzdigital/mainnavigation:38
 #: ../templates/_profile/sammlungen/_view/gentzdigital/subnavigation:59
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/info_project:37
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/mainnavigation:36
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/mainnavigation:38
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/subnavigation:34
+#: ../templates/_profile/sammlungen/_view/maxbruch/info_project:37
+#: ../templates/_profile/sammlungen/_view/maxbruch/mainnavigation:36
+#: ../templates/_profile/sammlungen/_view/maxbruch/mainnavigation:38
+#: ../templates/_profile/sammlungen/_view/maxbruch/subnavigation:44
 #: ../templates/_profile/sammlungen/_view/muenzen/info_project:37
 #: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:36
 #: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:38
@@ -10947,7 +10951,7 @@ msgstr "Prüfen Sie die Schreibweise Ihrer Suchbegriffe."
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:314
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:304
 #: ../templates/persons_record_html:102 ../templates/reviews_edit:230
-#: ../templates/titles_record_html:315 ../templates/titles_record_include:213
+#: ../templates/titles_record_html:339 ../templates/titles_record_include:213
 msgid "Pseudonym"
 msgstr "Pseudonym"
 
@@ -11047,7 +11051,7 @@ msgstr "ReadMe"
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:99
 #: ../templates/_profile/sammlungen/_view/richter/subnavigation:53
 #: ../templates/search_title_start_html:51 ../templates/subnavigation:22
-#: ../templates/titles_record_html:119
+#: ../templates/titles_record_html:134
 #: ../templates/users_titles_record_searchindex_html:42
 msgid "Recherche"
 msgstr "Recherche"
@@ -11274,10 +11278,10 @@ msgstr "Regisseur"
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:38
 #: ../templates/_profile/sammlungen/_view/landschaft/subnavigation:22
 #: ../templates/_profile/sammlungen/_view/landschaft/titles_fields_record_html:52
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/mainnavigation:42
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/mainnavigation:44
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/subnavigation:46
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/titles_fields_record_html:46
+#: ../templates/_profile/sammlungen/_view/maxbruch/mainnavigation:42
+#: ../templates/_profile/sammlungen/_view/maxbruch/mainnavigation:44
+#: ../templates/_profile/sammlungen/_view/maxbruch/subnavigation:56
+#: ../templates/_profile/sammlungen/_view/maxbruch/titles_fields_record_html:46
 #: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:41
 #: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:43
 #: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:46
@@ -11357,7 +11361,7 @@ msgstr "Relevanz"
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:312
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:302
 #: ../templates/reviews_edit:228 ../templates/reviews_record_html:70
-#: ../templates/titles_record_html:313 ../templates/titles_record_include:211
+#: ../templates/titles_record_html:337 ../templates/titles_record_include:211
 msgid "Rezension"
 msgstr "Rezension"
 
@@ -11508,8 +11512,8 @@ msgstr "Schauspieler"
 #: ../templates/_profile/sammlungen/_view/koelnzeitung/clouds_navigation:28
 #: ../templates/_profile/sammlungen/_view/koelnzeitung/clouds_navigation:30
 #: ../templates/_profile/sammlungen/_view/koelnzeitung/titles_fields_record_html:20
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/subnavigation:81
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/subnavigation:83
+#: ../templates/_profile/sammlungen/_view/maxbruch/subnavigation:91
+#: ../templates/_profile/sammlungen/_view/maxbruch/subnavigation:93
 #: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:179
 #: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:181
 #: ../templates/_profile/sammlungen/_view/portrait/subnavigation:116
@@ -11574,7 +11578,7 @@ msgstr "Schlagwort-Information: %1 in Katalog %2"
 #: ../templates/_profile/sammlungen/_view/koelnzeitung/searchforms_record_query:107
 #: ../templates/_profile/sammlungen/_view/koelnzeitung/subnavigation:25
 #: ../templates/_profile/sammlungen/_view/koelnzeitung/subnavigation:27
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:117
+#: ../templates/_profile/sammlungen/_view/maxbruch/searchforms_record_query:117
 #: ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:108
 #: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:107
 #: ../templates/_profile/sammlungen/searchforms_record_query:117
@@ -11723,7 +11727,7 @@ msgstr "Selbstregistrierung"
 #: ../templates/_profile/kug/searchforms_record_query:157
 #: ../templates/_profile/kug/users_preferences_html:237
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:197
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:197
+#: ../templates/_profile/sammlungen/_view/maxbruch/searchforms_record_query:197
 #: ../templates/_profile/sammlungen/searchforms_record_query:197
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:149
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:149
@@ -12313,7 +12317,7 @@ msgstr "Sigel"
 #: ../templates/_profile/sammlungen/_view/gentzdigital/cartitems_html_short:238
 #: ../templates/_profile/sammlungen/_view/gentzdigital/titles_popular_by_database_html:304
 #: ../templates/_profile/sammlungen/_view/landschaft/search_title_field:23
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:157
+#: ../templates/_profile/sammlungen/_view/maxbruch/searchforms_record_query:157
 #: ../templates/_profile/sammlungen/_view/muenzen/search_title_field:23
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_query:114
 #: ../templates/_profile/sammlungen/_view/umschlaege/search_title_field:23
@@ -12345,7 +12349,7 @@ msgstr "Sigel"
 #: ../templates/searchforms_record_query:126
 #: ../templates/titles_popular_by_database_html:292
 #: ../templates/titles_popular_html:286
-#: ../templates/titlist_item_html_short:345
+#: ../templates/titlist_item_html_short:344
 #: ../templates/users_circulations_borrows_html:67
 #: ../templates/users_circulations_borrows_ics:117
 #: ../templates/users_circulations_orders_html:63
@@ -12778,8 +12782,8 @@ msgstr "Standortinformationen bearbeiten"
 #: ../templates/_profile/sammlungen/_view/landschaft/clouds_year_html:48
 #: ../templates/_profile/sammlungen/_view/landschaft/titles_fields_record_html:51
 #: ../templates/_profile/sammlungen/_view/lefort/info_sammlung:36
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/info_project:36
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/titles_fields_record_html:45
+#: ../templates/_profile/sammlungen/_view/maxbruch/info_project:36
+#: ../templates/_profile/sammlungen/_view/maxbruch/titles_fields_record_html:45
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_corporatebody_html:48
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_databases_record_html:37
 #: ../templates/_profile/sammlungen/_view/muenzen/clouds_html:37
@@ -12894,7 +12898,7 @@ msgstr "Standortinformationen bearbeiten"
 #: ../templates/searchprofiles_session:51 ../templates/subjects_record_html:47
 #: ../templates/tags_html:40 ../templates/tags_names_html:37
 #: ../templates/tags_names_recent_html:37
-#: ../templates/tags_names_record_html:40 ../templates/titles_record_html:117
+#: ../templates/tags_names_record_html:40 ../templates/titles_record_html:132
 #: ../templates/users_passwords:38 ../templates/users_registrations:37
 #: ../templates/users_tags_html:40 ../templates/users_tags_names_html:37
 #: ../templates/users_tags_names_record_html:40
@@ -13154,9 +13158,9 @@ msgstr "Suche nach Zeitschriften"
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:123
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:124
 #: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:161
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/mainnavigation:130
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/mainnavigation:131
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:271
+#: ../templates/_profile/sammlungen/_view/maxbruch/mainnavigation:130
+#: ../templates/_profile/sammlungen/_view/maxbruch/mainnavigation:131
+#: ../templates/_profile/sammlungen/_view/maxbruch/searchforms_record_query:271
 #: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:118
 #: ../templates/_profile/sammlungen/_view/muenzen/mainnavigation:119
 #: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:359
@@ -13311,8 +13315,8 @@ msgstr "Suchhilfe"
 #: ../templates/_profile/sammlungen/_view/koelnzeitung/mainnavigation_html:43
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:46
 #: ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html:48
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/mainnavigation:53
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/mainnavigation:55
+#: ../templates/_profile/sammlungen/_view/maxbruch/mainnavigation:53
+#: ../templates/_profile/sammlungen/_view/maxbruch/mainnavigation:55
 #: ../templates/_profile/sammlungen/_view/muenzen/search_history:38
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:36
 #: ../templates/_profile/sammlungen/_view/poetica/mainnavigation_html:38
@@ -13462,8 +13466,8 @@ msgstr "System"
 #: ../templates/_profile/sammlungen/_view/inst404abklatsch/subnavigation:96
 #: ../templates/_profile/sammlungen/_view/kapsel/search_facet:178
 #: ../templates/_profile/sammlungen/_view/landschaft/search_facet:178
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/subnavigation:86
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/subnavigation:88
+#: ../templates/_profile/sammlungen/_view/maxbruch/subnavigation:96
+#: ../templates/_profile/sammlungen/_view/maxbruch/subnavigation:98
 #: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:184
 #: ../templates/_profile/sammlungen/_view/muenzen/subnavigation:186
 #: ../templates/_profile/sammlungen/_view/portrait/search_facet:180
@@ -13603,6 +13607,7 @@ msgstr "Signatur"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:87
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:87
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:85
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:88
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:90
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:87
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:84
@@ -13651,6 +13656,7 @@ msgstr "Standort"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:91
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:91
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:89
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:92
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:94
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:91
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:88
@@ -13692,6 +13698,7 @@ msgstr "Nebeneintr."
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:49
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:48
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:46
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:49
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:51
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:48
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:46
@@ -13734,6 +13741,7 @@ msgstr "Ersch.Land"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:23
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:21
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:21
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:21
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:24
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:21
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:21
@@ -13809,6 +13817,10 @@ msgstr "Autor"
 #: ../templates/_database/landschaft/visible_categories_title:17
 msgid "T0100-landschaft"
 msgstr "Künstler"
+
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:16
+msgid "T0100-maxbruch"
+msgstr "Absender"
 
 #: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:19
 #: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:240
@@ -13892,6 +13904,10 @@ msgstr "Schauspieler"
 msgid "T0101-inst450"
 msgstr "Co-Autor"
 
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:17
+msgid "T0101-maxbruch"
+msgstr "Adressat"
+
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:18
 msgid "T0101-portrait"
 msgstr "Stecher / Lithograph"
@@ -13948,6 +13964,7 @@ msgstr "Mutter"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:19
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:18
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:18
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:18
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:21
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:18
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:18
@@ -13995,6 +14012,7 @@ msgstr "Kinder"
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:19
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:20
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:19
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:19
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:22
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:19
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:19
@@ -14080,6 +14098,7 @@ msgstr "Zusammenarbeit"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:21
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:20
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:20
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:20
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:23
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:20
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:20
@@ -14133,6 +14152,7 @@ msgstr "Körperschaft"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:27
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:30
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:25
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:30
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:33
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:25
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:25
@@ -14174,6 +14194,7 @@ msgstr "SammelVermerk"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:25
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:23
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:23
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:23
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:26
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:23
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:23
@@ -14219,6 +14240,7 @@ msgstr "Motiv"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:24
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:22
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:22
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:22
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:25
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:22
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:22
@@ -14298,6 +14320,10 @@ msgstr "Kurztitel"
 msgid "T0331-landschaft"
 msgstr "Objekt-Titel"
 
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:24
+msgid "T0331-maxbruch"
+msgstr "Brieftitel"
+
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:20
 msgid "T0331-portrait"
 msgstr "Bildtitel"
@@ -14336,6 +14362,7 @@ msgstr "Vorderseite / Legende"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:31
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:28
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:29
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:28
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:31
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:29
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:28
@@ -14382,6 +14409,7 @@ msgstr "Vorderseite stempelgleich mit"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:53
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:52
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:50
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:53
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:55
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:50
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:52
@@ -14467,6 +14495,10 @@ msgstr "Incipit"
 msgid "T0335-inst404abklatsch"
 msgstr "Edition"
 
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:29
+msgid "T0335-maxbruch"
+msgstr "Briefdatum"
+
 #: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:29
 msgid "T0335-muenzen"
 msgstr "Rückseite / Legende"
@@ -14519,6 +14551,7 @@ msgstr "Nominal"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:29
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:27
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:28
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:27
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:30
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:28
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:27
@@ -14585,6 +14618,7 @@ msgstr "Legende Rückseite: aufgelöst, Editionstext"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:35
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:34
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:33
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:34
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:37
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:34
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:32
@@ -14630,6 +14664,7 @@ msgstr "Vorlageform"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:36
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:35
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:34
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:35
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:38
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:35
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:33
@@ -14681,6 +14716,7 @@ msgstr "Vorlage Unterreihe"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:33
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:31
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:31
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:31
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:34
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:30
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:31
@@ -14729,6 +14765,7 @@ msgstr "Einzelbild"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:34
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:32
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:32
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:32
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:35
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:32
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:31
@@ -14750,6 +14787,7 @@ msgstr "Gemeinsame Angaben"
 #: ../templates/_database/openlibrary/visible_categories_title:33
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:33
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:33
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:33
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:36
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:33
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:33
@@ -14788,6 +14826,7 @@ msgstr "Gemeins. Angaben Verfasser"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:28
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:25
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:26
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:25
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:28
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:26
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:26
@@ -14839,6 +14878,7 @@ msgstr "Bemerkung"
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:35
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:37
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:36
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:36
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:23
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:39
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:36
@@ -14881,6 +14921,7 @@ msgstr "Ausgabe"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:42
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:41
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:39
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:42
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:44
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:41
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:39
@@ -14922,6 +14963,7 @@ msgstr "Erscheinungsverlauf"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:59
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:58
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:56
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:59
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:61
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:58
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:56
@@ -15007,6 +15049,10 @@ msgstr "Ausstellungsort"
 msgid "T0410-inst404abklatsch"
 msgstr "Aufbewahrungsort"
 
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:38
+msgid "T0410-maxbruch"
+msgstr "Entstehungsort"
+
 #: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:23
 #: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:319
 msgid "T0410-muenzen"
@@ -15053,6 +15099,7 @@ msgstr "Geburtsort"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:39
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:38
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:36
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:39
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:31
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:41
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:38
@@ -15106,6 +15153,7 @@ msgstr "Herkunft"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:48
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:47
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:45
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:48
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:50
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:47
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:45
@@ -15156,6 +15204,7 @@ msgstr "Datierung"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:41
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:40
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:38
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:41
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:43
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:40
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:38
@@ -15213,6 +15262,7 @@ msgstr "Sterbedatum"
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:38
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:40
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:39
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:40
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:42
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:39
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:37
@@ -15329,6 +15379,10 @@ msgstr "Format/Umfang"
 msgid "T0433-inst404abklatsch"
 msgstr "Buchstabengröße"
 
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:52
+msgid "T0433-maxbruch"
+msgstr "Anzahl Seiten"
+
 #: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:34
 msgid "T0433-muenzen"
 msgstr "Gewicht"
@@ -15394,6 +15448,8 @@ msgstr "Beruf"
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:59
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:44
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:57
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:47
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:60
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:38
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:49
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:62
@@ -15447,6 +15503,7 @@ msgstr "Sonst.Angaben"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:50
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:49
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:47
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:50
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:52
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:49
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:47
@@ -15497,6 +15554,7 @@ msgstr "Durchmesser"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:61
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:60
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:58
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:61
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:63
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:60
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:58
@@ -15511,6 +15569,10 @@ msgstr "Durchmesser"
 #: ../templates/visible_categories_title:60
 msgid "T0437"
 msgstr "Begleitmaterial"
+
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:37
+msgid "T0440-maxbruch"
+msgstr "Zielort"
 
 #: ../templates/_database/bestellungen/visible_categories_title:58
 #: ../templates/_database/inst001/visible_categories_title:54
@@ -15539,6 +15601,7 @@ msgstr "Begleitmaterial"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:56
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:55
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:53
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:56
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:36
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:58
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:55
@@ -15587,6 +15650,7 @@ msgstr "Trauernde"
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:60
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:62
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:61
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:62
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:64
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:61
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:60
@@ -15662,6 +15726,7 @@ msgstr "EST beig. Werk"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:90
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:90
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:88
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:91
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:93
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:90
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:87
@@ -15704,6 +15769,7 @@ msgstr "Übersetzter Titel"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:63
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:62
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:60
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:63
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:40
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:65
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:62
@@ -15747,6 +15813,7 @@ msgstr "Paralleltitel/Fußnote"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:64
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:63
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:61
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:64
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:41
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:66
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:63
@@ -15789,6 +15856,7 @@ msgstr "Weiterer Titel/Fußnote"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:65
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:64
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:62
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:65
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:87
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:67
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:64
@@ -15832,6 +15900,7 @@ msgstr "Titelangaben"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:51
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:50
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:48
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:51
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:53
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:50
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:48
@@ -15889,6 +15958,7 @@ msgstr "Bibl. Nachweis"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:66
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:65
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:63
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:66
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:68
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:65
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:63
@@ -15939,6 +16009,7 @@ msgstr "Vermerke zur Personenangabe"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:67
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:66
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:64
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:67
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:43
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:69
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:66
@@ -15982,6 +16053,7 @@ msgstr "Ausgabe Fußnote"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:68
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:67
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:65
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:68
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:44
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:70
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:67
@@ -16025,6 +16097,7 @@ msgstr "Erschverm. Fußnote"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:69
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:68
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:66
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:69
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:45
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:71
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:68
@@ -16068,6 +16141,7 @@ msgstr "Koll. Fußnote"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:70
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:69
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:67
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:70
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:46
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:72
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:69
@@ -16111,6 +16185,7 @@ msgstr "Impress. Änderung"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:71
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:70
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:68
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:71
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:47
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:73
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:70
@@ -16153,6 +16228,7 @@ msgstr "Ergänzt. GesamtTitel"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:88
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:88
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:86
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:89
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:91
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:88
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:85
@@ -16186,6 +16262,7 @@ msgstr "Schrift"
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:70
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:71
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:69
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:72
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:74
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:71
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:69
@@ -16229,6 +16306,7 @@ msgstr "Angaben zum Inhalt"
 #: ../templates/_profile/kug/users_preferences_html:208
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:83
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:81
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:84
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:86
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:83
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:81
@@ -16280,6 +16358,7 @@ msgstr "Angaben zum Inhalt"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:72
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:72
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:70
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:73
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:49
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:75
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:72
@@ -16322,6 +16401,7 @@ msgstr "Teilungsvermerk"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:43
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:42
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:40
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:43
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:45
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:42
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:40
@@ -16364,6 +16444,7 @@ msgstr "Erscheinungsweise"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:73
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:73
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:71
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:74
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:50
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:76
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:73
@@ -16411,6 +16492,7 @@ msgstr "Ortsnamen"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:77
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:77
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:75
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:78
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:51
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:80
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:77
@@ -16454,6 +16536,7 @@ msgstr "Parallele Ausg."
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:78
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:78
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:76
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:79
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:52
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:81
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:78
@@ -16497,6 +16580,7 @@ msgstr "Titel Beilage"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:79
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:79
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:77
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:80
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:53
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:82
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:79
@@ -16540,6 +16624,7 @@ msgstr "Bezugswerk"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:80
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:80
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:78
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:81
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:54
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:83
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:80
@@ -16592,6 +16677,7 @@ msgstr "Mitglied der Herrscherfamilie"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:81
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:81
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:79
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:82
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:55
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:84
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:81
@@ -16635,6 +16721,7 @@ msgstr "Früherer Titel"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:82
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:82
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:80
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:83
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:56
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:85
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:82
@@ -16687,6 +16774,7 @@ msgstr "Magistrat"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:74
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:74
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:72
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:75
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:57
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:77
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:74
@@ -16730,6 +16818,7 @@ msgstr "Titelkonk."
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:75
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:75
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:73
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:76
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:58
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:78
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:75
@@ -16773,6 +16862,7 @@ msgstr "Anz. Exemplare"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:76
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:76
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:74
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:77
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:59
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:79
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:76
@@ -16825,6 +16915,7 @@ msgstr "Angabe Vervielfältigungsart"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:107
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:108
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:105
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:110
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:112
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:107
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:102
@@ -16866,6 +16957,7 @@ msgstr "ISBN"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:108
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:110
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:107
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:112
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:114
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:109
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:104
@@ -16896,6 +16988,7 @@ msgstr "ISSN"
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:106
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:109
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:106
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:111
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:113
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:108
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:103
@@ -16938,6 +17031,7 @@ msgstr "Fingerprint"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:85
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:85
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:83
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:86
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:63
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:88
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:85
@@ -16980,6 +17074,7 @@ msgstr "Nachweise / Sonstige Nummern"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:57
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:56
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:54
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:57
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:64
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:59
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:54
@@ -17025,6 +17120,7 @@ msgstr "Veröffentlicht"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:44
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:43
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:41
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:44
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:65
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:46
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:43
@@ -17081,6 +17177,7 @@ msgstr "Ausgabebez. der Quelle"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:45
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:44
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:42
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:45
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:68
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:47
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:44
@@ -17132,6 +17229,7 @@ msgstr "Entstehungslandschaft"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:46
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:45
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:43
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:46
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:69
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:48
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:45
@@ -17200,6 +17298,7 @@ msgstr "Standardnummer der Quelle"
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:56
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:58
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:57
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:58
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:60
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:57
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:55
@@ -17253,6 +17352,7 @@ msgstr "Kommentar"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:84
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:84
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:82
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:85
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:74
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:87
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:84
@@ -17304,6 +17404,7 @@ msgstr "Links"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:86
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:86
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:84
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:87
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:75
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:89
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:86
@@ -17346,6 +17447,7 @@ msgstr "Filmbesitz"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:54
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:53
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:51
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:54
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:56
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:53
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:51
@@ -17388,6 +17490,7 @@ msgstr "EDV Material"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:55
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:54
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:52
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:55
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:76
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:57
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:54
@@ -17430,6 +17533,7 @@ msgstr "EDV Adress"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:109
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:111
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:108
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:113
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:115
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:110
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:105
@@ -17473,6 +17577,7 @@ msgstr "Volltext-Hinweis"
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:27
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:26
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:27
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:26
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:77
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:29
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:27
@@ -17563,6 +17668,10 @@ msgstr "Altersfreigabe"
 msgid "T0700-landschaft"
 msgstr "1. Ikonogr. Schlagwort"
 
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:107
+msgid "T0700-maxbruch"
+msgstr "Behandeltes Werk"
+
 #: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:22
 #: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:260
 msgid "T0700-muenzen"
@@ -17600,6 +17709,7 @@ msgstr "Provenienz"
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:92
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:94
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:94
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:95
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:97
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:93
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:90
@@ -17675,6 +17785,7 @@ msgstr "Am Umschlag Beteiligte"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:89
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:89
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:87
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:90
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:92
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:89
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:86
@@ -17727,6 +17838,7 @@ msgstr "Transkription"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:93
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:93
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:90
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:94
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:96
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:92
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:89
@@ -17794,6 +17906,7 @@ msgstr "Konkordanz"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:95
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:95
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:92
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:96
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:98
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:94
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:91
@@ -17835,6 +17948,7 @@ msgstr "Schlagwort"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:96
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:96
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:93
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:97
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:99
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:95
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:92
@@ -17876,6 +17990,7 @@ msgstr "Schlagwort"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:97
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:97
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:94
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:98
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:100
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:96
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:93
@@ -17917,6 +18032,7 @@ msgstr "Schlagwort"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:98
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:98
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:95
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:99
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:101
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:97
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:94
@@ -17958,6 +18074,7 @@ msgstr "Schlagwort"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:99
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:99
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:96
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:100
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:102
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:98
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:95
@@ -17999,6 +18116,7 @@ msgstr "Schlagwort"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:100
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:100
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:97
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:101
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:103
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:99
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:96
@@ -18040,6 +18158,7 @@ msgstr "Schlagwort"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:101
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:101
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:98
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:102
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:104
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:100
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:97
@@ -18081,6 +18200,7 @@ msgstr "Schlagwort"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:102
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:102
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:99
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:103
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:105
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:101
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:98
@@ -18122,6 +18242,7 @@ msgstr "Schlagwort"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:103
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:103
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:100
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:104
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:106
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:102
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:99
@@ -18163,6 +18284,7 @@ msgstr "Schlagwort"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:104
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:104
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:101
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:105
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:107
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:103
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:100
@@ -18221,6 +18343,7 @@ msgstr "Hinweis"
 #: ../templates/_profile/kug/_database/wikisource_de/visible_categories_title:109
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:110
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:112
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:114
 #: ../templates/_profile/sammlungen/_database/muenzen/visible_categories_title:41
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:116
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:111
@@ -18295,6 +18418,7 @@ msgstr "Körperschaft"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:111
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:113
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:110
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:115
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:117
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:112
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:107
@@ -18344,6 +18468,7 @@ msgstr "Externer URL"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:112
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:114
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:111
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:116
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:118
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:113
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:108
@@ -18434,6 +18559,7 @@ msgstr "Wikipedia-Artikel (französisch)"
 #: ../templates/_database/landschaft/titles_record_html_categories:278
 #: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:28
 #: ../templates/_profile/sammlungen/_database/landschaft/titles_record_html_categories:278
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:125
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:127
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:124
 #: ../templates/_profile/sammlungen/_database/umschlaege/visible_categories_title:112
@@ -18448,6 +18574,7 @@ msgstr "Rechte-Information"
 
 #: ../templates/_database/bestellungen/visible_categories_title:123
 #: ../templates/_database/inst404card/visible_categories_title:122
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:123
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:125
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:122
 #: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:122
@@ -18461,6 +18588,7 @@ msgstr "Preis"
 
 #: ../templates/_database/bestellungen/visible_categories_title:124
 #: ../templates/_database/inst404card/visible_categories_title:123
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:124
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:126
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:123
 #: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:123
@@ -18479,6 +18607,7 @@ msgstr "Währung"
 #: ../templates/_database/openlibrary/visible_categories_title:114
 #: ../templates/_profile/kug/_database/openlibrary/visible_categories_title:114
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:116
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:117
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:119
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:116
 #: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:116
@@ -18543,6 +18672,7 @@ msgstr "Verfügbarkeit"
 #: ../templates/_profile/kug/_database/usbsab/visible_categories_title:92
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:92
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:92
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:93
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:95
 #: ../templates/_profile/sammlungen/_database/schatzbehalter/visible_categories_title:92
 #: ../templates/_profile/sammlungen/_database/usbbibliographie/visible_categories_title:92
@@ -18579,6 +18709,7 @@ msgstr "Typ"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:115
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:119
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:114
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:120
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:122
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:116
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:112
@@ -18650,6 +18781,7 @@ msgstr "Anzahl Gesamttitel"
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:121
 #: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:27
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:115
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:122
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:124
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:118
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:114
@@ -18698,6 +18830,7 @@ msgstr "IDs Bände/Stücke"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:117
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:120
 #: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:26
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:121
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:123
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:117
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:113
@@ -18747,6 +18880,7 @@ msgstr "BibKey-Basis"
 #: ../templates/_profile/rheinlandbib/_database/herzogenrath/visible_categories_title:122
 #: ../templates/_profile/sammlungen/_database/gentzdigital/visible_categories_title:29
 #: ../templates/_profile/sammlungen/_database/inst404abklatsch/visible_categories_title:116
+#: ../templates/_profile/sammlungen/_database/maxbruch/visible_categories_title:126
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:128
 #: ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title:121
 #: ../templates/_profile/sammlungen/_database/richter/visible_categories_title:115
@@ -18930,7 +19064,7 @@ msgstr "Testsystem - Nicht f&uuml;r den produktiven Einsatz bestimmt"
 #: ../templates/templates_record_html:61
 #: ../templates/templates_revisions_html:63
 #: ../templates/templates_revisions_record_html:62
-#: ../templates/titles_record_html:317 ../templates/titles_record_include:215
+#: ../templates/titles_record_html:341 ../templates/titles_record_include:215
 #: ../templates/users_templates_record_edit:126
 #: ../templates/users_templates_record_edit:90
 msgid "Text"
@@ -19124,7 +19258,7 @@ msgstr "Tip: Digitaler Kartenkatalog"
 #: ../templates/titles_popular_by_database_html:65
 #: ../templates/titles_popular_html:45
 #: ../templates/titles_record_circulation_html:38
-#: ../templates/titles_record_html:131 ../templates/titles_record_html:316
+#: ../templates/titles_record_html:146 ../templates/titles_record_html:340
 #: ../templates/titles_record_include:214
 #: ../templates/titles_record_provenances_html:38
 #: ../templates/titles_record_provenances_record_html:38
@@ -19262,7 +19396,7 @@ msgstr "Titel-Daten"
 #: ../templates/_profile/sammlungen/_database/muenzen/titles_record_html:36
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:35
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:35
-#: ../templates/titles_record_html:36 ../templates/titles_record_mobile:33
+#: ../templates/titles_record_html:51 ../templates/titles_record_mobile:33
 #: ../templates/users_titles_record_searchindex_html:15
 msgid "Titel-Information: %1 in Katalog %2"
 msgstr "Titel-Information: %1 in Katalog %2"
@@ -19306,7 +19440,7 @@ msgstr "Titelliste"
 #: ../templates/_profile/sammlungen/_view/gentzdigital/searchforms_record_query:107
 #: ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:87
 #: ../templates/_profile/sammlungen/_view/koelnzeitung/searchforms_record_query:87
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:87
+#: ../templates/_profile/sammlungen/_view/maxbruch/searchforms_record_query:87
 #: ../templates/_profile/sammlungen/_view/schatzbehalter/searchforms_record_query:87
 #: ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:84
 #: ../templates/_profile/sammlungen/_view/wikisource/searchforms_record_query:87
@@ -19488,7 +19622,7 @@ msgid "Tutorien zu einzelnen Themen:"
 msgstr "Tutorien zu einzelnen Themen:"
 
 #: ../templates/_profile/kug/searchforms_record_query:187
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:206
+#: ../templates/_profile/sammlungen/_view/maxbruch/searchforms_record_query:206
 #: ../templates/_profile/sammlungen/searchforms_record_query:207
 #: ../templates/_profile/usbportal/_view/warenkorb_komplett/searchforms_record_query:179
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/searchforms_record_query:179
@@ -19791,7 +19925,7 @@ msgstr "Verkn&uuml;pfungen mehrerer Suchfelder"
 #: ../templates/_profile/kug/searchforms_record_query:147
 #: ../templates/_profile/kug/users_preferences_html:252
 #: ../templates/_profile/rheinlandbib/searchforms_record_query:187
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:187
+#: ../templates/_profile/sammlungen/_view/maxbruch/searchforms_record_query:187
 #: ../templates/_profile/sammlungen/_view/umschlaege/searchforms_record_query:116
 #: ../templates/_profile/sammlungen/_view/umschlaege/subnavigation:40
 #: ../templates/_profile/sammlungen/_view/umschlaege/subnavigation:42
@@ -19818,7 +19952,8 @@ msgstr "Verlinkung und Lastverteilung in OpenBib"
 msgid "Verlinkung und Lastverteilung von OpenBib"
 msgstr "Verlinkung und Lastverteilung von OpenBib"
 
-#: ../templates/titlist_item_html_short:328
+#: ../templates/titles_record_html:179
+#: ../templates/titlist_item_html_short:327
 msgid "Verschiedene Standorte"
 msgstr "Verschiedene Standorte"
 
@@ -20114,7 +20249,7 @@ msgstr "Wann"
 #: ../templates/_database/einbaende/titles_record_html:375
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:350
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:340
-#: ../templates/titles_record_html:351 ../templates/titles_record_include:251
+#: ../templates/titles_record_html:375 ../templates/titles_record_include:251
 msgid "War diese Rezension hilfreich?"
 msgstr "War diese Rezension hilfreich?"
 
@@ -20131,7 +20266,7 @@ msgstr "WebOPAC-URL"
 #: ../templates/_database/inst001/circulation:100
 #: ../templates/_database/inst411/circulation:53
 #: ../templates/_profile/kug/_database/edz/circulation:106
-#: ../templates/_profile/kug/_database/inst001/circulation:122
+#: ../templates/_profile/kug/_database/inst001/circulation:160
 #: ../templates/_profile/kug/_database/inst001/holding:114
 #: ../templates/_profile/kug/_database/inst302/circulation:54
 #: ../templates/_profile/kug/_database/islandica/circulation:100
@@ -20846,8 +20981,8 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/koelnzeitung/searchforms_record_query:133
 #: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:149
 #: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:153
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:259
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:263
+#: ../templates/_profile/sammlungen/_view/maxbruch/searchforms_record_query:259
+#: ../templates/_profile/sammlungen/_view/maxbruch/searchforms_record_query:263
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_query:134
 #: ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:138
 #: ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:142
@@ -21144,7 +21279,7 @@ msgstr "aufsteigend"
 #: ../templates/_database/inst001/circulation:135
 #: ../templates/_database/inst411/circulation:86
 #: ../templates/_profile/kug/_database/edz/circulation:141
-#: ../templates/_profile/kug/_database/inst001/circulation:158
+#: ../templates/_profile/kug/_database/inst001/circulation:196
 #: ../templates/_profile/kug/_database/inst302/circulation:95
 #: ../templates/_profile/kug/_database/islandica/circulation:135
 #: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:141
@@ -21178,7 +21313,7 @@ msgstr "ausleihbar"
 #: ../templates/_database/inst001/circulation:133
 #: ../templates/_database/inst411/circulation:84
 #: ../templates/_profile/kug/_database/edz/circulation:139
-#: ../templates/_profile/kug/_database/inst001/circulation:156
+#: ../templates/_profile/kug/_database/inst001/circulation:194
 #: ../templates/_profile/kug/_database/inst302/circulation:93
 #: ../templates/_profile/kug/_database/islandica/circulation:133
 #: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:139
@@ -21208,7 +21343,7 @@ msgstr "beim Lieferanten reklamiert"
 #: ../templates/_database/inst001/circulation:131
 #: ../templates/_database/inst411/circulation:82
 #: ../templates/_profile/kug/_database/edz/circulation:137
-#: ../templates/_profile/kug/_database/inst001/circulation:154
+#: ../templates/_profile/kug/_database/inst001/circulation:192
 #: ../templates/_profile/kug/_database/inst302/circulation:91
 #: ../templates/_profile/kug/_database/islandica/circulation:131
 #: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:137
@@ -21238,7 +21373,7 @@ msgstr "beim Lieferanten storniert"
 #: ../templates/_database/inst001/circulation:127
 #: ../templates/_database/inst411/circulation:78
 #: ../templates/_profile/kug/_database/edz/circulation:133
-#: ../templates/_profile/kug/_database/inst001/circulation:150
+#: ../templates/_profile/kug/_database/inst001/circulation:188
 #: ../templates/_profile/kug/_database/inst302/circulation:87
 #: ../templates/_profile/kug/_database/islandica/circulation:127
 #: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:133
@@ -21275,7 +21410,7 @@ msgstr "bestellt beim Lieferanten"
 #: ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:133
 #: ../templates/_profile/sammlungen/_view/koelnzeitung/searchforms_record_query:133
 #: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:153
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:263
+#: ../templates/_profile/sammlungen/_view/maxbruch/searchforms_record_query:263
 #: ../templates/_profile/sammlungen/_view/muenzen/search_facet:287
 #: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:302
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_query:134
@@ -21372,7 +21507,7 @@ msgstr "entliehen"
 #: ../templates/_database/inst001/circulation:129
 #: ../templates/_database/inst411/circulation:80
 #: ../templates/_profile/kug/_database/edz/circulation:135
-#: ../templates/_profile/kug/_database/inst001/circulation:152
+#: ../templates/_profile/kug/_database/inst001/circulation:190
 #: ../templates/_profile/kug/_database/inst302/circulation:89
 #: ../templates/_profile/kug/_database/islandica/circulation:129
 #: ../templates/_profile/kug/_database/lehrbuchsmlg/circulation:135
@@ -22011,7 +22146,7 @@ msgstr "realisiert mit"
 #: ../templates/_database/einbaende/titles_record_html:328
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:303
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:293
-#: ../templates/reviews_edit:218 ../templates/titles_record_html:304
+#: ../templates/reviews_edit:218 ../templates/titles_record_html:328
 #: ../templates/titles_record_include:202
 msgid "schlecht"
 msgstr "schlecht"
@@ -22019,7 +22154,7 @@ msgstr "schlecht"
 #: ../templates/_database/einbaende/titles_record_html:334
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:309
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:299
-#: ../templates/reviews_edit:224 ../templates/titles_record_html:310
+#: ../templates/reviews_edit:224 ../templates/titles_record_html:334
 #: ../templates/titles_record_include:208
 msgid "sehr gut"
 msgstr "sehr gut"
@@ -22046,7 +22181,7 @@ msgstr "Portal-Administrator"
 #: ../templates/_profile/sammlungen/_view/kapsel/searchforms_record_query:129
 #: ../templates/_profile/sammlungen/_view/koelnzeitung/searchforms_record_query:129
 #: ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query:149
-#: ../templates/_profile/sammlungen/_view/maxbrucharchiv/searchforms_record_query:259
+#: ../templates/_profile/sammlungen/_view/maxbruch/searchforms_record_query:259
 #: ../templates/_profile/sammlungen/_view/muenzen/search_title_combined_html:75
 #: ../templates/_profile/sammlungen/_view/muenzen/searchforms_record_query:298
 #: ../templates/_profile/sammlungen/_view/pruessen/searchforms_record_query:138

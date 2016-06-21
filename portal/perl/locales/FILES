@@ -1371,6 +1371,7 @@
 ../templates/_profile/sammlungen/_view/maxbruch/std_header_html
 ../templates/_profile/sammlungen/_view/maxbruch/subnavigation
 ../templates/_profile/sammlungen/_view/maxbruch/titles_fields_record_html
+../templates/_profile/sammlungen/_view/maxbruch/search_facet
 ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_actions
 ../templates/_profile/sammlungen/_view/muenzen/cartitems_html_short
 ../templates/_profile/sammlungen/_view/muenzen/clouds_classification_html

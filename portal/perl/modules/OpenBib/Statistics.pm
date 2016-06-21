@@ -178,7 +178,7 @@ sub cache_data {
             type   => $type,
             subkey => $subkey,
             tstamp => \'NOW()',
-            data   => $datastring
+            data   => decode_utf8($datastring)
         }
     );
 

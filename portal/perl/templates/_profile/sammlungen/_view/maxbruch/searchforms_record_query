@@ -124,7 +124,7 @@ $(document).ready(function(){
     this_searchfield = 'classification';
  -%]
 <div class="ym-fbox-text">
-<label for="[% cgiparam %]">[% msg.maketext("Notation") %]</label>
+<label for="[% cgiparam %]">[% msg.maketext("T0700-maxbruch") %]</label>
 <input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 [% END %]

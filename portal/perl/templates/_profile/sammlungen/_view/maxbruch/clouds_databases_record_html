@@ -1,0 +1,85 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+[% show_foot_banner = 1%]
+<body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="cloud" %]
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="[% path_prefix%]/[% config.get('clouds_loc') %].html?l=[% lang %]">[% msg.maketext("Wolken") %]</a></li>
+         <li><a href="#" class="lastitem">[% dbinfo.get('dbnames').${database}.short %]</a></li>
+      </ul>
+     </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
+[% PROCESS common/subtemplate name="clouds_navigation" active_submenu='clouds_choice' %]
+[%# USE dumper;dumper.dump(dbinfo)%]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+<p/>
+
+
+<div class="box info">
+[% msg.maketext("W&auml;hlen Sie einen Wolken-Typ aus, um f&uuml;r diesen eine
+<b>&Uuml;bersicht der 200 am h&auml;ufigsten verwendeten Begriffe bzw.
+Normdaten-Eintr&auml;ge f&uuml;r Schlagworte,
+Systematiken/Notationen, K&ouml;rperschaften/Institutionen sowie Personen</b> in der Form einer
+Wortwolke ([_1]&nbsp;[_2]) zu erhalten. Je mehr Titel mit
+einem Normdaten-Eintrag verkn&uuml;pft wurden, umso grösser wird der zugehörige Normdaten-Eintrag dargestellt.","<img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit
+Wikipedia\" />","<a href=\"http://de.wikipedia.org/wiki/Wortwolke\" target=\"_blank\">engl. tag cloud</a>") %]
+</div>
+
+   <ul>
+     <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]">[% msg.maketext("Erscheinungsjahre") %]</a></li>
+     <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/person.html?l=[% lang %]">[% msg.maketext("Personen") %]</a></li>
+     <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/subject.html?l=[% lang %]">[% msg.maketext("Schlagworte") %]</a></li>
+     <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/classification.html?l=[% lang %]">[% msg.maketext("T0700-maxbruch") %]</a></li>
+     <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/corporatebody.html?l=[% lang %]">[% msg.maketext("Körperschaften") %]</a></li>
+   </ul>
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

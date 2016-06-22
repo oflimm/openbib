@@ -219,7 +219,7 @@ exclude:
           - inst622
           - inst623
        locations:
-          - DE-38
+          - DE-38-USBFB
           - freebooks
           - ebookpda
           - printpda

@@ -146,6 +146,11 @@
 <a href="http://www.ub.uni-koeln.de/bibliothek/zeiten/index_ger.html" target="_blank"><b>&Ouml;ffungszeiten</b></a>
 [% END %]
 </td>
+[%-
+
+thiscirculation.Signatur = thiscirculation.Signatur.replace('^ARCH/','');
+
+-%]
 <td><strong>[% IF thiscirculation.Signatur.match('#$') && thiscirculation.Exemplar %][% thiscirculation.Signatur %][% thiscirculation.Exemplar %][% ELSE %][% thiscirculation.Signatur %][% END %]</strong>
 [% provenances = record.get_provenances_of_media(thiscirculation.Mediennr) %]
 [% IF provenances.size > 0 %]

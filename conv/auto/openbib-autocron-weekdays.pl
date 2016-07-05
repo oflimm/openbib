@@ -197,21 +197,23 @@ foreach my $thread (@threads) {
     $logger->info("### -> done with $thread_description");
 }
 
+# PDA-relevante Kataloge werde nie inkrementell aufgebaut, sondern immer komplett
+
 $logger->info("### Offene Bestellungen");
 
-autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['bestellungen'] });
+autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['bestellungen'] });
 
 ##############################
 
 $logger->info("### EBOOKPDA");
 
-autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['ebookpda'] });
+autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['ebookpda'] });
 
 ##############################
 
 $logger->info("### PRINTPDA");
 
-autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['dreierpda','vubpda','roemkepda'] });
+autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['dreierpda','vubpda','roemkepda'] });
 
 ##############################
 

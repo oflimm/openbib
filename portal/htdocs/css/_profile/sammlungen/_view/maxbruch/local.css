@@ -6,7 +6,7 @@
   }
   
   header {
-    padding-bottom:235px;  
+    padding-bottom:150px;  
   }
 
   header #logo {
@@ -30,7 +30,7 @@
     background: url(/images/openbib/views/maxbruch/logo.png) center no-repeat;
     position: absolute;
     width: 1020px;
-    height: 306px;
+    height: 221px;
     top: 0px;
     left: 0px;
   }

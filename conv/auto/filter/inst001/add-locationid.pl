@@ -129,6 +129,9 @@ while (<HOLDING>){
             push @{$element_ref}, "DE-38-411";
             push @{$element_ref}, "DE-38-ENGPORTROM"; # Normales Institut mit Spezialview
         }
+        elsif ($location_ref->{content} =~m/Oppenheim-Stiftung/){
+            push @{$element_ref}, "DE-38-435";
+        }
         elsif ($location_ref->{content} =~m/inst(\d\d\d) /){
             push @{$element_ref}, "DE-38-$1";
         }

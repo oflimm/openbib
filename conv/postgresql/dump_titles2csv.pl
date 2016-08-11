@@ -168,7 +168,7 @@ while (my $title=$titles->next){
             push @jahr, cleanup_content($item_ref->{content});
         }
     }
-    elsif (defined $titlecache_ref->{T0424}){
+    elsif (defined $titlecache_ref->{T0425}){
         foreach my $item_ref (@{$titlecache_ref->{T0425}}){
             push @jahr, cleanup_content($item_ref->{content});
         }

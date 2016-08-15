@@ -54,6 +54,13 @@ print "### $pool: Erweiterung um Zugriffsinformation online, Typ Digital und The
 
 system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-fields.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title ; cat meta.title | $rootdir/filter/$pool/add-locationid.pl | $rootdir/filter/$pool/process_rda_subfields.pl | $rootdir/filter/$pool/gen_local_topic.pl  > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 
+print "### $pool: Entfernen aller nicht GND-Fremdnummern sowie des (DE-588) GND-Prefixes \n";
+
+system("cd $datadir/$pool ; cat meta.person | $rootdir/filter/$pool/fix-gnd.pl > meta.person.tmp ; mv -f meta.person.tmp meta.person");
+system("cd $datadir/$pool ; cat meta.corporatebody | $rootdir/filter/$pool/fix-gnd.pl > meta.corporatebody.tmp ; mv -f meta.corporatebody.tmp meta.corporatebody");
+system("cd $datadir/$pool ; cat meta.subject | $rootdir/filter/$pool/fix-gnd.pl > meta.subject.tmp ; mv -f meta.subject.tmp meta.subject");
+system("cd $datadir/$pool ; cat meta.classification | $rootdir/filter/$pool/fix-gnd.pl > meta.classification.tmp ; mv -f meta.classification.tmp meta.classification");
+
 print "### $pool: Korrektur der Exemplarinformationen\n";
 
 system("cd $datadir/$pool ; cat meta.holding| $rootdir/filter/$pool/fix-holding.pl > meta.holding.tmp ; mv -f meta.holding.tmp meta.holding");

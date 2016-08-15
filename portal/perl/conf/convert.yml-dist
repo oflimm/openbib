@@ -1014,6 +1014,174 @@ convtab:
      #'4717': 1        # Markierung Fachbibliothek Versicherungswissenschaft
      #'4720': 1        # Testdaten Inhaltsverzeichnis-Scans
      #'4725': 1        # Temporaeres Schlagwort
+    inverted_authority_person:
+      '0010':         # GND
+        index:
+          'gnd': 1
+      '0800':         # Ansetzung
+        index:
+          'person': 1
+          'personstring': 1
+          'freesearch': 1
+      '0830':         # Verweisform
+        index:
+          'person': 1
+          'personstring': 1
+          'freesearch': 1
+    inverted_person:
+      '0010':         # GND
+        index:
+          'gnd': 1
+      '0800':         # Ansetzung
+        index:
+          'person': 1
+          'personstring': 1
+          'freesearch': 1
+      '0830':         # Verweisform
+        index:
+          'person': 1
+          'personstring': 1
+          'freesearch': 1
+    inverted_corporatebody:
+      '0010':         # GND
+        index:
+          'gnd': 1
+      '0800':         # Ansetzung
+        index:
+          'corporatebody': 1
+          'corporatebodystring': 1
+          'freesearch': 1
+      '0810':         # Verweisform
+        index:
+          'corporatebody': 1
+          'corporatebodystring': 1
+          'freesearch': 1
+      '0812':         # Abkuerzung der Verweisform
+        index:
+          'corporatebody': 1
+          'corporatebodystring': 1
+          'freesearch': 1
+      '0881':         # Abkuerzung der Ansetzung
+        index:
+          'corporatebody': 1
+          'corporatebodystring': 1
+          'freesearch': 1
+      '0850':         # Frueherer/Spaeterer Name
+        index:
+          'corporatebody': 1
+          'corporatebodystring': 1
+          'freesearch': 1
+    inverted_authority_corporatebody:
+      '0010':         # GND
+        index:
+          'gnd': 1
+      '0800':         # Ansetzung
+        index:
+          'corporatebody': 1
+          'corporatebodystring': 1
+          'freesearch': 1
+      '0810':         # Verweisform
+        index:
+          'corporatebody': 1
+          'corporatebodystring': 1
+          'freesearch': 1
+      '0812':         # Abkuerzung der Verweisform
+        index:
+          'corporatebody': 1
+          'corporatebodystring': 1
+          'freesearch': 1
+      '0881':         # Abkuerzung der Ansetzung
+        index:
+          'corporatebody': 1
+          'corporatebodystring': 1
+          'freesearch': 1
+      '0850':         # Frueherer/Spaeterer Name
+        index:
+          'corporatebody': 1
+          'corporatebodystring': 1
+          'freesearch': 1
+    inverted_classification:
+      '0010':         # GND
+        index:
+          'gnd': 1
+      '0800':         # Ansetzung
+        index:
+          'classification': 1
+          'classificationstring': 1
+          'freesearch': 1
+      '0801':         # Ansetzung
+        index:
+          'classification': 1
+          'classificationstring': 1
+          'freesearch': 1
+      '0830':         # Stichwort
+        index:
+          'classification': 1
+          'classificationstring': 1
+          'freesearch': 1
+      '0840':         # Verweisform
+        index:
+          'classification': 1
+          'classificationstring': 1
+          'freesearch': 1
+    inverted_subject:
+      '0010':         # GND
+        index:
+          'gnd': 1
+      '0800':         # Ansetzung
+        index:
+          'subject': 1
+          'subjectstring': 1
+          'freesearch': 20
+      '0830':         # Verweisform
+        index:
+          'subject': 1
+          'subjectstring': 1
+          'freesearch': 1
+      '0840':         # Verweisform
+        index:
+          'subject': 1
+          'subjectstring': 1
+          'freesearch': 1
+      '0850':         # Uebergeordnete Bezeichnung
+        index:
+          'subject': 1
+          'subjectstring': 1
+          'freesearch': 1
+      '0870':         # Frueher
+        index:
+          'subject': 1
+          'subjectstring': 1
+          'freesearch': 1
+    inverted_authority_subject:
+      '0010':         # GND
+        index:
+          'gnd': 1
+      '0800':         # Ansetzung
+        index:
+          'subject': 1
+          'subjectstring': 1
+          'freesearch': 20
+      '0830':         # Verweisform
+        index:
+          'subject': 1
+          'subjectstring': 1
+          'freesearch': 1
+      '0840':         # Verweisform
+        index:
+          'subject': 1
+          'subjectstring': 1
+          'freesearch': 1
+      '0850':         # Uebergeordnete Bezeichnung
+        index:
+          'subject': 1
+          'subjectstring': 1
+          'freesearch': 1
+      '0870':         # Frueher
+        index:
+          'subject': 1
+          'subjectstring': 1
+          'freesearch': 1
     inverted_title:
       'tag':
         index:

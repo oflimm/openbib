@@ -4,7 +4,7 @@
 #
 #  authority2xapian.pl
 #
-#  Dieses File ist (C) 2013 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2013-2016 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -49,11 +49,12 @@ use OpenBib::Config;
 use OpenBib::Index::Factory;
 use OpenBib::Common::Util;
 
-my ($database,$help,$logfile,$withsorting,$withpositions,$loglevel,$indexpath,$incremental);
+my ($database,$help,$logfile,$withsorting,$withpositions,$loglevel,$indexpath,$incremental,$authtype);
 
 &GetOptions(
-    "indexpath=s"     => \$indexpath,
-    "database=s"      => \$database,
+    "indexpath=s"       => \$indexpath,
+    "database=s"        => \$database,
+    "authority-type=s"  => \$authtype,
     "logfile=s"       => \$logfile,
     "loglevel=s"      => \$loglevel,
     "with-sorting"    => \$withsorting,
@@ -86,7 +87,8 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-my $config = new OpenBib::Config();
+my $config  = new OpenBib::Config();
+my $rootdir = $config->{'autoconv_dir'};
 
 if (!$database){
   $logger->fatal("Kein Pool mit --database= ausgewaehlt");
@@ -100,19 +102,19 @@ my $FLINT_BTREE_MAX_KEY_LEN = $config->{xapian_option}{max_key_length};
 my @authority_files = (
     {
         type     => "person",
-        filename => $config->{autoconv_dir}."/pools/$database/meta.person.gz",
-    },
-    {
-        type     => "subject",
-        filename =>$config->{autoconv_dir}."/pools/$database/meta.subject.gz",
+        filename => "$rootdir/pools/$database/meta.person.gz",
     },
     {
         type     => "corporatebody",
-        filename =>$config->{autoconv_dir}."/pools/$database/meta.corporatebody.gz",
+        filename => "$rootdir/pools/$database/meta.corporatebody.gz",
+    },
+    {
+        type     => "subject",
+        filename => "$rootdir/pools/$database/meta.subject.gz",
     },
     {
         type     => "holding",
-        filename =>$config->{autoconv_dir}."/pools/$database/meta.holding.gz",
+        filename => "$rootdir/pools/$database/meta.holding.gz",
     }
 );
 
@@ -132,18 +134,49 @@ $indexer->set_stopper;
 $indexer->set_termgenerator;
 
 
+if (! -d "$rootdir/data/$database"){
+    system("mkdir $rootdir/data/$database");
+}
+
 foreach my $authority_file_ref (@authority_files){
     
-    if (-f $authority_file_ref->{filename}){
-        $logger->info("### POOL $database - ".$authority_file_ref->{type});
+    my $type            = $authority_file_ref->{type};
+    my $source_filename = $authority_file_ref->{filename};
+    my $dest_filename   = "authority_meta.$type";
 
+    next if ($authtype && $authtype ne $type);
+    
+    if (-f $source_filename){
+        my $atime = new Benchmark;
+
+        # Entpacken der Pool-Daten in separates Arbeits-Verzeichnis unter 'data'
+
+        $logger->info("### $database: Entpacken der Authority-Daten fuer Typ $type");
+                
+        system("rm $rootdir/data/$database/authority_*");
+        system("/bin/gzip -dc $source_filename > $rootdir/data/$database/$dest_filename");
+        
+        my $btime      = new Benchmark;
+        my $timeall    = timediff($btime,$atime);
+        my $resulttime = timestr($timeall,"nop");
+        $resulttime    =~s/(\d+\.\d+) .*/$1/;
+        
+        $logger->info("### $database: Benoetigte Zeit -> $resulttime");
+        
+        if ($database && -e "$config->{autoconv_dir}/filter/$database/authority_pre_conv_$type.pl"){
+            $logger->info("### $database: Verwende Plugin authority_pre_conv_$type.pl");
+            system("$config->{autoconv_dir}/filter/$database/authority_pre_conv_$type.pl $database");
+        }
+        
+        $logger->info("### POOL $database - ".$type);
+        
         my $fieldprefix = ($authority_file_ref->{type} eq "person")?"P":
             ($authority_file_ref->{type} eq "subject")?"S":
                 ($authority_file_ref->{type} eq "corporatebody")?"C":
                     ($authority_file_ref->{type} eq "holding")?"X":"";
         next unless ($fieldprefix);
         
-        open(SEARCHENGINE,"zcat $authority_file_ref->{filename} |" ) || die "$authority_file_ref->{filename} konnte nicht geoeffnet werden";
+        open(SEARCHENGINE,"cat $rootdir/data/$database/$dest_filename |" ) || die "$rootdir/data/$database/$dest_filename konnte nicht geoeffnet werden";
         
         {
             $logger->info("Aufbau eines neuen temporaeren Index fuer Datenbank $database");
@@ -225,6 +258,7 @@ authority2xapian.pl - Aufbau eines Xapian-Index für die Normdaten
    -with-sorting         : Integration von Sortierungsinformationen (nicht default)
    -with-positions       : Integration von Positionsinformationen(nicht default)
    --database=...        : Angegebenen Datenpool verwenden
+   --authority-type=...        : Angegebenen Normdatentyp (person, corporatebody, ...) verwenden
 
 ENDHELP
     exit;

@@ -89,6 +89,14 @@
 </div>
 [% END %]
 
+[%- cgiparam = searchfield.gnd.prefix;
+    this_searchfield = 'gnd';
+ -%]
+<div class="ym-fbox-text">
+<label for="[% cgiparam %]">GND</label>
+<input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+
 [% IF available_searchfields.isbn.active %]
 [%- cgiparam = searchfield.isbn.prefix;
     this_searchfield = 'isbn';

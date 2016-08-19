@@ -596,14 +596,17 @@ durch zus&auml;tzliche Worte weiter eingrenzen.") %]
 <div class="ob-category_header">[% msg.maketext("Suchbegriffe anpassen") %]</div>
 
 <script type="text/javascript">
+
 function update_per (){
   if ($("#autocomplete_per").val().length > 0){
-     $("#autocomplete_subj").prop('disabled', true);;
+     $("#autocomplete_gnd").prop('disabled', true);	
+     $("#autocomplete_subj").prop('disabled', true);
      $("#autocomplete_corp").prop('disabled', true);
      $("#autocomplete_fs").prop('disabled', true);
   }
   else {
-     $("#autocomplete_subj").prop('disabled',false);;
+     $("#autocomplete_gnd").prop('disabled',false);
+     $("#autocomplete_subj").prop('disabled',false);
      $("#autocomplete_corp").prop('disabled',false);
      $("#autocomplete_fs").prop('disabled',false);
   }
@@ -611,12 +614,14 @@ function update_per (){
 
 function update_subj (){
   if ($("#autocomplete_subj").val().length > 0){
-     $("#autocomplete_per").prop('disabled', true);;
+     $("#autocomplete_gnd").prop('disabled',true);
+     $("#autocomplete_per").prop('disabled', true);
      $("#autocomplete_corp").prop('disabled', true);
      $("#autocomplete_fs").prop('disabled', true);
   }
   else {
-     $("#autocomplete_per").prop('disabled',false);;
+     $("#autocomplete_gnd").prop('disabled',false);
+     $("#autocomplete_per").prop('disabled',false);
      $("#autocomplete_corp").prop('disabled',false);
      $("#autocomplete_fs").prop('disabled',false);
   }
@@ -624,32 +629,47 @@ function update_subj (){
 
 function update_corp (){
   if ($("#autocomplete_corp").val().length > 0){
-     $("#autocomplete_subj").prop('disabled', true);;
+     $("#autocomplete_gnd").prop('disabled',true);
+     $("#autocomplete_subj").prop('disabled', true);
      $("#autocomplete_per").prop('disabled', true);
      $("#autocomplete_fs").prop('disabled', true);
   }
   else {
-     $("#autocomplete_subj").prop('disabled',false);;
+     $("#autocomplete_gnd").prop('disabled',false);
+     $("#autocomplete_subj").prop('disabled',false);
      $("#autocomplete_per").prop('disabled',false);
      $("#autocomplete_fs").prop('disabled',false);
   }
-
-
 };
 
 function update_fs (){
   if ($("#autocomplete_fs").val().length > 0){
-     $("#autocomplete_subj").prop('disabled', true);;
+     $("#autocomplete_gnd").prop('disabled',true);
+     $("#autocomplete_subj").prop('disabled', true);
      $("#autocomplete_per").prop('disabled', true);
      $("#autocomplete_corp").prop('disabled', true);
   }
   else {
-     $("#autocomplete_subj").prop('disabled',false);;
+     $("#autocomplete_gnd").prop('disabled',false);
+     $("#autocomplete_subj").prop('disabled',false);
      $("#autocomplete_per").prop('disabled',false);
      $("#autocomplete_corp").prop('disabled',false);
   }
+};
 
-
+function update_gnd (){
+  if ($("#autocomplete_gnd").val().length > 0){
+     $("#autocomplete_subj").prop('disabled', true);
+     $("#autocomplete_per").prop('disabled', true);
+     $("#autocomplete_corp").prop('disabled', true);
+     $("#autocomplete_fs").prop('disabled', true);
+  }
+  else {
+     $("#autocomplete_subj").prop('disabled',false);
+     $("#autocomplete_per").prop('disabled',false);
+     $("#autocomplete_corp").prop('disabled',false);
+     $("#autocomplete_fs").prop('disabled', false);
+  }
 };
 
 </script>
@@ -672,6 +692,14 @@ function update_fs (){
 <div class="ym-fbox-text">
 <label for="autocomplete_[% cgiparam %]">[% msg.maketext("Freie Suche") %]</label>
 <input onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" size="30" maxlength="200" />
+</div>
+
+[%- cgiparam = config.searchfield.gnd.prefix;
+    this_searchfield = 'gnd';
+ -%]
+<div class="ym-fbox-text">
+<label for="autocomplete_[% cgiparam %]">GND</label>
+<input onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
 [%- cgiparam = config.searchfield.person.prefix;

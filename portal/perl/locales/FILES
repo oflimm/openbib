@@ -834,6 +834,9 @@
 ../templates/_profile/kug/_database/inst001/holding
 ../templates/_profile/kug/_database/inst001/titles_record_html_categories
 ../templates/_profile/kug/_database/inst001/visible_categories_title
+../templates/_profile/kug/_database/inst001/visible_categories_person
+../templates/_profile/kug/_database/inst001/visible_categories_corporatebody
+../templates/_profile/kug/_database/inst001/visible_categories_subject
 ../templates/_profile/kug/_database/inst137/holding
 ../templates/_profile/kug/_database/inst302/circulation
 ../templates/_profile/kug/_database/inst404abklatsch/holding

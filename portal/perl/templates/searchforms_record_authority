@@ -117,11 +117,13 @@ function update_gnd (){
      $("#autocomplete_subj").prop('disabled', true);
      $("#autocomplete_per").prop('disabled', true);
      $("#autocomplete_corp").prop('disabled', true);
+     $("#to_focus").prop('disabled', true);
   }
   else {
      $("#autocomplete_subj").prop('disabled',false);
      $("#autocomplete_per").prop('disabled',false);
      $("#autocomplete_corp").prop('disabled',false);
+     $("#to_focus").prop('disabled', false);
   }
 };
 

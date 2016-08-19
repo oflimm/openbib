@@ -161,7 +161,7 @@ FOREACH category IN categories;
 
     CASE "P0010";
          dnburl  = "http://d-nb.info/gnd/${content}";
-         content   = "<a href=\"${dnburl}\">${content}</a>";
+         content   = "<a href=\"${dnburl}\" target=\"_blank\">${content}</a>";
 
     CASE "P5000";
          searchterm    = record.id;

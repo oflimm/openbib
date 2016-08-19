@@ -831,6 +831,9 @@
 ../templates/_profile/kug/_database/inst001/circulation
 ../templates/_profile/kug/_database/inst001/connector_digibib_circset
 ../templates/_profile/kug/_database/inst001/connector_digibib_mexset
+../templates/_profile/kug/_database/inst001/persons_record_html
+../templates/_profile/kug/_database/inst001/corporatebodies_record_html
+../templates/_profile/kug/_database/inst001/subjects_record_html
 ../templates/_profile/kug/_database/inst001/holding
 ../templates/_profile/kug/_database/inst001/titles_record_html_categories
 ../templates/_profile/kug/_database/inst001/visible_categories_title

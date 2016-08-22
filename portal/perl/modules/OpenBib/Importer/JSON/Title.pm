@@ -1284,7 +1284,7 @@ sub process {
         if (exists $self->{storage}{listitemdata_holding}{$id}){
             my $thisholdings = $self->{storage}{listitemdata_holding}{$id};
             foreach my $content (@{$thisholdings}) {
-                $content = decode_utf8($content);
+                # $content = decode_utf8($content);
 
                 $index_doc->add_data('X0014', {
                     content => $content,

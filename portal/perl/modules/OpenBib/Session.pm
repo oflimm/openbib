@@ -35,7 +35,7 @@ use Cache::Memcached::libmemcached;
 use DBIx::Class::ResultClass::HashRefInflator;
 use Benchmark ':hireswallclock';
 use Digest::MD5;
-use Encode 'decode_utf8';
+use Encode qw(decode_utf8 encode_utf8);
 use JSON::XS qw(encode_json decode_json);
 use Log::Log4perl qw(get_logger :levels);
 use Storable;
@@ -965,7 +965,7 @@ sub save_eventlog_to_statisticsdb {
             my $searchquery_ref = {};
 
             eval {
-                $searchquery_ref = decode_json $content;
+                $searchquery_ref = decode_json encode_utf8($content);
             };
 
             if ($@){

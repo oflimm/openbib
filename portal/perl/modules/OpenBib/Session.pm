@@ -970,9 +970,8 @@ sub save_eventlog_to_statisticsdb {
 
             if ($@){
                 $logger->error("Error decoding JSON content: $@");
+                $logger->error("Query: $content");
             }
-            
-            $logger->debug("Query: $content");
             
             $statistics->log_query({
                 sid             => $new_sid,

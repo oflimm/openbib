@@ -141,8 +141,8 @@ foreach my $sessioninfo ($open_sessions->all){
       $user->clear_cached_userdata($userid);
   }
 
-  if ($count % 1000 == 0){
-      $logger->info("Purged $count sessions");
+  if ($count % 10000 == 0){
+      $logger->error("Purged $count sessions");
   }
   
   $count++;

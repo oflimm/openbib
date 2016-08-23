@@ -64,7 +64,7 @@ $loglevel=($loglevel)?$loglevel:"INFO";
 $logfile=($logfile)?$logfile:"/var/log/openbib/session-cleanup.log";
 
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=INFO, LOGFILE, Screen
+log4perl.rootLogger=$loglevel, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append

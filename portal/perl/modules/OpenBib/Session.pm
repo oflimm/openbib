@@ -1552,7 +1552,14 @@ sub get_info {
 }
 
 sub log_new_session_once {
-    my ($self,$r) = @_;
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $r                = exists $arg_ref->{r}
+        ? $arg_ref->{r}                 : undef;
+
+    my $representation   = exists $arg_ref->{representation}
+        ? $arg_ref->{representation}    : undef;
 
     return unless ($self->{_is_new_session});
     
@@ -1584,6 +1591,14 @@ sub log_new_session_once {
         $self->log_event({
             type      => 100,
             content   => $self->{view},
+        });
+    }
+
+    if ($representation) {
+        # Loggen der Repraesentation (json, rss usw.) beim Start
+        $self->log_event({
+            type      => 24,
+            content   => $representation,
         });
     }
     

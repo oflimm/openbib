@@ -107,9 +107,6 @@ sub cgiapp_init {
         $self->set_cookie('sessionID',$session->{ID}) ;
     }
     
-    # Neue Session, dann loggen
-    $session->log_new_session_once($r);
-
     my $user         = OpenBib::User->new({sessionID => $session->{ID}, config => $config});
     $self->param('user',$user);
 
@@ -224,6 +221,9 @@ sub cgiapp_init {
         $logger->info("Total time for cgiapp_init is ".timestr($timeall));
     }
 
+    # Neue Session und alle relevanten Informationen bestimmt (z.B. representation), dann loggen
+    $session->log_new_session_once({ r => $r, representation => $self->param('representation') });
+    
     return;
 }
 

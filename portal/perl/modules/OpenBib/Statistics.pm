@@ -341,6 +341,8 @@ sub log_event {
     #  20 => Rechercheart (einfach=1,komplex=2,...)
     #  21 => Recherche-Backend (sql,xapian,z3950)
     #  22 => Recherche-Einstieg ueber Connector (1=DigiBib)
+    #  23 => Recherche-Profil
+    #  24 => Repraesentation bei Beginn der Session
     #
     # Allgemeine Informationen
     # 100 => View
@@ -455,7 +457,6 @@ sub get_number_of_event {
     if ($type){
         $where_ref->{type} = $type,
     } 
-
 
     if ($from && $to){
         $where_ref->{-and} = [

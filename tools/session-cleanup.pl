@@ -6,7 +6,7 @@
 #
 #  Loeschung alter Sessions
 #
-#  Dieses File ist (C) 2003-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2016 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -34,6 +34,7 @@
 use strict;
 use warnings;
 
+use Getopt::Long;
 use Date::Manip;
 use DBI;
 use Log::Log4perl qw(get_logger :levels);
@@ -42,10 +43,28 @@ use OpenBib::Config;
 use OpenBib::Session;
 use OpenBib::User;
 
-my $logfile='/var/log/openbib/session-cleanup.log';
+our ($help,$logfile,$loglevel,$limit,$from,$to);
+
+&GetOptions(
+    "help"         => \$help,
+    "loglevel=s"   => \$loglevel,
+    "logfile=s"    => \$logfile,
+    "limit=s"      => \$limit,
+    "from=s"       => \$from,
+    "to=s"         => \$to,
+    );
+
+
+
+if ($help){
+    print_help();
+}
+
+$loglevel=($loglevel)?$loglevel:"INFO";
+$logfile=($logfile)?$logfile:"/var/log/openbib/session-cleanup.log";
 
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=ERROR, LOGFILE, Screen
+log4perl.rootLogger=INFO, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append
@@ -72,14 +91,35 @@ my $expiretimedate = Date::Manip::DateCalc($thistimedate,"-24hours");
 
 $expiretimedate = Date::Manip::UnixDate($expiretimedate,"%Y-%m-%d %H:%M:%S");
 
+my $where_ref = {
+};
+
+my $options_ref = {
+    group_by => ['id','createtime'],
+    order_by => ['createtime asc'],
+};
+    
+if ($limit){
+    $options_ref->{rows} = $limit;
+}
+
+if ($from && $to){
+    $where_ref = {
+	-and => [
+	     createtime => { '<' => $to },
+	     createtime => { '>' => $from },
+	    ],
+    };
+}
+else {
+    $where_ref = { 
+	createtime => { '<' => $expiretimedate },
+    };
+}
+
 my $open_sessions = $session->get_schema->resultset('Sessioninfo')->search(
-    {
-        createtime => { '<' => $expiretimedate },
-    },
-    {
-        group_by => ['id','createtime'],
-        order_by => ['createtime asc'],
-    }
+    $where_ref,
+    $options_ref,
 );
 
 my $count = 1;
@@ -101,5 +141,22 @@ foreach my $sessioninfo ($open_sessions->all){
       $user->clear_cached_userdata($userid);
   }
 
+  if ($count % 1000 == 0){
+      $logger->info("Purged $count sessions");
+  }
+  
   $count++;
 }
+
+sub print_help {
+    print "session-cleanup.pl - Schliessen abgelaufener Sessions und Uebertragung in Statistik-DB\n\n";
+    print "Optionen: \n";
+    print "  -help                    : Diese Informationsseite\n";
+    print "  --loglevel=DEBUG         : Loglevel [DEBUG|INFO|ERROR]\n";
+    print "  --logfile=...            : Log-Datei\n";
+    print "  --limit=...              : Maximale Zahl an zu schliessenden Sessions\n";
+    print "  --from=...               : Von Datum (Format: yyyy-mm-dd hh:mm:ss), nur zusammen mit --to\n";
+    print "  --to=...                 : Bis Datum (Format: yyyy-mm-dd hh:mm:ss), nur zusammen mit --from\n";    
+    exit;
+}
+

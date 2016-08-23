@@ -915,12 +915,16 @@ sub save_eventlog_to_statisticsdb {
         }
     )->single;
 
+    $logger->debug("Create new session in statistics db");
+
     my $new_sid = $statistics->create_session({
         sessionid  => $self->{ID},
         createtime => $sessioninfo->createtime,
         viewname   => $view,
     });
     
+    $logger->debug("Copy default events from active session to new session in statistics db");
+
     # Alle skalaren Events in Statistics-DB uebertragen
     foreach my $event ($sessioninfo->eventlogs->all){
         my $tstamp        = $event->tstamp;
@@ -940,6 +944,8 @@ sub save_eventlog_to_statisticsdb {
         });
     }
 
+    $logger->debug("Copy json events from active session to new session in statistics db");
+
     # Alle Events im JSON-Format in Statistics-DB uebertragen
     foreach my $event ($sessioninfo->eventlogjsons->all){
         my $tstamp        = $event->tstamp;
@@ -950,8 +956,8 @@ sub save_eventlog_to_statisticsdb {
             sid       => $new_sid,
             tstamp    => $tstamp,
             type      => $type,
-            content   => decode_utf8($content),
-#            content   => $content,
+#            content   => decode_utf8($content),
+            content   => $content,
             serialize => 1, # in Eventlogjson
         });
         
@@ -976,6 +982,8 @@ sub save_eventlog_to_statisticsdb {
             });
 	}
     }
+
+    $logger->debug("Write title usage stats from active session to new session in statistics db");
 
     # Relevanz-Daten vom Typ 2 (Einzeltrefferaufruf)
     # DBI: "select tstamp,content from eventlog where sessionid = ? and type=10"

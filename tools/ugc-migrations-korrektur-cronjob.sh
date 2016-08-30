@@ -1,14 +1,22 @@
 #!/bin/bash
 
-/opt/openbib/bin/ugc-migrations-korrektur.pl --source-database=inst103 --target-database=inst001 --master-database=inst103master --target-location="Fachbibliothek VWL" -migrate-litlists -migrate-tags -migrate-cartitems
-/opt/openbib/bin/ugc-migrations-korrektur.pl --source-database=inst105 --target-database=inst001 --master-database=inst105master --target-location="Fachbibliothek VWL" -migrate-litlists -migrate-tags -migrate-cartitems
-/opt/openbib/bin/ugc-migrations-korrektur.pl --source-database=inst128 --target-database=inst001 --master-database=inst128master --target-location="Fachbibliothek VWL" -migrate-litlists -migrate-tags -migrate-cartitems
-/opt/openbib/bin/ugc-migrations-korrektur.pl --source-database=inst132 --target-database=inst001 --master-database=inst132master --target-location="Fachbibliothek Soziologie" -migrate-litlists -migrate-tags -migrate-cartitems
-/opt/openbib/bin/ugc-migrations-korrektur.pl --source-database=inst157 --target-database=inst001 --master-database=inst157master --target-location="Fachbibliothek VWL" -migrate-litlists -migrate-tags -migrate-cartitems
-/opt/openbib/bin/ugc-migrations-korrektur.pl --source-database=inst166 --target-database=inst001 --master-database=inst166master --target-location="Fachbibliothek VWL" -migrate-litlists -migrate-tags -migrate-cartitems
-/opt/openbib/bin/ugc-migrations-korrektur.pl --source-database=inst418 --target-database=inst001 --master-database=inst418master --target-location="Fachbibliothek Slavistik" -migrate-litlists -migrate-tags -migrate-cartitems
-/opt/openbib/bin/ugc-migrations-korrektur.pl --source-database=inst427 --target-database=inst001 --master-database=inst427master --target-location="Fachbibliothek Archäologien / Archäologisches Institut" -migrate-litlists -migrate-tags -migrate-cartitems
-/opt/openbib/bin/ugc-migrations-korrektur.pl --source-database=inst429 --target-database=inst001 --master-database=inst429master --target-location="Fachbibl. Medienkultur und Theater . Theaterwiss. Sammlung" -migrate-litlists -migrate-tags -migrate-cartitems
-/opt/openbib/bin/ugc-migrations-korrektur.pl --source-database=inst448 --target-database=inst001 --master-database=inst448master --target-location="Fachbibl. Medienkultur und Theater . Inst. f..r Medienkultur u. Theater" -migrate-litlists -migrate-tags -migrate-cartitems
-/opt/openbib/bin/ugc-migrations-korrektur.pl --source-database=inst622 --target-database=inst001 --master-database=inst622master --target-location="inst622" -migrate-litlists -migrate-tags -migrate-cartitems
+/opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst103 -migrate-litlists -migrate-tags -migrate-cartitems
+/opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst105 -migrate-litlists -migrate-tags -migrate-cartitems
+/opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst128 -migrate-litlists -migrate-tags -migrate-cartitems
+/opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst132 -migrate-litlists -migrate-tags -migrate-cartitems
+/opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst157 -migrate-litlists -migrate-tags -migrate-cartitems
+/opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst166 -migrate-litlists -migrate-tags -migrate-cartitems
+/opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst401 -migrate-litlists -migrate-tags -migrate-cartitems
+/opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst404 -migrate-litlists -migrate-tags -migrate-cartitems
+/opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst409 -migrate-litlists -migrate-tags -migrate-cartitems
+/opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst411 -migrate-litlists -migrate-tags -migrate-cartitems
+/opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst414 -migrate-litlists -migrate-tags -migrate-cartitems
+/opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst418 -migrate-litlists -migrate-tags -migrate-cartitems
+/opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst426 -migrate-litlists -migrate-tags -migrate-cartitems
+/opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst427 -migrate-litlists -migrate-tags -migrate-cartitems
+/opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst429 -migrate-litlists -migrate-tags -migrate-cartitems
+/opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst432 -migrate-litlists -migrate-tags -migrate-cartitems
+/opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst437 -migrate-litlists -migrate-tags -migrate-cartitems
+/opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst448 -migrate-litlists -migrate-tags -migrate-cartitems
+/opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst622 -migrate-litlists -migrate-tags -migrate-cartitems
 

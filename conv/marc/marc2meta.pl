@@ -197,6 +197,45 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
 
     $title_ref->{id}=~s/\s//g;
 
+    my $isbn = "";
+    
+    # ISBN
+    foreach my $field ($record->field('020')){
+	my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
+	my $content_z = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('z')):$field->as_string('z');
+	
+	$content_a=~s/\s+\(.+?\)\s*$//;
+	$content_z=~s/\s+\(.+?\)\s*$//;
+	
+	if ($content_a){
+	    my $multcount=++$multcount_ref->{'0540'};
+	    
+	    push @{$title_ref->{fields}{'0540'}}, {
+		content  => konv($content_a),
+		subfield => '',
+		mult     => $multcount,
+	    };
+	    $isbn = konv($content_a);
+	}
+	
+	if ($content_z){
+	    my $multcount=++$multcount_ref->{'0541'};
+	    
+	    push @{$title_ref->{fields}{'0541'}}, {
+		content  => konv($content_z),
+		subfield => '',
+		mult     => $multcount,
+	    };
+	}
+	
+    }
+
+    # Wenn keine ID vergeben ist, wird eine ISBN verwendet
+    if (!defined $title_ref->{id} && $isbn){
+        $title_ref->{id} = $isbn;
+	$title_ref->{id}=~s/\s//g;
+    }
+    
     unless (defined $title_ref->{id}){
         $logger->info("Keine ID vorhanden");
         next;
@@ -210,7 +249,6 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
     $have_title_ref->{$title_ref->{id}} = 1;
 
     # Verfasser
-
     {
         # Verfasser
         foreach my $fieldno ('100','700'){
@@ -353,35 +391,6 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
     # Titel
 
     {
-        # ISBN
-        foreach my $field ($record->field('020')){
-            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
-            my $content_z = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('z')):$field->as_string('z');
-
-            $content_a=~s/\s+\(.+?\)\s*$//;
-            $content_z=~s/\s+\(.+?\)\s*$//;
-            
-            if ($content_a){
-                my $multcount=++$multcount_ref->{'0540'};
-                
-                push @{$title_ref->{fields}{'0540'}}, {
-                    content  => konv($content_a),
-                    subfield => '',
-                    mult     => $multcount,
-                };
-            }
-
-            if ($content_z){
-                my $multcount=++$multcount_ref->{'0541'};
-                
-                push @{$title_ref->{fields}{'0541'}}, {
-                    content  => konv($content_z),
-                    subfield => '',
-                    mult     => $multcount,
-                };
-            }
-
-        }
         
         foreach my $field ($record->field('776')){
             my $content_z = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('z')):$field->as_string('z');

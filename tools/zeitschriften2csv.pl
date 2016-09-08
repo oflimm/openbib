@@ -110,29 +110,29 @@ my $where_ref = {
     'title_holdings.titleid' => \'IS NOT NULL',
 };
 
-
+my $options_ref = {
+	select   => ['title_holdings.titleid','me.id','titleid.titlecache'],
+	as       => ['thistitleid','thisholdingid','thistitlecache'],
+#	prefetch => ['title_holdings'],
+	group_by => ['title_holdings.id','title_holdings.titleid','me.id','titleid.titlecache'],
+	join     => ['holding_fields','title_holdings', { 'title_holdings' => 'titleid' }],
+	result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+};
+ 
 if ($laufend){
    $where_ref = {
     'title_holdings.titleid' => \'IS NOT NULL',
     'holding_fields.field' => 1204,
     -or => [
 	'holding_fields.content' => { '~' => '- *$' }, 
-	'holding_fields.content' => { '~' => '- \[[^[]\]$' }, 
+	'holding_fields.content' => { '~' => '- \[[^]]+?\]$' }, 
 	], 
    };
 }
 
 my $zeitschriften = $catalog->get_schema->resultset('Holding')->search(
     $where_ref,
-    {
-	select   => ['title_holdings.titleid','me.id','titleid.titlecache'],
-	as       => ['thistitleid','thisholdingid','thistitlecache'],
-	prefetch => ['title_holdings'],
-	group_by => ['title_holdings.id','title_holdings.titleid','me.id','titleid.titlecache'],
-	join     => ['holding_fields','title_holdings', { 'title_holdings' => 'titleid' }],
-	result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-    }
-    
+    $options_ref
     );
 
 my $idx = 1;

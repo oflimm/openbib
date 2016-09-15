@@ -78,6 +78,8 @@ my $blacklist_enrichmnt_ref = {
 
 my $blacklist_ref = {
     'alekiddr' => 1,
+    'doab' => 1,
+    'oapen' => 1,
     'ebookpda' => 1,
     'econbiz' => 1,
     'edz' => 1,
@@ -290,7 +292,7 @@ sub threadA {
 
 #autoconvert({ sync => 1, databases => ['openlibrary','gutenberg','wikisource_de'] });
 #    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['doab','elis','gallica','gdz','gresham_oer','hathitrust','gutenberg','intechopen','khanacademy','khanacademy_de','loc','loviscach_oer','mitocw_oer','nptelhrd_oer','stanford_oer','ucberkeley_oer','ucla_oer','yale_oer','zvdd'] });
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['doab'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['doab','oapen','gutenberg'] });
 
     $logger->info("### Sammlungen aus dem Universitaet");
     

@@ -78,6 +78,8 @@ my $blacklist_enrichmnt_ref = {
 
 my $blacklist_ref = {
     'alekiddr' => 1,
+    'doab' => 1,
+    'oapen' => 1,
     'ebookpda' => 1,
     'econbiz' => 1,
     'edz' => 1,

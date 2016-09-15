@@ -50,16 +50,17 @@ use OpenBib::Config;
 use OpenBib::Enrichment;
 use OpenBib::Conv::Common::Util;
 
-my ($inputfile,$configfile,$use_milid,$use_xml,$format,$loglevel);
+my ($inputfile,$configfile,$use_milid,$globalencoding,$use_xml,$format,$loglevel);
 
 &GetOptions(
-            "format=s"        => \$format,
-	    "inputfile=s"     => \$inputfile,
-            "configfile=s"    => \$configfile,
-            "loglevel=s"      => \$loglevel,
-            "use-milid"       => \$use_milid,
-            "use-xml"         => \$use_xml,
-	    );
+    "format=s"        => \$format,
+    "encoding=s"      => \$globalencoding,
+    "inputfile=s"     => \$inputfile,
+    "configfile=s"    => \$configfile,
+    "loglevel=s"      => \$loglevel,
+    "use-milid"       => \$use_milid,
+    "use-xml"         => \$use_xml,
+    );
 
 my $logfile = '/var/log/openbib/marc2meta.log';
 
@@ -134,6 +135,12 @@ else {
 $batch->strict_off();
 $batch->warnings_off();
 
+# Fallback to UTF8
+MARC::Charset->assume_unicode(1);
+
+# Ignore Encoding Errors
+MARC::Charset->ignore_errors(1);
+
 my $have_title_ref = {};
 
 my $count=1;
@@ -171,8 +178,16 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
 
     $multcount_ref = {};
 
-    my $encoding = $record->encoding();
-
+    my $encoding;
+    
+    if ($globalencoding eq "UTF-8" || $globalencoding eq "MARC-8"){
+	$record->encoding($globalencoding);
+	$encoding=$globalencoding;
+    }
+    elsif (!$globalencoding) {
+	$encoding=$record->encoding();
+    }
+    
     $logger->debug("Encoding:$encoding:");
 
     if ($use_milid){
@@ -258,12 +273,21 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
                 my $linkage_fields_ref = get_linkage_fields({ record => $record, fieldnumber => $fieldno, linkage => $linkage});
 
                 $field->delete_subfield(code => '6'); # Linkage
+
+		if ($logger->is_debug()){
+		    $logger->debug("Pre: $fieldno -> A=",$field->as_string('a')," - C=",$field->as_string('c')," - D=",$field->as_string('d'));
+		}
+		
                 my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
                 my $content_c = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('c')):$field->as_string('c');
                 my $content_d = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('d')):$field->as_string('d');
 
                 $linkage_fields_ref = get_linkage_fields({ record => $record, fieldnumber => $fieldno, linkage => $linkage});
 
+		if ($logger->is_debug()){
+		    $logger->debug("Post: $fieldno -> A=$content_a - C=$content_c - D=$content_d");
+		}
+		
                 if ($content_a){
                     $title_ref = add_person($content_a,$content_c,$content_d,$title_ref);
                 }

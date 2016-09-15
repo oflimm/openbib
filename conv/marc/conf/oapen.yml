@@ -1,0 +1,19 @@
+exclude:
+  'by_availability':
+     field: '0540'
+     databases:
+        - doab
+        - nationallizenzen
+        - gbvnationallizenzen
+        - tmpebooks
+        - freebooks
+        - tusculum
+        - nomos
+     locations:
+        - 'doab'
+        - 'nationallizenzen'
+        - 'freebooks'
+        - 'tmpebooks'
+        - 'tusculum'
+        - 'usbebooks'
+        - 'nomos'

@@ -13,6 +13,8 @@ recordselector: /recordlist/record
 # Feld der eindeutigen Titel-ID
 uniqueidfield: '//oaiProvenance:identifier'
 
+is_deleted: '//is_deleted'
+
 # Personen
 person:
   'metadata/oai_dc:dc/dc:creator': '0100'        # Verfasser

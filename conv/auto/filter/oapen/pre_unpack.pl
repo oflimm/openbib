@@ -51,4 +51,4 @@ my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
 
 print "### $pool: Erweiterung um Zugriffsinformation online und Typ Digital\n";
 
-system("cd $pooldir/$pool ; zcat meta.title.gz| $rootdir/filter/$pool/add-locations.pl | $rootdir/filter/$pool/add-fields.pl | gzip > meta.title.gz.tmp ; mv -f meta.title.gz.tmp meta.title.gz");
+system("cd $pooldir/$pool ; zcat meta.title.gz| $rootdir/filter/$pool/add-locationid.pl | $rootdir/filter/$pool/add-fields.pl | gzip > meta.title.gz.tmp ; mv -f meta.title.gz.tmp meta.title.gz");

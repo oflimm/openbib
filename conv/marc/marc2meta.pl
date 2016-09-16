@@ -1085,12 +1085,18 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
             for (my $idx=0;$idx <= $#content_u; $idx++){
                 my $content_u_string = ($encoding eq "MARC-8")?marc8_to_utf8($content_u[$idx]):$content_u[$idx];
 
+		$content_u_string=~s/&amp;/&/g;
+		
                 my $content_z_string = "" ;
 
                 if ($content_z[$idx]){
                     $content_z_string = ($encoding eq "MARC-8")?marc8_to_utf8($content_z[$idx]):$content_z[$idx];
                 }
-            
+
+		if ($logger->is_debug){
+		    $logger->debug("");
+		}
+		
                 if ($content_u_string){
                     my $multcount=++$multcount_ref->{'0662'};
                     

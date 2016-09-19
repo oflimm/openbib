@@ -433,6 +433,22 @@ while (my $record = $batch->next() || $batch->next || $batch->next || $batch->ne
 
         }
 
+	# Ueberregionale Identifikationsnummer
+	foreach my $field ($record->field('029')){
+            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
+
+            if ($content_a){
+                my $multcount=++$multcount_ref->{'0025'};
+                
+                push @{$title_ref->{fields}{'0025'}}, {
+                    content  => konv($content_a),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+            }
+
+        }
+
         # ISSN
         foreach my $field ($record->field('022')){
             my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');

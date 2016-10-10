@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2016-08-19 15:07+0200\n"
+"PO-Revision-Date: 2016-10-10 12:10+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -66,6 +66,9 @@ msgstr "${category}"
 #: ../templates/_profile/kug/_database/gesiskoeln/titles_record_html_categories:295
 #: ../templates/_profile/kug/_database/gutenberg/titles_record_html_categories:313
 #: ../templates/_profile/kug/_database/gutenberg/titles_record_html_categories:344
+#: ../templates/_profile/kug/_database/inst001/corporatebodies_record_html:118
+#: ../templates/_profile/kug/_database/inst001/persons_record_html:189
+#: ../templates/_profile/kug/_database/inst001/subjects_record_html:120
 #: ../templates/_profile/kug/_database/inst001/titles_record_html_categories:365
 #: ../templates/_profile/kug/_database/inst001/titles_record_html_categories:399
 #: ../templates/_profile/kug/_database/islandica/titles_record_html_categories:400
@@ -887,6 +890,7 @@ msgstr "Abstrakt/Inhalt"
 msgid "Administration"
 msgstr "Administration"
 
+#: ../templates/_profile/kug/_database/inst001/persons_record_html:97
 #: ../templates/persons_record_html:97
 msgid "Akademische Titel"
 msgstr "Akademische Titel"
@@ -2348,6 +2352,7 @@ msgstr "Bereits existierende Themengebiete"
 msgid "Bereits existierende Views"
 msgstr "Bereits existierende Views"
 
+#: ../templates/_profile/kug/_database/inst001/persons_record_html:95
 #: ../templates/persons_record_html:95
 msgid "Beruf"
 msgstr "Beruf"
@@ -2364,6 +2369,7 @@ msgstr "Beruf / Weltanschauung"
 msgid "Beruf/Weltanschauung"
 msgstr "Beruf/Weltanschauung"
 
+#: ../templates/_profile/kug/_database/inst001/persons_record_html:99
 #: ../templates/persons_record_html:99
 msgid "Berufsbezeichnung"
 msgstr "Berufsbezeichnung"
@@ -3705,6 +3711,7 @@ msgstr ""
 msgid "Dienste an der Universit&auml;t"
 msgstr "Dienste an der Universit&auml;t"
 
+#: ../templates/_profile/kug/_database/inst001/persons_record_html:98
 #: ../templates/persons_record_html:98
 msgid "Dienstgrad"
 msgstr "Dienstgrad"
@@ -5604,10 +5611,12 @@ msgstr "Freie Suche"
 msgid "Frühere Recherchen"
 msgstr "Frühere Recherchen"
 
+#: ../templates/_profile/kug/_database/inst001/persons_record_html:104
 #: ../templates/persons_record_html:104
 msgid "Früherer Name"
 msgstr "Früherer Name"
 
+#: ../templates/_profile/kug/_database/inst001/persons_record_html:96
 #: ../templates/persons_record_html:96
 msgid "Funktion"
 msgstr "Funktion"
@@ -5702,6 +5711,7 @@ msgstr "Geben Sie hier einen oder mehrere Tags ein"
 msgid "Geburtsdatum"
 msgstr "Geburtsdatum"
 
+#: ../templates/_profile/kug/_database/inst001/persons_record_html:91
 #: ../templates/persons_record_html:91
 msgid "Geburtsort"
 msgstr "Geburtsort"
@@ -8183,6 +8193,7 @@ msgstr "Kurzbeschreibung"
 msgid "Kurztitel"
 msgstr "Kurztitel"
 
+#: ../templates/_profile/kug/_database/inst001/corporatebodies_record_html:47
 #: ../templates/_profile/rheinlandbib/clouds_databases_record_html:65
 #: ../templates/_profile/sammlungen/_view/portrait/searchforms_record_query:93
 #: ../templates/_profile/sammlungen/clouds_databases_record_html:65
@@ -8196,6 +8207,7 @@ msgid "Körperschaften"
 msgstr "Körperschaften"
 
 #. (recordname,dbdesc)
+#: ../templates/_profile/kug/_database/inst001/corporatebodies_record_html:20
 #: ../templates/_view/richter/corporatebodies_record_html:20
 #: ../templates/corporatebodies_record_html:20
 msgid "Körperschafts-Information: %1 in Katalog %2"
@@ -8718,6 +8730,7 @@ msgstr "Weitere Kataloge"
 msgid "Latein"
 msgstr "Latein"
 
+#: ../templates/_profile/kug/_database/inst001/persons_record_html:89
 #: ../templates/persons_record_html:89
 msgid "Lebensdaten"
 msgstr "Lebensdaten"
@@ -9761,6 +9774,7 @@ msgstr "Name der Organisationseinheit"
 msgid "Names des Profils"
 msgstr "Names des Profils"
 
+#: ../templates/_profile/kug/_database/inst001/persons_record_html:93
 #: ../templates/persons_record_html:93
 msgid "Nationalität"
 msgstr "Nationalität"
@@ -10609,6 +10623,7 @@ msgstr "Permanenter Link zu diesem Titel"
 
 #: ../templates/_database/einbaende/titles_record_html:104
 #: ../templates/_database/einbaende/titles_record_html:92
+#: ../templates/_profile/kug/_database/inst001/persons_record_html:48
 #: ../templates/_profile/kug/authority_search_facet:192
 #: ../templates/_profile/kug/search_facet:243
 #: ../templates/_profile/rheinlandbib/clouds_databases_record_html:62
@@ -10740,6 +10755,7 @@ msgstr "Personen-Datei"
 #. (recordname,dbdesc)
 #: ../templates/_database/openlibrary/persons_record_html:21
 #: ../templates/_database/wikisource_de/persons_record_html:21
+#: ../templates/_profile/kug/_database/inst001/persons_record_html:21
 #: ../templates/_profile/kug/_database/wikisource_de/persons_record_html:21
 #: ../templates/_view/richter/persons_record_html:21
 #: ../templates/persons_record_html:21
@@ -11014,6 +11030,7 @@ msgid "Prüfen Sie die Schreibweise Ihrer Suchbegriffe."
 msgstr "Prüfen Sie die Schreibweise Ihrer Suchbegriffe."
 
 #: ../templates/_database/einbaende/titles_record_html:339
+#: ../templates/_profile/kug/_database/inst001/persons_record_html:102
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:314
 #: ../templates/_profile/sammlungen/_database/umschlaege/titles_record_html:304
 #: ../templates/persons_record_html:102 ../templates/reviews_edit:230
@@ -11572,6 +11589,7 @@ msgstr "Titel"
 msgid "Schauspieler"
 msgstr "Schauspieler"
 
+#: ../templates/_profile/kug/_database/inst001/subjects_record_html:48
 #: ../templates/_profile/kug/users_preferences_html:188
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:54
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/clouds_navigation:56
@@ -11643,6 +11661,7 @@ msgid "Schlagwort-Datei"
 msgstr "Schlagwort-Datei"
 
 #. (recordname,dbdesc)
+#: ../templates/_profile/kug/_database/inst001/subjects_record_html:21
 #: ../templates/_view/richter/subjects_record_html:21
 #: ../templates/subjects_record_html:21
 msgid "Schlagwort-Information: %1 in Katalog %2"
@@ -12488,6 +12507,7 @@ msgstr ""
 "Soll ein Begriff beliebig enden,</b><br />\n"
 "schreiben Sie als <b>Trunkierungszeichen</b> ein *."
 
+#: ../templates/_profile/kug/_database/inst001/persons_record_html:88
 #: ../templates/persons_record_html:88
 msgid "Sonstige Daten"
 msgstr "Sonstige Daten"
@@ -12591,6 +12611,7 @@ msgstr "Sprach-Icon für %1"
 
 #: ../templates/_database/einbaende/titles_record_html:111
 #: ../templates/_database/einbaende/titles_record_html:97
+#: ../templates/_profile/kug/_database/inst001/persons_record_html:94
 #: ../templates/_profile/kug/authority_search_facet:198
 #: ../templates/_profile/kug/search_facet:251
 #: ../templates/_profile/sammlungen/_database/totenzettel/titles_record_html:109
@@ -12632,6 +12653,7 @@ msgstr "Sprache"
 msgid "Sprung in externe Recherchequellen"
 msgstr "Sprung in externe Recherchequellen"
 
+#: ../templates/_profile/kug/_database/inst001/persons_record_html:105
 #: ../templates/persons_record_html:105
 msgid "Späterer Name"
 msgstr "Späterer Name"
@@ -12786,6 +12808,9 @@ msgstr "Standortinformationen bearbeiten"
 #: ../templates/_profile/kug/_database/bibsonomy/titles_record_html:97
 #: ../templates/_profile/kug/_database/dbis/classifications_html:36
 #: ../templates/_profile/kug/_database/ezb/classifications_html:36
+#: ../templates/_profile/kug/_database/inst001/corporatebodies_record_html:46
+#: ../templates/_profile/kug/_database/inst001/persons_record_html:47
+#: ../templates/_profile/kug/_database/inst001/subjects_record_html:47
 #: ../templates/_profile/kug/info_help:37 ../templates/_profile/kug/login:38
 #: ../templates/_profile/kug/searchforms_record_advanced:35
 #: ../templates/_profile/rheinlandbib/_view/rheinlandbib/info_bruehl:36
@@ -13059,6 +13084,7 @@ msgstr "Stelle"
 msgid "Sterbejahre"
 msgstr "Sterbejahre"
 
+#: ../templates/_profile/kug/_database/inst001/persons_record_html:92
 #: ../templates/persons_record_html:92
 msgid "Sterbeort"
 msgstr "Sterbeort"
@@ -18633,14 +18659,17 @@ msgid "T4120"
 msgstr "Volltext-URL"
 
 #: ../templates/all_categories_title:137
+#: ../templates/visible_categories_title:119
 msgid "T4200"
 msgstr "Wikipedia-Artikel (deutsch)"
 
 #: ../templates/all_categories_title:138
+#: ../templates/visible_categories_title:120
 msgid "T4201"
 msgstr "Wikipedia-Artikel (englisch)"
 
 #: ../templates/all_categories_title:139
+#: ../templates/visible_categories_title:121
 msgid "T4202"
 msgstr "Wikipedia-Artikel (französisch)"
 
@@ -18658,7 +18687,7 @@ msgstr "Wikipedia-Artikel (französisch)"
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:124
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:124
 #: ../templates/all_categories_title:140
-#: ../templates/visible_categories_title:124
+#: ../templates/visible_categories_title:136
 msgid "T4210"
 msgstr "Rechte-Information"
 
@@ -18672,7 +18701,7 @@ msgstr "Rechte-Information"
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:122
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:122
 #: ../templates/all_categories_title:141
-#: ../templates/visible_categories_title:122
+#: ../templates/visible_categories_title:134
 msgid "T4211"
 msgstr "Preis"
 
@@ -18686,7 +18715,7 @@ msgstr "Preis"
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:123
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:123
 #: ../templates/all_categories_title:142
-#: ../templates/visible_categories_title:123
+#: ../templates/visible_categories_title:135
 msgid "T4212"
 msgstr "Währung"
 
@@ -18706,8 +18735,13 @@ msgstr "Währung"
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:116
 #: ../templates/all_categories_title:143
 #: ../templates/visible_categories_title:116
+#: ../templates/visible_categories_title:122
 msgid "T4220"
 msgstr "Nutzername"
+
+#: ../templates/visible_categories_title:123
+msgid "T4230"
+msgstr "Standort-ID"
 
 #: ../templates/all_categories_title:144
 msgid "T4300"
@@ -18812,7 +18846,7 @@ msgstr "Typ"
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:119
 #: ../templates/_profile/usbportal/visible_categories_title:115
 #: ../templates/all_categories_title:148
-#: ../templates/visible_categories_title:119
+#: ../templates/visible_categories_title:124
 msgid "T4500"
 msgstr "KUG Nutzer-Tags"
 
@@ -18831,8 +18865,21 @@ msgid "T4600"
 msgstr "Sammlungs-Portale"
 
 #: ../templates/_profile/kug/_database/inst001/visible_categories_title:110
+#: ../templates/visible_categories_title:125
 msgid "T4700"
 msgstr "Sammlungs-Portal"
+
+#: ../templates/visible_categories_title:126
+msgid "T4712"
+msgstr "Markierung: Wirtschaftswissenschaften"
+
+#: ../templates/visible_categories_title:127
+msgid "T4715"
+msgstr "Markierung: EDZ"
+
+#: ../templates/visible_categories_title:128
+msgid "T4717"
+msgstr "Markierung: FB VWL"
 
 #: ../templates/_database/kapsel/visible_categories_title:119
 #: ../templates/_database/openlibrary/visible_categories_title:118
@@ -18885,7 +18932,7 @@ msgstr "Anzahl Gesamttitel"
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:121
 #: ../templates/_profile/usbportal/visible_categories_title:117
 #: ../templates/all_categories_title:149
-#: ../templates/visible_categories_title:121
+#: ../templates/visible_categories_title:133
 msgid "T5002"
 msgstr "Anzahl Bände/Stücke"
 
@@ -18930,17 +18977,23 @@ msgstr "IDs Bände/Stücke"
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:120
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:120
 #: ../templates/all_categories_title:150
-#: ../templates/visible_categories_title:120
+#: ../templates/visible_categories_title:132
 msgid "T5005"
 msgstr "Zum Gesamttitel"
 
 #: ../templates/all_categories_title:151
+#: ../templates/visible_categories_title:129
 msgid "T5050"
 msgstr "BibKey"
 
 #: ../templates/all_categories_title:152
+#: ../templates/visible_categories_title:130
 msgid "T5051"
 msgstr "BibKey-Basis"
+
+#: ../templates/visible_categories_title:131
+msgid "T5055"
+msgstr "WorkKey-Basis"
 
 #: ../templates/_database/bestellungen/visible_categories_title:126
 #: ../templates/_database/filme/visible_categories_title:29
@@ -18984,7 +19037,7 @@ msgstr "BibKey-Basis"
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:125
 #: ../templates/_profile/usbportal/visible_categories_title:118
 #: ../templates/all_categories_title:153
-#: ../templates/visible_categories_title:125
+#: ../templates/visible_categories_title:137
 msgid "T5100"
 msgstr "Zählung"
 
@@ -19391,6 +19444,7 @@ msgstr "Titel in Suchindex"
 msgid "Titel in die Merkliste eintragen"
 msgstr "Titel in die Merkliste eintragen"
 
+#: ../templates/_profile/kug/_database/inst001/subjects_record_html:101
 #: ../templates/subjects_record_html:97
 msgid "Titel ist in diesem Katalog mit dem Schlagwort verknüpft"
 msgstr "Titel ist in diesem Katalog mit dem Schlagwort verknüpft"
@@ -19399,11 +19453,13 @@ msgstr "Titel ist in diesem Katalog mit dem Schlagwort verknüpft"
 msgid "Titel ist in diesem Katalog mit der Klassifikation verknüpft"
 msgstr "Titel ist in diesem Katalog mit der Klassifikation verknüpft"
 
+#: ../templates/_profile/kug/_database/inst001/corporatebodies_record_html:99
 #: ../templates/corporatebodies_record_html:95
 msgid "Titel ist in diesem Katalog mit der Körperschaft verknüpft"
 msgstr "Titel ist in diesem Katalog mit der Körperschaft verknüpft"
 
 #: ../templates/_database/openlibrary/persons_record_html:88
+#: ../templates/_profile/kug/_database/inst001/persons_record_html:171
 #: ../templates/persons_record_html:167
 msgid "Titel ist in diesem Katalog mit der Person verknüpft"
 msgstr "Titel ist in diesem Katalog mit der Person verknüpft"
@@ -19439,6 +19495,7 @@ msgstr ""
 msgid "Titel pro Katalog"
 msgstr "Titel pro Katalog"
 
+#: ../templates/_profile/kug/_database/inst001/subjects_record_html:103
 #: ../templates/subjects_record_html:99
 msgid "Titel sind in diesem Katalog mit dem Schlagwort verknüpft"
 msgstr "Titel sind in diesem Katalog mit dem Schlagwort verknüpft"
@@ -19447,11 +19504,13 @@ msgstr "Titel sind in diesem Katalog mit dem Schlagwort verknüpft"
 msgid "Titel sind in diesem Katalog mit der Klassifikation verknüpft"
 msgstr "Titel sind in diesem Katalog mit der Klassifikation verknüpft"
 
+#: ../templates/_profile/kug/_database/inst001/corporatebodies_record_html:101
 #: ../templates/corporatebodies_record_html:97
 msgid "Titel sind in diesem Katalog mit der Körperschaft verknüpft"
 msgstr "Titel sind in diesem Katalog mit der Körperschaft verknüpft"
 
 #: ../templates/_database/openlibrary/persons_record_html:90
+#: ../templates/_profile/kug/_database/inst001/persons_record_html:173
 #: ../templates/persons_record_html:169
 msgid "Titel sind in diesem Katalog mit der Person verknüpft"
 msgstr "Titel sind in diesem Katalog mit der Person verknüpft"
@@ -20823,10 +20882,12 @@ msgstr "Werkzeug-Daten"
 msgid "Wir bieten verschiedene Besichtigungstouren an:"
 msgstr "Wir bieten verschiedene Besichtigungstouren an:"
 
+#: ../templates/_profile/kug/_database/inst001/persons_record_html:103
 #: ../templates/persons_record_html:103
 msgid "Wirklicher Name"
 msgstr "Wirklicher Name"
 
+#: ../templates/_profile/kug/_database/inst001/persons_record_html:90
 #: ../templates/persons_record_html:90
 msgid "Wirkungsdaten"
 msgstr "Wirkungsdaten"
@@ -21154,6 +21215,7 @@ msgstr "Zeitschriften/Serien"
 msgid "Zeitschriftenartikel"
 msgstr "Zeitschriftenartikel"
 
+#: ../templates/_profile/kug/_database/inst001/persons_record_html:106
 #: ../templates/persons_record_html:106
 msgid "Zeitweiser Name"
 msgstr "Zeitweiser Name"

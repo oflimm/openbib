@@ -116,7 +116,19 @@
                 'T4220', # msg.maketext("T4220") Nutzer
                 'E4110', # msg.maketext("E4110") Inhaltsverzeichnis
                 'E4120', # msg.maketext("E4120") Ebook-URL
+                #'T4200', # msg.maketext("T4200") Wikipedia-Artikelname: deutsch
+                #'T4201', # msg.maketext("T4201") Wikipedia-Artikelname: englisch
+                #'T4202', # msg.maketext("T4202") Wikipedia-Artikelname: franzoesisch
+                #'T4220', # msg.maketext("T4220") Nutzername
+                #'T4230', # msg.maketext("T4230") Standort-ID		
                 #'T4500', # msg.maketext("T4500") Nutzer-Tags
+                #'T4700', # msg.maketext("T4700") Sammlungsschwerpunkt
+                #'T4712', # msg.maketext("T4712") Markierung Wirtschafswissenschaften
+                #'T4715', # msg.maketext("T4715") Markierung EDZ
+                #'T4717', # msg.maketext("T4717") Markierung FB VWL
+                #'T5050', # msg.maketext("T5050") BibKey
+                #'T5051', # msg.maketext("T5051") BibKey Basis-String
+                #'T5055', # msg.maketext("T5055") WorkKey Basis-String
                 'T5005', # msg.maketext("T5005") Uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke
                 'T4211', # msg.maketext("T4211") Preis

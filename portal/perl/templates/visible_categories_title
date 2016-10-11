@@ -116,6 +116,12 @@
                 'T4220', # msg.maketext("T4220") Nutzer
                 'E4110', # msg.maketext("E4110") Inhaltsverzeichnis
                 'E4120', # msg.maketext("E4120") Ebook-URL
+                #'T0422', # msg.maketext("T0422") Ercheinungsjahr erster Band
+                #'T0423', # msg.maketext("T0423") Ercheinungsjahr letzter Band
+                #'T0671', # msg.maketext("T0671") Originalschrift
+                #'T1024', # msg.maketext("T1024") Erstkatalogisierungs Verbund-ID
+                #'T1701', # msg.maketext("T1701") RVK
+                #'T2086', # msg.maketext("T2086") Selektionskennzeichen Sprache
                 #'T4200', # msg.maketext("T4200") Wikipedia-Artikelname: deutsch
                 #'T4201', # msg.maketext("T4201") Wikipedia-Artikelname: englisch
                 #'T4202', # msg.maketext("T4202") Wikipedia-Artikelname: franzoesisch

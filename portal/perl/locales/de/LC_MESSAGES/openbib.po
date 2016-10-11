@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2016-10-10 12:10+0200\n"
+"PO-Revision-Date: 2016-10-11 09:19+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -15291,6 +15291,14 @@ msgstr "Drucker"
 msgid "T0413-zpe"
 msgstr "Datierung"
 
+#: ../templates/visible_categories_title:119
+msgid "T0422"
+msgstr "Ersch. Jahr erster Band"
+
+#: ../templates/visible_categories_title:120
+msgid "T0423"
+msgstr "Ersch. Jahr letzter Band"
+
 #: ../templates/_database/bestellungen/visible_categories_title:43
 #: ../templates/_database/inst001/visible_categories_title:39
 #: ../templates/_database/inst404card/visible_categories_title:40
@@ -17706,6 +17714,10 @@ msgstr "Volltext-Hinweis"
 msgid "T0670"
 msgstr "Sachtitel in abweichender Orthographie"
 
+#: ../templates/visible_categories_title:121
+msgid "T0671"
+msgstr "Originalsprache"
+
 #: ../templates/_database/landschaft/visible_categories_title:77
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:78
 msgid "T0672"
@@ -18416,6 +18428,10 @@ msgstr "Schlagwort"
 msgid "T0947"
 msgstr "Schlagwort"
 
+#: ../templates/visible_categories_title:122
+msgid "T1024"
+msgstr "Erstkatalogisierungs Vebund-ID"
+
 #: ../templates/_database/landschaft/visible_categories_title:83
 #: ../templates/_profile/sammlungen/_database/portrait/visible_categories_title:85
 msgid "T1202"
@@ -18482,6 +18498,10 @@ msgstr "Provenienz"
 msgid "T1664-inst404abklatsch"
 msgstr "Ort der Inschrift"
 
+#: ../templates/visible_categories_title:123
+msgid "T1701"
+msgstr "RVK"
+
 #: ../templates/_profile/kug/_database/edz/visible_categories_title:18
 #: ../templates/_profile/kug/_database/inst001/visible_categories_title:18
 #: ../templates/_profile/kug/_database/islandica/visible_categories_title:18
@@ -18507,6 +18527,10 @@ msgstr "Person"
 #: ../templates/_profile/kug/_database/wiso/visible_categories_title:22
 msgid "T1802"
 msgstr "Körperschaft"
+
+#: ../templates/visible_categories_title:124
+msgid "T2086"
+msgstr "Selektionskennzeichen: Sprache"
 
 #: ../templates/_database/bestellungen/visible_categories_title:115
 #: ../templates/_database/inst001/visible_categories_title:108
@@ -18659,17 +18683,17 @@ msgid "T4120"
 msgstr "Volltext-URL"
 
 #: ../templates/all_categories_title:137
-#: ../templates/visible_categories_title:119
+#: ../templates/visible_categories_title:125
 msgid "T4200"
 msgstr "Wikipedia-Artikel (deutsch)"
 
 #: ../templates/all_categories_title:138
-#: ../templates/visible_categories_title:120
+#: ../templates/visible_categories_title:126
 msgid "T4201"
 msgstr "Wikipedia-Artikel (englisch)"
 
 #: ../templates/all_categories_title:139
-#: ../templates/visible_categories_title:121
+#: ../templates/visible_categories_title:127
 msgid "T4202"
 msgstr "Wikipedia-Artikel (französisch)"
 
@@ -18687,7 +18711,7 @@ msgstr "Wikipedia-Artikel (französisch)"
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:124
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:124
 #: ../templates/all_categories_title:140
-#: ../templates/visible_categories_title:136
+#: ../templates/visible_categories_title:142
 msgid "T4210"
 msgstr "Rechte-Information"
 
@@ -18701,7 +18725,7 @@ msgstr "Rechte-Information"
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:122
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:122
 #: ../templates/all_categories_title:141
-#: ../templates/visible_categories_title:134
+#: ../templates/visible_categories_title:140
 msgid "T4211"
 msgstr "Preis"
 
@@ -18715,7 +18739,7 @@ msgstr "Preis"
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:123
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:123
 #: ../templates/all_categories_title:142
-#: ../templates/visible_categories_title:135
+#: ../templates/visible_categories_title:141
 msgid "T4212"
 msgstr "Währung"
 
@@ -18735,11 +18759,11 @@ msgstr "Währung"
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:116
 #: ../templates/all_categories_title:143
 #: ../templates/visible_categories_title:116
-#: ../templates/visible_categories_title:122
+#: ../templates/visible_categories_title:128
 msgid "T4220"
 msgstr "Nutzername"
 
-#: ../templates/visible_categories_title:123
+#: ../templates/visible_categories_title:129
 msgid "T4230"
 msgstr "Standort-ID"
 
@@ -18846,7 +18870,7 @@ msgstr "Typ"
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:119
 #: ../templates/_profile/usbportal/visible_categories_title:115
 #: ../templates/all_categories_title:148
-#: ../templates/visible_categories_title:124
+#: ../templates/visible_categories_title:130
 msgid "T4500"
 msgstr "KUG Nutzer-Tags"
 
@@ -18865,19 +18889,19 @@ msgid "T4600"
 msgstr "Sammlungs-Portale"
 
 #: ../templates/_profile/kug/_database/inst001/visible_categories_title:110
-#: ../templates/visible_categories_title:125
+#: ../templates/visible_categories_title:131
 msgid "T4700"
 msgstr "Sammlungs-Portal"
 
-#: ../templates/visible_categories_title:126
+#: ../templates/visible_categories_title:132
 msgid "T4712"
 msgstr "Markierung: Wirtschaftswissenschaften"
 
-#: ../templates/visible_categories_title:127
+#: ../templates/visible_categories_title:133
 msgid "T4715"
 msgstr "Markierung: EDZ"
 
-#: ../templates/visible_categories_title:128
+#: ../templates/visible_categories_title:134
 msgid "T4717"
 msgstr "Markierung: FB VWL"
 
@@ -18932,7 +18956,7 @@ msgstr "Anzahl Gesamttitel"
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:121
 #: ../templates/_profile/usbportal/visible_categories_title:117
 #: ../templates/all_categories_title:149
-#: ../templates/visible_categories_title:133
+#: ../templates/visible_categories_title:139
 msgid "T5002"
 msgstr "Anzahl Bände/Stücke"
 
@@ -18977,21 +19001,21 @@ msgstr "IDs Bände/Stücke"
 #: ../templates/_profile/usbportal/_view/warenkorb_uni/visible_categories_title:120
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:120
 #: ../templates/all_categories_title:150
-#: ../templates/visible_categories_title:132
+#: ../templates/visible_categories_title:138
 msgid "T5005"
 msgstr "Zum Gesamttitel"
 
 #: ../templates/all_categories_title:151
-#: ../templates/visible_categories_title:129
+#: ../templates/visible_categories_title:135
 msgid "T5050"
 msgstr "BibKey"
 
 #: ../templates/all_categories_title:152
-#: ../templates/visible_categories_title:130
+#: ../templates/visible_categories_title:136
 msgid "T5051"
 msgstr "BibKey-Basis"
 
-#: ../templates/visible_categories_title:131
+#: ../templates/visible_categories_title:137
 msgid "T5055"
 msgstr "WorkKey-Basis"
 
@@ -19037,7 +19061,7 @@ msgstr "WorkKey-Basis"
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/visible_categories_title:125
 #: ../templates/_profile/usbportal/visible_categories_title:118
 #: ../templates/all_categories_title:153
-#: ../templates/visible_categories_title:137
+#: ../templates/visible_categories_title:143
 msgid "T5100"
 msgstr "Zählung"
 

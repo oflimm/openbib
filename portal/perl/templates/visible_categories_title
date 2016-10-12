@@ -129,6 +129,7 @@
                 #'T4230', # msg.maketext("T4230") Standort-ID		
                 #'T4500', # msg.maketext("T4500") Nutzer-Tags
                 #'T4700', # msg.maketext("T4700") Sammlungsschwerpunkt
+                #'T4702', # msg.maketext("T4702") Ehemal. Instituts-Katkey
                 #'T4712', # msg.maketext("T4712") Markierung Wirtschafswissenschaften
                 #'T4715', # msg.maketext("T4715") Markierung EDZ
                 #'T4717', # msg.maketext("T4717") Markierung FB VWL

@@ -1225,14 +1225,14 @@ convtab:
           'subject': 1
           'subjectstring': 1
         facet:
-	  'subject': 1
+          'subject': 1
       '0067':         # RDA: Schlagwort (eher Medientyp...)
         index:
           'freesearch': 1
           'subject': 1
           'subjectstring': 1
         facet:
-	  'subject': 1
+          'subject': 1
       '0089':
         index:
           'source': 1

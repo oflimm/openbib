@@ -6,7 +6,7 @@
 #
 #  Generierung von SQL-Einladedateien aus dem Meta-Format
 #
-#  Dieses File ist (C) 1997-2015 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2016 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -102,7 +102,7 @@ if ($help) {
 my $config      = OpenBib::Config->new;
 my $conv_config = OpenBib::Conv::Config->instance({dbname => $database});
 
-$logfile=($logfile)?$logfile:"/var/log/openbib/meta2sql-$database.log";
+$logfile=($logfile)?$logfile:"/var/log/openbib/meta2sql/${database}.log";
 $loglevel=($loglevel)?$loglevel:"INFO";
 
 my $log4Perl_config = << "L4PCONF";
@@ -116,6 +116,10 @@ log4perl.appender.Screen=Log::Dispatch::Screen
 log4perl.appender.Screen.layout=Log::Log4perl::Layout::PatternLayout
 log4perl.appender.Screen.layout.ConversionPattern=%d [%c]: %m%n
 L4PCONF
+
+if (!-d "/var/log/openbib/meta2sql/"){
+    mkdir "/var/log/openbib/meta2sql/";
+}
 
 Log::Log4perl::init(\$log4Perl_config);
 

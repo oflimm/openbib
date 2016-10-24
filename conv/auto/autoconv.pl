@@ -65,7 +65,7 @@ if ($help){
     print_help();
 }
 
-$logfile  = ($logfile)?$logfile:'/var/log/openbib/autoconv.log';
+$logfile  = ($logfile)?$logfile:"/var/log/openbib/autoconv/${database}.log";
 $loglevel = ($loglevel)?$loglevel:"INFO";
 
 my $log4Perl_config = << "L4PCONF";
@@ -79,6 +79,10 @@ log4perl.appender.Screen=Log::Dispatch::Screen
 log4perl.appender.Screen.layout=Log::Log4perl::Layout::PatternLayout
 log4perl.appender.Screen.layout.ConversionPattern=%d [%c]: %m%n
 L4PCONF
+
+if (!-d "/var/log/openbib/autoconv/"){
+    mkdir "/var/log/openbib/autoconv/";
+}
 
 Log::Log4perl::init(\$log4Perl_config);
 

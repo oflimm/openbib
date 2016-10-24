@@ -4,7 +4,7 @@
 #
 #  file2xapian.pl
 #
-#  Dieses File ist (C) 2007-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2016 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -67,7 +67,7 @@ if ($help){
     print_help();
 }
 
-$logfile=($logfile)?$logfile:'/var/log/openbib/file2xapian.log';
+$logfile=($logfile)?$logfile:"/var/log/openbib/file2xapian/${database}.log";
 $loglevel=($loglevel)?$loglevel:"INFO";
 
 my $log4Perl_config = << "L4PCONF";
@@ -81,6 +81,10 @@ log4perl.appender.Screen=Log::Dispatch::Screen
 log4perl.appender.Screen.layout=Log::Log4perl::Layout::PatternLayout
 log4perl.appender.Screen.layout.ConversionPattern=%d [%c]: %m%n
 L4PCONF
+
+if (!-d "/var/log/openbib/file2xapian/"){
+    mkdir "/var/log/openbib/file2xapian/";
+}
 
 Log::Log4perl::init(\$log4Perl_config);
 

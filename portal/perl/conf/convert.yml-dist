@@ -1219,6 +1219,20 @@ convtab:
           'freesearch': 1
         facet:
           'language': 1
+      '0065':         # RDA: Schlagwort (eher Medientyp...)
+        index:
+          'freesearch': 1
+          'subject': 1
+          'subjectstring': 1
+        facet:
+	  'subject': 1
+      '0067':         # RDA: Schlagwort (eher Medientyp...)
+        index:
+          'freesearch': 1
+          'subject': 1
+          'subjectstring': 1
+        facet:
+	  'subject': 1
       '0089':
         index:
           'source': 1
@@ -1279,7 +1293,6 @@ convtab:
       '0306':         # RDA: Manifestation verkoerperter Werke
         index:
           'title': 1
-          'titlestring': 1
           'freesearch': 1
       '0310':         # AST
         index:
@@ -1329,7 +1342,6 @@ convtab:
       '0371':         # RDA: erster/frueherer Sachtitel
         index:
           'title': 1
-          'titlestring': 1
           'freesearch': 1
       '0375':         # ZSTnorm
         index:
@@ -1339,10 +1351,8 @@ convtab:
       '0390':         # RDA: Anaben zum Inhalt
         index:
           'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
+          'title': 1
+          'titlestring': 1
       '0412':         # Verlag
         index:
           'publisher': 1

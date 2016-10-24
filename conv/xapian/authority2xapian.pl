@@ -67,7 +67,7 @@ if ($help){
     print_help();
 }
 
-$logfile=($logfile)?$logfile:'/var/log/openbib/authority2xapian.log';
+$logfile=($logfile)?$logfile:"/var/log/openbib/authority2xapian/${database}.log";
 $loglevel=($loglevel)?$loglevel:"INFO";
 
 my $log4Perl_config = << "L4PCONF";
@@ -81,6 +81,10 @@ log4perl.appender.Screen=Log::Dispatch::Screen
 log4perl.appender.Screen.layout=Log::Log4perl::Layout::PatternLayout
 log4perl.appender.Screen.layout.ConversionPattern=%d [%c]: %m%n
 L4PCONF
+
+if (!-d "/var/log/openbib/authority2xapian/"){
+    mkdir "/var/log/openbib/authority2xapian/";
+}
 
 Log::Log4perl::init(\$log4Perl_config);
 

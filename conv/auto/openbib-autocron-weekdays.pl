@@ -413,7 +413,7 @@ sub threadC {
 
     $logger->info("### Master: inst323, inst137");
     
-    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, databases => ['inst323','inst137'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst323','inst137'] });
 
     ##############################
     

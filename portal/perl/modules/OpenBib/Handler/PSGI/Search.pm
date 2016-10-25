@@ -1075,11 +1075,13 @@ sub print_resultitem {
         OUTPUT         => \$content,
     });            
     
-    
-    $logger->debug("Printing Result item");
+    if ($logger->is_debug){
+	$logger->debug("Printing Result item");
+	$logger->debug("Recordlist: ".YAML::Dump($self->param('recordlist')->to_ids));
+    }
     
     $itemtemplate->process($templatename, $ttdata) || do {
-        $logger->error($itemtemplate->error());
+        $logger->error("Process error for resultitem: ".$itemtemplate->error());
         $self->header_add('Status',400); # server error
         return;
     };

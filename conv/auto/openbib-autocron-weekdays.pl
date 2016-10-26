@@ -305,11 +305,11 @@ sub threadC {
 
     # Wegen Interimsloesung: Andere Kataloge, die nicht von aperol geholt werden
 
-    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['alff','muenzen','totenzettel','umschlaege','zpe','kups','gdea','inst526earchive'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['alff','muenzen','totenzettel','umschlaege','zpe','kups','gdea','inst526earchive'] });
 
     $logger->info("### gentzdigital");
     
-    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['gentzdigital'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['gentzdigital'] });
     
     system("$config->{'base_dir'}/bin/gen_bestof.pl --database=gentzdigital --type=5 --num=100");
 

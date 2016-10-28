@@ -406,8 +406,13 @@ sub negotiate_content {
             $logger->debug("Current URL is ".$self->param('path')." with args ".$r->escaped_args());
         }
     }
-    
-    $logger->debug("Leaving with representation ".$self->param('representation'));
+
+    if ($logger->is_debug && defined $self->param('representation')){
+	$logger->debug("Leaving with representation ".$self->param('representation'));
+    }
+    else {
+	$logger->debug("Leaving without representation");
+    }
     
     return;
 }
@@ -467,8 +472,10 @@ sub process_uri {
     }
 
     my ($location_uri,$last_uri_element) = $path =~m/^(.+?)\/([^\/]+)$/;
-    
-    $logger->debug("Full Internal Path: $path - Last URI Element: $last_uri_element - Args: ".$r->escaped_args);
+ 
+    if ($logger->is_debug && defined $path && defined $last_uri_element && defined $r->escaped_args){
+	$logger->debug("Full Internal Path: $path - Last URI Element: $last_uri_element - Args: ".$r->escaped_args);
+    }
     
     if (! $config->strip_view_from_uri($view)){
         $path_prefix = $complete_path_prefix;
@@ -482,16 +489,20 @@ sub process_uri {
     
     $logger->debug("Suffixes: $suffixes");
     $logger->debug("Scheme: $scheme");
-    
-#    my ($id) = $last_uri_element =~m/^(.+?)\.($suffixes)$/;
-    my ($id) = $last_uri_element =~m/^(.+?)\.($suffixes)$/;
 
+    my $id;
+
+    if ($last_uri_element){
+#    my ($id) = $last_uri_element =~m/^(.+?)\.($suffixes)$/;
+	($id) = $last_uri_element =~m/^(.+?)\.($suffixes)$/;
+    }
+    
     $logger->debug("ID: $id") if ($id);
     
     if ($id){
         $location_uri.="/$id";
     }
-    else {
+    elsif ($last_uri_element) {
         $location_uri.="/$last_uri_element";
     }
 

@@ -3472,7 +3472,11 @@ sub get_other_litlists {
 
     foreach my $litlist ($same_title->all){
         my $litlistid        = $litlist->litlistid;
-        $logger->debug("Found litlist $litlistid with same title");
+
+	if ($logger->is_debug && defined $litlistid){
+	    $logger->debug("Found litlist $litlistid with same title");
+	}
+
         my $litlist_props    = $self->get_litlist_properties({litlistid => $litlistid, view => $view});
         push @{$litlists_ref->{same_title}}, $litlist_props if ($litlist_props->{type} == 1);
     }

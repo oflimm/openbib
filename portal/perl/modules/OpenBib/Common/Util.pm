@@ -38,6 +38,7 @@ use Log::Log4perl qw(get_logger :levels);
 use MARC::Charset 'marc8_to_utf8';
 use POSIX();
 use String::Tokenizer;
+use Text::Unidecode qw(unidecode);
 use YAML ();
 
 use OpenBib::Config;
@@ -277,6 +278,26 @@ my %char_replacements = (
     "\x{2019}" => "'", # Slavisches Weichheitszeichen (modifier letter prime) als '
     #"\x{02ba}" => "\x{0022}", # Slavisches hartes Zeichen als "
     #"\x{201d}" => "\x{0022}",
+
+    # Sonstige
+    "ā" => "a",
+    "ḥ" => "h",
+    "š" => "s",
+    "Š" => "s",
+    "Ḥ" => "h",
+    "ī" => "i",
+    "ū" => "u",
+    "Ṭ" => "t",
+    "Ǧ" => "g",
+    "ǧ" => "g",
+    "ṯ" => "t",
+    "ṭ" => "t",
+    "a̱" => "a",
+    "Ā" => "a",
+    "h̄" => "h",
+#    "" => "",
+#    "" => "",
+#    "" => "",
    );
 
 my $chars_to_replace = join '|',
@@ -1147,8 +1168,13 @@ sub normalize {
         $content=~s/\s+$//;
         $content=~s/\s+<.*?>//g;
     }
-    
+
     $logger->debug("Checkpoint 1: $content");
+    
+    # Restliche Sonderzeichen quick and dirty mit Text::Unidecode umwandeln
+    $content=unidecode($content);
+    
+    $logger->debug("Checkpoint post unidecode: $content");
 
     # Recherche
     if ($searchreq){

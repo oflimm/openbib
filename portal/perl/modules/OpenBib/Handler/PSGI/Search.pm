@@ -1075,7 +1075,7 @@ sub print_resultitem {
         OUTPUT         => \$content,
     });            
     
-    if ($logger->is_debug){
+    if ($logger->is_debug && defined $self->param('recordlist')){
 	$logger->debug("Printing Result item");
 	$logger->debug("Recordlist: ".YAML::Dump($self->param('recordlist')->to_ids));
     }

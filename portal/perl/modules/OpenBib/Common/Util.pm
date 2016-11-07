@@ -1173,7 +1173,10 @@ sub normalize {
     
     # Restliche Sonderzeichen quick and dirty mit Text::Unidecode umwandeln
     $content=unidecode($content);
-    
+
+    # Kleinschreibung nachtraeglich fuer ggf. von unidecode in Grossbuchstaben umgewandelte Zeichen
+    $content=lc($content);
+ 
     $logger->debug("Checkpoint post unidecode: $content");
 
     # Recherche

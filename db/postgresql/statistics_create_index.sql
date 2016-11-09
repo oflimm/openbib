@@ -83,4 +83,16 @@ CREATE INDEX searchfields_titlestring ON searchfields (titlestring);
 CREATE INDEX searchfields_source ON searchfields (source);
 CREATE INDEX searchfields_year ON searchfields (year);
 
+-------------------------------------------------
+
+ALTER TABLE loans ADD PRIMARY KEY (id);
+CREATE INDEX loans_tstamp ON loans (tstamp);
+CREATE INDEX loans_tstamp_year ON loans (tstamp_year);
+CREATE INDEX loans_tstamp_month ON loans (tstamp_month);
+CREATE INDEX loans_tstamp_day ON loans (tstamp_day);
+CREATE INDEX loans_anon_userid ON loans (anon_userid);
+CREATE INDEX loans_groupid ON loans (groupid);
+CREATE INDEX loans_titleid ON loans (titleid);
+CREATE INDEX loans_isbn ON loans (isbn);
+
 vacuum analyze;

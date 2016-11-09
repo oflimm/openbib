@@ -105,3 +105,19 @@ CREATE TABLE searchfields (
  content        BOOL
 );
 
+drop table IF EXISTS loans;
+CREATE TABLE loans (
+ id          BIGSERIAL,
+
+ tstamp       TIMESTAMP,
+ tstamp_year  SMALLINT,
+ tstamp_month SMALLINT,
+ tstamp_day   SMALLINT,
+
+ anon_userid   VARCHAR(33),
+ groupid       VARCHAR(1),
+ isbn          VARCHAR(13),
+ dbname        TEXT,
+ titleid       TEXT	
+);
+

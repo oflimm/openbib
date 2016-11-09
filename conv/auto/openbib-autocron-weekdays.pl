@@ -153,12 +153,13 @@ my $blacklist_ref = {
     'inst438master' => 1,
     'inst448' => 1,
     'inst448master' => 1,
+    'inst461' => 1,
+    'inst461master' => 1,
     'inst622' => 1,
     'inst622master' => 1,
     'lehrbuchsmlg' => 1,
     'lesesaal' => 1,
     'openlibrary' => 1,
-    'rheinabt' => 1,
     'rheinabt' => 1,
     'kups'     => 1,
     'tmpebooks' => 1,
@@ -401,13 +402,13 @@ sub threadC {
 
     $logger->info("### Sonstige Master-Institutskataloge");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst401master','inst404master','inst409master','inst411master','inst414master','inst426master','inst432master','inst434master','inst437master','inst438master','inst622master'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst401master','inst404master','inst409master','inst411master','inst414master','inst426master','inst432master','inst434master','inst437master','inst438master','inst461master','inst622master'] });
 
     ##############################
     
     $logger->info("### Aufgesplittete sonstige Institutskataloge aus ihren Mastern");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst401','inst404','inst409','inst411','inst414','inst426','inst432','inst434','inst437','inst438','inst622'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst401','inst404','inst409','inst411','inst414','inst426','inst432','inst434','inst437','inst438','inst461','inst622'] });
 
     ##############################
 

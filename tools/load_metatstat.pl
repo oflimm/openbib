@@ -180,3 +180,11 @@ while (<IN>){
 $loans->populate($rows_ref);
 
 close(IN);
+
+# Moegliche Auswertungen
+#
+# 1) Ausleihen pro Tag und Benutzergruppe fuer ein Jahr
+#
+#    select tstamp,groupid,count(tstamp) from loans where tstamp_year=2007 group by tstamp,groupid order by tstamp,groupid;
+#
+#

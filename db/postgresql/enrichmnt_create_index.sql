@@ -19,6 +19,14 @@ CREATE INDEX enrichedcontentissn_content ON enriched_content_by_issn (content);
 
 -------------------------------------------------
 
+CREATE INDEX enrichedcontenttitle_titleid ON enriched_content_by_title (titleid);
+CREATE INDEX enrichedcontenttitle_dbname ON enriched_content_by_title (dbname);
+CREATE INDEX enrichedcontenttitle_origin ON enriched_content_by_title (origin);
+CREATE INDEX enrichedcontenttitle_field ON enriched_content_by_title (field);
+CREATE INDEX enrichedcontenttitle_content ON enriched_content_by_title (content);
+
+-------------------------------------------------
+
 CREATE INDEX alltitlesisbn_isbn ON all_titles_by_isbn (isbn);
 CREATE INDEX alltitlesisbn_dbname ON all_titles_by_isbn (dbname);
 CREATE INDEX alltitlesisbn_location ON all_titles_by_isbn (location);

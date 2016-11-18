@@ -128,24 +128,14 @@ foreach my $item ($titleids->all){
         $where_ref,
         {
             select       => ['anon_userid'],
-            as           => ['thisuserid'],
-	    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
         }
     );
     
-    $logger->debug("Title belongs to ".$users->count." anon users");
-    
-    my $ids_ref= [];
-    foreach my $user ($users->all){
-        my $id = $user->{'thisuserid'};
-        push @$ids_ref, { 'anon_userid' => $id };
-    }
-
     # Bestimme alle Titelids, die diese Nutzer ausgeliehen haben und erzeuge
     # daraus ein Nutzungshistogramm
 
     $where_ref = {
-	-or                 => $ids_ref,
+	-or                 => { 'anon_userid' => { -in => $users->get_column('anon_userid')->as_query}},
 	'groupid'           => {-in => \@groups},	    	    
 	'titleid'           => { '!=' => $thistitleid },             
     };
@@ -163,7 +153,11 @@ foreach my $item ($titleids->all){
         
     );
 
-    $logger->debug("Titleid connected to ".$titles->count." titles");
+    if ($logger->is_debug){
+	$logger->debug("Titleid connected to ".$titles->count." titles");
+    }
+    
+    $logger->info("Finding related Titleid for Title $thistitleid");
     
     my %titlehist=();
   TITLEHIST:
@@ -190,6 +184,7 @@ foreach my $item ($titleids->all){
         $logger->debug("Collected Titles ".YAML::Dump(\%titlehist));
         $logger->debug("Generating histogram");
     }
+
     
     my @histo=();
     foreach my $thisid (keys %titlehist){
@@ -202,7 +197,7 @@ foreach my $item ($titleids->all){
     if ($logger->is_debug){
         $logger->debug("Histogram: ".YAML::Dump(\@histo));
     }
-    
+
     if ($#histo >= 3){
         my $i=$#histo;
 
@@ -250,7 +245,7 @@ foreach my $item ($titleids->all){
 		
                 $count++;
                
-                if ($record->get_field({ category => 'T0331' }) && $item_ref->{isbn}){
+                if ($record->get_field({ category => 'T0331' })){
 
                     # Title als JSON
                     push @$enriched_content_ref, {

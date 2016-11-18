@@ -93,6 +93,7 @@ CREATE INDEX loans_tstamp_day ON loans (tstamp_day);
 CREATE INDEX loans_anon_userid ON loans (anon_userid);
 CREATE INDEX loans_groupid ON loans (groupid);
 CREATE INDEX loans_titleid ON loans (titleid);
+CREATE INDEX loans_dbname ON loans (dbname);
 CREATE INDEX loans_isbn ON loans (isbn);
 
 vacuum analyze;

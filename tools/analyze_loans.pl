@@ -29,6 +29,7 @@ use warnings;
 
 use Business::ISBN;
 use DBI;
+use DBIx::Class::ResultClass::HashRefInflator;
 use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
 use YAML;
@@ -49,7 +50,7 @@ my ($statisticsdbname,$enrichmntdbname,$database,@groups,$help,$logfile);
 	    "help"               => \$help
 	    );
 
-if ($help ||!$database){
+if ($help){
     print_help();
 }
 
@@ -82,41 +83,53 @@ unless ($enrichmntdbname){
     $enrichmntdbname = $config->{enrichmntdbname};
 }
 
+$logger->info("Starting: Searching for titles");
+
 my $enrichmnt  = new OpenBib::Enrichment({enrichmntdbname => $enrichmntdbname });
 my $statistics = new OpenBib::Statistics({statisticsdbname => $statisticsdbname });
 
 # $enrichmnt->get_schema->storage->debug(1);
 
+my $where_ref = {
+	groupid  => {-in => \@groups},
+};
+
+$where_ref->{dbname} = $database if ($database);
+
 # "select distinct isbn from relevance where isbn != ''"
 my $titleids = $statistics->get_schema->resultset('Loan')->search_rs(
+    $where_ref,
     {
-	dbname => $database,
-	groupid  => {-in => \@groups},
-    },
-    {
-        select   => ['titleid'],
-        group_by => ['titleid'],
+        select       => ['titleid','dbname'],
+	as           => ['thistitleid','thisdbname'],
+        group_by     => ['titleid','dbname'],
+	result_class => 'DBIx::Class::ResultClass::HashRefInflator',
     }
        
 );
 
-$logger->info("Processing ".$titleids->count." Titels");
+$logger->info($titleids->count." Titels found. Now processing.");
 
 my $titlecount = 1;
 
 # Bestimme Anonyme Nutzerinformationen fuer jede Titelid
 foreach my $item ($titleids->all){
     # Bestimme alle Nutzer, die den Titel mit dieser ID ausgeliehen/angeklickt haben
-    my $thistitleid = $item->get_column('titleid');
+    my $thistitleid = $item->{'thistitleid'};
+    my $thisdbname  = $item->{'thisdbname'};
+
+    $where_ref = {
+	'titleid' => $thistitleid,
+	'dbname'  => $thisdbname,
+	'groupid' => {-in => \@groups},
+    };
     
-    my $users = $statistics->get_schema->resultset('Loans')->search_rs(
+    my $users = $statistics->get_schema->resultset('Loan')->search_rs(
+        $where_ref,
         {
-            'titleid' => $thistitleid,
-	    'groupid' => {-in => \@groups},	    
-        },
-        {
-            select => ['anon_userid'],
-            as     => ['thisuserid'],
+            select       => ['anon_userid'],
+            as           => ['thisuserid'],
+	    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
         }
     );
     
@@ -124,24 +137,28 @@ foreach my $item ($titleids->all){
     
     my $ids_ref= [];
     foreach my $user ($users->all){
-        my $id = $user->get_column('thisuserid');
+        my $id = $user->{'thisuserid'};
         push @$ids_ref, { 'anon_userid' => $id };
     }
 
     # Bestimme alle Titelids, die diese Nutzer ausgeliehen haben und erzeuge
     # daraus ein Nutzungshistogramm
 
+    $where_ref = {
+	-or                 => $ids_ref,
+	'groupid'           => {-in => \@groups},	    	    
+	'titleid'           => { '!=' => $thistitleid },             
+    };
+    
+    $where_ref->{dbname} = $database if ($database);
+
     # "select isbn,dbname,katkey from relevance where isbn != ? and id in ($idstring)"
     my $titles = $statistics->get_schema->resultset('Loan')->search_rs(
+        $where_ref,
         {
-            -or                 => $ids_ref,
-	    'dbname'            => $database,
-	    'groupid'           => {-in => \@groups},	    	    
-            'titleid'           => { '!=' => $thistitleid },             
-        },
-        {
-            select => ['titleid'],
-            as     => ['titleid'],
+            select       => ['titleid','dbname'],
+            as           => ['titleid','dbname'],
+	    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
         }
         
     );
@@ -152,7 +169,8 @@ foreach my $item ($titleids->all){
   TITLEHIST:
 
     foreach my $title ($titles->all){
-        my $titleid     = $title->get_column('titleid');
+        my $titleid     = $title->{'titleid'};
+	my $dbname      = $title->{'dbname'};
 
         $logger->debug("Found related Titleid $titleid");
 
@@ -161,7 +179,7 @@ foreach my $item ($titleids->all){
         if (!exists $titlehist{$titleid}){
             $titlehist{$titleid}={
                 count  => 0,
-                dbname => $database,
+                dbname => $dbname,
                 id     => $titleid,
             };
         }
@@ -203,16 +221,13 @@ foreach my $item ($titleids->all){
 
         # Anreicherungen fuer diese Kategorie entfernen,
 
-        $logger->debug("Removing enriched content for titlid $thistitleid");
+        $logger->debug("Removing enriched content for titleid $thistitleid");
         
         # DBI: 'delete from normdata where isbn=? and category=?'
         $enrichmnt->get_schema->resultset('EnrichedContentByTitle')->search_rs(
             {
-                -or => [
-                    'field' => '4002',
-                    'field' => '4003',
-                ],
-                titlid => $thistitleid,
+		'field'   => '4003',
+                'titleid' => $thistitleid,
             }
         )->delete;
         
@@ -231,25 +246,16 @@ foreach my $item ($titleids->all){
                 $record->{user_count} = $references_ref->{count} ;
 
                 my $content = $record->to_json;
-                
+
+		
                 $count++;
                
                 if ($record->get_field({ category => 'T0331' }) && $item_ref->{isbn}){
 
-                    # ID
-                    push @$enriched_content_ref, {
-                        titleid  => $thistitleid,
-			dbname   => $database,
-                        origin   => 50,
-                        field    => 4002,
-                        subfield => $count,
-                        content  => $item_ref->{id},
-                    };
-
                     # Title als JSON
                     push @$enriched_content_ref, {
                         titleid  => $thistitleid,
-			dbname   => $database,			
+			dbname   => $thisdbname,			
                         origin   => 50,
                         field    => 4003,
                         subfield => $count,
@@ -288,7 +294,7 @@ analyze_loans.pl - Erzeugen von Ausleih-Analysen aus Statistik-Daten
    -help                 : Diese Informationsseite
    --statisticsdbname=...: Name der Statistikdatenbank
    --enrichmentdbname=...: Name der Anreicherungsdatenbank
-   --database=...        : Einzelner Katalog, dessen Ausleihverhalten analysiert werden soll
+   --database=...        : Eingrenzung auf einzelnen Katalog, dessen Ausleihverhalten analysiert werden soll
    --group=... (mult)    : Gruppen, auf die sich die Analyse beziehen soll
    --logfile=...         : Alternatives Logfile
 

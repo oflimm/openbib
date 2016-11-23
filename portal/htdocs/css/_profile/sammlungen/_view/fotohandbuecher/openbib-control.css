@@ -1,0 +1,4 @@
+@import url("/css/_profile/sammlungen/openbib.css"); 
+
+/* import specific classes */
+@import url("local.css");

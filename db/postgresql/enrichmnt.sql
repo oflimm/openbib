@@ -32,6 +32,17 @@ create table enriched_content_by_issn (
  content       TEXT NOT NULL
 );
 
+-- Enriched content by title --
+drop table IF EXISTS enriched_content_by_title;
+create table enriched_content_by_title (
+ titleid       TEXT NOT NULL,
+ dbname        TEXT NOT NULL,
+ origin        SMALLINT,
+ field         SMALLINT NOT NULL,
+ subfield      VARCHAR(3),
+ content       TEXT NOT NULL
+);
+
 --  references to all available titles in all databases by specific --
 --  identification keys --
 drop table IF EXISTS all_titles_by_isbn;

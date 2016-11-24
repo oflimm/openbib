@@ -27,20 +27,10 @@
     <!-- begin: main navigation  -->
     <nav class="ym-hlist">
       <ul>
-[% IF active_menu == "info" %]
-         <li class="active"><strong>[% msg.maketext("Einführung") %]</strong></li>
-[% ELSE %]
-          <li><a  href="[% path_prefix %]/[% config.get('info_loc') %]/einleitung.html?l=[% lang %]">[% msg.maketext("Einführung") %]</a></li>
-[% END %]
 [% IF active_menu == "project" %]
          <li class="active"><strong>[% msg.maketext("Projekt") %]</strong></li>
 [% ELSE %]
-          <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/ansprechpartner.html?l=[% lang %]" title="Projekt">[% msg.maketext("Projekt") %]</a></li>
-[% END %]
-[% IF active_menu == "register" %]
-         <li class="active"><strong>[% msg.maketext("Register") %]</strong></li>
-[% ELSE %]
-          <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/fotohandbuecher/[% config.get('titles_loc') %]/fields/id/0426.html?l=[% lang %]" title="[% msg.maketext("Register") %]">[% msg.maketext("Register") %]</a></li>
+          <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/einleitung.html?l=[% lang %]" title="Projekt">[% msg.maketext("Projekt") %]</a></li>
 [% END %]
 [% IF active_menu == "cloud" %]
          <li class="active"><strong>[% msg.maketext("&Uuml;bersichten") %]</strong></li>

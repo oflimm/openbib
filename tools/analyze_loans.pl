@@ -40,11 +40,12 @@ use OpenBib::Statistics;
 use OpenBib::Search::Util;
 use OpenBib::Record::Title;
 
-my ($statisticsdbname,$enrichmntdbname,$database,@groups,$help,$logfile);
+my ($statisticsdbname,$enrichmntdbname,$database,$mincount,@groups,$help,$logfile);
 
 &GetOptions("statisticsdbname=s" => \$statisticsdbname,
             "enrichmntdbname=s"  => \$enrichmntdbname,
 	    "database=s"         => \$database,
+	    "mincount=s"         => \$mincount,
 	    "group=s@"           => \@groups,
             "logfile=s"          => \$logfile,
 	    "help"               => \$help
@@ -55,6 +56,7 @@ if ($help){
 }
 
 $logfile=($logfile)?$logfile:'/var/log/openbib/analyze_loans.log';
+$mincount=($mincount)?$mincount:3;
 
 my $log4Perl_config = << "L4PCONF";
 log4perl.rootLogger=INFO, LOGFILE, Screen
@@ -100,23 +102,31 @@ $where_ref->{dbname} = $database if ($database);
 my $titleids = $statistics->get_schema->resultset('Loan')->search_rs(
     $where_ref,
     {
-        select       => ['titleid','dbname'],
-	as           => ['thistitleid','thisdbname'],
-        group_by     => ['titleid','dbname'],
+        select       => [{ count => 'anon_userid'},'titleid','dbname'],
+	as           => ['thisusercount','thistitleid','thisdbname'],
+        group_by     => ['anon_userid','titleid','dbname'],
 	result_class => 'DBIx::Class::ResultClass::HashRefInflator',
     }
        
 );
 
-$logger->info($titleids->count." Titels found. Now processing.");
+$logger->info("All Titles found. Now processing.");
 
 my $titlecount = 1;
 
 # Bestimme Anonyme Nutzerinformationen fuer jede Titelid
 foreach my $item ($titleids->all){
     # Bestimme alle Nutzer, die den Titel mit dieser ID ausgeliehen/angeklickt haben
-    my $thistitleid = $item->{'thistitleid'};
-    my $thisdbname  = $item->{'thisdbname'};
+    my $thistitleid    = $item->{'thistitleid'};
+    my $thisdbname     = $item->{'thisdbname'};
+    my $thisusercount  = $item->{'thisusercount'};
+
+    $logger->info("$thisusercount - $thisdbname - $thistitleid");
+
+    # Minimaler Ueberdeckungsgrad von Titeln und Nutzern muss gewahrt sein
+    next if ($thisusercount < $mincount);
+
+    $logger->info("Minimaler Ueberdeckungsgrad gewahrt");
 
     $where_ref = {
 	'titleid' => $thistitleid,
@@ -135,9 +145,9 @@ foreach my $item ($titleids->all){
     # daraus ein Nutzungshistogramm
 
     $where_ref = {
-	-or                 => { 'anon_userid' => { -in => $users->get_column('anon_userid')->as_query}},
-	'groupid'           => {-in => \@groups},	    	    
+	'anon_userid'       => {-in => $users->get_column('anon_userid')->as_query},
 	'titleid'           => { '!=' => $thistitleid },             
+	'dbname'            => { '!=' => $thisdbname },             
     };
     
     $where_ref->{dbname} = $database if ($database);
@@ -146,8 +156,9 @@ foreach my $item ($titleids->all){
     my $titles = $statistics->get_schema->resultset('Loan')->search_rs(
         $where_ref,
         {
-            select       => ['titleid','dbname'],
-            as           => ['titleid','dbname'],
+            select       => ['anon_userid','titleid','dbname'],
+            as           => ['anon_userid','titleid','dbname'],
+            group_by     => ['anon_userid','titleid','dbname'],
 	    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
         }
         
@@ -291,6 +302,7 @@ analyze_loans.pl - Erzeugen von Ausleih-Analysen aus Statistik-Daten
    --enrichmentdbname=...: Name der Anreicherungsdatenbank
    --database=...        : Eingrenzung auf einzelnen Katalog, dessen Ausleihverhalten analysiert werden soll
    --group=... (mult)    : Gruppen, auf die sich die Analyse beziehen soll
+   --mincount=...        : Geforderte minimale Anzahl von Nutzern bei gemeinsamen Titelvorkommen
    --logfile=...         : Alternatives Logfile
 
 ENDHELP

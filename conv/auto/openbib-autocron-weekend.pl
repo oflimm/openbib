@@ -454,8 +454,9 @@ sub threadC {
     ##############################
 
     $logger->info("### Diverse Kataloge");
-    
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['instzs','spoho','zbmed'] });
+   
+    # instzs wurde in eigenes Steuerscript ausgelagert, da die Lieferung des hbz erst Montag morgen erfolgt 
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['spoho','zbmed'] });
 #    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['instzs','spoho'] });
 
     ##############################

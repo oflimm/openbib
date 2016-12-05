@@ -35,7 +35,7 @@
 [% IF active_menu == "cloud" %]
          <li class="active"><strong>[% msg.maketext("&Uuml;bersichten") %]</strong></li>
 [% ELSE %]
-          <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/fotohandbuecher/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a></li>
+          <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/fotobuecher/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a></li>
 [% END %]
 [%- IF active_menu == "searchhistory" -%]
          <li class="active"><strong>[% msg.maketext("Suchhistorie") %]</strong></li>
@@ -118,7 +118,7 @@ $(document).ready(function(){
      <input id="to_focus" class="ym-searchfield" type="search" placeholder="[% msg.maketext("Suchen") %]" name="fs" value="[% searchquery.get_searchfield('freesearch').val | html %]" s />
      <input class="ym-searchbutton" type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" />
 
-      <a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a>&nbsp;|&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/fotohandbuecher/titles.html?l=[% lang %]&srt=title_asc&page=1" class="navlink">[% msg.maketext("Alle Objekte") %]</a>
+      <a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a>&nbsp;|&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/fotobuecher/titles.html?l=[% lang %]&srt=title_asc&page=1" class="navlink">[% msg.maketext("Alle Objekte") %]</a>
     </form>
 [% END %]
     </nav>

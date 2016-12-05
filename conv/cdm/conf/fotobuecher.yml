@@ -5,12 +5,14 @@
 uniqueidfield: 'cdmid'
 
 category_split_chars:
-  'creator': '\s+;\s'
-
+  'creator': '\s+und\s+'
+  'keywords': ',\s+'
+  
 # Personen
 pers:
   'creator': '0100'      # Verfasser
-
+  'contributor': '0101'  # Person
+  
 # Koerperschaften
 corp:
 
@@ -19,17 +21,28 @@ sys:
 
 # Schlagworte
 subj:
-
+  'keywords': '0710'
+  
 # Titel
 title:
   'title': '0331'
   'publisher': '0412'
-  'description': '0750'
-  'date': '0425'
+  'edition': '0403'
+  'year': '0425'
+  'place': '0410'
   'language': '0005'
+  'subtitle': '0335'    # Zusatz zum HST
+  'othertitle': '0370'  # WST
+  'halftitle': '0451' # GT
+  'illustrations': '0433'
+  '': ''
+  '': ''
+  '': ''
+  '': ''
+  '': ''
   'relation': '0508'
   'thumbnailURL': '2662'
 
 # Exemplare
 exempl:
-  'unmapped': '0014'
+  'owner': '0016'

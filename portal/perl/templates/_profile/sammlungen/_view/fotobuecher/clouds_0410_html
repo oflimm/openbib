@@ -15,7 +15,7 @@
 
 <body>
 [%
-      funcargs = { id => "fotobuecher-410", type => 14 } ;
+      funcargs = { id => "fotobuecher-0410", type => 14 } ;
       resultlist = statistics.get_result(funcargs);
 %]
 

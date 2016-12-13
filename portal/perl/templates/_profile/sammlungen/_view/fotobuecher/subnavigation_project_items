@@ -1,0 +1,22 @@
+ <ul>
+[% IF active_submenu == "sammlung" %]
+  <li class="active"><strong>[% msg.maketext("Sammlung") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">[% msg.maketext("Sammlung") %]</a></li>
+[% END %]
+[% IF active_submenu == "team" %]
+  <li class="active"><strong>[% msg.maketext("Projektmitarbeiter") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/team.html?l=[% lang %]">[% msg.maketext("Projektmitarbeiter") %]</a></li>
+[% END %]
+[% IF active_submenu == "quellen" %]
+  <li class="active"><strong>[% msg.maketext("Quellen") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/quellen.html?l=[% lang %]">[% msg.maketext("Quellen") %]</a></li>
+[% END %]
+[% IF active_submenu == "dfg" %]
+  <li class="active"><strong>[% msg.maketext("DFG Finanzierung") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/dfg.html?l=[% lang %]">[% msg.maketext("DFG Finanzierung") %]</a></li>
+[% END %]
+</ul>

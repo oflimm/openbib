@@ -5,6 +5,7 @@
 uniqueidfield: 'cdmid'
 
 category_split_chars:
+  'place': '\s+und\s+'
   'creator': '\s+und\s+'
   'keywords': ',\s+'
   

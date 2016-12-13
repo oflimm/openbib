@@ -64,9 +64,13 @@
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]" title="Startseite">[% msg.maketext("Startseite") %]</a></li>
 
 [% IF active_menu == "project" %]
-         <li class="active"><strong>[% msg.maketext("Projekt") %]</strong></li>
+         <li class="active"><strong>[% msg.maketext("Projekt") %]</strong>
+[% PROCESS common/subtemplate name="subnavigation_project_items" database="fotobuecher" %]
+	 </li>
 [% ELSE %]
-          <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/einleitung.html?l=[% lang %]" title="Projekt">[% msg.maketext("Projekt") %]</a></li>
+          <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]" title="Projekt">[% msg.maketext("Projekt") %]</a>
+[% PROCESS common/subtemplate name="subnavigation_project_items" database="fotobuecher" %]
+         </li>
 [% END %]
 [% IF active_menu == "cloud" %]
          <li class="active"><strong>[% msg.maketext("&Uuml;bersichten") %]</strong>

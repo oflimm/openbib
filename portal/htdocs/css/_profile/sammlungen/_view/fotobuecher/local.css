@@ -1,6 +1,11 @@
 @media all
 {
 
+  body {
+    background-image: none;
+    background-color: #a7a7a7;
+  }
+
   #topnav {
     z-index:9999;
   }

@@ -23,19 +23,69 @@
 #
 #######################################################################
 -%]
+<style>
+.ym-hlist {
+    overflow:visible;
+    height: 30px;
+    position: relative;
+    z-index: 999999;
+}
+
+/* unav dropdown */
+#unav li ul {
+
+    border: none;
+    width: auto;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 25px;
+    display: none; /* hide dropdown */
+}
+#unav li ul li {
+    float: none;
+    margin: 0;
+    padding: 0;
+}
+#unav li ul li a {
+    border-right: 1px solid #789;
+    border-bottom: 1px solid #789;
+}
+#unav li:hover > ul {
+    background:#C8C8C8;
+    display: block; /* show dropdown on hover */
+}
+</style>
+[% database = "fotobuecher" %]
 [%- username = user.get_username -%]
     <!-- begin: main navigation  -->
     <nav class="ym-hlist">
-      <ul>
+      <ul id="unav">
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]" title="Startseite">[% msg.maketext("Startseite") %]</a></li>
+
 [% IF active_menu == "project" %]
-         <li class="active"><strong>[% msg.maketext("Projekt") %]</strong></li>
+         <li class="active"><strong>[% msg.maketext("Projekt") %]</strong>
+[% PROCESS common/subtemplate name="subnavigation_project_items" database="fotobuecher" %]
+	 </li>
 [% ELSE %]
-          <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/einleitung.html?l=[% lang %]" title="Projekt">[% msg.maketext("Projekt") %]</a></li>
+          <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]" title="Projekt">[% msg.maketext("Projekt") %]</a>
+[% PROCESS common/subtemplate name="subnavigation_project_items" database="fotobuecher" %]
+         </li>
 [% END %]
 [% IF active_menu == "cloud" %]
-         <li class="active"><strong>[% msg.maketext("&Uuml;bersichten") %]</strong></li>
+         <li class="active"><strong>[% msg.maketext("&Uuml;bersichten") %]</strong>
+	    <ul>
+            [% PROCESS common/subtemplate name="clouds_navigation_items" database="fotobuecher" %]
+            [% PROCESS common/subtemplate name="clouds_navigation_ugc" %]
+	    </ul>
+	 </li>
 [% ELSE %]
-          <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/fotobuecher/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a></li>
+          <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/fotobuecher/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a>
+	    <ul>
+            [% PROCESS common/subtemplate name="clouds_navigation_items" database="fotobuecher" %]
+            [% PROCESS common/subtemplate name="clouds_navigation_ugc" %]
+	    </ul>
+	  </li>
 [% END %]
 [%- IF active_menu == "searchhistory" -%]
          <li class="active"><strong>[% msg.maketext("Suchhistorie") %]</strong></li>

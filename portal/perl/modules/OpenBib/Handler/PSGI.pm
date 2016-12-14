@@ -110,6 +110,9 @@ sub cgiapp_init {
     my $user         = OpenBib::User->new({sessionID => $session->{ID}, config => $config});
     $self->param('user',$user);
 
+    my $statistics   = OpenBib::Statistics->new();
+    $self->param('statistics',$statistics);
+
     my $dbinfo       = OpenBib::Config::DatabaseInfoTable->new;
     $self->param('dbinfo',$dbinfo);
 
@@ -959,6 +962,7 @@ sub add_default_ttdata {
     my $config         = $self->param('config');
     my $session        = $self->param('session');
     my $user           = $self->param('user');
+    my $statistics     = $self->param('statistics');
     my $msg            = $self->param('msg');
     my $lang           = $self->param('lang');
     my $queryoptions   = $self->param('qopts');
@@ -1026,6 +1030,7 @@ sub add_default_ttdata {
     $ttdata->{'config'}         = $config;
     $ttdata->{'qopts'}          = $queryoptions;
     $ttdata->{'user'}           = $user;
+    $ttdata->{'statistics'}     = $statistics;
     $ttdata->{'msg'}            = $msg;
     $ttdata->{'lang'}           = $lang;
     $ttdata->{'stylesheet'}     = $stylesheet;

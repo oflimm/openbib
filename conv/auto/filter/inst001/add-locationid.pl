@@ -73,7 +73,6 @@ while (<HOLDING>){
         elsif ($location_ref->{content} =~m/Fachbibliothek Versicherungswiss/){
             push @{$element_ref}, "DE-38-USBFB";
             push @{$element_ref}, "DE-38-123";
-            push @{$element_ref}, "DE-38-VERS";
         }
         elsif ($location_ref->{content} =~m/Fachbibliothek Soziologie/){
             push @{$element_ref}, "DE-38-USBFB";
@@ -341,7 +340,6 @@ sub sigel2isil {
     elsif ($content =~m/38\/123/){
         push @isils, "DE-38-USBFB";
         push @isils, "DE-38-123";
-        push @isils, "DE-38-VERS";
     }
     elsif ($content =~m/38\/132/){
         push @isils, "DE-38-USBFB";

@@ -168,9 +168,10 @@ if ($configfile && $convconfig->{exclude}{by_isbn_in_file} && $convconfig->{excl
     close(ISBN);
 }
 
-# Ignore 4 consecutive errors
-while (my $record = $batch->next() || $batch->next || $batch->next || $batch->next ){
+while (my $record = safe_next($batch)){
     $all_count++;
+    
+    next unless ($record);
 
     my $title_ref = {
         'fields' => {},
@@ -1373,4 +1374,20 @@ sub add_person {
     };
     
     return $title_ref;
+}
+
+sub safe_next {
+    my $batch = shift;
+
+    my $record;
+    
+    eval {
+	$record = $batch->next();
+    };
+
+    if ($@){
+	$record="";
+    }
+
+    return $record;
 }

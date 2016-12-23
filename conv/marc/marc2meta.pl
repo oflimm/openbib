@@ -1379,6 +1379,9 @@ sub add_person {
 sub safe_next {
     my $batch = shift;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
     my $record;
     
     eval {
@@ -1386,7 +1389,8 @@ sub safe_next {
     };
 
     if ($@){
-	$record="";
+	$logger->error("Error reading next record: ".$@);
+	$record=safe_next($batch);
     }
 
     return $record;

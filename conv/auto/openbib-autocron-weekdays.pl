@@ -294,7 +294,8 @@ sub threadB {
 
     $logger->info("### Master: USB Katalog");
     
-    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst001'] });
+#    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst001'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst001'] });
 
     $logger->info("### Aufgesplittete Kataloge aus USB Katalog");
     

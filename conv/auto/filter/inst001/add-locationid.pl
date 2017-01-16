@@ -60,6 +60,10 @@ while (<HOLDING>){
             push @{$element_ref}, "DE-38-USBFB";
             push @{$element_ref}, "DE-38-HWA";
         }
+        elsif ($location_ref->{content} =~m/^KMB/){
+            push @{$element_ref}, "DE-Kn3";
+	    push @{$element_ref}, "DE-38-ZBKUNST";
+        }
         elsif ($location_ref->{content} =~m/^Hauptabteilung\s*\/\s*Lehrbuchsammlung/){
             push @{$element_ref}, "DE-38-LBS";
         }

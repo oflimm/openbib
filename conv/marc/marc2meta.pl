@@ -50,9 +50,10 @@ use OpenBib::Config;
 use OpenBib::Enrichment;
 use OpenBib::Conv::Common::Util;
 
-my ($inputfile,$configfile,$use_milid,$globalencoding,$use_xml,$format,$loglevel);
+my ($inputfile,$configfile,$database,$use_milid,$globalencoding,$use_xml,$format,$loglevel);
 
 &GetOptions(
+    "database=s"      => \$database,
     "format=s"        => \$format,
     "encoding=s"      => \$globalencoding,
     "inputfile=s"     => \$inputfile,
@@ -62,7 +63,7 @@ my ($inputfile,$configfile,$use_milid,$globalencoding,$use_xml,$format,$loglevel
     "use-xml"         => \$use_xml,
     );
 
-my $logfile = '/var/log/openbib/marc2meta.log';
+my $logfile = "/var/log/openbib/marc2meta/${database}.log";
 
 $loglevel=($loglevel)?$loglevel:'INFO';
 

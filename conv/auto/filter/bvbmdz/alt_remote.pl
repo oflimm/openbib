@@ -49,5 +49,5 @@ system("cd $pooldir/$pool ; rm meta.* ; rm pool*");
 
 system("cd $pooldir/$pool ; cat header.xml > $pooldir/$pool/pool.xml ; zcat `ls -1 *mdz.xml.gz|sort -r |xargs` | sed -e 's/<marc:/</g' | sed -e 's/<\/marc:/</g'  >> $pooldir/$pool/pool.xml ; cat footer.xml >> $pooldir/$pool/pool.xml");
 
-system("cd $pooldir/$pool; $marc2metaexe --inputfile=pool.xml -use-xml; gzip meta.*");
+system("cd $pooldir/$pool; $marc2metaexe --database=$pool --inputfile=pool.xml -use-xml; gzip meta.*");
 system("rm $pooldir/$pool/pool.xml");

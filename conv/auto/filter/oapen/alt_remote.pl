@@ -50,4 +50,4 @@ my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->s
 my $filename      = $dbinfo->titlefile;
 print "### $pool: Konvertierung von $filename\n";
 system("cd $pooldir/$pool ; rm meta.* ");
-system("cd $pooldir/$pool; $marc2metaexe --loglevel=DEBUG -use-xml --encoding='UTF-8' --inputfile=$filename --configfile=/opt/openbib/conf/oapen.yml; gzip meta.*");
+system("cd $pooldir/$pool; $marc2metaexe --database=$pool --loglevel=DEBUG -use-xml --encoding='UTF-8' --inputfile=$filename --configfile=/opt/openbib/conf/oapen.yml; gzip meta.*");

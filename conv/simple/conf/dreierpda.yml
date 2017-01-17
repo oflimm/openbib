@@ -29,7 +29,8 @@ corporatebody:
 
 # Systematik
 classification: 
-
+  'department': '0700'
+  
 # Schlagworte
 subject:
 

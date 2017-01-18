@@ -3,6 +3,7 @@
 [%- ELSIF representation == 'mobile' -%]
 [%- PROCESS common/subtemplate name="search_title_end_mobile" -%]
 [%- ELSIF representation == 'rss' -%]
+[%- ELSIF representation == 'include' -%]
 [%- ELSIF representation == 'rdf' -%]
 [%- ELSIF representation == 'json' -%]
 [%- ELSE -%]

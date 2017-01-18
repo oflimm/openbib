@@ -4,6 +4,7 @@
 [%- PROCESS common/subtemplate name="search_title_start_mobile" -%]
 [%- ELSIF representation == 'json' -%]
 [%- ELSIF representation == 'rdf' -%]
+[%- ELSIF representation == 'include' -%]
 [%- ELSIF representation == 'rss' -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]

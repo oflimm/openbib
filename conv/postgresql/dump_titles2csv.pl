@@ -53,7 +53,7 @@ if ($help){
 $logfile=($logfile)?$logfile:'/var/log/openbib/dump_titles2csv.log';
 
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=DEBUG, LOGFILE, Screen
+log4perl.rootLogger=INFO, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append
@@ -99,6 +99,7 @@ $outputcsv->print($out,$out_ref);
 
 my $titles = $catalog->get_schema->resultset('Title');
 
+my $count = 0;
 while (my $title=$titles->next){
     $out_ref = [];    
 
@@ -185,6 +186,13 @@ while (my $title=$titles->next){
     push @{$out_ref}, ($title->id,$title->tstamp_create,$title->tstamp_update,join(' ; ',@pers_korp),join(' ; ',@ast),join(' ; ',@titel),join(' ; ',@zusatz),join(' ; ',@auflage),join(' ; ',@verlag),join(' ; ',@jahr),join(' ; ',@gt),join(' ; ',uniq @band),,join(' ; ',uniq @isbn),,join(' ; ',uniq @issn),,join(' ; ',uniq @bibkey),,join(' ; ',uniq @workkey),join(' ; ',@signatur));    
 
     $outputcsv->print($out,$out_ref);
+
+    $count++;
+
+    if ($count % 1000 == 0){
+	$logger->info("$count done");
+    }
+    
 }
 
 close $out;

@@ -38,10 +38,11 @@ use List::MoreUtils qw/ uniq /;
 use Log::Log4perl qw(get_logger :levels);
 use Text::CSV_XS;
 
-my ($database,$help,$logfile,$outputfile,$configfile);
+my ($database,$help,$logfile,$loglevel,$outputfile,$configfile);
 
 &GetOptions("database=s"      => \$database,
             "logfile=s"       => \$logfile,
+	    "loglevel=s"       => \$loglevel,
             "outputfile=s"    => \$outputfile,
 	    "configfile=s"    => \$configfile,
 	    "help"            => \$help
@@ -52,9 +53,10 @@ if ($help){
 }
 
 $logfile=($logfile)?$logfile:"/var/log/openbib/fulldump_titles2csv/${database}.log";
+$loglevel=($loglevel)?$loglevel:'INFO';
 
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=INFO, LOGFILE, Screen
+log4perl.rootLogger=$loglevel, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append
@@ -162,7 +164,10 @@ while (my $title=$titles->next){
 	}
     }
 
-    foreach my $thisholding_ref (@{$record_ref->{holding}}){
+    foreach my $thisholding_ref (@{$record_ref->{items}}){
+	if ($logger->is_debug){
+	    $logger->debug("Holding item: ".YAML::Dump($thisholding_ref));
+	}
 	foreach my $thisfield (keys %{$convconfig->{mapping_holding}}){
 	    my $destfield = $convconfig->{mapping_holding}{$thisfield};
 	    if (defined $thisholding_ref->{$thisfield}){

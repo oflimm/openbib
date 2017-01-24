@@ -1,0 +1,31 @@
+[%#-
+#######################################################################
+#
+# Templatename: users_navigation
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Navigations-Menu fuer Mein OpenBib
+#
+#######################################################################
+-%]
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% dbinfo.get('dbnames').${database}.short %]</h6>
+
+ <ul>
+[% IF active_submenu == "all" %]
+  <li class="active"><strong>Alle Titel</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/titles.html?l=[% lang %]">Alle Titel</a></li>
+[% END %]
+<!--
+[% IF active_submenu == "popular" %]
+  <li class="active"><strong>Beliebte Totenzettel</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/titles/popular.html?l=[% lang %]">[% msg.maketext("Populäre Titel") %]</a></li>
+[% END %]
+-->
+</ul>
+</nav>

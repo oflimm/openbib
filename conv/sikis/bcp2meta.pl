@@ -515,7 +515,7 @@ if ($used01buch) {
         my @line = split("",$_);
 
         if ($usemcopynum) {            
-            my ($d01gsi,$d01ex,$d01zweig,$d01entl,$d01mcopynum,$d01status,$d01skond,$d01ort,$d01abtlg,$d01standort)=@line[0,1,2,3,7,11,12,24,31,55];
+	    my ($d01gsi,$d01ex,$d01zweig,$d01entl,$d01mcopynum,$d01status,$d01skond,$d01ort,$d01abtlg,$d01standort)=@line[0,1,2,3,7,11,12,24,31,55];
             #print "$d01gsi,$d01ex,$d01zweig,$d01mcopynum,$d01ort,$d01abtlg\n";
             foreach my $katkey (@{$titelbuchkey{$d01mcopynum}}) {
                 push @{$buchdaten{$katkey}}, [$d01zweig,$d01ort,$d01abtlg,$d01standort,$d01entl,$d01status,$d01skond,$d01gsi,$d01ex];
@@ -936,6 +936,9 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
 
             if ($ex ne " "){
                 $mediennr = $mediennr."#".$ex;
+		if ($signatur =~/\#$/){
+		    $signatur = $signatur.$ex;
+		}
             }
             
             if ($usestatus){

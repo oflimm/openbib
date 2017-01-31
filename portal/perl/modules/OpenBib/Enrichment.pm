@@ -37,6 +37,7 @@ use Business::ISBN;
 use DBIx::Class::ResultClass::HashRefInflator;
 use Encode qw(decode_utf8 encode_utf8);
 use Log::Log4perl qw(get_logger :levels);
+use List::MoreUtils qw(uniq);
 use Storable ();
 use MLDBM qw(DB_File Storable);
 use YAML::Syck;
@@ -638,6 +639,145 @@ sub get_common_holdings {
     $dbh->disconnect;
     
     return $common_holdings_ref;
+}
+
+sub get_other_locations {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $selector            = exists $arg_ref->{selector}
+        ? $arg_ref->{selector}         : "ISBN13";
+
+    my $location            = exists $arg_ref->{location}
+        ? $arg_ref->{location}         : undef;
+
+    my $other_locations_ref       = exists $arg_ref->{other_locations}
+        ? $arg_ref->{other_locations}  : [];
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->new;
+    
+    my $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd}) or $logger->error_die($DBI::errstr);
+    
+    return () unless ($location && defined $dbh);
+    
+    return () unless ($selector eq "ISBN13" || $selector eq "ISSN" || $selector eq "BibKey" || $selector eq "WorkKey");
+    
+    my $other_holdings_ref = [];
+    
+    my %this_holding       = ();
+
+    my $matchkey_column = ($selector eq "ISBN13")?'isbn':
+        ($selector eq "ISSN")?'issn':
+	($selector eq "BibKey")?'bibkey':
+	($selector eq "WorkKey")?'workkey':'isbn';
+    
+    unless (@{$other_locations_ref}){
+	# get all locations
+	my $location_overview=$config->get_locationinfo_overiew;
+	foreach my $thislocation_ref (@$location_overview){
+	    push @$other_locations_ref, $thislocation_ref->{identifier} unless ($thislocation_ref->{identifier} eq $location);
+	}
+    }
+    
+    my $in_select_string = join(',',map {'?'} @{$other_locations_ref});
+    
+    my $sql_string = ($selector eq "ISBN13")?"select * from all_titles_by_isbn where location = ?":
+        ($selector eq "ISSN")?"select * from all_titles_by_issn where location = ?":
+	($selector eq "BibKey")?"select * from all_titles_by_bibkey where location = ?":
+	($selector eq "WorkKey")?"select * from all_titles_by_workkey where location = ?":"select * from all_titles_by_isbn where location = ?";
+    
+    $logger->debug($sql_string);
+    
+    my $request=$dbh->prepare($sql_string) or $logger->error($DBI::errstr);
+    
+    $request->execute($location) or $logger->error($DBI::errstr);;
+        
+    $logger->debug("Matchkey Column for Selector $selector is $matchkey_column");
+    
+    while (my $result=$request->fetchrow_hashref){
+	my $dbname   = $result->{dbname};
+	my $titleid  = $result->{titleid};
+	my $matchkey = $result->{$matchkey_column};
+
+	my $sql_string2 = ($selector eq "ISBN13")?"select * from all_titles_by_isbn where isbn = ? and location in ($in_select_string)":
+	    ($selector eq "ISSN")?"select * from all_titles_by_issn where issn = ? and location in ($in_select_string)":
+            ($selector eq "BibKey")?"select * from all_titles_by_bibkey where bibkey = ? and location in ($in_select_string) ":
+	    ($selector eq "WorkKey")?"select * from all_titles_by_workkey where workkey = ? and location in ($in_select_string)":"select * from all_titles_by_isbn where isbn = ? and location in ($in_select_string)";
+	
+	$logger->debug($sql_string);
+	
+	my $request2=$dbh->prepare($sql_string2) or $logger->error($DBI::errstr);
+
+	$request2->execute($matchkey,@{$other_locations_ref}) or $logger->error($DBI::errstr);;
+
+	while (my $result2=$request2->fetchrow_hashref){
+	    my $location = $result->{location};
+	    push @{$this_holding{"$dbname:$titleid"}{$matchkey}},$location;
+        }
+    }
+
+    foreach my $thistitle (keys %this_holding){
+	my ($database,$id)=split(':',$thistitle);
+
+        my $persons          = "";
+        my $title            = "";
+        my $title_supplement = "";
+        my $year             = "";
+	
+	my $record=OpenBib::Record::Title->new({database => $database, id => $id, config => $config})->load_brief_record->get_fields;
+	if (!$persons){
+	    $persons=$record->{PC0001}[0]{content};
+	}
+	
+	if (!$title){
+	    $title=$record->{T0331}[0]{content};
+	}
+	if (!$title_supplement){
+	    if (defined $record->{T0335}[0]{content}){
+		$title_supplement=$record->{T0335}[0]{content};
+	    }
+	}
+	if (!$year){
+	    if (defined $record->{T0424}[0]{content}){
+		$year=$record->{T0424}[0]{content};
+	    }
+	    elsif (defined $record->{T0425}[0]{content}){
+		$year=$record->{T0425}[0]{content};
+	    }
+	}
+
+	my @matchkey_collection        = ();
+	my @other_locations_collection = ();
+	
+	foreach my $thismatchkey (keys %{$this_holding{$thistitle}}){
+	    push @matchkey_collection, $thismatchkey;
+	    foreach my $thisotherlocation (@{$this_holding{$thistitle}{$thismatchkey}}){
+		push @other_locations_collection, $thisotherlocation;
+	    }
+	}
+	
+	my $this_item_ref = {};
+
+        $this_item_ref->{$selector}        = join(' ; ',@matchkey_collection);
+        $this_item_ref->{persons}          = $persons;
+        $this_item_ref->{title}            = $title;
+        $this_item_ref->{title_supplement} = $title_supplement;
+        $this_item_ref->{year}             = $year;
+	$this_item_ref->{other_locations}  = join(' ; ',uniq @other_locations_collection);
+	
+        if ($logger->is_debug){
+            $logger->debug(YAML::Dump($this_item_ref));
+        }
+        
+        push @{$other_holdings_ref}, $this_item_ref;
+    }
+    
+    $dbh->disconnect;
+    
+    return $other_holdings_ref;
 }
 
 sub get_schema {

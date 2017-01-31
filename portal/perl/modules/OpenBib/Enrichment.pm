@@ -761,7 +761,7 @@ sub get_other_locations {
 	
 	my $this_item_ref = {};
 
-        $this_item_ref->{$selector}        = join(' ; ',@matchkey_collection);
+        $this_item_ref->{selector}        = join(' ; ',@matchkey_collection);
         $this_item_ref->{persons}          = $persons;
         $this_item_ref->{title}            = $title;
         $this_item_ref->{title_supplement} = $title_supplement;

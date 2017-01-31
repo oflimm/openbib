@@ -59,7 +59,7 @@ my (@other_locations,$location,$help,$logfile,$loglevel,$selector,$filename);
     "help"            => \$help
 );
 
-if ($help || !@other_locations || !$selector || !$filename){
+if ($help || !$location || !$selector || !$filename){
     print_help();
 }
 

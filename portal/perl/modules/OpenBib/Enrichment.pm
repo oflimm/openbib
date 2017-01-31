@@ -676,7 +676,7 @@ sub get_other_locations {
     
     unless (@{$other_locations_ref}){
 	# get all locations
-	my $location_overview=$config->get_locationinfo_overiew;
+	my $location_overview=$config->get_locationinfo_overview;
 	foreach my $thislocation_ref (@$location_overview){
 	    push @$other_locations_ref, $thislocation_ref->{identifier} unless ($thislocation_ref->{identifier} eq $location);
 	}

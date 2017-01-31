@@ -702,20 +702,24 @@ sub get_other_locations {
 	my $titleid  = $result->{titleid};
 	my $matchkey = $result->{$matchkey_column};
 
-	my $sql_string2 = ($selector eq "ISBN13")?"select * from all_titles_by_isbn where isbn = ? and location in ($in_select_string)":
-	    ($selector eq "ISSN")?"select * from all_titles_by_issn where issn = ? and location in ($in_select_string)":
-            ($selector eq "BibKey")?"select * from all_titles_by_bibkey where bibkey = ? and location in ($in_select_string) ":
-	    ($selector eq "WorkKey")?"select * from all_titles_by_workkey where workkey = ? and location in ($in_select_string)":"select * from all_titles_by_isbn where isbn = ? and location in ($in_select_string)";
+	my $sql_string2 = ($selector eq "ISBN13")?"select * from all_titles_by_isbn where isbn = ? and location != ? and location in ($in_select_string)":
+	    ($selector eq "ISSN")?"select * from all_titles_by_issn where issn = ? and location != ?  and location in ($in_select_string)":
+            ($selector eq "BibKey")?"select * from all_titles_by_bibkey where bibkey = ? and location != ?  and location in ($in_select_string) ":
+	    ($selector eq "WorkKey")?"select * from all_titles_by_workkey where workkey = ? and location != ?  and location in ($in_select_string)":"select * from all_titles_by_isbn where isbn = ? and location != ?  and location in ($in_select_string)";
 	
-	$logger->debug($sql_string);
-	
+	if ($logger->is_debug){
+	    $logger->debug($sql_string2);
+	    
+	    $logger->debug("Matchkey $matchkey - Location $location - Other Locations ".join(';',@$other_locations_ref));
+	}
+
 	my $request2=$dbh->prepare($sql_string2) or $logger->error($DBI::errstr);
 
-	$request2->execute($matchkey,@{$other_locations_ref}) or $logger->error($DBI::errstr);;
+	$request2->execute($matchkey,$location,@{$other_locations_ref}) or $logger->error($DBI::errstr);;
 
 	while (my $result2=$request2->fetchrow_hashref){
-	    my $location = $result->{location};
-	    push @{$this_holding{"$dbname:$titleid"}{$matchkey}},$location;
+	    my $thislocation = $result2->{location};
+	    push @{$this_holding{"$dbname:$titleid"}{$matchkey}},$thislocation;
         }
     }
 

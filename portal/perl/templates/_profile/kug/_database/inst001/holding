@@ -45,7 +45,8 @@
   END ;
 
   standort = thisholding.${"X0016"}.content;
-  
+
+IF thisholding.${"X3330"}.content.match('^38$');
   IF thisholding.${"X0014"}.content.match('^FHM ') ;
     standort = "USB-Freihandmagazin (1. OG) (sofort einsehbar)";
   ELSIF thisholding.${"X0014"}.content.match('^EWA Z') ;
@@ -78,27 +79,7 @@
     standort = "Zeitungsbestand. USB-Magazin (ausleihbar nach Online-Bestellung)";
   ELSIF thisholding.${"X0014"}.content.match('^P ') ;
     standort = "Zeitschriftenlesesaal (1.OG) (sofort einsehbar)";
-  ELSIF thisholding.${"X3330"}.content == '101' ;
-    standort = standort;
-  ELSIF thisholding.${"X3330"}.content == '123' ;
-    standort = standort;
-  ELSIF thisholding.${"X3330"}.content == '132' ;
-    standort = standort;
-  ELSIF thisholding.${"X3330"}.content == '429' ;
-    standort = standort;
-  ELSIF thisholding.${"X3330"}.content == '448' ;
-    standort = standort;
-  ELSIF thisholding.${"X3330"}.content == '450' ;
-    standort = standort;
-  ELSIF thisholding.${"X3330"}.content == '459' ;
-    standort = standort;
-  ELSIF thisholding.${"X3330"}.content == '503' ;
-    standort = standort;
-  ELSIF thisholding.${"X3330"}.content == '507' ;
-    standort = standort;
-  ELSIF NOT thisholding.${"X0014"}.content.match('^-') && thisholding.${"X0016"}.content.match('^-') ;
-    standort = "USB Magazin (ausleihbar nach Bestellung, siehe Bände)";
-  END;
+END;
 
 -%]
 <td><a class="ob-qrcode_preview" onclick="return false;" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% thisholding.${"X4000"}.content.short | uri %] :: [% standort | uri %] :: [% thisholding.${"X0014"}.content | uri %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td>

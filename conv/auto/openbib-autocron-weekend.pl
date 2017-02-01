@@ -52,7 +52,7 @@ our ($logfile,$loglevel,$test,$cluster,$maintenance,$updatemaster,$incremental);
 
 my $config = OpenBib::Config->new;
 
-$logfile=($logfile)?$logfile:"/var/log/openbib/openbib-autocron.log";
+$logfile=($logfile)?$logfile:"/var/log/openbib/openbib-autocron-weekend.log";
 $loglevel=($loglevel)?$loglevel:"INFO";
 
 my $log4Perl_config = << "L4PCONF";

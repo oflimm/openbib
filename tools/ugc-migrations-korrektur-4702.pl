@@ -146,7 +146,7 @@ my $target_catalog = OpenBib::Catalog::Factory->create_catalog({ database => $ta
 my $migrated_titles = $target_catalog->get_schema->resultset('TitleField')->search(
     {
 	field => 4702,
-        content => {'~' => "^$sourcedatabase"},
+        content => {'~*' => "^$sourcedatabase"},
     },
     {
 	column => [ qw/titleid content/ ],

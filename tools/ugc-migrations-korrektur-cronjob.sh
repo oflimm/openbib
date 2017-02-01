@@ -8,6 +8,7 @@
 /opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst166 -migrate-litlists -migrate-tags -migrate-cartitems
 /opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst401 -migrate-litlists -migrate-tags -migrate-cartitems
 /opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst404 -migrate-litlists -migrate-tags -migrate-cartitems
+/opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst406 -migrate-litlists -migrate-tags -migrate-cartitems
 /opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst409 -migrate-litlists -migrate-tags -migrate-cartitems
 /opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst411 -migrate-litlists -migrate-tags -migrate-cartitems
 /opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst414 -migrate-litlists -migrate-tags -migrate-cartitems
@@ -16,7 +17,13 @@
 /opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst427 -migrate-litlists -migrate-tags -migrate-cartitems
 /opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst429 -migrate-litlists -migrate-tags -migrate-cartitems
 /opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst432 -migrate-litlists -migrate-tags -migrate-cartitems
+/opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst434 -migrate-litlists -migrate-tags -migrate-cartitems
+/opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst435 -migrate-litlists -migrate-tags -migrate-cartitems
 /opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst437 -migrate-litlists -migrate-tags -migrate-cartitems
+/opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst438 -migrate-litlists -migrate-tags -migrate-cartitems
 /opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst448 -migrate-litlists -migrate-tags -migrate-cartitems
+/opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst460 -migrate-litlists -migrate-tags -migrate-cartitems
+/opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst461 -migrate-litlists -migrate-tags -migrate-cartitems
 /opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst622 -migrate-litlists -migrate-tags -migrate-cartitems
+/opt/openbib/bin/ugc-migrations-korrektur-4702.pl --source-database=inst623 -migrate-litlists -migrate-tags -migrate-cartitems
 

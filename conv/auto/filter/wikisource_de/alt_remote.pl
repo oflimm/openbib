@@ -53,6 +53,6 @@ my $dbinfo = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 my $url    = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->titlefile;
 
 print "### $pool: Datenabzug via http von $url\n";
-system("cd $pooldir/$pool ; rm pool.dat*");
+system("cd $pooldir/$pool ; rm pool.dat* ; rm ".$dbinfo->titlefile);
 system("$wgetexe -P $pooldir/$pool/ $url > /dev/null 2>&1 ");
 system("cd $pooldir/$pool; bzcat ".$dbinfo->titlefile." > pool.dat ; $wikisource2metaexe --inputfile=pool.dat --configfile=$configfile ; gzip meta.* ; gzip *.yml ; rm pool.dat");

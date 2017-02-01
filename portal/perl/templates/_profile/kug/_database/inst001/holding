@@ -79,6 +79,7 @@ IF thisholding.${"X3330"}.content.match('^38$');
     standort = "Zeitungsbestand. USB-Magazin (ausleihbar nach Online-Bestellung)";
   ELSIF thisholding.${"X0014"}.content.match('^P ') ;
     standort = "Zeitschriftenlesesaal (1.OG) (sofort einsehbar)";
+  END;
 END;
 
 -%]

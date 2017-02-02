@@ -468,6 +468,23 @@ sub profile_exists {
     return $count;
 }
 
+sub get_number_of_profiles {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $all_profiles = $self->get_schema->resultset('Profileinfo')->search(
+        undef,
+        {
+            columns => [ qw/profilename/ ],
+            group_by => [ qw/profilename/ ],
+        }
+    )->count;
+    
+    return $all_profiles;
+}
+
 sub orgunit_exists {
     my $self     = shift;
     my $profilename = shift;
@@ -1115,6 +1132,23 @@ sub get_locationinfo_overview {
     }
     
     return $locations_ref;
+}
+
+sub get_number_of_locations {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $all_locations = $self->get_schema->resultset('Locationinfo')->search(
+        undef,
+        {
+            columns => [ qw/identifier/ ],
+            group_by => [ qw/identifier/ ],
+        }
+    )->count;
+    
+    return $all_locations;
 }
 
 sub have_locationinfo {

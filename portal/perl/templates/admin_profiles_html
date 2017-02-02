@@ -91,7 +91,7 @@
 
 [% IF profiles.size > 0 %]
 
-<h3>[% msg.maketext("Bereits existierende Katalog-Profile") %]</h3>
+<h3>[% msg.maketext("Bereits existierende Katalog-Profile") %]: [% config.get_number_of_profiles %]</h3>
 
 [% IF user.has_right({scope = 'admin_profiles', right = 'right_update'}) %]
 <p>

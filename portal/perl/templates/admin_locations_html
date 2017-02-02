@@ -101,7 +101,7 @@
 
 [% IF locations.size > 0 %]
 
-<h3>[% msg.maketext("Bereits existierende Standorte") %]</h3>
+<h3>[% msg.maketext("Bereits existierende Standorte") %]: [% config.get_number_of_locations %]</h3>
 [%# USE dumper;dumper.dump(locations)%]
 <table>
 <thead>

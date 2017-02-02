@@ -58,6 +58,7 @@ exclude:
           - bestellungen
           - doab
           - tmpebooks
+          - emedienkauf
           - zbmed
           - inst004
           - inst005

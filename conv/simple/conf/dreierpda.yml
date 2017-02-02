@@ -62,6 +62,7 @@ exclude:
           - nationallizenzen
           - bestellungen
           - doab
+          - emedienkauf
           - tmpebooks
           - inst004
           - inst005

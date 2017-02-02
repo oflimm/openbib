@@ -119,7 +119,7 @@
 
 [% IF catalogs.size > 0 %]
 
-<h3>[% msg.maketext("Bereits existierende Kataloge") %]</h3>
+<h3>[% msg.maketext("Bereits existierende Kataloge") %]: [% config.get_number_of_dbs %]</h3>
 
 <table>
 <thead>

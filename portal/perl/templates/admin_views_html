@@ -108,7 +108,7 @@
 [% END # right_create %]
 
 [% IF views.size > 0 %]
-<h3>[% msg.maketext("Bereits existierende Views") %]</h3>
+<h3>[% msg.maketext("Bereits existierende Views") %]: [% config.get_number_of_views %]</h3>
 
 <p>
 [% msg.maketext("Um einen bereits existierenden View zu bearbeiten klicken Sie bitte auf den Viewnamen.") %]

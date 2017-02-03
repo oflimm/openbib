@@ -168,6 +168,7 @@ my $blacklist_ref = {
     'rheinabt' => 1,
     'rheinabt' => 1,
     'kups'     => 1,
+    'emedienkauf' => 1,
     'tmpebooks' => 1,
     'usbebooks' => 1,
     'usbhwa' => 1,
@@ -465,9 +466,9 @@ sub threadC {
 
     ##############################
     
-    $logger->info("### TMPEBOOKS");
+    $logger->info("### Gekaufte und lizensierte E-Medien");
     
-    autoconvert({ updatemaster => $updatemaster, databases => ['tmpebooks'] });
+    autoconvert({ updatemaster => $updatemaster, databases => ['emedienkauf','tmpebooks'] });
     
     return $thread_description;
 }

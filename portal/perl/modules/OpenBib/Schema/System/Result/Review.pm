@@ -1,17 +1,21 @@
+use utf8;
 package OpenBib::Schema::System::Result::Review;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+OpenBib::Schema::System::Result::Review
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-OpenBib::Schema::System::Result::Review
+=head1 TABLE: C<review>
 
 =cut
 
@@ -58,7 +62,7 @@ __PACKAGE__->table("review");
 =head2 rating
 
   data_type: 'smallint'
-  default_value: '0)::smallint'
+  default_value: 0
   is_nullable: 0
 
 =head2 dbname
@@ -100,11 +104,7 @@ __PACKAGE__->add_columns(
   "reviewtext",
   { data_type => "text", default_value => "", is_nullable => 0 },
   "rating",
-  {
-    data_type     => "smallint",
-    default_value => "0)::smallint",
-    is_nullable   => 0,
-  },
+  { data_type => "smallint", default_value => 0, is_nullable => 0 },
   "dbname",
   { data_type => "text", default_value => "", is_nullable => 0 },
   "titleid",
@@ -112,24 +112,20 @@ __PACKAGE__->add_columns(
   "titleisbn",
   { data_type => "text", default_value => "", is_nullable => 0 },
 );
-__PACKAGE__->set_primary_key("id");
 
-=head1 RELATIONS
+=head1 PRIMARY KEY
 
-=head2 userid
+=over 4
 
-Type: belongs_to
+=item * L</id>
 
-Related object: L<OpenBib::Schema::System::Result::Userinfo>
+=back
 
 =cut
 
-__PACKAGE__->belongs_to(
-  "userid",
-  "OpenBib::Schema::System::Result::Userinfo",
-  { id => "userid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
-);
+__PACKAGE__->set_primary_key("id");
+
+=head1 RELATIONS
 
 =head2 reviewratings
 
@@ -146,9 +142,24 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 userid
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2016-01-22 11:29:37
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:HIJaFsmNojba0NtbB+/XXQ
+Type: belongs_to
+
+Related object: L<OpenBib::Schema::System::Result::Userinfo>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "userid",
+  "OpenBib::Schema::System::Result::Userinfo",
+  { id => "userid" },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
+);
+
+
+# Created by DBIx::Class::Schema::Loader v0.07042 @ 2017-02-03 15:42:03
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:MNXsa0u/z6eJGsC6VK8qMg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

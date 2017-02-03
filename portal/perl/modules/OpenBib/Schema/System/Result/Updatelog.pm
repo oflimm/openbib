@@ -137,12 +137,12 @@ __PACKAGE__->table("updatelog");
   data_type: 'interval'
   is_nullable: 1
 
-=head2 duration_stage_update_enrichment
+=head2 duration_stage_analyze
 
   data_type: 'interval'
   is_nullable: 1
 
-=head2 duration_stage_analyze
+=head2 duration_stage_update_enrichment
 
   data_type: 'interval'
   is_nullable: 1
@@ -199,9 +199,9 @@ __PACKAGE__->add_columns(
   { data_type => "interval", is_nullable => 1 },
   "duration_stage_switch",
   { data_type => "interval", is_nullable => 1 },
-  "duration_stage_update_enrichment",
-  { data_type => "interval", is_nullable => 1 },
   "duration_stage_analyze",
+  { data_type => "interval", is_nullable => 1 },
+  "duration_stage_update_enrichment",
   { data_type => "interval", is_nullable => 1 },
 );
 
@@ -260,8 +260,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07042 @ 2017-02-03 12:08:08
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:zPC6BPqIpNIedibJdg7ZyQ
+# Created by DBIx::Class::Schema::Loader v0.07042 @ 2017-02-03 15:42:03
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:O1GTRL8aDclJczbwohD6uA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

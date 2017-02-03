@@ -1,17 +1,21 @@
+use utf8;
 package OpenBib::Schema::System::Result::UserSession;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+OpenBib::Schema::System::Result::UserSession
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-OpenBib::Schema::System::Result::UserSession
+=head1 TABLE: C<user_session>
 
 =cut
 
@@ -61,24 +65,20 @@ __PACKAGE__->add_columns(
   "authenticatorid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
 );
-__PACKAGE__->set_primary_key("id");
 
-=head1 RELATIONS
+=head1 PRIMARY KEY
 
-=head2 userid
+=over 4
 
-Type: belongs_to
+=item * L</id>
 
-Related object: L<OpenBib::Schema::System::Result::Userinfo>
+=back
 
 =cut
 
-__PACKAGE__->belongs_to(
-  "userid",
-  "OpenBib::Schema::System::Result::Userinfo",
-  { id => "userid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
-);
+__PACKAGE__->set_primary_key("id");
+
+=head1 RELATIONS
 
 =head2 authenticatorid
 
@@ -92,7 +92,7 @@ __PACKAGE__->belongs_to(
   "authenticatorid",
   "OpenBib::Schema::System::Result::Authenticator",
   { id => "authenticatorid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 =head2 sid
@@ -107,12 +107,27 @@ __PACKAGE__->belongs_to(
   "sid",
   "OpenBib::Schema::System::Result::Sessioninfo",
   { id => "sid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
+);
+
+=head2 userid
+
+Type: belongs_to
+
+Related object: L<OpenBib::Schema::System::Result::Userinfo>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "userid",
+  "OpenBib::Schema::System::Result::Userinfo",
+  { id => "userid" },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2016-01-22 11:29:37
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:dIaCJanAqduPbMdZ8E5CsA
+# Created by DBIx::Class::Schema::Loader v0.07042 @ 2017-02-03 15:42:03
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:+n0JHQUa4S2twO76+3yfnw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

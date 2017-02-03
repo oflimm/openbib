@@ -1,17 +1,21 @@
+use utf8;
 package OpenBib::Schema::System::Result::Templateinforevision;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+OpenBib::Schema::System::Result::Templateinforevision
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-OpenBib::Schema::System::Result::Templateinforevision
+=head1 TABLE: C<templateinforevision>
 
 =cut
 
@@ -59,6 +63,17 @@ __PACKAGE__->add_columns(
   "templatetext",
   { data_type => "text", is_nullable => 1 },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</id>
+
+=back
+
+=cut
+
 __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
@@ -75,12 +90,12 @@ __PACKAGE__->belongs_to(
   "templateid",
   "OpenBib::Schema::System::Result::Templateinfo",
   { id => "templateid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2016-01-22 11:29:37
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Qhc26YUJEzBW3GbkFY0mdw
+# Created by DBIx::Class::Schema::Loader v0.07042 @ 2017-02-03 15:42:03
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:xaD43qi7rNI978LdAJw/EA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

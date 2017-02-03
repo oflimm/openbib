@@ -1,17 +1,21 @@
+use utf8;
 package OpenBib::Schema::System::Result::UserTemplate;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+OpenBib::Schema::System::Result::UserTemplate
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-OpenBib::Schema::System::Result::UserTemplate
+=head1 TABLE: C<user_template>
 
 =cut
 
@@ -53,24 +57,20 @@ __PACKAGE__->add_columns(
   "templateid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
 );
-__PACKAGE__->set_primary_key("id");
 
-=head1 RELATIONS
+=head1 PRIMARY KEY
 
-=head2 userid
+=over 4
 
-Type: belongs_to
+=item * L</id>
 
-Related object: L<OpenBib::Schema::System::Result::Userinfo>
+=back
 
 =cut
 
-__PACKAGE__->belongs_to(
-  "userid",
-  "OpenBib::Schema::System::Result::Userinfo",
-  { id => "userid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
-);
+__PACKAGE__->set_primary_key("id");
+
+=head1 RELATIONS
 
 =head2 templateid
 
@@ -84,12 +84,27 @@ __PACKAGE__->belongs_to(
   "templateid",
   "OpenBib::Schema::System::Result::Templateinfo",
   { id => "templateid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
+);
+
+=head2 userid
+
+Type: belongs_to
+
+Related object: L<OpenBib::Schema::System::Result::Userinfo>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "userid",
+  "OpenBib::Schema::System::Result::Userinfo",
+  { id => "userid" },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2016-01-22 11:29:37
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:q/X2cyB4nCKL4HIHLFDw/A
+# Created by DBIx::Class::Schema::Loader v0.07042 @ 2017-02-03 15:42:03
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:cyQuEqI+tfmgKpd4H4Qhwg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

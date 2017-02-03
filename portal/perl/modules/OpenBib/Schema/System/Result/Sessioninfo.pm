@@ -1,17 +1,21 @@
+use utf8;
 package OpenBib::Schema::System::Result::Sessioninfo;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+OpenBib::Schema::System::Result::Sessioninfo
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-OpenBib::Schema::System::Result::Sessioninfo
+=head1 TABLE: C<sessioninfo>
 
 =cut
 
@@ -121,24 +125,20 @@ __PACKAGE__->add_columns(
   "bibsonomy_sync",
   { data_type => "text", is_nullable => 1 },
 );
-__PACKAGE__->set_primary_key("id");
 
-=head1 RELATIONS
+=head1 PRIMARY KEY
 
-=head2 eventlogs
+=over 4
 
-Type: has_many
+=item * L</id>
 
-Related object: L<OpenBib::Schema::System::Result::Eventlog>
+=back
 
 =cut
 
-__PACKAGE__->has_many(
-  "eventlogs",
-  "OpenBib::Schema::System::Result::Eventlog",
-  { "foreign.sid" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
+__PACKAGE__->set_primary_key("id");
+
+=head1 RELATIONS
 
 =head2 eventlogjsons
 
@@ -151,6 +151,21 @@ Related object: L<OpenBib::Schema::System::Result::Eventlogjson>
 __PACKAGE__->has_many(
   "eventlogjsons",
   "OpenBib::Schema::System::Result::Eventlogjson",
+  { "foreign.sid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 eventlogs
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::Eventlog>
+
+=cut
+
+__PACKAGE__->has_many(
+  "eventlogs",
+  "OpenBib::Schema::System::Result::Eventlog",
   { "foreign.sid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -246,8 +261,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2016-01-22 11:29:37
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:CPrLhkm3z6UCU3p9Rcop/Q
+# Created by DBIx::Class::Schema::Loader v0.07042 @ 2017-02-03 15:42:03
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:mlS5riRgawci0O50eVT2yQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

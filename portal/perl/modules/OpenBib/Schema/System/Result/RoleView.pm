@@ -1,17 +1,21 @@
+use utf8;
 package OpenBib::Schema::System::Result::RoleView;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+OpenBib::Schema::System::Result::RoleView
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-OpenBib::Schema::System::Result::RoleView
+=head1 TABLE: C<role_view>
 
 =cut
 
@@ -53,24 +57,20 @@ __PACKAGE__->add_columns(
   "viewid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
 );
-__PACKAGE__->set_primary_key("id");
 
-=head1 RELATIONS
+=head1 PRIMARY KEY
 
-=head2 viewid
+=over 4
 
-Type: belongs_to
+=item * L</id>
 
-Related object: L<OpenBib::Schema::System::Result::Viewinfo>
+=back
 
 =cut
 
-__PACKAGE__->belongs_to(
-  "viewid",
-  "OpenBib::Schema::System::Result::Viewinfo",
-  { id => "viewid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
-);
+__PACKAGE__->set_primary_key("id");
+
+=head1 RELATIONS
 
 =head2 roleid
 
@@ -84,12 +84,27 @@ __PACKAGE__->belongs_to(
   "roleid",
   "OpenBib::Schema::System::Result::Roleinfo",
   { id => "roleid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
+);
+
+=head2 viewid
+
+Type: belongs_to
+
+Related object: L<OpenBib::Schema::System::Result::Viewinfo>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "viewid",
+  "OpenBib::Schema::System::Result::Viewinfo",
+  { id => "viewid" },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2016-01-22 11:29:37
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:NHPGu/IGSujOhvIBcTk2cA
+# Created by DBIx::Class::Schema::Loader v0.07042 @ 2017-02-03 15:42:03
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:hTN6Hsj5y3Yrb7tF6TROgw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

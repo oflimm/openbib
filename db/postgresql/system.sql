@@ -173,7 +173,17 @@ CREATE TABLE updatelog (
  corporatebody_count  INT,
  classification_count INT,
  subject_count        INT,
- holding_count        INT 
+ holding_count        INT,
+ is_incremental       INT,
+ duration_stage_collect     INTERVAL,
+ duration_stage_unpack      INTERVAL,
+ duration_stage_convert     INTERVAL,
+ duration_stage_load_db          INTERVAL,
+ duration_stage_load_index       INTERVAL,
+ duration_stage_load_authorities INTERVAL,
+ duration_stage_switch            INTERVAL,
+ duration_stage_analyze           INTERVAL,
+ duration_stage_update_enrichment INTERVAL
 );
 
 drop table IF EXISTS cartitem;

@@ -22,6 +22,7 @@ FOREACH update IN updates.all;
                     }
 
     tstamp_start = update.tstamp_start
+    is_incremental = update.is_incremental
     duration     = update.duration
     duration_per_stage = {
        collect          = update.duration_stage_collect

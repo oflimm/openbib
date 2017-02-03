@@ -100,6 +100,16 @@ my $meta2sqlexe   = "$config->{'conv_dir'}/meta2sql.pl";
 my $meta2mexexe   = "$config->{'conv_dir'}/meta2mex.pl";
 my $pgsqlexe      = "/usr/bin/psql -U $config->{'dbuser'} ";
 
+my $duration_stage_collect = 0;
+my $duration_stage_unpack = 0;
+my $duration_stage_convert = 0;
+my $duration_stage_load_db = 0;
+my $duration_stage_load_index = 0;
+my $duration_stage_load_authorities = 0;
+my $duration_stage_switch = 0;
+my $duration_stage_analyze = 0;
+my $duration_stage_update_enrichment = 0;
+
 if (!$database){
   $logger->fatal("Kein Katalog mit --database= ausgewaehlt");
   exit;
@@ -137,6 +147,7 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
 
     if ($sync){
         my $atime = new Benchmark;
+	my $duration_stage_collect_start = ParseDate("now");
         
         if ($database && -e "$config->{autoconv_dir}/filter/$database/pre_remote.pl"){
             $logger->info("### $database: Verwende Plugin pre_remote.pl");
@@ -182,6 +193,12 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
         $resulttime    =~s/(\d+\.\d+) .*/$1/;
         
         $logger->info("### $database: Benoetigte Zeit -> $resulttime");
+
+	my $duration_stage_collect_end = ParseDate("now");
+	
+	$duration_stage_collect = DateCalc($duration_stage_collect_start,$duration_stage_collect_end);
+	$duration_stage_collect = Delta_Format($duration_stage_collect, 0,"%st seconds");
+
     }
 }
 
@@ -189,6 +206,7 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
 
 {    
     my $atime = new Benchmark;
+    my $duration_stage_unpack_start = ParseDate("now");
 
     if ($database && -e "$config->{autoconv_dir}/filter/$database/pre_unpack.pl"){
         $logger->info("### $database: Verwende Plugin pre_unpack.pl");
@@ -226,6 +244,11 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
         system("$config->{autoconv_dir}/filter/$database/post_unpack.pl $database");
     }
 
+    my $duration_stage_unpack_end = ParseDate("now");
+    
+    $duration_stage_unpack = DateCalc($duration_stage_unpack_start,$duration_stage_unpack_end);
+    $duration_stage_unpack = Delta_Format($duration_stage_unpack, 0,"%st seconds");
+
     if (! -e "$rootdir/data/$database/meta.title" || ! -s "$rootdir/data/$database/meta.title"){
         $logger->error("### $database: Keine Daten vorhanden");
 
@@ -239,6 +262,7 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
 
 {
     my $atime = new Benchmark;
+    my $duration_stage_convert_start = ParseDate("now");
 
     # Konvertierung Exportdateien -> SQL
     if ($database && -e "$config->{autoconv_dir}/filter/$database/pre_conv.pl"){
@@ -286,6 +310,11 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
     my $resulttime = timestr($timeall,"nop");
     $resulttime    =~s/(\d+\.\d+) .*/$1/;
 
+    my $duration_stage_convert_end = ParseDate("now");
+    
+    $duration_stage_convert = DateCalc($duration_stage_convert_start,$duration_stage_convert_end);
+    $duration_stage_convert = Delta_Format($duration_stage_convert, 0,"%st seconds");
+
     $logger->info("### $database: Benoetigte Zeit -> $resulttime");     
 }
 
@@ -293,6 +322,7 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
 
 {
     my $atime = new Benchmark;
+    my $duration_stage_load_db_start = ParseDate("now");
 
     $logger->info("### $database: Temporaere Datenbank erzeugen");
 
@@ -355,6 +385,11 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
     my $resulttime = timestr($timeall,"nop");
     $resulttime    =~s/(\d+\.\d+) .*/$1/;
 
+    my $duration_stage_load_db_end = ParseDate("now");
+    
+    $duration_stage_load_db = DateCalc($duration_stage_load_db_start,$duration_stage_load_db_end);
+    $duration_stage_load_db = Delta_Format($duration_stage_load_db, 0,"%st seconds");
+    
     $logger->info("### $database: Benoetigte Zeit -> $resulttime");     
 }
 
@@ -362,6 +397,7 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
 
 {
     my $atime = new Benchmark;
+    my $duration_stage_load_index_start = ParseDate("now");
 
     my $indexpath    = $config->{xapian_index_base_path}."/$database";
     my $indexpathtmp = $config->{xapian_index_base_path}."/$databasetmp";
@@ -382,6 +418,11 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
     my $resulttime = timestr($timeall,"nop");
     $resulttime    =~s/(\d+\.\d+) .*/$1/;
 
+    my $duration_stage_load_index_end = ParseDate("now");
+    
+    $duration_stage_load_index = DateCalc($duration_stage_load_index_start,$duration_stage_load_index_end);
+    $duration_stage_load_index = Delta_Format($duration_stage_load_index, 0,"%st seconds");
+    
     $logger->info("### $database: Benoetigte Zeit -> $resulttime");     
 }
 
@@ -389,6 +430,7 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
 
 {    
     my $atime = new Benchmark;
+    my $duration_stage_load_authorities_start = ParseDate("now");
 
     my $authority_indexpathtmp = $config->{xapian_index_base_path}."/$authoritytmp";
 
@@ -412,6 +454,11 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
     my $resulttime = timestr($timeall,"nop");
     $resulttime    =~s/(\d+\.\d+) .*/$1/;
 
+    my $duration_stage_load_authorities_end = ParseDate("now");
+    
+    $duration_stage_load_authorities = DateCalc($duration_stage_load_authorities_start,$duration_stage_load_authorities_end);
+    $duration_stage_load_authorities = Delta_Format($duration_stage_load_authorities, 0,"%st seconds");
+    
     $logger->info("### $database: Benoetigte Zeit -> $resulttime");     
 }
 
@@ -515,6 +562,7 @@ else {
 # Tabellen aus temporaerer Datenbank in finale Datenbank verschieben
 unless ($incremental){
     my $atime = new Benchmark;
+    my $duration_stage_switch_start = ParseDate("now");
 
     $logger->info("### $database: Tabellen aus temporaerer Datenbank in finale Datenbank verschieben");
 
@@ -570,12 +618,19 @@ unless ($incremental){
     my $resulttime = timestr($timeall,"nop");
     $resulttime    =~s/(\d+\.\d+) .*/$1/;
 
+    my $duration_stage_switch_end = ParseDate("now");
+    
+    $duration_stage_switch = DateCalc($duration_stage_switch_start,$duration_stage_switch_end);
+    $duration_stage_switch = Delta_Format($duration_stage_switch, 0,"%st seconds");
+    
     $logger->info("### $database: Benoetigte Zeit -> $resulttime");     
 }
 
 # Titelanzahl in Datenbank festhalten
 
 if ($updatemaster){
+    my $duration_stage_analyze_start = ParseDate("now");
+
     $logger->info("### $database: Updating Titcount");    
     system("$config->{'base_dir'}/bin/updatetitcount.pl --database=$database");
 
@@ -584,6 +639,12 @@ if ($updatemaster){
     foreach my $thistype (qw/1 3 4 5 6 7 9/){
         system("$config->{'base_dir'}/bin/gen_bestof.pl --type=$thistype --database=$database");
     }
+
+    my $duration_stage_analyze_end = ParseDate("now");
+    
+    $duration_stage_analyze = DateCalc($duration_stage_analyze_start,$duration_stage_analyze_end);
+    $duration_stage_analyze = Delta_Format($duration_stage_analyze, 0,"%st seconds");
+    
 }
 
 # ISBNs etc. zentral merken bei zentraler Anreicherungs-Datenbank
@@ -593,11 +654,21 @@ if ($updatemaster){
 #    system("$config->{'base_dir'}/bin/update_all_titles_table.pl --database=$database");
 #}
 
-# Ansonsten bei jedem Node
-my $cmd = "$config->{'base_dir'}/bin/update_all_titles_table.pl --database=$database -bulk-insert";
+{
+    my $duration_stage_update_enrichment_start = ParseDate("now");
 
-$logger->info("### $database: Updating All-Titles table");
-system($cmd);
+    # Ansonsten bei jedem Node
+    my $cmd = "$config->{'base_dir'}/bin/update_all_titles_table.pl --database=$database -bulk-insert";
+    
+    $logger->info("### $database: Updating All-Titles table");
+    system($cmd);
+    
+    my $duration_stage_update_enrichment_end = ParseDate("now");
+    
+    $duration_stage_update_enrichment = DateCalc($duration_stage_update_enrichment_start,$duration_stage_update_enrichment_end);
+    $duration_stage_update_enrichment = Delta_Format($duration_stage_update_enrichment, 0,"%st seconds");
+
+}
 
 CLEANUP:
 
@@ -636,6 +707,20 @@ if ($serverinfo){
     $counter->{dbid} = $dbinfo->id;
     $counter->{tstamp_start} = UnixDate($tstamp_start,"%Y-%m-%d %T");
     $counter->{duration} = $duration;
+    $counter->{is_incremental} = (defined $incremental && $incremental)?1:0;
+    $counter->{duration_stage_collect} = $duration_stage_collect;
+    $counter->{duration_stage_unpack} = $duration_stage_unpack;
+    $counter->{duration_stage_convert} = $duration_stage_convert;
+    $counter->{duration_stage_load_db} = $duration_stage_load_db;
+    $counter->{duration_stage_load_index} = $duration_stage_load_index;
+    $counter->{duration_stage_load_authorities} = $duration_stage_load_authorities;
+    $counter->{duration_stage_switch} = $duration_stage_switch;
+    $counter->{duration_stage_analyze} = $duration_stage_analyze;
+    $counter->{duration_stage_update_enrichment} = $duration_stage_update_enrichment;
+
+    if ($logger->is_debug){
+	$logger->debug(YAML::Dump($counter));
+    }
     
     $serverinfo->updatelogs->create($counter);
 }

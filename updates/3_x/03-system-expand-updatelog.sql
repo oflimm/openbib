@@ -1,0 +1,10 @@
+alter TABLE updatelog add column is_incremental INT;
+alter TABLE updatelog add column duration_stage_collect  INTERVAL;
+alter TABLE updatelog add column duration_stage_unpack INTERVAL;
+alter TABLE updatelog add column duration_stage_convert INTERVAL;
+alter TABLE updatelog add column duration_stage_load_db INTERVAL;
+alter TABLE updatelog add column duration_stage_load_index INTERVAL;
+alter TABLE updatelog add column duration_stage_load_authorities INTERVAL;
+alter TABLE updatelog add column duration_stage_switch INTERVAL;
+alter TABLE updatelog add column duration_stage_analyze INTERVAL;
+alter TABLE updatelog add column duration_stage_update_enrichment INTERVAL;

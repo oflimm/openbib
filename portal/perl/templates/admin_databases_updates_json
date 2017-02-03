@@ -23,6 +23,17 @@ FOREACH update IN updates.all;
 
     tstamp_start = update.tstamp_start
     duration     = update.duration
+    duration_per_stage = {
+       collect          = update.duration_stage_collect
+       unpack           = update.duration_stage_unpack
+       convert          = update.duration_stage_convert
+       load_db          = update.duration_stage_load_db
+       load_index       = update.duration_stage_load_index
+       load_authorities = update.duration_stage_load_authorities
+       switch           = update.duration_stage_switch
+       analyze          = update.duration_stage_analyze
+       update_enrichmnt = update.duration_stage_update_enrichment
+    }
     count       = {
        title_all  = update.title_count
 

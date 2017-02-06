@@ -133,7 +133,11 @@ $(document).ready(function(){
     </div>
 [% IF record_exists %]
     <div class="ob-representation">
-<a class="ob-representation_rdf" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
+    [%
+        viewerURL = normdata.${"T2662"}.first.content ;
+        cdmid = viewerURL.match('id/(\d+)').first;
+    %]
+<a href="http://dfg-viewer.de/show/?set[mets]=http%3A%2F%2Fwww.ub.uni-koeln.de%2Fcdm4%2Fmets_gateway.php%3FCISOROOT%3D%2Fmuenzen%26CISOPTR%3D[% cdmid %]" target="_blank"><img src="/images/openbib/views/muenzen/dfgviewer.png" alt="DFG-Viewer" name="DFG-Viewer" /></a>&nbsp;
 <a class="ob-representation_json" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
     </div>
 [% END %]

@@ -48,6 +48,8 @@ title:
   'Erscheinungsjahr': '0425'
   'ISBN': '0540'
   'Inhalt': '0750'
+  'Quelle': '0508'
 
 holding:
-  'Standorte': '0014'
+  'Signatur': '0014'
+  'Standorte': '0016'

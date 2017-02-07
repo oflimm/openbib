@@ -8,7 +8,7 @@ tracelevel:
 # XPath-Parameter
 
 # Record-Selector
-recordselector: /FAUST_Datenbank/*
+recordselector: '/FAUST_Datenbank/*'
 
 # Feld der eindeutigen Titel-ID
 uniqueidfield: 'Objektnummer'

@@ -266,15 +266,22 @@ close(HOLDING);
 sub parse_record {
     my($t, $titset)= @_;
 
+    my $logger = get_logger();
+
     my $title_ref = {
         'fields' => {},
     };
 
+    if ($logger->is_debug){
+	$logger->debug($titset->toString);
+    }
     my @ids= $titset->findnodes($convconfig->{uniqueidfield});
 
     my $titleid = $ids[0]->first_child()->text();
 
     $titleid=~s/\//_/g;
+
+    $logger->debug("ID: $titleid");
 
     if ($have_titleid_ref->{$titleid}){
         $logger->error("Doppelte ID: $titleid");
@@ -282,7 +289,9 @@ sub parse_record {
         return;
     }
 
-    my $is_deleted = $titset->findnodes($convconfig->{is_deleted});
+    my $is_deleted;
+
+    $is_deleted = $titset->findnodes($convconfig->{is_deleted}) if (defined $convconfig->{is_deleted});
 
     if ($is_deleted){
 	$logger->error("Geloeschte ID: $titleid");
@@ -295,12 +304,15 @@ sub parse_record {
     $title_ref->{id} = $titleid; 
 
     foreach my $kateg (keys %{$convconfig->{title}}){
+	$logger->debug("Processing $kateg");
+
 
         my @elements = $titset->findnodes($kateg);
 
         my @parts = ();
         
         foreach my $element (@elements){
+
             next unless (defined $element->first_child());
             my $content = konv($element->first_child()->text());
 

@@ -56,5 +56,5 @@ if ($dbinfo->protocol eq "http" && $dbinfo->remoteuser ne "" && $dbinfo->remotep
 
 print "### $pool: Datenabzug via http von $url\n";
 system("cd $pooldir/$pool ; rm meta.*");
-system("$wgetexe $httpauthstring -P $pooldir/$pool/ $url > /dev/null 2>&1 ");
+#system("$wgetexe $httpauthstring -P $pooldir/$pool/ $url > /dev/null 2>&1 ");
 system("cd $pooldir/$pool; $simplexml2metaexe --inputfile=".$dbinfo->titlefile." --configfile=$confdir/$pool.yml; gzip meta.*");

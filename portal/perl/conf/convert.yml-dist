@@ -808,6 +808,8 @@ convtab:
           'subject': 20
           'subjectstring': 20
           'freesearch': 20
+        facet:
+          'subject': 1
       '4726':         # EUROP KatNr.
         index:
           'freesearch': 20
@@ -816,11 +818,15 @@ convtab:
           'subject': 20
           'subjectstring': 20
           'freesearch': 20
+        facet:
+          'subject': 1
       '4728':         # EUROP Formales Schlagwort
         index:
           'subject': 20
           'subjectstring': 20
           'freesearch': 20
+        facet:
+          'subject': 1
       '5050':         # Bibkey
         index:
           'bkey': 1

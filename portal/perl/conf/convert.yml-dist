@@ -849,6 +849,7 @@ convtab:
       '0310': 1
       '0331': 1
       '0335': 1
+      '0360': 1
       '0403': 1
       '0410': 1
       '0412': 1
@@ -1369,6 +1370,10 @@ convtab:
           'title': 1
           'titlestring': 1
           'freesearch': 1
+      '0360':       # Unterreihe
+        index:
+          'title': 40
+          'freesearch': 40
       '0361':       # Vorlage beigefuegtes Werk
         index:
           'title': 40
@@ -1683,6 +1688,8 @@ convtab:
           'subjectstring': 20
           'freesearch': 20
           'ft4300': 1
+        facet:
+          'subject': 1
       '4307':         # Provenienzen Koerperschaften
         index:
           'corporatebody': 20
@@ -1733,6 +1740,8 @@ convtab:
           'subject': 20
           'subjectstring': 20
           'freesearch': 20
+        facet:
+          'subject': 1
       '4726':         # EUROP KatNr.
         index:
           'freesearch': 20
@@ -1741,11 +1750,15 @@ convtab:
           'subject': 20
           'subjectstring': 20
           'freesearch': 20
+        facet:
+          'subject': 1
       '4728':         # EUROP Formales Schlagwort
         index:
           'subject': 20
           'subjectstring': 20
           'freesearch': 20
+        facet:
+          'subject': 1
       '5050':         # Bibkey
         index:
           'bkey': 1

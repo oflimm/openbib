@@ -25,6 +25,8 @@ person:
 
 # Koerperschaften
 corporatebody:
+ 'Urheber': '0200'
+ 'bet_KS': '0201'
  'Konferenz': '0201'
 
 # Systematik
@@ -46,9 +48,22 @@ title:
   'Ausgabe': '0403'
   'Umfang_Ill_Format': '0433'
   'Erscheinungsjahr': '0425'
+  'Ersch_Jahr': '0425'
   'ISBN': '0540'
   'Inhalt': '0750'
   'Quelle': '0508'
+  'Zeitschrift_Zeitung': '0590'
+  'Jahr': '0425'
+  'Jg': '0476' # Jahrgang	
+  'enthalten_in': '0590'
+  'Originaltitel': '0304'
+  'ergaenzende_Angaben': '0365'
+  'Hochschulschriftenvermerk': '0519'
+  'Heft': '0477'
+  'von_S': '0478'
+  'von_Seite': '0478'
+  'bis_S': '0479'
+  'bis_Seite': '0479'
 
 holding:
   'Signatur': '0014'

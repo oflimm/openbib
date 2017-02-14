@@ -52,11 +52,12 @@ use Text::CSV_XS;
 use YAML;
 use DBIx::Class::ResultClass::HashRefInflator;
 
-my ($help,$logfile,$laufend);
+my ($help,$logfile,$laufend,$sigel);
 
 &GetOptions(
     "logfile"  => \$logfile,
     "laufend"  => \$laufend,
+    "sigel=s"  => \$sigel,
     "help"     => \$help,
     );
 
@@ -64,7 +65,12 @@ if ($help){
     print_help();
 }
 
-$logfile=($logfile)?$logfile:'/var/log/openbib/zeitschriften2csv.log';
+if ($sigel){
+    $logfile=($logfile)?$logfile:'/var/log/openbib/$sigel-zeitschriften2csv.log';
+}
+else {
+    $logfile=($logfile)?$logfile:'/var/log/openbib/zeitschriften2csv.log';
+}
 
 my $log4Perl_config = << "L4PCONF";
 log4perl.rootLogger=INFO, LOGFILE, Screen
@@ -90,6 +96,10 @@ my $out;
 
 my $filename = ($laufend)?'uzk-zeitschriften-laufend.csv':'uzk-zeitschriften.csv';
 
+if ($sigel){
+    $filename=$sigel."-zeitschriften.csv";
+}
+
 open $out, ">:encoding(utf8)", $filename;
 
 my $outputcsv = Text::CSV_XS->new ({
@@ -99,7 +109,7 @@ my $outputcsv = Text::CSV_XS->new ({
 
 my $out_ref = [];
 
-push @{$out_ref}, ('ZDB-ID','Bibliothek','Person/Körperschaft','AST','Titel','Zusatz','Verlag','ISSN','Signatur','Standort','Verlauf');
+push @{$out_ref}, ('ZDB-ID','Bibliothek','Person/Körperschaft','AST','Titel','Zusatz','WST','Titelangaben','Verlag','Verlagsort','ISSN','Signatur','Standort','Verlauf');
 
 $outputcsv->print($out,$out_ref);
 
@@ -109,6 +119,14 @@ my $catalog = OpenBib::Catalog::Factory->create_catalog({database => 'instzs'});
 my $where_ref = {
     'title_holdings.titleid' => \'IS NOT NULL',
 };
+
+if ($sigel){
+   $where_ref = {
+    'title_holdings.titleid' => \'IS NOT NULL',
+    'holding_fields.field' => 3330,
+    'holding_fields.content' => $sigel,
+   };
+}
 
 my $options_ref = {
 	select   => ['title_holdings.titleid','me.id','titleid.titlecache'],
@@ -120,6 +138,11 @@ my $options_ref = {
 };
  
 if ($laufend){
+   if ($sigel){
+      $logger->error("Fuer ein Sigel koennen derzeit keine laufenden Zeitschriften ermittelt werden.");
+      exit;
+   }
+
    $where_ref = {
     'title_holdings.titleid' => \'IS NOT NULL',
     'holding_fields.field' => 1204,
@@ -162,10 +185,13 @@ while (my $zeitschrift = $zeitschriften->next()){
 
     my @pers_korp  = ();
     my @ast        = ();
+    my @wst        = ();
     my @titel      = ();
     my @zusatz     = ();
     my @verlag     = ();
+    my @ort        = ();
     my @issn       = ();
+    my @titelangaben = ();
     my $signatur   = "";
     my $standort   = "";
     my $besitzer   = "";
@@ -177,6 +203,11 @@ while (my $zeitschrift = $zeitschriften->next()){
     foreach my $item_ref (@{$fields_ref->{T0310}}){
         push @ast, cleanup_content($item_ref->{content});
     }
+
+    foreach my $item_ref (@{$fields_ref->{T0370}}){
+        push @wst, cleanup_content($item_ref->{content});
+    }
+
     foreach my $item_ref (@{$fields_ref->{T0331}}){
         push @titel, cleanup_content($item_ref->{content});
     }
@@ -187,6 +218,14 @@ while (my $zeitschrift = $zeitschriften->next()){
 
     foreach my $item_ref (@{$fields_ref->{T0412}}){
         push @verlag, cleanup_content($item_ref->{content});
+    }
+
+    foreach my $item_ref (@{$fields_ref->{T0410}}){
+        push @ort, cleanup_content($item_ref->{content});
+    }
+
+    foreach my $item_ref (@{$fields_ref->{T0507}}){
+        push @titelangaben, cleanup_content($item_ref->{content});
     }
 
     foreach my $item_ref (@{$fields_ref->{T0543}}){
@@ -222,7 +261,7 @@ while (my $zeitschrift = $zeitschriften->next()){
 
     next unless ($verlauf);
 
-    push @{$out_ref}, ($titleid,$besitzer,join(' ; ',@pers_korp),join(' ; ',@ast),join(' ; ',@titel),join(' ; ',@zusatz),join(' ; ',@verlag),join(' ; ',uniq @issn),$signatur,$standort,$verlauf);    
+    push @{$out_ref}, ($titleid,$besitzer,join(' ; ',@pers_korp),join(' ; ',@ast),join(' ; ',@titel),join(' ; ',@zusatz),join(' ; ',@wst),join(' ; ',@titelangaben),join(' ; ',@verlag),join(' ; ',@ort),join(' ; ',uniq @issn),$signatur,$standort,$verlauf);    
 
     $outputcsv->print($out,$out_ref);
 

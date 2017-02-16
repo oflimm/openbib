@@ -201,6 +201,10 @@ if ($cluster){
     }
 }
 
+$logger->info("### Offene Bestellungen vorziehen");
+
+autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['bestellungen'] });
+
 my @threads;
 
 if ($test){
@@ -219,7 +223,7 @@ foreach my $thread (@threads) {
 
 $logger->info("### Offene Bestellungen");
 
-autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['bestellungen'] });
+autoconvert({ updatemaster => $updatemaster, databases => ['bestellungen'] });
 
 ##############################
 

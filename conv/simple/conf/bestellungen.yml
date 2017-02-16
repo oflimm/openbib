@@ -55,4 +55,5 @@ exclude:
        databases:
           - inst001
        locations:
+          - 'DE-38'
           - 'DE-38-USBFB'

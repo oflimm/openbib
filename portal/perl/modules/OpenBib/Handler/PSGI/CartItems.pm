@@ -37,6 +37,7 @@ use utf8;
 use URI::Escape;
 
 use DBI;
+use Email::Valid;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use MIME::Lite;

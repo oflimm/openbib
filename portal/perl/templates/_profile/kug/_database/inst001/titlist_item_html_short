@@ -216,6 +216,12 @@
      title = item.${'T0331'}.first.content;
      IF item.${'T0310'}.first.content;
          title = item.${'T0310'}.first.content;
+     ELSE ;
+        # Einbeziehung der Unterreihen
+        IF item.${"T0360"}.defined ;
+           unterreihe = item.${"T0360"}.first.content ;
+           title = "${title} / ${unterreihe}" ;
+        END ;
      END;
 
      # Einbeziehung der Zaehlfelder T5100
@@ -227,12 +233,6 @@
            title = "${order}. ${title}";
         END;
      END;
-
-     # Einbeziehung der Unterreihen
-     IF NOT title.match(' / ') && item.${"T0360"}.defined ;
-        unterreihe = item.${"T0360"}.first.content ;
-        title = "${title} / ${unterreihe}" ;
-     END ;
 
      # Einbeziehung des ersten Gesamttitels T5005
      IF title && super;

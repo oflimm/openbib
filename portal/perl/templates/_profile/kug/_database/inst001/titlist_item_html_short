@@ -229,7 +229,7 @@
      END;
 
      # Einbeziehung der Unterreihen
-     IF item.${"T0360"}.defined ;
+     IF NOT title.match(' / ') && item.${"T0360"}.defined ;
         unterreihe = item.${"T0360"}.first.content ;
         title = "${title} / ${unterreihe}" ;
      END ;

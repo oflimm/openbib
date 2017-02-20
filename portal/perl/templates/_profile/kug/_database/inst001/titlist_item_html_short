@@ -228,6 +228,12 @@
         END;
      END;
 
+     # Einbeziehung der Unterreihen
+     IF item.${"T0360"}.defined ;
+        unterreihe = item.${"T0360"}.first.content ;
+        title = "${title} / ${unterreihe}" ;
+     END ;
+
      # Einbeziehung des ersten Gesamttitels T5005
      IF title && super;
         super_title = super.fields.${'0451'}.first.content;

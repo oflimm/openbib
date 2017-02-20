@@ -180,6 +180,16 @@ while (<TITLE>){
         }
     }
 
+    # KMB-Daten ohne Buchsaetze anhand 4800
+    if (defined $title_ref->{fields}{'4800'}){
+        foreach my $item (@{$title_ref->{fields}{'4800'}}){
+	    if ($item->{content}=~/^E[BKZ]A?$/){
+		push @{$element_ref}, "DE-Kn3";
+	    }
+        }
+    }
+
+    
     # Zeitschriften anhand besetzter ZDB-ID
     if (defined $title_ref->{fields}{'0572'}){
         foreach my $item (@{$title_ref->{fields}{'0012'}}){

@@ -93,7 +93,7 @@
 <button id="duration_stage_load_db_incremental">Einladen SQL (inkr.)</button>
 <button id="duration_stage_load_index">Indexierung</button>
 <button id="duration_stage_load_index_incremental">Indexierung (inkr.)</button>
-<button id="duration_stage_update_enrichment">Update Anreicherung</button>
+<button id="duration_stage_update_enrichment">Update Anreicherungs-DB</button>
 </p>
 
 <p>

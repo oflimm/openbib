@@ -63,7 +63,18 @@
     <script language="JavaScript" type="text/javascript" src="/js/jquery.flot.js"></script>
     <script language="JavaScript" type="text/javascript" src="/js/jquery.flot.tooltip.min.js"></script>
 
-[% plot_data = [] %]
+[% 
+    plot_data = [] ; 
+    plot_data_load_index = {}; 
+    plot_data_load_index_incremental = {}; 
+    plot_data_load_db = {}; 
+    plot_data_load_db_incremental = {}; 
+    plot_data_convert = {}; 
+    plot_data_convert_incremental = {}; 
+    plot_data_update_enrichment = {}; 
+    plot_data_update_enrichment_incremental = {}; 
+
+%]
 [% USE date %]
 
 <h4>[% msg.maketext("Aktualisierung") %]</h4>
@@ -72,6 +83,19 @@
 
 <div id="placeholder" style="width:600px;height:300px"></div>
 
+</p>
+
+<p>
+
+<button id="imported_titles">Titel</button>
+<button id="duration_stage_convert">Konvertierung</button>
+<button id="duration_stage_convert_incremental">Konvertierung (inkr.)</button>
+<button id="duration_stage_load_db">Einladen SQL</button>
+<button id="duration_stage_load_db_incremental">Einladen SQL (inkr.)</button>
+<button id="duration_stage_load_index">Indexierung</button>
+<button id="duration_stage_load_index_incremental">Indexierung (inkr.)</button>
+<button id="duration_stage_update_enrichment">Update Anreicherung</button>
+<button id="duration_stage_update_enrichment_incremental">Update Anreicherung (inkr.)</button>
 </p>
 
 <p>
@@ -89,7 +113,61 @@
 </thead>
 <tbody>
 [% FOREACH logentry IN updates.all %]
-[% thisdate = date.format(logentry.tstamp_start,"%s"); plot_data.push("[${thisdate}*1000,${logentry.title_count}]") %]
+[% thisdate = date.format(logentry.tstamp_start,"%s");
+
+   server = logentry.serverid.description ;
+
+   thistime_load_index = date.format("1970/01/01 ${logentry.duration_stage_load_index}",'%s'); 
+   thistime_load_db    = date.format("1970/01/01 ${logentry.duration_stage_load_db}",'%s'); 
+   thistime_convert    = date.format("1970/01/01 ${logentry.duration_stage_convert}",'%s'); 
+   thistime_update_enrichment    = date.format("1970/01/01 ${logentry.duration_stage_update_enrichment}",'%s'); 
+
+   IF NOT plot_data_load_index.${server}.defined ;
+     plot_data_load_index.${server} = [];
+   END ;
+
+   IF NOT plot_data_load_index_incremental.${server}.defined ;
+     plot_data_load_index_incremental.${server} = [];
+   END ;
+
+   IF NOT plot_data_load_db.${server}.defined ;
+     plot_data_load_db.${server} = [];
+   END ;
+
+   IF NOT plot_data_load_db_incremental.${server}.defined ;
+     plot_data_load_db_incremental.${server} = [];
+   END ;
+
+   IF NOT plot_data_convert.${server}.defined ;
+     plot_data_convert.${server} = [];
+   END ;
+
+   IF NOT plot_data_convert_incremental.${server}.defined ;
+     plot_data_convert_incremental.${server} = [];
+   END ;
+
+   IF NOT plot_data_update_enrichment.${server}.defined ;
+     plot_data_update_enrichment.${server} = [];
+   END ;
+
+   IF NOT plot_data_update_enrichment_incremental.${server}.defined ;
+     plot_data_update_enrichment_incremental.${server} = [];
+   END ;
+
+   plot_data.push("[${thisdate}*1000,${logentry.title_count}]") ;
+   IF logentry.is_incremental == '1';
+     plot_data_load_index_incremental.${server}.push("[${thisdate}*1000+60 * 60 * 1000,${thistime_load_index}*1000+ 60 * 60 * 1000]") ;
+     plot_data_load_db_incremental.${server}.push("[${thisdate}*1000+60 * 60 * 1000,${thistime_load_db}*1000+ 60 * 60 * 1000]") ;
+     plot_data_convert_incremental.${server}.push("[${thisdate}*1000+60 * 60 * 1000,${thistime_convert}*1000+ 60 * 60 * 1000]") ;
+     plot_data_update_enrichment_incremental.${server}.push("[${thisdate}*1000+60 * 60 * 1000,${thistime_update_enrichment}*1000+ 60 * 60 * 1000]") ;
+   ELSE ;
+     plot_data_load_index.${server}.push("[${thisdate}*1000+60 * 60 * 1000,${thistime_load_index}*1000+ 60 * 60 * 1000]") ;
+     plot_data_load_db.${server}.push("[${thisdate}*1000+60 * 60 * 1000,${thistime_load_db}*1000+ 60 * 60 * 1000]") ;
+     plot_data_convert.${server}.push("[${thisdate}*1000+60 * 60 * 1000,${thistime_convert}*1000+ 60 * 60 * 1000]") ;
+     plot_data_update_enrichment.${server}.push("[${thisdate}*1000+60 * 60 * 1000,${thistime_update_enrichment}*1000+ 60 * 60 * 1000]") ;
+   END ;
+ %]
+
 <tr><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% logentry.serverid.id %]/edit?l=[% lang %]">[% logentry.serverid.hostip %]</a></td><td>[% logentry.tstamp_start %]</td><td>[% logentry.duration %]</td><td>[% logentry.title_count %]</td></tr>
 [% END %]
 </tbody>
@@ -134,6 +212,22 @@
 $(function () {
     var d = [[% plot_data.join(',') %]];
 
+    var duration_load_index = [[%- FOREACH server IN plot_data_load_index.keys.sort -%]{ label: "[% server %]", data: [[% plot_data_load_index.${server}.join(',') %]] },[%- END -%]];
+
+    var duration_load_index_incremental = [[%- FOREACH server IN plot_data_load_index_incremental.keys.sort -%]{ label: "[% server %]", data: [[% plot_data_load_index_incremental.${server}.join(',') %]] },[%- END -%]];
+
+    var duration_load_db = [[%- FOREACH server IN plot_data_load_db.keys.sort -%]{ label: "[% server %]", data: [[% plot_data_load_db.${server}.join(',') %]] },[%- END -%]];
+
+    var duration_load_db_incremental = [[%- FOREACH server IN plot_data_load_db_incremental.keys.sort -%]{ label: "[% server %]", data: [[% plot_data_load_db_incremental.${server}.join(',') %]] },[%- END -%]];
+
+    var duration_convert = [[%- FOREACH server IN plot_data_convert.keys.sort -%]{ label: "[% server %]", data: [[% plot_data_convert.${server}.join(',') %]] },[%- END -%]];
+
+    var duration_convert_incremental = [[%- FOREACH server IN plot_data_convert_incremental.keys.sort -%]{ label: "[% server %]", data: [[% plot_data_convert_incremental.${server}.join(',') %]] },[%- END -%]];
+
+    var duration_update_enrichment = [[%- FOREACH server IN plot_data_update_enrichment.keys.sort -%]{ label: "[% server %]", data: [[% plot_data_update_enrichment.${server}.join(',') %]] },[%- END -%]];
+
+    var duration_update_enrichment_incremental = [[%- FOREACH server IN plot_data_update_enrichment_incremental.keys.sort -%]{ label: "[% server %]", data: [[% plot_data_update_enrichment_incremental.${server}.join(',') %]] },[%- END -%]];
+
     // first correct the timestamps - they are recorded as the daily
     // midnights in UTC+0100, but Flot always displays dates in UTC
     // so we have to add one hour to hit the midnights in the plot
@@ -159,7 +253,220 @@ $(function () {
     };
     
     $.plot($("#placeholder"), [{ data: d, label: "Bestandsentwicklung",}], options);
+
+    $("#imported_titles").click(function () {
+
+       // first correct the timestamps - they are recorded as the daily
+       // midnights in UTC+0100, but Flot always displays dates in UTC
+       // so we have to add one hour to hit the midnights in the plot
+       for (var i = 0; i < d.length; ++i)
+         d[i][0] += 60 * 60 * 1000;
+       
+       var options = {
+           xaxis: { mode: "time", tickLength: 5, timeformat: "%d.%m.%y" },
+           selection: { mode: "x" },
+           legend: { position: "nw", },
+           series: {
+             lines: { show: true },
+             points: { show: true },
+           },
+           grid: { hoverable: true, },
+           tooltip: true,
+           tooltipOpts: {
+              content: "%x: <b>%y Titel</b>",
+              defaultTheme: false,
+           },
+
+       };
+
+       $.plot($("#placeholder"), [{ data: d, label: "Bestandsentwicklung",}], options);
+
+    });
     
+
+    $("#duration_stage_load_index").click(function () {
+
+      var options = {
+          xaxis: { mode: "time", tickLength: 5, timeformat: "%d.%m.%y" },
+          yaxis: { mode: "time" },
+          selection: { mode: "x" },
+          legend: { position: "nw", },
+          series: {
+            lines: { show: true },
+            points: { show: true },
+          },
+          grid: { hoverable: true, },
+          tooltip: true,
+          tooltipOpts: {
+             content: "%x: <b>%y Dauer</b>",
+             defaultTheme: false,
+          },
+      };
+    
+       $.plot($("#placeholder"), duration_load_index, options);
+    });
+    
+
+    $("#duration_stage_load_index_incremental").click(function () {
+
+      var options = {
+          xaxis: { mode: "time", tickLength: 5, timeformat: "%d.%m.%y" },
+          yaxis: { mode: "time" },
+          selection: { mode: "x" },
+          legend: { position: "nw", },
+          series: {
+            lines: { show: true },
+            points: { show: true },
+          },
+          grid: { hoverable: true, },
+          tooltip: true,
+          tooltipOpts: {
+             content: "%x: <b>%y Dauer</b>",
+             defaultTheme: false,
+          },
+      };
+    
+       $.plot($("#placeholder"), duration_load_index_incremental, options);
+    });
+
+
+    $("#duration_stage_load_db").click(function () {
+
+      var options = {
+          xaxis: { mode: "time", tickLength: 5, timeformat: "%d.%m.%y" },
+          yaxis: { mode: "time" },
+          selection: { mode: "x" },
+          legend: { position: "nw", },
+          series: {
+            lines: { show: true },
+            points: { show: true },
+          },
+          grid: { hoverable: true, },
+          tooltip: true,
+          tooltipOpts: {
+             content: "%x: <b>%y Dauer</b>",
+             defaultTheme: false,
+          },
+      };
+    
+       $.plot($("#placeholder"), duration_load_db, options);
+    });
+    
+
+    $("#duration_stage_load_db_incremental").click(function () {
+
+      var options = {
+          xaxis: { mode: "time", tickLength: 5, timeformat: "%d.%m.%y" },
+          yaxis: { mode: "time" },
+          selection: { mode: "x" },
+          legend: { position: "nw", },
+          series: {
+            lines: { show: true },
+            points: { show: true },
+          },
+          grid: { hoverable: true, },
+          tooltip: true,
+          tooltipOpts: {
+             content: "%x: <b>%y Dauer</b>",
+             defaultTheme: false,
+          },
+      };
+    
+       $.plot($("#placeholder"), duration_load_db_incremental, options);
+    });
+
+
+    $("#duration_stage_convert").click(function () {
+
+      var options = {
+          xaxis: { mode: "time", tickLength: 5, timeformat: "%d.%m.%y" },
+          yaxis: { mode: "time" },
+          selection: { mode: "x" },
+          legend: { position: "nw", },
+          series: {
+            lines: { show: true },
+            points: { show: true },
+          },
+          grid: { hoverable: true, },
+          tooltip: true,
+          tooltipOpts: {
+             content: "%x: <b>%y Dauer</b>",
+             defaultTheme: false,
+          },
+      };
+    
+       $.plot($("#placeholder"), duration_convert, options);
+    });
+    
+
+    $("#duration_stage_convert_incremental").click(function () {
+
+      var options = {
+          xaxis: { mode: "time", tickLength: 5, timeformat: "%d.%m.%y" },
+          yaxis: { mode: "time" },
+          selection: { mode: "x" },
+          legend: { position: "nw", },
+          series: {
+            lines: { show: true },
+            points: { show: true },
+          },
+          grid: { hoverable: true, },
+          tooltip: true,
+          tooltipOpts: {
+             content: "%x: <b>%y Dauer</b>",
+             defaultTheme: false,
+          },
+      };
+    
+       $.plot($("#placeholder"), duration_convert_incremental, options);
+    });
+
+
+    $("#duration_stage_update_enrichment").click(function () {
+
+      var options = {
+          xaxis: { mode: "time", tickLength: 5, timeformat: "%d.%m.%y" },
+          yaxis: { mode: "time" },
+          selection: { mode: "x" },
+          legend: { position: "nw", },
+          series: {
+            lines: { show: true },
+            points: { show: true },
+          },
+          grid: { hoverable: true, },
+          tooltip: true,
+          tooltipOpts: {
+             content: "%x: <b>%y Dauer</b>",
+             defaultTheme: false,
+          },
+      };
+    
+       $.plot($("#placeholder"), duration_update_enrichment, options);
+    });
+    
+
+    $("#duration_stage_update_enrichment_incremental").click(function () {
+
+      var options = {
+          xaxis: { mode: "time", tickLength: 5, timeformat: "%d.%m.%y" },
+          yaxis: { mode: "time" },
+          selection: { mode: "x" },
+          legend: { position: "nw", },
+          series: {
+            lines: { show: true },
+            points: { show: true },
+          },
+          grid: { hoverable: true, },
+          tooltip: true,
+          tooltipOpts: {
+             content: "%x: <b>%y Dauer</b>",
+             defaultTheme: false,
+          },
+      };
+    
+       $.plot($("#placeholder"), duration_update_enrichment_incremental, options);
+    });
+
 });
 
 </script>

@@ -72,7 +72,6 @@
     plot_data_convert = {}; 
     plot_data_convert_incremental = {}; 
     plot_data_update_enrichment = {}; 
-    plot_data_update_enrichment_incremental = {}; 
 
 %]
 [% USE date %]
@@ -95,7 +94,6 @@
 <button id="duration_stage_load_index">Indexierung</button>
 <button id="duration_stage_load_index_incremental">Indexierung (inkr.)</button>
 <button id="duration_stage_update_enrichment">Update Anreicherung</button>
-<button id="duration_stage_update_enrichment_incremental">Update Anreicherung (inkr.)</button>
 </p>
 
 <p>
@@ -150,21 +148,18 @@
      plot_data_update_enrichment.${server} = [];
    END ;
 
-   IF NOT plot_data_update_enrichment_incremental.${server}.defined ;
-     plot_data_update_enrichment_incremental.${server} = [];
-   END ;
-
    plot_data.push("[${thisdate}*1000,${logentry.title_count}]") ;
+
+   plot_data_update_enrichment.${server}.push("[${thisdate}*1000+60 * 60 * 1000,${thistime_update_enrichment}*1000+ 60 * 60 * 1000]") ;
+
    IF logentry.is_incremental == '1';
      plot_data_load_index_incremental.${server}.push("[${thisdate}*1000+60 * 60 * 1000,${thistime_load_index}*1000+ 60 * 60 * 1000]") ;
      plot_data_load_db_incremental.${server}.push("[${thisdate}*1000+60 * 60 * 1000,${thistime_load_db}*1000+ 60 * 60 * 1000]") ;
      plot_data_convert_incremental.${server}.push("[${thisdate}*1000+60 * 60 * 1000,${thistime_convert}*1000+ 60 * 60 * 1000]") ;
-     plot_data_update_enrichment_incremental.${server}.push("[${thisdate}*1000+60 * 60 * 1000,${thistime_update_enrichment}*1000+ 60 * 60 * 1000]") ;
    ELSE ;
      plot_data_load_index.${server}.push("[${thisdate}*1000+60 * 60 * 1000,${thistime_load_index}*1000+ 60 * 60 * 1000]") ;
      plot_data_load_db.${server}.push("[${thisdate}*1000+60 * 60 * 1000,${thistime_load_db}*1000+ 60 * 60 * 1000]") ;
      plot_data_convert.${server}.push("[${thisdate}*1000+60 * 60 * 1000,${thistime_convert}*1000+ 60 * 60 * 1000]") ;
-     plot_data_update_enrichment.${server}.push("[${thisdate}*1000+60 * 60 * 1000,${thistime_update_enrichment}*1000+ 60 * 60 * 1000]") ;
    END ;
  %]
 
@@ -225,8 +220,6 @@ $(function () {
     var duration_convert_incremental = [[%- FOREACH server IN plot_data_convert_incremental.keys.sort -%]{ label: "[% server %]", data: [[% plot_data_convert_incremental.${server}.join(',') %]] },[%- END -%]];
 
     var duration_update_enrichment = [[%- FOREACH server IN plot_data_update_enrichment.keys.sort -%]{ label: "[% server %]", data: [[% plot_data_update_enrichment.${server}.join(',') %]] },[%- END -%]];
-
-    var duration_update_enrichment_incremental = [[%- FOREACH server IN plot_data_update_enrichment_incremental.keys.sort -%]{ label: "[% server %]", data: [[% plot_data_update_enrichment_incremental.${server}.join(',') %]] },[%- END -%]];
 
     // first correct the timestamps - they are recorded as the daily
     // midnights in UTC+0100, but Flot always displays dates in UTC
@@ -442,30 +435,7 @@ $(function () {
       };
     
        $.plot($("#placeholder"), duration_update_enrichment, options);
-    });
-    
-
-    $("#duration_stage_update_enrichment_incremental").click(function () {
-
-      var options = {
-          xaxis: { mode: "time", tickLength: 5, timeformat: "%d.%m.%y" },
-          yaxis: { mode: "time" },
-          selection: { mode: "x" },
-          legend: { position: "nw", },
-          series: {
-            lines: { show: true },
-            points: { show: true },
-          },
-          grid: { hoverable: true, },
-          tooltip: true,
-          tooltipOpts: {
-             content: "%x: <b>%y Dauer</b>",
-             defaultTheme: false,
-          },
-      };
-    
-       $.plot($("#placeholder"), duration_update_enrichment_incremental, options);
-    });
+    });    
 
 });
 

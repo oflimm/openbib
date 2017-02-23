@@ -1138,10 +1138,8 @@ sub normalize {
         return $content unless (defined $option_ref->{'filter_issn'}); # Short circuit for field-specific normalization
     }
 
-    # Hashes in Signaturen auf _ vereinheitlichen
-    if ($field eq "X0014"){
-	$content=~s/\#/_/g;
-    }
+    # Hashes wg. Signaturen auf _ vereinheitlichen
+    $content=~s/\#/_/g;
     
     # Nichtsortierzeichen entfernen
     $content=~s/¬//g;

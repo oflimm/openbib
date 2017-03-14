@@ -10,7 +10,7 @@
 #
 #  Andere : Ueber Plugins/Filter realisierbar
 #
-#  Dieses File ist (C) 1997-2016 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2017 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -115,10 +115,11 @@ if (!$database){
   exit;
 }
 
-my $databasetmp=($incremental)?$database:$database."tmp" ;
+my $databasetmp  = ($incremental)?$database:$database."tmp" ;
 
-my $authority = $database."_authority";
-my $authoritytmp=$authority."tmp";
+my $authority    = $database."_authority";
+my $authoritytmp = $authority."tmp";
+
 
 if (!$config->db_exists($database)){
   $logger->fatal("Pool $database existiert nicht");
@@ -399,19 +400,35 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
     my $atime = new Benchmark;
     my $duration_stage_load_index_start = ParseDate("now");
 
-    my $indexpath    = $config->{xapian_index_base_path}."/$database";
-    my $indexpathtmp = $config->{xapian_index_base_path}."/$databasetmp";
-    $logger->info("### $database: Importing data into searchengine");
-
-    my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl --loglevel=$loglevel -with-sorting -with-positions --database=$databasetmp --indexpath=$indexpathtmp";
-
-    if ($incremental){
-        $cmd.=" -incremental --deletefile=$rootdir/data/$database/title.delete";
+    if ($database && -e "$config->{autoconv_dir}/filter/$database/pre_searchengine.pl"){
+	$logger->info("### $database: Verwende Plugin pre_searchengine.pl");
+	system("$config->{autoconv_dir}/filter/$database/pre_searchengine.pl $database");
+    }
+    
+    if ($database && -e "$config->{autoconv_dir}/filter/$database/alt_searchengine.pl"){
+	$logger->info("### $database: Verwende Plugin alt_searchengine.pl");
+	system("$config->{autoconv_dir}/filter/$database/alt_searchengine.pl $database");
+    }
+    else {
+	my $indexpath    = $config->{xapian_index_base_path}."/$database";
+	my $indexpathtmp = $config->{xapian_index_base_path}."/$databasetmp";
+	$logger->info("### $database: Importing data into searchengine");
+	
+	my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl --loglevel=$loglevel -with-sorting -with-positions --database=$databasetmp --indexpath=$indexpathtmp";
+	
+	if ($incremental){
+	    $cmd.=" -incremental --deletefile=$rootdir/data/$database/title.delete";
+	}
+	
+	$logger->info("Executing: $cmd");
+	
+	system($cmd);
     }
 
-    $logger->info("Executing: $cmd");
-    
-    system($cmd);
+    if ($database && -e "$config->{autoconv_dir}/filter/$database/post_searchengine.pl"){
+	$logger->info("### $database: Verwende Plugin post_searchengine.pl");
+	system("$config->{autoconv_dir}/filter/$database/post_searchengine.pl $database");
+    }
 
     my $btime      = new Benchmark;
     my $timeall    = timediff($btime,$atime);
@@ -432,23 +449,27 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
     my $atime = new Benchmark;
     my $duration_stage_load_authorities_start = ParseDate("now");
 
-    my $authority_indexpathtmp = $config->{xapian_index_base_path}."/$authoritytmp";
-
-
-    # Inkrementelle Aktualisierung der Normdatenindizes wird zunaechst nicht realisiert. Es werden immer anhand der aktuellen Daten alle Normdatenindizes neu erzeugt!!!
-    # Zukuenftig kann die inkrementelle Aktualisierung jedoch implementiert werden
-    #if ($incremental && $authority &&& $authoritytmp){
-    #    system("rsync -av --delete $config->{xapian_index_base_path}/$authority/ $config->{xapian_index_base_path}/$authoritytmp/");
-    #}
-    
-    $logger->info("### $database: Importing authority data into searchengine");
-
-    my $cmd = "$config->{'base_dir'}/conv/authority2xapian.pl --loglevel=$loglevel -with-sorting -with-positions --database=$database --indexpath=$authority_indexpathtmp";
-
-    $logger->info("Executing: $cmd");
-    
-    system($cmd);
-
+    if ($database && -e "$config->{autoconv_dir}/filter/$database/alt_searchengine_authority.pl"){
+	$logger->info("### $database: Verwende Plugin alt_searchengine_authority.pl");
+	system("$config->{autoconv_dir}/filter/$database/alt_searchengine_authority.pl $database");
+    }
+    else {
+	my $authority_indexpathtmp = $config->{xapian_index_base_path}."/$authoritytmp";
+	
+	# Inkrementelle Aktualisierung der Normdatenindizes wird zunaechst nicht realisiert. Es werden immer anhand der aktuellen Daten alle Normdatenindizes neu erzeugt!!!
+	# Zukuenftig kann die inkrementelle Aktualisierung jedoch implementiert werden
+	#if ($incremental && $authority &&& $authoritytmp){
+	#    system("rsync -av --delete $config->{xapian_index_base_path}/$authority/ $config->{xapian_index_base_path}/$authoritytmp/");
+	#}
+	
+	$logger->info("### $database: Importing authority data into searchengine");
+	
+	my $cmd = "$config->{'base_dir'}/conv/authority2xapian.pl --loglevel=$loglevel -with-sorting -with-positions --database=$database --indexpath=$authority_indexpathtmp";
+	
+	$logger->info("Executing: $cmd");
+	
+	system($cmd);
+    }
     my $btime      = new Benchmark;
     my $timeall    = timediff($btime,$atime);
     my $resulttime = timestr($timeall,"nop");
@@ -587,16 +608,21 @@ unless ($incremental){
 
     $logger->info("### $database: Temporaeren Suchindex aktivieren");
 
-    if (-d "$config->{xapian_index_base_path}/$database"){
-        system("mv $config->{xapian_index_base_path}/$database $config->{xapian_index_base_path}/${database}tmp2");
+    if ($database && -e "$config->{autoconv_dir}/filter/$database/alt_move_searchengine.pl"){
+	$logger->info("### $database: Verwende Plugin alt_move_searchengine.pl");
+	system("$config->{autoconv_dir}/filter/$database/alt_move_searchengine.pl $database");
     }
-
-    system("mv $config->{xapian_index_base_path}/$databasetmp $config->{xapian_index_base_path}/$database");
-
-    if (-d "$config->{xapian_index_base_path}/${database}tmp2"){
-        system("rm $config->{xapian_index_base_path}/${database}tmp2/* ; rmdir $config->{xapian_index_base_path}/${database}tmp2");
+    else {
+	if (-d "$config->{xapian_index_base_path}/$database"){
+	    system("mv $config->{xapian_index_base_path}/$database $config->{xapian_index_base_path}/${database}tmp2");
+	}
+	
+	system("mv $config->{xapian_index_base_path}/$databasetmp $config->{xapian_index_base_path}/$database");
+	
+	if (-d "$config->{xapian_index_base_path}/${database}tmp2"){
+	    system("rm $config->{xapian_index_base_path}/${database}tmp2/* ; rmdir $config->{xapian_index_base_path}/${database}tmp2");
+	}
     }
-
     $logger->info("### $database: Temporaeren Normdaten-Suchindex aktivieren");
 
     if (-d "$config->{xapian_index_base_path}/$authority"){

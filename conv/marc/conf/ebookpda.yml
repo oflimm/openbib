@@ -1,6 +1,6 @@
 exclude:
   'by_availability':
-     field: '0540'
+     field: '0540' # Feld in umzuwandelndem Bestand
      databases:
         - doab
         - inst001

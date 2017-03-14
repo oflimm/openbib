@@ -271,20 +271,21 @@ ALLTITLECONTROL
     
     $where_ref = {
         -or => [
-            'title_fields.field' => '0540',
-            'title_fields.field' => '0553',
-            'title_fields.field' => '0541', # Testweise ff: ISBN_falsch
-            'title_fields.field' => '0547', # ISMN
-            'title_fields.field' => '0634', # ISBN Sekundaerform
-            'title_fields.field' => '1586', # ISBN_dat/www/mnt/_o/r/f
-            'title_fields.field' => '1587',
-            'title_fields.field' => '1588',
-            'title_fields.field' => '1590',
-            'title_fields.field' => '1591',
-            'title_fields.field' => '1592',
-            'title_fields.field' => '1594',
-            'title_fields.field' => '1595',
-            'title_fields.field' => '1596',
+	     'title_fields.field' => '0540',
+	     'title_fields.field' => '0553',
+	     'title_fields.field' => '0541', # Testweise ff: ISBN_falsch
+	     'title_fields.field' => '0547', # ISMN
+	     'title_fields.field' => '0634', # ISBN Sekundaerform
+	     'title_fields.field' => '1586', # ISBN_dat/www/mnt/_o/r/f
+	     'title_fields.field' => '1587',
+	     'title_fields.field' => '1588',
+	     'title_fields.field' => '1590',
+	     'title_fields.field' => '1591',
+	     'title_fields.field' => '1592',
+	     'title_fields.field' => '1594',
+	     'title_fields.field' => '1595',
+	     'title_fields.field' => '1596',
+	     'title_fields.field' => '1780', # ISBN Parallelausgabe RDA
         ],
     };
 
@@ -309,7 +310,9 @@ ALLTITLECONTROL
         my $thisisbn          = $item->get_column('thisisbn');
         my $thistitlecache    = $item->get_column('thistitlecache');
         my $thisdate          = $item->get_column('thisdate') || strftime("%Y-%m-%d %T", localtime) ;
-        
+
+	$thisisbn = cleanup_isbn($thisisbn);
+	
         $logger->debug("Got Title with id $thistitleid and ISBN $thisisbn");
         
         # Normierung auf ISBN13
@@ -733,4 +736,12 @@ sub cleanup_content {
     $content =~ s/($chars_to_replace)/$char_replacements{$1}/g;
     
     return $content;
+}
+
+sub cleanup_isbn {
+    my ($isbn) = @_;
+
+    $isbn=~s/[^-0-9xX]//g;
+    
+    return $isbn;
 }

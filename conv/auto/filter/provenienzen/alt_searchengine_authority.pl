@@ -49,10 +49,10 @@ print "### $database: Indexierung nur der Normdaten von Provenienzen in eigenen 
 
 my $authority_indexpathtmp = $config->{xapian_index_base_path}."/$authoritytmp";
 	
-$logger->info("### $database: Importing authority data into searchengine");
+print "### $database: Importing authority data into searchengine\n";
 	
 my $cmd = "$rootdir/filter/$database/authority2xapian.pl --loglevel=ERROR -with-sorting -with-positions --database=$database --indexpath=$authority_indexpathtmp";
 	
-$logger->info("Executing: $cmd");
+print "### $database: Executing: $cmd\n";
 	
 system($cmd);

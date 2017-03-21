@@ -211,7 +211,7 @@ my $atime = new Benchmark;
 		}
 		);
 
-	    if ($count % 1000){
+	    if ($count % 1000 == 0){
                 my $btime      = new Benchmark;
                 my $timeall    = timediff($btime,$atime);
                 my $resulttime = timestr($timeall,"nop");

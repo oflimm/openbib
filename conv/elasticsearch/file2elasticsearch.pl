@@ -4,7 +4,7 @@
 #
 #  file2elasticsearch.pl
 #
-#  Dieses File ist (C) 2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2012-2017 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -38,7 +38,7 @@ use Storable ();
 use Getopt::Long;
 use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
-use ElasticSearch;
+use Search::Elasticsearch;
 use String::Tokenizer;
 use YAML::Syck;
 use OpenBib::Config;
@@ -85,59 +85,63 @@ if (!$database){
 
 $logger->info("### POOL $database");
 
-open(TITLE_LISTITEM,  "<:utf8","title_listitem.mysql" ) || die "TITLE_LISTITEM konnte nicht geoeffnet werden";
-open(SEARCHENGINE,    "<:utf8","searchengine.csv"  ) || die "SEARCHENGINE konnte nicht geoeffnet werden";
+open(SEARCHENGINE,    "searchengine.json"  ) || die "SEARCHENGINE konnte nicht geoeffnet werden";
 
 my $atime = new Benchmark;
 
 {    
     $logger->info("Aufbau eines neuen temporaeren Index fuer Datenbank $database");
 
-    my $es = ElasticSearch->new(
-        servers      => $config->{elasticsearch}->{servers},       # default '127.0.0.1:9200'
-        transport    => $config->{elasticsearch}->{transport},     # default 'httplite'
-        max_requests => $config->{elasticsearch}->{max_requests},  # default 10_000
-        trace_calls  => $config->{elasticsearch}->{trace_calls},
-        no_refresh   => $config->{elasticsearch}->{no_refesh},
+    my $es = Search::Elasticsearch->new(
+	cxn_pool   => $config->{elasticsearch}{cxn_pool},    # default 'Sniff'
+        nodes      => $config->{elasticsearch}{nodes},       # default '127.0.0.1:9200'
     );
 
-    my $result = $es->index_exists(
-            index => $database,
-    );
+    my $result;
 
-    if ($result->{ok}){
-        $result = $es->delete_index( index => $database );
+    if ($es->indices->exists( index => $database )){
+        $result = $es->indices->delete( index => $database );
     }
     
-    $result = $es->create_index(
+    $result = $es->indices->create(
         index    => $database,
-        mappings => $config->{elasticsearch_index_mappings},
+#	type     => 'title',
     );
+
+    $result = $es->indices->put_mapping(
+	index => $database,
+	type  => 'title',
+	body => {
+	    title => {
+		properties => $config->{elasticsearch_index_mappings}{title}{properties},
+	    }
+	}	
+	);
     
     $logger->info("Migration der Titelsaetze");
     
     my $count = 1;
 
     my $doc_buffer_ref = [];
-
     
     {
+	my $bulk = $es->bulk_helper(
+	    index => $database,
+	    type => 'title',
+	    );
+	
         my $atime = new Benchmark;
-        while (my $title_listitem=<TITLE_LISTITEM>, my $searchengine=<SEARCHENGINE>) {
-            my ($s_id,$searchcontent)=split ("",$searchengine);
-            my ($t_id,$listitem)=split ("",$title_listitem);
-            
-            if ($s_id ne $t_id) {
-                $logger->fatal("Id's stimmen nicht ueberein ($s_id != $t_id)!");
-                next;
-            }
+        while (my $searchengine=<SEARCHENGINE>) {
+	    my $searchengine_ref = decode_json $searchengine;
 
-            my $searchcontent_ref = decode_json $searchcontent;
+	    my $id                 = $searchengine_ref->{id};
+	    my $title_listitem_ref = $searchengine_ref->{record};
+	    my $searchcontent_ref  = $searchengine_ref->{index};
 
-            my $title_listitem_ref = decode_json $listitem;
-
-            $searchcontent_ref->{listitem} = $title_listitem_ref;
-            
+	    my $elasticsearch_ref = {};
+	    
+            $elasticsearch_ref->{listitem} = $title_listitem_ref;
+	    
             foreach my $sorttype (keys %{$config->{elasticsearch_sorttype_value}}){
                 
                 if ($config->{elasticsearch_sorttype_value}{$sorttype}{type} eq "stringcategory"){
@@ -149,8 +153,9 @@ my $atime = new Benchmark;
                     });
                     
                     if ($content){
-                        $logger->debug("Adding $content as sortvalue");                        
-                        $searchcontent_ref->{$config->{elasticsearch_sorttype_value}{$sorttype}{field}} = $content;
+                        $logger->debug("Adding $content as sortvalue");
+
+			$elasticsearch_ref->{$config->{elasticsearch_sorttype_value}{$sorttype}{field}} = $content;
                     }
                 }
                 elsif ($config->{elasticsearch_sorttype_value}{$sorttype}{type} eq "integercategory"){
@@ -161,7 +166,7 @@ my $atime = new Benchmark;
                     if ($content){
                         $content = sprintf "%08d", $content;
                         $logger->debug("Adding $content as sortvalue");
-                        $searchcontent_ref->{$config->{elasticsearch_sorttype_value}{$sorttype}{field}} = $content;
+                        $elasticsearch_ref->{$config->{elasticsearch_sorttype_value}{$sorttype}{field}} = $content;
                     }
                 }
                 elsif ($config->{elasticsearch_sorttype_value}{$sorttype}{type} eq "integervalue"){
@@ -172,7 +177,7 @@ my $atime = new Benchmark;
                     if ($content){                    
                         $content = sprintf "%08d",$content;
                         $logger->debug("Adding $content as sortvalue");
-                        $searchcontent_ref->{$config->{elasticsearch_sorttype_value}{$sorttype}{field}} = $content;
+                        $elasticsearch_ref->{$config->{elasticsearch_sorttype_value}{$sorttype}{field}} = $content;
                     }
                 }
             }
@@ -184,72 +189,42 @@ my $atime = new Benchmark;
             # Gewichtungen aus Suchfeldern entfernen
 
             foreach my $searchfield (keys %{$config->{searchfield}}){
-                if (exists $searchcontent_ref->{$searchfield}){
+                if (defined $searchcontent_ref->{$searchfield}){
                     my $newcontent_ref = [];
                     foreach my $weight (keys %{$searchcontent_ref->{$searchfield}}){
-                        push @$newcontent_ref, @{$searchcontent_ref->{$searchfield}{$weight}};
+			foreach my $newstring_ref (@{$searchcontent_ref->{$searchfield}{$weight}}){
+			    push @$newcontent_ref, $newstring_ref->[1];
+			}
                     }
-                    $searchcontent_ref->{$searchfield} = $newcontent_ref;
+                    $elasticsearch_ref->{$searchfield} = $newcontent_ref;
                 }
             }
-            
-            # ID setzen:
 
-            push @$doc_buffer_ref, {
-                id   => $s_id,
-                data => $searchcontent_ref,
-            };
-            
-            if ($count % 1000 == 0) {
-                # Bulk-Indexieren
+	    if ($logger->is_debug){
+		$logger->debug(YAML::Dump($elasticsearch_ref));
+	    }
+	    
+	    $bulk->index(
+		{
+		    _id    => $id,
+		    source => $elasticsearch_ref,
+		}
+		);
 
-                my $result = $es->bulk_index(
-                    index       => $database,                   # optional
-                    type        => 'title',                     # optional
-                    docs        => $doc_buffer_ref,
-                    #                    consistency => 'quorum' |  'one' | 'all'    # optional
-                    refresh     => 1,
-                    #                        refresh     => 0 | 1,                       # optional
-                    #                    replication => 'sync' | 'async',            # optional
-                );
-
-                print Dump($result);
-                
-                $result = $es->flush_index( index => $database );
-                
-                $doc_buffer_ref = [];
+	    if ($count % 1000){
                 my $btime      = new Benchmark;
                 my $timeall    = timediff($btime,$atime);
                 my $resulttime = timestr($timeall,"nop");
                 $resulttime    =~s/(\d+\.\d+) .*/$1/;
                 $atime         = new Benchmark;
-                $logger->info("$count Saetze indexiert in $resulttime Sekunden");
-            }
+                $logger->info("$count Saetze indexiert in $resulttime Sekunden");            }
             
             $count++;
         }
-
-        # Bulk-Indexieren
-        
-        my $result = $es->bulk_index(
-            index       => $database,                   # optional
-            type        => 'title',                     # optional
-            docs        => $doc_buffer_ref,
-            #                    consistency => 'quorum' |  'one' | 'all'    # optional
-            refresh     => 1,
-            #                        refresh     => 0 | 1,                       # optional
-            #                    replication => 'sync' | 'async',            # optional
-        );
-        
-        print Dump($result);
-        
-        $result = $es->flush_index( index => $database );
-        
     }
     
 }
 
-close(TITLE_LISTITEM);
 close(SEARCHENGINE);
 
 my $btime      = new Benchmark;

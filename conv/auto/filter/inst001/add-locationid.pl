@@ -205,7 +205,7 @@ while (<TITLE>){
                 push @{$element_ref}, "DE-38";
                 push @{$element_ref}, "DE-38-USBFB";
                 push @{$element_ref}, "DE-38-101";
-                push @{$element_ref}, "DE-38-123";
+#                push @{$element_ref}, "DE-38-123";
                 push @{$element_ref}, "DE-38-132";
                 push @{$element_ref}, "DE-38-429";
                 push @{$element_ref}, "DE-38-448";

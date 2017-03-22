@@ -225,7 +225,7 @@ foreach my $thread (@threads) {
 
 $logger->info("### Offene Bestellungen");
 
-autoconvert({ updatemaster => $updatemaster, databases => ['bestellungen'] });
+autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['bestellungen'] });
 
 ##############################
 

@@ -102,25 +102,28 @@ sub new {
 	    );
 	
 	my $result;
-	
-	if ($es->indices->exists( index => $database )){
-	    $result = $es->indices->delete( index => $database );
+
+	if ($createindex){
+	    if ($es->indices->exists( index => $database )){
+		$result = $es->indices->delete( index => $database );
+	    }
+	    
+	    $result = $es->indices->create(
+		index    => $database,
+		#	type     => 'title',
+		);
+	    $result = $es->indices->put_mapping(
+		index => $database,
+		type  => 'title',
+		body => {
+		    title => {
+			properties => $config->{elasticsearch_index_mappings}{title}{properties},
+		    }
+		}	
+		);
+	    
 	}
 	
-	$result = $es->indices->create(
-	    index    => $database,
-	    #	type     => 'title',
-	    );
-	
-	$result = $es->indices->put_mapping(
-	    index => $database,
-	    type  => 'title',
-	    body => {
-		title => {
-		    properties => $config->{elasticsearch_index_mappings}{title}{properties},
-		}
-	    }	
-	    );
 
 	my $bulk = $es->bulk_helper(
 	    index => $database,
@@ -588,6 +591,10 @@ sub update_record {
     
     my $config = $self->{config};
 
+    $logger->error("Not implemented yet!");
+
+    return $self;
+    
     my $key = $config->{xapian_search}{id}{prefix}.$id;
 
     eval {
@@ -609,6 +616,10 @@ sub delete_record {
 
     my $config = $self->{config};
 
+    $logger->error("Not implemented yet!");
+
+    return $self;
+    
     my $key = $config->{xapian_search}{id}{prefix}.$id;
 
     eval {

@@ -145,30 +145,43 @@ die jeweilige Bibliothek.
 <div id="map_canvas" style="width: 100%; height: 600px"></div>
 </p>
 
-<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
 <script src="https://openlayers.org/en/v4.0.1/build/ol.js"></script>
 
 <script type="text/javascript">
-    map = new OpenLayers.Map("map_canvas");
-    map.addLayer(new OpenLayers.Layer.OSM());
+      var place = new ol.Feature({
+        name: '[% locationinfo.description.replace('"','\'') %]',
+        geometry: new ol.geom.Point(ol.proj.fromLonLat([[% locationinfo.fields.${"L0280"}.first.content.split(',').reverse.join(',') %]]))
+      });
 
-    var lonLat = new OpenLayers.LonLat( [% locationinfo.fields.${"L0280"}.first.content.split(',').reverse.join(',') %] ).transform(
-            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
-            map.getProjectionObject() // to Spherical Mercator Projection
-          );
+      place.setStyle(new ol.style.Style({
+        image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+          anchor: [0.5, 46],
+          anchorXUnits: 'fraction',
+          anchorYUnits: 'pixels',
+          src: 'https://kug.ub.uni-koeln.de/images/openbib/blue-marker.png'
+        }))
+      }));
 
-    var zoom=16;
+      var vectorSource = new ol.source.Vector({
+        features: [place]
+      });
 
-    var markers = new OpenLayers.Layer.Markers( "Markers" );
-    map.addLayer(markers);
+      var vectorLayer = new ol.layer.Vector({
+        source: vectorSource
+      });
 
-    var size = new OpenLayers.Size(32,32);
-    var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
-    var icon = new OpenLayers.Icon('https://kug.ub.uni-koeln.de/images/openbib/blue-marker.png',size,offset);
-    var marker = new OpenLayers.Marker(lonLat,icon);
-    markers.addMarker(marker);
+      var rasterLayer = new ol.layer.Tile({
+        source: new ol.source.OSM()
+      });
 
-    marker.icon.imageDiv.title = "[% locationinfo.description.replace('"','\'') %]";
-    map.setCenter (lonLat, zoom);
+      var map = new ol.Map({
+        layers: [rasterLayer, vectorLayer],
+        target: document.getElementById('map_canvas'),
+        view: new ol.View({
+          center: ol.proj.fromLonLat([[% locationinfo.fields.${"L0280"}.first.content.split(',').reverse.join(',') %]]),
+          zoom: 16
+        })
+      });
+
 </script>
 [% END %]

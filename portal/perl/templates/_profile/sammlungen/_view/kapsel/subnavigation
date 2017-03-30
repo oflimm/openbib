@@ -38,6 +38,15 @@
 <nav class="ym-vlist">
 <h6 class="ym-vtitle">[% msg.maketext("Themenschwerpunkte") %]</h6>
 <ul>
+<li><span  style="font-weight:normal">2017</span>
+    <ul>
+[% IF active_submenu == "adenauer" %]
+      <li class="active"><strong>Konrad Adenauer 1876 -1967</strong></li>
+[% ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/adenauer.html?l=[% lang %];page=1">Konrad Adenauer 1876 -1967</a></li>
+[% END %]
+    </ul>
+</li>
 <li><span  style="font-weight:normal">2015</span>
     <ul>
 [% IF active_submenu == "kolping" %]

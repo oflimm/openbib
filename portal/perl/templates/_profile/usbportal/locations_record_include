@@ -163,7 +163,7 @@ die jeweilige Bibliothek.
 
     var size = new OpenLayers.Size(32,32);
     var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
-    var icon = new OpenLayers.Icon('http://kug.ub.uni-koeln.de/images/openbib/blue-marker.png',size,offset);
+    var icon = new OpenLayers.Icon('https://kug.ub.uni-koeln.de/images/openbib/blue-marker.png',size,offset);
     var marker = new OpenLayers.Marker(lonLat,icon);
     markers.addMarker(marker);
 

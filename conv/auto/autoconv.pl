@@ -48,7 +48,7 @@ use OpenBib::Config;
 use OpenBib::Catalog;
 use OpenBib::Catalog::Factory;
 
-my ($database,$sync,$help,$keepfiles,$logfile,$loglevel,$updatemaster,$incremental,$reducemem);
+my ($database,$sync,$help,$keepfiles,$sb,$logfile,$loglevel,$updatemaster,$incremental,$reducemem);
 
 &GetOptions("database=s"      => \$database,
             "logfile=s"       => \$logfile,
@@ -58,6 +58,7 @@ my ($database,$sync,$help,$keepfiles,$logfile,$loglevel,$updatemaster,$increment
             "update-master"   => \$updatemaster,
             "incremental"     => \$incremental,
             "reduce-mem"      => \$reducemem,
+	    "search-backend=s" => \$sb,
 	    "help"            => \$help
 	    );
 
@@ -99,6 +100,8 @@ my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
 my $meta2sqlexe   = "$config->{'conv_dir'}/meta2sql.pl";
 my $meta2mexexe   = "$config->{'conv_dir'}/meta2mex.pl";
 my $pgsqlexe      = "/usr/bin/psql -U $config->{'dbuser'} ";
+
+$sb = ($sb)?$sb:$config->get('local_search_backend');
 
 my $duration_stage_collect = 0;
 my $duration_stage_unpack = 0;
@@ -410,19 +413,30 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
 	system("$config->{autoconv_dir}/filter/$database/alt_searchengine.pl $database");
     }
     else {
-	my $indexpath    = $config->{xapian_index_base_path}."/$database";
-	my $indexpathtmp = $config->{xapian_index_base_path}."/$databasetmp";
-	$logger->info("### $database: Importing data into searchengine");
-	
-	my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl --loglevel=$loglevel -with-sorting -with-positions --database=$databasetmp --indexpath=$indexpathtmp";
-	
-	if ($incremental){
-	    $cmd.=" -incremental --deletefile=$rootdir/data/$database/title.delete";
+	if ($sb eq "xapian"){
+	    my $indexpath    = $config->{xapian_index_base_path}."/$database";
+	    my $indexpathtmp = $config->{xapian_index_base_path}."/$databasetmp";
+	    $logger->info("### $database: Importing data into Xapian searchengine");
+	    
+	    my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl --loglevel=$loglevel -with-sorting -with-positions --database=$databasetmp --indexpath=$indexpathtmp";
+	    
+	    if ($incremental){
+		$cmd.=" -incremental --deletefile=$rootdir/data/$database/title.delete";
+	    }
+	    
+	    $logger->info("Executing: $cmd");
+	    
+	    system($cmd);
 	}
-	
-	$logger->info("Executing: $cmd");
-	
-	system($cmd);
+	elsif ($sb eq "elasticsearch"){
+	    $logger->info("### $database: Importing data into ElasticSearch searchengine");
+
+	    my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2elasticsearch.pl --database=$database";
+
+	    $logger->info("Executing: $cmd");
+	    
+	    system($cmd);
+	}
     }
 
     if ($database && -e "$config->{autoconv_dir}/filter/$database/post_searchengine.pl"){
@@ -454,21 +468,29 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
 	system("$config->{autoconv_dir}/filter/$database/alt_searchengine_authority.pl $database");
     }
     else {
-	my $authority_indexpathtmp = $config->{xapian_index_base_path}."/$authoritytmp";
-	
-	# Inkrementelle Aktualisierung der Normdatenindizes wird zunaechst nicht realisiert. Es werden immer anhand der aktuellen Daten alle Normdatenindizes neu erzeugt!!!
-	# Zukuenftig kann die inkrementelle Aktualisierung jedoch implementiert werden
-	#if ($incremental && $authority &&& $authoritytmp){
-	#    system("rsync -av --delete $config->{xapian_index_base_path}/$authority/ $config->{xapian_index_base_path}/$authoritytmp/");
-	#}
-	
-	$logger->info("### $database: Importing authority data into searchengine");
-	
-	my $cmd = "$config->{'base_dir'}/conv/authority2xapian.pl --loglevel=$loglevel -with-sorting -with-positions --database=$database --indexpath=$authority_indexpathtmp";
-	
-	$logger->info("Executing: $cmd");
-	
-	system($cmd);
+	if ($sb eq "xapian"){
+	    my $authority_indexpathtmp = $config->{xapian_index_base_path}."/$authoritytmp";
+	    
+	    # Inkrementelle Aktualisierung der Normdatenindizes wird zunaechst nicht realisiert. Es werden immer anhand der aktuellen Daten alle Normdatenindizes neu erzeugt!!!
+	    # Zukuenftig kann die inkrementelle Aktualisierung jedoch implementiert werden
+	    #if ($incremental && $authority &&& $authoritytmp){
+	    #    system("rsync -av --delete $config->{xapian_index_base_path}/$authority/ $config->{xapian_index_base_path}/$authoritytmp/");
+	    #}
+	    
+	    $logger->info("### $database: Importing authority data into Xapian searchengine");
+	    
+	    my $cmd = "$config->{'base_dir'}/conv/authority2xapian.pl --loglevel=$loglevel -with-sorting -with-positions --database=$database --indexpath=$authority_indexpathtmp";
+	    
+	    $logger->info("Executing: $cmd");
+	    
+	    system($cmd);
+	}
+	elsif ($sb eq "elasticsearch"){
+#	    $logger->info("### $database: Importing authority data into ElasticSearch searchengine");
+	    $logger->info("### $database: Authority Data import to ElasticSearch currently not supported");   
+#    system("cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2elasticsearch.pl --database=$database > /dev/null 2>&1");
+
+	}
     }
     my $btime      = new Benchmark;
     my $timeall    = timediff($btime,$atime);

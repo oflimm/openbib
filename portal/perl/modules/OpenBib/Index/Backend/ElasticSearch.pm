@@ -308,7 +308,13 @@ sub create_document {
                     my $content = $fields_ref->[1];
 
                     $logger->debug("Field: $field - Content: $content");
-                    
+
+		    if ($config->{searchfield}{$searchfield}{type} eq "integer"){
+			if ($self->can('filter_force_signed_year')){
+			    $content = $self->filter_force_signed_year($content);
+                        }
+		    }
+		    
                     next if (!$content);
                     
                     my $normalize_cache_id = "$field:".$config->{searchfield}{$searchfield}{type}.":".join(":",keys %$option_ref).":$content";
@@ -636,8 +642,8 @@ sub delete_record {
 
 sub filter_force_signed_year {
     my ($self, $string) = @_;
-    ($string) = $string=~m/^\D*(-?\d\D?\d\D?\d\D?\d)/;
     $string=~s/[^-0-9]//g if (defined $string);
+    ($string) = $string=~m/(-?\d\d\d\d)/;
     
     return $string;
 }

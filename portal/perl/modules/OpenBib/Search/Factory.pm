@@ -49,8 +49,12 @@ sub create_searcher {
     my $database           = exists $arg_ref->{database}
         ? $arg_ref->{database}        : undef;
 
+    my $options_ref        = exists $arg_ref->{options}
+        ? $arg_ref->{options}        : undef;
+
     my $sb                 = exists $arg_ref->{sb}
-        ? $arg_ref->{sb}              : undef;
+        ? $arg_ref->{sb}:
+	    (defined $options_ref->{sb})?$options_ref->{sb}: undef;
 
     my $config             = exists $arg_ref->{config}
         ? $arg_ref->{config}          : OpenBib::Config->new;

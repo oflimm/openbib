@@ -113,6 +113,10 @@ my $atime = new Benchmark;
         
         my $indexer = OpenBib::Index::Factory->create_indexer({ sb => 'elasticsearch', database => $database, create_index => $create_index, index_type => 'readwrite' });
 
+	if ($logger->is_debug){
+	    $logger->debug("Indexer: ".YAML::Dump($indexer));
+	}
+	
         if ($incremental){
             $logger->info("Loeschen der obsoleten Titelsaetze");
             open (DELETE_IDS,$deletefile);

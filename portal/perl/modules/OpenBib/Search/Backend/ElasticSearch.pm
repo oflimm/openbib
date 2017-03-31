@@ -2,7 +2,7 @@
 #
 #  OpenBib::Search::Backend::ElasticSearch
 #
-#  Dieses File ist (C) 2012-2015 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2012-2017 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -34,8 +34,7 @@ use Benchmark ':hireswallclock';
 use Encode 'decode_utf8';
 use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
-use ElasticSearch;
-use ElasticSearch::SearchBuilder;
+use Search::Elasticsearch;
 use Storable;
 use String::Tokenizer;
 use YAML ();
@@ -153,12 +152,9 @@ sub search {
 
     my $dbh;
 
-    my $es = ElasticSearch->new(
-        servers      => $config->{elasticsearch}->{servers},       # default '127.0.0.1:9200'
-        transport    => $config->{elasticsearch}->{transport},     # default 'httplite'
-        max_requests => $config->{elasticsearch}->{max_requests},  # default 10_000
-        trace_calls  => $config->{elasticsearch}->{trace_calls},
-        no_refresh   => $config->{elasticsearch}->{no_refesh},
+    my $es = Search::Elasticsearch->new(
+	cxn_pool   => $config->{elasticsearch}{cxn_pool},    # default 'Sniff'
+	nodes      => $config->{elasticsearch}{nodes},       # default '127.0.0.1:9200'
     );
 
     my $searchprofile = $searchquery->get_searchprofile;
@@ -166,27 +162,19 @@ sub search {
     my $index;
     
     if ($searchprofile){
-        my $result = $es->index_exists(
-            index => "profile_$searchprofile",
-        );
+	my $valid_databases_ref = [];
 
-        if ($result->{ok}){
-            $index = "profile_$searchprofile"
+	foreach my $database ($config->get_databases_of_searchprofile($searchprofile)){
+
+	    if ($es->indices->exists( index => $database )){
+		push @$valid_databases_ref, $database;
+	    }
         }
-        else {
-            my @index = ();
-            foreach my $database ($config->get_databases_of_searchprofile($searchprofile)){
-                push @index, $database if ($es->index_exists(
-                    index => $database,
-                ));
-            }
-            $index = \@index;
-        }
+
+	$index = $valid_databases_ref;
     }
     elsif ($self->{_database}){
-        $index = $self->{_database} if ($es->index_exists(
-            index => $self->{_database},
-        ));;
+        $index = $self->{_database} if ($es->indices->exists( index => $self->{_database}));
     }
 
     $self->parse_query($searchquery);
@@ -199,7 +187,7 @@ sub search {
     my $facets_ref = {};
 
     foreach my $facet (keys %{$config->{facets}}){
-        $facets_ref->{$facet} = {
+        $facets_ref->{"facet_$facet"} = {
             terms => {
                 field => "facet_$facet",
                 size => 25,
@@ -222,30 +210,40 @@ sub search {
 
     my $query_ref = $self->{_query};
 
-    $query_ref->{'-filter'} = $self->{_filter};
+    #$query_ref->{'-filter'} = $self->{_filter};
 
-    my $sort_ref = { };
+    my $sort_ref = [];
 
     if ($sorttype eq "relevance"){
-        $sort_ref->{_score} = {
-            order => $sortorder,
-        };
+        push @$sort_ref, { "_score" => { order => $sortorder }};
     }
     else {
-        $sort_ref->{"sort_$sorttype"} = {
-            order => $sortorder,
-        };
+	push @$sort_ref, { "sort_$sorttype" => { order => $sortorder }};
+    }
 
+    if ($logger->is_debug){
+	$logger->debug("Parsed Query ".YAML::Dump($query_ref));
+    }
+
+    if ($logger->is_debug){
+	$logger->debug("Sort ".YAML::Dump($sort_ref));
     }
     
     my $results = $es->search(
         index  => $index,
         type   => 'title',
-        queryb => $query_ref,
-        facets => $facets_ref,
-        sort   => $sort_ref, 
-        from   => $from,
-        size   => $num,
+	body  => {
+	    query => {
+		match => $query_ref,
+		#filter => $self->{_filter},
+	    },
+	    aggregations => $facets_ref,
+	    from   => $from,
+	    size   => $num,
+	    sort   => $sort_ref,
+	},
+#        queryb => $query_ref,
+#        facets => $facets_ref,
     );
 
     my @matches = ();
@@ -257,8 +255,12 @@ sub search {
         };
     }
 
+    if ($logger->is_debug){
+        $logger->debug("Found matches ".YAML::Dump(\@matches));
+    }
+    
     # Facets
-    $self->{categories} = $results->{facets};
+    $self->{categories} = $results->{aggregations};
 
     if ($logger->is_debug){
         $logger->debug("Results: ".YAML::Dump($results));
@@ -295,8 +297,17 @@ sub get_records {
     }
 
     foreach my $match (@matches) {
-    
-        $recordlist->add(OpenBib::Record::Title->new({database => $match->{database}, id => $match->{id}, config => $config })->set_fields_from_storable($match->{listitem}));
+
+        my $titlistitem_ref = decode_json $match->{listitem};
+
+        my $id            = $titlistitem_ref->{id};
+        my $database      = $titlistitem_ref->{database};
+        my $locations_ref = $titlistitem_ref->{locations};
+        delete $titlistitem_ref->{id};
+        delete $titlistitem_ref->{database};
+        delete $titlistitem_ref->{locations};
+	
+        $recordlist->add(OpenBib::Record::Title->new({database => $database, id => $id, locations => $locations_ref })->set_fields_from_storable($titlistitem_ref));
     }
 
     return $recordlist;
@@ -312,48 +323,34 @@ sub get_facets {
     
     # Transformation Hash->Array zur Sortierung
 
-    my $type_map_ref = {
-        database => 8,
-        person => 3,
-        corporatebody => 7,
-        subject => 1,
-        classification => 2,
-        year => 5,
-        mediatype => 4,
-        tag => 9,
-        litlist => 10,
-        language => 6,
-    };
-    
     my $category_map_ref     = ();
     my $tmp_category_map_ref = $self->{categories};
                                 
     foreach my $type (keys %{$tmp_category_map_ref}) {
         my $contents_ref = [] ;
-        foreach my $item_ref (@{$tmp_category_map_ref->{$type}->{terms}}) {
-            my $normcontent = OpenBib::Common::Util::normalize({
-                content   => decode_utf8($item_ref->{term}),
-                searchreq => 1,
-            });
-            
-            $normcontent=~s/\W/_/g;
+        foreach my $item_ref (@{$tmp_category_map_ref->{$type}->{buckets}}) {
             push @{$contents_ref}, [
-                decode_utf8($item_ref->{term}),
-                $item_ref->{count},
-                $normcontent,
+                $item_ref->{key},
+                $item_ref->{doc_count},
             ];
         }
         
         if ($logger->is_debug){
-            $logger->debug(YAML::Dump($contents_ref));
+            $logger->debug("Facet for $type ".YAML::Dump($contents_ref));
         }
         
         # Schwartz'ian Transform
-        
-        @{$category_map_ref->{$type_map_ref->{$type}}} = map { $_->[0] }
+
+	$type=~s/^facet_//;
+	
+        @{$category_map_ref->{$type}} = map { $_->[0] }
             sort { $b->[1] <=> $a->[1] }
                 map { [$_, $_->[1]] }
                     @{$contents_ref};
+    }
+
+    if ($logger->is_debug){
+	$logger->debug("All Facets ".YAML::Dump($category_map_ref));
     }
 
     my $ddbtime       = new Benchmark;
@@ -515,7 +512,7 @@ sub parse_query {
 #                     push @elasticsearchquerystrings, $config->{searchfield}{$field}{prefix}.":$term";
 #                 }
 
-                $query_ref->{freesearch} = $searchtermstring;
+                $query_ref->{$config->{searchfield}{$field}{prefix}} = $searchtermstring;
             }
             # Titelstring mit _ ersetzten
             elsif (($field eq "titlestring" || $field eq "mark") && $searchtermstring) {
@@ -528,11 +525,11 @@ sub parse_query {
                     $newsearchtermstring.=$char;
                 }
 
-                $query_ref->{titlestring} = $newsearchtermstring;
+                $query_ref->{$config->{searchfield}{$field}{prefix}} = $newsearchtermstring;
             }
             # Sonst Operator und Prefix hinzufuegen
             elsif ($searchtermstring) {
-                $query_ref->{$field} = $searchtermstring;
+                $query_ref->{$config->{searchfield}{$field}{prefix}} = $searchtermstring;
             }
 
             # Innerhalb einer freien Suche wird Standardmaessig UND-Verknuepft
@@ -543,18 +540,13 @@ sub parse_query {
     }
 
 
-     my $rev_searchfield_ref = {
-         fper => "facet_person",
-         fcln => "facet_classification",
-         fsubj => "facet_subject",
-         ftyp => "facet_mediatype",
-         fyear => "facet_year",
-         flang => "facet_language",
-         fdb => "facet_database",
-         ftag => "facet_tag",
-         flitlist => "facet_litlist",
+    my $rev_searchfield_ref = {};
+
+    foreach my $facet (keys %{$config->{facets}}){
+	$rev_searchfield_ref->{$config->{searchfield}{"${facet}string"}{prefix}} = "facet_$facet";
      };
 
+    
 #    my $rev_searchfield_ref = {};
 #    
 #    foreach my $searchfield (keys %{$config->{searchfield}}){
@@ -570,28 +562,17 @@ sub parse_query {
     }
     
     if (@{$searchquery->get_filter}){
-        $filter_ref = { };
+        $filter_ref = [ ];
         foreach my $thisfilter_ref (@{$searchquery->get_filter}){
             my $field = $rev_searchfield_ref->{$thisfilter_ref->{field}};
             my $term  = $thisfilter_ref->{term};
 #            $term=~s/_/ /g;
             
-            $logger->debug("Facet: $field / Term: $term / Ref: ".ref(${$filter_ref}{$field}));
+            $logger->debug("Facet: $field / Term: $term");
 
-            if (exists $filter_ref->{$field}){
-                if (! ref($filter_ref->{$field})){
-                    my $oldterm = $filter_ref->{$field};
-                    $logger->debug("String -> Array: $oldterm");
-                    $filter_ref->{$field}= [ '-and' ];
-                    push @{$filter_ref->{$field}}, $oldterm;
-                }
-                $logger->debug("Add Array: $term");
-                push @{$filter_ref->{$field}}, $term; #'"'.$term.'"';                    
-            }
-            else {
-                $filter_ref->{$field} = $term; #'"'.$term.'"';
-            }
+	    push @$filter_ref, { "term" => {$field => $term}};
         }
+	
     }
 
     if ($logger->is_debug){

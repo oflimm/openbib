@@ -162,6 +162,8 @@ convtab:
       'T0425':
         'sortfield': 'year'      # Jahr
         'type': 'integerfield'       
+        'filter':
+           - 'filter_force_signed_year'
       'T0424':
         'sortfield': 'year'      # Jahr
         'type': 'integerfield'

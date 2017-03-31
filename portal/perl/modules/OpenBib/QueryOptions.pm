@@ -428,7 +428,7 @@ OpenBib::QueryOptions - Objekt zur Behandlung von Recherche-Optionen
 
 =head1 DESCRIPTION
 
-Dieses Singleton Verwaltet die Recherche-Optionen wie num,
+Dieses Objekt verwaltet die Recherche-Optionen wie num,
 offset, Sprache l, Profil profile, Automatische Und-Verknuepfung
 autoplus, Such-Backend sb sowie den Trefferlistentyp listtype.
 

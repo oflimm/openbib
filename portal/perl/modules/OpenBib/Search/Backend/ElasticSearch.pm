@@ -179,11 +179,6 @@ sub search {
 
     $self->parse_query($searchquery);
 
-    if ($logger->is_debug){
-        $logger->debug("Query:  ".YAML::Dump($self->{_query}));
-        $logger->debug("Filter: ".YAML::Dump($self->{_filter}));
-    }
-
     my $facets_ref = {};
 
     foreach my $facet (keys %{$config->{facets}}){
@@ -208,9 +203,8 @@ sub search {
 #         };
 #     }    
 
-    my $query_ref = $self->{_query};
-
-    #$query_ref->{'-filter'} = $self->{_filter};
+    my $query_ref  = $self->get_query;
+    my $filter_ref = $self->get_filter;
 
     my $sort_ref = [];
 
@@ -222,28 +216,41 @@ sub search {
     }
 
     if ($logger->is_debug){
-	$logger->debug("Parsed Query ".YAML::Dump($query_ref));
+	$logger->debug("Sort ".YAML::Dump($sort_ref));
     }
 
+    my $body_ref = {
+	aggregations => $facets_ref,
+	from   => $from,
+	size   => $num,
+	sort   => $sort_ref,
+    };
+
+    if ($self->have_filter){
+	$body_ref->{query} = {
+	    bool => {
+		must  => $query_ref,
+		filter => $filter_ref, 
+	    }
+	}; 
+    }
+    else {
+	$body_ref->{query} = {
+	    bool => {
+		must  => $query_ref,
+	    }
+	};
+    }
+
+
     if ($logger->is_debug){
-	$logger->debug("Sort ".YAML::Dump($sort_ref));
+	$logger->debug("Request body ".YAML::Dump($body_ref));
     }
     
     my $results = $es->search(
         index  => $index,
         type   => 'title',
-	body  => {
-	    query => {
-		match => $query_ref,
-		#filter => $self->{_filter},
-	    },
-	    aggregations => $facets_ref,
-	    from   => $from,
-	    size   => $num,
-	    sort   => $sort_ref,
-	},
-#        queryb => $query_ref,
-#        facets => $facets_ref,
+	body   => $body_ref,
     );
 
     my @matches = ();
@@ -490,7 +497,7 @@ sub parse_query {
         'OR'      => 'OR ',
     };
 
-    my $query_ref = {};
+    my $query_ref = [];
     
     foreach my $field (keys %{$config->{searchfield}}){
         my $searchtermstring = (defined $searchquery->get_searchfield($field)->{norm})?$searchquery->get_searchfield($field)->{norm}:'';
@@ -512,7 +519,9 @@ sub parse_query {
 #                     push @elasticsearchquerystrings, $config->{searchfield}{$field}{prefix}.":$term";
 #                 }
 
-                $query_ref->{$config->{searchfield}{$field}{prefix}} = $searchtermstring;
+                push @$query_ref, {
+		    match => { $config->{searchfield}{$field}{prefix} => $searchtermstring },
+		};
             }
             # Titelstring mit _ ersetzten
             elsif (($field eq "titlestring" || $field eq "mark") && $searchtermstring) {
@@ -525,11 +534,15 @@ sub parse_query {
                     $newsearchtermstring.=$char;
                 }
 
-                $query_ref->{$config->{searchfield}{$field}{prefix}} = $newsearchtermstring;
+                push @$query_ref, {
+		    match => { $config->{searchfield}{$field}{prefix} => $newsearchtermstring },
+		};
             }
             # Sonst Operator und Prefix hinzufuegen
             elsif ($searchtermstring) {
-                $query_ref->{$config->{searchfield}{$field}{prefix}} = $searchtermstring;
+                push @$query_ref, {
+		    match => { $config->{searchfield}{$field}{prefix} => $searchtermstring },
+		};
             }
 
             # Innerhalb einer freien Suche wird Standardmaessig UND-Verknuepft
@@ -540,19 +553,6 @@ sub parse_query {
     }
 
 
-    my $rev_searchfield_ref = {};
-
-    foreach my $facet (keys %{$config->{facets}}){
-	$rev_searchfield_ref->{$config->{searchfield}{"${facet}string"}{prefix}} = "facet_$facet";
-     };
-
-    
-#    my $rev_searchfield_ref = {};
-#    
-#    foreach my $searchfield (keys %{$config->{searchfield}}){
-#        $rev_searchfield_ref->{$config->{searchfield}{$searchfield}{prefix}} = $searchfield;
-#    }
-    
     # Filter
 
     my $filter_ref;
@@ -560,15 +560,17 @@ sub parse_query {
     if ($logger->is_debug){
         $logger->debug("All filters: ".YAML::Dump($searchquery->get_filter));
     }
+
+    my $elasticsearch_filter_field_ref = $config->get('elasticsearch_filter_field');
     
     if (@{$searchquery->get_filter}){
         $filter_ref = [ ];
         foreach my $thisfilter_ref (@{$searchquery->get_filter}){
-            my $field = $rev_searchfield_ref->{$thisfilter_ref->{field}};
+            my $field = $elasticsearch_filter_field_ref->{$thisfilter_ref->{field}};
             my $term  = $thisfilter_ref->{term};
 #            $term=~s/_/ /g;
             
-            $logger->debug("Facet: $field / Term: $term");
+            $logger->debug("Facet: $field / Term: $term (Filter-Field: ".$thisfilter_ref->{field}.")");
 
 	    push @$filter_ref, { "term" => {$field => $term}};
         }

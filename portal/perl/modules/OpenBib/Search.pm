@@ -216,13 +216,36 @@ sub parse_query {
     return $self;
 }
 
+sub get_query {
+    my $self=shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return $self->{_query};
+}
+
 sub get_facets {
     my $self=shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    return {};
+    return $self->{_facets};
+}
+
+sub have_filter {
+    my $self = shift;
+    return (defined $self->{_filter} && @{$self->{_filter}})?1:0;
+}
+
+sub get_filter {
+    my $self=shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return $self->{_filter};
 }
 
 sub get_number_of_documents {

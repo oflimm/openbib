@@ -23,7 +23,7 @@ tie %title_locationid,             'MLDBM', "./title_locationid.db"
 tie %title_has_parent,             'MLDBM', "./title_has_parent.db"
     or die "Could not tie title_has_parent.\n";
 
-my $analyze_zbkunst = 0;
+my $analyze_zbkunst = 1;
 
 if ($analyze_zbkunst){
     print STDERR "### inst001 Analysiere Teilbestand Kunst\n";

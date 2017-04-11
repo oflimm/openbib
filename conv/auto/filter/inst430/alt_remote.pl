@@ -4,9 +4,7 @@
 #
 #  alt_remote.pl
 #
-#  Holen via oai und konvertieren in das Meta-Format
-#
-#  Dieses File ist (C) 2003-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -25,37 +23,22 @@
 #  an die Free Software Foundation, Inc., 675 Mass Ave, Cambridge,
 #  MA 02139, USA.
 #
-#####################################################################   
-
-#####################################################################
-# Einladen der benoetigten Perl-Module 
 #####################################################################
 
-use DBI;
+#####################################################################
+# Einladen der benoetigten Perl-Module
+#####################################################################
+
 use OpenBib::Config;
 
-my $config = new OpenBib::Config();
+my $config = new OpenBib::Config;
 
 my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
 
-my $harvestoaiexe     = "$config->{'conv_dir'}/harvestOAI.pl";
-my $simplexml2metaexe = "$config->{'conv_dir'}/simplexml2meta.pl";
-
 my $pool          = $ARGV[0];
 
-my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
+print "### $pool: Extrahiere die Daten aus ${pool}master\n";
 
-my $oaiurl        = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->titlefile;
-
-print "### $pool: Datenabzug via OAI von $oaiurl\n";
-system("cd $pooldir/$pool ; rm meta.* ; rm pool*");
-system("cd $pooldir/$pool ; $harvestoaiexe -all --set=$pool --url=\"$oaiurl\" ");
-
-print "### $pool: Harvesting done. Now converting\n";
-
-system("cd $pooldir/$pool ; echo '<recordlist>' > $pooldir/$pool/pool.dat ; cat pool-*.xml >> $pooldir/$pool/pool.dat ; echo '</recordlist>' >> $pooldir/$pool/pool.dat ; gzip pool-*.xml");
-
-system("cd $pooldir/$pool; $simplexml2metaexe --inputfile=pool.dat --configfile=/opt/openbib/conf/${pool}.yml; gzip meta.*");
-#system("rm $pooldir/$pool/pool.dat");
+system("$rootdir/filter/$pool/gen-subset.pl $pool");

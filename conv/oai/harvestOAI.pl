@@ -6,7 +6,7 @@
 #
 #  Abzug eines OAI-Repositories
 #
-#  Dieses File ist (C) 2003-2013 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2017 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -124,6 +124,7 @@ if( $response->is_error ) {
     $response->code . " " . $response->message, "\n";
   exit;
 }
+
 if ($set){
     $logger->info("Using set: $set");
 
@@ -144,28 +145,35 @@ if ($set){
     
 }
 else {
-    if ($all){        
-        $response = $h->ListRecords(
-            metadataPrefix => $format
-        );
+    if ($all){
+        eval {
+	    $response = $h->ListRecords(
+		metadataPrefix => $format
+		);
+	};
     }
     else {
-        $response = $h->ListRecords(
-            metadataPrefix => $format,
-            from           => $from, # '2001-01-29T15:27:51Z',
-            until          => $until, #'2003-01-29T15:27:51Z',
-        );
+	eval {
+	    $response = $h->ListRecords(
+		metadataPrefix => $format,
+		from           => $from, # '2001-01-29T15:27:51Z',
+		until          => $until, #'2003-01-29T15:27:51Z',
+		);
+	};
     }
 }
 
 if( $response->is_error ) {
-    $logger->error_die("Error: ", $response->code,
+    $logger->error("Error: ", $response->code,
                        " (", $response->message, ")");
 }
 
-while( my $rec = $response->next ) {
+my $counter = 1;
+while( my $rec = next_record($response) ) {
     if( $rec->is_error ) {
-        $logger->error($rec->message);
+	eval {
+	    $logger->error($rec->message);
+	};
         next;
     }
 
@@ -188,16 +196,41 @@ while( my $rec = $response->next ) {
         };
     }
 
-    my $about_string = $rec->{about}[0]->dom->toString;
-    
-    if ($about_string){
-        $about_string=~s/^<\?xml.*?>//;
-        
-        print OUT " $about_string \n";
-    }
+    eval {
+	my $about_string = $rec->{about}[0]->dom->toString;
+	
+	if ($about_string){
+	    $about_string=~s/^<\?xml.*?>//;
+	    
+	    print OUT " $about_string \n";
+	}
+    };
 
 
     print OUT "</record>\n";
+
+    if ($counter % 1000 == 0){
+	$logger->info("$counter records done");
+    }
+    $counter++;
 }
 
 close(OUT);
+
+sub next_record {
+    my $response = shift;
+    my $rec;
+
+    my $logger = get_logger();
+    
+    eval {
+	$rec = $response->next
+    };
+
+    if ($@){
+	$logger->error($@);
+	$rec = next_record($response);
+    }
+
+    return $rec;
+}

@@ -156,16 +156,16 @@ if ($location){
 
 	    if ($old_content ne $content){
 
-		$logger->info("Updating field '$field' / '$num_field' with content '$content'");
+		$logger->info("$isil: Updating field '$field' / '$num_field' with content '$content'");
 
 		$location->locationinfo_fields->search({ field => $num_field })->delete;
 		
 		if ($num_field == 10){ # Institutsname
-		    $logger->info("Updating description");
+		    $logger->info("$isil: Updating description");
 		    $location->update({description => $content});
 		}
 		
-		$logger->info("Deleting former content");
+		$logger->info("$isil Deleting former content");
 		
 		my $fields_ref = [];
 		push @$fields_ref, 
@@ -175,16 +175,16 @@ if ($location){
 		    content => $content,
 		};
 		
-		$logger->info("Writing new content for field $num_field: $content");
+		$logger->info("$isil: Writing new content for field $num_field: $content");
 		
 		$location->locationinfo_fields->populate($fields_ref);
 	    }
 	    else {
-		$logger->info("Nothing to do for field '$num_field'");
+		$logger->info("$isil: Nothing to do for field '$num_field'");
 	    }
         }
 	else {
-	    $logger->error("No numeric field number for '$field'");
+	    $logger->error("$isil: No numeric field number for '$field'");
 	}
 
     }

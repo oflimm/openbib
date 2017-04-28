@@ -35,7 +35,7 @@
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
          <li><a href="#">[% msg.maketext("Projekt") %]</a></li>
-         <li><a href="#" class="lastitem">[% msg.maketext("Quellen") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Provenienz der Digitalisate") %]</a></li>
       </ul>
      </div>
    </div>
@@ -43,7 +43,7 @@
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="subnavigation" active_menu="project" active_submenu='quellen' %]
+[% PROCESS common/subtemplate name="subnavigation" active_menu="project" active_submenu='provenienz' %]
         </div>
       </div>
       <!-- end: #col1 -->
@@ -51,7 +51,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-[% config.get_templatetext('info_quellen','fotobuecher',lang) %]
+[% config.get_templatetext('info_provenienz','fotobuecher',lang) %]
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

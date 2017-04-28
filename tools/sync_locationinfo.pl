@@ -180,7 +180,7 @@ if ($location){
 		$location->locationinfo_fields->populate($fields_ref);
 	    }
 	    else {
-		$logger->info("$isil: Nothing to do for field '$num_field'");
+		$logger->info("$isil: Nothing to do for field 'field'");
 	    }
         }
 	else {

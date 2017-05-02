@@ -229,6 +229,9 @@ title:
     '359 ':            # Vorl. Verf/Koerp
         'newcat': '0359' # Vorl. Verf/Koerp
         'mult': 1
+    '360 ':            # RDA Unterreihe Vorlageform
+        'newcat': '0360' # Vorl. Verf/Koerp
+        'mult': 1
     '370a':            # WST
         'newcat': '0370' # WST
         'mult': 1

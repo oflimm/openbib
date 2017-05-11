@@ -261,6 +261,7 @@ if ($cluster){
 $logger->info("### Dumping isbns");
 
 system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_usb 2>&1 > /dev/null");
+system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_kmb 2>&1 > /dev/null");
 system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_uni 2>&1 > /dev/null");
 system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_komplett 2>&1 > /dev/null");
 

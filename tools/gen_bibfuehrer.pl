@@ -7,7 +7,7 @@
 #  Aufbau eines elektronischen Bibliotheksfuehrers im pdf-Format
 #  aus den Informationen in der OpenBib Config-Datenbank
 #
-#  Dieses File ist (C) 2010-2015 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2010-2017 Oliver Flimm <flimm@openbib.org>
 #
 #  Diese Datei ist abgeleitet aus der Datei gen_zsstlist.pl
 #
@@ -60,14 +60,16 @@ if ($#ARGV < 0){
     print_help();
 }
 
-my ($help,$mode,$lang,$logfile);
+my ($help,$mode,$lang,$logfile,$loglevel,$renderer);
 
 &GetOptions(
-	    "help"      => \$help,
-	    "mode=s"    => \$mode,
-            "lang=s"    => \$lang,
-            "logfile=s" => \$logfile,            
-	    );
+    "help"       => \$help,
+    "mode=s"     => \$mode,
+    "lang=s"     => \$lang,
+    "renderer=s" => \$renderer,            
+    "logfile=s"  => \$logfile,            
+    "loglevel=s" => \$loglevel,            
+    );
 
 if ($help){
     print_help();
@@ -83,12 +85,14 @@ if ($mode ne "tex" && $mode ne "pdf" && $mode ne "csv"){
   exit;
 }
 
-$lang = ($lang)?$lang:"de";
+$lang     = ($lang)?$lang:"de";
+$loglevel = ($loglevel)?$loglevel:"INFO";
+$logfile  =($logfile)?$logfile:'/var/log/openbib/gen_bibfuehrer.log';
+$renderer =($renderer)?$renderer:"osmarenderer";
 
-$logfile=($logfile)?$logfile:'/var/log/openbib/gen_bibfuehrer.log';
 
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=INFO, LOGFILE, Screen
+log4perl.rootLogger=$loglevel, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append
@@ -116,20 +120,36 @@ if (! -e $img_base_path){
     mkdir $img_base_path, '755';
 }
 
-foreach my $database (keys %{$dbinfotable->{locationid}}){
-    my $libinfo = $config->get_locationinfo_fields_of_database($database);
+$logger->debug("Koordinaten bestimmen");
 
-    my $coordinates = $libinfo->{"L0280"}->[0]->{content};
-    my ($lat,$long) = split("\\s*,\\s*",$coordinates);
+my $location_field = $config->get_schema->resultset('LocationinfoField')->search(
+    {
+	field => 280,
+	content => { '~' => '^[0-9]'},
+    },
+    );
+
+while (my $field = $location_field->next()){
+
+    my $coordinates = $field->content;
+
+    $logger->info("Koordinaten: $coordinates");
+                
+    my ($lat,$long) = split(',',$coordinates);
+
+    $lat =~s/\s+//g;
+    $long=~s/\s+//g;
 
     $coordinates=~s/\s*,\s*/-/g;
     $coordinates=~s/\./_/g;
+    $coordinates=~s/\s+//g;
     
-    my $filename="${img_base_path}/${coordinates}_map.png";
+    my $filename="${img_base_path}/${coordinates}_${renderer}_map.png";
 
     if ($lat && $long && ! -e $filename){
         # URL fuer dne StaticMap-Dienst des OpenStreetMap-Projektes
-        my $url = "http://ojw.dev.openstreetmap.org/StaticMap/?lat=$lat&lon=$long&z=16&w=1000&h=1000&mlat0=$lat&mlon0=$long&fmt=png&show=1";
+        #my $url = "http://ojw.dev.openstreetmap.org/StaticMap/?lat=$lat&lon=$long&z=16&w=1000&h=1000&mlat0=$lat&mlon0=$long&fmt=png&show=1";
+	my $url = "http://staticmap.openstreetmap.de/staticmap.php?center=$lat,$long&zoom=17&size=1000x1000&maptype=$renderer&markers=$lat,$long,ol-marker-blue"; 
 
         $logger->info("Hole OSM-Karte via $url");
                 
@@ -160,6 +180,7 @@ my $template = Template->new({
 my $ttdata = {
     dbinfo       => $dbinfotable,
     config       => $config,
+    renderer     => $renderer,
     filterchars  => \&filterchars,
     msg          => $msg,
 };
@@ -199,8 +220,10 @@ sub filterchars {
 
   $logger->debug("Vorher: '$content'");
 
+  $content=decode_utf8($content) unless ($chapter);
+
   # URL's sind verlinkt
-  $content=~s/>(http:\S+)</>\\url{$1}</g;
+  $content=~s/>(http:\S+?)</>\\url{$1}</g;
   $content=~s/\&#39;/'/g;
   $content=~s/\&apos;/'/ig;
 

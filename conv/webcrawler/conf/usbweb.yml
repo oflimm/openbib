@@ -1,0 +1,32 @@
+# Encoding der Daten
+encoding: iso-8859-1
+#encoding: utf8
+
+# Tracelevel
+tracelevel:
+
+# XPath-Parameter
+
+# Personen
+person:
+
+# Koerperschaften
+corporatebody:
+  'meta[name="publisher"]': '0201'
+
+# Systematik
+classification: 
+
+# Schlagworte
+subject:
+  'meta[name="description"]': '0710'	
+
+# Titel
+title:
+  'meta[name="DC.Title.Alt"]': '0370'
+  'meta[name="DC.Title"]': '0331'
+
+webcontent: 'div#Content'	
+
+defaultmediatype: 'Digital'
+

@@ -174,7 +174,7 @@ $(document).ready(function(){
 
 <table class="ym-full">
 <thead>
-<tr align="center"><th>Vorbesitzer</th><th>Provenienz</th><th>Sigel</th><th>Mediennummer</th>[% IF has_4312 %]<th>Selektionskennzeichen</th>[% END %]</tr>
+<tr align="center"><th>Provenienz</th><th>Merkmal</th><th>Sigel</th><th>Mediennummer</th>[% IF has_4312 %]<th>Selektionskennzeichen</th>[% END %]</tr>
 </thead>
 <tbody>
 

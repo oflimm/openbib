@@ -68,7 +68,7 @@
 [% PROCESS common/subtemplate name="subnavigation_project_items" database="fotobuecher" %]
 	 </li>
 [% ELSE %]
-          <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]" title="Projekt">[% msg.maketext("Projekt") %]</a>
+          <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/digitalisierung.html?l=[% lang %]" title="Projekt">[% msg.maketext("Projekt") %]</a>
 [% PROCESS common/subtemplate name="subnavigation_project_items" database="fotobuecher" %]
          </li>
 [% END %]

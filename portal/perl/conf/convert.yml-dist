@@ -918,7 +918,55 @@ convtab:
       '5005': 1
       '5050': 1
       '5055': 1
+  usbweb:
+    listitemcat:
+      'tag': 1
+      'litlist': 1
+      'popularity': 1
+      '0100': 1
+      '0101': 1
+      '0102': 1
+      '0103': 1
+      '0200': 1
+      '0201': 1
+      '0310': 1
+      '0331': 1
+      '0333': 1
+      '0335': 1
+      '0360': 1
+      '0370': 1
+      '0403': 1
+      '0410': 1
+      '0412': 1
+      '0424': 1
+      '0425': 1
+      '0451': 1
+      '0453': 1
+      '0507': 1
+      '0540': 1
+      '0543': 1
+      '0553': 1
+      '0662': 1
+      '0750': 1	
+      '2662': 1
+      '1203': 1
+      '1800': 1
+      '1802': 1
+      '4110': 1
+      '4111': 1
+      '4120': 1
+      '4400': 1
+      '5005': 1
+      '5050': 1
+      '5055': 1
 
+  provenienzen:
+    inverted_authority_title:
+      '4310':         # T-PRO Besitzkennzeichen
+        index:
+          'freesearch': 20
+          't4310': 1
+          'ft4310': 1
   digitalis:
     listitemcat:
       'tag': 1
@@ -1017,7 +1065,7 @@ convtab:
      #'0015': 1        # Sprache
      #'0016': 1        # Standort (in holding vorhanden)
       '0027': 1        # Art des Werkes (V oder Leer = Verfasser, S=Sachtitelwerk, U=Urheberwerk)
-      '0028': 1        # Bandkennzeichen (Leer = Stuecktitel, B = Band, G = Gesamtwerk/Ueberordnung)
+     #'0028': 1        # Bandkennzeichen (Leer = Stuecktitel, B = Band, G = Gesamtwerk/Ueberordnung)
       '0036': 1        # Erscheinungsform
       '0038': 1        # Veroeffentlichungsart
       '0042': 1        # Publikationsstatus

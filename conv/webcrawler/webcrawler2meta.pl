@@ -52,10 +52,11 @@ use OpenBib::Record::Person;
 use OpenBib::Record::Subject;
 use OpenBib::Record::Title;
 
-my ($baseurl,$configfile,$logfile,$loglevel,$help);
+my ($baseurl,$configfile,$logfile,$maxpages,$loglevel,$help);
 
 &GetOptions(
     "base-url=s"     => \$baseurl,
+    "max-pages=s"    => \$maxpages,
     "configfile=s"   => \$configfile,
     "logfile=s"      => \$logfile,
     "loglevel=s"     => \$loglevel,
@@ -113,7 +114,9 @@ while (@urls) {
     my $id = encode_base64url("$path");
 
     next if exists $done{$id};
-    
+
+    $logger->info("Processing: $url");
+        
     my $res = $ua->get($url)->res; 
     
     gen_record($url,$res);
@@ -145,7 +148,7 @@ while (@urls) {
 	push @urls, $url;
 			 });
     
-    last if $url_count == 20;
+    last if ($maxpages && $url_count > $maxpages);
     
     sleep 1;
 }
@@ -174,8 +177,14 @@ sub gen_record {
     foreach my $meta_selector (keys %{$convconfig->{title}}){
 	my $content = $res->dom($meta_selector)->attr('content');
 
-	$content=decode($convconfig->{encoding},$content) if ($convconfig->{encoding});
-
+	eval {
+	    $content=decode($convconfig->{encoding},$content) if ($convconfig->{encoding});
+	};
+	
+	if ($@){
+	    $logger->error($@);
+	}
+	
 	push @{$title_ref->{fields}{$convconfig->{title}{$meta_selector}}}, {
 	    content => "$content",
 	    mult => 1,
@@ -188,6 +197,7 @@ sub gen_record {
     $body_text_dom->find('script')->strip;
     
     my $body_text = $body_text_dom->all_text;
+#    my $body_text = $body_text_dom->all_contents;
 
     push @{$title_ref->{fields}{'0662'}}, {
 	content => "$url",
@@ -201,10 +211,11 @@ sub gen_record {
 	subfield => "",
     };
 
-    print TITLE encode_json $title_ref, "\n";
-
+    return unless ($id && $url && $body_text);
     
-    $logger->info(YAML::Dump($title_ref)); 
+    print TITLE encode_json $title_ref, "\n";
+    
+    $logger->debug(YAML::Dump($title_ref)); 
     
 
     return;    

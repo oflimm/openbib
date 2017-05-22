@@ -179,6 +179,19 @@ while (<TITLE>){
         }
     }
 
+    # Vorrangig KMB-eigene E-Books anhand ISIL in 4719
+    if (defined $title_ref->{fields}{'4719'}){
+        foreach my $item (@{$title_ref->{fields}{'4719'}}){
+            if ($item->{content} eq "DE-Kn3"){
+                push @{$element_ref}, "DE-38-Kn3";
+		push @{$element_ref}, "DE-38-ZBKUNST";
+            }
+	    else {
+		push @{$element_ref}, $item->{content};
+	    }
+        }
+    }
+    
     # KMB-Daten ohne Buchsaetze anhand 4800
     if (defined $title_ref->{fields}{'4800'}){
         foreach my $item (@{$title_ref->{fields}{'4800'}}){

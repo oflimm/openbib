@@ -183,7 +183,7 @@ while (<TITLE>){
     if (defined $title_ref->{fields}{'4719'}){
         foreach my $item (@{$title_ref->{fields}{'4719'}}){
             if ($item->{content} eq "DE-Kn3"){
-                push @{$element_ref}, "DE-38-Kn3";
+                push @{$element_ref}, "DE-Kn3";
 		push @{$element_ref}, "DE-38-ZBKUNST";
             }
 	    else {

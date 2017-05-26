@@ -321,6 +321,12 @@ title:
         'mult': 1
         'subfield':
             'u': '0662'
+    '655e':
+        'no_conv': 1
+         # URLs
+        'mult': 1
+        'subfield':
+            'u': '0662'
     '659 ':
          # URL Beschreibungen
         'mult': 1

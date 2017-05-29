@@ -49,8 +49,8 @@ while (<>){
         }
 
 	
-	if (@{$title_ref->{fields}{'4400'}}){
-	    push @{$title_ref->{fields}{'4400'}}, {
+	if (@{$title_ref->{fields}{'4410'}}){
+	    push @{$title_ref->{fields}{'4410'}}, {
                 mult     => 1,
                 subfield => '',
                 content  => "Digital",

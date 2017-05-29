@@ -142,6 +142,15 @@ while (@urls) {
 	    return unless $url->host eq $base->host;
 	}
 
+	# Keine URLs in Blacklist
+	foreach my $bl_regexp (@{$convconfig->{blacklist_regexps}}){
+	    my $path = $url->path;
+	    if ($path =~m/$bl_regexp/){
+		$logger->info("Ignoring blacklisted URL ".$url->path);
+		return;
+	    }
+	}
+	
 	# Keine email links
 	return if $url->scheme && $url->scheme eq 'mailto';
 

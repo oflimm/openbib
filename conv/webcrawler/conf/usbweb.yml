@@ -30,3 +30,7 @@ webcontent: 'div#Content'
 
 defaultmediatype: 'Digital'
 
+blacklist_regexps:
+ - '\/e[0-9]+'
+ - 'preview'
+ - 'IPS'

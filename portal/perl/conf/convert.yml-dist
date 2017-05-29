@@ -336,6 +336,12 @@ convtab:
           'subject': 1
           'subjectstring': 1
           'freesearch': 1
+    inverted_authority_title:
+      '4310':         # T-PRO Besitzkennzeichen
+        index:
+          'freesearch': 20
+          't4310': 1
+          'ft4310': 1
     inverted_title:
       'tag':
         index:
@@ -960,13 +966,7 @@ convtab:
       '5050': 1
       '5055': 1
 
-  provenienzen:
-    inverted_authority_title:
-      '4310':         # T-PRO Besitzkennzeichen
-        index:
-          'freesearch': 20
-          't4310': 1
-          'ft4310': 1
+
   digitalis:
     listitemcat:
       'tag': 1
@@ -1319,6 +1319,12 @@ convtab:
           'subject': 1
           'subjectstring': 1
           'freesearch': 1
+    inverted_authority_title:
+      '4310':         # T-PRO Besitzkennzeichen
+        index:
+          'freesearch': 20
+          't4310': 1
+          'ft4310': 1
     inverted_title:
       'tag':
         index:

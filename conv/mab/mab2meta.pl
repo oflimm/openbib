@@ -432,6 +432,7 @@ if (-e $titlefile){
             my $newcategory = "";
             
             if (!exists $convconfig->{title}{$category}){
+		print "Ignoring category $category with content $content\n";
                 next;
             }
             
@@ -615,6 +616,7 @@ if (-e $titlefile){
                         my $subfield = $1;
                         my $thiscontent  = $2;
 
+			print "Handling subfield $subfield with content $thiscontent\n";
                         $thiscontent=konv($thiscontent) unless ($convconfig->{title}{$category}{no_conv});
                         if ($convconfig->{filter}{$category}{filter_generic}){
                             foreach my $filter (@{$convconfig->{filter}{$category}{filter_generic}}){
@@ -662,43 +664,96 @@ if (-e $titlefile){
             } 
             # Ansonsten normale Umwandlung
             else {
-                $content = konv($content);
-                
-                if ($convconfig->{filter}{$category}{filter_generic}){
-                    foreach my $filter (@{$convconfig->{filter}{$category}{filter_generic}}){
-                        my $from = $filter->{from};
-                        my $to   = $filter->{to};
-                        $content =~s/$from/$to/g;
-                    }
-                }
-                
-                if ($convconfig->{filter}{$category}{filter_junk}){
-                    $content = filter_junk($content);
-                }
-                
-                if ($convconfig->{filter}{$category}{filter_newline2br}){
-                    $content = filter_newline2br($content);
-                }
-                
-                if ($convconfig->{filter}{$category}{filter_match}){
-                    $content = filter_match($content,$convconfig->{filter}{$category}{filter_match});
-                }
-                
-                if ($newcategory && $convconfig->{title}{$category}{mult} && $content){
-                    my $multcount=++$multcount_ref->{$newcategory};
-                    push @{$title_ref->{fields}{$newcategory}},{
-                        mult     => $multcount,
-                        content  => $content,
-                        subfield => '',
-                    };
-                }
-                elsif ($newcategory && $content){
-                    push @{$title_ref->{fields}{$newcategory}},{
-                        mult     => 1,
-                        content  => $content,
-                        subfield => '',
-                    };
-                }
+
+		if (exists $convconfig->{title}{$category}{subfield}){
+		    
+		    foreach my $item (split("",$content)){
+			if ($item=~/^(.)(.+)/){
+			    my $subfield = $1;
+			    my $thiscontent  = $2;
+			    
+			    print "Handling subfield $subfield with content $thiscontent\n";
+			    $thiscontent=konv($thiscontent) unless ($convconfig->{title}{$category}{no_conv});
+			    
+			    if ($convconfig->{filter}{$category}{filter_generic}){
+				foreach my $filter (@{$convconfig->{filter}{$category}{filter_generic}}){
+				    my $from = $filter->{from};
+				    my $to   = $filter->{to};
+				    $thiscontent =~s/$from/$to/g;
+				}
+			    }
+			    
+			    if ($convconfig->{filter}{$category}{filter_junk}){
+				$thiscontent = filter_junk($thiscontent);
+			    }
+			    
+			    if ($convconfig->{filter}{$category}{filter_newline2br}){
+				$thiscontent = filter_newline2br($thiscontent);
+			    }
+			    
+			    if ($convconfig->{filter}{$category}{filter_match}){
+				$thiscontent = filter_match($thiscontent,$convconfig->{filter}{$category}{filter_match});
+			    }
+
+			    my $newcategory = $convconfig->{title}{$category}{subfield}{$subfield};
+			    
+			    if ($newcategory && $convconfig->{title}{$category}{mult} && $thiscontent){
+				my $multcount=++$multcount_ref->{$newcategory};
+				push @{$title_ref->{fields}{$newcategory}},{
+				    mult     => $multcount,
+				    content  => $thiscontent,
+				    subfield => '',
+				};
+			    }
+			    elsif ($newcategory && $thiscontent){
+				push @{$title_ref->{fields}{$newcategory}},{
+				    mult     => 1,
+				    content  => $thiscontent,
+				    subfield => '',
+				};
+			    }
+			}
+		    }
+		}
+		else {
+		    $content = konv($content);
+		    
+		    if ($convconfig->{filter}{$category}{filter_generic}){
+			foreach my $filter (@{$convconfig->{filter}{$category}{filter_generic}}){
+			    my $from = $filter->{from};
+			    my $to   = $filter->{to};
+			    $content =~s/$from/$to/g;
+			}
+		    }
+		    
+		    if ($convconfig->{filter}{$category}{filter_junk}){
+			$content = filter_junk($content);
+		    }
+		    
+		    if ($convconfig->{filter}{$category}{filter_newline2br}){
+			$content = filter_newline2br($content);
+		    }
+		    
+		    if ($convconfig->{filter}{$category}{filter_match}){
+			$content = filter_match($content,$convconfig->{filter}{$category}{filter_match});
+		    }
+		    
+		    if ($newcategory && $convconfig->{title}{$category}{mult} && $content){
+			my $multcount=++$multcount_ref->{$newcategory};
+			push @{$title_ref->{fields}{$newcategory}},{
+			    mult     => $multcount,
+			    content  => $content,
+			    subfield => '',
+			};
+		    }
+		    elsif ($newcategory && $content){
+			push @{$title_ref->{fields}{$newcategory}},{
+			    mult     => 1,
+			    content  => $content,
+			    subfield => '',
+			};
+		    }
+		}
             }
         }
         print TITOUT encode_json $title_ref, "\n";

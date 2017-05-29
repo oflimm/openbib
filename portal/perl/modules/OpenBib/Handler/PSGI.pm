@@ -44,6 +44,7 @@ use JSON::XS;
 use Template;
 use URI::Escape;
 use XML::RSS;
+use Search::Tools;
 use Text::CSV_PP;
 use YAML ();
 
@@ -1043,7 +1044,7 @@ sub add_default_ttdata {
     $ttdata->{'location'}       = $location;
     $ttdata->{'authenticator'}  = $authenticator;
     $ttdata->{'useragent'}      = $useragent;
-    $ttdata->{'browser'}      = $browser;
+    $ttdata->{'browser'}        = $browser;
     $ttdata->{'cgiapp'}         = $self;
     $ttdata->{'container'}      = $container;
     
@@ -1093,6 +1094,11 @@ sub add_default_ttdata {
     $ttdata->{'encode_utf8'}    = sub {
         my $string=shift;
         return encode_utf8($string);
+    };
+
+    $ttdata->{'snipper'}    = sub {
+        my ($arg_ref) = @_;
+        return Search::Tools->snipper(%$arg_ref);
     };
 
     $ttdata->{'create_title_record'}    = sub {

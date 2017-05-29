@@ -114,6 +114,10 @@ my @authority_files = (
         type     => "corporatebody",
         filename => "$rootdir/pools/$database/meta.corporatebody.gz",
     },
+    {
+        type     => "title",
+        filename => "$rootdir/pools/$database/meta.title.gz",
+    },
 #    {
 #        type     => "subject",
 #        filename => "$rootdir/pools/$database/meta.subject.gz",
@@ -122,6 +126,9 @@ my @authority_files = (
 
 my $conv_config = new OpenBib::Conv::Config({dbname => $database});
 
+$logger->info(YAML::Dump($conv_config));
+
+# Ueberschreibung fuer Titelkategorien:
 $logger->info("### POOL $database");
 
 $logger->info("Loeschung des alten Index fuer Datenbank $database");
@@ -181,7 +188,8 @@ foreach my $authority_file_ref (@authority_files){
         my $fieldprefix = ($authority_file_ref->{type} eq "person")?"P":
             ($authority_file_ref->{type} eq "subject")?"S":
                 ($authority_file_ref->{type} eq "corporatebody")?"C":
-                    ($authority_file_ref->{type} eq "holding")?"X":"";
+                ($authority_file_ref->{type} eq "title")?"T":
+		($authority_file_ref->{ty pe} eq "holding")?"X":"";
         next unless ($fieldprefix);
         
         open(SEARCHENGINE,"cat $rootdir/data/$database/$dest_filename |" ) || die "$rootdir/data/$database/$dest_filename konnte nicht geoeffnet werden";
@@ -206,13 +214,42 @@ foreach my $authority_file_ref (@authority_files){
                     my $fields_ref = $auth_ref->{fields};
 
 		    next unless (defined $positive_ids_ref->{$id} && $positive_ids_ref->{$id});
-		    
+
                     # Initialisieren und Basisinformationen setzen
                     my $document = OpenBib::Index::Document->new({ database => $database, id => $auth_ref->{id} });
 
                     $document->set_data("type",$authority_file_ref->{type});
                     
                     foreach my $field (keys %{$fields_ref}){
+
+			# Ansetzungsformen muessen aus der Datenbank geholt werden, da nicht in meta.title enthalten.
+			if ($type eq "title"){
+
+			    $logger->info("Processing title field $field");
+			    
+			    if ($field eq "4307"){ # Koerperschaft
+				foreach my $item_ref (@{$fields_ref->{$field}}){
+				    my $name = OpenBib::Record::CorporateBody->new({ database => $database, id => $item_ref->{id} })->load_name->name_as_string;
+				    
+				    $item_ref->{content} = $name;
+				    
+				    $logger->info("New Content C ".$item_ref->{content});
+				}
+			    }
+			    elsif ($field eq "4308"){ # Person
+				foreach my $item_ref (@{$fields_ref->{$field}}){
+				    my $name = OpenBib::Record::Person->new({ database => $database, id => $item_ref->{id} })->load_name->name_as_string;
+				    
+				    $item_ref->{content} = $name;
+					
+				    $logger->info("New Content P ".$item_ref->{content});
+				}
+
+
+			    }
+			    
+			}			
+
                         $document->set_data("$fieldprefix$field",$fields_ref->{$field});
 
                         foreach my $searchfield (keys %{$conv_config->{"inverted_authority_".$authority_file_ref->{type}}{$field}->{index}}) {
@@ -220,7 +257,9 @@ foreach my $authority_file_ref (@authority_files){
                             
                             foreach my $item_ref (@{$fields_ref->{$field}}){
                                 next unless $item_ref->{content};
-                                
+
+				$logger->info("indexing ".$item_ref->{content}) if ($type eq "title");
+				
                                 $document->add_index($searchfield,$weight, ["$fieldprefix$field",$item_ref->{content}]);
                             }
                         }
@@ -288,6 +327,22 @@ sub get_ids_of_provenances {
 	    },
 	    {
 		select => ['corporatebodyid'],
+		as => ['thisid'],
+		result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+
+	    }
+	    );
+	while (my $id = $ids->next()){
+	    $positive_ids_ref->{$id->{'thisid'}}=1;
+	}
+    }
+    elsif ($type eq "title"){
+	my $ids = $catalog->get_schema()->resultset('TitleField')->search(
+	    {
+		field => 4310,
+	    },
+	    {
+		select => ['titleid'],
 		as => ['thisid'],
 		result_class => 'DBIx::Class::ResultClass::HashRefInflator',
 

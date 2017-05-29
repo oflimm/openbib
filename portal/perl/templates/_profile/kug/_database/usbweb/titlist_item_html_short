@@ -248,7 +248,7 @@
 
      # Kein verwertbarer Titel oder Titel in titles_exclude, z.B. bei Ueberordnungen?
      IF NOT title ;
-       title = "<b>Kein Webseiten-Titel vorgeben</b>";
+       title = "<b>Kein Webseiten-Titel in Meta-Tags vorhanden</b>";
      END;
  
      # Auflage konstruieren

@@ -708,6 +708,10 @@ convtab:
         index:
           'isbn': 1
           'freesearch': 1
+      '1780':         # ISBN RDA
+        index:
+          'isbn': 1
+          'freesearch': 1
       '1800':         # Nebeneintragung 1. Person
         index:
           'person': 1
@@ -1728,6 +1732,10 @@ convtab:
           'isbn': 1
           'freesearch': 1
       '1596':         # ISBN_pnt_f 
+        index:
+          'isbn': 1
+          'freesearch': 1
+      '1780':         # ISBN RDA
         index:
           'isbn': 1
           'freesearch': 1

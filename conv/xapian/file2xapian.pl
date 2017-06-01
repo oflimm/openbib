@@ -4,7 +4,7 @@
 #
 #  file2xapian.pl
 #
-#  Dieses File ist (C) 2007-2016 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2017 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -31,7 +31,7 @@ use utf8;
 
 BEGIN {
 #    $ENV{XAPIAN_PREFER_CHERT}    = '1';
-    $ENV{XAPIAN_FLUSH_THRESHOLD} = $ENV{XAPIAN_FLUSH_THRESHOLD} || '200000';
+    $ENV{XAPIAN_FLUSH_THRESHOLD} = $ENV{XAPIAN_FLUSH_THRESHOLD} || '500000';
 }
 
 use Benchmark ':hireswallclock';

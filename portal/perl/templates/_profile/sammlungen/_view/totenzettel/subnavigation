@@ -22,9 +22,9 @@
 <h6 class="ym-vtitle">[% msg.maketext("Informationen") %]</h6>
  <ul>
 [% IF active_submenu == "sammlung" %]
-  <li class="active"><strong>[% msg.maketext("Sammlung") %]</strong></li>
+  <li class="active"><strong>Sammlung</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">[% msg.maketext("Sammlung") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">Sammlung</a></li>
 [% END %]
 [% IF active_submenu == "digitalisierung" %]
   <li class="active"><strong>[% msg.maketext("Digitalisierung") %]</strong></li>

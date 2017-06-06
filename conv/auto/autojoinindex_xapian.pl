@@ -78,6 +78,8 @@ my $logger = get_logger();
 
 my $config = new OpenBib::Config();
 
+my $fullatime = new Benchmark;
+
 my $xapian_cmd  = "/usr/bin/xapian-compact";
 my @xapian_args = ();
 my $xapian_base = $config->{xapian_index_base_path};
@@ -232,6 +234,12 @@ foreach my $searchprofile (@searchprofiles){
 }
 
 
+my $fullbtime      = new Benchmark;
+my $fulltimeall    = timediff($fullbtime,$fullatime);
+my $fullresulttime = timestr($fulltimeall,"nop");
+$fullresulttime    =~s/(\d+\.\d+) .*/$1/;
+
+$logger->info("### Gesamtezeit alle Indize-> $fullresulttime");
 
 sub print_help {
     print << "ENDHELP";

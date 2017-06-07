@@ -434,12 +434,7 @@ sub search {
 
     $self->{_enq}         = $enq;
 
-    if ($singletermcount > $maxmatch){
-      $self->{resultcount} = $singletermcount;
-    }
-    else {
-      $self->{resultcount} = $mset->get_matches_estimated;
-    }
+    $self->{resultcount} = $mset->get_matches_estimated;
 
     my @matches = ();
     foreach my $match ($mset->items()) {

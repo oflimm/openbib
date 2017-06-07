@@ -243,16 +243,16 @@ autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['dreierpda
 
 ##############################
 
-$logger->info("### Generating joined searchindexes");
-
-system("/opt/openbib/autoconv/bin/autojoinindex_xapian.pl");
-
 $logger->info("###### Updating done");
 
 if ($cluster){
     $logger->info("### Changing cluster/server-status to updated");
     $config->update_local_serverstatus("updated");
 }
+
+$logger->info("### Generating joined searchindexes");
+
+system("/opt/openbib/autoconv/bin/autojoinindex_xapian.pl");
 
 $logger->info("### Dumping isbns");
 

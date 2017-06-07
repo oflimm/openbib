@@ -434,7 +434,16 @@ sub search {
 
     $self->{_enq}         = $enq;
 
-    $self->{resultcount} = $mset->get_matches_estimated;
+    my $resultcount = $mset->get_matches_estimated;
+
+    my $lower_bound = $mset->get_matches_lower_bound;
+    my $upper_bound = $mset->get_matches_upper_bound;
+
+    if ($lower_bound > $maxmatch){
+	$resultcount = $upper_bound;
+    }
+
+    $self->{resultcount} = $resultcount;
 
     my @matches = ();
     foreach my $match ($mset->items()) {

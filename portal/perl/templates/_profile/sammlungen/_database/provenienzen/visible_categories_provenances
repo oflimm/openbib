@@ -1,0 +1,21 @@
+[%#-
+#######################################################################
+#
+# Templatename: visible_categories_titset
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabekategorien fuer einen einzelnen Titelsatz
+#
+#######################################################################
+-%]
+[%-# Ausgabekategorien -%]
+[%- categories = [
+                'T4308', # msg.maketext("T4308") Vorbesitzer Person
+                'T4307', # msg.maketext("T4307") Vorbesitzer Koerperschaft
+                'T4310', # msg.maketext("T4310") T-PRO Besitzkennzeichen
+                ]
+
+-%]

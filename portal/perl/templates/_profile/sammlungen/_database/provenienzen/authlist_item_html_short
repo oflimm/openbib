@@ -60,10 +60,20 @@
     <div class="ob-item[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
       <div class="ob-numbering">[% start_range+loop.count - 1 %]</div>
       <div class="ob-thumbnail">
+       [% IF item.type == 'title' %]
+       <img  style="width:64px;height:64px;" src="/images/openbib/views/provenienzen/flatremix/preferences-system-search-symbolic.svg" />
+       [% ELSE %]
+       <img  style="width:64px;height:64px;" src="/images/openbib/views/provenienzen/flatremix/system-users-symbolic.svg" />
+       [% END %]
+
       </div>
       <div class="ob-brieftitle">
 [%# USE dumper;dumper.dump(item) %]
+       [% IF item.type == 'title' %]
+         <a href="[% path_prefix %]/[% config.get('search_loc') %]?ft4310=[% main_entry |uri %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% main_entry %]</span></strong></a>
+       [% ELSE %]
          [% IF record.id && record.database %]<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get("${item.type}s_loc") %]/id/[% record.id %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% main_entry %]</span></strong></a>[% END %]
+       [% END %]
 [% IF multiple_dbs == 1 %]
          <br /><img style="vertical-align:text-bottom;padding:1px;" src="[% config.get('home_small_img') %]" alt="[% msg.maketext("Katalog") %]" title="[% msg.maketext("Katalog") %]"/>
 [%-   IF dbinfo.get('locationid').${record.database} %]

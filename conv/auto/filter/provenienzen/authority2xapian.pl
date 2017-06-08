@@ -4,7 +4,7 @@
 #
 #  authority2xapian.pl
 #
-#  Dieses File ist (C) 2013-2016 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2013-2017 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -203,6 +203,8 @@ foreach my $authority_file_ref (@authority_files){
             my $count = 1;
             
             {
+
+		my %habe_provenienzmerkmal = ();
                 
                 my $atime = new Benchmark;
                 
@@ -247,6 +249,20 @@ foreach my $authority_file_ref (@authority_files){
 
 
 			    }
+			    elsif ($field eq "4310"){ # Merkmal
+				my $filtered_fields_ref = [];
+				foreach my $item_ref (@{$fields_ref->{$field}}){
+				    if (defined $habe_provenienzmerkmal{$item_ref->{content}}){
+					next;
+				    }
+				    else {
+					push @{$filtered_fields_ref}, $item_ref;
+					$habe_provenienzmerkmal{$item_ref->{content}} = 1;
+				    }
+				}
+				$fields_ref->{$field} = $filtered_fields_ref;
+
+			    }
 			    
 			}			
 
@@ -254,13 +270,15 @@ foreach my $authority_file_ref (@authority_files){
 
                         foreach my $searchfield (keys %{$conv_config->{"inverted_authority_".$authority_file_ref->{type}}{$field}->{index}}) {
                             my $weight = $conv_config->{"inverted_authority_".$authority_file_ref->{type}}{$field}->{index}{$searchfield};
-                            
+
+#                            my $have_term_ref = {};
                             foreach my $item_ref (@{$fields_ref->{$field}}){
                                 next unless $item_ref->{content};
-
+#				next if (defined $have_term_ref->{$item_ref->{content}});
 				$logger->info("indexing ".$item_ref->{content}) if ($type eq "title");
 				
                                 $document->add_index($searchfield,$weight, ["$fieldprefix$field",$item_ref->{content}]);
+#				$have_term_ref->{$item_ref->{content}} = 1;
                             }
                         }
                     }

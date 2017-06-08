@@ -62,7 +62,6 @@ $(document).ready(function(){
 [%   END %]
 [% END %]
 
-<input type="hidden" name="db" value="[% config.get_dbs_of_view(view).first %]" />
 
 <fieldset class="ym-columnar">
 <legend>[% msg.maketext("Erweiterte Suche") %]</legend>

@@ -61,9 +61,9 @@
       <div class="ob-numbering">[% start_range+loop.count - 1 %]</div>
       <div class="ob-thumbnail">
        [% IF item.type == 'title' %]
-       <img  style="width:64px;height:64px;" src="/images/openbib/views/provenienzen/flatremix/preferences-system-search-symbolic.svg" />
+       <img  style="width:64px;height:64px;" src="/images/openbib/views/provenienzen/flatremix/preferences-system-search-symbolic.svg" alt="T-PRO Besitzkennzeichen" />
        [% ELSE %]
-       <img  style="width:64px;height:64px;" src="/images/openbib/views/provenienzen/flatremix/system-users-symbolic.svg" />
+       <img  style="width:64px;height:64px;" src="/images/openbib/views/provenienzen/flatremix/system-users-symbolic.svg" alt="Vorbesitzer"/>
        [% END %]
 
       </div>

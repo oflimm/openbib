@@ -194,7 +194,7 @@ sub search {
             $profileindex_path .="_authority";
         }
         
-        if (-d $profileindex_path){
+        if (-d $profileindex_path || -e $profileindex_path){
             $logger->debug("Adding Xapian DB-Object for profile $searchprofile with path $profileindex_path");
             
             eval {

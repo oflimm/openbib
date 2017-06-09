@@ -946,6 +946,30 @@ convtab:
       'popularity':
         'sortfield': 'popularity'# Popularitaet
         'type': 'integervalue'
+    inverted_authority_title:
+      '4307':         # Provenienzen Koerperschaften
+        index:
+          'corporatebody': 20
+          'corporatebodystring': 20
+          'freesearch': 20
+          't4307': 1
+          'ft4307': 1
+        facet:
+          'corporatebody': 1
+      '4308':         # Provenienzen Person
+        index:
+          'personbody': 20
+          'personstring': 20
+          'freesearch': 20
+          't4308': 1
+          'ft4308': 1
+        facet:
+          'person': 1
+      '4310':         # T-PRO Besitzkennzeichen
+        index:
+          'freesearch': 20
+          't4310': 1
+          'ft4310': 1
   
   instzs:
     listitemcat:

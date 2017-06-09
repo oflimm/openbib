@@ -147,6 +147,8 @@ if (! -d "$rootdir/data/$database"){
     system("mkdir $rootdir/data/$database");
 }
 
+my $inverted_ref  = $conv_config->{inverted_authority_title};
+
 foreach my $authority_file_ref (@authority_files){
     
     my $type            = $authority_file_ref->{type};
@@ -263,7 +265,18 @@ foreach my $authority_file_ref (@authority_files){
 				$fields_ref->{$field} = $filtered_fields_ref;
 
 			    }
-			    
+
+
+			    if (exists $inverted_ref->{$field}->{facet}){
+				foreach my $searchfield (keys %{$inverted_ref->{$field}->{facet}}) {
+				    next unless (defined $fields_ref->{$field});
+				    
+				    foreach my $item_ref (@{$fields_ref->{$field}}) {
+					$document->add_facet("facet_$searchfield", $item_ref->{content});        
+				    }
+				}
+			    }
+
 			}			
 
                         $document->set_data("$fieldprefix$field",$fields_ref->{$field});
@@ -281,6 +294,7 @@ foreach my $authority_file_ref (@authority_files){
 #				$have_term_ref->{$item_ref->{content}} = 1;
                             }
                         }
+
                     }
                     
                     my $doc = $indexer->create_document({ document => $document, with_sorting => $withsorting, with_positions => $withpositions });

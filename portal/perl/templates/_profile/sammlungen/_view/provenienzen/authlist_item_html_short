@@ -70,21 +70,17 @@
       <div class="ob-brieftitle">
 [%# USE dumper;dumper.dump(item) %]
        [% IF item.type == 'title' %]
+       T-PRO Besitzkennzeichen<br/>
+       [% ELSIF item.type == 'person' %]
+       Vorbesitzer (Person)<br/>
+       [% ELSIF item.type == 'corporatebody' %]
+       Vorbesitzer (Körperschaft)<br/>
+       [% END %]
+       [% IF item.type == 'title' %]
          <a href="[% path_prefix %]/[% config.get('search_loc') %]?ft4310=[% main_entry |uri %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% main_entry %]</span></strong></a>
        [% ELSE %]
          [% IF record.id && record.database %]<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get("${item.type}s_loc") %]/id/[% record.id %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% main_entry %]</span></strong></a>[% END %]
        [% END %]
-[% IF multiple_dbs == 1 %]
-         <br /><img style="vertical-align:text-bottom;padding:1px;" src="[% config.get('home_small_img') %]" alt="[% msg.maketext("Katalog") %]" title="[% msg.maketext("Katalog") %]"/>
-[%-   IF dbinfo.get('locationid').${record.database} %]
-         <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.get('locationid').${record.database} %]">
-[%-   ELSE -%]
-         <a href="[% dburl %]" target="_blank">
-[%-   END -%]
-[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></i>&nbsp;[%- IF titleinfo -%][ [% titleinfo %] ][%- END -%]
-[% ELSE %]
-[%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
-[% END %]      
       </div>
       <div class="ob-titlemark"></div>
       <div class="ob-titleactions"></div>

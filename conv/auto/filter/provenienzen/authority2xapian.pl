@@ -56,7 +56,6 @@ my ($database,$help,$logfile,$withsorting,$withpositions,$loglevel,$indexpath,$i
 &GetOptions(
     "indexpath=s"       => \$indexpath,
     "database=s"        => \$database,
-    "authority-type=s"  => \$authtype,
     "logfile=s"       => \$logfile,
     "loglevel=s"      => \$loglevel,
     "with-sorting"    => \$withsorting,
@@ -101,11 +100,26 @@ if (!$database){
   exit;
 }
 
+my @tpro = (
+    'Autogramm',
+    'Einlage',
+    'Exlibris',
+    'gedr. Besitzvermerk',
+    'hs. Besitzvermerk',
+    'Stempel',
+    'Supralibros',
+    'Widmung',
+    );
+
 $indexpath=($indexpath)?$indexpath:$config->{xapian_index_base_path}."/".$database."_authority";
 
 my $FLINT_BTREE_MAX_KEY_LEN = $config->{xapian_option}{max_key_length};
 
 my @authority_files = (
+    {
+        type     => "title",
+        filename => "$rootdir/pools/$database/meta.title.gz",
+    },
     {
         type     => "person",
         filename => "$rootdir/pools/$database/meta.person.gz",
@@ -113,10 +127,6 @@ my @authority_files = (
     {
         type     => "corporatebody",
         filename => "$rootdir/pools/$database/meta.corporatebody.gz",
-    },
-    {
-        type     => "title",
-        filename => "$rootdir/pools/$database/meta.title.gz",
     },
 #    {
 #        type     => "subject",
@@ -149,20 +159,15 @@ if (! -d "$rootdir/data/$database"){
 
 my $inverted_ref  = $conv_config->{inverted_authority_title};
 
+my $valid_person_id_ref = {};
+my $valid_corporatebody_id_ref = {};
+
 foreach my $authority_file_ref (@authority_files){
     
     my $type            = $authority_file_ref->{type};
     my $source_filename = $authority_file_ref->{filename};
     my $dest_filename   = "authority_meta.$type";
 
-    next if ($authtype && $authtype ne $type);
-
-    my $positive_ids_ref = get_ids_of_provenances($type);
-
-    if ($logger->is_debug){
-	$logger->debug(YAML::Dump($positive_ids_ref));
-    }
-    
     if (-f $source_filename){
         my $atime = new Benchmark;
 
@@ -216,16 +221,18 @@ foreach my $authority_file_ref (@authority_files){
 
 		    my $id         = $auth_ref->{id};
                     my $fields_ref = $auth_ref->{fields};
-
-		    next unless (defined $positive_ids_ref->{$id} && $positive_ids_ref->{$id});
+		    
+		    next if ($type eq "person" && !$valid_person_id_ref->{$id});
+		    next if ($type eq "corporatebody" && !$valid_corporatebody_id_ref->{$id});
 
                     # Initialisieren und Basisinformationen setzen
                     my $document = OpenBib::Index::Document->new({ database => $database, id => $auth_ref->{id} });
 
                     $document->set_data("type",$authority_file_ref->{type});
-                    
-                    foreach my $field (keys %{$fields_ref}){
 
+		    # 1st Pass: enrich fields
+
+                    foreach my $field (keys %{$fields_ref}){
 			# Ansetzungsformen muessen aus der Datenbank geholt werden, da nicht in meta.title enthalten.
 			if ($type eq "title"){
 
@@ -233,22 +240,14 @@ foreach my $authority_file_ref (@authority_files){
 			    
 			    if ($field eq "4307"){ # Koerperschaft
 				foreach my $item_ref (@{$fields_ref->{$field}}){
-				    my $name = OpenBib::Record::CorporateBody->new({ database => $database, id => $item_ref->{id} })->load_name->name_as_string;
-				    
-				    $item_ref->{content} = $name;
-				    
-				    $logger->info("New Content C ".$item_ref->{content});
+				    $valid_corporatebody_id_ref->{$item_ref->{id}} = 1;
 				}
+
 			    }
 			    elsif ($field eq "4308"){ # Person
 				foreach my $item_ref (@{$fields_ref->{$field}}){
-				    my $name = OpenBib::Record::Person->new({ database => $database, id => $item_ref->{id} })->load_name->name_as_string;
-				    
-				    $item_ref->{content} = $name;
-					
-				    $logger->info("New Content P ".$item_ref->{content});
+				    $valid_person_id_ref->{$item_ref->{id}} = 1;
 				}
-
 
 			    }
 			    elsif ($field eq "4310"){ # Merkmal
@@ -264,23 +263,75 @@ foreach my $authority_file_ref (@authority_files){
 				}
 				$fields_ref->{$field} = $filtered_fields_ref;
 
-			    }
-
-
-			    if (exists $inverted_ref->{$field}->{facet}){
-				foreach my $searchfield (keys %{$inverted_ref->{$field}->{facet}}) {
-				    next unless (defined $fields_ref->{$field});
-				    
-				    foreach my $item_ref (@{$fields_ref->{$field}}) {
-					$document->add_facet("facet_$searchfield", $item_ref->{content});        
+				my $mult = 1;
+				$fields_ref->{'0700'} = [];
+				foreach my $item_ref (@{$fields_ref->{'4310'}}){
+				    foreach my $merkmal (@tpro){
+					if ($item_ref->{content} =~m/$merkmal/){
+					    push @{$fields_ref->{'0700'}}, {
+						mult     => $mult,
+						subfield => '',
+						content  => $merkmal,
+					    };
+					    $mult++;
+					}
 				    }
 				}
+				
+				$fields_ref->{'4410'} = [
+				    {
+					mult     => 1,
+					subfield => '',
+					content  => "T-PRO Besitzkennzeichen",
+				    },
+				    ];
+				
 			    }
 
 			}			
+			elsif ($type eq "person"){
+				$fields_ref->{'4410'} = [
+				    {
+					mult     => 1,
+					subfield => '',
+					content  => "Vorbesitzer (Person)",
+				    },
+				    ];
+
+			}
+			elsif ($type eq "corporatebody"){
+				$fields_ref->{'4410'} = [
+				    {
+					mult     => 1,
+					subfield => '',
+					content  => "Vorbesitzer (Körperschaft)",
+				    },
+				    ];
+				
+			}
+		    }
+		    
+                    foreach my $field (keys %{$fields_ref}){
 
                         $document->set_data("$fieldprefix$field",$fields_ref->{$field});
 
+			if ($logger->is_debug){
+			    $logger->debug("Fields for type $type: ".YAML::Dump($fields_ref));
+			}
+			# Facettierung
+			foreach my $searchfield (keys %{$conv_config->{"inverted_authority_".$authority_file_ref->{type}}{$field}->{facet}}) {
+				next unless (defined $fields_ref->{$field});
+				
+				foreach my $item_ref (@{$fields_ref->{$field}}) {
+				    next unless ($item_ref->{content});
+				    $logger->debug("Adding Facet facet_$searchfield for ".$item_ref->{content});
+				    
+				    $document->add_facet("facet_$searchfield", $item_ref->{content});        
+				}
+			}
+			
+
+			# Indexierung
                         foreach my $searchfield (keys %{$conv_config->{"inverted_authority_".$authority_file_ref->{type}}{$field}->{index}}) {
                             my $weight = $conv_config->{"inverted_authority_".$authority_file_ref->{type}}{$field}->{index}{$searchfield};
 
@@ -288,7 +339,7 @@ foreach my $authority_file_ref (@authority_files){
                             foreach my $item_ref (@{$fields_ref->{$field}}){
                                 next unless $item_ref->{content};
 #				next if (defined $have_term_ref->{$item_ref->{content}});
-				$logger->info("indexing ".$item_ref->{content}) if ($type eq "title");
+				$logger->info("indexing ".$item_ref->{content}." for searchfield $searchfield with weight $weight") if ($type eq "title");
 				
                                 $document->add_index($searchfield,$weight, ["$fieldprefix$field",$item_ref->{content}]);
 #				$have_term_ref->{$item_ref->{content}} = 1;
@@ -296,7 +347,11 @@ foreach my $authority_file_ref (@authority_files){
                         }
 
                     }
-                    
+
+                    if ($logger->is_debug){
+			$logger->debug(YAML::Dump($document->get_document()))
+		    }
+		    
                     my $doc = $indexer->create_document({ document => $document, with_sorting => $withsorting, with_positions => $withpositions });
 
                     $indexer->create_record($doc);
@@ -329,65 +384,6 @@ $resulttime    =~s/(\d+\.\d+) .*/$1/;
 
 $logger->info("Gesamtzeit: $resulttime Sekunden");
 
-sub get_ids_of_provenances {
-    my ($type) =@_;
-
-    my $positive_ids_ref = {};
-
-    my $catalog = OpenBib::Catalog::Factory->create_catalog({database => $database});
-
-    if ($type eq "person"){
-	my $ids = $catalog->get_schema()->resultset('TitlePerson')->search(
-	    {
-		field => 4308,
-	    },
-	    {
-		select => ['personid'],
-		as => ['thisid'],
-		result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-
-	    }
-	    );
-	while (my $id = $ids->next()){
-	    $positive_ids_ref->{$id->{'thisid'}}=1;
-	}
-    }
-    elsif ($type eq "corporatebody"){
-	my $ids = $catalog->get_schema()->resultset('TitleCorporatebody')->search(
-	    {
-		field => 4307,
-	    },
-	    {
-		select => ['corporatebodyid'],
-		as => ['thisid'],
-		result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-
-	    }
-	    );
-	while (my $id = $ids->next()){
-	    $positive_ids_ref->{$id->{'thisid'}}=1;
-	}
-    }
-    elsif ($type eq "title"){
-	my $ids = $catalog->get_schema()->resultset('TitleField')->search(
-	    {
-		field => 4310,
-	    },
-	    {
-		select => ['titleid'],
-		as => ['thisid'],
-		result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-
-	    }
-	    );
-	while (my $id = $ids->next()){
-	    $positive_ids_ref->{$id->{'thisid'}}=1;
-	}
-    }
-
-    return $positive_ids_ref;
-}
-
 sub print_help {
     print << "ENDHELP";
 authority2xapian.pl - Aufbau eines Xapian-Index für die Normdaten von Provenienzen
@@ -399,7 +395,6 @@ authority2xapian.pl - Aufbau eines Xapian-Index für die Normdaten von Provenien
    -with-sorting         : Integration von Sortierungsinformationen (nicht default)
    -with-positions       : Integration von Positionsinformationen(nicht default)
    --database=...        : Angegebenen Datenpool verwenden
-   --authority-type=...        : Angegebenen Normdatentyp (person, corporatebody, ...) verwenden
 
 ENDHELP
     exit;

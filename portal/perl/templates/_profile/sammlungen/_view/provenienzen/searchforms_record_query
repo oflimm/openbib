@@ -102,6 +102,32 @@ $(document).ready(function(){
 <input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
+[%- cgiparam = searchfield.classification.prefix;
+    this_searchfield = 'classification';
+ -%]
+<div class="ym-fbox-select">
+<label for="[% cgiparam %]">[% msg.maketext("Systematik") %]</label>
+<select id="[% cgiparam %]" name="[% cgiparam %]"><option value="">Keine ausgew&auml;hlt</option>
+[%-
+
+  tpro = [
+    'Autogramm',
+    'Einlage',
+    'Exlibris',
+    'gedr. Besitzvermerk',
+    'hs. Besitzvermerk',
+    'Stempel',
+    'Supralibros',
+    'Widmung',
+  ];
+FOREACH sys IN tpro ;
+-%]
+<option value="[% sys %]">[% sys %]</option>
+[%-
+END;
+-%]
+</select>
+</div>
 
 
 <p/>

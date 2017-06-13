@@ -81,7 +81,7 @@ my $config = new OpenBib::Config();
 my $fullatime = new Benchmark;
 
 my $xapian_cmd  = "/usr/bin/xapian-compact";
-my @xapian_args = ();
+my @xapian_args = ('-s');
 my $xapian_base = $config->{xapian_index_base_path};
 
 my @searchprofiles = ();

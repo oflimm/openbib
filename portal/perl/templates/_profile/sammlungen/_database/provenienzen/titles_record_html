@@ -221,7 +221,7 @@ $(document).ready(function(){
 </td>
 [% END %]
 <td>
-[% IF provenance.${'T4315'}.first.content ;%]
+[% IF provenance.${'T4315'}.first.content %]
 [%
    this_id = provenance.${'T4315'}.first.content;
    cdm_json_url = "http://www.ub.uni-koeln.de/cdm4/json_gateway.php?collection=%2Fprovenienzen&start=1&maxrecs=100&field0=identi&mode0=exact&string0=${this_id}";
@@ -238,7 +238,9 @@ $(document).ready(function(){
 
   [% END %]
 
-[% END %]
+[% END # IF %]
+[% ELSE %]
+-
 [% END %]
 </td>
 </tr>

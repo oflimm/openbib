@@ -267,6 +267,8 @@
 ../modules/OpenBib/Search/Backend/HTTP.pm
 ../modules/OpenBib/Search/Backend/Xapian.pm
 ../modules/OpenBib/Search/Backend/Z3950.pm
+../modules/OpenBib/Search/Backend/Z3950/USBK/Config.pm
+../modules/OpenBib/Search/Backend/Z3950/USBK/Config.pm-dist
 ../modules/OpenBib/Search/Backend/Z3950/USBK.pm
 ../modules/OpenBib/Search/Factory.pm
 ../modules/OpenBib/Search.pm
@@ -638,6 +640,7 @@
 ../templates/_database/inst431/acquisition_index
 ../templates/_database/inst431/acquisition_types
 ../templates/_database/instzs/holding
+../templates/_database/instzs/titlist_item_html_short
 ../templates/_database/kapsel/holding
 ../templates/_database/kapsel/titles_record_html_categories
 ../templates/_database/kapsel/titles_record_html_images
@@ -934,6 +937,7 @@
 ../templates/_profile/kug/_database/usbsab/holding
 ../templates/_profile/kug/_database/usbsab/titles_record_html_categories
 ../templates/_profile/kug/_database/usbsab/visible_categories_title
+../templates/_profile/kug/_database/usbweb/titlist_item_html_short
 ../templates/_profile/kug/_database/wikisource_de/persons_record_html
 ../templates/_profile/kug/_database/wikisource_de/visible_categories_title
 ../templates/_profile/kug/_database/wiso/circulation
@@ -1208,6 +1212,7 @@
 ../templates/_profile/sammlungen/_database/portrait/titlist_item_html_short
 ../templates/_profile/sammlungen/_database/portrait/visible_categories_title
 ../templates/_profile/sammlungen/_database/provenienzen/titles_record_html
+../templates/_profile/sammlungen/_database/provenienzen/visible_categories_provenances
 ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title
 ../templates/_profile/sammlungen/_database/pruessen/titles_record_html_actions
 ../templates/_profile/sammlungen/_database/pruessen/visible_categories_title
@@ -1447,6 +1452,7 @@
 ../templates/_profile/sammlungen/_view/landschaft/clouds_subject_html
 ../templates/_profile/sammlungen/_view/landschaft/clouds_year_html
 ../templates/_profile/sammlungen/_view/landschaft/home_html
+../templates/_profile/sammlungen/_view/landschaft/info_digitalisierung
 ../templates/_profile/sammlungen/_view/landschaft/mainnavigation_html
 ../templates/_profile/sammlungen/_view/landschaft/search_facet
 ../templates/_profile/sammlungen/_view/landschaft/searchforms_record_query
@@ -1536,14 +1542,29 @@
 ../templates/_profile/sammlungen/_view/portrait/subnavigation
 ../templates/_profile/sammlungen/_view/portrait/titles_fields_record_html
 ../templates/_profile/sammlungen/_view/portrait/titles_record_html_images
+../templates/_profile/sammlungen/_view/provenienzen/authlist_item_html_short
+../templates/_profile/sammlungen/_view/provenienzen/authority_search_facet
+../templates/_profile/sammlungen/_view/provenienzen/cartitems_html
+../templates/_profile/sammlungen/_view/provenienzen/cartitems_html_actions
+../templates/_profile/sammlungen/_view/provenienzen/cartitems_html_as_text
+../templates/_profile/sammlungen/_view/provenienzen/cartitems_html_short
+../templates/_profile/sammlungen/_view/provenienzen/cartitems_html_simple
+../templates/_profile/sammlungen/_view/provenienzen/cartitems_mail_message
 ../templates/_profile/sammlungen/_view/provenienzen/corporate_banner
+../templates/_profile/sammlungen/_view/provenienzen/corporatebodies_record_html
+../templates/_profile/sammlungen/_view/provenienzen/holding
 ../templates/_profile/sammlungen/_view/provenienzen/home
 ../templates/_profile/sammlungen/_view/provenienzen/mainnavigation
+../templates/_profile/sammlungen/_view/provenienzen/persons_record_html
+../templates/_profile/sammlungen/_view/provenienzen/searchforms_record_advanced
 ../templates/_profile/sammlungen/_view/provenienzen/searchforms_record_query
 ../templates/_profile/sammlungen/_view/provenienzen/std_header_html
 ../templates/_profile/sammlungen/_view/provenienzen/subnavigation
 ../templates/_profile/sammlungen/_view/provenienzen/titles_fields_record_html
 ../templates/_profile/sammlungen/_view/provenienzen/titles_navigation
+../templates/_profile/sammlungen/_view/provenienzen/titles_record_html_actions
+../templates/_profile/sammlungen/_view/provenienzen/titles_record_html_categories
+../templates/_profile/sammlungen/_view/provenienzen/titlist_item_html_short
 ../templates/_profile/sammlungen/_view/pruessen/corporate_banner
 ../templates/_profile/sammlungen/_view/pruessen/home_html
 ../templates/_profile/sammlungen/_view/pruessen/info_ansprechpartner
@@ -1603,6 +1624,7 @@
 ../templates/_profile/sammlungen/_view/totenzettel/clouds_navigation
 ../templates/_profile/sammlungen/_view/totenzettel/clouds_year_html
 ../templates/_profile/sammlungen/_view/totenzettel/home_html
+../templates/_profile/sammlungen/_view/totenzettel/info_digitalisierung
 ../templates/_profile/sammlungen/_view/totenzettel/info_sammlung
 ../templates/_profile/sammlungen/_view/totenzettel/mainnavigation
 ../templates/_profile/sammlungen/_view/totenzettel/search_facet
@@ -1620,6 +1642,7 @@
 ../templates/_profile/sammlungen/_view/umschlaege/clouds_navigation
 ../templates/_profile/sammlungen/_view/umschlaege/home_html
 ../templates/_profile/sammlungen/_view/umschlaege/info_bibliographie
+../templates/_profile/sammlungen/_view/umschlaege/info_digitalisierung
 ../templates/_profile/sammlungen/_view/umschlaege/info_dokumentation
 ../templates/_profile/sammlungen/_view/umschlaege/info_redaktion
 ../templates/_profile/sammlungen/_view/umschlaege/info_sammlung
@@ -2083,6 +2106,7 @@
 ../templates/visible_categories_classification
 ../templates/visible_categories_corporatebody
 ../templates/visible_categories_location
+../templates/visible_categories_location_admin
 ../templates/visible_categories_person
 ../templates/visible_categories_subject
 ../templates/visible_categories_title

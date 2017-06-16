@@ -143,7 +143,7 @@ FOREACH category IN categories;
 [% ELSE %]
 <div class="ym-fbox-text" id="fields_[% category %]">
   <div id="fields_[% category %]_[% subfield %]_[% mult %]">
-    <label for="field_[% category %]_[% subfield %]_[% mult %]">[% msg.maketext("${thiscategory}") %] <a href="#" id="add_fields_[% category %]_[% subfield %]_[% mult %]" onClick="add_field();return false;">[% msg.maketext("Neu") %]</a></label>
+    <label for="field_[% category %]_[% subfield %]_[% mult %]">[% msg.maketext("${thiscategory}") %]<!-- <a href="#" id="add_fields_[% category %]_[% subfield %]_[% mult %]" onClick="add_field();return false;">[% msg.maketext("Neu") %]</a>--></label>
     <input type="text" name="fields_[% category %]_[% subfield %]_[% mult %]" id="field_[% category %]_[% subfield %]_[% mult %]" value="[% content | html %]" size="100"/>
   </div>
 </div>

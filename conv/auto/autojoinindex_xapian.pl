@@ -42,10 +42,11 @@ use Search::Xapian;
 
 use OpenBib::Config;
 
-my ($searchprofileid,$help,$logfile,$loglevel,$onlyauthorities,$onlytitles);
+my ($usedirectories,$searchprofileid,$help,$logfile,$loglevel,$onlyauthorities,$onlytitles);
 
 &GetOptions("searchprofileid=s" => \$searchprofileid,
             "only-authorities"  => \$onlyauthorities,
+	    "use-directories"   => \$usedirectories,
             "only-titles"       => \$onlytitles,
             "logfile=s"         => \$logfile,
             "loglevel=s"        => \$loglevel,
@@ -81,7 +82,12 @@ my $config = new OpenBib::Config();
 my $fullatime = new Benchmark;
 
 my $xapian_cmd  = "/usr/bin/xapian-compact";
-my @xapian_args = ('-s');
+my @xapian_args = ();
+
+unless ($usedirectories){
+    push @xapian_args, '-s';
+}
+
 my $xapian_base = $config->{xapian_index_base_path};
 
 my @searchprofiles = ();
@@ -121,15 +127,25 @@ while (my $file = readdir(DIR)) {
     
     if (!$onlyauthorities && !$is_authority){
 	$logger->info("Profil $file entfernt");
-	
-	system("rm $searchprofiledir/$file/*");
-	system("rmdir $searchprofiledir/$file");    
+
+	if ($usedirectories){
+	    system("rm $searchprofiledir/$file/*");
+	    system("rmdir $searchprofiledir/$file");
+	}
+	else {
+	    system("rm $searchprofiledir/$file");
+	}
     }
     elsif (!$onlytitles && $is_authority){
 	$logger->info("Authority Profil $file entfernt");
 	
-	system("rm $searchprofiledir/$file/*");
-	system("rmdir $searchprofiledir/$file");    
+	if ($usedirectories){
+	    system("rm $searchprofiledir/$file/*");
+	    system("rmdir $searchprofiledir/$file");
+	}
+	else {
+	    system("rm $searchprofiledir/$file");
+	}
     }	
 }
 
@@ -214,14 +230,24 @@ foreach my $searchprofile (@searchprofiles){
 
     if (!$onlyauthorities){
         $logger->info("### Replacing index");
-        
-        system("rm -f $thistmp2index_path/* ; rmdir $thistmp2index_path ; mv $thisindex_path $thistmp2index_path ; mv $thistmpindex_path $thisindex_path ; rm -f $thistmp2index_path/* ; rmdir $thistmp2index_path ");
+
+        if ($usedirectories){
+	    system("rm -f $thistmp2index_path/* ; rmdir $thistmp2index_path ; mv $thisindex_path $thistmp2index_path ; mv $thistmpindex_path $thisindex_path ; rm -f $thistmp2index_path/* ; rmdir $thistmp2index_path ");
+	}
+	else {
+	    system("rm $thistmp2index_path ; mv $thisindex_path $thistmp2index_path ; mv $thistmpindex_path $thisindex_path ; rm $thistmp2index_path ");
+	}
     }
 
     if (!$onlytitles){
         $logger->info("### Replacing authority index");
         
-        system("rm -f $thisauthoritytmp2index_path/* ; rmdir $thisauthoritytmp2index_path ; mv $thisauthorityindex_path $thisauthoritytmp2index_path ; mv $thisauthoritytmpindex_path $thisauthorityindex_path ; rm -f $thisauthoritytmp2index_path/* ; rmdir $thisauthoritytmp2index_path ");
+        if ($usedirectories){
+	    system("rm -f $thisauthoritytmp2index_path/* ; rmdir $thisauthoritytmp2index_path ; mv $thisauthorityindex_path $thisauthoritytmp2index_path ; mv $thisauthoritytmpindex_path $thisauthorityindex_path ; rm -f $thisauthoritytmp2index_path/* ; rmdir $thisauthoritytmp2index_path ");
+	}
+	else {
+	    system("rm $thisauthoritytmp2index_path ; mv $thisauthorityindex_path $thisauthoritytmp2index_path ; mv $thisauthoritytmpindex_path $thisauthorityindex_path ; rm $thisauthoritytmp2index_path ");
+	}
     }
     
     my $btime      = new Benchmark;
@@ -249,7 +275,7 @@ autojoinindex_xapian.pl - Automatische Verschmelzung von Xapian-Indizes fuer Suc
    -help                 : Diese Informationsseite
        
    --searchprofileid=... : Angegebne Suchprofil-ID verwenden (ansonsten fuer alle Kataloge die own_index=true in Admin haben)
-
+   -use-directories      : Verwendung von Verzeichnissen fuer die Xapian-Indizes anstelle Dateien
 ENDHELP
     exit;
 }

@@ -85,6 +85,8 @@ my $xapian_cmd  = "/usr/bin/xapian-compact";
 my @xapian_args = ();
 
 unless ($usedirectories){
+    # Glass-Backend mit Verzeichnissen braucht doppelt soviel Zeit bei
+    # xapian-compact wie die Verwendung von einer Datei pro Index
     push @xapian_args, '-s';
 }
 

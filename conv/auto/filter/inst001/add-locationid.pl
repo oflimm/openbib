@@ -184,6 +184,7 @@ while (<TITLE>){
         foreach my $item (@{$title_ref->{fields}{'4800'}}){
 	    if ($item->{content}=~/^E[BKZ]A?$/){
 		push @{$element_ref}, "DE-Kn3";
+		push @{$element_ref}, "DE-38-ZBKUNST";
 	    }
         }
     }

@@ -79,7 +79,16 @@
        [% IF item.type == 'title' %]
          <a href="[% path_prefix %]/[% config.get('search_loc') %]?ft4310=[% main_entry |uri %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% main_entry %]</span></strong></a>
        [% ELSE %]
-         [% IF record.id && record.database %]<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get("${item.type}s_loc") %]/id/[% record.id %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% main_entry %]</span></strong></a>[% END %]
+         [%
+            uri_part = "";
+	    IF item.type == "person";
+	      uri_part = "persons";
+	    ELSIF item.type == "corporatebody";
+	      uri_part = "corporatebodies";
+	    END;
+  
+	 %]
+         [% IF record.id && record.database %]<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% uri_part %]/id/[% record.id %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% main_entry %]</span></strong></a>[% END %]
        [% END %]
       </div>
       <div class="ob-titlemark"></div>

@@ -11,8 +11,23 @@
 #
 #######################################################################
 -%]
+[%
+ Aquisition = 0;
+
+ FOREACH thiscirculation IN circulation ;
+    IF thiscirculation.AquisitionStatuscode >= 1 ;
+       Aquisition = 1;
+    END ;
+ END ;
+
+ IF normset.${"T5002"}.first.content.defined ;
+    Aquisition = 2 ;
+ END ;
+
+%]
 <p />
 [%# USE dumper;dumper.dump(dbinfo)%]
+[% IF Aquisition == 0 %]
 <table class="ym-full">
 <thead>
 <tr align="center"><th>[% msg.maketext("Bibliothek") %]</th><th>QR-Code</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Ausleihstatus") %]</th><th>[% msg.maketext("Ausleihsystem") %]</th></tr>
@@ -46,7 +61,7 @@
         END ;
 
         IF thiscirculation.Signatur.match('^KS/V') ;
-           thiscirculation.Status = "bestellbar (Nutzung nur im Lesesaal)<br/>Bitte f&uuml;llen Sie einen konventionellen Leihschein aus (erh&auml;ltlich an der Auskunft und der Lesesaal-Theke im 1.OG)";
+           thiscirculation.Status = "bestellbar (Nutzung nur im Lesesaal)";
            thiscirculation.Standort = "Hauptabteilung / Magazin";
         END ; 
 
@@ -116,9 +131,7 @@
 <strong>[% thiscirculation.Bibliothek.full %]</strong></a></td>
 [%- END -%]
 <td><a class="ob-qrcode_preview" onclick="return false;" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [%- IF library_isil %][% locinfo.identifier.${library_isil}.description |uri %][% ELSE %][% thiscirculation.Bibliothek.short | uri %][% END %] :: [% IF thiscirculation.Standort.match('/ $') %][% thiscirculation.Standort.replace('/ $','') | uri %][% ELSE %][% thiscirculation.Standort | uri %][% END %][%- IF thiscirculation.Fussnote -%] ([% thiscirculation.Fussnote | uri %])[%- END -%] :: [% IF thiscirculation.Signatur.match('#$') && thiscirculation.Exemplar %][% thiscirculation.Signatur | uri %][% thiscirculation.Exemplar | uri %][% ELSE %][% thiscirculation.Signatur | uri %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td>
-<td>
-[% IF thiscirculation.Standort %]
-[% IF thiscirculation.Standort.match('/ $') %][% thiscirculation.Standort.replace('/ $','') %][% ELSE %][% thiscirculation.Standort %][% END %][%- IF thiscirculation.Fussnote -%] ([% thiscirculation.Fussnote %])[%- END -%]<br/>
+<td>[% IF thiscirculation.Standort.match('/ $') %][% thiscirculation.Standort.replace('/ $','') %][% ELSE %][% thiscirculation.Standort %][% END %][%- IF thiscirculation.Fussnote -%] ([% thiscirculation.Fussnote %])[%- END -%]<br/>
 [% IF thiscirculation.Standort.match('Fachbibliothek VWL') %]
 <a href="http://www.ub.uni-koeln.de/bibliotheken/38_101/" target="_blank"><b>&Ouml;ffungszeiten</b></a>
 [% ELSIF thiscirculation.Standort.match('Inst. für Medienkultur') %]
@@ -132,30 +145,19 @@
 [% ELSE %]
 <a href="http://www.ub.uni-koeln.de/bibliothek/zeiten/index_ger.html" target="_blank"><b>&Ouml;ffungszeiten</b></a>
 [% END %]
-[% END %]
 </td>
+[%-
+
+thiscirculation.Signatur = thiscirculation.Signatur.replace('^ARCH/','');
+
+-%]
 <td><strong>[% IF thiscirculation.Signatur.match('#$') && thiscirculation.Exemplar %][% thiscirculation.Signatur %][% thiscirculation.Exemplar %][% ELSE %][% thiscirculation.Signatur %][% END %]</strong>
 [% provenances = record.get_provenances_of_media(thiscirculation.Mediennr) %]
 [% IF provenances.size > 0 %]
 <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %];mnr=[% thiscirculation.Mediennr %]">Provenienzen</a>
 [% END %]
 </td>
-<td>
-[% IF thiscirculation.AquisitionStatuscode > 0 %]
-<strong>Neuerwerbung: </strong><br/>
-[%   IF thiscirculation.AquisitionStatuscode <= 2 %]
-[% msg.maketext("bestellt beim Lieferanten") %]
-[%   ELSIF thiscirculation.AquisitionStatuscode <= 4 %]
-[% msg.maketext("im Gesch&auml;ftsgang") %]
-[%   ELSIF thiscirculation.AquisitionStatuscode == 5 %]
-[% msg.maketext("beim Lieferanten storniert") %]
-[%   ELSIF thiscirculation.AquisitionStatuscode <= 8 %]
-[% msg.maketext("beim Lieferanten reklamiert") %]
-[%   ELSIF thiscirculation.AquisitionStatuscode == 9 %]
-[% msg.maketext("ausgeschieden") %]
-[%   END %]
-[% ELSE %]
-<strong>[%- IF thiscirculation.Status == 'bestellbar' -%]ausleihbar[% ELSIF
+<td><strong>[%- IF thiscirculation.Status == 'bestellbar' -%]ausleihbar[% ELSIF
 thiscirculation.Status == 'entliehen' && thiscirculation.Rueckgabe != '31.12.9999' && thiscirculation.Rueckgabe != '1.1.1753' %]entliehen<br/>bis [% thiscirculation.Rueckgabe %][%- ELSE -%][% thiscirculation.Status %][%- END -%]</strong></td>
 <td class="circurl">
 [%
@@ -174,9 +176,35 @@ thiscirculation.Status == 'entliehen' && thiscirculation.Rueckgabe != '31.12.999
 Ausleihe vor Ort [%# msg.maketext("Keine Aktion m&ouml;glich") %]
 [%      END %]
 [%   END %]
-[% END %]
 </td>
 </tr>
 [% END %]
 </tbody>
 </table>
+[% ELSIF Aquisition == 1 %]
+<table width="100%">
+<tr><th>[% msg.maketext("Neuerwerbung") %]</th></tr>
+<tr><td class="boxedclear">
+<table width="100%">
+<tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="120">[% msg.maketext("Erwerbungsstatus") %]</td></tr>
+[% FOREACH thiscirculation IN circulation %]
+<tr align="center"><td><a href="[% thiscirculation.Bibinfourl %]" target="_blank"><strong>[% thiscirculation.Bibliothek.full %]</strong></a></td><td>
+[%   IF thiscirculation.AquisitionStatuscode <= 2 %]
+[% msg.maketext("bestellt beim Lieferanten") %]
+[%   ELSIF thiscirculation.AquisitionStatuscode <= 4 %]
+[% msg.maketext("im Gesch&auml;ftsgang") %]
+[%   ELSIF thiscirculation.AquisitionStatuscode == 5 %]
+[% msg.maketext("beim Lieferanten storniert") %]
+[%   ELSIF thiscirculation.AquisitionStatuscode <= 8 %]
+[% msg.maketext("beim Lieferanten reklamiert") %]
+[%   ELSIF thiscirculation.AquisitionStatuscode == 9 %]
+[% msg.maketext("ausgeschieden") %]
+[%   END %]
+</td></tr>
+[% END %]
+</table>
+
+</td></tr>
+</table>
+
+[% END %]

@@ -61,7 +61,7 @@
         END ;
 
         IF thiscirculation.Signatur.match('^KS/V') ;
-           thiscirculation.Status = "bestellbar (Nutzung nur im Lesesaal)<br/>Bitte f&uuml;llen Sie einen konventionellen Leihschein aus (erh&auml;ltlich an der Auskunft und der Lesesaal-Theke im 1.OG)";
+           thiscirculation.Status = "bestellbar (Nutzung nur im Lesesaal)";
            thiscirculation.Standort = "Hauptabteilung / Magazin";
         END ; 
 

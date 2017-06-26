@@ -17,7 +17,7 @@
        field_description = "Provenienz Person";
        searchfield = 'personstring' ;
     ELSIF field == '4307' ;
-       field_description = "Provenienz K&ouml;rperschaft;
+       field_description = "Provenienz K&ouml;rperschaft";
        searchfield = 'corporatebodystring' ;
     ELSIF field == '4310' ;
        field_description = "Besitzkennzeichen (T-PRO)";

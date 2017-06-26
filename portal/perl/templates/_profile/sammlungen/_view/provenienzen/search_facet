@@ -53,6 +53,17 @@ $("#dd_corporatebody_[% database %]_toggle").click(function(){
  $("#dd_corporatebody_[% database %]_toggle").html("");
 });
 
+// Begin Togglen / Facets Koerperschaften
+// Bild setzen
+$("#dd_provenance_[% database %]_toggle").html("<b>[<a href=\"#dd_provenance_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+// Zuerst verstecken
+$("#dd_provenance_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_provenance_[% database %]_toggle").click(function(){
+ $("#dd_provenance_[% database %]").toggle();
+ $("#dd_provenance_[% database %]_toggle").html("");
+});
+
 // Begin Togglen / Facets Schlagworte
 // Bild setzen
 $("#dd_subjects_[% database %]_toggle").html("<b>[<a href=\"#dd_subjects_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
@@ -174,9 +185,10 @@ $("#dd_availability_[% database %]_toggle").click(function(){
           ${config.get('searchfield').dbstring.prefix} = msg.maketext("Katalog")
           ${config.get('searchfield').personstring.prefix} = msg.maketext("Person")
           ${config.get('searchfield').corporatebodystring.prefix} = msg.maketext("K&ouml;perschaft")
+          ${config.get('searchfield').provenancestring.prefix} = "USB Sammlungsvermerk"
           ${config.get('searchfield').subjectstring.prefix} = msg.maketext("Thema")
           ${config.get('searchfield').classificationstring.prefix} = msg.maketext("Systematik")
-          ${config.get('searchfield').mediatypestring.prefix} = msg.maketext("Medientyp")
+          ${config.get('searchfield').mediatypestring.prefix} = msg.maketext("Typ")
           ${config.get('searchfield').languagestring.prefix} = msg.maketext("Sprache")
           ${config.get('searchfield').yearstring.prefix} = msg.maketext("Jahr")
           ${config.get('searchfield').tagstring.prefix} = msg.maketext("Tag")
@@ -274,6 +286,31 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 </dl>
 [%         END %]
 <!-- End corporatebody facet -->
+
+<!-- Begin provenance facet -->
+[%         IF config.get('facets').provenance && facets.provenance.size > 0 %]
+<dl class="ob-items">
+<dt class="ob-headline" id="dd_provenance_[% database %]_anchor">nach USB Sammlungsvermerk</dt>
+[%             FOREACH termitem IN facets.provenance ;
+                  LAST IF loop.count > 25 ;
+%]
+[% IF facets.provenance.size > 5 && loop.count == 5 %]
+<span id="dd_provenance_[% database %]_toggle"></span>
+<div id="dd_provenance_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').provenancestring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])</dd>
+[%             END %]
+[% IF facets.provenance.size > 5 %]
+</div>
+[% END %]
+</dl>
+[%         END %]
+<!-- End provenance facet -->
 
 </form>
 [% ELSE %]

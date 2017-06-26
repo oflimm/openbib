@@ -14,14 +14,17 @@
 [% PROCESS common/subtemplate name="std_header" %]
 
 [%- IF field == '4308' ;
-       field_description = msg.maketext("Vorbesitzer Person");
+       field_description = "Provenienz Person";
        searchfield = 'personstring' ;
     ELSIF field == '4307' ;
-       field_description = msg.maketext("Vorbesitzer K&ouml;rperschaft");
+       field_description = "Provenienz K&ouml;rperschaft;
        searchfield = 'corporatebodystring' ;
     ELSIF field == '4310' ;
-       field_description = msg.maketext("T-PRO Besitzkennzeichen");
+       field_description = "Besitzkennzeichen (T-PRO)";
        searchfield = 'ft4310' ;
+    ELSIF field == '4700' ;
+       field_description = "USB Sammlungsvermerk";
+       searchfield = 'provenancestring' ;
     END ; -%]
 
 <body>

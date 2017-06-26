@@ -4550,6 +4550,7 @@ facets:
   location: 11
   availability: 12
   topic: 13
+  provenance: 14
 
 # Repraesentationen
 

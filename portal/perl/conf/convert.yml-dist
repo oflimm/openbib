@@ -1396,6 +1396,12 @@ convtab:
           'freesearch': 1
         facet:
           'mediatype': 1
+      '4700':         # Sammlungsvermerk
+        index:
+          'provenance': 20
+          'provenancestring': 20
+        facet:
+          'provenance': 1
       '4710':         # Migriertes Schlagwort
         index:
           'subject': 20

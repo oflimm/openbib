@@ -169,6 +169,18 @@ $(document).ready(function(){
 
 [% IF record_exists %]
 
+[%
+   have_provenance = 0;
+   FOREACH provenance IN record.get_provenances(msg) ;
+        IF provenance.defined('T4309');
+            have_provenance = 1;
+            LAST;
+        END;
+   END;
+
+%]
+
+[% IF have_provenance %]
 <table class="ym-full">
 <thead>
 <tr align="center"><th>Provenienz</th><th>Merkmal</th><th>Sigel</th><th>Mediennummer</th>[% IF has_4312 %]<th>Selektionskennzeichen</th>[% END %]<th>Scan</th></tr>
@@ -249,6 +261,9 @@ $(document).ready(function(){
 </tbody>
 </table>
 
+[% ELSE  %]
+<p style="font-size:1.2em;font-face:bold;">F&uuml;r diese &uuml;bergeordnete Titelaufnahme stehen keine Provenienzinformationen zur Verf&uuml;gung.</p>
+[% END %]
 <p style="height: 10px;"/>
 
 <div class="ob-category_header">[% msg.maketext("Titel") %]</div>

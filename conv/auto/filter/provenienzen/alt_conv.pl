@@ -40,7 +40,7 @@ my $meta2sqlexe   = "$config->{'conv_dir'}/meta2sql.pl";
 
 my $database = $ARGV[0];
 
-my $cmd = "$meta2sqlexe --loglevel=INFO --database=$database";
+my $cmd = "$meta2sqlexe --loglevel=INFO --database=$database -add-superpers";
 
 print "Executing in $rootdir/data/$database : $cmd\n";
 

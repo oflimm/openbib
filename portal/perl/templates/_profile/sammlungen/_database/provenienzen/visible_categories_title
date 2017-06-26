@@ -119,6 +119,7 @@
                 'T4220', # msg.maketext("T4220") Nutzer
                 'E4110', # msg.maketext("E4110") Inhaltsverzeichnis
                 'E4120', # msg.maketext("E4120") Ebook-URL
+                'T4700', # msg.maketext("T4700") Sammlungsvermerk
                 #'T4500', # msg.maketext("T4500") Nutzer-Tags
                 'T5005', # msg.maketext("T5005") Uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke

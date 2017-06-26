@@ -81,13 +81,14 @@ my $chars_to_replace = join '|',
 
 $chars_to_replace = qr/$chars_to_replace/;
 
-my ($database,$reducemem,$addsuperpers,$addmediatype,$addlanguage,$incremental,$logfile,$loglevel,$count,$help);
+my ($database,$reducemem,$addsuperpers,$addmediatype,$addlanguage,$incremental,$keepfiles,$logfile,$loglevel,$count,$help);
 
 &GetOptions(
     "reduce-mem"     => \$reducemem,
     "add-superpers"  => \$addsuperpers,
     "add-mediatype"  => \$addmediatype,
     "add-language"   => \$addlanguage,
+    "keep-files"     => \$keepfiles,
     "incremental"    => \$incremental,
     "database=s"     => \$database,
     "logfile=s"      => \$logfile,
@@ -437,7 +438,7 @@ foreach my $type (keys %{$stammdateien_ref}) {
         
         close(IN);
         
-        unlink $stammdateien_ref->{$type}{infile};
+        unlink $stammdateien_ref->{$type}{infile} unless ($keepfiles);
 
         $storage_ref = $importer->get_storage;
     }
@@ -523,7 +524,7 @@ if (-f "meta.holding"){
     close(OUTTITLEHOLDING);
     close(IN);
 
-    unlink "meta.holding";
+    unlink "meta.holding" unless ($keepfiles);
 
     $storage_ref = $importer->get_storage;
 
@@ -794,7 +795,7 @@ while (my $jsonline=<IN>){
     $count++;
 }
 
-unlink $stammdateien_ref->{title}{infile};
+unlink $stammdateien_ref->{title}{infile} unless ($keepfiles);
 
 $logger->info("### $database: $count Titelsaetze bearbeitet");
 $logger->info("### $database: $importer->{stats_enriched_language} Titelsaetze mit Sprachcode angereichert");

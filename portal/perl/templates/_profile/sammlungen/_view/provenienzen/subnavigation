@@ -24,7 +24,7 @@
 [% IF active_submenu == "sammlung" %]
   <li class="active"><strong>Weitere Informationen</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/quellen.html?l=[% lang %]">Weitere Informationen</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">Weitere Informationen</a></li>
 [% END %]
 </ul>
 </nav>
@@ -46,19 +46,24 @@
 <h6 class="ym-vtitle">[% msg.maketext("Register") %]</h6>
  <ul>
 [% IF active_submenu == "register_4308" %]
-  <li class="active"><strong>Vorbesitzer Person</strong></li>
+  <li class="active"><strong>Provenienz Person</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/provenienzen/titles/fields/id/4308.html?l=[% lang %];page=1">Vorbesitzer Person</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/provenienzen/titles/fields/id/4308.html?l=[% lang %];page=1">Provenienz Person</a></li>
 [% END %]
 [% IF active_submenu == "register_4307" %]
-  <li class="active"><strong>Vorbesitzer K&ouml;rperschaft</strong></li>
+  <li class="active"><strong>Provenienz K&ouml;rperschaft</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/provenienzen/titles/fields/id/4307.html?l=[% lang %];page=1">Vorbesitzer K&ouml;rperschaft</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/provenienzen/titles/fields/id/4307.html?l=[% lang %];page=1">Provenienz K&ouml;rperschaft</a></li>
 [% END %]
 [% IF active_submenu == "register_4310" %]
-  <li class="active"><strong>T-PRO Besitzkennzeichen</strong></li>
+  <li class="active"><strong>Besitzkennzeichen (T-PRO)</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/provenienzen/titles/fields/id/4310.html?l=[% lang %];page=1">T-PRO Besitzkennzeichen</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/provenienzen/titles/fields/id/4310.html?l=[% lang %];page=1">Besitzkennzeichen (T-PRO)</a></li>
+[% END %]
+[% IF active_submenu == "register_4700" %]
+  <li class="active"><strong>USB Sammlungsvermerk</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/provenienzen/titles/fields/id/4700.html?l=[% lang %];page=1">USB Sammlungsvermerk</a></li>
 [% END %]
  </ul>
 </nav>

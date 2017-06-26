@@ -299,6 +299,10 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
             $cmd.=" -reduce-mem";
         }
 
+        if ($keepfiles){
+            $cmd.=" -keep-files";
+        }
+	
         $logger->info("Executing in $rootdir/data/$database : $cmd");
         
         system("cd $rootdir/data/$database ; $cmd");

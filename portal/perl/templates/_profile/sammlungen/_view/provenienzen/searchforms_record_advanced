@@ -50,12 +50,12 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<form method="get" action="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %].html" class="ym-form">
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html" class="ym-form">
 <input type="hidden" name="l"          value="[% lang %]" />
 <input type="hidden" name="num"        value="20" />
 <input type="hidden" name="page"       value="1" />
 
-<input type="hidden" name="srt"        value="authority_asc" />
+<input type="hidden" name="srt"        value="author_asc" />
 <input type="hidden" name="st"         value="2" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
 

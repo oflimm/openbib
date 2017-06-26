@@ -964,6 +964,18 @@ convtab:
           'freesearch': 1
         facet:
           'mediatype': 1
+    inverted_person: # Fake Eintrag
+      'XXXX':         # Ansetzung
+        index:
+          'corporatebody': 1
+          'corporatebodystring': 1
+          'freesearch': 1
+    inverted_corporatebody: # Fake Eintrag
+      'XXXX':         # Ansetzung
+        index:
+          'corporatebody': 1
+          'corporatebodystring': 1
+          'freesearch': 1
     inverted_authority_corporatebody:
       '0800':         # Ansetzung
         index:
@@ -1031,6 +1043,371 @@ convtab:
           'classificationstring': 1
         facet:
           'classification': 1
+    inverted_title:
+      'id':           # Id
+        index:
+          'id': 1
+      '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
+        index:
+          'subid': 1
+      '0010':         # hbzid
+        index:
+          'hbzid': 1
+      '0014':         # Signatur, wenn nicht in den Exemplardaten
+        index:
+          'mark': 1
+          'markstring': 1
+      '0065':         # RDA: Schlagwort (eher Medientyp...)
+        index:
+          'subject': 1
+          'subjectstring': 1
+        facet:
+          'subject': 1
+      '0067':         # RDA: Schlagwort (eher Medientyp...)
+        index:
+          'subject': 1
+          'subjectstring': 1
+        facet:
+          'subject': 1
+      '0089':
+        index:
+          'source': 1
+      '0304':         # EST
+        index:
+          'title': 1
+          'titlestring': 1
+      '0306':         # RDA: Manifestation verkoerperter Werke
+        index:
+          'title': 1
+      '0310':         # AST
+        index:
+          'title': 1
+          'titlestring': 1
+      '0331':         # HST
+        index:
+          'title': 50
+          'titlestring': 50
+      '0335':         # Zusatz zum HST
+        index:
+          'title': 1
+          'titlestring': 1
+      '0340':         # PSTAnsetzung
+        index:
+          'title': 1
+          'titlestring': 1
+      '0341':         # PSTVorlage
+        index:
+          'title': 1
+          'titlestring': 1
+      '0343':         # RDA: Zusatz zum PST
+        index:
+          'title': 1
+          'titlestring': 1
+      '0360':       # Unterreihe
+        index:
+          'title': 40
+      '0361':       # Vorlage beigefuegtes Werk
+        index:
+          'title': 40
+          'titlestring': 40
+      '0362':         # RDA Doppelung von 0306: Manifestation verkoerperter Werke
+        index:
+          'title': 1
+          'titlestring': 1
+      '0370':         # WST
+        index:
+          'title': 1
+          'titlestring': 1
+      '0371':         # RDA: erster/frueherer Sachtitel
+        index:
+          'title': 1
+      '0375':         # ZSTnorm
+        index:
+          'title': 1
+          'titlestring': 1
+      '0390':         # RDA: Anaben zum Inhalt
+        index:
+          'title': 1
+          'titlestring': 1
+      '0412':         # Verlag
+        index:
+          'publisher': 1
+          'publisherstring': 1
+      '0413':         # Drucker
+        index:
+          'person': 1
+      '0424':
+        index:
+          'year': 1
+          'yearstring': 1
+      '0425':
+        index:
+          'year': 1
+          'yearstring': 1
+        facet:
+          'year': 1
+      '0451':
+        index:
+          'source': 1
+      '0508':
+        index:
+          'source': 1
+      '0519':         # Hochschulschriftenvermerk
+        index:
+          'hss': 1
+      '0520':         # RDA: Hochschulschriftenvermerk
+        index:
+          'hss': 1
+      '0540':         # ISBN
+        index:
+          'isbn': 1
+      '0541':         # ISBN falsch
+        index:
+          'isbn': 1
+      '0543':         # ISSN
+        index:
+          'issn': 1
+      '0544':         # ISSN falsch
+        index:
+          'issn': 1
+      '0547':         # ISMN ala ISBN
+        index:
+          'isbn': 1
+      '0553':         # ISBN
+        index:
+          'isbn': 1
+      '0572':         # zdbid
+        index:
+          'zdbid': 1
+      '0585':         # ISSN Quelle
+        index:
+          'issn': 1
+      '0590':
+        index:
+          'source': 1
+      '0634':         # ISBN sekundaerform
+        index:
+          'isbn': 1
+      '0670':         # TitelOrth
+        index:
+          'title': 1
+          'titlestring': 1
+      '0675':         # HSTmodern
+        index:
+          'title': 1
+          'titlestring': 1
+      '0688':         # RDA: Original-Verleger
+        index:
+          'publisher': 1
+          'publisherstring': 1
+      '0700':
+        index:
+          'classificationstring': 1
+        facet:
+          'classification': 1
+      '0710':
+        index:
+          'subject': 1
+          'subjectstring': 1
+        facet:
+          'subject': 1
+      '0750':         # Abstract
+        index:
+          'content': 1
+      '0902':
+        index:
+          'subject': 1
+          'subjectstring': 1
+        facet:
+          'subject': 1
+      '0907':
+        index:
+          'subject': 1
+          'subjectstring': 1
+        facet:
+          'subject': 1
+      '0912':
+        index:
+          'subject': 1
+          'subjectstring': 1
+        facet:
+          'subject': 1
+      '0917':
+        index:
+          'subject': 1
+          'subjectstring': 1
+        facet:
+          'subject': 1
+      '0922':
+        index:
+          'subject': 1
+          'subjectstring': 1
+        facet:
+          'subject': 1
+      '0927':
+        index:
+          'subject': 1
+          'subjectstring': 1
+        facet:
+          'subject': 1
+      '0932':
+        index:
+          'subject': 1
+          'subjectstring': 1
+        facet:
+          'subject': 1
+      '0937':
+        index:
+          'subject': 1
+          'subjectstring': 1
+        facet:
+          'subject': 1
+      '0942':
+        index:
+          'subject': 1
+          'subjectstring': 1
+        facet:
+          'subject': 1
+      '0947':
+        index:
+          'subject': 1
+          'subjectstring': 1
+        facet:
+          'subject': 1
+      '1203':         # Signatur, wenn nicht in den Exemplardaten
+        index:
+          'markstring': 1
+          'mark': 1
+      '1550':         # ISSN_aut_r
+        index:
+          'issn': 1
+      '1551':         # ISSN_dat_r
+        index:
+          'issn': 1
+      '1552':         # ISSN_www_r
+        index:
+          'issn': 1
+      '1553':         # ISSN_pnt_r
+        index:
+          'issn': 1
+      '1567':         # ISSN_pnt_f
+        index:
+          'issn': 1
+      '1586':         # ISBN_dat_o 
+        index:
+          'isbn': 1
+      '1587':         # ISBN_www_o 
+        index:
+          'isbn': 1
+      '1588':         # ISBN_pnt_o 
+        index:
+          'isbn': 1
+      '1590':         # ISBN_dat_r 
+        index:
+          'isbn': 1
+      '1591':         # ISBN_www_r 
+        index:
+          'isbn': 1
+      '1592':         # ISBN_pnt_r 
+        index:
+          'isbn': 1
+      '1594':         # ISBN_dat_f 
+        index:
+          'isbn': 1
+      '1595':         # ISBN_www_f 
+        index:
+          'isbn': 1
+      '1596':         # ISBN_pnt_f 
+        index:
+          'isbn': 1
+      '1780':         # ISBN RDA
+        index:
+          'isbn': 1
+      '1804':         # Nebeneintragung 1. Titel EST
+        index:
+          'title': 1
+          'titlestring': 1
+      '1805':         # Nebeneintragung 1. Titel Ansetzungsform
+        index:
+          'title': 1
+          'titlestring': 1
+      '1806':         # Nebeneintragung 1. Titel in Mischform
+        index:
+          'title': 1
+          'titlestring': 1
+      '4100':         # BK
+        index:
+          'ft4100': 1
+      '4102':         # Topic
+        index:
+          'topic': 1
+        facet:
+          'topic': 1
+      '4111':         # TOC
+        index:
+          'toc': 1
+      '4200':         # Wikipedia
+        index:
+          'content': 1
+      '4201':         # Wikipedia
+        index:
+          'content': 1
+      '4202':         # Wikipedia
+        index:
+          'content': 1
+      '4300':         # Fremde Schlagworte
+        index:
+          'subject': 20
+          'subjectstring': 20
+          'ft4300': 1
+        facet:
+          'subject': 1
+      '4307':         # Provenienzen Koerperschaften
+        index:
+          'corporatebody': 20
+          'corporatebodystring': 20
+          'freesearch': 20
+        facet:
+          'corporatebody': 1
+      '4308':         # Provenienzen Person
+        index:
+          'person': 20
+          'personstring': 20
+          'freesearch': 20
+        facet:
+          'person': 1
+      '4309':         # Signatur
+        index:
+          'freesearch': 20
+          'mark': 1
+          'markstring': 1
+      '4310':         # T-PRO Besitzkennzeichen
+        index:
+          'freesearch': 20
+          't4310': 1
+          'ft4310': 1
+      '4400':         # Verfuegbarkeit lendable_[immediate|order|weekend] oder visible_[immediate|order]
+        index:
+          'availabilitystring': 1
+      '4410':         # Medientyp
+        index:
+          'mediatype': 1
+          'mediatypestring': 1
+          'freesearch': 1
+        facet:
+          'mediatype': 1
+      '4710':         # Migriertes Schlagwort
+        index:
+          'subject': 20
+          'subjectstring': 20
+        facet:
+          'subject': 1
+      '5050':         # Bibkey
+        index:
+          'bkey': 1
+      '5051':         # Bibkey Base
+        index:
+          'bkey': 1
   
   instzs:
     listitemcat:

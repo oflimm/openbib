@@ -47,7 +47,7 @@
 
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+         persons.push("${part.content}");
          personslength = personslength+thislength ;
        ELSE ;
          truncatepers = 1 ;
@@ -74,7 +74,7 @@
 
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+         persons.push("${part.content}");
          personslength = personslength+thislength ;
        ELSE ;
          truncatepers = 1 ;
@@ -97,7 +97,7 @@
 
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+         persons.push("${part.content}");
          personslength = personslength+thislength ;
        ELSE ;
          truncatepers = 1 ;
@@ -120,7 +120,7 @@
 
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+         persons.push("${part.content}");
          personslength = personslength+thislength ;
        ELSE ;
          truncatepers = 1 ;
@@ -150,7 +150,7 @@
 
            globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-           persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+           persons.push("${part.content}");
            personslength = personslength+thislength ;
          ELSE ;
            truncatepers = 1 ;
@@ -168,7 +168,7 @@
 
            globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-           persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+           persons.push("${part.content}");
            personslength = personslength+thislength ;
          ELSE ;
            truncatepers = 1 ;

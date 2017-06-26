@@ -30,7 +30,7 @@
 [% IF active_menu == "info" %]
          <li class="active"><strong>[% msg.maketext("Informationen") %]</strong></li>
 [% ELSE %]
-          <li><a  href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Informationen") %]</a></li>
+          <li><a  href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">[% msg.maketext("Informationen") %]</a></li>
 [% END %]
 <!--[% IF active_menu == "project" %]
          <li class="active"><strong>[% msg.maketext("Projekt") %]</strong></li>
@@ -109,12 +109,12 @@ $(document).ready(function(){
 [%   END %]
 [% END %]
 
-     <form class="ym-searchform" method="get" action="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %].html">
+     <form class="ym-searchform" method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
 
      <input type="hidden" name="num"        value="20" />
      <input type="hidden" name="page"       value="1" />
 
-     <input type="hidden" name="srt"        value="authority_asc" />
+     <input type="hidden" name="srt"        value="person_asc" />
      <input type="hidden" name="st"         value="1" />
      <input type="hidden" name="lt"         value="[% qopts.lt %]" />
      <input type="hidden" name="l"          value="[% lang %]" />

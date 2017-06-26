@@ -15,10 +15,10 @@
 
 [%- IF field == '4308' ;
        field_description = msg.maketext("Vorbesitzer Person");
-       searchfield = 'ft4308' ;
+       searchfield = 'personstring' ;
     ELSIF field == '4307' ;
        field_description = msg.maketext("Vorbesitzer K&ouml;rperschaft");
-       searchfield = 'ft4307' ;
+       searchfield = 'corporatebodystring' ;
     ELSIF field == '4310' ;
        field_description = msg.maketext("T-PRO Besitzkennzeichen");
        searchfield = 'ft4310' ;

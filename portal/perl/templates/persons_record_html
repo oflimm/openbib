@@ -191,7 +191,7 @@ END;
 [% IF normset.defined('P0010') && normset.${'P0010'}.first.content.match('DE-588') %]
 [% gnd = normset.${'P0010'}.first.content.replace('\(DE-588\)','') %]
 <tr><td class="ob-field">Dt.&nbsp;Nationalbibliothek</td><td><a href="http://d-nb.info/gnd/[% gnd %]" target="_blank">Normdatensatz</a></td></tr>
-<tr><td class="ob-field">Wikipedia (de)</td><td><a href="http://tools.wmflabs.org/persondata/redirect/gnd/de/[% gnd %]" target="_blank">Artikel</a></td></tr>
+<!-- <tr><td class="ob-field">Wikipedia (de)</td><td><a href="http://tools.wmflabs.org/persondata/redirect/gnd/de/[% gnd %]" target="_blank">Artikel</a></td></tr> -->
 [% END %]
 </table>
 

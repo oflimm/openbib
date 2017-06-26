@@ -2,37 +2,44 @@
 
 use JSON::XS;
 
+my @tpro = (
+    'Autogramm',
+    'Einlage',
+    'Exlibris',
+    'gedr. Besitzvermerk',
+    'Herkunft',
+    'hs. Besitzvermerk',
+    'Stempel',
+    'Supralibros',
+    'Widmung',
+    );
+
 while (<>){
     my $title_ref = decode_json $_;
 
-    my $is_digital = 0;
+    my $type_ref = [];
+    my $mult = 1;
+    my $have_merkmal_ref = {};
+    foreach my $item_ref (@{$title_ref->{'fields'}{'4310'}}){
+	foreach my $merkmal (@tpro){
+	    next if (defined $have_merkmal_ref->{$merkmal});
+	    if ($item_ref->{content} =~m/$merkmal/){
+		if (!defined $have_merkmal_ref->{$merkmal}){
+		    push @{$type_ref}, {
+			mult     => $mult,
+			subfield => '',
+			content  => $merkmal,
+		    };
+		    $mult++;
+		    $have_merkmal_ref->{$merkmal} = 1;
+		}
+	    }
+	}
+    }
 
-    # T0662 hat Inhalt http://www.ub.uni-koeln.de/permalink*
-    if (defined $title_ref->{fields}{'0662'}){
-        foreach my $item (@{$title_ref->{fields}{'0662'}}){
-            if ($item->{content} =~m{^http://www.ub.uni-koeln.de/permalink}){
-                $is_digital = 1;
-            }        
-        }
+    if (@$type_ref){
+	$title_ref->{fields}{'4410'} = $type_ref;
     }
     
-    if ($is_digital){
-        $title_ref->{fields}{'4400'} = [
-            {
-                mult     => 1,
-                subfield => '',
-                content  => "online",
-            },
-        ];
-        
-        $title_ref->{fields}{'4410'} = [
-            {
-                mult     => 1,
-                subfield => '',
-                content  => "Digital",
-            },
-        ];
-    }
-   
     print encode_json $title_ref, "\n";
 }

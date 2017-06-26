@@ -78,16 +78,16 @@ $(document).ready(function(){
 </div>
 [% END %]
 
-[%- cgiparam = searchfield.t4308.prefix;
-    this_searchfield = 't4308';
+[%- cgiparam = searchfield.person.prefix;
+    this_searchfield = 'personstring';
  -%]
 <div class="ym-fbox-text">
 <label for="[% cgiparam %]">[% msg.maketext("Vorbesitzer Person") %]</label>
 <input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
-[%- cgiparam = searchfield.t4307.prefix;
-    this_searchfield = 't4307';
+[%- cgiparam = searchfield.corporatebody.prefix;
+    this_searchfield = 'corporatebodystring';
  -%]
 <div class="ym-fbox-text">
 <label for="[% cgiparam %]">[% msg.maketext("Vorbesitzer K&ouml;rperschaft") %]</label>
@@ -102,11 +102,11 @@ $(document).ready(function(){
 <input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
-[%- cgiparam = searchfield.classification.prefix;
-    this_searchfield = 'classification';
+[%- cgiparam = searchfield.mediatypestring.prefix;
+    this_searchfield = 'mediatypstring';
  -%]
 <div class="ym-fbox-select">
-<label for="[% cgiparam %]">[% msg.maketext("Systematik") %]</label>
+<label for="[% cgiparam %]">[% msg.maketext("Typ") %]</label>
 <select id="[% cgiparam %]" name="[% cgiparam %]"><option value="">Keine ausgew&auml;hlt</option>
 [%-
 

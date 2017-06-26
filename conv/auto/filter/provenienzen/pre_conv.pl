@@ -49,6 +49,6 @@ my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
 my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
 
 
-print "### $pool: Erweiterung um Information Digial/online\n";
+print "### $pool: Erweiterung um Information TPRO-Kennzeichen als allgemeiner Typ\n";
 
 system("cd $rootdir/data/$pool ; $rootdir/filter/$pool/add-fields.pl < meta.title > meta.title.tmp ; mv -f meta.title.tmp meta.title");

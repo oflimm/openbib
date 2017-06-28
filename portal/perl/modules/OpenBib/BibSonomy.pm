@@ -109,7 +109,7 @@ sub get_posts {
         $user = $self->{api_user};
     }
 
-    my $url='http://www.bibsonomy.org/api/posts?';
+    my $url='https://www.bibsonomy.org/api/posts?';
 
     # Type prefix?
     if (defined $bibkey){
@@ -496,7 +496,7 @@ sub get_tags {
     
     if (defined $bibkey){ # && $bibkey=~/^1[0-9a-f]{32}$/){
 #        substr($bibkey,0,1)=""; # Remove leading 1
-        $url="http://www.bibsonomy.org/api/tags?resourcetype=bibtex&resource=$bibkey";
+        $url="https://www.bibsonomy.org/api/tags?resourcetype=bibtex&resource=$bibkey";
         $logger->debug("Request: $url");
         
         my $response = $self->get_client->get($url)->content;
@@ -529,7 +529,7 @@ sub get_tags {
     if (@unique_tags) {
         foreach my $tag (@unique_tags){
             substr($bibkey,0,1)=""; # Remove leading 1
-            $url="http://www.bibsonomy.org/api/tags/$tag";
+            $url="https://www.bibsonomy.org/api/tags/$tag";
             $logger->debug("Request: $url");
             
             my $response = $self->get_client->get($url)->content;
@@ -626,7 +626,7 @@ sub change_post {
         }
 
         # Aendern in BibSonomy
-        my $url = "http://www.bibsonomy.org/api/users/".$self->{api_user}."/posts/".$record->get_generic_attributes->{intrahash};
+        my $url = "https://www.bibsonomy.org/api/users/".$self->{api_user}."/posts/".$record->get_generic_attributes->{intrahash};
 ;
 
         $logger->debug($url);
@@ -716,7 +716,7 @@ sub new_post {
     $logger->debug($doc->toString());
 
     # Anlegen in BibSonomy
-    my $url = "http://www.bibsonomy.org/api/users/".$self->{api_user}."/posts";
+    my $url = "https://www.bibsonomy.org/api/users/".$self->{api_user}."/posts";
 ;
 
     $logger->debug($url);
@@ -773,7 +773,7 @@ sub connectClient {
     $logger->debug("Authenticating with credentials $self->{api_user}/$self->{api_key}");
     
     $self->{client}->credentials(                      # HTTP authentication
-        'www.bibsonomy.org:80',
+        'www.bibsonomy.org:443',
         'BibSonomyWebService',
         $self->{api_user} => $self->{api_key}
     );

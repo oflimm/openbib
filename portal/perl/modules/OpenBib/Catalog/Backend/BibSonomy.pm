@@ -200,7 +200,8 @@ sub get_subjects {
             last if ($tag_count > 8);
 
             substr($bibkey,0,1)=""; # Remove leading 1
-            $url="http://www.bibsonomy.org/api/tags/$tag";
+            $url="https://www.bibsonomy.org/api/tags/$tag";
+
             $logger->debug("Tag-Request: $url");
             
             my $response = $self->get_client->get($url)->content;
@@ -244,7 +245,7 @@ sub connectClient {
     $logger->debug("Authenticating with credentials $self->{api_user}/$self->{api_key}");
     
     $self->{client}->credentials(                      # HTTP authentication
-        'www.bibsonomy.org:80',
+        'www.bibsonomy.org:443',
         'BibSonomyWebService',
         $self->{api_user} => $self->{api_key}
     );

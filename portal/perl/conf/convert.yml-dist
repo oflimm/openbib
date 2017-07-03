@@ -2012,6 +2012,10 @@ convtab:
           'title': 1
           'titlestring': 1
           'freesearch': 1
+      '0365':         # Weitere Titelzusaetze
+        index:
+          'title': 1
+          'freesearch': 1
       '0370':         # WST
         index:
           'title': 1

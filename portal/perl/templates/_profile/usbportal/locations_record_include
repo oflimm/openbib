@@ -89,8 +89,8 @@ IF NOT no_journals.exists("${sigel}") ;
 END ;
 
 IF sigel != 'ARTES' ;
-  locationinfo.fields.${"Die zuletzt 5 angelegten Literaturlisten"} = [ { content = litlist_content.join("\n") } ];
-  locationinfo.fields.${"Die zuletzt 5 vergebenen Tags"} = [ { content = tags_content.join("\n") } ];
+  locationinfo.fields.${"Die 5 zuletzt angelegten Literaturlisten"} = [ { content = litlist_content.join("\n") } ];
+  locationinfo.fields.${"Die 5 zuletzt vergebenen Tags"} = [ { content = tags_content.join("\n") } ];
 END;
 
 trclass = "even" ;

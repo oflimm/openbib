@@ -13,7 +13,13 @@ thisdbname = config.get_databases_of_isil(locationinfo.identifier).first;
 
 sigel = locationinfo.identifier.replace('DE-38-','');
 
-recent_litlists = user.get_recent_litlists({database = thisdbname, view = view});
+IF sigel == '123';
+  recent_litlists1 = user.get_recent_litlists({database = 'inst123', view = view});
+  recent_litlists2 = user.get_recent_litlists({database = 'inst218', view = view});
+  recent_litlists = recent_litlists1.merge(recent_litlists2);
+ELSE ;
+  recent_litlists = user.get_recent_litlists({database = thisdbname, view = view});
+END;
 
 litlist_content = [];
 
@@ -35,14 +41,22 @@ ELSE;
   litlist_content.push("Es wurden noch keine Literaturlisten mit Titel dieses Kataloges angelegt.");
 END;
 
-recent_tags = user.get_recent_tags({database = thisdbname});
+IF sigel == '123';
+  recent_tags1 = user.get_recent_tags({database = 'inst123'});
+  recent_tags2 = user.get_recent_tags({database = 'inst218'});
+  recent_tags = recent_tags1.merge(recent_tags2);
+ELSE ;
+  recent_tags = user.get_recent_tags({database = thisdbname});
+END;
 
 tags_content = [];
 
 IF recent_tags.size > 0;
   tags_content.push("<ul>");
   FOREACH tag IN recent_tags;
-    tags_content.push("<li><a target=\"kug\" href=\"http://kug.ub.uni-koeln.de/portal/kug/tags/names/id/${tag.tag}.html?l=de\">${tag.tag}</a></li>");
+    IF tag.tag ;
+      tags_content.push("<li><a target=\"kug\" href=\"http://kug.ub.uni-koeln.de/portal/kug/tags/names/id/${tag.tag}.html?l=de\">${tag.tag}</a></li>");
+    END ;
   END;
   tags_content.push("</ul>");
 ELSE;

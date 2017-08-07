@@ -15,7 +15,7 @@
 <!doctype html>
 <html lang="[% lang %]">
   <head>
-    <meta http-equiv="REFRESH" content="0;url=[% IF viewdbs.size == 1 %][% config.get_databaseinfo.search({ dbname = viewdbs.first }).first.url %][% ELSIF view == 'vwl' %]http://www.ub.uni-koeln.de/bibliotheken/38_101/[% ELSE %]http://www.ub.uni-koeln.de/bibliotheken/az/index_ger.html[% END %]">
+    <!-- <meta http-equiv="REFRESH" content="0;url=[% IF viewdbs.size == 1 %][% config.get_databaseinfo.search({ dbname = viewdbs.first }).first.url %][% ELSIF view == 'vwl' %]http://www.ub.uni-koeln.de/bibliotheken/38_101/[% ELSE %]http://www.ub.uni-koeln.de/bibliotheken/az/index_ger.html[% END %]"> -->
     <meta charset="utf-8"/>
 [% IF NOT disable_cache_control %]
     <meta http-equiv="content-type"  content="text/html; charset=utf-8"/>

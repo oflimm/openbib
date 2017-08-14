@@ -11,7 +11,7 @@ tracelevel:
 recordselector: /recordlist/record
 
 # Feld der eindeutigen Titel-ID
-uniqueidfield: '//oaiProvenance:identifier'
+uniqueidfield: 'header/identifier'
 
 # Personen
 person:

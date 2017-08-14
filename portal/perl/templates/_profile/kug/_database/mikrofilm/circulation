@@ -118,6 +118,15 @@
 
     thiscirculation.Standort = thiscirculation.Standort.replace('^inst[0-9][0-9][0-9] +\((.+)\)','$1') ;
 
+    IF thiscirculation.Standort.match('Historisches Institut \/ Osteuropäische Geschichte');
+       library_isil = "DE-38-425";
+    ELSIF thiscirculation.Standort.match('Kunstgeschichte \/ Architekturgeschichte');
+       library_isil = "DE-38-445";
+    ELSIF thiscirculation.Standort.match('Altertumskunde \/ Byzantinistik');
+       library_isil = "DE-38-460";
+    ELSIF thiscirculation.Standort.match('Altertumskunde \/ Mittellatein und Neulatein');
+       library_isil = "DE-38-461";
+    END;
 -%]
 <tr align="center"><td>
 [%- IF library_isil %]
@@ -142,7 +151,7 @@
 <a href="http://www.ub.uni-koeln.de/bibliotheken/38_132/" target="_blank"><b>&Ouml;ffungszeiten</b></a>
 [% ELSIF thiscirculation.Standort.match('Archäologisches Instsitut') %]
 <a href="http://www.ub.uni-koeln.de/bibliotheken/38_427/" target="_blank"><b>&Ouml;ffungszeiten</b></a>
-[% ELSE %]
+[% ELSIF library_isil.match('^DE-38$') %]
 <a href="http://www.ub.uni-koeln.de/bibliothek/zeiten/index_ger.html" target="_blank"><b>&Ouml;ffungszeiten</b></a>
 [% END %]
 </td>

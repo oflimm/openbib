@@ -112,12 +112,21 @@ $(document).ready(function(){
 
   tpro = [
     'Autogramm',
+    'Einband',
     'Einlage',
     'Exlibris',
     'gedr. Besitzvermerk',
     'hs. Besitzvermerk',
+    'Indiz',
+    'Initiale',
+    'Notiz',
+    'NS-Raubgut',
+    'Prämienband',
+    'Restitution',
+    'Restitutionsexemplar',
     'Stempel',
     'Supralibros',
+    'Wappenstempel',
     'Widmung',
   ];
 FOREACH sys IN tpro ;

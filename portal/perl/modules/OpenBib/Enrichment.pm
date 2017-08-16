@@ -537,6 +537,8 @@ sub get_common_holdings {
                 ($selector eq "WorkKey")?"select * from all_titles_by_workkey where location in ($in_select_string)":"select * from all_titles_by_isbn where location in ($in_select_string)";
 
     $logger->debug($sql_string);
+
+    $logger->info("Bestimmung aller Nachweise zum Selektor $selector für alle Standorte");
     
     my $request=$dbh->prepare($sql_string) or $logger->error($DBI::errstr);
     
@@ -558,6 +560,8 @@ sub get_common_holdings {
             push @{$all_by_matchkey{$result->{$matchkey_column}}{$result->{location}}{$result->{dbname}}}, $result->{titleid};
         }
     }
+
+    $logger->info("Nachweise sind bestimmt und nach dem Matchkey gespeichert");
     
     # Einzelbestaende entfernen
     foreach my $matchkey (keys %all_by_matchkey){
@@ -572,10 +576,13 @@ sub get_common_holdings {
         }
     }
 
+    $logger->info("Alleinbestand wurde entfernt");
+
     if ($logger->is_debug){
         $logger->debug("Result: ".YAML::Dump(\%all_by_matchkey));
     }
-    
+
+    $logger->info("Anreicherung mit Titel- und Exemplarinformationen beginnt");    
     foreach my $matchkey (keys %all_by_matchkey){
         my $this_item_ref = {};
         
@@ -635,6 +642,8 @@ sub get_common_holdings {
         
         push @{$common_holdings_ref}, $this_item_ref;
     }
+
+    $logger->info("Anreicherung beendet");
 
     $dbh->disconnect;
     

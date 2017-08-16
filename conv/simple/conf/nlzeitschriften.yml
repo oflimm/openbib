@@ -1,0 +1,53 @@
+# Encoding der Daten
+encoding: iso-8859-1
+
+# Tracelevel
+tracelevel:
+
+# CSV-Parameter
+csv:
+  'eol': "\n"
+  'sep_char': "\t"
+  'quote_char': ""
+  'escape_char': ""
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: 'EZB-Id'
+
+category_split_chars:
+  'E-ISBN': '\s*;\s*'
+  'P-ISBN': '\s*;\s*'
+  'Fach': '\s*;\s*'
+  'bibliographische URL(s)': '\*\*\*'
+  'VolltextURL': '\*\*\*'
+
+# Personen
+person:
+
+
+# Koerperschaften
+corporatebody:
+
+# Systematik
+classification: 
+  'Ampelfarbe': '0700'
+
+# Schlagworte
+subject:
+  'Fach': '0710'
+
+# Titel
+title:
+  'Titel': '0331'
+  'ZDB-Nummer': '0580'
+  'E-ISSN': '0543'
+  'P-ISSN': '0543'
+  'Typ': '0511'
+  'Preistyp': '0600'
+  'Zugangsbedingung': '0800'
+  'VolltextURL': '0662'
+  'FrontdoorURL': '0508'
+  'bibliographische URL(s)': '2662'
+
+# Exemplare
+holding:

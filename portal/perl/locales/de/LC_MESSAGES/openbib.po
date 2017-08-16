@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2017-06-16 10:35+0200\n"
-"Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
-"Language-Team: German <>\n"
+"PO-Revision-Date: 2017-08-16 15:38+0200\n"
+"Last-Translator: \n"
+"Language-Team: German <kde-i18n-doc@kde.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19461,7 +19461,7 @@ msgstr "Mediennummer"
 #: ../templates/_profile/sammlungen/_database/provenienzen/visible_categories_title:18
 #: ../templates/titles_record_provenances_record_html:81
 msgid "T4310"
-msgstr "T-PRO Besitzkennzeichen"
+msgstr "Provenienz"
 
 #: ../templates/titles_record_provenances_record_html:82
 msgid "T4311"

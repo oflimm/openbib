@@ -82,7 +82,7 @@ $(document).ready(function(){
     this_searchfield = 'personstring';
  -%]
 <div class="ym-fbox-text">
-<label for="[% cgiparam %]">[% msg.maketext("Vorbesitzer Person") %]</label>
+<label for="[% cgiparam %]">Provenienz Person</label>
 <input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
@@ -90,7 +90,7 @@ $(document).ready(function(){
     this_searchfield = 'corporatebodystring';
  -%]
 <div class="ym-fbox-text">
-<label for="[% cgiparam %]">[% msg.maketext("Vorbesitzer K&ouml;rperschaft") %]</label>
+<label for="[% cgiparam %]">Provenienz K&ouml;rperschaft</label>
 <input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 

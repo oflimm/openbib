@@ -127,15 +127,7 @@ foreach my $item_ref (@{$common_holdings_ref}){
     ];
 
     foreach my $location (sort @locations){
-        if ($item_ref->{$location}->{loc_mark}){
-            push @$out_ref, $item_ref->{$location}->{loc_mark};
-        }
-        elsif (defined $item_ref->{$location}) {
-            push @$out_ref, 'vorhanden';
-        }
-	else {
-            push @$out_ref, '-';
-	}
+	push @$out_ref, $item_ref->{$location}{loc_mark};
     }
 
     $csv->print($fh,$out_ref);

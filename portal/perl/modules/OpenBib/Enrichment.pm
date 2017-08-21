@@ -591,7 +591,7 @@ sub get_common_holdings {
         my $title_supplement = "";
         my $year             = "";
         foreach my $location (@{$locations_ref}){
-            if (exists $all_by_matchkey{$matchkey}{$location}){
+            if (defined $all_by_matchkey{$matchkey}{$location}){
                 my @signaturen = ();
                 foreach my $database (keys %{$all_by_matchkey{$matchkey}{$location}}){
                     foreach my $id (@{$all_by_matchkey{$matchkey}{$location}{$database}}){
@@ -623,10 +623,15 @@ sub get_common_holdings {
                     }
                 }
                 
-                $this_item_ref->{$location}{loc_mark} = join(" ; ",@signaturen);
+		if (@signaturen){
+		    $this_item_ref->{$location}{loc_mark} = join(" ; ",@signaturen);
+		}
+		else {
+		    $this_item_ref->{$location}{loc_mark} = "vorhanden";
+		}
             }
             else {
-                $this_item_ref->{$location}{loc_mark} = "";
+                $this_item_ref->{$location}{loc_mark} = "-";
             }
         }
 

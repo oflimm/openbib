@@ -1,17 +1,91 @@
 @media all
 {
 
+  #ob-simple_search_form {
+    white-space: nowrap;
+  }
+    
+  .ym-hlist ul {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
 
+  .ym-hlist form {
+    padding-left: 5px;
+    padding-right: 8px;
+  }
+
+  .ym-wrapper {
+    text-align:left;
+    width: 1000px;
+    margin: 0 auto;
+
+     width-min: 1000px;
+     width-max: 1000px;
+  }
+
+  .ob-resultheader .right {
+    position: absolute;
+    top: 0;
+    right: 0px;
+    width: 500px;
+    /*  padding: 5px; */
+    text-align: right;
+  }
+
+  #ob-facets_all_toggle img, #ob-facets_dbinfo_toggle img, .ob-responsive_toggle_button {
+    display: none;
+  }
+
+  #ob-reuse_508_toggle img, #ob-reuse_333_toggle img, #ob-reuse_336_toggle img {
+    display: none;
+  }
+ 
+  footer {
+    margin: 0.2em 0 0 0;
+/*    height: 50px; */
+/*    background: #e8fca4;
+    color: #444; */
+    padding: 0.5em;
+    vertical-align: baseline;
+    background: #c8c8c8;
+    
+    background: -webkit-gradient(linear, left top, left bottom, from(#c8c8c8), to(#f3f3f3));
+    background: -moz-linear-gradient(top,  #c8c8c8,  #f3f3f3);
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#c8c8c8', endColorstr='#f3f3f3');
+    
+    
+    border: 1px #c8c8c8 solid;
+  }
+
+  footer .ob-sponsored {
+    float: right;
+    margin:0 0 0 0
+  }
+
+  footer .ob-footertext {
+/*    position: absolute;*/
+/*    margin-top: 0;    */
+/*    padding-top: 18px;*/
+    padding-left: 5px;
+  }
+
+  footer .ob-sponsored .ob-footertext {
+      position: relative;
+/*      vertical-align: 21px; */
+      padding-right: 5px;
+  }
+  
   #topnav {
     z-index:9999;
   }
-  
+      
   header {
-    padding-bottom:150px;  
+    padding-bottom:145px;  
   }
 
   header #logo {
-    padding: 0px;
+/*    padding: 0px; */
     position: absolute;
     top: 0px;
     left: 0px;
@@ -23,47 +97,59 @@
     position: absolute;
     top: 0px;
     right: 0px;
-    with: 30%;
+    with: 20%;
   }
+
 
   #header_logo_image  {
-    background: url(/images/openbib/views/provenienzen/logo.jpg) center no-repeat;
+    background: url(/images/openbib/views/provenienzen/logo.png) center no-repeat;
     position: absolute;
-    width: 1020px;
-    height: 221px;
+    width: 1000px;
+    height: 217px;
     top: 0px;
-    left: 0px;
+    left: 0px;    
   }
 
-
-  .ym-wbox {
-    padding: 0px;
+  a.ob-representation_rdf {
+    display: none;
   }
-  
+
+  #header_institution_image {
+    background: url(/images/openbib/usblogotrans190.png) center no-repeat;
+    width: 190px;
+    height: 78px;
+    position: absolute;
+    top: 60px;
+    right: 10px;
+  }
+
+  .details {
+    padding-top: 1em;
+  }
+
+  .images {
+    padding-top: 1em;
+  }
+
   #main {
-    padding:10px 0;
+      padding: 10px;
   }
   
-  footer {
-    margin: 0.2em 0 0 0;
-/*    background: #e8fca4;
-    color: #444; */
-    padding: 0.5em;
-
-/*    background: #fff;*/
-    
-    border: none;
-  }
-
-/*  body {
-    overflow-y: scroll;
-  }*/
-
-  ul.topiclist a {
-    font-weight:bold;
-    font-size:1.2em;
+  #main .ym-grid img {
+      max-width:100%
   }
   
+  .ob-fulltitle {
+    padding: 5px;
+  }
+
+  .ob-fulltitle .ob-category_header {
+    float: left;
+    margin-left: 2px;
+    width: 98%;
+/*    padding-bottom: 10px; */
+  }
+
   .ob-pagination {
     padding-top: 10px;
     padding-bottom: 10px;
@@ -118,241 +204,768 @@
     font-size: 1.4em;
   }
 
-  .ob-category_header {
+  .ob-titleactions .ob-collection {
+    font-size: 12px;
+    border: 1px solid #777;
+    webkit-border-radius: .2em;
+    moz-border-radius: .2em;
+    border-radius: .2em;
+    padding: 3px;
+  }
+
+  .ob-titleactions .ob-collection img {
+    padding-right: 5px;
+    vertical-align:text-top;
+  }
+
+  .ob-fulltitle {
+    padding: 5px;
+  }
+
+  .ob-fulltitle .ob-category_header {
+    float: left;
+    margin-left: 2px;
+    width: 98%;
+  }
+
+  .ob-collection_image {
+      padding-top: 30px;
+      padding-bottom: 20px;
+      text-align: center;
+  }
+
+  .ob-collection_image img {
+      padding-bottom: 10px;
+
+  }
+
+  /*
+  .ob-item {
+    height: 145px;
     width: 100%;
-    padding: 2px;
+    position: relative;
+    border-style: solid;
+    border-color: #edebe3;
+    border-width: 1px;
+    margin-bottom: 5px;
+  }
+
+  .ob-item .ob-thumbnail {
+    position: relative;
+    top: 0px;
+    left: 25px;
+    width: 340px;
+    height: 120px;
+    background: none repeat scroll 0 0;
+  }
+
+  .ob-item .ob-brieftitle {
+    position: absolute;
+    top: 40px;
+    left:320px;
+    width: auto;
+  }
+*/
+  .ym-hlist li .icon {
+      display: none;
+  }
+
+}
+
+@media screen and (max-width: 1024px) {
+
+  #header_logo_image  {
+    background: url(/images/openbib/views/provenienzen/logo-768px.png) center no-repeat;
+    position: absolute;
+    width: 768px;
+    height: 166px;
+    top: 0px;
+    left: 0px;    
+  }
+
+  header {
+    padding-bottom:92px;  
+  }
+
+  .ym-wrapper {
+    text-align:left;
+    width: 768px;
+    margin: 0 auto;
+
+     width-min: 768px;
+     width-max: 768px;
+  }
+
+    .ob-footer_info, .ob-footer_seperator {
+    display:none;
+  }
+
+  
+  .ym-hlist li:not(:last-child) {display: none;}
+  .ym-hlist li .icon {
+    float: right;
+    display: block;
+  }
+
+  .ym-hlist.responsive {position: relative;}
+  .ym-hlist.responsive a.icon {
+    position: absolute;
+    left: 5px;
+    top: 2px;
+  }
+
+  .ym-hlist.responsive ul {
+      margin-top: 25px;
+  }
+
+  .ym-hlist.responsive li {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+
+  .ym-searchform.responsive {
+    display: none;
+  }
+
+  .ym-hlist form {
     padding-left: 5px;
-    margin: 10px 10px -5px -3px;
-    background: #ddd;
-    color: #000;
-    border-radius: 2px;
+    padding-right: 8px;
+  }
+
+  
+/*   .ob-searchfield_supplement select { */
+/*     width: 150px; */
+/*   } */
+  
+/*   .ob-searchfield { */
+
+/*     width: 650px; */
+/*     height: 80px; */
+/*     padding: 5px; */
+/*     margin: 0px auto 0px auto; */
+/* /\*    background: #c8c8c8;*\/ */
+/*     background: #dfe2e8; */
+/* /\*    background: rgba(0,0,0,.2);*\/ */
+/*     border-radius: 10px; */
+/*     /\* */
+/*     -moz-box-shadow: 10px 10px 5px #888; */
+/*     -webkit-box-shadow: 10px 10px 5px #888; */
+/*     box-shadow: 10px 10px 5px #888; */
+/*     -moz-box-shadow: 5px 5px 2px #888; */
+/*     -webkit-box-shadow: 5px 5px 2px #888; */
+/*     box-shadow: 5px 5px 2px #888; *\/ */
+/*     font-size: 110%; */
+
+/* /\*    box-shadow: 0 1px 1px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.2);*\/ */
+/*   } */
+
+/*   .ob-searchfield input[type="text"] { */
+/*     width: 555px; */
+/*     height: 40px; */
+/*     padding: 0px; */
+/*     padding-left: 5px; */
+/* /\*    height: 20px; */
+/*     padding: 10px 5px;*\/ */
+/*     float: left;    */
+/*     font: 18px Arial,Verdana,Helvetica,sans-serif; */
+    
+/* /\*    font: bold 15px 'lucida sans', 'trebuchet MS', 'Tahoma';*\/ */
+/*     border: 0; */
+/*     background: #fff; */
+/*     border-radius: 3px 0 0 3px;      */
+/*   } */
+
+/*   /\* Form submit button *\/ */
+/*   .ob-searchfield button {     */
+/*     overflow: visible; */
+/*     position: relative; */
+/*     float: right; */
+/*     top: -22px; */
+/*     border: 0; */
+/*     padding: 0; */
+/*     cursor: pointer; */
+/*     height: 40px; */
+/*     width: 90px; */
+/*     font: bold 15px/40px 'lucida sans', 'trebuchet MS', 'Tahoma'; */
+/*     color: #fff; */
+/*     text-transform: uppercase; */
+/*     background: #41799e; /\*#d83c3c;*\/ */
+/*     border-radius: 0 3px 3px 0;      */
+/*     text-shadow: 0 -1px 0 rgba(0, 0 ,0, .3); */
+/*   }   */
+}
+
+@media screen and (max-width: 768px) {   
+
+    body {
+	padding-top:0px;
+    }
+    
+  header {
+    height: 0px;
+    background: none;
+    border-bottom: none;
+    margin:0 auto;
+  }
+
+  #imgLogo {
+    margin-top: 0px;
+  }
+
+  #header_logo_image  {
+    background: url(/images/openbib/views/provenienzen/provenienzen-schriftzug-80px.png) center no-repeat;
+    position: absolute;
+    width: 280px;
+    height: 80px;
+    top: 0px;
+    left: 0px;    
+  }
+
+  header {
+      padding-bottom:10px;
+      background:  #e1cfb7; /* #312b2d; /* #5b5054; /* #292325; */
+  }
+
+
+/*  #header_logo_image {
+    display: none;
+  }
+*/
+  nav {
+    margin-top: 0px;
+    background: #fff;
+  }
+
+  .ym-wrapper {
+    text-align:left;
+    width: 100%;
+    margin: 0 auto;
+
+  }
+
+  .ym-searchform input[type=search] {
+      width: 45%;
+  }
+  /* #header_logo_image  { */
+  /*   background: url(/images/openbib/views/muenzen/logo-480px.jpg) center no-repeat; */
+  /*   position: absolute; */
+  /*   width: 480px; */
+  /*   height: 104px; */
+  /*   top: 0px; */
+  /*   left: 0px;     */
+  /* } */
+
+  /* .ym-wrapper { */
+  /*   text-align:left; */
+  /*   width: 480px; */
+  /*   margin: 0 auto; */
+
+  /*    width-min: 480px; */
+  /*    width-max: 480px; */
+  /* } */
+    
+  /* Allgemein */
+
+  .ob-resultheader .right {
+      display:none;
+  }
+  
+ 
+  footer .float-right {
+    display: none;
+
+  }
+
+  .ob-reuse_data, .ob-discover_sources, .ob-session_history {
+    background-color: #fff;
+    margin-top: 10px;
+    padding: 10px;
+  }
+
+  .ob-facets_all, .ob-facets_dbinfo {
+    background-color: #fff;
+    margin-top: 10px;
+    padding: 0px;
+  }
+
+  .ob-facets_all_toggle_do, .ob-facets_dbinfo_toggle_do {
+    font-size: 130%;
+    padding: 5px;
+  }
+      
+  .ob-discover_sources .ob-category_header, .ob-reuse_data .ob-category_header, .ob-session_history .ob-category_header {
+    width: 98%;
+    margin-left: -1px;
+    margin-right: 0px;
+/*    padding-bottom: 10px;*/
+/*     background: #41799e;
+    color: #fff;
     font-size: 16px;
-    font-weight: bold;
-    -moz-box-shadow: 2px 2px 2px #aaa;
-    -webkit-box-shadow: 2px 2px 2px #aaa;
-    box-shadow: 2px 2px 2px #aaa;
+    font-weight: bold; */
+  }
+
+  .ob-facets .ob-category_header, .ob-facets_dbinfo .ob-category_header {
+    width: 100%;
+    padding: 10px;
+/*     background: #41799e;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold; */
+  }
+
+  .ob-fulltitle {
+      margin-top: 0px;
+  }
+  
+  .ob-fulltitle .ob-category_header {
+    float: left;
+    margin-left: 2px;
+    width: 95%;
+    
+  }
+  
+  #ob-facets_all_toggle img, #ob-facets_dbinfo_toggle img, .ob-responsive_toggle_button {
+   display: inline;
+  }
+
+  #ob-reuse_508_toggle img, #ob-reuse_333_toggle img, #ob-reuse_336_toggle img {
+    display: inline;
+  }
+  
+  #ob-search_refine {
+    padding-bottom: 20px;
+  }
+
+  .ob-facets {
+    width: 100%;
+  }
+    
+  #ob-same_records, #ob-similar_records {
+    padding: 10px;
+  }
+
+
+  #ob-footer_systeminfo {
+    display:none;
+  }
+
+    
+  .ob-representation {
+    display: none;
+  }
+  
+  #ob-holding_info tr *:nth-child(2) {
+    display: none;
+  }
+
+  #ob-circulation_info tr *:nth-child(2) {
+    display: none;
+  }
+
+  /*
+  .ob-titleimage img, .ob-titleimage a, .ob-titleimage {
+      max-width: 100%;
+  }
+*/
+  /* .ob-titleimage img { */
+  /*     max-width: 100%; */
+  /* }   */
+/*
+  .ob-titleimage img, .ob-titleimage a, .ob-titleimage {
+    display: none;
+  }
+  */
+  .ob-item {
+    height: 125px;
+
+  }
+  
+  .ob-item .ob-thumbnail {
+    display: none;
+  }
+
+  .ob-item .ob-title {
+    font-size: 130%;
+  }
+  .ob-item .ob-brieftitle {
+    position: absolute;
+    top: 26px;
+    left:20px;
+    width: auto;
+  }
+
+  /*
+  body{
+    background: #fff;
+    margin: 0 0;
+    padding: 0px 0px;
+  }
+      
+  #main {
+    padding: 0px;
+    width:768px;
+    float:left;
+  }
+*/
+  /* header { */
+  /*   height: 90px; */
+  /*   background: none; */
+  /*   border-bottom: none; */
+  /*   margin:0 auto; */
+  /* } */
+
+  /* #imgLogo { */
+  /*   margin-top: 0px; */
+  /* } */
+  /* #institutLogo { */
+  /*   display: none; */
+  /* } */
+  /* #Logo { */
+  /*   display: none; */
+  /* } */
+
+  /* nav { */
+  /*   margin-top: 0px; */
+  /*   background: #fff; */
+  /* } */
+  
+  .ob-searchfield_supplement {
+    display: none;
+  }
+
+  #ob-simplesearch_form {
+    margin-left: 0px;
+    margin-top: -5px;
+  }
+  
+  .ob-searchfield {
+
+    width: 450px;
+    height: 40px;
+    padding: 5px;
+    margin: 0px auto 0px auto;
+/*    background: #c8c8c8;*/
+    background: #dfe2e8;
+/*    background: rgba(0,0,0,.2);*/
+    border-radius: 10px;
+    /*
+    -moz-box-shadow: 10px 10px 5px #888;
+    -webkit-box-shadow: 10px 10px 5px #888;
+    box-shadow: 10px 10px 5px #888;
+    -moz-box-shadow: 5px 5px 2px #888;
+    -webkit-box-shadow: 5px 5px 2px #888;
+    box-shadow: 5px 5px 2px #888; */
+    font-size: 110%;
 
 /*    box-shadow: 0 1px 1px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.2);*/
   }
 
-
-  #Logo {
-    margin: 0;
-    padding-left: 2em;
-  }
-  
-  #imgLogo {
-    margin-top: 25px;
+  .ob-searchfield input[type="text"] {
+    width: 355px;
+    height: 40px;
+    padding: 0px;
+    padding-left: 5px;
+/*    height: 20px;
+    padding: 10px 5px;*/
     float: left;
+    font: 18px Arial,Verdana,Helvetica,sans-serif;
+    
+/*    font: bold 15px 'lucida sans', 'trebuchet MS', 'Tahoma';*/
+    border: 0;
+    background: #fff;
+    border-radius: 3px 0 0 3px;
+  }
+
+  /* Form submit button */
+  .ob-searchfield button {
+    overflow: visible;
+    position: relative;
+    float: right;
+    top: -22px;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    height: 40px;
+    width: 90px;
+    font: bold 15px/40px 'lucida sans', 'trebuchet MS', 'Tahoma';
+    color: #fff;
+    text-transform: uppercase;
+    background: #41799e; /*#d83c3c;*/
+    border-radius: 0 3px 3px 0;
+    text-shadow: 0 -1px 0 rgba(0, 0 ,0, .3);
+  }
+
+  #uniTitle {
+    padding: 0px;
+    background-image: url('/images/openbib/unilogo_mobile.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin-left: 10px;
+    margin-top: 30px;
+    height: 45px;
     
   }
-
-  img.img,
-  img.imgNoborder {
-    border:0px;
+  
+  #uniTitle a {
+    padding: 0px;
+    margin-left: 55px;
+    margin-top: 25px;
+    height: 30px;
   }
 
-  /*-- FLOATING ---------------*/
-  .clearing {
-    clear: both;
-    height: 0;
-    border:0;
-    margin:0;
-    padding:0;
-    line-height:0;
+  #usbTitle a {
+    font-size:1.2em;
+
+  }
+
+}
+
+@media screen and (max-width: 480px) {   
+
+  header {
+    height: 0px;
+    background: none;
+    border-bottom: none;
+    margin:0 auto;
+  }
+
+  #imgLogo {
+    margin-top: 0px;
+  }
+
+  header {
+      padding-bottom:71px;
+      background:  #e1cfb7; /* #312b2d; /* #5b5054; /* #292325; */
+  }
+
+  .ob-titleimage {
+      text-align: center;      
+      padding-top: 10px;
   }
   
-  .ym-wbox {
-    background: #ffffff;
+
+    /* linearization for grid module */
+  .ob-titleimage > [class*="ym-g"] {
+    display: block;
+    float: none;
+    padding: 0;
+    margin: 0;
+    width: 100% !important;
+  }
+  /* reset defined gutter values */
+  .ob-titleimage > [class*="ym-g"] > [class*="ym-gbox"] {
+    overflow: hidden; /* optional for containing floats */
+    padding: 0;
+    margin: 0;
   }
 
-  .details {
-    padding-top: 1em;
+  /* .ob-titleimage img { */
+  /*     max-width: 100%; */
+  /* }   */
+  
+    /*
+  header {
+      height: 69px; 
+      padding-bottom:10px;
+      margin-bottom:-10px;
+  }
+*/
+  .ym-searchform input[type=search] {
+      width: 85%;
+  }
+  
+  #ob-nav_addon_links {
+     display:none;
+  }
+  /* header { */
+  /*     height: 69px; */
+  /*     padding-bottom:0px; */
+  /*     margin-bottom:-20px;   */
+  /* } */
+
+  footer .ob-sponsored .ob-footertext {
+      display: none;
+  }
+  
+  .ym-hlist form {
+      padding-right: 35px;
+  }
+    
+  /* Allgemein */
+/*  
+  body{
+    background: #fff;
+    margin: 0 0;
+    padding: 0px 0px;
+  }
+      
+  #main {
+    padding: 0px;
+    width:480px;
+    float:left;
+  }
+*/
+
+  
+  /* .ob-reuse_data { */
+  /*   display: none; */
+  /* } */
+  .ob-litlists {
+    display: none;
+  }
+  .ob-tagging {
+    display: none;
   }
 
-  .images {
-    padding-top: 1em;
+  .ob-discover_sources {
+    display: none;
+  }
+    
+  .ob-session_history {
+    display: none;
+  }
+  .ob-item {
+    height: 155px;
+
+  }
+
+  .ob-functional_nav {
+    display: none;
+  }
+
+
+/*
+   .ob-breadcrumb {
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    text-overflow: ellipsis;
+  }
+  */
+  
+/*
+  #imgLogo {
+    position: absolute;
+    widht: 60px
+    height: 60px;
+    background-image: url('/images/openbib/unilogo_mobile.png');
+    top: 20;
+    left: 20;
+    right: 0;
+    bottom: 0;
+    background-repeat: no-repeat;
+    background-size: contain;
+    z-index: 2;
+  }
+*/
+  
+  #imgLogo {
+    margin-top: 0px;
+  }
+  
+  #institutLogo {
+    display: none;
   }
 
   nav {
-    margin-top: 10px;
-    background: #fff;
-  }
-
-  nav.ob-fixed_navigation {
-    position: relative;
-    margin: 0px 60px 0px;
-    top: 0px;
-  }
-
-  .ob-selectbox optgroup[label] {
-    font-style: normal;
-
-  }
-
-  #ob-searchform_bottom {
-    font-size: 90%;
-    padding: 0px;
-/*    margin-top: -1.5em;
-    background: #ebeff5;*/
-  }
-
-  #ob-searchform_bottom .ym-gbox,   #ob-searchform_bottom .ym-gbox-left,   #ob-searchform_bottom .ym-gbox-right {
-    padding-top: 2px;
-    border-top: none;
-    background: #fff; /*#ededed ; /* #f6f6f8; /*#eaedf0;*/
-  }
-  #ob-searchform_bottom .ym-gbox-left {
-    border-left: 1px #eee solid;
-  }
-
-  #ob-searchform_bottom .ym-gbox {
-    border-left: 4px #eee solid;
-    border-right: 4px #eee solid;
-  }
-  #ob-searchform_bottom .ym-gbox-right {
-    border-right: 1px #eee solid;
-  }
-  
- .ob-searchform_bottom_left {
-    padding: 5px;
-  }
-
-
-  .ob-functional_nav {
-    width:100%;
-    margin:0 0 0 0;
-    padding:0;
-    height:32px;
-    border-top: 1px #e3e3e3 solid;
-    border-bottom: 1px #e3e3e3 solid;
-  }
-
-  .ob-functional_nav .ob-breadcrumb {
-    padding:0;
-    margin-top:-20px;
-    margin-left: 0px;
-  }
-  
-  .ob-functional_nav .ob-breadcrumb ul li {
-    list-style:none;
-    float:left;
-    height:30px
-    display:inline;
-  }
-  .ob-functional_nav .ob-breadcrumb ul li a {
-    font:12px Arial, Helvetica, sans-serif;
-    color:rgb(0,0,0);
-    text-decoration:none;
-    line-height:30px;
-    display:block;
-    background:url('/images/openbib/breadcrumb.png') 100% no-repeat;
-    padding:5px 17px 0 0;
-  }
-  .ob-functional_nav .ob-breadcrumb ul li a:hover {
-    text-decoration:underline;
-    color:rbg(0,0,0);
-  }
-  .ob-functional_nav .ob-breadcrumb ul li a.lastitem {
-    background:none;
-    color:rgb(0,0,0);
-  }
-  .ob-functional_nav .ob-breadcrumb ul li a.lastitem:hover {
-    text-decoration:none;
-  }
-
-  .ob-functional_nav .ob-representation {
-    float: right;
-    margin-top: 8px;
-    margin-right: 20px;
-  }
-
-  #topnav { 
-    top:5px;
-  }
-
-  .ob-resultlist {
-    background: #fff;
-  }
-  
-  .ob-facets {
     margin-top: 0px;
     background: #fff;
   }
-  .ob-facets h4 {
-    margin-top: 2px;
-    border-bottom: none;
-    font-weight: bold;
+  
+  .ob-searchfield_supplement {
+    display: none;
   }
 
-  .ym-col3 .ym-cbox {
-    padding: 5px;
-    padding-bottom: 2em;
-    margin-left: 10px;
-    margin-right: 10px;
-    background: #fff;    
-  }
-
-  .ym-col1 .ym-cbox {
-    padding: 5px;
-    margin-left: 10px;
-    margin-right: 10px;
-    background: #fff;    
-  }
-
-    
-  .ym-full .ym-gbox {
-    padding: 0 10px;
-  }
-
-  .ym-grid .ym-gbox {
-    padding: 0 10px;
-  }
-
-  .ob-items dt {
-    margin-top:.75em;
-    font-weight:bold;
-    padding:0.2em 0.4em;
-    background-color: #eee;
-  }
-
-  .ob-authority_record {
-    background: #fff;
-
+  #ob-simplesearch_form {
+    margin-left: 0px;
+    margin-top: -5px;
   }
   
-  .ob-fulltitle {
-    margin-top: 10px;
-  }
-
-  .ob-title_wikipedia_articles {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-
-  .ym-form {
-    background: none repeat scroll 0 0 #dfe2e8;
-    border: 2px solid #FFFFFF;
-    box-shadow: 0 0 4px #DDDDDD;
-    margin: 1.5em 0 0;
-    padding: 0;
-  }
-
-  nav.ob-hidden {
-    display: none;
-  }
-
-  .ym-col1.ob-hidden {
-    background: #eee;
-    display: none;
-    height: 0px;
-    width: 0px;
-    padding: 0px;
-  }
-
-  .ob-cartitems.ob-reuse_data {
+  .ob-searchfield {
+    width: 290px;
+    height: 40px;
     padding: 5px;
-    padding-top: 0px;
+    margin: 0px auto 0px auto;
+/*    background: #c8c8c8;*/
+    background: #dfe2e8;
+/*    background: rgba(0,0,0,.2);*/
+    border-radius: 10px;
+    /*
+    -moz-box-shadow: 10px 10px 5px #888;
+    -webkit-box-shadow: 10px 10px 5px #888;
+    box-shadow: 10px 10px 5px #888;
+    -moz-box-shadow: 5px 5px 2px #888;
+    -webkit-box-shadow: 5px 5px 2px #888;
+    box-shadow: 5px 5px 2px #888; */
+    font-size: 110%;
+
+/*    box-shadow: 0 1px 1px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.2);*/
   }
 
+  .ob-searchfield input[type="text"] {
+    width: 195px;
+    height: 40px;
+    padding: 0px;
+    padding-left: 5px;
+/*    height: 20px;
+    padding: 10px 5px;*/
+    float: left;   
+    font: 18px Arial,Verdana,Helvetica,sans-serif;
+    
+/*    font: bold 15px 'lucida sans', 'trebuchet MS', 'Tahoma';*/
+    border: 0;
+    background: #fff;
+    border-radius: 3px 0 0 3px;     
+  }
+
+  /* Form submit button */
+  .ob-searchfield button {    
+    overflow: visible;
+    position: relative;
+    float: right;
+    top: -22px;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    height: 40px;
+    width: 90px;
+    font: bold 15px/40px 'lucida sans', 'trebuchet MS', 'Tahoma';
+    color: #fff;
+    text-transform: uppercase;
+    background: #41799e; /*#d83c3c;*/
+    border-radius: 0 3px 3px 0;     
+    text-shadow: 0 -1px 0 rgba(0, 0 ,0, .3);
+  }  
+
+  #uniTitle {
+    font-size: 90%;
+    margin-left: 5px;
+  }
+  
+  
+  #usbTitle a {
+    font-size:1.2em;
+
+  }
+
+  .ob-resultheader {
+    font-size: 90%;
+  }
+
+  
+}
+
+/* Fix vertical Alignment of searchbutton for Chrome*/
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  .ob-searchfield button {    
+    top: -25px;
+  }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) and (max-width: 1024px) {
+  .ob-searchfield button {    
+    top: -26px;
+  }
 }

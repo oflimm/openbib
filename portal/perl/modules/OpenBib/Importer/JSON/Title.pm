@@ -768,7 +768,7 @@ sub process {
     }
     
     # Schlagworte
-    foreach my $field ('0710','0902','0907','0912','0917','0922','0927','0932','0937','0942','0947') {
+    foreach my $field ('0710','0902','0907','0912','0917','0922','0927','0932','0937','0942','0947','4306') {
         if (defined $fields_ref->{$field}) {
             foreach my $item_ref (@{$fields_ref->{$field}}) {
                 # Verknuepfungsfelder werden ignoriert
@@ -804,7 +804,7 @@ sub process {
                     }) if (exists $self->{conv_config}{listitemcat}{$field});
                     
 #                    if (exists $inverted_ref->{$field}->{index}) {                    
-                        push @subject, $subjectid;
+                        push @subject, $subjectid unless ($field eq "4306");
 #                    }
                 } 
                 else {

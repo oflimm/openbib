@@ -88,7 +88,7 @@ $(function(){
 
 
 function resizeScreen(){
-  if ($(window).width() <= 768){
+  if ($(window).width() < 768){
     $("#ob-facets_all_toggle_do").hide();
      // und bei Klick Sichtbarkeit togglen
        $("#ob-facets_all_toggle").click(function(){

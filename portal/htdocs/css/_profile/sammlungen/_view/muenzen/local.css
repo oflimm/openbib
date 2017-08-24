@@ -1,6 +1,10 @@
 @media all
 {
 
+  #ob-simple_search_form {
+    white-space: nowrap;
+  }
+    
   .ym-hlist ul {
     padding-left: 5px;
     padding-right: 5px;
@@ -28,7 +32,15 @@
     /*  padding: 5px; */
     text-align: right;
   }
-  
+
+  #ob-facets_all_toggle img, #ob-facets_dbinfo_toggle img, .ob-responsive_toggle_button {
+    display: none;
+  }
+
+  #ob-reuse_508_toggle img, #ob-reuse_333_toggle img, #ob-reuse_336_toggle img {
+    display: none;
+  }
+ 
   footer {
     margin: 0.2em 0 0 0;
     height: 50px;
@@ -58,6 +70,12 @@
     padding-left: 5px;
   }
 
+  footer .ob-sponsored .ob-footertext {
+      position: relative;
+      vertical-align: 21px;
+      padding-right: 5px;
+  }
+  
   #topnav {
     z-index:9999;
   }
@@ -114,6 +132,10 @@
   }
 
 
+  #main .ym-grid img {
+      max-width:100%
+  }
+  
   .ob-fulltitle {
     padding: 5px;
   }
@@ -122,6 +144,7 @@
     float: left;
     margin-left: 2px;
     width: 98%;
+/*    padding-bottom: 10px; */
   }
 
   .ob-pagination {
@@ -202,10 +225,17 @@
     width: 98%;
   }
 
-  .ob-titleimage {
-
+  .ob-collection_image {
+      padding-top: 30px;
+      padding-bottom: 20px;
+      text-align: center;
   }
 
+  .ob-collection_image img {
+      padding-bottom: 10px;
+
+  }
+  
   .ob-item {
     height: 145px;
     width: 100%;
@@ -232,5 +262,710 @@
     width: auto;
   }
 
+  .ym-hlist li .icon {
+      display: none;
+  }
 
+}
+
+@media screen and (max-width: 1024px) {
+
+  #header_logo_image  {
+    background: url(/images/openbib/views/muenzen/logo-768px.jpg) center no-repeat;
+    position: absolute;
+    width: 768px;
+    height: 167px;
+    top: 0px;
+    left: 0px;    
+  }
+
+  header {
+    padding-bottom:93px;  
+  }
+
+  .ym-wrapper {
+    text-align:left;
+    width: 768px;
+    margin: 0 auto;
+
+     width-min: 768px;
+     width-max: 768px;
+  }
+
+    #ob-footer_info, .ob-footer_seperator {
+    display:none;
+  }
+
+  
+  .ym-hlist li:not(:last-child) {display: none;}
+  .ym-hlist li .icon {
+    float: right;
+    display: block;
+  }
+
+  .ym-hlist.responsive {position: relative;}
+  .ym-hlist.responsive a.icon {
+    position: absolute;
+    left: 5px;
+    top: 2px;
+  }
+
+  .ym-hlist.responsive ul {
+      margin-top: 25px;
+  }
+
+  .ym-hlist.responsive li {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+
+  .ym-searchform.responsive {
+    display: none;
+  }
+
+  .ym-hlist form {
+    padding-left: 5px;
+    padding-right: 8px;
+  }
+
+  
+/*   .ob-searchfield_supplement select { */
+/*     width: 150px; */
+/*   } */
+  
+/*   .ob-searchfield { */
+
+/*     width: 650px; */
+/*     height: 80px; */
+/*     padding: 5px; */
+/*     margin: 0px auto 0px auto; */
+/* /\*    background: #c8c8c8;*\/ */
+/*     background: #dfe2e8; */
+/* /\*    background: rgba(0,0,0,.2);*\/ */
+/*     border-radius: 10px; */
+/*     /\* */
+/*     -moz-box-shadow: 10px 10px 5px #888; */
+/*     -webkit-box-shadow: 10px 10px 5px #888; */
+/*     box-shadow: 10px 10px 5px #888; */
+/*     -moz-box-shadow: 5px 5px 2px #888; */
+/*     -webkit-box-shadow: 5px 5px 2px #888; */
+/*     box-shadow: 5px 5px 2px #888; *\/ */
+/*     font-size: 110%; */
+
+/* /\*    box-shadow: 0 1px 1px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.2);*\/ */
+/*   } */
+
+/*   .ob-searchfield input[type="text"] { */
+/*     width: 555px; */
+/*     height: 40px; */
+/*     padding: 0px; */
+/*     padding-left: 5px; */
+/* /\*    height: 20px; */
+/*     padding: 10px 5px;*\/ */
+/*     float: left;    */
+/*     font: 18px Arial,Verdana,Helvetica,sans-serif; */
+    
+/* /\*    font: bold 15px 'lucida sans', 'trebuchet MS', 'Tahoma';*\/ */
+/*     border: 0; */
+/*     background: #fff; */
+/*     border-radius: 3px 0 0 3px;      */
+/*   } */
+
+/*   /\* Form submit button *\/ */
+/*   .ob-searchfield button {     */
+/*     overflow: visible; */
+/*     position: relative; */
+/*     float: right; */
+/*     top: -22px; */
+/*     border: 0; */
+/*     padding: 0; */
+/*     cursor: pointer; */
+/*     height: 40px; */
+/*     width: 90px; */
+/*     font: bold 15px/40px 'lucida sans', 'trebuchet MS', 'Tahoma'; */
+/*     color: #fff; */
+/*     text-transform: uppercase; */
+/*     background: #41799e; /\*#d83c3c;*\/ */
+/*     border-radius: 0 3px 3px 0;      */
+/*     text-shadow: 0 -1px 0 rgba(0, 0 ,0, .3); */
+/*   }   */
+}
+
+@media screen and (max-width: 768px) {   
+
+  header {
+    height: 0px;
+    background: none;
+    border-bottom: none;
+    margin:0 auto;
+  }
+
+  #imgLogo {
+    margin-top: 0px;
+  }
+
+  #header_logo_image  {
+    background: url(/images/openbib/views/muenzen/muenzen-schriftzug-80px.png) center no-repeat;
+    position: absolute;
+    width: 299px;
+    height: 80px;
+    top: 0px;
+    left: 0px;    
+  }
+
+  header {
+      padding-bottom:10px;
+      background:  #292325; /* #312b2d; /* #5b5054; /* #292325; */
+  }
+
+
+/*  #header_logo_image {
+    display: none;
+  }
+*/
+  nav {
+    margin-top: 0px;
+    background: #fff;
+  }
+
+  .ym-wrapper {
+    text-align:left;
+    width: 100%;
+    margin: 0 auto;
+
+  }
+
+  .ym-searchform input[type=search] {
+      width: 45%;
+  }
+  /* #header_logo_image  { */
+  /*   background: url(/images/openbib/views/muenzen/logo-480px.jpg) center no-repeat; */
+  /*   position: absolute; */
+  /*   width: 480px; */
+  /*   height: 104px; */
+  /*   top: 0px; */
+  /*   left: 0px;     */
+  /* } */
+
+  /* .ym-wrapper { */
+  /*   text-align:left; */
+  /*   width: 480px; */
+  /*   margin: 0 auto; */
+
+  /*    width-min: 480px; */
+  /*    width-max: 480px; */
+  /* } */
+    
+  /* Allgemein */
+
+  .ob-resultheader .right {
+      display:none;
+  }
+  
+ 
+  footer .float-right {
+    display: none;
+
+  }
+
+  .ob-reuse_data, .ob-discover_sources, .ob-session_history {
+    background-color: #fff;
+    margin-top: 10px;
+    padding: 0px;
+  }
+
+  .ob-facets_all, .ob-facets_dbinfo {
+    background-color: #fff;
+    margin-top: 10px;
+    padding: 0px;
+  }
+
+  .ob-facets_all_toggle_do, .ob-facets_dbinfo_toggle_do {
+    font-size: 130%;
+    padding: 5px;
+  }
+      
+  .ob-discover_sources .ob-category_header, .ob-reuse_data .ob-category_header, .ob-session_history .ob-category_header {
+    width: 95%;
+    margin-left: 5px;
+    margin-right: 4px;
+/*     background: #41799e;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold; */
+  }
+
+  .ob-facets .ob-category_header, .ob-facets_dbinfo .ob-category_header {
+    width: 100%;
+    padding: 10px;
+/*     background: #41799e;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold; */
+  }
+
+  .ob-fulltitle {
+      margin-top: 0px;
+  }
+  
+  .ob-fulltitle .ob-category_header {
+    float: left;
+    margin-left: 2px;
+    width: 95%;
+    
+  }
+  
+  #ob-facets_all_toggle img, #ob-facets_dbinfo_toggle img, .ob-responsive_toggle_button {
+   display: inline;
+  }
+
+  #ob-reuse_508_toggle img, #ob-reuse_333_toggle img, #ob-reuse_336_toggle img {
+    display: inline;
+  }
+  
+  #ob-search_refine {
+    padding-bottom: 20px;
+  }
+
+  .ob-facets {
+    width: 100%;
+  }
+    
+  #ob-same_records, #ob-similar_records {
+    padding: 10px;
+  }
+
+
+  #ob-footer_systeminfo {
+    display:none;
+  }
+
+    
+  .ob-representation {
+    display: none;
+  }
+  
+  #ob-holding_info tr *:nth-child(2) {
+    display: none;
+  }
+
+  #ob-circulation_info tr *:nth-child(2) {
+    display: none;
+  }
+
+  /*
+  .ob-titleimage img, .ob-titleimage a, .ob-titleimage {
+      max-width: 100%;
+  }
+*/
+  /* .ob-titleimage img { */
+  /*     max-width: 100%; */
+  /* }   */
+/*
+  .ob-titleimage img, .ob-titleimage a, .ob-titleimage {
+    display: none;
+  }
+  */
+  .ob-item {
+    height: 125px;
+
+  }
+  
+  .ob-item .ob-thumbnail {
+    display: none;
+  }
+
+  .ob-item .ob-title {
+    font-size: 130%;
+  }
+  .ob-item .ob-brieftitle {
+    position: absolute;
+    top: 26px;
+    left:20px;
+    width: auto;
+  }
+
+  /*
+  body{
+    background: #fff;
+    margin: 0 0;
+    padding: 0px 0px;
+  }
+      
+  #main {
+    padding: 0px;
+    width:768px;
+    float:left;
+  }
+*/
+  /* header { */
+  /*   height: 90px; */
+  /*   background: none; */
+  /*   border-bottom: none; */
+  /*   margin:0 auto; */
+  /* } */
+
+  /* #imgLogo { */
+  /*   margin-top: 0px; */
+  /* } */
+  /* #institutLogo { */
+  /*   display: none; */
+  /* } */
+  /* #Logo { */
+  /*   display: none; */
+  /* } */
+
+  /* nav { */
+  /*   margin-top: 0px; */
+  /*   background: #fff; */
+  /* } */
+  
+  .ob-searchfield_supplement {
+    display: none;
+  }
+
+  #ob-simplesearch_form {
+    margin-left: 0px;
+    margin-top: -5px;
+  }
+  
+  .ob-searchfield {
+
+    width: 450px;
+    height: 40px;
+    padding: 5px;
+    margin: 0px auto 0px auto;
+/*    background: #c8c8c8;*/
+    background: #dfe2e8;
+/*    background: rgba(0,0,0,.2);*/
+    border-radius: 10px;
+    /*
+    -moz-box-shadow: 10px 10px 5px #888;
+    -webkit-box-shadow: 10px 10px 5px #888;
+    box-shadow: 10px 10px 5px #888;
+    -moz-box-shadow: 5px 5px 2px #888;
+    -webkit-box-shadow: 5px 5px 2px #888;
+    box-shadow: 5px 5px 2px #888; */
+    font-size: 110%;
+
+/*    box-shadow: 0 1px 1px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.2);*/
+  }
+
+  .ob-searchfield input[type="text"] {
+    width: 355px;
+    height: 40px;
+    padding: 0px;
+    padding-left: 5px;
+/*    height: 20px;
+    padding: 10px 5px;*/
+    float: left;
+    font: 18px Arial,Verdana,Helvetica,sans-serif;
+    
+/*    font: bold 15px 'lucida sans', 'trebuchet MS', 'Tahoma';*/
+    border: 0;
+    background: #fff;
+    border-radius: 3px 0 0 3px;
+  }
+
+  /* Form submit button */
+  .ob-searchfield button {
+    overflow: visible;
+    position: relative;
+    float: right;
+    top: -22px;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    height: 40px;
+    width: 90px;
+    font: bold 15px/40px 'lucida sans', 'trebuchet MS', 'Tahoma';
+    color: #fff;
+    text-transform: uppercase;
+    background: #41799e; /*#d83c3c;*/
+    border-radius: 0 3px 3px 0;
+    text-shadow: 0 -1px 0 rgba(0, 0 ,0, .3);
+  }
+
+  #uniTitle {
+    padding: 0px;
+    background-image: url('/images/openbib/unilogo_mobile.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin-left: 10px;
+    margin-top: 30px;
+    height: 45px;
+    
+  }
+  
+  #uniTitle a {
+    padding: 0px;
+    margin-left: 55px;
+    margin-top: 25px;
+    height: 30px;
+  }
+
+  #usbTitle a {
+    font-size:1.2em;
+
+  }
+
+}
+
+@media screen and (max-width: 480px) {   
+
+  header {
+    height: 0px;
+    background: none;
+    border-bottom: none;
+    margin:0 auto;
+  }
+
+  #imgLogo {
+    margin-top: 0px;
+  }
+
+  #header_logo_image  {
+    background: url(/images/openbib/views/muenzen/muenzen-schriftzug-80px.png) center no-repeat;
+    position: absolute;
+    width: 299px;
+    height: 80px;
+    top: 0px;
+    left: 0px;    
+  }
+
+  header {
+      padding-bottom:71px;
+      background:  #292325; /* #312b2d; /* #5b5054; /* #292325; */
+  }
+
+  .ob-titleimage {
+      text-align: center;      
+      padding-top: 10px;
+  }
+  
+
+    /* linearization for grid module */
+  .ob-titleimage > [class*="ym-g"] {
+    display: block;
+    float: none;
+    padding: 0;
+    margin: 0;
+    width: 100% !important;
+  }
+  /* reset defined gutter values */
+  .ob-titleimage > [class*="ym-g"] > [class*="ym-gbox"] {
+    overflow: hidden; /* optional for containing floats */
+    padding: 0;
+    margin: 0;
+  }
+
+  /* .ob-titleimage img { */
+  /*     max-width: 100%; */
+  /* }   */
+  
+    /*
+  header {
+      height: 69px; 
+      padding-bottom:10px;
+      margin-bottom:-10px;
+  }
+*/
+  .ym-searchform input[type=search] {
+      width: 85%;
+  }
+  
+  #ob-nav_addon_links {
+     display:none;
+  }
+  /* header { */
+  /*     height: 69px; */
+  /*     padding-bottom:0px; */
+  /*     margin-bottom:-20px;   */
+  /* } */
+
+  footer .ob-sponsored .ob-footertext {
+      display: none;
+  }
+  
+  .ym-hlist form {
+      padding-right: 35px;
+  }
+    
+  /* Allgemein */
+/*  
+  body{
+    background: #fff;
+    margin: 0 0;
+    padding: 0px 0px;
+  }
+      
+  #main {
+    padding: 0px;
+    width:480px;
+    float:left;
+  }
+*/
+
+  
+  /* .ob-reuse_data { */
+  /*   display: none; */
+  /* } */
+  .ob-litlists {
+    display: none;
+  }
+  .ob-tagging {
+    display: none;
+  }
+
+  .ob-discover_sources {
+    display: none;
+  }
+    
+  .ob-session_history {
+    display: none;
+  }
+  .ob-item {
+    height: 155px;
+
+  }
+
+  .ob-functional_nav {
+    display: none;
+  }
+
+
+/*
+   .ob-breadcrumb {
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    text-overflow: ellipsis;
+  }
+  */
+  
+/*
+  #imgLogo {
+    position: absolute;
+    widht: 60px
+    height: 60px;
+    background-image: url('/images/openbib/unilogo_mobile.png');
+    top: 20;
+    left: 20;
+    right: 0;
+    bottom: 0;
+    background-repeat: no-repeat;
+    background-size: contain;
+    z-index: 2;
+  }
+*/
+  
+  #imgLogo {
+    margin-top: 0px;
+  }
+  
+  #institutLogo {
+    display: none;
+  }
+
+  nav {
+    margin-top: 0px;
+    background: #fff;
+  }
+  
+  .ob-searchfield_supplement {
+    display: none;
+  }
+
+  #ob-simplesearch_form {
+    margin-left: 0px;
+    margin-top: -5px;
+  }
+  
+  .ob-searchfield {
+    width: 290px;
+    height: 40px;
+    padding: 5px;
+    margin: 0px auto 0px auto;
+/*    background: #c8c8c8;*/
+    background: #dfe2e8;
+/*    background: rgba(0,0,0,.2);*/
+    border-radius: 10px;
+    /*
+    -moz-box-shadow: 10px 10px 5px #888;
+    -webkit-box-shadow: 10px 10px 5px #888;
+    box-shadow: 10px 10px 5px #888;
+    -moz-box-shadow: 5px 5px 2px #888;
+    -webkit-box-shadow: 5px 5px 2px #888;
+    box-shadow: 5px 5px 2px #888; */
+    font-size: 110%;
+
+/*    box-shadow: 0 1px 1px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.2);*/
+  }
+
+  .ob-searchfield input[type="text"] {
+    width: 195px;
+    height: 40px;
+    padding: 0px;
+    padding-left: 5px;
+/*    height: 20px;
+    padding: 10px 5px;*/
+    float: left;   
+    font: 18px Arial,Verdana,Helvetica,sans-serif;
+    
+/*    font: bold 15px 'lucida sans', 'trebuchet MS', 'Tahoma';*/
+    border: 0;
+    background: #fff;
+    border-radius: 3px 0 0 3px;     
+  }
+
+  /* Form submit button */
+  .ob-searchfield button {    
+    overflow: visible;
+    position: relative;
+    float: right;
+    top: -22px;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    height: 40px;
+    width: 90px;
+    font: bold 15px/40px 'lucida sans', 'trebuchet MS', 'Tahoma';
+    color: #fff;
+    text-transform: uppercase;
+    background: #41799e; /*#d83c3c;*/
+    border-radius: 0 3px 3px 0;     
+    text-shadow: 0 -1px 0 rgba(0, 0 ,0, .3);
+  }  
+
+  #uniTitle {
+    font-size: 90%;
+    margin-left: 5px;
+  }
+  
+  
+  #usbTitle a {
+    font-size:1.2em;
+
+  }
+
+  .ob-resultheader {
+    font-size: 90%;
+  }
+
+  
+}
+
+/* Fix vertical Alignment of searchbutton for Chrome*/
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  .ob-searchfield button {    
+    top: -25px;
+  }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) and (max-width: 1024px) {
+  .ob-searchfield button {    
+    top: -26px;
+  }
 }

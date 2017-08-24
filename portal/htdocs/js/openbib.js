@@ -95,7 +95,25 @@ function resizeScreen(){
         $("#ob-facets_all_toggle_do").toggle();
      });
 
-    $("#ob-facets_dbinfo_toggle_do").hide();
+    $("#ob-reuse_508_toggle_do").hide();
+     // und bei Klick Sichtbarkeit togglen
+       $("#ob-reuse_508_toggle").click(function(){
+        $("#ob-reuse_508_toggle_do").toggle();
+     });
+      
+    $("#ob-reuse_333_toggle_do").hide();
+     // und bei Klick Sichtbarkeit togglen
+       $("#ob-reuse_333_toggle").click(function(){
+        $("#ob-reuse_333_toggle_do").toggle();
+     });
+
+    $("#ob-reuse_336_toggle_do").hide();
+     // und bei Klick Sichtbarkeit togglen
+       $("#ob-reuse_336_toggle").click(function(){
+        $("#ob-reuse_336_toggle_do").toggle();
+     });
+
+      $("#ob-facets_dbinfo_toggle_do").hide();
      // und bei Klick Sichtbarkeit togglen
        $("#ob-facets_dbinfo_toggle").click(function(){
         $("#ob-facets_dbinfo_toggle_do").toggle();
@@ -121,6 +139,9 @@ function resizeScreen(){
   }
   else {
     $("#ob-facets_all_toggle_do").show();
+      $("#ob-reuse_508_toggle_do").show();
+      $("#ob-reuse_333_toggle_do").show();
+      $("#ob-reuse_336_toggle_do").show();
     $("#ob-facets_dbinfo_toggle_do").show();
     $("#ob-record_title_save_toggle_do").show();
     $("#ob-record_title_discover_toggle_do").show();

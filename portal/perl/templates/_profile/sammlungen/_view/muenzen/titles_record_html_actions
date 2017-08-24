@@ -11,9 +11,9 @@
 
 </style>
 
-<div class="ob-category_header">[% msg.maketext("T0508-muenzen") %]:</div><p/>
+<div class="ob-category_header"><span id="ob-reuse_508_toggle">[% msg.maketext("T0508-muenzen") %]:&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div><p/>
 
-<ul>
+<ul id="ob-reuse_508_toggle_do">
 [%
       referenzen = normdata.${'T0508'}.first.content.split(' ; ');
  
@@ -33,9 +33,9 @@
 
 <div class="ob-reuse_data"><!-- Begin Reuse -->
 
-<div class="ob-category_header">[% msg.maketext("T0333-muenzen") %]:</div><p/>
+<div class="ob-category_header"><span id="ob-reuse_333_toggle">[% msg.maketext("T0333-muenzen") %]:&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div><p/>
 
-<ul>
+<ul id="ob-reuse_333_toggle_do">
 [%
       referenzen = normdata.${'T0333'}.first.content.split(' ; ');
  
@@ -54,9 +54,9 @@
 
 <div class="ob-reuse_data"><!-- Begin Reuse -->
 
-<div class="ob-category_header">[% msg.maketext("T0336-muenzen") %]:</div><p/>
+<div class="ob-category_header"><span id="ob-reuse_336_toggle">[% msg.maketext("T0336-muenzen") %]:&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div><p/>
 
-<ul>
+<ul id="ob-reuse_336_toggle_do">
 [%
       referenzen = normdata.${'T0336'}.first.content.split(' ; ');
  

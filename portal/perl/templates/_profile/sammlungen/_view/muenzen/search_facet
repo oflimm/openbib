@@ -1,4 +1,6 @@
-<div class="ob-facets">
+<div id="ob-search_refine">
+[% IF queryoptions.get_option('facets') != 'none' %]
+<div class="ob-facets ob-facets_all">
 [% IF hits <= config.get('xapian_option').maxmatch %]
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
@@ -150,7 +152,9 @@ $("#dd_litlists_[% database %]_toggle").click(function(){
 </script>
 [%# USE dumper;dumper.dump(category_map)%]
 
-<h4>[% msg.maketext("Treffermenge eingrenzen") %]</h4>
+<div class="ob-category_header"><span id="ob-facets_all_toggle">[% msg.maketext("Treffermenge eingrenzen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+
+<div id="ob-facets_all_toggle_do">
 
 [% IF separate_refine %]
 [%# USE dumper;dumper.dump(have_filter)%]
@@ -503,6 +507,10 @@ Sie diese auf sinntragende Worte reduzieren (z.B. der, die das
 weglassen) und allgemeine Worte (z.B. deutschland oder geschichte)
 durch zus&auml;tzliche Worte weiter eingrenzen.") %]
 </p>
+
+[% END %]
+</div>
+</div>
 
 [% END %]
 </div>

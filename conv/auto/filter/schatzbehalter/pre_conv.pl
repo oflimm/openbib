@@ -42,4 +42,4 @@ my $pool          = $ARGV[0];
 print "### $pool: AST und HST vereinen wegen Titel-Register\n";
 
 system("mv -f $rootdir/data/$pool/meta.title $rootdir/data/$pool/meta.title.tmp");
-system("$rootdir/filter/$pool/change_ast_hst.pl < $rootdir/data/$pool/meta.title.tmp > $rootdir/data/$pool/meta.title");
+system("$rootdir/filter/$pool/change_ast_hst.pl < $rootdir/data/$pool/meta.title.tmp | $rootdir/filter/$pool/correct_urls.pl > $rootdir/data/$pool/meta.title");

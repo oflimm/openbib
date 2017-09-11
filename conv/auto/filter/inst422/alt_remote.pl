@@ -39,6 +39,6 @@ my $konvdir       = $config->{'conv_dir'};
 
 my $pool          = $ARGV[0];
 
-print "### $pool: Extrahiere der Daten der Mikrofilme aus den USB-Daten\n";
+print "### $pool: Extrahiere der Daten von inst422 aus inst420retro\n";
 
 system("$rootdir/filter/$pool/gen-subset-mex.pl $pool");

@@ -682,6 +682,8 @@ while ($csv->getline ($in)){
 
 
     my %mex = ();
+
+    $logger->info("Generate holding for id $title_ref->{id}");
     # Exemplare abarbeiten Anfang
     foreach my $kateg (keys %{$convconfig->{holding}}){
 #        my $content = decode($convconfig->{encoding},$row->{$kateg});
@@ -733,7 +735,7 @@ while ($csv->getline ($in)){
         push @{$item_ref->{fields}{'0004'}}, {
             mult     => 1,
             subfield => '',
-            content  => $titleid,
+            content  => $title_ref->{id},
         };
 
         foreach my $category (keys %{$mex{$part}}){

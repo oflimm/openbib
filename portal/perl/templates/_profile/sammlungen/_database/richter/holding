@@ -19,7 +19,7 @@
      bestandsverlauf  = thisholding.${"X1204"}.content;
      standort         = thisholding.${"X0016"}.content;
      IF thisholding.${"X4000"}.content.short == "(001)" ;
-       standort         = 'Handapparat Richterbibliothek Abt. UGK';
+       standort         = 'Richterbibliothek';
      END;
      IF standort && standort != '-' ;
         have_standort = 1;

@@ -59,7 +59,7 @@ my ($database,$help,$logfile,$filename);
 	    "help"            => \$help
 	    );
 
-if ($help){
+if ($help || (!$database && !$filename)){
     print_help();
 }
 
@@ -82,8 +82,6 @@ Log::Log4perl::init(\$log4Perl_config);
 
 # Log4perl logger erzeugen
 my $logger = get_logger();
-
-$logger->info("Exporting provenances to JSON");
 
 my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $database});
 
@@ -129,14 +127,14 @@ foreach my $title ($title_holdings->all){
     $title_holdings_count_ref->{$titleid} = $holding_count;
 }
 
-print "Katkey\tExemplare_Titel\tExemplare_Buchdaten\n";
+print OUT "Katkey\tExemplare_Titel\tExemplare_Buchdaten\n";
 
 foreach my $titleid (keys %$title_marks_count_ref){
     my $this_marks_count    = $title_marks_count_ref->{$titleid};
     my $this_holdings_count = $title_holdings_count_ref->{$titleid};
 
     if ($this_marks_count ne $this_holdings_count){
-	print "$titleid\t$this_marks_count\t$this_holdings_count\n";
+	print OUT "$titleid\t$this_marks_count\t$this_holdings_count\n";
     }
 }
 

@@ -138,9 +138,11 @@ my $blacklist_ref = {
     'inst418master' => 1,
     'inst420' => 1,
     'inst420master' => 1,
+    'inst420retro' => 1,
     'inst421' => 1,
     'inst422' => 1,
     'inst423' => 1,
+    'inst424' => 1,
     'inst426' => 1,
     'inst426master' => 1,
     'inst427' => 1,
@@ -384,15 +386,15 @@ sub threadC {
 
     ##############################
 
-    $logger->info("### Master: inst420master");
+    $logger->info("### Master: inst420master und -retro");
     
-    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst420master'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst420master','inst420retro'] });
 
     ##############################
     
     $logger->info("### Aufgesplittete Kataloge inst420");
     
-    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst420','inst421','inst422','inst423'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst420','inst421','inst422','inst423','inst424'] });
     
     ##############################
 

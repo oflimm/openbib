@@ -17,7 +17,7 @@ while (<>){
         }
 
         unless ($have_gnd == 1){
-            delete $norm_ref->{fields};
+            delete $norm_ref->{fields}{'0010'};
         };
     }
    

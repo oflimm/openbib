@@ -128,10 +128,10 @@ my @authority_files = (
         type     => "corporatebody",
         filename => "$rootdir/pools/$database/meta.corporatebody.gz",
     },
-#    {
-#        type     => "subject",
-#        filename => "$rootdir/pools/$database/meta.subject.gz",
-#    },
+    {
+        type     => "subject",
+        filename => "$rootdir/pools/$database/meta.subject.gz",
+    },
 );
 
 my $conv_config = new OpenBib::Conv::Config({dbname => $database});
@@ -161,6 +161,7 @@ my $inverted_ref  = $conv_config->{inverted_authority_title};
 
 my $valid_person_id_ref = {};
 my $valid_corporatebody_id_ref = {};
+my $valid_subject_id_ref = {};
 
 foreach my $authority_file_ref (@authority_files){
     
@@ -224,6 +225,7 @@ foreach my $authority_file_ref (@authority_files){
 		    
 		    next if ($type eq "person" && !$valid_person_id_ref->{$id});
 		    next if ($type eq "corporatebody" && !$valid_corporatebody_id_ref->{$id});
+		    next if ($type eq "subject" && !$valid_subject_id_ref->{$id});
 
                     # Initialisieren und Basisinformationen setzen
                     my $document = OpenBib::Index::Document->new({ database => $database, id => $auth_ref->{id} });
@@ -241,6 +243,12 @@ foreach my $authority_file_ref (@authority_files){
 			    if ($field eq "4307"){ # Koerperschaft
 				foreach my $item_ref (@{$fields_ref->{$field}}){
 				    $valid_corporatebody_id_ref->{$item_ref->{id}} = 1;
+				}
+
+			    }
+			    elsif ($field eq "4306"){ # Sammlung/Subject
+				foreach my $item_ref (@{$fields_ref->{$field}}){
+				    $valid_subject_id_ref->{$item_ref->{id}} = 1;
 				}
 
 			    }
@@ -294,7 +302,7 @@ foreach my $authority_file_ref (@authority_files){
 				    {
 					mult     => 1,
 					subfield => '',
-					content  => "Vorbesitzer (Person)",
+					content  => "Provenienz Person",
 				    },
 				    ];
 
@@ -304,7 +312,17 @@ foreach my $authority_file_ref (@authority_files){
 				    {
 					mult     => 1,
 					subfield => '',
-					content  => "Vorbesitzer (Körperschaft)",
+					content  => "Provenienz Körperschaft",
+				    },
+				    ];
+				
+			}
+			elsif ($type eq "subject"){
+				$fields_ref->{'4410'} = [
+				    {
+					mult     => 1,
+					subfield => '',
+					content  => "Provenienz Sammlung",
 				    },
 				    ];
 				

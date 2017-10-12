@@ -770,6 +770,17 @@ convtab:
           'ft4300': 1
         facet:
           'subject': 1
+      '4306':         # Provenienzen Sammlung
+        index:
+          'subject': 20
+          'subjectstring': 20
+          'freesearch': 20
+          't4306': 1
+          'ft4306': 1
+          'provenance': 20
+          'provenancestring': 20
+        facet:
+          'provenance': 1
       '4307':         # Provenienzen Koerperschaften
         index:
           'corporatebody': 20
@@ -1010,6 +1021,13 @@ convtab:
         facet:
           'mediatype': 1
     inverted_authority_title:
+      '4306':         # Provenienzen Sammlung
+        index:
+          'subject': 20
+          'subjectstring': 20
+          'freesearch': 20
+          't4306': 1
+          'ft4306': 1
       '4307':         # Provenienzen Koerperschaften
         index:
           'corporatebody': 20
@@ -1360,6 +1378,13 @@ convtab:
           'subject': 20
           'subjectstring': 20
           'ft4300': 1
+        facet:
+          'subject': 1
+      '4306':         # Provenienzen Sammlung
+        index:
+          'subject': 20
+          'subjectstring': 20
+          'freesearch': 20
         facet:
           'subject': 1
       '4307':         # Provenienzen Koerperschaften
@@ -2326,6 +2351,17 @@ convtab:
           'ft4300': 1
         facet:
           'subject': 1
+      '4306':         # Provenienzen Sammlung
+        index:
+          'subject': 20
+          'subjectstring': 20
+          'freesearch': 20
+          't4306': 1
+          'ft4306': 1
+          'provenance': 20
+          'provenancestring': 20
+        facet:
+          'provenance': 1
       '4307':         # Provenienzen Koerperschaften
         index:
           'corporatebody': 20

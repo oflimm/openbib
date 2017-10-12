@@ -19,6 +19,9 @@
     ELSIF field == '4307' ;
        field_description = "Provenienz K&ouml;rperschaft";
        searchfield = 'corporatebodystring' ;
+    ELSIF field == '4306' ;
+       field_description = "Provenienz Sammlung";
+       searchfield = 'ft4306' ;
     ELSIF field == '4310' ;
        field_description = "Provenienz Beschreibung (mit T-PRO)";
        searchfield = 'ft4310' ;

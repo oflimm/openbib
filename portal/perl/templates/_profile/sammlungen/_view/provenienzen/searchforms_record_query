@@ -94,8 +94,17 @@ $(document).ready(function(){
 <input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
+[%- cgiparam = searchfield.t4306.prefix;
+    this_searchfield = 't4306';
+ -%]
+<div class="ym-fbox-text">
+<label for="[% cgiparam %]">Provenienz Sammlung</label>
+<input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+
+
 [%- cgiparam = searchfield.t4310.prefix;
-    this_searchfield = 't4310';
+    this_searchfield = 'ft4310';
  -%]
 <div class="ym-fbox-text">
 <label for="[% cgiparam %]">Provenienz Beschreibung (mit T-PRO)</label>

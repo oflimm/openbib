@@ -79,7 +79,7 @@ $(document).ready(function(){
 [% END %]
 
 [%- cgiparam = searchfield.person.prefix;
-    this_searchfield = 'personstring';
+    this_searchfield = 'person';
  -%]
 <div class="ym-fbox-text">
 <label for="[% cgiparam %]">Provenienz Person</label>
@@ -87,7 +87,7 @@ $(document).ready(function(){
 </div>
 
 [%- cgiparam = searchfield.corporatebody.prefix;
-    this_searchfield = 'corporatebodystring';
+    this_searchfield = 'corporatebody';
  -%]
 <div class="ym-fbox-text">
 <label for="[% cgiparam %]">Provenienz K&ouml;rperschaft</label>
@@ -104,7 +104,7 @@ $(document).ready(function(){
 
 
 [%- cgiparam = searchfield.t4310.prefix;
-    this_searchfield = 'ft4310';
+    this_searchfield = 't4310';
  -%]
 <div class="ym-fbox-text">
 <label for="[% cgiparam %]">Provenienz Beschreibung (mit T-PRO)</label>

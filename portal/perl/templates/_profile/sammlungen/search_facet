@@ -408,7 +408,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <!-- Begin corporatebody facet -->
 [%         IF config.get('facets').corporatebody && facets.corporatebody.size > 0 %]
 <dl class="ob-items">
-<dt class="ob-headline" id="dd_corporatebody_[% database %]_anchor">[% msg.maketext("nach K&ouml;perschaften") %]</dt>
+<dt class="ob-headline" id="dd_corporatebody_[% database %]_anchor">[% msg.maketext("nach K&ouml;rperschaften") %]</dt>
 <tr><td>
 [%             FOREACH termitem IN facets.corporatebody ;
                   LAST IF loop.count > 25 ;

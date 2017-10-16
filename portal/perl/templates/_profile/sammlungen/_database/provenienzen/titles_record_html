@@ -192,6 +192,16 @@ $(document).ready(function(){
    FOREACH provenance IN record.get_provenances(msg) ;
 
      owner = [];
+     IF provenance.defined('T4306');
+       field = provenance.${'T4306'}.first ;
+       searchterm    = uri_escape(field.content);
+       searchprefix  = config.get('searchfield').subjectstring.prefix;
+       localurl      = "${path_prefix}/${config.get('search_loc')}.html?l=${lang};${searchprefix}=${searchterm}";
+
+       resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('subjects_loc')}/id/${field.id}.html?l=${lang}";
+       normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Sammlung-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>";
+       owner.push("<a href=\"${localurl}\">${field.content}</a>&nbsp;${normdataicon}");
+     END ;
      IF provenance.defined('T4307');
        field = provenance.${'T4307'}.first ;
        searchterm    = uri_escape(field.content);

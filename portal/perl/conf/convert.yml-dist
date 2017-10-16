@@ -987,6 +987,12 @@ convtab:
           'corporatebody': 1
           'corporatebodystring': 1
           'freesearch': 1
+    inverted_subject: # Fake Eintrag
+      'XXXX':         # Ansetzung
+        index:
+          'subject': 1
+          'subjectstring': 1
+          'freesearch': 1
     inverted_authority_corporatebody:
       '0800':         # Ansetzung
         index:
@@ -1375,11 +1381,7 @@ convtab:
           'content': 1
       '4300':         # Fremde Schlagworte
         index:
-          'subject': 20
-          'subjectstring': 20
           'ft4300': 1
-        facet:
-          'subject': 1
       '4306':         # Provenienzen Sammlung
         index:
           'subject': 20

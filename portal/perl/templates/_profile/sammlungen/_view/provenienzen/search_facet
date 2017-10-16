@@ -268,7 +268,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <!-- Begin corporatebody facet -->
 [%         IF config.get('facets').corporatebody && facets.corporatebody.size > 0 %]
 <dl class="ob-items">
-<dt class="ob-headline" id="dd_corporatebody_[% database %]_anchor">[% msg.maketext("nach K&ouml;perschaften") %]</dt>
+<dt class="ob-headline" id="dd_corporatebody_[% database %]_anchor">[% msg.maketext("nach K&ouml;rperschaften") %]</dt>
 [%             FOREACH termitem IN facets.corporatebody ;
                   LAST IF loop.count > 25 ;
 %]
@@ -290,10 +290,35 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [%         END %]
 <!-- End corporatebody facet -->
 
+<!-- Begin subject facet -->
+[%         IF config.get('facets').subject && facets.subject.size > 0 %]
+<dl class="ob-items">
+<dt class="ob-headline" id="dd_subjects_[% database %]_anchor">[% msg.maketext("nach Sammlungen") %]</dt>
+[%             FOREACH termitem IN facets.subject ;
+                  LAST IF loop.count > 25 ;
+%]
+[% IF facets.subject.size > 5 && loop.count == 5 %]
+<span id="dd_subjects_[% database %]_toggle"></span>
+<div id="dd_subjects_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').subjectstring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])</dd>
+[%             END %]
+[% IF facets.subject.size > 5 %]
+</div>
+[% END %]
+</dl>
+[%         END %]
+<!-- End subject facet -->
+
 <!-- Begin provenance facet -->
 [%         IF config.get('facets').provenance && facets.provenance.size > 0 %]
 <dl class="ob-items">
-<dt class="ob-headline" id="dd_provenance_[% database %]_anchor">nach USB Sammlungsvermerk</dt>
+<dt class="ob-headline" id="dd_provenance_[% database %]_anchor">[% msg.maketext("nach USB Sammlungsvermerk") %]</dt>
 [%             FOREACH termitem IN facets.provenance ;
                   LAST IF loop.count > 25 ;
 %]

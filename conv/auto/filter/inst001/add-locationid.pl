@@ -58,6 +58,7 @@ while (<HOLDING>){
     foreach my $location_ref (@{$holding_ref->{fields}{'0016'}}){
         if ($location_ref->{content} =~m/^Humanwiss. Abteilung/){
             push @{$element_ref}, "DE-38-USBFB";
+            push @{$element_ref}, "DE-38";
             push @{$element_ref}, "DE-38-HWA";
         }
         elsif ($location_ref->{content} =~m/^KMB/){

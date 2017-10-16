@@ -1081,18 +1081,6 @@ convtab:
         index:
           'mark': 1
           'markstring': 1
-      '0065':         # RDA: Schlagwort (eher Medientyp...)
-        index:
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
-      '0067':         # RDA: Schlagwort (eher Medientyp...)
-        index:
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
       '0089':
         index:
           'source': 1
@@ -1229,75 +1217,9 @@ convtab:
           'classificationstring': 1
         facet:
           'classification': 1
-      '0710':
-        index:
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
       '0750':         # Abstract
         index:
           'content': 1
-      '0902':
-        index:
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
-      '0907':
-        index:
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
-      '0912':
-        index:
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
-      '0917':
-        index:
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
-      '0922':
-        index:
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
-      '0927':
-        index:
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
-      '0932':
-        index:
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
-      '0937':
-        index:
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
-      '0942':
-        index:
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
-      '0947':
-        index:
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
       '1203':         # Signatur, wenn nicht in den Exemplardaten
         index:
           'markstring': 1
@@ -1429,12 +1351,6 @@ convtab:
           'provenancestring': 20
         facet:
           'provenance': 1
-      '4710':         # Migriertes Schlagwort
-        index:
-          'subject': 20
-          'subjectstring': 20
-        facet:
-          'subject': 1
       '5050':         # Bibkey
         index:
           'bkey': 1

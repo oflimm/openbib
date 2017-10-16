@@ -408,7 +408,7 @@
   #header_logo_image  {
     background: url(/images/openbib/views/muenzen/muenzen-schriftzug-80px.png) center no-repeat;
     position: absolute;
-    width: 299px;
+    width: 702px;
     height: 80px;
     top: 0px;
     left: 0px;    
@@ -723,15 +723,6 @@
 
   #imgLogo {
     margin-top: 0px;
-  }
-
-  #header_logo_image  {
-    background: url(/images/openbib/views/muenzen/muenzen-schriftzug-80px.png) center no-repeat;
-    position: absolute;
-    width: 299px;
-    height: 80px;
-    top: 0px;
-    left: 0px;    
   }
 
   header {

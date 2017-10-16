@@ -41,4 +41,4 @@ my $pool          = $ARGV[0];
 
 print "### $pool: Extrahiere der Daten von inst422 aus inst420retro\n";
 
-system("$rootdir/filter/$pool/gen-subset-mex.pl $pool");
+system("$rootdir/filter/$pool/gen-subset.pl $pool");

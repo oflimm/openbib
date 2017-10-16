@@ -39,6 +39,6 @@ my $konvdir       = $config->{'conv_dir'};
 
 my $pool          = $ARGV[0];
 
-print "### $pool: Extrahiere der Daten aus inst301\n";
+print "### $pool: Extrahiere die Daten aus inst301\n";
 
-system("$rootdir/filter/$pool/gen-subset-mex.pl $pool");
+system("$rootdir/filter/$pool/gen-subset.pl $pool");

@@ -35,6 +35,13 @@
 </thead>
 <tbody>
 [%  FOREACH thisholding IN holding %]
+[%  IF thisholding.${"X0014"}.content.match('^EWA-LS Z') || thisholding.${"X0014"}.content.match('^EWA-LS\s*:\s*Z') || thisholding.${"X0014"}.content.match('^EWA Z') ||thisholding.${"X0014"}.content.match('^HP-LS B') ||thisholding.${"X0014"}.content.match('^EWA-LS-Theke Z') ;
+
+    thisholding.${"X4000"}.content.full = "USB K&ouml;ln / Humanwiss. Abt.";
+    thisholding.${"X4000"}.content.dbname = "usbhwa";
+    
+    END;
+%]
 <tr align="center"><td><strong>
 [%-  IF thisholding.${"X4000"}.content && thisholding.${"X4001"}.content -%]
 [%-   thisdbname = thisholding.${"X4000"}.content.dbname -%]

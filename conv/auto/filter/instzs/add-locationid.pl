@@ -15,7 +15,7 @@ while (<HOLDING>){
     my $holding_ref = decode_json $_;
 
     my $titleid = $holding_ref->{fields}{'0004'}[0]{content};
-
+    
     next unless ($titleid);
 
     foreach my $location_ref (@{$holding_ref->{fields}{'3330'}}){
@@ -77,6 +77,12 @@ while (<HOLDING>){
         elsif ($location_ref->{content} eq "38"){
             push @{$title_locationid_ref->{$titleid}}, "DE-38";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
+	    foreach my $signatur_ref (@{$holding_ref->{fields}{'0014'}}){
+		if ($signatur_ref->{content} =~m/^EWA-LS\s*:?\s*Z/ || $signatur_ref->{content} =~m/^EWA Z/ || $signatur_ref->{content} =~m/^EWA-LS-Theke Z/ || $signatur_ref->{content} =~m/^HP-LS B/){
+		    push @{$title_locationid_ref->{$titleid}}, "DE-38-HWA";
+		}
+		
+	    }
         }
         elsif ($location_ref->{content} =~/^\d\d\d$/){
             push @{$title_locationid_ref->{$titleid}}, "DE-38-".$location_ref->{content};

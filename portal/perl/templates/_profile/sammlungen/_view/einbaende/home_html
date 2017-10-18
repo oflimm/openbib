@@ -30,73 +30,7 @@
     <!-- begin: main content area #main -->
     <div id="main">
 
-         <div class="ym-grid">
-          <div class="ym-g33 ym-gl">
-           <div class="ym-gbox" class="ym-clearfix">
-
-           <center style="padding-top: 70px;">
-
-<img src="/images/openbib/views/einbaende/Einband_startseite.png"
-alt="Canticum canticorum, 2003" /><br /><br /><span
-style="font-size:1em">Canticum canticorum, 2003<br />Einband in
-Polycarbonat<br />von Elke Oetter, St. Augustin</span>
-             <br/></center>
-          </div>
-         </div>
-          <div class="ym-g66 ym-gl">
-           <div class="ym-gbox" class="ym-clearfix">
-
-<h1>Digitale Einbandsammlung der Universitäts- und Stadtbibliothek Köln</h1>
-
-<p>
-Vom spätgotischen Kettenbuch bis hin zu den experimentellen
-zeitgenössischen Einbänden verwahrt die Bibliothek schützens- und
-erhaltenswerte Zeugnisse gediegener Handwerkskunst, künstlerischer
-Inspiration und verlegerischer Sorgfalt.
-</p>
-
-<p> Silbergetriebene und prunkvoll mit Edelsteinen und Elfenbein
-bestückte Prachteinbände wird man in der USB Köln vergeblich suchen,
-dennoch hütet sie einen prächtigen Einbandbestand.  </p>
-
-<p> Die regionalgeschichtlich bedeutsamen Gebrauchseinbände der
-Buchbinder des 15. bis 18. Jahrhunderts umschließen etliche Drucke aus
-klösterlichem Eigentum und dem Besitz der Kölner Rats; kunstvoll zu
-repräsentativen Zwecken eingebundene Bücher aus aller Welt stammen
-meist aus Stiftungen und den Kollektionen der Kölner Sammler. Noch
-heute (ver)bergen die Bestände der alten Kölner Stadtbibliothek die
-lange als banal erachteten, mittlerweile aber sehr geschätzten
-historistischen Hand- und Verlagseinbände, Buchobjekte und
-Objektbücher bieten Einblicke in die künstlerische Einband- und
-Buchgestaltung auch über das buchbinderische Wirken hinaus und
-schließlich vertreten bemerkenswerte Einbandentwürfe und die kreativen
-Arbeiten der Hausbuchbinderei die moderne Einbandkunst.  </p>
-
-<p> Von den zahlreichen bisher bekannten historisch und künstlerisch
-relevanten Einbänden der USB fanden nur 215 in der vorgesehenen, knapp
-bemessenen Räumlichkeit für die Einbandsammlung Aufstellung, die
-restlichen sind über die verschlossenen Trakte des Magazins verstreut
-und nur teilweise über sporadisch erschienene (nach neueren
-Erkenntnissen teilweise veraltete) Veröffentlichungen und
-Ausstellungskataloge nachgewiesen (s. Dokumentation). Ein
-Einbandkatalog existierte bisher nicht. Nachdem die Mitarbeiterinnen
-der Einbandstelle die 215 gemeinsam aufgestellten Bände der
-Einbandsammlung erfasst und erschlossen hatten, widmeten sie sich
-ebenfalls der Dokumentation des übrigen Bestandes.</p>
-</p>
-
-<p><b>Eine Einbanddatenbank, in die im Laufe der Zeit alle
-historisch relevanten, erhaltenswerten und künstlerischen Bucheinbände
-aus dem Bestand der USB einfließen werden, präsentiert als
-Gemeinschaftsprojekt des Hauses mittlerweile über 350 Objekte.</b></p>
-
-<a href="[% path_prefix %]/[% config.get('info_loc')
-%]/sammlung.html?l=[% lang %]">[Weitere Informationen]</a>
-</p>
-
-          </div>
-         </div>
-      </div>
+[% config.get_templatetext('home','einbaende',lang) %]
 
     </div>
     <!-- end: #main -->

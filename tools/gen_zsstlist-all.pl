@@ -43,7 +43,7 @@ use YAML;
 my $config      = OpenBib::Config->new;
 my $dbinfotable = OpenBib::Config::DatabaseInfoTable->new;
 
-my $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=instzs;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
+my $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=uzkzeitschriften;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
 
 my $request=$dbh->prepare("select distinct content from holding_fields where field = 3330 order by content") or $logger->error($DBI::errstr);
 
@@ -58,7 +58,7 @@ while (my $result=$request->fetchrow_hashref()){
     system("cd /var/www/zeitschriftenlisten ; pdflatex --interaction=batchmode /var/www/zeitschriftenlisten/zeitschriften-$sigel.tex");
     system("cd /var/www/zeitschriftenlisten ; pdflatex --interaction=batchmode /var/www/zeitschriftenlisten/zeitschriften-$sigel-bibsort.tex");
     
-    system($config->{tool_dir}."/gen_zsstlist.pl --sigel=$sigel -showall --enrichnatfile=/opt/openbib/autoconv/pools/instzs/nationallizenzen.csv --mode=tex -bibsort");
+    system($config->{tool_dir}."/gen_zsstlist.pl --sigel=$sigel -showall --enrichnatfile=/opt/openbib/autoconv/pools/uzkzeitschriften/nationallizenzen.csv --mode=tex -bibsort");
     system("cd /var/www/zeitschriftenlisten ; pdflatex --interaction=batchmode /var/www/zeitschriftenlisten/zeitschriften-$sigel-all.tex");
     system("cd /var/www/zeitschriftenlisten ; pdflatex --interaction=batchmode /var/www/zeitschriftenlisten/zeitschriften-$sigel-all-bibsort.tex");
 

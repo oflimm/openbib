@@ -181,7 +181,7 @@ if ($enrichnatfile){
 my $config      = OpenBib::Config->new;
 my $dbinfotable = OpenBib::Config::DatabaseInfoTable->new;
 
-my $subset = new OpenBib::Catalog::Subset("instzs","who_cares");
+my $subset = new OpenBib::Catalog::Subset("uzkzeitschriften","who_cares");
 $subset->identify_by_field_content('holding',[{ field => 3330, content => $sigel }]);
 
 my %titleids = %{$subset->get_titleid};
@@ -192,7 +192,7 @@ my $natlizzahl=0;
 my @recordlist = ();
 
 foreach $titleid (keys %titleids){
-    my $record = new OpenBib::Record::Title({database => 'instzs', id => $titleid})->load_full_record();
+    my $record = new OpenBib::Record::Title({database => 'uzkzeitschriften', id => $titleid})->load_full_record();
 
     my $sortfield = "";
     

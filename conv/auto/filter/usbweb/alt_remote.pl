@@ -52,4 +52,4 @@ my $url        = $dbinfo->protocol."://".$dbinfo->host."/";
 print "### $pool: Webcrawlen von $url\n";
 system("cd $pooldir/$pool ; rm meta.* ");
 system("cd $pooldir/$pool ; $webcrawler2metaexe --base-url=\"http://petros.ub.uni-koeln.de/\" --configfile=/opt/openbib/conf/$pool.yml");
-
+system("cd $pooldir/$pool ; gzip meta.* ");

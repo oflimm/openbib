@@ -298,6 +298,8 @@ sub threadA {
     $logger->info("### Standard-Institutskataloge");
 
     autoconvert({ incremental => $incremental, updatemaster => $updatemaster, blacklist => $blacklist_ref, sync => 1, autoconv => 1});
+
+    autoconvert({ updatemaster => $updatemaster, blacklist => $blacklist_ref, sync => 1, databases => ['usbweb'] });
     
     return $thread_description;
 }

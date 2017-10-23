@@ -11,11 +11,13 @@ my $id2zdbid_ref = LoadFile("/tmp/instzs-id2zdbid.yml");
 while (<>){
     my $record_ref = decode_json $_;
 
-    if (defined $record_ref->{fields}{'0004'}){
-        foreach my $item_ref (@{$record_ref->{fields}{'0004'}}){
-            $item_ref->{content} = $id2zdbid_ref->{$item_ref->{content}};
-        }
-    }
+    my $titleid = $record_ref->{fields}{'0004'}[0]{content};
+
+    next unless ($titleid);
+
+    next unless ($id2zdbid_ref->{$titleid});
+    
+    $record_ref->{fields}{'0004'}[0]{content} = $id2zdbid_ref->{$titleid};
     
     print encode_json $record_ref, "\n";
 }

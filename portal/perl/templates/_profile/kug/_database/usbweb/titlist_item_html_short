@@ -27,196 +27,10 @@
      listid = record.listid;
      all_locations = record.get_locations;
 
-     # Filter locations
-     locations = [];
-  
-     FOREACH loc IN all_locations ;
-       IF loc.match('^DE-38$') ;
-          locations.push(loc);
-       ELSIF loc.match('^DE-38-[0-9][0-9][0-9]') ;
-          locations.push(loc);
-       ELSIF NOT loc.match('^DE-38-[a-zA-Z]');   
-            locations.push(loc);
-       END;
-     END;
-     
-     super = "";
-     # 1. Ueberordnung?
-     IF item.${'T5005'}.first.content;
-        super = from_json(item.${'T5005'}.first.content);
-     END;
-
-     # Verfasser konstruieren
-     persons = [] ;
-
-     personslength = 0 ;
-     truncatepers  = 0 ;
-
-     FOREACH part IN item.${'P0100'} ;
-       thislength = part.content.length ;
-       IF (thislength+personslength) < config.get('maxlength_person') ;
-         searchterm    = uri_escape(part.content);
-         searchprefix  = config.get('searchfield').personstring.prefix;
-
-         globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
-
-         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
-         personslength = personslength+thislength ;
-       ELSE ;
-         truncatepers = 1 ;
-       END ;
-     END ;
-     FOREACH part IN item.${'T0100'} ;
-       thislength = part.content.length ;
-       IF (thislength+personslength) < config.get('maxlength_person') ;
-         persons.push(part.content);
-         personslength = personslength+thislength ;
-       ELSE ;
-         truncatepers = 1 ;
-       END ;
-     END ;
-     FOREACH part IN item.${'P0101'}  ;
-       thiscontent = part.content;
-       IF part.supplement ;
-          thiscontent = "${thiscontent} ${part.supplement}" ;
-       END ;
-       thislength = part.content.length ;
-       IF (thislength+personslength) < config.get('maxlength_person') ;
-         searchterm    = uri_escape(part.content);
-         searchprefix  = config.get('searchfield').personstring.prefix;
-
-         globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
-
-         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
-         personslength = personslength+thislength ;
-       ELSE ;
-         truncatepers = 1 ;
-       END ;
-     END ;
-     FOREACH part IN item.${'T0101'} ;
-       thislength = part.content.length ;
-       IF (thislength+personslength) < config.get('maxlength_person') ;
-         persons.push(part.content);
-         personslength = personslength+thislength ;
-       ELSE ;
-         truncatepers = 1 ;
-       END ;
-     END ;
-     FOREACH part IN item.${'T1800'} ;
-       thislength = part.content.length ;
-       IF (thislength+personslength) < config.get('maxlength_person') ;
-         persons.push(part.content);
-         personslength = personslength+thislength ;
-       ELSE ;
-         truncatepers = 1 ;
-       END ;
-     END ;
-     FOREACH part IN item.${'C0200'}  ;
-       thislength = part.content.length ;
-       IF (thislength+personslength) < config.get('maxlength_person') ;
-         searchterm    = uri_escape(part.content);
-         searchprefix  = config.get('searchfield').corporatebodystring.prefix;
-
-         globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
-
-         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
-         personslength = personslength+thislength ;
-       ELSE ;
-         truncatepers = 1 ;
-       END ;
-     END ;
-     FOREACH part IN item.${'T0200'} ;
-       thislength = part.content.length ;
-       IF (thislength+personslength) < config.get('maxlength_person') ;
-         persons.push(part.content);
-         personslength = personslength+thislength ;
-       ELSE ;
-         truncatepers = 1 ;
-       END ;
-     END ;
-     FOREACH part IN item.${'C0201'}  ;
-       thislength = part.content.length ;
-       IF (thislength+personslength) < config.get('maxlength_person') ;
-         searchterm    = uri_escape(part.content);
-         searchprefix  = config.get('searchfield').corporatebodystring.prefix;
-
-         globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
-
-         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
-         personslength = personslength+thislength ;
-       ELSE ;
-         truncatepers = 1 ;
-       END ;
-     END ;
-     FOREACH part IN item.${'T0201'} ;
-       thislength = part.content.length ;
-       IF (thislength+personslength) < config.get('maxlength_person') ;
-         persons.push(part.content);
-         personslength = personslength+thislength ;
-       ELSE ;
-         truncatepers = 1 ;
-       END ;
-     END ;
-     FOREACH part IN item.${'T1802'} ;
-       thislength = part.content.length ;
-       IF (thislength+personslength) < config.get('maxlength_person') ;
-         persons.push(part.content);
-         personslength = personslength+thislength ;
-       ELSE ;
-         truncatepers = 1 ;
-       END ;
-     END ;
-     person = persons.join(' ; ') ;
-     IF truncatepers ;
-       person = "$person [...]" ;
-     END ;
-
-     # Keine Person, dann aus Ueberordnung
-     IF super && NOT person ;
-       FOREACH part IN super.fields.${'0100'} ;
-         thislength = part.content.length ;
-         IF (thislength+personslength) < config.get('maxlength_person') ;
-           searchterm    = uri_escape(part.content);
-           searchprefix  = config.get('searchfield').personstring.prefix;
-
-           globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
-
-           persons.push("<a href=\"${globalurl}\">${part.content}</a>");
-           personslength = personslength+thislength ;
-         ELSE ;
-           truncatepers = 1 ;
-         END ;
-       END ;
-       FOREACH part IN super.fields.${'0101'}  ;
-         thiscontent = part.content;
-         IF part.supplement ;
-            thiscontent = "${thiscontent} ${part.supplement}" ;
-         END ;
-         thislength = part.content.length ;
-         IF (thislength+personslength) < config.get('maxlength_person') ;
-           searchterm    = uri_escape(part.content);
-           searchprefix  = config.get('searchfield').personstring.prefix;
-
-           globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
-
-           persons.push("<a href=\"${globalurl}\">${part.content}</a>");
-           personslength = personslength+thislength ;
-         ELSE ;
-           truncatepers = 1 ;
-         END ;
-       END ;
-
-       person = persons.join(' ; ') ;
-       IF truncatepers ;
-         person = "$person [...]" ;
-       END ;
-     END ;
 
      # Titel konstruieren
      title = item.${'T0331'}.first.content;
-     IF item.${'T0310'}.first.content;
-         title = item.${'T0310'}.first.content;
-     END;
+     subtitle = item.${'T0335'}.first.content;
 
      # Webcontent konstruieren
      webcontent = item.${'T0750'}.first.content;
@@ -319,17 +133,19 @@ $(document).ready(function(){
 
       <div class="ob-numbering">[% start_range+loop.count - 1 %]</div>
       <div class="ob-thumbnail">
-    [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
       </div>
       <div class="ob-brieftitle">
-[%# USE dumper;dumper.dump(dbinfo) %]
+[%# USE dumper;dumper.dump(item) %]
          <a href="[% weburl %]" alt="[% title %]" title="[% title %]" target="_blank"><strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong></a><br/>
+[% IF subtitle %]
+         <span class="ob-title">[% subtitle %]</span><br/>
+[% END %]
 [%-
 searchterms = searchquery.get_searchtermstring;
 snippets = snipper({ query => searchterms, max_chars => 100, context => 8, occur => 1, strip_markup => 1, type => token });
 -%]
 
-[% snippets.snip(webcontent) %]
+<i>[% snippets.snip(webcontent) %]</i>
 
 [% IF multiple_dbs == 1 %]
          <br /><img style="vertical-align:text-bottom;padding:1px;" src="[% config.get('home_small_img') %]" alt="[% msg.maketext("Katalog") %]" title="[% msg.maketext("Katalog") %]"/>

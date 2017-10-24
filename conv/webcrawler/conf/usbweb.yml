@@ -1,6 +1,6 @@
 # Encoding der Daten
-encoding: iso-8859-1
-#encoding: utf8
+#encoding: iso-8859-1
+encoding: utf8
 
 # Tracelevel
 tracelevel:
@@ -23,7 +23,7 @@ subject:
 
 # Titel
 title:
-  'meta[name="description"]': '0370'
+  'meta[name="description"]': '0335'
   'title': '0331'
 
 webcontent: 'main'	

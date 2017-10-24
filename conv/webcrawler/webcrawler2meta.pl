@@ -44,6 +44,7 @@ use Log::Log4perl qw(get_logger :levels);
 use Mojo::UserAgent;
 use Mojo::URL;
 use Digest::MD5 qw(md5_hex);
+use HTML::Strip;
 
 use OpenBib::Config;
 use OpenBib::Record::Classification;
@@ -98,6 +99,11 @@ my @urls = $base;
 my $ua = Mojo::UserAgent->new;
 my %done;
 my $url_count = 0;
+
+our $hs = HTML::Strip->new(
+    auto_reset => 1,
+    
+);
 
 open (TITLE,         ">:raw","meta.title");
 open (PERSON,        ">:raw","meta.person");
@@ -183,29 +189,37 @@ sub gen_record {
         'fields' => {},
     };
 
-    foreach my $meta_selector (keys %{$convconfig->{title}}){
-	my $content = $res->dom($meta_selector)->attr('content');
+    foreach my $selector (keys %{$convconfig->{title}}){
+	my $content = "";
 
+	if ($selector =~m/meta/){
+	    $content = $res->dom($selector)->attr('content');
+	}
+	else {
+	    $content = $res->dom($selector)->all_text;
+	}
+	
 	eval {
-	    $content=decode($convconfig->{encoding},$content) if ($convconfig->{encoding});
+	    $content = $hs->parse($content);	    
+	    $content = decode($convconfig->{encoding},$content) if ($convconfig->{encoding});
 	};
 	
 	if ($@){
 	    $logger->error($@);
 	}
 	
-	push @{$title_ref->{fields}{$convconfig->{title}{$meta_selector}}}, {
+	push @{$title_ref->{fields}{$convconfig->{title}{$selector}}}, {
 	    content => "$content",
 	    mult => 1,
 	    subfield => "",
-	       };
+	};
     }
 
     my $body_text_dom = $res->dom->find($convconfig->{webcontent});
 
-    $body_text_dom->find('script')->strip;
+    #$body_text_dom->find('script')->strip;
     
-    my $body_text = $body_text_dom->all_text;
+    my $body_text = process_dom($body_text_dom);
 #    my $body_text = $body_text_dom->all_contents;
 
     push @{$title_ref->{fields}{'0662'}}, {
@@ -230,6 +244,30 @@ sub gen_record {
     return;    
 }
 
+sub process_dom {
+    my $dom = shift;
+
+    my $logger=get_logger();
+
+    eval {
+	while($dom->at('form')->replace('<!-- form -->')){};	
+	while($dom->at('script')->replace('<!-- script -->')){};
+	while($dom->at('style')->replace('<!-- style -->')){};
+    };
+     
+    my $content = $dom->all_text;
+    
+    $logger->debug("Preprocess: $content");
+#    $content =~s/<[\s\/]*?script\b[^>]*>[^>]*<\/script>//g;
+#    $content =~s/<[\s\/]*style\b[^>]*>[^>]*<\/style>//g;
+#    $content =~s/<[\s\/]*?style\b[^>]*>.*?<\/style>//g;
+
+    $content = $hs->parse($content);	    
+    $content = decode($convconfig->{encoding},$content) if ($convconfig->{encoding});
+
+    $logger->debug("Postprocess: $content");
+    return $content;
+}
 sub print_help {
     print << "ENDHELP";
 webcrawler2meta.pl - Crawlen einer Website und Umwandlung in das Metaformat

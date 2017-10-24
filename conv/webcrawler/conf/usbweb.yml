@@ -9,28 +9,29 @@ tracelevel:
 
 # Personen
 person:
+  'meta[name="author"]': '0100'
 
 # Koerperschaften
 corporatebody:
-  'meta[name="publisher"]': '0201'
 
 # Systematik
 classification: 
 
 # Schlagworte
 subject:
-  'meta[name="description"]': '0710'	
+  'meta[name="keywords"]': '0710'	
 
 # Titel
 title:
-  'meta[name="DC.Title.Alt"]': '0370'
-  'meta[name="DC.Title"]': '0331'
+  'meta[name="description"]': '0370'
+  'title': '0331'
 
-webcontent: 'div#Content'	
+webcontent: 'main'	
 
 defaultmediatype: 'Digital'
 
 blacklist_regexps:
  - '\/e[0-9]+'
  - 'preview'
+ - '\/manage'
  - 'IPS'

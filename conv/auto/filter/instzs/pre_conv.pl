@@ -39,10 +39,6 @@ my $konvdir       = $config->{'conv_dir'};
 
 my $pool          = $ARGV[0];
 
-print "### $pool: Entfernen ungewuenschter Standorte\n";
-system("cd $rootdir/data/$pool/ ;  $rootdir/filter/$pool/exclude-locations.pl");
-system("cd $rootdir/data/$pool/ ;  mv -f meta.holding.tmp meta.holding ; mv -f meta.title.tmp meta.title");
-
 system("ls -l $rootdir/data/$pool/");
 
 print "### $pool: ZDBID wird zur ID\n";

@@ -1,0 +1,38 @@
+# Encoding der Daten
+#encoding: iso-8859-1
+encoding: utf8
+
+# Tracelevel
+tracelevel:
+
+# XPath-Parameter
+
+# Personen
+person:
+  'meta[name="author"]': '0100'
+
+# Koerperschaften
+corporatebody:
+
+# Systematik
+classification: 
+
+# Schlagworte
+subject:
+  'meta[name="keywords"]': '0710'	
+
+# Titel
+title:
+  'meta[name="description"]': '0335'
+  'title': '0331'
+
+webcontent: 'main'	
+
+defaultmediatype: 'Digital'
+
+blacklist_regexps:
+ - '\/e[0-9]+'
+ - 'preview'
+ - '\/manage'
+ - 'IPS'
+ - '\/rss'

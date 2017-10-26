@@ -35,3 +35,4 @@ blacklist_regexps:
  - 'preview'
  - '\/manage'
  - 'IPS'
+ - '\/rss'

@@ -43,6 +43,7 @@ use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use Mojo::UserAgent;
 use Mojo::URL;
+
 use Digest::MD5 qw(md5_hex);
 use HTML::Strip;
 
@@ -97,6 +98,9 @@ my $base = Mojo::URL->new($baseurl);
 my @urls = $base;
 
 my $ua = Mojo::UserAgent->new;
+
+$ua = $ua->request_timeout(5);
+
 my %done;
 my $url_count = 0;
 
@@ -124,8 +128,20 @@ while (@urls) {
     $logger->info("Processing: $url");
         
     my $res = $ua->get($url)->res; 
+
+    # my $content_type = $res->headers->content_type;
+    # my $status = $res->headers->status;
+    
+    # if ($status eq '200 OK' && $content_type ne "text/html"){
+    # 	$logger->info("Ignoring non-html page ($status/$content_type)");
+    # 	next;
+    # }
+    
+    $logger->info("Generate record");
     
     gen_record($url,$res);
+
+    $logger->info("Done. Next.");
     
     $done{$id} = 1;
     
@@ -157,8 +173,12 @@ while (@urls) {
 	    }
 	}
 	
-	# Keine email links
-	return if $url->scheme && $url->scheme eq 'mailto';
+	# Keine nicht-web links
+	if ($url->scheme && $url->scheme !~m/http/){
+	    $logger->info("Ignoring non-http(s) URL ".$url->path);
+
+	    return;
+	}
 
 	push @urls, $url;
 			 });
@@ -183,7 +203,7 @@ sub gen_record {
     my $path = $url->path;
 
     my $id = encode_base64url("$path");
-    
+
     my $title_ref = {
 	'id'     => $id,
         'fields' => {},
@@ -217,6 +237,9 @@ sub gen_record {
 
     my $body_text_dom = $res->dom->find($convconfig->{webcontent});
 
+    # Ignorieren, wenn kein Webcontent gefunden wurde!
+    return if (!$body_text_dom->size);
+
     #$body_text_dom->find('script')->strip;
     
     my $body_text = process_dom($body_text_dom);
@@ -249,22 +272,27 @@ sub process_dom {
 
     my $logger=get_logger();
 
+    $logger->debug("1");
+    $logger->debug(YAML::Dump($dom));
+    $logger->debug($dom->size);
+
     eval {
 	while($dom->at('form')->replace('<!-- form -->')){};	
 	while($dom->at('script')->replace('<!-- script -->')){};
 	while($dom->at('style')->replace('<!-- style -->')){};
     };
-     
+    $logger->debug("2");
     my $content = $dom->all_text;
-    
     $logger->debug("Preprocess: $content");
 #    $content =~s/<[\s\/]*?script\b[^>]*>[^>]*<\/script>//g;
 #    $content =~s/<[\s\/]*style\b[^>]*>[^>]*<\/style>//g;
 #    $content =~s/<[\s\/]*?style\b[^>]*>.*?<\/style>//g;
 
+    $logger->debug("3");
+
     $content = $hs->parse($content);	    
     $content = decode($convconfig->{encoding},$content) if ($convconfig->{encoding});
-
+    $logger->debug("4");
     $logger->debug("Postprocess: $content");
     return $content;
 }

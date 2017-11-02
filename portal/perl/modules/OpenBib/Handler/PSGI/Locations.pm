@@ -158,8 +158,11 @@ sub show_record {
         else {
             $logger->info("Can't find location with id $locationid")
         }
-                
+            
+	my $locationlist_ref = $config->get_locationinfo_overview;
+    
         my $ttdata = {
+	    locations      => $locationlist_ref,
             locationid     => $locationid,
             locationinfo   => $locationinfo_ref,
         };

@@ -36,3 +36,6 @@ blacklist_regexps:
  - '\/manage'
  - 'IPS'
  - '\/rss'
+
+allowed_hosts:
+ 'www.portal.uni-koeln.de': 1

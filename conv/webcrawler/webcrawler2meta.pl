@@ -157,11 +157,17 @@ while (@urls) {
 	    $url->fragment('');
 	}
 
-	$url = $url->to_abs($base);
-
+	$logger->debug("$url - ".$url->host);
+	if (!defined $url->host && !defined $convconfig->{allowed_hosts}{$url->host}){
+	    $url = $url->to_abs($base);
+	}
+	
 	# Nur lokale URLs
 	if ( $url->is_abs && defined $url->host && defined $base->host) {
-	    return unless $url->host eq $base->host;
+	    if ($url->host ne $base->host && !defined $convconfig->{allowed_hosts}{$url->host}){
+		$logger->debug("Host ".$url->host." not allowed");
+		return;
+	    }
 	}
 
 	# Keine URLs in Blacklist

@@ -574,6 +574,38 @@ convtab:
 #          'subjectstring': 1
         facet:
           'subject': 1
+      '0740':
+        index:
+          'freesearch': 1
+          'subject': 1
+      '0741':
+        index:
+          'freesearch': 1
+          'subject': 1
+      '0742':
+        index:
+          'freesearch': 1
+          'subject': 1
+      '0743':
+        index:
+          'freesearch': 1
+          'subject': 1
+      '0744':
+        index:
+          'freesearch': 1
+          'subject': 1
+      '0745':
+        index:
+          'freesearch': 1
+          'subject': 1
+      '0746':
+        index:
+          'freesearch': 1
+          'subject': 1
+      '0747':
+        index:
+          'freesearch': 1
+          'subject': 1
       '0750':         # Abstract
         index:
           'content': 1
@@ -1829,13 +1861,6 @@ convtab:
           'mark': 1
           'markstring': 1
           'freesearch': 1
-      '4301':
-        index:
-          'language': 1
-          'languagestring': 1
-          'freesearch': 1
-        facet:
-          'language': 1
       '0065':         # RDA: Schlagwort (eher Medientyp...)
         index:
           'freesearch': 1
@@ -2075,6 +2100,38 @@ convtab:
           'subjectstring': 1
         facet:
           'subject': 1
+      '0740':
+        index:
+          'freesearch': 1
+          'subject': 1
+      '0741':
+        index:
+          'freesearch': 1
+          'subject': 1
+      '0742':
+        index:
+          'freesearch': 1
+          'subject': 1
+      '0743':
+        index:
+          'freesearch': 1
+          'subject': 1
+      '0744':
+        index:
+          'freesearch': 1
+          'subject': 1
+      '0745':
+        index:
+          'freesearch': 1
+          'subject': 1
+      '0746':
+        index:
+          'freesearch': 1
+          'subject': 1
+      '0747':
+        index:
+          'freesearch': 1
+          'subject': 1
       '0750':         # Abstract
         index:
           'content': 1
@@ -2269,6 +2326,13 @@ convtab:
           'ft4300': 1
         facet:
           'subject': 1
+      '4301':
+        index:
+          'language': 1
+          'languagestring': 1
+          'freesearch': 1
+        facet:
+          'language': 1
       '4306':         # Provenienzen Sammlung
         index:
           'subject': 20

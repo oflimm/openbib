@@ -146,7 +146,7 @@ FOREACH category IN categories;
 END ;-%]
 </tbody>
 </table>
-
+<!-- ThisDbName: [% thisdbname %] -->
 <p style="font-size:0.8em;">
 <b>Hinweis:</b> Diese Informationen beruhen auf Selbstangaben der
 Campusbibliotheken und entsprechen dem uns jeweils zuletzt mitgeteilten

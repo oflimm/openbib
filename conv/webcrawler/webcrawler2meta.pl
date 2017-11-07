@@ -279,23 +279,24 @@ sub process_dom {
     my $logger=get_logger();
 
     $logger->debug("1");
-    $logger->debug(YAML::Dump($dom));
-    $logger->debug($dom->size);
+#    $logger->debug(YAML::Dump($dom));
+#    $logger->debug($dom->size);
 
-    eval {
-	while($dom->at('form')->replace('<!-- form -->')){};	
-	while($dom->at('script')->replace('<!-- script -->')){};
-	while($dom->at('style')->replace('<!-- style -->')){};
-    };
+    # eval {
+    # 	while($dom->at('form')->replace('<!-- form -->')){};	
+    # 	while($dom->at('script')->replace('<!-- script -->')){};
+    # 	while($dom->at('style')->replace('<!-- style -->')){};
+    # };
     $logger->debug("2");
-    my $content = $dom->all_text;
+    my $content = $dom->content;
     $logger->debug("Preprocess: $content");
-#    $content =~s/<[\s\/]*?script\b[^>]*>[^>]*<\/script>//g;
+    $content =~s/<[\s\/]*?script\b[^>]*>[^>]*<\/script>//msg;
 #    $content =~s/<[\s\/]*style\b[^>]*>[^>]*<\/style>//g;
-#    $content =~s/<[\s\/]*?style\b[^>]*>.*?<\/style>//g;
+    $content =~s/<[\s\/]*?style\b[^>]*>.*?<\/style>//msg;
 
     $logger->debug("3");
-
+    $logger->debug("Postprocess: $content");
+    
     $content = $hs->parse($content);	    
     $content = decode($convconfig->{encoding},$content) if ($convconfig->{encoding});
     $logger->debug("4");

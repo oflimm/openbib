@@ -34,5 +34,6 @@ blacklist_regexps:
  - '\/e[0-9]+'
  - 'preview'
  - '\/manage'
+ - '\/live'
  - 'IPS'
  - '\/rss'

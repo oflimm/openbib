@@ -481,14 +481,14 @@ while (my $record = safe_next($batch)){
 
         }
         
-        foreach my $field ($record->field('040')){
-            my $content_b = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('b')):$field->as_string('b');
+        foreach my $field ($record->field('041')){
+            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
 
-            if ($content_b){
+            if ($content_a){
                 my $multcount=++$multcount_ref->{'0015'};
                 
                 push @{$title_ref->{fields}{'0015'}}, {
-                    content  => konv($content_b),
+                    content  => konv($content_a),
                     subfield => '',
                     mult     => $multcount,
                 };

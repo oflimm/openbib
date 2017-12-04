@@ -240,7 +240,7 @@ sub show_collection {
     # Databases with API don't deliver all titles so they are always NOT considered
     # in contrast to a single title record
     
-    unless ($database_in_view){
+    unless ($database_in_view || $user->is_admin){
         $self->header_add('Status' => 404); # NOT_FOUND
         return;
     }
@@ -365,7 +365,7 @@ sub show_record {
 #         }
 #     }
     
-    unless ($database_in_view){
+    unless ($database_in_view || $user->is_admin){
         $self->header_add('Status' => 404); # NOT_FOUND
         return;
     }

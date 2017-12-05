@@ -1,0 +1,2003 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_databases_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller eingerichteten Kataloge
+# mit ihren wichtigsten Informationen
+#
+# Einrichtung eines neuen Kataloges
+#
+#######################################################################
+-%]
+
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://openlayers.org/en/v4.2.0/css/ol.css" type="text/css">
+<!-- The
+    line below is only needed for old environments like Internet Explorer and
+    Android 4.x -->
+<script src="https://cdn.polyfill.io/v2/polyfill.min.js?featur
+    es=requestAnimationFrame,Element.prototype.classList,URL"></script>
+<script src="https://openlayers.org/en/v4.2.0/build/ol.js"></script>
+<link rel="stylesheet" href="https://openlayers.org/en/v4.2.0/css/ol.css" type="text/css">
+
+
+<style>
+  br {
+    display: block;
+    margin: 3px 0;
+  }
+
+  .ol-touch .rotate-north {
+    /*top: 90px;*/
+  }
+
+  .ol-full-screen {
+    /*top: 70px; */
+  }
+  /*.ol-zoomslider {
+            top: 250px;
+        }
+
+        .ol-zoom {
+            top: 170px;
+          }*/
+
+  .obereLeiste_control {
+    border-radius: 4px;
+    opacity: 0.8;
+    padding: 2px;
+    position: absolute;
+
+    top: 8px;
+    left: 40px;
+    right: 40px;
+    background: #3E566C;
+  }
+
+  .divMobileFilterPanel {
+    font: 0.8em sans-serif;
+    position: absolute;
+    left: 40px;
+
+    top: 8px;
+    padding: 2px;
+
+    background: #3E566C;
+  }
+
+  .divMobile {
+    background: #3E566C;
+    font: 0.8em sans-serif;
+    border-radius: 4px;
+    height: 100%;
+  }
+
+  .filterPanel_control {
+    border-radius: 6px;
+    opacity: 0.8;
+    padding: 2px;
+    position: absolute;
+    /*width: auto;*/
+    height: auto;
+    top: 43px;
+    left: 40px;
+
+    background: #3E566C;
+
+    /*display: none;*/
+  }
+
+  #element2 {
+    float: left;
+    width: 116px;
+  }
+
+  #obereLeiste {
+    color: white;
+  }
+
+  #filterPanel {
+    color: white;
+    height: auto;
+  }
+
+
+
+
+
+
+  #divSearch {
+    float: left;
+    text-align: left;
+    display: inline;
+  }
+
+
+  .biggerText {
+    font-size: 2.0em;
+  }
+
+  .tooltip {
+    position: relative;
+    padding: 3px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    opacity: 0.9;
+    white-space: nowrap;
+    font: 0.7em sans-serif;
+  }
+
+
+
+  input[type=range] {
+    /* fix for FF unable to apply focus style bug  */
+    border: 1px solid white;
+
+    /*required for proper track sizing in FF*/
+    width: 150px;
+  }
+
+  input[type=range]::-moz-range-track {
+    width: 150px;
+    height: 5px;
+    background: #ddd;
+    border: none;
+    border-radius: 3px;
+  }
+
+  input[type=range]::-moz-range-thumb {
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: black;
+  }
+  /*hide the outline behind the border*/
+
+  input[type=range]:-moz-focusring {
+    outline: 1px solid white;
+    outline-offset: -1px;
+  }
+
+  input[type=range]:focus::-moz-range-track {
+    background: #ccc;
+  }
+  /* Fullscreen */
+
+  .map:-moz-full-screen {
+    height: 100%;
+  }
+
+  .map:-webkit-full-screen {
+    height: 100%;
+  }
+
+  .map:-ms-fullscreen {
+    height: 100%;
+  }
+
+  .map:fullscreen {
+    height: 100%;
+  }
+
+  .ol-rotate {
+    top: 3em;
+  }
+
+  #mobileView {
+    color: white;
+    background-color: #3E566C;
+  }
+  /*POPUP*/
+
+  .ol-popup {
+
+    // position: absolute;
+    background-color: #EFEFEF;
+    -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+    filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #cccccc;
+    bottom: 12px;
+    left: -50px;
+    width: 300px;
+
+    font: 0.7em sans-serif;
+    max-height: 300px;
+    overflow-y: scroll;
+  }
+
+  .ol-popup:after,
+  .ol-popup:before {
+    top: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+  }
+
+  .ol-popup:after {
+    border-top-color: white;
+    border-width: 10px;
+    left: 48px;
+    margin-left: -10px;
+  }
+
+  .ol-popup:before {
+    border-top-color: #cccccc;
+    border-width: 11px;
+    left: 48px;
+    margin-left: -11px;
+  }
+
+  .ol-popup-closer {
+
+    text-decoration: none;
+    position: absolute;
+    top: 2px;
+    right: 8px;
+  }
+
+
+  .ol-popup-closer:after {
+    content: "✖";
+  }
+
+  #sucheMob {
+    width: 80%;
+  }
+
+  #suche {
+    width: 100%;
+  }
+
+  #daten a {
+    color: white;
+  }
+
+  #titleMobileDesktop {
+   font-family: OpenSansSemibold,Arial,Helvetica,sans-serif;
+   color: #3E566C;
+  }
+
+</style>
+
+[% IF locations.size > 0 %]
+
+<h3 id="titleMobileDesktop"></h3>
+<div id="mobileView">
+  Name der Bibliothek <br /><input type="text" name="fname" id="sucheMob" list="theDataListMob"><input id="btnClearSearchMob" type="button" onclick="clearSucheMob()">
+  <div id="daten"></div>
+  <datalist id="theDataListMob"></datalist>
+  <!--<br />
+    		<input type="button" id="changeToDesktop" onclick="changeToDesktopView()" value="Auf der Karte ansehen"> -->
+</div>
+<div id="map" class="map" max-height="500px">
+  <div id="obereLeiste"></div>
+  <div id="filterPanel"></div>
+  <div id="tooltip" class="tooltip"></div>
+
+  <div id="popup" class="ol-popup">
+    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+    <div id="popup-content"></div>
+  </div>
+</div>
+<input type="text" name="fname" id="suche" list="theDataList">
+<div id="info" style="display: none;"></div>
+<datalist id="theDataList"></datalist>
+
+
+
+<script type="text/javascript">
+  // var container = document.getElementById('popup');
+  var content = document.getElementById('popup-content');
+  var closer = document.getElementById('popup-closer');
+
+
+
+
+  var filterButton;
+  var gewaehlteZeit;
+  var gewaehlterTag = 9;
+  var ints = [];
+  var marks = [];
+  var savedFakultaet = 8;
+  var feature;
+  var element;
+  var element2;
+  var checkBoxAus;
+  var checkBoxPr;
+  var checkBoxGps;
+  var nurGeoeffnet;
+  var slider;
+  var tageChoice;
+  var buttonZeitWaehlen;
+  var btnAnsicht = document.createElement('button');
+
+  var saveFilter;
+  var time;
+  var searchField;
+  var institutsChoice;
+  var buttonClearSearch;
+  var artSelect;
+  var textZeitWahl;
+  var view;
+  var ismobile = false;
+  var gpsFeature;
+  var screen;
+  var nurGe;
+  var sigelname = [];
+
+  var allForMobile = [];
+  var countForMobile = 0;
+  var div1 = document.createElement('div');
+  var div2 = document.createElement('div');
+  var buttonAktuell = document.createElement('button');
+  var divSearch = document.createElement('div');
+  var aufInstitutsseite = false;
+
+
+  // Bedienoberflächen ein/aus
+  var showDesktopGui = false;
+
+  var semester;
+  var feiertag;
+
+  var red = 'http://petros.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/pin_pink.png';
+  var grey = 'http://petros.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/pin_grau.png';
+  var green = 'http://petros.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/pin_lindgruen.png';
+  var pin_gps = 'http://petros.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/pin_blau_GPS.png';
+  var clock = 'http://petros.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/clock.png';
+  var calendar = 'http://petros.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/calendar.png';
+
+
+  var map;
+  var layer;
+  var foundInsts = [];
+  var displayFromMobile;
+
+  var windowWidth;
+  var windowHeight;
+
+  /**
+   * Initialsierung beim Seitenladen
+   */
+  function init(sigelUebergeben) {
+    // haben wir grad Semester?
+    semester = getSemester(); // true = im Semester; false = Semesterferien
+    // haben wir grad Feiertag?
+    feiertag = getFeiertag(); // true = feiertag; false = kein Feiertag
+
+    //gewaehlterTag = dates('tag');
+
+    printLogs();
+    windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+
+
+    if (windowWidth < 1000 && screen === 'desktop') {
+      screen = 'mobile';
+      showDesktopGui = false;
+
+      calcMarkers('8', true);
+    }
+    if (windowWidth > 1000 && screen === 'mobile') {
+      screen = 'desktop';
+      showDesktopGui = true;
+
+      calcMarkers('8', true);
+    }
+
+    /*if(sigelUebergeben.length !== 0) {
+		  screen = 'desktop';
+          showDesktopGui = true;
+
+          calcMarkers('8', true);
+		} */
+
+    if (sigelUebergeben.length > 1) {
+      aufInstitutsseite = true;
+
+    } else
+      aufInstitutsseite = false;
+
+    document.getElementById('btnClearSearchMob').value = 'X';
+    var options = '';
+    for (var i = 0; i < institute.length; i++)
+      options += '<option value="' + institute[i].name + '" />';
+
+    document.getElementById('theDataList').innerHTML = options;
+
+    //Map erstellen
+    if (windowWidth < 1000) {
+      document.getElementById('titleMobileDesktop').innerHTML = "Mobile Suche nach Campusbibliotheken";
+      map = createMap('desktop');
+      showDesktopGui = false;
+      screen = 'mobile';
+    } else if (windowWidth > 1000) {
+      map = createMap('desktop');
+      showDesktopGui = true;
+      screen = 'desktop';
+      document.getElementById('titleMobileDesktop').innerHTML = "Interaktive Map aller Campusbibliotheken in Echtzeit";
+    }
+
+    if (aufInstitutsseite)
+      guiAusblenden();
+
+
+    // Listener für GPS Checkbox initialisieren
+    /*   document.getElementById('track').checked = true;
+       var checkbox = document.getElementById('track');
+       checkbox.onchange = function() {
+         if (this.checked)
+           gps();
+       } */
+
+    document.getElementById('suche').value = "";
+    var options = '';
+    gewaehlteZeit = dates('uhrzeit');
+
+    changeDay(9);
+    if (sigelUebergeben.length === 0)
+      calcMarkers('8', false);
+
+    else
+      calcMarkers(sigelUebergeben, false);
+
+    updateClock(); // initial call
+  }
+
+  /*  function changeToDesktopView() {
+			document.getElementById('popup').style.display = 'none';
+    	    showDesktopGui = true;
+		    showFilter('desktop');
+            calcMarkers('8', true);
+      } */
+
+  // Listener für Browsersize
+  window.onresize = function(event) {
+    windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+    //console.log("width: " + windowWidth + "   " + " screen: " + screen);
+
+    if (windowWidth < 1000 && aufInstitutsseite === false) {
+      screen = 'mobile';
+      // console.log('wechsel zu mobile');
+      showDesktopGui = false;
+
+      calcMarkers(9, true);
+    }
+    if (windowWidth > 1000 /* && screen === 'mobile' */ ) {
+      screen = 'desktop';
+      // console.log('wechsel zu desktop');
+      //createObereLeiste();
+      showDesktopGui = true;
+
+      calcMarkers(9, true);
+    }
+  };
+
+  function clearSucheMob() {
+    document.getElementById('sucheMob').value = "";
+    document.getElementById('daten').innerHTML = "";
+  }
+
+  function printLogs() {
+    console.log(dates('volles_datum') + " " + dates('uhrzeit'));
+    console.log("Semester: " + getSemester());
+    console.log("Feiertag: " + getFeiertag());
+  }
+  /**
+   * erstellt die Map samt ControlElementen
+   */
+  function createMap(screensize) {
+    window.app = {};
+    var app = window.app;
+
+    element = document.getElementById('obereLeiste');
+    element2 = document.getElementById('filterPanel');
+
+    // FilterPane anzeigen/ausblenden
+    filterButton = document.createElement('button');
+    filterButton.id = 'filterButton';
+    filterButton.innerHTML = 'Filter ausblenden';
+    filterButton.addEventListener('click', function() {
+      if (windowWidth > 1280)
+        showFilter('desktop');
+      else if (windowWidth < 1280)
+        showFilter('mobile');
+    }, false);
+
+    btnAnsicht.id = 'btnAnsicht';
+    btnAnsicht.innerHTML = "Zur mobilen Suche wechseln";
+
+    btnAnsicht.addEventListener('click', function() {
+      if (showDesktopGui === true) {
+        showDesktopGui = false;
+        calcMarkers(9, true);
+      } else if (showDesktopGui === false) {
+        screen = 'mobile';
+        showDesktopGui = true;
+        calcMarkers(9, true);
+      }
+    }, false);
+
+
+    searchField = document.getElementById('suche');
+    searchField.id = 'suche';
+    searchField.class = 'inputControl';
+    searchField.style['width'] = '300px';
+    searchField.style['max-width'] = '300px';
+    searchField.type = 'text';
+
+    buttonClearSearch = document.createElement('button');
+    buttonClearSearch.id = 'clearSearch';
+    buttonClearSearch.innerHTML = '✖';
+    buttonClearSearch.addEventListener('click', function() {
+      clearSearch();
+    }, false);
+
+    artSelect = document.createElement('select');
+    artSelect.id = 'artSelect';
+    artSelect.onchange = function(e) {
+      calcMarkers(9, false);
+    }
+    artSelect.addEventListener('click', function() {
+      if (document.getElementById('artSelect')[0].innerHTML !== "Präsenz- und Ausleihbibliotheken")
+        document.getElementById('artSelect')[0].innerHTML = "Präsenz- und Ausleihbibliotheken";
+    }, false);
+    artSelect.setAttribute("style", "width: 220px");
+
+    var opt0 = document.createElement('option');
+    opt0.value = 0;
+    opt0.text = 'Art der Bibliothek';
+    opt0.selected = true;
+    artSelect.appendChild(opt0);
+
+    var opt1 = document.createElement('option');
+    opt1.value = 1;
+    opt1.text = 'nur Präsenzbibliotheken';
+    artSelect.appendChild(opt1);
+
+    var opt2 = document.createElement('option');
+    opt2.value = 2;
+    opt2.text = "nur Ausleihbibliotheken";
+    artSelect.appendChild(opt2);
+
+    // Institutsauswahl
+    institutsChoice = document.createElement('select');
+    institutsChoice.id = "institutsChoice";
+    institutsChoice.onchange = function(e) {
+      calcMarkers(this.value, false);
+    }
+    institutsChoice.addEventListener('click', function() {
+      if (document.getElementById('institutsChoice')[0].innerHTML !== "Alle")
+        document.getElementById('institutsChoice')[0].innerHTML = "Alle";
+    }, false);
+    institutsChoice.setAttribute("style", "width: 220px");
+
+    var option9 = document.createElement("option");
+    option9.value = 8;
+    option9.text = "Auswahl nach Fakultäten";
+    option9.selected = true;
+    institutsChoice.appendChild(option9);
+
+    var option0 = document.createElement("option");
+    option0.value = 'DE-38-0';
+    option0.text = "000 - ungebunden/übergreifend";
+    institutsChoice.appendChild(option0);
+
+    var option1 = document.createElement("option");
+    option1.value = 'DE-38-1';
+    option1.text = "100 - WiSo";
+    institutsChoice.appendChild(option1);
+
+    var option2 = document.createElement("option");
+    option2.value = 'DE-38-2';
+    option2.text = "200 - Rechtswissenschaften";
+    institutsChoice.appendChild(option2);
+
+    var option3 = document.createElement("option");
+    option3.value = 'DE-38-3';
+    option3.text = "300 - HumFak";
+    institutsChoice.appendChild(option3);
+
+    var option4 = document.createElement("option");
+    option4.value = 'DE-38-4';
+    option4.text = "400 - Philo";
+    institutsChoice.appendChild(option4);
+
+    var option5 = document.createElement("option");
+    option5.value = 'DE-38-5';
+    option5.text = "500 - MatNat";
+    institutsChoice.appendChild(option5);
+
+    element.className = 'ol-unselectable obereLeiste_control';
+
+    time = document.createElement('span');
+    time.id = 'time';
+
+    /*checkBoxGps = document.createElement('button');
+        checkBoxGps.id = 'track';
+        checkBoxGps.innerHTML = 'Mein Standort';
+        checkBoxGps.addEventListener('click', function() {
+          gps();
+        }, false);
+		*/
+
+    checkBoxPr = document.createElement('input');
+    checkBoxPr.id = 'pr';
+    checkBoxPr.defaultChecked = true;
+    checkBoxPr.type = 'checkbox';
+    checkBoxPr.value = 'test';
+    checkBoxPr.onchange = function() {
+      calcMarkers(9, false);
+    }
+
+    checkBoxAus = document.createElement('input');
+    checkBoxAus.id = 'aus';
+    checkBoxAus.defaultChecked = true;
+    checkBoxAus.type = 'checkbox';
+    checkBoxAus.onchange = function() {
+      calcMarkers(9, false);
+    }
+
+    nurGeoeffnet = document.createElement('input');
+    nurGeoeffnet.id = 'geoeffnet';
+    nurGeoeffnet.defaultChecked = false;
+    nurGeoeffnet.type = 'checkbox';
+    nurGeoeffnet.onchange = function() {
+      calcMarkers(9, false);
+    }
+
+    // Zeit wählen
+    buttonZeitWaehlen = document.createElement('button');
+    buttonZeitWaehlen.id = 'buttonZeit';
+
+    buttonZeitWaehlen.innerHTML = 'Bibliotheksbesuch planen';
+    buttonZeitWaehlen.addEventListener('click', function() {
+      setTimeNow();
+    }, false);
+
+    slider = document.createElement('input');
+    slider.id = 'rangevalue';
+    slider.type = 'range';
+    slider.class = 'slider';
+    slider.min = '360';
+    slider.max = '1439';
+    slider.step = '15';
+
+    textZeitwahl = document.createElement('span');
+    textZeitwahl.setAttribute("style", "float: left");
+    textZeitwahl.setAttribute("style", "position: absolute");
+
+    slider.addEventListener("input", function() {
+      var minutes = addZero(parseInt(this.value % 60, 10));
+      var hours = parseInt(this.value / 60 % 24, 10);
+      gewaehlteZeit = hours + "" + minutes;
+      textZeitwahl.innerHTML = hours + ":" + minutes + " Uhr";
+      calcMarkers(9, false);
+    });
+    slider.value = dates('stunde') * 60;
+
+    tageChoice = document.createElement("select");
+    tageChoice.id = "tageChoice";
+    tageChoice.onchange = function(e) {
+      var e1 = document.getElementById("tageChoice");
+      var strUser = e1.options[e1.selectedIndex].text;
+
+      changeDay(this.value);
+    }
+
+    tageChoice.setAttribute("style", "position: absolute");
+
+    var optionHe = document.createElement("option");
+    optionHe.value = 9;
+    optionHe.selected = true;
+    optionHe.text = 'Heute';
+    tageChoice.appendChild(optionHe);
+
+    var optionMo = document.createElement("option");
+    optionMo.value = 0;
+    optionMo.text = 'Montag';
+    tageChoice.appendChild(optionMo);
+
+    var optionDi = document.createElement("option");
+    optionDi.value = 1;
+    optionDi.text = 'Dienstag';
+    tageChoice.appendChild(optionDi);
+
+    var optionMi = document.createElement("option");
+    optionMi.value = 2;
+    optionMi.text = 'Mittwoch';
+    tageChoice.appendChild(optionMi);
+
+    var optionDo = document.createElement("option");
+    optionDo.value = 3;
+    optionDo.text = 'Donnerstag';
+    tageChoice.appendChild(optionDo);
+
+    var optionFr = document.createElement("option");
+    optionFr.value = 4;
+    optionFr.text = 'Freitag';
+    tageChoice.appendChild(optionFr);
+
+    var optionSa = document.createElement("option");
+    optionSa.value = 5;
+    optionSa.text = 'Samstag';
+    tageChoice.appendChild(optionSa);
+
+    var optionSo = document.createElement("option");
+    optionSo.value = 6;
+    optionSo.text = 'Sonntag';
+    tageChoice.appendChild(optionSo);
+
+    element2.className = 'ol-unselectable filterPanel_control';
+
+    buttonAktuell.id = 'buttonAktuell';
+    buttonAktuell.innerHTML = 'Aktuell';
+    buttonAktuell.addEventListener('click', function() {
+      setTimeNow();
+    }, false);
+    buttonAktuell.setAttribute("style", "display: none");
+
+    var this_ = this;
+    var handleRotateNorth = function(e) {
+      this_.getMap().getView().setRotation(0);
+    };
+    createObereLeiste();
+
+    //**************************************************************
+
+
+    if (screensize === 'desktop') {
+      showDesktopGui = true;
+    } else if (screensize === 'mobile') {
+      showDesktopGui = false;
+    }
+
+    //**************************************************************
+    // Filterpanel
+    app.CustomToolbarControl2 = function(opt_options) {
+      var options = opt_options || {};
+      var spanFilterPanel = document.createElement('span');
+      spanFilterPanel.id = 'spanFilterPanel';
+      // checkBoxGps.setAttribute("style", "float: right");
+      // var gpsText = document.createTextNode("Meine Position anzeigen");
+      var prText = document.createTextNode("Präsenz");
+      var ausText = document.createTextNode("Ausleih");
+      textZeitWahl = document.createTextNode('Uhrzeit und Tag wählen');
+      var clockIcon = document.createElement("img");
+      clockIcon.setAttribute("src", clock);
+      clockIcon.setAttribute("height", "25");
+      clockIcon.setAttribute("width", "25");
+
+      var calIcon = document.createElement('img');
+      calIcon.setAttribute("src", calendar);
+      calIcon.setAttribute("height", "25");
+      calIcon.setAttribute("width", "25");
+
+      element2.appendChild(filterButton);
+      // element2.appendChild(btnAnsicht);
+      //element2.appendChild(checkBoxGps);
+      element2.appendChild(document.createElement('br'));
+      element2.appendChild(document.createElement('br'));
+      spanFilterPanel.appendChild(institutsChoice);
+      var tdInstMark = document.createElement("span");
+      tdInstMark.id = "tdInstMark";
+      //tdInstMark.setAttribute('style', 'float: right');
+      spanFilterPanel.appendChild(tdInstMark);
+      spanFilterPanel.appendChild(document.createElement('br'));
+
+      spanFilterPanel.appendChild(document.createElement('br'));
+      var tdArtMark = document.createElement("span");
+      tdArtMark.id = "tdArtMark";
+      spanFilterPanel.appendChild(artSelect);
+      spanFilterPanel.appendChild(tdArtMark);
+
+      spanFilterPanel.appendChild(document.createElement('br'));
+      spanFilterPanel.appendChild(document.createElement('br'));
+
+
+      nurGe = document.createTextNode("Nur geöffnete Bibliotheken anzeigen");
+      nurGe.id = 'nurGe';
+      nurGe.className = "textInFilterBox";
+      spanFilterPanel.appendChild(nurGeoeffnet);
+      spanFilterPanel.appendChild(nurGe);
+      spanFilterPanel.appendChild(document.createElement('br'));
+      spanFilterPanel.appendChild(document.createElement('br'));
+      spanFilterPanel.appendChild(btnAnsicht);
+
+      spanFilterPanel.appendChild(document.createElement('br'));
+      spanFilterPanel.appendChild(document.createElement('br'));
+
+      var divZeitwahl = document.createElement('div');
+      divZeitwahl.id = 'divZeitwahl';
+      divZeitwahl.className = 'divZeitwahl';
+      divZeitwahl.setAttribute("style", "display: none");
+
+      divZeitwahl.appendChild(textZeitWahl);
+      divZeitwahl.appendChild(document.createElement('br'));
+      divZeitwahl.appendChild(clockIcon);
+      divZeitwahl.appendChild(slider);
+      divZeitwahl.appendChild(textZeitwahl);
+
+
+      divZeitwahl.appendChild(document.createElement('br'));
+      divZeitwahl.appendChild(calIcon);
+      divZeitwahl.appendChild(document.createTextNode('\u00A0\u00A0'));
+      divZeitwahl.appendChild(tageChoice);
+      buttonAktuell.setAttribute("style", "float: right");
+
+      spanFilterPanel.appendChild(buttonZeitWaehlen);
+
+
+      spanFilterPanel.appendChild(divZeitwahl);
+      element2.appendChild(spanFilterPanel);
+
+      document.getElementById('suche').addEventListener('input', function() {
+        search();
+      });
+
+      document.getElementById('sucheMob').addEventListener('input', function() {
+        searchMob();
+      });
+
+      saveFilter = document.getElementById('spanFilterPanel').innerHTML;
+      ol.control.Control.call(this, {
+        element: element2,
+        target: options.target
+      });
+
+    };
+    ol.inherits(app.CustomToolbarControl2, ol.control.Control);
+    //}
+
+
+    var container = document.getElementById('popup');
+    var uverlay = new ol.Overlay( /** @type {olx.OverlayOptions} */ ({
+      element: container,
+      autoPan: true,
+
+      autoPanAnimation: {
+        duration: 250
+      }
+
+    }));
+
+    var cologne = ol.proj.transform([6.919183, 50.933183], 'EPSG:4326', 'EPSG:3857');
+    view = new ol.View({
+      center: cologne,
+      zoom: 14
+    });
+
+    var map = new ol.Map({
+      controls: ol.control.defaults({
+        attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+          collapsible: false
+        })
+      }).extend([
+        new app.CustomToolbarControl(),
+        new app.CustomToolbarControl2(),
+        new ol.control.FullScreen()
+      ]),
+      layers: [
+        new ol.layer.Tile({
+          source: new ol.source.OSM()
+        })
+      ],
+      target: 'map',
+      view: new ol.View({
+        center: cologne,
+        zoom: 14
+      }),
+    });
+
+
+    var tooltip = document.getElementById('tooltip');
+    var overlay = new ol.Overlay({
+      element: tooltip,
+      offset: [10, 0],
+      positioning: 'bottom-left'
+    });
+
+    // Hoverpopup
+    map.addOverlay(overlay);
+
+    // Klickpopup
+    map.addOverlay(uverlay);
+
+    map.on('pointermove', displayTooltip);
+    map.on('click', displayPopup);
+
+
+    function displayTooltip(evt) {
+      var pixel = evt.pixel;
+      var feature = map.forEachFeatureAtPixel(pixel, function(feature) {
+        return feature;
+      });
+      var all = [];
+      if (feature) {
+        map.forEachFeatureAtPixel(pixel, function(feature) {
+          all.push(feature);
+        });
+        var s3 = doTheText(all, false);
+        tooltip.style.display = s3 ? '' : 'none';
+        overlay.setPosition(evt.coordinate);
+        s3 += '<br /><br />Klicken für weitere Informationen';
+        tooltip.innerHTML = s3;
+      } else {
+        tooltip.style.display = 'none';
+        all = [];
+      }
+    };
+
+    closer.onclick = function() {
+      uverlay.setPosition(undefined);
+      closer.blur();
+      return false;
+    };
+
+
+    function displayPopup(evt) {
+      var width = document.documentElement.clientWidth;
+      var height = document.documentElement.clientHeight;
+
+
+      var pixel = evt.pixel;
+      var feature = map.forEachFeatureAtPixel(pixel, function(feature) {
+        return feature;
+      });
+      var all = [];
+      if (feature) {
+        map.forEachFeatureAtPixel(pixel, function(feature) {
+          all.push(feature);
+        });
+
+        document.getElementById('popup').style.display = 'block';
+        var coordinate = evt.coordinate;
+        var s3 = doTheText(all, true);
+        content.innerHTML = s3;
+        uverlay.setPosition(coordinate);
+        tooltip.style.display = 'none';
+
+      } else {
+        document.getElementById('popup').style.display = 'none';
+      }
+    };
+
+    zoomslider = new ol.control.ZoomSlider();
+    map.addControl(zoomslider);
+    return map;
+  }
+
+  function doTheText(all, mitInfo) {
+    var string = '';
+    if (all.length > 1)
+      string += all.length + " Institute an diesem Standort<br>";
+    string += "<ul>";
+    for (var i = 0; i < all.length; i++) {
+      var a = all[i];
+      coord = a.getGeometry().getCoordinates();
+      coord = ol.proj.transform(coord, 'EPSG:3857', 'EPSG:4326');
+      var s = a.get('name');
+      var s0 = s.split("$$");
+      var s1 = '';
+      var status = '';
+
+
+      var nameLink = s0[1];
+
+      if (s0[3].match(/DE-38-[0-9]{0,3}$/))
+        var nameLink = '<a target="blank" href="http://petros.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/38_' + s0[3].replace(/DE-38-/g, "") + '/index_ger.html">' + s0[1] + '</a>';
+
+      if (s0[1].indexOf('USB Köln') !== -1)
+        var nameLink = '<a target="blank" href="http://petros.ub.uni-koeln.de/index_ger.html">' + s0[1] + '</a>';
+
+
+
+
+      if (s0[0] === '1')
+        status = '<strong style="color: green">zurzeit geöffnet</strong>';
+      else if (s0[0] === '2')
+        status = '<strong style="color: red">zurzeit geschlossen</strong>';
+      else if (s0[0] === 'undefined')
+        status = '<strong style="color: grey">Keine Öffnungszeiten angegeben</strong>';
+
+      if (mitInfo === true) {
+        string += "<li style=margin-bottom:20px;>" + nameLink + "<br />" + s0[4] + "<br />" + status + "<br />";
+        string += s0[2] + "</li>";
+      } else {
+        string += "<li style=margin-bottom:20px;>" + s0[1] + "<br />" + status + "</li>";
+      }
+      allForMobile.push(string);
+    }
+    string += "</li>";
+    return string;
+  }
+
+  /* GPS */
+  function gps() {
+    if (checkBoxGps.checked == true) {
+      var geolocation = new ol.Geolocation({
+        projection: map.getView().getProjection(),
+        tracking: true,
+        trackingOptions: {
+          enableHighAccuracy: true,
+          maximumAge: 2000
+        }
+      });
+      var iconStyle = new ol.style.Style({
+        image: new ol.style.Icon({
+          anchor: [0.5, 100],
+          anchorXUnits: 'fraction',
+          anchorYUnits: 'pixels',
+          opacity: 1.0,
+
+          src: pin_gps,
+          scale: 0.03
+        })
+      });
+
+      gpsFeature = new ol.Feature();
+      var iconSource = new ol.source.Vector({
+        features: [gpsFeature]
+      });
+      var iconLayer = new ol.layer.Vector({
+        source: iconSource,
+        style: iconStyle
+      });
+      map.addLayer(iconLayer);
+
+      var pos;
+      geolocation.on('change', function() {
+        pos = geolocation.getPosition();
+
+        gpsFeature.setGeometry(new ol.geom.Point(pos));
+      });
+
+
+    }
+  }
+
+  function createObereLeiste() {
+    app.CustomToolbarControl = function(opt_options) {
+      var options = opt_options || {};
+      element.appendChild(div1);
+
+      div1.appendChild(time);
+      div1.setAttribute("style", "float: right");
+
+      divSearch.id = 'divSearch';
+      var form = document.createElement('form');
+      var searchText = document.createTextNode("Name der Bibliothek: ");
+
+      divSearch.appendChild(searchText);
+      divSearch.appendChild(searchField);
+      divSearch.appendChild(buttonClearSearch);
+      element.appendChild(divSearch);
+      element.appendChild(div2);
+      div1.appendChild(document.createElement('br'));
+
+      ol.control.Control.call(this, {
+        element: element,
+        target: options.target
+      });
+
+    };
+    ol.inherits(app.CustomToolbarControl, ol.control.Control);
+  }
+
+
+  function changeDay(day) {
+    if (parseInt(day) === 9) {
+      var d = new Date();
+      var dd = d.getDay() - 1;
+      gewaehlterTag = dd;
+
+    } else
+      gewaehlterTag = parseInt(day);
+
+    calcMarkers(9, false);
+  }
+
+  /**
+   * Umschalten zwischen aktueller Zeit/Tag und frei wählbarer Zeit/Tag
+   */
+  function setTimeNow() {
+    if (document.getElementById('divZeitwahl').style.display === 'none') {
+      document.getElementById('filterPanel').setAttribute("style", "height: auto");
+      document.getElementById('buttonZeit').innerHTML = 'Zurücksetzen';
+      document.getElementById('divZeitwahl').setAttribute("style", "display: block");
+      document.getElementById('time').innerHTML = 'eigene Zeit gewählt';
+    } else if (document.getElementById('divZeitwahl').style.display === 'block') {
+      document.getElementById('filterPanel').setAttribute("style", "height: auto");
+      document.getElementById('buttonZeit').innerHTML = 'Bibliotheksbesuch planen';
+      document.getElementById('divZeitwahl').setAttribute("style", "display: none");
+
+      // wieder aktuelle Uhrzeit in Uhrzeitfeld schreiben
+      var now = new Date();
+      document.getElementById('time').innerHTML = now.getHours() + ':' + addZero(now.getMinutes() + " Uhr");
+    }
+
+    tageChoice.value = 9;
+    var d = new Date();
+
+    gewaehlterTag = d.getDay() - 1;
+    slider.value = dates('stunde') * 60;
+    gewaehlteZeit = dates('uhrzeit');
+    textZeitwahl.innerHTML = "";
+    calcMarkers(9, false);
+  }
+
+  // Feiertag mit festem Datum
+  var feiertage = [
+    '01.01',
+    '01.05',
+    '03.10',
+    '01.11',
+    '25.12',
+    '26.12'
+  ];
+
+  function showFilter(screenSize) {
+    var p = document.getElementById('filterButton');
+    if (p.innerText === 'Filter ausblenden') {
+      p.innerText = 'Filter einblenden';
+      document.getElementById('filterPanel').setAttribute("style", "height: 25px");
+      document.getElementById('spanFilterPanel').setAttribute("style", "display: none");
+    } else if (p.innerText === 'Filter einblenden') {
+      p.innerText = 'Filter ausblenden';
+      document.getElementById('spanFilterPanel').setAttribute("style", "display: block");
+      document.getElementById('filterPanel').setAttribute("style", "height: auto");
+    }
+  }
+
+  /* wenn Stunden oder Minuten nur eine Ziffer haben, eine 0 vorne dran hängen */
+  function addZero(i) {
+    if (i < 10)
+      i = "0" + i;
+    return i;
+  }
+
+  function calcMarkersByName(input) {
+
+    if (input === 'USB Köln') {
+      for (var i = 0; i < institute.length; i++) {
+        if (institute[i].sigel.indexOf('DE-38') !== -1 && input.length === 4) {
+          ints.push(institute[i]);
+          marks.push(koordinaten[i]);
+          sigelname.push(institute[i].name);
+        }
+      }
+    } else {
+      for (var t in input) {
+        for (var i = 0; i < institute.length; i++) {
+          if (institute[i].sigel === input[t]) {
+            ints.push(institute[i]);
+            marks.push(koordinaten[i]);
+          }
+        }
+      }
+    }
+	if(ints.length !== 0) {
+		showData(ints[0].name, true);
+		savedFakultaet = ints[0].sigel;
+
+		foundInsts = [];
+		if (typeof vectorSource !== 'undefined')
+		  map.removeLayer(vectorLayer);
+
+		drawMarkers(ints, marks);
+	}
+    ints = [];
+    marks = [];
+  }
+
+  function clearSearch() {
+    document.getElementById('suche').value = "";
+    calcMarkers('8', false);
+  }
+
+  // Verarbeite Sucheingabe in Textfeld 'suche'
+  function search() {
+    nurGeoeffnet.checked = false;
+    var inp = document.getElementById('suche').value;
+
+    for (var v = 0; v < institute.length; v++) {
+      var insti = institute[v];
+      if (insti.name.toLowerCase().indexOf(inp.toLowerCase()) !== -1 || insti.sigel.indexOf(inp) === 0) {
+        foundInsts.push(institute[v].sigel);
+      }
+    }
+    calcMarkersByName(foundInsts);
+  }
+
+  // Verarbeite Sucheingabe in Textfeld 'suche'
+  function searchMob() {
+    nurGeoeffnet.checked = false;
+    var inp = document.getElementById('sucheMob').value;
+    for (var v = 0; v < institute.length; v++) {
+      var insti = institute[v];
+      if (insti.name.toLowerCase().indexOf(inp.toLowerCase()) !== -1 || insti.sigel.indexOf(inp) === 0) {
+        foundInsts.push(institute[v].sigel);
+      }
+    }
+    calcMarkersByName(foundInsts);
+  }
+
+  function istOffen(sub1) {
+    // 9.00 - 18.45 Uhr
+    if (sub1.match(new RegExp(/(\d{1,2}\.\d{2}[\s]?-[\s]?\d{1,2}\.\d{2}[\s]?)/g))) {
+      var z = sub1.match(new RegExp(/(\d{1,2}\.\d{2}[\s]?-[\s]?\d{1,2}\.\d{2}[\s]?)/g));
+
+
+
+      for (t1 = 0; t1 < z.length; t1++) {
+        var zeit = z[t1].split("-");
+        for (v in zeit) {
+          var temp = zeit[v].toString().replace(/[^\d]/g, "");
+          zeit[v] = temp;
+        }
+        if (checkZeit(zeit[0], zeit[1]) === true)
+          return 1;
+        else if (checkZeit(zeit[0], zeit[1]) === false) {
+          if (t1 < z.length - 1)
+            continue;
+          else
+            return 2;
+        }
+      }
+    }
+    if (sub1.indexOf('geschlossen') !== -1)
+      return 2;
+    else
+      return 0;
+  }
+
+  function getMonat(input) {
+    var monatsArray = ["Januar", "Februar", "März", "April", "Mai", "Juni",
+      "Juli", "August", "September", "Oktober", "November", "Dezember"
+    ];
+    return monatsArray.indexOf(input) + 1;
+  }
+
+  /**
+   * wandelt Tage zu Nummern um mit denen gerechnet werden kann
+   *
+   * @param tag	Tag als String
+   * @return korrespondierende Nummer (0 - Montag, 1 - Dienstag, ...)
+   */
+  function tageZuNummer(tag) {
+    // console.log(tag);
+    var t = tag.trim();
+    var arrayKurz = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+    var arrayLang = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
+
+    if (t.length == 2) {
+      return arrayKurz.indexOf(t);
+    } else if (t.length > 2) {
+      return arrayLang.indexOf(t);
+    }
+  }
+
+  /* input: 'tag', 'uhrzeit', 'volles_datum', 'tag_monat' */
+  /*
+   * Gibt verschiedene Datumsabfragen zurück
+   *
+   * @param input	nach was wird gefragt ('tag', 'uhrzeit', 'volles_datum', 'stunde', 'tag_monat')
+   * @return das abgefragte Ergebnis
+   */
+
+  function updateClock() {
+    //console.log("Update Uhrzeit");
+    var now = new Date(); // current date
+
+    time = now.getHours() + ':' + addZero(now.getMinutes() + " Uhr");
+
+    document.getElementById('time').innerHTML = time;
+    gewaehlteZeit = now.getHours() + '' + addZero(now.getMinutes());
+
+    setTimeout(updateClock, 30000);
+  }
+
+  function dates(input) {
+    var date = new Date();
+    switch (input) {
+      /* Wochentag */
+      case 'tag':
+        // return date.getDay() -1;
+        //console.log("gewählterTag: " + gewählterTag);
+        return gewaehlterTag;
+
+        /* Uhrzeit ohne doppelpunkt*/
+      case 'uhrzeit':
+        var minutes = addZero(date.getMinutes());
+        var hours = date.getHours();
+        //return 1759;
+        return hours + "" + minutes;
+
+      case 'stunde':
+        return date.getHours();
+
+        /* volles Datum ohne Punkte */
+      case 'volles_datum':
+        return date.getDate() + "" + (addZero(date.getMonth() + 1)) + "" + date.getFullYear();
+
+        /* Tag und Monat (mit Punkt fuer Feiertag) */
+      case 'tag_monat':
+        return addZero(date.getDate()) + "." + (date.getMonth() + 1);
+
+      case 'monat':
+        return date.getMonth() + 1;
+
+      case 'voller_tag':
+        var datum;
+        datum = addZero(date.getDate()) + "." + (date.getMonth() + 1);
+        return datum;
+
+      case 'semester':
+        return date.getFullYear() + "" + (addZero(date.getMonth() + 1)) + "" + addZero(date.getDate());
+    }
+  }
+
+  /**
+   * Bestimmt ob das aktuelle Datum innerhalb oder ausserhalb der Semesterzeit liegt
+   *
+   * @return	true (wenn innerhalb des Semesters), false (wenn in der Semesterfreien Zeit)
+   */
+  function getSemester() {
+    var aktDatum = dates('semester');
+    for (var semesterIt in semesterZeit) {
+      if (aktDatum > semesterZeit[semesterIt].von && aktDatum < semesterZeit[semesterIt].bis)
+        return true;
+    }
+    return false;
+  }
+
+  /**
+   * Bestimmt ob aktuelles Datum Feiertag ist oder nicht
+   *
+   * @return true (wenn Feiertag), false (wenn normaler Tag)
+   */
+  function getFeiertag() {
+    var tagFull = dates('voller_tag');
+    if (feiertage.indexOf(tagFull) == -1)
+      return false;
+    else
+      return true;
+
+  }
+
+  /**
+   * prüft ob aktueller Tag innerhalb der Öffnungszeitentage der Bibliothek liegen
+   *
+   * @param tagDelete ist obsolet, kann weg
+   * @param tagArray die Tage an denen die Bibliothek geöffnet ist als Nummern
+   *
+   * @return true (wenn geöffnet), false (wenn geschlossen)
+   */
+  function checkTag(tagDELETE, tagArray) {
+    var tag = dates('tag');
+    for (var t in tagArray)
+      if (tagArray.indexOf(tag) != -1)
+        return true;
+      else
+        return false;
+  }
+
+
+  function checkZeit(beg, end) {
+    //var aktTime = dates('uhrzeit');
+    aktTime = gewaehlteZeit;
+    if (parseInt(aktTime) >= parseInt(beg) && parseInt(aktTime) <= parseInt(end))
+      return true;
+    else
+      return false;
+  }
+
+
+  function parse(str) {
+
+    // Wenn Feiertag, alle Bibs rot markieren und beenden
+    if (feiertag === true)
+      return 2;
+
+    // Sonderfälle abfangen zB "Heute geschlossen"
+    if (str.search('Heute geschlossen') !== -1) {
+      return 2;
+    }
+
+    // zB "Im August geschlossen"
+    if (str.search("geschlossen") !== -1) {
+      if (str.search(/[A-Za-z]{3,} geschlossen/g) !== -1) {
+        var matched = str.match(/[A-Za-z]{3,} geschlossen/g);
+        var temp = matched[0].toString().replace(/ geschlossen/g, "");
+        var monat = getMonat(temp);
+        if (monat === dates('monat'))
+          return 2;
+      }
+    }
+
+    // Eintrag enthält getrennte Angaben zu Semester und Semesterfreien Zeiten
+    if (str.search("Im Semester:") !== -1) {
+      if (semester === true) {
+        var n = str.replace("Im Semester:", "");
+        if (n.indexOf("In den Semesterferien:") != -1) {
+          var indexSemesterferien = n.indexOf("In den Semesterferien:");
+          var sub1 = n.substring(0, indexSemesterferien);
+          var f = [];
+          if (sub1.indexOf(";") != -1) {
+            f = sub1.split(";");
+            for (var y in f) {
+              var temp = f[y].toString().replace(new RegExp(/<[.*][^>]*>/g), " "); // löscht Tags nicht
+              f[y] = temp;
+            }
+          } else
+            f[0] = sub1;
+
+          var eintrag;
+          for (i = 0; i < f.length; i++) {
+            //console.log("i: " + i);
+            eintrag = f[i];
+
+            //*************************************************************************************************************************
+            // Mo - Fr:
+            if (eintrag.match(new RegExp(/([A-Za-z]{2}[\s]?-[\s]?[A-Za-z]{2}:[\s]?)/g))) {
+              var t = eintrag.match(new RegExp(/([A-Za-z]{2}[\s]?-[\s]?[A-Za-z]{2}:[\s]?)/g));
+              var tage = t[0].split("-");
+
+              for (var tti in tage) {
+                var temp = tage[tti].toString().replace(/[^A-Za-z]/g, "");
+                tage[tti] = tageZuNummer(temp.trim());
+
+              }
+              // auffuellen
+              var start = tage[0];
+              var end = tage[tage.length - 1];
+
+              for (start; start < end; start++) {
+                tage.push(start + 1);
+              }
+            }
+            //*************************************************************************************************************************
+            // Mo, Di, ...
+            else if (eintrag.match(new RegExp(/[A-Za-z]{2}(\,|: )/g))) {
+              var t = eintrag.match(new RegExp(/[A-Za-z]{2}(\,|: )/g));
+
+              for (var ti in t) {
+                var temp = t[ti].toString().replace(/[^A-Za-z]/g, "").trim();
+                t[ti] = tageZuNummer(temp);
+              }
+              tage = t;
+            }
+
+            // checken ob akt Tag drinnen ist
+            if (checkTag('tt', tage) === true)
+              return istOffen(eintrag);
+            else if (checkTag('tt', tage) === false) {
+              if (i < f.length - 1)
+                continue;
+              else
+                return 2;
+            }
+          }
+        }
+        // Bib enthält zwar Eintrag für "Im Semester" aber nicht für "in den Semesterferien", also Pin ausgrauen
+        else
+          return 0;
+      }
+      if (semester === false) {
+        if (str.indexOf("In den Semesterferien:") !== -1) {
+          var indexSemesterferien = str.indexOf("In den Semesterferien:");
+          var sub1 = str.substring(indexSemesterferien, str.length);
+          var f = [];
+          if (sub1.indexOf(";") != -1) {
+            f = sub1.split(";");
+            for (var y in f) {
+              var temp = f[y].toString().replace(new RegExp(/<[.*][^>]*>/g), " "); // löscht Tags nicht
+              f[y] = temp;
+            }
+          } else
+            f[0] = sub1;
+
+          var eintrag;
+          for (i = 0; i < f.length; i++) {
+            //	console.log("i: " + i);
+            eintrag = f[i];
+
+            //XXX: ist nicht so richtig schlau
+            //*************************************************************************************************************************
+            // Abfangen wenn in Semesterferien keine Zeit sondern Mailadresse angegeben ist
+
+            /*if(eintrag.match(new RegExp(/<a href="/g))) {
+    				return 0;
+    			}
+*/
+            //*************************************************************************************************************************
+            // Mo - Fr:
+            if (eintrag.match(new RegExp(/([A-Za-z]{2}[\s]?-[\s]?[A-Za-z]{2}:[\s]?)/g))) {
+              var t = eintrag.match(new RegExp(/([A-Za-z]{2}[\s]?-[\s]?[A-Za-z]{2}:[\s]?)/g));
+              var tage = t[0].split("-");
+              for (var tti in tage) {
+                var temp = tage[tti].toString().replace(/[^A-Za-z]/g, "");
+                tage[tti] = tageZuNummer(temp.trim());
+
+              }
+              // auffuellen
+              var start = tage[0];
+              var end = tage[tage.length - 1];
+
+              for (start; start < end; start++) {
+                tage.push(start + 1);
+              }
+            }
+            //*************************************************************************************************************************
+            // Mo, Di, ...
+            else if (eintrag.match(new RegExp(/[A-Za-z]{2}(\,|: )/g))) {
+              var t = eintrag.match(new RegExp(/[A-Za-z]{2}(\,|: )/g));
+
+              for (var ti in t) {
+                var temp = t[ti].toString().replace(/[^A-Za-z]/g, "").trim();
+                t[ti] = tageZuNummer(temp);
+              }
+              tage = t;
+            }
+
+            // checken ob akt Tag drinnen ist
+            if (checkTag('tt', tage) === true)
+              return istOffen(eintrag);
+            else if (checkTag('tt', tage) === false) {
+              if (i < f.length - 1)
+                continue;
+              else
+                return 2;
+            }
+          }
+        }
+        // Bib enthält zwar Eintrag für "Im Semester" aber nicht für "in den Semesterferien", also Pin grauen
+        else {
+          return 0;
+        }
+      }
+    }
+
+    //***************************************************************************************************************************
+    // Eintrag enthält keine Angaben zu Semesterzeiten
+    else if (str.search("Im Semester:") === -1) {
+      var sub1 = str;
+      var f = [];
+      if (sub1.indexOf(";") != -1) {
+        f = sub1.split(";");
+        for (var y in f) {
+          var temp = f[y].toString().replace(new RegExp(/<[.*][^>]*>/g), " "); // löscht Tags nicht
+          f[y] = temp;
+        }
+      } else
+        f[0] = sub1;
+
+      for (i = 0; i < f.length; i++) {
+        eintrag = f[i];
+        //*************************************************************************************************************************
+        // Mo - Fr:
+        if (eintrag.match(new RegExp(/([A-Za-z]{2}[\s]?-[\s]?[A-Za-z]{2}:[\s]?)/g))) {
+          var t = eintrag.match(new RegExp(/([A-Za-z]{2}[\s]?-[\s]?[A-Za-z]{2}:[\s]?)/g));
+          var tage = t[0].split("-");
+
+          for (var tti in tage) {
+            var temp = tage[tti].toString().replace(/[^A-Za-z]/g, "");
+            tage[tti] = tageZuNummer(temp.trim());
+
+          }
+          // auffuellen
+          var start = tage[0];
+          var end = tage[tage.length - 1];
+
+          if (end - start > 1) {
+            for (start + 1; start < end; start++) {
+              tage.push(start);
+            }
+          }
+        }
+        //*************************************************************************************************************************
+        // Mo, Di, ...
+        else if (eintrag.match(new RegExp(/[A-Za-z]{2}(\,|: )/g))) {
+          var t = eintrag.match(new RegExp(/[A-Za-z]{2}(\,|: )/g));
+
+          for (var ti in t) {
+            var temp = t[ti].toString().replace(/[^A-Za-z]/g, "").trim();
+            t[ti] = tageZuNummer(temp);
+          }
+          tage = t;
+        }
+
+        // checken ob akt Tag drinnen ist
+        if (checkTag('tt', tage) === true)
+          return istOffen(eintrag);
+        else if (checkTag('tt', tage) === false) {
+          if (i < f.length - 1)
+            continue;
+          else
+            return 2;
+        }
+      }
+    }
+  }
+
+  function drawMarkers(list, marks) {
+    var i, lat, lon, geom, feature, features = [],
+      style;
+
+    for (var i = 0; i < list.length; i++) {
+      lat = marks[i][0];
+      lon = marks[i][1];
+
+      geom = new ol.geom.Point(ol.proj.fromLonLat([lon, lat])
+        //ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:3857')
+      );
+
+      /* Zeiten parsen */
+      var zeiten, pinColor;
+      if (list[i].zeiten.length > 0) {
+        zeiten = parse(list[i].zeiten);
+
+        // wenn "nur geöffnet" ausgewählt ist
+        if (nurGeoeffnet.checked === true && zeiten === 2)
+          continue;
+
+        /* Farbe des Pins bestimmen */
+        var rotation = 0;
+        if (zeiten == 1) {
+          pinColor = green;
+          rotation = 0;
+        } else if (zeiten == 2) {
+          pinColor = red;
+          rotation = 50;
+        } else if (zeiten === 0) {
+          pinColor = grey;
+          rotation = -50;
+        } else if (zeiten == undefined) {
+          pinColor = grey;
+          rotation = -50;
+        }
+      }
+      /* wenn keine Zeiten gefunden */
+      else {
+        pinColor = grey;
+      }
+
+      var iconFeature = new ol.Feature({
+        geometry: new ol.geom.Point(ol.proj.transform([lat, lon], 'EPSG:4326', 'EPSG:3857')),
+        name: zeiten + "$$" + list[i].name + "$$" + list[i].zeiten + "$$" + list[i].sigel + "$$" + list[i].art + "bibliothek",
+      });
+
+
+      var iconStyle = new ol.style.Style({
+        image: new ol.style.Icon( /** @type {olx.style.IconOptions} */ ({
+          anchor: [0.5, 1280],
+          anchorXUnits: 'fraction',
+          anchorYUnits: 'pixels',
+          opacity: 0.8,
+
+          /* scale factor */
+          scale: 0.03,
+          //scale: 0.3,
+          src: pinColor,
+
+          //rotation: rotation
+
+        }))
+      });
+
+      iconFeature.setStyle(iconStyle);
+      features.push(iconFeature);
+    };
+    vectorSource = new ol.source.Vector({
+      features: features
+    });
+    vectorLayer = new ol.layer.Vector({
+      source: vectorSource
+    });
+    map.addLayer(vectorLayer);
+
+    if (list.length === 1) {
+      var ext = iconFeature.getGeometry().getExtent();
+      var center = ol.extent.getCenter(ext);
+      var cologne = ol.proj.transform(center, 'EPSG:4326', 'EPSG:3857');
+      map.setView(new ol.View({
+        center: [center[0], center[1]],
+        zoom: 15
+      }));
+    }
+  }
+
+  function resetInst() {
+    document.getElementById('institutsChoice').options.selectedIndex = 0;
+    calcMarkers(document.getElementById('institutsChoice').value, false);
+  }
+
+  function resetArt() {
+    document.getElementById('artSelect').options.selectedIndex = 0;
+    calcMarkers(9, false);
+  }
+
+
+  function newDataListEntries() {
+    var options = '';
+    document.getElementById('theDataListMob').innerHTML = "";
+    var string = "<ul><li>";
+    for (var i = 0; i < sigelname.length; i++) {
+      options += '<option value="' + sigelname[i] + '" />';
+      string += sigelname[i] + "</li>";
+    }
+    string += '</ul>';
+    document.getElementById('theDataListMob').innerHTML = options;
+  }
+
+  function doTheTextMobile(all, mitInfo) {
+    var string = '';
+
+    string += "<ul>";
+    for (var i = 0; i < all.length; i++) {
+      string += '<li style="text-decoration: underline">';
+      string += all[i].name;
+      string += '</li>';
+
+    }
+    string += '<ul>';
+
+    return string;
+  }
+
+  function showData(text, mitInfo) {
+    for (var t in institute) {
+      if (institute[t].name.indexOf(text) !== -1) {
+        var s1 = "";
+        var zeiten = parse(institute[t].zeiten);
+
+        var s1 = '';
+        var status = '';
+
+        var nameLink = institute[t].name;
+
+        if (institute[t].sigel.match(/DE-38-[0-9]{0,3}$/))
+        nameLink = '<a target="blank" href="http://petros.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/38_' + institute[t].sigel.replace(/DE-38-/g, "") + '/index_ger.html">' + institute[t].name + '</a>';
+
+        if(institute[t].name.indexOf('USB Köln') !== -1)
+          nameLink = '<a target="blank" href="http://petros.ub.uni-koeln.de/index_ger.html">' + institute[t].name + '</a>';
+
+        if (zeiten === 1)
+          status = '<strong style="color: lightgreen">zurzeit geöffnet</strong>';
+        else if (zeiten === 2)
+          status = '<strong style="color: red">zurzeit geschlossen</strong>';
+        else if (zeiten === 'undefined')
+          status = '<strong style="color: white">Keine Öffnungszeiten angegeben</strong>';
+        else if (zeiten === 0)
+            status = '<strong style="color: white">Keine Öffnungszeiten angegeben</strong>';
+
+        if (mitInfo === true) {
+          s1 += "<br />" + nameLink + "<br /><br />" + institute[t].art + "bibliothek" + "<br />" + status + "<br /><br />";
+          s1 += institute[t].zeiten;
+        } else {
+          s1 += institute[t].name + "<br />" + status;
+        }
+        displayFromMobile = institute[t].sigel;
+      }
+      document.getElementById('daten').innerHTML = s1;
+    }
+  }
+
+
+
+
+
+
+
+
+
+  function calcMarkers(fakultaet, fromMobile) {
+
+    if (showDesktopGui === false) {
+
+      document.getElementById('map').setAttribute('style', 'display: none');
+      document.getElementById('mobileView').setAttribute('style', 'display: block');
+      document.getElementById('titleMobileDesktop').innerHTML = "Mobile Suche nach Campusbibliotheken";
+    } else if (showDesktopGui === true) {
+      document.getElementById('mobileView').setAttribute('style', 'display: none');
+      document.getElementById('map').setAttribute('style', 'display: block');
+      document.getElementsByClassName("ol-unselectable")[0].setAttribute('style', 'display: block');
+      document.getElementById('titleMobileDesktop').innerHTML = "Interaktive Map aller Campusbibliotheken in Echtzeit";
+
+
+    }
+
+    var e = document.getElementById("institutsChoice");
+
+
+    if (e.options[e.selectedIndex].value !== '8')
+      document.getElementById('tdInstMark').innerHTML = "<button onclick='resetInst()' style='color: red'>✖</button>";
+    else if (e.options[e.selectedIndex].value === '8')
+      document.getElementById('tdInstMark').innerHTML = "";
+
+    var e1 = document.getElementById("artSelect");
+
+    if (e1.options[e1.selectedIndex].value !== '0')
+      document.getElementById('tdArtMark').innerHTML = "<button onclick='resetArt()' style='color: red'>✖</button>";
+    else if (e1.options[e1.selectedIndex].value === '0') {
+      document.getElementById('tdArtMark').innerHTML = "";
+    }
+
+
+    if (typeof vectorSource !== 'undefined') {
+      map.removeLayer(vectorLayer);
+    }
+    if (fakultaet === 9)
+      fakultaet = savedFakultaet;
+
+    savedFakultaet = fakultaet;
+    sigelname = [];
+
+	if(document.getElementById('institutsChoice').value === 'DE-38-0') {
+		for (var i = 0; i < institute.length; i++) {
+			if (institute[i].sigel === 'DE-38') {
+			ints.push(institute[i]);
+			marks.push(koordinaten[i]);
+			sigelname.push(institute[i].name);
+		}
+      }
+	}
+
+    if (fakultaet === 'DE-38') {
+      for (var i = 0; i < institute.length; i++) {
+        if (institute[i].sigel === 'DE-38') {
+          ints.push(institute[i]);
+          marks.push(koordinaten[i]);
+          sigelname.push(institute[i].name);
+        }
+      }
+    } else {
+      if (fakultaet !== '8' && fakultaet.toString().match(new RegExp(/\d*/g))) {
+        for (var i = 0; i < institute.length; i++) {
+          /* alle Bibliotheken */
+          if (document.getElementById("artSelect").value === '0') {
+            if (institute[i].sigel.indexOf(fakultaet) == 0) {
+              ints.push(institute[i]);
+              marks.push(koordinaten[i]);
+              sigelname.push(institute[i].name);
+            }
+          }
+          /* nur Praesensbibliotheken */
+          else if (document.getElementById("artSelect").value === '1') {
+            if (institute[i].sigel.indexOf(fakultaet) == 0) {
+              if (institute[i].art.indexOf('Pr') == 0) {
+                ints.push(institute[i]);
+                marks.push(koordinaten[i]);
+                sigelname.push(institute[i].name);
+              }
+            }
+            /* nur Ausleihbibliotheken */
+          } else if (document.getElementById("artSelect").value === '2') {
+            if (institute[i].sigel.indexOf(fakultaet) == 0) {
+              if (institute[i].art.indexOf('Aus') == 0) {
+                ints.push(institute[i]);
+                marks.push(koordinaten[i]);
+                sigelname.push(institute[i].name);
+              }
+            }
+          }
+        }
+      } else {
+        for (var i = 0; i < institute.length; i++) {
+          if (document.getElementById("artSelect").value === '0') {
+            ints.push(institute[i]);
+            marks.push(koordinaten[i]);
+            sigelname.push(institute[i].name);
+          }
+          /* nur Präsensbibliotheken */
+          else if (document.getElementById("artSelect").value === '1') {
+            if (institute[i].art.indexOf('Pr') == 0) {
+              ints.push(institute[i]);
+              marks.push(koordinaten[i]);
+              sigelname.push(institute[i].name);
+            }
+            /* nur Ausleihbibliotheken */
+          } else if (document.getElementById("artSelect").value === '2') {
+            if (institute[i].art.indexOf('Aus') == 0) {
+              ints.push(institute[i]);
+              marks.push(koordinaten[i]);
+              sigelname.push(institute[i].name);
+            }
+          }
+        }
+      }
+    }
+
+    newDataListEntries();
+    // document.getElementById('ergebnis').innerHTML = doTheTextMobile(ints, true);
+
+    drawMarkers(ints, marks);
+    ints = [];
+    marks = [];
+  }
+
+  function guiAusblenden() {
+    document.getElementById('obereLeiste').setAttribute('style', 'display: none');
+    document.getElementById('filterPanel').setAttribute('style', 'display: none');
+  }
+
+
+  // Semester und Semesterfreien Zeiten bis September 2019
+  // wie wird Semesterfreie Zeit definiert?
+  // Schema -> JahrMonatTag
+  var semesterZeit = [{
+    von: 20170418,
+    bis: 20170728
+  }, {
+    von: 20171009,
+    bis: 20180202
+  }, {
+    von: 20180409,
+    bis: 20180720
+  }, {
+    von: 20181008,
+    bis: 20190201
+  }, {
+    von: 20190401,
+    bis: 20190712
+  }];
+
+
+
+  /* Institutsliste */
+
+      var institute = [
+[%-
+   koordinaten = [];
+   
+   FOREACH location IN locations ;
+
+    coordinates = location.fields.${"L0280"}.first.content.split(',').reverse.join(',');
+    sigel       = location.identifier ;
+    description = location.description ;
+    art         = location.fields.${"L0180"}.first.content;
+    zeiten      = location.fields.${"L0110"}.first.content;
+    IF art.match('Präsenz');
+       art = "Präsenz";
+    ELSIF art.match('Ausleih');
+       art = "Ausleih";
+    END;
+
+    IF coordinates ; %]
+      {
+        sigel: "[% sigel %]",
+        name: "[% description %]",
+        art: "[% art %]",
+        zeiten: '[% zeiten %]',
+      },
+[%
+    koordinaten.push(coordinates);
+    END ;
+   END ;%]    
+];
+
+      // Bibliothekskoordinaten
+      var koordinaten = [
+      [% FOREACH koord IN koordinaten %]
+        [[% koord %]],
+      [% END %]
+      ];
+
+  window.onload = init('');
+</script>
+
+[% END %]

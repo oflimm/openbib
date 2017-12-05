@@ -351,12 +351,12 @@
   var semester;
   var feiertag;
 
-  var red = 'http://petros.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/pin_pink.png';
-  var grey = 'http://petros.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/pin_grau.png';
-  var green = 'http://petros.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/pin_lindgruen.png';
-  var pin_gps = 'http://petros.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/pin_blau_GPS.png';
-  var clock = 'http://petros.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/clock.png';
-  var calendar = 'http://petros.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/calendar.png';
+  var red = '/lernen_arbeiten/bibliotheken/res/pin_pink.png';
+  var grey = '/lernen_arbeiten/bibliotheken/res/pin_grau.png';
+  var green = '/lernen_arbeiten/bibliotheken/res/pin_lindgruen.png';
+  var pin_gps = '/lernen_arbeiten/bibliotheken/res/pin_blau_GPS.png';
+  var clock = '/lernen_arbeiten/bibliotheken/res/clock.png';
+  var calendar = '/lernen_arbeiten/bibliotheken/res/calendar.png';
 
 
   var map;
@@ -999,10 +999,10 @@
       var nameLink = s0[1];
 
       if (s0[3].match(/DE-38-[0-9]{0,3}$/))
-        var nameLink = '<a target="blank" href="http://petros.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/38_' + s0[3].replace(/DE-38-/g, "") + '/index_ger.html">' + s0[1] + '</a>';
+        var nameLink = '<a target="blank" href="/lernen_arbeiten/bibliotheken/38_' + s0[3].replace(/DE-38-/g, "") + '/index_ger.html">' + s0[1] + '</a>';
 
       if (s0[1].indexOf('USB Köln') !== -1)
-        var nameLink = '<a target="blank" href="http://petros.ub.uni-koeln.de/index_ger.html">' + s0[1] + '</a>';
+        var nameLink = '<a target="blank" href="/index_ger.html">' + s0[1] + '</a>';
 
 
 
@@ -1771,10 +1771,10 @@
         var nameLink = institute[t].name;
 
         if (institute[t].sigel.match(/DE-38-[0-9]{0,3}$/))
-        nameLink = '<a target="blank" href="http://petros.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/38_' + institute[t].sigel.replace(/DE-38-/g, "") + '/index_ger.html">' + institute[t].name + '</a>';
+        nameLink = '<a target="blank" href="/lernen_arbeiten/bibliotheken/38_' + institute[t].sigel.replace(/DE-38-/g, "") + '/index_ger.html">' + institute[t].name + '</a>';
 
         if(institute[t].name.indexOf('USB Köln') !== -1)
-          nameLink = '<a target="blank" href="http://petros.ub.uni-koeln.de/index_ger.html">' + institute[t].name + '</a>';
+          nameLink = '<a target="blank" href="/index_ger.html">' + institute[t].name + '</a>';
 
         if (zeiten === 1)
           status = '<strong style="color: lightgreen">zurzeit geöffnet</strong>';

@@ -19,6 +19,8 @@
 [%- PROCESS common/subtemplate name="locations_html" -%]
 [%- ELSIF representation == 'csv' -%]
 [%- PROCESS common/subtemplate name="locations_csv" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="locations_include" -%]
 [%- ELSIF representation == 'json' -%]
 [%- PROCESS common/subtemplate name="locations_json" -%]
 [%- ELSE -%]

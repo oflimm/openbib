@@ -1127,7 +1127,7 @@
 
       // wieder aktuelle Uhrzeit in Uhrzeitfeld schreiben
       var now = new Date();
-      document.getElementById('time').innerHTML = now.getHours() + ':' + addZero(now.getMinutes() + " Uhr");
+      document.getElementById('time').innerHTML = now.getHours() + ':' + addZero(now.getMinutes()) + " Uhr";
     }
 
     tageChoice.value = 9;

@@ -2003,6 +2003,10 @@ thisdbname = config.get_databases_of_isil(locationinfo.identifier).first;
 
 sigel = locationinfo.identifier.replace('DE-38-','');
 
+IF NOT thisdbname ;
+  thisdbname = "inst${sigel}";
+END;
+
 IF sigel == '123';
   recent_litlists1 = user.get_recent_litlists({database = 'inst123', view = view});
   recent_litlists2 = user.get_recent_litlists({database = 'inst218', view = view});

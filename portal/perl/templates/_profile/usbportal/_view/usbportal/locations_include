@@ -1303,7 +1303,7 @@
     //console.log("Update Uhrzeit");
     var now = new Date(); // current date
 
-    time = now.getHours() + ':' + addZero(now.getMinutes() + " Uhr");
+    time = now.getHours() + ':' + addZero(now.getMinutes()) + " Uhr";
 
     document.getElementById('time').innerHTML = time;
     gewaehlteZeit = now.getHours() + '' + addZero(now.getMinutes());

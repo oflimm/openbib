@@ -23,25 +23,6 @@ tie %title_locationid,             'MLDBM', "./title_locationid.db"
 tie %title_has_parent,             'MLDBM', "./title_has_parent.db"
     or die "Could not tie title_has_parent.\n";
 
-my $analyze_zbkunst = 1;
-
-if ($analyze_zbkunst){
-    print STDERR "### inst001 Analysiere Teilbestand Kunst\n";
-    
-    my $zbkunst_title_ref = {};
-    
-    my $zbkunst_subset = new OpenBib::Catalog::Subset("inst001","zbkunst");
-    
-    $zbkunst_subset->identify_by_field_content('classification',([ { field => '0800', content => '^20\.' },{ field => '0800', content => '^21\.' },{ field => '0800', content => '^Ku' } ]));
-    $zbkunst_subset->identify_by_mark(["^K[1-9]","^XK[1-9]","^AP[1-9]","^KP[1-9]","^1K[1-9]","2K[1-9]"]);
-    
-    foreach my $zbkunst_titleid (keys %{$zbkunst_subset->get_titleid}){
-        my $element_ref = $title_locationid{$zbkunst_titleid};
-        push @{$element_ref}, "DE-38-ZBKUNST";
-        $title_locationid{$zbkunst_titleid} = $element_ref;
-    }
-}
-
 print STDERR "### inst001 Analysiere Exemplardaten\n";
 
 open(HOLDING,"meta.holding");
@@ -132,6 +113,10 @@ while (<HOLDING>){
         elsif ($location_ref->{content} =~m/inst411 /){
             push @{$element_ref}, "DE-38-411";
         }
+        elsif ($location_ref->{content} =~m/inst428 /){
+            push @{$element_ref}, "DE-38-428";
+	    push @{$element_ref}, "DE-38-ZBKUNST";
+        }
         elsif ($location_ref->{content} =~m/inst(\d\d\d) /){
             push @{$element_ref}, "DE-38-$1";
         }
@@ -180,6 +165,15 @@ while (<TITLE>){
         }
     }
 
+    # Thematische Markierung fuer ZB-Kunst
+    if (defined $title_ref->{fields}{'4723'}){
+        foreach my $item (@{$title_ref->{fields}{'4723'}}){
+	    if ($item->{content}=~/^zb-kunst$/){
+		push @{$element_ref}, "DE-38-ZBKUNST";
+	    }
+        }
+    }
+    
     # KMB-Daten ohne Buchsaetze anhand 4800
     if (defined $title_ref->{fields}{'4800'}){
         foreach my $item (@{$title_ref->{fields}{'4800'}}){
@@ -189,7 +183,6 @@ while (<TITLE>){
 	    }
         }
     }
-
     
     # Zeitschriften anhand besetzter ZDB-ID
     if (defined $title_ref->{fields}{'0572'}){

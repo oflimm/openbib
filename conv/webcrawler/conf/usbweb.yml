@@ -38,3 +38,4 @@ blacklist_regexps:
  - '\/live'
  - 'IPS'
  - '\/rss'
+ - '\/cdm\/'

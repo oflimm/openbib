@@ -4,12 +4,11 @@ use warnings;
 use strict;
 use utf8;
 
-use MediaWiki::API;
 use JSON::XS qw/decode_json encode_json/;
 
 my %positive_ids = ();
 
-open(IDS,"/opt/openbib/autoconv/pools/ebookpda/ebookpda_ids.csv");
+open(IDS,"/opt/openbib/autoconv/pools/ebookpda/ebookpda_positive_ids.csv");
 
 while (<IDS>){
     chomp;
@@ -21,10 +20,18 @@ close(IDS);
 while (<>){
     my $title_ref = decode_json $_;
 
-    if (!defined $positive_ids{$title_ref->{id}}){
-        print STDERR "Titel-ID $title_ref->{id} excluded\n";
-        next;
+
+    my $exclude = 1;
+
+    if (defined $title_ref->{fields}{'0662'}){
+	foreach my $field_ref (@{$title_ref->{fields}{'0662'}}){
+	    my ($mil_id)=$field_ref->{content}=~m/id=(\d+)$/;
+	    next unless (defined $mil_id);
+	    if (defined $positive_ids{$mil_id} && $positive_ids{$mil_id}){
+		$exclude=0;
+	    }
+	}
     }
     
-    print;
+    print if (!$exclude);
 }

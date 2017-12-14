@@ -981,58 +981,50 @@
     return map;
   }
 
-function doTheText(all, mitInfo) {
-     var string = '';
-     if (all.length > 1)
-       string += all.length + " Institute an diesem Standort<br>";
-     string += "<ul>";
-     for (var i = 0; i < all.length; i++) {
-       var a = all[i];
-       coord = a.getGeometry().getCoordinates();
-       coord = ol.proj.transform(coord, 'EPSG:3857', 'EPSG:4326');
-       var s = a.get('name');
-       var s0 = s.split("$$");
-       var s1 = '';
-       var status = '';
+  function doTheText(all, mitInfo) {
+    var string = '';
+    if (all.length > 1)
+      string += all.length + " Institute an diesem Standort<br>";
+    string += "<ul>";
+    for (var i = 0; i < all.length; i++) {
+      var a = all[i];
+      coord = a.getGeometry().getCoordinates();
+      coord = ol.proj.transform(coord, 'EPSG:3857', 'EPSG:4326');
+      var s = a.get('name');
+      var s0 = s.split("$$");
+      var s1 = '';
+      var status = '';
 
-       var nameLink = s0[1];
 
-       if (s0[3].match(/DE-38-[0-9]{0,3}$/))
-         var nameLink = '<a target="blank" href="/lernen_arbeiten/bibliotheken/38_' + s0[3].replace(/DE-38-/g, "") + '/index_ger.html">' + s0[1] + '</a>';
+      var nameLink = s0[1];
 
-       // USB
-       else if (s0[1] === 'USB Köln')
-         var nameLink = '<a target="blank" href="/index_ger.html">' + s0[1] + '</a>';
+      if (s0[3].match(/DE-38-[0-9]{0,3}$/))
+        var nameLink = '<a target="blank" href="/lernen_arbeiten/bibliotheken/38_' + s0[3].replace(/DE-38-/g, "") + '/index_ger.html">' + s0[1] + '</a>';
 
-       // HWA
-       else if(s0[1] === 'USB Köln / Humanwissenschaftliche Abteilung')
-         var nameLink = '<a target="blank" href="https://www.ub.uni-koeln.de/ueber_uns/dach/hwa/index_ger.html">' + s0[1] + '</a>';
+      if (s0[1].indexOf('USB Köln') !== -1)
+        var nameLink = '<a target="blank" href="/index_ger.html">' + s0[1] + '</a>';
 
-       // Japanisches Kulturinstitut
-       else if(s0[1] === 'Japanisches Kulturinstitut')
-         var nameLink = '<a target="blank" href="http://www.jki.de/">' + s0[1] + '</a>';
 
-       if (s0[0] === '1')
-         status = '<strong style="color: green">zurzeit geöffnet</strong>';
-       else if (s0[0] === '2')
-         status = '<strong style="color: red">zurzeit geschlossen</strong>';
-       else if (s0[0] === 'undefined')
-         status = '<strong style="color: grey">Keine Öffnungszeiten 
-angegeben</strong>';
 
-       if (mitInfo === true) {
-         string += "<li style=margin-bottom:20px;>" + nameLink + "<br 
-/>" + s0[4] + "<br />" + status + "<br />";
-         string += s0[2] + "</li>";
-       } else {
-         string += "<li style=margin-bottom:20px;>" + s0[1] + "<br />" + 
-status + "</li>";
-       }
-       allForMobile.push(string);
-     }
-     string += "</li>";
-      return string;
-   }
+
+      if (s0[0] === '1')
+        status = '<strong style="color: green">zurzeit geöffnet</strong>';
+      else if (s0[0] === '2')
+        status = '<strong style="color: red">zurzeit geschlossen</strong>';
+      else if (s0[0] === 'undefined')
+        status = '<strong style="color: grey">Keine Öffnungszeiten angegeben</strong>';
+
+      if (mitInfo === true) {
+        string += "<li style=margin-bottom:20px;>" + nameLink + "<br />" + s0[4] + "<br />" + status + "<br />";
+        string += s0[2] + "</li>";
+      } else {
+        string += "<li style=margin-bottom:20px;>" + s0[1] + "<br />" + status + "</li>";
+      }
+      allForMobile.push(string);
+    }
+    string += "</li>";
+    return string;
+  }
 
   /* GPS */
   function gps() {
@@ -1179,49 +1171,38 @@ status + "</li>";
   }
 
   function calcMarkersByName(input) {
-     // USB Köln
-     if (input === 'USB Köln') {
-       for (var i = 0; i < institute.length; i++) {
-         if (institute[i].sigel.indexOf('DE-38') !== -1 && input.length === 4) {
-           ints.push(institute[i]);
-           marks.push(koordinaten[i]);
-           sigelname.push(institute[i].name);
-         }
-       }
-     }
-     // HWA
-     else if (input === 'USB Köln / Humanwissenschaftliche Abteilung') {
-       for (var i = 0; i < institute.length; i++) {
-         if (institute[i].sigel.indexOf('DE-38-HWA') !== -1 && input.length === 4) {
-           ints.push(institute[i]);
-           marks.push(koordinaten[i]);
-           sigelname.push(institute[i].name);
-         }
-       }
-     }
-     else {
-       for (var t in input) {
-         for (var i = 0; i < institute.length; i++) {
-           if (institute[i].sigel === input[t]) {
-             ints.push(institute[i]);
-             marks.push(koordinaten[i]);
-           }
-         }
-       }
-     }
-     if(ints.length !== 0) {
-         showData(ints[0].name, true);
-         savedFakultaet = ints[0].sigel;
 
-         foundInsts = [];
-         if (typeof vectorSource !== 'undefined')
-           map.removeLayer(vectorLayer);
+    if (input === 'USB Köln') {
+      for (var i = 0; i < institute.length; i++) {
+        if (institute[i].sigel.indexOf('DE-38') !== -1 && input.length === 4) {
+          ints.push(institute[i]);
+          marks.push(koordinaten[i]);
+          sigelname.push(institute[i].name);
+        }
+      }
+    } else {
+      for (var t in input) {
+        for (var i = 0; i < institute.length; i++) {
+          if (institute[i].sigel === input[t]) {
+            ints.push(institute[i]);
+            marks.push(koordinaten[i]);
+          }
+        }
+      }
+    }
+	if(ints.length !== 0) {
+		showData(ints[0].name, true);
+		savedFakultaet = ints[0].sigel;
 
-         drawMarkers(ints, marks);
-     }
-     ints = [];
-     marks = [];
-   }
+		foundInsts = [];
+		if (typeof vectorSource !== 'undefined')
+		  map.removeLayer(vectorLayer);
+
+		drawMarkers(ints, marks);
+	}
+    ints = [];
+    marks = [];
+  }
 
   function clearSearch() {
     document.getElementById('suche').value = "";

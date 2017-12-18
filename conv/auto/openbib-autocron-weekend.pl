@@ -483,6 +483,8 @@ sub threadC {
     autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['spoho','zbmed'] });
 #    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['instzs','spoho'] });
 
+    autoconvert({ updatemaster => $updatemaster, blacklist => $blacklist_ref, sync => 1, databases => ['usbweb'] });
+    
     ##############################
     
     $logger->info("### Gekaufte und lizensierte E-Medien");

@@ -411,6 +411,7 @@ sub sigel2isil {
         push @isils, "DE-38-$1";
     }
     else {
+	$content =~s/ //g;
         $content =~s/\//-/g;
         $content = "DE-$content";
         push @isils, $content;

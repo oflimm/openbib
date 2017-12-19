@@ -1,0 +1,459 @@
+# Encoding der Daten
+encoding: utf8
+
+# Tracelevel
+tracelevel:
+
+header: '^\d+\s+LDR-1'
+ht-selector: '^(\d+)\s001-1\s+L\s\$\$a(\w+)$' # 
+parse-line: '^(\d+)\s+(...)(.)(.)\sL\s(.+)$'   # Liefert $titleid,$kateg,$indikator,$type,$content
+subcat-splitter: '\$\$'
+parse-subcat: '^(.)(.+?)\s?$'                 # Liefert $type und $content
+mex-selector: 'Z30'
+
+# Personen
+person:
+    '001':
+        'newcat': 'id' # ID
+        'mult': 0
+    '002':
+        'newcat': '0100' # SDN
+        'mult': 0,
+    '800':
+        'newcat': '0800' # Ansetzung
+        'mult': 0
+    '820':
+        'newcat': '0830' # ansetzungsform nach einem weiteren regelwerk => verweisungsform
+        'mult': 1
+    '830':
+        'newcat': '0830' # verweisungsform 
+        'mult': 1
+
+# Koerperschaften
+corporatebody:
+    '001':
+        'newcat': 'id' # ID
+        'mult': 0
+    '002':
+        'newcat': '0100' # SDN
+        'mult': 0
+    '800':
+        'newcat': '0800' # Ansetzung
+        'mult': 0
+    '801':
+        'newcat': '0881' # Abkuerzung der Ansetzung
+        'mult': 0
+    '810':
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '811':
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '812':                # 2. verweisungsform zum namen der koerperschaft
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '813':                # zusaetzliche angaben zur 2. verweisungsform
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '814':                # 3. verweisungsform zum namen der koerperschaft
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '815':                # zusaetzliche angaben zur 3. verweisungsform
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '816':                # 4. verweisungsform zum namen der koerperschaft
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '817':                # zusaetzliche angaben zur 4. verweisungsform
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '818':                # 5. verweisungsform zum namen der koerperschaft
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '819':                # zusaetzliche angaben zur 5. verweisungsform
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '820':                # 6. verweisungsform zum namen der koerperschaft
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '821':                # zusaetzliche angaben zur 6. verweisungsform
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '822':                # 7. verweisungsform zum namen der koerperschaft
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '823':                # zusaetzliche angaben zur 7. verweisungsform
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '824':                # 8. verweisungsform zum namen der koerperschaft
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '825':                # zusaetzliche angaben zur 8. verweisungsform
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '826':                # 9. verweisungsform zum namen der koerperschaft
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '827':                # zusaetzliche angaben zur 9. verweisungsform
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '828':                # 10. verweisungsform zum namen der koerperschaft
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '829':                # zusaetzliche angaben zur 10. verweisungsform
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '830':                # 11. verweisungsform zum namen der koerperschaft
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '831':                # zusaetzliche angaben zur 11. verweisungsform
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '832':                # 12. verweisungsform zum namen der koerperschaft
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '833':                # zusaetzliche angaben zur 12. verweisungsform
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '834':                # 13. verweisungsform zum namen der koerperschaft
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '835':                # zusaetzliche angaben zur 13. verweisungsform
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '836':                # 14. verweisungsform zum namen der koerperschaft
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '837':                # zusaetzliche angaben zur 14. verweisungsform
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '838':                # 15. verweisungsform zum namen der koerperschaft
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '839':                # zusaetzliche angaben zur 15. verweisungsform
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '840':                # 16. verweisungsform zum namen der koerperschaft
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '841':                # zusaetzliche angaben zur 16. verweisungsform
+        'newcat': '0810' # Verweisung
+        'mult': 1
+    '850':                # 1. frueherer, zeitweiser oder spaeterer name der koerperschaft
+        'newcat': '0850' # Frueher/Spaeter
+        'mult': 1
+    '853':                # 2. frueherer, zeitweiser oder spaeterer name der koerperschaft
+        'newcat': '0850' # Frueher/Spaeter
+        'mult': 1
+    '856':                # 3. frueherer, zeitweiser oder spaeterer name der koerperschaft
+        'newcat': '0850' # Frueher/Spaeter
+        'mult': 1
+
+# Schlagworte
+subject: 
+    '001':
+        'newcat': 'id' # ID
+        'mult': 0
+    '002':
+        'newcat': '0100' # SDN
+        'mult': 0
+    '800':            # hauptschlagwort
+        'newcat': '0800' # Ansetzung
+        'mult': 0
+    '820':            # alternativform zum hauptschlagwort
+        'newcat': '0820' # verweisungsform 
+        'mult': 1
+    '830':            # aequivalente bezeichnung
+        'newcat': '0830' # verweisungsform 
+        'mult': 1
+    '850':            # uebergeordnetes schlagwort
+        'newcat': '0850' # uebergeordnet
+        'mult': 1
+    '860':            # verwandtes schlagwort
+        'newcat': '0860' # assoziiert
+        'mult': 1
+    '870':            # schlagwort fuer eine fruehere benennung
+        'newcat': '0870' # frueher
+        'mult': 1
+    '880':            # schlagwort fuer eine spaetere benennung
+        'newcat': '0880' # spaeter
+        'mult': 1
+
+# Titel
+title:
+    '001 ':
+        'newcat': 'id' # ID
+        'mult': 0
+    '002a':
+        'newcat': '0002' # SDN
+        'mult': 0
+    '010 ':           # identifikationsnummer des direkt uebergeordneten datensatzes
+        'newcat': '0004' # Uebergeordn. Satz
+        mut: 1
+    '025z':              # ZDBID
+        'newcat': '0572' # ZDBID
+        'mult': 1
+    '036a':              # Erschland
+        'newcat': '0035' # Erschland
+        'mult': 1
+    '037b':           # Sprache
+        'newcat': '0015' # Sprache
+        mut: 1
+    '089 ':            # bandangaben in vorlageform
+        'newcat': '0089' # bandangaben in vorlageform
+        'mult': 1
+    '310 ':            # ansetzungssachtitel
+        'newcat': '0310'  # ansetzungssachtitel
+        'mult': 1
+    '331 ':            # hauptsachtitel in vorlageform oder mischform
+        'newcat': '0331' # hauptsachtitel in vorlageform oder mischform
+        'mult': 1
+    '331a':            # hauptsachtitel in vorlageform oder mischform
+        'newcat': '0331' # hauptsachtitel in vorlageform oder mischform
+        'mult': 1
+    '331b':            # hauptsachtitel in vorlageform oder mischform
+        'newcat': '0331' # hauptsachtitel in vorlageform oder mischform
+        'mult': 1
+    '333 ':            # Zu erg. URH
+        'newcat': '0333' # Zu erg. URH
+        'mult': 1
+    '335 ':            # zusaetze zum hauptsachtitel
+        'newcat': '0335' # zusaetze zum hauptsachtitel
+        'mult': 1
+    '335a':            # zusaetze zum hauptsachtitel
+        'newcat': '0335' # zusaetze zum hauptsachtitel
+        'mult': 1
+    '335b':            # zusaetze zum hauptsachtitel
+        'newcat': '0335' # zusaetze zum hauptsachtitel
+        'mult': 1
+    '359 ':            # Vorl. Verf/Koerp
+        'newcat': '0359' # Vorl. Verf/Koerp
+        'mult': 1
+    '360 ':            # RDA Unterreihe Vorlageform
+        'newcat': '0360' # Vorl. Verf/Koerp
+        'mult': 1
+    '370a':            # WST
+        'newcat': '0370' # WST
+        'mult': 1
+    '403 ':            # ausgabebezeichnung in vorlageform
+        'newcat': '0403' # ausgabebezeichnung in vorlageform
+        'mult': 1
+    '405 ':            # Erschverlauf
+        'newcat': '0405' # Erschverlauf
+        'mult': 1
+    '410 ':            # ort(e) des 1. verlegers, druckers usw.
+        'newcat': '0410' # ort(e) des 1. verlegers, druckers usw.
+        'mult': 1
+    '412 ':            # name des 1. verlegers, druckers usw.
+        'newcat': '0412' # name des 1. verlegers, druckers usw.
+        'mult': 1
+#    '425a':            # erscheinungsjahr(e)
+#        'newcat': '0425' # erscheinungsjahr(e)
+#        'mult': 1
+#    '425b':            # erscheinungsjahr(e)
+#        'newcat': '0425' # erscheinungsjahr(e)
+#        'mult': 1
+#    '425c':            # erscheinungsjahr(e)
+#        'newcat': '0425' # erscheinungsjahr(e)
+#        'mult': 1
+    '433 ':            # umfangsangabe
+        'newcat': '0433' # umfangsangabe
+        'mult': 1
+    '451 ':            # 1. gesamttitel in vorlageform
+        'newcat': '0451' # 1. gesamttitel in vorlageform
+        'mult': 1
+    '507 ':            # Titelangaben
+        'newcat': '0507' # Titelangaben
+        'mult': 1
+    '523 ':            # Erscheinungsweise
+        'newcat': '0523' # Erscheinungsweise
+        'mult': 1
+    '524 ':            # Darin:
+        'newcat': '0524' # Darin:
+        'mult': 1
+    '527z':            # Parallele Ausg.
+        'newcat': '0527' # Parallele Ausg.
+        'mult': 1
+    '529z':            # Tit beilage
+        'newcat': '0529' # Tit beilage
+        'mult': 1
+    '530z':            # Bezugswerk
+        'newcat': '0530' # Bezugswerk
+        'mult': 1
+    '531z':            # FruehAusg.
+        'newcat': '0531' # FruehAusg.
+        'mult': 1
+    '532z':            # FruehTit.
+        'newcat': '0532' # FruehTit.
+        'mult': 1
+    '533z':            # SpaetAusg.
+        'newcat': '0533' # SpaetAusg.
+        'mult': 1
+    '534 ':            # Titelkonk.
+        'newcat': '0534' # Titelkonk.
+        'mult': 1
+    '540 ':            # internationale standardbuchnummer (isbn)
+        'newcat': '0540' # internationale standardbuchnummer (isbn)
+        'mult': 1
+    '540a':            # internationale standardbuchnummer (isbn)
+        'newcat': '0540' # internationale standardbuchnummer (isbn)
+        'mult': 1
+    '542a':            # ISSN
+        'newcat': '0543' # ISSN
+        'mult': 1
+    '611 ':              # Herstellungsort
+        'newcat': '0611' # Herstellungsort
+        'mult': 1
+    '613 ':              # Hersteller
+        'newcat': '0613' # Hersteller
+        'mult': 1
+    '619 ':              # Herstellungsjahr
+        'newcat': '0619' # Herstellungsjahr
+        'mult': 1
+    '621 ':              # 1. gesamttitel der sekundaerform in vorlageform
+        'newcat': '0508' # Quelle
+        'mult': 1
+    '634a':            # internationale standardbuchnummer (isbn)
+        'newcat': '0540' # internationale standardbuchnummer (isbn)
+        'mult': 1
+    '655 ':
+         # URLs
+        'mult': 1
+        'subfield':
+            'u': '0662'
+    '655e':
+        'no_conv': 1
+         # URLs
+        'mult': 1
+        'subfield':
+            'u': '0662'
+    '659 ':
+         # URL Beschreibungen
+        'mult': 1
+        'subfield':
+            '3': '0663'
+#     '710':            # schlagwoerter und schlagwortketten
+#         'newcat': '0710' # schlagwoerter und schlagwortketten
+#         'mult': 1
+#         'ref': 1
+    '902k':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '902g':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '902s':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '100 ':            # name der 1. person in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+#    '102a':            # ID der 1. person
+#        'newcat': '0100' # verfasser
+#        'mult': 1
+#        'ref': 1
+#    '102b':            # ID der 1. person
+#        'newcat': '0100' # verfasser
+#        'mult': 1
+#        'ref': 1
+    '104 ':            # name der 2. person in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+#    '106a':            # ID der 2. person
+#        'newcat': '0100' # verfasser
+#        'mult': 1
+#        'ref': 1
+#    '106b':            # ID der 2. person
+#        'newcat': '0100' # verfasser
+#        'mult': 1
+#        'ref': 1
+    '108 ':            # name der 3. person in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+#    '110a':            # ID der 3. person
+#        'newcat': '0100' # verfasser
+#        'mult': 1
+#        'ref': 1
+#    '110b':            # ID der 3. person
+#        'newcat': '0100' # verfasser
+#        'mult': 1
+#        'ref': 1
+    '200 ':            # name der 1. koerperschaft in ansetzungsform
+        'newcat': '0200' # koerperschaft
+        'mult': 1
+        'type': 'corporatebody'
+#    '202a':            # ID der 1. koerperschaft
+#        'newcat': '0200' # koerperschaft
+#        'mult': 1
+#        'ref': 1
+#    '202b':            # ID der 1. koerperschaft
+#        'newcat': '0200' # koerperschaft
+#        'mult': 1
+#        'ref': 1
+    '204 ':            # name der 2. koerperschaft in ansetzungsform
+         'newcat': '0200' # koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+#    '206a':            # ID der 2. koerperschaft
+#        'newcat': '0200' # koerperschaft
+#        'mult': 1
+#        'ref': 1
+#    '206b':            # ID der 2. koerperschaft
+#        'newcat': '0200' # koerperschaft
+#        'mult': 1
+#        'ref': 1
+    '208 ':            # name der 3. koerperschaft in ansetzungsform
+         'newcat': '0200' # koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+#    '210a':            # ID der 3. koerperschaft
+#        'newcat': '0200' # koerperschaft
+#        'mult': 1
+#        'ref': 1
+#    '210b':            # ID der 3. koerperschaft
+#        'newcat': '0200' # koerperschaft
+#        'mult': 1
+#        'ref': 1
+
+holding:
+    '001 ':
+        'newcat': 'id' # ID
+        'mult'  : 0
+    '012 ':
+        'newcat': '0004' # TitelID
+        'mult': 0
+    '100 ':
+        'newcat': '0014' # Signatur
+        'mult': 1
+    '200 ':
+         # Bestandsverlauf
+        'mult': 0
+        'subfield':
+            'a': '1202' # Bemerkung
+            'b': '1200' # Positiv
+            'c': '1201' # Negativ
+            'e': '0016' # Standort
+            'f': '0014' # Signatur
+    '071 ':
+        'newcat': '3330' # Bestandsverlauf
+        'mult': 0
+
+filter:
+  '540 ':
+    'filter_generic':
+       - from: 'ISBN '
+         to: ''
+  '540a':
+    'filter_generic':
+       - from: 'ISBN '
+         to: ''
+  '634a':
+    'filter_generic':
+       - from: 'ISBN '
+         to: ''

@@ -244,18 +244,24 @@ title:
     '410 ':            # ort(e) des 1. verlegers, druckers usw.
         'newcat': '0410' # ort(e) des 1. verlegers, druckers usw.
         'mult': 1
+    '419 ':            # RDA
+        'newcat': '0419' # RDA
+        'mult': 1
     '412 ':            # name des 1. verlegers, druckers usw.
         'newcat': '0412' # name des 1. verlegers, druckers usw.
         'mult': 1
-#    '425a':            # erscheinungsjahr(e)
-#        'newcat': '0425' # erscheinungsjahr(e)
-#        'mult': 1
-#    '425b':            # erscheinungsjahr(e)
-#        'newcat': '0425' # erscheinungsjahr(e)
-#        'mult': 1
-#    '425c':            # erscheinungsjahr(e)
-#        'newcat': '0425' # erscheinungsjahr(e)
-#        'mult': 1
+    '425_':            # erscheinungsjahr(e)
+        'newcat': '0425' # erscheinungsjahr(e)
+        'mult': 1
+    '425a':            # erscheinungsjahr(e)
+        'newcat': '0425' # erscheinungsjahr(e)
+        'mult': 1
+    '425b':            # erscheinungsjahr(e)
+        'newcat': '0425' # erscheinungsjahr(e)
+        'mult': 1
+    '425c':            # erscheinungsjahr(e)
+        'newcat': '0425' # erscheinungsjahr(e)
+        'mult': 1
     '433 ':            # umfangsangabe
         'newcat': '0433' # umfangsangabe
         'mult': 1

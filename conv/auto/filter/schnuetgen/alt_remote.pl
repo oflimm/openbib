@@ -77,7 +77,7 @@ print "Letztes Datum: $lastdate\n";
 
 foreach my $file(@FILES){
     if ($file=~m/export_mab_HBZ01.Z9057.F.$lastdate.\d+\.zip/){
-        system("unzip -v -p $pooldir/$pool/$file | perl -n -e '/\x1E025z/ and print' > $pooldir/$pool/tmp.TIT");
+        system("unzip -v -p $pooldir/$pool/$file > $pooldir/$pool/tmp.TIT");
     }
     if ($file=~m/export_mab_HBZ60.Z9057.F.$lastdate.\d+\.zip/){
         system("unzip -v -p $pooldir/$pool/$file > $pooldir/$pool/tmp.MEX");

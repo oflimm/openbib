@@ -407,6 +407,10 @@ sub sigel2isil {
         push @isils, "DE-38-USBFB";
         push @isils, "DE-38-507";
     }
+    elsif ($content =~m/^Kn\s*3/){
+        push @isils, "DE-Kn3";
+        push @isils, "DE-38-ZBKUNST";
+    }
     elsif ($content =~m/^38\/(\d\d\d)/){
         push @isils, "DE-38-$1";
     }

@@ -47,7 +47,7 @@
                 'L0250', # msg.maketext("L0250") # Sigel in ZDB
 #                'L0280', # msg.maketext("L0280") # Koordinaten
                  'Die 5 zuletzt angelegten Literaturlisten', # msg.maketext("Die 5 zuletzt angelegten Literaturlisten") #
-                 'Die 5 zuletzt vergebenen Tags', # msg.maketext("Die 5 zuletzt vergebenen Tags") #
+                 #'Die 5 zuletzt vergebenen Tags', # msg.maketext("Die 5 zuletzt vergebenen Tags") #
                 ]
 
 %]

@@ -2032,7 +2032,7 @@ IF recent_litlists.size > 0;
   END;
   litlist_content.push("</ul>");
 ELSE;
-  litlist_content.push("Es wurden noch keine Literaturlisten mit Titel dieses Kataloges angelegt.");
+  litlist_content.push("Es wurden noch keine Literaturlisten mit Titeln dieses Kataloges angelegt.");
 END;
 
 IF sigel == '123';

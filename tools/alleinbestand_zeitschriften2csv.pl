@@ -304,7 +304,7 @@ while (my $zeitschrift = $zeitschriften->next()){
 
 close ($out);
 
-$logger->info("Alleinbesitz für $sigel bei $alleinidx von $idx Zeitschriften");
+$logger->info("Alleinbesitz fuer $sigel bei $alleinidx von $idx Zeitschriften");
 
 sub print_help {
     print "alleinbestand_zeitschriften2csv.pl - Erzeugen von CSV Zeitschiftenlisten mit Alleinbestand eines Sigels\n\n";

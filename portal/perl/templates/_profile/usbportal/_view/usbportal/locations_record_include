@@ -1,9 +1,7 @@
 [%- IF locationinfo.fields.${"L0280"}.first.content -%]
 <meta charset="utf-8">
 <link rel="stylesheet" href="https://openlayers.org/en/v4.2.0/css/ol.css" type="text/css">
-<!-- The
-    line below is only needed for old environments like Internet Explorer and
-    Android 4.x -->
+<!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
 <script src="https://cdn.polyfill.io/v2/polyfill.min.js?featur
     es=requestAnimationFrame,Element.prototype.classList,URL"></script>
 <script src="https://openlayers.org/en/v4.2.0/build/ol.js"></script>
@@ -90,17 +88,11 @@
     height: auto;
   }
 
-
-
-
-
-
   #divSearch {
     float: left;
     text-align: left;
     display: inline;
   }
-
 
   .biggerText {
     font-size: 2.0em;
@@ -115,8 +107,6 @@
     white-space: nowrap;
     font: 0.7em sans-serif;
   }
-
-
 
   input[type=range] {
     /* fix for FF unable to apply focus style bug  */
@@ -180,7 +170,6 @@
   /*POPUP*/
 
   .ol-popup {
-
     // position: absolute;
     background-color: #EFEFEF;
     -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
@@ -229,7 +218,6 @@
     top: 2px;
     right: 8px;
   }
-
 
   .ol-popup-closer:after {
     content: "✖";
@@ -335,12 +323,12 @@
   var semester;
   var feiertag;
 
-  var red = '/lernen_arbeiten/bibliotheken/res/pin_pink.png';
-  var grey = '/lernen_arbeiten/bibliotheken/res/pin_grau.png';
-  var green = '/lernen_arbeiten/bibliotheken/res/pin_lindgruen.png';
-  var pin_gps = '/lernen_arbeiten/bibliotheken/res/pin_blau_GPS.png';
-  var clock = '/lernen_arbeiten/bibliotheken/res/clock.png';
-  var calendar = '/lernen_arbeiten/bibliotheken/res/calendar.png';
+  var red = 'https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/pin_pink.png';
+  var grey = 'https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/pin_grau.png';
+  var green = 'https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/pin_lindgruen.png';
+  var pin_gps = 'https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/pin_blau_GPS.png';
+  var clock = 'https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/clock.png';
+  var calendar = 'https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/calendar.png';
 
 
   var map;
@@ -350,11 +338,24 @@
 
   var windowWidth;
   var windowHeight;
+  
+  var browser = '';
+  var printLogsToConsole = false;
 
   /**
-   * Initialsierung beim Seitenladen
+   * Initialsierung
+   * sigelUebergeben zB 'DE-38-101'
    */
   function init(sigelUebergeben) {
+	printLogs("Übergebenes Sigel: " + sigelUebergeben);
+	if(!String.prototype.startsWith){
+		String.prototype.startsWith = function (str) {
+			return !this.indexOf(str);
+		}
+	}
+  
+    browser = detectBrowser();
+	
     // haben wir grad Semester?
     semester = getSemester(); // true = im Semester; false = Semesterferien
     // haben wir grad Feiertag?
@@ -456,31 +457,55 @@
 
     if (windowWidth < 1000 && aufInstitutsseite === false) {
       screen = 'mobile';
-      // console.log('wechsel zu mobile');
       showDesktopGui = false;
-
       calcMarkers(9, true);
     }
     if (windowWidth > 1000 /* && screen === 'mobile' */ ) {
       screen = 'desktop';
-      // console.log('wechsel zu desktop');
-      //createObereLeiste();
       showDesktopGui = true;
-
       calcMarkers(9, true);
     }
   };
 
+  function detectBrowser() {
+	 if((navigator.userAgent.indexOf("Opera") || navigator.userAgent.indexOf('OPR')) != -1 ) 
+    {
+        browser = 'Opera';
+    }
+    else if(navigator.userAgent.indexOf("Chrome") != -1 )
+    {
+        browser = 'Chrome';
+    }
+    else if(navigator.userAgent.indexOf("Safari") != -1)
+    {
+        browser = 'Safari';
+    }
+    else if(navigator.userAgent.indexOf("Firefox") != -1 ) 
+    {
+         browser = 'Firefox';
+    }
+    else if((navigator.userAgent.indexOf("MSIE") != -1 ) || (!!document.documentMode == true )) //IF IE > 10
+    {
+      browser = 'IE'; 
+    }  
+    else 
+    {
+       browser = 'unknown';
+    }
+	printLogs("Browser: " + browser);
+	return browser;
+  }
+  
   function clearSucheMob() {
     document.getElementById('sucheMob').value = "";
     document.getElementById('daten').innerHTML = "";
   }
-
-  function printLogs() {
-    console.log(dates('volles_datum') + " " + dates('uhrzeit'));
-    console.log("Semester: " + getSemester());
-    console.log("Feiertag: " + getFeiertag());
-  }
+	
+	function printLogs(input) {
+		if(printLogsToConsole)
+			console.log(input);
+	}
+ 
   /**
    * erstellt die Map samt ControlElementen
    */
@@ -664,16 +689,28 @@
     textZeitwahl = document.createElement('span');
     textZeitwahl.setAttribute("style", "float: left");
     textZeitwahl.setAttribute("style", "position: absolute");
-
-    slider.addEventListener("input", function() {
-      var minutes = addZero(parseInt(this.value % 60, 10));
-      var hours = parseInt(this.value / 60 % 24, 10);
-      gewaehlteZeit = hours + "" + minutes;
-      textZeitwahl.innerHTML = hours + ":" + minutes + " Uhr";
-      calcMarkers(9, false);
-    });
+	
+	if(browser !== 'IE') {
+		slider.addEventListener("input", function() {
+		  var minutes = addZero(parseInt(this.value % 60, 10));
+		  var hours = parseInt(this.value / 60 % 24, 10);
+		  gewaehlteZeit = hours + "" + minutes;
+		  textZeitwahl.innerHTML = hours + ":" + minutes + " Uhr";
+		  calcMarkers(9, false);
+		});
+	}
+	else if(browser === 'IE'){
+		slider.addEventListener("change", function() {
+		  var minutes = addZero(parseInt(this.value % 60, 10));
+		  var hours = parseInt(this.value / 60 % 24, 10);
+		  gewaehlteZeit = hours + "" + minutes;
+		  textZeitwahl.innerHTML = hours + ":" + minutes + " Uhr";
+		  calcMarkers(9, false);
+		});
+	}
+   
     slider.value = dates('stunde') * 60;
-
+	
     tageChoice = document.createElement("select");
     tageChoice.id = "tageChoice";
     tageChoice.onchange = function(e) {
@@ -979,17 +1016,22 @@
       var s1 = '';
       var status = '';
 
-
       var nameLink = s0[1];
 
       if (s0[3].match(/DE-38-[0-9]{0,3}$/))
         var nameLink = '<a target="blank" href="/lernen_arbeiten/bibliotheken/38_' + s0[3].replace(/DE-38-/g, "") + '/index_ger.html">' + s0[1] + '</a>';
-
-      if (s0[1].indexOf('USB Köln') !== -1)
+	  
+	  // USB	
+      else if (s0[1] == 'USB Köln')
         var nameLink = '<a target="blank" href="/index_ger.html">' + s0[1] + '</a>';
 
-
-
+	  // HWA
+	  else if(s0[1] == 'USB Köln / Humanwissenschaftliche Abteilung')
+		var nameLink = '<a target="blank" href="https://www.ub.uni-koeln.de/ueber_uns/dach/hwa/index_ger.html">' + s0[1] + '</a>';
+	
+      // Japanisches Kulturinstitut
+      else if(s0[1] == 'Japanisches Kulturinstitut')
+		var nameLink = '<a target="blank" href="http://www.jki.de/">' + s0[1] + '</a>';
 
       if (s0[0] === '1')
         status = '<strong style="color: green">zurzeit geöffnet</strong>';
@@ -1091,7 +1133,7 @@
 
     } else
       gewaehlterTag = parseInt(day);
-
+	printLogs("Tag: " + gewaehlterTag);
     calcMarkers(9, false);
   }
 
@@ -1111,7 +1153,7 @@
 
       // wieder aktuelle Uhrzeit in Uhrzeitfeld schreiben
       var now = new Date();
-      document.getElementById('time').innerHTML = now.getHours() + ':' + addZero(now.getMinutes() + " Uhr");
+      document.getElementById('time').innerHTML = now.getHours() + ':' + addZero(now.getMinutes()) + " Uhr";
     }
 
     tageChoice.value = 9;
@@ -1140,10 +1182,12 @@
       p.innerText = 'Filter einblenden';
       document.getElementById('filterPanel').setAttribute("style", "height: 25px");
       document.getElementById('spanFilterPanel').setAttribute("style", "display: none");
+	  printLogs("Filter ausgeblendet");
     } else if (p.innerText === 'Filter einblenden') {
       p.innerText = 'Filter ausblenden';
       document.getElementById('spanFilterPanel').setAttribute("style", "display: block");
       document.getElementById('filterPanel').setAttribute("style", "height: auto");
+	  printLogs("Filter eingeblendet");
     }
   }
 
@@ -1153,19 +1197,31 @@
       i = "0" + i;
     return i;
   }
-
+  
   function calcMarkersByName(input) {
-
+  printLogs('INPUT: ' + input);
+	// USB Köln
     if (input === 'USB Köln') {
       for (var i = 0; i < institute.length; i++) {
-        if (institute[i].sigel.indexOf('DE-38') !== -1 && input.length === 4) {
+        if (institute[i].sigel.indexOf('DE-38') != -1 && input.length === 4) {
           ints.push(institute[i]);
           marks.push(koordinaten[i]);
           sigelname.push(institute[i].name);
         }
       }
-    } else {
-      for (var t in input) {
+    }
+	// HWA
+	else if (input === 'USB Köln / Humanwissenschaftliche Abteilung') {
+      for (var i = 0; i < institute.length; i++) {
+        if (institute[i].sigel.indexOf('DE-38-HWA') != -1 && input.length === 4) {
+          ints.push(institute[i]);
+          marks.push(koordinaten[i]);
+          sigelname.push(institute[i].name);
+        }
+      }
+    }
+	else {
+      for (var t = 0; t < input.length; t++) {
         for (var i = 0; i < institute.length; i++) {
           if (institute[i].sigel === input[t]) {
             ints.push(institute[i]);
@@ -1174,6 +1230,7 @@
         }
       }
     }
+	
 	if(ints.length !== 0) {
 		showData(ints[0].name, true);
 		savedFakultaet = ints[0].sigel;
@@ -1200,12 +1257,151 @@
 
     for (var v = 0; v < institute.length; v++) {
       var insti = institute[v];
-      if (insti.name.toLowerCase().indexOf(inp.toLowerCase()) !== -1 || insti.sigel.indexOf(inp) === 0) {
+      if (insti.name.toLowerCase().indexOf(inp.toLowerCase()) != -1 || insti.sigel.indexOf(inp) == 0) {
         foundInsts.push(institute[v].sigel);
       }
     }
+	
+	var neudazu = [];
+	neudazu = abkuerzungen(inp);
+	
+	if(neudazu.length > 0) {
+		for (var i = 0; i < neudazu.length; i++) {
+			var hinzufuegen = true;
+			for(var g = 0; g < foundInsts.length; g++) {
+				if(foundInsts[g] == neudazu[i]) {
+					hinzufuegen = false;
+				}
+			}	
+			if(hinzufuegen){
+				foundInsts.push(neudazu[i]);
+			}
+		}
+	}	
+	printLogs("Gesuchte Institute: " + foundInsts);
+	
     calcMarkersByName(foundInsts);
   }
+  
+  
+  
+	function abkuerzungen(input) {
+		var arr = [];
+		
+		/* Allgemeine Abkürzungen */
+		if('vwl'.startsWith(input.toLowerCase())) return ['DE-38-101'];
+		if('hwa'.startsWith(input.toLowerCase())) return ['DE-38-HWA'];
+			
+		/* Liste von Schlagworten basierend auf den Angaben der Bibliotheken */	
+		/* A */
+		else if('abenteuerliteratur'.startsWith(input.toLowerCase())) return ['DE-38-323'];
+		else if('abwl'.startsWith(input.toLowerCase())) return ['DE-38-108', 'DE-38-112', 'DE-38-118', 'DE-38-124', 'DE-38-156'];
+		else if('afrikanistik'.startsWith(input)) return ['DE-38-998', 'DE-38-999'];
+		else if('altägypten'.startsWith(input.toLowerCase()) || 'ägyptologie'.startsWith(input.toLowerCase())) return ['DE-38-416'];
+		else if('alte geschichte'.startsWith(input.toLowerCase())) return ['DE-38-404'];
+		else if('altertumskunde'.startsWith(input.toLowerCase())) return ['DE-38-404', 'DE-38-460', 'DE-38-461', 'DE-38-462'];		
+		else if('amerikanische literatur'.startsWith(input.toLowerCase())) return ['DE-38-411'];
+		else if('amerikanisches recht'.startsWith(input.toLowerCase())) return ['DE-38-235'];
+		else if('anglistik'.startsWith(input.toLowerCase())) return ['DE-38-411'];
+		else if('anglo amerikanische geschichte'.startsWith(input.toLowerCase())) return ['DE-38-422'];
+		else if('anthropologie'.startsWith(input.toLowerCase())) return ['DE-38-419']; /* eigtl. anthrpologie (afrikanische) */			
+		else if('anwaltsrecht- und notarrecht'.startsWith(input.toLowerCase())) return ['DE-38-233'];
+		else if('arabistik'.startsWith(input.toLowerCase())) return ['DE-38-414'];
+		else if('arbeitskreis'.startsWith(input.toLowerCase()) || 'nationalismusforschung'.startsWith(input.toLowerCase())) return ['DE-38-420'];
+		else if('arbeitsmarktpolitik'.startsWith(input.toLowerCase())) return ['DE-38-107'];
+		else if('arbeitsrecht'.startsWith(input.toLowerCase())) return ['DE-38-203', 'DE-38-204'];		
+		else if('archäologie'.startsWith(input.toLowerCase())) return ['DE-38-426', 'DE-38-427', 'DE-38-438'];
+		else if('architekturgeschichte'.startsWith(input.toLowerCase())) return ['DE-38-445'];
+		else if('aristoteles'.startsWith(input.toLowerCase())) return ['DE-38-432'];
+		else if('asien'.startsWith(input.toLowerCase())) return ['DE-38-450', 'DE-38-459'];	
+		else if('atomrecht'.startsWith(input.toLowerCase())) return ['DE-38-220'];
+		else if('augustinus'.startsWith(input.toLowerCase())) return ['DE-38-432'];
+		else if('ausländisches'.startsWith(input.toLowerCase()) || 'öffentliches'.startsWith(input.toLowerCase()) || 'recht'.startsWith(input.toLowerCase())) return ['DE-38-207'];
+		else if('ausländisches'.startsWith(input.toLowerCase()) || 'privatrecht'.startsWith(input.toLowerCase())) return ['DE-38-208'];
+		else if('außenwirtschaft'.startsWith(input.toLowerCase())) return ['DE-38-101'];
+		else if('australische'.startsWith(input.toLowerCase()) || 'literatur'.startsWith(input.toLowerCase())) return ['DE-38-411'];	
+		else if('averroes'.startsWith(input.toLowerCase())) return ['DE-38-432'];
+			
+		/* B */
+		else if('bankbetriebslehre'.startsWith(input.toLowerCase())) return ['DE-38-109'];		
+		else if('bankrecht'.startsWith(input.toLowerCase())) return ['DE-38-217'];
+		else if('bankseminar'.startsWith(input.toLowerCase())) return ['DE-38-109'];
+		else if('behindertenpädagogik'.startsWith(input.toLowerCase())) return ['DE-38-302'];
+		else if('berufspädagogik'.startsWith(input.toLowerCase())) return ['DE-38-134'];
+		else if('besteuerung'.startsWith(input.toLowerCase()) || 'steuerwettbewerb'.startsWith(input.toLowerCase()) || 'international'.startsWith(input.toLowerCase())) return ['DE-38-101'];
+		else if('betriebswirtschaft'.startsWith(input.toLowerCase())) return ['DE-38-118', 'DE-38-124', 'DE-38-156'];
+		else if('bilanzrecht'.startsWith(input.toLowerCase())) return ['DE-38-231'];
+		else if('bildungsforschung'.startsWith(input.toLowerCase()) || 'sozialwissenschaften'.startsWith(input.toLowerCase())) return ['DE-38-309', 'DE-38-310'];
+		else if('bildungspolitik'.startsWith(input.toLowerCase())) return ['DE-38-107'];
+		else if('bildungswissenschaften'.startsWith(input.toLowerCase())) return ['DE-38-327'];	
+		else if('biochemie'.startsWith(input.toLowerCase())) return ['DE-38-503', 'DE-38-507'];	
+		else if('bioinformatik'.startsWith(input.toLowerCase())) return ['DE-38-503'];	
+		else if('biologie'.startsWith(input.toLowerCase())) return ['DE-38-503'];	
+		else if('biozentrum'.startsWith(input.toLowerCase())) return ['DE-38-503'];	
+		else if('botanik'.startsWith(input.toLowerCase())) return ['DE-38-503'];	
+		else if('bruch'.startsWith(input.toLowerCase()) || 'max'.startsWith(input.toLowerCase())) return ['DE-38-430'];
+		else if('bürgerliches'.startsWith(input.toLowerCase()) || 'recht'.startsWith(input.toLowerCase())) return ['DE-38-230', 'DE-38-231', 'DE-38-232', 'DE-38-234',];		
+		else if('byzantinistik'.startsWith(input.toLowerCase())) return ['DE-38-460'];
+		
+		/* C */
+		else if('transnational'.startsWith(input.toLowerCase())) return ['DE-38-217'];	// Center for Transnational Law (CENTRAL)
+		else if('chemie'.startsWith(input.toLowerCase())) return ['DE-38-507'];
+		else if('physikalische'.startsWith(input.toLowerCase()) || 'chemie'.startsWith(input.toLowerCase())) return ['DE-38-509'];
+		else if('didaktik'.startsWith(input.toLowerCase()) || 'chemie'.startsWith(input.toLowerCase())) return ['DE-38-317'];
+		else if('china'.startsWith(input.toLowerCase())) return ['DE-38-450'];	
+		else if('collegium'.startsWith(input.toLowerCase()) || 'musicum'.startsWith(input.toLowerCase())) return ['DE-38-430'];
+		else if('computer'.startsWith(input.toLowerCase())) return ['DE-38-006'];	
+		else if('computerrecht'.startsWith(input.toLowerCase())) return ['DE-38-222'];	
+		else if('controlling'.startsWith(input.toLowerCase())) return ['DE-38-160'];	
+		
+		/* D */
+		else if('datenverarbeitung'.startsWith(input.toLowerCase())) return ['DE-38-006'];	
+		else if('datenschutz'.startsWith(input.toLowerCase())) return ['DE-38-222'];	
+		else if('ddr'.startsWith(input.toLowerCase())) return ['DE-38-219']; // DDR-Recht	
+		else if('denkmalpflege'.startsWith(input.toLowerCase())) return ['DE-38-445'];	
+		else if('deutsche'.startsWith(input.toLowerCase()) || 'sprache'.startsWith(input.toLowerCase()) || 'literatur'.startsWith(input.toLowerCase())) return ['DE-38-312', 'DE-38-405'];
+		else if('digitale'.startsWith(input.toLowerCase()) || 'medien'.startsWith(input.toLowerCase())) return ['DE-38-222'];
+		else if('distributionsforschung'.startsWith(input.toLowerCase())) return ['DE-38-158'];	
+		else if('dokumentationszentrum'.startsWith(input.toLowerCase())) return ['DE-38-233'];	// Dokumentationszentrum für Europäisches Anwalts- und Notarrecht
+		else if('drika'.startsWith(input.toLowerCase())) return ['DE-38-438'];	
+		else if('drosophila'.startsWith(input.toLowerCase())) return ['DE-38-503'];	
+		
+		/* E */
+		else if('commerce'.startsWith(input.toLowerCase())) return ['DE-38-159'];	// E-Commerce
+		else if('empirische'.startsWith(input.toLowerCase()) || 'sozialforschung'.startsWith(input.toLowerCase())) return ['DE-38-132', 'DE_38-141', 'DE-38-171'];	
+		else if('energierecht'.startsWith(input.toLowerCase())) return ['DE-38-220'];	
+		else if('energiewirtschaft'.startsWith(input.toLowerCase())) return ['DE-38-119', 'DE-38-220'];	
+		else if('englische'.startsWith(input.toLowerCase()) || 'literatur'.startsWith(input.toLowerCase())) return ['DE-38-411'];	
+		// englische sprache 313, 411
+		else if('entwicklungsbiologie'.startsWith(input.toLowerCase()) || 'entwicklungsgenetik'.startsWith(input.toLowerCase())) return ['DE-38-503'];	
+		else if('entwicklungspsychologie'.startsWith(input.toLowerCase())) return ['DE-38-305'];	
+		else if('epigraphik'.startsWith(input.toLowerCase())) return ['DE-38-404'];	
+		else if('erziehungswissenschaft'.startsWith(input.toLowerCase())) return ['DE-38-HWA'];	
+		else if('ethnologie'.startsWith(input.toLowerCase())) return ['DE-38-431'];	
+		else if('europäische'.startsWith(input.toLowerCase()) || 'fragen'.startsWith(input.toLowerCase())) return ['DE-38-125', 'DE-38-EDZ'];
+		else if('europäische'.startsWith(input.toLowerCase()) || 'musikethnologie'.startsWith(input.toLowerCase())) return ['DE-38-324'];
+		else if('europäische'.startsWith(input.toLowerCase()) || 'rechtslinguistik'.startsWith(input.toLowerCase())) return ['DE-38-468'];
+		else if('europäische'.startsWith(input.toLowerCase()) || 'union'.startsWith(input.toLowerCase())) return ['DE-38-215', 'DE-38-EDZ'];
+		// Europäisches Anwalts- und Notarrecht 38/233
+		// Europäisches Arbeits- und Sozialrecht 38/203
+		else if('europäisches'.startsWith(input.toLowerCase()) || 'dokumentationszentrum'.startsWith(input.toLowerCase())) return ['DE-38-EDZ'];
+		else if('europäisches'.startsWith(input.toLowerCase()) || 'medienrecht'.startsWith(input.toLowerCase())) return ['DE-38-222', 'DE-38-EDZ'];
+		else if('europäisches'.startsWith(input.toLowerCase()) || 'rundfunkrecht'.startsWith(input.toLowerCase())) return ['DE-38-222', 'DE-38-EDZ'];
+		else if('europäisches'.startsWith(input.toLowerCase()) || 'telekommunikationsrecht'.startsWith(input.toLowerCase())) return ['DE-38-222', 'DE-38-EDZ'];
+		else if('europäisches'.startsWith(input.toLowerCase()) || 'wettbewerbsrecht'.startsWith(input.toLowerCase())) return ['DE-38-222', 'DE-38-EDZ'];
+		else if('europarecht'.startsWith(input.toLowerCase())) return ['DE-38-212', 'DE-38-213', 'DE-38-215', 'DE-38-468', 'DE-38-EDZ'];	
+		else if('evangelische'.startsWith(input.toLowerCase()) || 'theologie'.startsWith(input.toLowerCase())) return ['DE-38-111', 'DE-38-623'];
+		else if('evolutionsgenetik'.startsWith(input.toLowerCase())) return ['DE-38-503'];
+
+		/* F */		
+		// else if(''.startsWith(input.toLowerCase())) return ['DE-38-'];	
+		
+		else
+			return [];
+			
+	}
+
+  
 
   // Verarbeite Sucheingabe in Textfeld 'suche'
   function searchMob() {
@@ -1213,7 +1409,7 @@
     var inp = document.getElementById('sucheMob').value;
     for (var v = 0; v < institute.length; v++) {
       var insti = institute[v];
-      if (insti.name.toLowerCase().indexOf(inp.toLowerCase()) !== -1 || insti.sigel.indexOf(inp) === 0) {
+      if (insti.name.toLowerCase().indexOf(inp.toLowerCase()) != -1 || insti.sigel.indexOf(inp) == 0) {
         foundInsts.push(institute[v].sigel);
       }
     }
@@ -1224,8 +1420,6 @@
     // 9.00 - 18.45 Uhr
     if (sub1.match(new RegExp(/(\d{1,2}\.\d{2}[\s]?-[\s]?\d{1,2}\.\d{2}[\s]?)/g))) {
       var z = sub1.match(new RegExp(/(\d{1,2}\.\d{2}[\s]?-[\s]?\d{1,2}\.\d{2}[\s]?)/g));
-
-
 
       for (t1 = 0; t1 < z.length; t1++) {
         var zeit = z[t1].split("-");
@@ -1243,7 +1437,7 @@
         }
       }
     }
-    if (sub1.indexOf('geschlossen') !== -1)
+    if (sub1.indexOf('geschlossen') != -1)
       return 2;
     else
       return 0;
@@ -1263,7 +1457,6 @@
    * @return korrespondierende Nummer (0 - Montag, 1 - Dienstag, ...)
    */
   function tageZuNummer(tag) {
-    // console.log(tag);
     var t = tag.trim();
     var arrayKurz = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
     var arrayLang = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
@@ -1284,14 +1477,14 @@
    */
 
   function updateClock() {
-    //console.log("Update Uhrzeit");
     var now = new Date(); // current date
 
-    time = now.getHours() + ':' + addZero(now.getMinutes() + " Uhr");
+    time = now.getHours() + ':' + addZero(now.getMinutes()) + " Uhr";
 
     document.getElementById('time').innerHTML = time;
     gewaehlteZeit = now.getHours() + '' + addZero(now.getMinutes());
-
+	
+	printLogs("Uhrzeit: " + gewaehlteZeit);
     setTimeout(updateClock, 30000);
   }
 
@@ -1301,7 +1494,6 @@
       /* Wochentag */
       case 'tag':
         // return date.getDay() -1;
-        //console.log("gewählterTag: " + gewählterTag);
         return gewaehlterTag;
 
         /* Uhrzeit ohne doppelpunkt*/
@@ -1326,9 +1518,7 @@
         return date.getMonth() + 1;
 
       case 'voller_tag':
-        var datum;
-        datum = addZero(date.getDate()) + "." + (date.getMonth() + 1);
-        return datum;
+        return addZero(date.getDate()) + "." + (date.getMonth() + 1);
 
       case 'semester':
         return date.getFullYear() + "" + (addZero(date.getMonth() + 1)) + "" + addZero(date.getDate());
@@ -1342,7 +1532,7 @@
    */
   function getSemester() {
     var aktDatum = dates('semester');
-    for (var semesterIt in semesterZeit) {
+    for (var semesterIt = 0; semesterIt < semesterZeit.length; semesterIt++) {
       if (aktDatum > semesterZeit[semesterIt].von && aktDatum < semesterZeit[semesterIt].bis)
         return true;
     }
@@ -1372,12 +1562,15 @@
    * @return true (wenn geöffnet), false (wenn geschlossen)
    */
   function checkTag(tagDELETE, tagArray) {
+	if(tagArray == undefined)
+		return false;
     var tag = dates('tag');
-    for (var t in tagArray)
-      if (tagArray.indexOf(tag) != -1)
+    for (var t = 0; t < tagArray.length; t++) {
+      if(tagArray[t] == tag)
         return true;
-      else
-        return false;
+    }  
+    return false;
+	//	}
   }
 
 
@@ -1394,6 +1587,7 @@
   function parse(str) {
 
     // Wenn Feiertag, alle Bibs rot markieren und beenden
+	//XXX: überarbeiten, dass anderer Tag gewählt werden kann, auch wenn heute Feiertag ist
     if (feiertag === true)
       return 2;
 
@@ -1429,7 +1623,7 @@
             }
           } else
             f[0] = sub1;
-
+		 var tage = [];
           var eintrag;
           for (i = 0; i < f.length; i++) {
             //console.log("i: " + i);
@@ -1439,9 +1633,9 @@
             // Mo - Fr:
             if (eintrag.match(new RegExp(/([A-Za-z]{2}[\s]?-[\s]?[A-Za-z]{2}:[\s]?)/g))) {
               var t = eintrag.match(new RegExp(/([A-Za-z]{2}[\s]?-[\s]?[A-Za-z]{2}:[\s]?)/g));
-              var tage = t[0].split("-");
+              tage = t[0].split("-");
 
-              for (var tti in tage) {
+              for (var tti = 0; tti < tage.length; tti++) {
                 var temp = tage[tti].toString().replace(/[^A-Za-z]/g, "");
                 tage[tti] = tageZuNummer(temp.trim());
 
@@ -1459,7 +1653,7 @@
             else if (eintrag.match(new RegExp(/[A-Za-z]{2}(\,|: )/g))) {
               var t = eintrag.match(new RegExp(/[A-Za-z]{2}(\,|: )/g));
 
-              for (var ti in t) {
+              for (var ti = 0; ti < t.length; ti++) {
                 var temp = t[ti].toString().replace(/[^A-Za-z]/g, "").trim();
                 t[ti] = tageZuNummer(temp);
               }
@@ -1482,13 +1676,13 @@
           return 0;
       }
       if (semester === false) {
-        if (str.indexOf("In den Semesterferien:") !== -1) {
+        if (str.indexOf("In den Semesterferien:") != -1) {
           var indexSemesterferien = str.indexOf("In den Semesterferien:");
           var sub1 = str.substring(indexSemesterferien, str.length);
           var f = [];
           if (sub1.indexOf(";") != -1) {
             f = sub1.split(";");
-            for (var y in f) {
+            for (var y = 0; y < f.length; y++) {
               var temp = f[y].toString().replace(new RegExp(/<[.*][^>]*>/g), " "); // löscht Tags nicht
               f[y] = temp;
             }
@@ -1513,7 +1707,7 @@
             if (eintrag.match(new RegExp(/([A-Za-z]{2}[\s]?-[\s]?[A-Za-z]{2}:[\s]?)/g))) {
               var t = eintrag.match(new RegExp(/([A-Za-z]{2}[\s]?-[\s]?[A-Za-z]{2}:[\s]?)/g));
               var tage = t[0].split("-");
-              for (var tti in tage) {
+              for (var tti = 0; tti < tage.length; tti++) {
                 var temp = tage[tti].toString().replace(/[^A-Za-z]/g, "");
                 tage[tti] = tageZuNummer(temp.trim());
 
@@ -1531,7 +1725,7 @@
             else if (eintrag.match(new RegExp(/[A-Za-z]{2}(\,|: )/g))) {
               var t = eintrag.match(new RegExp(/[A-Za-z]{2}(\,|: )/g));
 
-              for (var ti in t) {
+              for (var ti = 0; ti < t.length; ti++) {
                 var temp = t[ti].toString().replace(/[^A-Za-z]/g, "").trim();
                 t[ti] = tageZuNummer(temp);
               }
@@ -1563,7 +1757,7 @@
       var f = [];
       if (sub1.indexOf(";") != -1) {
         f = sub1.split(";");
-        for (var y in f) {
+        for (var y = 0; y < f.length; y++) {
           var temp = f[y].toString().replace(new RegExp(/<[.*][^>]*>/g), " "); // löscht Tags nicht
           f[y] = temp;
         }
@@ -1598,7 +1792,7 @@
         else if (eintrag.match(new RegExp(/[A-Za-z]{2}(\,|: )/g))) {
           var t = eintrag.match(new RegExp(/[A-Za-z]{2}(\,|: )/g));
 
-          for (var ti in t) {
+          for (var ti = 0; ti < t.length; t++) {
             var temp = t[ti].toString().replace(/[^A-Za-z]/g, "").trim();
             t[ti] = tageZuNummer(temp);
           }
@@ -1720,6 +1914,7 @@
     var options = '';
     document.getElementById('theDataListMob').innerHTML = "";
     var string = "<ul><li>";
+	
     for (var i = 0; i < sigelname.length; i++) {
       options += '<option value="' + sigelname[i] + '" />';
       string += sigelname[i] + "</li>";
@@ -1743,9 +1938,11 @@
     return string;
   }
 
+  
   function showData(text, mitInfo) {
-    for (var t in institute) {
-      if (institute[t].name.indexOf(text) !== -1) {
+
+    for (var t = 0; t < institute.length; t++) {
+      if (institute[t].name.indexOf(text) != -1) {
         var s1 = "";
         var zeiten = parse(institute[t].zeiten);
 
@@ -1757,9 +1954,12 @@
         if (institute[t].sigel.match(/DE-38-[0-9]{0,3}$/))
         nameLink = '<a target="blank" href="/lernen_arbeiten/bibliotheken/38_' + institute[t].sigel.replace(/DE-38-/g, "") + '/index_ger.html">' + institute[t].name + '</a>';
 
-        if(institute[t].name.indexOf('USB Köln') !== -1)
-          nameLink = '<a target="blank" href="/index_ger.html">' + institute[t].name + '</a>';
-
+        if(institute[t] === 'USB Köln')
+            nameLink = '<a target="blank" href="/index_ger.html">' + institute[t].name + '</a>';
+		
+		if(institute[t] === 'USB Köln / Humanwissenschaftliche Abteilung')
+			nameLink = '<a target="blank" href="https://www.ub.uni-koeln.de/ueber_uns/dach/hwa/index_ger.html>' + institute[t].name + '</a>';
+		
         if (zeiten === 1)
           status = '<strong style="color: lightgreen">zurzeit geöffnet</strong>';
         else if (zeiten === 2)
@@ -1781,18 +1981,36 @@
     }
   }
 
+   function guiAusblenden() {
+    document.getElementById('obereLeiste').setAttribute('style', 'display: none');
+    document.getElementById('filterPanel').setAttribute('style', 'display: none');
+  }
 
 
-
-
-
-
+  // Semester und Semesterfreien Zeiten bis September 2019
+  // wie wird Semesterfreie Zeit definiert?
+  // Schema -> JahrMonatTag
+  var semesterZeit = [{
+    von: 20170418,
+    bis: 20170728
+  }, {
+    von: 20171009,
+    bis: 20180202
+  }, {
+    von: 20180409,
+    bis: 20180720
+  }, {
+    von: 20181008,
+    bis: 20190201
+  }, {
+    von: 20190401,
+    bis: 20190712
+  }];
 
 
   function calcMarkers(fakultaet, fromMobile) {
 
     if (showDesktopGui === false) {
-
       document.getElementById('map').setAttribute('style', 'display: none');
       document.getElementById('mobileView').setAttribute('style', 'display: block');
       document.getElementById('titleMobileDesktop').innerHTML = "Mobile Suche nach Campusbibliotheken";
@@ -1801,12 +2019,9 @@
       document.getElementById('map').setAttribute('style', 'display: block');
       document.getElementsByClassName("ol-unselectable")[0].setAttribute('style', 'display: block');
       document.getElementById('titleMobileDesktop').innerHTML = "Map dieser Campusbibliothek";
-
-
     }
 
     var e = document.getElementById("institutsChoice");
-
 
     if (e.options[e.selectedIndex].value !== '8')
       document.getElementById('tdInstMark').innerHTML = "<button onclick='resetInst()' style='color: red'>✖</button>";
@@ -1830,15 +2045,41 @@
 
     savedFakultaet = fakultaet;
     sigelname = [];
-
+	
+	// Sonderfall: fakultätsübergreifende/ungebundene Bibliotheken
 	if(document.getElementById('institutsChoice').value === 'DE-38-0') {
 		for (var i = 0; i < institute.length; i++) {
+			// USB
 			if (institute[i].sigel === 'DE-38') {
-			ints.push(institute[i]);
-			marks.push(koordinaten[i]);
-			sigelname.push(institute[i].name);
+				ints.push(institute[i]);
+				marks.push(koordinaten[i]);
+				sigelname.push(institute[i].name);
+			}
+			// HWA
+			if (institute[i].sigel === 'DE-38-HWA') {
+				ints.push(institute[i]);
+				marks.push(koordinaten[i]);
+				sigelname.push(institute[i].name);
+			}
+			// Bibliothek für Informatik und Wirtschaftsinformatik
+			if (institute[i].sigel === 'DE-38-526') {
+				ints.push(institute[i]);
+				marks.push(koordinaten[i]);
+				sigelname.push(institute[i].name);
+			}
 		}
-      }
+	}
+	
+	// Sonderfall: HumFak
+	if(document.getElementById('institutsChoice').value === 'DE-38-3') {
+		for (var i = 0; i < institute.length; i++) {
+			// HWA
+			if (institute[i].sigel === 'DE-38-HWA') {
+				ints.push(institute[i]);
+				marks.push(koordinaten[i]);
+				sigelname.push(institute[i].name);
+			}
+		}
 	}
 
     if (fakultaet === 'DE-38') {
@@ -1906,7 +2147,7 @@
       }
     }
 
-    newDataListEntries();
+    //  newDataListEntries();
     // document.getElementById('ergebnis').innerHTML = doTheTextMobile(ints, true);
 
     drawMarkers(ints, marks);
@@ -1914,36 +2155,7 @@
     marks = [];
   }
 
-  function guiAusblenden() {
-    document.getElementById('obereLeiste').setAttribute('style', 'display: none');
-    document.getElementById('filterPanel').setAttribute('style', 'display: none');
-  }
-
-
-  // Semester und Semesterfreien Zeiten bis September 2019
-  // wie wird Semesterfreie Zeit definiert?
-  // Schema -> JahrMonatTag
-  var semesterZeit = [{
-    von: 20170418,
-    bis: 20170728
-  }, {
-    von: 20171009,
-    bis: 20180202
-  }, {
-    von: 20180409,
-    bis: 20180720
-  }, {
-    von: 20181008,
-    bis: 20190201
-  }, {
-    von: 20190401,
-    bis: 20190712
-  }];
-
-
-
-  /* Institutsliste */
-
+   /* Institutsliste */
       var institute = [
 [%-
    koordinaten = [];
@@ -1982,11 +2194,10 @@
       ];
 
       window.onload = init('[% locationinfo.identifier %]');
-
-</script>
-
+      </script> 
 [% END %]
 [% END %]
+
 
 <table class="ZMSTable" >
 <caption align="top"></caption>
@@ -2147,5 +2358,4 @@ Campusbibliotheken und entsprechen dem uns jeweils zuletzt mitgeteilten
 Stand. Bitte wenden Sie sich bei etwaigen Unstimmigkeiten direkt an
 die jeweilige Bibliothek.
 </p>
-
 

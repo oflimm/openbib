@@ -48,6 +48,7 @@ use Digest::MD5 qw(md5_hex);
 use HTML::Strip;
 
 use OpenBib::Config;
+use OpenBib::Conv::Common::Util;
 use OpenBib::Record::Classification;
 use OpenBib::Record::CorporateBody;
 use OpenBib::Record::Person;
@@ -96,6 +97,8 @@ my $convconfig = YAML::Syck::LoadFile($configfile);
 
 my $base = Mojo::URL->new($baseurl);
 my @urls = $base;
+
+my $multcount_ref = {};
 
 my $ua = Mojo::UserAgent->new;
 
@@ -208,6 +211,8 @@ sub gen_record {
 
     my $path = $url->path;
 
+    $logger->debug("Gen record for path $path");
+
     my $id = encode_base64url("$path");
 
     my $title_ref = {
@@ -215,8 +220,12 @@ sub gen_record {
         'fields' => {},
     };
 
-    foreach my $selector (keys %{$convconfig->{title}}){
+
+    # convert person fields
+    foreach my $selector (keys %{$convconfig->{person}}){
 	my $content = "";
+
+	$logger->debug("Processing selector $selector");
 
 	if ($selector =~m/meta/){
 	    $content = $res->dom($selector)->attr('content');
@@ -225,6 +234,276 @@ sub gen_record {
 	    $content = $res->dom($selector)->all_text;
 	}
 	
+
+	$logger->debug("Found content $content");
+
+	eval {
+	    $content = $hs->parse($content);	    
+	    $content = decode($convconfig->{encoding},$content) if ($convconfig->{encoding});
+	};
+	
+	if ($@){
+	    $logger->error($@);
+	}
+
+
+	if ($content){
+	    my $new_field = $convconfig->{person}{$selector};
+	    
+	    my @parts = ();
+	    
+	    if (exists $convconfig->{category_split_chars}{$selector} && $content=~/$convconfig->{category_split_chars}{$selector}/){
+		@parts = split($convconfig->{category_split_chars}{$selector},$content);
+	    }
+	    else {
+		push @parts, $content;
+	    }
+	    
+	    foreach my $part (@parts){
+		my ($person_id,$new)=OpenBib::Conv::Common::Util::get_person_id($part);
+		
+		if ($new){
+		    my $item_ref = {
+			'fields' => {},
+		    };
+		    $item_ref->{id} = $person_id;
+		    push @{$item_ref->{fields}{'0800'}}, {
+			mult     => 1,
+			subfield => '',
+			content  => $part,
+		    };
+		    
+		    print PERSON encode_json $item_ref, "\n";
+		}
+		
+		my $mult = ++$multcount_ref->{$new_field};
+		
+		push @{$title_ref->{fields}{$new_field}}, {
+		    mult       => $mult,
+		    subfield   => '',
+		    id         => $person_id,
+		    supplement => '',
+		};
+	    }
+	}
+    }
+    
+    # convert corporatebody fields
+    foreach my $selector (keys %{$convconfig->{corporatebody}}){
+	my $content = "";
+
+	$logger->debug("Processing selector $selector");
+
+	if ($selector =~m/meta/){
+	    $content = $res->dom($selector)->attr('content');
+	}
+	else {
+	    $content = $res->dom($selector)->all_text;
+	}
+	
+
+	$logger->debug("Found content $content");
+
+	eval {
+	    $content = $hs->parse($content);	    
+	    $content = decode($convconfig->{encoding},$content) if ($convconfig->{encoding});
+	};
+	
+	if ($@){
+	    $logger->error($@);
+	}
+
+
+	if ($content){
+	    my $new_field = $convconfig->{corporatebody}{$selector};
+	    
+	    my @parts = ();
+	    
+	    if (exists $convconfig->{category_split_chars}{$selector} && $content=~/$convconfig->{category_split_chars}{$selector}/){
+		@parts = split($convconfig->{category_split_chars}{$selector},$content);
+	    }
+	    else {
+		push @parts, $content;
+	    }
+	    
+	    foreach my $part (@parts){
+		my ($corporatebody_id,$new)=OpenBib::Conv::Common::Util::get_corporatebody_id($part);
+		
+		if ($new){
+		    my $item_ref = {
+			'fields' => {},
+		    };
+		    $item_ref->{id} = $corporatebody_id;
+		    push @{$item_ref->{fields}{'0800'}}, {
+			mult     => 1,
+			subfield => '',
+			content  => $part,
+		    };
+		    
+		    print CORPORATEBODY encode_json $item_ref, "\n";
+		}
+		
+		my $mult = ++$multcount_ref->{$new_field};
+		
+		push @{$title_ref->{fields}{$new_field}}, {
+		    mult       => $mult,
+		    subfield   => '',
+		    id         => $corporatebody_id,
+		    supplement => '',
+		};
+	    }
+	}
+    }
+
+    # convert classification fields
+    foreach my $selector (keys %{$convconfig->{classification}}){
+	my $content = "";
+
+	$logger->debug("Processing selector $selector");
+
+	if ($selector =~m/meta/){
+	    $content = $res->dom($selector)->attr('content');
+	}
+	else {
+	    $content = $res->dom($selector)->all_text;
+	}
+	
+
+	$logger->debug("Found content $content");
+
+	eval {
+	    $content = $hs->parse($content);	    
+	    $content = decode($convconfig->{encoding},$content) if ($convconfig->{encoding});
+	};
+	
+	if ($@){
+	    $logger->error($@);
+	}
+
+
+	if ($content){
+	    my $new_field = $convconfig->{classification}{$selector};
+
+	    my @parts = ();
+
+	    if (exists $convconfig->{category_split_chars}{$selector} && $content=~/$convconfig->{category_split_chars}{$selector}/){
+		@parts = split($convconfig->{category_split_chars}{$selector},$content);
+	    }
+	    else {
+		push @parts, $content;
+	    }
+	    
+	    foreach my $part (@parts){
+		my ($classification_id,$new)=OpenBib::Conv::Common::Util::get_classification_id($part);
+		
+		if ($new){
+		    my $item_ref = {
+			'fields' => {},
+		    };
+		    $item_ref->{id} = $classification_id;
+		    push @{$item_ref->{fields}{'0800'}}, {
+			mult     => 1,
+			subfield => '',
+			content  => $part,
+		    };
+		    
+		    print CLASSIFICATION encode_json $item_ref, "\n";
+		}
+		
+		my $mult = ++$multcount_ref->{$new_field};
+		
+		push @{$title_ref->{fields}{$new_field}}, {
+		    mult       => $mult,
+		    subfield   => '',
+		    id         => $classification_id,
+		    supplement => '',
+		};
+	    }
+	}
+    }
+
+    # convert subject fields
+    foreach my $selector (keys %{$convconfig->{subject}}){
+	my $content = "";
+
+	$logger->debug("Processing selector $selector");
+
+	if ($selector =~m/meta/){
+	    $content = $res->dom($selector)->attr('content');
+	}
+	else {
+	    $content = $res->dom($selector)->all_text;
+	}
+	
+
+	$logger->debug("Found content $content");
+
+	eval {
+	    $content = $hs->parse($content);	    
+	    $content = decode($convconfig->{encoding},$content) if ($convconfig->{encoding});
+	};
+	
+	if ($@){
+	    $logger->error($@);
+	}
+
+
+	if ($content){
+	    my $new_field = $convconfig->{subject}{$selector};
+
+	    my @parts = ();
+
+	    if (exists $convconfig->{category_split_chars}{$selector} && $content=~/$convconfig->{category_split_chars}{$selector}/){
+		@parts = split($convconfig->{category_split_chars}{$selector},$content);
+	    }
+	    else {
+		push @parts, $content;
+	    }
+	    
+	    foreach my $part (@parts){
+		my ($subject_id,$new)=OpenBib::Conv::Common::Util::get_subject_id($part);
+		
+		if ($new){
+		    my $item_ref = {
+			'fields' => {},
+		    };
+		    $item_ref->{id} = $subject_id;
+		    push @{$item_ref->{fields}{'0800'}}, {
+			mult     => 1,
+			subfield => '',
+			content  => $part,
+		    };
+		    
+		    print SUBJECT encode_json $item_ref, "\n";
+		}
+		
+		my $mult = ++$multcount_ref->{$new_field};
+		
+		push @{$title_ref->{fields}{$new_field}}, {
+		    mult       => $mult,
+		    subfield   => '',
+		    id         => $subject_id,
+		    supplement => '',
+		};
+	    }
+	}
+    }
+
+    foreach my $selector (keys %{$convconfig->{title}}){
+	my $content = "";
+
+	$logger->debug("Processing selector $selector");
+
+	if ($selector =~m/meta/){
+	    $content = $res->dom($selector)->attr('content');
+	}
+	else {
+	    $content = $res->dom($selector)->all_text;
+	}
+	
+
+	$logger->debug("Found content $content");
+
 	eval {
 	    $content = $hs->parse($content);	    
 	    $content = decode($convconfig->{encoding},$content) if ($convconfig->{encoding});

@@ -7,6 +7,9 @@ tracelevel:
 
 # XPath-Parameter
 
+category_split_chars:
+  'meta[name="keywords"]': '\s*,\s*'
+
 # Personen
 person:
   'meta[name="author"]': '0100'

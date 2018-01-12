@@ -268,6 +268,33 @@ title:
     '451 ':            # 1. gesamttitel in vorlageform
         'newcat': '0451' # 1. gesamttitel in vorlageform
         'mult': 1
+    '453 ':            # 1. id gesamttitel in vorlageform
+        'newcat': '0451' # 1. id gesamttitel in vorlageform
+        'mult': 1
+    '461 ':            # 2. gesamttitel in vorlageform
+        'newcat': '0451' # 2. gesamttitel in vorlageform
+        'mult': 1
+    '463 ':            # 2. id gesamttitel in vorlageform
+        'newcat': '0451' # 2. id gesamttitel in vorlageform
+        'mult': 1
+    '471 ':            # 3. gesamttitel in vorlageform
+        'newcat': '0451' # 3. gesamttitel in vorlageform
+        'mult': 1
+    '473 ':            # 3. id gesamttitel in vorlageform
+        'newcat': '0451' # 3. id gesamttitel in vorlageform
+        'mult': 1
+    '481 ':            # 4. gesamttitel in vorlageform
+        'newcat': '0451' # 4. gesamttitel in vorlageform
+        'mult': 1
+    '483 ':            # 4. id gesamttitel in vorlageform
+        'newcat': '0451' # 4. id gesamttitel in vorlageform
+        'mult': 1
+    '491 ':            # 5. gesamttitel in vorlageform
+        'newcat': '0451' # 5. gesamttitel in vorlageform
+        'mult': 1
+    '493 ':            # 5. id gesamttitel in vorlageform
+        'newcat': '0451' # 5. id gesamttitel in vorlageform
+        'mult': 1
     '507 ':            # Titelangaben
         'newcat': '0507' # Titelangaben
         'mult': 1
@@ -346,6 +373,10 @@ title:
          'newcat': '0710' # schlagwoerter und schlagwortketten
          'mult': 1
          'type': 'subject'
+    '902e':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
     '902g':            # schlagwoerter mit ID's
          'newcat': '0710' # schlagwoerter und schlagwortketten
          'mult': 1
@@ -354,78 +385,942 @@ title:
          'newcat': '0710' # schlagwoerter und schlagwortketten
          'mult': 1
          'type': 'subject'
+    '902b':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '902c':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '902z':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '902f':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '907k':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '907e':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '907g':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '907s':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '907b':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '907c':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '907z':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '907f':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '912k':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '912e':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '912g':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '912s':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '912b':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '912c':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '912z':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '912f':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '917k':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '917e':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '917g':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '917s':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '917b':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '917c':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '917z':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '917f':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '922k':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '922e':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '922g':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '922s':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '922b':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '922c':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '922z':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '922f':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '927k':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '927e':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '927g':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '927s':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '927b':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '927c':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '927z':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '927f':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '932k':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '932e':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '932g':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '932s':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '932b':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '932c':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '932z':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '932f':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '937k':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '937e':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '937g':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '937s':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '937b':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '937c':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '937z':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '937f':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '942k':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '942e':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '942g':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '942s':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '942b':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '942c':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '942z':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '942f':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '947k':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '947e':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '947g':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '947s':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '947b':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '947c':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '947z':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '947f':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
     '100 ':            # name der 1. person in ansetzungsform
          'newcat': '0100' # verfasser
          'mult': 1
          'type': 'person'
-#    '102a':            # ID der 1. person
-#        'newcat': '0100' # verfasser
-#        'mult': 1
-#        'ref': 1
-#    '102b':            # ID der 1. person
-#        'newcat': '0100' # verfasser
-#        'mult': 1
-#        'ref': 1
-    '104 ':            # name der 2. person in ansetzungsform
+    '102a':            # ID der 1. person
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'ref': 1
+    '102b':            # ID der 1. person
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'ref': 1
+    '104 ':            # name des 2. Verfassers in ansetzungsform
          'newcat': '0100' # verfasser
          'mult': 1
          'type': 'person'
-#    '106a':            # ID der 2. person
-#        'newcat': '0100' # verfasser
-#        'mult': 1
-#        'ref': 1
-#    '106b':            # ID der 2. person
-#        'newcat': '0100' # verfasser
-#        'mult': 1
-#        'ref': 1
-    '108 ':            # name der 3. person in ansetzungsform
+    '104a':            # name des 2. Verfassers in ansetzungsform
          'newcat': '0100' # verfasser
          'mult': 1
          'type': 'person'
-#    '110a':            # ID der 3. person
-#        'newcat': '0100' # verfasser
-#        'mult': 1
-#        'ref': 1
-#    '110b':            # ID der 3. person
-#        'newcat': '0100' # verfasser
-#        'mult': 1
-#        'ref': 1
-    '200 ':            # name der 1. koerperschaft in ansetzungsform
-        'newcat': '0200' # koerperschaft
-        'mult': 1
-        'type': 'corporatebody'
-#    '202a':            # ID der 1. koerperschaft
-#        'newcat': '0200' # koerperschaft
-#        'mult': 1
-#        'ref': 1
-#    '202b':            # ID der 1. koerperschaft
-#        'newcat': '0200' # koerperschaft
-#        'mult': 1
-#        'ref': 1
-    '204 ':            # name der 2. koerperschaft in ansetzungsform
-         'newcat': '0200' # koerperschaft
+    '104b':            # name der 2. person in ansetzungsform
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'type': 'person'
+    '106a':            # ID der 2. person
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'ref': 1
+    '106b':            # ID der 2. person
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'ref': 1
+    '108 ':            # name des 3. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '108a':            # name des 3. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '108b':            # name der 3. person in ansetzungsform
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'type': 'person'
+    '110a':            # ID der 3. person
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'ref': 1
+    '110b':            # ID der 3. person
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'ref': 1
+    '112 ':            # name des 4. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '112a':            # name des 4. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '112b':            # name der 4. person in ansetzungsform
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'type': 'person'
+    '116 ':            # name des 5. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '116a':            # name des 5. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '116b':            # name der 5. person in ansetzungsform
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'type': 'person'
+    '120 ':            # name des 6. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '120a':            # name des 6. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '120b':            # name der 6. person in ansetzungsform
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'type': 'person'
+    '124 ':            # name des 7. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '124a':            # name des 7. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '124b':            # name der 7. person in ansetzungsform
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'type': 'person'
+    '128 ':            # name des 8. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '128a':            # name des 8. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '128b':            # name der 8. person in ansetzungsform
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'type': 'person'
+    '132 ':            # name des 9. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '132a':            # name des 9. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '132b':            # name der 9. person in ansetzungsform
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'type': 'person'
+    '136 ':            # name des 10. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '136a':            # name des 10. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '136b':            # name der 10. person in ansetzungsform
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'type': 'person'
+    '140 ':            # name des 11. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '140a':            # name des 11. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '140b':            # name der 11. person in ansetzungsform
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'type': 'person'
+    '144 ':            # name des 12. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '144a':            # name des 12. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '144b':            # name der 12. person in ansetzungsform
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'type': 'person'
+    '148 ':            # name des 13. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '148a':            # name des 13. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '148b':            # name der 13. person in ansetzungsform
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'type': 'person'
+    '152 ':            # name des 14. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '152a':            # name des 14. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '152b':            # name der 14. person in ansetzungsform
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'type': 'person'
+    '156 ':            # name des 15. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '156a':            # name des 15. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '156b':            # name der 15. person in ansetzungsform
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'type': 'person'
+    '160 ':            # name des 16. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '160a':            # name des 16. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '160b':            # name der 16. person in ansetzungsform
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'type': 'person'
+    '164 ':            # name des 17. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '164a':            # name des 17. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '164b':            # name der 17. person in ansetzungsform
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'type': 'person'
+    '168 ':            # name des 18. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '168a':            # name des 18. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '168b':            # name der 18. person in ansetzungsform
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'type': 'person'
+    '172 ':            # name des 19. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '172a':            # name des 19. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '172b':            # name der 19. person in ansetzungsform
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'type': 'person'
+    '176 ':            # name des 20. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '176a':            # name des 20. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '176b':            # name der 20. person in ansetzungsform
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'type': 'person'
+    '180 ':            # name des 21. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '180a':            # name des 21. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '180b':            # name der 21. person in ansetzungsform
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'type': 'person'
+    '184 ':            # name des 22. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '184a':            # name des 22. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '184b':            # name der 22. person in ansetzungsform
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'type': 'person'
+    '188 ':            # name des 23. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '188a':            # name des 23. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '188b':            # name der 23. person in ansetzungsform
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'type': 'person'
+    '192 ':            # name des 24. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '192a':            # name des 24. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '192b':            # name der 24. person in ansetzungsform
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'type': 'person'
+    '196 ':            # name des 25. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '196a':            # name des 25. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '196b':            # name der 25. person in ansetzungsform
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'type': 'person'
+    '200 ':            # name der 1. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
          'mult': 1
          'type': 'corporatebody'
-#    '206a':            # ID der 2. koerperschaft
-#        'newcat': '0200' # koerperschaft
-#        'mult': 1
-#        'ref': 1
-#    '206b':            # ID der 2. koerperschaft
-#        'newcat': '0200' # koerperschaft
-#        'mult': 1
-#        'ref': 1
-    '208 ':            # name der 3. koerperschaft in ansetzungsform
-         'newcat': '0200' # koerperschaft
+    '202a':            # ID der 1. Koerperschaft
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'ref': 1
+    '202b':            # ID der 1. Koerperschaft
+         'newcat': '0201' # Koerperschaft
+         'mult': 1
+         'ref': 1
+    '204 ':            # name des 2. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
          'mult': 1
          'type': 'corporatebody'
-#    '210a':            # ID der 3. koerperschaft
-#        'newcat': '0200' # koerperschaft
-#        'mult': 1
-#        'ref': 1
-#    '210b':            # ID der 3. koerperschaft
-#        'newcat': '0200' # koerperschaft
-#        'mult': 1
-#        'ref': 1
+    '204a':            # name des 2. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '204b':            # name der 2. Koerperschaft in ansetzungsform
+         'newcat': '0201' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '206a':            # ID der 2. Koerperschaft
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'ref': 1
+    '206b':            # ID der 2. Koerperschaft
+         'newcat': '0201' # Koerperschaft
+         'mult': 1
+         'ref': 1
+    '208 ':            # name des 3. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '208a':            # name des 3. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '208b':            # name der 3. Koerperschaft in ansetzungsform
+         'newcat': '0201' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '210a':            # ID der 3. Koerperschaft
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'ref': 1
+    '210b':            # ID der 3. Koerperschaft
+         'newcat': '0201' # Koerperschaft
+         'mult': 1
+         'ref': 1
+    '212 ':            # name des 4. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '212a':            # name des 4. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '212b':            # name der 4. Koerperschaft in ansetzungsform
+         'newcat': '0201' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '216 ':            # name des 5. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '216a':            # name des 5. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '216b':            # name der 5. Koerperschaft in ansetzungsform
+         'newcat': '0201' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '220 ':            # name des 6. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '220a':            # name des 6. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '220b':            # name der 6. Koerperschaft in ansetzungsform
+         'newcat': '0201' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '224 ':            # name des 7. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '224a':            # name des 7. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '224b':            # name der 7. Koerperschaft in ansetzungsform
+         'newcat': '0201' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '228 ':            # name des 8. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '228a':            # name des 8. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '228b':            # name der 8. Koerperschaft in ansetzungsform
+         'newcat': '0201' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '232 ':            # name des 9. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '232a':            # name des 9. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '232b':            # name der 9. Koerperschaft in ansetzungsform
+         'newcat': '0201' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '236 ':            # name des 10. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '236a':            # name des 10. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '236b':            # name der 10. Koerperschaft in ansetzungsform
+         'newcat': '0201' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '240 ':            # name des 11. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '240a':            # name des 11. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '240b':            # name der 11. Koerperschaft in ansetzungsform
+         'newcat': '0201' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '244 ':            # name des 12. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '244a':            # name des 12. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '244b':            # name der 12. Koerperschaft in ansetzungsform
+         'newcat': '0201' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '248 ':            # name des 13. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '248a':            # name des 13. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '248b':            # name der 13. Koerperschaft in ansetzungsform
+         'newcat': '0201' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '252 ':            # name des 14. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '252a':            # name des 14. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '252b':            # name der 14. Koerperschaft in ansetzungsform
+         'newcat': '0201' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '256 ':            # name des 15. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '256a':            # name des 15. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '256b':            # name der 15. Koerperschaft in ansetzungsform
+         'newcat': '0201' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '260 ':            # name des 16. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '260a':            # name des 16. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '260b':            # name der 16. Koerperschaft in ansetzungsform
+         'newcat': '0201' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '264 ':            # name des 17. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '264a':            # name des 17. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '264b':            # name der 17. Koerperschaft in ansetzungsform
+         'newcat': '0201' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '268 ':            # name des 18. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '268a':            # name des 18. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '268b':            # name der 18. Koerperschaft in ansetzungsform
+         'newcat': '0201' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '272 ':            # name des 19. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '272a':            # name des 19. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '272b':            # name der 19. Koerperschaft in ansetzungsform
+         'newcat': '0201' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '276 ':            # name des 20. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '276a':            # name des 20. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '276b':            # name der 20. Koerperschaft in ansetzungsform
+         'newcat': '0201' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '280 ':            # name des 21. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '280a':            # name des 21. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '280b':            # name der 21. Koerperschaft in ansetzungsform
+         'newcat': '0201' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '284 ':            # name des 22. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '284a':            # name des 22. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '284b':            # name der 22. Koerperschaft in ansetzungsform
+         'newcat': '0201' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '288 ':            # name des 23. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '288a':            # name des 23. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '288b':            # name der 23. Koerperschaft in ansetzungsform
+         'newcat': '0201' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '292 ':            # name des 24. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '292a':            # name des 24. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '292b':            # name der 24. Koerperschaft in ansetzungsform
+         'newcat': '0201' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '296 ':            # name des 25. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '296a':            # name des 25. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '296b':            # name der 25. Koerperschaft in ansetzungsform
+         'newcat': '0201' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
 
 holding:
     '001 ':

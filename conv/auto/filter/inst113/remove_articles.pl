@@ -17,6 +17,10 @@ while (<>){
       }
     }
 
+    if (defined $title_ref->{fields}{'0590'}){
+	$is_article = 1;
+    }
+    
     next if ($is_article);
 
     print encode_json $title_ref, "\n";

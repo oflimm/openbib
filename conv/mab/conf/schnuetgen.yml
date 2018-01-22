@@ -693,6 +693,14 @@ title:
          'newcat': '0100' # verfasser
          'mult': 1
          'type': 'person'
+    '100a':            # name des 1. Verfassers in ansetzungsform
+         'newcat': '0100' # verfasser
+         'mult': 1
+         'type': 'person'
+    '100b':            # name der 1. person in ansetzungsform
+         'newcat': '0101' # verfasser
+         'mult': 1
+         'type': 'person'
     '102a':            # ID der 1. person
          'newcat': '0100' # verfasser
          'mult': 1
@@ -1007,6 +1015,14 @@ title:
          'type': 'person'
     '200 ':            # name der 1. Koerperschaft in ansetzungsform
          'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '200a':            # name des 1. Koerperschaft in ansetzungsform
+         'newcat': '0200' # Koerperschaft
+         'mult': 1
+         'type': 'corporatebody'
+    '200b':            # name der 1. Koerperschaft in ansetzungsform
+         'newcat': '0201' # Koerperschaft
          'mult': 1
          'type': 'corporatebody'
     '202a':            # ID der 1. Koerperschaft

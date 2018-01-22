@@ -40,12 +40,14 @@ use MAB2::Record::Base;
 use Tie::MAB2::Recno;
 use Data::Dumper;
 use YAML::Syck;
+use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Conv::Common::Util;
 
-my ($titlefile,$personfile,$corporatebodyfile,$subjectfile,$classificationfile,$holdingfile,$holding_in_title,$configfile);
+my ($database,$titlefile,$personfile,$corporatebodyfile,$subjectfile,$classificationfile,$holdingfile,$holding_in_title,$configfile,$loglevel);
 
 &GetOptions(
+            "database=s"           => \$database,
 	    "titlefile=s"          => \$titlefile,
             "personfile=s"         => \$personfile,
             "corporatebodyfile=s"  => \$corporatebodyfile,
@@ -53,6 +55,7 @@ my ($titlefile,$personfile,$corporatebodyfile,$subjectfile,$classificationfile,$
             "classificationfile=s" => \$classificationfile,
             "holdingfile=s"        => \$holdingfile,
             "holding-in-title"     => \$holding_in_title,
+            "loglevel=s"           => \$loglevel,
             "configfile=s"         => \$configfile,
 	    );
 
@@ -65,10 +68,37 @@ HELP
 exit;
 }
 
+my $logfile = "/var/log/openbib/mab2meta/${database}.log";
+
+if (!-d "/var/log/openbib/mab2meta/"){
+    mkdir "/var/log/openbib/mab2meta/";
+}
+
+$loglevel=($loglevel)?$loglevel:'INFO';
+
+$database=($database)?$database:'all';
+
+my $log4Perl_config = << "L4PCONF";
+log4perl.rootLogger=$loglevel, LOGFILE, Screen
+log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
+log4perl.appender.LOGFILE.filename=$logfile
+log4perl.appender.LOGFILE.mode=append
+log4perl.appender.LOGFILE.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.LOGFILE.layout.ConversionPattern=%d [%c]: %m%n
+log4perl.appender.Screen=Log::Dispatch::Screen
+log4perl.appender.Screen.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.Screen.layout.ConversionPattern=%d [%c]: %m%n
+L4PCONF
+
+Log::Log4perl::init(\$log4Perl_config);
+
+# Log4perl logger erzeugen
+my $logger = get_logger();
+
 # Ininitalisierung mit Config-Parametern
 my $convconfig = YAML::Syck::LoadFile($configfile);
 
-print "Bearbeite Personen\n";
+$logger->info("Bearbeite Personen");
 
 if (-e $personfile){
     open(PEROUT,'>:raw','meta.person');
@@ -142,13 +172,13 @@ if (-e $personfile){
     close(PEROUT);
 }
 else {
-    print STDERR "Keine Persoenendaten vorhanden\n";
+    $logger->error("Keine Persoenendaten vorhanden");
 }
 
 ######################################################################
 # Koerperschafts-Daten
 
-print "Bearbeite Koerperschaften\n";
+$logger->info("Bearbeite Koerperschaften");
 
 if (-e $corporatebodyfile){
     open(KOROUT,'>:raw','meta.corporatebody');
@@ -221,13 +251,13 @@ if (-e $corporatebodyfile){
     close(KOROUT);
 }
 else {
-    print "Keine Koerperschaftsdaten vorhanden\n";
+   $logger->error("Keine Koerperschaftsdaten vorhanden");
 }
 
 ######################################################################
 # Schlagwort-Daten
 
-print "Bearbeite Schlagworte\n";
+$logger->info("Bearbeite Schlagworte");
 
 if (-e $subjectfile){
     open(SWTOUT,'>:raw','meta.subject');
@@ -302,14 +332,14 @@ if (-e $subjectfile){
     close(SWTOUT);
 }
 else {
-    print "Keine Schlagwortdaten vorhanden\n";
+    $logger->error("Keine Schlagwortdaten vorhanden");
 }
 
 
 ######################################################################
 # Systematik-Daten
 
-print "Bearbeite Systematik\n";
+$logger->info("Bearbeite Systematik");
 
 if (-e $classificationfile){
     open(NOTOUT,'>:raw','meta.classification');
@@ -322,7 +352,9 @@ if (-e $classificationfile){
         };
                 
         my $rec = MAB2::Record::Base->new($rawrec);
-        print $rec->readable."\n----------------------\n";    
+	if ($logger->is_debug){
+	    $logger->debug($rec->readable);
+	}
         my $multcount_ref = {};
         
         foreach my $category_ref (@{$rec->_struct->[1]}){
@@ -382,13 +414,13 @@ if (-e $classificationfile){
     close(NOTOUT);
 }
 else {
-    print STDERR "Keine Systemaitkdaten vorhanden\n";
+    $logger->error("Keine Systemaitkdaten vorhanden");
 }
 
 ######################################################################
 # Titel-Daten
 
-print "Bearbeite Titel\n";
+$logger->info("Bearbeite Titel");
 
 if (-e $titlefile){
     open(TITOUT,'>:raw','meta.title');
@@ -417,22 +449,24 @@ if (-e $titlefile){
         };
 
         my $rec = MAB2::Record::Base->new($rawrec);
-        print $rec->readable."\n----------------------\n";    
+	if ($logger->is_debug){
+	    $logger->debug($rec->readable);
+	}
         my $multcount_ref = {};
         
         foreach my $category_ref (@{$rec->_struct->[1]}){
             my $category  = $category_ref->[0];
             my $indicator = $category_ref->[1];
             my $content   = $category_ref->[2];
-            
-            print "$category - $indicator - $content\n";
+
+            $logger->debug("$category - $indicator - $content");
 
             $category = $category.$indicator;
 
             my $newcategory = "";
             
             if (!exists $convconfig->{title}{$category}){
-		print "Ignoring category $category with content $content\n";
+		$logger->debug("Ignoring category $category with content $content");
                 next;
             }
             
@@ -499,13 +533,16 @@ if (-e $titlefile){
 		
                 $content = konv($content);
 
+		$logger->debug("Got content $content");
                 if ($type eq "person"){		    
 		    if ($content =~m/.+\s+\[/){
-			($content, $supplement)=$content=~m/^(.*?)\S+(\[.+?)$/;
+			($content, $supplement)=$content=~m/^(.+?)\s+(\[.+?)$/;
+
+			$logger->debug("Effective $content with supplement $supplement");
 		    }
-		    
+
                     my ($person_id,$new)=OpenBib::Conv::Common::Util::get_person_id($content);
-                    
+		    
                     if ($new){
                         my $item_ref = {
                             'fields' => {},
@@ -611,7 +648,7 @@ if (-e $titlefile){
             }
             # 4) Holdings im Titel mit Unterfeldern
             elsif ($holding_in_title && exists $convconfig->{holding}{$category}{subfield}){
-                print STDERR "$content\n";
+                $logger->debug($content);
                 
                 my $holding_ref = {
                     'fields' => {},
@@ -622,7 +659,7 @@ if (-e $titlefile){
                         my $subfield = $1;
                         my $thiscontent  = $2;
 
-			print "Handling subfield $subfield with content $thiscontent\n";
+			$logger->debug("Handling subfield $subfield with content $thiscontent");
                         $thiscontent=konv($thiscontent) unless ($convconfig->{title}{$category}{no_conv});
                         if ($convconfig->{filter}{$category}{filter_generic}){
                             foreach my $filter (@{$convconfig->{filter}{$category}{filter_generic}}){
@@ -644,7 +681,7 @@ if (-e $titlefile){
                             $thiscontent = filter_match($thiscontent,$convconfig->{filter}{$category}{filter_match});
                         }
 
-                        print STDERR "$category - $subfield - $thiscontent\n";
+                        $logger->debug("$category - $subfield - $thiscontent");
                         my $newcategory = $convconfig->{holding}{$category}{subfield}{$subfield};
 
                         if ($newcategory && $convconfig->{holding}{$category}{mult} && $content){
@@ -678,7 +715,7 @@ if (-e $titlefile){
 			    my $subfield = $1;
 			    my $thiscontent  = $2;
 			    
-			    print "Handling subfield $subfield with content $thiscontent\n";
+			    $logger->debug("Handling subfield $subfield with content $thiscontent");
 			    $thiscontent=konv($thiscontent) unless ($convconfig->{title}{$category}{no_conv});
 			    
 			    if ($convconfig->{filter}{$category}{filter_generic}){
@@ -784,14 +821,14 @@ if (-e $titlefile){
     close(TITOUT);
 }
 else {
-    print "Keine Titeldaten vorhanden. EXIT!!!!\n";
+    $logger->error("Keine Titeldaten vorhanden. EXIT!!!!");
     exit;
 }
 
 ######################################################################
 # Exemplar-Daten
 
-print "Bearbeite Exemplare\n";
+$logger->info("Bearbeite Exemplare");
 
 if (-e $holdingfile){
     open(MEXOUT,'>:raw','meta.holding');

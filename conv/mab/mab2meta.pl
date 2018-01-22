@@ -495,9 +495,15 @@ if (-e $titlefile){
             elsif (exists $convconfig->{title}{$category}{type}){
                 my $type = $convconfig->{title}{$category}{type};
 
+		my $supplement = "";
+		
                 $content = konv($content);
-                
-                if ($type eq "person"){
+
+                if ($type eq "person"){		    
+		    if ($content =~m/.+\s+\[/){
+			($content, $supplement)=$content=~m/^(.*?)\S+(\[.+?)$/;
+		    }
+		    
                     my ($person_id,$new)=OpenBib::Conv::Common::Util::get_person_id($content);
                     
                     if ($new){
@@ -520,7 +526,7 @@ if (-e $titlefile){
                         mult       => $multcount,
                         subfield   => '',
                         id         => $person_id,
-                        supplement => '',
+                        supplement => $supplement,
                     };
                 }
                 elsif ($type eq "corporatebody"){
@@ -546,7 +552,7 @@ if (-e $titlefile){
                         mult       => $multcount,
                         subfield   => '',
                         id         => $corporatebody_id,
-                        supplement => '',
+                        supplement => $supplement,
                     };
                 }
                 elsif ($type eq "subject"){

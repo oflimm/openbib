@@ -701,14 +701,14 @@ title:
          'newcat': '0101' # verfasser
          'mult': 1
          'type': 'person'
-    '102a':            # ID der 1. person
-         'newcat': '0100' # verfasser
-         'mult': 1
-         'ref': 1
-    '102b':            # ID der 1. person
-         'newcat': '0101' # verfasser
-         'mult': 1
-         'ref': 1
+#    '102a':            # ID der 1. person
+#         'newcat': '0100' # verfasser
+#         'mult': 1
+#         'ref': 1
+#    '102b':            # ID der 1. person
+#         'newcat': '0101' # verfasser
+#         'mult': 1
+#         'ref': 1
     '104 ':            # name des 2. Verfassers in ansetzungsform
          'newcat': '0100' # verfasser
          'mult': 1
@@ -721,14 +721,14 @@ title:
          'newcat': '0101' # verfasser
          'mult': 1
          'type': 'person'
-    '106a':            # ID der 2. person
-         'newcat': '0100' # verfasser
-         'mult': 1
-         'ref': 1
-    '106b':            # ID der 2. person
-         'newcat': '0101' # verfasser
-         'mult': 1
-         'ref': 1
+#    '106a':            # ID der 2. person
+#         'newcat': '0100' # verfasser
+#         'mult': 1
+#         'ref': 1
+#    '106b':            # ID der 2. person
+#         'newcat': '0101' # verfasser
+#         'mult': 1
+#         'ref': 1
     '108 ':            # name des 3. Verfassers in ansetzungsform
          'newcat': '0100' # verfasser
          'mult': 1
@@ -741,14 +741,14 @@ title:
          'newcat': '0101' # verfasser
          'mult': 1
          'type': 'person'
-    '110a':            # ID der 3. person
-         'newcat': '0100' # verfasser
-         'mult': 1
-         'ref': 1
-    '110b':            # ID der 3. person
-         'newcat': '0101' # verfasser
-         'mult': 1
-         'ref': 1
+ #   '110a':            # ID der 3. person
+ #        'newcat': '0100' # verfasser
+ #        'mult': 1
+ #        'ref': 1
+ #   '110b':            # ID der 3. person
+ #        'newcat': '0101' # verfasser
+ #        'mult': 1
+ #        'ref': 1
     '112 ':            # name des 4. Verfassers in ansetzungsform
          'newcat': '0100' # verfasser
          'mult': 1
@@ -1025,14 +1025,14 @@ title:
          'newcat': '0201' # Koerperschaft
          'mult': 1
          'type': 'corporatebody'
-    '202a':            # ID der 1. Koerperschaft
-         'newcat': '0200' # Koerperschaft
-         'mult': 1
-         'ref': 1
-    '202b':            # ID der 1. Koerperschaft
-         'newcat': '0201' # Koerperschaft
-         'mult': 1
-         'ref': 1
+#    '202a':            # ID der 1. Koerperschaft
+#         'newcat': '0200' # Koerperschaft
+#         'mult': 1
+#         'ref': 1
+#    '202b':            # ID der 1. Koerperschaft
+#         'newcat': '0201' # Koerperschaft
+#         'mult': 1
+#         'ref': 1
     '204 ':            # name des 2. Koerperschaft in ansetzungsform
          'newcat': '0200' # Koerperschaft
          'mult': 1
@@ -1045,14 +1045,14 @@ title:
          'newcat': '0201' # Koerperschaft
          'mult': 1
          'type': 'corporatebody'
-    '206a':            # ID der 2. Koerperschaft
-         'newcat': '0200' # Koerperschaft
-         'mult': 1
-         'ref': 1
-    '206b':            # ID der 2. Koerperschaft
-         'newcat': '0201' # Koerperschaft
-         'mult': 1
-         'ref': 1
+#    '206a':            # ID der 2. Koerperschaft
+#         'newcat': '0200' # Koerperschaft
+#         'mult': 1
+#         'ref': 1
+#    '206b':            # ID der 2. Koerperschaft
+#         'newcat': '0201' # Koerperschaft
+#         'mult': 1
+#         'ref': 1
     '208 ':            # name des 3. Koerperschaft in ansetzungsform
          'newcat': '0200' # Koerperschaft
          'mult': 1
@@ -1065,14 +1065,14 @@ title:
          'newcat': '0201' # Koerperschaft
          'mult': 1
          'type': 'corporatebody'
-    '210a':            # ID der 3. Koerperschaft
-         'newcat': '0200' # Koerperschaft
-         'mult': 1
-         'ref': 1
-    '210b':            # ID der 3. Koerperschaft
-         'newcat': '0201' # Koerperschaft
-         'mult': 1
-         'ref': 1
+#    '210a':            # ID der 3. Koerperschaft
+#         'newcat': '0200' # Koerperschaft
+#         'mult': 1
+#         'ref': 1
+#    '210b':            # ID der 3. Koerperschaft
+#         'newcat': '0201' # Koerperschaft
+#         'mult': 1
+#         'ref': 1
     '212 ':            # name des 4. Koerperschaft in ansetzungsform
          'newcat': '0200' # Koerperschaft
          'mult': 1

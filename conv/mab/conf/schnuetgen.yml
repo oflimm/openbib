@@ -202,493 +202,6 @@ title:
     '089 ':            # bandangaben in vorlageform
         'newcat': '0089' # bandangaben in vorlageform
         'mult': 1
-    '310 ':            # ansetzungssachtitel
-        'newcat': '0310'  # ansetzungssachtitel
-        'mult': 1
-    '331 ':            # hauptsachtitel in vorlageform oder mischform
-        'newcat': '0331' # hauptsachtitel in vorlageform oder mischform
-        'mult': 1
-    '331a':            # hauptsachtitel in vorlageform oder mischform
-        'newcat': '0331' # hauptsachtitel in vorlageform oder mischform
-        'mult': 1
-    '331b':            # hauptsachtitel in vorlageform oder mischform
-        'newcat': '0331' # hauptsachtitel in vorlageform oder mischform
-        'mult': 1
-    '333 ':            # Zu erg. URH
-        'newcat': '0333' # Zu erg. URH
-        'mult': 1
-    '335 ':            # zusaetze zum hauptsachtitel
-        'newcat': '0335' # zusaetze zum hauptsachtitel
-        'mult': 1
-    '335a':            # zusaetze zum hauptsachtitel
-        'newcat': '0335' # zusaetze zum hauptsachtitel
-        'mult': 1
-    '335b':            # zusaetze zum hauptsachtitel
-        'newcat': '0335' # zusaetze zum hauptsachtitel
-        'mult': 1
-    '359 ':            # Vorl. Verf/Koerp
-        'newcat': '0359' # Vorl. Verf/Koerp
-        'mult': 1
-    '360 ':            # RDA Unterreihe Vorlageform
-        'newcat': '0360' # Vorl. Verf/Koerp
-        'mult': 1
-    '370a':            # WST
-        'newcat': '0370' # WST
-        'mult': 1
-    '403 ':            # ausgabebezeichnung in vorlageform
-        'newcat': '0403' # ausgabebezeichnung in vorlageform
-        'mult': 1
-    '405 ':            # Erschverlauf
-        'newcat': '0405' # Erschverlauf
-        'mult': 1
-    '410 ':            # ort(e) des 1. verlegers, druckers usw.
-        'newcat': '0410' # ort(e) des 1. verlegers, druckers usw.
-        'mult': 1
-    '419 ':            # RDA
-        'newcat': '0419' # RDA
-        'mult': 1
-    '412 ':            # name des 1. verlegers, druckers usw.
-        'newcat': '0412' # name des 1. verlegers, druckers usw.
-        'mult': 1
-    '425_':            # erscheinungsjahr(e)
-        'newcat': '0425' # erscheinungsjahr(e)
-        'mult': 1
-    '425a':            # erscheinungsjahr(e)
-        'newcat': '0425' # erscheinungsjahr(e)
-        'mult': 1
-    '425b':            # erscheinungsjahr(e)
-        'newcat': '0425' # erscheinungsjahr(e)
-        'mult': 1
-    '425c':            # erscheinungsjahr(e)
-        'newcat': '0425' # erscheinungsjahr(e)
-        'mult': 1
-    '433 ':            # umfangsangabe
-        'newcat': '0433' # umfangsangabe
-        'mult': 1
-    '451 ':            # 1. gesamttitel in vorlageform
-        'newcat': '0451' # 1. gesamttitel in vorlageform
-        'mult': 1
-    '453 ':            # 1. id gesamttitel in vorlageform
-        'newcat': '0451' # 1. id gesamttitel in vorlageform
-        'mult': 1
-    '461 ':            # 2. gesamttitel in vorlageform
-        'newcat': '0451' # 2. gesamttitel in vorlageform
-        'mult': 1
-    '463 ':            # 2. id gesamttitel in vorlageform
-        'newcat': '0451' # 2. id gesamttitel in vorlageform
-        'mult': 1
-    '471 ':            # 3. gesamttitel in vorlageform
-        'newcat': '0451' # 3. gesamttitel in vorlageform
-        'mult': 1
-    '473 ':            # 3. id gesamttitel in vorlageform
-        'newcat': '0451' # 3. id gesamttitel in vorlageform
-        'mult': 1
-    '481 ':            # 4. gesamttitel in vorlageform
-        'newcat': '0451' # 4. gesamttitel in vorlageform
-        'mult': 1
-    '483 ':            # 4. id gesamttitel in vorlageform
-        'newcat': '0451' # 4. id gesamttitel in vorlageform
-        'mult': 1
-    '491 ':            # 5. gesamttitel in vorlageform
-        'newcat': '0451' # 5. gesamttitel in vorlageform
-        'mult': 1
-    '493 ':            # 5. id gesamttitel in vorlageform
-        'newcat': '0451' # 5. id gesamttitel in vorlageform
-        'mult': 1
-    '507 ':            # Titelangaben
-        'newcat': '0507' # Titelangaben
-        'mult': 1
-    '523 ':            # Erscheinungsweise
-        'newcat': '0523' # Erscheinungsweise
-        'mult': 1
-    '524 ':            # Darin:
-        'newcat': '0524' # Darin:
-        'mult': 1
-    '527z':            # Parallele Ausg.
-        'newcat': '0527' # Parallele Ausg.
-        'mult': 1
-    '529z':            # Tit beilage
-        'newcat': '0529' # Tit beilage
-        'mult': 1
-    '530z':            # Bezugswerk
-        'newcat': '0530' # Bezugswerk
-        'mult': 1
-    '531z':            # FruehAusg.
-        'newcat': '0531' # FruehAusg.
-        'mult': 1
-    '532z':            # FruehTit.
-        'newcat': '0532' # FruehTit.
-        'mult': 1
-    '533z':            # SpaetAusg.
-        'newcat': '0533' # SpaetAusg.
-        'mult': 1
-    '534 ':            # Titelkonk.
-        'newcat': '0534' # Titelkonk.
-        'mult': 1
-    '540 ':            # internationale standardbuchnummer (isbn)
-        'newcat': '0540' # internationale standardbuchnummer (isbn)
-        'mult': 1
-    '540a':            # internationale standardbuchnummer (isbn)
-        'newcat': '0540' # internationale standardbuchnummer (isbn)
-        'mult': 1
-    '542a':            # ISSN
-        'newcat': '0543' # ISSN
-        'mult': 1
-    '611 ':              # Herstellungsort
-        'newcat': '0611' # Herstellungsort
-        'mult': 1
-    '613 ':              # Hersteller
-        'newcat': '0613' # Hersteller
-        'mult': 1
-    '619 ':              # Herstellungsjahr
-        'newcat': '0619' # Herstellungsjahr
-        'mult': 1
-    '621 ':              # 1. gesamttitel der sekundaerform in vorlageform
-        'newcat': '0508' # Quelle
-        'mult': 1
-    '634a':            # internationale standardbuchnummer (isbn)
-        'newcat': '0540' # internationale standardbuchnummer (isbn)
-        'mult': 1
-    '655 ':
-         # URLs
-        'mult': 1
-        'subfield':
-            'u': '0662'
-    '655e':
-        'no_conv': 1
-         # URLs
-        'mult': 1
-        'subfield':
-            'u': '0662'
-    '659 ':
-         # URL Beschreibungen
-        'mult': 1
-        'subfield':
-            '3': '0663'
-#     '710':            # schlagwoerter und schlagwortketten
-#         'newcat': '0710' # schlagwoerter und schlagwortketten
-#         'mult': 1
-#         'ref': 1
-    '902k':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '902e':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '902g':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '902s':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '902b':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '902c':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '902z':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '902f':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '907k':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '907e':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '907g':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '907s':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '907b':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '907c':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '907z':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '907f':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '912k':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '912e':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '912g':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '912s':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '912b':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '912c':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '912z':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '912f':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '917k':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '917e':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '917g':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '917s':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '917b':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '917c':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '917z':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '917f':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '922k':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '922e':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '922g':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '922s':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '922b':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '922c':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '922z':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '922f':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '927k':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '927e':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '927g':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '927s':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '927b':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '927c':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '927z':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '927f':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '932k':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '932e':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '932g':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '932s':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '932b':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '932c':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '932z':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '932f':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '937k':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '937e':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '937g':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '937s':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '937b':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '937c':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '937z':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '937f':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '942k':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '942e':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '942g':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '942s':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '942b':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '942c':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '942z':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '942f':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '947k':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '947e':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '947g':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '947s':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '947b':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '947c':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '947z':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
-    '947f':            # schlagwoerter mit ID's
-         'newcat': '0710' # schlagwoerter und schlagwortketten
-         'mult': 1
-         'type': 'subject'
     '100 ':            # name der 1. person in ansetzungsform
          'newcat': '0100' # verfasser
          'mult': 1
@@ -1337,6 +850,729 @@ title:
          'newcat': '0201' # Koerperschaft
          'mult': 1
          'type': 'corporatebody'
+    '304 ':            # 
+        'newcat': '0304' # 
+        'mult': 1
+    '304a':            # 
+        'newcat': '0304' # 
+        'mult': 1
+    '304b':            # 
+        'newcat': '0304' # 
+        'mult': 1
+    '310 ':            # ansetzungssachtitel
+        'newcat': '0310'  # ansetzungssachtitel
+        'mult': 1
+    '331 ':            # hauptsachtitel in vorlageform oder mischform
+        'newcat': '0331' # hauptsachtitel in vorlageform oder mischform
+        'mult': 1
+    '331a':            # hauptsachtitel in vorlageform oder mischform
+        'newcat': '0331' # hauptsachtitel in vorlageform oder mischform
+        'mult': 1
+    '331b':            # hauptsachtitel in vorlageform oder mischform
+        'newcat': '0331' # hauptsachtitel in vorlageform oder mischform
+        'mult': 1
+    '333 ':            # Zu erg. URH
+        'newcat': '0333' # Zu erg. URH
+        'mult': 1
+    '335 ':            # zusaetze zum hauptsachtitel
+        'newcat': '0335' # zusaetze zum hauptsachtitel
+        'mult': 1
+    '335a':            # zusaetze zum hauptsachtitel
+        'newcat': '0335' # zusaetze zum hauptsachtitel
+        'mult': 1
+    '335b':            # zusaetze zum hauptsachtitel
+        'newcat': '0335' # zusaetze zum hauptsachtitel
+        'mult': 1
+    '341 ':            # 
+        'newcat': '0341' # 
+        'mult': 1
+    '341_':            # 
+        'newcat': '0341' # 
+        'mult': 1
+    '341a':            # 
+        'newcat': '0341' # 
+        'mult': 1
+    '341b':            # 
+        'newcat': '0341' # 
+        'mult': 1
+    '345 ':            # 
+        'newcat': '0341' # 
+        'mult': 1
+    '345_':            # 
+        'newcat': '0341' # 
+        'mult': 1
+    '345a':            # 
+        'newcat': '0341' # 
+        'mult': 1
+    '345b':            # 
+        'newcat': '0341' # 
+        'mult': 1
+    '349 ':            # 
+        'newcat': '0341' # 
+        'mult': 1
+    '349_':            # 
+        'newcat': '0341' # 
+        'mult': 1
+    '349a':            # 
+        'newcat': '0341' # 
+        'mult': 1
+    '349b':            # 
+        'newcat': '0341' # 
+        'mult': 1
+    '353 ':            # 
+        'newcat': '0341' # 
+        'mult': 1
+    '353_':            # 
+        'newcat': '0341' # 
+        'mult': 1
+    '353a':            # 
+        'newcat': '0341' # 
+        'mult': 1
+    '353b':            # 
+        'newcat': '0341' # 
+        'mult': 1
+    '359 ':            # Vorl. Verf/Koerp
+        'newcat': '0359' # Vorl. Verf/Koerp
+        'mult': 1
+    '360 ':            # RDA Unterreihe Vorlageform
+        'newcat': '0360' # Vorl. Verf/Koerp
+        'mult': 1
+    '361 ':            # 
+        'newcat': '0361' # 
+        'mult': 1
+    '361_':            # 
+        'newcat': '0361' # 
+        'mult': 1
+    '370 ':            # WST
+        'newcat': '0370' # WST
+        'mult': 1
+    '370a':            # WST
+        'newcat': '0370' # WST
+        'mult': 1
+    '370b':            # WST
+        'newcat': '0370' # WST
+        'mult': 1
+    '370c':            # WST
+        'newcat': '0370' # WST
+        'mult': 1
+    '375e':            # WST
+        'newcat': '0375' # WST
+        'mult': 1
+    '376 ':            # WST
+        'newcat': '0376' # WST
+        'mult': 1
+    '376a':            # WST
+        'newcat': '0376' # WST
+        'mult': 1
+    '376b':            # WST
+        'newcat': '0376' # WST
+        'mult': 1
+    '376c':            # WST
+        'newcat': '0378' # WST
+        'mult': 1
+    '403 ':            # ausgabebezeichnung in vorlageform
+        'newcat': '0403' # ausgabebezeichnung in vorlageform
+        'mult': 1
+    '405 ':            # Erschverlauf
+        'newcat': '0405' # Erschverlauf
+        'mult': 1
+    '410_':            # ort(e) des 1. verlegers, druckers usw.
+        'newcat': '0410' # ort(e) des 1. verlegers, druckers usw.
+        'mult': 1
+    '410 ':            # ort(e) des 1. verlegers, druckers usw.
+        'newcat': '0410' # ort(e) des 1. verlegers, druckers usw.
+        'mult': 1
+    '410a':            # ort(e) des 1. verlegers, druckers usw.
+        'newcat': '0410' # ort(e) des 1. verlegers, druckers usw.
+        'mult': 1
+    '410b':            # ort(e) des 1. verlegers, druckers usw.
+        'newcat': '0410' # ort(e) des 1. verlegers, druckers usw.
+        'mult': 1
+    '419 ':            # RDA
+        'newcat': '0419' # RDA
+        'mult': 1
+    '412 ':            # name des 1. verlegers, druckers usw.
+        'newcat': '0412' # name des 1. verlegers, druckers usw.
+        'mult': 1
+    '412_':            # name des 1. verlegers, druckers usw.
+        'newcat': '0412' # name des 1. verlegers, druckers usw.
+        'mult': 1
+    '412a':            # name des 1. verlegers, druckers usw.
+        'newcat': '0412' # name des 1. verlegers, druckers usw.
+        'mult': 1
+    '412b':            # name des 1. verlegers, druckers usw.
+        'newcat': '0412' # name des 1. verlegers, druckers usw.
+        'mult': 1
+    '425_':            # erscheinungsjahr(e)
+        'newcat': '0425' # erscheinungsjahr(e)
+        'mult': 1
+    '425a':            # erscheinungsjahr(e)
+        'newcat': '0425' # erscheinungsjahr(e)
+        'mult': 1
+    '425b':            # erscheinungsjahr(e)
+        'newcat': '0425' # erscheinungsjahr(e)
+        'mult': 1
+    '425c':            # erscheinungsjahr(e)
+        'newcat': '0425' # erscheinungsjahr(e)
+        'mult': 1
+    '433 ':            # umfangsangabe
+        'newcat': '0433' # umfangsangabe
+        'mult': 1
+    '451 ':            # 1. gesamttitel in vorlageform
+        'newcat': '0451' # 1. gesamttitel in vorlageform
+        'mult': 1
+    '453 ':            # 1. id gesamttitel in vorlageform
+        'newcat': '0004' # 1. id gesamttitel in vorlageform
+        'mult': 1
+    '461 ':            # 2. gesamttitel in vorlageform
+        'newcat': '0451' # 2. gesamttitel in vorlageform
+        'mult': 1
+    '463 ':            # 2. id gesamttitel in vorlageform
+        'newcat': '0004' # 2. id gesamttitel in vorlageform
+        'mult': 1
+    '471 ':            # 3. gesamttitel in vorlageform
+        'newcat': '0451' # 3. gesamttitel in vorlageform
+        'mult': 1
+    '473 ':            # 3. id gesamttitel in vorlageform
+        'newcat': '0004' # 3. id gesamttitel in vorlageform
+        'mult': 1
+    '481 ':            # 4. gesamttitel in vorlageform
+        'newcat': '0451' # 4. gesamttitel in vorlageform
+        'mult': 1
+    '483 ':            # 4. id gesamttitel in vorlageform
+        'newcat': '0004' # 4. id gesamttitel in vorlageform
+        'mult': 1
+    '491 ':            # 5. gesamttitel in vorlageform
+        'newcat': '0451' # 5. gesamttitel in vorlageform
+        'mult': 1
+    '493 ':            # 5. id gesamttitel in vorlageform
+        'newcat': '0004' # 5. id gesamttitel in vorlageform
+        'mult': 1
+    '501 ':            # 
+        'newcat': '0501' # 
+        'mult': 1
+    '507 ':            # Titelangaben
+        'newcat': '0507' # Titelangaben
+        'mult': 1
+    '507 ':            # 
+        'newcat': '0507' # 
+        'mult': 1
+    '509 ':            # 
+        'newcat': '0509' # 
+        'mult': 1
+    '510 ':            # 
+        'newcat': '0510' # 
+        'mult': 1
+    '523 ':            # Erscheinungsweise
+        'newcat': '0523' # Erscheinungsweise
+        'mult': 1
+    '524 ':            # Darin:
+        'newcat': '0524' # Darin:
+        'mult': 1
+    '527z':            # Parallele Ausg.
+        'newcat': '0527' # Parallele Ausg.
+        'mult': 1
+    '527 ':            # Parallele Ausg.
+        'newcat': '0527' # Parallele Ausg.
+        'mult': 1
+    '529':            # Tit beilage
+        'newcat': '0529' # Tit beilage
+        'mult': 1
+    '529z':            # Tit beilage
+        'newcat': '0529' # Tit beilage
+        'mult': 1
+    '530':            # Bezugswerk
+        'newcat': '0530' # Bezugswerk
+        'mult': 1
+    '530z':            # Bezugswerk
+        'newcat': '0530' # Bezugswerk
+        'mult': 1
+    '531 ':            # FruehAusg.
+        'newcat': '0531' # FruehAusg.
+        'mult': 1
+    '531z':            # FruehAusg.
+        'newcat': '0531' # FruehAusg.
+        'mult': 1
+    '532 ':            # FruehTit.
+        'newcat': '0532' # FruehTit.
+        'mult': 1
+    '532z':            # FruehTit.
+        'newcat': '0532' # FruehTit.
+        'mult': 1
+    '533 ':            # SpaetAusg.
+        'newcat': '0533' # SpaetAusg.
+        'mult': 1
+    '533z':            # SpaetAusg.
+        'newcat': '0533' # SpaetAusg.
+        'mult': 1
+    '534 ':            # Titelkonk.
+        'newcat': '0534' # Titelkonk.
+        'mult': 1
+    '534z':            # Titelkonk.
+        'newcat': '0534' # Titelkonk.
+        'mult': 1
+    '540 ':            # internationale standardbuchnummer (isbn)
+        'newcat': '0540' # internationale standardbuchnummer (isbn)
+        'mult': 1
+    '540a':            # internationale standardbuchnummer (isbn)
+        'newcat': '0540' # internationale standardbuchnummer (isbn)
+        'mult': 1
+    '542a':            # ISSN
+        'newcat': '0543' # ISSN
+        'mult': 1
+    '611 ':              # Herstellungsort
+        'newcat': '0611' # Herstellungsort
+        'mult': 1
+    '613 ':              # Hersteller
+        'newcat': '0613' # Hersteller
+        'mult': 1
+    '619 ':              # Herstellungsjahr
+        'newcat': '0619' # Herstellungsjahr
+        'mult': 1
+    '621 ':              # 1. gesamttitel der sekundaerform in vorlageform
+        'newcat': '0508' # Quelle
+        'mult': 1
+    '634a':            # internationale standardbuchnummer (isbn)
+        'newcat': '0540' # internationale standardbuchnummer (isbn)
+        'mult': 1
+    '649d':            # 
+        'newcat': '0649' # 
+        'mult': 1
+    '655 ':
+         # URLs
+        'mult': 1
+        'subfield':
+            'u': '0662'
+    '655e':
+        'no_conv': 1
+         # URLs
+        'mult': 1
+        'subfield':
+            'u': '0662'
+    '659 ':
+         # URL Beschreibungen
+        'mult': 1
+        'subfield':
+            '3': '0663'
+    '710 ':            # 
+        'newcat': '0710' # 
+        'mult': 1
+    '770':            # 
+        'newcat': '0770' # 
+        'mult': 1
+    '780':            # 
+        'newcat': '0780' # 
+        'mult': 1
+    '785':            # 
+        'newcat': '0785' # 
+        'mult': 1
+    '787':            # 
+        'newcat': '0787' # 
+        'mult': 1
+#     '710':            # schlagwoerter und schlagwortketten
+#         'newcat': '0710' # schlagwoerter und schlagwortketten
+#         'mult': 1
+#         'ref': 1
+    '902t':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '902p':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '902k':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '902e':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '902g':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '902s':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '902b':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '902c':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '902z':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '902f':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '907t':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '907p':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '907k':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '907e':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '907g':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '907s':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '907b':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '907c':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '907z':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '907f':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '912t':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '912p':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '912k':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '912e':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '912g':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '912s':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '912b':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '912c':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '912z':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '912f':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '917t':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '917p':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '917k':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '917e':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '917g':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '917s':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '917b':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '917c':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '917z':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '917f':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '922t':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '922p':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '922k':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '922e':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '922g':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '922s':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '922b':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '922c':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '922z':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '922f':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '927t':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '927p':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '927k':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '927e':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '927g':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '927s':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '927b':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '927c':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '927z':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '927f':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '932t':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '932p':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '932k':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '932e':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '932g':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '932s':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '932b':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '932c':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '932z':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '932f':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '937t':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '937p':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '937k':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '937e':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '937g':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '937s':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '937b':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '937c':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '937z':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '937f':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '942t':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '942p':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '942k':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '942e':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '942g':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '942s':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '942b':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '942c':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '942z':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '942f':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '947t':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '947p':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '947k':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '947e':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '947g':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '947s':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '947b':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '947c':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '947z':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
+    '947f':            # schlagwoerter mit ID's
+         'newcat': '0710' # schlagwoerter und schlagwortketten
+         'mult': 1
+         'type': 'subject'
 
 holding:
     '001 ':

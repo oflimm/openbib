@@ -124,7 +124,7 @@ sub threadA {
 
     $logger->info("### instzs");
     
-    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['uzkzeitschriften','instzs'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['schnuetgen','uzkzeitschriften','instzs'] });
 
     return $thread_description;
 }

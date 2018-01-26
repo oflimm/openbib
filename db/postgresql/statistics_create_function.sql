@@ -28,7 +28,7 @@ timeformat := 'YYYY';
 END IF;
  
 _interval := '1 ' || selector;
-tablename :=  TG_TABLE_NAME || '_p' || TO_CHAR(NEW.tstamp, timeformat);
+tablename := TG_TABLE_NAME || '_p' || TO_CHAR(TO_TIMESTAMP(NEW.clock), timeformat);
  
 EXECUTE 'INSERT INTO ' || prefix || quote_ident(tablename) || ' SELECT ($1).*' USING NEW;
 RETURN NULL;
@@ -36,11 +36,11 @@ RETURN NULL;
 EXCEPTION
 WHEN undefined_table THEN
  
-startdate := EXTRACT(epoch FROM date_trunc(selector, NEW.tstamp));
-enddate := EXTRACT(epoch FROM date_trunc(selector, NEW.tstamp + _interval ));
- 
+startdate := EXTRACT(epoch FROM date_trunc(selector, TO_TIMESTAMP(NEW.clock)));
+enddate := EXTRACT(epoch FROM date_trunc(selector, TO_TIMESTAMP(NEW.clock) + _interval ));
+
 -- create table
-create_table_part:= 'CREATE TABLE IF NOT EXISTS '|| prefix || quote_ident(tablename) || ' (CHECK ((tstamp >= ' || quote_literal(to_timestamp(startdate::int)) || ' AND tstamp < ' || quote_literal(to_timestamp(enddate::int)) || '))) INHERITS ('|| TG_TABLE_NAME || ')';
+create_table_part:= 'CREATE TABLE IF NOT EXISTS '|| prefix || quote_ident(tablename) || ' (CHECK ((clock >= ' || quote_literal(startdate) || ' AND clock < ' || quote_literal(enddate) || '))) INHERITS ('|| TG_TABLE_NAME || ')';
 RAISE NOTICE 'A partition table has been created %',create_table_part;
 EXECUTE create_table_part;
 

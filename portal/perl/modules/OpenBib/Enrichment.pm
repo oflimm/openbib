@@ -136,6 +136,7 @@ sub add_enriched_content {
         'isbn'   => 'EnrichedContentByIsbn',
         'bibkey' => 'EnrichedContentByBibkey',
         'issn'   => 'EnrichedContentByIssn',
+	'title'  => 'EnrichedContentByTitle',
     };
     
     return unless (defined $matchkey_map_ref->{$matchkey} && @$content_ref);

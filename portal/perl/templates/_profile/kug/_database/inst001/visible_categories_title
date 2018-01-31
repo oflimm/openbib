@@ -112,6 +112,7 @@
                 #'T2663', # msg.maketext("T2663") USB URLInfo
                 'T1600', # msg.maketext("T1600") Hinweis
                 #'E4100', # msg.maketext("E4100") Basisklassifikation
+                'E4110', # msg.maketext("E4110") TOC
                 #'T4500', # msg.maketext("T4500") Nutzer-Tags
                 'T4600', # msg.maketext("T4600") Sammlungsportale
                 'T5005', # msg.maketext("T5005") Uebergeordn. Werke

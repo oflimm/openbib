@@ -912,8 +912,10 @@ sub process {
         }
     }
 
+    my $title_matchkey = "$database:$id";
+    
     # Zentrale Anreicherungsdaten lokal einspielen
-    if ($self->{local_enrichmnt} && (@{$enrichmnt_isbns_ref} || @{$enrichmnt_issns_ref} || $bibkey)) {
+    if ($self->{local_enrichmnt} && (@{$enrichmnt_isbns_ref} || @{$enrichmnt_issns_ref} || $bibkey || $title_matchkey)) {
         @{$enrichmnt_isbns_ref} =  keys %{{ map { $_ => 1 } @${enrichmnt_isbns_ref} }}; # Only unique
         @{$enrichmnt_issns_ref} =  keys %{{ map { $_ => 1 } @${enrichmnt_issns_ref} }}; # Only unique
         
@@ -948,6 +950,17 @@ sub process {
                     push @$enrichmnt_data_ref, $enrich_content;
                 }
             }
+
+	    # Anreicherung mit spezifischer Titel-ID und Datenbank
+
+	    {
+		my $lookup_ref = $self->{storage}{enrichmntdata}{$title_matchkey};
+		
+                foreach my $enrich_content  (@{$lookup_ref->{"$field"}}) {
+                    $logger->debug("Enrich field $field for title matchkey $title_matchkey with $enrich_content for id $id");
+                    push @$enrichmnt_data_ref, $enrich_content;
+                }
+	    }
             
             if (@{$enrichmnt_data_ref}) {
                 my $mult = 1;

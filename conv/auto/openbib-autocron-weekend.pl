@@ -291,6 +291,15 @@ if ($updatemaster && $maintenance){
 }
                                     
 if ($maintenance){
+    $logger->info("### Enriching from CDM");
+
+    system("cd /tmp ; mkdir kmbtocs ; cd kmbtocs ; wget http://peterlux.ub.uni-koeln.de/contentdm/export/kmbtocs.xml");
+    
+    system("$config->{'base_dir'}/conv/cdm2enrich.pl --inputfile=/tmp/kmbtocs/kmbtocs.xml --configfile=$config->{'base_dir'}/conf/kmb_tocs.yml --database=inst001");
+
+    system("cd /tmp ; rm kmbtocs/* ; rmdir kmbtocs");
+
+    
     $logger->info("### Enriching USB BK's");
     
     system("$config->{'base_dir'}/conv/usb_bk2enrich.pl");

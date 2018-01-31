@@ -541,6 +541,43 @@ sub enrich_content {
             });
         }
     }
+
+    # Anreicherung mit spezifischer Titel-ID und Datenbank
+
+    {
+	my $enriched_contents = $self->{enrich_schema}->resultset('EnrichedContentByTitle')->search_rs(
+            {
+                dbname  => $self->{database},
+		titleid => $self->{id},
+            },
+            {                        
+                group_by => ['field','content','dbname','titleid','origin','subfield'],
+                order_by => ['field','content'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+            }
+	    );
+        
+        while (my $item = $enriched_contents->next) {
+            my $field      = "E".sprintf "%04d",$item->{field};
+            my $subfield   =                    $item->{subfield};
+            my $content    =                    $item->{content};
+            
+            if ($seen_content{$content}) {
+                next;
+            } else {
+                $seen_content{$content} = 1;
+            }                    
+            
+            my $mult = ++$mult_map_ref->{$field};
+            
+            $self->set_field({
+                field      => $field,
+                subfield   => $subfield,
+                mult       => $mult,
+                content    => $content,
+            });
+        }
+    }
     
     if ($config->{benchmark}) {
         $btime=new Benchmark;

@@ -132,6 +132,8 @@ sub add_enriched_content {
     my $content_ref       = exists $arg_ref->{content}
         ? $arg_ref->{content}       : [];
 
+    my $logger = get_logger();
+    
     my $matchkey_map_ref = {
         'isbn'   => 'EnrichedContentByIsbn',
         'bibkey' => 'EnrichedContentByBibkey',
@@ -140,9 +142,15 @@ sub add_enriched_content {
     };
     
     return unless (defined $matchkey_map_ref->{$matchkey} && @$content_ref);
-       
-    $self->get_schema->resultset($matchkey_map_ref->{$matchkey})->populate($content_ref);
 
+    eval {
+	$self->get_schema->resultset($matchkey_map_ref->{$matchkey})->populate($content_ref);
+    };
+
+    if ($@){
+	$logger->fatal($@);
+    }
+    
     return;
 }
 

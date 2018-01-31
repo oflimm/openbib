@@ -1,21 +1,18 @@
 CREATE INDEX enrichedcontentisbn_isbn ON enriched_content_by_isbn (isbn);
 CREATE INDEX enrichedcontentisbn_origin ON enriched_content_by_isbn (origin);
 CREATE INDEX enrichedcontentisbn_field ON enriched_content_by_isbn (field);
-CREATE INDEX enrichedcontentisbn_content ON enriched_content_by_isbn (content);
 
 -------------------------------------------------
 
 CREATE INDEX enrichedcontentbibkey_bibkey ON enriched_content_by_bibkey (bibkey);
 CREATE INDEX enrichedcontentbibkey_origin ON enriched_content_by_bibkey (origin);
 CREATE INDEX enrichedcontentbibkey_field ON enriched_content_by_bibkey (field);
-CREATE INDEX enrichedcontentbibkey_content ON enriched_content_by_bibkey (content);
 
 -------------------------------------------------
 
 CREATE INDEX enrichedcontentissn_issn ON enriched_content_by_issn (issn);
 CREATE INDEX enrichedcontentissn_origin ON enriched_content_by_issn (origin);
 CREATE INDEX enrichedcontentissn_field ON enriched_content_by_issn (field);
-CREATE INDEX enrichedcontentissn_content ON enriched_content_by_issn (content);
 
 -------------------------------------------------
 
@@ -23,7 +20,6 @@ CREATE INDEX enrichedcontenttitle_titleid ON enriched_content_by_title (titleid)
 CREATE INDEX enrichedcontenttitle_dbname ON enriched_content_by_title (dbname);
 CREATE INDEX enrichedcontenttitle_origin ON enriched_content_by_title (origin);
 CREATE INDEX enrichedcontenttitle_field ON enriched_content_by_title (field);
-CREATE INDEX enrichedcontenttitle_content ON enriched_content_by_title (content);
 
 -------------------------------------------------
 

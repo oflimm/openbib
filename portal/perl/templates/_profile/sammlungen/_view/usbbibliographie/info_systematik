@@ -192,7 +192,7 @@
       <li><b>02.06.01</b> <a [% IF NOT have_classification.${"02.06.01"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.01*">Lesesaal und Bestandsschutz</a></li>
       <li><b>02.06.02</b> <a [% IF NOT have_classification.${"02.06.02"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.02*">Sondersammlungen</a>
         <ul>
-          <li><b>02.06.02.01</b> <a [% IF NOT have_classification.${"02.06.02.01"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.02.01*">Bibliothek Franz Ferdinand Wallraf</a>
+          <li><b>02.06.02.01</b> <a [% IF NOT have_classification.${"02.06.02.01"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.02.01*">Sondersammlungen generell</a>
           <li><b>02.06.02.02</b> <a [% IF NOT have_classification.${"02.06.02.02"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.02.02*">Sammlung Westerholt</a>
           <li><b>02.06.02.03</b> <a [% IF NOT have_classification.${"02.06.02.03"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.02.03*">Thomas a Kempis-Sammlung</a>
           <li><b>02.06.02.04</b> <a [% IF NOT have_classification.${"02.06.02.04"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.02.04*">Sammlung Jakob Ignaz Hittorff</a>
@@ -230,6 +230,7 @@
           <li><b>02.06.02.36</b> <a [% IF NOT have_classification.${"02.06.02.36"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.02.36*">Sammlung Jürgen Scholle</a>
           <li><b>02.06.02.37</b> <a [% IF NOT have_classification.${"02.06.02.37"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.02.37*">Bibliothek Ferdinand Franz Wallraf + Poetica-Sammlung</a>
           <li><b>02.06.02.38</b> <a [% IF NOT have_classification.${"02.06.02.38"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.02.38*">Sammlung Alff</a>
+          <li><b>02.06.02.39</b> <a [% IF NOT have_classification.${"02.06.02.39"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.02.39*">Autographensammlung</a>
         </ul>  
       </li>
       <li><b>02.06.03</b> <a [% IF NOT have_classification.${"02.06.03"}%]class="not-active"[% END %] href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;srt=title_asc;fcln=02.06.03*">Einzelne herausragende Objekte</a></li>

@@ -963,6 +963,9 @@ sub save_eventlog_to_statisticsdb {
         
 	if ($type == 1){
             my $searchquery_ref = {};
+  
+            # Quotes von Postgresql entfernen
+            $content=~s/\\\\/\\/g;
 
             eval {
                 $searchquery_ref = decode_json encode_utf8($content);
@@ -1153,7 +1156,8 @@ sub log_event {
     # DBI: "insert into eventlog values (?,NOW(),?,?)"
     if ($serialize){
         # Backslashes Escapen fuer PostgreSQL!!!
-        $contentstring=~s/\\/\\\\/g;
+        #$contentstring=~s/\\/\\\\/g;
+
         $self->get_schema->resultset('Eventlogjson')->populate([{ sid => $sid, tstamp => \'NOW()', type => $type, content => $contentstring }]);
     }
     else {

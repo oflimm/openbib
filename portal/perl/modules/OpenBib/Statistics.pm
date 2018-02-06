@@ -369,14 +369,19 @@ sub log_event {
     $parsed_tstamp->parse($tstamp);
 
     my $resultset = "Eventlog";
-    
+
+    $logger->debug("Pre content: $content");
     if ($serialize){
         # Backslashes Escapen fuer PostgreSQL!!!
-        $content=~s/\\/\\\\/g;        
+        # $content=~s/\\/\\\\/g;        
+	
+	# Ggf. Quote reduzieren
+	$content=~s/\\\\/\\/g;
         
         $resultset = "Eventlogjson";
     }
-    
+    $logger->debug("Post content: $content");
+
     $self->get_schema->resultset($resultset)->create(
         {
             sid          => $sid,

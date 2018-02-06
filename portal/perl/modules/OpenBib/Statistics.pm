@@ -370,7 +370,6 @@ sub log_event {
 
     my $resultset = "Eventlog";
 
-    $logger->debug("Pre content: $content");
     if ($serialize){
         # Backslashes Escapen fuer PostgreSQL!!!
         # $content=~s/\\/\\\\/g;        
@@ -380,7 +379,6 @@ sub log_event {
         
         $resultset = "Eventlogjson";
     }
-    $logger->debug("Post content: $content");
 
     $self->get_schema->resultset($resultset)->create(
         {

@@ -1,4 +1,5 @@
 [%- IF locationinfo.fields.${"L0280"}.first.content -%]
+
 <meta charset="utf-8">
 <link rel="stylesheet" href="https://openlayers.org/en/v4.2.0/css/ol.css" type="text/css">
 <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
@@ -92,6 +93,7 @@
     float: left;
     text-align: left;
     display: inline;
+	/*width: 100%;*/
   }
 
   .biggerText {
@@ -228,7 +230,7 @@
   }
 
   #suche {
-    width: 100%;
+    width: 70%;
   }
 
   #daten a {
@@ -246,7 +248,7 @@
 
 <h3 id="titleMobileDesktop"></h3>
 <div id="mobileView">
-  Name der Bibliothek <br /><input type="text" name="fname" id="sucheMob" list="theDataListMob"><input id="btnClearSearchMob" type="button" onclick="clearSucheMob()">
+  Name der Bibliothek oder Schlagwort<br /><input type="text" name="fname" id="sucheMob" list="theDataListMob"><input id="btnClearSearchMob" type="button" onclick="clearSucheMob()">
   <div id="daten"></div>
   <datalist id="theDataListMob"></datalist>
   <!--<br />
@@ -264,7 +266,7 @@
 </div>
 <input type="text" name="fname" id="suche" list="theDataList">
 <div id="info" style="display: none;"></div>
-<datalist id="theDataList"></datalist>
+<datalist id="theDataList" ></datalist>
 
 
 
@@ -323,10 +325,10 @@
   var semester;
   var feiertag;
 
-  var red = 'https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/pin_pink.png';
-  var grey = 'https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/pin_grau.png';
-  var green = 'https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/pin_lindgruen.png';
-  var pin_gps = 'https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/pin_blau_GPS.png';
+  var red = 'https:///www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/pin_pink.png';
+  var grey = 'https:///www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/pin_grau.png';
+  var green = 'https:///www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/pin_lindgruen.png';
+  var pin_gps = 'https:///www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/pin_blau_GPS.png';
   var clock = 'https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/clock.png';
   var calendar = 'https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/res/calendar.png';
 
@@ -360,7 +362,10 @@
     semester = getSemester(); // true = im Semester; false = Semesterferien
     // haben wir grad Feiertag?
     feiertag = getFeiertag(); // true = feiertag; false = kein Feiertag
-
+	
+	
+	printLogs("Semester: " + semester);
+	printLogs("Feiertag: " + feiertag);
     //gewaehlterTag = dates('tag');
 
     printLogs();
@@ -382,12 +387,6 @@
       calcMarkers('8', true);
     }
 
-    /*if(sigelUebergeben.length !== 0) {
-		  screen = 'desktop';
-          showDesktopGui = true;
-
-          calcMarkers('8', true);
-		} */
 
     if (sigelUebergeben.length > 1) {
       aufInstitutsseite = true;
@@ -412,7 +411,7 @@
       map = createMap('desktop');
       showDesktopGui = true;
       screen = 'desktop';
-      document.getElementById('titleMobileDesktop').innerHTML = "Map dieser Campusbibliothek";
+      document.getElementById('titleMobileDesktop').innerHTML = "Interaktive Map aller Campusbibliotheken in Echtzeit";
     }
 
     if (aufInstitutsseite)
@@ -420,12 +419,12 @@
 
 
     // Listener für GPS Checkbox initialisieren
-    /*   document.getElementById('track').checked = true;
+      document.getElementById('track').checked = true;
        var checkbox = document.getElementById('track');
        checkbox.onchange = function() {
          if (this.checked)
            gps();
-       } */
+       } 
 
     document.getElementById('suche').value = "";
     var options = '';
@@ -468,32 +467,16 @@
   };
 
   function detectBrowser() {
-	 if((navigator.userAgent.indexOf("Opera") || navigator.userAgent.indexOf('OPR')) != -1 ) 
-    {
-        browser = 'Opera';
-    }
-    else if(navigator.userAgent.indexOf("Chrome") != -1 )
-    {
-        browser = 'Chrome';
-    }
-    else if(navigator.userAgent.indexOf("Safari") != -1)
-    {
-        browser = 'Safari';
-    }
-    else if(navigator.userAgent.indexOf("Firefox") != -1 ) 
-    {
-         browser = 'Firefox';
-    }
-    else if((navigator.userAgent.indexOf("MSIE") != -1 ) || (!!document.documentMode == true )) //IF IE > 10
-    {
-      browser = 'IE'; 
-    }  
-    else 
-    {
-       browser = 'unknown';
-    }
-	printLogs("Browser: " + browser);
-	return browser;
+    brws = '';
+	if((navigator.userAgent.indexOf("Opera") || navigator.userAgent.indexOf('OPR')) != -1) brws = 'Opera';
+    else if(navigator.userAgent.indexOf("Chrome") != -1) brws = 'Chrome';
+    else if(navigator.userAgent.indexOf("Safari") != -1) brws = 'Safari';
+    else if(navigator.userAgent.indexOf("Firefox") != -1) brws = 'Firefox';
+    else if((navigator.userAgent.indexOf("MSIE") != -1) || (!!document.documentMode == true )) brws = 'IE'; //IF IE > 10
+    else brws = 'unknown';
+    
+	printLogs("Browser: " + brws);
+	return brws;
   }
   
   function clearSucheMob() {
@@ -545,8 +528,8 @@
     searchField = document.getElementById('suche');
     searchField.id = 'suche';
     searchField.class = 'inputControl';
-    searchField.style['width'] = '300px';
-    searchField.style['max-width'] = '300px';
+    searchField.style['width'] = '450px';
+   // searchField.style['max-width'] = '70%';
     searchField.type = 'text';
 
     buttonClearSearch = document.createElement('button');
@@ -636,13 +619,13 @@
     time = document.createElement('span');
     time.id = 'time';
 
-    /*checkBoxGps = document.createElement('button');
+    checkBoxGps = document.createElement('button');
         checkBoxGps.id = 'track';
         checkBoxGps.innerHTML = 'Mein Standort';
         checkBoxGps.addEventListener('click', function() {
           gps();
         }, false);
-		*/
+		
 
     checkBoxPr = document.createElement('input');
     checkBoxPr.id = 'pr';
@@ -793,8 +776,8 @@
       var options = opt_options || {};
       var spanFilterPanel = document.createElement('span');
       spanFilterPanel.id = 'spanFilterPanel';
-      // checkBoxGps.setAttribute("style", "float: right");
-      // var gpsText = document.createTextNode("Meine Position anzeigen");
+       checkBoxGps.setAttribute("style", "float: right");
+       var gpsText = document.createTextNode("Meine Position anzeigen");
       var prText = document.createTextNode("Präsenz");
       var ausText = document.createTextNode("Ausleih");
       textZeitWahl = document.createTextNode('Uhrzeit und Tag wählen');
@@ -809,8 +792,8 @@
       calIcon.setAttribute("width", "25");
 
       element2.appendChild(filterButton);
-      // element2.appendChild(btnAnsicht);
-      //element2.appendChild(checkBoxGps);
+       element2.appendChild(btnAnsicht);
+      element2.appendChild(checkBoxGps);
       element2.appendChild(document.createElement('br'));
       element2.appendChild(document.createElement('br'));
       spanFilterPanel.appendChild(institutsChoice);
@@ -1011,8 +994,8 @@
       var a = all[i];
       coord = a.getGeometry().getCoordinates();
       coord = ol.proj.transform(coord, 'EPSG:3857', 'EPSG:4326');
-      var s = a.get('name');
-      var s0 = s.split("$$");
+      //var s = a.get('name');
+      var s0 = a.get('name').split("$$");
       var s1 = '';
       var status = '';
 
@@ -1106,7 +1089,7 @@
 
       divSearch.id = 'divSearch';
       var form = document.createElement('form');
-      var searchText = document.createTextNode("Name der Bibliothek: ");
+      var searchText = document.createTextNode("Name der Bibliothek oder Schlagwort: ");
 
       divSearch.appendChild(searchText);
       divSearch.appendChild(searchField);
@@ -1197,9 +1180,15 @@
       i = "0" + i;
     return i;
   }
+
+  
+
+
+
+  
   
   function calcMarkersByName(input) {
-  printLogs('INPUT: ' + input);
+ // console.log('INPUT: ' + input);
 	// USB Köln
     if (input === 'USB Köln') {
       for (var i = 0; i < institute.length; i++) {
@@ -1285,119 +1274,593 @@
   
   
   
-	function abkuerzungen(input) {
-		var arr = [];
+	function abkuerzungen(inp) {
+		var array = [];
+		var arrSize = 1;
+		var end = [];
 		
-		/* Allgemeine Abkürzungen */
-		if('vwl'.startsWith(input.toLowerCase())) return ['DE-38-101'];
-		if('hwa'.startsWith(input.toLowerCase())) return ['DE-38-HWA'];
+		var wordsToIterate = [];
+		if(inp.indexOf(' ') >= 0){
+			wordsToIterate = inp.split(' ');
+			arrSize = wordsToIterate.length;
+			//console.log("Größe: " + wordsToIterate.length);
+		}
+		
+		input = inp;
+	//	for (var it = 0; it < wordsToIterate.length; it++) {
+			var arr = [];
+			/*var input;
+			if(inp.indexOf(' ') == 0)
+				input = inp;
+			else
+				input = wordsToIterate[it];
+			/* Allgemeine Abkürzungen */
+			if('vwl'.indexOf(input) != -1) arr.push('DE-38-101');
+			if('hwa'.indexOf(input) != -1) arr.push('DE-38-HWA');
 			
-		/* Liste von Schlagworten basierend auf den Angaben der Bibliotheken */	
-		/* A */
-		else if('abenteuerliteratur'.startsWith(input.toLowerCase())) return ['DE-38-323'];
-		else if('abwl'.startsWith(input.toLowerCase())) return ['DE-38-108', 'DE-38-112', 'DE-38-118', 'DE-38-124', 'DE-38-156'];
-		else if('afrikanistik'.startsWith(input)) return ['DE-38-998', 'DE-38-999'];
-		else if('altägypten'.startsWith(input.toLowerCase()) || 'ägyptologie'.startsWith(input.toLowerCase())) return ['DE-38-416'];
-		else if('alte geschichte'.startsWith(input.toLowerCase())) return ['DE-38-404'];
-		else if('altertumskunde'.startsWith(input.toLowerCase())) return ['DE-38-404', 'DE-38-460', 'DE-38-461', 'DE-38-462'];		
-		else if('amerikanische literatur'.startsWith(input.toLowerCase())) return ['DE-38-411'];
-		else if('amerikanisches recht'.startsWith(input.toLowerCase())) return ['DE-38-235'];
-		else if('anglistik'.startsWith(input.toLowerCase())) return ['DE-38-411'];
-		else if('anglo amerikanische geschichte'.startsWith(input.toLowerCase())) return ['DE-38-422'];
-		else if('anthropologie'.startsWith(input.toLowerCase())) return ['DE-38-419']; /* eigtl. anthrpologie (afrikanische) */			
-		else if('anwaltsrecht- und notarrecht'.startsWith(input.toLowerCase())) return ['DE-38-233'];
-		else if('arabistik'.startsWith(input.toLowerCase())) return ['DE-38-414'];
-		else if('arbeitskreis'.startsWith(input.toLowerCase()) || 'nationalismusforschung'.startsWith(input.toLowerCase())) return ['DE-38-420'];
-		else if('arbeitsmarktpolitik'.startsWith(input.toLowerCase())) return ['DE-38-107'];
-		else if('arbeitsrecht'.startsWith(input.toLowerCase())) return ['DE-38-203', 'DE-38-204'];		
-		else if('archäologie'.startsWith(input.toLowerCase())) return ['DE-38-426', 'DE-38-427', 'DE-38-438'];
-		else if('architekturgeschichte'.startsWith(input.toLowerCase())) return ['DE-38-445'];
-		else if('aristoteles'.startsWith(input.toLowerCase())) return ['DE-38-432'];
-		else if('asien'.startsWith(input.toLowerCase())) return ['DE-38-450', 'DE-38-459'];	
-		else if('atomrecht'.startsWith(input.toLowerCase())) return ['DE-38-220'];
-		else if('augustinus'.startsWith(input.toLowerCase())) return ['DE-38-432'];
-		else if('ausländisches'.startsWith(input.toLowerCase()) || 'öffentliches'.startsWith(input.toLowerCase()) || 'recht'.startsWith(input.toLowerCase())) return ['DE-38-207'];
-		else if('ausländisches'.startsWith(input.toLowerCase()) || 'privatrecht'.startsWith(input.toLowerCase())) return ['DE-38-208'];
-		else if('außenwirtschaft'.startsWith(input.toLowerCase())) return ['DE-38-101'];
-		else if('australische'.startsWith(input.toLowerCase()) || 'literatur'.startsWith(input.toLowerCase())) return ['DE-38-411'];	
-		else if('averroes'.startsWith(input.toLowerCase())) return ['DE-38-432'];
 			
-		/* B */
-		else if('bankbetriebslehre'.startsWith(input.toLowerCase())) return ['DE-38-109'];		
-		else if('bankrecht'.startsWith(input.toLowerCase())) return ['DE-38-217'];
-		else if('bankseminar'.startsWith(input.toLowerCase())) return ['DE-38-109'];
-		else if('behindertenpädagogik'.startsWith(input.toLowerCase())) return ['DE-38-302'];
-		else if('berufspädagogik'.startsWith(input.toLowerCase())) return ['DE-38-134'];
-		else if('besteuerung'.startsWith(input.toLowerCase()) || 'steuerwettbewerb'.startsWith(input.toLowerCase()) || 'international'.startsWith(input.toLowerCase())) return ['DE-38-101'];
-		else if('betriebswirtschaft'.startsWith(input.toLowerCase())) return ['DE-38-118', 'DE-38-124', 'DE-38-156'];
-		else if('bilanzrecht'.startsWith(input.toLowerCase())) return ['DE-38-231'];
-		else if('bildungsforschung'.startsWith(input.toLowerCase()) || 'sozialwissenschaften'.startsWith(input.toLowerCase())) return ['DE-38-309', 'DE-38-310'];
-		else if('bildungspolitik'.startsWith(input.toLowerCase())) return ['DE-38-107'];
-		else if('bildungswissenschaften'.startsWith(input.toLowerCase())) return ['DE-38-327'];	
-		else if('biochemie'.startsWith(input.toLowerCase())) return ['DE-38-503', 'DE-38-507'];	
-		else if('bioinformatik'.startsWith(input.toLowerCase())) return ['DE-38-503'];	
-		else if('biologie'.startsWith(input.toLowerCase())) return ['DE-38-503'];	
-		else if('biozentrum'.startsWith(input.toLowerCase())) return ['DE-38-503'];	
-		else if('botanik'.startsWith(input.toLowerCase())) return ['DE-38-503'];	
-		else if('bruch'.startsWith(input.toLowerCase()) || 'max'.startsWith(input.toLowerCase())) return ['DE-38-430'];
-		else if('bürgerliches'.startsWith(input.toLowerCase()) || 'recht'.startsWith(input.toLowerCase())) return ['DE-38-230', 'DE-38-231', 'DE-38-232', 'DE-38-234',];		
-		else if('byzantinistik'.startsWith(input.toLowerCase())) return ['DE-38-460'];
-		
-		/* C */
-		else if('transnational'.startsWith(input.toLowerCase())) return ['DE-38-217'];	// Center for Transnational Law (CENTRAL)
-		else if('chemie'.startsWith(input.toLowerCase())) return ['DE-38-507'];
-		else if('physikalische'.startsWith(input.toLowerCase()) || 'chemie'.startsWith(input.toLowerCase())) return ['DE-38-509'];
-		else if('didaktik'.startsWith(input.toLowerCase()) || 'chemie'.startsWith(input.toLowerCase())) return ['DE-38-317'];
-		else if('china'.startsWith(input.toLowerCase())) return ['DE-38-450'];	
-		else if('collegium'.startsWith(input.toLowerCase()) || 'musicum'.startsWith(input.toLowerCase())) return ['DE-38-430'];
-		else if('computer'.startsWith(input.toLowerCase())) return ['DE-38-006'];	
-		else if('computerrecht'.startsWith(input.toLowerCase())) return ['DE-38-222'];	
-		else if('controlling'.startsWith(input.toLowerCase())) return ['DE-38-160'];	
-		
-		/* D */
-		else if('datenverarbeitung'.startsWith(input.toLowerCase())) return ['DE-38-006'];	
-		else if('datenschutz'.startsWith(input.toLowerCase())) return ['DE-38-222'];	
-		else if('ddr'.startsWith(input.toLowerCase())) return ['DE-38-219']; // DDR-Recht	
-		else if('denkmalpflege'.startsWith(input.toLowerCase())) return ['DE-38-445'];	
-		else if('deutsche'.startsWith(input.toLowerCase()) || 'sprache'.startsWith(input.toLowerCase()) || 'literatur'.startsWith(input.toLowerCase())) return ['DE-38-312', 'DE-38-405'];
-		else if('digitale'.startsWith(input.toLowerCase()) || 'medien'.startsWith(input.toLowerCase())) return ['DE-38-222'];
-		else if('distributionsforschung'.startsWith(input.toLowerCase())) return ['DE-38-158'];	
-		else if('dokumentationszentrum'.startsWith(input.toLowerCase())) return ['DE-38-233'];	// Dokumentationszentrum für Europäisches Anwalts- und Notarrecht
-		else if('drika'.startsWith(input.toLowerCase())) return ['DE-38-438'];	
-		else if('drosophila'.startsWith(input.toLowerCase())) return ['DE-38-503'];	
-		
-		/* E */
-		else if('commerce'.startsWith(input.toLowerCase())) return ['DE-38-159'];	// E-Commerce
-		else if('empirische'.startsWith(input.toLowerCase()) || 'sozialforschung'.startsWith(input.toLowerCase())) return ['DE-38-132', 'DE_38-141', 'DE-38-171'];	
-		else if('energierecht'.startsWith(input.toLowerCase())) return ['DE-38-220'];	
-		else if('energiewirtschaft'.startsWith(input.toLowerCase())) return ['DE-38-119', 'DE-38-220'];	
-		else if('englische'.startsWith(input.toLowerCase()) || 'literatur'.startsWith(input.toLowerCase())) return ['DE-38-411'];	
-		// englische sprache 313, 411
-		else if('entwicklungsbiologie'.startsWith(input.toLowerCase()) || 'entwicklungsgenetik'.startsWith(input.toLowerCase())) return ['DE-38-503'];	
-		else if('entwicklungspsychologie'.startsWith(input.toLowerCase())) return ['DE-38-305'];	
-		else if('epigraphik'.startsWith(input.toLowerCase())) return ['DE-38-404'];	
-		else if('erziehungswissenschaft'.startsWith(input.toLowerCase())) return ['DE-38-HWA'];	
-		else if('ethnologie'.startsWith(input.toLowerCase())) return ['DE-38-431'];	
-		else if('europäische'.startsWith(input.toLowerCase()) || 'fragen'.startsWith(input.toLowerCase())) return ['DE-38-125', 'DE-38-EDZ'];
-		else if('europäische'.startsWith(input.toLowerCase()) || 'musikethnologie'.startsWith(input.toLowerCase())) return ['DE-38-324'];
-		else if('europäische'.startsWith(input.toLowerCase()) || 'rechtslinguistik'.startsWith(input.toLowerCase())) return ['DE-38-468'];
-		else if('europäische'.startsWith(input.toLowerCase()) || 'union'.startsWith(input.toLowerCase())) return ['DE-38-215', 'DE-38-EDZ'];
-		// Europäisches Anwalts- und Notarrecht 38/233
-		// Europäisches Arbeits- und Sozialrecht 38/203
-		else if('europäisches'.startsWith(input.toLowerCase()) || 'dokumentationszentrum'.startsWith(input.toLowerCase())) return ['DE-38-EDZ'];
-		else if('europäisches'.startsWith(input.toLowerCase()) || 'medienrecht'.startsWith(input.toLowerCase())) return ['DE-38-222', 'DE-38-EDZ'];
-		else if('europäisches'.startsWith(input.toLowerCase()) || 'rundfunkrecht'.startsWith(input.toLowerCase())) return ['DE-38-222', 'DE-38-EDZ'];
-		else if('europäisches'.startsWith(input.toLowerCase()) || 'telekommunikationsrecht'.startsWith(input.toLowerCase())) return ['DE-38-222', 'DE-38-EDZ'];
-		else if('europäisches'.startsWith(input.toLowerCase()) || 'wettbewerbsrecht'.startsWith(input.toLowerCase())) return ['DE-38-222', 'DE-38-EDZ'];
-		else if('europarecht'.startsWith(input.toLowerCase())) return ['DE-38-212', 'DE-38-213', 'DE-38-215', 'DE-38-468', 'DE-38-EDZ'];	
-		else if('evangelische'.startsWith(input.toLowerCase()) || 'theologie'.startsWith(input.toLowerCase())) return ['DE-38-111', 'DE-38-623'];
-		else if('evolutionsgenetik'.startsWith(input.toLowerCase())) return ['DE-38-503'];
+			/* Abkürzung aller zu 101 gezählten Bibs */
+			 if(input.indexOf('Volkswirtschaftliche Bibliothek 2 (ehem.: Seminar für Finanzwissenschaft)') != -1) arr.push('DE-38-101');
+			// if(input == 'Finanzwissenschaftliches Forschungsinstitut') arr.push('DE-38-101');
+			 if(input.indexOf('Volkswirtschaftliche Bibliothek 1 (ehem.: Staatswissenschaftliches (Volkswirtschaftliches) Seminar)') != -1) arr.push('DE-38-101');
+				
+			 if('finanzwissenschaft'.indexOf(input.toLowerCase()) != -1 || 'volkswirtschaftliche'.indexOf(input.toLowerCase()) != -1|| 'DE-38-103'.indexOf(input) != -1) arr.push('DE-38-101');
+			
+				
+			/* Liste von Schlagworten basierend auf den Angaben der Bibliotheken */	
+			/* A */
+			if('abenteuerliteratur'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-323');
+			if('abwl'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-108', 'DE-38-112', 'DE-38-118', 'DE-38-124', 'DE-38-156');
+			if('afrikanistik'.indexOf(input.toLowerCase())  != -1) arr.push('DE-38-998', 'DE-38-999');
+			if('altägypten'.indexOf(input.toLowerCase())  != -1 || 'ägyptologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-416');
+			if('alte geschichte'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-404');
+			if('altertumskunde'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-404', 'DE-38-460', 'DE-38-461', 'DE-38-462');		
+			if('amerikanische literatur'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-411');
+			if('amerikanisches recht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-235');
+			if('anglistik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-411');
+			if('anglo amerikanische geschichte'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-422');
+			if('anthropologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-419'); /* eigtl. anthrpologie (afrikanische) */			
+			if('anwaltsrecht- und notarrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-233');
+			if('arabistik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-414');
+			if('arbeitskreis'.indexOf(input.toLowerCase()) != -1 || 'nationalismusforschung'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-420');
+			if('arbeitsmarktpolitik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-107');
+			if('arbeitsrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-203', 'DE-38-204');		
+			if('archäologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-426', 'DE-38-427', 'DE-38-438');
+			if('architekturgeschichte'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-445');
+			if('aristoteles'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-432');
+			if('asien'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-450', 'DE-38-459');	
+			if('atomrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-220');
+			if('augustinus'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-432');
+			if('ausländisches'.indexOf(input.toLowerCase()) != -1 || 'öffentliches'.indexOf(input.toLowerCase()) != -1 || 'recht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-207');
+			if('ausländisches'.indexOf(input.toLowerCase())  != -1|| 'privatrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-208');
+			if('außenwirtschaft'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101');
+			if('australische'.indexOf(input.toLowerCase())  != -1|| 'literatur'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-411');	
+			if('averroes'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-432');
+				
+			/* B */
+			if('bankbetriebslehre'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-109');		
+			if('bankrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-217');
+			if('bankseminar'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-109');
+			if('behindertenpädagogik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-302');
+			if('berufspädagogik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-134');
+			if('besteuerung'.indexOf(input.toLowerCase())  != -1|| 'steuerwettbewerb'.indexOf(input.toLowerCase())  != -1|| 'international'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101');
+			if('betriebswirtschaft'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-118', 'DE-38-124', 'DE-38-156');
+			if('bilanzrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-231');
+			if('bildungsforschung'.indexOf(input.toLowerCase())  != -1|| 'sozialwissenschaften'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-309', 'DE-38-310');
+			if('bildungspolitik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-107');
+			if('bildungswissenschaften'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-327');	
+			if('biochemie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-503', 'DE-38-507');	
+			if('bioinformatik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-503');	
+			if('biologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-503');	
+			if('biozentrum'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-503');	
+			if('botanik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-503');	
+			if('bruch'.indexOf(input.toLowerCase())  != -1|| 'max'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-430');
+			if('bürgerliches'.indexOf(input.toLowerCase())  != -1|| 'recht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-230', 'DE-38-231', 'DE-38-232', 'DE-38-234');		
+			if('byzantinistik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-460');
 
-		/* F */		
-		// else if(''.startsWith(input.toLowerCase())) return ['DE-38-'];	
+			/* C */
+			if('transnational'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-217');	// Center for Transnational Law (CENTRAL)
+			if('chemie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-507');
+			if('physikalische'.indexOf(input.toLowerCase())  != -1 || 'chemie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-509');
+			if('didaktik'.indexOf(input.toLowerCase())  != -1 || 'chemie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-317');
+			if('china'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-450');	
+			if('collegium'.indexOf(input.toLowerCase())  != -1 || 'musicum'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-430');
+			if('computer'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-006');	
+			if('computerrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-222');	
+			if('controlling'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-160');	
+
+			/* D */
+			if('datenverarbeitung'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-006');	
+			if('datenschutz'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-222');	
+			if('ddr'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-219'); // DDR-Recht	
+			if('denkmalpflege'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-445');	
+			if('deutsche'.indexOf(input.toLowerCase())  != -1 || 'sprache'.indexOf(input.toLowerCase())  != -1 || 'literatur'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-312', 'DE-38-405');
+			if('digitale'.indexOf(input.toLowerCase())  != -1 || 'medien'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-222');
+			if('distributionsforschung'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-158');	
+			if('dokumentationszentrum'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-233');	// Dokumentationszentrum für Europäisches Anwalts- und Notarrecht
+			if('drika'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-438');	
+			if('drosophila'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-503');	
 		
-		else
-			return [];
+			/* E */
+			if('commerce'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-159');	// E-Commerce
+			if('empirische'.indexOf(input.toLowerCase()) != -1 || 'sozialforschung'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-132', 'DE_38-141', 'DE-38-171');	
+			if('energierecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-220');	
+			if('energiewirtschaft'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-119', 'DE-38-220');	
+			if('englische'.indexOf(input.toLowerCase()) != -1 || 'literatur'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-411');	
+			// englische sprache 313, 411
+			if('entwicklungsbiologie'.indexOf(input.toLowerCase())  != -1|| 'entwicklungsgenetik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-503');	
+			if('entwicklungspsychologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-305');	
+			if('epigraphik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-404');	
+			if('erziehungswissenschaft'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-HWA');	
+			if('ethnologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-431');	
+			if('europäische'.indexOf(input.toLowerCase())  != -1|| 'fragen'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-125', 'DE-38-EDZ');
+			if('europäische'.indexOf(input.toLowerCase())  != -1|| 'musikethnologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-324');
+			if('europäische'.indexOf(input.toLowerCase())  != -1|| 'rechtslinguistik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-468');
+			if('europäische'.indexOf(input.toLowerCase())  != -1|| 'union'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-215', 'DE-38-EDZ');
+			// Europäisches Anwalts- und Notarrecht 38/233
+			// Europäisches Arbeits- und Sozialrecht 38/203
+			if('europäisches'.indexOf(input.toLowerCase())  != -1|| 'dokumentationszentrum'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-EDZ');
+			if('europäisches'.indexOf(input.toLowerCase())  != -1|| 'medienrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-222', 'DE-38-EDZ');
+			if('europäisches'.indexOf(input.toLowerCase()) != -1 || 'rundfunkrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-222', 'DE-38-EDZ');
+			if('europäisches'.indexOf(input.toLowerCase()) != -1 || 'telekommunikationsrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-222', 'DE-38-EDZ');
+			if('europäisches'.indexOf(input.toLowerCase()) != -1 || 'wettbewerbsrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-222', 'DE-38-EDZ');
+			if('europarecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-212', 'DE-38-213', 'DE-38-215', 'DE-38-468', 'DE-38-EDZ');	
+			if('evangelische'.indexOf(input.toLowerCase()) != -1 || 'theologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-111', 'DE-38-623');
+			if('evolutionsgenetik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-503');
+
+			/* F */		
+			// Fachbibliothek Rechtswissenschaft / Rechtswissenschaftliches Seminar 38/201
+			if('fachsprachen'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-468');
+			if('feminismus'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-007');
+			if('fennistik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-444');
+			if('fernsehen'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101'); // ??? Fernsehen in der vwl?
+			if('fernsehwissenschaft'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-448');
+			if('festschriften'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101');
+			if('film'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-323');
+			if('filmwissenschaft'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-448');
+			if('finanzausgleich'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101');
+			if('finanzierungslehre'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-164');
+			if('finanzpolitik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101');
+			if('finanzwissenschaft'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101');
+			// Finnische Sprachwissenschaft und Literatur 38/444
+			if('finnland'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-444');
+			if('firmenmitteilungen'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101');
+			// Flexible Fertigung 38/110
+			if('föderalismus'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101');
+			// Forschungsstelle für das Recht des Gesundheitswesens 38/225
+			if('frauenfilme'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-323');
+			if('frauenliteratur'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-323');
+			// Frieden und Sicherheit 38/237
+			// Frühe Neuzeit 38/425
+			if('frühgeschichte'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-426');
+			
+			/* G */
+			// Geldtheorie u. Geldpolitik 38/101
+			// Gemeinsame Fachbibliothek Archäologien 38/427
+			// Gemeinsame Fachbibliothek Asien 38/450, 38/459
+			// Gemeinsame Fachbibliothek Biowissenschaften 38/503
+			// Gemeinsame Fachbibliothek Chemie 38/507
+			// Gemeinsame Fachbibliothek Medienkultur und Theater 38/429, 38/448
+			// Gemeinsame Fachbibliothek Rechtswissenschaft 38/201
+			// Gemeinsame Fachbibliothek Slavistik 38/418
+			// Gemeinsame Fachbibliothek Soziologie 38/132
+			// Gemeinsame Fachbibliothek Versicherungswissenschaft 38/123
+			// Gemeinsame Fachbibliothek Volkswirtschaftslehre 38/101
+			if('gender'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-007'); // Gender Studies in Köln
+			if('genetik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-503');
+			if('genossenschaften'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101');
+			if('geobibliothek'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-514');
+			if('geochemie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-514');
+			if('geographie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-314', 'DE-38-517');
+			if('geologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-514');
+			if('geophysik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-514');
+			if('germanistik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-405');
+			if('geschäftsberichte'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-102');
+			if('geschichte'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-306', 'DE-38-420');
+			// Geschichte (amerikanische, anglo-amerikanische, britische, englische) 38/422
+			// Geschichte (außereuropäische) 38/423
+			// Geschichte (osteuropäische) 38/425
+			if('geschlechterforschung'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-007', 'DE-38-420');
+			if('geschlechtskrankheiten'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-009');
+			if('gesellschaftsrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-218', 'DE-38-230', 'DE-38-231');
+			if('gesis'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-587');
+			if('gestik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-007');
+			if('gesundheitsrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-225');
+			// gewerblicher Rechtsschutz 38/222, 38/230
+			if('gleichstellungsbeauftragte'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-007');
+			// Großbritannien (Geschichte) 38/422
+			
+			/* H */
+			if('hagiographie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-461');
+			if('handel'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-112', 'DE-38-124', 'DE-38-156');
+			if('handelsforschung'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-159');
+			if('handelsrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-218' , 'DE-38-230');
+			if('hauptseminar'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-201');
+			if('heilpädagogik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-302');
+			// Historische Musikwissenschaft 38/430
+			// Historisches Institut 38/420 , 38/421, 38/422, 38/423 , 38/425, 38/306
+			if('hochschuldidaktik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-236');
+			if('homosexuell'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-009');
+			if('hörfunk'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101');
+			if('humangenetik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-503');
+			if('humanismus'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-434');
+			if('humanwissenschaft'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-HWA');
+			if('husserl'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-433');
+			
+			/* I */
+			// ICAO (International Civil Aviation Organization) 38/212
+			if('immunologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-503');
+			if('indiologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-408');
+			if('informatik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-006', 'DE-38-526');
+			// Informations- und Kommunikationssysteme 38/110
+			// International Investment Law Center Cologne 38/227
+			// International Peace and Security Law 38/237
+			// Internationale Besteuerung und Steuerwettbewerb 38/101
+			// Internationales Kolleg Morphomata 38/467
+			// Internationales und Ausländisches Privatrecht 38/208
+			if('internet'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-006', 'DE-38-101');
+			if('internetrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-222');
+			// Investment law 38/227
+			if('ipr'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-208');
+			if('iranistik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-414');
+			if('islamwissenschaft'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-414', 'DE-38-435', 'DE-38-437');
+			if('iss'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-205', 'DE-38-132');
+			// Italien (Geschichte) 38/420
+			// Italienische Literatur 38/434
+			// Italienische Renaissance 38/434
+			
+			/* J */
+			// Japanische Kulturgeschichte 38/459
+			if('japanologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-459');
+			if('jubiläumsschriften'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-102');
+			if('judaistik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-415');
+			if('jugendliteratur'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-323');
+			// Juristisches Lernen und Lehren 38/236
+			
+			/* K */
+			// Kanadische Literatur 38/411
+			// Kanonisches Recht 38/209
+			if('karibik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-423');
+			// Karibische Literatur 38/411
+			if('kartellrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-215', 'DE-38-230');
+			// Katholische Theologie 38/311, 38/325, 38/622
+			if('kinderarmut'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-308');
+			if('kinderliteratur'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-323');
+			if('kirchenrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-209');
+			// Klassische Philologie 38/404
+			if('klimatologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-540');
+			// Kolonialgeschichte (europäische) 38/423
+			if('kommunikationsrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-222');
+			if('kooperation'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101');
+			// Kooperationsforschung (Nonprofit-Bereich) 38/101
+			if('koptologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-416');
+			if('kosmochemie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-514');
+			if('kriminologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-223');
+			if('kristallographie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-514');
+			// KUGA (Kulturen und Gesellschaften Asiens) - Japan 38/459
+			if('kundenmanagement'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-156');
+			// Kunst und Textil 38/319, 38/320
+			if('kunstgeschichte'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-428');
+			// Kunstgeschichte (lateinamerikanische) 38/423
+			// Kunsthistorisches Institut 38/428, 38/445
+			
+			/* L */
+			if('lateinamerika'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-423');
+			// Lehrstuhl für Bürgerliches Recht, Wirtschafts- und Anwaltsrecht 38/232
+			// Leibniz-Institut für Sozialwissenschaften 38/141
+			if('lektüre'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-323');
+			if('lesbisch'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-009');
+			if('lesen'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-323');
+			if('liederbücher'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-324');
+			if('linguistik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-405', 'DE-38-409', 'DE-38-410', 'DE-38-465');
+			// Linguistik (afrikanische) 38/419
+			// Literatur (Italien) 38/434
+			// Literatur (Spätantike) 38/461
+			if('literaturwissenschaft'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-405', 'DE-38-411');
+			if('lizenzvertragsrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-230');
+			if('logistik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-110', 'DE-38-155');
+			// Luft- und Weltraumrecht 38/212
+			if('luther'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-325');
+			
+			/* M */
+			if('mädchenliteratur'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-323');
+			if('markenrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-230');
+			if('markenmanagement'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-124');
+			if('marketing'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-112', 'DE-38-124', 'DE-38-156', 'DE-38-158');
+			if('marktforschung'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-112');
+			// Martin-Buber-Institut für Judaistik 38/415
+			if('mathematik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-315', 'DE-38-501');
+			if('mausgenetik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-503');
+			// Max-Bruch-Archiv 38/430
+			// Max Freiherr von Oppenheim-Stiftung 38/435
+			if('mediävistik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-405');
+			if('medien'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101', 'DE-38-323');
+			if('medienforschung'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-323');
+			if('medienkulturwissenschaft'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-429', 'DE-38-448', 'DE-38-464');
+			if('medienökonomie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101');
+			if('medienpädagogik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-323');
+			if('medienrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-222');
+			if('medienwissenschaft'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-429', 'DE-38-448');
+			if('medizin'.indexOf(input.toLowerCase()) != -1) arr.push('ZB MED');
+			if('medizinsoziologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-328');
+			// Meister Eckhart 38/432
+			if('messe'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-112', 'DE-38-124');
+			if('messewirtschaft'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-158');
+			if('meteorologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-540');
+			if('migration'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-308');
+			if('mineralogie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-514');
+			if('mittelalter'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-420');
+			// Mittelalter-Philosophie 38/432
+			if('mittelamerika'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-423');
+			// Mittellateinische Literatur 38/461
+			// Mittellateinische Sprache 38/461
+			// Modellkolleg Bildungswissenschaften 38/327
+			if('molekularbiologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-503');
+			if('molekulargenetik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-503');
+			if('morphometa'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-467');
+			if('musikethnologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-324', 'DE-38-430');
+			if('musikpädagogik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-321');
+			if('musikwissenschaft'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-321', 'DE-38-430');
+			
+			/* N */
+			if('nationalismusforschung'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-420');
+			// Neue Medien 38/101
+			if('neulatein'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-462');
+			// Neulateinische Literatur 38/434
+			// Neuzeitliche Geschichte 38/420
+			// Nicolaus Cusanus 38/432
+			if('niederlandistik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-406');
+			// Nordische Philologie 407
+			if('nordistik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-407');
+			if('nubienkulturen'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-416');
+			if('numismatik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-404');
+			
+			/* O */
+			// Öffentliche Finanzwirtschaft 38/101
+			// Öffentliches Recht 38/213
+			if('ökonometrie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-140');
+			if('ökumene'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-325');
+			// Operations Research 38/110
+			// Oppenheim-Stiftung 38/435
+			if('organisation'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-108');
+			if('organisationsseminar'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-108');
+			// Orientalisches Seminar 38/414
+			// Ostasiatisches Seminar 38/450, 38/459
+			if('osteuropa'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-425');
+			// Europäisches Recht 38/219
+			if('ostrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-219');
+			
+			/* P */
+			if('pädagogik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-303', 'DE-38-304', 'DE-38-403');
+			if('paläontologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-514');
+			if('patentrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-230');
+			if('papyrologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-404');
+			// Peace and Security Law 38/237
+			if('persönlichkeitsrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-222');
+			if('petrarca'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-434');
+			if('petrologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-514');
+			if('phänomenologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-433');
+			// Philologie (klassisch) 38/404
+			if('philosophie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-401', 'DE-38-432', 'DE-38-433');
+			// Philosophisches Seminar 38/401
+			if('phonetik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-410');
+			if('physik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-502');
+			// Physikalische Chemie 38/509
+			if('platon'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-432');
+			if('polen'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-425');
+			if('politikwissenschaft'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-308', 'DE-38-125');
+			// Politische Presse 38/421
+			// Politische Wissenschaft 38/125
+			if('popularmusik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-430');
+			if('portugal'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-423');
+			// Portugiesisch-Brasilianisches Institut 38/413
+			if('presse'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-421');
+			if('presserecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-222');
+			// Privatrecht (internationales und ausländisches) 38/208
+			// Privatrechtsgeschichte (neuere) 38/216 
+			if('produktion'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-110');
+			// Produktionsplanung und -steuerung 38/110
+			if('produktpolitik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-112');
+			if('prosodie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-410');
+			if('psychologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-305');
+			// Psychologische Tests 38/326
+			// Public economics 38/101
+			if('publizistik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-421');
+			
+			/* Q */
+			// Quantitative Methoden (Statistik) 38/140
+			if('quartärgeologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-514');
+			
+			/* R */
+			if('rechenzentrum'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-006');
+			if('rechnungslegung'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-117');
+			// Recht (ausländisches öffentliches) 38/207
+			// Recht (US-amerikanisches) 38/235
+			// Recht der Europäischen Gemeinschaften 38/215
+			if('rechtsdidaktik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-236');
+			if('rechtsextremismus'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-308');
+			// Rechtsgeschichte (deutsche und rheinische) 38/216
+			// Rechtslinguistik (europäische) 38/468
+			if('rechtspolitik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-211');
+			if('rechtssprachen'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-468');
+			if('rechtstheorie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-234');
+			if('rechtsvergleichung'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-206', 'DE-38-208', 'DE-38-219');
+			if('rechtswissenschaft'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-201');
+			// Rechtswissenschaftliches Seminar 38/201
+			if('rehabilitätspädagogik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-302');
+			if('rehabilitätswissenschaft'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-328');
+			if('religionslehre'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-622');
+			if('renaissance'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-434');
+			// Rheinische Musikgeschichte 38/430
+			// Rheinland (Landesgeschichte) 38/420
+			if('risikomanagement'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-123');
+			if('romanistik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-412', 'DE-38-413', 'DE-38-434');
+			// Römisches Recht 38/214
+			if('rrzk'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-006');
+			if('rundfunk'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101');
+			if('rundfunkökonomie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101');
+			if('rundfunkrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-222');
+			if('russland'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-425');
+			
+			/* S */
+			if('schmalenbach'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-102'); // Schmalenbach-Bibliothek
+			if('schulforschung'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-304');
+			if('schulpädagogik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-304');
+			if('schwul'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-009');
+			if('sexualpolitik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-007');
+			if('simulation'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-110');
+			if('skandinavistik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-407');
+			if('slavistik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-418');
+			if('sonderpädagogik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-302');
+			if('sozialforschung'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-132'); // Sozialforschung (angewandte) 38/132
+			if('sozialgeographie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-136');
+			if('sozialpädagogik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-134');
+			if('sozialpolitik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101');
+			if('sozialpsychologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-132', 'DE-38-305');
+			// Sozialrecht (deutsches und europäisches) 38/203
+			if('sozialstatistik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-139', 'DE-38-140');
+			if('sozialwissenschaften'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-132', 'DE-38-308', 'DE-38-309', 'DE-38-310', 'DE-38-587');
+			if('soziologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-132', 'DE-38-309');
+			if('spanien'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-423');
+			// Spätantike Literatur 38/461
+			if('sprachlabor'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-466');
+			// Sprachliche Informationsverarbeitung 38/465
+			if('sprachwissenschaft'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-405', 'DE-38-409', 'DE-38-411');
+			if('stastskirchenrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-209');
+			if('staatsphilosophie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-211');
+			if('staatsrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-213', 'DE-38-225', 'DE-38-228');
+			if('staatsverschuldung'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101');
+			if('staatswissenschaft'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101');
+			if('statistik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-139', 'DE-38-140', 'DE-38-501');
+			if('std'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-009'); // STD (Sexually Transmitted Diseases) 38/009
+			if('steuerberatung'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-118');
+			if('steuerlehre'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-117'); // Steuerlehre (betriebswirtschaftliche) 38/117
+			// Steuerpolitik u. -theorie 38/101
+			if('steuerrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-210', 'DE-38-231');
+			if('steuerseminar'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-117');
+			if('stochastik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-501');
+			if('strafrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-208');
+			// Strafrecht (ausländisches und internationales) 38/206
+			if('strafprozessrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-205');
+			if('sudankulturen'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-416');
+			if('südamerika'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-423');
+			// Supply Chain Managemant 38/110
+			// Systematische Musikwissenschaft 38/430
+			// Strafrecht (ausländisches und internationales) 38/206
+			
+			/* T */
+			if('tamilistik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-408');
+			if('telekommunikationsrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-222');
+			if('testothek'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-326');
+			if('textilgestaltung'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-320');
+			if('textilwissenschaft'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-320');
+			if('theatergeschichte'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-429');
+			if('theaterwissenschaft'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-429', 'DE-38-448');
+			// Theaterwissenschaftliche Sammlung 38/429
+			// Theologie, evangelisch 38/311, 38/623 
+			// Theologie, katholisch 38/311, 38/325, 38/622
+			// Thomas von Aquin 38/432
+			// Thomas-Institut 38/432
+			if('transgender'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-009');
+			if('transsexuell'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-009');
+			if('treuhandseminar'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-118');
+			if('tv'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101');
+			
+			/* U */
+			if('ukraine'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-425');
+			if('umfrageergebnisse'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-141');
+			if('umweltökonomie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101');
+			if('umweltpolitik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101');
+			if('umweltrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-220');
+			if('ungarn'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-425');
+			// Universitätsarchiv 38/005
+			// Universitäts- und Stadtbibliothek Köln 38
+			if('unternehmensentwicklung'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-108');
+			if('unternehmensführung'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-155');
+			if('unternehmensrechnug'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-160');
+			// Ur- und Frühgeschichte 38/426, 38/438
+			if('urheberrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-222', 'DE-38-230');
+			// US-amerikanisches Recht 38/235
+			// USA (Geschichte) 38/422
+			
+			/* V */
+			if('varietätenlinguistik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-468');
+			if('verfahrensrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-221');
+			if('verfassungsrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-228');
+			// Vergleichende Bildungsforschung und Sozialwissenschaften 38/310
+			if('versicherungslehre'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-123');
+			if('versicherungsmathematik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-123');
+			if('versicherungsrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-123', 'DE-38-218');
+			if('versicherungswesen'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-123');
+			if('versicherungswirtschaft'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-123');
+			if('versicherungswissenschaft'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-123', 'DE-38-218');
+			if('versorgungsforschung'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-328');
+			if('verwaltungslehre'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-213', 'DE-38-228');
+			if('verwaltungsrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-228');
+			if('völkerkunde'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-431');
+			if('völkerrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-207', 'DE-38-212', 'DE-38-219');
+			// Volkswirtschaftslehre / Gemeinsame Fachbibliothek 38/101
+			// VWL Fachbibliothek 38/101
+			
+			/* W */
+			if('wahlforschung'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-141');
+			if('währungspolitik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-107');
+			if('weltraumforschung'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-514');
+			if('weltraumrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-212');
+			if('wettbewerbsrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-215', 'DE-38-222', 'DE-38-230');
+			// Wirtschaftsarchiv 38/102
+			if('wirtschaftsforschung'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-171');
+			if('wirtschaftsgeographie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-136');
+			if('wirtschaftsinformatik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-526');
+			if('wirtschaftsmathematik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-501');
+			if('wirtschaftspädagogik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-134');
+			if('wirtschaftspolitik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101', 'DE-38-107');
+			if('wirtschaftsprüfung'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-118');
+			if('wirtschaftspsychologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-305');
+			if('wirtschaftsrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-204', 'DE-38-212', 'DE-38-215', 'DE-38-218', 'DE-38-232');
+			if('wirtschaftsstatistik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-140', 'DE-38-139');
+			if('wirtschaftstheorie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101');
+			if('wirtschaftswissenschaften'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-310');
+			if('wirtschaftsrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-224', 'DE-38-228');
+			if('wohneigentum'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101');
+			if('wohungspolitik'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101');
+			if('wohnungsrecht'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101');
+			if('wohnungswirtschaft'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-101');
+			
+			/* X/Y/Z */
+			if('zeitschriften'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-421');
+			if('zeitung'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-421');
+			if('zoologie'.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-503');
+			
+			
+		
+		
+		// if(''.indexOf(input.toLowerCase()) != -1) arr.push('DE-38-');	
+			
+			/*if(it === 0)
+				array = arr;
+			else if(it > 0) {
+				for(var it = 0; it < array.length; it++) {
+					if(arr.indexOf(array[it]) != -1)
+						end.push(array[it]);
+				}
+				console.log("Noch drin: " + end);
+			}*/
+/********************************************** mögliche Lösung
+strng = "I have been working here since last six months";
+text = ["since", "be", "ths"];
+results = [];   // make result as object
+
+     for(var i=0; i<=text.length; i++){
+          if(strng.indexOf(text[i]) != -1)
+             results.push(text[i]);
+     }
+     
+console.log(results);     			
+/*****************************************************/
+		//}
+		
+		return arr;
 			
 	}
 
@@ -1413,10 +1876,28 @@
         foundInsts.push(institute[v].sigel);
       }
     }
+	var neudazu = [];
+	neudazu = abkuerzungen(inp);
+	
+	if(neudazu.length > 0) {
+		for (var i = 0; i < neudazu.length; i++) {
+			var hinzufuegen = true;
+			for(var g = 0; g < foundInsts.length; g++) {
+				if(foundInsts[g] == neudazu[i]) {
+					hinzufuegen = false;
+				}
+			}	
+			if(hinzufuegen){
+				foundInsts.push(neudazu[i]);
+			}
+		}
+	}	
+	printLogs("Gesuchte Institute: " + foundInsts);
     calcMarkersByName(foundInsts);
   }
 
   function istOffen(sub1) {
+  //console.log(sub1);
     // 9.00 - 18.45 Uhr
     if (sub1.match(new RegExp(/(\d{1,2}\.\d{2}[\s]?-[\s]?\d{1,2}\.\d{2}[\s]?)/g))) {
       var z = sub1.match(new RegExp(/(\d{1,2}\.\d{2}[\s]?-[\s]?\d{1,2}\.\d{2}[\s]?)/g));
@@ -1498,10 +1979,7 @@
 
         /* Uhrzeit ohne doppelpunkt*/
       case 'uhrzeit':
-        var minutes = addZero(date.getMinutes());
-        var hours = date.getHours();
-        //return 1759;
-        return hours + "" + minutes;
+        return date.getHours() + "" + addZero(date.getMinutes());
 
       case 'stunde':
         return date.getHours();
@@ -1518,9 +1996,12 @@
         return date.getMonth() + 1;
 
       case 'voller_tag':
+	 // return '01.01';
         return addZero(date.getDate()) + "." + (date.getMonth() + 1);
 
       case 'semester':
+		// Semesterferien simulieren
+		 //return '20180203';
         return date.getFullYear() + "" + (addZero(date.getMonth() + 1)) + "" + addZero(date.getDate());
     }
   }
@@ -1532,11 +2013,13 @@
    */
   function getSemester() {
     var aktDatum = dates('semester');
+	var returnVal = false;
     for (var semesterIt = 0; semesterIt < semesterZeit.length; semesterIt++) {
       if (aktDatum > semesterZeit[semesterIt].von && aktDatum < semesterZeit[semesterIt].bis)
         return true;
     }
-    return false;
+
+	return returnVal;
   }
 
   /**
@@ -1585,7 +2068,7 @@
 
 
   function parse(str) {
-
+	//console.log(str);
     // Wenn Feiertag, alle Bibs rot markieren und beenden
 	//XXX: überarbeiten, dass anderer Tag gewählt werden kann, auch wenn heute Feiertag ist
     if (feiertag === true)
@@ -1606,6 +2089,7 @@
           return 2;
       }
     }
+	
 
     // Eintrag enthält getrennte Angaben zu Semester und Semesterfreien Zeiten
     if (str.search("Im Semester:") !== -1) {
@@ -1772,7 +2256,7 @@
           var t = eintrag.match(new RegExp(/([A-Za-z]{2}[\s]?-[\s]?[A-Za-z]{2}:[\s]?)/g));
           var tage = t[0].split("-");
 
-          for (var tti in tage) {
+          for (var tti = 0; tti < tage.length; tti++) {
             var temp = tage[tti].toString().replace(/[^A-Za-z]/g, "");
             tage[tti] = tageZuNummer(temp.trim());
 
@@ -1792,7 +2276,7 @@
         else if (eintrag.match(new RegExp(/[A-Za-z]{2}(\,|: )/g))) {
           var t = eintrag.match(new RegExp(/[A-Za-z]{2}(\,|: )/g));
 
-          for (var ti = 0; ti < t.length; t++) {
+          for (var ti = 0; ti < t.length; ti++) {
             var temp = t[ti].toString().replace(/[^A-Za-z]/g, "").trim();
             t[ti] = tageZuNummer(temp);
           }
@@ -1813,72 +2297,97 @@
   }
 
   function drawMarkers(list, marks) {
-    var i, lat, lon, geom, feature, features = [],
-      style;
-
+    var i, lat, lon, geom, feature, features = [], style;
+	
+	
+	//var trigger101 = false;
+	//var trigger101IsIn = false;
     for (var i = 0; i < list.length; i++) {
-      lat = marks[i][0];
-      lon = marks[i][1];
+	
+		sig = list[i].sigel;
+		if(sig == 'DE-38-103' || sig == 'DE-38-105' || sig == 'DE-38-106' || sig == 'DE-38-113' || sig == 'DE-38-120' || sig == 'DE-38-121' || sig == 'DE-38-128' || sig == 'DE-38-146' || sig == 'DE-38-157' || sig == 'DE-38-104' || sig == 'DE-38-166' || sig == 'DE-38-108') {
+				continue;
+		}
+		
+		
+	/*	
+		if(trigger101IsIn == false && trigger101 == true) {
+			for(var t = 0; t < list.length; t++) {
+				if(list[t].sigel == 'DE-38-101')
+					trigger101IsIn = true;
+			}
+			for(var add = 0; add < institute.length; add++) {
+				if(institute[add].sigel == 'DE-38-101'){}
+			}
+			
+		}
+		*/
+			// checken ob 101 in Liste ist, wenn nicht hinzufügen
+			// wie komm ich da an die aktuellen Sachen aus dem kUG
+			
+		  lat = marks[i][0];
+		  lon = marks[i][1];
 
-      geom = new ol.geom.Point(ol.proj.fromLonLat([lon, lat])
-        //ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:3857')
-      );
+		  geom = new ol.geom.Point(ol.proj.fromLonLat([lon, lat])
+			//ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:3857')
+		  );
 
-      /* Zeiten parsen */
-      var zeiten, pinColor;
-      if (list[i].zeiten.length > 0) {
-        zeiten = parse(list[i].zeiten);
+		  /* Zeiten parsen */
+		  var zeiten, pinColor;
+		  if (list[i].zeiten.length > 0) {
+			zeiten = parse(list[i].zeiten);
 
-        // wenn "nur geöffnet" ausgewählt ist
-        if (nurGeoeffnet.checked === true && zeiten === 2)
-          continue;
+			// wenn "nur geöffnet" ausgewählt ist
+			if (nurGeoeffnet.checked === true && zeiten === 2)
+			  continue;
 
-        /* Farbe des Pins bestimmen */
-        var rotation = 0;
-        if (zeiten == 1) {
-          pinColor = green;
-          rotation = 0;
-        } else if (zeiten == 2) {
-          pinColor = red;
-          rotation = 50;
-        } else if (zeiten === 0) {
-          pinColor = grey;
-          rotation = -50;
-        } else if (zeiten == undefined) {
-          pinColor = grey;
-          rotation = -50;
-        }
-      }
-      /* wenn keine Zeiten gefunden */
-      else {
-        pinColor = grey;
-      }
+			/* Farbe des Pins bestimmen */
+			var rotation = 0;
+			if (zeiten == 1) {
+			  pinColor = green;
+			  rotation = 0;
+			} else if (zeiten == 2) {
+			  pinColor = red;
+			  rotation = 50;
+			} else if (zeiten === 0) {
+			  pinColor = grey;
+			  rotation = -50;
+			} else if (zeiten == undefined) {
+			  pinColor = grey;
+			  rotation = -50;
+			}
+		  }
+		  /* wenn keine Zeiten gefunden */
+		  else {
+			pinColor = grey;
+		  }
 
-      var iconFeature = new ol.Feature({
-        geometry: new ol.geom.Point(ol.proj.transform([lat, lon], 'EPSG:4326', 'EPSG:3857')),
-        name: zeiten + "$$" + list[i].name + "$$" + list[i].zeiten + "$$" + list[i].sigel + "$$" + list[i].art + "bibliothek",
-      });
+		  var iconFeature = new ol.Feature({
+			geometry: new ol.geom.Point(ol.proj.transform([lat, lon], 'EPSG:4326', 'EPSG:3857')),
+			name: zeiten + "$$" + list[i].name + "$$" + list[i].zeiten + "$$" + list[i].sigel + "$$" + list[i].art + "bibliothek",
+		  });
 
 
-      var iconStyle = new ol.style.Style({
-        image: new ol.style.Icon( /** @type {olx.style.IconOptions} */ ({
-          anchor: [0.5, 1280],
-          anchorXUnits: 'fraction',
-          anchorYUnits: 'pixels',
-          opacity: 0.8,
+		  
+		  var iconStyle = new ol.style.Style({
+			image: new ol.style.Icon( /** @type {olx.style.IconOptions} */ ({
+			  anchor: [0.5, 1280],
+			  anchorXUnits: 'fraction',
+			  anchorYUnits: 'pixels',
+			  opacity: 0.8,
 
-          /* scale factor */
-          scale: 0.03,
-          //scale: 0.3,
-          src: pinColor,
+			  /* scale factor */
+			  scale: 0.03,
+			  //scale: 0.3,
+			  src: pinColor,
 
-          //rotation: rotation
+			  //rotation: rotation
 
-        }))
-      });
+			}))
+		  });
 
-      iconFeature.setStyle(iconStyle);
-      features.push(iconFeature);
+		  iconFeature.setStyle(iconStyle);
+		  features.push(iconFeature);
     };
     vectorSource = new ol.source.Vector({
       features: features
@@ -2018,7 +2527,7 @@
       document.getElementById('mobileView').setAttribute('style', 'display: none');
       document.getElementById('map').setAttribute('style', 'display: block');
       document.getElementsByClassName("ol-unselectable")[0].setAttribute('style', 'display: block');
-      document.getElementById('titleMobileDesktop').innerHTML = "Map dieser Campusbibliothek";
+      document.getElementById('titleMobileDesktop').innerHTML = "Interaktive Map aller Campusbibliotheken";
     }
 
     var e = document.getElementById("institutsChoice");
@@ -2035,7 +2544,6 @@
     else if (e1.options[e1.selectedIndex].value === '0') {
       document.getElementById('tdArtMark').innerHTML = "";
     }
-
 
     if (typeof vectorSource !== 'undefined') {
       map.removeLayer(vectorLayer);
@@ -2146,11 +2654,12 @@
         }
       }
     }
-
+	
+	
     //  newDataListEntries();
     // document.getElementById('ergebnis').innerHTML = doTheTextMobile(ints, true);
 
-    drawMarkers(ints, marks);
+   drawMarkers(ints, marks);
     ints = [];
     marks = [];
   }
@@ -2358,4 +2867,5 @@ Campusbibliotheken und entsprechen dem uns jeweils zuletzt mitgeteilten
 Stand. Bitte wenden Sie sich bei etwaigen Unstimmigkeiten direkt an
 die jeweilige Bibliothek.
 </p>
+
 

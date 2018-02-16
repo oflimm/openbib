@@ -123,20 +123,20 @@
 
 <table>
 <thead>
-<tr><th>[% msg.maketext("DB-Name") %]</th><th>[% msg.maketext("Info") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("Bibinfo statt URL / vorhanden") %]</th><th>[% msg.maketext("Auto-Konv") %]</th><th>[% msg.maketext("Titel-Anzahl") %]</th></tr>
+<tr><th>[% msg.maketext("DB-Name") %]</th><th>[% msg.maketext("Info") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("Auto-Konv") %]</th><th>[% msg.maketext("Titel-Anzahl") %]</th></tr>
 </thead>
 <tbody>
-[% FOREACH catalog IN catalogs.all %]
+[% FOREACH catalog IN catalogs %]
 <tr [% IF catalog.active == 1 %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]>
 <td>[% catalog.dbname %]</td>
 <td style="white-space: nowrap;">
 <a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% catalog.dbname %]/updates.html?l=[% lang %]"><img src="[% config.get('chart_img') %]" alt="[% msg.maketext("Aktualisierung") %]" /></a>
 <a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% catalog.dbname %]/rss.html?l=[% lang %]"><img src="[% config.get('rssfeed_img') %]" alt="RSS-Icon" title="RSS"/></a>
-[% IF catalog.locationid.identifier %]
+[% IF catalog.location_identifier %]
 [%   IF user.has_right({scope = 'admin_locations', right = 'right_update'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %]/id/[% catalog.locationid.identifier %]/edit.html?l=[% lang %]"><img src="[% config.get('info_img') %]" alt="[% msg.maketext("Standorte") %]" /></a>
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %]/id/[% catalog.location_identifier %]/edit.html?l=[% lang %]"><img src="[% config.get('info_img') %]" alt="[% msg.maketext("Standorte") %]" /></a>
 [%   ELSIF user.has_right({scope = 'admin_locations', right = 'right_read'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %]/id/[% catalog.locationid.identifier %].html?l=[% lang %]"><img src="[% config.get('info_img') %]" alt="[% msg.maketext("Standorte") %]" /></a>
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %]/id/[% catalog.location_identifier %].html?l=[% lang %]"><img src="[% config.get('info_img') %]" alt="[% msg.maketext("Standorte") %]" /></a>
 [%   END %]
 [% END %]
 </td>
@@ -147,7 +147,6 @@
 <a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% catalog.dbname %].html?l=[% lang %]">[% catalog.description %]</a>
 [% END %]
 </td>
-<td align="center">[%- IF catalog.locationid.id -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%] / [%- IF config.have_locationinfo(catalog.dbname) -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td>
 <td align="center">[%- IF catalog.autoconvert == 1 -%][% msg.maketext("Ja") %][%- ELSE -%] [% msg.maketext("Nein") %][%- END -%]</td>
 <td align="right">[% IF catalog.system.match('Backend') %]extern[% ELSE %]<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% catalog.dbname %]/updates.html?l=[% lang %]" title="[% msg.maketext("Aktualisierung") %]">[% catalog.allcount %]</a>[% END %]</td></tr>
 [% END %]

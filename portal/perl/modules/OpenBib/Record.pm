@@ -33,7 +33,7 @@ no warnings 'redefine';
 use utf8;
 
 use Benchmark ':hireswallclock';
-use Cache::Memcached::libmemcached;
+use Cache::Memcached::Fast;
 use DBI;
 use Encode 'decode_utf8';
 use JSON::XS;
@@ -104,7 +104,7 @@ sub connectMemcached {
     }
 
     # Verbindung zu Memchached herstellen
-    $self->{memc} = new Cache::Memcached::libmemcached($config->{memcached});
+    $self->{memc} = new Cache::Memcached::Fast($config->{memcached});
 
     if (!$self->{memc}->set('isalive',1)){
         $logger->fatal("Unable to connect to memcached");

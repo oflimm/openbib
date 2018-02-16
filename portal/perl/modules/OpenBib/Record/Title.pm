@@ -32,7 +32,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Cache::Memcached::libmemcached;
+use Cache::Memcached::Fast;
 use Benchmark ':hireswallclock';
 use Business::ISBN;
 use DBIx::Class::ResultClass::HashRefInflator;
@@ -626,10 +626,11 @@ sub enrich_related_records {
         
         my $cached_records = $self->{memc}->get($memc_key);
 
-        $logger->debug("Got from memcached ".YAML::Dump($cached_records));
-        
         if ($cached_records){
-            
+	    if ($logger->is_debug){
+		$logger->debug("Got related records for key $memc_key from memcached ".YAML::Dump($cached_records));
+	    }
+	                
             if ($config->{benchmark}) {
                 my $btime=new Benchmark;
                 my $timeall=timediff($btime,$atime);
@@ -646,9 +647,7 @@ sub enrich_related_records {
                 undef $btime;
                 undef $timeall;
             }
-            
-            $logger->debug("Got recordlist from memcached");
-
+     
             $self->set_related_records($related_recordlist);
 
             $self->disconnectMemcached;
@@ -998,10 +997,12 @@ sub enrich_similar_records {
         
         my $cached_records = $self->{memc}->get($memc_key);
 
-        $logger->debug("Got from memcached ".YAML::Dump($cached_records));
-
         if ($cached_records){
 
+	    if ($logger->is_debug){
+		$logger->debug("Got similar records for key $memc_key from memcached: ".YAML::Dump($cached_records));
+	    }
+	
             if ($config->{benchmark}) {
                 my $btime=new Benchmark;
                 my $timeall=timediff($btime,$atime);
@@ -1018,9 +1019,7 @@ sub enrich_similar_records {
                 undef $btime;
                 undef $timeall;
             }
-            
-            $logger->debug("Got recordlist from memcached");
-            
+
             $self->set_similar_records($similar_recordlist);
 
             $self->disconnectMemcached;
@@ -1197,10 +1196,12 @@ sub enrich_same_records {
 
         my $cached_records = $self->{memc}->get($memc_key);
 
-        $logger->debug("Got from memcached ".YAML::Dump($cached_records));
-        
         if ($cached_records){
 
+	    if ($logger->is_debug){
+		$logger->debug("Got same records for key $memc_key from memcached: ".YAML::Dump($cached_records));
+	    }
+	
             if ($config->{benchmark}) {
                 my $btime=new Benchmark;
                 my $timeall=timediff($btime,$atime);
@@ -1217,9 +1218,7 @@ sub enrich_same_records {
                 undef $btime;
                 undef $timeall;
             }
-            
-            $logger->debug("Got recordlist from memcached");
-            
+
             $self->set_same_records($same_recordlist);
 
             $self->disconnectMemcached;
@@ -1395,8 +1394,10 @@ sub load_circulation {
         }
 
         if ($circulation_ref){
-            $logger->debug("Got circulation from memcached");
-
+	    if ($logger->is_debug){
+		$logger->debug("Got circulation for key $memc_key from memcached: ".YAML::Dump($circulation_ref));
+	    }
+	    
             $self->set_circulation($circulation_ref);
 
             $self->disconnectMemcached;

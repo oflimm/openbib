@@ -119,7 +119,7 @@
 <tr><th>[% msg.maketext("Viewname") %]</th><th>[% msg.maketext("RSS") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("Profil") %]</th><th>[% msg.maketext("Datenbanken") %]</th></tr>
 </thead>
 <tbody>
-[% FOREACH viewinfo IN views.all %]
+[% FOREACH viewinfo IN views %]
 <tr [% IF viewinfo.active == 1 %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]>
   <td>[% viewinfo.viewname %]</td>
   <td align="center"><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %]/rss/edit.html?l=[% lang %]"><img src="[% config.get('rssfeed_img') %]" alt="RSS-Icon" /></a></td>
@@ -130,7 +130,7 @@
      <a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %].html?l=[% lang %]">[% viewinfo.description %]</a>
 [%   END %]
   </td>
-  <td>[% viewinfo.profileid.description %]</td>
+  <td>[% viewinfo.profile_description %]</td>
   <td><ul>[% FOREACH item IN config.get_viewdbs(viewinfo.viewname).sort %]<li>[% item %]: [% dbinfo.get('dbnames').${item}.full %]</li>[% END %]</ul></td>
 </tr>
 [% END %]

@@ -31,7 +31,7 @@ no warnings 'redefine';
 use utf8;
 
 use Benchmark ':hireswallclock';
-use Cache::Memcached::libmemcached;
+use Cache::Memcached::Fast;
 use DBIx::Class::ResultClass::HashRefInflator;
 use Digest::MD5;
 use Encode qw(decode_utf8 encode_utf8);
@@ -99,6 +99,8 @@ sub new {
         $timeall=timediff($btime,$atime);
         $logger->info("Total time for is ".timestr($timeall));
     }
+
+    $self->{_is_admin} = undef;
 
     return $self;
 }
@@ -182,6 +184,14 @@ sub load_privileges {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = $self->get_config;
+    
+    my ($atime,$btime,$timeall);
+        
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+    
     my $thisuserid = (defined $userid)?$userid:$self->{ID};
 
     my $role_rights_ref = {};
@@ -255,6 +265,12 @@ sub load_privileges {
 
     $self->{restricted_views} = $views_ref;
     $self->{rights}           = $role_rights_ref;
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Zeit fuer : Laden der Berechtigungen ".timestr($timeall));
+    }
     
     return $self;
 }
@@ -5683,10 +5699,18 @@ sub is_admin {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    if (defined $self->{_is_admin}){
+	return 	$self->{_is_admin};
+    }
+    
     my $config = $self->get_config;
 
     # Statischer Admin-User aus portal.yml
-    return 1 if (defined $self->{ID} && $self->{ID} eq $config->{adminuser});
+    if (defined $self->{ID} && $self->{ID} eq $config->{adminuser}){
+	$self->{_is_admin} = 1;
+	
+	return 1;
+    } 
 
     # Sonst: Normale Nutzer mit der der Admin-Role
     
@@ -5700,8 +5724,11 @@ sub is_admin {
             join => ['roleid','userid'],
         }
     )->count;
+
     
-    return $count;
+    $self->{_is_admin} = $count;
+    
+    return $self->{_is_admin};
 }
 
 sub has_role {
@@ -6094,7 +6121,7 @@ sub connectMemcached {
     }
     
     # Verbindung zu Memchached herstellen
-    $self->{memc} = new Cache::Memcached::libmemcached($config->{memcached});
+    $self->{memc} = new Cache::Memcached::Fast($config->{memcached});
 
     if (!$self->{memc}->set('isalive',1)){
         $logger->fatal("Unable to connect to memcached");

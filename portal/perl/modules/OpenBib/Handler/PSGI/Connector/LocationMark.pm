@@ -40,7 +40,7 @@ no warnings 'redefine';
 use Log::Log4perl qw(get_logger :levels);
 
 use Benchmark ':hireswallclock';
-use Cache::Memcached::libmemcached;
+use Cache::Memcached::Fast;
 use DBI;
 use Encode qw(decode_utf8);
 
@@ -348,11 +348,18 @@ sub show_via_searchengine {
         
         if ($config->{memc}){
             my $sortedtitleids_ref = $config->{memc}->get($memc_key);
-            if ($logger->is_debug && @$sortedtitleids_ref){
-                $logger->debug("Getting stored titles from memcached: ".scalar(@$sortedtitleids_ref));
+            if ($logger->is_debug){
+                $logger->debug("Getting stored titles from memcached: ".YAML::Dump($sortedtitleids_ref));
             }
             
-            @sortedtitleids = @$sortedtitleids_ref;
+            @sortedtitleids = @$sortedtitleids_ref if (defined $sortedtitleids_ref);
+
+            if ($config->{benchmark}) {
+                $btime=new Benchmark;
+                $timeall=timediff($btime,$atime);
+                $logger->info("Total time for getting cached records is ".timestr($timeall));
+            }
+
         }
         
         if (!@sortedtitleids){
@@ -374,12 +381,7 @@ sub show_via_searchengine {
                 $logger->debug("All records found ".YAML::Dump($recordlist));
             }
             
-            if ($config->{benchmark}) {
-                $btime=new Benchmark;
-                $timeall=timediff($btime,$atime);
-                $logger->info("Total time for getting records is ".timestr($timeall));
-            }
-            
+            # Ausfiltern der Datensaetze, die nicht zu base und range passen
             foreach my $item (@{$recordlist}){
                 $logger->info(YAML::Dump($item));
                 my $titleid = $item->{'id'};
@@ -421,25 +423,22 @@ sub show_via_searchengine {
                     };
                 }   
                 
+		if ($config->{benchmark}) {
+		    $btime=new Benchmark;
+		    $timeall=timediff($btime,$atime);
+		    $logger->info("Total time for getting and filtering records is ".timestr($timeall));
+		}
+
             }
+
             
             @sortedtitleids = sort by_signature @filtered_titleids;
 
             if ($config->{memc}){
                 $config->{memc}->set($memc_key,\@sortedtitleids,$self->{memcached_expiration}{'handler:connector_locationmark'});
-                $logger->debug("Store status in memcached");
+                $logger->debug("Store titles in memcached for $memc_key");
             }
 
-        }
-        
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Total time for getting title ids is ".timestr($timeall));
-        }
-
-        if ($logger->is_debug){
-            $logger->debug("Gefundene Titelids: ".YAML::Dump(\@sortedtitleids));
         }
         
         my @outputbuffer = ();
@@ -457,8 +456,6 @@ sub show_via_searchengine {
 
         if ($logger->is_debug){
             $logger->debug("Offset: $offset - Num: ".$queryoptions->get_option('num'));
-            
-            $logger->debug("All titles ".YAML::Dump(@sortedtitleids));
         }
         
         my $endrange = ($offset+$queryoptions->get_option('num') < $#sortedtitleids)?$offset+$queryoptions->get_option('num'):$#sortedtitleids+1;
@@ -521,14 +518,30 @@ sub by_signature {
     my $line2=(exists $line2{locmark} && defined $line2{locmark})?cleanrl($line2{locmark}):"0";
 
 #    $logger->debug("1 L1: $line1 / L2: $line2 / Base: $base");
-    
-    my ($zahl1,$rest1)=$line1=~m/$base(\d+)(.*?)$/i;
-    my ($zahl2,$rest2)=$line2=~m/$base(\d+)(.*?)$/i;
+
+    my ($zahl1,$rest1,$suppl1);
+    my ($zahl2,$rest2,$suppl2);
+
+    if ($line1=~m/-\d+$/){
+	($zahl1,$rest1,$suppl1)=$line1=~m/$base(\d+)(.*?)-(.*?)$/i;
+    }
+    else {
+	($zahl1,$rest1)=$line1=~m/$base(\d+)(.*?)$/i;
+	$suppl1=0;
+    }
+
+    if ($line2=~m/-\d+$/){
+	($zahl2,$rest2,$suppl2)=$line2=~m/$base(\d+)(.*?)-(.*?)$/i;
+    }
+    else {
+	($zahl2,$rest2)=$line2=~m/$base(\d+)(.*?)$/i;
+	$suppl2=0;
+    }
 
 #    $logger->debug("2 Z1: $zahl1 / R1: $rest1 / Z2: $zahl2 / R2: $rest2");
     
-    $line1=sprintf "%08d%s", $zahl1, $rest1;
-    $line2=sprintf "%08d%s", $zahl2, $rest2;
+    $line1=sprintf "%08d%s%04d", $zahl1, $rest1, $suppl1;
+    $line2=sprintf "%08d%s%04d", $zahl2, $rest2, $suppl2;
 
 #    $logger->debug("3 L1: $line1 / L2: $line2");
     

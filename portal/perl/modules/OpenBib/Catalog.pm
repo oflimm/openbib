@@ -33,7 +33,7 @@ use utf8;
 use base qw(Class::Singleton);
 
 use Business::ISBN;
-use Cache::Memcached::libmemcached;
+use Cache::Memcached::Fast;
 use Encode qw(decode_utf8 encode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 use MLDBM qw(DB_File Storable);
@@ -169,7 +169,7 @@ sub connectMemcached {
     }
 
     # Verbindung zu Memchached herstellen
-    $self->{memc} = new Cache::Memcached::libmemcached($config->{memcached});
+    $self->{memc} = new Cache::Memcached::Fast($config->{memcached});
 
     if (!$self->{memc}->set('isalive',1)){
         $logger->fatal("Unable to connect to memcached");

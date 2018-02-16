@@ -32,7 +32,7 @@ use utf8;
 
 use Benchmark ':hireswallclock';
 use DBIx::Class::ResultClass::HashRefInflator;
-use Cache::Memcached::libmemcached;
+use Cache::Memcached::Fast;
 use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use LWP;
@@ -565,6 +565,12 @@ sub get_dbs_of_view {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my ($atime,$btime,$timeall);
+        
+    if ($self->{benchmark}) {
+        $atime=new Benchmark;
+    }
+    
     # DBI: "select databaseinfo.dbname from view_db,databaseinfo,orgunit_db,viewinfo,orgunitinfo where viewinfo.viewname = ? and view_db.viewid=viewinfo.id and view_db.dbid=databaseinfo.id and orgunit_db.dbid=view_db.dbid and databaseinfo.active is true order by orgunitinfo.orgunitname ASC, databaseinfo.description ASC"
     my $dbnames = $self->get_schema->resultset('ViewDb')->search(
         {
@@ -584,6 +590,12 @@ sub get_dbs_of_view {
 
     while (my $item = $dbnames->next){
         push @dblist, $item->{thisdbname};
+    }
+
+    if ($self->{benchmark}) {
+	my $btime=new Benchmark;
+	my $timeall=timediff($btime,$atime);
+	$logger->info("Zeit fuer das Holen der Informationen ist ".timestr($timeall));
     }
 
     if ($logger->is_debug){
@@ -978,14 +990,76 @@ sub get_dbinfo_overview {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my ($atime,$btime,$timeall);
+        
+    if ($self->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    $logger->debug("Getting dbinfo_overview");
+
+    my $memc_key = "config:dbinfo_overview";
+
+    if ($self->{memc}){
+        my $dbinfo_overview_ref = $self->{memc}->get($memc_key);
+
+	if ($dbinfo_overview_ref){
+	    if ($logger->is_debug){
+		$logger->debug("Got dbinfo_overview for key $memc_key from memcached");
+	    }
+
+            if ($self->{benchmark}) {
+                my $btime=new Benchmark;
+                my $timeall=timediff($btime,$atime);
+                $logger->info("Zeit fuer das Holen der gecacheten Informationen ist ".timestr($timeall));
+            }
+
+	    return $dbinfo_overview_ref if (defined $dbinfo_overview_ref);
+	}
+    }
+
     my $object = $self->get_databaseinfo->search(
         undef,
         {
             order_by => 'dbname',
         }
     );
+
+    my $dbinfo_overview_ref = [];
+
+    while (my $item = $object->next){
+	my $location_identifier = "";
+	my $location_id = "";
+
+	if ($item->locationid){
+	    $location_identifier = $item->locationid->identifier;
+	    $location_id = $item->locationid->id;
+	}
+
+	push @$dbinfo_overview_ref, {
+	    active => $item->active,
+	    dbname => $item->dbname,
+	    location_identifier => $location_identifier,
+	    location_id => $location_id,
+	    description => $item->description,
+	    autoconvert => $item->autoconvert,
+	    system => $item->system,
+	    allcount => $item->allcount,
+	};
+
+    }
+
+    if ($self->{memc}){
+	$self->{memc}->set($memc_key,$dbinfo_overview_ref,$self->{memcached_expiration}{$memc_key});
+    }
     
-    return $object;
+    if ($self->{benchmark}) {
+	my $btime=new Benchmark;
+	my $timeall=timediff($btime,$atime);
+	$logger->info("Zeit fuer das Holen der Informationen ist ".timestr($timeall));
+    }
+
+    return $dbinfo_overview_ref;
 }
 
 sub get_locationinfo_of_database {
@@ -1177,6 +1251,34 @@ sub get_viewinfo_overview {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my ($atime,$btime,$timeall);
+        
+    if ($self->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    $logger->debug("Getting viewinfo_overview");
+
+    my $memc_key = "config:viewinfo_overview";
+
+    if ($self->{memc}){
+        my $viewinfo_overview_ref = $self->{memc}->get($memc_key);
+
+	if ($viewinfo_overview_ref){
+	    if ($logger->is_debug){
+		$logger->debug("Got viewinfo_overview for key $memc_key from memcached");
+	    }
+
+            if ($self->{benchmark}) {
+                my $btime=new Benchmark;
+                my $timeall=timediff($btime,$atime);
+                $logger->info("Zeit fuer das Holen der gecacheten Informationen ist ".timestr($timeall));
+            }
+
+	    return $viewinfo_overview_ref if (defined $viewinfo_overview_ref);
+	}
+    }
+
     my $object = $self->get_viewinfo->search_rs(
         undef,
         {
@@ -1184,47 +1286,35 @@ sub get_viewinfo_overview {
         }
     );
     
-    return $object;
+    my $viewinfo_overview_ref = [];
 
-#     my $idnresult=$self->{dbh}->prepare("select * from viewinfo order by viewname") or $logger->error($DBI::errstr);
-#     $idnresult->execute() or $logger->error($DBI::errstr);
-#     while (my $result=$idnresult->fetchrow_hashref()) {
-#         my $viewname    = decode_utf8($result->{'viewname'});
-#         my $description = decode_utf8($result->{'description'});
-#         my $active      = decode_utf8($result->{'active'});
-#         my $profile     = decode_utf8($result->{'profilename'});
-        
-#         $description = (defined $description)?$description:'Keine Beschreibung';
-        
-#         $active="Ja"   if ($active eq "1");
-#         $active="Nein" if ($active eq "0");
-        
-#         my $idnresult2=$self->{dbh}->prepare("select * from view_db where viewname = ? order by dbname") or $logger->error($DBI::errstr);
-#         $idnresult2->execute($viewname);
-        
-#         my @viewdbs=();
-#         while (my $result2=$idnresult2->fetchrow_hashref()) {
-#             my $dbname = decode_utf8($result2->{'dbname'});
-#             push @viewdbs, $dbname;
-#         }
-        
-#         $idnresult2->finish();
-        
-#         my $viewdb=join " ; ", @viewdbs;
-        
-#         $view={
-#             viewname    => $viewname,
-#             description => $description,
-#             profile     => $profile,
-#             active      => $active,
-#             viewdb      => $viewdb,
-#         };
-        
-#         push @{$viewinfo_ref}, $view;
-        
-#     }
+    while (my $item = $object->next){
+	my $profile_description = "";
+
+	if ($item->profileid){
+	    $profile_description = $item->profileid->description;
+	}
+
+	push @$viewinfo_overview_ref, {
+	    active => $item->active,
+	    viewname => $item->viewname,
+	    description => $item->description,
+	    profile_description => $profile_description,
+	};
+
+    }
+
+    if ($self->{memc}){
+	$self->{memc}->set($memc_key,$viewinfo_overview_ref,$self->{memcached_expiration}{$memc_key});
+    }
     
-#     return $viewinfo_ref;
+    if ($self->{benchmark}) {
+	my $btime=new Benchmark;
+	my $timeall=timediff($btime,$atime);
+	$logger->info("Zeit fuer das Holen der Informationen ist ".timestr($timeall));
+    }
+
+    return $viewinfo_overview_ref;
 }
 
 sub get_profileinfo_overview {
@@ -1476,6 +1566,34 @@ sub get_viewdbs {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my ($atime,$btime,$timeall);
+        
+    if ($self->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    $logger->debug("Getting viewdbs for view $viewname");
+
+    my $memc_key = "config:viewdbs:$viewname";
+
+    if ($self->{memc}){
+        my $viewdbs_ref = $self->{memc}->get($memc_key);
+
+	if ($viewdbs_ref){
+	    if ($logger->is_debug){
+		$logger->debug("Got viewdbs for key $memc_key from memcached");
+	    }
+
+            if ($self->{benchmark}) {
+                my $btime=new Benchmark;
+                my $timeall=timediff($btime,$atime);
+                $logger->info("Zeit fuer das Holen der gecacheten Informationen ist ".timestr($timeall));
+            }
+
+	    return @$viewdbs_ref if (defined $viewdbs_ref);
+	}
+    }
+
     # DBI: "select databaseinfo.dbname from view_db,databaseinfo,viewinfo where viewinfo.viewname = ? and viewinfo.id=view_db.viewid and view_db.dbid = databaseinfo.dbname and databaseinfo.active is true order by dbname"
     my $dbnames = $self->get_schema->resultset('Viewinfo')->search(
         {
@@ -1496,6 +1614,16 @@ sub get_viewdbs {
 
     while (my $item = $dbnames->next){
         push @viewdbs, $item->{thisdbname};
+    }
+
+    if ($self->{memc}){
+	$self->{memc}->set($memc_key,\@viewdbs,$self->{memcached_expiration}{'config:viewdbs'});
+    }
+    
+    if ($self->{benchmark}) {
+	my $btime=new Benchmark;
+	my $timeall=timediff($btime,$atime);
+	$logger->info("Zeit fuer das Holen der Informationen ist ".timestr($timeall));
     }
 
     return @viewdbs;
@@ -2024,13 +2152,13 @@ sub local_server_is_active_and_searchable {
     
     my $active_and_searchable = 0;
     
-    my $memc_key = "config:local_server_is_active_and_searchable:".$self->get('local_ip');
+    # my $memc_key = "config:local_server_is_active_and_searchable:".$self->get('local_ip');
 
-    if ($self->{memc}){
-        $active_and_searchable = $self->{memc}->get($memc_key);
+    # if ($self->{memc}){
+    #     $active_and_searchable = $self->{memc}->get($memc_key);
 
-        return $active_and_searchable if (defined $active_and_searchable);
-    }
+    #     return $active_and_searchable if (defined $active_and_searchable);
+    # }
     
     my $request = $self->get_schema->resultset("Serverinfo")->search_rs(
         {
@@ -2055,10 +2183,10 @@ sub local_server_is_active_and_searchable {
         $logger->error("No DB-Request-Object returned");
     }
 
-    if ($self->{memc}){
-        $self->{memc}->set($memc_key,$active_and_searchable,$self->{memcached_expiration}{'config:local_server_is_active_and_searchable'});
-        $logger->debug("Store status in memcached");
-    }
+    # if ($self->{memc}){
+    #     $self->{memc}->set($memc_key,$active_and_searchable,$self->{memcached_expiration}{'config:local_server_is_active_and_searchable'});
+    #     $logger->debug("Store status in memcached");
+    # }
     
     return $active_and_searchable;
 }
@@ -2408,7 +2536,7 @@ sub connectMemcached {
     }
 
     # Verbindung zu Memchached herstellen
-    $self->{memc} = new Cache::Memcached::libmemcached($self->{memcached});
+    $self->{memc} = new Cache::Memcached::Fast($self->{memcached});
 
     if (!$self->{memc}->set('isalive',1)){
         $logger->fatal("Unable to connect to memcached");
@@ -2443,7 +2571,7 @@ sub del_databaseinfo {
     eval {
         my $databaseinfo =  $self->get_schema->resultset('Databaseinfo')->single({ dbname => $dbname});
 
-        if ($databaseinfo){
+	if ($databaseinfo){
             $databaseinfo->update({ locationid => \'NULL' });
             $databaseinfo->orgunit_dbs->delete;
             $databaseinfo->rssinfos->delete;
@@ -2464,10 +2592,39 @@ sub del_databaseinfo {
     $logger->debug("Database $dbname deleted");
 
     # Flushen und aktualisieren in Memcached
-    $self->{memc}->delete('config:databaseinfotable') if (defined $self->{memc});
+    if (defined $self->{memc}){
+        $self->memc_cleanup_databaseinfo;
+    }
+
+    return;
+}
+
+sub memc_cleanup_databaseinfo {
+    my $self = shift;
+
+    $self->{memc}->delete('config:databaseinfotable');
     OpenBib::Config::DatabaseInfoTable->new;
-    $self->{memc}->delete('config:circulationinfotable') if (defined $self->{memc});
+
+    $self->{memc}->delete('config:circulationinfotable');
     OpenBib::Config::CirculationInfoTable->new;
+
+    $self->{memc}->delete('config:dbinfo_overview');   
+    
+    return;
+}
+
+sub memc_cleanup_viewinfo {
+    my $self = shift;
+
+    $self->{memc}->delete('config:databaseinfotable');
+    OpenBib::Config::DatabaseInfoTable->new;
+
+    $self->{memc}->delete('config:circulationinfotable');
+    OpenBib::Config::CirculationInfoTable->new;
+
+    $self->{memc}->delete('config:dbinfo_overview');   
+
+    $self->{memc}->delete('config:viewinfo_overview');   
     
     return;
 }
@@ -2481,11 +2638,10 @@ sub update_databaseinfo {
     $self->get_schema->resultset('Databaseinfo')->single({ dbname => $dbinfo_ref->{dbname}})->update($dbinfo_ref);
 
     # Flushen und aktualisieren in Memcached
-    $self->{memc}->delete('config:databaseinfotable') if (defined $self->{memc});
-    OpenBib::Config::DatabaseInfoTable->new;
-    $self->{memc}->delete('config:circulationinfotable') if (defined $self->{memc});
-    OpenBib::Config::CirculationInfoTable->new;
-    
+    if (defined $self->{memc}){
+        $self->memc_cleanup_databaseinfo;
+    }
+
     return;
 }
 
@@ -2508,11 +2664,10 @@ sub new_databaseinfo {
     if ($new_database){
         
         # Flushen und aktualisieren in Memcached
-        $self->{memc}->delete('config:databaseinfotable') if (defined $self->{memc});
-        OpenBib::Config::DatabaseInfoTable->new;
-        $self->{memc}->delete('config:circulationinfotable') if (defined $self->{memc});
-        OpenBib::Config::CirculationInfoTable->new;
-
+        if (defined $self->{memc}){
+           $self->memc_cleanup_databaseinfo;
+        }
+	
         return $new_database->id;
     }
 
@@ -2578,7 +2733,12 @@ sub del_view {
     if ($@){
         $logger->error($@);
     }
-        
+
+    # Flushen und aktualisieren in Memcached
+    if (defined $self->{memc}){
+        $self->memc_cleanup_viewinfo;
+    }
+                
     return;
 }
 
@@ -2779,6 +2939,11 @@ sub update_view {
         # Dann die zugehoerigen Datenbanken eintragen
         $self->get_schema->resultset('ViewDb')->populate($this_db_ref);
     }
+
+    # Flushen und aktualisieren in Memcached
+    if (defined $self->{memc}){
+        $self->memc_cleanup_viewinfo;
+    }
         
     return;
 }
@@ -2922,7 +3087,12 @@ sub new_view {
     if ($viewid){
         return $viewid;
     }
-    
+
+    # Flushen und aktualisieren in Memcached
+    if (defined $self->{memc}){
+        $self->memc_cleanup_viewinfo;
+    }
+            
     return;
 }
 
@@ -3156,9 +3326,9 @@ sub del_server {
         
         my $hostip = $serverinfo->hostip;
 
-        if (defined $self->{memc} && $hostip eq $self->get('local_ip')){
+        if (defined $self->{memc}){
             # Flushen in Memcached
-            $self->{memc}->delete("config:local_server_is_active_and_searchable:".$self->get('local_ip'));
+            $self->{memc}->delete("config:local_server_is_active_and_searchable:$hostip");
         }
 
         $serverinfo->delete;
@@ -3212,9 +3382,9 @@ sub update_server {
 
     my $hostip = $serverinfo->hostip;
 
-    if (defined $self->{memc} && $hostip eq $self->get('local_ip')){
-        # Flushen in Memcached
-        $self->{memc}->delete("config:local_server_is_active_and_searchable:".$self->get('local_ip'));
+    if (defined $self->{memc}){
+	# Flushen in Memcached
+	$self->{memc}->delete("config:local_server_is_active_and_searchable:$hostip");
     }
     
     $serverinfo->update($update_args);
@@ -3248,6 +3418,11 @@ sub new_server {
     my $new_server = $self->get_schema->resultset('Serverinfo')->create({ hostip => $hostip, description => $description, status => $status, clusterid => $clusterid, active => $active });
 
     if ($new_server){
+	if (defined $self->{memc}){
+	    # Flushen in Memcached
+	    $self->{memc}->delete("config:local_server_is_active_and_searchable:$hostip");
+	}
+
         return $new_server->id;
     }
 
@@ -3771,6 +3946,12 @@ sub get_searchprofile_or_create {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my ($atime,$btime,$timeall);
+        
+    if ($self->{benchmark}) {
+        $atime=new Benchmark;
+    }
+    
     my $dbs_as_json = encode_json $dbs_ref;
 
     $logger->debug("Databases of Searchprofile as JSON: $dbs_as_json");
@@ -3786,7 +3967,15 @@ sub get_searchprofile_or_create {
     
     if ($searchprofile){
         $searchprofileid = $searchprofile->id;
+
         $logger->debug("Searchprofile-ID $searchprofileid found for databases $dbs_as_json");
+	
+	if ($self->{benchmark}) {
+	    my $btime=new Benchmark;
+	    my $timeall=timediff($btime,$atime);
+	    $logger->info("Zeit fuer das Holen der Informationen ist ".timestr($timeall));
+	}
+
     }
     else {
         $logger->debug("Creating new Searchprofile for databases $dbs_as_json");

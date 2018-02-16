@@ -31,6 +31,7 @@ no warnings 'redefine';
 use utf8;
 
 use Benchmark ':hireswallclock';
+use Cache::Memcached::Fast;
 use OpenBib::Schema::System::Singleton;
 use DBIx::Class::ResultClass::HashRefInflator;
 use Encode qw(decode_utf8);
@@ -228,7 +229,7 @@ sub connectMemcached {
     }
 
     # Verbindung zu Memchached herstellen
-    $self->{memc} = new Cache::Memcached::libmemcached($config->{memcached});
+    $self->{memc} = new Cache::Memcached::Fast($config->{memcached});
 
     if (!$self->{memc}->set('isalive',1)){
         $logger->fatal("Unable to connect to memcached");

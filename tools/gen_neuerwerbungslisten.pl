@@ -369,7 +369,7 @@ SQL1
 
         next if ($exclude_ref->{$katkey});
         
-        my $record = new OpenBib::Record::Title({database => $acq_config->{dbname}, id => $katkey})->load_brief_record;
+        my $record = new OpenBib::Record::Title({database => $acq_config->{dbname}, id => $katkey, config => $config})->load_brief_record;
         
 #        print YAML::Dump($record);
 

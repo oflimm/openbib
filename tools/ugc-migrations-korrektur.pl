@@ -219,7 +219,7 @@ while (my $targettitle_bibkey = $targettitle_bibkeys->next()){
 
     $logger->debug("Target-Titleid found: $target_titleid");
 
-    my $target_record = OpenBib::Record::Title->new({id => $target_titleid, database => $targetdatabase})->load_full_record;
+    my $target_record = OpenBib::Record::Title->new({id => $target_titleid, database => $targetdatabase, config => $config})->load_full_record;
 
     my $target_location_is_ok = 0;
 
@@ -251,8 +251,8 @@ foreach my $target_bibkey (@target_bibkeys){
     }
 
     if ($targetid && $sourceid){
-        my $mastertitle = OpenBib::Record::Title->new({id => $sourceid, database => $masterdatabase})->load_full_record;
-        my $targettitle = OpenBib::Record::Title->new({id => $targetid, database => $targetdatabase})->load_full_record;
+        my $mastertitle = OpenBib::Record::Title->new({id => $sourceid, database => $masterdatabase, config => $config})->load_full_record;
+        my $targettitle = OpenBib::Record::Title->new({id => $targetid, database => $targetdatabase, config => $config})->load_full_record;
 
         $logger->info("Master: ".$mastertitle->get_field({field => 'T0331', mult => 1}));
         $logger->info("Target: ".$targettitle->get_field({field => 'T0331', mult => 1}));

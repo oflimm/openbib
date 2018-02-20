@@ -246,7 +246,7 @@ foreach my $item ($isbns->all){
             my $enriched_content_ref  = [];
         
             foreach my $item_ref (@{$references_ref->{references}}){
-                my $record = OpenBib::Record::Title->new({database => $item_ref->{dbname}, id => $item_ref->{id}})->load_brief_record();
+                my $record = OpenBib::Record::Title->new({database => $item_ref->{dbname}, id => $item_ref->{id}, config => $config})->load_brief_record();
                 
                 # Add user count
                 $record->{user_count} = $references_ref->{count} ;

@@ -107,7 +107,7 @@ foreach my $title ($titles_with_provenances->all){
 
     next if (defined $title_done_ref->{$titleid});
 
-    my $record = OpenBib::Record::Title->new({ database => $database, id => $titleid})->load_full_record;
+    my $record = OpenBib::Record::Title->new({ database => $database, id => $titleid, config => $config})->load_full_record;
 
     my $hbzid  = $record->get_field({ field => 'T0010', mult => 1});
     

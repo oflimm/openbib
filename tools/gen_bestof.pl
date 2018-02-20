@@ -137,7 +137,7 @@ if ($type == 1){
 
             $logger->debug("Got Title with id $id and Session-Count $count");
             
-            my $item=OpenBib::Record::Title->new({database => $database, id => $id})->load_brief_record->to_hash;
+            my $item=OpenBib::Record::Title->new({database => $database, id => $id, config => $config})->load_brief_record->to_hash;
 
             push @$bestof_ref, {
                 item  => $item,
@@ -995,7 +995,7 @@ if ($type == 13){
             my $count    = $item->get_column('sidcount');
             my $database = $item->get_column('dbname');
 
-            my $item=OpenBib::Record::Title->new({database => $database, id => $id})->load_brief_record()->to_hash;
+            my $item=OpenBib::Record::Title->new({database => $database, id => $id, config => $config})->load_brief_record()->to_hash;
 
             push @$bestof_ref, {
                 item  => $item,

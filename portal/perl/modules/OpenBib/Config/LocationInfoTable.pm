@@ -32,6 +32,7 @@ use utf8;
 
 use Benchmark ':hireswallclock';
 use Cache::Memcached::Fast;
+use Compress::LZ4;
 use OpenBib::Schema::System::Singleton;
 use DBIx::Class::ResultClass::HashRefInflator;
 use Encode qw(decode_utf8);
@@ -51,12 +52,8 @@ sub new {
 
     bless ($self, $class);
 
-    $self->connectMemcached;
-
     $self->load;
 
-    $self->disconnectDB;
-    
     return $self;
 }
 
@@ -67,6 +64,9 @@ sub load {
     my $logger = get_logger();
 
     my $config  = OpenBib::Config::File->instance;
+
+    $self->connectDB;
+    $self->connectMemcached;
     
     #####################################################################
     # Dynamische Definition diverser Variablen
@@ -82,17 +82,24 @@ sub load {
     my $memc_key = "config:locationinfotable";
 
     if ($self->{memc}){
-      $self->{circinfo} = $self->{memc}->get($memc_key);
-      
-      $logger->debug("Got locationinfo from memcached");
-      
-      if ($config->{benchmark}) {
-          $btime=new Benchmark;
-          $timeall=timediff($btime,$atime);
-          $logger->info("Total time for is ".timestr($timeall));
-      }
+      my $locinfo = $self->{memc}->get($memc_key);
 
-      return $self if ($self->{identifier});
+      if ($locinfo){
+	  $self->{identifier} = $locinfo;
+	  
+	  $logger->debug("Got locationinfo from memcached");
+	  
+	  if ($config->{benchmark}) {
+	      $btime=new Benchmark;
+	      $timeall=timediff($btime,$atime);
+	      $logger->info("Total time for is ".timestr($timeall));
+	  }
+	  
+	  $self->disconnectDB;
+	  $self->disconnectMemcached;
+	  
+	  return $self;
+      }
     }
     
     my $locinfos = $self->get_schema->resultset('Locationinfo')->search_rs(
@@ -127,6 +134,9 @@ sub load {
     if ($self->{memc}){
         $self->{memc}->set($memc_key,$self->{identifier},$config->{memcached_expiration}{$memc_key});
     }
+
+    $self->disconnectDB;
+    $self->disconnectMemcached;
 
     return $self;
 }
@@ -229,8 +239,14 @@ sub connectMemcached {
     }
 
     # Verbindung zu Memchached herstellen
-    $self->{memc} = new Cache::Memcached::Fast($config->{memcached});
-
+    $self->{memc} = new Cache::Memcached::Fast(
+	$config->{memcached},
+	compress_methods => [
+            sub { ${$_[1]} = Compress::LZ4::compress(${$_[0]})   },
+            sub { ${$_[1]} = Compress::LZ4::decompress(${$_[0]}) },
+        ],
+	);
+    
     if (!$self->{memc}->set('isalive',1)){
         $logger->fatal("Unable to connect to memcached");
     }

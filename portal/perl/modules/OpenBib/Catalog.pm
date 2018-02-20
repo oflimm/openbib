@@ -155,29 +155,6 @@ sub connectDB {
 
 }
 
-sub connectMemcached {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config::File->instance;
-    
-    if (!exists $config->{memcached}){
-        $logger->debug("No memcached configured");
-        return;
-    }
-
-    # Verbindung zu Memchached herstellen
-    $self->{memc} = new Cache::Memcached::Fast($config->{memcached});
-
-    if (!$self->{memc}->set('isalive',1)){
-        $logger->fatal("Unable to connect to memcached");
-    }
-
-    return;
-}
-
 sub disconnectDB {
     my $self = shift;
 
@@ -212,24 +189,6 @@ sub DESTROY {
     if (defined $self->{schema}){
         $self->disconnectDB;
     }
-
-    if (defined $self->{memc}){
-        $self->disconnectMemcached;
-    }
-    
-    return;
-}
-
-sub disconnectMemcached {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    $logger->debug("Disconnecting memcached");
-    
-    $self->{memc}->disconnect_all if (defined $self->{memc});
-    delete $self->{memc};
 
     return;
 }

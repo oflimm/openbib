@@ -32,6 +32,7 @@ use utf8;
 
 use Benchmark ':hireswallclock';
 use Cache::Memcached::Fast;
+use Compress::LZ4;
 use OpenBib::Schema::System;
 use OpenBib::Schema::System::Singleton;
 use DBIx::Class::ResultClass::HashRefInflator;
@@ -52,11 +53,7 @@ sub new {
 
     bless ($self, $class);
 
-    $self->connectMemcached;
-
     $self->load;
-
-    $self->disconnectDB;
     
     return $self;
 }
@@ -69,6 +66,9 @@ sub load {
 
     my $config = OpenBib::Config::File->instance;
     
+    $self->connectDB;
+    $self->connectMemcached;
+
     #####################################################################
     # Dynamische Definition diverser Variablen
   
@@ -95,8 +95,11 @@ sub load {
                 $timeall=timediff($btime,$atime);
                 $logger->info("Total time for is ".timestr($timeall));
             }
+
+	    $self->disconnectDB;
+	    $self->disconnectMemcached;
             
-            return $self;
+            return $self ;
         }
     }
 
@@ -162,6 +165,9 @@ sub load {
     if ($self->{memc}){
         $self->{memc}->set($memc_key,$self->{dbinfo},$config->{memcached_expiration}{$memc_key});
     }
+
+    $self->disconnectDB;
+    $self->disconnectMemcached;
     
     return $self;
 }

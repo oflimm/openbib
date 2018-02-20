@@ -4,7 +4,7 @@
 #
 #  Basisklasse
 #
-#  Dieses File ist (C) 2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2012-2018 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -34,6 +34,7 @@ use utf8;
 
 use Benchmark ':hireswallclock';
 use Cache::Memcached::Fast;
+use Compress::LZ4;
 use DBI;
 use Encode 'decode_utf8';
 use JSON::XS;
@@ -88,29 +89,6 @@ sub connectDB {
 
     return;
 
-}
-
-sub connectMemcached {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config::File->instance;
-    
-    if (!exists $config->{memcached}){
-        $logger->debug("No memcached configured");
-        return;
-    }
-
-    # Verbindung zu Memchached herstellen
-    $self->{memc} = new Cache::Memcached::Fast($config->{memcached});
-
-    if (!$self->{memc}->set('isalive',1)){
-        $logger->fatal("Unable to connect to memcached");
-    }
-
-    return;
 }
 
 sub disconnectDB {
@@ -179,20 +157,6 @@ sub DESTROY {
         $self->disconnectMemcached;
     }
     
-    return;
-}
-
-sub disconnectMemcached {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    $logger->debug("Disconnecting memcached");
-    
-    $self->{memc}->disconnect_all if (defined $self->{memc});
-    delete $self->{memc};
-
     return;
 }
 

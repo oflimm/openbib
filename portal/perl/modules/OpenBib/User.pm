@@ -77,7 +77,10 @@ sub new {
         $atime=new Benchmark;
     }
 
-    $self->connectMemcached();
+    # Reuse des memc-Handles von config
+    if ($config->{memc}){
+	$self->{memc} = $config->{memc};
+    }
 
     if (defined $sessionID){
         my $userid = $self->get_userid_of_session($sessionID);
@@ -6099,47 +6102,6 @@ sub DESTROY {
     if (defined $self->{schema}){
         $self->disconnectDB;
     }
-
-    if (defined $self->{memc}){
-        $self->disconnectMemcached;
-    }
-
-    return;
-}
-
-sub connectMemcached {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = $self->get_config;
-
-    if (!exists $config->{memcached}){
-      $logger->debug("No memcached configured");
-      return;
-    }
-    
-    # Verbindung zu Memchached herstellen
-    $self->{memc} = new Cache::Memcached::Fast($config->{memcached});
-
-    if (!$self->{memc}->set('isalive',1)){
-        $logger->fatal("Unable to connect to memcached");
-    }
-
-    return;
-}
-
-sub disconnectMemcached {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    $logger->debug("Disconnecting memcached");
-    
-    $self->{memc}->disconnect_all if (defined $self->{memc});
-    delete $self->{memc};
 
     return;
 }

@@ -32,6 +32,7 @@ use utf8;
 
 use Benchmark ':hireswallclock';
 use Cache::Memcached::Fast;
+use Compress::LZ4;
 use DBIx::Class::ResultClass::HashRefInflator;
 use Encode qw(decode_utf8);
 use Log::Log4perl qw(get_logger :levels);
@@ -52,11 +53,7 @@ sub new {
 
     $self->{circinfo} = {};
     
-    $self->connectMemcached;
-
     $self->load;
-
-    $self->disconnectDB;
     
     return $self;
 }
@@ -68,6 +65,9 @@ sub load {
     my $logger = get_logger();
 
     my $config  = OpenBib::Config::File->instance;
+
+    $self->connectDB;
+    $self->connectMemcached;
     
     #####################################################################
     ## Ausleihkonfiguration fuer den Katalog einlesen
@@ -93,6 +93,9 @@ sub load {
                 $timeall=timediff($btime,$atime);
                 $logger->info("Total time for is ".timestr($timeall));
             }
+
+	    $self->disconnectDB;
+	    $self->disconnectMemcached;
             
             return $self;
         }
@@ -126,6 +129,9 @@ sub load {
     if ($self->{memc}){
         $self->{memc}->set($memc_key,$self->{circinfo},$config->{memcached_expiration}{$memc_key});
     }
+
+    $self->disconnectDB;
+    $self->disconnectMemcached;
     
     return $self;
     
@@ -238,7 +244,13 @@ sub connectMemcached {
     }
 
     # Verbindung zu Memchached herstellen
-    $self->{memc} = new Cache::Memcached::Fast($config->{memcached});
+    $self->{memc} = new Cache::Memcached::Fast(
+	$config->{memcached},
+	compress_methods => [
+            sub { ${$_[1]} = Compress::LZ4::compress(${$_[0]})   },
+            sub { ${$_[1]} = Compress::LZ4::decompress(${$_[0]}) },
+        ],
+	);
 
     if (!$self->{memc}->set('isalive',1)){
         $logger->fatal("Unable to connect to memcached");

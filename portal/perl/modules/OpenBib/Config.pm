@@ -33,6 +33,7 @@ use utf8;
 use Benchmark ':hireswallclock';
 use DBIx::Class::ResultClass::HashRefInflator;
 use Cache::Memcached::Fast;
+use Compress::LZ4;
 use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use LWP;
@@ -2536,7 +2537,13 @@ sub connectMemcached {
     }
 
     # Verbindung zu Memchached herstellen
-    $self->{memc} = new Cache::Memcached::Fast($self->{memcached});
+    $self->{memc} = new Cache::Memcached::Fast(
+	$self->{memcached},        
+	compress_methods => [
+            sub { ${$_[1]} = Compress::LZ4::compress(${$_[0]})   },
+            sub { ${$_[1]} = Compress::LZ4::decompress(${$_[0]}) },
+        ],
+	);
 
     if (!$self->{memc}->set('isalive',1)){
         $logger->fatal("Unable to connect to memcached");
@@ -2617,13 +2624,8 @@ sub memc_cleanup_viewinfo {
     my $self = shift;
 
     $self->{memc}->delete('config:databaseinfotable');
-    OpenBib::Config::DatabaseInfoTable->new;
-
     $self->{memc}->delete('config:circulationinfotable');
-    OpenBib::Config::CirculationInfoTable->new;
-
     $self->{memc}->delete('config:dbinfo_overview');   
-
     $self->{memc}->delete('config:viewinfo_overview');   
     
     return;
@@ -2870,8 +2872,6 @@ sub delete_locationinfo {
     }
 
     $self->{memc}->delete('config:locationinfotable') if (defined $self->{memc});
-    OpenBib::Config::LocationInfoTable->new;
-    
     return;
 }
 

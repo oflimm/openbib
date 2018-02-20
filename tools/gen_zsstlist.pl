@@ -192,7 +192,7 @@ my $natlizzahl=0;
 my @recordlist = ();
 
 foreach $titleid (keys %titleids){
-    my $record = new OpenBib::Record::Title({database => 'uzkzeitschriften', id => $titleid})->load_full_record();
+    my $record = new OpenBib::Record::Title({database => 'uzkzeitschriften', id => $titleid, config => $config})->load_full_record();
 
     my $sortfield = "";
     

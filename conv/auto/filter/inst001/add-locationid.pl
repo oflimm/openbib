@@ -132,7 +132,7 @@ while (<HOLDING>){
     }
 
     foreach my $mark_ref (@{$holding_ref->{fields}{'0014'}}){
-        if ($mark_ref->{content} =~m/^2[4-9]/ || $mark_ref->{content} =~m/^[3-9][0-9]A/){
+        if ($mark_ref->{content} =~m/^2[4-9]A/ || $mark_ref->{content} =~m/^[3-9][0-9]A/){
             push @{$element_ref}, "DE-38-SAB";
         }
     }

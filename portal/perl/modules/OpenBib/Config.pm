@@ -1144,6 +1144,34 @@ sub get_locationinfo_fields {
 
     return {} if (!$locationid);
 
+    my ($atime,$btime,$timeall);
+        
+    if ($self->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    my $locationinfo_ref= {};
+
+    my $memc_key = "config:locationinfo_fields:$locationid";
+
+    if ($self->{memc}){
+        my $locationinfo_ref = $self->{memc}->get($memc_key);
+
+	if ($locationinfo_ref){
+	    if ($logger->is_debug){
+		$logger->debug("Got locationinfo_fields for key $memc_key from memcached");
+	    }
+
+            if ($self->{benchmark}) {
+                my $btime=new Benchmark;
+                my $timeall=timediff($btime,$atime);
+                $logger->info("Zeit fuer das Holen der gecacheten Informationen ist ".timestr($timeall));
+            }
+
+	    return $locationinfo_ref if (defined $locationinfo_ref);
+	}
+    }
+
     # DBI: "select category,content,indicator from libraryinfo where dbname = ?"
     my $locationfields = $self->get_schema->resultset('LocationinfoField')->search_rs(
         {
@@ -1156,8 +1184,6 @@ sub get_locationinfo_fields {
             result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
         }
     );
-
-    my $locationinfo_ref= {};
 
     while (my $item = $locationfields->next){
         my $field    = "L".sprintf "%04d",$item->{field};
@@ -1174,6 +1200,16 @@ sub get_locationinfo_fields {
         } if ($content);
     }
 
+    if ($self->{memc}){
+	$self->{memc}->set($memc_key,$locationinfo_ref,$self->{memcached_expiration}{'config:locationinfo_fields'});
+    }
+    
+    if ($self->{benchmark}) {
+	my $btime=new Benchmark;
+	my $timeall=timediff($btime,$atime);
+	$logger->info("Zeit fuer das Holen der Informationen ist ".timestr($timeall));
+    }
+
     return $locationinfo_ref;
 }
 
@@ -1183,6 +1219,32 @@ sub get_locationinfo_overview {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my ($atime,$btime,$timeall);
+        
+    if ($self->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    my $memc_key = "config:locationinfo_overview";
+
+    if ($self->{memc}){
+        my $locationinfo_overview_ref = $self->{memc}->get($memc_key);
+
+	if ($locationinfo_overview_ref){
+	    if ($logger->is_debug){
+		$logger->debug("Got locationinfo_overview for key $memc_key from memcached");
+	    }
+
+            if ($self->{benchmark}) {
+                my $btime=new Benchmark;
+                my $timeall=timediff($btime,$atime);
+                $logger->info("Zeit fuer das Holen der gecacheten Informationen ist ".timestr($timeall));
+            }
+
+	    return $locationinfo_overview_ref if (defined $locationinfo_overview_ref);
+	}
+    }
+
     my $locations = $self->get_locationinfo->search_rs(
         undef,
         {
@@ -1191,7 +1253,7 @@ sub get_locationinfo_overview {
         }
     );
 
-    my $locations_ref = [];
+    my $locationinfo_overview_ref = [];
 
     while (my $location = $locations->next){
         my $thislocation_ref = {
@@ -1203,10 +1265,40 @@ sub get_locationinfo_overview {
             
         };
         
-        push @$locations_ref, $thislocation_ref;
+        push @$locationinfo_overview_ref, $thislocation_ref;
+    }
+
+    if ($self->{memc}){
+	$self->{memc}->set($memc_key,$locationinfo_overview_ref,$self->{memcached_expiration}{$memc_key});
     }
     
-    return $locations_ref;
+    if ($self->{benchmark}) {
+	my $btime=new Benchmark;
+	my $timeall=timediff($btime,$atime);
+	$logger->info("Zeit fuer das Holen der Informationen ist ".timestr($timeall));
+    }
+    
+    return $locationinfo_overview_ref;
+}
+
+sub memc_cleanup_locationinfo {
+    my ($self,$locationid) = @_;
+
+    $self->{memc}->delete("config:locationinfo_fields:$locationid");   
+
+    $self->{memc}->delete('config:dbinfo_overview');   
+    $self->{memc}->delete('config:viewinfo_overview');   
+    $self->{memc}->delete('config:locationinfo_overview');   
+
+    $self->{memc}->delete('config:databaseinfotable');
+    $self->{memc}->delete('config:circulationinfotable');
+    $self->{memc}->delete('config:locationinfotable');
+
+    OpenBib::Config::DatabaseInfoTable->new;
+    OpenBib::Config::CirculationInfoTable->new;
+    OpenBib::Config::LocationInfoTable->new;
+
+    return;
 }
 
 sub get_number_of_locations {
@@ -2600,22 +2692,21 @@ sub del_databaseinfo {
 
     # Flushen und aktualisieren in Memcached
     if (defined $self->{memc}){
-        $self->memc_cleanup_databaseinfo;
+        $self->memc_cleanup_databaseinfo($dbname);
     }
 
     return;
 }
 
 sub memc_cleanup_databaseinfo {
-    my $self = shift;
+    my ($self,$dbname) = @_;
 
     $self->{memc}->delete('config:databaseinfotable');
-    OpenBib::Config::DatabaseInfoTable->new;
-
     $self->{memc}->delete('config:circulationinfotable');
-    OpenBib::Config::CirculationInfoTable->new;
-
     $self->{memc}->delete('config:dbinfo_overview');   
+
+    OpenBib::Config::DatabaseInfoTable->new;
+    OpenBib::Config::CirculationInfoTable->new;
     
     return;
 }
@@ -2641,7 +2732,7 @@ sub update_databaseinfo {
 
     # Flushen und aktualisieren in Memcached
     if (defined $self->{memc}){
-        $self->memc_cleanup_databaseinfo;
+        $self->memc_cleanup_databaseinfo($dbinfo_ref->{dbname});
     }
 
     return;
@@ -2667,7 +2758,7 @@ sub new_databaseinfo {
         
         # Flushen und aktualisieren in Memcached
         if (defined $self->{memc}){
-           $self->memc_cleanup_databaseinfo;
+           $self->memc_cleanup_databaseinfo($new_database->id);
         }
 	
         return $new_database->id;
@@ -2726,7 +2817,7 @@ sub del_view {
     my $logger = get_logger();
 
     eval {
-        my $view = $self->get_schema->resultset('Viewinfo')->single({ viewname => $viewname});
+        my $view = $self->get_schema->resultset('Viewinfo')->single({ viewname => $viewname });
         $view->view_dbs->delete;
         $view->view_rsses->delete;
         $view->delete;
@@ -2788,6 +2879,11 @@ sub new_locationinfo {
         $self->{memc}->delete('config:locationinfotable') if (defined $self->{memc});
         OpenBib::Config::LocationInfoTable->new;
 
+	# Flushen und aktualisieren in Memcached
+	if (defined $self->{memc}){
+	    $self->memc_cleanup_locationinfo($new_location->id);
+	}
+
         return $new_location->id;
     }
     
@@ -2847,8 +2943,10 @@ sub update_locationinfo {
         }
     }
 
-    $self->{memc}->delete('config:locationinfotable') if (defined $self->{memc});
-    OpenBib::Config::LocationInfoTable->new;
+    # Flushen und aktualisieren in Memcached
+    if (defined $self->{memc}){
+	$self->memc_cleanup_locationinfo($locationinfo_ref->{identifier});
+    }
     
     return;
 }
@@ -2871,7 +2969,11 @@ sub delete_locationinfo {
         $logger->error("Can't delete locationinfo: ".$@);
     }
 
-    $self->{memc}->delete('config:locationinfotable') if (defined $self->{memc});
+    # Flushen und aktualisieren in Memcached
+    if (defined $self->{memc}){
+	$self->memc_cleanup_locationinfo($locationid);
+    }
+
     return;
 }
 
@@ -4054,6 +4156,34 @@ sub get_databases_of_searchprofile {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my ($atime,$btime,$timeall)=(0,0,0);
+
+    if ($self->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    my @databases = ();
+
+    my $memc_key = "config:searchprofile_dbs:$searchprofileid";
+    
+    if ($self->{memc}){
+        my $dbs_ref= $self->{memc}->get($memc_key);
+
+        if ($dbs_ref){
+	    @databases = @$dbs_ref;
+            
+            $logger->debug("Got searchprofile_dbs from memcached");
+            
+            if ($self->{benchmark}) {
+                $btime=new Benchmark;
+                $timeall=timediff($btime,$atime);
+                $logger->info("Total time for is ".timestr($timeall));
+            }
+
+            return @databases;
+        }
+    }
+
     my $searchprofiledbs = $self->get_schema->resultset('SearchprofileDb')->search_rs(
         {
             'me.searchprofileid' => $searchprofileid,
@@ -4068,14 +4198,24 @@ sub get_databases_of_searchprofile {
         }
     );
 
-    my @databases = ();
-    
     while (my $searchprofiledb = $searchprofiledbs->next){
         push @databases, $searchprofiledb->{thisdbname};
 
     }
 
     $logger->debug("Searchprofile $searchprofileid: ".join(',',@databases));
+
+    if ($self->{memc}){
+	$self->{memc}->set($memc_key,\@databases,$self->{memcached_expiration}{"config:searchprofile_dbs"});
+    }
+    
+    if ($self->{benchmark}) {
+	my $btime=new Benchmark;
+	my $timeall=timediff($btime,$atime);
+	$logger->info("Zeit fuer das Holen der Informationen ist ".timestr($timeall));
+    }
+
+
     return @databases;
 }
 

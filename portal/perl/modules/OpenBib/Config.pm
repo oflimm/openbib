@@ -2712,12 +2712,13 @@ sub memc_cleanup_databaseinfo {
 }
 
 sub memc_cleanup_viewinfo {
-    my $self = shift;
+    my ($self,$viewname) = @_;
 
     $self->{memc}->delete('config:databaseinfotable');
     $self->{memc}->delete('config:circulationinfotable');
     $self->{memc}->delete('config:dbinfo_overview');   
-    $self->{memc}->delete('config:viewinfo_overview');   
+    $self->{memc}->delete('config:viewinfo_overview');
+    $self->{memc}->delete("config:viewdbs:$viewname");
     
     return;
 }
@@ -2829,7 +2830,7 @@ sub del_view {
 
     # Flushen und aktualisieren in Memcached
     if (defined $self->{memc}){
-        $self->memc_cleanup_viewinfo;
+        $self->memc_cleanup_viewinfo($viewname);
     }
                 
     return;
@@ -3044,7 +3045,7 @@ sub update_view {
 
     # Flushen und aktualisieren in Memcached
     if (defined $self->{memc}){
-        $self->memc_cleanup_viewinfo;
+        $self->memc_cleanup_viewinfo($viewname);
     }
         
     return;
@@ -3192,7 +3193,7 @@ sub new_view {
 
     # Flushen und aktualisieren in Memcached
     if (defined $self->{memc}){
-        $self->memc_cleanup_viewinfo;
+        $self->memc_cleanup_viewinfo($viewname);
     }
             
     return;

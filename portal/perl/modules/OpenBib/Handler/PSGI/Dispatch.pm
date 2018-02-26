@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Dispatch
 #
-#  Dieses File ist (C) 2010-2015 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2010-2018 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -40,7 +40,7 @@ use YAML::Syck;
 use Data::Dumper;
 use HTTP::Exception;
 
-use OpenBib::Config;
+use OpenBib::Config::File;
 
 use base 'CGI::Application::Dispatch::PSGI';
 

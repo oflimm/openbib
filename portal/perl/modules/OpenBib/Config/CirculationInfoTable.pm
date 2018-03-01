@@ -66,7 +66,6 @@ sub load {
 
     my $config  = OpenBib::Config::File->instance;
 
-    $self->connectDB;
     $self->connectMemcached;
     
     #####################################################################
@@ -94,12 +93,13 @@ sub load {
                 $logger->info("Total time for is ".timestr($timeall));
             }
 
-	    $self->disconnectDB;
 	    $self->disconnectMemcached;
             
             return $self;
         }
     }
+
+    $self->connectDB;
     
     my $dbinfos = $self->get_schema->resultset('Databaseinfo')->search_rs(
         {

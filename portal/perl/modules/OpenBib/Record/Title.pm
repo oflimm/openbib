@@ -1417,7 +1417,7 @@ sub load_circulation {
             };
             
             if ($@){
-                $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
+                $logger->error("SOAP-Target ".$circinfotable->get($self->{database})->{circcheckurl}." konnte nicht erreicht werden :".$@);
             }
             
         }

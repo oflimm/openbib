@@ -1294,9 +1294,9 @@ sub memc_cleanup_locationinfo {
     $self->{memc}->delete('config:circulationinfotable');
     $self->{memc}->delete('config:locationinfotable');
 
-    OpenBib::Config::DatabaseInfoTable->new;
-    OpenBib::Config::CirculationInfoTable->new;
-    OpenBib::Config::LocationInfoTable->new;
+#    OpenBib::Config::DatabaseInfoTable->new;
+#    OpenBib::Config::CirculationInfoTable->new;
+#    OpenBib::Config::LocationInfoTable->new;
 
     return;
 }
@@ -2705,8 +2705,8 @@ sub memc_cleanup_databaseinfo {
     $self->{memc}->delete('config:circulationinfotable');
     $self->{memc}->delete('config:dbinfo_overview');   
 
-    OpenBib::Config::DatabaseInfoTable->new;
-    OpenBib::Config::CirculationInfoTable->new;
+#    OpenBib::Config::DatabaseInfoTable->new;
+#    OpenBib::Config::CirculationInfoTable->new;
     
     return;
 }

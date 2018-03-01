@@ -240,7 +240,7 @@ sub disconnectDB {
 
     if (defined $self->{schema}){
         eval {
-            $self->{schema}->storage->dbh->disconnect;
+            $self->{schema}->storage->disconnect;
             delete $self->{schema};
         };
 

@@ -6,7 +6,7 @@
 #
 #  CRON-Job zum automatischen aktualisieren aller OpenBib-Datenbanken
 #
-#  Dieses File ist (C) 1997-2017 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2018 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -158,6 +158,8 @@ my $blacklist_ref = {
     'inst429master' => 1,
     'inst430' => 1,
     'inst430master' => 1,
+    'inst431' => 1,
+    'inst431master' => 1,
     'inst432' => 1,
     'inst432master' => 1,
     'inst434' => 1,
@@ -439,13 +441,13 @@ sub threadC {
 
     $logger->info("### Sonstige Master-Institutskataloge");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst401master','inst404master','inst405master','inst409master','inst410master','inst411master','inst412master','inst414master','inst416master','inst418master','inst419master','inst426master','inst427master','inst428master','inst430master','inst432master','inst434master','inst437master','inst438master','inst445master','inst460master','inst461master','inst468master','inst622master','inst623master'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst401master','inst404master','inst405master','inst409master','inst410master','inst411master','inst412master','inst414master','inst416master','inst418master','inst419master','inst426master','inst427master','inst428master','inst430master','inst431master','inst432master','inst434master','inst437master','inst438master','inst445master','inst460master','inst461master','inst468master','inst622master','inst623master'] });
 
     ##############################
     
     $logger->info("### Aufgesplittete sonstige Master-Institutskataloge");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst401','inst404','inst405','inst409','inst410','inst411','inst412','inst414','inst416','inst418','inst419','inst426','inst427','inst428','inst430','inst432','inst434','inst437','inst438','inst445','inst460','inst461','inst468','inst622','inst623'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst401','inst404','inst405','inst409','inst410','inst411','inst412','inst414','inst416','inst418','inst419','inst426','inst427','inst428','inst430','inst431','inst432','inst434','inst437','inst438','inst445','inst460','inst461','inst468','inst622','inst623'] });
 
     ##############################
 

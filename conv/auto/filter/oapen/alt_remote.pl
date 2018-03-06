@@ -53,6 +53,7 @@ my $url =  $dbinfo->protocol."://".$dbinfo->host."/".$filename;
 
 print "### $database: Hole Exportdateien mit $wgetexe von $url\n";
 
+system("cd $pooldir/$pool ; rm oapen.marc.xml ");
 system("$wgetexe -o $pooldir/$pool/oapen.marc.xml \"$url\" > /dev/null 2>&1 ");
 
 

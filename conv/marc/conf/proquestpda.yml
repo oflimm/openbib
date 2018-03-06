@@ -1,0 +1,43 @@
+exclude:
+  'by_availability':
+     field: '0540' # Feld in umzuwandelndem Bestand
+     databases:
+        - doab
+        - inst001
+        - ebookpda
+        - nationallizenzen
+        - gbvnationallizenzen
+        - emedienkauf
+        - bestellungen
+        - tmpebooks
+        - freebooks
+        - tusculum
+        - inst103
+        - inst104
+        - inst105
+        - inst113
+        - inst128
+        - inst157
+        - inst429
+        - inst448
+        - inst450
+        - inst459reorg
+        - inst123
+        - inst201
+        - inst503
+        - nomos
+     locations:
+        - 'doab'
+        - 'DE-38-USBFB'
+        - 'bestellungen'
+        - 'nationallizenzen'
+        - 'freebooks'
+        - 'tmpebooks'
+        - 'tusculum'
+        - 'usbebooks'
+        - 'nomos'
+        
+
+  #'by_isbn_in_file':
+     #field: '0540'
+     #filename: '/opt/openbib/autoconv/pools/ebookpda/exclude_isbns.txt'

@@ -40,6 +40,11 @@ builder {
 #    enable 'Debug', panels =>
 #        [ qw(Environment Response Timer Memory Profiler::NYTProf)
 #      ];
+
+
+    enable "Deflater",
+      content_type => ['application/json','text/html','text/plain','text/csv','application/rdf+xml'],
+      vary_user_agent => 1;
     
     $cgiapp;
 };

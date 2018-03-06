@@ -40,7 +40,7 @@ my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
 my $confdir       = $config->{'base_dir'}."/conf";
-my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
+my $wgetexe       = "/usr/bin/curl";
 my $marc2metaexe   = "$konvdir/marc2meta.pl";
 
 my $pool          = $ARGV[0];
@@ -48,6 +48,14 @@ my $pool          = $ARGV[0];
 my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 
 my $filename      = $dbinfo->titlefile;
+
+my $url =  $dbinfo->protocol."://".$dbinfo->host."/".$filename;
+
+print "### $database: Hole Exportdateien mit $wgetexe von $url\n";
+
+system("$wgetexe -o $pooldir/$pool/oapen.marc.xml \"$url\" > /dev/null 2>&1 ");
+
+
 print "### $pool: Konvertierung von $filename\n";
 system("cd $pooldir/$pool ; rm meta.* ");
-system("cd $pooldir/$pool; $marc2metaexe --database=$pool --loglevel=DEBUG -use-xml --encoding='UTF-8' --inputfile=$filename --configfile=/opt/openbib/conf/oapen.yml; gzip meta.*");
+system("cd $pooldir/$pool; $marc2metaexe --database=$pool --loglevel=DEBUG -use-xml --encoding='UTF-8' --inputfile=oapen.marc.xml --configfile=/opt/openbib/conf/oapen.yml; gzip meta.*");

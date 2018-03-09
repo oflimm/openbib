@@ -80,7 +80,7 @@
 <td>
 [% IF selected_views %]
 <ul>
-[% FOREACH singleview IN viewinfos.all %]
+[% FOREACH singleview IN viewinfos %]
 [%   IF selected_views.${singleview.viewname} %]
 <li>[% singleview.viewname %]: [% singleview.description %]</li>
 [%   END %]

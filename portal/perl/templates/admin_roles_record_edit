@@ -81,7 +81,7 @@
 <div class="ym-fbox-select">
 <label for="views">Einschränkung auf View</label>
   <select id="views" name="views" multiple="multiple" size="20">
-[% FOREACH singleview IN viewinfos.all %]
+[% FOREACH singleview IN viewinfos %]
 <option value="[% singleview.viewname %]" [% IF selected_views.${singleview.viewname} %]selected="selected"[% END %]>[% singleview.viewname %]: [% singleview.description %]</option>
 [% END %]
   </select>

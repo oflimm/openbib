@@ -83,7 +83,7 @@
 <div class="ym-fbox-select">
 <label for="viewname">[% msg.maketext("View") %]</label>
   <select name="viewname" id="viewname">
-[% FOREACH viewinfo IN config.get_viewinfo_overview.all %]    
+[% FOREACH viewinfo IN config.get_viewinfo_overview %]    
      <option value="[% viewinfo.viewname %]">[% viewinfo.viewname %]: [% viewinfo.description %]</option>
 [% END %]
   </select>

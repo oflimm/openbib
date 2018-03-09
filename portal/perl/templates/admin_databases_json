@@ -1,7 +1,7 @@
 [%-
 
 all_databaseinfo = [] ;
-FOREACH database IN catalogs.all ;
+FOREACH database IN catalogs ;
   this_databaseinfo = {
     link = {
           rel = 'self'
@@ -15,7 +15,6 @@ FOREACH database IN catalogs.all ;
     system      = database.system
     sigel       = database.sigel
     url         = database.url
-    use_libinfo = database.use_libinfo
 
     host        = database.host
     protocol    = database.protocol
@@ -30,7 +29,6 @@ FOREACH database IN catalogs.all ;
     holdingfile = database.holdingfile
     autoconvert = database.autoconvert
 
-    autoconvert = database.autoconvert
     circ        = database.circ
     circurl     = database.circurl
     circwsurl   = database.circwsurl
@@ -38,7 +36,7 @@ FOREACH database IN catalogs.all ;
 
     count_all      = database.allcount
     count_digital  = database.digitalcount
-    count_journals = database.journalscount
+    count_journals = database.journalcount
     count_articles = database.articlecount
   };
   all_databaseinfo.push(this_databaseinfo);

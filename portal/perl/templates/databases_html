@@ -90,7 +90,7 @@ angesprochen werden sind davon ausgenommen.
 
 <table class="ym-full">
 <tr><td><b>[% msg.maketext("Name") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>Titel-Anzahl</b></td></tr>
-[% FOREACH database IN databases.all %]
+[% FOREACH database IN databases %]
 [% NEXT IF database.active != 1 || database_in_view.${database.dbname} != 1%]
 
 <tr>

@@ -201,6 +201,14 @@ sub get_result {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = OpenBib::Config->new;    
+
+    my ($atime,$btime,$timeall);
+        
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
     $logger->debug("Getting Result");
     
     return undef unless (defined $id && defined $type);
@@ -238,7 +246,19 @@ sub get_result {
             $logger->debug("Returning Ref: ".(ref $data_ref));
         }
         
+    if ($config->{benchmark}) {
+	my $btime=new Benchmark;
+	my $timeall=timediff($btime,$atime);
+	$logger->info("Zeit fuer das Holen der Informationen ist ".timestr($timeall));
+    }
+
         return $data_ref->{$hashkey};
+    }
+
+    if ($config->{benchmark}) {
+	my $btime=new Benchmark;
+	my $timeall=timediff($btime,$atime);
+	$logger->info("Zeit fuer das Holen der Informationen ist ".timestr($timeall));
     }
     
     return $data_ref;

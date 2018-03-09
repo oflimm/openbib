@@ -7,7 +7,7 @@ FOREACH dbname IN config.get_viewdbs(view);
 END;
 
 all_databases = [] ;
-FOREACH database IN databases.all ;
+FOREACH database IN databases ;
   this_databaseinfo = {
     link = {
           rel = 'self'

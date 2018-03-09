@@ -1767,7 +1767,7 @@ sub disconnectDB {
     if (defined $self->{schema}){
         eval {
             $logger->debug("Disconnect from System-DB now $self");
-            $self->{schema}->storage->dbh->disconnect;
+            $self->{schema}->storage->disconnect;
             delete $self->{schema};
         };
 

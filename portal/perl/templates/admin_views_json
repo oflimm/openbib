@@ -2,7 +2,7 @@
 
 all_views = [] ;
 
-FOREACH viewinfo IN views.all ;
+FOREACH viewinfo IN views ;
 
   databases = [];
   FOREACH item IN config.get_viewdbs(viewinfo.viewname).sort ;
@@ -21,12 +21,12 @@ FOREACH viewinfo IN views.all ;
   this_profile = {
     link = {
           rel = 'self'
-          href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('profiles_loc')}/id/${viewinfo.profileid.profilename}.json?l=${lang}"
+          href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('profiles_loc')}/id/${viewinfo.profile_name}.json?l=${lang}"
     }
 
-    id          = viewinfo.profileid.profilename
-    profilename = viewinfo.profileid.profilename
-    description = viewinfo.profileid.description
+    id          = viewinfo.profile_name
+    profilename = viewinfo.profile_name
+    description = viewinfo.profile_description
   }
 
   this_view = {

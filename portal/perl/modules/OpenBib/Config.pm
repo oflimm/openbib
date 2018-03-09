@@ -1007,6 +1007,7 @@ sub get_dbinfo_overview {
 	if ($dbinfo_overview_ref){
 	    if ($logger->is_debug){
 		$logger->debug("Got dbinfo_overview for key $memc_key from memcached");
+		$logger->debug(YAML::Dump($dbinfo_overview_ref));
 	    }
 
             if ($self->{benchmark}) {
@@ -1032,20 +1033,41 @@ sub get_dbinfo_overview {
 	my $location_identifier = "";
 	my $location_id = "";
 
-	if ($item->locationid){
+	if (defined $item->locationid){
 	    $location_identifier = $item->locationid->identifier;
 	    $location_id = $item->locationid->id;
 	}
 
 	push @$dbinfo_overview_ref, {
+	    description => $item->description,
+	    shortdesc => $item->shortdesc,
 	    active => $item->active,
 	    dbname => $item->dbname,
+	    system => $item->system,
+	    sigel => $item->sigel,
+	    url => $item->url,
+	    host => $item->host,
+	    protocol => $item->protocol,
+	    remotepath => $item->remotepath,
+	    remoteuser => $item->remoteuser,
+	    remotepassword => $item->remotepassword,
+	    titlefile => $item->titlefile,
+	    personfile => $item->personfile,
+	    corporatebodyfile => $item->corporatebodyfile,
+	    subjectfile => $item->subjectfile,
+	    classificationfile => $item->classificationfile,
+	    holdingfile => $item->holdingfile,
+	    autoconvert => $item->autoconvert,
+	    circ => $item->circ,
+	    circurl => $item->circurl,
+	    circwsurl => $item->circwsurl,
+            circdb => $item->circdb,
 	    location_identifier => $location_identifier,
 	    location_id => $location_id,
-	    description => $item->description,
-	    autoconvert => $item->autoconvert,
-	    system => $item->system,
 	    allcount => $item->allcount,
+	    digitalcount => $item->digitalcount,
+	    journalscount => $item->journalcount,
+	    articlecount => $item->articlecount,
 	};
 
     }
@@ -1382,9 +1404,11 @@ sub get_viewinfo_overview {
     my $viewinfo_overview_ref = [];
 
     while (my $item = $object->next){
+	my $profile_name = "";
 	my $profile_description = "";
 
-	if ($item->profileid){
+	if (defined $item->profileid){
+	    $profile_name = $item->profileid->profilename;
 	    $profile_description = $item->profileid->description;
 	}
 
@@ -1392,6 +1416,7 @@ sub get_viewinfo_overview {
 	    active => $item->active,
 	    viewname => $item->viewname,
 	    description => $item->description,
+	    profile_name => $profile_name,
 	    profile_description => $profile_description,
 	};
 

@@ -1583,9 +1583,7 @@
       return false;
   }
 
-
-  function parse(str) {
-
+function parse(str) {
     // Wenn Feiertag, alle Bibs rot markieren und beenden
 	//XXX: überarbeiten, dass anderer Tag gewählt werden kann, auch wenn heute Feiertag ist
     if (feiertag === true)
@@ -1609,7 +1607,7 @@
 
     // Eintrag enthält getrennte Angaben zu Semester und Semesterfreien Zeiten
     if (str.search("Im Semester:") !== -1) {
-      if (semester === true) {
+		if (semester === true) {
         var n = str.replace("Im Semester:", "");
         if (n.indexOf("In den Semesterferien:") != -1) {
           var indexSemesterferien = n.indexOf("In den Semesterferien:");
@@ -1690,19 +1688,9 @@
             f[0] = sub1;
 
           var eintrag;
-          for (i = 0; i < f.length; i++) {
-            //	console.log("i: " + i);
+          for (i = 0; i < f.length; i++) { 
             eintrag = f[i];
 
-            //XXX: ist nicht so richtig schlau
-            //*************************************************************************************************************************
-            // Abfangen wenn in Semesterferien keine Zeit sondern Mailadresse angegeben ist
-
-            /*if(eintrag.match(new RegExp(/<a href="/g))) {
-    				return 0;
-    			}
-*/
-            //*************************************************************************************************************************
             // Mo - Fr:
             if (eintrag.match(new RegExp(/([A-Za-z]{2}[\s]?-[\s]?[A-Za-z]{2}:[\s]?)/g))) {
               var t = eintrag.match(new RegExp(/([A-Za-z]{2}[\s]?-[\s]?[A-Za-z]{2}:[\s]?)/g));
@@ -1772,7 +1760,7 @@
           var t = eintrag.match(new RegExp(/([A-Za-z]{2}[\s]?-[\s]?[A-Za-z]{2}:[\s]?)/g));
           var tage = t[0].split("-");
 
-          for (var tti in tage) {
+          for (var tti = 0; tti < tage.length; tti++) {
             var temp = tage[tti].toString().replace(/[^A-Za-z]/g, "");
             tage[tti] = tageZuNummer(temp.trim());
 
@@ -1791,13 +1779,15 @@
         // Mo, Di, ...
         else if (eintrag.match(new RegExp(/[A-Za-z]{2}(\,|: )/g))) {
           var t = eintrag.match(new RegExp(/[A-Za-z]{2}(\,|: )/g));
-
-          for (var ti = 0; ti < t.length; t++) {
+			
+          for (var ti = 0; ti < t.length; ti++) {
             var temp = t[ti].toString().replace(/[^A-Za-z]/g, "").trim();
             t[ti] = tageZuNummer(temp);
           }
+		  tage = [];
           tage = t;
         }
+		
 
         // checken ob akt Tag drinnen ist
         if (checkTag('tt', tage) === true)

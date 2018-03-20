@@ -191,6 +191,7 @@ my $blacklist_ref = {
     'usbhwa' => 1,
     'usbsab' => 1,
     'vubpda' => 1,
+    'proquestpda' => 1,
     'roemkepda' => 1,
     'dreierpda' => 1,
     'wiso' => 1,
@@ -248,7 +249,7 @@ autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['bestellun
 
 $logger->info("### EBOOKPDA");
 
-autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['ebookpda'] });
+autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['ebookpda','proquestpda'] });
 
 ##############################
 

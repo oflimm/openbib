@@ -110,7 +110,7 @@ unlink 'availability_status.db';
 
 my %availability_status = ();
 
-tie %availability_status,           'MLDBM', 'availability_status.db',
+tie %availability_status,           'MLDBM', "availability_status_${database}.db",
     or die "Could not tie availability data.\n";
 
 
@@ -178,6 +178,9 @@ while (my $result=$request->fetchrow_arrayref){
     elsif ($status eq "nicht entleihbar"){
         $status_ref->{current}{presence} = 1;
     }
+    elsif ($status eq "entliehen"){
+        $status_ref->{current}{lent} = 1;
+    }
 
     $availability_status{$titleid} = $status_ref;
 
@@ -192,17 +195,23 @@ foreach my $titleid (keys %availability_status){
     # Autovivication bedenken!
 
 #    $logger->debug(YAML::Dump($availability_status{$titleid}));
-    # 1) Buch inzwischen ausgeliehen und nicht mehr ausleihbar
-    if (defined $availability_status{$titleid}->{old}{lendable} && ! defined $availability_status{$titleid}->{current}{lendable}){
+    # 1) Buch inzwischen ausgeliehen und nicht mehr ausleihbar bzw. praesent (Sonderausleihe!)
+    if ((defined $availability_status{$titleid}->{old}{lendable} || defined $availability_status{$titleid}->{old}{presence}) && defined $availability_status{$titleid}->{current}{lent}){
         update_status($database,$titleid,"");
     }
     # 2) Buch wieder zurueckgegeben und jetzt ausleihbar
     elsif (!defined $availability_status{$titleid}->{old}{lendable} && defined $availability_status{$titleid}->{current}{lendable}){
         update_status($database,$titleid,"lendable");
     }
+    # 3) Buch wieder zurueckgegeben und jetzt wieder Praesenzbestand
+    elsif (!defined $availability_status{$titleid}->{old}{lendable} && defined $availability_status{$titleid}->{current}{presence}){
+        update_status($database,$titleid,"presence");
+    }
 }
 
 $logger->info("$change_count titles changed status");
+
+unlink "availability_status_${database}.db";
 
 sub print_help {
     print "update_circulation_availability.pl - Aktualisierung der Zugriffs-Information aus dem Ausleihsystem\n\n";

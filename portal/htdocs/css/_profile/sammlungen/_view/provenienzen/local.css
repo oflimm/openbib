@@ -81,7 +81,7 @@
   }
       
   header {
-    padding-bottom:145px;  
+    padding-bottom:160px;  
   }
 
   header #logo {
@@ -105,7 +105,7 @@
     background: url(/images/openbib/views/provenienzen/logo.png) center no-repeat;
     position: absolute;
     width: 1000px;
-    height: 217px;
+    height: 231px;
     top: 0px;
     left: 0px;    
   }
@@ -278,13 +278,13 @@
     background: url(/images/openbib/views/provenienzen/logo-768px.png) center no-repeat;
     position: absolute;
     width: 768px;
-    height: 166px;
+    height: 178px;
     top: 0px;
     left: 0px;    
   }
 
   header {
-    padding-bottom:92px;  
+    padding-bottom:108px;  
   }
 
   .ym-wrapper {
@@ -416,14 +416,14 @@
   #header_logo_image  {
     background: url(/images/openbib/views/provenienzen/provenienzen-schriftzug-80px.png) center no-repeat;
     position: absolute;
-    width: 493px;
+    width: 708px;
     height: 80px;
     top: 0px;
     left: 0px;    
   }
 
   header {
-      padding-bottom:10px;
+      padding-bottom:0px;
       background:  #e1cfb7; /* #312b2d; /* #5b5054; /* #292325; */
   }
 

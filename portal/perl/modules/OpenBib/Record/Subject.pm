@@ -52,6 +52,10 @@ sub new {
 
     my $schema    = exists $arg_ref->{schema}
         ? $arg_ref->{schema}         : undef;
+
+    my $config     = exists $arg_ref->{config}
+        ? $arg_ref->{config}         : OpenBib::Config->new();
+    
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -59,6 +63,8 @@ sub new {
     my $self = { };
 
     bless ($self, $class);
+
+    $self->{_config}          = $config;
 
     $logger->debug("Creating Subject-Record-Object");
 
@@ -92,7 +98,7 @@ sub load_full_record {
     
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
 
     my $fields_ref={};
 
@@ -181,7 +187,7 @@ sub load_name {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
 
     $logger->debug("Loading main entry");
     my ($atime,$btime,$timeall);
@@ -242,7 +248,7 @@ sub save_record {
     
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
 
     my ($atime,$btime,$timeall);
 
@@ -357,7 +363,7 @@ sub delete_record {
     
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
 
     my ($atime,$btime,$timeall);
 
@@ -389,6 +395,12 @@ sub delete_record {
     return $self;
 }
 
+sub get_config {
+    my $self = shift;
+
+    return $self->{_config};
+}
+
 sub get_number_of_titles {
     my ($self,$arg_ref) = @_;
 
@@ -400,7 +412,7 @@ sub get_number_of_titles {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
     
     my ($atime,$btime,$timeall);
 

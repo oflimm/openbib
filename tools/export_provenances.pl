@@ -149,14 +149,14 @@ foreach my $title ($titles_with_provenances->all){
         if ($record->has_field('T4306')){
             foreach my $field_ref (@{$record->get_field({ field => 'T4306'})}){
                 if ($field_ref->{mult} eq $mult){
-                    my $subject = OpenBib::Record::Subject->new({database => $database, id => $field_ref->{id}})->load_full_record;
+                    my $subject = OpenBib::Record::Subject->new({database => $database, id => $field_ref->{id}, config => $config})->load_full_record;
                     
                     my $this_subject_gnd = $subject->get_field({field => 'S0010', mult => 1});
-
+		    
                     next unless (defined $this_subject_gnd);
-
-                    ($collection_gnd) = $this_subject_gnd =~/.DE-588.(.+)$/;
-            }
+		    
+                    $collection_gnd = $this_subject_gnd;
+		}
             }
         }
 
@@ -167,13 +167,13 @@ foreach my $title ($titles_with_provenances->all){
         if ($record->has_field('T4307')){                    
             foreach my $field_ref (@{$record->get_field({ field => 'T4307'})}){
                 if ($field_ref->{mult} eq $mult){
-                    my $corp = OpenBib::Record::CorporateBody->new({database => $database, id => $field_ref->{id}})->load_full_record;
+                    my $corp = OpenBib::Record::CorporateBody->new({database => $database, id => $field_ref->{id}, config => $config})->load_full_record;
                     
                     my $this_corp_gnd = $corp->get_field({field => 'C0010', mult => 1});
 
                     next unless (defined $this_corp_gnd);
                     
-                    ($corp_gnd) = $this_corp_gnd =~/.DE-588.(.+)$/;
+                    $corp_gnd = $this_corp_gnd;
                 }
             }
         }
@@ -189,7 +189,7 @@ foreach my $title ($titles_with_provenances->all){
             foreach my $field_ref (@{$record->get_field({ field => 'T4308'})}){
                 if ($field_ref->{mult} eq $mult){
 
-                    my $person = OpenBib::Record::Person->new({database => $database, id => $field_ref->{id}})->load_full_record;
+                    my $person = OpenBib::Record::Person->new({database => $database, id => $field_ref->{id}, config => $config})->load_full_record;
                     
                     my $this_person_gnd = $person->get_field({field => 'P0010', mult => 1});
 
@@ -197,7 +197,7 @@ foreach my $title ($titles_with_provenances->all){
                     
                     $logger->debug("Person-ID: ".$person->get_id." - $this_person_gnd");
                     
-                    ($person_gnd) = $this_person_gnd =~/.DE-588.(.+)$/;
+                    $person_gnd = $this_person_gnd;
                 }
             }
         }
@@ -213,6 +213,11 @@ foreach my $title ($titles_with_provenances->all){
         $provenance_ref->{collection_gnd}   = $collection_gnd  if ($collection_gnd);
         $provenance_ref->{corporatebody_gnd}   = $corp_gnd  if ($corp_gnd);
         $provenance_ref->{person_gnd}   = $person_gnd  if ($person_gnd);
+
+	if ($logger->is_debug){
+	    $logger->debug(YAML::Dump($provenance_ref));
+	}
+
 
         print OUT encode_json $provenance_ref, "\n" if ($corp_gnd || $person_gnd || $collection_gnd);
     }

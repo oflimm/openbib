@@ -96,7 +96,7 @@ my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";
 my $tooldir       = $config->{'tool_dir'};
 
-my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
+my $wgetexe       = "/usr/bin/wget --auth-no-challenge -nH --cut-dirs=3";
 my $meta2sqlexe   = "$config->{'conv_dir'}/meta2sql.pl";
 my $meta2mexexe   = "$config->{'conv_dir'}/meta2mex.pl";
 my $pgsqlexe      = "/usr/bin/psql -U $config->{'dbuser'} ";

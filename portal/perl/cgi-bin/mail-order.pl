@@ -82,6 +82,9 @@ my $signatur = ($query->param('signatur'))?decode_utf8($query->param('signatur')
 # Variablen in <FORM>, die den Such-Flu"s steuern 
 #####################################################################
 
+my $contact_whitelist_ref = {
+    'portraitbestellung@ub.uni-koeln.de' => 1,
+};
   
 #####                                                          ######
 ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
@@ -134,6 +137,41 @@ my $sysprofile = $config->get_profilename_of_view($view);
 $logger->debug("Username:$username - OPAC-Pin:$password - Titel: $titel - Person: $person - Signatur:$signatur");
 # Ueberpruefen, ob der Nutzer korrekt ist
 $logger->debug("Database: $database - View: $view - Kontakt: $contact");
+
+if (!defined $contact_whitelist_ref->{contact} && !$contact_whitelist_ref->{$contact}){
+    my  $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
+        database     => $database,
+        view         => $view,
+        profile      => $sysprofile,
+        templatename => 'mail-order_error',
+    });
+
+    my $ttdata =  {
+        database   => $database,
+        config     => $config,
+        msg        => $msg,
+        view       => $view,
+        sysprofile => $sysprofile,
+        grund      => "Keine valide Mailadresse ($contact)",
+    };
+
+    my $template = Template->new({ 
+        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+            INCLUDE_PATH   => $config->{tt_include_path},
+	    ABSOLUTE       => 1,
+            STAT_TTL => 60,  # one minute
+        }) ],
+        COMPILE_EXT => '.ttc',
+        COMPILE_DIR => '/tmp/ttc',
+        STAT_TTL => 60,  # one minute
+        RECURSION      => 1,
+    });
+
+    # Dann Ausgabe des neuen Headers
+    print $query->header('text/html');
+
+    $template->process($templatename, $ttdata);
+}
 
 my $result;
 

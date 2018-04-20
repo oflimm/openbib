@@ -1,4 +1,4 @@
-[%#-
+%#-
 #######################################################################
 #
 # Templatename: search_showtitset_images
@@ -47,7 +47,7 @@
 <input type="hidden" name="person"   value="[% record.get_fields.${"T0102"}.first.content %]"/>
 <input type="hidden" name="view"     value="[% view %]"/>
 <input type="hidden" name="database" value="[% database %]"/>
-<input type="hidden" name="contact"     value="flimm@ub.uni-koeln.de"/>
+<input type="hidden" name="contact"     value="portraitbestellung@ub.uni-koeln.de"/>
 <input type="hidden" name="mailsubject" value="Bestellung eines Portraits in den LS Hist. Sammlungen"/>
 
 <fieldset class="ym-full">

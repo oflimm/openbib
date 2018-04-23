@@ -2650,7 +2650,7 @@ sub get_provenances_of_media {
             $logger->debug("Found Medianr $medianumber - $mult");
 
             my $this_provenance_ref = {};
-            foreach my $field ('T4306','T4307','T4308','T4310','T4311','T4312'){
+            foreach my $field ('T4306','T4307','T4308','T4310','T4311','T4312','T4314','T4315'){
                 my $fields_ref = $self->get_field({ field => $field });
                 next unless ($fields_ref);
                 

@@ -113,7 +113,7 @@ push @{$out_ref}, ('ZDB-ID','Bibliothek','Person/Körperschaft','AST','Titel','Z
 
 $outputcsv->print($out,$out_ref);
 
-my $catalog = OpenBib::Catalog::Factory->create_catalog({database => 'instzs'});
+my $catalog = OpenBib::Catalog::Factory->create_catalog({database => 'uzkzeitschriften'});
 
 
 my $where_ref = {

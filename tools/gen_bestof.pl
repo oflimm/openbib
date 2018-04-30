@@ -124,20 +124,20 @@ if ($type == 1){
                 
             },
             {
-                select   => ['id', {'count' => 'sid'}],
-                as       => ['id','sidcount'],
-                group_by => ['id'],
+                select   => ['titleid', {'count' => 'sid'}],
+                as       => ['titleid','sidcount'],
+                group_by => ['titleid'],
                 order_by => { -desc => \'count(sid)' },
                 rows     => 20,
             }
         );
         foreach my $item ($titleusage->all){
-            my $id     = $item->get_column('id');
-            my $count  = $item->get_column('sidcount');
+            my $titleid  = $item->get_column('titleid');
+            my $count    = $item->get_column('sidcount');
 
-            $logger->debug("Got Title with id $id and Session-Count $count");
+            $logger->debug("Got Title with id $titleid and Session-Count $count");
             
-            my $item=OpenBib::Record::Title->new({database => $database, id => $id, config => $config})->load_brief_record->to_hash;
+            my $item=OpenBib::Record::Title->new({database => $database, id => $titleid, config => $config})->load_brief_record->to_hash;
 
             push @$bestof_ref, {
                 item  => $item,
@@ -185,10 +185,10 @@ if ($type == 2){
                 
             },
             {
-                select   => ['dbname', {'count' => 'id'}],
+                select   => ['dbname', {'count' => 'titleid'}],
                 as       => ['dbname','kcount'],
                 group_by => ['dbname'],
-                order_by => { -desc => \'count(id)' },
+                order_by => { -desc => \'count(titleid)' },
                 rows     => 20,
             }
         );
@@ -983,19 +983,19 @@ if ($type == 13){
                 
             },
             {
-                select   => ['id', 'dbname', {'count' => 'sid'}],
-                as       => ['id','dbname','sidcount'],
-                group_by => ['id','dbname'],
+                select   => ['titleid','dbname', {'count' => 'sid'}],
+                as       => ['titleid','dbname','sidcount'],
+                group_by => ['titleid','dbname'],
                 order_by => { -desc => \'count(sid)' },
                 rows     => 20,
             }
         );
         foreach my $item ($titleusage->all){
-            my $id       = $item->get_column('id');
+            my $titleid  = $item->get_column('titleid');
             my $count    = $item->get_column('sidcount');
             my $database = $item->get_column('dbname');
 
-            my $item=OpenBib::Record::Title->new({database => $database, id => $id, config => $config})->load_brief_record()->to_hash;
+            my $item=OpenBib::Record::Title->new({database => $database, id => $titleid, config => $config})->load_brief_record()->to_hash;
 
             push @$bestof_ref, {
                 item  => $item,

@@ -155,7 +155,7 @@ foreach my $item ($isbns->all){
             'titleusages.isbn' => { '!=' => $processed_isbn },             
         },
         {
-            select => ['titleusages.isbn','titleusages.id','titleusages.dbname'],
+            select => ['titleusages.isbn','titleusages.titleid','titleusages.dbname'],
             as     => ['titleisbn','titleid','titledbname'],
             join   => ['titleusages'],
         }

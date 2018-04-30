@@ -404,16 +404,32 @@ sub log_event {
 
     if ($type == 1){
        eval {
-           my $content_ref = decode_json $content;
+          my $content_ref = decode_json $content;
+
+          if ($logger->is_debug){
+              $logger->debug("Pre: ".YAML::Dump($content_ref));
+          }
 
           foreach my $field (keys %{$content_ref}){
              if (ref($content_ref->{$field}) eq 'HASH' && defined $content_ref->{$field}{val} && !$content_ref->{$field}{val}){
                  delete $content_ref->{$field};
+                 if ($logger->is_debug){
+                    $logger->debug("Deleted key $field");
+                 }
              } 
 
           }
 
+          if ($logger->is_debug){
+              $logger->debug("Post: ".YAML::Dump($content_ref));
+          }
+
           $content = encode_json $content_ref;
+
+          if ($logger->is_debug){
+              $logger->debug("New content is : $content");
+          }
+
        };
 
        if ($@){

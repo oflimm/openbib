@@ -84,7 +84,7 @@ my $logger = get_logger();
 
 my $enrichmnt = new OpenBib::Enrichment;
 
-my $common_holdings_ref = $enrichmnt->get_common_holdings({ selector => $selector, locations => \@locations});
+my $common_holdings_ref = $enrichmnt->get_common_holdings({ selector => $selector, locations => \@locations, config => $config});
 
 my $csv = Text::CSV_XS->new ({
     'eol'         => "\n",

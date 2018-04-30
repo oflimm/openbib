@@ -45,6 +45,7 @@ use OpenBib::Index::Backend::Xapian;
 
 use DBI;
 use Getopt::Long;
+use Encode qw(decode encode);
 use Log::Log4perl qw(get_logger :levels);
 use MLDBM qw(DB_File Storable);
 use DBIx::Class::ResultClass::HashRefInflator;
@@ -98,15 +99,67 @@ our $entl_map_ref = {
 
 our $config = OpenBib::Config->new;
 
+if (! $config->local_server_is_active_and_searchable){
+    $logger->info("### Local server is neither active nor searchable. Exiting.");
+    exit;
+}
+
 our $acq_config = YAML::LoadFile($configfile);
 
 my $dsn = sprintf "dbi:Proxy:%s;dsn=%s",$acq_config->{proxy}, $acq_config->{dsn_at_proxy};
 
 our $dbh = DBI->connect($dsn, $acq_config->{dbuser}, $acq_config->{dbpasswd}) or $logger->error_die($DBI::errstr);
 
+my $remotedbname = $acq_config->{dbname};
+my $sql_statement = qq{
+  select * 
+
+  from $remotedbname.sisis.d50zweig
+  };
+  
+my $request=$dbh->prepare($sql_statement);
+$request->execute() or $logger->error_die($DBI::errstr);
+
+my %zweig=();
+while (my $res=$request->fetchrow_hashref()){
+    $zweig{$res->{'d50zweig'}}{Bezeichnung}=$res->{'d50bezeich'};
+}
+
+$sql_statement = qq{
+  select * 
+
+  from $remotedbname.sisis.d60abteil
+  };
+
+$request=$dbh->prepare($sql_statement);
+$request->execute() or $logger->error_die($DBI::errstr);
+
+my %abteilung=();
+while (my $res=$request->fetchrow_hashref()){
+    $abteilung{$res->{'d60zweig'}}{$res->{'d60abt'}}=$res->{'d60bezeich'};
+}
+
+$sql_statement = qq{
+  select * 
+
+  from $remotedbname.sisis.d63mtyp
+  };
+
+$request=$dbh->prepare($sql_statement);
+$request->execute() or $logger->error_die($DBI::errstr);
+
+my $mtyp_ref = {};
+while (my $res=$request->fetchrow_hashref()){
+    $mtyp_ref->{$res->{'d63mtyp'}} = {
+	vmanz     => $res->{'d63anzvm'},
+	sotext    => $res->{'d63sotext'},
+	helptext  => $res->{'d63helptest'},
+    };
+}
+
 our $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $database});
 
-unlink 'availability_status.db';
+unlink "availability_status_${database}.db";
 
 my %availability_status = ();
 
@@ -141,19 +194,31 @@ while (my $title = $titles->next()){
 
 $logger->info("Processing current availability status");
 
-my $request=$dbh->prepare("select t.katkey,d.d01entl,d.d01status,d.d01skond from d01buch as d,titel_buch_key as t where d.d01mcopyno = t.mcopyno");# group by t.katkey");
+my $sql_statement_t = qq{
+  select distinct(katkey) from $remotedbname.sisis.titel_buch_key 
+  };
 
-eval {
-    $request->execute();
-};
+my $request_t=$dbh->prepare($sql_statement_t);
+$request_t->execute() or $logger->error_die($DBI::errstr);;
 
-if ($@){
-    $logger->error($@);
-}
+our $change_count = 0;
+
+while (my $res_t=$request_t->fetchrow_hashref()){
+    my $titleid = $res_t->{katkey};
+
+    $sql_statement = qq{
+  select tbk.katkey,d.d01aort,d.d01gsi,d.d01ort,d.d01entl,d.d01mtyp,d.d01ex,d.d01status,d.d01skond,d.d01vmanz,d.d01rv,d.d01abtlg,d.d01zweig,d.d01bnr
+
+  from $remotedbname.sisis.d01buch as d, $remotedbname.sisis.titel_buch_key as tbk
+
+  where d.d01mcopyno=tbk.mcopyno and tbk.katkey = ? 
+  };
     
-while (my $result=$request->fetchrow_arrayref){
-    my $titleid = $result->[0];
-    my $status  = get_mediastatus($result->[1],$result->[2],$result->[3]);
+
+    $request=$dbh->prepare($sql_statement);
+    $request->execute($titleid) or $logger->error_die($DBI::errstr);;
+
+    my $bindeeinheit = 0; 
 
     my $status_ref;
     
@@ -164,48 +229,192 @@ while (my $result=$request->fetchrow_arrayref){
         $status_ref = {};
     }
 
-#    $logger->debug("$titleid -> Status: $status");
+    my $circulation_ref = [];
     
-    if ($status eq "bestellbar"){
-        $status_ref->{current}{lendable} = 1;
-    }
-    elsif ($status eq "nur in Lesesaal bestellbar" || $status eq "nur in bes. Lesesaal bestellbar"){
-        $status_ref->{current}{presence} = 1;                    
-    }
-    elsif ($status eq "nur Wochenende"){
-        $status_ref->{current}{lendable} = 1;
-    }
-    elsif ($status eq "nicht entleihbar"){
-        $status_ref->{current}{presence} = 1;
-    }
-    elsif ($status eq "entliehen"){
-        $status_ref->{current}{lent} = 1;
+    while (my $res=$request->fetchrow_hashref()){
+	my $titleid    = $res->{'katkey'};
+	my $mediennr   = $res->{'d01gsi'};
+	my $signatur   = $res->{'d01ort'};
+	my $exemplar   = $res->{'d01ex'};
+	my $rueckgabe  = $res->{'d01rv'};
+	my $entl       = $res->{'d01entl'};
+	my $status     = $res->{'d01status'};
+	my $skond      = $res->{'d01skond'};
+	my $abteilung  = $res->{'d01abtlg'};
+	my $mtyp       = $res->{'d01mtyp'};
+	my $bnr        = $res->{'d01bnr'};
+	my $zweignr    = $res->{'d01zweig'};
+	my $vmanz      = $res->{'d01vmanz'};
+	my $ausgabeort = $res->{'d01aort'};
+	my $seqnr      = $res->{'seqnr'};
+	my $zweigst    = "";
+	
+	my $statusstring   = "";
+	my $standortstring = "";
+	my $vormerkbar     = 0;
+	my $opactext       = (exists $mtyp_ref->{$mtyp}{sotext})?$mtyp_ref->{$mtyp}{sotext}:'';
+	
+	if ($seqnr > 1){
+	    $bindeeinheit = 1;
+	}
+	
+	if ($vmanz < $mtyp_ref->{$mtyp}{vmanz}){
+	    $vormerkbar   = 1;
+	}
+	
+	if ($abteilung{"$zweignr"}{"$abteilung"}){
+	    $standortstring=$abteilung{"$zweignr"}{"$abteilung"};
+	}
+	
+	if ($zweig{"$zweignr"}{Bezeichnung}){
+	    $standortstring=$zweig{"$zweignr"}{Bezeichnung}." / $standortstring";
+	}
+	
+	if ($entl_map_ref->{$entl} == 0){
+	    $statusstring="nicht entleihbar";
+	}
+	elsif ($entl_map_ref->{$entl} == 1){
+	    if ($status eq "0"){
+		$statusstring="bestellbar";
+	    }
+	    elsif ($status eq "2"){
+		$statusstring="entliehen"; # Sonderwunsch. Eigentlich: bestellt
+	    }
+	    elsif ($status eq "4"){
+		$statusstring="entliehen";
+	    }
+	    else {
+		$statusstring="unbekannt";
+	    }
+	}
+	elsif ($entl_map_ref->{$entl} == 2){
+	    $statusstring="nur in Lesesaal bestellbar";
+	}
+	elsif ($entl_map_ref->{$entl} == 3){
+	    $statusstring="nur in bes. Lesesaal bestellbar";
+	}
+	elsif ($entl_map_ref->{$entl} == 4){
+	    $statusstring="nur Wochenende";
+	    
+	    if ($status eq "2"){
+		$statusstring="entliehen"; # Sonderwunsch. Eigentlich: bestellt
+	    }
+	    elsif ($status eq "4"){
+		$statusstring="entliehen";
+	    }	
+	}
+	else {
+	    $statusstring="unbekannt";
+	}
+	
+	# Sonderkonditionen
+	
+	if ($skond eq "16"){
+	    $statusstring="verloren";
+	}
+	elsif ($skond eq "32"){
+	    $statusstring="vermi&szlig;t";
+	}
+	
+	$rueckgabe=~s/12:00AM//;
+	
+	$standortstring="-" unless ($standortstring);
+	
+	my $d39sql_statement = qq{
+       select d39fusstext
+
+       from $remotedbname.sisis.d39fussnoten
+
+       where d39gsi = ?
+         AND d39ex = ?
+         AND d39fussart = 1
+
+       order by d39fussnr
+ };
+
+	my $request2=$dbh->prepare($d39sql_statement);
+	$request2->execute($mediennr,$exemplar) or $logger->error_die($DBI::errstr);;
+	
+	$logger->info("Fussnoten fuer Mediennr:$mediennr: Exemplar:$exemplar:");
+	my $fussnote = "";
+	
+	while (my $res2=$request2->fetchrow_hashref){
+	    $fussnote.=$res2->{d39fusstext};
+	}
+	
+	$request2->finish();
+	
+	
+	my $singleex_ref = {
+	    Mediennr       => encode("utf-8",decode("iso-8859-1",$mediennr)),
+	    Zweigstelle    => encode("utf-8",decode("iso-8859-1",$zweignr)),
+	    Signatur       => encode("utf-8",decode("iso-8859-1",$signatur)),
+	    Exemplar       => encode("utf-8",decode("iso-8859-1",$exemplar)),
+	    Abteilungscode => encode("utf-8",decode("iso-8859-1",$abteilung)),
+	    Standort       => encode("utf-8",decode("iso-8859-1",$standortstring)),
+	    Status         => encode("utf-8",decode("iso-8859-1",$statusstring)),
+	    Statuscode     => encode("utf-8",decode("iso-8859-1",$status)),
+	    Opactext       => encode("utf-8",decode("iso-8859-1",$opactext)),
+	    Fussnote       => encode("utf-8",decode("iso-8859-1",$fussnote)),
+	    Entleihbarkeit => $entl_map_ref->{$entl},
+	    Vormerkbarkeit => $vormerkbar,
+	    Rueckgabe      => encode("utf-8",decode("iso-8859-1",$rueckgabe)),
+	    Ausgabeort     => encode("utf-8",decode("iso-8859-1",$ausgabeort)),
+	};
+
+
+	if ($statusstring eq "bestellbar"){
+	    $status_ref->{current}{lendable} = 1;
+	}
+	elsif ($statusstring eq "nur in Lesesaal bestellbar" || $statusstring eq "nur in bes. Lesesaal bestellbar"){
+	    $status_ref->{current}{presence} = 1;                    
+	}
+	elsif ($statusstring eq "nur Wochenende"){
+	    $status_ref->{current}{lendable} = 1;
+	}
+	elsif ($statusstring eq "nicht entleihbar"){
+	    $status_ref->{current}{presence} = 1;
+	}
+	elsif ($statusstring eq "entliehen"){
+	    $status_ref->{current}{lent} = 1;
+	}
+	
+	push @$circulation_ref, $singleex_ref;
     }
 
+    my $memc_key = "record:title:circulation:$database:$titleid";
+
+    # Medienstatus eines Titel wird mit allen Exemplaren immer aktualisiert
+    if (defined $config->{memc}){
+	# Update in Memcached
+        $config->{memc}->set($memc_key,$circulation_ref,$config->{memcached_expiration}{'record:title:circulation'});
+    }
+
+    #    $logger->debug("$titleid -> Status: $status");
+    
+    
     $availability_status{$titleid} = $status_ref;
 
-}
-
-#print YAML::Dump(\%availability_status);
-
-$logger->info("Processing changed availability status");
-
-our $change_count = 0;
-foreach my $titleid (keys %availability_status){
-    # Autovivication bedenken!
-
-#    $logger->debug(YAML::Dump($availability_status{$titleid}));
-    # 1) Buch inzwischen ausgeliehen und nicht mehr ausleihbar bzw. praesent (Sonderausleihe!)
-    if ((defined $availability_status{$titleid}->{old}{lendable} || defined $availability_status{$titleid}->{old}{presence}) && defined $availability_status{$titleid}->{current}{lent}){
-        update_status($database,$titleid,"");
-    }
-    # 2) Buch wieder zurueckgegeben und jetzt ausleihbar
-    elsif (!defined $availability_status{$titleid}->{old}{lendable} && defined $availability_status{$titleid}->{current}{lendable}){
-        update_status($database,$titleid,"lendable");
-    }
-    # 3) Buch wieder zurueckgegeben und jetzt wieder Praesenzbestand
-    elsif (!defined $availability_status{$titleid}->{old}{lendable} && defined $availability_status{$titleid}->{current}{presence}){
-        update_status($database,$titleid,"presence");
+    #print YAML::Dump(\%availability_status);
+    
+    $logger->info("Processing changed availability status");
+    
+    foreach my $titleid (keys %availability_status){
+	# Autovivication bedenken!
+	
+	#    $logger->debug(YAML::Dump($availability_status{$titleid}));
+	# 1) Buch inzwischen ausgeliehen und nicht mehr ausleihbar bzw. praesent (Sonderausleihe!)
+	if ((defined $availability_status{$titleid}->{old}{lendable} || defined $availability_status{$titleid}->{old}{presence}) && defined $availability_status{$titleid}->{current}{lent}){
+	    update_status($database,$titleid,"");
+	}
+	# 2) Buch wieder zurueckgegeben und jetzt ausleihbar
+	elsif (!defined $availability_status{$titleid}->{old}{lendable} && defined $availability_status{$titleid}->{current}{lendable}){
+	    update_status($database,$titleid,"lendable");
+	}
+	# 3) Buch wieder zurueckgegeben und jetzt wieder Praesenzbestand
+	elsif (!defined $availability_status{$titleid}->{old}{lendable} && defined $availability_status{$titleid}->{current}{presence}){
+	    update_status($database,$titleid,"presence");
+	}
     }
 }
 

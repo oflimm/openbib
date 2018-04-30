@@ -567,11 +567,12 @@ sub get_common_holdings {
 
     my $locations_ref       = exists $arg_ref->{locations}
         ? $arg_ref->{locations}        : ();
+
+    my $config              = exists $arg_ref->{config}
+        ? $arg_ref->{config}        : OpenBib::Config->new;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
-    my $config = OpenBib::Config->new;
 
     my $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd}) or $logger->error_die($DBI::errstr);
 

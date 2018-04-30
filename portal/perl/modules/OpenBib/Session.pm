@@ -1048,32 +1048,34 @@ sub clear_data {
 
     my $config = $self->get_config;
     
+    # Wenn Statistik-DB deaktiviert ist, werden alle Sessiondaten in der System-DB gesammelt und nicht verworfen
     if ($config->{statisticsdb_enable}){
         $self->save_eventlog_to_statisticsdb;
-    }
-    
-    # dann Sessiondaten loeschen
-    my $sessioninfo = $self->get_schema->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} });
-
-    if ($sessioninfo){
-        $logger->debug("Trying to clear data for sessionID ".$sessioninfo->sessionid);
-
-        eval {
-            $sessioninfo->eventlogs->delete;
-            $sessioninfo->eventlogjsons->delete;
-            $sessioninfo->queries->delete;
-            $sessioninfo->recordhistories->delete;
-            $sessioninfo->searchhistories->delete;
-#            $sessioninfo->session_cartitems->cartitemid->delete;
-            $sessioninfo->session_cartitems->delete;
-            $sessioninfo->session_searchprofiles->delete;
-            $sessioninfo->user_sessions->delete;
-            $sessioninfo->delete;
-        };
-        
-        if ($@){
-            $logger->fatal("Problem clearing session $self->{ID}: $@");
-        }
+	
+	# dann Sessiondaten loeschen
+	my $sessioninfo = $self->get_schema->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} });
+	
+	if ($sessioninfo){
+	    $logger->debug("Trying to clear data for sessionID ".$sessioninfo->sessionid);
+	    
+	    eval {
+		$sessioninfo->eventlogs->delete;
+		$sessioninfo->eventlogjsons->delete;
+		$sessioninfo->queries->delete;
+		$sessioninfo->recordhistories->delete;
+		$sessioninfo->searchhistories->delete;
+		#            $sessioninfo->session_cartitems->cartitemid->delete;
+		$sessioninfo->session_cartitems->delete;
+		$sessioninfo->session_searchprofiles->delete;
+		$sessioninfo->user_sessions->delete;
+		$sessioninfo->delete;
+	    };
+	    
+	    if ($@){
+		$logger->fatal("Problem clearing session $self->{ID}: $@");
+	    }
+	}
+	
     }
 
     return;

@@ -57,7 +57,7 @@
 </p>
 
 <table class="ym-full">
-<tr><td><img src="/images/openbib/openbib-logo_small.gif"></td><td><a class="ext" href="http://www.openbib.org/" target="_blank">OpenBib</a></td><td>Die Portalsoftware</td></tr>
+<tr><td><img src="/images/openbib/openbib-logo_small.gif"></td><td><a class="ext" href="https://github.com/oflimm/openbib" target="_blank">OpenBib</a></td><td>Die Portalsoftware</td></tr>
 <tr><td><img src="http://www.yaml.de/images/yaml4-square-128.png"></td><td><a class="ext" href="http://www.yaml.de/" target="_blank">YAML 4</a></td><td>Das CSS Framework</a></td></tr>
 <tr><td><img src="http://www.cgi-app.org/images/cgiapp-logo.gif"></td><td><a class="ext" href="http://www.cgi-app.org/" target="_blank">CGI::Application w/ Dispatch</a></td><td>Das Perl Web-Framework</td></tr>
 <tr><td><img src="http://xapian.org/xapian-logo.png" width="200"></td><td><a class="ext" href="http://www.xapian.org/" target="_blank"></a></td><td>Die Xapian Searchengine Library</td></tr>

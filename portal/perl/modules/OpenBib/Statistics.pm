@@ -407,7 +407,7 @@ sub log_event {
            my $content_ref = decode_json $content;
 
           foreach my $field (keys %{$content_ref}){
-             if (defined $content_ref->{$field} && defined $content_ref->{$field}{val} && !$content_ref->{$field}{val}){
+             if (ref($content_ref->{$field}) eq 'HASH' && defined $content_ref->{$field}{val} && !$content_ref->{$field}{val}){
                  delete $content_ref->{$field};
              } 
 

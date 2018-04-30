@@ -193,7 +193,7 @@ else {
         
         $logger->debug("Encoding:$encoding:");
         
-        my $bibkey = OpenBib::Common::Util::gen_bibkey_from_marc($record,$encoding);
+#        my $bibkey = OpenBib::Common::Util::gen_bibkey_from_marc($record,$encoding);
 
         my @isbns = ();
         {
@@ -268,27 +268,27 @@ else {
 		}
 	    }
 	}
-	elsif ($bibkey){
-            foreach my $tocurl (@tocurls){
-                $logger->debug("Found Bibkey $bibkey -> $tocurl");
-                my $tocurl_ref = {
-                    bibkey   => $bibkey,
-                    origin   => $origin,
-                    field    => '4110',
-                    subfield => $tocurl->{subfield},
-                    content  => $tocurl->{content},
-                };
+	# elsif ($bibkey){
+        #     foreach my $tocurl (@tocurls){
+        #         $logger->debug("Found Bibkey $bibkey -> $tocurl");
+        #         my $tocurl_ref = {
+        #             bibkey   => $bibkey,
+        #             origin   => $origin,
+        #             field    => '4110',
+        #             subfield => $tocurl->{subfield},
+        #             content  => $tocurl->{content},
+        #         };
                 
-                print JSON encode_json($tocurl_ref),"\n" if ($jsonfile);
+        #         print JSON encode_json($tocurl_ref),"\n" if ($jsonfile);
                 
-                push @{$enrich_data_by_bibkey_ref}, $tocurl_ref;
-                $tocurl_tuple_count++;
-            }            
-        }
+        #         push @{$enrich_data_by_bibkey_ref}, $tocurl_ref;
+        #         $tocurl_tuple_count++;
+        #     }            
+        # }
            
         if ($import && $count % 1000 == 0){
             $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
-            $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref })  if (@$enrich_data_by_bibkey_ref);
+#            $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref })  if (@$enrich_data_by_bibkey_ref);
             $enrich_data_by_isbn_ref   = [];
             $enrich_data_by_bibkey_ref = [];
         }
@@ -298,7 +298,7 @@ else {
     
     if ($import && (@$enrich_data_by_isbn_ref || @$enrich_data_by_bibkey_ref) ){
         $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
-        $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref })  if (@$enrich_data_by_bibkey_ref);
+#        $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref })  if (@$enrich_data_by_bibkey_ref);
     }
     
     $logger->info("$tocurl_tuple_count TOCURL-Tupel eingefuegt");

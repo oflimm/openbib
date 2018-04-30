@@ -25,6 +25,7 @@ CREATE TABLE sessioninfo (
 
 drop table IF EXISTS titleusage;
 CREATE TABLE titleusage (
+ id           BIGSERIAL,
  sid          BIGINT,
 
  tstamp       TIMESTAMP,
@@ -41,6 +42,7 @@ CREATE TABLE titleusage (
 
 drop table IF EXISTS eventlog;
 CREATE TABLE eventlog (
+ id           BIGSERIAL,
  sid          BIGINT,
 
  tstamp       TIMESTAMP,
@@ -54,6 +56,7 @@ CREATE TABLE eventlog (
 
 drop table IF EXISTS eventlogjson;
 CREATE TABLE eventlogjson (
+ id           BIGSERIAL,
  sid          BIGINT,
 
  tstamp       TIMESTAMP,
@@ -81,6 +84,7 @@ CREATE TABLE searchterms (
 
 drop table IF EXISTS searchfields;
 CREATE TABLE searchfields (
+ id           BIGSERIAL,
  sid          BIGINT,
 
  tstamp       TIMESTAMP,
@@ -107,7 +111,7 @@ CREATE TABLE searchfields (
 
 drop table IF EXISTS loans;
 CREATE TABLE loans (
- id          BIGSERIAL,
+ id           BIGSERIAL,
 
  tstamp       TIMESTAMP,
  tstamp_year  SMALLINT,

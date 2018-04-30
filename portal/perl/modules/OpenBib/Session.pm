@@ -1020,9 +1020,9 @@ sub save_eventlog_to_statisticsdb {
 
         my $isbn          = $content_ref->{isbn};
         my $dbname        = $content_ref->{database};
-        my $id            = $content_ref->{id};
+        my $titleid       = $content_ref->{titleid};
 
-	next if (exists $seen_title{"$dbname:$id"});
+	next if (exists $seen_title{"$dbname:$titleid"});
 
         $statistics->store_titleusage({
             tstamp   => $tstamp,
@@ -1030,11 +1030,11 @@ sub save_eventlog_to_statisticsdb {
             viewname => $view,
             isbn     => $isbn,
             dbname   => $dbname,
-            id       => $id,
+            titleid  => $titleid,
             origin   => 1,
         });
 
-	$seen_title{"$dbname:$id"}=1;
+	$seen_title{"$dbname:$titleid"}=1;
     }
 
     return;

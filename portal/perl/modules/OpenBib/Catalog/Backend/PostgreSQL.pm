@@ -739,7 +739,7 @@ sub create_index_document {
         {
             dbname  => $self->{database},
             origin  => 1,
-            id      => $titleid,
+            titleid => $titleid,
         }
     )->count;
     

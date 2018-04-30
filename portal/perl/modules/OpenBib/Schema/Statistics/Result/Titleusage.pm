@@ -59,7 +59,7 @@ __PACKAGE__->table("titleusage");
   data_type: 'text'
   is_nullable: 0
 
-=head2 id
+=head2 titleid
 
   data_type: 'text'
   is_nullable: 0
@@ -91,7 +91,7 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 1 },
   "dbname",
   { data_type => "text", is_nullable => 0 },
-  "id",
+  "titleid",
   { data_type => "text", is_nullable => 0 },
   "origin",
   { data_type => "smallint", is_nullable => 1 },

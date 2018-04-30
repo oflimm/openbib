@@ -80,8 +80,8 @@ sub store_titleusage {
         ? $arg_ref->{tstamp}        : undef;
     my $origin            = exists $arg_ref->{origin}
         ? $arg_ref->{origin}        : 1;
-    my $id                = exists $arg_ref->{id}
-        ? $arg_ref->{id    }        : undef;
+    my $titleid           = exists $arg_ref->{titleid}
+        ? $arg_ref->{titleid}       : undef;
     my $isbn              = exists $arg_ref->{isbn}
         ? $arg_ref->{isbn  }        : undef;
     my $dbname            = exists $arg_ref->{dbname}
@@ -94,7 +94,7 @@ sub store_titleusage {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    return undef unless (defined $id && defined $dbname && defined $sid  && defined $origin);
+    return undef unless (defined $titleid && defined $dbname && defined $sid  && defined $origin);
 
     my $parsed_tstamp = new Date::Manip::Date;
     $parsed_tstamp->parse($tstamp);
@@ -106,7 +106,7 @@ sub store_titleusage {
             tstamp_year  => $parsed_tstamp->printf("%Y"),
             tstamp_month => $parsed_tstamp->printf("%m"),
             tstamp_day   => $parsed_tstamp->printf("%d"),
-            id           => $id,
+            titleid      => $titleid,
             isbn         => $isbn,
             dbname       => $dbname,
             sid          => $sid,

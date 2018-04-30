@@ -147,6 +147,7 @@ sub mail_confirmation {
     my $password2           = ($query->param('password2'))?$query->param('password2'):'';
     my $recaptcha_challenge = $query->param('recaptcha_challenge_field');
     my $recaptcha_response  = $query->param('recaptcha_response_field');
+    #my $recaptcha_response  = $query->param('g-recaptcha-response');
     
     my $recaptcha = Captcha::reCAPTCHA->new;
 
@@ -180,9 +181,8 @@ sub mail_confirmation {
     # Recaptcha nur verwenden, wenn Zugriffsinformationen vorhanden sind
     if ($config->{recaptcha_private_key}){
         # Recaptcha pruefen
-        my $recaptcha_result = $recaptcha->check_answer(
-            $config->{recaptcha_private_key}, $client_ip, #r->connection->remote_ip,
-            $recaptcha_challenge, $recaptcha_response
+        my $recaptcha_result = $recaptcha->check_answer_v2(
+            $config->{recaptcha_private_key}, $recaptcha_response, $client_ip
         );
         
         unless ( $recaptcha_result->{is_valid} ) {

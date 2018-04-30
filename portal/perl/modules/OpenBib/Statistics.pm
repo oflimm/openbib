@@ -400,6 +400,27 @@ sub log_event {
         $resultset = "Eventlogjson";
     }
 
+    # Reduzierung der Suchanfrage um leere Felder
+
+    if ($type == 1){
+       eval {
+           my $content_ref = decode_json $content;
+
+          foreach my $field (keys %{$content_ref}){
+             if (defined $content_ref->{$field} && defined $content_ref->{$field}{val} && !$content_ref->{$field}{val}){
+                 delete $content_ref->{$field};
+             } 
+
+          }
+
+          $content = encode_json $content_ref;
+       };
+
+       if ($@){
+          $logger->error($@. ": $content konnte nicht reduziert werden");
+       }
+    }
+
     $self->get_schema->resultset($resultset)->create(
         {
             sid          => $sid,

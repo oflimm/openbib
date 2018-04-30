@@ -68,7 +68,7 @@ $(document).ready(function(){
 
 <ul>
 <li><a href="#ob-login_forms_library">[% msg.maketext("Anmeldung mit einem Benutzerausweis") %]</a></li>
-<li><a href="#ob-login_forms_selfreg">[% msg.maketext("Anmeldung/Registrierung mit einer E-Mail-Adresse") %]</a></li>
+<li><a href="#ob-login_forms_selfreg">Anmeldung mit einer E-Mail-Adresse<!-- [% msg.maketext("Anmeldung/Registrierung mit einer E-Mail-Adresse") %]--></a></li>
 </ul>
 
 <div id="ob-login_forms_library">

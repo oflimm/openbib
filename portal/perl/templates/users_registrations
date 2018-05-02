@@ -43,14 +43,14 @@
     <div class="ym-column linearize-level-1">
       <div class="ym-col1">
         <div class="ym-cbox" class="ym-clearfix">
-
+<!--
 <div class="ob-category_header">[% msg.maketext("Hinweis") %]</div>
 <p>
 [% msg.maketext("Geben Sie f&uuml;r die Selbstregistrierung bitte als
 Benutzername Ihre g&uuml;ltige Email-Adresse ein und danach zwei Mal
 Ihr selbst gew&auml;hltes Passwort. Zur Absicherung gegen einen
-automatisierten Missbrauch wird ein sog. [_1]CAPTCHA[_2] verwendet. Daher m&uuml;ssen Sie zus&auml;tzlich die zwei
-verfremdet dargestellten Worte korrekt eingeben. Danach best&auml;tigen Sie bitte mit <b>Registrieren</b>.","<a href=\"http://de.wikipedia.org/wiki/CAPTCHA\" target=\"_blank\">","</a>") %]
+automatisierten Missbrauch wird ein sog. [_1]CAPTCHA[_2] verwendet. Danach best&auml;tigen Sie bitte mit <b>Registrieren</b>.","<a href=\"http://de.wikipedia.org/wiki/CAPTCHA\" target=\"_blank\">","</a>") %]
+-->
 
 <!--
 [% msg.maketext("<p>Falls Sie kein CAPTCHA angezeigt bekommen, dann liegt
@@ -61,8 +61,9 @@ Webseiten, siehe [_1]hier[_2].</p>
 <p>Leider ist der ReCaptcha Dienst gerade ein legitimer Inhalt, der
 ebenso unterdrückt wird. Im Firefox müssen Sie bei dieser Seite links oben auf das 'Schildsymbol' vor dem URL klicken und dort 'Schutz für diese Seite deaktivieren' auswählen</p>","<a href=\"https://support.mozilla.org/de/kb/Wie-beeinflussen-Inhalte-die-nicht-sicher-sind-meine-Sicherheit\" target=\"_blank\">","</a>") %]
 -->
+<!--
 </p>
-        </div>
+        </div> -->
       </div>
       <!-- end: #col1 -->
       <!-- begin: #col3 static column -->

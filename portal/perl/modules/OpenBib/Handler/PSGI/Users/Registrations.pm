@@ -146,8 +146,14 @@ sub mail_confirmation {
     my $password1           = ($query->param('password1'))?$query->param('password1'):'';
     my $password2           = ($query->param('password2'))?$query->param('password2'):'';
     my $recaptcha_challenge = $query->param('recaptcha_challenge_field');
-    my $recaptcha_response  = $query->param('recaptcha_response_field');
-    #my $recaptcha_response  = $query->param('g-recaptcha-response');
+    #my $recaptcha_response  = $query->param('recaptcha_response_field');
+    my $recaptcha_response  = $query->param('g-recaptcha-response');
+
+    if ($logger->is_debug){
+	foreach my $qparam ($query->param){
+	    $logger->debug("$qparam -> ".$query->param($qparam));
+	}
+    }
     
     my $recaptcha = Captcha::reCAPTCHA->new;
 

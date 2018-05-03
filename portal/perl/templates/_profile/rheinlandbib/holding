@@ -48,7 +48,7 @@
 </thead>
 <tbody>
 [%  FOREACH thisholding IN holding %]
-[%- IF thisholding.${"X0016"}.content == 'USB-Magazin'
+[%- IF thisholding.${"X0016"}.content == 'USB-Magazin';
       thisholding.${"X0016"}.content = '-';
     END;
 -%]

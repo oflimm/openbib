@@ -23,6 +23,13 @@ __PACKAGE__->table("eventlogjson");
 
 =head1 ACCESSORS
 
+=head2 id
+
+  data_type: 'bigint'
+  is_auto_increment: 1
+  is_nullable: 0
+  sequence: 'eventlogjson_id_seq'
+
 =head2 sid
 
   data_type: 'bigint'
@@ -62,6 +69,13 @@ __PACKAGE__->table("eventlogjson");
 =cut
 
 __PACKAGE__->add_columns(
+  "id",
+  {
+    data_type         => "bigint",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "eventlogjson_id_seq",
+  },
   "sid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
   "tstamp",
@@ -77,6 +91,18 @@ __PACKAGE__->add_columns(
   "content",
   { data_type => "text", is_nullable => 1 },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</id>
+
+=back
+
+=cut
+
+__PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 

@@ -173,7 +173,7 @@ while (<TITLE>){
 	    }
         }
     }
-    
+
     # KMB-Daten ohne Buchsaetze anhand 4800
     if (defined $title_ref->{fields}{'4800'}){
         foreach my $item (@{$title_ref->{fields}{'4800'}}){
@@ -181,6 +181,15 @@ while (<TITLE>){
 		push @{$element_ref}, "DE-Kn3";
 		push @{$element_ref}, "DE-38-ZBKUNST";
 	    }
+        }
+    }
+    
+    # Schwarze Lade der KMB
+    if (defined $title_ref->{fields}{'4802'}){
+        foreach my $item (@{$title_ref->{fields}{'4802'}}){
+            if ($item->{content} eq "88"){
+                push @{$element_ref}, "DE-Kn3-SL";
+            }
         }
     }
     

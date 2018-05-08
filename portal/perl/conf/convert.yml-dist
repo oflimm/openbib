@@ -2413,6 +2413,21 @@ convtab:
           'freesearch': 20
         facet:
           'subject': 1
+      '4800':         # KMB Einordnung
+        index:
+          'ft4800': 1
+      '4801':         # KMB Einordnung
+        index:
+          'ft4801': 1
+      '4802':         # KMB Einordnung
+        index:
+          'ft4802': 1
+      '4803':         # KMB Einordnung
+        index:
+          'ft4803': 1
+      '4804':         # KMB Einordnung
+        index:
+          'ft4804': 1
       '5050':         # Bibkey
         index:
           'bkey': 1

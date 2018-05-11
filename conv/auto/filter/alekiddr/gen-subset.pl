@@ -75,7 +75,7 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-my $subset = new OpenBib::Catalog::Subset("inst323",$pool);
+my $subset = new OpenBib::Catalog::Subset("inst323master",$pool);
 $subset->identify_by_mark("^AC.*DDR");
 $subset->identify_by_field_content('subject',([ { field => '0800', content => '^DDR-Produktion' } ]));
 $subset->write_set;

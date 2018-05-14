@@ -53,11 +53,11 @@
 <th>[% msg.maketext("Impressum") %]</th>
 </tr>
 <tr><td>
-Oliver Flimm<br/>
-An der Waidmaar 49<br/>
-50226 Frechen<br/>
-email:	   flimm@openbib.de<br/>
-Telefon:	02234-4351540<br/>
+Max Mustermann<br/>
+Musterstrasse 4712<br/>
+1111111 Musterstadt<br/>
+email:	   max@foo.bar<br/>
+Telefon:	.........<br/>
 </td></tr>
 </table>
 

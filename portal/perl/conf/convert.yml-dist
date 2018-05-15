@@ -2389,6 +2389,13 @@ convtab:
           'provenancestring': 20
         facet:
           'provenance': 1
+      '4701':         # Migrierte Notationen
+        index:
+          'classification': 20
+          'classificationstring': 20
+          'freesearch': 20
+        facet:
+          'classification': 1
       '4710':         # Migriertes Schlagwort
         index:
           'subject': 20

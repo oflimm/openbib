@@ -184,15 +184,6 @@ while (<TITLE>){
         }
     }
     
-    # Schwarze Lade der KMB
-    if (defined $title_ref->{fields}{'4802'}){
-        foreach my $item (@{$title_ref->{fields}{'4802'}}){
-            if ($item->{content} eq "88"){
-                push @{$element_ref}, "DE-Kn3-SL";
-            }
-        }
-    }
-    
     # Zeitschriften anhand besetzter ZDB-ID
     if (defined $title_ref->{fields}{'0572'}){
         foreach my $item (@{$title_ref->{fields}{'0012'}}){
@@ -237,8 +228,20 @@ while (<TITLE>){
 	    }
         }
     }
-    
 
+    # Schwarze Lade der KMB
+    if (defined $title_ref->{fields}{'4802'}){
+        foreach my $item (@{$title_ref->{fields}{'4802'}}){
+            if ($item->{content} eq "88"){
+		my @tmp = ( "DE-Kn3-SL" );
+		foreach my $element (@{$element_ref}){
+		    push @tmp, $element unless ($element eq "DE-Kn3");
+		}
+                @{$element_ref} = @tmp;
+            }
+        }
+    }
+    
     $title_locationid{$titleid} = $element_ref;
 }
 

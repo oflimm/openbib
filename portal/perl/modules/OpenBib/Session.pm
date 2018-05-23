@@ -934,7 +934,7 @@ sub save_eventlog_to_statisticsdb {
         my $type          = $event->type;
         my $content       = $event->content;
 
-        # Nutzer-IP's anonymisieren, indem letztes Octet auf Null gesetzt wird.
+        # Nutzer-IP's - falls aufgezeichnet - anonymisieren, indem letztes Octet auf Null gesetzt wird.
         if ($type == 102){
             $content =~s/\d+$/0/;
         }
@@ -1119,7 +1119,7 @@ sub log_event {
     # Allgemeine Informationen
     # 100 => View
     # 101 => Browser
-    # 102 => IP des Klienten
+    # 102 => IP des Klienten (obsolet durch DSGVO)
     # Redirects 
     # 500 => TOC / hbz-Server
     # 501 => TOC / ImageWaere-Server
@@ -1595,12 +1595,6 @@ sub log_new_session_once {
     if (defined $forwarded_for && $forwarded_for =~ /([^,\s]+)$/) {
         $remote_ip = $1;
     }
-    
-    # Loggen der Client-IP
-    $self->log_event({
-        type      => 102,
-        content   => $remote_ip,
-    });
     
     if ($self->{view}) {
         # Loggen der View-Auswahl

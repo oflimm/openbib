@@ -4892,9 +4892,9 @@ sub set_private_info {
         {
             nachname   => $userinfo_ref->{'Nachname'},
             vorname    => $userinfo_ref->{'Vorname'},
-            strasse    => $userinfo_ref->{'Strasse'},
-            ort        => $userinfo_ref->{'Ort'},
-            plz        => $userinfo_ref->{'PLZ'},
+            strasse    => '',
+            ort        => '',
+            plz        => '',
             soll       => $userinfo_ref->{'Soll'},
             gut        => $userinfo_ref->{'Guthaben'},
             avanz      => $userinfo_ref->{'Avanz'},
@@ -4905,7 +4905,7 @@ sub set_private_info {
             vlanz      => $userinfo_ref->{'Vlanz'},
             sperre     => $userinfo_ref->{'Sperre'},
             sperrdatum => $userinfo_ref->{'Sperrdatum'},
-            gebdatum   => $userinfo_ref->{'Geburtsdatum'},
+            gebdatum   => '',
         }
     );
 

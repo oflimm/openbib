@@ -57,7 +57,7 @@
 <table>
 <tr><td><b>[% msg.maketext("Benutzername") %]:</b></td><td>[% username %]</td>
 
-[% IF authenticator.type == 'self' && username != 'admin' %]
+[% IF username != 'admin' %]
 <td><form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]" enctype="application/x-www-form-urlencoded"><input type="hidden" name="confirm" value="1" /><input type="hidden" name="_method" value="DELETE" /><input type="submit" value="[% msg.maketext("Kennung l&ouml;schen") %]" /></form></td>
 [% END %]
 

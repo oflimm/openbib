@@ -130,6 +130,12 @@ werden. Dies kann auch automatisiert erfolgen. Werden Cookies für
 unsere Recherche-Portale deaktiviert, können möglicherweise nicht mehr
 alle Funktionen der Portale vollumfänglich genutzt werden.</p>
 
+<h3>Verwendung von SSL</h3>
+
+<p>Die Selbstregistrierung, Anmeldung und sämtliche Seiten des
+Web-Portals, die durch den angemeldeten Nutzer aufgerufen werden, sind
+durch eine SSL-Verschlüsselung kryptographisch gegen Abhören
+gesch&uuml;tzt.</p>
 
 <h3>Erhebung von Daten bei der Nutzung des Dienstes</h3>
 
@@ -219,6 +225,17 @@ eingebunden. Das Coverbild wird vom Webbrowser des Nutzers damit
 effektiv von den Web-Servern der OpenLibrary angefordert und
 hinterlässt ggf. dort personenbezogene Daten wie z.B. die IP-Adresse
 des Nutzers, Informationen zum verwendeten Webbrowser usw.</p>
+
+<h4>Kartenmaterial</h4>
+
+<p>Für die Anzeige der Standorte und der einfachen Auffindbarkeit
+aller Bibliotheken und Zweigstellen durch den Nutzer wird
+Kartenmaterial von OpenStreetMap (OSM) in den jeweiligen Seiten des
+Portals durch die Verwendung von JavaScript eingebunden. Die Karten
+werden vom Webbrowser des Nutzers von den Web-Servern des OSM-Projekts
+angefordert und hinterlassen ggf. dort personenbezogene Daten wie
+z.B. die IP-Adresse des Nutzers, Informationen zum verwendeten
+Webbrowser, Cookies usw.</p>
 
 <h4>Verlinkung zu Volltexten oder Auszügen von Büchern von Google Books</h4>
 

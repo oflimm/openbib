@@ -277,10 +277,10 @@ KUG Nutzerdatenbank separaten Bibliothekssystem ist nur bei einem
 Mitarbeiter der jeweiligen Bibliothek vor Ort möglich.</p>
 
 <p>Solange die Kennung eines Nutzers im Bibliothekssystem nicht
-gelöscht wurde kann sich ein Nutzer dort - auch nach Löschung seiner Daten
-in der KUG Nutzerdatenbank - weiterhin anmelden. Es wird dann ein
-neuer Eintrag mit einer anderen lokalen Nutzer-ID automatisch
-erzeugt.</p>
+gelöscht wurde kann sich ein Nutzer d- auch nach Löschung seiner Daten
+in der KUG Nutzerdatenbank - weiterhin hier anmelden. Es wird dann ein
+neuer Eintrag in der KUG Nutzerdatenbank mit einer anderen lokalen
+Nutzer-ID automatisch erzeugt.</p>
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

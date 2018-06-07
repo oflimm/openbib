@@ -7,7 +7,7 @@
 #  Extrahierung der Schlagworte aus den BVB Open Data Dumps
 #  fuer eine Anreicherung per ISBN
 #
-#  Dieses File ist (C) 2013 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2013-2018 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -39,9 +39,10 @@ use Business::ISBN;
 use Encode 'decode_utf8';
 use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
-use MARC::Batch;
-use MARC::Charset 'marc8_to_utf8';
-use MARC::File::XML;
+use XML::Twig::XPath;
+use XML::Simple;
+use Storable ();
+use Data::Dumper;
 use JSON::XS;
 
 use OpenBib::Common::Util;
@@ -53,15 +54,13 @@ use OpenBib::Catalog::Factory;
 $|=1;
 
 
-my ($help,$format,$use_xml,$importjson,$import,$init,$jsonfile,$inputfile,$logfile,$loglevel);
+my ($help,$importjson,$import,$init,$jsonfile,$inputfile,$logfile,$loglevel);
 
 &GetOptions("help"         => \$help,
             "init"         => \$init,
             "import"       => \$import,
             "inputfile=s"  => \$inputfile,
             "jsonfile=s"   => \$jsonfile,
-            "use-xml"      => \$use_xml,
-            "format=s"     => \$format,
             "import-json"  => \$importjson,
             "logfile=s"    => \$logfile,
             "loglevel=s"   => \$loglevel,
@@ -101,35 +100,29 @@ my $origin = 24;
 
 $logger->debug("Origin: $origin");
 
+my $twig= XML::Twig::XPath->new(
+   TwigHandlers => {
+     "marc:collection/marc:record" => \&parse_record
+#     "/collection/record" => \&parse_record
+   }
+ );
+
+#$twig->set_namespace('marc',
+#       'http://www.loc.gov/MARC21/slim');
+
 if ($init){
     $logger->info("Loeschen der bisherigen Daten");
     
     $enrichment->init_enriched_content({ field => '4300', origin => $origin });
 }
 
-$logger->info("Bestimmung der Schlagworte");
+#$logger->info("Bestimmung der Schlagworte");
 
-$format=($format)?$format:'USMARC';
+our $count=1;
 
-$logger->debug("Using format $format");
+our $subject_tuple_count = 1;
 
-my $batch;
-
-if ($use_xml){
-    $logger->debug("Using MARC-XML");
-    
-    MARC::File::XML->default_record_format($format);
-    
-    $batch = MARC::Batch->new('XML', $inputfile);    
-}
-else {
-    $logger->debug("Using native MARC");
-    $batch = MARC::Batch->new($format, $inputfile);
-}
-
-# Recover from errors
-$batch->strict_off();
-$batch->warnings_off();
+our $enrich_data_by_isbn_ref = [];
 
 if ($importjson){
     if (! -e $jsonfile){
@@ -138,33 +131,22 @@ if ($importjson){
     }
     open(JSON,$jsonfile);
 
-    my $count=1;
-    
-    my $subject_tuple_count = 1;
-    
-    my $enrich_data_by_isbn_ref   = [];
-    my $enrich_data_by_bibkey_ref = [];
-    
     $logger->info("Einlesen und -laden der neuen Daten");
 
     while (<JSON>){
         my $item_ref = decode_json($_);
 
         push @{$enrich_data_by_isbn_ref},   $item_ref if (defined $item_ref->{isbn});
-        push @{$enrich_data_by_bibkey_ref}, $item_ref if (defined $item_ref->{bibkey});
         $subject_tuple_count++;
         
         if ($count % 1000 == 0){
             $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
-            $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref })  if (@$enrich_data_by_bibkey_ref);
             $enrich_data_by_isbn_ref   = [];
-            $enrich_data_by_bibkey_ref = [];
         }
         $count++;
     }
 
     $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
-    $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref }) if (@$enrich_data_by_bibkey_ref);
     
     $logger->info("$subject_tuple_count Schlagwort-Tupel eingefuegt");
 
@@ -178,114 +160,100 @@ else {
         open(JSON,">$jsonfile");
     }
     
-    my $count=1;
-
-    my $subject_tuple_count = 1;
-    
-    my $enrich_data_by_isbn_ref = [];
-    my $enrich_data_by_bibkey_ref = [];
     
     $logger->info("Einlesen und -laden der neuen Daten");
-    
-    while (my $record = $batch->next()){
-        
-        my $encoding = $record->encoding();
-        
-        $logger->debug("Encoding:$encoding:");
-    
-        my $bibkey = OpenBib::Common::Util::gen_bibkey_from_marc($record,$encoding);
-    
-        my @isbns = ();
-        {
-            # ISBN
-            foreach my $field ($record->field('020')){
-                my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
-                my $content_z = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('z')):decode_utf8($field->as_string('z'));
-                
-                $content_a=~s/\s+\(.+?\)\s*$//;
-                $content_z=~s/\s+\(.+?\)\s*$//;
-                
-                if ($content_a){
-                    my $isbn = $content_a;
-                    my $isbnXX = Business::ISBN->new($content_a);
-                    
-                    if (defined $isbnXX && $isbnXX->is_valid){
-                        $isbn = $isbnXX->as_isbn13->as_string;
-                    }
-                    else {
-                        next;
-                    }
-                    
-                    $isbn = OpenBib::Common::Util::normalize({
-                        field    => 'T0540',
-                        content  => $isbn,
-                    });
-                    
-                    push @isbns, $isbn;
-                }
-            }
-        }
-        
-        my @subjects = ();
-        {        
-            # Schlagwort
-            foreach my $fieldno ('650','651'){
-                foreach my $field ($record->field($fieldno)){
-                    my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
-                    my $content_x = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('x')):decode_utf8($field->as_string('x'));
-                    my $content_y = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('y')):decode_utf8($field->as_string('y'));
-                    my $content_z = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('z')):decode_utf8($field->as_string('z'));
 
-                    push @subjects, {
-                        content  => konv($content_a),
-                        subfield => 'a'
-                    } if ($content_a);
-                    push @subjects, {
-                        content  => konv($content_x),
-                        subfield => 'x'
-                    } if ($content_x);
-                    push @subjects, {
-                        content  => konv($content_y),
-                        subfield => 'y'
-                    } if ($content_y);
-                    push @subjects, {
-                        content  => konv($content_z),
-                        subfield => 'z'
-                    } if ($content_z);
-                }
-            }
-        }
+    $twig->safe_parsefile($inputfile);
+    
+    $logger->info("$count done");
+    
+    $logger->info("$subject_tuple_count ISBN-Schlagwort-Tupel eingefuegt");
 
-	# Dublette Schlagworte's entfernen
-	my %seen_terms  = ();
-	my @unique_subjects = grep { ! $seen_terms{$_->{content}} ++ } @subjects; 
-        
-        if (@isbns){
-	    my @unique_isbns    = grep { ! $seen_terms{$_} ++ } @isbns;
-	
-	    foreach my $isbn (@unique_isbns){
-		foreach my $subject (@unique_subjects){
-		    $logger->debug("Found $isbn -> $subject");
-		    my $item_ref = {
-			isbn     => $isbn,
-			origin   => $origin,
-			field    => '4300',
-			subfield => $subject->{subfield},
-			content  => $subject->{content},
-		    };
-		    
-		    print JSON encode_json($item_ref),"\n" if ($jsonfile);
-		    
-		    push @{$enrich_data_by_isbn_ref}, $item_ref;
-		    $subject_tuple_count++;
+    if ($jsonfile){
+        close(JSON);
+    }
+
+}
+
+sub parse_record {
+    my($t, $titset)= @_;
+
+    my $logger = get_logger();
+
+#    $logger->info("Bestimmung der ISBNs");
+
+    my @isbns = ();
+    
+    {
+	my @elements = $titset->findnodes('//marc:datafield[@tag="020"]/marc:subfield[@code="a"]');
+#	my @elements = $titset->findnodes('//datafield[@tag="020"]/subfield[@code="a"]');
+
+#	$logger->info(Data::Dumper::Dumper(\@elements));
+	foreach my $element (@elements){
+	    
+	    my $isbn = $element->text();
+
+#	    $logger->info("ISBN: $isbn");
+	    $isbn=~s/\s+\(.+?\)\s*$//;
+
+
+	    
+	    if ($isbn){
+		my $isbn = $isbn;
+		my $isbnXX = Business::ISBN->new($isbn);
+		
+		if (defined $isbnXX && $isbnXX->is_valid){
+		    $isbn = $isbnXX->as_isbn13->as_string;
 		}
+		else {
+		    $logger->error("$isbn NOT valid!");
+		    next;
+		}
+		
+		$isbn = OpenBib::Common::Util::normalize({
+		    field    => 'T0540',
+		    content  => $isbn,
+							 });
+		
+		push @isbns, $isbn;
 	    }
 	}
-        elsif ($bibkey){
+    }       
+
+#    $logger->info("Found ISBN: ".join(';',@isbns)) if (@isbns);
+
+#    $logger->info("Bestimmung der Schlagworte");    
+
+    my @subjects = ();
+    {        
+	# Schlagwort
+	my @elements = $titset->findnodes('//marc:datafield[@tag="650" or @tag="651"]/marc:subfield[@code="a" or @code="x" or @code="y" or @code="z"]');
+	
+	foreach my $element (@elements){
+	    
+	    my $subject = $element->text();
+	    my $code    = $element->att("code");
+
+	    $logger->debug("SW: $subject - Code: $code");
+	    push @subjects, {
+		content  => konv($subject),
+		subfield => $code
+	    } if ($subject);
+	}
+    }
+    
+    # Dublette Schlagworte's entfernen
+    my %seen_terms  = ();
+    my @unique_subjects = grep { ! $seen_terms{$_->{content}} ++ } @subjects; 
+    
+    if (@isbns){
+	my @unique_isbns    = grep { ! $seen_terms{$_} ++ } @isbns;
+	
+	foreach my $isbn (@unique_isbns){
 	    foreach my $subject (@unique_subjects){
-		$logger->debug("Found $bibkey -> $subject");
+		$logger->debug("Found $isbn -> $subject");
 		my $item_ref = {
-		    bibkey   => $bibkey,
+		    isbn     => $isbn,
 		    origin   => $origin,
 		    field    => '4300',
 		    subfield => $subject->{subfield},
@@ -294,31 +262,24 @@ else {
 		
 		print JSON encode_json($item_ref),"\n" if ($jsonfile);
 		
-		push @{$enrich_data_by_bibkey_ref}, $item_ref;
+		push @{$enrich_data_by_isbn_ref}, $item_ref;
 		$subject_tuple_count++;
 	    }
-	}	
-        
-        if ($import && $count % 1000 == 0){
-            $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
-            $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref })  if (@$enrich_data_by_bibkey_ref);
-            $enrich_data_by_isbn_ref   = [];
-            $enrich_data_by_bibkey_ref = [];
-        }
-        $count++;
-        
+	}
     }
     
-    if ($import && (@$enrich_data_by_isbn_ref || @$enrich_data_by_bibkey_ref) ){
-        $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
-        $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref })  if (@$enrich_data_by_bibkey_ref);
+    if ($count % 1000 == 0){
+	$logger->info("$count done");
+	if ($import){
+	    $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
+	    $enrich_data_by_isbn_ref   = [];
+	}
     }
+    $count++;
     
-    $logger->info("$subject_tuple_count ISBN-Schlagwort-Tupel eingefuegt");
-
-    if ($jsonfile){
-        close(JSON);
-    }
+    # Release memory of processed tree
+    # up to here
+    $t->purge();
 
 }
 
@@ -331,8 +292,6 @@ bvb_subjects2enrich.pl - Anreicherung mit Schlagwort-Informationen aus den offen
 
    -init                 : Zuerst Eintraege fuer dieses Feld und Origin aus Anreicherungsdatenbank loeschen
    -import               : Einladen der verarbeiteten Daten
-   -use-xml              : MARCXML-Format verwenden
-   -format=...           : Format z.B. UNIMARC (default: USMARC)
 
    --inputfile=...       : Name der Einladedatei im MARC-Format
    --jsonfile=...        : Name der JSON-Einlade-/ausgabe-Datei

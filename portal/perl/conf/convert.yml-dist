@@ -469,6 +469,11 @@ convtab:
           'title': 1
           'titlestring': 1
           'freesearch': 1
+      '0359':       # Vorl. Verfasser Koerperschaft
+        index:
+          'person': 40
+          'corporatebody': 40
+          'freesearch': 40
       '0361':       # Vorlage beigefuegtes Werk
         index:
           'title': 40
@@ -1966,6 +1971,11 @@ convtab:
           'title': 1
           'titlestring': 1
           'freesearch': 1
+      '0359':       # Vorl. Verfasser Koerperschaft
+        index:
+          'person': 40
+          'corporatebody': 40
+          'freesearch': 40
       '0360':       # Unterreihe
         index:
           'title': 40

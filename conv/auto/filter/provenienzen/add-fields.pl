@@ -2,6 +2,8 @@
 
 use JSON::XS;
 
+use utf8;
+
 my @tpro = (
     'Autogramm',
     'Einband',

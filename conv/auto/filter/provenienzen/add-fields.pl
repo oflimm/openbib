@@ -2,7 +2,7 @@
 
 use JSON::XS;
 
-#use utf8;
+use utf8;
 
 my @tpro = (
     'Autogramm',
@@ -18,7 +18,7 @@ my @tpro = (
     'Monogramm',
     'Notiz',
     'NS-Raubgut',
-#    'Prämienband',
+    'Prämienband',
     'Restitution',
     'Restitutionsexemplar',
     'Stempel',

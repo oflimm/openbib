@@ -61,6 +61,11 @@
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/herzogenrath.html?l=[% lang %]">Pfarrbibliothek St. Gertrud in Herzogenrath</a></li>
 [% END %]
+[% IF active_submenu == "juechen" %]
+  <li class="active"><strong>Gemeindearchiv Jüchen</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/juechen.html?l=[% lang %]">Gemeindearchiv Jüchen</a></li>
+[% END %]
 [% IF active_submenu == "kempen" %]
   <li class="active"><strong>Kreis- und Stadtbibliothek Kempen</strong></li>
 [% ELSE %]

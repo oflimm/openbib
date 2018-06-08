@@ -3007,7 +3007,12 @@ sub enrich_cdm {
     if ($content){
         $content=~s/<!--.+?-->//g;
         $logger->debug("CDM: Result for ID $id: ".$content);
-        $enrich_data_ref = JSON::XS::decode_json($content);
+        eval {
+           $enrich_data_ref = JSON::XS::decode_json($content);
+        };
+        if ($@){
+           $logger->error($@);
+        }
     }
 
     return $enrich_data_ref;

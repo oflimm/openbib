@@ -50,11 +50,10 @@ use OpenBib::Catalog::Factory;
 # Autoflush
 $|=1;
 
-my ($help,$importjson,$import,$init,$jsonimportfile,$jsonsuffix,$inputfile,$logfile,$loglevel);
+my ($help,$init,$jsonimportfile,$jsonsuffix,$inputfile,$logfile,$loglevel);
 
 &GetOptions("help"              => \$help,
             "init"              => \$init,
-            "import"            => \$import,
             "inputfile=s"       => \$inputfile,
             "json-importfile=s" => \$jsonimportfile,
             "json-suffix=s"     => \$jsonsuffix,
@@ -157,6 +156,11 @@ if ($jsonimportfile){
     
 }
 else {
+    if (! -e $inputfile){
+	$logger->error("Eingabedatei $inputfile existiert nicht");
+	exit;
+    }
+    
     if ($jsonsuffix){
         open(JSONTOCS    ,">tocurls-${jsonsuffix}.json");
 	open(JSONSUBJECTS,">subjects-${jsonsuffix}.json");
@@ -168,8 +172,8 @@ else {
 	$logger->error("Suffix fuer Ausgabedateien fehlt");
 	exit;
     }
-        
-    $logger->info("Einlesen und -laden der neuen Daten");
+
+    $logger->info("Einlesen der neuen Daten");
     
     $twig->safe_parsefile($inputfile);
     
@@ -195,7 +199,6 @@ bvb2enrich.pl - Anreicherung mit Informationen aus den offenen Daten des BVB
    -help                 : Diese Informationsseite
 
    -init                 : Zuerst Eintraege fuer dieses Feld und Origin aus Anreicherungsdatenbank loeschen
-   -import               : Einladen der verarbeiteten Daten
 
    --inputfile=...       : Name der BVB-Datei im MARC-XML-Format
    --json-importfile=... : Name der JSON-Einlade-Datei
@@ -213,6 +216,8 @@ sub parse_record {
 
     my $logger = get_logger();
 
+    $logger->debug("Processing record");
+    
     my @isbns = ();
     
     {
@@ -248,9 +253,15 @@ sub parse_record {
     my %seen_terms  = ();
     my @unique_isbns    = grep { ! $seen_terms{$_} ++ } @isbns;
 
+    if ($logger->is_debug()){
+	$logger->debug("ISBNs: ".join(";",@unique_isbns));
+    }
+    
     # RVK
     my @rvks = ();
-    {        
+    {
+	$logger->debug("Processing RVK");
+
 	# RVKs
 	my @elements = $titset->findnodes('//marc:datafield[@tag="084"]');
 	
@@ -272,9 +283,15 @@ sub parse_record {
     %seen_terms  = ();
     my @unique_rvks = grep { ! $seen_terms{$_->{content}} ++ } @rvks; 
 
+    if ($logger->is_debug()){
+	$logger->debug("RVK: ".YAML::Dump(@unique_rvks));
+    }
+
     # DDC
     my @ddcs = ();
     {        
+	$logger->debug("Processing DDC");
+
 	# DDCs
 	my @elements = $titset->findnodes('//marc:datafield[@tag="082"]');
 	
@@ -292,10 +309,16 @@ sub parse_record {
     }
     %seen_terms  = ();
     my @unique_ddcs = grep { ! $seen_terms{$_->{content}} ++ } @ddcs; 
+
+    if ($logger->is_debug()){
+	$logger->debug("DDC: ".YAML::Dump(@unique_ddcs));
+    }
     
     # Tocurls
     my @tocurls = ();
     {        
+	$logger->debug("Processing TOC");
+
 	# Tocs
 	my @elements = $titset->findnodes('//marc:datafield[@tag="856"]');
 	
@@ -319,9 +342,15 @@ sub parse_record {
     %seen_terms  = ();
     my @unique_tocurls = grep { ! $seen_terms{$_->{content}} ++ } @tocurls; 
 
+    if ($logger->is_debug()){
+	$logger->debug("TOC: ".YAML::Dump(@unique_tocurls));
+    }
+
     # Subjects
     my @subjects = ();
     {        
+	$logger->debug("Processing subjects");
+
 	# Schlagwort
 	my @elements = $titset->findnodes('//marc:datafield[@tag="650" or @tag="651"]/marc:subfield[@code="a" or @code="x" or @code="y" or @code="z"]');
 	
@@ -340,11 +369,17 @@ sub parse_record {
     %seen_terms  = ();
     my @unique_subjects = grep { ! $seen_terms{$_->{content}} ++ } @subjects; 
 
+    if ($logger->is_debug()){
+	$logger->debug("Subject: ".YAML::Dump(@unique_subjects));
+    }
+    
     # Sprachen
     my @langs = ();
     {        
+	$logger->debug("Processing languages");
+
 	# Sprachen
-	my @elements = $titset->findnodes('//marc:datafield[@tag="041"]/marc:subfield[@code="a" ord @code="b" or @code="g"]');
+	my @elements = $titset->findnodes('//marc:datafield[@tag="041"]/marc:subfield[@code="a" or @code="b" or @code="g"]');
 	
 	foreach my $element (@elements){	    
 	    my $lang_full = $element->text();
@@ -362,12 +397,16 @@ sub parse_record {
     }
     %seen_terms  = ();
     my @unique_langs = grep { ! $seen_terms{$_->{content}} ++ } @langs; 
+
+    if ($logger->is_debug()){
+	$logger->debug("Lang: ".YAML::Dump(@unique_langs));
+    }
     
     foreach my $isbn (@unique_isbns){
 	# RVKs
 	{
 	    foreach my $rvk (@unique_rvks){
-		$logger->debug("Found $isbn -> $rvk");
+		$logger->debug("Found $isbn -> $rvk->{content}");
 		my $rvk_ref = {
 		    isbn     => $isbn,
 		    origin   => $origin,
@@ -383,7 +422,7 @@ sub parse_record {
 	# DDCs
 	{
 	    foreach my $ddc (@unique_ddcs){
-		$logger->debug("Found $isbn -> $ddc");
+		$logger->debug("Found $isbn -> $ddc->{content}");
 		my $ddc_ref = {
 		    isbn     => $isbn,
 		    origin   => $origin,
@@ -399,7 +438,7 @@ sub parse_record {
 	# Tocurls
 	{
 	    foreach my $tocurl (@tocurls){
-		$logger->debug("Found $isbn -> $tocurl");
+		$logger->debug("Found $isbn -> $tocurl->{content}");
 		my $tocurl_ref = {
 		    isbn     => $isbn,
 		    origin   => $origin,
@@ -415,7 +454,7 @@ sub parse_record {
 	# Subjects
 	{
 	    foreach my $subject (@unique_subjects){
-		$logger->debug("Found $isbn -> $subject");
+		$logger->debug("Found $isbn -> $subject->{content}");
 		my $item_ref = {
 		    isbn     => $isbn,
 		    origin   => $origin,

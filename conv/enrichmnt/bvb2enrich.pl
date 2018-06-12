@@ -50,10 +50,16 @@ use OpenBib::Catalog::Factory;
 # Autoflush
 $|=1;
 
-my ($help,$init,$jsonimportfile,$jsonsuffix,$inputfile,$logfile,$loglevel);
+my ($help,$initrvk,$initddc,$initsubjects,$inittocurls,$initlang,$jsonimportfile,$jsonsuffix,$inputfile,$logfile,$loglevel);
 
 &GetOptions("help"              => \$help,
-            "init"              => \$init,
+
+            "init-rvk"          => \$initrvk,
+            "init-ddc"          => \$initddc,
+            "init-subjects"     => \$initsubjects,
+            "init-tocurls"      => \$inittocurls,
+            "init-lang"         => \$initlang,
+	    
             "inputfile=s"       => \$inputfile,
             "json-importfile=s" => \$jsonimportfile,
             "json-suffix=s"     => \$jsonsuffix,
@@ -97,24 +103,29 @@ my $twig= XML::Twig::XPath->new(
    }
  );
 
-if ($init){
-    $logger->info("Loeschen der bisherigen Daten");
-
+if ($initrvk){
     $logger->info("Loeschen RVKs");
     $enrichment->init_enriched_content({ field => '4101', origin => $origin });
+}
     
+if ($initddc){
     $logger->info("Loeschen DDCs");
     $enrichment->init_enriched_content({ field => '4103', origin => $origin });
+}
     
+if ($inittocurls){
     $logger->info("Loeschen TocURLs");
     $enrichment->init_enriched_content({ field => '4110', origin => $origin });
-
+}
+    
+if ($initsubjects){
     $logger->info("Loeschen Schlagworte");
     $enrichment->init_enriched_content({ field => '4300', origin => $origin });
-
+}
+    
+if ($initlang){
     $logger->info("Loeschen Sprachen");
     $enrichment->init_enriched_content({ field => '4301', origin => $origin });
-    
 }
 
 our $count=0;

@@ -22,7 +22,7 @@ foreach my $line (split /\n/, $page_content){
 }
 
 
-$page = $mw->get_page( { title => 'Proquestpda - Exkludierte ISBNS' } );
+$page = $mw->get_page( { title => 'Proquestpda - Exkludierte ISBNs' } );
 
 $page_content = $page->{'*'};
 

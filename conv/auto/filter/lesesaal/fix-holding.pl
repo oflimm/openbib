@@ -23,4 +23,3 @@ while (<>){
     print encode_json $holding_ref, "\n";
 }
 
-print STDERR "### inst117 Entfernte Exemplare: $broken_count\n";

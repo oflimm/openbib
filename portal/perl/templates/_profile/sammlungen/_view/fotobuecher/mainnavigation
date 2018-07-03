@@ -23,43 +23,27 @@
 #
 #######################################################################
 -%]
-<style>
-.ym-hlist {
-    overflow:visible;
-    height: 30px;
-    position: relative;
-    z-index: 999999;
+
+<script type="text/javascript">
+
+function responsive_button() {
+    var x = document.getElementById("mainNav");
+    var y = document.getElementById("ob-simple_search_form");
+    if (x.className === "ym-hlist") {
+        x.className += " responsive";
+        y.className += " responsive";
+    } else {
+        x.className = "ym-hlist";
+        y.className = "ym-searchform";
+    }
 }
 
-/* unav dropdown */
-#unav li ul {
+</script>
 
-    border: none;
-    width: auto;
-    padding: 0;
-    margin: 0;
-    position: absolute;
-    top: 25px;
-    display: none; /* hide dropdown */
-}
-#unav li ul li {
-    float: none;
-    margin: 0;
-    padding: 0;
-}
-#unav li ul li a {
-    border-right: 1px solid #789;
-    border-bottom: 1px solid #789;
-}
-#unav li:hover > ul {
-    background:#C8C8C8;
-    display: block; /* show dropdown on hover */
-}
-</style>
 [% database = "fotobuecher" %]
 [%- username = user.get_username -%]
     <!-- begin: main navigation  -->
-    <nav class="ym-hlist">
+    <nav class="ym-hlist" id="mainNav">
       <ul id="unav">
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]" title="Startseite">[% msg.maketext("Startseite") %]</a></li>
 
@@ -97,6 +81,7 @@
 [% ELSE %]
           <li><a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %] <span id="ob-collectioncount"></span></a></li>
 [% END %]
+          <li><a href="javascript:void(0);" class="icon" onclick="responsive_button()">&#9776;</a></li>
      </ul>
 [% IF NOT without_navigation_search %]
 [%   IF user.is_authenticated %]
@@ -154,7 +139,7 @@ $(document).ready(function(){
 [%   END %]
 [% END %]
 
-     <form class="ym-searchform" method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
+     <form id="ob-simple_search_form" class="ym-searchform" method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
 
      <input type="hidden" name="num"        value="20" />
      <input type="hidden" name="page"       value="1" />
@@ -167,8 +152,8 @@ $(document).ready(function(){
 
      <input id="to_focus" class="ym-searchfield" type="search" placeholder="[% msg.maketext("Suchen") %]" name="fs" value="[% searchquery.get_searchfield('freesearch').val | html %]" s />
      <input class="ym-searchbutton" type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" />
-
-      <a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a>&nbsp;|&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/fotobuecher/titles.html?l=[% lang %]&srt=title_asc&page=1" class="navlink">[% msg.maketext("Alle Objekte") %]</a>
+      <span id="ob-nav_addon_links">
+      <a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a>&nbsp;|&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/fotobuecher/titles.html?l=[% lang %]&srt=title_asc&page=1" class="navlink">[% msg.maketext("Alle Objekte") %]</a></span>
     </form>
 [% END %]
     </nav>

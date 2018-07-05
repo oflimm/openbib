@@ -35,6 +35,8 @@
 use strict;
 use warnings;
 
+use utf8;
+
 use Getopt::Long;
 use OpenBib::Catalog::Subset;
 

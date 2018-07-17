@@ -1,10 +1,10 @@
 @media all
 {
 
-  body {
+/*  body {
     background-image: none;
     background-color: #a7a7a7;
-  }
+  } */
 
   #ob-simple_search_form {
     white-space: nowrap;
@@ -202,18 +202,8 @@
     font-size: 1.4em;
   }
 
-  .ob-titleactions .ob-collection {
-    font-size: 12px;
-    border: 1px solid #777;
-    webkit-border-radius: .2em;
-    moz-border-radius: .2em;
-    border-radius: .2em;
-    padding: 3px;
-  }
-
-  .ob-titleactions .ob-collection img {
-    padding-right: 5px;
-    vertical-align:text-top;
+  .ob-titleactions {
+      display: none;
   }
 
   .ob-fulltitle {

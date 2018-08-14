@@ -95,3 +95,19 @@ if ($memc_key){
 }
 elsif ($list){
 }
+
+sub print_help {
+    print << "ENDHELP";
+examine_memcached.pl - Untersuchen von Inhalten in Memcached von OpenBib
+
+
+   Optionen:
+   -help                 : Diese Informationsseite
+       
+   -key=...              : Memcached Schluessel
+   -show                 : Anzeigen des Inhaltes aus Memcached zum angegebenen Schluessel
+   -flush                : Inhalte zum angegebenen Schluessel aus Memcached entfernen
+
+ENDHELP
+    exit;
+}

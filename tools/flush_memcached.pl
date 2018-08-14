@@ -35,9 +35,12 @@ use strict;
 use warnings;
 
 use OpenBib::Config;
+use YAML;
 
 my $config = new OpenBib::Config;
 
-$config->{memc}->flush_all;
+my $result_ref = $config->{memc}->flush_all;
+
+print YAML::Dump($result_ref),"\n";
 
 print "Flushed memcached\n";

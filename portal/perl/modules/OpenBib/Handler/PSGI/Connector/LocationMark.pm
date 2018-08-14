@@ -307,7 +307,7 @@ sub show_via_searchengine {
     return 200 unless (defined $base); # ok
 
     #####################################################################
-    # Verbindung zur SQL-Datenbank herstellen
+    # Verbindung zum Suchindex herstellen
     
     my $searchquery = OpenBib::SearchQuery->new({view => $view, session => $session});
 
@@ -349,7 +349,7 @@ sub show_via_searchengine {
         if ($config->{memc}){
             my $sortedtitleids_ref = $config->{memc}->get($memc_key);
             if ($logger->is_debug){
-                $logger->debug("Getting stored titles from memcached: ".YAML::Dump($sortedtitleids_ref));
+                $logger->debug("Getting stored titles for key $memc_key from memcached: ".YAML::Dump($sortedtitleids_ref));
             }
             
             @sortedtitleids = @$sortedtitleids_ref if (defined $sortedtitleids_ref);
@@ -435,7 +435,7 @@ sub show_via_searchengine {
             @sortedtitleids = sort by_signature @filtered_titleids;
 
             if ($config->{memc}){
-                $config->{memc}->set($memc_key,\@sortedtitleids,$self->{memcached_expiration}{'handler:connector_locationmark'});
+                $config->{memc}->set($memc_key,\@sortedtitleids,$config->{memcached_expiration}{'handler:connector_locationmark'});
                 $logger->debug("Store titles in memcached for $memc_key");
             }
 

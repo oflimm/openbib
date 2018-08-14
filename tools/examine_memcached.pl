@@ -44,17 +44,19 @@ use OpenBib::Config;
 
 my $config = new OpenBib::Config;
 
-my ($help,$logfile,$loglevel,$memc_key);
+my ($help,$logfile,$loglevel,$memc_key,$list,$flush,$show);
 
 &GetOptions(
     "logfile=s"         => \$logfile,
     "loglevel=s"        => \$loglevel,
     "key=s"             => \$memc_key,
+    "flush"             => \$flush,
+    "show"              => \$show,
     "list"              => \$list,
     "help"              => \$help
     );
 
-if ($help){
+if ($help || (!$show && !$flush && !$list)){
     print_help();
 }
 
@@ -79,12 +81,33 @@ Log::Log4perl::init(\$log4Perl_config);
 my $logger = get_logger();
 
 
-if ($key){
+if ($memc_key){
 
-    my $value_ref = $config->{memc}->get($memc_key);
-    
-    print YAML::Dump($value_ref);
+    if ($show){
+	my $value_ref = $config->{memc}->get($memc_key);
+	
+	print YAML::Dump($value_ref);
+    }
+    elsif ($flush){
+	$config->{memc}->delete($memc_key);
+    }
 
 }
 elsif ($list){
+}
+
+sub print_help {
+    print << "ENDHELP";
+examine_memcached.pl - Untersuchen von Inhalten in Memcached von OpenBib
+
+
+   Optionen:
+   -help                 : Diese Informationsseite
+       
+   -key=...              : Memcached Schluessel
+   -show                 : Anzeigen des Inhaltes aus Memcached zum angegebenen Schluessel
+   -flush                : Inhalte zum angegebenen Schluessel aus Memcached entfernen
+
+ENDHELP
+    exit;
 }

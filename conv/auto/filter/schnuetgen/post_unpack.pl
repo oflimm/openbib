@@ -52,7 +52,7 @@ my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
 
 print "### $pool: Korrigiere Schlagworte bzgl. GND\n";
 
-system("cd $datadir/$pool ; cat meta.subject | $rootdir/filter/$pool/fix-subject.pl > meta.subject.tmp ; mv -f meta.subject.tmp meta.subject");
+system("cd $datadir/$pool ; cat meta.subject | $rootdir/filter/$pool/fix-subjects.pl > meta.subject.tmp ; mv -f meta.subject.tmp meta.subject");
 
 print "### $pool: Erweiterung um Standort DE-38-ZBKUNST\n";
 

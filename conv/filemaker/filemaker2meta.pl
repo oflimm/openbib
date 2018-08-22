@@ -406,9 +406,9 @@ sub parse_titset {
         };
     }
 
-    if(exists $metadata{'Signatur_flach'} && $cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text()){
+    if(exists $metadata{'Signatur'} && $cols[$metadata{'Signatur'}]->first_child('DATA')->text()){
         push @{$title_ref->{fields}{'0014'}}, {
-            content  => $cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text(),
+            content  => $cols[$metadata{'Signatur'}]->first_child('DATA')->text(),
             subfield => '',
             mult     => 1,
         };
@@ -417,7 +417,7 @@ sub parse_titset {
     print TITLE encode_json $title_ref, "\n";
 
     # Exemplardaten
-    if ((exists $metadata{'Signatur_flach'} && $cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text()) || $cols[$metadata{'Standort erweitert'}]->first_child('DATA')->text()){
+    if ((exists $metadata{'Signatur'} && $cols[$metadata{'Signatur'}]->first_child('DATA')->text()) || $cols[$metadata{'Standort erweitert'}]->first_child('DATA')->text()){
 
         my $item_ref = {
             'fields' => {},
@@ -437,9 +437,9 @@ sub parse_titset {
             };
         }
         
-        if(exists $metadata{'Signatur_flach'} && $cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text()){
+        if(exists $metadata{'Signatur'} && $cols[$metadata{'Signatur'}]->first_child('DATA')->text()){
             push @{$item_ref->{fields}{'0014'}}, {
-                content  => $cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text(),
+                content  => $cols[$metadata{'Signatur'}]->first_child('DATA')->text(),
                 subfield => '',
                 mult     => 1,
             };

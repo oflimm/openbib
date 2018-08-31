@@ -247,9 +247,6 @@ if ($persistentnormdataids){
     $logger->info("### Persistente Normdaten-IDs: $count Schlagworte eingelesen");
 }
 
-#my $yt = new WebService::GData::YouTube();
-#$yt->query->max_results(50);
-
 foreach my $channel_ref (@{$convconfig->{channels}}){
     $logger->info("Processing Youtube Channel ".$channel_ref->{description});
     
@@ -376,6 +373,13 @@ foreach my $channel_ref (@{$convconfig->{channels}}){
 		    subfield => '',
 		    content  => $parentid,
 		};
+
+		push @{$title_ref->{fields}{'0089'}}, {
+		    mult     => 1,
+		    subfield => '',
+		    content  => $video_ref->{position},
+		} if ($video_ref->{position});
+
 		
 		push @{$title_ref->{fields}{'0331'}}, {
 		    mult     => 1,
@@ -567,10 +571,12 @@ sub get_videos_by_playlistid {
     my $nextPageToken = "";
 
     my @videoids = ();
+
+    my $videoid_position_map_ref = {};
     
     while ($start || $nextPageToken){
 	
-	my $url = 'https://www.googleapis.com/youtube/v3/playlistItems?key='.$config->{youtube_api_key}.'&playlistId='.$playlistid.'&maxResults=5&part=contentDetails';
+	my $url = 'https://www.googleapis.com/youtube/v3/playlistItems?key='.$config->{youtube_api_key}.'&playlistId='.$playlistid.'&maxResults=50&part=snippet';
 	
 	if ($nextPageToken){
 	    $url.="&pageToken=$nextPageToken";
@@ -591,11 +597,13 @@ sub get_videos_by_playlistid {
 	if ($@){
 	    $logger->error("Fehler: $@");
 	}
-	
+
 	$nextPageToken = $result_ref->{nextPageToken};		
 
 	foreach my $thisitem_ref (@{$result_ref->{items}}){
-	    push @videoids, $thisitem_ref->{contentDetails}{videoId};
+	    my $videoid = $thisitem_ref->{snippet}{resourceId}{videoId};
+	    push @videoids, $videoid;
+	    $videoid_position_map_ref->{$videoid} = $thisitem_ref->{snippet}{position} + 1;
 	}
 
 	$start=0 if ($start);
@@ -607,6 +615,12 @@ sub get_videos_by_playlistid {
 
     my $videos_ref = get_videoinfo($allvideoid_string);
 
+    foreach my $video_ref (@$videos_ref){
+	if (defined $videoid_position_map_ref->{$video_ref->{id}}){
+	    $video_ref->{position} = $videoid_position_map_ref->{$video_ref->{id}};
+	}
+    }
+    
     #$logger->info(YAML::Dump($videos_ref));
     
     return $videos_ref;
@@ -630,7 +644,7 @@ sub get_videoinfo {
     
     while ($start || $nextPageToken){
 	
-	my $url = 'https://www.googleapis.com/youtube/v3/videos?key='.$config->{youtube_api_key}.'&id='.$videoid.'&maxResults=5&part=contentDetails,snippet';
+	my $url = 'https://www.googleapis.com/youtube/v3/videos?key='.$config->{youtube_api_key}.'&id='.$videoid.'&maxResults=50&part=contentDetails,snippet';
 	
 	if ($nextPageToken){
 	    $url.="&pageToken=$nextPageToken";
@@ -690,7 +704,7 @@ sub get_user_playlists {
     
     while ($start || $nextPageToken){
 	
-	my $url = 'https://www.googleapis.com/youtube/v3/playlists?key='.$config->{youtube_api_key}.'&channelId='.$channel_id.'&maxResults=5&part=snippet';
+	my $url = 'https://www.googleapis.com/youtube/v3/playlists?key='.$config->{youtube_api_key}.'&channelId='.$channel_id.'&maxResults=50&part=snippet,contentDetails';
 	
 	if ($nextPageToken){
 	    $url.="&pageToken=$nextPageToken";
@@ -720,7 +734,7 @@ sub get_user_playlists {
 		title => $thisitem_ref->{snippet}{title},
 		description => $thisitem_ref->{snippet}{description},
 		channeltitle => $thisitem_ref->{snippet}{channelTitle},
-	    };
+	    } if ($thisitem_ref->{contentDetails}{itemCount}); # Nur Playlists mit Videos!
 	}
 
 	$start=0 if ($start);

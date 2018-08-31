@@ -7,7 +7,7 @@
 #  Konvertierung von YouTube-Metadaten in des OpenBib
 #  Einlade-Metaformat
 #
-#  Dieses File ist (C) 2014 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2014-2018 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -37,13 +37,15 @@ use warnings;
 use Encode 'decode_utf8';
 use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
-use WebService::GData::YouTube;
 use JSON;
+use Data::Dumper;
 use YAML::Syck;
 use DBIx::Class::ResultClass::HashRefInflator;
 use Time::Seconds;
+use LWP::UserAgent;
+use LWP::Simple;
 
-use OpenBib::Config;
+use OpenBib::Config::File;
 use OpenBib::Conv::Common::Util;
 use OpenBib::Catalog::Factory;
 
@@ -92,16 +94,21 @@ Log::Log4perl::init(\$log4Perl_config);
 my $logger = get_logger();
 
 # Ininitalisierung mit Config-Parametern
+our $config = OpenBib::Config::File->instance;
+
 my $convconfig = YAML::Syck::LoadFile($configfile);
+
+our $progname = "KUG-Youtube";
+our $version = "0.1";
 
 our $have_titleid_ref = {};
 
-open (TITLE,         ">:raw","meta.title");
-open (PERSON,        ">:raw","meta.person");
-open (CORPORATEBODY, ">:raw","meta.corporatebody");
-open (CLASSIFICATION,">:raw","meta.classification");
-open (SUBJECT,       ">:raw","meta.subject");
-open (HOLDING,       ">:raw","meta.holding");
+open (TITLE,         ">:utf8","meta.title");
+open (PERSON,        ">:utf8","meta.person");
+open (CORPORATEBODY, ">:utf8","meta.corporatebody");
+open (CLASSIFICATION,">:utf8","meta.classification");
+open (SUBJECT,       ">:utf8","meta.subject");
+open (HOLDING,       ">:utf8","meta.holding");
 
 if ($persistentnormdataids){
     unless ($database){
@@ -240,21 +247,21 @@ if ($persistentnormdataids){
     $logger->info("### Persistente Normdaten-IDs: $count Schlagworte eingelesen");
 }
 
-my $yt = new WebService::GData::YouTube();
-$yt->query->max_results(50);
+#my $yt = new WebService::GData::YouTube();
+#$yt->query->max_results(50);
 
 foreach my $channel_ref (@{$convconfig->{channels}}){
-    $logger->info("Processing Youtube Channel $channel_ref->{description}");
+    $logger->info("Processing Youtube Channel ".$channel_ref->{description});
     
-    eval {
-    while(my $playlists = $yt->get_user_playlists($channel_ref->{name})) {
+#    eval {
+	my $playlists_ref = get_user_playlists($channel_ref->{id});
         
-        foreach my $playlist (@$playlists) {
+        foreach my $playlist_ref (@$playlists_ref) {
             
             # Take only playlists, that match the title selector regexp
             if ($channel_ref->{title_selector}){
                 my $regexp         = $channel_ref->{title_selector};
-                my $playlisttitle  = conv($playlist->title);
+                my $playlisttitle  = $playlist_ref->{title};
                 next unless ($playlisttitle =~m/$regexp/g);
             }
             
@@ -263,8 +270,8 @@ foreach my $channel_ref (@{$convconfig->{channels}}){
             my $title_ref = {
                 'fields' => {},
             };
-
-            my $titleid = $playlist->playlist_id;
+	    
+            my $titleid = $playlist_ref->{id};
             
             $titleid=~s/\//_/g;
             
@@ -277,30 +284,32 @@ foreach my $channel_ref (@{$convconfig->{channels}}){
             
             $title_ref->{id} = $titleid; 
 
+	    $logger->info("Processing Playlist: ".$playlist_ref->{title});
+
             push @{$title_ref->{fields}{'0331'}}, {
                 mult     => 1,
                 subfield => '',
-                content  => conv($playlist->title),
-            } if ($playlist->title);
-
-                   
+                content  => $playlist_ref->{title},
+            } if ($playlist_ref->{title});
+	    
+	    
             push @{$title_ref->{fields}{'0750'}}, {
                 mult     => 1,
                 subfield => '',
-                content  => filter_newline2br(conv($playlist->description)),
-            } if ($playlist->description);
-
+                content  => filter_newline2br($playlist_ref->{description}),
+            } if ($playlist_ref->{description});
+	    
             push @{$title_ref->{fields}{'0800'}}, {
                 mult     => 1,
                 subfield => '',
                 content  => 'Topic',
             };
-
+	    
             # Koerperschaften abarbeiten Anfang
             
-            if ($playlist->author->[0]->name){
-                my $content = $playlist->author->[0]->name;
-
+            if ($playlist_ref->{channeltitle}){
+                my $content = $playlist_ref->{channeltitle};
+		
                 if ($content){
                     my ($corporatebody_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($content);
                     
@@ -312,7 +321,7 @@ foreach my $channel_ref (@{$convconfig->{channels}}){
                         push @{$item_ref->{fields}{'0800'}}, {
                             mult     => 1,
                             subfield => '',
-                            content  => conv($content),
+                            content  => $content,
                         };
                         
                         print CORPORATEBODY to_json $item_ref;
@@ -330,152 +339,191 @@ foreach my $channel_ref (@{$convconfig->{channels}}){
                 }
                 
             }
-            # Autoren abarbeiten Ende
+            # Koerperschaften abarbeiten Ende
             
             print TITLE to_json $title_ref;
             print TITLE "\n";
             
             my $parentid = $titleid;
-            
-            while(my $videos = $yt->get_user_playlist_by_id($playlist->playlist_id)) {
-                foreach my $vid (@$videos){
 
-                    eval {
-                        my $title_ref = {
-                            'fields' => {},
-                        };
-                        
-                        my $titleid = "VD".$vid->video_id;
-                        
-                        $titleid=~s/\//_/g;
-                        
-                        if ($have_titleid_ref->{$titleid}){
-                            $logger->error("Doppelte ID: $titleid");
-                            next;
-                        }
-                    
-                        $have_titleid_ref->{$titleid} = 1;
-                        
-                        $title_ref->{id} = $titleid; 
-                        
-                        push @{$title_ref->{fields}{'0004'}}, {
-                            mult     => 1,
-                            subfield => '',
-                            content  => $parentid,
-                        };
-                        
-                        push @{$title_ref->{fields}{'0331'}}, {
-                            mult     => 1,
-                            subfield => '',
-                            content  => conv($vid->title),
-                        } if ($vid->title);
-                        
-                        
-                        push @{$title_ref->{fields}{'0750'}}, {
-                            mult     => 1,
-                            subfield => '',
-                            content  => filter_newline2br(conv($vid->description)),
-                        } if ($vid->description);
-                        
-                        #                     push @{$title_ref->{fields}{'0662'}}, {
-                        #                         mult     => 1,
-                        #                         subfield => '',
-                        #                         content  => $vid->content->type('flash')->[0]->url,
-                        #                     } if ($vid->content->type('flash')->[0]->url);
-                        
-                        if ($vid->media_player){
-                            push @{$title_ref->{fields}{'0662'}}, {
-                                mult     => 1,
-                                subfield => '',
-                                content  => $vid->media_player,
-                            };
-                            
-                            push @{$title_ref->{fields}{'0663'}}, {
-                                mult     => 1,
-                                subfield => '',
-                                content  => "Online Kurs-Video bei YouTube anschauen",
-                            };
-                        }
-                        
-                        # Thumbnail
-                        
-                        push @{$title_ref->{fields}{'4111'}}, {
-                            mult     => 1,
-                            subfield => '',
-                            content  => $vid->thumbnails->[0]->url,
-                        } if ($vid->thumbnails->[0]->url);
-                        
-                        # Duration
-                        
-                        if ($vid->duration){
-                            my $ts = new Time::Seconds $vid->duration;
-                            
-                            push @{$title_ref->{fields}{'0433'}}, {
-                                mult     => 1,
-                                subfield => '',
-                                content  => $ts->pretty,
-                            };
-                        }
+	    my $videos_ref = get_videos_by_playlistid($titleid);
 
-                        $title_ref->{fields}{'4400'} = [
-                            {
-                                mult     => 1,
-                                subfield => '',
-                                content  => "online",
-                            },
-                        ];
- 
-                        push @{$title_ref->{fields}{'4410'}}, {
-                            mult     => 1,
-                            subfield => '',
-                            content  => 'Online Kurs-Video',
-                        };
-                        
-                        
-                        # Koerperschaften abarbeiten Anfang
-                        
-                        if ($vid->author->[0]->name){
-                            my $content = $vid->author->[0]->name;
+	    #$logger->info(YAML::Dump($videos_ref));
+	    
+            foreach my $video_ref (@$videos_ref){
 
-                            if ($content){
-                                my ($corporatebody_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($content);
-                                
-                                if ($new){
-                                    my $item_ref = {
-                                        'fields' => {},
-                                    };
-                                    $item_ref->{id} = $corporatebody_id;
-                                    push @{$item_ref->{fields}{'0800'}}, {
-                                        mult     => 1,
-                                        subfield => '',
-                                        content  => $content,
-                                    };
-                                    
-                                    print CORPORATEBODY to_json $item_ref;
-                                    print CORPORATEBODY "\n";
-                                }
-                                
-                                my $new_category = "0200";
-                                
-                                push @{$title_ref->{fields}{$new_category}}, {
-                                    mult       => 1,
-                                    subfield   => '',
-                                    id         => $corporatebody_id,
-                                    supplement => '',
-                                };
-                            }
-                        }
-                        # Autoren abarbeiten Ende
-                        
-                        print TITLE to_json $title_ref;
-
-                        print TITLE "\n";
-                    }
-                }
+		$logger->info("Processing videos: ".$video_ref->{title});
+		
+		my $title_ref = {
+		    'fields' => {},
+		};
+		
+		my $titleid = "VD".$video_ref->{id};
+		
+		$titleid=~s/\//_/g;
+		
+		if ($have_titleid_ref->{$titleid}){
+		    $logger->error("Doppelte ID: $titleid");
+		    next;
+		}
+		
+		$have_titleid_ref->{$titleid} = 1;
+		
+		$title_ref->{id} = $titleid; 
+		
+		push @{$title_ref->{fields}{'0004'}}, {
+		    mult     => 1,
+		    subfield => '',
+		    content  => $parentid,
+		};
+		
+		push @{$title_ref->{fields}{'0331'}}, {
+		    mult     => 1,
+		    subfield => '',
+		    content  => $video_ref->{title},
+		} if ($video_ref->{title});
+		    
+		    
+		push @{$title_ref->{fields}{'0750'}}, {
+		    mult     => 1,
+		    subfield => '',
+		    content  => filter_newline2br($video_ref->{description}),
+		} if ($video_ref->{description});
+		    
+		    #                     push @{$title_ref->{fields}{'0662'}}, {
+		    #                         mult     => 1,
+		    #                         subfield => '',
+		    #                         content  => $vid->content->type('flash')->[0]->url,
+		    #                     } if ($vid->content->type('flash')->[0]->url);
+		    
+		if ($video_ref->{id}){
+		    push @{$title_ref->{fields}{'0662'}}, {
+			mult     => 1,
+			subfield => '',
+			content  => "https://www.youtube.com/watch?v=".$video_ref->{id},
+		    };
+		    
+		    push @{$title_ref->{fields}{'0663'}}, {
+			mult     => 1,
+			subfield => '',
+			content  => "Online Kurs-Video bei YouTube anschauen",
+		    };
+		}
+		
+		# Thumbnail
+		
+		push @{$title_ref->{fields}{'4111'}}, {
+		    mult     => 1,
+		    subfield => '',
+		    content  => $video_ref->{thumbnails}{default}{url},
+		} if ($video_ref->{thumbnails}{default}{url});
+		
+		# Duration
+		
+		if ($video_ref->{duration}){
+		    my $ts = new Time::Seconds $video_ref->{duration};
+		    
+		    push @{$title_ref->{fields}{'0433'}}, {
+			mult     => 1,
+			subfield => '',
+			content  => $ts->pretty,
+		    };
+		}
+		
+		$title_ref->{fields}{'4400'} = [
+		    {
+			mult     => 1,
+			subfield => '',
+			content  => "online",
+		    },
+		    ];
+		
+		push @{$title_ref->{fields}{'4410'}}, {
+		    mult     => 1,
+		    subfield => '',
+		    content  => 'Online Kurs-Video',
+		};
+		
+		
+		# Koerperschaften abarbeiten Anfang
+		
+		if ($video_ref->{channeltitle}){
+		    my $content = $video_ref->{channeltitle};
+		    
+		    if ($content){
+			my ($corporatebody_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($content);
+			
+			if ($new){
+			    my $item_ref = {
+				'fields' => {},
+			    };
+			    $item_ref->{id} = $corporatebody_id;
+			    push @{$item_ref->{fields}{'0800'}}, {
+				mult     => 1,
+				subfield => '',
+				content  => $content,
+			    };
+			    
+			    print CORPORATEBODY to_json $item_ref;
+			    print CORPORATEBODY "\n";
+			}
+			
+			my $new_category = "0200";
+			
+			push @{$title_ref->{fields}{$new_category}}, {
+			    mult       => 1,
+			    subfield   => '',
+			    id         => $corporatebody_id,
+			    supplement => '',
+			};
+		    }
+		}
+		# Koerperschaften abarbeiten Ende
+		
+		# Schlagworte abarbeiten Anfang
+		
+		if ($video_ref->{tags}){
+		    foreach my $content (@{$video_ref->{tags}}){
+			
+			if ($content){
+			    my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($content);
+			    
+			    if ($new){
+				my $item_ref = {
+				    'fields' => {},
+				};
+				$item_ref->{id} = $subject_id;
+				push @{$item_ref->{fields}{'0800'}}, {
+				    mult     => 1,
+				    subfield => '',
+				    content  => $content,
+				};
+				
+				print SUBJECT to_json $item_ref;
+				print SUBJECT "\n";
+			    }
+			    
+			    my $new_category = "0710";
+			    
+			    push @{$title_ref->{fields}{$new_category}}, {
+				mult       => 1,
+				subfield   => '',
+				id         => $subject_id,
+				supplement => '',
+			    };
+			}
+		    }
+		    # Schlagworte abarbeiten Ende
+		    
+		    print TITLE to_json $title_ref;
+		    
+		    print TITLE "\n";
+		}
+                
             }
         }
-    }
-    };
+#    };
+    
     if ($@){
 	$logger->error(YAML::Dump($@));
     }
@@ -503,4 +551,182 @@ sub filter_newline2br {
     $content=~s/\n/<br\/>/g;
     
     return $content;
+}
+
+sub get_videos_by_playlistid {
+    my ($playlistid) = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $ua = LWP::UserAgent->new();
+    
+    $ua->agent("$progname/$version");
+
+    my $start = 1;
+    my $nextPageToken = "";
+
+    my @videoids = ();
+    
+    while ($start || $nextPageToken){
+	
+	my $url = 'https://www.googleapis.com/youtube/v3/playlistItems?key='.$config->{youtube_api_key}.'&playlistId='.$playlistid.'&maxResults=5&part=contentDetails';
+	
+	if ($nextPageToken){
+	    $url.="&pageToken=$nextPageToken";
+	}
+	
+	$logger->debug($url);
+	
+	my $result = $ua->get($url);
+	
+	$logger->debug($result->decoded_content);
+	
+	my $result_ref;
+	
+	eval {
+	    $result_ref = decode_json $result->decoded_content;
+	};
+	
+	if ($@){
+	    $logger->error("Fehler: $@");
+	}
+	
+	$nextPageToken = $result_ref->{nextPageToken};		
+
+	foreach my $thisitem_ref (@{$result_ref->{items}}){
+	    push @videoids, $thisitem_ref->{contentDetails}{videoId};
+	}
+
+	$start=0 if ($start);
+    }
+
+    $logger->info(YAML::Dump(\@videoids));
+    
+    my $allvideoid_string = join(',',@videoids);
+
+    my $videos_ref = get_videoinfo($allvideoid_string);
+
+    #$logger->info(YAML::Dump($videos_ref));
+    
+    return $videos_ref;
+
+}
+
+sub get_videoinfo {
+    my ($videoid) = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $ua = LWP::UserAgent->new();
+    
+    $ua->agent("$progname/$version");
+
+    my $start = 1;
+    my $nextPageToken = "";
+
+    my $items_ref = [];
+    
+    while ($start || $nextPageToken){
+	
+	my $url = 'https://www.googleapis.com/youtube/v3/videos?key='.$config->{youtube_api_key}.'&id='.$videoid.'&maxResults=5&part=contentDetails,snippet';
+	
+	if ($nextPageToken){
+	    $url.="&pageToken=$nextPageToken";
+	}
+	
+	$logger->debug($url);
+	
+	my $result = $ua->get($url);
+	
+	$logger->debug($result->decoded_content);
+	
+	my $result_ref;
+	
+	eval {
+	    $result_ref = decode_json $result->decoded_content;
+	};
+	
+	if ($@){
+	    $logger->error("Fehler: $@");
+	}
+	
+	$nextPageToken = $result_ref->{nextPageToken};		
+
+	foreach my $thisitem_ref (@{$result_ref->{items}}){
+	    push @{$items_ref}, {
+		id => $thisitem_ref->{id},
+		channeltitle => $thisitem_ref->{channelTitle},
+		title => $thisitem_ref->{snippet}{title},
+		description => $thisitem_ref->{snippet}{description},
+		tags =>  $thisitem_ref->{snippet}{tags},
+		thumbnails =>  $thisitem_ref->{snippet}{thumbnails},
+		duration =>   $thisitem_ref->{contentDetails}{duration},
+		definition =>   $thisitem_ref->{contentDetails}{definition},
+	    };
+	}
+
+	$start=0 if ($start);
+    }
+    
+    return $items_ref;
+
+}
+
+sub get_user_playlists {
+    my ($channel_id) = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $ua = LWP::UserAgent->new();
+    $ua->agent("$progname/$version");
+
+    my $start = 1;
+    my $nextPageToken = "";
+
+    my $items_ref = [];
+    
+    while ($start || $nextPageToken){
+	
+	my $url = 'https://www.googleapis.com/youtube/v3/playlists?key='.$config->{youtube_api_key}.'&channelId='.$channel_id.'&maxResults=5&part=snippet';
+	
+	if ($nextPageToken){
+	    $url.="&pageToken=$nextPageToken";
+	}
+	
+	$logger->debug($url);
+	
+	my $result = $ua->get($url);
+	
+	$logger->debug($result->decoded_content);
+	
+	my $result_ref;
+	
+	eval {
+	    $result_ref = decode_json $result->decoded_content;
+	};
+	
+	if ($@){
+	    $logger->error("Fehler: $@");
+	}
+	
+	$nextPageToken = $result_ref->{nextPageToken};		
+
+	foreach my $thisitem_ref (@{$result_ref->{items}}){
+	    push @{$items_ref}, {
+		id => $thisitem_ref->{id},
+		title => $thisitem_ref->{snippet}{title},
+		description => $thisitem_ref->{snippet}{description},
+		channeltitle => $thisitem_ref->{snippet}{channelTitle},
+	    };
+	}
+
+	$start=0 if ($start);
+    }
+
+    #$logger->info(YAML::Dump($items_ref));
+    
+    return $items_ref;
 }

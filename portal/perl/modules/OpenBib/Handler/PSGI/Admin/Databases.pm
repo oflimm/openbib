@@ -123,6 +123,9 @@ sub create_record {
         return $self->print_authorization_error();
     }
 
+    # newdbname ggf. loeschen
+    delete $input_data_ref->{newdbname} if (defined $input_data_ref->{newdbname});
+    
     if ($input_data_ref->{dbname} eq "" || $input_data_ref->{description} eq "") {
         return $self->print_warning($msg->maketext("Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."),2);
     }
@@ -256,17 +259,17 @@ sub update_record {
     if ($logger->is_debug){
         $logger->debug("Info: ".YAML::Dump($input_data_ref));
     }
-
+    
     if (!$config->db_exists($dbname)) {        
         return $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
     }
-
+    
     if ($input_data_ref->{locationid} eq ""){
         delete $input_data_ref->{locationid};
     }
     else {
         my $location = $config->get_locationinfo->single({identifier => $input_data_ref->{locationid} });
-
+	
         if ($location){
             $input_data_ref->{locationid} = $location->id;
         }
@@ -274,10 +277,10 @@ sub update_record {
             delete $input_data_ref->{locationid};
         }
     }
-
+    
     if ($input_data_ref->{parentdbid}){
         my $parentdb = $config->get_databaseinfo->single({dbname => $input_data_ref->{parentdbid} });
-
+	
         if ($parentdb){
             $input_data_ref->{parentdbid} = $parentdb->id;
         }
@@ -288,9 +291,17 @@ sub update_record {
     else {
         $input_data_ref->{parentdbid} = \'NULL';
     }
-    
-    $config->update_databaseinfo($input_data_ref);
 
+    if ($input_data_ref->{newdbname}){
+	$input_data_ref->{dbname} = $input_data_ref->{newdbname};
+	delete $input_data_ref->{newdbname};
+	$config->new_databaseinfo($input_data_ref);
+    }
+    else {
+       delete $input_data_ref->{newdbname};
+       $config->update_databaseinfo($input_data_ref);
+    }
+	
     if ($self->param('representation') eq "html"){
         # TODO GET?
         return $self->redirect("$path_prefix/$config->{databases_loc}");
@@ -477,6 +488,11 @@ sub get_input_definition {
             type     => 'scalar',
         },
         circdb => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        newdbname => {
             default  => '',
             encoding => 'none',
             type     => 'scalar',

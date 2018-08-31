@@ -1,5 +1,6 @@
 channels:
  -
+   id: 'UC-EnprmCZ3OXyAoG7vjVNCA'
    name: StanfordUniversity
    description: 'Stanford University'
    title_selector: '^Course'

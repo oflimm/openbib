@@ -259,6 +259,17 @@
 </div>
 </fieldset>
 
+<fieldset class="ym-columnar">
+
+<legend>Neuen Katalog mit diesen Daten erzeugen</legend>
+
+<div class="ym-fbox-text">
+<label for="newdbname">Neuer DB-Name</label>
+<input type="text" name="newdbname" id="newdbname" value="" size="20" />
+</div>
+
+</fieldset>
+
 <div class="ym-fbox-button">
 
 <input type="submit" value="[% msg.maketext("Ändern") %]" />

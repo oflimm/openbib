@@ -5060,7 +5060,7 @@ sub get_all_templates {
     $logger->debug("Getting templates");
 
     # DBI: "select * from templateinfo"
-    my $templates = $self->get_schema->resultset('Templateinfo')->search_rs(undef);
+    my $templates = $self->get_schema->resultset('Templateinfo')->search_rs(undef, {join => 'viewid', order_by => ['viewid.viewname ASC','templatename ASC','templatelang ASC']});
 
     my $templates_ref = [];
     foreach my $template ($templates->all){

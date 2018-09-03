@@ -116,7 +116,7 @@
 </td>
 <td>
  <ul>
-[% FOREACH item IN config.get_profiledbs(profile.profilename) %]<li>[% item %]: [% dbinfo.get('dbnames').${item}.full %]</li>[% END %]
+[% FOREACH item IN config.get_profiledbs(profile.profilename).sort %]<li>[% item %]: [% dbinfo.get('dbnames').${item}.full %]</li>[% END %]
  </ul>
 </td>
 </tr>

@@ -114,6 +114,20 @@
 [% msg.maketext("Um einen bereits existierenden View zu bearbeiten klicken Sie bitte auf den Viewnamen.") %]
 </p>
 
+<!-- Toggle definieren-->
+<script type="text/javascript">
+$(document).ready(function(){
+[%- FOREACH viewinfo IN views %]
+ $("#[% viewinfo.viewname%]_db").hide();
+ $("#[% viewinfo.viewname%]_db_toggle").click(function(){
+   $("#[% viewinfo.viewname%]_db").toggle().css('margin-top','0px');
+   $("#[% viewinfo.viewname%]_db_toggle").css('display','none');
+ });
+[%- END%]
+})
+</script>
+
+
 <table class="ym-full">
 <thead>
 <tr><th>[% msg.maketext("Viewname") %]</th><th>[% msg.maketext("RSS") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("Profil") %]</th><th>[% msg.maketext("Datenbanken") %]</th></tr>
@@ -131,7 +145,12 @@
 [%   END %]
   </td>
   <td>[% viewinfo.profile_description %]</td>
-  <td><ul>[% FOREACH item IN config.get_viewdbs(viewinfo.viewname).sort %]<li>[% item %]: [% dbinfo.get('dbnames').${item}.full %]</li>[% END %]</ul></td>
+  <td>
+   <p id="[% viewinfo.viewname %]_db_toggle" style="font-weight: bold;">Anzeigen</p>
+
+  <ul id="[% viewinfo.viewname %]_db">[% FOREACH item IN config.get_viewdbs(viewinfo.viewname).sort %]<li>[% item %]: [% dbinfo.get('dbnames').${item}.full %]</li>[% END %]</ul>
+
+  </td>
 </tr>
 [% END %]
 </tbody>

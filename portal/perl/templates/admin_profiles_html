@@ -99,6 +99,21 @@
 </p>
 [% END %]
 
+<!-- Toggle definieren-->
+<script type="text/javascript">
+$(document).ready(function(){
+[%- FOREACH profile IN profiles.all %]
+ $("#[% profile.profilename%]_db").hide();
+ $("#[% profile.profilename%]_db_toggle").click(function(){
+   $("#[% profile.profilename%]_db").toggle().css('margin-top','0px');;
+   $("#[% profile.profilename%]_db_toggle").css('display','none');
+ });
+[%- END%]
+})
+</script>
+
+
+
 <table class="ym-full">
 <thead>
 <tr><th>[% msg.maketext("Profil-Name") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("Datenbanken") %]</th></tr>
@@ -115,7 +130,8 @@
 [% END %]
 </td>
 <td>
- <ul>
+ <p id="[% profile.profilename%]_db_toggle" style="font-weight: bold;">Anzeigen</p>
+ <ul id="[% profile.profilename%]_db">
 [% FOREACH item IN config.get_profiledbs(profile.profilename).sort %]<li>[% item %]: [% dbinfo.get('dbnames').${item}.full %]</li>[% END %]
  </ul>
 </td>

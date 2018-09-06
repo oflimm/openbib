@@ -119,14 +119,22 @@
 $(document).ready(function(){
 [%- FOREACH viewinfo IN views %]
  $("#[% viewinfo.viewname%]_db").hide();
+ $("#showall_db_toggle").click(function(){
+   $("#[% viewinfo.viewname%]_db").show().css('margin-top','0px');
+   $("#[% viewinfo.viewname%]_db_toggle").css('display','none');
+ });
+
  $("#[% viewinfo.viewname%]_db_toggle").click(function(){
-   $("#[% viewinfo.viewname%]_db").toggle().css('margin-top','0px');
+   $("#[% viewinfo.viewname%]_db").show().css('margin-top','0px');
    $("#[% viewinfo.viewname%]_db_toggle").css('display','none');
  });
 [%- END%]
 })
 </script>
 
+<p>
+<a href="#" id="showall_db_toggle">Alle Datenbanken anzeigen</a>
+</p>
 
 <table class="ym-full">
 <thead>

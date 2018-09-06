@@ -104,15 +104,22 @@
 $(document).ready(function(){
 [%- FOREACH profile IN profiles.all %]
  $("#[% profile.profilename%]_db").hide();
+ $("#showall_db_toggle").click(function(){
+   $("#[% profile.profilename%]_db").show().css('margin-top','0px');
+   $("#[% profile.profilename%]_db_toggle").css('display','none');
+ });
+ 
  $("#[% profile.profilename%]_db_toggle").click(function(){
-   $("#[% profile.profilename%]_db").toggle().css('margin-top','0px');;
+   $("#[% profile.profilename%]_db").show().css('margin-top','0px');;
    $("#[% profile.profilename%]_db_toggle").css('display','none');
  });
 [%- END%]
 })
 </script>
 
-
+<p>
+<a href="#" id="showall_db_toggle">Alle Datenbanken anzeigen</a>
+</p>
 
 <table class="ym-full">
 <thead>

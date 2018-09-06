@@ -66,9 +66,11 @@ sub failure_handler {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    # Log missing key=german message text
     $logger->error(ref($failing_msg), $key);
 
-    return "No translation available";
+    # Return key
+    return $key;
 }
 
 1;

@@ -4455,7 +4455,7 @@ function abkuerzungen(inp) {
         if ('mediävistik'.indexOf(input) != -1) arr.push('DE-38-405');
         if ('medien'.indexOf(input) != -1) arr.push('DE-38-101', 'DE-38-323');
         if ('medienforschung'.indexOf(input) != -1) arr.push('DE-38-323');
-        if ('medienkulturwissenschaft'.indexOf(input) != -1) arr.push('DE-38-429', 'DE-38-448', 'DE-38-464');
+        if ('medienkulturwissenschaft'.indexOf(input) != -1) arr.push('DE-38-429', 'DE-38-448');
         if ('medienökonomie'.indexOf(input) != -1) arr.push('DE-38-101');
         if ('medienpädagogik'.indexOf(input) != -1) arr.push('DE-38-323');
         if ('medienrecht'.indexOf(input) != -1) arr.push('DE-38-222');
@@ -5030,9 +5030,28 @@ var semesterZeit = [
 	 function initInsts() {
         return [
 [%-
+
+   is_blacklisted = { 
+                 'DE-38-103' = 1 
+                 'DE-38-104' = 1 
+                 'DE-38-105' = 1 
+                 'DE-38-106' = 1 
+                 'DE-38-108' = 1 
+                 'DE-38-113' = 1 
+                 'DE-38-120' = 1 
+                 'DE-38-121' = 1 
+                 'DE-38-128' = 1 
+                 'DE-38-146' = 1 
+                 'DE-38-157' = 1 
+                 'DE-38-159' = 1 
+                 'DE-38-166' = 1 
+                 'DE-38-464' = 1 
+   };
+
    koordinaten = [];
    
    FOREACH location IN locations ;
+    NEXT IF (is_blacklisted.${location.identifier});
 
     coordinates = location.fields.${"L0280"}.first.content.split(',').reverse.join(',');
     sigel       = location.identifier ;

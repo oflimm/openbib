@@ -1289,9 +1289,9 @@
 </div>
 <datalist id="theDataList"></datalist>
 
-<script src="/js/leaflet.js"></script>
+<script src="https://kug.ub.uni-koeln.de/js/leaflet.js"></script>
 
-<script src="/js/jquery-3.3.1.slim.min.js"></script>
+<script src="https://kug.ub.uni-koeln.de/js/jquery-3.3.1.slim.min.js"></script>
 
 <script type="text/javascript">
 	var arr = [];

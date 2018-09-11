@@ -1,0 +1,45 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% show_foot_banner = 1%]
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="cloud" %]
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Wolken") %]</a></li>
+      </ul>
+     </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
+[% PROCESS common/subtemplate name="clouds_navigation" active_submenu='clouds_choice' %]
+
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+<p/>
+
+<ul>
+<li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/id/searchterm.html?l=[% lang %]">[% msg.maketext("Suchbegriffe") %]</a></li>
+<li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]">[% msg.maketext("Datierung") %], [% msg.maketext("Region") %], [% msg.maketext("Stadt") %], [% msg.maketext("Provenienz") %], [% msg.maketext("Region") %]</li>
+</a></li>
+</ul>

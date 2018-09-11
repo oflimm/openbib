@@ -1,0 +1,125 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editlibinfo
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Bibliothek
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='' %]
+
+  <body onload="initialize_google_maps()">
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('locations_loc') %].html?l=[% lang %]">[% msg.maketext("Standorte") %]</a></li>
+         <li><a href="#" class="lastitem">[% locationinfo.description %]</a></li>
+       </ul>
+     </div>
+    <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %]/id/[% locationinfo.identifier %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+    </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
+[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_locations_record" active_subsubmenu="admin_locations_record_main" %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+[% PROCESS common/subtemplate name="visible_categories_location" %]
+
+<h3>[% IF locationinfo.type == 'ISIL' %][% msg.maketext("Bibliotheksinformationen") %]: [% END %][% locationinfo.description %]</h3>
+
+[%- IF locationinfo.fields.${"L0280"}.first.content -%]
+<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+
+<script type="text/javascript">
+  function initialize_google_maps() {
+    var latlng = new google.maps.LatLng([% locationinfo.fields.${"L0280"}.first.content %]);
+    var myOptions = {
+      zoom: 15,
+      center: latlng,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("map_canvas"),
+        myOptions);
+
+    var marker = new google.maps.Marker({
+      position: latlng, 
+      map: map, 
+      title:"[% locationinfo.description %]"
+  });   
+  }
+</script>
+
+<p>
+<div id="map_canvas" style="width: 100%; height: 300px"></div>
+</p>
+
+[% END %]
+
+<table class="ym-full">
+[%-
+FOREACH category IN categories;
+
+    IF locationinfo.fields.${category} ;
+      FOREACH item IN locationinfo.fields.$category;
+        content  = item.content;
+        mult     = item.mult;
+        subfield = item.subfield;
+
+        # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+        # in Config.pm fuer die entsprechende Datenbank definiert
+        # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+        # kodiert.
+        thiscategory = category ;
+        IF config.get('categorymapping').${locationinfo.databaseinfos.dbname}.$category ;
+          thiscategory = "${category}-${record.database}" ;
+        END;
+-%]
+<tr><th>[% msg.maketext("${thiscategory}") %]</th><td>[% content %]</td></tr>
+[%-   END ;
+   END ;
+END ;-%]
+</table>
+
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

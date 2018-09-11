@@ -1,0 +1,23 @@
+[%#-
+#######################################################################
+#
+# Templatename: profile
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller eingerichteten Profile
+# mit ihren wichtigsten Informationen
+#
+#######################################################################
+-%]
+[%- IF representation == '' || representation == 'html' -%]
+[%- PROCESS common/subtemplate name="layout_html" content="profiles_html" -%]
+[%- ELSIF representation == 'rdf' -%]
+[%- PROCESS common/subtemplate name="profiles_rdf" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="profiles_json" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

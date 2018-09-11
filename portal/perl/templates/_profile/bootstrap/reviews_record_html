@@ -1,0 +1,81 @@
+[%#-
+#######################################################################
+#
+# Templatename: userreviews_show
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Rezensionen eines Benutzers in seinem Nutzerbereich
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('reviews_loc') %].html?l=[% lang %]">[% msg.maketext("Rezensionen") %]</a></li>
+         <li><a href="#" class="lastitem">[% IF review.title %][% review.title %][% ELSE %][% review.id %][% END %]</a></li>
+      </ul>
+     </div>
+     <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% review.id %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+     </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1 ob-hidden">
+        <div class="ym-cbox" class="ym-clearfix">
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+[%# USE dumper; dumper.dump(review)%]
+<style>
+.ob-numbering {
+  display:none;
+}
+</style>
+[% record = review.record %]
+[% PROCESS common/subtemplate name="titlist_item_html_short" %] 
+
+<h3>[% review.title %]</h3>
+
+<table class="ym-full">
+<tr><th>[% msg.maketext("Bewertung") %]</th><td>[% review.rating %]</td></tr>
+<tr><th>[% msg.maketext("Rezension") %]</th><td>[% review.reviewtext %]</td></tr>
+</table>
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

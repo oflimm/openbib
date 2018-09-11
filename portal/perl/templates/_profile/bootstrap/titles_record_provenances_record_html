@@ -1,0 +1,133 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editview
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Views
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='Provenienzen' %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %].html?l=[% lang %]">[% msg.maketext("Titel") %]</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %]">Provenienzen</a></li>
+         <li><a href="#" class="lastitem">[% provenanceid %]</a></li>
+       </ul>
+     </div>
+    <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.json?l=[% lang %];mnr=[% provenanceid %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+    </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1 ob-hidden">
+        <div class="ym-cbox" class="ym-clearfix">
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+[%
+   has_4312 = 0;
+
+   FOREACH provenance IN provenances ;
+     IF provenance.defined('T4312') ;
+       has_4312 = 1;
+     END;
+   END;
+%]
+
+<h2>Alle Provenienzen des Mediums [% provenanceid %]</h2>
+[%# USE dumper;dumper.dump(provenances)%]
+<table class="ym-full">
+<thead>
+<tr align="center"><th>Vorbesitzer</th><th>Provenienz</th><th>Sigel</th>[% IF has_4312 %]<th>Selektionskennzeichen</th>[% END %]</tr>
+</thead>
+<tbody>
+
+[%-
+    categories = [
+                'T4307', # msg.maketext("T4307") Vorbesitzer Koerperschaft
+                'T4308', # msg.maketext("T4308") Vorbesitzer Person
+                'T4309', # msg.maketext("T4309") Mediennummer
+                'T4310', # msg.maketext("T4310") Provenienz
+                'T4311', # msg.maketext("T4311") Sigel
+                'T4312', # msg.maketext("T4312") Selektionskennzeichen
+    ]
+-%]
+
+[% FOREACH provenance IN provenances ;
+
+     owner = [];
+
+     IF provenance.defined('T4307');
+       field = provenance.${'T4307'}.first ;
+       resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('corporatebodies_loc')}/id/${field.id}.html?l=${lang}";
+       owner.push("<a href=\"${resourceurl}\">${field.content}</a>");
+     END ;
+     IF provenance.defined('T4308');
+       field = provenance.${'T4308'}.first ;
+       resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('persons_loc')}/id/${field.id}.html?l=${lang}";
+       owner.push("<a href=\"${resourceurl}\">${field.content}</a>");
+     END;
+
+     ownerstring = owner.join(' / ');
+%]
+<tr>
+<td>
+[% ownerstring %]
+</td>
+<td>
+[% provenance.${'T4310'}.first.content %]
+</td>
+<td>
+[% provenance.${'T4311'}.first.content %]
+</td>
+[% IF has_4312 %]
+<td>
+[% provenance.${'T4312'}.first.content %]
+</td>
+[% END %]
+</tr>
+[% END %]
+
+</tbody>
+</table>
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

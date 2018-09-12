@@ -82,6 +82,16 @@ $('.selectpicker').selectpicker();
 
       <li class="nav-item[% IF template_args.active_menu == "info" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('info_loc') %]/bestand.html?l=[% lang %]">[% msg.maketext("Informationen") %]</a></li>
 
+      <li class="nav-item[% IF template_args.active_menu == "search" %] active[% END %] dropdown">
+       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          [% msg.maketext("Suche") %]
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></li>      	  
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles.html?l=[% lang %]&srt=title_asc&page=1" class="navlink">[% msg.maketext("Alle Münzen") %]</a></li>
+        </ul>
+      </li>
+
       <li class="nav-item[% IF template_args.active_menu == "project" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('info_loc') %]/project.html?l=[% lang %]">[% msg.maketext("Projekt") %]</a></li>
 
       <li class="nav-item[% IF template_args.active_menu == "register" %] active[% END %] dropdown">
@@ -193,13 +203,8 @@ $(document).ready(function(){
      <input type="hidden" name="l"          value="[% lang %]" />
 
 
-      <input class="form-control mr-sm-2" type="search" placeholder="[% msg.maketext("Suchen") %]" aria-label="[% msg.maketext("Suchen") %]" name="fs" value="[% searchquery.get_searchfield('freesearch').val | html %]">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-
-      <span id="ob-nav_addon_links">
-      &nbsp;&nbsp;
-      <a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a>&nbsp;|&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles.html?l=[% lang %]&srt=title_asc&page=1" class="navlink">[% msg.maketext("Alle Münzen") %]</a></span>
-
+      <input class="form-control mr-sm-2" type="search" placeholder="[% msg.maketext("Einfache Suche") %]" aria-label="[% msg.maketext("Einfache Suche") %]" name="fs" value="[% searchquery.get_searchfield('freesearch').val | html %]">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Los</button>
 
     </form>
     [% END %]

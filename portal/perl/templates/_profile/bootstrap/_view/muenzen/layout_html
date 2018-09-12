@@ -24,7 +24,7 @@
 
 [% PROCESS common/subtemplate name="breadcrumbs" %] 
 
-    <div class="text-left">
+    <div class="text-left pt-3">
   [% PROCESS common/subtemplate name=content %]
     </div>
 

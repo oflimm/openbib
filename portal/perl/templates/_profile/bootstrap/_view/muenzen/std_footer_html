@@ -13,6 +13,11 @@
 -%]
 
 [% IF NOT hide_foot_banner %]
+<style>
+.card-body {
+  padding: 1rem;
+}
+</style>
 <div class="card">
               <div class="card-body">
 	      <img class="media-object float-left d-none d-md-bloc d-xl-block" src="/images/openbib/views/muenzen/dfg.png" title="Deutsche Forschungsgemeinschaft DFG" />

@@ -1,25 +1,15 @@
 [%#-
 #######################################################################
 #
-# Templatename: home
+# Templatename: helpframe_22
 #
 # Typ         : Mastertemplate
 #
 # Aufgabe:
 #
-# Ausgabe der Portalinformationen
+# Ausgabe von Hilfe- bzw. weiteren Information
 #
 #######################################################################
 -%]
 
-<style>
-.jumbotron {
-   padding: 1.5rem 1.5rem;
-}
-
-.figure {
-  margin: 0.5rem;
-}
-</style>
-
-[% config.get_templatetext('home','muenzen',lang) %]
+[% config.get_templatetext('info_bestand','muenzen',lang) %]

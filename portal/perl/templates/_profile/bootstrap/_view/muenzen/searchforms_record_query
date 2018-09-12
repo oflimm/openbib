@@ -201,26 +201,28 @@ $(document).ready(function(){
 <input type="hidden" name="novrp" value="1" />
 <input type="hidden" name="srt" value="year_asc" />
 
-<fieldset class="ym-columnar">
-<legend>[% msg.maketext("Erweiterte Suche") %]</legend>
+<!-- <legend>[% msg.maketext("Erweiterte Suche") %]</legend> -->
 
 [%# USE dumper;dumper.dump(available_searchfields)%]
 
 [%- cgiparam = searchfield.id.prefix ;
     this_searchfield = 'id';
 -%]
-<div class="ym-fbox-text">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Id") %]</label>
-<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+
+<div class="form-group row">
+   <label class="col-sm-2 col-form-label" for="autocomplete_[% cgiparam %]">[% msg.maketext("Id") %]</label>
+   <div class="col-sm-10">
+     <input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" maxlength="200" />
 </div>
 
 [% IF available_searchfields.freesearch.active %]
 [%- cgiparam = searchfield.freesearch.prefix ;
     this_searchfield = 'freesearch';
 -%]
-<div class="ym-fbox-text">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Freie Suche") %]</label>
-<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<div class="form-group row">
+     <label class="col-sm-2 col-form-label" for="autocomplete_[% cgiparam %]">[% msg.maketext("Freie Suche") %]</label>
+     <div class="col-sm-10">
+        <input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" maxlength="200" />
 </div>
 [% END %]
 

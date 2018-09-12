@@ -20,9 +20,11 @@
 
 [% PROCESS common/subtemplate name="corporate_banner" start=1 %]
 
-[% PROCESS common/subtemplate name="mainnavigation" active_menu="searchform" %] 
+[% PROCESS common/subtemplate name="mainnavigation" %] 
 
-    <div class="text-center">
+[% PROCESS common/subtemplate name="breadcrumbs" %] 
+
+    <div class="text-left">
   [% PROCESS common/subtemplate name=content %]
     </div>
 

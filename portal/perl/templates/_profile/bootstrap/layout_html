@@ -22,7 +22,7 @@
 
 [% PROCESS common/subtemplate name="mainnavigation" active_menu="searchform" %] 
 
-    <div class="text-center">
+    <div class="text-left">
   [% PROCESS common/subtemplate name=content %]
     </div>
 

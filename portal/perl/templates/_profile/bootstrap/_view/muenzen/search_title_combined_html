@@ -15,9 +15,8 @@
 
 <p/>
 
-<div class="ym-grid linearize-level-1">
-  <div class="ym-g25 ym-gr">
-    <div class="ym-gbox">
+<div class="row">
+  <div class="col-md-3">
 [% IF hits > 0 %]
 [% PROCESS common/subtemplate name="search_facet" %]
 [% ELSE %]
@@ -43,11 +42,9 @@
 </div>
 [%   END %]
 [% END %]
-    </div>
   </div>
 
-  <div class="ym-g75 ym-gl">
-    <div class="ym-gbox">
+  <div class="col-md-9">
 
 [% IF spelling_suggestion.resultlist %]
 [%    suggestion = searchquery.get_spelling_suggestion %]
@@ -70,11 +67,11 @@
 -%]
 
 <div class="ob-resultlist">
-  <div class="ob-resultheader">
-    <div class="left">
+  <div class="row">
+    <div class="col-md-6 d-flex justify-content-start">
 [% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b>[% hits %]</b>
     </div>
-    <div class="right">
+    <div class="col-md-6 d-flex justify-content-end">
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
 <input type="hidden" name="page" value="1" />
 
@@ -110,7 +107,6 @@
 
 [% PROCESS common/subtemplate name="search_more_tips" %]
 
-    </div>
   </div>
 
 </div>

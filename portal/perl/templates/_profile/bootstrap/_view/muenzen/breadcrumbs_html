@@ -23,7 +23,27 @@
 <li class="breadcrumb-item" aria-current="page"><a href="[% bc.url %]">[% bc.desc %]</a></li>
 [%   END %]
 [% END %]
+
+[% IF template_args.representations %]
+<li class="ml-auto">
+[%- FOREACH representation IN template_args.representations ;
+
+      IF representation.type == 'json'
+      -%]
+<a class="ob-representation_json" href="[% representation.url %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+      [%-
+      ELSIF representation.type == 'rss' ;
+      -%]
+<a class="ob-representation_rss" href="[% representation.url %]"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a>
+      [%-
+      END ; 
+   END -%]
+</li>
+[% END %]
+
 </ol>
+
+
 </nav>
 [% ELSE %]
 <!-- no breadcrumb navigation -->

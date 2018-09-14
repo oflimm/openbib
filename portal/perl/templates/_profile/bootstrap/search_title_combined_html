@@ -15,9 +15,8 @@
 
 <p/>
 
-<div class="ym-grid linearize-level-1">
-  <div class="ym-g25 ym-gr">
-    <div class="ym-gbox">
+<div class="row">
+  <div class="col-md-4">
 [% IF hits > 0 %]
 [% PROCESS common/subtemplate name="search_facet" %]
 [% ELSE %]
@@ -43,11 +42,9 @@
 </div>
 [%   END %]
 [% END %]
-    </div>
   </div>
 
-  <div class="ym-g75 ym-gl">
-    <div class="ym-gbox">
+  <div class="col-md-8">
 
 [% IF spelling_suggestion.resultlist %]
 [%    suggestion = searchquery.get_spelling_suggestion %]
@@ -110,7 +107,6 @@
 
 [% PROCESS common/subtemplate name="search_more_tips" %]
 
-    </div>
   </div>
 
 </div>

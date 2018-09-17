@@ -18,11 +18,11 @@
 
 <!-- Titlelist begins here -->
 <div class="ob-resultlist">
-  <div class="ob-resultheader">
-    <div class="left">
+  <div class="row">
+    <div class="col-md-6 d-flex justify-content-start">
        <input type="checkbox" name="collection" value="select" onclick="update_collection(this.form, this.checked,'collection_item')" />&nbsp;<b>[% msg.maketext("Alle Eintr&auml;ge ausw&auml;hlen") %]</b>
     </div>
-    <div class="right">
+    <div class="col-md-6 d-flex justify-content-end">
 [%# PROCESS common/subtemplate name="titlist_options" this_loc=config.get('cartitems_loc') no_jn=1 no_relevance=1 %]
     </div>
   </div>

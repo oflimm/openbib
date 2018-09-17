@@ -1,4 +1,23 @@
-[%- IF representation == '' || representation == 'html' -%]
+[%- IF representation == '' || representation == 'html' ;
+    template_args = {
+      'active_menu' = 'usage'
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = dbinfo.get('dbnames').${database}.short
+	     url  = "${path_prefix}/${config.get('databases_loc')}/id/${database}/titles.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Top 20')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+    };
+-%]
 [%- PROCESS common/subtemplate name="layout_html" content="titles_popular_by_database_html" -%]
 [%- ELSIF representation == 'rdf' -%]
 [%- PROCESS common/subtemplate name="titles_popular_by_database_rdf" -%]

@@ -1,0 +1,73 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editauthenticator
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines Anmeldeziels
+#
+#######################################################################
+-%]
+    <div class="row">
+      <div class="col-md-9" >
+
+<form method="post" action="[% path_prefix %]/[% config.get('authenticators_loc') %]/id/[% authenticatorinfo.id %]" class="ym-form">
+<input type="hidden" name="_method"     value="PUT" />
+
+<h1 class="display-5">[% msg.maketext("Anmeldeziel bearbeiten") %]</h1>
+
+<div class="form-group">
+<label for="id">[% msg.maketext("Id") %]</label>
+<span class="form-control">[% authenticatorinfo.id %]</span>
+</div>
+
+<div class="form-group">
+<label for="hostname">[% msg.maketext("Hostname") %]</label>
+<input class="form-control" type="text" name="hostname" id="hostname"  value="[% authenticatorinfo.hostname %]"/>
+</div>
+
+<div class="form-group">
+<label for="port">[% msg.maketext("Port") %]</label>
+<input class="form-control" type="text" name="port" id="port"  value="[% authenticatorinfo.port %]"/>
+</div>
+
+<div class="form-group">
+<label for="remoteuser">[% msg.maketext("Nutzername") %]</label>
+<input class="form-control" type="text" name="remoteuser" id="remoteuser"  value="[% authenticatorinfo.remoteuser %]"/>
+</div>
+
+<div class="form-group">
+<label for="dbname">[% msg.maketext("DB-Name") %]</label>
+<input class="form-control" type="text" name="dbname" id="dbname" value="[% authenticatorinfo.dbname %]"/>
+</div>
+
+<div class="form-group">
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<input class="form-control" type="text" name="description" id="description" value="[% authenticatorinfo.description %]"/>
+</div>
+
+<div class="form-group">
+<label for="type">[% msg.maketext("Typ") %]</label>
+  <select class="form-control" name="type" id="type">
+    <option value="self" [% IF authenticatorinfo.type == 'self' %]selected="selected"[% END %]>[% msg.maketext("Selbstregistrierung") %]</option>
+    <option value="olws" [% IF authenticatorinfo.type == 'olws' %]selected="selected"[% END %]>OLWS</option>
+  </select>
+</div>
+
+<button type="submit" name="do_change" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>
+
+&nbsp;&nbsp;&nbsp;
+
+<a class="btn btn-primary mb-2" role="button" href="[% path_prefix %]/[% config.get('authenticators_loc') %]/id/[% authenticatorinfo.id %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+
+</form>
+
+      </div>
+      <div class="col-md-3">
+[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_authenticators"  active_subsubmenu="admin_authenticators_record_main" %]
+      </div>
+
+    </div>

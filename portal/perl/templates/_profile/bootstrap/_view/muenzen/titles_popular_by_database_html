@@ -19,29 +19,8 @@
 [%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
 [%- popularity_i18n = msg.maketext("Popularität") -%]
 
-   <div class="ob-functional_nav">
-     <div class="ob-breadcrumb">
-       <ul>
-         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/titles.html?l=[% lang %]">[% dbinfo.get('dbnames').${database}.short %]</a></li>
-         <li><a href="#" class="lastitem">[% msg.maketext("Top 20") %] [% msg.maketext("Münzen") %]</a></li>
-       </ul>
-     </div>
-    <div class="ob-representation">
-<!--<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/popular.json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;-->
-    </div>
-   </div>
-
-    <div class="ym-column linearize-level-1">
-      <div class="ym-col1">
-        <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="titles_navigation" active_submenu = "popular" %]
-        </div>
-      </div>
-      <!-- end: #col1 -->
-      <!-- begin: #col3 static column -->
-      <div class="ym-col3" >
-        <div class="ym-cbox" class="ym-clearfix">
+    <div class="row">
+      <div class="col-md-9" >
 
    <h3>[% msg.maketext("Top 20") %] [% msg.maketext("Münzen") %]: [% dbinfo.get('dbnames').${database}.short %]</h3>
 
@@ -280,6 +259,13 @@
 
 <!-- Ende einzelner Treffer -->
 [%- END -%]
+    </div>
+
+  </div>
+
+  </div>
+  <div class="col-md-3">
+[% PROCESS common/subtemplate name="titles_navigation" active_submenu = "popular" %]
   </div>
 </div>
 <!-- Titlelist ends here -->

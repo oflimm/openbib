@@ -11,66 +11,25 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Cluster-Einstellungen' %]
 
-  <body>
-
-<!-- skip link navigation -->
-<ul class="ym-skiplinks">
-	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
-	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
-</ul>
-
-<div class="ym-wrapper">
-  <div class="ym-wbox">
-
-[% PROCESS common/subtemplate name="corporate_banner" %]
-
-[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
-
-    <!-- begin: main content area #main -->
-    <div id="main">
-
-   <div class="ob-functional_nav">
-     <div class="ob-breadcrumb">
-       <ul>
-         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('clusters_loc') %].html?l=[% lang %]">[% msg.maketext("Cluster") %]</a></li>
-         <li><a href="#" class="lastitem">[% clusterinfo.description %]</a></li>
-       </ul>
-     </div>
-    <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
-    </div>
-   </div>
-
-    <div class="ym-column linearize-level-1">
-      <div class="ym-col1">
-        <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_clusters_record" active_subsubmenu="admin_clusters_record_main" %]
-        </div>
-      </div>
-      <!-- end: #col1 -->
-      <!-- begin: #col3 static column -->
-      <div class="ym-col3" >
-        <div class="ym-cbox" class="ym-clearfix">
+    <div class="row">
+      <div class="col-md-9" >
 
 <h2>[% clusterinfo.description %]</h2>
 
-<table class="ym-full">
+<table class="table">
 <tr>
-<td>[% msg.maketext("Id") %]</td>
+<th>[% msg.maketext("Id") %]</th>
 <td>[% clusterinfo.id %]</td>
 </tr>
 
 <tr>
-<td>[% msg.maketext("Beschreibung") %]</td>
+<th>[% msg.maketext("Beschreibung") %]</th>
 <td>[% clusterinfo.description %]</td>
 </tr>
 
 <tr>
-<td>[% msg.maketext("Status") %]</td>
+<th>[% msg.maketext("Status") %]</th>
 <td>
 [% IF clusterinfo.status == 'updatable' %][% msg.maketext("Akualisierbar") %][% END %]
 [% IF clusterinfo.status == 'updating' %][% msg.maketext("Aktualisieren") %][% END %]
@@ -80,7 +39,7 @@
 </tr>
 
 <tr>
-<td>[% msg.maketext("Aktiv") %]</td>
+<th>[% msg.maketext("Aktiv") %]</th>
 <td>
 [%- IF clusterinfo.active -%][% msg.maketext("Ja") %][%- END -%]
 [%- IF NOT clusterinfo.active -%][% msg.maketext("Nein") %][%- END -%]
@@ -97,7 +56,8 @@
 %]
 <h4>Inkonsistenzen zwischen den Servern dieses Clusters</h4>
 
-<table class="ym-full">
+<table class="table">
+<thead>
 <tr>
 <th>[% msg.maketext("Katalog") %]</th>
 [% FOREACH serverid IN serverids %]
@@ -106,6 +66,8 @@ Titel auf [% config.get_serverinfo_description(serverid) %]
 </th>
 [% END %]
 </tr>
+</thead>
+</tbody>
 [% FOREACH thisdb IN differences %]
 <tr>
 <td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% thisdb.dbname %]/updates.html?l=[% lang %]">[% thisdb.dbname %]</a></td>
@@ -114,6 +76,7 @@ Titel auf [% config.get_serverinfo_description(serverid) %]
 [% END %]
 </tr>
 [% END %]
+</tbody>
 </table>
 
 [%
@@ -121,12 +84,8 @@ Titel auf [% config.get_serverinfo_description(serverid) %]
    END;
 %]
 
-        </div>
-        <div class="ym-ie-clearing">&nbsp;</div>
-        <!-- End: IE Column Clearing -->
       </div>
-     </div> <!-- end: ym-column -->
+      <div class="col-md-3">
+[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_clusters_record" active_subsubmenu="admin_clusters_record_main" %]
+      </div>
     </div>
-    <!-- end: #main -->
-
-[% PROCESS common/subtemplate name="std_footer" %]

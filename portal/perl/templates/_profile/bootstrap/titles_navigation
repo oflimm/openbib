@@ -11,19 +11,18 @@
 #
 #######################################################################
 -%]
-<nav class="ym-vlist">
-<h6 class="ym-vtitle">[% dbinfo.get('dbnames').${database}.short %]</h6>
-
- <ul>
+<nav class="navbar bg-light">
+ <ul class="nabar-nav">
+ <li class="navbar-item"><h1 class="display-6">[% dbinfo.get('dbnames').${database}.short %]</h1></li>
 [% IF active_submenu == "all" %]
-  <li class="active"><strong>[% msg.maketext("Alle Münzen") %]</strong></li>
+  <li class="navbar-item active"><strong>[% msg.maketext("Alle Münzen") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/titles.html?l=[% lang %]">[% msg.maketext("Alle Münzen") %]</a></li>
+  <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/titles.html?l=[% lang %]">[% msg.maketext("Alle Münzen") %]</a></li>
 [% END %]
 [% IF active_submenu == "popular" %]
-  <li class="active"><strong>[% msg.maketext("Beliebte Münzen") %]</strong></li>
+  <li class="navbar-item active"><strong>[% msg.maketext("Beliebte Münzen") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/titles/popular.html?l=[% lang %]">[% msg.maketext("Beliebte Münzen") %]</a></li>
+  <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/titles/popular.html?l=[% lang %]">[% msg.maketext("Beliebte Münzen") %]</a></li>
 [% END %]
 </ul>
 </nav>

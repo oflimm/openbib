@@ -26,15 +26,15 @@
 
 [% IF template_args.representations %]
 <li class="ml-auto">
-[%- FOREACH representation IN template_args.representations ;
+[%- FOREACH this_representation IN template_args.representations ;
 
-      IF representation.type == 'json'
+      IF this_representation.type == 'json'
       -%]
-<a class="ob-representation_json" href="[% representation.url %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a class="ob-representation_json" href="[% this_representation.url %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
       [%-
-      ELSIF representation.type == 'rss' ;
+      ELSIF this_representation.type == 'rss' ;
       -%]
-<a class="ob-representation_rss" href="[% representation.url %]"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a>
+<a class="ob-representation_rss" href="[% this_representation.url %]"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a>
       [%-
       END ; 
    END -%]

@@ -18,7 +18,7 @@
     layout_param = {
       'page_title' = 'Administration - Cluster anzeigen'
 
-      'main_template = 'admin_clusters_record_html'
+      'main_template' = 'admin_clusters_record_html'
       'sidebar_template' = 'users_navigation'
 
       'active_menu' = 'admin'

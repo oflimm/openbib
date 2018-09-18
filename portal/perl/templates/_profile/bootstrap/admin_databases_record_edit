@@ -18,7 +18,7 @@
     layout_param = {
       'page_title' = 'Administration - Katalog bearbeiten'
 
-      'main_template = 'admin_databases_record_edit_html'
+      'main_template' = 'admin_databases_record_edit_html'
       'sidebar_template' = 'users_navigation'
 
       'active_menu' = 'admin'

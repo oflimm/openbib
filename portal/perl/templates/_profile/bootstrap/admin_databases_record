@@ -19,7 +19,7 @@
     layout_param = {
       'page_title' = 'Administration - Katalog anzeigen'
 
-      'main_template = 'admin_databases_record_html'
+      'main_template' = 'admin_databases_record_html'
       'sidebar_template' = 'users_navigation'
 
       'active_menu' = 'admin'

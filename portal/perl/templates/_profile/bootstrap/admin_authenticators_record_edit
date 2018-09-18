@@ -19,7 +19,7 @@
     layout_param = {
       'page_title' = 'Administration - Anmeldeziel bearbeiten'
 
-      'main_template = 'admin_authenticators_record_edit_html'
+      'main_template' = 'admin_authenticators_record_edit_html'
       'sidebar_template' = 'users_navigation'
 
       'active_menu' = 'admin'

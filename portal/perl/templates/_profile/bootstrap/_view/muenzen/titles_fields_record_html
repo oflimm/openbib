@@ -40,6 +40,6 @@
  </div>
 
  <div class="col-sm-3">
-[% PROCESS common/subtemplate name="subnavigation" active_menu=template_args.active_menu active_submenu="register_${field}" %]
+[% PROCESS common/subtemplate name="subnavigation" active_menu=layout_param.active_menu active_submenu="register_${field}" %]
  </div>
 </div>

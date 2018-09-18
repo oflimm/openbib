@@ -11,10 +11,6 @@
 #
 #######################################################################
 -%]
-
-    <div class="row">
-      <div class="col-md-9" >
-
 <h2>[% clusterinfo.description %]</h2>
 
 <table class="table">
@@ -83,9 +79,3 @@ Titel auf [% config.get_serverinfo_description(serverid) %]
 #     USE dumper;dumper.dump(differences);
    END;
 %]
-
-      </div>
-      <div class="col-md-3">
-[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_clusters_record" active_subsubmenu="admin_clusters_record_main" %]
-      </div>
-    </div>

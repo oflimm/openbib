@@ -69,7 +69,7 @@ $(document).ready(function(){
 [%- username = user.get_username -%]
     <!-- begin: main navigation  -->
 
-<!-- Targs: [% USE dumper; dumper.dump(template_args) %] -->
+<!-- Targs: [% USE dumper; dumper.dump(layout_param) %] -->
 
 <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]"><img src="/images/openbib/views/muenzen/muenzen_brand.jpg" class="img-fluid"  /></a>
@@ -80,9 +80,9 @@ $(document).ready(function(){
 <!--    <a class="navbar-brand" href="#">Hidden brand</a> -->
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
 
-      <li class="nav-item[% IF template_args.active_menu == "info" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('info_loc') %]/bestand.html?l=[% lang %]">[% msg.maketext("Informationen") %]</a></li>
+      <li class="nav-item[% IF layout_param.active_menu == "info" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('info_loc') %]/bestand.html?l=[% lang %]">[% msg.maketext("Informationen") %]</a></li>
 
-      <li class="nav-item[% IF template_args.active_menu == "search" %] active[% END %] dropdown">
+      <li class="nav-item[% IF layout_param.active_menu == "search" %] active[% END %] dropdown">
        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           [% msg.maketext("Suche") %]
         </a>
@@ -92,9 +92,9 @@ $(document).ready(function(){
         </ul>
       </li>
 
-      <li class="nav-item[% IF template_args.active_menu == "project" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('info_loc') %]/project.html?l=[% lang %]">[% msg.maketext("Projekt") %]</a></li>
+      <li class="nav-item[% IF layout_param.active_menu == "project" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('info_loc') %]/project.html?l=[% lang %]">[% msg.maketext("Projekt") %]</a></li>
 
-      <li class="nav-item[% IF template_args.active_menu == "register" %] active[% END %] dropdown">
+      <li class="nav-item[% IF layout_param.active_menu == "register" %] active[% END %] dropdown">
        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           [% msg.maketext("Register") %]
         </a>
@@ -131,11 +131,11 @@ $(document).ready(function(){
 	   </li>
        </ul>
       </li>   
-      <li class="nav-item[% IF template_args.active_menu == "collection" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %]</a></li>
+      <li class="nav-item[% IF layout_param.active_menu == "collection" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %]</a></li>
 
     </ul>
 
-[% IF NOT template_args.without_navigation_search %]
+[% IF NOT layout_param.without_navigation_search %]
 [%   IF user.is_authenticated %]
 [%   autocompletion_type = user.get_autocompletion %]
 [%   livesearch          = user.get_livesearch %]

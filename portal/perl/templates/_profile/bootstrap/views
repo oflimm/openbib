@@ -16,7 +16,7 @@
 -%]
 [%- PROCESS common/subtemplate name="local_config" -%] 
 [%- IF representation == '' || representation == 'html';
-    template_args = {
+    layout_param = {
       # 'active_menu' = ''
       'breadcrumb' = [
           {

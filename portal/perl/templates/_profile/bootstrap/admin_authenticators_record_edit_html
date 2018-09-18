@@ -11,8 +11,6 @@
 #
 #######################################################################
 -%]
-    <div class="row">
-      <div class="col-md-9" >
 
 <form method="post" action="[% path_prefix %]/[% config.get('authenticators_loc') %]/id/[% authenticatorinfo.id %]" class="ym-form">
 <input type="hidden" name="_method"     value="PUT" />
@@ -65,9 +63,3 @@
 
 </form>
 
-      </div>
-      <div class="col-md-3">
-[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_authenticators"  active_subsubmenu="admin_authenticators_record_main" %]
-      </div>
-
-    </div>

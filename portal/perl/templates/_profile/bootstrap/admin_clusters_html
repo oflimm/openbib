@@ -11,9 +11,6 @@
 #
 #######################################################################
 -%]
-    <div class="row">
-      <div class="col-md-9" >
-
 [% IF user.has_right({scope = 'admin_clusters', right = 'right_create'}) %]
 <form method="post" action="[% path_prefix %]/[% config.get('clusters_loc') %]" >
 <h1 class="display-5 ob-toggable_legend">[% msg.maketext("Neuen Cluster einrichten") %]&nbsp;<img src="[% config.get('toggle_show_img') %]"/></h1>
@@ -101,9 +98,3 @@
 </table>
 
 [% END %]
-      </div>
-      <div class="col-md-3">
-[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_clusters" %]
-      </div>
-
-   </div>

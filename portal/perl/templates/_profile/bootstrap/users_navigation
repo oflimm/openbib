@@ -15,27 +15,27 @@
 <div class="navbar-header">ID: [% username %]</div>
 
  <ul class="navbar-nav">
-[% IF active_submenu == "userprefs" %]
+[% IF layout_param.active_submenu == "userprefs" %]
   <li class="nav-item active"><strong>[% msg.maketext("Grundeinstellungen") %]</strong></li>
 [% ELSE %]
   <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% msg.maketext("Grundeinstellungen") %]</a></li>
 [% END %]
 [% IF config.get('litlists') %]
-[%   IF active_submenu == "litlists" %]
+[%   IF layout_param.active_submenu == "litlists" %]
   <li class="nav-item active"><strong>[% msg.maketext("Literaturlisten") %]</strong></li>
 [%   ELSE %]
   <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/litlists.html?l=[% lang %]">[% msg.maketext("Literaturlisten") %]</a></li>
 [%   END %]
 [% END %]
-[% IF active_submenu == "tags" %]
+[% IF layout_param.active_submenu == "tags" %]
 <li class="nav-item"><span>[% msg.maketext("Tags") %]</span>
     <ul>
-[%    IF active_subsubmenu == "tags_names" %]
+[%    IF layout_param.active_subsubmenu == "tags_names" %]
        <li class="nav-item active"><strong>[% msg.maketext("nach Tagnamen") %]</strong></li>
 [%    ELSE %]
        <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags/names.html?l=[% lang %];format=cloud">[% msg.maketext("nach Tagnamen") %]</a></li>
 [%    END %]
-[%    IF active_subsubmenu == "tags_titles" %]
+[%    IF layout_param.active_subsubmenu == "tags_titles" %]
        <li class="nav-item active"><strong>[% msg.maketext("nach Titeln") %]</strong></li>
 [%    ELSE %]
        <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags.html?l=[% lang %];num=[% qopts.get_option('num') %];srt=title_asc">[% msg.maketext("nach Titeln") %]</a></li>
@@ -46,7 +46,7 @@
   <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags/names.html?l=[% lang %];format=cloud">[% msg.maketext("Tags") %]</a></li>
 [% END %]
 [% IF config.get('reviews') %]
-[%   IF active_submenu == "userreviews" %]
+[%   IF layout_param.active_submenu == "userreviews" %]
   <li class="nav-item active"><strong>[% msg.maketext("Rezensionen") %]</strong></li>
 [%   ELSE %]
    <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/reviews.html?l=[% lang %]">[% msg.maketext("Rezensionen") %]</a></li>
@@ -54,10 +54,10 @@
 [% END %]
 
 
-[% IF active_submenu == "databaseprofile" %]
+[% IF layout_param.active_submenu == "databaseprofile" %]
 <li class="nav-item"><span>[% msg.maketext("Katalogprofile") %]</span>
     <ul>
-[%   IF active_subsubmenu == "databaseprofile_record" %]
+[%   IF layout_param.active_subsubmenu == "databaseprofile_record" %]
       <li class="nav-item active"><strong>[% profilename %]</strong></li>
 [%   END %]
     </ul>
@@ -66,7 +66,7 @@
   <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %].html?l=[% lang %]">[% msg.maketext("Katalogprofile") %]</a></li>
 [% END %]
 
-[% IF active_submenu == "migration" %]
+[% IF layout_param.active_submenu == "migration" %]
   <li class="nav-item active"><strong>[% msg.maketext("Konto-Migration") %]</strong></li>
 [% ELSE %]
   <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/migration.html?l=[% lang %]">[% msg.maketext("Konto-Migration") %]</a></li>
@@ -81,22 +81,22 @@
  <ul>
 <li class="nav-item"><span>[% authenticator.description %]</span>
     <ul>
-[%   IF active_submenu == "borrows" %]
+[%   IF layout_param.active_submenu == "borrows" %]
       <li class="nav-item active"><strong>[% msg.maketext("Ausleihen") %]</strong></li>
 [%   ELSE %]
       <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/borrows.html?l=[% lang %]">[% msg.maketext("Ausleihen") %]</a></li>
 [%   END %]
-[%   IF active_submenu == "reservations" %]
+[%   IF layout_param.active_submenu == "reservations" %]
       <li class="nav-item active"><strong>[% msg.maketext("Vormerkungen") %]</strong></li>
 [%   ELSE %]
       <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/reservations.html?l=[% lang %]">[% msg.maketext("Vormerkungen") %]</a></li>
 [%   END %]
-[%   IF active_submenu == "orders" %]
+[%   IF layout_param.active_submenu == "orders" %]
       <li class="nav-item active"><strong>[% msg.maketext("Bestellungen") %]</strong></li>
 [%   ELSE %]
       <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/orders.html?l=[% lang %]">[% msg.maketext("Bestellungen") %]</a></li>
 [%   END %]
-[%   IF active_submenu == "reminders" %]
+[%   IF layout_param.active_submenu == "reminders" %]
       <li class="nav-item active"><strong>[% msg.maketext("Überziehungen / Gebühren") %]</strong></li>
 [%   ELSE %]
       <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/reminders.html?l=[% lang %]">[% msg.maketext("Überziehungen / Gebühren") %]</a></li>

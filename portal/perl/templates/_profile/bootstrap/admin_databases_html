@@ -14,9 +14,6 @@
 #
 #######################################################################
 -%]
-    <div class="row">
-      <div class="col-md-9" >
-
 [% IF user.has_right({scope = 'admin_databases', right = 'right_create'}) %]
 <form method="post" action="[% path_prefix %]/[% config.get('databases_loc') %]">
 
@@ -108,8 +105,3 @@
 </table>
 
 [% END %]
-      </div>
-      <div class="col-md-3">
-[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_databases" %]
-      </div>
-    </div>

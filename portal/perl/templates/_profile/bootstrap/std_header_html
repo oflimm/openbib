@@ -89,7 +89,7 @@
     <script type="text/javascript" src="/js/openbib.js"></script> 
     <script type="text/javascript" src="/js/cloud-zoom.1.0.2.min.js"></script>
 -->
-    <title>[% IF template_args.page_title %][% template_args.page_title %][% ELSE %]OpenBib Beispielportal mit Bootstrap 4.1[% END %]</title>
+    <title>[% IF layout_param.page_title %][% layout_param.page_title %][% ELSE %]OpenBib Beispielportal mit Bootstrap 4.1[% END %]</title>
 
 <!--[if lt IE 7.]>
 <script defer type="text/javascript" src="/js/pngfix.js"></script>

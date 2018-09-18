@@ -45,7 +45,7 @@
        used_fields.push( "<b>${fieldname}</b>:${fieldcontent}" );
      END;
 
-    template_args = {
+    layout_param = {
       'active_menu' = 'register'
       'breadcrumb' = [
           {
@@ -61,7 +61,7 @@
     };
 
     IF NOT qopts.get_option('sm');
-       template_args.representations = [
+       layout_param.representations = [
           {
 	     type = 'json'
 	     url  = "${path_prefix}/${config.get('search_loc')}.json?${cgi_querystring}"

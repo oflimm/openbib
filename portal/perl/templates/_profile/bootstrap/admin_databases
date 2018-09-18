@@ -16,9 +16,15 @@
 -%]
 [%- PROCESS common/subtemplate name="local_config" -%] 
 [%- IF representation == '' || representation == 'html' ;
-    template_args = {
+    layout_param = {
       'page_title' = 'Administration - Kataloge anzeigen'
+      
+      'main_template = 'admin_databases_html'
+      'sidebar_template' = 'users_navigation'
+
       'active_menu' = 'admin'
+      'active_submenu' = 'admin_databases'
+      
       'breadcrumb' = [
           {
              desc = msg.maketext('Start')
@@ -34,6 +40,7 @@
 	     current = 1
 	  }
       ]
+      
       'representations' = [
           {
 	     type = 'json'
@@ -41,8 +48,9 @@
 	  }
        ]
     };
+
 -%]
-[%- PROCESS common/subtemplate name="layout_html" content="admin_databases_html" -%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
 [%- ELSIF representation == 'rdf' -%]
 [%- PROCESS common/subtemplate name="admin_databases_rdf" -%]
 [%- ELSIF representation == 'json' -%]

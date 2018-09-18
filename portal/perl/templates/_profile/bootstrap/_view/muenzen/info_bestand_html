@@ -18,6 +18,6 @@
   </div>
 
   <div class="col-md-3">
-[% PROCESS common/subtemplate name="subnavigation" active_menu=template_args.active_menu active_submenu="bestand" %]
+[% PROCESS common/subtemplate name="subnavigation" active_menu=layout_param.active_menu active_submenu="bestand" %]
  </div>
 </div>

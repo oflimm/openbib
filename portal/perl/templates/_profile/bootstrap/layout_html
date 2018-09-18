@@ -25,7 +25,26 @@
 [% PROCESS common/subtemplate name="breadcrumbs" %] 
 
     <div class="text-left pt-3">
-  [% PROCESS common/subtemplate name=content %]
+
+[%-
+   IF content ;
+     layout_param.main_template = content ;
+   END ;
+-%]
+
+[% IF layout_param.sidebar_template %]
+      <div class="row">
+        <div class="col-md-9" >
+[% PROCESS common/subtemplate name=layout_param.main_template %]
+        </div>
+        <div class="col-md-3">
+[% PROCESS common/subtemplate name=layout_param.sidebar_template %]
+        </div>
+      </div>
+[% ELSE %]
+[% PROCESS common/subtemplate name=layout_param.main_template %]
+[% END %]
+
     </div>
 
 [% PROCESS common/subtemplate name="std_footer" %]

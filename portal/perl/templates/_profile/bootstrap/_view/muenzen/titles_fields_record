@@ -63,7 +63,7 @@ IF field == '0800' ;
        searchfield = 'ft0356' ;
     END ;
 
-    template_args = {
+    layout_param = {
       'active_menu' = 'register'
       'breadcrumb' = [
           {

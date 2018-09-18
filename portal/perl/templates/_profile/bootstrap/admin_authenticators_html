@@ -12,13 +12,8 @@
 #######################################################################
 -%]
 
-    <div class="row">
-      <div class="col-md-9" >
-
 [% IF user.has_right({scope = 'admin_authenticators', right = 'right_create'}) %]
 <form method="post" action="[% path_prefix %]/[% config.get('authenticators_loc') %]">
-
-<fieldset class="ym-columnar">
 
 <h1 class="display-5 ob-toggable_legend">[% msg.maketext("Neues Anmeldeziel anlegen") %]&nbsp;<img src="[% config.get('toggle_show_img') %]"/></h1>
 
@@ -96,9 +91,4 @@
 </table>
 [% END %]
 
-      </div>
-      <div class="col-md-3">
-[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_authenticators" %]
-      </div>
-     </div>
     </div>

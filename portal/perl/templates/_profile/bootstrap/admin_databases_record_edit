@@ -15,9 +15,16 @@
 -%]
 [%- PROCESS common/subtemplate name="local_config" -%] 
 [%- IF representation == '' || representation == 'html' ;
-    template_args = {
+    layout_param = {
       'page_title' = 'Administration - Katalog bearbeiten'
+
+      'main_template = 'admin_databases_record_edit_html'
+      'sidebar_template' = 'users_navigation'
+
       'active_menu' = 'admin'
+      'active_submenu' = 'admin_databases_record'
+      'active_subsubmenu' = 'admin_databases_record_main'      
+
       'breadcrumb' = [
           {
              desc = msg.maketext('Start')
@@ -45,7 +52,7 @@
        ]
     };
 -%]
-[%- PROCESS common/subtemplate name="layout_html" content="admin_databases_record_edit_html" -%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]
 [%- END -%]

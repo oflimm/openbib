@@ -11,8 +11,15 @@
 #
 #######################################################################
 -%]
+
+<div class="card">
+
+<div class="card-header">ID: [% username %]</div>
+
+<div class="card-body">
+
 <nav class="navbar bg-light">
-<div class="navbar-header">ID: [% username %]</div>
+
 
  <ul class="navbar-nav">
 [% IF layout_param.active_submenu == "userprefs" %]
@@ -74,11 +81,16 @@
 
  </ul>
 </nav>
+</div>
+</div>
 
 [% IF user.get_targettype_of_session(session.ID) != 'self' %]
-<nav class="ym-vlist">
-<h6 class="ym-vtitle">[% msg.maketext("Benutzerkonto") %]</h6>
- <ul>
+<div class="card-header">[% msg.maketext("Benutzerkonto") %]</div>
+
+<div class="card-body">
+
+<nav class="navbar bg-light">
+ <ul class="navbar-nav">
 <li class="nav-item"><span>[% authenticator.description %]</span>
     <ul>
 [%   IF layout_param.active_submenu == "borrows" %]
@@ -106,6 +118,8 @@
  </ul>
 </ul>
 </nav>
+</div>
+</div>
 [% END %]
 
 [% IF user.has_role('viewadmin',user.ID) %]
@@ -127,5 +141,6 @@
 %]
 
 [% IF user_gets_admin_navigation %]
+<p/>
 [% PROCESS common/subtemplate name="admin_navigation" %]
 [% END %]

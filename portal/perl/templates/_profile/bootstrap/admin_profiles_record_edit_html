@@ -1,0 +1,81 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_profile_record_edit
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Profiles
+#
+#######################################################################
+-%]
+
+<form method="post" action="[% path_prefix %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %]">
+<input type="hidden" name="_method"    value="PUT" />
+
+<h1 class="display-5">[% msg.maketext("Katalog-Profil bearbeiten") %]</h1>
+
+<div class="form-group">
+<label for="profilename">[% msg.maketext("Profil-Name") %]</label>
+<span class="form-control">[% profileinfo.profilename %]</span>
+</div>
+
+<div class="form-group">
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<input class="form-control" type="text" name="description" id="description" value="[% profileinfo.description %]" size="20" />
+</div>
+
+<button type="submit" name="do_change" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>
+
+[% IF profileinfo.viewinfos.size <= 0%]
+&nbsp;&nbsp;&nbsp;
+
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+[% END %]
+
+</form>
+
+<p />
+
+<form method="post" action="[% path_prefix %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %]/[% config.get('orgunits_loc') %]">
+
+<h1 class="display-5 ob-toggable_legend">[% msg.maketext("Neue Organisationseinheit anlegen") %]&nbsp;<img src="[% config.get('toggle_show_img') %]"/></h1>
+
+<div class="ob-fieldset">
+
+<div class="form-group">
+<label for="orgunitname">[% msg.maketext("Name der Organisationseinheit") %]</label>[
+<input class="form-control" type="text" name="orgunitname" id="orgunitname" />
+</div>
+
+<div class="form-group">
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<input class="form-control" type="text" name="description" id="description" size="20" />
+</div>
+
+<button type="submit" name="do_new" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>
+
+</div>
+
+</form>
+
+[% IF orgunits.all %]
+<h3>[% msg.maketext("Bereits existierende Organisationseinheiten") %]</h3>
+
+<table class="table">
+<thead>
+<tr><td><b>[% msg.maketext("Name") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>Nr</b></td><td><b>[% msg.maketext("Kataloge") %]</b></td><td></td></tr>
+</thead>
+<tbody>
+[% FOREACH thisorgunit IN orgunits.all %]
+<tr><td>[% thisorgunit.orgunitname %]</td><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %]/[% config.get('orgunits_loc') %]/id/[% thisorgunit.orgunitname %]/edit.html?l=[% lang %]">[% thisorgunit.description %]</a></td><td>[% thisorgunit.nr %]</td><td><ul>[% FOREACH item IN config.get_orgunitdbs(profileinfo.profilename,thisorgunit.orgunitname).sort %]<li>[% item %]: [% dbinfo.get('dbnames').${item}.full %]</li>[% END %]</ul></td></tr>
+[% END %]
+</tbody>
+</table>
+[% ELSE %]
+<h3>[% msg.maketext("Sie haben in diesem Profil noch keine Organisationseinheiten angelegt.") %]</h3>
+[% END %]
+
+

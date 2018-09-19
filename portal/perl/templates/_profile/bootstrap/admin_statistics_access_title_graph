@@ -1,9 +1,9 @@
 [%- PROCESS common/subtemplate name="local_config" -%] 
 [%- IF representation == '' || representation == 'html' ;
     layout_param = {
-      'page_title' = 'Administration - Statistik Zugriffe'
+      'page_title' = 'Administration - Statistik Titel'
       
-      'main_template' = 'admin_statistics_access_session_graph_html'
+      'main_template' = 'admin_statistics_access_title_graph_html'
       'sidebar_template' = 'users_navigation'
 
       'active_menu' = 'admin'
@@ -24,7 +24,7 @@
 	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('statistics_loc')}.html?l=${lang}"
 	  }
 	  {
-	     desc = msg.maketext('Zugriffe')
+	     desc = msg.maketext('Titel')
 	     url  = '#'
 	     current = 1
 	  }
@@ -34,7 +34,7 @@
 -%]
 [%- PROCESS common/subtemplate name="layout_html" -%]
 [%- ELSIF representation == 'include' -%]
-[%- PROCESS common/subtemplate name="admin_statistics_access_session_graph_include" -%]
+[%- PROCESS common/subtemplate name="admin_statistics_access_title_graph_include" -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]
 [%- END -%]

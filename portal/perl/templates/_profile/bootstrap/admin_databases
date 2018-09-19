@@ -48,7 +48,6 @@
 	  }
        ]
     };
-
 -%]
 [%- PROCESS common/subtemplate name="layout_html" -%]
 [%- ELSIF representation == 'rdf' -%]

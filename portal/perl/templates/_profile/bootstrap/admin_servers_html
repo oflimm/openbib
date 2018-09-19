@@ -11,71 +11,27 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Kataloge anzeigen' %]
-
-  <body>
-
-<!-- skip link navigation -->
-<ul class="ym-skiplinks">
-	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
-	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
-</ul>
-
-<div class="ym-wrapper">
-  <div class="ym-wbox">
-
-[% PROCESS common/subtemplate name="corporate_banner" %]
-
-[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
-
-    <!-- begin: main content area #main -->
-    <div id="main">
-
-   <div class="ob-functional_nav">
-     <div class="ob-breadcrumb">
-       <ul>
-         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
-         <li><a href="#" class="lastitem">[% msg.maketext("Server") %]</a></li>
-       </ul>
-     </div>
-    <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('servers_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
-    </div>
-   </div>
-
-    <div class="ym-column linearize-level-1">
-      <div class="ym-col1">
-        <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_servers" %]
-        </div>
-      </div>
-      <!-- end: #col1 -->
-      <!-- begin: #col3 static column -->
-      <div class="ym-col3" >
-        <div class="ym-cbox" class="ym-clearfix">
 
 [% IF user.has_right({scope = 'admin_servers', right = 'right_create'}) %]
-<form method="post" action="[% path_prefix %]/[% config.get('servers_loc') %]" class="ym-form">
-<fieldset class="ym-columnar">
+<form method="post" action="[% path_prefix %]/[% config.get('servers_loc') %]">
 
-<legend class="ob-toggable_legend">[% msg.maketext("Neuen Rechner zur Lastverteilung hinzuf&uuml;gen") %]&nbsp;<img src="[% config.get('toggle_show_img') %]"/></legend>
+<h1 class="display-5 ob-toggable_legend">[% msg.maketext("Neuen Rechner zur Lastverteilung hinzuf&uuml;gen") %]&nbsp;<img src="[% config.get('toggle_show_img') %]"/></h1>
 
 <div class="ob-fieldset">
 
-<div class="ym-fbox-text">
+<div class="form-group">
 <label for="hostip">[% msg.maketext("IP-Adresse") %]</label>
-<input type="text" name="hostip" id="hostip"/>
+<input class="form-control" type="text" name="hostip" id="hostip"/>
 </div>
 
-<div class="ym-fbox-text">
+<div class="form-group">
 <label for="description">[% msg.maketext("Beschreibung") %]</label>
-<input type="text" name="description" id="description"/>
+<input class="form-control" type="text" name="description" id="description"/>
 </div>
 
-<div class="ym-fbox-select">
+<div class="form-group">
 <label for="status">[% msg.maketext("Status") %]</label>
-  <select name="status" id="status">
+  <select class="form-control" name="status" id="status">
      <option value="updatable">[% msg.maketext("Aktualisierbar") %]</option>
      <option value="updating">[% msg.maketext("Aktualisieren") %]</option>
      <option value="updated">[% msg.maketext("Fertig mit Aktualisierung") %]</option>
@@ -84,9 +40,9 @@
 </div>
 
 [% IF config.get_clusterinfo_overview.count > 0 %]
-<div class="ym-fbox-select">
+<div class="form-group">
 <label for="clusterid">[% msg.maketext("Cluster") %]</label>
-  <select name="clusterid" id="clusterid">
+  <select class="form-control" name="clusterid" id="clusterid">
 [%  FOREACH clusterinfo IN config.get_clusterinfo_overview.all %]
      <option value="[% clusterinfo.id %]">[% clusterinfo.description %]</option>
 [% END %]
@@ -94,21 +50,17 @@
 </div>
 [% END %]
 
-<div class="ym-fbox-select">
+<div class="form-group">
 <label for="active">[% msg.maketext("Aktiv") %]</label>
-  <select name="active" id="active">
+  <select class="form-control" name="active" id="active">
      <option value="true">[% msg.maketext("Ja") %]</option>
      <option value="false">[% msg.maketext("Nein") %]</option>
   </select>
 </div>
 
-<div class="ym-fbox-button">
-<input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" />
-</div>
+<button type="submit" name="do_new" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>
 
 </div>
-
-</fieldset>
 
 </form>
 
@@ -120,14 +72,15 @@
 
 <h3>[% msg.maketext("Bereits existierende Rechner zur Lastverteilung") %]</h3>
 
-<table class="ym-full">
+<div class="table-responsive text-nowrap">
+<table class="table table-striped table-hover">
 <thead>
-<tr><th>[% msg.maketext("Id") %]</th><th>[% msg.maketext("IP-Adresse") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("Status") %]</th><th>[% msg.maketext("Cluster") %]</th><th>[% msg.maketext("Aktiv") %]</th><th></th><th></th><th></th></tr>
+<tr><th scope="col">[% msg.maketext("Id") %]</th><th scope="col">[% msg.maketext("IP-Adresse") %]</th><th scope="col">[% msg.maketext("Beschreibung") %]</th><th scope="col">[% msg.maketext("Status") %]</th><th scope="col">[% msg.maketext("Cluster") %]</th><th scope="col">[% msg.maketext("Aktiv") %]</th><th scope="col"></th><th scope="col"></th><th scope="col"></th></tr>
 </thead>
 <tbody>
 [% FOREACH serverinfo IN serverinfos.all %]
 <tr [% IF serverinfo.active == 1 %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]>
-<td>[% serverinfo.id %]</td>
+<th scope="row">[% serverinfo.id %]</th>
 <td>
 [%   IF user.has_right({scope = 'admin_servers', right = 'right_update'}) %]
 <a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]/edit.html?l=[% lang %]">[% serverinfo.hostip %]</a>
@@ -151,26 +104,16 @@
 <td align="center">[%- IF serverinfo.active == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td>
 <td>
 [%   IF user.has_right({scope = 'admin_servers', right = 'right_update'}) %]
-<form method="post" action="[% path_prefix %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]"><input type="hidden" name="_method" value="PUT"/><input type="hidden" name="active" value="[% IF NOT serverinfo.active %]true[% ELSE %]false[% END %]"/><input type="submit" value="[% IF NOT serverinfo.active %][% msg.maketext("An") %][% ELSE %][% msg.maketext("Aus") %][% END %]"/></form></td>
+<form method="post" action="[% path_prefix %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]"><input type="hidden" name="_method" value="PUT"/><input type="hidden" name="active" value="[% IF NOT serverinfo.active %]true[% ELSE %]false[% END %]"/><button class="btn btn-primary mb-2" type="submit">[% IF NOT serverinfo.active %][% msg.maketext("An") %][% ELSE %][% msg.maketext("Aus") %][% END %]</button></form></td>
 [%   END %]
 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 <td>
 [%   IF user.has_right({scope = 'admin_servers', right = 'right_update'}) %]
-<form method="post" action="[% path_prefix %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><input type="submit" value="[% msg.maketext("L&ouml;schen") %]"/></form>
+<form method="post" action="[% path_prefix %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><button class="btn btn-primary mb-2" type="submit">[% msg.maketext("L&ouml;schen") %]</button></form>
 [%   END %]
 </td></tr>
 [% END %]
 </tbody>
 </table>
-
+</div>
 [% END %]
-
-        </div>
-        <div class="ym-ie-clearing">&nbsp;</div>
-        <!-- End: IE Column Clearing -->
-      </div>
-     </div> <!-- end: ym-column -->
-    </div>
-    <!-- end: #main -->
-
-[% PROCESS common/subtemplate name="std_footer" %]

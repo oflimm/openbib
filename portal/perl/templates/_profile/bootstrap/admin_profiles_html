@@ -71,7 +71,8 @@ $(document).ready(function(){
 <a href="#" id="showall_db_toggle">Alle Datenbanken anzeigen</a>
 </p>
 
-<table class="table">
+<div class="table-responsive text-nowrap">
+<table class="table table-striped table-hover">
 <thead>
 <tr><th>[% msg.maketext("Profil-Name") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("Datenbanken") %]</th></tr>
 </thead>
@@ -96,7 +97,7 @@ $(document).ready(function(){
 [% END %]
 </tbody>
 </table>
-
+</div>
 [% ELSE %]
 <h3>[% msg.maketext("Es wurde noch kein Katalog-Profil angelegt") %]</h3>
 [% END %]

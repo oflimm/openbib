@@ -17,6 +17,7 @@
 [% msg.maketext("Dieses Rechercheportal w&auml;re nicht m&ouml;glich ohne") %]
 </p>
 
+<div class="table-responsive text-nowrap">
 <table class="table">
 <tr><td><img src="/images/openbib/openbib-logo_small.gif"></td><td><a class="ext" href="https://github.com/oflimm/openbib" target="_blank">OpenBib</a></td><td>Die Portalsoftware</td></tr>
 <tr><td><img src="http://www.yaml.de/images/yaml4-square-128.png"></td><td><a class="ext" href="http://www.yaml.de/" target="_blank">YAML 4</a></td><td>Das CSS Framework</a></td></tr>
@@ -44,3 +45,4 @@ target="_blank">Alex King</a></td><td>Das Share-This-Icon, das OpenBib fuer den 
 <!-- <tr><td><img src=""></td><td><a class="ext" href="" target="_blank"></a></td><td></td></tr>
 <tr><td><img src=""></td><td><a class="ext" href="" target="_blank"></a></td><td></td></tr>-->
 </table>
+</div>

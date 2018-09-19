@@ -13,7 +13,8 @@
 #######################################################################
 -%]
 
-<table class="table">
+<div class="table-responsive text-nowrap">
+<table class="table table-striped table-hover">
 <thead>
 <tr><th>[% msg.maketext("RSS-Einstellungen") %]</th></tr>
 </thead>
@@ -73,6 +74,7 @@ selected
 </td></tr>
 </tbody>
 </table>
+</div>
 
 </form>
 
@@ -85,7 +87,8 @@ selected
 <input type="hidden" name="do_editcat_rss" value="1" />
 <input type="hidden" name="type"           value="2" />
 
-<table class="table">
+<div class="table-responsive text-nowrap">
+<table class="table table-striped table-hover">
 <thead>
 <tr><th>[% msg.maketext("Neuaufnahmen nach Verfasser") %]</th></tr>
 </thead>
@@ -132,6 +135,7 @@ selected
 </td></tr>
 </tbody>
 </table>
+</div>
 
 </form>
 
@@ -144,7 +148,8 @@ selected
 <input type="hidden" name="do_editcat_rss" value="1" />
 <input type="hidden" name="type"           value="3" />
 
-<table class="table">
+<div class="table-responsive text-nowrap">
+<table class="table table-striped table-hover">
 <thead>
 <tr><th>[% msg.maketext("Neuaufnahmen nach K&ouml;rperschaft") %]</th></tr>
 </thead>
@@ -191,7 +196,7 @@ selected
 </td></tr>
 </tbody>
 </table>
-
+</div>
 </form>
 
 <!-- Ende: RSS Feed fuer Neuaufnahmen nach Koerperschaft -->
@@ -203,7 +208,8 @@ selected
 <input type="hidden" name="do_editcat_rss" value="1" />
 <input type="hidden" name="type"           value="4" />
 
-<table class="table">
+<div class="table-responsive text-nowrap">
+<table class="table table-striped table-hover">
 <thead>
 <tr><th>[% msg.maketext("Neuaufnahmen nach Schlagwort") %]</th></tr>
 </thead>
@@ -251,7 +257,7 @@ selected
 </td></tr>
 </tbody>
 </table>
-
+</div>
 </form>
 
 <!-- Ende: RSS Feed fuer Neuaufnahmen nach Schlagwort -->
@@ -263,7 +269,8 @@ selected
 <input type="hidden" name="do_editcat_rss" value="1" />
 <input type="hidden" name="type"           value="5" />
 
-<table class="table">
+<div class="table-responsive text-nowrap">
+<table class="table table-striped table-hover">
 <thead>
 <tr><th>[% msg.maketext("Neuaufnahmen nach Systematik") %]</th></tr>
 </thead>
@@ -310,7 +317,7 @@ selected
 </td></tr>
 </tbody>
 </table>
-
+</div>
 </form>
 
 <!-- Ende: RSS Feed fuer Neuaufnahmen (generell) -->

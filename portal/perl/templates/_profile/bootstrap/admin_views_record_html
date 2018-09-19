@@ -18,7 +18,8 @@
 
 <h2>[% msg.maketext("View") %] [% viewinfo.viewname %]</h2>
 
-<table class="table">
+<div class="table-responsive text-nowrap">
+<table class="table table-striped table-hover">
 <tr>
 <th>[% msg.maketext("Viewname") %]</th>
 <td>[% viewinfo.viewname %]</td>
@@ -82,6 +83,7 @@
 </td>
 </tr>
 </table>
+</div>
 
   </div>
   <div class="col-md-3">

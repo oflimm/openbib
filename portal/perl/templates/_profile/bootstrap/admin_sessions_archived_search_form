@@ -15,9 +15,9 @@
 -%]
 [%- IF representation == '' || representation == 'html' ;
     layout_param = {
-      'page_title' = 'Administration - Archivierte Session anzeigen'
+      'page_title' = 'Administration - Archivierte Session suchen'
 
-      'main_template' = 'admin_sessions_archived_record_html'
+      'main_template' = 'admin_sessions_archived_search_form_html'
       'sidebar_template' = 'users_navigation'
 
       'active_menu' = 'admin'
@@ -37,27 +37,15 @@
              desc = msg.maketext('Sessions')
 	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('sessions_loc')}/active.html?l=${lang}"
 	  },
-          {
-             desc = msg.maketext('Archiviert')
-	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('sessions_loc')}/archived/search/form.html?l=${lang}"
-	  },
 	  {
-	     desc = sid
+	     desc = msg.maketext("Explorer")
 	     url  = '#'
 	     current = 1
 	  }
       ]
-      'representations' = [
-          {
-	     type = 'json'
-	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('sessions_loc')}/archived/id/${sid}.json?l=${lang}"
-	  }
-       ]
     };
 -%]
-[%- PROCESS common/subtemplate name="layout_html"  -%]
-[%- ELSIF representation == 'json' -%]
-[%- PROCESS common/subtemplate name="admin_sessions_archived_record_json" -%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]
 [%- END -%]

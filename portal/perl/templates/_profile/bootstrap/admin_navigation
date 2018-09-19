@@ -228,11 +228,13 @@
 [%     ELSE %]
       <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/query.html">[% msg.maketext("Recherche-Arten") %]</a></li>
 [%     END %]
+<!-- Standarmaessig werden DSGVO-konform keine IP-Adressen archiviert. Dementsprechend koennen keine Statistische Auswertungen gemacht werden
 [%     IF layout_param.active_subsubmenu == "client" %]
       <li class="nav-item active"><strong>[% msg.maketext("Klienten") %]</strong></li>
 [%     ELSE %]
       <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/client.html">[% msg.maketext("Klienten") %]</a></li>
 [%     END %]
+-->
 [%     IF layout_param.active_subsubmenu == "browser" %]
       <li class="nav-item active"><strong>[% msg.maketext("Browser") %]</strong></li>
 [%     ELSE %]

@@ -13,7 +13,7 @@
 #######################################################################
 -%]
  
-<form method="get" action="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/archived/search" class="ym-form">
+<form method="get" action="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/archived/search">
 
 <h1 class="display-5">[% msg.maketext("Session-Explorer") %]</h1>
 

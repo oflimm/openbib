@@ -74,7 +74,7 @@ $('.selectpicker').selectpicker();
 <!-- Targs: [% USE dumper; dumper.dump(layout_param) %] -->
 
 <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]"><img src="/images/openbib/views/muenzen/muenzen_brand.jpg" class="img-fluid"  /></a>
+  <a class="navbar-brand" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]"><img src="/images/openbib/openbib-logo.png" class="img-fluid"  /></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>

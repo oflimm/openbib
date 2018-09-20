@@ -12,13 +12,9 @@
 #######################################################################
 -%]
 
-<div class="row">
-
-  <div class="col-md-9">
-
 <h2>[% msg.maketext("View") %] [% viewinfo.viewname %]</h2>
 
-<div class="table-responsive text-nowrap">
+<div class="table-responsive">
 <table class="table table-striped table-hover">
 <tr>
 <th>[% msg.maketext("Viewname") %]</th>
@@ -85,8 +81,3 @@
 </table>
 </div>
 
-  </div>
-  <div class="col-md-3">
-[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_views_record" active_subsubmenu="admin_views_record_main" %]
-  </div>
-</div>

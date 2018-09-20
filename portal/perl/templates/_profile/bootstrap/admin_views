@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_databases_record
+# Templatename: admin_views_record
 #
 # Typ         : Mastertemplate       
 #
@@ -18,7 +18,13 @@
 [%- IF representation == '' || representation == 'html' ;
     layout_param = {
       'page_title' = 'Administration - Views anzeigen'
+      
+      'main_template' = 'admin_views_html'
+      'sidebar_template' = 'users_navigation'
+
       'active_menu' = 'admin'
+      'active_submenu' = 'admin_views'
+      
       'breadcrumb' = [
           {
              desc = msg.maketext('Start')
@@ -29,11 +35,12 @@
 	     url  = "${path_prefix}/${config.get('admin_loc')}.html?l=${lang}"
 	  },
 	  {
-	     desc = msg.maketext('Views')
+	     desc = msg.maketext('Kataloge')
 	     url  = '#'
 	     current = 1
 	  }
       ]
+      
       'representations' = [
           {
 	     type = 'json'
@@ -42,7 +49,7 @@
        ]
     };
 -%]
-[%- PROCESS common/subtemplate name="layout_html" content="admin_views_html" -%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
 [%- ELSIF representation == 'rdf' -%]
 [%- PROCESS common/subtemplate name="admin_views_rdf" -%]
 [%- ELSIF representation == 'json' -%]

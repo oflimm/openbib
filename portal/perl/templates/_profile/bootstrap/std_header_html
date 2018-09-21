@@ -62,6 +62,8 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">
 
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" href="/css/fontawesome-free-5.3.1.css">
 
   [%- TRY -%]
     [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/_profile/$sysprofile/_view/$view/openbib.css" -%]

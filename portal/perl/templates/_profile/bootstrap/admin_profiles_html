@@ -14,11 +14,19 @@
 -%]
 
 [% IF user.has_right({scope = 'admin_profiles', right = 'right_create'}) %]
-<form method="post" action="[% path_prefix %]/[% config.get('profiles_loc') %]" class="ym-form">
+<div id="accordion">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <a class="card-link collapsed" href="#collapseOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+          [% msg.maketext("Neues Katalog-Profil anlegen") %]
+        </a>
+      </h5>
+    </div>
 
-<h1 class="display-5 ob-toggable_legend">[% msg.maketext("Neues Katalog-Profil anlegen") %]&nbsp;<img src="[% config.get('toggle_show_img') %]"/></h1>
-
-<div class="ob-fieldset">
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+      <div class="card-body">
+<form method="post" action="[% path_prefix %]/[% config.get('profiles_loc') %]">
 
 <div class="form-group">
 <label for="profilename">[% msg.maketext("Profil-Name") %]</label>
@@ -32,9 +40,12 @@
 
 <button type="submit" name="do_new" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>
 
+</form>
+</div>
+</div>
+</div>
 </div>
 
-</form>
 
 <p />
 [% END # right_create %]

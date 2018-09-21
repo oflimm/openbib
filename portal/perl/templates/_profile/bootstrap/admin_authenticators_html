@@ -13,11 +13,20 @@
 -%]
 
 [% IF user.has_right({scope = 'admin_authenticators', right = 'right_create'}) %]
+
+<div id="accordion">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <a class="card-link collapsed" href="#collapseOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+          [% msg.maketext("Neues Anmeldeziel anlegen") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+      <div class="card-body">
 <form method="post" action="[% path_prefix %]/[% config.get('authenticators_loc') %]">
-
-<h1 class="display-5 ob-toggable_legend">[% msg.maketext("Neues Anmeldeziel anlegen") %]&nbsp;<img src="[% config.get('toggle_show_img') %]"/></h1>
-
-<div class="ob-fieldset">
 
 <div class="form-group">
 <label for="hostname">[% msg.maketext("Hostname") %]</label>
@@ -54,9 +63,12 @@
 
 <button type="submit" name="do_new" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>
 
+</form>
+</div>
+</div>
+</div>
 </div>
 
-</form>
 
 <p />
 [% END # right_create %]
@@ -66,7 +78,7 @@
 
 <h3>[% msg.maketext("Bereits existierende Anmeldeziele") %]</h3>
 
-<div class="table-responsive text-nowrap">
+<div class="table-responsive">
 <table class="table table-striped table-hover">
 <thead>
 <tr><th>Id</th><th>[% msg.maketext("Hostname") %]</th><th>[% msg.maketext("Port") %]</th><th>[% msg.maketext("Nutzername") %]</th><th>[% msg.maketext("DB-Name") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("Typ") %]</th></tr>
@@ -92,5 +104,3 @@
 </table>
 </div>
 [% END %]
-
-    </div>

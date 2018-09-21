@@ -25,29 +25,13 @@ $(document).ready(function(){
 </script>
 [% END %]
 
-<style>
-#accordion .card-header h5:after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f078";
-  float: right;
-}
-
-#accordion .card-header.collapsed h5:after {
-  font-family: 'Font Awesome 5 Free';
-  content: "\f077";
-  float: right;
-}
-
-</style>
-
-
 <div id="accordion">
   <div class="card">
     <div class="card-header" id="headingOne">
       <h5 class="mb-0">
-        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        <a class="card-link" href="#collapseOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
           [% msg.maketext("Anmeldung/Registrierung mit einer E-Mail-Adresse") %]
-        </button>
+        </a>
       </h5>
     </div>
 
@@ -62,8 +46,6 @@ $(document).ready(function(){
 <input type="hidden" name="authenticatorid" value="[% authenticator.id %]">
 [%-   END -%]
 [%- END -%]
-
-<!-- <h1 class="display-5">[% msg.maketext("Anmeldung mit registrierter E-Mail-Adresse") %]</h1> -->
 
 <p/>
 
@@ -92,9 +74,9 @@ $(document).ready(function(){
   <div class="card">
     <div class="card-header" id="headingTwo">
       <h5 class="mb-0">
-        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+        <a class="card-link collapsed" href="#collapseTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
           [% msg.maketext("Anmeldung mit einem Benutzerausweis") %]
-        </button>
+        </a>
       </h5>
     </div>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
@@ -104,8 +86,6 @@ $(document).ready(function(){
 [% IF redirect_to %]
 <input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
 [% END %]
-
-<!-- <h1 class="display-5">[% msg.maketext("Anmeldung mit einem Benutzerausweis") %]</h1> -->
 
 <p/>
 

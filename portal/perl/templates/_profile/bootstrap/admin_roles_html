@@ -13,11 +13,19 @@
 -%]
 
 [% IF user.has_right({scope = 'admin_roles', right = 'right_create'}) %]
+<div id="accordion">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <a class="card-link collapsed" href="#collapseOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+          [% msg.maketext("Neue Rolle anlegen") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+      <div class="card-body">
 <form method="post" action="[% path_prefix %]/[% config.get('roles_loc') %]">
-
-<h1 class="display-5 ob-toggable_legend">[% msg.maketext("Neue Rolle hinzuf&uuml;gen") %]&nbsp;<img src="[% config.get('toggle_show_img') %]"/></h1>
-
-<div class="ob-fieldset">
 
 <div class="form-group">
 <label for="rolename">[% msg.maketext("Name") %]</label>
@@ -31,11 +39,11 @@
 
 <button type="submit" name="do_new" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>
 
-</div>
-
-</fieldset>
-
 </form>
+</div>
+</div>
+</div>
+</div>
 
 <p />
 [% END # right_create %]

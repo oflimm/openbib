@@ -15,11 +15,19 @@
 [% bks = config.load_bk; %]
 
 [% IF user.has_right({scope = 'admin_topics', right = 'right_create'}) %]
+<div id="accordion">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <a class="card-link collapsed" href="#collapseOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+          [% msg.maketext("Neues Themengebiet anlegen") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+      <div class="card-body">
 <form method="post" action="[% path_prefix %]/[% config.get('topics_loc') %]">
-
-<h1 class="display-5 ob-toggable_legend">[% msg.maketext("Neues Themengebiet anlegen") %]&nbsp;<img src="[% config.get('toggle_show_img') %]"/></h1>
-
-<div class="ob-fieldset">
 
 <div class="form-group">
 <label for="name">[% msg.maketext("Themengebiet") %]</label>
@@ -33,8 +41,12 @@
 
 <button type="submit" name="do_new" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>
 
-</div>
+
 </form>
+</div>
+</div>
+</div>
+</div>
 
 <p />
 [% END # right_create %]

@@ -1,0 +1,143 @@
+[%#-
+#######################################################################
+#
+# Templatename: login
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Eingabemaske fuer die Authentifizierung am Portal
+# entsprechend verschiedener Authentifizierungs-Ziele
+#
+#######################################################################
+-%]
+
+<h1>[% msg.maketext("Anmelden") %]</h1>
+
+<p/>
+
+[% IF authenticatorid %]
+<script>
+$(document).ready(function(){
+  $('#ob-login_forms').tabs('select', '#ob-login_forms_library');
+});
+</script>
+[% END %]
+
+<style>
+#accordion .card-header h5:after {
+  font-family: 'Font Awesome 5 Free';
+  content: "\f078";
+  float: right;
+}
+
+#accordion .card-header.collapsed h5:after {
+  font-family: 'Font Awesome 5 Free';
+  content: "\f077";
+  float: right;
+}
+
+</style>
+
+
+<div id="accordion">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          [% msg.maketext("Anmeldung/Registrierung mit einer E-Mail-Adresse") %]
+        </button>
+      </h5>
+    </div>
+
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+      <div class="card-body">
+<form method="post" action="[% IF config.get('use_https') %]https://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent">
+
+<input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
+
+[%- FOREACH authenticator IN authenticators -%]
+[%-   IF authenticator.type == 'self' -%]
+<input type="hidden" name="authenticatorid" value="[% authenticator.id %]">
+[%-   END -%]
+[%- END -%]
+
+<!-- <h1 class="display-5">[% msg.maketext("Anmeldung mit registrierter E-Mail-Adresse") %]</h1> -->
+
+<p/>
+
+<div class="form-group">
+<label for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>
+<input class="form-control" type="text" name="username" id="email_username" value="[% username %]" />
+</div>
+<div class="form-group">
+<label for="email_password"/>[% msg.maketext("Passwort") %]</label>
+<input class="form-control" type="password" name="password" id="email_username" />
+</div>
+<div>
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('registrations_loc') %].html">[% msg.maketext("Registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('passwords_loc') %].html?l=[% lang %]">[% msg.maketext("Passwort vergessen?") %]</a>
+</div>
+
+<p/>
+
+<p/>
+
+<button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Anmelden") %]</button>
+
+</form>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" id="headingTwo">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          [% msg.maketext("Anmeldung mit einem Benutzerausweis") %]
+        </button>
+      </h5>
+    </div>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+      <div class="card-body">
+<form method="post" action="[% IF config.get('use_https') %]https://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" class="ym-form">
+
+[% IF redirect_to %]
+<input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
+[% END %]
+
+<!-- <h1 class="display-5">[% msg.maketext("Anmeldung mit einem Benutzerausweis") %]</h1> -->
+
+<p/>
+
+<div class="form-group">
+<label for="authenticator">[% msg.maketext("mit") %]:</label>
+<select class="form-control" name="authenticatorid">
+[%- FOREACH authenticator IN authenticators -%]
+[%#-  NEXT IF authenticator.description.match("Ausweis:USB") -%]
+[%-   IF authenticator.type != 'self' -%]
+<option value="[% authenticator.id %]" [% IF authenticator.id == authenticatorid %]selected="selected"[% END %]>[% authenticator.description %]</option>
+[%-   END -%]
+[%- END -%]
+</select>
+</div>
+
+<div class="form-group">
+<label for="username">[% msg.maketext("Benutzernummer") %]</label>
+<input class="form-control" type="text" name="username" id="username" value="[% username %]" />
+</div>
+<div class="form-group">
+<label for="password"/>[% msg.maketext("Passwort") %]</label>
+<input class="form-control" type="password" name="password" id="password" />
+</div>
+
+<p/>
+
+<button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Anmelden") %]</button>
+
+</form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p/>

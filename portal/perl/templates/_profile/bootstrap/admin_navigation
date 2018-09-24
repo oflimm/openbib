@@ -18,6 +18,11 @@
 
 <nav class="navbar bg-light">
  <ul class="navbar-nav">
+[%   IF layout_param.active_submenu == "admin_overview" %]
+  <li class="nav-item active"><strong>[% msg.maketext("Übersicht") %]</strong></li>
+[%   ELSE %]
+  <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">[% msg.maketext("Übersicht") %]</a></li>
+[%   END %]
 [% IF user.has_right({scope = 'admin_clusters', right = 'right_read'}) || user.has_right({scope = 'admin_clusters', right = 'right_update'}) %]
 [%   IF layout_param.active_submenu == "admin_clusters" %]
   <li class="nav-item active"><strong>[% msg.maketext("Cluster") %]</strong></li>

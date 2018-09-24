@@ -1,5 +1,36 @@
-[%- IF representation == '' || representation == 'html' -%]
-[%- PROCESS common/subtemplate name="layout_html" content="titles_popular_html" -%]
+[%- IF representation == '' || representation == 'html' ;
+
+    layout_param = {
+      'page_title' = "Populäre Titel anzeigen"
+
+      'main_template' = 'titles_popular_html'
+      'sidebar_template'= 'usage_navigation'
+
+      'database' = database
+
+      'active_menu' = 'usage'
+      'active_submenu' = 'titles'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Kataloge')
+	     url  = "${path_prefix}/${config.get('databases_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Top 20 Titel')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+
+
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
 [%- ELSIF representation == 'rdf' -%]
 [%- PROCESS common/subtemplate name="titles_popular_rdf" -%]
 [%- ELSIF representation == 'json' -%]

@@ -15,8 +15,6 @@
 [%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
 [%- popularity_i18n = msg.maketext("Popularität") -%]
 
-<div class="row">
-  <div class="col-md-9">
 <!-- Beginn Result Item -->
 [%-
     request_base    = "num=${qopts.get_option('num')};srt=relevance_desc;page=1;" ;
@@ -35,7 +33,7 @@
 [% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b>[% hits %]</b>
         </div>
         <div class="col-md-6 d-flex justify-content-end">
-           <form method="get" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/titles.html">
+           <form method="get" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% layout_param.database %]/titles.html">
 <input type="hidden" name="page" value="1" />
 [%- FOREACH qparam IN query.param -%]
 [%-   IF qparam != 'srt' && qparam != 'srto' && qparam != 'page' %]
@@ -61,10 +59,3 @@
 
       </div> <!-- resultitems -->
     </div> <!-- resultlist -->
-  </div>
-
-  <div class="col-md-3">
-[% PROCESS common/subtemplate name="titles_navigation" active_submenu = "all" %] 
-  </div>
-
-</div>

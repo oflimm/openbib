@@ -12,6 +12,8 @@
 #######################################################################
 -%]
 
+<p/>
+
 [% IF NOT hide_foot_banner %]
 <div class="card">
               <div class="card-body">

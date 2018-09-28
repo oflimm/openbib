@@ -69,7 +69,7 @@ $('.selectpicker').selectpicker();
 -->
 
 [%- username = user.get_username -%]
-    <!-- begin: main navigation  -->
+<!-- begin: main navigation  -->
 
 <!-- Targs: [% USE dumper; dumper.dump(layout_param) %] -->
 
@@ -225,4 +225,4 @@ $(document).ready(function(){
     [% END %]
   </div>
 </nav>
-    <!-- end: main navigation -->
+<!-- end: main navigation -->

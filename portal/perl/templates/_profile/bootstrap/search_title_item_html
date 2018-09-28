@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 [%- PROCESS common/subtemplate name="local_config" -%] 
-<!-- Beginn Result Item -->
+<!-- begin: result item -->
 [%- dbdesc   = dbinfo.get('dbnames').${database}.full ;
     dburl    = dbinfo.get('urls').${database} ;
     request_base    = [] ;#num=${hitrange};srt=${sorttype};srto=${sortorder};" ;
@@ -48,30 +48,32 @@
 <a href="[% dburl %]" target="_blank">
 [%-   END -%]
      [% dbdesc | truncate(config.get('maxlength_dbname')) %]</a>
-    </div>
+    </div><!-- /.ob-catalog -->
     <div class="ob-hits">
 [% msg.maketext("Treffer") %]&nbsp;[% start_range %]-[% end_range %]&nbsp;[% msg.maketext("von") %]&nbsp;[% hits %]
-    </div>
-  </div>
+    </div><!-- /.ob-hits -->
+  </div><!-- /.ob-resultheader -->
 [% IF hits > 0 %]
   <div class="resultdrilldown">
 [% PROCESS common/subtemplate name="search_facet" %]
-  </div>
+  </div><!-- /.resultdrilldown -->
 [% END %]
   <div class="ob-resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 [%- FOREACH record IN recordlist.get_records -%]
 [%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=0 %] 
 [%- END -%]
-  <div class="ob-footer">
-[% query_args_base = "${request_base};${searchquery.to_cgi_params}" %]
+    <div class="ob-footer">
+[% query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}); # "${request_base};${searchquery.to_cgi_params}" %]
 [% PROCESS common/subtemplate name="pagination" %]
-    <div class="ob-resulttime">
+      <div class="ob-resulttime">
 in: [% resulttime %] [% msg.maketext("Sekunden") %]
-    </div>
-  </div>
-</div>
-<div class="ob-resultfooter">
+      </div><!-- /.ob-resulttime -->
+    </div><!-- /.ob-footer -->
+  </div><!-- /.ob-resultitems -->
+  <div class="ob-resultfooter">
 &nbsp;
-</div>
+  </div><!-- /.ob-resultfooter -->
 
+</div><!-- /.ob-resultlist -->
 <p/>
+<!-- end: result item -->

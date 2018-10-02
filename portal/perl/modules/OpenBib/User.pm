@@ -177,6 +177,39 @@ sub set_credentials {
     return;
 }
 
+sub update_lastlogin {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $username   = exists $arg_ref->{username}
+        ? $arg_ref->{username}             : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if ($username){
+        # DBI: "update userinfo set pin = ? where username = ?"
+        my $userinfo = $self->get_schema->resultset('Userinfo')->single(
+            {
+                username => $username,
+            }
+        )->update({ lastlogin => \"NOW()" });
+    }
+    elsif ($self->{ID}) {
+        # DBI: "update userinfo set pin = ? where id = ?"
+        my $userinfo = $self->get_schema->resultset('Userinfo')->single(
+            {
+                id => $self->{ID},
+            }
+        )->update({ lastlogin => \"NOW()" });
+    }
+    else {
+        $logger->error("Neither username nor userid given");
+    }
+
+    return;
+}
+
 sub load_privileges {
     my ($self,$arg_ref)=@_;
 

@@ -293,6 +293,9 @@ sub authenticate {
     if (!$loginfailed) {
 
         $logger->debug("Authentication successful");
+
+	$user->update_lastlogin({ username => $username });
+	
         $result_ref->{success} = 1;
 
         my $userid = $user->get_userid_for_username($username);

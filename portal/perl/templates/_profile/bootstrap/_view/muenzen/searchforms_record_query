@@ -209,38 +209,36 @@ $(document).ready(function(){
     this_searchfield = 'id';
 -%]
 
-<div class="form-group row">
-   <label class="col-sm-2 col-form-label" for="autocomplete_[% cgiparam %]">[% msg.maketext("Id") %]</label>
-   <div class="col-sm-10">
-     <input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" maxlength="200" />
+<div class="form-group">
+   <label for="autocomplete_[% cgiparam %]">[% msg.maketext("Id") %]</label>
+   <input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" maxlength="200" />
 </div>
 
 [% IF available_searchfields.freesearch.active %]
 [%- cgiparam = searchfield.freesearch.prefix ;
     this_searchfield = 'freesearch';
 -%]
-<div class="form-group row">
-     <label class="col-sm-2 col-form-label" for="autocomplete_[% cgiparam %]">[% msg.maketext("Freie Suche") %]</label>
-     <div class="col-sm-10">
-        <input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" maxlength="200" />
+<div class="form-group">
+   <label for="autocomplete_[% cgiparam %]">[% msg.maketext("Freie Suche") %]</label>
+   <input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" maxlength="200" />
 </div>
 [% END %]
 
 [%- cgiparam = searchfield.title.prefix;
     this_searchfield = 'title';
  -%]
-<div class="ym-fbox-text">
-<label for="[% cgiparam %]">[% msg.maketext("Legende") %]</label>
-<input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" class="keyboardInput"/>
+<div class="form-group">
+   <label for="[% cgiparam %]">[% msg.maketext("Legende") %]</label>
+   <input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" class="keyboardInput"/>
 </div>
 
 [% IF available_searchfields.person.active %]
 [%- cgiparam = searchfield.person.prefix;
     this_searchfield = 'person';
  -%]
-<div class="ym-fbox-text">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0100-muenzen") %]</label>
-<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" size="30" maxlength="200" />
+<div class="form-group">
+   <label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0100-muenzen") %]</label>
+   <input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" size="30" maxlength="200" />
 </div>
 [% END %]
 
@@ -248,9 +246,9 @@ $(document).ready(function(){
 [%- cgiparam = searchfield.subject.prefix;
     this_searchfield = 'subject';
  -%]
-<div class="ym-fbox-text">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0710-muenzen") %]</label>
-<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<div class="form-group">
+   <label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0710-muenzen") %]</label>
+   <input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 [% END %]
 
@@ -258,35 +256,35 @@ $(document).ready(function(){
 [%- cgiparam = searchfield.classification.prefix;
     this_searchfield = 'classification';
  -%]
-<div class="ym-fbox-text">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0700-muenzen") %]</label>
-<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<div class="form-group">
+   <label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0700-muenzen") %]</label>
+   <input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 [% END %]
 
 [%- cgiparam = searchfield.mediatypestring.prefix;
     this_searchfield = 'mediatypestring';
  -%]
-<div class="ym-fbox-text">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0800-muenzen") %]</label>
-<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]">
+<div class="form-group">
+   <label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0800-muenzen") %]</label>
+   <input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]">
 </div>
 
 [%- cgiparam      = searchfield.t0619.prefix;
     this_searchfield = 't0619';
  -%]
-<div class="ym-fbox-text">
-<label for="[% cgiparam %]">[% msg.maketext("Regierungsjahr (Alexandrinische Münzen)") %]</label>
-<input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="4" maxlength="4" />
+<div class="form-group">
+   <label for="[% cgiparam %]">[% msg.maketext("Regierungsjahr (Alexandrinische Münzen)") %]</label>
+   <input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="4" maxlength="4" />
 </div>
 
 [% IF available_searchfields.year.active %]
 [%- cgiparam      = searchfield.year.prefix;
     this_searchfield = 'year';
  -%]
-<div class="ym-fbox-text">
-<label for="[% cgiparam %]">[% msg.maketext("Jahr der Datierung") %]</label>
-<input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="4" maxlength="4" />
+<div class="form-group">
+   <label for="[% cgiparam %]">[% msg.maketext("Jahr der Datierung") %]</label>
+   <input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="4" maxlength="4" />
 </div>
 
 [%- cgiparam      = searchfield.year.prefix -%]
@@ -296,69 +294,67 @@ $(document).ready(function(){
 [%- cgiparam_to   = "${cgiparam}_to";
     this_searchfield_to = 'year_to';
    -%]
-<div class="ym-fbox-text">
-<label for="[% cgiparam_from %]">[% msg.maketext("Zeitraum der Datierung") %] [% msg.maketext("von") %]</label>
-<input id="[% cgiparam_from %]" type="text" name="[% cgiparam_from %]" value="[% searchquery.cgiparam_from.val | html %]" size="4" maxlength="4" />
+<div class="form-group">
+   <label for="[% cgiparam_from %]">[% msg.maketext("Zeitraum der Datierung") %] [% msg.maketext("von") %]</label>
+   <input class="form-control" id="[% cgiparam_from %]" type="text" name="[% cgiparam_from %]" value="[% searchquery.cgiparam_from.val | html %]" size="4" maxlength="4" />
 </div>
-<div class="ym-fbox-text">
-<label for="[% cgiparam_to %]">[% msg.maketext("Zeitraum der Datierung") %] [% msg.maketext("bis") %]</label>
-<input id="[% cgiparam_to %]" type="text" name="[% cgiparam_to %]" value="[% searchquery.cgiparam_to.val | html %]" size="4" maxlength="4" />
+
+<div class="form-group">
+   <label for="[% cgiparam_to %]">[% msg.maketext("Zeitraum der Datierung") %] [% msg.maketext("bis") %]</label>
+   <input class="form-control" id="[% cgiparam_to %]" type="text" name="[% cgiparam_to %]" value="[% searchquery.cgiparam_to.val | html %]" size="4" maxlength="4" />
 </div>
 [% END %]
 
 [%- cgiparam = searchfield.t0338.prefix;
     this_searchfield = 't0338';
  -%]
-<div class="ym-fbox-text">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0338-muenzen") %]</label>
-<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<div class="form-group">
+   <label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0338-muenzen") %]</label>
+   <input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
 [%- cgiparam = searchfield.t0410.prefix;
     this_searchfield = 't0410';
  -%]
-<div class="ym-fbox-text">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0410-muenzen") %]</label>
-<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<div class="form-group">
+   <label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0410-muenzen") %]</label>
+   <input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
 [%- cgiparam = searchfield.t0531.prefix;
     this_searchfield = 't0531';
  -%]
-<div class="ym-fbox-text">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0531-muenzen") %]</label>
-<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<div class="form-group">
+   <label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0531-muenzen") %]</label>
+   <input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
 
 [%- cgiparam = searchfield.t0533.prefix;
     this_searchfield = 't0533';
  -%]
-<div class="ym-fbox-text">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0533-muenzen") %]</label>
-<input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<div class="form-group">
+   <label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0533-muenzen") %]</label>
+   <input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
 [%- cgiparam = searchfield.t0508.prefix;
     this_searchfield = 't0508';
  -%]
-<div class="ym-fbox-text">
-<label for="[% cgiparam %]">[% msg.maketext("T0508-muenzen") %]</label>
-<input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<div class="form-group">
+   <label for="[% cgiparam %]">[% msg.maketext("T0508-muenzen") %]</label>
+   <input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
 [%- cgiparam = searchfield.t0600.prefix;
     this_searchfield = 't0600';
  -%]
-<div class="ym-fbox-text">
-<label for="[% cgiparam %]">[% msg.maketext("T0600-muenzen") %]</label>
-<input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<div class="form-group">
+   <label for="[% cgiparam %]">[% msg.maketext("T0600-muenzen") %]</label>
+   <input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
 <p/>
 
-<div class="ym-fbox-button">
-<input type="submit" title="[% msg.maketext("Hier suchen Sie in der Sammlung") %]" value="[% msg.maketext("Suchen") %]" />
-</div>
+<button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Suchen") %]</button>
 
-</fieldset>

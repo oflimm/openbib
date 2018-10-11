@@ -18,7 +18,7 @@
    END ;
 %]
 
-<select name="profile" class="ob-selectbox">
+<select name="profile" class="form-control ob-selectbox">
    
 [%# IF usersearchprofiles.size > 0 %]
 [% IF usersearchprofiles  %]

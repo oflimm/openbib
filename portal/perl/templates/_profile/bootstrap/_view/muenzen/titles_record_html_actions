@@ -2,7 +2,7 @@
    IF normdata.${'T0508'} ;
 %]
 
-<div class="ob-reuse_data"><!-- Begin Reuse -->
+<div class="card"><!-- Begin Reuse -->
 
 <style>
 .ob-cloud {
@@ -11,7 +11,9 @@
 
 </style>
 
-<div class="ob-category_header"><span id="ob-reuse_508_toggle">[% msg.maketext("T0508-muenzen") %]:&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div><p/>
+<div class="card-header"><span id="ob-reuse_508_toggle">[% msg.maketext("T0508-muenzen") %]:&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+
+<div class="card-body">
 
 <ul id="ob-reuse_508_toggle_do">
 [%
@@ -24,16 +26,19 @@
       END ;
 %]
 </ul>
-</div><!-- End Reuse -->
+</div><!-- End body -->
+</div>
 
 <p/>
 [% END %]
 
 [% IF normdata.${'T0333'} %]
 
-<div class="ob-reuse_data"><!-- Begin Reuse -->
+<div class="card"><!-- Begin Reuse -->
 
-<div class="ob-category_header"><span id="ob-reuse_333_toggle">[% msg.maketext("T0333-muenzen") %]:&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div><p/>
+<div class="card-header"><span id="ob-reuse_333_toggle">[% msg.maketext("T0333-muenzen") %]:&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div><p/>
+
+<div class="card-body">
 
 <ul id="ob-reuse_333_toggle_do">
 [%
@@ -46,16 +51,18 @@
       END ;
 %]
 </ul>
-</div><!-- End Reuse -->
+</div><!-- End body -->
+</div>
 
 [% END %]
 
 [% IF normdata.${'T0336'} %]
 
-<div class="ob-reuse_data"><!-- Begin Reuse -->
+<div class="card"><!-- Begin Reuse -->
 
-<div class="ob-category_header"><span id="ob-reuse_336_toggle">[% msg.maketext("T0336-muenzen") %]:&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div><p/>
+<div class="card-header"><span id="ob-reuse_336_toggle">[% msg.maketext("T0336-muenzen") %]:&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div><p/>
 
+<div class="card-body">
 <ul id="ob-reuse_336_toggle_do">
 [%
       referenzen = normdata.${'T0336'}.first.content.split(' ; ');
@@ -67,8 +74,10 @@
       END ;
 %]
 </ul>
-</div><!-- End Reuse -->
+</div><!-- End body -->
+</div>
 <p/>
+
 [% END %]
 
 

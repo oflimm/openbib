@@ -99,6 +99,7 @@ my $blacklist_ref = {
     'inst166master' => 1,
     'inst137' => 1,
     'inst301' => 1,
+    'inst301retro' => 1,
     'inst303' => 1,
     'inst304' => 1,
     'inst305' => 1,
@@ -424,9 +425,9 @@ sub threadC {
     
     ##############################
     
-    $logger->info("### Master: inst301");
+    $logger->info("### Master: inst301 und inst301retro");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst301'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst301','inst301retro'] });
     
     ##############################
     

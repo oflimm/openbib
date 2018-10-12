@@ -69,6 +69,10 @@ sammlungen = {
    'Sammlung Westerholt' => 'http://www.ub.uni-koeln.de/sammlungen/westerholt/'
    'Sammlung Wilhelm Alff' => 'http://www.ub.uni-koeln.de/sammlungen/alff/'
    'Sammlung Wilhelmine von Westerholt' => 'http://www.ub.uni-koeln.de/sammlungen/westerholt/'
+   'Sammlung Gustav von Mevissen' => 'http://mevissen.ub.uni-koeln.de/'
+   'Sammlung Melanie von Mevissen' => 'http://mevissen.ub.uni-koeln.de/'
+   'Sammlung Mathilde von Mevissen' => 'http://mevissen.ub.uni-koeln.de/'
+   'Sammlung Rudolf Hilferding' => 'http://hilferding.ub.uni-koeln.de/'
 };
 
 FOREACH sammlungsvermerk IN normdata.${"T4700"} ;

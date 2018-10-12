@@ -192,7 +192,7 @@ $(document).ready(function(){
 [% END %]
 
 
-    <form class="form-inline my-2 my-lg-0" method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">    
+    <form class="form-inline my-2 my-lg-0 pr-2" method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">    
      <input type="hidden" name="num"        value="20" />
      <input type="hidden" name="page"       value="1" />
 
@@ -209,7 +209,6 @@ $(document).ready(function(){
     </form>
     [% END %]
     [% IF config.get('lang').size > 1 %]
-    &nbsp;&nbsp;
     <select class="selectpicker" data-width="fit">
      [% lang_desc = {
        'en' = msg.maketext("English")

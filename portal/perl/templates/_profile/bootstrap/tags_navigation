@@ -1,0 +1,38 @@
+[%#-
+#######################################################################
+#
+# Templatename: litlists_navigatio
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Unternavigations-Menu 
+#
+# Parameter active_menu zur Kennzeichnung aktiver Menupunkte:
+#
+# searchmask
+# cloud
+# info
+#
+#######################################################################
+-%]
+<div class="card">
+<div class="card-header">[% msg.maketext("Tags") %]</div>
+<div class="card-body">
+<nav class="navbar">
+ <ul class="navbar-nav">
+[% IF layout_param.active_submenu == "tags_names" %]
+  <li class="nav-item active"><strong>[% msg.maketext("Alle Tags") %]</strong></li>
+[% ELSE %]
+   <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('tags_loc') %]/names.html?l=[% lang %]">[% msg.maketext("Alle Tags") %]</a></li>
+[% END %]
+[% IF layout_param.active_submenu == "tags_names_recent" %]
+  <li class="nav-item active"><strong>[% msg.maketext("Zuletzt angelegt") %]</strong></li>
+[% ELSE %]
+   <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('tags_loc') %]/names/recent.html?l=[% lang %];num=20">[% msg.maketext("Zuletzt angelegt") %]</a></li>
+[% END %]
+ </ul>
+</nav>
+</div>
+</div>

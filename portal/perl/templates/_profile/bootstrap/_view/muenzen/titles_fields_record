@@ -64,6 +64,7 @@ IF field == '0800' ;
     END ;
 
     layout_param = {
+      'main_template' = 'titles_fields_record_html'
       'active_menu' = 'register'
       'breadcrumb' = [
           {
@@ -83,7 +84,7 @@ IF field == '0800' ;
     };
 
 -%]
-[%- PROCESS common/subtemplate name="layout_html" content="titles_fields_record_html" -%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
 [%- ELSIF representation == 'json' -%]
 [%- PROCESS common/subtemplate name="titles_fields_record_json" -%]
 [%- ELSIF representation == 'include' -%]

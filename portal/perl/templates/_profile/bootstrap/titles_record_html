@@ -33,10 +33,6 @@
     END;
   END;
 
-  IF record.record_exists;
-    record_exists = 1;
-  END;
-
   bibkey = record.to_bibkey ;
   isbn   = normdata.${"T0540"}.first.content.replace('-','') ;
   IF NOT isbn ;
@@ -51,9 +47,6 @@
   title      = msg.maketext("Titel-Information: [_1] in Katalog [_2]",recordname,dbdesc)
 
 -%]
-[% PROCESS common/subtemplate name="std_header" unapi=1 LinkedData="title" %]
-
-<body>
 
 <!--               <script type="text/javascript">
                         $(function(){
@@ -104,70 +97,6 @@ $(document).ready(function(){
 
 </script>
 
-<!-- skip link navigation -->
-<ul class="ym-skiplinks">
-	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
-	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
-</ul>
-
-<div class="ym-wrapper">
-  <div class="ym-wbox">
-
-[% PROCESS common/subtemplate name="corporate_banner" %] 
-
-[% PROCESS common/subtemplate name="mainnavigation" %]
-
-    <!-- begin: main content area #main -->
-    <div id="main">
-
-[% PROCESS common/subtemplate name="search_title_field" %]
-[%-
-    used_fields = [] ;
-    searchquery = session.get_all_searchqueries.first ;
--%]
-
-   <div class="ob-functional_nav">
-      <div class="ob-breadcrumb"> 
-       <ul>
-         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
-[% IF searchquery %]
-         <li><a href="[% path_prefix%]/[% config.get('search_loc')%].html?[% queryoptions.to_cgi_querystring({ exclude = ['page'] }) %];page=1;[% searchquery.to_cgi_querystring %]">[% msg.maketext("Recherche") %]:&nbsp;
-[%- 
-    FOREACH field IN searchquery.get_searchquery.keys ;
-       fieldname    = field_map.${field};
-       fieldcontent = searchquery.get_searchquery.${field}.val;
-       NEXT IF NOT fieldcontent ;
-       used_fields.push( "<b>${fieldname}</b>:${fieldcontent}" );
-     END;
--%]
-<em>[% used_fields.join(' ; ') %]</em></a>
-        </li>
-[% END %]
-        <li><a href="#" class="lastitem">[% msg.maketext("Titel") %]</a></li>
-      </ul>
-    </div>
-[% IF record_exists %]
-    <div class="ob-representation">
-<a class="ob-representation_rdf" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
-<a class="ob-representation_json" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
-    </div>
-[% END %]
-   </div>
-
-    <!-- grid -->
-    <div class="ym-grid linearize-level-1">
-      <div class="ym-g33 ym-gr">
-        <div class="ym-gbox" class="ym-clearfix">
-[% IF record_exists %]
-[%   PROCESS common/subtemplate name="titles_record_html_actions" %]
-[% END %]
-        </div><!-- End User-Specific -->
-      </div>
-
-      <!-- end: grid right -->
-      <!-- begin: grid left -->
-      <div class="ym-g66 ym-gl">
-        <div class="ym-gbox" class="ym-clearfix">
 
 <div class="ob-fulltitle"><!-- Begin Fulltitle -->
 
@@ -182,17 +111,9 @@ $(document).ready(function(){
 [%     dbinfo.get('dbnames').${database}.short %]
 [%   END %]
 </div>
-<div class="ym-grid linearize-level-2 details"><!-- Begin Details -->
+<div class="row details"><!-- Begin Details -->
 <!-- Title begins here -->
-<div class="ym-g33 ym-gr ob-titleimage"><!-- Begin Images -->
-  <div class="ym-gbox">
-[% PROCESS common/subtemplate name="titles_record_html_images" %]
-  </div>
-</div><!-- End Images -->
-
-<div class="categories ym-g66 ym-gl"><!-- Begin Categories -->
-
-  <div class="ym-gbox-left ob-title_record">
+<div class="col-md-9 categories ob-title_record"><!-- Begin Categories -->
 
 [% IF record_exists %]
 [%   PROCESS common/subtemplate name="visible_categories_title" %]
@@ -206,9 +127,13 @@ $(document).ready(function(){
 [% IF config.get('unAPI') %]
 <abbr class="unapi-id" title="[% record.database %]:[% record.id %]"></abbr>
 [% END %]
-  </div> <!-- End ym-grid -->
-</div><!-- End Categories -->
-</div><!-- End Details -->
+</div><!-- End Col Categories -->
+
+<div class="col-md-3 ob-titleimage"><!-- Begin Images -->
+[% PROCESS common/subtemplate name="titles_record_html_images" %]
+</div><!-- End Col Images -->
+
+</div><!-- End Row Details -->
 
 <div class="ob-bottominfo"><!-- Begin Bottominfo -->
 
@@ -424,12 +349,3 @@ href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method
 
 <script src="http://books.google.com/books?jscmd=viewapi&bibkeys=ISBN:[% isbn %]&callback=addFullCover"></script>
 -->
-        </div>
-        <div class="ym-ie-clearing">&nbsp;</div>
-        <!-- End: IE Column Clearing -->
-      </div>
-     </div> <!-- end: ym-column -->
-    </div>
-    <!-- end: #main -->
-
-[% PROCESS common/subtemplate name="std_footer" %]

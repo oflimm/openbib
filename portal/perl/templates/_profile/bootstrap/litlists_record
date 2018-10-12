@@ -6,8 +6,7 @@
       'main_template' = 'litlists_record_html'
       'sidebar_template' = 'litlists_navigation'
 
-      'active_submenu' = 'database'
-      'database' = databaseinfo.dbname
+      'active_submenu' = 'litlists_all'
 
       # 'active_menu' = ''
       'breadcrumb' = [
@@ -37,7 +36,7 @@
        ]
     };
 -%]
-[%- PROCESS common/subtemplate name="layout_html" content="litlists_record_html" -%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
 [%- ELSIF representation == 'rdf' -%]
 [%- PROCESS common/subtemplate name="litlists_record_rdf" -%]
 [%- ELSIF representation == 'json' -%]

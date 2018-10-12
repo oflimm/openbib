@@ -30,7 +30,7 @@
 
 <ul class="list-group">
 [% FOREACH item IN browselist %]
-<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %]?db=[% database %];[% config.get('searchfield').${searchfield}.prefix %]=[% uri_escape(item) %]">[% item %]</a></li>
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %]?[% config.get('searchfield').${searchfield}.prefix %]=[% uri_escape(item) %]">[% item %]</a></li>
 [% END %]
 </ul>
 

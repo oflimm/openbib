@@ -30,17 +30,6 @@ $(document).ready(function(){
 });
 </script>
 
-<script>
-$('body').cookiefy({
-    backgroundColor: 'dimgray',
-    color: 'ghostwhite',
-    fontFamily: 'Helvetica',
-    fontSize: '1rem',
-    borderTop: '1px solid #000',
-    closeButtonUrl: 'https://cdn3.iconfinder.com/data/icons/interface/100/close_button_1-512.png'
-});
-</script>
-
 <nav id="ob-fixed_navigation" [% IF without_navigation_search %]class="ob-hidden"[% END %]>
 
 [% PROCESS common/subtemplate name="searchforms_suggestions" %]

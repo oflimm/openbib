@@ -1,3 +1,5 @@
+[%# PROCESS common/subtemplate name="cookie_warning" %]
+
 <!-- Begin Template: corporate_banner -->
 [% IF NOT viewdbs ;
      viewdbs = config.get_dbs_of_view(view) ;

@@ -12,13 +12,13 @@
 #######################################################################
 -%]
 <div class="card h-100">
-<div class="card-header">OpenBib</div>
+<div class="card-header"><h4>OpenBib</h4></div>
 
 <div class="card-body">
 
 [% titlecount = config.get_number_of_titles({profile = sysprofile}) %]
 
-<h3><img style="vertical-align:bottom" src="[% config.get('chart_img') %]" alt="Metrics" />&nbsp[% msg.maketext("Kennzahlen") %]</h3>
+<h5><img style="vertical-align:bottom" src="[% config.get('chart_img') %]" alt="Metrics" />&nbsp[% msg.maketext("Kennzahlen") %]</h5>
 
 <style>
 .ob-right_align td {

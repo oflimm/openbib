@@ -34,8 +34,8 @@ bklist = bklist.sort;
 [%# USE dumper;dumper.dump(thisbklist)%]
 <h4>[% msg.maketext("Basisklassifikation - Hauptgruppen") %]</h4>
 
-<ul class="topiclist">
+<ul class="list-group">
 [% FOREACH bk IN bklist %]
-<li>[% bk %] / <a href="[% path_prefix %]/[% config.get('browse_loc') %]/bks/id/[% bk %].html?l=[% lang %]">[% bks.${bk} %]</a></li>
+<li class="list-group-item">[% bk %] / <a href="[% path_prefix %]/[% config.get('browse_loc') %]/bks/id/[% bk %].html?l=[% lang %]">[% bks.${bk} %]</a></li>
 [% END %]
 </ul>

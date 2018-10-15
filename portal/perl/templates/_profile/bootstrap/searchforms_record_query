@@ -229,8 +229,11 @@
 </div>
 [% END %]
 <!-- <tr><td class="ob-field">[% msg.maketext("Eingrenzung auf Gesamttitel (Serien)") %]</td><td class="ob-field">und</td><td><input class="form-control" id="[% cgiparam %]" type="checkbox" name="serien" /></td><td></td></tr> -->
+
+<hr/>
+
 <div class="form-group">
-<label for="[% cgiparam %]">[% msg.maketext("in:") %]</label>
+<label for="[% cgiparam %]">[% msg.maketext("Suchprofil") %]</label>
 [% PROCESS common/subtemplate name="searchforms_record_profile" %]
 </div>
 

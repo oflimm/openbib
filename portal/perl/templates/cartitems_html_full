@@ -88,7 +88,7 @@ FOREACH category IN categories;
          END ;
          wikipediaurl = "http://${qopts.l}.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel";
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?searchall=1;verf=%22${item.content}%22";
-         localurl  = "${path_prefix}/${config.get('indexes_loc')}?database=${record.database};searchsingleaut=${thisid}";
+         localurl  = "${path_prefix}/databases/id/${record.database}/persons/id/${thisid}.html";
          content   = "${rssfeed}<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=520;url=${uri_escape(wikipediaurl)}\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
@@ -102,7 +102,7 @@ FOREACH category IN categories;
              rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_kor/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?searchall=1;kor=%22${item.content}%22";
-         localurl  = "${path_prefix}/${config.get('indexes_loc')}?database=${record.database};searchsinglekor=${thisid}";
+         localurl  = "${path_prefix}/databases/id/${record.database}/corporatebodies/id/${thisid}";
          content   = "${rssfeed}<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE "T0331";
@@ -173,7 +173,7 @@ FOREACH category IN categories;
              rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_swt/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?searchall=1;swt=%22${item.content}%22";
-         localurl  = "${path_prefix}/${config.get('indexes_loc')}?database=${record.database};searchsingleswt=${thisid}";
+         localurl  = "${path_prefix}/databases/id/${record.database}/subjects/id/${thisid}.html?l=${lang}";
          content   = " ${rssfeed}<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE "T0700";
@@ -186,7 +186,7 @@ FOREACH category IN categories;
          IF activefeed.5 ;
              rssfeed = "<a href=\"http://${config.get('loadbalancerservername')}${path_prefix}/${config.get('connector_rss_loc')}/neuzugang_nach_sys/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.get('rssfeed_img')}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
-         localurl  = "${path_prefix}/${config.get('indexes_loc')}?database=${record.database};searchsinglenot=${thisid}";
+         localurl  = "${path_prefix}/databases/id/${record.database}/classifications/id/${thisid}.html?l=${lang}";
          content   = " ${rssfeed}<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE "T1600";

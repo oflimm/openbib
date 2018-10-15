@@ -133,7 +133,7 @@
 <td>[%-  IF clusterinfo.active == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td>
 <td align="center">
 [%- IF user.has_right({scope = 'admin_clusters', right = 'right_update'}) -%]
-<td><form method="post" action="[% path_prefix %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %]"><input type="hidden" name="_method" value="PUT"/><input type="hidden" name="active" value="[% IF clusterinfo.active == 0 %]true[% ELSE %]false[% END %]"/><input type="submit" value="[% IF clusterinfo.active == 0 %][% msg.maketext("An") %][% ELSE %][% msg.maketext("Aus") %][% END %]"/></form>
+<form method="post" action="[% path_prefix %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %]"><input type="hidden" name="_method" value="PUT"/><input type="hidden" name="active" value="[% IF clusterinfo.active == 0 %]true[% ELSE %]false[% END %]"/><input type="submit" value="[% IF clusterinfo.active == 0 %][% msg.maketext("An") %][% ELSE %][% msg.maketext("Aus") %][% END %]"/></form>
 [%- END -%]
 </td>
 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>

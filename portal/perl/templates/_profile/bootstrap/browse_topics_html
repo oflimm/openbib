@@ -18,7 +18,7 @@
 <h4>[% msg.maketext("Themengebiete") %]</h4>
 
 <p />
-<ul class="topiclist">
+<ul class="list-group">
 [%- FOREACH topic IN user.get_topics -%]
 [% titlecount = 0 ;
    thisclassifications = user.get_classifications_of_topic({ type => 'bk', topicid => topic.id});
@@ -26,7 +26,7 @@
      titlecount = titlecount + thisbklist.${classification};
   END ;
 %]
-<li><a style="font-weight:bold;font-size:1.2em;" href="[% path_prefix %]/[% config.get('browse_loc') %]/topics/id/[% topic.id %].html?l=[% lang %]">[% topic.name %]</a> ([% msg.maketext("[_1] Titel in [_2] Gruppen, [_3] Literaturlisten",titlecount,thisclassifications.size,topic.litlistcount.public) %])</li>
+<li class="list-group-item"><a style="font-weight:bold;font-size:1.2em;" href="[% path_prefix %]/[% config.get('browse_loc') %]/topics/id/[% topic.id %].html?l=[% lang %]">[% topic.name %]</a> ([% msg.maketext("[_1] Titel in [_2] Gruppen, [_3] Literaturlisten",titlecount,thisclassifications.size,topic.litlistcount.public) %])</li>
 [% END %]
 </ul>
 

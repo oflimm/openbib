@@ -133,7 +133,7 @@ $(document).ready(function(){
 </script>
 
 <p>
-<a href="#" id="showall_db_toggle">Alle Datenbanken anzeigen</a>
+<a href="#" id="showall_db_toggle">[% msg.maketext("Alle Datenbanken anzeigen") %]</a>
 </p>
 
 <table class="ym-full">

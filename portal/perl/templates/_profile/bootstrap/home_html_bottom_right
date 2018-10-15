@@ -13,14 +13,14 @@
 -%]
 
 <div class="card h-100">
-<div class="card-header">[% msg.maketext("Weitere Informationsquellen") %]</div>
+<div class="card-header"><h4>[% msg.maketext("Weitere Informationsquellen") %]</h4></div>
 
 <div class="card-body">
 [%- IF viewdbs.size == 1 && viewdbs.first.match("^inst[0-6]") -%]
 
-<h3><img style="vertical-align:bottom" src="[% config.get('home_img') %]" alt="Bibliotheksangebote" />&nbsp;Bibliotheksangebote</h3>
+<h5><img style="vertical-align:bottom" src="[% config.get('home_img') %]" alt="Bibliotheksangebote" />&nbsp;Bibliotheksangebote</h5>
 
-<h4>[% msg.maketext("Zeitschriften der Bibliothek") %]</h4>
+<h6>[% msg.maketext("Zeitschriften der Bibliothek") %]</h6>
 
 <p>
 [% msg.maketext("Eine Aufstellung der Zeitschriften in dieser Bibliothek stellen wir
@@ -28,15 +28,15 @@ f&uuml;r Sie als [_1]E-Book[_2] bereit.","<a href=\"http://unikatalog.ub.uni-koe
 </p>
 [% END %]
 
-<h3><img style="vertical-align:bottom" src="[% config.get('global_img') %]" alt="Externe Angebote" />&nbsp;Allgemeine Informationsquellen</h3>
+<h5><img style="vertical-align:bottom" src="[% config.get('global_img') %]" alt="Externe Angebote" />&nbsp;Allgemeine Informationsquellen</h5>
 
-<h4>[% msg.maketext("Elektronische Zeitschriftenbibliothek (EZB)") %]</h4>
+<h6>[% msg.maketext("Elektronische Zeitschriftenbibliothek (EZB)") %]</h6>
 
 <p>
 [% msg.maketext("Greifen Sie fachspezifisch auf alle [_1]freien und lizenzierten Zeitschriften[_2] zu","<a href=\"${path_prefix}/${config.get('databases_loc')}/id/ezb/${config.get('classifications_loc')}.html?l=${lang};type=cloud;access_green=1;access_yellow=1\">","</a>") %]
 </p>
 
-<h4>[% msg.maketext("Datenbank Informationssystem (DBIS)") %]</h4>
+<h6>[% msg.maketext("Datenbank Informationssystem (DBIS)") %]</h6>
 
 <p>
 [% msg.maketext("Recherchieren Sie fachspezifisch in einer Vielzahl von [_1]freien und

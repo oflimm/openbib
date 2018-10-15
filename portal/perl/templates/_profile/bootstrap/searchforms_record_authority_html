@@ -144,7 +144,7 @@ function update_gnd (){
 </div>
 
 <div class="form-group">
-<label for="[% cgiparam %]">[% msg.maketext("in:") %]</label>
+<label for="[% cgiparam %]">[% msg.maketext("Suchprofil") %]</label>
 [% PROCESS common/subtemplate name="searchforms_record_profile" %]
 </div>
 

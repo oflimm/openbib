@@ -1020,7 +1020,7 @@ sub save_eventlog_to_statisticsdb {
 
         my $isbn          = $content_ref->{isbn};
         my $dbname        = $content_ref->{database};
-        my $titleid       = $content_ref->{titleid};
+        my $titleid       = $content_ref->{titleid} || $content_ref->{id};
 
 	next if (exists $seen_title{"$dbname:$titleid"});
 

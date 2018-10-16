@@ -50,9 +50,22 @@
 <td>&nbsp;&nbsp;[% msg.maketext("davon Digital") %]</td>
 <td>[% titlecount.digitalcount.chunk(-3).join('.') %]</td>
 </tr>
+[%-
+   user_all = user.get_number_of_users ;
+   user_selfreg = user.get_number_of_selfreg_users ;
+   user_bib = user_all - user_selfreg ;
+%]
 <tr>
 <th>[% msg.maketext("Angemeldete Nutzer") %]</th>
-<td>[% user.get_number_of_users.chunk(-3).join('.') %]</td>
+<td>[% user_all.chunk(-3).join('.') %]</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;[% msg.maketext("davon mit Bibliotheksausweis") %]</td>
+<td>[% user_bib.chunk(-3).join('.') %]</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;[% msg.maketext("davon mit Mail-Adresse") %]</td>
+<td>[% user_selfreg.chunk(-3).join('.') %]</td>
 </tr>
 <tr>
 <th>[% msg.maketext("Literaturlisten") %]</th>

@@ -1128,6 +1128,22 @@ sub get_number_of_users {
     return $numofusers;
 }
 
+sub get_number_of_selfreg_users {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # DBI: "select count(userid) as rowcount from userinfo"
+    my $numofusers = $self->get_schema->resultset('Userinfo')->search_rs(
+        {
+            username => { '~' => '^.+?\@.+?\..+?$' }, # Match email
+        }
+    )->count;
+
+    return $numofusers;
+}
+
 sub get_number_of_dbprofiles {
     my ($self)=@_;
 

@@ -36,12 +36,12 @@ bklist = bklist.sort;
 
 %]
 
-[%# USE dumper;dumper.dump(thisbklist)%]
+[%# USE dumper;dumper.dump(bklist) %]
 <h4>[% bks.${bkid} %]</h4>
 
-<ul class="topiclist">
+<ul class="list-group">
 [% FOREACH bk IN bklist %]
 [% NEXT IF NOT thisbklist.${bk} %]
-<li>[% bk %] / <a href="[% path_prefix %]/[% config.get('search_loc') %]?l=[% lang %];profile=[% searchprofileid_of_view %];ft4100=[% bk %]">[% bks.${bk} %]</a></li>
+<li class="list-group-item">[% bk %] / <a href="[% path_prefix %]/[% config.get('search_loc') %]?l=[% lang %];profile=[% searchprofileid_of_view %];ft4100=[% bk %]">[% bks.${bk} %]</a></li>
 [% END %]
 </ul>

@@ -2895,7 +2895,7 @@ function showPopupText(text, mitInfo) {
     tempText = text;
     tempInfo = mitInfo;
     for (var t = 0; t < institute.length; t++) {
-        if (institute[t].name.indexOf(text) != -1) {
+        if (institute[t].name == text) {
             var s1 = "";
             var zeiten = parse(institute[t].zeiten);
             var curTag;

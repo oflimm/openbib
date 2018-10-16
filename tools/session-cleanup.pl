@@ -126,11 +126,12 @@ my $count = 1;
 foreach my $sessioninfo ($open_sessions->all){
   my $sessionID  = $sessioninfo->sessionid;
   my $createtime = $sessioninfo->createtime;
+  my $viewname   = $sessioninfo->viewname;
 
 #  last if ($count == 10);
   $logger->info("Purging SessionID $sessionID from $createtime");
 
-  my $session = new OpenBib::Session({sessionID => $sessionID});
+  my $session = new OpenBib::Session({sessionID => $sessionID, view => $viewname });
   $session->clear_data();
 
   # Zwischengespeicherte Benutzerinformationen loeschen

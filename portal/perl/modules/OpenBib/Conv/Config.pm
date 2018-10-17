@@ -96,6 +96,37 @@ sub get {
     return $self->{$key};
 }
 
+sub analyze_index_configuration {
+    my ($self) = @_;
+
+    my $config = YAML::Syck::LoadFile("/opt/openbib/conf/convert.yml");
+    
+    my $result_ref = {};
+    foreach my $configuration (keys %{$config->{convtab}}){
+	
+	foreach my $normdatei ('person','corporatebody','subject','classification','title','holding'){
+	    foreach my $field (keys %{$config->{convtab}{$configuration}{"inverted_$normdatei"}}){
+		
+		if ($config->{convtab}{$configuration}{"inverted_$normdatei"}{$field}{'index'}){
+		    
+		    foreach my $suchfeld (keys %{$config->{convtab}{$configuration}{"inverted_$normdatei"}{$field}{'index'}}){
+			push @{$result_ref->{$configuration}{$suchfeld}}, {
+			    'authority' => $normdatei,
+			    'field'     => $field,
+			};
+			
+		    }
+		    
+		} 
+		
+	    }
+	    
+	}    
+    }
+
+    return $result_ref;
+}
+
 1;
 __END__
 

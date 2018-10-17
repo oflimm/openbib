@@ -93,6 +93,7 @@ sub show_record {
     
     my $statistics  = new OpenBib::Statistics();
     my $utils       = new OpenBib::Template::Utilities;
+    my $convconfig  = new OpenBib::Conv::Config;
 
     my $viewdesc      = $config->get_viewdesc_from_viewname($view);
     
@@ -104,6 +105,7 @@ sub show_record {
         viewdesc      => $viewdesc,
         statistics    => $statistics,
         utils         => $utils,
+        convconfig    => $convconfig,
     };
 
     my $templatename = ($stid && $stid ne "default")?"tt_info_".$stid."_tname":"tt_info_tname";

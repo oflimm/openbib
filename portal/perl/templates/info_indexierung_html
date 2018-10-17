@@ -105,7 +105,8 @@
 [%
    fields = [];
    FOREACH field IN configuration.${dbconfig}.${searchfield} ;
-     fields.push("${field.field} (${field.authority})");
+     this_desc = norm_desc.${field.authority};
+     fields.push("${field.field} (${this_desc})");
    END;
 %]
 

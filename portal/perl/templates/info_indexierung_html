@@ -68,12 +68,14 @@
 
 <h4>Standardkonfiguration</h4>
 
+[% PROCESS common/subtemplate name="search_title_field" view="take_uppermost_config" %] 
+
 <dl>
 
 [% FOREACH searchfield IN configuration.${"default"}.keys.sort %]
 
 
-<dt>[% searchfield %]</dt>
+<dt>[% IF field_map.${searchfield}.defined %][% searchfield %]: [% field_map.${searchfield} %][% ELSE %][% searchfield %][% END %]</dt>
 
 [%
    fields = [];
@@ -93,6 +95,9 @@
 
 [% FOREACH dbconfig IN configuration.keys.sort %]
 [% NEXT IF dbconfig == 'default' %]
+
+[% PROCESS common/subtemplate name="search_title_field" view=dbconfig %] 
+
 <h4>[% dbinfo.get('dbnames').${dbconfig}.full  %] (DB: [% dbconfig %])</h4>
 
 <dl>
@@ -100,7 +105,7 @@
 [% FOREACH searchfield IN configuration.${dbconfig}.keys.sort %]
 
 
-<dt>[% searchfield %]</dt>
+<dt>[% IF field_map.${searchfield}.defined %][% searchfield %]: [% field_map.${searchfield} %][% ELSE %][% searchfield %][% END %]</dt>
 
 [%
    fields = [];

@@ -16,7 +16,7 @@
 
  <ul>
 [% IF active_submenu == "all" %]
-  <li class="active"><strong>Alle Digitalisate</strong></li>
+  <li class="active"><strong>Alle Titel</strong></li>
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/titles.html?l=[% lang %]">Alle Digitalisate</a></li>
 [% END %]

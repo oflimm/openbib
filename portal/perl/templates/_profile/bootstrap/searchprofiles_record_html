@@ -31,11 +31,7 @@
      dbname = databases.${dbdesc} ;
      locationid = dbinfo.get('locationid').${dbname};
 %]
-[%   IF locationid %]
-<li><a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locationid %].html?l=[% lang %]">[% dbdesc %]</a></li>
-[%   ELSE %]
-<li>[% dbdesc %]</li>
-[%   END %]
+<li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% dbname %].html?l=[% lang %]">[% dbdesc %]</a></li>
 [% END %]
 </ul>
 </td>

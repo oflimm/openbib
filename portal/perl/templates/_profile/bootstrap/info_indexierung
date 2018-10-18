@@ -1,16 +1,14 @@
 [%- IF representation == '' || representation == 'html' ;
     layout_param = {
+      'main_template' = 'info_indexierung_html'
 
-      'main_template' = 'info_datenschutz_html'
-
-      #'active_menu' = 'info'
       'breadcrumb' = [
           {
              desc = msg.maketext('Start')
 	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
 	  },
 	  {
-	     desc = msg.maketext('Datenschutzerklärung')
+	     desc = msg.maketext('Indexierung')
 	     url  = '#'
 	     current = 1
 	  }

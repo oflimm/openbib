@@ -1,5 +1,8 @@
 [%- IF representation == '' || representation == 'html' ;
     layout_param = {
+
+      'main_template' = 'info_credits_html'
+
       #'active_menu' = 'info'
       'breadcrumb' = [
           {
@@ -14,9 +17,7 @@
       ]
     };
 -%]
-[%- PROCESS common/subtemplate name="layout_html" content="info_credits_html" -%]
-[%- ELSIF representation == 'mobile' -%]
-[%- PROCESS common/subtemplate name="info_credits_mobile" -%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]
 [%- END -%]

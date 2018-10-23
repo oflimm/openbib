@@ -9,6 +9,14 @@ while (<>){
 
     my $is_article = 0;
 
+    if (defined $title_ref->{fields}{'0028'}){
+      foreach my $item_ref (@{$title_ref->{fields}{'0028'}}){
+          if ($item_ref->{content} =~/^A/i){
+              $is_article = 1;
+          }
+      }
+    }
+
     if (defined $title_ref->{fields}{'0800'}){
       foreach my $item_ref (@{$title_ref->{fields}{'0800'}}){
           if ($item_ref->{content} =~/Aufsatz/i){
@@ -16,7 +24,7 @@ while (<>){
           }
       }
     }
-
+    
     if (defined $title_ref->{fields}{'0590'}){
 	$is_article = 1;
     }

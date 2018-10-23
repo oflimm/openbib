@@ -202,11 +202,11 @@ my $statisticsdbh
 $logger->info("### $database: Popularitaet fuer Titel dieses Kataloges bestimmen");
 
 # Popularitaet
-my $request=$statisticsdbh->prepare("select id, count(id) as idcount from titleusage where origin=1 and dbname=? group by id");
+my $request=$statisticsdbh->prepare("select titleid, count(titleid) as idcount from titleusage where origin=1 and dbname=? group by titleid");
 $request->execute($database);
 
 while (my $res    = $request->fetchrow_hashref) {
-    my $id      = $res->{id};
+    my $id      = $res->{titleid};
     my $idcount = $res->{idcount};
     $listitemdata_popularity{$id}=$idcount;
 }

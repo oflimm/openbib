@@ -260,7 +260,7 @@ CREATE INDEX titleusage_tstamp_day ON titleusage (tstamp_day);
 CREATE INDEX titleusage_viewname ON titleusage (viewname);
 CREATE INDEX titleusage_isbn ON titleusage (isbn);
 CREATE INDEX titleusage_dbname ON titleusage (dbname);
-CREATE INDEX titleusage_id ON titleusage (id);
+CREATE INDEX titleusage_titleid ON titleusage (titleid);
 CREATE INDEX titleusage_origin ON titleusage (origin);
 
 CREATE TRIGGER partition_trg BEFORE INSERT ON titleusage FOR EACH ROW EXECUTE PROCEDURE trg_partition('month');

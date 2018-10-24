@@ -36,7 +36,7 @@ CREATE TABLE titleusage (
  viewname     TEXT,
  isbn         TEXT,
  dbname       TEXT NOT NULL,
- id           TEXT NOT NULL,
+ titleid           TEXT NOT NULL,
  origin       SMALLINT
 );
 
@@ -70,6 +70,7 @@ CREATE TABLE eventlogjson (
 
 drop table IF EXISTS searchterms;
 CREATE TABLE searchterms (
+ id           BIGSERIAL,
  sid          BIGINT,
 
  tstamp       TIMESTAMP,

@@ -23,6 +23,13 @@ __PACKAGE__->table("searchterms");
 
 =head1 ACCESSORS
 
+=head2 id
+
+  data_type: 'bigint'
+  is_auto_increment: 1
+  is_nullable: 0
+  sequence: 'searchterms_id_seq'
+
 =head2 sid
 
   data_type: 'bigint'
@@ -67,6 +74,13 @@ __PACKAGE__->table("searchterms");
 =cut
 
 __PACKAGE__->add_columns(
+  "id",
+  {
+    data_type         => "bigint",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "searchterms_id_seq",
+  },
   "sid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
   "tstamp",
@@ -84,6 +98,18 @@ __PACKAGE__->add_columns(
   "content",
   { data_type => "text", is_nullable => 1 },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</id>
+
+=back
+
+=cut
+
+__PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
@@ -108,8 +134,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2013-01-07 17:04:57
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:VphtfoLpeCz0chx3+tIJ6Q
+# Created by DBIx::Class::Schema::Loader v0.07046 @ 2018-10-24 09:21:04
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2nhwHjlhuqbBHszpy0+++A
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -108,9 +108,21 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 1 },
 );
 
+=head1 PRIMARY KEY
 
-# Created by DBIx::Class::Schema::Loader v0.07042 @ 2016-11-08 10:53:37
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:8fiOdPfqMwwCQksVMzQ40g
+=over 4
+
+=item * L</id>
+
+=back
+
+=cut
+
+__PACKAGE__->set_primary_key("id");
+
+
+# Created by DBIx::Class::Schema::Loader v0.07046 @ 2018-10-24 09:21:04
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:6llecRdG1K493LA8LNbfKA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

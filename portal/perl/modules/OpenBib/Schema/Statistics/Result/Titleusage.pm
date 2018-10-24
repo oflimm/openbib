@@ -23,6 +23,13 @@ __PACKAGE__->table("titleusage");
 
 =head1 ACCESSORS
 
+=head2 id
+
+  data_type: 'bigint'
+  is_auto_increment: 1
+  is_nullable: 0
+  sequence: 'titleusage_id_seq'
+
 =head2 sid
 
   data_type: 'bigint'
@@ -49,6 +56,11 @@ __PACKAGE__->table("titleusage");
   data_type: 'smallint'
   is_nullable: 1
 
+=head2 viewname
+
+  data_type: 'text'
+  is_nullable: 1
+
 =head2 isbn
 
   data_type: 'text'
@@ -69,14 +81,16 @@ __PACKAGE__->table("titleusage");
   data_type: 'smallint'
   is_nullable: 1
 
-=head2 viewname
-
-  data_type: 'text'
-  is_nullable: 1
-
 =cut
 
 __PACKAGE__->add_columns(
+  "id",
+  {
+    data_type         => "bigint",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "titleusage_id_seq",
+  },
   "sid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
   "tstamp",
@@ -87,6 +101,8 @@ __PACKAGE__->add_columns(
   { data_type => "smallint", is_nullable => 1 },
   "tstamp_day",
   { data_type => "smallint", is_nullable => 1 },
+  "viewname",
+  { data_type => "text", is_nullable => 1 },
   "isbn",
   { data_type => "text", is_nullable => 1 },
   "dbname",
@@ -95,9 +111,19 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 0 },
   "origin",
   { data_type => "smallint", is_nullable => 1 },
-  "viewname",
-  { data_type => "text", is_nullable => 1 },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</id>
+
+=back
+
+=cut
+
+__PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
@@ -122,8 +148,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2013-01-07 17:04:57
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/OniqaJIi4XvsOvjXd9FNQ
+# Created by DBIx::Class::Schema::Loader v0.07046 @ 2018-10-24 09:21:04
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:T5qHQjYvMqQYokUfkzXrzg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

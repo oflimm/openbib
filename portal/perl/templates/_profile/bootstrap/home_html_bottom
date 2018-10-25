@@ -19,13 +19,13 @@
 [% END %]
 
           <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 mt-2">
 [% PROCESS common/subtemplate name="home_html_bottom_left" %]
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 mt-2">
 [% PROCESS common/subtemplate name="home_html_bottom_center" %]
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 mt-2">
 [% PROCESS common/subtemplate name="home_html_bottom_right" %]
             </div>
           </div>

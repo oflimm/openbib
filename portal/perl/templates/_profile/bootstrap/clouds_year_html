@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: clouds_person_html
+# Templatename: helpframe
 #
 # Typ         : Mastertemplate
 #
@@ -11,9 +11,6 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" %]
-
-<body>
 [%
       funcargs = { id => database, type => 9 } ;
       resultlist = statistics.get_result(funcargs);
@@ -26,52 +23,13 @@
   END ;
 %]
 
-<!-- skip link navigation -->
-<ul class="ym-skiplinks">
-	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
-	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
-</ul>
+<h3>[% msg.maketext("Erscheinungsjahre") %]</h3>
 
-<div class="ym-wrapper">
-  <div class="ym-wbox">
+<div class="card">
 
-[% PROCESS common/subtemplate name="corporate_banner" %] 
+<div class="card-header">[% msg.maketext("Wolke der h&auml;ufigsten Erscheinungsjahre") %]</div>
 
-[% PROCESS common/subtemplate name="mainnavigation" active_menu='cloud' %] 
-
-    <!-- begin: main content area #main -->
-    <div id="main">
-
-   <div class="ob-functional_nav">
-     <div class="ob-breadcrumb">
-       <ul>
-         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %].html?l=[% lang %]">Wolken</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %].html?l=[% lang %]">[% dbinfo.get('dbnames').${database}.short %]</a></li>
-         <li><a href="#" class="lastitem">[% msg.maketext("Prägejahre") %]</a></li>
-      </ul>
-     </div>
-     <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/year.json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
-     </div>
-   </div>
-
-    <div class="ym-column linearize-level-1">
-      <div class="ym-col1">
-        <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="clouds_navigation" active_submenu='clouds_year' %]
-        </div>
-      </div>
-      <!-- end: #col1 -->
-      <!-- begin: #col3 static column -->
-      <div class="ym-col3" >
-        <div class="ym-cbox" class="ym-clearfix">
-
-<h1>[% msg.maketext("Datierung") %]</h1>
-
-<table width="100%">
-<tr><th>[% msg.maketext("Wolke der h&auml;ufigsten Begriffe") %]</th></tr>
-<tr><td class="boxedclear">
+<div class="card-body">
 <!-- Beginn Tag-Cloud -->
 [%
    css_classes = [
@@ -96,21 +54,11 @@
    classnr   = thisitem.class;
    itemclass = css_classes.$classnr;
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel sind verkn&uuml;pft mit </span><a href="[% path_prefix %]/[% config.get('search_loc') %]?page=1;[% IF default_query_options %][% default_query_options %];[% END %]profile=[% config.get_searchprofile_of_database(database) %];[% searchprefix %]=[% item | uri %]" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Erscheinungsjahr</span><a href="[% path_prefix %]/[% config.get('search_loc') %]?page=1;[% IF default_query_options %][% default_query_options %];[% END %]profile=[% config.get_searchprofile_of_database(database) %];[% searchprefix %]=[% uri_escape(item) %]" class="tag" title="[% itemcount %] Titel haben das Erscheinungsjahr [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]
-[% msg.maketext("Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;ufige Begriffe diese Kategorie anbieten.") %]
+[% msg.maketext("Leider k&ouml;nnen wir Ihnen für diesen Katalog keine Wolke der Erscheinungsjahre anbieten.") %]
 [% END %]
-</td></tr>
-</table>
-
-        </div>
-        <div class="ym-ie-clearing">&nbsp;</div>
-        <!-- End: IE Column Clearing -->
-      </div>
-     </div> <!-- end: ym-column -->
-    </div>
-    <!-- end: #main -->
-
-[% PROCESS common/subtemplate name="std_footer" %]
+</div>
+</div>

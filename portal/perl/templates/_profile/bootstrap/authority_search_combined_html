@@ -15,10 +15,9 @@
 
 <p/>
 
-<div class="ym-grid">
-  <div class="ym-g25 ym-gr">
-    <div class="ym-gbox">
+<div class="row">
 [% IF hits > 0 %]
+  <div class="col-md-4">
 [% PROCESS common/subtemplate name="authority_search_facet" %]
 [% ELSE %]
 [%
@@ -42,12 +41,10 @@
 [% PROCESS common/subtemplate name="search_radius" %]
 </div>
 [%   END %]
-[% END %]
-    </div>
   </div>
+[% END %]
 
-  <div class="ym-g75 ym-gl">
-    <div class="ym-gbox">
+  <div class="col-md-8">
 
 [% IF spelling_suggestion.resultlist %]
 [%    suggestion = searchquery.get_spelling_suggestion %]
@@ -108,7 +105,6 @@
 [% END %]
 <p/>
 
-    </div>
   </div>
 
 </div>

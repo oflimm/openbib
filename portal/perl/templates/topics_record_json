@@ -20,6 +20,11 @@
           href = location
   };
 
+  this_json_output.mappings = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('topics_loc')}/id/${topic.id}/mappings.json?l=${lang}"
+  };
+
   to_json(this_json_output);
 
 -%]

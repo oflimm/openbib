@@ -34,7 +34,7 @@ IF type == "bk";
      topic    = topic
      link = {
           rel = 'self'
-          href = "${path_prefix}/${config.get('topics_loc')}/id/${topic.id}/mappings/id/bk.json?l=${lang}"
+          href = "${scheme}://${servername}${path_prefix}/${config.get('topics_loc')}/id/${topic.id}/mappings/id/bk.json?l=${lang}"
      }
      type = 'bk'
      classifications = []
@@ -58,7 +58,7 @@ this_json_output = {
    topic = topic
    link = {
         rel = 'self'
-        href = "${path_prefix}/${config.get('topics_loc')}/id/${topic.id}/mappings/id/${type}.json?l=${lang}"
+        href = "${scheme}://${servername}${path_prefix}/${config.get('topics_loc')}/id/${topic.id}/mappings/id/${type}.json?l=${lang}"
    }
    type = type
    classifications = []

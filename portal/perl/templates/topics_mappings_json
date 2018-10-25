@@ -33,7 +33,7 @@ all_mappings = [] ;
 this_mapping = {
    link = {
         rel = 'self'
-        href = "${path_prefix}/${config.get('topics_loc')}/id/${topic.id}/mappings/id/bk.json?l=${lang}"
+        href = "${scheme}://${servername}${path_prefix}/${config.get('topics_loc')}/id/${topic.id}/mappings/id/bk.json?l=${lang}"
    }
    type = 'bk'
    classifications = []
@@ -57,7 +57,7 @@ all_mappings.push(this_mapping);
 this_mapping = {
    link = {
         rel = 'self'
-        href = "${path_prefix}/${config.get('admin_loc')}/${config.get('topics_loc')}/id/${topic.id}/mappings/id/ezb.json?l=${lang}"
+        href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('topics_loc')}/id/${topic.id}/mappings/id/ezb.json?l=${lang}"
    }
    type = 'ezb'
    classifications = []
@@ -83,7 +83,7 @@ all_mappings.push(this_mapping);
 this_mapping = {
    link = {
         rel = 'self'
-        href = "${path_prefix}/${config.get('topics_loc')}/id/${topic.id}/mappings/id/dbis.json?l=${lang}"
+        href = "${scheme}://${servername}${path_prefix}/${config.get('topics_loc')}/id/${topic.id}/mappings/id/dbis.json?l=${lang}"
    }
    type = 'dbis'
    classifications = []

@@ -15,11 +15,11 @@
      this_json_output = {
            link = {
               rel = 'self'
-              href = "${scheme}://${servername}${path_prefix}/${config.get('authenticators_loc')}/id/${authenticator_record.id}.json?l=${lang}"
+              href = "${scheme}://${servername}${path_prefix}/${config.get('authenticators_loc')}/id/${authenticatorinfo.id}.json?l=${lang}"
            }
-           id = authenticator_record.id
-           description = authenticator_record.description
-           type = authenticator_record.type
+           id = authenticatorid
+           description = authenticatorinfo.description
+           type = authenticatorinfo.type
      };
 
      to_json(this_json_output);

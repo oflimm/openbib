@@ -34,7 +34,7 @@
      <div class="ob-breadcrumb">
        <ul>
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="#" class="lastitem">[% msg.maketext("Impressum") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Indexierung") %]</a></li>
        </ul>
      </div>
    </div>

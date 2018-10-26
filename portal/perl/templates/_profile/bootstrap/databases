@@ -17,7 +17,7 @@
 [%- PROCESS common/subtemplate name="local_config" -%] 
 [%- IF representation == '' || representation == 'html' ;
     layout_param = {
-     'page_title' = 'Kataloge anzeigen'
+     'page_title' = 'Kataloge'
 
       'main_template' = 'databases_html'
       'sidebar_template' = 'databases_sidebar'

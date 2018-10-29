@@ -551,8 +551,6 @@ open(MEXSIKJSON,"| gzip >./meta.holding.gz");
 binmode(TITSIKJSON);
 binmode(MEXSIKJSON);
 
-my $mexid           = 1;
-
 while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updatecode) = split ("",<TITEL>)) {
     next if ($katkey < 0);
     next if ($aktion != 0 && $aktion != 2);
@@ -765,12 +763,14 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
 		next;
 	    }
 
+	    my $holdingid = $katkey."-".$multkey;
+
             if ($useusbschema) {
                 my $erschverl=$erschverlbufpos{$multkey};
                 $erschverl.=" ".$erschverlbufneg{$multkey} if (exists $erschverlbufneg{$multkey});
                 
                 my $holding_ref = {
-                    'id'     => $mexid,
+                    'id'     => $holdingid,
                     'fields' => {
                         '0004'   => [
                             {
@@ -850,7 +850,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
                 my $erschverl=$erschverlbuf{$multkey};
 
                 my $holding_ref = {
-                    id      => $mexid,
+                    id      => $holdingid,
                     'fields' => {
                        '0004' =>
                         [
@@ -912,7 +912,6 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
 		}
             }
           
-            $mexid++;
             $k++;
         }
 
@@ -940,7 +939,11 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
 		    $signatur = $signatur.$ex;
 		}
             }
-            
+
+	    # Kombination mit dem Katkey, um Bindeeinheiten - ein Buchdatensatz mit einer Mediennummer fuer mehrere Titel - abbilden zu koennen und eine Eindeutige ID fuer duplizierte Exemplarsaetze zu erhalten
+
+	    my $holdingid = $katkey."-".$mediennr;
+
             if ($usestatus){
                 $mediastatus = get_mediastatus($buchsatz_ref) ;
 
@@ -975,7 +978,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
             chomp($standort);
 	  
             my $holding_ref = {
-                'id'     => $mexid,
+                'id'     => $holdingid,
                 'fields' => {
                   '0004' =>
                     [
@@ -998,7 +1001,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
 
             if ($signatur) {
                 push @{$holding_ref->{fields}{'0014'}}, {
-                    content  => konv($signatur),
+                    content  => $signatur,
                     mult     => 1,
                     subfield => '',
                 };
@@ -1006,7 +1009,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
           
             if ($standort) {
                 push @{$holding_ref->{fields}{'0016'}}, {
-                    content  => konv($standort),
+                    content  => $standort,
                     mult     => 1,
                     subfield => '',
                 };
@@ -1019,8 +1022,6 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
 	    if ($@){
 		print STDERR $@, "\n";
 	    }
-
-            $mexid++;
         }
 
         if ($usestatus){

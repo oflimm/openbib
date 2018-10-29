@@ -94,9 +94,13 @@ sub show_collection {
     }
 
     my $topic_ref = $user->get_topic({ id => $topicid});
+    my $ezb         = OpenBib::Catalog::Factory->create_catalog({database => 'ezb' });;
+    my $dbis        = OpenBib::Catalog::Factory->create_catalog({database => 'dbis' });
 
     my $ttdata={
         topic    => $topic_ref,
+        ezb        => $ezb,
+        dbis       => $dbis,
     };
     
     return $self->print_page($config->{tt_admin_topics_mappings_tname},$ttdata);

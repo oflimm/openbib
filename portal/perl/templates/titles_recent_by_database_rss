@@ -13,7 +13,7 @@
 -%]
 [%-#
 
-channel_link        = "${path_prefix}/${config.get('databases_loc')}/id/${database}/${config.get('titles_loc')}recent.rss?l=${lang}";
+channel_link        = "${path_prefix}/${config.get('databases_loc')}/id/${database}/${config.get('titles_loc')}/recent.rss?l=${lang}";
 channel_description = "RSS Feed der letzten Neuzugänge" ;
 channel_title       = "RSS Feed der letzten Neuzugänge" ;
 recordlist.to_rss({  path_prefix = path_prefix, servername = servername, view = view, channel_title = channel_title, channel_link = channel_link, channel_language = lang });

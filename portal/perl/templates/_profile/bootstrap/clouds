@@ -7,7 +7,7 @@
       'sidebar_template' = 'clouds_navigation'
 
       'active_menu' = 'cloud'
-      'active_submenu' = 'clouds_choice'
+#      'active_submenu' = 'clouds_choice'
       
       'breadcrumb' = [
           {

@@ -15,9 +15,9 @@
 
 
 [%# USE dumper;dumper.dump(public_tags)%]
-<ul class="topiclist">
+<ul class="list-group">
 [%- FOREACH thistag IN public_tags -%]
-<li><a href="[% path_prefix %]/[% config.get('tags_loc') %]/names/id/[% thistag.tagname %].html">[% thistag.tagname %] ([% thistag.itemcount %])</a></li>
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('tags_loc') %]/names/id/[% thistag.tagname %].html">[% thistag.tagname %] ([% thistag.itemcount %])</a></li>
 [% END %]
 </ul>
 

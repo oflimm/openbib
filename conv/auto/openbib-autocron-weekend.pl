@@ -89,6 +89,8 @@ my $blacklist_ref = {
     'inst103master' => 1,
     'inst105' => 1,
     'inst105master' => 1,
+    'inst113' => 1,
+    'inst113master' => 1,
     'inst128' => 1,
     'inst128master' => 1,
     'inst132' => 1,
@@ -417,13 +419,13 @@ sub threadC {
 
     $logger->info("### Master: VWL-Masterkataloge");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst103master','inst105master','inst128master','inst157master','inst166master'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst103master','inst105master','inst113master','inst128master','inst157master','inst166master'] });
 
     ##############################
 
     $logger->info("### Aufgesplittete Kataloge aus VWL-Masterkatalogen");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst103','inst105','inst128','inst157','inst166'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst103','inst105','inst113','inst128','inst157','inst166'] });
     
     ##############################
     

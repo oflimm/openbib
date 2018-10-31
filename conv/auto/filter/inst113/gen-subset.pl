@@ -77,7 +77,6 @@ my $logger = get_logger();
 
 my $subset = new OpenBib::Catalog::Subset("${pool}master",$pool);
 $subset->identify_by_field_content('title',[ { field => '0960', content => 'Retro' } ]);
-$subset->identify_by_field_content('title',[ { field => '0960', content => 'Aufsatz' } ]);
 $subset->write_set;
 
 sub print_help {

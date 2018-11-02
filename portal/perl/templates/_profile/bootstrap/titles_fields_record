@@ -19,6 +19,14 @@ IF field == '0800' ;
     ELSIF field == '0410' ;
        field_description = msg.maketext("Verlagsort");
        searchfield = 'ft0410' ;
+    ELSIF field == '0424' ;
+       field_description = msg.maketext("T${field}");
+       searchfield = 'yearstring' ;
+    ELSIF field == '0425' ;
+       field_description = msg.maketext("T${field}");
+       searchfield = 'yearstring' ;
+    ELSE ;
+       field_description = msg.maketext("T${field}");
     END ;
 
     layout_param = {
@@ -35,8 +43,8 @@ IF field == '0800' ;
 	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
 	  },
 	  {
-	     desc = msg.maketext('Register')
-	     url  = '#'
+	     desc = msg.maketext('Felder')
+	     url  = "${path_prefix}/${config.get('databases_loc')}/id/${database}/${config.get('titles_loc')}/fields.html?l=${lang}"
 	  }
 	  {
 	     desc = field_description

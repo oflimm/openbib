@@ -228,7 +228,10 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 
 [% PROCESS common/subtemplate name="search_radius" %]
 
-<div class="ob-category_header"><span id="ob-facets_all_toggle">[% msg.maketext("Treffermenge eingrenzen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div class="card">
+<div class="card-header"><span id="ob-facets_all_toggle">[% msg.maketext("Treffermenge eingrenzen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+
+<div class="card-body">
 
 <div id="ob-facets_all_toggle_do">
 
@@ -688,6 +691,9 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <!-- End language facet -->
 
 </div> <!-- End: ob-facets_all_toggle_do -->
+
+</div> <!-- End: card-body -->
+</div> <!-- End: card -->
 
 </form>
 [% ELSE %]

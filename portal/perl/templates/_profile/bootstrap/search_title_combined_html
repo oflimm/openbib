@@ -67,13 +67,14 @@
 -%]
 
 <div class="ob-resultlist">
-  <div class="ob-resultheader">
+  <div class="ob-resultheader mb-4">
     <div class="left">
 [% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b>[% hits %]</b>
     </div>
     <div class="right">
-<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
 <input type="hidden" name="page" value="1" />
+<input type="hidden" name="lang" value="[% lang %]" />
 
 [% cgiapp.to_cgi_hidden_input({ exclude = ['page','srt','srto','num']}) %]
 

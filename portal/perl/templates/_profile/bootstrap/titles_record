@@ -26,7 +26,13 @@
           {
              desc = msg.maketext('Start')
 	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
-	  }
+	  },
+	  {
+             desc = msg.maketext('Titel')
+	     url  = "#"
+	     current = 1
+	  },
+
       ]
 
     };

@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 
-<h2>[% msg.maketext("Thematisch relevante Titel nach einer Analyse der Wikipedia") %]</h2>
+<h3>[% msg.maketext("Thematisch relevante Titel nach einer Analyse der Wikipedia") %]</h3>
 
 [%
 
@@ -40,6 +40,6 @@
 </ul>
 <p/>
 [% ELSE %]
-<h2>[% msg.maketext("Zu diesem Titel existieren in der Wikipedia keine Beziehungen zu anderen thematisch relevanten Titeln") %]</h2>
+<h3>[% msg.maketext("Zu diesem Titel existieren in der Wikipedia keine Beziehungen zu anderen thematisch relevanten Titeln") %]</h3>
 <p/>
 [% END %]

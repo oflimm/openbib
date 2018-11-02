@@ -19,7 +19,7 @@
   same_records = record.enrich_same_records({ viewname => view, blacklisted_locations => blacklisted_locations  }).get_same_records ;
 
   IF same_records.get_size > 0 %]
-<h2>[% msg.maketext("Titel mit der ISBN dieses Titels sind auch an folgenden Standorten vorhanden") %]</h2>
+<h3>[% msg.maketext("Titel mit der ISBN dieses Titels sind auch an folgenden Standorten vorhanden") %]</h3>
 <p />
 <ul class="list-group">
 [% FOREACH same_record IN same_records.get_records %]
@@ -29,6 +29,6 @@
 [% END %]
 </ol>
 [% ELSE %]
-<h2>Dieser Titel ist in keinen anderen Katalogen vorhanden.</h2>
+<h3>[% msg.maketext("Dieser Titel ist in keinen anderen Katalogen vorhanden.") %]</h3>
 <p/>
 [% END %]

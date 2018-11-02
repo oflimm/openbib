@@ -1,17 +1,17 @@
 [%#-
 #######################################################################
 #
-# Templatename: connector_similarsubjects_html
+# Templatename: connector_similarsubjects
 #
-# Typ         : Mastertemplate       
+# Typ         : Mastertemplate
 #
 # Aufgabe:
 #
+# Ausgabe von katalogspezifischen Wortwolken
 #
 #######################################################################
 -%]
 [%- PROCESS common/subtemplate name="local_config" -%] 
-
 [%- IF similar_subjects.size > 1 %]
 <!-- Beginn Tag-Cloud -->
 [%
@@ -38,12 +38,12 @@
    searchterm    = uri_escape(item);
    searchprefix  = config.get('searchfield').subjectstring.prefix;
 
-   localurl  = "${path_prefix}/${config.get('search_loc')}.html?l=${lang};page=1;db=${database};${searchprefix}=${searchterm}";
+   localurl  = "${path_prefix}/${config.get('search_loc')}.html?l=${lang};db=${database};${searchprefix}=${searchterm}";
 
 %]
-<li class="p-1 [% itemclass %]"><span>[% itemcount %] Titel haben das Schlagwort</span><a href="[% localurl %]" class="tag" title="[% itemcount %] Titel haben das Schlagwort [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Schlagwort</span><a href="[% localurl %]" class="tag" title="[% itemcount %] Titel haben das Schlagwort [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]
-[% msg.maketext("Es konnten keine verwandten Themen bestimmt werden.") %]
+[% msg.maketext("Es konnten keine Themen bestimmt werden.") %]
 [% END %]

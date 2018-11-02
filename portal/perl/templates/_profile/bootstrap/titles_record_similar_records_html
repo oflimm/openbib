@@ -18,7 +18,7 @@
    similar_records = record.enrich_similar_records({ viewname => view, blacklisted_locations => blacklisted_locations  }).get_similar_records ;
 
    IF similar_records.get_size > 0 %]
-<h2>[% msg.maketext("Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere Auflage usw.) an den Standorten") %]</h2>
+<h3>[% msg.maketext("Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere Auflage usw.) an den Standorten") %]</h3>
 <p />
 <ul class="list-group">
 [% FOREACH similar_record IN similar_records.get_records %]
@@ -38,6 +38,6 @@
 [% END %]
 </ol>
 [% ELSE %]
-<h2>[% msg.maketext("Zu diesem Titel konnten keine anderen Ausgaben gefunden werden.") %]</h2>
+<h3>[% msg.maketext("Zu diesem Titel konnten keine anderen Ausgaben gefunden werden.") %]</h3>
 <p/>
 [% END %]

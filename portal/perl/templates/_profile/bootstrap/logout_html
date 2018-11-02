@@ -1,0 +1,29 @@
+[%#-
+#######################################################################
+#
+# Templatename: leave
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Erfolgsmeldung beim Abmelden aus dem Portal, sowie
+# einer view-sensitiven Verlinkung fuer einen erneuten Aufruf
+#
+#######################################################################
+-%]
+
+<br />
+  <br />
+  <center>
+    <p style="font-size:1.5em">
+[% msg.maketext("Sie haben sich abgemeldet.") %]<br />
+        <br />[% msg.maketext("Vielen Dank f&uuml;r Ihren Besuch.") %]
+
+    </p>
+  </center>
+
+<br />
+<br />
+<br />
+<br />

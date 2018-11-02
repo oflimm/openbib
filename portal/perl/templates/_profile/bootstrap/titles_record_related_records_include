@@ -1,25 +1,9 @@
-[%#-
-#######################################################################
-#
-# Templatename: admin_editview
-#
-# Typ         : Mastertemplate       
-#
-# Aufgabe:
-#
-# Eingabemaske fuer die Meta-Informationen eines einzelnen Views
-#
-#######################################################################
--%]
-
-<h2>[% msg.maketext("Thematisch relevante Titel nach einer Analyse der Wikipedia") %]</h2>
-
 [%
 
    blacklisted_locations = [ 'DE-38-USBFB' ];
 
    related_records = record.enrich_related_records({ viewname => view, blacklisted_locations => blacklisted_locations }).get_related_records ;
-
+ 
    IF related_records.get_size > 0 %]
 <ul class="list-group">
 [% FOREACH related_record IN related_records.sort({order = 'asc', type = 'title'}).get_records %]
@@ -40,6 +24,7 @@
 </ul>
 <p/>
 [% ELSE %]
-<h2>[% msg.maketext("Zu diesem Titel existieren in der Wikipedia keine Beziehungen zu anderen thematisch relevanten Titeln") %]</h2>
-<p/>
+<script>
+    $(".ob-related").hide();
+</script>
 [% END %]

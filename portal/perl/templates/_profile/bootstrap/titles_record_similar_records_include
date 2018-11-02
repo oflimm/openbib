@@ -1,16 +1,3 @@
-[%#-
-#######################################################################
-#
-# Templatename: admin_editview
-#
-# Typ         : Mastertemplate       
-#
-# Aufgabe:
-#
-# Eingabemaske fuer die Meta-Informationen eines einzelnen Views
-#
-#######################################################################
--%]
 [%
 
    blacklisted_locations = [ 'DE-38-USBFB' ];
@@ -18,11 +5,12 @@
    similar_records = record.enrich_similar_records({ viewname => view, blacklisted_locations => blacklisted_locations  }).get_similar_records ;
 
    IF similar_records.get_size > 0 %]
-<h2>[% msg.maketext("Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere Auflage usw.) an den Standorten") %]</h2>
+[% msg.maketext("Zu diesem Titel existieren andere Ausgaben (andere Sprache, andere Auflage usw.) an folgenden Standorten") %]:
 <p />
 <ul class="list-group">
 [% FOREACH similar_record IN similar_records.get_records %]
 [% item = similar_record.get_fields %]
+
 [% item_location = similar_record.get_locations.first %]
 [% similar_url = "${path_prefix}/${config.get('databases_loc')}/id/${similar_record.database}/${config.get('titles_loc')}/id/${similar_record.id}.html" %]
 [%# Titel konstruieren %]
@@ -34,10 +22,12 @@
 [%- yearofpub = item.${'T0425'}.first.content -%]
 [%# Edition konstruieren %]
 [%- edition   = item.${'T0403'}.first.content -%]
-<li class="list-group-item"><a href="[% similar_url %]"><i>[% title %]</i>[% IF edition %], [% edition %][% END %][% IF yearofpub %] ([% yearofpub %])[% END %]</a><br />in: <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% item_location %].html?l=[% lang %]">[% locinfo.get('identifier').${item_location}.description %]</a></li>
+<li class="list-group-item"><a href="[% similar_url %]"><i>[% title %]</i>[% IF edition %], [% edition %][% END %][% IF yearofpub %] ([% yearofpub %])[% END %]</a><br />in: [% locinfo.get('identifier').${item_location}.description %]</li>
 [% END %]
 </ol>
 [% ELSE %]
-<h2>[% msg.maketext("Zu diesem Titel konnten keine anderen Ausgaben gefunden werden.") %]</h2>
-<p/>
+<script>
+    $("#ob-similar_records_li").hide();
+    $("#ob-similar_records").hide();
+</script>
 [% END %]

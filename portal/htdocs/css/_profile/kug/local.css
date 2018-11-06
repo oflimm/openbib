@@ -26,9 +26,9 @@
   }
 
   #ob-kuginfo_newsflash {
-    display:none;
+      display:block;
   }
-  
+
   
   body {
     overflow-y: scroll;

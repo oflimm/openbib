@@ -124,7 +124,8 @@ CREATE TABLE viewinfo (
  profileid   BIGINT NOT NULL,
  stripuri    BOOL,
  active      BOOL,
- own_index   BOOL
+ own_index   BOOL,
+ force_login BOOL default false 
 );
 
 drop table IF EXISTS view_db;

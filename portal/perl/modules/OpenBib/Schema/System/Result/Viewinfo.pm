@@ -77,6 +77,12 @@ __PACKAGE__->table("viewinfo");
   data_type: 'boolean'
   is_nullable: 1
 
+=head2 force_login
+
+  data_type: 'boolean'
+  default_value: false
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -105,6 +111,8 @@ __PACKAGE__->add_columns(
   { data_type => "boolean", is_nullable => 1 },
   "own_index",
   { data_type => "boolean", is_nullable => 1 },
+  "force_login",
+  { data_type => "boolean", default_value => \"false", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -246,8 +254,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07042 @ 2017-02-03 15:42:03
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:hERqHlzTKksTAAczwPj9aw
+# Created by DBIx::Class::Schema::Loader v0.07046 @ 2018-11-07 15:47:23
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:9WFmJobz3OqopuBQWYI0Ag
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

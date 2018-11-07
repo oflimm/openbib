@@ -33,7 +33,7 @@
 
      FOREACH part IN item.${'P0100'} ;
        thislength = part.content.length ;
-       IF (thislength+personslength) < config.get('maxlength_pers') ;
+       IF (thislength+personslength) < config.get('maxlength_person') ;
          searchterm    = part.content;
          searchprefix  = config.get('searchfield').personstring.prefix;
 
@@ -52,7 +52,7 @@
           thiscontent = "${thiscontent} ${part.supplement}" ;
        END ;
        thislength = part.content.length ;
-       IF (thislength+personslength) < config.get('maxlength_pers') ;
+       IF (thislength+personslength) < config.get('maxlength_person') ;
          searchterm    = part.content;
          searchprefix  = config.get('searchfield').personstring.prefix;
 
@@ -67,7 +67,7 @@
      END ;
      FOREACH part IN item.${'C0200'}  ;
        thislength = part.content.length ;
-       IF (thislength+personslength) < config.get('maxlength_pers') ;
+       IF (thislength+personslength) < config.get('maxlength_person') ;
          searchterm    = part.content;
          searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
@@ -82,7 +82,7 @@
      END ;
      FOREACH part IN item.${'C0201'}  ;
        thislength = part.content.length ;
-       IF (thislength+personslength) < config.get('maxlength_pers') ;
+       IF (thislength+personslength) < config.get('maxlength_person') ;
          searchterm    = part.content;
          searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
@@ -96,9 +96,9 @@
        END ;
      END ;
      person = persons.join(' ; ') ;
-     IF truncatepers ;
-       person = "$person [...]" ;
-     END ;
+#     IF truncatepers ;
+#       person = "$person [...]" ;
+#     END ;
 
      # Titel konstruieren
      title = item.${'T0331'}.first.content;
@@ -143,12 +143,10 @@
     toc       = item.${'T4110'}.first.content ;
 
     IF ebook ;
-      ebook = "${path_prefix}/${config.get('redirect_loc')}?type=503;url=${uri_escape(ebook)}" ;
       titleinfos.push("<a href=\"${ebook}\" target=\"_blank\">${ebook_i18n}</a>") ;
     END ;
 
     IF toc ;
-      toc = "${path_prefix}/${config.get('redirect_loc')}?type=500;${uri_escape(toc)}" ;
       titleinfos.push("<a href=\"${toc}\" target=\"_blank\">${toc_i18n}</a>") ;
     END ;
 
@@ -165,12 +163,7 @@
 <li>
    <div class="hit-details">
         [%# USE dumper;dumper.dump(item) %]
-        <script type="text/javascript">
-            document.write('<h4><a href="javascript:ajaxpage(\'/portal/[% view %]/title/[% record.database %]/[% record.id %].include?l=de\', \'DISPLAY_SEARCH_[% item.database%]_[% item.id %]\', \'Lade Detailanzeige\');">[% title %]</a></h4>');
-        </script>
-           <noscript>
-            <h4><a href="[% view_config.${view}.zms_titles_url %]?l=de;view=[% view %];db=[% item.database %];id=[% item.id %]">[% title %]</a></h4>
-           </noscript>
+            <h4><a href="https://www.ub.uni-koeln.de/usbportal?service=search&kugview=38_[% item.database.replace('inst','') %]%7C[% item.database %]&query=ID:[% item.id %]">[% title %]</a></h4>
 
       <div class="title" style="margin-top:-0.2em;">
            <span class="ob-person">[% person %]</span>, <span class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span>

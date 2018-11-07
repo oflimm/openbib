@@ -29,9 +29,11 @@
     </div>
   </div>
   <div class="ob-resultitems fullwidth[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+  <ul>
 [%- FOREACH record IN recordlist.load_brief_records.get_records -%]
 [% PROCESS common/subtemplate name="titlist_item_html_short" database=record.database %]
 [%- END -%]
+  </ul>
   </div>
 </div>
 <!-- Titlelist ends here -->

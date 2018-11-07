@@ -163,7 +163,7 @@
 <li>
    <div class="hit-details">
         [%# USE dumper;dumper.dump(item) %]
-            <h4><a href="https://www.ub.uni-koeln.de/usbportal?service=search&kugview=38_[% item.database.replace('inst','') %]%7C[% item.database %]&query=ID:[% item.id %]">[% title %]</a></h4>
+            <h4><a href="https://www.ub.uni-koeln.de/usbportal?service=search&kugview=38_[% item.database.replace('inst','') %]%7C[% item.database %]&query=ID=[% item.database%]:[% item.id %]">[% title %]</a></h4>
 
       <div class="title" style="margin-top:-0.2em;">
            <span class="ob-person">[% person %]</span>, <span class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span>

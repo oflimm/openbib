@@ -402,6 +402,11 @@ sub get_input_definition {
             encoding => 'none',
             type     => 'scalar',
         },        
+        force_login => {
+            default  => 'false',
+            encoding => 'none',
+            type     => 'scalar',
+        },        
         
     };
 }

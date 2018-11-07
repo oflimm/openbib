@@ -15,13 +15,13 @@
 [%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
 [%- popularity_i18n = msg.maketext("Popularität") -%]
 
-   <h2>[% dbinfo.get('dbnames').${database}.short %]</span></h1>
+
 
 <!-- Titlelist begins here -->
 <div class="ob-resultlist">
   <div class="ob-resultheader">
     <div class="ob-catalog">
-    Letzte Neuzugänge
+   <h2>[% dbinfo.get('dbnames').${database}.short %]</span></h1>
     </div>
     <div class="ob-hits">
     </div>

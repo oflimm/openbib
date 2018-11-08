@@ -56,9 +56,11 @@
 <div id="login_container">
 
 <div class="left_side">
-<form method="post" action="[% IF config.get('use_admin_https') || config.distadmin.master %][% IF config.get('use_https') %]https[%- ELSE -%]http[%- END -%]://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent" class="ym-form">
+<form method="post" action="[% IF config.get('use_https') %][% IF config.get('use_https') %]https[%- ELSE -%]http[%- END -%]://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" class="ym-form">
 
-<input type="hidden" name="redirect_to" value="[% redirect_to %]">
+[% IF redirect_to %]
+<input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
+[% END %]
 
 [%- FOREACH target IN authenticators -%]
 [%-   IF target.type == 'self' -%]

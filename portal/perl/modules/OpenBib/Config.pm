@@ -1747,6 +1747,42 @@ sub get_viewdbs {
     return @viewdbs;
 }
 
+sub get_viewroles {
+    my $self     = shift;
+    my $viewname = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my ($atime,$btime,$timeall);
+        
+    if ($self->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    my $roles = $self->get_schema->resultset('Viewinfo')->search(
+        {
+            'me.viewname' => $viewname,
+        },
+        {
+            select   => 'roleid.rolename',
+            as       => 'thisrolename',
+            join     => [ 'role_views', { 'role_views' => 'roleid' } ],
+            order_by => 'roleid.rolename',
+            group_by => 'roleid.rolename',
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+        }
+    );
+
+    my @viewroles=();
+
+    while (my $item = $roles->next){
+        push @viewroles, $item->{thisrolename};
+    }
+
+    return @viewroles;
+}
+
 sub get_apidbs {
     my $self     = shift;
 
@@ -3025,9 +3061,13 @@ sub update_view {
         ? $arg_ref->{stripuri}            : undef;
     my $own_index              = exists $arg_ref->{own_index}
         ? $arg_ref->{own_index}           : undef;
+    my $force_login            = exists $arg_ref->{force_login}
+        ? $arg_ref->{force_login}         : undef;
 
     my $databases_ref          = exists $arg_ref->{databases}
         ? $arg_ref->{databases}           : [];
+    my $roles_ref              = exists $arg_ref->{roles}
+        ? $arg_ref->{roles}               : [];
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -3046,12 +3086,14 @@ sub update_view {
             servername  => $servername,
             stripuri    => $stripuri,
             own_index   => $own_index,
+            force_login => $force_login,
             active      => $active
         }
     );
     
-    # Datenbanken zunaechst loeschen
+    # Datenbank- und Rollen-Verknuepfungen zunaechst loeschen
     $self->get_schema->resultset('ViewDb')->search_rs({ viewid => $viewid})->delete;
+    $self->get_schema->resultset('RoleView')->search_rs({ viewid => $viewid})->delete;
 
     if (@$databases_ref){
         my $this_db_ref = [];
@@ -3066,6 +3108,21 @@ sub update_view {
         
         # Dann die zugehoerigen Datenbanken eintragen
         $self->get_schema->resultset('ViewDb')->populate($this_db_ref);
+    }
+
+    if (@$roles_ref){
+        my $this_role_ref = [];
+        foreach my $rolename (@$roles_ref){
+            my $roleid = $self->get_roleinfo->single({ rolename => $rolename })->id;
+                
+            push @$this_role_ref, {
+                viewid => $viewid,
+                roleid   => $roleid,
+            };
+        }
+        
+        # Dann die zugehoerigen Datenbanken eintragen
+        $self->get_schema->resultset('RoleView')->populate($this_role_ref);
     }
 
     # Flushen und aktualisieren in Memcached
@@ -3149,12 +3206,16 @@ sub new_view {
         ? $arg_ref->{stripuri}            : undef;
     my $active                 = exists $arg_ref->{active}
         ? $arg_ref->{active}              : undef;
+    my $own_index              = exists $arg_ref->{own_index}
+        ? $arg_ref->{own_index}           : undef;
+    my $force_login            = exists $arg_ref->{force_login}
+        ? $arg_ref->{force_login}         : undef;
 
     my $databases_ref          = exists $arg_ref->{databases}
         ? $arg_ref->{databases}           : [];
+    my $roles_ref              = exists $arg_ref->{roles}
+        ? $arg_ref->{roles}               : [];
 
-    my $own_index              = exists $arg_ref->{own_index}
-        ? $arg_ref->{own_index}           : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -3174,14 +3235,16 @@ sub new_view {
             servername  => $servername,
             stripuri    => $stripuri,
             own_index   => $own_index,
+            force_login => $force_login,
             active      => $active
         }
     );
 
     my $viewid = $new_view->id;
     
-    # Datenbanken zunaechst loeschen
+    # Datenbank- und Rollen-Verknuepfungen zunaechst loeschen
     $self->get_schema->resultset('ViewDb')->search_rs({ viewid => $viewid})->delete;
+    $self->get_schema->resultset('RoleView')->search_rs({ viewid => $viewid})->delete;
 
     my @profiledbs = $self->get_profiledbs($profilename);
 
@@ -3210,6 +3273,21 @@ sub new_view {
         
         # Dann die zugehoerigen Datenbanken eintragen
         $self->get_schema->resultset('ViewDb')->populate($this_db_ref);
+    }
+
+    if (@$roles_ref){
+        my $this_role_ref = [];
+        foreach my $rolename (@$roles_ref){
+            my $roleid = $self->get_roleinfo->single({ rolename => $rolename })->id;
+                
+            push @$this_role_ref, {
+                viewid => $viewid,
+                roleid   => $roleid,
+            };
+        }
+        
+        # Dann die zugehoerigen Datenbanken eintragen
+        $self->get_schema->resultset('RoleView')->populate($this_role_ref);
     }
 
     if ($viewid){

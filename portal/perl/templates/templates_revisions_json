@@ -15,7 +15,7 @@
 
 all_revisions = [];
 
-FOREACH revision IN revisions.all ;
+FOREACH revision IN revisions ;
 
    this_json_output = {
        link = {

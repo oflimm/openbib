@@ -186,6 +186,42 @@ sub cgiapp_init {
     # Setzt ggf: basic_auth_failure (auf 1)
     $self->check_http_basic_authentication;
 
+    # Ab jetzt ist in $self->param('user') entweder
+    # ggf. authentifizierte User - egal ob per Web oder REST
+
+    # Jetzt Zugriffsberechtigung des Users bei Views ueberpruefen, die
+    # ein Login zwingend verlangen
+    
+    if ($config->get_viewinfo->single({ viewname => $view })->force_login){
+	my $user_shall_access = 0;
+
+	my $user = $self->param('user');
+	
+	if ($user->{ID}){
+	    my $viewroles_ref      = {};
+	    foreach my $rolename ($config->get_viewroles($view)){
+		$viewroles_ref->{$rolename} = 1;
+	    }
+	    
+	    foreach my $userrole (keys %{$user->get_roles_of_user($user->{ID})}){
+		if ($viewroles_ref->{$userrole}){
+		    $user_shall_access = 1;
+		}
+	    }
+	}
+	
+	if (!$user_shall_access){
+	    my $login_path = $self->param('path_prefix')."/".$config->get('login_loc');
+	    my $dispatch_url = $self->param('scheme')."://".$self->param('servername').$login_path;
+
+	    $logger->debug($self->param('url')." - ".$login_path);
+
+	    if ($self->param('url') !~m/$login_path/){
+		$self->param('dispatch_url',$dispatch_url);
+	    }
+	}
+    }
+    
     if ($config->{benchmark}) {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);
@@ -242,6 +278,7 @@ sub cgiapp_prerun {
 
    my $r            = $self->param('r');
    my $user         = $self->param('user');
+   my $config       = $self->param('config');
    
    {
        # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
@@ -270,8 +307,10 @@ sub cgiapp_prerun {
        
    }
 
-   # Cookie-Header ausgeben
-   $self->finalize_cookies;
+#   if ($config->get('cookies_everywhere') || $self->param('send_new_cookie')){
+       # Cookie-Header ausgeben
+       $self->finalize_cookies;
+#   }
    
    $logger->debug("Exit cgiapp_prerun");
 }
@@ -1842,8 +1881,6 @@ sub finalize_cookies {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $config = $self->param('config');
-
     if (defined $self->param('cookie_jar')){
         $self->header_add('Set-Cookie', $self->param('cookie_jar'));
     }

@@ -128,6 +128,25 @@
 </select>
 </div>
 
+
+<div class="ym-fbox-select">
+<label for="force_login">[% msg.maketext("Login zwingend für den Zugriff") %]</label>
+<select id="force_login" name="force_login">
+<option value="1" [% IF viewinfo.force_login %]selected="selected"[% END %]>[% msg.maketext("Ja") %]</option>
+<option value="0" [% IF NOT viewinfo.force_login %]selected="selected"[% END %]>[% msg.maketext("Nein") %]</option>
+</select>
+</div>
+
+<div class="ym-fbox-select">
+<label for="roles">[% msg.maketext("Berechtigte Rollen für den Zugriff") %]</label>
+<select id="roles" name="roles" multiple="multiple" size="20">
+[% FOREACH singlerole IN config.get_roleinfo_overview.all %]
+<option value="[% singlerole.rolename %]" [% IF selected_viewroles.${singlerole.rolename} %]selected="selected"[% END %]>[% singlerole.description%]</option>
+[% END %]
+</select>
+</div>
+
+
 <div class="ym-fbox-button">
 
 <input type="submit" value="[% msg.maketext("Ändern") %]" />

@@ -31,8 +31,18 @@
 
     <!-- begin: main content area #main -->
     <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Anmelden") %]</a></li>
+      </ul>
+     </div>
+   </div>
+
     <div class="ym-column linearize-level-1">
-      <div class="ym-col1">
+      <div class="ym-col1 ob-hidden">
         <div class="ym-cbox" class="ym-clearfix">
 
         </div>
@@ -46,73 +56,41 @@
 <div id="login_container">
 
 <div class="left_side">
-<form method="post" action="[% IF config.get('use_admin_https') || config.distadmin.master %][% IF config.get('use_https') %]https[%- ELSE -%]http[%- END -%]://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent">
+<form method="post" action="[% IF config.get('use_https') %][% IF config.get('use_https') %]https[%- ELSE -%]http[%- END -%]://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" class="ym-form">
 
-[% IF redirect_to %]
-<input type="hidden" name="redirect_to" value="[% redirect_to %]">
-[% END %]
+<input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
 
-<table width="100%">
-<tr><th>[% msg.maketext("Login mit einem Benutzerausweis") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:9pt">
-<p />
-<table>
-<table>
-<tr><td align="right"><b>[% msg.maketext("mit")
-%]:</b></td><td>
-<select name="targetid">
-[%- FOREACH target IN authenticators -%]
-[%-   IF target.type != 'self' -%]
-<option value="[% target.id %]">[% target.description %]</option>
+[%- FOREACH authenticator IN authenticators -%]
+[%-   IF authenticator.type == 'self' -%]
+<input type="hidden" name="authenticatorid" value="[% authenticator.id %]">
 [%-   END -%]
 [%- END -%]
-</select>
-</td></tr>
-<tr><td align="right"><b>[% msg.maketext("Benutzernummer") %]</b></td><td><input type="text" name="username" value="[% username %]" /></td></tr>
-<tr><td align="right"><b>[% msg.maketext("Passwort") %]</b></td><td><input type="password" name="password" /></td></tr>
-<tr><td></td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Einloggen") %]" /></div></td><td></td></tr>
-</table>
-<p/>
+
+<fieldset class="ym-full">
+<legend>[% msg.maketext("Anmelden") %]</legend>
+<div class="ym-fbox-text">
+<label for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>
+<input type="text" name="username" id="email_username" value="[% username %]" />
+</div>
+<div class="ym-fbox-text">
+<label for="email_password"/>[% msg.maketext("Passwort") %]</label>
+<input type="password" name="password" id="email_username" />
+</div>
+<div>
 <a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('registrations_loc') %].html">[% msg.maketext("Registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('passwords_loc') %].html?l=[% lang %]">[% msg.maketext("Passwort vergessen?") %]</a>
-</td></tr>
-</table>
+</div>
 
-</form>
-</div><!-- End right_side -->
-
-
-<div class="right_side">
-<form method="post" action="[% IF config.get('use_admin_https') || config.distadmin.master %][% IF config.get('use_https') %]https[%- ELSE -%]http[%- END -%]://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent">
-
-[% IF redirect_to %]
-<input type="hidden" name="redirect_to" value="[% redirect_to %]">
-[% END %]
-
-[%- FOREACH target IN authenticators -%]
-[%-   IF target.type == 'self' -%]
-<input type="hidden" name="targetid" value="[% target.id %]">
-[%-   END -%]
-[%- END -%]
-
-<table width="100%">
-<tr><th>[% msg.maketext("Login ohne Benutzerausweis") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:9pt">
-<p />
-<table>
-<tr><td align="right"><b>[% msg.maketext("E-Mail-Adresse") %]</b></td><td><input type="text" name="username" value="[% username %]" /></td></tr>
-<tr><td align="right"><b>[% msg.maketext("Passwort") %]</b></td><td><input type="password" name="password" /></td></tr>
-<tr><td></td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Einloggen") %]" /></div></td><td></td></tr>
-</table>
 <p/>
-<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('registrations_loc') %].html">[% msg.maketext("Registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('passwords_loc') %]?l=[% lang %]">[% msg.maketext("Passwort vergessen?") %]</a>
-</td></tr>
-</table>
+
+<div class="ym-fbox-button">
+<input type="submit" value="[% msg.maketext("Einloggen") %]" />
+</div>
+
+</fieldset>
+
 </div><!-- End right_side -->
-
-</form>
-
 </div><!-- End login_container -->
-
+</form>
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

@@ -1,5 +1,4 @@
 [%- IF representation == '' || representation == 'html' -%]
-[%- PROCESS common/subtemplate name="api_info_html" -%]
 [%- ELSIF representation == 'mobile' -%]
 [%- PROCESS common/subtemplate name="search_title_start_mobile" -%]
 [%- ELSIF representation == 'json' -%]

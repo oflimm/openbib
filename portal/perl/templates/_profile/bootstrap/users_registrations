@@ -2,16 +2,18 @@
 [%- IF representation == '' || representation == 'html' ;
     suppress_unauthorized = 1;
     layout_param = {
-    
-      'main_template' = 'authorization_error_html'
 
+      'main_template' = 'users_registrations_html'
+
+      'active_menu' = 'registrations'
+      
       'breadcrumb' = [
           {
              desc = msg.maketext('Start')
 	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
 	  },
 	  {
-	     desc = msg.maketext('Zugriffsfehler')
+	     desc = msg.maketext("Registrieren")
 	     url  = '#'
 	     current = 1
 	  }

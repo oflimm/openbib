@@ -16,6 +16,7 @@
 -%]
 [%- PROCESS common/subtemplate name="local_config" -%] 
 [%- IF representation == '' || representation == 'html' ;
+    suppress_unauthorized = 1;
     layout_param = {
 
       'main_template' = 'login_html'

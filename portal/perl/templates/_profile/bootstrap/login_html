@@ -13,24 +13,14 @@
 #######################################################################
 -%]
 
-<h1>[% msg.maketext("Anmelden") %]</h1>
-
-<p/>
-
-[% IF authenticatorid %]
-<script>
-$(document).ready(function(){
-  $('#ob-login_forms').tabs('select', '#ob-login_forms_library');
-});
-</script>
-[% END %]
-
-<div id="accordion">
+        <div class="jumbotron">
+         <h1 class="display-4">[% msg.maketext("Anmelden") %]</h1>
+	 <div id="accordion">
   <div class="card">
     <div class="card-header" id="headingOne">
       <h5 class="mb-0">
         <a class="card-link" href="#collapseOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          [% msg.maketext("Anmeldung/Registrierung mit einer E-Mail-Adresse") %]
+          [% msg.maketext("Anmeldung mit einer E-Mail-Adresse") %]
         </a>
       </h5>
     </div>
@@ -119,5 +109,8 @@ $(document).ready(function(){
     </div>
   </div>
 </div>
+
+        </div><!-- End: jumbotron -->
+
 
 <p/>

@@ -58,12 +58,13 @@ z-index: 10000;
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]"><img src="/images/openbib/openbib-logo.png" class="img-fluid"  /></a>
+  <a class="navbar-brand" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]"><img src="/images/openbib/kuglogo_small-40px.png" class="img-fluid"  /></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
 <!--    <a class="navbar-brand" href="#">Hidden brand</a> -->
+[% IF NOT suppress_unauthorized %]
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
 
       <li class="nav-item[% IF layout_param.active_menu == "search" %] active[% END %] dropdown">
@@ -90,7 +91,7 @@ z-index: 10000;
       <li class="nav-item[% IF layout_param.active_menu == "collection" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %]</a></li>
 
     </ul>
-
+[% END # End: suppress_unauthorized %]
 <!--
     <form class="form-inline my-2 my-lg-0" method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">    
      <input type="hidden" name="num"        value="20" />
@@ -111,7 +112,12 @@ z-index: 10000;
 -->
 
     <ul class="nav navbar-nav flex-row justify-content-between ml-auto">
+[% IF NOT suppress_unauthorized %]    
+    [% IF username %]
+           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% msg.maketext("Mein Portal") %]</a></li>
+    [% ELSE %]
            <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Anmelden") %]</a></li>
+    [% END%]
 <!--           <li class="dropdown order-1">
                  <button type="button" id="dropdownMenu1" data-toggle="dropdown" class="btn btn-outline-secondary dropdown-toggle">Login <span class="caret"></span></button>
                  <ul class="dropdown-menu dropdown-menu-right mt-1">
@@ -142,6 +148,7 @@ z-index: 10000;
                         </li>
                     </ul>
                 </li> -->
+[% END # End: suppress_unauthorized %]
     [% IF config.get('lang').size > 1 %]		
                <li class="nav-item order-2 order-md-1 mt-1">
                    <select class="selectpicker" data-width="fit">
@@ -170,6 +177,7 @@ z-index: 10000;
 <!--<h4></h4>-->
  <p/>
 
+[% IF NOT suppress_unauthorized %]    
 <div class="sticky-top">
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
@@ -213,5 +221,6 @@ z-index: 10000;
 
 </form>
 <!-- </nav> -->
-</div>
+</div><!-- End: sticky-top -->
+[% END # End: suppress_unauthorized %]
     <!-- end: main navigation -->

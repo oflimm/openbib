@@ -211,12 +211,25 @@ sub cgiapp_init {
 	}
 	
 	if (!$user_shall_access){
-	    my $login_path = $self->param('path_prefix')."/".$config->get('login_loc');
-	    my $dispatch_url = $self->param('scheme')."://".$self->param('servername').$login_path;
-
-	    $logger->debug($self->param('url')." - ".$login_path);
-
-	    if ($self->param('url') !~m/$login_path/){
+	    my $dispatch_url = $self->param('scheme')."://".$self->param('servername').$self->param('path_prefix')."/".$config->get('login_loc');
+	    
+	    $logger->debug($self->param('url')." - ".$dispatch_url);
+	    
+	    my @always_allowed_paths = (
+		$self->param('path_prefix')."/".$config->get('login_loc'),
+		$self->param('path_prefix')."/".$config->get('users_loc')."/".$config->get('registrations_loc'),
+		$self->param('path_prefix')."/".$config->get('users_loc')."/".$config->get('passwords_loc'),
+		);
+	    
+	    my $do_dispatch = 1;
+	    
+	    foreach my $allowed_path (@always_allowed_paths){
+		if ($self->param('url') =~ m/$allowed_path/){
+		    $do_dispatch = 0;
+		}
+	    }
+	    
+	    if ($do_dispatch){
 		$self->param('dispatch_url',$dispatch_url);
 	    }
 	}

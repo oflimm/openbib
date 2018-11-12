@@ -84,6 +84,9 @@
 
 [%# Immer/haeufig genutzte Variablen %]
 [%
+   IF query.param('profile') ;
+       prevprofile = query.param('profile');
+   END ;  
    IF NOT prevprofile ;
        prevprofile = session.get_profile ;
    END ;

@@ -1,6 +1,6 @@
 [%- IF representation == '' || representation == 'html' ;
   profileid = config.get_searchprofile_of_view('warenkorb_uni');
-  redirect_url = "http://search.ub.uni-koeln.de/portal/erwerbung/search.html?${cgiapp.to_cgi_querystring};profileid=${profileid}" ;
+  redirect_url = "http://search.ub.uni-koeln.de/portal/erwerbung/search.html?${cgiapp.to_cgi_querystring};profile=${profileid}" ;
 
 -%]
 [%- PROCESS common/subtemplate name="api_info_html" -%]

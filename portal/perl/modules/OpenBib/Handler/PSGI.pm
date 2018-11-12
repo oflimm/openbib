@@ -186,6 +186,15 @@ sub cgiapp_init {
     # Setzt ggf: basic_auth_failure (auf 1)
     $self->check_http_basic_authentication;
 
+    # Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter 'l' oder cookie
+    $self->alter_negotiated_language;
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 7 is ".timestr($timeall));
+    }
+    
     # Ab jetzt ist in $self->param('user') entweder
     # ggf. authentifizierte User - egal ob per Web oder REST
 
@@ -213,9 +222,11 @@ sub cgiapp_init {
 	}
 	
 	if (!$user_shall_access){
-	    my $dispatch_url = $self->param('scheme')."://".$self->param('servername').$self->param('path_prefix')."/".$config->get('login_loc');
+	    my $redirect_to = $self->param('scheme')."://".$self->param('servername').$self->param('url');
+
+	    my $dispatch_url = $self->param('scheme')."://".$self->param('servername').$self->param('path_prefix')."/".$config->get('login_loc')."?l=".$self->param('lang').";redirect_to=".uri_escape($redirect_to);
 	    
-	    $logger->debug($self->param('url')." - ".$dispatch_url);
+	    $logger->debug("force_login URLs: $redirect_to - ".$self->param('url')." - ".$dispatch_url);
 	    
 	    my @always_allowed_paths = (
 		$self->param('path_prefix')."/".$config->get('login_loc'),
@@ -244,15 +255,6 @@ sub cgiapp_init {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);
         $logger->info("Total time for stage 6 is ".timestr($timeall));
-    }
-
-    # Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter 'l' oder cookie
-    $self->alter_negotiated_language;
-
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Total time for stage 7 is ".timestr($timeall));
     }
     
     # Message Katalog laden

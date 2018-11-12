@@ -191,8 +191,10 @@ sub cgiapp_init {
 
     # Jetzt Zugriffsberechtigung des Users bei Views ueberpruefen, die
     # ein Login zwingend verlangen
+
+    my $viewinfo = $config->get_viewinfo->single({ viewname => $view });
     
-    if ($config->get_viewinfo->single({ viewname => $view })->force_login){
+    if ($viewinfo && $viewinfo->force_login){
 	my $user_shall_access = 0;
 
 	my $user = $self->param('user');
@@ -217,6 +219,9 @@ sub cgiapp_init {
 	    
 	    my @always_allowed_paths = (
 		$self->param('path_prefix')."/".$config->get('login_loc'),
+		$self->param('path_prefix')."/".$config->get('logout_loc'),
+		$self->param('path_prefix')."/".$config->get('info_loc')."/impressum",
+		$self->param('path_prefix')."/".$config->get('info_loc')."/datenschutz",		
 		$self->param('path_prefix')."/".$config->get('users_loc')."/".$config->get('registrations_loc'),
 		$self->param('path_prefix')."/".$config->get('users_loc')."/".$config->get('passwords_loc'),
 		);

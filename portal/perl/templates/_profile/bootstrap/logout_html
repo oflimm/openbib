@@ -13,17 +13,10 @@
 #######################################################################
 -%]
 
-<br />
-  <br />
-  <center>
-    <p style="font-size:1.5em">
-[% msg.maketext("Sie haben sich abgemeldet.") %]<br />
-        <br />[% msg.maketext("Vielen Dank f&uuml;r Ihren Besuch.") %]
+<div class="jumbotron">
+  <h1>[% msg.maketext("Sie haben sich abgemeldet.") %]</h1>
 
-    </p>
-  </center>
+   <p class="lead">[% msg.maketext("Vielen Dank f&uuml;r Ihren Besuch.") %]</p>
 
-<br />
-<br />
-<br />
-<br />
+   <a class="btn btn-primary mb-2" href="[% path_prefix%]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Weiter") %]</a>
+</div>

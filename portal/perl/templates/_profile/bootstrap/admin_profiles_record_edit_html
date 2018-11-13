@@ -63,6 +63,14 @@
 <input class="form-control" type="text" name="description" id="description" size="20" />
 </div>
 
+<h1 class="display-5">Neues Katalog-Profil mit diesen Daten erzeugen</h1>
+
+<div class="form-group">
+<label for="newdbname">Neuer Profil-Name</label>
+<input class="form-control" type="text" name="newdbname" id="newprofilename" value="" size="20" />
+</div>
+
+
 <button type="submit" name="do_new" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>
 
 </form>

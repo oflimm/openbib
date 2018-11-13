@@ -14,7 +14,7 @@
 
 <div class="card">
 
-<div class="card-header">ID: [% username %]</div>
+<div class="card-header">ID: <span class="ob-nav_description">[% username %]</span></div>
 
 <div class="card-body">
 
@@ -85,14 +85,15 @@
 </div>
 
 [% IF user.get_targettype_of_session(session.ID) != 'self' %]
-<div class="card-header">[% msg.maketext("Benutzerkonto") %]</div>
+<p/>
+
+<div class="card">
+<div class="card-header">[% msg.maketext("Benutzerkonto") %]: <span class="ob-nav_description">[% authenticator.description %]</span></div>
 
 <div class="card-body">
 
 <nav class="navbar bg-light">
  <ul class="navbar-nav">
-<li class="nav-item"><span>[% authenticator.description %]</span>
-    <ul>
 [%   IF layout_param.active_submenu == "borrows" %]
       <li class="nav-item active"><strong>[% msg.maketext("Ausleihen") %]</strong></li>
 [%   ELSE %]
@@ -113,9 +114,6 @@
 [%   ELSE %]
       <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/reminders.html?l=[% lang %]">[% msg.maketext("Überziehungen / Gebühren") %]</a></li>
 [%   END %]
-    </ul>
-</li>
- </ul>
 </ul>
 </nav>
 </div>

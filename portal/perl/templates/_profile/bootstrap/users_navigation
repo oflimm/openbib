@@ -18,7 +18,7 @@
 
 <div class="card-body">
 
-<nav class="navbar bg-light">
+<nav class="navbar bg-light ob-sidebar">
 
 
  <ul class="navbar-nav">
@@ -92,7 +92,7 @@
 
 <div class="card-body">
 
-<nav class="navbar bg-light">
+<nav class="navbar bg-light ob-sidebar">
  <ul class="navbar-nav">
 [%   IF layout_param.active_submenu == "borrows" %]
       <li class="nav-item active"><strong>[% msg.maketext("Ausleihen") %]</strong></li>
@@ -121,6 +121,7 @@
 [% END %]
 
 [% IF user.has_role('viewadmin',user.ID) %]
+<p/>
 [% PROCESS common/subtemplate name="viewadmin_navigation" %]
 [% END %]
 

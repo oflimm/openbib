@@ -11,10 +11,11 @@
 #
 #######################################################################
 -%]
+
 <script src="/js/tinymce-4.1.5/tinymce.min.js"></script>
 <script>tinymce.init({selector:'textarea', language: '[% lang %]', plugins: ['preview','importcss','table','code','link','lists','charmap'], relative_urls:0, convert_urls: 0, remove_script_host: 0,});</script>
 
-<form method="post" action="[% path_prefix %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]">
+<form method="post" action="[% path_prefix %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]" class="ym-form">
 <input type="hidden" name="_method"    value="PUT" />
 
 <h1 class="display-5">[% msg.maketext("Template bearbeiten") %]</h1>
@@ -61,11 +62,11 @@
 <p>
 [% msg.maketext("Anzahl") %]
 &nbsp;
-<a [% IF numrev == 10 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/edit.html?l=[% lang %];numrev=10">10</a>
+<a [% IF numrev == 10 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/edit.html?l=[% lang %];numrev=10">10</a>
 &nbsp;|&nbsp;
-<a  [% IF numrev == 20 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/edit.html?l=[% lang %];numrev=20">20</a>
+<a  [% IF numrev == 20 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/edit.html?l=[% lang %];numrev=20">20</a>
 &nbsp;|&nbsp;
-<a  [% IF numrev == 100 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/edit.html?l=[% lang %];numrev=100">100</a>
+<a  [% IF numrev == 100 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/edit.html?l=[% lang %];numrev=100">100</a>
 </p>
 
 <div class="table-responsive">

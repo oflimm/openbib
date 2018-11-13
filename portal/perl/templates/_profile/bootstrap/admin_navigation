@@ -16,7 +16,7 @@
 
 <div class="card-body">
 
-<nav class="navbar bg-light">
+<nav class="navbar bg-light ob-sidebar">
  <ul class="navbar-nav">
 [%   IF layout_param.active_submenu == "admin_overview" %]
   <li class="nav-item active"><strong>[% msg.maketext("Übersicht") %]</strong></li>

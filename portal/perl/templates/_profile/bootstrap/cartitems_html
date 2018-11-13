@@ -47,7 +47,9 @@ function update_collection(yourform, checked, item) {
 
 </form>
 [% ELSE %]
-<h3>[% msg.maketext("Derzeit ist Ihre Merkliste leer") %]</h3>
+<div class="jumbotron">
+<h1 class="display-4">[% msg.maketext("Derzeit ist Ihre Merkliste leer") %]</h1>
+</div>
 [% END %]
       </div>
       <div class="col-md-3 [% IF recordlist.get_size == 0 %]ob-xhidden[% END %]">

@@ -375,6 +375,36 @@ sub user_exists {
     return $count;    
 }
 
+sub can_access_view {
+    my ($self,$viewname)=@_;
+
+    my $config = $self->get_config;
+
+    my $viewinfo = $config->get_viewinfo->single({ viewname => $viewname });
+
+    # Standardmaessig darf jeder Nutzer jeden View verwenden
+    my $user_shall_access = 1;
+    
+    if ($viewinfo && $viewinfo->force_login){
+	$user_shall_access = 0;
+
+	if ($self->{ID}){
+	    my $viewroles_ref      = {};
+	    foreach my $rolename ($config->get_viewroles($viewname)){
+		$viewroles_ref->{$rolename} = 1;
+	    }
+	    
+	    foreach my $userrole (keys %{$self->get_roles_of_user($self->{ID})}){
+		if ($viewroles_ref->{$userrole}){
+		    $user_shall_access = 1;
+		}
+	    }
+	}
+    }
+
+    return $user_shall_access;
+}
+
 sub add {
     my ($self,$arg_ref)=@_;
 

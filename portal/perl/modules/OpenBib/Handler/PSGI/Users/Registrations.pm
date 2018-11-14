@@ -167,6 +167,10 @@ sub mail_confirmation {
         $client_ip=$1;
     }
 
+    # Cleanup Username
+    $username=~s/^\s+//g;
+    $username=~s/\s+$//g;
+    
     if ($username eq "" || $password1 eq "" || $password2 eq "") {
         return $self->print_warning($msg->maketext("Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"));
     }

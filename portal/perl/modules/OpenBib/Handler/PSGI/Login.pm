@@ -183,6 +183,12 @@ sub authenticate {
     # wird in die Benutzereinstellungen gesprungen
     if ($user->{ID} && !$validtarget){
 
+	# Ablehnung, wenn Nutzer nicht zu den Berechtigten fuer den View gehoeren, dann Meldung
+
+	if (!$user->can_access_view($view)){
+	    return $self->print_warning($msg->maketext("Ihre Kennung ist nicht zur Nutzung dieses Portals zugelassen."));
+	}
+	
         my $redirecturl = "$path_prefix/$config->{users_loc}/id/[% user.ID %]/preferences.html?l=$lang";
         
         if ($scheme eq "https"){
@@ -293,7 +299,7 @@ sub authenticate {
     if (!$loginfailed) {
 
         $logger->debug("Authentication successful");
-
+	
 	$user->update_lastlogin({ username => $username });
 	
         $result_ref->{success} = 1;
@@ -303,6 +309,11 @@ sub authenticate {
         $result_ref->{userid} = $userid;
         
         if ($self->param('representation') eq "html"){
+	    my $authorized_user = new OpenBib::User({ id => $userid, config => $config});
+	    if (!$authorized_user->can_access_view($view)){
+		return $self->print_warning($msg->maketext("Ihre Kennung ist nicht zur Nutzung dieses Portals zugelassen."));
+	    }
+	    
             # Jetzt wird die Session mit der Benutzerid assoziiert
             
             $user->connect_session({

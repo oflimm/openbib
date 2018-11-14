@@ -5106,12 +5106,16 @@ sub get_roles_of_user {
   
     my $logger = get_logger();
 
+    if (!$userid){
+	$userid=($self->{ID})?$self->{ID}:-1;
+    }
+    
     $logger->debug("Getting roles");
 
     # DBI: "select role.name from role,user_role where user_role.userid=? and user_role.roleid=role.id"
     my $userroles = $self->get_schema->resultset('UserRole')->search_rs(
         {
-            'me.userid' => $self->{ID},
+            'me.userid' => $userid,
         },
         {
             join   => ['roleid'],
@@ -5126,7 +5130,7 @@ sub get_roles_of_user {
     }
 
     if ($logger->is_debug){
-        $logger->debug("Available roles ".YAML::Dump($role_ref));
+        $logger->debug("Available roles for user $userid ".YAML::Dump($role_ref));
     }
     
     return $role_ref;

@@ -179,7 +179,7 @@ sub authenticate {
     my $type        = ($query->param('type'))?$query->param('type'):'';
     my $redirect_to = uri_unescape($query->param('redirect_to'));
 
-    # Wenn die Session schon authentifiziert ist, dann wird
+    # Wenn die Session schon authentifiziert ist, dann
     # wird in die Benutzereinstellungen gesprungen
     if ($user->{ID} && !$validtarget){
 
@@ -309,7 +309,7 @@ sub authenticate {
         $result_ref->{userid} = $userid;
         
         if ($self->param('representation') eq "html"){
-	    my $authorized_user = new OpenBib::User({ id => $userid, config => $config});
+	    my $authorized_user = new OpenBib::User({ ID => $userid, config => $config});
 	    if (!$authorized_user->can_access_view($view)){
 		return $self->print_warning($msg->maketext("Ihre Kennung ist nicht zur Nutzung dieses Portals zugelassen."));
 	    }

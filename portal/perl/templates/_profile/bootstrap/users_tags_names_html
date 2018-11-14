@@ -11,50 +11,6 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
-
-  <body>
-
-<!-- skip link navigation -->
-<ul class="ym-skiplinks">
-	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
-	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
-</ul>
-
-<div class="ym-wrapper">
-  <div class="ym-wbox">
-
-[% PROCESS common/subtemplate name="corporate_banner" %] 
-
-[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
-
-    <!-- begin: main content area #main -->
-    <div id="main">
-
-   <div class="ob-functional_nav">
-     <div class="ob-breadcrumb">
-       <ul>
-        <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
-        <li><a href=["% path_prefix%]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% username %]</a></li>
-        <li><a href="#" class="lastitem">[% msg.maketext('Tags nach Namen') %]</a></li>
-      </ul>
-     </div>
-     <div class="ob-representation" >
-       <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('tags_loc') %]/names.json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
-<!-- <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('tags_loc') %]/names.rss"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a> -->
-     </div>
-  </div>
-
-    <div class="ym-column linearize-level-1">
-      <div class="ym-col1">
-        <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="users_navigation" active_submenu="tags" active_subsubmenu="tags_names" %] 
-        </div>
-      </div>
-      <!-- end: #col1 -->
-      <!-- begin: #col3 static column -->
-      <div class="ym-col3" >
-        <div class="ym-cbox" class="ym-clearfix">
 
 <div class="ob-listoptions">
 <b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('tags_loc') %]/names.html?format=cloud"[% IF format == 'cloud' %] class="ob-selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('tags_loc') %]/names.html?format=list"[% IF format == 'list' %] class="ob-selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
@@ -133,17 +89,7 @@ verkn&uuml;pft mit dem Tag </span><a href="[% path_prefix %]/[% config.get('user
 [%   END %]
 
 [% ELSE %]
-[% msg.maketext("Bisher haben Sie noch keine Tags vergeben.") %]
+<div class="jumbotron">
+<h1 class="display-4">[% msg.maketext("Bisher haben Sie noch keine Tags vergeben.") %]</h1>
+</div>
 [% END %]
-
-<p />
-
-        </div>
-        <div class="ym-ie-clearing">&nbsp;</div>
-        <!-- End: IE Column Clearing -->
-      </div>
-     </div> <!-- end: ym-column -->
-    </div>
-    <!-- end: #main -->
-
-[% PROCESS common/subtemplate name="std_footer" %]

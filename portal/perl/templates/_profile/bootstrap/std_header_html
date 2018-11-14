@@ -91,6 +91,15 @@
     <script type="text/javascript" src="/js/openbib.js"></script> 
     <script type="text/javascript" src="/js/cloud-zoom.1.0.2.min.js"></script>
 -->
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="/js/jquery-3.3.1.slim.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Then static OpenBib JS -->
+<script type="text/javascript" src="/js/openbib.js"></script>
+
     <title>[% IF layout_param.page_title %][% layout_param.page_title %][% ELSE %]OpenBib Beispielportal mit Bootstrap 4.1[% END %]</title>
 
 <!--[if lt IE 7.]>

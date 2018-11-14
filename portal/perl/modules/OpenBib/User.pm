@@ -466,6 +466,9 @@ sub add_confirmation_request {
     $md5digest->add($gmtime . rand('1024'). $$);
     my $registrationid = $md5digest->hexdigest;
 
+    # Ggf. schon existierendes Request loeschen
+    $self->get_schema->resultset('Registration')->search({ username => $username})->delete;
+    
     # DBI: "insert into userregistration values (?,NULL,?,?)"
     $self->get_schema->resultset('Registration')->create({
         id        => $registrationid,
@@ -5960,15 +5963,15 @@ sub search {
     else {
         my $where_ref = {};
         if ($username) {
-            $where_ref->{username} = $username;
+            $where_ref->{username} = { '~' => $username };
         }
         
         if ($commonname) {
-            $where_ref->{nachname} = $commonname;
+            $where_ref->{nachname} = { '~' => $commonname };
         }
         
         if ($surname) {
-            $where_ref->{vorname} = $surname;
+            $where_ref->{vorname} = { '~' => $surname };
         }
 
         my $users = $self->get_schema->resultset('Userinfo')->search($where_ref);

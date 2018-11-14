@@ -106,7 +106,7 @@
 -->
 
     <ul class="nav navbar-nav flex-row justify-content-between ml-auto">
-[% IF NOT suppress_unauthorized %]    
+[%# IF NOT suppress_unauthorized %]    
     [% IF username %]
            <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% msg.maketext("Mein KUG") %]</a></li>
            <li class="nav-item[% IF layout_param.active_menu == "loginout" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %]">[% msg.maketext("Abmelden") %]</a></li>
@@ -143,7 +143,7 @@
                         </li>
                     </ul>
                 </li> -->
-[% END # End: suppress_unauthorized %]
+[%# END # End: suppress_unauthorized %]
     [% IF config.get('lang').size > 1 %]		
                <li class="nav-item order-2 order-md-1 mt-1">
                    <select class="selectpicker" data-width="fit">

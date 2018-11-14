@@ -1,6 +1,13 @@
 @media all
 {
-
+    .navbar {
+	z-index: 10000;
+    }
+    
+    .navbar.ob-sidebar {
+	z-index: 0;
+    }
+    
     
     /* Accordion */
     

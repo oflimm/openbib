@@ -201,27 +201,30 @@ sub cgiapp_init {
     # Jetzt Zugriffsberechtigung des Users bei Views ueberpruefen, die
     # ein Login zwingend verlangen
 
-    my $viewinfo = $config->get_viewinfo->single({ viewname => $view });
+    # my $viewinfo = $config->get_viewinfo->single({ viewname => $view });
     
-    if ($viewinfo && $viewinfo->force_login){
-	my $user_shall_access = 0;
+    # if ($viewinfo && $viewinfo->force_login){
+    # 	my $user_shall_access = 0;
 
-	my $user = $self->param('user');
+    # 	my $user = $self->param('user');
 	
-	if ($user->{ID}){
-	    my $viewroles_ref      = {};
-	    foreach my $rolename ($config->get_viewroles($view)){
-		$viewroles_ref->{$rolename} = 1;
-	    }
+    # 	if ($user->{ID}){
+    # 	    my $viewroles_ref      = {};
+    # 	    foreach my $rolename ($config->get_viewroles($view)){
+    # 		$viewroles_ref->{$rolename} = 1;
+    # 	    }
 	    
-	    foreach my $userrole (keys %{$user->get_roles_of_user($user->{ID})}){
-		if ($viewroles_ref->{$userrole}){
-		    $user_shall_access = 1;
-		}
-	    }
-	}
+    # 	    foreach my $userrole (keys %{$user->get_roles_of_user($user->{ID})}){
+    # 		if ($viewroles_ref->{$userrole}){
+    # 		    $user_shall_access = 1;
+    # 		}
+    # 	    }
+    # 	}
 	
-	if (!$user_shall_access){
+    #    if (!$user_shall_access){
+    $user = $self->param('user');
+    
+    if (!$user->can_access_view($view)){	
 	    my $redirect_to = $self->param('scheme')."://".$self->param('servername').$self->param('url');
 
 	    my $dispatch_url = $self->param('scheme')."://".$self->param('servername').$self->param('path_prefix')."/".$config->get('login_loc')."?l=".$self->param('lang').";redirect_to=".uri_escape($redirect_to);
@@ -249,7 +252,6 @@ sub cgiapp_init {
 		$self->param('dispatch_url',$dispatch_url);
 	    }
 	}
-    }
     
     if ($config->{benchmark}) {
         $btime=new Benchmark;

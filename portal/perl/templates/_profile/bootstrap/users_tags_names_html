@@ -90,6 +90,8 @@ verkn&uuml;pft mit dem Tag </span><a href="[% path_prefix %]/[% config.get('user
 
 [% ELSE %]
 <div class="jumbotron">
-<h1 class="display-4">[% msg.maketext("Bisher haben Sie noch keine Tags vergeben.") %]</h1>
+<h1 class="display-4">[% msg.maketext('Keine Tags vorhanden') %]</h1>
+
+<p class="lead">[% msg.maketext("Bisher haben Sie noch keine Tags vergeben.") %]</p>
 </div>
 [% END %]

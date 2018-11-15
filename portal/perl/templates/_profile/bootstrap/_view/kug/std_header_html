@@ -91,6 +91,12 @@
     <script type="text/javascript" src="/js/openbib.js"></script> 
     <script type="text/javascript" src="/js/cloud-zoom.1.0.2.min.js"></script>
 -->
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+
     <title>[% IF layout_param.page_title %][% layout_param.page_title %][% ELSE %]KUG für Bibliotheksmitarbeiter[% END %]</title>
 
 <!--[if lt IE 7.]>

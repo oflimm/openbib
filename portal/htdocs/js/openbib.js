@@ -147,7 +147,7 @@ function resizeScreen(){
     $("#ob-record_title_discover_toggle_do").show();
     $("#ob-record_title_history_toggle_do").show();
   }
-
+/*
   if($(window).width() > 880){
    // Tabs fuer Suchmaske nach Formaten 
    $('#ob-searchform_types').tabs();
@@ -168,7 +168,7 @@ function resizeScreen(){
    // Tabs fuer weitere Informationen
    $('#ob-additional_title_info').tabs("destroy");
   }
-
+*/
 }
 
 

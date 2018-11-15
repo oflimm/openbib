@@ -81,13 +81,13 @@
 
   .ob-page_title {
     font-size: 1.2em;
-    margin-left: 20px;
+    /* margin-left: 20px; */
     font-weight: bold; 
   }
 
   .ob-page_subtitle {
     font-size: 1.0em;
-    margin-left: 20px;
+    /* margin-left: 20px; */
   }
 
   .ob-facets {

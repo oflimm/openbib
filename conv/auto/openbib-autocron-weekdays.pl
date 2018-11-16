@@ -6,7 +6,7 @@
 #
 #  CRON-Job zum automatischen aktualisieren aller OpenBib-Datenbanken
 #
-#  Dieses File ist (C) 1997-2017 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2018 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -95,6 +95,8 @@ my $blacklist_ref = {
     'inst128master' => 1,
     'inst132' => 1,
     'inst132master' => 1,
+    'inst146' => 1,
+    'inst146master' => 1,
     'inst157' => 1,
     'inst157master' => 1,
     'inst166' => 1,

@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI
 #
-#  Dieses File ist (C) 2010-2015 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2010-2018 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -222,9 +222,11 @@ sub cgiapp_init {
     # 	}
 	
     #    if (!$user_shall_access){
-    $user = $self->param('user');
     
-    if (!$user->can_access_view($view)){	
+    $user = $self->param('user');
+
+    # Trennung der Zugangskontrolle zwischen API (funktioniert immer fuer ein Portal) und Endnutzern (Webbrowser benoetigt Login)
+    if ($self->param('representation') eq "html" && !$user->can_access_view($view)){	
 	    my $redirect_to = $self->param('scheme')."://".$self->param('servername').$self->param('url');
 
 	    my $dispatch_url = $self->param('scheme')."://".$self->param('servername').$self->param('path_prefix')."/".$config->get('login_loc')."?l=".$self->param('lang').";redirect_to=".uri_escape($redirect_to);
@@ -856,12 +858,14 @@ sub print_warning {
 
     # Shared Args
     my $config         = $self->param('config');
-
+    
     my $ttdata = {
         err_nr  => $warningnr,
         err_msg => $warning,
     };
 
+    $ttdata = $self->add_default_ttdata($ttdata);
+    
     return $self->print_page($config->{tt_error_tname},$ttdata);
 }
 

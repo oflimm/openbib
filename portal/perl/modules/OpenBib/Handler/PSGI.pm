@@ -226,34 +226,36 @@ sub cgiapp_init {
     $user = $self->param('user');
 
     # Trennung der Zugangskontrolle zwischen API (funktioniert immer fuer ein Portal) und Endnutzern (Webbrowser benoetigt Login)
-    if ($self->param('representation') eq "html" && !$user->can_access_view($view)){	
-	    my $redirect_to = $self->param('scheme')."://".$self->param('servername').$self->param('url');
-
-	    my $dispatch_url = $self->param('scheme')."://".$self->param('servername').$self->param('path_prefix')."/".$config->get('login_loc')."?l=".$self->param('lang').";redirect_to=".uri_escape($redirect_to);
-	    
-	    $logger->debug("force_login URLs: $redirect_to - ".$self->param('url')." - ".$dispatch_url);
-	    
-	    my @always_allowed_paths = (
-		$self->param('path_prefix')."/".$config->get('login_loc'),
-		$self->param('path_prefix')."/".$config->get('logout_loc'),
-		$self->param('path_prefix')."/".$config->get('info_loc')."/impressum",
-		$self->param('path_prefix')."/".$config->get('info_loc')."/datenschutz",		
-		$self->param('path_prefix')."/".$config->get('users_loc')."/".$config->get('registrations_loc'),
-		$self->param('path_prefix')."/".$config->get('users_loc')."/".$config->get('passwords_loc'),
-		);
-	    
-	    my $do_dispatch = 1;
-	    
-	    foreach my $allowed_path (@always_allowed_paths){
-		if ($self->param('url') =~ m/$allowed_path/){
-		    $do_dispatch = 0;
-		}
-	    }
-	    
-	    if ($do_dispatch){
-		$self->param('dispatch_url',$dispatch_url);
+    if ($self->param('representation') eq "html" && !$user->can_access_view($view)){
+	my $scheme = ($config->get('use_https'))?'https':$self->param('scheme');
+	
+	my $redirect_to = $scheme."://".$self->param('servername').$self->param('url');
+	
+	my $dispatch_url = $scheme."://".$self->param('servername').$self->param('path_prefix')."/".$config->get('login_loc')."?l=".$self->param('lang').";redirect_to=".uri_escape($redirect_to);
+	
+	$logger->debug("force_login URLs: $redirect_to - ".$self->param('url')." - ".$dispatch_url);
+	
+	my @always_allowed_paths = (
+	    $self->param('path_prefix')."/".$config->get('login_loc'),
+	    $self->param('path_prefix')."/".$config->get('logout_loc'),
+	    $self->param('path_prefix')."/".$config->get('info_loc')."/impressum",
+	    $self->param('path_prefix')."/".$config->get('info_loc')."/datenschutz",		
+	    $self->param('path_prefix')."/".$config->get('users_loc')."/".$config->get('registrations_loc'),
+	    $self->param('path_prefix')."/".$config->get('users_loc')."/".$config->get('passwords_loc'),
+	    );
+	
+	my $do_dispatch = 1;
+	
+	foreach my $allowed_path (@always_allowed_paths){
+	    if ($self->param('url') =~ m/$allowed_path/){
+		$do_dispatch = 0;
 	    }
 	}
+	
+	if ($do_dispatch){
+	    $self->param('dispatch_url',$dispatch_url);
+	}
+    }
     
     if ($config->{benchmark}) {
         $btime=new Benchmark;

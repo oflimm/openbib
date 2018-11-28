@@ -3,12 +3,12 @@
 use JSON::XS;
 use utf8;
 
-open(CHANGED,">./changed.json");
+#open(CHANGED,">./changed.json");
 
 while (<>){
     my $title_ref = decode_json $_;
 
-    ### KMB-Medientypen vergeben: Ueberschreiben bereits vergebene Medientypen
+    ### KMB-Medientypen zusaetzlich vergeben
 
     my $is_kuenstlerbuch = 0;
     my $is_dossier = 0;
@@ -50,46 +50,82 @@ while (<>){
     }
         
     if ($is_kuenstlerbuch){
-	$title_ref->{fields}{'4410'} = [
-	    {
-		mult     => 1,
-		subfield => '',
-		content  => "Künstlerbuch",
-	    },
-	    ];
+	if (@{$title_ref->{fields}{'4410'}}){
+	    push @{$title_ref->{fields}{'4410'}}, {
+                mult     => 1,
+                subfield => '',
+                content  => "Künstlerbuch",
+            };
+	}
+	else {
+	    $title_ref->{fields}{'4410'} = [
+		{
+		    mult     => 1,
+		    subfield => '',
+		    content  => "Künstlerbuch",
+		},
+		];
+	}
     }
     elsif ($is_dossier){
-	$title_ref->{fields}{'4410'} = [
-	    {
-		mult     => 1,
-		subfield => '',
-		content  => "Dossier",
-	    },
-	    ];
+	if (@{$title_ref->{fields}{'4410'}}){
+	    push @{$title_ref->{fields}{'4410'}}, {
+                mult     => 1,
+                subfield => '',
+                content  => "Dossier",
+            };
+	}
+	else {
+	    $title_ref->{fields}{'4410'} = [
+		{
+		    mult     => 1,
+		    subfield => '',
+		    content  => "Dossier",
+		},
+		];
+	}
     }
     elsif ($is_bild){
-	$title_ref->{fields}{'4410'} = [
-	    {
-		mult     => 1,
-		subfield => '',
-		content  => "Bild",
-	    },
-	    ];
+	if (@{$title_ref->{fields}{'4410'}}){
+	    push @{$title_ref->{fields}{'4410'}}, {
+                mult     => 1,
+                subfield => '',
+                content  => "Bild",
+            };
+	}
+	else {
+	    $title_ref->{fields}{'4410'} = [
+		{
+		    mult     => 1,
+		    subfield => '',
+		    content  => "Bild",
+		},
+		];
+	}
     }
     elsif ($is_auktionskatalog){
-	$title_ref->{fields}{'4410'} = [
-	    {
-		mult     => 1,
-		subfield => '',
-		content  => "Auktionskatalog",
+	if (@{$title_ref->{fields}{'4410'}}){
+	    push @{$title_ref->{fields}{'4410'}}, {
+                mult     => 1,
+                subfield => '',
+                content  => "Auktionskatalog",
+            };
+	}
+	else {
+	    $title_ref->{fields}{'4410'} = [
+		{
+		    mult     => 1,
+		    subfield => '',
+		    content  => "Auktionskatalog",
 	    },
-	    ];
+		];
+	}
     }
 
-    if ($is_bild || $is_auktionskatalog || $is_dossier || $is_kuenstlerbuch){
-	print CHANGED encode_json $title_ref, "\n";
+    # if ($is_bild || $is_auktionskatalog || $is_dossier || $is_kuenstlerbuch){
+    # 	print CHANGED encode_json $title_ref, "\n";
 
-    }
+    # }
     ### Medientyp Digital/online zusaetzlich vergeben
     my $is_digital = 0;
 
@@ -155,4 +191,4 @@ while (<>){
    
     print encode_json $title_ref, "\n";
 }
-close(CHANGED);
+#close(CHANGED);

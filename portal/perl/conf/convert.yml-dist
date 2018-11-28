@@ -352,6 +352,7 @@ convtab:
           'tag': 1      
       'litlist':
         index:
+          'litlistid': 1
           'litlist': 1
           'litliststring': 1
           'freesearch': 1
@@ -1846,6 +1847,7 @@ convtab:
           'tag': 1      
       'litlist':
         index:
+          'litlistid': 1
           'litlist': 1
           'litliststring': 1
           'freesearch': 1
@@ -2464,6 +2466,7 @@ convtab:
           'tag': 1      
       'litlist':
         index:
+          'litlistid': 1
           'litlist': 1
           'litliststring': 1
           'freesearch': 1
@@ -2920,6 +2923,7 @@ convtab:
           'tag': 1      
       'litlist':
         index:
+          'litlistid': 1
           'litlist': 1
           'litliststring': 1
           'freesearch': 1
@@ -3371,6 +3375,7 @@ convtab:
           'tag': 1      
       'litlist':
         index:
+          'litlistid': 1
           'litlist': 1
           'litliststring': 1
           'freesearch': 1
@@ -3611,6 +3616,7 @@ convtab:
           'tag': 1      
       'litlist':
         index:
+          'litlistid': 1
           'litlist': 1
           'litliststring': 1
           'freesearch': 1
@@ -3853,6 +3859,7 @@ convtab:
           'tag': 1      
       'litlist':
         index:
+          'litlistid': 1
           'litlist': 1
           'litliststring': 1
           'freesearch': 1
@@ -4108,6 +4115,7 @@ convtab:
           'tag': 1      
       'litlist':
         index:
+          'litlistid': 1
           'litlist': 1
           'litliststring': 1
           'freesearch': 1
@@ -4388,6 +4396,7 @@ convtab:
           'tag': 1      
       'litlist':
         index:
+          'litlistid': 1
           'litlist': 1
           'litliststring': 1
           'freesearch': 1
@@ -4612,6 +4621,7 @@ convtab:
           'tag': 1      
       'litlist':
         index:
+          'litlistid': 1
           'litlist': 1
           'litliststring': 1
           'freesearch': 1
@@ -5099,6 +5109,7 @@ convtab:
           'tag': 1      
       'litlist':
         index:
+          'litlistid': 1
           'litlist': 1
           'litliststring': 1
           'freesearch': 1
@@ -5331,6 +5342,7 @@ convtab:
           'tag': 1      
       'litlist':
         index:
+          'litlistid': 1
           'litlist': 1
           'litliststring': 1
           'freesearch': 1
@@ -5459,6 +5471,7 @@ convtab:
           'tag': 1      
       'litlist':
         index:
+          'litlistid': 1
           'litlist': 1
           'litliststring': 1
           'freesearch': 1
@@ -5943,6 +5956,7 @@ convtab:
           'tag': 1      
       'litlist':
         index:
+          'litlistid': 1
           'litlist': 1
           'litliststring': 1
           'freesearch': 1
@@ -6522,6 +6536,7 @@ convtab:
           'tag': 1      
       'litlist':
         index:
+          'litlistid': 1
           'litlist': 1
           'litliststring': 1
           'freesearch': 1
@@ -6967,6 +6982,7 @@ convtab:
           'tag': 1      
       'litlist':
         index:
+          'litlistid': 1
           'litlist': 1
           'litliststring': 1
           'freesearch': 1

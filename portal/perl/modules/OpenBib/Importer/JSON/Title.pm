@@ -1018,7 +1018,12 @@ sub process {
                     elsif ($field eq "litlist"){
                         if (exists $self->{storage}{listitemdata_litlists}{$id}) {
                             foreach my $litlist_ref (@{$self->{storage}{listitemdata_litlists}{$id}}) {
-                                $index_doc->add_index($searchfield,$weight, ['litlist',$litlist_ref->{title}]);
+				if ($searchfield eq "litlistid"){
+				    $index_doc->add_index($searchfield,$weight, ['litlistid',$litlist_ref->{id}]);
+				}
+				else {
+				    $index_doc->add_index($searchfield,$weight, ['litlist',$litlist_ref->{title}]);
+				}
                             }
                             
                             $logger->info("### $database: Adding Litlists to ID $id");

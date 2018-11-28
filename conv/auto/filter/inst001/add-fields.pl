@@ -67,7 +67,8 @@ while (<>){
 		];
 	}
     }
-    elsif ($is_dossier){
+    
+    if ($is_dossier){
 	if (@{$title_ref->{fields}{'4410'}}){
 	    push @{$title_ref->{fields}{'4410'}}, {
                 mult     => 1,
@@ -85,7 +86,8 @@ while (<>){
 		];
 	}
     }
-    elsif ($is_bild){
+    
+    if ($is_bild){
 	if (@{$title_ref->{fields}{'4410'}}){
 	    push @{$title_ref->{fields}{'4410'}}, {
                 mult     => 1,
@@ -103,7 +105,8 @@ while (<>){
 		];
 	}
     }
-    elsif ($is_auktionskatalog){
+    
+    if ($is_auktionskatalog){
 	if (@{$title_ref->{fields}{'4410'}}){
 	    push @{$title_ref->{fields}{'4410'}}, {
                 mult     => 1,

@@ -1,10 +1,96 @@
 #!/usr/bin/perl
 
 use JSON::XS;
+use utf8;
+
+open(CHANGED,">./changed.json");
 
 while (<>){
     my $title_ref = decode_json $_;
 
+    ### KMB-Medientypen vergeben: Ueberschreiben bereits vergebene Medientypen
+
+    my $is_kuenstlerbuch = 0;
+    my $is_dossier = 0;
+    my $is_bild = 0;
+    my $is_auktionskatalog = 0;
+
+    if (defined $title_ref->{fields}{'2083'}){
+        foreach my $item (@{$title_ref->{fields}{'2083'}}){
+            if ($item->{content} =~m/^Kn 3: Digitales Foto von Werk/){
+                $is_bild = 1;
+            }        
+        }
+    }
+    
+    if (defined $title_ref->{fields}{'4800'}){	
+        foreach my $item (@{$title_ref->{fields}{'4800'}}){
+            if ($item->{content} eq "yy"){
+                $is_kuenstlerbuch = 1;
+            }
+	    
+            if ($item->{content} =~m/^D[IKOPT]$/ || $item->{content} eq "DKG"){
+                $is_dossier = 1;
+            }        
+
+            if ($item->{content} eq "BILD"){
+                $is_bild = 1;
+            }
+	    
+        }	
+    }
+    
+    ### Auktionskatalog
+    if (defined $title_ref->{fields}{'4801'}){
+        foreach my $item (@{$title_ref->{fields}{'4801'}}){
+            if ($item->{content} eq "91;00"){
+                $is_auktionskatalog = 1;
+            }        
+        }
+    }
+        
+    if ($is_kuenstlerbuch){
+	$title_ref->{fields}{'4410'} = [
+	    {
+		mult     => 1,
+		subfield => '',
+		content  => "Künstlerbuch",
+	    },
+	    ];
+    }
+    elsif ($is_dossier){
+	$title_ref->{fields}{'4410'} = [
+	    {
+		mult     => 1,
+		subfield => '',
+		content  => "Dossier",
+	    },
+	    ];
+    }
+    elsif ($is_bild){
+	$title_ref->{fields}{'4410'} = [
+	    {
+		mult     => 1,
+		subfield => '',
+		content  => "Bild",
+	    },
+	    ];
+    }
+    elsif ($is_auktionskatalog){
+	$title_ref->{fields}{'4410'} = [
+	    {
+		mult     => 1,
+		subfield => '',
+		content  => "Auktionskatalog",
+	    },
+	    ];
+    }
+
+    if ($is_bild || $is_auktionskatalog || $is_dossier || $is_kuenstlerbuch){
+	print CHANGED encode_json $title_ref, "\n";
+
+    }
+    ### Medientyp Digital/online zusaetzlich vergeben
     my $is_digital = 0;
 
     # 1) T0807 hat Inhalt 'g'
@@ -69,3 +155,4 @@ while (<>){
    
     print encode_json $title_ref, "\n";
 }
+close(CHANGED);

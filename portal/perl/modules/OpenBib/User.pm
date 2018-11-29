@@ -2579,7 +2579,7 @@ sub get_review_properties {
         my $nickname   = $review->nickname;
         my $reviewtext = $review->reviewtext;
         my $rating     = $review->rating;
-        my $userid     = $review->userid;
+        my $userid     = $review->userid->id;
         
         my $review_ref = {
             id               => $reviewid,
@@ -2664,24 +2664,24 @@ sub add_review {
         $review->update(
             {
                 titleisbn  => $titisbn,
-                nickname   => encode_utf8($nickname),
-                title      => encode_utf8($title),
-                reviewtext => encode_utf8($reviewtext),
+                nickname   => $nickname,
+                title      => $title,
+                reviewtext => $reviewtext,
                 rating     => $rating,
             }
         );
     }
     else {
         # DBI: "insert into review (titleid,titleisbn,dbname,userid,nickname,title,review,rating) values (?,?,?,?,?,?,?,?)"
-        $self->get_schema->create(
+        $self->get_schema->resultset('Review')->create(
             {
                 titleid    => $titleid,
                 dbname     => $dbname,
                 userid     => $self->get_userid_for_username($username),
                 titleisbn  => $titisbn,
-                nickname   => encode_utf8($nickname),
-                title      => encode_utf8($title),
-                reviewtext => encode_utf8($reviewtext),
+                nickname   => $nickname,
+                title      => $title,
+                reviewtext => $reviewtext,
                 rating     => $rating,
             }            
         );
@@ -2891,10 +2891,19 @@ sub get_reviews {
   
     my $logger = get_logger();
 
+    my $userid = $self->{ID};
+
+    if ($username){
+	$userid = $self->get_userid_for_username($username);
+    }
+    else {
+	$username = $self->get_username_for_userid($self->{ID});
+    }
+    
     # DBI: "select id,titleid,dbname,nickname,userid,title,review,rating from review where userid=?"
     my $reviews = $self->get_schema->resultset('Review')->search_rs(
         {
-            userid => $self->get_userid_for_username($username),
+            userid => $userid,
         }
     );
 
@@ -2902,20 +2911,20 @@ sub get_reviews {
     
     foreach my $review ($reviews->all){
         my $userid     = $review->userid;
-        my $username   = $self->get_username_for_userid($userid);
         my $nickname   = $review->nickname;
         my $title      = $review->title;
         my $reviewtext = $review->reviewtext;
         my $id         = $review->id;
-        my $titleid      = $review->titleid;
-        my $dbname      = $review->dbname;
+        my $titleid    = $review->titleid;
+        my $titleisbn  = $review->titleisbn;
+        my $dbname     = $review->dbname;
         my $rating     = $review->rating;
 
         push @$reviewlist_ref, {
             id        => $id,
-            titleid     => $titleid,
-            dbname     => $dbname,
-            username  => $username,
+            titleid   => $titleid,
+	    titleisbn => $titleisbn,
+            dbname    => $dbname,
             nickname  => $nickname,
             title     => $title,
             review    => $review,
@@ -3321,6 +3330,9 @@ sub get_recent_litlists {
 
     my $view         = exists $arg_ref->{view}
         ? $arg_ref->{view}              : '';
+
+    my $userid       = exists $arg_ref->{userid}
+        ? $arg_ref->{userid}            : '';
     
     # Log4perl logger erzeugen
   
@@ -3372,6 +3384,23 @@ sub get_recent_litlists {
                 join     => [ 'litlistitems'],
             }
         );
+    }
+    elsif ($userid) {
+        $litlists = $self->get_schema->resultset('Litlist')->search(
+            {
+		'userid' => $userid,
+                'type' => 1,
+            },
+            {
+                select   => ['id'],
+                as       => ['thislitlistid'],
+                order_by => [ 'id DESC' ],
+                rows     => $count,
+
+            }
+        );
+
+        # $sql_stmnt = "select id from litlist where type = 1";
     }
     else {
         $litlists = $self->get_schema->resultset('Litlist')->search(

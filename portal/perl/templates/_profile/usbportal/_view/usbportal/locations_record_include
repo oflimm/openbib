@@ -5135,6 +5135,8 @@ IF sigel == '123';
   recent_litlists1 = user.get_recent_litlists({database = 'inst123', view = view});
   recent_litlists2 = user.get_recent_litlists({database = 'inst218', view = view});
   recent_litlists = recent_litlists1.merge(recent_litlists2);
+ELSIF sigel == '401';
+  recent_litlists = user.get_recent_litlists({ userid = 7703 });
 ELSE ;
   recent_litlists = user.get_recent_litlists({database = thisdbname, view = view});
 END;
@@ -5147,12 +5149,12 @@ IF recent_litlists.size > 0;
     lecturestring = "" ;
     IF litlist.lecture ;
        lectureinfo   = "Offizielle Literaturliste des Instituts/Seminars";
-       lecturestring = "&nbsp;<img src=\"http://search.ub.uni-koeln.de${config.get('university_img')}\" title=\"${lectureinfo}\" alt=\"${lectureinfo}\" style=\"vertical-align:bottom\" />";
+       lecturestring = "&nbsp;<img src=\"https://search.ub.uni-koeln.de${config.get('university_img')}\" title=\"${lectureinfo}\" alt=\"${lectureinfo}\" style=\"vertical-align:bottom\" />";
     ELSE ;
        lectureinfo   = "Öffentliche Literaturliste von Nutzern";
-       lecturestring = "&nbsp;<img src=\"http://search.ub.uni-koeln.de${config.get('persons_img')}\" title=\"${lectureinfo}\" alt=\"${lectureinfo}\" style=\"vertical-align:bottom\" />";
+       lecturestring = "&nbsp;<img src=\"https://search.ub.uni-koeln.de${config.get('persons_img')}\" title=\"${lectureinfo}\" alt=\"${lectureinfo}\" style=\"vertical-align:bottom\" />";
     END ;
-    litlist_content.push("<li><a target=\"kug\" href=\"http://kug.ub.uni-koeln.de/portal/kug/litlists/id/${litlist.id}.html?l=de\">${litlist.title}</a> (${litlist.itemcount} Titel)${lecturestring}</li>");
+    litlist_content.push("<li><a href=\"https://www.ub.uni-koeln.de/usbportal?service=search&kugview=38_${sigel}%7Ckug&fs=litlistid:${litlist.id}\">${litlist.title}</a> (${litlist.itemcount} Titel)${lecturestring}</li>");
   END;
   litlist_content.push("</ul>");
 ELSE;
@@ -5168,6 +5170,8 @@ ELSE ;
 END;
 
 tags_content = [];
+
+recent_tags = [] ;
 
 IF recent_tags.size > 0;
   tags_content.push("<ul>");

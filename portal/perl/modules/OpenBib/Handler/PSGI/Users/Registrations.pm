@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Users::Registrations
 #
-#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2018 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -204,7 +204,7 @@ sub mail_confirmation {
 
     # Bestaetigungsmail versenden
 
-    my $afile = "an." . $$;
+    my $afile = "an." . $$ . ".txt";
 
     my $subject = $msg->maketext("Bestaetigen Sie Ihre Registrierung");
 
@@ -247,7 +247,7 @@ sub mail_confirmation {
     my $anschfile="/tmp/" . $afile;
 
     $mailmsg->attach(
-        Type            => 'TEXT',
+        Type            => 'text/plain',
         Encoding        => '8bit',
 	Path            => $anschfile,
     );

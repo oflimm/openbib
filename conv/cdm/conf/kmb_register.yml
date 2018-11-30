@@ -1,0 +1,15 @@
+# Tracelevel
+#tracelevel:
+
+# Feld der eindeutigen Titel-ID
+idfield: 'katkey'
+
+origin: '101'
+
+mapping:
+  'inhaltsverzeichnis': '4111'  
+#  'structure': '2662'
+  'viewerURL': '4110'
+
+
+

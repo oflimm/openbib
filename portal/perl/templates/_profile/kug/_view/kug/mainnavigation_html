@@ -64,15 +64,5 @@ $(document).ready(function(){
 </div>
 </form>
 </nav>
-
-[% IF NOT without_navigation_search %]<p/>
-<div style="text-align: center;">
-
-<h3>01.12.2018 +++ KUG wird abgeschaltet +++ 01.12.2018 +++ KUG wird abgeschaltet</h3>
-
-<p>
-Der Kölner UniversitätsGesamtkatalog (KUG) geht in den Ruhestand. Falls Sie ihn nutzen, sichern Sie sich bis zur Abschaltung Ihre KUG-Merklisten und KUG-Literaturlisten und recherchieren ab dem 1. Dezember bitte im <a href="https://www.ub.uni-koeln.de/">USB-Portal</a>.
-</p>
-</div>
-[% END %]
+<p/>
     <!-- end: main navigation -->

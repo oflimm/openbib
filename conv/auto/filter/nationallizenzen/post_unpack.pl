@@ -49,8 +49,11 @@ my $konvdir       = $config->{'conv_dir'};
 my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
 my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
 
+print "### $pool: Korrigiere Schlagworte bzgl. GND\n";
+
+system("cd $datadir/$pool ; cat meta.subject | $rootdir/filter/$pool/fix-subjects.pl > meta.subject.tmp ; mv -f meta.subject.tmp meta.subject");
 
 print "### $pool: Erweiterung um Standort DE-38-USBFB \n";
 
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-locationid.pl |  $rootdir/filter/$pool/process_rda_subfields.pl  > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-locationid.pl |  $rootdir/filter/$pool/process_rda_subfields.pl  | $rootdir/filter/$pool/map_rda_subfields.pl  > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 

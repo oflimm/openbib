@@ -10,7 +10,7 @@ while (<>){
         next if ($field eq "0671");
         my $new_field_ref = [];
         foreach my $field_ref (@{$record_ref->{fields}{$field}}){
-            if ($field_ref->{content} =~m/\u001f[a-zA-Z0-9] /){
+            if ($field_ref->{content} =~m/\x{001f}[a-zA-Z0-9]/){
                 my $processed_field_ref = process_subfields({content => $field_ref->{content}, mult => $field_ref->{mult}});
                 push @$new_field_ref, @$processed_field_ref if (@$processed_field_ref);
             }
@@ -34,7 +34,7 @@ sub process_subfields {
     my $new_field_ref = [];
 
     # Leading elements
-    while ($content =~m/\u001f([a-zA-Z0-9]) (.+?)(?=\u001f)/g){
+    while ($content =~m/\x{001f}([a-zA-Z0-9])(.+?)(?=\x{001f})/g){
         push @$new_field_ref, {
             mult     => $mult,
             content  => $2,
@@ -43,7 +43,7 @@ sub process_subfields {
     }
 
     # last element
-    $content=~m/(?<!\u001f).+\u001f([a-zA-Z0-9]) (.+?)$/;
+    $content=~m/(?<!\x{001f}).+\x{001f}([a-zA-Z0-9])(.+?)$/;
     push @$new_field_ref, {
         mult     => $mult,
         content  => $2,

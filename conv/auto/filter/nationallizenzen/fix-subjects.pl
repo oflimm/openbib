@@ -5,7 +5,7 @@ use strict;
 
 use JSON::XS;
 
-print STDERR "### schnuetgen Korrigiere Schlagworte\n";
+print STDERR "### nationallizenzen Korrigiere Schlagworte\n";
 
 while (<>){
     my $record_ref = decode_json $_;

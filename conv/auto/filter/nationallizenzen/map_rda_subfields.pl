@@ -5,7 +5,7 @@ use strict;
 
 use JSON::XS;
 
-print STDERR "### schnuetgen RDA-Felder splitten und neu zuordnen\n";
+print STDERR "### nationallizenzen RDA-Felder splitten und neu zuordnen\n";
 
 while (<>){
     my $title_ref = decode_json $_;

@@ -1,0 +1,45 @@
+# Encoding der Daten
+#encoding: iso-8859-1
+encoding: utf8
+
+# Tracelevel
+tracelevel:
+
+# CSV-Parameter
+csv:
+  'eol': "\n"
+  'sep_char': "," 
+  'quote_char': '"'
+  'escape_char': '"'
+  'binary': '1'
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: "Course ID"
+
+category_split_chars:
+  'Author': '\s*;\s*'
+
+# Personen
+person:
+  'Author': '0100'        # Verfasser
+
+# Koerperschaften
+corporatebody:
+
+# Systematik
+classification:
+  'Category': '0700'
+  
+# Schlagworte
+subject:
+  'Software': '0710'
+
+# Titel
+title:
+  'Course Title': '0331'
+  'Duration': '0433'
+  'Description': '0750'
+  'Release Date': '0425'
+  'Course URL': '0662'
+
+holding:

@@ -50,9 +50,9 @@ my $dbinfo = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 my $url    = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->titlefile;
 
 print "### $pool: Datenabzug via http von $url\n";
-system("cd $pooldir/$pool ; rm data.csv ; rm lynda_courses.zip");
+system("cd $pooldir/$pool ; rm data.csv ; rm lynda*");
 system("cd $pooldir/$pool ; $wgetexe -O lynda_courses.zip '$url' # > /dev/null 2>&1 ");
 
 print "### $pool: Konvertierung von data.csv\n";
 system("cd $pooldir/$pool ; rm meta.* ; unzip lynda_courses.zip ; cat 'lynda.com Courses.csv' | sed '1s/^.//' > data.csv");
-system("cd $pooldir/$pool; $simplecsv2metaexe --inputfile=data.csv' --configfile=$confdir/$pool.yml; gzip meta.*");
+system("cd $pooldir/$pool; $simplecsv2metaexe --inputfile=data.csv --configfile=$confdir/$pool.yml; gzip meta.*");

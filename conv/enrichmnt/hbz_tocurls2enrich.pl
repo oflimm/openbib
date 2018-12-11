@@ -91,7 +91,7 @@ my $logger = get_logger();
 
 my $enrichment = new OpenBib::Enrichment;
 
-my $origin = 24;
+my $origin = 26; # hbz
 
 $logger->debug("Origin: $origin");
 
@@ -188,6 +188,12 @@ else {
                 push @isbns, $content;
             }
 
+            if ($category =~ /^634$/){
+                $content=~s/^ISBN //;
+                $content=~s/^(\S+)(\s.+?)/$1/;
+                push @isbns, $content;
+            }
+
             if ($category =~ /^655$/){
                 my @subfields = split("",$content);
                 my $thisenrich_ref = {};
@@ -220,6 +226,7 @@ else {
 		$isbn = $isbnXX->as_isbn13->as_string;
 	    }
 	    else {
+		$logger->error("ISBN $isbn NOT valid");
 		next;
 	    }
 	    

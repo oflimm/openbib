@@ -96,7 +96,7 @@ my $logger = get_logger();
 
 my $enrichment = new OpenBib::Enrichment;
 
-my $origin = 24;
+my $origin = 26; # hbz
 
 $logger->debug("Origin: $origin");
 
@@ -181,10 +181,16 @@ else {
                 $id=$content;
             }
 	    
-            if ($category =~ /^540$/){
-                $content=~s/^ISBN //;
-                $content=~s/^(\S+)(\s.+?)/$1/;
-                push @isbns, $content;
+            if ($category =~ /^540$/ || $category =~ /^634$/){
+		if    ($content =~m/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/){
+		    $content = "$1$2$3$4$5$6$7$8$9$10$11$12$13";
+		    push @isbns, $content;
+		}
+		elsif ($content =~m/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/){
+		    $content = "$1$2$3$4$5$6$7$8$9$10";
+		    push @isbns, $content;
+		}
+
             }
 	    
 	}
@@ -205,6 +211,9 @@ else {
 		    $logger->debug("TOC-OCR: $ocr_content");
 		}
 	    }
+	    else {
+		$logger->error("Keine Datei $ocrfile vorhanden.");
+	    }
 	    
 	}
 	
@@ -221,6 +230,7 @@ else {
 		$isbn = $isbnXX->as_isbn13->as_string;
 	    }
 	    else {
+		$logger->error("ISBN $isbn NOT valid");
 		next;
 	    }
 	    

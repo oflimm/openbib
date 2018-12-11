@@ -51,14 +51,16 @@ use OpenBib::Config;
 # Autoflush
 $|=1;
 
-my ($help,$usedbfile,$filename,$logfile,$ocrdir,$mabfile);
+my ($help,$usedbfile,$filename,$logfile,$loglevel,$ocrdir,$mabfile,$updateenrichdb);
 
 &GetOptions("help"        => \$help,
             "use-dbfile"  => \$usedbfile,
             "mabfile=s"   => \$mabfile,
             "filename=s"  => \$filename,
+	    "update-enrichdb" => \$updateenrichdb,
             "ocrdir=s"    => \$ocrdir,
             "logfile=s"   => \$logfile,
+            "loglevel=s"  => \$loglevel,
 	    );
 
 if ($help){
@@ -68,6 +70,7 @@ if ($help){
 my $config = OpenBib::Config->new;
 
 $logfile=($logfile)?$logfile:"/var/log/openbib/hbz_dt-enrichmnt.log";
+$loglevel=($loglevel)?$loglevel:"INFO";
 $filename=($filename)?$filename:"./isbndata.db";
 
 my $log4Perl_config = << "L4PCONF";
@@ -95,12 +98,12 @@ my $enrichdbh
 # 24 = HBZ
 my $origin = 24;
 
-my $deleterequest     = $enrichdbh->prepare("delete from normdata where category=4110 and origin=$origin");
-my $ocr_deleterequest = $enrichdbh->prepare("delete from normdata where category=4111 and origin=$origin");
-my $publ_deleterequest = $enrichdbh->prepare("delete from normdata where category=4125 and origin=$origin");
-my $enrichrequest     = $enrichdbh->prepare("insert into normdata values(?,$origin,4110,?,?)");
-my $ocr_enrichrequest = $enrichdbh->prepare("insert into normdata values(?,$origin,4111,?,?)");
-my $publ_enrichrequest = $enrichdbh->prepare("insert into normdata values(?,$origin,4125,?,?)");
+my $deleterequest     = $enrichdbh->prepare("delete from enriched_content_by_isbn where category=4110 and origin=$origin");
+my $ocr_deleterequest = $enrichdbh->prepare("delete from enriched_content_by_isbn where category=4111 and origin=$origin");
+my $publ_deleterequest = $enrichdbh->prepare("delete from enriched_content_by_isbn where category=4125 and origin=$origin");
+my $enrichrequest     = $enrichdbh->prepare("insert into enriched_content_by_isbn values(?,$origin,4110,?,?)");
+my $ocr_enrichrequest = $enrichdbh->prepare("insert into enriched_content_by_isbn values(?,$origin,4111,?,?)");
+my $publ_enrichrequest = $enrichdbh->prepare("insert into enriched_content_by_isbn values(?,$origin,4125,?,?)");
 
 unless ($usedbfile){
     unlink $filename;
@@ -134,6 +137,8 @@ else {
             my $indicator = $category_ref->[1];
             my $content   = $category_ref->[2];
 
+	    $logger->debug("$category - $indicator - $content");
+
             # Titel-ID sowie Ueberordnungs-ID
             if ($category =~ /^001$/){
                 $content=lc($content);
@@ -152,7 +157,6 @@ else {
             }
 
             if ($category =~ /^655$/){
-#                print "---- $indikator - $content\n";
                 @subfields = split("",$content);
                 my $thisenrich_ref = {};
                 foreach my $subfield (@subfields){
@@ -197,56 +201,59 @@ else {
     }    
 }
 
-$logger->info("Loeschen der bisherigen Daten");
-$deleterequest->execute();
-$ocr_deleterequest->execute();
-
-$logger->info("Einladen der neuen Daten in die Datenbank");
-
-foreach my $thisisbn (keys %isbndata){
-    next if (!$thisisbn);
-
-    if ($logger->is_debug){
-        $logger->debug("ISBN: $thisisbn");
-        $logger->debug("YAML: ".YAML::Dump($isbndata{$thisisbn}));
-    }
+if ($updateenrichdb){
+    $logger->info("Loeschen der bisherigen Daten");
+    $deleterequest->execute();
+    $ocr_deleterequest->execute();
     
-    # Dublette Inhalte entfernen
-    my $toc_indicator=1;
-
-    foreach my $item (@{$isbndata{$thisisbn}}){
-        my $id     = $item->{id};
-        my @enrich = @{$item->{enrich}};
-        foreach my $thisitem_ref (@enrich){
-            if ($logger->is_debug){
-                $logger->debug("ITEM: ".YAML::Dump($thisitem_ref));
-            }
-            if ($thisitem_ref->{type} eq "Inhaltsverzeichnis"){        
-               $enrichrequest->execute($thisisbn,$toc_indicator,$thisitem_ref->{url});
-               $logger->debug("TOC-URL: $thisitem_ref->{url}");
-
-               my $ocrfile = $ocrdir."/".$id.".txt";
-
-               $logger->debug("OCR-File: $ocrfile");
-               if ($ocrdir && -e $ocrfile){
-                   my $slurped_file = decode_utf8(read_file($ocrfile));
-                   if ($slurped_file){
-                       my $ocr = process_ocr($slurped_file);
-                       $ocr_enrichrequest->execute($thisisbn,$toc_indicator,$ocr);
-                       $logger->debug("TOC-OCR: $ocr");
-                   }
-               }
-               $toc_indicator++;
-            }
-            elsif ($thisitem_ref->{type} =~/^Verlagsdaten/){        
-               $publ_enrichrequest->execute($thisisbn,1,$thisitem_ref->{url});
-            }
+    $logger->info("Einladen der neuen Daten in die Datenbank");
+    
+    foreach my $thisisbn (keys %isbndata){
+	next if (!$thisisbn);
+	
+	if ($logger->is_debug){
+	    $logger->debug("ISBN: $thisisbn");
+	    $logger->debug("YAML: ".YAML::Dump($isbndata{$thisisbn}));
+	}
+	
+	# Dublette Inhalte entfernen
+	my $toc_indicator=1;
+	
+	foreach my $item (@{$isbndata{$thisisbn}}){
+	    my $id     = $item->{id};
+	    my @enrich = @{$item->{enrich}};
+	    foreach my $thisitem_ref (@enrich){
+		if ($logger->is_debug){
+		    $logger->debug("ITEM: ".YAML::Dump($thisitem_ref));
+		}
+		if ($thisitem_ref->{type} eq "Inhaltsverzeichnis"){        
+		    $enrichrequest->execute($thisisbn,$toc_indicator,$thisitem_ref->{url});
+		    $logger->debug("TOC-URL: $thisitem_ref->{url}");
+		    
+		    my $ocrfile = $ocrdir."/".$id.".txt";
+		    
+		    $logger->debug("OCR-File: $ocrfile");
+		    if ($ocrdir && -e $ocrfile){
+			my $slurped_file = decode_utf8(read_file($ocrfile));
+			if ($slurped_file){
+			    my $ocr = process_ocr($slurped_file);
+			    $ocr_enrichrequest->execute($thisisbn,$toc_indicator,$ocr);
+			    $logger->debug("TOC-OCR: $ocr");
+			}
+		    }
+		    $toc_indicator++;
+		}
+		elsif ($thisitem_ref->{type} =~/^Verlagsdaten/){        
+		    $publ_enrichrequest->execute($thisisbn,1,$thisitem_ref->{url});
+		}
 #        else {
 #            $logger->info("Typ: $thisitem_ref->{type}");
 #        }
-        }
+	    }
         }
     }
+}
+
 sub print_help {
     print << "ENDHELP";
 hbz_dt2enrich.pl - Anreicherung mit Informationen aus den hbz-Daten

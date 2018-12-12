@@ -243,6 +243,8 @@ else {
 	    my @enrich = @{$title_ref->{enrich}};
 	    
 	    foreach my $thisitem_ref (@enrich){
+		next if (!$thisitem_ref->{url});
+		
 		if ($logger->is_debug){
 		    $logger->debug("ITEM: ".YAML::Dump($thisitem_ref));
 		}
@@ -299,6 +301,11 @@ bvb_tocurls2enrich.pl - Anreicherung mit TOCURL-Informationen aus den offenen Da
 
    --logfile=...         : Name der Log-Datei
    --loglevel=...        : Loglevel (default: INFO)
+
+Beispiele:
+
+ hbz_tocurls2enrich.pl -ocrdir=./storage --inputfile=tocs.mab --jsonfile=hbz_tocs_20181130_urls.json
+ hbz_tocurls2enrich.pl -import-json -init --jsonfile=hbz_tocs_20181130_urls.json
 
 ENDHELP
     exit;

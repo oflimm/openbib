@@ -110,7 +110,7 @@ $logger->info("Bestimmung der TOCs");
 
 our $count=0;
 
-our $tocurl_tuple_count = 0;
+our $toc_tuple_count = 0;
 
 our $enrich_data_by_isbn_ref   = [];
 
@@ -129,7 +129,7 @@ if ($importjson){
 
         push @{$enrich_data_by_isbn_ref},   $item_ref if (defined $item_ref->{isbn});
 
-        $tocurl_tuple_count++;
+        $toc_tuple_count++;
         
         if ($count % 1000 == 0){
             $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
@@ -140,7 +140,7 @@ if ($importjson){
 
     $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
     
-    $logger->info("$tocurl_tuple_count TOCURL-Tupel eingefuegt");
+    $logger->info("$toc_tuple_count TOCOCR-Tupel eingefuegt");
 
     if ($jsonfile){
         close(JSON);
@@ -294,6 +294,12 @@ hbz_tococr2enrich.pl - Anreicherung mit TOC-OCR aus Lieferungen des hbz
    --ocrdir=...          : Name des Verzeichnisses mit OCR-Daten
    --logfile=...         : Name der Log-Datei
    --loglevel=...        : Loglevel (default: INFO)
+
+Beispiele:
+
+ hbz_tococr2enrich.pl -ocrdir=./storage --inputfile=tocs.mab --jsonfile=hbz_tocs_20181130_ocr.json
+ hbz_tococr2enrich.pl -import-json -init --jsonfile=hbz_tocs_20181130_ocr.json
+
 
 ENDHELP
     exit;

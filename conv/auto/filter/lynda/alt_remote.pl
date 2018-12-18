@@ -4,9 +4,9 @@
 #
 #  alt_remote.pl
 #
-#  Konvertieren in das Meta-Format
+#  Holen via oai und konvertieren in das Meta-Format
 #
-#  Dieses File ist (C) 2003-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -39,20 +39,21 @@ my $config = new OpenBib::Config();
 my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
-my $confdir       = $config->{'base_dir'}."/conf";
-my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
-my $simplecsv2metaexe   = "$konvdir/simplecsv2meta.pl";
+
+my $harvestoaiexe     = "$config->{'conv_dir'}/harvestOAI.pl";
+my $simplexml2metaexe = "$config->{'conv_dir'}/simplexml2meta.pl";
 
 my $pool          = $ARGV[0];
 
-my $dbinfo = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
+my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 
-my $url    = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->titlefile;
+my $oaiurl        = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->titlefile;
 
-print "### $pool: Datenabzug via http von $url\n";
-system("cd $pooldir/$pool ; rm data.csv ; rm lynda*");
-system("cd $pooldir/$pool ; $wgetexe -O lynda_courses.zip '$url' # > /dev/null 2>&1 ");
+print "### $pool: Datenabzug via OAI von $oaiurl\n";
+system("cd $pooldir/$pool ; rm meta.* ; rm pool*");
+system("cd $pooldir/$pool ; $harvestoaiexe -all --set=$pool --format=marc21 --url=\"$oaiurl\" ");
 
-print "### $pool: Konvertierung von data.csv\n";
-system("cd $pooldir/$pool ; rm meta.* ; unzip lynda_courses.zip ; cat 'lynda.com Courses.csv' | sed '1s/^.//' > data.csv");
-system("cd $pooldir/$pool; $simplecsv2metaexe --inputfile=data.csv --configfile=$confdir/$pool.yml; gzip meta.*");
+system("cd $pooldir/$pool ; echo '<recordlist>' > $pooldir/$pool/pool.dat ; cat pool-*.xml >> $pooldir/$pool/pool.dat ; echo '</recordlist>' >> $pooldir/$pool/pool.dat");
+
+system("cd $pooldir/$pool; $simplexml2metaexe --inputfile=pool.dat --configfile=/opt/openbib/conf/${pool}.yml; gzip meta.*");
+system("rm $pooldir/$pool/pool.dat");

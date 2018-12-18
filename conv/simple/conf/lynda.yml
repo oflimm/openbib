@@ -1,45 +1,53 @@
 # Encoding der Daten
-#encoding: iso-8859-1
-encoding: utf8
+# encoding: iso-8859-1
+# encoding: utf8
 
 # Tracelevel
 tracelevel:
 
-# CSV-Parameter
-csv:
-  'eol': "\n"
-  'sep_char': "," 
-  'quote_char': '"'
-  'escape_char': '"'
-  'binary': '1'
+# XPath-Parameter
+
+# Record-Selector
+recordselector: "/recordlist/record"
 
 # Feld der eindeutigen Titel-ID
-uniqueidfield: "Course ID"
+uniqueidfield: "//mx:controlfield[@tag='001']"
 
-category_split_chars:
-  'Author': '\s*;\s*'
+is_deleted: "//is_deleted"
 
 # Personen
 person:
-  'Author': '0100'        # Verfasser
+  "//mx:datafield[@tag='100']/mx:subfield": '0100' # Verfasser
 
 # Koerperschaften
 corporatebody:
+  "//mx:datafield[@tag='260']/mx:subfield": '0200' # Koerperschaft
+
 
 # Systematik
-classification:
-  'Category': '0700'
-  
+classification: 
+  "//mx:datafield[@tag='521']/mx:subfield": '0700' # Klassifikation
+
 # Schlagworte
 subject:
-  'Software': '0710'
+  "//mx:datafield[@tag='650']/mx:subfield": '0710' # Schlagwort
 
 # Titel
 title:
-  'Course Title': '0331'
-  'Duration': '0433'
-  'Description': '0750'
-  'Release Date': '0425'
-  'Course URL': '0662'
+  "//mx:datafield[@tag='041']/mx:subfield": '0015' # Sprache
+  "//mx:datafield[@tag='245']/mx:subfield": '0331' # Titel
+  "//mx:datafield[@tag='520']/mx:subfield": '0750' # Beschreibung
+  "//mx:datafield[@tag='300']/mx:subfield": '0433' # Dauer/Kollation
+  "//mx:datafield[@tag='260']/mx:subfield": '0425' # Erstellungsdatum
+  "//mx:datafield[@tag='340']/mx:subfield": '0800' # Medientyp
+  "//mx:datafield[@tag='856']/mx:subfield[@code='u']": '0662'
 
-holding:
+defaultmediatype: 'Digital'
+
+filter:
+  'metadata/oai_dc:dc/dc:date':
+     filter_match: "^(\d\d\d\d)"
+  'metadata/oai_dc:dc/dc:description':
+     filter_newline2br: 1
+  'metadata/oai_dc:dc/dc:title':
+     filter_newline2br: 1

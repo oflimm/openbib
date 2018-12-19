@@ -21,7 +21,7 @@ person:
 
 # Koerperschaften
 corporatebody:
-  "//mx:datafield[@tag='260']/mx:subfield": '0200' # Koerperschaft
+  "//mx:datafield[@tag='260']/mx:subfield[@code='b']": '0200' # Koerperschaft
 
 
 # Systematik
@@ -38,7 +38,7 @@ title:
   "//mx:datafield[@tag='245']/mx:subfield": '0331' # Titel
   "//mx:datafield[@tag='520']/mx:subfield": '0750' # Beschreibung
   "//mx:datafield[@tag='300']/mx:subfield": '0433' # Dauer/Kollation
-  "//mx:datafield[@tag='260']/mx:subfield": '0425' # Erstellungsdatum
+  "//mx:datafield[@tag='260']/mx:subfield[@code='c']": '0425' # Erstellungsdatum
   "//mx:datafield[@tag='340']/mx:subfield": '0800' # Medientyp
   "//mx:datafield[@tag='856']/mx:subfield[@code='u']": '0662'
 

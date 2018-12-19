@@ -275,28 +275,42 @@ sub parse_record {
     if ($logger->is_debug){
 	$logger->debug($titset->toString);
     }
-    my @ids= $titset->findnodes($convconfig->{uniqueidfield});
-
-    my $titleid = $ids[0]->first_child()->text();
-
-    $titleid=~s/\//_/g;
-
-    $logger->debug("ID: $titleid");
-
-    if ($have_titleid_ref->{$titleid}){
-        $logger->error("Doppelte ID: $titleid");
-	$t->purge();
-        return;
-    }
 
     my $is_deleted;
 
     $is_deleted = $titset->findnodes($convconfig->{is_deleted}) if (defined $convconfig->{is_deleted});
 
     if ($is_deleted){
-	$logger->error("Geloeschte ID: $titleid");
+	$logger->debug("Geloeschte ID");
 	$t->purge();
 	return;
+    }
+
+    my @ids= $titset->findnodes($convconfig->{uniqueidfield});
+
+    # if (@ids){
+    # 	$logger->debug("ID: ".YAML::Dump(\@ids));
+    # }
+    # else {
+    # 	$logger->debug("No Title-ID!!!");
+    # }
+
+
+    my $titleid = $ids[0]->first_child()->text();
+    
+    $titleid=~s/\//_/g;
+
+    if ($titleid){
+	$logger->info("Processing ID: $titleid");
+    }
+    else {
+	$logger->debug("NO Title-ID!!!");
+    }
+
+    if ($have_titleid_ref->{$titleid}){
+        $logger->error("Doppelte ID: $titleid");
+	$t->purge();
+        return;
     }
         
     $have_titleid_ref->{$titleid} = 1;
@@ -316,6 +330,7 @@ sub parse_record {
             next unless (defined $element->first_child());
             my $content = konv($element->first_child()->text());
 
+	    $logger->info("Field $kateg - $content");
             if ($convconfig->{filter}{$kateg}{filter_junk}){
                 $content = filter_junk($content);
             }

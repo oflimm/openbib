@@ -358,7 +358,7 @@ sub threadA {
 
 #autoconvert({ sync => 1, databases => ['openlibrary','gutenberg','wikisource_de'] });
 #    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['doab','elis','gallica','gdz','gresham_oer','hathitrust','gutenberg','intechopen','khanacademy','khanacademy_de','loc','loviscach_oer','mitocw_oer','nptelhrd_oer','stanford_oer','ucberkeley_oer','ucla_oer','yale_oer','zvdd'] });
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['doab','oapen','gutenberg'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['doab','oapen','gutenberg','lynda'] });
 
     $logger->info("### Sammlungen aus dem Universitaet");
     

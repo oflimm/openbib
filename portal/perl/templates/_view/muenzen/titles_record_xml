@@ -1,13 +1,13 @@
 [%#-
 #######################################################################
 #
-# Templatename: titles_rdf
+# Templatename: titles_record_xml
 #
 # Typ         : Mastertemplate
 #
 # Aufgabe:
 #
-# Ausgabe eines Titel-Normdatensatzes als LinkedData
+# Ausgabe eines Titel-Normdatensatzes im LIDO/KENUM XML-Format
 #
 #######################################################################
 -%]

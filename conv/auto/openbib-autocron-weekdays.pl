@@ -91,6 +91,7 @@ my $blacklist_ref = {
     'inst105master' => 1,
     'inst113' => 1,
     'inst113master' => 1,
+    'inst123' => 1,
     'inst128' => 1,
     'inst128master' => 1,
     'inst132' => 1,
@@ -102,6 +103,7 @@ my $blacklist_ref = {
     'inst166' => 1,
     'inst166master' => 1,
     'inst137' => 1,
+    'inst218' => 1,    
     'inst301' => 1,
     'inst303' => 1,
     'inst304' => 1,
@@ -367,6 +369,12 @@ sub threadC {
     $logger->info("### Aufgesplittete Kataloge inst301");
     
     autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst303','inst304','inst305','inst306','inst307','inst308','inst309','inst310','inst311','inst312','inst313','inst314','inst315','inst317','inst318','inst319','inst320','inst321','inst324','inst325'] });
+
+    ##############################
+    
+    $logger->info("### Kataloge mit offiziellen Literaturliste muessen immer komplett aktualisiert werden");
+    
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst123','inst218','inst401'] });
 
     ##############################
 

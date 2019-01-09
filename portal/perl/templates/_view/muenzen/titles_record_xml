@@ -380,7 +380,7 @@
        </lido:relatedWorkRelType>
       </lido:relatedWorkSet>
 [% END -%]      
-     <lido:relatedWorksWrap>      
+     </lido:relatedWorksWrap>      
     </lido:objectRelationWrap>
 [% END -%]    
   </lido:descriptiveMetadata>

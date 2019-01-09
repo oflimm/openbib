@@ -217,11 +217,18 @@ Weitere Beispiele fuer Bezeichnungen der Muenzen:
       <lido:objectDescriptionWrap/>
       <lido:objectMeasurementsWrap>
         <lido:objectMeasurementsSet>
-          <lido:displayObjectMeasurements>
-         [% IF durchmesser %]Durchmesser: [% durchmesser %] mm[% END %]	 
-         [% IF gewicht %]Gewicht: [% gewicht %] g[% END %]	 
-         [% IF stempelstellung %]Stempelstellung: [% stempelstellung %] Uhr[% END %]
-          </lido:displayObjectMeasurements>
+[%- measurements = []; 
+    IF durchmesser ;
+       measurements.push("Durchmesser: ${durchmesser} mm");
+    END ;	 
+    IF gewicht ;
+       measurements.push("Gewicht: ${gewicht} g");
+    END;	 
+    IF stempelstellung ;
+       measurements.push("Stempelstellung: ${stempelstellung} Uhr");
+    END ;
+%]	
+          <lido:displayObjectMeasurements>[% IF measurements %][% measurements.join(', ') %][% END %]</lido:displayObjectMeasurements>
         <lido:objectMeasurements>
 [%- IF durchmesser -%]	  
          <lido:measurementsSet>

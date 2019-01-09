@@ -116,7 +116,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lido:lidoWrap xmlns:lido="http://www.lido-schema.org" xsi:schemaLocation="http://www.lido-schema.org http://www.lido-schema.org/schema/v1.0/lido-v1.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 <lido:lido xsi:schemaLocation="http://www.lido-schema.org http://www.lido-schema.org/schema/v1.0/lido-v1.0.xsd">
-  <lido:lidoRecID lido:source="Digitale Münzsammlung des Instituts für Altertumskunde an der Universität zu Köln" lido:type="local">record_DE-38-404_kenom_[% record.id %]
+  <lido:lidoRecID lido:source="Münzsammlung am Institut für Altertumskunde der Universität zu Köln" lido:type="local">record_DE-38-404_kenom_[% record.id %]
   </lido:lidoRecID>
   <lido:objectPublishedID lido:type="http://terminology.lido-schema.org/identifier_type/uri">
    https://[% servername %][% path_prefix %]/[% config.get('databases_loc') %]/id/[%- database -%]/[% config.get('titles_loc') %]/id/[%- record.id -%]
@@ -224,7 +224,7 @@
             http://ld.zdb-services.de/resource/organisations/DE-38-404
             </lido:legalBodyID>
             <lido:legalBodyName>
-              <lido:appellationValue>Institut für Altertumskunde, Abteilung Klassische Philologie, Alte Geschichte</lido:appellationValue>
+              <lido:appellationValue>Münzsammlung am Institut für Altertumskunde der Universität zu Köln</lido:appellationValue>
             </lido:legalBodyName>
             <lido:legalBodyWeblink>http://ifa.phil-fak.uni-koeln.de/</lido:legalBodyWeblink>
           </lido:repositoryName>
@@ -391,7 +391,7 @@
             <lido:legalBodyID lido:type="URI">
             http://ld.zdb-services.de/resource/organisations/DE-38-404</lido:legalBodyID>
             <lido:legalBodyName>
-              <lido:appellationValue>Institut für Altertumskunde, Abteilung Klassische Philologie, Alte Geschichte</lido:appellationValue>
+              <lido:appellationValue>Münzsammlung am Institut für Altertumskunde der Universität zu Köln</lido:appellationValue>
             </lido:legalBodyName>
             <lido:legalBodyWeblink>
             http://ifa.phil-fak.uni-koeln.de/</lido:legalBodyWeblink>
@@ -404,7 +404,7 @@
         <lido:recordSource>
           <lido:legalBodyID lido:type="URI"></lido:legalBodyID>
           <lido:legalBodyName>
-            <lido:appellationValue>Münzsammlung des Instituts für Altertumskunde, Universität zu Köln</lido:appellationValue>
+            <lido:appellationValue>Münzsammlung am Institut für Altertumskunde der Universität zu Köln</lido:appellationValue>
           </lido:legalBodyName>
           <lido:legalBodyWeblink>
           http://ifa.phil-fak.uni-koeln.de/</lido:legalBodyWeblink>
@@ -452,7 +452,7 @@
             <lido:rightsHolder>
               <lido:legalBodyID lido:type="URI"></lido:legalBodyID>
               <lido:legalBodyName>
-                <lido:appellationValue>Münzsammlung des Instituts für Altertumskunde, Universität zu Köln</lido:appellationValue>
+                <lido:appellationValue>Münzsammlung am Institut für Altertumskunde der Universität zu Köln</lido:appellationValue>
               </lido:legalBodyName>
               <lido:legalBodyWeblink>
               http://ifa.phil-fak.uni-koeln.de/</lido:legalBodyWeblink>
@@ -492,7 +492,7 @@
             <lido:rightsHolder>
               <lido:legalBodyID lido:type="URI"></lido:legalBodyID>
               <lido:legalBodyName>
-                <lido:appellationValue>Münzsammlung des Instituts für Altertumskunde, Universität zu Köln</lido:appellationValue>
+                <lido:appellationValue>Münzsammlung am Institut für Altertumskunde der Universität zu Köln</lido:appellationValue>
               </lido:legalBodyName>
               <lido:legalBodyWeblink>
               http://ifa.phil-fak.uni-koeln.de/</lido:legalBodyWeblink>

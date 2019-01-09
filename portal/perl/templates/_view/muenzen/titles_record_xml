@@ -12,11 +12,12 @@
 #######################################################################
 -%]
 [%-
-    normdata        = record.get_fields;
-    holding         = record.get_holding;
-    circulation     = record.load_circulation.get_circulation;
-    same_records    = record.enrich_same_records.get_same_records;
-    similar_records = record.enrich_similar_records.get_similar_records;
+     normdata        = record.get_fields;
+     holding         = record.get_holding;
+     circulation     = record.load_circulation.get_circulation;
+     same_records    = record.enrich_same_records.get_same_records;
+     similar_records = record.enrich_similar_records.get_similar_records;
+     
      # Titel konstruieren
      title = normdata.${'T0331'}.first.content;
      IF normdata.${'T0334'}.first.content;
@@ -29,11 +30,36 @@
        title = "Münze";
      END;
 
-     IF normdata.${'T0338'}.first.content;
-         nominal = normdata.${'T0338'}.first.content;
+     legende_vorderseite = "";
+     
+     IF normdata.${'T0346'}.defined ;
+       # Legende Vorderseite aufgeloest Editionstext - Latein
+       legende_vorderseite = normdata.${'T0346'}.first.content;
+     ELSE ;
+       # Legende Vorderseite aufgeloest Editionstext - Griechisch
+       legende_vorderseite = normdata.${'T0343'}.first.content;
      END;
 
-     # Datierung konstruieren
+     legende_rueckseite = "";
+
+     IF normdata.${'T0356'}.defined ;
+       # Legende Rueckseite aufgeloest Editionstext - Latein
+       legende_rueckseite = normdata.${'T0356'}.first.content;
+     ELSE ;
+       # Legende Rueckseite aufgeloest Editionstext - Griechisch
+       legende_rueckseite = normdata.${'T0353'}.first.content;
+     END ;
+     
+     # Beschreibung Vorderseite
+     beschreibung_vorderseite = normdata.${'T0334'}.first.content;
+
+     # Beschreibung Rueckseite
+     beschreibung_rueckseite = normdata.${'T0337'}.first.content;
+
+     # Nominal
+     nominal = normdata.${'T0338'}.first.content;
+
+     # Datierung ausfuehrlich
      datierung = normdata.${'T0428'}.first.content;
 
      # Muenzstand
@@ -43,7 +69,7 @@
      muenzherr = normdata.${'PC0001'}.first.content;
 
      # Durchmesser
-     durchmessert = normdata.${'T0435'}.first.content;
+     durchmesser = normdata.${'T0435'}.first.content;
 
      # Gewicht
      gewicht = normdata.${'T0433'}.first.content;
@@ -135,37 +161,29 @@
       </lido:titleWrap>
       <lido:inscriptionsWrap>
         <lido:inscriptions lido:type="front">
-[%- IF normdata.${"T0343"}.defined # griechisch %]	
+[%- IF legende_vorderseite %]	
           <lido:inscriptionTranscription>
-          Legende: [% normdata.${"T0343"}.first.content %]		  
-          </lido:inscriptionTranscription>
-[% ELSIF normdata.${"T0346"}.defined # latein %]	
-          <lido:inscriptionTranscription>
-          Legende: [% normdata.${"T0346"}.first.content %]		  
+          Legende: [% legende_vorderseite %]		  
           </lido:inscriptionTranscription>
 [% END -%]
-[%- IF normdata.${"T0334"}.defined %]	
+[%- IF beschreibung_vorderseite %]	
           <lido:inscriptionDescription>
              <lido:descriptiveNoteValue>
-              [% normdata.${"T0334"}.first.content %]		  
+              [% beschreibung_vorderseite %]		  
              </lido:descriptiveNoteValue>
           </lido:inscriptionDescription>
 [% END -%]	  
         </lido:inscriptions>
         <lido:inscriptions lido:type="back">
-[%- IF normdata.${"T0353"}.defined # griechisch %]	
+[%- IF legende_rueckseite %]	
           <lido:inscriptionTranscription>
-          Legende: [% normdata.${"T0353"}.first.content %]		  
-          </lido:inscriptionTranscription>
-[% ELSIF normdata.${"T0356"}.defined # latein %]	
-          <lido:inscriptionTranscription>
-          Legende: [% normdata.${"T0356"}.first.content %]		  
+          Legende: [% legende_rueckseite %]		  
           </lido:inscriptionTranscription>
 [% END -%]
-[%- IF normdata.${"T0337"}.defined %]	
+[%- IF beschreibung_rueckseite %]	
           <lido:inscriptionDescription>
              <lido:descriptiveNoteValue>
-              [% normdata.${"T0337"}.first.content %]		  
+              [% beschreibung_rueckseite %]		  
              </lido:descriptiveNoteValue>
           </lido:inscriptionDescription>
 [% END -%]	  
@@ -174,7 +192,7 @@
           <lido:inscriptionTranscription>[% record.id %]</lido:inscriptionTranscription>
         </lido:inscriptions>
 [%- IF 0 == 1 %]
-Weitere Beispiele fuer Bezeichnungen der Muenzen:
+        <!-- Weitere Beispiele fuer Bezeichnungen der Muenzen: -->
 
         <lido:inscriptions lido:type="edge">
            <lido:inscriptionTranscription>Beispieltext Prägung Rand</lido:inscriptionTranscription>

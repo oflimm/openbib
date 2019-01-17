@@ -965,7 +965,6 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
                 }
                 elsif ($mediastatus eq "entliehen"){
                     $overall_mediastatus_ref->{lent} = 1;
-#                    $overall_mediastatus_ref->{presence_immediate} = 1;                    
                 }
             }
             

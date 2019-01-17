@@ -18,7 +18,7 @@
 #  Programm, Konvertierungsroutinen in das Metaformat
 #  und generelle Optimierung auf Bulk-Konvertierungen
 #
-#  Copyright 2003-2015 Oliver Flimm
+#  Copyright 2003-2018 Oliver Flimm
 #                      <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
@@ -961,6 +961,10 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
                 }
                 elsif ($mediastatus eq "nicht entleihbar"){
                     $overall_mediastatus_ref->{presence} = 1;
+#                    $overall_mediastatus_ref->{presence_immediate} = 1;                    
+                }
+                elsif ($mediastatus eq "entliehen"){
+                    $overall_mediastatus_ref->{lent} = 1;
 #                    $overall_mediastatus_ref->{presence_immediate} = 1;                    
                 }
             }

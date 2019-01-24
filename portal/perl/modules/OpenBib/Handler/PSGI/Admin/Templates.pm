@@ -306,6 +306,16 @@ sub get_input_definition {
             encoding => 'none',
             type     => 'scalar',
         },
+        templatepart => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        templatedesc => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
         templatetext => {
             default  => '',
             encoding => 'none',

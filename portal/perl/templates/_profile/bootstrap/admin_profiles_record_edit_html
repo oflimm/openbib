@@ -27,6 +27,14 @@
 <input class="form-control" type="text" name="description" id="description" value="[% profileinfo.description %]" size="20" />
 </div>
 
+<h1 class="display-5">[% msg.maketext("Neues Katalog-Profil mit diesen Daten erzeugen") %]</h1>
+
+<div class="form-group">
+<label for="newprofilename">[% msg.maketext("Neuer Profil-Name") %]</label>
+<input class="form-control" type="text" name="newprofilename" id="newprofilename" value="" size="20" />
+</div>
+
+
 <button type="submit" name="do_change" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>
 
 [% IF profileinfo.viewinfos.size <= 0%]
@@ -62,14 +70,6 @@
 <label for="description">[% msg.maketext("Beschreibung") %]</label>
 <input class="form-control" type="text" name="description" id="description" size="20" />
 </div>
-
-<h1 class="display-5">Neues Katalog-Profil mit diesen Daten erzeugen</h1>
-
-<div class="form-group">
-<label for="newdbname">Neuer Profil-Name</label>
-<input class="form-control" type="text" name="newdbname" id="newprofilename" value="" size="20" />
-</div>
-
 
 <button type="submit" name="do_new" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>
 

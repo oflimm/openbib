@@ -2,7 +2,7 @@
 #
 #  OpenBib::Config
 #
-#  Dieses File ist (C) 2004-2015 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2019 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -3366,6 +3366,46 @@ sub new_profile {
 
     if ($new_profile){
         return $new_profile->id;
+    }
+
+    return;
+}
+
+sub clone_profile {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $profilename            = exists $arg_ref->{profilename}
+        ? $arg_ref->{profilename}            : undef;
+    my $description            = exists $arg_ref->{description}
+        ? $arg_ref->{description}            : undef;
+    my $newprofilename         = exists $arg_ref->{newprofilename}
+        ? $arg_ref->{newprofilename}         : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $new_profile = $self->get_schema->resultset('Profileinfo')->create({ profilename => $newprofilename, description => $description });
+
+    if ($new_profile){
+	$logger->debug("Created new profile $newprofilename derived from profile $profilename");
+
+	# Organisationseinheiten des alten Profils bestimmen und fuer
+        # newprofilename neu anlegen
+	# Dabei Datenbanken der alten Organisationseinheiten an die neuen zuweisen.
+
+	my $orgunits_ref=$self->get_orgunitinfo_overview($profilename);
+
+	while (my $thisorgunit = $orgunits_ref->next){
+	    my $orgunitname         = $thisorgunit->orgunitname;
+	    my $orgunit_description = $thisorgunit->description;
+	    my $nr                  = $thisorgunit->nr;
+	    my $own_index           = $thisorgunit->own_index;
+	    my @databases           = $self->get_orgunitdbs($profilename,$orgunitname);
+
+	    my $new_orgunit = $self->new_orgunit({ profilename => $newprofilename, orgunitname => $orgunitname, description => $orgunit_description, nr => $nr, own_index => $own_index, databases => \@databases});
+	    $logger->debug("Created orgunit $orgunitname / $orgunit_description");
+	}
     }
 
     return;

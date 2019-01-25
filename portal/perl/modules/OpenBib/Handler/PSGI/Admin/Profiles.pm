@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Admin::Profiles
 #
-#  Dieses File ist (C) 2004-2015 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2019 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -175,6 +175,9 @@ sub create_record {
         return $self->print_warning($msg->maketext("Ein Profil dieses Namens existiert bereits."));
     }
 
+    # newprofilename ggf. loeschen
+    delete $input_data_ref->{newprofilename} if (defined $input_data_ref->{newprofilename});
+    
     my $new_profileid = $config->new_profile({
         profilename => $input_data_ref->{profilename},
         description => $input_data_ref->{description},
@@ -265,11 +268,22 @@ sub update_record {
         return $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
     }
 
-    $config->update_profile({
-        profilename => $input_data_ref->{profilename},
-        description => $input_data_ref->{description},
-    });
+    if ($input_data_ref->{newprofilename}){
+	# Profile darf noch nicht existieren
+	if ($config->profile_exists($input_data_ref->{newprofilename})) {
+	    return $self->print_warning($msg->maketext("Ein Profil dieses Namens existiert bereits."));
+	}
 
+	$config->clone_profile($input_data_ref);	
+    }
+    else {
+       delete $input_data_ref->{newprofilename};
+       $config->update_profile({
+	   profilename => $input_data_ref->{profilename},
+	   description => $input_data_ref->{description},
+			       });
+    }
+    
     if ($self->param('representation') eq "html"){
         # TODO GET?
         return $self->redirect("$path_prefix/$config->{profiles_loc}");
@@ -350,6 +364,12 @@ sub get_input_definition {
             encoding => 'utf8',
             type     => 'scalar',
         },
+        newprofilename => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+	
     };
 }
 

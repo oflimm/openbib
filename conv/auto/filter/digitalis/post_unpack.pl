@@ -6,7 +6,7 @@
 #
 #  Bearbeitung der Titeldaten
 #
-#  Dieses File ist (C) 2005-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2019 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie k"onnen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -52,5 +52,5 @@ my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
 
 print "### $pool: Erweiterung um Standort DE-38-USBFB \n";
 
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-locationid.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-locationid.pl  > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 

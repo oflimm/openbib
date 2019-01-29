@@ -48,7 +48,11 @@ my $konvdir       = $config->{'conv_dir'};
 my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
 my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
 
+my $url           = "http://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->titlefile;
 
 print "### $pool: Erweiterung um Zugriffsinformation online und Typ Digital\n";
+
+system("cd $pooldir/$pool ; rm *.xml");
+system("$wgetexe -P $pooldir/$pool/ $url > /dev/null 2>&1 ");
 
 system("cd $rootdir/data/$pool ; cat meta.title | $rootdir/filter/$pool/add-fields.pl |  $rootdir/filter/$pool/remove_copyrighted.pl | $rootdir/filter/$pool/fix-url.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");

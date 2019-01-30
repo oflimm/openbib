@@ -236,97 +236,103 @@
 </div>
 </div>
 
+<p/>
 [% IF 0 == 1 %]
+<div class="card">
+<div class="card-header">[% msg.maketext("Automatische Vorschl&auml;ge zur Suchanfrage") %]</div>
+<div class="card-body">
+
 <form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/autocompletion" enctype="application/x-www-form-urlencoded" class="ym-form">
 <input type="hidden" name="_method"    value="PUT" />
-<fieldset class="ym-full">
-<legend>[% msg.maketext("Automatische Vorschl&auml;ge zur Suchanfrage") %]</legend>
 
 <div class="form-group">
-<select name="setautocompletion">
+<select class="form-control" name="setautocompletion">
 <option value="none"[%- IF userinfo.autocompletiontype == 'none' -%] selected="selected"[%- END -%]>[% msg.maketext("Keine") %]</option>
 <option value="livesearch"[%- IF userinfo.autocompletiontype == 'livesearch' -%] selected="selected"[%- END -%]>[% msg.maketext("LiveSearch") %]</option>
 <option value="spelling"[%- IF userinfo.autocompletiontype == 'spelling' -%] selected="selected"[%- END -%]>[% msg.maketext("Rechtschreibvorschläge") %]</option>
 </select>
 </div>
 
-<input type="submit" value="[% msg.maketext("&Auml;ndern") %]" />
-</fieldset>
-</form>
+<button class="btn btn-primary mb-2" type="submit">[% msg.maketext("&Auml;ndern") %]</button>
+
+<div class="border p-1">
+
+<h3>[% msg.maketext("LiveSearch") %]</h3>
 
 <form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/livesearch" enctype="application/x-www-form-urlencoded" class="ym-form">
 <input type="hidden" name="_method"    value="PUT" />
-<fieldset>
-<legend>[% msg.maketext("LiveSearch") %]</legend>
 
-<fieldset>
 <legend>[% msg.maketext("In der einfachen Recherche bzw. dem freien Suchfeld") %]</legend>
 
-<div class="ym-fbox-check">
-<input type="checkbox" name="livesearch_freesearch" id="livesearch_freesearch" value="1" [% IF livesearch.freesearch.active %]checked="checked"[% END %]/>
-<label for="livesearch_freesearch">[% msg.maketext("Aktiv") %]</label>
+<div class="form-check">
+<input class="form-check-input" type="checkbox" name="livesearch_freesearch" id="livesearch_freesearch" value="1" [% IF livesearch.freesearch.active %]checked="checked"[% END %]/>
+<label class="form-check-label" for="livesearch_freesearch">[% msg.maketext("Aktiv") %]</label>
 </div>
 
-<div class="ym-fbox-check">
-<input type="checkbox" name="livesearch_freesearch_exact" id="livesearch_freesearch_exact" value="1" [% IF livesearch.freesearch.exact %]checked="checked"[% END %]/>
-<label for="livesearch_freesearch_exact">Vorschlag nur bei exakter Wort&uuml;bereinstimmung</label>
-</div>
-</fieldset>
+<div class="form-check">
+<input class="form-check-input" type="checkbox" name="livesearch_freesearch_exact" id="livesearch_freesearch_exact" value="1" [% IF livesearch.freesearch.exact %]checked="checked"[% END %]/>
+<label class="form-check-label" for="livesearch_freesearch_exact">Vorschlag nur bei exakter Wort&uuml;bereinstimmung</label></div>
 
-<fieldset>
-<legend>[% msg.maketext("Bei der Eingabe von Personen") %]</legend>
+<legend class="mt-2">[% msg.maketext("Bei der Eingabe von Personen") %]</legend>
 
-<div class="ym-fbox-check">
-<input type="checkbox" name="livesearch_person" id="livesearch_person" "value="1" [% IF livesearch.person.active %]checked="checked"[% END %] />
-<label for="livesearch_person">[% msg.maketext("Aktiv") %]</label>
+<div class="form-check">
+<input class="form-check-input" type="checkbox" name="livesearch_person" id="livesearch_person" "value="1" [% IF livesearch.person.active %]checked="checked"[% END %] />
+<label class="form-check-label" for="livesearch_person">[% msg.maketext("Aktiv") %]</label>
 </div>
 
-<div class="ym-fbox-check">
-<input type="checkbox" name="livesearch_person_exact" id="livesearch_person_exact" value="1" [% IF livesearch.person.exact %]checked="checked"[% END %]/>
-<label for="livesearch_person_exact">Vorschlag nur bei exakter Wort&uuml;bereinstimmung</label>
+<div class="form-check">
+<input class="form-check-input" type="checkbox" name="livesearch_person_exact" id="livesearch_person_exact" value="1" [% IF livesearch.person.exact %]checked="checked"[% END %]/>
+<label class="form-check-label" for="livesearch_person_exact">Vorschlag nur bei exakter Wort&uuml;bereinstimmung</label>
 </div>
 </fieldset>
 
-<fieldset>
-<legend>[% msg.maketext("Bei der Eingabe von Schlagworten") %]</legend>
-<div class="ym-fbox-check">
-<input type="checkbox" name="livesearch_subject" id="livesearch_subject" "value="1" [% IF livesearch.subject.active %]checked="checked"[% END %] />
-<label for="livesearch_subject">[% msg.maketext("Aktiv") %]</label>
+<legend class="mt-2">[% msg.maketext("Bei der Eingabe von Schlagworten") %]</legend>
+<div class="form-check">
+<input class="form-check-input" type="checkbox" name="livesearch_subject" id="livesearch_subject" "value="1" [% IF livesearch.subject.active %]checked="checked"[% END %] />
+<label class="form-check-label" for="livesearch_subject">[% msg.maketext("Aktiv") %]</label>
 </div>
 
-<div class="ym-fbox-check">
-<input type="checkbox" name="livesearch_subjects_exact" id="livesearch_subjects_exact" value="1" [% IF livesearch.subject.exact %]checked="checked"[% END %]/>
-<label for="livesearch_subjects_exact">Keine Wortbestandteile bei Schlagwortangaben suchen</label>
+<div class="form-check">
+<input class="form-check-input" type="checkbox" name="livesearch_subjects_exact" id="livesearch_subjects_exact" value="1" [% IF livesearch.subject.exact %]checked="checked"[% END %]/>
+<label class="form-check-label" for="livesearch_subjects_exact">Keine Wortbestandteile bei Schlagwortangaben suchen</label>
 </div>
-</fieldset>
 
-<input type="submit" value="[% msg.maketext("&Auml;ndern") %]" />
-</fieldset>
+<button class="btn btn-primary mt-3 mb-2" type="submit">[% msg.maketext("&Auml;ndern") %]</button>
+
 </form>
+
+</div>
+
+<p/>
+
+<div class="border p-1">
 
 <form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/spelling" enctype="application/x-www-form-urlencoded" class="ym-form">
 <input type="hidden" name="_method"    value="PUT" />
 
-<fieldset>
-<legend>[% msg.maketext("Rechtschreibvorschläge") %]</legend>
+<h3>[% msg.maketext("Rechtschreibvorschläge") %]</h3>
 
-<div class="ym-fbox-check">
-<input type="checkbox" name="spelling_as_you_type" id="spelling_as_you_type" value="1" [% IF spelling_suggestion.as_you_type %]checked="checked"[% END %]/>
-<label for="spelling_as_you_type">[% msg.maketext("In der Recherchemaske") %]</label>
+<div class="form-check">
+<input class="form-check-input" type="checkbox" name="spelling_as_you_type" id="spelling_as_you_type" value="1" [% IF spelling_suggestion.as_you_type %]checked="checked"[% END %]/>
+<label class="form-check-label" for="spelling_as_you_type">[% msg.maketext("In der Recherchemaske") %]</label>
 </div>
 
-<div class="ym-fbox-check">
-<input type="checkbox" name="spelling_resultlist" id="spelling_resultlist" value="1" [% IF spelling_suggestion.resultlist %]checked="checked"[% END %] />
-<label for="spelling_resultlist">[% msg.maketext("In der Trefferliste") %]</label>
+<div class="form-check">
+<input class="form-check-input" type="checkbox" name="spelling_resultlist" id="spelling_resultlist" value="1" [% IF spelling_suggestion.resultlist %]checked="checked"[% END %] />
+<label class="form-check-label" for="spelling_resultlist">[% msg.maketext("In der Trefferliste") %]</label>
 </div>
 
-<input type="submit" value="[% msg.maketext("&Auml;ndern") %]" />
+<button class="btn btn-primary mt-3 mb-2" type="submit">[% msg.maketext("&Auml;ndern") %]</button>
 
-</fieldset>
 </form>
-[% END %]
+</div>
+
+
+</div>
+</div>
 
 <p/>
+[% END %]
 
 <div class="card">
 <div class="card-header">[% msg.maketext("BibSonomy") %]</div>

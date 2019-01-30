@@ -1,4 +1,4 @@
-[%    field_map = {
+[%-    field_map = {
           "id" = msg.maketext("Id")
           "availabilitystring" = msg.maketext("Komplette Verfügbarkeit")
           "bkey" = msg.maketext("BibKey")
@@ -61,4 +61,4 @@
           "ft4310" = "Komplette Provenienzbeschreibung"
           "ft4800" = "Komplette Provenienzbeschreibung"
 };
-%]
+-%]

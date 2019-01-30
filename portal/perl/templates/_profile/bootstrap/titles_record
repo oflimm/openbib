@@ -74,6 +74,8 @@
 [%- PROCESS common/subtemplate name="titles_record_rdf" -%]
 [%- ELSIF representation == 'json' -%]
 [%- PROCESS common/subtemplate name="titles_record_json" -%]
+[%- ELSIF representation == 'xml' -%]
+[%- PROCESS common/subtemplate name="titles_record_xml" -%]
 [%- ELSIF representation == 'include' -%]
 [%- PROCESS common/subtemplate name="titles_record_include" -%]
 [%- ELSIF representation == 'mobile' -%]

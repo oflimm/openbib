@@ -12,113 +12,282 @@
 #######################################################################
 -%]
 
-<div class="card">
 
-<div class="card-header">ID: <span class="ob-nav_description">[% username %]</span></div>
+<!-- Styles -->
+<style>
+/*
+4px:  $spacer * 0.25
+8px:  $spacer * 0.5
+16px: $spacer
+20px: $spacer * 1.25
+24px: $spacer * 1.5
+*/
 
-<div class="card-body">
+.sidebar-toggler {
+  padding: 0.25rem 0.75rem;
+  font-size: 1.25rem;
+  line-height: 1;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  color: rgba(0, 0, 0, 0.5);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+.sidebar-toggler .sidebar-toggler-icon {
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+  vertical-align: middle;
+  content: "";
+  background: no-repeat center center;
+  background-size: 100% 100%;
+  background-image: url("data:image/svg+xml;charset=utf8,<svg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'><path stroke='rgba(0, 0, 0, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/></svg>");
+  cursor: pointer;
+}
 
-<nav class="navbar bg-light ob-sidebar">
+.sidebar {
+  position: relative;
+  width: 100%;
+  z-index: 99;
+}
+.sidebar .sidebar-user .category-content {
+  padding: 1rem;
+  text-align: center;
+  color: #000;
+//  color: #6c757d;
+//  background: url(https://picsum.photos/260/80?image=652&blur) center center no-repeat;
+  background-color: #dee2e6;
 
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+.sidebar .sidebar-user .category-content:first-child {
+  border-bottom-right-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+.sidebar .sidebar-user .category-content:last-child {
+  border-top-right-radius: 0.25rem;
+  border-top-left-radius: 0.25rem;
+}
+.sidebar .sidebar-content {
+  position: relative;
+  border-radius: 0.25rem;
+  margin-bottom: 1.25rem;
+}
+.sidebar .category-title {
+  position: relative;
+  margin: 0;
+  padding: 12px 20px;
+  padding-right: 46px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
 
- <ul class="navbar-nav">
-[% IF layout_param.active_submenu == "userprefs" %]
-  <li class="nav-item active"><strong>[% msg.maketext("Grundeinstellungen") %]</strong></li>
-[% ELSE %]
-  <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% msg.maketext("Grundeinstellungen") %]</a></li>
-[% END %]
-[% IF config.get('litlists') %]
-[%   IF layout_param.active_submenu == "litlists" %]
-  <li class="nav-item active"><strong>[% msg.maketext("Literaturlisten") %]</strong></li>
-[%   ELSE %]
-  <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/litlists.html?l=[% lang %]">[% msg.maketext("Literaturlisten") %]</a></li>
-[%   END %]
-[% END %]
-[% IF layout_param.active_submenu == "tags" %]
-<li class="nav-item"><span>[% msg.maketext("Tags") %]</span>
-    <ul>
-[%    IF layout_param.active_subsubmenu == "tags_names" %]
-       <li class="nav-item active"><strong>[% msg.maketext("nach Tagnamen") %]</strong></li>
-[%    ELSE %]
-       <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags/names.html?l=[% lang %];format=cloud">[% msg.maketext("nach Tagnamen") %]</a></li>
-[%    END %]
-[%    IF layout_param.active_subsubmenu == "tags_titles" %]
-       <li class="nav-item active"><strong>[% msg.maketext("nach Titeln") %]</strong></li>
-[%    ELSE %]
-       <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags.html?l=[% lang %];num=[% qopts.get_option('num') %];srt=title_asc">[% msg.maketext("nach Titeln") %]</a></li>
-[%    END %]
-     </ul>
-</li>
-[% ELSE %]
-  <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags/names.html?l=[% lang %];format=cloud">[% msg.maketext("Tags") %]</a></li>
-[% END %]
-[% IF config.get('reviews') %]
-[%   IF layout_param.active_submenu == "userreviews" %]
-  <li class="nav-item active"><strong>[% msg.maketext("Rezensionen") %]</strong></li>
-[%   ELSE %]
-   <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/reviews.html?l=[% lang %]">[% msg.maketext("Rezensionen") %]</a></li>
-[%   END %]
-[% END %]
+.sidebar.sidebar-default .category-title {
+  border-bottom-color: #dee2e6;
+}
+.sidebar.sidebar-default .category-title > span {
+  display: block;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+.sidebar.sidebar-default .category-content .nav li > a {
+  color: #333;
+}
+.sidebar.sidebar-default .category-content .nav li > a.active, .sidebar.sidebar-default .category-content .nav li > a[aria-expanded="true"], .sidebar.sidebar-default .category-content .nav li > a:hover, .sidebar.sidebar-default .category-content .nav li > a:focus {
+  background-color: #f4f4f4;
+}
+.sidebar .category-content {
+  position: relative;
+}
+.sidebar .category-content .nav {
+  position: relative;
+  margin: 0;
+  padding: 0.5rem 0;
+}
+.sidebar .category-content .nav li {
+  position: relative;
+  list-style: none;
+}
+.sidebar .category-content .nav li > a {
+  font-size: 0.875rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  transition: background 0.15s linear, color 0.15s linear;
+}
+.sidebar .category-content .nav li > a[data-toggle="collapse"] {
+  padding-right: 2rem;
+}
+.sidebar .category-content .nav li > a[data-toggle="collapse"]:after {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  height: 1.5rem;
+  line-height: 1.5rem;
+  display: block;
+//  content: "\f107";
+  font-family: 'Font Awesome 5 Free';
+  content: "\f105";
+  font-size: 1.5rem;
+  font-weight: normal;
+  transform: rotate(0deg);
+  transition: -webkit-transform 0.2s ease-in-out;
+}
+.sidebar .category-content .nav li > a[data-toggle="collapse"][aria-expanded="true"]:after {
+  transform: rotate(90deg);
+}
+.sidebar .category-content .nav li > a > i {
+  float: left;
+  top: 0;
+  margin-top: 2px;
+  margin-right: 15px;
+  transition: opacity 0.2s ease-in-out;
+}
+.sidebar .category-content .nav li ul {
+  padding: 0;
+}
+.sidebar .category-content .nav li ul > li a {
+  padding-left: 2.75rem;
+}
+.sidebar .category-content .nav > li > a {
+  font-weight: 500;
+}
 
+@media (min-width: 768px) {
+  .sidebar {
+//    padding-top: 2rem !important;
+    padding-top: 0px; !important;
+//    display: table-cell;
+    display: grid;
+    vertical-align: top;
+    width: 100%;
+//    padding: 0 1.25rem;
+  }
+//  .sidebar.sidebar-fixed {
+//    position: sticky;
+//    top: 6.0rem;
+//  }
+  .sidebar.sidebar-default .sidebar-category {
+    background-color: #fff;
+  }
+  .sidebar.sidebar-separate .sidebar-content {
+    box-shadow: none;
+  }
+  .sidebar.sidebar-separate .sidebar-category {
+    margin-bottom: 1.25rem;
+    border-radius: 0.25rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  }
 
-[% IF layout_param.active_submenu == "databaseprofile" %]
-<li class="nav-item"><span>[% msg.maketext("Katalogprofile") %]</span>
-    <ul>
-[%   IF layout_param.active_subsubmenu == "databaseprofile_record" %]
-      <li class="nav-item active"><strong>[% profilename %]</strong></li>
-[%   END %]
-    </ul>
-</li>
-[% ELSE %]
-  <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %].html?l=[% lang %]">[% msg.maketext("Katalogprofile") %]</a></li>
-[% END %]
+  .content-wrapper {
+    display: table-cell;
+  }
+}
+</style>
 
-[% IF layout_param.active_submenu == "migration" %]
-  <li class="nav-item active"><strong>[% msg.maketext("Konto-Migration") %]</strong></li>
-[% ELSE %]
-  <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/migration.html?l=[% lang %]">[% msg.maketext("Konto-Migration") %]</a></li>
-[% END %]
+[%
+  allroles = [];
+  thisroles = user.get_roles_of_user(user.ID) ;
+  FOREACH thisrole IN thisroles.keys ;
+    allroles.push(thisroles.${thisrole});
+  END;
+%]
 
- </ul>
-</nav>
-</div>
-</div>
+<div id="sidebar-main" class="sidebar sidebar-default sidebar-separate sidebar-fixed">
+	<div class="sidebar-content">
 
+		<div class="sidebar-category sidebar-default">
+			<div class="sidebar-user">
+				<div class="category-content">
+					<h6>[% username %]</h6>
+					<small>[% allroles.join(' , ') %]</small>
+				</div>
+			</div>
+		</div>
+
+		<!-- /Sidebar Category -->
+		<div class="sidebar-category sidebar-default">
+				<div class="category-title">
+					<span>Einstellungen</span>
+				</div>
+			<div class="category-content">
+				<ul id="preferences-nav" class="nav flex-column">
+                                    <li class="nav-item">
+				       <a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% msg.maketext("Grundeinstellungen") %]
+				       </a>
+				    </li>
+				    <li class="nav-item">
+				       <a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/litlists.html?l=[% lang %]">[% msg.maketext("Literaturlisten") %]
+				       </a>
+				    </li>
+
+                                    <li class="nav-item">
+						<a href="#tags" class="nav-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="other-fruits">
+							[% msg.maketext("Tags") %]
+						</a>
+						<ul id="tags" class="flex-column collapse">
+
+                                                    <li class="nav-item">
+						       <a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags/names.html?l=[% lang %];format=cloud">[% msg.maketext("nach Tagnamen") %]
+						       </a>
+						    </li>
+                                                    <li class="nav-item">
+						       <a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags.html?l=[% lang %];num=[% qopts.get_option('num') %];srt=title_asc">[% msg.maketext("nach Titeln") %]
+						       </a>
+						    </li>
+                                               </ul>
+                                    </li>
+				    <li class="nav-item">
+                                       <a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %].html?l=[% lang %]">[% msg.maketext("Katalogprofile") %]
+				       </a>				    
+				    </li>
+				    <li class="nav-item">
+				       <a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/migration.html?l=[% lang %]">[% msg.maketext("Konto-Migration") %]
+				       </a>
+				    </li>
+				    
+				</ul>
+				<!-- /Nav -->
+			</div><!-- End: Category Content -->
+			
+                </div> <!-- End: Sidebar Category -->
 [% IF user.get_targettype_of_session(session.ID) != 'self' %]
-<p/>
 
-<div class="card">
-<div class="card-header">[% msg.maketext("Benutzerkonto") %]: <span class="ob-nav_description">[% authenticator.description %]</span></div>
-
-<div class="card-body">
-
-<nav class="navbar bg-light ob-sidebar">
- <ul class="navbar-nav">
-[%   IF layout_param.active_submenu == "borrows" %]
-      <li class="nav-item active"><strong>[% msg.maketext("Ausleihen") %]</strong></li>
-[%   ELSE %]
-      <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/borrows.html?l=[% lang %]">[% msg.maketext("Ausleihen") %]</a></li>
-[%   END %]
-[%   IF layout_param.active_submenu == "reservations" %]
-      <li class="nav-item active"><strong>[% msg.maketext("Vormerkungen") %]</strong></li>
-[%   ELSE %]
-      <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/reservations.html?l=[% lang %]">[% msg.maketext("Vormerkungen") %]</a></li>
-[%   END %]
-[%   IF layout_param.active_submenu == "orders" %]
-      <li class="nav-item active"><strong>[% msg.maketext("Bestellungen") %]</strong></li>
-[%   ELSE %]
-      <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/orders.html?l=[% lang %]">[% msg.maketext("Bestellungen") %]</a></li>
-[%   END %]
-[%   IF layout_param.active_submenu == "reminders" %]
-      <li class="nav-item active"><strong>[% msg.maketext("Überziehungen / Gebühren") %]</strong></li>
-[%   ELSE %]
-      <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/reminders.html?l=[% lang %]">[% msg.maketext("Überziehungen / Gebühren") %]</a></li>
-[%   END %]
-</ul>
-</nav>
-</div>
-</div>
+		<!-- /Sidebar Category -->
+		<div class="sidebar-category sidebar-default">
+				<div class="category-title">
+					<span>[% msg.maketext("Benutzerkonto") %]: [% authenticator.description %]</span>
+				</div>
+			<div class="category-content">
+				<ul id="preferences-nav" class="nav flex-column">
+                                    <li class="nav-item">
+                                       <a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/borrows.html?l=[% lang %]">[% msg.maketext("Ausleihen") %]
+				       </a>
+				    </li>
+				    <li class="nav-item">
+				       <a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/reservations.html?l=[% lang %]">[% msg.maketext("Vormerkungen") %]
+				       </a>
+				    </li>
+				    <li class="nav-item">
+				       <a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/orders.html?l=[% lang %]">[% msg.maketext("Bestellungen") %]
+				       </a>
+				    </li>
+				    <li class="nav-item">
+				       <a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/reminders.html?l=[% lang %]">[% msg.maketext("Überziehungen / Gebühren") %]
+				       </a>
+				    </li>
+				    
+				</ul>
+				<!-- /Nav -->
+			</div>
+			<!-- /Category Content -->
+		</div>
 [% END %]
+
+
+
+  </div>
+</div><!-- End: Sidebar-content -->
 
 [% IF user.has_role('viewadmin',user.ID) %]
 <p/>
@@ -143,3 +312,4 @@
 <p/>
 [% PROCESS common/subtemplate name="admin_navigation" %]
 [% END %]
+</div>

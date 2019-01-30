@@ -33,6 +33,7 @@
 -%]
 
 [% IF layout_param.sidebar_template %]
+<!-- begin: Layout with sidebar -->
       <div class="row">
         <div class="col-md-9" >
 [% PROCESS common/subtemplate name=layout_param.main_template %]
@@ -41,12 +42,15 @@
 [% PROCESS common/subtemplate name=layout_param.sidebar_template %]
         </div>
       </div>
+<!-- end: Layout with sidebar -->      
 [% ELSE %]
+<!-- begin: Layout without sidebar -->
       <div class="row">
         <div class="col-md-12" >
 [% PROCESS common/subtemplate name=layout_param.main_template %]
         </div>
       </div>
+<!-- end: Layout without sidebar -->      
 [% END %]
 
 [% PROCESS common/subtemplate name="std_footer" %]
@@ -83,6 +87,7 @@ $(function(e){
 [%   autocompletion_type = user.get_autocompletion %]
 [%   livesearch          = user.get_livesearch %]
 [%     IF autocompletion_type == "spelling" && spelling_suggestion.as_you_type %]
+<!--
 <script type="text/javascript">
 $(document).ready(function(){
   $("#to_focus").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
@@ -102,7 +107,9 @@ $(document).ready(function(){
                 multipleSeparator: ' '});
 })
 </script>
+-->
 [%     ELSIF autocompletion_type == "livesearch" && livesearch.fs %]
+<!--
 <script type="text/javascript">
 $(document).ready(function(){
   $("#to_focus").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
@@ -131,6 +138,7 @@ $(document).ready(function(){
                 }});
 })
 </script>
+-->
 [%     END %]
 [%  END %]
 [% END %]

@@ -228,11 +228,12 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 
 [% PROCESS common/subtemplate name="search_radius" %]
 
-<div class="card">
+<h5>[% msg.maketext("Suchergebnis filtern") %]</h5>
+<!-- <div class="card">
 <div class="card-header"><span id="ob-facets_all_toggle">[% msg.maketext("Treffermenge eingrenzen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 
 <div class="card-body">
-
+-->
 <div id="ob-facets_all_toggle_do">
 
 [% IF separate_refine %]
@@ -692,8 +693,8 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 
 </div> <!-- End: ob-facets_all_toggle_do -->
 
-</div> <!-- End: card-body -->
-</div> <!-- End: card -->
+<!-- </div> <!-- End: card-body -->
+<!-- </div> <!-- End: card -->
 
 </form>
 [% ELSE %]

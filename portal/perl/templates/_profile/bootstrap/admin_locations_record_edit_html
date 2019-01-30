@@ -39,7 +39,7 @@ function add_field(this) {
 }
 </script>
 
-<form method="post" action="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locationinfo.identifier %]" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locationinfo.identifier %]">
 <input type="hidden" name="_method"    value="PUT" />
 
 <h1 class="display-5">[% msg.maketext("Standortinformationen bearbeiten") %]</h1> 

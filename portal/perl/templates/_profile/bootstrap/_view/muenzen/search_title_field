@@ -1,4 +1,4 @@
-[%    field_map = {
+[%-    field_map = {
           "freesearch" = msg.maketext("Freie Suche")
           "title"      = msg.maketext("Titel")
           "database"   = msg.maketext("Katalog")
@@ -41,4 +41,4 @@
           "ft0700" = msg.maketext("Stadt")
           "ft0710" = msg.maketext("Region")
 };
-%]
+-%]

@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 
-<form method="post" action="[% path_prefix %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]">
 <input type="hidden" name="_method"    value="PUT" />
 
 <h1 class="display-5">[% msg.maketext("Server bearbeiten") %]</h1>
@@ -75,7 +75,7 @@
 
 <h4>[% msg.maketext("Aktualisierung") %]</h4>
 
-<p>
+<p class="alert alert-info">
 [% msg.maketext("Anzahl") %]
 &nbsp;
 <a [% IF qopts.get_option('num') == 100 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]/edit.html?l=[% lang %];num=100">100</a>

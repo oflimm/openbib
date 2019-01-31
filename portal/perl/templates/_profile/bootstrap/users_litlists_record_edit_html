@@ -77,7 +77,13 @@
 </select>
 </div>
 
-<buton type="submit" name="do_changelist" class="btn btn-primary mb-2">[% msg.maketext("&Auml;ndern") %]</button>
+<button type="submit" name="do_changelist" class="btn btn-primary mb-2">[% msg.maketext("&Auml;ndern") %]</button>
+
+&nbsp;&nbsp;
+
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+
+
 
 </form>
 </div>

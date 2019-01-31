@@ -238,7 +238,7 @@
                                                </ul>
                                     </li>
 				    <li class="nav-item">
-                                       <a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %].html?l=[% lang %]">[% msg.maketext("Katalogprofile") %]
+                                       <a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %].html?l=[% lang %]">[% msg.maketext("Suchprofile") %]
 				       </a>				    
 				    </li>
 				    <li class="nav-item">

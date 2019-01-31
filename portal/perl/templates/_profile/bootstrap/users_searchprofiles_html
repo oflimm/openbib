@@ -19,14 +19,14 @@
     <div class="card-header" id="headingOne">
       <h5 class="mb-0">
         <a class="card-link collapsed" href="#collapseOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-          [% msg.maketext("Neues Katalogprofil anlegen") %]
+          [% msg.maketext("Neues Suchprofil anlegen") %]
         </a>
       </h5>
     </div>
 
     <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
       <div class="card-body">
-<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %]" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %]">
 
 <div class="form-group">
 <label for="profilename">[% msg.maketext("Names des Profils") %]</label>

@@ -23,7 +23,7 @@
 	     url  = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/${config.get('litlists_loc')}.html?l=${lang}"
 	  },
 	  {
-	     desc = "${properties.title} löschen"
+	     desc = msg.maketext("[_1] löschen",properties.title)
 	     url  = '#'
 	     current = 1
 	  }

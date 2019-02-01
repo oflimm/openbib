@@ -36,7 +36,7 @@
 	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('profiles_loc')}.html?l=${lang}"
 	  },
 	  {
-	     desc = profileinfo.profilename
+ 	     desc = msg.maketext("[_1] löschen",profileinfo.profilename)
 	     url  = '#'
 	     current = 1
 	  }
@@ -50,10 +50,6 @@
     };
 -%]
 [%- PROCESS common/subtemplate name="layout_html" -%]
-[%- ELSIF representation == 'rdf' -%]
-[%- PROCESS common/subtemplate name="admin_profiles_record_rdf" -%]
-[%- ELSIF representation == 'json' -%]
-[%- PROCESS common/subtemplate name="admin_profiles_record_json" -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]
 [%- END -%]

@@ -39,7 +39,7 @@
 	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('databases_loc')}.html?l=${lang}"
 	  },
 	  {
-	     desc = databaseinfo.dbname
+	     desc = msg.maketext("[_1] löschen",databaseinfo.dbname)
 	     url  = '#'
 	     current = 1
 	  }

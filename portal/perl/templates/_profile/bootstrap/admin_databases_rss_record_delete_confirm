@@ -48,7 +48,7 @@
 	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('databases_loc')}/id/${dbname}/rss.html?l=${lang}"
 	  },
 	  {
-	     desc = rssinfo.id
+	     desc = msg.maketext("[_1] löschen",rssinfo.id)
 	     url  = '#'
 	     current = 1
 	  }
@@ -63,8 +63,6 @@
     };
 -%]
 [%- PROCESS common/subtemplate name="layout_html" -%]
-[%- ELSIF representation == 'json' -%]
-[%- PROCESS common/subtemplate name="admin_databases_rss_record_json" -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]
 [%- END -%]

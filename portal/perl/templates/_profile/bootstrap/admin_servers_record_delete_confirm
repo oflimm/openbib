@@ -40,7 +40,7 @@
 	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('servers_loc')}.html?l=${lang}"
 	  },
 	  {
-	     desc = serverinfo.description
+	     desc = msg.maketext("[_1] löschen",serverinfo.description)
 	     url  = '#'
 	     current = 1
 	  }
@@ -54,10 +54,6 @@
     };
 -%]
 [%- PROCESS common/subtemplate name="layout_html" -%]
-[%- ELSIF representation == 'rdf' -%]
-[%- PROCESS common/subtemplate name="admin_servers_record_rdf" -%]
-[%- ELSIF representation == 'json' -%]
-[%- PROCESS common/subtemplate name="admin_servers_record_json" -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]
 [%- END -%]

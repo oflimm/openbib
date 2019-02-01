@@ -38,15 +38,15 @@
 	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('profiles_loc')}.html?l=${lang}"
 	  },
           {
-             desc = profileinfo.profilename
-	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('profiles_loc')}/id/${profileinfo.profilename}/edit.html?l=${lang}"
+             desc = profilename
+	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('profiles_loc')}/id/${profilename}/edit.html?l=${lang}"
 	  },
           {
              desc = msg.maketext('Organisationseinheiten')
-	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('profiles_loc')}/id/${profileinfo.profilename}/orgunits.html?l=${lang}"
+	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('profiles_loc')}/id/${profilename}/orgunits.html?l=${lang}"
 	  },
 	  {
-	     desc = orgunitinfo.orgunitname
+	     desc = msg.maketext("[_1] löschen",orgunitinfo.orgunitname)
 	     url  = '#'
 	     current = 1
 	  }
@@ -55,20 +55,16 @@
       'representations' = [
           {
 	     type = 'csv'
-	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('profiles_loc')}/id/${profileinfo.profilename}/${config.get('orgunits_loc')}/id/${orgunitinfo.orgunitname}.csv?l=${lang}"
+	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('profiles_loc')}/id/${profilename}/${config.get('orgunits_loc')}/id/${orgunitinfo.orgunitname}.csv?l=${lang}"
 	  }
           {
 	     type = 'json'
-	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('profiles_loc')}/id/${profileinfo.profilename}/${config.get('orgunits_loc')}/id/${orgunitinfo.orgunitname}.json?l=${lang}"
+	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('profiles_loc')}/id/${profilename}/${config.get('orgunits_loc')}/id/${orgunitinfo.orgunitname}.json?l=${lang}"
 	  }
        ]
     };
 -%]
 [%- PROCESS common/subtemplate name="layout_html" -%]
-[%- ELSIF representation == 'csv' -%]
-[%- PROCESS common/subtemplate name="admin_orgunits_record_csv" -%]
-[%- ELSIF representation == 'json' -%]
-[%- PROCESS common/subtemplate name="admin_orgunits_record_json" -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]
 [%- END -%]

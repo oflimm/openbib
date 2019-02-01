@@ -23,7 +23,7 @@
 	     url  = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/${config.get('searchprofiles_loc')}.html?l=${lang}"
 	  },
 	  {
-	     desc = "${profilename} ${msg.maketext('löschen')}"
+ 	     desc = msg.maketext("[_1] löschen",profilename)
 	     url  = '#'
 	     current = 1
 	  }

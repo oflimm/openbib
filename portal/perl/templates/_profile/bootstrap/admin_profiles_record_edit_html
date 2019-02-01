@@ -37,12 +37,13 @@
 
 <button type="submit" name="do_change" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>
 
-[% IF profileinfo.viewinfos.size <= 0%]
+[% IF profileinfo.viewinfos.size <= 0 %]
 &nbsp;&nbsp;&nbsp;
 
 <a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
 [% END %]
 
+<p class="alert alert-info">[% msg.maketext("Achtung: Ein Katalog-Profil kann erst dann gelöscht werden, wenn es von keinen Views mehr genutzt wird!") %]</p>
 </form>
 
 <p />
@@ -100,6 +101,8 @@
 </table>
 </div>
 [% ELSE %]
+<p/>
+
 <h3>[% msg.maketext("Sie haben in diesem Profil noch keine Organisationseinheiten angelegt.") %]</h3>
 [% END %]
 

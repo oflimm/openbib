@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-
+[% IF 1 == 0 %]
 		<!-- /Sidebar Category -->
 		<div class="sidebar-category sidebar-default">
 				<div class="category-title">
@@ -101,7 +101,7 @@
 			</div>
 			<!-- /Category Content -->
 
-
+[% END %]
 <div class="card">
 <div class="card-header">[% msg.maketext("Administration") %]</div>
 

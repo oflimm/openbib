@@ -40,7 +40,7 @@
 	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('authenticators_loc')}.html?l=${lang}"
 	  },
 	  {
-	     desc = authenticatorinfo.description
+	     desc = msg.maketext("[_1] löschen",authenticatorinfo.description)
 	     url  = '#'
 	     current = 1
 	  }

@@ -40,7 +40,7 @@
 	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('topics_loc')}.html?l=${lang}"
 	  },
 	  {
-	     desc = topic.name
+ 	     desc = msg.maketext("[_1] löschen",topic.name)
 	     url  = '#'
 	     current = 1
 	  }
@@ -54,8 +54,6 @@
     };
 -%]
 [%- PROCESS common/subtemplate name="layout_html" -%]
-[%- ELSIF representation == 'json' -%]
-[%- PROCESS common/subtemplate name="admin_topics_record_json" -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]
 [%- END -%]

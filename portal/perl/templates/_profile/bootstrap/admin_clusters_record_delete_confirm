@@ -39,7 +39,7 @@
 	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('clusters_loc')}.html?l=${lang}"
 	  },
 	  {
-	     desc = clusterinfo.description
+	     desc = msg.maketext("[_1] löschen",clusterinfo.description)
 	     url  = '#'
 	     current = 1
 	  }

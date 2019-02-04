@@ -32,7 +32,7 @@
 	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
 	  },
           {
-             desc = msg.maketext('Views')
+             desc = msg.maketext('Administration')
 	     url  = "${path_prefix}/${config.get('admin_loc')}.html?l=${lang}"
 	  },
           {
@@ -40,7 +40,7 @@
 	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('views_loc')}.html?l=${lang}"
 	  },
           {
-             desc = msg.maketext('Views')
+             desc = viewinfo.viewname
 	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('views_loc')}/id/${viewinfo.viewname}.html?l=${lang}"
 	  },
 	  {

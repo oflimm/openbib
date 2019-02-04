@@ -29,7 +29,7 @@
 	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
 	  },
           {
-             desc = msg.maketext('Views')
+             desc = msg.maketext('Administration')
 	     url  = "${path_prefix}/${config.get('admin_loc')}.html?l=${lang}"
 	  },
           {

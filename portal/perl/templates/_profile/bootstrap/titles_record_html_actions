@@ -51,7 +51,7 @@
 
       IF userlitlists.size > 0 ;
 %]
-<form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]">
 
 <legend>[% msg.maketext("&Uuml;bernahme dieses Titels in die bestehende Literaturliste: ") %]</legend>
 <input type="hidden" name="redirect_to"       value="[% uri_escape(location) %]" />
@@ -68,7 +68,7 @@
 [% END %]
 
 <p>
-<form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]">
 
 <legend>[% msg.maketext("&Uuml;bernahme dieses Titels in eine neue Literaturliste: ") %]</legend>
 <input type="hidden" name="redirect_to"      value="[% uri_escape(location) %]" />
@@ -113,7 +113,7 @@
 <div id="ob-tagging_do"><!-- Begin Tagging do -->
 
 [%  IF private_tags_of_tit.size <= 0  %]
-<form method="post" action="[% path_prefix %]/[% config.get('tags_loc') %]" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('tags_loc') %]">
 
 <input type="hidden" name="redirect_to" value="[% uri_escape(location) %]" />
 <input type="hidden" name="dbname" value="[% record.database %]"/>
@@ -213,7 +213,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 
 [% ELSIF username && private_tags_of_tit.size > 0 %]
 
-<form method="post" action="[% path_prefix %]/[% config.get('tags_loc') %]" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('tags_loc') %]">
 <input type="hidden" name="dbname" value="[% record.database %]"/>
 <input type="hidden" name="titleid" value="[% record.id %]"/>
 <input type="hidden" name="redirect_to" value="[% uri_escape(location) %]" />

@@ -142,7 +142,7 @@
 <div class="card">
 <div class="card-header">[% msg.maketext("Felder in der erweiterten Suche") %]</div>
 <div class="card-body">
-<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/searchfields" enctype="application/x-www-form-urlencoded" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/searchfields" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="_method" value="PUT" />
 
 <div class="row">
@@ -248,7 +248,7 @@
 <div class="card-header">[% msg.maketext("Automatische Vorschl&auml;ge zur Suchanfrage") %]</div>
 <div class="card-body">
 
-<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/autocompletion" enctype="application/x-www-form-urlencoded" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/autocompletion" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="_method"    value="PUT" />
 
 <div class="form-group">
@@ -265,7 +265,7 @@
 
 <h3>[% msg.maketext("LiveSearch") %]</h3>
 
-<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/livesearch" enctype="application/x-www-form-urlencoded" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/livesearch" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="_method"    value="PUT" />
 
 <legend>[% msg.maketext("In der einfachen Recherche bzw. dem freien Suchfeld") %]</legend>
@@ -313,7 +313,7 @@
 
 <div class="border p-1">
 
-<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/spelling" enctype="application/x-www-form-urlencoded" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/spelling" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="_method"    value="PUT" />
 
 <h3>[% msg.maketext("Rechtschreibvorschläge") %]</h3>
@@ -344,7 +344,7 @@
 <div class="card-header">[% msg.maketext("BibSonomy") %]</div>
 <div class="card-body">
 
-<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/bibsonomy" enctype="application/x-www-form-urlencoded" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/bibsonomy" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="_method"    value="PUT" />
 [% bibsonomy = user.get_bibsonomy %]
 
@@ -371,7 +371,7 @@
 
 [%- IF bibsonomy.sync == "on" -%]
 <p/>
-<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/bibsonomysync" enctype="application/x-www-form-urlencoded" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/bibsonomysync" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="_method"    value="PUT" />
 
 <strong>[% msg.maketext("Alle getaggten Titel jetzt zu BibSonomy &uuml;bertragen") %]</strong>

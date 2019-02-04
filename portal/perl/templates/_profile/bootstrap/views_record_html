@@ -27,7 +27,7 @@
 </td></tr>
 
 <tr><th>[% msg.maketext("Aktiv") %]</th>
-<td>[% IF viewinfo.active == 1 %][% msg.maketext("Ja") %][% ELSE %][% msg.maketext("Nein") %][% END %]<td></tr>
+<td>[% IF viewinfo.active == 1 %][% msg.maketext("Ja") %][% ELSE %][% msg.maketext("Nein") %][% END %]</td></tr>
 
 <tr><th>[% msg.maketext("Katalogauswahl zu diesem View") %]</th>
 <td>
@@ -44,5 +44,10 @@
 [% END %]
 
 </td></tr>
+[% IF viewinfo.view_rsses.size || viewinfo.rssid.id %]
+<tr><th>[% msg.maketext("RSS") %]</th>
+<td><a href="[% path_prefix %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %]/rss.html?l=[% lang %]">[% msg.maketext('Anzeigen') %]</a></td>
+</tr>
+[% END %]
 </table>
 </div>

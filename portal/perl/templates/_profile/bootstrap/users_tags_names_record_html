@@ -15,7 +15,7 @@
 [%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
 [%- popularity_i18n = msg.maketext("Popularität") -%]
 
-<form method="post" action="[% path_prefix %]/[% config.get('tags_loc') %]/names/id/[% tagname %]" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('tags_loc') %]/names/id/[% tagname %]">
 <input type="hidden" name="_method" value="PUT" />
 <input type="hidden" name="from" value="[% tagname %]" />
 

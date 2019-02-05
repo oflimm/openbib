@@ -7073,8 +7073,8 @@ convtab:
 #          'freesearch': 1
 #          'corporatebody': 1
 #          'corporatebodystring': 1
-        facet:
-          'corporatebody': 1
+#        facet:
+#          'corporatebody': 1
       '0304':         # EST
         index:
           'title': 1

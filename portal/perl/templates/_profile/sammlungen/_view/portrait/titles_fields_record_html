@@ -19,6 +19,9 @@
     ELSIF field == '0100' ;
        field_description = 'Maler / Zeichner';
        searchfield = 'ft0100' ;
+    ELSIF field == '0200' ;
+       field_description = 'Provenienz';
+       searchfield = 'corporatebodystring' ;
     ELSIF field == '0101' ;
        field_description = 'Stecher / Lithograph';
        searchfield = 'ft0101' ;

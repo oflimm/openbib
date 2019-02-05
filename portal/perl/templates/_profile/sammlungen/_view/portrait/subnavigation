@@ -78,7 +78,7 @@
 [% IF active_submenu == "register_0103" %]
   <li class="active"><strong>Weitere Person</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/portrait/titles/fields/id/0102.html?l=[% lang %];page=1">Weitere Person</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/portrait/titles/fields/id/0103.html?l=[% lang %];page=1">Weitere Person</a></li>
 [% END %]
 [% IF active_submenu == "register_0710" %]
   <li class="active"><strong>Region</strong></li>

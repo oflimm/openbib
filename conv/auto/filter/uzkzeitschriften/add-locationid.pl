@@ -22,7 +22,7 @@ while (<HOLDING>){
         if ($location_ref->{content} eq "587"){
             push @{$title_locationid_ref->{$titleid}}, "DE-587";
         }
-        elsif ($location_ref->{content} eq "101" || $location_ref->{content} eq "103" || $location_ref->{content} eq "105" || $location_ref->{content} eq "106" || $location_ref->{content} eq "120" || $location_ref->{content} eq "121" || $location_ref->{content} eq "128" || $location_ref->{content} eq "146" || $location_ref->{content} eq "157"){
+        elsif ($location_ref->{content} eq "101" || $location_ref->{content} eq "103" || $location_ref->{content} eq "106" || $location_ref->{content} eq "120" || $location_ref->{content} eq "121" || $location_ref->{content} eq "128" || $location_ref->{content} eq "146" || $location_ref->{content} eq "157"){
             push @{$title_locationid_ref->{$titleid}}, "DE-38-101";
             push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
         }

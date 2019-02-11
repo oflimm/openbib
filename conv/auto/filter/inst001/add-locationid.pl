@@ -91,7 +91,7 @@ while (<HOLDING>){
             push @{$element_ref}, "DE-38-429";
             push @{$element_ref}, "DE-38-MEKUTH";
         }
-        elsif ($location_ref->{content} =~m/Inst.*?Medienkultur u. Theater/){
+        elsif ($location_ref->{content} =~m/Inst.*?Medienkultur und Theater/){
             push @{$element_ref}, "DE-38-USBFB";
             push @{$element_ref}, "DE-38-448";
             push @{$element_ref}, "DE-38-MEKUTH";

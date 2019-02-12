@@ -96,6 +96,11 @@ while (<HOLDING>){
             push @{$element_ref}, "DE-38-448";
             push @{$element_ref}, "DE-38-MEKUTH";
         }
+        elsif ($location_ref->{content} =~m/Mediensammlung Medienkulturwiss/){
+            push @{$element_ref}, "DE-38-USBFB";
+            push @{$element_ref}, "DE-38-448";
+            push @{$element_ref}, "DE-38-MEKUTH";
+        }
         elsif ($location_ref->{content} =~m/^Fachbibliothek Asien \/ China/){
             push @{$element_ref}, "DE-38-USBFB";
             push @{$element_ref}, "DE-38-450";

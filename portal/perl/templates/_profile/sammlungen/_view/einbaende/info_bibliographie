@@ -51,12 +51,7 @@
       <div class="ym-col3" >
         <div class="ym-cbox" class="ym-clearfix">
 
-<h1>Bibliographie zur K&ouml;lner Buch- und Einbandgeschichte</h1>
-<br /><br />
-
-Das alphabetische Verzeichnis der Bibliographie zur K&ouml;lner Buch- und Einbandgeschichte finden Sie <a href="http://www.ub.uni-koeln.de/bibliothek/profil/ssg/einband/biblio/index_ger.html" target="_blank">hier</a>.
-
-<p />
+[% config.get_templatetext('info_bibliographie','einbaende',lang) %]
 
         </div>
         <div class="ym-ie-clearing">&nbsp;</div>

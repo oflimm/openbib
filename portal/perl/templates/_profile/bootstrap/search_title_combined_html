@@ -15,7 +15,35 @@
 
 <p/>
 
-<div class="row">
+<div class="row flex-md-row-reverse">
+
+  <div class="col-md-3" style="border-left: 1px solid #dbdbdb;">
+[% IF hits > 0 %]
+[% PROCESS common/subtemplate name="search_facet" %]
+[% ELSE %]
+[%
+   IF NOT viewdbs ;
+       viewdbs = config.get_dbs_of_view(view);
+   END ;
+   IF NOT prevprofile ;
+       prevprofile = session.get_profile ;
+   END ;
+   IF NOT searchprofileid_of_view ;
+      searchprofileid_of_view  = config.get_searchprofile_of_view(view) ;
+   END ;
+   IF NOT searchprofileid_of_sysprofile ;
+      searchprofileid_of_sysprofile = config.get_searchprofile_of_systemprofile(view);
+   END ;
+
+%]
+
+[%   IF viewdbs.size == 1 %]  
+<div class="ob-facets">
+[% PROCESS common/subtemplate name="search_radius" %]
+</div>
+[%   END %]
+[% END %]
+  </div><!-- End: col-3 -->
 
   <div class="col-md-9">
 
@@ -41,7 +69,7 @@
 
 <div class="ob-resultlist">
   <div class="ob-resultheader">
-    <div class="left">
+    <div class="left d-none d-lg-block">
 [% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b>[% hits %]</b>
     </div>
     <div class="right">
@@ -86,33 +114,6 @@
   </div><!-- End: col -->
 
 
-  <div class="col-md-3" style="border-left: 1px solid #dbdbdb;">
-[% IF hits > 0 %]
-[% PROCESS common/subtemplate name="search_facet" %]
-[% ELSE %]
-[%
-   IF NOT viewdbs ;
-       viewdbs = config.get_dbs_of_view(view);
-   END ;
-   IF NOT prevprofile ;
-       prevprofile = session.get_profile ;
-   END ;
-   IF NOT searchprofileid_of_view ;
-      searchprofileid_of_view  = config.get_searchprofile_of_view(view) ;
-   END ;
-   IF NOT searchprofileid_of_sysprofile ;
-      searchprofileid_of_sysprofile = config.get_searchprofile_of_systemprofile(view);
-   END ;
-
-%]
-
-[%   IF viewdbs.size == 1 %]  
-<div class="ob-facets">
-[% PROCESS common/subtemplate name="search_radius" %]
-</div>
-[%   END %]
-[% END %]
-  </div><!-- End: col-3 -->
 
 </div><!-- End: row -->
 

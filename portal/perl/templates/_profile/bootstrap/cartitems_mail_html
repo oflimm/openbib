@@ -1,58 +1,53 @@
 [%#-
 #######################################################################
 #
-# Templatename: mailcartitems_mail_html
+# Templatename: managecartitems_mail
 #
 # Typ         : Mastertemplate       
 #
 # Aufgabe:
 #
-# Ausgabe einer Merkliste im HTML-Format fuer die Versendung via
-# Mail
+# Ausgabe der Merkliste mit einer Eingabemaske fuer die
+# E-Mail-Adresse, an die die Merkliste verschickt werden
+# soll
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" %]
 [% PROCESS common/subtemplate name="visible_categories_title" %]
+[% IF database && titleid %]
+<form method="post" action="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/mail" enctype="application/x-www-form-urlencoded">
+[% ELSE %]
+<form method="post" action="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/mail" enctype="application/x-www-form-urlencoded" class="ym-form">
+[% END %]
+<input type="hidden" name="l"      value="[% lang %]" />
+<input type="hidden" name="format" value="[% format %]" />
 
-  <body>
+<h1 class="display-5">[% msg.maketext("Ihre Eingabe") %]</h1>
 
-<ul class="ym-skiplinks">
-	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
-	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
-</ul>
+<div class="form-group">
+<label for="email">[% msg.maketext("E-Mail-Adresse") %]</label>
+<input class="form-control" [% IF user.ID.substr('@') %]placeholder="[% user.ID %]"[% END %] type="text" name="email" id="email" value="[% username %]" />
+</div>
 
-<div class="ym-wrapper">
-  <div class="ym-wbox">
+<div class="form-group">
+<label for="subject">[% msg.maketext("Betreff") %]</label>
+<input class="form-control" placeholder="[% msg.maketext("Meine Merkliste") %]" type="text" name="subject" id="subject" value="" />
+</div>
 
-[% PROCESS common/subtemplate name="corporate_banner" %] 
+<button class="btn btn-primary mb-2 type="submit">[% msg.maketext("Abschicken") %]</button>
 
-[% PROCESS common/subtemplate name="mainnavigation" %] 
+</form>
 
-    <!-- begin: main content area #main -->
-    <div id="main">
-    <div class="ym-column linearize-level-1">
-      <div class="ym-col1">
-        <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="subnavigation" active_menu='helene' %]
-        </div>
-      </div>
-      <!-- end: #col1 -->
-      <!-- begin: #col3 static column -->
-      <div class="ym-col3" >
-        <div class="ym-cbox" class="ym-clearfix">
+<p/>
 
-<h1>[% msg.maketext("Zugemailte Merkliste") %]</h1>
-<table>
-[% PROCESS common/subtemplate name="cartitems_html_simple" %]
-</table>
-
-        </div>
-        <div class="ym-ie-clearing">&nbsp;</div>
-        <!-- End: IE Column Clearing -->
-      </div>
-     </div> <!-- end: ym-column -->
-    </div>
-    <!-- end: #main -->
-
-[% PROCESS common/subtemplate name="std_footer" %]
+[% IF format == 'short' %]
+  [%- PROCESS common/subtemplate name="cartitems_html_short"  show_bibsonomy=1 -%]
+[% ELSIF format == 'full' %]
+  [%- PROCESS common/subtemplate name="cartitems_html_full" show_bibsonomy=1 -%]
+[% ELSIF format == 'Text' %]
+  [%- PROCESS common/subtemplate name="cartitems_html_as_text" show_bibsonomy=1 -%]
+[% ELSIF format == 'BibTeX' %]
+  [%- PROCESS common/subtemplate name="cartitems_html_as_bibtex" show_bibsonomy=1 -%]
+[% ELSIF format == 'EndNote' %]
+  [%- PROCESS common/subtemplate name="cartitems_html_as_endnote" show_bibsonomy=1 -%]
+[% END %]

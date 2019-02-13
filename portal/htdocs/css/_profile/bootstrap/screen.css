@@ -151,16 +151,6 @@
     margin-top: 5px;
   }
 
-  .ob-item {
-    height: 105px;
-    width: 100%;
-    position: relative;
-    border-style: solid;
-    border-color: #edebe3;
-    border-width: 1px;
-    margin-bottom: 5px;
-  }
-
   .ob-item .ob-titleactions {
     display: none;
   }
@@ -218,13 +208,6 @@
     
     background: none repeat scroll 0 0; 
 
-  }
-
-  .ob-item .ob-brieftitle {
-    position: absolute;
-    top: 26px;
-    left:110px;
-    width: auto;
   }
 
   /* ob-liststyle not used

@@ -1430,7 +1430,6 @@
 ../templates/_profile/bootstrap/topics_mappings_record_html
 ../templates/_profile/bootstrap/topics_record
 ../templates/_profile/bootstrap/topics_record_html
-../templates/_profile/bootstrap/topics_record_mapping_html
 ../templates/_profile/bootstrap/usage_navigation
 ../templates/_profile/bootstrap/users_circulations_borrows
 ../templates/_profile/bootstrap/users_circulations_borrows_html

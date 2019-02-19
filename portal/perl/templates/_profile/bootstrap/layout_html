@@ -33,13 +33,30 @@
 -%]
 
 [% IF layout_param.sidebar_template %]
-<!-- begin: Layout with sidebar -->
-      <div class="row">
+<!-- begin: Layout with collapsable sidebar -->
+<style>
+[data-toggle="collapse"] {
+  cursor: pointer;
+}
+
+@media screen and (min-width:768px) { #ob-sidebar{ display: block!important;visibility:visible!important; } }
+
+</style>
+
+      <div class="navbar navbar-default d-block d-md-none pl-0"><!-- only visible in xs-->
+        <div class="container-fluid pl-0">
+          <button class="btn btn-default navbar-btn" data-toggle="collapse" data-target="#ob-sidebar">
+            <i class="fa fa-list"></i> [% msg.maketext("Navigation") %]
+          </button>
+        </div>
+      </div>
+
+      <div class="row flex-md-row-reverse">
+        <div id="ob-sidebar" class="col-xs-6 col-md-3 collapse">
+[% PROCESS common/subtemplate name=layout_param.sidebar_template %]
+        </div>
         <div class="col-md-9" >
 [% PROCESS common/subtemplate name=layout_param.main_template %]
-        </div>
-        <div class="col-md-3">
-[% PROCESS common/subtemplate name=layout_param.sidebar_template %]
         </div>
       </div>
 <!-- end: Layout with sidebar -->      

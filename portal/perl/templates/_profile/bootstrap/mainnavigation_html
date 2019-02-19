@@ -205,7 +205,7 @@
 		   </div>
                 </div>
                 <input type="hidden" name="profile" value="[% searchprofileid_of_sysprofile %]" id="search_profile">
-                <input required="required" id="to_focus" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" size="30" maxlength="200" placeholder="Suchbegriff..." />
+                <input required="required" id="to_focus" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" size="30" maxlength="200" placeholder="[% msg.maketext("Suchbegriff...") %]" />
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="submit"><span class="fas fa-search"></span></button>
                 </span>

@@ -171,6 +171,10 @@ $(document).ready(function(){
   return false;
 });
 
+$(document).ready(function(){
+ $('.selectpicker').selectpicker();
+})
+
 $('.selectpicker').selectpicker();
 
 })

@@ -147,16 +147,22 @@
 
     [% IF config.get('lang').size > 1 %]		
                <li class="nav-item order-2 order-md-1 mt-1">
-                   <select class="selectpicker" data-width="fit">
+	        <form method="get" action="[% path %]">
+                   <select name="l" class="autosubmit" data-width="fit">
      [% lang_desc = {
        'en' = msg.maketext("English")
        'de' = msg.maketext("Deutsch")
      }
      %]
-     [% FOREACH l IN config.get('lang') %]
-      <option value="[% path %]?[% cgiapp.to_cgi_querystring(change = { l = l }) %]" data-content='<span class="flag-icon flag-icon-[% l %]"></span> [%lang_desc.${l} %]'> [%lang_desc.${l} %]</option>
+     [% FOREACH thislang IN config.get('lang') %]
+      <option value="[% thislang %]"[% IF lang == thislang %] selected="selected"[% END %]>[% lang_desc.${thislang} %]</option>
      [% END %]
-                  </select>
+                    </select>
+		[% cgiapp.to_cgi_hidden_input({ exclude = ['l']}) %]
+
+		    
+		  <button class="btn btn-primary p-1 ob-nojs_show" type="submit">[% msg.maketext("Los") %]</button>
+		  </form>
                </li>
     [% END %]
     		

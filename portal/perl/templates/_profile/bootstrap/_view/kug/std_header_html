@@ -96,6 +96,7 @@
 <script src="/js/jquery-3.3.1.min.js"></script>
 <script src="/js/popper.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
+<script src="/js/bootstrap-select.min.js"></script>
 <script src="/js/jquery-ui-1.8.24.min.js"></script>
 <script src="/js/openbib.js"></script> 
 

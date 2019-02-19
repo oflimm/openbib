@@ -15,9 +15,29 @@
 
 <p/>
 
+
+<style>
+[data-toggle="collapse"] {
+  cursor: pointer;
+}
+
+@media screen and (min-width:768px) { #ob-search_refine{ display: block!important;visibility:visible!important; } }
+
+</style>
+
+
+<div class="navbar navbar-default d-block d-md-none pl-0"><!-- only visible in xs-->
+  <div class="container-fluid pl-0">
+    <button class="btn btn-default navbar-btn" data-toggle="collapse" data-target="#ob-search_refine">
+      <i class="fa fa-tasks"></i> [% msg.maketext("Suchergebnis filtern & Datenbanken entdecken") %]
+    </button>
+  </div>
+</div>
+
+
 <div class="row flex-md-row-reverse">
 
-  <div class="col-md-3" style="border-left: 1px solid #dbdbdb;">
+  <div id="ob-search_refine" class="col-xs-6 col-md-3 collapse" style="border-left: 1px solid #dbdbdb;">
 [% IF hits > 0 %]
 [% PROCESS common/subtemplate name="search_facet" %]
 [% ELSE %]

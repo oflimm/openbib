@@ -1,4 +1,3 @@
-<div id="ob-search_refine">
 [% IF queryoptions.get_option('facets') != 'none' %]
 <div class="ob-facets ob-facets_all">
 [% IF hits <= config.get('xapian_option').maxmatch ;
@@ -229,12 +228,15 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [% PROCESS common/subtemplate name="search_radius" %]
 
 <h5>[% msg.maketext("Suchergebnis filtern") %]</h5>
+
 <!-- <div class="card">
 <div class="card-header"><span id="ob-facets_all_toggle">[% msg.maketext("Treffermenge eingrenzen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 
 <div class="card-body">
--->
 <div id="ob-facets_all_toggle_do">
+-->
+<div>
+
 
 [% IF separate_refine %]
 [%# USE dumper;dumper.dump(have_filter)%]
@@ -750,4 +752,3 @@ $(document).ready(function(){
 
 </div>
 
-</div>

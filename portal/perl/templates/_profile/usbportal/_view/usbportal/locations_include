@@ -14,7 +14,7 @@
 #
 #######################################################################
 -%]
-
+[%# USE dumper;dumper.dump(locations)%]
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" charset="UTF-8">
 
     <style>
@@ -2952,22 +2952,34 @@ function showPopupText(text, mitInfo) {
 
             var s1 = '';
             var status = '';
-
+            var arbeitsplaetze = '';
+	    
             var nameLink = institute[t].name;
 
             // xxx: hier gehts nicht ganz gut zu -> zeiten == 1 überschreibt wohl 'USB KÖLN'-link
             if (institute[t].sigel.match(/DE-38-[0-9]{0,3}$/))
                 nameLink = '<a id="linktitel" target="blank" href="/lernen_arbeiten/bibliotheken/38_' + institute[t].sigel.replace(/DE-38-/g, "") + '/index_ger.html">' + institute[t].name + '</a>';
 
-            else if (institute[t] === 'USB Köln / Humanwissenschaftliche Abteilung')
+            else if (institute[t].sigel.match(/DE-38-HWA/))
                 nameLink = '<a id="linktitel" target="blank" href="https://www.ub.uni-koeln.de/ueber_uns/dach/hwa/index_ger.html>' + institute[t].name + '</a>';
 
-            else if (institute[t] === 'USB Köln')
+            else if (institute[t].sigel.match(/^DE-38$/))
                 nameLink = '<a id="linktitel" target="blank" href="https://www.ub.uni-koeln.de/index.html">' + institute[t].name + '</a>';
+            else if (institute[t].url.match(/http/) && !institute[t].url.match(/href/))
+                nameLink = '<a id="linktitel" target="blank" href="' + institute[t].url + '">' + institute[t].name + '</a>';
 
 
-            if (zeiten === 1) // test mit öffnen div auch als link zu institutsseite
-                status = '<a id="linktitel" target="blank" href="/lernen_arbeiten/bibliotheken/38_' + institute[t].sigel.replace(/DE-38-/g, "") + '/index_ger.html">' + '<div class="status_geeoffnet" id="status"><strong id="strong" style="color: white">' + print + ' geöffnet</strong></div></a>';
+            if (institute[t].arbeitsplaetze > 0 )
+                arbeitsplaetze = '<p><strong>Arbeitsplätze für Nutzer:</strong> '+institute[t].arbeitsplaetze + '</p>';
+
+            if (zeiten === 1){ // test mit öffnen div auch als link zu institutsseite
+ //             if (institute[t].sigel.match(/DE-38-[0-9]{0,3}$/)) {
+ //               status = '<a id="linktitel" target="blank" href="/lernen_arbeiten/bibliotheken/38_' + institute[t].sigel.replace(/DE-38-/g, "") + '/index_ger.html">' + '<div class="status_geeoffnet" id="status"><strong id="strong" style="color: white">' + print + ' geöffnet</strong></div></a>';
+//              }
+//              else {
+                status = '<div class="status_geeoffnet" id="status"><strong id="strong" style="color: white">' + print + ' geöffnet</strong></div>';
+//              }
+            }
             else if (zeiten === 2)
                 status = '<div id="status" class="status_geschlossen"><strong id="strong" style="color: white">' + print + ' geschlossen</strong></div>';
             else if (zeiten === 'undefined' || zeiten === 0)
@@ -2975,7 +2987,7 @@ function showPopupText(text, mitInfo) {
 
 
             displayFromMobile = institute[t].sigel;
-            return "<div id='bibnames'><h4 id='bibtitel' style='text-align: center; margin-top: 5px; margin-bottom: 10px'>" + nameLink + "</h4>" + status + "</div><br>";
+            return "<div id='bibnames'><h4 id='bibtitel' style='text-align: center; margin-top: 5px; margin-bottom: 10px'>" + nameLink + "</h4>" + status + arbeitsplaetze + "</div><br>";
         }
     }
 }
@@ -5057,6 +5069,8 @@ var semesterZeit = [
     sigel       = location.identifier ;
     description = location.description ;
     art         = location.fields.${"L0180"}.first.content;
+    url         = location.fields.${"L0090"}.first.content;
+    arbeitsplaetze = location.fields.${"L0270"}.first.content;
     zeiten      = location.fields.${"L0110"}.first.content;
     IF art.match('Präsenz');
        art = "Präsenz";
@@ -5069,6 +5083,8 @@ var semesterZeit = [
         sigel: "[% sigel %]",
         name: "[% description %]",
         art: "[% art %]",
+        url: '[% url %]',
+        arbeitsplaetze: "[% arbeitsplaetze %]",
         zeiten: '[% zeiten %]',
       },
 [%

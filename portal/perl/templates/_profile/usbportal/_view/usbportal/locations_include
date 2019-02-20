@@ -2970,7 +2970,7 @@ function showPopupText(text, mitInfo) {
 
 
             if (institute[t].arbeitsplaetze > 0 )
-                arbeitsplaetze = '<p><strong>Arbeitsplätze für Nutzer:</strong> '+institute[t].arbeitsplaetze + '</p>';
+                arbeitsplaetze = '<br/><p><strong>Arbeitsplätze für Nutzer:</strong> '+institute[t].arbeitsplaetze + '</p>';
 
             if (zeiten === 1){ // test mit öffnen div auch als link zu institutsseite
  //             if (institute[t].sigel.match(/DE-38-[0-9]{0,3}$/)) {

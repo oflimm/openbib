@@ -13,10 +13,11 @@
 -%]
 [%- IF representation == '' || representation == 'html' ;
     layout_param = {
-     'page_title' = "Tital anzeigen"
+     'page_title' = "Titel anzeigen"
 
       'main_template' = 'titles_record_html'
       'sidebar_template' = 'titles_record_html_actions'
+      'sidebar_template_description' = msg.maketext("Aktionen")   
 
       'active_submenu' = 'database'
       'database' = databaseinfo.dbname

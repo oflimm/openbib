@@ -1,7 +1,7 @@
 [%- PROCESS common/subtemplate name="local_config" -%] 
 [%- IF representation == '' || representation == 'html' ;
     layout_param = {
-     'page_title' = "Tital anzeigen"
+     'page_title' = "Titel im Suchindex anzeigen"
 
       'main_template' = 'users_titles_record_searchindex_html'
 

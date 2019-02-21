@@ -3433,8 +3433,14 @@ function drawMarkers(inst, coord) {
             marker.sig = inst[i].sigel;
             marker.name = inst[i].name;
             marker.zeiten = inst[i].zeiten;
+            var instname = inst[i].name;
+            var arbeitsplaetze = inst[i].arbeitsplaetze;            
+            
+            if (arbeitsplaetze > 0){
+               instname = instname + '<br/>Nutzerarbeitsplätze: ' + arbeitsplaetze;
+            }
 
-            marker.bindTooltip("<div>" + marker.name + "</div>", {
+            marker.bindTooltip("<div>" + instname + "</div>", {
                 permanent: showMarkerText,
                 direction: 'right',
 

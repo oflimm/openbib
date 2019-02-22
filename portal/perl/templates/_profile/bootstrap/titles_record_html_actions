@@ -21,7 +21,7 @@
 
 <div class="card-body">
 
-<div id="ob-record_title_save_toggle_do">
+<!-- <div id="ob-record_title_save_toggle_do"> -->
 <p/>
 <img src="[% config.get('share_img') %]" alt="[% msg.maketext("An BibSonomy senden") %]" title="[% msg.maketext("An BibSonomy senden") %]" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/to_bibsonomy.html?l=[% lang %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a><br/>
 <img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" />&nbsp;<a class="ob-collection" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a><br/>
@@ -249,7 +249,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 <p/>
 </div><!-- End: Tagging -->
 
-</div><!-- End: ob-record_title_save_toggle -->
+<!-- </div><!-- End: ob-record_title_save_toggle -->
 
 </div><!-- End: card-body --> 
 </div><!-- End: card -->
@@ -261,7 +261,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 <div class="card-header"><span id="ob-record_title_discover_toggle">[% msg.maketext("Entdecken Sie weitere Titel") %]&nbsp;<img class="ob-responsive_toggle_button" style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div class="card-body">
 
-<div id="ob-record_title_discover_toggle_do">
+<!-- <div id="ob-record_title_discover_toggle_do"> -->
 <p/>
 
 <!-- Anfang Empfehlungen -->
@@ -453,7 +453,7 @@ $(document).ready(function(){
 </div>
 <p/>
 
-</div><!-- End ob-record_title_discover_toggle_do -->
+<!-- </div><!-- End ob-record_title_discover_toggle_do -->
 </div><!-- End card-body -->
 </div><!-- End card -->
 </div><!-- End Discover-Sources -->
@@ -482,7 +482,7 @@ $("#history_toggle").click(function(){
 <div class="card-header" id="history_anchor"><span id="ob-record_title_history_toggle">[% msg.maketext("Diese Titel interessierten Sie bereits:") %]&nbsp;<img class="ob-responsive_toggle_button" style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div class="card-body">
 
-<div id="ob-record_title_history_toggle_do">
+<!-- <div id="ob-record_title_history_toggle_do"> -->
 <p/>
 [% FOREACH recent_record IN recent_titles.get_records %]
 [%- item = recent_record.get_fields -%]
@@ -509,7 +509,7 @@ title %]</span></strong></a>, <span class="ob-publisher">[% publisher %]</span> 
 
 <p/>
 
-</div><!-- End ob-record_title_history_toggle_do -->
+<!-- </div><!-- End ob-record_title_history_toggle_do -->
 </div><!-- End card-body -->
 </div><!-- End card -->
 </div><!-- End Session-Historie -->

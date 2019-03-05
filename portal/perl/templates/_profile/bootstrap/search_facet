@@ -1,5 +1,51 @@
 [% IF queryoptions.get_option('facets') != 'none' %]
-<div class="ob-facets ob-facets_all">
+<div class="ob-facets ob-facets_all sliding-sidebar">
+<style>
+[data-toggle="collapse"] {
+  cursor: pointer;
+}
+
+.sliding-sidebar {
+    position: absolute;
+        z-index: 1;
+	    background: #fff;
+	        min-height: 100%;
+		    border-right: 1px solid #ccc;
+
+    &.collapse,
+        &.collapsing {
+	      display: block !important;
+	            transform: translate3D(-100%, 0, 0);
+		          transition: all 200ms;
+			      }
+
+    &.collapse.in {
+          transform: translate3D(0, 0, 0);
+	        box-shadow:
+		        1px 0 0 rgba(0,0,0,0.05),
+			        2px 0 0 rgba(0,0,0,0.05),
+				        3px 0 0 rgba(0,0,0,0.05);
+					    }
+}
+
+.parent-expanded {
+
+}
+.parent-collapsed {
+  display: none;
+}*
+
+.collapsed {
+  .parent-expanded {
+      display: none;
+  }
+
+  .parent-collapsed {
+      display: inline-block;
+  }
+}
+</style>
+
 [% IF hits <= config.get('xapian_option').maxmatch ;
 
       bklookup    = config.load_bk;
@@ -305,8 +351,12 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 
 <!-- Begin location facet -->
 [%         IF config.get('facets').location && facets.defined('location') && facets.location.size > 0 %]
-<dl class="ob-items">
-<dt class="ob-headline" id="dd_location_[% database %]_anchor">[% msg.maketext("nach Standort") %]</dt>
+        <h4 data-toggle="collapse" data-target="#group-1">
+          <i class="fa fa-fw fa-caret-down parent-expanded"></i>
+          <i class="fa fa-fw fa-caret-right parent-collapsed"></i>
+          [% msg.maketext("nach Standort") %] 
+        </h4>
+        <div id="group-1" class="list-group collapse in">
 [%             FOREACH termitem IN facets.location ;
 
  %]
@@ -319,12 +369,12 @@ $("#dd_availability_[% database %]_toggle").click(function(){
     searchprefix  = config.get('searchfield').locationstring.prefix;
     filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% locinfo.get('identifier').${termitem.0}.description %]</a>&nbsp;([% termitem.1 %])</dd>
+<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]"><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% locinfo.get('identifier').${termitem.0}.description %]<span class="badge badge-pill badge-secondary float-right">[% termitem.1 %]</span></a>
 [%             END %]
 [% IF facets.location.size > 5 %]
 </div>
 [% END %]
-</dl>
+</div>
 [%         END %]
 <!-- End location facet -->
 

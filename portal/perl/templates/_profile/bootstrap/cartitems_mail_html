@@ -17,7 +17,7 @@
 [% IF database && titleid %]
 <form method="post" action="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/mail" enctype="application/x-www-form-urlencoded">
 [% ELSE %]
-<form method="post" action="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/mail" enctype="application/x-www-form-urlencoded" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/mail" enctype="application/x-www-form-urlencoded">
 [% END %]
 <input type="hidden" name="l"      value="[% lang %]" />
 <input type="hidden" name="format" value="[% format %]" />

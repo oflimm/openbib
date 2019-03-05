@@ -1,6 +1,10 @@
 [% IF NOT hide_options %]
 <div class="ob-cartitems ob-reuse_data"><!-- Begin Reuse -->
-<div class="ob-category_header">[% msg.maketext("Behalten Sie diese Liste") %]:</div>
+
+<div class="card">
+<div class="card-header">[% msg.maketext("Behalten Sie diese Liste") %]</div>
+
+<div class="card-body">
 
 <p />
 <img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/save?format=Text" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a><br/>
@@ -26,7 +30,7 @@
 [%    IF config.get('litlists') %]
 <div class="ob-litlists"><!-- Begin Litlist -->
 <div class="ob-headline"><span id="ob-litlists_toggle">[% msg.maketext("Literaturliste") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
-<div class="ym-form" id="ob-litlists_do"><!-- Begin Litlist do -->
+<div id="ob-litlists_do"><!-- Begin Litlist do -->
 
 [% 
       litlists = [] ;
@@ -81,7 +85,7 @@
 [% username = user.get_username %]
 <div class="ob-tagging"><!-- Begin: Tagging -->
 <div class="ob-headline"><span id="ob-tagging_toggle">[% msg.maketext("Tagging") %]<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle"></span></div>
-<div class="ym-form" id="ob-tagging_do"><!-- Begin Tagging do -->
+<div id="ob-tagging_do"><!-- Begin Tagging do -->
 <p/>
 [% msg.maketext("<b>Ausgew&auml;hlte Titel</b> mit diesen Tags versehen:") %]
 
@@ -100,7 +104,7 @@
 </select>
 </div>
 
-<button class="btn btn-primary mb-2" type="submit" name="do_addtags">[% msg.maketext("Hinzuf&uuml;gen") %]"</button>
+<button class="btn btn-primary mb-2" type="submit" name="do_addtags">[% msg.maketext("Hinzuf&uuml;gen") %]</button>
 
 [% private_tags = user.get_private_tags({ username => username  }) %]
 
@@ -149,5 +153,9 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 </p>
 
 [%   END %]
+
+</div>  <!-- End: card-body -->
+</div>  <!-- End: card -->
+
 </div> <!-- End: Reuse Data -->
 [% END %]

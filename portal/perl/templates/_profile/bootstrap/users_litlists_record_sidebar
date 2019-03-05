@@ -11,7 +11,7 @@
 <div class="card-header">[% msg.maketext("Einstellungen &auml;ndern") %]</div>
 
 <div class="card-body">
-<form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]">
 
 <div class="form-group">
 <label for="title">[% msg.maketext("Titel der Liste") %]</label>

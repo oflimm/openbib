@@ -20,13 +20,13 @@
 */    
     /* Accordion */
     
-    #accordion .card-header .mb-0 > a {
+    .accordion .card-header .mb-0 > a {
 	display: block;
 	position: relative;
 	outline: none;
     }
     
-    #accordion .card-header .mb-0 > a:after {
+    .accordion .card-header .mb-0 > a:after {
 	font-family: 'Font Awesome 5 Free';
 	content: "\f107";
 	font-weight: 900;
@@ -34,7 +34,7 @@
 	right: 0;
     }
     
-    #accordion .card-header .mb-0  a[aria-expanded="true"]:after {
+    .accordion .card-header .mb-0  a[aria-expanded="true"]:after {
 	font-family: 'Font Awesome 5 Free';
 	content: "\f106";
 	font-weight: 900;

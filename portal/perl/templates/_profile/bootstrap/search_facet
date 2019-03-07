@@ -346,8 +346,10 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [% IF separate_refine %]
 [%# USE dumper;dumper.dump(have_filter)%]
 [%         IF searchquery.get_filter.size > 0 %]
-<dl>
-<dt class="ob-headline" >[% msg.maketext("Aktive Filter") %]</dt>
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-database" aria-expanded="true">
+           [% msg.maketext("Aktive Filter") %] 
+        </h4>
+        <ul id="group-database" class="list-group in collapse show">
 [%
     filter_prefix_map = {
           ${config.get('searchfield').dbstring.prefix} = msg.maketext("Katalog")
@@ -377,9 +379,11 @@ $("#dd_availability_[% database %]_toggle").click(function(){
                    END ;
 %]
 [%# USE dumper;dumper.dump(category_map) %]
-<dd><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude_filter = [ filter.val ] }) %]" title="[% msg.maketext("Entfernen") %]"><img style="vertical-align:bottom" src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>&nbsp;[% filter_prefix_map.${filter.field} %]: [% IF filter.field == "fdb" %][% dbinfo.get('dbnames').${filter.term}.short %][% ELSE %][% filter.term %][% END %]</dd>
+<li class="ob-facet-item d-flex"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude_filter = [ filter.val ] }) %]" title="[% msg.maketext("Entfernen") %]"><img style="vertical-align:bottom" src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>&nbsp;[% filter_prefix_map.${filter.field} %]: [% IF filter.field == "fdb" %][% dbinfo.get('dbnames').${filter.term}.short %][% ELSE %][% filter.term %][% END %]</li>
 [%             END %]
-</dl>
+</ul>
+
+</p>
 [%        END %]
 [% END %]
 

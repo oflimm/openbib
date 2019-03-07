@@ -19,7 +19,16 @@
     content:'\25BC'
 }
 
+/*
 .ob-facets .collapse, .ob-facets .collapsing,
+.ob-facets .ob-facet-item {
+    position:relative;
+    border-left:1px solid #ddd;
+    border-right:1px solid #ddd
+}
+*/
+
+
 .ob-facets .ob-facet-item {
     position:relative;
     border-left:1px solid #ddd;
@@ -66,7 +75,6 @@
     text-align:inherit;
     font-size: 1.2rem;
 }
-
 
 
 /*
@@ -377,8 +385,10 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 
 <!-- Begin database facet -->
 [%         IF 1 == 0 && facets.defined('database') && facets.database.size > 0 %]
-<dl class="ob-items">
-<dt class="ob-headline" id="dd_databases_[% database %]_anchor">[% msg.maketext("nach Katalog") %]</dt>
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-database" aria-expanded="true">
+           [% msg.maketext("nach Katalog") %] 
+        </h4>
+        <ul id="group-database" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.database ;
                   LAST IF loop.count > 25 ;
 %]
@@ -391,21 +401,22 @@ $("#dd_availability_[% database %]_toggle").click(function(){
     searchprefix  = config.get('searchfield').dbstring.prefix;
     filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% dbinfo.get('dbnames').${termitem.0}.short %]</a>&nbsp;([% termitem.1 %])</dd>
+<li class="ob-facet-item d-flex"><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% dbinfo.get('dbnames').${termitem.0}.short %]</a> <span class="badge badge-pill badge-secondary ml-auto">[% termitem.1 %]</span></li>
 [%             END %]
 [% IF facets.database.size > 5 %]
 </div>
 [% END %]
-</dl>
+</ul>
+<p/>
 [%         END %]
 <!-- End database facet -->
 
 <!-- Begin location facet -->
 [%         IF config.get('facets').location && facets.defined('location') && facets.location.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-location" aria-expanded="false">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-location" aria-expanded="true">
            [% msg.maketext("nach Standort") %] 
         </h4>
-        <ul id="group-location" class="list-group in">
+        <ul id="group-location" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.location ;
 
  %]
@@ -433,7 +444,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
         <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-availability" aria-expanded="true">
            [% msg.maketext("nach Zugriff") %] 
         </h4>
-        <ul id="group-availability" class="list-group in">
+        <ul id="group-availability" class="list-group in collapse show">
 [%
     # Availability Types
     # msg.maketext("online")             Online
@@ -469,10 +480,10 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 
 <!-- Begin mediatype facet -->
 [%         IF config.get('facets').mediatype && facets.defined('mediatype') && facets.mediatype.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-mediatype" aria-expanded="false">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-mediatype" aria-expanded="true">
            [% msg.maketext("nach Typ") %] 
         </h4>
-        <ul id="group-mediatype" class="list-group in">
+        <ul id="group-mediatype" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.mediatype ;
                   LAST IF loop.count > 25 ;
  %]
@@ -496,10 +507,10 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <!-- End mediatype facet -->
 <!-- Begin topic facet -->
 [%         IF config.get('facets').topic && facets.defined('topic') && facets.topic.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-topic" aria-expanded="false">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-topic" aria-expanded="true">
            [% msg.maketext("nach Themengebieten") %] 
         </h4>
-        <ul id="group-mediatype" class="list-group in">
+        <ul id="group-mediatype" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.topic ;
                   LAST IF loop.count > 25 ;
  %]
@@ -523,10 +534,10 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <!-- End topic facet -->
 <!-- Begin subject facet -->
 [%         IF config.get('facets').subject && facets.defined('subject') && facets.subject.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-subject" aria-expanded="false">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-subject" aria-expanded="true">
            [% msg.maketext("nach Themen") %] 
         </h4>
-        <ul id="group-subject" class="list-group in">
+        <ul id="group-subject" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.subject ;
                   LAST IF loop.count > 25 ;
 %]
@@ -550,10 +561,10 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <!-- End subject facet -->
 <!-- Begin year facet -->
 [%         IF config.get('facets').year && facets.defined('year') && facets.year.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-year" aria-expanded="false">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-year" aria-expanded="true">
            [% msg.maketext("nach Jahr") %] 
         </h4>
-        <ul id="group-year" class="list-group in">
+        <ul id="group-year" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.year ;
                   LAST IF loop.count > 25 ;
  %]
@@ -572,18 +583,19 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 </div>
 [% END %]
 </ul>
+
 <p/>
 
-[% msg.maketext("Von") %]&nbsp;&nbsp;<input type="text" name="year_from" value="[% searchquery.get_searchfield("year_from").val %]" style="width:40px;" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input type="text" name="year_to" value="[% searchquery.get_searchfield("year_to").val %]" style="width:40px;"/>&nbsp;&nbsp;<input type="submit" value=">>"/></dd>
-
+[% msg.maketext("Von") %]&nbsp;&nbsp;<input type="text" name="year_from" value="[% searchquery.get_searchfield("year_from").val %]" style="width:40px;" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input type="text" name="year_to" value="[% searchquery.get_searchfield("year_to").val %]" style="width:40px;"/>&nbsp;&nbsp;<input type="submit" value=">>"/>
+<p/>
 [%         END %]
 <!-- End year facet -->
 <!-- Begin classification facet -->
 [%         IF config.get('facets').classification && facets.defined('classification') && facets.classification.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-classification" aria-expanded="false">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-classification" aria-expanded="true">
            [% msg.maketext("nach Systematik") %] 
         </h4>
-        <ul id="group-classification" class="list-group in">
+        <ul id="group-classification" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.classification ;
                   LAST IF loop.count > 25 ;
  %]
@@ -596,7 +608,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
     searchprefix  = config.get('searchfield').classificationstring.prefix;
     filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<li class="ob-facet-item d-flex"><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>[% IF searchterm.match('^\d\d\.\d\d') %] [% bklookup.${searchterm} %][% END %]  <span class="badge badge-pill badge-secondary ml-auto">[% termitem.1 %]</span></li>
+<li class="ob-facet-item d-flex"><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>[% IF searchterm.match('^\d\d\.\d\d') %]&nbsp;[% bklookup.${searchterm} %][% END %]  <span class="badge badge-pill badge-secondary ml-auto">[% termitem.1 %]</span></li>
 [%             END %]
 [% IF facets.classification.size > 5 %]
 </div>
@@ -607,10 +619,10 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <!-- End classification facet -->
 <!-- Begin provenance facet -->
 [%         IF config.get('facets').provenance && facets.defined('provenance') && facets.provenance.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-provenance" aria-expanded="false">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-provenance" aria-expanded="true">
            [% msg.maketext("nach Provenienz") %] 
         </h4>
-        <ul id="group-provenance" class="list-group in">
+        <ul id="group-provenance" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.provenance ;
                   LAST IF loop.count > 25 ;
  %]
@@ -634,10 +646,10 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <!-- End provenance facet -->
 <!-- Begin tag facet -->
 [%         IF config.get('facets').tag && facets.defined('tag') && facets.tag.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-tag" aria-expanded="false">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-tag" aria-expanded="true">
            [% msg.maketext("nach Tags") %] 
         </h4>
-        <ul id="group-tag" class="list-group in">
+        <ul id="group-tag" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.tag ;
                   LAST IF loop.count > 25 ;
  %]
@@ -661,10 +673,10 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <!-- End tag facet -->
 <!-- Begin litlist facet -->
 [%         IF config.get('facets').litlist && facets.defined('litlist') && facets.litlist.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-litlist" aria-expanded="false">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-litlist" aria-expanded="true">
            [% msg.maketext("nach Literaturliste") %] 
         </h4>
-        <ul id="group-litlist" class="list-group in">
+        <ul id="group-litlist" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.litlist ;
                   LAST IF loop.count > 25 ;
  %]
@@ -688,10 +700,10 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <!-- End litlist facet -->
 <!-- Begin person facet -->
 [%         IF config.get('facets').person && facets.defined('person') && facets.person.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-person" aria-expanded="false">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-person" aria-expanded="true">
            [% msg.maketext("nach Personen") %] 
         </h4>
-        <ul id="group-person" class="list-group in">
+        <ul id="group-person" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.person ;
                   LAST IF loop.count > 25 ;
 %]
@@ -715,10 +727,10 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <!-- End person facet -->
 <!-- Begin corporatebody facet -->
 [%         IF config.get('facets').corporatebody && facets.defined('corporatebody') && facets.corporatebody.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-corporatebody" aria-expanded="false">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-corporatebody" aria-expanded="true">
            [% msg.maketext("nach K&ouml;perschaften") %] 
         </h4>
-        <ul id="group-corporatebody" class="list-group in">
+        <ul id="group-corporatebody" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.corporatebody ;
                   LAST IF loop.count > 25 ;
 %]
@@ -742,10 +754,10 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <!-- End corporatebody facet -->
 <!-- Begin language facet -->
 [%         IF config.get('facets').language && facets.defined('language') && facets.language.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-language" aria-expanded="false">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-language" aria-expanded="true">
            [% msg.maketext("nach Sprache") %] 
         </h4>
-        <ul id="group-language" class="list-group in">
+        <ul id="group-language" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.language ;
                   LAST IF loop.count > 25 ;
  %]

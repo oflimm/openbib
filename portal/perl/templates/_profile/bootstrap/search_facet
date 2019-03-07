@@ -1,108 +1,4 @@
 [% IF queryoptions.get_option('facets') != 'none' %]
-
-<style>
-
-.ob-facets [data-toggle="collapse"] {
-    cursor: pointer;
-}
-
-.ob-facets [data-toggle="collapse"]::after {
-    content: '\25B2';
-    float: right;
-}
-
-.ob-facets [data-toggle="collapse"]::after{
-    float:right;
-}
-
-.ob-facets .collapsed::after{
-    content:'\25BC'
-}
-
-/*
-.ob-facets .collapse, .ob-facets .collapsing,
-.ob-facets .ob-facet-item {
-    position:relative;
-    border-left:1px solid #ddd;
-    border-right:1px solid #ddd
-}
-*/
-
-
-.ob-facets .ob-facet-item {
-    position:relative;
-    border-left:1px solid #ddd;
-    border-right:1px solid #ddd
-}
-
-.ob-facets .ob-facet-item:first-child {
-    border-top:1px solid #ddd;
-}
-
-
-.ob-facet-item, .ob-facets .ob-facet-title {
-    display:flex;
-    padding:.5rem;
-    width:100%;
-    line-height:1.5rem;
-    background-color:transparent
-}
-
-.ob-facet-item,.ob-facets .ob-facet-title {
-    flex-grow:1
-}
-
-.ob-facet-item input {
-    margin-right: 10px;
-}
-
-.ob-facet-item .badge  {
-    /* flex-shrink:0; */
-    max-height:19px;
-    line-height:1.2;
-    vertical-align:baseline;
-}
-
-.ob-facets .ob-facet-item {
-    border-bottom:1px solid #ddd
-}
-
-.ob-facets .ob-facet-title {
-    display:block;
-    padding-right:8px;
-    border:1px solid #ddd;
-    font-weight:bold;
-    text-align:inherit;
-    font-size: 1.2rem;
-}
-
-
-/*
-.ob-facets .collapsed::after {
-    content: '\25BC';
-}
-
-
-::before, ::after {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
-
-.ob-facets .group-title {
-    display: block;
-    padding-right: 8px;
-    border: 1px solid #ddd;
-    font-weight: bold;
-    text-align: inherit;
-
-}
-*/
-
-</style>
-
-
 <div class="ob-facets ob-facets_all sliding-sidebar">
 
 [% IF hits <= config.get('xapian_option').maxmatch ;
@@ -332,7 +228,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 
 [% PROCESS common/subtemplate name="search_radius" %]
 
-<h5>[% msg.maketext("Suchergebnis filtern") %]</h5>
+<h4>[% msg.maketext("Suchergebnis filtern") %]</h4>
 
 <!-- <div class="card">
 <div class="card-header"><span id="ob-facets_all_toggle">[% msg.maketext("Treffermenge eingrenzen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>

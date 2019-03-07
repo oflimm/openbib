@@ -584,10 +584,13 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [% END %]
 </ul>
 
-<p/>
+<br/>
 
-[% msg.maketext("Von") %]&nbsp;&nbsp;<input type="text" name="year_from" value="[% searchquery.get_searchfield("year_from").val %]" style="width:40px;" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input type="text" name="year_to" value="[% searchquery.get_searchfield("year_to").val %]" style="width:40px;"/>&nbsp;&nbsp;<input type="submit" value=">>"/>
-<p/>
+<p>
+
+[% msg.maketext("Von") %]&nbsp;&nbsp;<input type="text" size="4" name="year_from" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input type="text" size="4" name="year_to" value="[% searchquery.get_searchfield("year_to").val %]" />&nbsp;&nbsp;<input type="submit" value=">>"/>
+</p>
+
 [%         END %]
 <!-- End year facet -->
 <!-- Begin classification facet -->

@@ -334,13 +334,13 @@
     background: url(/images/openbib/views/kubibooks/logo-768px.jpg) center no-repeat;
     position: absolute;
     width: 768px;
-    height: 166px;
+    height: 151px;
     top: 0px;
     left: 0px;    
   }
 
   header {
-    padding-bottom:96px;  
+    padding-bottom:81px;  
   }
 
   .ym-wrapper {
@@ -470,9 +470,9 @@
   }
 
   #header_logo_image  {
-    background: url(/images/openbib/views/kubibooks/logo-720x80px.jpg) center no-repeat;
+    background: url(/images/openbib/views/kubibooks/logo-schrift-80px.jpg) center no-repeat;
     position: absolute;
-    width: 720px;
+    width: 833px;
     height: 80px;
     top: 0px;
     left: 0px;    

@@ -23,9 +23,25 @@
 #
 #######################################################################
 -%]
+<script type="text/javascript">
+
+function responsive_button() {
+    var x = document.getElementById("mainNav");
+    var y = document.getElementById("ob-simple_search_form");
+    if (x.className === "ym-hlist") {
+        x.className += " responsive";
+        y.className += " responsive";
+    } else {
+        x.className = "ym-hlist";
+        y.className = "ym-searchform";
+    }
+}
+
+</script>
+
 [%- username = user.get_username -%]
     <!-- begin: main navigation  -->
-    <nav class="ym-hlist">
+    <nav class="ym-hlist"  id="mainNav">
       <ul>
 [% IF active_menu == "info" %]
          <li class="active"><strong>[% msg.maketext("Informationen") %]</strong></li>
@@ -57,6 +73,7 @@
 [% ELSE %]
           <li><a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %] <span id="ob-collectioncount"></span></a></li>
 [% END %]
+          <li><a href="javascript:void(0);" class="icon" onclick="responsive_button()">&#9776;</a></li>
      </ul>
 [% IF NOT without_navigation_search %]
 [%   IF user.is_authenticated %]
@@ -114,7 +131,7 @@ $(document).ready(function(){
 [%   END %]
 [% END %]
 
-     <form class="ym-searchform" method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
+     <form id="ob-simple_search_form" class="ym-searchform" method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
 
      <input type="hidden" name="num"        value="20" />
      <input type="hidden" name="page"       value="1" />

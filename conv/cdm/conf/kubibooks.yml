@@ -1,0 +1,64 @@
+# Tracelevel
+#tracelevel:
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: 'cdmid'
+
+category_split_chars:
+  'creator': '\s+;\s+'
+  'translator': '\s+;\s+'
+  'editor': '\s+;\s+'
+  'commentator': '\s+;\s+'  
+  'isbn': '\s+;\s+'
+
+# Personen
+pers:
+  'creator': '0100'      # Verfasser
+  'translator': '0101'  
+  'editor': '0101' # Team
+  'commentator': '0101'  
+
+# Koerperschaften
+corp:
+
+# Systematik
+sys: 
+
+# Schlagworte
+subj:
+
+# Titel
+title:
+  'title': '0331'
+  'subtitle': '0335'  
+  'uniformtitle': '0304'  
+  'collectivetitle': '0451'  
+  'commontitle': '0451'  
+  'varianttitle': '0370'  
+  'seriestitle': '0451'  
+  'formertitle': '0532'  
+  'subsequenttitle': '0534'  
+  'illustrations': '0434'  
+  'subsequenttitle': '0534'  
+  'volume': '0089'  
+  'edition': '0403'  
+  'publisher': '0412'
+  'date': '0425'
+  'pagination': '0433'
+  'isbn': '0540'
+  'issn': '0543'
+  'language': '0015'
+  'katkey': '0010'
+  'remark': '0600'
+  'additionalhints': '0501'
+  'provenance': '1664'
+  'rights': '4210'
+  'type': '0800'  
+  'hbzid': '0010'  
+  'fulltext': '0750'
+  'thumbnailURL': '2662'
+  'viewerURL': '0662'
+
+# Exemplare
+exempl:
+  'shelfmark': '0014'

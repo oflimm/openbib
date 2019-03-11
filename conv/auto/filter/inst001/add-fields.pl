@@ -141,10 +141,11 @@ while (<>){
         }
     }
     
-    # 2) T2662  ist besetzt
-    if (defined $title_ref->{fields}{'2662'}){
-        $is_digital = 1;
-    } 
+    # 2) T2662  ist besetzt oflimm: In der Kategorie landen auch andere Inhalte (Inhaltsverzeichnisse),
+    # daher kein sinnvolles Kriterium mehr
+    # if (defined $title_ref->{fields}{'2662'}){
+    #     $is_digital = 1;
+    # } 
     
     # 3) T0078 hat Inhalt 'ldd' oder 'fzo'
     if (defined $title_ref->{fields}{'0078'}){

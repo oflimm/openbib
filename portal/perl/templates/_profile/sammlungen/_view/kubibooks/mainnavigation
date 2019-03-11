@@ -44,15 +44,17 @@ function responsive_button() {
     <nav class="ym-hlist"  id="mainNav">
       <ul>
 [% IF active_menu == "info" %]
-         <li class="active"><strong>[% msg.maketext("Informationen") %]</strong></li>
+         <li class="active"><strong>[% msg.maketext("Start") %]</strong></li>
 [% ELSE %]
-          <li><a  href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Informationen") %]</a></li>
+          <li><a  href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
 [% END %]
+<!--
 [% IF active_menu == "project" %]
          <li class="active"><strong>[% msg.maketext("Projekt") %]</strong></li>
 [% ELSE %]
           <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/project.html?l=[% lang %]" title="Projekt">[% msg.maketext("Projekt") %]</a></li>
 [% END %]
+-->
 [% IF active_menu == "register" %]
          <li class="active"><strong>[% msg.maketext("Register") %]</strong></li>
 [% ELSE %]

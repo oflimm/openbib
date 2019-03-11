@@ -15,6 +15,9 @@
 <!-- Begin Image -->
 [%
    katkey = normdata.${"T0010"}.first.content;
+
+   IF katkey ;
+   
    cdm_json_url = "http://www.ub.uni-koeln.de/cdm4/json_gateway.php?collection=%2Fkubibooks&start=1&maxrecs=100&field0=katkey&mode0=exact&string0=${katkey}";
 
    cdm = record.enrich_cdm(bezeichner,cdm_json_url) ;
@@ -29,6 +32,7 @@
 <a  href="[% dfgviewer_url %]" target="_blank"><img id="cover_full" src="[% cdm_imgurl %]"/></a>
 
   [% END %]
+[% END %]  
 <!-- [% USE dumper;dumper.dump(cdm.records)%] -->
 [% END %]
 

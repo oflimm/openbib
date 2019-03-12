@@ -211,8 +211,8 @@
 
     .ob-item .ob-titleactions {
 	float:right;
-
 	padding-top: 2px;
+	padding-bottom: 2px;
 	padding-right: 5px;
 	/*       display: none;  */
     }
@@ -1142,12 +1142,12 @@ a.ext {
 }
 
 .ob-titleactions .ob-collection {
-    font-size: 12px;
-    border: 1px solid #777;
+    font-size: 20px;
+    /*border: 1px solid #777;
     webkit-border-radius: .2em;
     moz-border-radius: .2em;
-    border-radius: .2em;
-    padding: 3px;
+    border-radius: .2em; */
+    padding: 10px;
 }
 
 .ob-titleactions .ob-collection img {
@@ -1161,12 +1161,12 @@ a.ext {
 }
 
 .ob-titleactions .ob-bibsonomy {
-    font-size: 12px;
-    border: 1px solid #777;
+    font-size: 20px;
+/*    border: 1px solid #777;
     webkit-border-radius: .2em;
     moz-border-radius: .2em;
-    border-radius: .2em;
-    padding: 3px;
+    border-radius: .2em; */
+    padding: 10px;
 }
 
 .ob-titleactions .ob-bibsonomy img {

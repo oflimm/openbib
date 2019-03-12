@@ -16,7 +16,7 @@
 [%- popularity_i18n = msg.maketext("Popularität") -%]
 
 <div class="alert-info p-1">
-<div class="ob-page_title">Literaturliste: [% litlist.properties.title %][%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</div>
+<div class="ob-page_title">Literaturliste: [% litlist.properties.title %][%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.get_icon('university',view,sysprofile) %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</div>
 <div class="ob-page_subtitle"><b>[% msg.maketext("Themengebiete") %]</b>:&nbsp;
 [%- IF litlist.properties.topics.size -%]
 [%-   FOREACH topic IN litlist.properties.topics-%]
@@ -35,7 +35,7 @@
 <strong>[% msg.maketext("Andere Formate") %]</strong>: <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit?format=short" [%- IF format == 'short' -%]class="ob-selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit?format=Text" [%- IF format == 'Text'-%]class="ob-selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit?format=BibTeX" [%- IF format == 'BibTeX'-%]class="ob-selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit?format=EndNote" [%- IF format == 'EndNote'-%]class="ob-selected_item"[%- END -%]>EndNote</a> 
 </p>
 
-<div id="accordion">
+<div class="accordion">
   <div class="card">
     <div class="card-header" id="headingOne">
       <h5 class="mb-0">

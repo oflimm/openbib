@@ -16,7 +16,7 @@
 -%]
 [% IF user.has_right({scope = 'admin_databases', right = 'right_create'}) %]
 
-<div id="accordion">
+<div class="accordion">
   <div class="card">
     <div class="card-header" id="headingOne">
       <h5 class="mb-0">
@@ -93,13 +93,13 @@
 <tr [% IF catalog.active == 1 %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]>
 <td>[% catalog.dbname %]</td>
 <td style="white-space: nowrap;">
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% catalog.dbname %]/updates.html?l=[% lang %]"><img src="[% config.get('chart_img') %]" alt="[% msg.maketext("Aktualisierung") %]" /></a>
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% catalog.dbname %]/rss.html?l=[% lang %]"><img src="[% config.get('rssfeed_img') %]" alt="RSS-Icon" title="RSS"/></a>
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% catalog.dbname %]/updates.html?l=[% lang %]"><img src="[% config.get_icon('chart',view,sysprofile) %]" alt="[% msg.maketext("Aktualisierung") %]" /></a>
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% catalog.dbname %]/rss.html?l=[% lang %]"><img src="[% config.get_icon('rssfeed,view,sysprofile') %]" alt="RSS-Icon" title="RSS"/></a>
 [% IF catalog.location_identifier %]
 [%   IF user.has_right({scope = 'admin_locations', right = 'right_update'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %]/id/[% catalog.location_identifier %]/edit.html?l=[% lang %]"><img src="[% config.get('info_img') %]" alt="[% msg.maketext("Standorte") %]" /></a>
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %]/id/[% catalog.location_identifier %]/edit.html?l=[% lang %]"><img src="[% config.get_icon('info',view,sysprofile) %]" alt="[% msg.maketext("Standorte") %]" /></a>
 [%   ELSIF user.has_right({scope = 'admin_locations', right = 'right_read'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %]/id/[% catalog.location_identifier %].html?l=[% lang %]"><img src="[% config.get('info_img') %]" alt="[% msg.maketext("Standorte") %]" /></a>
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %]/id/[% catalog.location_identifier %].html?l=[% lang %]"><img src="[% config.get_icon('info',view,sysprofile) %]" alt="[% msg.maketext("Standorte") %]" /></a>
 [%   END %]
 [% END %]
 </td>

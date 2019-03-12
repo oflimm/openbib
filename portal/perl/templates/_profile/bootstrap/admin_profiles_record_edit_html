@@ -48,7 +48,7 @@
 
 <p />
 
-<div id="accordion">
+<div class="accordion">
   <div class="card">
     <div class="card-header" id="headingOne">
       <h5 class="mb-0">

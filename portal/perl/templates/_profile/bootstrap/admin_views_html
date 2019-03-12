@@ -14,7 +14,7 @@
 -%]
 
 [% IF user.has_right({scope = 'admin_views', right = 'right_create'}) %]
-<div id="accordion">
+<div class="accordion">
   <div class="card">
     <div class="card-header" id="headingOne">
       <h5 class="mb-0">
@@ -107,7 +107,7 @@ $(document).ready(function(){
 [% FOREACH viewinfo IN views %]
 <tr [% IF viewinfo.active == 1 %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]>
   <td>[% viewinfo.viewname %]</td>
-  <td align="center"><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %]/rss/edit.html?l=[% lang %]"><img src="[% config.get('rssfeed_img') %]" alt="RSS-Icon" /></a></td>
+  <td align="center"><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %]/rss/edit.html?l=[% lang %]"><img src="[% config.get_icon('rssfeed',view,sysprofile) %]" alt="RSS-Icon" /></a></td>
   <td>
 [%   IF user.has_right({scope = 'admin_views', right = 'right_update'}) %]
      <a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %]/edit.html?l=[% lang %]" title="[% viewinfo.description %]">[% viewinfo.description %]</a>

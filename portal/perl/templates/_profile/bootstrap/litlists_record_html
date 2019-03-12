@@ -16,7 +16,7 @@
 [%- popularity_i18n = msg.maketext("Popularität") -%]
 [% PROCESS common/subtemplate name="visible_categories_title" %]
 
-<div class="ob-page_title">Literaturliste: [% litlist.properties.title %][%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- ELSE -%]&nbsp;<img src="[% config.get('persons_img') %]" title="[% msg.maketext("Öffentliche Literaturliste von Nutzern") %]" alt="[% msg.maketext("Öffentliche Literaturliste von Nutzern") %]" style="vertical-align:bottom"/>[%- END -%]</div> <div class="ob-page_subtitle"><b>[% msg.maketext("Themengebiete") %]</b>:&nbsp;
+<div class="ob-page_title">Literaturliste: [% litlist.properties.title %][%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.get_icon('university',view,sysprofile) %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- ELSE -%]&nbsp;<img src="[% config.get_icon('persons',view,sysprofile) %]" title="[% msg.maketext("Öffentliche Literaturliste von Nutzern") %]" alt="[% msg.maketext("Öffentliche Literaturliste von Nutzern") %]" style="vertical-align:bottom"/>[%- END -%]</div> <div class="ob-page_subtitle"><b>[% msg.maketext("Themengebiete") %]</b>:&nbsp;
 [%- IF litlist.properties.topics.size -%]
 [%- FOREACH topic IN litlist.properties.topics-%]
 <a href="[% path_prefix %]/[% config.get('litlists_loc') %]/[% config.get('topics_loc') %]/id/[% topic.id %].html?l=[% lang %]">[% topic.name %]</a>&nbsp;&nbsp;
@@ -91,7 +91,7 @@
 <p />
 
 
-<div id="accordion">
+<div class="accordion">
 [%    IF other_litlists.same_user.size > 0 %]
   <div class="card">
     <div class="card-header" id="headingOne">
@@ -108,7 +108,7 @@
 <ul>
 [%      FOREACH other_litlist IN other_litlists.same_user %]
 [%        IF other_litlist.type == 1 %]
-<li><a href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% other_litlist.id %].html?l=[% lang %]"><b>[% other_litlist.title %]</b></a>&nbsp([% other_litlist.itemcount %] Titel)[%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
+<li><a href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% other_litlist.id %].html?l=[% lang %]"><b>[% other_litlist.title %]</b></a>&nbsp([% other_litlist.itemcount %] Titel)[%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.get_icon('university',view,sysprofile) %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
 [%        END %]
 [%      END %]
 
@@ -137,7 +137,7 @@
 <ul>
 [%    FOREACH other_litlist IN other_litlists.same_title %]
 [%         IF other_litlist.type == 1 %]
-<li><a href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% other_litlist.id %].html?l=[% lang %]"><b>[% other_litlist.title %]</b></a>&nbsp([% other_litlist.itemcount %] Titel)&nbsp;[%- IF other_litlist.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</td><td align="center"><a href="http://[% config.get('loadbalancerservername') %][% config.get('connector_permalink_loc') %]/[% other_litlist.userid %]/[% other_litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="[% config.get('permalink_img') %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a></td></tr>
+<li><a href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% other_litlist.id %].html?l=[% lang %]"><b>[% other_litlist.title %]</b></a>&nbsp([% other_litlist.itemcount %] Titel)&nbsp;[%- IF other_litlist.lecture -%]&nbsp;<img src="[% config.get_icon('university',view,sysprofile) %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</td><td align="center"><a href="http://[% config.get('loadbalancerservername') %][% config.get('connector_permalink_loc') %]/[% other_litlist.userid %]/[% other_litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="[% config.get_icon('permalink',view,sysprofile) %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a></td></tr>
 [%       END %]
 [%    END %]
 

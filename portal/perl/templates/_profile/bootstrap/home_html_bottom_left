@@ -18,7 +18,7 @@
 
 [% titlecount = config.get_number_of_titles({profile = sysprofile}) %]
 
-<h5><img style="vertical-align:bottom" src="[% config.get('chart_img') %]" alt="Metrics" />&nbsp[% msg.maketext("Kennzahlen") %]</h5>
+<h5><img style="vertical-align:bottom" src="[% config.get_icon('chart',view,sysprofile) %]" alt="Metrics" />&nbsp[% msg.maketext("Kennzahlen") %]</h5>
 
 <style>
 .ob-right_align td {

@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 [% IF user.has_right({scope = 'admin_clusters', right = 'right_create'}) %]
-<div id="accordion">
+<div class="accordion">
   <div class="card">
     <div class="card-header" id="headingOne">
       <h5 class="mb-0">

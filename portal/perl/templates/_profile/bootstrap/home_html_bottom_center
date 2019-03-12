@@ -17,7 +17,7 @@
 
 <div class="card-body">
 
-<h5><img style="vertical-align:bottom" src="[% config.get('persons_img') %]" alt="User generated content" />&nbsp[% msg.maketext("Nutzergenerierte Inhalte") %]</h5>
+<h5><img style="vertical-align:bottom" src="[% config.get_icon('persons',view,sysprofile) %]" alt="User generated content" />&nbsp[% msg.maketext("Nutzergenerierte Inhalte") %]</h5>
 
 <ul>
 <li><a href="[% path_prefix %]/[% config.get('litlists_loc') %][% IF view_config.${view}.topicid %]/[% config.get('topics_loc') %]/id/[% view_config.${view}.topicid %].html[% ELSE %].html[%- END -%]" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a></li>
@@ -26,7 +26,7 @@
 <li><a href="[% path_prefix %]/[% config.get('databases_loc') %][%- IF viewdbs.size == 1 -%]/id/[% viewdbs.first %][%- END -%]/[% config.get('titles_loc') %]/popular.html" title="Top 20">[% msg.maketext("meistgenutzte Titel") %]</a></li>
 </ul>
 
-<h5><img style="vertical-align:bottom" src="[% config.get('books_img') %]" alt="Books" />&nbsp[% msg.maketext("Kataloge, Standorte und Bestand") %]</h5>
+<h5><img style="vertical-align:bottom" src="[% config.get_icon('books',view,sysprofile) %]" alt="Books" />&nbsp[% msg.maketext("Kataloge, Standorte und Bestand") %]</h5>
 
 <ul>
 <li><a href="[% path_prefix %]/[%- IF viewdbs.size == 1 -%][% config.get('databases_loc') %]/id/[% viewdbs.first %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %][% ELSE %][% config.get('databases_loc') %]/[% config.get('clouds_loc') %].html?l=[% lang %][% END %]" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Struktur des Katalogbestandes als Wortwolken") %]</a></li>
@@ -72,7 +72,7 @@ function addEngine(name,ext,cat)
 //-->
 </script>
 
-<h5><img style="vertical-align:bottom" src="[% config.get('firefox_img') %]" alt="Firefox" />&nbsp[% msg.maketext("Firefox Such-Plugin") %]</h5>
+<h5><img style="vertical-align:bottom" src="[% config.get_icon('firefox',view,sysprofile) %]" alt="Firefox" />&nbsp[% msg.maketext("Firefox Such-Plugin") %]</h5>
 
 <p> [% msg.maketext("Da Sie den Internet-Browser [_1] verwenden, k&ouml;nnen
     Sie f&uuml;r ihn das

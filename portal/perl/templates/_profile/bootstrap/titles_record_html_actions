@@ -9,6 +9,11 @@
 	border-bottom: 2px solid #e3e3e3;
 }
 
+/*
+.ob-discover_sources .card-header {
+        margin-right:5px;
+}
+*/
 </style>
 
 
@@ -20,7 +25,7 @@
   END ;
 %]
 
-<h4>[% msg.maketext("Behalten Sie diesen Titel") %]</h4>
+<h4>[% msg.maketext("Dieser Titel") %]</h4>
 
 <div id="ob-title_actions" class="accordion"><!-- Begin Litlist -->
 
@@ -36,13 +41,13 @@
     <div id="collapseActions" class="collapse show" aria-labelledby="headingActions" data-parent="#ob-title_actions">
       <div class="card-body">
 <p/>
-<img src="[% config.get('share_img') %]" alt="[% msg.maketext("An BibSonomy senden") %]" title="[% msg.maketext("An BibSonomy senden") %]" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/to_bibsonomy.html?l=[% lang %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a><br/>
-<img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" />&nbsp;<a class="ob-collection" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a><br/>
+<img src="[% config.get_icon('share',view,sysprofile) %]" alt="[% msg.maketext("An BibSonomy senden") %]" title="[% msg.maketext("An BibSonomy senden") %]" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/to_bibsonomy.html?l=[% lang %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a><br/>
+<img src="[% config.get_icon('listofinterest',view,sysprofile) %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" />&nbsp;<a class="ob-collection" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a><br/>
 [% IF user.ID %]
-<img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/mail.html?l=[% lang %];format=Text" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a><br/>
+<img src="[% config.get_icon('mail',view,sysprofile) %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/mail.html?l=[% lang %];format=Text" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a><br/>
 [% END %]
-<img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/save.html?l=[% lang %];format=Text" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a><br/>
-<img src="[% config.get('print_img') %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/print.html?l=[% lang %];format=short" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a><br/>
+<img src="[% config.get_icon('save',view,sysprofile) %]" alt="[% msg.maketext("Abspeichern") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/save.html?l=[% lang %];format=Text" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a><br/>
+<img src="[% config.get_icon('print',view,sysprofile) %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/print.html?l=[% lang %];format=short" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a><br/>
 
 <p />
 </div>
@@ -469,33 +474,6 @@ $(document).ready(function(){
 <!-- Ende Verschlagwortung in anderen Katalogen -->
 
 <!-- Anfang Tags -->
-[% IF all_tags.size > 0 %]
-<div id="ob-available_tags" class="accordion"><!-- Begin Vorhandene tags -->
-  <div class="card">
-    <div class="card-header" id="headingAvailableTags">
-      <h5 class="mb-0">
-        <a class="card-link" href="#collapseAvailableTags" data-toggle="collapse" data-target="#collapseAvailableTags" aria-expanded="false" aria-controls="collapseAvailableTags">
-          [% msg.maketext("Tags") %]
-        </a>
-      </h5>
-    </div>
-
-    <div id="collapseAvailableTags" class="collapse" aria-labelledby="headingAvailableTags" data-parent="#ob-available_tags">
-      <div class="card-body">
-[% alltags_cloud %]
-[% IF username && private_tags_of_tit.size > 0 %]
-<br />davon eigene Tags:
-[%- FOREACH tag IN private_tags_of_tit -%]
-<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags/id/[% tag.id %].html">[% tag.name %]</a>&nbsp;
-[%- END -%]
-[% END %]
-<p/>
-</div>
-</div>
-</div>
-</div>
-[% END %]
-<!-- Ende Tags -->
 
     <script>
 $(document).ready(function(){
@@ -509,27 +487,38 @@ $(document).ready(function(){
 
     </script>
 
-<!-- Anfang BibSonomy-Tags -->
-<div id="ob-bibsonomy_tags" class="accordion"><!-- Begin Vorhandene BibSonomy tags -->
+
+<div id="ob-available_tags" class="accordion"><!-- Begin Vorhandene tags -->
   <div class="card">
-    <div class="card-header" id="headingBibsonomyTags">
+    <div class="card-header" id="headingAvailableTags">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseBibsonomyTags" data-toggle="collapse" data-target="#collapseBibsonomyTags" aria-expanded="false" aria-controls="collapseBibsonomyTags">
-          [% msg.maketext("BibSonomy Tags") %]
+        <a class="card-link" href="#collapseAvailableTags" data-toggle="collapse" data-target="#collapseAvailableTags" aria-expanded="false" aria-controls="collapseAvailableTags">
+          [% msg.maketext("Tags") %]
         </a>
       </h5>
     </div>
 
-    <div id="collapseBibsonomyTags" class="collapse" aria-labelledby="headingBibsonomyTags" data-parent="#ob-bibsonomy_tags">
+    <div id="collapseAvailableTags" class="collapse" aria-labelledby="headingAvailableTags" data-parent="#ob-available_tags">
       <div class="card-body">
-
+[% IF all_tags.size > 0 %]      
+      <h5>Von Nutzern vergeben</h5>
+[% alltags_cloud %]
+[% IF username && private_tags_of_tit.size > 0 %]
+<br />davon eigene Tags:
+[%- FOREACH tag IN private_tags_of_tit -%]
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags/id/[% tag.id %].html">[% tag.name %]</a>&nbsp;
+[%- END -%]
+[% END %]
+<p/>
+[% END %]
+      <h5>Aus Bibsonomy</h5>
 <span id="ob-bibsonomy_tags_content"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/bibsonomy/[% config.get('subjects_loc') %].html?l=[% lang %];bibkey=[% record.to_bibkey %];subjects=[% record.to_tags | uri %]">Suchen?</a></span>
 <p/>
 </div>
 </div>
 </div>
 </div>
-<!-- Ende BibSonomy-Tags -->
+<!-- Ende Tags -->
 
 <!-- Anfang Verwandte Verfasser -->
 <script language="JavaScript" type="text/javascript">

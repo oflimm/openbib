@@ -11,7 +11,7 @@
 
 </style>
 
-<div class="ob-category_header"><span id="ob-reuse_508_toggle">[% msg.maketext("T0508-muenzen") %]:&nbsp;<img style="vertical-align:bottom;" src="[% config.get('toggle_show_img') %]" alt="Toggle" /></span></div><p/>
+<div class="ob-category_header"><span id="ob-reuse_508_toggle">[% msg.maketext("T0508-muenzen") %]:&nbsp;<img style="vertical-align:bottom;" src="[% config.get_icon('toggle_show',view,sysprofile) %]" alt="Toggle" /></span></div><p/>
 
 <ul id="ob-reuse_508_toggle_do">
 [%
@@ -33,7 +33,7 @@
 
 <div class="ob-reuse_data"><!-- Begin Reuse -->
 
-<div class="ob-category_header"><span id="ob-reuse_333_toggle">[% msg.maketext("T0333-muenzen") %]:&nbsp;<img style="vertical-align:bottom;" src="[% config.get('toggle_show_img') %]" alt="Toggle" /></span></div><p/>
+<div class="ob-category_header"><span id="ob-reuse_333_toggle">[% msg.maketext("T0333-muenzen") %]:&nbsp;<img style="vertical-align:bottom;" src="[% config.get_icon('toggle_show',view,sysprofile) %]" alt="Toggle" /></span></div><p/>
 
 <ul id="ob-reuse_333_toggle_do">
 [%
@@ -54,7 +54,7 @@
 
 <div class="ob-reuse_data"><!-- Begin Reuse -->
 
-<div class="ob-category_header"><span id="ob-reuse_336_toggle">[% msg.maketext("T0336-muenzen") %]:&nbsp;<img style="vertical-align:bottom;" src="[% config.get('toggle_show_img') %]" alt="Toggle" /></span></div><p/>
+<div class="ob-category_header"><span id="ob-reuse_336_toggle">[% msg.maketext("T0336-muenzen") %]:&nbsp;<img style="vertical-align:bottom;" src="[% config.get_icon('toggle_show',view,sysprofile) %]" alt="Toggle" /></span></div><p/>
 
 <ul id="ob-reuse_336_toggle_do">
 [%

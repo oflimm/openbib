@@ -33,7 +33,7 @@
 <tr><td></td><td><a class="ext" href="http://www.icon-king.com/"
 target="_blank">David Vignoni</a></td><td>Das <a href="http://www.icon-king.com/projects/nuvola/" target="_blank">Nuvola
   Icon-Set</a></td></tr>
-<tr><td><img src="[% config.get('share_img') %]" /></td><td><a class="ext" href="http://www.alexking.org/"
+<tr><td><img src="[% config.get_icon('share',view,sysprofile) %]" /></td><td><a class="ext" href="http://www.alexking.org/"
 target="_blank">Alex King</a></td><td>Das Share-This-Icon, das OpenBib fuer den Mashup zu
   BibSonomy verwendet. Dieses Icon ist vierfach-lizensiert unter
   folgenden Lizenzen:

@@ -275,7 +275,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
                    END ;
 %]
 [%# USE dumper;dumper.dump(category_map) %]
-<li class="ob-facet-item d-flex"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude_filter = [ filter.val ] }) %]" title="[% msg.maketext("Entfernen") %]"><img style="vertical-align:bottom" src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>&nbsp;[% filter_prefix_map.${filter.field} %]: [% IF filter.field == "fdb" %][% dbinfo.get('dbnames').${filter.term}.short %][% ELSE %][% filter.term %][% END %]</li>
+<li class="ob-facet-item d-flex"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude_filter = [ filter.val ] }) %]" title="[% msg.maketext("Entfernen") %]"><img style="vertical-align:bottom" src="[% config.get_icon('delete',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /></a>&nbsp;[% filter_prefix_map.${filter.field} %]: [% IF filter.field == "fdb" %][% dbinfo.get('dbnames').${filter.term}.short %][% ELSE %][% filter.term %][% END %]</li>
 [%             END %]
 </ul>
 
@@ -410,7 +410,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
         <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-topic" aria-expanded="true">
            [% msg.maketext("nach Themengebieten") %] 
         </h4>
-        <ul id="group-mediatype" class="list-group in collapse show">
+        <ul id="group-topic" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.topic ;
                   LAST IF loop.count > 25 ;
  %]

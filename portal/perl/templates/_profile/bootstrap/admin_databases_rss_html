@@ -43,7 +43,7 @@ END ;
 [% IF user.has_right({scope = 'admin_databases', right = 'right_create'}) %]
 [% IF available_types.size > 0 %]
 
-<div id="accordion">
+<div class="accordion">
   <div class="card">
     <div class="card-header" id="headingOne">
       <h5 class="mb-0">

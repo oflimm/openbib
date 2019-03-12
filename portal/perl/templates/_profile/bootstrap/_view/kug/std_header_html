@@ -109,4 +109,23 @@
 <!--[if lt IE 9]>
   <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
+
+  <script>
+ $(".ob-collection").click(function(){
+
+
+   // Insert-Funktion aufrufen
+   $.get(this.href);
+
+   // Signalisieren, dass in Merkliste transferiert wurde
+   $(this).children("img").attr("src","[% config.get_icon('listofinterest_small_selected',view,sysprofile) %]");
+
+   // Merklistenfuellstand aktualisieren
+   //  $.get("[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/count",
+   //function (txt){ $("#ob-collectioncount").html("["+txt+"]"); });
+
+   return false;
+ });
+  
+  </script>
    </head>

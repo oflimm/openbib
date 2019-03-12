@@ -18,7 +18,7 @@
 <div class="card-body">
 [%- IF viewdbs.size == 1 && viewdbs.first.match("^inst[0-6]") -%]
 
-<h5><img style="vertical-align:bottom" src="[% config.get('home_img') %]" alt="Bibliotheksangebote" />&nbsp;Bibliotheksangebote</h5>
+<h5><img style="vertical-align:bottom" src="[% config.get_icon('home',view,sysprofile) %]" alt="Bibliotheksangebote" />&nbsp;Bibliotheksangebote</h5>
 
 <h6>[% msg.maketext("Zeitschriften der Bibliothek") %]</h6>
 
@@ -28,7 +28,7 @@ f&uuml;r Sie als [_1]E-Book[_2] bereit.","<a href=\"http://unikatalog.ub.uni-koe
 </p>
 [% END %]
 
-<h5><img style="vertical-align:bottom" src="[% config.get('global_img') %]" alt="Externe Angebote" />&nbsp;Allgemeine Informationsquellen</h5>
+<h5><img style="vertical-align:bottom" src="[% config.get_icon('global',view,sysprofile) %]" alt="Externe Angebote" />&nbsp;Allgemeine Informationsquellen</h5>
 
 <h6>[% msg.maketext("Elektronische Zeitschriftenbibliothek (EZB)") %]</h6>
 

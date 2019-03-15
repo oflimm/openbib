@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 <div class="card h-100">
-<div class="card-header"><h4>OpenBib</h4></div>
+<div class="card-header"><h4>[% msg.maketext("Über den KUG") %]</h4></div>
 
 <div class="card-body">
 

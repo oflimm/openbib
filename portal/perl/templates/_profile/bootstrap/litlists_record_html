@@ -90,7 +90,7 @@
 [% is_active = 1 %]
 <p />
 
-
+xxx
 <div id="litlists_show" class="accordion">
 [%    IF other_litlists.same_user.size > 0 %]
   <div class="card">

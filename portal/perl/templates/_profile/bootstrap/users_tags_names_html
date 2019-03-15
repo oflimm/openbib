@@ -68,7 +68,7 @@ verkn&uuml;pft mit dem Tag </span><a href="[% path_prefix %]/[% config.get('user
 [%     END %]
 </ol>
 [%   ELSIF format == 'list' %]
-<ul class="topiclist">
+<ul class="list-group">
 [%-     FOREACH thisitem IN private_tags_by_name -%]
 [% item      = thisitem.name;
    itemcount = thisitem.count;
@@ -76,7 +76,7 @@ verkn&uuml;pft mit dem Tag </span><a href="[% path_prefix %]/[% config.get('user
    itemid    = thisitem.id;
    itemclass = css_classes.$classnr;
 %]
-<li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('tags_loc') %]/names/id/[% item %]">[% item %]</a> ([% itemcount %])</li>
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('tags_loc') %]/names/id/[% item %]">[% item %]</a> ([% itemcount %])</li>
 [%     END %]
 </ul>
 

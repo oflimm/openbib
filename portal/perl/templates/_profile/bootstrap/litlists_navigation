@@ -21,8 +21,8 @@
 <div class="card-header">[% msg.maketext("Literaturlisten") %]</div>
 
 <div class="card-body">
-<nav class="navbar bg-light">
-<ul class="navbar-nav>
+<nav class="navbar bg-light ob-sidebar">
+<ul class="navbar-nav">
 [% IF layout_param.active_submenu == "litlists_all" %]
   <li class="nav-item active"><strong>[% msg.maketext("Alle Listen") %]</strong></li>
 [% ELSE %]

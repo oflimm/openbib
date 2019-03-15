@@ -1,7 +1,21 @@
 @media all
 {
+
+[aria-expanded="false"] > .expanded,
+[aria-expanded="true"] > .collapsed {
+  display: none;
+}
+
     .navbar {
 	z-index: 10000;
+    }
+
+    .brand-title img {
+	padding-right: 15px;
+    }
+
+    .brand-title {
+	font-size: 24px;
     }
     
     .navbar.ob-sidebar {
@@ -41,6 +55,14 @@
 	position: absolute;
 	right: 0;
     }
+
+    .accordion .card-body {
+       border-bottom-style: solid;
+       border-bottom-color: #edebe3;
+       border-bottom-width: 1px;
+    }
+
+
     
     .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
 					background-color: lightgrey;
@@ -119,7 +141,7 @@
 	margin-bottom: 25px;
 /*  height: 35px;
        background-color: #fef6e2;
-       border-left-style: solid;
+       border-left-style: solid
        border-left-color: #edebe3;
        border-left-width: 1px;
        border-right-style: solid;
@@ -398,6 +420,21 @@
 	padding-top: 5px;
     }
 
+.ob-cloud {
+  font-size: 150%;
+}
+
+.ob-reuse_data h4, .ob-discover_sources h4, .ob-session_history h4 {
+	border-bottom: 2px solid #e3e3e3;
+}
+
+/*
+.ob-discover_sources .card-header {
+        margin-right:5px;
+}
+*/
+
+    
     .ob-search_hints { 
 	background-color: #fff;
 	padding: 10px;
@@ -1175,12 +1212,12 @@ a.ext {
 }
 
 .ob-titleactions .ob-delete {
-    font-size: 12px;
-    border: 1px solid #777;
+    font-size: 20px;
+/*    border: 1px solid #777;
     webkit-border-radius: .2em;
     moz-border-radius: .2em;
-    border-radius: .2em;
-    padding: 3px;
+    border-radius: .2em; */
+    padding: 10px;
 }
 
 .ob-titleactions .ob-delete img {

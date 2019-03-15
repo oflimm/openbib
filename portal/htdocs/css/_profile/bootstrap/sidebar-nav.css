@@ -46,6 +46,10 @@
     background-color:#fff;
 }
 
+.ob-sidebar > li:first-child {
+    border-top:1px #ddd solid;
+}
+
 .ob-sidebar a,
 .ob-sidebar strong,
 .ob-sidebar span {
@@ -69,13 +73,14 @@
 
 /* active list element */
 .ob-sidebar li.active {
-    background: url(/images/openbib/navigation_arrow_blue_closed.png) no-repeat scroll 1em 0.7em #fff;    
+/*    background: url(/images/openbib/navigation_arrow_blue_closed.png) no-repeat scroll 1em 0.7em #fff;*/
+    font-weight: bold;    
     color:#41799e;
     /*		background-color:#444;*/
 }
 
 .ob-sidebar li.active strong {
-    background: url(/images/openbib/navigation_arrow_blue_closed.png) no-repeat scroll 0.7em 0.8em #fff;
+    /* background: url(/images/openbib/navigation_arrow_blue_closed.png) no-repeat scroll 0.7em 0.8em #fff; */
     font-weight:bold;
 }
 
@@ -84,13 +89,14 @@
 }
 
 .ob-sidebar ul li.active strong {
-    background: url(/images/openbib/navigation_arrow_blue_closed.png) no-repeat scroll 1em 0.8em #fff;
+/*    background: url(/images/openbib/navigation_arrow_blue_closed.png) no-repeat scroll 1em 0.8em #fff; */
     font-weight:bold;
 }
 /* Level 1 */
 .ob-sidebar li a,
 .ob-sidebar li strong,
-.ob-sidebar li span { width:90%; padding-left:10%; } /* LTR */
+/*.ob-sidebar li span { width:90%; padding-left:10%; } /* LTR */
+.ob-sidebar li span { width:90%; padding-left:0px; } /* LTR */
 
 .ob-sidebar li a:focus,
 .ob-sidebar li a:hover,

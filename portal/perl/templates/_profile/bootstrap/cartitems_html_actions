@@ -1,10 +1,21 @@
 [% IF NOT hide_options %]
 <div class="ob-cartitems ob-reuse_data"><!-- Begin Reuse -->
 
-<div class="card">
-<div class="card-header">[% msg.maketext("Behalten Sie diese Liste") %]</div>
+<h4>[% msg.maketext("Diese Merkliste") %]</h4>
 
-<div class="card-body">
+<div id="ob-title_actions" class="accordion"><!-- Begin Litlist -->
+
+  <div class="card">
+    <div class="card-header" id="headingActions">
+      <h5 class="mb-0">
+        <a class="card-link" href="#collapseActions" data-toggle="collapse" data-target="#collapseActions" aria-expanded="true" aria-controls="collapseActions">
+          [% msg.maketext("Aktionen") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseActions" class="collapse show" aria-labelledby="headingActions" data-parent="#ob-title_actions">
+      <div class="card-body">
 
 <p />
 <img src="[% config.get_icon('save',view,sysprofile) %]" alt="[% msg.maketext("Abspeichern") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/save?format=Text" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a><br/>
@@ -14,24 +25,55 @@
 [% END %]
 <p />
 
-<h4>[% msg.maketext("Andere Formate") %]</h4>
+</div>
+</div>
+</div>
+</div>
 
+<div id="ob-formats" class="accordion"><!-- Begin Formats -->
+
+  <div class="card">
+    <div class="card-header" id="headingFormats">
+      <h5 class="mb-0">
+        <a class="card-link" href="#collapseFormats" data-toggle="collapse" data-target="#collapseFormats" aria-expanded="false" aria-controls="collapseFormats">
+          [% msg.maketext("Andere Formate") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseFormats" class="collapse" aria-labelledby="headingFormats" data-parent="#ob-formats">
+      <div class="card-body">
 <p />
 <a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?format=short"[%- IF format == 'short' -%]class="ob-selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>,  <a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?format=Text" [%- IF format == 'Text'-%]class="ob-selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?format=BibTeX" [%- IF format == 'BibTeX'-%]class="ob-selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?format=EndNote" [%- IF format == 'EndNote'-%]class="ob-selected_item"[%- END -%]>EndNote</a>
 <p />
+</div>
+</div>
+</div>
+</div>
 
+<p/>
 
 <h4>[% msg.maketext("Ausgewählte Titel") %]</h4>
+
 
 <p />
 
 [% IF extended_actions == 1 %]
 
 [%    IF config.get('litlists') %]
-<div class="ob-litlists"><!-- Begin Litlist -->
-<div class="ob-headline"><span id="ob-litlists_toggle">[% msg.maketext("Literaturliste") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
-<div id="ob-litlists_do"><!-- Begin Litlist do -->
+<div id="ob-litlists" class="accordion"><!-- Begin Litlist -->
 
+  <div class="card">
+    <div class="card-header" id="headingLitlists">
+      <h5 class="mb-0">
+        <a class="card-link" href="#collapseLitlists" data-toggle="collapse" data-target="#collapseLitlists" aria-expanded="false" aria-controls="collapseLitlists">
+          [% msg.maketext("Literaturliste") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseLitlists" class="collapse" aria-labelledby="headingLitlists" data-parent="#ob-litlists">
+      <div class="card-body">
 [% 
       litlists = [] ;
       IF user.ID ;
@@ -77,15 +119,25 @@
 [% END %]
 
 </div> <!-- End: Listlist do -->
-<p/>
 </div><!-- End: Listlist -->
-
+</div>
+</div>
 
 [%# IF user.ID %]
 [% username = user.get_username %]
-<div class="ob-tagging"><!-- Begin: Tagging -->
-<div class="ob-headline"><span id="ob-tagging_toggle">[% msg.maketext("Tagging") %]<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle"></span></div>
-<div id="ob-tagging_do"><!-- Begin Tagging do -->
+<div id="ob-tagging" class="accordion"><!-- Begin: Tagging -->
+
+  <div class="card">
+    <div class="card-header" id="headingTagging">
+      <h5 class="mb-0">
+        <a class="card-link" href="#collapseTagging" data-toggle="collapse" data-target="#collapseTagging" aria-expanded="false" aria-controls="collapseTagging">
+          [% msg.maketext("Tagging") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseTagging" class="collapse" aria-labelledby="headingTagging" data-parent="#ob-tagging">
+      <div class="card-body">
 <p/>
 [% msg.maketext("<b>Ausgew&auml;hlte Titel</b> mit diesen Tags versehen:") %]
 
@@ -144,7 +196,12 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 </div><!-- End: Tagging -->
 [%# END %]
 
-</p>
+[%   END %]
+
+</div>  <!-- End: card-body -->
+</div>  <!-- End: card -->
+
+<p/>
 
 <p>
 
@@ -152,10 +209,10 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 
 </p>
 
-[%   END %]
+</div>
 
-</div>  <!-- End: card-body -->
-</div>  <!-- End: card -->
+
+</div>
 
 </div> <!-- End: Reuse Data -->
 [% END %]

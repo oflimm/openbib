@@ -16,7 +16,7 @@
 -%]
 [% IF user.has_right({scope = 'admin_databases', right = 'right_create'}) %]
 
-<div class="accordion">
+<div id="new_item" class="accordion">
   <div class="card">
     <div class="card-header" id="headingOne">
       <h5 class="mb-0">
@@ -26,7 +26,7 @@
       </h5>
     </div>
 
-    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#new_item">
       <div class="card-body">
 <form method="post" action="[% path_prefix %]/[% config.get('databases_loc') %]">
 
@@ -94,7 +94,7 @@
 <td>[% catalog.dbname %]</td>
 <td style="white-space: nowrap;">
 <a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% catalog.dbname %]/updates.html?l=[% lang %]"><img src="[% config.get_icon('chart',view,sysprofile) %]" alt="[% msg.maketext("Aktualisierung") %]" /></a>
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% catalog.dbname %]/rss.html?l=[% lang %]"><img src="[% config.get_icon('rssfeed,view,sysprofile') %]" alt="RSS-Icon" title="RSS"/></a>
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% catalog.dbname %]/rss.html?l=[% lang %]"><img src="[% config.get_icon('rssfeed',view,sysprofile) %]" alt="RSS-Icon" title="RSS"/></a>
 [% IF catalog.location_identifier %]
 [%   IF user.has_right({scope = 'admin_locations', right = 'right_update'}) %]
 <a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %]/id/[% catalog.location_identifier %]/edit.html?l=[% lang %]"><img src="[% config.get_icon('info',view,sysprofile) %]" alt="[% msg.maketext("Standorte") %]" /></a>

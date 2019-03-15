@@ -26,14 +26,14 @@
 <div class="ob-resultlist">
   <div class="ob-resultheader">
     <div class="ob-catalog">
-[% msg.maketext("Die 20 meist aufgerufenen Münzen in den letzten 6 Monaten") %]
+[% msg.maketext("Die 20 meist aufgerufenen Titel in den letzten 6 Monaten") %]
     </div>
     <div class="ob-hits">
     </div>
     <div class="ob-navigation">
     </div>
   </div>
-  <div class="ob-resultitems fullwidth[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+  <div class="ob-resultitems [% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 [%- FOREACH thisitem IN resultlist -%]
 [% 
    itemcount = thisitem.count;
@@ -227,33 +227,22 @@
     titleinfo = titleinfos.join(" | ");
 -%]
 
-    <div class="ob-item[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+    <div class="ob-item ob-item d-flex flex-row[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
       <div class="ob-numbering">[% start_range+loop.count - 1 %]</div>
-      <div class="ob-thumbnail">
-<!-- Anfang Umschlagbilder -->
-[%# USE dumper;dumper.dump(item)%]
-[% IF item.${"T6052"}.0 %]
-<div style="position:absolute; left: 5px;">
-<a  class="invisible cloud-zoom" rel="zoomWidth:650, zoomHeight:350, adjustX:180, adjustY: -120, position:'right'" href="[% item.${"T6051"}.0.content %]"><img src="[% item.${"T6052"}.0.content %]" alt="Vorderseite"/></a>
-</div>
-[% END %]
-[% IF item.${"T6052"}.1 %]
-<div style="position:absolute; left: 140px;" >
-<a  class="invisible cloud-zoom" rel="zoomWidth:650, zoomHeight:350, adjustX: 40, adjustY: -120, position:'right'" href="[% item.${"T6051"}.1.content %]"><img src="[% item.${"T6052"}.1.content %]" alt="Rückseite"/></a>
-</div>
-[% END %]
-<!-- Ende Umschlagbilder -->
+      <div class="ob-thumbnail pt-3 pl-5 mr-0 d-none d-md-block">
       </div>
-      <div class="ob-brieftitle">
-[%# USE dumper;dumper.dump(item) %]
-         <span class="ob-person">[% person %]</span><br />[% IF item.id && record.database %]<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% item.id %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong></a>[% ELSE %]<strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong>[% END %][%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%][% IF nominal %]<br/>[% nominal %][% END %][% IF yearofpub %]<br/><span class="ob-yearofpub">[% yearofpub %]</span>[% END %]   
-[%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
-      </div>
-      <div class="ob-titlemark"><span>[% item.id %]</span></div>
+      <div class="ob-brieftitle pl-5">
       <div class="ob-titleactions">
 [% IF item.id && item.database %]<a class="ob-collection" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% item.database %];titleid=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img class="ob-collection-image" src="[% config.get_icon('listofinterest_small',view,sysprofile) %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" />[% msg.maketext("Merken") %]</a>[% END %]
       </div>
+[%# USE dumper;dumper.dump(item) %]
+      <div class="ob-titleinfo mt-4">
+         <span class="ob-person">[% person %]</span><br />[% IF item.id && record.database %]<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% item.id %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong></a>[% ELSE %]<strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong>[% END %][%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%][% IF nominal %]<br/>[% nominal %][% END %][% IF yearofpub %]<br/><span class="ob-yearofpub">[% yearofpub %]</span>[% END %]   
+[%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
+       </div>
+      <div class="ob-titlemark d-none d-md-block">[% IF signatur %][% msg.maketext("Signatur") %]: <span>[% signatur | truncate(config.get('maxlength_mark')) %]</span>[% END %]</div>
     </div>
+  </div>
 
 <!-- Ende einzelner Treffer -->
 [%- END -%]

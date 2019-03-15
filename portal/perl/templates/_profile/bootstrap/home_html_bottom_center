@@ -43,7 +43,7 @@
 </li>
 </ul>
 
-[% IF browser.firefox %]
+[% IF 0 == 1 && browser.firefox %]
 
     <script type="text/javascript">
 <!--
@@ -72,7 +72,7 @@ function addEngine(name,ext,cat)
 //-->
 </script>
 
-<h5><img style="vertical-align:bottom" src="[% config.get_icon('firefox',view,sysprofile) %]" alt="Firefox" />&nbsp[% msg.maketext("Firefox Such-Plugin") %]</h5>
+<h5><img style="vertical-align:bottom" src="[% config.get_icon('global',view,sysprofile) %]" alt="Firefox" />&nbsp[% msg.maketext("Firefox Such-Plugin") %]</h5>
 
 <p> [% msg.maketext("Da Sie den Internet-Browser [_1] verwenden, k&ouml;nnen
     Sie f&uuml;r ihn das

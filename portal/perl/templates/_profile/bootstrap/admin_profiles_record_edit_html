@@ -48,7 +48,7 @@
 
 <p />
 
-<div class="accordion">
+<div id="new_item" class="accordion">
   <div class="card">
     <div class="card-header" id="headingOne">
       <h5 class="mb-0">
@@ -58,7 +58,7 @@
       </h5>
     </div>
 
-    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#new_item">
       <div class="card-body">
 <form method="post" action="[% path_prefix %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %]/[% config.get('orgunits_loc') %]">
 

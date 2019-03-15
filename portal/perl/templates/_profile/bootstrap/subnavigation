@@ -22,7 +22,7 @@
 <div class="card-header">[% msg.maketext("Recherche") %]</div>
 <div class="card-body">
 
-<nav class="navbar bg-light">
+<nav class="navbar bg-light ob-sidebar">
  <ul class="navbar-nav">
 [% IF layout_param.active_submenu == "searchform_advanced" %]
   <li class="navbar-item active"><strong>[% msg.maketext("Erweiterte Suche") %]</strong></li>
@@ -43,7 +43,7 @@
 <div class="card">
 <div class="card-header">[% msg.maketext("Register") %]</div>
 <div class="card-body">
-<nav class="navbar bg-light">
+<nav class="navbar bg-light ob-sidebar">
 
  <ul class="navbar-nav">
   <li class="navbar-item[% IF layout_param.active_submenu == "register_T0100" %] active[% END %]"> <a class="[% IF layout_param.active_submenu == "register_T0100" %]active [% END %]navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/titles/fields/id/0100.html?l=[% lang %]">[% msg.maketext('Verfasser') %]</a></li>
@@ -62,7 +62,7 @@
 <div class="card-header">[% msg.maketext("&Uuml;bersichten") %]</div>
 <div class="card-body">
 
-<nav class="navbar bg-light">
+<nav class="navbar bg-light ob-sidebar">
 
  <ul class="navbar-nav">
 [% IF layout_param.active_submenu == "clouds_choice" %]

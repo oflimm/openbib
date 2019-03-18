@@ -169,7 +169,6 @@ $(document).ready(function(){
 </div>
 
 [% IF record_exists %]
-<p class="ob-background">&nbsp;</p>
 
 [%
  FOREACH thiscirculation IN circulation ;
@@ -190,9 +189,9 @@ $(document).ready(function(){
 
 <ul class="nav nav-tabs" role="tablist">
 [%   IF circulation.size > 0 %]
-<li class="nav-item active"><a class="nav-link" role="tab" data-toggle="tab" href="#ob-circulation_info">[% msg.maketext("Ausleihe/Exemplare") %]</a></li>
+<li class="nav-item"><a class="nav-link active" role="tab" data-toggle="tab" href="#ob-circulation_info">[% msg.maketext("Ausleihe/Exemplare") %]</a></li>
 [%   ELSE %]
-<li class="nav-item active"><a class="nav-link" role="tab" data-toggle="tab" href="#ob-holding_info">[% msg.maketext("Bestand") %]</a></li>
+<li class="nav-item"><a class="nav-link active" role="tab" data-toggle="tab" href="#ob-holding_info">[% msg.maketext("Bestand") %]</a></li>
 [%   END %]
 
 [%   IF journaltocs_feed %]

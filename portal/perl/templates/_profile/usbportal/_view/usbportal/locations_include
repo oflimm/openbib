@@ -2969,7 +2969,7 @@ function showPopupText(text, mitInfo) {
                 nameLink = '<a id="linktitel" target="blank" href="' + institute[t].url + '">' + institute[t].name + '</a>';
 
 
-            if (institute[t].arbeitsplaetze > 0 )
+            if (institute[t].arbeitsplaetze != '' )
                 arbeitsplaetze = '<br/><p><strong>Arbeitsplätze für Nutzer:</strong> '+institute[t].arbeitsplaetze + '</p>';
 
             if (zeiten === 1){ // test mit öffnen div auch als link zu institutsseite
@@ -3454,7 +3454,7 @@ function drawMarkers(inst, coord) {
             var instname = inst[i].name;
             var arbeitsplaetze = inst[i].arbeitsplaetze;            
             
-            if (arbeitsplaetze > 0){
+            if (arbeitsplaetze != ''){
                instname = instname + '<br/>Nutzerarbeitsplätze: ' + arbeitsplaetze;
             }
 

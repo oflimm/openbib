@@ -31,9 +31,27 @@
 <p/>
 [% userrole = user.get_roles_of_user(litlist.properties.userid) %]
 
+<div id="ob-formats" class="accordion"><!-- Begin Formats -->
+
+  <div class="card">
+    <div class="card-header" id="headingFormats">
+      <h5 class="mb-0">
+        <a class="card-link" href="#collapseFormats" data-toggle="collapse" data-target="#collapseFormats" aria-expanded="false" aria-controls="collapseFormats">
+          [% msg.maketext("Andere Formate") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseFormats" class="collapse" aria-labelledby="headingFormats" data-parent="#ob-formats">
+      <div class="card-body">
 <p>
-<strong>[% msg.maketext("Andere Formate") %]</strong>: <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit?format=short" [%- IF format == 'short' -%]class="ob-selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit?format=Text" [%- IF format == 'Text'-%]class="ob-selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit?format=BibTeX" [%- IF format == 'BibTeX'-%]class="ob-selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit?format=EndNote" [%- IF format == 'EndNote'-%]class="ob-selected_item"[%- END -%]>EndNote</a> 
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit?format=short" [%- IF format == 'short' -%]class="ob-selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit?format=Text" [%- IF format == 'Text'-%]class="ob-selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit?format=BibTeX" [%- IF format == 'BibTeX'-%]class="ob-selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit?format=EndNote" [%- IF format == 'EndNote'-%]class="ob-selected_item"[%- END -%]>EndNote</a> 
 </p>
+</div>
+</div>
+</div>
+
+<p/>
 
 <div id="edit_item" class="accordion">
   <div class="card">

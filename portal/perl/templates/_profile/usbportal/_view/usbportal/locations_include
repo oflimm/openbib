@@ -5333,7 +5333,7 @@ var semesterZeit = [
   
 %]
 [% FOREACH desc IN institute_map.keys.sort %]
-	<li>[% IF institute_map.${desc}.url %]<a href="[% institute_map.${desc}.url %]">[% END %][% IF desc.match('^Lern') %]<it>[% desc %]</it>[% ELSE %][% desc %][% END %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF institute_map.${desc}.arbeitsplaetze %]<br/><b>Zahl der Nutzerarbeitsplätze:</b> [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
+	<li>[% IF institute_map.${desc}.url %]<a href="[% institute_map.${desc}.url %]">[% END %][% IF desc.match('^Lern') %]<span style="color:black;">[% desc %]</span>[% ELSE %][% desc %][% END %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF institute_map.${desc}.arbeitsplaetze %]<br/><b>Zahl der Nutzerarbeitsplätze:</b> [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
        </ul>

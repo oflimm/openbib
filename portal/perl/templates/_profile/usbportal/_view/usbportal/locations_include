@@ -5244,12 +5244,15 @@ var semesterZeit = [
 
      END;
 
-     url = "https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/${sigel_path}/index_ger.html";
+     url = '';
 
      IF identifier.match('^DE-38$');
         url = 'https://www.ub.uni-koeln.de/index_ger.html';
      ELSIF identifier.match('^DE-38-HWA$');
         url = 'https://www.ub.uni-koeln.de/ueber_uns/dach/hwa/index_ger.html';
+     ELSIF identifier.match('^DE-38-\d\d\d$');
+        url = "https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/${sigel_path}/index_ger.html";
+
      END;
   
      description    = location.description ;
@@ -5266,7 +5269,7 @@ var semesterZeit = [
   
 %]
 [% FOREACH desc IN institute_map.keys.sort %]
-	<li><a href="[% institute_map.${desc}.url %]">[% desc %] ([% institute_map.${desc}.sigel %])</a>[% IF institute_map.${desc}.arbeitsplaetze %]<br/><b>Zahl der Nutzerarbeitsplätze:</b> [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
+	<li>[% IF institute_map.${desc}.url %]<a href="[% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF institute_map.${desc}.arbeitsplaetze %]<br/><b>Zahl der Nutzerarbeitsplätze:</b> [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
       </ul>
@@ -5302,6 +5305,20 @@ var semesterZeit = [
          sigel_path     = location.fields.${"L0250"}.first.content.replace('/','_');
 
      END;  
+
+     gebaeude = location.fields.${"L0030"}.first.content;
+
+
+     url = '';
+
+     IF identifier.match('^DE-38-\d\d\d.?$');
+        url = "https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/${sigel_path}/index_ger.html";
+     END;
+
+     IF location.type == 'Generic' && gebaeude ;
+        url = "https://lageplan.uni-koeln.de/#!${gebaeude}";
+     END;
+
      description    = location.description ;
      arbeitsplaetze = location.fields.${"L0270"}.first.content;
      zeiten         = location.fields.${"L0110"}.first.content;
@@ -5310,12 +5327,13 @@ var semesterZeit = [
         sigel => sigel,
 	sigel_path => sigel_path,
         arbeitsplaetze => arbeitsplaetze,
+	url => url,
      };        
    END;
   
 %]
 [% FOREACH desc IN institute_map.keys.sort %]
-	<li><a href="https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/[% institute_map.${desc}.sigel_path %]/index_ger.html">[% desc %] ([% institute_map.${desc}.sigel %])</a>[% IF institute_map.${desc}.arbeitsplaetze %]<br/><b>Zahl der Nutzerarbeitsplätze:</b> [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
+	<li>[% IF institute_map.${desc}.url %]<a href="[% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF institute_map.${desc}.arbeitsplaetze %]<br/><b>Zahl der Nutzerarbeitsplätze:</b> [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
        </ul>
@@ -5352,6 +5370,13 @@ var semesterZeit = [
          sigel_path     = location.fields.${"L0250"}.first.content.replace('/','_');
 
      END;  
+
+     url = '';
+
+     IF identifier.match('^DE-38-\d\d\d$');
+        url = "https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/${sigel_path}/index_ger.html";
+     END;
+
      description    = location.description ;
      arbeitsplaetze = location.fields.${"L0270"}.first.content;
      zeiten         = location.fields.${"L0110"}.first.content;
@@ -5360,12 +5385,13 @@ var semesterZeit = [
         sigel => sigel,
 	sigel_path => sigel_path,
         arbeitsplaetze => arbeitsplaetze,
+	url => url,
      };        
    END;
   
 %]
 [% FOREACH desc IN institute_map.keys.sort %]
-	<li><a href="https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/[% institute_map.${desc}.sigel_path %]/index_ger.html">[% desc %] ([% institute_map.${desc}.sigel %])</a>[% IF institute_map.${desc}.arbeitsplaetze %]<br/><b>Zahl der Nutzerarbeitsplätze:</b> [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
+	<li>[% IF institute_map.${desc}.url %]<a href="[% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF institute_map.${desc}.arbeitsplaetze %]<br/><b>Zahl der Nutzerarbeitsplätze:</b> [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
 </ul></div>
@@ -5400,6 +5426,13 @@ var semesterZeit = [
          sigel_path     = location.fields.${"L0250"}.first.content.replace('/','_');
 
      END;  
+
+     url = '';
+
+     IF identifier.match('^DE-38-\d\d\d$');
+        url = "https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/${sigel_path}/index_ger.html";
+     END;
+
      description    = location.description ;
      arbeitsplaetze = location.fields.${"L0270"}.first.content;
      zeiten         = location.fields.${"L0110"}.first.content;
@@ -5408,12 +5441,13 @@ var semesterZeit = [
         sigel => sigel,
 	sigel_path => sigel_path,
         arbeitsplaetze => arbeitsplaetze,
+	url => url,
      };        
    END;
   
 %]
 [% FOREACH desc IN institute_map.keys.sort %]
-	<li><a href="https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/[% institute_map.${desc}.sigel_path %]/index_ger.html">[% desc %] ([% institute_map.${desc}.sigel %])</a>[% IF institute_map.${desc}.arbeitsplaetze %]<br/><b>Zahl der Nutzerarbeitsplätze:</b> [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
+	<li>[% IF institute_map.${desc}.url %]<a href="[% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF institute_map.${desc}.arbeitsplaetze %]<br/><b>Zahl der Nutzerarbeitsplätze:</b> [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
 </ul></div>
@@ -5448,6 +5482,13 @@ var semesterZeit = [
          sigel_path     = location.fields.${"L0250"}.first.content.replace('/','_');
 
      END;  
+
+     url = '';
+
+     IF identifier.match('^DE-38-\d\d\d$');
+        url = "https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/${sigel_path}/index_ger.html";
+     END;
+
      description    = location.description ;
      arbeitsplaetze = location.fields.${"L0270"}.first.content;
      zeiten         = location.fields.${"L0110"}.first.content;
@@ -5456,12 +5497,13 @@ var semesterZeit = [
         sigel => sigel,
 	sigel_path => sigel_path,
         arbeitsplaetze => arbeitsplaetze,
+	url => url,
      };        
    END;
   
 %]
 [% FOREACH desc IN institute_map.keys.sort %]
-	<li><a href="https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/[% institute_map.${desc}.sigel_path %]/index_ger.html">[% desc %] ([% institute_map.${desc}.sigel %])</a>[% IF institute_map.${desc}.arbeitsplaetze %]<br/><b>Zahl der Nutzerarbeitsplätze:</b> [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
+	<li>[% IF institute_map.${desc}.url %]<a href="[% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF institute_map.${desc}.arbeitsplaetze %]<br/><b>Zahl der Nutzerarbeitsplätze:</b> [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
 </ul></div>
@@ -5496,6 +5538,13 @@ var semesterZeit = [
          sigel_path     = location.fields.${"L0250"}.first.content.replace('/','_');
 
      END;  
+
+     url = '';
+
+     IF identifier.match('^DE-38-\d\d\d$');
+        url = "https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/${sigel_path}/index_ger.html";
+     END;
+
      description    = location.description ;
      arbeitsplaetze = location.fields.${"L0270"}.first.content;
      zeiten         = location.fields.${"L0110"}.first.content;
@@ -5504,12 +5553,13 @@ var semesterZeit = [
         sigel => sigel,
 	sigel_path => sigel_path,
         arbeitsplaetze => arbeitsplaetze,
+	url => url,
      };        
    END;
   
 %]
 [% FOREACH desc IN institute_map.keys.sort %]
-	<li><a href="https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/[% institute_map.${desc}.sigel_path %]/index_ger.html">[% desc %] ([% institute_map.${desc}.sigel %])</a>[% IF institute_map.${desc}.arbeitsplaetze %]<br/><b>Zahl der Nutzerarbeitsplätze:</b> [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
+	<li>[% IF institute_map.${desc}.url %]<a href="[% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF institute_map.${desc}.arbeitsplaetze %]<br/><b>Zahl der Nutzerarbeitsplätze:</b> [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
 </ul></div>

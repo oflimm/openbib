@@ -15,7 +15,8 @@
 #######################################################################
 -%]
 [%# USE dumper;dumper.dump(locations)%]
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" charset="UTF-8">
+</div><!-- End editorblock -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" charset="UTF-8"/>
 
     <style>
 

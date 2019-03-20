@@ -5180,6 +5180,7 @@ var semesterZeit = [
  <div class="uzk15__editorblock"><p>Das Bibliothekssystem an der Universität zu Köln ist zweischichtig. Das bedeutet, dass es neben der USB als zentrale Hochschulbibliothek, ca. 150 Campusbibliotheken gibt, die den Instituten der Universität angeschlossen sind.</p>
 
 <p>Sie möchten den Bestand der Campusbibliotheken durchsuchen? Starten Sie eine Suche in unserem <a href="https://www.ub.uni-koeln.de/usbportal">USB-Portal</a>.</p></div>
+
 <div class="uzk15__grid_100 uzk15__sprungmarkennavigation">
  <script>$(function(){  
   $('.uzk15__sprungmarkennavigation a').on('click',function(e){
@@ -5209,9 +5210,11 @@ var semesterZeit = [
   <div class="uzk15__seperator"></div>
  </nav>
  
-</div>
+</div><!-- End: uzk15__grid_100 -->
 
-<div class="uzk15__seperator"></div><div class="uzk15__grid_100" id="e23239">
+<div class="uzk15__seperator"></div>
+
+<div class="uzk15__grid_100" id="e23239">
 
  <div class="uzk15__akkordeon" role="tablist" aria-multiselectable="false">
     
@@ -5523,7 +5526,8 @@ var semesterZeit = [
       <div class="uzk15__akkordeon-inhalt" aria-hidden="true" role="tabpanel" aria-labelledby="akkordeon_oeffner23250_uzk15__akkordeon6-titel1" id="akkordeon_oeffner23250_uzk15__akkordeon6-1">
         <div class="uzk15__editorblock">
           
- <div class="uzk15__editorblock"><ul>
+        <div class="uzk15__editorblock">
+         <ul>
 [%  
     institute_map = {};
     FOREACH location IN locations ;
@@ -5569,7 +5573,10 @@ var semesterZeit = [
 	<li>[% IF institute_map.${desc}.url %]<a href="[% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF institute_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
-</ul></div>
-
-        </div>
+    </ul>
+   </div>
+  </div>
+</div>
+</div> <!-- End: uzk15__akkordeon -->
+</div> <!-- End: uzk15__grid_100 -->
 [% END %]

@@ -5581,3 +5581,4 @@ var semesterZeit = [
 </div> <!-- End: uzk15__akkordeon -->
 </div> <!-- End: uzk15__grid_100 -->
 [% END %]
+ <div class="uzk15__editorblock">

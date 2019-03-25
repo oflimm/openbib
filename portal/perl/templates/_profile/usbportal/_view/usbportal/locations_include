@@ -2962,7 +2962,7 @@ function showPopupText(text, mitInfo) {
                 nameLink = '<a id="linktitel" target="blank" href="/lernen_arbeiten/bibliotheken/38_' + institute[t].sigel.replace(/DE-38-/g, "") + '/index_ger.html">' + institute[t].name + '</a>';
 
             else if (institute[t].sigel.match(/DE-38-HWA/))
-                nameLink = '<a id="linktitel" target="blank" href="https://www.ub.uni-koeln.de/ueber_uns/dach/hwa/index_ger.html>' + institute[t].name + '</a>';
+                nameLink = '<a id="linktitel" target="blank" href="https://www.ub.uni-koeln.de/ueber_uns/dach/hwa/index_ger.html">' + institute[t].name + '</a>';
 
             else if (institute[t].sigel.match(/^DE-38$/))
                 nameLink = '<a id="linktitel" target="blank" href="https://www.ub.uni-koeln.de/index.html">' + institute[t].name + '</a>';

@@ -1,0 +1,232 @@
+[%-
+#######################################################################
+#
+# Templatename: mainnavigation
+#
+# Typ         : Subtemplage       
+#
+# Aufgabe:
+#
+# Ausgabe der Hauptmenu-Punkte
+#
+# Parameter active_menu zur Kennzeichnung aktiver Menupunkte:
+#
+# databasechoice
+# searchform
+# resultlists
+# collection
+# startpage
+# rssfeeds
+# login
+# info
+# tutorial
+#
+#######################################################################
+-%]
+<style>
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu a::after {
+  transform: rotate(-90deg);
+  position: absolute;
+  right: 6px;
+  top: .8em;
+}
+
+.dropdown-submenu .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-left: .1rem;
+  margin-right: .1rem;
+}
+</style>
+
+<!--
+-->
+
+[%- username = user.get_username -%]
+    <!-- begin: main navigation  -->
+
+<!-- Targs: [% USE dumper; dumper.dump(layout_param) %] -->
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]"><span class="brand-title"><img src="/images/openbib/views/fidphil/fidphil-logo-40px.jpg" class="img-fluid d-none d-sm-inline"  />FID Philosophiet</span></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+<!--    <a class="navbar-brand" href="#">Hidden brand</a> -->
+[% IF NOT suppress_unauthorized %]
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+
+      <li class="nav-item[% IF layout_param.active_menu == "search" %] active[% END %] dropdown">
+       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          [% msg.maketext("Suche") %]
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kubibooks/titles.html?l=[% lang %]&srt=title_asc&page=1" class="navlink">[% msg.maketext("Alle Titel") %]</a></li>
+      	  
+        </ul>
+      </li>
+
+<!--
+      <li class="nav-item[% IF layout_param.active_menu == "browse" %] active[% END %] dropdown">
+       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          [% msg.maketext("Register") %]
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kubibooks/titles/fields/id/0100.html?l=[% lang %];page=1">[% msg.maketext("Person") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kubibooks/titles/fields/id/0331.html?l=[% lang %];page=1">[% msg.maketext("Titel") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kubibooks/titles/fields/id/0425.html?l=[% lang %];page=1">[% msg.maketext("Erscheinungsjahre") %]</a></li>
+        </ul>
+      </li>
+-->
+
+    </ul>
+[% END # End: suppress_unauthorized %]
+<!--
+    <form class="form-inline my-2 my-lg-0" method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">    
+     <input type="hidden" name="num"        value="20" />
+     <input type="hidden" name="page"       value="1" />
+
+     <input type="hidden" name="srt"        value="year_asc" />
+     <input type="hidden" name="st"         value="1" />
+     <input type="hidden" name="profile"    value="[% config.get_searchprofile_of_view(view) %]" />
+     <input type="hidden" name="lt"         value="[% qopts.lt %]" />
+     <input type="hidden" name="l"          value="[% lang %]" />
+
+
+
+      <input class="form-control mr-sm-2" type="search" placeholder="[% msg.maketext("Einfache Suche") %]" aria-label="[% msg.maketext("Einfache Suche") %]" name="fs" value="[% searchquery.get_searchfield('freesearch').val | html %]">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Los</button>
+
+    </form>
+-->
+
+    <ul class="nav navbar-nav flex-row justify-content-between ml-auto">
+          <li class="nav-item[% IF layout_param.active_menu == "collection" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?l=[% lang %]"><img src="[% config.get_icon('listofinterest_small_selected',view,sysprofile) %]"/> [% msg.maketext("Merkliste") %]</a></li>
+          <li><a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]" class="nav-link">[% msg.maketext("Suchhistorie") %]</a></li>
+    
+<!--    [% IF username %]
+      [% IF NOT suppress_unauthorized %]
+           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% msg.maketext("Mein KUG") %]</a></li>
+           <li class="nav-item[% IF layout_param.active_menu == "loginout" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %]">[% msg.maketext("Abmelden") %]</a></li>
+      [% END %]
+    [% ELSE %]
+           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Anmelden") %]</a></li>
+    [% END%] -->
+<!--           <li class="dropdown order-1">
+                 <button type="button" id="dropdownMenu1" data-toggle="dropdown" class="btn btn-outline-secondary dropdown-toggle">Login <span class="caret"></span></button>
+                 <ul class="dropdown-menu dropdown-menu-right mt-1">
+                      <li class="p-3">
+                            <form class="form" role="form" method="post" action="[% IF config.get('use_https') %]https://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent">
+
+                                <input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
+
+[%- FOREACH authenticator IN authenticators -%]
+[%-   IF authenticator.type == 'self' -%]
+                                <input type="hidden" name="authenticatorid" value="[% authenticator.id %]">
+[%-   END -%]
+[%- END -%]
+
+                                <div class="form-group">
+                                    <input id="emailInput" placeholder="Email" class="form-control form-control-sm" type="text" required="" name="username">
+                                </div>
+                                <div class="form-group">
+                                    <input id="passwordInput" placeholder="Password" class="form-control form-control-sm" type="password" required="" name="password">
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-block">[% msg.maketext('Anmelden') %]</button>
+                                </div>
+                                <div class="form-group text-xs-center">
+                                    <small><a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('registrations_loc') %].html">[% msg.maketext("Registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('passwords_loc') %].html?l=[% lang %]">[% msg.maketext("Passwort vergessen?") %]</a></small>
+                                </div>
+                            </form>
+                        </li>
+                    </ul>
+                </li> -->
+
+    [% IF config.get('lang').size > 1 %]		
+               <li class="nav-item order-2 order-md-1 mt-1">
+	        <form method="get" action="[% path %]">
+                   <select name="l" class="autosubmit" data-width="fit">
+     [% lang_desc = {
+       'en' = msg.maketext("English")
+       'de' = msg.maketext("Deutsch")
+     }
+     %]
+     [% FOREACH thislang IN config.get('lang') %]
+      <option value="[% thislang %]"[% IF lang == thislang %] selected="selected"[% END %]>[% lang_desc.${thislang} %]</option>
+     [% END %]
+                    </select>
+		[% cgiapp.to_cgi_hidden_input({ exclude = ['l']}) %]
+
+		    
+		  <button class="btn btn-primary p-1 ob-nojs_show" type="submit">[% msg.maketext("Los") %]</button>
+		  </form>
+               </li>
+    [% END %]
+    		
+            </ul>
+  
+  </div>
+</nav>
+
+
+<!-- <nav class="navbar" id="ob-fixed_navigation" [% IF without_navigation_search %]class="ob-hidden"[% END %]> -->
+
+[% PROCESS common/subtemplate name="searchforms_suggestions" %]
+
+<!--<h4></h4>-->
+ <p/>
+
+[% IF NOT suppress_unauthorized %]    
+<div class="sticky-top">
+
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
+
+<input type="hidden" name="num"        value="20" />
+<input type="hidden" name="page"       value="1" />
+<input type="hidden" name="lang"       value="[% lang %]" />
+
+<input type="hidden" name="srt"        value="relevance_desc" />
+<input type="hidden" name="st"         value="1" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+
+<div class="d-flex justify-content-center border shadow rounded pt-4 pb-4 mb-4 bg-light">
+    <div class="row">    
+        <div class="col-xs-8 col-xs-offset-2">
+            <div class="input-group">
+		<div class="input-group-btn ob-search_panel">
+<!--                   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                      <span id="search_profile_text">Suchprofil</span> <span class="caret"></span>
+                   </button> -->
+		   <div class="d-none d-md-block">
+		   [%# PROCESS common/subtemplate name="searchforms_record_profile" %]
+		   </div>
+                </div>
+                <input type="hidden" name="profile" value="[% searchprofileid_of_sysprofile %]" id="search_profile">
+                <input required="required" id="to_focus" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" size="30" maxlength="200" placeholder="[% msg.maketext("Suchbegriff...") %]" />
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit"><span class="fas fa-search"></span></button>
+                </span>
+            </div>
+       </div>
+   </div>
+</div>
+
+
+[%# sysprofile%]
+[%# USE dumper; dumper.dump(config.get_orgunitinfo_overview(sysprofile)) ; %]
+[%# USE dumper; dumper.dump(config.get_orgunitinfo_overview(dbchoice)) ; %]
+<!-- [% msg.maketext("Recherchieren Sie in [_1] Titeln und [_2] Katalogen","${alldbcount.allcount.chunk(-3).join('.')}","${alldbs}") %] -->
+
+
+</form>
+<!-- </nav> -->
+</div><!-- End: sticky-top -->
+[% END # End: suppress_unauthorized %]
+    <!-- end: main navigation -->

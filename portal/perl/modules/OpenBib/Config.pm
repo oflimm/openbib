@@ -2597,11 +2597,24 @@ sub get_templateinforevision {
     return $object;
 }
 
-
 sub get {
     my ($self,$key) = @_;
 
     return $self->{$key};
+}
+
+sub get_icon {
+    my ($self,$icon,$view,$profile) = @_;
+    
+    if ($view && defined $self->{iconset}{view}{$view} && defined $self->{iconset}{view}{$view}{$icon}){
+	return $self->{iconset}{view}{$view}{$icon};
+    }
+    elsif ($profile && defined $self->{iconset}{profile}{$profile} && defined $self->{iconset}{profile}{$profile}{$icon}){
+	return $self->{iconset}{profile}{$profile}{$icon};
+    }
+    else {
+	return $self->{iconset}{default}{$icon};
+    }
 }
 
 sub connectDB {

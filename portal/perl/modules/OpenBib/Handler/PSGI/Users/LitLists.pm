@@ -554,9 +554,12 @@ sub confirm_delete_record {
     my $view           = $self->param('view');
     my $litlistid      = $self->strip_suffix($self->param('litlistid'));
     my $config         = $self->param('config');
-
+    my $user           = $self->param('user');
+    my $properties     = $user->get_litlist_properties({ litlistid => $litlistid, view => $view });
+    
     my $ttdata={
         litlistid => $litlistid,
+	properties => $properties,
     };
     
     $logger->debug("Asking for confirmation");

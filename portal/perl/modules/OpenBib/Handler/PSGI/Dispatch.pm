@@ -199,9 +199,16 @@ sub dispatch_args {
                     'rm'  => "$runmode",
                 };
 
-                if ($item->{scope}){
+                if (defined $item->{scope} && defined $item->{scope}){
                     $item->{args}->{scope} = $item->{scope};
                 }
+
+                if (defined $item->{send_new_cookie} && $item->{send_new_cookie} ){
+                    $item->{args}->{send_new_cookie} = 1;
+                }
+		else {
+		    $item->{args}->{send_new_cookie} = 0;
+		}
                 
                 if ($item->{args}){
                     # Request-Object dazu, da sonst ueberschrieben
@@ -222,9 +229,16 @@ sub dispatch_args {
                 'rm'  => "$runmode",
             };
 
-            if ($item->{scope}){
-                $item->{args}->{scope} = $item->{scope};
-            }
+	    if (defined $item->{scope} && defined $item->{scope}){
+		$item->{args}->{scope} = $item->{scope};
+	    }
+	    
+	    if (defined $item->{send_new_cookie} && $item->{send_new_cookie} ){
+		$item->{args}->{send_new_cookie} = 1;
+	    }
+	    else {
+		$item->{args}->{send_new_cookie} = 0;
+	    }
             
             if ($item->{args}){
                 # Request-Object dazu, da sonst ueberschrieben

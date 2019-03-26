@@ -62,7 +62,6 @@ sub setup {
     $self->run_modes(
         'show_collection'           => 'show_collection',
         'show_record'               => 'show_record',
-        'delete_record'             => 'delete_record',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 

@@ -197,17 +197,14 @@ sub show_record {
     
     my $targettype     = $user->get_targettype_of_session($session->{ID});
 
-    my $maxcolumn      = $config->{databasechoice_maxcolumn};
     my @catdb          = $config->get_infomatrix_of_active_databases({view => $view, checkeddb_ref => $checkeddb_ref});
     
     # TT-Data erzeugen
-    my $colspan=$maxcolumn*3;
     
     my $ttdata={
         targettype     => $targettype,
         profilename    => $profilename,
-        maxcolumn      => $maxcolumn,
-        colspan        => $colspan,
+	profileid      => $profileid,
         catdb          => \@catdb,
     };
     
@@ -425,9 +422,13 @@ sub confirm_delete_record {
     my $view           = $self->param('view');
     my $profileid      = $self->strip_suffix($self->param('searchprofileid'));
     my $config         = $self->param('config');
+    my $user           = $self->param('user');
 
+    my $profilename = $user->get_profilename_of_usersearchprofileid($profileid);
+    
     my $ttdata={
-        profileid => $profileid,
+        profileid   => $profileid,
+	profilename => $profilename,
     };
     
     $logger->debug("Asking for confirmation");

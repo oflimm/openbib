@@ -216,7 +216,7 @@ sub create_record {
 
     if ($self->param('representation') eq "html"){
         # TODO GET?
-        $self->redirect("$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{databases_loc}/id/$dbname/rss.html?l=$lang");
+        $self->redirect("$path_prefix/$config->{admin_loc}/$config->{databases_loc}/id/$dbname/rss.html?l=$lang");
         return;
     }
     else {
@@ -364,6 +364,7 @@ sub delete_record {
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
+    my $lang           = $self->param('lang');
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
@@ -384,7 +385,7 @@ sub delete_record {
     return unless ($self->param('representation') eq "html");
 
     # TODO GET?
-    return $self->redirect("$path_prefix/$config->{databases_loc}/$dbname/rss");
+    return $self->redirect("$path_prefix/$config->{admin_loc}/$config->{databases_loc}/id/$dbname/rss.html?l=$lang");
 }
 
 sub get_input_definition {

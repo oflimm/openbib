@@ -616,18 +616,10 @@ sub save_collection {
         recordlist  => $recordlist,
     };
     
-    if ($format eq "short" || $format eq "full") {
-        $self->param('content_type','text/html');
-        $self->header_add("Content-Disposition" => "attachment;filename=\"kugliste.html\"");
-        return $self->print_page($config->{tt_cartitems_save_html_tname},$ttdata);
-    }
-    else {
-        $self->param('content_type','text/plain');
-        $self->header_add("Content-Disposition" => "attachment;filename=\"kugliste.txt\"");
-        return $self->print_page($config->{tt_cartitems_save_plain_tname},$ttdata);
-    }
+    $self->param('content_type','text/plain');
+    $self->header_add("Content-Disposition" => "attachment;filename=\"kugliste.txt\"");
+    return $self->print_page($config->{tt_cartitems_save_plain_tname},$ttdata);
 
-    return;
 }
 
 sub mail_collection {

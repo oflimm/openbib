@@ -136,7 +136,7 @@ sub process {
 
     $logger->debug("JSON decoded");
     
-    my $id            = $record_ref->{id};
+    my $id            = $self->cleanup_content($record_ref->{id});
     my $fields_ref    = $record_ref->{fields};
 
     # Primaeren Normdatensatz erstellen und schreiben

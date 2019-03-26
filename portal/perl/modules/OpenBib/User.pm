@@ -590,6 +590,10 @@ sub get_username_for_userid {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    if ($logger->is_debug){
+	$logger->debug("Finding username for userid $userid of type ".ref($userid));
+    }
+
     # DBI: "select username from user where userid = ?"
     my $userinfo = $self->get_schema->resultset('Userinfo')->single(
         {
@@ -2716,18 +2720,23 @@ sub get_reviews_of_tit {
     my $reviewlist_ref = [];
 
     foreach my $review ($reviews->all){
-        my $userid    = $review->userid;
-        my $username = $self->get_username_for_userid($userid);
-        my $nickname  = $review->nickname;
-        my $title     = $review->title;
-        my $review    = $review->reviewtext;
-        my $id        = $review->id;
-        my $rating    = $review->rating;
+        my $userid    = $review->userid->id;
+
+	if ($logger->is_debug){
+	    $logger->debug("Review for Userid $userid of type ".ref($userid));
+	}
+	
+        my $username   = $self->get_username_for_userid($userid);
+        my $nickname   = $review->nickname;
+        my $title      = $review->title;
+        my $reviewtext = $review->reviewtext;
+        my $id         = $review->id;
+        my $rating     = $review->rating;
 
         # DBI: "select count(id) as votecount from reviewrating where reviewid=?  group by id"
         my $votecount = $self->get_schema->resultset('Reviewrating')->search_rs(
             {
-                reviewid => $review->id,
+                reviewid => $id,
             },
             {
                 group_by => 'reviewid',
@@ -2740,7 +2749,7 @@ sub get_reviews_of_tit {
             # DBI: "select count(id) as posvotecount from reviewrating where reviewid=? and rating > 0 group by id"
             $posvotecount = $self->get_schema->resultset('Reviewrating')->search_rs(
                 {
-                    reviewid => $review->id,
+                    reviewid => $id,
                     rating   => { '>' =>  0},
                 },
                 {
@@ -2754,7 +2763,7 @@ sub get_reviews_of_tit {
             username  => $username,
             nickname  => $nickname,
             title     => $title,
-            review    => $review,
+            review    => $reviewtext,
             rating    => $rating,
             votes     => {
                 all      => $votecount,
@@ -2827,7 +2836,7 @@ sub get_review_of_user {
     if ($review){
         $logger->debug("Found Review $id for User $username");
 
-        my $userid     = $review->userid;
+        my $userid     = $review->userid->id;
         my $username   = $self->get_username_for_userid($userid);
         my $nickname   = $review->nickname;
         my $title      = $review->title;

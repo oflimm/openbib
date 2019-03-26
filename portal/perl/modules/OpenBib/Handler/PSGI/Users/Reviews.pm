@@ -132,47 +132,38 @@ sub update_record {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $r              = $self->param('r');
 
+    # Dispatched Args    
+    my $r              = $self->param('r');
     my $view           = $self->param('view')           || '';
-    my $reviewid       = $self->param('reviewid')         || '';
+    my $reviewid       = $self->param('reviewid')       || '';
+
+    # Shared Args  
+    my $query          = $self->query();  
     my $queryoptions   = $self->param('qopts');
     my $msg            = $self->param('msg');
     my $user           = $self->param('user');
     my $session        = $self->param('session');
     my $config         = $self->param('config');
-    
-    my $query  = $r;
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
 
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-  
-    #####################################################################
-    # Konfigurationsoptionen bei <FORM> mit Defaulteinstellungen
-    #####################################################################
-
+    # CGI Args
     my $offset         = $query->param('offset')      || 0;
     my $hitrange       = $query->param('hitrange')    || 50;
     my $queryid        = $query->param('queryid')     || '';
     my $database       = $query->param('db')    || '';
     my $sorttype       = $query->param('srt')    || "person";
     my $sortorder      = $query->param('srto')   || "asc";
-    $reviewid       = $query->param('reviewid')    || '';
-    my $titleid          = $query->param('titleid')       || '';
-    my $dbname          = $query->param('dbname')       || '';
+    $reviewid          = $query->param('reviewid')    || '';
+    my $titleid        = $query->param('titleid')       || '';
+    my $dbname         = $query->param('dbname')       || '';
     my $titisbn        = $query->param('titisbn')     || '';
     my $title          = decode_utf8($query->param('title'))    || '';
     my $review         = decode_utf8($query->param('review'))   || '';
     my $nickname       = decode_utf8($query->param('nickname')) || '';
     my $rating         = $query->param('rating')      || 0;
 
-    my $do_show        = $query->param('do_show')     || '';
-    my $do_add         = $query->param('do_add')      || '';
-    my $do_change      = $query->param('do_change')   || '';
-    my $do_edit        = $query->param('do_edit')     || '';
-    my $do_del         = $query->param('do_del')      || '';
-    my $do_vote        = $query->param('do_vote')      || '';
-    
     #####                                                          ######
     ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
     #####                                                          ######
@@ -195,8 +186,8 @@ sub update_record {
     $logger->debug("Aufnehmen/Aendern des Reviews");
     
     $user->add_review({
-        titleid     => $titleid,
-        dbname     => $dbname,
+        titleid   => $titleid,
+        dbname    => $dbname,
         username  => $username,
         nickname  => $nickname,
         title     => $title,
@@ -219,13 +210,15 @@ sub delete_record {
 
     my $view           = $self->param('view')           || '';
     my $reviewid       = $self->param('reviewid')         || '';
+
+
+    # Shared Args  
+    my $query          = $self->query();  
     my $config         = $self->param('config');
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
-
-    my $query  = $r;
 
     if (!$session->is_valid()){
         return $self->print_warning($msg->maketext("Ungültige Session"));
@@ -259,17 +252,17 @@ sub show_record_form {
 
     my $view           = $self->param('view')           || '';
     my $reviewid       = $self->param('reviewid')       || '';
+
+    # Shared Args  
+    my $query          = $self->query();  
     my $path_prefix    = $self->param('path_prefix');
     my $config         = $self->param('config');
     my $session        = $self->param('session');
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
     my $queryoptions   = $self->param('qopts');
-
-    my $query  = $r;
-
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-  
+    my $stylesheet     = $self->param('stylesheet');
+    
     #####################################################################
     # Konfigurationsoptionen bei <FORM> mit Defaulteinstellungen
     #####################################################################
@@ -287,21 +280,6 @@ sub show_record_form {
     my $review         = decode_utf8($query->param('review'))   || '';
     my $nickname       = decode_utf8($query->param('nickname')) || '';
     my $rating         = $query->param('rating')      || 0;
-
-    my $do_show        = $query->param('do_show')     || '';
-    my $do_add         = $query->param('do_add')      || '';
-    my $do_change      = $query->param('do_change')   || '';
-    my $do_edit        = $query->param('do_edit')     || '';
-    my $do_del         = $query->param('do_del')      || '';
-    my $do_vote        = $query->param('do_vote')      || '';
-    
-    #####                                                          ######
-    ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
-    #####                                                          ######
-  
-    ###########                                               ###########
-    ############## B E G I N N  P R O G R A M M F L U S S ###############
-    ###########                                               ###########
 
     if (!$session->is_valid()){
         return $self->print_warning($msg->maketext("Ungültige Session"));
@@ -370,6 +348,34 @@ sub return_baseurl {
     $self->redirect($new_location);
 
     return;
+}
+
+sub get_input_definition {
+    my $self=shift;
+    
+    return {
+        title => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        type => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        lecture => {
+            default  => 'false',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        topics => {
+            default  => [],
+            encoding => 'none',
+            type     => 'array',
+        },
+        
+    };
 }
 
 1;

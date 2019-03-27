@@ -61,17 +61,6 @@
 [% IF NOT suppress_unauthorized %]
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
 
-      <li class="nav-item[% IF layout_param.active_menu == "search" %] active[% END %] dropdown">
-       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          [% msg.maketext("Suche") %]
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></li>
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kubibooks/titles.html?l=[% lang %]&srt=title_asc&page=1" class="navlink">[% msg.maketext("Alle Titel") %]</a></li>
-      	  
-        </ul>
-      </li>
-
 <!--
       <li class="nav-item[% IF layout_param.active_menu == "browse" %] active[% END %] dropdown">
        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -107,6 +96,19 @@
 -->
 
     <ul class="nav navbar-nav flex-row justify-content-between ml-auto">
+
+<!--
+          <li class="nav-item[% IF layout_param.active_menu == "search" %] active[% END %] dropdown">
+       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          [% msg.maketext("Suche") %]
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]" class="navlink">[% msg.maketext("Suchhistorie") %]</a></li>
+      	  
+        </ul>
+      </li>
+-->
           <li class="nav-item[% IF layout_param.active_menu == "collection" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?l=[% lang %]"><img src="[% config.get_icon('listofinterest_small_selected',view,sysprofile) %]"/> [% msg.maketext("Merkliste") %]</a></li>
           <li><a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]" class="nav-link">[% msg.maketext("Suchhistorie") %]</a></li>
     

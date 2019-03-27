@@ -33,7 +33,7 @@ f&uuml;r Sie als [_1]E-Book[_2] bereit.","<a href=\"http://unikatalog.ub.uni-koe
 <h6>[% msg.maketext("Elektronische Zeitschriftenbibliothek (EZB)") %]</h6>
 
 <p>
-[% msg.maketext("Greifen Sie fachspezifisch auf alle [_1]freien und lizenzierten Zeitschriften[_2] zu","<a href=\"${path_prefix}/${config.get('search_loc')}?l=de;db=ezb;sm=seq;page=1;num=20;access_green=1;access_yellow=1;cln=CA-CI${config.get('databases_loc')}/id/ezb/${config.get('classifications_loc')}.html?l=${lang};type=cloud;access_green=1;access_yellow=1\">","</a>") %]
+[% msg.maketext("Greifen Sie fachspezifisch auf alle [_1]freien und lizenzierten Zeitschriften[_2] zu","<a href=\"${path_prefix}/${config.get('search_loc')}?l=de;db=ezb;sm=seq;page=1;num=20;access_green=1;access_yellow=1;cln=CA-CI\">","</a>") %]
 </p>
 
 <h6>[% msg.maketext("Datenbank Informationssystem (DBIS)") %]</h6>

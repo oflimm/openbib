@@ -159,7 +159,7 @@ while (my $record = safe_next($batch)){
 		
 		next unless ($content_2=~/rvk/);
 		
-		if ($content_a =~/^C[ABCDIK]/){
+		if ($content_a =~/^C[A-K]/){
 		    $is_phil = 1;
 		}
 	    }

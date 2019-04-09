@@ -37,6 +37,7 @@ use OpenBib::Search::Backend::BibSonomy;
 use OpenBib::Search::Backend::DBIS;
 use OpenBib::Search::Backend::ElasticSearch;
 use OpenBib::Search::Backend::EZB;
+use OpenBib::Search::Backend::EDS;
 use OpenBib::Search::Backend::Xapian;
 
 sub create_searcher {
@@ -80,6 +81,9 @@ sub create_searcher {
         elsif ($system eq "Backend: BibSonomy"){
             $sb = "bibsonomy";
         }
+        elsif ($system eq "Backend: EDS"){
+            $sb = "eds";
+        }
         else {
             $sb = $config->{local_search_backend};
         }
@@ -101,6 +105,9 @@ sub create_searcher {
     }
     elsif ($sb eq "elasticsearch"){        
         return new OpenBib::Search::Backend::ElasticSearch($arg_ref);
+    }
+    elsif ($sb eq "eds"){        
+        return new OpenBib::Search::Backend::EDS($arg_ref);
     }
     else {
         $logger->fatal("Couldn't dispatch to any Search Backend");

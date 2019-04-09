@@ -672,6 +672,10 @@ sub get_records {
         $recordlist->add(new OpenBib::Record::Title({database => $database, id => $id, locations => $locations_ref})->set_fields_from_storable($titlistitem_ref));
     }
 
+    if ($logger->is_debug){
+	$logger->debug("Result-Recordlist: ".YAML::Dump($recordlist->to_list))
+    }
+
     return $recordlist;
 }
 

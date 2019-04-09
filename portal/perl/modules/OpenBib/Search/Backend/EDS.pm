@@ -1,0 +1,618 @@
+#####################################################################
+#
+#  OpenBib::Search::Backend::EDS
+#
+#  Dieses File ist (C) 2012-2019 Oliver Flimm <flimm@openbib.org>
+#  Codebasis von ElasticSearch.pm
+#
+#  Dieses Programm ist freie Software. Sie koennen es unter
+#  den Bedingungen der GNU General Public License, wie von der
+#  Free Software Foundation herausgegeben, weitergeben und/oder
+#  modifizieren, entweder unter Version 2 der Lizenz oder (wenn
+#  Sie es wuenschen) jeder spaeteren Version.
+#
+#  Die Veroeffentlichung dieses Programms erfolgt in der
+#  Hoffnung, dass es Ihnen von Nutzen sein wird, aber OHNE JEDE
+#  GEWAEHRLEISTUNG - sogar ohne die implizite Gewaehrleistung
+#  der MARKTREIFE oder der EIGNUNG FUER EINEN BESTIMMTEN ZWECK.
+#  Details finden Sie in der GNU General Public License.
+#
+#  Sie sollten eine Kopie der GNU General Public License zusammen
+#  mit diesem Programm erhalten haben. Falls nicht, schreiben Sie
+#  an die Free Software Foundation, Inc., 675 Mass Ave, Cambridge,
+#  MA 02139, USA.
+#
+#####################################################################
+
+package OpenBib::Search::Backend::EDS;
+
+use strict;
+use warnings;
+no warnings 'redefine';
+use utf8;
+
+use Benchmark ':hireswallclock';
+use Encode 'decode_utf8';
+use JSON::XS;
+use Log::Log4perl qw(get_logger :levels);
+use LWP::UserAgent;
+use Storable;
+use String::Tokenizer;
+use YAML ();
+
+use OpenBib::Config;
+use OpenBib::Common::Util;
+use OpenBib::Record::Title;
+use OpenBib::RecordList::Title;
+use OpenBib::SearchQuery;
+use OpenBib::QueryOptions;
+
+use base qw(OpenBib::Search);
+
+sub search {
+    my ($self) = @_;
+
+    # Set defaults search parameters
+#    my $serien            = exists $arg_ref->{serien}
+#        ? $arg_ref->{serien}        : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $config       = $self->get_config;
+    my $searchquery  = $self->get_searchquery;
+    my $queryoptions = $self->get_queryoptions;
+
+    # Used Parameters
+    my $sorttype          = $queryoptions->get_option('srt');
+    my $sortorder         = $queryoptions->get_option('srto');
+    my $defaultop         = $queryoptions->get_option('dop');
+    my $drilldown         = $queryoptions->get_option('dd');
+
+    # Pagination parameters
+    my $page              = $queryoptions->get_option('page');
+    my $num               = $queryoptions->get_option('num');
+
+    my $from              = ($page - 1)*$num;
+    
+    my ($atime,$btime,$timeall);
+  
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    my $ua = LWP::UserAgent->new();
+    $ua->agent('USB Koeln/1.0');
+    $ua->timeout(30);
+    
+    $self->connect_eds($ua);
+
+    if ($logger->is_debug){
+	$logger->debug("Setting default header with x-authenticationToken: ".$self->get_authtoken." and x-sessionToken: ".$self->get_sessiontoken);
+    }
+
+    $ua->default_header('x-authenticationToken' => $self->get_authtoken, 'x-sessionToken' => $self->get_sessiontoken);
+
+    my $url = $config->get('eds')->{'search_url'};
+
+    # search options
+    my @search_options = ();
+
+    # Default
+    push @search_options, "sort=relevance";
+    push @search_options, "searchmode=all";
+    push @search_options, "highlight=y";
+    push @search_options, "includefacets=y";
+    push @search_options, "autosuggest=y";
+    push @search_options, "view=brief";    
+    
+    push @search_options, "resultsperpage=$num" if ($num);
+    push @search_options, "pagenumber=$page" if ($page);
+
+    $self->parse_query($searchquery);
+
+    my $query_ref  = $self->get_query;
+    my $filter_ref = $self->get_filter;
+
+    push @$query_ref, @$filter_ref;    
+    push @$query_ref, @search_options;
+    
+    my $args = join('&',@$query_ref);
+    
+    $url = $url."?$args";
+
+    if ($logger->is_debug()){
+	$logger->debug("Request URL: $url");
+    }
+    
+    my $request = HTTP::Request->new('GET' => $url);
+    $request->content_type('application/json');
+    
+    my $response = $ua->request($request);
+
+
+    if ($self->have_filter){
+    }
+    else {
+    }
+
+    if (!$response->is_success) {
+	$logger->info($response->code . ' - ' . $response->message);
+	return;
+    }
+
+    
+    $logger->info('ok');
+    $logger->debug($response->content);
+
+    my $json_result_ref = {};
+    
+    eval {
+	$json_result_ref = decode_json $response->content;
+    };
+    
+    if ($@){
+	$logger->error('Decoding error: '.$@);
+    }
+    
+    # my $results = $es->search(
+    #     index  => $index,
+    #     type   => 'title',
+    # 	body   => $body_ref,
+    # );
+
+    my @matches = $self->process_matches($json_result_ref);
+
+    $self->process_facets($json_result_ref);
+        
+    if ($logger->is_debug){
+        $logger->debug("Found matches ".YAML::Dump(\@matches));
+    }
+    
+    # # Facets
+    # $self->{categories} = $results->{aggregations};
+
+    if ($logger->is_debug){
+	$logger->debug("Results: ".YAML::Dump(\@matches));
+    }
+
+    my $resultcount = $json_result_ref->{SearchResult}{Statistics}{TotalHits};
+
+    $self->{resultcount} = $resultcount;
+
+    if ($logger->is_debug){
+         $logger->info("Found ".$self->{resultcount}." titles");
+    }
+
+    
+    $self->{_matches}     = \@matches;
+
+
+    # if ($logger->is_debug){
+    #     $logger->info("Running query ".YAML::Dump($self->{_querystring})." with filters ".YAML::Dump($self->{_filter}));
+    # }
+
+#    $logger->info("Found ".scalar(@matches)." matches in database $self->{_database}") if (defined $self->{_database});
+    return;
+}
+
+sub get_records {
+    my $self=shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config     = $self->get_config;
+
+    my $recordlist = new OpenBib::RecordList::Title();
+
+    my @matches = $self->matches;
+
+    $self->matches;
+
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump(\@matches));
+    }
+
+    foreach my $match (@matches) {
+
+        my $id            = $match->{id};
+        my $database      = $match->{database};
+	my $fields_ref    = $match->{fields};
+	
+        $recordlist->add(OpenBib::Record::Title->new({database => $database, id => $id })->set_fields_from_storable($fields_ref));
+    }
+
+    if ($logger->is_debug){
+	$logger->debug("Result-Recordlist: ".YAML::Dump($recordlist->to_list))
+    }
+    
+    return $recordlist;
+}
+
+sub process_matches {
+    my ($self,$json_result_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config     = $self->get_config;
+    
+    my @matches = ();
+    
+    foreach my $match (@{$json_result_ref->{SearchResult}{Data}{Records}}){
+	my $fields_ref = {};
+
+	$logger->debug("Processing Record ".YAML::Dump($json_result_ref->{SearchResult}{Data}{Records}));
+	foreach my $thisfield (keys %{$match->{RecordInfo}{BibRecord}{BibEntity}}){
+	    
+	    if ($thisfield eq "Titles"){
+		foreach my $item (@{$match->{RecordInfo}{BibRecord}{BibEntity}{$thisfield}}){
+		    push @{$fields_ref->{'T0331'}}, {
+			content => $item->{TitleFull}
+		    } if ($item->{Type} eq "main");
+		    
+		}
+	    }
+	}
+
+	if (defined $match->{RecordInfo}{BibRecord} && defined $match->{RecordInfo}{BibRecord}{BibRelationships} && defined $match->{RecordInfo}{BibRecord}{BibRelationships}{HasContributorRelationships}){
+	    
+	    foreach my $item (@{$match->{RecordInfo}{BibRecord}{BibRelationships}{HasContributorRelationships}}){
+		$logger->debug("DebugRelationShips".YAML::Dump($item));
+		if (defined $item->{PersonEntity} && defined $item->{PersonEntity}{Name} && defined $item->{PersonEntity}{Name}{NameFull}){
+		    
+		    push @{$fields_ref->{'P0100'}}, {
+			content => $item->{PersonEntity}{Name}{NameFull},
+		    }; 
+		    
+		    push @{$fields_ref->{'PC0001'}}, {
+			content => $item->{PersonEntity}{Name}{NameFull},
+		    }; 
+		}
+	    }
+	}
+	
+        push @matches, {
+            database => $match->{Header}{DbId},
+            id       => $match->{Header}{An},
+            fields   => $fields_ref,
+        };
+    }
+
+    return @matches;
+}
+
+sub process_facets {
+    my ($self,$json_result_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = $self->get_config;
+    
+    my $ddatime   = new Benchmark;
+
+
+    my $fields_ref = {};
+    
+    
+    my $category_map_ref     = ();
+    
+    # Transformation Hash->Array zur Sortierung
+
+    $logger->debug("Start processing facets: ".YAML::Dump($json_result_ref->{SearchResult}{AvailableFacets}));
+    
+    foreach my $eds_facet (@{$json_result_ref->{SearchResult}{AvailableFacets}}){
+
+	my $id   = $eds_facet->{Id};
+	my $type = $config->get('eds_facet_mapping')->{$id};
+
+	$logger->debug("Process Id $id and type $type");
+	
+	next unless (defined $type) ;
+	
+        my $contents_ref = [] ;
+        foreach my $item_ref (@{$eds_facet->{AvailableFacetValues}}) {
+            push @{$contents_ref}, [
+                $item_ref->{Value},
+                $item_ref->{Count},
+            ];
+        }
+        
+        if ($logger->is_debug){
+            $logger->debug("Facet for type $type ".YAML::Dump($contents_ref));
+        }
+        
+        # Schwartz'ian Transform
+
+        @{$category_map_ref->{$type}} = map { $_->[0] }
+            sort { $b->[1] <=> $a->[1] }
+                map { [$_, $_->[1]] }
+                    @{$contents_ref};
+    }
+
+    if ($logger->is_debug){
+	$logger->debug("All Facets ".YAML::Dump($category_map_ref));
+    }
+
+    my $ddbtime       = new Benchmark;
+    my $ddtimeall     = timediff($ddbtime,$ddatime);
+    my $drilldowntime    = timestr($ddtimeall,"nop");
+    $drilldowntime    =~s/(\d+\.\d+) .*/$1/;
+    
+    $logger->debug("Zeit fuer categorized drilldowns $drilldowntime");
+
+    $self->{_facets} = $category_map_ref;
+    
+    return; 
+}
+
+sub get_facets {
+    my $self=shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return $self->{_facets};
+}
+
+sub parse_query {
+    my ($self,$searchquery)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = $self->get_config;
+
+    # Aufbau des eds searchquerystrings
+    my @eds_querystrings = ();
+    my $eds_querystring  = "";
+
+    # Aufbau des eds_filterstrings
+    my @eds_filterstrings = ();
+    my $eds_filterstring  = "";
+
+    my $ops_ref = {
+        'AND'     => 'AND ',
+        'AND NOT' => 'NOT ',
+        'OR'      => 'OR ',
+    };
+
+    my $query_count = 1;
+    
+    my $query_ref = [];
+
+    my $mapping_ref = $config->get('eds_searchfield_mapping');
+    
+    foreach my $field (keys %{$config->{searchfield}}){
+        my $searchtermstring = (defined $searchquery->get_searchfield($field)->{norm})?$searchquery->get_searchfield($field)->{norm}:'';
+        if ($searchtermstring) {
+	    if (defined $mapping_ref->{$field}){
+		push @$query_ref, "query-".$query_count."=AND,".$mapping_ref->{$field}.":".$searchtermstring;
+		$query_count++;
+	    }
+        }
+    }
+
+
+    # Filter
+
+    my $filter_count = 1;
+    
+    my $filter_ref = [];
+
+    if ($logger->is_debug){
+        $logger->debug("All filters: ".YAML::Dump($searchquery->get_filter));
+    }
+
+    my $eds_reverse_facet_mapping_ref = $config->get('eds_reverse_facet_mapping');
+    
+    if (@{$searchquery->get_filter}){
+        $filter_ref = [ ];
+        foreach my $thisfilter_ref (@{$searchquery->get_filter}){
+            my $field = $eds_reverse_facet_mapping_ref->{$thisfilter_ref->{field}};
+            my $term  = $thisfilter_ref->{term};
+#            $term=~s/_/ /g;
+            
+            $logger->debug("Facet: $field / Term: $term (Filter-Field: ".$thisfilter_ref->{field}.")");
+
+	    if ($field && $term){
+		push @$filter_ref, "facetfilter=".$filter_count.",$field:$term";
+		$filter_count++;
+	    }
+        }
+	
+    }
+
+    if ($logger->is_debug){
+        $logger->debug("Query: ".YAML::Dump($query_ref));
+        $logger->debug("Filter: ".YAML::Dump($filter_ref));
+    }
+
+    $self->{_query}  = $query_ref;
+    $self->{_filter} = $filter_ref;
+
+    return $self;
+}
+
+sub _create_authtoken {
+    my ($self,$ua) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $config = $self->get_config;
+
+    
+    if (!$ua){
+	$ua = LWP::UserAgent->new();
+	$ua->agent('USB Koeln/1.0');
+	$ua->timeout(30);
+    }
+
+    my $request = HTTP::Request->new('POST' => $config->get('eds')->{auth_url});
+    $request->content_type('application/json');
+
+    my $json_request_ref = {
+	'UserId'   => $config->get('eds')->{userid},
+	'Password' => $config->get('eds')->{passwd},
+    };
+    
+    $request->content(encode_json($json_request_ref));
+
+    if ($logger->is_debug){
+	$logger->info("JSON-Request: ".encode_json($json_request_ref));
+    }
+    
+    my $response = $ua->request($request);
+
+    if ($response->is_success) {
+	if ($logger->is_debug()){
+	    $logger->debug($response->content);
+	}
+
+	my $json_result_ref = {};
+
+	eval {
+	    $json_result_ref = decode_json $response->content;
+	};
+
+	if ($@){
+	    $logger->error('Decoding error: '.$@);
+	}
+	
+	if ($json_result_ref->{AuthToken}){
+	    return $json_result_ref->{AuthToken};
+	}
+	else {
+	    $logger->error('No AuthToken received'.$response->content);
+	}
+    } 
+    else {
+	$logger->error('Error in Request: '.$response->code.' - '.$response->message);
+    }
+
+    return;
+}
+
+sub _create_sessiontoken {
+    my ($self, $authtoken, $ua) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $config = $self->get_config;
+
+    
+    if (!$ua){
+	$ua = LWP::UserAgent->new();
+	$ua->agent('USB Koeln/1.0');
+	$ua->timeout(30);
+    }
+    
+    my $guest = 'n';
+
+    my $request = HTTP::Request->new('POST' => $config->get('eds')->{session_url});
+    $request->content_type('application/json');
+
+    my $json_request_ref = {
+	'Profile' => $config->get('eds')->{profile},
+	'Guest'   => $guest,
+    };
+
+    my $json = encode_json $json_request_ref;
+    
+    $request->content($json);
+
+    if ($logger->is_debug){
+	$logger->info("JSON-Request: ".encode_json($json_request_ref));
+    }
+
+    $ua->default_header('x-authenticationToken' => $authtoken);
+    
+    my $response = $ua->request($request);
+
+    if ($response->is_success) {
+	if ($logger->is_debug()){
+	    $logger->debug($response->content);
+	}
+
+	my $json_result_ref = {};
+
+	eval {
+	    $json_result_ref = decode_json $response->content;
+	};
+	
+	if ($@){
+	    $logger->error('Decoding error: '.$@);
+	}
+	
+	if ($json_result_ref->{SessionToken}){
+	    return $json_result_ref->{SessionToken};
+	}
+	else {
+	    $logger->error('No SessionToken received'.$response->content);
+	}
+
+    } 
+    else {
+	$logger->error('Error in Request: '.$response->code.' - '.$response->message);
+    }
+
+    return;
+}
+
+sub connect_eds {
+    my ($self,$ua) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $config = $self->get_config;
+
+    if (!$ua){
+	$ua = LWP::UserAgent->new();
+	$ua->agent('USB Koeln/1.0');
+	$ua->timeout(30);
+    }
+    
+    $self->{authtoken} = $self->_create_authtoken($ua);
+
+    # second try... just in case ;-)
+    if (!$self->{authtoken}){
+	$self->{authtoken}  = $self->_create_authtoken($ua);
+    }
+
+    if (!$self->{authtoken}){
+	$logger->error('No AuthToken available. Exiting...');
+	return;	
+    }
+    
+    $self->{sessiontoken} = $self->_create_sessiontoken($self->{authtoken},$ua);
+
+    # second try... just in case ;-)
+    if (!$self->{sessiontoken}){
+	$self->{sessiontoken} = $self->_create_sessiontoken($self->{authtoken});
+    }
+
+    if (!$self->{sessiontoken}){
+	$logger->error('No SessionToken available. Exiting...');
+	return;	
+    }
+
+    return;
+};
+
+sub get_authtoken {
+    my $self = shift;
+    return $self->{authtoken};
+}
+
+sub get_sessiontoken {
+    my $self = shift;
+    return $self->{sessiontoken};
+}
+
+1;
+

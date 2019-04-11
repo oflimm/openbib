@@ -38,6 +38,7 @@ use Log::Log4perl qw(get_logger :levels);
 use LWP::UserAgent;
 use Storable;
 use String::Tokenizer;
+use URI::Escape qw(uri_escape);
 use YAML ();
 
 use OpenBib::Config;
@@ -130,6 +131,16 @@ sub search {
     
     my $response = $ua->request($request);
 
+  
+    if ($config->{benchmark}) {
+	my $stime        = new Benchmark;
+	my $stimeall     = timediff($stime,$atime);
+	my $searchtime   = timestr($stimeall,"nop");
+	$searchtime      =~s/(\d+\.\d+) .*/$1/;
+	
+	$logger->debug("Zeit fuer EDS HTTP-Request $searchtime");
+    }
+    
 
     if ($self->have_filter){
     }
@@ -193,6 +204,16 @@ sub search {
     # }
 
 #    $logger->info("Found ".scalar(@matches)." matches in database $self->{_database}") if (defined $self->{_database});
+
+    if ($config->{benchmark}) {
+	my $stime        = new Benchmark;
+	my $stimeall     = timediff($stime,$atime);
+	my $searchtime   = timestr($stimeall,"nop");
+	$searchtime      =~s/(\d+\.\d+) .*/$1/;
+	
+	$logger->debug("Gesamtzeit fuer EDS-Suche $searchtime");
+    }
+
     return;
 }
 
@@ -216,11 +237,10 @@ sub get_records {
 
     foreach my $match (@matches) {
 
-        my $id            = $match->{id};
-        my $database      = $match->{database};
+        my $id            = OpenBib::Common::Util::encode_id($match->{database}."::".$match->{id});
 	my $fields_ref    = $match->{fields};
-	
-        $recordlist->add(OpenBib::Record::Title->new({database => $database, id => $id })->set_fields_from_storable($fields_ref));
+
+        $recordlist->add(OpenBib::Record::Title->new({database => 'eds', id => $id })->set_fields_from_storable($fields_ref));
     }
 
     if ($logger->is_debug){
@@ -243,6 +263,10 @@ sub process_matches {
     foreach my $match (@{$json_result_ref->{SearchResult}{Data}{Records}}){
 	my $fields_ref = {};
 
+	push @{$fields_ref->{'eds_source'}}, {
+	    content => $match
+	};
+	
 	$logger->debug("Processing Record ".YAML::Dump($json_result_ref->{SearchResult}{Data}{Records}));
 	foreach my $thisfield (keys %{$match->{RecordInfo}{BibRecord}{BibEntity}}){
 	    
@@ -256,21 +280,54 @@ sub process_matches {
 	    }
 	}
 
-	if (defined $match->{RecordInfo}{BibRecord} && defined $match->{RecordInfo}{BibRecord}{BibRelationships} && defined $match->{RecordInfo}{BibRecord}{BibRelationships}{HasContributorRelationships}){
-	    
-	    foreach my $item (@{$match->{RecordInfo}{BibRecord}{BibRelationships}{HasContributorRelationships}}){
-		$logger->debug("DebugRelationShips".YAML::Dump($item));
-		if (defined $item->{PersonEntity} && defined $item->{PersonEntity}{Name} && defined $item->{PersonEntity}{Name}{NameFull}){
-		    
-		    push @{$fields_ref->{'P0100'}}, {
-			content => $item->{PersonEntity}{Name}{NameFull},
-		    }; 
-		    
-		    push @{$fields_ref->{'PC0001'}}, {
-			content => $item->{PersonEntity}{Name}{NameFull},
-		    }; 
+	if (defined $match->{RecordInfo}{BibRecord} && defined $match->{RecordInfo}{BibRecord}{BibRelationships}){
+
+	    if (defined $match->{RecordInfo}{BibRecord}{BibRelationships}{HasContributorRelationships}){
+		foreach my $item (@{$match->{RecordInfo}{BibRecord}{BibRelationships}{HasContributorRelationships}}){
+		    $logger->debug("DebugRelationShips".YAML::Dump($item));
+		    if (defined $item->{PersonEntity} && defined $item->{PersonEntity}{Name} && defined $item->{PersonEntity}{Name}{NameFull}){
+			
+			push @{$fields_ref->{'P0100'}}, {
+			    content => $item->{PersonEntity}{Name}{NameFull},
+			}; 
+			
+			push @{$fields_ref->{'PC0001'}}, {
+			    content => $item->{PersonEntity}{Name}{NameFull},
+			}; 
+		    }
 		}
 	    }
+
+
+	    if (defined $match->{RecordInfo}{BibRecord}{BibRelationships}{IsPartOfRelationships}){
+		foreach my $partof_item (@{$match->{RecordInfo}{BibRecord}{BibRelationships}{IsPartOfRelationships}}){
+		    if (defined $partof_item->{BibEntity}){
+		
+			foreach my $thisfield (keys %{$partof_item->{BibEntity}}){
+			    
+			    if ($thisfield eq "Titles"){
+				foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
+				    push @{$fields_ref->{'T0451'}}, {
+					content => $item->{TitleFull}
+				    };
+				    
+				}
+			    }
+			    
+			    if ($thisfield eq "Dates"){
+				foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
+				    push @{$fields_ref->{'T0425'}}, {
+					content => $item->{'Y'}
+				    };
+				    
+				}
+			    }
+			}
+		    }
+		    
+		}
+	    }
+	    
 	}
 	
         push @matches, {
@@ -386,10 +443,13 @@ sub parse_query {
     my $mapping_ref = $config->get('eds_searchfield_mapping');
     
     foreach my $field (keys %{$config->{searchfield}}){
-        my $searchtermstring = (defined $searchquery->get_searchfield($field)->{norm})?$searchquery->get_searchfield($field)->{norm}:'';
+        my $searchtermstring = (defined $searchquery->get_searchfield($field)->{val})?$searchquery->get_searchfield($field)->{val}:'';
+
         if ($searchtermstring) {
+
+	    
 	    if (defined $mapping_ref->{$field}){
-		push @$query_ref, "query-".$query_count."=AND,".$mapping_ref->{$field}.":".$searchtermstring;
+		push @$query_ref, "query-".$query_count."=AND,".$mapping_ref->{$field}.":".uri_escape($searchtermstring);
 		$query_count++;
 	    }
         }
@@ -418,7 +478,7 @@ sub parse_query {
             $logger->debug("Facet: $field / Term: $term (Filter-Field: ".$thisfilter_ref->{field}.")");
 
 	    if ($field && $term){
-		push @$filter_ref, "facetfilter=".$filter_count.",$field:$term";
+		push @$filter_ref, "facetfilter=".$filter_count.",$field:".uri_escape($term);
 		$filter_count++;
 	    }
         }

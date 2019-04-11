@@ -2015,6 +2015,24 @@ sub bin2dec {
     return unpack("N", pack("B32", substr("0" x 32 . shift, -32)));
 }
 
+sub encode_id {
+    my $id = shift;
+
+    # id als URL duerfen keine / haben!
+    $id=~s{/}{:slash:}g;
+    
+    return $id;
+}
+
+sub decode_id {
+    my $id = shift;
+
+    # codierte slashes wieder zurueck konvertieren
+    $id=~s{:slash:}{/}g;
+    
+    return $id;
+}
+
 sub normalize_lang {
     my $inputlang = shift;
 

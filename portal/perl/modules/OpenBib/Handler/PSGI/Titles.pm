@@ -631,7 +631,8 @@ sub show_availability {
     
     if ($titleid && $database){
         # Wenn Datenbank an Ausleihsystem gekoppelt, dann Medienstatus hollen und auswerten
-        if ($config->get_databaseinfo->single({ dbname => $database })->get_column('circ')){
+	my $thisdbinfo = $config->get_databaseinfo->single({ dbname => $database });
+        if ($thisdbinfo && $thisdbinfo->get_column('circ')){
             my $record = OpenBib::Record::Title->new({id => $titleid, database => $database, config => $config })->load_circulation;
             # TT-Data erzeugen
             my $ttdata={

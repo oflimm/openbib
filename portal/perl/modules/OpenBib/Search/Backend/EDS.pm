@@ -38,7 +38,6 @@ use Log::Log4perl qw(get_logger :levels);
 use LWP::UserAgent;
 use Storable;
 use String::Tokenizer;
-use URI::Escape qw(uri_escape);
 use YAML ();
 
 use OpenBib::Config;
@@ -449,7 +448,7 @@ sub parse_query {
 
 	    
 	    if (defined $mapping_ref->{$field}){
-		push @$query_ref, "query-".$query_count."=AND,".$mapping_ref->{$field}.":".uri_escape($searchtermstring);
+		push @$query_ref, "query-".$query_count."=AND,".$mapping_ref->{$field}.":".cleanup_eds_content($searchtermstring);
 		$query_count++;
 	    }
         }
@@ -478,7 +477,7 @@ sub parse_query {
             $logger->debug("Facet: $field / Term: $term (Filter-Field: ".$thisfilter_ref->{field}.")");
 
 	    if ($field && $term){
-		push @$filter_ref, "facetfilter=".$filter_count.",$field:".uri_escape($term);
+		push @$filter_ref, "facetfilter=".$filter_count.",$field:".cleanup_eds_content($term);
 		$filter_count++;
 	    }
         }
@@ -672,6 +671,18 @@ sub get_authtoken {
 sub get_sessiontoken {
     my $self = shift;
     return $self->{sessiontoken};
+}
+
+sub cleanup_eds_content {
+    my $content = shift;
+
+    $content =~ s{(,|\:|\(|\))}{\\$1}g;
+    $content =~ s{\s+\-\s+}{ }g;
+    $content =~ s{\s\s}{ }g;
+    $content =~ s{^\s+|\s+$}{}g;
+    $content =~ s{\s+(and|or|not)\s+}{ }gi;
+
+    return $content;
 }
 
 1;

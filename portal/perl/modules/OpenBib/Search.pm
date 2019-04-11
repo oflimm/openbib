@@ -268,6 +268,12 @@ sub get_number_of_documents {
     return $num;
 }       
 
+sub get_database {
+    my $self = shift;
+
+    return $self->{_database};
+}
+
 sub DESTROY {
     my $self = shift;
 

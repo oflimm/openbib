@@ -91,11 +91,13 @@ sub add {
     $logger->debug("Adding 1 Record of type ".ref($records));
     # Einzelner Titel
     if    (ref($records) eq "OpenBib::Record::Title"){
+	$logger->debug("Adding single record");
         push @{$self->{recordlist}}, $records;
         $self->{_size}=$self->{_size}+1;
     }
     # Titelliste
     elsif (ref($records) eq "OpenBib::RecordList::Title"){
+	$logger->debug("Adding recordlist");
        push @{$self->{recordlist}}, $records->get_records;
        $self->{_size}=$self->{_size}+$records->get_size();
     }

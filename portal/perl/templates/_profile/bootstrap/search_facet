@@ -1,7 +1,7 @@
 [% IF queryoptions.get_option('facets') != 'none' %]
 <div class="ob-facets ob-facets_all sliding-sidebar">
 
-[% IF hits <= config.get('xapian_option').maxmatch ;
+[% IF qopts.get_option('sb') == "eds" || ( qopts.get_option('sb') == "xapian" && hits <= config.get('xapian_option').maxmatch ) ;
 
       bklookup    = config.load_bk;
 
@@ -239,7 +239,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <div>
 
 
-[% IF separate_refine %]
+[% IF separate_refine  || qopts.get_option('sb') == "eds" %]
 [%# USE dumper;dumper.dump(have_filter)%]
 [%         IF searchquery.get_filter.size > 0 %]
         <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-database" aria-expanded="true">
@@ -275,7 +275,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
                    END ;
 %]
 [%# USE dumper;dumper.dump(category_map) %]
-<li class="ob-facet-item d-flex"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude_filter = [ filter.val ] }) %]" title="[% msg.maketext("Entfernen") %]"><img style="vertical-align:bottom" src="[% config.get_icon('delete',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /></a>&nbsp;[% filter_prefix_map.${filter.field} %]: [% IF filter.field == "fdb" %][% dbinfo.get('dbnames').${filter.term}.short %][% ELSE %][% filter.term %][% END %]</li>
+<li class="ob-facet-item d-flex"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude_filter = [ filter.val ] }) %]" title="[% msg.maketext("Entfernen") %]"><img style="vertical-align:bottom" src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /></a>&nbsp;[% filter_prefix_map.${filter.field} %]: [% IF filter.field == "fdb" %][% dbinfo.get('dbnames').${filter.term}.short %][% ELSE %][% filter.term %][% END %]</li>
 [%             END %]
 </ul>
 

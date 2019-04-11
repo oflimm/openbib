@@ -38,6 +38,7 @@ use Log::Log4perl qw(get_logger :levels);
 use LWP::UserAgent;
 use Storable;
 use String::Tokenizer;
+use URI::Escape;
 use YAML ();
 
 use OpenBib::Config;
@@ -101,10 +102,11 @@ sub search {
     # Default
     push @search_options, "sort=relevance";
     push @search_options, "searchmode=all";
-    push @search_options, "highlight=y";
+    push @search_options, "highlight=n";
     push @search_options, "includefacets=y";
     push @search_options, "autosuggest=y";
-    push @search_options, "view=brief";    
+    push @search_options, "view=brief";
+    #push @search_options, "view=detailed";    
     
     push @search_options, "resultsperpage=$num" if ($num);
     push @search_options, "pagenumber=$page" if ($page);
@@ -124,6 +126,10 @@ sub search {
     if ($logger->is_debug()){
 	$logger->debug("Request URL: $url");
     }
+
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
     
     my $request = HTTP::Request->new('GET' => $url);
     $request->content_type('application/json');
@@ -137,14 +143,10 @@ sub search {
 	my $searchtime   = timestr($stimeall,"nop");
 	$searchtime      =~s/(\d+\.\d+) .*/$1/;
 	
-	$logger->debug("Zeit fuer EDS HTTP-Request $searchtime");
+	$logger->info("Zeit fuer EDS HTTP-Request $searchtime");
     }
     
 
-    if ($self->have_filter){
-    }
-    else {
-    }
 
     if (!$response->is_success) {
 	$logger->info($response->code . ' - ' . $response->message);
@@ -153,7 +155,6 @@ sub search {
 
     
     $logger->info('ok');
-    $logger->debug($response->content);
 
     my $json_result_ref = {};
     
@@ -175,16 +176,16 @@ sub search {
 
     $self->process_facets($json_result_ref);
         
-    if ($logger->is_debug){
-        $logger->debug("Found matches ".YAML::Dump(\@matches));
-    }
+#    if ($logger->is_debug){
+#        $logger->debug("Found matches ".YAML::Dump(\@matches));
+#    }
     
     # # Facets
     # $self->{categories} = $results->{aggregations};
 
-    if ($logger->is_debug){
-	$logger->debug("Results: ".YAML::Dump(\@matches));
-    }
+#    if ($logger->is_debug){
+#	$logger->debug("Results: ".YAML::Dump(\@matches));
+#    }
 
     my $resultcount = $json_result_ref->{SearchResult}{Statistics}{TotalHits};
 
@@ -210,7 +211,7 @@ sub search {
 	my $searchtime   = timestr($stimeall,"nop");
 	$searchtime      =~s/(\d+\.\d+) .*/$1/;
 	
-	$logger->debug("Gesamtzeit fuer EDS-Suche $searchtime");
+	$logger->info("Gesamtzeit fuer EDS-Suche $searchtime");
     }
 
     return;
@@ -230,9 +231,9 @@ sub get_records {
 
     $self->matches;
 
-    if ($logger->is_debug){
-        $logger->debug(YAML::Dump(\@matches));
-    }
+#    if ($logger->is_debug){
+#        $logger->debug(YAML::Dump(\@matches));
+#    }
 
     foreach my $match (@matches) {
 
@@ -242,9 +243,9 @@ sub get_records {
         $recordlist->add(OpenBib::Record::Title->new({database => 'eds', id => $id })->set_fields_from_storable($fields_ref));
     }
 
-    if ($logger->is_debug){
-	$logger->debug("Result-Recordlist: ".YAML::Dump($recordlist->to_list))
-    }
+    # if ($logger->is_debug){
+    # 	$logger->debug("Result-Recordlist: ".YAML::Dump($recordlist->to_list))
+    # }
     
     return $recordlist;
 }
@@ -262,11 +263,18 @@ sub process_matches {
     foreach my $match (@{$json_result_ref->{SearchResult}{Data}{Records}}){
 	my $fields_ref = {};
 
+	my ($atime,$btime,$timeall);
+	
+	if ($config->{benchmark}) {
+	    $atime=new Benchmark;
+	}
+
+	
 	push @{$fields_ref->{'eds_source'}}, {
 	    content => $match
 	};
 	
-	$logger->debug("Processing Record ".YAML::Dump($json_result_ref->{SearchResult}{Data}{Records}));
+	# $logger->debug("Processing Record ".YAML::Dump($json_result_ref->{SearchResult}{Data}{Records}));
 	foreach my $thisfield (keys %{$match->{RecordInfo}{BibRecord}{BibEntity}}){
 	    
 	    if ($thisfield eq "Titles"){
@@ -283,7 +291,7 @@ sub process_matches {
 
 	    if (defined $match->{RecordInfo}{BibRecord}{BibRelationships}{HasContributorRelationships}){
 		foreach my $item (@{$match->{RecordInfo}{BibRecord}{BibRelationships}{HasContributorRelationships}}){
-		    $logger->debug("DebugRelationShips".YAML::Dump($item));
+#		    $logger->debug("DebugRelationShips".YAML::Dump($item));
 		    if (defined $item->{PersonEntity} && defined $item->{PersonEntity}{Name} && defined $item->{PersonEntity}{Name}{NameFull}){
 			
 			push @{$fields_ref->{'P0100'}}, {
@@ -334,6 +342,16 @@ sub process_matches {
             id       => $match->{Header}{An},
             fields   => $fields_ref,
         };
+
+	if ($config->{benchmark}) {
+	    my $stime        = new Benchmark;
+	    my $stimeall     = timediff($stime,$atime);
+	    my $parsetime   = timestr($stimeall,"nop");
+	    $parsetime      =~s/(\d+\.\d+) .*/$1/;
+	    
+	    $logger->info("Zeit um Treffer zu parsen $parsetime");
+	}
+
     }
 
     return @matches;
@@ -357,7 +375,7 @@ sub process_facets {
     
     # Transformation Hash->Array zur Sortierung
 
-    $logger->debug("Start processing facets: ".YAML::Dump($json_result_ref->{SearchResult}{AvailableFacets}));
+#    $logger->debug("Start processing facets: ".YAML::Dump($json_result_ref->{SearchResult}{AvailableFacets}));
     
     foreach my $eds_facet (@{$json_result_ref->{SearchResult}{AvailableFacets}}){
 
@@ -397,7 +415,7 @@ sub process_facets {
     my $drilldowntime    = timestr($ddtimeall,"nop");
     $drilldowntime    =~s/(\d+\.\d+) .*/$1/;
     
-    $logger->debug("Zeit fuer categorized drilldowns $drilldowntime");
+    $logger->info("Zeit fuer categorized drilldowns $drilldowntime");
 
     $self->{_facets} = $category_map_ref;
     
@@ -448,7 +466,14 @@ sub parse_query {
 
 	    
 	    if (defined $mapping_ref->{$field}){
-		push @$query_ref, "query-".$query_count."=AND,".$mapping_ref->{$field}.":".cleanup_eds_content($searchtermstring);
+		if ($mapping_ref->{$field} eq "TX"){
+		    push @$query_ref, "query-".$query_count."=AND%2C".cleanup_eds_query($searchtermstring);
+		}
+		else {
+		    push @$query_ref, "query-".$query_count."=AND,".$mapping_ref->{$field}.":".cleanup_eds_query($searchtermstring);
+		}
+		
+		#push @$query_ref, "query-".$query_count."=AND%2C".cleanup_eds_query($mapping_ref->{$field}.":".$searchtermstring);
 		$query_count++;
 	    }
         }
@@ -477,7 +502,7 @@ sub parse_query {
             $logger->debug("Facet: $field / Term: $term (Filter-Field: ".$thisfilter_ref->{field}.")");
 
 	    if ($field && $term){
-		push @$filter_ref, "facetfilter=".$filter_count.",$field:".cleanup_eds_content($term);
+		push @$filter_ref, "facetfilter=".cleanup_eds_filter($filter_count.",$field:$term");
 		$filter_count++;
 	    }
         }
@@ -673,15 +698,38 @@ sub get_sessiontoken {
     return $self->{sessiontoken};
 }
 
-sub cleanup_eds_content {
+sub cleanup_eds_query {
     my $content = shift;
 
     $content =~ s{(,|\:|\(|\))}{\\$1}g;
+ #   $content =~ s{\[}{%5B}g;
+ #   $content =~ s{\]}{%5D}g;
     $content =~ s{\s+\-\s+}{ }g;
     $content =~ s{\s\s}{ }g;
     $content =~ s{^\s+|\s+$}{}g;
     $content =~ s{\s+(and|or|not)\s+}{ }gi;
+#    $content =~ s{ }{\+}g;
 
+    $content = uri_escape($content);
+    
+     # Runde Klammern in den Facetten duerfen nicht escaped und URL-encoded werden!
+#    $content =~ s{\%5C\%28}{(}g; 
+#    $content =~ s{\%5C\%29}{)}g;
+
+    
+    return $content;
+}
+
+sub cleanup_eds_filter {
+    my $content = shift;
+
+    $content = uri_escape($content);
+    
+     # Runde Klammern in den Facetten duerfen nicht escaped und URL-encoded werden!
+    $content =~ s{\%5C\%28}{(}g; 
+    $content =~ s{\%5C\%29}{)}g;
+
+    
     return $content;
 }
 

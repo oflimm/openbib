@@ -240,7 +240,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <div>
 
 
-[% IF separate_refine  || qopts.get_option('sb') == "eds" %]
+[% IF separate_refine %]
 [%# USE dumper;dumper.dump(have_filter)%]
 [%         IF searchquery.get_filter.size > 0 %]
         <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-database" aria-expanded="true">

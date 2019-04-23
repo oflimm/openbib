@@ -312,11 +312,11 @@ $(document).ready(function(){
 </script>
 
       <div class="ob-numbering">[% IF with_id_checkbox %]<input type="checkbox" name="id" value="[% record.listid %]"  title="collection_item" />&nbsp;[% END %][% start_range+loop.count - 1 %]</div>
-      <div class="ob-thumbnail pt-3 pl-5 mr-0 d-none d-md-block">
-      <img src="http://www.ub.uni-koeln.de/cgi-bin/thumbnail.exe?CISOROOT=kubibooks&CISOPTR=[% record.id %]" alt="Thumbnail" />
-    [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
+      <div class="ob-thumbnail pt-5 ml-5 pr-2 mr-0 d-none d-md-block">
+
+      <a style="display: block;"href="http://dfg-viewer.de/show/?set[mets]=http%3A%2F%2Fwww.ub.uni-koeln.de%2Fcdm4%2Fmets_gateway.php%3FCISOROOT%3D%2Fkubibooks%26CISOPTR%3D[% record.id %]" target="_blank"><i class="fas fa-book fa-3x" style="display: inline-block;"></i></a>
       </div>
-      <div class="ob-brieftitle pl-5">
+      <div class="ob-brieftitle pl-2">
 [%# USE dumper;dumper.dump(dbinfo) %]
         <div class="ob-titleactions">
 [% IF tagname %]

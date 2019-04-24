@@ -22,14 +22,14 @@ while (<>){
 		mult    => $mark_ref->{mult},
 		subfield => $mark_ref->{subfield},
 	    };
-	    push $location_ref, $new_location_ref;
+	    push @$location_ref, $new_location_ref;
 
 	    my $new_isil_ref = {
 		content => "DE-Kn3",
 		mult    => $mark_ref->{mult},
 		subfield => $mark_ref->{subfield},
 	    };
-	    push $isil_ref, $new_isil_ref;
+	    push @$isil_ref, $new_isil_ref;
 
         }
     }

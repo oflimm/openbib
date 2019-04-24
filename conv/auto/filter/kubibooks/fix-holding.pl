@@ -18,7 +18,7 @@ while (<>){
     foreach my $mark_ref (@{$holding_ref->{fields}{'0014'}}){
         if ($mark_ref->{content} =~m/KMB/){
 	    my $new_location_ref = {
-		content => "Kunst und Musemsbibliothek Köln",
+		content => "Kunst und Musemsbibliothek K&ouml;ln",
 		mult    => $mark_ref->{mult},
 		subfield => $mark_ref->{subfield},
 	    };

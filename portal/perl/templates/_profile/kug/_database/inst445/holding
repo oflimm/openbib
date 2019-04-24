@@ -50,7 +50,7 @@
 [%  FOREACH thisholding IN holding %]
 <tr align="center"><td><strong>
 [%-  IF thisholding.${"X4000"}.content && thisholding.${"X4001"}.content -%]
-[%-   thisdbname = thisholding.${"X4000"}.content.dbname ;
+[%-   
       sigel = record.database.replace('inst','');
       library_isil = "DE-38-${sigel}";
 

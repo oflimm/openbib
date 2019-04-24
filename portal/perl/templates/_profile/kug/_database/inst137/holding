@@ -37,7 +37,6 @@
 [%  FOREACH thisholding IN holding %]
 <tr align="center"><td><strong>
 [%-  IF thisholding.${"X4000"}.content && thisholding.${"X4001"}.content -%]
-[%-   thisdbname = thisholding.${"X4000"}.content.dbname -%]
 [%-    IF dbinfo.get('locationid').${record.database} %]
 <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.get('locationid').${record.database} %].html?l=[% lang %]">
 [%-    ELSE -%]

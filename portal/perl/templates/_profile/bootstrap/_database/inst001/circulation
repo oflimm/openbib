@@ -28,7 +28,8 @@
 <p />
 [%# USE dumper;dumper.dump(dbinfo)%]
 [% IF Aquisition == 0 %]
-<table class="ym-full">
+<div class="table-responsive">
+<table class="table table-striped table-hover">
 <thead>
 <tr align="center"><th>[% msg.maketext("Bibliothek") %]</th><th>QR-Code</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Ausleihstatus") %]</th><th>[% msg.maketext("Ausleihsystem") %]</th></tr>
 </thead>
@@ -139,7 +140,7 @@
 [%-   END -%]
 <strong>[% thiscirculation.Bibliothek.full %]</strong></a></td>
 [%- END -%]
-<td><a class="ob-qrcode_preview" onclick="return false;" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [%- IF library_isil %][% locinfo.identifier.${library_isil}.description |uri %][% ELSE %][% thiscirculation.Bibliothek.short | uri %][% END %] :: [% IF thiscirculation.Standort.match('/ $') %][% thiscirculation.Standort.replace('/ $','') | uri %][% ELSE %][% thiscirculation.Standort | uri %][% END %][%- IF thiscirculation.Fussnote -%] ([% thiscirculation.Fussnote | uri %])[%- END -%] :: [% IF thiscirculation.Signatur.match('#$') && thiscirculation.Exemplar %][% thiscirculation.Signatur | uri %][% thiscirculation.Exemplar | uri %][% ELSE %][% thiscirculation.Signatur | uri %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get('qrcode_img') %]" /></a></td>
+<td><a class="ob-qrcode_preview" onclick="return false;" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [%- IF library_isil %][% locinfo.identifier.${library_isil}.description |uri %][% ELSE %][% thiscirculation.Bibliothek.short | uri %][% END %] :: [% IF thiscirculation.Standort.match('/ $') %][% thiscirculation.Standort.replace('/ $','') | uri %][% ELSE %][% thiscirculation.Standort | uri %][% END %][%- IF thiscirculation.Fussnote -%] ([% thiscirculation.Fussnote | uri %])[%- END -%] :: [% IF thiscirculation.Signatur.match('#$') && thiscirculation.Exemplar %][% thiscirculation.Signatur | uri %][% thiscirculation.Exemplar | uri %][% ELSE %][% thiscirculation.Signatur | uri %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" /></a></td>
 <td>[% IF thiscirculation.Standort.match('/ $') %][% thiscirculation.Standort.replace('/ $','') %][% ELSE %][% thiscirculation.Standort %][% END %][%- IF thiscirculation.Fussnote -%] ([% thiscirculation.Fussnote %])[%- END -%]<br/>
 [% IF thiscirculation.Standort.match('Fachbibliothek VWL') %]
 <a href="http://www.ub.uni-koeln.de/bibliotheken/38_101/" target="_blank"><b>&Ouml;ffnungszeiten</b></a>
@@ -171,7 +172,7 @@ thiscirculation.Status == 'entliehen' && thiscirculation.Rueckgabe != '31.12.999
 <td class="circurl">
 [%
      IF thiscirculation.Ausleihurl %]
-   <img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=550;url=[% uri_escape(thiscirculation.Ausleihurl) %]">[% msg.maketext("Weiter") %]</a>
+   <img style="vertical-align:bottom" src="[% config.get_icon("follow",view,sysprofile) %]" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=550;url=[% uri_escape(thiscirculation.Ausleihurl) %]">[% msg.maketext("Weiter") %]</a>
 [%   ELSE %]
 [%      IF thiscirculation.Statuscode != 0 ;
             IF thiscirculation.Gruppe.Name.match("Handapparat") %]
@@ -190,8 +191,10 @@ Ausleihe vor Ort [%# msg.maketext("Keine Aktion m&ouml;glich") %]
 [% END %]
 </tbody>
 </table>
+</div>
 [% ELSIF Aquisition == 1 %]
-<table width="100%">
+<div class="table-responsive">
+<table class="table table-striped table-hover">
 <tr><th>[% msg.maketext("Neuerwerbung") %]</th></tr>
 <tr><td class="boxedclear">
 <table width="100%">
@@ -215,5 +218,5 @@ Ausleihe vor Ort [%# msg.maketext("Keine Aktion m&ouml;glich") %]
 
 </td></tr>
 </table>
-
+</div>
 [% END %]

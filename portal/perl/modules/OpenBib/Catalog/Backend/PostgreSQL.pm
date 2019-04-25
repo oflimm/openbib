@@ -42,6 +42,7 @@ use Log::Log4perl qw(get_logger :levels);
 use OpenBib::Conv::Config;
 use OpenBib::Config::File;
 use OpenBib::Config::DatabaseInfoTable;
+use OpenBib::Config::LocationInfoTable;
 use OpenBib::Schema::Catalog;
 use OpenBib::Record::Title;
 use OpenBib::Record::Person;
@@ -1228,8 +1229,9 @@ sub _get_holding {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config      = OpenBib::Config::File->instance;
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->new;
+    my $config       = OpenBib::Config::File->instance;
+    my $dbinfotable  = OpenBib::Config::DatabaseInfoTable->new;
+    my $locinfo      = OpenBib::Config::LocationInfoTable->new;
     
     my $fields_ref={};
 
@@ -1292,11 +1294,17 @@ sub _get_holding {
     # Ein im Exemplar-Datensatz gefundenes Sigel geht vor
     if (exists $fields_ref->{X3330}{content}) {
         $sigel=$fields_ref->{X3330}{content};
-        if (defined $sigel && defined $dbinfotable->get('sigel')->{$sigel}) {
-            $fields_ref->{X4000}{content}=$dbinfotable->get('sigel')->{$sigel};
+        if (defined $sigel && defined $locinfo->get('identifier')->{$sigel}) {
+            $fields_ref->{X4000}{content} = {
+		full  => $locinfo->get('identifier')->{$sigel}{description},
+		short => $locinfo->get('identifier')->{$sigel}{description},
+	    };
+        }
+        elsif (defined $sigel && defined $dbinfotable->get('sigel')->{$sigel}) {
+            $fields_ref->{X4000}{content} = $dbinfotable->get('sigel')->{$sigel};		
         }
         else {
-            $fields_ref->{X4000}{content}= {
+            $fields_ref->{X4000}{content} = {
 					     full  => "($sigel)",
 					     short => "($sigel)",
 					    };

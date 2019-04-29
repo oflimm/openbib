@@ -269,7 +269,8 @@ sub process_matches {
 	    $atime=new Benchmark;
 	}
 
-	
+
+	# Gesamtresponse in eds_source
 	push @{$fields_ref->{'eds_source'}}, {
 	    content => $match
 	};
@@ -369,13 +370,14 @@ sub process_facets {
 
 
     my $fields_ref = {};
+
     
     
     my $category_map_ref     = ();
     
     # Transformation Hash->Array zur Sortierung
 
-#    $logger->debug("Start processing facets: ".YAML::Dump($json_result_ref->{SearchResult}{AvailableFacets}));
+    $logger->debug("Start processing facets: ".YAML::Dump($json_result_ref->{SearchResult}{AvailableFacets}));
     
     foreach my $eds_facet (@{$json_result_ref->{SearchResult}{AvailableFacets}}){
 
@@ -462,15 +464,29 @@ sub parse_query {
     foreach my $field (keys %{$config->{searchfield}}){
         my $searchtermstring = (defined $searchquery->get_searchfield($field)->{val})?$searchquery->get_searchfield($field)->{val}:'';
 
-        if ($searchtermstring) {
+        my $searchtermstring_from = (defined $searchquery->get_searchfield("${field}_from")->{norm})?$searchquery->get_searchfield("${field}_from")->{norm}:'';
+        my $searchtermstring_to = (defined $searchquery->get_searchfield("${field}_to")->{norm})?$searchquery->get_searchfield("${field}_to")->{norm}:'';
 
+	if ($field eq "year" && ($searchtermstring_from || $searchtermstring_to)){
+	    if ($searchtermstring_from && $searchtermstring_to){
+		push @$query_ref, "query-".$query_count."=AND%2CDT:".cleanup_eds_query($searchtermstring_from."-".$searchtermstring_to);
+	    }
+	    elsif ($searchtermstring_from){
+		push @$query_ref, "query-".$query_count."=AND%2CDT:".cleanup_eds_query($searchtermstring_from."-9999");
+	    }
+	    elsif ($searchtermstring_to){
+		# Keine Treffer im API, wenn aelter als 1800
+		push @$query_ref, "query-".$query_count."=AND&2CDT:".cleanup_eds_query("1800-".$searchtermstring_to);
+	    }
+    	}	
+        elsif ($searchtermstring) {
 	    
 	    if (defined $mapping_ref->{$field}){
 		if ($mapping_ref->{$field} eq "TX"){
 		    push @$query_ref, "query-".$query_count."=AND%2C".cleanup_eds_query($searchtermstring);
 		}
 		else {
-		    push @$query_ref, "query-".$query_count."=AND,".$mapping_ref->{$field}.":".cleanup_eds_query($searchtermstring);
+		    push @$query_ref, "query-".$query_count."=AND%2C".$mapping_ref->{$field}.":".cleanup_eds_query($searchtermstring);
 		}
 		
 		#push @$query_ref, "query-".$query_count."=AND%2C".cleanup_eds_query($mapping_ref->{$field}.":".$searchtermstring);
@@ -478,7 +494,6 @@ sub parse_query {
 	    }
         }
     }
-
 
     # Filter
 
@@ -710,7 +725,7 @@ sub cleanup_eds_query {
     $content =~ s{\s+(and|or|not)\s+}{ }gi;
 #    $content =~ s{ }{\+}g;
 
-    $content = uri_escape($content);
+    $content = uri_escape_utf8($content);
     
      # Runde Klammern in den Facetten duerfen nicht escaped und URL-encoded werden!
 #    $content =~ s{\%5C\%28}{(}g; 
@@ -723,7 +738,7 @@ sub cleanup_eds_query {
 sub cleanup_eds_filter {
     my $content = shift;
 
-    $content = uri_escape($content);
+    $content = uri_escape_utf8($content);
     
      # Runde Klammern in den Facetten duerfen nicht escaped und URL-encoded werden!
     $content =~ s{\%5C\%28}{(}g; 

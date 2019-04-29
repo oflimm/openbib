@@ -150,6 +150,17 @@ $("#dd_mediatype_[% database %]_toggle").click(function(){
  $("#dd_mediatype_[% database %]_toggle").html("");
 });
 
+// Begin Togglen / Facets Quellen
+// Bild setzen
+$("#dd_sources_[% database %]_toggle").html("<b>[<a href=\"#dd_sources_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+// Zuerst verstecken
+$("#dd_sources_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_sources_[% database %]_toggle").click(function(){
+ $("#dd_sources_[% database %]").toggle();
+ $("#dd_sources_[% database %]_toggle").html("");
+});
+
 // Begin Togglen / Facets Medienart
 // Bild setzen
 $("#dd_provenance_[% database %]_toggle").html("<b>[<a href=\"#dd_provenance_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
@@ -253,6 +264,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
           ${config.get('searchfield').personstring.prefix} = msg.maketext("Person")
           ${config.get('searchfield').corporatebodystring.prefix} = msg.maketext("K&ouml;perschaft")
           ${config.get('searchfield').subjectstring.prefix} = msg.maketext("Thema")
+          ${config.get('searchfield').sourcestring.prefix} = msg.maketext("Quelle")
           ${config.get('searchfield').classificationstring.prefix} = msg.maketext("Systematik")
           ${config.get('searchfield').topic.prefix} = msg.maketext("Themengebiet")
           ${config.get('searchfield').locationstring.prefix} = msg.maketext("Standort")
@@ -282,6 +294,37 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 
 </p>
 [%        END %]
+[% END %]
+
+
+[% IF qopts.get_option('sb') == "eds" %]
+<!-- Begin eds source facet -->
+[%         IF facets.defined('source') && facets.source.size > 0 %]
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-source" aria-expanded="true">
+           [% msg.maketext("nach Quelle") %] 
+        </h4>
+        <ul id="group-source" class="list-group in collapse show">
+[%             FOREACH termitem IN facets.source ;
+                  LAST IF loop.count > 25 ;
+%]
+[% IF facets.source.size > 5 && loop.count == 5 %]
+<span id="dd_sources_[% database %]_toggle"></span>
+<div id="dd_sources_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').sourcestring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>  <span class="badge badge-pill badge-secondary ml-auto">[% termitem.1 %]</span></li>
+[%             END %]
+[% IF facets.source.size > 5 %]
+</div>
+[% END %]
+</ul>
+<p/>
+[%         END %]
+<!-- End eds source facet -->
 [% END %]
 
 <!-- Begin database facet -->

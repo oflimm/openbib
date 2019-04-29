@@ -61,6 +61,15 @@
 [% IF NOT suppress_unauthorized %]
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
 
+      <li class="nav-item[% IF layout_param.active_menu == "search" %] active[% END %] dropdown">
+       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          [% msg.maketext("Suche") %]
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></li>
+        </ul>
+      </li>
+
 <!--
       <li class="nav-item[% IF layout_param.active_menu == "browse" %] active[% END %] dropdown">
        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -420,8 +420,6 @@ while (my $record = safe_next($batch)){
         
         foreach my $field ($record->field('776')){
             my $content_z = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('z')):$field->as_string('z');
-
-            $content_z=~s/\s+\(.+?\)\s*$//;
             
             if ($content_z){
                 my $multcount=++$multcount_ref->{'0553'};
@@ -435,6 +433,51 @@ while (my $record = safe_next($batch)){
 
         }
 
+	# HST Quelle
+        foreach my $field ($record->field('773')){
+            my $content_i = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('i')):$field->as_string('i');
+            my $content_t = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('t')):$field->as_string('t');
+            my $content_d = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('d')):$field->as_string('d');
+            my $content_g = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('g')):$field->as_string('g'); #
+            my $content_q = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('q')):$field->as_string('q'); # Seiten
+            my $content_x = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('x')):$field->as_string('x'); # ISBN
+
+	    my $hstquelle = "";
+
+	    if ($content_i){
+		$hstquelle .= $content_i.": ";
+	    }
+	    
+	    if ($content_t){
+		$hstquelle .= $content_t." ";
+	    }
+
+	    if ($content_g){
+		$hstquelle .= $content_g.".";
+	    }
+	    
+            if ($hstquelle){
+                my $multcount=++$multcount_ref->{'0590'};
+                
+                push @{$title_ref->{fields}{'0590'}}, {
+                    content  => konv($hstquelle),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+            }
+
+	    if ($content_x){
+                my $multcount=++$multcount_ref->{'0585'};
+                
+                push @{$title_ref->{fields}{'0585'}}, {
+                    content  => konv($content_x),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+	    }
+	    
+        }
+	
 	# Ueberregionale Identifikationsnummer
 	foreach my $field ($record->field('029')){
             my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');

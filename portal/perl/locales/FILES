@@ -1210,7 +1210,6 @@
 ../templates/_profile/bootstrap/cartitems_html_short
 ../templates/_profile/bootstrap/cartitems_mail
 ../templates/_profile/bootstrap/cartitems_mail_html
-../templates/_profile/bootstrap/cartitems_save_html
 ../templates/_profile/bootstrap/circulation
 ../templates/_profile/bootstrap/classifications
 ../templates/_profile/bootstrap/classifications_record
@@ -1823,9 +1822,6 @@
 ../templates/_profile/kug/_view/wisostatistik/home_html_bottom_left
 ../templates/_profile/kug/_view/wisostatistik/searchforms_record_profile
 ../templates/_profile/kug/_view/wisostatistik/search_radius
-../templates/_profile/mobile/_view/richtermobile/browse_title_html
-../templates/_profile/mobile/_view/richtermobile/holding
-../templates/_profile/mobile/_view/richtermobile/home
 ../templates/_profile/rheinlandbib/clouds_databases_record_html
 ../templates/_profile/rheinlandbib/clouds_html
 ../templates/_profile/rheinlandbib/clouds_navigation

@@ -441,12 +441,13 @@ while (my $record = safe_next($batch)){
             my $content_g = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('g')):$field->as_string('g'); #
             my $content_q = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('q')):$field->as_string('q'); # Seiten
             my $content_x = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('x')):$field->as_string('x'); # ISBN
+            my $content_w = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('w')):$field->as_string('w'); # ID der Quelle
 
 	    my $hstquelle = "";
 
-	    if ($content_i){
-		$hstquelle .= $content_i.": ";
-	    }
+	    # if ($content_i){
+	    # 	$hstquelle .= $content_i.": ";
+	    # }
 	    
 	    if ($content_t){
 		$hstquelle .= $content_t." ";
@@ -471,6 +472,18 @@ while (my $record = safe_next($batch)){
                 
                 push @{$title_ref->{fields}{'0585'}}, {
                     content  => konv($content_x),
+                    subfield => '',
+                    mult     => $multcount,
+                };
+	    }
+
+	    if ($content_w){
+                my $multcount=++$multcount_ref->{'0004'};
+
+		$content_w =~s{^\(.+\)}{}; # ISIL-Prefix entfernen
+		
+                push @{$title_ref->{fields}{'0004'}}, {
+                    content  => konv($content_w),
                     subfield => '',
                     mult     => $multcount,
                 };

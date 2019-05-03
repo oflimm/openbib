@@ -1,5 +1,4 @@
 [%- IF locationinfo.fields.${"L0280"}.first.content -%]
-</div><!-- End editorblock -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" charset="UTF-8"/>
 
     <style>
@@ -5323,4 +5322,3 @@ Stand. Bitte wenden Sie sich bei etwaigen Unstimmigkeiten direkt an
 die jeweilige Bibliothek.
 </p>
 
- <div class="uzk15__editorblock">

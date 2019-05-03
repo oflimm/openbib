@@ -19,6 +19,7 @@
                 'L0030', # msg.maketext("L0030") # Gebäude
                 'L0180', # msg.maketext("L0180") # Art der Bibliothek
                 'L0110', # msg.maketext("L0110") # Öffnungszeiten
+                'L0270', # msg.maketext("L0270") # Arbeitsplaetze
                 'L0230', # msg.maketext("L0230") # Online-Katalogisierung seit Erscheinungsjahr
                 'L0290', # msg.maketext("L0290") # Weitere Kataloge
                 'L0100', # msg.maketext("L0100") # Auskunft / Bibliothekar(in)

@@ -1,5 +1,6 @@
 [%- IF locationinfo.fields.${"L0280"}.first.content -%]
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" charset="UTF-8">
+</div><!-- End editorblock -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" charset="UTF-8"/>
 
     <style>
 
@@ -1292,6 +1293,8 @@
 <script src="https://kug.ub.uni-koeln.de/js/leaflet.js"></script>
 
 <script src="https://kug.ub.uni-koeln.de/js/jquery-3.3.1.slim.min.js"></script>
+
+
 
 <script type="text/javascript">
 	var arr = [];
@@ -2943,7 +2946,7 @@ function showPopupText(text, mitInfo) {
                 nameLink = '<a id="linktitel" target="blank" href="/lernen_arbeiten/bibliotheken/38_' + institute[t].sigel.replace(/DE-38-/g, "") + '/index_ger.html">' + institute[t].name + '</a>';
 
             else if (institute[t].sigel.match(/DE-38-HWA/))
-                nameLink = '<a id="linktitel" target="blank" href="https://www.ub.uni-koeln.de/ueber_uns/dach/hwa/index_ger.html>' + institute[t].name + '</a>';
+                nameLink = '<a id="linktitel" target="blank" href="https://www.ub.uni-koeln.de/ueber_uns/dach/hwa/index_ger.html">' + institute[t].name + '</a>';
 
             else if (institute[t].sigel.match(/^DE-38$/))
                 nameLink = '<a id="linktitel" target="blank" href="https://www.ub.uni-koeln.de/index.html">' + institute[t].name + '</a>';
@@ -2951,7 +2954,7 @@ function showPopupText(text, mitInfo) {
                 nameLink = '<a id="linktitel" target="blank" href="' + institute[t].url + '">' + institute[t].name + '</a>';
 
 
-            if (institute[t].arbeitsplaetze > 0 )
+            if (institute[t].arbeitsplaetze != '' )
                 arbeitsplaetze = '<br/><p><strong>Arbeitsplätze für Nutzer:</strong> '+institute[t].arbeitsplaetze + '</p>';
 
             if (zeiten === 1){ // test mit öffnen div auch als link zu institutsseite
@@ -3196,6 +3199,8 @@ function init(sigelUebergeben, indoorUebergeben) {
     /* Laden der OSM-Karte
      * alternativer Kartenstil in Farbe:
      * http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png
+     * http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png
+     * https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png
      */
     L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', {
         maxZoom: 20,
@@ -3436,7 +3441,7 @@ function drawMarkers(inst, coord) {
             var instname = inst[i].name;
             var arbeitsplaetze = inst[i].arbeitsplaetze;            
             
-            if (arbeitsplaetze > 0){
+            if (arbeitsplaetze != ''){
                instname = instname + '<br/>Nutzerarbeitsplätze: ' + arbeitsplaetze;
             }
 
@@ -4455,7 +4460,7 @@ function abkuerzungen(inp) {
         if ('mediävistik'.indexOf(input) != -1) arr.push('DE-38-405');
         if ('medien'.indexOf(input) != -1) arr.push('DE-38-101', 'DE-38-323');
         if ('medienforschung'.indexOf(input) != -1) arr.push('DE-38-323');
-        if ('medienkulturwissenschaft'.indexOf(input) != -1) arr.push('DE-38-429', 'DE-38-448', 'DE-38-464');
+        if ('medienkulturwissenschaft'.indexOf(input) != -1) arr.push('DE-38-429', 'DE-38-448');
         if ('medienökonomie'.indexOf(input) != -1) arr.push('DE-38-101');
         if ('medienpädagogik'.indexOf(input) != -1) arr.push('DE-38-323');
         if ('medienrecht'.indexOf(input) != -1) arr.push('DE-38-222');
@@ -5030,9 +5035,29 @@ var semesterZeit = [
 	 function initInsts() {
         return [
 [%-
+
+   is_blacklisted = { 
+                 'DE-38-103' = 1 
+                 'DE-38-104' = 1 
+                 'DE-38-105' = 1 
+                 'DE-38-106' = 1 
+                 'DE-38-108' = 1 
+                 'DE-38-113' = 1 
+                 'DE-38-120' = 1 
+                 'DE-38-121' = 1 
+                 'DE-38-127' = 1 
+                 'DE-38-128' = 1 
+                 'DE-38-146' = 1 
+                 'DE-38-157' = 1 
+                 'DE-38-159' = 1 
+                 'DE-38-166' = 1 
+                 'DE-38-464' = 1 
+   };
+
    koordinaten = [];
    
    FOREACH location IN locations ;
+    NEXT IF (is_blacklisted.${location.identifier});
 
     coordinates = location.fields.${"L0280"}.first.content.split(',').reverse.join(',');
     sigel       = location.identifier ;
@@ -5298,3 +5323,4 @@ Stand. Bitte wenden Sie sich bei etwaigen Unstimmigkeiten direkt an
 die jeweilige Bibliothek.
 </p>
 
+ <div class="uzk15__editorblock">

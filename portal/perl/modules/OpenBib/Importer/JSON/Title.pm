@@ -552,7 +552,10 @@ sub process {
             my $source_titleid   = $id;
             my $supplement       = "";
             my $field            = "0004";
-            
+
+	    # Keine Verlinkungen zu nicht existierenden Titelids
+	    next if (!defined $self->{storage}{titleid_exists}{$target_titleid} || ! $self->{storage}{titleid_exists}{$target_titleid});
+	    
             if (defined $inverted_ref->{$field}->{index}) {
                 foreach my $searchfield (keys %{$inverted_ref->{$field}->{index}}) {
                     my $weight = $inverted_ref->{$field}->{index}{$searchfield};

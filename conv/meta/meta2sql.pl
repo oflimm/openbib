@@ -146,6 +146,7 @@ my %indexed_corporatebody       = ();
 my %indexed_subject             = ();
 my %indexed_classification      = ();
 my %indexed_holding             = ();
+my %titleid_exists             = ();
 
 if ($reducemem) {
     tie %indexed_person,        'MLDBM', "./indexed_person.db"
@@ -192,6 +193,9 @@ if ($reducemem) {
 
     tie %listitemdata_superid,    "MLDBM", "./listitemdata_superid.db"
         or die "Could not tie listitemdata_superid.\n";
+
+    tie %titleid_exists,    "MLDBM", "./titleid_exists.db"
+        or die "Could not tie titleid_exists.\n";
 }
 
 # Verbindung zur SQL-Datenbank herstellen
@@ -314,6 +318,7 @@ my $storage_ref = {
     'indexed_subject'             => \%indexed_subject,
     'indexed_classification'      => \%indexed_classification,
     'indexed_holding'             => \%indexed_holding,
+    'titleid_exists'              => \%titleid_exists,
 };
 
 my $actions_map_ref = {};
@@ -567,7 +572,11 @@ if ($addsuperpers) {
             $logger->error("Skipping record: $@");
             next;
         }
-            
+
+        my $titleid = $record_ref->{id};
+
+	$storage_ref->{titleid_exists}{$titleid} = 1;
+	
         if (exists $record_ref->{fields}{'0004'}){
             foreach my $item (@{$record_ref->{fields}{'0004'}}){
                 my $superid = $item->{content};
@@ -601,7 +610,7 @@ if ($addsuperpers) {
         }
 
         my $id = $record_ref->{id};
-
+	
         next unless (defined $storage_ref->{listitemdata_superid}{$id} && ref  $storage_ref->{listitemdata_superid}{$id} eq "HASH");
 
         # Anreichern mit content;

@@ -1079,6 +1079,8 @@ sub add_default_ttdata {
         my $csv = Text::CSV_PP->new ({
             'binary'       => 1, # potential newlines inside fields
             'always_quote' => 1,
+	    'sep_char'     => ';',
+	    'quote_char'   => '"',
             'eol'          => "\n",
         });
         $ttdata->{'csv'}           = $csv;

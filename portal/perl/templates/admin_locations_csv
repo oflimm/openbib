@@ -1,6 +1,6 @@
 [%-
 
-x = csv.print(r,['identifier','type','description','institution','adresse','gebaeude','gemeinsame_bibliothek','weitere_kataloge','telefon','fax','email','internet','bibliothekare','oeffnungszeiten','bestand_monos','bestand_zeitschriften','laufende_zeitschriften','sammelgebiete','art','sigel','geo']);
+x = csv.print(r,['identifier','type','description','institution','adresse','gebaeude','gemeinsame_bibliothek','weitere_kataloge','telefon','fax','email','internet','bibliothekare','oeffnungszeiten','anzahl_arbeitsplaetze','bestand_monos','bestand_zeitschriften','laufende_zeitschriften','sammelgebiete','art','sigel','geo']);
 
 FOREACH location IN locations ;
 
@@ -17,6 +17,7 @@ FOREACH location IN locations ;
   internet = field.${"L0090"}.first.content;
   bibliothekare = field.${"L0100"}.first.content;
   oeffnungszeiten = field.${"L0110"}.first.content;
+  anzahlarbeitsplaetze = field.${"L0270"}.first.content;
   bestand_monos = field.${"L0120"}.first.content;
   bestand_zeitschriften = field.${"L0130"}.first.content;
   laufende_zeitschriften = field.${"L0140"}.first.content;
@@ -25,7 +26,7 @@ FOREACH location IN locations ;
   sigel = field.${"L0250"}.first.content;
   geo = field.${"L0280"}.first.content;
 
-  x = csv.print(r,[location.identifier,location.type,location.description,institution,adresse,gebaeude,gemeinsame_bibliothek,weitere_kataloge,telefon,fax,e_mail,internet,bibliothekare,oeffnungszeiten,bestand_monos,bestand_zeitschriften,laufende_zeitschriften,sammelgebiete,art,sigel,geo]);
+  x = csv.print(r,[location.identifier,location.type,location.description,institution,adresse,gebaeude,gemeinsame_bibliothek,weitere_kataloge,telefon,fax,e_mail,internet,bibliothekare,oeffnungszeiten,anzahlarbeitsplaetze,bestand_monos,bestand_zeitschriften,laufende_zeitschriften,sammelgebiete,art,sigel,geo]);
 END ;
 
 -%]

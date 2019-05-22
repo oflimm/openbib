@@ -937,6 +937,27 @@ if (-e $holdingfile){
             }
             
         }
+
+	# Zusammenfuehren von 1200/1201 in 1204
+
+	if (defined $item_ref->{fields}{'1200'}){
+	    my $bestandsverlauf = $item_ref->{fields}{'1200'}[0]{content};
+
+	    if (defined $item_ref->{fields}{'1201'}){
+		$bestandsverlauf.= " ".$item_ref->{fields}{'1201'}[0]{content};
+	    }
+
+	    push @{$item_ref->{fields}{1204}},{
+		mult     => 1,
+		content  => $bestandsverlauf,
+		subfield => '',
+	    };
+
+	    delete $item_ref->{fields}{'1200'};
+	    delete $item_ref->{fields}{'1201'};
+	}
+
+	
         print MEXOUT encode_json $item_ref, "\n";
     }
 

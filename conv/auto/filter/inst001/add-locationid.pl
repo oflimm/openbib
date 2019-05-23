@@ -115,6 +115,10 @@ while (<HOLDING>){
             push @{$element_ref}, "DE-38-USBFB";
             push @{$element_ref}, "DE-38-507";
         }
+        elsif ($location_ref->{content} =~m/Fachbibliothek Biologie/){
+            push @{$element_ref}, "DE-38-USBFB";
+            push @{$element_ref}, "DE-38-503";
+        }
         elsif ($location_ref->{content} =~m/inst411 /){
             push @{$element_ref}, "DE-38-411";
         }

@@ -121,7 +121,6 @@
 </div> <!-- End: Listlist do -->
 </div><!-- End: Listlist -->
 </div>
-</div>
 
 [%# IF user.ID %]
 [% username = user.get_username %]

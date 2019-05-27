@@ -29,7 +29,7 @@
      dfgviewer_url = "http://dfg-viewer.de/show/?set[mets]=http%3A%2F%2Fwww.ub.uni-koeln.de%2Fcdm4%2Fmets_gateway.php%3FCISOROOT%3D%2Fkubibooks%26CISOPTR%3D${record.id}";
      cdm_imgurl    = "https://www.ub.uni-koeln.de/cgi-bin/thumbnail.exe?CISOROOT=${cdmrecord.collection}&CISOPTR=${cdmrecord.pointer}";
 %]
-<a  href="[% dfgviewer_url %]" target="_blank"><img id="cover_full" src="[% cdm_imgurl %]"/></a>
+<p><a  href="[% dfgviewer_url %]" target="_blank"><img id="cover_full" src="[% cdm_imgurl %]"/></a></p>
 
   [% END %]
 [% END %]  

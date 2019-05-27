@@ -79,6 +79,7 @@
     <ul class="nav navbar-nav flex-row justify-content-between ml-auto">
            <li class="nav-item[% IF layout_param.active_menu == "collection" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %]</a></li>
 
+<!--
     [% IF username %]
       [% IF NOT suppress_unauthorized %]
            <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% msg.maketext("Mein KUG") %]</a></li>
@@ -87,7 +88,7 @@
     [% ELSE %]
            <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Anmelden") %]</a></li>
     [% END%]
-
+-->
     [% IF config.get('lang').size > 1 %]		
                <li class="nav-item order-2 order-md-1 mt-1">
 	        <form method="get" action="[% path %]">

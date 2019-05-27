@@ -84,7 +84,7 @@
 %]
 <p/>
 
-<h3 class="display-5">[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> in die bestehende Literaturliste &uuml;bernehmen: ") %]</h3>
+<h5>[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> in die bestehende Literaturliste &uuml;bernehmen: ") %]</h5>
 
 <div class="form-group">
 <label for="litlistid">[% msg.maketext("Name") %]</label>
@@ -96,11 +96,12 @@
 </div>
 
 <button class="btn btn-primary mb-2" type="submit" name="do_litlists_addentry">[% msg.maketext("Los") %]</button>
-</div>
 [%    END %]
 <p/>
+<hr/>
+<p/>
 
-<h3 class="display-5">[% msg.maketext("Anlegen einer neuen Literaturliste: ") %]</h3>
+<h5>[% msg.maketext("Anlegen einer neuen Literaturliste: ") %]</h5>
 
 <div class="form-group">
 <label for="title">[% msg.maketext("Name") %]</label>
@@ -117,6 +118,7 @@
 
 <button class="btn btn-primary mb-2" type="submit" name="do_addlitlist">[% msg.maketext("Los") %]</button>
 [% END %]
+</div> <!-- End: card-body -->
 
 </div> <!-- End: Listlist do -->
 </div><!-- End: Listlist -->
@@ -140,7 +142,7 @@
 <p/>
 [% msg.maketext("<b>Ausgew&auml;hlte Titel</b> mit diesen Tags versehen:") %]
 
-<h3 class="display-5">[% msg.maketext("Eingabe neuer Tags") %]</h3>
+<h5>[% msg.maketext("Eingabe neuer Tags") %]</h5>
 
 <div class="form-group">
 <label for"tags">[% msg.maketext("Tags") %]</label>
@@ -155,11 +157,13 @@
 </select>
 </div>
 
-<button class="btn btn-primary mb-2" type="submit" name="do_addtags">[% msg.maketext("Hinzuf&uuml;gen") %]</button>
+<button class="btn btn-primary mt-1 mb-2" type="submit" name="do_addtags">[% msg.maketext("Hinzuf&uuml;gen") %]</button>
 
 [% private_tags = user.get_private_tags({ username => username  }) %]
 
-<h4>[% msg.maketext("Übernahme eigener Tags") %]</h4>
+<p/>
+
+<h5>[% msg.maketext("Übernahme eigener Tags") %]</h5>
 
 <!-- Beginn Tag-Cloud -->
 [%

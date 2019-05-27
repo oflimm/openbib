@@ -11,19 +11,17 @@
 #
 #######################################################################
 -%]
-<b>[% msg.maketext("Anzahl") %]:</b>&nbsp;<select name="num" class="autosubmit">
-  <option value="20"[%- IF query.param('num') == 20 -%] selected="selected"[%- END -%]>20</option>
-  <option value="50"[%- IF query.param('num') == 50 -%] selected="selected"[%- END -%]>50</option>
-  <option value="100"[%- IF query.param('num') == 100 -%] selected="selected"[%- END -%]>100</option>
-  <option value="200"[%- IF query.param('num') == 200 -%] selected="selected"[%- END -%]>200</option>
-</select>&nbsp;&nbsp;<b>[% msg.maketext("Sortierung") %]:</b>&nbsp;<select name="srt" class="autosubmit">
-  <option value="year_asc"[%- IF query.param('srt') == 'year_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]&nbsp;&uarr;</option>-->
+<b>[% msg.maketext("Sortierung") %]:</b>&nbsp;
+<select name="srt" class="autosubmit">
+[% IF NOT no_relevance %]  <option value="relevance_desc"[%- IF query.param('srt') == 'relevance_dsc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Relevanz") %]</option>[% END %]
+  <option value="popularity_desc"[%- IF query.param('srt') == 'popularity_desc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
   <option value="year_desc"[%- IF query.param('srt') == 'year_desc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]&nbsp;&darr;</option>
-  <option value="person_asc"[%- IF query.param('srt') == 'person_asc' %] selected="selected"[%- END -%]>[% msg.maketext("nach Regent") %]</option>
-  <option value="id_asc"[%- IF query.param('srt') == 'id_asc' %] selected="selected"[%- END -%]>[% msg.maketext("nach ID") %]</option>
-  <option value="custom1_asc"[%- IF query.param('srt') == 'custom1_asc' %] selected="selected"[%- END -%]>[% msg.maketext("nach Polit. Bereich") %]</option>
-  <option value="custom2_asc"[%- IF query.param('srt') == 'custom2_asc' %] selected="selected"[%- END -%]>[% msg.maketext("nach Stadt") %]</option>
-  <option value="custom3_asc"[%- IF query.param('srt') == 'custom3_asc' %] selected="selected"[%- END -%]>[% msg.maketext("nach Region") %]</option>
+  <option value="year_asc"[%- IF query.param('srt') == 'year_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]&nbsp;&uarr;</option>
+  <option value="person_asc"[%- IF query.param('srt') == 'person_asc' %] selected="selected"[%- END -%]>[% msg.maketext("nach Person") %]</option>
+  <option value="title_asc"[%- IF query.param('srt') == 'title_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
+  <option value="order_asc"[%- IF query.param('srt') == 'order_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Z&auml;hlung") %]</option>
+  <option value="mark_asc"[%- IF query.param('srt') == 'mark_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Signatur") %]&nbsp;&uarr;</option>
+  <option value="mark_desc"[%- IF query.param('srt') == 'mark_desc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Signatur") %]&nbsp;&darr;</option>
 </select>
 
 <button class="btn btn-primary p-1 ob-nojs_show" type="submit">[% msg.maketext("Los") %]</button>

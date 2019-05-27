@@ -26,4 +26,4 @@
   <option value="custom3_asc"[%- IF query.param('srt') == 'custom3_asc' %] selected="selected"[%- END -%]>[% msg.maketext("nach Region") %]</option>
 </select>
 
-<input class="ob-nojs_show" type="submit" value="[% msg.maketext("Los") %]" />
+<button class="btn btn-primary p-1 ob-nojs_show" type="submit">[% msg.maketext("Los") %]</button>

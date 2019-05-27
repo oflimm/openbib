@@ -57,25 +57,6 @@
                         });
                 </script>
 -->
-<script language="JavaScript" type="text/javascript">
-$(document).ready(function(){
-    $(".ob-collection").click(function(){
-
-
-   // Insert-Funktion aufrufen
-   $.get(this.href);
-
-   // Signalisieren, dass in Merkliste transferiert wurde
-   $(this).children("img").attr("src","/images/openbib/success.png");
-
-   // Merklistenfuellstand aktualisieren
-   //  $.get("/portal/openbib/cartitems/count",
-   //function (txt){ $("#ob-collectioncount").html("["+txt+"]"); });
-
-   return false;
- });
-});
-</script>
 
 <script>
 $(document).ready(function(){

@@ -45,7 +45,7 @@
 
       <div class="navbar navbar-default d-block d-md-none pl-0"><!-- only visible in xs-->
         <div class="container-fluid pl-0">
-          <button class="btn btn-default navbar-btn" data-toggle="collapse" data-target="#ob-sidebar">
+          <button class="btn btn-primary navbar-btn" data-toggle="collapse" data-target="#ob-sidebar">
             <i class="fa fa-list"></i> [% IF layout_param.sidebar_template_description %][% layout_param.sidebar_template_description %][% ELSE %][% msg.maketext("Navigation") %][% END %]
           </button>
         </div>

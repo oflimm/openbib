@@ -204,7 +204,7 @@
         <div class="col-xs-8 col-xs-offset-2">
             <div class="input-group">
 		<div class="input-group-btn ob-search_panel">
-<!--                   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+<!--                   <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                       <span id="search_profile_text">Suchprofil</span> <span class="caret"></span>
                    </button> -->
 		   <div class="d-none d-md-block">
@@ -214,7 +214,7 @@
                 <input type="hidden" name="profile" value="[% searchprofileid_of_sysprofile %]" id="search_profile">
                 <input required="required" id="to_focus" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" maxlength="200" placeholder="[% msg.maketext("Suchbegriff...") %]" />
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="submit"><span class="fas fa-search"></span></button>
+                    <button class="btn btn-primary" type="submit"><span class="fas fa-search"></span></button>
                 </span>
             </div>
        </div>

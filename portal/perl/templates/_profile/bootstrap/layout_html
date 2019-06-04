@@ -76,13 +76,16 @@
 
 <!-- START Bootstrap-Cookie-Alert -->
 <div class="alert text-center cookiealert" role="alert">
-    <b>Do you like cookies?</b> &#x1F36A; We use cookies to ensure you get the best experience on our website. <a href="https://cookiesandyou.com/" target="_blank">Learn more</a>
+    <b>Um unsere Webseite für Sie optimal zu gestalten und fortlaufend verbessern zu können, verwenden wir Cookies. Durch die weitere Nutzung der Webseite stimmen Sie der Verwendung von Cookies zu. Weitere Informationen zu Cookies erhalten Sie in unserer <a href="[% path_prefix %]/[% config.get('info_loc') %]/datenschutz.html?l=[% lang %]">Datenschutzerklärung</a>. Unser Impressum finden Sie <a href="[% path_prefix %]/[% config.get('info_loc') %]/impressum.html?l=[% lang %]">hier</a>.
 
     <button type="button" class="btn btn-primary btn-sm acceptcookies" aria-label="Close">
-        I agree
+        Ich stimme der Verwendung von Cookies zu.
     </button>
 </div>
 <!-- END Bootstrap-Cookie-Alert -->
+
+<script src="/js/cookiealert.js"></script>
+
 
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <!-- <script src="/js/jquery-3.3.1.min.js"></script>

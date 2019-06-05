@@ -62,8 +62,15 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">
 
+    <!-- Bootstrap Select CSS -->
+    <link rel="stylesheet" href="/css/bootstrap-select.css">
+
     <!-- FontAwesome CSS -->
     <link rel="stylesheet" href="/css/fontawesome-free-5.3.1.css">
+
+    <!-- Material Design CSS -->
+<!--    <link rel="stylesheet" href="/css/bootstrap-material-design.min.css"> -->
+
 
   [%- TRY -%]
     [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/_profile/$sysprofile/_view/$view/openbib.css" -%]
@@ -92,6 +99,8 @@
 <script src="/js/bootstrap-select.min.js"></script>
 <script src="/js/jquery-ui-1.8.24.min.js"></script>
 <script src="/js/jquery.autocomplete.js"></script>
+
+<!-- <script src="/js/bootstrap-material-design.min.js"></script> -->
 
 <!-- Then static OpenBib JS -->
 <script src="/js/_profile/bootstrap/openbib.js"></script> 

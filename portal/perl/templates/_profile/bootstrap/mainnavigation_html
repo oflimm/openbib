@@ -100,7 +100,7 @@
     [% IF config.get('lang').size > 1 %]		
                <li class="nav-item order-2 order-md-1 mt-1">
 	        <form method="get" action="[% path %]">
-                   <select name="l" class="autosubmit" data-width="fit">
+                   <select name="l" class="autosubmit selectpicker" data-width="fit">
      [% lang_desc = {
        'en' = msg.maketext("English")
        'de' = msg.maketext("Deutsch")

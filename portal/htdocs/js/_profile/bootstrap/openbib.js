@@ -77,6 +77,7 @@ $(function(){
   // Activate accessible tabs
 // $("#searchform_types").accessibleTabs({ tabbody: '.tabbody', tabhead: 'h3', fxspeed: 'fast', syncheights: true });
 
+ $('.selectpicker').selectpicker();
  imagePreview();
  qrcodeShow();
 

@@ -53,7 +53,7 @@
 	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
 	  },
 	  {
-	     desc = "${msg.maketext('Recherche')}:&nbsp;${used_fields.join(' ; ')}"
+	     desc = "<span class=\"fas fa-search\"></span>&nbsp;${used_fields.join(' ; ')}"
 	     url  = '#'
 	     current = 1
 	  }

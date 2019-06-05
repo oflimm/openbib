@@ -215,14 +215,9 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 
 <p>
 
-<input type="submit" name="do_cartitems_delentry" value="[% msg.maketext("Löschen") %]" />
+<input type="submit" name="do_cartitems_delentry" class="btn btn-primary mb-2" value="[% msg.maketext("Löschen") %]" />
 
 </p>
-
-</div>
-
-
-</div>
 
 </div> <!-- End: Reuse Data -->
 [% END %]

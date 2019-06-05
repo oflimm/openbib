@@ -60,7 +60,7 @@
        this_options = queryoptions.to_cgi_querystring({ exclude = ['page'] });
        layout_param.breadcrumb.push(
          {
-	     desc = "${msg.maketext('Recherche')}:&nbsp;<em>${used_fields.join(' ; ')}</em>"
+	     desc = "<span class=\"fas fa-search\"></span>:&nbsp;<em>${used_fields.join(' ; ')}</em>"
 	     url  = "${path_prefix}/${config.get('search_loc')}.html?${thisoptions};page=1;${searchquery.to_cgi_querystring}"
 	  }
 	);

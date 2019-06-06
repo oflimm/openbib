@@ -92,7 +92,7 @@
     [% IF config.get('lang').size > 1 %]		
                <li class="nav-item order-2 order-md-1 mt-1">
 	        <form method="get" action="[% path %]">
-                   <select name="l" class="autosubmit" data-width="fit">
+                   <select name="l" class="autosubmit selectpicker" data-width="fit">
      [% lang_desc = {
        'en' = msg.maketext("English")
        'de' = msg.maketext("Deutsch")
@@ -165,6 +165,10 @@
 
             <li class="list-group-item bg-light pr-1 pt-3" style="border: none" >
 	     <a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
+	   </li>
+
+            <li class="list-group-item bg-light pr-1 pt-3" style="border: none" >
+	     <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kubibooks/titles.html?l=[% lang %]">[% msg.maketext("Alle Titel") %]</a>
 	   </li>
 
          </ul>

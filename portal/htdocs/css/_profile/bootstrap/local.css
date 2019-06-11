@@ -1388,4 +1388,9 @@ a.ext {
 	Label the data
     */
      .table-flippable td:before { content: attr(data-title); }
+
+
+     .badge-secondary {
+	 background-color: #0f7bff;
+     }
 }

@@ -17,18 +17,53 @@ while (<>){
     my $isil_ref = [];
     foreach my $mark_ref (@{$holding_ref->{fields}{'0014'}}){
         if ($mark_ref->{content} =~m/KMB/){
-	    my $new_location_ref = {
-		content => "Kunst und Musemsbibliothek K&ouml;ln",
-		mult    => $mark_ref->{mult},
-		subfield => $mark_ref->{subfield},
-	    };
+	    my $new_location_ref = {};
+	    my $new_isil_ref = {};
+	    
+	    if ($mark_ref->{content} =~m{^KMB/WRM/}){
+		$new_location_ref = {
+		    content => '<a href="https://www.wallraf.museum/" target="_blank">Wallraf-Richartz-Museum</a>',
+		    mult    => $mark_ref->{mult},
+		    subfield => $mark_ref->{subfield},
+		};
+
+		$new_isil_ref = {
+		    content => "DE-MUS-079214",
+		    mult    => $mark_ref->{mult},
+		    subfield => $mark_ref->{subfield},
+		};
+		
+	    }
+	    elsif ($mark_ref->{content} =~m{^KMB/MAKK/}){
+		$new_location_ref = {
+		    content => '<a href="https://museenkoeln.de/museum-fuer-angewandte-kunst/" target="_blank">Museum für Angewandte Kunst Köln</a>',
+		    mult    => $mark_ref->{mult},
+		    subfield => $mark_ref->{subfield},
+		};
+
+		$new_isil_ref = {
+		    content => "DE-MUS-078617",
+		    mult    => $mark_ref->{mult},
+		    subfield => $mark_ref->{subfield},
+		};
+		
+	    }
+	    else {
+		$new_location_ref = {
+		    content => "Kunst und Musemsbibliothek K&ouml;ln",
+		    mult    => $mark_ref->{mult},
+		    subfield => $mark_ref->{subfield},
+		};
+		
+		$new_isil_ref = {
+		    content => "DE-Kn3",
+		    mult    => $mark_ref->{mult},
+		    subfield => $mark_ref->{subfield},
+		};
+	    }
+	    
 	    push @$location_ref, $new_location_ref;
 
-	    my $new_isil_ref = {
-		content => "DE-Kn3",
-		mult    => $mark_ref->{mult},
-		subfield => $mark_ref->{subfield},
-	    };
 	    push @$isil_ref, $new_isil_ref;
 
         }

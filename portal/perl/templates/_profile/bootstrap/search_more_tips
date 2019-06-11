@@ -35,7 +35,7 @@ Recherche auswählen können.","<a href=\"${path_prefix}/${config.get('users_loc
 
 <ul>
 <li>[% msg.maketext("Suchen Sie im Kartenkatalog einer infrage kommende Institutsbibliothek. Leider sind noch nicht alle B&uuml;cher elektronisch erfasst und damit &uuml;ber den KUG recherchierbar.") %]</li>
-<li>[% msg.maketext("F&uuml;r verschiedene Institute und Seminare der Philosophischen Fakult&auml;t besteht die M&ouml;glichkeit der Suche in einem [_1]Online-Kartenkatalog[_2]","<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=532;url=http://retro-philfak.ub.uni-koeln.de:8080/catalog/\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>") %].</li>
+<li>[% msg.maketext("F&uuml;r verschiedene Institute und Seminare der Philosophischen Fakult&auml;t besteht die M&ouml;glichkeit der Suche in einem [_1]Online-Kartenkatalog[_2]","<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=532;url=http://retro-philfak.ub.uni-koeln.de:8080/catalog/\" target=\"_blank\">","</a>") %].</li>
 </ul>
 
 <p>
@@ -44,9 +44,9 @@ Recherche auswählen können.","<a href=\"${path_prefix}/${config.get('users_loc
 
 <ul>
 <li>[% msg.maketext("Denken Sie daran, dass nur wenige Bibliotheken Ihre Aufs&auml;tze in Ihrem Katalog aufnehmen") %]</li>
-<li>[% msg.maketext("Suchen Sie in den [_1]elektronisch verf&uuml;gbaren Zeitschriften[_2] der Universit&auml;tsbibliothek nach dem Zeitschriftentitel.","<a href=\"${path_prefix}/${config.get('databases_loc')}/id/ezb/classifications.html?l=${lang};type=cloud;access_green=1;access_yellow=1\"><span style=\"font-size:1.2em\">","</span></a>") %]</li>
+<li>[% msg.maketext("Suchen Sie in den [_1]elektronisch verf&uuml;gbaren Zeitschriften[_2] der Universit&auml;tsbibliothek nach dem Zeitschriftentitel.","<a href=\"${path_prefix}/${config.get('databases_loc')}/id/ezb/classifications.html?l=${lang};type=cloud;access_green=1;access_yellow=1\">","</a>") %]</li>
 <li>[% msg.maketext("Haben Sie sich &uuml;ber unser
-[_1]Datenbankangebot[_2] informiert? Auch hier finden Sie Volltexte.","<a href=\"${path_prefix}/${config.get('databases_loc')}/id/dbis/classifications.html?l=de;type=cloud;access_green=1;access_yellow=1;access_national=1\"><span style=\"font-size:1.2em\">","</span></a>") %]</li>
+[_1]Datenbankangebot[_2] informiert? Auch hier finden Sie Volltexte.","<a href=\"${path_prefix}/${config.get('databases_loc')}/id/dbis/classifications.html?l=de;type=cloud;access_green=1;access_yellow=1;access_national=1\">","</a>") %]</li>
 </ul>
 <!--
 </div>

@@ -432,13 +432,13 @@
 	padding-top: 5px;
     }
 
-.ob-cloud {
-  font-size: 150%;
-}
+    .ob-cloud {
+	font-size: 150%;
+    }
 
-.ob-reuse_data h4, .ob-discover_sources h4, .ob-session_history h4 {
+    .ob-reuse_data h4, .ob-discover_sources h4, .ob-session_history h4 {
 	border-bottom: 2px solid #e3e3e3;
-}
+    }
 
 /*
 .ob-discover_sources .card-header {
@@ -1165,6 +1165,10 @@
     }
 
 
+    .badge-secondary {
+	background-color: #0f7bff;
+    }
+
 /*    background:#f4f4f4; */
 }
 
@@ -1389,8 +1393,4 @@ a.ext {
     */
      .table-flippable td:before { content: attr(data-title); }
 
-
-     .badge-secondary {
-	 background-color: #0f7bff;
-     }
 }

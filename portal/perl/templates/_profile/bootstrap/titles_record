@@ -8,7 +8,7 @@
        fieldname    = field_map.${field};
        fieldcontent = searchquery.get_searchquery.${field}.val;
        NEXT IF NOT fieldcontent ;
-       used_fields.push( "<b>${fieldname}</b>:${fieldcontent}" );
+       used_fields.push( "<b>${fieldname}</b>: ${fieldcontent}" );
     END;
 -%]
 [%- IF representation == '' || representation == 'html' ;

@@ -48,7 +48,7 @@
        fieldname    = field_map.${field};
        fieldcontent = thissearchquery.${field}.val;
        NEXT IF NOT fieldcontent ;
-       used_fields.push( "<b>${fieldname}</b>:${fieldcontent}" );
+       used_fields.push( "<b>${fieldname}</b>: ${fieldcontent}" );
      END;
 -%]
 <em>[% used_fields.join(' ; ') %]</em></a>

@@ -15,7 +15,7 @@
 <form method="post" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% databaseinfo.dbname %]">
 <input type="hidden" name="_method"    value="PUT" />
 
-<h1 class="display-5">[% msg.maketext("Allgemeines Kataloginformationen") %]</h1>
+<h1 class="display-5">[% msg.maketext("Allgemeine Kataloginformationen") %]</h1>
 
 <div class="form-group">
 <label for="dbname">[% msg.maketext("DB-Name") %]</label>

@@ -41,7 +41,7 @@
           fieldcontent = topic_map.${fieldcontent} ;
        END ;       
        NEXT IF NOT fieldcontent ;
-       used_fields.push( "<b>${fieldname}</b>:${fieldcontent}" );
+       used_fields.push( "<b>${fieldname}</b>: ${fieldcontent}" );
      END;
 
     layout_param = {

@@ -56,7 +56,7 @@
     fieldcontent = query.get_searchquery.${field}.val;
     NEXT IF NOT fieldcontent ;    
 -%]
-[% used_fields.push( "<b>${fieldname}</b>:${fieldcontent}" ) %]
+[% used_fields.push( "<b>${fieldname}</b>: ${fieldcontent}" ) %]
 [%- END -%]
 [% used_fields.join(' ; ') %] 
 [%# USE dumper;dumper.dump(databaseinfo.system);%]

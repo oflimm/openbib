@@ -11,7 +11,9 @@
 #
 #######################################################################
 -%]
-<h2>Die Web-Administration</h2>
+
+<div class="jumbotron">
+          <h1 class="display-4">Die Web-Administration</h1>
 
 <h3>Katalog- und Portalmanagement</h3>
 
@@ -54,3 +56,5 @@ Kataloge werden in Portalen in folgender Reihenfolge definiert
 <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %].html?l=[% lang %]">Sessions</a></li>
 <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('searchprofiles_loc') %].html?l=[% lang %]">Suchprofile</a></li>
 </ul>
+
+</div>

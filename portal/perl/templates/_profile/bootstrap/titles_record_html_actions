@@ -314,6 +314,8 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 
 </div>
 
+
+[% IF NOT disable_discover_sources %]
 <div class="ob-discover_sources"><!-- Begin Discover-Sources -->
 
 <h4>[% msg.maketext("Entdecken Sie weitere Titel") %]</h4>
@@ -611,6 +613,8 @@ $(document).ready(function(){
 
 <!-- </div><!-- End ob-record_title_discover_toggle_do -->
 </div><!-- End card-body -->
+
+[% END %]
 
 <script type="text/javascript">
 $(document).ready(function(){

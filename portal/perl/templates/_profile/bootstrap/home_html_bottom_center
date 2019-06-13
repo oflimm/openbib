@@ -32,15 +32,6 @@
 <li><i class="fa-li fa fa-caret-right"></i><a href="[% path_prefix %]/[%- IF viewdbs.size == 1 -%][% config.get('databases_loc') %]/id/[% viewdbs.first %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %][% ELSE %][% config.get('databases_loc') %]/[% config.get('clouds_loc') %].html?l=[% lang %][% END %]" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Struktur des Katalogbestandes als Wortwolken") %]</a></li>
 <li><i class="fa-li fa fa-caret-right"></i><a href="[% path_prefix %]/[% config.get('databases_loc') %].html?l=[% lang %]">[% msg.maketext("Informationen zu den Katalogen") %]</a></li>
 <li><i class="fa-li fa fa-caret-right"></i><a href="[% path_prefix %]/[% config.get('locations_loc') %].html?l=[% lang %]">[% msg.maketext("Standorte der Bibliotheken") %]</a></li>
-<li><i class="fa-li fa fa-caret-down"></i>[% msg.maketext("Allgemeine Suchprofile")%]
-<ul class="fa-ul">
-[% FOREACH unit IN config.get_orgunitinfo_overview(sysprofile).all ;
-      searchprofileid_of_orgunit = config.get_searchprofile_of_orgunit(sysprofile,unit.orgunitname) ;
-%]
-<li><i class="fa-li fa fa-caret-right"></i><a href="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/id/[% searchprofileid_of_orgunit %].html?l=[% lang %]">[% unit.description %]</a></li>
-[% END%]
-</ul>
-</li>
 </ul>
 
 [% IF 0 == 1 && browser.firefox %]

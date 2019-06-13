@@ -41,7 +41,7 @@
 [%   END;
     END; %]
 [% END %]
-<option value="[% searchprofileid_of_sysprofile %]"[%- IF prevprofile == searchprofileid_of_sysprofile && NOT checked_profile -%] selected="selected"[%- END -%]>[% msg.maketext("Alle Kataloge") %]</option>
+<option value="[% searchprofileid_of_view %]"[%- IF prevprofile == searchprofileid_of_view && NOT checked_profile -%] selected="selected"[%- END -%]>[% msg.maketext("Alle Kataloge") %]</option>
 </optgroup>
 [% IF 0 == 1 %]
 <optgroup label="[% msg.maketext("Allgemeine Suchprofile") %]">

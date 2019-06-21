@@ -143,6 +143,7 @@ sub load_full_title_record {
 
     my $fields_ref = ();
 
+    # Gesamtresponse in eds_source
     push @{$fields_ref->{'eds_source'}}, {
 	content => $json_result_ref
     };
@@ -175,6 +176,54 @@ sub load_full_title_record {
 		
 	    }
 	}
+
+	# z.B. DOI in 0010
+	if ($thisfield eq "Identifiers"){
+	    foreach my $item (@{$json_result_ref->{Record}{RecordInfo}{BibRecord}{BibEntity}{$thisfield}}){
+		push @{$fields_ref->{'T0010'}}, {
+		    content => $item->{Value}
+		};
+		
+	    }
+	}
+
+
+	if ($thisfield eq "PhysicalDescription"){
+	    my $startpage;
+	    my $endpage;
+	    my $pagecount;
+	    
+	    eval {
+		$startpage = $json_result_ref->{Record}{RecordInfo}{BibRecord}{BibEntity}{$thisfield}{Pagination}{StartPage};
+	    };
+
+	    eval {
+		$pagecount = $json_result_ref->{Record}{RecordInfo}{BibRecord}{BibEntity}{$thisfield}{Pagination}{PageCount};
+	    };
+
+	    if ($startpage){
+		$startpage=~s{^0+}{}g;
+
+		if ($pagecount && $pagecount > 1){
+		    $endpage = $startpage + $pagecount - 1;
+		}
+	    }
+
+	    my $pagerange = "";
+
+	    $pagerange = $startpage if ($startpage);
+	    $pagerange .= " - $endpage" if ($endpage);
+
+	    $pagerange = "S. ".$pagerange if ($pagerange);
+	    
+	    
+	    if ($pagerange){
+		push @{$fields_ref->{'T0596'}}, {
+		    content => $pagerange,
+		    subfield => "s",
+		};
+	    }
+	}
 	
     }
     
@@ -185,9 +234,14 @@ sub load_full_title_record {
 	    foreach my $item (@{$json_result_ref->{Record}{RecordInfo}{BibRecord}{BibRelationships}{HasContributorRelationships}}){
 		$logger->debug("DebugRelationShips".YAML::Dump($item));
 		if (defined $item->{PersonEntity} && defined $item->{PersonEntity}{Name} && defined $item->{PersonEntity}{Name}{NameFull}){
+		    my $name = $item->{PersonEntity}{Name}{NameFull};
+
+		    $name =~ s{([^\(]+)\, (Verfasser|Herausgeber|Mitwirkender|Sonstige).*}{$1}; # Hinweis pkostaedt: GND-Zusaetze abschneiden, z.B. ID=edswao:edswao.47967597X
+		    $name =~ s{([^\(]+)\, \(DE\-.*}{$1}; # Hinweis pkostaedt: GND-ID abschneiden, z.B. ID=edswao:edswao.417671822
+
 		    
 		    push @{$fields_ref->{'T0100'}}, {
-			content => $item->{PersonEntity}{Name}{NameFull},
+			content => $name,
 		    };
 		}
 	    }
@@ -217,12 +271,141 @@ sub load_full_title_record {
 				
 			    }
 			}
+
+			if ($thisfield eq "Numbering"){
+			    foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
+				my $type  = $item->{Type};
+				my $value = $item->{Value};
+
+				if ($value && $type eq "volume"){
+				    push @{$fields_ref->{'T0089'}}, {
+					content => $value,
+				    };
+				    push @{$fields_ref->{'T0596'}}, {
+					content => $value,
+					subfield => "b",
+				    };
+				}
+				elsif ($value && $type eq "issue"){
+				    push @{$fields_ref->{'T0596'}}, {
+					content => $value,
+					subfield => "h",
+				    };
+				}
+				
+			    }
+			}
+			
+			if ($thisfield eq "Identifiers"){
+			    foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
+				my $type  = $item->{Type};
+				my $value = $item->{Value};
+
+				if ($value && $type eq "issn-print"){
+				    # Normieren
+				    $value =~ s/^(\d{4})(\d{3}[0-9xX])$/$1-$2/;
+
+				    # Todo: 543 oder 585
+				    push @{$fields_ref->{'T0585'}}, {
+					content => $value,
+				    } if ($value =~m/^\d{4}\-?\d{3}[0-9xX]$/);
+				}
+				elsif ($type =~/^issn-([0-9xX]{8})$/){
+				    $value = $1;
+				    
+				    # Normieren
+				    $value =~ s/^(\d{4})(\d{3}[0-9xX])$/$1-$2/;
+
+				    # Todo: 543 oder 585
+				    push @{$fields_ref->{'T0585'}}, {
+					content => $value,
+				    } if ($value =~m/^\d{4}\-?\d{3}[0-9xX]$/);
+				}
+				elsif ($value && $type eq "isbn-print"){
+				    # Todo: 540
+				    push @{$fields_ref->{'T0540'}}, {
+					content => $value,
+				    };
+				}
+			    }
+			}
 		    }
 		}
 	    }
 	}
     }
 
+    # Todo: 
+    # Jahr und Heft nicht verwenden, wenn DbId = edsarx
+    # Serial nicht anwenden, wenn DbId = rih
+
+    
+    # Volltextlinks
+    {
+	my $link_mult = 1;
+	
+	my $url = "";
+	
+	eval { 	
+	    $url = $json_result_ref->{'Record'}{'FullText'}{'Links'}[0]{'Link'}[0]{'Url'};
+	};
+	
+	if ($url) { # ID=bth:94617232
+	    $record->set_field({field => 'T0662', subfield => '', mult => $link_mult, content => $url});
+	    $record->set_field({field => 'T0663', subfield => '', mult => $link_mult, content => "Volltext"});
+	    # Todo: Zugriffstatus 'yellow' hinzufuegen
+	    $link_mult++;
+	}
+	else { 
+	    my $available = '';
+	    
+	    eval {
+		$available = $json_result_ref->{'Record'}{'FullText'}{'Text'}{'Availability'}
+	    };
+		
+	    if ($available == 1 && $json_result_ref->{'Record'}{PLink}) {
+		$record->set_field({field => 'T0662', subfield => '', mult => $link_mult, content => $json_result_ref->{PLink}});
+		$record->set_field({field => 'T0663', subfield => '', mult => $link_mult, content => "HTML-Volltext"});
+		# Todo: Zugriffstatus 'yellow' hinzufuegen
+		$link_mult++;
+	    }
+	}
+	
+	# arXiv, DOAJ und OAIster: Publikationstyp einfuegen und CustomLink auslesen
+	if ($json_result_ref->{Header}{DbId} =~ /^(edsarx|edsdoj|edsoai)$/) {
+	    $record->set_field({field => 'T0800', subfield => '', mult => 1, content => "electronic resource"}) unless $json_result_ref->{'Record'}{'Header'}{'PubType'};
+	    
+	    $url = '';
+	    
+	    eval {
+		# In IPS $json_result_ref->{'FullText'}[0]{'CustomLinks'}[0]['CustomLink'][0]{'Url'};
+		$url = $json_result_ref->{'Record'}{'FullText'}{'CustomLinks'}[0]{'Url'};
+	    };
+	    
+	    if ($url) {
+		$url =~ s!(.*)\#\?$!$1!; # OAIster: "#?" am Ende entfernen, z.B. ID=edsoai:edsoai.859893876 ; ID=edsoai:edsoai.690666320
+		$url =~ s!(http://etheses.bham.ac.uk/[^/]+/).*ThumbnailVersion.*\.pdf!$1!; # Sonderanpassung fuer etheses.bham.ac.uk, z.B. ID=edsoai:edsoai.690666320
+		$record->set_field({field => 'T0662', subfield => '', mult => $link_mult, content => $url});
+		$record->set_field({field => 'T0663', subfield => '', mult => $link_mult, content => "Volltext"});
+		# Todo: Zugriffstatus 'green' hinzufuegen
+		$link_mult++;
+	    }
+	}
+
+
+	# Science cititation index: hart verlinken
+	# Hinweis pkostaedt: Der Link "Citing Articles" funktioniert nicht in jedem Fall, z.B. ID=edswss:000312205100002
+	if ($json_result_ref->{Header}{DbId} =~ /^(edswsc|edswss)$/ && $json_result_ref->{Header}{An}) {
+	    my $url = "http://gateway.isiknowledge.com/gateway/Gateway.cgi?&GWVersion=2&SrcAuth=EBSCO&SrcApp=EDS&DestLinkType=CitingArticles&KeyUT=" . $json_result_ref->{Header}{An} . "&DestApp=WOS";
+	    
+	    $record->set_field({field => 'T0662', subfield => '', mult => $link_mult, content => $url});
+	    $record->set_field({field => 'T0663', subfield => '', mult => $link_mult, content => "Citing Articles (via Web of Science)"});
+	    # Todo: Zugriffstatus 'yellow' hinzufuegen
+	    $link_mult++;
+	}
+
+    }
+    
     $record->set_fields_from_storable($fields_ref);
     
     $record->set_holding([]);

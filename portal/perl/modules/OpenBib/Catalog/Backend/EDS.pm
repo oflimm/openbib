@@ -339,6 +339,87 @@ sub load_full_title_record {
     # Jahr und Heft nicht verwenden, wenn DbId = edsarx
     # Serial nicht anwenden, wenn DbId = rih
 
+    # Items
+
+    {
+
+	if (defined  $json_result_ref->{'Record'}{'Items'}){
+
+	    my $items_field_map_ref = {
+		ItemTitle       => 'T0590',
+		ItemAuthor      => 'T0591',
+		ItemLanguage    => 'T0516',
+		Abstract        => 'T0750',
+		AbstractNonEng  => 'T0750',
+		TitleSource     => 'T0451',
+		TitleSourceBook => 'T0451',
+		Publisher       => 'T0419',
+		DatePubCY       => 'T0595',
+		ISBN            => 'T0540',
+		ISSN	        => 'T0585',
+	    };
+
+	    
+	    foreach my $item (@{$json_result_ref->{'Record'}{'Items'}}){
+		my $label = $item->{Label};
+		my $data  = $item->{Data};
+		my $name  = $item->{Name};
+		
+		# Data breinigen. Hinweise pkostaedt
+		$data =~ s{<br \/>}{ ; }g;
+		$data =~ s{<relatesTo>[^<]+<\/relatesTo><i>[^<]+<\/i>}{}g; # z.B. <relatesTo>2</relatesTo><i> javierm@electrica.cujae.edu.cu</i>
+		$data =~ s{<i>([^<]+)<\/i>}{$1}g;
+		$data =~ s{<[^>]+>([^<]+)<\/[^>]+>}{$1}g;                  # z.B. <searchLink fieldCode="JN" term="%22Linux%22">Linux</searchLink>
+		$data =~ s{&lt;.+?&gt;}{}g;                                # z.B. rih:2012-09413, pdx:0209854
+		$data =~ s{&amp;amp;}{&amp;}g;                             # z.B. pdx:0209854
+
+		if ($name =~ /^(ItemTitle|ItemAuthor|ItemLanguage|Abstract|AbstractNonEng|TitleSource|TitleSourceBook|Publisher|DatePubCY|ISBN|ISSN)$/) {
+
+		    if ($name eq 'Publisher') {
+			$data =~ s/,\s+\d{4}$//;                          # z.B. edsgsl:solis.00547468 (Hamburg : Diplomica Verl., 2009 -> Hamburg : Diplomica Verl.)
+		    } 
+		    elsif ($name eq 'TitleSource' && $json_result_ref->{Header}{DbId} eq 'edsoai' && $data =~ /urn:/) {
+			next;                                             # z.B. edsoai:edsoai.824612814
+		    }
+
+		    if (defined $items_field_map_ref->{$name}){
+			push @{$fields_ref->{$items_field_map_ref->{$name}}}, {
+			    content => $data,
+			};
+			
+		    }
+		    # if ($Result{$name}) {
+		    #     if ($name eq 'Abstract') {
+		    # 	$Result{$name} .= '<br/>';
+		    # 	$Result{$name} .= '<br/>' if length($data) > 100;
+		    #     } else {
+		    # 	$Result{$name} .= ' ; ';
+		    #     }
+		    # }
+		    # $Result{$name} .= $data; 
+		    elsif ($name eq 'ItemSubject') {
+			if ($label eq 'Time') {
+			    push @{$fields_ref->{'T0501'}}, {
+				content => "Zeitangabe: " . $data, # z.B. Geburtsdaten, ID=edsoao:oao.T045764
+			    };
+			} 
+			else { 
+			    my @subjects = split(' ; ', $data);
+			    foreach my $subject (@subjects) {
+				push @{$fields_ref->{'T0710'}}, {
+				    content => $data,
+				};
+			    }
+			}
+			
+			
+			
+		    }
+		}
+	    }
+	}
+	
+    }
     
     # Volltextlinks
     {

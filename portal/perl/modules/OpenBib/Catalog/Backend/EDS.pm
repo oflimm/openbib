@@ -75,6 +75,8 @@ sub new {
     
     $self->{client}        = $ua;
 
+    $self->{have_field_content} = {};
+    
     return $self;
 }
 
@@ -147,279 +149,9 @@ sub load_full_title_record {
     push @{$fields_ref->{'eds_source'}}, {
 	content => $json_result_ref
     };
-    
-    foreach my $thisfield (keys %{$json_result_ref->{Record}{RecordInfo}{BibRecord}{BibEntity}}){
-	
-	if ($thisfield eq "Titles"){
-	    foreach my $item (@{$json_result_ref->{Record}{RecordInfo}{BibRecord}{BibEntity}{$thisfield}}){
-		push @{$fields_ref->{'T0331'}}, {
-		    content => $item->{TitleFull}
-		} if ($item->{Type} eq "main");
-		
-	    }
-	}
-	
-	if ($thisfield eq "Subjects"){
-	    foreach my $item (@{$json_result_ref->{Record}{RecordInfo}{BibRecord}{BibEntity}{$thisfield}}){
-		push @{$fields_ref->{'T0710'}}, {
-		    content => $item->{SubjectFull}
-		};
-		
-	    }
-	}
-
-	if ($thisfield eq "Languages"){
-	    foreach my $item (@{$json_result_ref->{Record}{RecordInfo}{BibRecord}{BibEntity}{$thisfield}}){
-		push @{$fields_ref->{'T0015'}}, {
-		    content => $item->{Text}
-		};
-		
-	    }
-	}
-
-	# z.B. DOI in 0010
-	if ($thisfield eq "Identifiers"){
-	    foreach my $item (@{$json_result_ref->{Record}{RecordInfo}{BibRecord}{BibEntity}{$thisfield}}){
-		push @{$fields_ref->{'T0010'}}, {
-		    content => $item->{Value}
-		};
-		
-	    }
-	}
 
 
-	if ($thisfield eq "PhysicalDescription"){
-	    my $startpage;
-	    my $endpage;
-	    my $pagecount;
-	    
-	    eval {
-		$startpage = $json_result_ref->{Record}{RecordInfo}{BibRecord}{BibEntity}{$thisfield}{Pagination}{StartPage};
-	    };
-
-	    eval {
-		$pagecount = $json_result_ref->{Record}{RecordInfo}{BibRecord}{BibEntity}{$thisfield}{Pagination}{PageCount};
-	    };
-
-	    if ($startpage){
-		$startpage=~s{^0+}{}g;
-
-		if ($pagecount && $pagecount > 1){
-		    $endpage = $startpage + $pagecount - 1;
-		}
-	    }
-
-	    my $pagerange = "";
-
-	    $pagerange = $startpage if ($startpage);
-	    $pagerange .= " - $endpage" if ($endpage);
-
-	    $pagerange = "S. ".$pagerange if ($pagerange);
-	    
-	    
-	    if ($pagerange){
-		push @{$fields_ref->{'T0596'}}, {
-		    content => $pagerange,
-		    subfield => "s",
-		};
-	    }
-	}
-	
-    }
-    
-    if (defined $json_result_ref->{Record}{RecordInfo}{BibRecord} && defined $json_result_ref->{Record}{RecordInfo}{BibRecord}{BibRelationships}){
-	
-	
-	if (defined $json_result_ref->{Record}{RecordInfo}{BibRecord}{BibRelationships}{HasContributorRelationships}){
-	    foreach my $item (@{$json_result_ref->{Record}{RecordInfo}{BibRecord}{BibRelationships}{HasContributorRelationships}}){
-		$logger->debug("DebugRelationShips".YAML::Dump($item));
-		if (defined $item->{PersonEntity} && defined $item->{PersonEntity}{Name} && defined $item->{PersonEntity}{Name}{NameFull}){
-		    my $name = $item->{PersonEntity}{Name}{NameFull};
-
-		    $name =~ s{([^\(]+)\, (Verfasser|Herausgeber|Mitwirkender|Sonstige).*}{$1}; # Hinweis pkostaedt: GND-Zusaetze abschneiden, z.B. ID=edswao:edswao.47967597X
-		    $name =~ s{([^\(]+)\, \(DE\-.*}{$1}; # Hinweis pkostaedt: GND-ID abschneiden, z.B. ID=edswao:edswao.417671822
-
-		    
-		    push @{$fields_ref->{'T0100'}}, {
-			content => $name,
-		    };
-		}
-	    }
-	}
-	
-	if (defined $json_result_ref->{Record}{RecordInfo}{BibRecord}{BibRelationships}{IsPartOfRelationships}){
-
-	    foreach my $partof_item (@{$json_result_ref->{Record}{RecordInfo}{BibRecord}{BibRelationships}{IsPartOfRelationships}}){
-		if (defined $partof_item->{BibEntity}){
-		
-		    foreach my $thisfield (keys %{$partof_item->{BibEntity}}){
-			
-			if ($thisfield eq "Titles"){
-			    foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
-				push @{$fields_ref->{'T0451'}}, {
-				    content => $item->{TitleFull}
-				};
-				
-			    }
-			}
-			
-			if ($thisfield eq "Dates"){
-			    foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
-				push @{$fields_ref->{'T0425'}}, {
-				    content => $item->{'Y'}
-				};
-				
-			    }
-			}
-
-			if ($thisfield eq "Numbering"){
-			    foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
-				my $type  = $item->{Type};
-				my $value = $item->{Value};
-
-				if ($value && $type eq "volume"){
-				    push @{$fields_ref->{'T0089'}}, {
-					content => $value,
-				    };
-				    push @{$fields_ref->{'T0596'}}, {
-					content => $value,
-					subfield => "b",
-				    };
-				}
-				elsif ($value && $type eq "issue"){
-				    push @{$fields_ref->{'T0596'}}, {
-					content => $value,
-					subfield => "h",
-				    };
-				}
-				
-			    }
-			}
-			
-			if ($thisfield eq "Identifiers"){
-			    foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
-				my $type  = $item->{Type};
-				my $value = $item->{Value};
-
-				if ($value && $type eq "issn-print"){
-				    # Normieren
-				    $value =~ s/^(\d{4})(\d{3}[0-9xX])$/$1-$2/;
-
-				    # Todo: 543 oder 585
-				    push @{$fields_ref->{'T0585'}}, {
-					content => $value,
-				    } if ($value =~m/^\d{4}\-?\d{3}[0-9xX]$/);
-				}
-				elsif ($type =~/^issn-([0-9xX]{8})$/){
-				    $value = $1;
-				    
-				    # Normieren
-				    $value =~ s/^(\d{4})(\d{3}[0-9xX])$/$1-$2/;
-
-				    # Todo: 543 oder 585
-				    push @{$fields_ref->{'T0585'}}, {
-					content => $value,
-				    } if ($value =~m/^\d{4}\-?\d{3}[0-9xX]$/);
-				}
-				elsif ($value && $type eq "isbn-print"){
-				    # Todo: 540
-				    push @{$fields_ref->{'T0540'}}, {
-					content => $value,
-				    };
-				}
-			    }
-			}
-		    }
-		}
-	    }
-	}
-    }
-
-    # Todo: 
-    # Jahr und Heft nicht verwenden, wenn DbId = edsarx
-    # Serial nicht anwenden, wenn DbId = rih
-
-    # Items
-
-    {
-
-	if (defined  $json_result_ref->{'Record'}{'Items'}){
-
-	    my $items_field_map_ref = {
-		ItemTitle       => 'T0590',
-		ItemAuthor      => 'T0591',
-		ItemLanguage    => 'T0516',
-		Abstract        => 'T0750',
-		AbstractNonEng  => 'T0750',
-		TitleSource     => 'T0451',
-		TitleSourceBook => 'T0451',
-		Publisher       => 'T0419',
-		DatePubCY       => 'T0595',
-		ISBN            => 'T0540',
-		ISSN	        => 'T0585',
-	    };
-
-	    
-	    foreach my $item (@{$json_result_ref->{'Record'}{'Items'}}){
-		my $label = $item->{Label};
-		my $data  = $item->{Data};
-		my $name  = $item->{Name};
-		
-		# Data breinigen. Hinweise pkostaedt
-		$data =~ s{<br \/>}{ ; }g;
-		$data =~ s{<relatesTo>[^<]+<\/relatesTo><i>[^<]+<\/i>}{}g; # z.B. <relatesTo>2</relatesTo><i> javierm@electrica.cujae.edu.cu</i>
-		$data =~ s{<i>([^<]+)<\/i>}{$1}g;
-		$data =~ s{<[^>]+>([^<]+)<\/[^>]+>}{$1}g;                  # z.B. <searchLink fieldCode="JN" term="%22Linux%22">Linux</searchLink>
-		$data =~ s{&lt;.+?&gt;}{}g;                                # z.B. rih:2012-09413, pdx:0209854
-		$data =~ s{&amp;amp;}{&amp;}g;                             # z.B. pdx:0209854
-
-		if ($name =~ /^(ItemTitle|ItemAuthor|ItemLanguage|Abstract|AbstractNonEng|TitleSource|TitleSourceBook|Publisher|DatePubCY|ISBN|ISSN)$/) {
-
-		    if ($name eq 'Publisher') {
-			$data =~ s/,\s+\d{4}$//;                          # z.B. edsgsl:solis.00547468 (Hamburg : Diplomica Verl., 2009 -> Hamburg : Diplomica Verl.)
-		    } 
-		    elsif ($name eq 'TitleSource' && $json_result_ref->{Header}{DbId} eq 'edsoai' && $data =~ /urn:/) {
-			next;                                             # z.B. edsoai:edsoai.824612814
-		    }
-
-		    if (defined $items_field_map_ref->{$name}){
-			push @{$fields_ref->{$items_field_map_ref->{$name}}}, {
-			    content => $data,
-			};
-			
-		    }
-		    # if ($Result{$name}) {
-		    #     if ($name eq 'Abstract') {
-		    # 	$Result{$name} .= '<br/>';
-		    # 	$Result{$name} .= '<br/>' if length($data) > 100;
-		    #     } else {
-		    # 	$Result{$name} .= ' ; ';
-		    #     }
-		    # }
-		    # $Result{$name} .= $data; 
-		    elsif ($name eq 'ItemSubject') {
-			if ($label eq 'Time') {
-			    push @{$fields_ref->{'T0501'}}, {
-				content => "Zeitangabe: " . $data, # z.B. Geburtsdaten, ID=edsoao:oao.T045764
-			    };
-			} 
-			else { 
-			    my @subjects = split(' ; ', $data);
-			    foreach my $subject (@subjects) {
-				push @{$fields_ref->{'T0710'}}, {
-				    content => $data,
-				};
-			    }
-			}
-			
-			
-			
-		    }
-		}
-	    }
-	}
-	
-    }
+    my $is_electronic_resource = 0;
     
     # Volltextlinks
     {
@@ -435,6 +167,7 @@ sub load_full_title_record {
 	    $record->set_field({field => 'T0662', subfield => '', mult => $link_mult, content => $url});
 	    $record->set_field({field => 'T0663', subfield => '', mult => $link_mult, content => "Volltext"});
 	    # Todo: Zugriffstatus 'yellow' hinzufuegen
+
 	    $link_mult++;
 	}
 	else { 
@@ -485,6 +218,322 @@ sub load_full_title_record {
 	    $link_mult++;
 	}
 
+    }
+
+    {
+    foreach my $thisfield (keys %{$json_result_ref->{Record}{RecordInfo}{BibRecord}{BibEntity}}){
+	
+	if ($thisfield eq "Titles"){
+	    foreach my $item (@{$json_result_ref->{Record}{RecordInfo}{BibRecord}{BibEntity}{$thisfield}}){
+		
+		if ($item->{Type} eq "main" && ! $self->have_field_content('T0331',$item->{TitleFull})){
+		    push @{$fields_ref->{'T0331'}}, {
+			content => $item->{TitleFull}
+		    };
+		}
+	    }
+	}
+	
+	if ($thisfield eq "Subjects"){
+	    foreach my $item (@{$json_result_ref->{Record}{RecordInfo}{BibRecord}{BibEntity}{$thisfield}}){
+		
+		push @{$fields_ref->{'T0710'}}, {
+		    content => $item->{SubjectFull}
+		} if (! $self->have_field_content('T0710',$item->{SubjectFull} ));
+	    }
+	}
+
+	if ($thisfield eq "Languages"){
+	    foreach my $item (@{$json_result_ref->{Record}{RecordInfo}{BibRecord}{BibEntity}{$thisfield}}){
+		push @{$fields_ref->{'T0015'}}, {
+		    content => $item->{Text}
+		} if (!$self->have_field_content('T0015',$item->{Text} ));
+	    }
+	}
+
+	# z.B. DOI in 0010
+	if ($thisfield eq "Identifiers"){
+	    foreach my $item (@{$json_result_ref->{Record}{RecordInfo}{BibRecord}{BibEntity}{$thisfield}}){
+		
+		push @{$fields_ref->{'T0010'}}, {
+		    content => $item->{Value}
+		} if (!$self->have_field_content('T0010',$item->{Value} ));
+	    }
+	}
+
+
+	if ($thisfield eq "PhysicalDescription"){
+	    my $startpage;
+	    my $endpage;
+	    my $pagecount;
+	    
+	    eval {
+		$startpage = $json_result_ref->{Record}{RecordInfo}{BibRecord}{BibEntity}{$thisfield}{Pagination}{StartPage};
+	    };
+
+	    eval {
+		$pagecount = $json_result_ref->{Record}{RecordInfo}{BibRecord}{BibEntity}{$thisfield}{Pagination}{PageCount};
+	    };
+
+	    if ($startpage){
+		$startpage=~s{^0+}{}g;
+
+		if ($pagecount && $pagecount > 1){
+		    $endpage = $startpage + $pagecount - 1;
+		}
+	    }
+
+	    my $pagerange = "";
+
+	    $pagerange = $startpage if ($startpage);
+	    $pagerange .= " - $endpage" if ($endpage);
+
+	    $pagerange = "S. ".$pagerange if ($pagerange);
+	    
+	    
+	    if ($pagerange){
+		push @{$fields_ref->{'T0596'}}, {
+		    content => $pagerange,
+		    subfield => "s",
+		};
+	    }
+	}
+	
+    }
+}
+
+    { # BibRelationships
+    if (defined $json_result_ref->{Record}{RecordInfo}{BibRecord} && defined $json_result_ref->{Record}{RecordInfo}{BibRecord}{BibRelationships}){
+	
+	
+	if (defined $json_result_ref->{Record}{RecordInfo}{BibRecord}{BibRelationships}{HasContributorRelationships}){
+	    foreach my $item (@{$json_result_ref->{Record}{RecordInfo}{BibRecord}{BibRelationships}{HasContributorRelationships}}){
+		$logger->debug("DebugRelationShips".YAML::Dump($item));
+		if (defined $item->{PersonEntity} && defined $item->{PersonEntity}{Name} && defined $item->{PersonEntity}{Name}{NameFull}){
+		    my $name = $item->{PersonEntity}{Name}{NameFull};
+
+		    $name =~ s{([^\(]+)\, (Verfasser|Herausgeber|Mitwirkender|Sonstige).*}{$1}; # Hinweis pkostaedt: GND-Zusaetze abschneiden, z.B. ID=edswao:edswao.47967597X
+		    $name =~ s{([^\(]+)\, \(DE\-.*}{$1}; # Hinweis pkostaedt: GND-ID abschneiden, z.B. ID=edswao:edswao.417671822
+
+		    
+		    push @{$fields_ref->{'T0100'}}, {
+			content => $name,
+		    } if (!$self->have_field_content('T0100',$name ));
+		}
+	    }
+	}
+	
+	if (defined $json_result_ref->{Record}{RecordInfo}{BibRecord}{BibRelationships}{IsPartOfRelationships}){
+
+	    foreach my $partof_item (@{$json_result_ref->{Record}{RecordInfo}{BibRecord}{BibRelationships}{IsPartOfRelationships}}){
+		if (defined $partof_item->{BibEntity}){
+		
+		    foreach my $thisfield (keys %{$partof_item->{BibEntity}}){
+			
+			if ($thisfield eq "Titles"){
+			    foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
+				push @{$fields_ref->{'T0451'}}, {
+				    content => $item->{TitleFull}
+				} if (!$self->have_field_content('T0451',$item->{TitleFull} ));
+
+			    }
+			}
+			
+			if ($thisfield eq "Dates"){
+			    foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
+				push @{$fields_ref->{'T0425'}}, {
+				    content => $item->{'Y'}
+				} if (!$self->have_field_content('T0425',$item->{Y} ));
+				
+			    }
+			}
+
+			if ($thisfield eq "Numbering"){
+			    foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
+				my $type  = $item->{Type};
+				my $value = $item->{Value};
+
+				if ($value && $type eq "volume"){
+				    push @{$fields_ref->{'T0089'}}, {
+					content => $value,
+				    } if (!$self->have_field_content('T0089',$value ));
+				    push @{$fields_ref->{'T0596'}}, {
+					content => $value,
+					subfield => "b",
+				    } if (!$self->have_field_content('T0596b',$value ));
+				}
+				elsif ($value && $type eq "issue"){
+				    push @{$fields_ref->{'T0596'}}, {
+					content => $value,
+					subfield => "h",
+				    } if (!$self->have_field_content('T0596h',$value ));
+
+				}
+				
+			    }
+			}
+			
+			if ($thisfield eq "Identifiers"){
+			    foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
+				my $type  = $item->{Type};
+				my $value = $item->{Value};
+
+				if ($value && $type eq "issn-print"){
+				    # Normieren
+				    $value =~ s/^(\d{4})(\d{3}[0-9xX])$/$1-$2/;
+
+				    # Todo: 543 oder 585
+				    push @{$fields_ref->{'T0585'}}, {
+					content => $value,
+				    } if ($value =~m/^\d{4}\-?\d{3}[0-9xX]$/  && !$self->have_field_content('T0585',$value ));
+				}
+				elsif ($type =~/^issn-([0-9xX]{8})$/){
+				    $value = $1;
+				    
+				    # Normieren
+				    $value =~ s/^(\d{4})(\d{3}[0-9xX])$/$1-$2/;
+
+				    # Todo: 543 oder 585
+				    push @{$fields_ref->{'T0585'}}, {
+					content => $value,
+				    } if ($value =~m/^\d{4}\-?\d{3}[0-9xX]$/  && !$self->have_field_content('T0585',$value ));			      
+				}
+			 	elsif ($value && $type eq "isbn-print"){
+				    # Todo: 540
+				    push @{$fields_ref->{'T0540'}}, {
+					content => $value,
+				    } if (!$self->have_field_content('T0540',$value));
+				}
+			    }
+			}
+		    }
+		}
+	    }
+	}
+    }
+    }
+    
+    # Todo: 
+    # Jahr und Heft nicht verwenden, wenn DbId = edsarx
+    # Serial nicht anwenden, wenn DbId = rih
+
+    # Items
+
+    {
+
+	if (defined  $json_result_ref->{'Record'}{'Items'}){
+
+	    my $items_field_map_ref = {
+		ItemTitle       => 'T0590',
+		ItemAuthor      => 'T0591',
+		ItemLanguage    => 'T0516',
+		Abstract        => 'T0750',
+		AbstractNonEng  => 'T0750',
+		TitleSource     => 'T0451',
+		TitleSourceBook => 'T0451',
+		Publisher       => 'T0419',
+		DatePubCY       => 'T0595',
+		ISBN            => 'T0540',
+		ISSN	        => 'T0585',
+	    };
+
+	    
+	    foreach my $item (@{$json_result_ref->{'Record'}{'Items'}}){
+		my $label = $item->{Label};
+		my $data  = $item->{Data};
+		my $name  = $item->{Name};
+		
+		# Data breinigen. Hinweise pkostaedt
+		$data =~ s{<br \/>}{ ; }g;
+		$data =~ s{<relatesTo>[^<]+<\/relatesTo><i>[^<]+<\/i>}{}g; # z.B. <relatesTo>2</relatesTo><i> javierm@electrica.cujae.edu.cu</i>
+		$data =~ s{<i>([^<]+)<\/i>}{$1}g;
+		$data =~ s{<[^>]+>([^<]+)<\/[^>]+>}{$1}g;                  # z.B. <searchLink fieldCode="JN" term="%22Linux%22">Linux</searchLink>
+		$data =~ s{&lt;.+?&gt;}{}g;                                # z.B. rih:2012-09413, pdx:0209854
+		$data =~ s{&amp;amp;}{&amp;}g;                             # z.B. pdx:0209854
+
+		if ($name =~ /^(ItemTitle|ItemAuthor|ItemLanguage|Abstract|AbstractNonEng|TitleSource|TitleSourceBook|Publisher|DatePubCY|ISBN|ISSN)$/) {
+
+		    if ($name eq 'Publisher') {
+			$data =~ s/,\s+\d{4}$//;                          # z.B. edsgsl:solis.00547468 (Hamburg : Diplomica Verl., 2009 -> Hamburg : Diplomica Verl.)
+		    } 
+		    elsif ($name eq 'TitleSource' && $json_result_ref->{Header}{DbId} eq 'edsoai' && $data =~ /urn:/) {
+			next;                                             # z.B. edsoai:edsoai.824612814
+		    }
+		    elsif ($name eq 'ISSN'){
+			# Normieren, hier spezielle wegen Dubletten zu  BibRelationShips
+			$data =~ s/^(\d{4})(\d{3}[0-9xX])$/$1-$2/;
+		    }
+
+		    if (defined $items_field_map_ref->{$name}){
+			push @{$fields_ref->{$items_field_map_ref->{$name}}}, {
+			    content => $data,
+			} if (!$self->have_field_content($items_field_map_ref->{$name},$data));
+			
+		    }
+		    # if ($Result{$name}) {
+		    #     if ($name eq 'Abstract') {
+		    # 	$Result{$name} .= '<br/>';
+		    # 	$Result{$name} .= '<br/>' if length($data) > 100;
+		    #     } else {
+		    # 	$Result{$name} .= ' ; ';
+		    #     }
+		    # }
+		    # $Result{$name} .= $data; 
+		    elsif ($name eq 'ItemSubject') {
+			if ($label eq 'Time') {
+			    push @{$fields_ref->{'T0501'}}, {
+				content => "Zeitangabe: " . $data, # z.B. Geburtsdaten, ID=edsoao:oao.T045764
+			    };
+			} 
+			else { 
+			    my @subjects = split(' ; ', $data);
+			    foreach my $subject (@subjects) {
+				push @{$fields_ref->{'T0710'}}, {
+				    content => $data,
+				} if (!$self->have_field_content('T0710',$data));
+			    }
+			}
+			
+			
+			
+		    }
+		    # elsif ($name eq 'URL' && $label eq 'Access URL' && $Result{fn} !~ /Publikationstyp: Elektronische Ressource/) { 
+		    # 	my $url = '';
+		    # 	$url = $1 if ($data =~ /linkTerm=.*(http.*)&lt;/ or $data =~ /^(http[^\s]+)/);
+		    # 	if ($Result{DbId} =~ /^(edsfis|edswao)$/) { # z.B. ID=edswao:edswao.035502584
+		    # 	    $hitOut->appendTextChild( 'LNK1', $url ) if $url;
+		    # 	} else {
+		    # 	    # SSOAR und BASE: Volltext-Link auslesen, z.B. ID=edsbas:edsbas.ftunivdortmund.oai.eldorado.tu.dortmund.de.2003.30139
+		    # 	    #if ($url) {
+		    # 	    #    $hitOut->appendTextChild( 'LNK1', $url );
+		    # 	    #    $hitOut->appendTextChild( 'LNK1T', 'Volltext' );
+		    # 	    #    $hitOut->appendTextChild( 'LNK1L', 'unknown' );
+		    # 	    #    if ($Result{DbId} eq 'edsbas') { # BASE
+		    # 	    #       $hitOut->appendTextChild( 'LNK1L', 'unknown' );
+		    # 	    #    } else {
+		    # 	    #       $hitOut->appendTextChild( 'LNK1L', 'green' );
+		    # 	    #    }
+		    # 	    #    $Result{PubType} = 'electronic resource' unless $Result{PubType};
+		    # 	    #    $Result{fn} .= '<li>Publikationstyp: Elektronische Ressource</li>'; # Sorgt dafuer, dass kein Verfuegbarkeitsbutton angezeigt wird!
+		    # 	    #}
+		    # 	    # SSOAR, BASE, OLC, ...: Volltext-Link auslesen, z.B. ID=edsbas:edsbas.ftunivdortmund.oai.eldorado.tu.dortmund.de.2003.30139, ID=edsgoc:edsgoc.197587160X
+		    # 	    if ($url && $url !~ /gesis\.org\/sowiport/) { # Sowiport-Links funktionieren nicht mehr, z.B. ID=edsgsl:edsgsl.793796
+		    # 		$hitOut->appendTextChild( 'LNK1', $url );
+		    # 		$hitOut->appendTextChild( 'LNK1T', 'Volltext' );
+		    # 		if ($Result{DbId} eq 'edsgso') { # SSOAR
+		    # 		    $hitOut->appendTextChild( 'LNK1L', 'green' );
+		    # 		    $Result{fn} .= '<li>Publikationstyp: Elektronische Ressource</li>'; # Sorgt dafuer, dass kein Verfuegbarkeitsbutton angezeigt wird!
+		    # 		} else {
+		    # 		    $hitOut->appendTextChild( 'LNK1L', 'unknown' );
+		    # 		}
+		    # 		$Result{PubType} = 'electronic resource' unless $Result{PubType};
+		    # 	    }
+		    # 	}
+		    #} 
+		}
+	    }
+	}
+	
     }
     
     $record->set_fields_from_storable($fields_ref);
@@ -687,6 +736,20 @@ sub _create_sessiontoken {
     }
 
     return;
+}
+
+sub have_field_content {
+    my ($self,$field,$content)=@_;
+
+    my $have_field = 0;
+    
+    eval {
+	$have_field = $self->{have_field_content}{$field}{$content};
+    };
+
+    $self->{have_field_content}{$field}{$content} = 1;
+
+    return $have_field;
 }
 
 sub connect_eds {

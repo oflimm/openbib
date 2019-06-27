@@ -2587,8 +2587,18 @@ sub to_json {
             }
         }
     }
+
+    my $contentstring = "";
     
-    return JSON::XS::encode_json $record;
+    eval {
+	$contentstring= JSON::XS->new->utf8->canonical->encode($record);
+    };
+    
+    if ($@){
+	$logger->error("Canonical Encoding failed: ".YAML::Dump($record));
+    }
+    
+    return $contentstring; 
 }
 
 sub from_json {

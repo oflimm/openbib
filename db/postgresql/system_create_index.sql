@@ -146,6 +146,7 @@ ALTER TABLE templateinfo ADD PRIMARY KEY (id);
 ALTER TABLE templateinfo ADD CONSTRAINT fk_templateinfo_view FOREIGN KEY (viewid) REFERENCES viewinfo (id);
 CREATE INDEX templateinfo_templatename ON templateinfo (templatename);
 CREATE INDEX templateinfo_viewid ON templateinfo (viewid);
+CREATE INDEX templateinfo_templatelang ON templateinfo (templatelang);
 
 ALTER TABLE templateinforevision ADD PRIMARY KEY (id);
 ALTER TABLE templateinforevision ADD CONSTRAINT fk_templateinforevision_templateinfo FOREIGN KEY (templateid) REFERENCES templateinfo (id);

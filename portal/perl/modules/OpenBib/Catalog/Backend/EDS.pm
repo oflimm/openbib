@@ -558,10 +558,25 @@ sub load_full_title_record {
 			    } if (!$self->have_field_content('T0710',$data));
 			}
 		    }
-		    
-		    
-		    
 		}
+		elsif ($name eq 'DOI') {
+		    if ($data !~ /http/){
+			$data = "https://doi.org/".$data;
+		    }
+		    
+		    push @{$fields_ref->{'T0662'}}, {
+			subfield     => '', 
+			mult         => $link_mult, 
+			content      => $data,
+			availability => 'unknown',
+		    };
+		    push @{$fields_ref->{'T0663'}}, {
+			subfield => '', 
+			mult     => $link_mult, 
+			content  => "DOI"
+		    };
+		    $link_mult++;
+		} 
 		elsif ($name eq 'URL' && $label eq 'Access URL' && ! $is_electronic_ressource) { 
 		    my $url = '';
 		    
@@ -571,9 +586,10 @@ sub load_full_title_record {
 		    
 		    if ($json_result_ref->{Header}{DbId} =~ /^(edsfis|edswao)$/) { # z.B. ID=edswao:edswao.035502584
 			push @{$fields_ref->{'T0662'}}, {
-			    subfield => '', 
-			    mult => $link_mult, 
-			    content => $url
+			    subfield     => '', 
+			    mult         => $link_mult, 
+			    content      => $url,
+			    availability => 'green',
 			};
 			# Todo: Zugriffstatus 'green' hinzufuegen
 			$link_mult++;
@@ -582,9 +598,11 @@ sub load_full_title_record {
 			# SSOAR, BASE, OLC, ...: Volltext-Link auslesen, z.B. ID=edsbas:edsbas.ftunivdortmund.oai.eldorado.tu.dortmund.de.2003.30139, ID=edsgoc:edsgoc.197587160X
 			if ($url && $url !~ /gesis\.org\/sowiport/) { # Sowiport-Links funktionieren nicht mehr, z.B. ID=edsgsl:edsgsl.793796
 			    push @{$fields_ref->{'T0662'}}, {
-				subfield => '', 
-				mult     => $link_mult, 
-				content  => $url
+				subfield     => '', 
+				mult         => $link_mult, 
+				content      => $url,
+				availability => 'yellow',
+
 			    };
 			    push @{$fields_ref->{'T0663'}}, {
 				subfield => '', 
@@ -638,21 +656,12 @@ sub load_full_title_record {
 			    if ($json_result_ref->{Header}{DbId} =~ /^(edsbl)$/) {
 				next;
 			    }
-			    
-			    push @{$fields_ref->{'T0662'}}, {
-				subfield => '', 
-				mult     => $link_mult, 
-				content  => $url
-			    };
-			    push @{$fields_ref->{'T0663'}}, {
-				subfield => '', 
-				mult     => $link_mult, 
-				content  => "Volltext"
-			    };
-			    
-			    $link_mult++;
+
+			    my $availability = "";
+
 			    if ($json_result_ref->{Header}{DbId} =~ /^(edsoao|edsomo|edsebo|edssvl)$/) { # Links aus Grove Art und Britannica Online, z.B. ID=edsoao:oao.T045764
 				# Todo: Zugriffstatus 'yellow' hinzufuegen
+				$availability = "yellow";
 				
 				push @{$fields_ref->{'T0800'}}, {
 				    subfield => '', 
@@ -661,8 +670,27 @@ sub load_full_title_record {
 				};
 			    } 
 			    else {
-				# Todo: Zugriffstatus 'green_yellow_red' hinzufuegen
+				$availability = "unknown";
 			    }
+
+			    my $thisfield_ref = {
+				subfield => '', 
+				mult     => $link_mult, 
+				content  => $url
+			    };
+
+			    if ($availability){
+				$thisfield_ref->{availability} = $availability;
+			    }
+			    
+			    push @{$fields_ref->{'T0662'}}, $thisfield_ref; 
+			    push @{$fields_ref->{'T0663'}}, {
+				subfield => '', 
+				mult     => $link_mult, 
+				content  => "Volltext"
+			    };
+			    
+			    $link_mult++;
 			}
 			$i++;
 		    }

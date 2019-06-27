@@ -104,7 +104,7 @@ sub search {
     push @search_options, "searchmode=all";
     push @search_options, "highlight=n";
     push @search_options, "includefacets=y";
-    push @search_options, "autosuggest=y";
+    push @search_options, "autosuggest=n";
     push @search_options, "view=brief";
     #push @search_options, "view=detailed";    
     
@@ -149,7 +149,8 @@ sub search {
 
 
     if (!$response->is_success) {
-	$logger->info($response->code . ' - ' . $response->message);
+	$logger->error($response->code . ' - ' . $response->message . " - ".$response->content);
+
 	return;
     }
 

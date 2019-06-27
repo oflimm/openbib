@@ -679,12 +679,13 @@ sub add_item_to_collection {
     my $new_title;
     
     if ($dbname && $titleid){
+	$logger->debug("Adding by dbname/titleid: $dbname/$titleid");
         # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
         
         # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
         my $have_title = $self->get_schema->resultset('SessionCartitem')->search_rs(
             {
-                'sid.id'                   => $self->{sid},
+                'sid.id'             => $self->{sid},
                 'cartitemid.dbname'  => $dbname,
                 'cartitemid.titleid' => $titleid,
             },
@@ -722,6 +723,8 @@ sub add_item_to_collection {
         }
     }
     elsif ($record){
+	$logger->debug("Adding by json-encoded record");
+
         # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
         
         my $record_json = encode_json $record;
@@ -729,7 +732,7 @@ sub add_item_to_collection {
         # DBI: "select count(userid) as rowcount from collection where userid = ? and dbname = ? and titleid = ?"
         my $have_title = $self->get_schema->resultset('SessionCartitem')->search_rs(
             {
-                'sid.id'                      => $self->{sid},
+                'sid.id'                => $self->{sid},
                 'cartitemid.titlecache' => $record_json,
             },
             {
@@ -753,7 +756,7 @@ sub add_item_to_collection {
 
             $self->get_schema->resultset('SessionCartitem')->create(
                 {
-                    sid              => $self->{sid},
+                    sid        => $self->{sid},
                     cartitemid => $new_title->id,
                 }
             );
@@ -1100,7 +1103,13 @@ sub log_event {
     my $contentstring = $content;
 
     if ($serialize){
-        $contentstring=encode_json $content;
+	eval {
+	    $contentstring= JSON::XS->new->utf8->canonical->encode($content);
+	};
+
+	if ($@){
+	    $logger->error("Canonical Encoding failed: ".YAML::Dump($content));
+	}
     }
     
     # Moegliche Event-Typen
@@ -1152,8 +1161,11 @@ sub log_event {
         eval {
             $self->get_schema->resultset('Eventlog')->search_rs({ 'sid.sessionid' => $self->{ID}, 'me.type' => $type, 'me.content' => $contentstring},{ join => 'sid' })->delete_all;
         };
-    }
 
+	if ($@){
+	    $logger->error("Error logging unique event: sessionid/type/content = ".$self->{ID}."/$type/$contentstring");
+	}
+    }
     
     $logger->debug("Getting sid for SessionID ".$self->{ID});
     my $sid = $self->get_schema->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} })->id;

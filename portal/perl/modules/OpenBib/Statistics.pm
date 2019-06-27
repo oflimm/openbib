@@ -424,7 +424,7 @@ sub log_event {
               $logger->debug("Post: ".YAML::Dump($content_ref));
           }
 
-          $content = encode_json $content_ref;
+          $content = JSON::XS->new->utf8->canonical->encode($content_ref);
 
           if ($logger->is_debug){
               $logger->debug("New content is : $content");
@@ -433,7 +433,7 @@ sub log_event {
        };
 
        if ($@){
-          $logger->error($@. ": $content konnte nicht reduziert werden");
+          $logger->error($@. ": $content konnte nicht reduziert/encoded werden");
        }
     }
 

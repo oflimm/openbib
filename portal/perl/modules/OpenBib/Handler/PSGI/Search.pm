@@ -926,6 +926,17 @@ sub search {
     my $resulttime;
     my $nav;
 
+    # Besteht das Suchprofil nur aus einer Datenbank, dann den Datenbanknamen setzen.
+    # So koennen per API angesteuerte Backends gemeinsam mit anderen Profilen ueber den zugehoerigen searchprofile-Parameter
+    # angesteuert werden (OpenBib::Search::Factory)
+    if (!$database && $searchquery && $searchquery->get_searchprofile){
+	my @databases = $config->get_databases_of_searchprofile($searchquery->get_searchprofile);
+	
+	if (scalar @databases == 1){
+	    $database = $databases[0];
+	}
+    }
+    
     my $search_args_ref = {};
     $search_args_ref->{options}      = OpenBib::Common::Util::query2hashref($query);
     $search_args_ref->{database}     = $database if (defined $database);

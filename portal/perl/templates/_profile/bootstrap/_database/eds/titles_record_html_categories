@@ -22,6 +22,12 @@
    END;
 
    catalog_has_authorities = config.get('source_systems').${config.get_system_of_db(record.database)}.has_authorities;
+
+
+  availability_text_ref = {
+    unknown = 'Informationen über Zugriffsrechte liegen nicht vor.'
+  };
+
 -%]
 [% IF format == "full" %]
 
@@ -133,6 +139,7 @@ FOREACH category IN categories;
 
     CASE [ "T0662" "T2662" ];
          thismult = item.mult ;
+	 thisavailability = item.availability;
          thiscontent   = '' ;
          IF category == 'T0662' ;
            FOREACH thisitem IN normdata.${"T0663"} ;
@@ -156,15 +163,24 @@ FOREACH category IN categories;
                thiscontent = thiscontent.substr(0,60);
                thiscontent = "${thiscontent}...";
             END ;
-            content   = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
          ELSE ;
             thiscontent = content;
             IF thiscontent.length > 60 ;
                thiscontent = thiscontent.substr(0,60);
                thiscontent = "${thiscontent}...";
             END ;
-            content   = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
+         
          END ;
+	 content   = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
+	 IF thisavailability ;
+	    availability_icon = config.get_icon("availability_${thisavailability}",view,sysprofile);
+	    IF availability_icon ;
+	      availability_text = availability_text_ref.${thisavailability} ;
+	      availability_icon = "<img src=\"${availability_icon}\" title=\"${availability_text}\"/>";
+	      content = "${content} ${availability_icon}";
+	    END ;
+	 END;
+
 
     CASE [ "E4100" "T4100" ];
          searchterm    = uri_escape(item.content);

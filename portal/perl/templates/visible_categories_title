@@ -59,7 +59,6 @@
                 'T0407', # msg.maketext("T0407") Massstab
                 'T0434', # msg.maketext("T0434") Sonst. Angaben
                 'T0437', # msg.maketext("T0437") Begleitmat.
-                'T0501', # msg.maketext("T0501") Fussnoten
                 'T0504', # msg.maketext("T0504") PST Fussnote
                 'T0505', # msg.maketext("T0505") WST Fussnote
                 'T0507', # msg.maketext("T0507") Ang. HST
@@ -142,6 +141,7 @@
                 'T4211', # msg.maketext("T4211") Preis
                 'T4212', # msg.maketext("T4212") Waehrung
                 'T4210', # msg.maketext("T4210") Copyright-Information
+                'T0501', # msg.maketext("T0501") Fussnoten		
                 'T5100', # msg.maketext("T5100") Allg. Zaehlung
                 ]
 

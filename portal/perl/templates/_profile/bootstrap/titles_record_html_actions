@@ -5,6 +5,9 @@
 
 
 [%
+
+  normdata = record.get_fields;
+  
   private_tags_of_tit = [];
   IF user.ID ;
     private_tags        = user.get_private_tags_by_name({ userid => user.ID  }).first;
@@ -358,6 +361,17 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 <!-- Ende Empfehlungen -->
 [% END %]
 
+[%
+
+have_isbn = 0;
+
+IF normdata.exists('T0540') || normdata.exists('T0553');
+  have_isbn = 1;
+END;
+
+%]
+
+[% IF have_isbn %]
 <script>
 $(document).ready(function(){
     $("#ob-related_nojs").hide();
@@ -394,6 +408,7 @@ $(document).ready(function(){
 </div>
 
 <!-- Ende Empfehlungen -->
+[% END %]
 
 <!-- Anfang Literaturlisten -->
 [% IF litlists.size > 0 %]

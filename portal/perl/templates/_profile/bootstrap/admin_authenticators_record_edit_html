@@ -51,7 +51,8 @@
 <label for="type">[% msg.maketext("Typ") %]</label>
   <select class="form-control" name="type" id="type">
     <option value="self" [% IF authenticatorinfo.type == 'self' %]selected="selected"[% END %]>[% msg.maketext("Selbstregistrierung") %]</option>
-    <option value="olws" [% IF authenticatorinfo.type == 'olws' %]selected="selected"[% END %]>OLWS</option>
+    <option value="ldap" [% IF authenticatorinfo.type == 'ldap' %]selected="selected"[% END %]>[% msg.maketext("LDAP") %]</option>
+    <option value="olws" [% IF authenticatorinfo.type == 'olws' %]selected="selected"[% END %]>[% msg.maketext("OLWS") %]</option>
   </select>
 </div>
 

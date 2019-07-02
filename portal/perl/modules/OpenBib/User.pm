@@ -382,6 +382,10 @@ sub user_exists {
 sub user_exists_in_view {
     my ($self,$arg_ref)=@_;
 
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+    
     # Set defaults
     my $username    = exists $arg_ref->{username}
         ? $arg_ref->{username}              : undef;
@@ -395,15 +399,18 @@ sub user_exists_in_view {
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
+    if ($logger->is_debug){
+	$logger->debug("viewname: $viewname - viewid: $viewid");
+    }
 
     if (!$viewid){
 	my $config = $self->get_config;
-	my $viewinfo = $config->get_viewinfo->single({ viewname => $viewname });
-	
-	my $viewid;
-	
-	if ($viewinfo){
-	    $viewid = $viewinfo->id;
+	eval {
+	    $viewid = $config->get_viewinfo->single({ viewname => $viewname })->id;
+	};
+
+	if ($@){
+	    $logger->error($@);
 	}
     }
 
@@ -416,6 +423,11 @@ sub user_exists_in_view {
 	    viewid   => $viewid,
 	})->count;
 
+
+    if ($logger->is_debug){
+	$logger->debug("Availability of username $username in view $viewid: $count");
+    }
+    
     return $count;
 }
 

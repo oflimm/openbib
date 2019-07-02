@@ -37,7 +37,7 @@
          <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
          <li><a href="[% path_prefix %]/[% config.get('databases_loc') %].html?l=[% lang %]">Administration</a></li>
          <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('authenticators_loc') %].html?l=[% lang %]">[% msg.maketext("Anmeldung") %]</a></li>
-         <li><a href="#" class="lastitem">[% authenticator.description %]</a></li>
+         <li><a href="#" class="lastitem">[% authenticatorinfo.description %]</a></li>
        </ul>
      </div>
    </div>
@@ -60,7 +60,7 @@
 <table>
 <tr>
 <td>
-<form method="post" action="[% path_prefix %]/[% config.get('authenticators_loc') %]/id/[% authenticator.id %]">
+<form method="post" action="[% path_prefix %]/[% config.get('authenticators_loc') %]/id/[% authenticatorinfo.id %]">
 <input type="hidden" name="_method"     value="DELETE" />
 <input type="hidden" name="confirm"     value="0" />
 <input type="submit" value="[% msg.maketext("Ja") %]">
@@ -68,7 +68,7 @@
 </td>
 <td>&nbsp;&nbsp;</td>
 <td>
-<form method="get" action="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('authenticators_loc') %]/id/[% authenticator.id %]/edit">
+<form method="get" action="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('authenticators_loc') %]/id/[% authenticatorinfo.id %]/edit">
 <input type="submit" value="[% msg.maketext("Nein") %]">
 </form>
 </td>

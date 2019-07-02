@@ -223,7 +223,7 @@ sub create_record {
 
     if ($self->param('representation') eq "html"){
         # TODO GET?
-        $self->redirect("$path_prefix/$config->{admin_loc}/$config->{authenticators_loc}/id/$new_authenticatorid.html?l=$lang");
+        $self->redirect("$path_prefix/$config->{admin_loc}/$config->{authenticators_loc}/id/$new_authenticatorid/edit.html?l=$lang");
         return;
     }
     else {
@@ -342,8 +342,13 @@ sub confirm_delete_record {
 
     my $authenticator_ref = $config->get_authenticator_by_id($authenticatorid);
 
+    if ($logger->is_debug){
+	$logger->debug("Confirming deletion of authenticator $authenticatorid");
+	$logger->debug("Authenticator is: ".YAML::Dump($authenticator_ref));
+    }
+    
     my $ttdata={
-       authenticator  => $authenticator_ref,
+       authenticatorinfo  => $authenticator_ref,
     };
     
     $logger->debug("Asking for confirmation");

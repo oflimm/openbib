@@ -43,6 +43,12 @@ __PACKAGE__->table("registration");
   data_type: 'text'
   is_nullable: 1
 
+=head2 viewid
+
+  data_type: 'bigint'
+  is_foreign_key: 1
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -54,6 +60,8 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 1 },
   "password",
   { data_type => "text", is_nullable => 1 },
+  "viewid",
+  { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -68,9 +76,31 @@ __PACKAGE__->add_columns(
 
 __PACKAGE__->set_primary_key("id");
 
+=head1 RELATIONS
 
-# Created by DBIx::Class::Schema::Loader v0.07042 @ 2019-01-24 09:47:24
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:zngKpHpZI2oAKVOLRRQ6Qw
+=head2 viewid
+
+Type: belongs_to
+
+Related object: L<OpenBib::Schema::System::Result::Viewinfo>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "viewid",
+  "OpenBib::Schema::System::Result::Viewinfo",
+  { id => "viewid" },
+  {
+    is_deferrable => 0,
+    join_type     => "LEFT",
+    on_delete     => "NO ACTION",
+    on_update     => "NO ACTION",
+  },
+);
+
+
+# Created by DBIx::Class::Schema::Loader v0.07046 @ 2019-07-01 11:08:55
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:9dZpM9VV2MfdSphG4dUb9Q
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

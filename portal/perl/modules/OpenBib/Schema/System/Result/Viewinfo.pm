@@ -158,6 +158,21 @@ __PACKAGE__->belongs_to(
   { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
+=head2 registrations
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::Registration>
+
+=cut
+
+__PACKAGE__->has_many(
+  "registrations",
+  "OpenBib::Schema::System::Result::Registration",
+  { "foreign.viewid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 role_views
 
 Type: has_many
@@ -208,17 +223,17 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 user_views
+=head2 userinfos
 
 Type: has_many
 
-Related object: L<OpenBib::Schema::System::Result::UserView>
+Related object: L<OpenBib::Schema::System::Result::Userinfo>
 
 =cut
 
 __PACKAGE__->has_many(
-  "user_views",
-  "OpenBib::Schema::System::Result::UserView",
+  "userinfos",
+  "OpenBib::Schema::System::Result::Userinfo",
   { "foreign.viewid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -254,8 +269,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07042 @ 2019-01-24 09:47:24
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:qkEvkyZ0q1KFPjGqtRS+Vw
+# Created by DBIx::Class::Schema::Loader v0.07046 @ 2019-07-01 11:08:55
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Top4IWzp6TQumPq2ceq91Q
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

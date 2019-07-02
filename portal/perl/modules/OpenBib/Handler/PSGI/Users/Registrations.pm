@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Users::Registrations
 #
-#  Dieses File ist (C) 2004-2018 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2019 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -181,11 +181,11 @@ sub mail_confirmation {
     
     # Ueberpruefen, ob es eine gueltige Mailadresse angegeben wurde.
     unless (Email::Valid->address($username)){
-        return $self->print_warning($msg->maketext("Sie haben keine gÃ¼tige Mailadresse eingegeben. Gehen Sie bitte [_1]zurÃ¼ck[_2] und korrigieren Sie Ihre Eingabe","<a href=\"$path_prefix/$config->{users_loc}/$config->{registrations_loc}\">","</a>"));
+        return $self->print_warning($msg->maketext("Sie haben keine gÃ¼tige Mailadresse eingegeben. Gehen Sie bitte [_1]zurück[_2] und korrigieren Sie Ihre Eingabe","<a href=\"$path_prefix/$config->{users_loc}/$config->{registrations_loc}\">","</a>"));
     }
-    
-    if ($user->user_exists($username)) {
-        return $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurÃ¼ck[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"));
+
+    if ($user->user_exists_in_view({ username => $username, viewname => $view})) {
+        return $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"));
     }
     
     # Recaptcha nur verwenden, wenn Zugriffsinformationen vorhanden sind
@@ -196,11 +196,11 @@ sub mail_confirmation {
         );
         
         unless ( $recaptcha_result->{is_valid} ) {
-            return $self->print_warning($msg->maketext("Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte [_1]zurÃ¼ck[_2] und versuchen Sie es erneut.","<a href=\"$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"));
+            return $self->print_warning($msg->maketext("Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte [_1]zurück[_2] und versuchen Sie es erneut.","<a href=\"$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"));
         }
     }
 
-    my $registrationid = $user->add_confirmation_request({username => $username, password => $password1});
+    my $registrationid = $user->add_confirmation_request({username => $username, password => $password1, viewname => $view});
 
     # Bestaetigungsmail versenden
 
@@ -213,6 +213,7 @@ sub mail_confirmation {
                       view           => $view,
                       config         => $config,
 		      msg            => $msg,
+		      scheme         => $self->param('scheme'),
 		      servername     => $self->param('servername'),
 		      path_prefix    => $self->param('path_prefix'),
 		     };
@@ -299,11 +300,12 @@ sub register {
 
     my $username         = $confirmation_info_ref->{username};
     my $hashed_password  = $confirmation_info_ref->{password};
-
-    if ($username && $hashed_password){
+    my $viewid           = $confirmation_info_ref->{viewid};
+    
+    if ($username && $viewid && $hashed_password){
 
       # Wurde dieser Nutzername inzwischen bereits registriert?
-      if ($user->user_exists($username)) {
+      if ($user->user_exists_in_view({ username => $username, viewid => $viewid })) {
         return $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"));
       }
 
@@ -311,6 +313,7 @@ sub register {
       $user->add({
 		  username         => $username,
 		  hashed_password  => $hashed_password,
+		  viewid           => $viewid,
 		  email            => $username,
 		 });
 
@@ -322,7 +325,7 @@ sub register {
       $user->clear_confirmation_request({ registrationid => $registrationid });
     }
     else {
-      return $self->print_warning($msg->maketext("Diese Registrierungs-ID existiert nicht."));
+      return $self->print_warning($msg->maketext("Diese Registrierungs-ID existiert nicht für dieses Portal."));
     }
 
     # TT-Data erzeugen

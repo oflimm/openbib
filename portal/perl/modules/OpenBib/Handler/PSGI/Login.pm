@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Login
 #
-#  Dieses File ist (C) 2004-2013 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2019 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -280,6 +280,7 @@ sub authenticate {
         my $result = $user->authenticate_self_user({
             username  => $username,
             password  => $password,
+	    viewname  => $view,
         });
         
         if ($result <= 0) {

@@ -2,7 +2,7 @@
 #
 #  OpenBib::User
 #
-#  Dieses File ist (C) 2006-2015 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2019 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -363,16 +363,60 @@ sub allowed_for_view {
 }
 
 sub user_exists {
-    my ($self,$username)=@_;
+    my ($self,$username,$viewname)=@_;
     
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
 
     # DBI: "select count(userid) as rowcount from user where username = ?"
-    my $count = $self->get_schema->resultset('Userinfo')->search({ username => $username})->count;
+    my $count = $self->get_schema->resultset('Userinfo')->search(
+	{ 
+	    username => $username, 
+	    viewid   => undef,
+	})->count;
     
     return $count;    
+}
+
+sub user_exists_in_view {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $username    = exists $arg_ref->{username}
+        ? $arg_ref->{username}              : undef;
+
+    my $viewname    = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}              : undef;
+
+    my $viewid      = exists $arg_ref->{viewid}
+        ? $arg_ref->{viewid}                : undef;
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    if (!$viewid){
+	my $config = $self->get_config;
+	my $viewinfo = $config->get_viewinfo->single({ viewname => $viewname });
+	
+	my $viewid;
+	
+	if ($viewinfo){
+	    $viewid = $viewinfo->id;
+	}
+    }
+
+    my $count = 0;
+    
+    # DBI: "select count(userid) as rowcount from user where username = ?"
+    $count = $self->get_schema->resultset('Userinfo')->search(
+	{ 
+	    username => $username, 
+	    viewid   => $viewid,
+	})->count;
+
+    return $count;
 }
 
 sub can_access_view {
@@ -410,10 +454,13 @@ sub add {
 
     # Set defaults
     my $username   = exists $arg_ref->{username}
-        ? $arg_ref->{username}             : undef;
+        ? $arg_ref->{username}              : undef;
 
     my $password    = exists $arg_ref->{password}
         ? $arg_ref->{password}              : undef;
+
+    my $viewid      = exists $arg_ref->{viewid}
+        ? $arg_ref->{viewid}                : undef;
 
     my $hashed_password    = exists $arg_ref->{hashed_password}
         ? $arg_ref->{hashed_password}              : undef;
@@ -427,6 +474,7 @@ sub add {
 
     # DBI: "insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','',?,'','','','','')"
     my $new_user = $self->get_schema->resultset('Userinfo')->create({
+	viewid    => $viewid,
         username  => $username,
         password  => $hashed_password,
         email     => $email,
@@ -481,17 +529,29 @@ sub add_confirmation_request {
 
     # Set defaults
     my $username   = exists $arg_ref->{username}
-        ? $arg_ref->{username}             : undef;
+        ? $arg_ref->{username}              : undef;
 
     my $password    = exists $arg_ref->{password}
         ? $arg_ref->{password}              : undef;
 
+    my $viewname    = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}              : undef;
+    
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
-
+    
     my $gmtime    = localtime(time);
     my $md5digest = Digest::MD5->new();
+
+    my $config = $self->get_config;
+    my $viewinfo = $config->get_viewinfo->single({ viewname => $viewname });
+
+    my $viewid;
+
+    if ($viewinfo){
+        $viewid = $viewinfo->id;
+    }
     
     $md5digest->add($gmtime . rand('1024'). $$);
     my $registrationid = $md5digest->hexdigest;
@@ -502,6 +562,8 @@ sub add_confirmation_request {
     # DBI: "insert into userregistration values (?,NULL,?,?)"
     $self->get_schema->resultset('Registration')->create({
         id        => $registrationid,
+	viewid    => $viewid,
+        tstamp    => \'NOW()',
         username  => $username,
         password  => \"crypt('$password', gen_salt('bf'))",
     });
@@ -527,16 +589,18 @@ sub get_confirmation_request {
         }
     );
 
-    my ($username,$password);
+    my ($username,$password,$viewid);
     
     if ($confirmationinfo){
         $username = $confirmationinfo->username;
         $password  = $confirmationinfo->password;
+        $viewid    = $confirmationinfo->viewid->id;
     }
     
     my $confirmation_info_ref = {
         username  => $username,
         password  => $password,
+        viewid    => $viewid,
     };
     
     return $confirmation_info_ref;
@@ -1298,15 +1362,27 @@ sub authenticate_self_user {
         ? $arg_ref->{username}            : undef;
     my $password            = exists $arg_ref->{password}
         ? $arg_ref->{password}            : undef;
+    my $viewname            = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}            : undef;
 
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
 
+    my $config = $self->get_config;
+    my $viewinfo = $config->get_viewinfo->single({ viewname => $viewname });
+    
+    my $viewid;
+    
+    if ($viewinfo){
+	$viewid = $viewinfo->id;
+    }
+
     # DBI: "select userid from user where username = ? and password = ?"
     my $authentication = $self->get_schema->resultset('Userinfo')->search_rs(
         {
             username  => $username,
+	    viewid    => $viewid,
         },
         {
             select => ['id', \"me.password  = crypt('$password',me.password)"],
@@ -1319,6 +1395,22 @@ sub authenticate_self_user {
 
     if ($authentication && $authentication->get_column('is_authenticated')){
         $userid = $authentication->get_column('thisid');
+    }
+    else { # Fallback ohne View
+       $authentication = $self->get_schema->resultset('Userinfo')->search_rs(
+           {
+               username  => $username,
+	       viewid    => undef,
+           },
+           {
+               select => ['id', \"me.password  = crypt('$password',me.password)"],
+               as     => ['thisid','is_authenticated'],
+           }
+        )->first;
+
+       if ($authentication && $authentication->get_column('is_authenticated')){
+           $userid = $authentication->get_column('thisid');
+       }
     }
 
     $logger->debug("Got Userid $userid");
@@ -4688,40 +4780,6 @@ sub update_user_rights_template {
             {
                 userid     => $userinfo_ref->{id},
                 templateid => $templateid,
-            }
-        );
-    }
-
-    return;
-}
-
-sub update_user_rights_view {
-    my ($self,$userinfo_ref)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    $self->get_schema->resultset('UserView')->search_rs(
-        {
-            userid => $userinfo_ref->{id},
-        }
-    )->delete_all;
-    
-    foreach my $viewname (@{$userinfo_ref->{views}}){
-        $logger->debug("Adding View $viewname to user $userinfo_ref->{id}");
-
-        my $viewid = $self->get_viewinfo->single({ viewname => $viewname })->id;
-
-        next unless ($viewid);
-        
-        $self->get_schema->resultset('UserView')->search_rs(
-            {
-                userid => $userinfo_ref->{id},
-            }
-        )->create(
-            {
-                userid => $userinfo_ref->{id},
-                viewid => $viewid,
             }
         );
     }

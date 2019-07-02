@@ -337,6 +337,7 @@ sub set_field {
             content    => $content,
             supplement => $supplement,
         };
+	$logger->debug("Set field $field with content $content and id $id");
     }
     else {
         push @{$self->{_fields}{$field}}, {
@@ -344,6 +345,7 @@ sub set_field {
             subfield  => $subfield,
             content   => $content,
         };
+	$logger->debug("Set field $field with content $content");
     }
 
     return $self;

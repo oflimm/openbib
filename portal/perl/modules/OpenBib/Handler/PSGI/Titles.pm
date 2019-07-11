@@ -343,8 +343,8 @@ sub show_record {
 
     my @dbs_in_view = $config->get_viewdbs($view);
 
-    # Add 'special' databases
-    #push @dbs_in_view, "bibsonomy";#,"ezb","dbis");
+    # Add 'special' databases of type api
+    push @dbs_in_view, $config->get_apidbs;
     
     foreach my $dbname (@dbs_in_view){
         if ($dbname eq $database){
@@ -353,10 +353,10 @@ sub show_record {
         }
     }
 
-    if ($database eq "bibsonomy" || $database eq "ezb" || $database eq "dbis"){
-        $database_in_view = 1;
+    # if ($database eq "bibsonomy" || $database eq "ezb" || $database eq "dbis"){
+    #     $database_in_view = 1;
         
-    }
+    # }
     # Databases with API are always considered
 #     foreach my $dbname ($config->get_apidbs){
 #         if ($dbname eq $database){
@@ -366,6 +366,9 @@ sub show_record {
 #     }
     
     unless ($database_in_view || $user->is_admin){
+	if ($logger->is_debug){
+	    $logger->debug("Access denied for database $database. Viewdbs: ".YAML::Dump(@dbs_in_view));
+	}
         $self->header_add('Status' => 404); # NOT_FOUND
         return;
     }

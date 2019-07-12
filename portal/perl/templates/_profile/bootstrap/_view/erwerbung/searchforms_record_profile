@@ -1,4 +1,7 @@
 [%# USE dumper; dumper.dump(dbchoice)%]
+[%
+    searchprofileid_of_eds  = config.get_searchprofile_of_database('eds') ;
+%]
 <select name="profile" class="form-control ob-selectbox">
 [% searchprofileid_of_view = config.get_searchprofile_of_view(view) ; checked_profile = 0 %]
 [%- IF dbchoice.id -%]
@@ -17,7 +20,7 @@
 [%- IF prevprofile == searchprofileid_of_view && NOT checked_profile -%]
  selected="selected"
 [%- END -%]
->[% msg.maketext("Alle Kataloge") %]</option><option value=""></option>
+>[% msg.maketext("Alle Kataloge") %]</option>
 <optgroup label="[% msg.maketext("Profile") %]">
 [% searchprofileid_of_erwerbung = config.get_searchprofile_of_orgunit('usbintern','erwerbung') %]
 <option value="[% searchprofileid_of_erwerbung %]"
@@ -71,5 +74,6 @@
  selected="selected"
 [%- checked_profile=1 ; END -%]
 >Warenkorb KOMPLETT</option>
+<option value="[% searchprofileid_of_eds %]"[%- IF prevprofile == searchprofileid_of_eds && NOT checked_profile -%] selected="selected"[%- END -%]>[% msg.maketext("Aufsätze & Mehr") %]</option>
 </optgroup>
 </select>

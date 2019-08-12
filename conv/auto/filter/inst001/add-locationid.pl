@@ -56,6 +56,10 @@ while (<HOLDING>){
             push @{$element_ref}, "DE-38-USBFB";
             push @{$element_ref}, "DE-38-101";
         }
+        elsif ($location_ref->{content} =~m/Fachbibliothek BWL/){
+            push @{$element_ref}, "DE-38-USBFB";
+            push @{$element_ref}, "DE-38-106";
+        }
         elsif ($location_ref->{content} =~m/Fachbibliothek Versicherungswiss/){
             push @{$element_ref}, "DE-38-USBFB";
             push @{$element_ref}, "DE-38-123";

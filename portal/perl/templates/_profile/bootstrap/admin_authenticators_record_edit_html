@@ -23,23 +23,8 @@
 </div>
 
 <div class="form-group">
-<label for="hostname">[% msg.maketext("Hostname") %]</label>
-<input class="form-control" type="text" name="hostname" id="hostname"  value="[% authenticatorinfo.hostname %]"/>
-</div>
-
-<div class="form-group">
-<label for="port">[% msg.maketext("Port") %]</label>
-<input class="form-control" type="text" name="port" id="port"  value="[% authenticatorinfo.port %]"/>
-</div>
-
-<div class="form-group">
-<label for="remoteuser">[% msg.maketext("Nutzername") %]</label>
-<input class="form-control" type="text" name="remoteuser" id="remoteuser"  value="[% authenticatorinfo.remoteuser %]"/>
-</div>
-
-<div class="form-group">
-<label for="dbname">[% msg.maketext("DB-Name") %]</label>
-<input class="form-control" type="text" name="dbname" id="dbname" value="[% authenticatorinfo.dbname %]"/>
+<label for="name">[% msg.maketext("Name") %]</label>
+<input class="form-control" type="text" name="name" id="name"  value="[% authenticatorinfo.name %]"/>
 </div>
 
 <div class="form-group">
@@ -53,6 +38,22 @@
     <option value="self" [% IF authenticatorinfo.type == 'self' %]selected="selected"[% END %]>[% msg.maketext("Selbstregistrierung") %]</option>
     <option value="ldap" [% IF authenticatorinfo.type == 'ldap' %]selected="selected"[% END %]>[% msg.maketext("LDAP") %]</option>
     <option value="olws" [% IF authenticatorinfo.type == 'olws' %]selected="selected"[% END %]>[% msg.maketext("OLWS") %]</option>
+  </select>
+</div>
+
+[%
+   selected_views = {};
+   FOREACH thisview IN authenticatorinfo.views ;
+     selected_views.${thisview} = 1;
+   END;
+%]
+
+<div class="form-group">
+<label for="views">[% msg.maketext("Views") %]</label>
+  <select class="form-control" name="views" multiple="multiple" size="20" id="views">
+[% FOREACH thisview IN config.get_viewinfo_overview %]  
+    <option value="[% thisview.viewname %]" [% IF selected_views.${thisview.viewname} %]selected="selected"[% END %]>[% thisview.viewname %] - [% thisview.description %]</option>
+[% END %]
   </select>
 </div>
 

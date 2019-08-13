@@ -12,10 +12,19 @@
 #
 #######################################################################
 -%]
+[%
+
+  available_authenticators = config.get_authenticators_by_view(view);
+
+ # USE dumper;dumper.dump(available_authenticators);
+%]
 
         <div class="jumbotron">
          <h1 class="display-4">[% msg.maketext("Anmelden") %]</h1>
 	 <div id="login_targets" class="accordion">
+
+
+
   <div class="card">
     <div class="card-header" id="headingOne">
       <h5 class="mb-0">

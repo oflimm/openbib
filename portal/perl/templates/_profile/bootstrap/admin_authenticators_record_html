@@ -16,11 +16,19 @@
 
 <div class="table-responsive text-nowrap">
 <table class="table table-striped table-hover">
-<tr><th>[% msg.maketext("Hostname") %]</th><td>[% authenticatorinfo.hostname %]</td></tr>
-<tr><th>[% msg.maketext("Port") %]</th><td>[% authenticatorinfo.port %]</td></tr>
-<tr><th>[% msg.maketext("Nutzername") %]</th><td>[% authenticatorinfo.remoteuser %]</td></tr>
-<tr><th>[% msg.maketext("DB-Name") %]</th><td>[% authenticatorinfo.dbname %]</td></tr>
+<tr><th>[% msg.maketext("Name") %]</th><td>[% authenticatorinfo.name %]</td></tr>
 <tr><th>[% msg.maketext("Beschreibung") %]</th><td>[% authenticatorinfo.description %]</td></tr>
 <tr><th>[% msg.maketext("Typ") %]</th><td>[% authenticatorinfo.type %]</td></tr>
+
+<tr><th>[% msg.maketext("Views") %]</th><td>
+
+<ul>
+[% FOREACH thisview IN config.get_viewinfo_overview %]  
+    <li>[% thisview.viewname %] - [% thisview.description %]</li>
+[% END %]
+</ul>
+
+</td></tr>
+
 </table>
 </div>

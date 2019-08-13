@@ -92,7 +92,7 @@
 </div>
 </div>
 
-[% IF user.get_targettype_of_session(session.ID) != 'self' %]
+[% IF user.get_targettype_of_session(session.ID) == 'olws' %]
 <p/>
 
 <div class="card">

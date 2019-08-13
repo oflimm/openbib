@@ -90,6 +90,13 @@
 </select>
 </div>
 
+
+<div class="form-group">
+<label for="restrict_intranet">[% msg.maketext("Einschränkung auf Intranet-IPs") %]</label>
+<textarea class="form-control" name="restrict_intranet" id="restrict_intranet" value="[% viewinfo.restrict_intranet %]" rows="5">[% viewinfo.restrict_intranet %]</textarea>
+</div>
+
+
 <div class="form-group">
 <label for="roles">[% msg.maketext("Berechtigte Rollen für den Zugriff") %]</label>
 <select class="form-control"  id="roles" name="roles" multiple="multiple" size="20">

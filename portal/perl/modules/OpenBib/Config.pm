@@ -4299,10 +4299,10 @@ sub update_authenticator {
 	$authenticator->update(
 	    $arg_ref,
 	    );
+
+	$authenticator->authenticator_views->delete;
 	
     	if (@$views_ref){
-	    $authenticator->authenticator_views->delete;
-
 	    my $this_view_ref = [];
 	    foreach my $viewname (@$views_ref){
 		

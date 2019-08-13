@@ -1783,6 +1783,42 @@ sub get_viewroles {
     return @viewroles;
 }
 
+sub get_viewauthenticators {
+    my $self     = shift;
+    my $viewname = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my ($atime,$btime,$timeall);
+        
+    if ($self->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    my $authenticators = $self->get_schema->resultset('Viewinfo')->search(
+        {
+            'me.viewname' => $viewname,
+        },
+        {
+            select   => 'authenticatorid.id',
+            as       => 'thisauthenticatorid',
+            join     => [ 'authenticator_views', { 'authenticator_views' => 'authenticatorid' } ],
+            order_by => 'authenticatorid.name',
+            group_by => ['authenticatorid.name','authenticatorid.id'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+        }
+    );
+
+    my @viewauthenticators=();
+
+    while (my $item = $authenticators->next){
+        push @viewauthenticators, $item->{thisauthenticatorid};
+    }
+
+    return @viewauthenticators;
+}
+
 sub get_apidbs {
     my $self     = shift;
 
@@ -3101,6 +3137,8 @@ sub update_view {
         ? $arg_ref->{databases}           : [];
     my $roles_ref              = exists $arg_ref->{roles}
         ? $arg_ref->{roles}               : [];
+    my $authenticators_ref     = exists $arg_ref->{authenticators}
+        ? $arg_ref->{authenticators}      : [];
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -3128,6 +3166,7 @@ sub update_view {
     # Datenbank- und Rollen-Verknuepfungen zunaechst loeschen
     $self->get_schema->resultset('ViewDb')->search_rs({ viewid => $viewid})->delete;
     $self->get_schema->resultset('RoleView')->search_rs({ viewid => $viewid})->delete;
+    $self->get_schema->resultset('AuthenticatorView')->search_rs({ viewid => $viewid})->delete;
 
     if (@$databases_ref){
         my $this_db_ref = [];
@@ -3157,6 +3196,19 @@ sub update_view {
         
         # Dann die zugehoerigen Datenbanken eintragen
         $self->get_schema->resultset('RoleView')->populate($this_role_ref);
+    }
+
+    if (@$authenticators_ref){
+        my $this_authenticator_ref = [];
+        foreach my $authenticatorid (@$authenticators_ref){
+            push @$this_authenticator_ref, {
+                viewid => $viewid,
+                authenticatorid   => $authenticatorid,
+            };
+        }
+        
+        # Dann die zugehoerigen Datenbanken eintragen
+        $self->get_schema->resultset('AuthenticatorView')->populate($this_authenticator_ref);
     }
 
     # Flushen und aktualisieren in Memcached

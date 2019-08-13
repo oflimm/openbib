@@ -236,6 +236,11 @@ sub show_record_form {
         $viewroles_ref->{$rolename} = 1;
     }
 
+    my $viewauthenticators_ref      = {};
+    foreach my $authenticatorid ($config->get_viewauthenticators($viewname)){
+        $viewauthenticators_ref->{$authenticatorid} = 1;
+    }
+    
     
     my @profiledbs       = sort $config->get_profiledbs($config->get_profilename_of_view($viewname));
     my $all_rssfeeds_ref = $config->get_rssfeed_overview();
@@ -245,6 +250,7 @@ sub show_record_form {
         viewinfo   => $viewinfo,
         selected_viewdbs    => $viewdbs_ref,
         selected_viewroles  => $viewroles_ref,
+	selected_viewauthenticators  => $viewauthenticators_ref,
 
         allrssfeeds  => $all_rssfeeds_ref,
         viewrssfeed  => $viewrssfeed_ref,
@@ -405,6 +411,11 @@ sub get_input_definition {
             type     => 'array',
         },
         roles => {
+            default  => [],
+            encoding => 'none',
+            type     => 'array',
+        },
+        authenticators => {
             default  => [],
             encoding => 'none',
             type     => 'array',

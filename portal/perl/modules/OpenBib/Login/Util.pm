@@ -33,8 +33,11 @@ use utf8;
 use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
+use Net::LDAPS;
 use SOAP::Lite;
 use YAML::Syck;
+
+use OpenBib::Config;
 
 sub authenticate_olws_user {
     my ($arg_ref) = @_;
@@ -99,5 +102,6 @@ sub authenticate_olws_user {
     
     return \%userinfo;
 }
+
 
 1;

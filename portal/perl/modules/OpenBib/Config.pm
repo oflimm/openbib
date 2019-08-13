@@ -1811,6 +1811,24 @@ sub get_apidbs {
     return @apidbs;
 }
 
+sub get_apidb_map {
+    my $self     = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $apidb_map_ref = {};
+
+    my @apidbs = $self->get_apidbs;
+
+    foreach my $dbname (@apidbs){
+	$apidb_map_ref->{$dbname} = 1;
+    }
+
+
+    return $apidb_map_ref;
+}
+
 sub get_active_databases {
     my $self = shift;
     
@@ -3076,6 +3094,8 @@ sub update_view {
         ? $arg_ref->{own_index}           : undef;
     my $force_login            = exists $arg_ref->{force_login}
         ? $arg_ref->{force_login}         : undef;
+    my $restrict_intranet      = exists $arg_ref->{restrict_intranet}
+        ? $arg_ref->{restrict_intranet}   : undef;
 
     my $databases_ref          = exists $arg_ref->{databases}
         ? $arg_ref->{databases}           : [];
@@ -3100,6 +3120,7 @@ sub update_view {
             stripuri    => $stripuri,
             own_index   => $own_index,
             force_login => $force_login,
+            restrict_intranet => $restrict_intranet,
             active      => $active
         }
     );
@@ -3223,6 +3244,8 @@ sub new_view {
         ? $arg_ref->{own_index}           : undef;
     my $force_login            = exists $arg_ref->{force_login}
         ? $arg_ref->{force_login}         : undef;
+    my $restrict_intranet      = exists $arg_ref->{restrict_intranet}
+        ? $arg_ref->{restrict_intranet}   : undef;
 
     my $databases_ref          = exists $arg_ref->{databases}
         ? $arg_ref->{databases}           : [];
@@ -3249,6 +3272,7 @@ sub new_view {
             stripuri    => $stripuri,
             own_index   => $own_index,
             force_login => $force_login,
+	    restrict_intranet => $restrict_intranet,
             active      => $active
         }
     );
@@ -3926,7 +3950,7 @@ sub authentication_exists {
     my $logger = get_logger();
 
     # DBI: "select count(*) as rowcount from authenticator where targetid = ?"
-    my $targetcount = $self->get_schema->resultset('Authenticator')->search_rs(
+    my $targetcount = $self->get_schema->resultset('Authenticatorinfo')->search_rs(
         {
             id => $targetid,
         }
@@ -3943,28 +3967,88 @@ sub get_authenticators {
     my $logger = get_logger();
 
     # DBI: "select * from authenticator order by type DESC,description"
-    my $authenticators = $self->get_schema->resultset('Authenticator')->search_rs(
-        undef,
-        {
+    my $authenticators = $self->get_schema->resultset('Authenticatorinfo')->search_rs(
+	undef,
+	{
             order_by => ['type DESC','description'],
-            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
         }
-    );
-
+	);
+    
     my $authenticators_ref = [];
 
     while (my $authenticator = $authenticators->next){
-        push @$authenticators_ref, {
-            id          => $authenticator->{id},
-            hostname    => $authenticator->{hostname},
-            port        => $authenticator->{port},
-            remoteuser  => $authenticator->{remoteuser},
-            dbname      => $authenticator->{dbname},
-            description => $authenticator->{description},
-            type        => $authenticator->{type},
+        my $thisauthenticator_ref = {
+            id          => $authenticator->id,
+            name        => $authenticator->name,
+            description => $authenticator->description,
+            type        => $authenticator->type,
         };
+
+	my $views_ref = [];
+
+	eval {
+	    my $authenticatorviews = $authenticator->authenticator_views;
+	    if ($authenticatorviews){
+		while (my $thisauthenticatorview = $authenticatorviews->next){
+		    push @$views_ref, $thisauthenticatorview->viewid->viewname;
+		}
+	    }
+	};
+	$thisauthenticator_ref->{views} = $views_ref;
+	push @$authenticators_ref, $thisauthenticator_ref;		
     }
 
+    return $authenticators_ref;
+}
+
+sub get_authenticators_by_view {
+    my ($self,$viewname) = @_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    # DBI: "select * from authenticator order by type DESC,description"
+    my $authenticators = $self->get_schema->resultset('AuthenticatorView')->search_rs(       
+	{
+	    'viewid.viewname' => $viewname,
+	},
+	{
+	    select => ['authenticatorid.id','authenticatorid.name','authenticatorid.description','authenticatorid.type'],
+	    as => ['thisid','thisname','thisdescription','thistype'],
+	    join => ['authenticatorid','viewid'],
+            order_by => ['type DESC','description'],
+        }
+	);
+    
+    my $authenticators_ref = [];
+
+    while (my $authenticator = $authenticators->next){
+        my $thisauthenticator_ref = {
+            id          => $authenticator->get_column('thisid'),
+            name        => $authenticator->get_column('thisname'),
+            description => $authenticator->get_column('thisdescription'),
+            type        => $authenticator->get_column('thistype'),
+        };
+
+	my $views_ref = [];
+
+	eval {
+	    my $authenticatorview = $authenticator->authenticator_views;
+	    if ($authenticatorview){
+		while (my $thisauthenticatorview = $authenticatorview->next){
+		    push @$views_ref, $thisauthenticatorview->viewid->viewname;
+		}
+	    }
+	};
+	$thisauthenticator_ref->{views} = $views_ref;
+	push @$authenticators_ref, $thisauthenticator_ref;
+    }
+
+    if ($logger->is_debug){
+	$logger->debug(YAML::Dump($authenticators_ref));
+    }
+    
     return $authenticators_ref;
 }
 
@@ -3976,7 +4060,7 @@ sub get_authenticator_by_id {
     my $logger = get_logger();
 
     # DBI: "select * from authenticator where targetid = ?"
-    my $authenticator = $self->get_schema->resultset('Authenticator')->single(
+    my $authenticator = $self->get_schema->resultset('Authenticatorinfo')->single(
         {
             id => $targetid,
         },
@@ -3987,13 +4071,27 @@ sub get_authenticator_by_id {
     if ($authenticator){
         $authenticator_ref = {
             id          => $authenticator->get_column('id'),
-            hostname    => $authenticator->get_column('hostname'),
-            port        => $authenticator->get_column('port'),
-            remoteuser  => $authenticator->get_column('remoteuser'),
-            dbname      => $authenticator->get_column('dbname'),
+            name        => $authenticator->get_column('name'),
             description => $authenticator->get_column('description'),
             type        => $authenticator->get_column('type'),
         };
+
+	my $views_ref = [];
+
+	eval {
+	    my $authenticatorview = $authenticator->authenticator_views;
+	    if ($authenticatorview){
+		$logger->debug("Views found");
+		while (my $thisauthenticatorview = $authenticatorview->next){
+		    my $viewname = $thisauthenticatorview->viewid->get_column('viewname');
+
+		    $logger->debug("Single View found: $viewname");
+
+		    push @$views_ref, $viewname;
+		}
+	    }
+	};
+	$authenticator_ref->{views} = $views_ref;
     }
 
     if ($logger->is_debug){
@@ -4010,9 +4108,9 @@ sub get_authenticator_by_dbname {
   
     my $logger = get_logger();
 
-    my $authenticator = $self->get_schema->resultset('Authenticator')->single(
+    my $authenticator = $self->get_schema->resultset('Authenticatorinfo')->single(
         {
-            dbname => $dbname,
+            name => $dbname,
         },
     );
 
@@ -4021,13 +4119,19 @@ sub get_authenticator_by_dbname {
     if ($authenticator){
         $authenticator_ref = {
             id          => $authenticator->id,
-            hostname    => $authenticator->hostname,
-            port        => $authenticator->port,
-            remoteuser  => $authenticator->remoteuser,
-            dbname      => $authenticator->dbname,
+            name        => $authenticator->name,
             description => $authenticator->description,
             type        => $authenticator->type,
         };
+
+	my $views_ref = {};
+
+	eval {
+	    foreach my $thisview ($authenticator->authenticator_views->viewid->all){
+		push @$views_ref, $thisview->viewname;
+	    }
+	};
+	$authenticator_ref->{views} = $views_ref;
     }
 
     if ($logger->is_debug){
@@ -4045,7 +4149,7 @@ sub get_authenticator_self {
     my $logger = get_logger();
 
     # DBI: "select * from authenticator where type = ?"
-    my $authenticator = $self->get_schema->resultset('Authenticator')->single(
+    my $authenticator = $self->get_schema->resultset('Authenticatorinfo')->single(
         {
             type => 'self',
         },
@@ -4056,13 +4160,19 @@ sub get_authenticator_self {
     if ($authenticator){
         $authenticator_ref = {
             id          => $authenticator->id,
-            hostname    => $authenticator->hostname,
-            port        => $authenticator->port,
-            remoteuser  => $authenticator->remoteuser,
-            dbname      => $authenticator->dbname,
+            name        => $authenticator->name,
             description => $authenticator->description,
             type        => $authenticator->type,
         };
+
+	my $views_ref = {};
+
+	eval {
+	    foreach my $thisview ($authenticator->authenticator_views->viewid->all){
+		push @$views_ref, $thisview->viewname;
+	    }
+	};
+	$authenticator_ref->{views} = $views_ref;	
     }
 
     if ($logger->is_debug){
@@ -4079,7 +4189,7 @@ sub get_number_of_authenticators {
     my $logger = get_logger();
 
     # DBI: "select count(targetid) as rowcount from authenticator"
-    my $numoftargets = $self->get_schema->resultset('Authenticator')->search_rs(
+    my $numoftargets = $self->get_schema->resultset('Authenticatorinfo')->search_rs(
         undef,
     )->count;
 
@@ -4097,7 +4207,7 @@ sub authenticator_exists {
     my $logger = get_logger();
 
     # DBI: "select count(description) as rowcount from authenticator where description = ?"
-    my $targetcount = $self->get_schema->resultset('Authenticator')->search_rs(
+    my $targetcount = $self->get_schema->resultset('Authenticatorinfo')->search_rs(
         {
             description => $description,
         }   
@@ -4114,7 +4224,7 @@ sub delete_authenticator {
     my $logger = get_logger();
 
     eval {
-        $self->get_schema->resultset('Authenticator')->search_rs(
+        $self->get_schema->resultset('Authenticatorinfo')->search_rs(
             {
                 id => $targetid,
             }   
@@ -4138,13 +4248,32 @@ sub new_authenticator {
     if ($logger->is_debug){
         $logger->debug(YAML::Dump($arg_ref));
     }
+
+    my $views_ref = $arg_ref->{views};
+    delete $arg_ref->{views};
     
     # DBI: "insert into authenticator (hostname,port,user,db,description,type) values (?,?,?,?,?,?)"
-    my $new_authenticator = $self->get_schema->resultset('Authenticator')->create(
+    my $new_authenticator = $self->get_schema->resultset('Authenticatorinfo')->create(
         $arg_ref,
     );
 
     if ($new_authenticator){
+	if (@$views_ref){
+	    my $this_view_ref = [];
+	    foreach my $viewname (@$views_ref){
+		
+		my $viewid = $self->get_viewinfo->single({ viewname => $viewname })->id;
+                
+		push @$this_view_ref, {
+		    viewid          => $viewid,
+		    authenticatorid => $new_authenticator->id,
+		};
+	    }
+	    
+	    # Dann die zugehoerigen Views eintragen
+	    $self->get_schema->resultset('AuthenticatorView')->populate($this_view_ref);
+        }
+        
         return $new_authenticator->id;
     }
 
@@ -4157,14 +4286,39 @@ sub update_authenticator {
     my $logger = get_logger();
 
     # DBI: "update authenticator set hostname = ?, port = ?, user =?, db = ?, description = ?, type = ? where id = ?"
-    $self->get_schema->resultset('Authenticator')->single(
+    my $authenticator = $self->get_schema->resultset('Authenticatorinfo')->single(
         {
             id => $arg_ref->{id},
         }   
-    )->update(
-        $arg_ref,
-    );
+	);
 
+    if($authenticator){
+	my $views_ref = $arg_ref->{views};
+	delete $arg_ref->{views};
+	
+	$authenticator->update(
+	    $arg_ref,
+	    );
+	
+    	if (@$views_ref){
+	    $authenticator->authenticator_views->delete;
+
+	    my $this_view_ref = [];
+	    foreach my $viewname (@$views_ref){
+		
+		my $viewid = $self->get_viewinfo->single({ viewname => $viewname })->id;
+                
+		push @$this_view_ref, {
+		    viewid          => $viewid,
+		    authenticatorid => $arg_ref->{id},
+		};
+	    }
+	    
+	    # Dann die zugehoerigen Views eintragen
+	    $self->get_schema->resultset('AuthenticatorView')->populate($this_view_ref);
+        }
+    }
+    
     $logger->debug("Authenticator updated");
     
     return;
@@ -4184,7 +4338,7 @@ sub get_id_of_selfreg_authenticator {
     return undef if (!defined $dbh);
 
     # DBI: "select id from authenticator where type = 'self'"
-    my $authenticator = $self->get_schema->resultset('Authenticator')->search_rs(
+    my $authenticator = $self->get_schema->resultset('Authenticatorinfo')->search_rs(
         {
             type => 'self',
         }

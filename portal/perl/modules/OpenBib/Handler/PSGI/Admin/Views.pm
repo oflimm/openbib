@@ -419,6 +419,11 @@ sub get_input_definition {
             encoding => 'none',
             type     => 'scalar',
         },        
+        restrict_intranet => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
         
     };
 }

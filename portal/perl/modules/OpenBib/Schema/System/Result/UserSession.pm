@@ -84,13 +84,13 @@ __PACKAGE__->set_primary_key("id");
 
 Type: belongs_to
 
-Related object: L<OpenBib::Schema::System::Result::Authenticator>
+Related object: L<OpenBib::Schema::System::Result::Authenticatorinfo>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "authenticatorid",
-  "OpenBib::Schema::System::Result::Authenticator",
+  "OpenBib::Schema::System::Result::Authenticatorinfo",
   { id => "authenticatorid" },
   { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
@@ -126,8 +126,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07046 @ 2019-07-01 11:08:55
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/Nci7qGgIzWE6MGSBjlqcQ
+# Created by DBIx::Class::Schema::Loader v0.07046 @ 2019-07-10 08:25:07
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:4QRP1gP4ZbhjKGD/Ts+gFQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

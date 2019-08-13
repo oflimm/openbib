@@ -395,22 +395,7 @@ sub get_input_definition {
             encoding => 'utf8',
             type     => 'scalar',
         },
-        hostname => {
-            default  => '',
-            encoding => 'none',
-            type     => 'scalar',
-        },
-        port => {
-            default  => '',
-            encoding => 'none',
-            type     => 'scalar',
-        },
-        remoteuser => {
-            default  => '',
-            encoding => 'none',
-            type     => 'scalar',
-        },
-        dbname => {
+        name => {
             default  => '',
             encoding => 'none',
             type     => 'scalar',
@@ -419,7 +404,13 @@ sub get_input_definition {
             default  => '',
             encoding => 'none',
             type     => 'scalar',
-        },        
+        },
+        views => {
+            default  => [],
+            encoding => 'none',
+            type     => 'array',
+        },
+        
     };
 }
     

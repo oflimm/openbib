@@ -176,6 +176,8 @@ sub search {
         map { $current_facets_ref->{$_} = 1 } split(',',$facets);
     }
 
+    my $apidb_map = $config->get_apidb_map;
+    
     if ($logger->is_debug){
         $logger->debug("Facets CGI Parameter: $facets");
         $logger->debug("Generate Facets: ".YAML::Dump($current_facets_ref));
@@ -208,6 +210,12 @@ sub search {
         }        
         else {
             foreach my $database ($config->get_databases_of_searchprofile($searchprofile)) {
+
+		if (defined $apidb_map->{$database} && $apidb_map->{$database}){
+		    $logger->debug("Ignoring database $database of type api");
+		    next;
+		}
+		
                 $logger->debug("Adding Xapian DB-Object for searchindex $database");
                 
                 if (!defined $dbh){
@@ -327,7 +335,7 @@ sub search {
     if ($defaultop ne "or"){
         $self->{qp}->set_default_op($default_op_ref->{$defaultop});
         if ($logger->is_debug){
-            $logger->debug("Setting default op to ".$default_op_ref->{$defaultop});
+            $logger->debug("Setting default op $defaultop to ".$default_op_ref->{$defaultop});
             $logger->debug("Got default op ".$self->{qp}->get_default_op);
         }
     }
@@ -342,7 +350,7 @@ sub search {
     }
     
     my $category_map_ref = {};
-    my $enq       = $dbh->enquire($self->{qp}->parse_query($fullquerystring,Search::Xapian::FLAG_WILDCARD|Search::Xapian::FLAG_LOVEHATE|Search::Xapian::FLAG_BOOLEAN|Search::Xapian::FLAG_PHRASE));
+    my $enq       = $dbh->enquire($self->{qp}->parse_query($fullquerystring,Search::Xapian::FLAG_WILDCARD|Search::Xapian::FLAG_LOVEHATE|Search::Xapian::FLAG_BOOLEAN|Search::Xapian::FLAG_BOOLEAN_ANY_CASE|Search::Xapian::FLAG_PHRASE));
 #    my $enq       = $dbh->enquire($self->{qp}->parse_query($fullquerystring,FLAG_WILDCARD|FLAG_BOOLEAN|FLAG_PHRASE));
 
     $logger->debug("Original sorting: $sorttype / $sortorder");

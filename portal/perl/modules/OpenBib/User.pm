@@ -37,6 +37,7 @@ use Digest::MD5;
 use Encode qw(decode_utf8 encode_utf8);
 use JSON::XS;
 use Data::Pageset;
+use NetAddr::IP;
 use Log::Log4perl qw(get_logger :levels);
 use YAML::Syck;
 
@@ -181,19 +182,23 @@ sub update_lastlogin {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $username   = exists $arg_ref->{username}
-        ? $arg_ref->{username}             : undef;
+    my $userid   = exists $arg_ref->{userid}
+        ? $arg_ref->{userid}             : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    if ($username){
+    if ($userid){
         # DBI: "update userinfo set pin = ? where username = ?"
         my $userinfo = $self->get_schema->resultset('Userinfo')->single(
             {
-                username => $username,
+                id => $userid,
             }
-        )->update({ lastlogin => \"NOW()" });
+	    );
+
+	if ($userinfo){
+	    $userinfo->update({ lastlogin => \"NOW()" });
+	}
     }
     elsif ($self->{ID}) {
         # DBI: "update userinfo set pin = ? where id = ?"
@@ -201,10 +206,14 @@ sub update_lastlogin {
             {
                 id => $self->{ID},
             }
-        )->update({ lastlogin => \"NOW()" });
+        );
+
+	if ($userinfo){
+	    $userinfo->update({ lastlogin => \"NOW()" });
+	}
     }
     else {
-        $logger->error("Neither username nor userid given");
+        $logger->error("No userid given");
     }
 
     return;
@@ -363,7 +372,7 @@ sub allowed_for_view {
 }
 
 sub user_exists {
-    my ($self,$username,$viewname)=@_;
+    my ($self,$username)=@_;
     
     # Log4perl logger erzeugen
   
@@ -373,7 +382,6 @@ sub user_exists {
     my $count = $self->get_schema->resultset('Userinfo')->search(
 	{ 
 	    username => $username, 
-	    viewid   => undef,
 	})->count;
     
     return $count;    
@@ -395,15 +403,15 @@ sub user_exists_in_view {
 
     my $viewid      = exists $arg_ref->{viewid}
         ? $arg_ref->{viewid}                : undef;
+
+    my $authenticatorid    = exists $arg_ref->{authenticatorid}
+        ? $arg_ref->{authenticatorid}       : undef;
     
-    # Log4perl logger erzeugen
-  
-    my $logger = get_logger();
     if ($logger->is_debug){
 	$logger->debug("viewname: $viewname - viewid: $viewid");
     }
 
-    if (!$viewid){
+    if ($viewname && !$viewid){
 	my $config = $self->get_config;
 	eval {
 	    $viewid = $config->get_viewinfo->single({ viewname => $viewname })->id;
@@ -419,8 +427,9 @@ sub user_exists_in_view {
     # DBI: "select count(userid) as rowcount from user where username = ?"
     $count = $self->get_schema->resultset('Userinfo')->search(
 	{ 
-	    username => $username, 
-	    viewid   => $viewid,
+	    username        => $username, 
+	    viewid          => $viewid,
+	    authenticatorid => $authenticatorid,
 	})->count;
 
 
@@ -432,16 +441,63 @@ sub user_exists_in_view {
 }
 
 sub can_access_view {
-    my ($self,$viewname)=@_;
+    my ($self,$viewname,$remote_ip)=@_;
 
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+    
     my $config = $self->get_config;
 
     my $viewinfo = $config->get_viewinfo->single({ viewname => $viewname });
 
     # Standardmaessig darf jeder Nutzer jeden View verwenden
     my $user_shall_access = 1;
+
+    my $restrict_intranet = $viewinfo->restrict_intranet;
+    my $force_login       = $viewinfo->force_login;
     
-    if ($viewinfo && $viewinfo->force_login){
+    # IP-Eingrenzung?
+    if ($viewinfo && $restrict_intranet){
+	my $remote_address;
+
+	eval {
+	    $remote_address = NetAddr::IP->new($remote_ip);
+	};
+	
+	if (!$@){
+	    
+	    my @ip_ranges = split("\r\n",$restrict_intranet);
+	    
+	    my $is_intranet    = 0;
+	    my $checked_ranges = 0;
+	    
+	    foreach my $ip (@ip_ranges){
+		$logger->debug("Checking $remote_ip - $ip");
+		
+		my $address_range;
+		
+		eval {
+		    $address_range = NetAddr::IP->new($ip);
+		};
+
+		next if (!$address_range);
+
+		$checked_ranges++;
+		
+		if ($remote_address->within($address_range)){
+		    $is_intranet = 1;
+		    $logger->debug("IP $remote_ip considered intranet");
+		}
+	    }
+	    
+	    # Default force_login, wenn ausserhalb des Intranets
+	    $force_login = 1 if ($checked_ranges && !$is_intranet);
+	}
+    }
+
+    # Login zwingend, weil so konfiguriert
+    if ($viewinfo && $force_login){
 	$user_shall_access = 0;
 
 	if ($self->{ID}){
@@ -480,16 +536,22 @@ sub add {
     my $email       = exists $arg_ref->{email}
         ? $arg_ref->{email}                 : '';
 
+
+    my $authenticatorid = exists $arg_ref->{authenticatorid}
+    ? $arg_ref->{authenticatorid}                 : undef;
+
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
 
     # DBI: "insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','',?,'','','','','')"
     my $new_user = $self->get_schema->resultset('Userinfo')->create({
-	viewid    => $viewid,
-        username  => $username,
-        password  => $hashed_password,
-        email     => $email,
+	creationdate    => \"NOW()", 
+	authenticatorid => $authenticatorid,
+	viewid          => $viewid,
+        username        => $username,
+        password        => $hashed_password,
+        email           => $email,
     });
 
     if ($password){
@@ -499,7 +561,7 @@ sub add {
         $new_user->update({ password => $hashed_password });
     }
     
-    return;
+    return $new_user->id;
 }
 
 sub set_password {
@@ -788,7 +850,7 @@ sub get_targetdb_of_session {
         },
         {
             join   => ['sid','authenticatorid'],
-            select => ['authenticatorid.dbname'],
+            select => ['authenticatorid.name'],
             as     => ['thisdbname'],
         }
             
@@ -1381,20 +1443,30 @@ sub authenticate_self_user {
   
     my $logger = get_logger();
 
-    my $config = $self->get_config;
-    my $viewinfo = $config->get_viewinfo->single({ viewname => $viewname });
-    
+    my $userid = -1;
+
     my $viewid;
-    
-    if ($viewinfo){
-	$viewid = $viewinfo->id;
+
+    my $config = $self->get_config;
+
+    eval {
+	$viewid = $config->get_viewinfo->single({ viewname => $viewname })->id;
+    };
+
+    if ($@){
+	$logger->error($@);
+
+	return $userid;
     }
+    
+    my $authenticator_self = $config->get_authenticator_self;
 
     # DBI: "select userid from user where username = ? and password = ?"
     my $authentication = $self->get_schema->resultset('Userinfo')->search_rs(
         {
-            username  => $username,
-	    viewid    => $viewid,
+            username        => $username,
+	    viewid          => $viewid,
+	    authenticatorid => $authenticator_self->{id},
         },
         {
             select => ['id', \"me.password  = crypt('$password',me.password)"],
@@ -1403,16 +1475,15 @@ sub authenticate_self_user {
             
     )->first;
     
-    my $userid = -1;
-
     if ($authentication && $authentication->get_column('is_authenticated')){
         $userid = $authentication->get_column('thisid');
     }
     else { # Fallback ohne View
        $authentication = $self->get_schema->resultset('Userinfo')->search_rs(
            {
-               username  => $username,
-	       viewid    => undef,
+               username        => $username,
+	       viewid          => undef,
+	       authenticatorid => $authenticator_self->{id},
            },
            {
                select => ['id', \"me.password  = crypt('$password',me.password)"],
@@ -1428,6 +1499,65 @@ sub authenticate_self_user {
     $logger->debug("Got Userid $userid");
 
     return $userid;
+}
+
+sub authenticate_ldap_user {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $username            = exists $arg_ref->{username}
+        ? $arg_ref->{username}            : undef;
+    my $password            = exists $arg_ref->{password}
+        ? $arg_ref->{password}            : undef;
+    my $authenticator       = exists $arg_ref->{authenticator}
+        ? $arg_ref->{authenticator}       : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = $self->get_config;
+
+    my $authenticator_config;
+
+    eval {
+	$authenticator_config = $config->{authenticator}{ldap}{$authenticator};
+    };
+
+    my %userinfo=('erfolgreich' => 0);
+
+    return \%userinfo unless ($authenticator_config);
+
+    my @ldap_parameters = ($authenticator_config->{hostname});
+
+    foreach my $parameter ('scheme','port','verify','timeout','onerror','cafile'){
+	push @ldap_parameters, ($parameter,$authenticator_config->{$parameter}) if ($authenticator_config->{$parameter});
+
+    }
+
+    my $ldaps = Net::LDAPS->new(@ldap_parameters);
+    
+    if (defined $ldaps) {
+	my $userdn= $authenticator_config->{userdn};
+	$userdn=~s/USER_NAME/$username/;
+
+       $logger->debug("Checking $userdn in RRZK-LDAP-Tree.");
+       my $mesg = $ldaps->bind(
+	   $userdn, 
+	   password => "$password"
+	   );
+       if (not defined $mesg) {
+	   $ldaps->unbind;
+	   $logger->debug("$authenticator LDAP: ERR");
+           $userinfo{'erfolgreich'} = 0;
+       } 
+       else {
+	   $ldaps->unbind;
+	   $logger->debug("$authenticator LDAP: OK");
+           $userinfo{'erfolgreich'} = 1;
+       }
+    }
+    
+    return \%userinfo;
 }
 
 sub add_tags {
@@ -5139,6 +5269,15 @@ sub get_info {
         $userinfo_ref->{'autocompletiontype'} = $userinfo->autocompletiontype;
         $userinfo_ref->{'spelling_as_you_type'}   = $userinfo->spelling_as_you_type;
         $userinfo_ref->{'spelling_resultlist'}    = $userinfo->spelling_resultlist;
+	$userinfo_ref->{'viewname'} = undef;
+	$userinfo_ref->{'authenticatorid'} = undef;
+	
+	if ($userinfo->viewid){
+	    $userinfo_ref->{'viewname'}  = $userinfo->viewid->viewname;
+	}
+	if ($userinfo->authenticatorid){
+	    $userinfo_ref->{'authenticatorid'}  = $userinfo->authenticatorid->id;
+	}
     }
     
     # Rollen
@@ -5150,13 +5289,13 @@ sub get_info {
         },
         {
             join   => ['roleid'],
-            select => ['roleid.rolename'],
-            as     => ['thisrolename'],
+            select => ['roleid.rolename','roleid.description'],
+            as     => ['thisrolename','thisroledesc'],
         }
     );
 
     foreach my $userrole ($userroles->all){
-        $userinfo_ref->{role}{$userrole->get_column('thisrolename')}=1;
+        $userinfo_ref->{role}{$userrole->get_column('thisrolename')}=$userrole->get_column('thisroledesc');
     }
 
     # Templates

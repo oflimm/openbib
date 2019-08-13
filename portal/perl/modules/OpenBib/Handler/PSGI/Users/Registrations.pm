@@ -140,8 +140,6 @@ sub mail_confirmation {
     my $path_prefix    = $self->param('path_prefix');
 
     # CGI Args
-    my $action              = ($query->param('action'))?$query->param('action'):'none';
-    my $targetid            = ($query->param('targetid'))?$query->param('targetid'):'none';
     my $username            = ($query->param('username'))?$query->param('username'):'';
     my $password1           = ($query->param('password1'))?$query->param('password1'):'';
     my $password2           = ($query->param('password2'))?$query->param('password2'):'';
@@ -176,15 +174,17 @@ sub mail_confirmation {
     }
 
     if ($password1 ne $password2) {
-        return $self->print_warning($msg->maketext("Die beiden eingegebenen Passworte stimmen nicht Ã¼berein."));
+        return $self->print_warning($msg->maketext("Die beiden eingegebenen Passworte stimmen nicht überein."));
     }
     
     # Ueberpruefen, ob es eine gueltige Mailadresse angegeben wurde.
     unless (Email::Valid->address($username)){
-        return $self->print_warning($msg->maketext("Sie haben keine gÃ¼tige Mailadresse eingegeben. Gehen Sie bitte [_1]zurück[_2] und korrigieren Sie Ihre Eingabe","<a href=\"$path_prefix/$config->{users_loc}/$config->{registrations_loc}\">","</a>"));
+        return $self->print_warning($msg->maketext("Sie haben keine gültige Mailadresse eingegeben. Gehen Sie bitte [_1]zurück[_2] und korrigieren Sie Ihre Eingabe","<a href=\"$path_prefix/$config->{users_loc}/$config->{registrations_loc}\">","</a>"));
     }
 
-    if ($user->user_exists_in_view({ username => $username, viewname => $view})) {
+    my $authenticator_self_ref = $config->get_authenticator_self;
+    
+    if ($user->user_exists_in_view({ username => $username, viewname => $view, authenticatorid => $authenticator_self_ref->{id}})) {
         return $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"));
     }
     
@@ -304,25 +304,29 @@ sub register {
     
     if ($username && $viewid && $hashed_password){
 
-      # Wurde dieser Nutzername inzwischen bereits registriert?
-      if ($user->user_exists_in_view({ username => $username, viewid => $viewid })) {
-        return $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"));
-      }
-
-      # OK, neuer Nutzer -> eintragen
-      $user->add({
-		  username         => $username,
-		  hashed_password  => $hashed_password,
-		  viewid           => $viewid,
-		  email            => $username,
-		 });
-
-      # An dieser Stelle darf zur Bequemlichkeit der Nutzer die Session 
-      # nicht automatisch mit dem Nutzer verknuepft werden (=automatische
-      # Anmeldung), dann dann ueber das Ausprobieren von Registrierungs-IDs 
-      # Nutzer-Identitaeten angenommen werden koennten.
-      
-      $user->clear_confirmation_request({ registrationid => $registrationid });
+	my $authenticator_self_ref = $config->get_authenticator_self;
+	
+	
+	# Wurde dieser Nutzername inzwischen bereits registriert?
+	if ($user->user_exists_in_view({ username => $username, viewid => $viewid, authenticatorid => $authenticator_self_ref->{id} })) {
+	    return $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"));
+	}
+	
+	# OK, neuer Nutzer -> eintragen
+	$user->add({
+	    username         => $username,
+	    hashed_password  => $hashed_password,
+	    viewid           => $viewid,
+	    email            => $username,
+	    authenticatorid  => $authenticator_self_ref->{id},
+		   });
+	
+	# An dieser Stelle darf zur Bequemlichkeit der Nutzer die Session 
+	# nicht automatisch mit dem Nutzer verknuepft werden (=automatische
+	# Anmeldung), dann dann ueber das Ausprobieren von Registrierungs-IDs 
+	# Nutzer-Identitaeten angenommen werden koennten.
+	
+	$user->clear_confirmation_request({ registrationid => $registrationid });
     }
     else {
       return $self->print_warning($msg->maketext("Diese Registrierungs-ID existiert nicht für dieses Portal."));

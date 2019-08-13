@@ -43,6 +43,7 @@ use Socket;
 use Template;
 use URI::Escape;
 
+use OpenBib::Authenticator::Factory;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::CirculationInfoTable;
@@ -126,7 +127,7 @@ sub show_form {
         return;
     }
 
-    my $authenticators_ref = $config->get_authenticators();
+    my $authenticators_ref = $config->get_authenticators($view);
     
     # TT-Data erzeugen
     my $ttdata={
@@ -179,6 +180,12 @@ sub authenticate {
     my $type        = ($query->param('type'))?$query->param('type'):'';
     my $redirect_to = uri_unescape($query->param('redirect_to'));
 
+    my $redirecturl = "";
+
+    my $result_ref = {
+        success => 0,
+    };
+    
     # Wenn die Session schon authentifiziert ist, dann
     # wird in die Benutzereinstellungen gesprungen
     if ($user->{ID} && !$validtarget){
@@ -201,113 +208,45 @@ sub authenticate {
         return;
     }
 
-    my $loginfailed=0;
+    my $userid = 0; # Nicht erfolgreich authentifiziert
     
     if ($username eq "" || $password eq "") {
-        $loginfailed=1;
+        $redirecturl="$path_prefix/$config->{login_loc}/failure?code=-1";
+	
+	if ($self->param('representation') eq "html"){
+	    $logger->debug("Redirecting to $redirecturl");
+	    
+	    # TODO GET?
+	    $self->header_add('Content-Type' => 'text/html');
+	    return $self->redirect($redirecturl);
+	}
+	else {
+	    return $self->print_json($result_ref);        
+	}
     }
+
+    my $authenticator = OpenBib::Authenticator::Factory->create_authenticator({ id => $authenticatorid, config => $config});
+
+    # Konsistenzchecks
+    { 
+	if ($authenticator->get('type') eq "self" && $username ne "admin" && $username !~/\@/){
+	    return $self->print_warning($msg->maketext("Bitte melden Sie sich mit Ihrer registrierten E-Mail-Adresse an"));
+	}
+    }
+
+    $userid = $authenticator->authenticate({
+	username  => $username,
+	password  => $password,
+	viewname  => $view,
+					   });
     
-    my $authenticator_ref = $config->get_authenticator_by_id($authenticatorid);
-
-    if ($logger->is_debug){
-        $logger->debug(YAML::Dump($authenticator_ref));
-    }
-    
-    ## Ausleihkonfiguration fuer den Katalog einlesen
-    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
-    
-    if ($authenticator_ref->{type} eq "olws") {
-        if ($logger->is_debug){
-            $logger->debug("Trying to authenticate via OLWS: ".YAML::Dump($circinfotable));
-        }
-        
-        my $userinfo_ref=OpenBib::Login::Util::authenticate_olws_user({
-            username      => $username,
-            password      => $password,
-            circcheckurl  => $circinfotable->get($authenticator_ref->{dbname})->{circcheckurl},
-            circdb        => $circinfotable->get($authenticator_ref->{dbname})->{circdb},
-        });
-        
-        my %userinfo=%$userinfo_ref;
-        
-        $logger->debug("Authentication via OLWS done");
-        
-        if ($userinfo{'erfolgreich'} ne "1") {
-            $loginfailed=2;
-        }
-        
-        # Gegebenenfalls Benutzer lokal eintragen
-        else {
-            if ($self->param('representation') eq "html"){
-                my $userid;
-                
-                $logger->debug("Save/update user");
-                
-                # Eintragen, wenn noch nicht existent
-                if (!$user->user_exists($username)) {
-                    # Neuen Satz eintragen
-                    $user->add({
-                        username => $username,
-                        password  => $password,
-                    });
-                    
-                    $logger->debug("User added");
-                }
-                else {
-                    # Satz aktualisieren
-                    $user->set_credentials({
-                        username => $username,
-                        password  => $password,
-                    });
-                    
-                    $logger->debug("User credentials updated");
-                }
-                
-                # Benuzerinformationen eintragen
-                $user->set_private_info($username,$userinfo_ref);
-                
-                $logger->debug("Updated private user info");
-            }
-        }
-    }
-    elsif ($authenticator_ref->{type} eq "self") {
-        # Selbstregistrierung nur fuer email-Adresse und admin
-
-        if ($username ne "admin" && $username !~/\@/){
-            return $self->print_warning($msg->maketext("Bitte melden Sie sich mit Ihrer registrierten E-Mail-Adresse an"));
-        }
-        
-        my $result = $user->authenticate_self_user({
-            username  => $username,
-            password  => $password,
-	    viewname  => $view,
-        });
-        
-        if ($result <= 0) {
-            $loginfailed=2;
-        }
-    }
-    else {
-        $loginfailed=2;
-    }
-    
-    my $redirecturl = "";
-
-    my $result_ref = {
-        success => 0,
-    };
-
-    if (!$loginfailed) {
-
+    if ($userid > 0) { 
         $logger->debug("Authentication successful");
 	
-	$user->update_lastlogin({ username => $username });
+	$user->update_lastlogin({ userid => $userid });
 	
         $result_ref->{success} = 1;
-
-        my $userid = $user->get_userid_for_username($username);
-
-        $result_ref->{userid} = $userid;
+        $result_ref->{userid}  = $userid;
         
         if ($self->param('representation') eq "html"){
 	    my $authorized_user = new OpenBib::User({ ID => $userid, config => $config});
@@ -318,8 +257,8 @@ sub authenticate {
             # Jetzt wird die Session mit der Benutzerid assoziiert
             
             $user->connect_session({
-                sessionID => $session->{ID},
-                userid    => $userid,
+                sessionID        => $session->{ID},
+                userid           => $userid,
                 authenticatorid  => $authenticatorid,
             });
             
@@ -376,11 +315,10 @@ sub authenticate {
     }
     
     # Fehlerbehandlung
-    if ($loginfailed) {
-        $redirecturl="$path_prefix/$config->{login_loc}/failure?code=$loginfailed";
+    if ($userid <= 0) {
+        $redirecturl="$path_prefix/$config->{login_loc}/failure?code=$userid";
     }
     
-
     if ($self->param('representation') eq "html"){
         $logger->debug("Redirecting to $redirecturl");
 
@@ -391,6 +329,7 @@ sub authenticate {
     else {
         return $self->print_json($result_ref);        
     }
+    
 }
 
 sub failure {
@@ -432,10 +371,10 @@ sub failure {
         return;
     }
 
-    if    ($code eq "1") {
+    if    ($code eq "-1") {
         return $self->print_warning($msg->maketext("Sie haben entweder kein Passwort oder keinen Usernamen eingegeben"));
     }
-    elsif ($code eq "2") {
+    elsif ($code eq "-2") {
         return $self->print_warning($msg->maketext("Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht erfolgreich authentifiziert werden"));
     }
     else {

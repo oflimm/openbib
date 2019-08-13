@@ -1692,7 +1692,7 @@ sub get_authenticator {
     my $logger = get_logger();
 
     # DBI: select type from user_session,authenticator where user_session.sessionid = ? and user_session.targetid = authenticator.targetid"
-    my $authenticator = $self->get_schema->resultset('Authenticator')->search_rs(
+    my $authenticator = $self->get_schema->resultset('Authenticatorinfo')->search_rs(
         {
             'sid.sessionid' => $self->{ID},
         },

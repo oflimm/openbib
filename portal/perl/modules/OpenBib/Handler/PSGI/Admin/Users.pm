@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Admin::Users
 #
-#  Dieses File ist (C) 2004-2015 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2019 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -226,7 +226,7 @@ sub show_search {
         return $self->print_warning($msg->maketext("Bitte geben Sie einen Suchbegriff ein."));
     }
 
-    my $userlist_ref = $user->search($args_ref);;
+    my $userlist_ref = $user->search($args_ref);
 
     # TT-Data erzeugen
     my $ttdata={

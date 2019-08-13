@@ -94,6 +94,16 @@ sub cgiapp_init {
     if (!defined $r){
         $logger->error("No Request");
     }
+
+    my $remote_ip = $r->remote_host || '';
+    
+    my $forwarded_for = $r->header('X-Forwarded-For');
+    
+    if (defined $forwarded_for && $forwarded_for =~ /([^,\s]+)$/) {
+        $remote_ip = $1;
+    }
+
+    $self->param('remote_ip',$remote_ip);
     
     my $sessionID    = $r->cookies->{sessionID} || '';
 
@@ -226,7 +236,7 @@ sub cgiapp_init {
     $user = $self->param('user');
 
     # Trennung der Zugangskontrolle zwischen API (funktioniert immer fuer ein Portal) und Endnutzern (Webbrowser benoetigt Login)
-    if ($self->param('representation') eq "html" && !$user->can_access_view($view)){
+    if ($self->param('representation') eq "html" && !$user->can_access_view($view,$remote_ip)){
 	my $scheme = ($config->get('use_https'))?'https':$self->param('scheme');
 	
 	my $redirect_to = $scheme."://".$self->param('servername').$self->param('url');

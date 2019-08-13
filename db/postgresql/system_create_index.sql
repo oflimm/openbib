@@ -119,7 +119,10 @@ CREATE INDEX searchhistory_queryid ON searchhistory (queryid);
 CREATE INDEX searchhistory_sid ON searchhistory (sid);
 
 ALTER TABLE userinfo ADD PRIMARY KEY (id);
-ALTER TABLE userinfo ADD CONSTRAINT uq_userinfo_username UNIQUE (username);
+ALTER TABLE userinfo ADD CONSTRAINT uq_userinfo_username UNIQUE (username,viewid,authenticatorid);
+ALTER TABLE userinfo ADD CONSTRAINT fk_userinfo_view FOREIGN KEY (viewid) REFERENCES viewinfo (id);
+ALTER TABLE userinfo ADD CONSTRAINT fk_userinfo_location FOREIGN KEY (locationid) REFERENCES locationinfo (id);
+CREATE INDEX userinfo_username ON userinfo (username);
 CREATE INDEX userinfo_nachname ON userinfo (nachname);
 CREATE INDEX userinfo_vorname ON userinfo (vorname);
 CREATE INDEX userinfo_password ON userinfo (password);
@@ -173,7 +176,15 @@ CREATE INDEX user_db_dbid ON user_db (dbid);
 
 ALTER TABLE registration ADD PRIMARY KEY (id);
 
-ALTER TABLE authenticator ADD PRIMARY KEY (id);
+ALTER TABLE authenticatorinfo ADD PRIMARY KEY (id);
+CREATE INDEX authenticatorinfo_name ON authenticatorinfo (name);
+CREATE INDEX authenticatorinfo_type ON authenticatorinfo (type);
+
+ALTER TABLE authenticator_view ADD PRIMARY KEY (id);
+ALTER TABLE authenticator_view ADD CONSTRAINT fk_authenticatorview_view FOREIGN KEY (viewid) REFERENCES viewinfo (id);
+ALTER TABLE authenticator_view ADD CONSTRAINT fk_authenticatorview_authenticator FOREIGN KEY (authenticatorid) REFERENCES authenticator (id);
+CREATE INDEX authenticator_view_viewid ON authenticator_view (viewid);
+CREATE INDEX authenticator_view_authenticatorid ON authenticator_view (authenticatorid);
 
 ALTER TABLE user_session ADD PRIMARY KEY (id);
 ALTER TABLE user_session ADD CONSTRAINT fk_usersession_user FOREIGN KEY (userid) REFERENCES userinfo (id);

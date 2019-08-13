@@ -28,6 +28,6 @@ SELECT setval('searchprofile_id_seq', (SELECT MAX(id) FROM searchprofile));
 SELECT setval('user_searchprofile_id_seq', (SELECT MAX(id) FROM user_searchprofile));
 SELECT setval('user_role_id_seq', (SELECT MAX(id) FROM user_role));
 SELECT setval('user_session_id_seq', (SELECT MAX(id) FROM user_session));
-SELECT setval('authenticator_id_seq', (SELECT MAX(id) FROM authenticator));
+SELECT setval('authenticatorinfo_id_seq', (SELECT MAX(id) FROM authenticatorinfo));
 SELECT setval('session_cartitem_id_seq', (SELECT MAX(id) FROM session_cartitem));
 SELECT setval('queries_queryid_seq', (SELECT MAX(queryid) FROM queries));

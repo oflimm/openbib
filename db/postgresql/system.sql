@@ -125,7 +125,8 @@ CREATE TABLE viewinfo (
  stripuri    BOOL,
  active      BOOL,
  own_index   BOOL,
- force_login BOOL default false 
+ force_login BOOL DEFAULT FALSE,
+ restrict_intranet TEXT DEFAULT ''
 );
 
 drop table IF EXISTS view_db;
@@ -290,8 +291,11 @@ CREATE TABLE searchhistory (
 DROP TABLE IF EXISTS userinfo;
 CREATE TABLE userinfo (
  id         BIGSERIAL,
- lastlogin  TIMESTAMP,
+ creationdate TIMESTAMP,
+ lastlogin    TIMESTAMP,
 
+ viewid     BIGINT,
+ locationid BIGINT,
  username  TEXT,
  password  TEXT,
 
@@ -361,13 +365,6 @@ CREATE TABLE user_role (
 );
 
 
-DROP TABLE IF EXISTS user_view;
-CREATE TABLE user_view (
-  id        BIGSERIAL,
-  userid    BIGINT NOT NULL,
-  viewid    BIGINT NOT NULL
-);
-
 DROP TABLE IF EXISTS user_db;
 CREATE TABLE user_db (
   id        BIGSERIAL,
@@ -379,8 +376,11 @@ DROP TABLE IF EXISTS templateinfo;
 CREATE TABLE templateinfo (
   id         BIGSERIAL,
   viewid     BIGINT NOT NULL,
+  templatedesc TEXT,
   templatename TEXT NOT NULL,
-  templatetext TEXT
+  templatepart TEXT,
+  templatetext TEXT,
+  templatelang TEXT,
 );
 
 DROP TABLE IF EXISTS user_template;
@@ -404,22 +404,29 @@ DROP TABLE IF EXISTS registration;
 CREATE TABLE registration (
   id                  TEXT,
   tstamp              TIMESTAMP,
- 
+
+  viewid              BIGINT,
+
   username            TEXT,
   password            TEXT
 );
 
-DROP TABLE IF EXISTS authenticator;
-CREATE TABLE authenticator (
+DROP TABLE IF EXISTS authenticatorinfo;
+CREATE TABLE authenticatorinfo (
  id          BIGSERIAL,
 
- hostname    TEXT,
- port        TEXT,
- remoteuser  TEXT,
- dbname      TEXT,
+ name        TEXT,
  description TEXT,
  type        TEXT
 );
+
+DROP TABLE IF EXISTS authenticator_view;
+CREATE TABLE authenticator_view (
+  id        BIGSERIAL,
+  authenticatorid    BIGINT NOT NULL,
+  viewid    BIGINT NOT NULL
+);
+
 
 DROP TABLE IF EXISTS user_session;
 CREATE TABLE user_session (

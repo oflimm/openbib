@@ -106,6 +106,17 @@
 </select>
 </div>
 
+[% authenticators = config.get_authenticators %]
+[% IF authenticators.size > 0 %]
+<div class="form-group">
+<label for="authenticators">[% msg.maketext("Anmeldeziele") %]</label>
+<select class="form-control"  id="authenticators" name="authenticators" multiple="multiple" size="20">
+[% FOREACH target IN authenticators %]
+<option value="[% target.id %]" [% IF selected_viewauthenticators.${target.id} %]selected="selected"[% END %]>[% target.description%]</option>
+[% END %]
+</select>
+</div>
+[% END %]
 <button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Ändern") %]</button>
 
 &nbsp;&nbsp;&nbsp;

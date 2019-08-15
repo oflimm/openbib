@@ -185,6 +185,31 @@ sub authenticate {
     my $result_ref = {
         success => 0,
     };
+
+
+    # Authentifizierung nur dann valide, wenn dem View das Anmeldeziel
+    # authenticatorid zugeordnet ist.
+    my @valid_authenticators = $config->get_viewauthenticators($view);
+
+    my $authenticator_is_valid = 0;
+
+    foreach my $valid_authenticator (@valid_authenticators){
+	if ($valid_authenticator == $authenticatorid){
+	    $authenticator_is_valid = 1;
+	    last;
+	}
+    }
+
+    if (!$authenticator_is_valid){
+	my $reason = $msg->maketext("Ihre Kennung ist nicht zur Nutzung dieses Portals zugelassen.");
+	if ($self->param('representation') eq "html"){
+	    return $self->print_warning($reason);
+	}
+	else {
+	    $result_ref->{reason} = $reason;
+	    return $self->print_json($result_ref);        
+	}
+    }
     
     # Wenn die Session schon authentifiziert ist, dann
     # wird in die Benutzereinstellungen gesprungen
@@ -193,7 +218,14 @@ sub authenticate {
 	# Ablehnung, wenn Nutzer nicht zu den Berechtigten fuer den View gehoeren, dann Meldung
 
 	if (!$user->can_access_view($view)){
-	    return $self->print_warning($msg->maketext("Ihre Kennung ist nicht zur Nutzung dieses Portals zugelassen."));
+	    my $reason = $msg->maketext("Ihre Kennung ist nicht zur Nutzung dieses Portals zugelassen.");
+	    if ($self->param('representation') eq "html"){
+		return $self->print_warning($reason);
+	    }
+	    else {
+		$result_ref->{reason} = $reason;
+		return $self->print_json($result_ref);        
+	    }
 	}
 	
         my $redirecturl = "$path_prefix/$config->{users_loc}/id/[% user.ID %]/preferences.html?l=$lang";
@@ -251,7 +283,16 @@ sub authenticate {
         if ($self->param('representation') eq "html"){
 	    my $authorized_user = new OpenBib::User({ ID => $userid, config => $config});
 	    if (!$authorized_user->can_access_view($view)){
-		return $self->print_warning($msg->maketext("Ihre Kennung ist nicht zur Nutzung dieses Portals zugelassen."));
+		my $reason = $msg->maketext("Ihre Kennung ist nicht zur Nutzung dieses Portals zugelassen.");
+		if ($self->param('representation') eq "html"){
+		    return $self->print_warning($reason);
+		}
+		else {
+		    $result_ref->{reason} = $reason;
+		    $result_ref->{success} = 0;
+		    
+		    return $self->print_json($result_ref);        
+		}
 	    }
 	    
             # Jetzt wird die Session mit der Benutzerid assoziiert

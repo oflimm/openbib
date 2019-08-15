@@ -496,19 +496,31 @@ sub can_access_view {
 	}
     }
 
-    # Login zwingend, weil so konfiguriert
+    # Login zwingend, weil so konfiguriert oder ausserhalb des Intranets
     if ($viewinfo && $force_login){
 	$user_shall_access = 0;
 
+	# Wenn Nutzer angemeldet ist
 	if ($self->{ID}){
+	    my $roles_necessary = 0;
 	    my $viewroles_ref      = {};
 	    foreach my $rolename ($config->get_viewroles($viewname)){
 		$viewroles_ref->{$rolename} = 1;
+		$roles_necessary = 1;
 	    }
-	    
-	    foreach my $userrole (keys %{$self->get_roles_of_user($self->{ID})}){
-		if ($viewroles_ref->{$userrole}){
-		    $user_shall_access = 1;
+
+	    # Keine Rollenzugehoerigkeit fuer View definiert, 
+	    # dann Zugriff erlaubt
+	    if (!$roles_necessary){
+		$user_shall_access = 1;
+	    }
+	    # ansonsten Ueberpruefung, ob notwendige Rollenzugehoerigkeit 
+	    # besteht
+	    else {
+		foreach my $userrole (keys %{$self->get_roles_of_user($self->{ID})}){
+		    if ($viewroles_ref->{$userrole}){
+			$user_shall_access = 1;
+		    }
 		}
 	    }
 	}

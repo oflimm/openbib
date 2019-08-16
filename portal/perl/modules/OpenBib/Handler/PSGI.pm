@@ -1770,6 +1770,7 @@ sub check_http_basic_authentication {
     my $config  = $self->param('config');
     my $user    = $self->param('user');
     my $session = $self->param('session');
+    my $view    = $self->param('view');
 
 #    if ($logger->is_debug){
 #        $logger->debug("User Pre: ".YAML::Dump($user));
@@ -1801,7 +1802,7 @@ sub check_http_basic_authentication {
         
         $logger->debug("Authentication Shortcut for user $http_user : Status $status / Password: $password");
         
-        my $userid   = $user->authenticate_self_user({ username => $http_user, password => $password });
+        my $userid   = $user->authenticate_self_user({ username => $http_user, password => $password, viewname => $view });
         
         my $authenticator   = $config->get_authenticator_self();
         my $authenticatorid = $authenticator->{id};

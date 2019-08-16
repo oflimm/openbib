@@ -16,7 +16,7 @@
 
 <div class="card-body">
 
-[% titlecount = config.get_number_of_titles({profile = sysprofile}) %]
+[% titlecount = config.get_number_of_titles({view = view}) %]
 
 <h5><img style="vertical-align:bottom" src="[% config.get_icon('chart',view,sysprofile) %]" alt="Metrics" />&nbsp[% msg.maketext("Kennzahlen") %]</h5>
 
@@ -29,7 +29,7 @@
 <table class="table table-striped table-hover ob-right_align">
 <tr>
 <th>[% msg.maketext("Kataloge") %]</th>
-<td>[% config.get_profiledbs(sysprofile).size %]</td>
+<td>[% config.get_viewdbs(view).size %]</td>
 </tr>
 <tr>
 <th>[% msg.maketext("Titel") %]</th>

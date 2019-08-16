@@ -142,7 +142,7 @@ sub migrate_ugc {
         return $self->print_authorization_error();
     }
 
-    my $olduserid = $user->authenticate_self_user({ username => $input_data_ref->{oldusername}, password => $input_data_ref->{oldpassword} });
+    my $olduserid = $user->authenticate_self_user({ username => $input_data_ref->{oldusername}, password => $input_data_ref->{oldpassword}, viewname => $view });
 
     if ($olduserid < 0){
         return $self->print_warning($msg->maketext("Falsches Password. Bitte geben Sie die korrekte Kennung und das zugehörige Passwort ein."));

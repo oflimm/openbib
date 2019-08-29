@@ -296,6 +296,7 @@ CREATE TABLE userinfo (
 
  viewid     BIGINT,
  locationid BIGINT,
+ authenticatorid BIGINT,
  username  TEXT,
  password  TEXT,
 
@@ -380,7 +381,7 @@ CREATE TABLE templateinfo (
   templatename TEXT NOT NULL,
   templatepart TEXT,
   templatetext TEXT,
-  templatelang TEXT,
+  templatelang TEXT
 );
 
 DROP TABLE IF EXISTS user_template;

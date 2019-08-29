@@ -122,6 +122,7 @@ ALTER TABLE userinfo ADD PRIMARY KEY (id);
 ALTER TABLE userinfo ADD CONSTRAINT uq_userinfo_username UNIQUE (username,viewid,authenticatorid);
 ALTER TABLE userinfo ADD CONSTRAINT fk_userinfo_view FOREIGN KEY (viewid) REFERENCES viewinfo (id);
 ALTER TABLE userinfo ADD CONSTRAINT fk_userinfo_location FOREIGN KEY (locationid) REFERENCES locationinfo (id);
+ALTER TABLE userinfo ADD CONSTRAINT fk_userinfo_authenticator FOREIGN KEY (authenticatorid) REFERENCES authenticatorinfo (id);
 CREATE INDEX userinfo_username ON userinfo (username);
 CREATE INDEX userinfo_nachname ON userinfo (nachname);
 CREATE INDEX userinfo_vorname ON userinfo (vorname);

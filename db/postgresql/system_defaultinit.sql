@@ -72,6 +72,7 @@ insert into dbrtopic (id,topic,description) values
 (51, 'arc', 'Archäologie'),
 (52, 'swl', 'Wirtschaftszweiglehren');
 
+truncate table dbistopic;
 insert into dbistopic (id,topic,description) values 
 (1,'OR','Orientalistik und sonstige Sprachen'),
 (2,'1','Physik'),

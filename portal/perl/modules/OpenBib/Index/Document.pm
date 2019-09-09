@@ -192,6 +192,14 @@ sub add_facet {
     return;
 }
 
+sub add_collapse {
+    my ($self,$key,$value) = @_;
+
+    push @{$self->{_index}{$key}}, $value;
+
+    return;
+}
+
 sub DESTROY {
     my $self = shift;
 

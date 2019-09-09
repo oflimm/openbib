@@ -9,6 +9,8 @@ convtab:
       '4102': 1        # KUG-Topics
       '4110': 1        # TOC-URL
       '4111': 1        # TOC-Text
+      '4112': 1        # Register-URL
+      '4113': 1        # Register-Text
       '4120': 1        # eBook-URL
       '4200': 1        # Wikipedia
       '4201': 1        # Wikipedia
@@ -526,6 +528,8 @@ convtab:
         index:
           'isbn': 1
           'freesearch': 1
+        collapse:
+          'isbn': 1
       '0541':         # ISBN falsch
         index:
           'isbn': 1
@@ -546,6 +550,8 @@ convtab:
         index:
           'isbn': 1
           'freesearch': 1
+        collapse:
+          'isbn': 1
       '0585':         # ISSN Quelle
         index:
           'issn': 1
@@ -788,6 +794,9 @@ convtab:
       '4111':         # TOC
         index:
           'toc': 1
+      '4113':         # Register
+        index:
+          'reg': 1
       '4200':         # Wikipedia
         index:
           'content': 1
@@ -892,6 +901,8 @@ convtab:
         index:
           'bkey': 1
           'freesearch': 1
+        collapse:
+          'bibkey': 1
       '5051':         # Bibkey Base
         index:
           'bkey': 1
@@ -928,6 +939,8 @@ convtab:
       '1802': 1
       '4110': 1
       '4111': 1
+      '4112': 1      
+      '4113': 1
       '4120': 1
       '4400': 1
       '5005': 1
@@ -1330,6 +1343,9 @@ convtab:
       '4111':         # TOC
         index:
           'toc': 1
+      '4113':         # Register
+        index:
+          'reg': 1
       '4200':         # Wikipedia
         index:
           'content': 1
@@ -1431,6 +1447,8 @@ convtab:
       '1802': 1
       '4110': 1
       '4111': 1
+      '4112': 1
+      '4113': 1
       '4120': 1
       '4400': 1
       '5005': 1
@@ -1472,6 +1490,8 @@ convtab:
       '1802': 1
       '4110': 1
       '4111': 1
+      '4112': 1
+      '4113': 1
       '4120': 1
       '4400': 1
       '5005': 1
@@ -1513,6 +1533,8 @@ convtab:
       '1802': 1
       '4110': 1
       '4111': 1
+      '4112': 1
+      '4113': 1
       '4120': 1
       '4400': 1
       '5005': 1
@@ -2318,6 +2340,9 @@ convtab:
       '4111':         # TOC
         index:
           'toc': 1
+      '4113':         # Register
+        index:
+          'reg': 1
       '4200':         # Wikipedia
         index:
           'content': 1
@@ -3308,6 +3333,9 @@ convtab:
       '4111':         # TOC
         index:
           'toc': 1
+      '4113':         # Register
+        index:
+          'reg': 1
       '4200':         # Wikipedia
         index:
           'content': 1
@@ -4382,6 +4410,8 @@ convtab:
       '1203': 1
       '4110': 1
       '4111': 1
+      '4112': 1
+      '4113': 1
       '4120': 1
       '4400': 1
       '5005': 1
@@ -5020,6 +5050,9 @@ convtab:
       '4111':         # TOC
         index:
           'toc': 1
+      '4113':         # Register
+        index:
+          'reg': 1
       '4200':         # Wikipedia
         index:
           'content': 1
@@ -6931,6 +6964,9 @@ convtab:
       '4111':         # TOC
         index:
           'toc': 1
+      '4113':         # Register
+        index:
+          'reg': 1
       '4200':         # Wikipedia
         index:
           'content': 1

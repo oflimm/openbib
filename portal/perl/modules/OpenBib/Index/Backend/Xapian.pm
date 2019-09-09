@@ -540,6 +540,24 @@ sub create_document {
             $logger->error($@);
         }
     }
+
+    foreach my $field (keys %{$config->{'xapian_collapse_value'}}){
+	next if (!defined $index_ref->{"collapse_".$field});
+
+        my %seen_terms = ();
+        my @unique_terms = grep { defined $_ && ! $seen_terms{$_} ++ } @{$index_ref->{"collapse_".$field}}; 
+	
+	my $collapsestring = (defined $unique_terms[0])?$unique_terms[0]:'';
+	
+	$logger->debug("Adding to $field collapse $collapsestring");
+	eval {
+	    $doc->add_value($config->{xapian_collapse_value}{$field},encode_utf8($collapsestring)) if ($collapsestring);
+	};
+	
+	if ($@){
+	    $logger->error($@);
+	}
+    }
     
     # Sortierung
     if ($withsorting){

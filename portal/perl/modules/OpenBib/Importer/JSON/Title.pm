@@ -1073,7 +1073,18 @@ sub process {
                 }
             }
             
-            # b) Facetten in der Suchmaschine
+            # b) Collapse keys in der Suchmaschine
+            if (defined $inverted_ref->{$field}->{collapse}){
+                foreach my $collapsefield (keys %{$inverted_ref->{$field}->{collapse}}) {
+		    next unless (defined $fields_ref->{$field});
+		    
+		    foreach my $item_ref (@{$fields_ref->{$field}}) {
+			$index_doc->add_collapse("collapse_$collapsefield", $item_ref->{content});        
+		    }
+                }
+            }
+
+            # c) Facetten in der Suchmaschine
             if (exists $inverted_ref->{$field}->{facet}){
                 foreach my $searchfield (keys %{$inverted_ref->{$field}->{facet}}) {
                     if ($field eq "tag"){
@@ -1098,8 +1109,8 @@ sub process {
                         }
                     }
                 }
-            }
-        }
+            }        
+	}
     }
             
     # Indexierte Informationen aus anderen Normdateien fuer Suchmaschine

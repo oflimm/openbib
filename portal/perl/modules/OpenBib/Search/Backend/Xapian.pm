@@ -144,6 +144,12 @@ sub search {
     my $facets            = (defined $self->{_options}{facets})?$self->{_options}{facets}:$queryoptions->get_option('facets');
     my $gen_facets        = ($facets eq "none")?0:1;
 
+    my ($atime,$btime,$timeall);
+  
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+    
     if ($logger->is_debug){
         $logger->debug("Options: ".YAML::Dump($options_ref));
     }
@@ -162,8 +168,6 @@ sub search {
     my $num               = (defined $self->{_options}{num})?$self->{_options}{num}:$queryoptions->get_option('num');
     my $collapse          = (defined $self->{_options}{clp})?$self->{_options}{clp}:$queryoptions->get_option('clp');
     
-    my ($atime,$btime,$timeall);
-  
     if ($config->{benchmark}) {
         $atime=new Benchmark;
     }
@@ -348,7 +352,13 @@ sub search {
             $self->{qp}->add_prefix($searchfield,$config->{xapian_search}{$searchfield}{prefix});
         }
     }
-    
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 1 is ".timestr($timeall));
+    }
+
     my $category_map_ref = {};
     my $enq       = $dbh->enquire($self->{qp}->parse_query($fullquerystring,Search::Xapian::FLAG_WILDCARD|Search::Xapian::FLAG_LOVEHATE|Search::Xapian::FLAG_BOOLEAN|Search::Xapian::FLAG_BOOLEAN_ANY_CASE|Search::Xapian::FLAG_PHRASE));
 #    my $enq       = $dbh->enquire($self->{qp}->parse_query($fullquerystring,FLAG_WILDCARD|FLAG_BOOLEAN|FLAG_PHRASE));
@@ -374,7 +384,8 @@ sub search {
 
     # Collapsing
     if ($collapse){
-        $enq->set_collapse_key($config->{xapian_sorttype_value}{$collapse});
+	$logger->debug("Setting collapse key $collapse");
+        $enq->set_collapse_key($config->{xapian_collapse_value}{$collapse},1);
     }
     
     my $thisquery = $enq->get_query()->get_description();
@@ -429,33 +440,51 @@ sub search {
     my $offset = $page*$num-$num;
   
     $logger->debug("Facets: $gen_facets - Offset: $offset");
-    
-    my $mset = ($gen_facets)?$enq->get_mset($offset,$num,$maxmatch,$rset,$decider_ref):$enq->get_mset($offset,$num,$maxmatch);
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 2 is ".timestr($timeall));
+    }
 
     if ($logger->is_debug){
         $logger->debug("DB: $self->{_database}") if (defined $self->{_database});
-    }
-    
-    if ($logger->is_debug){
         $logger->debug("Categories-Map: ".YAML::Dump(\%decider_map));
     }
 
+    my $mset = ($gen_facets)?$enq->get_mset($offset,$num,$maxmatch,$rset,$decider_ref):$enq->get_mset($offset,$num,$maxmatch);
+
     $self->{_enq}         = $enq;
 
-    my $resultcount = $mset->get_matches_estimated;
-
+    my $resultcount = $mset->get_matches_estimated;    
     my $lower_bound = $mset->get_matches_lower_bound;
     my $upper_bound = $mset->get_matches_upper_bound;
+
+    if ($logger->is_debug){
+	$logger->debug("Counts: result $resultcount - lower $lower_bound - upper $upper_bound");
+    }
 
     if ($lower_bound > $maxmatch){
 	$resultcount = $upper_bound;
     }
-
+    
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 3 is ".timestr($timeall));
+    }
+    
     $self->{resultcount} = $resultcount;
 
     my @matches = ();
     foreach my $match ($mset->items()) {
         push @matches, $match;
+    }
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 4 is ".timestr($timeall));
     }
     
 #    my @this_matches      = splice(@matches,$offset,$num);
@@ -473,9 +502,12 @@ sub search {
       $self->{categories}   = \%decider_map;
     }
 
-    $logger->info("Running query ".$self->{_querystring}." with filters ".$self->{_filter});
-
-    $logger->info("Found ".scalar(@matches)." matches in database $self->{_database}") if (defined $self->{_database});
+    if ($logger->is_info){
+	$logger->info("Running query ".$self->{_querystring}." with filters ".$self->{_filter});
+	
+	$logger->info("Found ".scalar(@matches)." matches in database $self->{_database}") if (defined $self->{_database});
+    }
+    
     return;
 }
 
@@ -566,6 +598,12 @@ sub browse {
         return [];
     }
 
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 1 is ".timestr($timeall));
+    }
+
     my $category_map_ref = {};
 
     my $matchall = Search::Xapian::Query->new("");
@@ -621,9 +659,21 @@ sub browse {
     my $offset = $page*$num-$num;
 
     $logger->debug("Offset: $offset");
-    
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 2 is ".timestr($timeall));
+    }
+
     my $mset = $enq->get_mset($offset,$num,$maxmatch);
 
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 3 is ".timestr($timeall));
+    }
+    
     $logger->debug("DB: $self->{_database}") if (defined $self->{_database});
     
     if ($logger->is_debug){
@@ -638,7 +688,13 @@ sub browse {
     foreach my $match ($mset->items()) {
         push @matches, $match;
     }
-    
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 4 is ".timestr($timeall));
+    }
+
 #    my @this_matches      = splice(@matches,$offset,$num);
     $self->{_matches}     = \@matches;
 

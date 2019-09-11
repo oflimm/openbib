@@ -47,7 +47,7 @@ my $pool          = $ARGV[0];
 
 my $dbinfo = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 
-my $url    = $dbinfo->protocol."s://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->titlefile;
+my $url    = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->titlefile;
 
 print "### $pool: Datenabzug via http von $url\n";
 system("cd $pooldir/$pool ; rm data.json");

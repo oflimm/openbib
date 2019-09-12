@@ -119,11 +119,14 @@ open(OUT,">:raw",$filename);
 my $h = new HTTP::OAI::Harvester(baseURL=>$url);
 
 my $response = $h->repository($h->Identify);
-if( $response->is_error ) {
-  print "Error requesting Identify:\n",
-    $response->code . " " . $response->message, "\n";
-  exit;
-}
+
+#print YAML::Dump($h->Identify),"\n";
+
+# if( $response->is_error ) {
+#   print "Error requesting Identify:\n",
+#     $response->code . " " . $response->message, "\n";
+#   exit;
+# }
 
 if ($set){
     $logger->info("Using set: $set");
@@ -163,19 +166,19 @@ else {
     }
 }
 
-if( $response->is_error ) {
-    $logger->error("Error: ", $response->code,
-                       " (", $response->message, ")");
-}
+# if( $response->is_error ) {
+#     $logger->error("Error: ", $response->code,
+#                        " (", $response->message, ")");
+# }
 
 my $counter = 1;
 while( my $rec = next_record($response) ) {
-    if( $rec->is_error ) {
-	eval {
-	    $logger->error($rec->message);
-	};
-        next;
-    }
+    # if( $rec->is_error ) {
+    # 	eval {
+    # 	    $logger->error($rec->message);
+    # 	};
+    #     next;
+    # }
 
     print OUT "<record>\n";
 

@@ -27,7 +27,6 @@
 
 <div class="table-responsive">
 <table class="table table-striped table-hover ob-title_fields">
-<tr><th class="ob-field">id</th><td>[% record.id %]</td></tr>
 
 [%-
    request_base = config.get('search_defaultparams');

@@ -94,8 +94,20 @@ sub new {
     
     $logger->debug("Entering Session->new");
 
+    if ($config->{benchmark}) {
+		$btime=new Benchmark;
+		$timeall=timediff($btime,$atime);
+		$logger->info("Total time for stage 0 is ".timestr($timeall));
+    }
+
     if (!defined $sessionID || !$sessionID){
         $self->_init_new_session();
+	if ($config->{benchmark}) {
+	    $btime=new Benchmark;
+	    $timeall=timediff($btime,$atime);
+	    $logger->info("Total time for stage 0a is ".timestr($timeall));
+	}
+	
         $logger->debug("Generation of new SessionID $self->{ID} successful");
     }
     else {
@@ -104,13 +116,25 @@ sub new {
         $logger->debug("Examining if SessionID $self->{ID} is valid");
         if (!$self->is_valid()){
             $logger->debug("SessionID is NOT valid");
+
+	    if ($config->{benchmark}) {
+		$btime=new Benchmark;
+		$timeall=timediff($btime,$atime);
+		$logger->info("Total time for stage 0b2 is ".timestr($timeall));
+	    }
             
             # Wenn uebergebene SessionID nicht ok, dann neue generieren
             $self->_init_new_session();
             $logger->debug("Generation of new SessionID $self->{ID} successful");
         }
     }
-    
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 1 is ".timestr($timeall));
+    }
+
     if ($self->{ID} && !$self->{sid}){
         my $search_sid = $self->get_schema->resultset('Sessioninfo')->single(
             {
@@ -121,6 +145,12 @@ sub new {
         if ($search_sid){
             $self->{sid} = $search_sid->id;
         }
+    }
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 2 is ".timestr($timeall));
     }
     
     #$logger->debug("Session-Object created: ".YAML::Dump($self));
@@ -139,7 +169,7 @@ sub _init_new_session {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
+    
     my $config = $self->get_config;
 
     my $sessionID="";
@@ -265,13 +295,27 @@ sub is_valid {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = $self->get_config;
+    
     # Spezielle SessionID -1 ist erlaubt
     if (defined $self->{ID} && $self->{ID} eq "-1") {
         return 1;
     }
 
-    my $anzahl = $self->get_schema->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} })->count;
+    my ($atime,$btime,$timeall)=(0,0,0);
 
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+    
+    my $anzahl = $self->get_schema->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} },{ result_class => 'DBIx::Class::ResultClass::HashRefInflator' })->count;
+    
+    if ($config->{benchmark}) {
+	$btime=new Benchmark;
+	$timeall=timediff($btime,$atime);
+	$logger->info("Total time for validity check is ".timestr($timeall));
+    }
+    
     if ($anzahl == 1) {
         return 1;
     }
@@ -517,6 +561,50 @@ sub get_number_of_queries {
     $logger->debug("Found $numofqueries queries in Session $self->{ID}");
     
     return $numofqueries;
+}
+
+sub get_last_searchquery {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+
+    my $sid =   exists $arg_ref->{sid}
+        ? $arg_ref->{sid}         : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = $self->get_config;
+    
+    my $thissid = (defined $sid)?$sid:$self->{sid};
+
+    my ($atime,$btime,$timeall)=(0,0,0);
+    
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    # DBI: "select queryid from queries where sessionid = ? order by queryid DESC "
+    my $searchquery = $self->get_schema->resultset('Query')->search_rs(
+        {
+            'sid.id' => $thissid,
+        },
+        {
+            select => 'me.queryid',
+            as     => 'thisqueryid',
+            order_by => [ 'me.queryid DESC' ],
+            join => 'sid',
+	    rows => 1,
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
+        }
+    )->single;
+
+    if ($searchquery){
+        $logger->debug("Found last searchquery with id ".$searchquery->{thisqueryid});
+        return OpenBib::SearchQuery->new->load({sid => $thissid, queryid => $searchquery->{thisqueryid} });
+    }
+
+    return;
 }
 
 sub get_all_searchqueries {

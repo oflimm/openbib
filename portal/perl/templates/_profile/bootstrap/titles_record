@@ -3,7 +3,7 @@
 [%- IF representation == '' || representation == 'html' ;
 
     used_fields = [] ;
-    searchquery = session.get_all_searchqueries.first ;
+    searchquery = session.get_last_searchquery ;
 
     FOREACH field IN searchquery.get_searchquery.keys ;
        fieldname    = field_map.${field};

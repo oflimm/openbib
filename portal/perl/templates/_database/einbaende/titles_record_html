@@ -115,7 +115,7 @@ $(document).ready(function(){
 };
 
     used_fields = [] ;
-    searchquery = session.get_all_searchqueries.first ;
+    searchquery = session.get_last_searchquery ;
 -%]
 
    <div class="ob-functional_nav">

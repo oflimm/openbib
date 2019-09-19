@@ -345,24 +345,30 @@ sub load  {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # DBI: "select queryid,query from queries where sessionID = ? and queryid = ?"
-    my $query = $self->get_schema->resultset('Query')->search(
-        {
-            'sid.id'        => $sid,
-            'me.queryid'    => $queryid,
-        },
-        {
-            select => ['me.tstamp','me.query'],
-            as     => ['thiststamp','thisquery'],
-            join => ['sid'],
-        }
-    )->single;
-
     my ($thisquery,$thiststamp);
     
-    if ($query){
-        $thisquery  = scalar $query->get_column('thisquery');
-        $thiststamp = scalar $query->get_column('thiststamp');
+    eval {
+	# DBI: "select queryid,query from queries where sessionID = ? and queryid = ?"
+	my $query = $self->get_schema->resultset('Query')->search(
+	    {
+		'sid.id'        => $sid,
+		    'me.queryid'    => $queryid,
+	    },
+	    {
+		select => ['me.tstamp','me.query'],
+		as     => ['thiststamp','thisquery'],
+		join => ['sid'],
+	    }
+	    )->single;
+	
+	if ($query){
+	    $thisquery  = scalar $query->get_column('thisquery');
+	    $thiststamp = scalar $query->get_column('thiststamp');
+	}
+    };
+
+    if ($@){
+	$logger->error($@);
     }
     
     $logger->debug("$sid/$queryid -> $thisquery");

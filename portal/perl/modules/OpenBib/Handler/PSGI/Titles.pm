@@ -417,9 +417,9 @@ sub show_record {
 
         my $poolname=$dbinfotable->get('dbnames')->{$database};
 
-        if ($queryid){
-            $searchquery->load({sid => $session->{sid}, queryid => $queryid});
-        }
+        # if ($queryid){
+        #     $searchquery->load({sid => $session->{sid}, queryid => $queryid});
+        # }
 
         my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
             session    => $session,

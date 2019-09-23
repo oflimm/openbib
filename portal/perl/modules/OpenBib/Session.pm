@@ -615,6 +615,9 @@ sub get_all_searchqueries {
     my $sid =   exists $arg_ref->{sid}
         ? $arg_ref->{sid}         : undef;
 
+    my $num =   exists $arg_ref->{num}
+        ? $arg_ref->{num}         : 10;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -634,11 +637,12 @@ sub get_all_searchqueries {
             'sid.id' => $thissid,
         },
         {
-            select => 'me.queryid',
-            as     => 'thisqueryid',
-            order_by => [ 'me.queryid DESC' ],
-            join => 'sid',
-            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
+            select       => 'me.queryid',
+            as           => 'thisqueryid',
+            order_by     => [ 'me.queryid DESC' ],
+            join         => 'sid',
+	    rows         => $num,
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
         }
     );
 

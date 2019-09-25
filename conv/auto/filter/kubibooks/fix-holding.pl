@@ -50,7 +50,7 @@ while (<>){
 	    }
 	    else {
 		$new_location_ref = {
-		    content => '<a href="https:/http://www.kunst-und-museumsbibliothek.de/" target="_blank">Kunst und Musemsbibliothek K&ouml;ln',
+		    content => '<a href="http://www.kunst-und-museumsbibliothek.de/" target="_blank">Kunst und Musemsbibliothek K&ouml;ln',
 		    mult    => $mark_ref->{mult},
 		    subfield => $mark_ref->{subfield},
 		};

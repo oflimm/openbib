@@ -108,7 +108,7 @@
      }
      %]
      [% FOREACH thislang IN config.get('lang') %]
-      <option value="[% thislang %]"[% IF lang == thislang %] selected="selected"[% END %]>[% lang_desc.${thislang} %]</option>
+      <option value="[% thislang %]"[% IF lang == thislang %] selected[% END %]>[% lang_desc.${thislang} %]</option>
      [% END %]
                     </select>
 		[% cgiapp.to_cgi_hidden_input({ exclude = ['l']}) %]

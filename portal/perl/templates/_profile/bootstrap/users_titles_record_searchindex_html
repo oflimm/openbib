@@ -34,6 +34,8 @@
 <tbody>
 [% facets    = config.get('xapian_facet_value');
    sorttypes = config.get('xapian_sorttype_value');
+   collapsetypes = config.get('xapian_collapse_value');
+
 
    FOREACH category IN facets.keys.sort %]
 <tr><td>Facette</td><td>[% facets.${category} %]</td><td>[% category %]</td><td>[% values.${facets.${category}}.replace('\t',' \\t ') %]</td></tr>
@@ -41,6 +43,9 @@
 
 [% FOREACH category IN sorttypes.keys.sort %]
 <tr><td>Sortierung</td><td>[% sorttypes.${category} %]</td><td>[% category %]</td><td>[% values.${sorttypes.${category}} %]</td></tr>
+[% END %]
+[% FOREACH category IN collapsetypes.keys.sort %]
+<tr><td>Collapse Key</td><td>[% collapsetypes.${category} %]</td><td>[% category %]</td><td>[% values.${collapsetypes.${category}} %]</td></tr>
 [% END %]
 </tbody>
 </table>

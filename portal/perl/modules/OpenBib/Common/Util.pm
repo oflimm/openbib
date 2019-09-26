@@ -1157,7 +1157,7 @@ sub normalize {
     # $content=~s/\[.*?\]//g;
     
     # Fall: C++, C# und .Net
-    $content=~s/(?<=(\w|\+))\+/plus/g;
+    #$content=~s/(?<=(\w|\+))\+/plus/g;
     $content=~s/(c)\#/$1sharp/ig;
     $content=~s/\.(net)/dot$1/ig;
 

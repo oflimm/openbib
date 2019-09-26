@@ -177,6 +177,11 @@ __PACKAGE__->table("userinfo");
   is_foreign_key: 1
   is_nullable: 1
 
+=head2 creationdate
+
+  data_type: 'timestamp'
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -245,6 +250,8 @@ __PACKAGE__->add_columns(
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
   "authenticatorid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
+  "creationdate",
+  { data_type => "timestamp", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY

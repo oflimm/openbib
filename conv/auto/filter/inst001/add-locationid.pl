@@ -130,6 +130,9 @@ while (<HOLDING>){
             push @{$element_ref}, "DE-38-428";
 	    push @{$element_ref}, "DE-38-ZBKUNST";
         }
+        elsif ($location_ref->{content} =~m/^Informatik/){
+            push @{$element_ref}, "DE-38-526";
+        }
         elsif ($location_ref->{content} =~m/inst(\d\d\d) /){
             push @{$element_ref}, "DE-38-$1";
         }

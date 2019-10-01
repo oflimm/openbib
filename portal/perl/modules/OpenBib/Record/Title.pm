@@ -3006,7 +3006,7 @@ sub enrich_cdm {
     
     my $ua = new LWP::UserAgent;
     $ua->agent("OpenBib/1.0");
-    $ua->timeout(1);
+    $ua->timeout(10);
     my $request = new HTTP::Request('GET', $url);
     my $response = $ua->request($request);
 

@@ -360,15 +360,17 @@ sub search {
     }
 
     my $category_map_ref = {};
-    my $enq       = $dbh->enquire($self->{qp}->parse_query($fullquerystring,Search::Xapian::FLAG_WILDCARD|Search::Xapian::FLAG_LOVEHATE|Search::Xapian::FLAG_BOOLEAN|Search::Xapian::FLAG_BOOLEAN_ANY_CASE|Search::Xapian::FLAG_PHRASE));
+    my $enq       = $dbh->enquire($self->{qp}->parse_query($fullquerystring,Search::Xapian::FLAG_WILDCARD|Search::Xapian::FLAG_LOVEHATE|Search::Xapian::FLAG_BOOLEAN|Search::Xapian::FLAG_PHRASE));
 #    my $enq       = $dbh->enquire($self->{qp}->parse_query($fullquerystring,FLAG_WILDCARD|FLAG_BOOLEAN|FLAG_PHRASE));
 
-    $logger->debug("Original sorting: $sorttype / $sortorder");
+    $logger->debug("Original sorting type: $sorttype");
     
     # Sorting
     if ($sorttype ne "relevance" || exists $config->{xapian_sorttype_value}{$sorttype}) { # default
         $sortorder = ($sortorder eq "asc")?0:1;
 
+	$logger->debug("Original sorting order: $sortorder");
+	
         $logger->debug("Set Sorting to type ".$config->{xapian_sorttype_value}{$sorttype}." / order ".$sortorder);
         # Sortierung nach Zaehlung: Erst nach Zaehlung, dann Titel
         if ($sorttype ne "title"){

@@ -70,6 +70,7 @@ sub setup {
         'show_record_related_records'       => 'show_record_related_records',
         'show_record_similar_records'       => 'show_record_similar_records',
         'show_record_same_records'          => 'show_record_same_records',
+        'show_record_fields'                => 'show_record_fields',
         'show_record_circulation'           => 'show_record_circulation',
         'redirect_to_bibsonomy'      => 'redirect_to_bibsonomy',
         'dispatch_to_representation'           => 'dispatch_to_representation',
@@ -649,6 +650,221 @@ sub show_availability {
     }
 
     return;
+}
+
+sub show_record_fields {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $userid         = $self->param('userid');
+    my $database       = $self->param('database');
+    my $titleid        = $self->strip_suffix($self->param('titleid'));
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $lang           = $self->param('lang');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+    my $representation = $self->param('represenation');
+    my $dbinfotable    = $self->param('dbinfo');
+
+    # CGI Args
+    my $stid          = $query->param('stid')              || '';
+    my $callback      = $query->param('callback')  || '';
+    my $queryid       = $query->param('queryid')   || '';
+    my $format        = $query->param('format')    || 'full';
+    my $no_log        = $query->param('no_log')    || '';
+
+    my $database_in_view = 0;
+
+    my @dbs_in_view = $config->get_viewdbs($view);
+
+    # Add 'special' databases of type api
+    push @dbs_in_view, $config->get_apidbs;
+    
+    foreach my $dbname (@dbs_in_view){
+        if ($dbname eq $database){
+            $database_in_view = 1;
+            last;
+        }
+    }
+
+    # if ($database eq "bibsonomy" || $database eq "ezb" || $database eq "dbis"){
+    #     $database_in_view = 1;
+        
+    # }
+    # Databases with API are always considered
+#     foreach my $dbname ($config->get_apidbs){
+#         if ($dbname eq $database){
+#             $database_in_view = 1;
+#             last;
+#         }
+#     }
+    
+    unless ($database_in_view || $user->is_admin){
+	if ($logger->is_debug){
+	    $logger->debug("Access denied for database $database. Viewdbs: ".YAML::Dump(@dbs_in_view));
+	}
+        $self->header_add('Status' => 404); # NOT_FOUND
+        return;
+    }
+        
+    if ($userid && !$self->is_authenticated('user',$userid)){
+        $logger->debug("Testing authorization for given userid $userid");
+        return;
+    }
+
+    my ($atime,$btime,$timeall)=(0,0,0);
+
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+    $logger->debug("Vor");
+    my $searchquery   = OpenBib::SearchQuery->new({r => $r, view => $view, session => $session, config => $config});
+
+    my $authenticatordb = $user->get_targetdb_of_session($session->{ID});
+    
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time until stage -1 is ".timestr($timeall));
+    }
+
+    if ($database && $titleid ){ # Valide Informationen etc.
+        $logger->debug("ID: $titleid - DB: $database");
+
+        $logger->debug("1");        
+        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid, config => $config})->load_full_record;
+
+        $logger->debug("2");        
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Total time until stage 0 is ".timestr($timeall));
+        }
+
+        my $poolname=$dbinfotable->get('dbnames')->{$database};
+
+        # if ($queryid){
+        #     $searchquery->load({sid => $session->{sid}, queryid => $queryid});
+        # }
+
+        my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
+            session    => $session,
+            database   => $database,
+            titleid    => $titleid,
+            view       => $view,
+            session    => $session,
+        });
+
+        my $active_feeds = $config->get_activefeeds_of_db($database);
+        
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Total time until stage 1 is ".timestr($timeall));
+        }
+        $logger->debug("3");        
+
+        my $sysprofile= $config->get_profilename_of_view($view);
+
+        if ($logger->is_debug){
+            $logger->debug("Vor Enrichment:".YAML::Dump($record->get_fields));
+        }
+        
+        $record->enrich_content({ profilename => $sysprofile });
+
+        if ($logger->is_debug){
+            $logger->debug("Nach Enrichment:".YAML::Dump($record->get_fields));
+        }
+        
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Total time until stage 2 is ".timestr($timeall));
+        }
+
+        # TT-Data erzeugen
+        my $ttdata={
+            database    => $database, # Zwingend wegen common/subtemplate
+            userid      => $userid,
+            poolname    => $poolname,
+            prevurl     => $prevurl,
+            nexturl     => $nexturl,
+#            qopts       => $queryoptions->get_options,
+            queryid     => $searchquery->get_id,
+            record      => $record,
+            titleid      => $titleid,
+
+            format      => $format,
+
+            searchquery => $searchquery,
+            activefeed  => $active_feeds,
+            
+            authenticatordb => $authenticatordb,
+            
+            highlightquery    => \&highlightquery,
+        };
+
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Total time until stage 3 is ".timestr($timeall));
+        }
+
+        # Log Event
+
+        my $isbn;
+        
+        if ($record->has_field("T0540") && $record->get_fields->{T0540}[0]{content}){
+            $isbn = $record->get_fields->{T0540}[0]{content};
+            $isbn =~s/ //g;
+            $isbn =~s/-//g;
+            $isbn =~s/X/x/g;
+        }
+        
+        if (!$no_log){
+            $session->log_event({
+                type      => 10,
+                content   => {
+                    id       => $titleid,
+                    database => $database,
+                    isbn     => $isbn,
+                },
+                serialize => 1,
+            });
+        }
+
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Total time for show_record is ".timestr($timeall));
+        }
+
+        return $self->print_page($config->{tt_titles_record_fields_tname},$ttdata);
+    }
+    else {
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Total time for show_record is ".timestr($timeall));
+        }
+
+        return $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));
+    }
 }
 
 sub show_record_circulation {

@@ -71,6 +71,7 @@ sub setup {
         'show_record_similar_records'       => 'show_record_similar_records',
         'show_record_same_records'          => 'show_record_same_records',
         'show_record_fields'                => 'show_record_fields',
+        'show_record_holdings'              => 'show_record_holdings',
         'show_record_circulation'           => 'show_record_circulation',
         'redirect_to_bibsonomy'      => 'redirect_to_bibsonomy',
         'dispatch_to_representation'           => 'dispatch_to_representation',
@@ -855,6 +856,109 @@ sub show_record_fields {
         }
 
         return $self->print_page($config->{tt_titles_record_fields_tname},$ttdata);
+    }
+    else {
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Total time for show_record is ".timestr($timeall));
+        }
+
+        return $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));
+    }
+}
+
+sub show_record_holdings {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $userid         = $self->param('userid');
+    my $database       = $self->param('database');
+    my $titleid        = $self->strip_suffix($self->param('titleid'));
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $lang           = $self->param('lang');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+    my $representation = $self->param('represenation');
+    my $dbinfotable    = $self->param('dbinfo');
+
+    # CGI Args
+    my $stid          = $query->param('stid')              || '';
+    my $callback      = $query->param('callback')  || '';
+    my $queryid       = $query->param('queryid')   || '';
+    my $format        = $query->param('format')    || 'full';
+    my $no_log        = $query->param('no_log')    || '';
+
+
+    my ($atime,$btime,$timeall)=(0,0,0);
+
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+    
+    if ($database && $titleid ){ # Valide Informationen etc.
+        $logger->debug("ID: $titleid - DB: $database");
+
+        $logger->debug("1");        
+        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid, config => $config})->load_full_record;
+
+        $logger->debug("2");        
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Total time until stage 0 is ".timestr($timeall));
+        }
+
+        my $poolname=$dbinfotable->get('dbnames')->{$database};
+
+        my $sysprofile= $config->get_profilename_of_view($view);
+
+        if ($logger->is_debug){
+            $logger->debug("Vor Enrichment:".YAML::Dump($record->get_fields));
+        }
+        
+        $record->enrich_content({ profilename => $sysprofile });
+
+        if ($logger->is_debug){
+            $logger->debug("Nach Enrichment:".YAML::Dump($record->get_fields));
+        }
+        
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Total time until stage 2 is ".timestr($timeall));
+        }
+
+        # TT-Data erzeugen
+        my $ttdata={
+            database    => $database, # Zwingend wegen common/subtemplate
+            userid      => $userid,
+            poolname    => $poolname,
+#            qopts       => $queryoptions->get_options,
+            record      => $record,
+            titleid      => $titleid,
+        };
+
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Total time for show_record is ".timestr($timeall));
+        }
+
+        return $self->print_page($config->{tt_titles_record_holdings_tname},$ttdata);
     }
     else {
         if ($config->{benchmark}) {

@@ -3,7 +3,7 @@
 thisrecord = {
            link = {
                     rel = 'self'
-                    href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.id}.json"
+                    href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.id}/holdings.json"
            }
            id       = record.id
            database = {

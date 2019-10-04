@@ -18,7 +18,7 @@
 	  },
           {
              desc = msg.maketext('Titel')
-	     url  = "${path_prefix}/${config.get('database_loc')}/id/${database}/${config.get('titles_loc')}/id/${titleid}.html?l=${lang}"
+	     url  = "${path_prefix}/${config.get('databases_loc')}/id/${database}/${config.get('titles_loc')}/id/${titleid}.html?l=${lang}"
 	  },
 	  {
              desc = msg.maketext('Ausleihe/Exemplare')

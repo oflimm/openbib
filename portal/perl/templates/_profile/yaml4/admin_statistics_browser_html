@@ -1,0 +1,170 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_statistics_browser_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersicht der wichtigsten statistischen Daten sowie
+# Verweise auf andere Sub-Templates (via stid = sub-template-id) mit
+# weiteren statistischen Auswertungen.
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Grundlegende Statistikinformationen' %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %].html?l=[% lang %]">[% msg.maketext("Statistiken") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Browser") %]</a></li>
+       </ul>
+     </div>
+    <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/browser.json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+    </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
+[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_statistics" active_subsubmenu="browser" %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+[% PROCESS common/subtemplate name="admin_statistics_paging_monthly" statisticsid="browser" %] 
+
+<p/>
+
+[%-
+
+  browsers = statistics.get_ranking_of_event({ type => 101, limit => 300, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) ;
+
+  count_msie    = 0;
+  count_ff      = 0;
+  count_safari  = 0;
+  count_opera   = 0;
+  count_chrome  = 0;
+  count_all     = 0;
+
+  count_os_windows = 0;
+  count_os_macos   = 0;
+  count_os_linux   = 0;
+  count_os_android = 0;
+  count_os_ios     = 0;
+  count_os_all     = 0;
+
+  FOREACH browser IN browsers ;
+   IF browser.content.match('MSIE') ;
+      count_msie   =  count_msie + browser.number;
+      count_all    =  count_all + browser.number;
+   ELSIF browser.content.match('Firefox') ;
+      count_ff     =  count_ff + browser.number;
+      count_all    =  count_all + browser.number;
+   ELSIF browser.content.match('Safari') ;
+      count_safari =  count_safari + browser.number;
+      count_all    = count_all + browser.number;
+   ELSIF browser.content.match('Opera') ;
+      count_opera  =  count_opera + browser.number;
+      count_all    = count_all + browser.number;
+   ELSIF browser.content.match('Chrome') ;
+      count_chrome  =  count_chrome + browser.number;
+      count_all = count_all + browser.number;
+   END ;
+
+   IF browser.content.match('Windows NT') ;
+      count_os_windows =  count_os_windows + browser.number;
+      count_os_all = count_os_all + browser.number;
+   ELSIF browser.content.match('Android') ;
+      count_os_android =  count_os_android + browser.number;
+      count_os_all = count_os_all + browser.number;
+   ELSIF browser.content.match('Linux') ;
+      # Nur echte Browser, keine Spider
+      IF browser.content.match('Firefox') || browser.content.match('Chrome') || browser.content.match('KHTML');
+        count_os_linux =  count_os_linux + browser.number;
+        count_os_all = count_os_all + browser.number;
+      END;
+   ELSIF browser.content.match('iPhone OS') ;
+      count_os_ios = count_os_ios + browser.number;
+      count_os_all = count_os_all + browser.number;
+   ELSIF browser.content.match('Mac OS') ;
+      count_os_macos =  count_os_macos + browser.number;
+      count_os_all = count_os_all + browser.number;
+   END;
+  END ;
+-%]
+
+[% IF count_all %]
+
+<h3>[% msg.maketext("Browserverteilung") %]</h3>
+
+<table class="ym-full">
+<tr><th>Firefox</th><td>[% count_ff * 100.0 / count_all %] %</td></tr>
+<tr><th>MSIE</th><td>[% count_msie * 100.0 / count_all %] %</td></tr>
+<tr><th>Safari</th><td>[% count_safari * 100.0 / count_all %] %</td></tr>
+<tr><th>Opera</th><td>[% count_opera * 100.0 / count_all %] %</td></tr>
+<tr><th>Chrome</th><td>[% count_chrome * 100.0 / count_all %] %</td></tr>
+</table>
+
+<p />
+
+<h3>[% msg.maketext("Betriebssystemverteilung") %]</h3>
+
+<table class="ym-full">
+<tr><th>Windows</th><td>[% count_os_windows * 100.0 / count_os_all %] %</td></tr>
+<tr><th>Mac OS</th><td>[% count_os_macos * 100.0 / count_os_all %] %</td></tr>
+<tr><th>Linux</th><td>[% count_os_linux * 100.0 / count_os_all %] %</td></tr>
+<tr><th>Android</th><td>[% count_os_android * 100.0 / count_os_all %] %</td></tr>
+<tr><th>iOS</th><td>[% count_os_ios * 100.0 / count_os_all %] %</td></tr>
+</table>
+
+<p />
+
+[% END %]
+
+<h3>[% msg.maketext("Genutzte Browser") %]</h3>
+
+<table>
+[% FOREACH browser IN browsers %]
+<tr><th>[% browser.content %]</th><td><b>[% browser.number %]</b></td></tr>
+[% END %]
+</table>
+
+
+
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

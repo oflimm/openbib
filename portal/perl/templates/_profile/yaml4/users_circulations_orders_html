@@ -1,0 +1,100 @@
+[%#-
+#######################################################################
+#
+# Templatename: circulation_orders
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller bestellten Medien
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% config.get('home_loc') %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% username %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Bestellungen") %]</a></li>
+       </ul>
+     </div>
+     <div class="ob-representation">
+<!-- <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% config.get('circulations_loc') %]/id/borrows.json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>-->
+     </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
+[% PROCESS common/subtemplate name="users_navigation" active_submenu="orders" %] 
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+[% IF orders.size == 0 %]
+<b>[% msg.maketext("Sie haben keine Bestellungen get&auml;tigt.") %]</b>
+[% ELSE  %]
+
+<table cellpadding="5">
+<tr><td><b>[% msg.maketext("Titelangaben") %]</b></td><td><b>[% msg.maketext("Signatur") %]</b></td><td><b>[% msg.maketext("Bestelldatum") %]</b></td><td><b>[% msg.maketext("Status") %]</b></td></tr>
+[%- listrow = 'listrow1' -%]
+
+[%- FOREACH order = orders -%]
+
+<tr
+class="[% listrow %]"
+[%- IF listrow == 'listrow1' -%]
+[%- listrow = 'listrow2' -%] 
+[%- ELSE -%]
+[%- listrow = 'listrow1' -%] 
+[%- END -%]
+><td><i>[% order.Verfasser %]</i><br />[% order.Titel %]
+
+[% IF order.EJahr %]
+, [% order.EJahr %]
+[% END %]
+
+</td><td>
+[% IF order.MTyp == 99 %]
+[% msg.maketext("Fernleihbestellung") %]<br />
+[% END %]
+
+[% order.Mediennummer %]</td><td>[% order.BestellDatum %]</td><td>[% order.Status %]</td></tr>
+[% END %]
+</table>
+
+[% END %]
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -1,0 +1,159 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_browsetit
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Inhalte einer Titel-Kategorie
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+<body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation"  active_menu='register' %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+[%   thistopic = user.get_topic({ id => topicid }); #USE dumper;dumper.dump(thistopic)%]
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="[% path_prefix%]/[% config.get('browse_loc') %].html?l=[% lang %]">[% msg.maketext("Browsen") %]</a></li>
+         <li><a href="[% path_prefix%]/[% config.get('browse_loc') %]/topics.html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a></li>
+         <li><a href="#" class="lastitem">[% thistopic.name %]</a></li>
+      </ul>
+     </div>
+     <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('browse_loc') %]/[% config.get('topics_loc') %]/id/[% topicid %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+     </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1 ob-hidden">
+        <div class="ym-cbox" class="ym-clearfix">
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+[%
+  bks         = config.load_bk;
+  thisbklist = statistics.get_result({id => view, type => 10}); 
+
+  bklist = [];
+  FOREACH bk IN bks;
+    IF bk.key.length == 2;
+      bklist.push(bk.key);
+    END ;
+  END ;
+
+  bklist = bklist.sort;
+
+%]
+
+<h4>[% msg.maketext("Katalogtitel nach Bibliothekssystematik") %]</h4>
+
+<ul class="topiclist">
+[% FOREACH classification IN user.get_classifications_of_topic({ type => 'bk', topicid => topicid}) %]
+<li><a href="[% path_prefix %]/[% config.get('browse_loc') %]/bks/id/[% classification %]">[% bks.${classification} %]</a> / [% classification %] ([% thisbklist.${classification}%] Titel)</li>
+[% END %]
+</ul>
+
+<p />
+
+[%-
+   ezb_classifications = user.get_classifications_of_topic({ type => 'ezb', topicid => topicid});
+   FOREACH ezb_topic IN ezb_classifications;
+     ezb_mapping.$ezb_topic = 1;
+   END ;
+   ezb_topics = ezb.get_classifications;
+-%]
+[% IF ezb_classifications.size > 0 %]
+<h4>[% msg.maketext("Elektronisch verfügbare Zeitschriften (EZB)")%]</h4>
+
+<ul class="topiclist">
+[% FOREACH topic IN ezb_topics %]
+[%   IF ezb_mapping.${topic.name} ;
+   searchterm    = topic.name;
+   searchprefix  = config.get('searchfield').classification.prefix;
+%]
+<li><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% searchprefix %]=[% searchterm %]">[% topic.desc %]</a> / [% topic.name %] ([% msg.maketext("[_1] Zeitschriften",topic.count) %])</li>
+[%   END %]
+[% END %]
+</ul>
+
+<p />
+[% END %]
+
+[%-
+   dbis_classifications = user.get_classifications_of_topic({ type => 'dbis', topicid => topicid});
+   FOREACH dbis_topic IN dbis_classifications;
+     dbis_mapping.$dbis_topic = 1;
+   END ;
+   dbis_topics = dbis.get_classifications;
+-%]
+
+[% IF dbis_classifications.size > 0 %]
+<h4>[% msg.maketext("Elektronisch verfügbare Datenbanken (DBIS)") %]</h4>
+
+[%# USE dumper;dumper.dump(dbis_topics) %]
+<ul class="topiclist">
+[% FOREACH topic IN dbis_topics %]
+[%   IF dbis_mapping.${topic.name} ;
+   searchterm    = topic.name;
+   searchprefix  = config.get('searchfield').classification.prefix;
+%]
+<li><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=dbis;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% searchprefix %]=[% searchterm %]">[% topic.desc %]</a> / [% topic.name %] ([% msg.maketext("[_1] Datenbanken",topic.count) %])</li>
+[%   END %]
+[% END %]
+</ul>
+
+<p />
+[% END %]
+
+[% litlists = user.get_public_litlists({ topicid => topicid, view => view}) %]
+[% IF litlists.size > 0 %]
+<h4>[% msg.maketext("Literaturlisten") %]</h4>
+
+<ul class="topiclist">
+[% FOREACH thisitem IN litlists%]
+[% IF thisitem.itemcount %]
+<li><a href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% thisitem.id %].html?l=[% lang %]">[% thisitem.title%]</a> ([% msg.maketext("[_1] Titel",thisitem.itemcount) %])[%- IF thisitem.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
+[% ELSE %]
+<li>[% thisitem.title%] ([% msg.maketext("[_1] Titel",thisitem.itemcount) %])[%- IF thisitem.lecture -%]&nbsp;<img src="[% config.get('university_img') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
+[% END %]
+[% END %]
+</ul>
+
+[% END %]
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

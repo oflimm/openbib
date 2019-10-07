@@ -1,0 +1,151 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editcat
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Kataloges
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Cluster-Einstellungen' %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('clusters_loc') %].html?l=[% lang %]">[% msg.maketext("Cluster") %]</a></li>
+         <li><a href="#" class="lastitem">[% clusterinfo.description %]</a></li>
+       </ul>
+     </div>
+    <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+    </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
+[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_clusters_record" active_subsubmenu="admin_clusters_record_main" %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+<form method="post" action="[% path_prefix %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %]" class="ym-form">
+<input type="hidden" name="_method"    value="PUT" />
+
+<fieldset class="ym-columnar">
+
+<legend>[% msg.maketext("Cluster bearbeiten") %]</legend>
+
+<div class="ym-fbox-text">
+<label for="id">[% msg.maketext("Id") %]</label>
+[% clusterinfo.id %]
+</div>
+
+<div class="ym-fbox-text">
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<input type="text" name="description" id="description" value="[% clusterinfo.description %]"/>
+</div>
+
+<div class="ym-fbox-select">
+<label for="status">[% msg.maketext("Status") %]</label>
+  <select name="status" id="status">
+     <option value="updatable" [% IF clusterinfo.status == 'updatable' %]selected="selected"[% END %]>[% msg.maketext("Akualisierbar") %]</option>
+     <option value="updating" [% IF clusterinfo.status == 'updating' %]selected="selected"[% END %]>[% msg.maketext("Aktualisieren") %]</option>
+     <option value="updated" [% IF clusterinfo.status == 'updated' %]selected="selected"[% END %]>[% msg.maketext("Fertig mit Aktualisierung") %]</option>
+     <option value="searchable" [% IF clusterinfo.status == 'searchable' %]selected="selected"[% END %]>[% msg.maketext("Recherchierbar") %]</option>
+  </select>
+</div>
+
+<div class="ym-fbox-select">
+<label for="active">[% msg.maketext("Aktiv") %]</label>
+  <select name="active" id="active">
+     <option value="true" [%- IF clusterinfo.active -%]selected="selected"[%- END -%]>[% msg.maketext("Ja") %]</option>
+     <option value="false" [%- IF NOT clusterinfo.active -%]selected="selected"[%- END -%]>[% msg.maketext("Nein") %]</option>
+  </select>
+</div>
+
+
+<div class="ym-fbox-button">
+<input type="submit" value="[% msg.maketext("Ändern") %]">
+
+[%- IF user.has_right({scope = 'admin_clusters', right = 'right_delete'}) -%]
+&nbsp;&nbsp;&nbsp;
+
+<a class="ob_button" href="[% path_prefix %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+[%- END -%]
+</div>
+
+
+</fieldset>
+
+</form>
+
+[% differences = config.check_cluster_consistency(clusterinfo.id) ;
+
+   IF differences ;
+
+   serverids = config.get_serverids_of_cluster(clusterinfo.id);
+
+%]
+<h4>Inkonsistenzen zwischen den Servern dieses Clusters</h4>
+
+<table class="ym-full">
+<tr>
+<th>[% msg.maketext("Katalog") %]</th>
+[% FOREACH serverid IN serverids %]
+<th>
+Titel auf [% config.get_serverinfo_description(serverid) %]
+</th>
+[% END %]
+</tr>
+[% FOREACH thisdb IN differences %]
+<tr>
+<td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% thisdb.dbname %]/updates.html?l=[% lang %]">[% thisdb.dbname %]</a></td>
+[% FOREACH serverid IN serverids %]
+<td>[% thisdb.server.${serverid} %]</td>
+[% END %]
+</tr>
+[% END %]
+</table>
+
+[%
+#     USE dumper;dumper.dump(differences);
+   END;
+%]
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -343,7 +343,7 @@ if ($maintenance){
 
     system("cd /tmp ; rm kmbtocs/* ; rmdir kmbtocs");
 
-    system("cd /tmp ; mkdir kmbregister ; cd kmbregister ; wget http://peterlux.ub.uni-koeln.de/contentdm/export/kmbregister.xmlc");
+    system("cd /tmp ; mkdir kmbregister ; cd kmbregister ; wget http://peterlux.ub.uni-koeln.de/contentdm/export/kmbregister.xml");
 
     system("$config->{'base_dir'}/conv/cdm2enrich.pl --inputfile=/tmp/kmbregister/kmbregister.xml --configfile=$config->{'base_dir'}/conf/kmb_register.yml --database=inst001");
 

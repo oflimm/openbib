@@ -7,9 +7,9 @@ idfield: 'katkey'
 origin: '101'
 
 mapping:
-  'inhaltsverzeichnis': '4111'  
+  'inhaltsverzeichnis': '4113'  
 #  'structure': '2662'
-  'viewerURL': '4110'
+  'viewerURL': '4112'
 
 
 

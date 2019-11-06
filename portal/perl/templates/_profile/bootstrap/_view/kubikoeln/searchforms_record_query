@@ -176,7 +176,7 @@
 </div>
 [% END %]
 
-[%- cgiparam = searchfield.toc.prefix;
+[%- cgiparam = searchfield.reg.prefix;
     this_searchfield = 'reg';
  -%]
 <div class="form-group">

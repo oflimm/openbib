@@ -183,7 +183,6 @@
 <label for="[% cgiparam %]">[% msg.maketext("Register") %]</label>
 <input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
-[% END %]
 
 [% IF available_searchfields.hss.active %]
 [%- cgiparam = searchfield.hss.prefix;

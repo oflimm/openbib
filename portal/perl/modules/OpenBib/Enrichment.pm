@@ -119,6 +119,7 @@ sub init_enriched_content {
     $self->get_schema->resultset('EnrichedContentByIsbn')->search_rs({ field => $field, origin => $origin })->delete;
     $self->get_schema->resultset('EnrichedContentByBibkey')->search_rs({ field => $field, origin => $origin })->delete;
     $self->get_schema->resultset('EnrichedContentByIssn')->search_rs({ field => $field, origin => $origin })->delete;    
+    $self->get_schema->resultset('EnrichedContentByTitle')->search_rs({ field => $field, origin => $origin })->delete;    
 
     return;
 }

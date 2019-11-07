@@ -4,7 +4,7 @@
 # Feld der eindeutigen Titel-ID
 idfield: 'katkey'
 
-origin: '101'
+origin: '100'
 
 mapping:
   'inhaltsverzeichnis': '4113'  

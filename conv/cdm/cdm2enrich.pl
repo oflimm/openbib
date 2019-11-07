@@ -101,9 +101,17 @@ my $origin = $convconfig->{origin};
 
 our $enrichment = new OpenBib::Enrichment;
 
-$logger->info("Loeschen der bisherigen Daten mit Origin $origin");
+my $mapping = $convconfig->{mapping};
 
-$enrichment->init_enriched_content({ origin => $origin });
+foreach my $this_mapping (keys %$mapping){
+    my $field = $mapping->{$this_mapping};
+    
+    $logger->info("Loeschen der bisherigen Daten in Feld $field von Origin $origin");
+    
+    $enrichment->init_enriched_content({ field => $field, origin => $origin });
+}
+
+$logger->info("Einladen der neuen Daten");
 
 my $twig= XML::Twig->new(
    TwigHandlers => {
@@ -113,6 +121,8 @@ my $twig= XML::Twig->new(
 
 
 $twig->safe_parsefile($inputfile);
+
+$logger->info("Fertig");
 
 sub parse_titset {
     my($t, $titset)= @_;

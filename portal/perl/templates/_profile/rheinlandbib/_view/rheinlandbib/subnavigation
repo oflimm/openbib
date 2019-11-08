@@ -26,6 +26,11 @@
 [% ELSE %]
   <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/rheinischeabteilung.html?l=[% lang %]">Die Rheinische Abteilung der USB</a></li>
 [% END %]
+[% IF active_submenu == "altenberg"  %]
+  <li class="active"><strong>Altenberger Dom-Verein</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/altenberg.html?l=[% lang %]">Altenberger Dom-Verein</a></li>
+[% END %]
 [% IF active_submenu == "bruehl"  %]
   <li class="active"><strong>Bibliothek des Max-Ernst-Gymnasiums (MEG) der Stadt Brühl</strong></li>
 [% ELSE %]

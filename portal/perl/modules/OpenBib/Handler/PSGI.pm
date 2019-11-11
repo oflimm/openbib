@@ -550,6 +550,9 @@ sub process_uri {
 	$scheme = "https";
     }
 
+    # use-https overrides everything
+    $scheme = ($config->get('use_https'))?'https':$scheme;
+    
     my ($location_uri,$last_uri_element) = $path =~m/^(.+?)\/([^\/]+)$/;
  
     if ($logger->is_debug && defined $path && defined $last_uri_element && defined $r->escaped_args){

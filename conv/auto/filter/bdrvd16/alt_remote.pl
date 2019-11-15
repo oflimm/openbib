@@ -42,6 +42,7 @@ my $konvdir       = $config->{'conv_dir'};
 
 my $harvestoaiexe     = "$config->{'conv_dir'}/harvestOAI.pl";
 my $simplexml2metaexe = "$config->{'conv_dir'}/simplexml2meta.pl";
+my $marc2metaexe      = "$config->{'conv_dir'}/marc2meta.pl";
 
 my $pool          = $ARGV[0];
 
@@ -55,5 +56,8 @@ system("cd $pooldir/$pool ; $harvestoaiexe -all --set=$pool --format=MarcXchange
 
 system("cd $pooldir/$pool ; echo '<recordlist>' > $pooldir/$pool/pool.dat ; cat pool-*.xml >> $pooldir/$pool/pool.dat ; echo '</recordlist>' >> $pooldir/$pool/pool.dat");
 
-system("cd $pooldir/$pool; $simplexml2metaexe --inputfile=pool.dat --configfile=/opt/openbib/conf/${pool}.yml; gzip meta.*");
+system("cd $pooldir/$pool; yaz-marcdump -i marcxchange -o marc pool.dat > pool.mrc");
+#system("cd $pooldir/$pool; $simplexml2metaexe --inputfile=pool.dat --configfile=/opt/openbib/conf/${pool}.yml; gzip meta.*");
+system("cd $pooldir/$pool; $marc2metaexe --database=$pool --encoding='UTF-8' --inputfile=pool.mrc; gzip meta.*");
+
 #system("rm $pooldir/$pool/pool.dat");

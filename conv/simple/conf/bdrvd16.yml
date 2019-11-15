@@ -1,0 +1,54 @@
+# Encoding der Daten
+# encoding: iso-8859-1
+# encoding: utf8
+
+# Tracelevel
+tracelevel:
+
+# XPath-Parameter
+
+# Record-Selector
+recordselector: "/recordlist/record"
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: "//mx:controlfield[@tag='001']"
+
+is_deleted: "//is_deleted"
+
+# Personen
+person:
+  "//mx:datafield[@tag='100']/mx:subfield[@code='a']": '0100' # Verfasser
+
+# Koerperschaften
+corporatebody:
+  "//mx:datafield[@tag='110']/mx:subfield[@code='a']": '0201' # Koerperschaft
+
+
+# Systematik
+classification: 
+  "//mx:datafield[@tag='521']/mx:subfield": '0700' # Klassifikation
+
+# Schlagworte
+subject:
+  "//mx:datafield[@tag='650']/mx:subfield": '0710' # Schlagwort
+
+# Titel
+title:
+  "//mx:datafield[@tag='041']/mx:subfield[@code='a']": '0015' # Sprache
+  "//mx:datafield[@tag='245']/mx:subfield": '0331' # Titel
+  "//mx:datafield[@tag='520']/mx:subfield": '0750' # Beschreibung
+  "//mx:datafield[@tag='300']/mx:subfield": '0433' # Dauer/Kollation
+  "//mx:datafield[@tag='260']/mx:subfield[@code='c']": '0425' # Erstellungsdatum
+  "//mx:datafield[@tag='340']/mx:subfield": '0800' # Medientyp
+  "//mx:datafield[@tag='260']/mx:subfield[@code='b']": '0410' # Verlag
+  "//mx:datafield[@tag='856']/mx:subfield[@code='u']": '0662'
+
+defaultmediatype: 'Digital'
+
+filter:
+  'metadata/oai_dc:dc/dc:date':
+     filter_match: "^(\d\d\d\d)"
+  'metadata/oai_dc:dc/dc:description':
+     filter_newline2br: 1
+  'metadata/oai_dc:dc/dc:title':
+     filter_newline2br: 1

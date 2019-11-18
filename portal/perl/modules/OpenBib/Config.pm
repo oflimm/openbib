@@ -1800,7 +1800,7 @@ sub get_viewlocations {
     my @viewlocations=();
 
     while (my $item = $identifiers->next){
-        push @viewlocations, $item->{thisidentifier};
+        push @viewlocations, $item->{thisidentifier} if ($item->{thisidentifier});
     }
 
     if ($self->{memc}){

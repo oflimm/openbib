@@ -141,6 +141,13 @@ CREATE TABLE view_rss (
  rssid     BIGINT NOT NULL
 );
 
+drop table IF EXISTS view_location;
+CREATE TABLE view_location (
+ id         BIGSERIAL,
+ viewid     BIGINT NOT NULL,
+ locationid BIGINT NOT NULL
+);
+
 DROP TABLE IF EXISTS clusterinfo;
 CREATE TABLE clusterinfo (
  id           BIGSERIAL,

@@ -69,6 +69,12 @@ ALTER TABLE view_rss ADD CONSTRAINT fk_viewrss_view FOREIGN KEY (viewid) REFEREN
 CREATE INDEX view_rss_rssid ON view_rss (rssid);
 CREATE INDEX view_rss_viewid ON view_rss (viewid);
 
+ALTER TABLE view_location ADD PRIMARY KEY (id);
+ALTER TABLE view_location ADD CONSTRAINT fk_viewlocation_location FOREIGN KEY (locationid) REFERENCES locationinfo (id);
+ALTER TABLE view_location ADD CONSTRAINT fk_viewlocation_view FOREIGN KEY (viewid) REFERENCES viewinfo (id);
+CREATE INDEX view_location_locationid ON view_location (locationid);
+CREATE INDEX view_location_viewid ON view_location (viewid);
+
 ALTER TABLE clusterinfo ADD PRIMARY KEY (id);
 CREATE INDEX clusterinfo_active ON clusterinfo (active);
 

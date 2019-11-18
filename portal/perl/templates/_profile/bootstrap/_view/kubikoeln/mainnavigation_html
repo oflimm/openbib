@@ -135,7 +135,7 @@
 <input type="hidden" name="st"         value="1" />
 <input type="hidden" name="profile"    value="[% config.get_searchprofile_of_view(view) %]" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
-<input type="hidden" name="f[floc]"    value="DE-38-ZBKUNST" />
+<!--<input type="hidden" name="f[floc]"    value="DE-38-ZBKUNST" /> -->
 
 <div class="container-full justify-content-center border shadow rounded pl-4 pr-4 pt-3 pb-2 mb-4 bg-light">
     <div class="row">    

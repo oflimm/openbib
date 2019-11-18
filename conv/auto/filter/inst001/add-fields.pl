@@ -3,11 +3,157 @@
 use JSON::XS;
 use utf8;
 
+use MLDBM qw(DB_File Storable);
+use Storable ();
+use DB_File;
+
 #open(CHANGED,">./changed.json");
+
+open(HOLDING,"./meta.holding");
+
+my $ausstellungskatalog_regexp_ref = [
+    '^KMB/YF ',
+    '^KMB/!YF ',
+    '^KMB/\+YF ',
+    '^KMB/=YF ',
+    '^KMB/!!YF ',
+    '^KMB/YG ',
+    '^KMB/!YG ',
+    '^KMB/\+YG ',
+    '^KMB/=YG ',
+    '^KMB/!!YG ',
+    '^KMB/YK ',
+    '^KMB/!YK ',
+    '^KMB/\+YK ',
+    '^KMB/=YK ',
+    '^KMB/!!YK ',
+    '^KMB/YNL ', 
+    '^KMB/!YNL ', 
+    '^KMB/\+YNL ', 
+    '^KMB/=YNL ',
+    '^KMB/!!YNL ',
+    '^KMB/YNK ', 
+    '^KMB/!YNK ', 
+    '^KMB/\+YNK ', 
+    '^KMB/=YNK ',
+    '^KMB/!!YNK ',
+    '^KMB/!!K \w+ 7 ', 
+    '^KMB/!K \w+ 7 ', 
+    '^KMB/K \w+ 7 ', 
+    '^KMB/\+K \w+ 7 ', 
+    '^KMB/=K \w+ 7 '
+    ];
+
+my $sammlungskatalog_regexp_ref = [
+    'KMB/!Y ',
+    'KMB/!Y ',
+    'KMB/Y ',
+    'KMB/\+Y ',
+    'KMB/=Y ',
+    'KMB/!!YA ',
+    'KMB/!YA ',
+    'KMB/YA ',
+    'KMB/\+YA ',
+    'KMB/=YA ',
+    'KMB/!!YU ',
+    'KMB/!YU ',
+    'KMB/YU ',
+    'KMB/\+YU ',
+    'KMB/=YU ',
+    'KMB/!!YV ',
+    'KMB/YV ',
+    'KMB/\+YV ',
+    'KMB/=YV ',
+    ];
+
+my $kunstmessekatalog_regexp_ref = [
+    'KMB/!!YNM ',
+    'KMB/!YNM ',
+    'KMB/YNM ',
+    'KMB/\+YNM ',
+    'KMB/=YNM ',
+    ];
+
+unlink "./ausstellungskatalog.db";
+unlink "./sammlungskatalog.db";
+unlink "./kunstmessekatalog.db";
+
+my %ausstellungskatalog = ();
+my %sammlungskatalog = ();
+my %kunstmessekatalog = ();
+
+tie %ausstellungskatalog,             'MLDBM', "./ausstellungskatalog.db"
+    or die "Could not tie ausstellungskatalog.\n";
+
+tie %sammlungskatalog,                'MLDBM', "./sammlungskatalog.db"
+    or die "Could not tie ausstellungskatalog.\n";
+
+tie %kunstmessekatalog,               'MLDBM', "./kunstmessekatalog.db"
+    or die "Could not tie kunstmessekatalog.\n";
+
+
+while (<HOLDING>){
+    # Einschraenkung, um Verarbeitung zu minimieren
+    
+    next unless ($_ =~m/KMB/);
+    
+    my $holding_ref = decode_json $_;
+
+    # Titelid bestimmen
+
+    my $titleid = "";
+    if (defined $holding_ref->{fields}{'0004'}){	
+        foreach my $item (@{$holding_ref->{fields}{'0004'}}){
+	    $titleid=$item->{content};
+	}
+    }
+
+    ### KMB-Medientypen bestimmen
+    
+    if (defined $holding_ref->{fields}{'0014'}){	
+        foreach my $item (@{$holding_ref->{fields}{'0014'}}){
+	    # Ausstellungskatalog??
+
+	    foreach my $regexp (@$ausstellungskatalog_regexp_ref){
+		# print STDERR "Matching ".$item->{content}." with ".$regexp."\n";
+		if ($item->{content} =~m{$regexp}){
+		    $ausstellungskatalog{$titleid} = 1;
+		    #print "Matched ",$item->{content},"\n";
+		}
+	    }
+
+	    # Sammlungskatalog??
+
+	    foreach my $regexp (@$sammlungskatalog_regexp_ref){
+		# print STDERR "Matching ".$item->{content}." with ".$regexp."\n";
+		if ($item->{content} =~m{$regexp}){
+		    $sammlungskatalog{$titleid} = 1;
+		    #print "Matched ",$item->{content},"\n";
+		}
+	    }
+
+	    # Kunstmessekatalog??
+
+	    foreach my $regexp (@$kunstmessekatalog_regexp_ref){
+		# print STDERR "Matching ".$item->{content}." with ".$regexp."\n";
+		if ($item->{content} =~m{$regexp}){
+		    $kunstmessekatalog{$titleid} = 1;
+		    #print "Matched ",$item->{content},"\n";
+		}
+	    }
+        }	
+    }
+
+
+}
+
+close(HOLDING);
 
 while (<>){
     my $title_ref = decode_json $_;
 
+    my $titleid = $title_ref->{id};
+    
     ### KMB-Medientypen zusaetzlich vergeben
 
     my $is_kuenstlerbuch = 0;
@@ -121,6 +267,65 @@ while (<>){
 		    subfield => '',
 		    content  => "Auktionskatalog",
 	    },
+		];
+	}
+    }
+
+    if (defined $ausstellungskatalog{$titleid} && $ausstellungskatalog{$titleid}){
+	if (@{$title_ref->{fields}{'4410'}}){
+	    push @{$title_ref->{fields}{'4410'}}, {
+                mult     => 1,
+                subfield => '',
+                content  => "Ausstellungskatalog",
+            };
+	}
+	else {
+	    $title_ref->{fields}{'4410'} = [
+		{
+		    mult     => 1,
+		    subfield => '',
+		    content  => "Ausstellungskatalog",
+		},
+		];
+	}
+
+    }
+    
+    if (defined $sammlungskatalog{$titleid} && $sammlungskatalog{$titleid}){
+	if (@{$title_ref->{fields}{'4410'}}){
+	    push @{$title_ref->{fields}{'4410'}}, {
+                mult     => 1,
+                subfield => '',
+                content  => "Sammlungskatalog",
+            };
+	}
+	else {
+	    $title_ref->{fields}{'4410'} = [
+		{
+		    mult     => 1,
+		    subfield => '',
+		    content  => "Sammlungskatalog",
+		},
+		];
+	}
+    }
+
+
+    if (defined $kunstmessekatalog{$titleid} && $kunstmessekatalog{$titleid}){
+	if (@{$title_ref->{fields}{'4410'}}){
+	    push @{$title_ref->{fields}{'4410'}}, {
+                mult     => 1,
+                subfield => '',
+                content  => "Kunstmessekatalog",
+            };
+	}
+	else {
+	    $title_ref->{fields}{'4410'} = [
+		{
+		    mult     => 1,
+		    subfield => '',
+		    content  => "Kunstmessekatalog",
+		},
 		];
 	}
     }

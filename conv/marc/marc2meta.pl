@@ -214,6 +214,8 @@ while (my $record = safe_next($batch)){
 
     $title_ref->{id}=~s/\s//g;
 
+    $logger->debug("Record id: ".$title_ref->{id});
+    
     my $isbn = "";
     
     # ISBN
@@ -280,18 +282,25 @@ while (my $record = safe_next($batch)){
 		    $logger->debug("Pre: $fieldno -> A=",$field->as_string('a')," - C=",$field->as_string('c')," - D=",$field->as_string('d'));
 		}
 		
-                my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
-                my $content_c = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('c')):$field->as_string('c');
-                my $content_d = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('d')):$field->as_string('d');
+                my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a'); # Personal name
+                my $content_b = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('b')):$field->as_string('b'); # Numeration
+                my $content_c = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('c')):$field->as_string('c'); # Titles and other words associated
+                my $content_d = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('d')):$field->as_string('d'); # Dates associated
+                my $content_0 = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('0')):$field->as_string('0'); # Authority number
 
                 $linkage_fields_ref = get_linkage_fields({ record => $record, fieldnumber => $fieldno, linkage => $linkage});
 
 		if ($logger->is_debug()){
-		    $logger->debug("Post: $fieldno -> A=$content_a - C=$content_c - D=$content_d");
+		    $logger->debug("Post: $fieldno -> A=$content_a - B=$content_b - C=$content_c - D=$content_d");
+		}
+
+		# Beispiel 'Maximilian II'
+		if ($content_a && $content_b){
+		    $content_a = $content_a." ".$content_b;
 		}
 		
                 if ($content_a){
-                    $title_ref = add_person($content_a,$content_c,$content_d,$title_ref);
+                    $title_ref = add_person($content_0,$content_a,$content_c,$content_d,$title_ref);
                 }
 
                 foreach my $linkage_field (@$linkage_fields_ref){
@@ -300,9 +309,10 @@ while (my $record = safe_next($batch)){
                     my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('a')):$linkage_field->as_string('a');
                     my $content_c = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('c')):$linkage_field->as_string('c');
                     my $content_d = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('d')):$linkage_field->as_string('d');
+		    my $content_0 = ($encoding eq "MARC-8")?marc8_to_utf8($linkage_field->as_string('0')):$linkage_field->as_string('0');
 
                     if ($content_a){
-                        $title_ref = add_person($content_a,$content_c,$content_d,$title_ref);
+                        $title_ref = add_person($content_0,$content_a,$content_c,$content_d,$title_ref);
                     }
                 }
                 
@@ -1382,9 +1392,17 @@ sub add_subject {
 }
 
 sub add_person {
-    my ($content_a,$content_c,$content_d,$title_ref) = @_;
+    my ($content_0,$content_a,$content_c,$content_d,$title_ref) = @_;
+
+    my ($person_id,$new)=(undef,undef);
     
-    my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($content_a);
+    # Verlinkt per GND
+    if (defined $content_0 && $content_0 =~m/DE-588/){
+	($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($content_0);
+    }
+    else {
+	($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($content_a);
+    }
     
     if ($new){
         my $item_ref = {

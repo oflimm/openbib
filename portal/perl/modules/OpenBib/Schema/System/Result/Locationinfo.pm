@@ -135,9 +135,39 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 userinfos
 
-# Created by DBIx::Class::Schema::Loader v0.07046 @ 2019-07-10 08:25:07
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:iSU+InYDp4O/Soiu/QZeNA
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::Userinfo>
+
+=cut
+
+__PACKAGE__->has_many(
+  "userinfos",
+  "OpenBib::Schema::System::Result::Userinfo",
+  { "foreign.locationid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 view_locations
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::ViewLocation>
+
+=cut
+
+__PACKAGE__->has_many(
+  "view_locations",
+  "OpenBib::Schema::System::Result::ViewLocation",
+  { "foreign.locationid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2019-11-12 13:14:14
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:OlXGvoOtXijR4ogPmsjbCA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

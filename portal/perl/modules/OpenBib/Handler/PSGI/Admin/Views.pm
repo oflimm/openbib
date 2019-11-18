@@ -231,6 +231,11 @@ sub show_record_form {
         $viewdbs_ref->{$dbname} = 1;
     }
 
+    my $viewlocations_ref      = {};
+    foreach my $location ($config->get_viewlocations($viewname)){
+        $viewlocations_ref->{$location} = 1;
+    }
+    
     my $viewroles_ref      = {};
     foreach my $rolename ($config->get_viewroles($viewname)){
         $viewroles_ref->{$rolename} = 1;
@@ -246,9 +251,12 @@ sub show_record_form {
     my $all_rssfeeds_ref = $config->get_rssfeed_overview();
     my $viewrssfeed_ref  = $config->get_rssfeeds_of_view($viewname);
 
+    my $locations_overview_ref = $config->get_locationinfo_overview;
+    
     my $ttdata={
         viewinfo   => $viewinfo,
         selected_viewdbs    => $viewdbs_ref,
+        selected_viewlocations  => $viewlocations_ref,
         selected_viewroles  => $viewroles_ref,
 	selected_viewauthenticators  => $viewauthenticators_ref,
 
@@ -256,6 +264,7 @@ sub show_record_form {
         viewrssfeed  => $viewrssfeed_ref,
 
         dbnames    => \@profiledbs,
+	locations  => $locations_overview_ref,
         viewinfo   => $viewinfo,
     };
     
@@ -406,6 +415,11 @@ sub get_input_definition {
             type     => 'scalar',
         },
         databases => {
+            default  => [],
+            encoding => 'none',
+            type     => 'array',
+        },
+        locations => {
             default  => [],
             encoding => 'none',
             type     => 'array',

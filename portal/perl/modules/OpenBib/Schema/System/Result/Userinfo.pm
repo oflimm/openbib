@@ -177,6 +177,12 @@ __PACKAGE__->table("userinfo");
   is_foreign_key: 1
   is_nullable: 1
 
+=head2 locationid
+
+  data_type: 'bigint'
+  is_foreign_key: 1
+  is_nullable: 1
+
 =head2 creationdate
 
   data_type: 'timestamp'
@@ -250,6 +256,8 @@ __PACKAGE__->add_columns(
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
   "authenticatorid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
+  "locationid",
+  { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
   "creationdate",
   { data_type => "timestamp", is_nullable => 1 },
 );
@@ -276,11 +284,16 @@ __PACKAGE__->set_primary_key("id");
 
 =item * L</viewid>
 
+=item * L</authenticatorid>
+
 =back
 
 =cut
 
-__PACKAGE__->add_unique_constraint("uq_userinfo_username", ["username", "viewid"]);
+__PACKAGE__->add_unique_constraint(
+  "uq_userinfo_username",
+  ["username", "viewid", "authenticatorid"],
+);
 
 =head1 RELATIONS
 
@@ -332,6 +345,26 @@ __PACKAGE__->has_many(
   "OpenBib::Schema::System::Result::Livesearch",
   { "foreign.userid" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 locationid
+
+Type: belongs_to
+
+Related object: L<OpenBib::Schema::System::Result::Locationinfo>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "locationid",
+  "OpenBib::Schema::System::Result::Locationinfo",
+  { id => "locationid" },
+  {
+    is_deferrable => 0,
+    join_type     => "LEFT",
+    on_delete     => "NO ACTION",
+    on_update     => "NO ACTION",
+  },
 );
 
 =head2 reviewratings
@@ -505,8 +538,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07046 @ 2019-07-10 08:25:07
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:KWkZJfkGSJwJ8aRhPhTLCg
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2019-11-12 13:14:14
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:yh4B3LxoStFgV92dG4Sc/Q
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

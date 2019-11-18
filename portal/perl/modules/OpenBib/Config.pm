@@ -1747,6 +1747,75 @@ sub get_viewdbs {
     return @viewdbs;
 }
 
+sub get_viewlocations {
+    my $self     = shift;
+    my $viewname = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my ($atime,$btime,$timeall);
+        
+    if ($self->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    $logger->debug("Getting viewlocations for view $viewname");
+
+    my $memc_key = "config:viewlocations:$viewname";
+
+    if ($self->{memc}){
+        my $viewlocations_ref = $self->{memc}->get($memc_key);
+
+	if ($viewlocations_ref){
+	    if ($logger->is_debug){
+		$logger->debug("Got viewlocations for key $memc_key from memcached");
+	    }
+
+            if ($self->{benchmark}) {
+                my $btime=new Benchmark;
+                my $timeall=timediff($btime,$atime);
+                $logger->info("Zeit fuer das Holen der gecacheten Informationen ist ".timestr($timeall));
+            }
+
+	    return @$viewlocations_ref if (defined $viewlocations_ref);
+	}
+    }
+
+    # DBI: "select databaseinfo.dbname from view_db,databaseinfo,viewinfo where viewinfo.viewname = ? and viewinfo.id=view_db.viewid and view_db.dbid = databaseinfo.dbname and databaseinfo.active is true order by dbname"
+    my $identifiers = $self->get_schema->resultset('Viewinfo')->search(
+        {
+            'me.viewname' => $viewname,
+        },
+        {
+            select   => 'locationid.identifier',
+            as       => 'thisidentifier',
+            join     => [ 'view_locations', { 'view_locations' => 'locationid' } ],
+            order_by => 'locationid.identifier',
+            group_by => 'locationid.identifier',
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+        }
+    );
+
+    my @viewlocations=();
+
+    while (my $item = $identifiers->next){
+        push @viewlocations, $item->{thisidentifier};
+    }
+
+    if ($self->{memc}){
+	$self->{memc}->set($memc_key,\@viewlocations,$self->{memcached_expiration}{'config:viewlocations'});
+    }
+    
+    if ($self->{benchmark}) {
+	my $btime=new Benchmark;
+	my $timeall=timediff($btime,$atime);
+	$logger->info("Zeit fuer das Holen der Informationen ist ".timestr($timeall));
+    }
+
+    return @viewlocations;
+}
+
 sub get_viewroles {
     my $self     = shift;
     my $viewname = shift;
@@ -1814,6 +1883,10 @@ sub get_viewauthenticators {
 
     while (my $item = $authenticators->next){
         push @viewauthenticators, $item->{thisauthenticatorid};
+    }
+    
+    if ($logger->is_debug){
+       $logger->debug("Found authenticators ".YAML::Dump(@viewauthenticators)." for view $viewname");
     }
 
     return @viewauthenticators;
@@ -2847,6 +2920,7 @@ sub memc_cleanup_viewinfo {
     $self->{memc}->delete('config:dbinfo_overview');   
     $self->{memc}->delete('config:viewinfo_overview');
     $self->{memc}->delete("config:viewdbs:$viewname");
+    $self->{memc}->delete("config:viewlocations:$viewname");
     
     return;
 }
@@ -2947,8 +3021,15 @@ sub del_view {
 
     eval {
         my $view = $self->get_schema->resultset('Viewinfo')->single({ viewname => $viewname });
+
         $view->view_dbs->delete;
+	$view->role_views->delete;
+	$view->authenticator_views->delete;
+	$view->view_locations->delete;
         $view->view_rsses->delete;
+	$view->registrations->delete;
+	$view->templateinfos->delete;
+	$view->userinfos->delete;
         $view->delete;
     };
 
@@ -3135,6 +3216,8 @@ sub update_view {
 
     my $databases_ref          = exists $arg_ref->{databases}
         ? $arg_ref->{databases}           : [];
+    my $locations_ref          = exists $arg_ref->{locations}
+        ? $arg_ref->{locations}           : [];
     my $roles_ref              = exists $arg_ref->{roles}
         ? $arg_ref->{roles}               : [];
     my $authenticators_ref     = exists $arg_ref->{authenticators}
@@ -3165,6 +3248,7 @@ sub update_view {
     
     # Datenbank- und Rollen-Verknuepfungen zunaechst loeschen
     $self->get_schema->resultset('ViewDb')->search_rs({ viewid => $viewid})->delete;
+    $self->get_schema->resultset('ViewLocation')->search_rs({ viewid => $viewid})->delete;
     $self->get_schema->resultset('RoleView')->search_rs({ viewid => $viewid})->delete;
     $self->get_schema->resultset('AuthenticatorView')->search_rs({ viewid => $viewid})->delete;
 
@@ -3181,6 +3265,21 @@ sub update_view {
         
         # Dann die zugehoerigen Datenbanken eintragen
         $self->get_schema->resultset('ViewDb')->populate($this_db_ref);
+    }
+
+    if (@$locations_ref){
+        my $this_location_ref = [];
+        foreach my $location (@$locations_ref){
+            my $locationid = $self->get_locationinfo->single({ identifier => $location })->id;
+                
+            push @$this_location_ref, {
+                viewid     => $viewid,
+                locationid => $locationid,
+            };
+        }
+        
+        # Dann die zugehoerigen Datenbanken eintragen
+        $self->get_schema->resultset('ViewLocation')->populate($this_location_ref);
     }
 
     if (@$roles_ref){
@@ -3301,6 +3400,8 @@ sub new_view {
 
     my $databases_ref          = exists $arg_ref->{databases}
         ? $arg_ref->{databases}           : [];
+    my $locations_ref          = exists $arg_ref->{locations}
+        ? $arg_ref->{locations}           : [];
     my $roles_ref              = exists $arg_ref->{roles}
         ? $arg_ref->{roles}               : [];
 
@@ -3331,9 +3432,11 @@ sub new_view {
 
     my $viewid = $new_view->id;
     
-    # Datenbank- und Rollen-Verknuepfungen zunaechst loeschen
+    # Datenbank-, Standort- und Rollen-Verknuepfungen zunaechst loeschen
+    $self->get_schema->resultset('ViewLocation')->search_rs({ viewid => $viewid})->delete;
     $self->get_schema->resultset('ViewDb')->search_rs({ viewid => $viewid})->delete;
     $self->get_schema->resultset('RoleView')->search_rs({ viewid => $viewid})->delete;
+    $self->get_schema->resultset('AuthenticatorView')->search_rs({ viewid => $viewid})->delete;
 
     my @profiledbs = $self->get_profiledbs($profilename);
 
@@ -3362,6 +3465,21 @@ sub new_view {
         
         # Dann die zugehoerigen Datenbanken eintragen
         $self->get_schema->resultset('ViewDb')->populate($this_db_ref);
+    }
+
+    if (@$locations_ref){
+        my $this_location_ref = [];
+        foreach my $location (@$locations_ref){
+            my $locationid = $self->get_locationinfo->single({ identifier => $location })->id;
+                
+            push @$this_location_ref, {
+                viewid    => $viewid,
+                locationid => $locationid,
+            };
+        }
+        
+        # Dann die zugehoerigen Datenbanken eintragen
+        $self->get_schema->resultset('ViewLocation')->populate($this_location_ref);
     }
 
     if (@$roles_ref){

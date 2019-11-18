@@ -1,12 +1,12 @@
 use utf8;
-package OpenBib::Schema::System::Result::LitlistTopic;
+package OpenBib::Schema::System::Result::ViewLocation;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
 =head1 NAME
 
-OpenBib::Schema::System::Result::LitlistTopic
+OpenBib::Schema::System::Result::ViewLocation
 
 =cut
 
@@ -15,11 +15,11 @@ use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<litlist_topic>
+=head1 TABLE: C<view_location>
 
 =cut
 
-__PACKAGE__->table("litlist_topic");
+__PACKAGE__->table("view_location");
 
 =head1 ACCESSORS
 
@@ -28,15 +28,15 @@ __PACKAGE__->table("litlist_topic");
   data_type: 'bigint'
   is_auto_increment: 1
   is_nullable: 0
-  sequence: 'litlist_topic_id_seq'
+  sequence: 'view_location_id_seq'
 
-=head2 litlistid
+=head2 viewid
 
   data_type: 'bigint'
   is_foreign_key: 1
   is_nullable: 0
 
-=head2 topicid
+=head2 locationid
 
   data_type: 'bigint'
   is_foreign_key: 1
@@ -50,11 +50,11 @@ __PACKAGE__->add_columns(
     data_type         => "bigint",
     is_auto_increment => 1,
     is_nullable       => 0,
-    sequence          => "litlist_topic_id_seq",
+    sequence          => "view_location_id_seq",
   },
-  "litlistid",
+  "viewid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
-  "topicid",
+  "locationid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
 );
 
@@ -72,39 +72,39 @@ __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
-=head2 litlistid
+=head2 locationid
 
 Type: belongs_to
 
-Related object: L<OpenBib::Schema::System::Result::Litlist>
+Related object: L<OpenBib::Schema::System::Result::Locationinfo>
 
 =cut
 
 __PACKAGE__->belongs_to(
-  "litlistid",
-  "OpenBib::Schema::System::Result::Litlist",
-  { id => "litlistid" },
+  "locationid",
+  "OpenBib::Schema::System::Result::Locationinfo",
+  { id => "locationid" },
   { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
-=head2 topicid
+=head2 viewid
 
 Type: belongs_to
 
-Related object: L<OpenBib::Schema::System::Result::Topic>
+Related object: L<OpenBib::Schema::System::Result::Viewinfo>
 
 =cut
 
 __PACKAGE__->belongs_to(
-  "topicid",
-  "OpenBib::Schema::System::Result::Topic",
-  { id => "topicid" },
+  "viewid",
+  "OpenBib::Schema::System::Result::Viewinfo",
+  { id => "viewid" },
   { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 
 # Created by DBIx::Class::Schema::Loader v0.07049 @ 2019-11-12 13:14:14
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:7JkgupDx7R+qansBCcJG+Q
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:CQZKG3hlAtqMlmPRIbrmzw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -276,6 +276,21 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 view_locations
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::ViewLocation>
+
+=cut
+
+__PACKAGE__->has_many(
+  "view_locations",
+  "OpenBib::Schema::System::Result::ViewLocation",
+  { "foreign.viewid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 view_rsses
 
 Type: has_many
@@ -292,8 +307,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07046 @ 2019-07-10 08:25:07
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Azz5gEUzqqOUx3InnlRATQ
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2019-11-12 13:14:14
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:0PyBCyWrkCSNkU0Hj156Bg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

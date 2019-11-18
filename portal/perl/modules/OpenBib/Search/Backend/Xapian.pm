@@ -1124,6 +1124,30 @@ sub parse_query {
     foreach my $filter_ref (@{$searchquery->get_filter}){
         push @xapianfilterstrings, "$filter_ref->{field}:$filter_ref->{norm}";
     }
+
+    # Sucheinschraenkung auf Standort(e)
+    my $view          = $searchquery->{view};
+    my @viewlocations = ();
+
+    if ($view && defined $config->{searchfield}{'locationstring'}){
+	@viewlocations = $config->get_viewlocations($view);
+
+	if (@viewlocations){
+	    my $prefix = $config->{searchfield}{'locationstring'}{prefix};
+
+	    @viewlocations = map { "$prefix:".OpenBib::Common::Util::normalize({
+                content   => $_,
+                type      => 'string',
+            }) } @viewlocations;
+
+	    if ($#viewlocations == 0){
+		push @xapianquerystrings, $viewlocations[0];
+	    }
+	    else {
+		push @xapianquerystrings, "(".join(' OR ',@viewlocations).")";
+	    }
+	}	
+    }
     
     $xapianquerystring  = join(" ",@xapianquerystrings);
     $xapianfilterstring = join(" ",@xapianfilterstrings);

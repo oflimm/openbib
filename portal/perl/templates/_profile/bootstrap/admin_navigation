@@ -41,6 +41,13 @@
       <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %].html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
 [%       END %]
 [%     END %]
+[%     IF layout_param.active_subsubmenu == "admin_clusters_record_consistency" %]
+      <li class="active"><strong>[% msg.maketext("Katalog-Konsistenz") %]</strong></li>
+[%     ELSE %]
+[%       IF user.has_right({scope = 'admin_clusters', right = 'right_read'}) %]
+      <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %]/consistency.html?l=[% lang %]">[% msg.maketext("Katalog-Konsistenz") %]</a></li>
+[%       END %]
+[%     END %]
     </ul>
 </li>
 [%   END %]

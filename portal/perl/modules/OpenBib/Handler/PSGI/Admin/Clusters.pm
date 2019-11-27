@@ -61,6 +61,7 @@ sub setup {
     $self->run_modes(
         'show_collection'            => 'show_collection',
         'show_record_form'           => 'show_record_form',
+        'show_record_consistency'    => 'show_record_consistency',
         'show_record'                => 'show_record',
         'create_record'              => 'create_record',
         'update_record'              => 'update_record',
@@ -124,6 +125,33 @@ sub show_record_form {
     };
     
     return $self->print_page($config->{tt_admin_clusters_record_edit_tname},$ttdata);
+}
+
+sub show_record_consistency {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatches Args
+    my $view             = $self->param('view');
+    my $clusterid        = $self->param('clusterid');
+
+    # Shared Args
+    my $config           = $self->param('config');
+
+    if (!$self->authorization_successful('right_update')){
+        return $self->print_authorization_error();
+    }
+
+    my $clusterinfo_ref = $config->get_clusterinfo->search_rs({ id => $clusterid })->single();
+    
+    my $ttdata = {
+        clusterid     => $clusterid,
+        clusterinfo   => $clusterinfo_ref,
+    };
+    
+    return $self->print_page($config->{tt_admin_clusters_record_consistency_tname},$ttdata);
 }
 
 sub show_record {

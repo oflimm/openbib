@@ -290,7 +290,8 @@ autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['bestellun
 
 $logger->info("### EBOOKPDA");
 
-autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['ebookpda','proquestpda'] });
+#autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['ebookpda','proquestpda'] });
+autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['ebookpda'] });
 
 ##############################
 

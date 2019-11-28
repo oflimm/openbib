@@ -62,6 +62,7 @@ sub setup {
         'show_collection'           => 'show_collection',
         'show_record'               => 'show_record',
         'show_record_form'          => 'show_record_form',
+        'show_record_form'          => 'show_record_form',
         'create_record'             => 'create_record',
         'update_record'             => 'update_record',
         'confirm_delete_record'     => 'confirm_delete_record',
@@ -119,23 +120,10 @@ sub show_record_form {
 
     
     my $serverinfo_ref = $config->get_serverinfo->search_rs({ id => $serverid })->single;
-
-    my $updatelog_ref;
-
-    if ($serverinfo_ref) {
-        $updatelog_ref = $serverinfo_ref->updatelogs->search_rs(
-            undef,
-            {                
-                rows => $queryoptions->get_option('num'),
-                order_by => ['id DESC']
-            }
-        );
-    }
     
     my $ttdata = {
         serverid     => $serverid,
         serverinfo   => $serverinfo_ref,
-        updatelog    => $updatelog_ref,
     };
     
     return $self->print_page($config->{tt_admin_servers_record_edit_tname},$ttdata);
@@ -160,23 +148,10 @@ sub show_record {
     }
 
     my $serverinfo_ref = $config->get_serverinfo->search_rs({ id => $serverid })->single;
-
-    my $updatelog_ref;
-
-    if ($serverinfo_ref) {
-        $updatelog_ref = $serverinfo_ref->updatelogs->search_rs(
-            undef,
-            {                
-                rows => $queryoptions->get_option('num'),
-                order_by => ['id DESC']
-            }
-        );
-    }
     
     my $ttdata = {
         serverid     => $serverid,
         serverinfo   => $serverinfo_ref,
-        updatelog    => $updatelog_ref,
     };
     
     return $self->print_page($config->{tt_admin_servers_record_tname},$ttdata);

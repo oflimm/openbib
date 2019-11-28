@@ -3882,6 +3882,22 @@ sub new_server {
     return;
 }
 
+sub server_exists {
+    my ($self,$serverid) = @_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $servercount = $self->get_schema->resultset('Serverinfo')->search_rs(
+        {
+            id => $serverid,
+        }
+    )->count;
+    
+    return $servercount;
+}
+
 sub del_cluster {
     my ($self,$arg_ref) = @_;
 
@@ -3961,6 +3977,22 @@ sub new_cluster {
     }
 
     return;
+}
+
+sub cluster_exists {
+    my ($self,$clusterid) = @_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $clustercount = $self->get_schema->resultset('Clusterinfo')->search_rs(
+        {
+            id => $clusterid,
+        }
+    )->count;
+    
+    return $clustercount;
 }
 
 # Durch Nutzer aenderbare Template-Inhalte

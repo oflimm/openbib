@@ -72,13 +72,6 @@ var uskChart = new Chart(usk_ctx, {
         }]
     },
     options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        },
 	layout: {
             padding: {
                 left: 0,

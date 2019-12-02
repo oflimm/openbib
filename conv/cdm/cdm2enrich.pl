@@ -149,7 +149,7 @@ sub parse_titset {
                     origin   => $origin,
                     field    => $convconfig->{mapping}{$kateg},
 		    subfield => 'e',
-		    content  => $content,
+		    content  => process_ocr($content),
 		};
             }
         }
@@ -177,4 +177,40 @@ sub konv {
 
     return $content;
 }
+
+sub process_ocr {
+    my ($ocr)=@_;
+
+    # Preambel entfernen
+    $ocr=~s/ocr-text://;
+
+    # Nur noch eine Zeile
+    $ocr=~s/\n/ /g;
+
+    # Mindestens drei Zeichen
+    $ocr=~s/\s+.{0,3}\s+/ /g;
+
+    # Roemische Zahen weg
+    $ocr=~s/\s+M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})\s+/ /gi;
+
+    $ocr=~s/(Inhaltsverzeichnis|Seite|Page|Table\s+Of\s+Contents|Chapter|Vorwort|Geleitwort|Abbildungsverzeichnis|Abkürzungsverzeichnis|Einleitung|Preface|Contents|Introduction|http:\/\/.*?\s|Appendix|Index|References)/ /gi;
+    
+    #$ocr=OpenBib::Common::Util::normalize({ content => $ocr });
+
+    $ocr=~s/[^\p{Alphabetic}]/ /g;
+
+    $ocr=~s/\s\d+(\.\d)+\s/ /g;
+    $ocr=~s/-/ /g;
+    $ocr=~s/,/ /g;
+    $ocr=~s/,/ /g;
+    $ocr=~s/\d+\.?/ /g;
+
+    $ocr=~s/\s+/ /g;    
+
+    # Dublette Inhalte entfernen
+    #my %seen_terms = ();
+    #$ocr = join(" ",grep { ! $seen_terms{lc($_)} ++ } split ("\\s+",$ocr)); 
+        
+    return $ocr;
+}    
 

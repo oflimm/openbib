@@ -427,6 +427,23 @@ while (my $record = safe_next($batch)){
     # Titel
 
     {
+
+        foreach my $fieldno ('024'){
+            foreach my $field ($record->field($fieldno)){
+		my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
+                
+                if ($content_a){
+                    my $multcount=++$multcount_ref->{'0010'};
+                    
+                    push @{$title_ref->{fields}{'0010'}}, {
+                        content  => konv($content_a),
+                        subfield => '',
+                        mult     => $multcount,
+                    };
+                }
+            }
+        }
+	
         
         foreach my $field ($record->field('776')){
             my $content_z = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('z')):$field->as_string('z');
@@ -1162,6 +1179,23 @@ while (my $record = safe_next($batch)){
             }
         }
 
+        # geogr. Ort
+        foreach my $fieldno ('751'){
+            foreach my $field ($record->field($fieldno)){
+		my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
+                
+                if ($content_a){
+                    my $multcount=++$multcount_ref->{'0673'};
+                    
+                    push @{$title_ref->{fields}{'0673'}}, {
+                        content  => konv($content_a),
+                        subfield => '',
+                        mult     => $multcount,
+                    };
+                }
+            }
+        }
+	
         # URLs
         foreach my $field ($record->field('856')){
             my @content_u = $field->subfield('u');

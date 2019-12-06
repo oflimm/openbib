@@ -141,7 +141,11 @@ sub parse_titset {
 
         if(defined $titset->first_child($kateg) && $titset->first_child($kateg)->text()){
             my $content = konv($titset->first_child($kateg)->text());
-            
+
+            if ($convconfig->{filter}{$kateg}{filter_ocr}){
+                $content = filter_ocr($content);
+            }
+	    
             if ($content){
 		push @{$enrich_ref},{
 		    titleid  => $titleid,
@@ -149,7 +153,7 @@ sub parse_titset {
                     origin   => $origin,
                     field    => $convconfig->{mapping}{$kateg},
 		    subfield => 'e',
-		    content  => process_ocr($content),
+		    content  => $content,
 		};
             }
         }
@@ -178,7 +182,7 @@ sub konv {
     return $content;
 }
 
-sub process_ocr {
+sub filter_ocr {
     my ($ocr)=@_;
 
     # Preambel entfernen

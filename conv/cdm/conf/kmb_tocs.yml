@@ -11,5 +11,6 @@ mapping:
 #  'structure': '2662'
   'viewerURL': '4110'
 
-
-
+filter:
+  'inhaltsverzeichnis':  
+    'filter_ocr': 1  

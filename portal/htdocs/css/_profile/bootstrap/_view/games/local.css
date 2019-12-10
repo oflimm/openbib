@@ -1,6 +1,10 @@
 @media all
 {
 
+    .navbar {
+	padding: 0rem 1rem;
+    }
+    
 [aria-expanded="false"] > .expanded,
 [aria-expanded="true"] > .collapsed {
   display: none;
@@ -1345,7 +1349,12 @@ a.ext {
 
 
 @media only screen and (max-width: 800px) {
-     
+
+    .navbar {
+	padding: 0.5rem 1rem;
+    }
+
+    
      /* Force table to not be like tables anymore */
      .table-flippable table, 
      .table-flippable thead, 

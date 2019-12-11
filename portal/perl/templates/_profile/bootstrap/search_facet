@@ -64,7 +64,7 @@ $(document).ready(function(){
 
 // Begin Togglen / Facets Personen
 // Bild setzen
-$("#dd_person_[% database %]_toggle").html("<b>[<a href=\"#dd_person_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+$("#dd_person_[% database %]_toggle").html("<a href=\"#dd_person_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_person_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -75,7 +75,7 @@ $("#dd_person_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Koerperschaften
 // Bild setzen
-$("#dd_corporatebody_[% database %]_toggle").html("<b>[<a href=\"#dd_corporatebody_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+$("#dd_corporatebody_[% database %]_toggle").html("<a href=\"#dd_corporatebody_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_corporatebody_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -86,7 +86,7 @@ $("#dd_corporatebody_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Schlagworte
 // Bild setzen
-$("#dd_subjects_[% database %]_toggle").html("<b>[<a href=\"#dd_subjects_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+$("#dd_subjects_[% database %]_toggle").html("<a href=\"#dd_subjects_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_subjects_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -97,7 +97,7 @@ $("#dd_subjects_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Systematik
 // Bild setzen
-$("#dd_classification_[% database %]_toggle").html("<b>[<a href=\"#dd_classification_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+$("#dd_classification_[% database %]_toggle").html("<a href=\"#dd_classification_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_classification_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -108,7 +108,7 @@ $("#dd_classification_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Topics
 // Bild setzen
-$("#dd_topic_[% database %]_toggle").html("<b>[<a href=\"#dd_topic_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+$("#dd_topic_[% database %]_toggle").html("<a href=\"#dd_topic_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_topic_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -119,7 +119,7 @@ $("#dd_topic_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Locations
 // Bild setzen
-$("#dd_location_[% database %]_toggle").html("<b>[<a href=\"#dd_location_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+$("#dd_location_[% database %]_toggle").html("<a href=\"#dd_location_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_location_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -130,7 +130,7 @@ $("#dd_location_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Jahr
 // Bild setzen
-$("#dd_year_[% database %]_toggle").html("<b>[<a href=\"#dd_year_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+$("#dd_year_[% database %]_toggle").html("<a href=\"#dd_year_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_year_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -141,7 +141,7 @@ $("#dd_year_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Medienart
 // Bild setzen
-$("#dd_mediatype_[% database %]_toggle").html("<b>[<a href=\"#dd_mediatype_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+$("#dd_mediatype_[% database %]_toggle").html("<a href=\"#dd_mediatype_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_mediatype_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -152,7 +152,7 @@ $("#dd_mediatype_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Quellen
 // Bild setzen
-$("#dd_sources_[% database %]_toggle").html("<b>[<a href=\"#dd_sources_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+$("#dd_sources_[% database %]_toggle").html("<a href=\"#dd_sources_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_sources_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -163,7 +163,7 @@ $("#dd_sources_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Medienart
 // Bild setzen
-$("#dd_provenance_[% database %]_toggle").html("<b>[<a href=\"#dd_provenance_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+$("#dd_provenance_[% database %]_toggle").html("<a href=\"#dd_provenance_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_provenance_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -174,7 +174,7 @@ $("#dd_provenance_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Sprache
 // Bild setzen
-$("#dd_language_[% database %]_toggle").html("<b>[<a href=\"#dd_language_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+$("#dd_language_[% database %]_toggle").html("<a href=\"#dd_language_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_language_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -186,7 +186,7 @@ $("#dd_language_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Katalog
 // Bild setzen
-$("#dd_databases_[% database %]_toggle").html("<b>[<a href=\"#dd_databases_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+$("#dd_databases_[% database %]_toggle").html("<a href=\"#dd_databases_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_databases_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -199,7 +199,7 @@ $("#dd_databases_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Tags
 // Bild setzen
-$("#dd_tags_[% database %]_toggle").html("<b>[<a href=\"#dd_tags_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+$("#dd_tags_[% database %]_toggle").html("<a href=\"#dd_tags_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_tags_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -211,7 +211,7 @@ $("#dd_tags_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Literaturliste
 // Bild setzen
-$("#dd_litlists_[% database %]_toggle").html("<b>[<a href=\"#dd_litlists_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+$("#dd_litlists_[% database %]_toggle").html("<a href=\"#dd_litlists_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_litlists_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -223,7 +223,7 @@ $("#dd_litlists_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Verfuegbarkeit
 // Bild setzen
-$("#dd_availability_[% database %]_toggle").html("<b>[<a href=\"#dd_availability_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+$("#dd_availability_[% database %]_toggle").html("<a href=\"#dd_availability_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_availability_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -532,7 +532,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 
 <p>
 
-[% msg.maketext("Von") %]&nbsp;&nbsp;<input type="text" size="4" name="year_from" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input type="text" size="4" name="year_to" value="[% searchquery.get_searchfield("year_to").val %]" />&nbsp;&nbsp;<input type="submit" value=">>"/>
+[% msg.maketext("Von") %]&nbsp;&nbsp;<input type="text" size="4" name="year_from" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input type="text" size="4" name="year_to" value="[% searchquery.get_searchfield("year_to").val %]" />&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Los"/>
 </p>
 
 [%         END %]

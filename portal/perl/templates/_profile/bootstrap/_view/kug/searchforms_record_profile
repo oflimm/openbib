@@ -10,6 +10,9 @@
    IF NOT searchprofileid_of_eds ;
       searchprofileid_of_eds  = config.get_searchprofile_of_database('eds') ;
    END ;
+   IF NOT searchprofileid_of_website ;
+      searchprofileid_of_website  = config.get_searchprofile_of_view('usbweb') ;
+   END ;
    IF NOT searchprofileid_of_sysprofile ;
       searchprofileid_of_sysprofile = config.get_searchprofile_of_systemprofile(view);
    END ;
@@ -50,6 +53,7 @@
 [% END %]
 <option value="[% searchprofileid_of_view %]"[%- IF prevprofile == searchprofileid_of_view && NOT checked_profile -%] selected[%- END -%]>[% msg.maketext("Bücher & Mehr") %]</option>
 <option value="[% searchprofileid_of_eds %]"[%- IF prevprofile == searchprofileid_of_eds && NOT checked_profile -%] selected[%- END -%]>[% msg.maketext("Aufsätze & Mehr") %]</option>
+<option value="[% searchprofileid_of_website %]"[%- IF prevprofile == searchprofileid_of_website && NOT checked_profile -%] selected[%- END -%]>[% msg.maketext("Webseite") %]</option>
 </optgroup>
 [% IF 0 == 1 %]
 <optgroup label="[% msg.maketext("Allgemeine Suchprofile") %]">

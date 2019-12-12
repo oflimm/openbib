@@ -55,7 +55,7 @@
                  'Sammlung Ernst Vollbach, Bergisch Gladbach',
                 ];
 %]
-<div class="ob-category_header">Sammlungen Kölner Provenienz</div>
+<div class="ob-category_header">Sammlungen</div>
 
 <table>
 [% FOREACH sammlung IN sammlungen %]

@@ -1,0 +1,1243 @@
+@media all
+{
+
+  .ym-wbox {
+    padding: 0px;
+  }
+  
+  #main {
+    background: #ebeff5;
+    padding:10px 0;
+  }
+
+  #ob-facets_all_toggle img, #ob-facets_dbinfo_toggle img, .ob-responsive_toggle_button {
+    display: none;
+  }
+  
+  footer {
+    margin: 0.2em 0 0 0;
+/*    background: #e8fca4;
+    color: #444; */
+    padding: 0.5em;
+
+    background: #fff;
+    
+    border: none;
+  }
+
+  #ob-kuginfo_newsflash {
+      display:block;
+  }
+
+  
+  body {
+    overflow-y: scroll;
+  }
+
+  ul.topiclist a {
+    font-weight:bold;
+    font-size:1.2em;
+  }
+  
+  .ob-pagination {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center; 
+  }
+  
+  .ob-pagination_firstpage, .ob-pagination_page, .ob-pagination_activepage, .ob-pagination_lastpage {
+    border: 1px solid #999999;
+    margin: 0 4px 4px 0;
+    padding: 3px 10px;
+    border-radius: 2px 2px 2px 2px;    
+    white-space: no-wrap;
+    background: #eeeeee;
+  }
+
+  .ob-pagination_firstpage:focus, .ob-pagination_page:focus, .ob-pagination_activepage:focus, .ob-pagination_lastpage:focus {
+    box-shadow: 0 0 2px #eeeeee;
+  }
+
+  .ob-pagination_space:after {
+    content: ' ... ';
+    font-size: 1.2em;
+  }
+
+  .ob-pagination_previous, .ob-pagination_next {
+    font-size: 1.2em;
+  }
+  
+  .ob-pagination_previous { 
+    padding-right: 0.5em;
+  }
+  
+  .ob-pagination_next {
+    padding-left: 0.5em;
+  }
+  
+  .ob-pagination_firstpage {
+    font-size: 1.4em;
+
+  }
+
+  .ob-pagination_activepage {
+    border: 2px solid #999999;
+    font-size: 1.4em;
+  }
+
+  .ob-pagination_page {
+    font-size: 1.4em;
+  }
+
+  .ob-pagination_lastpage {
+    font-size: 1.4em;
+  }
+
+  .ob-category_header {
+    width: 100%;
+    padding: 2px;
+    padding-left: 5px;
+    margin: 10px 10px -5px -3px;
+    background: #41799e;
+    color: #fff;
+    border-radius: 2px;
+    font-size: 16px;
+    font-weight: bold;
+    -moz-box-shadow: 2px 2px 2px #888;
+    -webkit-box-shadow: 2px 2px 2px #888;
+    box-shadow: 2px 2px 2px #888;
+
+/*    box-shadow: 0 1px 1px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.2);*/
+  }
+
+  #Logo {
+    margin: 0;
+    padding-left: 2em;
+  }
+  
+  #imgLogo {
+    margin-top: 25px;
+    float: left;
+    
+  }
+
+  img.img,
+  img.imgNoborder {
+    border:0px;
+  }
+
+  #institutLogo {
+    border:0; 	
+    margin:0;      
+    float: right;
+    margin-top: -8em;	
+    margin-right: 4em;	
+    text-align: right;
+
+  }
+
+  header {    
+    background: url(/images/openbib/skyline.png) no-repeat scroll 40% 100% #fff;
+    background-color: #fff;
+    display: block;
+    padding: 0px;
+    height: 115px;
+    width: 100%;
+    border-bottom: 1.6em solid #ebeff5;
+  }
+
+  #uniTitle {   
+    float: left;
+    height: 8.18em;
+    margin: 3.5em 0 0 2em;
+  }
+  
+  #subLogo { 
+    clear: both;
+    margin-right: 20px;
+  }
+  
+  #subLogo img {
+    float: right;
+    margin-top: 0px;
+    width: 85px;
+    height: 84px;
+  }
+  #uniTitle  a {
+    font-size: 2.1em;
+    font-weight:bold;
+    text-decoration: none;
+    color: #41799e;
+  }
+  #usbTitle a {                
+    font-size:1.5em;
+    font-weight:bold;
+    text-decoration: none;
+    color: #41799e;
+  }
+  /*-- FLOATING ---------------*/
+  .clearing {
+    clear: both;
+    height: 0;
+    border:0;
+    margin:0;
+    padding:0;
+    line-height:0;
+  }
+
+  
+/*  header {
+    color:#000;
+    background:#fff repeat-x top left;
+    padding: 40px 2em 5px 20px;
+    position:relative;
+  }
+ 
+  header #logo {
+    padding: 0px;
+    position: relative;
+    margin: 0px auto 0px auto;
+    width: 850px;
+  }
+
+  header #logo img {
+    margin-bottom: -5px;
+    margin-right: 5px;
+  }
+
+  header #logotext {
+    font-family: 'Droid Sans', sans-serif;
+    font-size: 35px;
+    color: #aaaaaa;
+  }
+*/
+/*
+  #header_logo_image {
+    background: url(/images/openbib/kuglogo_small-40px.png) center no-repeat;
+    width: 88px;
+    height: 40px;
+    position: absolute;
+    top: 40px;
+    left: 60px;
+  }
+*/
+  .ym-wbox {
+    background: #ffffff;
+  }
+/* 
+ #header_institution_image {
+    background: url(/images/openbib/views/alekiddr/aleki_logo.png) center no-repeat;
+    width: 111px;
+    height: 90px;
+    position: absolute;
+    top: 30px;
+    right: 10px;
+  }
+*/
+  .details {
+    padding-top: 1em;
+  }
+
+  .images {
+    padding-top: 1em;
+  }
+
+  nav {
+    margin-top: 10px;
+    background: #fff;
+  }
+
+  nav.ob-fixed_navigation {
+    position: relative;
+    margin: 0px 60px 0px;
+    top: 0px;
+  }
+
+  
+  .ob-searchfield_supplement {
+    width: 100%;
+    padding-top: 30px;
+/*    text-align: center;*/
+    font-size: 100%;
+  }
+
+  .ob-searchfield_supplement a {
+    padding: 2px;
+    text-decoration: underline;
+  }
+
+  .ob-searchfield_supplement a:hover {
+    padding: 2px;
+    background: #41799e;
+    color: #fff;
+    text-decoration: none;
+  }
+  
+    
+  .ob-searchfield {
+    width: 850px;
+    padding: 15px;
+    margin: 0px auto 0px auto;
+/*    background: #c8c8c8;*/
+    background: #dfe2e8;
+/*    background: rgba(0,0,0,.2);*/
+    border-radius: 10px;
+    /*
+    -moz-box-shadow: 10px 10px 5px #888;
+    -webkit-box-shadow: 10px 10px 5px #888;
+    box-shadow: 10px 10px 5px #888; */
+    -moz-box-shadow: 5px 5px 2px #888;
+    -webkit-box-shadow: 5px 5px 2px #888;
+    box-shadow: 5px 5px 2px #888; 
+    font-size: 110%;
+
+/*    box-shadow: 0 1px 1px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.2);*/
+  }
+  
+  .ob-searchfield input[type="text"] {
+    width: 735px;
+    height: 40px;
+    padding: 0px;
+    padding-left: 5px;
+/*    height: 20px;
+    padding: 10px 5px;*/
+    float: left;   
+    font: 18px Arial,Verdana,Helvetica,sans-serif;
+    
+/*    font: bold 15px 'lucida sans', 'trebuchet MS', 'Tahoma';*/
+    border: 0;
+    background: #fff;
+    border-radius: 3px 0 0 3px;     
+  }
+  
+  .ob-searchfield input[type="text"]:focus {
+    outline: 0;
+    background: #fff;
+    box-shadow: 0 0 2px rgba(0,0,0,.8) inset;
+  }
+  
+  .ob-searchfield input[type="text"]:-webkit-input-placeholder {
+    padding-left: 5px;
+    color: #999;
+    font-weight: normal;
+    font-style: italic;
+  }
+  
+  .ob-searchfield input[type="text"]:-moz-placeholder {
+    padding-left: 5px;
+    color: #999;
+    font-weight: normal;
+    font-style: italic;
+  }
+  
+  .ob-searchfield input[type="text"]:-ms-input-placeholder {
+    padding-left: 0px;
+    color: #999;
+    font-weight: normal;
+    font-style: italic;
+  }   
+  
+  /* Form submit button */
+  .ob-searchfield button {    
+    overflow: visible;
+    position: relative;
+    float: right;
+    top: -22px;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    height: 40px;
+    width: 110px;
+    font: bold 15px/40px 'lucida sans', 'trebuchet MS', 'Tahoma';
+    color: #fff;
+    text-transform: uppercase;
+    background: #41799e; /*#d83c3c;*/
+    border-radius: 0 3px 3px 0;     
+    text-shadow: 0 -1px 0 rgba(0, 0 ,0, .3);
+  }  
+  
+  .ob-searchfield button:hover{    
+    background: #007ead; /*#e54040;*/
+  }  
+   
+  .ob-searchfield button:active,
+  .ob-searchfield button:focus{  
+    background: #c42f2f;
+    outline: 0;  
+  }
+
+  input[type="reset"]{
+    visibility: hidden;
+  }
+  
+  input[type="text"]:valid + input[type="reset"]{
+    visibility: visible!important;
+   } 
+
+
+  .ob-searchfield input[type="reset"]
+  {
+    background-image: url( /images/openbib/fileclose.png );
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 22px;
+    width: 22px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    position: relative;
+    top: 10px;
+    left: -25px;
+  }
+  
+  input[type="text"]::-webkit-clear {
+    width : 0;
+    height: 0;
+  }
+    
+/*  .ob-searchfield button:before { /* left arrow */ /*
+    content: '';
+    position: absolute;
+    border-width: 8px 8px 8px 0;
+    border-style: solid solid solid none;
+    border-color: transparent #d83c3c transparent;
+    top: 12px;
+    left: -6px;
+  }
+  */
+    
+  .ob-searchfield button:hover:before{
+    border-right-color: #e54040;
+  }
+  
+  .ob-searchfield button:focus:before,
+  .ob-searchfield button:active:before{
+    border-right-color: #c42f2f;
+  }     
+  
+  .ob-searchfield button::-moz-focus-inner { /* remove extra button spacing for Mozilla Firefox */
+    border: 0;
+    padding: 0;
+  }    
+
+  .ob-clear_floats:before, .ob-clear_floats:after{
+    content:"";
+    display:table;
+  }
+  
+
+  .ob-clear_floats:after{
+    clear:both;
+  }
+
+  .ob-strong {
+    font-weight: bold;
+  }
+  
+  .ob-clear_floats{
+    zoom:1;
+  }    
+
+  .ob-selectbox optgroup[label] {
+    font-style: normal;
+
+  }
+
+/*  .ob-selectbox select {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    border-color: #0088FF;
+    border-style: solid;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px
+
+    scrollbar-face-color:#990000;
+    scrollbar-highlight-color:#FF0000;
+    scrollbar-3dlight-color:#CC0000;
+    scrollbar-darkshadow-color:#5B0000;
+    scrollbar-shadow-color:#6C0000;
+    scrollbar-arrow-color:#FFFFFF;
+    scrollbar-track-color:#990000;
+  }*/
+
+/*  .ob-selectbox option:before {
+    content: "> ";
+  }
+  */
+
+  #ob-searchform_bottom {
+    font-size: 90%;
+    padding: 0px;
+/*    margin-top: -1.5em;
+    background: #ebeff5;*/
+  }
+
+  #ob-searchform_bottom .ym-gbox,   #ob-searchform_bottom .ym-gbox-left,   #ob-searchform_bottom .ym-gbox-right {
+    padding-top: 2px;
+    border-top: none;
+    background: #fff; /*#ededed ; /* #f6f6f8; /*#eaedf0;*/
+  }
+  #ob-searchform_bottom .ym-gbox-left {
+    border-left: 1px #ebeff5 solid;
+  }
+
+  #ob-searchform_bottom .ym-gbox {
+    border-left: 4px #ebeff5 solid;
+    border-right: 4px #ebeff5 solid;
+  }
+  #ob-searchform_bottom .ym-gbox-right {
+    border-right: 1px #ebeff5 solid;
+  }
+  
+ .ob-searchform_bottom_left {
+    padding: 5px;
+  }
+
+  
+  .ob-functional_nav {
+    width:100%;
+    margin:0 0 0 0;
+    padding:0;
+    height:32px;
+    background: #fff;
+    border-top: 2px #ebeff5 solid;
+    border-bottom: 2px #ebeff5 solid;
+  }
+
+  .ob-functional_nav .ob-breadcrumb {
+    padding:0;
+    margin-top:-20px;
+    margin-left: 0px;
+  }
+  
+  .ob-functional_nav .ob-breadcrumb ul li {
+    list-style:none;
+    float:left;
+    height:30px
+    display:inline;
+  }
+  .ob-functional_nav .ob-breadcrumb ul li a {
+    font:12px Arial, Helvetica, sans-serif;
+    color:rgb(0,0,0);
+    text-decoration:none;
+    line-height:30px;
+    display:block;
+    background:url('/images/openbib/breadcrumb.png') 100% no-repeat;
+    padding:5px 17px 0 0;
+  }
+  .ob-functional_nav .ob-breadcrumb ul li a:hover {
+    text-decoration:underline;
+    color:rbg(0,0,0);
+  }
+  .ob-functional_nav .ob-breadcrumb ul li a.lastitem {
+    background:none;
+    color:rgb(0,0,0);
+  }
+  .ob-functional_nav .ob-breadcrumb ul li a.lastitem:hover {
+    text-decoration:none;
+  }
+
+  .ob-functional_nav .ob-representation {
+    float: right;
+    margin-top: 8px;
+    margin-right: 20px;
+  }
+
+  #topnav { 
+    top:5px;
+  }
+
+  .ob-resultlist {
+    background: #fff;
+  }
+  
+  .ob-facets {
+    margin-top: 0px;
+    background: #fff;
+  }
+  .ob-facets h4 {
+    margin-top: 2px;
+    border-bottom: none;
+    font-weight: bold;
+  }
+
+  .ym-col3 .ym-cbox {
+    padding: 5px;
+    padding-bottom: 2em;
+    margin-left: 10px;
+    margin-right: 10px;
+    background: #fff;    
+  }
+
+  .ym-col1 .ym-cbox {
+    padding: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+    background: #fff;    
+  }
+
+    
+  .ym-full .ym-gbox {
+    padding: 0 10px;
+  }
+
+  .ym-grid .ym-gbox {
+    padding: 0 10px;
+  }
+
+  .ob-items dt {
+    margin-top:.75em;
+    font-weight:bold;
+    padding:0.2em 0.4em;
+    background-color: #ebeff5;
+  }
+
+  .ob-authority_record {
+    background: #fff;
+
+  }
+  
+  .ob-fulltitle {
+    margin-top: 10px;
+/*    background: #fff;*/
+  }
+
+  .ob-title_wikipedia_articles {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .ym-form {
+    background: none repeat scroll 0 0 #dfe2e8;
+    border: 2px solid #FFFFFF;
+    box-shadow: 0 0 4px #DDDDDD;
+    margin: 1.5em 0 0;
+    padding: 0;
+  }
+
+ nav.ob-hidden {
+    display: none;
+  }
+
+  .ym-col1.ob-hidden {
+    background: #ebeff5;
+    display: none;
+    height: 0px;
+    width: 0px;
+    padding: 0px;
+  }
+
+  .ob-cartitems.ob-reuse_data {
+    padding: 5px;
+    padding-top: 0px;
+  }
+
+  .ob-resultheader .left {
+    padding-top: 2px;
+  }
+    
+
+}
+
+@media screen and (max-width: 1024px) {
+
+  .ob-searchfield_supplement select {
+    width: 150px;
+  }
+  
+  .ob-searchfield {
+
+    width: 650px;
+    height: 80px;
+    padding: 5px;
+    margin: 0px auto 0px auto;
+/*    background: #c8c8c8;*/
+    background: #dfe2e8;
+/*    background: rgba(0,0,0,.2);*/
+    border-radius: 10px;
+    /*
+    -moz-box-shadow: 10px 10px 5px #888;
+    -webkit-box-shadow: 10px 10px 5px #888;
+    box-shadow: 10px 10px 5px #888;
+    -moz-box-shadow: 5px 5px 2px #888;
+    -webkit-box-shadow: 5px 5px 2px #888;
+    box-shadow: 5px 5px 2px #888; */
+    font-size: 110%;
+
+/*    box-shadow: 0 1px 1px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.2);*/
+  }
+
+  .ob-searchfield input[type="text"] {
+    width: 555px;
+    height: 40px;
+    padding: 0px;
+    padding-left: 5px;
+/*    height: 20px;
+    padding: 10px 5px;*/
+    float: left;   
+    font: 18px Arial,Verdana,Helvetica,sans-serif;
+    
+/*    font: bold 15px 'lucida sans', 'trebuchet MS', 'Tahoma';*/
+    border: 0;
+    background: #fff;
+    border-radius: 3px 0 0 3px;     
+  }
+
+  /* Form submit button */
+  .ob-searchfield button {    
+    overflow: visible;
+    position: relative;
+    float: right;
+    top: -22px;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    height: 40px;
+    width: 90px;
+    font: bold 15px/40px 'lucida sans', 'trebuchet MS', 'Tahoma';
+    color: #fff;
+    text-transform: uppercase;
+    background: #41799e; /*#d83c3c;*/
+    border-radius: 0 3px 3px 0;     
+    text-shadow: 0 -1px 0 rgba(0, 0 ,0, .3);
+  }  
+}
+
+@media screen and (max-width: 768px) {   
+    
+  /* Allgemein */
+ 
+
+  footer .float-right {
+    display: none;
+
+  }
+
+  .ob-reuse_data, .ob-discover_sources, .ob-session_history {
+    background-color: #fff;
+    margin-top: 10px;
+    padding: 0px;
+  }
+
+  .ob-facets_all, .ob-facets_dbinfo { 
+    background-color: #fff;
+    margin-top: 10px;
+    padding: 0px;
+  }
+
+  .ob-facets_all_toggle_do, .ob-facets_dbinfo_toggle_do {
+    font-size: 130%;
+    padding: 5px;
+  }
+      
+  .ob-discover_sources .ob-category_header, .ob-reuse_data .ob-category_header, .ob-session_history .ob-category_header, .ob-facets .ob-category_header, .ob-facets_dbinfo .ob-category_header {
+    width: 100%;
+    padding: 10px;
+    background: #41799e;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .ob-fulltitle .ob-category_header {
+    float: left;
+    margin-left: 2px;
+    width: 95%;
+  }
+  
+  #ob-facets_all_toggle img, #ob-facets_dbinfo_toggle img, .ob-responsive_toggle_button { 
+   display: inline;
+  }
+
+  #ob-search_refine {
+    padding-bottom: 20px;
+  }
+
+  .ob-facets {
+    width: 100%;
+  }
+    
+  #ob-same_records, #ob-similar_records {
+    padding: 10px;
+  }
+
+
+  #ob-footer_systeminfo {
+    display:none;
+  }
+
+    
+  .ob-representation {
+    display: none;
+  }
+  
+  #ob-holding_info tr *:nth-child(2) {
+    display: none;
+  }
+
+  #ob-circulation_info tr *:nth-child(2) {
+    display: none;
+  }
+    
+  .ob-titleimage img, .ob-titleimage a, .ob-titleimage {
+    display: none;
+  }
+  
+  .ob-item {
+    height: 125px;
+
+  }
+  
+  .ob-item .ob-thumbnail {
+    display: none;
+  }
+
+  .ob-item .ob-title {
+    font-size: 130%;
+  }
+  .ob-item .ob-brieftitle {
+    position: absolute;
+    top: 26px;
+    left:20px;
+    width: auto;
+  }
+
+  /*
+  body{
+    background: #fff;
+    margin: 0 0;
+    padding: 0px 0px;
+  }
+      
+  #main {
+    padding: 0px;
+    width:768px;
+    float:left;
+  }
+*/
+  header {
+    height: 90px;
+    background: none;
+    border-bottom: none;
+    margin:0 auto;
+  }
+
+  #imgLogo {
+    margin-top: 0px;
+  }
+  #institutLogo {
+    display: none;
+  }
+  #Logo {
+    display: none;
+  }
+
+  nav {
+    margin-top: 0px;
+    background: #fff;
+  }
+  
+  .ob-searchfield_supplement {
+    display: none;
+  }
+
+  #ob-simplesearch_form {
+    margin-left: 0px;
+    margin-top: -5px;
+  }
+  
+  .ob-searchfield {
+
+    width: 450px;
+    height: 40px;
+    padding: 5px;
+    margin: 0px auto 0px auto;
+/*    background: #c8c8c8;*/
+    background: #dfe2e8;
+/*    background: rgba(0,0,0,.2);*/
+    border-radius: 10px;
+    /*
+    -moz-box-shadow: 10px 10px 5px #888;
+    -webkit-box-shadow: 10px 10px 5px #888;
+    box-shadow: 10px 10px 5px #888;
+    -moz-box-shadow: 5px 5px 2px #888;
+    -webkit-box-shadow: 5px 5px 2px #888;
+    box-shadow: 5px 5px 2px #888; */
+    font-size: 110%;
+
+/*    box-shadow: 0 1px 1px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.2);*/
+  }
+
+  .ob-searchfield input[type="text"] {
+    width: 355px;
+    height: 40px;
+    padding: 0px;
+    padding-left: 5px;
+/*    height: 20px;
+    padding: 10px 5px;*/
+    float: left;   
+    font: 18px Arial,Verdana,Helvetica,sans-serif;
+    
+/*    font: bold 15px 'lucida sans', 'trebuchet MS', 'Tahoma';*/
+    border: 0;
+    background: #fff;
+    border-radius: 3px 0 0 3px;     
+  }
+
+  /* Form submit button */
+  .ob-searchfield button {    
+    overflow: visible;
+    position: relative;
+    float: right;
+    top: -22px;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    height: 40px;
+    width: 90px;
+    font: bold 15px/40px 'lucida sans', 'trebuchet MS', 'Tahoma';
+    color: #fff;
+    text-transform: uppercase;
+    background: #41799e; /*#d83c3c;*/
+    border-radius: 0 3px 3px 0;     
+    text-shadow: 0 -1px 0 rgba(0, 0 ,0, .3);
+  }  
+
+  #uniTitle {
+    padding: 0px;
+    background-image: url('/images/openbib/unilogo_mobile.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin-left: 10px;
+    margin-top: 30px;
+    height: 45px;
+    
+  }
+  
+  #uniTitle a {
+    padding: 0px;
+    margin-left: 55px;
+    margin-top: 25px;
+    height: 30px;
+  }
+
+  #usbTitle a {
+    font-size:1.2em;
+
+  }
+
+}
+
+@media screen and (max-width: 480px) {   
+    
+  /* Allgemein */
+/*  
+  body{
+    background: #fff;
+    margin: 0 0;
+    padding: 0px 0px;
+  }
+      
+  #main {
+    padding: 0px;
+    width:480px;
+    float:left;
+  }
+*/
+
+  #ob-footer_info, .ob-footer_seperator {
+    display:none;
+  }
+  
+  .ob-reuse_data {
+    display: none;
+  }
+  .ob-litlists {
+    display: none;
+  }
+  .ob-tagging {
+    display: none;
+  }
+
+  .ob-discover_sources {
+    display: none;
+  }
+    
+  .ob-session_history {
+    display: none;
+  }
+  .ob-item {
+    height: 155px;
+
+  }
+
+  .ob-functional_nav {
+    display: none;
+  }
+
+
+/*
+   .ob-breadcrumb {
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    text-overflow: ellipsis;
+  }
+  */
+  
+  header {
+    height: 90px;
+    background: none;
+    border-bottom: none;
+    margin:0 auto;
+  }
+/*
+  #imgLogo {
+    position: absolute;
+    widht: 60px
+    height: 60px;
+    background-image: url('/images/openbib/unilogo_mobile.png');
+    top: 20;
+    left: 20;
+    right: 0;
+    bottom: 0;
+    background-repeat: no-repeat;
+    background-size: contain;
+    z-index: 2;
+  }
+*/
+  
+  #imgLogo {
+    margin-top: 0px;
+  }
+  
+  #institutLogo {
+    display: none;
+  }
+
+  nav {
+    margin-top: 0px;
+    background: #fff;
+  }
+  
+  .ob-searchfield_supplement {
+    display: none;
+  }
+
+  #ob-simplesearch_form {
+    margin-left: 0px;
+    margin-top: -5px;
+  }
+  
+  .ob-searchfield {
+    width: 290px;
+    height: 40px;
+    padding: 5px;
+    margin: 0px auto 0px auto;
+/*    background: #c8c8c8;*/
+    background: #dfe2e8;
+/*    background: rgba(0,0,0,.2);*/
+    border-radius: 10px;
+    /*
+    -moz-box-shadow: 10px 10px 5px #888;
+    -webkit-box-shadow: 10px 10px 5px #888;
+    box-shadow: 10px 10px 5px #888;
+    -moz-box-shadow: 5px 5px 2px #888;
+    -webkit-box-shadow: 5px 5px 2px #888;
+    box-shadow: 5px 5px 2px #888; */
+    font-size: 110%;
+
+/*    box-shadow: 0 1px 1px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.2);*/
+  }
+
+  .ob-searchfield input[type="text"] {
+    width: 195px;
+    height: 40px;
+    padding: 0px;
+    padding-left: 5px;
+/*    height: 20px;
+    padding: 10px 5px;*/
+    float: left;   
+    font: 18px Arial,Verdana,Helvetica,sans-serif;
+    
+/*    font: bold 15px 'lucida sans', 'trebuchet MS', 'Tahoma';*/
+    border: 0;
+    background: #fff;
+    border-radius: 3px 0 0 3px;     
+  }
+
+  /* Form submit button */
+  .ob-searchfield button {    
+    overflow: visible;
+    position: relative;
+    float: right;
+    top: -22px;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    height: 40px;
+    width: 90px;
+    font: bold 15px/40px 'lucida sans', 'trebuchet MS', 'Tahoma';
+    color: #fff;
+    text-transform: uppercase;
+    background: #41799e; /*#d83c3c;*/
+    border-radius: 0 3px 3px 0;     
+    text-shadow: 0 -1px 0 rgba(0, 0 ,0, .3);
+  }  
+
+  #uniTitle {
+    font-size: 90%;
+    margin-left: 5px;
+  }
+  
+  
+  #usbTitle a {
+    font-size:1.2em;
+
+  }
+
+  .ob-resultheader {
+    font-size: 90%;
+  }
+
+}
+
+@media screen and (max-width: 320px) {   
+    
+  /* Allgemein */
+/*  
+  body{
+    margin: 0 0;
+    padding: 0px 0px;
+  }
+      
+  #main {
+    padding: 0px;
+    width:320px;
+    float:left;
+  }
+*/
+  header {
+    height: 90px;
+    background: none;
+    border-bottom: none;
+    margin:0 auto;
+  }
+
+  #imgLogo {
+    margin-top: 0px;
+  }
+  #institutLogo {
+    display: none;
+  }
+  
+  #Logo img {
+    display: none;
+  }
+
+  nav {
+    margin-top: 0px;
+    background: #fff;
+  }
+  
+  .ob-searchfield_supplement {
+    display: none;
+  }
+
+  #ob-simplesearch_form {
+    margin-left: 0px;
+    margin-top: -5px;
+  }
+  
+  .ob-searchfield {
+
+    width: 260px;
+    height: 40px;
+    padding: 5px;
+    margin: 0px auto 0px auto;
+/*    background: #c8c8c8;*/
+    background: #dfe2e8;
+/*    background: rgba(0,0,0,.2);*/
+    border-radius: 10px;
+    /*
+    -moz-box-shadow: 10px 10px 5px #888;
+    -webkit-box-shadow: 10px 10px 5px #888;
+    box-shadow: 10px 10px 5px #888;
+    -moz-box-shadow: 5px 5px 2px #888;
+    -webkit-box-shadow: 5px 5px 2px #888;
+    box-shadow: 5px 5px 2px #888; */
+    font-size: 110%;
+
+/*    box-shadow: 0 1px 1px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.2);*/
+  }
+
+  .ob-searchfield input[type="text"] {
+    width: 165px;
+    height: 40px;
+    padding: 0px;
+    padding-left: 5px;
+/*    height: 20px;
+    padding: 10px 5px;*/
+    float: left;   
+    font: 14px Arial,Verdana,Helvetica,sans-serif;
+    
+/*    font: bold 15px 'lucida sans', 'trebuchet MS', 'Tahoma';*/
+    border: 0;
+    background: #fff;
+    border-radius: 3px 0 0 3px;     
+  }
+
+  /* Form submit button */
+  .ob-searchfield button {    
+    overflow: visible;
+    position: relative;
+    float: right;
+    top: -22px;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    height: 40px;
+    width: 90px;
+    font: bold 15px/40px 'lucida sans', 'trebuchet MS', 'Tahoma';
+    color: #fff;
+    text-transform: uppercase;
+    background: #41799e; /*#d83c3c;*/
+    border-radius: 0 3px 3px 0;     
+    text-shadow: 0 -1px 0 rgba(0, 0 ,0, .3);
+  }  
+
+  #uniTitle a {
+    padding: 0px;
+    margin-left: 50px;
+    margin-top: 25px;
+    height: 30px;
+  }
+
+  #usbTitle a {
+    font-size:1.2em;
+
+  }
+
+  .ob-collectionicon {
+    display: none;
+  }
+
+
+}
+
+/* Fix vertical Alignment of searchbutton for Chrome*/
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  .ob-searchfield button {    
+    top: -25px;
+  }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) and (max-width: 1024px) {
+  .ob-searchfield button {    
+    top: -26px;
+  }
+}

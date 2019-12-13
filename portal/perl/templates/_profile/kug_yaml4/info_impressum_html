@@ -1,0 +1,148 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_impressum
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe des Impressum
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
+[% PROCESS common/subtemplate name="subnavigation" active_menu='' %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+<h3>[% msg.maketext("Impressum") %]</h3>
+
+<p/>
+
+Universitäts- und Stadtbibliothek Köln<br />
+Universitätsstr. 33<br />
+50931 Köln<br />
+<br />
+Tel.: +49 221 470-2374 (Information)<br />
+Fax: +49 221 470-5166 (zentrale Fax-Nr.)<br />
+<a href="http://www.ub.uni-koeln.de/res/auskunft/index_ger.html">eMail</a><br /></p><p>
+Die Universitäts- und Stadtbibliothek Köln ist eine zentrale Einrichtung der Universität zu Köln, eine Körperschaft des Öffentlichen Rechts.<br />
+Sie wird durch den <a href="http://www.portal.uni-koeln.de/3580.html">Rektor der Universität zu Köln</a> gesetzlich vertreten.<br />
+<br />
+<strong>Zuständige Aufsichtsbehörde:</strong> Ministerium für Innovation, Wissenschaft, Forschung und Technologie, 40190 Düsseldorf Düsseldorf<br />
+<strong>Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz:</strong> DE 123 486 767<br />
+<strong>Inhaltlich Verantwortlicher gemäß § 5 des Telemediengesetzes (TMG) und § 55 Abs. 2 des Rundfunkstaatsvertrages (RStV):</strong><br />
+<a
+href="http://www.ub.uni-koeln.de/bibliothek/kontakt/personal/neuhausen/index_ger.html">Dr.
+H. Neuhausen</a> (Bibliotheksdirektor)<br /></p>
+
+<h4>Haftungshinweis:<br /></h4>
+
+<p>
+Das Landgericht Hamburg hat mit Urteil vom 12.05.1998 entschieden, dass man durch die Ausbringung eines Links die Inhalte der gelinkten Seite ggf. mit zu verantworten hat. Dies kann, so das LG, nur dadurch verhindert werden, dass man sich ausdrücklich von diesen Inhalten distanziert.<br />
+Die Verantwortlichen für alle von der Universitäts- und Stadtbibliothek Köln und dem Regionalen Rechenzentrum der Universität zu Köln betriebenen Webserver erklären in diesem Sinne:<br />
+"Hiermit distanzieren wir uns ausdrücklich von den Inhalten aller
+gelinkten, nicht von uns zu verantwortenden Seiten."<br /></p>
+
+<h4>Datenschutz:</h4>
+
+<p>
+Sofern innerhalb des Internetangebotes die Möglichkeit zur  Eingabe persönlicher oder geschäftlicher Daten (eMail-Adressen,  Namen, Anschriften) besteht, so erfolgt die Preisgabe dieser Daten  seitens des Nutzers auf ausdrücklich freiwilliger Basis. Die  Inanspruchnahme und Bezahlung aller angebotenen Dienste ist -  soweit technisch möglich und zumutbar - auch ohne Angabe  solcher Daten bzw. unter Angabe anonymisierter Daten oder eines  Pseudonyms gestattet. Die Nutzung der im Rahmen des Impressums oder vergleichbarer Angaben veröffentlichten Kontaktdaten wie Postanschriften, Telefon- und Faxnummern  sowie eMail-Adressen durch Dritte zur Übersendungvon nicht ausdrücklich angeforderten Informationen ist nicht gestattet.  Rechtliche Schritte gegen die Versender von sogenannten Spam-Mails bei Verstössen gegen dieses Verbots sind ausdrücklich  vorbehalten.<br />
+<br />
+Unsere Seiten werden ausschließlich auf den zentralen Webservern der Universitäts- und Stadtbibliothek und des Rechenzentrums der Universität zu Köln zur Verfügung gestellt. Jeder Ihrer Zugriffe wird in einer Protokolldatei gespeichert. Die Daten in der  Protokolldatei sind nicht personenbezogen. Wir können somit nicht  nachvollziehen, auf welche Seiten Sie zugegriffen, bzw. welche Dateien Sie abgerufen haben.<br />
+<br />
+In der Protokolldatei werden folgende Daten gespeichert:<br />
+- Name der abgerufenen Datei<br />- Datum, Uhrzeit, IP-Adresse<br />
+<br />
+Diese nicht personenbezogenen gespeicherten Daten werden nur zur Optimierung des  Internetangebotes ausgewertet. Eine Weitergabe an Dritte findet nicht statt.<br />
+<br />
+Personenbezogene Daten werden nur im Zusammenhang mit
+Ausleihbewegungen in unserem Online-Katalog gespeichert. Dies
+geschieht soweit es für den Bibliotheksbetrieb erforderlich und nach
+dem Datenschutzgesetz Nordrhein-Westfalen (DSG NRW) zulässig ist.<br
+/></p>
+
+<h4>Deutsche Bibliotheksstatistik</h4>
+
+<p>
+Die Universitäts- und Stadtbibliothek Köln nutzt im Rahmen ihrer
+Teilnahme an der Deutschen Bibliotheksstatistik ein Verfahren zur
+Zählung der Besuche auf ihrer Internetseite. Beim Aufruf der Homepage,
+der Seiten unter "Suchen & Bestellen" sowie des "Kölner
+UniversitätsGesamtkatalogs" werden eine Kennung der Bibliothek und der
+betreffenden Seite, der Zeitpunkt des Aufrufs und eine Signatur des
+aufrufenden Rechners gespeichert. Die Signatur wird mittels einer
+Einwegfunktion aus IP-Adresse, Browserkennung und Proxy-Information
+gebildet. Die Erhebung, Speicherung und Auswertung dieser Daten
+erfolgt in pseudonymisierter Form, d.h. die Signatur ist nicht
+bestimmten Personen zuzuordnen. Eine Speicherung insbesondere der
+IP-Adresse findet nicht statt. Die pseudonymen Einzeldaten werden nach
+spätestens 24 Stunden aufsummiert und damit anonymisiert.
+</p>
+
+<p>
+Die gespeicherten Daten werden statistisch ausgewertet, um unsere
+Internetseite bedarfsgerecht zu gestalten und weiterzuentwickeln. Die
+Daten werden nur zu diesem Zweck genutzt und im Anschluss an die
+Auswertung gelöscht.
+</p>
+
+<p>
+Mit der technischen und organisatorischen Umsetzung des Verfahrens ist
+die Hochschule der Medien Stuttgart beauftragt. Sie hat das Verfahren
+nach den Maßgaben der gesetzlichen Bestimmungen der Datenschutzgesetze
+und des Telemediengesetzes (TMG) entwickelt und sich zu deren
+Einhaltung verpflichtet.
+</p>
+
+<p>
+Sie haben die Möglichkeit, der Erhebung, Verarbeitung und Nutzung der
+vorbezeichneten Daten Ihrer Besuche zu dem genannten Zweck zu
+widersprechen. Klicken Sie dazu bitte auf den folgenden externen Link:
+</p>
+
+<a href="http://dbspixel.hbz-nrw.de/widerspruch.html" target="_blank">http://dbspixel.hbz-nrw.de/widerspruch.html</a>
+
+<h4>Herausgeber:</h4><p>Der Direktor der Universitäts- und Stadtbibliothek Köln<br/>
+<a
+href="http://www.ub.uni-koeln.de/bibliothek/kontakt/personal/neuhausen/index_ger.html">Dr. H. Neuhausen</a></p>
+
+<h4>Technischer Betrieb und Programmierung:</h4>
+
+<p>Dezernat Datenverarbeitung<br/>
+Tel.: +49 221 470-4512<br/>
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -1,0 +1,81 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchform_bottom_left
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe Unten-Links
+#
+#######################################################################
+-%]
+<div class="ob-category_header">[% msg.maketext("Steckbrief der Bibliothek") %]</div>
+
+[% PROCESS common/subtemplate name="newsflash" %]
+
+[% FOREACH thisviewdb IN [ "inst112", "inst124", "inst156", "inst158" ] %]
+
+[% locationid = config.get_databaseinfo.single({dbname = thisviewdb}).locationid.identifier %]
+[%- locationinfo = config.get_locationinfo_fields(locationid); -%]
+[%# USE dumper;dumper.dump(locationinfo)%]
+[% categories = [
+                'L0010', # msg.maketext("L0010") # Institutsname
+                'L0020', # msg.maketext("L0020") # Strasse
+                'L0030', # msg.maketext("L0030") # Gebäude
+                'L0110', # msg.maketext("L0110") # Öffnungszeiten
+                'L0180', # msg.maketext("L0180") # Art der Bibliothek
+                'L0230', # msg.maketext("L0230") # Katalogisierung seit...
+                'L0235', # msg.maketext("L0235") # Katalogisierung seit...
+                ]
+%]
+
+<table>
+[%-
+
+qrcode_infos = [];
+
+FOREACH category IN ["L0010","L0020","L0030","L0110"];
+      FOREACH item IN locationinfo.$category;
+        content = item.content.replace('%22','"').replace('%22','');
+        IF NOT content.match('<a');
+          qrcode_infos.push(content);
+        END;
+      END;
+END;
+
+qrcode = qrcode_infos.join(' :: ');
+qrcode = qrcode.replace('<br />',', ');
+
+FOREACH category IN categories;
+
+      FOREACH item IN locationinfo.$category;
+        content = item.content.replace('%22','"');
+
+        SWITCH category;
+
+          CASE [ "L0010" "L0230" "L0235" ];
+            content   = "<b>${content}</b>";
+
+        END;
+
+        # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+        # in Config.pm fuer die entsprechende Datenbank definiert
+        # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+        # kodiert.
+        thiscategory = category ;
+        IF config.get('categorymapping').${locationinfo.database}.$category ;
+          thiscategory = "${category}-${record.database}" ;
+        END;
+-%]
+<tr><td class="ob-field">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
+[%-   END ;
+END ;-%]
+<tr><td class="ob-field">QR-Code</td><td><a class="ob-qrcode_preview" onclick="return false;" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% qrcode | truncate(252) %]" title="Name :: Adresse :: Öffnungszeiten"><img src="[% config.get('qrcode_img') %]" /></a></td></tr>
+</table>
+[<a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locationid %]">[% msg.maketext("Mehr") %]</a>]
+
+<p/>
+[% END %]
+

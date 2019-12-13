@@ -1,0 +1,35 @@
+[%# USE dumper; dumper.dump(dbchoice)%]
+[% viewdbs = config.get_dbs_of_view(view);
+   orgunitname = config.get_orgunitname_of_db_in_view(viewdbs.first,view);
+   prevprofile = session.get_profile; %]
+<select name="profile" class="ob-selectbox">
+[% searchprofileid_of_view = config.get_searchprofile_of_view(view) ; checked_profile = 0 %]
+[% searchprofileid_of_sysprofile = config.get_searchprofile_of_systemprofile(view) %]
+[% IF userprofile.size > 0 %]
+<optgroup label="Eigene Suchprofile">
+[%- FOREACH profile IN userprofile -%]
+[%     pid   = profile.key %]
+[%     pdata = profile.value %]
+<option value="[% pid %]"[%- IF prevprofile == '${pid}'  && NOT checked_profile -%] selected="selected"[%- checked_profile=1 ; END -%]>[% msg.maketext("Benutzerdefiniert") %]: [% pdata.name %]</option>
+[%  END %]
+</optgroup>
+[% END %]
+<optgroup label="[% msg.maketext("Suchradius") %]">
+<option value="[% searchprofileid_of_view %]"[%- IF prevprofile == searchprofileid_of_view && NOT checked_profile -%] selected="selected"[%- checked_profile=1 ; END -%]>Soziologie</option>
+[%  FOREACH unit IN config.get_orgunitinfo_overview(sysprofile).all ;
+     IF unit.orgunitname == orgunitname ;
+      searchprofileid_of_orgunit = config.get_searchprofile_of_orgunit(sysprofile,unit.orgunitname) ;
+%]
+<option value="[% searchprofileid_of_orgunit %]"[%- IF prevprofile == searchprofileid_of_orgunit && NOT checked_profile -%] selected="selected"[%- checked_profile=1 ; END -%]>[% unit.description %]</option>
+[%   END;
+    END; %]
+<option value="[% searchprofileid_of_sysprofile %]"[%- IF prevprofile == searchprofileid_of_sysprofile && NOT checked_profile -%] selected="selected"[%- END -%]>[% msg.maketext("Alle Kataloge") %]</option>
+</optgroup>
+<optgroup label="[% msg.maketext("Allgemeine Suchprofile") %]">
+[% FOREACH unit IN config.get_orgunitinfo_overview(sysprofile).all ;
+     searchprofileid_of_orgunit = config.get_searchprofile_of_orgunit(sysprofile,unit.orgunitname) ;
+%]
+<option value="[% searchprofileid_of_orgunit %]"[%- IF prevprofile == searchprofileid_of_orgunit && NOT checked_profile -%] selected="selected"[%- checked_profile=1 ; END -%]>- [% unit.description %]</option>
+[% END %]
+</optgroup>
+</select>

@@ -1,0 +1,106 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showtitlist
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe einer Titel-Kurztrefferliste
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title = 'Trefferliste' disable_cache_control=1 %]
+[%- ebook_i18n      = msg.maketext("E-Book") -%]
+[%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
+[%- popularity_i18n = msg.maketext("Popularität") -%]
+
+<body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+        <li><a href="#" class="lastitem">[% msg.maketext("Tags") %]</a></li>
+      </ul>
+     </div>
+     <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('tags_loc') %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
+     </div>
+  </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1 ob-hidden">
+        <div class="ym-cbox" class="ym-clearfix">
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+[% IF public_tags.size == 0 %]
+
+   <h1>Bisher wurden keine Tags vergeben</h1>
+
+[% ELSE %]
+
+[%-
+    start_range     = nav.current_page*qopts.get_option('num') - qopts.get_option('num') + 1;
+    end_range       = public_tags.size;
+-%]
+
+[%# USE dumper;dumper.dump(public_tags)%]
+<!-- Titlelist begins here -->
+<div class="ob-resultlist">
+  <div class="ob-resultheader">
+    <div class="left">
+[% total_count %]  [% msg.maketext("Tags") %]
+    </div>
+    <div class="right">
+    </div>    
+  </div>
+  <div class="ob-resultitems fullwidth[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+[%- FOREACH tag IN public_tags ;
+      record  = tag.record ;
+      tagname = tag.tagname ;
+-%]
+[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 %] 
+[%- END -%]
+  </div>
+</div>
+<!-- Titlelist ends here -->
+
+<p/>
+
+  <div class="ob-footer">
+[% PROCESS common/subtemplate name="pagination" %]
+  </div>
+
+[% END %]
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

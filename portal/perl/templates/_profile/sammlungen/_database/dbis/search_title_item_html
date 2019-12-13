@@ -1,0 +1,109 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_item
+#
+# Typ         : Mastertemplate (2/3)
+#
+# Aufgabe:
+#
+# Ausgabe der Suchergebnisse *eines* Katalogs
+#
+#######################################################################
+-%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
+<!-- Beginn Result Item -->
+[%- dbdesc   = dbinfo.get('dbnames').${database}.full ;
+    dburl    = dbinfo.get('urls').${database} ;
+
+    start_range     = nav.current_page*qopts.get_option('num')-qopts.get_option('num') + 1;
+    end_range       = nav.current_page*qopts.get_option('num');
+    IF end_range >= hits ;
+       end_range       = hits;
+    END;    
+
+-%]
+
+<p/>
+
+<div class="ym-grid">
+  <div class="ym-g25 ym-gr">
+    <div class="ym-gbox">
+<div class="ob-headline">[% msg.maketext("Suche nach Zeitschriften") %]</div>
+<p/>
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+<input type="hidden" name="db"        value="dbis" />
+<input type="hidden" name="l"         value="[% lang %]" />
+<input type="hidden" name="sm"        value="seq" />
+<input type="hidden" name="page"      value="1" />
+<input type="hidden" name="num"       value="20" />
+
+[% classification_name = searchquery.get_searchfield('classification').val %]
+
+<table>
+<tr><td><input type="checkbox" name="access_green" value="1" [%- IF query.param('access_green') -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_green_img') %]" alt="green"/></td><td>[% msg.maketext("mit frei zugänglichen Volltextartikeln") %]</td></tr>
+<tr><td><input type="checkbox" name="access_yellow" value="1" [%- IF query.param('access_yellow') -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_yellow_img') %]" alt="yellow"/></td><td>[% msg.maketext("mit Volltextartikeln, die nur im Uni-Netz zugänglich sind") %]</td></tr>
+<tr><td><input type="checkbox" name="access_red" value="1" [%- IF query.param('access_red') -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_red_img') %]" alt="red"/></td><td>[% msg.maketext("ohne Zugriff auf Volltextartikel (Inhaltsverzeichnisse und Abstracts sind in der Regel frei zugänglich)") %]</td></tr>
+<tr><td><input type="checkbox" name="access_national" value="1" [%- IF query.param('access_national') -%]checked="checked"[%- END -%] /></td><td><img src="[% config.get('dbis_de_img') %]" alt="red"/></td><td>[% msg.maketext("deutschlandweit frei zugänglich (DFG-geförderte Nationallizenz)") %]</td></tr>
+<tr><td colspan="3"></td></tr>
+<tr><td colspan="3"><b>[% msg.maketext("in:") %]</b> <select name="cln"><option value="" [% IF classification_name == 'all' %]selected="selected"[% END %]>[% msg.maketext("Alle Fachgebiete") %]</option>[%- FOREACH classification IN container.get('classifications') -%]
+<option value="[% classification.name %]" [% IF classification_name == classification.name %]selected="selected"[% END %]>[% classification.desc | truncate(25) %]</option>[%- END -%]</select></td></tr>
+</table>
+<p/>
+<table>
+<tr><td><input id="to_focus" class="fs_field" type="text" name="tit" value="" size="13" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" name="search" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
+</table>
+</form>
+
+<p/>
+
+<h4>[% msg.maketext("Gesamtübersicht") %]</h4>
+<ul class="classificationlist">
+[% FOREACH classification IN container.get('classifications');
+   searchterm    = classification.name;
+   searchprefix  = config.get('searchfield').classification.prefix;
+ %]
+<li><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=dbis;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% IF query.param('access_national') %]access_national=1;[% END %][% searchprefix %]=[% searchterm %]">[% IF classification_name == classification.name %]<b>[% classification.desc %]</b>[% ELSE %][% classification.desc %][% END %]</a> ([% classification.count %])</li>
+[% END %]
+</ul>
+
+    </div>
+  </div>
+
+  <div class="ym-g75 ym-gl">
+    <div class="ym-gbox-left">
+<h4>[%-   IF dbinfo.get('locationid').${database} %]
+<a href="[% path_prefix %]/[% config.get('libraries_loc') %]/[% database %]">
+[%-   ELSE -%]
+<a href="[% dburl %]" target="_blank">
+[%-   END -%]
+     [% dbdesc | truncate(config.get('maxlength_dbname')) %]</a>
+</h4>
+
+<!-- Titlelist begins here -->
+<div class="ob-resultlist">
+  <div class="ob-resultheader">
+    <div class="left">
+[% msg.maketext("Treffer") %]&nbsp;[% start_range %]-[% end_range %]&nbsp;[% msg.maketext("von") %]&nbsp;[% hits %]
+    </div>
+    <div class="right">
+    </div>
+  </div>
+  <div class="ob-resultitems">
+[%- FOREACH record IN recordlist.get_records -%]
+[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=0 %] 
+[%- END -%]
+  </div>
+  <div class="ob-footer">
+[% cgi_args_base =  cgiapp.to_cgi_querystring({ exclude = ['page'] }) %]
+[% PROCESS common/subtemplate name="pagination" %]
+    <div class="ob-resulttime">
+    </div>
+  </div>
+</div>
+<div class="ob-resultfooter">
+&nbsp;
+</div>
+<!-- Titlelist ends here -->
+
+<p/>

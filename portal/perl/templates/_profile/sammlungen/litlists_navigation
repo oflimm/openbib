@@ -1,0 +1,56 @@
+[%#-
+#######################################################################
+#
+# Templatename: litlists_navigatio
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Unternavigations-Menu 
+#
+# Parameter active_menu zur Kennzeichnung aktiver Menupunkte:
+#
+# searchmask
+# cloud
+# info
+#
+#######################################################################
+-%]
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("Literaturlisten") %]</h6>
+ <ul>
+[% IF active_submenu == "litlists_all" %]
+  <li class="active"><strong>[% msg.maketext("Alle Listen") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('litlists_loc') %].html?l=[% lang %]">[% msg.maketext("Alle Listen") %]</a></li>
+[% END %]
+[% IF active_submenu == "litlists_recent" %]
+  <li class="active"><strong>[% msg.maketext("Zuletzt angelegt") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('litlists_loc') %]/recent.html?l=[% lang %];num=20">[% msg.maketext("Zuletzt angelegt") %]</a></li>
+[% END %]
+[% IF active_submenu == "litlists_topics" %]
+  <li class="active"><strong>[% msg.maketext("Themengebiete") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('litlists_loc') %]/topics.html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a></li>
+[% END %]
+[% IF topicid %]
+   <li><span>[% FOREACH topic IN topics %][% IF topic.id == topicid %][% topic.name%][% END %][% END %]</span>
+     <ul>
+[%   IF active_submenu == "litlists_topic_all" %]
+   <li class="active"><strong>[% msg.maketext("Alle Listen") %]</strong></li>
+[%   ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('litlists_loc') %]/topics/id/[% topicid %].html?l=[% lang %]">[% msg.maketext("Alle Listen") %]</a></li>
+[%   END %]
+[%   IF active_submenu == "litlists_topic_recent" %]
+       <li class="active"><strong>[% msg.maketext("Zuletzt angelegt") %]</strong></li>
+[%   ELSE %]
+       <li><a href="[% path_prefix %]/[% config.get('litlists_loc') %]/topics/id/[% topicid %]/recent.html?l=[% lang %];num=20">[% msg.maketext("Zuletzt angelegt") %]</a></li>
+[% END %]
+    </ul>
+  </li>
+[% END %]
+
+ </ul>
+</nav>

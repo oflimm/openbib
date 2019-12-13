@@ -1,0 +1,50 @@
+[%#-
+#######################################################################
+#
+# Templatename: visible_categories_library
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabekategorien fuer Informationen zu einer
+# einzelnen Bibliothek
+#
+#######################################################################
+-%]
+[%# Ausgabekategorien %]
+[% categories = [
+                'L0010', # msg.maketext("L0010") # Institutsname
+                'L0015', # msg.maketext("L0015") # Fakultaet (Kuerzel)
+                'L0020', # msg.maketext("L0020") # Adresse
+                'L0030', # msg.maketext("L0030") # Gebäude
+                'L0040', # msg.maketext("L0040") # Interaktiver Lageplan der Universität
+                'L0050', # msg.maketext("L0050") # Gemeinsame Bibliothek
+                'L0290', # msg.maketext("L0290") # Weitere Kataloge
+                'L0060', # msg.maketext("L0060") # Telefon
+                'L0070', # msg.maketext("L0070") # Fax
+                'L0080', # msg.maketext("L0080") # E-Mail
+                'L0090', # msg.maketext("L0090") # Internet
+                'L0100', # msg.maketext("L0100") # Auskunft / Bibliothekar(in)
+                'L0110', # msg.maketext("L0110") # Öffnungszeiten
+                'L0120', # msg.maketext("L0120") # Bestand Monos
+                'L0130', # msg.maketext("L0130") # Bestand Zeitschriften
+                'L0140', # msg.maketext("L0140") # Anzahl laufender Zeitschriften
+                'L0150', # msg.maketext("L0150") # Bestand CD's / Digitale Medien
+                'L0160', # msg.maketext("L0160") # Sonstige Bestandsangaben
+                'L0170', # msg.maketext("L0170") # Besondere Sammelgebiete
+                'L0180', # msg.maketext("L0180") # Art der Bibliothek
+                'L0190', # msg.maketext("L0190") # Neuerwerbungslisten
+                'L0200', # msg.maketext("L0200") # Kopierer / Technische Ausstattung
+                'L0260', # msg.maketext("L0260") # Art der Vernetzung
+                'L0210', # msg.maketext("L0210") # DV-Ausstattung  
+                'L0270', # msg.maketext("L0270") # Zahl bereitgestellter Arbeitsplaetze
+                'L0220', # msg.maketext("L0220") # Art des Systems
+                'L0230', # msg.maketext("L0230") # Online-Katalogisierung seit Erscheinungsjahr
+                'L0235', # msg.maketext("L0235") # Online-Katalogisierung seit Erwerbungsjahr
+                'L0240', # msg.maketext("L0240") # Mitarbeit am KUG
+                'L0250', # msg.maketext("L0250") # Sigel in ZDB
+                'L0280', # msg.maketext("L0280") # Koordinaten
+                ]
+
+%]

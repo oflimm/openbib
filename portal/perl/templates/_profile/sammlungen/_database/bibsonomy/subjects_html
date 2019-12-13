@@ -1,0 +1,62 @@
+[%#-
+#######################################################################
+#
+# Templatename: bibsonomy_showtags
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %]
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+   <h1>[% msg.maketext("Tags in BibSonomy") %]</h1>
+
+<h3>[% msg.maketext("Es konnten in BibSonomy folgende Schlagworte gefunden werden.") %]</h3>
+<p/>
+<ul>
+[% FOREACH subject IN subjects %]
+<li><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;sm=seq;db=bibsonomy;typ=publication;fsubj=[% subject.name |uri %]">[% subject.name %]</a></li>
+[% END %]
+</ul>
+<p/>
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

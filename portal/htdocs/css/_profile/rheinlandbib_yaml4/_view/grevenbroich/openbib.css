@@ -1,0 +1,4 @@
+@import url("/css/_profile/rheinlandbib_yaml4/openbib.css"); 
+
+/* import specific classes */
+@import url("local.css");

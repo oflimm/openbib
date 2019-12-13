@@ -1,0 +1,24 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editview
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Views
+#
+#######################################################################
+-%]
+[%
+   viewsdesc = [];
+   FOREACH singledb IN viewdbs ;
+     desc = dbinfo.get('dbnames').${singledb}.short;
+     viewsdesc.push("${desc}");
+   END;
+   
+%]
+[% FOREACH singledesc IN viewsdesc.sort %]
+[% singledesc %]<br/>
+[% END %]

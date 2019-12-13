@@ -1,0 +1,36 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchform_bottom
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe Unten-Links
+#
+#######################################################################
+-%]
+<div id="ob-searchform_bottom"><!-- Begin searchform_bottom -->
+
+          <div class="ym-grid ym-equalize">
+            <div class="ym-g33 ym-gl">
+              <div class="ym-gbox-left">
+                <div class="ob-searchform_bottom_left">
+[% PROCESS common/subtemplate name="searchforms_record_bottom_left" %]
+                </div>
+              </div>
+            </div>
+            <div class="ym-g33 ym-gl">
+              <div class="ym-gbox">
+[% PROCESS common/subtemplate name="searchforms_record_bottom_center" %]
+              </div>
+            </div>
+            <div class="ym-g33 ym-gr">
+             <div class="ym-gbox-right">
+[% PROCESS common/subtemplate name="searchforms_record_bottom_right" %]
+             </div>
+            </div>
+          </div>
+
+</div><!-- End searchform_bottom -->

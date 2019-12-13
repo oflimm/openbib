@@ -1,0 +1,101 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_statistics_query_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersicht der wichtigsten statistischen Daten sowie
+# Verweise auf andere Sub-Templates (via stid = sub-template-id) mit
+# weiteren statistischen Auswertungen.
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Grundlegende Statistikinformationen' %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %].html?l=[% lang %]">[% msg.maketext("Statistiken") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Recherche-Arten") %]</a></li>
+       </ul>
+     </div>
+    <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/query.json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+    </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
+[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_statistics" active_subsubmenu="query" %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+[% PROCESS common/subtemplate name="admin_statistics_paging_monthly" statisticsid="query" %] 
+
+<p/>
+
+<h3>[% msg.maketext("Verwendete Recherche-Art") %]</h3>
+
+<table>
+<tr><th>[% msg.maketext("Einfache Recherche") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 1, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Komplexe Recherche") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 2, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Externer Suchschlitz") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 3, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+</table>
+
+<p />
+
+<h3>[% msg.maketext("Verwendete Kategorien") %]</h3>
+
+<table>
+<tr><th>[% msg.maketext("Freie Suche") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'freesearch', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Titelworte") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'title', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Personen") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'person', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("K&ouml;rperschaften") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'corporatebody', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Schlagworte") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'subject', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Notationen") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'classification', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("ISBN") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'isbn', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("ISSN") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'issn', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Signatur") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'mark', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Kompletter Titel") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'titlestring', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Serie/Band/Quelle") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'source', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Jahr") %]</th><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'year', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+</table>
+
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

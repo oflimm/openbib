@@ -1,0 +1,94 @@
+[%#-
+#######################################################################
+#
+# Templatename: managecartitems_tit_as_html_simple
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe *aller* Merklisten-Items im HTML-Format fuer Mail und Druck
+# *ohne* Funktionselemente
+#
+#######################################################################
+-%]
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
+[% PROCESS common/subtemplate name="cartitems_html_actions" %] 
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+[% FOREACH record IN recordlist.get_records %]
+[%- database = record.database -%]
+[%- dbdesc   = dbinfo.get('dbnames').${record.database}.full -%]
+[%- dburl    = dbinfo.get('urls').${record.database} -%]
+[% normdata    = record.get_fields %]
+[% holding     = record.get_holding  %]
+[% circulation = record.load_circulation.get_circulation %]
+
+<h3>[% msg.maketext("Titelaufnahme") %]</h3>
+<!-- Title begins here -->
+
+<div class="ob-fulltitle ob-title_record"><!-- Begin Fulltitle -->
+
+<table cellpadding="2">
+<tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
+<tr><td class="ob-field">id</td><td>[% record.id %]</td></tr>
+
+[%-
+
+FOREACH category IN categories;
+    NEXT IF category == 'T5005';
+    FOREACH item IN normdata.$category;
+      content = item.content;
+
+-%]
+<tr><td class="ob-field">[% msg.maketext("${category}") %]</td><td>[% content %]</td></tr>
+[%- END -%]
+[%- END -%]
+</table>
+
+[%# USE dumper;dumper.dump(record) %]
+[% IF circulation.size > 0 || holding.size > 0 %]
+<div id="ob-additional_title_info"><!-- Begin Additional Title Info -->
+
+<ul>
+[%   IF circulation.size > 0 %]
+<li><a href="#ob-circulation_info">[% msg.maketext("Ausleihe/Exemplare") %]</a></li>
+[%   ELSE %]
+<li><a href="#ob-holding_info">[% msg.maketext("Bestand") %]</a></li>
+[%   END %]
+</ul>
+
+[% IF circulation.size > 0 %]
+<div id="ob-circulation_info"><!-- Begin Circulation -->
+[% PROCESS common/subtemplate name="circulation" %]
+</div><!-- End Circulation -->
+[% ELSE %]
+<div id="ob-holding_info"><!-- Begin Bestand -->
+[% PROCESS common/subtemplate name="holding" %]
+</div><!-- End Bestand -->
+[% END %]
+
+</div>
+[% END %]
+
+<p />
+<p />
+<!-- Title ends here -->
+</div><!-- fulltitle -->
+
+[% END %]
+
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->

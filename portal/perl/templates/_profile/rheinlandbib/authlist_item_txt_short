@@ -1,0 +1,37 @@
+[%#-
+#######################################################################
+#
+# Templatename: titlist_item
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Einzelner Eintrag in einer Liste (Kurztitel)
+#
+#
+# Erhaelt neben Default-Objekten (config, session usw.)
+#
+# record
+# dbinfo 
+#
+#######################################################################
+-%]
+[%-
+     item   = record.get_fields;
+
+     # Normdateneintrag konstruieren
+     main_entry = "" ;
+
+     FOREACH part IN item.${'P0800'} ;
+       main_entry = part.content;
+     END ;
+     FOREACH part IN item.${'C0800'} ;
+       main_entry = part.content;
+     END ;
+     FOREACH part IN item.${'S0800'} ;
+       main_entry = part.content;
+     END ;
+
+-%]
+[% main_entry.replace('&gt;','>').replace('&lt;','<').replace('&amp;','&') %]

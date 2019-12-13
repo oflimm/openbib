@@ -1,0 +1,137 @@
+[%#-
+#######################################################################
+#
+# Templatename: subnavigation
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Unternavigations-Menu fuer Tabs
+#
+# Parameter active_menu zur Kennzeichnung aktiver Menupunkte:
+#
+# searchmask
+# cloud
+# info
+#
+#######################################################################
+-%]
+[% IF active_menu == "info" %]
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("Informationen") %]</h6>
+ <ul>
+[% IF active_submenu == "quellen" %]
+  <li class="active"><strong>Weitere Quellen</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/quellen.html?l=[% lang %]">Weitere Quellen</a></li>
+[% END %]
+[% IF active_submenu == "unbekannte_portraits" %]
+  <li class="active"><strong>Unbekannte Portraits</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/unbekannte_portraits.html?l=[% lang %]">Unbekannte Portraits</a></li>
+[% END %]
+</ul>
+</nav>
+[% END %]
+[% IF active_menu == "project" %]
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("Projekt") %]</h6>
+ <ul>
+[% IF active_submenu == "ansprechpartner" %]
+  <li class="active"><strong>Ansprechpartner</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/ansprechpartner.html?l=[% lang %]">Ansprechpartner</a></li>
+[% END %]
+[% IF active_submenu == "ausstellung" %]
+  <li class="active"><strong>Ausstellung</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/ausstellung.html?l=[% lang %]">Ausstellung</a></li>
+[% END %]
+[% IF active_submenu == "faq" %]
+  <li class="active"><strong>FAQ</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/faq.html?l=[% lang %]">FAQ</a></li>
+[% END %]
+</ul>
+</nav>
+[% END %]
+[% IF active_menu == "register" %]
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("Register") %]</h6>
+ <ul>
+[% IF active_submenu == "register_0101" %]
+  <li class="active"><strong>[% msg.maketext("Buchbinder/Werkstatt") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/einbaende/titles/fields/id/0101.html?l=[% lang %];page=1">[% msg.maketext("Buchbinder/Werkstatt") %]</a></li>
+[% END %]
+[% IF active_submenu == "register_0700" %]
+  <li class="active"><strong>[% msg.maketext("Einband") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/einbaende/titles/fields/id/0700.html?l=[% lang %];page=1">[% msg.maketext("Einband") %]</a></li>
+[% END %]
+[% IF active_submenu == "register_0200" %]
+  <li class="active"><strong>[% msg.maketext("Region") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/einbaende/titles/fields/id/0200.html?l=[% lang %];page=1">[% msg.maketext("Region") %]</a></li>
+[% END %]
+[% IF active_submenu == "register_0710" %]
+  <li class="active"><strong>[% msg.maketext("Jahrhundert") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/einbaende/titles/fields/id/0710.html?l=[% lang %];page=1">[% msg.maketext("Jahrhundert") %]</a></li>
+[% END %]
+[% IF active_submenu == "register_0413" %]
+  <li class="active"><strong>[% msg.maketext("Drucker/Verleger/Verlag") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/einbaende/titles/fields/id/0413.html?l=[% lang %];page=1">[% msg.maketext("Drucker/Verleger/Verlag") %]</a></li>
+[% END %]
+[% IF active_submenu == "register_0304" %]
+  <li class="active"><strong>[% msg.maketext("Motiv/Werkzeug") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/einbaende/titles/fields/id/0304.html?l=[% lang %];page=1">[% msg.maketext("Motiv/Werkzeug") %]</a></li>
+[% END %]
+[% IF active_submenu == "register_0102" %]
+  <li class="active"><strong>[% msg.maketext("Werkstatt/Werkzeug") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/einbaende/titles/fields/id/0102.html?l=[% lang %];page=1">[% msg.maketext("Werkstatt/Werkzeug") %]</a></li>
+[% END %]
+[% IF active_submenu == "register_0201" %]
+  <li class="active"><strong>[% msg.maketext("Region/Werkzeug") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/einbaende/titles/fields/id/0201.html?l=[% lang %];page=1">[% msg.maketext("Region/Werkzeug") %]</a></li>
+[% END %]
+ </ul>
+</nav>
+[% END %]
+[% IF active_menu == "cloud" %]
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("&Uuml;bersichten") %]</h6>
+ <ul>
+[% IF active_submenu == "clouds_year" %]
+  <li class="active"><strong>[% msg.maketext("Jahr") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/year/database/richter.html?l=[% lang %]" title="Jahr">[% msg.maketext("Jahr") %]</a></li>
+[% END %]
+[% IF active_submenu == "clouds_person" %]
+  <li class="active"><strong>[% msg.maketext("Personen") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/person/database/richter.html?l=[% lang %]" title="Personen">[% msg.maketext("Personen") %]</a></li>
+[% END %]
+[% IF active_submenu == "clouds_corporatebody" %]
+  <li class="active"><strong>[% msg.maketext("K&ouml;rperschaften") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/corporatebody/database/richter.html?l=[% lang %]" title="K&ouml;rperschaften">[% msg.maketext("K&ouml;rperschaften") %]</a></li>
+[% END %]
+[% IF active_submenu == "clouds_subject" %]
+  <li class="active"><strong>[% msg.maketext("Schlagwort") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/subject/database/richter.html?l=[% lang %]" title="Schlagwort">[% msg.maketext("Schlagwort") %]</a></li>
+[% END %]
+[% IF active_submenu == "clouds_classification" %]
+  <li class="active"><strong>[% msg.maketext("Systematik") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/classification/database/richter.html?l=[% lang %]" title="Systematik">[% msg.maketext("Systematik") %]</a></li>
+[% END %]
+ </ul>
+</nav>
+[% END %]

@@ -1,0 +1,107 @@
+[%#-
+#######################################################################
+#
+# Templatename: subnavigation
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Unternavigations-Menu fuer Tabs
+#
+# Parameter active_menu zur Kennzeichnung aktiver Menupunkte:
+#
+# searchmask
+# cloud
+# info
+#
+#######################################################################
+-%]
+[% IF active_menu == "info" %]
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("Informationen") %]</h6>
+ <ul>
+[% IF active_submenu == "sammlung" %]
+  <li class="active"><strong>Weitere Informationen</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/quellen.html?l=[% lang %]">Weitere Informationen</a></li>
+[% END %]
+</ul>
+</nav>
+[% END %]
+[% IF active_menu == "project" %]
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("Projekt") %]</h6>
+ <ul>
+[% IF active_submenu == "ansprechpartner" %]
+  <li class="active"><strong>Ansprechpartner</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/ansprechpartner.html?l=[% lang %]">Ansprechpartner</a></li>
+[% END %]
+</ul>
+</nav>
+[% END %]
+[% IF active_menu == "register" %]
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("Register") %]</h6>
+ <ul>
+[% IF active_submenu == "register_0100" %]
+  <li class="active"><strong>Autor</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/schatzbehalter/titles/fields/id/0100.html?l=[% lang %];page=1">Autor</a></li>
+[% END %]
+[% IF active_submenu == "register_0331" %]
+  <li class="active"><strong>Titel</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/schatzbehalter/titles/fields/id/0331.html?l=[% lang %];page=1">Titel</a></li>
+[% END %]
+[% IF active_submenu == "register_0304" %]
+  <li class="active"><strong>Originaltitel</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/schatzbehalter/titles/fields/id/0304.html?l=[% lang %];page=1">Originaltitel</a></li>
+[% END %]
+[% IF active_submenu == "register_0700" %]
+  <li class="active"><strong>Systematik</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/schatzbehalter/titles/fields/id/0700.html?l=[% lang %];page=1">Systematik</a></li>
+[% END %]
+[% IF active_submenu == "register_0425" %]
+  <li class="active"><strong>Erscheinungsjahre</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/schatzbehalter/titles/fields/id/0425.html?l=[% lang %];page=1">Erscheinungsjahre</a></li>
+[% END %]
+ </ul>
+</nav>
+[% END %]
+[% IF active_menu == "cloud" %]
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("&Uuml;bersichten") %]</h6>
+ <ul>
+[% IF active_submenu == "clouds_year" %]
+  <li class="active"><strong>[% msg.maketext("Jahr") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/year/database/schatzbehalter.html?l=[% lang %]" title="Jahr">[% msg.maketext("Jahr") %]</a></li>
+[% END %]
+[% IF active_submenu == "clouds_person" %]
+  <li class="active"><strong>[% msg.maketext("Personen") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/person/database/schatzbehalter.html?l=[% lang %]" title="Personen">[% msg.maketext("Personen") %]</a></li>
+[% END %]
+[% IF active_submenu == "clouds_corporatebody" %]
+  <li class="active"><strong>[% msg.maketext("K&ouml;rperschaften") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/corporatebody/database/schatzbehalter.html?l=[% lang %]" title="K&ouml;rperschaften">[% msg.maketext("K&ouml;rperschaften") %]</a></li>
+[% END %]
+[% IF active_submenu == "clouds_subject" %]
+  <li class="active"><strong>[% msg.maketext("Schlagwort") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/subject/database/schatzbehalter.html?l=[% lang %]" title="Schlagwort">[% msg.maketext("Schlagwort") %]</a></li>
+[% END %]
+[% IF active_submenu == "clouds_classification" %]
+  <li class="active"><strong>[% msg.maketext("Systematik") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/classification/database/schatzbehalter.html?l=[% lang %]" title="Systematik">[% msg.maketext("Systematik") %]</a></li>
+[% END %]
+ </ul>
+</nav>
+[% END %]

@@ -1,0 +1,14 @@
+[% IF statistics.result_exists({ id => 'litlists_usage', type => 12 })%]
+[%   IF config.get('litlists') %]
+[%     IF active_submenu == "clouds_litlist" %]
+  <li class="active"><strong>[% msg.maketext("Literaturlisten") %]</strong></li>
+[%     ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/id/litlist.html" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a></li>
+[%     END %]
+[%   END %]
+[% END %]
+[% IF active_submenu == "clouds_searchterm" %]
+  <li class="active"><strong>[% msg.maketext("Suchbegriffe") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('clouds_loc') %]/id/searchterm.html" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a></li>
+[% END %]

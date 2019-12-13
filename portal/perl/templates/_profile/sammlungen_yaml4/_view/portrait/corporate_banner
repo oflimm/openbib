@@ -1,0 +1,17 @@
+<!-- Begin Template: corporate_banner -->
+    <header role="banner">
+      <div id="topnav" role="contentinfo">
+[% IF NOT no_topnav %]
+        <span><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/artmann/titles/recent.rss?l=[% lang %]"><img style="vertical-align: bottom;" src="[% config.get('rssfeed_img') %]" alt="RSS-Feed"/></a> | [% IF config.get('lang').size > 1 %][% FOREACH l IN config.get('lang') %][% NEXT IF l == lang %] <a href="[% path %]?[% cgiapp.to_cgi_querystring(change = { l = l }) %]"><img style="vertical-align: bottom;" src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a> |[% END %][% END %] [% IF config.get('login_active') == 1 %]
+[% IF username %]
+          <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% msg.maketext("Meine Sammlung") %]</a>
+| <a href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %]" target="_parent"><b>[% msg.maketext("Abmelden") %] [[% username %]]</b></a></span>
+[% ELSE %]
+          <a href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Anmelden") %]</a>
+[%- END -%]
+[% END %]
+[%END%]
+      </div>
+      <div id="logo"><a href="[% path_prefix %]/[% config.get('home_loc') %]?l=[% lang %]" title="Startseite der Sammlung" id="header_logo_image"></a></div>
+    </header>
+<!-- End Template: corporate_banner -->

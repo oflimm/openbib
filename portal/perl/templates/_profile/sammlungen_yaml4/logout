@@ -1,0 +1,70 @@
+[%#-
+#######################################################################
+#
+# Templatename: leave
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Erfolgsmeldung beim Abmelden aus dem Portal, sowie
+# einer view-sensitiven Verlinkung fuer einen erneuten Aufruf
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1 ob-hidden">
+        <div class="ym-cbox" class="ym-clearfix">
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" style="width: 100%;">
+        <div class="ym-cbox" class="ym-clearfix">
+
+<br />
+  <br />
+  <center>
+    <p style="font-size:1.5em">
+[% msg.maketext("Sie haben sich abgemeldet.") %]<br />
+        <br />[% msg.maketext("Vielen Dank f&uuml;r Ihren Besuch.") %]
+
+    </p>
+  </center>
+
+  <center>
+    <p>
+      <a style="font-size:2.5em" href="http://[% servername %][% path_prefix %]/[% config.get('home_loc') %]">[% msg.maketext("Zur Hauptseite") %]</a>
+    </p>
+  </center>
+<br />
+<br />
+<br />
+<br />
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" hide_foot_banner=1 %]

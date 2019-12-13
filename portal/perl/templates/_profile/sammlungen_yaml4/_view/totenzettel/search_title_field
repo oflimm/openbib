@@ -1,0 +1,26 @@
+[%    field_map = {
+          "freesearch" = msg.maketext("Freie Suche")
+          "content" = "Orte"
+          "person" = msg.maketext("Person")
+          "publisher" = "Beruf / Stand"
+          "classification" = "Provenienz"
+          "year" = msg.maketext("Jahr")
+          "year_from" = msg.maketext("Jahr von")
+          "year_to" = msg.maketext("Jahr bis")
+          "tag" = msg.maketext("Tag")
+          "toc" = msg.maketext("Inhaltsverzeichnis")
+          "litlist" = msg.maketext("Literaturliste")
+          "personstring" = msg.maketext("Person")
+          "classificationstring" = "Provenienz"
+          "markstring" = "Ehepartner"
+          "yearstring" = msg.maketext("Jahr")
+          "tagstring" = msg.maketext("Tag")
+          "litliststring" = msg.maketext("Literaturliste")
+          "ft0410" = "Sterbeort"
+          "ft0411" = "Geburtsort"
+          "ft0425_from" = "Sterbejahr von"
+          "ft0425_to" = "Sterbejahr bis"
+          "ft0425" = "Sterbejahr"
+          "ft0426" = "Geburtsjahr"
+};
+%]

@@ -1,0 +1,135 @@
+[%#-
+#######################################################################
+#
+# Templatename: mainnavigation
+#
+# Typ         : Subtemplage       
+#
+# Aufgabe:
+#
+# Ausgabe der Hauptmenu-Punkte
+#
+# Parameter active_menu zur Kennzeichnung aktiver Menupunkte:
+#
+# databasechoice
+# searchform
+# resultlists
+# collection
+# startpage
+# rssfeeds
+# login
+# info
+# tutorial
+#
+#######################################################################
+-%]
+[%- username = user.get_username -%]
+    <!-- begin: main navigation  -->
+    <nav class="ym-hlist">
+      <ul>
+[% IF active_menu == "info" %]
+         <li class="active"><strong>[% msg.maketext("Informationen") %]</strong></li>
+[% ELSE %]
+          <li><a  href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">[% msg.maketext("Informationen") %]</a></li>
+[% END %]
+[% IF active_menu == "project" %]
+         <li class="active"><strong>[% msg.maketext("Projekt") %]</strong></li>
+[% ELSE %]
+          <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/redaktion.html?l=[% lang %]" title="Projekt">[% msg.maketext("Projekt") %]</a></li>
+[% END %]
+[% IF active_menu == "register" %]
+         <li class="active"><strong>[% msg.maketext("Register") %]</strong></li>
+[% ELSE %]
+          <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/umschlaege/[% config.get('titles_loc') %]/fields/id/0710.html?l=[% lang %]" title="Projekt">[% msg.maketext("Register") %]</a></li>
+[% END %]
+[% IF active_menu == "cloud" %]
+         <li class="active"><strong>[% msg.maketext("&Uuml;bersichten") %]</strong></li>
+[% ELSE %]
+          <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/umschlaege/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a></li>
+[% END %]
+[%- IF active_menu == "searchhistory" -%]
+         <li class="active"><strong>[% msg.maketext("Suchhistorie") %]</strong></li>
+[% ELSE %]
+         <li><a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a></li>
+[% END %]
+[%- IF active_menu == "collection" -%]
+         <li class="active"><strong>[% msg.maketext("Merkliste") %] <span id="ob-collectioncount"></span></strong></li>
+[% ELSE %]
+          <li><a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %] <span id="ob-collectioncount"></span></a></li>
+[% END %]
+     </ul>
+[% IF NOT without_navigation_search %]
+[%   IF user.is_authenticated %]
+[%   autocompletion_type = user.get_autocompletion %]
+[%   livesearch          = user.get_livesearch %]
+[%   IF autocompletion_type == "spelling" && spelling_suggestion.as_you_type %]
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#to_focus").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+  $("#input_box_serials").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+})
+</script>
+[% ELSIF autocompletion_type == "livesearch" && livesearch.fs %]
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#to_focus").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  exact: "[% livesearch.exact %]"
+                }});
+  $("#input_box_serials").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  exact: "[% livesearch.exact %]"
+                }});
+  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  exact: "[% livesearch.exact %]"
+                }});
+})
+</script>
+[%   END %]
+[% END %]
+
+     <form class="ym-searchform" method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
+
+     <input type="hidden" name="num"        value="20" />
+     <input type="hidden" name="page"       value="1" />
+
+     <input type="hidden" name="srt"        value="relevance_desc" />
+     <input type="hidden" name="st"         value="1" />
+     <input type="hidden" name="profile"    value="[% config.get_searchprofile_of_view(view) %]" />
+     <input type="hidden" name="lt"         value="[% qopts.lt %]" />
+     <input type="hidden" name="l"          value="[% lang %]" />
+
+     <input id="to_focus" class="ym-searchfield" type="search" placeholder="[% msg.maketext("Suchen") %]" name="fs" value="[% searchquery.get_searchfield('freesearch').val | html %]" s />
+     <input class="ym-searchbutton" type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" />
+
+      <a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a>&nbsp;|&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/umschlaege/titles.html?l=[% lang %]&srt=title_asc&page=1" class="navlink">Alle Digitalisate</a>
+    </form>
+[% END %]
+    </nav>
+    <!-- end: main navigation -->

@@ -1,0 +1,98 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_browsetit
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Inhalte einer Titel-Kategorie
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+[%- IF field == '0100' ;
+       field_description = msg.maketext("Personen");
+       searchfield = 'ft0100' ;
+    ELSIF field == '0710' ;
+       field_description = msg.maketext("Schlagwort");
+       searchfield = 'ft0710' ;
+     END ; -%]
+
+<body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation"  active_menu='register' %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="#">[% msg.maketext("Register") %]</a></li>
+         <li><a href="#" class="lastitem">[% field_description %]</a></li>
+      </ul>
+     </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
+[% PROCESS common/subtemplate name="subnavigation" active_submenu="register_${field}" %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+[%-
+    request_base    = "num=${queryoptions.get_option('num')};srt=${queryoptions.get_option('srt')}_${queryoptions.get_option('srto')};" ;
+    start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
+    end_range       = nav.current_page*queryoptions.get_option('num');
+    IF end_range >= hits ;
+       end_range       = hits;
+    END;
+
+    query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
+-%]
+
+<h2>[% field_description %]</h2>
+
+<table class="ym-full">
+[% FOREACH item IN browselist %]
+<tr><td><a href="[% path_prefix %]/[% config.get('search_loc') %]?db=[% database %];[% config.get('searchfield').${searchfield}.prefix %]=[% uri_escape(item) %]">[% item %]</a></td></tr>
+[% END %]
+</table>
+
+<p/>
+
+  <div class="ob-footer">
+[% PROCESS common/subtemplate name="pagination" %]
+    <div class="ob-resulttime">
+    </div>
+  </div>
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

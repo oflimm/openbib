@@ -1,0 +1,22 @@
+ <ul>
+[% IF active_submenu == "digitalisierung" %]
+  <li class="active"><strong>[% msg.maketext("Digitalisierung") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/digitalisierung.html?l=[% lang %]">[% msg.maketext("Digitalisierung") %]</a></li>
+[% END %]
+[% IF active_submenu == "provenienz" %]
+  <li class="active"><strong>[% msg.maketext("Provenienz der Digitalisate") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/provenienz.html?l=[% lang %]">[% msg.maketext("Provenienz der Digitalisate") %]</a></li>
+[% END %]
+[% IF active_submenu == "mitarbeiter" %]
+  <li class="active"><strong>[% msg.maketext("Projektmitarbeiter") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/mitarbeiter.html?l=[% lang %]">[% msg.maketext("Projektmitarbeiter") %]</a></li>
+[% END %]
+[% IF active_submenu == "kooperationspartner" %]
+  <li class="active"><strong>[% msg.maketext("Kooperationspartner") %]</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/kooperationspartner.html?l=[% lang %]">[% msg.maketext("Kooperationspartner") %]</a></li>
+[% END %]
+</ul>

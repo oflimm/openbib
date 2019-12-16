@@ -1,7 +1,0 @@
-[%- IF representation == '' || representation == 'html' -%]
-[%- PROCESS common/subtemplate name="users_migration_html" -%]
-[%- ELSIF representation == 'json' -%]
-[%- PROCESS common/subtemplate name="users_migration_json" -%]
-[%- ELSE -%]
-This Resource-Type is not available in the representation [% representation %]
-[%- END -%]

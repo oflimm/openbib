@@ -1,8 +1,0 @@
-[% FOREACH item IN normset.${"P0308"};
-      image_id = item.content;
-%]
-<p>
-<center><img src="http://covers.openlibrary.org/b/id/[% image_id %]-M.jpg" title="OpenLibrary Cover" />
-</p>
-[% END %]
-

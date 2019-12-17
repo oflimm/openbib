@@ -346,7 +346,7 @@ $(document).ready(function(){
 [% END %]
         </div> <!-- end: titleinfo -->
         <div class="ob-titlemark d-none d-md-block">[% IF signatur %][% msg.maketext("Signatur") %]: <span>[% signatur | truncate(config.get('maxlength_mark')) %]</span>[% END %]&nbsp;</div>
-        <div class="ob-titleactions pb-1">
+        <div class="ob-titleactions pb-1 pt-2">
 [% IF tagname %]
         <button href="[% path_prefix %]/[% config.get('tags_loc') %]/names/id/[% tagname %]" class="btn btn-primary pr-2">Tag: [% tagname %]</button>
 [% END %]

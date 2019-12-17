@@ -11,6 +11,8 @@
 #
 #######################################################################
 -%]
+
+<p class="pt-2 pb-2" />
 [%-
 
   request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db']}) ;
@@ -33,7 +35,6 @@
     END;
   END;
 
-  bibkey = record.to_bibkey ;
   isbn   = normdata.${"T0540"}.first.content.replace('-','') ;
   IF NOT isbn ;
       isbn   = normdata.${"T0553"}.first.content.replace('-','') ;
@@ -77,21 +78,6 @@ $(document).ready(function(){
 });
 
 </script>
-
-
-<div class="content"><!-- Begin Fulltitle -->
-
-<div class="ob-category_header">
-[%-  IF locations.size >= 1 -%]
-[%      IF locations.size == 1 %]
-         [% locinfo.identifier.${locations.first}.description %]
-[%      ELSIF locations.size > 1 %]
-         [% msg.maketext('Verschiedene Standorte') %]
-[%      END %]
-[%-  ELSE %]
-[%     dbinfo.get('dbnames').${database}.short %]
-[%   END %]
-</div>
 
 <div class="row flex-md-row-reverse"><!-- Begin Details -->
 
@@ -320,9 +306,5 @@ href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method
 
 [% END # record_exists %]
 </div><!-- End: Bottom Info -->
-
-</div><!-- End Fulltitle -->
-
-<!--</div>--><!-- End record -->
 
 <!-- Title ends here -->

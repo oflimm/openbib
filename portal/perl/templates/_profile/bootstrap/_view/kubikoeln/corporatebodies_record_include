@@ -30,12 +30,14 @@
 [%- 
 
 FOREACH category IN categories;
+    content_category = [];
+
     FOREACH item IN normset.$category;
     content = item.content;
 
     SWITCH category;
 
-    CASE "C5000";
+      CASE "C5000";
          searchterm    = record.id;
          searchprefix  = config.get('searchfield').corporatebodyid.prefix;
 
@@ -46,8 +48,13 @@ FOREACH category IN categories;
 
          localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base};page=1;db=${database};fs=${searchprefix}:${searchterm}";
          content   = "<a href=\"${localurl}\">${content} ${desc}</a>";
-    END;
+         content_category.push(thiscontent);
+	 
+     CASE ;
+         content_category.push(content);
 
+     END;
+   END;
    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
    # in Config.pm fuer die entsprechende Datenbank definiert
    # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
@@ -56,11 +63,13 @@ FOREACH category IN categories;
    IF config.get('categorymapping').${record.database}.$category ;
      thiscategory = "${category}-${record.database}" ;
    END;
-
+   
 -%]
-<tr><th class="ob-field">[% msg.maketext("${thiscategory}") %]</th><td>[% content %]</td></tr>
+[% IF content_category.size > 0  %]
+<tr><th class="ob-field">[% msg.maketext("${thiscategory}") %]</th><td>[% content_category.join(' ; ') %]</td></tr>
 [%-
    END;
+
 END;
 -%]
 </table>

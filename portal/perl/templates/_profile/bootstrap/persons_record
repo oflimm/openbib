@@ -1,10 +1,13 @@
 [%- PROCESS common/subtemplate name="local_config" -%] 
-[% IF representation == '' || representation == 'html' ;
-    dbdesc   = dbinfo.get('dbnames').${database}.short ;
-    normset  = record.to_rawdata;   
-    request_base = queryoptions.to_cgi_params({exclude = ['profile','page','db']});
+[%
 
-    recordname = normset.${'P0800'}.first.content;
+  dbdesc   = dbinfo.get('dbnames').${database}.short ;
+  normset  = record.to_rawdata;   
+  request_base = queryoptions.to_cgi_params({exclude = ['profile','page','db']});
+
+  recordname = normset.${'P0800'}.first.content;
+
+  IF representation == '' || representation == 'html' ;
 
     layout_param = {
       'page_title' = msg.maketext("Personen-Information: [_1] in Katalog [_2]",recordname,dbdesc)

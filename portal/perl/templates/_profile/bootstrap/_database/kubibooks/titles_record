@@ -13,6 +13,12 @@
        NEXT IF NOT fieldcontent ;
        used_fields.push( "<b>${fieldname}</b>: ${fieldcontent}" );
     END;
+
+    IF record.record_exists;
+      record_exists = 1;
+    END;
+
+
 -%]
 [%- IF representation == '' || representation == 'html' ;
     layout_param = {
@@ -40,10 +46,6 @@
       ]
 
     };
-
-    IF record.record_exists;
-      record_exists = 1;
-    END;
 
     IF record_exists ;
        layout_param.representations = [

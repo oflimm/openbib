@@ -392,6 +392,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [%
     # Availability Types
     # msg.maketext("online")             Online
+    # msg.maketext("lent")               Ausgeliehen
     # msg.maketext("lendable")           Ausleihbar
     # msg.maketext("lendable_immediate") Ausleihbar - sofort
     # msg.maketext("lendable_order")     Ausleihbar - nach Bestellung

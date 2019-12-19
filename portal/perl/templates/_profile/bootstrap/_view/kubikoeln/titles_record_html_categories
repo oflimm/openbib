@@ -21,13 +21,14 @@
       topic_map.${topic.id} = topic.name;
    END;
 
+   permalink = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.id}"
+
    catalog_has_authorities = config.get('source_systems').${config.get_system_of_db(record.database)}.has_authorities;
 -%]
 [% IF format == "full" %]
 
 <div class="table-responsive">
 <table class="table ob-title_fields">
-<tr><th class="ob-field">id</th><td>[% record.id %]</td></tr>
 
 [%-
    request_base = config.get('search_defaultparams');
@@ -120,7 +121,7 @@ FOREACH category IN categories;
          content_category.push(content);
 
     CASE "T0331";
-         content   = "<b>${highlightquery(searchquery,content)}</b>";
+         content   = "<i>${highlightquery(searchquery,content)}</i>";
          content_category.push(content);
 
 #    CASE [ "T0531" "T0533" ];
@@ -343,7 +344,7 @@ FOREACH category IN categories;
 
    IF content_category.size > 0;
 -%]
-<tr><th class="ob-field">[% msg.maketext("${thiscategory}") %]</th><td>[% content_category.join(' ; ') %]</td></tr>
+<tr><th>[% msg.maketext("${thiscategory}") %]</th><td>[% content_category.join(' ; ') %]</td></tr>
 [%-
    END;
 END;
@@ -351,6 +352,7 @@ END;
 [%- IF currently_unavailable -%]
 <tr><th class="ob-field">[% msg.maketext("Volltext")%]</th><td>derzeit nicht verf&uuml;gbar (z.B. noch im Erwerbungsvorgang)</td></tr>
 [%- END -%]
+<tr><th class="ob-field">Perma-Link</th><td>[% permalink %]</td></tr>
 </table>
 [% ELSIF format == "BibTeX" %]
 <div>

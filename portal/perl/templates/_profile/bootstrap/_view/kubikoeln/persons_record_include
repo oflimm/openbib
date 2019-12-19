@@ -17,7 +17,7 @@
 
 <div class="row">
 
-<div class="categories col-md-6"><!-- Begin Categories -->
+<div class="categories col-md-12"><!-- Begin Categories -->
 
 <div class="ob-category_header">[% dbinfo.get('dbnames').${database}.short %]</div>
 
@@ -87,14 +87,21 @@ FOREACH category IN categories;
               categoryout = "Berufsbezeichnung";
             CASE "o";
               categoryout = "Beziehungen";
-            CASE "u";
+            CASE ["u"," "];
               categoryout = "Sonstige Daten";
+	    CASE ;
+	      categoryout = "";
          END;
-	 thiscontent = "${categorycout}: ${content}";
+	 IF categoryout ;
+	    thiscontent = "${categoryout}: ${content}";
+	 ELSE ;
+	    thiscontent = content;
+	 END;
          content_category.push(thiscontent);
 
 
       CASE "P0830";
+         categoryout = "";
          SWITCH subfield ;
             CASE "a";
               categoryout = "Pseudonym";
@@ -165,10 +172,6 @@ END;
 </div>
 
 </div><!-- End Categories -->
-
-<div class="images col-md-6"><!-- Begin Images -->
-[% PROCESS common/subtemplate name="persons_record_html_images" %]
-</div><!-- End Images -->
 
 </div><!-- End row -->
 </div><!-- End Details -->

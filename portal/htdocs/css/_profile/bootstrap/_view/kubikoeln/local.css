@@ -161,11 +161,16 @@
     .ob-resultheader {
 	position: relative;
 	width: auto;  
-	padding: 5px;
+	padding: 10px;
 	padding-right: 0px;
-	min-height: 10px;
+	min-height: 35px;
 	height: auto;
 	margin-bottom: 25px;
+
+	border-style: solid;
+	border-color: #edebe3;
+	border-width: 1px;
+	
 /*  height: 35px;
        background-color: #fef6e2;
        border-left-style: solid
@@ -401,6 +406,7 @@
 	margin-top: 5px;
 	margin-right: 5px;
 	width: 99.7%;
+	
 /*
     border-top-style: solid;
     border-top-color: #edebe3;

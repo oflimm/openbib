@@ -15,6 +15,8 @@
 # record
 # dbinfo 
 #
+# Anpassung: Thumbnail direkt aus der OpenLibrary via TitelID
+#
 #######################################################################
 -%]
 <!-- Anfang einzelner Treffer -->
@@ -313,7 +315,7 @@ $(document).ready(function(){
 
       <div class="ob-numbering">[% IF with_id_checkbox %]<input type="checkbox" name="id" value="[% record.listid %]"  title="collection_item" />&nbsp;[% END %][% start_range+loop.count - 1 %]</div>
       <div class="ob-thumbnail pt-3 pl-5 mr-0 d-none d-md-block">
-    [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
+    [% IF (config.get('coverscans').all || config.get('coverscans').${database}) %]<img src="http://covers.openlibrary.org/b/olid/[% record.id %]-S.jpg" title="OpenLibrary Cover" />[% ELSE %]&nbsp;[% END %]
       </div>
       <div class="ob-brieftitle pl-5">
 [%# USE dumper;dumper.dump(dbinfo) %]

@@ -13,57 +13,14 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Grundlegende Statistikinformationen' %]
 
-  <body>
+<h3>[% msg.maketext("Allgemeine Statistikdaten") %]</h3>
 
-<!-- skip link navigation -->
-<ul class="ym-skiplinks">
-	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
-	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
-</ul>
-
-<div class="ym-wrapper">
-  <div class="ym-wbox">
-
-[% PROCESS common/subtemplate name="corporate_banner" %]
-
-[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
-
-    <!-- begin: main content area #main -->
-    <div id="main">
-
-   <div class="ob-functional_nav">
-     <div class="ob-breadcrumb">
-       <ul>
-         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %].html?l=[% lang %]">[% msg.maketext("Statistiken") %]</a></li>
-         <li><a href="#" class="lastitem">[% msg.maketext("Allgemein") %]</a></li>
-       </ul>
-     </div>
-    <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
-    </div>
-   </div>
-
-    <div class="ym-column linearize-level-1">
-      <div class="ym-col1">
-        <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_statistics" active_subsubmenu="general"%]
-        </div>
-      </div>
-      <!-- end: #col1 -->
-      <!-- begin: #col3 static column -->
-      <div class="ym-col3" >
-        <div class="ym-cbox" class="ym-clearfix">
-
-<h3>[% msg.maketext("Allgemeine Statistikdaten zu OpenBib") %]</h3>
-
-<table class="ym-full">
+<div class="table-responsive">
+<table class="table table-striped table-hover">
 <tr><th>[% msg.maketext("Anzahl der Titels&auml;tze (Alle/Zeitschriften-Serien/Artikel/Online)") %]</th><td><b>[%- titcount = config.get_number_of_titles -%][% titcount.allcount %] / [% titcount.journalcount %] / [% titcount.articlecount %] / [% titcount.digitalcount %]</b></td><td></td></tr>
 <tr><th>[% msg.maketext("Anzahl der Kataloge (aktiv/gesamt)") %]</th><td><b>[% config.get_number_of_dbs %] / [% config.get_number_of_all_dbs %]</b></td><td></td></tr>
-<tr><th>[% msg.maketext("Anzahl der Spezialsichten (aktiv/gesamt)") %]</th><td><b>[% config.get_number_of_views %] / [% config.get_number_of_all_views %]</b></td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="[% config.get('chart_img') %]" alt="Diagramm" />&nbsp;<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/view/session/graph.html">[% msg.maketext("Grafik") %]</a></td></tr>
+<tr><th>[% msg.maketext("Anzahl der Spezialsichten (aktiv/gesamt)") %]</th><td><b>[% config.get_number_of_views %] / [% config.get_number_of_all_views %]</b></td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="[% config.get_icon('chart',view,sysprofile) %]" alt="Diagramm" />&nbsp;<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/view/session/graph.html">[% msg.maketext("Grafik") %]</a></td></tr>
 <tr><th>[% msg.maketext("Anzahl vergebener Tags / Titel / Nutzer") %]</th><td><b>[% user.get_number_of_tags %] / [% user.get_number_of_tagged_titles %] / [% user.get_number_of_tagging_users %]</b></td><td></td></tr>
 <tr><th>[% msg.maketext("Anzahl der Literaturlisten (&ouml;ffentlich/privat)") %]</th><td>[% ret = user.get_number_of_litlists %]<b>[% ret.public %] / [% ret.private %]</b></td><td></td></tr>
 <tr><th>[% msg.maketext("Anzahl der Nutzer") %]</th><td><b>[% user.get_number_of_users %]</b></td><td></td></tr>
@@ -72,13 +29,4 @@
 </table>
 </td></td>
 </table>
-
-        </div>
-        <div class="ym-ie-clearing">&nbsp;</div>
-        <!-- End: IE Column Clearing -->
-      </div>
-     </div> <!-- end: ym-column -->
-    </div>
-    <!-- end: #main -->
-
-[% PROCESS common/subtemplate name="std_footer" %]
+</div>

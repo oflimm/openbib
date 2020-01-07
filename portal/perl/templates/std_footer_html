@@ -11,14 +11,22 @@
 #
 #######################################################################
 -%]
+<!-- begin: footer -->
 
 [% IF NOT hide_foot_banner %]
-    <!-- begin: #footer -->
-    <footer role="contentinfo">[% msg.maketext("Diese Website demonstriert ein Recherche-Portal") %]&nbsp;&nbsp;::&nbsp;&nbsp;[% msg.maketext("realisiert mit") %] <a href="https://github.com/oflimm/openbib" target="_blank">OpenBib</a>&nbsp;&nbsp;::&nbsp;&nbsp;Layout based on <a href="http://www.yaml.de/">YAML</a>&nbsp;&nbsp;::&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('info_loc') %]/impressum.html?l=[% lang %]">[% msg.maketext("Impressum") %]</a>&nbsp;&nbsp;::&nbsp;&nbsp;<tt>[% config.get('version')%] </tt></footer>
-    <!-- end: #footer -->
+<div class="card mt-3">
+    <div class="card-body p-2">
+      <div class="row">
+      <div class="col-md-6 mx-auto d-none d-lg-block"><b>[% config.get_viewdesc_from_viewname(view) %]</b> [% msg.maketext("ist ein Dienst der Universitäts- und Stadtbibliothek Köln") %]
+      </div>
+      <div class="col-md-6 mr-0 d-none d-block text-md-right text-sm-left">
+      <a href="https://www.ub.uni-koeln.de/ueber_uns/ansprechpartner/dezentralebibliotheken/index_ger.html" target="_blank">[% msg.maketext("Kontakt") %]</a>&nbsp;&nbsp;::&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('info_loc') %]/impressum.html?l=[% lang %]">[% msg.maketext("Impressum") %]</a>&nbsp;&nbsp;::&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('info_loc') %]/datenschutz.html?l=[% lang %]">Datenschutzerklärung</a>
+      </div>
+    </div>
+
+   </div>
+</div>
 [% END %]
 
-</div> <!-- ym-wbox -->
-</div> <!-- ym-wrapper -->
-</body>
-</html>
+<!-- end: footer -->
+

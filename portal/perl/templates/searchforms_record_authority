@@ -1,208 +1,28 @@
-[%#-
-#######################################################################
-#
-# Templatename: searchform_advance
-#
-# Typ         : Mastertemplate
-#
-# Aufgabe:
-#
-# Ausgabe der Erweiterten Suchmaske
-#
-#######################################################################
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+     'page_title' = 'Normdaten-Recherche'
+
+      'main_template' = 'searchforms_record_authority_html'
+      'sidebar_template' = 'subnavigation'
+      'active_menu' = 'searchform'
+      'active_submenu' = 'searchform_authority'
+
+      'without_navigation_search' = '1'
+
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Normdaten-Recherche')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+    };
 -%]
-[% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
-
-  <body>
-
-<!-- skip link navigation -->
-<ul class="ym-skiplinks">
-	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
-	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
-</ul>
-
-<div class="ym-wrapper">
-  <div class="ym-wbox">
-
-[% PROCESS common/subtemplate name="corporate_banner" start=1 %] 
-
-    <!-- begin: main content area #main -->
-    <div id="main">
-
-   <div class="ob-functional_nav">
-     <div class="ob-breadcrumb">
-       <ul>
-         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
-         <li><a href="#" class="lastitem">[% msg.maketext("Normdaten-Recherche") %]</a></li>
-      </ul>
-     </div>
-   </div>
-
-    <div class="ym-column linearize-level-1">
-      <div class="ym-col1">
-        <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="subnavigation" active_menu='searchform' active_submenu='searchform_authority' %]
-        </div>
-      </div>
-      <!-- end: #col1 -->
-      <!-- begin: #col3 static column -->
-      <div class="ym-col3" >
-        <div class="ym-cbox" class="ym-clearfix">
-
-[% PROCESS common/subtemplate name="searchforms_suggestions" %]
-
-<script type="text/javascript">
-function update_per (){
-  if ($("#autocomplete_per").val().length > 0){
-     $("#autocomplete_gnd").prop('disabled', true);	
-     $("#autocomplete_subj").prop('disabled', true);
-     $("#autocomplete_corp").prop('disabled', true);
-     $("#to_focus").prop('disabled', true);
-  }
-  else {
-     $("#autocomplete_gnd").prop('disabled',false);
-     $("#autocomplete_subj").prop('disabled',false);
-     $("#autocomplete_corp").prop('disabled',false);
-     $("#to_focus").prop('disabled',false);
-  }
-};
-
-function update_subj (){
-  if ($("#autocomplete_subj").val().length > 0){
-     $("#autocomplete_gnd").prop('disabled',true);
-     $("#autocomplete_per").prop('disabled', true);
-     $("#autocomplete_corp").prop('disabled', true);
-     $("#to_focus").prop('disabled', true);
-  }
-  else {
-     $("#autocomplete_gnd").prop('disabled',false);
-     $("#autocomplete_per").prop('disabled',false);
-     $("#autocomplete_corp").prop('disabled',false);
-     $("#to_focus").prop('disabled',false);
-  }
-};
-
-function update_corp (){
-  if ($("#autocomplete_corp").val().length > 0){
-     $("#autocomplete_gnd").prop('disabled',true);
-     $("#autocomplete_subj").prop('disabled', true);
-     $("#autocomplete_per").prop('disabled', true);
-     $("#to_focus").prop('disabled', true);
-  }
-  else {
-     $("#autocomplete_gnd").prop('disabled',false);
-     $("#autocomplete_subj").prop('disabled',false);
-     $("#autocomplete_per").prop('disabled',false);
-     $("#to_focus").prop('disabled',false);
-  }
-};
-
-function update_fs (){
-  if ($("#to_focus").val().length > 0){
-     $("#autocomplete_gnd").prop('disabled',true);
-     $("#autocomplete_subj").prop('disabled', true);
-     $("#autocomplete_per").prop('disabled', true);
-     $("#autocomplete_corp").prop('disabled', true);
-  }
-  else {
-     $("#autocomplete_gnd").prop('disabled',false);
-     $("#autocomplete_subj").prop('disabled',false);
-     $("#autocomplete_per").prop('disabled',false);
-     $("#autocomplete_corp").prop('disabled',false);
-  }
-};
-
-function update_gnd (){
-  if ($("#autocomplete_gnd").val().length > 0){
-     $("#autocomplete_subj").prop('disabled', true);
-     $("#autocomplete_per").prop('disabled', true);
-     $("#autocomplete_corp").prop('disabled', true);
-     $("#to_focus").prop('disabled', true);
-  }
-  else {
-     $("#autocomplete_subj").prop('disabled',false);
-     $("#autocomplete_per").prop('disabled',false);
-     $("#autocomplete_corp").prop('disabled',false);
-     $("#to_focus").prop('disabled', false);
-  }
-};
-
-</script>
-
-<form class="ym-form" method="get" action="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]">
-<input type="hidden" name="num"        value="20" />
-<input type="hidden" name="page"       value="1" />
-
-<input type="hidden" name="srt"        value="authority_asc" />
-<input type="hidden" name="st"         value="3" />
-<input type="hidden" name="lt"         value="[% qopts.lt %]" />
-
-<fieldset class="ym-columnar">
-<legend>[% msg.maketext("Normdaten") %]</legend>
-
-[%# USE dumper;dumper.dump(available_searchfields)%]
-
-[%- cgiparam = config.searchfield.freesearch.prefix ;
-    this_searchfield = 'freesearch';
--%]
-<div class="ym-fbox-text">
-<label for="to_focus">[% msg.maketext("Freie Suche") %]</label>
-<input onkeypress="update_[% cgiparam %]()" id="to_focus" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
-</div>
-
-[%- cgiparam = config.searchfield.gnd.prefix;
-    this_searchfield = 'gnd';
- -%]
-<div class="ym-fbox-text">
-<label for="autocomplete_[% cgiparam %]">GND</label>
-<input onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
-</div>
-
-[%- cgiparam = config.searchfield.person.prefix;
-    this_searchfield = 'person';
- -%]
-<div class="ym-fbox-text">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Personen") %]</label>
-<input onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
-</div>
-
-[%- cgiparam = config.searchfield.corporatebody.prefix;
-    this_searchfield = 'corporatebody';
- -%]
-<div class="ym-fbox-text">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Institutionen") %]</label>
-<input onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
-</div>
-
-[%- cgiparam = config.searchfield.subject.prefix;
-    this_searchfield = 'subject';
- -%]
-<div class="ym-fbox-text">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Schlagworte") %]</label>
-<input onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
-</div>
-
-<div class="ym-fbox-select">
-<label for="[% cgiparam %]">[% msg.maketext("in:") %]</label>
-[% PROCESS common/subtemplate name="searchforms_record_profile" %]
-</div>
-
-<p/>
-
-<div class="ym-fbox-button">
-<input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" />
-</div>
-
-</fieldset>
-
-</form>
-
-        </div>
-        <div class="ym-ie-clearing">&nbsp;</div>
-        <!-- End: IE Column Clearing -->
-      </div>
-     </div> <!-- end: ym-column -->
-    </div>
-    <!-- end: #main -->
-
-[% PROCESS common/subtemplate name="std_footer" %]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

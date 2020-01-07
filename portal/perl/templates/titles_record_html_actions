@@ -1,14 +1,13 @@
 <div class="ob-reuse_data"><!-- Begin Reuse -->
 
 <style>
-.ob-cloud {
-  font-size: 150%;
-}
-
 </style>
 
 
 [%
+
+  normdata = record.get_fields;
+  
   private_tags_of_tit = [];
   IF user.ID ;
     private_tags        = user.get_private_tags_by_name({ userid => user.ID  }).first;
@@ -16,87 +15,134 @@
   END ;
 %]
 
-<div class="ob-category_header"><span id="ob-record_title_save_toggle">[% msg.maketext("Behalten Sie diesen Titel") %]:&nbsp;<img class="ob-responsive_toggle_button" style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<h4>[% msg.maketext("Dieser Titel") %]</h4>
 
-<div id="ob-record_title_save_toggle_do">
-<p/>
-<img src="[% config.get('share_img') %]" alt="[% msg.maketext("An BibSonomy senden") %]" title="[% msg.maketext("An BibSonomy senden") %]" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/to_bibsonomy.html?l=[% lang %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a><br/>
-<img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" />&nbsp;<a class="ob-collection" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a><br/>
+<div id="ob-title_actions" class="accordion"><!-- Begin Litlist -->
+
+  <div class="card">
+    <div class="card-header" id="headingActions">
+      <h5 class="mb-0">
+        <a class="card-link" href="#collapseActions" data-toggle="collapse" data-target="#collapseActions" aria-expanded="true" aria-controls="collapseActions">
+          [% msg.maketext("Aktionen") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseActions" class="collapse show" aria-labelledby="headingActions" data-parent="#ob-title_actions">
+      <div class="card-body">
+
+<div class="pt-2">
+<img src="[% config.get_icon('share',view,sysprofile) %]" alt="[% msg.maketext("An BibSonomy senden") %]" title="[% msg.maketext("An BibSonomy senden") %]" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/to_bibsonomy.html?l=[% lang %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a>
+</div>
+
+<div class="pt-2">
+<img src="[% config.get_icon('listofinterest_small',view,sysprofile) %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" />&nbsp;<a class="ob-collection" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a>
+</div>
+
 [% IF user.ID %]
-<img src="[% config.get('mail_img') %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/mail.html?l=[% lang %];format=Text" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a><br/>
+<div class="pt-2">
+<img src="[% config.get_icon('mail',view,sysprofile) %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/mail.html?l=[% lang %];format=Text" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a>
+</div>
 [% END %]
-<img src="[% config.get('save_img') %]" alt="[% msg.maketext("Abspeichern") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/save.html?l=[% lang %];format=Text" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a><br/>
-<img src="[% config.get('print_img') %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/print.html?l=[% lang %];format=short" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a><br/>
 
-<p />
-<div class="ob-formats"><!-- Begin Formats -->
-<div class="ob-headline"><span id="ob-formats_toggle">[% msg.maketext("Andere Formate") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
-<div id="ob-formats_do"><!-- Begin formats do -->
+<div class="pt-2">
+<img src="[% config.get_icon('save',view,sysprofile) %]" alt="[% msg.maketext("Abspeichern") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/save.html?l=[% lang %];format=Text" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a>
+</div>
+
+<div class="pt-2">
+<img src="[% config.get_icon('print',view,sysprofile) %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/print.html?l=[% lang %];format=short" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="ob-formats" class="accordion"><!-- Begin Formats -->
+
+  <div class="card">
+    <div class="card-header" id="headingFormats">
+      <h5 class="mb-0">
+        <a class="card-link" href="#collapseFormats" data-toggle="collapse" data-target="#collapseFormats" aria-expanded="false" aria-controls="collapseFormats">
+          [% msg.maketext("Andere Formate") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseFormats" class="collapse" aria-labelledby="headingFormats" data-parent="#ob-formats">
+      <div class="card-body">
 <p>
 <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %];format=full" [%- IF format == 'full' || format == '' -%]class="ob-selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %];format=Text" [%- IF format == 'Text'-%]class="ob-selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %];format=BibTeX" [%- IF format == 'BibTeX'-%]class="ob-selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %];format=EndNote" [%- IF format == 'EndNote'-%]class="ob-selected_item"[%- END -%]>EndNote</a> 
 </p>
-</div>
-<p/>
+      </div>
+    </div>      
+  </div>
 </div>
 
 [% IF config.get('litlists') %]
-<div class="ob-litlists"><!-- Begin Litlist -->
-<div class="ob-headline"><span id="ob-litlists_toggle">[% msg.maketext("Literaturliste") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
-<div id="ob-litlists_do"><!-- Begin Litlist do -->
+<div id="ob-litlists" class="accordion"><!-- Begin Litlist -->
+
+  <div class="card">
+    <div class="card-header" id="headingLitlists">
+      <h5 class="mb-0">
+        <a class="card-link" href="#collapseLitlists" data-toggle="collapse" data-target="#collapseLitlists" aria-expanded="false" aria-controls="collapseLitlists">
+          [% msg.maketext("Literaturliste") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseLitlists" class="collapse" aria-labelledby="headingLitlists" data-parent="#ob-litlists">
+      <div class="card-body">
+
 [%
       userlitlists = user.get_litlists({ view => view });
 
       IF userlitlists.size > 0 ;
 %]
-<form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]" class="ym-form">
-<fieldset class="ym-columnar">
+<form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]">
+
 <legend>[% msg.maketext("&Uuml;bernahme dieses Titels in die bestehende Literaturliste: ") %]</legend>
 <input type="hidden" name="redirect_to"       value="[% uri_escape(location) %]" />
 <input type="hidden" name="titleid"           value="[% record.id %]" />
 <input type="hidden" name="dbname"            value="[% record.database %]" />
-<div class="ym-fbox-select">
+<div class="form-group">
 <label for="litlistid">[% msg.maketext("Name") %]</label>
-<select name="litlistid" id="litlistid">[% FOREACH litlist IN userlitlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>
+<select class="form-control" name="litlistid" id="litlistid">[% FOREACH litlist IN userlitlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>
 </div>
 
-<div class="ym-fbox-button">
-<input type="submit" value="[% msg.maketext("Los") %]" />
-</div>
+<button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Los") %]</button>
 
-</fieldset>
 </form>
 [% END %]
 
 <p>
-<form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]" class="ym-form">
-<fieldset class="ym-columnar">
+<form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]">
+
 <legend>[% msg.maketext("&Uuml;bernahme dieses Titels in eine neue Literaturliste: ") %]</legend>
 <input type="hidden" name="redirect_to"      value="[% uri_escape(location) %]" />
 <input type="hidden" name="titleid"          value="[% record.id %]" />
 <input type="hidden" name="dbname"           value="[% record.database %]" />
 
-<div class="ym-fbox-text">
+<div class="form-group">
 <label for="title">[% msg.maketext("Name") %]</label>
-<input type="text" name="title" id="title" size="20" />
+<input class="form-control" type="text" name="title" id="title" size="20" />
 </div>
 
-<div class="ym-fbox-select">
+<div class="form-group">
 <label for="type">[% msg.maketext("Sichtbarkeit") %]</label>
-<select name="type" id="type"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select>
+<select class="form-control" name="type" id="type"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select>
 </div>
 
-<div class="ym-fbox-button">
-<input type="submit" value="[% msg.maketext("Los") %]" />
-</div>
+<button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Los") %]</button>
 
-</fieldset>
 </form>
 <p/>
 
 </div><!-- End Litlist do-->
 </div><!-- End Litlist -->
-
-<p />
+</div>
+</div>
 [% END %]
 
 [%
@@ -111,38 +157,45 @@
   ];
 %]
 
-<div class="ob-tagging"><!-- Begin: Tagging -->
-<div class="ob-headline"><span id="ob-tagging_toggle">[% msg.maketext("Tagging") %]<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle"></span></div>
-<div id="ob-tagging_do"><!-- Begin Tagging do -->
+<div id="ob-tagging" class="accordion"><!-- Begin: Tagging -->
+
+  <div class="card">
+    <div class="card-header" id="headingTagging">
+      <h5 class="mb-0">
+        <a class="card-link" href="#collapseTagging" data-toggle="collapse" data-target="#collapseTagging" aria-expanded="false" aria-controls="collapseTagging">
+          [% msg.maketext("Tagging") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseTagging" class="collapse" aria-labelledby="headingTagging" data-parent="#ob-tagging">
+      <div class="card-body">
 
 [%  IF private_tags_of_tit.size <= 0  %]
-<form method="post" action="[% path_prefix %]/[% config.get('tags_loc') %]" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('tags_loc') %]">
 
 <input type="hidden" name="redirect_to" value="[% uri_escape(location) %]" />
 <input type="hidden" name="dbname" value="[% record.database %]"/>
 <input type="hidden" name="titleid" value="[% record.id %]"/>
 
-<fieldset class="ym-columnar">
+
 <legend>[% msg.maketext("Eingabe neuer Tags") %]</legend>
 
-<div class="ym-fbox-text">
+<div class="form-group">
 <label for="tags">[% msg.maketext("Tags") %]</label>
-<input type="text" name="tags" value="" size="20" maxlength="200" id="tags"/>
+<input class="form-control" type="text" name="tags" value="" size="20" maxlength="200" id="tags"/>
 </div>
 
-<div class="ym-fbox-select">
+<div class="form-group">
 <label for="tags_type">[% msg.maketext("Sichtbarkeit") %]</label>
-<select name="type" id="tags_type">
+<select class="form-control" name="type" id="tags_type">
   <option value="1">[% msg.maketext("&ouml;ffentlich") %]</option>
   <option value="2">[% msg.maketext("privat") %]</option>
 </select>
 </div>
 
-<div class="ym-fbox-button">
-<input type="submit" value="[% msg.maketext("Hinzuf&uuml;gen") %]" />
-</div>
+<button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Hinzuf&uuml;gen") %]</button>
 
-</fieldset>
 </form>
 
 [%
@@ -219,33 +272,25 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 
 [% ELSIF username && private_tags_of_tit.size > 0 %]
 
-<form method="post" action="[% path_prefix %]/[% config.get('tags_loc') %]" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('tags_loc') %]">
 <input type="hidden" name="dbname" value="[% record.database %]"/>
 <input type="hidden" name="titleid" value="[% record.id %]"/>
 <input type="hidden" name="redirect_to" value="[% uri_escape(location) %]" />
 
-<fieldset class="ym-columnar">
-
-<div class="ym-fbox-text">
+<div class="form-group">
 <label for="tags">[% msg.maketext("Tags") %]</label>
-<input type="text" name="tags" id="tags" value="" size="30" maxlength="200"/>
+<input class="form-control" type="text" name="tags" id="tags" value="" size="30" maxlength="200"/>
 </div>
 
-<div class="ym-fbox-select">
+<div class="form-group">
 <label for="type">[% msg.maketext("Typ:") %]</label>
-<select name="type">
+<select class="form-control" name="type">
   <option value="1" [% IF private_tags.first.type == 1 %]selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option>
   <option value="2" [% IF private_tags.first.type == 2 %]selected="selected"[% END %]>[% msg.maketext("privat") %]</option>
 </select>
 </div>
 
-<div class="ym-fbox-button">
-
-<input type="submit" value="[% msg.maketext("Hinzuf&uuml;gen") %]" />
-
-</div>
-
-</fieldset>
+<button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Hinzuf&uuml;gen") %]</button>
 
 </form>
 
@@ -263,21 +308,39 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 <p/>
 </div><!-- End: Tagging -->
 
-</div><!-- End: ob-record_title_save_toggle -->
+<!-- </div><!-- End: ob-record_title_save_toggle -->
+
+<!-- </div><!-- End: card-body --> 
+<!-- </div><!-- End: card -->
 </div><!-- End Reuse -->
+</div>
 
+</div>
+
+
+[% IF NOT disable_discover_sources %]
 <div class="ob-discover_sources"><!-- Begin Discover-Sources -->
-<div class="ob-category_header"><span id="ob-record_title_discover_toggle">[% msg.maketext("Entdecken Sie weitere Titel &uuml;ber:") %]&nbsp;<img class="ob-responsive_toggle_button" style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 
-<div id="ob-record_title_discover_toggle_do">
+<h4>[% msg.maketext("Entdecken Sie weitere Titel") %]</h4>
+
 <p/>
 
-<!-- Anfang Empfehlungen -->
 [% IF normdata.exists('E4000') %]
-<div class="ob-recommendation"><!-- Begin Empfehlungen -->
-<div class="ob-headline">[% msg.maketext("Empfehlungen") %]</div>
+<!-- Anfang Empfehlungen -->
+<div id="ob-recommendation" class="accordion"><!-- Begin Empfehlungen -->
+  <div class="card">
+    <div class="card-header" id="headingRecommendations">
+      <h5 class="mb-0">
+        <a class="card-link" href="#collapseRecommendations" data-toggle="collapse" data-target="#collapseRecommendations" aria-expanded="false" aria-controls="collapseRecommendations">
+          [% msg.maketext("Empfehlungen") %]
+        </a>
+      </h5>
+    </div>
 
-<table>
+    <div id="collapseRecommendations" class="collapse" aria-labelledby="headingRecommendations" data-parent="#ob-recommendation">
+      <div class="card-body">
+
+<ul class="list-group">
 [%-   isbnitems = normdata.${"E4000"} -%]
 [%-   hstitems  = normdata.${"E4001"} -%]
 [%- FOREACH isbnitem IN isbnitems -%]
@@ -285,53 +348,93 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 [%-   hstitem = hstitems.${isbnidx} -%]
 [%-   globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base};isbn=${isbnitem.content}" -%]
 [%-   IF hstitem.content.defined -%]
-<tr><td>[% hstitem.content %]<a href="[% globalurl %]">[suchen]</a></td></tr>
+<li class="list-group-item">[% hstitem.content %]<a href="[% globalurl %]">[suchen]</a></li>
 [%-   END -%]
 [%- END -%]
-</table>
+</ul>
 <p/>
 </div>
-[% END %]
+</div>
+</div>
+</div>
+
 <!-- Ende Empfehlungen -->
+[% END %]
 
-<!-- Ende Tags -->
+[%
 
+have_isbn = 0;
+
+IF normdata.exists('T0540') || normdata.exists('T0553');
+  have_isbn = 1;
+END;
+
+%]
+
+[% IF have_isbn %]
 <script>
 $(document).ready(function(){
     $("#ob-related_nojs").hide();
-    $(".ob-related .ob-headline").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-related_loading\" />"); 
+    $("#collapseRelated .card-body").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-related_loading\" />"); 
     $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/related_records.include?l=[% lang %]",
         function (txt){
-            $("#ob-related").html(txt);
+            $("#collapseRelated .card-body").html(txt);
             $("#ob-related_loading").hide();
         });
 });
 </script>
 
 <!-- Anfang Thematisch relevante Titel (Wikipedia) -->
-<div class="ob-related"><!-- Begin thematisch Relevant -->
- <div class="ob-headline">Literaturanalyse in der Wikipedia</div>
- <div id="ob-related">
+<div id="ob-related" class="accordion"><!-- Begin thematisch Relevant -->
+
+  <div class="card">
+    <div class="card-header" id="headingRelated">
+      <h5 class="mb-0">
+        <a class="card-link" href="#collapseRelated" data-toggle="collapse" data-target="#collapseRelated" aria-expanded="false" aria-controls="collapseRelated">
+          [% msg.maketext("Literaturanalyse in der Wikipedia") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseRelated" class="collapse" aria-labelledby="headingRelated" data-parent="#ob-related">
+      <div class="card-body">
+
    <p id="ob-related_nojs">
    <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/related_records.html?l=[% lang %]">Thematisch relevante Titel anzeigen?</a>
    </p>   
- </div>
-
- <p/>
+     </div>
+</div>
+</div>
 </div>
 
 <!-- Ende Empfehlungen -->
+[% END %]
 
 <!-- Anfang Literaturlisten -->
 [% IF litlists.size > 0 %]
-<div class="ob-available_litlists"><!-- Begin Vorhandene Literaturlisten -->
-<div class="ob-headline">[% msg.maketext("Literaturlisten") %]</div>
+<div id="ob-available_litlists" class="accordion"><!-- Begin Vorhandene Literaturlisten -->
+
+  <div class="card">
+    <div class="card-header" id="headingAvailableLitlists">
+      <h5 class="mb-0">
+        <a class="card-link" href="#collapseAvailableLitlists" data-toggle="collapse" data-target="#collapseAvailableLitlists" aria-expanded="false" aria-controls="collapseAvailableLitlists">
+          [% msg.maketext("Literaturlisten") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseAvailableLitlists" class="collapse" aria-labelledby="headingAvailableLitlists" data-parent="#ob-available_litlists">
+      <div class="card-body">
+      
 <ul>
 [% FOREACH litlist IN litlists %]
 <li><a href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].html">[% litlist.title %]</a>&nbsp;([% litlist.itemcount %])</li>
 [% END %]
 </ul>
 <p/>
+</div>
+</div>
+</div>
 </div>
 [% END %]
 <!-- Ende Literaturlisten -->
@@ -356,8 +459,19 @@ $(document).ready(function(){
 
 [%# USE dumper;dumper.dump(more_subjects)%]
 [% IF more_subjects.size > 0 %]
-<div class="available_subjects"><!-- Begin Vorhandene Schlagworte -->
-<div class="ob-headline">[% msg.maketext("Verschlagwortung dieses Titels in anderen Katalogen") %]</div>
+<div id="ob-available_subjects" class="accordion"><!-- Begin Vorhandene Schlagworte -->
+
+  <div class="card">
+    <div class="card-header" id="headingAvailableSubjects">
+      <h5 class="mb-0">
+        <a class="card-link" href="#collapseAvailableSubjects" data-toggle="collapse" data-target="#collapseAvailableSubjects" aria-expanded="false" aria-controls="collapseAvailableSubjects">
+          [% msg.maketext("Verschlagwortung dieses Titels in anderen Katalogen") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseAvailableSubjects" class="collapse" aria-labelledby="headingAvailableSubjects" data-parent="#ob-available_subjects">
+      <div class="card-body">
 <p/>
 <ul>
 [% FOREACH thiscontent IN more_subjects.sort;
@@ -370,13 +484,41 @@ $(document).ready(function(){
 </ul>
 <p/>
 </div>
+</div>
+</div>
+</div>
 [% END %]
 <!-- Ende Verschlagwortung in anderen Katalogen -->
 
 <!-- Anfang Tags -->
-[% IF all_tags.size > 0 %]
-<div class="available_tags"><!-- Begin Vorhandene tags -->
-<div class="ob-headline">[% msg.maketext("Tags") %]</div>
+
+    <script>
+$(document).ready(function(){
+
+    $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/bibsonomy/[% config.get('subjects_loc') %].include?l=[% lang %];bibkey=[% record.to_bibkey %];subjects=[% record.to_tags %]",
+          function (txt){
+            $("#ob-bibsonomy_tags_content").html(txt); 
+    });
+
+});
+
+    </script>
+
+
+<div id="ob-available_tags" class="accordion"><!-- Begin Vorhandene tags -->
+  <div class="card">
+    <div class="card-header" id="headingAvailableTags">
+      <h5 class="mb-0">
+        <a class="card-link" href="#collapseAvailableTags" data-toggle="collapse" data-target="#collapseAvailableTags" aria-expanded="false" aria-controls="collapseAvailableTags">
+          [% msg.maketext("Tags") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseAvailableTags" class="collapse" aria-labelledby="headingAvailableTags" data-parent="#ob-available_tags">
+      <div class="card-body">
+[% IF all_tags.size > 0 %]      
+      <h5>Von Nutzern vergeben</h5>
 [% alltags_cloud %]
 [% IF username && private_tags_of_tit.size > 0 %]
 <br />davon eigene Tags:
@@ -385,31 +527,15 @@ $(document).ready(function(){
 [%- END -%]
 [% END %]
 <p/>
-</div>
 [% END %]
-<!-- Ende Tags -->
-
-    <script>
-$(document).ready(function(){
-
-    $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/bibsonomy/[% config.get('subjects_loc') %].include?l=[% lang %];bibkey=[% record.to_bibkey %];subjects=[% record.to_tags %]",
-          function (txt){
-            $("#ob-bibsonomy_tags").html(txt); 
-    });
-
-});
-
-    </script>
-
-<!-- Anfang BibSonomy-Tags -->
-<div class="ob-bibsonomy_tags"><!-- Begin Vorhandene BibSonomy tags -->
-<div class="ob-headline"><span id="ob-bibsonomy_tags_toggle">[% msg.maketext("BibSonomy Tags") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
-<div id="ob-bibsonomy_tags_do"><!-- Begin bibsonomy_tags do -->
-<span id="ob-bibsonomy_tags"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/bibsonomy/[% config.get('subjects_loc') %].html?l=[% lang %];bibkey=[% record.to_bibkey %];subjects=[% record.to_tags | uri %]">Suchen?</a></span>
-</div>
+      <h5>Aus Bibsonomy</h5>
+<span id="ob-bibsonomy_tags_content"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/bibsonomy/[% config.get('subjects_loc') %].html?l=[% lang %];bibkey=[% record.to_bibkey %];subjects=[% record.to_tags | uri %]">Suchen?</a></span>
 <p/>
 </div>
-<!-- Ende BibSonomy-Tags -->
+</div>
+</div>
+</div>
+<!-- Ende Tags -->
 
 <!-- Anfang Verwandte Verfasser -->
 <script language="JavaScript" type="text/javascript">
@@ -417,18 +543,32 @@ $(document).ready(function(){
 // Begin Verwandte Personen
   $.get("[% path_prefix %]/[% config.get('connector_similarpersons_loc') %].include?l=[% lang %];db=[% record.database%];type=tit;id=[% record.id %]",
          function (txt){
-           $("#ob-similar_persons").html(txt); 
+           $("#ob-similar_persons_content").html(txt); 
   });
 });
 </script>
 
-<div class="ob-similar_persons"><!-- Begin Verwandte Personen -->
-<div class="ob-headline"><span id="ob-similar_persons_toggle">[% msg.maketext("Verwandte Personen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
-<div id="ob-similar_persons_do"><!-- Begin similarpersons do -->
-<span id="ob-similar_persons"><a href="[% path_prefix %]/[% config.get('connector_similarpersons_loc') %].html?l=[% lang %];db=[% record.database%];type=tit;id=[% record.id %]">Anzeigen?</a></span>
+<div id="ob-similar_persons" class="accordion"><!-- Begin Verwandte Personen -->
+
+  <div class="card">
+    <div class="card-header" id="headingSimilarPersons">
+      <h5 class="mb-0">
+        <a class="card-link" href="#collapseSimilarPersons" data-toggle="collapse" data-target="#collapseSimilarPersons" aria-expanded="false" aria-controls="collapseSimilarPersons">
+          [% msg.maketext("Verwandte Personen") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseSimilarPersons" class="collapse" aria-labelledby="headingSimilarPersons" data-parent="#ob-similar_persons">
+      <div class="card-body">
+
+<span id="ob-similar_persons_content"><a href="[% path_prefix %]/[% config.get('connector_similarpersons_loc') %].html?l=[% lang %];db=[% record.database%];type=tit;id=[% record.id %]">Anzeigen?</a></span>
 </div>
 <p/>
 </div>
+</div>
+</div>
+
 <!-- Ende Verwandte Verfasser -->
 
 <!-- Anfang Verwandte Themen -->
@@ -437,33 +577,59 @@ $(document).ready(function(){
 // Begin Verwandte Themen
   $.get("[% path_prefix %]/[% config.get('connector_similarsubjects_loc') %].include?l=[% lang %];db=[% record.database%];type=tit;id=[% record.id %]",
          function (txt){
-           $("#ob-similar_subjects").html(txt); 
+           $("#ob-similar_subjects_content").html(txt); 
   });
 });
 </script>
-<div class="ob-similar_subjects"><!-- Begin Verwandte Themen -->
-<div class="ob-headline"><span id="ob-similar_subjects_toggle">[% msg.maketext("Verwandte Themen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
-<div id="ob-similar_subjects_do"><!-- Begin similarsubjects do -->
-<span id="ob-similar_subjects"><a href="[% path_prefix %]/[% config.get('connector_similarsubjects_loc') %].html?l=[% lang %];db=[% record.database%];type=tit;id=[% record.id %]">Anzeigen?</a></span>
+<div id="ob-similar_subjects" class="accordion"><!-- Begin Verwandte Themen -->
+
+  <div class="card">
+    <div class="card-header" id="headingSimilarSubjects">
+      <h5 class="mb-0">
+        <a class="card-link" href="#collapseSimilarSubjects" data-toggle="collapse" data-target="#collapseSimilarSubjects" aria-expanded="false" aria-controls="collapseSimilarSubjects">
+          [% msg.maketext("Verwandte Themen") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseSimilarSubjects" class="collapse" aria-labelledby="headingSimilarSubjects" data-parent="#ob-similar_subjects">
+      <div class="card-body">
+
+<span id="ob-similar_subjects_content"><a href="[% path_prefix %]/[% config.get('connector_similarsubjects_loc') %].html?l=[% lang %];db=[% record.database%];type=tit;id=[% record.id %]">Anzeigen?</a></span>
 </div>
 <p/>
+</div>
+</div>
 </div>
 <!-- Ende Verwandte Themen -->
 
 <!-- Anfang Verschiedenes -->
-<div class="ob-misc"><!-- Begin Verschiedenes -->
-<div class="ob-headline"><span id="ob-misc_toggle">[% msg.maketext("Verschiedenes") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
-<div id="ob-misc_do"><!-- Begin misc do -->
+<div id="ob-misc" class="accordion"><!-- Begin Verschiedenes -->
+
+  <div class="card">
+    <div class="card-header" id="headingMisc">
+      <h5 class="mb-0">
+        <a class="card-link" href="#collapseMisc" data-toggle="collapse" data-target="#collapseMisc" aria-expanded="false" aria-controls="collapseMisc">
+          [% msg.maketext("Verschiedenes") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseMisc" class="collapse" aria-labelledby="headingMisc" data-parent="#ob-misc">
+      <div class="card-body">
+
 <ul>
 <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/popular.html" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
 </ul>
 </div>
 </div>
-<p/>
+</div>
+</div>
 
-</div><!-- End ob-record_title_discover_toggle_do -->
-</div><!-- End Discover-Sources -->
+<!-- </div><!-- End ob-record_title_discover_toggle_do -->
+</div><!-- End card-body -->
 
+[% END %]
 
 <script type="text/javascript">
 $(document).ready(function(){
@@ -483,11 +649,11 @@ $("#history_toggle").click(function(){
 [% recent_titles = session.get_recently_selected_titles.load_brief_records %]
 [% IF recent_titles.get_size > 0 %]
 <div class="ob-session_history"><!-- Begin Historie -->
+<h4>[% msg.maketext("Diese Titel interessierten Sie bereits:") %]</h4>
 
-<div class="ob-category_header" id="history_anchor"><span id="ob-record_title_history_toggle">[% msg.maketext("Diese Titel interessierten Sie bereits:") %]&nbsp;<img class="ob-responsive_toggle_button" style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
-
-<div id="ob-record_title_history_toggle_do">
+<!-- <div id="ob-record_title_history_toggle_do"> -->
 <p/>
+<ul class="list-group">
 [% FOREACH recent_record IN recent_titles.get_records %]
 [%- item = recent_record.get_fields -%]
 [%# Titel konstruieren %]
@@ -504,8 +670,8 @@ $("#history_toggle").click(function(){
 <span id="history_toggle"></span>
 <div id="history">
 [% END %]
-<p>[% IF item.${'PC0001'}.first.content %][% item.${'PC0001'}.first.content %]<br/>[% END %]<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% item.database %]/[% config.get('titles_loc') %]/id/[% item.id %].html"><strong><span class="ob-title">[%
-title %]</span></strong></a>, <span class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span></p>
+<li class="list-group-item">[% IF item.${'PC0001'}.first.content %][% item.${'PC0001'}.first.content %]<br/>[% END %]<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% item.database %]/[% config.get('titles_loc') %]/id/[% item.id %].html"><strong><span class="ob-title">[%
+title %]</span></strong></a>, <span class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span></li>
 [% END %]
 [% IF recent_titles.get_size > 5 %]
 </div>
@@ -513,7 +679,7 @@ title %]</span></strong></a>, <span class="ob-publisher">[% publisher %]</span> 
 
 <p/>
 
-</div><!-- End ob-record_title_history_toggle_do -->
+<!-- </div><!-- End ob-record_title_history_toggle_do -->
 </div><!-- End Session-Historie -->
 [% END %]
 

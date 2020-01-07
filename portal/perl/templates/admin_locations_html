@@ -14,87 +14,48 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Standorte anzeigen' %]
-
-  <body>
-
-<!-- skip link navigation -->
-<ul class="ym-skiplinks">
-	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
-	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
-</ul>
-
-<div class="ym-wrapper">
-  <div class="ym-wbox">
-
-[% PROCESS common/subtemplate name="corporate_banner" %]
-
-[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
-
-    <!-- begin: main content area #main -->
-    <div id="main">
-
-   <div class="ob-functional_nav">
-     <div class="ob-breadcrumb">
-       <ul>
-         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
-         <li><a href="#" class="lastitem">[% msg.maketext("Standorte") %]</a></li>
-       </ul>
-     </div>
-    <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %].csv?l=[% lang %]"><img src="/images/openbib/csv.png" alt="CSV" /></a>&nbsp;
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
-    </div>
-   </div>
-
-    <div class="ym-column linearize-level-1">
-      <div class="ym-col1">
-        <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_locations" %]
-        </div>
-      </div>
-      <!-- end: #col1 -->
-      <!-- begin: #col3 static column -->
-      <div class="ym-col3" >
-        <div class="ym-cbox" class="ym-clearfix">
 
 [% IF user.has_right({scope = 'admin_locations', right = 'right_create'}) %]
-<form method="post" action="[% path_prefix %]/[% config.get('locations_loc') %]" class="ym-form">
-<fieldset class="ym-columnar">
+<div id="new_item" class="accordion">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <a class="card-link collapsed" href="#collapseOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+          [% msg.maketext("Neuen Standort anlegen") %]
+        </a>
+      </h5>
+    </div>
 
-<legend class="ob-toggable_legend">[% msg.maketext("Neuen Standort anlegen") %]&nbsp;<img src="[% config.get('toggle_show_img') %]"/></legend>
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#new_item">
+      <div class="card-body">
+<form method="post" action="[% path_prefix %]/[% config.get('locations_loc') %]">
 
-<div class="ob-fieldset">
-
-<div class="ym-fbox-text">
+<div class="form-group">
 <label for="identifier">[% msg.maketext("Identifier") %]</label>
-<input type="text" name="identifier" id="identifier" size="8" />
+<input class="form-control" type="text" name="identifier" id="identifier" size="8" />
 </div>
 
-<div class="ym-fbox-text">
+<div class="form-group">
 <label for="description">[% msg.maketext("Beschreibung") %]</label>
-<input type="text" name="description" id="description" size="20" />
+<input class="form-control" type="text" name="description" id="description" size="20" />
 </div>
 
-<div class="ym-fbox-select">
+<div class="form-group">
 <label for="type">[% msg.maketext("Typ") %]</label>
-  <select name="type" id="type">
+  <select class="form-control" name="type" id="type">
 [% FOREACH location_type IN config.get('location_types') %]
        <option value="[% location_type %]">[% location_type %]</option>
 [% END %]
    </select>
 </div>
 
-<div class="ym-fbox-button">
-<input type="submit" value="[% msg.maketext("Neu") %]" />
+<button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Neu") %]</button>
 
-</div>
-
-</div>
-
-</fieldset>
 </form>
+</div>
+</div>
+</div>
+</div>
 
 <p />
 [% END # right_create %]
@@ -103,7 +64,8 @@
 
 <h3>[% msg.maketext("Bereits existierende Standorte") %]: [% config.get_number_of_locations %]</h3>
 [%# USE dumper;dumper.dump(locations)%]
-<table>
+<div class="table-responsive">
+<table class="table table-striped table-hover">
 <thead>
 <tr><th>[% msg.maketext("Identifier") %]</th><th>[% msg.maketext("Typ") %]</th><th>[% msg.maketext("Beschreibung") %]</th></tr>
 </thead>
@@ -123,15 +85,5 @@
 [% END %]
 </tbody>
 </table>
-
+</div>
 [% END %]
-
-        </div>
-        <div class="ym-ie-clearing">&nbsp;</div>
-        <!-- End: IE Column Clearing -->
-      </div>
-     </div> <!-- end: ym-column -->
-    </div>
-    <!-- end: #main -->
-
-[% PROCESS common/subtemplate name="std_footer" %]

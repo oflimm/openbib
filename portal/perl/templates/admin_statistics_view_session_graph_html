@@ -13,35 +13,6 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Grundlegende Statistikinformationen' %]
-
-  <body>
-
-<!-- skip link navigation -->
-<ul class="ym-skiplinks">
-	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
-	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
-</ul>
-
-<div class="ym-wrapper">
-  <div class="ym-wbox">
-
-[% PROCESS common/subtemplate name="corporate_banner" %]
-
-[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
-
-    <!-- begin: main content area #main -->
-    <div id="main">
-    <div class="ym-column linearize-level-1">
-      <div class="ym-col1">
-        <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_statistics" active_subsubmenu="view" %]
-        </div>
-      </div>
-      <!-- end: #col1 -->
-      <!-- begin: #col3 static column -->
-      <div class="ym-col3" >
-        <div class="ym-cbox" class="ym-clearfix">
 
 <img src="/images/openbib/graph/yearly/session/titles.png" />
 
@@ -63,7 +34,7 @@
 -%]
 
 [%  IF images.size > 0 %]
-<table width="100%">
+<table class="table">
 <tr><th>[% msg.maketext("Entwicklung der Session-Zahl in den einzelnen Sichten nach Monaten eines Jahres") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 [%    FOREACH filename IN images %]
@@ -93,7 +64,7 @@
 -%]
 
 [%  IF images.size > 0 %]
-<table width="100%">
+<table class="table">
 <tr><th>[% msg.maketext("Entwicklung der Session-Zahl in den einzelnen Sichten nach Tagen eines Monats") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 [%   FOREACH filename IN images %]
@@ -105,12 +76,3 @@
 [%  END %]
 [% END %]
 
-        </div>
-        <div class="ym-ie-clearing">&nbsp;</div>
-        <!-- End: IE Column Clearing -->
-      </div>
-     </div> <!-- end: ym-column -->
-    </div>
-    <!-- end: #main -->
-
-[% PROCESS common/subtemplate name="std_footer" %]

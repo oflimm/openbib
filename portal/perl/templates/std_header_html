@@ -16,6 +16,8 @@
 <html lang="[% lang %]">
   <head>
     <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
 [% IF NOT disable_cache_control %]
     <meta http-equiv="content-type"  content="text/html; charset=utf-8"/>
     <meta http-equiv="Pragma"        content="no-cache" />
@@ -34,11 +36,8 @@
 [%- FOREACH thislang IN config.get('lang') ;
      language_location_args = cgiapp.to_cgi_querystring({ change = {'l' = thislang }});
      language_location = "${cgiapp.param('scheme')}://${cgiapp.param('servername')}${cgiapp.param('path')}?${language_location_args}" %]
-<link rel="alternate" href="[% language_location %]" hreflang="[% thislang %]-[% thislang %]" />
+<link rel="alternate" href="[% language_location %]" hreflang="[% thislang %]" />
 [%- END %]
-
- <!-- mobile viewport optimisation -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 [% IF record %]
     <meta name="Bibkey"              content="[% record.to_bibkey %]" />
@@ -53,12 +52,25 @@
 <link rel="alternate" type="application/rss+xml" title="RDF-Datei" href="[% path_prefix %]/[% primrssfeed %]" />
 [% END %]
 [% IF LinkedData == "title" %]
-<link rel="alternate" type="application/rdf+xml" title="RDF Representation" href="http://[% servername %][% path_prefix %]/[% config.get('databases_loc') %]/id/[%- record.database -%]/[% config.get('titles_loc') %]/id/[%- record.id -%].rdf"/>
-<link rel="alternate" type="application/json" title="JSON Representation" href="http://[% servername %][% path_prefix %]/[% config.get('databases_loc') %]/id/[%- record.database -%]/[% config.get('titles_loc') %]/id/[%- record.id -%].json"/>
+<link rel="alternate" type="application/rdf+xml" title="RDF Representation" href="https://[% servername %][% path_prefix %]/[% config.get('databases_loc') %]/id/[%- record.database -%]/[% config.get('titles_loc') %]/id/[%- record.id -%].rdf"/>
+<link rel="alternate" type="application/json" title="JSON Representation" href="https://[% servername %][% path_prefix %]/[% config.get('databases_loc') %]/id/[%- record.database -%]/[% config.get('titles_loc') %]/id/[%- record.id -%].json"/>
 [% END %]
 [% IF unapi && config.get('unAPI') %]
     <link rel="unapi-server" title="unAPI" type="application/xml" href="[% path_prefix %]/[% config.get('connector_unapi_loc') %]" />
 [% END %]
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">
+
+    <!-- Bootstrap Select CSS -->
+    <link rel="stylesheet" href="/css/bootstrap-select.css">
+
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" href="/css/fontawesome-free-5.3.1.css">
+
+    <!-- Material Design CSS -->
+<!--    <link rel="stylesheet" href="/css/bootstrap-material-design.min.css"> -->
+
 
   [%- TRY -%]
     [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/_profile/$sysprofile/_view/$view/openbib.css" -%]
@@ -77,38 +89,29 @@
     [%- END -%]
   [%- END -%]
 
+
 <!-- jQuery & Plugins -->
-    <script type="text/javascript" src="/js/jquery-1.8.2.min.js"></script>
-    <script type="text/javascript" src="/js/jquery-ui-1.8.24.min.js"></script>
 
-    <script language="JavaScript" type="text/javascript" src="/js/openbib.js"></script>
-<!--    <script language="JavaScript" type="text/javascript" src="/js/jquery.autocomplete.pack.js"></script> -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/bootstrap-select.min.js"></script>
+<script src="/js/jquery-ui-1.8.24.min.js"></script>
+<script src="/js/jquery.autocomplete.js"></script>
 
+<!-- <script src="/js/bootstrap-material-design.min.js"></script> -->
 
-    <title>[% IF page_title %][% page_title %][% ELSE %][% msg.maketext("OpenBib - Demo-Portal") %][% END %]</title>
+<!-- Then static OpenBib JS -->
+<script src="/js/_profile/bootstrap/openbib.js"></script> 
+
+    <title>[% IF layout_param.page_title %][% layout_param.page_title %][% ELSE %][% config.get_viewdesc_from_viewname(view) %][% END %]</title>
 
 <!--[if lt IE 7.]>
 <script defer type="text/javascript" src="/js/pngfix.js"></script>
 <![endif]-->
 
 <!--[if lt IE 9]>
-  <script src="/js/html5.js"></script>
+  <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
    </head>
-
-[% IF show_javascript %]
-[% show_javascript %]
-[% END %]
-
-[%# Immer/haeufig genutzte Variablen %]
-[%
-   IF NOT prevprofile ;
-       prevprofile = session.get_profile ;
-   END ;
-   IF NOT searchprofileid_of_view ;
-      searchprofileid_of_view  = config.get_searchprofile_of_view(view) ;
-   END ;
-   IF NOT searchprofileid_of_sysprofile ;
-      searchprofileid_of_sysprofile = config.get_searchprofile_of_systemprofile(view);
-   END ;
-%]

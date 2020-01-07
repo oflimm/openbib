@@ -1,7 +1,23 @@
-[%- IF representation == '' || representation == 'html' -%]
-[%- PROCESS common/subtemplate name="info_impressum_html" -%]
-[%- ELSIF representation == 'mobile' -%]
-[%- PROCESS common/subtemplate name="info_impressum_mobile" -%]
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+
+      'main_template' = 'info_impressum_html'
+
+      #'active_menu' = 'info'
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Impressum')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]
 [%- END -%]

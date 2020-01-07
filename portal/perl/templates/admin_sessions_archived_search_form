@@ -1,92 +1,51 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_sessio_archived_search_form
+# Templatename: admin_session
 #
 # Typ         : Mastertemplate       
 #
 # Aufgabe:
 #
-# Ausgabe einer Uebersichtsliste aller aktuell bestehenden Sessions
+# Ausgabe einer Uebersichtsliste aller aktiver Sessions
 # mit ihren wichtigsten Informationen
+#
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Bestehende Sessions anzeigen' %]
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+      'page_title' = 'Administration - Archivierte Session suchen'
 
-  <body>
+      'main_template' = 'admin_sessions_archived_search_form_html'
+      'sidebar_template' = 'users_navigation'
 
-<!-- skip link navigation -->
-<ul class="ym-skiplinks">
-	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
-	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
-</ul>
-
-<div class="ym-wrapper">
-  <div class="ym-wbox">
-
-[% PROCESS common/subtemplate name="corporate_banner" %]
-
-[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
-
-    <!-- begin: main content area #main -->
-    <div id="main">
-
-   <div class="ob-functional_nav">
-     <div class="ob-breadcrumb">
-       <ul>
-         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/active.html?l=[% lang %]">[% msg.maketext("Sessions") %]</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/archived/search/form.html?l=[% lang %]">[% msg.maketext("Archiviert") %]</a></li>
-         <li><a href="#" class="lastitem">[% msg.maketext("Explorer") %]</a></li>
-       </ul>
-     </div>
-   </div>
-
-    <div class="ym-column linearize-level-1">
-      <div class="ym-col1">
-        <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="admin_navigation" active_submenu="session" %]
-        </div>
-      </div>
-      <!-- end: #col1 -->
-      <!-- begin: #col3 static column -->
-      <div class="ym-col3" >
-        <div class="ym-cbox" class="ym-clearfix">
-
-<form method="get" action="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/archived/search" class="ym-form">
-
-<fieldset class="ym-columnar">
-
-<legend>[% msg.maketext("Session-Explorer") %]</legend>
-
-<div class="ym-fbox-text">
-<label for="fromdate">[% msg.maketext("Von") %]</label>
-<input type="text" name="fromdate" value="1999-01-08 04:05:06" id="fromdate" size="8" />
-</div>
-
-<div class="ym-fbox-text">
-<label for="todate">[% msg.maketext("Bis") %]</label>
-<input type="text" name="todate" value="1999-01-08 04:10:06" id="todate" size="20" />
-</div>
-
-<div class="ym-fbox-button">
-<input type="submit" value="[% msg.maketext("Suchen") %]" />
-
-</div>
-
-</fieldset>
-</form>
-
-
-
-        </div>
-        <div class="ym-ie-clearing">&nbsp;</div>
-        <!-- End: IE Column Clearing -->
-      </div>
-     </div> <!-- end: ym-column -->
-    </div>
-    <!-- end: #main -->
-
-[% PROCESS common/subtemplate name="std_footer" %]
+      'active_menu' = 'admin'
+      'active_submenu' = 'admin_sessions'
+      'active_subsubmenu' = 'archived'      
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Administration')
+	     url  = "${path_prefix}/${config.get('admin_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Sessions')
+	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('sessions_loc')}/active.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext("Explorer")
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

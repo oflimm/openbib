@@ -1,7 +1,5 @@
 [%- IF representation == '' || representation == 'html' -%]
 [%- PROCESS common/subtemplate name="search_title_start_html" -%]
-[%- ELSIF representation == 'mobile' -%]
-[%- PROCESS common/subtemplate name="search_title_start_mobile" -%]
 [%- ELSIF representation == 'json' -%]
 [%- ELSIF representation == 'rdf' -%]
 [%- ELSIF representation == 'include' -%]

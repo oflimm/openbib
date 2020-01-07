@@ -11,28 +11,22 @@
 #
 #######################################################################
 -%]
-<div id="ob-searchform_bottom"><!-- Begin searchform_bottom -->
+<div id="ob-searchform_bottom" class="content"><!-- Begin searchform_bottom -->
 
 [% IF config.get('bix') %]
 <!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
   <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
 [% END %]
 
-          <div class="ym-grid ym-equalize">
-            <div class="ym-g33 ym-gl">
-              <div class="ym-gbox">
+          <div class="row">
+            <div class="col-md-4 mt-2">
 [% PROCESS common/subtemplate name="home_html_bottom_left" %]
-              </div>
             </div>
-            <div class="ym-g33 ym-gl">
-              <div class="ym-gbox">
+            <div class="col-md-4 mt-2">
 [% PROCESS common/subtemplate name="home_html_bottom_center" %]
-              </div>
             </div>
-            <div class="ym-g33 ym-gr">
-             <div class="ym-gbox">
+            <div class="col-md-4 mt-2">
 [% PROCESS common/subtemplate name="home_html_bottom_right" %]
-             </div>
             </div>
           </div>
 

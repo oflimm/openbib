@@ -11,52 +11,14 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" %]
-  <body>
-
-<!-- skip link navigation -->
-<ul class="ym-skiplinks">
-	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
-	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
-</ul>
-
-<div class="ym-wrapper">
-  <div class="ym-wbox">
-
-[% PROCESS common/subtemplate name="corporate_banner" %] 
-
-[% PROCESS common/subtemplate name="mainnavigation" %] 
-
-    <!-- begin: main content area #main -->
-    <div id="main">
-
-   <div class="ob-functional_nav">
-     <div class="ob-breadcrumb">
-       <ul>
-         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="#" class="lastitem">[% msg.maketext("Danksagung") %]</a></li>
-       </ul>
-     </div>
-   </div>
-
-    <div class="ym-column linearize-level-1">
-      <div class="ym-col1 ob-hidden">
-        <div class="ym-cbox" class="ym-clearfix">
-        </div>
-      </div>
-      <!-- end: #col1 -->
-      <!-- begin: #col3 static column -->
-      <div class="ym-col3" >
-        <div class="ym-cbox" class="ym-clearfix">
-
-
 <h3>[% msg.maketext("Danksagung") %]</h3>
 
 <p>
 [% msg.maketext("Dieses Rechercheportal w&auml;re nicht m&ouml;glich ohne") %]
 </p>
 
-<table class="ym-full">
+<div class="table-responsive text-nowrap">
+<table class="table">
 <tr><td><img src="/images/openbib/openbib-logo_small.gif"></td><td><a class="ext" href="https://github.com/oflimm/openbib" target="_blank">OpenBib</a></td><td>Die Portalsoftware</td></tr>
 <tr><td><img src="http://www.yaml.de/images/yaml4-square-128.png"></td><td><a class="ext" href="http://www.yaml.de/" target="_blank">YAML 4</a></td><td>Das CSS Framework</a></td></tr>
 <tr><td><img src="http://www.cgi-app.org/images/cgiapp-logo.gif"></td><td><a class="ext" href="http://www.cgi-app.org/" target="_blank">CGI::Application w/ Dispatch</a></td><td>Das Perl Web-Framework</td></tr>
@@ -71,7 +33,7 @@
 <tr><td></td><td><a class="ext" href="http://www.icon-king.com/"
 target="_blank">David Vignoni</a></td><td>Das <a href="http://www.icon-king.com/projects/nuvola/" target="_blank">Nuvola
   Icon-Set</a></td></tr>
-<tr><td><img src="[% config.get('share_img') %]" /></td><td><a class="ext" href="http://www.alexking.org/"
+<tr><td><img src="[% config.get_icon('share',view,sysprofile) %]" /></td><td><a class="ext" href="http://www.alexking.org/"
 target="_blank">Alex King</a></td><td>Das Share-This-Icon, das OpenBib fuer den Mashup zu
   BibSonomy verwendet. Dieses Icon ist vierfach-lizensiert unter
   folgenden Lizenzen:
@@ -83,14 +45,4 @@ target="_blank">Alex King</a></td><td>Das Share-This-Icon, das OpenBib fuer den 
 <!-- <tr><td><img src=""></td><td><a class="ext" href="" target="_blank"></a></td><td></td></tr>
 <tr><td><img src=""></td><td><a class="ext" href="" target="_blank"></a></td><td></td></tr>-->
 </table>
-
-
-        </div>
-        <div class="ym-ie-clearing">&nbsp;</div>
-        <!-- End: IE Column Clearing -->
-      </div>
-     </div> <!-- end: ym-column -->
-    </div>
-    <!-- end: #main -->
-
-[% PROCESS common/subtemplate name="std_footer" %]
+</div>

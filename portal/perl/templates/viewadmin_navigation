@@ -11,9 +11,16 @@
 #
 #######################################################################
 -%]
-<nav class="ym-vlist">
-<h6 class="ym-vtitle">[% msg.maketext("viewadmin") %]</h6>
-<ul>
+<div class="card">
+
+<div class="card-header">[% msg.maketext("viewadmin") %]</div>
+
+<div class="card-body">
+
+<nav class="navbar bg-light ob-sidebar">
+
+<ul class="navbar-nav">
+
 [% IF active_submenu == "viewadmin_templates" %]
   <li class="active"><strong>[% msg.maketext("Templates") %]</strong></li>
 [% ELSE %]
@@ -32,3 +39,7 @@
 [% END %]
 </ul>
 </nav>
+</div>
+</div>
+
+<p/>

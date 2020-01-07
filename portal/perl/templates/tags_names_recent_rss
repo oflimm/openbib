@@ -14,15 +14,15 @@
 [%-
 
 channel_link        = "http://${config.get('frontendservername')}${path_prefix}/${config.get('tags_loc')}/recent.rss";
-channel_title       = "Öffentliche Literaturlisten";
-channel_description = "RSS Feed aller öffentlichen Literaturlisten sortiert nach dem Anlegedatum der Literaturlisten";
+channel_title       = "Zuletzt angelegte Tags";
+channel_description = "RSS Feed der zuletzt angelegten Tagssortiert nach dem Anlegedatum";
 
 dummy = rss.channel( "title", channel_title, "link", channel_link, "description", channel_description );
 
 FOREACH thisitem IN recent_tags ;
 
-item_title       = thisitem.tag;
-item_link        = "http://${config.get('frontendservername')}${path_prefix}/${config.get('tags_loc')}/${thisitem.id}";
+item_title       = thisitem.tagname;
+item_link        = "${scheme}://${servername}${path_prefix}/${config.get('tags_loc')}/names/id/${thisitem.tagname}";
 # item_tstamp      = thisitem.tstamp.split(' ').first;
 
 item_desc = "

@@ -1,150 +1,60 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_users_record_edit
+# Templatename: admin_users_record
 #
 # Typ         : Mastertemplate       
 #
 # Aufgabe:
 #
-# Aenderung von Nutzerinformationen durch den Administrator
+# Ausgabe der Informationen eines Benutzers in der Web-Administration 
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Nutzer editieren' %]
+[%- PROCESS common/subtemplate name="local_config" -%] 
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+      'page_title' = 'Administration - Nutzer bearbeiten'
+      
+      'main_template' = 'admin_users_record_edit_html'
+      'sidebar_template' = 'users_navigation'
 
-  <body>
-
-<!-- skip link navigation -->
-<ul class="ym-skiplinks">
-	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
-	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
-</ul>
-
-<div class="ym-wrapper">
-  <div class="ym-wbox">
-
-[% PROCESS common/subtemplate name="corporate_banner" %] 
-
-[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
-
-    <!-- begin: main content area #main -->
-    <div id="main">
-
-   <div class="ob-functional_nav">
-     <div class="ob-breadcrumb">
-       <ul>
-         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %].html?l=[% lang %]">[% msg.maketext("Nutzerverwaltung") %]</a></li>
-         <li><a href="#" class="lastitem">[% userinfo.id %]</a></li>
-       </ul>
-     </div>
-    <div class="ob-representation">
-<!-- <a href="[% path_prefix %]/[% config.get('users_loc') %]/[% userinfo.id %]/[% config.get('roles_loc') %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp; -->
-    </div>
-   </div>
-
-    <div class="ym-column linearize-level-1">
-      <div class="ym-col1">
-        <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_users" %] 
-        </div>
-      </div>
-      <!-- end: #col1 -->
-      <!-- begin: #col3 static column -->
-      <div class="ym-col3" >
-        <div class="ym-cbox" class="ym-clearfix">
-
-<h2>[% msg.maketext("Personendaten") %]</h2>
-
-<table class="ym-full">
-[% IF userinfo.nachname %]
-<tr><td><b>[% msg.maketext("Nachname") %]:</b></td><td align="left">&nbsp;[% userinfo.nachname %]</td></tr>
-[% END %] 
-[% IF userinfo.vorname %]
-<tr><td><b>[% msg.maketext("Vorname") %]:</b></td><td align="left">&nbsp;[% userinfo.vorname %]</td></tr>
-[% END %] 
-[% IF userinfo.gebdatum %]
-<tr><td><b>[% msg.maketext("Geburtsdatum") %]:</b></td><td align="left">&nbsp;[% userinfo.gebdatum %]</td></tr>
-[% END %] 
-[% IF userinfo.strasse %]
-<tr><td><b>[% msg.maketext("Strasse") %]:</b></td><td align="left">&nbsp;[% userinfo.strasse %]</td></tr>
-[% END %] 
-<tr><td><b>[% msg.maketext("Ort") %]:</b></td><td align="left">
-[% IF userinfo.plz %]
-&nbsp;[% userinfo.plz %]
-[% END %] 
-&nbsp;[% userinfo.ort %]</td></tr>
-[% IF userinfo.email %]
-<tr><td><b>[% msg.maketext("E-Mail") %]:</b></td><td align="left">&nbsp;[% userinfo.email %]</td></tr>
-[% END %]
-<tr><td><b>[% msg.maketext("Sperre") %]:</b></td><td align="left">&nbsp;
-[%- IF userinfo.sperre -%]
-[% msg.maketext("ja, seit") %][% userinfo.sperrdatum %] [% msg.maketext("mit Grund") %]<em>[% userinfo.sperre %]</em>
+      'active_menu' = 'admin'
+      'active_submenu' = 'admin_users'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Administration')
+	     url  = "${path_prefix}/${config.get('admin_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Nutzerverwaltung')
+	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('users_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = userinfo.id
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+      
+      'representations' = [
+          {
+	     type = 'json'
+	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('users_loc')}/id/${userinfo.id}?l=${lang}"
+	  }
+       ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'rdf' -%]
+[%- PROCESS common/subtemplate name="admin_users_record_rdf" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="admin_users_record_json" -%]
 [%- ELSE -%]
-[% msg.maketext("nein") %]
+This Resource-Type is not available in the representation [% representation %]
 [%- END -%]
-</td></tr>
-</table>
-
-<h3>[% msg.maketext("Einstellungen") %]</h3>
-
-<form method="post" action="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/id/[% userinfo.id %]/rights/[% config.get('roles_loc') %]" class="ym-form">
-<input type="hidden" name="_method"    value="PUT" />
-
-<fieldset class="ym-columnar">
-
-<legend>[% msg.maketext("Rolle zuordnen") %]</legend>
-
-<div class="ym-fbox-select">
-<label for="roles">[% msg.maketext("Rollen") %]</label>
-<select name="roles" multiple="multiple" size="5">
-[% FOREACH role IN user.get_all_roles %]
-  <option value="[% role.id %]"[% IF userinfo.role.${role.rolename} %] selected="selected"[% END %]>[% role.description %]</option>
-[% END %]
-</select>
-</div>
-
-<div class="ym-fbox-button">
-<input type="submit" value="[% msg.maketext("Los") %]">
-
-</div>
-</fieldset>
-</form>
-
-
-<p/>
-
-<form method="post" action="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/id/[% userinfo.id %]/rights/[% config.get('templates_loc') %]" class="ym-form">
-<input type="hidden" name="_method"    value="PUT" />
-
-<fieldset class="ym-columnar">
-
-<legend>[% msg.maketext("Templates zuordnen") %]</legend>
-
-<div class="ym-fbox-select">
-<label for="templates">[% msg.maketext("Templates") %]</label>
-<select name="templates" multiple="multiple" size="5">
-[% FOREACH template IN user.get_all_templates %]
-  <option value="[% template.id %]"[% IF userinfo.template.${template.id} %] selected="selected"[% END %]>[% template.viewname %] - [% template.templatename %] - [% template.templatelang %]</option>
-[% END %]
-</select>
-</div>
-
-<div class="ym-fbox-button">
-<input type="submit" value="[% msg.maketext("Los") %]">
-
-</div>
-</fieldset>
-</form>
-
-        </div>
-        <div class="ym-ie-clearing">&nbsp;</div>
-        <!-- End: IE Column Clearing -->
-      </div>
-     </div> <!-- end: ym-column -->
-    </div>
-    <!-- end: #main -->
-
-[% PROCESS common/subtemplate name="std_footer" %]

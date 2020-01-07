@@ -1,155 +1,63 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_editcat
+# Templatename: servers
 #
 # Typ         : Mastertemplate       
 #
 # Aufgabe:
 #
-# Eingabemaske fuer die Meta-Informationen eines einzelnen Kataloges
+# Ausgabe einer Uebersichtsliste aller eingerichteten Kataloge
+# mit ihren wichtigsten Informationen
+#
+# Einrichtung eines neuen Kataloges
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Cluster-Einstellungen' %]
+[%- PROCESS common/subtemplate name="local_config" -%] 
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+      'page_title' = 'Administration - Server bearbeiten'
 
-  <body>
+      'main_template' = 'admin_servers_record_edit_html'
+      'sidebar_template' = 'users_navigation'
 
-<!-- skip link navigation -->
-<ul class="ym-skiplinks">
-	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
-	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
-</ul>
-
-<div class="ym-wrapper">
-  <div class="ym-wbox">
-
-[% PROCESS common/subtemplate name="corporate_banner" %]
-
-[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
-
-    <!-- begin: main content area #main -->
-    <div id="main">
-
-   <div class="ob-functional_nav">
-     <div class="ob-breadcrumb">
-       <ul>
-         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %].html?l=[% lang %]">[% msg.maketext("Server") %]</a></li>
-         <li><a href="#" class="lastitem">[% serverinfo.description %]</a></li>
-       </ul>
-     </div>
-    <div class="ob-representation">
-<a href="[% path_prefix %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
-    </div>
-   </div>
-
-    <div class="ym-column linearize-level-1">
-      <div class="ym-col1">
-        <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_servers_record" active_subsubmenu="admin_servers_record_main" %]
-        </div>
-      </div>
-      <!-- end: #col1 -->
-      <!-- begin: #col3 static column -->
-      <div class="ym-col3" >
-        <div class="ym-cbox" class="ym-clearfix">
-
-<form method="post" action="[% path_prefix %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]" class="ym-form">
-<input type="hidden" name="_method"    value="PUT" />
-
-<fieldset class="ym-columnar">
-
-<legend>[% msg.maketext("Server bearbeiten") %]</legend>
-
-<div class="ym-fbox-text">
-<label for="id">[% msg.maketext("Id") %]</label>
-[% serverinfo.id %]
-</div>
-
-<div class="ym-fbox-text">
-<label for="hostip">[% msg.maketext("IP-Adresse") %]</label>
-<input type="text" name="hostip" id="hostip" value="[% serverinfo.hostip %]"/>
-</div>
-
-<div class="ym-fbox-text">
-<label for="description">[% msg.maketext("Beschreibung") %]</label>
-<input type="text" name="description" id="description" value="[% serverinfo.description %]"/>
-</div>
-
-<div class="ym-fbox-select">
-<label for="status">[% msg.maketext("Status") %]</label>
-  <select name="status" id="status">
-     <option value="updatable" [% IF serverinfo.status == 'updatable' %]selected="selected"[% END %]>[% msg.maketext("Aktualisierbar") %]</option>
-     <option value="updating" [% IF serverinfo.status == 'updating' %]selected="selected"[% END %]>[% msg.maketext("Aktualisieren") %]</option>
-     <option value="updated" [% IF serverinfo.status == 'updated' %]selected="selected"[% END %]>[% msg.maketext("Fertig mit Aktualisierung") %]</option>
-     <option value="searchable" [% IF serverinfo.status == 'searchable' %]selected="selected"[% END %]>[% msg.maketext("Recherchierbar") %]</option>
-  </select>
-</div>
-
-<div class="ym-fbox-select">
-<label for="clusterid">[% msg.maketext("Cluster") %]</label>
-  <select name="clusterid" id="clusterid">
-     <option value="updatable">[% msg.maketext("Aktualisierbar") %]</option>
-[%  FOREACH clusterinfo IN config.get_clusterinfo_overview.all %]
-     <option value="[% clusterinfo.id %]" [% IF serverinfo.clusterid.id == clusterinfo.id %]selected="selected"[% END %]>[% clusterinfo.description %]</option>
-[% END %]
-  </select>
-</div>
-
-<div class="ym-fbox-select">
-<label for="active">[% msg.maketext("Aktiv") %]</label>
-  <select name="active" id="active">
-     <option value="true" [%- IF serverinfo.active -%]selected="selected"[%- END -%]>[% msg.maketext("Ja") %]</option>
-     <option value="false" [%- IF NOT serverinfo.active -%]selected="selected"[%- END -%]>[% msg.maketext("Nein") %]</option>
-  </select>
-</div>
-
-<div class="ym-fbox-button">
-<input type="submit" value="[% msg.maketext("Ändern") %]">
-
-[%- IF user.has_right({scope = 'admin_servers', right = 'right_delete'}) -%]
-&nbsp;&nbsp;&nbsp;
-
-<a class="ob_button" href="[% path_prefix %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+      'active_menu' = 'admin'
+      'active_submenu' = 'admin_servers_record'
+      'active_subsubmenu' = 'admin_servers_record_main'      
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Administration')
+	     url  = "${path_prefix}/${config.get('admin_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Server')
+	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('servers_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = serverinfo.description
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+      'representations' = [
+          {
+	     type = 'json'
+	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('servers_loc')}/id/${serverinfo.id}.json?l=${lang}"
+	  }
+       ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'rdf' -%]
+[%- PROCESS common/subtemplate name="admin_servers_record_rdf" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="admin_servers_record_json" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
 [%- END -%]
-</div>
-
-</fieldset>
-
-</form>
-
-[% IF updatelog.size > 0 %]
-<h4>[% msg.maketext("Aktualisierung") %]</h4>
-
-<p>
-[% msg.maketext("Anzahl") %]
-&nbsp;
-<a [% IF qopts.get_option('num') == 100 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]/edit.html?l=[% lang %];num=100">100</a>
-&nbsp;|&nbsp;
-<a  [% IF qopts.get_option('num') == 200 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]/edit.html?l=[% lang %];num=200">200</a>
-&nbsp;|&nbsp;
-<a  [% IF qopts.get_option('num') == 400 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]/edit.html?l=[% lang %];num=400">400</a>
-</p>
-<table class="ym-full">
-<thead>
-<tr><th>[% msg.maketext("Katalog") %]</th><th>[% msg.maketext("Start") %]</th><th>[% msg.maketext("Dauer") %]</th><th>[% msg.maketext("Titel") %]</th></tr>
-</thead>
-<tbody>
-[% FOREACH logentry IN updatelog.all %]
-<tr><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% logentry.dbid.dbname %]/updates.html?l=[% lang %]">[% logentry.dbid.dbname %]</a></td><td>[% logentry.tstamp_start %]</td><td>[% logentry.duration %]</td><td>[% logentry.title_count %]</td></tr>
-[% END %]
-</tbody>
-</table>
-[% END %]
-
-        </div>
-        <div class="ym-ie-clearing">&nbsp;</div>
-        <!-- End: IE Column Clearing -->
-      </div>
-     </div> <!-- end: ym-column -->
-    </div>
-    <!-- end: #main -->
-
-[% PROCESS common/subtemplate name="std_footer" %]

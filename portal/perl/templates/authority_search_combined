@@ -27,8 +27,6 @@
 [%- PROCESS common/subtemplate name="authority_search_combined_rss" -%]
 [%- ELSIF representation == 'include' -%]
 [%- PROCESS common/subtemplate name="authority_search_combined_include" -%]
-[%- ELSIF representation == 'mobile' -%]
-[%- PROCESS common/subtemplate name="authority_search_combined_mobile" -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]
 [%- END -%]

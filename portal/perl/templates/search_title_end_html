@@ -26,14 +26,15 @@
 
 <p />
 
+      </div><!-- /.col -->
+    </div><!-- /.row -->
 
-        </div>
-        <div class="ym-ie-clearing">&nbsp;</div>
-        <!-- End: IE Column Clearing -->
-      </div>
-     </div> <!-- end: ym-column -->
-    </div>
-    <!-- end: #main -->
 
 [% PROCESS common/subtemplate name="std_footer" %]
+
+</div><!-- /.container-fluid -->
+
+  
+</body>
+</html>
 [% END %]

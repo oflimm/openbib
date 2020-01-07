@@ -33,10 +33,6 @@
     END;
   END;
 
-  IF record.record_exists;
-    record_exists = 1;
-  END;
-
   bibkey = record.to_bibkey ;
   isbn   = normdata.${"T0540"}.first.content.replace('-','') ;
   IF NOT isbn ;
@@ -51,9 +47,6 @@
   title      = msg.maketext("Titel-Information: [_1] in Katalog [_2]",recordname,dbdesc)
 
 -%]
-[% PROCESS common/subtemplate name="std_header" unapi=1 LinkedData="title" %]
-
-<body>
 
 <!--               <script type="text/javascript">
                         $(function(){
@@ -64,25 +57,6 @@
                         });
                 </script>
 -->
-<script language="JavaScript" type="text/javascript">
-$(document).ready(function(){
-    $(".ob-collection").click(function(){
-
-
-   // Insert-Funktion aufrufen
-   $.get(this.href);
-
-   // Signalisieren, dass in Merkliste transferiert wurde
-   $(this).children("img").attr("src","/images/openbib/success.png");
-
-   // Merklistenfuellstand aktualisieren
-   //  $.get("/portal/openbib/cartitems/count",
-   //function (txt){ $("#ob-collectioncount").html("["+txt+"]"); });
-
-   return false;
- });
-});
-</script>
 
 <script>
 $(document).ready(function(){
@@ -104,72 +78,8 @@ $(document).ready(function(){
 
 </script>
 
-<!-- skip link navigation -->
-<ul class="ym-skiplinks">
-	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
-	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
-</ul>
 
-<div class="ym-wrapper">
-  <div class="ym-wbox">
-
-[% PROCESS common/subtemplate name="corporate_banner" %] 
-
-[% PROCESS common/subtemplate name="mainnavigation" %]
-
-    <!-- begin: main content area #main -->
-    <div id="main">
-
-[% PROCESS common/subtemplate name="search_title_field" %]
-[%-
-    used_fields = [] ;
-    searchquery = session.get_last_searchquery ;
--%]
-
-   <div class="ob-functional_nav">
-      <div class="ob-breadcrumb"> 
-       <ul>
-         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
-[% IF searchquery %]
-         <li><a href="[% path_prefix%]/[% config.get('search_loc')%].html?[% queryoptions.to_cgi_querystring({ exclude = ['page'] }) %];page=1;[% searchquery.to_cgi_querystring %]">[% msg.maketext("Recherche") %]:&nbsp;
-[%- 
-    FOREACH field IN searchquery.get_searchquery.keys ;
-       fieldname    = field_map.${field};
-       fieldcontent = searchquery.get_searchquery.${field}.val;
-       NEXT IF NOT fieldcontent ;
-       used_fields.push( "<b>${fieldname}</b>:${fieldcontent}" );
-     END;
--%]
-<em>[% used_fields.join(' ; ') %]</em></a>
-        </li>
-[% END %]
-        <li><a href="#" class="lastitem">[% msg.maketext("Titel") %]</a></li>
-      </ul>
-    </div>
-[% IF record_exists %]
-    <div class="ob-representation">
-<a class="ob-representation_rdf" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].rdf"><img src="/images/openbib/rdf.gif" alt="RDF" /></a>&nbsp;
-<a class="ob-representation_json" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].json"><img src="/images/openbib/JSON.png" alt="JSON" /></a>
-    </div>
-[% END %]
-   </div>
-
-    <!-- grid -->
-    <div class="ym-grid linearize-level-1">
-      <div class="ym-g33 ym-gr">
-        <div class="ym-gbox" class="ym-clearfix">
-[% IF record_exists %]
-[%   PROCESS common/subtemplate name="titles_record_html_actions" %]
-[% END %]
-        </div><!-- End User-Specific -->
-      </div>
-
-      <!-- end: grid right -->
-      <!-- begin: grid left -->
-      <div class="ym-g66 ym-gl">
-        <div class="ym-gbox" class="ym-clearfix">
-
-<div class="ob-fulltitle"><!-- Begin Fulltitle -->
+<div class="content"><!-- Begin Fulltitle -->
 
 <div class="ob-category_header">
 [%-  IF locations.size >= 1 -%]
@@ -182,17 +92,17 @@ $(document).ready(function(){
 [%     dbinfo.get('dbnames').${database}.short %]
 [%   END %]
 </div>
-<div class="ym-grid linearize-level-2 details"><!-- Begin Details -->
-<!-- Title begins here -->
-<div class="ym-g33 ym-gr ob-titleimage"><!-- Begin Images -->
-  <div class="ym-gbox">
+
+<div class="row flex-md-row-reverse"><!-- Begin Details -->
+
+<!-- <div class="col-xs-6 col-md-3 ob-titleimage"><!-- Begin Images -->
+<div class="col-md-3"><!-- Begin Images -->
 [% PROCESS common/subtemplate name="titles_record_html_images" %]
-  </div>
-</div><!-- End Images -->
+</div><!-- End Col Images -->
 
-<div class="categories ym-g66 ym-gl"><!-- Begin Categories -->
-
-  <div class="ym-gbox-left ob-title_record">
+<!-- Title begins here -->
+<!-- <div class="categories ob-title_record col-md-9"><!-- Begin Categories -->
+<div class="col-md-9"><!-- Begin Categories -->
 
 [% IF record_exists %]
 [%   PROCESS common/subtemplate name="visible_categories_title" %]
@@ -206,16 +116,17 @@ $(document).ready(function(){
 [% IF config.get('unAPI') %]
 <abbr class="unapi-id" title="[% record.database %]:[% record.id %]"></abbr>
 [% END %]
-  </div> <!-- End ym-grid -->
-</div><!-- End Categories -->
-</div><!-- End Details -->
+</div>
+</div><!-- End Col Categories -->
+
+</div><!-- End Row Details -->
 
 <div class="ob-bottominfo"><!-- Begin Bottominfo -->
 
 <div class="ob-title_wikipedia_articles">
 [%- IF normdata.${"E4200"} || normdata.${"E4201"} || normdata.${"E4202"} %]
 <p class="wikipediamashup">
-<img src="[% config.get('wikipedia_img') %]" alt="[% msg.maketext("Mashup mit Wikipedia") %]" /> [% msg.maketext("Dieses Buch ist in Wikipedia erw&auml;hnt unter") %]:&nbsp;
+<img src="[% config.get_icon('wikipedia',view,sysprofile) %]" alt="[% msg.maketext("Mashup mit Wikipedia") %]" /> [% msg.maketext("Dieses Buch ist in Wikipedia erw&auml;hnt unter") %]:&nbsp;
 [%-   IF normdata.${"E4200"} %]
 [%-     FOREACH item IN normdata.${"E4200"}-%]
 [%        redirect_url = "http://de.wikipedia.org/wiki/${item.content}" %]
@@ -239,7 +150,6 @@ $(document).ready(function(){
 </div>
 
 [% IF record_exists %]
-<p class="ob-background">&nbsp;</p>
 
 [%
  FOREACH thiscirculation IN circulation ;
@@ -258,29 +168,30 @@ $(document).ready(function(){
 -%]
 [%# USE dumper;dumper.dump(holding)%]
 
-<ul>
+<ul class="nav nav-tabs" role="tablist">
 [%   IF circulation.size > 0 %]
-<li><a href="#ob-circulation_info">[% msg.maketext("Ausleihe/Exemplare") %]</a></li>
+<li class="nav-item"><a class="nav-link active" role="tab" data-toggle="tab" href="#ob-circulation_info">[% msg.maketext("Ausleihe/Exemplare") %]</a></li>
 [%   ELSE %]
-<li><a href="#ob-holding_info">[% msg.maketext("Bestand") %]</a></li>
+<li class="nav-item"><a class="nav-link active" role="tab" data-toggle="tab" href="#ob-holding_info">[% msg.maketext("Bestand") %]</a></li>
 [%   END %]
 
 [%   IF journaltocs_feed %]
-<li><a href="#ob-journaltocs">[% msg.maketext("Letzte Artikel") %]</a></li>
+<li class="nav-item"><a class="nav-link" role="tab" data-toggle="tab" href="#ob-journaltocs">[% msg.maketext("Letzte Artikel") %]</a></li>
 [%   END %]
-<li><a href="#ob-same_records" id="ob-same_records_li">[% msg.maketext("In anderen Katalogen") %]</a></li>
-<li><a href="#ob-similar_records" id="ob-similar_records_li">[% msg.maketext("Andere Ausgaben") %]</a></li>
+<li class="nav-item"><a class="nav-link" role="tab" data-toggle="tab" href="#ob-same_records" id="ob-same_records_li">[% msg.maketext("In anderen Katalogen") %]</a></li>
+<li class="nav-item"><a class="nav-link" role="tab" data-toggle="tab" href="#ob-similar_records" id="ob-similar_records_li">[% msg.maketext("Andere Ausgaben") %]</a></li>
 [%   IF config.get('reviews') %]
-<li><a href="#ob-reviews">[% msg.maketext("Bewertungen/Rezensionen") %]</a></li>
+<li class="nav-item"><a class="nav-link" role="tab" data-toggle="tab" href="#ob-reviews">[% msg.maketext("Bewertungen/Rezensionen") %]</a></li>
 [%   END %]
 </ul>
 
+<div class="tab-content pt-3">
 [% IF circulation.size > 0 %]
-<div id="ob-circulation_info"><!-- Begin Circulation -->
+<div role="tabpanel" class="tab-pane fade-in active" id="ob-circulation_info"><!-- Begin Circulation -->
 [% PROCESS common/subtemplate name="circulation" %]
 </div><!-- End Circulation -->
 [% ELSE %]
-<div id="ob-holding_info"><!-- Begin Bestand -->
+<div role="tabpanel" class="tab-pane fade-in active" id="ob-holding_info"><!-- Begin Bestand -->
 [% PROCESS common/subtemplate name="holding" %]
 </div><!-- End Bestand -->
 [% END %]
@@ -296,14 +207,14 @@ $(document).ready(function(){
 });
 </script>
 
-<div id="ob-journaltocs"><!-- Begin Journaltocs -->
+<div role="tabpanel" class="tab-pane fade" id="ob-journaltocs"><!-- Begin Journaltocs -->
 [% msg.maketext("F&uuml;r die letzten in dieser Zeitschrift ver&ouml;ffentlichten Artikel bieten wir eine eine [_1]&Uuml;bersicht[_2] an.","<a href=\"${path_prefix}/${config.get('info_loc')}/journaltocs?id=${journaltocs_feed}\">","</a>") %]
 </div><!-- End Journaltocs -->
 [% END %]
 <!-- Begin: Reviews -->
 [% IF config.get('reviews') %]
 
-<div id="ob-reviews"><!-- Begin: Reviews -->
+<div role="tabpanel" class="tab-pane fade" id="ob-reviews"><!-- Begin: Reviews -->
 
 [% IF   username %]
 
@@ -324,7 +235,8 @@ OID[% ownreviewid %]
 <div id="ob-newreviews_do"><!-- Begin formats do -->
 
 <h4>[% msg.maketext("Bewertung") %]</h4>
-<table>
+
+<table class="table">
 <tr><td>[% msg.maketext("schlecht") %]&nbsp;<input type="radio"
 name="rating" value="0"/>&nbsp;<input type="radio" name="rating"
 value="1"/>&nbsp;<input type="radio" name="rating"
@@ -335,23 +247,30 @@ value="5"/>&nbsp;[% msg.maketext("sehr gut") %]</td></tr>
 </table>
 
 <h4>[% msg.maketext("Rezension") %]</h4>
-<table>
-<tr><td><b>[% msg.maketext("Pseudonym") %]</b></td><td><input type="text" name="nickname" value="" size="30" maxlength="30" /></td></tr>
-<tr><td><b>[% msg.maketext("Titel") %]</b></td><td><input type="text" name="title" value="" size="30" maxlength="100" /></td></tr>
-<tr><td><b>[% msg.maketext("Text") %]</b></td><td><textarea cols="80" rows="10" name="review"></textarea></td></tr>
-</table>
-<p />
-<table>
-<tr>
-<td><input type="submit" value="[% msg.maketext("Aufnehmen") %]"/>&nbsp;&nbsp;</td><td><input type="reset" value="[% msg.maketext("Löschen") %]"/></td>
-</tr>
-</table>
-</div><!-- End newreviews_do -->
+
+<div class="form-group">
+<label for="review_nickname">[% msg.maketext("Pseudonym") %]</label>
+<input class="form-control" id="review_nickname" type="text" name="nickname" value="" />
+</div>
+
+<div class="form-group">
+<label for="review_title">[% msg.maketext("Titel") %]</label>
+<input class="form-control" id="review_title" type="text" name="title" value=""  />
+</div>
+
+<div class="form-group">
+<label for="review_text">[% msg.maketext("Rezension") %]</label>
+<textarea class="form-control" id="review_text" cols="80" rows="10" name="review"></textarea>
+</div>
+
+<button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Aufnehmen") %]</button>&nbsp;&nbsp;<button class="btn btn-primary mb-2" type="reset">[% msg.maketext("Löschen") %]</button>
 
 </form>
 [% END %]
 
 [%   END %]
+
+</div><!-- End: do_new_review -->
 
 [%   IF reviews.size > 0 %]
 
@@ -388,15 +307,15 @@ href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method
 
 <!-- End: Reviews -->
 
-<div id="ob-same_records"><!-- Begin: Same records -->
+<div role="tabpanel" class="tab-pane fade" id="ob-same_records"><!-- Begin: Same records -->
    <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/same_records.html?l=[% lang %]">Titel in anderen Katalogen anzeigen?</a>
 </div><!-- End: Same Records -->
 
-<div id="ob-similar_records"><!-- Begin: Similar records -->
+<div role="tabpanel" class="tab-pane fade" id="ob-similar_records"><!-- Begin: Similar records -->
    <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/similar_records.html?l=[% lang %]">Titel in anderen Ausgaben anzeigen?</a>
 </div><!-- End: Similar Records -->
 
-
+</div><!-- End: tab-content -->
 </div><!-- End: Additional Title Info -->
 
 [% END # record_exists %]
@@ -407,29 +326,3 @@ href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method
 <!--</div>--><!-- End record -->
 
 <!-- Title ends here -->
-
-<!--
-<script>
-   function addFullCover(resultbooks) {
-     for (i in resultbooks) {
-       var thisbook = resultbooks[i];
-       if (thisbook.thumbnail_url != undefined){         
-          document.getElementById('cover_full').src      = thisbook.thumbnail_url.replace("zoom=5","zoom=1");
-          document.getElementById('cover_full').title    = "Cover von Google Books";
-          document.getElementById('cover_full_url').href = thisbook.preview_url;
-       }
-     }
-   }
-</script>
-
-<script src="http://books.google.com/books?jscmd=viewapi&bibkeys=ISBN:[% isbn %]&callback=addFullCover"></script>
--->
-        </div>
-        <div class="ym-ie-clearing">&nbsp;</div>
-        <!-- End: IE Column Clearing -->
-      </div>
-     </div> <!-- end: ym-column -->
-    </div>
-    <!-- end: #main -->
-
-[% PROCESS common/subtemplate name="std_footer" %]

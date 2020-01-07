@@ -11,8 +11,6 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" %]
-  <body>
 [%
       funcargs = { id => database, type => 1 } ;
       resultlist = statistics.get_result(funcargs);
@@ -21,49 +19,9 @@
 [%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
 [%- popularity_i18n = msg.maketext("Popularität") -%]
 
-<!-- skip link navigation -->
-<ul class="ym-skiplinks">
-	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
-	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
-</ul>
+   <h3>[% msg.maketext("Top 20") %] [% dbinfo.get('dbnames').${database}.short %]</h3>
 
-<div class="ym-wrapper">
-  <div class="ym-wbox">
-
-[% PROCESS common/subtemplate name="corporate_banner" %] 
-
-[% PROCESS common/subtemplate name="mainnavigation" %] 
-
-    <!-- begin: main content area #main -->
-    <div id="main">
-
-   <div class="ob-functional_nav">
-     <div class="ob-breadcrumb">
-       <ul>
-         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('databases_loc') %].html?l=[% lang %]">[% msg.maketext("Kataloge") %]</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %].html?l=[% lang %]">[% dbinfo.get('dbnames').${database}.short %]</a></li>
-         <li><a href="#" class="lastitem">[% msg.maketext("Top 20") %] [% msg.maketext("Titel") %]</a></li>
-       </ul>
-     </div>
-    <div class="ob-representation">
-<!--<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/popular.json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;-->
-    </div>
-   </div>
-
-    <div class="ym-column linearize-level-1">
-      <div class="ym-col1">
-        <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="titles_navigation" active_submenu = "popular" %]
-        </div>
-      </div>
-      <!-- end: #col1 -->
-      <!-- begin: #col3 static column -->
-      <div class="ym-col3" >
-        <div class="ym-cbox" class="ym-clearfix">
-
-   <h3>[% msg.maketext("Top 20") %] [% msg.maketext("Titel") %]: [% dbinfo.get('dbnames').${database}.short %]</h3>
-
+[% IF resultlist %]
 <!-- Titlelist begins here -->
 <div class="ob-resultlist">
   <div class="ob-resultheader">
@@ -75,7 +33,7 @@
     <div class="ob-navigation">
     </div>
   </div>
-  <div class="ob-resultitems fullwidth[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+  <div class="ob-resultitems [% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 [%- FOREACH thisitem IN resultlist -%]
 [% 
    itemcount = thisitem.count;
@@ -238,7 +196,7 @@
     ebook     = item.${'T4120'}.first.content ;
     toc       = item.${'T4110'}.first.content ;
 
-    titleinfos.push("${itemcount} Nutzer");
+    #titleinfos.push("${itemcount} Nutzer");
 
     IF item.tags ;
       tags = [];
@@ -269,53 +227,28 @@
     titleinfo = titleinfos.join(" | ");
 -%]
 
-    <div class="ob-item[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+    <div class="ob-item ob-item d-flex flex-row[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
       <div class="ob-numbering">[% start_range+loop.count - 1 %]</div>
-      <div class="ob-thumbnail">
-    [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
+      <div class="ob-thumbnail pt-3 pl-5 mr-0 d-none d-md-block">
       </div>
-      <div class="ob-brieftitle">
-[%# USE dumper;dumper.dump(item) %]
-         <span class="ob-person">[% person %]</span><br />[% IF item.id && item.database %]<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% item.database %]/[% config.get('titles_loc') %]/id/[% item.id %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong></a>[% ELSE %]<strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong>[% END %][%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span>   
-[% IF multiple_dbs == 1 %]
-         <br /><img style="vertical-align:text-bottom;padding:1px;" src="[% config.get('home_small_img') %]" alt="[% msg.maketext("Katalog") %]" title="[% msg.maketext("Katalog") %]"/>
-[%-   IF dbinfo.get('locationid').${item.database}.identifier %]
-         <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.get('locationid').${item.database}.identifier %]">
-[%-   ELSE -%]
-         <a href="[% dburl %]" target="_blank">
-[%-   END -%]
-[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></i>&nbsp;[%- IF titleinfo -%][ [% titleinfo %] ][%- END -%]
-[% ELSE %]
-[%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
-[% END %]
-      </div>
-      <div class="ob-titlemark">[% IF signatur %][% msg.maketext("Signatur") %]: <span>[% signatur | truncate(config.get('maxlength_mark')) %]</span>[% END %]</div>
+      <div class="ob-brieftitle pl-5">
       <div class="ob-titleactions">
-[% IF tagname %]
-      <a href="[% path_prefix %]/[% config.get('tags_loc') %]/names/id/[% tagname %]" class="ob-tags">[% tagname %]</a>
-[% END %]
-[% IF item.id && item.database %]<a class="ob-collection" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% item.database %];titleid=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img class="ob-collection-image" src="[% config.get('listofinterest_small_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" />[% msg.maketext("Merken") %]</a>&nbsp;&nbsp;<a class="ob-bibsonomy" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% item.database %]/[% config.get('titles_loc') %]/id/[% item.id %]/to_bibsonomy" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy"><img src="[% config.get('share_small_img') %]" alt="Share this"/>BibSonomy</a>[% END %]
-[% IF user_owns_litlist %]
-&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/items/id/[% listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>
-[% END %]
-[% IF parameter.private_tags %]
-&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('tags_loc') %]/[% parameter.tag %]?titleid=[% item.id %];dbname=[% item.database %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>
-[% END %]
+[% IF item.id && item.database %]<a class="ob-collection" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% item.database %];titleid=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img class="ob-collection-image" src="[% config.get_icon('listofinterest_small',view,sysprofile) %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" />[% msg.maketext("Merken") %]</a>[% END %]
       </div>
+[%# USE dumper;dumper.dump(item) %]
+      <div class="ob-titleinfo mt-4">
+         <span class="ob-person">[% person %]</span><br />[% IF item.id && record.database %]<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% item.id %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong></a>[% ELSE %]<strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong>[% END %][%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%][% IF nominal %]<br/>[% nominal %][% END %][% IF yearofpub %]<br/><span class="ob-yearofpub">[% yearofpub %]</span>[% END %]   
+[%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
+       </div>
+      <div class="ob-titlemark d-none d-md-block">[% IF signatur %][% msg.maketext("Signatur") %]: <span>[% signatur | truncate(config.get('maxlength_mark')) %]</span>[% END %]</div>
     </div>
+  </div>
 
 <!-- Ende einzelner Treffer -->
 [%- END -%]
   </div>
 </div>
 <!-- Titlelist ends here -->
-
-        </div>
-        <div class="ym-ie-clearing">&nbsp;</div>
-        <!-- End: IE Column Clearing -->
-      </div>
-     </div> <!-- end: ym-column -->
-    </div>
-    <!-- end: #main -->
-
-[% PROCESS common/subtemplate name="std_footer" %]
+[% ELSE %]
+[% msg.maketext('Es liegen derzeit keine Daten vor.') %]
+[% END %]

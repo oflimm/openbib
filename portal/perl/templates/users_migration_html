@@ -11,104 +11,54 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" %]
 
-  <body>
-
-<!-- skip link navigation -->
-<ul class="ym-skiplinks">
-	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
-	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
-</ul>
-
-<div class="ym-wrapper">
-  <div class="ym-wbox">
-
-[% PROCESS common/subtemplate name="corporate_banner" %] 
-
-[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
-
-    <!-- begin: main content area #main -->
-    <div id="main">
-
-   <div class="ob-functional_nav">
-     <div class="ob-breadcrumb">
-       <ul>
-         <li><a href="[% config.get('home_loc') %]">Start</a></li>
-         <li><a href="#">[% username %]</a></li>
-         <li><a href="#" class="lastitem">[% msg.maketext("Grundeinstellungen") %]</a></li>
-       </ul>
-     </div>
-   </div>
-
-    <div class="ym-column linearize-level-1">
-      <div class="ym-col1">
-        <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="users_navigation" active_submenu="migration" %] 
-        </div>
-      </div>
-      <!-- end: #col1 -->
-      <!-- begin: #col3 static column -->
-      <div class="ym-col3" >
-        <div class="ym-cbox" class="ym-clearfix">
-
-<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/migration" enctype="application/x-www-form-urlencoded" class="ym-form">
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/migration" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="_method"    value="PUT" />
-<fieldset>
-<legend>[% msg.maketext("Migration von nutzergenerierten Inhalte (Literaturlisten, Tags, Merkliste) einer anderen Kennung") %]</legend>
 
-<p style="padding: 5px; padding-left: 10px;">[% msg.maketext("Haben Sie Ihren Bibliotheksausweis verloren und eine neue
+
+
+<h3>[% msg.maketext("Migration von nutzergenerierten Inhalte (Literaturlisten, Tags, Merkliste) einer anderen Kennung") %]</h3>
+
+<div class="alert-info p-1">
+<p>[% msg.maketext("Haben Sie Ihren Bibliotheksausweis verloren und eine neue
 Benutzernummer bekommen? Oder haben Sie keinen Bibliotheksausweis mehr
 und wollen den KUG weiter mit Ihrer registrierten E-Mail-Adresse
 verwenden? Dann können Sie hier Ihre unter der alten
 Kennung angelegten Merklisteneinträge, Literaturlisten und Tags
-zu dieser Kennung verschieben.") %]
-</p>
+zu dieser Kennung verschieben.") %]</p>
 
-<p style="padding: 5px; padding-left:10px;">
-[% msg.maketext("Geben Sie bitte die Authentifizierungsinformationen für die alte Kennung
-ein, von der Inhalte zu dieser hin verschoben werden sollen.") %]
-</p>
+<p>[% msg.maketext("Geben Sie bitte die Authentifizierungsinformationen für die alte Kennung
+ein, von der Inhalte zu dieser hin verschoben werden sollen.") %]</p>
 
-<div class="ym-fbox-text">
+</div>
+
+<p/>
+
+<div class="form-group">
 <label for="oldusername">[% msg.maketext("Alte Benutzernummer bzw. E-Mail-Adresse") %]</label>
-<input type="text" name="oldusername" id="oldusername" />
+<input class="form-control" type="text" name="oldusername" id="oldusername" />
 </div>
-<div class="ym-fbox-text">
+
+<div class="form-group">
 <label for="oldpassword"/>[% msg.maketext("Altes Passwort") %]</label>
-<input type="password" name="oldpassword" id="oldpassword" />
+<input class="form-control" type="password" name="oldpassword" id="oldpassword" />
 </div>
 
-<div class="ym-fbox-check">
-<input type="checkbox" name="migrate_collections" id="migrate_collections" value="1" checked="checked" />
-<label for="migrate_collections">[% msg.maketext("Merkliste") %]</label>
+<div class="form-check">
+<input class="form-check-input" type="checkbox" name="migrate_collections" id="migrate_collections" value="1" checked="checked" />
+<label class="form-check-label" for="migrate_collections">[% msg.maketext("Merkliste") %]</label>
 </div>
 
-<div class="ym-fbox-check">
-<input type="checkbox" name="migrate_litlists" id="migrate_litlists" value="1" checked="checked" />
-<label for="migrate_litlists">[% msg.maketext("Literaturlisten") %]</label>
+<div class="form-check">
+<input class="form-check-input" type="checkbox" name="migrate_litlists" id="migrate_litlists" value="1" checked="checked" />
+<label class="form-check-label" for="migrate_litlists">[% msg.maketext("Literaturlisten") %]</label>
 </div>
 
-<div class="ym-fbox-check">
-<input type="checkbox" name="migrate_tags" id="migrate_tags" value="1" checked="checked" />
-<label for="migrate_tags">[% msg.maketext("Tags") %]</label>
+<div class="form-check">
+<input class="form-check-input" type="checkbox" name="migrate_tags" id="migrate_tags" value="1" checked="checked" />
+<label class="form-check-label" for="migrate_tags">[% msg.maketext("Tags") %]</label>
 </div>
 
-<div class="ym-fbox-button">
-<input type="submit" value="[% msg.maketext("Zur aktuellen Kennung verschieben") %]" />
-</div>
-
-</fieldset>
+<button class="btn btn-primary mb-2 mt-3" type="submit">[% msg.maketext("Zur aktuellen Kennung verschieben") %]</button>
 
 </form>
-
-
-        </div>
-        <div class="ym-ie-clearing">&nbsp;</div>
-        <!-- End: IE Column Clearing -->
-      </div>
-     </div> <!-- end: ym-column -->
-    </div>
-    <!-- end: #main -->
-
-[% PROCESS common/subtemplate name="std_footer" %]

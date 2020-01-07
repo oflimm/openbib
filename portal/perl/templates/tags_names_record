@@ -1,5 +1,37 @@
-[%- IF representation == '' || representation == 'html' -%]
-[%- PROCESS common/subtemplate name="tags_names_record_html" -%]
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+     'page_title' = "Titel zum Tag '${tagname}' anzeigen"
+
+      'main_template' = 'tags_names_record_html'
+      'sidebar_template' = 'tags_navigation'
+
+      # 'active_submenu' = 'tags_names'
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Tags')
+	     url  = "${path_prefix}/${config.get('tags_loc')}/names.html?l=${lang}"
+	  },
+	  {
+	     desc = tagname
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+      'representations' = [
+          {
+	     type = 'json'
+	     url  = "${path_prefix}/${config.get('tags_loc')}/names/id/${tagname}.json?l=${lang}"
+	  },
+       ]
+    };
+    
+    show_foot_banner = 1 ;
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
 [%- ELSIF representation == 'rdf' -%]
 [%- PROCESS common/subtemplate name="tags_names_record_rdf" -%]
 [%- ELSIF representation == 'json' -%]

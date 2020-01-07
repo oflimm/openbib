@@ -18,12 +18,13 @@
 
 <p/>
 
+[% titlecount = config.get_number_of_titles({database = 'openlibrary'}) %]
 
 <div class="table-responsive">
 <table class="table table-striped table-hover ob-right_align">
 <tr><td class="category">[% msg.maketext("Katalog") %]</td><td>Freie Digitalisate / E-Books der Open Library</td></tr>
 <tr><td class="category">[% msg.maketext("Ursprung") %]</td><td>Internet Archiv</td></tr>
-<tr><td class="category">[% msg.maketext("Online-Bestand") %]</td><td>[% config.get_number_of_titles({ database => 'openlibrary' }).all.chunk(-3).join('.') %] Titel</td></tr>
+<tr><td class="category">[% msg.maketext("Online-Bestand") %]</td><td>[% titlecount.allcount.chunk(-3).join('.') %] Titel</td></tr>
 </table>
 
 <p>

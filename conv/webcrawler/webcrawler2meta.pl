@@ -98,11 +98,13 @@ my $convconfig = YAML::Syck::LoadFile($configfile);
 my $base = Mojo::URL->new($baseurl);
 my @urls = $base;
 
+my @error_urls = ();
+
 my $multcount_ref = {};
 
 my $ua = Mojo::UserAgent->new;
 
-$ua = $ua->request_timeout(5);
+$ua = $ua->request_timeout(50);
 
 my %done;
 my $url_count = 0;
@@ -129,9 +131,22 @@ while (@urls) {
     next if exists $done{$id};
 
     $logger->info("Processing: $url");
-        
-    my $res = $ua->get($url)->res; 
 
+    my $res;
+    
+    eval {
+	$res = $ua->get($url)->result; 
+    };
+
+    if ($@){
+	$logger->error("Error fetching webpage: $url - ".$@);
+
+	push @error_urls, $url;
+	
+	$done{$id} = 1;
+	next;
+    }
+    
     # my $content_type = $res->headers->content_type;
     # my $status = $res->headers->status;
     
@@ -141,7 +156,7 @@ while (@urls) {
     # }
     
     $logger->info("Generate record");
-    
+
     gen_record($url,$res);
 
     $logger->info("Done. Next.");
@@ -150,7 +165,7 @@ while (@urls) {
     
     $url_count++;         
     
-    $res->dom('a')->each(sub{
+    $res->dom->find('a')->each(sub{
 	my $logger = get_logger();
 
 	my $url = Mojo::URL->new($_->{href});
@@ -189,8 +204,10 @@ while (@urls) {
 	    return;
 	}
 
+	$logger->info("Adding URL ".$url->path);
+	
 	push @urls, $url;
-			 });
+			       });
     
     last if ($maxpages && $url_count > $maxpages);
     
@@ -228,10 +245,14 @@ sub gen_record {
 	$logger->debug("Processing selector $selector");
 
 	if ($selector =~m/meta/){
-	    $content = $res->dom($selector)->attr('content');
+	    foreach my $item ($res->dom->find($selector)->each){
+		$content = $item->attr('content');
+	    }
 	}
 	else {
-	    $content = $res->dom($selector)->all_text;
+	    foreach my $item ($res->dom->find($selector)->each){
+		$content = $item->all_text;
+	    }
 	}
 	
 
@@ -295,10 +316,14 @@ sub gen_record {
 	$logger->debug("Processing selector $selector");
 
 	if ($selector =~m/meta/){
-	    $content = $res->dom($selector)->attr('content');
+	    foreach my $item ($res->dom->find($selector)->each){
+		$content = $item->attr('content');
+	    }
 	}
 	else {
-	    $content = $res->dom($selector)->all_text;
+	    foreach my $item ($res->dom->find($selector)->each){
+		$content = $item->all_text;
+	    }
 	}
 	
 
@@ -362,10 +387,14 @@ sub gen_record {
 	$logger->debug("Processing selector $selector");
 
 	if ($selector =~m/meta/){
-	    $content = $res->dom($selector)->attr('content');
+	    foreach my $item ($res->dom->find($selector)->each){
+		$content = $item->attr('content');
+	    }
 	}
 	else {
-	    $content = $res->dom($selector)->all_text;
+	    foreach my $item ($res->dom->find($selector)->each){
+		$content = $item->all_text;
+	    }
 	}
 	
 
@@ -429,10 +458,14 @@ sub gen_record {
 	$logger->debug("Processing selector $selector");
 
 	if ($selector =~m/meta/){
-	    $content = $res->dom($selector)->attr('content');
+	    foreach my $item ($res->dom->find($selector)->each){
+		$content = $item->attr('content');
+	    }
 	}
 	else {
-	    $content = $res->dom($selector)->all_text;
+	    foreach my $item ($res->dom->find($selector)->each){
+		$content = $item->all_text;
+	    }
 	}
 	
 
@@ -495,10 +528,14 @@ sub gen_record {
 	$logger->debug("Processing selector $selector");
 
 	if ($selector =~m/meta/){
-	    $content = $res->dom($selector)->attr('content');
+	    foreach my $item ($res->dom->find($selector)->each){
+		$content = $item->attr('content');
+	    }
 	}
 	else {
-	    $content = $res->dom($selector)->all_text;
+	    foreach my $item ($res->dom->find($selector)->each){
+		$content = $item->all_text;
+	    }
 	}
 	
 
@@ -520,14 +557,16 @@ sub gen_record {
 	};
     }
 
-    my $body_text_dom = $res->dom->find($convconfig->{webcontent});
+    my $body_text_col = $res->dom->at($convconfig->{webcontent});
 
     # Ignorieren, wenn kein Webcontent gefunden wurde!
-    return if (!$body_text_dom->size);
-
+    if (!$body_text_col){
+	$logger->error("No content found in page block ".$convconfig->{webcontent});
+	return ;
+    }
     #$body_text_dom->find('script')->strip;
     
-    my $body_text = process_dom($body_text_dom);
+    my $body_text = process_dom($body_text_col);
 #    my $body_text = $body_text_dom->all_contents;
 
     push @{$title_ref->{fields}{'0662'}}, {
@@ -568,20 +607,35 @@ sub process_dom {
     # };
     $logger->debug("2");
     my $content = $dom->content;
+    
     $logger->debug("Preprocess: $content");
     $content =~s/<[\s\/]*?script\b[^>]*>[^>]*<\/script>//msg;
-#    $content =~s/<[\s\/]*style\b[^>]*>[^>]*<\/style>//g;
+    #    $content =~s/<[\s\/]*style\b[^>]*>[^>]*<\/style>//g;
     $content =~s/<[\s\/]*?style\b[^>]*>.*?<\/style>//msg;
-
+    
     $logger->debug("3");
     $logger->debug("Postprocess: $content");
     
-    $content = $hs->parse($content);	    
-    $content = decode($convconfig->{encoding},$content) if ($convconfig->{encoding});
+    $content = $hs->parse($content);
+    
+    
+    eval {
+	if ($convconfig->{encoding}){
+	    my $octets = decode($convconfig->{encoding},$content,Encode::FB_DEFAULT);
+	    $content = decode($convconfig->{encoding},$octets,Encode::FB_CROAK);
+	}
+    };
+    
+    if ($@){
+	$logger->error("ERROR: ".$@);
+	return '';
+    }
     $logger->debug("4");
     $logger->debug("Postprocess: $content");
+
     return $content;
 }
+
 sub print_help {
     print << "ENDHELP";
 webcrawler2meta.pl - Crawlen einer Website und Umwandlung in das Metaformat

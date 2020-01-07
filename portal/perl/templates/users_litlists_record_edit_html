@@ -1,0 +1,169 @@
+[%#-
+#######################################################################
+#
+# Templatename: litlists_record_edit
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Neuanlegen und Ausgabe bestehender Literaturlisten
+#
+#######################################################################
+-%]
+[%- ebook_i18n      = msg.maketext("E-Book") -%]
+[%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
+[%- popularity_i18n = msg.maketext("Popularität") -%]
+
+<div class="alert-info p-1">
+<div class="ob-page_title">Literaturliste: [% litlist.properties.title %][%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.get_icon('university',view,sysprofile) %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</div>
+<div class="ob-page_subtitle"><b>[% msg.maketext("Themengebiete") %]</b>:&nbsp;
+[%- IF litlist.properties.topics.size -%]
+[%-   FOREACH topic IN litlist.properties.topics-%]
+<a href="[% path_prefix %]/[% config.get('litlists_loc') %]/[% config.get('topics_loc') %]/id/[% topic.id %].html">[% topic.name %]</a>&nbsp;&nbsp;
+[%-   END-%]
+[%- ELSE -%]
+[% msg.maketext("Keine") %]
+[%- END-%]
+</div>
+</div>
+
+<p/>
+[% userrole = user.get_roles_of_user(litlist.properties.userid) %]
+
+<div id="ob-formats" class="accordion"><!-- Begin Formats -->
+
+  <div class="card">
+    <div class="card-header" id="headingFormats">
+      <h5 class="mb-0">
+        <a class="card-link" href="#collapseFormats" data-toggle="collapse" data-target="#collapseFormats" aria-expanded="false" aria-controls="collapseFormats">
+          [% msg.maketext("Andere Formate") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseFormats" class="collapse" aria-labelledby="headingFormats" data-parent="#ob-formats">
+      <div class="card-body">
+<p>
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit?format=short" [%- IF format == 'short' -%]class="ob-selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit?format=Text" [%- IF format == 'Text'-%]class="ob-selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit?format=BibTeX" [%- IF format == 'BibTeX'-%]class="ob-selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit?format=EndNote" [%- IF format == 'EndNote'-%]class="ob-selected_item"[%- END -%]>EndNote</a> 
+</p>
+</div>
+</div>
+</div>
+
+<p/>
+
+<div id="edit_item" class="accordion">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <a class="card-link collapsed" href="#collapseOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+          [% msg.maketext("Einstellungen &auml;ndern") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#edit_item">
+      <div class="card-body">
+
+<form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]">
+
+<div class="form-group">
+<label for="title">[% msg.maketext("Titel der Liste") %]</label>
+<input class="form-control" type="text" name="title" id="title" value="[% litlist.properties.title %]" size="20"/>
+</div>
+
+<div class="form-group">
+<label for="type">[% msg.maketext("Sichtbarkeit") %]</label>
+<select class="form-control" name="type" id="type"><option value="1" [% IF litlist.properties.type == 1%] selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option><option value="2"[% IF litlist.properties.type == 2 %] selected="selected"[% END %]>[% msg.maketext("privat") %]</option></select>
+</div>
+
+[%- IF userrole.${"librarian"} || userrole.${"lecturer"} -%]
+<div class="form-group">
+<label for="lecture">[% msg.maketext("Offiziell") %]</label>
+<select class="form-control" name="lecture" id="lecture"><option value="1" [% IF litlist.properties.lecture == 1%] selected="selected"[% END %]>[% msg.maketext("Ja") %]</option><option value="0"[% IF litlist.properties.lecture == 0 %] selected="selected"[% END %]>[% msg.maketext("Nein") %]</option></select>
+[%- END -%]
+
+<div class="form-group">
+<label for="topics">Ordnen Sie Ihre Literaturliste thematisch ein</label>
+<select class="form-control" name="topics" id="topics" multiple="multiple" size="5">
+
+[% FOREACH topic IN topics %]
+<option value="[% topic.id %]" [% IF litlist.properties.topic_selected.${topic.id} %] selected="selected"[% END %]>[% topic.name | truncate(40) %]</option>
+[% END %]
+
+</select>
+</div>
+
+<button type="submit" name="do_changelist" class="btn btn-primary mb-2">[% msg.maketext("&Auml;ndern") %]</button>
+
+&nbsp;&nbsp;
+
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+
+
+
+</form>
+</div>
+</div>
+</div>
+</div>
+
+<p />
+
+[%# USE dumper; dumper.dump(litlist)%]
+[% IF litlist.recordlist.get_size > 0 %]
+[%-
+    start_range     = 1;
+    end_range       = litlist.get_size;
+-%]
+
+<!-- Titlelist begins here -->
+<div class="ob-resultlist">
+  <div class="ob-resultheader">
+    <div class="left">
+[% litlist.recordlist.get_size %] [% msg.maketext("Titel") %]
+    </div>
+    <div class="right">
+<form method="get" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/edit.html">
+<input type="hidden" name="l" value="[% lang %]" />
+
+[% PROCESS common/subtemplate name="titlist_options" this_loc="${path_prefix}/${config.get('litlists_loc')}/id/${litlist.properties.id}" no_relevance=1 %]
+
+</form>
+    </div>
+  </div>
+  
+  <div class="ob-resultitems [% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+
+[% IF format == 'Text' %]
+
+[% PROCESS common/subtemplate name="litlists_record_html_as_text" %]
+
+[% ELSIF format == 'BibTeX' %]
+
+[% PROCESS common/subtemplate name="litlists_record_html_as_bibtex" %]
+
+[% ELSIF format == 'EndNote' %]
+
+[% PROCESS common/subtemplate name="litlists_record_html_as_endnote" %]
+
+[% ELSIF format == 'short' %]
+
+[% PROCESS common/subtemplate name="litlists_record_html_short" %] 
+
+[% ELSIF format == 'full' %]
+
+[% PROCESS common/subtemplate name="litlists_record_html_full" %]
+
+[%- END # Ende Alles -%]
+
+</div>
+</div>
+<!-- Titlelist ends here -->
+
+[% ELSE %]
+
+<h1>Diese Literaturliste enth&auml;lt keine Titel</h1>
+
+[% END %]

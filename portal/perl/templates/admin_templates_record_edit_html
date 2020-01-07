@@ -1,0 +1,95 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_templates_record_edit
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Templates
+#
+#######################################################################
+-%]
+<script src="/js/tinymce-4.1.5/tinymce.min.js"></script>
+<script>tinymce.init({selector:'textarea', language: '[% lang %]', plugins: ['preview','importcss','table','code','link','lists','charmap'], relative_urls:0, convert_urls: 0, remove_script_host: 0,});</script>
+
+<form method="post" action="[% path_prefix %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]">
+<input type="hidden" name="_method"    value="PUT" />
+
+<h1 class="display-5">[% msg.maketext("Template bearbeiten") %]</h1>
+
+<div class="form-group">
+<label for="id">[% msg.maketext("Id") %]</label>
+<span class="form-control">[% templateinfo.id %]</span>
+</div>
+
+<div class="form-group">
+<label for="templatelang">[% msg.maketext("Sprache") %]</label>
+<span class="form-control"><img style="vertical-align: bottom;" src="/images/openbib/[% templateinfo.templatelang %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",templateinfo.templatelang) %]" /></span>
+</div>
+
+<div class="form-group">
+<label for="viewname">[% msg.maketext("View") %]</label>
+<span class="form-control">[% templateinfo.viewid.viewname %]: [% templateinfo.viewid.description %]</span>
+</div>
+
+<div class="form-group">
+<label for="templatename">[% msg.maketext("Name") %]</label>
+<span class="form-control">[% templateinfo.templatename %]</span>
+</div>
+
+<div class="form-group">
+<!-- <label for="templatetext">[% msg.maketext("Text") %]</label> -->
+<textarea class="form-control" name="templatetext" id="templatetext" style="width:100%" rows="50">[% templateinfo.templatetext %]</textarea>
+</div>
+
+<button type="submit" name="do_change" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>
+
+&nbsp;&nbsp;&nbsp;
+
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+
+</form>
+
+<p/>
+
+[% IF templateinfo.templateinforevisions %]
+
+<h2>Revisionen</h2>
+
+<p>
+[% msg.maketext("Anzahl") %]
+&nbsp;
+<a [% IF numrev == 10 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/edit.html?l=[% lang %];numrev=10">10</a>
+&nbsp;|&nbsp;
+<a  [% IF numrev == 20 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/edit.html?l=[% lang %];numrev=20">20</a>
+&nbsp;|&nbsp;
+<a  [% IF numrev == 100 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/edit.html?l=[% lang %];numrev=100">100</a>
+</p>
+
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+<thead>
+<tr><th>[% msg.maketext("Id") %]</th><th>[% msg.maketext("Datum") %]</th><th>[% msg.maketext("Text") %]</th><th>&nbsp;</th></tr>
+</thead>
+<tbody>
+[%   FOREACH thistemplaterevision IN config.get_templateinforevision_overview(templateinfo.id,numrev).all %]
+<tr>
+<td>[% thistemplaterevision.id %]</td>
+<td>[% thistemplaterevision.tstamp %]</td>
+<td>[% thistemplaterevision.templatetext %]</td>
+<td>
+ <form method="post" action="[% path_prefix %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/revisions/id/[% thistemplaterevision.id %]">
+  <input type="hidden" name="_method"    value="PUT" />
+  <button class="btn btn-primary mb-2" type="submit" >[% msg.maketext('Wiederherstellen') %]</button>
+ </form>
+ <br/>
+ <a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/revisions/id/[% thistemplaterevision.id %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+</td>
+</tr>
+[%   END %]
+</tbody>
+</table>
+</div>
+[% END %]

@@ -1,0 +1,52 @@
+[%- PROCESS common/subtemplate name="local_config" -%]
+[%- PROCESS common/subtemplate name="search_title_field" -%]
+[%- IF representation == '' || representation == 'html';
+
+    searchquery = session.get_last_searchquery ;
+
+    IF record.record_exists;
+      record_exists = 1;
+    END;
+
+    layout_param = {
+      'page_title' = "Felder"
+
+      'main_template' = 'titles_record_fields_html'
+
+      'active_submenu' = 'database'
+
+      # 'active_menu' = ''
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Titel')
+	     url  = "${path_prefix}/${config.get('databases_loc')}/id/${database}/${config.get('titles_loc')}/id/${titleid}.html?l=${lang}"
+	  },
+	  {
+             desc = msg.maketext('Felder')
+	     url  = "#"
+	     current = 1
+	  },
+
+      ]
+
+      representations = [
+          {
+	     type = 'json'
+	     url  = "${path_prefix}/${config.get('databases_loc')}/id/${database}/${config.get('titles_loc')}/id/${titleid}/fields.json?l=${lang}"
+	  },
+       ]
+
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="titles_record_fields_json" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="titles_record_fields_include" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

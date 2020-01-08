@@ -14,7 +14,7 @@
 -%]
 
 <p>
-<center><img src="http://covers.openlibrary.org/b/olid/[% record.id %]-M.jpg" ti
+<center><img src="https://covers.openlibrary.org/b/olid/[% record.id %]-M.jpg" ti
 tle="OpenLibrary Cover" />
 </p>
 

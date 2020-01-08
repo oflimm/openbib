@@ -31,6 +31,8 @@ no warnings 'redefine';
 use utf8;
 
 use Benchmark ':hireswallclock';
+use Cache::Memcached::Fast;
+use Compress::LZ4;
 use DBI;
 use LWP;
 use Encode qw(decode decode_utf8);
@@ -66,6 +68,9 @@ sub new {
     my $config             = exists $arg_ref->{config}
         ? $arg_ref->{config}                  : OpenBib::Config->new;
     
+    my $session            = exists $arg_ref->{session}
+        ? $arg_ref->{session}                 : undef;
+
     my $searchquery        = exists $arg_ref->{searchquery}
         ? $arg_ref->{searchquery}             : OpenBib::SearchQuery->new;
 
@@ -97,6 +102,10 @@ sub new {
     if ($config){
         $self->{_config}        = $config;
     }
+
+    if ($session){
+        $self->{_session}       = $session;
+    }
     
     if ($queryoptions){
         $self->{_queryoptions}  = $queryoptions;
@@ -117,6 +126,12 @@ sub get_config {
     my ($self) = @_;
 
     return $self->{_config};
+}
+
+sub get_session {
+    my ($self) = @_;
+
+    return $self->{_session};
 }
 
 sub get_searchquery {
@@ -273,6 +288,50 @@ sub get_database {
 
     return $self->{_database};
 }
+
+# sub connectMemcached {
+#     my $self = shift;
+
+#     # Log4perl logger erzeugen
+#     my $logger = get_logger();
+
+#     my $config = get_config;
+    
+#     if (!defined $config->{memcached}){
+#       $logger->debug("No memcached configured");
+#       return;
+#     }
+
+#     # Verbindung zu Memchached herstellen
+#     $self->{memc} = new Cache::Memcached::Fast(
+# 	$config->{memcached},        
+# 	compress_methods => [
+#             sub { ${$_[1]} = Compress::LZ4::compress(${$_[0]})   },
+#             sub { ${$_[1]} = Compress::LZ4::decompress(${$_[0]}) },
+#         ],
+# 	);
+
+#     if (!$self->{memc}->set('isalive',1)){
+#         $logger->fatal("Unable to connect to memcached");
+#         $self->disconnectMemcached;
+#     }
+
+#     return;
+# }
+
+# sub disconnectMemcached {
+#     my $self = shift;
+
+#     # Log4perl logger erzeugen
+#     my $logger = get_logger();
+
+#     $logger->debug("Disconnecting memcached");
+    
+#     $self->{memc}->disconnect_all if (defined $self->{memc});
+#     delete $self->{memc};
+
+#     return;
+# }
 
 sub DESTROY {
     my $self = shift;

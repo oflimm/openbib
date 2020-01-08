@@ -59,7 +59,7 @@ sub create_searcher {
 
     my $config             = exists $arg_ref->{config}
         ? $arg_ref->{config}          : OpenBib::Config->new;
-    
+
     if ($logger->is_debug){
         $logger->debug("Trying to dispatch database $database") if (defined $database);
         $logger->debug("Trying to dispatch with optional sb $sb") if (defined $sb);

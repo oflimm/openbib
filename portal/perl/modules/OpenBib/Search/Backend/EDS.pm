@@ -63,7 +63,8 @@ sub search {
     my $config       = $self->get_config;
     my $searchquery  = $self->get_searchquery;
     my $queryoptions = $self->get_queryoptions;
-
+    my $session      = $self->get_session;
+    
     # Used Parameters
     my $sorttype          = $queryoptions->get_option('srt');
     my $sortorder         = $queryoptions->get_option('srto');
@@ -75,6 +76,10 @@ sub search {
     my $num               = $queryoptions->get_option('num');
 
     my $from              = ($page - 1)*$num;
+
+    # SessionID for sessiontoken
+
+    my $sessionID = $session->get_id;
     
     my ($atime,$btime,$timeall);
   
@@ -86,7 +91,7 @@ sub search {
     $ua->agent('USB Koeln/1.0');
     $ua->timeout(30);
     
-    $self->connect_eds($ua);
+    $self->connect_eds($ua,$sessionID);
 
     if ($logger->is_debug){
 	$logger->debug("Setting default header with x-authenticationToken: ".$self->get_authtoken." and x-sessionToken: ".$self->get_sessiontoken);
@@ -544,6 +549,34 @@ sub _create_authtoken {
     
     my $config = $self->get_config;
 
+    $config->connectMemcached;
+    
+    my $memc_key = "eds:authtoken";
+
+    $logger->debug("Memc: ".$config->{memcached});
+    
+    if ($config->{memc}){
+        my $authtoken = $config->{memc}->get($memc_key);
+
+	if ($authtoken){
+	    if ($logger->is_debug){
+		$logger->debug("Got eds authtoken $authtoken for key $memc_key from memcached");
+	    }
+
+	    $config->disconnectMemcached;
+	    	    
+	    return $authtoken;
+	}
+	else {
+	    if ($logger->is_debug){
+		$logger->debug("No eds authtoken for key $memc_key from memcached found");
+	    }
+
+	}
+    }
+    else {
+	$logger->debug("Weiter ohne memcached");
+    }
     
     if (!$ua){
 	$ua = LWP::UserAgent->new();
@@ -583,6 +616,16 @@ sub _create_authtoken {
 	}
 	
 	if ($json_result_ref->{AuthToken}){
+	    if ($config->{memc}){
+		$config->{memc}->set($memc_key,$json_result_ref->{AuthToken},$self->{memcached_expiration}{$memc_key});
+		
+		if ($logger->is_debug){
+		    $logger->debug("Saved eds authtoken ".$json_result_ref->{AuthToken}." to key $memc_key in memcached");
+		}
+	    }
+
+	    $config->disconnectMemcached;
+    
 	    return $json_result_ref->{AuthToken};
 	}
 	else {
@@ -593,17 +636,47 @@ sub _create_authtoken {
 	$logger->error('Error in Request: '.$response->code.' - '.$response->message);
     }
 
+    $config->disconnectMemcached;
+    	
     return;
 }
 
 sub _create_sessiontoken {
-    my ($self, $authtoken, $ua) = @_;
+    my ($self, $authtoken, $ua, $sessionID) = @_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
     my $config = $self->get_config;
 
+    $config->connectMemcached;
+    
+    $logger->debug("Creating sessiontoken for sessionid $sessionID");
+
+    my $memc_key = "eds:sessiontoken:$sessionID";
+
+    if ($config->{memc}){
+        my $sessiontoken = $config->{memc}->get($memc_key);
+
+	if ($sessiontoken){
+	    if ($logger->is_debug){
+		$logger->debug("Got eds sessiontoken $sessiontoken for key $memc_key from memcached");
+	    }
+
+	    $config->disconnectMemcached;
+	    
+	    return $sessiontoken;
+	}
+	else {
+	    if ($logger->is_debug){
+		$logger->debug("No eds sessiontoken for key $memc_key from memcached found");
+	    }
+
+	}
+    }
+    else {
+	$logger->debug("Weiter ohne memcached");
+    }
     
     if (!$ua){
 	$ua = LWP::UserAgent->new();
@@ -649,6 +722,16 @@ sub _create_sessiontoken {
 	}
 	
 	if ($json_result_ref->{SessionToken}){
+	    if ($config->{memc}){
+		$config->{memc}->set($memc_key,$json_result_ref->{SessionToken},$self->{memcached_expiration}{'eds:sessiontoken'});
+
+		if ($logger->is_debug){
+		    $logger->debug("Saved eds sessiontoken ".$json_result_ref->{SessionToken}." to key $memc_key in memcached");
+		}
+	    }
+
+	    $config->disconnectMemcached;
+	    
 	    return $json_result_ref->{SessionToken};
 	}
 	else {
@@ -660,17 +743,19 @@ sub _create_sessiontoken {
 	$logger->error('Error in Request: '.$response->code.' - '.$response->message);
     }
 
+    $config->disconnectMemcached;
+    
     return;
 }
 
 sub connect_eds {
-    my ($self,$ua) = @_;
+    my ($self,$ua,$sessionID) = @_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $config = $self->get_config;
 
+    my $config = $self->get_config;
+    
     if (!$ua){
 	$ua = LWP::UserAgent->new();
 	$ua->agent('USB Koeln/1.0');
@@ -689,11 +774,12 @@ sub connect_eds {
 	return;	
     }
     
-    $self->{sessiontoken} = $self->_create_sessiontoken($self->{authtoken},$ua);
+    $self->{sessiontoken} = $self->_create_sessiontoken($self->{authtoken},$ua,$sessionID);
 
-    # second try... just in case ;-)
+    # second try... und zur Sicherheit noch ein neues Authtoken holen just in case ;-)
     if (!$self->{sessiontoken}){
-	$self->{sessiontoken} = $self->_create_sessiontoken($self->{authtoken});
+	$self->{authtoken}    = $self->_create_authtoken($ua);	
+	$self->{sessiontoken} = $self->_create_sessiontoken($self->{authtoken},$ua,$sessionID);
     }
 
     if (!$self->{sessiontoken}){

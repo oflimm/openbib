@@ -838,6 +838,7 @@ sub joined_search {
 
     my $config      = $self->param('config');
     my $searchquery = $self->param('searchquery');
+    my $session     = $self->param('session');
     my $writer      = $self->param('writer');
     
     $logger->debug("Starting joined search");
@@ -878,6 +879,7 @@ sub sequential_search {
     
     my $config      = $self->param('config');
     my $searchquery = $self->param('searchquery');
+    my $session     = $self->param('session');
     my $writer      = $self->param('writer');
 
     ######################################################################
@@ -918,6 +920,7 @@ sub search {
     my $config       = $self->param('config');
     my $queryoptions = $self->param('qopts');
     my $searchquery  = $self->param('searchquery');
+    my $session      = $self->param('session');
 
     my $atime=new Benchmark;
     my $timeall;
@@ -943,6 +946,7 @@ sub search {
     $search_args_ref->{authority}    = $authority if (defined $authority);
     $search_args_ref->{searchquery}  = $searchquery if (defined $searchquery);
     $search_args_ref->{config}       = $config if (defined $config);
+    $search_args_ref->{session}      = $session if (defined $session);    
     $search_args_ref->{queryoptions} = $queryoptions if (defined $queryoptions);
 
     # Searcher erhaelt per default alle Query-Parameter uebergeben. So kann sich jedes
@@ -951,6 +955,12 @@ sub search {
     # heraussuchen.
     # Derzeit: Nur jeweils ein Parameter eines 'Parameternamens'
 
+    if ($config->{benchmark}) {
+        my $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 1 is ".timestr($timeall));
+    }
+
     $logger->debug("Args processed");
     
     my $searcher = OpenBib::Search::Factory->create_searcher($search_args_ref);
@@ -958,6 +968,12 @@ sub search {
     # Recherche starten
     $searcher->search;
 
+    if ($config->{benchmark}) {
+        my $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for stage 2 is ".timestr($timeall));
+    }
+    
     my $facets_ref = $searcher->get_facets;
     $searchquery->set_results($facets_ref->{8}) unless (defined $database); # Verteilung nach Datenbanken
 

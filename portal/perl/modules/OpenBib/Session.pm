@@ -341,6 +341,12 @@ sub get_profile {
     return $prevprofile;
 }
 
+sub get_id {
+    my $self = shift;
+
+    return $self->{ID};
+}
+
 sub set_profile {
     my ($self,$profileid)=@_;
 

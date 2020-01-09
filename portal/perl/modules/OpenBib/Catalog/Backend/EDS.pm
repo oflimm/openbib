@@ -44,6 +44,7 @@ use YAML ();
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::EDS;
 use OpenBib::Record::Title;
 
 use base qw(OpenBib::Catalog);
@@ -54,29 +55,37 @@ sub new {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
-    
     # Set defaults
     my $lang      = exists $arg_ref->{l}
-        ? $arg_ref->{l}           : undef;
+        ? $arg_ref->{l}              : undef;
 
-    my $database        = exists $arg_ref->{database}
-        ? $arg_ref->{database}         : undef;
+    my $database  = exists $arg_ref->{database}
+        ? $arg_ref->{database}       : undef;
 
+    my $config    = exists $arg_ref->{config}
+        ? $arg_ref->{config}         : OpenBib::Config->new;
+        
+    my $sessionID = exists $arg_ref->{sessionID}
+        ? $arg_ref->{sessionID}      : undef;
+    
     my $self = { };
 
     bless ($self, $class);
 
-    my $ua = LWP::UserAgent->new();
-    $ua->agent('USB Koeln/1.0');
-    $ua->timeout(30);
-
     $self->{database}      = $database;
     
-    $self->{client}        = $ua;
-
     $self->{have_field_content} = {};
+
+    if ($config){
+        $self->{_config}        = $config;
+    }
     
+    if (defined $sessionID){
+        $self->{sessionID} = $sessionID;
+    }
+
+    $logger->debug("Creating Catalog::EDS");
+    $logger->debug("Config Type".ref($self->{config}));    
     return $self;
 }
 
@@ -90,625 +99,19 @@ sub load_full_title_record {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->new;
+    my $config = $self->get_config;
 
+    $logger->debug("Config Type".ref($self->{config}));
+    
     my $edsid = OpenBib::Common::Util::decode_id($id);
 
     my $database;
     
     ($database,$edsid)=$edsid=~m/^(.+?)::(.+)$/;
+
+    my $eds = new OpenBib::EDS({ sessionID => $self->{sessionID} });
     
-    my $ua = $self->{client};
-    
-    $self->connect_eds($ua);
-    
-    if ($logger->is_debug){
-	$logger->debug("Setting default header with x-authenticationToken: ".$self->get_authtoken." and x-sessionToken: ".$self->get_sessiontoken);
-    }
-
-    $ua->default_header('x-authenticationToken' => $self->get_authtoken, 'x-sessionToken' => $self->get_sessiontoken);
-    
-    my $url = $config->get('eds')->{'retrieve_url'};
-
-    $url.="?dbid=".$database."&an=".$edsid;
-
-    if ($logger->is_debug()){
-	$logger->debug("Request URL: $url");
-    }
-    
-    my $request = HTTP::Request->new('GET' => $url);
-    $request->content_type('application/json');
-    
-    my $response = $ua->request($request);
-    
-    $logger->debug("Response: $response");
-
-    if (!$response->is_success) {
-	$logger->info($response->code . ' - ' . $response->message);
-	return;
-    }
-
-    $logger->info('ok');
-    $logger->debug($response->content);
-
-    my $json_result_ref = {};
-    
-    eval {
-	$json_result_ref = decode_json $response->content;
-    };
-    
-    if ($@){
-	$logger->error('Decoding error: '.$@);
-    }
-    
-    my $record = new OpenBib::Record::Title({ 'eds', id => $id });
-
-    my $fields_ref = ();
-
-    # Gesamtresponse in eds_source
-    push @{$fields_ref->{'eds_source'}}, {
-	content => $json_result_ref
-    };
-
-
-    my $is_electronic_ressource = 0;
-    my $link_mult = 1;
-
-
-    # Allgemeine Trefferinformationen
-    {
-	push @{$fields_ref->{'T0501'}}, {
-	    content => "Datenquelle: " . $json_result_ref->{'Record'}{'Header'}{'DbLabel'},
-	} if ($json_result_ref->{'Record'}{'Header'}{'DbLabel'});
-
-
-	push @{$fields_ref->{'T0662'}}, {
-	    subfield => '', 
-	    mult     => $link_mult, 
-	    content  => $json_result_ref->{'Record'}{'PLink'}
-	} if ($json_result_ref->{'Record'}{'PLink'});
-    
-	push @{$fields_ref->{'T0663'}},{
-	    subfield => '', 
-	    mult     => $link_mult, 
-	    content  => $json_result_ref->{'Record'}{'Header'}{'DbLabel'}
-	} if ($json_result_ref->{'Record'}{'Header'}{'DbLabel'});
-	
-	$link_mult++;
-    }
-    
-    # Volltextlinks
-    {
-	
-	my $url = "";
-	
-	eval { 	
-	    $url = $json_result_ref->{'Record'}{'FullText'}{'Links'}[0]{'Link'}[0]{'Url'};
-	};
-	
-	if ($url) { # ID=bth:94617232
-	    push @{$fields_ref->{'T0662'}}, {
-		subfield => '', 
-		mult     => $link_mult, 
-		content  => $url};
-	    
-	    push @{$fields_ref->{'T0663'}}, {
-		subfield => '',
-		mult     => $link_mult, 
-		content  => "Volltext"};
-	    # Todo: Zugriffstatus 'yellow' hinzufuegen
-
-	    $link_mult++;
-	}
-	else { 
-	    my $available = '';
-	    
-	    eval {
-		$available = $json_result_ref->{'Record'}{'FullText'}{'Text'}{'Availability'}
-	    };
-	    
-	    if ($available == 1 && $json_result_ref->{'Record'}{PLink}) {
-		push @{$fields_ref->{'T0662'}}, {
-		    subfield => '', 
-		    mult     => $link_mult, 
-		    content  => $json_result_ref->{'Record'}{PLink}};
-		
-		push @{$fields_ref->{'T0663'}}, {
-		    subfield => '', 
-		    mult     => $link_mult, 
-		    content  => "HTML-Volltext"};
-		# Todo: Zugriffstatus 'yellow' hinzufuegen
-		$link_mult++;
-	    }
-	}
-	
-	# arXiv, DOAJ und OAIster: Publikationstyp einfuegen und CustomLink auslesen
-	if ($json_result_ref->{Header}{DbId} =~ /^(edsarx|edsdoj|edsoai)$/) {
-	    unless ($json_result_ref->{'Record'}{'Header'}{'PubType'}) {
-		push @{$fields_ref->{'T0800'}}, {
-		    subfield => '', 
-		    mult     => 1, 
-		    content  => "electronic resource"};
-		$is_electronic_ressource = 1;
-	    }
-	    
-	    $url = '';
-	    
-	    eval {
-		$url = $json_result_ref->{'Record'}{'FullText'}{'CustomLinks'}[0]{'Url'};
-	    };
-	    
-	    if ($url) {
-		$url =~ s!(.*)\#\?$!$1!; # OAIster: "#?" am Ende entfernen, z.B. ID=edsoai:edsoai.859893876 ; ID=edsoai:edsoai.690666320
-		$url =~ s!(http://etheses.bham.ac.uk/[^/]+/).*ThumbnailVersion.*\.pdf!$1!; # Sonderanpassung fuer etheses.bham.ac.uk, z.B. ID=edsoai:edsoai.690666320
-		push @{$fields_ref->{'T0662'}}, {
-		    subfield => '', 
-		    mult => $link_mult, 
-		    content => $url};
-		
-		push @{$fields_ref->{'T0663'}}, {
-		    subfield => '', 
-		    mult => $link_mult, 
-		    content => "Volltext"};
-		# Todo: Zugriffstatus 'green' hinzufuegen
-		$link_mult++;
-	    }
-	}
-	
-	
-	# Science cititation index: hart verlinken
-	# Hinweis pkostaedt: Der Link "Citing Articles" funktioniert nicht in jedem Fall, z.B. ID=edswss:000312205100002
-	if ($json_result_ref->{Header}{DbId} =~ /^(edswsc|edswss)$/ && $json_result_ref->{Header}{An}) {
-	    my $url = "http://gateway.isiknowledge.com/gateway/Gateway.cgi?&GWVersion=2&SrcAuth=EBSCO&SrcApp=EDS&DestLinkType=CitingArticles&KeyUT=" . $json_result_ref->{Header}{An} . "&DestApp=WOS";
-	    
-	    push @{$fields_ref->{'T0662'}}, {
-		subfield => '', 
-		mult     => $link_mult, 
-		content  => $url};
-	    push @{$fields_ref->{'T0663'}}, {
-		subfield => '', 
-		mult => $link_mult, 
-		content => "Citing Articles (via Web of Science)"};
-	    # Todo: Zugriffstatus 'yellow' hinzufuegen
-	    $link_mult++;
-	}
-	
-    }
-
-    # BibEntity
-    {
-	foreach my $thisfield (keys %{$json_result_ref->{Record}{RecordInfo}{BibRecord}{BibEntity}}){
-	    
-	    if ($thisfield eq "Titles"){
-		foreach my $item (@{$json_result_ref->{Record}{RecordInfo}{BibRecord}{BibEntity}{$thisfield}}){
-		    
-		    if ($item->{Type} eq "main" && ! $self->have_field_content('T0331',$item->{TitleFull})){
-			push @{$fields_ref->{'T0331'}}, {
-			    content => $item->{TitleFull}
-			};
-		    }
-		}
-	    }
-	    
-	    if ($thisfield eq "Subjects"){
-		foreach my $item (@{$json_result_ref->{Record}{RecordInfo}{BibRecord}{BibEntity}{$thisfield}}){
-		    
-		    push @{$fields_ref->{'T0710'}}, {
-			content => $item->{SubjectFull}
-		    } if (! $self->have_field_content('T0710',$item->{SubjectFull} ));
-		}
-	    }
-	    
-	    if ($thisfield eq "Languages"){
-		foreach my $item (@{$json_result_ref->{Record}{RecordInfo}{BibRecord}{BibEntity}{$thisfield}}){
-		    push @{$fields_ref->{'T0015'}}, {
-			content => $item->{Text}
-		    } if (!$self->have_field_content('T0015',$item->{Text} ));
-		}
-	    }
-	    
-	    # z.B. DOI in 0010
-	    if ($thisfield eq "Identifiers"){
-		foreach my $item (@{$json_result_ref->{Record}{RecordInfo}{BibRecord}{BibEntity}{$thisfield}}){
-		    
-		    push @{$fields_ref->{'T0010'}}, {
-			content => $item->{Value}
-		    } if (!$self->have_field_content('T0010',$item->{Value} ));
-		}
-	    }
-	    
-	    
-	    if ($thisfield eq "PhysicalDescription"){
-		my $startpage;
-		my $endpage;
-		my $pagecount;
-		
-		eval {
-		    $startpage = $json_result_ref->{Record}{RecordInfo}{BibRecord}{BibEntity}{$thisfield}{Pagination}{StartPage};
-		};
-		
-		eval {
-		    $pagecount = $json_result_ref->{Record}{RecordInfo}{BibRecord}{BibEntity}{$thisfield}{Pagination}{PageCount};
-		};
-		
-		if ($startpage){
-		    $startpage=~s{^0+}{}g;
-		    
-		    if ($pagecount && $pagecount > 1){
-			$endpage = $startpage + $pagecount - 1;
-		    }
-		}
-		
-		my $pagerange = "";
-		
-		$pagerange = $startpage if ($startpage);
-		$pagerange .= " - $endpage" if ($endpage);
-		
-		$pagerange = "S. ".$pagerange if ($pagerange);
-		
-		
-		if ($pagerange){
-		    push @{$fields_ref->{'T0596'}}, {
-			content => $pagerange,
-			subfield => "s",
-		    };
-		}
-	    }
-	    
-	}
-    }
-    
-    { # BibRelationships
-	if (defined $json_result_ref->{Record}{RecordInfo}{BibRecord} && defined $json_result_ref->{Record}{RecordInfo}{BibRecord}{BibRelationships}){
-	    
-	    
-	    if (defined $json_result_ref->{Record}{RecordInfo}{BibRecord}{BibRelationships}{HasContributorRelationships}){
-		foreach my $item (@{$json_result_ref->{Record}{RecordInfo}{BibRecord}{BibRelationships}{HasContributorRelationships}}){
-		    $logger->debug("DebugRelationShips".YAML::Dump($item));
-		    if (defined $item->{PersonEntity} && defined $item->{PersonEntity}{Name} && defined $item->{PersonEntity}{Name}{NameFull}){
-			my $name = $item->{PersonEntity}{Name}{NameFull};
-			
-			$name =~ s{([^\(]+)\, (Verfasser|Herausgeber|Mitwirkender|Sonstige).*}{$1}; # Hinweis pkostaedt: GND-Zusaetze abschneiden, z.B. ID=edswao:edswao.47967597X
-			$name =~ s{([^\(]+)\, \(DE\-.*}{$1}; # Hinweis pkostaedt: GND-ID abschneiden, z.B. ID=edswao:edswao.417671822
-			
-			
-			push @{$fields_ref->{'T0100'}}, {
-			    content => $name,
-			} if (!$self->have_field_content('T0100',$name ));
-		    }
-		}
-	    }
-	    
-	    if (defined $json_result_ref->{Record}{RecordInfo}{BibRecord}{BibRelationships}{IsPartOfRelationships}){
-		
-		foreach my $partof_item (@{$json_result_ref->{Record}{RecordInfo}{BibRecord}{BibRelationships}{IsPartOfRelationships}}){	
-		    if (defined $partof_item->{BibEntity}){
-			
-			foreach my $thisfield (keys %{$partof_item->{BibEntity}}){
-			    
-			    if ($thisfield eq "Titles"){
-				foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
-				    push @{$fields_ref->{'T0451'}}, {
-					content => $item->{TitleFull}
-				    } if (!$self->have_field_content('T0451',$item->{TitleFull} ));
-				    
-				}
-			    }
-			    
-			    if ($thisfield eq "Dates"){
-				foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
-				    push @{$fields_ref->{'T0425'}}, {
-					content => $item->{'Y'}
-				    } if (!$self->have_field_content('T0425',$item->{Y} ));
-				    
-				}
-			    }
-			    
-			    if ($thisfield eq "Numbering"){
-				foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
-				    my $type  = $item->{Type};
-				    my $value = $item->{Value};
-				    
-				    if ($value && $type eq "volume"){
-					push @{$fields_ref->{'T0089'}}, {
-					    content => $value,
-					} if (!$self->have_field_content('T0089',$value ));
-					push @{$fields_ref->{'T0596'}}, {
-					    content => $value,
-					    subfield => "b",
-					} if (!$self->have_field_content('T0596b',$value ));
-				    }
-				    elsif ($value && $type eq "issue"){
-					push @{$fields_ref->{'T0596'}}, {
-					    content => $value,
-					    subfield => "h",
-					} if (!$self->have_field_content('T0596h',$value ));
-					
-				    }
-				    
-				}
-			    }
-			    
-			    if ($thisfield eq "Identifiers"){
-				foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
-				    my $type  = $item->{Type};
-				    my $value = $item->{Value};
-				    
-				    if ($value && $type eq "issn-print"){
-					# Normieren
-					$value =~ s/^(\d{4})(\d{3}[0-9xX])$/$1-$2/;
-					
-					# Todo: 543 oder 585
-					push @{$fields_ref->{'T0585'}}, {
-					    content => $value,
-					} if ($value =~m/^\d{4}\-?\d{3}[0-9xX]$/  && !$self->have_field_content('T0585',$value ));
-				    }
-				    elsif ($type =~/^issn-([0-9xX]{8})$/){
-					$value = $1;
-					
-					# Normieren
-					$value =~ s/^(\d{4})(\d{3}[0-9xX])$/$1-$2/;
-					
-					# Todo: 543 oder 585
-					push @{$fields_ref->{'T0585'}}, {
-					    content => $value,
-					} if ($value =~m/^\d{4}\-?\d{3}[0-9xX]$/  && !$self->have_field_content('T0585',$value ));			      
-				    }
-				    elsif ($value && $type eq "isbn-print"){
-					# Todo: 540
-					push @{$fields_ref->{'T0540'}}, {
-					    content => $value,
-					} if (!$self->have_field_content('T0540',$value));
-				    }
-				}
-			    }
-			}
-		    }
-		}
-	    }
-	}
-    }
-    
-    # Todo: 
-    # Jahr und Heft nicht verwenden, wenn DbId = edsarx
-    # Serial nicht anwenden, wenn DbId = rih
-
-    # Items
-
-    {
-
-	if (defined  $json_result_ref->{'Record'}{'Items'}){
-
-	    my $items_field_map_ref = {
-		ItemTitle       => 'T0590',
-		ItemAuthor      => 'T0591',
-		ItemLanguage    => 'T0516',
-		Abstract        => 'T0750',
-		AbstractNonEng  => 'T0750',
-		TitleSource     => 'T0451',
-		TitleSourceBook => 'T0451',
-		Publisher       => 'T0419',
-		DatePubCY       => 'T0425',
-		ISBN            => 'T0540',
-		ISSN	        => 'T0585',
-	    };
-
-	    
-	    foreach my $item (@{$json_result_ref->{'Record'}{'Items'}}){
-		my $label = $item->{Label};
-		my $data  = $item->{Data};
-		my $name  = $item->{Name};
-
-		$logger->debug("Data pre:$data");
-
-		# &gt; &lt; auf <,> vereinfachen
-		$data =~ s{&lt;}{<}g;
-		$data =~ s{&gt;}{>}g;
-		
-		# Data breinigen. Hinweise pkostaedt
-		$data =~ s{<br \/>}{ ; }g;
-		$data =~ s{<relatesTo>[^<]+<\/relatesTo><i>[^<]+<\/i>}{}g; # z.B. <relatesTo>2</relatesTo><i> javierm@electrica.cujae.edu.cu</i>
-		$data =~ s{<i>([^<]+)<\/i>}{$1}g;
-		$data =~ s{<[^>]+>([^<]+)<\/[^>]+>}{$1}g;                  # z.B. <searchLink fieldCode="JN" term="%22Linux%22">Linux</searchLink>
-		$data =~ s{&lt;.+?&gt;}{}g;                                # z.B. rih:2012-09413, pdx:0209854
-		$data =~ s{&amp;amp;}{&amp;}g;                             # z.B. pdx:0209854
-
-		$logger->debug("Item - Label:$label - Name:$name Data:$data");
-		
-		if ($name =~ /^(Title|Author|Language|Abstract|AbstractNonEng|TitleSource|TitleSourceBook|Publisher|DatePubCY|ISBN|ISSN)$/) {
-
-		    if ($name eq 'Publisher') {
-			$data =~ s/,\s+\d{4}$//;                          # z.B. edsgsl:solis.00547468 (Hamburg : Diplomica Verl., 2009 -> Hamburg : Diplomica Verl.)
-		    } 
-		    elsif ($name eq 'TitleSource' && $json_result_ref->{Header}{DbId} eq 'edsoai' && $data =~ /urn:/) {
-			next;                                             # z.B. edsoai:edsoai.824612814
-		    }
-		    elsif ($name eq 'ISSN'){
-			# Normieren, hier spezielle wegen Dubletten zu  BibRelationShips
-			$data =~ s/^(\d{4})(\d{3}[0-9xX])$/$1-$2/;
-		    }
-
-		    if (defined $items_field_map_ref->{$name}){
-			push @{$fields_ref->{$items_field_map_ref->{$name}}}, {
-			    content => $data,
-			} if (!$self->have_field_content($items_field_map_ref->{$name},$data));
-			
-		    }
-		    # if ($Result{$name}) {
-		    #     if ($name eq 'Abstract') {
-		    # 	$Result{$name} .= '<br/>';
-		    # 	$Result{$name} .= '<br/>' if length($data) > 100;
-		    #     } else {
-		    # 	$Result{$name} .= ' ; ';
-		    #     }
-		    # }
-		    # $Result{$name} .= $data;
-		}
-		elsif ($name eq 'Subject') {
-		    if ($label eq 'Time') {
-			push @{$fields_ref->{'T0501'}}, {
-			    content => "Zeitangabe: " . $data, # z.B. Geburtsdaten, ID=edsoao:oao.T045764
-			};
-		    } 
-		    else { 
-			my @subjects = split(' ; ', $data);
-			foreach my $subject (@subjects) {
-			    push @{$fields_ref->{'T0710'}}, {
-				content => $subject,
-			    } if (!$self->have_field_content('T0710',$data));
-			}
-		    }
-		}
-		elsif ($name eq 'DOI') {
-		    if ($data !~ /http/){
-			$data = "https://doi.org/".$data;
-		    }
-		    
-		    push @{$fields_ref->{'T0662'}}, {
-			subfield     => '', 
-			mult         => $link_mult, 
-			content      => $data,
-			availability => 'unknown',
-		    };
-		    push @{$fields_ref->{'T0663'}}, {
-			subfield => '', 
-			mult     => $link_mult, 
-			content  => "DOI"
-		    };
-		    $link_mult++;
-		} 
-		elsif ($name eq 'URL' && $label eq 'Access URL' && ! $is_electronic_ressource) { 
-		    my $url = '';
-		    
-		    if ($data =~ /linkTerm=.*(http.*)&lt;/ or $data =~ /^(http[^\s]+)/){
-			$url = $1;
-		    }
-		    
-		    if ($json_result_ref->{Header}{DbId} =~ /^(edsfis|edswao)$/) { # z.B. ID=edswao:edswao.035502584
-			push @{$fields_ref->{'T0662'}}, {
-			    subfield     => '', 
-			    mult         => $link_mult, 
-			    content      => $url,
-			    availability => 'green',
-			};
-			# Todo: Zugriffstatus 'green' hinzufuegen
-			$link_mult++;
-		    } 
-		    else {
-			# SSOAR, BASE, OLC, ...: Volltext-Link auslesen, z.B. ID=edsbas:edsbas.ftunivdortmund.oai.eldorado.tu.dortmund.de.2003.30139, ID=edsgoc:edsgoc.197587160X
-			if ($url && $url !~ /gesis\.org\/sowiport/) { # Sowiport-Links funktionieren nicht mehr, z.B. ID=edsgsl:edsgsl.793796
-			    push @{$fields_ref->{'T0662'}}, {
-				subfield     => '', 
-				mult         => $link_mult, 
-				content      => $url,
-				availability => 'yellow',
-
-			    };
-			    push @{$fields_ref->{'T0663'}}, {
-				subfield => '', 
-				mult     => $link_mult, 
-				content  => "Volltext"
-			    };
-			    # Todo: Zugriffstatus 'yellow' hinzufuegen
-			    $link_mult++;
-			    
-			    if ($json_result_ref->{Header}{DbId} eq 'edsgso') { # SSOAR
-				# Todo: Zugriffsstatus 'green' hinzufuegen
-				push @{$fields_ref->{'T0800'}}, {
-				    subfield => '', 
-				    mult     => 1, 
-				    content  => "electronic resource"
-				};
-				$is_electronic_ressource = 1;
-			    } 
-			    else {
-				# Todo: Zugriffsstatus 'unknown' hinzufuegen
-			    }
-			    push @{$fields_ref->{'T0800'}}, {
-				subfield => '', 
-				mult     => 1, 
-				content  => "electronic resource"
-			    } unless ($is_electronic_ressource);
-			}
-		    }
-		}
-		elsif ($name eq 'URL' && $label eq 'Availability') {
-
-		    $logger->debug("URL - Label:$label - Name:$name Data:$data");
-		    
-		    my @urls = split(' ; ', $data);
-		    my $i = 2;
-		    foreach my $url (@urls) {
-			if ($url =~ /doi\.org/) {
-			    push @{$fields_ref->{'T0662'}}, {
-				subfield => '', 
-				mult     => $link_mult, 
-				content  => $url
-			    };
-			    push @{$fields_ref->{'T0663'}}, {
-				subfield => '', 
-				mult => $link_mult, 
-				content => "DOI"
-			    };
-			    $link_mult++;
-			} 
-			else {
-			    if ($json_result_ref->{Header}{DbId} =~ /^(edsbl)$/) {
-				next;
-			    }
-
-			    my $availability = "";
-
-			    if ($json_result_ref->{Header}{DbId} =~ /^(edsoao|edsomo|edsebo|edssvl)$/) { # Links aus Grove Art und Britannica Online, z.B. ID=edsoao:oao.T045764
-				# Todo: Zugriffstatus 'yellow' hinzufuegen
-				$availability = "yellow";
-				
-				push @{$fields_ref->{'T0800'}}, {
-				    subfield => '', 
-				    mult     => 1, 
-				    content  => "electronic resource"
-				};
-			    } 
-			    else {
-				$availability = "unknown";
-			    }
-
-			    my $thisfield_ref = {
-				subfield => '', 
-				mult     => $link_mult, 
-				content  => $url
-			    };
-
-			    if ($availability){
-				$thisfield_ref->{availability} = $availability;
-			    }
-			    
-			    push @{$fields_ref->{'T0662'}}, $thisfield_ref; 
-			    push @{$fields_ref->{'T0663'}}, {
-				subfield => '', 
-				mult     => $link_mult, 
-				content  => "Volltext"
-			    };
-			    
-			    $link_mult++;
-			}
-			$i++;
-		    }
-		} 
-		elsif ($name !~ /^(AbstractSuppliedCopyright|AN|URL)$/) {
-		    push @{$fields_ref->{'T0501'}}, {
-			content => $label . ': ' . $data,
-		    };
-		}
-	    }
-	}
-	
-    }
-    
-    $record->set_fields_from_storable($fields_ref);
-    
-    $record->set_holding([]);
-    $record->set_circulation([]);
+    my $record = $eds->get_record({ database => $database, id => $edsid});
 
     return $record;
 }
@@ -727,321 +130,38 @@ sub load_brief_title_record {
     return $self->load_full_title_record($arg_ref);
 }
 
-sub get_classifications {
-    my ($self) = @_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $url="http://rzblx10.uni-regensburg.de/dbinfo/fachliste.php?colors=$self->{colors}&ocolors=$self->{ocolors}&bib_id=$self->{dbis_bibid}&lett=l&lang=$self->{lang}&xmloutput=1";
-
-    my $classifications_ref = [];
-    
-    $logger->debug("Request: $url");
-
-    my $response = $self->{client}->get($url)->decoded_content(charset => 'utf8');
-
-    $logger->debug("Response: $response");
-    
-    my $parser = XML::LibXML->new();
-    my $tree   = $parser->parse_string($response);
-    my $root   = $tree->getDocumentElement;
-
-    my $maxcount=0;
-    my $mincount=999999999;
-
-    foreach my $classification_node ($root->findnodes('/dbis_page/list_subjects_collections/list_subjects_collections_item')) {
-        my $singleclassification_ref = {} ;
-
-        $singleclassification_ref->{name}    = $classification_node->findvalue('@notation');
-        $singleclassification_ref->{count}   = $classification_node->findvalue('@number');
-        #$singleclassification_ref->{lett}    = $classification_node->findvalue('@lett');
-        $singleclassification_ref->{desc}    = decode_utf8($classification_node->textContent());
-
-        if ($maxcount < $singleclassification_ref->{count}){
-            $maxcount = $singleclassification_ref->{count};
-        }
-        
-        if ($mincount > $singleclassification_ref->{count}){
-            $mincount = $singleclassification_ref->{count};
-        }
-
-        push @{$classifications_ref}, $singleclassification_ref;
-    }
-
-    $classifications_ref = OpenBib::Common::Util::gen_cloud_class({
-        items => $classifications_ref, 
-        min   => $mincount, 
-        max   => $maxcount, 
-        type  => 'log'});
-
-    if ($logger->is_debug){
-        $logger->debug(YAML::Dump($classifications_ref));
-    }
-
-    return $classifications_ref;
-}
-
-sub _create_authtoken {
-    my ($self,$ua) = @_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $config = OpenBib::Config->new;
-    
-    if (!$ua){
-	$ua = LWP::UserAgent->new();
-	$ua->agent('USB Koeln/1.0');
-	$ua->timeout(30);
-    }
-
-    my $request = HTTP::Request->new('POST' => $config->get('eds')->{auth_url});
-    $request->content_type('application/json');
-
-    my $json_request_ref = {
-	'UserId'   => $config->get('eds')->{userid},
-	'Password' => $config->get('eds')->{passwd},
-    };
-    
-    $request->content(encode_json($json_request_ref));
-
-    if ($logger->is_debug){
-	$logger->info("JSON-Request: ".encode_json($json_request_ref));
-    }
-    
-    my $response = $ua->request($request);
-
-    if ($response->is_success) {
-	if ($logger->is_debug()){
-	    $logger->debug($response->content);
-	}
-
-	my $json_result_ref = {};
-
-	eval {
-	    $json_result_ref = decode_json $response->content;
-	};
-
-	if ($@){
-	    $logger->error('Decoding error: '.$@);
-	}
-	
-	if ($json_result_ref->{AuthToken}){
-	    return $json_result_ref->{AuthToken};
-	}
-	else {
-	    $logger->error('No AuthToken received'.$response->content);
-	}
-    } 
-    else {
-	$logger->error('Error in Request: '.$response->code.' - '.$response->message);
-    }
-
-    return;
-}
-
-sub _create_sessiontoken {
-    my ($self, $authtoken, $ua) = @_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $config = OpenBib::Config->new;
-    
-    if (!$ua){
-	$ua = LWP::UserAgent->new();
-	$ua->agent('USB Koeln/1.0');
-	$ua->timeout(30);
-    }
-    
-    my $guest = 'n';
-
-    my $request = HTTP::Request->new('POST' => $config->get('eds')->{session_url});
-    $request->content_type('application/json');
-
-    my $json_request_ref = {
-	'Profile' => $config->get('eds')->{profile},
-	'Guest'   => $guest,
-    };
-
-    my $json = encode_json $json_request_ref;
-    
-    $request->content($json);
-
-    if ($logger->is_debug){
-	$logger->info("JSON-Request: ".encode_json($json_request_ref));
-    }
-
-    $ua->default_header('x-authenticationToken' => $authtoken);
-    
-    my $response = $ua->request($request);
-
-    if ($response->is_success) {
-	if ($logger->is_debug()){
-	    $logger->debug($response->content);
-	}
-
-	my $json_result_ref = {};
-
-	eval {
-	    $json_result_ref = decode_json $response->content;
-	};
-	
-	if ($@){
-	    $logger->error('Decoding error: '.$@);
-	}
-	
-	if ($json_result_ref->{SessionToken}){
-	    return $json_result_ref->{SessionToken};
-	}
-	else {
-	    $logger->error('No SessionToken received'.$response->content);
-	}
-
-    } 
-    else {
-	$logger->error('Error in Request: '.$response->code.' - '.$response->message);
-    }
-
-    return;
-}
-
-sub have_field_content {
-    my ($self,$field,$content)=@_;
-
-    my $have_field = 0;
-    
-    eval {
-	$have_field = $self->{have_field_content}{$field}{$content};
-    };
-
-    $self->{have_field_content}{$field}{$content} = 1;
-
-    return $have_field;
-}
-
-sub connect_eds {
-    my ($self,$ua) = @_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $config = OpenBib::Config->new;
-
-    if (!$ua){
-	$ua = LWP::UserAgent->new();
-	$ua->agent('USB Koeln/1.0');
-	$ua->timeout(30);
-    }
-    
-    $self->{authtoken} = $self->_create_authtoken($ua);
-
-    # second try... just in case ;-)
-    if (!$self->{authtoken}){
-	$self->{authtoken}  = $self->_create_authtoken($ua);
-    }
-
-    if (!$self->{authtoken}){
-	$logger->error('No AuthToken available. Exiting...');
-	return;	
-    }
-    
-    $self->{sessiontoken} = $self->_create_sessiontoken($self->{authtoken},$ua);
-
-    # second try... just in case ;-)
-    if (!$self->{sessiontoken}){
-	$self->{sessiontoken} = $self->_create_sessiontoken($self->{authtoken});
-    }
-
-    if (!$self->{sessiontoken}){
-	$logger->error('No SessionToken available. Exiting...');
-	return;	
-    }
-
-    return;
-};
-
-sub get_authtoken {
-    my $self = shift;
-    return $self->{authtoken};
-}
-
-sub get_sessiontoken {
-    my $self = shift;
-    return $self->{sessiontoken};
-}
-
 1;
 __END__
 
 =head1 NAME
 
-OpenBib::DBIS - Objektorientiertes Interface zum DBIS XML-API
+OpenBib::Catalog::Backend::EDS - Objektorientiertes Interface zum EDS-API
 
 =head1 DESCRIPTION
 
-Mit diesem Objekt kann auf das XML-API des
-Datenbankinformationssystems (DBIS) in Regensburg zugegriffen werden.
+Mit diesem Objekt kann auf das JSON-API von EDS zugegriffen werden, um auf einen Katalog-Titel uber das vereinheitlichte OpenBib::Catalog Objekt zuzugreifen
 
 =head1 SYNOPSIS
 
- use OpenBib::DBIS;
+ use OpenBib::Catalog::Backend::EDS;
 
- my $dbis = OpenBib::DBIS->new({});
+ my $eds = OpenBib::Catalog::Backend::EDS->new({});
 
 =head1 METHODS
 
 =over 4
 
-=item new({ bibid => $bibid, client_ip => $client_ip, colors => $colors, ocolors => $ocolors, lang => $lang })
+=item new({ sessionID => $sessionID, id => $edsid })
 
-Erzeugung des DBIS Objektes. Dabei wird die DBIS-Kennung $bibid der
-Bibliothek, die IP des aufrufenden Clients (zur Statistik), die
-Sprachversion lang, sowie die Spezifikation der gewünschten
-Zugriffsbedingungen color und ocolor benötigt.
+Erzeugung des EDS Objektes. sessionID wird benoetigt, um OpenBib-Sessionbasiert das EDS-Sessiontoken via memcached zwischenzuspeichern.
 
-=item get_subjects
+=item load_full_title_record({ id => "$database::$edsid" })
 
-Liefert eine Listenreferenz der vorhandenen Fachgruppen zurück mit
-einer Hashreferenz auf die jeweilige Notation notation, der
-Datenbankanzahl count, des Anfangbuchstabens lett sowie der
-Beschreibung der Fachgruppe desc. Zusätzlich werden für eine
-Wolkenanzeige die entsprechenden Klasseninformationen hinzugefügt.
+Abfrage des Records.
 
-=item search_dbs({ fs => $fs, notation => $notation })
+=item load_short_title_record({ id => "$database::$edsid" })
 
-Stellt die Suchanfrage $fs - optional eingeschränkt auf die Fachgruppe
-$notation - an DBIS und liefert als Ergebnis verschiedene Informatinen
-als Hashreferenz zurück.
-
-Es sind dies die Informationen über die aktuelle Ergebnisseite
-current_page (mit lett, colors, ocolors), die Fachgruppe subject, die
-Kategorisierung von Datenbanken db_groups, die Zugriffsbedingungen
-access_info sowie die jeweiligen Datenbanktypen db_type.
-
-=item get_dbs({ notation => $notation, fs => $fs, lett => $lett, sc => $sc, lc => $lc, sindex => $sindex })
-
-Liefert eine Liste mit Informationen über alle Datenbanken der
-Fachgruppe $notation aus DBIS als Hashreferenz zurück.
-
-Es sind dies die Informationen über die Fachgruppe subject, die
-Kategorisierung von Datenbanken db_groups, die Zugriffsbedingungen
-access_info sowie die jeweiligen Datenbanktypen db_type.
-
-=item get_dbinfo({ id => $id })
-
-Liefert Informationen über die Datenbank mit der Id $id als
-Hashreferenz zurück. Es sind dies neben der Id $id auch Informationen
-über den Titel title, hints, content, instructions, subjects,
-keywords, appearance, access, access_info sowie db_type.
-
-=item get_dbreadme({ id => $id })
-
-Liefert zur Datenbank mit der Id $id generelle Nutzungsinformationen
-als Hashreferenz zurück. Neben dem Titel title sind das Informationen
-periods (color, label, readme_link, warpto_link) über alle
-verschiedenen Zeiträume.
+Abfrage des Records. Nutzt load_full_title_record.
 
 =back
 

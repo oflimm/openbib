@@ -168,8 +168,8 @@ sub load_full_title_record {
     $title_ref->{other} = [];
 
     foreach my $this_node (@title_nodes){
-        $title_ref->{main}     =  decode_utf8($this_node->textContent) if ($this_node->findvalue('@main') eq "Y");
-        push @{$title_ref->{other}}, decode_utf8($this_node->textContent) if ($this_node->findvalue('@main') eq "N");
+        $title_ref->{main}     =  $this_node->textContent if ($this_node->findvalue('@main') eq "Y");
+        push @{$title_ref->{other}}, $this_node->textContent if ($this_node->findvalue('@main') eq "N");
     }
 
     my $access_ref = {};
@@ -178,20 +178,20 @@ sub load_full_title_record {
     my @access_nodes = $root->findnodes('/dbis_page/details/accesses/access');
 
     foreach my $this_node (@access_nodes){
-        $access_ref->{main}     =  decode_utf8($this_node->findvalue('@href')) if ($this_node->findvalue('@main') eq "Y");
-        push @{$access_ref->{other}}, decode_utf8($this_node->findvalue('@href')) if ($this_node->findvalue('@main') eq "N");
+        $access_ref->{main}     =  $this_node->findvalue('@href') if ($this_node->findvalue('@main') eq "Y");
+        push @{$access_ref->{other}}, $this_node->findvalue('@href') if ($this_node->findvalue('@main') eq "N");
     }
     
-    my $hints   =  decode_utf8($root->findvalue('/dbis_page/details/hints'));
+    my $hints   =  $root->findvalue('/dbis_page/details/hints');
     my $content =  $root->findvalue('/dbis_page/details/content');
-    my $instructions =  decode_utf8($root->findvalue('/dbis_page/details/instructions'));
+    my $instructions =  $root->findvalue('/dbis_page/details/instructions');
 
     my @subjects_nodes =  $root->findnodes('/dbis_page/details/subjects/subject');
 
     my $subjects_ref = [];
 
     foreach my $subject_node (@subjects_nodes){
-        push @{$subjects_ref}, decode_utf8($subject_node->textContent);
+        push @{$subjects_ref}, $subject_node->textContent;
     }
 
     my @keywords_nodes =  $root->findnodes('/dbis_page/details/keywords/keyword');
@@ -199,7 +199,7 @@ sub load_full_title_record {
     my $keywords_ref = [];
 
     foreach my $keyword_node (@keywords_nodes){
-        push @{$keywords_ref}, decode_utf8($keyword_node->textContent);
+        push @{$keywords_ref}, $keyword_node->textContent;
     }
 
     my $record = new OpenBib::Record::Title({ database => $self->{database}, id => $id });

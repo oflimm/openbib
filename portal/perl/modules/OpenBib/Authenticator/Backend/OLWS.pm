@@ -145,6 +145,9 @@ sub authenticate {
        if ($local_user){
            $userid = $local_user->get_column('thisid');
        }
+
+	$logger->debug("User exists with id $userid");
+	
     }
     
     # Benuzerinformationen eintragen

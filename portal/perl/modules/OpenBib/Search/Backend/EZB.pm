@@ -251,7 +251,7 @@ sub search {
     my $alphabetical_nav_ref = [];
 
     foreach my $nav_node ($root->findnodes('/ezb_page/ezb_alphabetical_list_searchresult/navlist/current_page')) {        
-        $current_page_ref->{desc}   = decode_utf8($nav_node->textContent);
+        $current_page_ref->{desc}   = $nav_node->textContent;
     }
 
     my @nav_nodes = $root->findnodes('/ezb_page/ezb_alphabetical_list_searchresult/navlist');
@@ -274,7 +274,7 @@ sub search {
         my $singlejournal_ref = {} ;
         
         $singlejournal_ref->{id}          = $journal_node->findvalue('@jourid');
-        $singlejournal_ref->{title}       = decode_utf8($journal_node->findvalue('title'));
+        $singlejournal_ref->{title}       = $journal_node->findvalue('title');
         $singlejournal_ref->{color}{code} = $journal_node->findvalue('journal_color/@color_code');
         $singlejournal_ref->{color}{desc} = $journal_node->findvalue('journal_color/@color');
 

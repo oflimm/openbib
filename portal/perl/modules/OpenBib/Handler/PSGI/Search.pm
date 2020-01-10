@@ -946,7 +946,7 @@ sub search {
     $search_args_ref->{authority}    = $authority if (defined $authority);
     $search_args_ref->{searchquery}  = $searchquery if (defined $searchquery);
     $search_args_ref->{config}       = $config if (defined $config);
-    $search_args_ref->{session}      = $session if (defined $session);    
+    $search_args_ref->{sessionID}    = $session->{ID} if (defined $session->{ID});    
     $search_args_ref->{queryoptions} = $queryoptions if (defined $queryoptions);
 
     # Searcher erhaelt per default alle Query-Parameter uebergeben. So kann sich jedes

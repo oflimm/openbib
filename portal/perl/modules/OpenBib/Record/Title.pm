@@ -45,7 +45,6 @@ use Storable qw(freeze thaw);
 use XML::LibXML;
 use YAML ();
 
-use OpenBib::BibSonomy;
 use OpenBib::Catalog::Factory;
 use OpenBib::Common::Util;
 use OpenBib::Config;
@@ -96,6 +95,10 @@ sub new {
     my $config     = exists $arg_ref->{config}
         ? $arg_ref->{config}         : OpenBib::Config->new();
     
+    my $sessionID  = exists $arg_ref->{sessionID}
+        ? $arg_ref->{sessionID}      : undef;
+    
+
     my $generic_attributes = exists $arg_ref->{generic_attributes}
         ? $arg_ref->{generic_attributes}   : {};
 
@@ -124,6 +127,10 @@ sub new {
         $self->{id}       = $id;
     }
 
+    if (defined $sessionID){
+        $self->{sessionID} = $sessionID;
+    }
+    
     if (defined $date){
         $self->{date}     = $date;
     }
@@ -215,7 +222,7 @@ sub load_full_record {
       }
     }
     
-    my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $self->{database}});
+    my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $self->{database}, sessionID => $self->{sessionID}, config => $config });
     
     $record = $catalog->load_full_title_record({id => $id});
     

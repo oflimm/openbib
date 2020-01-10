@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::EDS.pm
+#  OpenBib::API::HTTP::EDS.pm
 #
 #  Objektorientiertes Interface zum EDS API
 #
@@ -25,7 +25,7 @@
 #
 #####################################################################
 
-package OpenBib::EDS;
+package OpenBib::API::HTTP::EDS;
 
 use strict;
 use warnings;
@@ -1378,7 +1378,7 @@ __END__
 
 =head1 NAME
 
- OpenBib::EDS - Objekt zur Interaktion mit EDS
+ OpenBib::API::HTTP::EDS - Objekt zur Interaktion mit EDS
 
 =head1 DESCRIPTION
 
@@ -1386,7 +1386,7 @@ __END__
 
 =head1 SYNOPSIS
 
- use OpenBib::EDS;
+ use OpenBib::API::HTTP::EDS;
 
  my $eds = new OpenBib::EDS({ api_key => $api_key, api_user => $api_user});
 

@@ -41,7 +41,7 @@ use Storable;
 use XML::LibXML;
 use YAML ();
 
-use OpenBib::BibSonomy;
+use OpenBib::API::HTTP::BibSonomy;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Record::Title;
@@ -86,7 +86,7 @@ sub search {
     $self->{_querystring}{start} = $offset;
     $self->{_querystring}{end}   = $offset+$num;
     
-    my $recordlist = OpenBib::BibSonomy->new()->get_posts($self->{_querystring});
+    my $recordlist = OpenBib::API::HTTP::BibSonomy->new()->get_posts($self->{_querystring});
 
     $self->{resultcount}    = $recordlist->get_generic_attribute("hits");
     $self->{_matches}       = $recordlist;

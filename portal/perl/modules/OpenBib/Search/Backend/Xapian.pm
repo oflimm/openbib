@@ -1132,7 +1132,12 @@ sub parse_query {
     if ($view && defined $config->{searchfield}{'locationstring'}){
 	@viewlocations = $config->get_viewlocations($view);
 
+	
 	if (@viewlocations){
+
+	    if ($logger->is_debug){
+		$logger->debug("Viewlocations".YAML::Dump(\@viewlocations)."\n#: ".scalar(@viewlocations));
+	    }
 	    my $prefix = $config->{searchfield}{'locationstring'}{prefix};
 
 	    @viewlocations = map { "$prefix:".OpenBib::Common::Util::normalize({

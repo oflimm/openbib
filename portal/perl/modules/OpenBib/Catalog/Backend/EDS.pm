@@ -44,7 +44,7 @@ use YAML ();
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
-use OpenBib::EDS;
+use OpenBib::API::HTTP::EDS;
 use OpenBib::Record::Title;
 
 use base qw(OpenBib::Catalog);
@@ -109,7 +109,7 @@ sub load_full_title_record {
     
     ($database,$edsid)=$edsid=~m/^(.+?)::(.+)$/;
 
-    my $eds = new OpenBib::EDS({ sessionID => $self->{sessionID} });
+    my $eds = new OpenBib::API::HTTP::EDS({ sessionID => $self->{sessionID} });
     
     my $record = $eds->get_record({ database => $database, id => $edsid});
 

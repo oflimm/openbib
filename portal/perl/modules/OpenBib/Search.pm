@@ -68,8 +68,8 @@ sub new {
     my $config             = exists $arg_ref->{config}
         ? $arg_ref->{config}                  : OpenBib::Config->new;
     
-    my $session            = exists $arg_ref->{session}
-        ? $arg_ref->{session}                 : undef;
+    my $sessionID            = exists $arg_ref->{sessionID}
+        ? $arg_ref->{sessionID}                 : undef;
 
     my $searchquery        = exists $arg_ref->{searchquery}
         ? $arg_ref->{searchquery}             : OpenBib::SearchQuery->new;
@@ -103,8 +103,8 @@ sub new {
         $self->{_config}        = $config;
     }
 
-    if ($session){
-        $self->{_session}       = $session;
+    if ($sessionID){
+        $self->{_sessionID}       = $sessionID;
     }
     
     if ($queryoptions){
@@ -128,10 +128,10 @@ sub get_config {
     return $self->{_config};
 }
 
-sub get_session {
+sub get_sessionID {
     my ($self) = @_;
 
-    return $self->{_session};
+    return $self->{_sessionID};
 }
 
 sub get_searchquery {

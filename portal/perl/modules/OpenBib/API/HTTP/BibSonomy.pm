@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::BibSonomy.pm
+#  OpenBib::API::HTTP::BibSonomy.pm
 #
 #  Objektorientiertes Interface zum BibSonomy API
 #
@@ -25,7 +25,7 @@
 #
 #####################################################################
 
-package OpenBib::BibSonomy;
+package OpenBib::API::HTTP::BibSonomy;
 
 use strict;
 use warnings;
@@ -793,7 +793,7 @@ __END__
 
 =head1 NAME
 
- OpenBib::BibSonomy - Objekt zur Interaktion mit BibSonomy
+ OpenBib::API::HTTP::BibSonomy - Objekt zur Interaktion mit BibSonomy
 
 =head1 DESCRIPTION
 
@@ -801,9 +801,9 @@ __END__
 
 =head1 SYNOPSIS
 
- use OpenBib::BibSonomy;
+ use OpenBib::API::HTTP::BibSonomy;
 
- my $bibsonomy = new OpenBib::BibSonomy({ api_key => $api_key, api_user => $api_user});
+ my $bibsonomy = new OpenBib::API::HTTP::BibSonomy({ api_key => $api_key, api_user => $api_user});
 
  my @tags = $bibsonomy->get_tags({ bibkey => $bibkey, tags => \@local_tags});
 

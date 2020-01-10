@@ -43,7 +43,7 @@ use YAML ();
 
 use OpenBib::Config;
 use OpenBib::Common::Util;
-use OpenBib::EDS;
+use OpenBib::API::HTTP::EDS;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
 use OpenBib::SearchQuery;
@@ -77,7 +77,7 @@ sub search {
 	queryoptions => $queryoptions
     };
     
-    my $eds = new OpenBib::EDS($arg_ref);
+    my $eds = new OpenBib::API::HTTP::EDS($arg_ref);
 
     my $json_result_ref = $eds->search();
     

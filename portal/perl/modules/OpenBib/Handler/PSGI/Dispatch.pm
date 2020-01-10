@@ -169,6 +169,12 @@ sub dispatch_args {
     
     my $configfile  = OpenBib::Config::File->instance;
 
+    my ($atime,$btime,$timeall)=(0,0,0);
+    
+    if ($configfile->{benchmark}) {
+	$atime=new Benchmark;
+    }
+    
     my $table_ref = [];
 
     foreach my $item (@{$configfile->{dispatch_rules}}){
@@ -256,6 +262,12 @@ sub dispatch_args {
         }
     }
 
+    if ($configfile->{benchmark}) {
+	$btime=new Benchmark;
+	$timeall=timediff($btime,$atime);
+	$logger->info("Total time for processing dispatch args is ".timestr($timeall));
+    }
+    
     return {
 #        debug => 1,
         table => $table_ref,

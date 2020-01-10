@@ -41,7 +41,7 @@ use NetAddr::IP;
 use Log::Log4perl qw(get_logger :levels);
 use YAML::Syck;
 
-use OpenBib::BibSonomy;
+use OpenBib::API::HTTP::BibSonomy;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::File;
@@ -1696,7 +1696,7 @@ sub add_tags {
 
     return unless ($bibsonomy_ref->{user} || $bibsonomy_ref->{key} || $bibsonomy_ref->{sync});
         
-    my $bibsonomy = new OpenBib::BibSonomy({api_user => $bibsonomy_ref->{user}, api_key => $bibsonomy_ref->{key}});
+    my $bibsonomy = new OpenBib::API::HTTP::BibSonomy({api_user => $bibsonomy_ref->{user}, api_key => $bibsonomy_ref->{key}});
 
     # Sync mit BibSonomy, falls gewuenscht
     $logger->debug("Syncing single title to BibSonomy");
@@ -5921,7 +5921,7 @@ sub sync_all_to_bibsonomy {
 
     return unless ($bibsonomy_ref->{user} || $bibsonomy_ref->{key});
         
-    my $bibsonomy = new OpenBib::BibSonomy({api_user => $bibsonomy_ref->{user}, api_key => $bibsonomy_ref->{key}});
+    my $bibsonomy = new OpenBib::API::HTTP::BibSonomy({api_user => $bibsonomy_ref->{user}, api_key => $bibsonomy_ref->{key}});
 
     $logger->debug("Syncing all to BibSonomy");
 

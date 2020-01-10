@@ -41,7 +41,7 @@ use Storable;
 use XML::LibXML;
 use YAML ();
 
-use OpenBib::BibSonomy;
+use OpenBib::API::HTTP::BibSonomy;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Record::Title;
@@ -106,7 +106,7 @@ sub load_full_title_record {
 
     $logger->debug("Loading Record with id $id");
     
-    my $recordlist = OpenBib::BibSonomy->new()->get_posts({ start => 0, end => 20 , bibkey => $id});
+    my $recordlist = OpenBib::API::HTTP::BibSonomy->new()->get_posts({ start => 0, end => 20 , bibkey => $id});
 
     # Record is fully qualified, so get first record in recordlist
     
@@ -167,7 +167,7 @@ sub get_subjects {
     if (defined $bibkey && $bibkey=~/^[1-3][0-9a-f]{32}$/){
 #        substr($bibkey,0,1)=""; # Remove leading 1
 
-        my $recordlist = OpenBib::BibSonomy->new()->get_posts({ start => 0, end => 20 , bibkey => $bibkey});
+        my $recordlist = OpenBib::API::HTTP::BibSonomy->new()->get_posts({ start => 0, end => 20 , bibkey => $bibkey});
         
         # Record is fully qualified, so get first record in recordlist
         

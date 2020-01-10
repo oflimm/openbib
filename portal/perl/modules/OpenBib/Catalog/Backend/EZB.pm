@@ -136,15 +136,15 @@ sub load_full_title_record {
     my $tree   = $parser->parse_string($response);
     my $root   = $tree->getDocumentElement;
 
-    my $title     =  decode_utf8($root->findvalue('/ezb_page/ezb_detail_about_journal/journal/title'));
-    my $publisher =  decode_utf8($root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/publisher'));
+    my $title     =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/title');
+    my $publisher =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/publisher');
     my @zdb_nodes =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/detail/ZDB_number');
 
     my $zdb_node_ref = {};
     
     foreach my $zdb_node (@zdb_nodes){
         $zdb_node_ref->{ZDB_number}{url} = $zdb_node->findvalue('@url');
-        $zdb_node_ref->{ZDB_number}{content} = decode_utf8($zdb_node->textContent);
+        $zdb_node_ref->{ZDB_number}{content} = $zdb_node->textContent;
     }
 
     my @classifications_nodes =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/detail/subjects/subject');
@@ -152,7 +152,7 @@ sub load_full_title_record {
     my $classifications_ref = [];
 
     foreach my $classification_node (@classifications_nodes){
-        push @{$classifications_ref}, decode_utf8($classification_node->textContent);
+        push @{$classifications_ref}, $classification_node->textContent;
     }
 
     my @subjects_nodes =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/detail/keywords/keyword');
@@ -160,7 +160,7 @@ sub load_full_title_record {
     my $subjects_ref = [];
 
     foreach my $subject_node (@subjects_nodes){
-        push @{$subjects_ref}, decode_utf8($subject_node->textContent);
+        push @{$subjects_ref}, $subject_node->textContent;
     }
 
     my @homepages_nodes =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/detail/hompages/homepage');
@@ -168,14 +168,14 @@ sub load_full_title_record {
     my $homepages_ref = [];
 
     foreach my $homepage_node (@homepages_nodes){
-        push @{$homepages_ref}, decode_utf8($homepage_node->textContent);
+        push @{$homepages_ref}, $homepage_node->textContent;
     }
     
-    my $firstvolume =  decode_utf8($root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/first_fulltext_issue/first_volume'));
-    my $firstdate   =  decode_utf8($root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/first_fulltext_issue/first_date'));
-    my $appearence  =  decode_utf8($root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/appearence'));
-    my $costs       =  decode_utf8($root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/costs'));
-    my $remarks     =  decode_utf8($root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/remarks'));
+    my $firstvolume =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/first_fulltext_issue/first_volume');
+    my $firstdate   =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/first_fulltext_issue/first_date');
+    my $appearence  =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/appearence');
+    my $costs       =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/costs');
+    my $remarks     =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/remarks');
 
     my $record = new OpenBib::Record::Title({ database => $self->{database}, id => $id });
 
@@ -319,7 +319,7 @@ sub _get_readme {
         };
     }
 
-    my $title    =  decode_utf8($root->findvalue('/ezb_page/ezb_readme_page/journal/title'));
+    my $title    =  $root->findvalue('/ezb_page/ezb_readme_page/journal/title');
 
     my @periods_nodes =  $root->findnodes('/ezb_page/ezb_readme_page/journal/periods/period');
 
@@ -328,8 +328,8 @@ sub _get_readme {
     foreach my $period_node (@periods_nodes){
         my $this_period_ref = {};
 
-        $this_period_ref->{color}       = decode_utf8($period_node->findvalue('journal_color/@color'));
-        $this_period_ref->{label}       = decode_utf8($period_node->findvalue('label'));
+        $this_period_ref->{color}       = $period_node->findvalue('journal_color/@color');
+        $this_period_ref->{label}       = $period_node->findvalue('label');
         $this_period_ref->{readme_link} = uri_unescape($period_node->findvalue('readme_link/@url'));
         $this_period_ref->{warpto_link} = uri_unescape($period_node->findvalue('warpto_link/@url'));
 

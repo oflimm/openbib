@@ -296,10 +296,10 @@
 
     .ob-item .ob-dbis_availability {
 	position: relative;
-	top: 22px;
-	left:40px;
+	top: 30px;
+/*	left:40px; */
 	width: 60px;
-	height: 90px;
+/*	height: 90px; */
 	
 	background: none repeat scroll 0 0; 
 

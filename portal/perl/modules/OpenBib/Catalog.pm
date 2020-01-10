@@ -193,6 +193,12 @@ sub DESTROY {
     return;
 }
 
+sub get_config {
+    my ($self) = @_;
+
+    return $self->{_config};
+}
+
 1;
 __END__
 

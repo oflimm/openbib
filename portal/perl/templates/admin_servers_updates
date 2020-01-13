@@ -16,7 +16,7 @@
 [%- PROCESS common/subtemplate name="local_config" -%] 
 [%- IF representation == '' || representation == 'html' ;
     layout_param = {
-      'page_title' = 'Administration - Katalog-Aktualisierung anzeigen'
+      'page_title' = 'Administration - Aktualisierungen auf Server anzeigen'
 
       'main_template' = 'admin_servers_updates_html'
       'sidebar_template' = 'users_navigation'
@@ -39,7 +39,7 @@
 	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('servers_loc')}.html?l=${lang}"
 	  },
           {
-             desc = databaseinfo.id
+             desc = serverid
 	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('servers_loc')}/id/${serverid}/updates.html?l=${lang}"
 	  },
 	  {

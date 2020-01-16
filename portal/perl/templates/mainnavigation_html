@@ -98,15 +98,25 @@
            <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Anmelden") %]</a></li>
     [%  END %]
 [%     END %]
-    [% IF config.get('lang').size > 1 %]		
+
+     [% lang_desc = {
+       'en' = "English"
+       'de' = "Deutsch"
+     }
+     %]
+
+    [% IF config.get('lang').size == 2 %]
+               <li class="nav-item">		
+      [% FOREACH thislang IN config.get('lang') %]
+       [% IF lang != thislang %]<a class="nav-link" href="[% path %]?[% cgiapp.to_cgi_query({ exclude = ['l']}) %];l=[% thislang %]">[% lang_desc.${thislang} %]</a>[% END %]
+     [% END %]
+               </li>
+    [% ELSE %]
+     
                <li class="nav-item order-2 order-md-1 mt-1">
 	        <form method="get" action="[% path %]">
                    <select name="l" class="autosubmit selectpicker" data-width="fit">
-     [% lang_desc = {
-       'en' = msg.maketext("English")
-       'de' = msg.maketext("Deutsch")
-     }
-     %]
+
      [% FOREACH thislang IN config.get('lang') %]
       <option value="[% thislang %]"[% IF lang == thislang %] selected[% END %]>[% lang_desc.${thislang} %]</option>
      [% END %]

@@ -1239,8 +1239,8 @@ while (my $record = safe_next($batch)){
 
     { # Exemplardaten
         foreach my $field ($record->field('852')){
-            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
-            my $content_i = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('i')):$field->as_string('i');
+	    my $indicator_1 = $field->indicator(1);
+	    my $indicator_2 = $field->indicator(2);
 
             my $holding_ref = {
                 'id'     => $mexid++,
@@ -1255,19 +1255,52 @@ while (my $record = safe_next($batch)){
                     ],
                 },
             };
+	    
+	    if ($indicator_1 == 8){
+		my $content_b = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('b')):$field->as_string('b');
+		my $content_c = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('c')):$field->as_string('c');
+		my $content_h = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('h')):$field->as_string('h');
+		my $content_8 = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('8')):$field->as_string('8');
 
-            push @{$holding_ref->{fields}{'0016'}}, {
-                content  => konv($content_a),
-                subfield => '',
-                mult     => 1,
-            };
+		if ($content_8){
+		    $holding_ref->{id} = $content_8;
+		}
+		
+		if ($content_b && $content_c){
+		    $content_c = $content_b." / ".$content_c;
+		}
+		
+		push @{$holding_ref->{fields}{'0016'}}, {
+		    content  => konv($content_c),
+		    subfield => '',
+		    mult     => 1,
+		};
+		
+		push @{$holding_ref->{fields}{'0014'}}, {
+		    content  => konv($content_h),
+		    subfield => '',
+		    mult     => 1,
+		};
 
-            push @{$holding_ref->{fields}{'0014'}}, {
-                content  => konv($content_i),
-                subfield => '',
-                mult     => 1,
-            };
+	    }
+	    else {
+		my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
+		my $content_i = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('i')):$field->as_string('i');
 
+		push @{$holding_ref->{fields}{'0016'}}, {
+		    content  => konv($content_a),
+		    subfield => '',
+		    mult     => 1,
+		};
+		
+		push @{$holding_ref->{fields}{'0014'}}, {
+		    content  => konv($content_i),
+		    subfield => '',
+		    mult     => 1,
+		};
+		
+	    }
+	    
             print HOLDING encode_json $holding_ref,"\n";
         }
     }

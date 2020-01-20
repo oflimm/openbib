@@ -6,7 +6,7 @@
 #
 #  iKonvertieren in das Meta-Format
 #
-#  Dieses File ist (C) 2003-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2020 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -47,5 +47,5 @@ my $mab2metaexe   = "$konvdir/mab2meta.pl";
 my $pool          = $ARGV[0];
 
 print "### $pool: Konvertieren\n";
-system("cd $pooldir/$pool ; rm *.bdbrecno ; rm meta.*");
-system("cd $pooldir/$pool; $mab2metaexe --titlefile=pool.dat --configfile=/opt/openbib/conf/$pool.yml; gzip meta.* ");
+system("cd $pooldir/$pool ; rm *.bdbrecno ; rm meta.* ; gunzip -c pool.dat.gz > pool.dat");
+system("cd $pooldir/$pool; $mab2metaexe --titlefile=pool.dat --configfile=/opt/openbib/conf/$pool.yml; gzip meta.* ; rm pool.dat *.bdbrecno ");

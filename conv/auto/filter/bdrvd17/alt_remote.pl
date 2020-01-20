@@ -6,7 +6,7 @@
 #
 #  Holen via oai und konvertieren in das Meta-Format
 #
-#  Dieses File ist (C) 2003-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2020 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -60,4 +60,5 @@ system("cd $pooldir/$pool; yaz-marcdump -i marcxchange -o marc pool.dat > pool.m
 #system("cd $pooldir/$pool; $simplexml2metaexe --inputfile=pool.dat --configfile=/opt/openbib/conf/${pool}.yml; gzip meta.*");
 system("cd $pooldir/$pool; $marc2metaexe --database=$pool --encoding='UTF-8' --inputfile=pool.mrc; gzip meta.*");
 
-#system("rm $pooldir/$pool/pool.dat");
+system("rm $pooldir/$pool/pool.dat $pooldir/$pool/pool-*.xml");
+

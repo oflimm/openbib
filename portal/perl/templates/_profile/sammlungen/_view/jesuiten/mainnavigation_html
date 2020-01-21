@@ -52,7 +52,7 @@
 <!-- Targs: [% USE dumper; dumper.dump(layout_param) %] -->
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]"><span class="brand-title"><img src="/images/openbib/views/kubibooks/kubibooks-logo-40px.jpg" class="img-fluid d-none d-sm-inline"  />Alte Bücher zur Kunst</span></a>
+  <a class="navbar-brand" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]"><span class="brand-title"><img src="/images/openbib/views/jesuiten/Ihs-logo-40px.jpg" class="img-fluid d-none d-sm-inline"  />Jesuitenbibliothek Köln</span></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -66,9 +66,9 @@
           [% msg.maketext("Register") %]
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kubibooks/titles/fields/id/0100.html?l=[% lang %];page=1">[% msg.maketext("Person") %]</a></li>
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kubibooks/titles/fields/id/0331.html?l=[% lang %];page=1">[% msg.maketext("Titel") %]</a></li>
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kubibooks/titles/fields/id/0425.html?l=[% lang %];page=1">[% msg.maketext("Erscheinungsjahre") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/0100.html?l=[% lang %];page=1">[% msg.maketext("Person") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/0331.html?l=[% lang %];page=1">[% msg.maketext("Titel") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/0425.html?l=[% lang %];page=1">[% msg.maketext("Erscheinungsjahre") %]</a></li>
         </ul>
       </li>
 
@@ -167,7 +167,7 @@
 	   </li>
 
             <li class="list-group-item bg-light pr-1 pt-3" style="border: none" >
-	     <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kubibooks/titles.html?l=[% lang %]">[% msg.maketext("Alle Titel") %]</a>
+	     <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles.html?l=[% lang %]">[% msg.maketext("Alle Titel") %]</a>
 	   </li>
 
          </ul>

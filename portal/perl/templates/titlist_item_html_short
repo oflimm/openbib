@@ -358,7 +358,12 @@ $(document).ready(function(){
 [%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
 [% END %]
         </div> <!-- end: titleinfo -->
-        <div class="ob-titlemark d-none d-md-block">[% IF signatur %][% msg.maketext("Signatur") %]: <span>[% signatur | truncate(config.get('maxlength_mark')) %]</span>[% END %]&nbsp;[% IF availability == "online" %]<span class="ob-availability_online">online</span>[% IF signatur %]<span id="availability_[% record.database %]_[% uri_escape(record.id) %]"></span>[% END %][% ELSE %]<span id="availability_[% record.database %]_[% uri_escape(record.id) %]"></span>[% END %]</div>
+	<div class="d-flex">
+           <div class="ob-titlemark d-flex d-none d-md-block">[% IF signatur %][% msg.maketext("Signatur") %]: <span>[% signatur | truncate(config.get('maxlength_mark')) %]</span>[% END %]
+	   </div>
+	   <div class="ml-auto">[% IF availability == "online" %]<button class="btn btn-primary ob-availability_online mb-1 mr-1 pr-2"><img src="[% config.get_icon('lendable',view,sysprofile) %]" alt="[% msg.maketext("online") %]" /><span  class="pl-1 d-none d-sm-inline">[% msg.maketext("online") %]</span></button>[% IF signatur %]<span id="availability_[% record.database %]_[% uri_escape(record.id) %]"></span>[% END %][% ELSE %]<span id="availability_[% record.database %]_[% uri_escape(record.id) %]"></span>[% END %]
+	   </div>
+	 </div>
 
       </div>
     </div>

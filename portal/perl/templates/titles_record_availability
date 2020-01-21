@@ -27,9 +27,9 @@
 %]
 
 [% IF overall_mediastatus.${"lendable"} == 1%]
-<span class="ob-availability_lendable">[% msg.maketext("ausleihbar") %]</span>
+<button class="btn btn-primary ob-availability_lendable mb-1 mr-1 pr-2"><img src="[% config.get_icon('lendable',view,sysprofile) %]" alt="[% msg.maketext("ausleihbar") %]" /><span class="pl-1 d-none d-sm-inline">[% msg.maketext("ausleihbar") %]</span></button>
 [% ELSIF overall_mediastatus.${"presence"} == 1 %]
-<span class="ob-availability_presence">[% msg.maketext("einsehbar") %]</span>
+<button class="btn btn-primary ob-availability_presence mb-1 mr-1 pr-2"><img src="[% config.get_icon('presence',view,sysprofile) %]" alt="[% msg.maketext("einsehbar") %]" /><span class="pl-1 d-none d-sm-inline">[% msg.maketext("einsehbar") %]</span></button>
 [% ELSIF overall_mediastatus.${"borrowed"} == 1 %]
-<span class="ob-availability_borrowed">[% msg.maketext("entliehen") %]</span>
+<button class="btn btn-primary ob-availability_borrowed mb-1 mr-1 pr-2"><img src="[% config.get_icon('borrowed',view,sysprofile) %]" alt="[% msg.maketext("einsehbar") %]" /><span class="pl-1 d-none d-sm-inline">[% msg.maketext("entliehen") %]</span></button>
 [% END %]

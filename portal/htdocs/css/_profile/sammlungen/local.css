@@ -21,7 +21,7 @@
 }
 
     .navbar {
-	z-index: 1000;
+	z-index: 2000;
     }
 
     .brand-title img {

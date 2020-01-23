@@ -26,11 +26,6 @@
   <label for="access_ref"><img src="[% config.get('dbis_red_img') %]" alt="red"/>&nbsp;[% msg.maketext("ohne Zugriff auf Volltextartikel (Inhaltsverzeichnisse und Abstracts sind in der Regel frei zugänglich)") %]</label>
 </div>
 
-<div class="form-check">
-  <input class="form-check-input" id="access_national" type="checkbox" name="access_national" value="1" [%- IF query.param('access_national') -%]checked="checked"[%- END -%] />
-  <label for="access_national"><img src="[% config.get('dbis_de_img') %]" alt="Nationallizenzen"/>&nbsp;[% msg.maketext("deutschlandweit frei zugänglich (DFG-geförderte Nationallizenz)") %]</label>
-</div>
-
 <div class="form-group">
   <label for="cln"><b>[% msg.maketext("in:") %]</b></label>
   <select class="form-control" id="cln" name="cln"><option value="" [% IF classification_name == 'all' %]selected="selected"[% END %]>[% msg.maketext("Alle Fachgebiete") %]</option>[%- FOREACH classification IN container.get('classifications') -%]

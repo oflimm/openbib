@@ -1,5 +1,6 @@
 [%-    field_map = {
           "id" = msg.maketext("Id")
+          "db" = msg.maketext("Katalog")	  
           "availabilitystring" = msg.maketext("Komplette Verfügbarkeit")
           "bkey" = msg.maketext("BibKey")
           "hss" = msg.maketext("Hochschulschriftenvermerk")	  

@@ -350,15 +350,15 @@ $(document).ready(function(){
         <div class="d-flex ob-titleactions pb-1 pt-2">
 [% IF tagname %]
          <div>
-           <a type="button" href="[% path_prefix %]/[% config.get('tags_loc') %]/names/id/[% tagname %]" class="btn btn-light pr-2">Tag: [% tagname %]</a>
+           <button type="button" href="[% path_prefix %]/[% config.get('tags_loc') %]/names/id/[% tagname %]" class="btn btn-light pr-2">Tag: [% tagname %]</button>
 	 </div>
 [% END %]
 [% IF record.id && record.database %]
        <div class="pr-1">
-	 <a class="btn btn-light pr-2" data-toggle="collapse" data-target="#fulltitle-[% record.database %]-[% record.id %]" ic-target="#fulltitle-[% record.database %]-[% record.id %]" ic-indicator="#spinner-[% record.database %]-[% record.id %]" ic-get-from="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].include?l=[% lang %]" data-title="[% title %]" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %]" alt="[% title %]" title="[% title %]"><img src="[% config.get_icon('details',view,sysprofile) %]" alt="[% msg.maketext("Details") %]" /><span class="d-none d-sm-inline">Details</span></a>
+	 <button type="button" class="btn btn-light pr-2" data-toggle="collapse" data-target="#fulltitle-[% record.database %]-[% record.id %]" ic-target="#fulltitle-[% record.database %]-[% record.id %]" ic-indicator="#spinner-[% record.database %]-[% record.id %]" ic-get-from="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].include?l=[% lang %]" data-title="[% title %]" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %]" alt="[% title %]" title="[% title %]"><img src="[% config.get_icon('details',view,sysprofile) %]" alt="[% msg.maketext("Details") %]" /><span class="d-none d-sm-inline">Details</span></button>
        </div>
        <div class="pr-1">
-          <a class="btn btn-light pr-2" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img class="ob-collection-image" src="[% config.get_icon('listofinterest_small',view,sysprofile) %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /><span class="d-none d-sm-inline">[% msg.maketext("Merken") %]</span></a>
+          <button type="button" class="btn btn-light pr-2" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img class="ob-collection-image" src="[% config.get_icon('listofinterest_small',view,sysprofile) %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /><span class="d-none d-sm-inline">[% msg.maketext("Merken") %]</span></button>
        </div>
        <div class="pr-1">
 	  <a class="btn btn-light pr-2" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/to_bibsonomy" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy"><img src="[% config.get_icon('share_small',view,sysprofile) %]" alt="Share this"/><span class="d-none d-sm-inline">BibSonomy</span></a>
@@ -366,17 +366,17 @@ $(document).ready(function(){
 [% END # id / database%]
 [% IF user_owns_litlist %]
        <div class="pr-1">
-         <a class="btn btn-light pr-2" href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/items/id/[% listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("L&ouml;schen") %]</span></a>
+         <button type="button" class="btn btn-light pr-2" href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/items/id/[% listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("L&ouml;schen") %]</span></button>
        </div>
 [% END %]
 [% IF parameter.private_tags %]
        <div class="pr-1">
-         <a class="btn btn-light pr-2" href="[% path_prefix %]/[% config.get('tags_loc') %]/[% parameter.tag %]?titleid=[% record.id %];dbname=[% record.database %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("L&ouml;schen") %]</span></a>
+         <button type="button" class="btn btn-light pr-2" href="[% path_prefix %]/[% config.get('tags_loc') %]/[% parameter.tag %]?titleid=[% record.id %];dbname=[% record.database %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("L&ouml;schen") %]</span></button>
        </div>
 [% END %]
 [% IF with_cartitems_delete %]
        <div class="pr-1">
-          <a class="btn btn-light pr-2" href="[% path_prefix %]/[% config.get('cartitems_loc') %]/id/[% record.listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Löschen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("Löschen") %]</span></a>
+          <a type="button" class="btn btn-light pr-2" href="[% path_prefix %]/[% config.get('cartitems_loc') %]/id/[% record.listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Löschen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("Löschen") %]</span></a>
        </div>
 [% END %]
        <div class="ml-auto">

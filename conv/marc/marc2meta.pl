@@ -223,8 +223,8 @@ while (my $record = safe_next($batch)){
 	my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
 	my $content_z = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('z')):$field->as_string('z');
 	
-	$content_a=~s/\s+\(.+?\)\s*$//;
-	$content_z=~s/\s+\(.+?\)\s*$//;
+	$content_a=~s/\s+\(.+?\).*$//;
+	$content_z=~s/\s+\(.+?\).*$//;
 	
 	if ($content_a){
 	    my $multcount=++$multcount_ref->{'0540'};

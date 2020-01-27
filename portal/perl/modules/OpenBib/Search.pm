@@ -173,19 +173,7 @@ sub get_records {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $recordlist = new OpenBib::RecordList::Title;
-
-    my @matches = $self->matches;
-    
-    foreach my $match_ref (@matches) {        
-        if ($logger->is_debug){
-            $logger->debug("Record: ".$match_ref );
-        }
-
-        # Create and populate record
-
-        # and add to recordlist
-    }
+    my $recordlist = $self->get_api->get_search_resultlist;
 
     return $recordlist;
 }
@@ -287,6 +275,12 @@ sub get_database {
     my $self = shift;
 
     return $self->{_database};
+}
+
+sub get_api {
+    my $self = shift;
+
+    return $self->{api};
 }
 
 # sub connectMemcached {

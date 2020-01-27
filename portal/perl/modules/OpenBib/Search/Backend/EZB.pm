@@ -41,6 +41,7 @@ use Storable;
 use XML::LibXML;
 use YAML ();
 
+use OpenBib::API::HTTP::EZB;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Record::Title;
@@ -55,96 +56,14 @@ sub new {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # Set defaults
-    my $lang      = exists $arg_ref->{l}
-        ? $arg_ref->{l}           : undef;
-
-    my $sc      = exists $arg_ref->{sc}
-        ? $arg_ref->{sc}           : undef;
-
-    my $lc       = exists $arg_ref->{lc}
-        ? $arg_ref->{lc}           : undef;
-
-    my $sindex   = exists $arg_ref->{sindex}
-        ? $arg_ref->{sindex}           : undef;
-    
-    my $database        = exists $arg_ref->{database}
-        ? $arg_ref->{database}         : undef;
-
-    my $access_green           = exists $arg_ref->{access_green}
-        ? $arg_ref->{access_green}            : 0;
-
-    my $access_yellow          = exists $arg_ref->{access_yellow}
-        ? $arg_ref->{access_yellow}           : 0;
-
-    my $access_red             = exists $arg_ref->{access_red}
-        ? $arg_ref->{access_red}              : 0;
-
-    my $config             = exists $arg_ref->{config}
-        ? $arg_ref->{config}                  : OpenBib::Config->new;
-
-    my $bibid              = exists $arg_ref->{bibid}
-        ? $arg_ref->{bibid}                   : $config->{ezb_bibid};
-    
-    my $colors = $access_green + $access_yellow*2 + $access_red*4;
-    
-    if (!$colors){
-        $colors=$config->{ezb_colors};
-
-        my $colors_mask  = OpenBib::Common::Util::dec2bin($colors);
-
-        $logger->debug("Access: mask($colors_mask)");
-        
-        $access_green  = ($colors_mask & 0b001)?1:0;
-        $access_yellow = ($colors_mask & 0b010)?1:0;
-        $access_red    = ($colors_mask & 0b100)?1:0;
-    }
-
-    my $options            = exists $arg_ref->{options}
-        ? $arg_ref->{options}                 : {};
-    
-    my $searchquery        = exists $arg_ref->{searchquery}
-        ? $arg_ref->{searchquery}             : OpenBib::SearchQuery->new;
-
-    my $queryoptions       = exists $arg_ref->{queryoptions}
-        ? $arg_ref->{queryoptions}            : OpenBib::QueryOptions->new;
+    my $api = new OpenBib::API::HTTP::EZB($arg_ref);
     
     my $self = { };
 
     bless ($self, $class);
 
-    $logger->debug("Initializing with colors = ".(defined $colors || '')." and lang = ".(defined $lang || ''));
-
-    $self->{client}        = LWP::UserAgent->new;            # HTTP client
-    $self->{_database}     = $database if ($database);
-
-    # Backend Specific Attributes
-    $self->{access_green}  = $access_green;
-    $self->{access_yellow} = $access_yellow;
-    $self->{access_red}    = $access_red;
-    $self->{bibid}         = $bibid;
-    $self->{lang}          = $lang if ($lang);
-    $self->{colors}        = $colors if ($colors);
-    $self->{sc}            = $sc if ($sc);
-    $self->{lc}            = $lc if ($lc);
-    $self->{sindex}        = $sindex if ($sindex);
-    $self->{args}          = $arg_ref;
-
-    if ($options){
-        $self->{_options}       = $options;
-    }
-
-    if ($config){
-        $self->{_config}        = $config;
-    }
-    
-    if ($queryoptions){
-        $self->{_queryoptions}  = $queryoptions;
-    }
-
-    if ($searchquery){    
-        $self->{_searchquery}   = $searchquery;
-    }
+    $self->{api}  = $api;
+    $self->{args} = $arg_ref;
 
     return $self;
 }
@@ -152,139 +71,10 @@ sub new {
 sub search {
     my ($self,$arg_ref) = @_;
 
-    # Set defaults search parameters
-    my $options_ref          = exists $arg_ref->{options}
-        ? $arg_ref->{options}        : {};
-
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config       = $self->get_config;
-    my $searchquery  = $self->get_searchquery;
-    my $queryoptions = $self->get_queryoptions;
-
-    # Used Parameters
-    my $sorttype          = (defined $self->{_options}{srt})?$self->{_options}{srt}:$queryoptions->get_option('srt');
-    my $sortorder         = (defined $self->{_options}{srto})?$self->{_options}{srto}:$queryoptions->get_option('srto');
-    my $defaultop         = (defined $self->{_options}{dop})?$self->{_options}{dop}:$queryoptions->get_option('dop');
-    my $facets            = (defined $self->{_options}{facets})?$self->{_options}{facets}:$queryoptions->get_option('facets');
-    my $gen_facets        = ($facets eq "none")?0:1;
-    
-    if ($logger->is_debug){
-        $logger->debug("Options: ".YAML::Dump($options_ref));
-    }
-    
-    # Pagination parameters
-    my $page              = (defined $self->{_options}{page})?$self->{_options}{page}:$queryoptions->get_option('page');
-    my $num               = (defined $self->{_options}{num})?$self->{_options}{num}:$queryoptions->get_option('num');
-    my $collapse          = (defined $self->{_options}{clp})?$self->{_options}{clp}:$queryoptions->get_option('clp');
-
-    my $offset            = $page*$num-$num;
-
-    $self->parse_query($searchquery);
-
-    my $url="http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?colors=$self->{colors}&bibid=$self->{bibid}&sc=$self->{sc}&lc=$self->{lc}&sindex=$self->{sindex}&".$self->querystring."&hits_per_page=$num&offset=$offset&lang=".((defined $self->{lang})?$self->{lang}:"de")."&xmloutput=1";
-
-    my $titles_ref = [];
-    
-    $logger->debug("Request: $url");
-
-    my $response = $self->{client}->get($url)->content; # decoded_content(charset => 'latin1');
-
-    $logger->debug("Response: $response");
-    
-    my $parser = XML::LibXML->new();
-    my $tree   = $parser->parse_string($response);
-    my $root   = $tree->getDocumentElement;
-
-    my $current_page_ref = {};
-    
-    foreach my $nav_node ($root->findnodes('/ezb_page/page_vars')) {        
-        $current_page_ref->{sc}   = $nav_node->findvalue('sc/@value');
-        $current_page_ref->{lc}   = $nav_node->findvalue('lc/@value');
-        $current_page_ref->{sindex}   = $nav_node->findvalue('sindex/@value');
-        $current_page_ref->{sindex}   = $nav_node->findvalue('sindex/@value');
-        $current_page_ref->{category} = $nav_node->findvalue('jq_type1/@value');
-        $current_page_ref->{term}     = $nav_node->findvalue('jq_term1/@value');
-        $current_page_ref->{hits_per_page}     = $nav_node->findvalue('hits_per_page/@value');
-    }
-
-    my $search_count = $root->findvalue('/ezb_page/ezb_alphabetical_list_searchresult/search_count');
-    
-    my $nav_ref = [];
-    
-    my @first_nodes = $root->findnodes('/ezb_page/ezb_alphabetical_list_searchresult/first_fifty');
-    if (@first_nodes){
-        foreach my $nav_node (@first_nodes){
-            my $current_nav_ref = {};
-            $current_nav_ref->{sc}     = $nav_node->findvalue('@sc');
-            $current_nav_ref->{lc}     = $nav_node->findvalue('@lc');
-            $current_nav_ref->{sindex} = $nav_node->findvalue('@sindex');
-            push @{$nav_ref}, $current_nav_ref;
-        }
-        push @{$nav_ref}, {
-            sc     => $current_page_ref->{sc},
-            lc     => $current_page_ref->{lc},
-            sindex => $current_page_ref->{sindex},
-        };
-
-    }
-    else {
-        push @{$nav_ref}, {
-            sc     => $current_page_ref->{sc},
-            lc     => $current_page_ref->{lc},
-            sindex => $current_page_ref->{sindex},
-        };
-    }
-
-    my @next_nodes = $root->findnodes('/ezb_page/ezb_alphabetical_list_searchresult/next_fifty');
-    if (@next_nodes){
-        foreach my $nav_node (@next_nodes){
-            my $current_nav_ref = {};
-            $current_nav_ref->{sc}     = $nav_node->findvalue('@sc');
-            $current_nav_ref->{lc}     = $nav_node->findvalue('@lc');
-            $current_nav_ref->{sindex} = $nav_node->findvalue('@sindex');
-            push @{$nav_ref}, $current_nav_ref;
-        }
-    }
-
-    my $alphabetical_nav_ref = [];
-
-    foreach my $nav_node ($root->findnodes('/ezb_page/ezb_alphabetical_list_searchresult/navlist/current_page')) {        
-        $current_page_ref->{desc}   = $nav_node->textContent;
-    }
-
-    my @nav_nodes = $root->findnodes('/ezb_page/ezb_alphabetical_list_searchresult/navlist');
-    if ( @nav_nodes){
-        foreach my $this_node ($nav_nodes[0]->childNodes){
-            my $singlenav_ref = {} ;
-            
-            $logger->debug($this_node->toString);
-            $singlenav_ref->{sc}   = $this_node->findvalue('@sc');
-            $singlenav_ref->{lc}   = $this_node->findvalue('@lc');
-            $singlenav_ref->{desc} = $this_node->textContent;
-            
-            push @{$alphabetical_nav_ref}, $singlenav_ref if ($singlenav_ref->{desc} && $singlenav_ref->{desc} ne "\n");
-        }
-    }
-
-    my $journals_ref = [];
-
-    foreach my $journal_node ($root->findnodes('/ezb_page/ezb_alphabetical_list_searchresult/alphabetical_order/journals/journal')) {
-        my $singlejournal_ref = {} ;
-        
-        $singlejournal_ref->{id}          = $journal_node->findvalue('@jourid');
-        $singlejournal_ref->{title}       = $journal_node->findvalue('title');
-        $singlejournal_ref->{color}{code} = $journal_node->findvalue('journal_color/@color_code');
-        $singlejournal_ref->{color}{desc} = $journal_node->findvalue('journal_color/@color');
-
-        push @{$journals_ref}, $singlejournal_ref;
-    }
-
-    $logger->debug("Found $search_count titles");
-    
-    $self->{resultcount}   = $search_count;
-    $self->{_matches}      = $journals_ref;
+    $self->get_api->search($arg_ref);
     
     return $self;
 }
@@ -295,8 +85,6 @@ sub get_records {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config     = $self->get_config;
-
     my $catalog = OpenBib::Catalog::Factory->create_catalog($self->{args});
     
     my $classifications_ref = $catalog->get_classifications;
@@ -304,98 +92,35 @@ sub get_records {
     my $container = OpenBib::Container->instance;
 
     $container->register('classifications',$classifications_ref);
-
-    my $recordlist = new OpenBib::RecordList::Title;
-
-    my @matches = $self->matches;
     
-    foreach my $match_ref (@matches) {        
-        $logger->debug("Record: ".$match_ref );
-        
-        my $record = new OpenBib::Record::Title({id => $match_ref->{id}, database => 'ezb', generic_attributes => { color => $match_ref->{color}}});
-        $logger->debug("Title is ".$match_ref->{title});
-        
-        $record->set_field({field => 'T0331', subfield => '', mult => 1, content => $match_ref->{title}});
-
-        if ($logger->is_debug){
-            $logger->debug("Adding Record with ".YAML::Dump($record->get_fields));
-        }
-        
-        $recordlist->add($record);
-    }
-
+    my $recordlist = $self->get_api->get_search_resultlist;
+    
     return $recordlist;
 }
 
-sub parse_query {
-    my ($self,$searchquery)=@_;
+sub get_resultcount {
+    my $self = shift;
+
+    return $self->get_api->get_resultcount;
+}
+
+sub get_facets {
+    my $self=shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = $self->get_config;
-
-    my @searchterms = ();
-    foreach my $field (keys %{$config->{searchfield}}){
-        my $searchtermstring = (defined $searchquery->get_searchfield($field)->{norm})?$searchquery->get_searchfield($field)->{norm}:'';
-        if ($searchtermstring) {
-            # Freie Suche einfach uebernehmen
-            if    ($field eq "title" && $searchtermstring) {
-                push @searchterms, {
-                    field   => 'KT',
-                    content => $searchtermstring
-                };
-            }
-            elsif ($field eq "titlestring" && $searchtermstring) {
-                push @searchterms, {
-                    field   => 'KS',
-                    content => $searchtermstring
-                };
-            }
-            elsif ($field eq "subject" && $searchtermstring) {
-                push @searchterms, {
-                    field   => 'KW',
-                    content => $searchtermstring
-                };
-            }
-            elsif ($field eq "classification" && $searchtermstring) {
-                push @searchterms, {
-                    string   => 'Notations[]=$searchtermstring',
-                };
-            }
-            elsif ($field eq "publisher" && $searchtermstring) {
-                push @searchterms, {
-                    field   => 'PU',
-                    content => $searchtermstring
-                };
-            }
-        }
-    }
-
-    my @searchstrings = ();
-    my $i = 1;
-    foreach my $search_ref (@searchterms){
-        last if ($i > 3);
-
-        if ($search_ref->{field} && $search_ref->{content}){
-            push @searchstrings, "jq_type${i}=$search_ref->{field}&jq_term${i}=$search_ref->{content}&jq_bool${i}=AND";
-            $i++;
-        }
-    }
-    
-    if (defined $searchquery->get_searchfield('classification')->{val} && $searchquery->get_searchfield('classification')->{val}){
-        push @searchstrings, "Notations[]=".$searchquery->get_searchfield('classification')->{val};
-    }
-    else {
-        push @searchstrings, "Notations[]=all";
-    }
-
-    my $ezbquerystring = join("&",@searchstrings);
-    $logger->debug("EZB-Querystring: $ezbquerystring");
-    $self->{_querystring} = $ezbquerystring;
-
-    return $self;
+    return $self->get_api->get_facets;    
 }
+
+sub have_results {
+    my $self = shift;
+
+    my $resultcount = $self->get_api->get_resultcount;
+    
+    return ($resultcount)?$resultcount:0;
+}
+
 
 1;
 __END__

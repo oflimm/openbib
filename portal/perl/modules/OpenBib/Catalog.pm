@@ -199,6 +199,75 @@ sub get_config {
     return $self->{_config};
 }
 
+sub get_client {
+    my ($self) = @_;
+
+    return $self->{client};
+}
+
+sub get_searchquery {
+    my ($self) = @_;
+
+    return $self->{_searchquery};
+}
+
+sub get_queryoptions {
+    my ($self) = @_;
+
+    return $self->{_queryoptions};
+}
+
+sub have_field_content {
+    my ($self,$field,$content)=@_;
+
+    my $have_field = 0;
+    
+    eval {
+	$have_field = $self->{have_field_content}{$field}{$content};
+    };
+
+    $self->{have_field_content}{$field}{$content} = 1;
+
+    return $have_field;
+}
+
+sub load_full_title_record {
+    my ($self,$arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $record = $self->get_api->get_titles_record($arg_ref);
+    
+    return $record;
+}
+
+sub load_brief_title_record {
+    my ($self,$arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return $self->load_full_title_record($arg_ref);
+}
+
+sub get_classifications {
+    my ($self,$arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $classifications_ref = $self->get_api->get_classifications();
+    
+    return $classifications_ref;
+}
+
+sub get_api {
+    my $self = shift;
+
+    return $self->{api};
+}
+
 1;
 __END__
 

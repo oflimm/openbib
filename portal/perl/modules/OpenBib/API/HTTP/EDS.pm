@@ -46,6 +46,8 @@ use OpenBib::Config;
 use OpenBib::SearchQuery;
 use OpenBib::QueryOptions;
 
+use base qw(OpenBib::API::HTTP);
+
 sub new {
     my ($class,$arg_ref) = @_;
 
@@ -62,9 +64,6 @@ sub new {
     my $config             = exists $arg_ref->{config}
         ? $arg_ref->{config}                  : OpenBib::Config->new;
     
-    my $session            = exists $arg_ref->{session}
-        ? $arg_ref->{session}                 : undef;
-
     my $searchquery        = exists $arg_ref->{searchquery}
         ? $arg_ref->{searchquery}             : OpenBib::SearchQuery->new;
 
@@ -293,7 +292,7 @@ sub get_record {
 	$json_result_ref = $self->send_retrieve_request($arg_ref);		
     }
 
-    my $record = new OpenBib::Record::Title({ 'eds', id => $id });
+    my $record = new OpenBib::Record::Title({ database => 'eds', id => $id });
 
     my $fields_ref = ();
 
@@ -870,6 +869,14 @@ sub search {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+
+    my ($atime,$btime,$timeall);
+
+    my $config=$self->get_config;
+    
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
     
     $self->connect_eds;
 
@@ -882,8 +889,56 @@ sub search {
 	$json_result_ref = $self->send_search_request($arg_ref);		
     }
 
+    my @matches = $self->process_matches($json_result_ref);
+
+    $self->process_facets($json_result_ref);
+        
+    my $resultcount = $json_result_ref->{SearchResult}{Statistics}{TotalHits};
+
+    if ($logger->is_debug){
+         $logger->info("Found ".$resultcount." titles");
+    }
     
-    return $json_result_ref;
+    if ($config->{benchmark}) {
+	my $stime        = new Benchmark;
+	my $stimeall     = timediff($stime,$atime);
+	my $searchtime   = timestr($stimeall,"nop");
+	$searchtime      =~s/(\d+\.\d+) .*/$1/;
+	
+	$logger->info("Gesamtzeit fuer EDS-Suche $searchtime");
+    }
+
+    $self->{resultcount} = $resultcount;
+    $self->{_matches}     = \@matches;
+    
+    return $self;
+}
+
+sub get_search_resultlist {
+    my $self=shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config     = $self->get_config;
+
+    my $recordlist = new OpenBib::RecordList::Title();
+
+    my @matches = $self->matches;
+
+    foreach my $match_ref (@matches) {
+
+        my $id            = OpenBib::Common::Util::encode_id($match_ref->{database}."::".$match_ref->{id});
+	my $fields_ref    = $match_ref->{fields};
+
+        $recordlist->add(OpenBib::Record::Title->new({database => 'eds', id => $id })->set_fields_from_storable($fields_ref));
+    }
+
+    # if ($logger->is_debug){
+    # 	$logger->debug("Result-Recordlist: ".YAML::Dump($recordlist->to_list))
+    # }
+    
+    return $recordlist;
 }
 
 
@@ -1172,6 +1227,177 @@ sub connect_eds {
 
     return;
 };
+
+sub process_matches {
+    my ($self,$json_result_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config     = $self->get_config;
+    
+    my @matches = ();
+    
+    foreach my $match (@{$json_result_ref->{SearchResult}{Data}{Records}}){
+	my $fields_ref = {};
+
+	my ($atime,$btime,$timeall);
+	
+	if ($config->{benchmark}) {
+	    $atime=new Benchmark;
+	}
+
+
+	# Gesamtresponse in eds_source
+	push @{$fields_ref->{'eds_source'}}, {
+	    content => $match
+	};
+	
+	# $logger->debug("Processing Record ".YAML::Dump($json_result_ref->{SearchResult}{Data}{Records}));
+	foreach my $thisfield (keys %{$match->{RecordInfo}{BibRecord}{BibEntity}}){
+	    
+	    if ($thisfield eq "Titles"){
+		foreach my $item (@{$match->{RecordInfo}{BibRecord}{BibEntity}{$thisfield}}){
+		    push @{$fields_ref->{'T0331'}}, {
+			content => $item->{TitleFull}
+		    } if ($item->{Type} eq "main");
+		    
+		}
+	    }
+	}
+
+	if (defined $match->{RecordInfo}{BibRecord} && defined $match->{RecordInfo}{BibRecord}{BibRelationships}){
+
+	    if (defined $match->{RecordInfo}{BibRecord}{BibRelationships}{HasContributorRelationships}){
+		foreach my $item (@{$match->{RecordInfo}{BibRecord}{BibRelationships}{HasContributorRelationships}}){
+#		    $logger->debug("DebugRelationShips".YAML::Dump($item));
+		    if (defined $item->{PersonEntity} && defined $item->{PersonEntity}{Name} && defined $item->{PersonEntity}{Name}{NameFull}){
+			
+			push @{$fields_ref->{'P0100'}}, {
+			    content => $item->{PersonEntity}{Name}{NameFull},
+			}; 
+			
+			push @{$fields_ref->{'PC0001'}}, {
+			    content => $item->{PersonEntity}{Name}{NameFull},
+			}; 
+		    }
+		}
+	    }
+
+
+	    if (defined $match->{RecordInfo}{BibRecord}{BibRelationships}{IsPartOfRelationships}){
+		foreach my $partof_item (@{$match->{RecordInfo}{BibRecord}{BibRelationships}{IsPartOfRelationships}}){
+		    if (defined $partof_item->{BibEntity}){
+		
+			foreach my $thisfield (keys %{$partof_item->{BibEntity}}){
+			    
+			    if ($thisfield eq "Titles"){
+				foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
+				    push @{$fields_ref->{'T0451'}}, {
+					content => $item->{TitleFull}
+				    };
+				    
+				}
+			    }
+			    
+			    if ($thisfield eq "Dates"){
+				foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
+				    push @{$fields_ref->{'T0425'}}, {
+					content => $item->{'Y'}
+				    };
+				    
+				}
+			    }
+			}
+		    }
+		    
+		}
+	    }
+	    
+	}
+	
+        push @matches, {
+            database => $match->{Header}{DbId},
+            id       => $match->{Header}{An},
+            fields   => $fields_ref,
+        };
+
+	if ($config->{benchmark}) {
+	    my $stime        = new Benchmark;
+	    my $stimeall     = timediff($stime,$atime);
+	    my $parsetime   = timestr($stimeall,"nop");
+	    $parsetime      =~s/(\d+\.\d+) .*/$1/;
+	    
+	    $logger->info("Zeit um Treffer zu parsen $parsetime");
+	}
+
+    }
+
+    return @matches;
+}
+
+sub process_facets {
+    my ($self,$json_result_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = $self->get_config;
+    
+    my $ddatime   = new Benchmark;
+
+    my $fields_ref = {};
+    
+    my $category_map_ref     = ();
+    
+    # Transformation Hash->Array zur Sortierung
+
+    $logger->debug("Start processing facets: ".YAML::Dump($json_result_ref->{SearchResult}{AvailableFacets}));
+    
+    foreach my $eds_facet (@{$json_result_ref->{SearchResult}{AvailableFacets}}){
+
+	my $id   = $eds_facet->{Id};
+	my $type = $config->get('eds_facet_mapping')->{$id};
+
+	$logger->debug("Process Id $id and type $type");
+	
+	next unless (defined $type) ;
+	
+        my $contents_ref = [] ;
+        foreach my $item_ref (@{$eds_facet->{AvailableFacetValues}}) {
+            push @{$contents_ref}, [
+                $item_ref->{Value},
+                $item_ref->{Count},
+            ];
+        }
+        
+        if ($logger->is_debug){
+            $logger->debug("Facet for type $type ".YAML::Dump($contents_ref));
+        }
+        
+        # Schwartz'ian Transform
+
+        @{$category_map_ref->{$type}} = map { $_->[0] }
+            sort { $b->[1] <=> $a->[1] }
+                map { [$_, $_->[1]] }
+                    @{$contents_ref};
+    }
+
+    if ($logger->is_debug){
+	$logger->debug("All Facets ".YAML::Dump($category_map_ref));
+    }
+
+    my $ddbtime       = new Benchmark;
+    my $ddtimeall     = timediff($ddbtime,$ddatime);
+    my $drilldowntime    = timestr($ddtimeall,"nop");
+    $drilldowntime    =~s/(\d+\.\d+) .*/$1/;
+    
+    $logger->info("Zeit fuer categorized drilldowns $drilldowntime");
+
+    $self->{_facets} = $category_map_ref;
+    
+    return; 
+}
 
 sub get_config {
     my ($self) = @_;

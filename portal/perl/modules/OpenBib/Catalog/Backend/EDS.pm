@@ -55,37 +55,14 @@ sub new {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # Set defaults
-    my $lang      = exists $arg_ref->{l}
-        ? $arg_ref->{l}              : undef;
-
-    my $database  = exists $arg_ref->{database}
-        ? $arg_ref->{database}       : undef;
-
-    my $config    = exists $arg_ref->{config}
-        ? $arg_ref->{config}         : OpenBib::Config->new;
-        
-    my $sessionID = exists $arg_ref->{sessionID}
-        ? $arg_ref->{sessionID}      : undef;
+    my $api = new OpenBib::API::HTTP::EDS($arg_ref);
     
     my $self = { };
 
     bless ($self, $class);
 
-    $self->{database}      = $database;
+    $self->{api} = $api;
     
-    $self->{have_field_content} = {};
-
-    if ($config){
-        $self->{_config}        = $config;
-    }
-    
-    if (defined $sessionID){
-        $self->{sessionID} = $sessionID;
-    }
-
-    $logger->debug("Creating Catalog::EDS");
-    $logger->debug("Config Type".ref($self->{config}));    
     return $self;
 }
 
@@ -99,35 +76,15 @@ sub load_full_title_record {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = $self->get_config;
-
-    $logger->debug("Config Type".ref($self->{config}));
-    
     my $edsid = OpenBib::Common::Util::decode_id($id);
 
     my $database;
     
     ($database,$edsid)=$edsid=~m/^(.+?)::(.+)$/;
 
-    my $eds = new OpenBib::API::HTTP::EDS({ sessionID => $self->{sessionID} });
-    
-    my $record = $eds->get_record({ database => $database, id => $edsid});
+    my $record = $self->get_api->get_record({ database => $database, id => $edsid});
 
     return $record;
-}
-
-sub load_brief_title_record {
-    my ($self,$arg_ref) = @_;
-
-    # Set defaults
-    my $id                = exists $arg_ref->{id}
-        ? $arg_ref->{id}                :
-            (exists $self->{id})?$self->{id}:undef;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    return $self->load_full_title_record($arg_ref);
 }
 
 1;

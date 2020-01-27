@@ -332,7 +332,7 @@ Liefert nach dem Stellen der Suchanfrage mit search() das Ergebnis als RecordLis
 
 =item get_record({ database => $database, id => $id })
 
-Liefert eine OpenBib::Record-Objekt zurueck.
+Liefert ein OpenBib::Record-Objekt zurueck.
 
 =back
 

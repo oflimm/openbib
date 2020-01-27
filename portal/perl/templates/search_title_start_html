@@ -38,7 +38,7 @@
     FOREACH field IN searchquery.get_searchquery.keys ;
        fieldname    = field_map.${field};
        fieldcontent = searchquery.get_searchquery.${field}.val;
-       IF topic_map.${fieldcontent} ;
+       IF field == 'topic' && topic_map.${fieldcontent} ;
           fieldcontent = topic_map.${fieldcontent} ;
        END ;       
        NEXT IF NOT fieldcontent ;

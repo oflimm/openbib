@@ -141,8 +141,8 @@ sub identify_by_mark {
 
     my @marks = (ref $mark)?@$mark:($mark);
 
-    # Merken 
-    $self->{marks} = \@marks;
+    # Default: Eingrenzung der Exemplare auf genaus diese Signaturen. Daher merken 
+    $self->{restrict_marks} = \@marks;
     
     my $config = new OpenBib::Config;
     
@@ -718,8 +718,8 @@ sub write_set {
     # Exemplardaten
     # DBI: "select targetid from conn where sourceid=? and sourcetype=1 and targettype=6"
 
-    if (@{$self->{marks}}){
-	foreach my $thismark (@{$self->{marks}}){
+    if (defined $self->{restrict_marks} && @{$self->{restrict_marks}}){
+	foreach my $thismark (@{$self->{restrict_marks}}){
 	    # Exemplardaten *nur* vom entsprechenden Institut!
 	    # DBI: "select distinct id from holding where category=14 and content rlike ?"
 	    my $holdings = $self->get_schema->resultset('Holding')->search_rs(
@@ -1019,6 +1019,28 @@ sub set_titleid {
     my ($self,$titleid_ref) = @_;
 
     $self->{titleid} = $titleid_ref;
+
+    return;
+}
+
+sub get_marks_restriction {
+    my $self = shift;
+    
+    return $self->{restrict_marks};
+}
+
+sub set_marks_restriction {
+    my ($self,$marks_ref) = @_;
+    
+    $self->{restrict_marks} = $marks_ref;
+}
+
+sub remove_marks_restriction {
+    my $self = shift;
+
+    delete $self->{restrict_marks};
+
+    return;
 }
 
 1;

@@ -5,7 +5,7 @@
 #  Zusammenfassung von Funktionen, die von mehreren Datenbackends
 #  verwendet werden
 #
-#  Dieses File ist (C) 1997-2013 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2020 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -73,6 +73,7 @@ sub new {
     $self->{classificationid} = {};
     $self->{holdingid}        = {};
 
+    $self->{exclude_titleid}  = {};
 
     return $self;
 }
@@ -140,6 +141,9 @@ sub identify_by_mark {
 
     my @marks = (ref $mark)?@$mark:($mark);
 
+    # Merken 
+    $self->{marks} = \@marks;
+    
     my $config = new OpenBib::Config;
     
     foreach my $thismark (@marks){
@@ -176,6 +180,14 @@ sub identify_by_mark {
     }
     
     $logger->info("### $self->{source} -> $self->{destination}: Gefundene Titel-ID's $count");
+
+    if (keys %{$self->{exclude_titleid}}){
+	$logger->info("### $self->{source} -> $self->{destination}: Titel ignorieren");
+	
+	foreach my $key (keys %{$self->{exclude_titleid}}){
+	    delete $self->{titleid}{$key};
+	}
+    }
     
     $self->get_title_hierarchy;
     
@@ -319,32 +331,6 @@ sub identify_by_field_content {
 
     $logger->info("### $self->{source} -> $self->{destination}: Gefundene Titel-ID's $count");
 
-    $self->get_title_hierarchy;
-
-    $self->get_title_normdata;
-
-    # Exemplardaten
-    # DBI: "select targetid from conn where sourceid=? and sourcetype=1 and targettype=6"
-
-    foreach my $id (keys %{$self->{titleid}}){
-        my $holdings = $self->get_schema->resultset('TitleHolding')->search_rs(
-            {
-                'titleid' => $id,
-            },
-            {
-                select   => ['holdingid'],
-                as       => ['thisid'],
-                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-            }
-        );
-        
-        while (my $item = $holdings->next){
-            my $thisid = $item->{thisid};
-
-            $self->{holdingid}{$thisid}=1;
-        }    
-    }
-
     return $self;
 }
 
@@ -386,33 +372,170 @@ sub identify_by_olws_circulation {
     }
 
     $logger->info("### $self->{source} -> $self->{destination}: Gefundene Titel-ID's $count");
+    
+    return $self;
+}
 
-    $self->get_title_hierarchy;
+sub exclude_by_mark {
+    my $self = shift;
+    my $mark = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
 
-    $self->get_title_normdata;
+    my @marks = (ref $mark)?@$mark:($mark);
 
-    # Exemplardaten
-    # DBI: "select targetid from conn where sourceid=? and sourcetype=1 and targettype=6"
-
-    foreach my $id (keys %{$self->{titleid}}){
-        my $holdings = $self->get_schema->resultset('TitleHolding')->search_rs(
+    my $config = new OpenBib::Config;
+    
+    foreach my $thismark (@marks){
+        $logger->debug("Searching for Mark $thismark");
+        
+        # DBI: "select distinct conn.sourceid as titleid from conn,holding where holding.category=14 and holding.content COLLATE utf8_bin rlike ? and conn.targetid=holding.id and conn.sourcetype=1 and conn.targettype=6"
+        my $titles = $self->get_schema->resultset('TitleHolding')->search_rs(
             {
-                'titleid' => $id,
+                'holding_fields.field' => 14,
+                'holding_fields.content' => { '~*' => $thismark },
             },
             {
-                select   => ['holdingid'],
+                select   => ['titleid.id'],
+                as       => ['thistitleid'],
+                join     => ['titleid','holdingid', {'holdingid' => 'holding_fields' }],
+                group_by => ['titleid.id'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+            }
+        );
+
+	$logger->info("### $self->{source} -> $self->{destination}: ".$titles->count." Titel mit $thismark");
+	
+        while (my $item = $titles->next){
+            my $titleid = $item->{thistitleid};
+            
+            $self->{exclude_titleid}{$titleid} = 1;
+        }
+    }
+    
+    my $count=0;
+    
+    foreach my $key (keys %{$self->{exclude_titleid}}){
+        $count++;
+    }
+    
+    $logger->info("### $self->{source} -> $self->{destination}: Ignorierte Titel-ID's $count");
+    
+    return $self;
+}
+
+sub exclude_by_field_content {
+    my $self    = shift;
+    my $table   = shift;
+    my $arg_ref = shift;
+    my $mode    = shift || '';
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = new OpenBib::Config;
+    
+    my %table_type = (
+        'person'         => {
+            resultset => 'TitlePerson',
+            field => 'person_fields.field',
+            join => ['personid', { 'personid' => 'person_fields' }]
+        },
+        'corporatebody'  => {
+            resultset => 'TitleCorporatebody',
+            field => 'corporatebody_fields.field',
+            join => ['corporatebodyid', { 'corporatebodyid' => 'corporatebody_fields' }]
+        },
+        'subject'        => {
+            resultset => 'TitleSubject',
+            field => 'subject_fields.field',
+            join => ['subjectid', { 'subjectid' => 'subject_fields' }]
+        },
+        'classification' => {
+            resultset => 'TitleClassification',
+            field => 'classification_fields.field',
+            join => ['classificationid', { 'classificationid' => 'classification_fields' }]
+        },
+        'holding' => {
+            resultset => 'TitleHolding',
+            field => 'holding_fields.field',
+            join => ['holdingid', { 'holdingid' => 'holding_fields' }]
+        },
+
+    );
+
+    my $first_criteria = 1;
+    my %title_a = ();
+    my %title_b = ();
+    
+    foreach my $criteria_ref (@$arg_ref){        
+        # DBI: "select distinct id as titleid from $table where category = ? and content rlike ?") or $logger->error($DBI::errstr);
+        my $titles = $self->get_schema->resultset('TitleField')->search_rs(
+            {
+                'field'   => $criteria_ref->{field},
+                'content' => { '~*' => $criteria_ref->{content} },
+            },
+            {
+                select   => ['titleid'],
                 as       => ['thisid'],
                 result_class => 'DBIx::Class::ResultClass::HashRefInflator',
             }
         );
         
-        while (my $item = $holdings->next){
-            my $thisid = $item->{thisid};
+        if ($table ne "title"){
+            # DBI: "select distinct conn.sourceid as titleid from conn,$table where $table.category = ? and $table.content rlike ? and conn.targetid=$table.id and conn.sourcetype=1 and conn.targettype=$table_type{$table}");
+            $titles = $self->get_schema->resultset($table_type{$table}{resultset})->search_rs(
+                {
+                    $table_type{$table}{field} => $criteria_ref->{field},
+                    'content' => { '~*' => $criteria_ref->{content} },
+                },
+                {
+                    select   => ['me.titleid'],
+                    as       => ['thisid'],
+                    join     => $table_type{$table}{join},
+		    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+                }
+            );
+        }
 
-            $self->{holdingid}{$thisid}=1;
-        }    
+        if ($mode eq "all" && $first_criteria){
+            $first_criteria = 0;
+            while (my $item = $titles->next){
+                my $thisid = $item->{thisid};                
+                $title_a{$thisid} = 1;
+            }            
+        }
+        elsif ($mode eq "all" && !$first_criteria){
+            while (my $item = $titles->next){
+                my $thisid = $item->{thisid};                
+                if ($title_a{$thisid} == 1){
+                    $title_b{$thisid} = 1;
+                }
+            }
+            %title_a = %title_b;
+        }
+        else {
+            foreach my $item ($titles->all){
+                my $thisid = $item->{'thisid'};
+                
+                $self->{exclude_titleid}{$thisid} = 1;
+            }
+        }
+    }
+
+    if ($mode eq "all"){
+        $self->{exclude_titleid} = \%title_a;
     }
     
+    my $count=0;
+
+    foreach my $key (keys %{$self->{exclude_titleid}}){
+        $count++;
+    }
+
+    $logger->info("### $self->{source} -> $self->{destination}: Ignorierte Titel-ID's $count");
+
     return $self;
 }
 
@@ -580,6 +703,70 @@ sub write_set {
         return $self;
     }
 
+    if (keys %{$self->{exclude_titleid}}){
+	$logger->info("### $self->{source} -> $self->{destination}: Titel ignorieren");
+	
+	foreach my $key (keys %{$self->{exclude_titleid}}){
+	    delete $self->{titleid}{$key};
+	}
+    }
+    
+    $self->get_title_hierarchy;
+
+    $self->get_title_normdata;
+
+    # Exemplardaten
+    # DBI: "select targetid from conn where sourceid=? and sourcetype=1 and targettype=6"
+
+    if (@{$self->{marks}}){
+	foreach my $thismark (@{$self->{marks}}){
+	    # Exemplardaten *nur* vom entsprechenden Institut!
+	    # DBI: "select distinct id from holding where category=14 and content rlike ?"
+	    my $holdings = $self->get_schema->resultset('Holding')->search_rs(
+		{
+		    'holding_fields.field' => 14,
+			'holding_fields.content' => { '~*' => $thismark },
+		},
+		{
+		    select   => ['me.id'],
+		    as       => ['thisholdingid'],
+		    join     => ['holding_fields'],
+		    group_by => ['me.id'],
+		    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+		}
+		);
+	    
+	    while (my $item = $holdings->next){
+		my $holdingid = $item->{thisholdingid};
+		
+		$self->{holdingid}{$holdingid} = 1;
+	    }
+	}
+    }
+    else {
+	# Exemplardaten
+	# DBI: "select targetid from conn where sourceid=? and sourcetype=1 and targettype=6"
+	
+	foreach my $id (keys %{$self->{titleid}}){
+	    my $holdings = $self->get_schema->resultset('TitleHolding')->search_rs(
+		{
+		    'titleid' => $id,
+		},
+		{
+		    select   => ['holdingid'],
+		    as       => ['thisid'],
+		    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+		}
+		);
+	    
+	    while (my $item = $holdings->next){
+		my $thisid = $item->{thisid};
+		
+		$self->{holdingid}{$thisid}=1;
+	    }    
+	}
+    }
+    
     if (! keys %{$self->{titleid}}){
         $logger->info("### $self->{source} -> $self->{destination}: Keine Titel vorhanden - Abbruch!");
         return;

@@ -95,7 +95,8 @@ FOREACH thisdoc IN items ;
       }      
     };
 
-    available_ref = [];
+    available_ref   = [];
+    unavailable_ref = [];
     IF thiscirculation.Status == 'bestellbar' ;
       IF thiscirculation.Entleihbarkeit ;
         available_ref.push({service = 'loan'}) ;
@@ -104,10 +105,42 @@ FOREACH thisdoc IN items ;
       END;
     ELSIF thiscirculation.Status == 'nicht entleihbar' ;
       available_ref.push({service = 'presence'}) ;
+    ELSIF thiscirculation.Status == 'nur in Lesesaal bestellbar' ;
+      available_ref.push({
+           service = 'loan'
+	   limitation = [ {
+	        content = thiscirculation.Status
+	        id = "http://purl.org/ontology/dso#Stationary"
+	   } ]
+      }) ;
+    ELSIF thiscirculation.Status == 'nur in bes. Lesesaal bestellbar' ;
+      available_ref.push({
+           service = 'loan'
+	   limitation = [ {
+	        content = thiscirculation.Status
+	        id = "http://purl.org/ontology/dso#Stationary"
+	   } ]
+      }) ;
+    ELSIF thiscirculation.Status == 'nur Wochenende' ;
+      available_ref.push({
+           service = 'loan'
+	   limitation = [ {
+	        content = thiscirculation.Status
+	        id = "http://purl.org/ontology/dso#ShortLoan"
+	   } ]
+      }) ;
+    ELSIF thiscirculation.Status == 'entliehen' ;
+      unavailable_ref.push({service = 'loan'}) ;
     END ;
 
-    thisitem_ref.available = available_ref;
-    
+    IF available_ref.size > 0 ;
+      thisitem_ref.available = available_ref;
+    END;
+
+    IF unavailable_ref.size > 0 ;
+      thisitem_ref.unavailable = unavailable_ref;
+    END;
+
     items_ref.push(thisitem_ref);
  END;
 

@@ -1,0 +1,119 @@
+[%- # From OLWS
+
+result_ref = {
+ 	    timestamp = timestamp
+	    version   = '0.1'	    
+};
+
+documents_ref = [];
+
+FOREACH thisdoc IN items ;
+
+ resourceurl  = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${thisdoc.database}/${config.get('titles_loc')}/id/${thisdoc.id}";
+
+ newdoc_ref = {
+ 	    href = resourceurl
+ 	    id   = resourceurl
+ };
+
+ items_ref = [];
+
+ FOREACH thiscirculation IN thisdoc.circulation ;
+
+     thiscirculation.Ausleihurl = "${thiscirculation.Ausleihurl}?referrer=KUG&service=search&db=UBKSLNP&query=ID=${record.id}";
+
+     IF     thiscirculation.Zweigstelle == 0 ;
+
+        IF thiscirculation.Signatur.match('^2[4-9]A') || thiscirculation.Signatur.match('[3-9][0-9]A') ;
+           thiscirculation.Standort = "Hauptabteilung / SAB";
+        END ;      
+
+        IF thiscirculation.Signatur.match('^KS/V') ;
+           thiscirculation.Status = "bestellbar (Nutzung nur im Lesesaal)";
+           thiscirculation.Standort = "Hauptabteilung / Magazin";
+        END ; 
+
+     END ;
+
+    library_isil = "";
+
+    IF thiscirculation.Standort.match('Hauptabteilung') || thiscirculation.Standort.match('Humanwiss. Abteilung') ;
+       library_isil = "DE-38";
+    ELSIF thiscirculation.Standort.match('inst');
+       kuerzel = thiscirculation.Standort.match("^inst([0-9][0-9][0-9])").first ;
+       IF kuerzel ;
+          library_isil = "DE-38-${kuerzel}";
+       END ;
+    ELSIF thiscirculation.Standort.match('VWL');
+       library_isil = "DE-38-101";
+    ELSIF thiscirculation.Standort.match('Archäologisches Institut');
+       library_isil = "DE-38-427";
+    ELSIF thiscirculation.Standort.match('Forschungsstelle Afrika');
+       library_isil = "DE-38-438";
+    ELSIF thiscirculation.Standort.match('Institut für Ur- u. Frühgeschichte');
+       library_isil = "DE-38-426";
+    ELSIF thiscirculation.Standort.match('China');
+       library_isil = "DE-38-450";
+    ELSIF thiscirculation.Standort.match('Japanologie');
+       library_isil = "DE-38-459";
+    ELSIF thiscirculation.Standort.match('Slavistik');
+       library_isil = "DE-38-418";
+    ELSIF thiscirculation.Standort.match('Soziologie');
+       library_isil = "DE-38-132";
+    ELSIF thiscirculation.Standort.match('Theaterwiss. Sammlung');
+       library_isil = "DE-38-429";
+    ELSIF thiscirculation.Standort.match('Inst. für Medienkultur u. Theater');
+       library_isil = "DE-38-448";
+    ELSIF thiscirculation.Standort.match('Philosophisches Seminar');
+       library_isil = "DE-38-401";
+    END ;
+
+    thiscirculation.Standort = thiscirculation.Standort.replace('^inst[0-9][0-9][0-9] +\((.+)\)','$1') ;
+
+    IF thiscirculation.Standort.match('Historisches Institut \/ Osteuropäische Geschichte');
+       library_isil = "DE-38-425";
+    ELSIF thiscirculation.Standort.match('Kunstgeschichte \/ Architekturgeschichte');
+       library_isil = "DE-38-445";
+    ELSIF thiscirculation.Standort.match('Altertumskunde \/ Byzantinistik');
+       library_isil = "DE-38-460";
+    ELSIF thiscirculation.Standort.match('Altertumskunde \/ Mittellatein und Neulatein');
+       library_isil = "DE-38-461";
+    END;
+
+    locationurl  = "${scheme}://${servername}${path_prefix}/${config.get('locations_loc')}/id/${library_isil}";
+
+    thisitem_ref = {
+      label = thiscirculation.Signatur
+      href  = resourceurl
+      id    = thiscirculation.Mediennr
+      department = {
+      	      content = ""
+	      id = locationurl
+      }
+      storage = {
+      	      content = thiscirculation.Standort
+      }      
+    };
+
+    IF thiscirculation.Status == 'bestellbar' ;
+      IF thiscirculation.Entleihbarkeit ;
+        thisitem_ref.${'available'}.push({service = 'loan'}) ;
+      ELSE ;
+        thisitem_ref.${'available'}.push({service = 'presence'}) ;
+      END;
+    ELSIF thiscirculation.Status == 'nicht entleihbar' ;
+      thisitem_ref.${'available'}.push({service = 'presence'}) ;
+    END ;
+    items_ref.push(thisitem_ref);
+ END;
+
+ newdoc_ref.item = items_ref;
+
+ documents_ref.push(newdoc_ref);
+END;
+
+result_ref.documents = documents_ref;
+
+to_json(result_ref);
+
+-%]

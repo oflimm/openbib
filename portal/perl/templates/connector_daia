@@ -95,15 +95,19 @@ FOREACH thisdoc IN items ;
       }      
     };
 
+    available_ref = [];
     IF thiscirculation.Status == 'bestellbar' ;
       IF thiscirculation.Entleihbarkeit ;
-        thisitem_ref.${'available'}.push({service = 'loan'}) ;
+        available_ref.push({service = 'loan'}) ;
       ELSE ;
-        thisitem_ref.${'available'}.push({service = 'presence'}) ;
+        available_ref.push({service = 'presence'}) ;
       END;
     ELSIF thiscirculation.Status == 'nicht entleihbar' ;
-      thisitem_ref.${'available'}.push({service = 'presence'}) ;
+      available_ref.push({service = 'presence'}) ;
     END ;
+
+    thisitem_ref.available = available_ref;
+    
     items_ref.push(thisitem_ref);
  END;
 

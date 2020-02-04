@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">
+
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" href="/css/fontawesome-free-5.3.1.css">
+
+    <title>API der KUG Recherche-Infrastruktur</title>
+
+   </head>
+
+  <body>
+
+  <div class="wrapper container-fluid">
+
+     <div class="row">
+       <div class="col-md-12" >
+
+       <p/>
+
+        <div class="jumbotron">
+         <h1 class="display-4">API der KUG Recherche-Infrastruktur</h1>
+         <p class="lead">Dieses Portal stellt das <a href="https://de.wikipedia.org/wiki/Representational_State_Transfer" target="_blank">REST-API</a> für die KUG Recherche-Infrastruktur bereit. Es ist nicht für die Nutzung durch den Web-Browser gedacht.</p>
+         <p class="lead">
+            <a class="btn btn-primary btn-lg" href="https://github.com/oflimm/openbib/wiki/REST-API" role="button">Informationen zum KUG REST-API</a>
+         </p>
+        </div><!-- End: jumbotron -->
+       </div><!-- End: cold -->
+     </div><!-- End: row -->
+
+  </div><!--End: container-fluid -->
+
+<!-- Footer -->
+  <footer class="page-footer font-small bg-light p-1">
+
+    <!-- Footer Links -->
+    <div class="container-fluid text-center text-md-left">
+
+      <div class="row">
+         <div class="col-md-6 pr-2 d-none d-lg-block">
+            <b>KUG API</b> [% msg.maketext("ist ein Dienst der Universitäts- und Stadtbibliothek Köln") %]
+	 </div>
+	 <div class="col-6 d-none d-block text-md-right"><a href="https://www.ub.uni-koeln.de/ueber_uns/ansprechpartner/dezentralebibliotheken/index_ger.html" target="_blank">[% msg.maketext("Kontakt") %]</a>&nbsp;&nbsp;::&nbsp;&nbsp;<a href="https://www.ub.uni-koeln.de/res/impressum/index_ger.html">[% msg.maketext("Impressum") %]</a>&nbsp;&nbsp;::&nbsp;&nbsp;<a href="https://www.portal.uni-koeln.de/datenschutz.html">Datenschutzerklärung</a>
+	 </div>
+      </div>
+    </div>
+    <!-- Footer Links -->
+
+  </footer>
+  <!-- Footer -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="/js/jquery-3.3.1.slim.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+

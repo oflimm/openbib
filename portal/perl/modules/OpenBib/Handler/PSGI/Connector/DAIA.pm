@@ -100,6 +100,9 @@ sub show {
     my $accesstoken = $query->param('access_token')    || '';
     my $suppressresponsecodes = $query->param('suppress-response-codes')    || '';
 
+    # Richtigen Content-Type setzen
+    $self->param('content_type','application/json');
+    
     $self->header_add('X-DAIA-Version' => '1.0.0');
     $self->header_add('Content-Language' => $lang);
 

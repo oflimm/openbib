@@ -104,8 +104,11 @@ while (my $term=<BLACKLIST>){
 	$where_ref->{content} = $term;
     }
 
-    $logger->info(YAML::Dump($where_ref));
-#    $enrichment->get_schema->resultset('EnrichedContentByIsbn')->search_rs({ field => '4100', origin => $origin })->delete;
+    if ($logger->is_debug){
+	$logger->debug(YAML::Dump($where_ref));
+    }
+    
+    $enrichment->get_schema->resultset('EnrichedContentByIsbn')->search_rs($where_ref)->delete;
 
 }
 

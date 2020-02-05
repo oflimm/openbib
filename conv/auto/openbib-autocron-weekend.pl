@@ -340,6 +340,10 @@ if ($updatemaster && $maintenance){
 
 }
                                     
+$logger->info("### Cleaning up Enrichment-DB");    
+
+system("/opt/git/openbib-current/conv/enrichmnt/remove_enriched_terms.pl --filename=/opt/git/openbib-current/conv/enrichmnt/enrichmnt_blacklist.txt --field=4300");
+    
 if ($maintenance){
     $logger->info("### Enriching from CDM");
 
@@ -354,13 +358,12 @@ if ($maintenance){
     system("$config->{'base_dir'}/conv/cdm2enrich.pl --inputfile=/tmp/kmbregister/kmbregister.xml --configfile=$config->{'base_dir'}/conf/kmb_register.yml --database=inst001");
 
     system("cd /tmp ; rm kmbregister/* ; rmdir kmbregister");
-
     
     $logger->info("### Enriching USB BK's");
     
     system("$config->{'base_dir'}/conv/usb_bk2enrich.pl");
 
-    $logger->info("### Dumping Enrichment-DB");
+    $logger->info("### Dumping Enrichment-DB");    
     
     system("$config->{'base_dir'}/bin/dump_enrichmnt.pl");
     

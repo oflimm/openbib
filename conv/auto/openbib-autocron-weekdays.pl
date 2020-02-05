@@ -324,12 +324,16 @@ if ($updatemaster && $maintenance){
         system("$config->{'base_dir'}/bin/gen_bestof.pl --type=$thistype");
     }
 }
-                                    
+
+$logger->info("### Cleaning up Enrichment-DB");    
+    
+system("/opt/git/openbib-current/conv/enrichmnt/remove_enriched_terms.pl --filename=/opt/git/openbib-current/conv/enrichmnt/enrichmnt_blacklist.txt --field=4300");
+
 if ($maintenance){
     $logger->info("### Enriching USB BK's");
     
     system("$config->{'base_dir'}/conv/usb_bk2enrich.pl");
-
+    
     $logger->info("### Dumping Enrichment-DB");
     
     system("$config->{'base_dir'}/bin/dump_enrichmnt.pl");

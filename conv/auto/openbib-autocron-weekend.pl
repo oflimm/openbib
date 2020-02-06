@@ -342,7 +342,7 @@ if ($updatemaster && $maintenance){
                                     
 $logger->info("### Cleaning up Enrichment-DB");    
 
-system("/opt/git/openbib-current/conv/enrichmnt/remove_enriched_terms.pl --filename=/opt/git/openbib-current/conv/enrichmnt/enrichmnt_blacklist.txt --field=4300");
+system("$config->{'base_dir'}/conv/remove_enriched_terms.pl --filename=$config->{'base_dir'}/conf/enrichmnt_blacklist.txt --field=4300");
     
 if ($maintenance){
     $logger->info("### Enriching from CDM");

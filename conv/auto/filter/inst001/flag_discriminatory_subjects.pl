@@ -34,7 +34,7 @@ while (<>){
     if (keys %subjects_to_flag){
 	foreach my $synonym_ref (@{$subject_ref->{fields}{'0830'}}){
 	    if ($subjects_to_flag{$synonym_ref->{content}}){
-		$synonym_ref->{content}.=" (Diskr.)";
+		$synonym_ref->{content}.=" (Diskriminierender Begriff)";
 	    }
         }
     }

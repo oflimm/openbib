@@ -165,7 +165,7 @@ sub show {
 		eval {
 		    my $soap = SOAP::Lite
 			-> uri($uri)
-                        -> proxy($circinfotable->get($thisdb)->{circcheckurl});
+                        -> proxy($config->get('usbws_url'));
 		    my $result = $soap->show_all_items(@args);
 		    
 		    unless ($result->fault) {

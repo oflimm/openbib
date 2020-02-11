@@ -46,6 +46,7 @@ use JSON::XS qw/encode_json/;
 use OpenBib::Config;
 use OpenBib::Common::Util;
 use OpenBib::Config::DatabaseInfoTable;
+use OpenBib::Config::CirculationInfoTable;
 use OpenBib::Enrichment;
 use OpenBib::L10N;
 use OpenBib::Record::Title;
@@ -100,6 +101,9 @@ sub show {
     my $accesstoken = $query->param('access_token')    || '';
     my $suppressresponsecodes = $query->param('suppress-response-codes')    || '';
 
+    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->new;
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
     # Richtigen Content-Type setzen
     $self->param('content_type','application/json');
     
@@ -126,7 +130,7 @@ sub show {
     my @request_ids = ();
     
     if ($id =~m/\\|/){ # multiple
-	$logger->debug("Mutliple");
+	$logger->debug("Multiple");
 	@request_ids = split("\\|",$id);
     }
     else {
@@ -139,10 +143,58 @@ sub show {
 
     foreach my $request_id (@request_ids){
 	my ($thisdb,$thisid)=split(':',$request_id);
-
 	
-	my $record = new OpenBib::Record::Title({ database => $thisdb, id => $thisid})->load_circulation;
-	my $circulation_ref = $record->get_circulation;
+	# Ausleihinformationen der Exemplare
+	my $circulation_ref = [];
+	{
+	    my $circexlist=undef;
+	    
+	    if ($circinfotable->has_circinfo($thisdb) && defined $circinfotable->get($thisdb)->{circ}) {
+		
+		$logger->debug("Getting Circulation info via USB-SOAP");
+
+		my @args = ($thisid);
+		
+		my $uri = "urn:/Loan";
+
+		if ($circinfotable->get($thisdb)->{circdb} ne "sisis"){
+		    $uri = "urn:/Loan_inst";
+		    push @args, $thisdb;
+		}
+		    
+		eval {
+		    my $soap = SOAP::Lite
+			-> uri($uri)
+                        -> proxy($circinfotable->get($thisdb)->{circcheckurl});
+		    my $result = $soap->show_all_items(@args);
+		    
+		    unless ($result->fault) {
+			$circexlist = $result->result;
+			if ($logger->is_debug){
+			    $logger->debug("SOAP Result: ".YAML::Dump($circexlist));
+			}
+		    }
+		    else {
+			$logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+		    }
+		};
+		
+		if ($@){
+		    $logger->error("SOAP-Target ".$circinfotable->get($thisdb)->{circcheckurl}." konnte nicht erreicht werden :".$@);
+		}
+		
+	    }
+	    
+	    # Bei einer Ausleihbibliothek haben - falls Exemplarinformationen
+	    # in den Ausleihdaten vorhanden sind -- diese Vorrange ueber die
+	    # titelbasierten Exemplardaten
+	    
+	    if (defined($circexlist)) {
+		foreach my $nr (keys %{$circexlist->{Exemplardaten}}){
+		    push @$circulation_ref, $circexlist->{Exemplardaten}{$nr}
+		}
+	    }	    
+	}
 	
 	my $item_ref = {
 	    id => $thisid,
@@ -154,7 +206,7 @@ sub show {
 	
 	$logger->debug("Circ: ".YAML::Dump($item_ref));
     }
-
+    
     my $ttdata={
 	timestamp => $self->get_timestamp,
 	items     => $all_items_ref,

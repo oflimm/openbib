@@ -9,7 +9,7 @@ use JSON::XS qw/decode_json encode_json/;
 
 my $mw = MediaWiki::API->new( {api_url => 'https://usbwiki.ub.uni-koeln.de/usbwiki/api.php' } );
 
-my $page = $mw->get_page( { title => 'Dreierpda - Exkludierte Titel' } );
+my $page = $mw->get_page( { title => 'Schweitzerpda - Exkludierte Titel' } );
 
 my $page_content = $page->{'*'};
 

@@ -132,7 +132,7 @@ FOREACH thisdoc IN items ;
 	        id = "http://purl.org/ontology/dso#Stationary"
 	   } ]
       }) ;
-    ELSIF thiscirculation.LeihstatusText.match('bestellbar') ;
+    ELSIF thiscirculation.LeihstatusText.match('bestellbar') || thiscirculation.LeihstatusText.match('verfügbar') ;
       available_ref.push({service = 'loan'}) ;
     ELSIF thiscirculation.LeihstatusText == 'nicht entleihbar' ;
       available_ref.push({service = 'presence'}) ;

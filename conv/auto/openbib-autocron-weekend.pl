@@ -239,6 +239,7 @@ my $blacklist_ref = {
     'proquestpda' => 1,
     'roemkepda' => 1,
     'dreierpda' => 1,
+    'schweitzerpda' => 1,
     'wiso' => 1,
 };
 
@@ -299,7 +300,7 @@ autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['ebookpda'
 
 $logger->info("### PRINTPDA");
 
-autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['dreierpda','vubpda','roemkepda'] });
+autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['dreierpda','vubpda','schweitzerpda','roemkepda'] });
 
 ##############################
 

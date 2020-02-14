@@ -109,6 +109,18 @@ FOREACH category IN categories;
     CASE "T0331";
          content   = "<b>${highlightquery(searchquery,content)}</b>";
 
+    CASE "T0451";
+#         content.replace('.',' . ');
+         IF content.match(' ; ');
+	   parts451 = content.split(' ; ');
+	   band = parts451.1 ;
+	   IF band.length > 40;
+              band = band.substr(0,40);
+              parts451.1 = "${band}...";
+	   END;
+	   content = parts451.join(' ; ');
+	 END;
+
 #    CASE [ "T0531" "T0533" ];
 #         IF content.match("---&gt;: ") ;
 #            previssues = content.split("---&gt;: ");

@@ -1193,23 +1193,17 @@ sub connect_eds {
     
     $self->get_authtoken;
 
-    $logger->debug("1");
-    
     # second try... just in case ;-)
     if (!$self->{authtoken}){
 	$logger->error("2nd try to get authtoken necessary");
 	$self->{authtoken} = $self->_create_authtoken();
     }
 
-    $logger->debug("2");
-    
     if (!$self->{authtoken}){
 	$logger->error('No AuthToken available. Exiting...');
 	return;	
     }
 
-    $logger->debug("3");
-    
     $self->get_sessiontoken;
 
     # second try... und zur Sicherheit noch ein neues Authtoken holen just in case ;-)
@@ -1219,7 +1213,6 @@ sub connect_eds {
 	$self->{sessiontoken} = $self->_create_sessiontoken;
     }
 
-    $logger->debug("4");    
     if (!$self->{sessiontoken}){
 	$logger->error('No SessionToken available. Exiting...');
 	return;	
@@ -1552,11 +1545,6 @@ sub cleanup_eds_query {
 #    $content =~ s{ }{\+}g;
 
     $content = uri_escape_utf8($content);
-    
-     # Runde Klammern in den Facetten duerfen nicht escaped und URL-encoded werden!
-#    $content =~ s{\%5C\%28}{(}g; 
-#    $content =~ s{\%5C\%29}{)}g;
-
     
     return $content;
 }

@@ -1,0 +1,460 @@
+<?xml version="1.0" ?>
+<schema name="OpenBib Bibliographic Index" version="1.2">
+  <types>
+    <!-- Define fieldType long as it is needed by the _version_ field required by Solr 4.x -->
+    <fieldType name="long" class="solr.LongPointField" positionIncrementGap="0"/>
+    <fieldType name="string" class="solr.StrField" sortMissingLast="true" omitNorms="true"/>
+    <fieldType name="text_general" class="solr.TextField" positionIncrementGap="100"> 
+      <analyzer type="index"> 
+	<tokenizer class="solr.StandardTokenizerFactory"/>
+	<filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+	<!-- in this example, we will only use synonyms at query time
+	     <filter class="solr.SynonymFilterFactory" synonyms="index_synonyms.txt" ignoreCase="true" expand="false"/>
+	-->
+	<filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+      <analyzer type="query">
+	<tokenizer class="solr.StandardTokenizerFactory"/>
+	<filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+	<filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
+	<filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+    </fieldType>    
+    <fieldType name="textFacet" class="solr.TextField" sortMissingLast="true" omitNorms="true">
+      <analyzer>
+        <tokenizer class="solr.KeywordTokenizerFactory"/>
+        <!-- strip trailing punctuation from facets: -->
+        <filter class="solr.PatternReplaceFilterFactory" pattern="(?&lt;!\b[A-Z])[.\s]*$" replacement="" replace="first"/>
+      </analyzer>
+    </fieldType>
+    <fieldType name="text" class="solr.TextField" positionIncrementGap="100">
+      <analyzer type="index">
+        <tokenizer class="solr.ICUTokenizerFactory"/>
+        <filter class="solr.WordDelimiterGraphFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0" splitOnCaseChange="1"/>
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt"/>
+        <filter class="solr.ICUFoldingFilterFactory"/>
+        <filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
+        <filter class="solr.SnowballPorterFilterFactory" language="English"/>
+        <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
+      </analyzer>
+      <analyzer type="query">
+        <tokenizer class="solr.ICUTokenizerFactory"/>
+        <filter class="solr.SynonymGraphFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
+        <filter class="solr.WordDelimiterGraphFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="0" catenateNumbers="0" catenateAll="0" splitOnCaseChange="1"/>
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt"/>
+        <filter class="solr.ICUFoldingFilterFactory"/>
+        <filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
+        <filter class="solr.SnowballPorterFilterFactory" language="English"/>
+        <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
+      </analyzer>
+    </fieldType>
+    <!-- Text Field without Stemming and Synonyms -->
+    <fieldType name="textProper" class="solr.TextField" positionIncrementGap="100">
+      <analyzer type="index">
+        <tokenizer class="solr.ICUTokenizerFactory"/>
+        <filter class="solr.WordDelimiterGraphFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="1" catenateNumbers="1" catenateAll="0"/>
+        <filter class="solr.ICUFoldingFilterFactory"/>
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt"/>
+        <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
+      </analyzer>
+      <analyzer type="query">
+        <tokenizer class="solr.ICUTokenizerFactory"/>
+        <filter class="solr.WordDelimiterGraphFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="0" catenateNumbers="0" catenateAll="0"/>
+        <filter class="solr.ICUFoldingFilterFactory"/>
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt"/>
+        <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
+      </analyzer>
+    </fieldType>
+    <!-- Basic Text Field for use with Spell Correction -->
+    <fieldType name="textSpell" class="solr.TextField" positionIncrementGap="100">
+      <analyzer>
+        <tokenizer class="solr.ICUTokenizerFactory"/>
+        <filter class="solr.WordDelimiterGraphFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="0" catenateNumbers="0" catenateAll="0"/>
+        <filter class="solr.ICUFoldingFilterFactory"/>
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt"/>
+        <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
+      </analyzer>
+    </fieldType>
+    <!-- More advanced spell checking field. -->
+    <fieldType name="textSpellShingle" class="solr.TextField" positionIncrementGap="100">
+      <analyzer type="index">
+        <tokenizer class="solr.ICUTokenizerFactory"/>
+        <filter class="solr.ICUFoldingFilterFactory"/>
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt"/>
+        <filter class="solr.ShingleFilterFactory" maxShingleSize="2" outputUnigrams="false"/>
+        <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
+      </analyzer>
+      <analyzer type="query">
+        <tokenizer class="solr.ICUTokenizerFactory"/>
+        <filter class="solr.ICUFoldingFilterFactory"/>
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt"/>
+        <filter class="solr.ShingleFilterFactory" maxShingleSize="2" outputUnigrams="false"/>
+        <filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
+      </analyzer>
+    </fieldType>
+    <!-- Text Field for Normalized ISBN/ISSN Numbers - take first chunk of text
+         prior to whitespace, force to lowercase, strip non-ISBN/ISSN characters,
+         omit results that are empty after stripping. -->
+    <fieldType name="isn" class="solr.TextField" positionIncrementGap="100">
+      <analyzer>
+        <tokenizer class="solr.PatternTokenizerFactory" pattern="^(\S*)\s*.*$" group="1"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+        <filter class="solr.PatternReplaceFilterFactory" pattern="[^0-9x]" replacement="" replace="all"/>
+        <filter class="solr.LengthFilterFactory" min="4" max="100" />
+      </analyzer>
+    </fieldType>
+    <!-- case-insensitive/whitespace-agnostic field type for callnumber searching -->
+    <fieldType name="callnumberSearch" class="solr.TextField" sortMissingLast="true" omitNorms="true">
+      <analyzer>
+        <charFilter class="solr.PatternReplaceCharFilterFactory" pattern="(\s)" replacement=""/>
+        <tokenizer class="solr.KeywordTokenizerFactory"/>
+        <filter class="solr.ICUFoldingFilterFactory"/>
+      </analyzer>
+    </fieldType>
+    <fieldType name="date" class="solr.DatePointField" sortMissingLast="true" omitNorms="true"/>
+    <fieldType name="random" class="solr.RandomSortField" indexed="true" />
+    <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true" omitNorms="true"/>
+    <fieldType name="booleans" class="solr.BoolField" sortMissingLast="true" multiValued="true"/>
+    <fieldType name="pdate" class="solr.DatePointField" docValues="true"/>
+    <fieldType name="pdates" class="solr.DatePointField" docValues="true" multiValued="true"/>
+    <fieldType name="plong" class="solr.LongPointField" docValues="true"/>
+    <fieldType name="pdouble" class="solr.DoublePointField" docValues="true"/>
+
+    <fieldType name="pints" class="solr.IntPointField" docValues="true" multiValued="true"/>
+    <fieldType name="pfloats" class="solr.FloatPointField" docValues="true" multiValued="true"/>
+    <fieldType name="plongs" class="solr.LongPointField" docValues="true" multiValued="true"/>
+    <fieldType name="pdoubles" class="solr.DoublePointField" docValues="true" multiValued="true"/>
+
+    <!-- add geo field to handle geographic search and display capabilities -->
+    <fieldType name="geo" class="solr.SpatialRecursivePrefixTreeFieldType" distErrPct="0.025" maxDistErr="0.000009" distanceUnits="degrees" />
+  </types>
+ <fields>
+   <!-- Required by Solr 4.x -->
+   <field name="_version_" type="long" indexed="true" stored="true"/>
+   <!-- OpenBib Core Fields  -->
+   <field name="id" type="string" indexed="true" stored="true"/>
+   <field name="db" type="string" indexed="true" stored="true"/>
+   <field name="dbstring" type="string" indexed="true" stored="true"/>
+   <!-- fullid = id:db -->
+   <field name="fullid" type="string" indexed="true" stored="true"/>
+   
+   <field name="location" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="bibkey" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="fullrecord" type="string" indexed="false" stored="true"/>
+   <field name="hbzid" type="string" indexed="true" stored="false" multiValued="true"/>
+   <field name="zdbid" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="personid" type="string" indexed="true" stored="false" multiValued="true"/>
+   <field name="corporatebodyid" type="string" indexed="true" stored="false" multiValued="true"/>
+   <field name="subjectid" type="string" indexed="true" stored="false" multiValued="true"/>
+   <field name="gnd" type="string" indexed="true" stored="false" multiValued="true"/>
+   <field name="freesearch" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="person" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="title" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="subject" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="corporatebody" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="classification" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="mark" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="publisher" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="provenance" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="hss" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="isbn" type="string" indexed="true" stored="false" multiValued="true"/>
+   <field name="issn" type="string" indexed="true" stored="false" multiValued="true"/>
+   <field name="mediatype" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="authoritytype" type="string" indexed="true" stored="false" multiValued="true"/>
+   <field name="content" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="place" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="source" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="tag" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="toc" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="reg" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="year" type="string" indexed="true" stored="false" multiValued="true"/>
+   <field name="subid" type="string" indexed="true" stored="false" multiValued="true"/>
+   <field name="topic" type="string" indexed="true" stored="false" multiValued="true"/>
+
+   <!-- Exact content -->
+   <field name="titlestring" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="tagstring" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="litliststring" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="availabilitystring" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="subjectstring" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="yearstring" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="languagestring" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="classificationstring" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="personstring" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="corporatebodystring" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="mediatypestring" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="markstring" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="publisherstring" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="provenancestring" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="sourcestring" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="locationstring" type="string" indexed="true" stored="true" multiValued="true"/>
+   
+   <!-- Individual tokenized text Fields -->
+
+   <field name="t0006" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0100" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0101" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0102" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0103" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0200" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0201" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0304" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0334" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0335" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0338" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0341" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0342" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0343" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0344" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0345" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0351" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0352" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0353" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0354" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0355" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0356" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0407" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0410" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0411" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0412" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0413" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0425" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0426" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0427" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0428" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0531" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0533" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0619" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0700" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0710" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t0720" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t4100" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t4300" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t4306" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t4307" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t4308" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="t4310" type="text" indexed="true" stored="false" multiValued="true"/>
+
+   <field name="ft0006" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0100" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0101" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0102" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0103" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0200" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0201" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0304" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0334" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0335" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0338" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0341" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0342" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0343" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0344" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0345" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0351" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0352" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0353" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0354" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0355" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0356" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0407" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0410" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0411" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0412" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0413" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0425" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0426" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0427" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0428" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0531" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0533" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0619" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0700" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0710" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft0720" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft4100" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft4300" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft4306" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft4307" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft4308" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="ft4310" type="string" indexed="true" stored="true" multiValued="true"/>
+   
+   <field name="facet_location" type="textFacet" indexed="true" stored="true" multiValued="true"/>
+   <field name="facet_database" type="textFacet" indexed="true" stored="true" multiValued="true"/>
+   <field name="facet_person" type="textFacet" indexed="true" stored="true" multiValued="true"/>
+   <field name="facet_corporatebody" type="textFacet" indexed="true" stored="true" multiValued="true"/>
+   <field name="facet_subject" type="textFacet" indexed="true" stored="true" multiValued="true"/>
+   <field name="facet_classification" type="textFacet" indexed="true" stored="true" multiValued="true"/>
+   <field name="facet_year" type="textFacet" indexed="true" stored="true" multiValued="true"/>
+   <field name="facet_tag" type="textFacet" indexed="true" stored="true" multiValued="true"/>
+   <field name="facet_topic" type="textFacet" indexed="true" stored="true" multiValued="true"/>
+   <field name="facet_listlist" type="textFacet" indexed="true" stored="true" multiValued="true"/>
+   <field name="facet_language" type="textFacet" indexed="true" stored="true" multiValued="true"/>
+   <field name="facet_mediatype" type="textFacet" indexed="true" stored="true" multiValued="true"/>
+   <field name="facet_provenance" type="textFacet" indexed="true" stored="true" multiValued="true"/>
+   <field name="facet_availability" type="textFacet" indexed="true" stored="true" multiValued="true"/>
+
+<!-- obsolete Vufind stuff 
+   <field name="fullrecord" type="string" indexed="false" stored="true"/>
+   <field name="marc_error" type="string" indexed="false" stored="true" multiValued="true"/>
+   <field name="allfields" type="text" indexed="true" stored="false" multiValued="true"/>
+   <field name="allfields_unstemmed" type="textProper" indexed="true" stored="false" multiValued="true"/>
+   <field name="fulltext" type="text" indexed="true" stored="false"/>
+   <field name="fulltext_unstemmed" type="textProper" indexed="true" stored="false"/>
+   <field name="spelling" type="textSpell" indexed="true" stored="true" multiValued="true"/>
+   <field name="spellingShingle" type="textSpellShingle" indexed="true" stored="true" multiValued="true"/>
+
+   <field name="institution" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="collection" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="building" type="string" indexed="true" stored="true" multiValued="true"/>
+
+   <field name="language" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="format" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="author" type="textProper" indexed="true" stored="true" multiValued="true" termVectors="true"/>
+   <field name="author_variant" type="text" indexed="true" stored="true" multiValued="true" termVectors="true"/>
+   <field name="author_role" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="author_facet" type="textFacet" indexed="true" stored="true" multiValued="true"/>
+   <field name="author_sort" type="string" indexed="true" stored="true"/>
+   <field name="title" type="text" indexed="true" stored="true"/>
+   <field name="title_sort" type="string" indexed="true" stored="true"/>
+   <field name="title_sub" type="text" indexed="true" stored="true"/>
+   <field name="title_short" type="text" indexed="true" stored="true"/>
+   <field name="title_full" type="text" indexed="true" stored="true"/>
+   <field name="title_full_unstemmed" type="textProper" indexed="true" stored="true"/>
+   <field name="title_fullStr" type="string" indexed="true" stored="true"/>
+   <field name="title_auth" type="text" indexed="true" stored="true"/>
+   <field name="physical" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="publisher" type="textProper" indexed="true" stored="true" multiValued="true"/>
+   <field name="publisherStr" type="string" indexed="true" stored="false" multiValued="true"/>
+   <field name="publishDate" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="publishDateSort" type="string" indexed="true" stored="false"/>
+   <field name="edition" type="string" indexed="true" stored="true"/>
+   <field name="description" type="text" indexed="true" stored="true"/>
+   <field name="contents" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="url" type="string" indexed="false" stored="true" multiValued="true"/>
+   <field name="thumbnail" type="string" indexed="false" stored="true"/>
+
+   <field name="lccn" type="string" indexed="true" stored="true"/>
+   <field name="ctrlnum" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="isbn" type="isn" indexed="true" stored="true" multiValued="true"/>
+   <field name="issn" type="isn" indexed="true" stored="true" multiValued="true"/>
+   <field name="oclc_num" type="string" indexed="true" stored="true" multiValued="true" />
+   <field name="callnumber-first" type="string" indexed="true" stored="true"/>
+   <field name="callnumber-subject" type="string" indexed="true" stored="true"/>
+   <field name="callnumber-label" type="string" indexed="true" stored="true"/>
+   <field name="callnumber-sort" type="string" indexed="true" stored="true"/>
+   <field name="callnumber-raw" type="string" indexed="true" stored="true" multiValued="true" />
+   <field name="callnumber-search" type="callnumberSearch" indexed="true" stored="true" multiValued="true" />
+   <field name="dewey-hundreds" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="dewey-tens" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="dewey-ones" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="dewey-full" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="dewey-sort" type="string" indexed="true" stored="true" />
+   <field name="dewey-raw" type="string" indexed="true" stored="true" multiValued="true" />
+   <field name="dewey-search" type="callnumberSearch" indexed="true" stored="true" multiValued="true" />
+   <field name="author2" type="textProper" indexed="true" stored="true" multiValued="true"/>
+   <field name="author2_variant" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="author2_role" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="author_corporate" type="textProper" indexed="true" stored="true" multiValued="true"/>
+   <field name="author_corporate_role" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="author_fuller" type="textProper" indexed="true" stored="true" multiValued="true" />
+   <field name="author2_fuller" type="textProper" indexed="true" stored="true" multiValued="true" />
+   <field name="author_additional" type="textProper" indexed="true" stored="true" multiValued="true"/>
+   <field name="title_alt" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="title_old" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="title_new" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="dateSpan" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="series" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="series2" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="topic" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="topic_unstemmed" type="textProper" indexed="true" stored="false" multiValued="true"/>
+   <field name="topic_facet" type="textFacet" indexed="true" stored="true" multiValued="true"/>
+   <field name="topic_browse" type="string" indexed="true" stored="false" multiValued="true"/>
+   <field name="author_browse" type="string" indexed="true" stored="false" multiValued="true"/>
+   <field name="genre" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="genre_facet" type="textFacet" indexed="true" stored="true" multiValued="true"/>
+   <field name="geographic" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="geographic_facet" type="textFacet" indexed="true" stored="true" multiValued="true"/>
+   <field name="era" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="era_facet" type="textFacet" indexed="true" stored="true" multiValued="true"/>
+   <field name="illustrated" type="string" indexed="true" stored="true" multiValued="false"/>
+
+   <field name="long_lat" type="geo" indexed="true" stored="true" multiValued="true" />
+   <field name="long_lat_display" type="text" indexed="true" stored="true" multiValued="true"/>
+   <field name="long_lat_label" type="string" indexed="false" stored="true" multiValued="true"/>
+
+   <field name="container_title" type="text" indexed="true" stored="true"/>
+   <field name="container_volume" type="text" indexed="true" stored="true"/>
+   <field name="container_issue" type="text" indexed="true" stored="true"/>
+   <field name="container_start_page" type="text" indexed="true" stored="true"/>
+   <field name="container_reference" type="text" indexed="true" stored="true"/>
+
+   <field name="hierarchytype" type="string" indexed="true" stored="true" multiValued="false"/>
+   <field name="hierarchy_top_id" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="hierarchy_top_title" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="hierarchy_parent_id" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="hierarchy_parent_title" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="hierarchy_sequence" type="string" indexed="true" stored="true" multiValued="true"/>
+   <field name="is_hierarchy_id" type="string" indexed="true" stored="true" multiValued="false"/>
+   <field name="is_hierarchy_title" type="string" indexed="true" stored="true" multiValued="false"/>
+   <field name="title_in_hierarchy" type="string" indexed="true" stored="true" multiValued="true" />
+   <field name="hierarchy_browse" type="string" indexed="true" stored="false" multiValued="true"/>
+
+   <field name="recordtype" type="string" indexed="false" stored="true"/>
+   <field name="record_format" type="string" indexed="true" stored="true"/>
+
+   <field name="first_indexed" type="date" indexed="true" stored="true" docValues="true"/>
+   <field name="last_indexed" type="date" indexed="true" stored="true" docValues="true"/>
+   <dynamicField name="*_date" type="date" indexed="true" stored="true" docValues="true"/>
+   <dynamicField name="*_date_mv" type="date" indexed="true" stored="true" multiValued="true" docValues="true"/>
+   <dynamicField name="*_isn" type="isn" indexed="true" stored="true"/>
+   <dynamicField name="*_isn_mv" type="isn" indexed="true" stored="true" multiValued="true"/>
+   <dynamicField name="*_str" type="string" indexed="true" stored="true"/>
+   <dynamicField name="*_str_mv" type="string" indexed="true" stored="true" multiValued="true"/>
+   <dynamicField name="*_txt" type="text" indexed="true" stored="true"/>
+   <dynamicField name="*_txt_mv" type="text" indexed="true" stored="true" multiValued="true"/>
+   <dynamicField name="*_txtF" type="textFacet" indexed="true" stored="true"/>
+   <dynamicField name="*_txtF_mv" type="textFacet" indexed="true" stored="true" multiValued="true"/>
+   <dynamicField name="*_txtP" type="textProper" indexed="true" stored="true"/>
+   <dynamicField name="*_txtP_mv" type="textProper" indexed="true" stored="true" multiValued="true"/>
+   <dynamicField name="*_random" type="random" />
+   <dynamicField name="*_boolean" type="boolean" indexed="true" stored="true"/>
+   <dynamicField name="*_geo" type="geo" indexed="true" stored="true" multiValued="false" />
+   <dynamicField name="*_geo_mv" type="geo" indexed="true" stored="true" multiValued="true" />
+-->
+ </fields>
+
+ <uniqueKey>fullid</uniqueKey>
+ <copyField source="db" dest="dbstring"/> 
+ <!-- CopyFields for Spelling -->
+ <!-- ** Basic, single word spelling -->
+ <!--
+ <copyField source="allfields" dest="spelling"/>
+
+ <copyField source="author"   dest="spellingShingle"/>
+ <copyField source="title"    dest="spellingShingle"/>
+ <copyField source="contents" dest="spellingShingle"/>
+ <copyField source="series"   dest="spellingShingle"/>
+ <copyField source="topic"    dest="spellingShingle"/>
+
+ <copyField source="title_full" dest="title_fullStr"/>
+ <copyField source="title_full" dest="title_full_unstemmed"/>
+ <copyField source="author" dest="author_facet"/>
+ <copyField source="author2" dest="author_facet"/>
+ <copyField source="author_corporate" dest="author_facet"/>
+ <copyField source="publisher" dest="publisherStr"/>
+ <copyField source="topic" dest="topic_unstemmed"/>
+ <copyField source="allfields" dest="allfields_unstemmed"/>
+ <copyField source="fulltext" dest="fulltext_unstemmed"/>
+
+ <copyField source="topic" dest="topic_browse"/>
+ <copyField source="author" dest="author_browse"/>
+ <copyField source="author2" dest="author_browse"/>
+ <copyField source="author_corporate" dest="author_browse"/>
+
+ <copyField source="format"    dest="allfields"/>
+ <copyField source="format"    dest="allfields_unstemmed"/>
+
+ <copyField source="dewey-raw" dest="dewey-search"/>
+ <copyField source="callnumber-raw" dest="callnumber-search"/>-->
+</schema>

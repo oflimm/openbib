@@ -35,6 +35,7 @@ use Log::Log4perl qw(get_logger :levels);
 use OpenBib::Config;
 
 use OpenBib::Index::Backend::ElasticSearch;
+use OpenBib::Index::Backend::Solr;
 use OpenBib::Index::Backend::Xapian;
 
 sub create_indexer {
@@ -60,6 +61,9 @@ sub create_indexer {
     }
     elsif ($sb eq "elasticsearch"){        
         return new OpenBib::Index::Backend::ElasticSearch($arg_ref);
+    }
+    elsif ($sb eq "solr"){        
+        return new OpenBib::Index::Backend::Solr($arg_ref);
     }
     else {
         $logger->fatal("Couldn't dispatch to any Indexer Backend");

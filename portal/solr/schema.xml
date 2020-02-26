@@ -146,6 +146,7 @@
    <field name="personid" type="string" indexed="true" stored="false" multiValued="true"/>
    <field name="corporatebodyid" type="string" indexed="true" stored="false" multiValued="true"/>
    <field name="subjectid" type="string" indexed="true" stored="false" multiValued="true"/>
+   <field name="classificationid" type="string" indexed="true" stored="false" multiValued="true"/>
    <field name="gnd" type="string" indexed="true" stored="false" multiValued="true"/>
    <field name="freesearch" type="text" indexed="true" stored="false" multiValued="true"/>
    <field name="person" type="text" indexed="true" stored="false" multiValued="true"/>
@@ -288,7 +289,7 @@
    <field name="facet_year" type="textFacet" indexed="true" stored="true" multiValued="true"/>
    <field name="facet_tag" type="textFacet" indexed="true" stored="true" multiValued="true"/>
    <field name="facet_topic" type="textFacet" indexed="true" stored="true" multiValued="true"/>
-   <field name="facet_listlist" type="textFacet" indexed="true" stored="true" multiValued="true"/>
+   <field name="facet_litlist" type="textFacet" indexed="true" stored="true" multiValued="true"/>
    <field name="facet_language" type="textFacet" indexed="true" stored="true" multiValued="true"/>
    <field name="facet_mediatype" type="textFacet" indexed="true" stored="true" multiValued="true"/>
    <field name="facet_provenance" type="textFacet" indexed="true" stored="true" multiValued="true"/>

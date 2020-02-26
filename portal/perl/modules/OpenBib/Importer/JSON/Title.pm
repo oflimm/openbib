@@ -631,7 +631,7 @@ sub process {
                         type    => 'person',
                         content => $mainentry,
                         supplement => $supplement,
-                    }) if (exists $self->{conv_config}{listitemcat}{$field});
+                    }) if ($self->{conv_config}{store_full_record} || exists $self->{conv_config}{listitemcat}{$field});
                     
                     push @personcorporatebody, $mainentry  unless ($field eq "4308");
                     
@@ -695,7 +695,7 @@ sub process {
                         type    => 'corporatebody',
                         content => $mainentry,
                         supplement => $supplement,
-                    }) if (exists $self->{conv_config}{listitemcat}{$field});
+                    }) if ($self->{conv_config}{store_full_record} || exists $self->{conv_config}{listitemcat}{$field});
                     
                     push @personcorporatebody, $mainentry unless ($field eq "4307");
                     
@@ -757,7 +757,7 @@ sub process {
                         type    => 'classification',
                         content => $mainentry,
                         supplement => $supplement,
-                    }) if (exists $self->{conv_config}{listitemcat}{$field});
+                    }) if ($self->{conv_config}{store_full_record} || exists $self->{conv_config}{listitemcat}{$field});
                     
 #                    if (exists $inverted_ref->{$field}->{index}) {                    
                         push @classification, $classificationid;
@@ -804,7 +804,7 @@ sub process {
                         type    => 'subject',
                         content => $mainentry,
                         supplement => $supplement,
-                    }) if (exists $self->{conv_config}{listitemcat}{$field});
+                    }) if ($self->{conv_config}{store_full_record} || exists $self->{conv_config}{listitemcat}{$field});
                     
 #                    if (exists $inverted_ref->{$field}->{index}) {                    
                         push @subject, $subjectid unless ($field eq "4306");
@@ -1207,7 +1207,7 @@ sub process {
     # Index-Data mit Titelfeldern fuellen
     foreach my $field (keys %{$fields_ref}) {            
         # Kategorien in listitemcat werden fuer die Kurztitelliste verwendet
-        if (defined $self->{conv_config}{listitemcat}{$field}) {
+        if ($self->{conv_config}{store_full_record} || defined $self->{conv_config}{listitemcat}{$field}) {
             foreach my $item_ref (@{$fields_ref->{$field}}) {
                 unless (defined $item_ref->{ignore}){
                     $index_doc->add_data("T".$field, $item_ref);

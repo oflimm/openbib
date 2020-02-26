@@ -36,6 +36,7 @@ use OpenBib::Config;
 use OpenBib::Search::Backend::BibSonomy;
 use OpenBib::Search::Backend::DBIS;
 use OpenBib::Search::Backend::ElasticSearch;
+use OpenBib::Search::Backend::Solr;
 use OpenBib::Search::Backend::EZB;
 use OpenBib::Search::Backend::EDS;
 use OpenBib::Search::Backend::Xapian;
@@ -105,6 +106,9 @@ sub create_searcher {
     }
     elsif ($sb eq "elasticsearch"){        
         return new OpenBib::Search::Backend::ElasticSearch($arg_ref);
+    }
+    elsif ($sb eq "solr"){        
+        return new OpenBib::Search::Backend::Solr($arg_ref);
     }
     elsif ($sb eq "eds"){        
         return new OpenBib::Search::Backend::EDS($arg_ref);

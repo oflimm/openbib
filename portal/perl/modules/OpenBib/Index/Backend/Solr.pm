@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Index::Backend::VuFind
+#  OpenBib::Index::Backend::Solr
 #
 #  Dieses File ist (C) 2020 Oliver Flimm <flimm@openbib.org>
 #

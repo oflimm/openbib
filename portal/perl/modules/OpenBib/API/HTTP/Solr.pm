@@ -178,6 +178,15 @@ sub send_search_request {
         $atime=new Benchmark;
     }
 
+    $logger->debug("srt: ".$sorttype);
+    
+    # Wenn srto in srt enthalten, dann aufteilen
+    if ($sorttype =~m/^([^_]+)_([^_]+)$/){
+        $sorttype=$1;
+        $sortorder=$2;
+        $logger->debug("srt Option split: srt = $1, srto = $2");
+    }
+    
     # Defaults from portal.yml
     my $current_facets_ref = $config->{facets};
 
@@ -249,6 +258,11 @@ sub send_search_request {
     # Facetten aktivieren
     if (keys %$json_facets_ref){
 	$json_query_ref->{facet} = $json_facets_ref;
+    }
+
+    # Sortierung
+    if ($sorttype ne "relevance") { # default
+	$json_query_ref->{sort} = "sort_$sorttype $sortorder";
     }
     
     my $encoded_json = encode_utf8(encode_json($json_query_ref));
@@ -390,103 +404,6 @@ sub get_search_resultlist {
     return $recordlist;
 }
 
-
-sub get_authtoken {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $config = $self->get_config;
-
-    $config->connectMemcached;
-    
-    my $memc_key = "eds:authtoken";
-
-    $logger->debug("Memc: ".$config->{memcached});
-    
-    if ($config->{memc}){
-        my $authtoken = $config->{memc}->get($memc_key);
-
-	if ($authtoken){
-	    if ($logger->is_debug){
-		$logger->debug("Got eds authtoken $authtoken for key $memc_key from memcached");
-	    }
-
-	    $config->disconnectMemcached;
-	    	    
-	    $self->{authtoken} = $authtoken;
-	}
-	else {
-	    if ($logger->is_debug){
-		$logger->debug("No eds authtoken for key $memc_key from memcached found");
-	    }
-
-	    $self->{authtoken} = $self->_create_authtoken();
-
-	}
-    }    
-    else {
-	$logger->debug("Weiter ohne memcached");
-	
-	$self->{authtoken} = $self->_create_authtoken();
-    }
-    
-    return $self->{authtoken};
-}
-
-sub get_sessiontoken {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $config = $self->get_config;
-
-    $config->connectMemcached;
-
-    $logger->debug("Getting sessiontoken for sessionid ".$self->{sessionID});
-
-    my $memc_key = "eds:sessiontoken:".$self->{sessionID};
-
-    if ($config->{memc}){
-        my $sessiontoken = $config->{memc}->get($memc_key);
-
-	if ($sessiontoken){
-	    if ($logger->is_debug){
-		$logger->debug("Got eds sessiontoken $sessiontoken for key $memc_key from memcached");
-	    }
-
-	    $config->disconnectMemcached;
-	    
-	    $self->{sessiontoken} = $sessiontoken;
-	}
-	else {
-	    if ($logger->is_debug){
-		$logger->debug("No eds sessiontoken for key $memc_key from memcached found");
-	    }
-
-	    $self->{sessiontoken} = $self->_create_sessiontoken;
-	    if (!$self->{sessiontoken}){
-		$self->{authtoken}    = $self->_create_authtoken;
-		$self->{sessiontoken} = $self->_create_sessiontoken;
-	    }
-
-	}
-    }
-    else {	
-	$logger->debug("Weiter ohne memcached");
-	
-	$self->{sessiontoken} = $self->_create_sessiontoken;
-	if (!$self->{sessiontoken}){
-	    $self->{authtoken}    = $self->_create_authtoken;
-	    $self->{sessiontoken} = $self->_create_sessiontoken;
-	}
-    }    
-    
-    return $self->{sessiontoken};
-}
-
 sub process_matches {
     my ($self,$json_result_ref) = @_;
 
@@ -593,44 +510,6 @@ sub process_facets {
     return; 
 }
 
-sub get_config {
-    my ($self) = @_;
-
-    return $self->{_config};
-}
-
-sub get_client {
-    my ($self) = @_;
-
-    return $self->{client};
-}
-
-sub get_searchquery {
-    my ($self) = @_;
-
-    return $self->{_searchquery};
-}
-
-sub get_queryoptions {
-    my ($self) = @_;
-
-    return $self->{_queryoptions};
-}
-
-sub have_field_content {
-    my ($self,$field,$content)=@_;
-
-    my $have_field = 0;
-    
-    eval {
-	$have_field = $self->{have_field_content}{$field}{$content};
-    };
-
-    $self->{have_field_content}{$field}{$content} = 1;
-
-    return $have_field;
-}
-
 sub parse_query {
     my ($self,$searchquery)=@_;
 
@@ -708,60 +587,6 @@ sub parse_query {
     $self->{_filter} = $filter_ref;
 
     return $self;
-}
-
-sub cleanup_eds_query {
-    my $content = shift;
-
-    $content =~ s{(,|\:|\(|\))}{\\$1}g;
- #   $content =~ s{\[}{%5B}g;
- #   $content =~ s{\]}{%5D}g;
-    $content =~ s{\s+\-\s+}{ }g;
-    $content =~ s{\s\s}{ }g;
-    $content =~ s{^\s+|\s+$}{}g;
-    $content =~ s{\s+(and|or|not)\s+}{ }gi;
-#    $content =~ s{ }{\+}g;
-
-    $content = uri_escape_utf8($content);
-    
-    return $content;
-}
-
-sub cleanup_eds_filter {
-    my $content = shift;
-
-    $content = uri_escape_utf8($content);
-    
-     # Runde Klammern in den Facetten duerfen nicht escaped und URL-encoded werden!
-    $content =~ s{\%5C\%28}{(}g; 
-    $content =~ s{\%5C\%29}{)}g;
-
-    
-    return $content;
-}
-
-sub get_query {
-    my $self=shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    return $self->{_query};
-}
-
-sub get_filter {
-    my $self=shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    return $self->{_filter};
-}
-
-sub DESTROY {
-    my $self = shift;
-
-    return;
 }
 
 

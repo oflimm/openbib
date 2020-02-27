@@ -62,7 +62,7 @@
 </select>
 </div>
 
-<button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Los") %]</button
+<button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Los") %]</button>
 
 </form>
 

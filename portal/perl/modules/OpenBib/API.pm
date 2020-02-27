@@ -211,5 +211,10 @@ sub get_database {
     return $self->{_database};
 }
 
+sub DESTROY {
+    my $self = shift;
+
+    return;
+}
 
 1;

@@ -113,19 +113,25 @@ sub send_retrieve_request {
     my $ua     = $self->get_client;
 
 
-    my $url = $config->get('eds')->{'retrieve_url'};
+    my $url = $config->get('solr')->{'search_url'};
 
-    $url.="?dbid=".$database."&an=".$id;
+    my $header = ['Content-Type' => 'application/json; charset=UTF-8'];
+    my $json_query_ref = {
+	'query' => { bool => { must => ["fullid:($database\\:$id)"]}},
+    };
+
+    my $encoded_json = encode_utf8(encode_json($json_query_ref));
+
+    $logger->debug("Solr JSON Query: $encoded_json");
+    
+    my $request = HTTP::Request->new('POST',$url,$header,$encoded_json);
+    
+    my $response = $ua->request($request);
 
     if ($logger->is_debug()){
 	$logger->debug("Request URL: $url");
     }
     
-    my $request = HTTP::Request->new('GET' => $url);
-    $request->content_type('application/json');
-    
-    my $response = $ua->request($request);
-
     if ($logger->is_debug){
 	$logger->debug("Response: ".$response->content);
     }
@@ -327,6 +333,13 @@ sub get_record {
     push @{$fields_ref->{'response_source'}}, {
 	content => $json_result_ref
     };
+
+    foreach my $match (@{$json_result_ref->{response}{docs}}){
+	$fields_ref = decode_json $match->{fullrecord};
+
+	delete $fields_ref->{id};
+	delete $fields_ref->{database};
+    }
     
     $record->set_fields_from_storable($fields_ref);
     
@@ -368,7 +381,7 @@ sub search {
 	my $searchtime   = timestr($stimeall,"nop");
 	$searchtime      =~s/(\d+\.\d+) .*/$1/;
 	
-	$logger->info("Gesamtzeit fuer EDS-Suche $searchtime");
+	$logger->info("Gesamtzeit fuer Solr-Suche $searchtime");
     }
 
     $self->{resultcount} = $resultcount;
@@ -418,7 +431,7 @@ sub process_matches {
 	my $fields_ref = decode_json $match->{fullrecord};
 
 	delete $fields_ref->{id};
-	delete $fields_ref->{db};
+	delete $fields_ref->{database};
 	
 	my ($atime,$btime,$timeall);
 	

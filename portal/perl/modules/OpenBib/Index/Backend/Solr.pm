@@ -2,7 +2,7 @@
 #
 #  OpenBib::Index::Backend::Solr
 #
-#  Dieses File ist (C) 2020 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2020- Oliver Flimm <flimm@openbib.org>
 #
 #  basiert auf OpenBib::Index::Backend::ElasticSearch
 #
@@ -243,6 +243,8 @@ sub create_document {
     my $id            = $record_ref->{id};
     my $thisdbname    = $record_ref->{database};
     my $locations_ref = $record_ref->{locations};
+
+    my $convconfig = OpenBib::Conv::Config->instance({dbname => $thisdbname});
     
     my $doc_ref = {
 	fullid     => "$thisdbname:$id",
@@ -269,6 +271,76 @@ sub create_document {
         my @unique_terms = grep { defined $_ && ! $seen_terms{$_} ++ } @{$index_ref->{"facet_".$type}}; 
 
 	$doc_ref->{"facet_$type"} = \@unique_terms;
+    }
+
+    # Sortierung
+    if ($logger->is_debug){
+	$logger->debug("sorting_order: ".YAML::Dump($convconfig->get('sorting_order')));
+	$logger->debug("sorting: ".YAML::Dump($convconfig->get('sorting')));
+    }
+    
+    foreach my $field (@{$convconfig->get('sorting_order')}){
+	next unless (defined $record_ref->{$field});
+	
+	my $sortfield = $convconfig->get('sorting')->{$field}->{sortfield};
+	
+	# Bibliogr. Feldinhalte mit Zeichenketten
+	if ($convconfig->get('sorting')->{$field}->{type} eq "stringfield"){
+	    my $content = (defined $record_ref->{$field}[0]{content})?$record_ref->{$field}[0]{content}:"";
+	    next unless ($content);
+	    
+	    if (defined $convconfig->get('sorting')->{$field}{filter}){
+		foreach my $filtername (@{$convconfig->get('sorting')->{$field}{filter}}){
+		    if ($self->can($filtername)){
+			$content = $self->$filtername($content);
+		    }
+		}
+	    }
+	    
+	    $content = OpenBib::Common::Util::normalize({
+		content   => $content,
+		type      => 'string',
+							});
+	    
+	    if ($content){
+		$logger->debug("Adding $content as sortvalue");
+		
+		$doc_ref->{"sort_$sortfield"} = $content;
+	    }
+	}
+	# Bibliogr. Feldinhalte mit Integerwerten
+	elsif ($convconfig->get('sorting')->{$field}->{type} eq "integerfield"){
+	    my $content = (defined $record_ref->{$field}[0]{content})?$record_ref->{$field}[0]{content}:0;
+	    next unless ($content);
+	    
+	    if (defined $convconfig->get('sorting')->{$field}{filter}){
+		foreach my $filtername (@{$convconfig->get('sorting')->{$field}{filter}}){
+		    if ($self->can($filtername)){
+			$content = $self->$filtername($content);
+		    }
+		}
+	    }
+	    
+	    ($content) = $content=~m/^\D*?(-?\d+)/ if (defined $content);
+	    
+	    if ($content){
+		$logger->debug("Adding $content as sortvalue");
+		
+		$doc_ref->{"sort_$sortfield"} = $content;		    
+	    }
+	}
+	# Integerwerte jenseits der bibliogr. Felder, also z.B. popularity
+	elsif ($convconfig->get('sorting')->{$field}->{type} eq "integervalue"){
+	    my $content = 0 ;
+	    if (defined $record_ref->{$field}){
+		($content) = $record_ref->{$field}=~m/^(-?\d+)/;
+	    }
+	    if ($content){
+		$logger->debug("Adding $content as sortvalue");
+		
+		$doc_ref->{"sort_$sortfield"} = $content;		    
+	    }
+	}
     }
     
     $logger->debug(encode_json($doc_ref));

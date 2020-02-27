@@ -279,6 +279,9 @@
    <field name="ft4307" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="ft4308" type="string" indexed="true" stored="true" multiValued="true"/>
    <field name="ft4310" type="string" indexed="true" stored="true" multiValued="true"/>
+
+   
+   <!-- Facets -->
    
    <field name="facet_location" type="textFacet" indexed="true" stored="true" multiValued="true"/>
    <field name="facet_database" type="textFacet" indexed="true" stored="true" multiValued="true"/>
@@ -295,6 +298,17 @@
    <field name="facet_provenance" type="textFacet" indexed="true" stored="true" multiValued="true"/>
    <field name="facet_availability" type="textFacet" indexed="true" stored="true" multiValued="true"/>
 
+   <!-- Sorting -->
+   
+   <field name="sort_person" type="string" indexed="true" stored="true" />
+   <field name="sort_title" type="string" indexed="true" stored="true" />
+   <field name="sort_order" type="pints" indexed="true" stored="true" />
+   <field name="sort_year" type="pints" indexed="true" stored="true" />
+   <field name="sort_publisher" type="string" indexed="true" stored="true" />
+   <field name="sort_mark" type="string" indexed="true" stored="true" />
+   <field name="sort_popularity" type="pints" indexed="true" stored="true" />
+   <field name="sort_authority" type="string" indexed="true" stored="true" />
+   
 <!-- obsolete Vufind stuff 
    <field name="fullrecord" type="string" indexed="false" stored="true"/>
    <field name="marc_error" type="string" indexed="false" stored="true" multiValued="true"/>

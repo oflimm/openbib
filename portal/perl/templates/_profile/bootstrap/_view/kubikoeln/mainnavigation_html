@@ -43,9 +43,15 @@
 }
 </style>
 
+<script>
+function incollection (){
+   return '<img class="ob-collection-image" src="[% config.get_icon('listofinterest_small_selected',view,sysprofile) %]" alt="[% msg.maketext("In der Merkliste") %]" border="0" /><span class="d-none d-sm-inline">[% msg.maketext("Gemerkt") %]</span>';
+}
+</script>
 <!--
 -->
 
+<!-- SessionID: [% sessionID %] -->
 [%- username = user.get_username -%]
     <!-- begin: main navigation  -->
 

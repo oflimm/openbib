@@ -52,7 +52,7 @@
 <!-- Targs: [% USE dumper; dumper.dump(layout_param) %] -->
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]"><span class="brand-title"><img src="/images/openbib/views/usbbibliographie/logo-40px.jpg" class="img-fluid"  /> <img src="/images/openbib/views/usbbibliographie/jubilogo-40px.jpg" class="img-fluid d-none d-sm-inline"  /></span></a>
+  <a class="navbar-brand" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]"><span class="brand-title"><img src="/images/openbib/views/usbbibliographie/logo-40px.png" class="img-fluid"  /> <img src="/images/openbib/views/usbbibliographie/jubilogo-40px.jpg" class="img-fluid d-none d-sm-inline"  /></span></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>

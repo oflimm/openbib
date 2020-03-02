@@ -1,6 +1,11 @@
 @media all
 {
 
+    #home_main {
+	margin-bottom: 0px;
+	
+    }
+    
     .ob-title {
 	font-size: 1.5em;
     }

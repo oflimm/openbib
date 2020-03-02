@@ -34,6 +34,10 @@
 	padding-right: 0px;
     }
 
+    nav.navbar.navbar-expand-lg.navbar-light.bg-light {
+	padding:unset;
+    }
+    
     .navbar-toggler {
 	border: none;
     }
@@ -50,6 +54,10 @@
 	z-index: 0;
     }
 
+    .list-group-item > ul {
+	padding: 10px;
+    }
+    
     span.btn.btn-primary.fas.fa-cog.d-md-none {
 	padding-top: 0.6em;
 	padding-bottom: 0.6em;

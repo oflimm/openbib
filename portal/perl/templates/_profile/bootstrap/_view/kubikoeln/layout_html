@@ -18,6 +18,33 @@
 
   <div class="wrapper container-fluid">
 
+<script>
+function updateModal (){
+$(".modal-body").html("<div style=\"min-height: 100vh\"><i class=\"fa fa-spinner fa-spin fa-2x\"></i></div>");
+$('#fulltitleModal').modal('show');
+}
+</script>
+
+<div class="modal fade" id="fulltitleModal" tabindex="-1" role="dialog" aria-labelledby="fulltitleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-full" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="fulltitleModalLabel">Vollanzeige</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+            </div>
+            <div id="modal-content" class="modal-body">
+                <div style="min-height: 100vh">
+                    <i class="fa fa-spinner fa-spin fa-2x"></i>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 [% PROCESS common/subtemplate name="corporate_banner" start=1 %]
 
 [% PROCESS common/subtemplate name="mainnavigation" %] 

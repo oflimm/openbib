@@ -352,7 +352,7 @@ END;
 [%- IF currently_unavailable -%]
 <tr><th class="ob-field">[% msg.maketext("Volltext")%]</th><td>derzeit nicht verf&uuml;gbar (z.B. noch im Erwerbungsvorgang)</td></tr>
 [%- END -%]
-<tr><th class="ob-field">Perma-Link</th><td>[% permalink %]</td></tr>
+<!-- <tr><th class="ob-field">Perma-Link</th><td>[% permalink %]</td></tr> -->
 </table>
 [% ELSIF format == "BibTeX" %]
 <div>

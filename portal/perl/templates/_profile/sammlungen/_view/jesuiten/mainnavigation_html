@@ -58,7 +58,7 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
 <!--    <a class="navbar-brand" href="#">Hidden brand</a> -->
-[% IF NOT suppress_unauthorized %]
+[% IF 0 == 1 %]
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
 
       <li class="nav-item[% IF layout_param.active_menu == "browse" %] active[% END %] dropdown">

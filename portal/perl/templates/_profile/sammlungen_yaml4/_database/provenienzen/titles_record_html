@@ -40,7 +40,7 @@
 
 <body>
 
-<!--               <script type="text/javascript">
+               <script type="text/javascript">
                         $(function(){
 
                                 // Tabs
@@ -48,7 +48,7 @@
                                         
                         });
                 </script>
--->
+
 <script language="JavaScript" type="text/javascript">
 $(document).ready(function(){
     $(".ob-collection").click(function(){
@@ -170,20 +170,64 @@ $(document).ready(function(){
 [% IF record_exists %]
 
 [%
-   have_provenance = 0;
+   has_provenance = 0;
+   has_4306 = 0;
+   has_4307 = 0;
+   has_4308 = 0;
+   has_4310 = 0;
+   has_4311 = 0;
+   has_4312 = 0;
+   has_4313 = 0;
+   has_4314 = 0;
+   has_4315 = 0;
+   has_4316 = 0;
+   has_4317 = 0;
+   
    FOREACH provenance IN record.get_provenances(msg) ;
+        IF provenance.defined('T4306');
+            has_4306 = 1;
+        END;
+        IF provenance.defined('T4307');
+            has_4307 = 1;
+        END;
+        IF provenance.defined('T4308');
+            has_4308 = 1;
+        END;
         IF provenance.defined('T4309');
-            have_provenance = 1;
-            LAST;
+            has_provenance = 1;
+        END;
+        IF provenance.defined('T4310');
+            has_4310 = 1;
+        END;
+        IF provenance.defined('T4311');
+            has_4311 = 1;
+        END;
+        IF provenance.defined('T4312');
+            has_4312 = 1;
+        END;
+        IF provenance.defined('T4313');
+            has_4313 = 1;
+        END;
+        IF provenance.defined('T4314');
+            has_4314 = 1;
+        END;
+        IF provenance.defined('T4315');
+            has_4315 = 1;
+        END;
+        IF provenance.defined('T4316');
+            has_4316 = 1;
+        END;
+        IF provenance.defined('T4317');
+            has_4317 = 1;
         END;
    END;
 
 %]
 
-[% IF have_provenance %]
+[% IF has_provenance %]
 <table class="ym-full">
 <thead>
-<tr align="center"><th>Provenienz</th><th>Merkmal</th><th>Sigel</th><th>Mediennummer</th>[% IF has_4312 %]<th>Selektionskennzeichen</th>[% END %]<th>Scan</th></tr>
+<tr align="center"><th>Provenienz</th>[% IF has_4310 %]<th>Merkmal</th>[% END %][% IF has_4317 %]<th>Bemerkung</th>[% END %][% IF has_4316 %]<th>Datierung</th>[% END %][% IF has_4311 %]<th>Sigel</th>[% END %]<th>Mediennummer</th>[% IF has_4314 %]<th>Hist. Signatur/Aufstellung</th>[% END %][% IF has_4312 %]<th>Selektionskennzeichen</th>[% END %][% IF has_4315 %]<th>Scan</th>[% END %]</tr>
 </thead>
 <tbody>
 
@@ -228,20 +272,40 @@ $(document).ready(function(){
 <td>
 [% ownerstring %]
 </td>
+[% IF has_4310 %]
 <td>
 [% provenance.${'T4310'}.first.content %]
 </td>
+[% END %]
+[% IF has_4317 %]
+<td>
+[% provenance.${'T4317'}.first.content %]
+</td>
+[% END %]
+[% IF has_4316 %]
+<td>
+[% provenance.${'T4316'}.first.content %]
+</td>
+[% END %]
+[% IF has_4311 %]
 <td>
 [% provenance.${'T4311'}.first.content %]
 </td>
+[% END %]
 <td>
 [% provenance.${'T4309'}.first.content %]
 </td>
+[% IF has_4314 %]
+<td>
+[% provenance.${'T4314'}.first.content %]
+</td>
+[% END %]
 [% IF has_4312 %]
 <td>
 [% provenance.${'T4312'}.first.content %]
 </td>
 [% END %]
+[% IF has_4315 %]
 <td>
 [% IF provenance.${'T4315'}.first.content %]
 [%
@@ -265,6 +329,7 @@ $(document).ready(function(){
 -
 [% END %]
 </td>
+[% END %]
 </tr>
 [% END %]
 

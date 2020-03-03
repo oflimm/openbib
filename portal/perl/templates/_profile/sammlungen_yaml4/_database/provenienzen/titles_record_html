@@ -140,20 +140,7 @@ $(document).ready(function(){
    </div>
 
     <!-- grid -->
-    <div class="ym-grid linearize-level-1">
-      <div class="ym-g33 ym-gr">
-        <div class="ym-gbox" class="ym-clearfix">
-[% IF record_exists %]
-[%   PROCESS common/subtemplate name="titles_record_html_actions" %]
-[% END %]
-        </div><!-- End User-Specific -->
-      </div>
-
-      <!-- end: grid right -->
-      <!-- begin: grid left -->
-      <div class="ym-g66 ym-gl">
-        <div class="ym-gbox" class="ym-clearfix">
-
+    <div class="ym-full">
 <div class="ob-fulltitle"><!-- Begin Fulltitle -->
 
 <div class="ob-category_header">[% dbinfo.get('dbnames').${database}.short %]</div>
@@ -227,7 +214,7 @@ $(document).ready(function(){
 [% IF has_provenance %]
 <table class="ym-full">
 <thead>
-<tr align="center"><th>Provenienz</th>[% IF has_4310 %]<th>Merkmal</th>[% END %][% IF has_4317 %]<th>Bemerkung</th>[% END %][% IF has_4316 %]<th>Datierung</th>[% END %][% IF has_4311 %]<th>Sigel</th>[% END %]<th>Mediennummer</th>[% IF has_4314 %]<th>Hist. Signatur/Aufstellung</th>[% END %][% IF has_4312 %]<th>Selektionskennzeichen</th>[% END %][% IF has_4315 %]<th>Scan</th>[% END %]</tr>
+<tr align="center"><th>Provenienz</th>[% IF has_4310 %]<th>Merkmal</th>[% END %][% IF has_4317 %]<th>Bemerkung</th>[% END %][% IF has_4316 %]<th>Zugangsjahr</th>[% END %][% IF has_4311 %]<th>Sigel</th>[% END %]<th>Mediennummer</th>[% IF has_4314 %]<th>Hist. Signatur/Aufstellung</th>[% END %][% IF has_4312 %]<th>Selektionskennzeichen</th>[% END %][% IF has_4315 %]<th>Scan</th>[% END %]</tr>
 </thead>
 <tbody>
 
@@ -279,7 +266,7 @@ $(document).ready(function(){
 [% END %]
 [% IF has_4317 %]
 <td>
-[% provenance.${'T4317'}.first.content %]
+[% provenance.${'T4317'}.first.content.replace(' ; ','<br/>') %]
 </td>
 [% END %]
 [% IF has_4316 %]
@@ -574,10 +561,6 @@ href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method
 <script src="http://books.google.com/books?jscmd=viewapi&bibkeys=ISBN:[% isbn %]&callback=addFullCover"></script>
 -->
         </div>
-        <div class="ym-ie-clearing">&nbsp;</div>
-        <!-- End: IE Column Clearing -->
-      </div>
-     </div> <!-- end: ym-column -->
     </div>
     <!-- end: #main -->
 

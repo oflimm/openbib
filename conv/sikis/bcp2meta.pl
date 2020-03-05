@@ -915,7 +915,8 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
             $k++;
         }
 
-        if ($usestatus){
+	# Nur Zeitschriften ohne Buchdaten, aber keine E-Medien
+        if ($usestatus && defined $title_ref->{fields}{'0543'}){
             push @{$title_ref->{fields}{'4400'}}, {
                 mult       => 1,
                 subfield   => '',
@@ -965,6 +966,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
                 }
                 elsif ($mediastatus eq "entliehen"){
                     $overall_mediastatus_ref->{lent} = 1;
+#                    $overall_mediastatus_ref->{presence_immediate} = 1;                    
                 }
             }
             

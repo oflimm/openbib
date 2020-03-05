@@ -3371,7 +3371,7 @@ function drawMarkers(inst, coord) {
     var latlng;
     for (var i = 0; i < inst.length; i++) {
         var sig = inst[i].sigel;
-        if (sig == 'DE-38-103' || sig == 'DE-38-105' || sig == 'DE-38-113' || sig == 'DE-38-120' || sig == 'DE-38-121' || sig == 'DE-38-128' || sig == 'DE-38-146' || sig == 'DE-38-157' || sig == 'DE-38-159' || sig == 'DE-38-104' || sig == 'DE-38-166' || sig == 'DE-38-108') {
+        if (sig == 'DE-38-103' || sig == 'DE-38-105' || sig == 'DE-38-113' || sig == 'DE-38-120' || sig == 'DE-38-121' || sig == 'DE-38-128' || sig == 'DE-38-146' || sig == 'DE-38-157' || sig == 'DE-38-159' || sig == 'DE-38-104' || sig == 'DE-38-166' ) {
             continue;
         }
 
@@ -5039,7 +5039,7 @@ var semesterZeit = [
                  'DE-38-103' = 1 
                  'DE-38-104' = 1 
                  'DE-38-105' = 1 
-                 'DE-38-108' = 1 
+#                 'DE-38-108' = 1 
                  'DE-38-113' = 1 
                  'DE-38-120' = 1 
                  'DE-38-121' = 1 

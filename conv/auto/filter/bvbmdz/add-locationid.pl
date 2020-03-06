@@ -10,8 +10,9 @@ print STDERR "### bvbmdz Erweitere Titeldaten\n";
 while (<>){
     my $title_ref = decode_json $_;
 
+    push @{$title_ref->{'locations'}}, "emedien";
     push @{$title_ref->{'locations'}}, "mdz";
-    push @{$title_ref->{'locations'}}, "DE-38-USBFB";
+#    push @{$title_ref->{'locations'}}, "DE-38-USBFB";
     
     print encode_json $title_ref, "\n";
 }

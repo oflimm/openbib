@@ -24,6 +24,9 @@
 	 END;
       END;
 
+      facets.delete('location');
+      facets.delete('elocation');      
+      
       IF facets_emedia.size > 0;
          facets.elocation = facets_emedia;
       END;

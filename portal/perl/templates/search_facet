@@ -4,6 +4,34 @@
 
 [% IF qopts.get_option('sb') == "eds" || searchprofileid_of_eds == searchquery.get_profile || ( qopts.get_option('sb') == "xapian" && hits <= config.get('xapian_option').maxmatch ) ;
 
+
+      is_location_of_emedia = {
+         emedien = 1
+	 usbebooks = 1
+	 freebooks = 1
+	 ocwconsortium = 1
+	 nptelhrd_oer = 1
+      };
+
+      facets_emedia = [];
+      facets_pmedia = [];
+      FOREACH loc IN facets.location;
+         thislocation = loc.first;
+	 IF is_location_of_emedia.${thislocation} == 1;
+	    facets_emedia.push(loc);
+	 ELSE ;
+	    facets_pmedia.push(loc);	 
+	 END;
+      END;
+
+      IF facets_emedia.size > 0;
+         facets.elocation = facets_emedia;
+      END;
+
+      IF facets_pmedia.size > 0;
+         facets.location = facets_pmedia;
+      END;
+
       bklookup    = config.load_bk;
 
       # USB Spezifika
@@ -117,7 +145,7 @@ $("#dd_topic_[% database %]_toggle").click(function(){
  $("#dd_topic_[% database %]_toggle").html("");
 });
 
-// Begin Togglen / Facets Locations
+// Begin Togglen / Facets Print Locations
 // Bild setzen
 $("#dd_location_[% database %]_toggle").html("<a href=\"#dd_location_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
@@ -126,6 +154,17 @@ $("#dd_location_[% database %]").hide();
 $("#dd_location_[% database %]_toggle").click(function(){
  $("#dd_location_[% database %]").toggle();
  $("#dd_location_[% database %]_toggle").html("");
+});
+
+// Begin Togglen / Facets Emedia Locations
+// Bild setzen
+$("#dd_elocation_[% database %]_toggle").html("<a href=\"#dd_elocation_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+// Zuerst verstecken
+$("#dd_elocation_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_elocation_[% database %]_toggle").click(function(){
+ $("#dd_elocation_[% database %]").toggle();
+ $("#dd_elocation_[% database %]_toggle").html("");
 });
 
 // Begin Togglen / Facets Jahr
@@ -355,10 +394,38 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [%         END %]
 <!-- End database facet -->
 
+<!-- Begin elocation facet -->
+[%         IF config.get('facets').location && facets.defined('elocation') && facets.elocation.size > 0 %]
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-elocation" aria-expanded="true">
+           [% msg.maketext("nach E-Medien Quelle") %] 
+        </h4>
+        <ul id="group-elocation" class="list-group in collapse show">
+[%             FOREACH termitem IN facets.elocation ;
+
+ %]
+[% IF facets.elocation.size > 5 && loop.count == 5 %]
+<span id="dd_elocation_[% database %]_toggle"></span>
+<div id="dd_elocation_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').locationstring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% locinfo.get('identifier').${termitem.0}.description %]</a> <span class="badge badge-pill badge-secondary ml-auto">[% termitem.1 %]</span></li>
+[%             END %]
+[% IF facets.elocation.size > 5 %]
+</div>
+[% END %]
+</ul>
+<p/>
+[%         END %]
+<!-- End location facet -->
+
 <!-- Begin location facet -->
 [%         IF config.get('facets').location && facets.defined('location') && facets.location.size > 0 %]
         <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-location" aria-expanded="true">
-           [% msg.maketext("nach Standort") %] 
+           [% msg.maketext("nach Print-Medien Standort") %] 
         </h4>
         <ul id="group-location" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.location ;

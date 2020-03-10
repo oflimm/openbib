@@ -447,6 +447,7 @@ CREATE TABLE user_session (
 DROP TABLE IF EXISTS searchprofile;
 CREATE TABLE searchprofile (
  id                BIGSERIAL,
+ own_index         BOOL,
  databases_as_json TEXT -- for quick lookup having database list and initial state --
 );
 

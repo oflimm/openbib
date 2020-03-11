@@ -3,6 +3,7 @@ DROP TABLE user_view;
 
 ALTER TABLE userinfo ADD COLUMN viewid BIGINT;
 ALTER TABLE userinfo ADD COLUMN locationid BIGINT;
+ALTER TABLE userinfo ADD COLUMN authenticatorid BIGINT;
 ALTER TABLE userinfo ADD COLUMN creationdate TIMESTAMP;
 ALTER TABLE userinfo ADD CONSTRAINT fk_userinfo_view FOREIGN KEY (viewid) REFERENCES viewinfo (id);
 ALTER TABLE userinfo ADD CONSTRAINT fk_userinfo_location FOREIGN KEY (locationid) REFERENCES locationinfo (id);

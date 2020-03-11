@@ -131,6 +131,7 @@ sub show_record {
             id          => $locationinfo->id,
             identifier  => $locationinfo->identifier,
             description => $locationinfo->description,
+            shortdesc   => $locationinfo->shortdesc,
             type        => $locationinfo->type,
             fields      => $config->get_locationinfo_fields($locationid),
         };
@@ -235,6 +236,7 @@ sub show_record_form {
             id          => $locationinfo->id,
             identifier  => $locationinfo->identifier,
             description => $locationinfo->description,
+            shortdesc   => $locationinfo->shortdesc,
             type        => $locationinfo->type,
             fields      => $config->get_locationinfo_fields($locationid),
         };
@@ -356,6 +358,11 @@ sub get_input_definition {
             type     => 'scalar',
         },
         description => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        shortdesc => {
             default  => '',
             encoding => 'utf8',
             type     => 'scalar',

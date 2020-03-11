@@ -10,6 +10,7 @@ FOREACH thislocation IN locations ;
 
     id          = thislocation.identifier
     description = thislocation.description
+    shortdesc   = thislocation.shortdesc
     type        = thislocation.type
     identifier  = thislocation.identifier
   };

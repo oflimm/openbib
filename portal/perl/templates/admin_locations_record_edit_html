@@ -55,7 +55,7 @@ function add_field(this) {
 
 <div class="form-group">
 <label for="shortdesc">[% msg.maketext("Kurzbeschreibung") %]</label>
-<input class="form-control" type="text" name="shortdesc" id="shortdesc" value="[% locationinfo.description %]" size="20" />
+<input class="form-control" type="text" name="shortdesc" id="shortdesc" value="[% locationinfo.shortdesc %]" size="20" />
 </div>
 
 <div class="form-group">

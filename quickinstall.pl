@@ -40,7 +40,7 @@ use utf8;
 # 1) Wo ist das DocumentRoot des Web-Servers?
 #    z.B. /var/www OHNE abschliessenden /
 
-my $documentroot = "/var/www";
+my $documentroot = "/var/www/html";
 
 # 2) Wo ist das conf.d-Verzeichnis Ihres Web-Servers
 #    z.B. /etc/apache/conf.d  OHNE abschliessenden /

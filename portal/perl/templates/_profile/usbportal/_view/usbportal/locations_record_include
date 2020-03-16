@@ -5063,7 +5063,7 @@ var semesterZeit = [
     art         = location.fields.${"L0180"}.first.content;
     url         = location.fields.${"L0090"}.first.content;
     arbeitsplaetze = location.fields.${"L0270"}.first.content;
-    zeiten      = location.fields.${"L0110"}.first.content;
+    zeiten      = 'wg. Corona geschlossen';#location.fields.${"L0110"}.first.content;
     IF art.match('Präsenz');
        art = "Präsenz";
     ELSIF art.match('Ausleih');

@@ -55,6 +55,12 @@ __PACKAGE__->table("locationinfo");
   data_type: 'timestamp'
   is_nullable: 1
 
+=head2 shortdesc
+
+  data_type: 'text'
+  default_value: (empty string)
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -75,6 +81,8 @@ __PACKAGE__->add_columns(
   { data_type => "timestamp", is_nullable => 1 },
   "tstamp_update",
   { data_type => "timestamp", is_nullable => 1 },
+  "shortdesc",
+  { data_type => "text", default_value => "", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -166,8 +174,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2019-11-12 13:14:14
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:OlXGvoOtXijR4ogPmsjbCA
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2020-03-09 16:17:04
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:vvflE1Xy26nDXbVTNPbaXg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

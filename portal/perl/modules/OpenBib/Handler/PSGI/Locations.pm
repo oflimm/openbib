@@ -146,6 +146,7 @@ sub show_record {
                 id          => $locationinfo->id,
                 identifier  => $locationinfo->identifier,
                 description => $locationinfo->description,
+                shortdesc   => $locationinfo->shortdesc,
                 type        => $locationinfo->type,
                 fields      => $config->get_locationinfo_fields($locationid),
             };

@@ -7,14 +7,16 @@ insert into roleinfo values (2,'librarian','Bibliothekar');
 insert into roleinfo values (3,'viewadmin','Portal-Administrator');
 
 /* Standard ist Admin-User mit ID 1 und Passwort 'StrengGeheim' */
-insert into userinfo (id,username,password,authenticatorid) values (1,'admin','StrengGeheim',1);
+insert into userinfo (id,username,password,authenticatorid) values (1,'admin',crypt('StrengGeheim', gen_salt('bf', 4)),1);
 insert into user_role (userid,roleid) values (1,1);
+insert into user_authenticator (userid,authenticatorid) values (1,1);
 
 /* Standard-Profil ist openbib */
 insert into profileinfo (id,profilename,description) values (1,'bootstrap','OpenBib Beispiel-Portal');
 
 /* Standard-View ist openbib */
 insert into viewinfo (id,viewname,description,start_loc,servername,profileid,stripuri,active) values (1,'openbib','OpenBib Beispiel-Portal','','',1,'false','true');
+insert into authenticator_view (viewid,authenticatorid) values (1,1);
 
 /* elib Datenbank Recommender */
 truncate table dbrtopic;

@@ -1282,6 +1282,7 @@ sub get_locationinfo_overview {
             id          => $location->{id},
             identifier  => $location->{identifier},
             description => $location->{description},
+            shortdesc   => $location->{shortdesc},
             type        => $location->{type},
             fields      => $self->get_locationinfo_fields($location->{identifier}),
             
@@ -3062,7 +3063,10 @@ sub new_locationinfo {
     if ($locationinfo_ref->{description}){
         $create_args->{description} = $locationinfo_ref->{description};
     }
-
+    if ($locationinfo_ref->{shortdesc}){
+        $create_args->{shortdesc} = $locationinfo_ref->{shortdesc};
+    }
+   
     my $new_location = $self->get_schema->resultset('Locationinfo')->create($create_args);
 
     if (defined $locationinfo_ref->{field}){
@@ -3117,6 +3121,9 @@ sub update_locationinfo {
     }
     if ($locationinfo_ref->{description}){
         $update_args->{description} = $locationinfo_ref->{description};
+    }
+    if ($locationinfo_ref->{shortdesc}){
+        $update_args->{shortdesc} = $locationinfo_ref->{shortdesc};
     }
 
     my $locationinfo = $self->get_schema->resultset('Locationinfo')->single({ identifier => $locationinfo_ref->{identifier} });

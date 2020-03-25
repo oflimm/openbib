@@ -63,7 +63,7 @@ if ($help){
 $logfile=($logfile)?$logfile:'/var/log/openbib/locations_by_view.log';
 
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=DEBUG, LOGFILE, Screen
+log4perl.rootLogger=INFO, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append
@@ -97,6 +97,8 @@ else {
     @views=$config->get_active_views();
 }
 
+my $db_cache_ref = {};
+
 foreach my $view (@views){
     $logger->info("Generating Type 15 locations for view $view");
     
@@ -105,8 +107,19 @@ foreach my $view (@views){
     my $locations_ref = {};
     
     foreach my $database (@databases){
+
+	# Ggf. schon bestimmte Standorte der Datenbanken aus dem Cache holen
+	if (defined $db_cache_ref->{$database}){
+	    $logger->info("Getting locations for db $database from cache");
+	    foreach my $loc (keys %{$db_cache_ref->{$database}}){
+		$locations_ref->{$loc} = 1;
+	    }
+	    next;
+	}
+	
 	# Verbindung zur SQL-Datenbank herstellen
 	eval {
+	    $logger->info("Getting locations for db $database from database");
 	my $catalogdbh
 	    = DBI->connect("DBI:Pg:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
 	    or $logger->error_die($DBI::errstr);
@@ -122,6 +135,10 @@ foreach my $view (@views){
 	    my $location      = $result->{content};
 	    $locations_ref->{$location} = 1;
 	}
+
+	# Cachen
+	$db_cache_ref->{$database} = $locations_ref;
+	
 	};
 
 	if ($@){

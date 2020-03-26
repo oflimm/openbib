@@ -15,6 +15,7 @@
 -%]
 [%
       is_location_of_emedia = {
+         freemedia = 1
          emedien = 1
          bdr = 1
 	 digitalis = 1

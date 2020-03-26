@@ -20,9 +20,6 @@
 <!-- Anfang einzelner Treffer -->
 [%-
 
-     # Thumbnail-URL
-     thumbnail_url = item.${'T4111'}.first.content ;
-
      ebook_i18n      = msg.maketext("E-Book");
      toc_i18n        = msg.maketext("Inhaltsverzeichnis");
      popularity_i18n = msg.maketext("Popularität");
@@ -30,6 +27,9 @@
      item   = record.get_fields;
      listid = record.listid;
      all_locations = record.get_locations;
+
+     # Thumbnail-URL
+     thumbnail_url = item.${'T4111'}.first.content ;
 
      # Filter locations
      locations = [];

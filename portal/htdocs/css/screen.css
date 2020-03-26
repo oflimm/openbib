@@ -31,11 +31,12 @@
     right:10px; /* LTR */
 	text-align:right; /* LTR */
   }
+
   
   .ob-fulltitle {
     margin-top: 10px;
     background: #fff;
-    width: 100%;
+    width: 100%; 
   }
   
   .ob-cloud {
@@ -80,13 +81,13 @@
 
   .ob-page_title {
     font-size: 1.2em;
-    margin-left: 20px;
+    /* margin-left: 20px; */
     font-weight: bold; 
   }
 
   .ob-page_subtitle {
     font-size: 1.0em;
-    margin-left: 20px;
+    /* margin-left: 20px; */
   }
 
   .ob-facets {
@@ -105,6 +106,7 @@
     padding-right: 0px;
     min-height: 10px;
     height: auto;
+    margin-bottom: 25px;
     /*  height: 35px;
        background-color: #fef6e2;
        border-left-style: solid;
@@ -147,16 +149,6 @@
   .ob-resultitems {
     width: auto;
     margin-top: 5px;
-  }
-
-  .ob-item {
-    height: 105px;
-    width: 100%;
-    position: relative;
-    border-style: solid;
-    border-color: #edebe3;
-    border-width: 1px;
-    margin-bottom: 5px;
   }
 
   .ob-item .ob-titleactions {
@@ -216,13 +208,6 @@
     
     background: none repeat scroll 0 0; 
 
-  }
-
-  .ob-item .ob-brieftitle {
-    position: absolute;
-    top: 26px;
-    left:110px;
-    width: auto;
   }
 
   /* ob-liststyle not used
@@ -722,7 +707,7 @@
     margin-left: 2px;
     width: 98%;
   }
-
+  
   .ob-titleimage img {
     display: block;
     margin-top: 15px;

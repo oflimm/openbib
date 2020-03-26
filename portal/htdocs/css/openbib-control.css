@@ -1,21 +1,4 @@
-/* import framework core */
-@import url("/yaml/core/base.min.css");
-
-/* import default CSS */
-@import url("/yaml/navigation/hlist.css");
-@import url("/yaml/print/print.css");
-@import url("/yaml/screen/typography.css");
-
-/* import customized CSS */
-@import url("typography.css");
-@import url("layout.css");
-@import url("hlist.css");
-@import url("vlist.css");
-@import url("screen.css");
-@import url("forms.css");
-@import url("buttons.css"); 
-@import url("jquery-ui-1.8.14.custom.css");
+@import url("/css/_profile/sammlungen/openbib.css"); 
 
 /* import specific classes */
 @import url("local.css");
-@import url("print.css");

@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Authenticator::Factory
+#  OpenBib::Search::Backend::Z3950::USBK::Config
 #
-#  Dieses File ist (C) 2019 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -23,46 +23,56 @@
 #
 #####################################################################
 
-package OpenBib::Authenticator::Factory;
+package OpenBib::Search::Backend::Z3950::USBK::Config;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
+use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Config;
-use OpenBib::User;
-use OpenBib::Authenticator::Backend::SelfRegistration;
-use OpenBib::Authenticator::Backend::OLWS;
-use OpenBib::Authenticator::Backend::LDAP;
-    
-sub create_authenticator {
-    my ($self,$arg_ref) = @_;
 
-    # Set defaults
-    my $id          = exists $arg_ref->{id}
-        ? $arg_ref->{id}           : undef;
+# Importieren der Konfigurationsdaten als Globale Variablen
+# in diesem Namespace
+use vars qw(%config %z39config);
 
-    my $config    = exists $arg_ref->{config}
-        ? $arg_ref->{config}       : OpenBib::Config->new;
+*config = \%OpenBib::Config::config;
+
+if ($OpenBib::Config::config{benchmark}){
+    use Benchmark ':hireswallclock';
+}
+
+%z39config = (
+    databaseName          => "",
+    user                  => "",
+    password              => "",
+    groupid               => "1",
+
+    hostname              => "",
+    port                  => "",
+
+    querytype             => "CQL",
+    elementSetName        => "B",
+    preferredRecordSyntax => "MAB",
+    hitrange              => 10,
+);
+
+sub new {
+    my $class = shift;
+
+    # Ininitalisierung mit Config-Parametern
+    my $self = \%z39config;
+
+    bless ($self, $class);
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    $arg_ref->{config} = $config;
-    
-    my $authenticator_ref = $config->get_authenticator_by_id($id);
 
-    if ($logger->is_debug){
-        $logger->debug("Factory for authenticator $id with type ".$authenticator_ref->{type});
-    }
-
-    return new OpenBib::Authenticator::Backend::OLWS($arg_ref)  if ($authenticator_ref->{type} eq "olws");
-    return new OpenBib::Authenticator::Backend::LDAP($arg_ref)  if ($authenticator_ref->{type} eq "ldap");
-    
-    # Default is selfregistration
-    return new OpenBib::Authenticator::Backend::SelfRegistration($arg_ref);
+    return $self;
 }
 
 1;
+

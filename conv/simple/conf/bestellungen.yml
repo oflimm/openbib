@@ -56,3 +56,4 @@ exclude:
           - inst001
        locations:
           - 'DE-38-USBFB'
+          - 'usbebooks'

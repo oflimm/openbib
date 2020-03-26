@@ -41,6 +41,7 @@ use Data::Dumper;
 use HTTP::Exception;
 
 use OpenBib::Config::File;
+use OpenBib::Config::DispatchTable;
 
 use base 'CGI::Application::Dispatch::PSGI';
 
@@ -167,17 +168,11 @@ sub dispatch_args {
 
     my $logger = get_logger();
     
-    my $configfile  = OpenBib::Config::File->instance;
+    my $dispatch_rules  = OpenBib::Config::DispatchTable->instance;
 
-    my ($atime,$btime,$timeall)=(0,0,0);
-    
-    if ($configfile->{benchmark}) {
-	$atime=new Benchmark;
-    }
-    
     my $table_ref = [];
 
-    foreach my $item (@{$configfile->{dispatch_rules}}){
+    foreach my $item (@{$dispatch_rules}){
         my $rule       = $item->{rule};
         my $module     = $item->{module};
         my $runmode    = $item->{runmode};
@@ -261,15 +256,9 @@ sub dispatch_args {
             push @{$table_ref}, $rule_specs;
         }
     }
-
-    if ($configfile->{benchmark}) {
-	$btime=new Benchmark;
-	$timeall=timediff($btime,$atime);
-	$logger->info("Total time for processing dispatch args is ".timestr($timeall));
-    }
     
     return {
-#        debug => 1,
+        #debug => 1,
         table => $table_ref,
     };
 }

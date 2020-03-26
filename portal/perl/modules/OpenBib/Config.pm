@@ -2,7 +2,7 @@
 #
 #  OpenBib::Config
 #
-#  Dieses File ist (C) 2004-2019 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2020 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -41,9 +41,11 @@ use URI::Escape qw(uri_escape);
 use YAML::Syck;
 
 use OpenBib::Config::File;
+use OpenBib::Config::DispatchTable;
 use OpenBib::Schema::DBI;
 use OpenBib::Schema::System;
 use OpenBib::Schema::System::Singleton;
+use OpenBib::Statistics;
 
 my %char_replacements = (
     
@@ -69,8 +71,8 @@ sub new {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $configfile = OpenBib::Config::File->instance;
-
+    my $configfile     = OpenBib::Config::File->instance;
+    
     # Ininitalisierung mit Config-Parametern
     my $self = {};
 
@@ -79,6 +81,8 @@ sub new {
     foreach my $key (keys %$configfile){
         $self->{$key} = $configfile->{$key};
     }
+
+    $self->{dispatch_rules} = OpenBib::Config::DispatchTable->instance;
     
     $self->connectMemcached();
 
@@ -1085,6 +1089,24 @@ sub get_dbinfo_overview {
     return $dbinfo_overview_ref;
 }
 
+sub get_available_locations_of_view {
+    my $self   = shift;
+    my $viewname = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $statistics = OpenBib::Statistics->new;
+
+    my $result_ref = $statistics->get_result({ type => 15, id => $viewname });
+
+    $logger->debug("Locations for view $viewname :".YAML::Dump($result_ref));
+
+    return () if (!$result_ref);				      
+
+    return @$result_ref;				      
+}
+
 sub get_locationinfo_of_database {
     my $self   = shift;
     my $dbname = shift;
@@ -1746,6 +1768,39 @@ sub get_viewdbs {
     }
 
     return @viewdbs;
+}
+
+sub get_searchlocations_of_view {
+    my ($self,$viewname)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Todo: Ueber die Suchmaschine ggf. alle Standorte finden, die zum View existieren				     
+    my $all_locations_ref = $self->get_locationinfo_overview;
+    
+    my $searchlocations_ref = [];
+
+    my @available_locations = $self->get_available_locations_of_view($viewname);
+
+    if (@available_locations){    
+       my $location_is_available_ref = {};
+
+       foreach my $loc (@available_locations){
+          $location_is_available_ref->{$loc} = 1;
+       }				      
+
+       foreach my $loc (@$all_locations_ref){
+         if ($location_is_available_ref->{$loc->{identifier}}){
+            push @$searchlocations_ref, $loc;
+         }				      
+       }
+    }
+    else {
+       $searchlocations_ref = $all_locations_ref;
+    }				      
+
+    return $searchlocations_ref;
 }
 
 sub get_viewlocations {
@@ -2626,17 +2681,6 @@ sub get_roleinfo_overview {
     );
     
     return $object;
-}
-
-sub get_scopes {
-    my $self       = shift;
-
-    my $scopes_ref = {};
-    foreach my $dispatch_rule (@{$self->get('dispatch_rules')}){
-        $scopes_ref->{$dispatch_rule->{scope}} = 1 if (defined $dispatch_rule->{scope});  
-    }
-
-    return sort keys %$scopes_ref;
 }
 
 sub get_templateinfo_overview {
@@ -5285,6 +5329,17 @@ sub check_cluster_consistency {
     return $differences_ref;
 }
 
+sub get_scopes {
+    my $self       = shift;
+
+    my $scopes_ref = {};
+    foreach my $dispatch_rule (@{$self->{dispatch_rules}}){
+        $scopes_ref->{$dispatch_rule->{scope}} = 1 if (defined $dispatch_rule->{scope});  
+    }
+
+    return sort keys %$scopes_ref;
+}
+    
 sub cleanup_pg_content {
     my $content = shift;
 

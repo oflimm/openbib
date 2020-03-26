@@ -10,6 +10,7 @@ print STDERR "### digitalis Erweitere Titeldaten\n";
 while (<>){
     my $title_ref = decode_json $_;
 
+    push @{$title_ref->{'locations'}}, "freemedia";
     push @{$title_ref->{'locations'}}, "emedien";
     push @{$title_ref->{'locations'}}, "DE-38-137-DIGITALIS";
 #    push @{$title_ref->{'locations'}}, "DE-38-USBFB";

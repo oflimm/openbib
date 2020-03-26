@@ -316,7 +316,7 @@ $(document).ready(function(){
 </script>
 
       <div class="ob-numbering">[% IF with_id_checkbox %]<input type="checkbox" name="id" value="[% record.listid %]"  title="collection_item" />&nbsp;[% END %][% start_range+loop.count - 1 %]</div>
-      <div class="ob-thumbnail pt-3 pl-3 mr-0 d-none d-md-block">
+      <div class="ob-thumbnail pt-3 pl-4 mr-0 d-none d-md-block">
      [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && thumbnail_url %]<img src="[% thumbnail_url %]" title="Thumbnail" width="70" style="padding-top:5px;"/>[% ELSE %]&nbsp;[% END %]
       </div>
       <div class="ob-brieftitle pl-5">

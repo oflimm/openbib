@@ -340,6 +340,13 @@ CREATE TABLE userinfo (
  bibsonomy_sync TEXT
 );
 
+DROP TABLE IF EXISTS user_searchlocation;
+CREATE TABLE user_searchlocation (
+  id         BIGSERIAL,
+  userid     BIGINT NOT NULL,
+  locationid BIGINT NOT NULL
+);
+
 DROP TABLE IF EXISTS roleinfo;
 CREATE TABLE roleinfo (
   id           BIGSERIAL,

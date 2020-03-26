@@ -1,12 +1,12 @@
 use utf8;
-package OpenBib::Schema::System::Result::SessionCartitem;
+package OpenBib::Schema::System::Result::UserSearchlocation;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
 =head1 NAME
 
-OpenBib::Schema::System::Result::SessionCartitem
+OpenBib::Schema::System::Result::UserSearchlocation
 
 =cut
 
@@ -15,11 +15,11 @@ use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<session_cartitem>
+=head1 TABLE: C<user_searchlocation>
 
 =cut
 
-__PACKAGE__->table("session_cartitem");
+__PACKAGE__->table("user_searchlocation");
 
 =head1 ACCESSORS
 
@@ -28,15 +28,15 @@ __PACKAGE__->table("session_cartitem");
   data_type: 'bigint'
   is_auto_increment: 1
   is_nullable: 0
-  sequence: 'session_cartitem_id_seq'
+  sequence: 'user_searchlocation_id_seq'
 
-=head2 sid
+=head2 userid
 
   data_type: 'bigint'
   is_foreign_key: 1
   is_nullable: 0
 
-=head2 cartitemid
+=head2 locationid
 
   data_type: 'bigint'
   is_foreign_key: 1
@@ -50,49 +50,61 @@ __PACKAGE__->add_columns(
     data_type         => "bigint",
     is_auto_increment => 1,
     is_nullable       => 0,
-    sequence          => "session_cartitem_id_seq",
+    sequence          => "user_searchlocation_id_seq",
   },
-  "sid",
+  "userid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
-  "cartitemid",
+  "locationid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</id>
+
+=back
+
+=cut
+
+__PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
-=head2 cartitemid
+=head2 locationid
 
 Type: belongs_to
 
-Related object: L<OpenBib::Schema::System::Result::Cartitem>
+Related object: L<OpenBib::Schema::System::Result::Locationinfo>
 
 =cut
 
 __PACKAGE__->belongs_to(
-  "cartitemid",
-  "OpenBib::Schema::System::Result::Cartitem",
-  { id => "cartitemid" },
+  "locationid",
+  "OpenBib::Schema::System::Result::Locationinfo",
+  { id => "locationid" },
   { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
-=head2 sid
+=head2 userid
 
 Type: belongs_to
 
-Related object: L<OpenBib::Schema::System::Result::Sessioninfo>
+Related object: L<OpenBib::Schema::System::Result::Userinfo>
 
 =cut
 
 __PACKAGE__->belongs_to(
-  "sid",
-  "OpenBib::Schema::System::Result::Sessioninfo",
-  { id => "sid" },
+  "userid",
+  "OpenBib::Schema::System::Result::Userinfo",
+  { id => "userid" },
   { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 
 # Created by DBIx::Class::Schema::Loader v0.07049 @ 2020-03-12 10:27:35
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:zUPkvJRwS+/0yXVJO1vzqw
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:RddOhLU+DSlHtR/hdChslA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

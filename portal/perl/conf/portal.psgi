@@ -28,7 +28,7 @@ my $cgiapp = sub {
 builder {
     enable "Plack::Middleware::Static",
         path => qr!^/(css|images|yaml|js)/!,
-            root => '/var/www';
+            root => '/var/www/html';
 
     enable "Plack::Middleware::SizeLimit" => (
         max_unshared_size_in_kb => '4194304', # 4GB

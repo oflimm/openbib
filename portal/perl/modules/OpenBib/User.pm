@@ -1003,6 +1003,42 @@ sub get_profiledbs_of_usersearchprofileid {
     return @profiledbs;
 }
 
+sub get_searchlocations {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $usersearchlocations = $self->get_schema->resultset('UserSearchlocation')->search_rs(
+        {
+            'me.userid'    => $self->{ID},
+        },
+        {
+            join   => ['locationid'],
+            select => ['locationid.identifier'],
+            as     => ['thislocation'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+        }
+
+    );
+
+    my @searchlocations=();
+    
+    if ($usersearchlocations){
+	while ( my $thisloc = $usersearchlocations->next()){
+	    my $loc = $thisloc->{'thislocation'};
+	    push @searchlocations, $loc;
+	    $logger->debug("Found searchlocation $loc for user $self->{ID}");
+	}
+    }
+    else {
+        $logger->debug("Couldn't find searchlocations user $self->{ID}");
+    }
+    
+    return @searchlocations;
+}
+
+    
 sub get_number_of_items_in_collection {
     my ($self,$arg_ref)=@_;
 
@@ -5037,6 +5073,68 @@ sub delete_dbprofile {
         }
     )->delete;
 
+    return;
+}
+
+sub update_searchlocation {
+    my ($self,$locations_ref)=@_;
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = $self->get_config;
+
+    my $userinfo = $self->get_schema->resultset('Userinfo')->search_rs(
+        {
+            id => $self->{ID}
+        }
+    )->first;
+
+    if ($userinfo){
+        # Verbindung zur Session loeschen
+        # DBI: "delete from user_session where userid = ?"
+        $userinfo->delete_related('user_searchlocations');
+    }
+
+    my $update_ref = [];
+    foreach my $thislocation (@$locations_ref){
+	my $locid = $config->get_locationinfo->single({ identifier => $thislocation })->id;
+	push @$update_ref, {
+	    locationid => $locid,
+	    userid     => $self->{ID},
+	};
+    }
+
+    $self->get_schema->resultset('UserSearchlocation')->populate(
+	$update_ref
+	);
+
+    
+    return;
+}
+
+sub delete_searchlocation {
+    my ($self,$locations_ref)=@_;
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = $self->get_config;
+
+    my $userinfo = $self->get_schema->resultset('Userinfo')->search_rs(
+        {
+            id => $self->{ID}
+        }
+    )->first;
+
+    if ($userinfo){
+        # Verbindung zur Session loeschen
+        # DBI: "delete from user_session where userid = ?"
+        $userinfo->delete_related('user_searchlocations');
+    }
+    
     return;
 }
 

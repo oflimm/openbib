@@ -68,7 +68,14 @@
 [%   END %]
 [% END %]
 
+[% IF layout_param.active_submenu == "userlocations" %]
+<li class="nav-item"><span>[% msg.maketext("Suchraum") %]
+</li>
+[% ELSE %]
+  <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchlocations_loc') %]/edit.html?l=[% lang %]">[% msg.maketext("Suchraum") %]</a></li>
+[% END %]
 
+<!--
 [% IF layout_param.active_submenu == "databaseprofile" %]
 <li class="nav-item"><span>[% msg.maketext("Katalogprofile") %]</span>
     <ul>
@@ -80,6 +87,7 @@
 [% ELSE %]
   <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %].html?l=[% lang %]">[% msg.maketext("Katalogprofile") %]</a></li>
 [% END %]
+-->
 
 [% IF layout_param.active_submenu == "migration" %]
   <li class="nav-item active"><strong>[% msg.maketext("Konto-Migration") %]</strong></li>

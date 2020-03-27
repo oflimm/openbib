@@ -62,12 +62,14 @@
     request_base    = "l=${lang};num=${queryoptions.get_option('num')};srt=relevance_desc;page=1;" ;
     start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
     end_range       = nav.current_page*queryoptions.get_option('num');
+    ic_request       = "l=${lang};num=${queryoptions.get_option('ic-request')};srt=relevance_desc;page=1;";
     IF end_range >= hits ;
        end_range       = hits;
     END;
 
     query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
 -%]
+
 
 <div class="ob-resultlist">
   <div class="ob-resultheader">

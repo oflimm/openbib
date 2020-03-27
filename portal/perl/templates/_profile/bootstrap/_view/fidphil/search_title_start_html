@@ -11,8 +11,13 @@
 #
 #######################################################################
 -%]
+[%-
+  ic_request  = "${queryoptions.get_option('ic-request')}";
+-%]
+<!--Check if this is an Intercooler Request -->
 
 [%- IF representation == 'html'-%]
+ [%- IF NOT ic_request -%]
 [% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
 [%- request_base    = "l=${lang};num=${hitrange};srt=${sorttype}_${sortorder};"  -%]
 
@@ -88,4 +93,6 @@
 [% END %]
 
 [%# USE dumper;dumper.dump(dbinfo)%]
+[%- END -%]
+
 [%- END -%]

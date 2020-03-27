@@ -13,6 +13,12 @@
 #
 #######################################################################
 -%]
+[%-
+  ic_request  = "${queryoptions.get_option('ic-request')}";
+-%]
+<!--Check if this is an Intercooler Request -->
+[% IF NOT ic_request  %]</h1>
+
 [%- PROCESS common/subtemplate name="local_config" -%] 
 
 <p/>
@@ -38,6 +44,7 @@
     aria-selected="false">Philosopher's Index</a>
   </li>
 </ul>
+[% END %]
 <div class="tab-content card pt-5" id="myTabContentMD">
   <div class="tab-pane fade show active" id="books-md" role="tabpanel" aria-labelledby="books-tab-md">
    <div class="row flex-md-row-reverse">
@@ -143,7 +150,7 @@
   </div>
 
 </div>
-<div class="tab-pane fade" id="ebsco-md" role="tabpanel" aria-labelledby="profile-tab-md" ic-get-from="http://localhost:8008/portal/fidphil/search.include?l=en;num=20;page=1;lang=en;srt=relevance_desc;st=1;lt=;fs=Perl;profile=2" ic-trigger-on="load">
+<div class="tab-pane fade" id="ebsco-md" role="tabpanel" aria-labelledby="profile-tab-md" ic-get-from="http://localhost:8008/portal/fidphil/search.html?l=en;num=20;page=1;lang=en;srt=relevance_desc;st=1;lt=;fs=Perl;profile=2" ic-trigger-on="load">
 
 
 </div>

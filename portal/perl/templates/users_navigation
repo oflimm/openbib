@@ -1,4 +1,4 @@
-[%#-
+%#-
 #######################################################################
 #
 # Templatename: users_navigation
@@ -30,6 +30,11 @@
 
 
  <ul class="navbar-nav">
+[% IF layout_param.active_submenu == "account" %]
+  <li class="nav-item active"><strong>[% msg.maketext("Kennung") %]</strong></li>
+[% ELSE %]
+  <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %].html?l=[% lang %]">[% msg.maketext("Kennung") %]</a></li>
+[% END %]
 [% IF layout_param.active_submenu == "userprefs" %]
   <li class="nav-item active"><strong>[% msg.maketext("Grundeinstellungen") %]</strong></li>
 [% ELSE %]

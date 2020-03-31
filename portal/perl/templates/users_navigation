@@ -22,7 +22,7 @@
 
 <div class="card">
 
-<div class="card-header"><span class="ob-nav_description">[% username %]</span><br/><small>[% allroles.join(' , ') %]</small></div>
+<div class="card-header"><span class="ob-nav_description"><a href="[% path_prefix%]/[% config.get('users_loc') %]/id/[% user.ID %].html?l=[% lang %]">[% username %]</a></span><br/><small>[% allroles.join(' , ') %]</small></div>
 
 <div class="card-body">
 

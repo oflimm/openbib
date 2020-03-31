@@ -5,7 +5,8 @@
       'main_template' = 'users_record_html'
       'sidebar_template' = 'users_navigation'
 
-      'active_menu' = 'account'
+      'active_menu' = 'users'
+      'active_submenu' = 'account'
       
       'breadcrumb' = [
           {

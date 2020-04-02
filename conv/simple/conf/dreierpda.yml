@@ -56,6 +56,7 @@ exclude:
        databases:
           - inst001
           - ebookpda
+          - proquestpda
           - freebooks
           - zbmed
           - gbvnationallizenzen
@@ -224,7 +225,7 @@ exclude:
           - inst622
           - inst623
        locations:
-          - DE-38-USBFB
+          - DE-38
           - freebooks
           - ebookpda
           - nationallizenzen
@@ -396,6 +397,7 @@ exclude:
        databases:
           - inst001
           - ebookpda
+          - proquestpda
           - freebooks
           - zbmed
           - gbvnationallizenzen

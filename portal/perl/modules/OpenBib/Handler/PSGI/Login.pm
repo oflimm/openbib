@@ -193,6 +193,7 @@ sub authenticate {
 
     my $authenticator_is_valid = 0;
 
+    #check if the passed authentification type is valid for this view
     foreach my $valid_authenticator (@valid_authenticators){
 	if ($valid_authenticator == $authenticatorid){
 	    $authenticator_is_valid = 1;

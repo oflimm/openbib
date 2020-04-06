@@ -1,0 +1,169 @@
+[%#-
+#######################################################################
+#
+# Templatename: circulation_orders
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller bestellten Medien
+#
+#######################################################################
+-%]
+
+<h1>Bestellung in den Lesesaal</h1>
+
+ 
+<p>Bitte füllen Sie das Bestellformular vollständig aus. Ihr Bestellwunsch wird per E-Mail an unsere Benutzungsabteilung übermittelt und liegt in der Regel innerhalb von 3 Werktagen 14 Tage lang für Sie bereit. </p>
+
+<p>Sie werden über den Eingang der Bestellung <strong>nicht</strong> gesondert benachrichtigt.</p>
+    
+<style>
+.jumbotron {
+   padding: 1.5rem 1.5rem;
+}
+
+.figure {
+  margin: 0.5rem;
+}
+</style>
+
+
+
+[%
+
+normdata = record.to_hash;
+
+title = normdata.fields.${"T0331"}.first.content ;
+publishers = [];
+
+IF normdata.fields.${"T0412"}.first.content ;
+ publishers.push(normdata.fields.${"T0412"}.first.content);
+END;
+IF normdata.fields.${"T0410"}.first.content ;
+ publishers.push(normdata.fields.${"T0410"}.first.content);
+END;
+
+publisher = publishers.join(' : ');
+
+institutions = [];
+
+FOREACH inst IN normdata.fields.${"T0200"} ;
+  institutions.push(inst.content);
+END;
+FOREACH inst IN normdata.fields.${"T0201"} ;
+  institutions.push(inst.content);
+END;
+
+institution = institutions.join(' ; ');
+
+persons = [];
+
+FOREACH inst IN normdata.fields.${"T0100"} ;
+  persons.push(inst.content);
+END;
+FOREACH inst IN normdata.fields.${"T0101"} ;
+  persons.push(inst.content);
+END;
+
+FOREACH inst IN normdata.fields.${"T0102"} ;
+  persons.push(inst.content);
+END;
+
+FOREACH inst IN normdata.fields.${"T0103"} ;
+  persons.push(inst.content);
+END;
+
+
+person = persons.join(' ; ');
+
+%]
+
+[%# USE dumper;dumper.dump(normdata)%]
+
+<div class="jumbotron">
+     <form name="orderForm" method="post" action="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locationid %]/mailorders" class="orderform">
+     <input type="hidden" name="scope" value="kmb" />
+     <fieldset>
+     <input type="hidden" name="zweigabteil" value="Kunst- und Museumsbibliothek der Stadt Köln / KMB" />
+     <fieldset>
+
+      <h3>Titelangaben</h3> 
+      <div class="labelstyle">Titel:</div>
+      <p>[% title %]</p>
+      <input type="hidden" name="title" value="[% title %]" />
+      <input type="hidden" name="siasnr" value="[% record.id %]" />
+      <input type="hidden" name="mnr" value="[% mnr %]" />
+
+[% IF institution %]
+      <div class="labelstyle">Institution:</div>
+      <p>[% institution %]</p>
+      <input type="hidden" name="corporation" value="[% institution.replace('"','') %]" />
+[% END ;%]    
+
+[% IF person %]
+      <div class="labelstyle">Personen:</div>
+      <p>[% person %]</p>
+      <input type="hidden" name="person" value="[% person.replace('"','') %]" />
+[% END ;%]    
+    
+      <div class="labelstyle">Ort / Verlag:</div>
+      <p>[% publisher %]</p>
+      <input type="hidden" name="publisher" value="[% publisher %]" />
+    
+      <div class="labelstyle">Signatur:</div>
+      <p>[% mark %]</p>
+      <input type="hidden" name="mark" value="[% mark %]" />
+        
+    
+
+      <br />
+
+      <h3>Weitere Angaben zur Bestellung</h3> 
+      <p style="margin-bottom:1.5em;">Mit * gekennzeichnete Felder sind Pflichtfelder und müssen ausgefüllt werden.</p> 
+
+
+      <input type="hidden" name="userid" value="ExtAnonymous" />
+
+      <label for="username" class="">Name, Vorname (*):</label>
+      <p>
+       <input type="text" name="username" id="username" value="" maxlength="60" size="37" />
+      </p>
+
+      <div class="labelstyle ">Bereitstellungsort (*):</div>
+      <p>
+     
+     
+    
+    
+       <span style="white-space:nowrap;">
+        <input type="radio" name="pickup" id="LUDWIG" value="Lesesaal im Museum Ludwig"  /> <label for="LUDWIG" class="radiostyle">Lesesaal im Museum Ludwig</label><br />
+       </span>
+    
+    
+       <span style="white-space:nowrap;">
+        <input type="radio" name="pickup" id="KUNST" value="Lesesaal im Museum für angewandte Kunst"  /> <label for="KUNST" class="radiostyle">Lesesaal im Museum für angewandte Kunst</label>
+       </span>
+    
+      </p>
+
+      <label for="REMARK">Bemerkungen:</label>
+      <p>
+       <textarea name="remark" id="REMARK" cols="32" rows="4"></textarea>
+      </p>
+
+      <div class="labelstyle">Bestellquittung:</div> 
+      <p style="white-space:nowrap;">
+       <input type="checkbox" name="receipt" id="RECEIPT"  class="checkbox" style="margin-right:1em;float:left;" /> <label for="RECEIPT" class="checkboxstyle">Ja, ich möchte eine Kopie dieser Bestellung als E-Mail erhalten</label>
+      </p>
+
+      <label for="EMAIL" class="">E-Mail-Adresse (*):</label>
+      <p>
+       <input type="text" name="email" id="EMAIL" value="" maxlength="60" size="37" /> 
+      </p>
+      <input class="btn btn-primary" type="submit" value="Bestellen" style="margin:1em 0 2em 0;" />
+
+     </fieldset>
+    </form>
+</div>

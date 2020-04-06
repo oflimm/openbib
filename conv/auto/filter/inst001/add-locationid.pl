@@ -212,6 +212,7 @@ while (<TITLE>){
     if (defined $title_ref->{fields}{'4400'}){
         foreach my $item (@{$title_ref->{fields}{'4400'}}){
             if ($item->{content} eq "online"){
+                 $element_ref = [];		
                  push @{$element_ref}, "emedien";
                  push @{$element_ref}, "usbebooks";
 #                 push @{$element_ref}, "DE-38";

@@ -15,19 +15,10 @@
 <h2>[% msg.maketext("Grundeinstellungen") %]</h2>
 
 <div class="card">
-<div class="card-header">[% msg.maketext("Kennung") %]</div>
+<div class="card-header">[% msg.maketext("Passwort &auml;ndern") %]</div>
 <div class="card-body">
 <div class="table-responsive">
 <form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/password" enctype="application/x-www-form-urlencoded">
-
-<p>
-<b>[% msg.maketext("Angemeldet über:") %]</b> [% authenticator.description %]
-</p>
-
-<div class="form-group mt-4">
-<label for="username">[% msg.maketext("Benutzername") %]</label>
-<span class="form-control" id="username">[% username %]</span>
-</div>
 
 [% IF authenticator.type == 'self' %]
 <div class="form-group mt-2">
@@ -124,7 +115,6 @@
 <p />
 [% END %]
 
-<h2>[% msg.maketext("Einstellungen") %]</h2>
 
 [% IF 0 == 1 %]
 <div class="card">

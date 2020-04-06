@@ -1,39 +1,71 @@
 <!-- Start Template: corporate_banner -->
 
-<div class="page-header no-padding no-margin" style="width: 100%; max-height: 200px: ">
-	<div class="container-fluid">
-		<div class="row pt-3">
-			<div class="col-6">
-				<div class="row">
-					<div class="col-5">
-						<img src="/images/openbib/views/fidphil/logofid.jpg" width="800px" height="auto" class="img-fluid d-none d-sm-inline"  />
-					</div>
-					<div class="col-7 align-self-end">
-						<h2 class="m-0" style="color: red">Beta</h2>
-					</div>
-				</div>
-
+<header>
+	<nav class="container-fluid pt-2 pb-2 m-0" style="background-color: #39383a; color: white">
+		<div class="row justify-content-between">
+			<div class="col-2 ml-auto p-0 align-content-end"> 
+				Login
 			</div>
-			<div class="col-6">
-				<div class="row justify-content-between">
-					<div class="col-2 ml-auto p-0 align-content-end"> 
-						Mein Profil
-					</div>
-					<div class="col-2 p-0 align-content-end"> 
-						Logout
-					</div>
-					<div class="col-2 p-0 align-content-end"> 
-						Menü 3
-					</div>
-					<div class="col-2 p-0 align-content-end"> 
-						Menü 4
-					</div>
-				</div>
-				
+			<div class="col-2 p-0 align-content-end"> 
+				Logout
+			</div>
+			<div class="col-2 p-0 align-content-end"> 
+				Menü 3
+			</div>
+			<div class="col-2 p-0 align-content-end"> 
+				Menü 4
 			</div>
 		</div>
-	</div>
-</div>
+	</nav>
 
+	<div class="container-fluid mt-4" >
+		<div class="row">
+			<div class="col-lg-4 col-12 text-lg-left text-center">
+				<img src="/images/openbib/views/fidphil/logofid.jpg"  width="300px" height="auto"  />
+			</div> 
 
-<!-- End Template: corporate_banner -->
+			<div class="col-lg-8 col-12 mt-4 pl-lg-4">
+				<h2>Suche im FID Philosophie</h2>
+				<form method="GET" action="https://babel.hathitrust.org/cgi/ls/one" id="ht-search-form" class="ht-search-form">
+					<div class="row mt-3">
+						<div class="col-12 col-md-12 col-lg-7" style="margin-right: 15px; ">
+							<div class="row" >
+								<div class="col-9 pr-0 text-lg-left text-center" > 
+									<input id="q1-input" name="q1" type="text" style="flex: 2; width:100%" class="search-input-text" placeholder="Search words about or within the items" required="required" pattern="^(?!\s*$).+" value="">
+								</div>
+
+								<div class="control control-searchtype col-3 pl-0">
+									<select id="search-input-select" size="1" class="search-input-select" name="searchtype" style="font-size: 1rem">
+										<option value="all" selected="selected">All Fields</option>
+										<option value="title">Title</option>
+										<option value="author">Author</option>
+										<option value="subject">Subject</option>
+										<option value="isbn">ISBN/ISSN</option>
+										<option value="publisher">Publisher</option>
+										<option value="seriestitle">Series Title</option>
+									</select>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-lg-4 col-md-12 col-12 p-0 text-lg-left text-center">
+							<div class="control">
+								<button class="btn btn-primary" id="action-search-hathitrust" style="white-space: nowrap"><i class="fas fa-search"></i></i> Suche starten</button>
+							</div>
+						</div>
+
+					</div>
+					<div class="row mt-2">
+						<div class="col"> 
+							<input type="radio" name="editList" value="always"> Alles durchsuchen   
+							<input type="radio" name="editList" value="never">  DigiPhiD 
+							<div>
+							</div>
+						</div>
+					</div>
+				</div> 
+			</div>
+		</div>
+	</header>
+
+	<!-- End Template: corporate_banner -->

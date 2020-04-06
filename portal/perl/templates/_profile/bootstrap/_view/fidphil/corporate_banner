@@ -24,18 +24,18 @@
 				<img src="/images/openbib/views/fidphil/logofid.jpg"  width="300px" height="auto"  />
 			</div> 
 
-			<div class="col-lg-8 col-12 mt-4 pl-lg-4">
-				<h2>Suche im FID Philosophie</h2>
-				<form method="GET" action="https://babel.hathitrust.org/cgi/ls/one" id="ht-search-form" class="ht-search-form">
+			<div class="col-lg-8 col-12 mt-3 pl-lg-4">
+					<form method="GET" action="https://babel.hathitrust.org/cgi/ls/one" id="ht-search-form" class="ht-search-form">
 					<div class="row mt-3">
-						<div class="col-12 col-md-12 col-lg-7" style="margin-right: 15px; ">
+						<div class="col-12 col-md-12 col-lg-12" style="margin-right: 15px; ">
 							<div class="row" >
-								<div class="col-9 pr-0 text-lg-left text-center" > 
-									<input id="q1-input" name="q1" type="text" style="flex: 2; width:100%" class="search-input-text" placeholder="Search words about or within the items" required="required" pattern="^(?!\s*$).+" value="">
+								<div class="col-12 mr-3 text-lg-left text-center" > 
+									<input id="q1-input" name="q1" type="text" style="width:100%; border: 1px solid grey; ;height: 52px;" class="" placeholder="Search words about or within the items" pattern="^(?!\s*$).+" value="">
+									<input type="submit" value="Search" class="browse-module__search-btn" style="position: absolute; right: 22px; top: 2px;height: 47px;width: 69px;z-index: 2;padding: 0;border: none;background-color: #fff;background-repeat: no-repeat;background-position: 50%;text-indent: -9999px;background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMyIgaGVpZ2h0PSIyNyI+PHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDAwIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgZD0iTTIyIDI2bC03LTkiLz48Y2lyY2xlIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGN4PSIxMCIgY3k9IjEwLjAwMSIgcj0iOSIvPjwvc3ZnPg==');">
 								</div>
-
+<!-- 
 								<div class="control control-searchtype col-3 pl-0">
-									<select id="search-input-select" size="1" class="search-input-select" name="searchtype" style="font-size: 1rem">
+									<select id="search-input-select" size="1" class="search-input-select" name="searchtype" style="font-size: 1rem; border: 1px solid grey; background-color:white">
 										<option value="all" selected="selected">All Fields</option>
 										<option value="title">Title</option>
 										<option value="author">Author</option>
@@ -43,18 +43,11 @@
 										<option value="isbn">ISBN/ISSN</option>
 										<option value="publisher">Publisher</option>
 										<option value="seriestitle">Series Title</option>
-									</select>
+									</select> -->
 								</div>
 							</div>
 						</div>
 
-						<div class="col-lg-4 col-md-12 col-12 p-0 text-lg-left text-center">
-							<div class="control">
-								<button class="btn btn-primary" id="action-search-hathitrust" style="white-space: nowrap"><i class="fas fa-search"></i></i> Suche starten</button>
-							</div>
-						</div>
-
-					</div>
 					<div class="row mt-2">
 						<div class="col"> 
 							<input type="radio" name="editList" value="always"> Alles durchsuchen   

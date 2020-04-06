@@ -81,6 +81,17 @@ my $config = new OpenBib::Config();
 
 my $fullatime = new Benchmark;
 
+my $dboverview = $config->get_dbinfo_overview;
+
+my $db_is_not_local_ref = {
+};
+
+foreach my $thisdb (@$dboverview){
+    if ($thisdb->{system} =~m/Backend/){
+	$db_is_not_local_ref->{$thisdb->{dbname}} = 1;
+    }
+}
+
 my $xapian_cmd  = "/usr/bin/xapian-compact";
 my @xapian_args = ();
 
@@ -160,6 +171,10 @@ foreach my $searchprofile (@searchprofiles){
 
     my @databases = $config->get_databases_of_searchprofile($searchprofile);
 
+    # Herausfiltern der externen Datenbanken
+
+    @databases = grep { !$db_is_not_local_ref->{$_} } @databases;
+    
     # Check, welche Indizes irregulaer sind
 
     my $sane_index = 1;

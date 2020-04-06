@@ -1399,6 +1399,17 @@
    runmode: 'show_record'
    args:
       admin_loc: 'locations'
+- # locations_loc:
+   module: 'OpenBib::Handler::PSGI::Locations::MailOrders'
+   rule: '/portal/:view/locations/id/:locationid/mailorders[get]'
+   runmode: 'show_collection'
+   representations:
+     - none
+     - html
+- # locations_loc:
+   module: 'OpenBib::Handler::PSGI::Locations::MailOrders'
+   rule: '/portal/:view/locations/id/:locationid/mailorders[post]'
+   runmode: 'mail'
 - # users/locations_loc:
    scope: 'admin_locations'
    module: 'OpenBib::Handler::PSGI::Admin::Locations'
@@ -2675,13 +2686,6 @@
      - rdf
      - ics
 - # users/circulations_loc:
-   module: 'OpenBib::Handler::PSGI::Users::Circulations::MailOrders'
-   rule: '/portal/:view/databases/id/:database/circulations/id/mailorders[get]'
-   runmode: 'show_collection'
-   representations:
-     - none
-     - html
-- # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Orders'
    rule: '/portal/:view/users/id/:userid/databases/id/:database/circulations/id/orders[get]'
    runmode: 'show_collection'
@@ -2721,8 +2725,8 @@
      - html
    runmode: 'renew_loans'
 - # users/circulations_loc:
-   module: 'OpenBib::Handler::PSGI::Users::Circulations::MailOrders'
-   rule: '/portal/:view/databases/id/:database/circulations/id/mailorders[post]'
+   module: 'OpenBib::Handler::PSGI::Users::Circulations::Orders'
+   rule: '/portal/:view/databases/id/:database/circulations/id/orders[post]'
    runmode: 'create_record'
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Reservations'
@@ -2797,15 +2801,27 @@
 - # users_loc: Update
    module: 'OpenBib::Handler::PSGI::Users'
    rule: '/portal/:view/users/id/:userid[get]'
-   runmode: 'show_user'
+   runmode: 'show_record'
+- # users_loc: Update
+   module: 'OpenBib::Handler::PSGI::Users'
+   rule: '/portal/:view/users/id/:userid/edit[get]'
+   runmode: 'show_record_form'
+- # users_loc: Update
+   module: 'OpenBib::Handler::PSGI::Users'
+   rule: '/portal/:view/users[post]'
+   runmode: 'create_record'
 - # users_loc: Update
    module: 'OpenBib::Handler::PSGI::Users'
    rule: '/portal/:view/users/id/:userid[post]'
-   runmode: 'update_account'
+   runmode: 'update_record'
+- # users_loc: Update
+   module: 'OpenBib::Handler::PSGI::Users'
+   rule: '/portal/:view/users/id/:userid[put]'
+   runmode: 'update_record'
 - # users_loc: Update
    module: 'OpenBib::Handler::PSGI::Users'
    rule: '/portal/:view/users/id/:userid[delete]'
-   runmode: 'delete_account'
+   runmode: 'delete_record'
 
 #####################################################################
 # Login/Logout-Resource/Repraesentation

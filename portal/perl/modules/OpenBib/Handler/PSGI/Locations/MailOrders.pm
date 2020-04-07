@@ -168,6 +168,10 @@ sub mail {
         return $self->print_warning($msg->maketext("Eine Bestellung ist nicht moeglich."));
     }
 
+    if (!$username || !$pickup || !$email){
+        return $self->print_warning($msg->maketext("Sie müssen alle Pflichtfelder ausfüllen."));
+    }
+
     unless (Email::Valid->address($email)) {
         return $self->print_warning($msg->maketext("Sie haben eine ungültige Mailadresse eingegeben."));
     }	

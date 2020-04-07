@@ -22,7 +22,7 @@
 
 <div class="card">
 
-<div class="card-header"><span class="ob-nav_description"><a href="[% path_prefix%]/[% config.get('users_loc') %]/id/[% user.ID %].html?l=[% lang %]">[% username %]</a></span><br/><small>[% allroles.join(' , ') %]</small></div>
+<div class="card-header"><span class="ob-nav_description"><a href="[% path_prefix%]/[% config.get('users_loc') %]/id/[% user.ID %]/edit.html?l=[% lang %]">[% username %]</a></span><br/><small>[% allroles.join(' , ') %]</small></div>
 
 <div class="card-body">
 
@@ -33,7 +33,7 @@
 [% IF layout_param.active_submenu == "account" %]
   <li class="nav-item active"><strong>[% msg.maketext("Kennung") %]</strong></li>
 [% ELSE %]
-  <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %].html?l=[% lang %]">[% msg.maketext("Kennung") %]</a></li>
+  <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/edit.html?l=[% lang %]">[% msg.maketext("Kennung") %]</a></li>
 [% END %]
 [% IF layout_param.active_submenu == "userprefs" %]
   <li class="nav-item active"><strong>[% msg.maketext("Grundeinstellungen") %]</strong></li>

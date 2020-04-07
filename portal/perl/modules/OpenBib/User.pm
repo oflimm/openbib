@@ -5393,14 +5393,16 @@ sub get_info {
         $userinfo_ref->{'spelling_resultlist'}    = $userinfo->spelling_resultlist;
 	$userinfo_ref->{'viewname'} = undef;
 	$userinfo_ref->{'authenticatorid'} = undef;
+  
+        if ($userinfo->mixed_bag){
+	   eval {
+	       $userinfo_ref->{'mixed_bag'} = decode_json $userinfo->mixed_bag;
+	   };
 
-	eval {
-	    $userinfo_ref->{'mixed_bag'} = decode_json $userinfo->mixed_bag;
-	};
-
-	if ($@){
-	    $logger->error($@);
-	}
+	   if ($@){
+	       $logger->error($@);
+	   }
+        }
 	
 	if ($userinfo->viewid){
 	    $userinfo_ref->{'viewname'}  = $userinfo->viewid->viewname;

@@ -156,6 +156,7 @@ sub mail {
     my $pickup      = $query->param('pickup');
     my $remark      = $query->param('remark');
     my $email       = ($query->param('email'))?$query->param('email'):'';
+    my $receipt     = $query->param('receipt');
 
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
@@ -227,9 +228,15 @@ sub mail {
         return;
     };
 
+    my $mail_to = $config->{mailorders}{scope}{$scope}{recipient};
+
+    if ($receipt){
+	$mail_to.=",$email";
+    }
+    
     my $mailmsg = MIME::Lite->new(
         From            => $config->{mailorders}{scope}{$scope}{sender},
-        To              => $config->{mailorders}{scope}{$scope}{recipient},
+        To              => $mail_to,
         Subject         => "$scope: Bestellung per Mail",
         Type            => 'multipart/mixed'
     );

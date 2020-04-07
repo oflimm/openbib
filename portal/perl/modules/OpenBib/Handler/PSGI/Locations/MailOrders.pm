@@ -170,6 +170,12 @@ sub mail {
     unless (Email::Valid->address($email)) {
         return $self->print_warning($msg->maketext("Sie haben eine ungültige Mailadresse eingegeben."));
     }	
+
+    # Bei angemeldeten Usern wird deren Username als Userid gesetzt und ueberschreibt damit den Standartwert 'Anonym'
+
+    if ($user->{ID}){
+	$userid = $user->get_username;
+    }
     
     # TT-Data erzeugen
     
@@ -201,10 +207,6 @@ sub mail {
     my $anschreiben="";
     my $afile = "an." . $$;
 
-    my $mainttdata = {
-		      msg => $msg,
-		     };
-
     my $maintemplate = Template->new({
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
             INCLUDE_PATH   => $config->{tt_include_path},
@@ -219,7 +221,7 @@ sub mail {
         OUTPUT        => $afile,
     });
 
-    $maintemplate->process($config->{tt_locations_record_mailorders_mail_body_tname}, $mainttdata ) || do { 
+    $maintemplate->process($config->{tt_locations_record_mailorders_mail_body_tname}, $ttdata ) || do { 
         $logger->error($maintemplate->error());
         $self->header_add('Status',400); # server error
         return;

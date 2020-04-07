@@ -2806,6 +2806,9 @@
    module: 'OpenBib::Handler::PSGI::Users'
    rule: '/portal/:view/users/id/:userid/edit[get]'
    runmode: 'show_record_form'
+   representations:
+     - none
+     - html
 - # users_loc: Update
    module: 'OpenBib::Handler::PSGI::Users'
    rule: '/portal/:view/users[post]'

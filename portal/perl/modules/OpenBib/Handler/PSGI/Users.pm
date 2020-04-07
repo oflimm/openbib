@@ -58,6 +58,7 @@ sub setup {
     $self->run_modes(
         'create_record'         => 'create_record',	
         'show_record'           => 'show_record',
+        'show_record_form'      => 'show_record_form',
         'update_record'         => 'update_record',
         'delete_record'         => 'delete_record',
         'confirm_delete_record' => 'confirm_delete_record',
@@ -127,6 +128,58 @@ sub show_record {
     return $self->print_page($config->{tt_users_record_tname},$ttdata);
 }
 
+sub show_record_form {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Ards
+    my $view           = $self->param('view');
+    my $userid         = $self->strip_suffix($self->param('userid'));
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+
+    $self->param('userid',$userid);
+    
+    if (!$self->authorization_successful){
+        return $self->print_authorization_error();
+    }
+
+    my $userinfo_ref            = $user->get_info();
+    
+    # Wenn wir eine gueltige Mailadresse als Usernamen haben,
+    # dann liegt Selbstregistrierung vor und das Passwort kann
+    # geaendert werden
+
+    my $userinfo = new OpenBib::User({ID => $userid })->get_info;
+    
+    my $email_valid=Email::Valid->address($userinfo->{username});
+    
+    my $authenticator=$session->get_authenticator;
+
+    # TT-Data erzeugen
+    my $ttdata={
+	userid              => $userid,
+	userinfo            => $userinfo,
+        qopts               => $queryoptions->get_options,
+        email_valid         => $email_valid,
+        authenticator       => $authenticator,
+    };
+    
+    return $self->print_page($config->{tt_users_record_edit_tname},$ttdata);
+}
+
 sub update_record {
     my $self = shift;
     
@@ -149,21 +202,37 @@ sub update_record {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $method          = $query->param('_method') || '';
-    my $confirm         = $query->param('confirm') || 0;
-
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
+    
     if (!$self->is_authenticated('user',$userid)){
         return;
     }
 
-    my $new_location = "$path_prefix/$view/$config->{logout_loc}";
+    if (defined $input_data_ref->{mixed_bag}){
+	my $contentstring = {};
+	
+	eval {
+	    $contentstring= JSON::XS->new->utf8->canonical->encode($input_data_ref->{mixed_bag});
+	};
 
-    # TODO GET?
-    $self->header_add('Content-Type' => 'text/html');
-    $self->redirect($new_location);
+	if ($@){
+	    $logger->error("Canonical Encoding failed: ".YAML::Dump($input_data_ref->{mixed_bag}));
+	}
 
-    return;
+	$input_data_ref->{mixed_bag} = $contentstring; 
+    }
+   
+    $user->update_userinfo($input_data_ref) if (keys %$input_data_ref);
+
+    if ($self->param('representation') eq "html"){
+        # TODO GET?
+        return $self->redirect("$path_prefix/$config->{users_loc}/id/$user->{ID}/edit");
+    }
+    else {
+        $logger->debug("Weiter zum Record");
+        return $self->show_record;
+    }    
 }
 
 sub confirm_delete_record {
@@ -242,6 +311,19 @@ sub authorization_successful {
     # Default: Kein Zugriff
     return 0;
 }
+
+sub get_input_definition {
+    my $self=shift;
+    
+    return {
+        bag => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'mixed_bag', # always arrays
+        },
+    };
+}
+
 
 1;
 __END__

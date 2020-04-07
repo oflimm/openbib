@@ -1583,7 +1583,21 @@ sub parse_valid_input {
             my $encoding = $valid_input_params_ref->{$param}{encoding};
             my $default  = $valid_input_params_ref->{$param}{default};
 
-            $input_params_ref->{$param} = $input_data_ref->{$param} || $default;
+	    if ($type eq "mixed_bag"){
+		my $param_prefix = $param;
+		
+                foreach my $qparam ($query->param){
+                    if ($qparam=~/^${param_prefix}_/){
+
+			my $content = $query->param($qparam) || $default;
+			
+			push @{$input_params_ref->{mixed_bag}{$qparam}}, $content;
+                    }
+                }
+	    }
+	    else {
+		$input_params_ref->{$param} = $input_data_ref->{$param} || $default;
+	    }
         }    
 
     }
@@ -1633,6 +1647,18 @@ sub parse_valid_input {
                 }
                 $input_params_ref->{$param} = $fields_ref;
             }
+	    elsif ($type eq "mixed_bag"){
+		my $param_prefix = $param;
+		
+                foreach my $qparam ($query->param){
+                    if ($qparam=~/^${param_prefix}_/){
+
+                        my $content  = decode_utf8($query->param($qparam)) || $default;
+			
+			push @{$input_params_ref->{mixed_bag}{$qparam}}, $content;
+                    }
+                }
+	    }
             elsif ($type eq "rights") {
                 my $rights_ref     = $default;
                 my $rights_tmp_ref = {};

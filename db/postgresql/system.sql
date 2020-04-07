@@ -337,7 +337,12 @@ CREATE TABLE userinfo (
 -- Bibsonomy Credentials for automatic sync --
  bibsonomy_user TEXT,
  bibsonomy_key  TEXT,
- bibsonomy_sync TEXT
+ bibsonomy_sync TEXT,
+
+-- Additional unspecified content - json encoded --
+
+ mixed_bag jsonb
+ 
 );
 
 DROP TABLE IF EXISTS user_searchlocation;

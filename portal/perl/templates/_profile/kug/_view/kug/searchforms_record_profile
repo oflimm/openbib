@@ -31,7 +31,7 @@
 <select name="profile" class="form-control ob-selectbox selectpicker">
    
 [%# IF usersearchprofiles.size > 0 %]
-[% IF usersearchprofiles  %]
+[% IF usersearchprofiles && 0 == 1 %]
 <optgroup label="Eigene Suchprofile">
 [%- FOREACH profile IN usersearchprofiles -%]
 [%     pid   = profile.searchprofileid %]

@@ -5138,6 +5138,18 @@ sub delete_searchlocation {
     return;
 }
 
+sub update_userinfo {
+    my ($self,$userinfo_ref)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $self->get_schema->resultset('Userinfo')->single({ id => $self->{ID} })->update($userinfo_ref);
+
+    return;
+}
+
+
 sub wipe_account {
     my ($self)=@_;
     
@@ -5381,6 +5393,16 @@ sub get_info {
         $userinfo_ref->{'spelling_resultlist'}    = $userinfo->spelling_resultlist;
 	$userinfo_ref->{'viewname'} = undef;
 	$userinfo_ref->{'authenticatorid'} = undef;
+  
+        if ($userinfo->mixed_bag){
+	   eval {
+	       $userinfo_ref->{'mixed_bag'} = decode_json $userinfo->mixed_bag;
+	   };
+
+	   if ($@){
+	       $logger->error($@);
+	   }
+        }
 	
 	if ($userinfo->viewid){
 	    $userinfo_ref->{'viewname'}  = $userinfo->viewid->viewname;

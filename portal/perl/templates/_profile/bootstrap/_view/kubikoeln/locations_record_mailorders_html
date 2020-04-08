@@ -124,7 +124,7 @@ person = persons.join(' ; ');
       <p style="margin-bottom:1.5em;">Mit * gekennzeichnete Felder sind Pflichtfelder und müssen ausgefüllt werden.</p> 
 
 
-      <input type="hidden" name="userid" value="ExtAnonymous" />
+      <input type="hidden" name="userid" value="Anonym" />
 
       <label for="username" class="">Name, Vorname (*):</label>
       <p>
@@ -138,7 +138,7 @@ person = persons.join(' ; ');
     
     
        <span style="white-space:nowrap;">
-        <input type="radio" name="pickup" id="LUDWIG" value="Lesesaal im Museum Ludwig"  /> <label for="LUDWIG" class="radiostyle">Lesesaal im Museum Ludwig</label><br />
+        <input type="radio" name="pickup" id="LUDWIG" value="Lesesaal im Museum Ludwig" selected /> <label for="LUDWIG" class="radiostyle">Lesesaal im Museum Ludwig</label><br />
        </span>
     
     

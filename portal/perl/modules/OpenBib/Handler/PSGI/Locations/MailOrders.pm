@@ -156,6 +156,7 @@ sub mail {
     my $pickup      = $query->param('pickup');
     my $remark      = $query->param('remark');
     my $email       = ($query->param('email'))?$query->param('email'):'';
+    my $receipt     = $query->param('receipt');
 
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
@@ -167,9 +168,19 @@ sub mail {
         return $self->print_warning($msg->maketext("Eine Bestellung ist nicht moeglich."));
     }
 
+    if (!$username || !$pickup || !$email){
+        return $self->print_warning($msg->maketext("Sie müssen alle Pflichtfelder ausfüllen."));
+    }
+
     unless (Email::Valid->address($email)) {
         return $self->print_warning($msg->maketext("Sie haben eine ungültige Mailadresse eingegeben."));
     }	
+
+    # Bei angemeldeten Usern wird deren Username als Userid gesetzt und ueberschreibt damit den Standartwert 'Anonym'
+
+    if ($user->{ID}){
+	$userid = $user->get_username;
+    }
     
     # TT-Data erzeugen
     
@@ -201,10 +212,6 @@ sub mail {
     my $anschreiben="";
     my $afile = "an." . $$;
 
-    my $mainttdata = {
-		      msg => $msg,
-		     };
-
     my $maintemplate = Template->new({
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
             INCLUDE_PATH   => $config->{tt_include_path},
@@ -219,15 +226,21 @@ sub mail {
         OUTPUT        => $afile,
     });
 
-    $maintemplate->process($config->{tt_locations_record_mailorders_mail_body_tname}, $mainttdata ) || do { 
+    $maintemplate->process($config->{tt_locations_record_mailorders_mail_body_tname}, $ttdata ) || do { 
         $logger->error($maintemplate->error());
         $self->header_add('Status',400); # server error
         return;
     };
 
+    my $mail_to = $config->{mailorders}{scope}{$scope}{recipient};
+
+    if ($receipt){
+	$mail_to.=",$email";
+    }
+    
     my $mailmsg = MIME::Lite->new(
         From            => $config->{mailorders}{scope}{$scope}{sender},
-        To              => $config->{mailorders}{scope}{$scope}{recipient},
+        To              => $mail_to,
         Subject         => "$scope: Bestellung per Mail",
         Type            => 'multipart/mixed'
     );

@@ -2,14 +2,29 @@ Sehr geehrte Damen und Herren,
 
 Ueber die Mail-Bestellfunktion wurde folgendes Medium bestellt:
 
-Nutzernummer        : [% username %]
-Name des Nutzers    : [% userinfo.Vorname %] [% userinfo.Nachname %]
+-- Angaben zum Nutzer --
+
+Nutzer-ID           : [% userid %]
+Name des Nutzers    : [% username %]
+E-Mail              : [% email %]
+
+-- Angaben zum Titel --
 
 Person              : [% person %]
-Titel               : [% titel %]
-Signatur(en)        : [% signatur %]
+Koerperschaft       : [% corporation %]
+Titel               : [% title %]
+Verlag              : [% publisher %]
+
+Signatur(en)        : [% mark %]
+Mediennummer(n)     : [% mnr %]
+
+-- Sonstige Angaben --
+
+Bereitstellungsort  : [% pickup %]
+
+Bemerkungen         : [% remark %]
 
 Mit freundlichen Gruessen
 
-Das KUG Recherche-Portal
+Das Recherche-Portal
 

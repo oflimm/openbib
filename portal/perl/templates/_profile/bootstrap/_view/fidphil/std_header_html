@@ -71,7 +71,8 @@
 
   <!-- Material Design CSS -->
   <!--    <link rel="stylesheet" href="/css/bootstrap-material-design.min.css"> -->
-
+  <!-- Fidphil CSS -->
+  <link rel="stylesheet" href="/css/_profile/bootstrap/_view/fidphil/fidphil.css">
 
   [%- TRY -%]
   [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/_profile/$sysprofile/_view/$view/openbib.css" -%]

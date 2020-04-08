@@ -53,7 +53,7 @@
 					<div class="row ">
 						<div class="col-10 text-right">
 							<div class="p-1">
-								<a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" ic-get-from="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" ic-target="#search-container" ic-push-url="true">[% msg.maketext("Erweiterte Suche") %]
+								<a class="advanced-search-link" href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" ic-get-from="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" ic-target="#search-container" ic-push-url="true">[% msg.maketext("Erweiterte Suche") %]
 								</a>
 							</div>
 						</div>

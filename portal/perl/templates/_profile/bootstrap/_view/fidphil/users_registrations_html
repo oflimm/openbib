@@ -11,43 +11,126 @@
 #
 #######################################################################
 -%]
-<div class="d-flex pt-3" style="height: 100vh; width: 100%; min-width: 400px">
+<div class="d-flex pt-3 mt-3" style="height: 100vh; width: 100%; min-width: 400px">
 	<div class="d-flex flex-row justify-content-center" style="width: 100%"> 
-		<div class="d-flex flex-column justify-content-center" style="width: 50%">
-			<div class="text-center m-b3">
-				<img src="/images/openbib/views/fidphil/logofid.jpg"  width="240px" height="auto"  />
+		<div class="d-flex flex-column justify-content-center" style="width: 40%">
+			<div class="text-center mb-1">
+				<img src="/images/openbib/views/fidphil/logofid.jpg"  width="180px" height="auto"  />
 			</div>
-			<div class="text-center mt-4">
+			<div class="text-center mt-3">
 				<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('registrations_loc') %]" enctype="application/x-www-form-urlencoded">
-					<h1 class="display-4">[% msg.maketext("Registrieren") %]</h1>
-
-					<div class="form-group">
-						<label for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>
-						<input class="form-control" type="text" name="username" id="email_username" value="[% username %]" />
+					<h2 class="display-4">[% msg.maketext("Registrieren") %]</h2>
+					<div class="row mt-4">
+						<div class="col-3 text-left">
+							<label for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>
+						</div>
+						<div class="col-9 text-left">
+							<input class="form-control" type="text" name="username" id="email_username" value="[% username %]" />
+						</div>
 					</div>
-					<div class="form-group">
-						<label for="email_password1">[% msg.maketext("Passwort") %]</label>
+					<div class="row mt-3">
+						<div class="col-3 text-left">
+							<label for="email_password">Anrede</label>
+						</div>
+						<div class="col-9 text-left">
+							<select  name="partnerorg" required style="width: 30%">
+								<option value="none">---</option>
+								<option value="dr">Herr</option>
+								<option value="prof">Frau</option>
+							</select>
+						</div>
+					</div>
+					<div class="row mt-3">
+						<div class="col-3 text-left align-content-center">
+							<label for="degree_select">Akademischer Grad</label>
+						</div>
+						<div class="col-9 text-left">
+							<select id="degree_select" name="degree" required style="width: 30%">
+								<option value="none">---</option>
+								<option value="dr">Dr.</option>
+								<option value="prof">Prof. Dr.</option>
+							</select>
+						</div>
+					</div>
+					<div class="row mt-3">
+						<div class="col-3 text-left align-content-center">
+							<label for="firstname_field">[% msg.maketext("Vorname") %]</label>
+						</div>
+						<div class="col-9 text-left">
+								<input class="form-control" type="text" name="firstname" id="firstname_field" />
+						</div>
+					</div>
+					<div class="row mt-3">
+						<div class="col-3 text-left align-content-center">
+							<label for="lastname_field">[% msg.maketext("Nachname") %]</label>
+						</div>
+						<div class="col-9 text-left">
+						<input class="form-control" type="text" name="lastname" id="lastname_field" />
+						</div>
+					</div>
+					<div class="row mt-3">
+						<div class="col-3 text-left align-content-center">
+							<label for="email_password1">[% msg.maketext("Passwort") %]</label>
+						</div>
+						<div class="col-9 text-left">
 						<input class="form-control" type="password" name="password1" id="email_password1" />
+						</div>
 					</div>
-					<div class="form-group">
-						<label for="email_password">[% msg.maketext("Passwort (wiederholt)") %]</label>
+					<div class="row mt-3">
+						<div class="col-3 text-left align-content-center">
+							<label for="email_password">[% msg.maketext("Passwort") %]</label>
+						</div>
+						<div class="col-9 text-left">
 						<input class="form-control" type="password" name="password2" id="email_password" />
+						</div>
 					</div>
-
-					<div class="form-group">
-						[%- IF config.${"recaptcha_public_key"} -%]
-						[%- recaptcha_options = { lang => lang, theme => 'white' } -%]
-						[% recaptcha.get_html_v2(config.${"recaptcha_public_key"},'',1,recaptcha_options) %]
-						[%- END -%]
+	
+					<div class="row mt-4">
+						<div class="col-3 text-left align-content-center">
+							<label for="partnerorg_select">Fachgesellschaft</label>
+						</div>
+						<div class="col-9">
+							<select  id="partnerorg_select" name="partnerorg" required style="width: 100%">
+								<option value="dgphil">Deutsche Gesellschaft für Philosophie (DGPhil)</option>
+								<option value="gap">Gesellschaft für analytische Philosophie (GaP)</option>
+							</select>
+						</div>
 					</div>
+				</div>
+				<div class="row mt-3">
+					<div class="col-3">
+						<label for="email_password">Zuordnung zu einer Universitäsbibliothek</label>
+					</div>
+					<div class="col-9">
+						<select name="partnerorg" required style="width: 100%">
+							<option value="none" value="keine" selected="true">keine</option>
+							<option value="usbk">Universitäts- und Stadtbibliothek Köln</option>
+						</select>
+					</div>
+				</div>
+				<div class="row">
+				<div class="col coltext-right mt-5">
+					<a href="[% path_prefix %]/[% config.get('login_loc') %]" class="btn btn-secondary mb-2" style="width:20%">[% msg.maketext("Züruck") %]</a>
+				</div>
+				<div class="col text-right mt-5">
+					<button class="btn btn-primary mb-2" style="width:20%">[% msg.maketext("Registrieren") %]</button>
+				</div>
 
-					<p/>
-
-					<button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Registrieren") %]</button>
-
-				</form>
 			</div>
-		</div>
+			
+			<div class="form-group">
+				[%- IF config.${"recaptcha_public_key"} -%]
+				[%- recaptcha_options = { lang => lang, theme => 'white' } -%]
+				[% recaptcha.get_html_v2(config.${"recaptcha_public_key"},'',1,recaptcha_options) %]
+				[%- END -%]
+			</div>
+
+			<p/>
+
+			
+		</form>
 	</div>
+</div>
+</div>
 </div>
 

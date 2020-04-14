@@ -438,6 +438,12 @@ sub set_fields {
 
 #     }
 
+sub get_client {
+    my ($self) = @_;
+
+    return $self->{client};
+}
+
 sub DESTROY {
     my $self = shift;
 

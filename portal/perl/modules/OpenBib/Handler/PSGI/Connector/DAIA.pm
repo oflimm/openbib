@@ -103,6 +103,7 @@ sub show {
 
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->new;
     my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+    my $locinfotable  = OpenBib::Config::LocationInfoTable->new;
 
     # Richtigen Content-Type setzen
     $self->param('content_type','application/json');
@@ -142,7 +143,7 @@ sub show {
     my $all_items_ref = [];
 
     foreach my $request_id (@request_ids){
-	my ($thisdb,$thisid)=split(':',$request_id);
+	my ($thisdb,$thisid)=$request_id=~m/^(.+?):(.+)$/;
 	
 	# Ausleihinformationen der Exemplare
 	my $circulation_ref = [];
@@ -191,9 +192,35 @@ sub show {
 	    
 	    if (defined($circexlist)) {
 		foreach my $nr (keys %{$circexlist->{Exemplardaten}}){
-		    push @$circulation_ref, $circexlist->{Exemplardaten}{$nr}
+		    my $circ_ref = $circexlist->{Exemplardaten}{$nr};
+
+		    $logger->debug(YAML::Dump($circ_ref));
+		    
+		    my $zweigabteil = $circ_ref->{'ZweigAbteil'};
+		    
+		    $logger->debug("Matching $zweigabteil");
+		    if ($zweigabteil=~m/^\$msg\{USB-KUG-Locations,(.+?)\}/){
+			my $isil=$1;
+
+			my $zweigname = $locinfotable->get('identifier')->{$isil}{description};
+			$logger->debug("Found $zweigname");
+			
+			$circ_ref->{'ZweigAbteil'} =~s/^\$msg\{USB-KUG-Locations,.+?\}/$zweigname/;
+			
+
+			
+		    }
+		    else {
+			$logger->debug("No match");
+		    }
+
+		    push @$circulation_ref, $circ_ref;
 		}
 	    }	    
+	}
+
+	# Cleanup USBWS-Messages 
+	foreach my $circ_ref (@$circulation_ref){
 	}
 	
 	my $item_ref = {

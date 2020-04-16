@@ -1531,24 +1531,28 @@ sub load_olwsviewer {
     my $logger = get_logger();
 
     my $config        = $self->get_config;
-    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    my $olwsconfig = ($config->get('olws')->{$self->{'database'}})?$config->get('olws')->{$self->{'database'}}:undef;
+
+    my $circcheckurl  = (defined $olwsconfig)?$olwsconfig->{circwsurl}:"";
+    my $circdb        = (defined $olwsconfig)?$olwsconfig->{circdb}:"";
 
     # Anreicherung mit OLWS-Daten
-    if (defined $circinfotable->get($self->{database}) && defined $circinfotable->get($self->{database})->{circcheckurl}){
+    if ($circdb && $circcheckurl){
         if ($logger->is_debug){                        
-            $logger->debug("Endpoint: ".$circinfotable->get($self->{database})->{circcheckurl});
+            $logger->debug("Endpoint: ".$circcheckurl);
         }
         
         my $soapresult;
         eval {
             my $soap = SOAP::Lite
                 -> uri("urn:/Viewer")
-                    -> proxy($circinfotable->get($self->{database})->{circcheckurl});
+                    -> proxy($circcheckurl);
             
             my $result = $soap->get_item_info(
                 SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                    SOAP::Data->name(collection => $circinfotable->get($self->{database})->{circdb})->type('string'),
-                    SOAP::Data->name(item       => $self->{id})->type('string'))));
+                    SOAP::Data->name(collection => $circdb)->type('string'),
+                    SOAP::Data->name(item       => $id)->type('string'))));
             
             unless ($result->fault) {
                 $soapresult=$result->result;

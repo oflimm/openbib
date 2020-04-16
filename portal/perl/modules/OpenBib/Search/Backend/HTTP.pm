@@ -34,7 +34,6 @@ use Benchmark ':hireswallclock';
 use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
-use SOAP::Lite;
 use Storable;
 use YAML ();
 

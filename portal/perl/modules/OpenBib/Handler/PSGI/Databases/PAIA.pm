@@ -96,11 +96,29 @@ sub authenticate {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
+    my $suppressresponsecodes = $query->param('suppress-response-codes')    || '';
+
+    
     if ($service eq "login" || $service eq "logout"){
-	$self->${service};
+	return $self->${service};
     }
     else {
 	$logger->error("invalid service");
+	
+	my $response_ref = {
+	    error => 'Missing or invalid query parameters',
+	    code  => 422
+	};
+	
+	if ($suppressresponsecodes){
+	    $self->header_add('Status' => 200); # ok
+	}
+	else {
+	    $self->header_add('Status' => 422); # invalid request
+	    
+	}
+
+	return decode_utf8(encode_json $response_ref);
     }
         
     return;
@@ -202,6 +220,24 @@ sub login {
 		"patron"     => $response_username,
 		"scope"      => "read_patron read_fees read_items write_items read_notifications delete_notifications"
 	};
+
+	my $paia = $config->get_schema->resultset('Paia')->single(
+	    {
+		username => $response_username,
+	    },
+	    );
+
+	if ($paia){
+	    $paia->delete;
+	}
+	
+	$config->get_schema->resultset('Paia')->create(
+	    {
+		tstamp   => \'NOW()',
+		username => $response_username,
+		token    => $token
+	    }
+	    );
 	
     }
     else {

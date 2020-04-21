@@ -1,12 +1,12 @@
 use utf8;
-package OpenBib::Schema::System::Result::Templateinforevision;
+package OpenBib::Schema::System::Result::Paia;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
 =head1 NAME
 
-OpenBib::Schema::System::Result::Templateinforevision
+OpenBib::Schema::System::Result::Paia
 
 =cut
 
@@ -15,11 +15,11 @@ use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<templateinforevision>
+=head1 TABLE: C<paia>
 
 =cut
 
-__PACKAGE__->table("templateinforevision");
+__PACKAGE__->table("paia");
 
 =head1 ACCESSORS
 
@@ -28,20 +28,19 @@ __PACKAGE__->table("templateinforevision");
   data_type: 'bigint'
   is_auto_increment: 1
   is_nullable: 0
-  sequence: 'templateinforevision_id_seq'
+  sequence: 'paia_id_seq'
 
 =head2 tstamp
 
   data_type: 'timestamp'
   is_nullable: 1
 
-=head2 templateid
+=head2 username
 
-  data_type: 'bigint'
-  is_foreign_key: 1
-  is_nullable: 0
+  data_type: 'text'
+  is_nullable: 1
 
-=head2 templatetext
+=head2 token
 
   data_type: 'text'
   is_nullable: 1
@@ -54,13 +53,13 @@ __PACKAGE__->add_columns(
     data_type         => "bigint",
     is_auto_increment => 1,
     is_nullable       => 0,
-    sequence          => "templateinforevision_id_seq",
+    sequence          => "paia_id_seq",
   },
   "tstamp",
   { data_type => "timestamp", is_nullable => 1 },
-  "templateid",
-  { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
-  "templatetext",
+  "username",
+  { data_type => "text", is_nullable => 1 },
+  "token",
   { data_type => "text", is_nullable => 1 },
 );
 
@@ -76,26 +75,9 @@ __PACKAGE__->add_columns(
 
 __PACKAGE__->set_primary_key("id");
 
-=head1 RELATIONS
-
-=head2 templateid
-
-Type: belongs_to
-
-Related object: L<OpenBib::Schema::System::Result::Templateinfo>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "templateid",
-  "OpenBib::Schema::System::Result::Templateinfo",
-  { id => "templateid" },
-  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
-);
-
 
 # Created by DBIx::Class::Schema::Loader v0.07049 @ 2020-04-21 10:35:12
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:4i4QlRvymT7usdgcPZs4AA
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:5JW8Np5injTvoweuIpfrbw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

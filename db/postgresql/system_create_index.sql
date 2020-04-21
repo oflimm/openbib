@@ -314,3 +314,7 @@ ALTER TABLE dbistopic_dbisdb ADD CONSTRAINT fk_dbistopic_dbisdb_dbisdb FOREIGN K
 CREATE INDEX dbistopicdbisdb_dbistopic ON dbistopic_dbisdb (dbistopicid);
 CREATE INDEX dbistopicdbisdb_dbisdb ON dbistopic_dbisdb (dbisdbid);
 
+ALTER TABLE paia ADD PRIMARY KEY (id);
+CREATE INDEX paia_username ON paia (username);
+CREATE INDEX paia_token ON paia (token);
+CREATE INDEX paia_tstamp ON paia (tstamp);

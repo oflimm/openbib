@@ -643,3 +643,13 @@ CREATE TABLE dbistopic_dbisdb (
  dbisdbid     BIGINT    NOT NULL,
  rank         INT
 );
+
+DROP TABLE IF EXISTS paia;
+CREATE TABLE paia (
+  id                  BIGSERIAL,
+  tstamp              TIMESTAMP,
+
+  username            TEXT,
+  token               TEXT
+
+);

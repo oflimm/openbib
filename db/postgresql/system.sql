@@ -219,7 +219,6 @@ CREATE TABLE sessioninfo (
  createtime     TIMESTAMP,
  lastresultset  TEXT,
  username       TEXT,
- userpassword   TEXT,
 
  viewname       TEXT,
 
@@ -297,15 +296,16 @@ CREATE TABLE searchhistory (
 
 DROP TABLE IF EXISTS userinfo;
 CREATE TABLE userinfo (
- id         BIGSERIAL,
+ id           BIGSERIAL,
  creationdate TIMESTAMP,
  lastlogin    TIMESTAMP,
 
- viewid     BIGINT,
- locationid BIGINT,
+ viewid          BIGINT,
+ locationid      BIGINT,
  authenticatorid BIGINT,
- username  TEXT,
- password  TEXT,
+ username        TEXT,
+ password        TEXT,
+ token           TEXT,
 
  /* User informatin from library system */
  nachname   TEXT,

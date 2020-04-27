@@ -15,11 +15,12 @@
 [%# Ausgabekategorien %]
 [% categories = [
                 'L0010', # msg.maketext("L0010") # Institutsname
+                'L0090', # msg.maketext("L0090") # Internet
                 'L0020', # msg.maketext("L0020") # Adresse
                 'L0030', # msg.maketext("L0030") # Gebäude
                 'L0180', # msg.maketext("L0180") # Art der Bibliothek
-                'L0110', # msg.maketext("L0110") # Öffnungszeiten
-                'L0270', # msg.maketext("L0270") # Arbeitsplaetze
+                #'L0110', # msg.maketext("L0110") # Öffnungszeiten
+                #'L0270', # msg.maketext("L0270") # Arbeitsplaetze
                 'L0230', # msg.maketext("L0230") # Online-Katalogisierung seit Erscheinungsjahr
                 'L0290', # msg.maketext("L0290") # Weitere Kataloge
                 'L0100', # msg.maketext("L0100") # Auskunft / Bibliothekar(in)
@@ -28,7 +29,6 @@
                 'L0060', # msg.maketext("L0060") # Telefon
                 'L0070', # msg.maketext("L0070") # Fax
                 'L0080', # msg.maketext("L0080") # E-Mail
-                'L0090', # msg.maketext("L0090") # Internet
 
                 'Bestand', # msg.maketext("Bestand") #Kombinierter Gesamtbestand aus L0120 usw.
 #                'L0120', # msg.maketext("L0120") # Bestand Monos

@@ -50,11 +50,6 @@ __PACKAGE__->table("sessioninfo");
   data_type: 'text'
   is_nullable: 1
 
-=head2 userpassword
-
-  data_type: 'text'
-  is_nullable: 1
-
 =head2 viewname
 
   data_type: 'text'
@@ -107,8 +102,6 @@ __PACKAGE__->add_columns(
   "lastresultset",
   { data_type => "text", is_nullable => 1 },
   "username",
-  { data_type => "text", is_nullable => 1 },
-  "userpassword",
   { data_type => "text", is_nullable => 1 },
   "viewname",
   { data_type => "text", is_nullable => 1 },
@@ -261,8 +254,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2020-04-21 10:35:12
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Hpz4ru/UvcdunIFYyo/boA
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2020-04-22 08:12:01
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:KwsZutTHhv+SBj9az2REkQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -62,9 +62,8 @@ sub authenticate {
 
     my $userid = 0;
 
-    my $config = $self->get_config;
-
-    my $dbname = $self->get('name');
+    my $config  = $self->get_config;
+    my $dbname  = $self->get('name');
 
     my $ua = LWP::UserAgent->new();
     $ua->agent('USB Koeln/1.0');
@@ -76,6 +75,8 @@ sub authenticate {
     
     my $request = HTTP::Request::Common::POST( $url, [ %args ] );
     my $response = $ua->request($request);
+
+    my $access_token = "";
     
     if ( $response->is_error() ) {
 	$logger->error("Error in PAIA request");
@@ -87,7 +88,9 @@ sub authenticate {
 	eval {
 	    my $json_ref = decode_json $response->content;
 
-	    if (!$json_ref->{access_token}){
+	    $access_token = $json_ref->{access_token};
+	    
+	    if (!$access_token){
 		return -2;
 	    }
 	};
@@ -116,6 +119,7 @@ sub authenticate {
 	    hashed_password => undef,
 	    authenticatorid => $self->get('id'),
 	    viewid          => undef,
+	    token           => $access_token,
 			     });
 	
 	$logger->debug("User added with new id $userid");
@@ -127,16 +131,14 @@ sub authenticate {
 		viewid          => undef,
 		authenticatorid => $self->get('id'),
 	    },
-	    {
-		select => ['id'],
-		as     => ['thisid'],
-	    }
+	    undef
 	    )->first;
 	
-       if ($local_user){
-           $userid = $local_user->get_column('thisid');
-       }
-
+	if ($local_user){
+	    $userid = $local_user->get_column('id');
+	    $local_user->update({ token => $access_token });
+	}
+	
 	$logger->debug("User exists with id $userid");
 	
     }

@@ -5311,6 +5311,7 @@ sub delete_private_info {
             sperre     => '',
             sperrdatum => '',
             gebdatum   => '',
+            token      => '',
         }
     );
    

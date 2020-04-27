@@ -256,7 +256,7 @@ sub authenticate {
 	}
     }
 
-    my $authenticator = OpenBib::Authenticator::Factory->create_authenticator({ id => $authenticatorid, config => $config});
+    my $authenticator = OpenBib::Authenticator::Factory->create_authenticator({ id => $authenticatorid, config => $config, session => $session});
 
     # Konsistenzchecks
     { 

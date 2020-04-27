@@ -1277,22 +1277,21 @@
 
 [% IF locations.size > 0 %]
 
+<!--
 <div id="map">
     <div id="mapDiv"></div>
     <div id="suchleiste"><span id="tb_cont"><input type="search" list="theDataList" placeholder="Bibliothek finden.." name="fname" id="suche" /><span onclick="clearSearch()" style="top: 0px;" id="clear_input">X</span></span>
     </div>
-    <!--<button id="roundFilter" onclick="showFilterPanel()"></button>-->
     <img src="https://www.ub.uni-koeln.de/e12502/e12523/e33478/e40292/if_filter_299094_ger.png" id="filterImg" onclick="showFilterPanel()"></img>
     <div id="filterPanel" style="display: none;">
         <div id="einstellungen"></div>
     </div>
-</div>
+</div> -->
 <datalist id="theDataList"></datalist>
 
 <script src="https://kug.ub.uni-koeln.de/js/leaflet.js"></script>
 
 <script src="https://kug.ub.uni-koeln.de/js/jquery-3.3.1.slim.min.js"></script>
-
 
 
 <script type="text/javascript">

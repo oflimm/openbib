@@ -701,7 +701,7 @@ sub items {
 
     if (defined($itemlist) && %{$itemlist->{Konto}}) {
 	my $all_items_ref = [];
-
+	
 	foreach my $nr (sort keys %{$itemlist->{Konto}}){
 	    push @$all_items_ref, $itemlist->{Konto}{$nr};
 	}
@@ -710,9 +710,9 @@ sub items {
 	    my @titleinfo = ();
 	    push @titleinfo, $item_ref->{Verfasser} if ($item_ref->{Verfasser});
 	    push @titleinfo, $item_ref->{Titel} if ($item_ref->{Titel});
-
+	    
 	    my $about = join(': ',@titleinfo);
-
+	    
 	    my $starttime = $item_ref->{Datum};
 	    my $endtime   = $item_ref->{RvDatum};
 
@@ -720,7 +720,7 @@ sub items {
 		about   => $about,
 		edition => $scheme."://".$servername.$path_prefix."/databases/id/$database/titles/id/".$item_ref->{Titlecatkey},
 		item    => $scheme."://".$servername.$path_prefix."/databases/id/$database/titles/id/".$item_ref->{Titlecatkey}."/items/id/".uri_escape($item_ref->{MedienNummer}),
-		renewals => $item_ref->{VlAnz};
+		renewals => $item_ref->{VlAnz},
 	    };
 	    
 	}

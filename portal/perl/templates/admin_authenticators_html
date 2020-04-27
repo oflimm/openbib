@@ -44,6 +44,7 @@
     <option value="self">[% msg.maketext("Selbstregistrierung") %]</option>
     <option value="ldap">[% msg.maketext("LDAP") %]</option>
     <option value="olws">[% msg.maketext("OLWS") %]</option>
+    <option value="paia">[% msg.maketext("PAIA") %]</option>
   </select>
 </div>
 

@@ -159,19 +159,20 @@ $(document).ready(function(){
  END ;
 %]
 
-<div id="ob-additional_title_info"><!-- Begin Additional Title Info -->
 [%- reviews = user.get_reviews_of_tit({ titleid => record.id, dbname => record.database }); %]
 [%- issn              = normdata.${"T0543"}.first.content ;
     IF issn ;
        journaltocs_feed  = "http://www.journaltocs.ac.uk/api/journals/${issn}?output=articles";
     END ;
 -%]
+
+<div id="ob-additional_title_info"><!-- Begin Additional Title Info -->
 [%# USE dumper;dumper.dump(holding)%]
 
 <ul class="nav nav-tabs" role="tablist">
 [%   IF circulation.size > 0 %]
 <li class="nav-item"><a class="nav-link active" role="tab" data-toggle="tab" href="#ob-circulation_info">[% msg.maketext("Ausleihe/Exemplare") %]</a></li>
-[%   ELSE %]
+[%   ELSIF holding.size > 0 %]
 <li class="nav-item"><a class="nav-link active" role="tab" data-toggle="tab" href="#ob-holding_info">[% msg.maketext("Bestand") %]</a></li>
 [%   END %]
 
@@ -190,7 +191,7 @@ $(document).ready(function(){
 <div role="tabpanel" class="tab-pane fade-in active" id="ob-circulation_info"><!-- Begin Circulation -->
 [% PROCESS common/subtemplate name="circulation" %]
 </div><!-- End Circulation -->
-[% ELSE %]
+[% ELSIF holding.size > 0 %]
 <div role="tabpanel" class="tab-pane fade-in active" id="ob-holding_info"><!-- Begin Bestand -->
 [% PROCESS common/subtemplate name="holding" %]
 </div><!-- End Bestand -->

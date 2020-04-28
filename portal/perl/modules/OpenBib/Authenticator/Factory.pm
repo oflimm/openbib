@@ -35,6 +35,7 @@ use Log::Log4perl qw(get_logger :levels);
 use OpenBib::Config;
 use OpenBib::User;
 use OpenBib::Authenticator::Backend::SelfRegistration;
+use OpenBib::Authenticator::Backend::PAIA;
 use OpenBib::Authenticator::Backend::OLWS;
 use OpenBib::Authenticator::Backend::LDAP;
     
@@ -58,6 +59,7 @@ sub create_authenticator {
         $logger->debug("Factory for authenticator $id with type ".$authenticator_ref->{type});
     }
 
+    return new OpenBib::Authenticator::Backend::PAIA($arg_ref)  if ($authenticator_ref->{type} eq "paia");
     return new OpenBib::Authenticator::Backend::OLWS($arg_ref)  if ($authenticator_ref->{type} eq "olws");
     return new OpenBib::Authenticator::Backend::LDAP($arg_ref)  if ($authenticator_ref->{type} eq "ldap");
     

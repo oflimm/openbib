@@ -38,6 +38,7 @@
     <option value="self" [% IF authenticatorinfo.type == 'self' %]selected="selected"[% END %]>[% msg.maketext("Selbstregistrierung") %]</option>
     <option value="ldap" [% IF authenticatorinfo.type == 'ldap' %]selected="selected"[% END %]>[% msg.maketext("LDAP") %]</option>
     <option value="olws" [% IF authenticatorinfo.type == 'olws' %]selected="selected"[% END %]>[% msg.maketext("OLWS") %]</option>
+    <option value="paia" [% IF authenticatorinfo.type == 'paia' %]selected="selected"[% END %]>[% msg.maketext("PAIA") %]</option>
   </select>
 </div>
 

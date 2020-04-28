@@ -110,6 +110,7 @@
                 'T1600', # msg.maketext("T1600") Hinweis
                 #'E4100', # msg.maketext("E4100") Basisklassifikation
                 #'T4500', # msg.maketext("T4500") Nutzer-Tags
+                'T4700', # msg.maketext("T4700") Sammlungsvermerk
                 'T4600', # msg.maketext("T4600") Sammlungs-Portale
                 'T5005', # msg.maketext("T5005") Uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke

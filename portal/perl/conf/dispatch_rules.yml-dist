@@ -492,9 +492,33 @@
    args:
       disable_content_negotiation: 1
 - # connector_paia_loc:
-   module: 'OpenBib::Handler::PSGI::Connector::PAIA'
-   rule: '/portal/:view/connector/paia'
-   runmode: 'show'
+   module: 'OpenBib::Handler::PSGI::Databases::PAIA'
+   rule: '/portal/:view/databases/id/:database/paia/auth/:serviceid[post]'
+   runmode: 'authenticate'
+   args:
+      disable_content_negotiation: 1
+- # connector_paia_loc:
+   module: 'OpenBib::Handler::PSGI::Databases::PAIA'
+   rule: '/portal/:view/databases/id/:database/paia/core/:userid[get]'
+   runmode: 'patron'
+   args:
+      disable_content_negotiation: 1
+- # connector_paia_loc:
+   module: 'OpenBib::Handler::PSGI::Databases::PAIA'
+   rule: '/portal/:view/databases/id/:database/paia/core/:userid[patch]'
+   runmode: 'update_patron'
+   args:
+      disable_content_negotiation: 1
+- # connector_paia_loc:
+   module: 'OpenBib::Handler::PSGI::Databases::PAIA'
+   rule: '/portal/:view/databases/id/:database/paia/core/:userid/:serviceid[get]'
+   runmode: 'core_get_services'
+   args:
+      disable_content_negotiation: 1
+- # connector_paia_loc:
+   module: 'OpenBib::Handler::PSGI::Databases::PAIA'
+   rule: '/portal/:view/databases/id/:database/paia/core/:userid/:serviceid[post]'
+   runmode: 'core_post_services'
    args:
       disable_content_negotiation: 1
 - # connector_livesearch_loc:

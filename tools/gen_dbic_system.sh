@@ -1,0 +1,3 @@
+#!/bin/bash
+
+dbicdump -o dump_directory=/opt/git/openbib-current/portal/perl/modules -o debug=1 -o really_erase_my_files=1 OpenBib::Schema::System 'dbi:Pg:dbname=openbib_system' $1 $2

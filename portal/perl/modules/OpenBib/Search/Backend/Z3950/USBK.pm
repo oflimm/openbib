@@ -39,7 +39,6 @@ use Encode; # 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use Encode::MAB2;
 use ZOOM;
-use SOAP::Lite;
 use Storable;
 use YAML ();
 

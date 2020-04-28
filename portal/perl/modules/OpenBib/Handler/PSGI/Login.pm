@@ -47,7 +47,6 @@ use OpenBib::Authenticator::Factory;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::CirculationInfoTable;
-use OpenBib::Login::Util;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
@@ -257,7 +256,7 @@ sub authenticate {
 	}
     }
 
-    my $authenticator = OpenBib::Authenticator::Factory->create_authenticator({ id => $authenticatorid, config => $config});
+    my $authenticator = OpenBib::Authenticator::Factory->create_authenticator({ id => $authenticatorid, config => $config, session => $session});
 
     # Konsistenzchecks
     { 

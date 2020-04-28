@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Authenticator::OLWS
+#  OpenBib::Authenticator::PAIA
 #
-#  Dieses File ist (C) 2019 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2020 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -23,7 +23,7 @@
 #
 #####################################################################
 
-package OpenBib::Authenticator::Backend::OLWS;
+package OpenBib::Authenticator::Backend::PAIA;
 
 use strict;
 use warnings;
@@ -34,7 +34,10 @@ use base qw(OpenBib::Authenticator);
 
 use Cache::Memcached::Fast;
 use Encode qw(decode_utf8 encode_utf8);
+use HTTP::Request::Common;
+use JSON::XS qw/decode_json/;
 use Log::Log4perl qw(get_logger :levels);
+use LWP::UserAgent;
 use MLDBM qw(DB_File Storable);
 use SOAP::Lite;
 use Storable ();
@@ -59,59 +62,48 @@ sub authenticate {
 
     my $userid = 0;
 
-    my $config = $self->get_config;
+    my $config  = $self->get_config;
+    my $dbname  = $self->get('name');
 
-    my $olwsconfig = ($config->get('olws')->{$config->{authenticator}{olws}{$self->get('name')}{dbname}})?$config->get('olws')->{$config->{authenticator}{olws}{$self->get('name')}{dbname}}:$config->get('olws')->{'default'};
+    my $ua = LWP::UserAgent->new();
+    $ua->agent('USB Koeln/1.0');
+    $ua->timeout(30);
 
-#    my $circcheckurl  = $circinfotable->get($config->{authenticator}{olws}{$self->get('name')}{dbname})->{circcheckurl};
-#    my $circdb        = $circinfotable->get($config->{authenticator}{olws}{$self->get('name')}{dbname})->{circdb};
+    my $url = $config->get('authenticator')->{'paia'}{$dbname}{'base_url'}."/auth/login";
 
-    my $circcheckurl  = $olwsconfig->{circwsurl};
-    my $circdb        = $olwsconfig->{circdb};
-	
-    if ($logger->is_debug){
-	$logger->debug("Trying to authenticate via OLWS: ".YAML::Dump($olwsconfig));
+    my %args = ('username' => $username, 'password' => $password);
+    
+    my $request = HTTP::Request::Common::POST( $url, [ %args ] );
+    my $response = $ua->request($request);
+
+    my $access_token = "";
+    
+    if ( $response->is_error() ) {
+	$logger->error("Error in PAIA request");
+	$logger->debug("Error-Code:".$response->code());
+	$logger->debug("Fehlermeldung:".$response->message());
+	return 0;
     }
+    else {
+	eval {
+	    my $json_ref = decode_json $response->content;
 
-    my %userinfo=();
+	    $access_token = $json_ref->{access_token};
+	    
+	    if (!$access_token){
+		return -2;
+	    }
+	};
 
-    eval {
-        my $soap = SOAP::Lite
-            -> uri("urn:/Authentication")
-	    -> proxy($circcheckurl);
-        
-        my $result = $soap->authenticate_user(
-            SOAP::Data->name(parameter  =>\SOAP::Data->value(
-				 SOAP::Data->name(username => $username)->type('string'),
-				 SOAP::Data->name(password => $password)->type('string'),
-				 SOAP::Data->name(database => $circdb)->type('string')))
-	    );
-        
-        if ($logger->is_debug){
-            $logger->debug("Result: ".YAML::Dump($result->result));
-        }
-        
-        unless ($result->fault) {
-            if (defined $result->result) {
-                %userinfo = %{$result->result};
-                $userinfo{'erfolgreich'}="1";
-            }
-            else {
-                $userinfo{'erfolgreich'}="0";
-            }
-        }
-        else {
-            $logger->error("SOAP Authentication Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	if ($@){
+	    $logger->error($@);
+
 	    return 0;
-        }
-        
-    };
-    
-    $logger->debug("Authentication via OLWS done");
-    
-    if ($userinfo{'erfolgreich'} ne "1") {
-	return -2;
+	}
+	
     }
+    
+    $logger->debug("Authentication via PAIA successful");
     
     # Gegebenenfalls Benutzer lokal eintragen
     $logger->debug("Save new user");
@@ -127,6 +119,7 @@ sub authenticate {
 	    hashed_password => undef,
 	    authenticatorid => $self->get('id'),
 	    viewid          => undef,
+	    token           => $access_token,
 			     });
 	
 	$logger->debug("User added with new id $userid");
@@ -138,24 +131,22 @@ sub authenticate {
 		viewid          => undef,
 		authenticatorid => $self->get('id'),
 	    },
-	    {
-		select => ['id'],
-		as     => ['thisid'],
-	    }
+	    undef
 	    )->first;
 	
-       if ($local_user){
-           $userid = $local_user->get_column('thisid');
-       }
-
+	if ($local_user){
+	    $userid = $local_user->get_column('id');
+	    $local_user->update({ token => $access_token });
+	}
+	
 	$logger->debug("User exists with id $userid");
 	
     }
     
     # Benuzerinformationen eintragen
-    $user->set_private_info($username,\%userinfo);
+    #$user->set_private_info($username,\%userinfo);
     
-    $logger->debug("Updated private user info");
+    #$logger->debug("Updated private user info");
 
     return $userid;
 }
@@ -165,11 +156,11 @@ __END__
 
 =head1 NAME
 
-OpenBib::Authenticator::Backend::SelfRegistration - Backend zur Authentifizierung an der Eigenen Nutzerdatenbank nach Selbstregistrierung
+OpenBib::Authenticator::Backend::PAIA - Backend zur Authentifizierung mittels PAIA Webservice
 
 =head1 DESCRIPTION
 
-Dieses Backend stellt die Methode authenticate zur Authentifizierung eines Nutzer an der lokalen Nutzerdatenbank bereit
+Dieses Backend stellt die Methode authenticate zur Authentifizierung eines Nutzer ueber einen PAIA Webservice bereit
 
 =head1 SYNOPSIS
 

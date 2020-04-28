@@ -40,7 +40,6 @@ use OpenBib::Catalog;
 use OpenBib::Schema::Catalog;
 use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
-use SOAP::Lite;
 
 use OpenBib::Config;
 
@@ -331,48 +330,6 @@ sub identify_by_field_content {
 
     $logger->info("### $self->{source} -> $self->{destination}: Gefundene Titel-ID's $count");
 
-    return $self;
-}
-
-sub identify_by_olws_circulation {
-    my $self    = shift;
-    my $arg_ref = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $soap = SOAP::Lite
-        -> uri($arg_ref->{urn})
-            -> proxy($arg_ref->{proxy});
-    my $result = $soap->get_idn_of_borrows($arg_ref->{soap_params});
-    
-    my $circexlist=undef;
-
-    unless ($result->fault) {
-        $circexlist=$result->result;
-    }
-    else {
-        $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode,
-    $result->faultstring, $result->faultdetail);
-        return;
-    }
-
-    
-    my @circexemplarliste=@$circexlist;
-    
-    foreach my $singleex_ref (@circexemplarliste) {
-        $self->{titleid}{$singleex_ref->{'Katkey'}}=1;
-    }
-
-    
-    my $count=0;
-
-    foreach my $key (keys %{$self->{titleid}}){
-        $count++;
-    }
-
-    $logger->info("### $self->{source} -> $self->{destination}: Gefundene Titel-ID's $count");
-    
     return $self;
 }
 

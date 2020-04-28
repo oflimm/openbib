@@ -32,6 +32,8 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
+use LWP::UserAgent;
+
 use base qw(OpenBib::API);
 
 sub new {

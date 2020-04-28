@@ -1571,6 +1571,17 @@ sub set_user {
     return;
 }
 
+sub set_token {
+    my ($self,$token)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $self->get_schema->resultset('Sessioninfo')->search({ sessionid => $self->{ID} })->update({ usertoken => $token });
+
+    return;
+}
+
 sub logout_user {
     my ($self,$user)=@_;
 

@@ -1,4 +1,6 @@
 <nav aria-label="Page navigation">
+  [%- forget_it = nav.pages_per_set(5) -%]
+
   <ul class="pagination justify-content-start">
 [% IF nav.current_page > 1 %]
     <li class="page-item">
@@ -14,6 +16,12 @@
        <a class="page-link" href="[% path %]?page=[% nav.first_page %][% IF query_args_base %];[% query_args_base %][% END %]">[% nav.first_page %]</a>
     </li>
 [%- END -%]
+[%- IF nav.pages_in_set.first - 1 > nav.first_page -%]
+    <li class="page-item">
+       <span class="page-link disabled">...</span><!-- <a class="page-link" href="[% path %]?page=[% nav.last_page %][% IF query_args_base %];[% query_args_base %][% END %]">[% nav.last_page %]</a> -->
+    </li>
+[%- END -%]
+
 [%- FOREACH page IN nav.pages_in_set -%]
 [%-   lastpage = page -%]
 [%-   IF page == nav.current_page -%]
@@ -26,9 +34,10 @@
     </li>
 [%-   END -%]
 [%- END -%]
+
 [%- IF lastpage < nav.last_page -%]
     <li class="page-item">
-       <a class="page-link" href="[% path %]?page=[% nav.last_page %][% IF query_args_base %];[% query_args_base %][% END %]">[% nav.last_page %]</a>
+       <span class="page-link disabled">...</span><!-- <a class="page-link" href="[% path %]?page=[% nav.last_page %][% IF query_args_base %];[% query_args_base %][% END %]">[% nav.last_page %]</a> -->
     </li>
 [%- END -%]
 

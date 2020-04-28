@@ -17,6 +17,8 @@
 [%- bklookup    = config.load_bk -%]
 [% IF format == "full" %]
 
+[%   PROCESS common/subtemplate name="titles_record_html_sammlungslinks" %]
+
 <table class="ym-full ob-title_fields">
 <tr><td class="ob-field">id</td><td>[% record.id %]</td></tr>
 
@@ -28,84 +30,6 @@ searchprofileid_of_database   = config.get_searchprofile_of_database(record.data
 
 globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
 rswkswt_done      = {};
-
-sammlungen = {
-   'Slg. Gertrud von le Fort' => {
-                        url => 'http://lefort.ub.uni-koeln.de/'
-                        desc => 'Sammlung Gertrud von le Fort'
-                                 },
-   'Slg. Dante' => {
-                        url => 'http://dante.ub.uni-koeln.de/'
-                        desc => 'Dante-Sammlung (Wilhelm Reiners)'
-                                 },
-   'H.C. Artmann-Sammlung Knupfer' => {
-                        url => 'http://artmann.ub.uni-koeln.de/'
-                        desc => 'H.C. Artmann-Sammlung Knupfer'
-                                 },
-   'Slg. Wilhelm Alff' => {
-                        url => 'http://www.ub.uni-koeln.de/sammlungen/alff/index_ger.html'
-                        desc => 'Sammlung Wilhelm Alff'
-                                 },
-   'Slg. Erkes' => {
-                        url => 'http://www.ub.uni-koeln.de/bibliothek/ssg/islandica/index_ger.html'
-                        desc => 'Sammlung Islandica'
-                                 },
-   'Slg. Islandica' => {
-                        url => 'http://www.ub.uni-koeln.de/bibliothek/ssg/islandica/index_ger.html'
-                        desc => 'Sammlung Islandica'
-                                 },
-   'Slg. Eugen Schmalenbach' => {
-                        url => 'http://schmalenbach.ub.uni-koeln.de/'
-                        desc => 'Sammlung Eugen Schmalenbach'
-                                 },
-   'Slg. Syndikatsbibliothek' => {
-                        url => 'http://syndikatsbibliothek.ub.uni-koeln.de/'
-                        desc => 'Sammlung Syndikatsbibliothek'
-                                 },
-   'Slg. Thomas a Kempis' => {
-                        url => 'http://.ub.uni-koeln.de/'
-                        desc => 'Sammlung Thomas a Kempis'
-                                 },
-   'Slg. Westerholt' => {
-                        url => 'http://www.ub.uni-koeln.de/sammlungen/westerholt/index_ger.html'
-                        desc => 'Sammlung Westerholt'
-                                 },
-   'Slg. Fritz von Westerholt' => {
-                        url => 'http://www.ub.uni-koeln.de/sammlungen/westerholt/index_ger.html'
-                        desc => 'Sammlung Westerholt'
-                                 },
-   'Slg. Wilhelmine von Westerholt' => {
-                        url => 'http://www.ub.uni-koeln.de/sammlungen/westerholt/index_ger.html'
-                        desc => 'Sammlung Westerholt'
-                                 },
-};
-
-classifications  =  [];
-portals          =  [];
-sammlungen_done  =  {};
-
-FOREACH classification IN normset.${"T0700"} ;
-     IF sammlungen.${classification.content}.defined ;
-        url  = sammlungen.${classification.content}.url;
-        desc = sammlungen.${classification.content}.desc;
-        classification.content = "<img style=\"vertical-align:bottom\" src=\"${config.get('home_img')}\" alt=\"Home-Icon\" />&nbsp;<a href=\"${url}\" target=\"_bl
-ank\"><b>${desc}</b></a>" ;
-        IF NOT sammlungen_done.${url} ;
-          portals.push(classification);
-        END ;
-        sammlungen_done.${url} = 1;
-     ELSE ;
-        classifications.push(classification);
-     END ;
-END;
-
-IF classifications ;
-  normset.${"T0700"} = classifications;
-END;
-
-IF portals ;
-  normset.${"T4600"} = portals;
-END;
 
 FOREACH category IN categories;
     FOREACH item IN normdata.$category;

@@ -123,7 +123,7 @@ $(document).ready(function(){
 [% END %]
                 filter: false,
 		sortResults: false,
-		delay: 100,
+		delay: 200,
                 multiple: true,                
                 multipleSeparator: ' ',
                 extraParams: {

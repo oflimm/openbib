@@ -11,7 +11,7 @@ SELECT setval('sessioninfo_id_seq', (SELECT MAX(id) FROM sessioninfo));
 SELECT setval('userinfo_id_seq', (SELECT MAX(id) FROM userinfo));
 SELECT setval('cartitem_id_seq', (SELECT MAX(id) FROM cartitem));
 SELECT setval('user_cartitem_id_seq', (SELECT MAX(id) FROM user_cartitem));
-SELECT setval('role_id_seq', (SELECT MAX(id) FROM role));
+SELECT setval('roleinfo_id_seq', (SELECT MAX(id) FROM roleinfo));
 SELECT setval('topic_id_seq', (SELECT MAX(id) FROM topic));
 SELECT setval('dbrtopic_id_seq', (SELECT MAX(id) FROM dbrtopic));
 SELECT setval('dbistopic_id_seq', (SELECT MAX(id) FROM dbistopic));

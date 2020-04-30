@@ -3,6 +3,7 @@ convtab:
 # Standardwerte
 ##############################################################################
   default:
+    store_full_record: 1
     local_enrichmnt:
       '4100': 1        # BK
       '4101': 1        # RVK
@@ -344,6 +345,12 @@ convtab:
           'freesearch': 20
           't4310': 1
           'ft4310': 1
+    inverted_authority_title:
+      '0331':         # HST
+        index:
+          'title': 1
+          'titlestring': 1
+          'freesearch': 1
     inverted_title:
       'tag':
         index:
@@ -7006,7 +7013,7 @@ convtab:
       '5051':         # Bibkey Base
         index:
           'bkey': 1
-          'freesearch': 1
+          'freesearch': 1  
   games:
     listitemcat:
       'tag': 1
@@ -7491,3 +7498,42 @@ convtab:
         index:
           'bkey': 1
           'freesearch': 1
+  legacy:
+    listitemcat:
+      'tag': 1
+      'litlist': 1
+      'popularity': 1
+      '0100': 1
+      '0101': 1
+      '0102': 1
+      '0103': 1
+      '0200': 1
+      '0201': 1
+      '0310': 1
+      '0331': 1
+      '0335': 1
+      '0360': 1
+      '0403': 1
+      '0410': 1
+      '0412': 1
+      '0424': 1
+      '0425': 1
+      '0451': 1
+      '0453': 1
+      '0540': 1
+      '0543': 1
+      '0553': 1
+      '0662': 1
+      '2662': 1
+      '1203': 1
+      '1800': 1
+      '1802': 1
+      '4110': 1
+      '4111': 1
+      '4112': 1      
+      '4113': 1
+      '4120': 1
+      '4400': 1
+      '5005': 1
+      '5050': 1
+      '5055': 1

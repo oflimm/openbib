@@ -18,13 +18,13 @@ resultlist = [];
 
 FOREACH item IN recordlist.to_serialized_reference;
   IF item.fields.${'P0800'}.first.content.defined;
-    resultlist.push(item.fields.${'P0800'}.first.content);
+    resultlist.push(item.fields.${'P0800'}.first.content.trim);
   ELSIF item.fields.${'C0800'}.first.content.defined;
-    resultlist.push(item.fields.${'C0800'}.first.content);
+    resultlist.push(item.fields.${'C0800'}.first.content.trim);
   ELSIF item.fields.${'S0800'}.first.content.defined;
-    resultlist.push(item.fields.${'S0800'}.first.content);
+    resultlist.push(item.fields.${'S0800'}.first.content.trim);
   ELSIF item.fields.${'T0331'}.first.content.defined;
-    resultlist.push(item.fields.${'T0331'}.first.content);
+    resultlist.push(item.fields.${'T0331'}.first.content.trim);
   END;
 END;
 

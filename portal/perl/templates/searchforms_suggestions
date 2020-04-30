@@ -122,6 +122,8 @@ $(document).ready(function(){
                 beforeUseConverter: append_wildcard,
 [% END %]
                 filter: false,
+		sortResults: false,
+		delay: 300,
                 multiple: true,                
                 multipleSeparator: ' ',
                 extraParams: {

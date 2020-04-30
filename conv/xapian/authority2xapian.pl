@@ -117,6 +117,10 @@ my @authority_files = (
         filename => "$rootdir/pools/$database/meta.subject.gz",
     },
     {
+        type     => "title",
+        filename => "$rootdir/pools/$database/meta.title.gz",
+    },
+    {
         type     => "holding",
         filename => "$rootdir/pools/$database/meta.holding.gz",
     }
@@ -176,8 +180,9 @@ foreach my $authority_file_ref (@authority_files){
         
         my $fieldprefix = ($authority_file_ref->{type} eq "person")?"P":
             ($authority_file_ref->{type} eq "subject")?"S":
-                ($authority_file_ref->{type} eq "corporatebody")?"C":
-                    ($authority_file_ref->{type} eq "holding")?"X":"";
+	    ($authority_file_ref->{type} eq "corporatebody")?"C":
+	    ($authority_file_ref->{type} eq "title")?"T":
+	    ($authority_file_ref->{type} eq "holding")?"X":"";
         next unless ($fieldprefix);
         
         open(SEARCHENGINE,"cat $rootdir/data/$database/$dest_filename |" ) || die "$rootdir/data/$database/$dest_filename konnte nicht geoeffnet werden";

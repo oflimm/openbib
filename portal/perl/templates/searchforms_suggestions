@@ -12,7 +12,72 @@
 #
 #######################################################################
 -%]
+[% IF NOT layout_param.without_navigation_search %]
 [% IF user.is_authenticated %]
+<style>
+.acResults {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 2000;
+  display: none;
+  float: left;
+  min-width: 160px;
+//  padding: 5px 0;
+//  margin: 2px 0 0;
+  list-style: none;
+  font-size: 14px;
+  text-align: left;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  background-clip: padding-box;
+}
+
+<!--
+.acResults > li {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.42857143;
+  color: #333333;
+  white-space: nowrap;
+}
+
+-->
+
+.acResults > ul  {
+    padding: 0px;
+}
+
+.acResults > ul > li:first-child {
+//    border-top-left-radius: .25rem;
+//    border-top-right-radius: .25rem;
+}
+
+
+.acResults > ul > li {
+    position: relative;
+    display: block;
+    padding: .75rem 0.75rem;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,.125);
+}
+
+.acResults > ul > li:hover {
+    background-color: lightgrey;
+}
+
+//*, ::after, ::before {
+//    box-sizing: border-box;
+//}
+</style>
+
 [% autocompletion_type = user.get_autocompletion %]
 [% livesearch          = user.get_livesearch %]
 [% IF 1 == 0 && autocompletion_type == "spelling" && spelling_suggestion.as_you_type %]
@@ -61,6 +126,8 @@ $(document).ready(function(){
                 multipleSeparator: ' ',
                 extraParams: {
                   l: "[% lang %]",
+                  facets: "none",
+		  srt: "relevance_desc",
                   clp: "authority",
                 }});
 [%    END %]
@@ -79,6 +146,8 @@ $(document).ready(function(){
                 multipleSeparator: ' ',
                 extraParams: {
                   l: "[% lang %]",
+                  facets: "none",
+		  srt: "relevance_desc",
                   clp: "authority",
                 }});
 [%    END %]
@@ -97,6 +166,8 @@ $(document).ready(function(){
                 multipleSeparator: ' ',
                 extraParams: {
                   l: "[% lang %]",
+                  facets: "none",
+		  srt: "relevance_desc",
                   clp: "authority",
                 }});
 [%    END %]
@@ -115,6 +186,8 @@ $(document).ready(function(){
                 multipleSeparator: ' ',
                 extraParams: {
                   l: "[% lang %]",
+                  facets: "none",
+		  srt: "relevance_desc",
                   clp: "authority",
                 }});
 [%    END %]
@@ -122,4 +195,5 @@ $(document).ready(function(){
 })
 </script>
 [%   END %]
+[% END %]
 [% END %]

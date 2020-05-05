@@ -71,11 +71,12 @@ $chars_to_replace = qr/$chars_to_replace/;
 my $config     = new OpenBib::Config;
 my $enrichment = new OpenBib::Enrichment;
 
-my ($database,$help,$logfile,$incremental,$bulkinsert,$keepfiles,$deletefilename,$insertfilename,$reducemem);
+my ($database,$help,$logfile,$incremental,$bulkinsert,$keepfiles,$withtitlecache,$deletefilename,$insertfilename,$reducemem);
 
 &GetOptions("database=s"        => \$database,
             "logfile=s"         => \$logfile,
             "incremental"       => \$incremental,
+            "with-titlecache"   => \$withtitlecache,
             "bulk-insert"       => \$bulkinsert,
             "keep-files"        => \$keepfiles,
             "reduce-mem"        => \$reducemem,
@@ -332,6 +333,11 @@ ALLTITLECONTROL
         my $thistitlecache    = $item->get_column('thistitlecache');
         my $thisdate          = $item->get_column('thisdate') || strftime("%Y-%m-%d %T", localtime) ;
 
+
+	if (!$withtitlecache){
+	    $thistitlecache = "";
+	}
+	
 	$thisisbn = cleanup_isbn($thisisbn);
 	
         $logger->debug("Got Title with id $thistitleid and ISBN $thisisbn");
@@ -462,6 +468,10 @@ ALLTITLECONTROL
         my $thisbibkey     = $item->get_column('thisbibkey');
         my $thistitlecache = $item->get_column('thistitlecache');
         my $thisdate       = $item->get_column('thisdate') || strftime("%Y-%m-%d %T", localtime) ;
+
+	if (!$withtitlecache){
+	    $thistitlecache = "";
+	}
         
         if ($thisbibkey){
             $logger->debug("Got Title with id $thistitleid and bibkey $thisbibkey");
@@ -565,6 +575,9 @@ ALLTITLECONTROL
         my $thisissn       = $item->get_column('thisissn');
         my $thisdate       = $item->get_column('thisdate') || strftime("%Y-%m-%d %T", localtime) ;
         
+	if (!$withtitlecache){
+	    $thistitlecache = "";
+	}
 
         if ($thisissn){
             # Normierung als String
@@ -678,6 +691,10 @@ ALLTITLECONTROL
         
         my $thistitlecache      = $item->get_column('thistitlecache');
         my $thisdate            = $item->get_column('thisdate') || strftime("%Y-%m-%d %T", localtime) ;
+
+	if (!$withtitlecache){
+	    $thistitlecache = "";
+	}
         
         if ($thisworkkey){
             $logger->debug("Got Title with id $thistitleid and workkey $thisworkkey");

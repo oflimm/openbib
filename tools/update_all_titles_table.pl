@@ -210,6 +210,7 @@ COPY all_titles_by_workkey_tmp FROM '$data_dir/all_title_by_workkey.dump' WITH D
 INSERT INTO all_titles_by_workkey (workkey,edition,dbname,titleid,location,titlecache,tstamp) select workkey,edition,dbname,titleid,location,titlecache,tstamp from all_titles_by_workkey_tmp; 
 ALLTITLECONTROL
 
+	close(CONTROL);
     
         open(ISBNOUT,   ">:utf8","$data_dir/all_title_by_isbn.dump");
         open(BIBKEYOUT, ">:utf8","$data_dir/all_title_by_bibkey.dump");

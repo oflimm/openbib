@@ -208,6 +208,7 @@ COPY all_titles_by_bibkey  FROM '$data_dir/all_title_by_bibkey.dump' WITH DELIMI
 COPY all_titles_by_issn    FROM '$data_dir/all_title_by_issn.dump' WITH DELIMITER '' NULL AS '';
 COPY all_titles_by_workkey_tmp FROM '$data_dir/all_title_by_workkey.dump' WITH DELIMITER '' NULL AS '';
 INSERT INTO all_titles_by_workkey (workkey,edition,dbname,titleid,location,titlecache,tstamp) select workkey,edition,dbname,titleid,location,titlecache,tstamp from all_titles_by_workkey_tmp; 
+DROP TABLE all_titles_by_workkey_tmp;
 ALLTITLECONTROL
 
 	close(CONTROL);
@@ -250,8 +251,6 @@ ALLTITLECONTROL
         close(TITDEL);
         close(TITINS);
     }
-
-    $logger->info("### $database: Getting ISBNs from database $database and adding to enrichmntdb");
 
     my $where_ref = { dbname => $database };
 
@@ -303,6 +302,8 @@ ALLTITLECONTROL
     if ($incremental){
         $where_ref->{'title_fields.titleid'} = { -in => \@titleids_to_insert };
     }
+
+    $logger->info("### $database: Getting ISBNs from database $database and adding to enrichmntdb");
     
     my $all_isbns = $catalog->get_schema->resultset('Title')->search_rs(
         $where_ref,
@@ -762,12 +763,11 @@ ALLTITLECONTROL
     }
     
     if ($bulkinsert){
-	my $cmd = "$pgsqlexe -f '$data_dir/all_title_control.sql' $config->{enrichmntdbname}"; 
-
-        $logger->info("### $database: Bulk inserting all keys to enrichment database with command $cmd");
+	
+        $logger->info("### $database: Bulk inserting all keys to enrichment database");
 
 	eval {
-	    system($cmd);
+	    system("$pgsqlexe -f '$data_dir/all_title_control.sql' $config->{enrichmntdbname}");
 	};
 
 	if ($@){

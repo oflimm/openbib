@@ -56,9 +56,9 @@ exclude:
        databases:
           - inst001
           - ebookpda
-	  - proquestpda
-	  - dreierpda
-	  - vubpda
+          - proquestpda
+          - dreierpda
+          - vubpda
           - freebooks
           - zbmed
           - gbvnationallizenzen
@@ -230,7 +230,7 @@ exclude:
           - DE-38
           - freebooks
           - ebookpda
-	  - printpda
+          - printpda
           - nationallizenzen
           - bestellungen
           - doab
@@ -400,9 +400,9 @@ exclude:
        databases:
           - inst001
           - ebookpda
-	  - proquestpda
-	  - dreierpda
-	  - vubpda
+          - proquestpda
+          - dreierpda
+          - vubpda
           - freebooks
           - zbmed
           - gbvnationallizenzen

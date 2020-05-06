@@ -719,7 +719,7 @@ if ($updatemaster){
     my $duration_stage_update_enrichment_start = ParseDate("now");
 
     # Ansonsten bei jedem Node
-    my $cmd = "$config->{'base_dir'}/bin/update_all_titles_table.pl --database=$database -bulk-insert -reduce-mem";
+    my $cmd = "$config->{'base_dir'}/bin/update_all_titles_table.pl --database=$database -reduce-mem";
     
     $logger->info("### $database: Updating All-Titles table");
     system($cmd);

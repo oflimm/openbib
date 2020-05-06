@@ -762,12 +762,19 @@ ALLTITLECONTROL
     }
     
     if ($bulkinsert){
-	my $cmd = "$pgsqlexe -f '$data_dir/all_title_control.sql' $config->{enrichmntdbname} 2> /var/log/openbib/update_all_titles_error_$database.log"; 
+	my $cmd = "$pgsqlexe -f '$data_dir/all_title_control.sql' $config->{enrichmntdbname}"; 
 
         $logger->info("### $database: Bulk inserting all keys to enrichment database with command $cmd");
-	
-        system($cmd);
 
+	eval {
+	    system($cmd);
+	};
+
+	if ($@){
+	    $logger->error($@);
+	    $keepfiles = 1;
+	}
+	
         unless ($keepfiles){
             unlink("$data_dir/all_title_control.sql");
             unlink("$data_dir/all_title_by_isbn.dump");

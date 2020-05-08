@@ -51,70 +51,6 @@
 
 <!-- Targs: [% USE dumper; dumper.dump(layout_param) %] -->
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]"><span class="brand-title"><img src="/images/openbib/views/fidphil/fidphil-logo-40px.png" class="img-fluid d-none d-sm-inline"  />FID Philosophie</span></a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-<!--    <a class="navbar-brand" href="#">Hidden brand</a> -->
-[% IF 0 == 1 && NOT suppress_unauthorized %]
-    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-
-      <li class="nav-item[% IF layout_param.active_menu == "browse" %] active[% END %] dropdown">
-       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          [% msg.maketext("Register") %]
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kubibooks/titles/fields/id/0100.html?l=[% lang %];page=1">[% msg.maketext("Person") %]</a></li>
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kubibooks/titles/fields/id/0331.html?l=[% lang %];page=1">[% msg.maketext("Titel") %]</a></li>
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kubibooks/titles/fields/id/0425.html?l=[% lang %];page=1">[% msg.maketext("Erscheinungsjahre") %]</a></li>
-        </ul>
-      </li>
-
-
-    </ul>
-[% END # End: suppress_unauthorized %]
-
-    <ul class="nav navbar-nav flex-row justify-content-between ml-auto">
-           <li class="nav-item[% IF layout_param.active_menu == "collection" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %]</a></li>
-
-    [% IF username %]
-      [% IF NOT suppress_unauthorized %]
-           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% msg.maketext("Mein Portal") %]</a></li>
-           <li class="nav-item[% IF layout_param.active_menu == "loginout" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %]">[% msg.maketext("Abmelden") %]</a></li>
-      [% END %]
-    [% ELSE %]
-           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Anmelden") %]</a></li>
-    [% END%]
-
-    [% IF config.get('lang').size > 1 %]		
-               <li class="nav-item order-2 order-md-1 mt-1">
-	        <form method="get" action="[% path %]">
-                   <select name="l" class="autosubmit selectpicker" data-width="fit">
-     [% lang_desc = {
-       'en' = msg.maketext("English")
-       'de' = msg.maketext("Deutsch")
-     }
-     %]
-     [% FOREACH thislang IN config.get('lang') %]
-      <option value="[% thislang %]"[% IF lang == thislang %] selected="selected"[% END %]>[% lang_desc.${thislang} %]</option>
-     [% END %]
-                    </select>
-		[% cgiapp.to_cgi_hidden_input({ exclude = ['l']}) %]
-
-		    
-		  <button class="btn btn-primary p-1 ob-nojs_show" type="submit">[% msg.maketext("Los") %]</button>
-		  </form>
-               </li>
-    [% END %]
-    		
-            </ul>
-  
-  </div>
-</nav>
-
 
 <!-- <nav class="navbar" id="ob-fixed_navigation" [% IF without_navigation_search %]class="ob-hidden"[% END %]> -->
 
@@ -124,8 +60,8 @@
  <p/>
 
 [% IF NOT suppress_unauthorized && NOT layout_param.without_navigation_search %]    
-<div class="sticky-top">
-
+<div class="sticky-top mt-4">
+<!---
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
 
 <input type="hidden" name="num"        value="20" />
@@ -150,12 +86,12 @@
     </div>
     <div class="row pt-1 pb-0">     
       <div class="col collapse d-md-block p-0" id="search_options">
-<!--       <div class="d-flex flex-row">
+      <div class="d-flex flex-row">
          <div>[% PROCESS common/subtemplate name="searchforms_record_profile" %]</div>
 	 <div class="p-1"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a></div>
 	 <div class="p-1"><a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a></div>
 	 <div class="p-1"><a  href="[% path_prefix %]/[% config.get('browse_loc') %]/[% config.get('topics_loc') %].html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a></div>
-       </div> -->
+       </div>
        
          <ul class="list-group flex-row flex-wrap justify-content-md-center justify-content-sm-left">
             <li class="list-group-item bg-light pr-1" style="border: none" >
@@ -170,17 +106,16 @@
 	   </li>
 
          </ul>
-    </div><!-- col -->
-  </div><!-- row -->
+    </div>
+  </div><
 </div>
 
 [%# sysprofile%]
 [%# USE dumper; dumper.dump(config.get_orgunitinfo_overview(sysprofile)) ; %]
 [%# USE dumper; dumper.dump(config.get_orgunitinfo_overview(dbchoice)) ; %]
-<!-- [% msg.maketext("Recherchieren Sie in [_1] Titeln und [_2] Katalogen","${alldbcount.allcount.chunk(-3).join('.')}","${alldbs}") %] -->
-
 
 </form>
+-->
 <!-- </nav> -->
 </div><!-- End: sticky-top -->
 [% END # End: suppress_unauthorized %]

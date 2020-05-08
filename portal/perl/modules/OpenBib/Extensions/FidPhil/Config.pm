@@ -30,7 +30,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw('OpenBib::Config');
+use base 'OpenBib::Config';
 
 sub new {
     my ($class,$arg_ref) = @_;

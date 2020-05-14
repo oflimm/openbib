@@ -152,7 +152,6 @@
 </div>
 <div class="tab-pane fade" id="ebsco-md" role="tabpanel" aria-labelledby="profile-tab-md" ic-get-from="http://localhost:8008/portal/fidphil/search.html?l=en;num=20;page=1;lang=en;srt=relevance_desc;st=1;lt=;fs=Perl;profile=2" ic-trigger-on="load">
 
-
 </div>
 
 <div class="navbar navbar-default d-block d-md-none pl-0" style="z-index: 1"><!-- only visible in xs-->

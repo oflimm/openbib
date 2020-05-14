@@ -432,6 +432,15 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
 	    
 	    system($cmd);
 	}
+	elsif ($sb eq "solr"){
+	    $logger->info("### $database: Importing data into Solr searchengine");
+	    
+	    my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2solr.pl --loglevel=$loglevel --database=$database";
+	    
+	    $logger->info("Executing: $cmd");
+	    
+	    system($cmd);
+	}
 	elsif ($sb eq "elasticsearch"){
 	    $logger->info("### $database: Importing data into ElasticSearch searchengine");
 
@@ -710,7 +719,7 @@ if ($updatemaster){
     my $duration_stage_update_enrichment_start = ParseDate("now");
 
     # Ansonsten bei jedem Node
-    my $cmd = "$config->{'base_dir'}/bin/update_all_titles_table.pl --database=$database -bulk-insert";
+    my $cmd = "$config->{'base_dir'}/bin/update_all_titles_table.pl --database=$database -reduce-mem";
     
     $logger->info("### $database: Updating All-Titles table");
     system($cmd);

@@ -1491,7 +1491,7 @@ sub load_circulation {
 		    availability   => $availability,
 		    availability_info   => $availability_ref,
 		    unavailability_info => $unavailability_ref,
-		    mediar_nr      => $media_nr,
+		    media_nr       => $media_nr,
 		};
 
 		push @$circulation_ref, $this_item_ref;

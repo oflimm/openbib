@@ -1,0 +1,36 @@
+[%#-
+#######################################################################
+#
+# Templatename: titles_rdf
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Titel-Normdatensatzes als LinkedData
+#
+#######################################################################
+-%]
+[%- normdata        = record.get_fields -%]
+[%- holding         = record.get_holding -%]
+[%- circulation     = record.load_circulation.get_circulation -%] 
+[%- same_records    = record.enrich_same_records.get_same_records -%]
+[%- similar_records = record.enrich_similar_records.get_similar_records -%]
+<?xml version="1.0" encoding="UTF-8"?>
+	<mods version="3.3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mods="http://www.loc.gov/mods/v3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">
+		<mods:titleInfo>
+		<mods:name type="personal" >
+			[% FOREACH category IN [ "T0100" "T0101" "T0102" "T0103"] %]
+			[%   FOREACH item IN normdata.${category} %]
+				<mods:role>
+					<mods:roleTerm authority="marcrelator" type="code" >aut</mods:roleTerm>
+				</mods:role>
+				<mods:displayForm>[% item.content%]</mods:displayForm>
+			[%   END %]
+			[%   END %]
+		</mods:name> 
+		[% FOREACH item IN normdata.${"T0331"} %]
+				<mods:title>[% item.content %]</mods:title>
+			[% END %]
+		</mods:titleInfo> 
+	</mods>

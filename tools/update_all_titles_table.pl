@@ -71,13 +71,15 @@ $chars_to_replace = qr/$chars_to_replace/;
 my $config     = new OpenBib::Config;
 my $enrichment = new OpenBib::Enrichment;
 
-my ($database,$help,$logfile,$incremental,$bulkinsert,$keepfiles,$deletefilename,$insertfilename);
+my ($database,$help,$logfile,$incremental,$bulkinsert,$keepfiles,$withtitlecache,$deletefilename,$insertfilename,$reducemem);
 
 &GetOptions("database=s"        => \$database,
             "logfile=s"         => \$logfile,
             "incremental"       => \$incremental,
+            "with-titlecache"   => \$withtitlecache,
             "bulk-insert"       => \$bulkinsert,
             "keep-files"        => \$keepfiles,
+            "reduce-mem"        => \$reducemem,
             "delete-filename=s" => \$deletefilename,
             "insert-filename=s" => \$insertfilename,
 	    "help"              => \$help
@@ -138,9 +140,17 @@ foreach my $database (@databases){
     
     my %locations_map = ();
 
-    tie %locations_map,        'MLDBM', "$data_dir/locations_map_${database}.db"
-        or die "Could not tie locations_map_${database}.db\n";
-    
+    if ($reducemem){
+	unlink "$data_dir/locations_map_${database}.db";
+	
+	eval {
+	    tie %locations_map,        'MLDBM', "$data_dir/locations_map_${database}.db";
+	};
+
+	if ($@){
+	    $logger->error_die("$@: Could not tie locations_map_${database}.db");
+	}
+    }
     
     my $all_locations = $catalog->get_schema->resultset('TitleField')->search_rs(
         {
@@ -198,8 +208,10 @@ COPY all_titles_by_bibkey  FROM '$data_dir/all_title_by_bibkey.dump' WITH DELIMI
 COPY all_titles_by_issn    FROM '$data_dir/all_title_by_issn.dump' WITH DELIMITER '' NULL AS '';
 COPY all_titles_by_workkey_tmp FROM '$data_dir/all_title_by_workkey.dump' WITH DELIMITER '' NULL AS '';
 INSERT INTO all_titles_by_workkey (workkey,edition,dbname,titleid,location,titlecache,tstamp) select workkey,edition,dbname,titleid,location,titlecache,tstamp from all_titles_by_workkey_tmp; 
+DROP TABLE all_titles_by_workkey_tmp;
 ALLTITLECONTROL
 
+	close(CONTROL);
     
         open(ISBNOUT,   ">:utf8","$data_dir/all_title_by_isbn.dump");
         open(BIBKEYOUT, ">:utf8","$data_dir/all_title_by_bibkey.dump");
@@ -239,8 +251,6 @@ ALLTITLECONTROL
         close(TITDEL);
         close(TITINS);
     }
-
-    $logger->info("### $database: Getting ISBNs from database $database and adding to enrichmntdb");
 
     my $where_ref = { dbname => $database };
 
@@ -292,6 +302,8 @@ ALLTITLECONTROL
     if ($incremental){
         $where_ref->{'title_fields.titleid'} = { -in => \@titleids_to_insert };
     }
+
+    $logger->info("### $database: Getting ISBNs from database $database and adding to enrichmntdb");
     
     my $all_isbns = $catalog->get_schema->resultset('Title')->search_rs(
         $where_ref,
@@ -303,14 +315,31 @@ ALLTITLECONTROL
     );
 
     my $isbn_insertcount = 0;
-    my $alltitlebyisbn_ref = [];
-    
+    my @alltitlebyisbn = ();
+
+    if ($reducemem){
+	unlink "$data_dir/alltitlebyisbn_${database}.db";
+	
+	eval {
+	    tie @alltitlebyisbn,        'MLDBM', "$data_dir/alltitlebyisbn_${database}.db";
+	};
+	  
+	if ($@){
+	    $logger->error("$@: Could not tie alltitlebyisbn_${database}.db");
+	}
+    }
+
     foreach my $item ($all_isbns->all){
         my $thistitleid       = $item->get_column('thistitleid');
         my $thisisbn          = $item->get_column('thisisbn');
         my $thistitlecache    = $item->get_column('thistitlecache');
         my $thisdate          = $item->get_column('thisdate') || strftime("%Y-%m-%d %T", localtime) ;
 
+
+	if (!$withtitlecache){
+	    $thistitlecache = "";
+	}
+	
 	$thisisbn = cleanup_isbn($thisisbn);
 	
         $logger->debug("Got Title with id $thistitleid and ISBN $thisisbn");
@@ -347,7 +376,7 @@ ALLTITLECONTROL
         
         if (defined $locations_map{$thistitleid}){
             foreach my $location (@{$locations_map{$thistitleid}}){
-                push @$alltitlebyisbn_ref, {
+                push @alltitlebyisbn, {
                     isbn       => $thisisbn,
                     titleid    => $thistitleid,
                     dbname     => $database,
@@ -358,7 +387,7 @@ ALLTITLECONTROL
             }   
         }
         else {
-            push @$alltitlebyisbn_ref, {
+            push @alltitlebyisbn, {
                 isbn       => $thisisbn,
                 titleid    => $thistitleid,
                 dbname     => $database,
@@ -368,31 +397,31 @@ ALLTITLECONTROL
             };        
         }
         
-        if ($isbn_insertcount && $isbn_insertcount % 10000 == 0 && @$alltitlebyisbn_ref){
+        if ($isbn_insertcount && $isbn_insertcount % 10000 == 0 && @alltitlebyisbn){
             if ($bulkinsert){
-                foreach my $this_row_ref (@$alltitlebyisbn_ref){
+                foreach my $this_row_ref (@alltitlebyisbn){
                     print ISBNOUT $this_row_ref->{isbn}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{location}."".$this_row_ref->{tstamp}."".cleanup_content($this_row_ref->{titlecache})."\n";
                 }
                 $logger->info("### $database: $isbn_insertcount ISBN's collected");
             }
             else {
-                $enrichment->get_schema->resultset('AllTitleByIsbn')->populate($alltitlebyisbn_ref);
+                $enrichment->get_schema->resultset('AllTitleByIsbn')->populate(\@alltitlebyisbn);
                 $logger->info("### $database: $isbn_insertcount ISBN's inserted");
             }
-            $alltitlebyisbn_ref = [];
+            @alltitlebyisbn = ();
         }
         
         $isbn_insertcount++;
     }
 
-    if (@$alltitlebyisbn_ref){
+    if (@alltitlebyisbn){
         if ($bulkinsert){
-            foreach my $this_row_ref (@$alltitlebyisbn_ref){
+            foreach my $this_row_ref (@alltitlebyisbn){
                 print ISBNOUT $this_row_ref->{isbn}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{location}."".$this_row_ref->{tstamp}."".cleanup_content($this_row_ref->{titlecache})."\n";
             }
         }
         else {
-            $enrichment->get_schema->resultset('AllTitleByIsbn')->populate($alltitlebyisbn_ref);
+            $enrichment->get_schema->resultset('AllTitleByIsbn')->populate(\@alltitlebyisbn);
         }
     }
 
@@ -422,19 +451,36 @@ ALLTITLECONTROL
     );
 
     my $bibkey_insertcount = 0;
-    my $alltitlebybibkey_ref = [];
+    my @alltitlebybibkey = ();
+
+    if ($reducemem){
+	unlink "$data_dir/alltitlebybibkey_${database}.db";
+	    
+	eval {
+	    tie @alltitlebybibkey,        'MLDBM', "$data_dir/alltitlebybibkey_${database}.db";
+	};
+
+	if ($@){
+	    $logger->error("$@: Could not tie alltitlebybibkey_${database}.db");
+	}
+    }
+
     foreach my $item ($all_bibkeys->all){
         my $thistitleid    = $item->get_column('thistitleid');
         my $thisbibkey     = $item->get_column('thisbibkey');
         my $thistitlecache = $item->get_column('thistitlecache');
         my $thisdate       = $item->get_column('thisdate') || strftime("%Y-%m-%d %T", localtime) ;
+
+	if (!$withtitlecache){
+	    $thistitlecache = "";
+	}
         
         if ($thisbibkey){
             $logger->debug("Got Title with id $thistitleid and bibkey $thisbibkey");
 
             if (defined $locations_map{$thistitleid}){
                 foreach my $location (@{$locations_map{$thistitleid}}){
-                    push @$alltitlebybibkey_ref, {
+                    push @alltitlebybibkey, {
                         bibkey     => $thisbibkey,
                         titleid    => $thistitleid,
                         dbname     => $database,
@@ -445,7 +491,7 @@ ALLTITLECONTROL
                 }
             }
             else {
-                push @$alltitlebybibkey_ref, {
+                push @alltitlebybibkey, {
                     bibkey     => $thisbibkey,
                     titleid    => $thistitleid,
                     dbname     => $database,
@@ -458,30 +504,30 @@ ALLTITLECONTROL
             $bibkey_insertcount++;
         }
 
-        if ($bibkey_insertcount && $bibkey_insertcount % 10000 == 0 && @$alltitlebybibkey_ref){
+        if ($bibkey_insertcount && $bibkey_insertcount % 10000 == 0 && @alltitlebybibkey){
             if ($bulkinsert){
-                foreach my $this_row_ref (@$alltitlebybibkey_ref){
+                foreach my $this_row_ref (@alltitlebybibkey){
                     print BIBKEYOUT $this_row_ref->{bibkey}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{location}."".$this_row_ref->{tstamp}."".cleanup_content($this_row_ref->{titlecache})."\n";
                 }
                 $logger->info("### $database: $bibkey_insertcount Bibkeys collected");
             }
             else {
-                $enrichment->get_schema->resultset('AllTitleByBibkey')->populate($alltitlebybibkey_ref);
+                $enrichment->get_schema->resultset('AllTitleByBibkey')->populate(\@alltitlebybibkey);
                 $logger->info("### $database: $bibkey_insertcount Bibkeys inserted");
             }   
-            $alltitlebybibkey_ref = [];
+            @alltitlebybibkey = ();
         }
 
     }
 
-    if (@$alltitlebybibkey_ref){
+    if (@alltitlebybibkey){
         if ($bulkinsert){
-            foreach my $this_row_ref (@$alltitlebybibkey_ref){
+            foreach my $this_row_ref (@alltitlebybibkey){
                 print BIBKEYOUT $this_row_ref->{bibkey}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{location}."".$this_row_ref->{tstamp}."".cleanup_content($this_row_ref->{titlecache})."\n";
             }
         }
         else {
-            $enrichment->get_schema->resultset('AllTitleByBibkey')->populate($alltitlebybibkey_ref);
+            $enrichment->get_schema->resultset('AllTitleByBibkey')->populate(\@alltitlebybibkey);
         }
     }
 
@@ -511,14 +557,29 @@ ALLTITLECONTROL
     );
     
     my $issn_insertcount = 0;
-    my $alltitlebyissn_ref = [];
+    my @alltitlebyissn   = ();
     
+    if ($reducemem){
+	unlink "$data_dir/alltitlebyissn_${database}.db";
+
+	eval {
+	    tie @alltitlebyissn,        'MLDBM', "$data_dir/alltitlebyissn_${database}.db";
+	};
+
+	if ($@){
+	    $logger->error("$@: Could not tie alltitlebyissn_${database}.db");
+	}
+    }
+
     foreach my $item ($all_issns->all){
         my $thistitleid    = $item->get_column('thistitleid');
         my $thistitlecache = $item->get_column('thistitlecache');
         my $thisissn       = $item->get_column('thisissn');
         my $thisdate       = $item->get_column('thisdate') || strftime("%Y-%m-%d %T", localtime) ;
         
+	if (!$withtitlecache){
+	    $thistitlecache = "";
+	}
 
         if ($thisissn){
             # Normierung als String
@@ -533,7 +594,7 @@ ALLTITLECONTROL
 
             if (defined $locations_map{$thistitleid}){
                 foreach my $location (@{$locations_map{$thistitleid}}){
-                    push @$alltitlebyissn_ref, {
+                    push @alltitlebyissn, {
                         issn       => $thisissn,
                         titleid    => $thistitleid,
                         dbname     => $database,
@@ -544,7 +605,7 @@ ALLTITLECONTROL
                 }
             }
             else {
-                push @$alltitlebyissn_ref, {
+                push @alltitlebyissn, {
                     issn       => $thisissn,
                     titleid    => $thistitleid,
                     dbname     => $database,
@@ -556,30 +617,30 @@ ALLTITLECONTROL
             
             $issn_insertcount++;
 
-            if ($issn_insertcount && $issn_insertcount % 10000 == 0 && @$alltitlebyissn_ref){
+            if ($issn_insertcount && $issn_insertcount % 10000 == 0 && @alltitlebyissn){
                 if ($bulkinsert){
-                    foreach my $this_row_ref (@$alltitlebyissn_ref){
+                    foreach my $this_row_ref (@alltitlebyissn){
                         print ISSNOUT $this_row_ref->{issn}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{location}."".$this_row_ref->{tstamp}."".cleanup_content($this_row_ref->{titlecache})."\n";
                     }
                     $logger->info("### $database: $issn_insertcount ISSNs collected");
                 }
                 else {
-                    $enrichment->get_schema->resultset('AllTitleByIssn')->populate($alltitlebyissn_ref);
+                    $enrichment->get_schema->resultset('AllTitleByIssn')->populate(\@alltitlebyissn);
                     $logger->info("### $database: $issn_insertcount ISSNs inserted");
                 }
-                $alltitlebyissn_ref = [];
+                @alltitlebyissn = ();
             }
         }
     }
 
-    if (@$alltitlebyissn_ref){
+    if (@alltitlebyissn){
         if ($bulkinsert){
-            foreach my $this_row_ref (@$alltitlebyissn_ref){
+            foreach my $this_row_ref (@alltitlebyissn){
                 print ISSNOUT $this_row_ref->{issn}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{location}."".$this_row_ref->{tstamp}."".cleanup_content($this_row_ref->{titlecache})."\n";
             }
         }
         else {
-            $enrichment->get_schema->resultset('AllTitleByIssn')->populate($alltitlebyissn_ref);
+            $enrichment->get_schema->resultset('AllTitleByIssn')->populate(\@alltitlebyissn);
         }
     }
 
@@ -610,7 +671,20 @@ ALLTITLECONTROL
     );
 
     my $workkey_insertcount = 0;
-    my $alltitlebyworkkey_ref = [];
+    my @alltitlebyworkkey   = ();
+
+    if ($reducemem){
+	unlink "$data_dir/alltitlebyworkkey_${database}.db";
+	    
+	eval {
+	    tie @alltitlebyworkkey,        'MLDBM', "$data_dir/alltitlebyworkkey_${database}.db";
+	};
+
+	if ($@){
+	    $logger->error("$@: Could not tie alltitlebyworkkey_${database}.db");
+	}
+    }
+
     foreach my $item ($all_workkeys->all){
         my $thistitleid         = $item->get_column('thistitleid');
         my $thisworkkeybase     = $item->get_column('thisworkkeybase');
@@ -619,13 +693,17 @@ ALLTITLECONTROL
         
         my $thistitlecache      = $item->get_column('thistitlecache');
         my $thisdate            = $item->get_column('thisdate') || strftime("%Y-%m-%d %T", localtime) ;
+
+	if (!$withtitlecache){
+	    $thistitlecache = "";
+	}
         
         if ($thisworkkey){
             $logger->debug("Got Title with id $thistitleid and workkey $thisworkkey");
 
             if (defined $locations_map{$thistitleid}){
                 foreach my $location (@{$locations_map{$thistitleid}}){
-                    push @$alltitlebyworkkey_ref, {
+                    push @alltitlebyworkkey, {
                         workkey    => $thisworkkey,
                         edition    => $edition || 1,
                         titleid    => $thistitleid,
@@ -637,7 +715,7 @@ ALLTITLECONTROL
                 }
             }
             else {
-                push @$alltitlebyworkkey_ref, {
+                push @alltitlebyworkkey, {
                     workkey    => $thisworkkey,
                     edition    => $edition || 1,
                     titleid    => $thistitleid,
@@ -650,29 +728,29 @@ ALLTITLECONTROL
             $workkey_insertcount++;
         }
 
-        if ($workkey_insertcount && $workkey_insertcount % 10000 == 0 && @$alltitlebyworkkey_ref){
+        if ($workkey_insertcount && $workkey_insertcount % 10000 == 0 && @alltitlebyworkkey){
             if ($bulkinsert){
-                foreach my $this_row_ref (@$alltitlebyworkkey_ref){
+                foreach my $this_row_ref (@alltitlebyworkkey){
                     print WORKKEYOUT $this_row_ref->{workkey}."".$this_row_ref->{edition}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{location}."".cleanup_content($this_row_ref->{titlecache})."".$this_row_ref->{tstamp}."\n";
                 }
                 $logger->info("### $database: $workkey_insertcount Workkeys collected");
             }
             else {
-                $enrichment->get_schema->resultset('AllTitleByWorkkey')->populate($alltitlebyworkkey_ref);
+                $enrichment->get_schema->resultset('AllTitleByWorkkey')->populate(\@alltitlebyworkkey);
                 $logger->info("### $database: $workkey_insertcount Workkeys inserted");
             }
-            $alltitlebyworkkey_ref = [];
+            @alltitlebyworkkey = ();
         }
     }
 
-    if (@$alltitlebyworkkey_ref){
+    if (@alltitlebyworkkey){
         if ($bulkinsert){
-            foreach my $this_row_ref (@$alltitlebyworkkey_ref){
+            foreach my $this_row_ref (@alltitlebyworkkey){
                 print WORKKEYOUT $this_row_ref->{workkey}."".$this_row_ref->{edition}."".$this_row_ref->{dbname}."".$this_row_ref->{titleid}."".$this_row_ref->{location}."".cleanup_content($this_row_ref->{titlecache})."".$this_row_ref->{tstamp}."\n";
             }
         }
         else {
-            $enrichment->get_schema->resultset('AllTitleByWorkkey')->populate($alltitlebyworkkey_ref);
+            $enrichment->get_schema->resultset('AllTitleByWorkkey')->populate(\@alltitlebyworkkey);
         }
     }
 
@@ -685,9 +763,18 @@ ALLTITLECONTROL
     }
     
     if ($bulkinsert){
+	
         $logger->info("### $database: Bulk inserting all keys to enrichment database");
-        system("$pgsqlexe -f '$data_dir/all_title_control.sql' $config->{enrichmntdbname}");
 
+	eval {
+	    system("$pgsqlexe -f '$data_dir/all_title_control.sql' $config->{enrichmntdbname}");
+	};
+
+	if ($@){
+	    $logger->error($@);
+	    $keepfiles = 1;
+	}
+	
         unless ($keepfiles){
             unlink("$data_dir/all_title_control.sql");
             unlink("$data_dir/all_title_by_isbn.dump");

@@ -51,7 +51,6 @@ sub create_authenticator {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
     $arg_ref->{config} = $config;
     
     my $authenticator_ref = $config->get_authenticator_by_id($id);

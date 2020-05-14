@@ -192,6 +192,7 @@ sub authenticate {
 
     my $authenticator_is_valid = 0;
 
+    #check if the passed authentification type is valid for this view
     foreach my $valid_authenticator (@valid_authenticators){
 	if ($valid_authenticator == $authenticatorid){
 	    $authenticator_is_valid = 1;
@@ -200,7 +201,7 @@ sub authenticate {
     }
 
     if (!$authenticator_is_valid){
-	my $reason = $msg->maketext("Ihre Kennung ist nicht zur Nutzung dieses Portals zugelassen.");
+	my $reason = $msg->maketext("Ihre Kennung ist nicht zur Nutzung dieses Portals zugelassen. Wrong authenticator");
 	if ($self->param('representation') eq "html"){
 	    return $self->print_warning($reason);
 	}
@@ -217,7 +218,7 @@ sub authenticate {
 	# Ablehnung, wenn Nutzer nicht zu den Berechtigten fuer den View gehoeren, dann Meldung
 
 	if (!$user->can_access_view($view)){
-	    my $reason = $msg->maketext("Ihre Kennung ist nicht zur Nutzung dieses Portals zugelassen.");
+	    my $reason = $msg->maketext("Ihre Kennung ist nicht zur Nutzung dieses Portals zugelassen. Cannot access view");
 	    if ($self->param('representation') eq "html"){
 		return $self->print_warning($reason);
 	    }

@@ -1,8 +1,8 @@
-####################################################################
+#####################################################################
 #
-#  OpenBib::Extensions::FidPhil::Config
+#  OpenBib::Search::Backend::Z3950::USBK::Config
 #
-#  Dieses File ist (C) 2004-2020 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -23,50 +23,56 @@
 #
 #####################################################################
 
-package OpenBib::Extensions::FidPhil::Config;
+package OpenBib::Search::Backend::Z3950::USBK::Config;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use base qw('OpenBib::Config');
+use Encode 'decode_utf8';
+use Log::Log4perl qw(get_logger :levels);
+
+use OpenBib::Config;
+
+# Importieren der Konfigurationsdaten als Globale Variablen
+# in diesem Namespace
+use vars qw(%config %z39config);
+
+*config = \%OpenBib::Config::config;
+
+if ($OpenBib::Config::config{benchmark}){
+    use Benchmark ':hireswallclock';
+}
+
+%z39config = (
+    databaseName          => "",
+    user                  => "",
+    password              => "",
+    groupid               => "1",
+
+    hostname              => "",
+    port                  => "",
+
+    querytype             => "CQL",
+    elementSetName        => "B",
+    preferredRecordSyntax => "MAB",
+    hitrange              => 10,
+);
 
 sub new {
-    my ($class,$arg_ref) = @_;
+    my $class = shift;
 
-    my $self = { };
+    # Ininitalisierung mit Config-Parametern
+    my $self = \%z39config;
 
     bless ($self, $class);
-    
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
     return $self;
 }
 
-sub get_viewusers {
-    my $self     = shift;
-    my $viewname = shift;
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    my ($atime,$btime,$timeall);
-    
-    if ($self->{benchmark}) {
-        $atime=new Benchmark;
-    }
+1;
 
-    my $users = $self->get_schema->resultset('Userinfo')->search(
-        {
-            'me.viewname' => $viewname,
-        },
-        {
-            order_by => 'email',
-        }
-    );
-
-    my @userdata=();
-
-    while (my $item = $users->next){
-        push @userdata, $item->{email};
-    }
-
-    return @userdata;
-}

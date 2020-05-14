@@ -61,6 +61,7 @@
 
 [% IF NOT suppress_unauthorized && NOT layout_param.without_navigation_search %]    
 <div class="sticky-top mt-4">
+
 <!---
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
 

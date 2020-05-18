@@ -57,7 +57,7 @@
 	 gutenberg = 1
 	 hathitrust = 1
 	 intechopen = 1
-	 'DE-38-KAPSEL' = 1
+	# 'DE-38-KAPSEL' = 1
 	 khanacademy = 1
 	 loc = 1
 	 loviscach_oer = 1

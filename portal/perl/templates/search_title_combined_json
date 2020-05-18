@@ -38,7 +38,7 @@
       thisrecord = {
                       link = {
                                rel = 'self'
-                               href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.id}.json"
+                               href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.get_encoded_id}.json"
                       }
                       id       = record.id
                       database = {
@@ -128,7 +128,7 @@
 	 gutenberg = 1
 	 hathitrust = 1
 	 intechopen = 1
-	 'DE-38-KAPSEL' = 1
+	 #'DE-38-KAPSEL' = 1
 	 khanacademy = 1
 	 loc = 1
 	 loviscach_oer = 1

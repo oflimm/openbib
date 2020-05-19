@@ -81,45 +81,34 @@ $(document).ready(function(){
 
 <div class="content"><!-- Begin Fulltitle -->
 
-<div class="ob-category_header">
-[%-  IF locations.size >= 1 -%]
-[%      IF locations.size == 1 %]
-         [% locinfo.identifier.${locations.first}.description %]
-[%      ELSIF locations.size > 1 %]
-         [% msg.maketext('Verschiedene Standorte') %]
-[%      END %]
-[%-  ELSE %]
-[%     dbinfo.get('dbnames').${database}.short %]
-[%   END %]
-</div>
-
 <div class="row flex-md-row-reverse"><!-- Begin Details -->
 
-<!-- <div class="col-xs-6 col-md-3 ob-titleimage"><!-- Begin Images -->
-<div class="col-md-3"><!-- Begin Images -->
-[% PROCESS common/subtemplate name="titles_record_html_images" %]
-</div><!-- End Col Images -->
+  <!-- <div class="col-xs-6 col-md-3 ob-titleimage"><!-- Begin Images -->
+    <div class="col-md-3"><!-- Begin Images -->
+      [% PROCESS common/subtemplate name="titles_record_html_images" %]
+    </div><!-- End Col Images -->
 
-<!-- Title begins here -->
-<!-- <div class="categories ob-title_record col-md-9"><!-- Begin Categories -->
-<div class="col-md-9"><!-- Begin Categories -->
+    <!-- Title begins here -->
+    <!-- <div class="categories ob-title_record col-md-9"><!-- Begin Categories -->
+      <div class="col-md-9"><!-- Begin Categories -->
+     <!--  <div class="col-lg-4 col-12 text-lg-left text-center">
+        <img src="/images/openbib/views/fidphil/logofid.jpg"  width="240px" height="auto"  />
+      </div> -->
+        [% IF record_exists %]
+        [%   PROCESS common/subtemplate name="visible_categories_title" %]
 
-[% IF record_exists %]
-[%   PROCESS common/subtemplate name="visible_categories_title" %]
+        [%   PROCESS common/subtemplate name="titles_record_html_categories" %]
+        [% ELSE %]
+        <h2>[% msg.maketext("Ein Titel mit dieser ID ist nicht (mehr) in diesem Katalog vorhanden.") %]</h2>
+        [% END %]
 
+        [% IF config.get('unAPI') %]
+        <abbr class="unapi-id" title="[% record.database %]:[% record.id %]"></abbr>
+        [% END %]
+      </div>
+    </div><!-- End Col Categories -->
 
-[%   PROCESS common/subtemplate name="titles_record_html_categories" %]
-[% ELSE %]
-<h2>[% msg.maketext("Ein Titel mit dieser ID ist nicht (mehr) in diesem Katalog vorhanden.") %]</h2>
-[% END %]
-
-[% IF config.get('unAPI') %]
-<abbr class="unapi-id" title="[% record.database %]:[% record.id %]"></abbr>
-[% END %]
-</div>
-</div><!-- End Col Categories -->
-
-</div><!-- End Row Details -->
+  </div><!-- End Row Details -->
 
 <div class="ob-bottominfo"><!-- Begin Bottominfo -->
 

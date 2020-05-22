@@ -656,73 +656,94 @@ sub items {
     }    
 
     my $itemlist=undef;
-    
-    if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
-	
-	$logger->debug("Getting Circulation info via USB-SOAP");
-	
-	my @args = ($username,'ALLES');
-	
-	my $uri = "urn:/Account";
-	
-	if ($circinfotable->get($database)->{circdb} ne "sisis"){
-	    $uri = "urn:/Account_inst";
-	    push @args, $database;
-	}
 
-	eval {
-	    my $soap = SOAP::Lite
-		-> uri($uri)
-		-> proxy($config->get('usbws_url'));
-	    my $result = $soap->show_account(@args);
-	    
-	    unless ($result->fault) {
-		$itemlist = $result->result;
-		if ($logger->is_debug){
-		    $logger->debug("SOAP Result: ".YAML::Dump($itemlist));
-		}
-	    }
-	    else {
-		$logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-	    }
-	};
-	
-	if ($@){
-	    $logger->error("SOAP-Target ".$config->get('usbws_url')." konnte nicht erreicht werden :".$@);
-	}
-	
-    }
-    
-    # Bei einer Ausleihbibliothek haben - falls Exemplarinformationen
-    # in den Ausleihdaten vorhanden sind -- diese Vorrange ueber die
-    # titelbasierten Exemplardaten
-    
     my $response_ref = [];
-
-    if (defined($itemlist) && %{$itemlist->{Konto}}) {
-	my $all_items_ref = [];
 	
-	foreach my $nr (sort keys %{$itemlist->{Konto}}){
-	    push @$all_items_ref, $itemlist->{Konto}{$nr};
-	}
-	
-	foreach my $item_ref (@$all_items_ref){
-	    my @titleinfo = ();
-	    push @titleinfo, $item_ref->{Verfasser} if ($item_ref->{Verfasser});
-	    push @titleinfo, $item_ref->{Titel} if ($item_ref->{Titel});
-	    
-	    my $about = join(': ',@titleinfo);
-	    
-	    my $starttime = $item_ref->{Datum};
-	    my $endtime   = $item_ref->{RvDatum};
+    if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
 
-	    push @$response_ref, {
-		about   => $about,
-		edition => $scheme."://".$servername.$path_prefix."/databases/id/$database/titles/id/".$item_ref->{Titlecatkey},
-		item    => $scheme."://".$servername.$path_prefix."/databases/id/$database/titles/id/".$item_ref->{Titlecatkey}."/items/id/".uri_escape($item_ref->{MedienNummer}),
-		renewals => $item_ref->{VlAnz},
+	$logger->debug("Getting Circulation info via USB-SOAP");
+
+	my $request_types_ref = [
+	    {
+		type   => 'AUSLEIHEN',
+		status => 3,
+	    },
+	    {
+		type   => 'BESTELLUNGEN',
+		status => 2,
+	    },
+	    {
+		type   => 'VORMERKUNGEN',
+		status => 1,
+	    },	    
+	    ];
+	
+	foreach my $type_ref (@$request_types_ref){
+	    my @args = ($username,$type_ref->{type});
+	    
+	    my $uri = "urn:/Account";
+	    
+	    if ($circinfotable->get($database)->{circdb} ne "sisis"){
+		$uri = "urn:/Account_inst";
+		push @args, $database;
+	    }
+	    
+	    eval {
+		my $soap = SOAP::Lite
+		    -> uri($uri)
+		    -> proxy($config->get('usbws_url'));
+		my $result = $soap->show_account(@args);
+		
+		unless ($result->fault) {
+		    $itemlist = $result->result;
+		    if ($logger->is_debug){
+			$logger->debug("SOAP Result: ".YAML::Dump($itemlist));
+		    }
+		}
+		else {
+		    $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+		}
 	    };
 	    
+	    if ($@){
+		$logger->error("SOAP-Target ".$config->get('usbws_url')." konnte nicht erreicht werden :".$@);
+	    }
+	    
+	    # Bei einer Ausleihbibliothek haben - falls Exemplarinformationen
+	    # in den Ausleihdaten vorhanden sind -- diese Vorrange ueber die
+	    # titelbasierten Exemplardaten
+	    
+	    
+	    if (defined($itemlist) && %{$itemlist->{Konto}}) {
+		next if (defined $itemlist->{Konto}{KeineVormerkungen});
+		next if (defined $itemlist->{Konto}{KeineBestellungen});
+		next if (defined $itemlist->{Konto}{KeineAusleihen});
+		
+		my $all_items_ref = [];
+		
+		foreach my $nr (sort keys %{$itemlist->{Konto}}){
+		    push @$all_items_ref, $itemlist->{Konto}{$nr};
+		}
+		
+		foreach my $item_ref (@$all_items_ref){
+		    my @titleinfo = ();
+		    push @titleinfo, $item_ref->{Verfasser} if ($item_ref->{Verfasser});
+		    push @titleinfo, $item_ref->{Titel} if ($item_ref->{Titel});
+		    
+		    my $about = join(': ',@titleinfo);
+		    
+		    my $starttime = $item_ref->{Datum};
+		    my $endtime   = $item_ref->{RvDatum};
+		    
+		    push @$response_ref, {
+			about   => $about,
+			edition => $scheme."://".$servername.$path_prefix."/databases/id/$database/titles/id/".uri_escape($item_ref->{Titlecatkey}),
+			item    => $scheme."://".$servername.$path_prefix."/databases/id/$database/titles/id/".uri_escape($item_ref->{Titlecatkey})."/items/id/".uri_escape($item_ref->{MedienNummer}),
+			renewals => $item_ref->{VlAnz},
+			status   => $type_ref->{status},
+		    };
+		}
+	    }
 	}
     }
     

@@ -31,6 +31,35 @@
 				</nav>
 			</div>
 		</div>
+			<div class="row mt-3">
+				<div class="col">
+			<form method="GET" action="[% path_prefix %]/[% config.get('search_loc') %].html" id="ht-search-form" class="ht-search-form">
+
+						<input type="hidden" name="num"        value="20" />
+						<input type="hidden" name="page"       value="1" />
+						<input type="hidden" name="lang"       value="[% lang %]" />
+
+						<input type="hidden" name="srt"        value="relevance_desc" />
+						<input type="hidden" name="st"         value="1" />
+						<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+						<div class="row mr-auto ml-auto mt-1" style="width: 100%">
+							<div class="col-12 mr-3 text-lg-left text-center" > 
+								<input id="q1-input" name="fs" type="text" class="search-input pl-2" placeholder="Search words about or within the items" pattern="^(?!\s*$).+" value="" style="background-color: white; height: 60px">
+								<input type="submit" value="Search" class="search-btn">
+							</div>
+
+							<div class="row mt-2 mr-auto " style="width: 90%">
+								<div class="col"> 
+									<input type="radio" name="editList" value="always"> Alles durchsuchen   
+									<input type="radio" name="editList" value="never">  DigiPhiD 
+									<div>
+									</div>
+								</div>
+							</div>
+						</div> 
+					</form>
+					</div>
+		</div>
 	</div>
 	<hr>
 	 <style>
@@ -42,7 +71,7 @@
       opacity: 0;
     }
   </style>
-	<div class="container-fluid" id="search-container" ic-transition-duration="0.1s"  >
+	<!-- <div class="container-fluid" id="search-container" ic-transition-duration="0.1s"  >
 		<div class="row">
 			<div class="col-lg-12 col-12 mt-3 pl-lg-4">
 
@@ -87,7 +116,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 </header>
 
 <!-- End Template: corporate_banner -->

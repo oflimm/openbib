@@ -94,9 +94,9 @@ $(document).ready(function(){
      <!--  <div class="col-lg-4 col-12 text-lg-left text-center">
         <img src="/images/openbib/views/fidphil/logofid.jpg"  width="240px" height="auto"  />
       </div> -->
+
         [% IF record_exists %]
         [%   PROCESS common/subtemplate name="visible_categories_title" %]
-
         [%   PROCESS common/subtemplate name="titles_record_html_categories" %]
         [% ELSE %]
         <h2>[% msg.maketext("Ein Titel mit dieser ID ist nicht (mehr) in diesem Katalog vorhanden.") %]</h2>

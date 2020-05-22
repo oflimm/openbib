@@ -12,6 +12,7 @@
 #
 #######################################################################
 -%]
+Test
 [%-
 
    bklookup    = config.load_bk;
@@ -23,8 +24,9 @@
 
    catalog_has_authorities = config.get('source_systems').${config.get_system_of_db(record.database)}.has_authorities;
 -%]
-[% IF format == "full" %]
 
+[% IF format == "full" %]
+Hallo2
 <div class="table-responsive">
 <table class="table ob-title_fields">
 <tr><th class="ob-field">id</th><td>[% record.id %]</td></tr>

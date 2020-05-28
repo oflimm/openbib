@@ -18,26 +18,26 @@
 </div>
 [% ELSE  %]
 
+[% USE dumper;dumper.dump(orders) %]
+
 <div class="table-responsive">
 <table class="table table-striped table-hover">
 <thead>
-<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Bestelldatum") %]</th><th>[% msg.maketext("Status") %]</th></tr>
+<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Bestelldatum") %]</th><th>[% msg.maketext("Status") %]</th></tr>
 </thead>
 <tbody>
 [%- FOREACH order = orders -%]
 
-<tr><td><i>[% order.Verfasser %]</i><br />[% order.Titel %]
-
-[% IF order.EJahr %]
-, [% order.EJahr %]
-[% END %]
-
-</td><td>
+<tr>
+<td><i><a href="[% order.edition %]">[% order.about %]</a></i></td>
+<td><i>[% order.storage %]</i></td>
+<td>
 [% IF order.MTyp == 99 %]
 [% msg.maketext("Fernleihbestellung") %]<br />
 [% END %]
 
-[% order.Mediennummer %]</td><td>[% order.BestellDatum %]</td><td>[% order.Status %]</td></tr>
+[% order.label %]</td>
+<td>[% order.starttime %]</td><td>[% order.Status %]</td></tr>
 [% END %]
 </tbody>
 </table>

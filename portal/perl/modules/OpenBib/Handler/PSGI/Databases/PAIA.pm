@@ -499,9 +499,19 @@ sub login {
     my $ref = XMLin($response->content);
     
     my $account_ref = {};
-    
-    foreach my $field (keys %{$ref->{slnpValue}}){
-	$account_ref->{$field} = $ref->{slnpValue}{$field}{content};
+
+    if ($logger->is_debug){
+	$logger->debug("Response: ".YAML::Dump($ref));
+    }
+
+    if ($ref->{slnpValue}{id} ne "ERROR"){    
+	foreach my $field (keys %{$ref->{slnpValue}}){
+	    $account_ref->{$field} = $ref->{slnpValue}{$field}{content};
+	}
+    }
+
+    if ($logger->is_debug){
+	$logger->debug("Account: ".YAML::Dump($account_ref));
     }
 
     my $response_username = $account_ref->{'BenutzerNummer'};
@@ -722,6 +732,7 @@ sub items {
 		my $all_items_ref = [];
 		
 		foreach my $nr (sort keys %{$itemlist->{Konto}}){
+		    next if ($itemlist->{Konto}{$nr}{KtoTyp});
 		    push @$all_items_ref, $itemlist->{Konto}{$nr};
 		}
 		
@@ -731,17 +742,38 @@ sub items {
 		    push @titleinfo, $item_ref->{Titel} if ($item_ref->{Titel});
 		    
 		    my $about = join(': ',@titleinfo);
-		    
-		    my $starttime = $item_ref->{Datum};
-		    my $endtime   = $item_ref->{RvDatum};
-		    
-		    push @$response_ref, {
+
+		    my $label     = $item_ref->{Signatur};
+
+		    my $this_response_ref = {
 			about   => $about,
 			edition => $scheme."://".$servername.$path_prefix."/databases/id/$database/titles/id/".uri_escape($item_ref->{Titlecatkey}),
 			item    => $scheme."://".$servername.$path_prefix."/databases/id/$database/titles/id/".uri_escape($item_ref->{Titlecatkey})."/items/id/".uri_escape($item_ref->{MedienNummer}),
 			renewals => $item_ref->{VlAnz},
 			status   => $type_ref->{status},
+			label     => $label,
 		    };
+		    
+		    if ($type_ref->{type} eq "AUSLEIHEN"){
+			$this_response_ref->{starttime} = $item_ref->{Datum};
+			$this_response_ref->{endtime}   = $item_ref->{RvDatum};
+		    }
+		    elsif ($type_ref->{type} eq "VORMERKUNGEN"){
+			$this_response_ref->{starttime} = $item_ref->{Datum};
+			$this_response_ref->{endtime}   = $item_ref->{VmEnd};
+			$this_response_ref->{queue}     = $item_ref->{VmAnz};
+		    }
+		    elsif ($type_ref->{type} eq "BESTELLUNGEN"){
+			my $storage = $item_ref->{EntlZweigTxt};
+			if ($item_ref->{LesesaalTxt}){
+			    $storage.=" / ".$item_ref->{LesesaalTxt};
+			}
+			$this_response_ref->{starttime} = $item_ref->{Datum};
+			$this_response_ref->{endtime}   = $item_ref->{RvDatum};
+			$this_response_ref->{storage}   = $storage;
+		    }
+		    
+		    push @$response_ref, $this_response_ref;
 		}
 	    }
 	}

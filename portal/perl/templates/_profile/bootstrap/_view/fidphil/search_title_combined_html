@@ -20,11 +20,9 @@ searchdata = "${searchquery.get_searchtermstring()}";
 -%]
 
 
-
+[%- PROCESS common/subtemplate name="local_config" -%] 
 <!--Check if this is an Intercooler Request -->
 [% IF NOT ic_request  %]
-
-[%- PROCESS common/subtemplate name="local_config" -%] 
 
 <style>
 [data-toggle="collapse"] {
@@ -45,12 +43,10 @@ searchdata = "${searchquery.get_searchtermstring()}";
     Philosopher's Index</a>
   </li>
 </ul>
-<div class="tab-content card pt-5" id="myTabContentMD">
+<div class="tab-content search-tabs" id="myTabContentMD">
 
   <div class="tab-pane fade show active" id="books-md" role="tabpanel" aria-labelledby="books-tab-md">
-    [% END %]
     [% PROCESS common/subtemplate name="search_title_combined_html_tab" %]
-    [% IF NOT ic_request  %]
   </div><!-- End: col -->
 
 <div class="tab-pane fade" id="ebsco-md" role="tabpanel" aria-labelledby="profile-tab-md" ic-get-from="[% path_prefix %]/[% config.get('search_loc') %].html?l=en;num=20;page=1;lang=en;srt=relevance_desc;st=1;lt=;fs=[% searchdata %];profile=4" ic-indicator="#indicator" ic-trigger-on="load" 
@@ -69,8 +65,7 @@ ic-on-complete="$('#indicatorTab').hide();">
     </button>
   </div>
 </div>
+[% ELSE %]
+[% PROCESS common/subtemplate name="search_title_combined_html_tab" %]
 [% END %]
-
-
-
 

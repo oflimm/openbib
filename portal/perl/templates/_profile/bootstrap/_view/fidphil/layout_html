@@ -15,7 +15,7 @@
 [% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
 
 <body style="font-family: 'Open Sans', sans-serif;" ic-history-elt="true">
-  <div class="ml-auto mr-auto" style="width: 97%; max-width:1800px">
+  <div class="ml-auto mr-auto" style="width: 97%; max-width:1800px" ic-history-elt="true">
 
     [% PROCESS common/subtemplate name="corporate_banner" start=1 %]
 

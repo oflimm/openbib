@@ -1,3 +1,4 @@
+
 .main-menu-item {
 	cursor: pointer;
 }
@@ -48,4 +49,28 @@
 	background-color: black;
 	color: white;
 	background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMyIgaGVpZ2h0PSIyNyI+PHBhdGggZmlsbD0iI0U1RTVFNSIgZD0iTTEwIDJjNC40MSAwIDggMy41OSA4IDhzLTMuNTkgOC04IDgtOC0zLjU5LTgtOCAzLjU5LTggOC04bTAtMkM0LjQ3NyAwIDAgNC40NzcgMCAxMGMwIDUuNTIgNC40NzcgMTAgMTAgMTAgNS41MiAwIDEwLTQuNDggMTAtMTAgMC01LjUyMy00LjQ4LTEwLTEwLTEweiIvPjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0U1RTVFNSIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0yMiAyNmwtNy05Ii8+PC9zdmc+');
+}
+
+/*Search Page*/
+
+.title-link {
+	color: black;
+}
+
+.title-link:hover{
+	color: #427b8f;
+	text-decoration: none;
+}
+
+.person-link {
+	color: black;
+}
+.person-link:hover {
+	color: #427b8f;
+	text-decoration: none;
+}
+
+
+#myTabContentMD {
+	border: none;
 }

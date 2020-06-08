@@ -16,7 +16,7 @@
 			<div class="col-lg col-3 mt-2" style="z-index: 2">
 				<img id="fid-logo" src="/images/openbib/views/fidphil/logo_fid_ohneschrift.jpg"  width="130px" height="auto">
 			</div>
-			<div id="navarea" class="col-lg-10 col-9 pt-lg-1 pt-1">
+			<div id="navarea" class="col-lg-10 col-9 pt-lg-3 pt-2">
 				<div class="mx-3">
 					<div class="d-none d-lg-flex flex-lg-row flex-column justify-content-end text-right" style="width:95%; font-size: 1.6em">
 						<div class="text-lg-center mr-3">
@@ -45,10 +45,10 @@
 		<div class="row">
 			<div class="col-2">
 			</div>
-			<div id="contentarea" class="col-lg-10 col-md-12 pl-3 mt-lg-0 mt-2 pt-5" style="height: 100vh">
-				<h1>Recherchieren im</br> Fachinformationsdienst Philosophie</h1>
-				<div class="mt-2">
-					<form method="GET" action="[% path_prefix %]/[% config.get('search_loc') %].html" id="search-form">
+			<div id="contentarea" class="col-lg-10 col-md-12 pl-3 mt-lg-0 mt-2 pt-3" style="height: 70vh;">
+				<h1 class="mt-lg-5">Recherchieren im</br> Fachinformationsdienst Philosophie</h1>
+				<form method="GET" action="[% path_prefix %]/[% config.get('search_loc') %].html" id="search-form" style="width:100%;">
+					<div class="d-flex flex-row mt-5 align-items-center" style="background: #0c394a; margin-left:-10%; height: 110px; width: 85%">
 						<input type="hidden" name="num" value="20">
 						<input type="hidden" name="page" value="1">
 						<input type="hidden" name="lang" value="de">
@@ -56,14 +56,51 @@
 						<input type="hidden" name="st" value="1">
 						<input type="hidden" name="lt" value="">
 						<input type="hidden" name="profile" value="4">
-						<div class="row mr-auto ml-auto mt-3" style="width: 100%">
-							<div class="col-12 mr-3 text-lg-left text-center align-items-center">
-								<input name="fs" type="text" placeholder="Search materials" value="" style="width: 85%; background-color: : white; height: 60px">
-								<input type="submit" value="Search" class="searchda-btn" style="background-color: #857785">
-							</div>
+						<div class="d-flex flex-row mr-auto ml-3 align-items-center" style="width: 100%">
+							<input name="fs" class="align-self-center mr-5" type="text" placeholder="Search materials" value="" style="width: 85%; background-color: white; height: 60px">
+							<input type="submit" value="Suchen" class="searchda-btn mr-5" style="background-color: #D99725; height: 60px; width: 100px">
 						</div>
+					</div>
+				</form>
+				<div class="d-flex flex-row justify-content-lg-end mt-3" style="width:75%; font-size: 0.8em">
+					<div class="mr-4">
+						-> ERWEITERTE SUCHE
+					</div>
+					<div class="mr-3">
+						-> DATENBANKEN
 					</div>
 				</div>
 			</div>
-		</body>
-		</html>
+		</div>
+		<div class="row mt-5 ml-auto mr-auto" style="width:60%">
+			<div class="col-lg-7 mt-2" style="z-index: 2">
+				Data
+			</div>
+			<div class="col-lg-5 mt-2" style="z-index: 2">
+				<img id="fid-logo" src="/images/openbib/views/fidphil/logo_fid_ohneschrift.jpg"  width="230px" height="auto" style="opacity: 0.2">
+			</div>
+		</div>
+		<div class="row mx-1 my-3 p-3" style="width:40%; background-color: #F2F2F2" >
+			<div class="col-6">
+				<div style="z-index: 2">
+					<img id="fid-logo" src="/images/openbib/views/fidphil/gaplogo.png"  width="230px" height="auto">
+				</div>
+				<div class="mt-2" style="z-index: 2">
+					<img id="fid-logo" src="/images/openbib/views/fidphil/gaplogo.png"  width="230px" height="auto">
+				</div>
+			</div>
+			<div class="col-6">
+				<div style="z-index: 2">
+					<img id="fid-logo" src="/images/openbib/views/fidphil/gaplogo.png"  width="230px" height="auto">
+				</div>
+				<div class="mt-2" style="z-index: 2">
+					<img id="fid-logo" src="/images/openbib/views/fidphil/gaplogo.png"  width="230px" height="auto">
+				</div>
+			</div>
+
+		</div>
+
+
+	</div>
+</body>
+</html>

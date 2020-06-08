@@ -100,19 +100,22 @@
 
 #contentarea {
     color: white;
-    background-image: linear-gradient(to right, rgba(169, 93, 162, 1) 0%, 35.5614960193634%, rgba(12, 57, 74, 1) 71.1229920387268%, 85.5614960193634%, rgba(101, 142, 160, 1) 100%);
-}
+    background-color: #852785
+/*    background-image: linear-gradient(to right, rgba(169, 93, 162, 1) 0%, 35.5614960193634%, rgba(12, 57, 74, 1) 71.1229920387268%, 85.5614960193634%, rgba(101, 142, 160, 1) 100%);
+*/}
 
 #navarea {
     color: white;
-    background-image: linear-gradient(to right, rgba(169, 93, 162, 1) 0%, 35.5614960193634%, rgba(12, 57, 74, 1) 71.1229920387268%, 85.5614960193634%, rgba(101, 142, 160, 1) 100%);
-}
+    background-color: #0c394a;
+/*    background-image: linear-gradient(to right, rgba(169, 93, 162, 1) 0%, 35.5614960193634%, rgba(12, 57, 74, 1) 71.1229920387268%, 85.5614960193634%, rgba(101, 142, 160, 1) 100%);
+*/}
 
 @media only screen and (max-width: 991.98px) {
     #fid-logo {
         width: 130px;
     }
     #navarea {
+        background-color: white;
         background-image: none;
         color: black;
 

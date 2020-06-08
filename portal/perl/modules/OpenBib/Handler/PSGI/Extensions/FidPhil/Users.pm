@@ -46,8 +46,9 @@ use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
-use OpenBib::User;
+use OpenBib::Extensions::FidPhil::User;
 
+# Doi we really need to inherit from Admin Users - Base PSGI should be enough???
 use base 'OpenBib::Handler::PSGI::Admin::Users';
 
 # Run at startup
@@ -66,16 +67,25 @@ sub show_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     my $view           = $self->param('view');
+    my $user           = $self->param('user');
+    my $session        = $self->param('session');
     # Shared Args
     my $config         = $self->param('config');
     if (!$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
     }
+    $user         = OpenBib::Extensions::FidPhil::User->new({sessionID => $session->{ID}, config => $config});
+    my $args_ref = {};
+    #benoetigt wird eine ID
+    $args_ref->{view} = 2;
+    my $userlist_ref = $user->showUsersForView($args_ref);
     # TT-Data erzeugen
     my $ttdata={
-    	"a" => "Test"
+        userlist   => $userlist_ref,
     };
     return $self->print_page($config->{tt_admin_users_tname},$ttdata);
 }
+
+#    return $self->print_page($config->{tt_admin_users_search_tname},$ttdata);
 
 1;

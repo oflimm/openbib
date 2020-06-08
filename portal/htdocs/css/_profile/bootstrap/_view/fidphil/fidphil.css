@@ -12,6 +12,34 @@
     text-decoration: none;
 }
 
+.side-menu {
+	position: absolute;
+	top: 0;
+	border: 1px solid black;
+	left: 0px;
+	z-index: 100;
+	height: 100%;
+	background: white;
+	width:500px;
+	transition: all 500ms;
+}
+
+.side-menu-collapsed {
+	 left: -250px;
+}
+
+/*.side-menu:after {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0.2);
+	content: '';
+	opacity: 1;
+	-webkit-transition: opacity 0.5s;
+	transition: opacity 0.5s;
+}*/
 
 .advanced-search-link:hover, .advanced-search-link:focus {
     color: #2A6496;
@@ -50,6 +78,46 @@
 	color: white;
 	background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMyIgaGVpZ2h0PSIyNyI+PHBhdGggZmlsbD0iI0U1RTVFNSIgZD0iTTEwIDJjNC40MSAwIDggMy41OSA4IDhzLTMuNTkgOC04IDgtOC0zLjU5LTgtOCAzLjU5LTggOC04bTAtMkM0LjQ3NyAwIDAgNC40NzcgMCAxMGMwIDUuNTIgNC40NzcgMTAgMTAgMTAgNS41MiAwIDEwLTQuNDggMTAtMTAgMC01LjUyMy00LjQ4LTEwLTEwLTEweiIvPjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0U1RTVFNSIgc3Ryb2tlLXdpZHRoPSIzIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0yMiAyNmwtNy05Ii8+PC9zdmc+');
 }
+
+.hamburger-nav {
+	position: absolute;
+	cursor: pointer;
+	right: 5%;
+	top: 15%;
+	transform: translate(-5%, -50%);
+	z-index: 2;
+	transition: all 0.7s ease;
+}
+
+.hamburger-nav div {
+	width: 30px;
+	height: 4px;
+	background: black;
+	margin: 5px;
+	transition: all 0.3s ease;
+}
+/*Home Page*/
+
+#contentarea {
+    color: white;
+    background-image: linear-gradient(to right, rgba(169, 93, 162, 1) 0%, 35.5614960193634%, rgba(12, 57, 74, 1) 71.1229920387268%, 85.5614960193634%, rgba(101, 142, 160, 1) 100%);
+}
+
+#navarea {
+    color: white;
+    background-image: linear-gradient(to right, rgba(169, 93, 162, 1) 0%, 35.5614960193634%, rgba(12, 57, 74, 1) 71.1229920387268%, 85.5614960193634%, rgba(101, 142, 160, 1) 100%);
+}
+
+@media only screen and (max-width: 991.98px) {
+    #fid-logo {
+        width: 130px;
+    }
+    #navarea {
+        background-image: none;
+        color: black;
+
+    }
+    }
 
 /*Search Page*/
 

@@ -97,6 +97,7 @@
   <script src="/js/bootstrap.min.js"></script>
   <script src="/js/jquery.autocomplete.js"></script>
   <script src="/js/_profile/bootstrap/_view/fidphil/intercooler.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 
   <!-- Then static OpenBib JS -->
   <title>[% IF layout_param.page_title %][% layout_param.page_title %][% ELSE %][% config.get_viewdesc_from_viewname(view) %][% END %]</title>

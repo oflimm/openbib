@@ -1,0 +1,69 @@
+[%#-
+#######################################################################
+#
+# Templatename: home
+#
+# Typ         : Template fuer Landing Page
+#
+# 
+#######################################################################
+-%]
+
+[% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg col-3 mt-2" style="z-index: 2">
+				<img id="fid-logo" src="/images/openbib/views/fidphil/logo_fid_ohneschrift.jpg"  width="130px" height="auto">
+			</div>
+			<div id="navarea" class="col-lg-10 col-9 pt-lg-1 pt-1">
+				<div class="mx-3">
+					<div class="d-none d-lg-flex flex-lg-row flex-column justify-content-end text-right" style="width:95%; font-size: 1.6em">
+						<div class="text-lg-center mr-3">
+							Login
+						</div>
+						<div class="text-lg-center mr-3" style="overflow: hidden">
+							Registrieren
+						</div>
+						<div class="text-lg-center mr-3">
+							Sprache
+						</div>
+						<div class="text-lg-center mr-3">
+							Menü
+						</div>
+					</div>
+
+				</div>
+				<div class="hamburger-nav d-lg-none d-block"> 
+					<div class="line1"></div>
+					<div class="line2"></div>
+					<div class="line3"></div>
+				</div>
+			</div>
+			
+		</div>
+		<div class="row">
+			<div class="col-2">
+			</div>
+			<div id="contentarea" class="col-lg-10 col-md-12 pl-3 mt-lg-0 mt-2 pt-5" style="height: 100vh">
+				<h1>Recherchieren im</br> Fachinformationsdienst Philosophie</h1>
+				<div class="mt-2">
+					<form method="GET" action="[% path_prefix %]/[% config.get('search_loc') %].html" id="search-form">
+						<input type="hidden" name="num" value="20">
+						<input type="hidden" name="page" value="1">
+						<input type="hidden" name="lang" value="de">
+						<input type="hidden" name="srt" value="relevance_desc">
+						<input type="hidden" name="st" value="1">
+						<input type="hidden" name="lt" value="">
+						<input type="hidden" name="profile" value="4">
+						<div class="row mr-auto ml-auto mt-3" style="width: 100%">
+							<div class="col-12 mr-3 text-lg-left text-center align-items-center">
+								<input name="fs" type="text" placeholder="Search materials" value="" style="width: 85%; background-color: : white; height: 60px">
+								<input type="submit" value="Search" class="searchda-btn" style="background-color: #857785">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+		</html>

@@ -43,7 +43,7 @@
       [% END %]
     </div><!-- End: col-3 -->
 
-    <div class="col-md-9">
+    <div class="col-md-8">
 
       [% IF spelling_suggestion.resultlist %]
       [%    suggestion = searchquery.get_spelling_suggestion %]
@@ -112,4 +112,42 @@
       [% PROCESS common/subtemplate name="search_more_tips" %]
 
     </div><!-- End: col -->
+
+<div x-ref="sidebar" x-show="showSidebar"  
+    x-transition:enter-start="side-menu-collapsed" @click.away="close($refs)" ;x-transition:enter-end="side-menu" class="mt-5 p-2 side-menu" x-data="sidebar()" @person-info.window.prevent="swipe($refs); return false;" style="position: fixed; overflow-y: auto; ">
+<h2 class="icon icon-lab">Sidebar</h2>
+    <div x-ref="sidebarbody" id="sidebar-body">  
+      <span> <i @click="load($refs)" id="box-spinner" class="fa fa-spinner fa-spin"></i> Lade Informationen</span>
+    </div>
+    <script>
+      function sidebar() {
+        return {
+          showSidebar : false,
+          loaded : false,
+          swipe($refs) { 
+            this.showSidebar  =!this.showSidebar;
+            if (!this.loaded){
+             fetch('http://localhost:8008/portal/fidphil/databases/id/eds/titles/id/pif::PHL2387913.html?l=en')
+             .then(response => response.text())
+             .then(html => { $refs.sidebarbody.innerHTML = html }); 
+           }
+           this.loaded = true;
+           return false; 
+         },
+         close($refs) {
+           console.log("test");
+           this.showSidebar = false; 
+         },
+         load ($refs) {
+
+
+         }
+
+       }           
+     };
+   </script> 
+</div>
+
+
+
 </div>

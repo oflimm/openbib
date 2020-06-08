@@ -80,26 +80,28 @@
 				<img id="fid-logo" src="/images/openbib/views/fidphil/logo_fid_ohneschrift.jpg"  width="230px" height="auto" style="opacity: 0.2">
 			</div>
 		</div>
-		<div class="row mx-1 my-3 p-3" style="width:40%; background-color: #F2F2F2" >
-			<div class="col-6">
+		<div class="row mx-1 mt-3 mb-5 p-3" style="width:40%; background-color: #F2F2F2" >
+			<div class="col-5 mr-3">
 				<div style="z-index: 2">
-					<img id="fid-logo" src="/images/openbib/views/fidphil/gaplogo.png"  width="230px" height="auto">
+					<img id="fid-logo" src="/images/openbib/views/fidphil/gaplogo.png"  width="100%" height="auto">
 				</div>
 				<div class="mt-2" style="z-index: 2">
-					<img id="fid-logo" src="/images/openbib/views/fidphil/gaplogo.png"  width="230px" height="auto">
+					<img id="fid-logo" src="/images/openbib/views/fidphil/dfglogo.png"  width="120%" height="auto">
 				</div>
 			</div>
-			<div class="col-6">
+			<div class="col-5">
 				<div style="z-index: 2">
-					<img id="fid-logo" src="/images/openbib/views/fidphil/gaplogo.png"  width="230px" height="auto">
-				</div>
-				<div class="mt-2" style="z-index: 2">
-					<img id="fid-logo" src="/images/openbib/views/fidphil/gaplogo.png"  width="230px" height="auto">
+					<img id="fid-logo" src="/images/openbib/views/fidphil/dgphil.jpg"  width="100%" height="auto">
 				</div>
 			</div>
 
 		</div>
-
+		<div style="height:10px"></div>
+		<div class="my-5 mr-5 p-3 ml-auto" style="background-color: #0c394a; height: 50vh; width: 85%" >
+			<div class="" style="z-index: 2; position: relative; top: -80px; left: -105px">
+				<img id="fid-logo" src="/images/openbib/views/fidphil/logo-fid.png"  width="130px" height="auto">
+			</div>
+		</div>
 
 	</div>
 </body>

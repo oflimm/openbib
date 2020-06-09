@@ -83,7 +83,8 @@ sub show_collection {
     my $ttdata={
         userlist   => $userlist_ref,
     };
-    return $self->print_page($config->{tt_admin_users_tname},$ttdata);
+    # return $self->print_page("$config->{tt_manager_users_tname}",$ttdata);
+    return $self->print_page("manager_users",$ttdata);
 }
 
 #    return $self->print_page($config->{tt_admin_users_search_tname},$ttdata);

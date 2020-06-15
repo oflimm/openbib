@@ -135,10 +135,10 @@ sub get_credentials {
     );
 
     if ($credentials){
-        return ($credentials->username,$credentials->password);
+        return ($credentials->username,$credentials->password,$credentials->token);
     }
     else {
-        return (undef,undef);
+        return (undef,undef,undef);
     }
 }
 

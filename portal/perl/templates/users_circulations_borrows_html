@@ -22,21 +22,21 @@
 <b>[% msg.maketext("Gesamtkonto-Verl&auml;ngerung") %]:</b> <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/renew_loans" title="[% msg.maketext("Gesamtkonto verl&auml;ngern") %]">[% msg.maketext("durchf&uuml;hren") %]</a>
 </p>
 
+[%# USE dumper;dumper.dump(borrows) %]
 <div class="table-responsive">
 <table class="table table-striped table-hover">
 <thead>
-<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Ausleihfrist") %]</th></tr>
+<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Verl&auml;ngerungen") %]</th><th>[% msg.maketext("Ausleihfrist") %]</th></tr>
 </thead>
 <tbody>
 [%- FOREACH borrow = borrows -%]
 
-<tr><td><i>[% borrow.Verfasser %]</i><br />[% borrow.Titel %]
-
-[% IF borrow.EJahr %]
-, [% borrow.EJahr %]
-[% END %]
-
-</td><td>[% borrow.Signatur %]</td><td>[% borrow.AusleihDatum %]-[% borrow.RueckgabeDatum %]</td></tr>
+<tr>
+<td><i><a href="[% borrow.edition %]">[% borrow.about %]</a></i></td>
+<td>[% borrow.label %]</td>
+<td>[% borrow.renewals %]</td>
+<td>[% borrow.starttime %]-[% borrow.endtime %]</td>
+</tr>
 [% END %]
 </tbody>
 </table>

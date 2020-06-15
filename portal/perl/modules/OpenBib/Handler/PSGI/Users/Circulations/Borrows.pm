@@ -43,6 +43,8 @@ use SOAP::Lite;
 use Socket;
 use Template;
 use URI::Escape;
+use JSON::XS qw/encode_json decode_json/;
+use LWP::UserAgent;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
@@ -93,6 +95,8 @@ sub show_collection {
     my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
+    my $scheme         = $self->param('scheme');
+    my $servername     = $self->param('servername');
 
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
 
@@ -105,35 +109,57 @@ sub show_collection {
         }
     }
     
-    my ($loginname,$password) = $user->get_credentials();
+    my ($loginname,$password,$access_token) = $user->get_credentials();
 
     my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
 
     my $circexlist=undef;
+
+    my $url = $scheme."://".$servername.$path_prefix."/".$config->get('databases_loc')."/id/".$sessionauthenticator."/paia/core/".uri_escape($loginname)."/items";
+
+    my $ua = LWP::UserAgent->new();
+    $ua->agent('USB Koeln/1.0');
+    $ua->timeout(30);
+
+    my $paia_failure = 0;
     
     eval {
-        my $soap = SOAP::Lite
-            -> uri("urn:/Circulation")
-                -> proxy($circinfotable->get($database)->{circcheckurl});
-        my $result = $soap->get_borrows(
-            SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                SOAP::Data->name(username => $loginname)->type('string'),
-                SOAP::Data->name(password => $password)->type('string'),
-                SOAP::Data->name(database => $circinfotable->get($database)->{circdb})->type('string'))));
-        
-        unless ($result->fault) {
-            $circexlist=$result->result;
-        }
-        else {
-            $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-        }
+	if ($logger->is_debug()){
+	    $logger->debug("Request URL: $url");
+	}
+	
+	my $response = $ua->get($url,
+				'Authorization' => "Bearer $access_token",
+	    );
+	
+	
+	if ($logger->is_debug){
+	    $logger->debug("Response: ".$response->content);
+	}
+	
+	if (!$response->is_success) {
+	    $logger->info($response->code . ' - ' . $response->message);
+	    return;
+	}
+
+	$circexlist = decode_json $response->content;
+	
+	if ($logger->is_debug){
+	    $logger->debug("PAIA Result: ".YAML::Dump($circexlist));
+	}
     };
     
     if ($@){
-        $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
+	$logger->error("PAIA-Target $url konnte nicht erreicht werden :".$@);
     }
-
+    
     my $authenticator = $session->get_authenticator;
+
+    my $itemlist_ref = [];
+
+    foreach my $this_item (@$circexlist){
+	push @$itemlist_ref, $this_item if ($this_item->{status} == 3);
+    }
     
     # TT-Data erzeugen
     my $ttdata={
@@ -141,7 +167,7 @@ sub show_collection {
         loginname  => $loginname,
         password   => $password,
         
-        borrows    => $circexlist,
+        borrows    => $itemlist_ref,
         
         database   => $database,
     };

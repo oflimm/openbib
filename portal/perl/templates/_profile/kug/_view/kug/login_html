@@ -27,8 +27,7 @@
 
         <div class="jumbotron">
          <h1 class="display-4">[% msg.maketext("Anmelden") %]</h1>
-	 <p>Der Zugriff auf dieses Portal als Ausweich-Recherchesystem für alle unsere Nutzer wegen des Cyberangriffs wird hiermit eingestellt.</p>
-	 <p>Bitte recherchieren Sie fortan wieder im <a href="https://www.ub.uni-koeln.de" target="_blank">USB Portal</a></p>
+	 <p>Der Zugriff auf dieses Portal als Ausweich-Recherchesystem für alle unsere Nutzer wegen des Cyberangriffs wird hiermit eingestellt. Bitte recherchieren Sie fortan wieder im <a href="https://www.ub.uni-koeln.de" target="_blank">USB Portal</a></p>
  	 <p>An diesem Portal können sich nur registrierte Mitarbeiter der Bibliotheken der UzK anmelden.</p>
 	 <div id="login_targets" class="accordion">
 [% IF available_authenticator_types.${"self"} %]	 
@@ -223,6 +222,7 @@
   </div>
 </div>
 [% END %]
+         </div><!-- End: login_targets -->
         </div><!-- End: jumbotron -->
 
 

@@ -48,10 +48,10 @@
 					<div class="form-group row mt-lg-4 text-left">
 						<label for="vorname" class="col-md-3 col-form-label text-left">[% msg.maketext("Anrede") %]  </label>
 						<div class="col-md-9">
-							<select class="form-control" name="bag_title" id="bag_title">
-								<option value="none" [% IF userinfo.mixed_bag.bag_title.first == 'none' %]selected[% END %]>[% msg.maketext("Keine") %]</option>
-								<option value="mr" [% IF userinfo.mixed_bag.bag_title.first == "mr" %]selected[% END %]>[% msg.maketext("Herr") %]</option>
-								<option value="mrs" [% IF userinfo.mixed_bag.bag_title.first == "mrs" %]selected[% END %]>[% msg.maketext("Frau") %]</option>
+							<select class="form-control" name="bag_anrede" id="bag_anrede">
+								<option value="none" [% IF userinfo.mixed_bag.bag_anrede.first == 'none' %]selected[% END %]>[% msg.maketext("Keine") %]</option>
+								<option value="mr" [% IF userinfo.mixed_bag.bag_anrede.first == "mr" %]selected[% END %]>[% msg.maketext("Herr") %]</option>
+								<option value="mrs" [% IF userinfo.mixed_bag.bag_anrede.first == "mrs" %]selected[% END %]>[% msg.maketext("Frau") %]</option>
 							</select>
 						</div>
 					</div>

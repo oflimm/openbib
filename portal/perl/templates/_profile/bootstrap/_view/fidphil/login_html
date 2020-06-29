@@ -51,6 +51,10 @@ available_authenticators = config.get_authenticators_by_view(view);
            <input class="form-control" type="password" name="password" id="email_username" />
          </div>
        </div>
+       </br>
+       <small id="passwordHelp" class="text-danger">
+                [% errors.general %]
+              </small>  
        <div class="row mt-4">
         <div class="col-6 align-self-center">
           <div>

@@ -57,465 +57,465 @@ use base 'OpenBib::Handler::PSGI';
 # Run at startup
 # Run at startup
 sub setup {
-my $self = shift;
+    my $self = shift;
 
-$self->start_mode('show');
-$self->run_modes(
-    'show_form'    => 'show_form',
-    'authenticate' => 'authenticate',
-    'failure'      => 'failure',
-    'dispatch_to_representation'           => 'dispatch_to_representation',
+    $self->start_mode('show');
+    $self->run_modes(
+        'show_form'                  => 'show_form',
+        'authenticate'               => 'authenticate',
+        'failure'                    => 'failure',
+        'dispatch_to_representation' => 'dispatch_to_representation',
     );
 
-# Use current path as template path,
-# i.e. the template is in the same directory as this script
-#    $self->tmpl_path('./');
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+    #    $self->tmpl_path('./');
 }
 
 sub show_form {
-my $self = shift;
+    my $self = shift;
 
-# Log4perl logger erzeugen
-my $logger = get_logger();
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
 
-# Dispatched Args
-my $view           = $self->param('view');
+    # Dispatched Args
+    my $view = $self->param('view');
 
-# Shared Args
-my $query          = $self->query();
-my $r              = $self->param('r');
-my $config         = $self->param('config');
-my $session        = $self->param('session');
-my $user           = $self->param('user');
-my $msg            = $self->param('msg');
-my $lang           = $self->param('lang');
-my $queryoptions   = $self->param('qopts');
-my $stylesheet     = $self->param('stylesheet');
-my $useragent      = $self->param('useragent');
-my $path_prefix    = $self->param('path_prefix');
-my $scheme         = $self->param('scheme');
-my $servername     = $self->param('servername');
+    # Shared Args
+    my $query        = $self->query();
+    my $r            = $self->param('r');
+    my $config       = $self->param('config');
+    my $session      = $self->param('session');
+    my $user         = $self->param('user');
+    my $msg          = $self->param('msg');
+    my $lang         = $self->param('lang');
+    my $queryoptions = $self->param('qopts');
+    my $stylesheet   = $self->param('stylesheet');
+    my $useragent    = $self->param('useragent');
+    my $path_prefix  = $self->param('path_prefix');
+    my $scheme       = $self->param('scheme');
+    my $servername   = $self->param('servername');
 
-# CGI / JSON input
-my $input_data_ref = $self->parse_valid_input();
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
 
-my $authenticatorid  = $input_data_ref->{authenticatorid};
-my $username         = $input_data_ref->{username};
-my $password         = $input_data_ref->{password};
+    my $authenticatorid = $input_data_ref->{authenticatorid};
+    my $username        = $input_data_ref->{username};
+    my $password        = $input_data_ref->{password};
 
-# CGI-only Parameters for html-representation
-my $action      = ($query->param('action'))?$query->param('action'):'none';
-my $code        = ($query->param('code'))?$query->param('code'):'1';
+    # CGI-only Parameters for html-representation
+    my $action
+        = ( $query->param('action') ) ? $query->param('action') : 'none';
+    my $code = ( $query->param('code') ) ? $query->param('code') : '1';
+
 #my $validtarget = ($query->param('validtarget'))?$query->param('validtarget'):'none';
-my $validtarget = undef;
-my $type        = ($query->param('type'))?$query->param('type'):'';
-my $redirect_to = $query->param('redirect_to'); # || "$path_prefix/$config->{searchform_loc}?l=$lang";
+    my $validtarget = undef;
+    my $type        = ( $query->param('type') ) ? $query->param('type') : '';
+    my $redirect_to = $query->param('redirect_to');
 
+    my $authenticators_ref = $config->get_authenticators($view);
 
-# Wenn die Session schon authentifiziert ist, dann wird
-# in die Benutzereinstellungen gesprungen
+    # Wenn die Session schon authentifiziert ist, dann wird
+    # in die Benutzereinstellungen gesprungen
+    if ( $user->{ID} && !$validtarget ) {
+        my $userinfo   = $user->get_info;
+        my $user_roles = $user->get_roles_of_user;
+        my $hasFiDRole = 0;
 
+        foreach my $role ( keys %{$user_roles} ) {
+            if (   $role eq 'viewadmin'
+                || $role eq 'admin'
+                || $role eq 'society_user' )
+            {
+                $hasFiDRole = 1;
+            }
+        }
+        if ($hasFiDRole) {
+            my $redirecturl
+                = "$path_prefix/$config->{users_loc}/id/$user->{ID}/home.html?l=$lang";
+            if ( $scheme eq "https" ) {
+                $redirecturl = "https://$servername$redirecturl";
+            }
+            #        # TODO GET?
+            return $self->redirect($redirecturl);
+        }
+        else {
+            my $redirecturl
+                = "$path_prefix/$config->{users_loc}/login/fid.html?l=$lang";
+            if ( $scheme eq "https" ) {
+                $redirecturl = "https://$servername$redirecturl";
+            }
 
-my $authenticators_ref = $config->get_authenticators($view);
-
-if ($user->{ID} && !$validtarget){
- my $userData = new OpenBib::User({ID => $user->{ID} });
- my $userinfo = $userData->get_info;
- my $user_roles = $userData->get_roles_of_user;
- my $hasFiDRole = 0;
- my $identificationDone = 0;
-
- foreach my $role (keys %{$user_roles})
- {
-    if ($role eq 'viewadmin' || $role eq 'admin' || $role eq 'society_user'){
-        $hasFiDRole = 1;
+            # TODO GET?
+            return $self->redirect($redirecturl);
+        }
     }
-    elsif ($role eq 'society_pending'){
-        $identificationDone = 1;
-    }
-}
-if ($hasFiDRole) {
-   my $redirecturl = "$path_prefix/$config->{users_loc}/id/$user->{ID}/home.html?l=$lang";
-   if ($scheme eq "https"){
-    $redirecturl ="https://$servername$redirecturl";
-}
-#        # TODO GET?
-return $self->redirect($redirecturl);
+    # TT-Data erzeugen
+    my $ttdata = {
+        authenticatorid => $authenticatorid,
+        authenticators  => $authenticators_ref,
+        validtarget     => $validtarget,
+        username        => $username,
+        redirect_to     => $redirect_to,
+    };
 
-}
+    my $templatename
+        = ($type) ? "tt_login_" . $type . "_tname" : "tt_login_tname";
 
-if (!$identificationDone) {
-my $redirecturl = "$path_prefix/$config->{users_loc}/identification.html?l=$lang";
-if ($scheme eq "https"){
-$redirecturl ="https://$servername$redirecturl";
-}
-# TODO GET?
-return $self->redirect($redirecturl);
-
-}
-}
-
-# TT-Data erzeugen
-my $ttdata={
-authenticatorid => $authenticatorid,
-authenticators  => $authenticators_ref,
-validtarget     => $validtarget,
-username        => $username,
-redirect_to     => $redirect_to,
-};
-
-my $templatename = ($type)?"tt_login_".$type."_tname":"tt_login_tname";
-
-return $self->print_page($config->{$templatename},$ttdata);
+    return $self->print_page( $config->{$templatename}, $ttdata );
 }
 
 sub authenticate {
-my $self = shift;
+    my $self = shift;
 
-# Log4perl logger erzeugen
-my $logger = get_logger();
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
 
-# Dispatched Args
-my $view           = $self->param('view');
+    # Dispatched Args
+    my $view = $self->param('view');
 
-# Shared Args
-my $query          = $self->query();
-my $r              = $self->param('r');
-my $config         = $self->param('config');    
-my $session        = $self->param('session');
-my $user           = $self->param('user');
-my $lang           = $self->param('lang');
-my $msg            = $self->param('msg');
-my $queryoptions   = $self->param('qopts');
-my $stylesheet     = $self->param('stylesheet');    
-my $useragent      = $self->param('useragent');
-my $path_prefix    = $self->param('path_prefix');
-my $scheme         = $self->param('scheme');
-my $servername     = $self->param('servername');
+    # Shared Args
+    my $query        = $self->query();
+    my $r            = $self->param('r');
+    my $config       = $self->param('config');
+    my $session      = $self->param('session');
+    my $user         = $self->param('user');
+    my $lang         = $self->param('lang');
+    my $msg          = $self->param('msg');
+    my $queryoptions = $self->param('qopts');
+    my $stylesheet   = $self->param('stylesheet');
+    my $useragent    = $self->param('useragent');
+    my $path_prefix  = $self->param('path_prefix');
+    my $scheme       = $self->param('scheme');
+    my $servername   = $self->param('servername');
 
-# CGI / JSON input
-my $input_data_ref = $self->parse_valid_input();
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
 
-my $authenticatorid  = $input_data_ref->{authenticatorid};
-my $username         = $input_data_ref->{username};
-my $password         = $input_data_ref->{password};
+    my $authenticatorid    = $input_data_ref->{authenticatorid};
+    my $authenticators_ref = $config->get_authenticators($view);
+    my $username           = $input_data_ref->{username};
+    my $password           = $input_data_ref->{password};
 
-# CGI-only Parameters for html-representation
-my $code        = ($query->param('code'))?$query->param('code'):'1';
-my $validtarget = ($query->param('validtarget'))?$query->param('validtarget'):'none';
-my $type        = ($query->param('type'))?$query->param('type'):'';
-my $redirect_to = uri_unescape($query->param('redirect_to'));
+    # CGI-only Parameters for html-representation
+    my $code = ( $query->param('code') ) ? $query->param('code') : '1';
+    my $validtarget = undef;
 
-my $redirecturl = "";
+    #    = ( $query->param('validtarget') )
+    #    ? $query->param('validtarget')
+    #    : 'none';
+    my $type = ( $query->param('type') ) ? $query->param('type') : '';
+    my $redirect_to = uri_unescape( $query->param('redirect_to') );
 
-my $result_ref = {
-    success => 0,
-};
+    my $redirecturl = "";
 
+    my $result_ref = { success => 0, };
 
-# Authentifizierung nur dann valide, wenn dem View das Anmeldeziel
-# authenticatorid zugeordnet ist.
-my @valid_authenticators = $config->get_viewauthenticators($view);
+    # Authentifizierung nur dann valide, wenn dem View das Anmeldeziel
+    # authenticatorid zugeordnet ist.
+    my @valid_authenticators = $config->get_viewauthenticators($view);
 
-my $authenticator_is_valid = 0;
+    my $authenticator_is_valid = 0;
 
-#check if the passed authentification type is valid for this view
-foreach my $valid_authenticator (@valid_authenticators){
-    if ($valid_authenticator == $authenticatorid){
-        $authenticator_is_valid = 1;
-        last;
+    #check if the passed authentification type is valid for this view
+    foreach my $valid_authenticator (@valid_authenticators) {
+        if ( $valid_authenticator == $authenticatorid ) {
+            $authenticator_is_valid = 1;
+            last;
+        }
     }
-}
 
-if (!$authenticator_is_valid){
-    my $reason = $msg->maketext("fesIhre Kennung ist nicht zur Nutzung dieses Portals zugelassen. Wrong authenticator");
-    if ($self->param('representation') eq "html"){
-        return $self->print_warning($reason);
-    }
-    else {
-        $result_ref->{reason} = $reason;
-        return $self->print_json($result_ref);        
-    }
-}
-
-# Wenn die Session schon authentifiziert ist, dann
-# wird in die Benutzereinstellungen gesprungen
-if ($user->{ID} && !$validtarget){
-
-    if (!$user->user_exists_in_view($view)){
-        my $reason = $msg->maketext("fesIhre Kennung ist nicht zur Nutzung dieses Portals zugelassen. Cannot access view");
-        if ($self->param('representation') eq "html"){
+    if ( !$authenticator_is_valid ) {
+        my $reason
+            = $msg->maketext(
+            "fesIhre Kennung ist nicht zur Nutzung dieses Portals zugelassen. Wrong authenticator"
+            );
+        if ( $self->param('representation') eq "html" ) {
             return $self->print_warning($reason);
         }
         else {
             $result_ref->{reason} = $reason;
-            return $self->print_json($result_ref);        
+            return $self->print_json($result_ref);
         }
     }
-    else {
-        # Ablehnung, wenn Nutzer nicht zu den Berechtigten fuer den View gehoeren, dann Meldung
-        if (!$user->can_access_view($view))
-        {
-         my $userData = new OpenBib::User({ID => $user->{ID} });
-         my $userinfo = $userData->get_info;
-         my $user_roles = $userData->get_roles_of_user;
-         my $identificationDone = 0;
-         foreach my $role (keys %{$user_roles})
-         {
-            if ($role eq 'society_pending')
-            {
-                $identificationDone = 1;
+    my $ttdata = {
+        authenticatorid => $authenticatorid,
+        authenticators  => $authenticators_ref,
+        username        => $username,
+        errors          => {
+
+        }
+    };
+
+    # Wenn die Session schon authentifiziert ist, dann
+    # wird in die Benutzereinstellungen gesprungen
+    if ( $user->{ID} && !$validtarget ) {
+
+        if ( !$user->user_exists_in_view($view) ) {
+            my $reason
+                = $msg->maketext(
+                "Ihre Kennung ist nicht zur Nutzung dieses Portals zugelassen. Cannot access view"
+                );
+            if ( $self->param('representation') eq "html" ) {
+                return $self->print_warning($reason);
+            }
+            else {
+                $result_ref->{reason} = $reason;
+                return $self->print_json($result_ref);
             }
         }
-        if (!$identificationDone)
-        {
-          # my $redirecturl = "$path_prefix/$config->{users_loc}/identification.html?l=$lang";
-           if ($scheme eq "https"){
-            $redirecturl ="https://$servername$redirecturl";
-        }
-        # TODO GET?
-        return $self->redirect($redirecturl);
-        }else
-        {
-            #we hsve to show the Waiting message
-            my $redirecturl = "$path_prefix/$config->{users_loc}/id/$user->{ID}/home.html?l=$lang";
-            if ($scheme eq "https")
-            {
-                $redirecturl ="https://$servername$redirecturl";
+        else {
+# Ablehnung, wenn Nutzer nicht zu den Berechtigten fuer den View gehoeren, dann Meldung
+            if ( !$user->can_access_view($view) ) {
+
+                #we hsve to show the Waiting message
+                my $redirecturl
+                    = "$path_prefix/$config->{users_loc}/identification/confirm.html?l=$lang";
+                if ( $scheme eq "https" ) {
+                    $redirecturl = "https://$servername$redirecturl";
+                }
+                return $self->redirect($redirecturl);
             }
-            return $self->redirect($redirecturl);
-        }
-        }else
-        {
-            my $redirecturl = "$path_prefix/$config->{users_loc}/id/$user->{ID}/home.html?l=$lang";
-            if ($scheme eq "https")
-            {
-                $redirecturl ="https://$servername$redirecturl";
+
+            else {
+                my $redirecturl
+                    = "$path_prefix/$config->{users_loc}/id/$user->{ID}/home.html?l=$lang";
+                if ( $scheme eq "https" ) {
+                    $redirecturl = "https://$servername$redirecturl";
+                }
+                return $self->redirect($redirecturl);
             }
-            return $self->redirect($redirecturl);
         }
     }
-}
+    my $userid = 0;    # Nicht erfolgreich authentifiziert
 
-my $userid = 0; # Nicht erfolgreich authentifiziert
-
-if ($username eq "" || $password eq "") {
-    $redirecturl="$path_prefix/$config->{login_loc}/failure?code=-1";
-
-    if ($self->param('representation') eq "html"){
-        $logger->debug("Redirecting to $redirecturl");
-
-        # TODO GET?
-        $self->header_add('Content-Type' => 'text/html');
-        return $self->redirect($redirecturl);
+    if ( $username eq "" || $password eq "" ) {
+        $ttdata->{errors}->{general}
+            = $msg->maketext(
+            "Bitte geben Sie Ihre Email und ihr Passwort ein um sich anzumelden"
+            );
+        return $self->print_page( "login", $ttdata );
     }
-    else {
-        return $self->print_json($result_ref);        
-    }
-}
 
-my $authenticator = OpenBib::Authenticator::Factory->create_authenticator({ id => $authenticatorid, config => $config, session => $session});
+    my $authenticator = OpenBib::Authenticator::Factory->create_authenticator(
+        { id => $authenticatorid, config => $config, session => $session } );
 
-# Konsistenzchecks
-{ 
-    if ($authenticator->get('type') eq "self" && $username ne "admin" && $username !~/\@/){
-        return $self->print_warning($msg->maketext("Bitte melden Sie sich mit Ihrer registrierten E-Mail-Adresse an"));
-    }
-}
-
-$userid = $authenticator->authenticate({
-    username  => $username,
-    password  => $password,
-    viewname  => $view,
-    });
-
-
-
-if ($userid > 0) { 
-
-    $logger->debug("Authentication successful");
-
-    $user->update_lastlogin({ userid => $userid });
-
-    $result_ref->{success} = 1;
-    $result_ref->{userid}  = $userid;
-    my $authorized_user = new OpenBib::User({ ID => $userid, config => $config});
-    # Ablehnung, wenn Nutzer nicht zu den Berechtigten fuer den View gehoeren, dann Meldung
-    if (!$authorized_user->can_access_view($view))
+    # Konsistenzchecks
     {
-      my $userinfo = $authorized_user->get_info;
-      my $user_roles = $authorized_user->get_roles_of_user;
-      my $identificationDone = 0;
-       #foreach my $role (keys %{$user_roles})
-      # {
-     #    if ($role eq 'society_pending')
-    #     {
-    #       $identificationDone = 1;
-    #   }
-    #     }
-    # if (!$identificationDone)
-    # {
-         #do we need active session here???
-         $self->connectUserSession($user, $userid, $session, $authenticatorid , $logger);
-         my $redirecturl = "$path_prefix/$config->{users_loc}/identification.html?l=$lang";
-         if ($scheme eq "https"){
-             $redirecturl ="https://$servername$redirecturl";
-         } 
-         return $self->redirect($redirecturl,303);     
-
-    # }else
-    # {
-    #     $self->connectUserSession($user, $userid, $session, $authenticatorid , $logger);
-    #     my $redirecturl = "$path_prefix/$config->{users_loc}/id/$user->{ID}/home.html?l=$lang";
-    #     if ($scheme eq "https")
-    #     {
-    #         $redirecturl ="https://$servername$redirecturl";
-    #     }
-    #     return $self->redirect($redirecturl,303);
-    # }
-     }else
-     {
-        $self->connectUserSession($user, $userid, $session, $authenticatorid , $logger);
-        my $redirecturl = "$path_prefix/$config->{users_loc}/id/$userid/home.html?l=$lang";
-        if ($scheme eq "https")
+        if (   $authenticator->get('type') eq "self"
+            && $username ne "admin"
+            && $username !~ /\@/ )
         {
-            $redirecturl ="https://$servername$redirecturl";
+            $ttdata->{errors}->{general}
+                = $msg->maketext(
+                "Bitte melden Sie sich mit ihrer registrierten E-Mail Adresse an"
+                );
+            return $self->print_page( "login", $ttdata );
         }
-        return $self->redirect($redirecturl,303);
     }
 
-}
+    $userid = $authenticator->authenticate(
+        {   username => $username,
+            password => $password,
+            viewname => $view,
+        }
+    );
+
+    if ( $userid > 0 ) {
+
+        $logger->debug("Authentication successful");
+
+        $user->update_lastlogin( { userid => $userid } );
+
+        $result_ref->{success} = 1;
+        $result_ref->{userid}  = $userid;
+        my $authorized_user
+            = new OpenBib::User( { ID => $userid, config => $config } );
+
+# Ablehnung, wenn Nutzer nicht zu den Berechtigten fuer den View gehoeren, dann Meldung
+        if ( !$authorized_user->can_access_view($view) ) {
+
+            $self->connectUserSession( $user, $userid, $session,
+                $authenticatorid, $logger );
+            my $redirecturl
+                = "$path_prefix/$config->{users_loc}/identification/confirm.html?l=$lang";
+            if ( $scheme eq "https" ) {
+                $redirecturl = "https://$servername$redirecturl";
+            }
+            return $self->redirect( $redirecturl, 303 );
+        }
+        else {
+            $self->connectUserSession( $user, $userid, $session,
+                $authenticatorid, $logger );
+            my $redirecturl
+                = "$path_prefix/$config->{users_loc}/id/$userid/home.html?l=$lang";
+            if ( $scheme eq "https" ) {
+                $redirecturl = "https://$servername$redirecturl";
+            }
+            return $self->redirect( $redirecturl, 303 );
+        }
+
+    }
+
+    # Fehlerbehandlung
+    if ( $userid <= 0 ) {
+        $ttdata->{errors}->{general}
+            = $msg->maketext("Falsche E-Mail oder falsches Passwort");
+        return $self->print_page( "login", $ttdata );
+    }
 }
 
 sub connectUserSession {
 
-my $self = shift;
-my $user = shift;
-my $userid = shift;
-my $session = shift;
-my $authenticatorid = shift;
-my $logger = shift;
+    my $self            = shift;
+    my $user            = shift;
+    my $userid          = shift;
+    my $session         = shift;
+    my $authenticatorid = shift;
+    my $logger          = shift;
 
-$user->connect_session({
-    sessionID        => $session->{ID},
-    userid           => $userid,
-    authenticatorid  => $authenticatorid,
-    });
+    $user->connect_session(
+        {   sessionID       => $session->{ID},
+            userid          => $userid,
+            authenticatorid => $authenticatorid,
+        }
+    );
 
-# Falls noch keins da ist, eintragen
-if (!$user->searchfields_exist($userid)) {
-    $user->set_default_searchfields($userid);
-}
-
-if (!$user->livesearch_exists($userid)) {
-    $user->set_default_livesearch($userid);
-}
-
-# Jetzt wird die bestehende Trefferliste uebernommen.
-# Gehe ueber alle Eintraege der Trefferliste
-
-$logger->debug("Session connected, defaults for searchfields/livesearch set");
-
-my $recordlist_existing_collection = $session->get_items_in_collection();
-
-if ($logger->is_debug){
-    $logger->debug("Items in Session: ".YAML::Dump($recordlist_existing_collection));
-}
-
-foreach my $record (@{$recordlist_existing_collection->to_list}){
-    if ($logger->is_debug){
-        $logger->debug("Adding item to personal collection of user $userid: ".YAML::Dump($record));
+    # Falls noch keins da ist, eintragen
+    if ( !$user->searchfields_exist($userid) ) {
+        $user->set_default_searchfields($userid);
     }
 
-    $user->move_cartitem_to_user({
-        userid => $userid,
-        itemid => $record->{listid},
-        });
-}
+    if ( !$user->livesearch_exists($userid) ) {
+        $user->set_default_livesearch($userid);
+    }
 
-$logger->debug("Added recently collected title");
+    # Jetzt wird die bestehende Trefferliste uebernommen.
+    # Gehe ueber alle Eintraege der Trefferliste
 
-# Bestimmen des Recherchemasken-Typs
-my $masktype = $user->get_mask($userid);
+    $logger->debug(
+        "Session connected, defaults for searchfields/livesearch set");
 
-$session->set_mask($masktype);
+    my $recordlist_existing_collection = $session->get_items_in_collection();
+
+    if ( $logger->is_debug ) {
+        $logger->debug( "Items in Session: "
+                . YAML::Dump($recordlist_existing_collection) );
+    }
+
+    foreach my $record ( @{ $recordlist_existing_collection->to_list } ) {
+        if ( $logger->is_debug ) {
+            $logger->debug(
+                "Adding item to personal collection of user $userid: "
+                    . YAML::Dump($record) );
+        }
+
+        $user->move_cartitem_to_user(
+            {   userid => $userid,
+                itemid => $record->{listid},
+            }
+        );
+    }
+
+    $logger->debug("Added recently collected title");
+
+    # Bestimmen des Recherchemasken-Typs
+    my $masktype = $user->get_mask($userid);
+
+    $session->set_mask($masktype);
 
 }
 
 sub failure {
-my $self = shift;
+    my $self = shift;
 
-# Log4perl logger erzeugen
-my $logger = get_logger();
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
 
-# Dispatched Args
-my $view           = $self->param('view')           || '';
+    # Dispatched Args
+    my $view = $self->param('view') || '';
 
-# Shared Args
-my $query          = $self->query();
-my $r              = $self->param('r');
-my $config         = $self->param('config');    
-my $session        = $self->param('session');
-my $user           = $self->param('user');
-my $msg            = $self->param('msg');
-my $queryoptions   = $self->param('qopts');
-my $stylesheet     = $self->param('stylesheet');    
-my $useragent      = $self->param('useragent');
-my $path_prefix    = $self->param('path_prefix');
+    # Shared Args
+    my $query        = $self->query();
+    my $r            = $self->param('r');
+    my $config       = $self->param('config');
+    my $session      = $self->param('session');
+    my $user         = $self->param('user');
+    my $msg          = $self->param('msg');
+    my $queryoptions = $self->param('qopts');
+    my $stylesheet   = $self->param('stylesheet');
+    my $useragent    = $self->param('useragent');
+    my $path_prefix  = $self->param('path_prefix');
 
-# CGI Args
-my $code      = ($query->param('code'))?$query->param('code'):'1';
-my $authenticatorid  = ($query->param('authenticatorid'))?$query->param('authenticatorid'):'none';
-my $validtarget = ($query->param('validtarget'))?$query->param('validtarget'):'none';
-my $type      = ($query->param('type'))?$query->param('type'):'';
-my $username = ($query->param('username'))?$query->param('username'):'';
-my $password  = decode_utf8($query->param('password')) || $query->param('password') || '';
+    # CGI Args
+    my $code = ( $query->param('code') ) ? $query->param('code') : '1';
+    my $authenticatorid
+        = ( $query->param('authenticatorid') )
+        ? $query->param('authenticatorid')
+        : 'none';
+    my $validtarget
+        = ( $query->param('validtarget') )
+        ? $query->param('validtarget')
+        : 'none';
+    my $type = ( $query->param('type') ) ? $query->param('type') : '';
+    my $username
+        = ( $query->param('username') ) ? $query->param('username') : '';
+    my $password
+        = decode_utf8( $query->param('password') )
+        || $query->param('password')
+        || '';
 
-# Wenn die Session schon authentifiziert ist, dann wird
-# wird in die Benutzereinstellungen gesprungen
-if ($user->{ID} && !$validtarget){
+    # Wenn die Session schon authentifiziert ist, dann wird
+    # wird in die Benutzereinstellungen gesprungen
+    if ( $user->{ID} && !$validtarget ) {
 
-    # TODO GET?
-    $self->redirect("$path_prefix/$config->{users_loc}/id/[% user.ID %]/preferences");
+        # TODO GET?
+        $self->redirect(
+            "$path_prefix/$config->{users_loc}/id/[% user.ID %]/preferences");
 
-    return;
-}
+        return;
+    }
 
-if    ($code eq "-1") {
-    return $self->print_warning($msg->maketext("Sie haben entweder kein Passwort oder keinen Usernamen eingegeben"));
-}
-elsif ($code eq "-2") {
-    return $self->print_warning($msg->maketext("Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht erfolgreich authentifiziert werden"));
-}
-else {
-    return $self->print_warning($msg->maketext("Falscher Fehler-Code"));
-}
+    if ( $code eq "-1" ) {
+        return $self->print_warning(
+            $msg->maketext(
+                "Sie haben entweder kein Passwort oder keinen Usernamen eingegeben"
+            )
+        );
+    }
+    elsif ( $code eq "-2" ) {
+        return $self->print_warning(
+            $msg->maketext(
+                "Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht erfolgreich authentifiziert werden"
+            )
+        );
+    }
+    else {
+        return $self->print_warning( $msg->maketext("Falscher Fehler-Code") );
+    }
 }
 
 sub get_input_definition {
-my $self=shift;
+    my $self = shift;
 
-return {
-authenticatorid => {
-    default  => '',
-    encoding => 'none',
-    type     => 'scalar',
-    },
-    username => {
-        default  => '',
-        encoding => 'none',
-        type     => 'scalar',
+    return {
+        authenticatorid => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        username => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
         },
         password => {
             default  => '',
             encoding => 'none',
             type     => 'scalar',
-            },
-        };
-    }
+        },
+    };
+}
 
-    1;
-
-
-
+1;
 

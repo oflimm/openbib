@@ -14,8 +14,20 @@
 #
 #######################################################################
 -%]
+[%- IF "${path}" == "/portal/fidphil/login" || "${path}" == "/portal/fidphil/login.html" -%]
+<html>
+<head>
+   <!-- HTML meta refresh URL redirection -->
+   <meta http-equiv="refresh"
+   content="0; url=[%${servername}%]/portal/fidphil/fid/login">
+</head>
+<body>
+   <p>The page has moved to:
+   <a href="[%${servername}%]/portal/fidphil/fid/login">this page</a></p>
+</body>
+</html>
+[%- ELSE -%]
 [%- PROCESS common/subtemplate name="local_config" -%] 
-
 [%- IF representation == '' || representation == 'html' ;
 -%]
 [%- 
@@ -24,14 +36,15 @@ ic_request  = "${qopts.get_option('ic-request')}";
 [%- IF NOT ic_request -%]
 [% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
 <body>
-<div id="contentWrapper">
-[%- END -%] 
-[%- PROCESS common/subtemplate name="login_html" -%] 
-[%- IF NOT ic_request -%]
-</div>
+	<div id="contentWrapper">
+		[%- END -%] 
+		[%- PROCESS common/subtemplate name="login_html" -%] 
+		[%- IF NOT ic_request -%]
+	</div>
 </body>
 [%- END -%] 
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]
+[%- END -%]
 [%- END -%]
 

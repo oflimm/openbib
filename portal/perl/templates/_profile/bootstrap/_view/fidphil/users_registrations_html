@@ -18,7 +18,7 @@
 				<img src="/images/openbib/views/fidphil/logofid.jpg"  width="180px" height="auto"  />
 			</div>
 			<div class="text-center mt-5">
-				<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/registrations/fid" enctype="application/x-www-form-urlencoded">
+				<form method="post" action="[% path_prefix %]/fid/[% config.get('users_loc') %]/registrations" enctype="application/x-www-form-urlencoded">
 					<h2 class="display-4">[% msg.maketext("Registrieren") %]</h2>
 					<div class="form-group row mt-5 text-left">
 						<label class="col-md-3 col-form-label text-left" for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>

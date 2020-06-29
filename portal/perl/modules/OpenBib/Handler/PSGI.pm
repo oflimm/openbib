@@ -251,7 +251,11 @@ sub cgiapp_init {
 	    $self->param('path_prefix')."/".$config->get('info_loc')."/impressum",
 	    $self->param('path_prefix')."/".$config->get('info_loc')."/datenschutz",		
 	    $self->param('path_prefix')."/".$config->get('users_loc')."/".$config->get('registrations_loc'),
-	    $self->param('path_prefix')."/".$config->get('users_loc')."/".$config->get('passwords_loc')
+	    $self->param('path_prefix')."/".$config->get('users_loc')."/".$config->get('passwords_loc'),
+        #FID-Erweeiterung
+        $self->param('path_prefix')."/fid/".$config->get('login_loc'),
+        $self->param('path_prefix')."/fid/".$config->get('logout_loc'),
+        $self->param('path_prefix')."/fid/".$config->get('users_loc')."/".$config->get('registrations_loc'),
 	    );
 	
 	my $do_dispatch = 1;

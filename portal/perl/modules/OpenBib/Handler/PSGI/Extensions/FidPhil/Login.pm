@@ -63,6 +63,7 @@ sub setup {
     $self->run_modes(
         'show_form'                  => 'show_form',
         'authenticate'               => 'authenticate',
+        'show_confirm'               => 'show_confirm',
         'failure'                    => 'failure',
         'dispatch_to_representation' => 'dispatch_to_representation',
     );
@@ -136,12 +137,12 @@ sub show_form {
             if ( $scheme eq "https" ) {
                 $redirecturl = "https://$servername$redirecturl";
             }
+
             #        # TODO GET?
             return $self->redirect($redirecturl);
         }
         else {
-            my $redirecturl
-                = "$path_prefix/$config->{users_loc}/login/fid.html?l=$lang";
+            my $redirecturl = "$path_prefix/login/confirm.html?l=$lang";
             if ( $scheme eq "https" ) {
                 $redirecturl = "https://$servername$redirecturl";
             }
@@ -150,6 +151,7 @@ sub show_form {
             return $self->redirect($redirecturl);
         }
     }
+
     # TT-Data erzeugen
     my $ttdata = {
         authenticatorid => $authenticatorid,
@@ -163,6 +165,44 @@ sub show_form {
         = ($type) ? "tt_login_" . $type . "_tname" : "tt_login_tname";
 
     return $self->print_page( $config->{$templatename}, $ttdata );
+}
+
+sub show_confirm {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view = $self->param('view');
+
+    # Shared Args
+    my $query        = $self->query();
+    my $r            = $self->param('r');
+    my $config       = $self->param('config');
+    my $session      = $self->param('session');
+    my $user         = $self->param('user');
+    my $msg          = $self->param('msg');
+    my $lang         = $self->param('lang');
+    my $queryoptions = $self->param('qopts');
+    my $stylesheet   = $self->param('stylesheet');
+    my $useragent    = $self->param('useragent');
+    my $path_prefix  = $self->param('path_prefix');
+    my $scheme       = $self->param('scheme');
+    my $servername   = $self->param('servername');
+
+    if ( $user->{ID} ) {
+        return $self->print_page("users_identification_confirmation");
+    }
+    else {
+        my $redirecturl
+            = "$path_prefix/login/confirm.html?l=$lang";
+        if ( $scheme eq "https" ) {
+            $redirecturl = "https://$servername$redirecturl";
+        }
+        return $self->redirect($redirecturl, 303);
+    }
+
 }
 
 sub authenticate {
@@ -228,7 +268,7 @@ sub authenticate {
     if ( !$authenticator_is_valid ) {
         my $reason
             = $msg->maketext(
-            "fesIhre Kennung ist nicht zur Nutzung dieses Portals zugelassen. Wrong authenticator"
+            "Ihre Kennung ist nicht zur Nutzung dieses Portals zugelassen. Wrong authenticator"
             );
         if ( $self->param('representation') eq "html" ) {
             return $self->print_warning($reason);
@@ -270,7 +310,7 @@ sub authenticate {
 
                 #we hsve to show the Waiting message
                 my $redirecturl
-                    = "$path_prefix/$config->{users_loc}/identification/confirm.html?l=$lang";
+                    = "$path_prefix/logim/confirm.html?l=$lang";
                 if ( $scheme eq "https" ) {
                     $redirecturl = "https://$servername$redirecturl";
                 }
@@ -338,7 +378,7 @@ sub authenticate {
             $self->connectUserSession( $user, $userid, $session,
                 $authenticatorid, $logger );
             my $redirecturl
-                = "$path_prefix/$config->{users_loc}/identification/confirm.html?l=$lang";
+                = "$path_prefix/login/confirm.html?l=$lang";
             if ( $scheme eq "https" ) {
                 $redirecturl = "https://$servername$redirecturl";
             }

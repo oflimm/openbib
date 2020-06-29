@@ -26,7 +26,7 @@ available_authenticators = config.get_authenticators_by_view(view);
         <img src="/images/openbib/views/fidphil/logofid.jpg"  width="240px" height="auto"  />
       </div>
       <div class="text-center mt-3">
-        <form method="post" action="[% IF config.get('use_https') %]https://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]/fid" enctype="application/x-www-form-urlencoded" target="_parent">
+        <form method="post" action="[% IF config.get('use_https') %]https://[% servername %][% END %][% path_prefix %]/fid/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent">
           <h2 class="display-4">[% msg.maketext("Login") %]</h2>
         </div>
         <input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">

@@ -79,8 +79,8 @@ sub cgiapp_init {
 
 
     my $r            = $self->param('r');
+    #my $view         = $self->param('view') || $self->param('viewdata');
     my $view         = $self->param('view');
-
     my $config       = OpenBib::Config->new;
 
     $self->param('config',$config);
@@ -534,7 +534,7 @@ sub process_uri {
 
     my $r          = $self->param('r');
     my $config     = $self->param('config');
-    my $view       = $self->param('view');
+    my $view         = $self->param('view');
     my $servername = $self->param('servername');
 
     my $path_prefix          = $config->get('base_loc');

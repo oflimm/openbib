@@ -173,7 +173,6 @@ sub mail_confirmation {
     if ( $r->header('X-Forwarded-For') =~ /([^,\s]+)$/ ) {
         $client_ip = $1;
     }
-
     # Cleanup Username
     $username =~ s/^\s+//g;
     $username =~ s/\s+$//g;

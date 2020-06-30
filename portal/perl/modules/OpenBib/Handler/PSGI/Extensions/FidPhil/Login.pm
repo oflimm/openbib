@@ -75,12 +75,11 @@ sub setup {
 
 sub show_form {
     my $self = shift;
-
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
     # Dispatched Args
-    my $view = $self->param('view');
+    my $view         = $self->param('view') || $self->param('viewdata');
 
     # Shared Args
     my $query        = $self->query();
@@ -103,7 +102,6 @@ sub show_form {
     my $authenticatorid = $input_data_ref->{authenticatorid};
     my $username        = $input_data_ref->{username};
     my $password        = $input_data_ref->{password};
-
     # CGI-only Parameters for html-representation
     my $action
         = ( $query->param('action') ) ? $query->param('action') : 'none';
@@ -164,7 +162,7 @@ sub show_form {
     my $templatename
         = ($type) ? "tt_login_" . $type . "_tname" : "tt_login_tname";
 
-    return $self->print_page( $config->{$templatename}, $ttdata );
+    return $self->print_page("login", $ttdata );
 }
 
 sub show_confirm {
@@ -174,7 +172,7 @@ sub show_confirm {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view = $self->param('view');
+    my $view         = $self->param('view');
 
     # Shared Args
     my $query        = $self->query();
@@ -212,7 +210,7 @@ sub authenticate {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view = $self->param('view');
+   my $view         = $self->param('view');
 
     # Shared Args
     my $query        = $self->query();

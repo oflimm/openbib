@@ -28,8 +28,8 @@
 
 
 
-<link rel="stylesheet" type="text/css" href="http://unikatalog.ub.uni-koeln.de/css/style.css" />
-<link rel="stylesheet" type="text/css" href="http://unikatalog.ub.uni-koeln.de/css/style_openbib.css" />
+<link rel="stylesheet" type="text/css" href="https://unikatalog.ub.uni-koeln.de/css/style.css" />
+<link rel="stylesheet" type="text/css" href="https://unikatalog.ub.uni-koeln.de/css/style_openbib.css" />
 
 <!-- BO headScript_Basic -->
 
@@ -79,7 +79,7 @@
 <div id="Search">
 </div><!-- /pageelement_Search -->
  <!-- pageelement_Logo -->
-<div id="Logo"><img src="http://unikatalog.ub.uni-koeln.de/images/logo_new.jpg" id="imgLogo" class="imgNoborder" alt="Siegel Uni Koeln/Startseite" usemap="#Logo" />
+<div id="Logo"><img src="https://unikatalog.ub.uni-koeln.de/images/logo_new.jpg" id="imgLogo" class="imgNoborder" alt="Siegel Uni Koeln/Startseite" usemap="#Logo" />
 </div>
 <map name="Logo" id="map">
  <area shape="circle" coords="55,50,57" href="http://www.uni-koeln.de/" alt="Universität zu Köln" target="_blank" />
@@ -217,7 +217,7 @@ K&ouml;ln - Abteilung Universit&auml;tsgesamtkatalog</a>
  </div>
  <div class="floatRight" style="margin:0.2em 0 0 0">
 
-  <a href="#top"><img title="Seitenanfang" style="width:2.24em;" class="imgNoborder" src="http://unikatalog.ub.uni-koeln.de/images/top.gif" alt="Seitenanfang" /></a>
+  <a href="#top"><img title="Seitenanfang" style="width:2.24em;" class="imgNoborder" src="https://unikatalog.ub.uni-koeln.de/images/top.gif" alt="Seitenanfang" /></a>
  </div>
 </div>
 

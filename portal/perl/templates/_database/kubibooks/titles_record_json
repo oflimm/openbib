@@ -15,7 +15,7 @@ fields = record.get_fields(msg);
 
 fields.${"T2662"}.push({
                    mult = 1
-		   content = dfgviewer_url
+		   content = uri_escape(dfgviewer_url)
 		 });
 
 forget = fields.${"T2662"}.shift;

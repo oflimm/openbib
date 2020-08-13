@@ -1294,16 +1294,16 @@
 
 [% IF locations.size > 0 %]
 
+<!--
 <div id="map">
     <div id="mapDiv"></div>
     <div id="suchleiste"><span id="tb_cont"><input type="search" list="theDataList" placeholder="Bibliothek finden.." name="fname" id="suche" /><span onclick="clearSearch()" style="top: 0px;" id="clear_input">X</span></span>
     </div>
-    <!--<button id="roundFilter" onclick="showFilterPanel()"></button>-->
     <img src="https://www.ub.uni-koeln.de/e12502/e12523/e33478/e40292/if_filter_299094_ger.png" id="filterImg" onclick="showFilterPanel()"></img>
     <div id="filterPanel" style="display: none;">
         <div id="einstellungen"></div>
     </div>
-</div>
+</div> -->
 <datalist id="theDataList"></datalist>
 
 <script src="https://kug.ub.uni-koeln.de/js/leaflet.js"></script>
@@ -5062,6 +5062,7 @@ var semesterZeit = [
                  'DE-38-121' = 1 
                  'DE-38-127' = 1 
                  'DE-38-128' = 1 
+                 'DE-38-137' = 1 
                  'DE-38-146' = 1 
                  'DE-38-157' = 1 
                  'DE-38-159' = 1 
@@ -5272,7 +5273,7 @@ var semesterZeit = [
   
 %]
 [% FOREACH desc IN institute_map.keys.sort %]
-	<li>[% IF institute_map.${desc}.url %]<a href="[% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF institute_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
+	<li>[% IF institute_map.${desc}.url %]<a href="[% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF 0 == 1 && institute_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
       </ul>
@@ -5337,13 +5338,13 @@ var semesterZeit = [
 %]
 [% FOREACH desc IN institute_map.keys.sort %]
      [% NEXT IF NOT desc.match('^Lern') %]
-	<li>[% IF institute_map.${desc}.url %]<a href="[% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF institute_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
+	<li>[% IF institute_map.${desc}.url %]<a href="[% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF 0 == 1 && institute_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
 
 [% FOREACH desc IN institute_map.keys.sort %]
      [% NEXT IF desc.match('^Lern') %]
-	<li>[% IF institute_map.${desc}.url %]<a href="[% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF institute_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
+	<li>[% IF institute_map.${desc}.url %]<a href="[% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF 0 == 1 && institute_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
        </ul>
@@ -5401,7 +5402,7 @@ var semesterZeit = [
   
 %]
 [% FOREACH desc IN institute_map.keys.sort %]
-	<li>[% IF institute_map.${desc}.url %]<a href="[% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF institute_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
+	<li>[% IF institute_map.${desc}.url %]<a href="[% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF 0 == 1 && institute_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
 </ul></div>
@@ -5457,7 +5458,7 @@ var semesterZeit = [
   
 %]
 [% FOREACH desc IN institute_map.keys.sort %]
-	<li>[% IF institute_map.${desc}.url %]<a href="[% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF institute_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
+	<li>[% IF institute_map.${desc}.url %]<a href="[% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF 0 == 1 && institute_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
 </ul></div>
@@ -5513,7 +5514,7 @@ var semesterZeit = [
   
 %]
 [% FOREACH desc IN institute_map.keys.sort %]
-	<li>[% IF institute_map.${desc}.url %]<a href="[% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF institute_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
+	<li>[% IF institute_map.${desc}.url %]<a href="[% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF 0 == 1 && institute_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
 </ul></div>
@@ -5570,7 +5571,7 @@ var semesterZeit = [
   
 %]
 [% FOREACH desc IN institute_map.keys.sort %]
-	<li>[% IF institute_map.${desc}.url %]<a href="[% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF institute_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
+	<li>[% IF institute_map.${desc}.url %]<a href="[% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF 0 == 1 && institute_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
     </ul>

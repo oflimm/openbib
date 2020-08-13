@@ -79,8 +79,8 @@ sub cgiapp_init {
 
 
     my $r            = $self->param('r');
+    #my $view         = $self->param('view') || $self->param('viewdata');
     my $view         = $self->param('view');
-
     my $config       = OpenBib::Config->new;
 
     $self->param('config',$config);
@@ -252,6 +252,10 @@ sub cgiapp_init {
 	    $self->param('path_prefix')."/".$config->get('info_loc')."/datenschutz",		
 	    $self->param('path_prefix')."/".$config->get('users_loc')."/".$config->get('registrations_loc'),
 	    $self->param('path_prefix')."/".$config->get('users_loc')."/".$config->get('passwords_loc'),
+        #FID-Erweeiterung
+        $self->param('path_prefix')."/fid/".$config->get('login_loc'),
+        $self->param('path_prefix')."/fid/".$config->get('logout_loc'),
+        $self->param('path_prefix')."/fid/".$config->get('users_loc')."/".$config->get('registrations_loc'),
 	    );
 	
 	my $do_dispatch = 1;
@@ -530,7 +534,7 @@ sub process_uri {
 
     my $r          = $self->param('r');
     my $config     = $self->param('config');
-    my $view       = $self->param('view');
+    my $view         = $self->param('view');
     my $servername = $self->param('servername');
 
     my $path_prefix          = $config->get('base_loc');
@@ -1583,7 +1587,21 @@ sub parse_valid_input {
             my $encoding = $valid_input_params_ref->{$param}{encoding};
             my $default  = $valid_input_params_ref->{$param}{default};
 
-            $input_params_ref->{$param} = $input_data_ref->{$param} || $default;
+	    if ($type eq "mixed_bag"){
+		my $param_prefix = $param;
+		
+                foreach my $qparam ($query->param){
+                    if ($qparam=~/^${param_prefix}_/){
+
+			my $content = $query->param($qparam) || $default;
+			
+			push @{$input_params_ref->{mixed_bag}{$qparam}}, $content;
+                    }
+                }
+	    }
+	    else {
+		$input_params_ref->{$param} = $input_data_ref->{$param} || $default;
+	    }
         }    
 
     }
@@ -1633,6 +1651,18 @@ sub parse_valid_input {
                 }
                 $input_params_ref->{$param} = $fields_ref;
             }
+	    elsif ($type eq "mixed_bag"){
+		my $param_prefix = $param;
+		
+                foreach my $qparam ($query->param){
+                    if ($qparam=~/^${param_prefix}_/){
+
+                        my $content  = decode_utf8($query->param($qparam)) || $default;
+			
+			push @{$input_params_ref->{mixed_bag}{$qparam}}, $content;
+                    }
+                }
+	    }
             elsif ($type eq "rights") {
                 my $rights_ref     = $default;
                 my $rights_tmp_ref = {};

@@ -27,8 +27,8 @@
   END;
 %]
 
-
-<table class="ym-full">
+<div class="table-responsive">
+<table class="table table-striped table-hover">
 <thead>
 <tr align="center"><th>[% msg.maketext("Bibliothek") %]</th><th>QR-Code</th>[% IF have_standort %]<th>[% msg.maketext("Standort") %]</th>[% END %]<th>[% msg.maketext("Inventarnummer") %]</th><th>[% msg.maketext("Signatur") %]</th>[% IF have_bestandsverlauf %]<th>[% msg.maketext("Bestand") %]</th>[% END %]</tr>
 </thead>
@@ -60,4 +60,5 @@
 [% END %]
 </tbody>
 </table>
+</div>
 [% END %]

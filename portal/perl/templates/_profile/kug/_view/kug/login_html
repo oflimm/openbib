@@ -27,6 +27,8 @@
 
         <div class="jumbotron">
          <h1 class="display-4">[% msg.maketext("Anmelden") %]</h1>
+	 <p>Der Zugriff auf dieses Portal als Ausweich-Recherchesystem für alle unsere Nutzer wegen des Cyberangriffs wird hiermit eingestellt. Bitte recherchieren Sie fortan wieder im <a href="https://www.ub.uni-koeln.de" target="_blank">USB Portal</a>.</p>
+ 	 <p>An diesem Portal können sich nur registrierte Mitarbeiter der Bibliotheken der UzK anmelden.</p>
 	 <div id="login_targets" class="accordion">
 [% IF available_authenticator_types.${"self"} %]	 
   <div class="card">
@@ -124,6 +126,54 @@
   </div>
 </div>
 [% END %]
+[% IF available_authenticator_types.${"paia"} %]	 
+  <div class="card">
+    <div class="card-header" id="headingPAIA">
+      <h5 class="mb-0">
+        <a class="card-link collapsed" href="#collapsePAIA" data-toggle="collapse" data-target="#collapsePAIA" aria-expanded="false" aria-controls="collapsePAIA">
+          [% msg.maketext("Anmeldung mit einem Benutzerausweis") %]
+        </a>
+      </h5>
+    </div>
+    <div id="collapsePAIA" class="collapse" aria-labelledby="headingPAIA" data-parent="#login_targets">
+      <div class="card-body">
+<form method="post" action="[% IF config.get('use_https') %]https://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded">
+
+[% IF redirect_to %]
+<input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
+[% END %]
+
+<p/>
+
+<div class="form-group">
+<label for="authenticator">[% msg.maketext("mit") %]:</label>
+<select class="form-control" name="authenticatorid">
+[%- FOREACH authenticator IN available_authenticators -%]
+[%-   NEXT IF authenticator.type != 'paia' -%]
+<option value="[% authenticator.id %]" [% IF authenticator.id == authenticatorid %]selected="selected"[% END %]>[% authenticator.description %]</option>
+[%- END -%]
+</select>
+</div>
+
+<div class="form-group">
+<label for="username">[% msg.maketext("Benutzernummer") %]</label>
+<input class="form-control" type="text" name="username" id="username" value="[% username %]" />
+</div>
+<div class="form-group">
+<label for="password"/>[% msg.maketext("Passwort") %]</label>
+<input class="form-control" type="password" name="password" id="password" />
+</div>
+
+<p/>
+
+<button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Anmelden") %]</button>
+
+</form>
+      </div>
+    </div>
+  </div>
+</div>
+[% END %]
 [% IF available_authenticator_types.${"ldap"} %]	 
   <div class="card">
     <div class="card-header" id="headingLDAP">
@@ -172,6 +222,7 @@
   </div>
 </div>
 [% END %]
+         </div><!-- End: login_targets -->
         </div><!-- End: jumbotron -->
 
 

@@ -143,6 +143,21 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 user_searchlocations
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::UserSearchlocation>
+
+=cut
+
+__PACKAGE__->has_many(
+  "user_searchlocations",
+  "OpenBib::Schema::System::Result::UserSearchlocation",
+  { "foreign.locationid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 userinfos
 
 Type: has_many
@@ -174,8 +189,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2020-03-09 16:17:04
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:vvflE1Xy26nDXbVTNPbaXg
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2020-04-27 09:46:48
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:e8BTO7Oo6ifu1K7d+tRJnA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

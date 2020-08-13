@@ -39,8 +39,10 @@ my $konvdir       = $config->{'conv_dir'};
 
 my $pool          = $ARGV[0];
 
-print "### $pool: Exemplardaten korrigieren\n";
+print "### $pool: Titel- und Exemplardaten korrigieren\n";
 
 
+system("$rootdir/filter/$pool/add-locationid.pl < $rootdir/data/$pool/meta.title > $rootdir/data/$pool/meta.title.tmp");
+system("mv -f $rootdir/data/$pool/meta.title.tmp $rootdir/data/$pool/meta.title");
 system("$rootdir/filter/$pool/fix-holding.pl < $rootdir/data/$pool/meta.holding > $rootdir/data/$pool/meta.holding.tmp");
 system("mv -f $rootdir/data/$pool/meta.holding.tmp $rootdir/data/$pool/meta.holding");

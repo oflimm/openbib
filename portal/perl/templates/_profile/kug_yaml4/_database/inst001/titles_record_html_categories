@@ -17,6 +17,8 @@
 [%- bklookup    = config.load_bk -%]
 [% IF format == "full" %]
 
+[%   PROCESS common/subtemplate name="titles_record_html_sammlungslinks" %]
+
 <table class="ym-full ob-title_fields">
 <tr><td class="ob-field">id</td><td>[% record.id %]</td></tr>
 
@@ -28,52 +30,6 @@ searchprofileid_of_database   = config.get_searchprofile_of_database(record.data
 
 globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
 rswkswt_done      = {};
-
-sammlungen = {
-   'Sammlung Dante - Sammlung Wilhelm Reiners' => 'http://dante.ub.uni-koeln.de/'
-   'Sammlung Eugen Schmalenbach' => 'http://schmalenbach.ub.uni-koeln.de/'
-   'Sammlung Evangelische Bibliothek' => 'http://www.ub.uni-koeln.de/sammlungen/ebk/'
-   'Sammlung Fachbibliothek Medienkultur und Theater' => 'http://www.ub.uni-koeln.de/bibliotheken/fb/'
-   'Sammlung Fachbibliothek Schmalenbach' => 'http://www.ub.uni-koeln.de/bibliotheken/fb/'
-   'Sammlung Ferdinand Franz Wallraf' => 'http://wallraf.ub.uni-koeln.de/'
-   'Sammlung Franz Thorbecke' => 'http://www.ub.uni-koeln.de/sammlungen/thorbecke/'
-   'Sammlung Franz Weinkauff' => 'http://weinkauff.ub.uni-koeln.de/'
-   'Sammlung Fred Bänfer' => 'http://www.ub.uni-koeln.de/sammlungen/baenfer/'
-   'Sammlung Friedrich Wilhelm Bäumker' => 'http://baeumker.ub.uni-koeln.de/'
-   'Sammlung Fritz von Westerholt' => 'http://www.ub.uni-koeln.de/sammlungen/westerholt/'
-   'Sammlung Gertrud von Le Fort' => 'http://lefort.ub.uni-koeln.de/'
-   'Sammlung Gertrud von Le Fort' => 'http://lefort.ub.uni-koeln.de/'
-   'Sammlung Gymnasialbibliothek' => 'http://gymnasialbibliothek.ub.uni-koeln.de/'
-   'Sammlung Günter Herterich' => 'http://www.ub.uni-koeln.de/sammlungen/gentz/'
-   'Sammlung H. C. Artmann - Sammlung Karl-Heinz Knupfer' => ''
-   'Sammlung Hanns-Theo Schmitz-Otto' => 'http://schmitzotto.ub.uni-koeln.de/'
-   'Sammlung Heinrich Erkes' => 'http://www.ub.uni-koeln.de/bibliothek/profil/ssg/islandica/'
-   'Sammlung Herbert von Dirksen' => 'http://dirksen.ub.uni-koeln.de/'
-   'Sammlung Hermann Heinrich Becker' => 'http://becker.ub.uni-koeln.de/'
-   'Sammlung Islandica' => 'http://www.ub.uni-koeln.de/bibliothek/profil/ssg/islandica/'
-   'Sammlung Jürgen Scholle' => 'http://www.ub.uni-koeln.de/sammlungen/scholle/'
-   'Sammlung Kölnische Bibliotheksgesellschaft' => 'http://www.koelnische-bibliotheksgesellschaft.de/'
-   'Sammlung Otto Wolff' => 'http://wolff.ub.uni-koeln.de/'
-   'Sammlung Poetica' => 'http://poetica.ub.uni-koeln.de/'
-   'Sammlung Syndikatsbibliothek' => 'http://syndikatsbibliothek.ub.uni-koeln.de/'
-   'Sammlung Thomas a Kempis' => 'http://kempis.ub.uni-koeln.de/'
-   'Sammlung Westerholt' => 'http://www.ub.uni-koeln.de/sammlungen/westerholt/'
-   'Sammlung Wilhelm Alff' => 'http://www.ub.uni-koeln.de/sammlungen/alff/'
-   'Sammlung Wilhelmine von Westerholt' => 'http://www.ub.uni-koeln.de/sammlungen/westerholt/'
-   'Sammlung Gustav von Mevissen' => 'http://mevissen.ub.uni-koeln.de/'
-   'Sammlung Melanie von Mevissen' => 'http://mevissen.ub.uni-koeln.de/'
-   'Sammlung Mathilde von Mevissen' => 'http://mevissen.ub.uni-koeln.de/'
-   'Sammlung Rudolf Hilferding' => 'http://hilferding.ub.uni-koeln.de/'
-};
-
-FOREACH sammlungsvermerk IN normdata.${"T4700"} ;
-     IF sammlungen.${sammlungsvermerk.content}.defined ;
-        sammlungsurl = sammlungen.${sammlungsvermerk.content};
-        sammlungsvermerk.content = "<img style=\"vertical-align:bottom\" src=\"${config.get('home_img')}\" alt=\"Home-Icon\" />&nbsp;<a href=\"${sammlungsurl}\" target=\"_blank\"><b>${sammlungsvermerk.content}</b></a>" ;
-     ELSE ;
-        sammlungsvermerk.content = "${sammlungsvermerk.content} (Portal im Aufbau)" ;
-     END ;
-END;
 
 IF normdata.${'T4400'}.first.content == 'online' && NOT normdata.${"T0662"}.first.content && NOT normdata.${"T2662"}.first.content;
    currently_unavailable = 1;

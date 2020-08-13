@@ -188,6 +188,16 @@ __PACKAGE__->table("userinfo");
   data_type: 'timestamp'
   is_nullable: 1
 
+=head2 mixed_bag
+
+  data_type: 'jsonb'
+  is_nullable: 1
+
+=head2 token
+
+  data_type: 'text'
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -260,6 +270,10 @@ __PACKAGE__->add_columns(
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
   "creationdate",
   { data_type => "timestamp", is_nullable => 1 },
+  "mixed_bag",
+  { data_type => "jsonb", is_nullable => 1 },
+  "token",
+  { data_type => "text", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -472,6 +486,21 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 user_searchlocations
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::UserSearchlocation>
+
+=cut
+
+__PACKAGE__->has_many(
+  "user_searchlocations",
+  "OpenBib::Schema::System::Result::UserSearchlocation",
+  { "foreign.userid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 user_searchprofiles
 
 Type: has_many
@@ -538,8 +567,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2020-03-09 16:17:04
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:MgYK28rdgOSXIlbuC4Fh5Q
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2020-04-27 09:46:48
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:g60BkVhY4/ALXycWq3DCZw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

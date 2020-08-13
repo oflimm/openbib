@@ -1,0 +1,35 @@
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+     'page_title' = 'Informationen zum Nutzer'
+
+      'main_template' = 'users_record_html'
+      'sidebar_template' = 'users_navigation'
+
+      'active_menu' = 'users'
+      'active_submenu' = 'account'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = username
+	     url  = '#'
+	  },
+	  {
+	     desc = msg.maketext('Informationen')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'rdf' -%]
+[%- PROCESS common/subtemplate name="users_record_rdf" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="users_record_json" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

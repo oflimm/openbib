@@ -14,80 +14,80 @@
 
 [% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
 
-  <body>
+<body>
 
   <div class="wrapper container-fluid">
 
-[% PROCESS common/subtemplate name="corporate_banner" start=1 %]
+    [% PROCESS common/subtemplate name="corporate_banner" start=1 %]
 
-[% PROCESS common/subtemplate name="mainnavigation" %] 
+    [% PROCESS common/subtemplate name="mainnavigation" %] 
 
-[% IF not suppress_unauthorized %]
-[% PROCESS common/subtemplate name="breadcrumbs" %] 
-[% END %]
+    [% IF not suppress_unauthorized %]
+    [% PROCESS common/subtemplate name="breadcrumbs" %] 
+    [% END %]
 
-[%-
-   IF content ;
-     layout_param.main_template = content ;
-   END ;
--%]
+    [%-
+    IF content ;
+    layout_param.main_template = content ;
+    END ;
+    -%]
 
-[% IF layout_param.sidebar_template %]
-<!-- begin: Layout with collapsable sidebar -->
-<style>
-[data-toggle="collapse"] {
-  cursor: pointer;
-}
+    [% IF layout_param.sidebar_template %]
+    <!-- begin: Layout with collapsable sidebar -->
+    <style>
+    [data-toggle="collapse"] {
+      cursor: pointer;
+    }
 
-@media screen and (min-width:768px) { #ob-sidebar{ display: block!important;visibility:visible!important; } }
+    @media screen and (min-width:768px) { #ob-sidebar{ display: block!important;visibility:visible!important; } }
 
-</style>
+    </style>
 
-      <div class="navbar navbar-default d-block d-md-none pl-0" style="z-index: 0"><!-- only visible in xs-->
-        <div class="container-fluid pl-0">
-          <span class="btn btn-primary navbar-btn" data-toggle="collapse" data-target="#ob-sidebar">
-            <i class="fa fa-list"></i> [% IF layout_param.sidebar_template_description %][% layout_param.sidebar_template_description %][% ELSE %][% msg.maketext("Navigation") %][% END %]
-          </span>
-        </div>
+    <div class="navbar navbar-default d-block d-md-none pl-0" style="z-index: 0"><!-- only visible in xs-->
+      <div class="container-fluid pl-0">
+        <span class="btn btn-primary navbar-btn" data-toggle="collapse" data-target="#ob-sidebar">
+          <i class="fa fa-list"></i> [% IF layout_param.sidebar_template_description %][% layout_param.sidebar_template_description %][% ELSE %][% msg.maketext("Navigation") %][% END %]
+        </span>
       </div>
+    </div>
 
-      <div class="row flex-md-row-reverse">
-        <div id="ob-sidebar" class="col-xs-6 col-md-3 collapse">
-[% PROCESS common/subtemplate name=layout_param.sidebar_template %]
-        </div>
-        <div class="col-md-9" >
-[% PROCESS common/subtemplate name=layout_param.main_template %]
-        </div>
+    <div class="row flex-md-row-reverse">
+      <div id="ob-sidebar" class="col-xs-6 col-md-3 collapse">
+        [% PROCESS common/subtemplate name=layout_param.sidebar_template %]
       </div>
-<!-- end: Layout with sidebar -->      
-[% ELSE %]
-<!-- begin: Layout without sidebar -->
-      <div class="row">
-        <div class="col-md-12" >
-[% PROCESS common/subtemplate name=layout_param.main_template %]
-        </div>
+      <div class="col-md-9" >
+        [% PROCESS common/subtemplate name=layout_param.main_template %]
       </div>
-<!-- end: Layout without sidebar -->      
-[% END %]
+    </div>
+    <!-- end: Layout with sidebar -->      
+    [% ELSE %]
+    <!-- begin: Layout without sidebar -->
+    <div class="row">
+      <div class="col-md-12" >
+        [% PROCESS common/subtemplate name=layout_param.main_template %]
+      </div>
+    </div>
+    <!-- end: Layout without sidebar -->      
+    [% END %]
 
-[% PROCESS common/subtemplate name="std_footer" %]
+    [% PROCESS common/subtemplate name="std_footer" %]
 
   </div><!-- /.container-fluid -->
 
-<!-- START Bootstrap-Cookie-Alert -->
-<div class="alert text-center cookiealert" role="alert">
+  <!-- START Bootstrap-Cookie-Alert -->
+  <div class="alert text-center cookiealert" role="alert">
     <b>Um unsere Webseite für Sie optimal zu gestalten und fortlaufend verbessern zu können, verwenden wir Cookies. Durch die weitere Nutzung der Webseite stimmen Sie der Verwendung von Cookies zu. Weitere Informationen zu Cookies erhalten Sie in unserer <a href="[% path_prefix %]/[% config.get('info_loc') %]/datenschutz.html?l=[% lang %]">Datenschutzerklärung</a>. Unser Impressum finden Sie <a href="[% path_prefix %]/[% config.get('info_loc') %]/impressum.html?l=[% lang %]">hier</a>.
 
-    <button type="button" class="btn btn-primary btn-sm acceptcookies" aria-label="Close">
+      <button type="button" class="btn btn-primary btn-sm acceptcookies" aria-label="Close">
         Ich stimme der Verwendung von Cookies zu.
-    </button>
-</div>
-<!-- END Bootstrap-Cookie-Alert -->
+      </button>
+    </div>
+    <!-- END Bootstrap-Cookie-Alert -->
 
-<script src="/js/cookiealert.js"></script>
+    <script src="/js/cookiealert.js"></script>
 
 
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <!-- <script src="/js/jquery-3.3.1.min.js"></script>
 <script src="/js/popper.min.js"></script>
 <script src="/js/bootstrap.min.js"></script> -->
@@ -97,26 +97,26 @@
 
 <!-- ... and finally dynamic OpenBib JS -->
 <script>
-  $('#to_focus').val('[% searchquery.get_searchfield('freesearch').val.replace("'","\\'") %]');
+$('#to_focus').val('[% searchquery.get_searchfield('freesearch').val.replace("'","\\'") %]');
 </script>
 
 <script>
 $(function(e){
-    $('.ob-search_panel .dropdown-menu').find('a').click(function(e) {
-		e.preventDefault();
-		var param = $(this).attr("href").replace("#","");
-		var profile_text = $(this).text();
-		$('.ob-search_panel span #search_profile_text').text(profile_text);
-		$('.input-group #search_profile').val(param);
-	});
-});
-</script>
+  $('.ob-search_panel .dropdown-menu').find('a').click(function(e) {
+    e.preventDefault();
+      var param = $(this).attr("href").replace("#","");
+        var profile_text = $(this).text();
+          $('.ob-search_panel span #search_profile_text').text(profile_text);
+            $('.input-group #search_profile').val(param);
+          });
+        });
+            </script>
 
-[% IF NOT layout_param.without_navigation_search %]
-[%   IF user.is_authenticated %]
-[%   autocompletion_type = user.get_autocompletion %]
-[%   livesearch          = user.get_livesearch %]
-[%     IF autocompletion_type == "spelling" && spelling_suggestion.as_you_type %]
+            [% IF NOT layout_param.without_navigation_search %]
+            [%   IF user.is_authenticated %]
+            [%   autocompletion_type = user.get_autocompletion %]
+            [%   livesearch          = user.get_livesearch %]
+            [%     IF autocompletion_type == "spelling" && spelling_suggestion.as_you_type %]
 <!--
 <script type="text/javascript">
 $(document).ready(function(){
@@ -212,7 +212,7 @@ $('.selectpicker').selectpicker();
 -->
 
 <!--    <script type="text/javascript" src="/js/cloud-zoom.1.0.2.min.js"></script> -->
-    
+
 
 </body>
 </html>

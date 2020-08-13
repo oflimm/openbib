@@ -38,8 +38,9 @@ use Business::ISBN;
 use DBIx::Class::ResultClass::HashRefInflator;
 use DBI;
 use Encode 'decode_utf8';
-use JSON::XS();
+use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
+use LWP::UserAgent;
 use SOAP::Lite;
 use Storable qw(freeze thaw);
 use XML::LibXML;
@@ -115,6 +116,12 @@ sub new {
 
     $logger->debug("Stage 1");
     
+    my $ua = LWP::UserAgent->new();
+    $ua->agent('USB Koeln/1.0');
+    $ua->timeout(30);
+    
+    $self->{client}        = $ua;
+
     if (defined $database){
         $self->{database} = $database;
     }
@@ -1398,33 +1405,51 @@ sub load_circulation {
     my $circulation_ref = [];
     {
         my $circexlist=undef;
-        
+
+	my $daia_ref = [];
+	
         if ($circinfotable->has_circinfo($self->{database}) && defined $circinfotable->get($self->{database})->{circ}) {
 
-            $logger->debug("Getting Circulation info via SOAP");
+            $logger->debug("Getting Circulation info via DAIA");
             
             eval {
-                my $soap = SOAP::Lite
-                    -> uri("urn:/MediaStatus")
-                        -> proxy($circinfotable->get($self->{database})->{circcheckurl});
-                my $result = $soap->get_mediastatus(
-                    SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                        SOAP::Data->name(katkey   => $id)->type('string'),
-                        SOAP::Data->name(database => $circinfotable->get($self->{database})->{circdb})->type('string'))));
-                
-                unless ($result->fault) {
-                    $circexlist = $result->result;
-                    if ($logger->is_debug){
-                        $logger->debug("SOAP Result: ".YAML::Dump($circexlist));
-                    }
-                }
-                else {
-                    $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-                }
+		my $ua     = $self->get_client;
+
+		my $url = $circinfotable->get($self->{database})->{circcheckurl};
+		
+		$url.="?id=".$self->{database}.":".$id;
+
+		if ($logger->is_debug()){
+		    $logger->debug("Request URL: $url");
+		}
+		
+		my $request = HTTP::Request->new('GET' => $url);
+		$request->content_type('application/json');
+		
+		my $response = $ua->request($request);
+		
+		if ($logger->is_debug){
+		    $logger->debug("Response: ".$response->content);
+		}
+		
+		if (!$response->is_success) {
+		    $logger->info($response->code . ' - ' . $response->message);
+		    return;
+		}
+
+		$circexlist = decode_json $response->content;
+		
+		if (defined($circexlist)) {
+		    $daia_ref = $circexlist->{documents}[0]{item};
+		}
+		
+		if ($logger->is_debug){
+		    $logger->debug("DAIA Result: ".YAML::Dump($circexlist));
+		}
             };
             
             if ($@){
-                $logger->error("SOAP-Target ".$circinfotable->get($self->{database})->{circcheckurl}." konnte nicht erreicht werden :".$@);
+                $logger->error("DAIA-Target ".$circinfotable->get($self->{database})->{circcheckurl}." konnte nicht erreicht werden :".$@);
             }
             
         }
@@ -1433,37 +1458,43 @@ sub load_circulation {
         # in den Ausleihdaten vorhanden sind -- diese Vorrange ueber die
         # titelbasierten Exemplardaten
         
-        if (defined($circexlist)) {
-            $circulation_ref = $circexlist;
-        }
-        
         # Anreichern mit Bibliotheksinformationen
         if ($circinfotable->has_circinfo($self->{database}) && defined $circinfotable->get($self->{database})->{circ}
-                && @{$circulation_ref}) {
-            for (my $i=0; $i < scalar(@{$circulation_ref}); $i++) {
-                
-                my $bibliothek="-";
-                my $sigel=$dbinfotable->get('dbases')->{$self->{database}};
-                
-                if (length($sigel)>0) {
-                    if (defined $dbinfotable->get('sigel')->{$sigel}) {
-                        $bibliothek=$dbinfotable->get('sigel')->{$sigel};
-                    } else {
-                        $bibliothek="($sigel)";
-                    }
-                } else {
-                    if (defined $dbinfotable->get('sigel')->{$dbinfotable->get('dbases')->{$self->{database}}}) {
-                        $bibliothek=$dbinfotable->get('sigel')->{
-                            $dbinfotable->get('dbases')->{$self->{database}}};
-                    }
-                }
-                
-                my $bibinfourl=$dbinfotable->get('bibinfo')->{
-                    $dbinfotable->get('dbases')->{$self->{database}}};
-                
-                $circulation_ref->[$i]{'Bibliothek'} = $bibliothek;
-                $circulation_ref->[$i]{'Bibinfourl'} = $bibinfourl;
-                $circulation_ref->[$i]{'Ausleihurl'} = $circinfotable->get($self->{database})->{circurl};
+                && @{$daia_ref}) {
+            for (my $i=0; $i < scalar(@{$daia_ref}); $i++) {
+		my $department     = $daia_ref->[$i]{department}{content};
+		my $department_id  = $daia_ref->[$i]{department}{id};
+		my $department_url = $daia_ref->[$i]{department}{href};
+
+		my $storage        = $daia_ref->[$i]{storage}{content};
+
+		my $availability_ref   = $daia_ref->[$i]{available};
+		my $unavailability_ref = $daia_ref->[$i]{unavailable};
+		
+		my $availability     = $self->get_availability($availability_ref,$unavailability_ref);
+            
+		my $location_mark    = $daia_ref->[$i]{label};
+		my $media_nr         = $daia_ref->[$i]{id};
+
+		my $this_item_ref = {
+		    # Legacy
+		    Zweigstelle    => $department_id,
+		    Signatur       => $location_mark,
+		    Standort       => $department." / ".$storage,
+
+		    # DAIA
+		    department     => $department,
+		    department_id  => $department_id,
+		    department_url => $department_url,
+		    location_mark  => $location_mark,
+		    storage        => $storage,
+		    availability   => $availability,
+		    availability_info   => $availability_ref,
+		    unavailability_info => $unavailability_ref,
+		    media_nr       => $media_nr,
+		};
+
+		push @$circulation_ref, $this_item_ref;
             }
         }
         else {
@@ -1500,24 +1531,28 @@ sub load_olwsviewer {
     my $logger = get_logger();
 
     my $config        = $self->get_config;
-    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    my $olwsconfig = ($config->get('olws')->{$self->{'database'}})?$config->get('olws')->{$self->{'database'}}:undef;
+
+    my $circcheckurl  = (defined $olwsconfig)?$olwsconfig->{circwsurl}:"";
+    my $circdb        = (defined $olwsconfig)?$olwsconfig->{circdb}:"";
 
     # Anreicherung mit OLWS-Daten
-    if (defined $circinfotable->get($self->{database}) && defined $circinfotable->get($self->{database})->{circcheckurl}){
+    if ($circdb && $circcheckurl){
         if ($logger->is_debug){                        
-            $logger->debug("Endpoint: ".$circinfotable->get($self->{database})->{circcheckurl});
+            $logger->debug("Endpoint: ".$circcheckurl);
         }
         
         my $soapresult;
         eval {
             my $soap = SOAP::Lite
                 -> uri("urn:/Viewer")
-                    -> proxy($circinfotable->get($self->{database})->{circcheckurl});
+                    -> proxy($circcheckurl);
             
             my $result = $soap->get_item_info(
                 SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                    SOAP::Data->name(collection => $circinfotable->get($self->{database})->{circdb})->type('string'),
-                    SOAP::Data->name(item       => $self->{id})->type('string'))));
+                    SOAP::Data->name(collection => $circdb)->type('string'),
+                    SOAP::Data->name(item       => $id)->type('string'))));
             
             unless ($result->fault) {
                 $soapresult=$result->result;
@@ -3047,6 +3082,31 @@ sub to_indexable_document {
     my $titlecache_ref   = {}; # Inhalte fuer den Titel-Cache
     my $searchengine_ref = {}; # Inhalte fuer die Suchmaschinen
 
+}
+
+sub get_availability {
+    my ($self,$availability_ref,$unavailability_ref) = @_;
+
+    my $availability = "unknown";
+
+    if (defined $availability_ref && @$availability_ref){
+	foreach my $this_availability_ref (@$availability_ref){
+	    $availability = $this_availability_ref->{service};
+	}
+    }
+
+    if (defined $unavailability_ref && %$unavailability_ref){
+	if ($unavailability_ref->{service} eq "loan"){
+	    if (defined $unavailability_ref->{expected} && $unavailability_ref->{expected}){
+		$availability = "borrowed";
+	    }
+	    elsif (!defined $unavailability_ref->{expected}){
+		$availability = "missing";
+	    }
+	}
+    }
+
+    return $availability;
 }
 
 1;

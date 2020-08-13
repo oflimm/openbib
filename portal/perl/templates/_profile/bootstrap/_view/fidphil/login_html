@@ -12,104 +12,76 @@
 #
 #######################################################################
 -%]
-        <div class="jumbotron">
-         <h1 class="display-4">[% msg.maketext("Anmelden") %]</h1>
-	 <div id="login_targets" class="accordion">
-  <div class="card">
-    <div class="card-header" id="headingOne">
-      <h5 class="mb-0">
-        <a class="card-link" href="#collapseOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          [% msg.maketext("Anmeldung mit einer E-Mail-Adresse") %]
-        </a>
-      </h5>
-    </div>
+[%
 
-    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#login_targets">
-      <div class="card-body">
-<form method="post" action="[% IF config.get('use_https') %]https://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent">
+available_authenticators = config.get_authenticators_by_view(view);
 
-<input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
+# USE dumper;dumper.dump(available_authenticators);
+%]
 
-[%- FOREACH authenticator IN authenticators -%]
-[%-   IF authenticator.type == 'self' -%]
-<input type="hidden" name="authenticatorid" value="[% authenticator.id %]">
-[%-   END -%]
-[%- END -%]
-
-<p/>
-
-<div class="form-group">
-<label for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>
-<input class="form-control" type="text" name="username" id="email_username" value="[% username %]" />
-</div>
-<div class="form-group">
-<label for="email_password"/>[% msg.maketext("Passwort") %]</label>
-<input class="form-control" type="password" name="password" id="email_username" />
-</div>
-<div>
-<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('registrations_loc') %].html">[% msg.maketext("Registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('passwords_loc') %].html?l=[% lang %]">[% msg.maketext("Passwort vergessen?") %]</a>
-</div>
-
-<p/>
-
-<p/>
-
-<button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Anmelden") %]</button>
-
-</form>
+<div class="d-flex pt-3 mt-3" style="height: 100vh; width: 100%; min-width: 400px">
+  <div class="d-flex flex-row justify-content-center" style="width: 100%"> 
+    <div class="d-flex flex-column justify-content-center" style="width: 40%">
+      <div class="text-center mb-1">
+        <img src="/images/openbib/views/fidphil/logofid.jpg"  width="240px" height="auto"  />
       </div>
+      <div class="text-center mt-3">
+        <form method="post" action="[% IF config.get('use_https') %]https://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent">
+          <h2 class="display-4">[% msg.maketext("Login") %]</h2>
+        </div>
+        <input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
+        [%- FOREACH authenticator IN authenticators -%]
+        [%-   IF authenticator.type == 'self' -%]
+        <input type="hidden" name="authenticatorid" value="[% authenticator.id %]">
+        [%-   END -%]
+        [%-   END -%]
+        <div class="row mt-4">
+          <div class="col-3 text-left">
+            <label for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>
+          </div>
+          <div class="col-8 text-left">
+            <input class="form-control" type="text" name="username" id="email_username" value="[% username %]" />
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-3 text-left align-content-center">
+            <label for="email_password1">[% msg.maketext("Passwort") %]</label>
+          </div>
+          <div class="col-8 text-left">
+           <input class="form-control" type="password" name="password" id="email_username" />
+         </div>
+       </div>
+       </br>
+       <small id="passwordHelp" class="text-danger">
+                [% errors.general %]
+              </small>  
+       <div class="row mt-4">
+        <div class="col-6 align-self-center">
+          <div>
+            <a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('registrations_loc') %]"
+            >Noch kein Mitglied? Jetzt registrieren</a>
+          </div>
+        </div>
+        <div class="col-5 text-right align-self-center">
+         <button class="btn btn-primary mb-2" style="" type="submit">[% msg.maketext("Einloggen") %]</button>
+       </div>
+
+     </div>
+
+     <div class="form-group">
+      [%- IF config.${"recaptcha_public_key"} -%]
+      [%- recaptcha_options = { lang => lang, theme => 'white' } -%]
+      [% recaptcha.get_html_v2(config.${"recaptcha_public_key"},'',1,recaptcha_options) %]
+      [%- END -%]
     </div>
-  </div>
-  <div class="card">
-    <div class="card-header" id="headingTwo">
-      <h5 class="mb-0">
-        <a class="card-link collapsed" href="#collapseTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-          [% msg.maketext("Anmeldung mit einem Benutzerausweis") %]
-        </a>
-      </h5>
-    </div>
-    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#login_targets">
-      <div class="card-body">
-<form method="post" action="[% IF config.get('use_https') %]https://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded">
 
-[% IF redirect_to %]
-<input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
-[% END %]
+    <p/>
 
-<p/>
 
-<div class="form-group">
-<label for="authenticator">[% msg.maketext("mit") %]:</label>
-<select class="form-control" name="authenticatorid">
-[%- FOREACH authenticator IN authenticators -%]
-[%#-  NEXT IF authenticator.description.match("Ausweis:USB") -%]
-[%-   IF authenticator.type != 'self' -%]
-<option value="[% authenticator.id %]" [% IF authenticator.id == authenticatorid %]selected="selected"[% END %]>[% authenticator.description %]</option>
-[%-   END -%]
-[%- END -%]
-</select>
+  </form>
+</div>
+</div>
 </div>
 
-<div class="form-group">
-<label for="username">[% msg.maketext("Benutzernummer") %]</label>
-<input class="form-control" type="text" name="username" id="username" value="[% username %]" />
-</div>
-<div class="form-group">
-<label for="password"/>[% msg.maketext("Passwort") %]</label>
-<input class="form-control" type="password" name="password" id="password" />
-</div>
-
-<p/>
-
-<button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Anmelden") %]</button>
-
-</form>
-      </div>
-    </div>
-  </div>
-</div>
-
-        </div><!-- End: jumbotron -->
 
 
-<p/>

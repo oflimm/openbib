@@ -134,6 +134,12 @@ CREATE INDEX userinfo_nachname ON userinfo (nachname);
 CREATE INDEX userinfo_vorname ON userinfo (vorname);
 CREATE INDEX userinfo_password ON userinfo (password);
 
+ALTER TABLE user_searchlocation ADD PRIMARY KEY (id);
+ALTER TABLE user_searchlocation ADD CONSTRAINT fk_usersearchlocation_user FOREIGN KEY (userid) REFERENCES userinfo (id);
+ALTER TABLE user_searchlocation ADD CONSTRAINT fk_usersearchlocation_location FOREIGN KEY (locationid) REFERENCES locationinfo (id);
+CREATE INDEX usersearchlocation_userid ON user_searchlocation (userid);
+CREATE INDEX usersearchlocation_searchlocationid ON user_searchlocation (locationid);
+
 ALTER TABLE roleinfo ADD PRIMARY KEY (id);
 
 ALTER TABLE role_view ADD PRIMARY KEY (id);
@@ -308,3 +314,9 @@ ALTER TABLE dbistopic_dbisdb ADD CONSTRAINT fk_dbistopic_dbisdb_dbisdb FOREIGN K
 CREATE INDEX dbistopicdbisdb_dbistopic ON dbistopic_dbisdb (dbistopicid);
 CREATE INDEX dbistopicdbisdb_dbisdb ON dbistopic_dbisdb (dbisdbid);
 
+ALTER TABLE paia ADD PRIMARY KEY (id);
+CREATE INDEX paia_username ON paia (username);
+CREATE INDEX paia_token ON paia (token);
+CREATE INDEX paia_tstamp ON paia (tstamp);
+
+ALTER TABLE paia ALTER COLUMN tstamp SET DEFAULT now();

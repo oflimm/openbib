@@ -61,14 +61,16 @@ sub authenticate {
 
     my $config = $self->get_config;
 
-    ## Ausleihkonfiguration fuer den Katalog einlesen
-    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+    my $olwsconfig = ($config->get('olws')->{$config->{authenticator}{olws}{$self->get('name')}{dbname}})?$config->get('olws')->{$config->{authenticator}{olws}{$self->get('name')}{dbname}}:$config->get('olws')->{'default'};
 
-    my $circcheckurl  = $circinfotable->get($config->{authenticator}{olws}{$self->get('name')}{dbname})->{circcheckurl};
-    my $circdb        = $circinfotable->get($config->{authenticator}{olws}{$self->get('name')}{dbname})->{circdb};
-    
+#    my $circcheckurl  = $circinfotable->get($config->{authenticator}{olws}{$self->get('name')}{dbname})->{circcheckurl};
+#    my $circdb        = $circinfotable->get($config->{authenticator}{olws}{$self->get('name')}{dbname})->{circdb};
+
+    my $circcheckurl  = $olwsconfig->{circwsurl};
+    my $circdb        = $olwsconfig->{circdb};
+	
     if ($logger->is_debug){
-	$logger->debug("Trying to authenticate via OLWS: ".YAML::Dump($circinfotable));
+	$logger->debug("Trying to authenticate via OLWS: ".YAML::Dump($olwsconfig));
     }
 
     my %userinfo=();

@@ -91,7 +91,6 @@ my %git_links = (
     "$repositoryroot/portal/perl/locales"                   => "/opt/openbib/locales",
     "$repositoryroot/conv/allegro/ald2simple.pl"            => "/opt/openbib/conv/ald2simple.pl",
     "$repositoryroot/conv/allegro/ald2simple.pl"            => "/opt/openbib/conv/ald2simple.pl",
-    "$repositoryroot/portal/starman/init.d/starman"         => "/etc/init.d/starman",
     "$repositoryroot/conv/auto/autoconv.pl"                 => "/opt/openbib/autoconv/bin/autoconv.pl",
     "$repositoryroot/conv/auto/autojoinindex_xapian.pl"     => "/opt/openbib/autoconv/bin/autojoinindex_xapian.pl",
     "$repositoryroot/conv/auto/openbib-clustermgmt.pl"      => "/opt/openbib/autoconv/bin/openbib-clustermgmt.pl",

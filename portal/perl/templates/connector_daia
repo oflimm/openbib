@@ -8,7 +8,7 @@ result_ref = {
 	    }
  	    timestamp = timestamp
 	    version   = '0.1'
-#	    items_src = items
+	    items_src = items
 };
 
 documents_ref = [];
@@ -94,7 +94,7 @@ FOREACH thisdoc IN items ;
        thiscirculation.Zweigstelle = 0;
     END;
 
-    locationurl  = "${scheme}://${servername}/portal/api/${config.get('locations_loc')}/id/${library_isil}";
+    locationurl  = "${scheme}://${servername}${path_prefix}/${config.get('locations_loc')}/id/${library_isil}";
 
     thisitem_ref = {
       label = thiscirculation.Signatur
@@ -133,12 +133,14 @@ FOREACH thisdoc IN items ;
 	   } ]
       }) ;
     ELSIF thiscirculation.LeihstatusText.match('bestellbar') || thiscirculation.LeihstatusText.match('verfügbar') ;
+      available_ref.push({service = 'order'}) ;
+    ELSIF thiscirculation.LeihstatusText == 'ausleihbar' ;
       available_ref.push({service = 'loan'}) ;
     ELSIF thiscirculation.LeihstatusText == 'nicht entleihbar' ;
       available_ref.push({service = 'presence'}) ;
     ELSIF thiscirculation.LeihstatusText == 'nur in bes. Lesesaal bestellbar' ;
       available_ref.push({
-           service = 'loan'
+           service = 'order'
 	   limitation = [ {
 	        content = thiscirculation.LeihstatusText
 	        id = "http://purl.org/ontology/dso#Stationary"
@@ -153,13 +155,19 @@ FOREACH thisdoc IN items ;
 	   } ]
       }) ;
     ELSIF thiscirculation.LeihstatusText.match('entliehen') ;
-      this_unavailable_ref = {
-               service = 'loan'
-	       queue   = thiscirculation.VormerkAnzahl
+      unavailable_ref = {
+               service  = 'loan'
+	       expected = thiscirculation.RueckgabeDatum
       };
-      IF thiscirculation.RueckgabeDatum != '31.12.9999' && thiscirculation.RueckgabeDatum != '1.1.1753' ;
-      this_unavailable_ref.expected = thiscirculation.RueckgabeDatum;
+      
+      IF thiscirculation.VormerkAnzahl ;
+        this_unavailable_ref.queue = thiscirculation.VormerkAnzahl ;
       END;
+      unavailable_ref.push(this_unavailable_ref) ;
+    ELSIF thiscirculation.LeihstatusText.match('vermisst') ;
+      unavailable_ref = {
+               service = 'loan'
+      };
       unavailable_ref.push(this_unavailable_ref) ;
     END ;
 

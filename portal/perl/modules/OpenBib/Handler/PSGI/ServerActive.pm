@@ -85,11 +85,14 @@ sub show {
 
 
     if ($config->local_server_is_active_and_searchable){
+	$logger->debug("Server is active and searchable");
+
         $self->header_add('Status' => 200);
         $self->header_add('Content-Type' => 'text/plain');
         return 'enabled';
     }
     else {
+	$logger->debug("Server not available");
         $self->header_add('Status' => 404);
         return;
     }

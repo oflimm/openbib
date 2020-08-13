@@ -219,7 +219,6 @@ CREATE TABLE sessioninfo (
  createtime     TIMESTAMP,
  lastresultset  TEXT,
  username       TEXT,
- userpassword   TEXT,
 
  viewname       TEXT,
 
@@ -297,15 +296,16 @@ CREATE TABLE searchhistory (
 
 DROP TABLE IF EXISTS userinfo;
 CREATE TABLE userinfo (
- id         BIGSERIAL,
+ id           BIGSERIAL,
  creationdate TIMESTAMP,
  lastlogin    TIMESTAMP,
 
- viewid     BIGINT,
- locationid BIGINT,
+ viewid          BIGINT,
+ locationid      BIGINT,
  authenticatorid BIGINT,
- username  TEXT,
- password  TEXT,
+ username        TEXT,
+ password        TEXT,
+ token           TEXT,
 
  /* User informatin from library system */
  nachname   TEXT,
@@ -337,7 +337,19 @@ CREATE TABLE userinfo (
 -- Bibsonomy Credentials for automatic sync --
  bibsonomy_user TEXT,
  bibsonomy_key  TEXT,
- bibsonomy_sync TEXT
+ bibsonomy_sync TEXT,
+
+-- Additional unspecified content - json encoded --
+
+ mixed_bag jsonb
+ 
+);
+
+DROP TABLE IF EXISTS user_searchlocation;
+CREATE TABLE user_searchlocation (
+  id         BIGSERIAL,
+  userid     BIGINT NOT NULL,
+  locationid BIGINT NOT NULL
 );
 
 DROP TABLE IF EXISTS roleinfo;
@@ -630,4 +642,14 @@ CREATE TABLE dbistopic_dbisdb (
  dbistopicid  BIGINT    NOT NULL,
  dbisdbid     BIGINT    NOT NULL,
  rank         INT
+);
+
+DROP TABLE IF EXISTS paia;
+CREATE TABLE paia (
+  id                  BIGSERIAL,
+  tstamp              TIMESTAMP,
+
+  username            TEXT,
+  token               TEXT
+
 );

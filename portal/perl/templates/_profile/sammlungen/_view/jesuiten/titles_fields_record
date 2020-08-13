@@ -21,7 +21,7 @@ IF field == '0800' ;
        searchfield = 'publisherstring' ;
     ELSIF field == '4314' ;
        field_description = msg.maketext("Historische Systematik");
-       searchfield = 'classificationstring' ;
+       searchfield = 'ft4314' ;
     ELSIF field == '4316' ;
        field_description = msg.maketext("Zugangsjahr");
        searchfield = 'ft4316' ;

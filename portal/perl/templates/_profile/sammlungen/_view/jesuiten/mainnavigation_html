@@ -67,8 +67,11 @@
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/0100.html?l=[% lang %];page=1">[% msg.maketext("Person") %]</a></li>
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/0331.html?l=[% lang %];page=1">[% msg.maketext("Titel") %]</a></li>
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/0425.html?l=[% lang %];page=1">[% msg.maketext("Erscheinungsjahre") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/0470.html?l=[% lang %];page=1">[% msg.maketext("Verlagsort") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/0471.html?l=[% lang %];page=1">[% msg.maketext("Verlag") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/4314.html?l=[% lang %];page=1">[% msg.maketext("Historische Systematik") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/4316.html?l=[% lang %];page=1">[% msg.maketext("Zugangsjahre") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/0015.html?l=[% lang %];page=1">[% msg.maketext("Sprache") %]</a></li>
         </ul>
       </li>
 
@@ -158,7 +161,7 @@
                 </span>
             </div>
        </div>
-    </div>
+   </div>
     <div class="row pt-1 pb-0">     
       <div class="col collapse d-md-block p-0" id="search_options">
 <!--       <div class="d-flex flex-row">
@@ -169,6 +172,28 @@
        </div> -->
        
          <ul class="list-group flex-row flex-wrap justify-content-md-center justify-content-sm-left">
+             <li class="list-group-item bg-light pr-1 pt-2" style="border: none" >
+    <ul class="navbar-nav mt-0">
+
+      <li class="nav-item[% IF layout_param.active_menu == "browse" %] active[% END %] dropdown">
+       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          [% msg.maketext("Register") %]
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/0100.html?l=[% lang %];page=1">[% msg.maketext("Person") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/0470.html?l=[% lang %];page=1">[% msg.maketext("Verlagsort") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/0471.html?l=[% lang %];page=1">[% msg.maketext("Verlag") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/4314.html?l=[% lang %];page=1">[% msg.maketext("Historische Systematik") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/4316.html?l=[% lang %];page=1">[% msg.maketext("Zugangsjahre") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/0015.html?l=[% lang %];page=1">[% msg.maketext("Sprache") %]</a></li>
+        </ul>
+      </li>
+
+
+    </ul>
+
+	    </li>
+
             <li class="list-group-item bg-light pr-1 pt-3" style="border: none" >
              <a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
 	    </li>

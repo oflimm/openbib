@@ -55,7 +55,7 @@
 						<input type="hidden" name="srt" value="relevance_desc">
 						<input type="hidden" name="st" value="1">
 						<input type="hidden" name="lt" value="">
-						<input type="hidden" name="profile" value="4">
+						<input type="hidden" name="db" value="eds">
 						<div class="d-flex flex-row mr-auto ml-3 align-items-center" style="width: 100%">
 							<input name="fs" class="align-self-center mr-5" type="text" placeholder="Search materials" value="" style="width: 85%; background-color: white; height: 60px">
 							<input type="submit" value="Suchen" class="searchda-btn mr-5" style="background-color: #D99725; height: 60px; width: 100px">

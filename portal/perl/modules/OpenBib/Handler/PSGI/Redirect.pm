@@ -37,6 +37,8 @@ use utf8;
 use Encode qw(decode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 use URI::Escape qw(uri_unescape);
+use URI::URL;
+use YAML;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
@@ -80,11 +82,28 @@ sub show {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
-
+    my $servername     = $self->param('servername');
+    
     # CGI Args
     my $url  = uri_unescape($query->param('url'));
     my $type = $query->param('type');
 
+    my $referer = $r->referer;
+
+    my $referer_host = "";
+
+    if ($referer){
+	my $referer_url = new URI::URL($referer);
+	$referer_host = $referer_url->host;
+    }
+
+    if ($referer_host ne $servername){
+	$self->header_add('Status' => 403); # 403 FORBIDDEN
+        return;
+    }
+    
+    $logger->debug("This Host: ".$self->param('servername')." Referer Host: $referer_host");
+    
     $logger->debug("SessionID: $session->{ID} - Type: $type - URL: $url");
 
     my $valid_redirection_type_ref = {

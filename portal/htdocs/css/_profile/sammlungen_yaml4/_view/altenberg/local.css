@@ -1,12 +1,17 @@
 @media all
 {
 
+  .ym-wrapper {
+     width: 1000px;
+  }
+
+
   #topnav {
     z-index:9999;
   }
   
   header {
-    padding-bottom:100px;  
+    padding-bottom:30px;  
   }
 
   header #logo {
@@ -28,8 +33,8 @@
   #header_logo_image  {
     background: url(/images/openbib/views/altenberg/logo.jpg) center no-repeat;
     position: absolute;
-    width: 1020px;
-    height: 200px;
+    width: 1000px;
+    height: 100px;
     top: 0px;
     left: 0px;
   }

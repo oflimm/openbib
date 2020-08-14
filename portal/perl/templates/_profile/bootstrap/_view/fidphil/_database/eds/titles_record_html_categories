@@ -115,6 +115,12 @@ thiscategory = category ;
 %]
 <div>[% msg.maketext("${thiscategory}") %] : [% content %] </div>
 [%
+CASE "T0451";
+content = "<b>${highlightquery(searchquery,content)}</b>";
+thiscategory = category ;
+%]
+<div>[% msg.maketext("${thiscategory}") %] : [% content %] </div>
+[%
 END;
 
 END;

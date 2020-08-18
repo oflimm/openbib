@@ -86,14 +86,14 @@ title = msg.maketext("Titel-Information: [_1] in Katalog [_2]",recordname,dbdesc
     <!-- Begin Details -->
 
     <!-- <div class="col-xs-6 col-md-3 ob-titleimage"><!-- Begin Images -->
-    <div class="col-md-3">
+    <div class="col-md-0">
       <!-- Begin Images -->
       [% PROCESS common/subtemplate name="titles_record_html_images" %]
     </div><!-- End Col Images -->
 
     <!-- Title begins here -->
     <!-- <div class="categories ob-title_record col-md-9"><!-- Begin Categories -->
-    <div class="col-md-9">
+    <div class="col-md-12">
       <!-- Begin Categories -->
       <!--  <div class="col-lg-4 col-12 text-lg-left text-center">
         <img src="/images/openbib/views/fidphil/logofid.jpg"  width="240px" height="auto"  />

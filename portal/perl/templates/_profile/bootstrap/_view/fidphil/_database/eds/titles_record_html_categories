@@ -29,8 +29,6 @@ unknown = 'Informationen über Zugriffsrechte liegen nicht vor.'
 };
 
 -%]
-<div class="mb-5">
-<div>Main Bibliographic Data</div>
 [% IF format == "full" %]
 
 [%-
@@ -58,75 +56,60 @@ globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
 rswkswt_done = {};
 
 #USE dumper;dumper.dump(normdata);
-
-FOREACH category IN categories;
-FOREACH item IN normdata.$category;
-content = item.content;
-
-SWITCH category;
-
-CASE [ "T0100" "T0101" "T0103" ];
-thisid = item.id;
-
-wikicontent = content.split(', ').reverse.join(' ');
-wikicontent = wikicontent.replace('¬','');
-
-searchterm = uri_escape(item.content);
-searchprefix = config.get('searchfield').personstring.prefix;
-
-resourceurl =
-"${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('persons_loc')}/id/${thisid}";
-wikipediaurl = "http://${lang}.wikipedia.org/w/index.php?search=${wikicontent}";
-localurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
-
-rssfeed = "" ;
-IF activefeed.2 && catalog_has_authorities ;
-rssfeed = "&nbsp;<a href=\"http://${servername}${resourceurl}/titles/recent.rss?l=${lang}\" target=\"_blank\"><img
-      src=\"${config.get_icon('rssfeed',view,sysprofile)}\" alt=\"RSS-Icon\" /></a>" ;
-END ;
-
-normdataicon = "";
-
-IF thisid && catalog_has_authorities ;
-normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Personen-Information\"><img
-      src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
-END;
-
-icons = "<div class=\"float-right\"><a
-      href=\"${path_prefix}/${config.get('redirect_loc')}?type=520;url=${uri_escape(wikipediaurl)}\"
-      target=\"_blank\"><img
-         src=\"${path_prefix}/${config.get('connector_availabilityimage_loc')}/wikipedia/${wikicontent}?lang=${lang}\"
-         alt=\"Mashup mit Wikipedia\" /></a>${rssfeed}${normdataicon}</div>";
-content = "${icons}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
-thiscategory = category ;
-%]
-<div>[% msg.maketext("${thiscategory}") %] : [% content %] </div>
+persons = [ ] ;
+FOREACH author IN normdata.${'T0100'};
+   persons.push(author);
+END;%]
+<div class="d-flex">
+   <div class="mt-2 mr-auto" style="width: 60%">
+<div class="d-flex">
+   <div style="width: 25%;">Verfasserangabe:</div>
+   <div style="width: 70%;">
+[%FOREACH authorEntry IN persons;%]
+   <span>[%author.content%] [%UNLESS loop.last %];[%END%]</span>
+[%END;%]
+</div>
+</div>
+<hr>
 [%
-CASE "T0331";
-content = "<b>${highlightquery(searchquery,content)}</b>";
-thiscategory = category ;
-%]
-<div>[% msg.maketext("${thiscategory}") %] : [% content %] </div>
-[%
+titles = [];
+FOREACH title IN normdata.${'T0331'};
+   titles.push(title);
+END;%]
+<div class="d-flex">
+<div style="width: 25%;">Titelangabe:</div>
+<div style="width: 70%;">
+[%FOREACH titleData IN titles;%] 
+ <span>[%titleData.content%][%UNLESS loop.last %]; [%END%]</span>
+[%END;%]
+</div>
+</div>
+<hr>
+[% year = normdata.${'T0425'}.first.content;%]
+<div class="d-flex">
+   <div style="width: 25%;">Erscheiungsjahr:</div>
+   <div style="width: 70%;">
+      <span>[%year%]</span>
+   </div>
+</div>
+<hr>
+[% gesamttitel = normdata.${'T0451'}.1.content;%]
+<div class="d-flex">
+   <div style="width: 25%;">Gesamttitel:</div>
+   <div style="width: 70%;">
+      <span>[%gesamttitel%]</span>
+   </div>
+</div>
+<hr class="mb-5">
+</div>
+<div class="ml-auto text-center" style="width: 30%; color: white; background-color: #00205d;">
+<h4 class="pt-2">Informationen zum Zugriff</h4>
+[% fulltext = normdata.${'T0662'}.first.content;%]
+<div class="mt-3 text-left pl-4">
+   <a style="color: white; text-decoration: none;" href="[%fulltext%]">Volltext beim Philosopher's Index</a>
+</div>
 
-CASE "T0425";
-content = "<b>${highlightquery(searchquery,content)}</b>";
-thiscategory = category ;
-%]
-<div>[% msg.maketext("${thiscategory}") %] : [% content %] </div>
-[%
-CASE "T0451";
-content = "<b>${highlightquery(searchquery,content)}</b>";
-thiscategory = category ;
-%]
-<div>[% msg.maketext("${thiscategory}") %] : [% content %] </div>
-[%
-END;
-
-END;
-END;
-
-%]
+</div>
 </div>
 <button type="button" data-toggle="collapse" data-target="#moreMeta" aria-expanded="false" aria-controls="moreMeta">Show</button>
 <div id="moreMeta" class="collapse table-responsive">

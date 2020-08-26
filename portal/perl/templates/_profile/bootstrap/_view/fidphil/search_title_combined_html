@@ -5,7 +5,7 @@
 #
 # Templatename: virtualsearch_result_item
 #
-# Typ         : Mastertemplate (2/3)
+# Typ : Mastertemplate (2/3)
 #
 # Aufgabe:
 #
@@ -14,34 +14,34 @@
 #######################################################################
 -%]
 [%-
-ic_request  = "${queryoptions.get_option('ic-request')}";
+ic_request = "${queryoptions.get_option('ic-request')}";
 searchdata = "${searchquery.get_searchtermstring()}";
 
 -%]
 
 
-[%- PROCESS common/subtemplate name="local_config" -%] 
+[%- PROCESS common/subtemplate name="local_config" -%]
 <!--Check if this is an Intercooler Request -->
-[% IF NOT ic_request  %]
+[% IF NOT ic_request %]
 
 <style>
-[data-toggle="collapse"] {
-  cursor: pointer;
-}
+  [data-toggle="collapse"] {
+    cursor: pointer;
+  }
 
-@media screen and (min-width:768px) { #ob-search_refine{ display: block!important;visibility:visible!important; } }
-
+  @media screen and (min-width:768px) {
+    #ob-search_refine {
+      display: block !important;
+      visibility: visible !important;
+    }
+  }
 </style>
 <ul class="nav nav-tabs md-tabs" id="myTabMD" role="tablist">
   <li class="nav-item">
     <a class="nav-link active" id="books-tab-md" data-toggle="tab" href="#books-md" role="tab" aria-controls="books-md"
-    aria-selected="true">Bücher und mehr</a>
+      aria-selected="true">Philosopher's Index</a>
   </li>
-  <li class="nav-item">
-    <a class="nav-link" id="ebsco-tab-md" data-toggle="tab" href="#ebsco-md" role="tab" aria-controls="ebsco-md"
-    aria-selected="false" > <i id="indicatorTab" class="fa fa-spinner fa-spin"></i>
-    Philosopher's Index</a>
-  </li>
+  
 </ul>
 <div class="tab-content search-tabs" id="myTabContentMD">
 
@@ -49,16 +49,17 @@ searchdata = "${searchquery.get_searchtermstring()}";
     [% PROCESS common/subtemplate name="search_title_combined_html_tab" %]
   </div><!-- End: col -->
 
-<!--- <div class="tab-pane fade" id="ebsco-md" role="tabpanel" aria-labelledby="profile-tab-md" ic-get-from="[% path_prefix %]/[% config.get('search_loc') %].html?l=en;num=20;page=1;lang=en;srt=relevance_desc;st=1;lt=;fs=[% searchdata %];profile=4" ic-indicator="#indicator" ic-trigger-on="load" 
+  <!--- <div class="tab-pane fade" id="ebsco-md" role="tabpanel" aria-labelledby="profile-tab-md" ic-get-from="[% path_prefix %]/[% config.get('search_loc') %].html?l=en;num=20;page=1;lang=en;srt=relevance_desc;st=1;lt=;fs=[% searchdata %];profile=4" ic-indicator="#indicator" ic-trigger-on="load" 
 ic-on-complete="$('#indicatorTab').hide();">
  <i id="indicator" class="fa fa-spinner fa-spin"></i>
 </div>-->
-<script>
+  <script>
 
-</script>
+  </script>
 </div>
 
-<div class="navbar navbar-default d-block d-md-none pl-0" style="z-index: 1"><!-- only visible in xs-->
+<div class="navbar navbar-default d-block d-md-none pl-0" style="z-index: 1">
+  <!-- only visible in xs-->
   <div class="container-fluid pl-0">
     <button class="btn btn-primary navbar-btn" data-toggle="collapse" data-target="#ob-search_refine">
       <i class="fa fa-tasks"></i> [% msg.maketext("Suchergebnis filtern & mehr") %]
@@ -68,4 +69,3 @@ ic-on-complete="$('#indicatorTab').hide();">
 [% ELSE %]
 [% PROCESS common/subtemplate name="search_title_combined_html_tab" %]
 [% END %]
-

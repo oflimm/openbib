@@ -145,3 +145,16 @@
 #myTabContentMD {
 	border: none;
 }
+
+.hoverdata {
+	
+	color:white;
+}
+.hoverdata::after{
+		content: " ";
+		position: absolute;
+		top: 100%;
+		left: 1rem;
+		border-width: 2rem;
+		border-color: blue transparent transparent transparent;
+}

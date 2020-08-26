@@ -1,0 +1,10 @@
+
+<div class="d-flex pt-3 mt-3" style="width: 100%; min-width: 400px">
+    <div class="d-flex flex-row text-center" style="width: 100%">
+        <div class="d-flex flex-column justify-content-center ml-auto" style="width: 55%">
+            <div>Mitgliedschaft bestaetigen</div>
+            <div class="mb-3 text-center"><img id="fid-logo" src="/images/openbib/views/fidphil/dgphil.jpg"
+                    width="470px" height="auto"></div>
+        </div>
+    </div>
+</div>

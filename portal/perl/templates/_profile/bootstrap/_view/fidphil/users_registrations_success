@@ -1,0 +1,9 @@
+[%- PROCESS common/subtemplate name="local_config" -%] 
+[%- IF representation == '' || representation == 'html' ;
+    suppress_unauthorized = 1;
+    layout_param = {
+-%]
+[%- PROCESS common/subtemplate name="users_registrations_success_html" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

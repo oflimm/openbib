@@ -45,9 +45,10 @@ super = "";
 IF item.${'T5005'}.first.content;
 super = from_json(item.${'T5005'}.first.content);
 END;
-
+#persons are duplicated in the data source for EDS index; check!!!
 # Verfasser konstruieren
 persons = [] ;
+personCheck = [];
 
 personslength = 0 ;
 truncatepers  = 0 ;
@@ -57,11 +58,14 @@ thislength = part.content.length ;
 IF (thislength+personslength) < config.get('maxlength_person') ;
 searchterm    = uri_escape(part.content);
 searchprefix  = config.get('searchfield').personstring.prefix;
-
 globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
-
+#we check for duplicates here, maybe also in other places!!!
+IF personCheck.grep(part.content).size;
+ELSE;
+personCheck.push(part.content);
 persons.push("<a class='person-link' href=\"${globalurl}\">${part.content}</a>");
 personslength = personslength+thislength ;
+END;
 ELSE ;
 truncatepers = 1 ;
 END ;
@@ -325,8 +329,13 @@ titleinfo = titleinfos.join(" | ");
       <i class="fas fa-newspaper fa-3x" style="color: #823293"></i>
     </div>
     <div class="col-10">
-   <div x-data="{foo:'bar'}">
-     <span class="ob-person">[% person %]</span>&nbsp;<i class="fas fa-info-circle" x-on:click.prevent="$dispatch('person-info', { foo: 'bar' }); return false"></i>
+  <div class="d-flex" x-data="hovertool()">
+    <div class="ob-person">[% person %]&nbsp;</div>
+    <div  x-on:click.once="hovericon($refs); $dispatch('person-hover', { foo: 'bar' }); return false">
+      <i class="fas fa-info-circle"
+      ></i><div class="hoverarea" style="position:absolute; background-color: thistle; top:-25px; max-width: 120px; max-height: 90px;" @click.away="showHover=false;" x-ref="icon" x-show="showHover"></div>
+  </div>
+ 
   </div>
    [% IF record.id && record.database %]
   <div>

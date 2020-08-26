@@ -24,7 +24,7 @@
 
 				<p class="lead">[% msg.maketext("Vielen Dank für Ihren Besuch.") %]</p>
 
-				<a class="btn btn-primary mb-2" href="[% path_prefix%]/login/fid.html?l=[% lang %]">[% msg.maketext("Zurück zum Login") %]</a>
+				<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Zurück zum Login") %]</a>
 			</div>
 		</div>
 	</div>

@@ -106,6 +106,7 @@ href="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/styles/choices
 <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/scripts/choices.min.js"></script>
 <script src="https://unpkg.com/papaparse@5.2.0/papaparse.min.js"></script>
+<script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
 
 <!-- Then static OpenBib JS -->
 <title>[% IF layout_param.page_title %][% layout_param.page_title %][% ELSE %][% config.get_viewdesc_from_viewname(view) %][% END %]</title>

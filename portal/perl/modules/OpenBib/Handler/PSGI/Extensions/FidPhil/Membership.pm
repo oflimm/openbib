@@ -79,9 +79,17 @@ sub show_record_form {
         return $self->print_authorization_error();
     }
     my $userid       = $user->{ID};
-    my $userinfo = new OpenBib::User( { ID => $userid } )->get_info;
+    my $userObject= new OpenBib::User( { ID => $userid } );
+    my $userinfo = $userObject->get_info;
+    my $role = 'registered';
+    
+    if ($userObject->has_role('fidphil_society_pending',$userid)){
+        $role = 'society_pending';
+    };
+
     my $ttdata = {
         userid   => $userid,
+        role => $role,
         userinfo => $userinfo,
     };
 

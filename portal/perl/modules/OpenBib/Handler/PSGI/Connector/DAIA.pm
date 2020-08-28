@@ -162,7 +162,9 @@ sub show {
 		    $uri = "urn:/Loan_inst";
 		    push @args, $thisdb;
 		}
-		    
+
+		$logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+		
 		eval {
 		    my $soap = SOAP::Lite
 			-> uri($uri)
@@ -191,8 +193,10 @@ sub show {
 	    # titelbasierten Exemplardaten
 	    
 	    if (defined($circexlist)) {
-		foreach my $nr (keys %{$circexlist->{Exemplardaten}}){
-		    my $circ_ref = $circexlist->{Exemplardaten}{$nr};
+		my $itemstring = (defined $circexlist->{Exemplardaten})?'Exemplardaten':'PresentExemplardaten';
+		
+		foreach my $nr (keys %{$circexlist->{$itemstring}}){
+		    my $circ_ref = $circexlist->{$itemstring}{$nr};
 
 		    $logger->debug(YAML::Dump($circ_ref));
 		    
@@ -216,6 +220,7 @@ sub show {
 
 		    push @$circulation_ref, $circ_ref;
 		}
+
 	    }	    
 	}
 

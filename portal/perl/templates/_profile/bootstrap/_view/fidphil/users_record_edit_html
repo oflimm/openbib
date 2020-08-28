@@ -123,14 +123,14 @@
 				<div class="mr-4 d-flex flex-column justify-content-between">
 					<div class="text-center"><img id="fid-logo" src="/images/openbib/views/fidphil/dgphil.jpg"  width="170px" height="auto"></div>
 					<div class="align-bottom"> <a class="btn btn-primary mb-2"
-						href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/membership/dgphil">[%
+						href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/membership/society/dgphil">[%
 						msg.maketext("Mitgliedschaft in der DGPhil") %]</a>
 					</div>
 				</div>				
 				<div class="d-flex flex-column justify-content-between">
 					<div class="mb-3 text-center"><img id="fid-logo" src="/images/openbib/views/fidphil/gaplogo.png" width="170px" height="auto"></div>
 					<div> <a class="btn btn-primary mb-2"
-							href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/membership/gap">[%
+							href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/membership/society/gap">[%
 							msg.maketext("Mitgliedschaft in der GAP") %]</a>
 					</div>
 				</div>

@@ -52,9 +52,30 @@ use base qw(OpenBib::Catalog);
 sub new {
     my ($class,$arg_ref) = @_;
 
+    # Set defaults
+    my $database           = exists $arg_ref->{database}
+        ? $arg_ref->{database}        : undef;
+
+    my $config             = exists $arg_ref->{config}
+        ? $arg_ref->{config}          : OpenBib::Config->new;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $database})->single;
+
+    my $user     = $dbinfo_ref->{remoteuser};
+    my $password = $dbinfo_ref->{remotepassword};
+    my $profile  = $dbinfo_ref->{remotepath};
+
+    $logger->debug("EDS API-Credentials: $user - $password - $profile");
+    
+    if ($user && $password && $profile){
+	$arg_ref->{api_user}     = $user;
+	$arg_ref->{api_password} = $password;
+	$arg_ref->{api_profile}  = $profile;
+    }
+    
     my $api = new OpenBib::API::HTTP::EDS($arg_ref);
     
     my $self = { };
@@ -73,16 +94,15 @@ sub load_full_title_record {
     my $id = exists $arg_ref->{id}
         ? $arg_ref->{id}     : '';
 
+    my $database = exists $arg_ref->{database}
+        ? $arg_ref->{database}     : '';
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $edsid = OpenBib::Common::Util::decode_id($id);
+    $id = OpenBib::Common::Util::decode_id($id);
 
-    my $database;
-    
-    ($database,$edsid)=$edsid=~m/^(.+?)::(.+)$/;
-
-    my $record = $self->get_api->get_record({ database => $database, id => $edsid});
+    my $record = $self->get_api->get_record({ database => $database, id => $id});
 
     return $record;
 }

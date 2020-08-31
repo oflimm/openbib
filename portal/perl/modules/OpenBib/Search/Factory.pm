@@ -72,7 +72,8 @@ sub create_searcher {
     }
     
     elsif (defined $database && !defined $sb){
-        my $system = $config->get_system_of_db($database);
+        my $system   = $config->get_system_of_db($database);
+
         if    ($system eq "Backend: EZB"){
             $sb = "ezb";
         }

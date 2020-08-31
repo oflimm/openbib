@@ -52,11 +52,17 @@ sub new {
     my ($class,$arg_ref) = @_;
 
     # Set defaults
-    my $api_key   = exists $arg_ref->{api_key}
-        ? $arg_ref->{api_key}       : undef;
+    my $api_password   = exists $arg_ref->{api_password}
+        ? $arg_ref->{api_password}       : undef;
 
     my $api_user  = exists $arg_ref->{api_user}
         ? $arg_ref->{api_user}      : undef;
+
+    my $api_profile = exists $arg_ref->{api_profile}
+        ? $arg_ref->{api_profile}   : undef;
+    
+    my $database  = exists $arg_ref->{database}
+        ? $arg_ref->{database}      : '';
 
     my $sessionID = exists $arg_ref->{sessionID}
         ? $arg_ref->{sessionID}     : undef;
@@ -83,13 +89,18 @@ sub new {
 
     $self->{client}        = $ua;
         
-    $self->{api_user} = (defined $api_user)?$api_user:(defined $config->{eds}{userid})?$config->{eds}{userid}:undef;
-    $self->{api_key}  = (defined $api_key )?$api_key :(defined $config->{eds}{passwd} )?$config->{eds}{passwd} :undef;
+    $self->{api_user}     = (defined $api_user)?$api_user:(defined $config->{eds}{default_user})?$config->{eds}{default_user}:undef;
+    $self->{api_password} = (defined $api_password )?$api_password :(defined $config->{eds}{default_password} )?$config->{eds}{default_password} :undef;
+    $self->{api_profile}  = (defined $api_profile )?$api_profile :(defined $config->{eds}{default_profile} )?$config->{eds}{default_profile} :undef;
     
     $self->{sessionID} = $sessionID;
 
     if ($config){
         $self->{_config}        = $config;
+    }
+
+    if ($database){
+        $self->{_database}      = $database;
     }
 
     if ($queryoptions){
@@ -119,6 +130,8 @@ sub send_retrieve_request {
     my $config = $self->get_config;
     my $ua     = $self->get_client;
 
+    my ($edsdatabase,$edsid)=$id=~m/^(.+?)::(.+)$/;    
+    
     if ($logger->is_debug){
 	$logger->debug("Setting default header with x-authenticationToken: ".$self->{authtoken}." and x-sessionToken: ".$self->{sessiontoken});
     }
@@ -127,7 +140,9 @@ sub send_retrieve_request {
     
     my $url = $config->get('eds')->{'retrieve_url'};
 
-    $url.="?dbid=".$database."&an=".$id;
+    $logger->debug("DB - ID: $edsdatabase - $edsid");
+    
+    $url.="?dbid=".$edsdatabase."&an=".$edsid;
 
     if ($logger->is_debug()){
 	$logger->debug("Request URL: $url");
@@ -292,7 +307,7 @@ sub get_record {
 	$json_result_ref = $self->send_retrieve_request($arg_ref);		
     }
 
-    my $record = new OpenBib::Record::Title({ database => 'eds', id => $id });
+    my $record = new OpenBib::Record::Title({ database => $database, id => $id });
 
     my $fields_ref = ();
 
@@ -950,9 +965,11 @@ sub get_authtoken {
     
     my $config = $self->get_config;
 
+    my $database = $self->get_database;
+    
     $config->connectMemcached;
     
-    my $memc_key = "eds:authtoken";
+    my $memc_key = "eds:authtoken:$database";
 
     $logger->debug("Memc: ".$config->{memcached});
     
@@ -1047,14 +1064,16 @@ sub _create_authtoken {
     my $config = $self->get_config;
     my $ua     = $self->get_client;
 
-    my $memc_key = "eds:authtoken";
+    my $database = $self->get_database;
+    
+    my $memc_key = "eds:authtoken:$database";
     
     my $request = HTTP::Request->new('POST' => $config->get('eds')->{auth_url});
     $request->content_type('application/json');
 
     my $json_request_ref = {
-	'UserId'   => $config->get('eds')->{userid},
-	'Password' => $config->get('eds')->{passwd},
+	'UserId'   => $self->{api_user},
+	'Password' => $self->{api_password},
     };
     
     $request->content(encode_json($json_request_ref));
@@ -1125,7 +1144,7 @@ sub _create_sessiontoken {
     $request->content_type('application/json');
 
     my $json_request_ref = {
-	'Profile' => $config->get('eds')->{profile},
+	'Profile' => $self->{api_profile},
 	'Guest'   => $guest,
     };
 
@@ -1580,11 +1599,21 @@ sub get_filter {
     return $self->{_filter};
 }
 
+sub get_database {
+    my $self=shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return $self->{_database};
+}
+
 sub DESTROY {
     my $self = shift;
 
     return;
 }
+
 
 
 1;
@@ -1602,7 +1631,7 @@ __END__
 
  use OpenBib::API::HTTP::EDS;
 
- my $eds = new OpenBib::EDS({ api_key => $api_key, api_user => $api_user});
+ my $eds = new OpenBib::EDS({ api_password => $api_password, api_user => $api_user});
 
  my $search_result_json = $eds->search({ searchquery => $searchquery, queryoptions => $queryoptions });
 
@@ -1612,10 +1641,10 @@ __END__
 
 =over 4
 
-=item new({ api_key => $api_key, api_user => $api_user })
+=item new({ api_password => $api_password, api_user => $api_user })
 
 Anlegen eines neuen EDS-Objektes. Für den Zugriff über das
-EDS-API muss ein API-Key $api_key und ein API-Nutzer $api_user
+EDS-API muss ein API-Passwort $api_password und ein API-Nutzer $api_user
 vorhanden sein. Diese können direkt bei der Objekt-Erzeugung angegeben
 werden, ansonsten werden die Standard-Keys unter eds aus OpenBib::Config 
 respektive portal.yml verwendet.

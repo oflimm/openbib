@@ -35,6 +35,7 @@ no warnings 'redefine';
 use utf8;
 use Log::Log4perl qw(get_logger :levels);
 use OpenBib::User;
+use Data::Dumper;
 
 use base 'OpenBib::Handler::PSGI';
 
@@ -74,27 +75,30 @@ sub show_record_form {
     my $stylesheet   = $self->param('stylesheet');
     my $useragent    = $self->param('useragent');
     my $path_prefix  = $self->param('path_prefix');
-    
+
     if ( !$self->authorization_successful ) {
         return $self->print_authorization_error();
     }
-    my $userid       = $user->{ID};
-    my $userObject= new OpenBib::User( { ID => $userid } );
-    my $userinfo = $userObject->get_info;
-    my $role = 'registered';
-    
-    if ($userObject->has_role('fidphil_society_pending',$userid)){
-        $role = 'society_pending';
-    };
+    my $userid     = $user->{ID};
+    my $userObject = new OpenBib::User( { ID => $userid } );
+    my $userinfo   = $userObject->get_info;
+    my $role       = 'registered';
+
+    if ( $userObject->has_role( 'fidphil_society_pending', $userid ) ) {
+        $role = 'fidphil_society_pending';
+    }
+    elsif ( $userObject->has_role( 'fidphil_society', $userid ) ) {
+        $role = 'fidphil_society';
+    }
 
     my $ttdata = {
         userid   => $userid,
-        role => $role,
+        role     => $role,
         userinfo => $userinfo,
     };
 
     #get Society as param
-    return $self->print_page( "users_membership", $ttdata );
+    return $self->print_page( "users_membership_edit", $ttdata );
 }
 
 #how to handle
@@ -124,20 +128,71 @@ sub request_membership {
     if ( !$self->authorization_successful ) {
         return $self->print_authorization_error();
     }
-    my $userid       = $user->{ID};
-    my $userinfo     = new OpenBib::User( { ID => $userid } )->get_info;
+    my $userid = $user->{ID};
+    my $userinfo = new OpenBib::User( { ID => $userid } )->get_info;
 
-    my @roles = (4);
+    my @roles            = (4);
     my $thisuserinfo_ref = {
         id    => $userid,
         roles => \@roles,
     };
 
     $user->update_user_rights_role($thisuserinfo_ref);
+    my $input_data_ref ={};
+	$userinfo->{mixed_bag}->{society}=['dgphil'];
+    $input_data_ref->{mixed_bag} = JSON::XS->new->utf8->canonical->encode($userinfo->{mixed_bag}); 
+       
+    $user->update_userinfo($input_data_ref) if (keys %$input_data_ref);
     my $ttdata = {
         userid   => $userid,
         userinfo => $userinfo,
     };
+    my $ttdata = {
+        userid   => $userid,
+        userinfo => $userinfo,
+    };
+    return "Request Membership";
+
+    #get Society as param
+    #return $self->print_page("users_membership", $ttdata);
+}
+
+sub renew_membership {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Ards
+    my $view = $self->param('view');
+
+    # Shared Args
+    my $query        = $self->query();
+    my $r            = $self->param('r');
+    my $config       = $self->param('config');
+    my $session      = $self->param('session');
+    my $user         = $self->param('user');
+    my $msg          = $self->param('msg');
+    my $queryoptions = $self->param('qopts');
+    my $stylesheet   = $self->param('stylesheet');
+    my $useragent    = $self->param('useragent');
+    my $path_prefix  = $self->param('path_prefix');
+    if ( !$self->authorization_successful ) {
+        return $self->print_authorization_error();
+    }
+    my $userid = $user->{ID};
+    my $userinfo = new OpenBib::User( { ID => $userid } )->get_info;
+
+    #we need a way to retrieve the ID of the role
+    my @roles            = (6);
+    my $thisuserinfo_ref = {
+        id    => $userid,
+        roles => \@roles,
+    };
+
+    # CGI / JSON input
+    $user->update_user_rights_role($thisuserinfo_ref);
+   
     return "Request Membership";
 
     #get Society as param

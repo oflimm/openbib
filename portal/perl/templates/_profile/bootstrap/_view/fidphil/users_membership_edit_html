@@ -8,7 +8,12 @@
                 height="auto">
         </div>
     </div>
-    <h2>Mitgliedschaft bestaetigen [%role%]</h2>
+    [% IF role == 'fidphil_society_pending'%]
+        <div>Ihre Anfrage auf Mitgliedschaft wird überprüft</div>
+    [% ELSIF role =='fidphil_society' %]
+    <div>Sie sind als Mitglied der DGPHIL vermerkt</div>
+    [% ELSE %]
+    <h2>Mitgliedschaft beantragen [%role%]</h2>
     <p class="mt-3">
         Die Mitgliedschaft in einer der Deutschen Gesellschaft für Philosophie berechtigt....
     </p>
@@ -39,6 +44,6 @@
             <button type="submit" class="btn btn-primary">Beantragen</button>
         </div>
     </form>
-
+    [% END %]
 </div>
 </div>

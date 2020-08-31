@@ -12,6 +12,14 @@
 #######################################################################
 -%]
 
+[%IF user.get_roles_of_user.fidphil_society%]
+[%role = 'fidphil_society';%]
+[%ELSIF user.get_roles_of_user.fidphil_society_pending%]
+[%role = 'fidphil_society_pending';%]
+[%ELSE%] 
+[%role = 'registered';%]
+[%END%]
+<!-- [% user.get_info.mixed_bag.bag_vorname.0%] -->
 <div class="card">
 	<div class="card-header">[% msg.maketext("Basisdaten") %]</div>
 	<div class="card-body">
@@ -120,26 +128,33 @@
 		<div class="card-header">[% msg.maketext("Mitgliedschaft in der Fachgesellschaft") %]</div>
 		<div class="card-body">
 			<div class="d-flex">
+				[% IF role == 'fidphil_society_pending'%]
+				<div>
+					Ihre Mitgliedschaft wird überprüft
+				</div>
+				[% ELSIF role =='fidphil_society' %]
+				<div class="d-flex">
+					<div class="text-center mr-3">
+						<img id="fid-logo" src="/images/openbib/views/fidphil/dgphil.jpg"  width="170px" height="auto">
+					</div>
+					<div>Sie sind als Mitglied der DGPHIL vermerkt</div>
+				</div>
+				[% ELSE %]
 				<div class="mr-4 d-flex flex-column justify-content-between">
 					<div class="text-center"><img id="fid-logo" src="/images/openbib/views/fidphil/dgphil.jpg"  width="170px" height="auto"></div>
 					<div class="align-bottom"> <a class="btn btn-primary mb-2"
-						href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/membership/society/dgphil">[%
+						href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/membership/society/dgphil/edit">[%
 						msg.maketext("Mitgliedschaft in der DGPhil") %]</a>
 					</div>
 				</div>				
 				<div class="d-flex flex-column justify-content-between">
 					<div class="mb-3 text-center"><img id="fid-logo" src="/images/openbib/views/fidphil/gaplogo.png" width="170px" height="auto"></div>
 					<div> <a class="btn btn-primary mb-2"
-							href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/membership/society/gap">[%
+							href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/membership/society/gap/edit">[%
 							msg.maketext("Mitgliedschaft in der GAP") %]</a>
 					</div>
 				</div>
-				<div>
-					Sie sind Mitglied in der GAP
-				</div>
-				<div>
-					Ihre Mitgleidschaft wird überprüft, kontaktieren Sie uns, wenn ihr Account nach zwei Tagen nicht freigeschaltet ist
-				</div>			
+				[%END%]			
 			</div>
 		</div>
 	</div>

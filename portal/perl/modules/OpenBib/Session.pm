@@ -1774,20 +1774,24 @@ sub get_recently_selected_titles {
     my $have_item_ref = {};
     foreach my $item ($lastrecords->all){
         my $thiscontent = $item->{thiscontent};
-        my $content_ref = {};
-        next if (defined $have_item_ref->{$thiscontent});
-                                          
-        eval {
+        my $record_ref = {};
+		    
+	eval {
             $logger->debug("Got ".$item->{thiscontent});
-            $content_ref = decode_json $item->{thiscontent};
-            $have_item_ref->{$thiscontent} = 1;
+            $record_ref = decode_json $item->{thiscontent};
         };
+
+        next if (defined $have_item_ref->{$record_ref->{database}.$record_ref->{id}});
 
         if ($@){
             $logger->error("Error decoding JSON $@ ".$item->{thiscontent});
         }
         
-        $recordlist->add(new OpenBib::Record::Title({database => $content_ref->{database}, id => $content_ref->{id}}));
+	my $record = OpenBib::Record::Title->new->from_hash($record_ref);
+        $recordlist->add(OpenBib::Record::Title->new->from_hash($record_ref));
+
+	$have_item_ref->{$record_ref->{database}.$record_ref->{id}} = 1;
+
     }
 
     $logger->debug($recordlist);

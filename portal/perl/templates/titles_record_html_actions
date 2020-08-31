@@ -741,7 +741,6 @@ $("#history_toggle").click(function(){
 [%- publisher = record_fields.${'T0412'}.first.content -%]
 [%# Ejahr konstruieren %]
 [%- yearofpub = record_fields.${'T0425'}.first.content -%]
-[% NEXT IF NOT title %]
 [% IF recent_titles.get_size > 5 && loop.count == 5 %]
 <span id="history_toggle"></span>
 <div id="history">
@@ -752,11 +751,9 @@ title %]</span></strong></a>, <span class="ob-publisher">[% publisher %]</span> 
 [% IF recent_titles.get_size > 5 %]
 </div>
 [% END %]
-
+</ul>
 <p/>
 
 <!-- </div><!-- End ob-record_title_history_toggle_do -->
 </div><!-- End Session-Historie -->
 [% END %]
-
-

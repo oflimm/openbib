@@ -541,6 +541,7 @@ sub show_record {
                     id       => $titleid,
                     database => $database,
                     isbn     => $isbn,
+		    fields   => $record->get_fields,
                 },
                 serialize => 1,
             });
@@ -844,6 +845,7 @@ sub show_record_fields {
                     id       => $titleid,
                     database => $database,
                     isbn     => $isbn,
+		    fields   => $record->get_fields,
                 },
                 serialize => 1,
             });

@@ -748,7 +748,7 @@ $("#history_toggle").click(function(){
 });
 </script>
 
-[% recent_titles = session.get_recently_selected_titles.load_brief_records %]
+[% recent_titles = session.get_recently_selected_titles %]
 [% IF recent_titles.get_size > 0 %]
 <div class="session_history"><!-- Begin Historie -->
 

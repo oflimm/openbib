@@ -1,12 +1,12 @@
 use utf8;
-package OpenBib::Schema::System::Result::UserSession;
+package OpenBib::Schema::System::Result::RoleViewadmin;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
 =head1 NAME
 
-OpenBib::Schema::System::Result::UserSession
+OpenBib::Schema::System::Result::RoleViewadmin
 
 =cut
 
@@ -15,11 +15,11 @@ use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<user_session>
+=head1 TABLE: C<role_viewadmin>
 
 =cut
 
-__PACKAGE__->table("user_session");
+__PACKAGE__->table("role_viewadmin");
 
 =head1 ACCESSORS
 
@@ -28,21 +28,15 @@ __PACKAGE__->table("user_session");
   data_type: 'bigint'
   is_auto_increment: 1
   is_nullable: 0
-  sequence: 'user_session_id_seq'
+  sequence: 'role_viewadmin_id_seq'
 
-=head2 sid
-
-  data_type: 'bigint'
-  is_foreign_key: 1
-  is_nullable: 0
-
-=head2 userid
+=head2 roleid
 
   data_type: 'bigint'
   is_foreign_key: 1
   is_nullable: 0
 
-=head2 authenticatorid
+=head2 viewid
 
   data_type: 'bigint'
   is_foreign_key: 1
@@ -56,13 +50,11 @@ __PACKAGE__->add_columns(
     data_type         => "bigint",
     is_auto_increment => 1,
     is_nullable       => 0,
-    sequence          => "user_session_id_seq",
+    sequence          => "role_viewadmin_id_seq",
   },
-  "sid",
+  "roleid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
-  "userid",
-  { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
-  "authenticatorid",
+  "viewid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
 );
 
@@ -80,54 +72,39 @@ __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
-=head2 authenticatorid
+=head2 roleid
 
 Type: belongs_to
 
-Related object: L<OpenBib::Schema::System::Result::Authenticatorinfo>
+Related object: L<OpenBib::Schema::System::Result::Roleinfo>
 
 =cut
 
 __PACKAGE__->belongs_to(
-  "authenticatorid",
-  "OpenBib::Schema::System::Result::Authenticatorinfo",
-  { id => "authenticatorid" },
+  "roleid",
+  "OpenBib::Schema::System::Result::Roleinfo",
+  { id => "roleid" },
   { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
-=head2 sid
+=head2 viewid
 
 Type: belongs_to
 
-Related object: L<OpenBib::Schema::System::Result::Sessioninfo>
+Related object: L<OpenBib::Schema::System::Result::Viewinfo>
 
 =cut
 
 __PACKAGE__->belongs_to(
-  "sid",
-  "OpenBib::Schema::System::Result::Sessioninfo",
-  { id => "sid" },
-  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
-);
-
-=head2 userid
-
-Type: belongs_to
-
-Related object: L<OpenBib::Schema::System::Result::Userinfo>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "userid",
-  "OpenBib::Schema::System::Result::Userinfo",
-  { id => "userid" },
+  "viewid",
+  "OpenBib::Schema::System::Result::Viewinfo",
+  { id => "viewid" },
   { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 
 # Created by DBIx::Class::Schema::Loader v0.07049 @ 2020-09-02 13:17:10
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:MBIvPDmRmwEaCKECb5OBoA
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Rn+Q7T2a1l6adjZ8XsDckw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

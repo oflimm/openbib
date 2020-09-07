@@ -359,8 +359,17 @@ CREATE TABLE roleinfo (
   description  TEXT NOT NULL
 );
 
+--- Access to view viewid is restricted to membership of roleid
 DROP TABLE IF EXISTS role_view;
 CREATE TABLE role_view (
+  id        BIGSERIAL,
+  roleid    BIGINT NOT NULL,
+  viewid    BIGINT NOT NULL
+);
+
+--- Role roleid can be administered by viewadmin of view viewid
+DROP TABLE IF EXISTS role_viewadmin;
+CREATE TABLE role_viewadmin (
   id        BIGSERIAL,
   roleid    BIGINT NOT NULL,
   viewid    BIGINT NOT NULL

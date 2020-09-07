@@ -144,6 +144,17 @@
      - html
      - include
      - json
+- # users_loc/holdings_loc: Record show
+   module: 'OpenBib::Handler::PSGI::Holdings::Fields'
+   rule: '/portal/:view/databases/id/:database/holdings/fields[get]'
+   runmode: 'show_collection'
+   representations:
+     - none
+     - html
+- # users_loc/holdings_loc: Record show
+   module: 'OpenBib::Handler::PSGI::Holdings::Fields'
+   rule: '/portal/:view/databases/id/:database/holdings/fields/id/:fieldid[get]'
+   runmode: 'show_record'
 - # users_loc/titles_loc: Record show related_records (wikipedia)
    module: 'OpenBib::Handler::PSGI::Titles'
    rule: '/portal/:view/databases/id/:database/titles/id/:titleid/related_records[get]'
@@ -1885,6 +1896,169 @@
    rule: '/portal/:view/roles/id/:roleid[delete]'
    runmode: 'delete_record'
 
+#####################################################################
+#  Viewadmin
+#####################################################################
+
+#####################################################################
+# Admin-Resource/Repraesentation
+- # Resource: admin_loc
+   scope: 'viewadmin'
+   module: 'OpenBib::Handler::PSGI::Viewadmin'
+   rule: '/portal/:view/viewadmin[get]'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   runmode: 'show_collection'
+
+#####################################################################
+# Katalogsichten/Views-Resource/Repraesentation
+- # admin_loc/views_loc: Record show
+   scope: 'viewadmin_views'
+   module: 'OpenBib::Handler::PSGI::ViewAdmin::Views'
+   rule: '/portal/:view/viewadmin/views/id/:viewid[get]'
+   runmode: 'show_record'
+- # admin_loc/views_loc: Record show
+   scope: 'viewadmin_views'
+   module: 'OpenBib::Handler::PSGI::Viewadmin::Views'
+   rule: '/portal/:view/viewadmin/views/id/:viewid[get]'
+   runmode: 'show_record'
+- # admin_loc/views_loc: Record show form
+   scope: 'viewadmin_views'
+   module: 'OpenBib::Handler::PSGI::Viewadmin::Views'
+   rule: '/portal/:view/viewadmin/views/id/:viewid/edit[get]'
+   runmode: 'show_record_form'
+   representations:
+     - none
+     - html
+- # admin_loc/views_loc: Update Record
+   scope: 'viewadmin_views'
+   module: 'OpenBib::Handler::PSGI::Viewadmin::Views'
+   rule: '/portal/:view/viewadviews/id/:viewid[post]'
+   runmode: 'update_record'
+- # admin_loc/views_loc: Update Record
+   scope: 'viewadmin_views'
+   module: 'OpenBib::Handler::PSGI::Viewadmin::Views'
+   rule: '/portal/:view/viewadmin/views/id/:viewid[put]'
+   runmode: 'update_record'
+
+
+#####################################################################
+# Roles-Resource/Repraesentation
+
+- # users/roles_loc:
+   scope: 'viewadmin_roles'
+   module: 'OpenBib::Handler::PSGI::Viewadmin::Roles'
+   rule: '/portal/:view/viewadmin/roles[get]'
+   runmode: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+- # admin_loc/roles_loc: Record show
+   scope: 'viewadmin_roles'
+   module: 'OpenBib::Handler::PSGI::Viewadmin::Roles'
+   rule: '/portal/:view/viewadmin/roles/id/:roleid[get]'
+   runmode: 'show_record'
+- # admin_loc/roles_loc: Record show form
+   scope: 'viewadmin_roles'
+   module: 'OpenBib::Handler::PSGI::Viewadmin::Roles'
+   rule: '/portal/:view/viewadmin/roles/id/:roleid/edit[get]'
+   runmode: 'show_record_form'
+   representations:
+     - none
+     - html
+- # admin_loc/roles_loc: Update Record
+   scope: 'viewadmin_roles'
+   module: 'OpenBib::Handler::PSGI::Viewadmin::Roles'
+   rule: '/portal/:view/viewadmin/roles[post]'
+   runmode: 'create_record'
+- # admin_loc/roles_loc: Update Record
+   scope: 'viewadmin_roles'
+   module: 'OpenBib::Handler::PSGI::Viewadmin::Roles'
+   rule: '/portal/:view/viewadmin/roles/id/:roleid[post]'
+   runmode: 'update_record'
+- # admin_loc/roles_loc: Update Record
+   scope: 'viewadmin_roles'
+   module: 'OpenBib::Handler::PSGI::Viewadmin::Roles'
+   rule: '/portal/:view/viewadmin/roles/id/:roleid[put]'
+   runmode: 'update_record'
+- # admin_loc/roles_loc: Delete Record
+   scope: 'viewadmin_roles'
+   module: 'OpenBib::Handler::PSGI::Viewadmin::Roles'
+   rule: '/portal/:view/viewadmin/roles/id/:roleid[delete]'
+   runmode: 'delete_record'
+
+#####################################################################
+# Users-Resource/Repraesentation
+- # Resource: admin_loc/users_loc
+   scope: 'viewadmin_users'
+   module: 'OpenBib::Handler::PSGI::Viewadmin::Users'
+   rule: '/portal/:view/viewadmin/users[get]'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   runmode: 'show_collection'
+- # Resource: admin_loc/users_loc
+   scope: 'viewadmin_users'
+   module: 'OpenBib::Handler::PSGI::Viewadmin::Users'
+   rule: '/portal/:view/viewadmin/users/search/form[get]'
+   representations:
+     - none
+     - html
+   runmode: 'show_search_form'
+- # Resource: admin_loc/users_loc
+   scope: 'viewadmin_users'
+   module: 'OpenBib::Handler::PSGI::Viewadmin::Users'
+   rule: '/portal/:view/viewadmin/users/search[get]'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   runmode: 'show_search'
+
+#####################################################################
+# Admin User Rights Roles-Resource/Repraesentation
+- # viewadmin users:
+   scope: 'viewadmin_users'
+   module: 'OpenBib::Handler::PSGI::Viewadmin::Users'
+   rule: '/portal/:view/viewadmin/users/id/:userid[get]'
+   runmode: 'show_record'
+- # viewadmin users:
+   scope: 'viewadmin_users'
+   module: 'OpenBib::Handler::PSGI::Viewadmin::Users'
+   rule: '/portal/:view/viewadmin/users/id/:userid/edit[get]'
+   runmode: 'show_record_form'
+   representations:
+     - none
+     - html
+- # users_loc/roles_loc: Update
+   scope: 'viewadmin_users'
+   module: 'OpenBib::Handler::PSGI::Viewadmin::Users::Rights::Roles'
+   rule: '/portal/:view/viewadmin/users/id/:userid/rights/roles[post]'
+   runmode: 'update_record'
+- # users_loc/roles_loc: Update
+   scope: 'viewadmin_users'
+   module: 'OpenBib::Handler::PSGI::Viewadmin::Users::Rights::Roles'
+   rule: '/portal/:view/viewadmin/users/id/:userid/rights/roles[put]'
+   runmode: 'update_record'
+
+- # users_loc/templates_loc: Update
+   scope: 'viewadmin_users'
+   module: 'OpenBib::Handler::PSGI::Viewadmin::Users::Rights::Templates'
+   rule: '/portal/:view/viewadmin/users/id/:userid/rights/templates[post]'
+   runmode: 'update_record'
+- # users_loc/templates_loc: Update
+   scope: 'viewadmin_users'
+   module: 'OpenBib::Handler::PSGI::Viewadmin::Users::Rights::Templates'
+   rule: '/portal/:view/viewadmin/users/id/:userid/rights/templates[put]'
+   runmode: 'update_record'
 
 #####################################################################
 # Users-Resource/Repraesentation

@@ -1,0 +1,109 @@
+[%#-
+#######################################################################
+#
+# Templatename: viewadmin_users_record_edit
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Aenderung von Nutzerinformationen durch den Administrator
+#
+#######################################################################
+-%]
+
+<h2>[% msg.maketext("Personendaten") %]</h2>
+
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+[% IF userinfo.nachname %]
+<tr><td><b>[% msg.maketext("Nachname") %]:</b></td><td align="left">&nbsp;[% userinfo.nachname %]</td></tr>
+[% END %] 
+[% IF userinfo.vorname %]
+<tr><td><b>[% msg.maketext("Vorname") %]:</b></td><td align="left">&nbsp;[% userinfo.vorname %]</td></tr>
+[% END %] 
+[% IF userinfo.gebdatum %]
+<tr><td><b>[% msg.maketext("Geburtsdatum") %]:</b></td><td align="left">&nbsp;[% userinfo.gebdatum %]</td></tr>
+[% END %] 
+[% IF userinfo.strasse %]
+<tr><td><b>[% msg.maketext("Strasse") %]:</b></td><td align="left">&nbsp;[% userinfo.strasse %]</td></tr>
+[% END %] 
+<tr><td><b>[% msg.maketext("Ort") %]:</b></td><td align="left">
+[% IF userinfo.plz %]
+&nbsp;[% userinfo.plz %]
+[% END %] 
+&nbsp;[% userinfo.ort %]</td></tr>
+[% IF userinfo.email %]
+<tr><td><b>[% msg.maketext("E-Mail") %]:</b></td><td align="left">&nbsp;[% userinfo.email %]</td></tr>
+[% END %]
+<tr><td><b>[% msg.maketext("Sperre") %]:</b></td><td align="left">&nbsp;
+[%- IF userinfo.sperre -%]
+[% msg.maketext("ja, seit") %][% userinfo.sperrdatum %] [% msg.maketext("mit Grund") %]<em>[% userinfo.sperre %]</em>
+[%- ELSE -%]
+[% msg.maketext("nein") %]
+[%- END -%]
+</td></tr>
+</table>
+</div>
+
+[%
+   roles = [];
+   
+   FOREACH role IN config.get_roleinfo_of_viewadmin(view).all;
+     roles.push(role);
+   END;
+
+   templates = [];
+   
+   FOREACH template IN user.get_all_templates ;
+     templates.push(template) IF template.viewname == view ;
+   END;
+%]
+
+[% IF roles.size > 0 || templates.size > 0 %]
+<h2>[% msg.maketext("Einstellungen") %]</h2>
+[% END %]
+
+
+[% IF roles.size > 0 %]
+<form method="post" action="[% path_prefix %]/[% config.get('viewadmin_loc') %]/[% config.get('users_loc') %]/id/[% userinfo.id %]/rights/[% config.get('roles_loc') %]">
+<input type="hidden" name="_method"    value="PUT" />
+
+<h3 class="display-5">[% msg.maketext("Rolle zuordnen") %]</h3>
+
+<div class="form-group">
+<label for="roles">[% msg.maketext("Rollen") %]</label>
+<select class="form-control" name="roles" multiple="multiple" size="5">
+[% FOREACH role IN roles %]
+  <option value="[% role.id %]"[% IF userinfo.role.${role.rolename} %] selected="selected"[% END %]>[% role.description %]</option>
+[% END %]
+</select>
+</div>
+
+<button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Los") %]</button>
+
+</form>
+
+
+<p/>
+[% END %]
+
+[% IF templates.size > 0 %]
+<form method="post" action="[% path_prefix %]/[% config.get('viewadmin_loc') %]/[% config.get('users_loc') %]/id/[% userinfo.id %]/rights/[% config.get('templates_loc') %]">
+<input type="hidden" name="_method"    value="PUT" />
+
+<h3 class="display-5">[% msg.maketext("Templates zuordnen") %]</h3>
+
+<div class="form-group">
+<label for="templates">[% msg.maketext("Templates") %]</label>
+<select class="form-control" name="templates" multiple="multiple" size="15">
+[% FOREACH template IN templates %]
+  <option value="[% template.id %]"[% IF userinfo.template.${template.id} %] selected="selected"[% END %]>[% template.viewname %] - [% template.templatename %] - [% template.templatelang %]</option>
+[% END %]
+</select>
+</div>
+
+<button class="btn btn-primary mb-2 type="submit">[% msg.maketext("Los") %]</button>
+
+</form>
+[% END %]

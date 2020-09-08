@@ -1,0 +1,42 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editcat
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Kataloges
+#
+#######################################################################
+-%]
+
+<form method="post" action="[% path_prefix %]/[% config.get('viewadmin_loc') %]/[% config.get('roles_loc') %]/id/[% roleinfo.rolename %]">
+<input type="hidden" name="_method"    value="PUT" />
+
+<h1 class="display-5">[% msg.maketext("Rolle bearbeiten") %]</h1>
+
+<div class="form-group">
+<label for="id">[% msg.maketext("Id") %]</label>
+<span class="form-control">[% roleinfo.id %]</span>
+</div>
+
+<div class="form-group">
+<label for="rolename">[% msg.maketext("Name") %]</label>
+<input class="form-control" type="text" name="rolename" id="rolename" value="[% roleinfo.rolename %]"/>
+</div>
+
+<div class="form-group">
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<input class="form-control" type="text" name="description" id="description" value="[% roleinfo.description %]"/>
+</div>
+
+
+<button type="submit" name="do_change" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>
+
+&nbsp;&nbsp;&nbsp;
+
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('viewadmin_loc') %]/[% config.get('roles_loc') %]/id/[% roleinfo.rolename %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+
+</form>

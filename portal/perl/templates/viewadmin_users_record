@@ -1,0 +1,60 @@
+[%#-
+#######################################################################
+#
+# Templatename: viewadmin_users_record
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Informationen eines Benutzers in der Web-Administration 
+#
+#######################################################################
+-%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+      'page_title' = 'Portal Administration - Nutzer anzeigen'
+      
+      'main_template' = 'viewadmin_users_record_html'
+      'sidebar_template' = 'users_navigation'
+
+      'active_menu' = 'viewadmin'
+      'active_submenu' = 'viewadmin_users'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Administration')
+	     url  = "${path_prefix}/${config.get('viewadmin_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Nutzerverwaltung')
+	     url  = "${path_prefix}/${config.get('viewadmin_loc')}/${config.get('users_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = userinfo.id
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+      
+      'representations' = [
+          {
+	     type = 'json'
+	     url  = "${path_prefix}/${config.get('viewadmin_loc')}/${config.get('users_loc')}/id/${userinfo.id}?l=${lang}"
+	  }
+       ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'rdf' -%]
+[%- PROCESS common/subtemplate name="viewadmin_users_record_rdf" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="viewadmin_users_record_json" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

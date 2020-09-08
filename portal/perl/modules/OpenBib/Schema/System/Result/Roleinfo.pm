@@ -85,6 +85,21 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 role_viewadmins
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::RoleViewadmin>
+
+=cut
+
+__PACKAGE__->has_many(
+  "role_viewadmins",
+  "OpenBib::Schema::System::Result::RoleViewadmin",
+  { "foreign.roleid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 role_views
 
 Type: has_many
@@ -116,8 +131,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2020-04-27 09:46:48
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:HKOWs+VcPx6Gc8EwfT0reg
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2020-09-02 13:17:10
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Qk4F/2IYpHPzkMC6AlND7w
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

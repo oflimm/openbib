@@ -152,6 +152,12 @@ ALTER TABLE role_right ADD PRIMARY KEY (id);
 ALTER TABLE role_right ADD CONSTRAINT fk_roleright_role FOREIGN KEY (roleid) REFERENCES roleinfo (id);
 CREATE INDEX role_right_roleid ON role_right (roleid);
 
+ALTER TABLE role_viewadmin ADD PRIMARY KEY (id);
+ALTER TABLE role_viewadmin ADD CONSTRAINT fk_roleviewadmin_view FOREIGN KEY (viewid) REFERENCES viewinfo (id);
+ALTER TABLE role_viewadmin ADD CONSTRAINT fk_roleviewadmin_role FOREIGN KEY (roleid) REFERENCES roleinfo (id);
+CREATE INDEX role_viewadmin_viewid ON role_viewadmin (viewid);
+CREATE INDEX role_viewadmin_roleid ON role_viewadmin (roleid);
+
 ALTER TABLE user_role ADD PRIMARY KEY (id);
 ALTER TABLE user_role ADD CONSTRAINT fk_userrole_user FOREIGN KEY (userid) REFERENCES userinfo (id);
 ALTER TABLE user_role ADD CONSTRAINT fk_userrole_role FOREIGN KEY (roleid) REFERENCES roleinfo (id);

@@ -129,8 +129,11 @@
 		<div class="card-body">
 			<div class="d-flex">
 				[% IF role == 'fidphil_society_pending'%]
-				<div>
-					Ihre Mitgliedschaft wird überprüft
+					<div class="d-flex">
+					<div class="text-center mr-3">
+						<img id="fid-logo" src="/images/openbib/views/fidphil/dgphil.jpg"  width="170px" height="auto">
+					</div>
+					<div>Ihre Mitgliedschaft wird überprüft</div>
 				</div>
 				[% ELSIF role =='fidphil_society' %]
 				<div class="d-flex">

@@ -215,15 +215,18 @@ sub update_record {
     my $user           = $self->param('user');
     
     if (!$user->user_exists_in_view({ viewname => $view, userid => $user->{ID}})){
+	$logger->error("User ".$self->{ID}." not in view $view");
         return $self->print_authorization_error();
     }
     
     if (!$self->authorization_successful('right_update')){
+	$logger->error("User ".$self->{ID}." has no right to update in view $view");
         return $self->print_authorization_error();
     }
 
     # restrict update to local view
     if ($viewname ne $view) {
+	$logger->error("Editable view $viewname doesn't belong to view $view");
 	return $self->print_authorization_error();
     }
     

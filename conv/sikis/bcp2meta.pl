@@ -681,6 +681,30 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
                         }
                     }
 
+                    if ($line=~/^1212\.(\d\d\d):(.*$)/) {
+                        my $zaehlung=$1;
+                        my $inhalt=$2;
+
+			# Parsen des Inhalts
+			if ($inhalt =~m/^(.+?) : (.+?) : (.+?)$/){
+			    $erschverlbufpos{$zaehlung}=$1;
+			    $signaturbuf{$zaehlung} = $2;
+			    $bemerkbuf2{$zaehlung} = $3;
+
+			}
+			elsif ($inhalt =~m/^(.+?) : (.+?)$/){
+			    $erschverlbufpos{$zaehlung}=$1;
+			    $signaturbuf{$zaehlung} = $2;
+			}
+			else {
+			    $erschverlbufpos{$zaehlung}=$inhalt;
+			}
+			
+                        if ($maxmex <= $zaehlung) {
+                            $maxmex=$zaehlung;
+                        }
+                    }
+		    
                     if ($line=~/^0012\.(\d\d\d):(.*$)/) {
                         my $zaehlung=$1;
                         my $inhalt=$2;
@@ -767,7 +791,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
 
             if ($useusbschema) {
                 my $erschverl=$erschverlbufpos{$multkey};
-                $erschverl.=" ".$erschverlbufneg{$multkey} if (exists $erschverlbufneg{$multkey});
+                $erschverl.=" ".$erschverlbufneg{$multkey} if (exists $erschverlbufneg{$multkey} && $erschverl !~m/\[N/);
                 
                 my $holding_ref = {
                     'id'     => $holdingid,

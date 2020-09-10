@@ -2,8 +2,7 @@
 #######################################################################
 #
 # Templatename: userprefs
-#
-# Typ         : Mastertemplate
+# # Typ : Mastertemplate
 #
 # Aufgabe:
 #
@@ -16,28 +15,42 @@
 [%role = 'fidphil_society';%]
 [%ELSIF user.get_roles_of_user.fidphil_society_pending%]
 [%role = 'fidphil_society_pending';%]
-[%ELSE%] 
+[%ELSIF user.get_roles_of_user.fidphil_user%]
+[%role = 'fidphil_user';%]
+[%ELSE%]
 [%role = 'registered';%]
 [%END%]
-<!-- [% user.get_info.mixed_bag.bag_vorname.0%] -->
-<div class="card">
-	<div class="card-header">[% msg.maketext("Basisdaten") %]</div>
-	<div class="card-body">
-		<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]" enctype="application/x-www-form-urlencoded">
-			<input type="hidden" name="_method"    value="PUT" />
-			<div class="form-group row mt-4">
-				<label for="username" class="col-sm-2 col-form-label">[% msg.maketext("Benutzername") %]:  </label>
-				<div class="col-sm-10">
-					<input class="form-control-plaintext" type="text" name="username" id="username" value="[% userinfo.username %]"/>
+
+<div class="row">
+	<div class="card mb-3 col-lg-9 col-11 p-0 mx-auto">
+
+		<div class="card-header">[% msg.maketext("Basisdaten") %]</div>
+		<div class="card-body">
+			[% IF role == 'registered'%]
+			<div class="d-flex justify-content-start ml-2">
+				<div class="bg-warning">
+					Bitte schließen Sie die Registrierung ab, indem Sie Ihre Daten vervollständigen
 				</div>
 			</div>
-			<div class="form-group row mt-4">
-				<label for="email" class="col-sm-2 col-form-label">[% msg.maketext("E-Mail") %]:  </label>
-				<div class="col-sm-10">
-					<input class="form-control-plaintext" type="text" name="email" id="email" value="[% userinfo.email %]"/>
+			[% END %]
+			<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]"
+				enctype="application/x-www-form-urlencoded">
+				<input type="hidden" name="_method" value="PUT" />
+				<div class="form-group row">
+					<label for="username" class="col-md-3 col-form-label">[% msg.maketext("Benutzername") %]: </label>
+					<div class="col-md-9">
+						<input class="form-control-plaintext" type="text" name="username" id="username"
+							value="[% userinfo.username %]" />
+					</div>
 				</div>
-			</div>
-			<div class="form-group row mt-4">
+				<div class="form-group row">
+					<label for="email" class="col-md-3 col-form-label">[% msg.maketext("E-Mail") %]: </label>
+					<div class="col-md-9">
+						<input class="form-control-plaintext" type="text" name="email" id="email"
+							value="[% userinfo.email %]" />
+					</div>
+				</div>
+				<!-- <div class="form-group row mt-4">
 				<label for="vorname" class="col-sm-2 col-form-label">[% msg.maketext("Anrede") %]:  </label>
 				<div class="col-sm-10">
 					<select class="form-control" name="bag_anrede" id="bag_anrede">
@@ -47,126 +60,189 @@
 						<option value="dr" [% IF userinfo.mixed_bag.bag_anrede.first == "dr" %]selected[% END %]>[% msg.maketext("Dr.") %]</option>
 					</select>
 				</div>
-			</div>
-			<div class="form-group row mt-4">
-				<label for="bag_title" class="col-sm-2 col-form-label">[% msg.maketext("Akademischer Grad") %]:  </label>
-				<div class="col-sm-10">
-					<select class="form-control" name="bag_title" id="bag_title">
-						<option disabled selected value> -- select an option -- </option>
-						<option value="dr" [% IF userinfo.mixed_bag.bag_title.first == "dr" %]selected[%END%]>Dr.</option>
-						<option value="prof" [% IF userinfo.mixed_bag.bag_title.first == "prof" %]selected[%END%]>Prof. Dr.</option>
-					</select>
+			</div> -->
+				<div class="form-group row">
+					<label for="bag_title" class="col-md-3 col-form-label">[% msg.maketext("Akademischer Grad") %]:
+					</label>
+					<div class="col-md-9">
+						<select class="form-control" name="bag_title" id="bag_title">
+							<option disabled selected value> -- select an option -- </option>
+							<option value="none" [% IF userinfo.mixed_bag.bag_title.first=="none" %]selected[%END%]>
+								keine
+								Angabe</option>
+							<option value="dr" [% IF userinfo.mixed_bag.bag_title.first=="dr" %]selected[%END%]>Dr.
+							</option>
+							<option value="prof" [% IF userinfo.mixed_bag.bag_title.first=="prof" %]selected[%END%]>
+								Prof.
+								Dr.</option>
+						</select>
+					</div>
 				</div>
-			</div>
-			<div class="form-group row mt-4">
-				<label for="bag_vorname" class="col-sm-2 col-form-label">[% msg.maketext("Vorname") %]:  </label>
-				<div class="col-sm-10">
-					<input class="form-control" type="text" name="bag_vorname" id="bag_vorname" value="[% userinfo.mixed_bag.bag_vorname.first %]"/>
+				<div class="form-group row">
+					<label for="bag_vorname" class="col-md-3 col-form-label">[% msg.maketext("Vorname") %]: </label>
+					<div class="col-md-9">
+						<input class="form-control" type="text" name="bag_vorname" id="bag_vorname"
+							value="[% userinfo.mixed_bag.bag_vorname.first %]" />
+					</div>
 				</div>
-			</div>
-			<div class="form-group row mt-4">
-				<label for="bag_nachname" class="col-sm-2 col-form-label">[% msg.maketext("Nachname") %]:  </label>
-				<div class="col-sm-10">
-					<input class="form-control" type="text" name="bag_nachname" id="bag_nachname" value="[% userinfo.mixed_bag.bag_nachname.first %]"/>
+				<div class="form-group row">
+					<label for="bag_nachname" class="col-md-3 col-form-label">[% msg.maketext("Nachname") %]: </label>
+					<div class="col-md-9">
+						<input class="form-control" type="text" name="bag_nachname" id="bag_nachname"
+							value="[% userinfo.mixed_bag.bag_nachname.first %]" />
+					</div>
 				</div>
-			</div>
-			<div class="form-group row mt-4">
-				<label for="bag_institution" class="col-sm-2 col-form-label">[% msg.maketext("Heimatinstitution") %]:  </label>
-				<div class="col-sm-10">
-					<select class="form-control" name="bag_institution" id="bag_institution">
-						<option value="">Please select your home institution</option>
-					</select>
-					
-					<script>
-						let url = 'http://localhost:8008/css/_profile/bootstrap/_view/fidphil/isil_list.csv';
-						let selectedInstitution = '[% userinfo.mixed_bag.bag_institution.first %]'
-						let dataset = []
-						fetch(url, {
-							headers: {
-								'Content-Type': 'text/csv'
-							},
-							responseType: 'text'})
-						.then(data => data.text())
-						.then(responseText => {
-							let values = Papa.parse(responseText);
-							values.data.forEach(element => {
-								if (element[0]){
-								let elem = {};
-								elem.value = element[0]
-								elem.label = element[4] + " - " + element[0]
-								if (selectedInstitution == element[0]){
-									elem.selected = true
-								}
-								dataset.push(elem)
-							}
+				<div class="form-group row">
+					<label for="bag_institution" class="col-md-3 col-form-label">[% msg.maketext("Heimatinstitution")
+						%]:
+					</label>
+					<div class="col-md-9">
+						<select class="form-control" name="bag_institution" id="bag_institution">
+							<option value="">Please select your home institution</option>
+						</select>
+
+						<script>
+							let url = 'http://localhost:8008/css/_profile/bootstrap/_view/fidphil/isil_list.csv';
+							let selectedInstitution = '[% userinfo.mixed_bag.bag_institution.first %]'
+							let dataset = []
+							fetch(url, {
+								headers: {
+									'Content-Type': 'text/csv'
+								},
+								responseType: 'text'
 							})
-							let element = document.getElementById("bag_institution")
-							const example = new Choices(element, {}
-								);
-							example.setChoices(
-								dataset,
-								'value',
-								'label',
-								false,
-								);
-						})
-						.catch(error => console.log(error))
-						
-						
-					</script>
-					<!-- <input class="form-control" type="text" name="bag_institution" id="bag_institution" value="[% userinfo.mixed_bag.bag_institution.first %]"/> -->
-				</div>
-			</div>
-			<button class="btn btn-primary mb-2 mt-4" type="submit">[% msg.maketext("&Auml;ndern") %]</button>
+								.then(data => data.text())
+								.then(responseText => {
+									let values = Papa.parse(responseText);
+									values.data.forEach(element => {
+										if (element[0]) {
+											let elem = {};
+											elem.value = element[0]
+											elem.label = element[4] + " - " + element[0]
+											if (selectedInstitution == element[0]) {
+												elem.selected = true
+											}
+											dataset.push(elem)
+										}
+									})
+									let element = document.getElementById("bag_institution")
+									const example = new Choices(element, {}
+									);
+									example.setChoices(
+										dataset,
+										'value',
+										'label',
+										false,
+									);
+								})
+								.catch(error => console.log(error))
 
-		</form>
+
+						</script>
+						<!-- <input class="form-control" type="text" name="bag_institution" id="bag_institution" value="[% userinfo.mixed_bag.bag_institution.first %]"/> -->
+					</div>
+				</div>
+				<button class="btn btn-primary mb-2" type="submit">[% msg.maketext("&Auml;ndern") %]</button>
+
+			</form>
+		</div>
+
+		<p />
+
+
 	</div>
+</div>
+<div class="row">
 
-	<p />
-
-	<div class="card">
-		<div class="card-header">[% msg.maketext("Mitgliedschaft in der Fachgesellschaft") %]</div>
-		<div class="card-body">
-			<div class="d-flex">
-				[% IF role == 'fidphil_society_pending'%]
-					<div class="d-flex">
-					<div class="text-center mr-3">
-						<img id="fid-logo" src="/images/openbib/views/fidphil/dgphil.jpg"  width="170px" height="auto">
-					</div>
-					<div>Ihre Mitgliedschaft wird überprüft</div>
+	[% IF role == 'fidphil_user' %]
+	<div class="w-75 mb-3 col-lg-9 col-11 p-0 mx-auto d-flex flex-lg-row flex-column"
+		style="background-color: rgb(128, 0, 128, .1);">
+		<div class="pl-3 w-lg-75 w-100">
+			<form>
+				<div class="form-group mt-2">
+					<label>Fachgesellschaft</label>
+					<select class="form-control w-75">
+						<option value="dgphil">
+							DGPhil
+						</option>
+						<option value="gap">
+							GAP
+						</option>
+					</select>
 				</div>
-				[% ELSIF role =='fidphil_society' %]
-				<div class="d-flex">
-					<div class="text-center mr-3">
-						<img id="fid-logo" src="/images/openbib/views/fidphil/dgphil.jpg"  width="170px" height="auto">
-					</div>
-					<div>Sie sind als Mitglied der DGPHIL vermerkt</div>
+				<div class="form-group mt-2 w-75">
+					<label for="mitgliedsnummer">Mitgliedsnummer (wird überprüft)</label>
+					<input class="form-control" type="text" name="mitgliedsnummer"
+						placeholder="Mitgliedsnummer eingeben" />
 				</div>
-				[% ELSE %]
-				<div class="mr-4 d-flex flex-column justify-content-between">
-					<div class="text-center"><img id="fid-logo" src="/images/openbib/views/fidphil/dgphil.jpg"  width="170px" height="auto"></div>
-					<div class="align-bottom"> <a class="btn btn-primary mb-2"
-						href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/membership/society/dgphil/edit">[%
-						msg.maketext("Mitgliedschaft in der DGPhil") %]</a>
-					</div>
-				</div>				
-				<div class="d-flex flex-column justify-content-between">
-					<div class="mb-3 text-center"><img id="fid-logo" src="/images/openbib/views/fidphil/gaplogo.png" width="170px" height="auto"></div>
-					<div> <a class="btn btn-primary mb-2"
-							href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/membership/society/gap/edit">[%
-							msg.maketext("Mitgliedschaft in der GAP") %]</a>
-					</div>
+				<div class="form-group mt-2 w-75">
+					<label class="mr-2 mb-3 d-flex">Hiermit bestätige ich die Korrektheit der Angaben
+						<input class="ml-2" type="checkbox">
+					</label>
 				</div>
-				[%END%]			
-			</div>
+				<div class="d-flex justify-content-end w-75">
+					<button class="btn btn-primary form-control w-25 mb-3" style="min-width:150px;">
+						Absenden
+					</button>
+				</div>
+			</form>
+		</div>
+		<div class="border my-2 mr-5 p-2 ml-md-2 mt-md-2" style="color: black">
+			Noch kein Mitglied in einer Fachgesellschaft?</br>
+			Erfahren Sie mehr über unsere Partner Fachgesellschaften und
+			die Vorteile einer Mitgliedschaft
 		</div>
 	</div>
-	
-	<div class="card">
+	[% END %]
+</div>
+<!-- <div class="card">
+	<div class="card-header">[% msg.maketext("Mitgliedschaft in der Fachgesellschaft") %]</div>
+	<div class="card-body">
+		<div class="d-flex">
+			[% IF role == 'fidphil_society_pending'%]
+			<div class="d-flex">
+				<div class="text-center mr-3">
+					<img id="fid-logo" src="/images/openbib/views/fidphil/dgphil.jpg" width="170px" height="auto">
+				</div>
+				<div>Ihre Mitgliedschaft wird überprüft</div>
+			</div>
+			[% ELSIF role =='fidphil_society' %]
+			<div class="d-flex">
+				<div class="text-center mr-3">
+					<img id="fid-logo" src="/images/openbib/views/fidphil/dgphil.jpg" width="170px" height="auto">
+				</div>
+				<div>Sie sind als Mitglied der DGPHIL vermerkt</div>
+			</div>
+			[% ELSE %]
+			<div class="mr-4 d-flex flex-column justify-content-between">
+				<div class="text-center"><img id="fid-logo" src="/images/openbib/views/fidphil/dgphil.jpg" width="170px"
+						height="auto"></div>
+				<div class="align-bottom"> <a class="btn btn-primary mb-2"
+						href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/membership/society/dgphil/edit">[%
+						msg.maketext("Mitgliedschaft in der DGPhil") %]</a>
+				</div>
+			</div>
+			<div class="d-flex flex-column justify-content-between">
+				<div class="mb-3 text-center"><img id="fid-logo" src="/images/openbib/views/fidphil/gaplogo.png"
+						width="170px" height="auto"></div>
+				<div> <a class="btn btn-primary mb-2"
+						href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/membership/society/gap/edit">[%
+						msg.maketext("Mitgliedschaft in der GAP") %]</a>
+				</div>
+			</div>
+			[%END%]
+		</div>
+	</div>
+</div> -->
+
+<div class="row">
+	<div class="card mb-3 col-lg-9 col-11 p-0 mx-auto">
 		<div class="card-header">[% msg.maketext("Passwort &auml;ndern") %]</div>
 		<div class="card-body">
 			<div class="table-responsive">
-				<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/password" enctype="application/x-www-form-urlencoded">
+				<form method="post"
+					action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/password"
+					enctype="application/x-www-form-urlencoded">
 
 					[% IF authenticator.type == 'self' %]
 					<div class="form-group mt-2">
@@ -178,54 +254,33 @@
 						<input class="form-control" type="password" name="password2" value="" />
 					</div>
 
-					<button type="submit" class="btn btn-primary mb-2">[% msg.maketext("Passwort &auml;ndern") %]</button>
+					<button type="submit" class="btn btn-primary mb-2">[% msg.maketext("Passwort &auml;ndern")
+						%]</button>
 
-					[%   IF username != 'admin' %]
-					<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]?_method=DELETE;confirm=1">[% msg.maketext("Kennung l&ouml;schen") %]</a>
-					[%   END %]
+					[% IF username != 'admin' %]
+					<a class="btn btn-primary mb-2"
+						href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]?_method=DELETE;confirm=1">[%
+						msg.maketext("Kennung l&ouml;schen") %]</a>
+					[% END %]
 					[% END %]
 				</form>
 			</div>
 		</div>
 	</div>
+</div>
+<p />
 
-	<p/>
-
-	<div class="card">
-		<div class="card-header">[% msg.maketext("Rollen-Zugeh&ouml;rigkeiten") %]</div>
-		<div class="card-body">
-			[% IF userinfo.role %]
-			<ul>
-				[% FOREACH thisrole IN userinfo.role %]
-				<li>[% thisrole.value %] ([% thisrole.key %])</li>
-				[% END %]
-			</ul>
-			[% ELSE %]
-			Ihnen wurde bisher keine Rolle zugeordnet.
+<div class="card">
+	<div class="card-header">[% msg.maketext("Rollen-Zugeh&ouml;rigkeiten") %]</div>
+	<div class="card-body">
+		[% IF userinfo.role %]
+		<ul>
+			[% FOREACH thisrole IN userinfo.role %]
+			<li>[% thisrole.value %] ([% thisrole.key %])</li>
 			[% END %]
-		</div>
+		</ul>
+		[% ELSE %]
+		Ihnen wurde bisher keine Rolle zugeordnet.
+		[% END %]
 	</div>
-
-	<p/>
-
-	<div class="card">
-		<div class="card-header">[% msg.maketext("Zugeordnete Templates") %]</div>
-		<div class="card-body">
-			[% templates_of_user = user.get_templates_of_user(userid).all %]
-			[% IF templates_of_user %]
-			<ul>
-				[% FOREACH thistemplate IN templates_of_user %]
-				[%# USE dumper;dumper.dump(thistemplate)%]
-				<li>View: [% thistemplate.templateid.viewid.description %]<br/>Template: [% thistemplate.templateid.templatename %]<br/>Sprache: [% thistemplate.templateid.templatelang %]</li>
-				[% END %]
-			</ul>
-			[% ELSE %]
-			Ihnen wurden bisher keine Templates zum Bearbeiten zugeordnet.
-			[% END %]
-
-		</div>
-	</div>
-
-	<p/>
-
-
+</div>

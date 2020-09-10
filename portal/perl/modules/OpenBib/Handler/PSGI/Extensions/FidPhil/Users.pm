@@ -47,44 +47,129 @@ use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
 use OpenBib::Extensions::FidPhil::User;
+use Data::Dumper;
 
 # Doi we really need to inherit from Admin Users - Base PSGI should be enough???
-use base 'OpenBib::Handler::PSGI::Admin::Users';
+use base 'OpenBib::Handler::PSGI::Users';
 
 # Run at startup
 sub setup {
-	my $self = shift;
-	$self->start_mode('show_collection');
-	$self->run_modes(
-		'show_collection'            => 'show_collection',
-		'dispatch_to_representation' => 'dispatch_to_representation',
-		);
+    my $self = shift;
+    $self->start_mode('show_collection');
+    $self->run_modes(
+        'show_collection'            => 'show_collection',
+        'update_record'              => 'update_record',
+        'dispatch_to_representation' => 'dispatch_to_representation',
+    );
 }
 
 sub show_collection {
     my $self = shift;
 
     # Log4perl logger erzeugen
-    my $logger = get_logger();
-    my $view           = $self->param('view');
-    my $user           = $self->param('user');
-    my $session        = $self->param('session');
+    my $logger  = get_logger();
+    my $view    = $self->param('view');
+    my $user    = $self->param('user');
+    my $session = $self->param('session');
+
     # Shared Args
-    my $config         = $self->param('config');
-    if (!$self->authorization_successful('right_read')){
+    my $config = $self->param('config');
+    if ( !$self->authorization_successful('right_read') ) {
         return $self->print_authorization_error();
     }
-    $user         = OpenBib::Extensions::FidPhil::User->new({sessionID => $session->{ID}, config => $config});
+    $user = OpenBib::Extensions::FidPhil::User->new(
+        { sessionID => $session->{ID}, config => $config } );
     my $args_ref = {};
+
     #benoetigt wird eine ID
     $args_ref->{view} = 2;
     my $userlist_ref = $user->showUsersForView($args_ref);
+
     # TT-Data erzeugen
-    my $ttdata={
-        userlist   => $userlist_ref,
-    };
+    my $ttdata = { userlist => $userlist_ref, };
+
     # return $self->print_page("$config->{tt_manager_users_tname}",$ttdata);
-    return $self->print_page("manager_users",$ttdata);
+    return $self->print_page( "manager_users", $ttdata );
+}
+
+sub update_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view   = $self->param('view');
+    my $userid = $self->strip_suffix( $self->param('userid') );
+
+    # Shared Args
+    my $query        = $self->query();
+    my $r            = $self->param('r');
+    my $config       = $self->param('config');
+    my $session      = $self->param('session');
+    my $user         = $self->param('user');
+    my $msg          = $self->param('msg');
+    my $queryoptions = $self->param('qopts');
+    my $stylesheet   = $self->param('stylesheet');
+    my $useragent    = $self->param('useragent');
+    my $path_prefix  = $self->param('path_prefix');
+
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
+
+    if ( !$self->is_authenticated( 'user', $userid ) ) {
+        return;
+    }
+
+    if ( defined $input_data_ref->{mixed_bag} ) {
+        my $contentstring = {};
+
+        eval {
+            $contentstring = JSON::XS->new->utf8->canonical->encode(
+                $input_data_ref->{mixed_bag} );
+        };
+
+        if ($@) {
+            $logger->error( "Canonical Encoding failed: "
+                  . YAML::Dump( $input_data_ref->{mixed_bag} ) );
+        }
+
+        $input_data_ref->{mixed_bag} = $contentstring;
+    }
+
+    my $all_roles  = $user->get_all_roles();
+    my $user_roles = $user->get_roles_of_user($userid);
+
+    #only update user is without a role
+    #maybe use has_role?
+    if (   !$user_roles->{'fidphil_user'}
+        && !$user_roles->{'admin'}
+        && !$user_roles->{'fidphil_society'} )
+    {
+        my $roleid = 0;
+        foreach my $role ( @{$all_roles} ) {
+            if ( $role->{rolename} eq 'fidphil_user' ) {
+                $roleid = $role->{id};
+            }
+        }
+        my @roles            = ($roleid);
+        my $thisuserinfo_ref = {
+            id    => $userid,
+            roles => \@roles,
+        };
+        $user->update_user_rights_role($thisuserinfo_ref);
+    }
+    $user->update_userinfo($input_data_ref) if ( keys %$input_data_ref );
+    if ( $self->param('representation') eq "html" ) {
+
+        # TODO GET?
+        return $self->redirect(
+            "$path_prefix/$config->{users_loc}/id/$user->{ID}/edit");
+    }
+    else {
+        $logger->debug("Weiter zum Record");
+        return $self->show_record;
+    }
 }
 
 #    return $self->print_page($config->{tt_admin_users_search_tname},$ttdata);

@@ -41,6 +41,7 @@ use Log::Log4perl qw(get_logger :levels);
 use Storable;
 use JSON::XS;
 use YAML ();
+use Data::Dumper;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
@@ -62,11 +63,11 @@ sub new {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $database})->single;
 
-    my $user     = $dbinfo_ref->{remoteuser};
-    my $password = $dbinfo_ref->{remotepassword};
-    my $profile  = $dbinfo_ref->{remotepath};
+    my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $database})->single;
+    my $user     = $dbinfo_ref->remoteuser;
+    my $password = $dbinfo_ref->remotepassword;
+    my $profile  = $dbinfo_ref->remotepath;
 
     $logger->debug("EDS API-Credentials: $user - $password - $profile");
     

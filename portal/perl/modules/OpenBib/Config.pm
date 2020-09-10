@@ -2683,6 +2683,27 @@ sub get_roleinfo_overview {
     return $object;
 }
 
+sub get_roleinfo_of_viewadmin {
+    my $self     = shift;
+    my $viewname = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $object = $self->get_roleinfo->search_rs(
+        {
+            'viewid.viewname' => $viewname,     
+	},
+        {
+            join => ['role_viewadmins',{'role_viewadmins' => 'viewid' }],
+	    group_by => ['me.id','me.rolename','me.description'],
+            order_by => 'me.rolename',
+        }
+    );
+    
+    return $object;
+}
+
 sub get_templateinfo_overview {
     my $self       = shift;
     
@@ -5016,6 +5037,29 @@ sub new_role {
 
         if (@$create_roleviews_ref){
             $self->get_schema->resultset('RoleView')->populate($create_roleviews_ref);
+        }
+
+    }
+
+    if (defined $roleinfo_ref->{viewadmins}){
+
+        # Viewverknuepfungen zunaechst loeschen
+        $self->get_schema->resultset('RoleViewadmin')->search_rs({ roleid => $roleid})->delete;
+
+        my $create_roleviewadmins_ref = [];
+        foreach my $viewname (@{$roleinfo_ref->{viewadmins}}){        
+            my $viewid = $self->get_viewinfo->single({ viewname => $viewname })->id;
+
+            my $thisroleviewadmin_ref = {
+                roleid => $roleid,
+                viewid => $viewid,
+            };
+
+            push @$create_roleviewadmins_ref, $thisroleviewadmin_ref;
+        }
+
+        if (@$create_roleviewadmins_ref){
+            $self->get_schema->resultset('RoleViewadmin')->populate($create_roleviewadmins_ref);
         }
 
     }

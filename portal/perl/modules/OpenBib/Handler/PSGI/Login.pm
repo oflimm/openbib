@@ -357,7 +357,7 @@ sub authenticate {
     
     # Fehlerbehandlung
     if ($userid <= 0) {
-        $redirecturl="$path_prefix/$config->{login_loc}/failure?code=$userid";
+        $redirecturl="$path_prefix/$config->{login_loc}/failure?code=-2";
     }
     
     if ($self->param('representation') eq "html"){

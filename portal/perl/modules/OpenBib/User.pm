@@ -398,6 +398,9 @@ sub user_exists_in_view {
     my $username    = exists $arg_ref->{username}
         ? $arg_ref->{username}              : undef;
 
+    my $userid      = exists $arg_ref->{userid}
+        ? $arg_ref->{userid}                : undef;
+
     my $viewname    = exists $arg_ref->{viewname}
         ? $arg_ref->{viewname}              : undef;
 
@@ -423,14 +426,26 @@ sub user_exists_in_view {
     }
 
     my $count = 0;
+
+    my $where_ref = { 
+	    viewid          => $viewid,
+    };
+
+    if ($username){
+	$where_ref->{username} = $username;
+    }
+    elsif ($userid){
+	$where_ref->{id} = $userid;	
+    }
+    
+    if ($authenticatorid){
+	$where_ref->{authenticatorid} = $authenticatorid;
+    }
     
     # DBI: "select count(userid) as rowcount from user where username = ?"
     $count = $self->get_schema->resultset('Userinfo')->search(
-	{ 
-	    username        => $username, 
-	    viewid          => $viewid,
-	    authenticatorid => $authenticatorid,
-	})->count;
+	$where_ref
+	)->count;
 
 
     if ($logger->is_debug){
@@ -438,6 +453,220 @@ sub user_exists_in_view {
     }
     
     return $count;
+}
+
+sub role_exists_in_view {
+    my ($self,$arg_ref)=@_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+    
+    # Set defaults
+    my $rolename    = exists $arg_ref->{rolename}
+        ? $arg_ref->{rolename}              : undef;
+
+    my $roleid      = exists $arg_ref->{roleid}
+        ? $arg_ref->{roleid}                : undef;
+
+    my $viewname    = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}              : undef;
+
+    my $viewid      = exists $arg_ref->{viewid}
+        ? $arg_ref->{viewid}                : undef;
+
+    my $authenticatorid    = exists $arg_ref->{authenticatorid}
+        ? $arg_ref->{authenticatorid}       : undef;
+    
+    if ($logger->is_debug){
+	$logger->debug("viewname: $viewname - viewid: $viewid");
+    }
+
+    if ($viewname && !$viewid){
+	my $config = $self->get_config;
+	eval {
+	    $viewid = $config->get_viewinfo->single({ viewname => $viewname })->id;
+	};
+
+	if ($@){
+	    $logger->error($@);
+	}
+    }
+
+    if ($rolename && !$roleid){
+	my $config = $self->get_config;
+	eval {
+	    $roleid = $config->get_roleinfo->single({ rolename => $rolename })->id;
+	};
+
+	if ($@){
+	    $logger->error($@);
+	}
+    }
+
+    my $count = 0;
+
+    # DBI: "select count(userid) as rowcount from user where username = ?"
+    $count = $self->get_schema->resultset('RoleViewadmin')->search(
+	{
+	    roleid => $roleid,
+	    viewid => $viewid,
+	}
+	)->count;
+
+
+    if ($logger->is_debug){
+	$logger->debug("Availability of role $roleid in view $viewid: $count");
+    }
+    
+    return $count;
+}
+
+sub filter_roles_by_view {
+    my ($self,$arg_ref)=@_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+    
+    # Set defaults
+    my $roleids       = exists $arg_ref->{roleids}
+        ? $arg_ref->{roleids}               : undef;
+
+    my $roles         = exists $arg_ref->{roles}
+        ? $arg_ref->{roles}                 : undef;
+    
+    my $viewname    = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}              : undef;
+
+    my $viewid      = exists $arg_ref->{viewid}
+        ? $arg_ref->{viewid}                : undef;
+
+    
+    if ($logger->is_debug){
+	$logger->debug("viewname: $viewname - viewid: $viewid");
+    }
+
+    if ($viewname && !$viewid){
+	my $config = $self->get_config;
+	eval {
+	    $viewid = $config->get_viewinfo->single({ viewname => $viewname })->id;
+	};
+
+	if ($@){
+	    $logger->error($@);
+	}
+    }
+
+    my $roles_in_view = $self->get_schema->resultset('RoleViewadmin')->search(
+	{
+	    'me.viewid' => $viewid,
+	},
+	{
+	    select => ['roleid.id','roleid.rolename'],
+	    group_by => ['roleid.id','roleid.rolename'],
+	    as     => ['thisroleid','thisrolename'],
+	    join => ['roleid'],
+	    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+
+	}
+	);
+
+    my $roleid_is_in_view_ref = {};
+    my $role_is_in_view_ref = {};
+    
+    while (my $role = $roles_in_view->next){
+	$roleid_is_in_view_ref->{$role->{thisroleid}} = 1;
+	$role_is_in_view_ref->{$role->{thisrolename}} = 1;
+    }
+
+    my @result = ();
+
+    if (@$roleids){
+	foreach my $roleid (@$roleids){
+	    next unless (defined $roleid_is_in_view_ref->{$roleid});
+	    push @result, $roleid;
+	}
+    }
+    elsif (@$roles){
+	foreach my $rolename (@$roles){
+	    next unless (defined $role_is_in_view_ref->{$rolename});
+	    push @result, $rolename;
+	}
+    }
+    
+    if ($logger->is_debug){
+	$logger->debug("Roles to evaluate: ".join(';',@$roleids)) if (@$roleids);
+	$logger->debug("Roles to evaluate: ".join(';',@$roles)) if (@$roles);
+	$logger->debug("Roles in view $viewid: ".join(';',@result));
+    }
+    
+    return @result;
+}
+
+sub filter_templates_by_view {
+    my ($self,$arg_ref)=@_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+    
+    # Set defaults
+    my $templates   = exists $arg_ref->{templates}
+        ? $arg_ref->{templates}             : undef;
+
+    my $viewname    = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}              : undef;
+
+    my $viewid      = exists $arg_ref->{viewid}
+        ? $arg_ref->{viewid}                : undef;
+
+    my $config = $self->get_config;    
+
+    if ($logger->is_debug){
+	$logger->debug("viewname: $viewname - viewid: $viewid");
+    }
+
+    if ($viewname && !$viewid){
+	my $config = $self->get_config;
+	eval {
+	    $viewid = $config->get_viewinfo->single({ viewname => $viewname })->id;
+	};
+
+	if ($@){
+	    $logger->error($@);
+	}
+    }
+
+    my $templates_in_view = $self->get_schema->resultset('Templateinfo')->search(
+	{
+	    viewid => $viewid,
+	},
+	{
+	    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+
+	}
+	);
+
+    my $template_is_in_view_ref = {};
+    
+    while (my $template = $templates_in_view->next){
+	$template_is_in_view_ref->{$template->{id}} = 1;
+    }
+
+    my @result = ();
+
+    foreach my $templateid (@$templates){
+	next unless (defined $template_is_in_view_ref->{$templateid});
+	push @result, $templateid;
+    }
+
+    if ($logger->is_debug){
+	$logger->debug("Templates to evaluate: ".join(';',@$templates));
+	$logger->debug("Templates in view $viewid: ".join(';',@result));
+    }
+    
+    return @result;
 }
 
 sub can_access_view {
@@ -4916,32 +5145,65 @@ sub delete_item_from_collection {
 }
 
 sub update_user_rights_role {
-    my ($self,$userinfo_ref)=@_;
+    my ($self,$userinfo_ref,$viewname)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # DBI: "delete from user_role where userid=?"
-    $self->get_schema->resultset('UserRole')->search_rs(
-        {
-            userid => $userinfo_ref->{id},
-        }
-    )->delete_all;
+    my $config = $self->get_config;
+
+    # Wenn viewspezifisch, dann werden nur die dort definierten Rollen aktualisiert
+    my $role_in_view_ref = {};
+    
+    if ($viewname){
+	my $roles_in_view = $config->get_roleinfo_of_viewadmin($viewname);
+
+	while (my $singlerole = $roles_in_view->next){
+	    my $roleid = $singlerole->get_column('id');
+	    
+	    $self->get_schema->resultset('UserRole')->search_rs(
+		{
+		    userid => $userinfo_ref->{id},
+		    roleid => $roleid,
+		}
+		)->delete;
+
+	    $role_in_view_ref->{$roleid} = 1;
+	}
+    }
+    else {
+	# DBI: "delete from user_role where userid=?"
+	$self->get_schema->resultset('UserRole')->search_rs(
+	    {
+		userid => $userinfo_ref->{id},
+	    }
+	    )->delete_all;
+    }
+
+    if ($logger->is_debug){
+	$logger->debug("Roles in View: ".join ';',keys %$role_in_view_ref);
+    }
     
     foreach my $roleid (@{$userinfo_ref->{roles}}){
         $logger->debug("Adding Role $roleid to user $userinfo_ref->{id}");
 
         # DBI: "insert into user_role values (?,?)"
-        $self->get_schema->resultset('UserRole')->search_rs(
-            {
-                userid => $userinfo_ref->{id},
-            }
-        )->create(
-            {
-                userid => $userinfo_ref->{id},
-                roleid => $roleid,
-            }
-        );
+	if ($viewname){
+	    $self->get_schema->resultset('UserRole')->create(
+		{
+		    userid => $userinfo_ref->{id},
+		    roleid => $roleid,
+		}
+		) if (defined $role_in_view_ref->{$roleid});
+	}
+	else {
+	    $self->get_schema->resultset('UserRole')->create(
+		{
+		    userid => $userinfo_ref->{id},
+		    roleid => $roleid,
+		}
+		);
+	}
     }
 
     return;
@@ -5356,19 +5618,20 @@ sub set_private_info {
 }
 
 sub get_info {
-    my ($self)=@_;
+    my ($self,$userid)=@_;
     
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
 
+    $userid = (defined $userid)?$userid:$self->{ID};
     # DBI: "select * from userinfo where id = ?"
-    my $userinfo = $self->get_schema->resultset('Userinfo')->single({ id => $self->{ID} });
+    my $userinfo = $self->get_schema->resultset('Userinfo')->single({ id => $userid });
     
     my $userinfo_ref={};
 
     if ($userinfo){
-        $userinfo_ref->{'id'}         = $self->{'ID'};
+        $userinfo_ref->{'id'}         = $userinfo->id;
         $userinfo_ref->{'nachname'}   = $userinfo->nachname;
         $userinfo_ref->{'vorname'}    = $userinfo->vorname;
         $userinfo_ref->{'strasse'}    = $userinfo->strasse;
@@ -6357,6 +6620,8 @@ sub search {
         ? $arg_ref->{surname}             : undef;
     my $commonname             = exists $arg_ref->{commonname}
         ? $arg_ref->{commonname}          : undef;
+    my $viewname               = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}          : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -6402,7 +6667,12 @@ sub search {
     foreach my $userid (@found_userids){
         $logger->debug("Found ID $userid");
         my $single_user = new OpenBib::User({ID => $userid});
-        push @$userlist_ref, $single_user->get_info;
+	my $userinfo = $single_user->get_info;
+	if ($viewname){
+	    next unless ($userinfo->{viewname} eq $viewname);
+	}
+	
+	push @$userlist_ref, $userinfo;
     }
 
     return $userlist_ref;

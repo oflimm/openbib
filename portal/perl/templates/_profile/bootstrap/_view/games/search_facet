@@ -591,6 +591,34 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <p/>
 [%         END %]
 <!-- End topic facet -->
+<!-- Begin classification facet -->
+[%         IF config.get('facets').classification && facets.defined('classification') && facets.classification.size > 0 %]
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-classification" aria-expanded="true">
+           [% msg.maketext("nach Platform") %] 
+        </h4>
+        <ul id="group-classification" class="list-group in collapse show">
+[%             FOREACH termitem IN facets.classification ;
+                  LAST IF loop.count > 25 ;
+ %]
+[% IF facets.classification.size > 5 && loop.count == 5 %]
+<span id="dd_classification_[% database %]_toggle"></span>
+<div id="dd_classification_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').classificationstring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>[% IF searchterm.match('^\d\d\.\d\d') %]&nbsp;[% bklookup.${searchterm} %][% END %]  <span class="badge badge-pill badge-secondary ml-auto">[% termitem.1 %]</span></li>
+[%             END %]
+[% IF facets.classification.size > 5 %]
+</div>
+[% END %]
+</ul>
+<p/>
+[%         END %]
+<!-- End classification facet -->
+
 <!-- Begin subject facet -->
 [%         IF config.get('facets').subject && facets.defined('subject') && facets.subject.size > 0 %]
         <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-subject" aria-expanded="true">
@@ -618,6 +646,34 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <p/>
 [%         END %]
 <!-- End subject facet -->
+<!-- Begin corporatebody facet -->
+[%         IF config.get('facets').corporatebody && facets.defined('corporatebody') && facets.corporatebody.size > 0 %]
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-corporatebody" aria-expanded="true">
+           [% msg.maketext("nach Publisher") %] 
+        </h4>
+        <ul id="group-corporatebody" class="list-group in collapse show">
+[%             FOREACH termitem IN facets.corporatebody ;
+                  LAST IF loop.count > 25 ;
+%]
+[% IF facets.corporatebody.size > 5 && loop.count == 5 %]
+<span id="dd_corporatebody_[% database %]_toggle"></span>
+<div id="dd_corporatebody_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').corporatebodystring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>  <span class="badge badge-pill badge-secondary ml-auto">[% termitem.1 %]</span></li>
+[%             END %]
+[% IF facets.corporatebody.size > 5 %]
+</div>
+[% END %]
+</ul>
+<p/>
+[%         END %]
+<!-- End corporatebody facet -->
+
 <!-- Begin year facet -->
 [%         IF config.get('facets').year && facets.defined('year') && facets.year.size > 0 %]
         <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-year" aria-expanded="true">
@@ -652,33 +708,6 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 
 [%         END %]
 <!-- End year facet -->
-<!-- Begin classification facet -->
-[%         IF config.get('facets').classification && facets.defined('classification') && facets.classification.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-classification" aria-expanded="true">
-           [% msg.maketext("nach Platform") %] 
-        </h4>
-        <ul id="group-classification" class="list-group in collapse show">
-[%             FOREACH termitem IN facets.classification ;
-                  LAST IF loop.count > 25 ;
- %]
-[% IF facets.classification.size > 5 && loop.count == 5 %]
-<span id="dd_classification_[% database %]_toggle"></span>
-<div id="dd_classification_[% database %]">
-[% END %]
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').classificationstring.prefix;
-    filterstring  = "${searchprefix}:${searchterm}";
--%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>[% IF searchterm.match('^\d\d\.\d\d') %]&nbsp;[% bklookup.${searchterm} %][% END %]  <span class="badge badge-pill badge-secondary ml-auto">[% termitem.1 %]</span></li>
-[%             END %]
-[% IF facets.classification.size > 5 %]
-</div>
-[% END %]
-</ul>
-<p/>
-[%         END %]
-<!-- End classification facet -->
 <!-- Begin provenance facet -->
 [%         IF config.get('facets').provenance && facets.defined('provenance') && facets.provenance.size > 0 %]
         <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-provenance" aria-expanded="true">
@@ -787,33 +816,6 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <p/>
 [%         END %]
 <!-- End person facet -->
-<!-- Begin corporatebody facet -->
-[%         IF config.get('facets').corporatebody && facets.defined('corporatebody') && facets.corporatebody.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-corporatebody" aria-expanded="true">
-           [% msg.maketext("nach Publisher") %] 
-        </h4>
-        <ul id="group-corporatebody" class="list-group in collapse show">
-[%             FOREACH termitem IN facets.corporatebody ;
-                  LAST IF loop.count > 25 ;
-%]
-[% IF facets.corporatebody.size > 5 && loop.count == 5 %]
-<span id="dd_corporatebody_[% database %]_toggle"></span>
-<div id="dd_corporatebody_[% database %]">
-[% END %]
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').corporatebodystring.prefix;
-    filterstring  = "${searchprefix}:${searchterm}";
--%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>  <span class="badge badge-pill badge-secondary ml-auto">[% termitem.1 %]</span></li>
-[%             END %]
-[% IF facets.corporatebody.size > 5 %]
-</div>
-[% END %]
-</ul>
-<p/>
-[%         END %]
-<!-- End corporatebody facet -->
 <!-- Begin language facet -->
 [%         IF config.get('facets').language && facets.defined('language') && facets.language.size > 0 %]
         <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-language" aria-expanded="true">

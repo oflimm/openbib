@@ -62,18 +62,24 @@ sub new {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $database})->single;
+    eval {
+	my $dbinfo_ref = $config->get_databaseinfo->search({ dbname => $database})->single;
+	
+	my $user     = $dbinfo_ref->remoteuser;
+	my $password = $dbinfo_ref->remotepassword;
+	my $profile  = $dbinfo_ref->remotepath;
+	
+	$logger->debug("EDS API-Credentials: $user - $password - $profile");
+	
+	if ($user && $password && $profile){
+	    $arg_ref->{api_user}     = $user;
+	    $arg_ref->{api_password} = $password;
+	    $arg_ref->{api_profile}  = $profile;
+	}
+    };
 
-    my $user     = $dbinfo_ref->{remoteuser};
-    my $password = $dbinfo_ref->{remotepassword};
-    my $profile  = $dbinfo_ref->{remotepath};
-
-    $logger->debug("EDS API-Credentials: $user - $password - $profile");
-    
-    if ($user && $password && $profile){
-	$arg_ref->{api_user}     = $user;
-	$arg_ref->{api_password} = $password;
-	$arg_ref->{api_profile}  = $profile;
+    if ($@){
+	$logger->error($@);
     }
     
     my $api = new OpenBib::API::HTTP::EDS($arg_ref);

@@ -681,29 +681,29 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
                         }
                     }
 
-                    if ($line=~/^1212\.(\d\d\d):(.*$)/) {
-                        my $zaehlung=$1;
-                        my $inhalt=$2;
+                    # if ($line=~/^1212\.(\d\d\d):(.*$)/) {
+                    #     my $zaehlung=$1;
+                    #     my $inhalt=$2;
 
-			# Parsen des Inhalts
-			if ($inhalt =~m/^(.+?) : (.+?) : (.+?)$/){
-			    $erschverlbufpos{$zaehlung}=$1;
-			    $signaturbuf{$zaehlung} = $2;
-			    $bemerkbuf2{$zaehlung} = $3;
+		    # 	# Parsen des Inhalts
+		    # 	if ($inhalt =~m/^(.+?) : (.+?) : (.+?)$/){
+		    # 	    $erschverlbufpos{$zaehlung}=$1;
+		    # 	    $signaturbuf{$zaehlung} = $2;
+		    # 	    $bemerkbuf2{$zaehlung} = $3;
 
-			}
-			elsif ($inhalt =~m/^(.+?) : (.+?)$/){
-			    $erschverlbufpos{$zaehlung}=$1;
-			    $signaturbuf{$zaehlung} = $2;
-			}
-			else {
-			    $erschverlbufpos{$zaehlung}=$inhalt;
-			}
+		    # 	}
+		    # 	elsif ($inhalt =~m/^(.+?) : (.+?)$/){
+		    # 	    $erschverlbufpos{$zaehlung}=$1;
+		    # 	    $signaturbuf{$zaehlung} = $2;
+		    # 	}
+		    # 	else {
+		    # 	    $erschverlbufpos{$zaehlung}=$inhalt;
+		    # 	}
 			
-                        if ($maxmex <= $zaehlung) {
-                            $maxmex=$zaehlung;
-                        }
-                    }
+                    #     if ($maxmex <= $zaehlung) {
+                    #         $maxmex=$zaehlung;
+                    #     }
+                    # }
 		    
                     if ($line=~/^0012\.(\d\d\d):(.*$)/) {
                         my $zaehlung=$1;
@@ -791,7 +791,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
 
             if ($useusbschema) {
                 my $erschverl=$erschverlbufpos{$multkey};
-                $erschverl.=" ".$erschverlbufneg{$multkey} if (exists $erschverlbufneg{$multkey} && $erschverl !~m/\[N/);
+                $erschverl.=" ".$erschverlbufneg{$multkey} if (exists $erschverlbufneg{$multkey});
                 
                 my $holding_ref = {
                     'id'     => $holdingid,

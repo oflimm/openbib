@@ -9,8 +9,9 @@ tracelevel:
 csv:
   'eol': "\n"
   'sep_char': ','
-  'quote_char': "'"
+  'quote_char': '"'
   'escape_char': '"'
+  'allow_loose_quotes': 1
 
 # Feld der eindeutigen Titel-ID
 uniqueidfield: 'upi'

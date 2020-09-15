@@ -172,6 +172,28 @@ sub update_record {
     }
 }
 
+sub get_input_definition {
+    my $self=shift;
+    
+    return {
+        vorname => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        nachname => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },       
+        bag => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'mixed_bag', # always arrays
+        },
+    };
+}
+
 #    return $self->print_page($config->{tt_admin_users_search_tname},$ttdata);
 
 1;

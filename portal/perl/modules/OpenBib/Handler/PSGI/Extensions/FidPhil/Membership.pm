@@ -36,6 +36,7 @@ use utf8;
 use Log::Log4perl qw(get_logger :levels);
 use OpenBib::User;
 use Data::Dumper;
+use Cwd;
 
 use base 'OpenBib::Handler::PSGI';
 
@@ -128,33 +129,43 @@ sub request_membership {
     if ( !$self->authorization_successful ) {
         return $self->print_authorization_error();
     }
-    my $userid = $user->{ID};
-    my $userinfo = new OpenBib::User( { ID => $userid } )->get_info;
+    my $userid          = $user->{ID};
+    my $userinfo        = new OpenBib::User( { ID => $userid } )->get_info;
+    my $all_roles       = $user->get_all_roles();
+    my $user_roles      = $user->get_roles_of_user($userid);
+    my $input_data_ref  = $self->parse_valid_input();
+    my $society         = $input_data_ref->{'society'};
+    my $mitgliedsnummer = $input_data_ref->{'mitgliedsnummer'};
+    if (   !$user_roles->{'admin'}
+        && !$user_roles->{'fidphil_society'} )
+    {
+        my $updateInfo = {};
+        $userinfo->{mixed_bag}->{bag_society} = [$society];
+        $userinfo->{mixed_bag}->{bag_mitgliedsnummer} = [$mitgliedsnummer];
+        $updateInfo->{mixed_bag} =
+          JSON::XS->new->utf8->canonical->encode( $userinfo->{mixed_bag} );
+        $user->update_userinfo($updateInfo) if ( keys %$updateInfo );
 
-    my @roles            = (4);
-    my $thisuserinfo_ref = {
-        id    => $userid,
-        roles => \@roles,
-    };
+    }
 
-    $user->update_user_rights_role($thisuserinfo_ref);
-    my $input_data_ref ={};
-	$userinfo->{mixed_bag}->{society}=['dgphil'];
-    $input_data_ref->{mixed_bag} = JSON::XS->new->utf8->canonical->encode($userinfo->{mixed_bag}); 
-       
-    $user->update_userinfo($input_data_ref) if (keys %$input_data_ref);
-    my $ttdata = {
-        userid   => $userid,
-        userinfo => $userinfo,
-    };
-    my $ttdata = {
-        userid   => $userid,
-        userinfo => $userinfo,
-    };
-    return "Request Membership";
+    # my $ttdata = {
+    #     userid   => $userid,
+    #     userinfo => $userinfo,
+    # };
+    # my $ttdata = {
+    #     userid   => $userid,
+    #     userinfo => $userinfo,
+    return "Request Membership $society ";
 
     #get Society as param
     #return $self->print_page("users_membership", $ttdata);
+}
+
+sub check_membership {
+    my $self       = shift;
+    my $society    = shift;
+    my $membership = shift;
+
 }
 
 sub renew_membership {
@@ -192,7 +203,7 @@ sub renew_membership {
 
     # CGI / JSON input
     $user->update_user_rights_role($thisuserinfo_ref);
-   
+
     return "Request Membership";
 
     #get Society as param
@@ -225,6 +236,27 @@ sub authorization_successful {
     # Default: Kein Zugriff
     return 0;
 
+}
+
+sub get_input_definition {
+    my $self = shift;
+
+    return {
+        society => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        mitgliedsnummer => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        }, bag => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'mixed_bag', # always arrays
+        },
+    };
 }
 
 1;

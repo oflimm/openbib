@@ -3,7 +3,7 @@
      'page_title' = 'Informationen zum Nutzer bearbeiten'
 
       'main_template' = 'users_record_edit_html'
-      #'sidebar_template' = 'users_navigation'
+      'sidebar_template' = 'users_navigation'
 
       'active_menu' = 'users'
       'active_submenu' = 'account'

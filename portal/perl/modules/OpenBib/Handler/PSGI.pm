@@ -802,7 +802,7 @@ sub negotiate_language {
     my $config         = $self->param('config');
     
     my $lang         = $r->header('Accept-Language') || '';
-    my @accepted_languages  = map { ($_)=$_=~/^(..)/} map { (split ";", $_)[0] } split /\*s,\*s/, $lang;
+    my @accepted_languages  = map { ($_)=$_=~/^(..)/} map { (split ";", $_)[0] } split (/\*s,\*s/, $lang);
     
     #if ($logger->is_debug){
     #    $logger->debug("Accept-Language: $lang - Languages: ".YAML::Dump(\@accepted_languages));

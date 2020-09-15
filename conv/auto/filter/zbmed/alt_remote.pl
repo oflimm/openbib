@@ -64,5 +64,5 @@ system("$wgetexe -P $pooldir/$pool/ $baseurl/sik_fstab.bcp.gz     > /dev/null 2>
 system("$wgetexe -P $pooldir/$pool/ $baseurl/titel_exclude.bcp.gz > /dev/null 2>&1 ");
 system("$wgetexe -P $pooldir/$pool/ $baseurl/titel_buch_key.bcp.gz > /dev/null 2>&1 ");
 
-system("cd $pooldir/$pool ; gzip -d *.bcp.gz ; $bcp2metaexe -use-status -use-d01buch -use-mcopynum --bcp-path=$pooldir/$pool > /dev/null 2>&1 ; gzip *.bcp");
+system("cd $pooldir/$pool ; gzip -d *.bcp.gz ; $bcp2metaexe -use-status  -use-usbschema -use-d01buch -use-mcopynum --bcp-path=$pooldir/$pool > /dev/null 2>&1 ; gzip *.bcp");
 system("cd $pooldir/$pool ; zcat meta.title.gz| $rootdir/filter/$pool/filter-rswk.pl | gzip > meta.title.gz.tmp ; mv -f meta.title.gz.tmp meta.title.gz");

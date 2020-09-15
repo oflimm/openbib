@@ -66,9 +66,9 @@ convtab:
       '1025': 1        # Lokale ZDB-ID
       '1026': 1        # ZDB Jason-ID
       '1042': 1        # ZDB Prio
-      '1200': 1        # Bestandzusammenfassung (in holding verwenden wir 1204)
-      '1201': 1        # Bestandsluecken (in holding verwenden wir 1204)
-      '1202': 1        # Bemerkungen zum Bestand
+     #'1200': 1        # Bestandzusammenfassung (in holding verwenden wir 1204)
+     #'1201': 1        # Bestandsluecken (in holding verwenden wir 1204)
+     #'1202': 1        # Bemerkungen zum Bestand
      #'1299': 1        # ZDB Mikro
       '1527': 1        # ID der Parallelausgabe
       '1529': 1        # Fortlaufende Beilage Titel?
@@ -1631,9 +1631,9 @@ convtab:
       '1025': 1        # Lokale ZDB-ID
       '1026': 1        # ZDB Jason-ID
       '1042': 1        # ZDB Prio
-      '1200': 1        # Bestandzusammenfassung (in holding verwenden wir 1204)
-      '1201': 1        # Bestandsluecken (in holding verwenden wir 1204)
-      '1202': 1        # Bemerkungen zum Bestand
+     #'1200': 1        # Bestandzusammenfassung (in holding verwenden wir 1204)
+     #'1201': 1        # Bestandsluecken (in holding verwenden wir 1204)
+     #'1202': 1        # Bemerkungen zum Bestand
      #'1299': 1        # ZDB Mikro
       '1527': 1        # ID der Parallelausgabe
       '1529': 1        # Fortlaufende Beilage Titel?

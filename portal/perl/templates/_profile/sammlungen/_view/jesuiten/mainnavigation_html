@@ -67,10 +67,14 @@
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/0100.html?l=[% lang %];page=1">[% msg.maketext("Person") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/0200.html?l=[% lang %];page=1">[% msg.maketext("Körperschaft") %]</a></li>
           <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/0470.html?l=[% lang %];page=1">[% msg.maketext("Verlagsort") %]</a></li>
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/0471.html?l=[% lang %];page=1">[% msg.maketext("Verlag") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/0471.html?l=[% lang %];page=1">[% msg.maketext("Verlag/Drucker") %]</a></li>
           <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/4314.html?l=[% lang %];page=1">[% msg.maketext("Historische Systematik") %]</a></li>
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/4316.html?l=[% lang %];page=1">[% msg.maketext("Zugangsjahre") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/0425.html?l=[% lang %];page=1">[% msg.maketext("Erscheinungsjahr") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/4316.html?l=[% lang %];page=1">[% msg.maketext("Zugangsjahr") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/4308.html?l=[% lang %];page=1">[% msg.maketext("Provenienz/Person") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/4307.html?l=[% lang %];page=1">[% msg.maketext("Provenienz/Körperschaft") %]</a></li>
           <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/0015.html?l=[% lang %];page=1">[% msg.maketext("Sprache") %]</a></li>
         </ul>
       </li>
@@ -181,11 +185,15 @@
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/0100.html?l=[% lang %];page=1">[% msg.maketext("Person") %]</a></li>
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/0470.html?l=[% lang %];page=1">[% msg.maketext("Verlagsort") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/0200.html?l=[% lang %];page=1">[% msg.maketext("Körperschaft") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/0470.html?l=[% lang %];page=1">[% msg.maketext("Erscheinungsort") %]</a></li>
           <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/0471.html?l=[% lang %];page=1">[% msg.maketext("Verlag") %]</a></li>
           <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/4314.html?l=[% lang %];page=1">[% msg.maketext("Historische Systematik") %]</a></li>
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/4316.html?l=[% lang %];page=1">[% msg.maketext("Zugangsjahre") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/0425.html?l=[% lang %];page=1">[% msg.maketext("Erscheinungsjahr") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/4316.html?l=[% lang %];page=1">[% msg.maketext("Zugangsjahr") %]</a></li>
           <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/0015.html?l=[% lang %];page=1">[% msg.maketext("Sprache") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/4308.html?l=[% lang %];page=1">[% msg.maketext("Provenienz/Person") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/titles/fields/id/4307.html?l=[% lang %];page=1">[% msg.maketext("Provenienz/Körperschaft") %]</a></li>
         </ul>
       </li>
 

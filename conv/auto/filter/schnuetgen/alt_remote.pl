@@ -47,43 +47,14 @@ my $pool          = $ARGV[0];
 
 my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 
-my $url        = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->titlefile;
+my $title_url     = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->titlefile;
+my $holding_url   = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->holdingfile;
 
-my $ftpauthstring="";
-if ($dbinfo->protocol eq "ftp" && $dbinfo->remoteuser ne "" && $dbinfo->remotepassword ne ""){
-    $ftpauthstring=" --ftp-user=".$dbinfo->remoteuser." --ftp-password=".$dbinfo->remotepassword;
-}
+system("cd $pooldir/$pool; rm *.mab2* ");
 
+system("$wgetexe -N -P $pooldir/$pool/ $title_url ");
+system("$wgetexe -N -P $pooldir/$pool/ $holding_url ");
 
-print "### $pool: Datenabzug via http von $url\n";
-system("cd $pooldir/$pool ; rm meta.* ; rm tmp.* ; rm export_*");
-system("$wgetexe $ftpauthstring --no-passive-ftp -N -P $pooldir/$pool/ $url ");
-
-opendir(DIR, "$pooldir/$pool/");
-@FILES= readdir(DIR); 
-
-my $lastdate = 0;
-foreach my $file(@FILES){
-    print "Processing $file\n";
-    if ($file=~m/export_mab_HBZ\d\d.Z9057.F.(\d\d\d\d\d\d\d\d).\d+\.zip/){
-        my $thisdate = $1;
-        if ($thisdate > $lastdate){
-            $lastdate = $thisdate;
-        }
-    }
-}
-
-print "Letztes Datum: $lastdate\n";
-
-foreach my $file(@FILES){
-    if ($file=~m/export_mab_HBZ01.Z9057.F.$lastdate.\d+\.zip/){
-        system("unzip -v -p $pooldir/$pool/$file > $pooldir/$pool/tmp.TIT");
-    }
-    if ($file=~m/export_mab_HBZ60.Z9057.F.$lastdate.\d+\.zip/){
-        system("unzip -v -p $pooldir/$pool/$file > $pooldir/$pool/tmp.MEX");
-    }
-}
-
-system("cd $pooldir/$pool; $mab2metaexe --titlefile=tmp.TIT --holdingfile=tmp.MEX --configfile=/opt/openbib/conf/$pool.yml");
-system("cd $pooldir/$pool; gzip meta.* ; rm tmp.*");
+system("cd $pooldir/$pool; $mab2metaexe --titlefile=".$dbinfo->titlefile." --holdingfile=".$dbinfo->holdingfile." --configfile=/opt/openbib/conf/$pool.yml");
+system("cd $pooldir/$pool; gzip meta.* ");
 

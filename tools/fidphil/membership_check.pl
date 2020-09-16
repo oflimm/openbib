@@ -35,7 +35,8 @@ use DBI;
 
 use OpenBib::Config;
 use Data::Dumper;
-
+use JSON qw( decode_json );
+use Text::CSV;
 
 my $config = OpenBib::Config->new;
 
@@ -48,12 +49,74 @@ my $systemdbh = DBI->connect(
     $config->{systemdbpasswd}
 ) or die "could not connect";
 
+sub collectNumbers {
+    my $csv     = Text::CSV->new( { sep_char => ';' } );
+    my $file    = shift;
+    my %numbers = ();
+    open( my $data, '<', $file ) or die "Could not open '$file' $!\n";
+    while ( my $line = <$data> ) {
+        chomp $line;
+        if ( $csv->parse($line) ) {
+            my @fields = $csv->fields();
+
+            #trim necessary
+            $numbers{ $fields[0] } = 'free';
+        }
+        else {
+            warn "Line could not be parsed: $line\n";
+        }
+    }
+    return %numbers;
+}
+
+sub is_valid_membership_number {
+    $numbers_ref     = shift;
+    $mitgliedsnummer = shift;
+    if ( $numbers_ref->{$mitgliedsnummer} eq 'free' ) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}
+
+sub make_user_society_user {
+    $user_id = shift;
+    my $request = $systemdbh->prepare(
+        "SELECT id from roleinfo WHERE rolename = 'fidphil_society' LIMIT 1");
+    $request->execute();
+    my $res = $request->fetchrow_array();
+    $role_id = $res;
+    my $request = $systemdbh->prepare(
+        "UPDATE user_role 
+         SET roleid = ?
+         WHERE userid = ?"
+    );
+    $request->bind_param( 1, $role_id );
+    $request->bind_param( 2, $user_id );
+    $request->execute();
+}
+
+#####################################################################
+# aktuelle Nummern sammeln
+
+my $dg_phil_list = "/opt/openbib/conf/fidphil/membership_dgphil.csv"
+  or die "Need to get CSV file on the command line\n";
+my %dgphil_numbers = collectNumbers($dg_phil_list);
+print Dumper @dgphil_numbers;
+my $gap_list = "/opt/openbib/conf/fidphil/membership_gap.csv"
+  or die "Need to get CSV file on the command line\n";
+my %gap_numbers = collectNumbers($gap_list);
+print Dumper @gap_numbers;
+
 #####################################################################
 # alle User der Rollen fidphil_user, fidphil_society finden
 # vielleicht sollte das normale Skript nur die normalen FidPhil User finden
 
 my $request = $systemdbh->prepare(
-"SELECT id from roleinfo WHERE rolename = 'fidphil_user' OR  rolename = 'fidphil_society' "
+    "SELECT id from roleinfo WHERE rolename = 'fidphil_user'"
+
+#"SELECT id from roleinfo WHERE rolename = 'fidphil_user' OR  rolename = 'fidphil_society' "
 );
 $request->execute();
 @ids = ();
@@ -61,21 +124,46 @@ while ( my $res = $request->fetchrow_hashref ) {
     push( @ids, $res->{id} );
 }
 
+#####################################################################
+# Nutzerdaten abrufen und Nutzer iterieren
+
 my $request = $systemdbh->prepare(
     "SELECT userinfo.id, email, mixed_bag, vorname
     FROM userinfo
     INNER JOIN user_role
     ON userinfo.id = user_role.userid 
-    WHERE roleid = ? OR roleid = ? "
+    WHERE roleid = ? "
 );
 
 $request->execute(@ids);
+
 while ( my $res = $request->fetchrow_hashref ) {
-    my $id    = $res->{id};
-    my $email = $res->{email};
-    my $vorname = $res->{vorname};
-    my $mixed_bag = 0;
-    print STDERR "$vorname\n";
+    my $userid          = $res->{id};
+    my $email           = $res->{email};
+    my $mixed_bag       = decode_json( $res->{mixed_bag} );
+    my $society         = $mixed_bag->{"bag_society"}[0];
+    my $mitgliedsnummer = $mixed_bag->{'bag_mitgliedsnummer'}->[0];
+
+    if ( $society eq 'gap' && $mitgliedsnummer ) {
+        if ( is_valid_membership_number( \%gap_numbers, $mitgliedsnummer ) ) {
+            print "is valid " . $mitgliedsnummer . "\n";
+            make_user_society_user($userid);
+        }
+        else {
+
+            print "is invalid " . $mitgliedsnummer . "\n";
+        }
+    }
+    elsif ( $society eq 'dgphil' && $mitgliedsnummer ) {
+        if ( is_valid_membership_number( \%dgphil_numbers, $mitgliedsnummer ) )
+        {
+            print "is valid " . $mitgliedsnummer . "\n";
+            make_user_society_user($userid);
+        }
+        else {
+            print "is invalid " . $mitgliedsnummer . "\n";
+        }
+    }
 }
 
 print "done\n";

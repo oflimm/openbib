@@ -35,11 +35,11 @@ use DBI;
 
 use OpenBib::Config;
 use Data::Dumper;
-use JSON qw( decode_json );
+use JSON;
 use Text::CSV;
+use MIME::Lite;
 
 my $config = OpenBib::Config->new;
-
 #####################################################################
 # Verbindung zur SQL-Datenbank herstellen
 
@@ -73,7 +73,7 @@ sub is_valid_membership_number {
     $numbers_ref     = shift;
     $mitgliedsnummer = shift;
     if ( $numbers_ref->{$mitgliedsnummer} eq 'free' ) {
-        return 1;
+         return 1;
     }
     else {
         return 0;
@@ -97,12 +97,49 @@ sub make_user_society_user {
     $request->execute();
 }
 
+sub reset_user_status {
+    $user_id = shift;
+    my $request = $systemdbh->prepare(
+        "SELECT mixed_bag from userinfo WHERE id = ? LIMIT 1");
+    $request->bind_param( 1, $user_id );
+    $request->execute();
+    my $res = $request->fetchrow_array();
+    $mixed_bag = decode_json($res);
+    delete( $mixed_bag->{"bag_society"} );
+    delete( $mixed_bag->{"bag_mitgliedsnummer"} );
+    $mixed_bag_json = encode_json($mixed_bag);
+    my $request = $systemdbh->prepare(
+        "UPDATE userinfo 
+         SET mixed_bag = ?
+         WHERE id = ?"
+    );
+    $request->bind_param( 1, $mixed_bag_json );
+    $request->bind_param( 2, $user_id );
+    $request->execute();
+}
+
+sub send_membership_confirmation {
+    $email           = shift;
+    $society         = shift;
+    $mitgliedsnummer = shift;
+
+    my $mailmsg = MIME::Lite->new(
+        From    => $config->{contact_email},
+        To      => $email,
+        Subject => 'Sie wurden als Fachgesellschafts-Nutzer bestätigt',
+        Type    => 'multipart/mixed'
+    );
+
+    $mailmsg->send( 'sendmail',
+        "/usr/lib/sendmail -t -oi -f$config->{contact_email}" );
+}
+
 #####################################################################
 # aktuelle Nummern sammeln
 
-my $dg_phil_list = "/opt/openbib/conf/fidphil/membership_dgphil.csv"
+my $dgphil_list = "/opt/openbib/conf/fidphil/membership_dgphil.csv"
   or die "Need to get CSV file on the command line\n";
-my %dgphil_numbers = collectNumbers($dg_phil_list);
+my %dgphil_numbers = collectNumbers($dgphil_list);
 print Dumper @dgphil_numbers;
 my $gap_list = "/opt/openbib/conf/fidphil/membership_gap.csv"
   or die "Need to get CSV file on the command line\n";
@@ -147,23 +184,32 @@ while ( my $res = $request->fetchrow_hashref ) {
     if ( $society eq 'gap' && $mitgliedsnummer ) {
         if ( is_valid_membership_number( \%gap_numbers, $mitgliedsnummer ) ) {
             print "is valid " . $mitgliedsnummer . "\n";
+            $gap_numbers{$mitgliedsnummer} = "taken";
+            #we have to check here if the operation is succesful
             make_user_society_user($userid);
+            send_membership_confirmation( $email, $society, $mitgliedsnummer );
         }
         else {
-
             print "is invalid " . $mitgliedsnummer . "\n";
+            reset_user_status($userid);
         }
     }
     elsif ( $society eq 'dgphil' && $mitgliedsnummer ) {
         if ( is_valid_membership_number( \%dgphil_numbers, $mitgliedsnummer ) )
         {
             print "is valid " . $mitgliedsnummer . "\n";
+            #we have to check here if the operation is succesful
+            $dgphil_numbers{$mitgliedsnummer} = "taken";
             make_user_society_user($userid);
+            send_membership_confirmation( $email, $society, $mitgliedsnummer );
         }
         else {
             print "is invalid " . $mitgliedsnummer . "\n";
+            reset_user_status($userid);
         }
     }
 }
+#we need to serialize the new information back to the csv-file
+print Dumper(\%dgphil_numbers);
+print Dumper(\%gap_numbers);
 
-print "done\n";

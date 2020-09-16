@@ -243,6 +243,22 @@
 					die Vorteile einer Mitgliedschaft
 				</div>
 			</div>
+			[%ELSIF role == 'fidphil_society' %]
+			<div class="w-75 mb-3 col-lg-9 col-11 p-2 border mx-auto">
+				[% IF userinfo.mixed_bag.bag_society.0 == 'dgphil' %]
+				<p>Sie sind als Mitglied der <i>DGPhil - Deutsche Gesellschaft für Philosophie</i> registriert</p>
+				<div class="d-flex mt-2 pt-2">
+					<div class="text-left ml-3">
+						<img id="fid-logo" src="/images/openbib/views/fidphil/dgphil.jpg" width="170px" height="auto">
+					</div>
+					<div class="ml-3">
+						Mitgliedsnummer: [% userinfo.mixed_bag.bag_mitgliedsnummer.0 %]
+					</div>
+				</div>
+				[%ELSE%]
+				<p>Sie sind als Mitglied der GAP - Gesellschaft für analytische Philosophie registriert</p>
+				[%END%]
+			</div>
 			[% END %]
 		</div>
 		<!-- <div class="card">

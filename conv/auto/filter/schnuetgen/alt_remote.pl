@@ -50,7 +50,7 @@ my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->s
 my $title_url     = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->titlefile;
 my $holding_url   = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->holdingfile;
 
-system("cd $pooldir/$pool; rm *.mab2 ");
+system("cd $pooldir/$pool; rm *.mab2* ");
 
 system("$wgetexe -N -P $pooldir/$pool/ $title_url ");
 system("$wgetexe -N -P $pooldir/$pool/ $holding_url ");

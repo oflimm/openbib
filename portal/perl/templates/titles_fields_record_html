@@ -12,9 +12,6 @@
 #######################################################################
 -%]
 
- <div class="row">
-   <div class="col-sm-9">
-
 [%-
     request_base    = "num=${queryoptions.get_option('num')};srt=${queryoptions.get_option('srt')}_${queryoptions.get_option('srto')};" ;
     start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
@@ -41,9 +38,3 @@
 <p/>
 
 [% PROCESS common/subtemplate name="pagination" %]
- </div>
-
- <div class="col-sm-3">
-[% PROCESS common/subtemplate name="subnavigation" active_menu=layout_param.active_menu active_submenu="register_${field}" %]
- </div>
-</div>

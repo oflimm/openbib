@@ -11,8 +11,7 @@
 #
 #######################################################################
 -%]
-<b>[% msg.maketext("Sortierung") %]:</b>&nbsp;
-<select name="srt" class="autosubmit">
+<select name="srt" class="custom-select autosubmit" style="width:auto;">
 [% IF NOT no_relevance %]  <option value="relevance_desc"[%- IF query.param('srt') == 'relevance_dsc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Relevanz") %]</option>[% END %]
   <option value="popularity_desc"[%- IF query.param('srt') == 'popularity_desc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
   <option value="year_desc"[%- IF query.param('srt') == 'year_desc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]&nbsp;&darr;</option>

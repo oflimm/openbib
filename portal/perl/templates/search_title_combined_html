@@ -26,14 +26,6 @@
 </style>
 
 
-<div class="navbar navbar-default d-block d-md-none pl-0" style="z-index: 1"><!-- only visible in xs-->
-  <div class="container-fluid pl-0">
-    <button class="btn btn-primary navbar-btn" data-toggle="collapse" data-target="#ob-search_refine">
-      <i class="fa fa-tasks"></i> [% msg.maketext("Suchergebnis filtern & mehr") %]
-    </button>
-  </div>
-</div>
-
 
 <div class="row flex-md-row-reverse">
 
@@ -89,11 +81,20 @@
 -%]
 
 <div class="ob-resultlist">
-  <div class="ob-resultheader">
-    <div class="left d-none d-lg-block">
+  <div class="ob-resultheader pb-4">
+    <div class="left">
+      <div class="navbar navbar-default d-block d-md-none pl-0 mt-0" style="z-index: 1"><!-- only visible in xs-->
+        <div class="container-fluid pl-0">
+          <button class="btn btn-primary navbar-btn" data-toggle="collapse" data-target="#ob-search_refine">
+           <i class="fa fa-filter"></i> [% msg.maketext("Filtern") %]
+          </button>
+       </div>
+     </div>
+     <div class="left d-none d-lg-block mt-2">
 [% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b>[% hits %]</b>
     </div>
-    <div class="right">
+    </div>
+    <div class="right mt-2">
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
 <input type="hidden" name="page" value="1" />
 <input type="hidden" name="lang" value="[% lang %]" />

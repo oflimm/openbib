@@ -208,27 +208,13 @@ while (<TITLE>){
         }
     }
     
-    # Online-Medien werden allen (USB/Fachbibliotheks-)Standorten zugewiesen
+    # Online-Medien werden keinen Print-Standorten zugewiesen
     if (defined $title_ref->{fields}{'4400'}){
         foreach my $item (@{$title_ref->{fields}{'4400'}}){
             if ($item->{content} eq "online"){
                  $element_ref = [];		
                  push @{$element_ref}, "emedien";
                  push @{$element_ref}, "usbebooks";
-#                 push @{$element_ref}, "DE-38";
-#                 push @{$element_ref}, "DE-38-USBFB";
-#                 push @{$element_ref}, "DE-38-101";
-# #                push @{$element_ref}, "DE-38-123";
-#                 push @{$element_ref}, "DE-38-132";
-#                 push @{$element_ref}, "DE-38-429";
-#                 push @{$element_ref}, "DE-38-448";
-#                 push @{$element_ref}, "DE-38-418";
-#                 push @{$element_ref}, "DE-38-507";
-#                 push @{$element_ref}, "DE-38-EDZ";
-#                 push @{$element_ref}, "DE-38-HWA";
-#                 push @{$element_ref}, "DE-38-ASIEN";
-#                 push @{$element_ref}, "DE-38-MEKUTH";
-#                 push @{$element_ref}, "DE-38-ARCH";
             }
         }
     }
@@ -439,6 +425,7 @@ sub sigel2isil {
         push @isils, "DE-38-507";
     }
     elsif ($content =~m/^Kn\s*3/){
+	print STDERR "XXX\n";
         push @isils, "DE-Kn3";
         push @isils, "DE-38-ZBKUNST";
     }

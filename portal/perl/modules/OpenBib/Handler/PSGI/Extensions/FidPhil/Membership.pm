@@ -92,14 +92,8 @@ sub show_record_form {
         $role = 'fidphil_society';
     }
 
-    my $ttdata = {
-        userid   => $userid,
-        role     => $role,
-        userinfo => $userinfo,
-    };
-
-    #get Society as param
-    return $self->print_page( "users_membership_edit", $ttdata );
+    return $self->redirect(
+            "$path_prefix/$config->{users_loc}/id/$userid/edit");
 }
 
 #how to handle
@@ -147,26 +141,11 @@ sub request_membership {
         $user->update_userinfo($updateInfo) if ( keys %$updateInfo );
 
     }
-
-    # my $ttdata = {
-    #     userid   => $userid,
-    #     userinfo => $userinfo,
-    # };
-    # my $ttdata = {
-    #     userid   => $userid,
-    #     userinfo => $userinfo,
-    return "Request Membership $society ";
-
-    #get Society as param
-    #return $self->print_page("users_membership", $ttdata);
-}
-
-sub check_membership {
-    my $self       = shift;
-    my $society    = shift;
-    my $membership = shift;
+    return $self->redirect(
+            "$path_prefix/$config->{users_loc}/id/$userid/edit");
 
 }
+
 
 sub renew_membership {
     my $self = shift;

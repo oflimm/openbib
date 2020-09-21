@@ -328,7 +328,7 @@ titleinfo = titleinfos.join(" | ");
     <div class="col-1 mr-4 align-self-center">
       <i class="fas fa-newspaper fa-3x" style="color: #823293"></i>
     </div>
-    <div class="col-10">
+    <div class="col-9">
   <div class="d-flex" x-data="hovertool()">
     <div class="ob-person">[% person %]&nbsp;</div>
     <div  x-on:click.once="hovericon($refs); $dispatch('person-hover', { foo: 'bar' }); return false">
@@ -389,5 +389,11 @@ titleinfo = titleinfos.join(" | ");
    
    [% END %]
  </div>
+<div class="col-1 d-flex">
+  <a class="text-secondary" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" 
+  title="[% msg.maketext('In die Merkliste') %]"> 
+    <i class="far fa-star"></i>
+  </span>
+</div>
   </div>
 <!-- Ende einzelner Treffer -->

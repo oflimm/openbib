@@ -199,16 +199,9 @@ while (<TITLE>){
 	    }
         }
     }
-    
-    # Zeitschriften anhand besetzter ZDB-ID
-    if (defined $title_ref->{fields}{'0572'}){
-        foreach my $item (@{$title_ref->{fields}{'0012'}}){
-            my @isils = sigel2isil($item->{content});
-            push @{$element_ref}, @isils if (@isils);
-        }
-    }
-    
+
     # Online-Medien werden keinen Print-Standorten zugewiesen
+    # Neu: wg. KMB jetzt bis auf elektronische Zeitschriften
     if (defined $title_ref->{fields}{'4400'}){
         foreach my $item (@{$title_ref->{fields}{'4400'}}){
             if ($item->{content} eq "online"){
@@ -218,7 +211,15 @@ while (<TITLE>){
             }
         }
     }
-
+    
+    # Zeitschriften anhand besetzter ZDB-ID
+    if (defined $title_ref->{fields}{'0572'}){
+        foreach my $item (@{$title_ref->{fields}{'0012'}}){
+            my @isils = sigel2isil($item->{content});
+            push @{$element_ref}, @isils if (@isils);
+        }
+    }
+    
     # Vorrangig KMB-eigene E-Books anhand ISIL in 4719
     # Ueberschreiben alle anderen Standorte!!!
     if (defined $title_ref->{fields}{'4719'}){
@@ -425,7 +426,6 @@ sub sigel2isil {
         push @isils, "DE-38-507";
     }
     elsif ($content =~m/^Kn\s*3/){
-	print STDERR "XXX\n";
         push @isils, "DE-Kn3";
         push @isils, "DE-38-ZBKUNST";
     }

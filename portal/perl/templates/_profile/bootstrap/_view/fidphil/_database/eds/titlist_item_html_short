@@ -311,21 +311,8 @@ END ;
 
 titleinfo = titleinfos.join(" | ");
 -%]
-   <!--  [% IF record.id && record.database %]
-
-    <a class="ob-collection" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img class="ob-collection-image" src="[% config.get_icon('listofinterest_small',view,sysprofile) %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /><span class="d-none d-sm-inline">[% msg.maketext("Merken") %]</span>
-    [% END # id / database%]
-    [% IF user_owns_litlist %]
-    &nbsp;&nbsp;<a class="ob-delete" href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/items/id/[% listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("L&ouml;schen") %]</span></a>
-    [% END %]
-    [% IF parameter.private_tags %]
-    &nbsp;&nbsp;<a class="ob-collection" href="[% path_prefix %]/[% config.get('tags_loc') %]/[% parameter.tag %]?titleid=[% record.id %];dbname=[% record.database %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("L&ouml;schen") %]</span></a>
-    [% END %]
-    [% IF with_cartitems_delete %]
-    &nbsp;&nbsp;<a class="ob-delete" href="[% path_prefix %]/[% config.get('cartitems_loc') %]/id/[% record.listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Löschen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("Löschen") %]</span></a>
-    [% END %] -->
   <div class="row mt-4">
-    <div class="col-1 mr-4 align-self-center">
+    <div class="col-1 mr-3 align-self-center">
       <i class="fas fa-newspaper fa-3x" style="color: #823293"></i>
     </div>
     <div class="col-9">
@@ -374,26 +361,30 @@ titleinfo = titleinfos.join(" | ");
    [%- END -%]
    [%- IF fulltext == 1 -%]
    <div id='fulltextlink[% record.id.remove("\:\:") %]'>
-    <i class="fa fa-spinner fa-spin"></i>
+    <a href="[% path_prefix %]/fulltexts/id/[% record.id%]">Link<a>
    </div>
    <script type="text/javascript">
-    $(document).ready(function(){ 
-    $.get( "[% path_prefix %]/users/id/3/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].json?l=en", function( data ) {
-         let requestUrl = data.fields.eds_source[0].content.Record.FullText.Links[0].Url;
-        $( "#fulltextlink[% record.id.remove('\:\:') %]" ).html( "<a href='"+requestUrl+"'>Link<a>" );
+    //$(document).ready(function(){ 
+    /* $.get("[% path_prefix %]/users/id/3/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].json?l=en", function (data) {
+        let requestUrl = data.fields.eds_source[0].content.Record.FullText.Links[0].Url;
+        $("#fulltextlink[% record.id.remove('\:\:') %]").html("<a href='" + requestUrl + "'>Link<a>");
       })
-  });
+    }); */
 
 
     </script>
    
    [% END %]
  </div>
-<div class="col-1 d-flex">
-  <a class="text-secondary" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" 
+
+<div x-data="{on_list: false}" class="col-1 d-flex">
+  <a x-on:htmx:after-request.camel="$refs.star.style.color = 'magenta';" class="text-secondary" hx-post="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" hx-swap="none" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" 
   title="[% msg.maketext('In die Merkliste') %]"> 
-    <i class="far fa-star"></i>
-  </span>
+    <i x-ref="star" class="far fa-star"></i>
+  </a>
+
+
+    
 </div>
   </div>
 <!-- Ende einzelner Treffer -->

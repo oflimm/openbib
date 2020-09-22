@@ -27,6 +27,11 @@
 					</div>
 					[% END %]
 					<div class="text-lg-center mr-3">
+							<a  hx-get="[% path_prefix %]//cartitems/count.html?l=de" hx-target="#merklist_count" hx-trigger="load"
+							href="[% path_prefix %]/cartitems.html?l=[% lang %]">Merkliste (<span id="merklist_count"><i class="fas fa-spinner fa-spin"></i></span>) </a>
+					</div>
+					
+					<div class="text-lg-center mr-3">
 						Sprache
 					</div>
 					<div class="text-lg-center mr-3">

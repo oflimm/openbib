@@ -27,14 +27,16 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::PSGI::Extensions::FidPhil::Login;
+package OpenBib::Handler::PSGI::Extensions::FidPhil::Fulltexts;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
-
+use OpenBib::Record::Title;
 use base 'OpenBib::Handler::PSGI';
+use Data::Dumper;
+
 
 # Run at startup
 sub setup {
@@ -51,7 +53,7 @@ sub show_record {
     my $self = shift;
 
     # Log4perl logger erzeugen
-    my $logger = get_logger();
+    #my $logger = get_logger();
     
     # Dispatched Args
     my $view           = $self->param('view')           || '';
@@ -74,11 +76,14 @@ sub show_record {
     my $useragent      = $self->param('useragent');
 
     # CGI Args
-    my $method         = $query->param('_method')     || '';
+    my $method         = $query->param('_method');
     
-    $titleid           = $query->param('titleid')             || '';
+    $titleid           = $self->param('edsid');
+    $titleid   =~ s/.html//;
+    my $record = OpenBib::Record::Title->new({database => "eds", id => $titleid, config => $config})->load_full_record({id => $titleid});
 
-    return $self->print_page($config->{'tt_tags_names_record_tname'});
+    my $url = $record->{_fields}->{eds_source}->[0]->{content}->{Record}->{FullText}->{Links}->[0]->{Url};
+    return $self->redirect($url);
 
 }
 

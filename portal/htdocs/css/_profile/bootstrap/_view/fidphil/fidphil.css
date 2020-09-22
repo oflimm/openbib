@@ -1,3 +1,6 @@
+/* see: https://stackoverflow.com/a/3844452 */
+:focus {outline:none;}
+::-moz-focus-inner {border:0;}
 
 .main-menu-item {
 	cursor: pointer;

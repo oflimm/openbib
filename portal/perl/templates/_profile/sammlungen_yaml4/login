@@ -13,6 +13,17 @@
 #######################################################################
 -%]
 [% PROCESS common/subtemplate name="std_header" %]
+[%
+
+  available_authenticators = config.get_authenticators_by_view(view);
+
+  available_authenticator_types = {};
+  FOREACH authenticator IN available_authenticators ;
+     available_authenticator_types.${authenticator.type} = 1;
+  END;
+  
+  #USE dumper;dumper.dump(available_authenticators);dumper.dump(available_authenticator_types);
+%]
 
   <body>
 
@@ -67,10 +78,15 @@ $(document).ready(function(){
 <div id="ob-login_forms">
 
 <ul>
+[% IF available_authenticator_types.${"self"} %]	 
 <li><a href="#ob-login_forms_selfreg">[% msg.maketext("Anmelden mit registrierter E-Mail-Adresse") %]</a></li>
+[% END %]
+[% IF available_authenticator_types.${"paia"} %]	 
 <li><a href="#ob-login_forms_library">[% msg.maketext("Anmelden mit einem Benutzerausweis") %]</a></li>
+[% END %]
 </ul>
 
+[% IF available_authenticator_types.${"self"} %]	 
 <div id="ob-login_forms_selfreg">
 <form method="post" action="[% IF config.get('use_admin_https') || config.distadmin.master %][% IF config.get('use_https') %]https[%- ELSE -%]http[%- END -%]://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent" class="ym-form">
 
@@ -107,7 +123,9 @@ $(document).ready(function(){
 
 </form>
 </div>
+[% END %]
 
+[% IF available_authenticator_types.${"paia"} %]
 <div id="ob-login_forms_library">
 <form method="post" action="[% IF config.get('use_admin_https') || config.distadmin.master %][% IF config.get('use_https') %]https[%- ELSE -%]http[%- END -%]://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" class="ym-form">
 
@@ -121,10 +139,9 @@ $(document).ready(function(){
 <div class="ym-fbox-select">
 <label for="authenticator">[% msg.maketext("mit") %]:</label>
 <select name="authenticatorid">
-[%- FOREACH authenticator IN authenticators -%]
-[%-   IF authenticator.type != 'self' -%]
+[%- FOREACH authenticator IN available_authenticators -%]
+[%-   NEXT IF authenticator.type != 'paia' -%]
 <option value="[% authenticator.id %]" [% IF authenticator.id == authenticatorid %]selected="selected"[% END %]>[% authenticator.description %]</option>
-[%-   END -%]
 [%- END -%]
 </select>
 </div>
@@ -148,6 +165,7 @@ $(document).ready(function(){
 
 </form>
 </div>
+[% END %]
 
 </div>
         </div>

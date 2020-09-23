@@ -4884,13 +4884,13 @@ sub get_items_in_collection {
 
         $logger->debug("Processing Item $listid with DB: $database ID: $titleid / Record: $titlecache");
 
-        if ($database && $titleid){
-            $recordlist->add(new OpenBib::Record::Title({ database => $database, id => $titleid, listid => $listid, date => $tstamp, comment => $comment, config => $config })->load_brief_record);
-        }
-        elsif ($titlecache) {
+        if ($titlecache) {
             my $record = new OpenBib::Record::Title({listid => $listid, date => $tstamp, comment => $comment, config => $config });
-            $record->set_fields_from_json($titlecache);
+            $record->from_json($titlecache);
             $recordlist->add($record);
+        }
+        elsif ($database && $titleid){
+            $recordlist->add(new OpenBib::Record::Title({ database => $database, id => $titleid, listid => $listid, date => $tstamp, comment => $comment, config => $config })->load_brief_record);
         }
     }
     

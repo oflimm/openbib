@@ -377,14 +377,36 @@ titleinfo = titleinfos.join(" | ");
    [% END %]
  </div>
 
-<div x-data="{on_list: false}" class="col-1 d-flex">
+<div x-data="action_area()" class="col-1 d-flex">
   <a x-on:htmx:after-request.camel="$refs.star.style.color = 'magenta';" class="text-secondary" hx-post="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" hx-swap="none" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" 
   title="[% msg.maketext('In die Merkliste') %]"> 
-    <i x-ref="star" class="far fa-star"></i>
+  <i @cartitem-loaded.document="test($store, '[%record.id%]' )" x-show="showaddcart" x-ref="star" class="far fa-star" style="display:none"></i>
+  
   </a>
-
-
-    
+  <a class="text-secondary" hx-post="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" hx-swap="none" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" 
+  title="[% msg.maketext('Aus der Merkliste entfernen') %]">
+  <i @cartitem-loaded.document="test($store, '[%record.id%]' )" x-show="showremovecart" x-ref="star" class="far fa-trash-alt" style="display:none"></i>
+  </a>
+  
 </div>
+<script>
+    
+    function action_area() {
+        return {
+          showaddcart : false,
+          showremovecart : false,
+          test (store, recordid) {
+            if (store.cartitems.includes(recordid)){
+              this.showaddcart=false;
+              this.showremovecart=true;
+
+            }else{
+            this.showaddcart=true;
+            this.showremovecart=false;
+            }
+          },
+        }
+      }
+</script>
   </div>
 <!-- Ende einzelner Treffer -->

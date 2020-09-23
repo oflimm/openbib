@@ -138,9 +138,22 @@
     [% PROCESS common/subtemplate name="search_more_tips" %]
 
   </div><!-- End: col -->
-
-  <div x-ref="sidebar" x-show="showSidebar" x-transition:enter-start="side-menu-collapsed"
-    ;x-transition:enter-end="side-menu" class="mt-5 p-2 side-menu" x-data="sidebar()"
+ 
+  <script>
+    let cartItemdata = {};
+    fetch('[% path_prefix %]/cartitems.json?l=de')
+    .then(response => response.json())
+    .then(data => {
+     cartItemdata = data.collection.map(elem => elem.titleid);
+     Spruce.store('cartitems', cartItemdata);
+     let event = new CustomEvent("cartitem-loaded", { "detail": "Example of an event" });
+     // Dispatch/Trigger/Fire the event
+     document.dispatchEvent(event);
+    });
+    
+  </script>
+  <div x-ref="sidebar" x-show="showSidebar" x-transition:enter-start="side-menu-collapsed
+    ;x-transition:enter-end='side-menu'" class="mt-5 p-2 side-menu" x-data="sidebar()"
     @person-hover.window="showHover($el);" @person-info.window.prevent="swipe($refs); return false;"
     style="position: fixed; overflow-y: auto; ">
     <h2 class="icon icon-lab">Sidebar</h2>

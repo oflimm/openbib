@@ -378,15 +378,20 @@ titleinfo = titleinfos.join(" | ");
  </div>
 
 <div x-data="action_area()" class="col-1 d-flex">
-  <a x-on:htmx:after-request.camel="$refs.star.style.color = 'magenta';" class="text-secondary" hx-post="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" hx-swap="none" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" 
-  title="[% msg.maketext('In die Merkliste') %]"> 
-  <i @cartitem-loaded.document="test($store, '[%record.id%]' )" x-show="showaddcart" x-ref="star" class="far fa-star" style="display:none"></i>
+  <a  x-ref="addcart" x-show="showaddcart"
+   x-on:htmx:before-request.camel="showspinner=true;showaddcart=false;"
+   x-on:htmx:after-request.camel="cartlistChange($dispatch, 'add', $refs);" 
+    class="text-secondary" hx-post="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" hx-swap="none" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" 
+  title="[% msg.maketext('In die Merkliste') %]" style="display:none"> 
+  <i @cartitem-loaded.document="test($store, '[%record.id%]' )" class="far fa-star" ></i>
   
   </a>
-  <a class="text-secondary" hx-post="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" hx-swap="none" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" 
-  title="[% msg.maketext('Aus der Merkliste entfernen') %]">
-  <i @cartitem-loaded.document="test($store, '[%record.id%]' )" x-show="showremovecart" x-ref="star" class="far fa-trash-alt" style="display:none"></i>
+  <a  id="removecard[%record.id%]" x-ref="removecart" x-show="showremovecart" @click="removeFromCartList($refs, $dispatch, $store, '[% record.id %]')"
+  class="text-secondary" hx-swap="none" 
+  title="[% msg.maketext('Aus der Merkliste entfernen') %]" style="display:none">
+  <i @cartitem-loaded.document="test($store, $refs, '[%record.id%]' )"  class="far fa-trash-alt" ></i>
   </a>
+  <a x-ref="spinner" x-show="showspinner"><i class="fas fa-spinner fa-spin"></i></a>
   
 </div>
 <script>
@@ -395,8 +400,52 @@ titleinfo = titleinfos.join(" | ");
         return {
           showaddcart : false,
           showremovecart : false,
-          test (store, recordid) {
-            if (store.cartitems.includes(recordid)){
+          showspinner : true,
+          
+          deleteurl: '',
+          cartlistChange(dispatch, mode, refs) {
+           
+            fetch('[% path_prefix %]/cartitems.json?l=de')
+              .then(response => response.json())
+              .then(data => {
+                
+                cartItemdata = {};
+                data.collection.forEach(function (element) {
+                  cartItemdata[element.titleid] = {
+                    itemid: element.itemid
+                  }
+                })
+                console.log(cartItemdata);
+                Spruce.reset('cartitems', cartItemdata);
+                if (mode === 'add'){
+                  this.showspinner=false;
+                this.showaddcart=false;
+                this.showremovecart=true;
+                }else {
+                  this.showspinner=false;
+                  this.showaddcart=true;
+                 this.showremovecart=false;
+                //refs['addcart'].style.display = 'block';
+                //refs['removecart'].style.display = 'none';
+                }
+                //refs['spinner'].style.display = 'none';
+                dispatch("cartlist-change", {});
+             })
+            
+          },
+          removeFromCartList(refs, dispatch, store, recordid){
+          this.showremovecart = false;
+          this.showspinner = true;
+           let url = "[% path_prefix %]/[% config.get('cartitems_loc') %]/id/"+store.cartitems[recordid]['itemid']+"?_method=DELETE";
+             fetch(url, {
+              method: 'GET',
+             }).then(res => {
+              this.cartlistChange( dispatch,'remove', refs);
+             }) 
+          },
+          test(store, refs, recordid,) {
+            this.showspinner = false;
+            if (store.cartitems[recordid]){
               this.showaddcart=false;
               this.showremovecart=true;
 

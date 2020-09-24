@@ -29,6 +29,7 @@
 					<div class="text-lg-center mr-3">
 							<a  hx-get="[% path_prefix %]//cartitems/count.html?l=de" hx-target="#merklist_count" hx-trigger="load"
 							href="[% path_prefix %]/cartitems.html?l=[% lang %]">Merkliste (<span id="merklist_count"><i class="fas fa-spinner fa-spin"></i></span>) </a>
+							<a x-data x-ref="anchor" @cartlist-change.window="console.log('event');$refs.anchor.click();" hx-get="[% path_prefix %]/cartitems/count.html?l=de" hx-trigger="click" hx-target="#merklist_count"></a>
 					</div>
 					
 					<div class="text-lg-center mr-3">

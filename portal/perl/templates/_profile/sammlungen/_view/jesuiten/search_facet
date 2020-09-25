@@ -497,96 +497,150 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [%         END %]
 <!-- End database facet -->
 
-<!-- Begin favlocation facet -->
-[%         IF config.get('facets').location && facets.defined('favlocation') && facets.favlocation.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-favlocation" aria-expanded="true">
-           [% msg.maketext("nach meinem Suchraum") %] 
-        </h4>
-        <ul id="group-favlocation" class="list-group in collapse show">
-[%             FOREACH termitem IN facets.favlocation ;
-
- %]
-[% IF facets.favlocation.size > 5 && loop.count == 5 %]
-<span id="dd_favlocation_[% database %]_toggle"></span>
-<div id="dd_favlocation_[% database %]">
-[% END %]
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').locationstring.prefix;
-    filterstring  = "${searchprefix}:${searchterm}";
--%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% locinfo.get('identifier').${termitem.0}.description %]</a> <span class="badge badge-pill badge-secondary ml-auto">[% termitem.1 %]</span></li>
-[%             END %]
-[% IF facets.favlocation.size > 5 %]
-</div>
-[% END %]
-</ul>
-<p/>
-[%         END %]
-<!-- End location facet -->
-
-<!-- Begin elocation facet -->
-[%         IF config.get('facets').location && facets.defined('elocation') && facets.elocation.size > 0 %]
-        <h4 class="ob-facet-title [% IF facets.favlocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-toggle="collapse" data-target="#group-elocation" aria-expanded=[% IF facets.favlocation.size > 0 %]"false"[% ELSE %]"true"[% END %]>
-           [% msg.maketext("nach E-Medien Quelle") %] 
-        </h4>
-        <ul id="group-elocation" class="list-group in collapse [% IF facets.favlocation.size <= 0 %]show[% END %]">
-[%             FOREACH termitem IN facets.elocation ;
-
- %]
-[% IF facets.elocation.size > 5 && loop.count == 5 %]
-<span id="dd_elocation_[% database %]_toggle"></span>
-<div id="dd_elocation_[% database %]">
-[% END %]
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').locationstring.prefix;
-    filterstring  = "${searchprefix}:${searchterm}";
--%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% locinfo.get('identifier').${termitem.0}.description %]</a> <span class="badge badge-pill badge-secondary ml-auto">[% termitem.1 %]</span></li>
-[%             END %]
-[% IF facets.elocation.size > 5 %]
-</div>
-[% END %]
-</ul>
-<p/>
-[%         END %]
-<!-- End location facet -->
-
-<!-- Begin location facet -->
-[%         IF config.get('facets').location && facets.defined('location') && facets.location.size > 0 %]
-        <h4 class="ob-facet-title [% IF facets.favlocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-toggle="collapse" data-target="#group-location" aria-expanded=[% IF facets.favlocation.size > 0 %]"false"[% ELSE %]"true"[% END %]>
-           [% msg.maketext("nach Print-Medien Standort") %] 
-        </h4>
-        <ul id="group-location" class="list-group in collapse [% IF facets.favlocation.size <= 0 %]show[% END %]">
-[%             FOREACH termitem IN facets.location ;
-
- %]
-[% IF facets.location.size > 5 && loop.count == 5 %]
-<span id="dd_location_[% database %]_toggle"></span>
-<div id="dd_location_[% database %]">
-[% END %]
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').locationstring.prefix;
-    filterstring  = "${searchprefix}:${searchterm}";
--%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% locinfo.get('identifier').${termitem.0}.description %]</a> <span class="badge badge-pill badge-secondary ml-auto">[% termitem.1 %]</span></li>
-[%             END %]
-[% IF facets.location.size > 5 %]
-</div>
-[% END %]
-</ul>
-<p/>
-[%         END %]
-<!-- End location facet -->
-
 <!-- Begin year facet -->
 [%         IF config.get('facets').year && facets.defined('year') && facets.year.size > 0 %]
         <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-year" aria-expanded="true">
            [% msg.maketext("nach Zugangsjahr") %] 
         </h4>
-        <ul id="group-year" class="list-group in collapse show">
+
+[%
+      minyear = 9999;
+      maxyear = -9999;
+      
+      yearcount = {};
+      FOREACH year_thisitem IN facets.year;
+        item      = year_thisitem.0;
+        itemcount = year_thisitem.1;
+        yearcount.${item} = itemcount;
+        IF item < minyear ;
+	   minyear = item;
+	END;
+	IF item > maxyear ;
+	   maxyear = item;
+        END;
+
+      END;
+
+      year_labels = [];
+      year_itemcounts = [];
+      FOREACH year_label IN yearcount.keys.sort ;
+        year_labels.push("'${year_label}'");
+        year_itemcounts.push(yearcount.${year_label});
+
+      END;
+
+%]
+<div id="group-year" class="in collapse show">
+[% IF facets.year.size > 1 %]
+<canvas id="ob-yearChart" width="400" height="300"></canvas>
+
+<div id="ob-yearSlider" class="m-4"></div>
+
+<p>
+[% msg.maketext("Von") %]&nbsp;&nbsp;<input id="ob-yearSlider_from" type="text" size="4" name="year_from" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input id="ob-yearSlider_to" type="text" size="4" name="year_to" value="[% searchquery.get_searchfield("year_to").val %]" />&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Los"/>
+</p>
+
+<script>
+var type_ctx = document.getElementById('ob-yearChart');
+var typeChart = new Chart(type_ctx, {
+    type: 'bar',
+    data: {    
+        labels: [[% year_labels.join(',') %]],
+        datasets: [{
+            label: 'Trefferzahl',
+            data: [[% year_itemcounts.join(',') %]],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1,
+            maxBarThickness: 8,
+        }],
+    },
+    options: {
+        legend: {
+           display: false
+        },
+        tooltips: {
+          callbacks: {
+             label: function(tooltipItem) {
+                  return tooltipItem.yLabel;
+             }
+          }
+        },
+        scales: {
+	   xAxes: [{
+                type: 'time',
+                time: {
+                    unit: 'year'
+                }
+           }],
+           yAxes: [{
+                ticks: {
+		    stepSize: 1,
+                    beginAtZero: true
+                }
+            }]
+        },
+        annotation: {
+           annotations: [{
+           type: 'box',
+	   drawTime: 'beforeDatasetsDraw',
+           xScaleID: 'x-axis-1',
+           xMin: [% minyear %],
+           xMax: [% maxyear %],
+           backgroundColor: 'rgba(100, 100, 100, 0.2)',
+           borderColor: 'rgba(100, 100, 100, 0.2)',	   
+          }]
+      }
+	
+    }
+});
+
+var yearslider = document.getElementById('ob-yearSlider');
+
+noUiSlider.create(yearslider, {
+    start: [[% minyear %], [% maxyear %]],
+    connect: true,
+    range: {
+        'min': [% minyear %],
+        'max': [% maxyear %]
+    }
+});
+
+var yearslider_from = document.getElementById('ob-yearSlider_from');
+var yearslider_to   = document.getElementById('ob-yearSlider_to');
+
+yearslider.noUiSlider.on('update', function (values, handle) {
+
+    var value = values[handle];
+
+    if (handle) {
+        yearslider_to.value = Math.round(value);
+	typeChart.options.annotation.annotations[0].xMax = Math.round(value);
+        typeChart.update();
+    } else {
+        yearslider_from.value = Math.round(value);
+	typeChart.options.annotation.annotations[0].xMin = Math.round(value);
+        typeChart.update();
+    }
+});
+
+yearslider_from.addEventListener('change', function () {
+    yearslider.noUiSlider.set([this.value, null]);
+    typeChart.options.annotation.annotations[0].xMin = Math.round(this.value);
+    typeChart.update();
+});
+
+yearslider_to.addEventListener('change', function () {
+    yearslider.noUiSlider.set([null, this.value]);
+    typeChart.options.annotation.annotations[0].xMax = Math.round(this.value);
+    typeChart.update();
+});
+
+
+</script>
+[% END %] 
+<!--        <ul id="group-year" class="list-group in collapse show"> -->
+        <ul class="list-group">	
 [%             FOREACH termitem IN facets.year ;
                   LAST IF loop.count > 25 ;
  %]
@@ -605,8 +659,8 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 </div>
 [% END %]
 </ul>
-
-<br/>
+</div><!-- group-year -->
+<p/>
 <!--
 <p>
 

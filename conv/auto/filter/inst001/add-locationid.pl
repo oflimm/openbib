@@ -201,11 +201,11 @@ while (<TITLE>){
     }
 
     # Online-Medien werden keinen Print-Standorten zugewiesen
-    # Neu: wg. KMB jetzt bis auf elektronische Zeitschriften
+    # Neu: wg. KMB wieder deaktiviert
     if (defined $title_ref->{fields}{'4400'}){
         foreach my $item (@{$title_ref->{fields}{'4400'}}){
             if ($item->{content} eq "online"){
-                 $element_ref = [];		
+#                 $element_ref = [];		
                  push @{$element_ref}, "emedien";
                  push @{$element_ref}, "usbebooks";
             }

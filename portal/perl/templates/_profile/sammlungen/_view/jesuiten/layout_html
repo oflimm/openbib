@@ -43,19 +43,11 @@
 
 </style>
 
-      <div class="navbar navbar-default d-block d-md-none pl-0"><!-- only visible in xs-->
-        <div class="container-fluid pl-0">
-          <button class="btn btn-primary navbar-btn" data-toggle="collapse" data-target="#ob-sidebar">
-            <i class="fa fa-list"></i> [% IF layout_param.sidebar_template_description %][% layout_param.sidebar_template_description %][% ELSE %][% msg.maketext("Navigation") %][% END %]
-          </button>
-        </div>
-      </div>
-
       <div [% IF layout_param.css_id %]id="[% layout_param.css_id %]" [% END %]class="row flex-md-row-reverse">
-        <div id="ob-sidebar" class="col-xs-6 col-md-3 collapse">
+        <div id="ob-sidebar" class="col-xs-6 col-md-3 collapse pr-4">
 [% PROCESS common/subtemplate name=layout_param.sidebar_template %]
         </div>
-        <div id="ob-mainpage" class="col-md-9" >
+        <div id="ob-mainpage" class="col-md-9 pl-4" >
 [% PROCESS common/subtemplate name=layout_param.main_template %]
         </div>
       </div>
@@ -63,7 +55,7 @@
 [% ELSE %]
 <!-- begin: Layout without sidebar -->
       <div  [% IF layout_param.css_id %]id="[% layout_param.css_id %]" [% END %] class="row">
-        <div class="col-md-12" >
+        <div class="col-md-12 pl-4 pr-4" >
 [% PROCESS common/subtemplate name=layout_param.main_template %]
         </div>
       </div>

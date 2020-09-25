@@ -216,13 +216,17 @@ person = "$person [...]" ;
 END ;
 END ;
 
-# Titel konstruierenF
+# Titel konstruieren
 title = item.${'T0331'}.first.content;
 IF item.${'T0310'}.first.content;
 title = item.${'T0310'}.first.content;
 END;
-
+pubtype = '';
+IF is_cartlist;
+pubtype = item.eds_source.0.content.Record.Header.PubTypeId;
+ELSE;
 pubtype = item.eds_source.0.content.Header.PubTypeId;
+END;
 IF pubtype == 'academicJournal';
 journaltitle   = item.${'T0451'}.first.content;
 journalyear   = item.${'T0425'}.first.content;
@@ -311,7 +315,7 @@ END ;
 
 titleinfo = titleinfos.join(" | ");
 -%]
-  <div class="row mt-4">
+<div class="row mt-4">
     <div class="col-1 mr-3 align-self-center">
       <i class="fas fa-newspaper fa-3x" style="color: #823293"></i>
     </div>
@@ -354,7 +358,12 @@ titleinfo = titleinfos.join(" | ");
     [%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
     [% END %]
    [% fulltext = 0 %]  
-   [%- FOREACH link IN item.eds_source.0.content.FullText.Links -%]
+   [% IF is_cartlist %]
+   [% linkdata = item.eds_source.0.content.Record.FullText.Links %]
+   [% ELSE %]
+   [% linkdata = item.eds_source.0.content.FullText.Links %]
+   [% END %]
+   [%- FOREACH link IN linkdata -%]
             [%- IF link.Type == "pdflink" -%]
               [% fulltext = 1 %]  
             [%- END -%]
@@ -363,16 +372,6 @@ titleinfo = titleinfos.join(" | ");
    <div id='fulltextlink[% record.id.remove("\:\:") %]'>
     <a href="[% path_prefix %]/fulltexts/id/[% record.id%]">Link<a>
    </div>
-   <script type="text/javascript">
-    //$(document).ready(function(){ 
-    /* $.get("[% path_prefix %]/users/id/3/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].json?l=en", function (data) {
-        let requestUrl = data.fields.eds_source[0].content.Record.FullText.Links[0].Url;
-        $("#fulltextlink[% record.id.remove('\:\:') %]").html("<a href='" + requestUrl + "'>Link<a>");
-      })
-    }); */
-
-
-    </script>
    
    [% END %]
  </div>

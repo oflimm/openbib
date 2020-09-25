@@ -145,6 +145,7 @@
 		.then(response => response.json())
 		.then(data => {
 			cartItemdata = {};
+			
 			data.collection.forEach(function (element) {
 				cartItemdata[element.titleid] = {
 					itemid: element.itemid

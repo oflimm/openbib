@@ -104,10 +104,21 @@ END;%]
 </div>
 <div class="ml-auto text-center" style="width: 30%; color: white; background-color: #00205d;">
 <h4 class="pt-2">Informationen zum Zugriff</h4>
-[% fulltext = normdata.${'T0662'}.first.content;%]
-<div class="mt-3 text-left pl-4">
-   <a style="color: white; text-decoration: none;" href="[%fulltext%]">Volltext beim Philosopher's Index</a>
-</div>
+[% fulltext = 0 %]     
+<div>[%normdata.eds_source.0.content.Fulltext%]</div>
+[% linkdata = normdata.eds_source.0.content.Record.FullText.Links %]
+   [%- FOREACH link IN linkdata -%]
+            [%- IF link.Type == "pdflink" -%]
+              [% fulltext = 1 %]  
+            [%- END -%]
+   [%- END -%]
+
+   [%- IF fulltext == 1 -%]
+   <div id='fulltextlink[% record.id.remove("\:\:") %]'>
+    <a href="[% path_prefix %]/fulltexts/id/[% record.id%]">Text über den Philosopher's Index<a>
+   </div>
+   
+   [% END %]
 
 </div>
 </div>

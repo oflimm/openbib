@@ -26,12 +26,13 @@
 							href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('registrations_loc') %].html?l=[% lang %]">Registrierung</a>
 					</div>
 					[% END %]
-					<div class="text-lg-center mr-3">
-							<a  hx-get="[% path_prefix %]//cartitems/count.html?l=de" hx-target="#merklist_count" hx-trigger="load"
-							href="[% path_prefix %]/cartitems.html?l=[% lang %]">Merkliste (<span id="merklist_count"><i class="fas fa-spinner fa-spin"></i></span>) </a>
-							<a x-data x-ref="anchor" @cartlist-change.window="console.log('event');$refs.anchor.click();" hx-get="[% path_prefix %]/cartitems/count.html?l=de" hx-trigger="click" hx-target="#merklist_count"></a>
+					<div x-data class="text-lg-center mr-3">
+						<a hx-get="[% path_prefix %]//cartitems/count.html?l=de" hx-target="#merklist_count"
+							hx-trigger="load" href="[% path_prefix %]/cartitems.html?l=[% lang %]">Merkliste (<span
+								x-text="$store.cartitems_count" id="merklist_count"><i
+									class="fas fa-spinner fa-spin"></i></span>) </a>
 					</div>
-					
+
 					<div class="text-lg-center mr-3">
 						Sprache
 					</div>
@@ -138,5 +139,24 @@
 		</div>
 	</div> -->
 </header>
+<script>
+	let cartItemdata = {};
+	fetch('[% path_prefix %]/cartitems.json?l=de')
+		.then(response => response.json())
+		.then(data => {
+			cartItemdata = {};
+			data.collection.forEach(function (element) {
+				cartItemdata[element.titleid] = {
+					itemid: element.itemid
+				}
+			})
+			Spruce.store('cartitems', cartItemdata);
+			Spruce.store('cartitems_count', Object.keys(cartItemdata).length);
+			let event = new CustomEvent("cartitem-loaded", { "detail": "Example of an event" });
+			// Dispatch/Trigger/Fire the event
+			document.dispatchEvent(event);
+		});
+
+</script>
 
 <!-- End Template: corporate_banner -->

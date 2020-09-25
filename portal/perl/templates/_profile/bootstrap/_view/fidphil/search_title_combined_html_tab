@@ -151,6 +151,7 @@
       } 
      }) 
      Spruce.store('cartitems', cartItemdata);
+     Spruce.store('cartitems_count', Object.keys(cartItemdata).length);
      let event = new CustomEvent("cartitem-loaded", { "detail": "Example of an event" });
      // Dispatch/Trigger/Fire the event
      document.dispatchEvent(event);

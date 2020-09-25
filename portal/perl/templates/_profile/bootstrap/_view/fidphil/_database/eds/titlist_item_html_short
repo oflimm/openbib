@@ -380,7 +380,7 @@ titleinfo = titleinfos.join(" | ");
 <div x-data="action_area()" class="col-1 d-flex">
   <a  x-ref="addcart" x-show="showaddcart"
    x-on:htmx:before-request.camel="showspinner=true;showaddcart=false;"
-   x-on:htmx:after-request.camel="cartlistChange($dispatch, 'add', $refs);" 
+   x-on:htmx:after-request.camel="cartlistChange($dispatch, $refs, $store);" 
     class="text-secondary" hx-post="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" hx-swap="none" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" 
   title="[% msg.maketext('In die Merkliste') %]" style="display:none"> 
   <i @cartitem-loaded.document="test($store, '[%record.id%]' )" class="far fa-star" ></i>
@@ -398,64 +398,61 @@ titleinfo = titleinfos.join(" | ");
     
     function action_area() {
         return {
-          showaddcart : false,
-          showremovecart : false,
-          showspinner : true,
-          
+          showaddcart: false,
+          showremovecart: false,
+          showspinner: true,
           deleteurl: '',
-          cartlistChange(dispatch, mode, refs) {
-           
+          cartlistChange(dispatch, refs,store) {
             fetch('[% path_prefix %]/cartitems.json?l=de')
               .then(response => response.json())
               .then(data => {
-                
                 cartItemdata = {};
                 data.collection.forEach(function (element) {
                   cartItemdata[element.titleid] = {
                     itemid: element.itemid
                   }
                 })
-                console.log(cartItemdata);
                 Spruce.reset('cartitems', cartItemdata);
-                if (mode === 'add'){
-                  this.showspinner=false;
-                this.showaddcart=false;
-                this.showremovecart=true;
-                }else {
-                  this.showspinner=false;
-                  this.showaddcart=true;
-                 this.showremovecart=false;
-                //refs['addcart'].style.display = 'block';
-                //refs['removecart'].style.display = 'none';
-                }
-                //refs['spinner'].style.display = 'none';
+                Spruce.reset('cartitems_count', Object.keys(cartItemdata).length);
+                console.log(store.cartitems_count);
+                this.showspinner = false;
+                this.showaddcart = false;
+                this.showremovecart = true;
                 dispatch("cartlist-change", {});
-             })
-            
+              })
           },
-          removeFromCartList(refs, dispatch, store, recordid){
-          this.showremovecart = false;
-          this.showspinner = true;
-           let url = "[% path_prefix %]/[% config.get('cartitems_loc') %]/id/"+store.cartitems[recordid]['itemid']+"?_method=DELETE";
-             fetch(url, {
+          removeFromCartList(refs, dispatch, store, recordid) {
+            this.showremovecart = false;
+            this.showspinner = true;
+            let url = "[% path_prefix %]/[% config.get('cartitems_loc') %]/id/" + store.cartitems[recordid]['itemid'] + "?_method=DELETE";
+            fetch(url, {
               method: 'GET',
-             }).then(res => {
-              this.cartlistChange( dispatch,'remove', refs);
-             }) 
-          },
+            }).then(res => {
+              delete store.cartitems[recordid];
+              Spruce.reset('cartitems_count', Object.keys(cartItemdata).length);
+              console.log(store.cartitems_count);
+              this.showspinner = false;
+              this.showaddcart = true;
+              this.showremovecart = false;
+              dispatch("cartlist-change", {});
+            })
+          }
+          ,
           test(store, refs, recordid,) {
             this.showspinner = false;
-            if (store.cartitems[recordid]){
-              this.showaddcart=false;
-              this.showremovecart=true;
+            if (store.cartitems[recordid]) {
+              this.showaddcart = false;
+              this.showremovecart = true;
 
-            }else{
-            this.showaddcart=true;
-            this.showremovecart=false;
+            } else {
+              this.showaddcart = true;
+              this.showremovecart = false;
             }
-          },
+          }
         }
       }
+      
+      
 </script>
   </div>
 <!-- Ende einzelner Treffer -->

@@ -122,7 +122,9 @@
   border-radius: 3px;
 }
 .noUi-connect {
-  background: #3FB8AF;
+    background: #d6ecfb;
+
+    /*background: #3FB8AF; */
 }
 /* Handles and cursors;
  */

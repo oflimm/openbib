@@ -713,6 +713,14 @@ $("#dd_availability_[% database %]_toggle").click(function(){
       yearcount = {};
       FOREACH year_thisitem IN facets.year;
         item      = year_thisitem.0;
+
+        itemmatch = item.match('(-?\d\d\d\d)');
+	IF itemmatch.0 ;
+	  item = itemmatch.0;
+	ELSE ;
+	   NEXT;
+	END;
+
         itemcount = year_thisitem.1;
         yearcount.${item} = itemcount;
         IF item < minyear ;

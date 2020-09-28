@@ -71,6 +71,8 @@
     <!-- Material Design CSS -->
 <!--    <link rel="stylesheet" href="/css/bootstrap-material-design.min.css"> -->
 
+    <!-- noUiSlider CSS -->
+    <link rel="stylesheet" href="/css/nouislider.css">
 
   [%- TRY -%]
     [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/_profile/$sysprofile/_view/$view/openbib.css" -%]
@@ -99,6 +101,8 @@
 <script src="/js/bootstrap-select.min.js"></script>
 <script src="/js/jquery-ui-1.8.24.min.js"></script>
 <script src="/js/jquery.autocomplete.js"></script>
+<script src="/js/Chart.bundle.min.js"></script>
+<script src="/js/nouislider.min.js"></script>
 
 <!-- <script src="/js/bootstrap-material-design.min.js"></script> -->
 

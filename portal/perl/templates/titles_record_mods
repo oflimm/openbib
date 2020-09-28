@@ -1,0 +1,162 @@
+[%#-
+#######################################################################
+#
+# Templatename: titles_rdf
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Titel-Normdatensatzes als LinkedData
+#
+#######################################################################
+-%]
+[%- normdata        = record.get_fields -%]
+[%- holding         = record.get_holding -%]
+[%- circulation     = record.load_circulation.get_circulation -%] 
+[%- same_records    = record.enrich_same_records.get_same_records -%]
+[%- similar_records = record.enrich_similar_records.get_similar_records -%]
+<?xml version="1.0" encoding="UTF-8"?>
+
+<modsCollection xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns="http://www.loc.gov/mods/v3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">
+ <mods version="3.3"> 
+<recordInfo>
+ <recordIdentifier>[% record.id %]</recordIdentifier>
+</recordInfo>
+ [%    list_one = normdata.${"T0100"};
+       list_two = normdata.${"T0101"};
+       list_three = normdata.${"T0102"};
+       list_four = normdata.${"T0103"};
+       personlist = list_one.merge(list_two, list_three, list_four);
+ %]
+
+[% FOREACH item IN personlist %]
+<name type="personal">
+[% 
+ IF item.content.search(','); 
+ name_array = item.content.split(','),
+ family = name_array.0.trim;
+ given = name_array.1.trim;
+ ELSE;
+ given = item.content.trim;
+ END;
+%]
+ [% IF family %]
+ <namePart type="family">[% family %]</namePart>
+ [%END%]
+ <namePart type="given">[% given %]</namePart>
+ <displayForm>[% item.content %]</displayForm>
+ <role>
+ [% IF item.supplement %]
+ <roleTerm type="code" authority="marcrelator" text="[%item.supplement%]">oth</roleTerm>
+ [% ELSE %]
+  <roleTerm type="code" authority="marcrelator">aut</roleTerm>
+ [% END %]
+ </role>
+  </name>
+ [% END %]
+[%    corp_one = normdata.${"T0200"};
+       corp_two = normdata.${"T0201"};
+       corplist = corp_one.merge(corp_two);
+ %]
+[% FOREACH item IN corplist %]
+<name type="corporate">
+ <namePart>[% item.content %]</namePart>
+ <role>
+ [% IF item.supplement %]
+ <roleTerm type="code" authority="marcrelator" text="[% item.supplement %]">oth</roleTerm>
+ [% ELSE %]
+  <roleTerm type="code" authority="marcrelator">aut</roleTerm>
+ [% END %]
+ </role>
+  </name>
+ [% END %]
+[% IF normdata.${"T4410"}.first.content == "Monographie" %] 
+<titleInfo>
+[% FOREACH item IN normdata.${"T0331"} %]
+<title>[% item.content %]</title>
+[% END %]
+[% FOREACH item IN normdata.${"T0335"} %]
+<subtitle>[% item.content %]</subtitle>
+[% END %]
+</titleInfo>
+<originInfo eventType="publication">
+[% FOREACH item IN normdata.${"T0410"} %]
+ <place>
+ <placeTerm type="text">[% item.content %]</placeTerm>
+ </place>
+ [% END %]
+ [% FOREACH item IN normdata.${"T0412"} %]
+ <publisher>[% item.content %]</publisher>
+ [% END %]
+  [% FOREACH item IN normdata.${"T0425"} %]
+ <dateIssued keyDate="yes" encodin="iso8601">[% item.content %]</dateIssued>
+ [% END %]
+</originInfo>
+<!-- 
+ Bei der Digitalisierung zu erzeugen 
+<originInfo eventType="digitization">
+<publisher>Universitäts- und Stadtbibliothek Köln</publisher>
+</originInfo> 
+-->
+[% IF normdata.${"T4301"}.first %] 
+<language>
+<languageTerm type="code" authority="iso639-2">[% normdata.${"T4301"}.first.content %]</languageTerm>
+</language>
+[%END%]
+<!-- See description for MARC 561 -->
+<note type="ownership">
+  [% normdata.${"T4310"}.first.content %]
+</note>
+<subject usage="usb_collection">
+[% FOREACH item IN normdata.${"T4700"} %]
+<topic>[% item.content %]</topic>
+[%END%]
+</subject>
+<subject>
+[% FOREACH item IN normdata.${"T0710"} %]
+<topic>[% item.content %]</topic>
+[%END%]
+</subject>
+[% 
+IF normdata.${"T5005"}.first; 
+ super         = from_json(normdata.${"T5005"}.first.content);
+ super_title   = super.fields.${'0451'}.first.content;
+
+ IF super.fields.${'0331'} ;
+ super_title   = super.fields.${'0331'}.first.content;
+ END ;
+ IF NOT super_title ;
+ super_title = "Zur Ueberordnung";
+ END ;
+END;
+%]
+[% IF super %]
+<relatedItem>
+  <titleInfo>[% super_title %]</titleInfo>
+</relatedItem>
+<relatedItem type="host">
+  <recordInfo>
+    <recordIdentifier>[% normdata.${"T0004"}.first.content %]</recordIdentifier>
+  </recordInfo>
+</relatedItem>
+<relatedItem>
+<part>
+<detail type="volume">
+[% IF NOT normdata.${"T0331"} %]
+<number>[% normdata.${"T0089"}.first.content %]</number>
+[% ELSE %]
+<number>[% normdata.${"T0455"}.first.content %]</number>
+[%END%]
+</detail>
+</part>
+</relatedItem>
+[%END%]
+
+[% ELSE %]
+  <article/>
+[% END %]
+</mods>
+
+</modsCollection>

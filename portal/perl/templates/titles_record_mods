@@ -18,12 +18,11 @@
 [%- similar_records = record.enrich_similar_records.get_similar_records -%]
 <?xml version="1.0" encoding="UTF-8"?>
 
-<modsCollection xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xmlns="http://www.loc.gov/mods/v3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">
- <mods version="3.3"> 
-<recordInfo>
- <recordIdentifier>[% record.id %]</recordIdentifier>
-</recordInfo>
+<mods xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns="http://www.loc.gov/mods/v3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd" version="3.4"> 
+<mods:recordInfo>
+ <mods:recordIdentifier>[% record.id %]</mods:recordIdentifier>
+</mods:recordInfo>
  [%    list_one = normdata.${"T0100"};
        list_two = normdata.${"T0101"};
        list_three = normdata.${"T0102"};
@@ -32,7 +31,7 @@
  %]
 
 [% FOREACH item IN personlist %]
-<name type="personal">
+<mods:name type="personal">
 [% 
  IF item.content.search(','); 
  name_array = item.content.split(','),
@@ -43,57 +42,57 @@
  END;
 %]
  [% IF family %]
- <namePart type="family">[% family %]</namePart>
+ <mods:namePart type="family">[% family %]</mods:namePart>
  [%END%]
- <namePart type="given">[% given %]</namePart>
- <displayForm>[% item.content %]</displayForm>
- <role>
+ <mods:namePart type="given">[% given %]</mods:namePart>
+ <mods:displayForm>[% item.content %]</mods:displayForm>
+ <mods:role>
  [% IF item.supplement %]
- <roleTerm type="code" authority="marcrelator" text="[%item.supplement%]">oth</roleTerm>
+ <mods:roleTerm type="code" authority="marcrelator" text="[%item.supplement%]">oth</mods:roleTerm>
  [% ELSE %]
-  <roleTerm type="code" authority="marcrelator">aut</roleTerm>
+  <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
  [% END %]
- </role>
-  </name>
+ </mods:role>
+  </mods:name>
  [% END %]
 [%    corp_one = normdata.${"T0200"};
        corp_two = normdata.${"T0201"};
        corplist = corp_one.merge(corp_two);
  %]
 [% FOREACH item IN corplist %]
-<name type="corporate">
- <namePart>[% item.content %]</namePart>
- <role>
+<mods:name type="corporate">
+ <mods:namePart>[% item.content %]</mods:namePart>
+ <mods:role>
  [% IF item.supplement %]
- <roleTerm type="code" authority="marcrelator" text="[% item.supplement %]">oth</roleTerm>
+ <mods:roleTerm type="code" authority="marcrelator" text="[% item.supplement %]">oth</roleTerm>
  [% ELSE %]
-  <roleTerm type="code" authority="marcrelator">aut</roleTerm>
+  <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
  [% END %]
- </role>
-  </name>
+ </mods:role>
+  </mods:name>
  [% END %]
 [% IF normdata.${"T4410"}.first.content == "Monographie" %] 
-<titleInfo>
+<mods:titleInfo>
 [% FOREACH item IN normdata.${"T0331"} %]
-<title>[% item.content %]</title>
+<mods:title>[% item.content %]</mods:title>
 [% END %]
 [% FOREACH item IN normdata.${"T0335"} %]
-<subtitle>[% item.content %]</subtitle>
+<mods:subtitle>[% item.content %]</mods:subtitle>
 [% END %]
-</titleInfo>
-<originInfo eventType="publication">
+</mods:titleInfo>
+<mods:originInfo eventType="publication">
 [% FOREACH item IN normdata.${"T0410"} %]
- <place>
- <placeTerm type="text">[% item.content %]</placeTerm>
- </place>
+ <mods:place>
+ <mods:placeTerm type="text">[% item.content %]</mods:placeTerm>
+ </mods:place>
  [% END %]
  [% FOREACH item IN normdata.${"T0412"} %]
- <publisher>[% item.content %]</publisher>
+ <mods:publisher>[% item.content %]</mods:publisher>
  [% END %]
   [% FOREACH item IN normdata.${"T0425"} %]
- <dateIssued keyDate="yes" encodin="iso8601">[% item.content %]</dateIssued>
+ <mods:dateIssued keyDate="yes" encodin="iso8601">[% item.content %]</mods:dateIssued>
  [% END %]
-</originInfo>
+</mods:originInfo>
 <!-- 
  Bei der Digitalisierung zu erzeugen 
 <originInfo eventType="digitization">
@@ -101,24 +100,24 @@
 </originInfo> 
 -->
 [% IF normdata.${"T4301"}.first %] 
-<language>
-<languageTerm type="code" authority="iso639-2">[% normdata.${"T4301"}.first.content %]</languageTerm>
-</language>
+<mods:language>
+<mods:languageTerm type="code" authority="iso639-2">[% normdata.${"T4301"}.first.content %]</mods:languageTerm>
+</mods:language>
 [%END%]
 <!-- See description for MARC 561 -->
-<note type="ownership">
+<mods:note type="ownership">
   [% normdata.${"T4310"}.first.content %]
-</note>
-<subject usage="usb_collection">
+</mods:note>
+<mods:subject usage="usb_collection">
 [% FOREACH item IN normdata.${"T4700"} %]
-<topic>[% item.content %]</topic>
+<mods:topic>[% item.content %]</mods:topic>
 [%END%]
-</subject>
-<subject>
+</mods:subject>
+<mods:subject>
 [% FOREACH item IN normdata.${"T0710"} %]
-<topic>[% item.content %]</topic>
+<mods:topic>[% item.content %]</mods:topic>
 [%END%]
-</subject>
+</mods:subject>
 [% 
 IF normdata.${"T5005"}.first; 
  super         = from_json(normdata.${"T5005"}.first.content);
@@ -133,30 +132,28 @@ IF normdata.${"T5005"}.first;
 END;
 %]
 [% IF super %]
-<relatedItem>
-  <titleInfo>[% super_title %]</titleInfo>
-</relatedItem>
-<relatedItem type="host">
-  <recordInfo>
-    <recordIdentifier>[% normdata.${"T0004"}.first.content %]</recordIdentifier>
-  </recordInfo>
-</relatedItem>
-<relatedItem>
-<part>
-<detail type="volume">
+<mods:relatedItem>
+  <mods:titleInfo>[% super_title %]</mods:titleInfo>
+</mods:relatedItem>
+<mods:relatedItem type="host">
+  <mods:recordInfo>
+    <mods:recordIdentifier>[% normdata.${"T0004"}.first.content %]</mods:recordIdentifier>
+  </mods:recordInfo>
+</mods:relatedItem>
+<mods:relatedItem>
+<mods:part>
+<mods:detail type="volume">
 [% IF NOT normdata.${"T0331"} %]
-<number>[% normdata.${"T0089"}.first.content %]</number>
+<mods:number>[% normdata.${"T0089"}.first.content %]</mods:number>
 [% ELSE %]
-<number>[% normdata.${"T0455"}.first.content %]</number>
+<mods:number>[% normdata.${"T0455"}.first.content %]</mods:number>
 [%END%]
-</detail>
-</part>
-</relatedItem>
+</mods:detail>
+</mods:part>
+</mods:relatedItem>
 [%END%]
 
 [% ELSE %]
   <article/>
 [% END %]
 </mods>
-
-</modsCollection>

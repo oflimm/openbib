@@ -56,5 +56,5 @@ system("$wgetexe -N -P $pooldir/$pool/ $title_url ");
 system("$wgetexe -N -P $pooldir/$pool/ $holding_url ");
 
 system("cd $pooldir/$pool; $mab2metaexe --titlefile=".$dbinfo->titlefile." --holdingfile=".$dbinfo->holdingfile." --configfile=/opt/openbib/conf/$pool.yml");
-system("cd $pooldir/$pool; gzip meta.* ");
+system("cd $pooldir/$pool; rm meta.*.gz ; gzip meta.* ");
 

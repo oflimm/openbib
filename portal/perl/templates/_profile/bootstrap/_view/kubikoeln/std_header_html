@@ -71,6 +71,9 @@
     <!-- Material Design CSS -->
 <!--    <link rel="stylesheet" href="/css/bootstrap-material-design.min.css"> -->
 
+    <!-- noUiSlider CSS -->
+    <link rel="stylesheet" href="/css/nouislider.css">
+
     <!-- Chart CSS -->
     <link rel="stylesheet" href="/css/Chart.css">
 
@@ -103,6 +106,8 @@
 <script src="/js/jquery-ui-1.8.24.min.js"></script>
 <script src="/js/jquery.autocomplete.js"></script>
 <script src="/js/Chart.bundle.min.js"></script>
+<script src="/js/nouislider.min.js"></script>
+
 <script src="/js/intercooler-1.2.3.min.js"></script>
 
 <!-- <script src="/js/bootstrap-material-design.min.js"></script> -->

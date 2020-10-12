@@ -110,11 +110,9 @@
 <mods:note type="ownership">
   [% normdata.${"T4310"}.first.content %]
 </mods:note>
-<mods:classification authority="ZVDD">
 [% FOREACH item IN normdata.${"T4700"} %]
-</mods:classification>
+<mods:classification authority="ZVDD">[% item.content %]</mods:classification>
 [%END%]
-</mods:subject>
 <mods:subject>
 [% FOREACH item IN normdata.${"T0710"} %]
 <mods:topic>[% item.content %]</mods:topic>

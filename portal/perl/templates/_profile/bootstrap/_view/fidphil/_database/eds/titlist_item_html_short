@@ -372,9 +372,28 @@ titleinfo = titleinfos.join(" | ");
    <div id='fulltextlink[% record.id.remove("\:\:") %]'>
     <a href="[% path_prefix %]/fulltexts/id/[% record.id%]">Link<a>
    </div>
-   
    [% END %]
- </div>
+   <!--EBSCO FUlltextfinder
+  e.g.http://localhost/portal/fidphil/users/id/8/databases/id/eds/titles/id/pif::PHL2394730.json?l=de
+  Für diese Links sind häufig Bibliotheks-Lizenzen, z.B. Academic Search Complete notwendig
+  -->
+  [% custom_fulltext = 0 %] 
+  [% ebsco_icon_link = '' %] 
+  [% custom_linkdata = item.eds_source.0.content.FullText.CustomLinks %]
+  [%- FOREACH link IN custom_linkdata -%]
+           [%- IF link.Url -%]
+             [% custom_fulltext = link.Url %]
+             [% ebsco_icon_link = link.Icon %]   
+           [%- END -%]
+  [%- END -%]
+  [%- IF custom_fulltext  -%]
+  <div id='fulltextlink[% record.id.remove("\:\:") %]'>
+   <img src="[% ebsco_icon_link %]"><a href="[%custom_fulltext%]">Get Link using EBSCO Fulltext Finder<a>
+  </div>
+  [% END %]
+ 
+    </div>
+
 
 <div x-data="action_area()" class="col-1 d-flex">
   <a  x-ref="addcart" x-show="showaddcart"
@@ -393,7 +412,7 @@ titleinfo = titleinfos.join(" | ");
   <a x-ref="spinner" x-show="showspinner"><i class="fas fa-spinner fa-spin"></i></a>
   
 </div>
-<script>
+<script type="text/javascript">
     
     function action_area() {
         return {

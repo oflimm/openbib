@@ -139,64 +139,7 @@
 
   </div><!-- End: col -->
  
-  <script>
-    let cartItemdata = {};
-    fetch('[% path_prefix %]/cartitems.json?l=de')
-    .then(response => response.json())
-    .then(data => {
-     cartItemdata = {};
-     data.collection.forEach(function(element) {
-      cartItemdata[element.titleid] = {
-        itemid: element.itemid
-      } 
-     }) 
-     Spruce.store('cartitems', cartItemdata);
-     Spruce.store('cartitems_count', Object.keys(cartItemdata).length);
-     let event = new CustomEvent("cartitem-loaded", { "detail": "Example of an event" });
-     // Dispatch/Trigger/Fire the event
-     document.dispatchEvent(event);
-    });
-    
-  </script>
-  <div x-ref="sidebar" x-show="showSidebar" x-transition:enter-start="side-menu-collapsed
-    ;x-transition:enter-end='side-menu'" class="mt-5 p-2 side-menu" x-data="sidebar()"
-    @person-hover.window="showHover($el);" @person-info.window.prevent="swipe($refs); return false;"
-    style="position: fixed; overflow-y: auto; ">
-    <h2 class="icon icon-lab">Sidebar</h2>
-    <div x-ref="sidebarbody" id="sidebar-body">
-      <span> <i @click="load($refs)" id="box-spinner" class="fa fa-spinner fa-spin"></i> Lade Informationen</span>
-    </div>
-    <script>
-      function sidebar() {
-        return {
-          showSidebar: false,
-          loaded: false,
-          swipe($refs) {
-            this.showSidebar = !this.showSidebar;
-            if (!this.loaded) {
-              fetch('http://localhost:8008/portal/fidphil/databases/id/eds/titles/id/pif::PHL2387913.html?l=en')
-                .then(response => response.text())
-                .then(html => { $refs.sidebarbody.innerHTML = html });
-            }
-            this.loaded = true;
-            return false;
-          },
-          close($refs) {
-            console.log("test");
-            this.showSidebar = false;
-          },
-          showHover(el) {
-            //console.log("test");
-
-          },
-          load($refs) {
-
-
-          }
-
-        }
-      };
-    </script>
+  
   </div>
 
 

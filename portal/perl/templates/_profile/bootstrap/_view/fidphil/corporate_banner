@@ -139,25 +139,16 @@
 		</div>
 	</div> -->
 </header>
-<script>
-	let cartItemdata = {};
-	fetch('[% path_prefix %]/cartitems.json?l=de')
-		.then(response => response.json())
-		.then(data => {
-			cartItemdata = {};
-			
-			data.collection.forEach(function (element) {
-				cartItemdata[element.titleid] = {
-					itemid: element.itemid
-				}
-			})
-			Spruce.store('cartitems', cartItemdata);
-			Spruce.store('cartitems_count', Object.keys(cartItemdata).length);
-			let event = new CustomEvent("cartitem-loaded", { "detail": "Example of an event" });
-			// Dispatch/Trigger/Fire the event
-			document.dispatchEvent(event);
-		});
-
+[% USE JSON.Escape( ) %];
+[%data =user.get_items_in_collection({view = 'fidphil'}).get_records %];
+[% json_stuct = { foo => 42, bar => [ 1, 2, 3 ] } %]
+<script type="text/javascript">let a = 'b';
+let b ="[%json_struct.json | html %]";
+console.log(b);
 </script>
+
+
+<div></div>
+
 
 <!-- End Template: corporate_banner -->

@@ -44,7 +44,7 @@ searchdata = "${searchquery.get_searchtermstring()}";
   
 </ul>
 <div class="tab-content search-tabs" id="myTabContentMD">
-
+  
   <div class="tab-pane fade show active" id="books-md" role="tabpanel" aria-labelledby="books-tab-md">
     [% PROCESS common/subtemplate name="search_title_combined_html_tab" %]
   </div><!-- End: col -->

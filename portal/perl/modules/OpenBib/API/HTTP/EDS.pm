@@ -1483,6 +1483,10 @@ sub parse_query {
         my $searchtermstring_from = (defined $searchquery->get_searchfield("${field}_from")->{norm})?$searchquery->get_searchfield("${field}_from")->{norm}:'';
         my $searchtermstring_to = (defined $searchquery->get_searchfield("${field}_to")->{norm})?$searchquery->get_searchfield("${field}_to")->{norm}:'';
 
+	
+		
+	
+
 	if ($field eq "year" && ($searchtermstring_from || $searchtermstring_to)){
 	    if ($searchtermstring_from && $searchtermstring_to){
 		push @$query_ref, "query-".$query_count."=AND%2CDT:".cleanup_eds_query($searchtermstring_from."-".$searchtermstring_to);
@@ -1502,7 +1506,9 @@ sub parse_query {
 		    push @$query_ref, "query-".$query_count."=AND%2C".cleanup_eds_query($searchtermstring);
 		}
 		else {
+			if ($field ne 'fulltext'){
 		    push @$query_ref, "query-".$query_count."=AND%2C".$mapping_ref->{$field}.":".cleanup_eds_query($searchtermstring);
+			}
 		}
 		
 		#push @$query_ref, "query-".$query_count."=AND%2C".cleanup_eds_query($mapping_ref->{$field}.":".$searchtermstring);
@@ -1539,13 +1545,18 @@ sub parse_query {
         }
 	
     }
-
+	
     if ($logger->is_debug){
         $logger->debug("Query: ".YAML::Dump($query_ref));
         $logger->debug("Filter: ".YAML::Dump($filter_ref));
     }
 
-    $self->{_query}  = $query_ref;
+    #necessary to make the fulltext limiter work
+	if ( $searchquery->get_searchfield('fulltext')->{val}) {
+       push @$query_ref, "&limiter=FT:y";
+    }
+
+	$self->{_query}  = $query_ref;
     $self->{_filter} = $filter_ref;
 
     return $self;

@@ -1,3 +1,4 @@
+[% USE Dumper %]
 [% IF queryoptions.get_option('facets') != 'none' %]
 [% separate_refine = 1 %]
 <div class="ob-facets ob-facets_all sliding-sidebar">
@@ -229,6 +230,7 @@
                    END ;
 %]
 [%# USE dumper;dumper.dump(category_map) %]
+[% dumper.dump(filter) %]
 <li class="ob-facet-item d-flex"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude_filter = [ filter.val ] }) %]" title="[% msg.maketext("Entfernen") %]"><img style="vertical-align:bottom" src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /></a>&nbsp;[% filter_prefix_map.${filter.field} %]: [% IF filter.field == "fdb" %][% dbinfo.get('dbnames').${filter.term}.short %][% ELSIF filter.field == "floc" %][% locinfo.get('identifier').${filter.term}.description %][% ELSE %][% filter.term %][% END %]</li>
 [%             END %]
 </ul>
@@ -432,6 +434,18 @@
 [%         END %]
 <!-- End availability facet -->
 
+<!--Fulltext Selector-->
+<div class="ob-facet-fulltext d-flex pl-3 mt-2 mb-4">
+
+  [% IF NOT searchquery.get_searchfield('fulltext').val %]
+   <a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %];fulltext=yes"><input class="mr-2" type="checkbox">
+    [% ELSE %]
+    <a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];hello;[% searchquery.to_cgi_querystring({ exclude = [ 'fulltext' ] }) %]"><input class="mr-2" type="checkbox" checked>
+     [% END %]
+    <span>[% msg.maketext("Zeige nur Treffer mit Volltext") %] </span>
+   </a>
+</div>
+
 <!-- Begin mediatype facet -->
 [%         IF config.get('facets').mediatype && facets.defined('mediatype') && facets.mediatype.size > 0 %]
         <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-mediatype" aria-expanded="true">
@@ -473,7 +487,7 @@
 [% IF facets.topic.size > 5 && loop.count == 5 %]
 <div x-data="{open: false}">
 <span id="dd_topic_[% database %]_toggle" @click="open = true" x-show="!open"><a href="#dd_topic_[% database %]_anchor"><i class="fa fa-arrow-down"></i> [% msg.maketext("Mehr") %]</a></span>
-<div id="dd_topic_[% database %]" x-show="open">
+<div id="dd_topic_[% database %]" x-show="open" style="display:none">
 [% END %]
 [%-
     searchterm    = termitem.0;
@@ -502,7 +516,7 @@
 [% IF facets.subject.size > 5 && loop.count == 5 %]
 <div x-data="{open: false}">
 <span id="dd_subjects_[% database %]_toggle" @click="open = true" x-show="!open"><a href="#dd_subjects_[% database %]_anchor"><i class="fa fa-arrow-down"></i> [% msg.maketext("Mehr") %]</a></span>
-<div id="dd_subjects_[% database %]" x-show="open">
+<div id="dd_subjects_[% database %]" x-show="open" style="display:none">
 [% END %]
 [%-
     searchterm    = termitem.0;
@@ -846,27 +860,13 @@ durch zus&auml;tzliche Worte weiter eingrenzen.") %]
 [% END %]
 </div>
 
-<p/>
-
-<p/>
 [% END # facets=none%]
 <div class="ob-facets ob-facets_dbinfo">
 <div class="ob-category_header"><span id="ob-facets_dbinfo_toggle">[% msg.maketext("Datenbank-Empfehlungen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 
 <div id="ob-facets_dbinfo_toggle_do">
 <!-- Anfang Elib DBIS-Empfehlungen -->
-<script language="JavaScript" type="text/javascript">
-$(document).ready(function(){
-// Begin Elib DBIS-Empfehlungen
-  $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/titles/recommendations.include?l=[% lang %];fs=[% searchquery.get_searchtermstring %]",
-         function (txt){
-           $("#ob-dbis_recommendations").html(txt); 
-  });
-});
 
-</script>
-
-<p/>
 
 <div id="ob-dbis_recommendations"><!-- Begin Elib DBIS-Empfehlungen -->
 <span ><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/titles/recommendations.html?l=[% lang %];fs=[% searchquery.get_searchtermstring %]">[% msg.maketext("Weiter zu den Datenbank-Empfehlungen") %]</a></span>

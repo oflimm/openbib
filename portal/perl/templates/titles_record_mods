@@ -17,9 +17,8 @@
 [%- same_records    = record.enrich_same_records.get_same_records -%]
 [%- similar_records = record.enrich_similar_records.get_similar_records -%]
 <?xml version="1.0" encoding="UTF-8"?>
-
 <mods xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xmlns="http://www.loc.gov/mods/v3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd" version="3.4"> 
+ xmlns:mods="http://www.loc.gov/mods/v3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd" version="3.4"> 
 <mods:recordInfo>
  <mods:recordIdentifier>[% record.id %]</mods:recordIdentifier>
 </mods:recordInfo>
@@ -76,6 +75,9 @@
 [% FOREACH item IN normdata.${"T0331"} %]
 <mods:title>[% item.content %]</mods:title>
 [% END %]
+[% FOREACH item IN normdata.${"T0370"} %]
+<mods:title type="alternative">[% item.content %]</mods:title>
+[% END %]
 [% FOREACH item IN normdata.${"T0335"} %]
 <mods:subtitle>[% item.content %]</mods:subtitle>
 [% END %]
@@ -108,9 +110,9 @@
 <mods:note type="ownership">
   [% normdata.${"T4310"}.first.content %]
 </mods:note>
-<mods:subject usage="usb_collection">
+<mods:classification authority="ZVDD">
 [% FOREACH item IN normdata.${"T4700"} %]
-<mods:topic>[% item.content %]</mods:topic>
+</mods:classification>
 [%END%]
 </mods:subject>
 <mods:subject>

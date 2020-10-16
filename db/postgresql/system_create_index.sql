@@ -133,6 +133,8 @@ CREATE INDEX userinfo_username ON userinfo (username);
 CREATE INDEX userinfo_nachname ON userinfo (nachname);
 CREATE INDEX userinfo_vorname ON userinfo (vorname);
 CREATE INDEX userinfo_password ON userinfo (password);
+CREATE INDEX userinfo_status ON userinfo (status);
+CREATE INDEX userinfo_login_failure ON userinfo (login_failure);
 
 ALTER TABLE user_searchlocation ADD PRIMARY KEY (id);
 ALTER TABLE user_searchlocation ADD CONSTRAINT fk_usersearchlocation_user FOREIGN KEY (userid) REFERENCES userinfo (id);

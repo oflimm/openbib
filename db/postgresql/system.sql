@@ -306,7 +306,9 @@ CREATE TABLE userinfo (
  username        TEXT,
  password        TEXT,
  token           TEXT,
-
+ login_failure   BIGINT default 0,
+ status          TEXT,
+ 
  /* User informatin from library system */
  nachname   TEXT,
  vorname    TEXT,

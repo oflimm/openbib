@@ -144,8 +144,8 @@ sub migrate_ugc {
         return $self->print_warning($msg->maketext("Bitte geben Sie eine alte und neue Kennung ein."));
     }
 
-    my $olduserid = $user->get_userid_for_username($input_data_ref->{oldusername});
-    my $newuserid = $user->get_userid_for_username($input_data_ref->{newusername});
+    my $olduserid = $user->get_userid_for_username($input_data_ref->{oldusername},$view);
+    my $newuserid = $user->get_userid_for_username($input_data_ref->{newusername},$view);
 
     if (!$olduserid){
         return $self->print_warning($msg->maketext("Die Ursprungs-Kennung existiert nicht."));

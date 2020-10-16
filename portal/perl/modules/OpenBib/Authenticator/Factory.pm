@@ -49,9 +49,14 @@ sub create_authenticator {
     my $config    = exists $arg_ref->{config}
         ? $arg_ref->{config}       : OpenBib::Config->new;
 
+    my $user      = exists $arg_ref->{user}
+        ? $arg_ref->{user}         : OpenBib::User->new;
+
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
     $arg_ref->{config} = $config;
+    $arg_ref->{user}   = $user;
     
     my $authenticator_ref = $config->get_authenticator_by_id($id);
 

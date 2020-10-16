@@ -60,6 +60,7 @@ sub authenticate {
     my ($userid,$viewid) = (0,0);
 
     my $config = $self->get_config;
+    my $user   = $self->get_user;
 
     eval {
 	$viewid = $config->get_viewinfo->single({ viewname => $viewname })->id;
@@ -70,43 +71,59 @@ sub authenticate {
 
 	return $userid;
     }
+
+    my $max_login_failure = $config->get('max_login_failure');
     
-    # DBI: "select userid from user where username = ? and password = ?"
-    my $authentication = $config->get_schema->resultset('Userinfo')->search_rs(
+    # Im View registrierter Nutzer hat Vorrang gegenueber gleichnamigen ohne View-Zuordnung
+    my $thisuser = $config->get_schema->resultset('Userinfo')->search_rs(
         {
             username        => $username,
-	    viewid          => $viewid,
+	    -or             => [ viewid => $viewid, viewid => undef ],
 	    authenticatorid => $self->{id},
         },
         {
-            select => ['id', \"me.password  = crypt('$password',me.password)"],
-            as     => ['thisid','is_authenticated'],
+            select => ['id', 'login_failure','status'],
+            as     => ['thisid','thislogin_failure','thisstatus'],
+	    order_by => ['viewid asc'],
         }
             
     )->first;
     
-    if ($authentication && $authentication->get_column('is_authenticated')){
-        $userid = $authentication->get_column('thisid');
-    }
-    else { # Fallback ohne View
-       $authentication = $config->get_schema->resultset('Userinfo')->search_rs(
-           {
-               username        => $username,
-	       viewid          => undef,
-	       authenticatorid => $self->{id},
-           },
-           {
-               select => ['id', \"me.password  = crypt('$password',me.password)"],
-               as     => ['thisid','is_authenticated'],
-           }
-        )->first;
+    if ($thisuser){
+	my $login_failure = $thisuser->get_column('thislogin_failure');
+	my $status        = $thisuser->get_column('thisstatus');
+        $userid           = $thisuser->get_column('thisid');
+        $logger->debug("Got Userid $userid with login failure $login_failure and status $status");
 
-       if ($authentication && $authentication->get_column('is_authenticated')){
-           $userid = $authentication->get_column('thisid');
-       }
-    }
+	if ($userid && $login_failure > $config->get('max_login_failure')){
+	    $userid = -2; # Status: max_login_failure reached
+	}
+	elsif ($userid) {
+	    # User exists so we can authenticate with given password
+	    my $authentication = $config->get_schema->resultset('Userinfo')->search_rs(
+		{
+		    id          => $userid,
+		},
+		{
+		    select => [\"me.password  = crypt('$password',me.password)"],
+		    as     => ['is_authenticated'],
+	        }
+            )->first;
 
-    $logger->debug("Got Userid $userid");
+            if ($authentication->get_column('is_authenticated')){
+               $user->reset_login_failure({ userid => $userid});
+            }
+            else {
+	       $user->add_login_failure({ userid => $userid});
+               $userid = -3;  # Status: wrong password
+            }
+
+	}
+    }
+    else { # User does not exist
+       $logger->debug("Username $username does not exist");
+       $userid = -4;  # Status: user does not exist
+    }
 
     return $userid;    
 }

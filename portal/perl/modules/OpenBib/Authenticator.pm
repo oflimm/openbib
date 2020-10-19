@@ -47,11 +47,12 @@ sub new {
 
     my $config    = exists $arg_ref->{config}
         ? $arg_ref->{config}       : OpenBib::Config->new;
+
+    my $user      = exists $arg_ref->{user}
+        ? $arg_ref->{user}         : OpenBib::User->new;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
-    $config = ($config)?$config:OpenBib::Config->new;
 
     my $authenticator_ref = $config->get_authenticator_by_id($id);
 
@@ -59,8 +60,9 @@ sub new {
 
     bless ($self, $class);
 
-    $self->{id}     = $id;
+    $self->{id}      = $id;
     $self->{_config} = $config;
+    $self->{_user}   = $user;
     
     foreach my $key (keys %{$authenticator_ref}){
 	$self->{$key}     = $authenticator_ref->{$key};
@@ -114,6 +116,12 @@ sub get_config {
     my $self = shift;
 
     return $self->{_config};    
+}
+
+sub get_user {
+    my $self = shift;
+
+    return $self->{_user};    
 }
 
 sub get {

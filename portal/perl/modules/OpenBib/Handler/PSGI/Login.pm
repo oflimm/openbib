@@ -241,6 +241,14 @@ sub authenticate {
     }
 
     my $userid = 0; # Nicht erfolgreich authentifiziert
+
+    # Failure codes
+    #
+    #  0: unspecified
+    # -1: no username and/or password
+    # -2: max_login_failure reached
+    # -3: wrong password
+    # -4: user does not exist
     
     if ($username eq "" || $password eq "") {
         $redirecturl="$path_prefix/$config->{login_loc}/failure?code=-1";
@@ -357,7 +365,7 @@ sub authenticate {
     
     # Fehlerbehandlung
     if ($userid <= 0) {
-        $redirecturl="$path_prefix/$config->{login_loc}/failure?code=-2";
+        $redirecturl="$path_prefix/$config->{login_loc}/failure?code=$userid";
     }
     
     if ($self->param('representation') eq "html"){
@@ -413,13 +421,21 @@ sub failure {
     }
 
     if    ($code eq "-1") {
-        return $self->print_warning($msg->maketext("Sie haben entweder kein Passwort oder keinen Usernamen eingegeben"));
+        return $self->print_warning($msg->maketext("Sie haben entweder kein Passwort oder keinen Benutzernamen eingegeben"));
     }
     elsif ($code eq "-2") {
+        return $self->print_warning($msg->maketext("Die Anmeldung mit Ihrem angegebenen Benutzernamen und Passwort ist zu oft fehlgeschlagen. Das Account ist gesperrt. Bitte fordern Sie ein neues Passwort über 'Passwort vergessen' an."));
+    }
+    elsif ($code eq "-3") {
+	# wrong password
+        return $self->print_warning($msg->maketext("Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht erfolgreich authentifiziert werden"));
+    }
+    elsif ($code eq "-4") {
+	# user does not exist
         return $self->print_warning($msg->maketext("Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht erfolgreich authentifiziert werden"));
     }
     else {
-        return $self->print_warning($msg->maketext("Falscher Fehler-Code"));
+        return $self->print_warning($msg->maketext("Unspezifischer Fehler-Code"));
     }
 }
 

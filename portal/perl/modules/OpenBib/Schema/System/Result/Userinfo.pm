@@ -198,6 +198,17 @@ __PACKAGE__->table("userinfo");
   data_type: 'text'
   is_nullable: 1
 
+=head2 login_failure
+
+  data_type: 'bigint'
+  default_value: 0
+  is_nullable: 1
+
+=head2 status
+
+  data_type: 'text'
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -273,6 +284,10 @@ __PACKAGE__->add_columns(
   "mixed_bag",
   { data_type => "jsonb", is_nullable => 1 },
   "token",
+  { data_type => "text", is_nullable => 1 },
+  "login_failure",
+  { data_type => "bigint", default_value => 0, is_nullable => 1 },
+  "status",
   { data_type => "text", is_nullable => 1 },
 );
 
@@ -567,8 +582,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2020-09-02 13:17:10
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:3SdxB5/1X60MBYrUceEPWw
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2020-10-15 13:15:46
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:1gvLYsImRYSb5C4RIRZJpw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -134,8 +134,16 @@ sub create_record {
     
     # Set new password
 
-    $user->set_password({ username => $username, password => $password });
+    my $userid = $user->get_userid_for_username($username, $view);
 
+    if ($userid > 0){
+	$user->set_password({ userid => $userid, password => $password });
+	$user->reset_login_failure({ userid => $userid});
+    }
+    else {
+	return $self->print_warning($msg->maketext("Dieser Nutzer ist in diesem Portal nicht registriert."));
+    }
+    
     my $anschreiben="";
     my $afile = "an." . $$;
     

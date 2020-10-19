@@ -2,10 +2,10 @@
 
 #####################################################################
 #
-#  gen-subset-holding.pl
+#  gen-subset.pl
 #
 #  Extrahieren einer Titeluntermenge eines Katalogs anhand der
-#  mex-Daten fuer die Erzeugung eines separaten neuen Katalogs
+#  Bibliograph. Daten fuer die Erzeugung eines separaten neuen Katalogs
 #
 #  Dieses File ist (C) 2005-2011 Oliver Flimm <flimm@openbib.org>
 #
@@ -75,8 +75,9 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-my $subset = new OpenBib::Catalog::Subset("inst301retro",$pool);
-$subset->identify_by_mark('^311 \\$');
+my $subset = new OpenBib::Catalog::Subset("${pool}master",$pool);
+$subset->identify_by_field_content('title',[ { field => '0960', content => 'Retro' } ]);
+$subset->identify_by_field_content('title',[ { field => '0960', content => 'Aufsatz' } ]);
 $subset->write_set;
 
 sub print_help {

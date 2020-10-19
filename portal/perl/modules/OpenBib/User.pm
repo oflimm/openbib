@@ -219,6 +219,68 @@ sub update_lastlogin {
     return;
 }
 
+sub add_login_failure {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $userid   = exists $arg_ref->{userid}
+        ? $arg_ref->{userid}             : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if ($userid){
+        # DBI: "update userinfo set pin = ? where username = ?"
+        my $userinfo = $self->get_schema->resultset('Userinfo')->single(
+            {
+                id => $userid,
+            }
+	    );
+
+	if ($userinfo){
+	    my $current_login_failure = $userinfo->get_column('login_failure');
+	    $current_login_failure++;
+	    
+	    $userinfo->update({ login_failure => $current_login_failure });
+	}
+    }
+    else {
+        $logger->error("No userid given");
+    }
+
+    return;
+}
+
+sub reset_login_failure {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $userid   = exists $arg_ref->{userid}
+        ? $arg_ref->{userid}             : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if ($userid){
+
+        # DBI: "update userinfo set pin = ? where username = ?"
+        my $userinfo = $self->get_schema->resultset('Userinfo')->single(
+            {
+                id => $userid,
+            }
+	    );
+
+	if ($userinfo){
+	    $userinfo->update({ login_failure => 0 });
+	}
+    }
+    else {
+        $logger->error("No userid given");
+    }
+
+    return;
+}
+
 sub load_privileges {
     my ($self,$arg_ref)=@_;
 
@@ -809,8 +871,8 @@ sub set_password {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $username   = exists $arg_ref->{username}
-        ? $arg_ref->{username}             : undef;
+    my $userid      = exists $arg_ref->{userid}
+        ? $arg_ref->{userid}                : undef;
 
     my $password    = exists $arg_ref->{password}
         ? $arg_ref->{password}              : undef;
@@ -825,7 +887,7 @@ sub set_password {
     # DBI: "insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','',?,'','','','','')"
     my $update_user = $self->get_schema->resultset('Userinfo')->search_rs(
         {
-            username  => $username,
+            id  => $userid,
         }
     );
 
@@ -990,23 +1052,41 @@ sub get_username_for_userid {
 }
 
 sub get_userid_for_username {
-    my ($self,$username)=@_;
+    my ($self,$username,$viewname)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # DBI: "select userid from user where username = ?"
-    my $userinfo = $self->get_schema->resultset('Userinfo')->single(
-        {
-            username => $username,
-        }
-    );
+    my ($userid,$viewid) = (0,undef);
 
-    my $userid;
+    my $config = $self->get_config;
 
-    if ($userinfo){
-        $userid = $userinfo->id;
+    if ($viewname){
+	eval {
+	    $viewid = $config->get_viewinfo->single({ viewname => $viewname })->id;
+	};
+	
+	if ($@){
+	    $logger->error($@);
+	}
     }
+    
+    my $thisuser = $config->get_schema->resultset('Userinfo')->search_rs(
+        {
+            username        => $username,
+	    -or             => [ viewid => $viewid, viewid => undef ],
+        },
+        {
+            select => ['id'],
+            as     => ['thisid'],
+	    order_by => ['viewid asc'],
+        }
+            
+    )->first;
+
+    if ($thisuser){
+        $userid           = $thisuser->get_column('thisid');
+    }    
 
     return $userid;
 }
@@ -5648,14 +5728,16 @@ sub get_info {
         $userinfo_ref->{'sperre'}     = $userinfo->sperre;
         $userinfo_ref->{'sperrdatum'} = $userinfo->sperrdatum;
         $userinfo_ref->{'email'}      = $userinfo->email;
+	$userinfo_ref->{'status'}     = $userinfo->status;
         $userinfo_ref->{'gebdatum'}   = $userinfo->gebdatum;
         $userinfo_ref->{'username'}   = $userinfo->username;
         $userinfo_ref->{'password'}   = $userinfo->password;
         $userinfo_ref->{'masktype'}   = $userinfo->masktype;
-        $userinfo_ref->{'autocompletiontype'} = $userinfo->autocompletiontype;
+	$userinfo_ref->{'login_failure'}          = $userinfo->login_failure;
+        $userinfo_ref->{'autocompletiontype'}     = $userinfo->autocompletiontype;
         $userinfo_ref->{'spelling_as_you_type'}   = $userinfo->spelling_as_you_type;
         $userinfo_ref->{'spelling_resultlist'}    = $userinfo->spelling_resultlist;
-	$userinfo_ref->{'viewname'} = undef;
+	$userinfo_ref->{'viewname'}        = undef;
 	$userinfo_ref->{'authenticatorid'} = undef;
   
         if ($userinfo->mixed_bag){

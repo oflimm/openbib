@@ -1,0 +1,9 @@
+[%-
+thisrecord = {
+    username= userinfo.username,
+    email =  userinfo.email,
+    vorname = userinfo.vorname,
+    nachname = userinfo.nachname,
+};
+to_json(thisrecord);
+-%]

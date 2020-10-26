@@ -139,13 +139,6 @@
 		</div>
 	</div> -->
 </header>
-[% USE JSON.Escape( ) %];
-[%data =user.get_items_in_collection({view = 'fidphil'}).get_records %];
-[% json_stuct = { foo => 42, bar => [ 1, 2, 3 ] } %]
-<script type="text/javascript">let a = 'b';
-let b ="[%json_struct.json | html %]";
-console.log(b);
-</script>
 
 
 <div></div>

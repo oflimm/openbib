@@ -14,15 +14,12 @@
 #######################################################################
 -%]
 [%-
-ic_request = "${queryoptions.get_option('ic-request')}";
 searchdata = "${searchquery.get_searchtermstring()}";
 
 -%]
 
 
 [%- PROCESS common/subtemplate name="local_config" -%]
-<!--Check if this is an Intercooler Request -->
-[% IF NOT ic_request %]
 
 <style>
   [data-toggle="collapse"] {
@@ -66,6 +63,3 @@ ic-on-complete="$('#indicatorTab').hide();">
     </button>
   </div>
 </div>
-[% ELSE %]
-[% PROCESS common/subtemplate name="search_title_combined_html_tab" %]
-[% END %]

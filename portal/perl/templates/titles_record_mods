@@ -23,17 +23,25 @@
   <mods:recordInfo>
     <mods:recordIdentifier>[% record.id %]</mods:recordIdentifier>
   </mods:recordInfo>
+
   [%-
-  IF normdata.${"T0100"} OR normdata.${"T0101"} OR normdata.${"T0102"} OR normdata.${"T0103"};
-  list_one = normdata.${"T0100"};
-  list_two = normdata.${"T0101"};
-  list_three = normdata.${"T0102"};
-  list_four = normdata.${"T0103"};
-  personlist = list_one.merge(list_two, list_three, list_four);
-  END
+  personlist = [];
+  IF normdata.${"T0100"};
+  personlist.push(normdata.${"T0100"});
+  END;
+  IF normdata.${"T0101"};
+  personlist.push(normdata.${"T0101"});
+  END;
+  IF normdata.${"T0102"};
+  personlist.push(normdata.${"T0102"});
+  END;
+  IF normdata.${"T0103"};
+  personlist.push(normdata.${"T0103"});
+  END;
   -%]
-  [%- IF personlist -%]
-  [%- FOREACH item IN personlist %]
+  [%- IF personlist && personlist.size -%]
+  [%- FOREACH persondata IN personlist %]
+  [%- FOREACH item IN persondata %]
   <mods:name type="personal">
     [%-
     IF item.content.search(',');
@@ -59,15 +67,19 @@
   </mods:name>
   [%- END -%]
   [%- END -%]
+  [%- END -%]
   [%-
-  IF normdata.${"T0200"} OR normdata.${"T0201"};
-  corp_one = normdata.${"T0200"};
-  corp_two = normdata.${"T0201"};
-  corplist = corp_one.merge(corp_two);
+  corplist = [];
+  IF normdata.${"T0200"};
+  corplist.push(normdata.${"T0100"});
   END;
-  -%]
-  [% IF corplist %]
-  [% FOREACH item IN corplist %]
+  IF normdata.${"T0201"};
+  corplist.push(normdata.${"T0101"});
+  END;
+  %]
+  [% IF corplist && corplist.size %]
+  [%- FOREACH corpdata IN corplist %]
+  [% FOREACH item IN corpdata %]
   <mods:name type="corporate">
     <mods:namePart>[% item.content %]</mods:namePart>
     <mods:role>
@@ -78,6 +90,7 @@
         [% END %]
     </mods:role>
   </mods:name>
+  [% END %]
   [% END %]
   [% END %]
   <mods:titleInfo>
@@ -104,19 +117,12 @@
     <mods:dateIssued keyDate="yes" encodin="iso8601">[% item.content %]</mods:dateIssued>
     [%- END %]
   </mods:originInfo>
-  <!-- 
- Bei der Digitalisierung zu erzeugen 
-<originInfo eventType="digitization">
-<publisher>Universitäts- und Stadtbibliothek Köln</publisher>
-</originInfo> 
--->
   [%- IF normdata.${"T4301"}.first %]
   <mods:language>
     <mods:languageTerm type="code" authority="iso639-2">[% normdata.${"T4301"}.first.content %]</mods:languageTerm>
   </mods:language>
   [%-END%]
   [%- IF normdata.${"T4310"}.first %]
-  <!-- See description for MARC 561 -->
   <mods:note type="ownership">
     [% normdata.${"T4310"}.first.content %]
   </mods:note>
@@ -124,11 +130,13 @@
   [%- FOREACH item IN normdata.${"T4700"} %]
   <mods:classification authority="ZVDD">[% item.content %]</mods:classification>
   [%- END %]
+  [%- IF normdata.${"T0710"}.first %]
   <mods:subject>
     [%- FOREACH item IN normdata.${"T0710"} %]
     <mods:topic>[% item.content %]</mods:topic>
     [%- END %]
   </mods:subject>
+  [%- END %]
   [%-
   IF normdata.${"T5005"}.first;
   super = from_json(normdata.${"T5005"}.first.content);

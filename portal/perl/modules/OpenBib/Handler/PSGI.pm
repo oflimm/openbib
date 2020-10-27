@@ -1161,6 +1161,16 @@ sub add_default_ttdata {
         my $string = shift;
         return uri_unescape($string);
     };
+
+    $ttdata->{'encode_id'}     = sub {
+        my $string = shift;
+        return $self->encode_id($string);
+    };
+
+    $ttdata->{'decode_id'}     = sub {
+        my $string = shift;
+        return $self->decode_id($string);
+    };
     
     $ttdata->{'iso2utf'}        = sub {
         my $string=shift;
@@ -2092,6 +2102,20 @@ sub teardown {
     }
     
     return;
+}
+
+# de/encode_id corresponds to OpenBib::Record::get_encoded_id, so keep encoding/decoding mechanism in these methods synchronized!
+
+sub decode_id {
+    my ($self,$id) = @_;
+
+    return uri_unescape($id);
+}
+
+sub encode_id {
+    my ($self,$id) = @_;
+
+    return uri_escape_utf8($id);
 }
 
 1;

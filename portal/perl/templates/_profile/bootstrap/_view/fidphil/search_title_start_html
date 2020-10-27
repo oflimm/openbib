@@ -11,7 +11,6 @@
 #
 #######################################################################
 -%]
-Test
 [% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
 [%- request_base    = "l=${lang};num=${hitrange};srt=${sorttype}_${sortorder};"  -%]
 

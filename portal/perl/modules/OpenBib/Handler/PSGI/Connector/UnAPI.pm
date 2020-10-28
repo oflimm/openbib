@@ -116,7 +116,9 @@ sub show {
                 config          => $config,
                 msg             => $msg,
             };
-            
+
+	    $ttdata = $self->add_default_ttdata($ttdata);
+
             my $templatename = ($format)?"tt_connector_unapi_".$format."_tname":"tt_unapi_formats_tname";
             
             $logger->debug("Using Template $templatename");
@@ -162,6 +164,8 @@ sub show {
             msg             => $msg,
         };
 
+	$ttdata = $self->add_default_ttdata($ttdata);
+	
         my $templatename = $config->{tt_connector_unapi_formats_tname};
 
         $logger->debug("Using Template $templatename");

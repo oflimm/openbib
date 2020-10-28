@@ -46,7 +46,7 @@ IF normdata.${"T0332"}.first.content ;
   # Legende
  searchterm    = uri_escape(content);
  searchprefix  = config.get('searchfield').titlestring.prefix;
- localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_sysprofile};${searchprefix}=${searchterm}";
+ localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
  content   = "<a href=\"${localurl}\">${content}</a>";
  vorderseite.push(content);
 END ;
@@ -64,7 +64,7 @@ IF normdata.${"T0335"}.first.content ;
   # Legende
  searchterm    = uri_escape(content);
  searchprefix  = config.get('searchfield').titlestring.prefix;
- localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_sysprofile};${searchprefix}=${searchterm}";
+ localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
  content   = "<a href=\"${localurl}\">${content}</a>";
  rueckseite.push(content);
 END ;
@@ -94,7 +94,7 @@ FOREACH category IN categories;
          searchprefix  = config.get('searchfield').personstring.prefix;
 
          resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('persons_loc')}/id/${thisid}";
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_sysprofile};${searchprefix}=${searchterm}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
          rssfeed = "" ;
          IF activefeed.2 ;
@@ -113,7 +113,7 @@ FOREACH category IN categories;
          searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
          resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('corporatebodies_loc')}/id/${thisid}";
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_sysprofile};${searchprefix}=${searchterm}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
          rssfeed = "" ;
          IF activefeed.3 ;
@@ -154,7 +154,7 @@ FOREACH category IN categories;
          searchterm    = uri_escape(item.content);
          searchprefix  = config.get('searchfield').ft0410.prefix;
 
-         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_sysprofile};${searchprefix}=${searchterm}";
+         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
          content   = "${highlightquery(searchquery,content)}";
          content   = "<a href=\"${localurl}\">${content}</a>";
 
@@ -162,7 +162,7 @@ FOREACH category IN categories;
          searchterm    = uri_escape(item.content);
          searchprefix  = config.get('searchfield').ft0410.prefix;
 
-         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_sysprofile};${searchprefix}=${searchterm}";
+         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
          content   = "${highlightquery(searchquery,content)}";
          content   = "<a href=\"${localurl}\">${content}</a>";
 
@@ -170,7 +170,7 @@ FOREACH category IN categories;
          searchterm    = uri_escape(item.content);
          searchprefix  = config.get('searchfield').ft0531.prefix;
 
-         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_sysprofile};${searchprefix}=${searchterm}";
+         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
          content   = "${highlightquery(searchquery,content)}";
          content   = "<a href=\"${localurl}\">${content}</a>";
 
@@ -178,7 +178,7 @@ FOREACH category IN categories;
          searchterm    = uri_escape(item.content);
          searchprefix  = config.get('searchfield').ft0533.prefix;
 
-         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_sysprofile};${searchprefix}=${searchterm}";
+         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
          content   = "${highlightquery(searchquery,content)}";
          content   = "<a href=\"${localurl}\">${content}</a>";
 
@@ -228,7 +228,7 @@ FOREACH category IN categories;
          searchterm    = uri_escape(item.content);
          searchprefix  = config.get('searchfield').ft4100.prefix;
 
-         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_sysprofile};${searchprefix}=${searchterm}";
+         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
          bkdesc      = bklookup.${content};
          content     = "<a href=\"${localurl}\">${content}</a>";
          IF bkdesc ;
@@ -251,7 +251,7 @@ FOREACH category IN categories;
          searchterm    = uri_escape(item.content);
          searchprefix  = config.get('searchfield').ft4300.prefix;
 
-         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_sysprofile};${searchprefix}=${searchterm}";
+         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
          NEXT IF rswkswt_done.${thiscontent} == 1;
 	 content       = "<a href=\"${localurl}\">${content}</a>";
@@ -268,7 +268,7 @@ FOREACH category IN categories;
          searchprefix  = config.get('searchfield').subjectstring.prefix;
 
          resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('subjects_loc')}/id/${thisid}";
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_sysprofile};${searchprefix}=${searchterm}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
          rssfeed = "" ;
          IF activefeed.4 ;
@@ -293,7 +293,7 @@ FOREACH category IN categories;
          searchprefix  = config.get('searchfield').classificationstring.prefix;
 
          resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('classifications_loc')}/id/${thisid}";
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_sysprofile};${searchprefix}=${searchterm}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
          rssfeed = "" ;
          IF activefeed.5 ;

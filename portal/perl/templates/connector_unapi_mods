@@ -1,22 +1,9 @@
-[%#-
-#######################################################################
-#
-# Templatename: titles_rdf
-#
-# Typ : Mastertemplate
-#
-# Aufgabe:
-#
-# Ausgabe eines Titel-Normdatensatzes als LinkedData
-#
-#######################################################################
--%]
+<?xml version="1.0" encoding="UTF-8"?>
 [%- normdata = record.get_fields -%]
 [%- holding = record.get_holding -%]
 [%- circulation = record.load_circulation.get_circulation -%]
 [%- same_records = record.enrich_same_records.get_same_records -%]
 [%- similar_records = record.enrich_similar_records.get_similar_records -%]
-<?xml version="1.0" encoding="UTF-8"?>
 <mods xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:mods="http://www.loc.gov/mods/v3"
   xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd" version="3.4">

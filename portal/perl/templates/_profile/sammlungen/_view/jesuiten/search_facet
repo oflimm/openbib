@@ -552,7 +552,7 @@ var typeChart = new Chart(type_ctx, {
             backgroundColor: 'rgba(54, 162, 235, 0.2)',
             borderColor: 'rgba(54, 162, 235, 1)',
             borderWidth: 1,
-            maxBarThickness: 8,
+            BarThickness: 8,
         }],
     },
     options: {
@@ -579,19 +579,7 @@ var typeChart = new Chart(type_ctx, {
                     beginAtZero: true
                 }
             }]
-        },
-        annotation: {
-           annotations: [{
-           type: 'box',
-	   drawTime: 'beforeDatasetsDraw',
-           xScaleID: 'x-axis-1',
-           xMin: [% minyear %],
-           xMax: [% maxyear %],
-           backgroundColor: 'rgba(100, 100, 100, 0.2)',
-           borderColor: 'rgba(100, 100, 100, 0.2)',	   
-          }]
-      }
-	
+        },	
     }
 });
 
@@ -615,25 +603,17 @@ yearslider.noUiSlider.on('update', function (values, handle) {
 
     if (handle) {
         yearslider_to.value = Math.round(value);
-	typeChart.options.annotation.annotations[0].xMax = Math.round(value);
-        typeChart.update();
     } else {
         yearslider_from.value = Math.round(value);
-	typeChart.options.annotation.annotations[0].xMin = Math.round(value);
-        typeChart.update();
     }
 });
 
 yearslider_from.addEventListener('change', function () {
     yearslider.noUiSlider.set([this.value, null]);
-    typeChart.options.annotation.annotations[0].xMin = Math.round(this.value);
-    typeChart.update();
 });
 
 yearslider_to.addEventListener('change', function () {
     yearslider.noUiSlider.set([null, this.value]);
-    typeChart.options.annotation.annotations[0].xMax = Math.round(this.value);
-    typeChart.update();
 });
 
 

@@ -35,6 +35,7 @@ no warnings 'redefine';
 
 use Benchmark;
 use DBI;
+use Encode qw(decode_utf8 encode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 use Template;
 
@@ -151,6 +152,17 @@ sub show {
                 $self->header_add('Status',400); # server error
                 return;
             };
+
+	    eval {
+		# PSGI-Spezifikation erwartet UTF8 bytestream
+		$content = encode_utf8($content);
+	    };
+	    
+	    if ($@){
+		$logger->fatal($@);
+	    }
+	    
+	    $logger->debug("Template-Output: ".$content);
 
             return $content;
         }

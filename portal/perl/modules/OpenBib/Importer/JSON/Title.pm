@@ -325,8 +325,34 @@ sub process {
     
     my $valid_language_available=0;
     my $mult_lang = 1;
-    
+
     if (defined $fields_ref->{'0015'}){
+
+	# First cleanup multiple Languages
+	my $single_lang_ref = {};
+	foreach my $item_ref (@{$fields_ref->{'0015'}}){
+	    if ($item_ref->{content} =~m/\;/){
+		my @langs=split(';',$item_ref->{content});
+		foreach my $lang (@langs){
+		    $single_lang_ref->{$lang} = 1;
+		}
+	    }
+	    else {
+		  $single_lang_ref->{$item_ref->{content}} = 1;
+	    }
+	}
+
+	my $new_lang_ref = [];
+	foreach my $lang (keys %$single_lang_ref){
+	    push @$new_lang_ref, {
+		mult      => $mult_lang++,
+		content   => $lang,
+	    };
+	}
+
+	$fields_ref->{'0015'} = $new_lang_ref;
+	
+	$mult_lang = 1;
         foreach my $item_ref (@{$fields_ref->{'0015'}}){
             my $valid_lang = OpenBib::Common::Util::normalize_lang($item_ref->{content});
             if (defined $valid_lang){

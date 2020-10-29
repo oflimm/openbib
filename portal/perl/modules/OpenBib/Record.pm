@@ -41,6 +41,7 @@ use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use SOAP::Lite;
 use Storable;
+use URI::Escape;
 use YAML ();
 
 use OpenBib::Config;
@@ -225,6 +226,12 @@ sub get_id {
     my ($self)=@_;
 
     return (defined $self->{id})?$self->{id}:undef;
+}
+
+sub get_encoded_id {
+    my ($self) = @_;
+
+    return (defined $self->{id})?uri_escape($self->{id}):undef;    
 }
 
 sub get_database {

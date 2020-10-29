@@ -35,6 +35,7 @@ no warnings 'redefine';
 
 use Benchmark;
 use DBI;
+use Encode qw(decode_utf8 encode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 use Template;
 
@@ -116,7 +117,9 @@ sub show {
                 config          => $config,
                 msg             => $msg,
             };
-            
+
+	    $ttdata = $self->add_default_ttdata($ttdata);
+
             my $templatename = ($format)?"tt_connector_unapi_".$format."_tname":"tt_unapi_formats_tname";
             
             $logger->debug("Using Template $templatename");
@@ -150,6 +153,17 @@ sub show {
                 return;
             };
 
+	    eval {
+		# PSGI-Spezifikation erwartet UTF8 bytestream
+		$content = encode_utf8($content);
+	    };
+	    
+	    if ($@){
+		$logger->fatal($@);
+	    }
+	    
+	    $logger->debug("Template-Output: ".$content);
+
             return $content;
         }
         else {
@@ -162,6 +176,8 @@ sub show {
             msg             => $msg,
         };
 
+	$ttdata = $self->add_default_ttdata($ttdata);
+	
         my $templatename = $config->{tt_connector_unapi_formats_tname};
 
         $logger->debug("Using Template $templatename");

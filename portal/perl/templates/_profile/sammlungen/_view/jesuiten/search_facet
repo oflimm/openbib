@@ -549,10 +549,9 @@ var typeChart = new Chart(type_ctx, {
         datasets: [{
             label: 'Trefferzahl',
             data: [[% year_itemcounts.join(',') %]],
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgba(54, 162, 235, 1)',
+            backgroundColor: '#3e566c',
             borderWidth: 1,
-            maxBarThickness: 8,
+            BarThickness: 8,
         }],
     },
     options: {
@@ -579,19 +578,7 @@ var typeChart = new Chart(type_ctx, {
                     beginAtZero: true
                 }
             }]
-        },
-        annotation: {
-           annotations: [{
-           type: 'box',
-	   drawTime: 'beforeDatasetsDraw',
-           xScaleID: 'x-axis-1',
-           xMin: [% minyear %],
-           xMax: [% maxyear %],
-           backgroundColor: 'rgba(100, 100, 100, 0.2)',
-           borderColor: 'rgba(100, 100, 100, 0.2)',	   
-          }]
-      }
-	
+        },	
     }
 });
 
@@ -615,25 +602,17 @@ yearslider.noUiSlider.on('update', function (values, handle) {
 
     if (handle) {
         yearslider_to.value = Math.round(value);
-	typeChart.options.annotation.annotations[0].xMax = Math.round(value);
-        typeChart.update();
     } else {
         yearslider_from.value = Math.round(value);
-	typeChart.options.annotation.annotations[0].xMin = Math.round(value);
-        typeChart.update();
     }
 });
 
 yearslider_from.addEventListener('change', function () {
     yearslider.noUiSlider.set([this.value, null]);
-    typeChart.options.annotation.annotations[0].xMin = Math.round(this.value);
-    typeChart.update();
 });
 
 yearslider_to.addEventListener('change', function () {
     yearslider.noUiSlider.set([null, this.value]);
-    typeChart.options.annotation.annotations[0].xMax = Math.round(this.value);
-    typeChart.update();
 });
 
 
@@ -972,48 +951,55 @@ yearslider_to.addEventListener('change', function () {
     filterstring  = "${searchprefix}:${searchterm}";
 
     spr_mapping = {
+        "ara"      => msg.maketext("Arabisch"),
+        "arm"      => msg.maketext("Armenisch"),
+        "arab."    => msg.maketext("Arabisch"),
+        "ces"      => msg.maketext("Tschechisch"),
+        "chi"      => msg.maketext("Chinesisch"),
+        "cop"      => msg.maketext(""),
+        "cze"      => msg.maketext("Tschechisch"),
         "de"       => msg.maketext("Deutsch"),
         "dt."      => msg.maketext("Deutsch"),
-        "ger"      => msg.maketext("Deutsch"),
+        "dut"      => msg.maketext("Niederländisch"),
+        "dut."     => msg.maketext("Niederländisch"),
+        "ell"      => msg.maketext("Neu-Griechisch"),
         "en"       => msg.maketext("Englisch"),
         "eng"      => msg.maketext("Englisch"),
         "engl."    => msg.maketext("Englisch"),
+        "fin"      => msg.maketext("Finnisch"),
+        "finn."    => msg.maketext("Finnisch"),
         "fr"       => msg.maketext("Französisch"),
-        "fre"       => msg.maketext("Französisch"),
         "franz."       => msg.maketext("Französisch"),
-        "lat"      => msg.maketext("Latein"),
-        "lats"     => msg.maketext("Latein"),
-        "grk"      => msg.maketext("Griechisch"),
+        "fre"      => msg.maketext("Französisch"),
+        "ger"      => msg.maketext("Deutsch"),
+        "gre"      => msg.maketext("Neu-Griechisch"),
+        "grc"      => msg.maketext("Alt-Griechisch"),
         "griech."  => msg.maketext("Griechisch"),
-        "neugriech."  => msg.maketext("Neu-Griechisch"),
-        "ell"       => msg.maketext("Neu-Griechisch"),
-        "gre"       => msg.maketext("Neu-Griechisch"),
+        "grk"      => msg.maketext("Griechisch"),
+        "he"       => msg.maketext("Hebräisch"),
+        "heb"      => msg.maketext("Hebräisch"),
         "hun"      => msg.maketext("Ungarisch"),
-        "ungar."   => msg.maketext("Ungarisch"),
+        "ice"      => msg.maketext("Isländisch"),
+        "islaend." => msg.maketext("Isländisch"),
         "ita"      => msg.maketext("Italienisch"),
-        "ital."      => msg.maketext("Italienisch"),
-        "spa"      => msg.maketext("Spanisch"),
-        "span."    => msg.maketext("Spanisch"),
+        "ital."    => msg.maketext("Italienisch"),
+        "jpn"      => msg.maketext("Japanisch"),
+        "lat"      => msg.maketext("Latein"),
+        "lat."     => msg.maketext("Latein"),
+        "lats"     => msg.maketext("Latein"),
+        "nds"      => msg.maketext("Niederdeutsch"),
+        "neugriech."   => msg.maketext("Neu-Griechisch"),
+        "niederlaend." => msg.maketext("Niederländisch"),
+        "pol"      => msg.maketext("Polnisch"),
         "rus"      => msg.maketext("Russisch"),
         "russ."    => msg.maketext("Russisch"),
-        "jpn"      => msg.maketext("Japanisch"),
-        "cze"      => msg.maketext("Tschechisch"),
+        "spa"      => msg.maketext("Spanisch"),
+        "span."    => msg.maketext("Spanisch"),
         "swe"      => msg.maketext("Schwedisch"),
-        "tur"      => msg.maketext("Türkisch"),
+        "syc"      => msg.maketext("Alt-Syrisch"),
         "tschech." => msg.maketext("Tschechisch"),
-        "ces"      => msg.maketext("Tschechisch"),
-        "pol"      => msg.maketext("Polnisch"),
-        "niederlaend." => msg.maketext("Niederländisch"),
-        "dut."     => msg.maketext("Niederländisch"),
-        "dut"      => msg.maketext("Niederländisch"),
-        "islaend." => msg.maketext("Isländisch"),
-        "ice"      => msg.maketext("Isländisch"),
-        "finn."    => msg.maketext("Finnisch"),
-        "fin"      => msg.maketext("Finnisch"),
-        "chi"      => msg.maketext("Chinesisch"),
-        "arab."    => msg.maketext("Arabisch"),
-        "ara"      => msg.maketext("Arabisch"),
-
+        "tur"      => msg.maketext("Türkisch"),
+        "ungar."   => msg.maketext("Ungarisch"),
     };
 
     spr_tmp = termitem.0.split(';');

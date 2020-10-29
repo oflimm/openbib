@@ -1,14 +1,68 @@
 @media all
 {
 
+    /* Appearance functional elements */
+
+    a, a:hover{
+	color: #253746;
+    }
+
+    .page-item .page-link {
+	color: #253746;
+    }
+    
+    .page-item.active .page-link {
+	background: #253746;
+	border-color: #253746;
+    }
+    
+    .btn-primary {
+	background: #253746;
+    }
+
+    .btn-primary:hover {
+	background-color: #a0adb6 !important ;
+	border-color: #253746;
+    }
+    
+    .badge-secondary {
+	background-color: #253746;
+    }
+
+    .noUi-connect {
+	background: #3e566c;	
+    }
+    
+    /* other settings */
+
+    .ob-page_footer {
+	position:absolute;
+	margin-bottom: 0px;
+	width:100%;
+	height:10px; 
+    }
+    
     .bg-color {
 	color: #fff;
     }
 
     #ob-startpage {
 	padding-bottom: 40px;
-	background:url('/images/openbib/views/jesuiten/Triumph_St_Ignatius_Pozzo.jpg') 100% no-repeat;	
-   }
+	margin-right: 0px;
+	padding-right: 0px;
+	/*	background:url('/images/openbib/views/jesuiten/Triumph_St_Ignatius_Pozzo.jpg') 100% no-repeat;	*/
+	background:url('/images/openbib/views/jesuiten/Ausschnitt_N2_52.jpg') left 100% no-repeat;
+	background-position: 10% 30%;
+    }
+
+    #ob-startpage .col-md-12 {
+	width: auto;
+	padding: 0px;
+    }
+    
+    #ob-search_tipps {
+	padding: 10px;
+    }
     
     .container-fluid {
 	padding-left: 0px;
@@ -19,22 +73,45 @@
 	background-color: #fff;
 	z-index: 1000;
     }
+
+    .ob-searchbox {
+	background-image: linear-gradient(#a0adb6, #3e566c );
+//	background-color: #3e566c;
+       border-top-style: solid;
+//       border-top-color: #e28573;
+       border-top-color: #253746;
+       border-top-width: 3px;
+    }
     
     .ob-page_footer {
        border-top-style: solid;
 //       border-top-color: #e28573;
-       border-top-color: #dc4c44;
+       border-top-color: #253746;
        border-top-width: 2px;
        border-bottom-width: 0px;
     }
-    
-    .ob-searchbox {
-//	background-color: #e28a85;
-       border-top-style: solid;
-//       border-top-color: #e28573;
-       border-top-color: #dc4c44;
-       border-top-width: 5px;
+
+    .ob-searchbox .list-group-item {
+	background-color: transparent;
     }
+
+    .ob-searchbox .list-group-item a {
+	color: #fff;
+    }
+
+    #ob-startpage .card {
+	background-color: #3e566c;
+	color: #fff;
+    }
+
+    .ob-searchbox li .dropdown-item {
+	color: #000;
+    }
+
+    #ob-mainpage .list-group a {
+	color: #000;
+    }
+
     
     body {
 //	background-color: #c6af85;
@@ -200,8 +277,9 @@
     }
 
     .ob-resultlist {
-	width: auto%;
-	padding: 1em;
+	width: auto;
+	padding: 0.5em;
+	padding-left: 0em;
     }
     
     .ob-resultheader {
@@ -269,24 +347,21 @@
     }
 
     .ob-item .ob-thumbnail {
-        width: 60px;
+        display:none ;
 	/* position: relative; */
 	/*     float: left; 
     top: 15px;
     width: auto;
     height: 90px;/*
 	/*    border: 1px solid #000; */
-	background: none repeat scroll 0 0;
     }
 
     .ob-item .ob-thumbnail img {
-	display: block;
-	margin-top: 15px;
-	margin-left: auto;
-	margin-right: auto;
+	display: none;
     }
 
     .ob-item .ob-brieftitle {
+	padding-left: 2.5em;
 	width: 100%;
 /*    position: relative; 
       float: left; 
@@ -1225,10 +1300,6 @@
 	padding: 5px;
     }
 
-
-    .badge-secondary {
-	background-color: #0f7bff;
-    }
 
 /*    background:#f4f4f4; */
 }

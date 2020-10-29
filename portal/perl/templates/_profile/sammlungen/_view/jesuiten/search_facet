@@ -549,8 +549,7 @@ var typeChart = new Chart(type_ctx, {
         datasets: [{
             label: 'Trefferzahl',
             data: [[% year_itemcounts.join(',') %]],
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgba(54, 162, 235, 1)',
+            backgroundColor: '#3e566c',
             borderWidth: 1,
             BarThickness: 8,
         }],

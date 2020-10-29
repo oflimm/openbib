@@ -1,6 +1,31 @@
 @media all
 {
 
+    /* Appearance functional elements */
+
+    a, a:hover{
+	color: #253746;
+    }
+
+    .page-item .page-link {
+	color: #253746;
+    }
+    
+    .page-item.active .page-link {
+	background: #253746;
+	border-color: #253746;
+    }
+    
+    .btn-primary {
+	background: #253746;
+    }
+
+    .badge-secondary {
+	background-color: #253746;
+    }
+
+    /* other settings */
+    
     .bg-color {
 	color: #fff;
     }
@@ -1254,10 +1279,6 @@
 	padding: 5px;
     }
 
-
-    .badge-secondary {
-	background-color: #0f7bff;
-    }
 
 /*    background:#f4f4f4; */
 }

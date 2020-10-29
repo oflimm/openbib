@@ -20,6 +20,10 @@
 	background: #253746;
     }
 
+    .btn-primary:hover {
+	background-color: #a0adb6 !important ;
+    }
+    
     .badge-secondary {
 	background-color: #253746;
     }
@@ -61,7 +65,7 @@
        border-top-style: solid;
 //       border-top-color: #e28573;
        border-top-color: #253746;
-       border-top-width: 5px;
+       border-top-width: 3px;
     }
     
     .ob-page_footer {
@@ -259,7 +263,8 @@
 
     .ob-resultlist {
 	width: auto%;
-	padding: 1em;
+	padding: 0.5em;
+	padding-left: 0em;
     }
     
     .ob-resultheader {

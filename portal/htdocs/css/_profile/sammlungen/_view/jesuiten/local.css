@@ -34,6 +34,13 @@
     }
     
     /* other settings */
+
+    .ob-page_footer {
+	position:absolute;
+	margin-bottom: 0px;
+	width:100%;
+	height:10px; 
+    }
     
     .bg-color {
 	color: #fff;
@@ -41,11 +48,18 @@
 
     #ob-startpage {
 	padding-bottom: 40px;
+	margin-right: 0px;
+	padding-right: 0px;
 	/*	background:url('/images/openbib/views/jesuiten/Triumph_St_Ignatius_Pozzo.jpg') 100% no-repeat;	*/
 	background:url('/images/openbib/views/jesuiten/Ausschnitt_N2_52.jpg') left 100% no-repeat;
 	background-position: 10% 30%;
     }
 
+    #ob-startpage .col-md-12 {
+	width: auto;
+	padding: 0px;
+    }
+    
     #ob-search_tipps {
 	padding: 10px;
     }
@@ -263,7 +277,7 @@
     }
 
     .ob-resultlist {
-	width: auto%;
+	width: auto;
 	padding: 0.5em;
 	padding-left: 0em;
     }

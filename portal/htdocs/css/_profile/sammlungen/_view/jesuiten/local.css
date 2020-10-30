@@ -53,6 +53,7 @@
 	/*	background:url('/images/openbib/views/jesuiten/Triumph_St_Ignatius_Pozzo.jpg') 100% no-repeat;	*/
 	background:url('/images/openbib/views/jesuiten/Ausschnitt_N2_52.jpg') left 100% no-repeat;
 	background-position: 10% 30%;
+	background-size: cover;
     }
 
     #ob-startpage .col-md-12 {

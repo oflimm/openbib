@@ -39,7 +39,17 @@
 	position:absolute;
 	margin-bottom: 0px;
 	width:100%;
-	height:10px; 
+
+
+       border-top-style: solid;
+//       border-top-color: #e28573;
+       border-top-color: #253746;
+       border-top-width: 2px;
+       border-bottom-width: 0px;
+    }
+
+    .ob-page_footer .row {
+	margin-right: 0px;
     }
     
     .bg-color {
@@ -84,13 +94,6 @@
        border-top-width: 3px;
     }
     
-    .ob-page_footer {
-       border-top-style: solid;
-//       border-top-color: #e28573;
-       border-top-color: #253746;
-       border-top-width: 2px;
-       border-bottom-width: 0px;
-    }
 
     .ob-searchbox .list-group-item {
 	background-color: transparent;

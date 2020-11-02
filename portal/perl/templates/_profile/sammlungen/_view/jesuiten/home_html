@@ -21,7 +21,7 @@
   margin: 0.5rem;
 }
 </style>
-
+<!--
 <div class="container">
 <div class="row">
 <div class="col-md-4 pl-5 pr-5">
@@ -51,4 +51,5 @@
 </div>
 
 </div>
-[%# config.get_templatetext('home',view,lang) %]
+-->
+[% config.get_templatetext('home',view,lang) %]

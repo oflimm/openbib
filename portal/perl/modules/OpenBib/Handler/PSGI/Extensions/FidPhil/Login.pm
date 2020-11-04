@@ -317,7 +317,8 @@ sub authenticate {
 
     # Wenn Return_url existiert, dann wird dorthin gesprungen
     if ($redirect_to) {
-        $redirecturl = $redirect_to ."/user/$userid";
+        #$redirecturl = $redirect_to ."/user/$userid";
+        $redirecturl = "https://google.de";
         #$redirecturl = $redirect_to."%3Fuserid%3D$userid";
     }
     
@@ -331,7 +332,7 @@ sub authenticate {
 
         # TODO GET?
         $self->header_add( 'Content-Type' => 'text/html' );
-        #return $self->redirect($redirecturl);
+        return $self->redirect($redirecturl);
     }
     else {
         return $self->print_json($result_ref);

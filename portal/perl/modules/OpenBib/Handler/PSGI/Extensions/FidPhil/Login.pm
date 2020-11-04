@@ -331,7 +331,7 @@ sub authenticate {
 
         # TODO GET?
         $self->header_add( 'Content-Type' => 'text/html' );
-        return $self->redirect($redirecturl);
+        #return $self->redirect($redirecturl);
     }
     else {
         return $self->print_json($result_ref);

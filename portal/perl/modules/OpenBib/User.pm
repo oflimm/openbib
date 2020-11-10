@@ -787,7 +787,7 @@ sub can_access_view {
 		# Weiterleitung an Anmeldung, wenn Nutzung auf Intranet eingegrenzt, aber IP von ausserhalb kommt.
 		$force_login = 1 ;
 	    }
-	    elsif ($check_range && $is_intranet){
+	    elsif ($checked_ranges && $is_intranet){
 		# Anfrage brechtigt, wenn Nutzung auf Intranet eingegrenzt, und IP aus dem Intranet kommt.
 		# Ein fuer den View etwaig definierter Login-Zwang (force_login) ist dann obsolet
 		$force_login = 0;

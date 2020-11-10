@@ -120,7 +120,7 @@ sub cgiapp_init {
     
     my $user         = OpenBib::User->new({sessionID => $session->{ID}, config => $config});
     $self->param('user',$user);
-
+    
     my $statistics   = OpenBib::Statistics->new();
     $self->param('statistics',$statistics);
 
@@ -235,6 +235,11 @@ sub cgiapp_init {
     
     $user = $self->param('user');
 
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($self->param('lang')) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+    $self->param('msg',$msg);
+    
     # Trennung der Zugangskontrolle zwischen API (funktioniert immer fuer ein Portal) und Endnutzern (Webbrowser benoetigt Login)
     if ($self->param('representation') eq "html" && !$user->can_access_view($view,$remote_ip)){
 	my $scheme = ($config->get('use_https'))?'https':$self->param('scheme');
@@ -266,6 +271,10 @@ sub cgiapp_init {
 	    $self->param('dispatch_url',$dispatch_url);
 	}
     }
+    elsif (!$user->can_access_view($view,$remote_ip)){
+	$self->param('default_runmode','show_warning');
+	$self->param('warning_message',$msg->maketext("Zugriff verweigert."));
+    }
     
     if ($config->{benchmark}) {
         $btime=new Benchmark;
@@ -273,11 +282,6 @@ sub cgiapp_init {
         $logger->info("Total time for stage 6 is ".timestr($timeall));
     }
     
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($self->param('lang')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    $self->param('msg',$msg);
-
     if (defined $user->{ID}){
         $logger->debug("This request after initialization: User? $user->{ID}");
     }
@@ -299,6 +303,19 @@ sub cgiapp_init {
 
     # Neue Session und alle relevanten Informationen bestimmt (z.B. representation), dann loggen
     $session->log_new_session_once({ r => $r, representation => $self->param('representation') });
+
+    # Katalogeingrenzung auf view pruefen
+    if ($self->param('restrict_db_to_view')){
+	my $database = $self->param('database');
+	
+	unless ($config->database_defined_in_view({ database => $database, view => $view })){
+	    if (!$user->is_admin){
+		$logger->debug("Zugriff auf Katalog $database in view $view verweigert.");
+		$self->param('default_runmode','show_warning');
+		$self->param('warning_message',$msg->maketext("Zugriff auf Katalog $database verweigert."));
+	    }
+	}
+    }
     
     return;
 }
@@ -343,6 +360,27 @@ sub cgiapp_prerun {
        
    }
 
+   {
+       # Wenn default_runmode gesetzt, dann ausschliesslich in diesen wechseln
+       if ($self->param('default_runmode')){
+
+	   # Zum default_runmode muss eine Methode in
+	   # diesem Modul definiert sein, denn default_runmodes werden immer in
+	   # OpenBib::Handler::PSGI definiert!
+
+	   if (OpenBib::Handler::PSGI->can($self->param('default_runmode'))){
+	       $self->run_modes(
+		   $self->param('default_runmode')  => $self->param('default_runmode'),
+		   );
+	       $self->prerun_mode($self->param('default_runmode'));
+	   }
+	   else {
+	       $logger->error("Invalid default runmode ".$self->param('default_runmode'));
+	   }
+       }
+   }
+   
+   
 #   if ($config->get('cookies_everywhere') || $self->param('send_new_cookie')){
        # Cookie-Header ausgeben
        $self->finalize_cookies;
@@ -1708,6 +1746,7 @@ sub parse_valid_input {
     return $input_params_ref;
 }
 
+# Common runmodes 
 sub dispatch_to_representation {
     my $self = shift;
 
@@ -1719,6 +1758,17 @@ sub dispatch_to_representation {
     $self->redirect($self->param('dispatch_url'),'303');
     
     return;
+}
+
+sub show_warning {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $message = $self->param('warning_message');
+
+    return $self->print_warning($message);
 }
 
 sub redirect {

@@ -1092,7 +1092,11 @@ sub _get_searchprofile {
     my %seen_dbases = ();
     @databases = grep { ! $seen_dbases{$_} ++ } @databases;
 
-    my $searchprofile = ($profile)?$profile:$config->get_searchprofile_or_create(\@databases);
+    # Nur Datenbanken sind erlaubt, die fuer den View definiert wurden
+    # Damit: Katalogweise Abschottung der Views bei Recherchen
+    @databases = $config->restrict_databases_to_view({ databases => \@databases, view => $view }) if ($view);
+									
+    my $searchprofile = $config->get_searchprofile_or_create(\@databases);
     
     if ($logger->is_debug){
         $logger->debug("Database List: ".YAML::Dump(\@databases));

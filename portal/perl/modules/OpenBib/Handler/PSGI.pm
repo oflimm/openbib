@@ -105,8 +105,12 @@ sub cgiapp_init {
 	$logger->info("X-Client-IP: $xclientip");
     }
     
-    if (defined $forwarded_for && $forwarded_for =~ /([^,\s]+)$/) {
+    if (defined $xclientip && $xclientip =~ /([^,\s]+)$/) {
         $remote_ip = $1;
+    }
+
+    if ($logger->is_info){
+	$logger->info("Remote IP set to $remote_ip");
     }
 
     $self->param('remote_ip',$remote_ip);

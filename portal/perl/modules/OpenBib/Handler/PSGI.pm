@@ -109,10 +109,6 @@ sub cgiapp_init {
         $remote_ip = $1;
     }
 
-    if ($logger->is_info){
-	$logger->info("Remote IP set to $remote_ip");
-    }
-
     $self->param('remote_ip',$remote_ip);
     
     my $sessionID    = $r->cookies->{sessionID} || '';
@@ -245,6 +241,12 @@ sub cgiapp_init {
     
     $user = $self->param('user');
 
+    if ($logger->is_info){
+	my $path   = $self->param('path');
+	my $scheme = $self->param('scheme');
+	$logger->info("Remote IP set to $remote_ip for scheme $scheme and path $path");
+    }
+    
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($self->param('lang')) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );

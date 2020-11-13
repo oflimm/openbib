@@ -98,6 +98,10 @@ sub cgiapp_init {
     my $remote_ip = $r->remote_host || '';
     
     my $forwarded_for = $r->header('X-Forwarded-For');
+
+    if ($logger->is_info){
+	$logger->info("X-Forwarded-For: $forwarded_for");
+    }
     
     if (defined $forwarded_for && $forwarded_for =~ /([^,\s]+)$/) {
         $remote_ip = $1;

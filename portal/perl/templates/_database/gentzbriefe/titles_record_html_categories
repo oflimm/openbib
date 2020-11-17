@@ -313,7 +313,7 @@ FOREACH category IN categories;
    # kodiert.
    thiscategory = category ;
    IF config.get('categorymapping').${"gentzdigital"}.$category ;
-     thiscategory = "${category}-${"gentzdigital"}" ;
+     thiscategory = "${category}-gentzdigital" ;
    END;
 
 -%]

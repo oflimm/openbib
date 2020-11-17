@@ -192,79 +192,79 @@ foreach my $item_ref (@{$json_ref->{objects}}){
     # Titel
     
     if ($letter_ref->{title}{'de-DE'}){
-	push @{$title_ref->{fields}{T0331}}, {
+	push @{$title_ref->{fields}{'0331'}}, {
 	    content => $letter_ref->{title}{'de-DE'},
 	}
     }
 
     if ($letter_ref->{reference_publication_incipit}){
-	push @{$title_ref->{fields}{T0335}}, {
+	push @{$title_ref->{fields}{'0335'}}, {
 	    content => $letter_ref->{reference_publication_incipit},
 	}
     }
 
     if ($letter_ref->{reference_publication}{_standard}{3}{text}{'de-DE'}){
-	push @{$title_ref->{fields}{T0591}}, {
+	push @{$title_ref->{fields}{'0591'}}, {
 	    content => $letter_ref->{reference_publication}{_standard}{3}{text}{'de-DE'},
 	}
     }
 
     if ($letter_ref->{reference_publication}{_standard}{1}{text}{'de-DE'}){
-	push @{$title_ref->{fields}{T0590}}, {
+	push @{$title_ref->{fields}{'0590'}}, {
 	    content => $letter_ref->{reference_publication}{_standard}{1}{text}{'de-DE'},
 	}
     }
 
     if ($letter_ref->{reference_publication_date}){
-	push @{$title_ref->{fields}{T0595}}, {
+	push @{$title_ref->{fields}{'0595'}}, {
 	    content => $letter_ref->{reference_publication_date},
 	}
     }
     
     if ($letter_ref->{reference_publication_page}){
-	push @{$title_ref->{fields}{T0433}}, {
+	push @{$title_ref->{fields}{'0433'}}, {
 	    content => $letter_ref->{reference_publication_page},
 	}
     }
 
     if ($letter_ref->{sent_date_original}){
-	push @{$title_ref->{fields}{T0424}}, {
+	push @{$title_ref->{fields}{'0424'}}, {
 	    content => $letter_ref->{sent_date_original},
 	}
     }
 
     if ($letter_ref->{sent_date_year}){
-	push @{$title_ref->{fields}{T0425}}, {
+	push @{$title_ref->{fields}{'0425'}}, {
 	    content => $letter_ref->{sent_date_year},
 	}
     }
 
     if ($letter_ref->{sent_location_normalized}{_standard}{1}{text}{'de-DE'}){
-	push @{$title_ref->{fields}{T0410}}, {
+	push @{$title_ref->{fields}{'0410'}}, {
 	    content => $letter_ref->{sent_location_normalized}{_standard}{1}{text}{'de-DE'},
 	}
     }
     
     if ($letter_ref->{format_size}{'de-DE'}){
-	push @{$title_ref->{fields}{T0433}}, {
+	push @{$title_ref->{fields}{'0433'}}, {
 	    content => $letter_ref->{format_size}{'de-DE'},
 	}
     }
 
     if ($letter_ref->{language}{_standard}{1}{text}{'de-DE'}){
-	push @{$title_ref->{fields}{T0015}}, {
+	push @{$title_ref->{fields}{'0015'}}, {
 	    content => $letter_ref->{language}{_standard}{1}{text}{'de-DE'},
 	}
     }
 
     if ($letter_ref->{archive}{_standard}{1}{text}{'de-DE'}){
-	push @{$title_ref->{fields}{T0412}}, {
+	push @{$title_ref->{fields}{'0412'}}, {
 	    content => $letter_ref->{archive}{_standard}{1}{text}{'de-DE'},
 	}
     }
 
     if ($letter_ref->{provenance}{'de-DE'}){
-	push @{$title_ref->{fields}{T1664}}, {
+	push @{$title_ref->{fields}{'1664'}}, {
 	    content => $letter_ref->{provenance}{'de-DE'},
 	}
     }

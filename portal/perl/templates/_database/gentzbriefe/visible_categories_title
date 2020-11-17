@@ -22,6 +22,12 @@
                 'T0594', # msg.maketext("T0594-gentzdigital") Druckorte
                 'T0335', # msg.maketext("T0335-gentzdigital") Incipit  
                 'T0800', # msg.maketext("T0800-gentzdigital") Brieftyp
+                'T0425', # msg.maketext("T0425") 
+                'T1664', # msg.maketext("T1664") 
+                'T0015', # msg.maketext("T0015") 
+                'T0590', # msg.maketext("T0590") 
+                'T0591', # msg.maketext("T0591") 
+                'T0595', # msg.maketext("T0595") 
                 'T6053', # msg.maketext("T6053") Text
                 'T5005', # msg.maketext("T5005") Uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke

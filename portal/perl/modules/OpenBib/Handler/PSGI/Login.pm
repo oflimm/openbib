@@ -355,6 +355,12 @@ sub authenticate {
             if ($scheme eq "https"){
                 $redirecturl ="https://$servername$redirecturl";
             }
+        }else {
+              $user->connect_session({
+                sessionID        => $session->{ID},
+                userid           => $userid,
+                authenticatorid  => $authenticatorid,
+            });
         }
     }
     

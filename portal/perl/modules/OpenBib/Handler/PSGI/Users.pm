@@ -315,10 +315,32 @@ sub authorization_successful {
     return 0;
 }
 
+# sub get_input_definition {
+#     my $self=shift;
+    
+#     return {
+#         bag => {
+#             default  => '',
+#             encoding => 'utf8',
+#             type     => 'mixed_bag', # always arrays
+#         },
+#     };
+# }
+
 sub get_input_definition {
     my $self=shift;
     
     return {
+        vorname => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        nachname => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },       
         bag => {
             default  => '',
             encoding => 'utf8',

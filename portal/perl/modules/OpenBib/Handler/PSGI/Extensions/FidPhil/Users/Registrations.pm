@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::PSGI::Users::Registrations;
+package OpenBib::Handler::PSGI::Extensions::FidPhil::Users::Registrations;
 
 use strict;
 use warnings;

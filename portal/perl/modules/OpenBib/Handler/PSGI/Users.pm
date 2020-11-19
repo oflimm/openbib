@@ -226,7 +226,7 @@ sub update_record {
     $user->update_userinfo($input_data_ref) if (keys %$input_data_ref);
     my $result_ref = { success => 0, };
     $result_ref->{success} = 1;
-    $result_ref->{registrationkey}  = $registrationid;
+    #$result_ref->{registrationkey}  = $registrationid;
     return $self->print_json($result_ref);
     #if ($self->param('representation') eq "html"){
     #    # TODO GET?

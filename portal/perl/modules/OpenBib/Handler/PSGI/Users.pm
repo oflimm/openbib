@@ -224,15 +224,18 @@ sub update_record {
     }
    
     $user->update_userinfo($input_data_ref) if (keys %$input_data_ref);
-
-    if ($self->param('representation') eq "html"){
-        # TODO GET?
-        return $self->redirect("$path_prefix/$config->{users_loc}/id/$user->{ID}/edit");
-    }
-    else {
-        $logger->debug("Weiter zum Record");
-        return $self->show_record;
-    }    
+    my $result_ref = { success => 0, };
+    $result_ref->{success} = 1;
+    $result_ref->{registrationkey}  = $registrationid;
+    return $self->print_json($result_ref);
+    #if ($self->param('representation') eq "html"){
+    #    # TODO GET?
+    #    return $self->redirect("$path_prefix/$config->{users_loc}/id/$user->{ID}/edit");
+    #}
+    #else {
+    #    $logger->debug("Weiter zum Record");
+    #    return $self->show_record;
+    #}    
 }
 
 sub confirm_delete_record {

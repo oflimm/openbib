@@ -98,7 +98,7 @@
  </ul>
 </nav>
 [% END %]
-[% IF layout_param.active_menu == "info" %]
+[% IF layout_param.active_menu == "info" || layout_param.active_menu == "project" %]
 <div class="card">
 <div class="card-header">[% msg.maketext("Einführung") %]</div>
 <div class="card-body">
@@ -115,8 +115,9 @@
 </nav>
 </div>
 </div>
+<p/>
 [% END %]
-[% IF layout_param.active_menu == "project" %]
+[% IF layout_param.active_menu == "info" || layout_param.active_menu == "project" %]
 <div class="card">
 <div class="card-header">[% msg.maketext("Projekt") %]</div>
 <div class="card-body">

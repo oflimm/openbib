@@ -971,7 +971,7 @@ sub print_json {
     #    $logger->debug(YAML::Dump($json_ref))
     #}
 
-    return encoder_json($json_ref);
+    return encode_json($json_ref);
 }
 
 sub print_page {

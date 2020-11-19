@@ -224,18 +224,15 @@ sub update_record {
     }
    
     $user->update_userinfo($input_data_ref) if (keys %$input_data_ref);
-    my $result_ref = { success => 0, };
-    $result_ref->{success} = 1;
-    #$result_ref->{registrationkey}  = $registrationid;
-    return $self->print_json($result_ref);
-    #if ($self->param('representation') eq "html"){
-    #    # TODO GET?
-    #    return $self->redirect("$path_prefix/$config->{users_loc}/id/$user->{ID}/edit");
-    #}
-    #else {
-    #    $logger->debug("Weiter zum Record");
-    #    return $self->show_record;
-    #}    
+
+    if ($self->param('representation') eq "html"){
+        # TODO GET?
+        return $self->redirect("$path_prefix/$config->{users_loc}/id/$user->{ID}/edit");
+    }
+    else {
+        $logger->debug("Weiter zum Record");
+        return $self->show_record;
+    }    
 }
 
 sub confirm_delete_record {
@@ -315,32 +312,10 @@ sub authorization_successful {
     return 0;
 }
 
-# sub get_input_definition {
-#     my $self=shift;
-    
-#     return {
-#         bag => {
-#             default  => '',
-#             encoding => 'utf8',
-#             type     => 'mixed_bag', # always arrays
-#         },
-#     };
-# }
-
 sub get_input_definition {
     my $self=shift;
     
     return {
-        vorname => {
-            default  => '',
-            encoding => 'none',
-            type     => 'scalar',
-        },
-        nachname => {
-            default  => '',
-            encoding => 'utf8',
-            type     => 'scalar',
-        },       
         bag => {
             default  => '',
             encoding => 'utf8',

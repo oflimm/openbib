@@ -764,7 +764,7 @@ sub can_access_view {
 	    my $checked_ranges = 0;
 	    
 	    foreach my $ip (@ip_ranges){
-		$logger->debug("Checking $remote_ip - $ip");
+		$logger->debug("Checking remote ip $remote_ip with allowed ip range $ip for view $viewname");
 		
 		my $address_range;
 		
@@ -778,12 +778,20 @@ sub can_access_view {
 		
 		if ($remote_address->within($address_range)){
 		    $is_intranet = 1;
-		    $logger->debug("IP $remote_ip considered intranet");
+		    $logger->debug("IP $remote_ip considered intranet for view $viewname");
 		}
 	    }
 	    
 	    # Default force_login, wenn ausserhalb des Intranets
-	    $force_login = 1 if ($checked_ranges && !$is_intranet);
+	    if ($checked_ranges && !$is_intranet){
+		# Weiterleitung an Anmeldung, wenn Nutzung auf Intranet eingegrenzt, aber IP von ausserhalb kommt.
+		$force_login = 1 ;
+	    }
+	    elsif ($checked_ranges && $is_intranet){
+		# Anfrage brechtigt, wenn Nutzung auf Intranet eingegrenzt, und IP aus dem Intranet kommt.
+		# Ein fuer den View etwaig definierter Login-Zwang (force_login) ist dann obsolet
+		$force_login = 0;
+	    }
 	}
     }
 

@@ -19,13 +19,19 @@
 
 <h2>Terms</h2>
 
+[% IF terms.length > 0 %]
 <p>
 [% terms.join(' ') %]
 </p>
+[% ELSE %]
+[% msg.maketext("Es konnten keine Terme im Index für diesen Titel gefunden werden") %]
+[% END %]
+
+<p/>
 
 <h2>Values</h2>
 
-
+[% IF facets.keys || sorttypes.keys || collapsetypes.keys %]
 <div class="table-responsive">
 <table class="table table-striped table-hover">
 <thead>
@@ -50,8 +56,18 @@
 </tbody>
 </table>
 </div>
+[% ELSE %]
+[% msg.maketext("Es konnten keine Values im Index für diesen Titel gefunden werden") %]
+[% END %]
+
+<p/>
 
 <h2>Daten</h2>
+
+[% IF data %]
 <p>
 [% data %]
 </p>
+[% ELSE %]
+[% msg.maketext("Es konnten keine Daten-BLOBs im Index für diesen Titel gefunden werden") %]
+[% END %]

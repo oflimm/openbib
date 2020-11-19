@@ -103,6 +103,11 @@ gesch&uuml;tzt.</p>
 
 <h4>Anmeldung und Selbstregistrierung</h4>
 
+<p>Bei der Registrierung eines Nutzers am Portal wird das
+sog. Double-Opt-In Verfahren verwendet, bei dem Sie zun&auml;chst eine
+Bestätigungsmail mit einem Web-Link erhalten. Erst durch dessen Aufruf
+wird das Konto im Portal unter Ihrer E-Mail-Adresse angelegt.</p>
+
 <p>Grunds&auml;tzlich verwendet die KUG Recherche-Infrastruktur eine
 eigene Nutzerdatenbank (KUG Nutzerdatenbank), in der jeder Nutzer nach
 erstmaliger Anmeldung mit einem Bibliotheksausweis oder nach

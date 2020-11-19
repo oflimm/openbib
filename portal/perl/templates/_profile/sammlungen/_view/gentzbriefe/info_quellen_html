@@ -1,0 +1,25 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_22
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+
+[% config.get_templatetext('info_quellen','gentzdigital',lang) %]
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

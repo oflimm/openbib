@@ -25,15 +25,6 @@
 
 </style>
 
-
-
-<div class="row flex-md-row-reverse">
-
-  <div id="ob-search_refine" class="col-xs-6 col-md-3 collapse" style="border-left: 1px solid #dbdbdb;">
-
-[% IF hits > 0 %]
-[% PROCESS common/subtemplate name="search_facet" %]
-[% ELSE %]
 [%
    IF NOT viewdbs ;
        viewdbs = config.get_dbs_of_view(view);
@@ -47,9 +38,19 @@
    IF NOT searchprofileid_of_sysprofile ;
       searchprofileid_of_sysprofile = config.get_searchprofile_of_systemprofile(view);
    END ;
+   IF NOT searchprofileid_of_eds ;
+      searchprofileid_of_eds = config.get_searchprofile_of_database('eds');
+   END ;
 
 %]
 
+<div class="row flex-md-row-reverse">
+
+  <div id="ob-search_refine" class="col-xs-6 col-md-3 collapse" style="border-left: 1px solid #dbdbdb;">
+
+[% IF hits > 0 %]
+[% PROCESS common/subtemplate name="search_facet" %]
+[% ELSE %]
 [%   IF viewdbs.size == 1 %]  
 <div class="ob-facets">
 [% PROCESS common/subtemplate name="search_radius" %]

@@ -12,5 +12,5 @@
 #######################################################################
 -%]
 
-[% config.get_templatetext('info_literatur','gentzdigital',lang) %]
+[% config.get_templatetext('info_literatur','gentzbriefe',lang) %]
 

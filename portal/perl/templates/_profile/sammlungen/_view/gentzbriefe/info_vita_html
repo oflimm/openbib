@@ -12,4 +12,4 @@
 #######################################################################
 -%]
 
-[% config.get_templatetext('info_vita','gentzdigital',lang) %]
+[% config.get_templatetext('info_vita','gentzbriefe',lang) %]

@@ -46,130 +46,273 @@ use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
-use OpenBib::Extensions::FidPhil::User;
-use Data::Dumper;
+use OpenBib::User;
 
-# Doi we really need to inherit from Admin Users - Base PSGI should be enough???
-use base 'OpenBib::Handler::PSGI::Users';
+use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
 sub setup {
     my $self = shift;
-    $self->start_mode('show_collection');
+
+    $self->start_mode('show');
     $self->run_modes(
-        'show_collection'            => 'show_collection',
-        'update_record'              => 'update_record',
-        'dispatch_to_representation' => 'dispatch_to_representation',
+        'create_record'         => 'create_record',	
+        'show_record'           => 'show_record',
+        'show_record_form'      => 'show_record_form',
+        'update_record'         => 'update_record',
+        'delete_record'         => 'delete_record',
+        'confirm_delete_record' => 'confirm_delete_record',
+        'dispatch_to_representation'           => 'dispatch_to_representation',
     );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
 }
 
-sub show_collection {
+sub show_record {
     my $self = shift;
 
     # Log4perl logger erzeugen
-    my $logger  = get_logger();
-    my $view    = $self->param('view');
-    my $user    = $self->param('user');
-    my $session = $self->param('session');
+    my $logger = get_logger();
+
+    # Dispatched Ards
+    my $view           = $self->param('view');
+    my $userid         = $self->strip_suffix($self->param('userid'));
 
     # Shared Args
-    my $config = $self->param('config');
-    if ( !$self->authorization_successful('right_read') ) {
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+
+    $self->param('userid',$userid);
+    
+    if (!$self->authorization_successful){
         return $self->print_authorization_error();
     }
-    $user = OpenBib::Extensions::FidPhil::User->new(
-        { sessionID => $session->{ID}, config => $config } );
-    my $args_ref = {};
 
-    #benoetigt wird eine ID
-    $args_ref->{view} = 2;
-    my $userlist_ref = $user->showUsersForView($args_ref);
+    my $searchfields_ref        = $user->get_searchfields();
+    my $userinfo_ref            = $user->get_info();
+    my $spelling_suggestion_ref = $user->get_spelling_suggestion();
+    my $livesearch_ref          = $user->get_livesearch();
+    
+    # Wenn wir eine gueltige Mailadresse als Usernamen haben,
+    # dann liegt Selbstregistrierung vor und das Passwort kann
+    # geaendert werden
+
+    my $userinfo = new OpenBib::User({ID => $userid })->get_info;
+    
+    my $email_valid=Email::Valid->address($userinfo->{username});
+    
+    my $authenticator=$session->get_authenticator;
 
     # TT-Data erzeugen
-    my $ttdata = { userlist => $userlist_ref, };
+    my $ttdata={
+	userid              => $userid,
+	userinfo            => $userinfo,
+        qopts               => $queryoptions->get_options,
+        email_valid         => $email_valid,
+        authenticator       => $authenticator,
+        searchfields        => $searchfields_ref,
+        spelling_suggestion => $spelling_suggestion_ref,
+        livesearch          => $livesearch_ref,
+    };
+    
+    return $self->print_page($config->{tt_users_record_tname},$ttdata);
+}
 
-    # return $self->print_page("$config->{tt_manager_users_tname}",$ttdata);
-    return $self->print_page( "manager_users", $ttdata );
+sub show_record_form {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Ards
+    my $view           = $self->param('view');
+    my $userid         = $self->strip_suffix($self->param('userid'));
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+
+    $self->param('userid',$userid);
+    
+    if (!$self->authorization_successful){
+        return $self->print_authorization_error();
+    }
+
+    my $userinfo_ref            = $user->get_info();
+    
+    # Wenn wir eine gueltige Mailadresse als Usernamen haben,
+    # dann liegt Selbstregistrierung vor und das Passwort kann
+    # geaendert werden
+
+    my $userinfo = new OpenBib::User({ID => $userid })->get_info;
+    
+    my $email_valid=Email::Valid->address($userinfo->{username});
+    
+    my $authenticator=$session->get_authenticator;
+
+    # TT-Data erzeugen
+    my $ttdata={
+	userid              => $userid,
+	userinfo            => $userinfo,
+        qopts               => $queryoptions->get_options,
+        email_valid         => $email_valid,
+        authenticator       => $authenticator,
+    };
+    
+    return $self->print_page($config->{tt_users_record_edit_tname},$ttdata);
 }
 
 sub update_record {
+    my $self = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $userid         = $self->strip_suffix($self->param('userid'));
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
+    
+    if (!$self->is_authenticated('user',$userid)){
+        return;
+    }
+
+    if (defined $input_data_ref->{mixed_bag}){
+	my $contentstring = {};
+	
+	eval {
+	    $contentstring= JSON::XS->new->utf8->canonical->encode($input_data_ref->{mixed_bag});
+	};
+
+	if ($@){
+	    $logger->error("Canonical Encoding failed: ".YAML::Dump($input_data_ref->{mixed_bag}));
+	}
+
+	$input_data_ref->{mixed_bag} = $contentstring; 
+    }
+   
+    $user->update_userinfo($input_data_ref) if (keys %$input_data_ref);
+    my $result_ref = { success => 0, };
+    $result_ref->{success} = 1;
+    #$result_ref->{registrationkey}  = $registrationid;
+    return $self->print_json($result_ref);
+    #if ($self->param('representation') eq "html"){
+    #    # TODO GET?
+    #    return $self->redirect("$path_prefix/$config->{users_loc}/id/$user->{ID}/edit");
+    #}
+    #else {
+    #    $logger->debug("Weiter zum Record");
+    #    return $self->show_record;
+    #}    
+}
+
+sub confirm_delete_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view');
+    my $userid      = $self->strip_suffix($self->param('userid'));
+    my $config         = $self->param('config');
+
+    my $ttdata={
+        userid => $userid,
+    };
+    
+    $logger->debug("Asking for confirmation");
+
+    return $self->print_page($config->{tt_users_record_delete_confirm_tname},$ttdata);
+}
+
+sub delete_record {
     my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view   = $self->param('view');
-    my $userid = $self->strip_suffix( $self->param('userid') );
+    my $view           = $self->param('view');
+    my $userid         = $self->strip_suffix($self->param('userid'));
 
     # Shared Args
-    my $query        = $self->query();
-    my $r            = $self->param('r');
-    my $config       = $self->param('config');
-    my $session      = $self->param('session');
-    my $user         = $self->param('user');
-    my $msg          = $self->param('msg');
-    my $queryoptions = $self->param('qopts');
-    my $stylesheet   = $self->param('stylesheet');
-    my $useragent    = $self->param('useragent');
-    my $path_prefix  = $self->param('path_prefix');
+    my $config         = $self->param('config');
+    my $user           = $self->param('user');
+    my $path_prefix    = $self->param('path_prefix');
 
-    # CGI / JSON input
-    my $input_data_ref = $self->parse_valid_input();
-
-    if ( !$self->is_authenticated( 'user', $userid ) ) {
+    if (!$self->is_authenticated('user',$userid)){
         return;
     }
 
-    if ( defined $input_data_ref->{mixed_bag} ) {
-        my $contentstring = {};
+    $user->wipe_account();
 
-        eval {
-            $contentstring = JSON::XS->new->utf8->canonical->encode(
-                $input_data_ref->{mixed_bag} );
-        };
-
-        if ($@) {
-            $logger->error( "Canonical Encoding failed: "
-                  . YAML::Dump( $input_data_ref->{mixed_bag} ) );
-        }
-
-        $input_data_ref->{mixed_bag} = $contentstring;
+    if ($self->param('representation') eq "html"){
+        $self->redirect("$path_prefix/$config->{home_loc}");
     }
 
-    my $all_roles  = $user->get_all_roles();
-    my $user_roles = $user->get_roles_of_user($userid);
+    return;
+}
 
-    #only update user is without a role
-    #maybe use has_role?
-    if (   !$user_roles->{'fidphil_user'}
-        && !$user_roles->{'admin'}
-        && !$user_roles->{'fidphil_society'} )
-    {
-        my $roleid = 0;
-        foreach my $role ( @{$all_roles} ) {
-            if ( $role->{rolename} eq 'fidphil_user' ) {
-                $roleid = $role->{id};
-            }
-        }
-        my @roles            = ($roleid);
-        my $thisuserinfo_ref = {
-            id    => $userid,
-            roles => \@roles,
-        };
-        $user->update_user_rights_role($thisuserinfo_ref);
-    }
-    $user->update_userinfo($input_data_ref) if ( keys %$input_data_ref );
-    if ( $self->param('representation') eq "html" ) {
+# Authentifizierung wird spezialisiert
 
-        # TODO GET?
-        return $self->redirect(
-            "$path_prefix/$config->{users_loc}/id/$user->{ID}/edit");
+sub authorization_successful {
+    my $self   = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $user               = $self->param('user');    
+    my $basic_auth_failure = $self->param('basic_auth_failure') || 0;
+    my $userid             = $self->param('userid')             || '';
+
+    $logger->debug("Basic http auth failure: $basic_auth_failure / Userid: $userid ");
+
+    # Bei Fehler grundsaetzlich Abbruch
+    if ($basic_auth_failure || !$userid){
+        return 0;
     }
-    else {
-        $logger->debug("Weiter zum Record");
-        return $self->show_record;
+    
+    # Der zugehoerige Nutzer darf auch zugreifen (admin darf immer)
+    if ($self->is_authenticated('user',$userid)){
+	return 1;
     }
+
+    # Default: Kein Zugriff
+    return 0;
 }
 
 sub get_input_definition {
@@ -194,6 +337,31 @@ sub get_input_definition {
     };
 }
 
-#    return $self->print_page($config->{tt_admin_users_search_tname},$ttdata);
 
 1;
+__END__
+
+=head1 NAME
+
+OpenBib::UserPrefs - Verwaltung von Benutzer-Profil-Einstellungen
+
+=head1 DESCRIPTION
+
+Das mod_perl-Modul OpenBib::UserPrefs stellt dem Benutzer des 
+Suchportals Einstellmoeglichkeiten seines persoenlichen Profils
+zur Verfuegung.
+
+=head2 Loeschung seiner Kennung
+
+Loeschung seiner Kennung, so es sich um eine Kennung handelt, die 
+im Rahmen der Selbstregistrierung angelegt wurde. Sollte der
+Benutzer sich mit einer Kennung aus einer Sisis-Datenbank 
+authentifiziert haben, so wird ihm die Loeschmoeglichkeit nicht 
+angeboten
+ 
+
+=head1 AUTHOR
+
+ Oliver Flimm <flimm@openbib.org>
+
+=cut

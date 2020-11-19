@@ -21,11 +21,11 @@
   margin: 0.5rem;
 }
 </style>
-<!--
+
 <div class="container">
-<div class="row">
+<div class="row justify-content-end">
 <div class="col-md-4 pl-5 pr-5">
-<div class="card mt-5 mb-5"><img class="card-img-top" src="/images/openbib/views/jesuiten/Ignatius-Loyola_291px.jpg" alt="Castigliones H&ouml;llensturz" />
+<div class="card mt-5 mb-5"><img class="card-img-top" src="/images/openbib/views/gentzbriefe/gentzportrait_291px.jpg" alt="Gentz Portrait" />
 <div class="card-body">
 <h5 class="card-title">Info 1</h5>
 <p class="card-text">Lorem ipsum</p>
@@ -33,13 +33,14 @@
 </div>
 </div>
 <div class="col-md-4 pl-5 pr-5">
-<div class="card mt-5 mb-5"><img class="card-img-top" src="/images/openbib/views/jesuiten/hoellensturz.jpg" alt="Castigliones H&ouml;llensturz" />
+<div class="card mt-5 mb-5"><img class="card-img-top" src="/images/openbib/views/gentzbriefe/Brief02_291px.jpg" alt="Auszug aus: Gentz an Pitt, 12.12.1802" />
 <div class="card-body">
 <h5 class="card-title">Info 2</h5>
 <p class="card-text">Lorem ipsum</p>
 <a class="btn btn-primary" href="#">Mehr</a></div>
 </div>
 </div>
+<!--
 <div class="col-md-4 pl-5 pr-5">
 <div class="card mt-5 mb-5"><img class="card-img-top" src="/images/openbib/views/jesuiten/Regimini_291px.jpg" alt="Castigliones H&ouml;llensturz" />
 <div class="card-body">
@@ -47,9 +48,9 @@
 <p class="card-text">Lorem ipsum</p>
 <a class="btn btn-primary" href="#">Mehr</a></div>
 </div>
-</div>
+</div>-->
 </div>
 
 </div>
--->
-[% config.get_templatetext('home',view,lang) %]
+
+<!-- [% config.get_templatetext('home',view,lang) %] -->

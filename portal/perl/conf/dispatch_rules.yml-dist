@@ -60,6 +60,8 @@
      - json
      - include
      - rdf
+   args:
+     'restrict_db_to_view': 1
 - # users/titles_loc: only public
    module: 'OpenBib::Handler::PSGI::Titles'
    rule: '/portal/:view/databases/titles/popular[get]'
@@ -89,6 +91,8 @@
      - json
      - include
      - rdf
+   args:
+     'restrict_db_to_view': 1
 - # users/titles_loc: only public
    module: 'OpenBib::Handler::PSGI::Titles'
    rule: '/portal/:view/databases/id/:database/titles/recent[get]'
@@ -100,6 +104,8 @@
      - rss
      - include
      - rdf
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/titles_loc: Record show
    module: 'OpenBib::Handler::PSGI::Titles::Fields'
    rule: '/portal/:view/databases/id/:database/titles/fields[get]'
@@ -107,16 +113,21 @@
    representations:
      - none
      - html
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/titles_loc: Record show
    module: 'OpenBib::Handler::PSGI::Titles::Fields'
    rule: '/portal/:view/databases/id/:database/titles/fields/id/:fieldid[get]'
    runmode: 'show_record'
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/titles_loc: Record show
    module: 'OpenBib::Handler::PSGI::Titles'
    rule: '/portal/:view/databases/id/:database/titles/id/:titleid[get]'
    runmode: 'show_record'
    args:
-      users_loc: 'databases'
+     'restrict_db_to_view': 1
+     users_loc: 'databases'
 - # users_loc/titles_loc: Circulation
    module: 'OpenBib::Handler::PSGI::Titles'
    rule: '/portal/:view/databases/id/:database/titles/id/:titleid/circulation[get]'
@@ -126,6 +137,8 @@
      - html
      - include
      - json
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/titles_loc: Fields
    module: 'OpenBib::Handler::PSGI::Titles'
    rule: '/portal/:view/databases/id/:database/titles/id/:titleid/fields[get]'
@@ -135,6 +148,8 @@
      - html
      - include
      - json
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/titles_loc: Holdings
    module: 'OpenBib::Handler::PSGI::Titles'
    rule: '/portal/:view/databases/id/:database/titles/id/:titleid/holdings[get]'
@@ -144,6 +159,8 @@
      - html
      - include
      - json
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/holdings_loc: Record show
    module: 'OpenBib::Handler::PSGI::Holdings::Fields'
    rule: '/portal/:view/databases/id/:database/holdings/fields[get]'
@@ -151,10 +168,14 @@
    representations:
      - none
      - html
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/holdings_loc: Record show
    module: 'OpenBib::Handler::PSGI::Holdings::Fields'
    rule: '/portal/:view/databases/id/:database/holdings/fields/id/:fieldid[get]'
    runmode: 'show_record'
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/titles_loc: Record show related_records (wikipedia)
    module: 'OpenBib::Handler::PSGI::Titles'
    rule: '/portal/:view/databases/id/:database/titles/id/:titleid/related_records[get]'
@@ -164,6 +185,8 @@
      - html
      - include
      - json
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/titles_loc: Record show similar_records (belonging to same work, eg. other editions)
    module: 'OpenBib::Handler::PSGI::Titles'
    rule: '/portal/:view/databases/id/:database/titles/id/:titleid/similar_records[get]'
@@ -173,6 +196,8 @@
      - html
      - include
      - json
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/titles_loc: Record show same records in other databases
    module: 'OpenBib::Handler::PSGI::Titles'
    rule: '/portal/:view/databases/id/:database/titles/id/:titleid/same_records[get]'
@@ -182,6 +207,8 @@
      - html
      - include
      - json
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/titles_loc: Record show
    module: 'OpenBib::Handler::PSGI::CartItems'
    rule: '/portal/:view/databases/id/:database/titles/id/:titleid/save[get]'
@@ -190,7 +217,8 @@
      - none
      - html
    args:
-      users_loc: 'databases'
+     'restrict_db_to_view': 1
+     users_loc: 'databases'
 - # users_loc/titles_loc: Record show
    module: 'OpenBib::Handler::PSGI::CartItems'
    rule: '/portal/:view/databases/id/:database/titles/id/:titleid/mail[get]'
@@ -199,11 +227,14 @@
      - none
      - html
    args:
-      users_loc: 'databases'
+     'restrict_db_to_view': 1
+     users_loc: 'databases'
 - # users_loc/titles_loc: Record show
    module: 'OpenBib::Handler::PSGI::CartItems'
    rule: '/portal/:view/databases/id/:database/titles/id/:titleid/mail[post]'
    runmode: 'mail_collection_send'
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/titles_loc: Record show
    module: 'OpenBib::Handler::PSGI::CartItems'
    rule: '/portal/:view/databases/id/:database/titles/id/:titleid/print[get]'
@@ -212,20 +243,23 @@
      - none
      - html
    args:
-      users_loc: 'databases'
+     'restrict_db_to_view': 1
+     users_loc: 'databases'
 
 - # users_loc/titles_loc: Record show
    module: 'OpenBib::Handler::PSGI::Titles'
    rule: '/portal/:view/databases/id/:database/titles/id/:titleid/availability[get]'
    runmode: 'show_availability'
    args:
-      disable_content_negotiation: 1
+     'restrict_db_to_view': 1
+     disable_content_negotiation: 1
 - # users/titles_loc:
    module: 'OpenBib::Handler::PSGI::Titles'
    rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/availability[get]'
    runmode: 'show_availability'
    args:
-      disable_content_negotiation: 1
+     'restrict_db_to_view': 1
+     disable_content_negotiation: 1
 - # users/titles_loc:
    module: 'OpenBib::Handler::PSGI::Titles::Provenances'
    rule: '/portal/:view/databases/id/:database/titles/id/:titleid/provenances[get]'
@@ -235,6 +269,8 @@
      - include
      - json
      - html
+   args:
+     'restrict_db_to_view': 1
 - # users/titles_loc:
    module: 'OpenBib::Handler::PSGI::Titles::Provenances'
    rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/provenances[get]'
@@ -244,6 +280,8 @@
      - include
      - json
      - html
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/titles_loc: Record redirect to bibsonomy
    module: 'OpenBib::Handler::PSGI::Titles'
    rule: '/portal/:view/databases/id/:database/titles/id/:titleid/to_bibsonomy[get]'
@@ -251,10 +289,14 @@
    representations:
      - none
      - html
+   args:
+     'restrict_db_to_view': 1
 - # users/titles_loc:
    module: 'OpenBib::Handler::PSGI::Users::Titles'
    rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid[get]'
    runmode: 'show_record'
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/titles_loc: Fields
    module: 'OpenBib::Handler::PSGI::Titles'
    rule: '/portal/:view/databases/id/:database/titles/id/:titleid/fields[get]'
@@ -264,6 +306,8 @@
      - html
      - include
      - json
+   args:
+     'restrict_db_to_view': 1
 - # users/titles_loc:
    module: 'OpenBib::Handler::PSGI::Users::CartItems'
    rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/save[get]'
@@ -271,6 +315,8 @@
    representations:
      - none
      - html
+   args:
+     'restrict_db_to_view': 1
 - # users/titles_loc:
    module: 'OpenBib::Handler::PSGI::Users::CartItems'
    rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/mail[get]'
@@ -278,10 +324,14 @@
    representations:
      - none
      - html
+   args:
+     'restrict_db_to_view': 1
 - # users/titles_loc:
    module: 'OpenBib::Handler::PSGI::Users::CartItems'
    rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/mail[post]'
    runmode: 'mail_collection_send'
+   args:
+     'restrict_db_to_view': 1
 - # users/titles_loc:
    module: 'OpenBib::Handler::PSGI::Users::CartItems'
    rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/print[get]'
@@ -289,6 +339,8 @@
    representations:
      - none
      - html
+   args:
+     'restrict_db_to_view': 1
 - # users/titles_loc:
    module: 'OpenBib::Handler::PSGI::Users::Titles'
    rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/searchindex[get]'
@@ -298,6 +350,8 @@
      - html
      - json
      - rdf
+   args:
+     'restrict_db_to_view': 1
 - # users/titles_loc:
    module: 'OpenBib::Handler::PSGI::Users::Titles'
    rule: '/portal/:view/databases/id/:database/titles/id/:titleid/searchindex[get]'
@@ -307,6 +361,8 @@
      - html
      - json
      - rdf
+   args:
+     'restrict_db_to_view': 1
 - # users/titles_loc:
    module: 'OpenBib::Handler::PSGI::Users::Titles'
    rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/edit[get]'
@@ -314,6 +370,8 @@
    representations:
      - none
      - html
+   args:
+     'restrict_db_to_view': 1
 - # users/titles_loc:
    module: 'OpenBib::Handler::PSGI::Users::Titles'
    rule: '/portal/:view/users/id/:id/databases/id/:database/titles/edit[get]'
@@ -321,22 +379,32 @@
    representations:
      - none
      - html
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/titles_loc: Update Record
    module: 'OpenBib::Handler::PSGI::Users::Titles'
    rule: '/portal/:view/databases/id/:database/titles[post]'
    runmode: 'create_record'
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/titles_loc: Update Record
    module: 'OpenBib::Handler::PSGI::Users::Titles'
    rule: '/portal/:view/databases/id/:database/titles/id/:titleid[post]'
    runmode: 'update_record'
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/titles_loc: Update Record
    module: 'OpenBib::Handler::PSGI::Users::Titles'
    rule: '/portal/:view/databases/id/:database/titles/id/:titleid[put]'
    runmode: 'update_record'
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/titles_loc: Delete Record
    module: 'OpenBib::Handler::PSGI::Users::Titles'
    rule: '/portal/:view/databases/id/:database/titles/id/:titleid[delete]'
    runmode: 'delete_record'
+   args:
+     'restrict_db_to_view': 1
 
 #####################################################################
 # Browse-Resource/Repraesentation
@@ -507,31 +575,36 @@
    rule: '/portal/:view/databases/id/:database/paia/auth/:serviceid[post]'
    runmode: 'authenticate'
    args:
-      disable_content_negotiation: 1
+     'restrict_db_to_view': 1
+     disable_content_negotiation: 1
 - # connector_paia_loc:
    module: 'OpenBib::Handler::PSGI::Databases::PAIA'
    rule: '/portal/:view/databases/id/:database/paia/core/:userid[get]'
    runmode: 'patron'
    args:
-      disable_content_negotiation: 1
+     'restrict_db_to_view': 1
+     disable_content_negotiation: 1
 - # connector_paia_loc:
    module: 'OpenBib::Handler::PSGI::Databases::PAIA'
    rule: '/portal/:view/databases/id/:database/paia/core/:userid[patch]'
    runmode: 'update_patron'
    args:
-      disable_content_negotiation: 1
+     'restrict_db_to_view': 1
+     disable_content_negotiation: 1
 - # connector_paia_loc:
    module: 'OpenBib::Handler::PSGI::Databases::PAIA'
    rule: '/portal/:view/databases/id/:database/paia/core/:userid/:serviceid[get]'
    runmode: 'core_get_services'
    args:
-      disable_content_negotiation: 1
+     'restrict_db_to_view': 1
+     disable_content_negotiation: 1
 - # connector_paia_loc:
    module: 'OpenBib::Handler::PSGI::Databases::PAIA'
    rule: '/portal/:view/databases/id/:database/paia/core/:userid/:serviceid[post]'
    runmode: 'core_post_services'
    args:
-      disable_content_negotiation: 1
+     'restrict_db_to_view': 1
+     disable_content_negotiation: 1
 - # connector_livesearch_loc:
    module: 'OpenBib::Handler::PSGI::Connector::LiveSearch'
    rule: '/portal/:view/connector/livesearch'
@@ -1185,7 +1258,8 @@
    rule: '/portal/:view/databases/id/:databaseid[get]'
    runmode: 'show_record'
    args:
-      admin_loc: 'databases'
+     'restrict_db_to_view': 1
+     admin_loc: 'databases'
 - # users/databases_loc:
    scope: 'admin_databases'
    module: 'OpenBib::Handler::PSGI::Admin::Databases'
@@ -1242,13 +1316,15 @@
      - json
      - rdf
    args:
-      admin_loc: 'databases'
+     'restrict_db_to_view': 1
+     admin_loc: 'databases'
 - # databases_loc: Record show
    module: 'OpenBib::Handler::PSGI::Databases::RSS'
    rule: '/portal/:view/databases/id/:databaseid/rss/id/:rssid[get]'
    runmode: 'show_record'
    args:
-      admin_loc: 'databases'
+     'restrict_db_to_view': 1
+     admin_loc: 'databases'
 - # users/databases_loc:
    scope: 'admin_databases'
    module: 'OpenBib::Handler::PSGI::Admin::Databases::RSS'
@@ -2297,7 +2373,8 @@
    rule: '/portal/:view/databases/id/:database/persons/id/:personid[get]'
    runmode: 'show_record'
    args:
-      users_loc: 'databases'
+     'restrict_db_to_view': 1
+     users_loc: 'databases'
 - # users_loc/persons_loc: Record show
    module: 'OpenBib::Handler::PSGI::Persons::Titles'
    rule: '/portal/:view/databases/id/:database/persons/id/:personid/titles/recent[get]'
@@ -2305,10 +2382,14 @@
    representations:
      - none
      - rss
+   args:
+     'restrict_db_to_view': 1
 - # users/persons_loc:
    module: 'OpenBib::Handler::PSGI::Persons'
    rule: '/portal/:view/users/id/:id/databases/id/:database/persons/id/:personid[get]'
    runmode: 'show_record'
+   args:
+     'restrict_db_to_view': 1
 - # users/persons_loc: TODO
    module: 'OpenBib::Handler::PSGI::Persons'
    rule: '/portal/:view/users/id/:id/databases/id/:database/persons/id/:personid/edit[get]'
@@ -2316,6 +2397,8 @@
    representations:
      - none
      - html
+   args:
+     'restrict_db_to_view': 1
 - # users/persons_loc: TODO
    module: 'OpenBib::Handler::PSGI::Persons'
    rule: '/portal/:view/users/id/:id/databases/id/:database/persons/edit[get]'
@@ -2323,22 +2406,32 @@
    representations:
      - none
      - html
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/persons_loc: Update Record TODO
    module: 'OpenBib::Handler::PSGI::Persons'
    rule: '/portal/:view/databases/id/:database/persons[post]'
    runmode: 'create_record'
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/persons_loc: Update Record TODO
    module: 'OpenBib::Handler::PSGI::Persons'
    rule: '/portal/:view/databases/id/:database/persons/id/:personid[post]'
    runmode: 'update_record'
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/persons_loc: Update Record TODO
    module: 'OpenBib::Handler::PSGI::Persons'
    rule: '/portal/:view/databases/id/:database/persons/id/:personid[put]'
    runmode: 'update_record'
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/persons_loc: Delete Record TODO
    module: 'OpenBib::Handler::PSGI::Persons'
    rule: '/portal/:view/databases/id/:database/persons/id/:personid[delete]'
    runmode: 'delete_record'
+   args:
+     'restrict_db_to_view': 1
 
 #####################################################################
 # Corporatebodies-Resource/Repraesentation
@@ -2347,7 +2440,8 @@
    rule: '/portal/:view/databases/id/:database/corporatebodies/id/:corporatebodyid[get]'
    runmode: 'show_record'
    args:
-      users_loc: 'databases'
+     'restrict_db_to_view': 1
+     users_loc: 'databases'
 - # users_loc/corporatebodies_loc: Record show
    module: 'OpenBib::Handler::PSGI::CorporateBodies::Titles'
    rule: '/portal/:view/databases/id/:database/corporatebodies/id/:corporatebodyid/titles/recent[get]'
@@ -2355,10 +2449,14 @@
    representations:
      - none
      - rss
+   args:
+     'restrict_db_to_view': 1
 - # users/corporatebodies_loc:
    module: 'OpenBib::Handler::PSGI::CorporateBodies'
    rule: '/portal/:view/users/id/:id/databases/id/:database/corporatebodies/id/:corporatebodyid[get]'
    runmode: 'show_record'
+   args:
+     'restrict_db_to_view': 1
 - # users/corporatebodies_loc: TODO
    module: 'OpenBib::Handler::PSGI::CorporateBodies'
    rule: '/portal/:view/users/id/:id/databases/id/:database/corporatebodies/id/:corporatebodyid/edit[get]'
@@ -2366,6 +2464,8 @@
    representations:
      - none
      - html
+   args:
+     'restrict_db_to_view': 1
 - # users/corporatebodies_loc: TODO
    module: 'OpenBib::Handler::PSGI::CorporateBodies'
    rule: '/portal/:view/users/id/:id/databases/id/:database/corporatebodies/edit[get]'
@@ -2373,18 +2473,26 @@
    representations:
      - none
      - html
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/corporatebodies_loc: Update Record TODO
    module: 'OpenBib::Handler::PSGI::CorporateBodies'
    rule: '/portal/:view/databases/id/:database/corporatebodies[post]'
    runmode: 'create_record'
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/corporatebodies_loc: Update Record TODO
    module: 'OpenBib::Handler::PSGI::CorporateBodies'
    rule: '/portal/:view/databases/id/:database/corporatebodies/id/:corporatebodyid[post]'
    runmode: 'update_record'
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/corporatebodies_loc: Update Record TODO
    module: 'OpenBib::Handler::PSGI::CorporateBodies'
    rule: '/portal/:view/databases/id/:database/corporatebodies/id/:corporatebodyid[put]'
    runmode: 'update_record'
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/corporatebodies_loc: Delete Record TODO
    module: 'OpenBib::Handler::PSGI::CorporateBodies'
    rule: '/portal/:view/databases/id/:database/corporatebodies/id/:corporatebodyid[delete]'
@@ -2402,12 +2510,15 @@
      - json
      - include
      - rdf
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/subjects_loc: Record show
    module: 'OpenBib::Handler::PSGI::Subjects'
    rule: '/portal/:view/databases/id/:database/subjects/id/:subjectid[get]'
    runmode: 'show_record'
    args:
-      users_loc: 'databases'
+     'restrict_db_to_view': 1
+     users_loc: 'databases'
 - # users_loc/subjects_loc: Record show
    module: 'OpenBib::Handler::PSGI::Subjects::Titles'
    rule: '/portal/:view/databases/id/:database/subjects/id/:subjectid/titles/recent[get]'
@@ -2415,10 +2526,14 @@
    representations:
      - none
      - rss
+   args:
+     'restrict_db_to_view': 1
 - # users/subjects_loc:
    module: 'OpenBib::Handler::PSGI::Subjects'
    rule: '/portal/:view/users/id/:id/databases/id/:database/subjects/id/:subjectid[get]'
    runmode: 'show_record'
+   args:
+     'restrict_db_to_view': 1
 - # users/subjects_loc: TODO
    module: 'OpenBib::Handler::PSGI::Subjects'
    rule: '/portal/:view/users/id/:id/databases/id/:database/subjects/id/:subjectid/edit[get]'
@@ -2426,6 +2541,8 @@
    representations:
      - none
      - html
+   args:
+     'restrict_db_to_view': 1
 - # users/subjects_loc: TODO
    module: 'OpenBib::Handler::PSGI::Subjects'
    rule: '/portal/:view/users/id/:id/databases/id/:database/subjects/edit[get]'
@@ -2433,22 +2550,32 @@
    representations:
      - none
      - html
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/subjects_loc: Update Record TODO
    module: 'OpenBib::Handler::PSGI::Subjects'
    rule: '/portal/:view/databases/id/:database/subjects[post]'
    runmode: 'create_record'
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/subjects_loc: Update Record TODO
    module: 'OpenBib::Handler::PSGI::Subjects'
    rule: '/portal/:view/databases/id/:database/subjects/id/:subjectid[post]'
    runmode: 'update_record'
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/subjects_loc: Update Record TODO
    module: 'OpenBib::Handler::PSGI::Subjects'
    rule: '/portal/:view/databases/id/:database/subjects/id/:subjectid[put]'
    runmode: 'update_record'
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/subjects_loc: Delete Record TODO
    module: 'OpenBib::Handler::PSGI::Subjects'
    rule: '/portal/:view/databases/id/:database/subjects/id/:subjectid[delete]'
    runmode: 'delete_record'
+   args:
+     'restrict_db_to_view': 1
 
 #####################################################################
 # Classifications-Resource/Repraesentation
@@ -2462,12 +2589,15 @@
      - json
      - include
      - rdf
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/classifications_loc: Record show
    module: 'OpenBib::Handler::PSGI::Classifications'
    rule: '/portal/:view/databases/id/:database/classifications/id/:classificationid[get]'
    runmode: 'show_record'
    args:
-      users_loc: 'databases'
+     'restrict_db_to_view': 1
+     users_loc: 'databases'
 - # users_loc/classifications_loc: Record show
    module: 'OpenBib::Handler::PSGI::Classifications::Titles'
    rule: '/portal/:view/databases/id/:database/classifications/id/:classificationid/titles/recent[get]'
@@ -2475,10 +2605,14 @@
    representations:
      - none
      - rss
+   args:
+     'restrict_db_to_view': 1
 - # users/classifications_loc:
    module: 'OpenBib::Handler::PSGI::Classifications'
    rule: '/portal/:view/users/id/:id/databases/id/:database/classifications/id/:classificationid[get]'
    runmode: 'show_record'
+   args:
+     'restrict_db_to_view': 1
 - # users/classifications_loc: TODO
    module: 'OpenBib::Handler::PSGI::Classifications'
    rule: '/portal/:view/users/id/:id/databases/id/:database/classifications/id/:classificationid/edit[get]'
@@ -2486,6 +2620,8 @@
    representations:
      - none
      - html
+   args:
+     'restrict_db_to_view': 1
 - # users/classifications_loc: TODO
    module: 'OpenBib::Handler::PSGI::Classifications'
    rule: '/portal/:view/users/id/:id/databases/id/:database/classifications/edit[get]'
@@ -2493,22 +2629,32 @@
    representations:
      - none
      - html
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/classifications_loc: Update Record TODO
    module: 'OpenBib::Handler::PSGI::Classifications'
    rule: '/portal/:view/databases/id/:database/classifications[post]'
    runmode: 'create_record'
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/classifications_loc: Update Record TODO
    module: 'OpenBib::Handler::PSGI::Classifications'
    rule: '/portal/:view/databases/id/:database/classifications/id/:classificationid[post]'
    runmode: 'update_record'
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/classifications_loc: Update Record TODO
    module: 'OpenBib::Handler::PSGI::Classifications'
    rule: '/portal/:view/databases/id/:database/classifications/id/:classificationid[put]'
    runmode: 'update_record'
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/classifications_loc: Delete Record TODO
    module: 'OpenBib::Handler::PSGI::Classifications'
    rule: '/portal/:view/databases/id/:database/classifications/id/:classificationid[delete]'
    runmode: 'delete_record'
+   args:
+     'restrict_db_to_view': 1
 
 #####################################################################
 # CartItems-Resource/Repraesentation
@@ -2883,6 +3029,8 @@
      - json
      - rdf
      - ics
+   args:
+     'restrict_db_to_view': 1
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Orders'
    rule: '/portal/:view/users/id/:userid/databases/id/:database/circulations/id/orders[get]'
@@ -2892,6 +3040,8 @@
      - html
      - json
      - rdf
+   args:
+     'restrict_db_to_view': 1
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Reservations'
    rule: '/portal/:view/users/id/:userid/databases/id/:database/circulations/id/reservations[get]'
@@ -2901,6 +3051,8 @@
      - html
      - json
      - rdf
+   args:
+     'restrict_db_to_view': 1
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Reminders'
    rule: '/portal/:view/users/id/:userid/databases/id/:database/circulations/id/reminders[get]'
@@ -2910,6 +3062,8 @@
      - html
      - json
      - rdf
+   args:
+     'restrict_db_to_view': 1
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations'
    rule: '/portal/:view/users/id/:userid/circulations/id/:circulationid[get]'
@@ -2922,18 +3076,26 @@
      - none
      - html
    runmode: 'renew_loans'
+   args:
+     'restrict_db_to_view': 1
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Orders'
    rule: '/portal/:view/databases/id/:database/circulations/id/orders[post]'
    runmode: 'create_record'
+   args:
+     'restrict_db_to_view': 1
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Reservations'
    rule: '/portal/:view/databases/id/:database/circulations/id/reservations[post]'
    runmode: 'create_record'
+   args:
+     'restrict_db_to_view': 1
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Reservations'
    rule: '/portal/:view/databases/id/:database/circulations/id/reservations/branches/id/:branchid/media/id/*[delete]'
    runmode: 'delete_record'
+   args:
+     'restrict_db_to_view': 1
 
 #####################################################################
 # Admin User Rights Roles-Resource/Repraesentation
@@ -3082,6 +3244,8 @@
      - html
      - json
      - rdf
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/clouds_loc: Record show
    module: 'OpenBib::Handler::PSGI::Clouds'
    rule: '/portal/:view/clouds/id/:cloudid[get]'
@@ -3090,3 +3254,5 @@
    module: 'OpenBib::Handler::PSGI::Clouds'
    rule: '/portal/:view/databases/id/:database/clouds/id/:cloudid[get]'
    runmode: 'show_record'
+   args:
+     'restrict_db_to_view': 1

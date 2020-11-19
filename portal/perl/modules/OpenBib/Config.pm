@@ -35,6 +35,7 @@ use DBIx::Class::ResultClass::HashRefInflator;
 use Cache::Memcached::Fast;
 use Compress::LZ4;
 use JSON::XS;
+use List::Compare;
 use Log::Log4perl qw(get_logger :levels);
 use LWP;
 use URI::Escape qw(uri_escape);
@@ -109,6 +110,61 @@ sub get_schema {
     $self->connectDB;
     
     return $self->{schema};
+}
+
+sub restrict_databases_to_view {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $databases_ref      = exists $arg_ref->{databases}
+        ? $arg_ref->{databases}       : undef;
+
+    my $view               = exists $arg_ref->{view}
+        ? $arg_ref->{view}            : undef;
+
+    my @viewdbs = $self->get_viewdbs($view);
+
+    my $compare = List::Compare->new('-u',$databases_ref, \@viewdbs);
+    
+    return $compare->get_intersection;
+}
+
+sub restrict_searchprofileid_to_view {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $searchprofileid    = exists $arg_ref->{searchprofileid}
+        ? $arg_ref->{searchprofileid} : undef;
+
+    my $view               = exists $arg_ref->{view}
+        ? $arg_ref->{view}            : undef;
+
+    my @viewdbs          = $self->get_viewdbs($view);
+    my @searchprofiledbs = $self->get_databases_of_searchprofile($searchprofileid);
+
+    my $compare = List::Compare->new('-u',\@searchprofiledbs, \@viewdbs);
+    
+    return $self->get_searchprofile_or_create($compare->get_intersection_ref); 
+}
+
+sub database_defined_in_view {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $database           = exists $arg_ref->{database}
+        ? $arg_ref->{database}        : undef;
+
+    my $view               = exists $arg_ref->{view}
+        ? $arg_ref->{view}            : undef;
+
+
+    my @viewdbs = $self->get_viewdbs($view);
+
+    if (my ($matched) = grep $_ eq $database, @viewdbs) {
+	return 1;
+    }
+
+    return 0;
 }
 
 sub get_number_of_dbs {
@@ -564,7 +620,8 @@ sub get_valid_rsscache_entry {
     return '';
 }
 
-sub get_dbs_of_view {
+# Todo: Obsolete, same as get_viewdbs
+sub get_dbs_of_view_obsolete {
     my ($self,$view) = @_;
     
     # Log4perl logger erzeugen
@@ -608,6 +665,12 @@ sub get_dbs_of_view {
     }
     
     return @dblist;
+}
+
+sub get_dbs_of_view {
+    my ($self,$view) = @_;
+
+    return $self->get_viewdbs($view);
 }
 
 sub get_rssfeeds_of_view {

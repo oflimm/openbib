@@ -261,9 +261,10 @@ sub mail_confirmation {
         username      => $username,
     };
     
-    return $self->print_json($result_ref);
     $result_ref->{success} = 1;
     $result_ref->{registrationkey}  = $registrationid;
+    return $self->print_json($result_ref);
+
     #return $self->print_page($config->{tt_users_registrations_confirmation_tname},$ttdata);
 }
 

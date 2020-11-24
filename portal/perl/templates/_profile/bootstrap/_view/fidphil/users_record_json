@@ -4,8 +4,10 @@ thisrecord = {
     email =  userinfo.email,
     vorname = userinfo.vorname,
     nachname = userinfo.nachname,
-    abc = "test",
     title = userinfo.mixed_bag.bag_title.0,
+    institution = userinfo.mixed_bag.bag_institution.0,
+    society = userinfo.mixed_bag.bag_society.0,
+    society_no = userinfo.mixed_bag.bag_society_no.0,
 };
 to_json(thisrecord);
 -%]

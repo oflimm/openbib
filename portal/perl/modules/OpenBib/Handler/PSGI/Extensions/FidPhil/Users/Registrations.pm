@@ -145,6 +145,7 @@ sub mail_confirmation {
     my $username            = ($query->param('username'))?$query->param('username'):'';
     my $password1           = ($query->param('password1'))?$query->param('password1'):'';
     my $password2           = ($query->param('password2'))?$query->param('password2'):'';
+    my $portal_host           = ($query->param('portal_host'))?$query->param('portal_host'):'';
     my $recaptcha_challenge = $query->param('recaptcha_challenge_field');
     #my $recaptcha_response  = $query->param('recaptcha_response_field');
     my $recaptcha_response  = $query->param('g-recaptcha-response');
@@ -259,6 +260,7 @@ sub mail_confirmation {
     # TT-Data erzeugen
     my $ttdata={
         username      => $username,
+        portal_use    => $portal_host,
     };
     
     #$result_ref->{success} = 1;

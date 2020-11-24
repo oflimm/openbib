@@ -23,8 +23,9 @@
 				<p class="lead">
 					Um Ihre Registrierung erfolgreich zu beenden klicken Sie bitte auf den URL, den wir Ihnen in einer Mail geschickt haben.
 				</p>
+ <div class="text-right"><a class="btn btn-primary mb-2" href="[% portal_host %]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Weiter zur Anmeldung") %]</a> 
 
-				<div class="text-right"><a class="btn btn-primary mb-2" href="[% path_prefix%]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Weiter zur Anmeldung") %]</a>
+				<!-- <div class="text-right"><a class="btn btn-primary mb-2" href="[% path_prefix%]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Weiter zur Anmeldung") %]</a> -->
 				</div>
 			</div>
 		</div>

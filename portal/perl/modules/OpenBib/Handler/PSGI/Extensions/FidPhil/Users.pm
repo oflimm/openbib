@@ -112,7 +112,8 @@ sub show_record {
     my $email_valid=Email::Valid->address($userinfo->{username});
     
     my $authenticator=$session->get_authenticator;
-
+    my $userrole_ref = $user->get_roles_of_user( $userid );
+    $userinfo->{roledata} = $userrole_ref;
     # TT-Data erzeugen
     my $ttdata={
 	userid              => $userid,

@@ -389,28 +389,6 @@ $(document).ready(function(){
 [% END %]
 <!-- Ende Tags -->
 
-    <script>
-$(document).ready(function(){
-
-    $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/bibsonomy/[% config.get('subjects_loc') %].include?l=[% lang %];bibkey=[% record.to_bibkey %];subjects=[% record.to_tags %]",
-          function (txt){
-            $("#ob-bibsonomy_tags").html(txt); 
-    });
-
-});
-
-    </script>
-
-<!-- Anfang BibSonomy-Tags -->
-<div class="ob-bibsonomy_tags"><!-- Begin Vorhandene BibSonomy tags -->
-<div class="ob-headline"><span id="ob-bibsonomy_tags_toggle">[% msg.maketext("BibSonomy Tags") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
-<div id="ob-bibsonomy_tags_do"><!-- Begin bibsonomy_tags do -->
-<span id="ob-bibsonomy_tags"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/bibsonomy/[% config.get('subjects_loc') %].html?l=[% lang %];bibkey=[% record.to_bibkey %];subjects=[% record.to_tags | uri %]">Suchen?</a></span>
-</div>
-<p/>
-</div>
-<!-- Ende BibSonomy-Tags -->
-
 <!-- Anfang Verwandte Verfasser -->
 <script language="JavaScript" type="text/javascript">
 $(document).ready(function(){

@@ -8,7 +8,7 @@ thisrecord = {
     institution = userinfo.mixed_bag.bag_institution.0,
     society = userinfo.mixed_bag.bag_society.0,
     society_no = userinfo.mixed_bag.bag_society_no.0,
-    roledata = userinfo.roledata,
+    roledata = Dumper(userinfo.roledata),
 };
 to_json(thisrecord);
 -%]

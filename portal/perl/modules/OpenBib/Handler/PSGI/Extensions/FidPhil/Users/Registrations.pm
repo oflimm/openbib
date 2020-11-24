@@ -236,11 +236,16 @@ sub mail_confirmation {
         OUTPUT        => $afile,
     });
 
-    $maintemplate->process($config->{tt_users_registrations_mail_message_tname}, $mainttdata ) || do { 
-        $logger->error($maintemplate->error());
-        $self->header_add('Status','400'); # Server Error
-        return;
-    };
+    $maintemplate->process("users_registrations_mail_message", $mainttdata ) || do { 
+         $logger->error($maintemplate->error());
+         $self->header_add('Status','400'); # Server Error
+         return;
+     };
+    # $maintemplate->process($config->{tt_users_registrations_mail_message_tname}, $mainttdata ) || do { 
+    #     $logger->error($maintemplate->error());
+    #     $self->header_add('Status','400'); # Server Error
+    #     return;
+    # };
 
     my $mailmsg = MIME::Lite->new(
         From            => $config->{contact_email},

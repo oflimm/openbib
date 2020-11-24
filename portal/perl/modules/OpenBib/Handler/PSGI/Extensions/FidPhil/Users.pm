@@ -47,6 +47,7 @@ use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
 use OpenBib::User;
+use Data::Dumper;
 
 use base 'OpenBib::Handler::PSGI';
 
@@ -113,10 +114,10 @@ sub show_record {
     
     my $authenticator=$session->get_authenticator;
     my $userrole_ref = $user->get_roles_of_user( $userid );
-    $userinfo->{roledata} = $userrole_ref;
     # TT-Data erzeugen
     my $ttdata={
 	userid              => $userid,
+    user_role           => $userrole_ref,
 	userinfo            => $userinfo,
         qopts               => $queryoptions->get_options,
         email_valid         => $email_valid,

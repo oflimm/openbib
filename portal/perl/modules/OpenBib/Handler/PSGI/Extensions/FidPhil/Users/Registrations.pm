@@ -236,16 +236,12 @@ sub mail_confirmation {
         OUTPUT        => $afile,
     });
 
-    $maintemplate->process("users_registrations_mail_message", $mainttdata ) || do { 
+ 
+    $maintemplate->process($config->{tt_users_registrations_mail_message_tname}, $mainttdata ) || do { 
          $logger->error($maintemplate->error());
-         $self->header_add('Status','400'); # Server Error
+        $self->header_add('Status','400'); # Server Error
          return;
      };
-    # $maintemplate->process($config->{tt_users_registrations_mail_message_tname}, $mainttdata ) || do { 
-    #     $logger->error($maintemplate->error());
-    #     $self->header_add('Status','400'); # Server Error
-    #     return;
-    # };
 
     my $mailmsg = MIME::Lite->new(
         From            => $config->{contact_email},
@@ -262,16 +258,16 @@ sub mail_confirmation {
 	Path            => $anschfile,
     );
     
-     $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config->{contact_email}");
+    #$mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config->{contact_email}");
     # TT-Data erzeugen
     my $ttdata={
         username      => $username,
         wp_home    => $wp_home,
     };
     
-    #$result_ref->{success} = 1;
-    #$result_ref->{registrationkey}  = $registrationid;
-    #return $self->print_json($result_ref);
+    $result_ref->{success} = 1;
+    $result_ref->{registrationkey}  = $registrationid;
+    return $self->print_json($result_ref);
 
     return $self->print_page($config->{tt_users_registrations_confirmation_tname},$ttdata);
 }

@@ -255,17 +255,17 @@ sub mail_confirmation {
 	Path            => $anschfile,
     );
     
-   #  $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config->{contact_email}");
+     $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config->{contact_email}");
     # TT-Data erzeugen
     my $ttdata={
         username      => $username,
     };
     
-    $result_ref->{success} = 1;
-    $result_ref->{registrationkey}  = $registrationid;
-    return $self->print_json($result_ref);
+    #$result_ref->{success} = 1;
+    #$result_ref->{registrationkey}  = $registrationid;
+    #return $self->print_json($result_ref);
 
-    #return $self->print_page($config->{tt_users_registrations_confirmation_tname},$ttdata);
+    return $self->print_page($config->{tt_users_registrations_confirmation_tname},$ttdata);
 }
 
 sub register {

@@ -260,7 +260,7 @@ sub mail_confirmation {
     # TT-Data erzeugen
     my $ttdata={
         username      => $username,
-        portal_use    => $portal_host,
+        portal_host    => $portal_host,
     };
     
     #$result_ref->{success} = 1;

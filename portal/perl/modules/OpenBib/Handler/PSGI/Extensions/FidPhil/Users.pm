@@ -319,16 +319,16 @@ sub get_input_definition {
     my $self=shift;
     
     return {
-        vorname => {
-            default  => '',
-            encoding => 'none',
-            type     => 'scalar',
-        },
-        nachname => {
-            default  => '',
-            encoding => 'utf8',
-            type     => 'scalar',
-        },       
+        # vorname => {
+        #     default  => '',
+        #     encoding => 'none',
+        #     type     => 'scalar',
+        # },
+        # nachname => {
+        #     default  => '',
+        #     encoding => 'utf8',
+        #     type     => 'scalar',
+        # },       
         bag => {
             default  => '',
             encoding => 'utf8',

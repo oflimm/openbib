@@ -261,7 +261,7 @@ sub mail_confirmation {
     # TT-Data erzeugen
     my $ttdata={
         username      => $username,
-        portal_host    => $portal_host,
+        wp_home    => $wp_home,
     };
     
     #$result_ref->{success} = 1;

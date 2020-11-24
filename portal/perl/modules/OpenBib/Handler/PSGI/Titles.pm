@@ -229,23 +229,6 @@ sub show_collection {
     my $path_prefix    = $self->param('path_prefix');
     my $representation = $self->param('represenation');
     my $dbinfotable    = $self->param('dbinfo');
-
-    my $database_in_view = 0;
-
-    foreach my $dbname ($config->get_viewdbs($view)){
-        if ($dbname eq $database){
-            $database_in_view = 1;
-            last;
-        }
-    }
-
-    # Databases with API don't deliver all titles so they are always NOT considered
-    # in contrast to a single title record
-    
-    unless ($database_in_view || $user->is_admin){
-        $self->header_add('Status' => 404); # NOT_FOUND
-        return;
-    }
     
     # CGI Args
     my $sb        = $query->param('sb')        || $config->{local_search_backend};
@@ -317,7 +300,7 @@ sub show_record {
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
     my $database       = $self->param('database');
-    my $titleid        = $self->strip_suffix($self->param('titleid'));
+    my $titleid        = $self->strip_suffix($self->decode_id($self->param('titleid')));
 
     # Shared Args
     my $query          = $self->query();
@@ -340,45 +323,11 @@ sub show_record {
     my $queryid       = $query->param('queryid')   || '';
     my $format        = $query->param('format')    || 'full';
     my $no_log        = $query->param('no_log')    || '';
-
-    my $database_in_view = 0;
-
-    my @dbs_in_view = $config->get_viewdbs($view);
-
-    # Add 'special' databases of type api
-    push @dbs_in_view, $config->get_apidbs;
-    
-    foreach my $dbname (@dbs_in_view){
-        if ($dbname eq $database){
-            $database_in_view = 1;
-            last;
-        }
-    }
-
-    # if ($database eq "bibsonomy" || $database eq "ezb" || $database eq "dbis"){
-    #     $database_in_view = 1;
-        
-    # }
-    # Databases with API are always considered
-#     foreach my $dbname ($config->get_apidbs){
-#         if ($dbname eq $database){
-#             $database_in_view = 1;
-#             last;
-#         }
-#     }
-    
-    unless ($database_in_view || $user->is_admin){
-	if ($logger->is_debug){
-	    $logger->debug("Access denied for database $database. Viewdbs: ".YAML::Dump(@dbs_in_view));
-	}
-        $self->header_add('Status' => 404); # NOT_FOUND
-        return;
-    }
     
     if ($user->{ID} && !$userid){
         my $args = "?l=".$self->param('lang');
 
-        return $self->redirect("$path_prefix/$config->{users_loc}/id/$user->{ID}/title/database/$database/id/$titleid.$representation$args",303);
+        return $self->redirect("$path_prefix/$config->{users_loc}/id/$user->{ID}/title/database/$database/id/".$self->decode_id($titleid)."$representation$args",303);
     }
     
     if ($userid && !$self->is_authenticated('user',$userid)){
@@ -575,7 +524,7 @@ sub redirect_to_bibsonomy {
     # Dispatched Args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $titleid        = $self->param('titleid');
+    my $titleid        = $self->decode_id($self->param('titleid'));
 
     # Shared Args
     my $r              = $self->param('r');
@@ -623,7 +572,7 @@ sub show_availability {
     # Dispatched Args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $titleid        = $self->param('titleid');
+    my $titleid        = $self->decode_id($self->param('titleid'));
 
     # Shared Args
     my $r              = $self->param('r');
@@ -664,7 +613,7 @@ sub show_record_fields {
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
     my $database       = $self->param('database');
-    my $titleid        = $self->strip_suffix($self->param('titleid'));
+    my $titleid        = $self->strip_suffix($self->decode_id($self->param('titleid')));
 
     # Shared Args
     my $query          = $self->query();
@@ -687,40 +636,6 @@ sub show_record_fields {
     my $queryid       = $query->param('queryid')   || '';
     my $format        = $query->param('format')    || 'full';
     my $no_log        = $query->param('no_log')    || '';
-
-    my $database_in_view = 0;
-
-    my @dbs_in_view = $config->get_viewdbs($view);
-
-    # Add 'special' databases of type api
-    push @dbs_in_view, $config->get_apidbs;
-    
-    foreach my $dbname (@dbs_in_view){
-        if ($dbname eq $database){
-            $database_in_view = 1;
-            last;
-        }
-    }
-
-    # if ($database eq "bibsonomy" || $database eq "ezb" || $database eq "dbis"){
-    #     $database_in_view = 1;
-        
-    # }
-    # Databases with API are always considered
-#     foreach my $dbname ($config->get_apidbs){
-#         if ($dbname eq $database){
-#             $database_in_view = 1;
-#             last;
-#         }
-#     }
-    
-    unless ($database_in_view || $user->is_admin){
-	if ($logger->is_debug){
-	    $logger->debug("Access denied for database $database. Viewdbs: ".YAML::Dump(@dbs_in_view));
-	}
-        $self->header_add('Status' => 404); # NOT_FOUND
-        return;
-    }
         
     if ($userid && !$self->is_authenticated('user',$userid)){
         $logger->debug("Testing authorization for given userid $userid");
@@ -880,7 +795,7 @@ sub show_record_holdings {
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
     my $database       = $self->param('database');
-    my $titleid        = $self->strip_suffix($self->param('titleid'));
+    my $titleid        = $self->strip_suffix($self->decode_id($self->param('titleid')));
 
     # Shared Args
     my $query          = $self->query();
@@ -982,7 +897,7 @@ sub show_record_circulation {
     # Dispatched Args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $titleid        = $self->param('titleid');
+    my $titleid        = $self->decode_id($self->param('titleid'));
 
     # Shared Args
     my $r              = $self->param('r');
@@ -1019,7 +934,7 @@ sub show_record_related_records {
     # Dispatched Args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $titleid        = $self->param('titleid');
+    my $titleid        = $self->decode_id($self->param('titleid'));
 
     # Shared Args
     my $r              = $self->param('r');
@@ -1056,7 +971,7 @@ sub show_record_similar_records {
     # Dispatched Args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $titleid        = $self->param('titleid');
+    my $titleid        = $self->decode_id($self->param('titleid'));
 
     # Shared Args
     my $r              = $self->param('r');
@@ -1093,7 +1008,7 @@ sub show_record_same_records {
     # Dispatched Args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $titleid        = $self->param('titleid');
+    my $titleid        = $self->decode_id($self->param('titleid'));
 
     # Shared Args
     my $r              = $self->param('r');

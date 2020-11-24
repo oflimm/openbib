@@ -231,7 +231,7 @@ sub show_record {
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
     my $database       = $self->param('database');
-    my $titleid        = $self->strip_suffix($self->param('titleid'));
+    my $titleid        = $self->strip_suffix($self->decode_id($self->param('titleid')));
 
     # Shared Args
     my $query          = $self->query();
@@ -452,7 +452,7 @@ sub show_record_searchindex {
     # Dispatched Args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $titleid        = $self->strip_suffix($self->param('titleid'));
+    my $titleid        = $self->strip_suffix($self->decode_id($self->param('titleid')));
 
     # Shared Args
     my $r              = $self->param('r');
@@ -484,7 +484,7 @@ sub redirect_to_bibsonomy {
     # Dispatched Args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $titleid        = $self->param('titleid');
+    my $titleid        = $self->decode_id($self->param('titleid'));
 
     # Shared Args
     my $r              = $self->param('r');

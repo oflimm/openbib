@@ -34,7 +34,7 @@ items = record.get_holding;
 
 FOREACH item IN items ;
    IF item.${"X0014"}.content.match('^EWA-LS Z') || item.${"X0014"}.content.match('^EWA-LS\s*:\s*Z') || item.${"X0014"}.content.match('^EWA Z') ||item.${"X0014"}.content.match('^HP-LS B') ||item.${"X0014"}.content.match('^EWA-LS-Theke Z') ;
-      item.${"X4000"}.content = "USB K&ouml;ln / Humanwiss. Abt.";
+      item.${"X4000"}.content = "USB Köln / Humanwiss. Abt.";
    END;
 END;
 

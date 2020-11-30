@@ -2492,6 +2492,389 @@ sub to_harvard_citation {
     if ($fields_ref->{type} eq "book"){
 	if ($fields_ref->{availability} eq "online"){
 	    if ($fields_ref->{year}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="(".$fields_ref->{year}.").";
+	    }
+	    if ($fields_ref->{title}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="<i>".$fields_ref->{title}."</i>.";
+	    }
+	    if ($fields_ref->{edition}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{edition}.".";
+	    }
+	    if ($fields_ref->{series}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="<i>".$fields_ref->{series}."</i> [online].";
+	    }
+
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    
+	    $citation.="Available at: ";
+	    
+	    if ($fields_ref->{onlineurl}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{onlineurl};
+	    }
+	    elsif ($fields_ref->{doi}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{doi};
+	    }
+	}
+	else {
+	    if ($fields_ref->{year}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="(".$fields_ref->{year}.").";
+	    }
+	    if ($fields_ref->{title}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="<i>".$fields_ref->{title}."</i>.";
+	    }
+	    if ($fields_ref->{edition}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{edition}.".";
+	    }
+	    if ($fields_ref->{place}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{place}.":";
+	    }
+	    if ($fields_ref->{publisher}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{publisher};
+	    }
+	}
+    }
+    elsif ($fields_ref->{type} eq "article"){
+	if ($fields_ref->{availability} eq "online"){
+	    if ($fields_ref->{year}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="(".$fields_ref->{year}.")";
+	    }
+	    if ($fields_ref->{title}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="'".$fields_ref->{title}."',";
+	    }
+	    if ($fields_ref->{source_journal}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="<i>".$fields_ref->{source_journal}."</i>.";
+	    }
+	    if ($fields_ref->{source_volume}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{source_volume};
+	    }
+	    if ($fields_ref->{source_issue}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="(".$fields_ref->{source_issue}."),";
+	    }
+	    if ($fields_ref->{source_pages}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{source_pages}.".";
+	    }
+
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    
+	    $citation.="Available at:";
+	    
+	    if ($fields_ref->{onlineurl}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{onlineurl};
+	    }
+	    elsif ($fields_ref->{doi}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{doi};
+	    }
+	}
+	else {
+	    if ($fields_ref->{year}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="(".$fields_ref->{year}.").";
+	    }
+	    if ($fields_ref->{title}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="'".$fields_ref->{title}."'.";
+	    }
+	    if ($fields_ref->{source_journal}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="<i>".$fields_ref->{source_journal}."</i>.";
+	    }
+	    if ($fields_ref->{source_volume}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{source_volume};
+	    }
+	    if ($fields_ref->{source_issue}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="(".$fields_ref->{source_issue}."),";
+	    }
+	    if ($fields_ref->{source_pages}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{source_pages}.".";
+	    }
+	}
+    }
+
+    $logger->debug("Harvard Citation: $citation");
+    
+    return $citation;
+}
+
+sub to_mla_citation {
+    my ($self,$arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $fields_ref = $self->to_abstract_fields();
+
+    # Source: https://www.mendeley.com/guides/mla-citation-guide
+    
+    my $citation = "";
+
+    if (defined $fields_ref->{authors} && @{$fields_ref->{authors}}){
+	if (@{$fields_ref->{authors}} == 1){
+	    $citation.=$fields_ref->{authors}[0];
+	}
+	elsif (@{$fields_ref->{authors}} == 2){
+	    $citation.=$fields_ref->{authors}[0]; # first author
+	    my ($surname,$forename) = split('\s*,\s*',$fields_ref->{authors}[1]); # 2nd author
+	    $citation.=" and $forename $surname";
+	}
+	elsif (@{$fields_ref->{authors}} >= 3){
+	    $citation.=$fields_ref->{authors}[0]." et al";
+	}
+    }
+
+    if (defined $fields_ref->{editors} && @{$fields_ref->{editors}}){
+	if (!$citation){
+	    $citation.=$fields_ref->{editors}[0].", editor";
+	}
+    }
+
+    $citation.="." if ($citation);
+    
+    if ($fields_ref->{type} eq "book"){
+	if ($fields_ref->{title}){
+	    my $title = $fields_ref->{title};
+	    $title=~s/([\w']+)/\u\L$1/g;
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.="<i>$title</i>.";
+	}
+	if ($fields_ref->{series}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.=$fields_ref->{series};
+	    if ($fields_ref->{publisher} || $fields_ref->{year} || $fields_ref->{edition} || $fields_ref->{availability} eq "online"){
+		$citation.=",";
+	    }
+	}
+	if ($fields_ref->{edition}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.=$fields_ref->{edition};
+	    if ($fields_ref->{publisher} || $fields_ref->{year}){
+		$citation.=",";
+	    }
+	}
+	if ($fields_ref->{availability} eq "online"){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.="e-book";
+	    if ($fields_ref->{year} || $fields_ref->{publisher}){
+		$citation.=",";
+	    }
+	}
+	
+	if ($fields_ref->{publisher}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.=$fields_ref->{publisher};
+	    if ($fields_ref->{year}){
+		$citation.=",";
+	    }
+	}
+	if ($fields_ref->{year}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.=$fields_ref->{year}.".";
+	}
+    }
+    elsif ($fields_ref->{type} eq "article"){
+	if ($fields_ref->{title}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.="\"".$fields_ref->{title}."\".";
+	}
+	if ($fields_ref->{source_journal}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.="<i>".$fields_ref->{source_journal}."</i>";
+	    if ($fields_ref->{source_volume} || $fields_ref->{source_issue} || $fields_ref->{year} || $fields_ref->{source_pages}){
+		$citation.=",";
+	    }
+	}
+	if ($fields_ref->{source_volume}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.="vol. ".$fields_ref->{source_volume};
+	    if ($fields_ref->{source_issue} || $fields_ref->{year} || $fields_ref->{source_pages}){
+		$citation.=",";
+	    }
+	}
+	if ($fields_ref->{source_issue}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.="no. ".$fields_ref->{source_issue};
+	    if ($fields_ref->{year} || $fields_ref->{source_pages}){
+		$citation.=",";
+	    }
+	}
+	if ($fields_ref->{year}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.=$fields_ref->{year};
+	    if ($fields_ref->{source_pages}){
+		$citation.=",";
+	    }
+	}
+	if ($fields_ref->{source_pages}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.=$fields_ref->{source_pages};
+	}
+
+	if ($citation){
+	    $citation.=".";
+	}
+	
+	if ($fields_ref->{availability} eq "online"){
+	    if ($fields_ref->{onlineurl}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{onlineurl};
+	    }
+	    elsif ($fields_ref->{doi}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{doi};
+	    }
+
+	    if ($citation){
+		$citation.=".";
+	    }
+	}    
+    }
+
+    $logger->debug("Harvard Citation: $citation");
+    
+    return $citation;
+}
+
+# ToDo!
+sub to_apa_citation {
+    my ($self,$arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $fields_ref = $self->to_abstract_fields();
+
+    # Source: https://www.mendeley.com/guides/harvard-citation-guide
+    
+    my $citation = "";
+
+    if (defined $fields_ref->{editors} && @{$fields_ref->{editors}}){
+	if (@{$fields_ref->{editors}} >= 4){
+	    $citation.=$fields_ref->{editors}[0]." et al";
+	}
+	else {
+	    $citation.=join(', ', @{$fields_ref->{editors}});
+	}
+	$citation.=". (eds.)";
+    }
+    elsif (defined $fields_ref->{authors} && @{$fields_ref->{authors}}){
+	if (@{$fields_ref->{authors}} >= 4){
+	    $citation.=$fields_ref->{authors}[0]." et al";
+	}
+	else {
+	    $citation.=join(', ', @{$fields_ref->{authors}});
+	}
+	$citation.=".";
+    }
+    else {
+	    $citation.="Anonymus.";
+    }
+
+    if ($fields_ref->{type} eq "book"){
+	if ($fields_ref->{availability} eq "online"){
+	    if ($fields_ref->{year}){
 		$citation.=" (".$fields_ref->{year}.").";
 	    }
 	    if ($fields_ref->{title}){

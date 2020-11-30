@@ -67,4 +67,6 @@
 [% record.to_harvard_citation %]
 [% ELSIF format == "mla" %]
 [% record.to_mla_citation %]
+[% ELSIF format == "apa" %]
+[% record.to_apa_citation %]
 [% END %]

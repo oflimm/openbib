@@ -2832,12 +2832,11 @@ sub to_mla_citation {
 	}    
     }
 
-    $logger->debug("Harvard Citation: $citation");
+    $logger->debug("MLA Citation: $citation");
     
     return $citation;
 }
 
-# ToDo!
 sub to_apa_citation {
     my ($self,$arg_ref) = @_;
 
@@ -2846,127 +2845,156 @@ sub to_apa_citation {
 
     my $fields_ref = $self->to_abstract_fields();
 
-    # Source: https://www.mendeley.com/guides/harvard-citation-guide
+    # Source: https://www.mendeley.com/guides/apa-citation-guide
     
     my $citation = "";
 
     if (defined $fields_ref->{editors} && @{$fields_ref->{editors}}){
-	if (@{$fields_ref->{editors}} >= 4){
-	    $citation.=$fields_ref->{editors}[0]." et al";
+	my @editors = @{$fields_ref->{editors}} ;
+	if (@editors == 1){
+	    $citation.=$fields_ref->{editors}[0];
 	}
-	else {
-	    $citation.=join(', ', @{$fields_ref->{editors}});
+	elsif (@editors >= 1){
+	    $editors[$#editors] = "&amp; ".$editors[$#editors]; 
+	    $citation.=join(', ', @editors);
 	}
-	$citation.=". (eds.)";
+	$citation.="(Ed.)";
     }
     elsif (defined $fields_ref->{authors} && @{$fields_ref->{authors}}){
-	if (@{$fields_ref->{authors}} >= 4){
-	    $citation.=$fields_ref->{authors}[0]." et al";
+	my @authors = @{$fields_ref->{authors}} ;
+	if (@authors == 1){
+	    $citation.=$fields_ref->{authors}[0];
 	}
-	else {
-	    $citation.=join(', ', @{$fields_ref->{authors}});
+	elsif (@authors >= 1){
+	    $authors[$#authors] = "&amp; ".$authors[$#authors]; 
+	    $citation.=join(', ', @authors);
 	}
-	$citation.=".";
-    }
-    else {
-	    $citation.="Anonymus.";
     }
 
+    $citation.="." if ($citation);
+    
     if ($fields_ref->{type} eq "book"){
-	if ($fields_ref->{availability} eq "online"){
-	    if ($fields_ref->{year}){
-		$citation.=" (".$fields_ref->{year}.").";
+	if ($fields_ref->{year}){
+	    if ($citation){
+		$citation.=" ";
 	    }
-	    if ($fields_ref->{title}){
-		$citation.=" <i>".$fields_ref->{title}."</i>.";
+	    $citation.="(".$fields_ref->{year}.").";
+	}
+	if ($fields_ref->{title}){
+	    my $title = $fields_ref->{title};
+	    $title=~s/([\w']+)/\u\L$1/g;
+	    if ($citation){
+		$citation.=" ";
 	    }
+	    $citation.="<i>$title</i>";
+
 	    if ($fields_ref->{edition}){
-		$citation.=" ".$fields_ref->{edition}.".";
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="(".$fields_ref->{edition}.")";
 	    }
-	    if ($fields_ref->{series}){
-		$citation.=" <i>".$fields_ref->{series}."</i> [online].";
+
+	    $citation.=".";
+	}
+
+	if ($fields_ref->{place}){
+	    if ($citation){
+		$citation.=" ";
 	    }
+	    $citation.=$fields_ref->{place};
 	    
-	    $citation.=" Available at: ";
-	    
+	    if ($fields_ref->{publisher}){
+		$citation.=":";
+	    }
+	}
+	if ($fields_ref->{publisher}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.=$fields_ref->{publisher}.".";
+	}
+	
+	if ($fields_ref->{availability} eq "online"){
 	    if ($fields_ref->{onlineurl}){
-		$citation.=" ".$fields_ref->{onlineurl};
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="Retrieved from ".$fields_ref->{onlineurl};
 	    }
 	    elsif ($fields_ref->{doi}){
-		$citation.=" ".$fields_ref->{doi};
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{doi};
 	    }
-	}
-	else {
-	    if ($fields_ref->{year}){
-		$citation.=" (".$fields_ref->{year}.").";
-	    }
-	    if ($fields_ref->{title}){
-		$citation.=" <i>".$fields_ref->{title}."</i>.";
-	    }
-	    if ($fields_ref->{edition}){
-		$citation.=" ".$fields_ref->{edition}.".";
-	    }
-	    if ($fields_ref->{place}){
-		$citation.=" ".$fields_ref->{place}.":";
-	    }
-	    if ($fields_ref->{publisher}){
-		$citation.=" ".$fields_ref->{publisher};
-	    }
-	}
+	}	
     }
     elsif ($fields_ref->{type} eq "article"){
-	if ($fields_ref->{availability} eq "online"){
-	    if ($fields_ref->{year}){
-		$citation.=" (".$fields_ref->{year}.")";
+	if ($fields_ref->{year}){
+	    if ($citation){
+		$citation.=" ";
 	    }
-	    if ($fields_ref->{title}){
-		$citation.=" '".$fields_ref->{title}."',";
+	    $citation.="(".$fields_ref->{year}.").";
+	}
+	if ($fields_ref->{title}){
+	    if ($citation){
+		$citation.=" ";
 	    }
-	    if ($fields_ref->{source_journal}){
-		$citation.=" <i>".$fields_ref->{source_journal}."</i>.";
+	    $citation.=$fields_ref->{title}.".";
+	}
+	if ($fields_ref->{source_journal}){
+	    if ($citation){
+		$citation.=" ";
 	    }
-	    if ($fields_ref->{source_volume}){
-		$citation.=" ".$fields_ref->{source_volume};
+	    $citation.="<i>".$fields_ref->{source_journal}."</i>";
+	    if ($fields_ref->{source_volume} || $fields_ref->{source_issue} || $fields_ref->{year} || $fields_ref->{source_pages}){
+		$citation.=",";
 	    }
-	    if ($fields_ref->{source_issue}){
-		$citation.=" (".$fields_ref->{source_issue}."),";
+	}
+	if ($fields_ref->{source_volume}){
+	    if ($citation){
+		$citation.=" ";
 	    }
+	    $citation.=$fields_ref->{source_volume};
+	    if (!$fields_ref->{source_issue} && $fields_ref->{source_pages}){
+		$citation.=",";
+	    }
+	}
+	if ($fields_ref->{source_issue}){
+	    $citation.="(".$fields_ref->{source_issue}.")";
 	    if ($fields_ref->{source_pages}){
-		$citation.=" ".$fields_ref->{source_pages}.".";
+		$citation.=",";
 	    }
-	    
-	    $citation.=" Available at: ";
-	    
+	}
+	if ($fields_ref->{source_pages}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.=$fields_ref->{source_pages};
+	}
+
+	if ($citation){
+	    $citation.=".";
+	}
+	
+	if ($fields_ref->{availability} eq "online"){
 	    if ($fields_ref->{onlineurl}){
-		$citation.=" ".$fields_ref->{onlineurl};
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="Retrieved from ".$fields_ref->{onlineurl};
 	    }
 	    elsif ($fields_ref->{doi}){
-		$citation.=" ".$fields_ref->{doi};
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{doi};
 	    }
-	}
-	else {
-	    if ($fields_ref->{year}){
-		$citation.=" (".$fields_ref->{year}.").";
-	    }
-	    if ($fields_ref->{title}){
-		$citation.=" '".$fields_ref->{title}."'.";
-	    }
-	    if ($fields_ref->{source_journal}){
-		$citation.=" <i>".$fields_ref->{source_journal}."</i>.";
-	    }
-	    if ($fields_ref->{source_volume}){
-		$citation.=" ".$fields_ref->{source_volume};
-	    }
-	    if ($fields_ref->{source_issue}){
-		$citation.=" (".$fields_ref->{source_issue}."),";
-	    }
-	    if ($fields_ref->{source_pages}){
-		$citation.=" ".$fields_ref->{source_pages}.".";
-	    }
-	}
+	}    
     }
 
-    $logger->debug("Harvard Citation: $citation");
+    $logger->debug("APA Citation: $citation");
     
     return $citation;
 }

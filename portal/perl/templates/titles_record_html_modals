@@ -57,7 +57,7 @@ function copy_to_clipboard(formatid) {
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body" id="mla_citation>
+      <div class="modal-body" id="mla_citation">
 [% record.to_mla_citation %]      
       </div>
       <div class="modal-footer">

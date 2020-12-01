@@ -64,16 +64,27 @@
   <div class="card">
     <div class="card-header" id="headingFormats">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseFormats" data-toggle="collapse" data-target="#collapseFormats" aria-expanded="false" aria-controls="collapseFormats">
+        <a class="card-link" href="#collapseFormats" data-toggle="collapse" data-target="#collapseFormats" aria-expanded="true" aria-controls="collapseFormats">
           [% msg.maketext("Andere Formate") %]
         </a>
       </h5>
     </div>
 
-    <div id="collapseFormats" class="collapse" aria-labelledby="headingFormats" data-parent="#ob-formats">
+    <div id="collapseFormats" class="collapse show" aria-labelledby="headingFormats" data-parent="#ob-formats">
       <div class="card-body">
+
 <p>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %].html?l=[% lang %];format=full" [%- IF format == 'full' || format == '' -%]class="ob-selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %].html?l=[% lang %];format=Text" [%- IF format == 'Text'-%]class="ob-selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %].html?l=[% lang %];format=apa" [%- IF format == 'apa'-%]class="ob-selected_item"[%- END -%]>Zitat: APA</a>, <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %].html?l=[% lang %];format=harvard" [%- IF format == 'harvard'-%]class="ob-selected_item"[%- END -%]>Zitat: Harvard</a>, <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %].html?l=[% lang %];format=mla" [%- IF format == 'mla'-%]class="ob-selected_item"[%- END -%]>Zitat: MLA</a>, <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %].html?l=[% lang %];format=BibTeX" [%- IF format == 'BibTeX'-%]class="ob-selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %].html?l=[% lang %];format=EndNote" [%- IF format == 'EndNote'-%]class="ob-selected_item"[%- END -%]>EndNote</a> 
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#apaModal">[% msg.maketext("APA Zitat") %]</button>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#harvardModal">[% msg.maketext("Harvard Zitat") %]</button>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mlaModal">[% msg.maketext("MLA Zitat") %]</button>
+</p>
+
+<p>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#bibtexModal">BibTeX</button>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#endnoteModal">Endnote</button>
 </p>
       </div>
     </div>      

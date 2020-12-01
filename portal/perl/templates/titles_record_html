@@ -61,14 +61,14 @@
 <script>
 $(document).ready(function(){
     $("#ob-same_records_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-same_records_loading\" />"); 
-    $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/same_records.include?l=[% lang %]",
+    $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/same_records.include?l=[% lang %]",
         function (txt){
             $("#ob-same_records").html(txt);
             $("#ob-same_records_loading").hide();
         });
 
     $("#ob-similar_records_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-similar_records_loading\" />"); 
-    $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/similar_records.include?l=[% lang %]",
+    $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/similar_records.include?l=[% lang %]",
         function (txt){
             $("#ob-similar_records").html(txt);
             $("#ob-similar_records_loading").hide();
@@ -78,6 +78,7 @@ $(document).ready(function(){
 
 </script>
 
+[% PROCESS common/subtemplate name="titles_record_html_modals" %]
 
 <div class="content"><!-- Begin Fulltitle -->
 
@@ -114,7 +115,7 @@ $(document).ready(function(){
 [% END %]
 
 [% IF config.get('unAPI') %]
-<abbr class="unapi-id" title="[% record.database %]:[% record.id %]"></abbr>
+<abbr class="unapi-id" title="[% record.database %]:[% record.get_encoded_id %]"></abbr>
 [% END %]
 </div>
 </div><!-- End Col Categories -->
@@ -228,7 +229,7 @@ OID[% ownreviewid %]
 <form method="post" action="[% path_prefix %]/[% config.get('reviews_loc') %]">
 
 <input type="hidden" name="dbname"      value="[% record.database %]" />
-<input type="hidden" name="titleid"      value="[% record.id %]" />
+<input type="hidden" name="titleid"      value="[% record.get_encoded_id %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
 <input type="hidden" name="titisbn"    value="[% isbn %]" />
 
@@ -292,8 +293,8 @@ von [_2] Nutzer fanden die folgende Rezension hilfreich:",item.votes.positive,it
 href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=DELETE;confirm=1">[% msg.maketext("Eigenen Review l&ouml;schen") %]</a>
 [% ELSIF username %]
 <p />
-[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=PUT;titleid=[% record.id %];dbname=[% record.database %];rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
-<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?titleid=[% record.id %];dbname=[% record.database %];rating=0">[% msg.maketext("Nein") %]</a>
+[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=PUT;titleid=[% record.get_encoded_id %];dbname=[% record.database %];rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?titleid=[% record.get_encoded_id %];dbname=[% record.database %];rating=0">[% msg.maketext("Nein") %]</a>
 [% END %]
 </dd>
 [%  END %]
@@ -309,11 +310,11 @@ href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method
 <!-- End: Reviews -->
 
 <div role="tabpanel" class="tab-pane fade" id="ob-same_records"><!-- Begin: Same records -->
-   <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/same_records.html?l=[% lang %]">Titel in anderen Katalogen anzeigen?</a>
+   <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/same_records.html?l=[% lang %]">Titel in anderen Katalogen anzeigen?</a>
 </div><!-- End: Same Records -->
 
 <div role="tabpanel" class="tab-pane fade" id="ob-similar_records"><!-- Begin: Similar records -->
-   <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/similar_records.html?l=[% lang %]">Titel in anderen Ausgaben anzeigen?</a>
+   <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/similar_records.html?l=[% lang %]">Titel in anderen Ausgaben anzeigen?</a>
 </div><!-- End: Similar Records -->
 
 </div><!-- End: tab-content -->

@@ -61,7 +61,7 @@ FOREACH category IN categories;
     SWITCH category;
 
     CASE [ "T0100" "T0101" "T0103" ];
-         thisid     = item.id;
+         thisid     = encode_id(item.id);
 
          wikicontent = content.split(', ').reverse.join(' ');
          wikicontent = wikicontent.replace('¬','');
@@ -88,7 +88,7 @@ FOREACH category IN categories;
          content   = "${icons}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
-         thisid     = item.id;
+         thisid     = encode_id(item.id);
 
 
          searchterm    = uri_escape(item.content);
@@ -206,7 +206,7 @@ FOREACH category IN categories;
          rswkswt_done.${thiscontent} = 1;
 
     CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];
-         thisid     = item.id;
+         thisid     = encode_id(item.id);
 
          thiscontent = item.content;
 
@@ -235,7 +235,7 @@ FOREACH category IN categories;
          rswkswt_done.${thiscontent} = 1;
 
     CASE "T0700";
-         thisid     = item.id;
+         thisid     = encode_id(item.id);
 
          searchterm    = uri_escape(item.content);
          searchprefix  = config.get('searchfield').classificationstring.prefix;
@@ -281,7 +281,7 @@ FOREACH category IN categories;
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').subid.prefix;
 
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?page=1;num=20;srt=order_asc;profile=${searchprofileid_of_database};${searchprefix}=${record.id}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?page=1;num=20;srt=order_asc;profile=${searchprofileid_of_database};${searchprefix}=${record.get_encoded_id}";
          content   = "<img style=\"vertical-align:bottom\" src=\"${config.get_icon('follow',view,sysprofile)}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE "T5005";
@@ -369,4 +369,10 @@ END;
 <pre>
 [% record.to_endnote %]
 </pre>
+[% ELSIF format == "harvard" %]
+[% record.to_harvard_citation %]
+[% ELSIF format == "mla" %]
+[% record.to_mla_citation %]
+[% ELSIF format == "apa" %]
+[% record.to_apa_citation %]
 [% END %]

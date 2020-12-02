@@ -48,9 +48,12 @@
 
      # Verfasser konstruieren
      persons = [] ;
+     corporatebodies = [] ;
 
      personslength = 0 ;
      truncatepers  = 0 ;
+     corporatebodieslength = 0 ;
+     truncatecorp  = 0 ;
 
      FOREACH part IN item.${'P0100'} ;
        thislength = part.content.length ;
@@ -113,25 +116,25 @@
      END ;
      FOREACH part IN item.${'C0200'}  ;
        thislength = part.content.length ;
-       IF (thislength+personslength) < config.get('maxlength_person') ;
+       IF (thislength+corporatebodieslength) < config.get('maxlength_person') ;
          searchterm    = uri_escape(part.content);
          searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
-         personslength = personslength+thislength ;
+         corporatebodies.push("<a href=\"${globalurl}\">${part.content}</a>");
+         corporatebodieslength = corporatebodieslength+thislength ;
        ELSE ;
-         truncatepers = 1 ;
+         truncatecorp = 1 ;
        END ;
      END ;
      FOREACH part IN item.${'T0200'} ;
        thislength = part.content.length ;
-       IF (thislength+personslength) < config.get('maxlength_person') ;
-         persons.push(part.content);
-         personslength = personslength+thislength ;
+       IF (thislength+corporatebodieslength) < config.get('maxlength_person') ;
+         corporatebodies.push(part.content);
+         corporatebodieslength = corporatebodieslength+thislength ;
        ELSE ;
-         truncatepers = 1 ;
+         truncatecorp = 1 ;
        END ;
      END ;
      FOREACH part IN item.${'C0201'}  ;
@@ -210,6 +213,15 @@
        IF truncatepers ;
          person = "$person [...]" ;
        END ;
+     END ;
+
+     corporatebody = corporatebodies.join(' ; ') ;
+     IF truncatecorp ;
+       corporatebody = "$corporatebody [...]" ;
+     END ;
+
+     IF (corporatebody && person) ;
+        person = "$person &rarr; $corporatebody";
      END ;
 
      # Titel konstruieren
@@ -335,28 +347,7 @@ $(document).ready(function(){
         </div>
         <div class="ob-titleinfo mt-4">
          <span class="ob-person">[% person %]</span><br />[% IF record.id && record.database %]<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %].html?l=[% lang %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong></a>[% ELSE %]<strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong>[% END %][%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span>   
-[% IF multiple_dbs == 1 %]
-         <br /><img style="vertical-align:text-bottom;padding:1px;" src="[% config.get_icon('home_small',view,sysprofile) %]" alt="[% msg.maketext("Katalog") %]" title="[% msg.maketext("Katalog") %]"/>
-[%-  IF locations.size >= 1 -%]
-[%      IF locations.size == 1 %]
-         <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locations.first %].html?l=[% lang %]">[% locinfo.identifier.${locations.first}.description %]</a>
-[%      ELSIF locations.size > 1 %]
-         [% msg.maketext('Verschiedene Standorte') %]
-[%      END %]
-[%-  ELSE %]
-[%-   IF dburl -%]
-[%-     IF dbinfo.get('locationid').${record.database} %]
-          <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.get('locationid').${record.database} %].html?l=[% lang %]">
-[%-     ELSE -%]
-          <a href="[% dburl %]" target="_blank">
-[%-     END -%]
-[%    END %]
-[%    dbdesc | truncate(config.get('maxlength_dbname')) %][% IF dburl %]</a>[% END %]
-[%   END %]
-&nbsp;[%- IF titleinfo -%][ [% titleinfo %] ][%- END -%]
-[% ELSE %]
 [%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
-[% END %]
         </div> <!-- end: titleinfo -->
 	<div class="d-flex">
            <div class="ob-titlemark d-flex d-none d-md-block">[% IF signatur %][% msg.maketext("Signatur") %]: <span>[% signatur | truncate(config.get('maxlength_mark')) %]</span>[% END %]

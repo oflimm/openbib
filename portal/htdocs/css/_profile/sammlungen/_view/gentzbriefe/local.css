@@ -94,7 +94,7 @@
        border-top-width: 3px;
     }
     
-
+    
     .ob-searchbox .list-group-item {
 	background-color: transparent;
     }
@@ -112,6 +112,10 @@
 	color: #000;
     }
 
+    #ob-mainpage {
+	padding-left: 5px;
+    }
+    
     #ob-mainpage .list-group a {
 	color: #000;
     }
@@ -283,7 +287,7 @@
     .ob-resultlist {
 	width: auto;
 	padding: 0.5em;
-	padding-left: 0em;
+	padding-left: 8px;
     }
     
     .ob-resultheader {

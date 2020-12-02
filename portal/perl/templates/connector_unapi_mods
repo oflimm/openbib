@@ -101,7 +101,7 @@
     <mods:publisher>[% item.content %]</mods:publisher>
     [%- END %]
     [%- FOREACH item IN normdata.${"T0425"} %]
-    <mods:dateIssued keyDate="yes" encodin="iso8601">[% item.content %]</mods:dateIssued>
+    <mods:dateIssued keyDate="yes" encoding="iso8601">[% item.content %]</mods:dateIssued>
     [%- END %]
   </mods:originInfo>
   [%- IF normdata.${"T4301"}.first %]

@@ -10,7 +10,7 @@ function copy_to_clipboard(formatid) {
 </script>
 
 <div class="modal fade" id="apaModal" tabindex="-1" role="dialog" aria-labelledby="apaModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="apaModalLabel">APA Zitierformat</h5>
@@ -30,7 +30,7 @@ function copy_to_clipboard(formatid) {
   </div>
 </div>
 <div class="modal fade" id="harvardModal" tabindex="-1" role="dialog" aria-labelledby="harvardModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="harvardModalLabel">Harvard Zitierformat</h5>
@@ -49,7 +49,7 @@ function copy_to_clipboard(formatid) {
   </div>
 </div>
 <div class="modal fade" id="mlaModal" tabindex="-1" role="dialog" aria-labelledby="mlaModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="mlaModalLabel">MLA Zitierformat</h5>
@@ -68,7 +68,7 @@ function copy_to_clipboard(formatid) {
   </div>
 </div>
 <div class="modal fade" id="bibtexModal" tabindex="-1" role="dialog" aria-labelledby="bibtexModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="bibtexModalLabel">BibTeX Zitierformat</h5>
@@ -89,7 +89,7 @@ function copy_to_clipboard(formatid) {
   </div>
 </div>
 <div class="modal fade" id="endnoteModal" tabindex="-1" role="dialog" aria-labelledby="endnoteModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="endnoteModalLabel">Endnote Format</h5>

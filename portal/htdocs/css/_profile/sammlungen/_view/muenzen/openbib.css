@@ -1,6 +1,5 @@
-@import url("screen.css"); 
-@import url("buttons.css"); 
-
 /* import specific classes */
-@import url("keyboard.css");
+@import url("../../sidebar-nav.css");
+@import url("../../cookiealert.css");
+@import url("../../material-design-buttons.css");
 @import url("local.css");

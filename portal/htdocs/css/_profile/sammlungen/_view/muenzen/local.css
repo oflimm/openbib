@@ -73,8 +73,9 @@
 	background-position: 10% 30%;
 	background-size: cover;
 	height: 300px !important;
+	border-bottom-style: solid;
 	border-bottom-color: #253746;
-        border-bottom-width: 3px;
+        border-bottom-width: 5px;
 
     }
 
@@ -104,7 +105,7 @@
     
     #search_wrapper {
 	border-style: solid;
-	border-width: 1px;
+	border-width: 3px;
 	border-color: #253746;
     }
     
@@ -134,6 +135,15 @@
     #ob-navbar_top .nav-link {
 	font-size: 24px;
 	color: #fff;
+    }
+
+    #ob-navbar_top a, #ob-navbar_top a:hover {
+	color: #fff;
+    }
+
+    #ob-navbar_top a.active, #ob-navbar_top i {
+	color: #fff;
+	font-weight: bold;
     }
     
     .ob-searchbox {
@@ -173,6 +183,11 @@
     }
     body {
 //	background:url('/images/openbib/views/jesuiten/Triumph_St_Ignatius_Pozzo_wp25.png') 50% no-repeat;	
+    }
+
+    #extendedSearchModal {
+	background-color: #fff;
+	color: #000;
     }
     
     #fulltitleModal {
@@ -336,7 +351,7 @@
     .ob-resultlist {
 	width: auto;
 	padding: 0.5em;
-	padding-left: 0em;
+	padding-left: 5px;
     }
     
     .ob-resultheader {
@@ -381,7 +396,7 @@
 	position: absolute;
 	top: 0;
 	right: 0px;
-	width: 300px;
+
 	/*  padding: 5px; */
 	text-align: right;
     }
@@ -404,7 +419,12 @@
     }
 
     .ob-item .ob-thumbnail {
-        display:none ;
+    position: relative;
+    top: 0px;
+    left: 25px;
+    width: 340px;
+    height: 120px;
+    background: none repeat scroll 0 0;
 	/* position: relative; */
 	/*     float: left; 
     top: 15px;
@@ -413,10 +433,10 @@
 	/*    border: 1px solid #000; */
     }
 
-    .ob-item .ob-thumbnail img {
+<!--    .ob-item .ob-thumbnail img {
 	display: none;
     }
-
+-->
     .ob-item .ob-brieftitle {
 	padding-left: 2.5em;
 	width: 100%;
@@ -437,10 +457,17 @@
     }
 
     .ob-item .ob-titleactions {
-	float:right;
-	padding-top: 2px;
-	padding-bottom: 2px;
-	padding-right: 5px;
+	height: 45px;
+	/*       display: none;  */
+    }
+
+    .ob-item .ob-titleactions btn {
+	height: auto;
+	/*       display: none;  */
+    }
+
+    .ob-titleactions .btn-light, .ob-titleactions .btn-light:hover  {
+	color: #000;
 	/*       display: none;  */
     }
 

@@ -14,18 +14,19 @@
 
 <div class="jumbotron jumbotron-fluid mb-0 landing-page-img">
   <div class="container container-fluid" style="margin-top: 50px!important;">
+
     <div class="card border-0" style="min-width: 100%!important;">
       <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
 
 	<input type="hidden" name="num"        value="20" />
 	<input type="hidden" name="page"       value="1" />
-	<input type="hidden" name="lang"       value="[% lang %]" />
+	<input type="hidden" name="l"          value="[% lang %]" />
 	
 	<input type="hidden" name="srt"        value="relevance_desc" />
 	<input type="hidden" name="st"         value="1" />
-	<input type="hidden" name="profile"    value="[% config.get_searchprofile_of_view(view) %]" />
 	<input type="hidden" name="lt"         value="[% qopts.lt %]" />
         <div class="card-header p-0 border-0">
+	  
           <div id="search_wrapper" class="input-group input-group-lg shadow-sm" style="min-width: 100%">
             <div class="input-group-prepend">
               <button type="submit" class="input-group-text ob-bg ob-border">
@@ -177,13 +178,15 @@
   </div>
 </div>
 
+<div class="text-center ob-bg text-white"><h4>DIE MÜNZSAMMLUNG AM INSTITUT FÜR ALTERTUMSKUNDE</h4></div>
+
 <div class="container pb-5">
   <div class="row">
     <div class="col-md-4 pl-5 pr-5 pb-5">
       <div class="card mt-5 h-100">
 	<div class="card-header pb-2 text-center"><i class="fas fa-info fa-2x"></i></div>
 	<div class="card-body">
-	  <h4 class="card-subtitle pb-3">Der Münzbestand</h4>
+	  <h4 class="card-subtitle pb-3">Münzbestand</h4>
 	  <p class="card-text">Informationen zu Provenienzen und Anzahl der Münzen</p>
 	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('info_loc') %]/bestand.html?l=[% lang %]">Mehr</a></div>
       </div>

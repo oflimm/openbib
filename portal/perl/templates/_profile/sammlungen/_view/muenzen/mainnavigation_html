@@ -73,14 +73,13 @@
     [% END%]
 [%    END %]
 
-               <li class="nav-item text-nowrap text-white">		
-                   <a class="[% IF lang == 'de' %] active[% END %]" href="[% path %]?[% cgiapp.to_cgi_querystring({ exclude = ['l']}) %];l=de">de</a> <i class="fas fa-grip-lines-vertical"></i> <a class="[% IF lang == 'en' %] active[% END %]" href="[% path %]?[% cgiapp.to_cgi_querystring({ exclude = ['l']}) %];l=en">en</a>  <img class="pr-1" src="/images/openbib/views/muenzen/Globus_fuer_Sprache_24px.png" />
+               <li class="nav-item">		
+                   <div class="nav-link text-nowrap text-white"><a class="[% IF lang == 'de' %] active[% END %]" href="[% path %]?[% cgiapp.to_cgi_querystring({ exclude = ['l']}) %][% IF NOT lang %];[% END %]l=de">de</a> | <a class="[% IF lang == 'en' %] active[% END %]" href="[% path %]?[% cgiapp.to_cgi_querystring({ exclude = ['l']}) %][% IF NOT lang %];[% END %]l=en">en</a>  <img class="pr-1" src="/images/openbib/views/muenzen/Globus_fuer_Sprache_24px.png" /></div>
                </li>    		
             </ul>
   
   </div>
 </nav>
-
 
 <!-- <nav class="navbar" id="ob-fixed_navigation" [% IF without_navigation_search %]class="ob-hidden"[% END %]> -->
 
@@ -88,14 +87,16 @@
 
 <!--<h4></h4>-->
 
-[% IF NOT suppress_unauthorized && NOT layout_param.without_navigation_search %]    
+[% layout_param.whithout_navigation_search = 1 %]
+
+[% IF 0 == 1 && NOT suppress_unauthorized && NOT layout_param.without_navigation_search %]    
 <div class="sticky-top">
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
 
 <input type="hidden" name="num"        value="20" />
 <input type="hidden" name="page"       value="1" />
-<input type="hidden" name="lang"       value="[% lang %]" />
+<input type="hidden" name="l"          value="[% lang %]" />
 
 <input type="hidden" name="srt"        value="relevance_desc" />
 <input type="hidden" name="st"         value="1" />

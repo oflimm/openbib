@@ -1,6 +1,18 @@
 @media all
 {
 
+   /* Modal scrolling?? 
+    .modal {
+    overflow-x: hidden;
+    overflow-y: auto;
+    }
+    */
+   /*  #scrollbox {
+	overflow-y: auto;
+	max-height: calc(100vh - 150px);
+    }
+   */
+
     /* Appearance functional elements */
 
     a, a:hover{
@@ -1719,5 +1731,12 @@ a.ext {
 
     table.ob-title_fields th, table.ob-title_fields td {
 	border-top-style: none;
-    } 
+    } */ 
+}
+
+@media (min-width: 768px) {
+  .modal-xl {
+    width: 90%;
+   max-width:1200px;
+  }
 }

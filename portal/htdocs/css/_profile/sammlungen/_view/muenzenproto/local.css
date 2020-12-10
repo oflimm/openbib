@@ -118,6 +118,12 @@
 	height: 400px !important; */
     }
 
+    #ob-startpage hr {
+	border-bottom-style: solid;
+	border-bottom-color: #253746;
+        border-bottom-width: 5px;	
+    }
+    
     #ob-startpage .landing-page-img {
 	padding-bottom: 40px;
 	background:url('/images/openbib/views/muenzenproto/Muenzenhintergrund1700x991px.jpg') left 100% no-repeat;

@@ -29,6 +29,9 @@
                 <a class="navbar-brand" href="http://www.awk.nrw.de/startseite.html" title="Nordrhein-Westfälische Akademie der Wissenschaften und der Künste" target="_blank">
                     <img src="/images/openbib/views/muenzen/AkademieNRW.jpg"  height="50" class="d-inline-block align-top" alt="">
                 </a>
+                <a class="navbar-brand" href="http://www.awk.nrw.de/startseite.html" title="Universität zu Köln" target="_blank">
+                    <img src="/images/openbib/views/muenzenproto/013_Unisiegel_plus_Schriftzug_DE.jpg"  height="50" class="d-inline-block align-top" alt="">
+                </a>
             </ul>
     </div>
 </div>

@@ -23,7 +23,7 @@
       <div id="collapse0508Actions" class="collapse show" aria-labelledby="headingActions" data-parent="#ob-title_actions">
 	<div class="card-body">
 	  
-	  <ul id="ob-reuse_508_toggle_do">
+	  <ul>
 [%
       referenzen = normdata.${'T0508'}.first.content.split(' ; ');
  
@@ -67,7 +67,7 @@
       <div id="collapse0336Actions" class="collapse show" aria-labelledby="headingActions" data-parent="#ob-title_actions">
 	<div class="card-body">
 	  
-	  <ul id="ob-reuse_508_toggle_do">
+	  <ul>
 [%
       referenzen = normdata.${'T0508'}.first.content.split(' ; ');
  

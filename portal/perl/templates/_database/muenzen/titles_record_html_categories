@@ -392,6 +392,6 @@ FOREACH category IN categories;
    END;
 END;
 -%]
-<tr><td class="ob-field">DFG-Viewer</td><td><a href="http://dfg-viewer.de/show/?set[mets]=http%3A%2F%2Fwww.ub.uni-koeln.de%2Fcdm4%2Fmets_gateway.php%3FCISOROOT%3D%2Fmuenzen%26CISOPTR%3D[% cdmid %]" target="_blank"><img src="/images/openbib/views/muenzen/dfgviewer.png" alt="DFG-Viewer" name="DFG-Viewer" /></a></td></tr>
+<tr><th class="ob-field">DFG-Viewer</th><td><a href="http://dfg-viewer.de/show/?set[mets]=http%3A%2F%2Fwww.ub.uni-koeln.de%2Fcdm4%2Fmets_gateway.php%3FCISOROOT%3D%2Fmuenzen%26CISOPTR%3D[% cdmid %]" target="_blank"><img src="/images/openbib/views/muenzen/dfgviewer.png" alt="DFG-Viewer" name="DFG-Viewer" /></a></td></tr>
 </table>
 [% END %]

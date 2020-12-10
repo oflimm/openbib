@@ -1,0 +1,49 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showtitset_images
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabe des "Bilder"-Bereichs fuer einen
+# einzelnen Titelsatz
+#
+# Anpassung: Bestellformular fuer Portrait
+#
+#######################################################################
+-%]
+<!-- Anfang Umschlagbilder -->
+[% IF normdata.${"T6054"} ;
+
+     muenzen_img = [ ];
+     FOREACH item IN normdata.${"T6054"} ;
+       cdm_ptr = item.content ;
+       thismult = item.mult ;
+       FOREACH thisitem IN normdata.${"T6050"} ;
+           IF thisitem.mult == thismult ;
+              description = thisitem.content ;
+           END ;
+       END ;
+
+       muenzen_img.push({ cdm_ptr = cdm_ptr , description = description }) ;
+     END ;
+%]
+<div class="row flex-md-row-reverse"><!-- Begin Images -->
+
+  <div class="col-md-6"><!-- Begin Single Image -->
+    <div class="ob-collection_image">
+     <a href="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&CISOPTR=[% muenzen_img.0.cdm_ptr %]&DMSCALE=100.00000&DMWIDTH=4000&DMHEIGHT=4000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" target="_blank"><img src="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&CISOPTR=[% muenzen_img.0.cdm_ptr %]&DMSCALE=18.00000&DMWIDTH=1000&DMHEIGHT=1000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" /></a><br/><a href="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&CISOPTR=[% muenzen_img.0.cdm_ptr %]&DMSCALE=100.00000&DMWIDTH=4000&DMHEIGHT=4000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" target="_blank">[% muenzen_img.0.description %]</a>
+     </div>
+  </div>
+   <div class="col-md-6"><!-- Begin Single Image -->
+    <div class="ob-collection_image">
+     <a href="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&CISOPTR=[% muenzen_img.1.cdm_ptr %]&DMSCALE=100.00000&DMWIDTH=4000&DMHEIGHT=4000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" target="_blank"><img src="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&CISOPTR=[% muenzen_img.1.cdm_ptr %]&DMSCALE=18.00000&DMWIDTH=1000&DMHEIGHT=1000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" /></a><br/><a href="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&CISOPTR=[% muenzen_img.1.cdm_ptr %]&DMSCALE=100.00000&DMWIDTH=4000&DMHEIGHT=4000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" target="_blank">[% muenzen_img.1.description %]</a>
+    </div>
+  </div>
+</div>
+[%
+   END ; %]
+<!-- Ende Umschlagbilder -->
+

@@ -4,7 +4,9 @@
 [% searchform_choices = statistics.get_result({ id => 'muenzen_searchform_choices', type => 1}) %]
 
 <script type="text/javascript">
-[% regent_string = searchform_choices.regent.join('", "') ;
+[% regent_array = [];
+
+   regent_string = searchform_choices.regent.join('", "') ;
    regent_string = "\"${regent_string}\"";
 
    region_string = searchform_choices.region.join('", "') ;
@@ -33,87 +35,67 @@
 $(document).ready(function(){
       var available_regents = [ [% regent_string %] ];
 
-      $('#autocomplete_per').autocomplete({
-         source : available_regents,
-         minLength : 0
-      });
-      $('#autocomplete_per').focus(function() {
-         $('#autocomplete_per').autocomplete("search", "");
+      $("#autocomplete_per").select2({
+         allowClear: true,
+	 placeholder: "[% msg.maketext("Bitte Regenten auswählen") %]",
+         data: available_regents
       });
 
       var available_regions = [ [% region_string %] ];
 
-      $('#autocomplete_subj').autocomplete({
-         source : available_regions,
-         minLength : 0
-      });
-      $('#autocomplete_subj').focus(function() {
-         $('#autocomplete_subj').autocomplete("search", "");
+      $("#autocomplete_subj").select2({
+         allowClear: true,
+	 placeholder: "[% msg.maketext("Bitte Region auswählen") %]",
+         data: available_regions
       });
 
       var available_cities = [ [% city_string %] ];
 
-      $('#autocomplete_cln').autocomplete({
-         source : available_cities,
-         minLength : 0
-      });
-      $('#autocomplete_cln').focus(function() {
-         $('#autocomplete_cln').autocomplete("search", "");
+      $("#autocomplete_cln").select2({
+         allowClear: true,
+	 placeholder: "[% msg.maketext("Bitte Stadt auswählen") %]",
+         data: available_cities
       });
 
       var available_nominals = [ [% nominal_string %] ];
 
-      $('#autocomplete_t0338').autocomplete({
-         source : available_nominals,
-         minLength : 0
+      $("#autocomplete_t0338").select2({
+         allowClear: true,
+	 placeholder: "[% msg.maketext("Bitte Nominal auswählen") %]",
+         data: available_nominals
       });
-      $('#autocomplete_t0338').focus(function() {
-         $('#autocomplete_t0338').autocomplete("search", "");
-      });
-
+      
       var available_areas = [ [% area_string %] ];
 
-      $('#autocomplete_t0410').autocomplete({
-         source : available_areas,
-         minLength : 0
+      $("#autocomplete_t0410").select2({
+         allowClear: true,
+	 placeholder: "[% msg.maketext("Bitte Herrschaftsbereich auswählen") %]",
+         data: available_areas
       });
-      $('#autocomplete_t0410').focus(function() {
-         $('#autocomplete_t0410').autocomplete("search", "");
-      });
-
-
+      
       var available_magistrates = [ [% magistrate_string %] ];
 
-      $('#autocomplete_t0533').autocomplete({
-         source : available_magistrates,
-         minLength : 0
+      $("#autocomplete_t0533").select2({
+         allowClear: true,
+	 placeholder: "[% msg.maketext("Bitte Magistrat auswählen") %]",
+         data: available_magistrates
       });
-      $('#autocomplete_t0533').focus(function() {
-         $('#autocomplete_t0533').autocomplete("search", "");
-      });
-
-
+      
       var available_ruling_families = [ [% ruling_family_string %] ];
 
-      $('#autocomplete_t0531').autocomplete({
-         source : available_ruling_families,
-         minLength : 0
+      $("#autocomplete_t0531").select2({
+         allowClear: true,
+	 placeholder: "[% msg.maketext("Bitte Regenten auswählen") %]",
+         data: available_ruling_families
       });
-      $('#autocomplete_t0531').focus(function() {
-         $('#autocomplete_t0531').autocomplete("search", "");
-      });
-
-
+      
       var available_materials = [ [% material_string %] ];
 
-      $('#autocomplete_ftyp').autocomplete({
-         source : available_materials,
-         minLength : 0
+      $("#autocomplete_ftyp").select2({
+         allowClear: true,
+	 placeholder: "[% msg.maketext("Bitte Nominal auswählen") %]",
+         data: available_materials
       });
-      $('#autocomplete_ftyp').focus(function() {
-         $('#autocomplete_ftyp').autocomplete("search", "");
-      });
-
 });
 </script>
 
@@ -152,7 +134,7 @@ $(document).ready(function(){
  -%]
 <div class="form-group">
 <label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0100-muenzen") %]</label>
-<input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]"/>
 </div>
 
 [%- cgiparam = searchfield.subject.prefix;

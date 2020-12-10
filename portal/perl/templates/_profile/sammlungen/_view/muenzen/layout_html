@@ -55,9 +55,9 @@
 [% ELSE %]
 <!-- begin: Layout without sidebar -->
       <div  [% IF layout_param.css_id %]id="[% layout_param.css_id %]" [% END %]>
-<!--        <div class="col-md-12" > -->
+        <div class="col-md-12" > 
 [% PROCESS common/subtemplate name=layout_param.main_template %]
-<!--        </div> -->
+        </div> 
       </div>
 <!-- end: Layout without sidebar -->      
 [% END %]

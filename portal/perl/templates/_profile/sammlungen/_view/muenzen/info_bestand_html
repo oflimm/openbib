@@ -12,6 +12,4 @@
 #######################################################################
 -%]
 
-<div class="pl-3 pr-3">
 [% config.get_templatetext('info_bestand','muenzen',lang) %]
-</div>

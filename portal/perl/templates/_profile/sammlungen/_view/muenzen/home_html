@@ -191,9 +191,9 @@
   <div class="row">
     <div class="col-md-4 pl-5 pr-5 pb-5">
       <div class="card mt-5 h-100">
-	<div class="card-header pb-2 text-center"><i class="fas fa-info fa-2x"></i></div>
+	<div class="card-header pb-2 text-center"><i class="fas fa-coins fa-2x"></i></div>
 	<div class="card-body">
-	  <h4 class="card-subtitle pb-3">Münzbestand</h4>
+	  <h4 class="card-subtitle pb-3 text-center">Münzbestand</h4>
 	  <p class="card-text">Informationen zu Provenienzen und Anzahl der Münzen</p>
 	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('info_loc') %]/bestand.html?l=[% lang %]">Mehr</a></div>
       </div>
@@ -202,7 +202,7 @@
       <div class="card mt-5 h-100">
 	<div class="card-header pb-2 text-center"><i class="fas fa-list-ul fa-2x"></i></div>
 	<div class="card-body">
-	  <h4 class="card-subtitle pb-3">Register</h4>
+	  <h4 class="card-subtitle pb-3 text-center">Register</h4>
 	  <p class="card-text">Systematisches Browsen im Bestand</p>
 	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/[% config.get('titles_loc') %]/fields/id/0100.html?l=[% lang %]">Mehr</a></div>
       </div>
@@ -211,7 +211,7 @@
       <div class="card mt-5 h-100">
 	<div class="card-header pb-2 text-center"><i class="fas fa-at fa-2x"></i></div>
 	<div class="card-body">
-	  <h4 class="card-subtitle pb-3">Kontakt</h4>
+	  <h4 class="card-subtitle pb-3 text-center">Kontakt</h4>
 	  <p class="card-text">Alle Ansprechpartner des Kölner Münzportals</p>
 	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('info_loc') %]/project.html?l=[% lang %]">Mehr</a></div>
       </div>

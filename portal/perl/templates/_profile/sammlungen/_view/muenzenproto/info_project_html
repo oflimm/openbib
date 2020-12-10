@@ -12,4 +12,4 @@
 #######################################################################
 -%]
 
-[% config.get_templatetext('info_project','muenzen',lang) %]
+[% config.get_templatetext('info_project',view,lang) %]

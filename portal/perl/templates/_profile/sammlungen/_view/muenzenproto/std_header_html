@@ -80,6 +80,8 @@
     <!-- noUiSlider CSS -->
     <link rel="stylesheet" href="/css/nouislider.css">
 
+    <!-- Leaflet for OSM CSS -->
+    <link rel="stylesheet" href="/js/leaflet-1.7.1/leaflet.css">
 
   [%- TRY -%]
     [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/_profile/$sysprofile/_view/$view/openbib.css" -%]
@@ -113,6 +115,9 @@
 <script src="/js/nouislider.min.js"></script>
 
 <!-- <script src="/js/bootstrap-material-design.min.js"></script> -->
+
+<!-- Leaflet for OSM -->
+<script src="/js/leaflet-1.7.1/leaflet.js"></script>
 
 <!-- Then static OpenBib JS -->
 <script src="/js/_profile/bootstrap/openbib.js"></script> 

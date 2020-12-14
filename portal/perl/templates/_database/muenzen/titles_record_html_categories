@@ -34,7 +34,7 @@ IF normdata.${"T0332"}.first.content ;
  searchterm    = uri_escape(content);
  searchprefix  = config.get('searchfield').titlestring.prefix;
  localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
- content   = "<a href=\"${localurl}\">${content}</a>";
+ content   = "<i class=\"fas fa-search\"></i> <a href=\"${localurl}\">${content}</a>";
  vorderseite.push(content);
 END ;
 IF normdata.${"T0334"}.first.content ;
@@ -52,7 +52,7 @@ IF normdata.${"T0335"}.first.content ;
  searchterm    = uri_escape(content);
  searchprefix  = config.get('searchfield').titlestring.prefix;
  localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
- content   = "<a href=\"${localurl}\">${content}</a>";
+ content   = "<i class=\"fas fa-search\"></i> <a href=\"${localurl}\">${content}</a>";
  rueckseite.push(content);
 END ;
 IF normdata.${"T0337"}.first.content ;
@@ -70,7 +70,6 @@ END;
 
 <div class="table-responsive">
 <table class="table table-striped table-hover ob-title_fields">
-<tr><th class="ob-field">id</th><td>[% record.id %]</td></tr>
 
 [%-
    request_base = config.get('search_defaultparams');
@@ -122,7 +121,7 @@ FOREACH category IN categories;
 
          normdataicon = "";
 
-         content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         content   = "<i class=\"fas fa-search\"></i> <a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
          thisid     = item.id;
@@ -147,7 +146,7 @@ FOREACH category IN categories;
 
          icons     = "<div class=\"float-right\">${rssfeed}${normdataicon}</div>";
 
-         content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         content   = "<i class=\"fas fa-search\"></i> <a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE "T0331";
          content   = "<b>${highlightquery(searchquery,content)}</b>";
@@ -175,7 +174,7 @@ FOREACH category IN categories;
 
          localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
          content   = "${highlightquery(searchquery,content)}";
-         content   = "<a href=\"${localurl}\">${content}</a>";
+         content   = "<i class=\"fas fa-search\"></i> <a href=\"${localurl}\">${content}</a>";
 
     CASE "T0411";
          searchterm    = uri_escape(item.content);
@@ -183,7 +182,7 @@ FOREACH category IN categories;
 
          localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
          content   = "${highlightquery(searchquery,content)}";
-         content   = "<a href=\"${localurl}\">${content}</a>";
+         content   = "<i class=\"fas fa-search\"></i> <a href=\"${localurl}\">${content}</a>";
 
     CASE "T0531";
          searchterm    = uri_escape(item.content);
@@ -191,7 +190,7 @@ FOREACH category IN categories;
 
          localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
          content   = "${highlightquery(searchquery,content)}";
-         content   = "<a href=\"${localurl}\">${content}</a>";
+         content   = "<i class=\"fas fa-search\"></i> <a href=\"${localurl}\">${content}</a>";
 
     CASE "T0533";
          searchterm    = uri_escape(item.content);
@@ -199,7 +198,7 @@ FOREACH category IN categories;
 
          localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
          content   = "${highlightquery(searchquery,content)}";
-         content   = "<a href=\"${localurl}\">${content}</a>";
+         content   = "<i class=\"fas fa-search\"></i> <a href=\"${localurl}\">${content}</a>";
 
 #    CASE [ "T0531" "T0533" ];
 #         IF content.match("---&gt;: ") ;
@@ -302,7 +301,7 @@ FOREACH category IN categories;
 
          icons     = "<div class=\"float-right\">${rssfeed}${normdataicon}</div>";
 
-         content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         content   = "<i class=\"fas fa-search\"></i> <a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
          rswkswt_done.${thiscontent} = 1;
 
     CASE "T0700";
@@ -322,12 +321,12 @@ FOREACH category IN categories;
          normdataicon = "";
 
          IF thisid ;
-            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Systematik-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>";
+            normdataicon = "&nbsp;<a data-toggle=\"modal\" data-target=\"#cityModal\"  href=\"${resourceurl}.html\" title=\"Stadt-Information\"><i class=\"fas fa-info-circle\"></li></a>";
          END;
 
          icons     = "<div class=\"float-right\">${rssfeed}${normdataicon}</div>";
 
-         content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         content   = "<i class=\"fas fa-search\"></i> <a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement} ${icons}";
 
     CASE "T1600";
          IF content.match('Sie einen Bestellschein aus');
@@ -375,7 +374,7 @@ FOREACH category IN categories;
          content   = "<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${super_title}</span></a>";
 
     CASE ;
-         content   = highlightquery(searchquery,item.content);
+         content   = item.content;
    END;
    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
    # in Config.pm fuer die entsprechende Datenbank definiert

@@ -1,3 +1,8 @@
+[% IF record.has_field('T0700') %]
+[%
+   city_record = record.get_fields.${'T0700'}.first
+   city_resource = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('classifications_loc')}/id/${city_record.id}";
+%]
 <script>
 function copy_to_clipboard(formatid) {
     var range = document.createRange();
@@ -6,106 +11,40 @@ function copy_to_clipboard(formatid) {
     window.getSelection().addRange(range);
     document.execCommand("copy");
     window.getSelection().removeAllRanges();
-} 
+}
 </script>
 
-<div class="modal fade" id="apaModal" tabindex="-1" role="dialog" aria-labelledby="apaModalLabel" aria-hidden="true">
+<script>
+$(document).ready(function(){
+    $.get("[% city_resource %].include?l=[% lang %]",
+        function (txt){
+            $("#city_information").html(txt);
+        });
+});
+</script>
+
+<div class="modal fade" id="cityModal" tabindex="-1" role="dialog" aria-labelledby="cityModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="apaModalLabel">APA Zitierformat</h5>
+        <h5 class="modal-title" id="cityModalLabel">Informationen zur Stadt</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body" id="apa_citation">
-[% record.to_apa_citation %]      
+      <div class="modal-body">
+        <div id="mapid" style="height:200px;"></div>
+
+        <div id="city_information"></div>
       </div>
       <div class="modal-footer">
-        <button type="button" onclick="copy_to_clipboard('apa_citation')" class="btn btn-primary">[% msg.maketext("Kopieren") %]</button>
+<!--        <button type="button" onclick="copy_to_clipboard('city_information')" class="btn btn-primary">[% msg.maketext("Kopieren") %]</button> -->
 
         <button type="button" class="btn btn-primary" data-dismiss="modal">[% msg.maketext("Schließen") %]</button>
       </div>
     </div>
   </div>
 </div>
-<div class="modal fade" id="harvardModal" tabindex="-1" role="dialog" aria-labelledby="harvardModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="harvardModalLabel">Harvard Zitierformat</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" id="harvard_citation">
-[% record.to_harvard_citation  %]      
-      </div>
-      <div class="modal-footer">
-        <button type="button" onclick="copy_to_clipboard('harvard_citation')" class="btn btn-primary">[% msg.maketext("Kopieren") %]</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal">[% msg.maketext("Schließen") %]</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id="mlaModal" tabindex="-1" role="dialog" aria-labelledby="mlaModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="mlaModalLabel">MLA Zitierformat</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" id="mla_citation">
-[% record.to_mla_citation %]      
-      </div>
-      <div class="modal-footer">
-        <button type="button" onclick="copy_to_clipboard('mla_citation')" class="btn btn-primary">[% msg.maketext("Kopieren") %]</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal">[% msg.maketext("Schließen") %]</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id="bibtexModal" tabindex="-1" role="dialog" aria-labelledby="bibtexModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="bibtexModalLabel">BibTeX Zitierformat</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" id="bibtex_format">
-      <pre>
-[% record.to_bibtex %]
-      </pre>
-      </div>
-      <div class="modal-footer">
-        <button type="button" onclick="copy_to_clipboard('bibtex_format')" class="btn btn-primary">[% msg.maketext("Kopieren") %]</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal">[% msg.maketext("Schließen") %]</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade" id="endnoteModal" tabindex="-1" role="dialog" aria-labelledby="endnoteModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="endnoteModalLabel">Endnote Format</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" id="endnote_format">
-      <pre>
-[% record.to_endnote %]
-      </pre>
-      </div>
-      <div class="modal-footer">
-        <button type="button" onclick="copy_to_clipboard('endnote_format')" class="btn btn-primary">[% msg.maketext("Kopieren") %]</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal">[% msg.maketext("Schließen") %]</button>
-      </div>
-    </div>
-  </div>
-</div>
+[% ELSE %]
+<!-- no modals -->
+[% END %]

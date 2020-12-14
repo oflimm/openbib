@@ -28,6 +28,7 @@
        END ;
 
        muenzen_img.push({ cdm_ptr = cdm_ptr , description = description }) ;
+       muenzen_img = muenzen_img.reverse;
      END ;
 %]
 <div class="row flex-md-row-reverse"><!-- Begin Images -->

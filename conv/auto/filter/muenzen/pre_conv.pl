@@ -52,3 +52,6 @@ my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
 print "### $pool: Erweiterung um Zugriffsinformation online\n";
 
 system("cd $rootdir/data/$pool ; cat meta.title | $rootdir/filter/$pool/pre_process.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+
+system("cd $rootdir/data/$pool ; cat meta.classification | $rootdir/filter/$pool/enrich_cities.pl --inputfile=$rootdir/filter/$pool/ORT_ID.csv > meta.classification.tmp ; mv -f meta.classification.tmp meta.classification") if (-f "$rootdir/filter/$pool/ORT_ID.csv");
+

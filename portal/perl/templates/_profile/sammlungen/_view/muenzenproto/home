@@ -2,7 +2,6 @@
     layout_param = {
       'css_id' = 'ob-startpage'
       'main_template' = 'home_html'
-      'without_navigation_search' = 1
 
     };
 -%]

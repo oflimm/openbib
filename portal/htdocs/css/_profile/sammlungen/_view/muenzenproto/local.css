@@ -160,14 +160,16 @@
 	color: #000;
     }
     
-    #search_wrapper {
+    #search_wrapper, #search_wrapper_top {
 	border-style: solid;
 	border-width: 3px;
 	border-color: #253746;
+	border-radius: 0rem;
     }
     
-    #search_wrapper button {
+    #search_wrapper button, #search_wrapper_top button {
 	background-color:  #3e566c;
+	border-radius: 0rem;
     }
 
     #ob-startpage .col-md-12 {

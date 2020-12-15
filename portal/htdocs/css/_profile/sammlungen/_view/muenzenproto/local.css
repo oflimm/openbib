@@ -481,7 +481,7 @@
     position: relative;
     top: 0px;
     left: 25px;
-    width: 340px;
+    min-width: 280px !important;
     height: 120px;
     background: none repeat scroll 0 0;
 	/* position: relative; */
@@ -497,7 +497,7 @@
     }
 -->
     .ob-item .ob-brieftitle {
-	padding-left: 2.5em;
+    padding-left: 25px;
 	width: 100%;
 /*    position: relative; 
       float: left; 

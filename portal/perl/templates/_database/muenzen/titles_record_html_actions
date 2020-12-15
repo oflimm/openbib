@@ -1,6 +1,6 @@
 [% normdata = record.get_fields %]
 [% IF normdata.${'T0508'} %]
-<div class="ob-reuse_data"><!-- Begin Reuse -->
+<div class="pr-1"><!-- Begin Reuse -->
   
   <style>
     .ob-cloud {
@@ -44,7 +44,7 @@
 [% END %]
 
 [% IF normdata.${'T0336'} %]
-<div class="ob-reuse_data"><!-- Begin Reuse -->
+<div class="pr-1"><!-- Begin Reuse -->
 
   <style>
     .ob-cloud {

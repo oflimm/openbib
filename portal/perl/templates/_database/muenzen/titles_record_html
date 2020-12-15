@@ -80,13 +80,11 @@ $(document).ready(function(){
 
 [% PROCESS common/subtemplate name="titles_record_html_modals" %]
 
+<div class="ob-category_header ob-bg text-white pt-1 pl-1 pr-1">[% normdata.${"T0412"}.first.content %] <span style="float:right">[% record.id %]</span></div>
+
 <div class="content"><!-- Begin Fulltitle -->
 
-  <div class="ob-category_header">
-[% msg.maketext("Detailinformation Münze") %] [% record.id %]
-  </div>
-
-  <div class="ob-title_image"><!-- Begin Details -->
+<div class="ob-title_image"><!-- Begin Details -->
 [% PROCESS common/subtemplate name="titles_record_html_images" %]
   </div>
 

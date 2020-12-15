@@ -559,7 +559,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 
 %]
 <div id="group-year" class="in collapse show">
-[% IF facets.year.size > 1 %]
+[% IF 0 == 1 && facets.year.size > 1 %]
 <canvas id="ob-yearChart" width="400" height="300"></canvas>
 
 <div id="ob-yearSlider" class="m-4"></div>

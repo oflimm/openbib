@@ -110,8 +110,8 @@
 <p>Der Kernbestand von ungef&auml;hr 3800 M&uuml;nzen aus dem kaiserzeitlichen &Auml;gypten ist eine der bedeutendsten Sammlungen f&uuml;r dieses Themengebiet. Hinzu kommen 230 Pr&auml;gungen aus der Zeit der Ptolem&auml;er (323-30 v. Chr.) und rund 1800 M&uuml;nzen aus den griechischen St&auml;dten Kleinasiens.</p>
 <p>Die im Rahmen eines DFG Projektes in Kooperation mit der Universit&auml;ts- und Stadtbibliothek K&ouml;ln erstellte Pr&auml;sentation der <a href="/portal/info/bestand.html?l=de">Best&auml;nde</a> soll es auch den an der Numismatik partizipierenden Disziplinen leicht erm&ouml;glichen, das Material zu sichten und auf komplexe Fragestellungen hin auszuwerten.</p>    
     </div>
-    <div class="col-md-6 pl-5 pr-5">
-<center><img src="/images/openbib/views/muenzen/muenze-schiff.jpeg" alt="M&uuml;nze mit Schiff" /><br /><br /><em style="font-size: 0.8em;"><a href="/portal/databases/id/muenzen/titles/id/AL_0184">Schiff des Kaisers Nero unter Segel, datiert 66-67 n. Chr.</a></em></center>
+    <div class="col-md-6 pl-5 pr-5 text-center">
+      <img class="img-fluid" src="/images/openbib/views/muenzen/muenze-schiff.jpeg" alt="M&uuml;nze mit Schiff" /><br /><br /><em style="font-size: 0.8em;"><a href="/portal/databases/id/muenzen/titles/id/AL_0184">Schiff des Kaisers Nero unter Segel, datiert 66-67 n. Chr.</a></em>
     </div>
   </div>
 </div>

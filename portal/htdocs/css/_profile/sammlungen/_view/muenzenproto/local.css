@@ -781,22 +781,34 @@
 	cursor: pointer;
     }
 
-    div .ob-breadcrumb {
+    div .ob-breadcrumb .list-group {
+	border-radius: 0;
+	margin-left: 10px;
+	padding-left: 0px;
 	margin-bottom: 10px;
 /*	border-bottom: 2px #253746 solid;	 */
     }
 
+    div .ob-breadcrumb .list-group-horizontal .list-group-item:first-child,     div .ob-breadcrumb .list-group-horizontal .list-group-item:last-child 
+ {
+	border-radius: 0;
+    }
+    
     div .ob-breadcrumb ol li.ob-navitem {
 	color: #fff;
 	font-weight: bold;
 	margin-top: 5px;
 	padding-bottom: 5px;
 	padding-top: 5px;
-	margin-left: 5px;
+	margin-left: 0px;
 	margin-right: 5px;
 	border-bottom: 7px #253746 solid;	
     }
-
+    
+    div .ob-breadcrumb ol li.ob-navitem:first {
+	margin-left: 0px;
+    }
+    
     div .ob-breadcrumb ol li.ob-navitem:hover {
 /*	background-color:  #253746 ;
 	border-bottom: 7px #e3e3e3 solid;	
@@ -808,6 +820,17 @@
 	border-top: none;
 	border-left: none;
 	border-right: none;
+    }
+
+    div .ob-breadcrumb ol li.ob-representation {
+	padding-right: 0px;
+	font-weight: bold;
+	border: none;
+    }
+
+    div .ob-breadcrumb ol li.ob-representation a {
+	padding-left: 5px;
+	padding-right: 5px;
     }
 
     div .ob-breadcrumb ol li a {

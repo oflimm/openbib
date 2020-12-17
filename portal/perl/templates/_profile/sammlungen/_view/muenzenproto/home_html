@@ -91,11 +91,11 @@
     </div>
     <div class="col-md-4 pl-5 pr-5 pb-5">
       <div class="card mt-5 h-100">
-	<div class="card-header pb-2 text-center"><i class="fas fa-at fa-2x"></i></div>
+	<div class="card-header pb-2 text-center"><i class="fas fa-map-marker-alt fa-2x"></i></div>
 	<div class="card-body">
-	  <h4 class="card-subtitle pb-3 text-center">Kontakt</h4>
-	  <p class="card-text">Alle Ansprechpartner des Kölner Münzportals</p>
-	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('info_loc') %]/project.html?l=[% lang %]">Mehr</a></div>
+	  <h4 class="card-subtitle pb-3 text-center">Karte</h4>
+	  <p class="card-text">Eine Übersicht aller Städte der Münzen</p>
+	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('info_loc') %]/staedte.html?l=[% lang %]">Mehr</a></div>
       </div>
     </div>
   </div>

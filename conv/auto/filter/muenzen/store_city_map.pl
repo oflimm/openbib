@@ -20,7 +20,7 @@ while (my $city = $cities->next()){
 	my $name = $thiscity->get_field({ field => 'N0800', mult => 1});
 	my $geo = $thiscity->get_field({ field => 'N0200', mult => 1});
 
-	$result_store->{$name} = $geo;
+	push @{$result_store->{$geo}},$name;
     }
 }       
 

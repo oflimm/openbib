@@ -28,14 +28,21 @@ L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 
 var cities = [
-[% FOREACH item IN resultlist.keys %]
-              ['[% item %]',[ [% resultlist.${item} %] ]],
+[% FOREACH geo IN resultlist.keys %]
+              [[[% geo %]],[ '[% resultlist.${geo}.sort.join('\',\'') %]' ]],
 [% END %]
             ];
 	    
 for (var i = 0; i < cities.length; i++) {
-  var marker = L.marker(cities[i][1]).addTo(citiesmap);
-  marker.bindPopup('<a href="[% path_prefix%]/search.html?fcln='+cities[i][0]+';l=[% lang %]">'+cities[i][0]+'</a>');
+  var marker = L.marker(cities[i][0]).addTo(citiesmap);
+  var markerstring = "";
+  for (var j = 0; j < cities[i][1].length; j++) {
+     markerstring = markerstring + '<a href="[% path_prefix%]/search.html?fcln='+cities[i][1][j]+';l=[% lang %]">'+cities[i][1][j]+'</a>'
+     if (j < cities[i][1].length -1){
+        markerstring = markerstring + ', ';
+     }
+  }
+  marker.bindPopup(markerstring);
 }
 
 </script>

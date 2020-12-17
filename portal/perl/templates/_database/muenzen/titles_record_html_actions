@@ -43,6 +43,50 @@
 <p/>
 [% END %]
 
+[% IF normdata.${'T0333'} %]
+<div class="pr-1"><!-- Begin Reuse -->
+
+  <style>
+    .ob-cloud {
+    font-size: 150%;
+    }
+    
+  </style>
+  
+  <div id="ob-title_actions" class="accordion">
+    
+    <div class="card">
+      <div class="card-header" id="headingActions">
+	<h5 class="mb-0">
+          <a class="card-link" href="#collapse0333Actions" data-toggle="collapse" data-target="#collapse0333Actions" aria-expanded="true" aria-controls="collapse0333Actions">
+            [% msg.maketext("T0333-muenzen") %]
+          </a>
+	</h5>
+      </div>
+      
+      <div id="collapse0333Actions" class="collapse show" aria-labelledby="headingActions" data-parent="#ob-title_actions">
+	<div class="card-body">
+	  
+	  <ul>
+[%
+      referenzen = normdata.${'T0508'}.first.content.split(' ; ');
+ 
+      FOREACH referenz IN referenzen ;
+%]
+           <li>[% referenz %]</li>
+[%
+      END ;
+%]
+	  </ul>
+	</div>
+      </div>
+      
+    </div>
+  </div>
+</div><!-- End reuse_data -->
+<p/>
+[% END %]
+
 [% IF normdata.${'T0336'} %]
 <div class="pr-1"><!-- Begin Reuse -->
 

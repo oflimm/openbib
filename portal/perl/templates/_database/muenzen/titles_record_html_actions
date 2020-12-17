@@ -29,7 +29,7 @@
  
       FOREACH referenz IN referenzen ;
 %]
-           <li>[% referenz %]</li>
+           <li>[% IF referenz.match('href') %]<i class="fas fa-search"></i> [% END %][% referenz %]</li>
 [%
       END ;
 %]

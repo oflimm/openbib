@@ -169,6 +169,7 @@ $(document).ready(function(){
 <input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
+[% IF 0 == 1 %]
 [%- cgiparam      = searchfield.year.prefix;
     this_searchfield = 'year';
  -%]
@@ -176,6 +177,7 @@ $(document).ready(function(){
 <label for="[% cgiparam %]">[% msg.maketext("Jahr der Datierung") %]</label>
 <input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="4" maxlength="4" />
 </div>
+[% END %]
 
 [%- cgiparam      = searchfield.year.prefix -%]
 [%- cgiparam_from = "${cgiparam}_from";

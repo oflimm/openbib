@@ -307,14 +307,6 @@
     titleinfo = titleinfos.join(" | ");
 -%]
     <div class="ob-item shadow-sm mb-3[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
-<script>
-$(document).ready(function(){
-   $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/availability?l=[% lang %]",
-     function (txt){
-        $("#availability_[% record.database %]_[% uri_escape(record.id) %]").html(txt);
-   });
-});
-</script>
 
     <div class="ob-numbering">[% IF with_id_checkbox %]<input type="checkbox" name="id" value="[% record.listid %]"  title="collection_item" />&nbsp;[% END %][% start_range+loop.count - 1 %]</div>
 
@@ -381,7 +373,7 @@ $(document).ready(function(){
        </div>
 [% END %]
        <div class="ml-auto">
-[% IF availability == "online" %]<button class="btn btn-primary ob-availability_online mr-1"><img src="[% config.get_icon('global',view,sysprofile) %]" alt="[% msg.maketext("online") %]" /><span class="d-none d-sm-inline">[% msg.maketext("online") %]</span></button>[% IF signatur %]<span id="availability_[% record.database %]_[% uri_escape(record.id) %]"></span>[% END %][% ELSE %]<span id="availability_[% record.database %]_[% uri_escape(record.id) %]"></span>[% END %]
+       <!-- no availability info -->
        </div>
       </div>
 

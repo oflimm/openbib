@@ -78,6 +78,23 @@ $(document).ready(function(){
 
 </script>
 
+[% IF normdata.${"T6054"} ;
+
+     muenzen_img = [ ];
+     FOREACH item IN normdata.${"T6054"} ;
+       cdm_ptr = item.content ;
+       thismult = item.mult ;
+       FOREACH thisitem IN normdata.${"T6050"} ;
+           IF thisitem.mult == thismult ;
+              description = thisitem.content ;
+           END ;
+       END ;
+
+       muenzen_img.push({ cdm_ptr = cdm_ptr , description = description }) ;
+     END ;
+   END;
+%]
+
 [% PROCESS common/subtemplate name="titles_record_html_modals" %]
 
 <div class="ob-category_header ob-bg text-white pt-1 pl-1 pr-1">[% normdata.${"T0412"}.first.content %] <span style="float:right">[% record.id %]</span></div>

@@ -49,6 +49,13 @@ $(document).ready(function(){
 <!-- no modals -->
 [% END %]
 
+<style>
+.modal-lg {
+  width: 80%;
+}
+
+</style>
+
 <div class="modal fade" id="reverseModal" tabindex="-1" role="dialog" aria-labelledby="reverseModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -72,7 +79,7 @@ $(document).ready(function(){
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="obverseModalLabel">[% msg.maketext("Vorderseite") %]</h5>
+        <h5 class="modal-title" id="obverseModalLabel">[% msg.maketext("Rückseite") %]</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
           <span aria-hidden="true">&times;</span>
         </button>

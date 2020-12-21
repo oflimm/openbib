@@ -214,10 +214,10 @@
 
      # Titel konstruieren
      title = item.${'T0331'}.first.content;
-     IF item.${'T0334'}.first.content;
-         title_back = item.${'T0334'}.first.content;
-         title = "${title} / ${title_back}";
-     END;
+#     IF item.${'T0334'}.first.content;
+#         title_back = item.${'T0334'}.first.content;
+#         title = "${title} / ${title_back}";
+#     END;
 
      IF item.${'T0338'}.first.content;
          nominal = item.${'T0338'}.first.content;

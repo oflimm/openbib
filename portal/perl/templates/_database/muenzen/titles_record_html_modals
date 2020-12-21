@@ -69,6 +69,7 @@ $(document).ready(function(){
         <img class="img-fluid mx-auto d-block" src="https://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&CISOPTR=[% muenzen_img.0.cdm_ptr %]&DMSCALE=100.00000&DMWIDTH=4000&DMHEIGHT=4000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0"/>
       </div>
       <div class="modal-footer">
+        <a class="btn btn-primary" href="https://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&CISOPTR=[% muenzen_img.0.cdm_ptr %]&DMSCALE=100.00000&DMWIDTH=4000&DMHEIGHT=4000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0"><i class="fas fa-download"></i> Download</a>
         <button type="button" class="btn btn-primary" data-dismiss="modal">[% msg.maketext("Schließen") %]</button>
       </div>
     </div>
@@ -88,6 +89,7 @@ $(document).ready(function(){
         <img  class="img-fluid mx-auto d-block" src="https://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&CISOPTR=[% muenzen_img.1.cdm_ptr %]&DMSCALE=100.00000&DMWIDTH=4000&DMHEIGHT=4000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0"/>
       </div>
       <div class="modal-footer">
+        <a class="btn btn-primary" href="https://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&CISOPTR=[% muenzen_img.1.cdm_ptr %]&DMSCALE=100.00000&DMWIDTH=4000&DMHEIGHT=4000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0"><i class="fas fa-download"></i> Download</a>
         <button type="button" class="btn btn-primary" data-dismiss="modal">[% msg.maketext("Schließen") %]</button>
       </div>
     </div>

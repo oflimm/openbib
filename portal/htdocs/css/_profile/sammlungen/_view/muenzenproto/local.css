@@ -64,6 +64,10 @@
 
     /* Appearance functional elements */
 
+    .row {
+	margin-right: 0px;
+    }
+    
     a, a:hover{
 	color: #253746;
     }

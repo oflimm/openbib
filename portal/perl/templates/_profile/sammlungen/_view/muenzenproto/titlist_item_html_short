@@ -328,7 +328,7 @@
       </div>
       <div class="ob-brieftitle pl-5">
 [%# USE dumper;dumper.dump(dbinfo) %]
-        <div class="ob-titleinfo mt-1" ic-switch-class="active">
+        <div class="ob-titleinfo pt-2" ic-switch-class="active">
          <span class="ob-person">[% person %]</span><br />
         <strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong>
 [%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%][% IF nominal %]<br/>[% nominal %][% END %][% IF yearofpub %]<br/><span class="ob-yearofpub">[% yearofpub %]</span>[% END %]
@@ -337,7 +337,7 @@
         <div class="ob-titlemark d-none d-lg-block">
           <span>[% record.id %]</span>
         </div>
-        <div class="d-flex ob-titleactions pb-1 pt-2">
+        <div class="d-flex ob-titleactions">
 [% IF tagname %]
          <div>
            <button type="button" href="[% path_prefix %]/[% config.get('tags_loc') %]/names/id/[% tagname %]" class="btn btn-light pr-2">Tag: [% tagname %]</button>

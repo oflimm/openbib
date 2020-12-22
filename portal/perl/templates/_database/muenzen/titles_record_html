@@ -97,7 +97,7 @@ $(document).ready(function(){
 
 [% PROCESS common/subtemplate name="titles_record_html_modals" %]
 
-<div class="ob-category_header ob-bg text-white pt-1 pl-1 pr-1">[% normdata.${"T0412"}.first.content %] <span style="float:right">[% record.id %]</span></div>
+<div class="ob-category_header ob-bg text-white pt-1 pl-2 pr-2">[% normdata.${"T0412"}.first.content %] <span style="float:right">[% record.id %]</span></div>
 
 <div class="content"><!-- Begin Fulltitle -->
 

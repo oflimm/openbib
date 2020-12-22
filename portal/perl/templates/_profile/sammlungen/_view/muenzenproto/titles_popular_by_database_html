@@ -36,7 +36,8 @@
   <div class="ob-resultitems [% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 [%- FOREACH thisitem IN resultlist -%]
 [%  record = {};
-    record.database   = database;
+    record.id         = thisitem.item.fields.id;
+    record.database   = thisitem.item.fields.database;
     record.get_fields = thisitem.item.fields;
     record.get_fields.${'popularity'} = thisitem.count;
  %]

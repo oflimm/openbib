@@ -476,7 +476,7 @@
     }
 
     .ob-item {
-	min-height: 125px;
+	min-height: 140px;
 	height: auto;
 	/*    width: 100%;
     position: relative;
@@ -492,7 +492,7 @@
     top: 0px;
     left: 25px;
     min-width: 280px !important;
-    height: 120px;
+    height: 140px;
     background: none repeat scroll 0 0;
 	/* position: relative; */
 	/*     float: left; 
@@ -509,8 +509,10 @@
     .ob-item .ob-brieftitle {
     padding-left: 25px;
 	width: 100%;
+	height: auto;
 /*    position: relative; 
       float: left; 
+
 
     top: 25px;
     width: auto; */
@@ -526,7 +528,10 @@
     }
 
     .ob-item .ob-titleactions {
+	margin-bottom: 1rem;
 	height: 45px;
+	padding-top: 2.5rem;
+	padding-bottom: 1.5rem;
 	/*       display: none;  */
     }
 
@@ -592,8 +597,10 @@
     .ob-item .ob-titlemark {
 	position: absolute;
 	right:15px;
+	margin-bottom: 1rem;
+	padding-bottom: 1.5rem;
 	padding-right: 20px; 
-	padding-top: 15px;
+	padding-top: 47px;
 /*  float: right;
        margin: -20px 5px 80px 120px;*/
     }

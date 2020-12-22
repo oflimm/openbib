@@ -590,12 +590,10 @@
   }
    */
     .ob-item .ob-titlemark {
-	/*    position: absolute; */
-	bottom:0;
-	right:0;
-	padding-right: 10px; 
-	padding-top: 3px;
-	padding-bottom: 3px; 
+	position: absolute;
+	right:15px;
+	padding-right: 20px; 
+	padding-top: 15px;
 /*  float: right;
        margin: -20px 5px 80px 120px;*/
     }

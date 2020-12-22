@@ -334,7 +334,9 @@
 [%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%][% IF nominal %]<br/>[% nominal %][% END %][% IF yearofpub %]<br/><span class="ob-yearofpub">[% yearofpub %]</span>[% END %]
 [%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
         </div> <!-- end: titleinfo -->
-        <div class="ob-titlemark d-none d-md-block">[% IF signatur %][% msg.maketext("Signatur") %]: <span>[% signatur | truncate(config.get('maxlength_mark')) %]</span>[% END %]&nbsp;</div>
+        <div class="ob-titlemark d-none d-lg-block">
+          <span>[% record.id %]</span>
+        </div>
         <div class="d-flex ob-titleactions pb-1 pt-2">
 [% IF tagname %]
          <div>

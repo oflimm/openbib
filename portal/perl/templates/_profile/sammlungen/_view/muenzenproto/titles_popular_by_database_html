@@ -37,6 +37,8 @@
 [%- start_range = 1; -%]  
 [%- FOREACH thisitem IN resultlist -%]
 [%  record = {};
+    thisitem.item.fields.popularity.delete;
+
     record.id         = thisitem.item.fields.id;
     record.database   = thisitem.item.fields.database;
     record.get_fields = thisitem.item.fields;

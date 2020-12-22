@@ -40,7 +40,6 @@
     record.id         = thisitem.item.fields.id;
     record.database   = thisitem.item.fields.database;
     record.get_fields = thisitem.item.fields;
-    record.get_fields.${'popularity'} = thisitem.count;
  %]
 [%    PROCESS common/subtemplate name="titlist_item_html_short" database=record.database %] 
 

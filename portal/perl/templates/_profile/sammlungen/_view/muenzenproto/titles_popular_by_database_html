@@ -26,7 +26,7 @@
 <div class="ob-resultlist">
   <div class="ob-resultheader">
     <div class="ob-catalog">
-[% msg.maketext("Die 20 meist aufgerufenen Titel in den letzten 6 Monaten") %]
+[% msg.maketext("Die 20 meist aufgerufenen Münzen in den letzten 6 Monaten") %]
     </div>
     <div class="ob-hits">
     </div>

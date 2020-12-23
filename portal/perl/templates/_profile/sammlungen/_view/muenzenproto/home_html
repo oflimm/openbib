@@ -40,34 +40,28 @@
     <div class="d-md-flex justify-content-end d-none bg-transparent" style="width: 95%">
       <div class="btn-group btn-group-sm d-none d-md-block">
         <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">
-          <i class="fas fa-search-plus"></i> Erweiterte Suche
+          <i class="fas fa-search-plus"></i> [% msg.maketext("Erweiterte Suche") %]
         </a>
         <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/[% config.get('titles_loc') %].html?l=[% lang %]">
           <i class="fas fa-th-list"></i> [% msg.maketext("Alle Münzen") %]
         </a>
-<!--        <button type="button" class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-left-radius: 0!important;" data-toggle="collapse" data-target="#extendedFilterModal" style="display:hidden">
-          <i class="fas fa-filter"></i> Schnellfilter
-        </button> -->
       </div>
     </div>
     <div class="d-flex justify-content-center d-md-none">
       <div class="btn-group btn-group-sm d-none d-md-block">
         <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;"  href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">
-          <i class="fas fa-search-plus"></i> Erweiterte Suche
+          <i class="fas fa-search-plus"></i> [% msg.maketext("Erweiterte Suche") %]
         </a>
         <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/[% config.get('titles_loc') %].html?l=[% lang %]">
           <i class="fas fa-th-list"></i> [% msg.maketext("Alle Münzen") %]
         </a>
-<!--        <button type="button" class="btn btn-sm ob-bg-tertiary ob-border-tertiary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-left-radius: 0!important;" data-toggle="modal" data-target="#extendedFilterModal" style="display:hidden">
-          <i class="fas fa-filter"></i> Schnellfilter
-        </button> -->
       </div>
     </form>      
     </div>
   </div>
 </div>
 
-<div class="text-center ob-bg text-white"><h4>DIE MÜNZSAMMLUNG AM INSTITUT FÜR ALTERTUMSKUNDE DER UNIVERSITÄT ZU KÖLN</h4></div>
+<div class="text-center ob-bg text-white"><h4>[% msg.maketext("DIE MÜNZSAMMLUNG AM INSTITUT FÜR ALTERTUMSKUNDE DER UNIVERSITÄT ZU KÖLN") %]</h4></div>
 
 <div class="container pb-5">
   <div class="row">
@@ -75,27 +69,27 @@
       <div class="card mt-5 h-100">
 	<div class="card-header pb-2 text-center"><i class="fas fa-coins fa-2x"></i></div>
 	<div class="card-body">
-	  <h4 class="card-subtitle pb-3 text-center">Münzbestand</h4>
-	  <p class="card-text">Informationen zu Provenienzen und Anzahl der Münzen</p>
-	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('info_loc') %]/bestand.html?l=[% lang %]">Mehr</a></div>
+	  <h4 class="card-subtitle pb-3 text-center">[% msg.maketext("Münzbestand") %]</h4>
+	  <p class="card-text">[% msg.maketext("Informationen zu Provenienzen und Anzahl der Münzen") %]</p>
+	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('info_loc') %]/bestand.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a></div>
       </div>
     </div>
     <div class="col-md-4 pl-5 pr-5 pb-5">
       <div class="card mt-5 h-100">
 	<div class="card-header pb-2 text-center"><i class="fas fa-list-ul fa-2x"></i></div>
 	<div class="card-body">
-	  <h4 class="card-subtitle pb-3 text-center">Register</h4>
-	  <p class="card-text">Systematisches Browsen im Bestand</p>
-	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/[% config.get('titles_loc') %]/fields/id/0100.html?l=[% lang %]">Mehr</a></div>
+	  <h4 class="card-subtitle pb-3 text-center">[% msg.maketext("Register") %]</h4>
+	  <p class="card-text">[% msg.maketext("Systematisches Browsen im Bestand") %]</p>
+	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/[% config.get('titles_loc') %]/fields/id/0100.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a></div>
       </div>
     </div>
     <div class="col-md-4 pl-5 pr-5 pb-5">
       <div class="card mt-5 h-100">
 	<div class="card-header pb-2 text-center"><i class="fas fa-map-marker-alt fa-2x"></i></div>
 	<div class="card-body">
-	  <h4 class="card-subtitle pb-3 text-center">Karte</h4>
-	  <p class="card-text">Eine Übersicht aller Städte der Münzen</p>
-	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('info_loc') %]/staedte.html?l=[% lang %]">Mehr</a></div>
+	  <h4 class="card-subtitle pb-3 text-center">[% msg.maketext("Karte") %]</h4>
+	  <p class="card-text">[% msg.maketext("Eine Übersicht aller Städte der Münzen") %]</p>
+	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('info_loc') %]/staedte.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a></div>
       </div>
     </div>
   </div>
@@ -119,7 +113,7 @@
 <hr/>
 
 <div class="container pb-5 pt-3">
-<h2 class="text-center"><i class="fas fa-info"></i> Aktuelles</h2>
+<h2 class="text-center"><i class="fas fa-info"></i> [% msg.maketext("Aktuelles") %]</h2>
 
 <ul class="list-group pt-2">
 <li class="list-group-item"><a class="font-weight-bold" href="https://portal.uni-koeln.de/universitaet/aktuell/presseinformationen/detail/uni-koeln-erhaelt-bedeutende-muenzschenkung">Presseinformation der Universität zu Köln</a>, 08.07.2020: Uni Köln erhält bedeutende Münzschenkung</li>

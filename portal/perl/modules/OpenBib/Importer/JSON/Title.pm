@@ -347,6 +347,7 @@ sub process {
 	    push @$new_lang_ref, {
 		mult      => $mult_lang++,
 		content   => $lang,
+		subfield  => '',
 	    };
 	}
 

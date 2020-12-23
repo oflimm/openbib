@@ -47,7 +47,7 @@
         <div id="ob-sidebar" class="col-xs-6 col-md-3 collapse">
 [% PROCESS common/subtemplate name=layout_param.sidebar_template %]
         </div>
-        <div id="ob-mainpage" class="col-md-9 pl-4" >
+        <div id="ob-mainpage" class="col-xs-6 col-md-9 pl-4" >
 [% PROCESS common/subtemplate name=layout_param.main_template %]
         </div>
       </div>

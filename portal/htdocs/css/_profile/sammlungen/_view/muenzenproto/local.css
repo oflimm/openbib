@@ -76,17 +76,17 @@
     .col-md-3 {
 	margin-right: 0px;
 	padding-right: 0px;
-	padding-left: 5px; 
+	padding-left: 10px; 
     }
 
     .col-md-9 {
 	margin-right: 0px;
-	padding-right: 5px;
+	padding-right: 10px;
     }
 
     .col-xs-6 {
 	margin-right: 0px;
-	padding-right: 5px;
+	padding-right: 10px;
     }
     
     a, a:hover{
@@ -342,7 +342,8 @@
 /*    .navbar-nav {
 	width: 100%;
     }
-    
+
+
     .ob-sidebar .navbar-nav .nav-item {
 	width: 100%;
 	border-bottom: 1px solid rgba(0,0,0,.125);
@@ -1784,6 +1785,23 @@ a.ext {
     */
      .table-flippable td:before { content: attr(data-title); }
 
+}
+
+@media only screen and (max-width: 768px) {
+    .col-md-3 {
+	margin-right: 0px;
+	padding-right: 0px;
+	padding-left: 20px; 
+    }
+
+    .col-md-9 {
+	margin-right: 0px;
+	padding-right: 5px;
+    }
+
+    #ob-sidebar .card {
+	margin-right: 5px;
+    }
 }
 
 @media only screen and (max-width: 575px) {

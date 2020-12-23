@@ -63,9 +63,30 @@
     }
 
     /* Appearance functional elements */
-
-    .row {
+    
+    .flex-md-row-reverse {
 	margin-right: 0px;
+    }
+
+    .col-md-12 {
+	padding-right: -15px;
+	margin-right: 0px;
+    }
+
+    .col-md-3 {
+	margin-right: 0px;
+	padding-right: 0px;
+	padding-left: 5px; 
+    }
+
+    .col-md-9 {
+	margin-right: 0px;
+	padding-right: 5px;
+    }
+
+    .col-xs-6 {
+	margin-right: 0px;
+	padding-right: 5px;
     }
     
     a, a:hover{
@@ -423,15 +444,16 @@
 
     .ob-resultlist {
 	width: auto;
-	padding: 0.5em;
+/*	padding: 0.5em;*/
 	padding-left: 5px;
+	padding-right: 0px;
     }
     
     .ob-resultheader {
 	position: relative;
 	width: auto;  
 	padding: 5px;
-	padding-right: 0px;
+	padding-right: 5px;
 	min-height: 10px;
 	height: auto;
 	margin-bottom: 25px;
@@ -459,7 +481,7 @@
 	position: absolute;
 	top: 0;
 	left: 0px;
-	width: 500px;
+	/* width: 500px; */
 	font-size: 1.2em;
 /*  font-weight: bold; 
        padding: 5px; */
@@ -812,6 +834,10 @@
  {
 	border-radius: 0;
     }
+
+    div .ob-breadcrumb .list-group-item {
+	padding: .75rem .50rem;
+    }
     
     div .ob-breadcrumb ol li.ob-navitem {
 	color: #fff;
@@ -1002,12 +1028,13 @@
     /* Start: Facets */
     
     .ob-facets {
+	margin-right: 5px; 
 	margin-top: -5px;
     }
 
     .ob-facets {
-	width: 95%;
-	padding: 5px;
+/*	width: 95%; */
+	padding: 0px;
 	/*  font-size:0.9em; */
 /*  background-color: white;
        border-top-style: solid;

@@ -100,7 +100,7 @@ while ($csv->getline ($in)){
 	$thiscity_ref->{ikmb_type} = $row->{type};
 
 	my $geo = $row->{description_de};
-	$geo=~s/ \| /,/;
+	$geo=~s/\s+\|\s+/,/;
 	$thiscity_ref->{geo} = $geo;
 
 	if ($row->{CONTENTDM_STADT} =~/\n/){

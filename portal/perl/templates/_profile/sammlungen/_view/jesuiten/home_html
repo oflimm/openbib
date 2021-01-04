@@ -98,7 +98,16 @@
 <div class="container">
 
 <div class="row">
-<div class="col-md-6 pl-5 pr-5 mt-5">
+<div class="col-md-6 p-0 text-center">
+  <img class="img-fluid" src="/images/openbib/views/jesuiten/jesuiten-besonderheiten-200pct.jpg" alt="Besonderheiten" />
+</div>
+<div class="col-md-6 pl-5 pr-5 mt-5 pb-3">
+Auf diesem Portal werden die Ergebnisse des Projektes schon vor dessen Abschluss verfügbar gemacht und gebündelt. Den Kern machen dabei die Informationen aus dem Katalog der USB aus, die im Projekt überprüft und angereichert werden. Über die Suchfunktion sind alle Bücher durchsuchbar, die mit dem Sammlungsvermerk ‚Jesuitenbibliothek‘ markiert wurden. Über die Register können die Bücher nach festgelegten Kategorien geordnet werden – etwa nach dem Druckort, dem Zugangsjahr zur Jesuitenbibliothek oder nach Vorbesitzern. Ergänzt werden diese Listen durch Informationstexte
+</div>
+</div>
+
+<div class="row">
+<div class="col-md-6 pl-5 pr-5 mt-5 pb-3">
 <h4>Systematik und Aufstellung der jesuitischen Buchbestände</h4>
 <ul class="list-group">
 <li class="list-group-item">Kataloge der Jesuitenbibliothek</li>
@@ -121,7 +130,7 @@
   <img class="img-fluid" src="/images/openbib/views/jesuiten/jesuiten-besonderheiten-200pct.jpg" alt="Besonderheiten" />
 </div>
 
-<div class="col-md-6 pl-5 pr-5 mt-5">
+<div class="col-md-6 pl-5 pr-5 mt-5 pb-3">
 <h4>Weitere erfasste Besonderheiten der Bücher</h4>
 <ul class="list-group">
 <li class="list-group-item">Zugangsjahr</li>

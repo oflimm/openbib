@@ -69,7 +69,7 @@
 	<div class="card-body">
 	  <h4 class="card-subtitle pb-3 text-center"  style="height:60px; !important">[% msg.maketext("Die Kölner Jesuitenbibliothek") %]</h4>
 	  <p class="card-text" style="height:40px; !important">[% msg.maketext("Historischer Abriss") %]</p>
-	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('info_loc') %]/bestand.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a></div>
+	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('info_loc') %]/einleitung.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a></div>
       </div>
     </div>
     <div class="col-md-4 pl-5 pr-5 pb-5">

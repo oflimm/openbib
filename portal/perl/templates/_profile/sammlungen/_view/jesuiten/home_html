@@ -138,7 +138,7 @@ Auf diesem Portal werden die Ergebnisse des Projektes schon vor dessen Abschluss
 <li class="list-group-item">Reich bebildert: Beispiele aus den Büchern</li>
 </ul>
 
-<a class="btn btn-primary mt-5" href="[% path_prefix %]/[% config.get('info_loc') %]/besonderheiten.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a>
+<a class="btn btn-primary mt-5" href="[% path_prefix %]/[% config.get('info_loc') %]/erschliessung.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a>
 
 </div>
 

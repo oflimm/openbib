@@ -47,7 +47,7 @@
         <div id="ob-sidebar" class="col-xs-6 col-md-3 collapse">
 [% PROCESS common/subtemplate name=layout_param.sidebar_template %]
         </div>
-        <div id="ob-mainpage" class="col-md-9 pl-4" >
+        <div id="ob-mainpage" class="col-xs-6 col-md-9 pl-4" >
 [% PROCESS common/subtemplate name=layout_param.main_template %]
         </div>
       </div>
@@ -55,25 +55,17 @@
 [% ELSE %]
 <!-- begin: Layout without sidebar -->
       <div  [% IF layout_param.css_id %]id="[% layout_param.css_id %]" [% END %]>
-<!--        <div class="col-md-12" > -->
+        <div class="col-md-12" > 
 [% PROCESS common/subtemplate name=layout_param.main_template %]
-<!--        </div> -->
+        </div> 
       </div>
 <!-- end: Layout without sidebar -->      
 [% END %]
 
-[% PROCESS common/subtemplate name="std_footer" %]
-
   </div><!-- /.container-fluid -->
   
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<!-- <script src="/js/jquery-3.3.1.min.js"></script>
-<script src="/js/popper.min.js"></script>
-<script src="/js/bootstrap.min.js"></script> -->
-
-<!-- Then static OpenBib JS -->
-<!-- <script type="text/javascript" src="/js/openbib.js"></script> -->
-
+[% PROCESS common/subtemplate name="std_footer" %]
+  
 <!-- ... and finally dynamic OpenBib JS -->
 <script>
   $('#to_focus').val('[% searchquery.get_searchfield('freesearch').val.replace("'","\\'") %]');
@@ -90,108 +82,6 @@ $(function(e){
 	});
 });
 </script>
-
-[% IF NOT layout_param.without_navigation_search %]
-[%   IF user.is_authenticated %]
-[%   autocompletion_type = user.get_autocompletion %]
-[%   livesearch          = user.get_livesearch %]
-[%     IF autocompletion_type == "spelling" && spelling_suggestion.as_you_type %]
-<!--
-<script type="text/javascript">
-$(document).ready(function(){
-  $("#to_focus").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' '});
-  $("#input_box_serials").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' '});
-  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' '});
-})
-</script>
--->
-[%     ELSIF autocompletion_type == "livesearch" && livesearch.fs %]
-<!--
-<script type="text/javascript">
-$(document).ready(function(){
-  $("#to_focus").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' ',
-                extraParams: {
-                  exact: "[% livesearch.exact %]"
-                }});
-  $("#input_box_serials").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' ',
-                extraParams: {
-                  exact: "[% livesearch.exact %]"
-                }});
-  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
-                selectFirst: false,
-                minChars: 3,
-                multiple: true,                
-                multipleSeparator: ' ',
-                extraParams: {
-                  exact: "[% livesearch.exact %]"
-                }});
-})
-</script>
--->
-[%     END %]
-[%  END %]
-[% END %]
-
-<!--
-               <script type="text/javascript">
-                        $(function(){
-
-                                // Tabs
-                                $('#tabs_types').tabs();
-                                        
-                        });
-                </script>
-
-<script type="text/javascript">
-$(document).ready(function(){
- $('.dropdown-menu a.dropdown-toggle').on('click', function(e) {
-  if (!$(this).next().hasClass('show')) {
-    $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
-  }
-  var $subMenu = $(this).next(".dropdown-menu");
-  $subMenu.toggleClass('show');
-
-
-  $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function(e) {
-    $('.dropdown-submenu .show').removeClass("show");
-  });
-
-
-  return false;
-});
-
-$(document).ready(function(){
- $('.selectpicker').selectpicker();
-})
-
-$('.selectpicker').selectpicker();
-
-})
-</script>
--->
-
-<!--    <script type="text/javascript" src="/js/cloud-zoom.1.0.2.min.js"></script> -->
-    
 
 </body>
 </html>

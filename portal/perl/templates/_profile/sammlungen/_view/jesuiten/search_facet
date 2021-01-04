@@ -956,7 +956,7 @@ yearslider_to.addEventListener('change', function () {
         "arab."    => msg.maketext("Arabisch"),
         "ces"      => msg.maketext("Tschechisch"),
         "chi"      => msg.maketext("Chinesisch"),
-        "cop"      => msg.maketext(""),
+        "cop"      => msg.maketext("Koptisch"),
         "cze"      => msg.maketext("Tschechisch"),
         "de"       => msg.maketext("Deutsch"),
         "dt."      => msg.maketext("Deutsch"),

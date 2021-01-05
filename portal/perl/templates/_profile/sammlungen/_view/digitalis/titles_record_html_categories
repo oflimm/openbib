@@ -322,9 +322,6 @@ FOREACH category IN categories;
    END;
 END;
 -%]
-[%- IF currently_unavailable -%]
-<tr><th class="ob-field">[% msg.maketext("Volltext")%]</th><td>derzeit nicht verf&uuml;gbar. Der Titel wird zukuenftig in das Digitalisierungssystem der USB Köln eingearbeitet</td></tr>
-[%- END -%]
 </table>
 [% ELSIF format == "BibTeX" %]
 <div>

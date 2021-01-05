@@ -83,15 +83,7 @@ $(document).ready(function(){
 <div class="content"><!-- Begin Fulltitle -->
 
 <div class="ob-category_header ob-bg text-white pt-1 pl-2 pr-2 mb-3">
-[%-  IF locations.size >= 1 -%]
-[%      IF locations.size == 1 %]
-         [% locinfo.identifier.${locations.first}.description %]
-[%      ELSIF locations.size > 1 %]
-         [% msg.maketext('Verschiedene Standorte') %]
-[%      END %]
-[%-  ELSE %]
 [%     dbinfo.get('dbnames').${database}.short %]
-[%   END %]
 </div>
 
 [% IF record_exists %]

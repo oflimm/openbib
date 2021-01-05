@@ -83,7 +83,7 @@ $(document).ready(function(){
 <div class="content"><!-- Begin Fulltitle -->
 
 <div class="ob-category_header ob-bg text-white pt-1 pl-2 pr-2 mb-3">
-[%     dbinfo.get('dbnames').${database}.short %]
+[% msg.maketext("Details") %] [%#     dbinfo.get('dbnames').${database}.short %]
 </div>
 
 [% IF record_exists %]

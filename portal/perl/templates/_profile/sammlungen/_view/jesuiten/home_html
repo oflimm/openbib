@@ -98,7 +98,7 @@
 <div class="container">
 
 <div class="row">
-<div class="col-md-6 p-0 text-center">
+<div class="col-md-6 pl-0 pr-0 text-center">
   <img class="img-fluid" src="/images/openbib/views/jesuiten/jesuiten-besonderheiten-200pct.jpg" alt="Besonderheiten" />
 </div>
 <div class="col-md-6 pl-5 pr-5 mt-5 pb-3">
@@ -119,14 +119,14 @@ Auf diesem Portal werden die Ergebnisse des Projektes schon vor dessen Abschluss
 <a class="btn btn-primary mt-5" href="[% path_prefix %]/[% config.get('info_loc') %]/systematik.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a>
 
 </div>
-<div class="col-md-6 text-center">
+<div class="col-md-6 pl-0 pr-0 text-center">
   <img class="img-fluid" src="/images/openbib/views/jesuiten/jesuiten-aufstellung-200pct.jpg" alt="Aufstellung" />
 </div>
 
 </div>
 
 <div class="row">
-<div class="col-md-6 p-0 text-center">
+<div class="col-md-6 pl-0 pr-0 text-center">
   <img class="img-fluid" src="/images/openbib/views/jesuiten/jesuiten-besonderheiten-200pct.jpg" alt="Besonderheiten" />
 </div>
 

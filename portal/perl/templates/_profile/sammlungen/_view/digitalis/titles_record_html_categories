@@ -163,7 +163,7 @@ FOREACH category IN categories;
                thiscontent = thiscontent.substr(0,60);
                thiscontent = "${thiscontent}...";
             END ;
-            content   = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
+            content   = "<a href=\"${content}\" class=\"btn btn-primary\" target=\"_blank\">${msg.maketext('Zum Volltext')}</a>";
          END ;
 
     CASE [ "E4100" "T4100" ];

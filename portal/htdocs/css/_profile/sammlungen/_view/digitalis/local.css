@@ -224,6 +224,8 @@
     #ob-navbar_top {
 	background-color: #253746;
 	z-index: 1000;
+	padding-left:5px;
+	padding-right:8px;
     }
 
     #ob-navbar_top .nav-link {
@@ -307,11 +309,11 @@
     }
 
     .brand-title img {
-	padding-right: 15px;
+	padding-right: 10px;
     }
 
     .brand-title {
-	font-size: 24px;
+	font-size: 23px;
     }
     
     .navbar.ob-sidebar {

@@ -34,6 +34,8 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
+use URI;
+
 use DBI;
 use Digest::MD5;
 use Email::Valid;
@@ -42,7 +44,9 @@ use POSIX;
 use SOAP::Lite;
 use Socket;
 use Template;
+use JSON::XS qw/encode_json decode_json/;
 use URI::Escape;
+use LWP::UserAgent;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
@@ -51,6 +55,7 @@ use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
 use OpenBib::User;
+use OpenBib::Record::Title;
 
 use base 'OpenBib::Handler::PSGI::Users';
 
@@ -91,6 +96,8 @@ sub show_collection {
     my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
+    my $scheme         = $self->param('scheme');
+    my $servername     = $self->param('servername');
 
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
 
@@ -103,36 +110,69 @@ sub show_collection {
         }
     }
     
-    my ($loginname,$password) = $user->get_credentials();
+    my ($loginname,$password,$access_token) = $user->get_credentials();
+
     $database              = $user->get_targetdb_of_session($session->{ID});
 
     my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
 
     my $circexlist=undef;
+
+    my $url = $scheme."://".$servername.$path_prefix."/".$config->get('databases_loc')."/id/".$sessionauthenticator."/paia/core/".uri_escape($loginname)."/fees";
+
+    my $ua = LWP::UserAgent->new();
+    $ua->agent('USB Koeln/1.0');
+    $ua->timeout(30);
+
+    my $paia_failure = 0;
     
     eval {
-        my $soap = SOAP::Lite
-            -> uri("urn:/Circulation")
-                -> proxy($circinfotable->get($database)->{circcheckurl});
-        my $result = $soap->get_reminders(
-            SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                SOAP::Data->name(username => $loginname)->type('string'),
-                SOAP::Data->name(password => $password)->type('string'),
-                SOAP::Data->name(database => $circinfotable->get($database)->{circdb})->type('string'))));
-        
-        unless ($result->fault) {
-            $circexlist=$result->result;
-        }
-        else {
-            $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-        }
+	if ($logger->is_debug()){
+	    $logger->debug("Request URL: $url");
+	}
+	
+	my $response = $ua->get($url,
+				'Authorization' => "Bearer $access_token",
+	    );
+	
+	
+	if ($logger->is_debug){
+	    $logger->debug("Response: ".$response->content);
+	}
+	
+	if (!$response->is_success) {
+	    $logger->info($response->code . ' - ' . $response->message);
+	    return;
+	}
+
+	$circexlist = decode_json $response->content;
+	
+	if ($logger->is_debug){
+	    $logger->debug("PAIA Result: ".YAML::Dump($circexlist));
+	}
     };
     
     if ($@){
-        $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
+	$logger->error("PAIA-Target $url konnte nicht erreicht werden :".$@);
     }
 
+   
     my $authenticator=$session->get_authenticator;
+
+    # Anreicherung mit Informationen zum Titel
+
+    foreach my $item_ref (@{$circexlist->{fee}}){
+	# Parse Information
+	next if (!$item_ref->{item});
+
+	my ($dbname,$titleid,$label) = $item_ref->{item} =~m{databases/id/(.+?)/titles/id/(.+?)/items/id/(.+?)$};
+	
+	my $fields = OpenBib::Record::Title->new({ database => $database, id => $titleid})->load_brief_record->get_fields;
+
+	$item_ref->{fields} = $fields;
+	$item_ref->{label}  = uri_unescape($label);
+	
+    }
     
     # TT-Data erzeugen
     

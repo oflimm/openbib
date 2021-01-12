@@ -125,9 +125,12 @@ sub show_record_form {
     }
 
     my $userinfo = new OpenBib::User({ID => $userid })->get_info;
-        
+
+    my $viewinfo_ref = $config->get_viewinfo_overview();
+
     my $ttdata={
         userinfo   => $userinfo,
+	views      => $viewinfo_ref,
     };
     
     return $self->print_page($config->{tt_admin_users_record_edit_tname},$ttdata);

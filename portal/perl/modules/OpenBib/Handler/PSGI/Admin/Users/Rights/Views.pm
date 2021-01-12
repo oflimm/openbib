@@ -93,7 +93,7 @@ sub update_record {
     my $path_prefix    = $self->param('path_prefix');
 
     # CGI Args
-    my $view           = ($query->param('view'))?$query->param('view'):'';
+    my $newview        = ($query->param('view'))?$query->param('view'):'';
 
     if (!$self->authorization_successful('right_update')){
         return $self->print_authorization_error();
@@ -101,7 +101,7 @@ sub update_record {
 
     my $thisuserinfo_ref = {
         id        => $userid,
-        viewname  => $view,
+        viewname  => $newview,
     };
 
     $user->update_user_rights_view($thisuserinfo_ref);

@@ -2114,6 +2114,11 @@
    representations:
      - none
      - html
+- # viewadmin users: Update
+   scope: 'viewadmin_users'
+   module: 'OpenBib::Handler::PSGI::Viewadmin::Users'
+   rule: '/portal/:view/viewadmin/users/id/:userid[post]'
+   runmode: 'update_record'
 - # users_loc/roles_loc: Update
    scope: 'viewadmin_users'
    module: 'OpenBib::Handler::PSGI::Viewadmin::Users::Rights::Roles'
@@ -3154,6 +3159,19 @@
    scope: 'admin_users'
    module: 'OpenBib::Handler::PSGI::Admin::Users::Rights::Templates'
    rule: '/portal/:view/admin/users/id/:userid/rights/templates[put]'
+   runmode: 'update_record'
+
+#####################################################################
+# Admin User Rights Viewzuordnung
+- # users_loc/views_loc: Update
+   scope: 'admin_users'
+   module: 'OpenBib::Handler::PSGI::Admin::Users::Rights::Views'
+   rule: '/portal/:view/admin/users/id/:userid/rights/views[post]'
+   runmode: 'update_record'
+- # users_loc/views_loc: Update
+   scope: 'admin_users'
+   module: 'OpenBib::Handler::PSGI::Admin::Users::Rights::Views'
+   rule: '/portal/:view/admin/users/id/:userid/rights/views[put]'
    runmode: 'update_record'
 
 #####################################################################

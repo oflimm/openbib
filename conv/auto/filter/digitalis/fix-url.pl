@@ -20,7 +20,7 @@ while (<>){
 
     my $id = $title_ref->{id};
 
-    my $delete_field = 0;
+    my $skip_title = 0;
     
     if (defined $title_ref->{fields}{'0662'}){
         foreach my $item_ref (@{$title_ref->{fields}{'0662'}}){
@@ -29,14 +29,14 @@ while (<>){
 		    $item_ref->{content}="https://www.ub.uni-koeln.de/permalink/db/digitalis/id/$id";
 		}
 		else {
-		    $delete_field=1;
+		    $skip_title=1;
 		}
             }
         }
     }
 
-    if ($delete_field){
-	delete $title_ref->{fields}{'0662'};
+    if ($skip_title){
+	next;
     }
     
     print encode_json $title_ref, "\n";

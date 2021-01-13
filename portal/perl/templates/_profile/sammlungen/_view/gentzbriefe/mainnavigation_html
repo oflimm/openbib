@@ -159,7 +159,7 @@
           [% msg.maketext("Register") %]
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0425.html?l=[% lang %];page=1">[% msg.maketext("Person") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0425.html?l=[% lang %];page=1">[% msg.maketext("Jahre") %]</a></li>
           <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0200.html?l=[% lang %];page=1">[% msg.maketext("Briefempfänger") %]</a></li>
           <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0100.html?l=[% lang %];page=1">[% msg.maketext("Briefaussteller") %]</a></li>
           <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/1664.html?l=[% lang %];page=1">[% msg.maketext("Provenienzen") %]</a></li>

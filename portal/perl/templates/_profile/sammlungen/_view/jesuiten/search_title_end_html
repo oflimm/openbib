@@ -1,0 +1,36 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_end
+#
+# Typ         : Mastertemplate (3/3)
+#
+# Aufgabe:
+#
+# Ausgabe das unteren Teils der initialen Trefferliste
+#
+#######################################################################
+-%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
+[%- IF representation == 'html' -%]
+
+<!--
+<div class="ob-refine_query box info">
+[% IF total_hits == 0 %]
+<span style="font-size:1.7em;font-face:bold">[% msg.maketext("Es wurden keine Treffer gefunden") %] : [% msg.maketext("Zur&uuml;ck zur [_1]Suchanfrage[_2]","<a href=\"${path_prefix}/${config.get('searchforms_loc')}/id/advanced.html?l=${lang};queryid=${searchquery.get_id.first}\">","</a>") %]</span>
+[% ELSE %]
+<span style="font-size:1.5em;font-face:bold">[% msg.maketext("M&ouml;chten Sie Ihre Suchanfrage pr&auml;zisieren?") %] : [% msg.maketext("Zur&uuml;ck zur [_1]Suchanfrage[_2]","<a href=\"${path_prefix}/${config.get('searchforms_loc')}/id/advanced.html?l=${lang};queryid=${searchquery.get_id.first}\">","</a>") %]</span>
+[% END %]
+</div>
+-->
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]
+
+</div><!-- /.container-fluid -->
+
+  
+</body>
+</html>
+[% END %]

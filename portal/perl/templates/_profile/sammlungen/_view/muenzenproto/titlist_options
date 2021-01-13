@@ -1,0 +1,22 @@
+[%#-
+#######################################################################
+#
+# Templatename: titlist_options
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Optionen einer Liste (Sortierung etc.)
+#
+#######################################################################
+-%]
+<select name="srt" class="custom-select autosubmit" style="width:auto;">
+  <option value="year_asc"[%- IF query.param('srt') == 'year_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]&nbsp;&uarr;</option>-->
+  <option value="year_desc"[%- IF query.param('srt') == 'year_desc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]&nbsp;&darr;</option>
+  <option value="person_asc"[%- IF query.param('srt') == 'person_asc' %] selected="selected"[%- END -%]>[% msg.maketext("nach Regent") %]</option>
+  <option value="id_asc"[%- IF query.param('srt') == 'id_asc' %] selected="selected"[%- END -%]>[% msg.maketext("nach ID") %]</option>
+  <option value="custom1_asc"[%- IF query.param('srt') == 'custom1_asc' %] selected="selected"[%- END -%]>[% msg.maketext("nach Polit. Bereich") %]</option>
+  <option value="custom2_asc"[%- IF query.param('srt') == 'custom2_asc' %] selected="selected"[%- END -%]>[% msg.maketext("nach Stadt") %]</option>
+  <option value="custom3_asc"[%- IF query.param('srt') == 'custom3_asc' %] selected="selected"[%- END -%]>[% msg.maketext("nach Region") %]</option>
+</select>

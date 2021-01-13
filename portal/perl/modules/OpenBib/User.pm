@@ -5327,6 +5327,39 @@ sub update_user_rights_template {
     return;
 }
 
+sub update_user_rights_view {
+    my ($self,$userinfo_ref)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = $self->get_config;
+
+    my $viewname = $userinfo_ref->{viewname};
+    
+    my $viewid   = undef;
+   
+    if ($viewname && $config->view_exists($viewname)){	
+       $logger->debug("Updating View of user $userinfo_ref->{id} to $viewname");
+       $viewid = $config->get_viewinfo->single({ viewname => $viewname })->id;
+    }
+    else {
+       $logger->debug("Granting user $userinfo_ref->{id} full access to all views");
+    }
+
+    $self->get_schema->resultset('Userinfo')->search_rs(
+	{
+	    id => $userinfo_ref->{id},
+	}
+        )->update(
+	{
+	    viewid => $viewid,
+	}
+        );
+    
+    return;
+}
+
 sub dbprofile_exists {
     my ($self,$profilename)=@_;
     

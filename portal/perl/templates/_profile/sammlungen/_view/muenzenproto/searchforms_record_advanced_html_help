@@ -1,0 +1,5 @@
+<h3>[% msg.maketext("Hinweise") %]</h3>
+<p>
+Bei der Recherche nach Datierungen kennzeichnen negative Jahreszahlen
+die Jahre v. Chr., positive Jahreszahlen n.Chr. 
+</p>

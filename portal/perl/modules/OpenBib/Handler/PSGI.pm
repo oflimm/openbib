@@ -539,6 +539,15 @@ sub negotiate_content {
             $logger->debug("Current URL is ".$self->param('path')." with args ".$r->escaped_args());
         }
     }
+    else {
+	# Respektiere und verarbeite ggf. mitgegebene Repraesentation fuer API-Zugriff
+	my $content_type = $r->header('Content-Type') || '';
+	
+	if ($config->{content_type_map}{$content_type}){
+            $self->param('content_type',$content_type);
+            $self->param('representation',$config->{content_type_map}->{$content_type});
+        }
+    }
 
     if ($logger->is_debug && defined $self->param('representation')){
 	$logger->debug("Leaving with representation ".$self->param('representation'));

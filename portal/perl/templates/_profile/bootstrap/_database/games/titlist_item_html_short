@@ -357,7 +357,17 @@ $(document).ready(function(){
 [% END %]
         </div>
         <div class="ob-titleinfo mt-4">
-         <span class="ob-person">[% person %]</span><br />[% IF record.id && record.database %]<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong></a>[% ELSE %]<strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong>[% END %][%- IF platform -%], <span class="rledition">[% platform %]</span>[%- END -%], <span class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span>   
+         <span class="ob-person">[% person %]</span><br />[% IF record.id && record.database %]<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong></a>[% ELSE %]<strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong>[% END %][%- IF platform -%], <span class="rledition">[% platform %]</span>[%- END -%], <span class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span>
+[% mediatype = item.${'T0800'}.first.content %]
+[% IF mediatype == "DVD" || mediatype == "BluRay" || mediatype == "UMD" || mediatype == "CD" || mediatype == "GCD" || mediatype == "Flashcard" %]
+ <i class="fas fa-dot-circle"></i>
+[% ELSIF mediatype == "eShop" || mediatype.match('Download') %]
+ <i class="fas fa-download"></i>
+[% END %]
+[% IF mediatype.match('PSN Plus') || mediatype.match('Gold') %]
+ <b>Abo</b>
+[% END %]
+
 [% IF multiple_dbs == 1 %]
          <br /><img style="vertical-align:text-bottom;padding:1px;" src="[% config.get_icon('home_small',view,sysprofile) %]" alt="[% msg.maketext("Katalog") %]" title="[% msg.maketext("Katalog") %]"/>
 [%-  IF locations.size >= 1 -%]

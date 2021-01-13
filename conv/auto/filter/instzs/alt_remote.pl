@@ -42,7 +42,7 @@ my $pool          = $ARGV[0];
 
 print "### $pool: Daten von uzkzeitschriften kopieren\n";
 system("cd $pooldir/$pool ; rm meta.* ");
-system("cp -f $pooldir/uzkzeitschriften/meta.* $pooldir/$pool/");
+system("cp -f $pooldir/uzkzeitschriften/meta.*.gz $pooldir/$pool/");
 
 print "### $pool: Entfernen ungewuenschter Standorte\n";
 system("cd $pooldir/$pool/ ; gunzip meta.* ; $rootdir/filter/$pool/exclude-locations.pl");

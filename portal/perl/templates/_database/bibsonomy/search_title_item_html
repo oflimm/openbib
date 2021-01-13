@@ -42,6 +42,8 @@
         allsubjects.${subject} = 1;
       END ;
     END ;
+
+    query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
 -%]
 
 [%# USE dumper;dumper.dump(nav)%]
@@ -49,10 +51,18 @@
 
 [%# USE dumper;dumper.dump(recordlist.generic_attributes)%]
 
-<div class="ym-grid">
-  <div class="ym-g25 ym-gr">
-    <div class="ym-gbox">
+    <!-- begin: Layout with collapsable sidebar -->
+    <style>
+    [data-toggle="collapse"] {
+      cursor: pointer;
+    }
 
+    @media screen and (min-width:768px) { #ob-sidebar{ display: block!important;visibility:visible!important; } }
+
+    </style>
+
+    <div class="row flex-md-row-reverse">
+      <div id="ob-sidebar" class="col-xs-6 col-md-3 collapse">
 <div class="ob-facets">
 
 <h4>[% msg.maketext("Weitere Optionen") %]</h4>
@@ -89,16 +99,8 @@
 </dl>
 
 </div>
-
-
-    </div>
-  </div>
-
-[% IF recordlist.get_size > 0 %]
-
-  <div class="ym-g75 ym-gl">
-    <div class="ym-gbox-left">
-
+      </div>
+      <div class="col-md-9" >
 <div class="ob-resultlist">
   <div class="ob-category_header">[% dbinfo.get('dbnames').${database}.short %]</div>
   <div class="ob-resultheader">
@@ -121,13 +123,8 @@
 <div class="ob-resultfooter">
 &nbsp;
 </div>
-
-   </div>
-  </div>
-
-
-
-</div>
-[% END %]
+      </div>
+    </div>
+    <!-- end: Layout with sidebar -->      
 
 <p/>

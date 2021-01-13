@@ -103,15 +103,15 @@ sub authenticate {
 	$logger->error("invalid service");
 	
 	my $response_ref = {
-	    error => 'Missing or invalid query parameters',
-	    code  => 422
+	    error => 'Known but unsupported request',
+	    code  => 501
 	};
 	
 	if ($suppressresponsecodes){
 	    $self->header_add('Status' => 200); # ok
 	}
 	else {
-	    $self->header_add('Status' => 422); # invalid request
+	    $self->header_add('Status' => 501); # invalid request
 	    
 	}
 
@@ -588,7 +588,7 @@ sub login {
     return $returnvalue;
 }
 
-sub update_patron {
+sub update_patron { # to be implemented
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -634,6 +634,98 @@ sub items {
     # CGI Args
     my $suppressresponsecodes = $query->param('suppress-response-codes')    || '';
 
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+    
+    # Richtigen Content-Type setzen
+    $self->param('content_type','application/json');
+    $self->param('represenation','json');
+    
+    $self->header_add('X-PAIA-Version' => '1.3.4');
+    $self->header_add('X-OAuth-Scopes' => 'read_patron read_fees read_items write_items read_notifications delete_notifications');
+    $self->header_add('Cache-Control' => 'no-store');
+    $self->header_add('Pragma' => 'no-cache');
+    $self->header_add('Content-Language' => $lang);
+
+    my $valid_paia = $self->user_has_valid_token($username);
+    
+    if (!$valid_paia){
+	my $response_ref = {
+	    "error" => "access_denied",
+		"error_description" => "invalid patron or password",
+	};
+	
+	if ($suppressresponsecodes){
+	    $self->header_add('Status' => 200); # ok
+	}
+	else {
+	    $self->header_add('Status' => 403); # forbidden
+	}
+
+	return decode_utf8(encode_json $response_ref);
+    }    
+
+
+    my $response_ref = [];
+	
+    if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
+
+	$logger->debug("Getting Circulation info via USB-SOAP");
+
+	my $request_types_ref = [
+	    {
+		type   => 'AUSLEIHEN',
+		status => 3,
+	    },
+	    {
+		type   => 'BESTELLUNGEN',
+		status => 2,
+	    },
+	    {
+		type   => 'VORMERKUNGEN',
+		status => 1,
+	    },	    
+	    ];
+	
+	my $tmp_response_ref = $self->send_account_request({ types => $request_types_ref});
+	$response_ref = $tmp_response_ref->{items};
+    }
+    
+    my $returnvalue;
+
+    eval {
+	$returnvalue = encode_json $response_ref;    
+    };
+
+    if ($@){
+	$logger->error($@);
+    }
+    
+    $logger->debug("Returnvalue: ".$returnvalue);
+    
+    return $returnvalue;
+}
+
+sub fees {  # to be implemented
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+    my $username       = uri_unescape($self->param('userid'));    
+
+    # Shared Args
+    my $query          = $self->query();
+    my $config         = $self->param('config');
+    my $lang           = $self->param('lang');
+    my $path_prefix    = $self->param('path_prefix');
+    my $scheme         = $self->param('scheme');
+    my $servername     = $self->param('servername');
+
+    # CGI Args
+    my $suppressresponsecodes = $query->param('suppress-response-codes')    || '';
 
     my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
     
@@ -665,9 +757,8 @@ sub items {
 	return decode_utf8(encode_json $response_ref);
     }    
 
-    my $itemlist=undef;
 
-    my $response_ref = [];
+    my $response_ref = {};
 	
     if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
 
@@ -675,108 +766,11 @@ sub items {
 
 	my $request_types_ref = [
 	    {
-		type   => 'AUSLEIHEN',
-		status => 3,
+		type   => 'OFFENEGEBUEHREN',
 	    },
-	    {
-		type   => 'BESTELLUNGEN',
-		status => 2,
-	    },
-	    {
-		type   => 'VORMERKUNGEN',
-		status => 1,
-	    },	    
 	    ];
 	
-	foreach my $type_ref (@$request_types_ref){
-	    my @args = ($username,$type_ref->{type});
-	    
-	    my $uri = "urn:/Account";
-	    
-	    if ($circinfotable->get($database)->{circdb} ne "sisis"){
-		$uri = "urn:/Account_inst";
-		push @args, $database;
-	    }
-	    
-	    eval {
-		my $soap = SOAP::Lite
-		    -> uri($uri)
-		    -> proxy($config->get('usbws_url'));
-		my $result = $soap->show_account(@args);
-		
-		unless ($result->fault) {
-		    $itemlist = $result->result;
-		    if ($logger->is_debug){
-			$logger->debug("SOAP Result: ".YAML::Dump($itemlist));
-		    }
-		}
-		else {
-		    $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-		}
-	    };
-	    
-	    if ($@){
-		$logger->error("SOAP-Target ".$config->get('usbws_url')." konnte nicht erreicht werden :".$@);
-	    }
-	    
-	    # Bei einer Ausleihbibliothek haben - falls Exemplarinformationen
-	    # in den Ausleihdaten vorhanden sind -- diese Vorrange ueber die
-	    # titelbasierten Exemplardaten
-	    
-	    
-	    if (defined($itemlist) && %{$itemlist->{Konto}}) {
-		next if (defined $itemlist->{Konto}{KeineVormerkungen});
-		next if (defined $itemlist->{Konto}{KeineBestellungen});
-		next if (defined $itemlist->{Konto}{KeineAusleihen});
-		
-		my $all_items_ref = [];
-		
-		foreach my $nr (sort keys %{$itemlist->{Konto}}){
-		    next if ($itemlist->{Konto}{$nr}{KtoTyp});
-		    push @$all_items_ref, $itemlist->{Konto}{$nr};
-		}
-		
-		foreach my $item_ref (@$all_items_ref){
-		    my @titleinfo = ();
-		    push @titleinfo, $item_ref->{Verfasser} if ($item_ref->{Verfasser});
-		    push @titleinfo, $item_ref->{Titel} if ($item_ref->{Titel});
-		    
-		    my $about = join(': ',@titleinfo);
-
-		    my $label     = $item_ref->{Signatur};
-
-		    my $this_response_ref = {
-			about   => $about,
-			edition => $scheme."://".$servername.$path_prefix."/databases/id/$database/titles/id/".uri_escape($item_ref->{Titlecatkey}),
-			item    => $scheme."://".$servername.$path_prefix."/databases/id/$database/titles/id/".uri_escape($item_ref->{Titlecatkey})."/items/id/".uri_escape($item_ref->{MedienNummer}),
-			renewals => $item_ref->{VlAnz},
-			status   => $type_ref->{status},
-			label     => $label,
-		    };
-		    
-		    if ($type_ref->{type} eq "AUSLEIHEN"){
-			$this_response_ref->{starttime} = $item_ref->{Datum};
-			$this_response_ref->{endtime}   = $item_ref->{RvDatum};
-		    }
-		    elsif ($type_ref->{type} eq "VORMERKUNGEN"){
-			$this_response_ref->{starttime} = $item_ref->{Datum};
-			$this_response_ref->{endtime}   = $item_ref->{VmEnd};
-			$this_response_ref->{queue}     = $item_ref->{VmAnz};
-		    }
-		    elsif ($type_ref->{type} eq "BESTELLUNGEN"){
-			my $storage = $item_ref->{EntlZweigTxt};
-			if ($item_ref->{LesesaalTxt}){
-			    $storage.=" / ".$item_ref->{LesesaalTxt};
-			}
-			$this_response_ref->{starttime} = $item_ref->{Datum};
-			$this_response_ref->{endtime}   = $item_ref->{RvDatum};
-			$this_response_ref->{storage}   = $storage;
-		    }
-		    
-		    push @$response_ref, $this_response_ref;
-		}
-	    }
-	}
+	$response_ref = $self->send_account_request({ types => $request_types_ref});
     }
     
     my $returnvalue;
@@ -794,7 +788,7 @@ sub items {
     return $returnvalue;
 }
 
-sub fees {
+sub notifications {  # to be implemented
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -818,7 +812,7 @@ sub fees {
     return decode_utf8(encode_json $response_ref);
 }
 
-sub notifications {
+sub request {  # to be implemented
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -842,7 +836,7 @@ sub notifications {
     return decode_utf8(encode_json $response_ref);
 }
 
-sub request {
+sub renew {  # to be implemented
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -866,31 +860,7 @@ sub request {
     return decode_utf8(encode_json $response_ref);
 }
 
-sub renew {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Richtigen Content-Type setzen
-    $self->param('content_type','application/json');
-    $self->param('represenation','json');
-    
-    $self->header_add('X-PAIA-Version' => '1.3.4');
-    $self->header_add('X-OAuth-Scopes' => 'read_patron read_fees read_items write_items read_notifications delete_notifications');
-
-    my $response_ref = {
-	"error" => "not_implemented",
-	    "error_description" => "Known but unsupported request URL",
-    };
-    
-    
-    $self->header_add('Status' => 501); 
-
-    return decode_utf8(encode_json $response_ref);
-}
-
-sub cancel {
+sub cancel {  # to be implemented
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -942,6 +912,160 @@ sub user_has_valid_token {
     return $paia if ($paia);
 
     return;
+}
+
+sub send_account_request {
+    my ($self,$arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Set defaults
+    my $types_ref      = exists $arg_ref->{types}
+        ? $arg_ref->{types}       : [];
+
+    my $config        = $self->param('config');
+    my $path_prefix    = $self->param('path_prefix');
+    my $scheme         = $self->param('scheme');
+    my $servername     = $self->param('servername');
+
+    my $database       = $self->param('database');
+    my $username       = uri_unescape($self->param('userid'));    
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    my $itemlist     = undef;
+    my $response_ref = {};
+
+    foreach my $type_ref (@$types_ref){
+	my @args = ($username,$type_ref->{type});
+	
+	my $uri = "urn:/Account";
+	
+	if ($circinfotable->get($database)->{circdb} ne "sisis"){
+	    $uri = "urn:/Account_inst";
+	    push @args, $database;
+	}
+	
+	eval {
+	    my $soap = SOAP::Lite
+		-> uri($uri)
+		-> proxy($config->get('usbws_url'));
+	    my $result = $soap->show_account(@args);
+	    
+	    unless ($result->fault) {
+		$itemlist = $result->result;
+		if ($logger->is_debug){
+		    $logger->debug("SOAP Result: ".YAML::Dump($itemlist));
+		}
+	    }
+	    else {
+		$logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    }
+	};
+	
+	if ($@){
+	    $logger->error("SOAP-Target ".$config->get('usbws_url')." konnte nicht erreicht werden :".$@);
+	}
+	
+	# Bei einer Ausleihbibliothek haben - falls Exemplarinformationen
+	# in den Ausleihdaten vorhanden sind -- diese Vorrange ueber die
+	# titelbasierten Exemplardaten
+	
+	
+	if (defined($itemlist)) {
+
+	    if ( %{$itemlist->{Konto}} && ($type_ref->{type} eq "AUSLEIHEN" || $type_ref->{type} eq "BESTELLUNGEN" || $type_ref->{type} eq "VORMERKUNG")){
+		next if (defined $itemlist->{Konto}{KeineVormerkungen});
+		next if (defined $itemlist->{Konto}{KeineBestellungen});
+		next if (defined $itemlist->{Konto}{KeineAusleihen});
+		
+		my $all_items_ref = [];
+		
+		foreach my $nr (sort keys %{$itemlist->{Konto}}){
+		    next if ($itemlist->{Konto}{$nr}{KtoTyp});
+		    push @$all_items_ref, $itemlist->{Konto}{$nr};
+		}
+		
+		foreach my $item_ref (@$all_items_ref){
+		    my @titleinfo = ();
+		    push @titleinfo, $item_ref->{Verfasser} if ($item_ref->{Verfasser});
+		    push @titleinfo, $item_ref->{Titel} if ($item_ref->{Titel});
+		    
+		    my $about = join(': ',@titleinfo);
+		    
+		    my $label     = $item_ref->{Signatur};
+		    
+		    my $this_response_ref = {
+			about   => $about,
+			edition => $scheme."://".$servername.$path_prefix."/databases/id/$database/titles/id/".uri_escape($item_ref->{Titlecatkey}),
+			item    => $scheme."://".$servername.$path_prefix."/databases/id/$database/titles/id/".uri_escape($item_ref->{Titlecatkey})."/items/id/".uri_escape($item_ref->{MedienNummer}),
+			renewals => $item_ref->{VlAnz},
+			status   => $type_ref->{status},
+			label     => $label,
+		    };
+		    
+		    if ($type_ref->{type} eq "AUSLEIHEN"){
+			$this_response_ref->{starttime} = $item_ref->{Datum};
+			$this_response_ref->{endtime}   = $item_ref->{RvDatum};
+		    }
+		    elsif ($type_ref->{type} eq "VORMERKUNGEN"){
+			$this_response_ref->{starttime} = $item_ref->{Datum};
+			$this_response_ref->{endtime}   = $item_ref->{VmEnd};
+			$this_response_ref->{queue}     = $item_ref->{VmAnz};
+		    }
+		    elsif ($type_ref->{type} eq "BESTELLUNGEN"){
+			my $storage = $item_ref->{EntlZweigTxt};
+			if ($item_ref->{LesesaalTxt}){
+			    $storage.=" / ".$item_ref->{LesesaalTxt};
+			}
+			$this_response_ref->{starttime} = $item_ref->{Datum};
+			$this_response_ref->{endtime}   = $item_ref->{RvDatum};
+			$this_response_ref->{storage}   = $storage;
+		    }
+
+		    push @{$response_ref->{items}}, $this_response_ref;
+		}
+	    }
+	    elsif ($type_ref->{type} eq "OFFENEGEBUEHREN"){
+		#		next if (defined $itemlist->{Konto}{KeineOffenenGebuehren});
+		my $all_items_ref = [];
+
+		my $fee_sum = 0;
+		foreach my $nr (sort keys %{$itemlist->{Konto}}){
+		    next if ($itemlist->{Konto}{$nr}{KtoTyp});
+		    push @$all_items_ref, $itemlist->{Konto}{$nr};
+		    if ($itemlist->{Konto}{$nr}{Gebuehr}){
+			my $gebuehr = $itemlist->{Konto}{$nr}{Gebuehr};
+			$gebuehr=~s/\,/./;
+			$fee_sum+=$gebuehr;
+		    }
+		}
+
+		$response_ref->{amount} = $fee_sum." EUR";
+		
+		foreach my $item_ref (@$all_items_ref){
+		    my $this_response_ref = {};
+		    
+		    my $gebuehr = $item_ref->{Gebuehr};
+		    $gebuehr=~s/\,/./;
+		    
+		    $this_response_ref->{amount} = $gebuehr. "EUR";
+		    
+		    $this_response_ref->{about} = $item_ref->{Text};
+		    
+		    $this_response_ref->{item} = $scheme."://".$servername.$path_prefix."/databases/id/$database/titles/id/".uri_escape($item_ref->{Titlecatkey})."/items/id/".uri_escape($item_ref->{MedienNummer}) if ($item_ref->{Titlecatkey} && $item_ref->{MedienNummer});
+
+		    my ($day,$month,$year) = $item_ref->{Datum} =~m/^(\d+)\.(\d+)\.(\d+)$/;
+		    $this_response_ref->{date} = $year."-".$month."-".$day."T12:00:00Z";
+		    
+		    push @{$response_ref->{fee}}, $this_response_ref;
+		}
+	    }
+	}
+    }
+
+    return $response_ref;
 }
 
 sub get_timestamp {

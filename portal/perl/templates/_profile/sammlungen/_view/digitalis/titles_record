@@ -1,0 +1,86 @@
+[%- PROCESS common/subtemplate name="local_config" -%]
+[%- PROCESS common/subtemplate name="search_title_field" -%]
+[%- IF representation == '' || representation == 'html' ;
+
+    used_fields = [] ;
+    searchquery = session.get_last_searchquery ;
+
+    FOREACH field IN searchquery.get_searchquery.keys ;
+       fieldname    = field_map.${field};
+       fieldcontent = searchquery.get_searchquery.${field}.val;
+       NEXT IF NOT fieldcontent ;
+       used_fields.push( "<b>${fieldname}</b>: ${fieldcontent}" );
+    END;
+
+    layout_param = {
+     'page_title' = "Titel anzeigen"
+
+      'main_template' = 'titles_record_html'
+
+      'active_submenu' = 'database'
+      'database' = databaseinfo.dbname
+
+      # 'active_menu' = ''
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+             desc = msg.maketext('Titel')
+	     url  = "#"
+	     current = 1
+	  },
+
+      ]
+
+    };
+
+    IF record.record_exists;
+      record_exists = 1;
+    END;
+
+    IF record_exists ;
+       layout_param.representations = [
+          {
+	     type = 'rdf'
+	     url  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.id}.rdf?l=${lang}"
+	  },
+          {
+	     type = 'json'
+	     url  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.id}.json?l=${lang}"
+	  },
+       ];
+    END;
+
+    IF searchquery ;
+
+       this_options = queryoptions.to_cgi_querystring({ exclude = ['page'] });
+       layout_param.breadcrumb.push(
+         {
+	     desc = "<span class=\"fas fa-search\"></span>:&nbsp;<em>${used_fields.join(' ; ')}</em>"
+	     url  = "${path_prefix}/${config.get('search_loc')}.html?${thisoptions};page=1;${searchquery.to_cgi_querystring}"
+	  }
+	);
+
+    END ;
+
+    unapi = 1;
+    LinkedData = "title";
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'rdf' -%]
+[%- PROCESS common/subtemplate name="titles_record_rdf" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="titles_record_json" -%]
+[%- ELSIF representation == 'xml' -%]
+[%- PROCESS common/subtemplate name="titles_record_xml" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="titles_record_include" -%]
+[%- ELSIF representation == 'mobile' -%]
+[%- PROCESS common/subtemplate name="titles_record_mobile" -%]
+[%- ELSIF representation == 'mods' -%]
+[%- PROCESS common/subtemplate name="titles_record_mods" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

@@ -1,0 +1,55 @@
+[%#-
+#######################################################################
+#
+# Templatename: home
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Portalinformationen
+#
+#######################################################################
+-%]
+
+<style>
+.jumbotron {
+   padding: 1.5rem 1.5rem;
+}
+
+.figure {
+  margin: 0.5rem;
+}
+</style>
+<!--
+<div class="container">
+<div class="row">
+<div class="col-md-4 pl-5 pr-5">
+<div class="card mt-5 mb-5"><img class="card-img-top" src="/images/openbib/views/jesuiten/Ignatius-Loyola_291px.jpg" alt="Castigliones H&ouml;llensturz" />
+<div class="card-body">
+<h5 class="card-title">Info 1</h5>
+<p class="card-text">Lorem ipsum</p>
+<a class="btn btn-primary" href="#">Mehr</a></div>
+</div>
+</div>
+<div class="col-md-4 pl-5 pr-5">
+<div class="card mt-5 mb-5"><img class="card-img-top" src="/images/openbib/views/jesuiten/hoellensturz.jpg" alt="Castigliones H&ouml;llensturz" />
+<div class="card-body">
+<h5 class="card-title">Info 2</h5>
+<p class="card-text">Lorem ipsum</p>
+<a class="btn btn-primary" href="#">Mehr</a></div>
+</div>
+</div>
+<div class="col-md-4 pl-5 pr-5">
+<div class="card mt-5 mb-5"><img class="card-img-top" src="/images/openbib/views/jesuiten/Regimini_291px.jpg" alt="Castigliones H&ouml;llensturz" />
+<div class="card-body">
+<h5 class="card-title">Info 3</h5>
+<p class="card-text">Lorem ipsum</p>
+<a class="btn btn-primary" href="#">Mehr</a></div>
+</div>
+</div>
+</div>
+
+</div>
+-->
+[% config.get_templatetext('home',view,lang) %]

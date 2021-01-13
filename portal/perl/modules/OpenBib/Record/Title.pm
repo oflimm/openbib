@@ -2455,6 +2455,829 @@ sub to_bibtex {
     return $bibtex;
 }
 
+sub to_harvard_citation {
+    my ($self,$arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $fields_ref = $self->to_abstract_fields();
+
+    # Source: https://www.mendeley.com/guides/harvard-citation-guide
+    
+    my $citation = "";
+
+    if (defined $fields_ref->{editors} && @{$fields_ref->{editors}}){
+	if (@{$fields_ref->{editors}} >= 4){
+	    $citation.=$fields_ref->{editors}[0]." et al";
+	}
+	else {
+	    $citation.=join(', ', @{$fields_ref->{editors}});
+	}
+	$citation.=". (eds.)";
+    }
+    elsif (defined $fields_ref->{authors} && @{$fields_ref->{authors}}){
+	if (@{$fields_ref->{authors}} >= 4){
+	    $citation.=$fields_ref->{authors}[0]." et al";
+	}
+	else {
+	    $citation.=join(', ', @{$fields_ref->{authors}});
+	}
+	$citation.=".";
+    }
+    else {
+	    $citation.="Anonymus.";
+    }
+
+    if ($fields_ref->{type} eq "book"){
+	if ($fields_ref->{availability} eq "online"){
+	    if ($fields_ref->{year}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="(".$fields_ref->{year}.").";
+	    }
+	    if ($fields_ref->{title}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="<i>".$fields_ref->{title}."</i>.";
+	    }
+	    if ($fields_ref->{edition}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{edition}.".";
+	    }
+	    if ($fields_ref->{series}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="<i>".$fields_ref->{series}."</i> [online].";
+	    }
+
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    
+	    $citation.="Available at: ";
+	    
+	    if ($fields_ref->{onlineurl}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{onlineurl};
+	    }
+	    elsif ($fields_ref->{doi}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{doi};
+	    }
+	}
+	else {
+	    if ($fields_ref->{year}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="(".$fields_ref->{year}.").";
+	    }
+	    if ($fields_ref->{title}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="<i>".$fields_ref->{title}."</i>.";
+	    }
+	    if ($fields_ref->{edition}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{edition}.".";
+	    }
+	    if ($fields_ref->{place}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{place}.":";
+	    }
+	    if ($fields_ref->{publisher}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{publisher};
+	    }
+	}
+    }
+    elsif ($fields_ref->{type} eq "article"){
+	if ($fields_ref->{availability} eq "online"){
+	    if ($fields_ref->{year}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="(".$fields_ref->{year}.")";
+	    }
+	    if ($fields_ref->{title}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="'".$fields_ref->{title}."',";
+	    }
+	    if ($fields_ref->{source_journal}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="<i>".$fields_ref->{source_journal}."</i>.";
+	    }
+	    if ($fields_ref->{source_volume}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{source_volume};
+	    }
+	    if ($fields_ref->{source_issue}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="(".$fields_ref->{source_issue}."),";
+	    }
+	    if ($fields_ref->{source_pages}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{source_pages}.".";
+	    }
+
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    
+	    $citation.="Available at:";
+	    
+	    if ($fields_ref->{onlineurl}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{onlineurl};
+	    }
+	    elsif ($fields_ref->{doi}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{doi};
+	    }
+	}
+	else {
+	    if ($fields_ref->{year}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="(".$fields_ref->{year}.").";
+	    }
+	    if ($fields_ref->{title}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="'".$fields_ref->{title}."'.";
+	    }
+	    if ($fields_ref->{source_journal}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="<i>".$fields_ref->{source_journal}."</i>.";
+	    }
+	    if ($fields_ref->{source_volume}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{source_volume};
+	    }
+	    if ($fields_ref->{source_issue}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="(".$fields_ref->{source_issue}."),";
+	    }
+	    if ($fields_ref->{source_pages}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{source_pages}.".";
+	    }
+	}
+    }
+
+    $logger->debug("Harvard Citation: $citation");
+    
+    return $citation;
+}
+
+sub to_mla_citation {
+    my ($self,$arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $fields_ref = $self->to_abstract_fields();
+
+    # Source: https://www.mendeley.com/guides/mla-citation-guide
+    
+    my $citation = "";
+
+    if (defined $fields_ref->{authors} && @{$fields_ref->{authors}}){
+	if (@{$fields_ref->{authors}} == 1){
+	    $citation.=$fields_ref->{authors}[0];
+	}
+	elsif (@{$fields_ref->{authors}} == 2){
+	    $citation.=$fields_ref->{authors}[0]; # first author
+	    my ($surname,$forename) = split('\s*,\s*',$fields_ref->{authors}[1]); # 2nd author
+	    $citation.=" and $forename $surname";
+	}
+	elsif (@{$fields_ref->{authors}} >= 3){
+	    $citation.=$fields_ref->{authors}[0]." et al";
+	}
+    }
+
+    if (defined $fields_ref->{editors} && @{$fields_ref->{editors}}){
+	if (!$citation){
+	    $citation.=$fields_ref->{editors}[0].", editor";
+	}
+    }
+
+    $citation.="." if ($citation);
+    
+    if ($fields_ref->{type} eq "book"){
+	if ($fields_ref->{title}){
+	    my $title = $fields_ref->{title};
+	    $title=~s/([\w']+)/\u\L$1/g;
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.="<i>$title</i>.";
+	}
+	if ($fields_ref->{series}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.=$fields_ref->{series};
+	    if ($fields_ref->{publisher} || $fields_ref->{year} || $fields_ref->{edition} || $fields_ref->{availability} eq "online"){
+		$citation.=",";
+	    }
+	}
+	if ($fields_ref->{edition}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.=$fields_ref->{edition};
+	    if ($fields_ref->{publisher} || $fields_ref->{year}){
+		$citation.=",";
+	    }
+	}
+	if ($fields_ref->{availability} eq "online"){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.="e-book";
+	    if ($fields_ref->{year} || $fields_ref->{publisher}){
+		$citation.=",";
+	    }
+	}
+	
+	if ($fields_ref->{publisher}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.=$fields_ref->{publisher};
+	    if ($fields_ref->{year}){
+		$citation.=",";
+	    }
+	}
+	if ($fields_ref->{year}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.=$fields_ref->{year}.".";
+	}
+    }
+    elsif ($fields_ref->{type} eq "article"){
+	if ($fields_ref->{title}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.="\"".$fields_ref->{title}."\".";
+	}
+	if ($fields_ref->{source_journal}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.="<i>".$fields_ref->{source_journal}."</i>";
+	    if ($fields_ref->{source_volume} || $fields_ref->{source_issue} || $fields_ref->{year} || $fields_ref->{source_pages}){
+		$citation.=",";
+	    }
+	}
+	if ($fields_ref->{source_volume}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.="vol. ".$fields_ref->{source_volume};
+	    if ($fields_ref->{source_issue} || $fields_ref->{year} || $fields_ref->{source_pages}){
+		$citation.=",";
+	    }
+	}
+	if ($fields_ref->{source_issue}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.="no. ".$fields_ref->{source_issue};
+	    if ($fields_ref->{year} || $fields_ref->{source_pages}){
+		$citation.=",";
+	    }
+	}
+	if ($fields_ref->{year}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.=$fields_ref->{year};
+	    if ($fields_ref->{source_pages}){
+		$citation.=",";
+	    }
+	}
+	if ($fields_ref->{source_pages}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.=$fields_ref->{source_pages};
+	}
+
+	if ($citation){
+	    $citation.=".";
+	}
+	
+	if ($fields_ref->{availability} eq "online"){
+	    if ($fields_ref->{onlineurl}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{onlineurl};
+	    }
+	    elsif ($fields_ref->{doi}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{doi};
+	    }
+
+	    if ($citation){
+		$citation.=".";
+	    }
+	}    
+    }
+
+    $logger->debug("MLA Citation: $citation");
+    
+    return $citation;
+}
+
+sub to_apa_citation {
+    my ($self,$arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $fields_ref = $self->to_abstract_fields();
+
+    # Source: https://www.mendeley.com/guides/apa-citation-guide
+    
+    my $citation = "";
+
+    if (defined $fields_ref->{editors} && @{$fields_ref->{editors}}){
+	my @editors = @{$fields_ref->{editors}} ;
+	if (@editors == 1){
+	    $citation.=$fields_ref->{editors}[0];
+	}
+	elsif (@editors >= 1){
+	    $editors[$#editors] = "&amp; ".$editors[$#editors]; 
+	    $citation.=join(', ', @editors);
+	}
+	$citation.="(Ed.)";
+    }
+    elsif (defined $fields_ref->{authors} && @{$fields_ref->{authors}}){
+	my @authors = @{$fields_ref->{authors}} ;
+	if (@authors == 1){
+	    $citation.=$fields_ref->{authors}[0];
+	}
+	elsif (@authors >= 1){
+	    $authors[$#authors] = "&amp; ".$authors[$#authors]; 
+	    $citation.=join(', ', @authors);
+	}
+    }
+
+    $citation.="." if ($citation);
+    
+    if ($fields_ref->{type} eq "book"){
+	if ($fields_ref->{year}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.="(".$fields_ref->{year}.").";
+	}
+	if ($fields_ref->{title}){
+	    my $title = $fields_ref->{title};
+	    $title=~s/([\w']+)/\u\L$1/g;
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.="<i>$title</i>";
+
+	    if ($fields_ref->{edition}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="(".$fields_ref->{edition}.")";
+	    }
+
+	    $citation.=".";
+	}
+
+	if ($fields_ref->{place}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.=$fields_ref->{place};
+	    
+	    if ($fields_ref->{publisher}){
+		$citation.=":";
+	    }
+	}
+	if ($fields_ref->{publisher}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.=$fields_ref->{publisher}.".";
+	}
+	
+	if ($fields_ref->{availability} eq "online"){
+	    if ($fields_ref->{onlineurl}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="Retrieved from ".$fields_ref->{onlineurl};
+	    }
+	    elsif ($fields_ref->{doi}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{doi};
+	    }
+	}	
+    }
+    elsif ($fields_ref->{type} eq "article"){
+	if ($fields_ref->{year}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.="(".$fields_ref->{year}.").";
+	}
+	if ($fields_ref->{title}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.=$fields_ref->{title}.".";
+	}
+	if ($fields_ref->{source_journal}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.="<i>".$fields_ref->{source_journal}."</i>";
+	    if ($fields_ref->{source_volume} || $fields_ref->{source_issue} || $fields_ref->{year} || $fields_ref->{source_pages}){
+		$citation.=",";
+	    }
+	}
+	if ($fields_ref->{source_volume}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.=$fields_ref->{source_volume};
+	    if (!$fields_ref->{source_issue} && $fields_ref->{source_pages}){
+		$citation.=",";
+	    }
+	}
+	if ($fields_ref->{source_issue}){
+	    $citation.="(".$fields_ref->{source_issue}.")";
+	    if ($fields_ref->{source_pages}){
+		$citation.=",";
+	    }
+	}
+	if ($fields_ref->{source_pages}){
+	    if ($citation){
+		$citation.=" ";
+	    }
+	    $citation.=$fields_ref->{source_pages};
+	}
+
+	if ($citation){
+	    $citation.=".";
+	}
+	
+	if ($fields_ref->{availability} eq "online"){
+	    if ($fields_ref->{onlineurl}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="Retrieved from ".$fields_ref->{onlineurl};
+	    }
+	    elsif ($fields_ref->{doi}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{doi};
+	    }
+	}    
+    }
+
+    $logger->debug("APA Citation: $citation");
+    
+    return $citation;
+}
+
+sub to_abstract_fields {
+    my ($self) = @_;
+
+    my $abstract_fields_ref = {};
+
+    # Definition sprechender Feldnamen mit deren Inhalten
+    #
+    # authors[] : Verfasser 0100/0101
+    # editors[] : Herausgeber anhand Supplement
+    # corp[]    : Koerperschaften 0200
+    # creator[] : Urheber 0201
+    # keywords[]: Schlagworte
+    # edition   : Auflage
+    # publisher : Verlag
+    # place     : Verlagsort
+    # title     : Titel
+    # titlesup  : Zusatz zum Sachtitel
+    # year      : Erscheinungsjahr
+    # isbn      : ISBN
+    # issn      : ISSN
+    # language  : Sprache
+    # urls[]    : URLs
+    # abstract  : Abstrakt
+    #
+    # source    : Quelle Gesamtangabe
+    #
+    # aufgesplittet in:
+    #   source_pages   : Quelle Seitenangabe
+    #   source_journal : Quelle Zeitschriftentitel
+    #   source_volume  : Quelle Bandnr
+    #   source_year    : Quelle Jahr
+    #
+    # pages     : Kollation
+    # series    : Gesamttitelangabe 0451
+    # edition   : Auflage
+    # type      : Medientyp (article,book,periodical)
+    
+    # Verfasser und Herausgeber konstruieren
+    my $authors_ref=[];
+    my $editors_ref=[];
+    foreach my $category (qw/T0100 T0101/){
+        next if (!exists $self->{_fields}->{$category});
+        foreach my $part_ref (@{$self->{_fields}->{$category}}){
+            if (defined $part_ref->{supplement} && $part_ref->{supplement} =~ /Hrsg/){
+                push @$editors_ref, $part_ref->{content};
+            }
+            else {
+                push @$authors_ref, $part_ref->{content};
+            }
+        }
+    }
+
+    $abstract_fields_ref->{authors} = $authors_ref;
+    $abstract_fields_ref->{editors} = $editors_ref;
+
+    # Urheber und Koerperschaften konstruieren
+    my $corp_ref=[];
+    my $creator_ref=[];
+    foreach my $category (qw/T0200/){
+        next if (!exists $self->{_fields}->{$category});
+        foreach my $part_ref (@{$self->{_fields}->{$category}}){
+	    push @$corp_ref, $part_ref->{content};
+        }
+    }
+
+    foreach my $category (qw/T0201/){
+        next if (!exists $self->{_fields}->{$category});
+        foreach my $part_ref (@{$self->{_fields}->{$category}}){
+	    push @$creator_ref, $part_ref->{content};
+        }
+    }
+
+    $abstract_fields_ref->{corp} = $corp_ref;
+    $abstract_fields_ref->{creator} = $creator_ref;
+    
+    # Schlagworte
+    my $keywords_ref=[];
+    foreach my $category (qw/T0710 T0902 T0907 T0912 T0917 T0922 T0927 T0932 T0937 T0942 T0947/){
+        next if (!exists $self->{_fields}->{$category});
+        foreach my $part_ref (@{$self->{_fields}->{$category}}){
+            push @$keywords_ref, $part_ref->{content};
+        }
+    }
+
+    $abstract_fields_ref->{keywords} = $keywords_ref;
+    
+    # Auflage
+    $abstract_fields_ref->{edition} = (exists $self->{_fields}->{T0403})?$self->{_fields}->{T0403}[0]{content}:'';
+
+    # Verleger
+    $abstract_fields_ref->{publisher} = (exists $self->{_fields}->{T0412})?$self->{_fields}->{T0412}[0]{content}:'';
+
+    # Verlagsort
+    $abstract_fields_ref->{place} = (exists $self->{_fields}->{T0410})?$self->{_fields}->{T0410}[0]{content}:'';
+
+    # Titel
+    $abstract_fields_ref->{title} = (exists $self->{_fields}->{T0331})?$self->{_fields}->{T0331}[0]{content}:'';
+
+    # Zusatz zum Titel
+    $abstract_fields_ref->{titlesup} = (exists $self->{_fields}->{T0335})?$self->{_fields}->{T0335}[0]{content}:'';
+#    Folgende Erweiterung um titlesup ist nuetzlich, laeuft aber der
+#    Bibkey-Bildung entgegen
+#    if ($title && $titlesup){
+#        $title = "$title : $titlesup";
+#    }
+
+    # Jahr
+    $abstract_fields_ref->{year} = (exists $self->{_fields}->{T0424})?$self->{_fields}->{T0424}[0]{content}:(exists $self->{_fields}->{T0425})?$self->{_fields}->{T0425}[0]{content}:'';
+
+    # ISBN
+    $abstract_fields_ref->{isbn} = (exists $self->{_fields}->{T0540})?$self->{_fields}->{T0540}[0]{content}:'';
+
+    # ISSN
+    $abstract_fields_ref->{issn} = (exists $self->{_fields}->{T0543})?$self->{_fields}->{T0543}[0]{content}:'';
+
+    # Sprache
+    $abstract_fields_ref->{language} = (exists $self->{_fields}->{T0015})?$self->{_fields}->{T0015}[0]{content}:
+	(exists $self->{_fields}->{T0516})?$self->{_fields}->{T0516}[0]{content}:'';
+
+    # Series
+    $abstract_fields_ref->{series} = (exists $self->{_fields}->{T0451})?$self->{_fields}->{T0451}[0]{content}:'';
+    
+    # Mediatyp
+    if ($abstract_fields_ref->{issn}){
+	if (@{$abstract_fields_ref->{authors}}){
+	    $abstract_fields_ref->{type} = 'article';
+	}
+	elsif ($abstract_fields_ref->{title}){
+	    if ($abstract_fields_ref->{source}){
+		$abstract_fields_ref->{type} = 'article';
+	    }
+	    else {
+		$abstract_fields_ref->{type} = 'periodical';
+	    }
+	}
+    }
+    elsif ($abstract_fields_ref->{isbn}){
+	if ($abstract_fields_ref->{title}){
+	    $abstract_fields_ref->{type} = 'book';
+	}
+    }
+    elsif ($abstract_fields_ref->{series}){
+	if ($abstract_fields_ref->{title}){
+	    $abstract_fields_ref->{type} = 'article';
+	}
+	else {
+	    $abstract_fields_ref->{type} = 'magazine';
+	}
+    }
+    elsif ($abstract_fields_ref->{title}){
+	$abstract_fields_ref->{type} = 'book';
+    }
+
+    # Zugriffsart (online=Digital / E-Resource)
+    $abstract_fields_ref->{availability} = (exists $self->{_fields}->{T4400})?$self->{_fields}->{T4400}[0]{content} :'';
+    
+    # URL
+    my $urls_ref=[];
+    foreach my $category (qw/T0662/){
+        next if (!exists $self->{_fields}->{$category});
+        foreach my $part_ref (@{$self->{_fields}->{$category}}){
+	    my $thisdesc ="";
+	    foreach my $descpart_ref (@{$self->{_fields}->{'T0663'}}){
+		if ($part_ref->{'mult'} == $descpart_ref->{'mult'} ){
+		    $thisdesc = $descpart_ref->{content};
+		}
+	    }
+
+	    if ($thisdesc =~m/DOI/){
+		$abstract_fields_ref->{onlineurl} = $part_ref->{content};
+		$abstract_fields_ref->{availability} = "online";
+	    }
+	    elsif ($thisdesc =~m/Volltext/){
+		$abstract_fields_ref->{onlineurl} = $part_ref->{content};
+		$abstract_fields_ref->{availability} = "online";
+	    }
+	    
+	    push @$urls_ref, {
+		url => $part_ref->{content},
+		desc => $thisdesc,
+	    };
+        }
+    }
+
+    # Only one URL, so this must be digital...
+    if (@$urls_ref == 1){
+	$abstract_fields_ref->{onlineurl} = $urls_ref->[0]{url};	
+    }
+
+    $abstract_fields_ref->{urls} = $urls_ref;
+
+    # Abstract
+    $abstract_fields_ref->{abstract} = (exists $self->{_fields}->{T0750})?$self->{_fields}->{T0750}[0]{content}:'';
+
+    # Source
+    $abstract_fields_ref->{source} = (exists $self->{_fields}->{T0590})?$self->{_fields}->{T0590}[0]{content}:'';
+
+    my $article_source = ($abstract_fields_ref->{source})?$abstract_fields_ref->{source}:$abstract_fields_ref->{series};
+
+    # Information in T0596, else parse Source/Series Pages (e.g. EDS)
+    if (exists $self->{_fields}->{T0596}){
+	$abstract_fields_ref->{source_journal} = $abstract_fields_ref->{series};
+	
+        foreach my $part_ref (@{$self->{_fields}->{T0596}}){
+	    if    ($part_ref->{subfield} eq "b"){
+		$abstract_fields_ref->{source_volume} = $part_ref->{content};
+	    }
+	    elsif    ($part_ref->{subfield} eq "s"){
+		$abstract_fields_ref->{source_pages} = $part_ref->{content};
+	    }
+	    elsif    ($part_ref->{subfield} eq "h"){
+		$abstract_fields_ref->{source_issue} = $part_ref->{content};
+	    }
+	}
+    }
+    elsif ($article_source){
+	# Pages
+        if ($article_source=~/ ; (S\. *\d+.*)$/){
+	    $abstract_fields_ref->{source_pages} = $1;
+        }
+        elsif ($article_source=~/, (S\. *\d+.*)$/){
+	    $abstract_fields_ref->{source_pages} = $1;
+        }
+
+        # Journal and/or Volume
+        if ($article_source=~/^(.+?) ; (.*?) ; S\. *\d+.*$/){
+            my $journal = $1;
+            my $volume  = $2;
+
+            $journal =~ s/ \/ .*$//;
+	    $abstract_fields_ref->{source_journal} = $journal;
+	    $abstract_fields_ref->{source_volume} = $2;
+        }
+        elsif ($article_source=~/^(.+?)\. (.*?), (\d\d\d\d), S\. *\d+.*$/){
+            my $journal = $1;
+            my $volume  = $2;
+            my $year    = $3;
+
+            $journal =~ s/ \/ .*$//;
+	    $abstract_fields_ref->{source_journal} = $journal;
+	    $abstract_fields_ref->{source_volume} = $2;
+	    $abstract_fields_ref->{source_year} = $3;
+
+        }
+        elsif ($article_source=~/^(.+?)\. (.*?), S\. *\d+.*$/){
+            my $journal = $1;
+            my $volume  = $2;
+
+            $journal =~ s/ \/ .*$//;
+	    $abstract_fields_ref->{source_journal} = $journal;
+	    $abstract_fields_ref->{source_volume} = $2;
+        }
+        elsif ($article_source=~/^(.+?) ; (.*?), S\. *\d+.*$/){
+            my $journal = $1;
+            my $volume  = $2;
+
+            $journal =~ s/ \/ .*$//;
+	    $abstract_fields_ref->{source_journal} = $journal;
+	    $abstract_fields_ref->{source_volume} = $2;
+        }
+        elsif ($article_source=~/^(.*?) ; S\. *\d+.*$/){
+            my $journal = $1;
+
+            $journal =~ s/ \/ .*$//;
+	    $abstract_fields_ref->{source_journal} = $journal;
+        }
+    }
+
+    # Pages
+    $abstract_fields_ref->{pages} = (exists $self->{_fields}->{T0433})?$self->{_fields}->{T0433}[0]{content}:'';
+
+    # Edition
+    $abstract_fields_ref->{edition} = (exists $self->{_fields}->{T0403})?$self->{_fields}->{T0403}[0]{content}:'';
+        
+
+    
+    return $abstract_fields_ref;
+}
+
 sub to_tags {
     my ($self) = @_;
 

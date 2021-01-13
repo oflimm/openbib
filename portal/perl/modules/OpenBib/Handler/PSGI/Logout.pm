@@ -86,6 +86,8 @@ sub show {
     my $path_prefix    = $self->param('path_prefix');
 
     $logger->debug("Deleting Cookie with SessionID $session->{ID}");
+
+    my $purge_private_userinfo = $query->param('purge_private_userinfo');
     
     my $cookie = CGI::Cookie->new($r,
                                       -name    => "sessionID",
@@ -100,8 +102,8 @@ sub show {
         # Authentifiziert-Status der Session loeschen
         $user->disconnect_session();
     
-        # Zwischengespeicherte Benutzerinformationen loeschen
-        $user->delete_private_info();
+        # Zwischengespeicherte Benutzerinformationen ggf. loeschen
+        $user->delete_private_info() if ($purge_private_userinfo);
     }
 
     $session->clear_data();

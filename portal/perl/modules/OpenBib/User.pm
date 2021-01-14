@@ -5534,14 +5534,16 @@ sub update_userinfo {
 
 
 sub wipe_account {
-    my ($self)=@_;
+    my ($self,$userid)=@_;
     
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
 
+    my $userid_to_delete = ($userid)?$userid:$self->{ID};
+    
     my $userinfo = $self->get_schema->resultset('Userinfo')->single({
-        id => $self->{ID}
+        id => $userid_to_delete
     });
 
     if ($userinfo){
@@ -5572,9 +5574,11 @@ sub wipe_account {
         $userinfo->reviews->delete;
         
         # .. dann die Rollen
-        # DBI: "delete from livesearch where userid = ?"
         $userinfo->user_roles->delete;
 
+        # .. dann die Templates
+        $userinfo->user_templates->delete;
+	
         # .. dann die Merkliste
         # DBI: "delete from collection where userid = ?"
 #        $userinfo->user_cartitems->cartitems->delete;

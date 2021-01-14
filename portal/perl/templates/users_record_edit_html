@@ -17,36 +17,6 @@
 <div class="card-body">
 <form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="_method"    value="PUT" />
-
-<div class="table-responsive">
-
-<table class="table">
-<tr><th>[% msg.maketext("Benutzername") %]</th><td>[% userinfo.username %]</td></tr>
-<tr><th>[% msg.maketext("Portal") %]</th><td>[% IF userinfo.viewname %][% config.get_viewdesc_from_viewname(userinfo.viewname) %][% ELSE %][% msg.maketext("Zugriff auf alle Portale") %][% END %]</td></tr>
-<tr><th>[% msg.maketext("Authentifizierung") %]</th><td>[% authenticator.description %]</td></tr>
-[% IF userinfo.nachname %]
-<tr><th>[% msg.maketext("Nachname") %]:</th><td>[% userinfo.nachname %]</td></tr>
-[% END %]
-[% IF userinfo.vorname %]
-<tr><th>[% msg.maketext("Vorname") %]:</th><td>[% userinfo.vorname %]</td></tr>
-[% END %]
-[% IF userinfo.email %]
-<tr><th>[% msg.maketext("E-Mail") %]:</th><td>[% userinfo.email %]</td></tr>
-[% END %]
-<tr><th>[% msg.maketext("Sperre") %]:</th><td>
-[%- IF userinfo.sperre -%]
-[% msg.maketext("ja, seit") %][% userinfo.sperrdatum %] [% msg.maketext("mit Grund") %]<em>[% userinfo.sperre %]</em>
-[%- ELSE -%]
-[% msg.maketext("nein") %]
-[%- END -%]
-</td></tr>
-</table>
-
-<p>
-[% msg.maketext("Bitte wenden Sie sich bei Unstimmigkeiten in Ihren Personendaten an die Auskunft der Bibliothek.") %]
-</p>
-
-
 <!-- Beispiel: Ablage von weiteren Informationen in mixed_bag -->
 [%# USE dumper;dumper.dump(userinfo.mixed_bag)%]
 
@@ -66,24 +36,82 @@
 <input class="form-control" type="text" name="bag_institution" id="bag_institution" value="[% userinfo.mixed_bag.bag_institution.first %]"/>
 </div>
 
+-->
+
+<div class="form-group">
+<label for="username">[% msg.maketext("Benutzername") %]</label>
+<span class="form-control" id="username">[% userinfo.username %]</span>
+</div>
+
+
+<div class="form-group">
+<label for="authenticator">[% msg.maketext("Authentifizierung") %]</label>
+<span class="form-control" id="authenticator">[% authenticator.description %]</span>
+</div>
+[%# USE dumper;dumper.dump(views)%]
+<div class="form-group">
+<label for="view">[% msg.maketext("Portal") %]</label>
+<span class="form-control" id="view">[% IF userinfo.viewname %][% config.get_viewdesc_from_viewname(userinfo.viewname) %][% ELSE %][% msg.maketext("Zugriff auf alle Portale") %][% END %]</span>
+</div>
+
+<div class="form-group">
+<label for="nachname">[% msg.maketext("Nachname") %]</label>
+<input class="form-control" id="nachname" type="text" name="nachname" value="[% userinfo.nachname %]" size="30" maxlength="200" />
+</div>
+
+<div class="form-group">
+<label for="vorname">[% msg.maketext("Vorname") %]</label>
+<input class="form-control" id="vorname" type="text" name="vorname" value="[% userinfo.vorname %]" size="30" maxlength="200" />
+</div>
+
+<div class="form-group">
+<label for="email">[% msg.maketext("E-Mail") %]</label>
+<input class="form-control" id="email" type="text" name="email" value="[% userinfo.email %]" size="30" maxlength="200" />
+</div>
+
+<div class="form-group">
+<label for="gebdatum">[% msg.maketext("Geburtsdatum") %]</label>
+<input class="form-control" id="gebdatum" type="text" name="gebdatum" value="[% userinfo.gebdatum %]" size="30" maxlength="200" />
+</div>
+
+<div class="form-group">
+<label for="status">[% msg.maketext("Status") %]</label>
+<span class="form-control" id="status">[% userinfo.status %]</span>
+</div>
+
+<div class="form-group">
+<label for="sperre">[% msg.maketext("Sperre") %]</label>
+<span class="form-control" id="sperre">
+[%- IF userinfo.sperre -%]
+[% msg.maketext("ja, seit") %][% userinfo.sperrdatum %] [% msg.maketext("mit Grund") %]<em>[% userinfo.sperre %]</em>
+[%- ELSE -%]
+[% msg.maketext("nein") %]
+[%- END -%]
+</span>
+</div>
+
 <button class="btn btn-primary mb-2 mt-4" type="submit">[% msg.maketext("&Auml;ndern") %]</button>
 
--->
-</div>
+[% IF authenticator.type == 'self' %]
+[%   IF userinfo.username != 'admin' %]
+<a class="btn btn-primary mb-2 mt-4" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/id/[% userinfo.id %]?_method=DELETE;confirm=1">[% msg.maketext("Kennung l&ouml;schen") %]</a>
+[%   END %]
+[% END %]
+
 </form>
 
-</div>
-</div>
+</div><!-- End card-body -->
+</div><!-- End card -->
 
 <p />
 
+[% IF authenticator.type == 'self' %]
 <div class="card">
 <div class="card-header">[% msg.maketext("Passwort &auml;ndern") %]</div>
 <div class="card-body">
 <div class="table-responsive">
 <form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/password" enctype="application/x-www-form-urlencoded">
 
-[% IF authenticator.type == 'self' %]
 <div class="form-group mt-2">
 <label for="password">[% msg.maketext("Passwort") %]</label>
 <input class="form-control" type="password" name="password1" value="" />
@@ -95,24 +123,22 @@
 
 <button type="submit" class="btn btn-primary mb-2">[% msg.maketext("Passwort &auml;ndern") %]</button>
 
-[%   IF username != 'admin' %]
-<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]?_method=DELETE;confirm=1">[% msg.maketext("Kennung l&ouml;schen") %]</a>
-[%   END %]
-[% END %]
 </form>
 </div>
-</div>
-</div>
 
-<p/>
+</div><!-- End card body -->
+</div><!-- End card -->
+
+<p />
+[% END %]
 
 <div class="card">
 <div class="card-header">[% msg.maketext("Rollen-Zugeh&ouml;rigkeiten") %]</div>
 <div class="card-body">
 [% IF userinfo.role %]
-<ul>
+<ul class="list-group">
 [% FOREACH thisrole IN userinfo.role %]
-<li>[% thisrole.value %] ([% thisrole.key %])</li>
+<li class="list-group-item">[% thisrole.value %] ([% thisrole.key %])</li>
 [% END %]
 </ul>
 [% ELSE %]
@@ -128,10 +154,10 @@ Ihnen wurde bisher keine Rolle zugeordnet.
 <div class="card-body">
 [% templates_of_user = user.get_templates_of_user(userid).all %]
 [% IF templates_of_user %]
-<ul>
+<ul class="list-group">
 [% FOREACH thistemplate IN templates_of_user %]
 [%# USE dumper;dumper.dump(thistemplate)%]
-<li>View: [% thistemplate.templateid.viewid.description %]<br/>Template: [% thistemplate.templateid.templatename %]<br/>Sprache: [% thistemplate.templateid.templatelang %]</li>
+<li class="list-group-item">View: [% thistemplate.templateid.viewid.description %]<br/>Template: [% thistemplate.templateid.templatename %]<br/>Sprache: [% thistemplate.templateid.templatelang %]</li>
 [% END %]
 </ul>
 [% ELSE %]

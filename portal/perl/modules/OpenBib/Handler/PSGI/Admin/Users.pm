@@ -65,7 +65,10 @@ sub setup {
         'show_record_form'          => 'show_record_form',
         'show_search'               => 'show_search',
         'show_search_form'          => 'show_search_form',
-        'dispatch_to_representation'           => 'dispatch_to_representation',
+        'update_record'             => 'update_record',
+        'delete_record'             => 'delete_record',
+        'confirm_delete_record'     => 'confirm_delete_record',
+        'dispatch_to_representation' => 'dispatch_to_representation',
     );
 
     # Use current path as template path,
@@ -173,6 +176,114 @@ sub show_record {
     return $self->print_page($config->{tt_admin_users_record_tname},$ttdata);
 }
 
+sub update_record {
+    my $self = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $userid         = $self->strip_suffix($self->param('userid'));
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
+
+    if (!$self->authorization_successful('right_update')){
+        return $self->print_authorization_error();
+    }
+    
+    if (defined $input_data_ref->{mixed_bag}){
+	my $contentstring = {};
+	
+	eval {
+	    $contentstring= JSON::XS->new->utf8->canonical->encode($input_data_ref->{mixed_bag});
+	};
+
+	if ($@){
+	    $logger->error("Canonical Encoding failed: ".YAML::Dump($input_data_ref->{mixed_bag}));
+	}
+
+	$input_data_ref->{mixed_bag} = $contentstring; 
+    }
+
+    my $user = new OpenBib::User({ ID => $userid });
+    $user->update_userinfo($input_data_ref) if (keys %$input_data_ref);
+
+    if ($self->param('representation') eq "html"){
+        # TODO GET?
+        return $self->redirect("$path_prefix/$config->{admin_loc}/$config->{users_loc}/id/$userid/edit");
+    }
+    else {
+        $logger->debug("Weiter zum Record");
+        return $self->show_record;
+    }    
+}
+
+sub confirm_delete_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r              = $self->param('r');
+
+    my $view           = $self->param('view');
+    my $userid         = $self->strip_suffix($self->param('userid'));
+    my $config         = $self->param('config');
+
+    if (!$self->authorization_successful('right_delete')){
+        return $self->print_authorization_error();
+    }
+
+    my $ttdata={
+        userid => $userid,
+    };
+    
+    $logger->debug("Asking for confirmation");
+
+    return $self->print_page($config->{tt_admin_users_record_delete_confirm_tname},$ttdata);
+}
+
+sub delete_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $userid         = $self->strip_suffix($self->param('userid'));
+
+    # Shared Args
+    my $config         = $self->param('config');
+    my $user           = $self->param('user');
+    my $path_prefix    = $self->param('path_prefix');
+
+    if (!$self->authorization_successful('right_delete')){
+        return $self->print_authorization_error();
+    }
+
+    $user->wipe_account($userid);
+
+    if ($self->param('representation') eq "html"){
+        return $self->redirect("$path_prefix/$config->{admin_loc}/$config->{users_loc}");
+    }
+
+    return;
+}
+
 sub show_search_form {
     my $self = shift;
 
@@ -238,5 +349,58 @@ sub show_search {
     
     return $self->print_page($config->{tt_admin_users_search_tname},$ttdata);
 }
+
+sub get_input_definition {
+    my $self=shift;
     
+    return {
+        bag => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'mixed_bag', # always arrays
+        },
+	nachname => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+	vorname => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+	strasse => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+	ort => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+	plz => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+	gebdatum => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+	email => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+	viewid => {
+            default  => undef,
+            encoding => 'none',
+            type     => 'scalar',
+        },
+
+    };
+}
+
 1;

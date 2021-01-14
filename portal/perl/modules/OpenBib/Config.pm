@@ -1492,13 +1492,17 @@ sub get_viewinfo_overview {
     while (my $item = $object->next){
 	my $profile_name = "";
 	my $profile_description = "";
+	my $profile_id = "";
 
 	if (defined $item->profileid){
 	    $profile_name = $item->profileid->profilename;
 	    $profile_description = $item->profileid->description;
+	    $profile_id = $item->profileid->id;
 	}
 
 	push @$viewinfo_overview_ref, {
+            id => $item->id,				      
+            profile_id => $profile_id,				      
 	    active => $item->active,
 	    viewname => $item->viewname,
 	    description => $item->description,

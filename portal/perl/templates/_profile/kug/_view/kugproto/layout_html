@@ -22,7 +22,7 @@
 
     [% PROCESS common/subtemplate name="mainnavigation" %] 
 
-    [% IF not suppress_unauthorized %]
+    [% IF 0 == 1 && not suppress_unauthorized %]
     [% PROCESS common/subtemplate name="breadcrumbs" %] 
     [% END %]
 

@@ -160,6 +160,9 @@
 <!--       <span class="logowhitebg"></span> -->
        </div>
 </div>
+    [% IF not suppress_unauthorized %]
+    [% PROCESS common/subtemplate name="breadcrumbs" %] 
+    [% END %]
 </header>
 
 <!-- <nav class="navbar" id="ob-fixed_navigation" [% IF without_navigation_search %]class="ob-hidden"[% END %]> -->

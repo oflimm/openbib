@@ -2,7 +2,7 @@
 [% separate_refine = 1 %]
 <div class="ob-facets ob-facets_all sliding-sidebar">
 
-[% IF qopts.get_option('sb') == "eds" || searchprofileid_of_eds == searchquery.get_profile || ( qopts.get_option('sb') == "xapian" && hits <= config.get('xapian_option').maxmatch ) ;
+[% IF qopts.get_option('sb') == "eds" || searchprofileid_of_eds == searchquery.get_searchprofile || ( qopts.get_option('sb') == "xapian" && hits <= config.get('xapian_option').maxmatch ) ;
 
 
       is_location_of_emedia = {

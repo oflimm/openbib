@@ -1,0 +1,172 @@
+[%#-
+#######################################################################
+#
+# Templatename: layout
+#
+# Typ         : Mastertemplate fuer Layout
+#
+# Aufgabe:
+#
+# Layout fuer alle Seiten
+#
+#######################################################################
+-%]
+
+[% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
+
+<body>
+
+  <div class="wrapper container-fluid">
+
+    [% PROCESS common/subtemplate name="corporate_banner" start=1 %]
+
+    [% PROCESS common/subtemplate name="mainnavigation" %] 
+
+    [% IF not suppress_unauthorized %]
+    [% PROCESS common/subtemplate name="breadcrumbs" %] 
+    [% END %]
+
+    [%-
+    IF content ;
+    layout_param.main_template = content ;
+    END ;
+    -%]
+
+    [% IF layout_param.sidebar_template %]
+    <!-- begin: Layout with collapsable sidebar -->
+    <style>
+    [data-toggle="collapse"] {
+      cursor: pointer;
+    }
+
+    @media screen and (min-width:768px) { #ob-sidebar{ display: block!important;visibility:visible!important; } }
+
+    </style>
+
+    <div class="row flex-md-row-reverse">
+      <div id="ob-sidebar" class="col-xs-6 col-md-3 collapse">
+        [% PROCESS common/subtemplate name=layout_param.sidebar_template %]
+      </div>
+      <div id="ob-maincontent" class="col-md-9" >
+        [% PROCESS common/subtemplate name=layout_param.main_template %]
+      </div>
+    </div>
+    <!-- end: Layout with sidebar -->      
+    [% ELSE %]
+    <!-- begin: Layout without sidebar -->
+    <div class="row">
+      <div id="ob-maincontent" class="col-md-12" >
+        [% PROCESS common/subtemplate name=layout_param.main_template %]
+      </div>
+    </div>
+    <!-- end: Layout without sidebar -->      
+    [% END %]
+
+    [% PROCESS common/subtemplate name="std_footer" %]
+
+  </div><!-- /.container-fluid -->
+
+  <!-- START Bootstrap-Cookie-Alert -->
+  <div class="alert text-center cookiealert" role="alert">
+    <b>Um unsere Webseite für Sie optimal zu gestalten und fortlaufend verbessern zu können, verwenden wir Cookies. Durch die weitere Nutzung der Webseite stimmen Sie der Verwendung von Cookies zu. Weitere Informationen zu Cookies erhalten Sie in unserer <a href="[% path_prefix %]/[% config.get('info_loc') %]/datenschutz.html?l=[% lang %]">Datenschutzerklärung</a>. Unser Impressum finden Sie <a href="[% path_prefix %]/[% config.get('info_loc') %]/impressum.html?l=[% lang %]">hier</a>.</b>
+
+      <button type="button" class="btn btn-primary btn-sm acceptcookies" aria-label="Close">
+        Ich stimme der Verwendung von Cookies zu.
+      </button>
+    </div>
+    <!-- END Bootstrap-Cookie-Alert -->
+
+    <script src="/js/cookiealert.js"></script>
+
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<!-- <script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap.min.js"></script> -->
+
+<!-- Then static OpenBib JS -->
+<!-- <script type="text/javascript" src="/js/openbib.js"></script> -->
+
+<!-- ... and finally dynamic OpenBib JS -->
+<script>
+$('#to_focus').val('[% searchquery.get_searchfield('freesearch').val.replace("'","\\'") %]');
+</script>
+
+<script>
+$(function(e){
+  $('.ob-search_panel .dropdown-menu').find('a').click(function(e) {
+    e.preventDefault();
+      var param = $(this).attr("href").replace("#","");
+        var profile_text = $(this).text();
+          $('.ob-search_panel span #search_profile_text').text(profile_text);
+            $('.input-group #search_profile').val(param);
+          });
+        });
+</script>
+
+            [% IF NOT layout_param.without_navigation_search %]
+            [%   IF user.is_authenticated %]
+            [%   autocompletion_type = user.get_autocompletion %]
+            [%   livesearch          = user.get_livesearch %]
+            [%     IF autocompletion_type == "spelling" && spelling_suggestion.as_you_type %]
+<!--
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#to_focus").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+  $("#input_box_serials").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+})
+</script>
+-->
+[%     ELSIF autocompletion_type == "livesearch" && livesearch.fs %]
+<!--
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#to_focus").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  exact: "[% livesearch.exact %]"
+                }});
+  $("#input_box_serials").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  exact: "[% livesearch.exact %]"
+                }});
+  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('connector_livesearch_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  exact: "[% livesearch.exact %]"
+                }});
+})
+</script>
+-->
+[%     END %]
+[%  END %]
+[% END %]
+
+
+<!-- <script src="/js/uzk15/scripts.jQ.js"></script> -->
+
+</body>
+</html>

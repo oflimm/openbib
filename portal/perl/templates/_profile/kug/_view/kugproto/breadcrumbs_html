@@ -1,0 +1,59 @@
+[%#-
+#######################################################################
+#
+# Templatename: breadcrumbs
+#
+# Typ         : Subtemplage       
+#
+# Aufgabe:
+#
+# Ausgabe der Kruemelpfad-Navigation
+#
+#######################################################################
+-%]
+
+<!-- start: breadcrumb navigation -->
+[% IF layout_param.breadcrumb %]
+<nav aria-label="breadcrumb">
+<ol class="breadcrumb border ob-bg text-white">
+[% FOREACH bc IN layout_param.breadcrumb %]
+[%   IF bc.current %]
+<li class="breadcrumb-item active text-white" aria-current="page">[% bc.desc %]</li>
+[%   ELSE %]
+<li class="breadcrumb-item text-white" aria-current="page"><a href="[% bc.url %]">[% bc.desc %]</a></li>
+[%   END %]
+[% END %]
+
+[% IF layout_param.representations %]
+<li class="ml-auto d-none d-md-block">
+[%- FOREACH this_representation IN layout_param.representations ;
+
+      IF this_representation.type == 'csv'
+      -%]
+<a class="ob-representation_csv" href="[% this_representation.url %]"><img src="/images/openbib/csv.png" alt="CSV" /></a>&nbsp;
+      [%-
+      ELSIF this_representation.type == 'json'
+      -%]
+<a class="ob-representation_json" href="[% this_representation.url %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+      [%-
+      ELSIF this_representation.type == 'rss' ;
+      -%]
+<a class="ob-representation_rss" href="[% this_representation.url %]"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a>
+      [%-
+      ELSIF this_representation.type == 'dfg' ;
+      -%]
+<a href="[% this_representation.url %]" target="dfgviewer"><img src="/images/openbib/dfgviewer.png" alt="DFG-Viewer" /></a>
+      [%-
+      END ; 
+   END -%]
+</li>
+[% END %]
+
+</ol>
+
+
+</nav>
+[% ELSE %]
+<!-- no breadcrumb navigation -->
+[% END %]
+<!-- end: breadcrumb navigation -->

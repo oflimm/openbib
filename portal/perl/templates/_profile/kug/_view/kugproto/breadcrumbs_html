@@ -13,14 +13,15 @@
 -%]
 
 <!-- start: breadcrumb navigation -->
+<!-- <hr style="border-bottom-width:2px;"/> -->
 [% IF layout_param.breadcrumb %]
 <nav aria-label="breadcrumb">
-<ol class="breadcrumb border ob-bg text-white">
+<ol class="breadcrumb">
 [% FOREACH bc IN layout_param.breadcrumb %]
 [%   IF bc.current %]
-<li class="breadcrumb-item active text-white" aria-current="page">[% bc.desc %]</li>
+<li class="breadcrumb-item active text-black" aria-current="page">[% bc.desc %]</li>
 [%   ELSE %]
-<li class="breadcrumb-item text-white" aria-current="page"><a href="[% bc.url %]">[% bc.desc %]</a></li>
+<li class="breadcrumb-item text-black" aria-current="page"><a href="[% bc.url %]">[% bc.desc %]</a></li>
 [%   END %]
 [% END %]
 

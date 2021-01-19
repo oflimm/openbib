@@ -72,12 +72,12 @@
 
     /* Appearance functional elements */
     
-    .flex-md-row-reverse {
-	margin-right: 0px;
+    .flex-md-row {
+	margin-left: 0px;
     }
 
     .col-md-12 {
-	padding-right: -15px;
+	padding-right: 10px;
 	margin-right: 0px;
     }
 
@@ -88,7 +88,7 @@
     }
 
     .col-md-9 {
-	margin-right: 0px;
+	margin-left: 0px;
 	padding-right: 10px;
     }
 
@@ -151,8 +151,8 @@
        border-top-width: 2px;
        border-bottom-width: 0px;
     }
-
-    .ob-page_footer .row {
+    
+    .row, .ob-page_footer .row {
 	margin-right: 0px;
     }
     
@@ -214,6 +214,10 @@
 
     
     text-black {
+	color: #000;
+    }
+
+    .text-black a, .text-black a:hover {
 	color: #000;
     }
     
@@ -831,6 +835,16 @@
 	cursor: pointer;
     }
 
+    .breadcrumb {
+	border-radius: 0;
+	background-color: #fff;
+    }
+
+
+    #ob-mainsearchform .container {
+	max-width: 99%;
+    }
+    
     div .ob-breadcrumb .list-group {
 	border-radius: 0;
 	margin-left: 10px;
@@ -1044,6 +1058,7 @@
     .ob-facets {
 /*	width: 95%; */
 	padding: 0px;
+	padding-top: 20px;
 	/*  font-size:0.9em; */
 /*  background-color: white;
        border-top-style: solid;
@@ -2036,8 +2051,8 @@ form .border {
 }
 
 #ob-searchform_bottom {
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-left: 15px;
+/*    margin-right: 10px; */
 }
 
 .card-header {

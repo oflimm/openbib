@@ -79,9 +79,6 @@
 
 [% PROCESS common/subtemplate name="breadcrumbs" %] 
 
-    <div class="row">
-        <div class="col-md-12">
-
 [% IF config.get('deutsche_bibliotheksstatistik') %]
 <!-- DBS 'Zaehl-Pixel' USB - Kategorie: KUG-->
 <img src="http://dbspixel.hbz-nrw.de/count?id=AB038&amp;page=4" width="1" height="1" />

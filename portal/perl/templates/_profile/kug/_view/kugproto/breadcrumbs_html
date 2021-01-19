@@ -15,7 +15,7 @@
 <!-- start: breadcrumb navigation -->
 <!-- <hr style="border-bottom-width:2px;"/> -->
 [% IF layout_param.breadcrumb %]
-<nav aria-label="breadcrumb">
+<nav aria-label="breadcrumb" class="d-none d-md-block">
 <ol class="breadcrumb">
 [% FOREACH bc IN layout_param.breadcrumb %]
 [%   IF bc.current %]

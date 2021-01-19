@@ -150,7 +150,7 @@
 <div class="navbottom pl-4 row">
 
       <div class="col-md-9 mx-auto brandname">
-        <a href="[% path_prefix %]/home">Kölner UniversitätsGesamtkatalog</a>
+        <a href="[% path_prefix %]/home"><span class="d-sm-none">KUG Portal</span><span class="d-none d-sm-block">Kölner UniversitätsGesamtkatalog</span></a>
       </div>
       
        <div class="col-md-3 text-right d-none d-md-block">
@@ -168,9 +168,6 @@
 <!-- <nav class="navbar" id="ob-fixed_navigation" [% IF without_navigation_search %]class="ob-hidden"[% END %]> -->
 
 [% PROCESS common/subtemplate name="searchforms_suggestions" %]
-
-<!--<h4></h4>-->
- <p/>
 
 [% IF NOT suppress_unauthorized && NOT layout_param.without_navigation_search %]    
 <div class="sticky-top">

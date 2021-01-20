@@ -1573,5 +1573,146 @@ sub get_bibliographic_counters {
         title_digitalcount => $title_digitalcount,
     };
 }
+
+sub get_common_holdings {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $location1          = exists $arg_ref->{location1}
+        ? $arg_ref->{location1}        : "";
+
+    my $location2          = exists $arg_ref->{location2}
+        ? $arg_ref->{location2}        : "";
     
+    my $config             = exists $arg_ref->{config}
+        ? $arg_ref->{config}        : OpenBib::Config->new;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $schema = $self->get_schema;
+
+    return () unless ($location1 && $location2 && defined $schema);
+       
+    my $titles1 = $schema->resultset('Holding')->search(
+	{
+	    'holding_fields.field' => 16,
+		'holding_fields.content' => {'~' => $location1 },
+	},
+	{
+	    select   => ['title_holdings.titleid'],
+	    as       => ['thistitleid'],
+	    #       prefetch => ['title_holdings'],
+	    group_by => ['title_holdings.titleid'],
+	    join     => ['holding_fields','title_holdings', { 'title_holdings' => 'titleid' }],
+	}
+	);
+
+    $logger->info("Found ".$titles1->count." titles for location $location1");
+    
+    my $common_titles = $schema->resultset('Holding')->search(
+	{
+	    'titleid.id' => { -in => $titles1->as_query},
+		'holding_fields.field' => 16,
+		'holding_fields.content' => {'~' => $location2 },
+	},
+	{
+	    select   => ['title_holdings.titleid','me.id','titleid.titlecache'],
+	    as       => ['thistitleid','thisholdingid','thistitlecache'],
+	    #       prefetch => ['title_holdings'],
+	    group_by => ['title_holdings.id','title_holdings.titleid','me.id','titleid.titlecache'],
+	    join     => ['holding_fields','title_holdings', { 'title_holdings' => 'titleid' }],
+	    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+	}
+	);
+
+    $logger->info("Found ".$common_titles->count." common titles for location $location1 AND $location2");
+    
+    my $common_titles_ref = [];
+
+    $logger->info("Processing common titles");
+    
+    while (my $common_title = $common_titles->next()){
+	my $titleid    = $common_title->{thistitleid};
+	my $titlecache = $common_title->{thistitlecache};
+	
+	my $fields_ref ;
+
+	if ($titlecache){
+	    eval {
+		$fields_ref = JSON::XS::decode_json $titlecache;
+	    };
+	    
+	    if ($@){
+		$logger->error($@);
+		$logger->error("$titleid -> $titlecache");
+		next;
+	    }
+	}
+	else {
+	    $fields_ref = OpenBib::Record::Title->new({ database => $self->get_database, id => $titleid })->load_brief_record->get_fields;
+	}
+	
+        my $this_item_ref = {};
+        
+        my $persons          = "";
+        my $title            = "";
+        my $title_supplement = "";
+        my $year             = "";
+	my @signaturen       = ();
+	
+	if (!$persons){
+	    $persons=$fields_ref->{PC0001}[0]{content};
+	}
+	
+	if (!$title){
+	    $title=$fields_ref->{T0331}[0]{content};
+	}
+	if (!$title_supplement){
+	    if (defined $fields_ref->{T0335}[0]{content}){
+		$title_supplement=$fields_ref->{T0335}[0]{content};
+	    }
+	}
+	if (!$year){
+	    if (defined $fields_ref->{T0424}[0]{content}){
+		$year=$fields_ref->{T0424}[0]{content};
+	    }
+	    elsif (defined $fields_ref->{T0425}[0]{content}){
+		$year=$fields_ref->{T0425}[0]{content};
+	    }
+	}
+	
+	foreach my $signature_ref (@{$fields_ref->{X0014}}){
+	    push @signaturen, $signature_ref->{content};
+	}
+
+
+
+	if (@signaturen){
+	    $this_item_ref->{loc_marks} = join(" ; ",@signaturen);
+	}
+	else {
+	    $this_item_ref->{loc_marks} = "-";
+	}
+
+        $this_item_ref->{katkey}               = $titleid;
+        $this_item_ref->{persons}          = $persons;
+        $this_item_ref->{title}            = $title;
+        $this_item_ref->{title_supplement} = $title_supplement;
+        $this_item_ref->{year}             = $year;
+
+        if ($logger->is_debug){
+            $logger->debug(YAML::Dump($this_item_ref));
+        }
+        
+        push @{$common_titles_ref}, $this_item_ref;
+
+    }
+
+    $logger->info("Processing common titles DONE");
+    
+    return $common_titles_ref;
+}
+
+
 1;

@@ -56,7 +56,7 @@
            <div class="sidebar-content overflow-auto h-100">
 
 [% IF hits > 0 %]
-[% PROCESS common/subtemplate name="search_facet" %]
+[% PROCESS common/subtemplate name="search_facet" facet_prefix="sidebar" %]
 [% ELSE %]
 [%   IF viewdbs.size == 1 %]  
 <div class="ob-facets">
@@ -72,7 +72,7 @@
       <div id="ob-search_refine" class="col-xs-6 col-md-3 d-none d-md-block ">
 
 [% IF hits > 0 %]
-[% PROCESS common/subtemplate name="search_facet" %]
+[% PROCESS common/subtemplate name="search_facet" facet_prefix="main" %]
 [% ELSE %]
 [%   IF viewdbs.size == 1 %]  
 <div class="ob-facets">

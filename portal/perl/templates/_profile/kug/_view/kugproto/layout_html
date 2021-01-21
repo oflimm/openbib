@@ -44,7 +44,7 @@
 
   [% IF layout_param.sidebar_template %]
   
-    <button class="btn btn-primary sidebar-toggler" type="button" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-arrow-right"></i> Navigation</button>
+    <button class="btn btn-primary sidebar-toggler mt-3" type="button" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-arrow-right"></i> Navigation</button>
 
   
       <div id="ob-sidebar" class="bg-light border-right min-vh-100 collapse navbar-collapse" aria-expanded="false">

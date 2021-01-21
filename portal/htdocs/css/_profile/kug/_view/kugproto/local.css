@@ -220,6 +220,96 @@
     .text-black a, .text-black a:hover {
 	color: #000;
     }
+
+    /* Navbar flyin left */
+    #navbarToggler {
+	background-color: #fff;
+	min-width: 250px;
+	max-width: 250px;
+	height: 100vh;
+	position: fixed;
+	top: 0;
+	left: 0;
+	/* top layer */
+	z-index: 9999;
+	-webkit-transition: margin .25s ease-out;
+	-moz-transition: margin .25s ease-out;
+	-o-transition: margin .25s ease-out;
+	transition: margin .25s ease-out;
+    }
+
+    #navbarToggler .navbar-heading {
+	padding: 0.875rem 1.25rem;
+	font-size: 1.2rem;
+    }
+
+    #navbarToggler #navbar-dismiss {
+	padding: 0.875rem 1.25rem;
+	font-size: 1.2rem;
+    }
+
+    /* sidebar flyin */
+    #ob-sidebar {
+	background-color: #fff;
+	min-width: 300px;
+	max-width: 300px;
+	height: 100vh;
+	position: fixed;
+	top: 0;
+	left: 0;
+	/* top layer */
+	z-index: 9999;
+	-webkit-transition: margin .25s ease-out;
+	-moz-transition: margin .25s ease-out;
+	-o-transition: margin .25s ease-out;
+	transition: margin .25s ease-out;
+    }
+
+    #ob-sidebar .sidebar-heading {
+	padding: 1.2rem 1.25rem;
+	font-size: 1.2rem;
+    }
+
+    #ob-sidebar #sidebar-dismiss {
+	padding: 0.875rem 1.25rem;
+	font-size: 1.2rem;
+    }
+
+    .sidebar-toggler {
+	margin-left: 10px;
+	margin-bottom: 5px;
+    }
+    
+    .overlay {
+	display: none;
+	position: fixed;
+	/* full screen */
+	width: 100vw;
+	height: 100vh;
+	/* transparent black */
+	background: rgba(0, 0, 0, 0.7);
+	/* middle layer, i.e. appears below the sidebar */
+	z-index: 998;
+	opacity: 0;
+	/* animate the transition */
+	transition: all 0.5s ease-in-out;
+    }
+    /* display .overlay when it has the .active class */
+    .overlay.active {
+	display: block;
+	opacity: 1;
+    }
+    
+    #dismiss {
+	width: 35px;
+	height: 35px;
+	position: absolute;
+	/* top right corner of the sidebar */
+	top: 10px;
+	right: 10px;
+    }
+
+
     
     #search_wrapper, #search_wrapper_top {
 	border-style: solid;
@@ -363,8 +453,16 @@
     }
 
     .navbar-toggler {
-	background: #fff;
+	background-color: #fff;
+	margin-bottom:5px;
     }
+
+    .navbar-toggler-icon {
+	background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(0, 0, 0, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+	color: #000;
+    }
+
 /*    .navbar-nav {
 	width: 100%;
     }
@@ -1825,9 +1923,10 @@ a.ext {
 	padding-right: 5px;
     }
 
+    /* no flyout
     #ob-sidebar .card {
 	margin-right: 10px;
-    }
+    } */
 }
 
 @media only screen and (max-width: 575px) {
@@ -2014,7 +2113,6 @@ header nav .navbar-brand {
     position: relative;
     display: block;
 }
-
 
 header .navbottom {
     background-color: #3e566c;

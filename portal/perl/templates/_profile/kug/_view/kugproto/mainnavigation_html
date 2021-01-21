@@ -227,6 +227,8 @@
     [% END %]
 </header>
 
+<div class="mb-3 d-none d-md-block"></div>
+
 <!-- <nav class="navbar" id="ob-fixed_navigation" [% IF without_navigation_search %]class="ob-hidden"[% END %]> -->
 
 [% PROCESS common/subtemplate name="searchforms_suggestions" %]

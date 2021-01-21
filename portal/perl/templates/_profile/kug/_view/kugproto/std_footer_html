@@ -14,7 +14,7 @@
 <!-- begin: footer -->
 
 [% IF NOT hide_foot_banner %]
-<footer class="uzk15__mainfooter" role="contentinfo">
+<footer class="uzk15__mainfooter mt-3" role="contentinfo">
  <div class="uzk15__footersection1">
   <div class="uzk15__mainwrapper">
    <div class="uzk15__grid_100">

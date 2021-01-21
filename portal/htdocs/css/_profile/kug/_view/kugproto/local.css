@@ -251,8 +251,8 @@
     /* sidebar flyin */
     #ob-sidebar {
 	background-color: #fff;
-	min-width: 300px;
-	max-width: 300px;
+	min-width: 320px;
+	max-width: 320px;
 	height: 100vh;
 	position: fixed;
 	top: 0;

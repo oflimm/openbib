@@ -744,7 +744,7 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle").click(function(){
 %]
 <div id="group-year" class="in collapse show">
 [% IF facets.year.size > 1 %]
-<canvas id="ob-yearChart"></canvas>
+<canvas id="ob-yearChart-[% facet_prefix %]" width="300" height="200"></canvas>
 
 <div id="ob-yearSlider" class="m-4"></div>
 
@@ -753,7 +753,7 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle").click(function(){
 </p>
 
 <script>
-var type_ctx = document.getElementById('ob-yearChart');
+var type_ctx = document.getElementById('ob-yearChart-[% facet_prefix %]');
 var typeChart = new Chart(type_ctx, {
     type: 'bar',
     data: {    

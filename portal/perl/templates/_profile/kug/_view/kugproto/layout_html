@@ -32,35 +32,42 @@
     END ;
     -%]
 
-    [% IF layout_param.sidebar_template %]
     <!-- begin: Layout with collapsable sidebar -->
     <style>
     [data-toggle="collapse"] {
       cursor: pointer;
     }
 
-    @media screen and (min-width:768px) { #ob-sidebar{ display: block!important;visibility:visible!important; } }
+//    @media screen and (min-width:768px) { #ob-sidebar{ display: block!important;visibility:visible!important; } }
 
     </style>
 
-    <div class="row flex-md-row-reverse">
-      <div id="ob-sidebar" class="col-xs-6 col-md-3 collapse">
+  [% IF layout_param.sidebar_template %]
+  
+    <button class="btn btn-primary sidebar-toggler" type="button" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-arrow-right"></i> Navigation</button>
+
+  
+      <div id="ob-sidebar" class="bg-light border-right min-vh-100 collapse navbar-collapse" aria-expanded="false">
+           <div id="sidebar-dismiss" class="float-right" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-arrow-left"></i>
+           </div>
+
+           <div class="sidebar-heading">
+              <h3>Navigation</h3>
+           </div>
+
+           <div class="sidebar-content overflow-auto h-100">
         [% PROCESS common/subtemplate name=layout_param.sidebar_template %]
+	   </div>
       </div>
-      <div id="ob-maincontent" class="col-md-9" >
-        [% PROCESS common/subtemplate name=layout_param.main_template %]
-      </div>
-    </div>
-    <!-- end: Layout with sidebar -->      
-    [% ELSE %]
-    <!-- begin: Layout without sidebar -->
+   [% END %]
+   
     <div class="row">
       <div id="ob-maincontent" class="col-md-12" >
         [% PROCESS common/subtemplate name=layout_param.main_template %]
       </div>
     </div>
     <!-- end: Layout without sidebar -->      
-    [% END %]
 
     [% PROCESS common/subtemplate name="std_footer" %]
 

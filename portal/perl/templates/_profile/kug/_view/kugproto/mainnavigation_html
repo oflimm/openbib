@@ -55,7 +55,7 @@
 <header>
 <nav class="navbar navbar-expand-lg pl-4">
  
-  <a class="navbar-brand" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">
+  <a class="navbar-brand d-none d-md-block" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">
   <span class="uzk15__icon-uzk">
    <svg>
     <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#uzk"></use>
@@ -64,10 +64,13 @@
    </span>
   <h1>Universität zu Köln</h1>
  </a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01,#ob-sidebar" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+  <a class="navbar-brand d-md-none" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">
+    <h1 class="ml-0">Universität zu Köln</h1>
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler,#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+  <div class="collapse navbar-collapse" id="navbarToggler">
 <!--    <a class="navbar-brand" href="#">Hidden brand</a> -->
 [% IF NOT suppress_unauthorized %]
 <!--    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -169,7 +172,8 @@
 
 [% PROCESS common/subtemplate name="searchforms_suggestions" %]
 
-[% IF NOT suppress_unauthorized && NOT layout_param.without_navigation_search %]    
+[% IF NOT suppress_unauthorized && NOT layout_param.without_navigation_search %]
+<div class="d-none d-md-block mb-3"></div>
 <div class="sticky-top">
 
 <form id="ob-mainsearchform" method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">

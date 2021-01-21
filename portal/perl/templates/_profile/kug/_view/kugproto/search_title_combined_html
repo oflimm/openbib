@@ -44,7 +44,7 @@
 
 %]
 
-<div id="ob-sidebar" class="col-md-3 bg-light border-right min-vh-100 collapse navbar-collapse" aria-expanded="false">
+<div id="ob-sidebar" class="bg-light border-right min-vh-100 collapse navbar-collapse" aria-expanded="false">
            <div id="sidebar-dismiss" class="float-right d-md-none" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <i class="fas fa-arrow-left"></i>
            </div>

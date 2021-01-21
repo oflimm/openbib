@@ -52,7 +52,7 @@
     END; %]
 [% END %]
 <option value="[% searchprofileid_of_view %]"[%- IF prevprofile == searchprofileid_of_view && NOT checked_profile -%] selected[%- END -%]>[% msg.maketext("Bücher & Mehr") %]</option>
-<option value="[% searchprofileid_of_eds %]"[%- IF prevprofile == searchprofileid_of_eds && NOT checked_profile -%] selected[%- END -%]>[% msg.maketext("Aufsätze & Mehr") %]</option>
+<option value="[% searchprofileid_of_eds %]"[%- IF prevprofile == searchprofileid_of_eds && NOT checked_profile -%] selected[%- END -%] disabled>[% msg.maketext("Aufsätze & Mehr") %]</option>
 <option value="[% searchprofileid_of_website %]"[%- IF prevprofile == searchprofileid_of_website && NOT checked_profile -%] selected[%- END -%]>[% msg.maketext("Webseite") %]</option>
 </optgroup>
 [% IF 0 == 1 %]

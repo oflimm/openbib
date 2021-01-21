@@ -21,7 +21,7 @@
   cursor: pointer;
 }
 
-@media screen and (min-width:768px) { #ob-search_refine{ display: block!important;visibility:visible!important; } }
+//@media screen and (min-width:768px) { #ob-sidebar { display: block!important;visibility:visible!important; } }
 
 </style>
 
@@ -44,9 +44,16 @@
 
 %]
 
-<div class="row flex-md-row">
+<div id="ob-sidebar" class="col-md-3 bg-light border-right min-vh-100 collapse navbar-collapse" aria-expanded="false">
+           <div id="sidebar-dismiss" class="float-right d-md-none" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-arrow-left"></i>
+           </div>
 
-  <div id="ob-search_refine" class="col-xs-6 col-md-3 collapse" style="border-left: 1px solid #dbdbdb;">
+           <div class="sidebar-heading d-md-none">
+              <h3>Navigation</h3>
+           </div>
+
+           <div class="sidebar-content overflow-auto h-100">
 
 [% IF hits > 0 %]
 [% PROCESS common/subtemplate name="search_facet" %]
@@ -57,7 +64,25 @@
 </div>
 [%   END %]
 [% END %]
-  </div><!-- End: col-3 -->
+   </div>
+</div><!-- End: sidebar -->
+
+<div class="row flex-md-row">
+
+      <div id="ob-search_refine" class="col-xs-6 col-md-3 d-none d-md-block ">
+
+[% IF hits > 0 %]
+[% PROCESS common/subtemplate name="search_facet" %]
+[% ELSE %]
+[%   IF viewdbs.size == 1 %]  
+<div class="ob-facets">
+[% PROCESS common/subtemplate name="search_radius" %]
+</div>
+[%   END %]
+[% END %]
+
+  </div><!-- End: sidebar -->
+
 
   <div class="col-md-9">
 
@@ -86,7 +111,7 @@
     <div class="left">
       <div class="navbar navbar-default d-block d-md-none pl-0 mt-0" style="z-index: 1"><!-- only visible in xs-->
         <div class="container-fluid pl-0">
-          <button class="btn btn-primary navbar-btn" data-toggle="collapse" data-target="#ob-search_refine">
+          <button class="btn btn-primary navbar-btn" data-toggle="collapse" data-target="#ob-sidebar">
            <i class="fa fa-filter"></i> [% msg.maketext("Filtern") %]
           </button>
        </div>

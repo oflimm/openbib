@@ -3117,6 +3117,24 @@
    representations:
      - none
      - html
+- # admin users:
+   scope: 'admin_users'
+   module: 'OpenBib::Handler::PSGI::Admin::Users'
+   rule: '/portal/:view/admin/users/id/:userid[put]'
+   runmode: 'update_record'
+- # admin users:
+   scope: 'admin_users'
+   module: 'OpenBib::Handler::PSGI::Admin::Users'
+   rule: '/portal/:view/admin/users/id/:userid[post]'
+   runmode: 'update_record'
+- # admin users:
+   scope: 'admin_users'
+   module: 'OpenBib::Handler::PSGI::Admin::Users'
+   rule: '/portal/:view/admin/users/id/:userid[delete]'
+   runmode: 'delete_record'
+
+#####################################################################
+# Admin User Rights Roles-Resource/Repraesentation
 - # admin users/roles_loc:
    scope: 'admin_users'
    module: 'OpenBib::Handler::PSGI::Admin::Users::Rights::Roles'
@@ -3162,7 +3180,7 @@
    runmode: 'update_record'
 
 #####################################################################
-# Admin User Rights Viewzuordnung
+# Admin User Rights Viewzuordnung (obsolete)
 - # users_loc/views_loc: Update
    scope: 'admin_users'
    module: 'OpenBib::Handler::PSGI::Admin::Users::Rights::Views'

@@ -1,0 +1,22 @@
+[%#-
+#######################################################################
+#
+# Templatename: leave
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Erfolgsmeldung beim Abmelden aus dem Portal, sowie
+# einer view-sensitiven Verlinkung fuer einen erneuten Aufruf
+#
+#######################################################################
+-%]
+
+<div class="jumbotron">
+  <h1>[% msg.maketext("Sie haben sich abgemeldet.") %]</h1>
+
+   <p class="lead">[% msg.maketext("Vielen Dank für Ihren Besuch.") %]</p>
+
+   <a class="btn btn-primary mb-2" href="https://[% servername %][% path_prefix%]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Weiter") %]</a>
+</div>

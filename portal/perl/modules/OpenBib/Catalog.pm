@@ -65,6 +65,16 @@ sub new {
 }
 
 
+sub get_database {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+
+    return $self->{database};
+}
+
 sub get_recent_titles {
     my ($self,$arg_ref) = @_;
 
@@ -266,6 +276,24 @@ sub get_api {
     my $self = shift;
 
     return $self->{api};
+}
+
+sub get_common_holdings {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $locations_ref       = exists $arg_ref->{locations}
+        ? $arg_ref->{locations}        : ();
+
+    my $config              = exists $arg_ref->{config}
+        ? $arg_ref->{config}        : OpenBib::Config->new;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->error("Method get_common_holdings not supported for this catalog backend");
+    
+    return ();
 }
 
 1;

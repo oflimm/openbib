@@ -1,0 +1,38 @@
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+     'page_title' = 'Grundeinstellungen bearbeiten'
+
+      'main_template' = 'admin_users_record_delete_confirm_html'
+
+      'active_menu' = 'admin'
+      'active_submenu' = 'users'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Administration')
+	     url  = "${path_prefix}/${config.get('admin_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Nutzerverwaltung')
+	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('users_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = userid
+	     url  = '#'
+	  },
+	  {
+	     desc = msg.maketext('Account löschen')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

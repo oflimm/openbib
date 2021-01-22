@@ -11,18 +11,10 @@
 #
 #######################################################################
 -%]
+
+[%- IF representation == 'html'-%]
 [% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
 [%- request_base    = "l=${lang};num=${hitrange};srt=${sorttype}_${sortorder};"  -%]
-
-  <body>
-
-  <div class="wrapper container-fluid">
-
-[% PROCESS common/subtemplate name="corporate_banner" start=1 %]
-
-[% PROCESS common/subtemplate name="mainnavigation" %] 
-
-[% PROCESS common/subtemplate name="search_title_field" %]
 
 [%-
 
@@ -75,7 +67,15 @@
 
 -%]
 
-[% PROCESS common/subtemplate name="breadcrumbs" %] 
+  <body>
+
+  <div class="wrapper container-fluid">
+
+[% PROCESS common/subtemplate name="corporate_banner" start=1 %]
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+[% PROCESS common/subtemplate name="search_title_field" %]
 
 [% IF config.get('deutsche_bibliotheksstatistik') %]
 <!-- DBS 'Zaehl-Pixel' USB - Kategorie: KUG-->
@@ -83,4 +83,4 @@
 [% END %]
 
 [%# USE dumper;dumper.dump(dbinfo)%]
-
+[%- END -%]

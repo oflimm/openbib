@@ -1,0 +1,310 @@
+[%#-
+#######################################################################
+#
+# Templatename: std_footer
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe des Seiten-Footers
+#
+#######################################################################
+-%]
+<!-- begin: footer -->
+
+[% IF NOT hide_foot_banner %]
+<footer class="uzk15__mainfooter mt-3" role="contentinfo">
+ <div class="uzk15__footersection1">
+  <div class="uzk15__mainwrapper">
+   <div class="uzk15__grid_100">
+    <p class="uzk15__autordatum">
+    <span>zuletzt geändert am 06.05.2020</span>
+    
+     <span>, Autor/in: Universitäts- und Stadtbibliothek Köln</span> 
+    </p>
+   </div>
+  </div>
+ </div>
+ <div class="uzk15__footersection3 usb__footersection2">
+  <div class="uzk15__mainwrapper">
+   <div class="uzk15__grid_100">
+ <h2 class="uzk15__triggerhead">Universitäts- und Stadtbibliothek Köln</h2>
+
+    <div class="uzk15__columnlist uzk15__box">
+   <h2 class="uzk15__smallerheadlines">Social-Media-Kanäle der Universitäts- und Stadtbibliothek  Köln</h2> 
+    <div class="uzk15__socialmedia">
+     <a href="https://www.facebook.com/usbkoeln">
+      <span class="uzk15__icon uzk15__icon-facebook"> 
+       <svg class="uzk15__svg-facebook">
+        <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#fb" />
+       </svg>
+      </span>
+      <span class="uzk15__invisible">Facebook</span>
+     </a>
+
+     <a href="https://twitter.com/unibibkoeln"> 
+      <span class="uzk15__icon uzk15__icon-twitter"> 
+       <svg class="uzk15__svg-twitter">
+        <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#twitter" />
+       </svg>
+      </span>
+      <span class="uzk15__invisible">Twitter</span>
+     </a>
+     <a href="http://www.youtube.com/user/usbkoeln"> 
+      <span class="uzk15__icon uzk15__icon-youtube"> 
+       <svg class="uzk15__svg-youtube">
+        <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#youtube" />
+       </svg>
+      </span>
+      <span class="uzk15__invisible">Youtube</span>
+     </a>
+     <a href="/rss"> 
+      <span class="uzk15__icon"> 
+       <svg class="uzk15__svg-linkedin">
+        <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#rss" />
+       </svg>
+      </span>
+      <span class="uzk15__invisible">LinkedIn</span>
+     </a>
+    </div>
+     <nav class="uzk15__footercolumn">
+      <h3 class="uzk15__invisible">Kontakt</h3> 
+      <ul>
+         <li>
+      
+          
+              <a href="https://www.ub.uni-koeln.de/suchen_ausleihen/fragen/index_ger.html">Kontakt</a>
+           
+          
+              
+           
+      
+     </li>
+         <li>
+      
+          
+              <a href="https://www.ub.uni-koeln.de/res/newsletter/index_ger.html">Newsletter</a>
+           
+          
+              
+           
+      
+     </li>
+         <li>
+      
+          
+              <a href="https://www.ub.uni-koeln.de/res/impressum#e33277">Webredaktion</a>
+           
+          
+              
+           
+      
+     </li>
+      </ul>
+     </nav>
+     <nav class="uzk15__footercolumn">
+      <h3 class="uzk15__invisible">Impressum / Datenschutzerklärung</h3> 
+      <ul>
+       <li>
+      
+          
+              <a href="https://www.ub.uni-koeln.de/res/impressum/index_ger.html">Impressum</a>
+           
+          
+              
+           
+      
+     </li>
+       <li>
+      
+          
+              <a href="https://www.portal.uni-koeln.de/9468.html">Datenschutzerklärung</a>
+           
+          
+              
+           
+      
+     </li>
+     </ul>
+     </nav>
+  </div>
+   <h2 class="uzk15__smallerheadlines">Unsere Partner machen uns stark!</h2> 
+    
+    <div class="uzk15__partner">
+<a href="https://www.ub.uni-koeln.de/ueber_uns/kulturpartner/index_ger.html">
+      <span class="uzk15__icon ">
+       <img src="/images/openbib/uzk15/logo_wdr.png" />
+      </span>
+      <span class="uzk15__invisible">Kulturpartner</span>
+     </a>
+    </div>
+     <h2 class="uzk15__smallerheadlines uzk15__bottom"><a href="https://www.ub.uni-koeln.de/ueber_uns/kulturpartner/index_ger.html">...und viele weitere Kulturpartner und Förderer.</a></h2>
+
+    
+  </div>
+  </div>
+ </div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+// Begin Togglen / Facets Personen
+// Bild setzen 
+//                   $("#footertrigger").attr("aria-controls", "footerbox");
+//                    $("#footertrigger").attr("aria-expanded", "false");
+                    $("#footerbox").hasClass("uzk15__open") ? $("#footerbox").attr("aria-hidden", "false") : $("#footerbox").attr("aria-hidden", "true");
+                    $("#footertrigger").on("click",
+                        function() {
+                            $("#footerbox, #footertrigger").toggleClass("uzk15__open");
+                            $("#footertrigger").hasClass("uzk15__open") ? $("#footertrigger").attr("aria-expanded", "true") : $("#footertrigger").attr("aria-expanded", "false");
+                            $("#footerbox").hasClass("uzk15__open") ? $("#footerbox").attr("aria-hidden", "false") : $("#footerbox").attr("aria-hidden", "true")
+                        });
+});
+</script>
+
+ <div class="uzk15__footersection3">
+  <div class="uzk15__mainwrapper">
+   <div class="uzk15__grid_100">
+    <h2 class="uzk15__triggerhead footertrigger">
+     <span id="footertrigger" aria-expanded="false" aria-controls="footerbox" href="http://uni-koeln.de">Die Universität zu Köln</span>
+    </h2>
+    <div class="uzk15__columnlist uzk15__hidebox" id="footerbox" aria-hidden="true">
+     <nav class="uzk15__footercolumn">
+      <h3>Informationen für</h3>
+      <ul>
+         <li><a href="http://www.portal.uni-koeln.de/studium.html">Studierende</a></li>
+         <li><a href="http://www.portal.uni-koeln.de/studieninteressierte.html">Studieninteressierte</a></li>
+         <li><a href="http://www.amgc.uni-koeln.de/">Promotion</a></li>
+         <li><a href="http://www.portal.uni-koeln.de/forschung.html">Forschung und Transfer</a></li>
+         <li><a href="http://www.international.uni-koeln.de/">International</a></li>
+         <li><a href="http://portal.uni-koeln.de/alumni-foerdernde.html">Alumni und Förderer</a></li>
+         <li><a href="http://portal.uni-koeln.de/presse-marketing.html">Presse und Marketing</a></li>
+      </ul>
+     </nav>
+     <nav class="uzk15__footercolumn">
+      <h3>Fakultäten</h3>
+      <ul>
+       <li><a href="http://www.wiso.uni-koeln.de/">Wirtschafts- und Sozialwissenschaften</a></li>
+       <li><a href="http://www.uni-koeln.de/jur-fak/www/index.shtml">Rechtswissenschaften</a></li>
+       <li><a href="http://www.medfak.uni-koeln.de/">Medizin</a></li>
+       <li><a href="http://www.uni-koeln.de/phil-fak/">Philosophie</a></li>
+       <li><a href="http://www.mathnat.uni-koeln.de/">Mathematik &amp; Naturwissenschaften</a></li>
+       <li><a href="http://www.hf.uni-koeln.de/">Humanwissenschaften</a></li>
+      </ul>
+     </nav>
+     <nav class="uzk15__footercolumn">
+      <h3>Schnellzugriff</h3>
+      <ul>
+       <li><a href="https://www.ub.uni-koeln.de/index_ger.html">Universitäts- und Stadtbibliothek Köln</a></li>
+       
+       <li><a href="http://www.portal.uni-koeln.de/universitaet.html">Universität</a></li>
+       <li><a href="http://verwaltung.uni-koeln.de/studsek/content/">Studierendensekretariat</a></li>
+       <li><a href="http://www.portal.uni-koeln.de/kontakt.html">Kontakt</a></li>
+       <li><a href="http://www.kstw.de/index.php?option=com_content&amp;view=article&amp;id=182&amp;Itemid=121&amp;lang=de">Mensa</a></li>
+       <li><a href="http://www.portal.uni-koeln.de/bibliotheken.html">Bibliothek</a></li>
+       <li><a href="http://www.portal.uni-koeln.de/termine.html">Terminkalender</a></li>
+       <li><a href="https://webmail.uni-koeln.de/login.php">Webmail</a></li>
+      </ul>
+     </nav>
+    </div>
+   </div>
+  </div>
+ </div>
+ <div class="uzk15__footersection4">
+  <div class="uzk15__mainwrapper">
+   <div class="uzk15__grid_100">
+    <h2 class="uzk15__smallerheadlines">Social-Media-Kanäle der Universität zu Köln</h2>
+    <div class="uzk15__socialmedia">
+     <a href="https://www.facebook.com/pages/Universit%C3%A4t-zu-K%C3%B6ln/180703865199">
+      <span class="uzk15__icon uzk15__icon-facebook"> 
+       <svg class="uzk15__svg-facebook">
+        <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#fb" />
+       </svg>
+      </span>
+      <span class="uzk15__invisible">Facebook</span>
+     </a>
+
+     <a href="https://twitter.com/UniCologne"> 
+      <span class="uzk15__icon uzk15__icon-twitter"> 
+       <svg class="uzk15__svg-twitter">
+        <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#twitter" />
+       </svg>
+      </span>
+      <span class="uzk15__invisible">Twitter</span>
+     </a>
+     <a href="http://www.xing.com/net/universitaetzukoeln/"> 
+      <span class="uzk15__icon uzk15__icon-xing"> 
+       <svg class="uzk15__svg-xing">
+        <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#xing" />
+       </svg>
+      </span> 
+      <span class="uzk15__invisible">Xing</span>
+     </a>
+
+     <a href="http://www.youtube.com/user/UniversitaetzuKoeln"> 
+      <span class="uzk15__icon uzk15__icon-youtube"> 
+       <svg class="uzk15__svg-youtube">
+        <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#youtube" />
+       </svg>
+      </span>
+      <span class="uzk15__invisible">Youtube</span>
+     </a>
+     <a href="https://www.linkedin.com/company/university-of-cologne?trk=biz-companies-cym"> 
+      <span class="uzk15__icon"> 
+       <svg class="uzk15__svg-linkedin">
+        <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#linkedin" />
+       </svg>
+      </span>
+      <span class="uzk15__invisible">LinkedIn</span>
+     </a>
+     <a href="http://itunes.apple.com/de/institution/universitat-zu-koln/id426341691"> 
+      <span class="uzk15__icon"> 
+       <svg class="uzk15__svg-itunes">
+        <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#itunes" />
+       </svg>
+      </span>
+      <span class="uzk15__invisible">iTunes</span>
+     </a>
+     <a href="https://instagram.com/universityofcologne/"> 
+      <span class="uzk15__icon"> 
+       <svg class="uzk15__svg-itunes">
+        <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#instagram" />
+       </svg>
+      </span>
+      <span class="uzk15__invisible">Instagram</span>
+     </a>
+    </div>
+  <div class="uzk15__copyright">
+   <small>© Universität zu Köln</small><br>
+   <a href="https://www.portal.uni-koeln.de/9468.html">Datenschutzerklärung</a><br>
+  </div>
+  <div class="uzk15__seperator"></div>
+  <div class="uzk15__accreditation">
+   <h2 class="uzk15__smallerheadlines">Qualitätslabels der Universität zu Köln:</h2>
+   <div class="uzk15__accreditationlist">
+    <dl>
+     <dt>    
+      <a href="https://portal.uni-koeln.de/13951.html"><abbr title="Total E-Quality">Total Equality Award</abbr></a>
+      <a href="http://www.wiso.uni-koeln.de/21732.html"><abbr title="European Quality Improvement System">EQUIS</abbr></a>
+      <a href="http://www.wiso.uni-koeln.de/30432.html"><abbr title="CEMS International Management">CEMS</abbr></a>
+      <a href="http://www.aqas.de/"><abbr title="Akkreditierte Studienprogramme">AQAS</abbr></a>
+      <a href="http://www.charta-der-vielfalt.de/unterzeichner/unterzeichner-der-charta-der-vielfalt/zeige/universitaet-zu-koeln.html"><abbr title="Charta der Vielfalt">Charta der Vielfalt</abbr></a>
+      <a href="http://www.uni-koeln.de/img/dist/HRK-Audit-Zertifikat.jpg"><abbr title="Charta der Vielfalt">HRK-Audit Internationalisierung</abbr></a>
+     </dt>
+     <dd>
+     </dd>
+    </dl>
+   </div>
+  </div>
+ </div>
+ </div>
+ </div>
+<div>
+
+</div>
+</footer>
+[% END %]
+
+<!-- end: footer -->
+

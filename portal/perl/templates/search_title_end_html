@@ -26,10 +26,6 @@
 
 <p />
 
-      </div><!-- /.col -->
-    </div><!-- /.row -->
-
-
 [% PROCESS common/subtemplate name="std_footer" %]
 
 </div><!-- /.container-fluid -->

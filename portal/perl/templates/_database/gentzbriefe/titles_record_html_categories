@@ -322,6 +322,10 @@ FOREACH category IN categories;
    END;
 END;
 -%]
+
+[% IF normdata.${"T0662"} %]
+<tr><th class="ob-field">[% msg.maketext("Volltext") %]</th><td><a class="btn btn-primary" href="[% normdata.${"T0662"}.first.content %]" target="_blank"><i class="fas fa-download"></i> Download</a></td></tr>
+[% END %]
 </table>
 [% ELSIF format == "BibTeX" %]
 <div>

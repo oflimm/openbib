@@ -89,13 +89,12 @@ open (CLASSIFICATION,">:raw","meta.classification");
 open (SUBJECT,       ">:raw","meta.subject");
 open (HOLDING,       ">:raw","meta.holding");
 
-my $json = read_file($inputfile) ;
-
-my $json_ref = decode_json($json);
+open(IN ,           "<:raw", $inputfile );
 
 my $multcount_ref = {};
 
-foreach my $item_ref (@{$json_ref->{objects}}){
+while (my $jsonline = <IN>){
+    my $item_ref = decode_json($jsonline); 
 
     if ($logger->is_debug){
 	$logger->debug(YAML::Dump($item_ref));
@@ -191,9 +190,9 @@ foreach my $item_ref (@{$json_ref->{objects}}){
     
     # Titel
     
-    if ($letter_ref->{title}{'de-DE'}){
+    if ($letter_ref->{title}){
 	push @{$title_ref->{fields}{'0331'}}, {
-	    content => $letter_ref->{title}{'de-DE'},
+	    content => $letter_ref->{title},
 	}
     }
 
@@ -245,9 +244,9 @@ foreach my $item_ref (@{$json_ref->{objects}}){
 	}
     }
     
-    if ($letter_ref->{format_size}{'de-DE'}){
+    if ($letter_ref->{format_size}){
 	push @{$title_ref->{fields}{'0433'}}, {
-	    content => $letter_ref->{format_size}{'de-DE'},
+	    content => $letter_ref->{format_size},
 	}
     }
 
@@ -263,14 +262,57 @@ foreach my $item_ref (@{$json_ref->{objects}}){
 	}
     }
 
-    if ($letter_ref->{provenance}{'de-DE'}){
+    if ($letter_ref->{provenance}){
 	push @{$title_ref->{fields}{'1664'}}, {
-	    content => $letter_ref->{provenance}{'de-DE'},
+	    content => $letter_ref->{provenance},
 	}
     }
 
+
+    # URLs
+
+    foreach my $transcription_ref (@{$letter_ref->{'_nested:gentz_letter__transcriptions'}}){
+
+	if ($transcription_ref->{transcription_fulltext}){
+	    push @{$title_ref->{fields}{'6053'}}, {
+		mult    => 1,
+		content => $transcription_ref->{'transcription_fulltext'},
+	    }
+	}
+	
+
+	# URLs
+	foreach my $file_ref (@{$transcription_ref->{transcription_file}}){
+
+	    # Volles Bild
+	    if ($file_ref->{versions}{original}{url}){
+		push @{$title_ref->{fields}{'0662'}}, {
+		    content => $file_ref->{versions}{original}{url},
+		}
+	    }
+
+	    # Thumbnail
+	    if ($file_ref->{versions}{preview}{url}){
+		push @{$title_ref->{fields}{'2662'}}, {
+		    content => $file_ref->{versions}{original}{url},
+		}
+	    }
+
+	}
+    }
+
+    
     print TITLE encode_json($title_ref),"\n";
 	
 
     
 }
+
+close (TITLE);
+close (PERSON);
+close (CORPORATEBODY);
+close (CLASSIFICATION);
+close (SUBJECT);
+close (HOLDING);
+
+close(IN);

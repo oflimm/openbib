@@ -911,30 +911,4 @@ durch zus&auml;tzliche Worte weiter eingrenzen.") %]
 
 <p/>
 [% END # facets=none%]
-<div class="ob-facets ob-facets_dbinfo">
-<div class="ob-category_header"><span id="ob-facets_dbinfo_toggle">[% msg.maketext("Datenbank-Empfehlungen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
-
-<div id="ob-facets_dbinfo_toggle_do">
-<!-- Anfang Elib DBIS-Empfehlungen -->
-<script language="JavaScript" type="text/javascript">
-$(document).ready(function(){
-// Begin Elib DBIS-Empfehlungen
-  $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/titles/recommendations.include?l=[% lang %];fs=[% searchquery.get_searchtermstring %]",
-         function (txt){
-           $("#ob-dbis_recommendations").html(txt); 
-  });
-});
-
-</script>
-
-<p/>
-
-<div id="ob-dbis_recommendations"><!-- Begin Elib DBIS-Empfehlungen -->
-<span ><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/titles/recommendations.html?l=[% lang %];fs=[% searchquery.get_searchtermstring %]">[% msg.maketext("Weiter zu den Datenbank-Empfehlungen") %]</a></span>
-</div>
-<!-- Ende Elib DBIS-Empfehlungen -->
-
-</div> <!-- End: ob-facets_dbinfo_toggle_do -->
-
-</div>
 

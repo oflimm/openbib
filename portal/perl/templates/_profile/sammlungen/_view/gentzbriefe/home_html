@@ -52,7 +52,7 @@
         <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">
           <i class="fas fa-search-plus"></i> [% msg.maketext("Erweiterte Suche") %]
         </a>
-        <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/[% config.get('titles_loc') %].html?l=[% lang %]">
+        <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/[% config.get('titles_loc') %].html?l=[% lang %];facets=mediatype,year,provenance,person,corporatebody,language">
           <i class="fas fa-th-list"></i> [% msg.maketext("Alle Titel") %]
         </a>
       </div>
@@ -71,7 +71,7 @@
          <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;"  href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">
           <i class="fas fa-search-plus"></i> [% msg.maketext("Erweiterte Suche") %]
         </a>
-        <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/[% config.get('titles_loc') %].html?l=[% lang %]">
+        <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/[% config.get('titles_loc') %].html?l=[% lang %];facets=mediatype,year,provenance,person,corporatebody,language">
           <i class="fas fa-th-list"></i> [% msg.maketext("Alle Titel") %]
         </a>
       </div>

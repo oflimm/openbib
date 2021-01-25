@@ -171,6 +171,10 @@
 
     }
 
+    .ob-thumbnail .img-fluid {
+	max-height:100%;
+    }
+    
     .ob-bg {
 	background-color:  #3e566c;
     }
@@ -518,7 +522,7 @@
     position: relative;
     top: 0px;
     left: 25px;
-    min-width: 280px !important;
+/*    min-width: 280px !important; */
     height: 140px;
     background: none repeat scroll 0 0;
 	/* position: relative; */
@@ -621,13 +625,12 @@
     left: 50px;
   }
    */
-    .ob-item .ob-titlemark {
+    .ob-item .ob-title_availability {
 	position: absolute;
 	right:15px;
 	margin-bottom: 1rem;
 	padding-bottom: 1.5rem;
 	padding-right: 20px; 
-	padding-top: 47px;
 /*  float: right;
        margin: -20px 5px 80px 120px;*/
     }
@@ -1674,7 +1677,7 @@ a.ext {
 /*    padding: 5px;
     width: 6em;
     height: 42px; */
-    width: 9em;
+/*    width: 9em; */
     background: #7dde7d;    
     color: #fff;
 /*    border-radius: 2px;

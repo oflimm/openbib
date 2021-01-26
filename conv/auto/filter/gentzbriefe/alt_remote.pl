@@ -45,6 +45,8 @@ my $easydb2metaexe   = "$konvdir/gentzbriefe2meta.pl";
 
 my $pool          = $ARGV[0];
 
+my $filterdir     = $rootdir."/filter/$pool";
+
 my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 
 my $titlefile     = $dbinfo->titlefile;
@@ -58,4 +60,5 @@ if ($dbinfo->protocol eq "http" && $dbinfo->remoteuser ne "" && $dbinfo->remotep
 
 print "### $pool: Datenabzug via http von $url\n";
 system("cd $pooldir/$pool ; rm meta.*");
+system("cd $pooldir/$pool ; $filterdir/flatten_json.pl > $titlefile");
 system("cd $pooldir/$pool; $easydb2metaexe --inputfile=$titlefile ; gzip meta.*");

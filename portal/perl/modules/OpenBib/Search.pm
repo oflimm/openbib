@@ -283,6 +283,68 @@ sub get_api {
     return $self->{api};
 }
 
+sub get_indexterms {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $database          = exists $arg_ref->{database}
+        ? $arg_ref->{database}      : undef;
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id}            : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $indexterms_ref = [];
+
+    # to implement ....
+
+    return $indexterms_ref;    
+}
+
+sub get_values {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $database          = exists $arg_ref->{database}
+        ? $arg_ref->{database}      : undef;
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id}            : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = $self->get_config;
+
+    my $values_ref = {};
+
+    # to implement ...
+    
+    return $values_ref;
+}
+
+sub get_data {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $database          = exists $arg_ref->{database}
+        ? $arg_ref->{database}      : undef;
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id}            : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = $self->get_config;
+
+    my $data = "";
+    
+    # to implement ....
+        
+    return $data;
+}
+
+
 # sub connectMemcached {
 #     my $self = shift;
 

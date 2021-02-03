@@ -17,7 +17,7 @@ uniqueidfield: 'ID'
 
 category_split_chars:
 #  'title': ';'
-#  'person': ';'
+  'Autoren/Herausgeber': ','
 
 # Personen
 person:

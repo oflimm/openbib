@@ -74,20 +74,20 @@
     </div>  
     <div class="col-md-3 pl-1 pr-1 pb-5">
       <div class="card mt-5 h-100">
-	<div class="card-header pb-2 text-center"><i class="fas fa-archway fa-2x"></i></div>
-	<div class="card-body pb-0">
-	  <h4 class="card-subtitle pb-1 text-center"  style="height:60px; !important">[% msg.maketext("Die Bibliothek des Kölner Kollegs") %]</h4>
-	  <p class="card-text" style="height:120px; !important">Die Kölner Jesuiten legten eine große Büchersammlung an, die heute als Teil der Gymnasialbibliothek in der USB Köln aufbewahrt wird.</p>
-	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a></div>
-      </div>
-    </div>
-    <div class="col-md-3 pl-1 pr-1 pb-5">
-      <div class="card mt-5 h-100">
 	<div class="card-header pb-2 text-center"><i class="fas fa-info fa-2x"></i></div>
 	<div class="card-body pb-0">
 	  <h4 class="card-subtitle pb-1 text-center" style="height:60px; !important">[% msg.maketext("Das Jesuitenprojekt der USB Köln") %]</h4>
 	  <p class="card-text" style="height:120px; !important">Das Jesuitenprojekt verzeichnet Provenienzen, Informationen zum ehemaligen Standort der Bücher und vieles mehr!</p>
 	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('info_loc') %]/project.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a></div>
+      </div>
+    </div>
+    <div class="col-md-3 pl-1 pr-1 pb-5">
+      <div class="card mt-5 h-100">
+	<div class="card-header pb-2 text-center"><i class="fas fa-archway fa-2x"></i></div>
+	<div class="card-body pb-0">
+	  <h4 class="card-subtitle pb-1 text-center"  style="height:60px; !important">[% msg.maketext("Die Bibliothek des Kölner Kollegs") %]</h4>
+	  <p class="card-text" style="height:120px; !important">Die Kölner Jesuiten legten eine große Büchersammlung an, die heute als Teil der Gymnasialbibliothek in der USB Köln aufbewahrt wird.</p>
+	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a></div>
       </div>
     </div>
     <div class="col-md-3 pl-1 pr-1 pb-5">

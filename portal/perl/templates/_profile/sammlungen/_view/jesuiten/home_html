@@ -104,6 +104,7 @@
 
 <hr/>
 
+<!--
 <div class="container pb-5 pt-3">
 <h2 class="text-center"><i class="fas fa-info"></i> [% msg.maketext("Aktuelles") %]</h2>
 
@@ -112,6 +113,7 @@
 </ul>
 
 </div>
+-->
 
 <div class="container">
 

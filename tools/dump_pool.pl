@@ -86,8 +86,8 @@ my $config     = OpenBib::Config->new;
 my $tmpdir     = "/opt/openbib/autoconv/data/$database";
 
 my $pg_dump    = "/usr/bin/pg_dump";
-my $gzip       = "/usr/bin/gzip";
-my $tar        = "/usr/bin/tar";
+my $gzip       = "/bin/gzip";
+my $tar        = "/bin/tar";
 
 if (!$config->db_exists($database)){
     $logger->error("Katalog $database existiert nicht");

@@ -13,6 +13,8 @@
 -%]
 <!-- begin: footer -->
 
+<hr/>
+
 [% IF NOT hide_foot_banner %]
 <div id="extended-info" class="d-flex justify-content-center footer-logo-box">
     <div>

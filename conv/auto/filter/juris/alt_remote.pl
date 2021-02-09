@@ -4,9 +4,9 @@
 #
 #  alt_remote.pl
 #
-#  Holen via http und konvertieren in das Meta-Format
+#  Konvertieren in das Meta-Format
 #
-#  Dieses File ist (C) 2003-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -41,24 +41,14 @@ my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
 my $confdir       = $config->{'base_dir'}."/conf";
 my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
-my $easydb2metaexe   = "$konvdir/gentzbriefe2meta.pl";
+my $simplecsv2metaexe   = "$konvdir/simplecsv2meta.pl";
 
 my $pool          = $ARGV[0];
 
-my $filterdir     = $rootdir."/filter/$pool";
+my $dbinfo = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
+my $filename = $dbinfo->titlefile;
 
-my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
-
-my $titlefile     = $dbinfo->titlefile;
-
-my $url           = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->titlefile;
-
-my $httpauthstring="";
-if ($dbinfo->protocol eq "http" && $dbinfo->remoteuser ne "" && $dbinfo->remotepassword ne ""){
-    $httpauthstring=" --http-user=".$dbinfo->remoteuser." --http-password=".$dbinfo->remotepassword;
-}
-
-print "### $pool: Datenabzug via http von $url\n";
-system("cd $pooldir/$pool ; rm meta.*");
-system("cd $pooldir/$pool ; $filterdir/flatten_json.pl > $titlefile");
-system("cd $pooldir/$pool; $easydb2metaexe --inputfile=$titlefile ; gzip meta.*");
+print "### $pool: Konvertierung von data.csv\n";
+system("cd $pooldir/$pool ; rm meta.* ; rm fulldata.csv");
+system("cd $pooldir/$pool ; $rootdir/filter/$pool/add-id.pl < $filename > fulldata.csv");
+system("cd $pooldir/$pool; $simplecsv2metaexe --inputfile=fulldata.csv --configfile=$confdir/$pool.yml; gzip meta.*");

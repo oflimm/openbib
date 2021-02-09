@@ -1,8 +1,94 @@
 @media all
 {
 
-    /* Appearance functional elements */
+    /* cloudzoom*/
 
+    .cloud-zoom-big {
+	border: 5px solid #ced4da;
+	border-radius: .25rem;
+	-moz-box-shadow: 10px 10px 5px #888;
+	-webkit-box-shadow: 10px 10px 5px #888;
+	box-shadow: 10px 10px 5px #888;
+    }
+    
+   /* Modal scrolling?? 
+    .modal {
+    overflow-x: hidden;
+    overflow-y: auto;
+    }
+    */
+   /*  #scrollbox {
+	overflow-y: auto;
+	max-height: calc(100vh - 150px);
+    }
+   */
+
+   /* twitter typeahead */
+
+/*   .typeahead, .tt-query, .tt-hint {
+	border: 2px solid #CCCCCC;
+	border-radius: 8px;
+	font-size: 22px;
+	height: 30px;
+	line-height: 30px;
+	outline: medium none;
+	padding: 8px 12px;
+	width: 396px;
+   } 
+   .typeahead {
+	background-color: #FFFFFF;
+   }
+   .typeahead:focus {
+	border: 2px solid #0097CF;
+   }
+   .tt-query {
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+   }
+*/
+
+    .select2-container .select2-selection--single { /* corresponding form-control in bootstrap */
+	display: block;
+	width: 100%;
+	height: calc(1.5em + .75rem + 2px);
+	padding: .375rem .75rem;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.5;
+	color: #495057;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #ced4da;
+	border-radius: .25rem;
+	transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+
+    /* Appearance functional elements */
+    
+    .flex-md-row-reverse {
+	margin-right: 0px;
+    }
+
+    .col-md-12 {
+	padding-right: -15px;
+	margin-right: 0px;
+    }
+
+    .col-md-3 {
+	margin-right: 0px;
+	padding-right: 0px;
+	padding-left: 10px; 
+    }
+
+    .col-md-9 {
+	margin-right: 0px;
+	padding-right: 10px;
+    }
+
+    .col-xs-6 {
+	margin-right: 0px;
+	padding-right: 10px;
+    }
+    
     a, a:hover{
 	color: #253746;
     }
@@ -37,6 +123,7 @@
 
     .ob-page_footer {
 	position:absolute;
+	padding-top: 20px;
 	margin-bottom: 0px;
 	width:100%;
 
@@ -57,13 +144,71 @@
     }
 
     #ob-startpage {
-	padding-bottom: 40px;
 	margin-right: 0px;
 	padding-right: 0px;
 	/*	background:url('/images/openbib/views/jesuiten/Triumph_St_Ignatius_Pozzo.jpg') 100% no-repeat;	*/
-	background:url('/images/openbib/views/gentzbriefe/gentzbg.png') left 100% no-repeat;
+/*	background:url('/images/openbib/views/muenzen/Muenzenhintergrund1700x991px.jpg') left 100% no-repeat;
 	background-position: 10% 30%;
 	background-size: cover;
+	height: 400px !important; */
+    }
+
+    hr {
+	border-bottom-style: solid;
+	border-bottom-color: #253746;
+        border-bottom-width: 5px;	
+    }
+    
+    #ob-startpage .landing-page-img {
+	padding-bottom: 40px;
+	background:url('/images/openbib/views/gentzbriefe/gentzbg.png') left 100% no-repeat;
+/*	background-position: 10% 30%;*/
+	background-size: cover;
+	height: 500px !important;
+	border-bottom-style: solid;
+	border-bottom-color: #253746;
+        border-bottom-width: 5px;
+
+    }
+
+    .ob-thumbnail .img-fluid {
+	max-height:100%;
+    }
+    
+    .ob-bg {
+	background-color:  #3e566c;
+    }
+
+    .ob-bg-secondary {
+	background-color: #253746;
+    }
+    
+    .ob-border {
+	border-color: #253746;
+    }
+
+    bg-white {
+	background-color: #fff;
+    }
+
+    text-white {
+	color: #fff;
+    }
+
+    text-black {
+	color: #000;
+    }
+    
+    #search_wrapper, #search_wrapper_top {
+	border-style: solid;
+	border-width: 3px;
+	border-color: #253746;
+	border-radius: 0rem;
+    }
+    
+    #search_wrapper button, #search_wrapper_top button {
+	background-color:  #3e566c;
+	border-radius: 0rem;
     }
 
     #ob-startpage .col-md-12 {
@@ -81,10 +226,24 @@
     }
 
     #ob-navbar_top {
-	background-color: #fff;
+	background-color: #253746;
 	z-index: 1000;
     }
 
+    #ob-navbar_top .nav-link {
+	font-size: 24px;
+	color: #fff;
+    }
+
+    #ob-navbar_top a, #ob-navbar_top a:hover {
+	color: #fff;
+    }
+
+    #ob-navbar_top a.active, #ob-navbar_top i {
+	color: #fff;
+	font-weight: bold;
+    }
+    
     .ob-searchbox {
 	background-image: linear-gradient(#a0adb6, #3e566c );
 //	background-color: #3e566c;
@@ -94,7 +253,7 @@
        border-top-width: 3px;
     }
     
-    
+
     .ob-searchbox .list-group-item {
 	background-color: transparent;
     }
@@ -112,10 +271,6 @@
 	color: #000;
     }
 
-    #ob-mainpage {
-	padding-left: 5px;
-    }
-    
     #ob-mainpage .list-group a {
 	color: #000;
     }
@@ -126,6 +281,11 @@
     }
     body {
 //	background:url('/images/openbib/views/jesuiten/Triumph_St_Ignatius_Pozzo_wp25.png') 50% no-repeat;	
+    }
+
+    #extendedSearchModal {
+	background-color: #fff;
+	color: #000;
     }
     
     #fulltitleModal {
@@ -139,7 +299,6 @@
         max-width: 100%;
         margin-bottom: 0;
     }
-
 
     
 [aria-expanded="false"] > .expanded,
@@ -180,11 +339,15 @@
        border-bottom-color: #edebe3;
        border-bottom-width: 1px;
     }
-    
+
+    .navbar-toggler {
+	background: #fff;
+    }
 /*    .navbar-nav {
 	width: 100%;
     }
-    
+
+
     .ob-sidebar .navbar-nav .nav-item {
 	width: 100%;
 	border-bottom: 1px solid rgba(0,0,0,.125);
@@ -286,15 +449,16 @@
 
     .ob-resultlist {
 	width: auto;
-	padding: 0.5em;
-	padding-left: 8px;
+/*	padding: 0.5em;*/
+	padding-left: 5px;
+	padding-right: 0px;
     }
     
     .ob-resultheader {
 	position: relative;
 	width: auto;  
 	padding: 5px;
-	padding-right: 0px;
+	padding-right: 5px;
 	min-height: 10px;
 	height: auto;
 	margin-bottom: 25px;
@@ -322,7 +486,7 @@
 	position: absolute;
 	top: 0;
 	left: 0px;
-	width: 500px;
+	/* width: 500px; */
 	font-size: 1.2em;
 /*  font-weight: bold; 
        padding: 5px; */
@@ -332,7 +496,7 @@
 	position: absolute;
 	top: 0;
 	right: 0px;
-	width: 300px;
+
 	/*  padding: 5px; */
 	text-align: right;
     }
@@ -343,7 +507,7 @@
     }
 
     .ob-item {
-	min-height: 125px;
+	min-height: 140px;
 	height: auto;
 	/*    width: 100%;
     position: relative;
@@ -355,7 +519,12 @@
     }
 
     .ob-item .ob-thumbnail {
-        display:none ;
+    position: relative;
+    top: 0px;
+    left: 25px;
+/*    min-width: 280px !important; */
+    height: 140px;
+    background: none repeat scroll 0 0;
 	/* position: relative; */
 	/*     float: left; 
     top: 15px;
@@ -364,15 +533,17 @@
 	/*    border: 1px solid #000; */
     }
 
-    .ob-item .ob-thumbnail img {
+<!--    .ob-item .ob-thumbnail img {
 	display: none;
     }
-
+-->
     .ob-item .ob-brieftitle {
-	padding-left: 2.5em;
+    padding-left: 25px;
 	width: 100%;
+	height: auto;
 /*    position: relative; 
       float: left; 
+
 
     top: 25px;
     width: auto; */
@@ -388,10 +559,20 @@
     }
 
     .ob-item .ob-titleactions {
-	float:right;
-	padding-top: 2px;
-	padding-bottom: 2px;
-	padding-right: 5px;
+	margin-bottom: 1rem;
+	height: 45px;
+	padding-top: 2.5rem;
+	padding-bottom: 1.5rem;
+	/*       display: none;  */
+    }
+
+    .ob-item .ob-titleactions btn {
+	height: auto;
+	/*       display: none;  */
+    }
+
+    .ob-titleactions .btn-light, .ob-titleactions .btn-light:hover  {
+	color: #000;
 	/*       display: none;  */
     }
 
@@ -444,13 +625,12 @@
     left: 50px;
   }
    */
-    .ob-item .ob-titlemark {
-	/*    position: absolute; */
-	bottom:0;
-	right:0;
-	padding-right: 10px; 
-	padding-top: 3px;
-	padding-bottom: 3px; 
+    .ob-item .ob-title_availability {
+	position: absolute;
+	right:15px;
+	margin-bottom: 1rem;
+	padding-bottom: 1.5rem;
+	padding-right: 20px; 
 /*  float: right;
        margin: -20px 5px 80px 120px;*/
     }
@@ -646,7 +826,70 @@
 	cursor: pointer;
     }
 
+    div .ob-breadcrumb .list-group {
+	border-radius: 0;
+	margin-left: 10px;
+	padding-left: 0px;
+	margin-bottom: 10px;
+/*	border-bottom: 2px #253746 solid;	 */
+    }
 
+    div .ob-breadcrumb .list-group-horizontal .list-group-item:first-child,     div .ob-breadcrumb .list-group-horizontal .list-group-item:last-child 
+ {
+	border-radius: 0;
+    }
+
+    div .ob-breadcrumb .list-group-item {
+	padding: .75rem .50rem;
+    }
+    
+    div .ob-breadcrumb ol li.ob-navitem {
+	color: #fff;
+	font-weight: bold;
+	margin-top: 5px;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	margin-left: 0px;
+	margin-right: 5px;
+	border-bottom: 7px #253746 solid;	
+    }
+    
+    div .ob-breadcrumb ol li.ob-navitem:first {
+	margin-left: 0px;
+    }
+    
+    div .ob-breadcrumb ol li.ob-navitem:hover {
+/*	background-color:  #253746 ;
+	border-bottom: 7px #e3e3e3 solid;	
+*/
+	color: #253746;
+    }
+    
+    div .ob-breadcrumb ol li {
+	border-top: none;
+	border-left: none;
+	border-right: none;
+    }
+
+    div .ob-breadcrumb ol li.ob-representation {
+	padding-right: 0px;
+	font-weight: bold;
+	border: none;
+    }
+
+    div .ob-breadcrumb ol li.ob-representation a {
+	padding-left: 5px;
+	padding-right: 5px;
+    }
+
+    div .ob-breadcrumb ol li a {
+	color: #000;
+    }
+
+    div .ob-breadcrumb ol li a:hover {
+	color: #253746;	
+    }
+    
     .ob-functional_nav {
 	width:100%;
 	margin:0 0 0 0;
@@ -789,12 +1032,13 @@
     /* Start: Facets */
     
     .ob-facets {
+	margin-right: 5px; 
 	margin-top: -5px;
     }
 
     .ob-facets {
-	width: 95%;
-	padding: 5px;
+/*	width: 95%; */
+	padding: 0px;
 	/*  font-size:0.9em; */
 /*  background-color: white;
        border-top-style: solid;
@@ -1013,12 +1257,21 @@
     padding-left: 5px;
     margin: 10px 10px -5px -3px;
 	/*    background: #41799e; */
-	color: #000;
+	padding: 5px;
+	padding-left: 10px;
+	margin-top: 20px;
+	color: #fff;
+	margin-bottom: 30px;
+	background-color: #3e566c;
 	/*    border-radius: 2px; */
 	font-size: 1.4em;
 	font-weight: bold;
-	padding-bottom: 10px;
 
+	border-radius: .25rem;
+	-moz-box-shadow: 5px 5px 2px #888;
+	-webkit-box-shadow: 5px 5px 2px #888;
+	box-shadow: 5px 5px 2px #888;
+	
 /*    -moz-box-shadow: 2px 2px 2px #888;
     -webkit-box-shadow: 2px 2px 2px #888;
     box-shadow: 2px 2px 2px #888; */
@@ -1424,7 +1677,7 @@ a.ext {
 /*    padding: 5px;
     width: 6em;
     height: 42px; */
-    width: 9em;
+/*    width: 9em; */
     background: #7dde7d;    
     color: #fff;
 /*    border-radius: 2px;
@@ -1541,6 +1794,23 @@ a.ext {
 
 }
 
+@media only screen and (max-width: 768px) {
+    .col-md-3 {
+	margin-right: 0px;
+	padding-right: 0px;
+	padding-left: 20px; 
+    }
+
+    .col-md-9 {
+	margin-right: 0px;
+	padding-right: 5px;
+    }
+
+    #ob-sidebar .card {
+	margin-right: 10px;
+    }
+}
+
 @media only screen and (max-width: 575px) {
 
     .ob-availability_online {
@@ -1612,6 +1882,17 @@ a.ext {
 }
 
 @media screen and (max-width:480px) {
+    .ob-item .ob-brieftitle {
+	padding-left: 2.5em;
+	width: 100%;
+/*    position: relative; 
+      float: left; 
+
+    top: 25px;
+    width: auto; */
+    }
+
+    
     table.ob-title_fields tr {
 	display: block;
     }
@@ -1643,5 +1924,12 @@ a.ext {
 
     table.ob-title_fields th, table.ob-title_fields td {
 	border-top-style: none;
-    } 
+    } */ 
+}
+
+@media (min-width: 768px) {
+  .modal-xl {
+    width: 90%;
+   max-width:1200px;
+  }
 }

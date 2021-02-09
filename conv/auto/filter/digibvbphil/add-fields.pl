@@ -13,5 +13,13 @@ while (<>){
         },
     ];
 
+    $title_ref->{fields}{'4410'} = [
+        {
+            mult     => 1,
+            subfield => '',
+            content  => "Digital",
+        },
+    ];
+
     print encode_json $title_ref, "\n";
 }

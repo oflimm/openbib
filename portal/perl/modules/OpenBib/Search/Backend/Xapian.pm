@@ -535,7 +535,7 @@ sub browse {
     my $sortorder         = (defined $self->{_options}{srto})?$self->{_options}{srto}:$queryoptions->get_option('srto');
     my $defaultop         = (defined $self->{_options}{dop})?$self->{_options}{dop}:$queryoptions->get_option('dop');
     my $facets            = (defined $self->{_options}{facets})?$self->{_options}{facets}:$queryoptions->get_option('facets');
-    my $gen_facets        = ($facets eq "none")?0:1;
+    my $gen_facets        = ($facets)?1:0;
 
     if ($logger->is_debug){
         $logger->debug("Options: ".YAML::Dump($options_ref));
@@ -564,7 +564,7 @@ sub browse {
     # Defaults from portal.yml
     my $current_facets_ref = $config->{facets};
 
-    if ($facets){
+    if ($facets && $facets ne "all"){
         $current_facets_ref = {};
         map { $current_facets_ref->{$_} = 1 } split(',',$facets);
     }
@@ -660,7 +660,9 @@ sub browse {
 
     my $offset = $page*$num-$num;
 
-    $logger->debug("Offset: $offset");
+    my $rset = Search::Xapian::RSet->new();
+
+    $logger->debug("Facets: $gen_facets - Offset: $offset");
 
     if ($config->{benchmark}) {
         $btime=new Benchmark;
@@ -668,7 +670,7 @@ sub browse {
         $logger->info("Total time for stage 2 is ".timestr($timeall));
     }
 
-    my $mset = $enq->get_mset($offset,$num,$maxmatch);
+    my $mset = ($gen_facets)?$enq->get_mset($offset,$num,$maxmatch,$rset,$decider_ref):$enq->get_mset($offset,$num,$maxmatch);
 
     if ($config->{benchmark}) {
         $btime=new Benchmark;
@@ -700,8 +702,7 @@ sub browse {
 #    my @this_matches      = splice(@matches,$offset,$num);
     $self->{_matches}     = \@matches;
 
-    $self->{categories} = {};
-
+    $self->{categories}   = \%decider_map;
 
     $logger->info("Found ".scalar(@matches)." matches in database $self->{_database}") if (defined $self->{_database});
     return;
@@ -857,7 +858,13 @@ sub get_indexterms {
     $qp->add_prefix('id', 'Q');
     $qp->set_default_op(Search::Xapian::OP_AND);
 
+    $id = OpenBib::Common::Util::normalize({ content => $id, type => 'id'});
+    
     my $enq  = $dbh->enquire("Q$id"); #$qp->parse_query("id:$id"));
+
+    my $thisquery = $enq->get_query()->get_description();
+        
+    $logger->debug("Internal Xapian Query: $thisquery");
 
     my @matches = $enq->matches(0,10);
 
@@ -919,6 +926,8 @@ sub get_values {
     
     $qp->add_prefix('id', 'Q');
     $qp->set_default_op(Search::Xapian::OP_AND);
+
+    $id = OpenBib::Common::Util::normalize({ content => $id, type => 'id'});
 
     my $enq  = $dbh->enquire($qp->parse_query("id:$id"));
 
@@ -987,6 +996,8 @@ sub get_data {
     $qp->add_prefix('id', 'Q');
     $qp->set_default_op(Search::Xapian::OP_AND);
 
+    $id = OpenBib::Common::Util::normalize({ content => $id, type => 'id'});
+    
     my $enq  = $dbh->enquire($qp->parse_query("id:$id"));
 
     my @matches = $enq->matches(0,10);

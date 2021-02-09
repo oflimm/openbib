@@ -200,6 +200,10 @@ while (<TITLE>){
 		push @{$element_ref}, "DE-Kn3";
 		push @{$element_ref}, "DE-38-ZBKUNST";
 	    }
+	    elsif ($item->{content}=~/^yk$/){
+		push @{$element_ref}, "DE-Kn3";
+		push @{$element_ref}, "DE-38-ZBKUNST";
+	    }
         }
     }
 

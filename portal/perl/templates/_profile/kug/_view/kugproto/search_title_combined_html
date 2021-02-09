@@ -145,7 +145,8 @@
   </div>
 
   <div class="ob-resultfooter">
-   &nbsp;
+    [% PROCESS common/subtemplate name="search_more_tips" %]
+   
   </div>
 </div>
 
@@ -156,8 +157,6 @@
 </div>
 
 [% END %]
-
-[% PROCESS common/subtemplate name="search_more_tips" %]
 
   </div><!-- End: col -->
 

@@ -60,7 +60,20 @@
 <!--    <a class="navbar-brand" href="#">Hidden brand</a> -->
 
     <ul class="nav navbar-nav flex-row justify-content-between ml-auto">
-           <li class="nav-item[% IF layout_param.active_menu == "collection" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %]</a></li>
+           <li class="nav-item d-md-none"><a class="nav-link" href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a></li>
+	   
+           <li class="nav-item dropdown d-md-none"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">[% msg.maketext("Register") %]</a>
+             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0425.html?l=[% lang %];page=1">[% msg.maketext("Jahre") %]</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0200.html?l=[% lang %];page=1">[% msg.maketext("Briefempfänger") %]</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0100.html?l=[% lang %];page=1">[% msg.maketext("Briefaussteller") %]</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/1664.html?l=[% lang %];page=1">[% msg.maketext("Provenienzen") %]</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0410.html?l=[% lang %];page=1">[% msg.maketext("Orte") %]</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0412.html?l=[% lang %];page=1">[% msg.maketext("Herkunft") %]</a></li>
+             </ul>
+	   </li>
+           <li class="nav-item d-md-none"><a class="nav-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/[% config.get('titles_loc') %].html?l=[% lang %]">[% msg.maketext("Alle Titel") %]</a></li>
+<!--           <li class="nav-item[% IF layout_param.active_menu == "collection" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %]</a></li> -->
 
 [%    IF config.get_viewauthenticators(view) %]
     [% IF username %]
@@ -73,131 +86,40 @@
     [% END%]
 [%    END %]
 
-     [% lang_desc = {
-       'en' = "English"
-       'de' = "Deutsch"
-     }
-     %]
-
-    [% IF config.get('lang').size == 2 %]
                <li class="nav-item">		
-      [% FOREACH thislang IN config.get('lang') %]
-       [% IF lang != thislang %]<a class="nav-link" href="[% path %]?[% cgiapp.to_cgi_querystring({ exclude = ['l']}) %];l=[% thislang %]">[% lang_desc.${thislang} %]</a>[% END %]
-     [% END %]
-               </li>
-    [% ELSE %]
-     
-               <li class="nav-item order-2 order-md-1 mt-1">
-	        <form method="get" action="[% path %]">
-                   <select name="l" class="autosubmit selectpicker" data-width="fit">
-
-     [% FOREACH thislang IN config.get('lang') %]
-      <option value="[% thislang %]"[% IF lang == thislang %] selected[% END %]>[% lang_desc.${thislang} %]</option>
-     [% END %]
-                    </select>
-		[% cgiapp.to_cgi_hidden_input({ exclude = ['l']}) %]
-
-		    
-		  <button class="btn btn-primary p-1 ob-nojs_show" type="submit">[% msg.maketext("Los") %]</button>
-		  </form>
-               </li>
-    [% END %]
-    		
+                   <div class="nav-link text-nowrap text-white"><a class="[% IF lang == 'de' %] active[% END %]" href="[% path %]?[% IF cgiapp.to_cgi_querystring({ exclude = ['l']}) %][% cgiapp.to_cgi_querystring({ exclude = ['l']}) %];l=de[% ELSE %]l=de[% END %]">de</a> | <a class="[% IF lang == 'en' %] active[% END %]" href="[% path %]?[% IF cgiapp.to_cgi_querystring({ exclude = ['l']}) %][% cgiapp.to_cgi_querystring({ exclude = ['l']}) %];l=en[% ELSE %]l=en[% END %]">en</a>  <img class="pr-1" src="/images/openbib/Globus_fuer_Sprache_24px.png" /></div>
+               </li>    		
             </ul>
   
   </div>
 </nav>
 
-
 <!-- <nav class="navbar" id="ob-fixed_navigation" [% IF without_navigation_search %]class="ob-hidden"[% END %]> -->
 
 [% PROCESS common/subtemplate name="searchforms_suggestions" %]
+[% IF NOT layout_param.without_navigation_search %]
+    <div class="card border-0 d-md-none sticky-top" style="min-width: 100%!important;">
+      <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
 
-<!--<h4></h4>-->
-
-[% IF NOT suppress_unauthorized && NOT layout_param.without_navigation_search %]    
-<div class="sticky-top">
-
-<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
-
-<input type="hidden" name="num"        value="20" />
-<input type="hidden" name="page"       value="1" />
-<input type="hidden" name="lang"       value="[% lang %]" />
-
-<input type="hidden" name="srt"        value="relevance_desc" />
-<input type="hidden" name="st"         value="1" />
-<input type="hidden" name="profile"    value="[% config.get_searchprofile_of_view(view) %]" />
-<input type="hidden" name="lt"         value="[% qopts.lt %]" />
-
-<div class="ob-searchbox container-full justify-content-center pl-4 pr-4 pt-3 pb-2">
-    <div class="row">    
-        <div class="col">
-            <div class="input-group">
-                <input required="required" id="to_focus" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Suchbegriff...") %]" />
-                <span class="input-group-btn pl-1">
-                    <button class="btn btn-primary" type="submit"><span class="fas fa-search d-md-none"></span><span class="d-none d-md-block font-weight-bold">[% msg.maketext("Suchen") %]</span></button>
-                    <span class="btn btn-primary fas fa-cog d-md-none" data-toggle="collapse" data-target="#search_options" aria-expanded="false"></span>
-                </span>
+	<input type="hidden" name="num"        value="20" />
+	<input type="hidden" name="page"       value="1" />
+	<input type="hidden" name="l"          value="[% lang %]" />
+	
+	<input type="hidden" name="srt"        value="relevance_desc" />
+	<input type="hidden" name="st"         value="1" />
+	<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+        <div class="card-header p-0 border-0">
+	  
+          <div id="search_wrapper_top" class="input-group input-group-lg shadow-sm" style="min-width: 100%">
+            <div class="input-group-prepend">
+              <button type="submit" class="input-group-text ob-bg ob-border">
+                <i class="fas fa-search text-white"></i>
+              </button>
             </div>
-       </div>
-   </div>
-    <div class="row pt-1 pb-0">     
-      <div class="col collapse d-md-block p-0" id="search_options">
-<!--       <div class="d-flex flex-row">
-         <div>[% PROCESS common/subtemplate name="searchforms_record_profile" %]</div>
-	 <div class="p-1"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a></div>
-	 <div class="p-1"><a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a></div>
-	 <div class="p-1"><a  href="[% path_prefix %]/[% config.get('browse_loc') %]/[% config.get('topics_loc') %].html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a></div>
-       </div> -->
-       
-         <ul class="list-group flex-row flex-wrap justify-content-md-center justify-content-sm-left">
-             <li class="list-group-item pr-1 pt-2" style="border: none" >
-    <ul class="navbar-nav mt-0">
-
-      <li class="nav-item[% IF layout_param.active_menu == "browse" %] active[% END %] dropdown">
-       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          [% msg.maketext("Register") %]
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0425.html?l=[% lang %];page=1">[% msg.maketext("Jahre") %]</a></li>
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0200.html?l=[% lang %];page=1">[% msg.maketext("Briefempfänger") %]</a></li>
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0100.html?l=[% lang %];page=1">[% msg.maketext("Briefaussteller") %]</a></li>
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/1664.html?l=[% lang %];page=1">[% msg.maketext("Provenienzen") %]</a></li>
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0410.html?l=[% lang %];page=1">[% msg.maketext("Orte") %]</a></li>
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0412.html?l=[% lang %];page=1">[% msg.maketext("Herkunft") %]</a></li>
-        </ul>
-      </li>
-
-
-    </ul>
-
-	    </li>
-
-            <li class="list-group-item pr-1 pt-3" style="border: none" >
-             <a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
-	    </li>
-
-            <li class="list-group-item pr-1 pt-3" style="border: none" >
-	     <a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
-	   </li>
-
-            <li class="list-group-item pr-1 pt-3" style="border: none" >
-	     <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles.html?l=[% lang %]">[% msg.maketext("Alle Titel") %]</a>
-	   </li>
-
-         </ul>
-    </div><!-- col -->
-  </div><!-- row -->
-</div>
-
-[%# sysprofile%]
-[%# USE dumper; dumper.dump(config.get_orgunitinfo_overview(sysprofile)) ; %]
-[%# USE dumper; dumper.dump(config.get_orgunitinfo_overview(dbchoice)) ; %]
-<!-- [% msg.maketext("Recherchieren Sie in [_1] Titeln und [_2] Katalogen","${alldbcount.allcount.chunk(-3).join('.')}","${alldbs}") %] -->
-
-
-</form>
-<!-- </nav> -->
-</div><!-- End: sticky-top -->
-[% END # End: suppress_unauthorized %]
+            <input id="freetext-input" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Suchbegriff...") %]" required="" />
+          </div>
+        </div>
+      </form>      
+    </div>
+[% END %]
     <!-- end: main navigation -->

@@ -115,9 +115,13 @@ while (my $jsonline = <IN>){
 	$title_ref->{id} = $letter_ref->{_id};
     }
 
+    my @senders = ();
+    
     # Person
     if ($letter_ref->{sender}{_standard}{1}{text}{'de-DE'}){
 	my $name = $letter_ref->{sender}{_standard}{1}{text}{'de-DE'};
+
+	push @senders, $name;
 	
 	my ($person_id,$new)=OpenBib::Conv::Common::Util::get_person_id($name);
 	
@@ -150,10 +154,14 @@ while (my $jsonline = <IN>){
 	
 	$mult++;
     }        
+
+    my @recipients = ();
     
     # Koerperschaft
     foreach my $recipient_ref (@{$letter_ref->{'_nested:gentz_letter__recipients'}}){	
 	my $name = $recipient_ref->{recipient}{_standard}{1}{text}{'de-DE'};
+
+	push  @recipients, $name;
 	
 	my ($corporatebody_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($name);
 	
@@ -226,15 +234,21 @@ while (my $jsonline = <IN>){
 	}
     }
 
+    my $year = "";
+    
     if ($letter_ref->{sent_date_original}){
+	($year) = $letter_ref->{sent_date_original} =~m/(\d\d\d\d)/;
+	
 	push @{$title_ref->{fields}{'0424'}}, {
 	    content => $letter_ref->{sent_date_original},
 	}
     }
 
-    if ($letter_ref->{sent_date_year}){
+    if ($year || $letter_ref->{sent_date_year}){
+	$year = ($letter_ref->{sent_date_year})?$letter_ref->{sent_date_year}:$year;
+	
 	push @{$title_ref->{fields}{'0425'}}, {
-	    content => $letter_ref->{sent_date_year},
+	    content => $year,
 	}
     }
 
@@ -268,7 +282,8 @@ while (my $jsonline = <IN>){
 	}
     }
 
-
+    my $is_digital = 0;
+    
     # URLs
 
     foreach my $transcription_ref (@{$letter_ref->{'_nested:gentz_letter__transcriptions'}}){
@@ -284,20 +299,140 @@ while (my $jsonline = <IN>){
 	# URLs
 	foreach my $file_ref (@{$transcription_ref->{transcription_file}}){
 
-	    # Volles Bild
+	    # Volles Bild zum Download
 	    if ($file_ref->{versions}{original}{url}){
 		push @{$title_ref->{fields}{'0662'}}, {
-		    content => $file_ref->{versions}{original}{url},
-		}
+		    content => $file_ref->{versions}{original}{download_url},
+		};
+		$is_digital = 1;
 	    }
 
 	    # Thumbnail
-	    if ($file_ref->{versions}{preview}{url}){
+	    if ($file_ref->{versions}{small}{url}){
 		push @{$title_ref->{fields}{'2662'}}, {
-		    content => $file_ref->{versions}{original}{url},
-		}
-	    }
+		    content => $file_ref->{versions}{small}{url},
+		};
+		$is_digital = 1;
+	    }	    
+	}
+    }
 
+    if ($is_digital){
+	push @{$title_ref->{fields}{'4400'}}, {
+	    content  => 'online',
+	    mult     => 1,
+	    subfield => '',
+	}
+    }
+
+
+    my $mediatype = "";
+
+    foreach my $sender (@senders){
+	if ($sender eq "Friedrich Gentz"){
+	    $mediatype = "Briefe von Gentz";
+	}
+    }
+
+    foreach my $recipient (@recipients){
+	if ($recipient eq "Friedrich Gentz"){
+	    $mediatype = "Briefe an Gentz";
+	}
+    }
+
+    if (!$mediatype){
+	$mediatype = "Briefe Dritter";
+    }
+
+    if ($mediatype){
+	$title_ref->{fields}{'0800'} = [
+	    {
+		mult     => 1,
+		subfield => '',
+		content  => $mediatype,
+	    }
+	    ];
+    }
+    
+    if ($mediatype eq "Briefe von Gentz"){
+	if ($year){
+	    $title_ref->{fields}{'0426'} = [
+		{
+		    mult     => 1,
+		    subfield => '',
+		    content  => $year,
+		},
+                ];
+	}
+	else {
+	    $title_ref->{fields}{'0425'} = [
+		{
+		    mult     => 1,
+		    subfield => '',
+		    content  => 'ohne Jahr',
+		},
+                ];
+	    $title_ref->{fields}{'0426'} = [
+		{
+		    mult     => 1,
+		    subfield => '',
+		    content  => 'ohne Jahr',
+		},
+                ];
+	}
+    }
+    elsif ($mediatype eq "Briefe an Gentz"){
+	if ($year){
+	    $title_ref->{fields}{'0427'} = [
+		{
+		    mult     => 1,
+		    subfield => '',
+		    content  => $year,
+		},
+                ];
+	}
+	else {
+	    $title_ref->{fields}{'0425'} = [
+		{
+		    mult     => 1,
+		    subfield => '',
+		    content  => 'ohne Jahr',
+		},
+                ];
+	    $title_ref->{fields}{'0427'} = [
+		{
+		    mult     => 1,
+		    subfield => '',
+		    content  => 'ohne Jahr',
+		},
+                ];
+	}
+    }
+    elsif ($mediatype eq "Briefe Dritter"){
+	if ($year){
+	    $title_ref->{fields}{'0428'} = [
+		{
+		    mult     => 1,
+		    subfield => '',
+		    content  => $year,
+		},
+                ];
+	}
+	else {
+	    $title_ref->{fields}{'0425'} = [
+		{
+		    mult     => 1,
+		    subfield => '',
+		    content  => 'ohne Jahr',
+		},
+                ];
+	    $title_ref->{fields}{'0428'} = [
+		{
+		    mult     => 1,
+		    subfield => '',
+		    content  => 'ohne Jahr',
+		},
+                ];
 	}
     }
 

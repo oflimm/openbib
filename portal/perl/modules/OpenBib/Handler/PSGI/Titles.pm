@@ -252,6 +252,8 @@ sub show_collection {
     # Browsing starten
     $searcher->browse;
 
+    my $facets_ref = $searcher->get_facets;
+    
     my $nav;
     my $recordlist = OpenBib::RecordList::Title->new;
     
@@ -276,6 +278,7 @@ sub show_collection {
     # den einzeltreffern
 
     $self->param('nav',$nav);
+    $self->param('facets',$facets_ref);
     $self->param('recordlist',$recordlist);
     $self->param('hits',$searcher->get_resultcount);
     $self->param('total_hits',$self->param('total_hits')+$searcher->get_resultcount);
@@ -283,6 +286,7 @@ sub show_collection {
     my $ttdata = {
         database    => $database,
         recordlist  => $recordlist,
+        facets      => $self->param('facets'),
         hits        => $self->param('hits'),
         nav         => $self->param('nav'),
     };

@@ -273,6 +273,7 @@
 
     
     body {
+        font-size:1.1rem;
 //	background-color: #c6af85;
     }
     body {
@@ -622,12 +623,12 @@
   }
    */
     .ob-item .ob-titlemark {
-	position: absolute;
+/*	position: absolute;
 	right:15px;
 	margin-bottom: 1rem;
 	padding-bottom: 1.5rem;
 	padding-right: 20px; 
-	padding-top: 47px;
+	padding-top: 47px; */
 /*  float: right;
        margin: -20px 5px 80px 120px;*/
     }
@@ -1254,11 +1255,15 @@
     padding-left: 5px;
     margin: 10px 10px -5px -3px;
 	/*    background: #41799e; */
-	color: #000;
+	padding: 5px;
+	padding-left: 10px;
+	margin-top: 20px;
+	color: #fff;
+	margin-bottom: 30px;
+	background-color: #3e566c;
 	/*    border-radius: 2px; */
 	font-size: 1.4em;
 	font-weight: bold;
-	padding-bottom: 10px;
 
 	border-radius: .25rem;
 	-moz-box-shadow: 5px 5px 2px #888;

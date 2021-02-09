@@ -6,6 +6,7 @@ thisrecord = {
     nachname = userinfo.nachname,
     title = userinfo.mixed_bag.bag_title.0,
     institution = userinfo.mixed_bag.bag_institution.0,
+    access = userinfo.mixed_bag.bag_access.0,
     society = userinfo.mixed_bag.bag_society.0,
     society_no = userinfo.mixed_bag.bag_society_no.0,
     user_role = user_role,

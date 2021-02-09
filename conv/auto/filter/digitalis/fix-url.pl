@@ -3,17 +3,21 @@
 use JSON::XS;
 use YAML;
 
-my %positive_id = ();
+my %cdm_id  = ();
+my %digitalis_id = ();
 
 open(POSITIVLISTE,"/opt/openbib/autoconv/pools/digitalis/digitalis.xml");
 
 while(<POSITIVLISTE>){
     if (/<katkey>(\d+)<\/katkey>/){
-	$positive_id{$1} = 1;
+	$cdm_id{$1} = 1;
     }    
 }
 
 close(POSITIVLISTE);
+
+open(CDMIDS,">/opt/openbib/autoconv/pools/digitalis/cdm-missing-inst137-ids.txt");
+open(INSTIDS,">/opt/openbib/autoconv/pools/digitalis/inst137-missing-cdm-ids.txt");
 
 while (<>){
     my $title_ref = decode_json $_;
@@ -25,10 +29,16 @@ while (<>){
     if (defined $title_ref->{fields}{'0662'}){
         foreach my $item_ref (@{$title_ref->{fields}{'0662'}}){
             if ($item_ref->{content}=~m/digitalis/){
-		if ($positive_id{$id}){
+		
+		$digitalis_id{$id} = 1;
+
+		if ($cdm_id{$id}){
+		    # Replace Link
 		    $item_ref->{content}="https://www.ub.uni-koeln.de/permalink/db/digitalis/id/$id";
 		}
 		else {
+		    print INSTIDS $id,":",$item_ref->{content},"\n";
+		    
 		    $skip_title=1;
 		}
             }
@@ -41,3 +51,11 @@ while (<>){
     
     print encode_json $title_ref, "\n";
 }
+
+foreach my $cdmid (keys %cdm_id){
+    if (!defined $digitalis_id{$cdmid} || !$digitalis_id{$cdmid}){
+	print CDMIDS $cdmid,"\n";
+    }
+}
+
+close(CDMIDS);

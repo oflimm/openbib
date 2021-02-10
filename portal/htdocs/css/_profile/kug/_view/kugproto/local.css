@@ -252,7 +252,7 @@
     #ob-sidebar {
 	background-color: #fff;
 	min-width: 320px;
-/*	max-width: 320px; */
+	max-width: 400px;
 	height: 100vh;
 	position: fixed;
 	top: 0;
@@ -675,13 +675,24 @@
     }
 
     .ob-item .ob-titleactions {
-	float:right;
-	padding-top: 2px;
-	padding-bottom: 2px;
-	padding-right: 5px;
+	white-space: nowrap;
+	margin-bottom: 1rem;
+	height: 45px;
+	padding-top: 0.2rem;
+	padding-bottom: 0.5rem;
 	/*       display: none;  */
     }
 
+    .ob-item .ob-titleactions btn {
+	height: auto;
+	/*       display: none;  */
+    }
+
+    .ob-titleactions .btn-light, .ob-titleactions .btn-light:hover  {
+	color: #000;
+	/*       display: none;  */
+    }
+    
     .ob-item:hover {
 	/*    margin-left: -3px;		/**/
 	margin-left: -3px;	            
@@ -1786,6 +1797,11 @@ a.ext {
 
 .ob-titleimage a {
 
+}
+
+.ob-availability {
+    padding-top: 0.2rem;
+    padding-bottom: 0.5rem;
 }
 
 .ob-availability_online {

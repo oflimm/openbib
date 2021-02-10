@@ -122,26 +122,26 @@ $(document).ready(function(){
 <div class="d-flex ob-fulltitle_actions">
 
    <div class="pr-1">
-         <a  class="btn btn-primary" ic-transform-response="return incollection();" ic-get-from="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img class="ob-collection-image" src="[% config.get_icon('listofinterest_small',view,sysprofile) %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /><span class="d-none d-sm-inline">[% msg.maketext("Merken") %]</span></a>
+         <a  class="btn btn-light" ic-transform-response="return incollection();" ic-get-from="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><i class="fas fa-star"></i> <span class="d-none d-sm-inline">[% msg.maketext("Merken") %]</span></a>
   </div>
 
 	    <div class="pr-3">
-	      <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/to_bibsonomy" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy"><img src="[% config.get_icon('share_small',view,sysprofile) %]" alt="Share this"/><span class="d-none d-sm-inline">BibSonomy</span></a>
+	      <a class="btn btn-light" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/to_bibsonomy" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy"><i class="fas fa-share-alt"></i> <span class="d-none d-sm-inline">BibSonomy</span></a>
 	    </div>       
 
 <div class="pr-1">
-  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#apaModal">[% msg.maketext("APA Zitat") %]</button>
+  <button type="button" class="btn btn-light" data-toggle="modal" data-target="#apaModal">[% msg.maketext("APA") %] <span class="d-none d-sm-inline">[% msg.maketext("Zitat") %]</span></button>
 </div>
 <div class="pr-1">
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#harvardModal">[% msg.maketext("Harvard Zitat") %]</button>
+<button type="button" class="btn btn-light" data-toggle="modal" data-target="#harvardModal">[% msg.maketext("Harvard") %] <span class="d-none d-sm-inline">[% msg.maketext("Zitat") %]</span></button>
 </div>
 <div class="pr-1">
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mlaModal">[% msg.maketext("MLA Zitat") %]</button>
+<button type="button" class="btn btn-light" data-toggle="modal" data-target="#mlaModal">[% msg.maketext("MLA") %] <span class="d-none d-sm-inline">[% msg.maketext("Zitat") %]</span></button>
 </div>
 
 
 <div class="pr-1">
-    <button class="btn btn-primary sidebar-toggler" type="button" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-arrow-right"></i> [% msg.maketext("Mehr") %]</button>
+    <button class="btn btn-light sidebar-toggler" type="button" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-arrow-right"></i> [% msg.maketext("Mehr") %]</button>
 </div>
 
 
@@ -294,7 +294,7 @@ value="5"/>&nbsp;[% msg.maketext("sehr gut") %]</td></tr>
 <textarea class="form-control" id="review_text" cols="80" rows="10" name="review"></textarea>
 </div>
 
-<button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Aufnehmen") %]</button>&nbsp;&nbsp;<button class="btn btn-primary mb-2" type="reset">[% msg.maketext("Löschen") %]</button>
+<button class="btn btn-light mb-2" type="submit">[% msg.maketext("Aufnehmen") %]</button>&nbsp;&nbsp;<button class="btn btn-light mb-2" type="reset">[% msg.maketext("Löschen") %]</button>
 
 </form>
 [% END %]

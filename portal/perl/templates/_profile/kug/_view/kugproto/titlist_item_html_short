@@ -349,14 +349,14 @@ $(document).ready(function(){
           <div class="d-flex ob-titleactions">
 [% IF record.id && record.database %]
             <div class="pr-1">
-	 <a class="btn btn-light pr-2" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %]" alt="[% title %]" title="[% title %]"><img src="[% config.get_icon('details',view,sysprofile) %]" alt="[% msg.maketext("Details") %]" /><span class="d-none d-sm-inline">Details</span></a>
+	 <a class="btn btn-light pr-2" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %]" alt="[% title %]" title="[% title %]"><i class="fas fa-ellipsis-h"></i> <span class="d-none d-sm-inline">Details</span></a>
             </div>
 [% IF NOT with_cartitems_delete %]
 	    <div class="pr-1">
-              <a  class="btn btn-light pr-2" ic-transform-response="return incollection();" ic-get-from="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img class="ob-collection-image" src="[% config.get_icon('listofinterest_small',view,sysprofile) %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /><span class="d-none d-sm-inline">[% msg.maketext("Merken") %]</span></a>
+              <a  class="btn btn-light pr-2" ic-transform-response="return incollection();" ic-get-from="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><i class="fas fa-star"></i> <span class="d-none d-sm-inline">[% msg.maketext("Merken") %]</span></a>
 	    </div>
 	    <div class="pr-1">
-	      <a class="btn btn-light pr-2" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/to_bibsonomy" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy"><img src="[% config.get_icon('share_small',view,sysprofile) %]" alt="Share this"/><span class="d-none d-sm-inline">BibSonomy</span></a>
+	      <a class="btn btn-light pr-2" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/to_bibsonomy" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy"><i class="fas fa-share-alt"></i> <span class="d-none d-sm-inline">BibSonomy</span></a>
 	    </div>       
 [% END %]
 

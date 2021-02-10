@@ -688,6 +688,11 @@
 	/*       display: none;  */
     }
 
+    .ob-fulltitle_actions .btn-light, .ob-fulltitle_actions .btn-light:hover  {
+	color: #000;
+	/*       display: none;  */
+    }
+
     .ob-titleactions .btn-light, .ob-titleactions .btn-light:hover  {
 	color: #000;
 	/*       display: none;  */

@@ -32,7 +32,6 @@
 
 <div class="table-responsive">
 <table class="table table-striped table-hover ob-title_fields">
-<tr><th class="ob-field">id</th><td>[% record.id %]</td></tr>
 
 [%-
 
@@ -334,9 +333,6 @@ END;
 -%]
 [%- IF currently_unavailable -%]
 <tr><th class="ob-field">[% msg.maketext("Volltext")%]</th><td>derzeit nicht verf&uuml;gbar (z.B. noch im Erwerbungsvorgang)</td></tr>
-[%- END -%]
-[%- IF bibkey -%]
-<tr><th class="ob-field">bibkey</th><td>[% bibkey %]</td></tr>
 [%- END -%]
 </table>
 [% ELSIF format == "BibTeX" %]

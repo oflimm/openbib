@@ -8,6 +8,17 @@
     footer img {
 	max-width: 100%;
     }
+
+    .ob-title {
+	font-size: 1.5em;
+    }
+    
+    .ob-item-fulltitle {
+	padding-left: 4px;
+    }
+
+    .ob-item-fulltitle active {
+    }
     
     /* cloudzoom*/
 

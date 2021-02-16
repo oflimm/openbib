@@ -108,11 +108,29 @@
 	padding-right: 10px;
     }
 
-/*
-    a, a:hover{
+
+    a, a:hover {
+	text-decoration-color: #253746;;
+	text-decoration-thickness: .125em;
+	text-underline-offset: 1.5px;
+	text-decoration-style: solid;
+	
 	color: #253746;
     }
-*/
+
+    .ob-person {
+	display: block; /* line-break after */
+    }
+    
+    .ob-person a {
+	text-decoration-color: #253746;;
+	text-decoration-thickness: .125em;
+	text-underline-offset: 1.5px;
+	text-decoration-style: solid;
+	text-decoration: underline;
+	color: #253746;
+    }
+    
     #ob-maincontent {
 	padding-left: 25px;
     }

@@ -13,7 +13,6 @@
 -%]
 [%- PROCESS common/subtemplate name="local_config" -%] 
 
-TEST
 Sehr geehrter Nutzer,
 
 sie haben sich heute im Portal "[% config.get_viewdesc_from_viewname(view) %]" selbst registriert.

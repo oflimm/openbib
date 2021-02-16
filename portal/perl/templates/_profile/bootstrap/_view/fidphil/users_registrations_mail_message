@@ -19,7 +19,7 @@ sie haben sich soeben im Portal des FID Philosophie registriert.
 
 Ihre Registrierung wird wirksam, wenn Sie den folgenden URL aufrufen: fid
 
-http://abondant.ub.uni-koeln.de/confirm/[% registrationid %]
+[% portal_url %]/confirm/[% registrationid %]
 
 Mit freundlichen Gruessen
 

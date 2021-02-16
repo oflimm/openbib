@@ -218,14 +218,6 @@ sub mail_confirmation {
 		      path_prefix    => $self->param('path_prefix'),
 		     };
 
-    my $sysprofile= $config->get_profilename_of_view($view);
-    my $maintemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
-        database     => '', # Template ist nicht datenbankabhaengig
-        view         => $view,
-        profile      => $sysprofile,
-        templatename => $config->{tt_users_registrations_mail_message_tname},
-    });
-    
     my $maintemplate = Template->new({
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
             INCLUDE_PATH   => $config->{tt_include_path},
@@ -240,7 +232,7 @@ sub mail_confirmation {
         OUTPUT        => $afile,
     });
 
-    $maintemplate->process($maintemplatename, $mainttdata ) || do { 
+    $maintemplate->process($config->{tt_users_registrations_mail_message_tname}, $mainttdata ) || do { 
         $logger->error($maintemplate->error());
         $self->header_add('Status','400'); # Server Error
         return;

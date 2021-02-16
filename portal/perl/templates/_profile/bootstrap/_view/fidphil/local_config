@@ -14,7 +14,6 @@
 -%]
 [%-
   
-  portal_url = "http://abondant.ub.uni-koeln.de"
   
   view_config = {
        "inst001" = {

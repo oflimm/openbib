@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::PSGI::Extensions::FidPhil::Users::Registrations;
+package OpenBib::Handler::PSGI::Users::Registrations;
 
 use strict;
 use warnings;
@@ -67,57 +67,6 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
-sub show {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    # Dispatched Args
-    my $view           = $self->param('view')           || '';
-
-    # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');    
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
-    
-    # CGI Args
-    my $action              = ($query->param('action'))?$query->param('action'):'none';
-    my $targetid            = ($query->param('targetid'))?$query->param('targetid'):'none';
-    my $username            = ($query->param('username'))?$query->param('username'):'';
-    my $password1           = ($query->param('password1'))?$query->param('password1'):'';
-    my $password2           = ($query->param('password2'))?$query->param('password2'):'';
-    my $recaptcha_challenge = $query->param('recaptcha_challenge_field');
-    my $recaptcha_response  = $query->param('recaptcha_response_field');
-
-    
-    my $recaptcha = Captcha::reCAPTCHA->new;
-
-    # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
-    # Client-IP setzen
-    my $client_ip="";
-    
-    if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
-        $client_ip=$1;
-    }
-
-    # TT-Data erzeugen
-    my $ttdata={
-        recaptcha  => $recaptcha,
-        
-        lang       => $queryoptions->get_option('l'),
-    };
-    
-    return $self->print_page($config->{tt_users_registrations_tname},$ttdata);
-}
-
 sub mail_confirmation {
     my $self = shift;
 
@@ -139,13 +88,11 @@ sub mail_confirmation {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $result_ref = { success => 0, };
-    
     # CGI Args
     my $username            = ($query->param('username'))?$query->param('username'):'';
+    my $portal_url            = ($query->param('portal_url'))?$query->param('portal_url'):'';
     my $password1           = ($query->param('password1'))?$query->param('password1'):'';
     my $password2           = ($query->param('password2'))?$query->param('password2'):'';
-    my $wp_home        = ($query->param('wp_home'))?$query->param('wp_home'):'';
     my $recaptcha_challenge = $query->param('recaptcha_challenge_field');
     #my $recaptcha_response  = $query->param('recaptcha_response_field');
     my $recaptcha_response  = $query->param('g-recaptcha-response');
@@ -219,9 +166,18 @@ sub mail_confirmation {
 		      scheme         => $self->param('scheme'),
 		      servername     => $self->param('servername'),
 		      path_prefix    => $self->param('path_prefix'),
-              wp_home        => $wp_home,
+              portal_url     => $portal_url   
 		     };
 
+    #notwendig um das richtige Template zu finden
+    my $sysprofile= $config->get_profilename_of_view($view);
+    my $maintemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
+        database     => '', # Template ist nicht datenbankabhaengig
+        view         => $view,
+        profile      => $sysprofile,
+        templatename => $config->{tt_users_registrations_mail_message_tname},
+    });
+    
     my $maintemplate = Template->new({
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
             INCLUDE_PATH   => $config->{tt_include_path},
@@ -236,12 +192,11 @@ sub mail_confirmation {
         OUTPUT        => $afile,
     });
 
- 
-    $maintemplate->process($config->{tt_users_registrations_mail_message_tname}, $mainttdata ) || do { 
-         $logger->error($maintemplate->error());
+    $maintemplate->process($maintemplatename, $mainttdata ) || do { 
+        $logger->error($maintemplate->error());
         $self->header_add('Status','400'); # Server Error
-         return;
-     };
+        return;
+    };
 
     my $mailmsg = MIME::Lite->new(
         From            => $config->{contact_email},
@@ -258,95 +213,26 @@ sub mail_confirmation {
 	Path            => $anschfile,
     );
     
-    #$mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config->{contact_email}");
+     $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config->{contact_email}");
     # TT-Data erzeugen
     my $ttdata={
         username      => $username,
-        wp_home    => $wp_home,
     };
-    
-    $result_ref->{success} = 1;
-    $result_ref->{registrationkey}  = $registrationid;
-    return $self->print_json($result_ref);
 
     return $self->print_page($config->{tt_users_registrations_confirmation_tname},$ttdata);
 }
 
-sub register {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
+sub get_input_definition {
+    my $self=shift;
     
-    # Dispatched Args
-    my $view           = $self->param('view')           || '';
-    my $registrationid = $self->strip_suffix($self->param('registrationid')) || '';
-
-    # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');    
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
-    
-
-    my $client_ip = "";
-    # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
-    # Client-IP setzen
-    if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
-        $client_ip = $1; # $r->connection->remote_ip($1);
-    }
-
-    # ab jetzt ist klar, dass es den Benutzer noch nicht gibt.
-    # Jetzt eintragen und session mit dem Benutzer assoziieren;
-
-    my $confirmation_info_ref = $user->get_confirmation_request({registrationid => $registrationid});
-
-    my $username         = $confirmation_info_ref->{username};
-    my $hashed_password  = $confirmation_info_ref->{password};
-    my $viewid           = $confirmation_info_ref->{viewid};
-    
-    if ($username && $viewid && $hashed_password){
-
-	my $authenticator_self_ref = $config->get_authenticator_self;
-	
-	
-	# Wurde dieser Nutzername inzwischen bereits registriert?
-	if ($user->user_exists_in_view({ username => $username, viewid => $viewid, authenticatorid => $authenticator_self_ref->{id} })) {
-	    return $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"));
-	}
-	
-	# OK, neuer Nutzer -> eintragen
-	$user->add({
-	    username         => $username,
-	    hashed_password  => $hashed_password,
-	    viewid           => $viewid,
-	    email            => $username,
-	    authenticatorid  => $authenticator_self_ref->{id},
-		   });
-	
-	# An dieser Stelle darf zur Bequemlichkeit der Nutzer die Session 
-	# nicht automatisch mit dem Nutzer verknuepft werden (=automatische
-	# Anmeldung), dann dann ueber das Ausprobieren von Registrierungs-IDs 
-	# Nutzer-Identitaeten angenommen werden koennten.
-	
-	$user->clear_confirmation_request({ registrationid => $registrationid });
-    }
-    else {
-      return $self->print_warning($msg->maketext("Diese Registrierungs-ID existiert nicht für dieses Portal."));
-    }
-
-    # TT-Data erzeugen
-    my $ttdata={
-        username   => $username,
+    return {
+        portal_url => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
     };
-
-    return $self->print_page($config->{tt_users_registrations_success_tname},$ttdata);
 }
+
 
 1;

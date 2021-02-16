@@ -54,10 +54,8 @@ use base 'OpenBib::Handler::PSGI';
 sub setup {
     my $self = shift;
 
-    $self->start_mode('show');
+    $self->start_mode('mail_confirmation');
     $self->run_modes(
-        'show'              => 'show',
-        'register'          => 'register',
         'mail_confirmation' => 'mail_confirmation',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );

@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::PSGI::Users::Registrations
+#  OpenBib::Handler::PSGI::Extensions::FidPhil::Users::Registrations;
 #
 #  Dieses File ist (C) 2004-2019 Oliver Flimm <flimm@openbib.org>
 #

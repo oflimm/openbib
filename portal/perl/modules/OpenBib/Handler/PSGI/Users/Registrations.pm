@@ -143,7 +143,6 @@ sub mail_confirmation {
     my $username            = ($query->param('username'))?$query->param('username'):'';
     my $password1           = ($query->param('password1'))?$query->param('password1'):'';
     my $password2           = ($query->param('password2'))?$query->param('password2'):'';
-    my $portal_url          = ($query->param('wp_base'))?$query->param('wp_base'):'';
     my $recaptcha_challenge = $query->param('recaptcha_challenge_field');
     #my $recaptcha_response  = $query->param('recaptcha_response_field');
     my $recaptcha_response  = $query->param('g-recaptcha-response');
@@ -217,17 +216,8 @@ sub mail_confirmation {
 		      scheme         => $self->param('scheme'),
 		      servername     => $self->param('servername'),
 		      path_prefix    => $self->param('path_prefix'),
-              portal_url     => $portal_url   
 		     };
 
-    my $sysprofile= $config->get_profilename_of_view($view);
-    my $maintemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
-        database     => '', # Template ist nicht datenbankabhaengig
-        view         => $view,
-        profile      => $sysprofile,
-        templatename => $config->{tt_users_registrations_mail_message_tname},
-    });
-    
     my $maintemplate = Template->new({
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
             INCLUDE_PATH   => $config->{tt_include_path},
@@ -242,7 +232,7 @@ sub mail_confirmation {
         OUTPUT        => $afile,
     });
 
-    $maintemplate->process($maintemplatename, $mainttdata ) || do { 
+    $maintemplate->process($config->{tt_users_registrations_mail_message_tname}, $mainttdata ) || do { 
         $logger->error($maintemplate->error());
         $self->header_add('Status','400'); # Server Error
         return;

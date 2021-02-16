@@ -90,7 +90,7 @@ sub mail_confirmation {
 
     # CGI Args
     my $username            = ($query->param('username'))?$query->param('username'):'';
-    my $portal_url            = ($query->param('portal_url'))?$query->param('portal_url'):'';
+    my $portal_url          = ($query->param('wp_base'))?$query->param('wp_base'):'';
     my $password1           = ($query->param('password1'))?$query->param('password1'):'';
     my $password2           = ($query->param('password2'))?$query->param('password2'):'';
     my $recaptcha_challenge = $query->param('recaptcha_challenge_field');

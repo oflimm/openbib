@@ -382,6 +382,7 @@ sub authenticate {
         return $self->redirect($redirecturl);
     }
     else {
+        $result_ref->{reason} = $userid;
         return $self->print_json($result_ref);        
     }
     

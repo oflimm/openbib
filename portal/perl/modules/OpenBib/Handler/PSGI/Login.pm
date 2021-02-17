@@ -251,10 +251,10 @@ sub authenticate {
     # -4: user does not exist
     my $failure_codes ={};
     $failure_codes->{0} = 'unspecified';
-    $failure_codes->{-1} = 'unspecified';
-    $failure_codes->{-2} = 'unspecified';
-    $failure_codes->{-3} = 'unspecified';
-    $failure_codes->{-4} = 'unspecified';
+    $failure_codes->{-1} = 'no username and/or password';
+    $failure_codes->{-2} = 'max_login_failure reached';
+    $failure_codes->{-3} = 'wrong password';
+    $failure_codes->{-4} = 'user does not exist';
     
     if ($username eq "" || $password eq "") {
         $redirecturl="$path_prefix/$config->{login_loc}/failure?code=-1";

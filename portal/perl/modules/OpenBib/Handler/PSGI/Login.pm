@@ -249,6 +249,12 @@ sub authenticate {
     # -2: max_login_failure reached
     # -3: wrong password
     # -4: user does not exist
+    my $failure_codes ={};
+    $failure_codes->{'0'} = 'unspecified';
+    $failure_codes->{'-1'} = 'unspecified';
+    $failure_codes->{'-2'} = 'unspecified';
+    $failure_codes->{'-3'} = 'unspecified';
+    $failure_codes->{'-4'} = 'unspecified';
     
     if ($username eq "" || $password eq "") {
         $redirecturl="$path_prefix/$config->{login_loc}/failure?code=-1";
@@ -383,6 +389,7 @@ sub authenticate {
     }
     else {
         $result_ref->{reason} = $userid;
+        $result_ref->{message} = $failure_codes->{"$userid"};
         return $self->print_json($result_ref);        
     }
     

@@ -240,4 +240,118 @@ sub mail_confirmation {
     return $self->print_page($config->{tt_users_registrations_confirmation_tname},$ttdata);
 }
 
+sub register {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    # Dispatched Args
+    my $view           = $self->param('view')           || '';
+    my $registrationid = $self->strip_suffix($self->param('registrationid')) || '';
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+    
+
+    my $client_ip = "";
+    # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
+    # Client-IP setzen
+    if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
+        $client_ip = $1; # $r->connection->remote_ip($1);
+    }
+
+     my $result_ref = {
+        success => 0,
+    };
+    # ab jetzt ist klar, dass es den Benutzer noch nicht gibt.
+    # Jetzt eintragen und session mit dem Benutzer assoziieren;
+
+    my $confirmation_info_ref = $user->get_confirmation_request({registrationid => $registrationid});
+
+    my $username         = $confirmation_info_ref->{username};
+    my $hashed_password  = $confirmation_info_ref->{password};
+    my $viewid           = $confirmation_info_ref->{viewid};
+    
+    if ($username && $viewid && $hashed_password){
+
+	my $authenticator_self_ref = $config->get_authenticator_self;
+	
+	
+	# Wurde dieser Nutzername inzwischen bereits registriert?
+	if ($user->user_exists_in_view({ username => $username, viewid => $viewid, authenticatorid => $authenticator_self_ref->{id} })) {
+	    my $code   = -1;
+	    my $reason = $self->get_error_message($code);
+        if ($self->param('representation') eq "html"){
+         return $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"));
+	    }else {
+         $result_ref->{reason} = $msg->maketext($reason,"$username" );
+	     $result_ref->{errorcode} = $code;
+	    return $self->print_json($result_ref);    
+        }
+	}
+	
+	# OK, neuer Nutzer -> eintragen
+	$user->add({
+	    username         => $username,
+	    hashed_password  => $hashed_password,
+	    viewid           => $viewid,
+	    email            => $username,
+	    authenticatorid  => $authenticator_self_ref->{id},
+		   });
+	
+	# An dieser Stelle darf zur Bequemlichkeit der Nutzer die Session 
+	# nicht automatisch mit dem Nutzer verknuepft werden (=automatische
+	# Anmeldung), dann dann ueber das Ausprobieren von Registrierungs-IDs 
+	# Nutzer-Identitaeten angenommen werden koennten.
+	
+	$user->clear_confirmation_request({ registrationid => $registrationid });
+    }
+    else {
+        my $code   = -2;
+	    my $reason = $self->get_error_message($code);
+        if ($self->param('representation') eq "html"){
+         return $self->print_warning($reason, $code);
+	    }else {
+         $result_ref->{reason} = $msg->maketext($reason,"$username" );
+	     $result_ref->{errorcode} = $code;
+	    return $self->print_json($result_ref);    
+        }
+    }
+    # TT-Data erzeugen
+    my $ttdata={
+        username   => $username,
+    };
+
+    return $self->print_page($config->{tt_users_registrations_success_tname},$ttdata);
+}
+
+sub get_error_message {
+    my $self=shift;
+    my $errorcode=shift;
+
+    my $msg            = $self->param('msg');
+
+    my %messages = (
+        -1 => $msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits."),
+        -2 => $msg->maketext("Diese Registrierungs-ID existiert nicht für dieses Portal."),
+    );
+    my $unspecified = $msg->maketext("Unspezifischer Fehler-Code");
+    if (defined $messages{$errorcode} && $messages{$errorcode}){
+	  return $messages{$errorcode}
+    }
+    else {
+	  return $unspecified;
+    }
+}
+
 1;

@@ -77,6 +77,7 @@ sub setup {
 
     $self->start_mode('mail_confirmation');
     $self->run_modes(
+        'register' => 'register',
         'mail_confirmation' => 'mail_confirmation',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );

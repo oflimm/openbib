@@ -162,7 +162,7 @@ sub mail_confirmation {
         if ($self->param('representation') eq "html"){
           return $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"));
         }else {
-         $result_ref->{reason} = $msg->maketext($reason,"$username" );
+         $result_ref->{reason} = $msg->maketext($reason);
 	     $result_ref->{errorcode} = $code;
 	     return $self->print_json($result_ref);
         }    
@@ -302,7 +302,7 @@ sub register {
 	# Wurde dieser Nutzername inzwischen bereits registriert?
 	if ($user->user_exists_in_view({ username => $username, viewid => $viewid, authenticatorid => $authenticator_self_ref->{id} })) {
 	    my $code   = -1;
-	    my $reason = $self->get_error_message($code);
+	    my $reason = $self->get_error_message($code, $username);
         if ($self->param('representation') eq "html"){
          return $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"));
 	    }else {

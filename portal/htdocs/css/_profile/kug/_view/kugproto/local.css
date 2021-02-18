@@ -8,6 +8,17 @@
     footer img {
 	max-width: 100%;
     }
+
+    .ob-title {
+	font-size: 1.2em;
+    }
+    
+    .ob-item-fulltitle {
+	padding-left: 4px;
+    }
+
+    .ob-item-fulltitle active {
+    }
     
     /* cloudzoom*/
 
@@ -18,7 +29,19 @@
 	-webkit-box-shadow: 10px 10px 5px #888;
 	box-shadow: 10px 10px 5px #888;
     }
+
+    /* Feldbezeichnungsspalte: fit to content */
+    table.ob-title_fields th {
+	white-space: nowrap;
+	width: 1%;
+    }
+
     
+    table.ob-normdata_fields th {
+	white-space: nowrap;
+	width: 1%;
+    }
+
    /* Modal scrolling?? 
     .modal {
     overflow-x: hidden;
@@ -97,11 +120,29 @@
 	padding-right: 10px;
     }
 
-/*
-    a, a:hover{
+
+    a, a:hover {
+	text-decoration-color: #253746;;
+	text-decoration-thickness: .125em;
+	text-underline-offset: 1.5px;
+	text-decoration-style: solid;
+	
 	color: #253746;
     }
-*/
+
+    .ob-person {
+	display: block; /* line-break after */
+    }
+    
+    .ob-person a {
+	text-decoration-color: #253746;;
+	text-decoration-thickness: .125em;
+	text-underline-offset: 1.5px;
+	text-decoration-style: solid;
+	text-decoration: underline;
+	color: #253746;
+    }
+    
     #ob-maincontent {
 	padding-left: 25px;
     }
@@ -252,7 +293,7 @@
     #ob-sidebar {
 	background-color: #fff;
 	min-width: 320px;
-/*	max-width: 320px; */
+	max-width: 400px;
 	height: 100vh;
 	position: fixed;
 	top: 0;
@@ -675,13 +716,29 @@
     }
 
     .ob-item .ob-titleactions {
-	float:right;
-	padding-top: 2px;
-	padding-bottom: 2px;
-	padding-right: 5px;
+	white-space: nowrap;
+	margin-bottom: 1rem;
+	height: 45px;
+	padding-top: 0.2rem;
+	padding-bottom: 0.5rem;
 	/*       display: none;  */
     }
 
+    .ob-item .ob-titleactions btn {
+	height: auto;
+	/*       display: none;  */
+    }
+
+    .ob-fulltitle_actions .btn-light, .ob-fulltitle_actions .btn-light:hover  {
+	color: #000;
+	/*       display: none;  */
+    }
+
+    .ob-titleactions .btn-light, .ob-titleactions .btn-light:hover  {
+	color: #000;
+	/*       display: none;  */
+    }
+    
     .ob-item:hover {
 	/*    margin-left: -3px;		/**/
 	margin-left: -3px;	            
@@ -1786,6 +1843,11 @@ a.ext {
 
 .ob-titleimage a {
 
+}
+
+.ob-availability {
+    padding-top: 0.2rem;
+    padding-bottom: 0.5rem;
 }
 
 .ob-availability_online {

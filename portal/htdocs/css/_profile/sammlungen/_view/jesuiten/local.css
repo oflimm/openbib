@@ -171,6 +171,15 @@
 
     }
 
+    #ob-startpage .card-body h4.card-subtitle {
+	height:70px; !important;
+    }
+
+    #ob-startpage .card-body .card-text {
+	height:130px; !important;
+    }
+
+    
     .ob-bg {
 	background-color:  #3e566c;
     }

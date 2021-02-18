@@ -201,12 +201,15 @@ sub authenticate {
     }
 
     if (!$authenticator_is_valid){
-	my $reason = $msg->maketext("Ihre Kennung ist nicht zur Nutzung dieses Portals zugelassen. Wrong authenticator");
+	my $code   = -6;
+	my $reason = $self->get_error_message($code);
+	
 	if ($self->param('representation') eq "html"){
 	    return $self->print_warning($reason);
 	}
 	else {
 	    $result_ref->{reason} = $reason;
+	    $result_ref->{errorcode} = $code;
 	    return $self->print_json($result_ref);        
 	}
     }
@@ -218,12 +221,15 @@ sub authenticate {
 	# Ablehnung, wenn Nutzer nicht zu den Berechtigten fuer den View gehoeren, dann Meldung
 
 	if (!$user->can_access_view($view)){
-	    my $reason = $msg->maketext("Ihre Kennung ist nicht zur Nutzung dieses Portals zugelassen. Cannot access view");
+	    my $code   = -5;
+	    my $reason = $self->get_error_message($code);
+
 	    if ($self->param('representation') eq "html"){
 		return $self->print_warning($reason);
 	    }
 	    else {
 		$result_ref->{reason} = $reason;
+		$result_ref->{errorcode} = $code;
 		return $self->print_json($result_ref);        
 	    }
 	}
@@ -249,9 +255,15 @@ sub authenticate {
     # -2: max_login_failure reached
     # -3: wrong password
     # -4: user does not exist
+    # -5: view denied
+    # -6: wrong authenticator
+    # -7: username is no email
     
     if ($username eq "" || $password eq "") {
         $redirecturl="$path_prefix/$config->{login_loc}/failure?code=-1";
+	
+	my $code   = -1;
+	my $reason = $self->get_error_message($code);
 	
 	if ($self->param('representation') eq "html"){
 	    $logger->debug("Redirecting to $redirecturl");
@@ -261,6 +273,8 @@ sub authenticate {
 	    return $self->redirect($redirecturl);
 	}
 	else {
+	    $result_ref->{reason} = $reason;
+	    $result_ref->{errorcode} = $code;
 	    return $self->print_json($result_ref);        
 	}
     }
@@ -270,7 +284,20 @@ sub authenticate {
     # Konsistenzchecks
     { 
 	if ($authenticator->get('type') eq "self" && $username ne "admin" && $username !~/\@/){
-	    return $self->print_warning($msg->maketext("Bitte melden Sie sich mit Ihrer registrierten E-Mail-Adresse an"));
+
+	    my $code   = -7;
+	    my $reason = $self->get_error_message($code);
+	    
+	    if ($self->param('representation') eq "html"){
+		
+		return $self->print_warning($reason,$code);
+	    }
+	    else {
+		$result_ref->{reason} = $reason;
+		$result_ref->{errorcode} = $code;
+		return $self->print_json($result_ref);        
+	    }
+	    
 	}
     }
 
@@ -284,77 +311,87 @@ sub authenticate {
         $logger->debug("Authentication successful");
 	
 	$user->update_lastlogin({ userid => $userid });
-	
+
         $result_ref->{success} = 1;
+	$result_ref->{authenticatorid} = $authenticatorid;
         $result_ref->{userid}  = $userid;
         
-        if ($self->param('representation') eq "html"){
-	    my $authorized_user = new OpenBib::User({ ID => $userid, config => $config});
-	    if (!$authorized_user->can_access_view($view)){
-		my $reason = $msg->maketext("Ihre Kennung ist nicht zur Nutzung dieses Portals zugelassen.");
-		if ($self->param('representation') eq "html"){
-		    return $self->print_warning($reason);
-		}
-		else {
-		    $result_ref->{reason} = $reason;
-		    $result_ref->{success} = 0;
-		    
-		    return $self->print_json($result_ref);        
-		}
+
+	my $authorized_user = new OpenBib::User({ ID => $userid, config => $config});
+	if (!$authorized_user->can_access_view($view)){
+	    
+	    my $code   = -5;
+	    my $reason = $self->get_error_message($code);
+	    
+	    if ($self->param('representation') eq "html"){
+		return $self->print_warning($reason,$code);
+	    }
+	    else {
+		$result_ref->{reason} = $reason;
+		$result_ref->{errorcode} = $code;
+		$result_ref->{success} = 0;
+		
+		return $self->print_json($result_ref);        
+	    }
+	}
+	
+	# Jetzt wird die Session mit der Benutzerid assoziiert
+	
+	$user->connect_session({
+	    sessionID        => $session->{ID},
+	    userid           => $userid,
+	    authenticatorid  => $authenticatorid,
+			       });
+	
+	$result_ref->{sessionID} = $session->{ID};
+	
+	# Falls noch keins da ist, eintragen
+	if (!$user->searchfields_exist($userid)) {
+	    $user->set_default_searchfields($userid);
+	}
+	
+	if (!$user->livesearch_exists($userid)) {
+	    $user->set_default_livesearch($userid);
+	}
+	
+	# Jetzt wird die bestehende Trefferliste uebernommen.
+	# Gehe ueber alle Eintraege der Trefferliste
+
+	if ($self->param('representation') eq "html"){
+
+	    $logger->debug("Session connected, defaults for searchfields/livesearch set");
+	    
+	    my $recordlist_existing_collection = $session->get_items_in_collection();
+	    
+	    if ($logger->is_debug){
+		$logger->debug("Items in Session: ".YAML::Dump($recordlist_existing_collection));
 	    }
 	    
-            # Jetzt wird die Session mit der Benutzerid assoziiert
-            
-            $user->connect_session({
-                sessionID        => $session->{ID},
-                userid           => $userid,
-                authenticatorid  => $authenticatorid,
-            });
-            
-            # Falls noch keins da ist, eintragen
-            if (!$user->searchfields_exist($userid)) {
-                $user->set_default_searchfields($userid);
-            }
-            
-            if (!$user->livesearch_exists($userid)) {
-                $user->set_default_livesearch($userid);
-            }
-            
-            # Jetzt wird die bestehende Trefferliste uebernommen.
-            # Gehe ueber alle Eintraege der Trefferliste
-            
-            $logger->debug("Session connected, defaults for searchfields/livesearch set");
-            
-            my $recordlist_existing_collection = $session->get_items_in_collection();
-            
-            if ($logger->is_debug){
-                $logger->debug("Items in Session: ".YAML::Dump($recordlist_existing_collection));
-            }
-            
-            foreach my $record (@{$recordlist_existing_collection->to_list}){
-                if ($logger->is_debug){
-                    $logger->debug("Adding item to personal collection of user $userid: ".YAML::Dump($record));
-                }
-                
-                $user->move_cartitem_to_user({
-                    userid => $userid,
-                    itemid => $record->{listid},
-                });
-            }
-            
-            $logger->debug("Added recently collected title");
-            
-            # Bestimmen des Recherchemasken-Typs
-            my $masktype = $user->get_mask($userid);
-            
-            $session->set_mask($masktype);
-            
-            $redirecturl
-                = "$path_prefix/$config->{users_loc}/id/$userid/preferences.html?l=$lang";
-            
-            if ($scheme eq "https"){
-                $redirecturl ="https://$servername$redirecturl";
-            }
+	    foreach my $record (@{$recordlist_existing_collection->to_list}){
+		if ($logger->is_debug){
+		    $logger->debug("Adding item to personal collection of user $userid: ".YAML::Dump($record));
+		}
+		
+		$user->move_cartitem_to_user({
+		    userid => $userid,
+		    itemid => $record->{listid},
+					     });
+	    }
+	    
+	    $logger->debug("Added recently collected title");
+	    
+	    # Bestimmen des Recherchemasken-Typs
+	    my $masktype = $user->get_mask($userid);
+	    
+	    $session->set_mask($masktype);
+	}
+	
+	$redirecturl
+	    = "$path_prefix/$config->{users_loc}/id/$userid/preferences.html?l=$lang";
+	
+	if ($scheme eq "https"){
+	    $redirecturl ="https://$servername$redirecturl";
+	    
         }
     }
     
@@ -366,6 +403,18 @@ sub authenticate {
     # Fehlerbehandlung
     if ($userid <= 0) {
         $redirecturl="$path_prefix/$config->{login_loc}/failure?code=$userid";
+
+	my $code   = $userid;
+	my $reason = $self->get_error_message($code);
+
+	if ($self->param('representation') ne "html"){
+	    
+	    $result_ref->{reason} = $reason;
+	    $result_ref->{errorcode} = $code;
+	    $result_ref->{success} = 0;
+	    
+	    return $self->print_json($result_ref);
+	}
     }
     
     if ($self->param('representation') eq "html"){
@@ -376,7 +425,7 @@ sub authenticate {
         return $self->redirect($redirecturl);
     }
     else {
-        return $self->print_json($result_ref);        
+	return $self->print_json($result_ref);
     }
     
 }
@@ -420,22 +469,41 @@ sub failure {
         return;
     }
 
-    if    ($code eq "-1") {
-        return $self->print_warning($msg->maketext("Sie haben entweder kein Passwort oder keinen Benutzernamen eingegeben"));
-    }
-    elsif ($code eq "-2") {
-        return $self->print_warning($msg->maketext("Die Anmeldung mit Ihrem angegebenen Benutzernamen und Passwort ist zu oft fehlgeschlagen. Das Account ist gesperrt. Bitte fordern Sie ein neues Passwort über 'Passwort vergessen' an."));
-    }
-    elsif ($code eq "-3") {
+    return $self->print_warning($self->get_error_message($code),$code);
+}
+
+sub get_error_message {
+    my $self=shift;
+    my $errorcode=shift;
+
+    my $msg            = $self->param('msg');
+
+    my %messages = (
+
+        -1 => $msg->maketext("Sie haben entweder kein Passwort oder keinen Benutzernamen eingegeben"),
+
+        -2 => $msg->maketext("Die Anmeldung mit Ihrem angegebenen Benutzernamen und Passwort ist zu oft fehlgeschlagen. Das Account ist gesperrt. Bitte fordern Sie ein neues Passwort über 'Passwort vergessen' an."),
+
 	# wrong password
-        return $self->print_warning($msg->maketext("Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht erfolgreich authentifiziert werden"));
-    }
-    elsif ($code eq "-4") {
+        -3 => $msg->maketext("Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht erfolgreich authentifiziert werden"),
+
 	# user does not exist
-        return $self->print_warning($msg->maketext("Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht erfolgreich authentifiziert werden"));
+        -4 => $msg->maketext("Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht erfolgreich authentifiziert werden"),
+
+	-5 => $msg->maketext("Ihre Kennung ist nicht zur Nutzung dieses Portals zugelassen."),
+
+	-6 => $msg->maketext("Ihre Kennung ist nicht zur Nutzung dieses Portals zugelassen. Wrong authenticator"),
+
+	-7 => $msg->maketext("Bitte melden Sie sich mit Ihrer registrierten E-Mail-Adresse an"), 
+	);
+
+    my $unspecified = $msg->maketext("Unspezifischer Fehler-Code");
+
+    if (defined $messages{$errorcode} && $messages{$errorcode}){
+	return $messages{$errorcode}
     }
     else {
-        return $self->print_warning($msg->maketext("Unspezifischer Fehler-Code"));
+	return $unspecified;
     }
 }
 

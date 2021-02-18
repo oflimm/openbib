@@ -35,7 +35,13 @@
 	white-space: nowrap;
 	width: 1%;
     }
+
     
+    table.ob-normdata_fields th {
+	white-space: nowrap;
+	width: 1%;
+    }
+
    /* Modal scrolling?? 
     .modal {
     overflow-x: hidden;

@@ -251,17 +251,8 @@ sub cgiapp_init {
     my $msg = OpenBib::L10N->get_handle($self->param('lang')) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
     $self->param('msg',$msg);
-    
-    # Trennung der Zugangskontrolle zwischen API (funktioniert immer fuer ein Portal) und Endnutzern (Webbrowser benoetigt Login)
-    if ($self->param('representation') eq "html" && !$user->can_access_view($view,$remote_ip)){
-	my $scheme = ($config->get('use_https'))?'https':$self->param('scheme');
-	
-	my $redirect_to = $scheme."://".$self->param('servername').$self->param('url');
-	
-	my $dispatch_url = $scheme."://".$self->param('servername').$self->param('path_prefix')."/".$config->get('login_loc')."?l=".$self->param('lang').";redirect_to=".uri_escape($redirect_to);
-	
-	$logger->debug("force_login URLs: $redirect_to - ".$self->param('url')." - ".$dispatch_url);
-	
+
+    if (!$user->can_access_view($view,$remote_ip)){
 	my @always_allowed_paths = (
 	    $self->param('path_prefix')."/".$config->get('login_loc'),
 	    $self->param('path_prefix')."/".$config->get('logout_loc'),
@@ -279,13 +270,26 @@ sub cgiapp_init {
 	    }
 	}
 	
-	if ($do_dispatch){
-	    $self->param('dispatch_url',$dispatch_url);
+	# Trennung der Zugangskontrolle zwischen API und Endnutzern
+	if ($self->param('representation') eq "html"){
+	    my $scheme = ($config->get('use_https'))?'https':$self->param('scheme');
+	    
+	    my $redirect_to = $scheme."://".$self->param('servername').$self->param('url');
+	    
+	    my $dispatch_url = $scheme."://".$self->param('servername').$self->param('path_prefix')."/".$config->get('login_loc')."?l=".$self->param('lang').";redirect_to=".uri_escape($redirect_to);
+	    
+	    $logger->debug("force_login URLs: $redirect_to - ".$self->param('url')." - ".$dispatch_url);
+	    
+	    if ($do_dispatch){
+		$self->param('dispatch_url',$dispatch_url);
+	    }
 	}
-    }
-    elsif (!$user->can_access_view($view,$remote_ip)){
-	$self->param('default_runmode','show_warning');
-	$self->param('warning_message',$msg->maketext("Zugriff verweigert."));
+	else {
+	    if (!$do_dispatch){
+		$self->param('default_runmode','show_warning');
+		$self->param('warning_message',$msg->maketext("Zugriff verweigert."));
+	    }
+	}
     }
     
     if ($config->{benchmark}) {

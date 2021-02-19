@@ -285,7 +285,7 @@ sub cgiapp_init {
 	    }
 	}
 	else {
-	    if (!$do_dispatch){
+	    if ($do_dispatch){
 		$self->param('default_runmode','show_warning');
 		$self->param('warning_message',$msg->maketext("Zugriff verweigert."));
 	    }

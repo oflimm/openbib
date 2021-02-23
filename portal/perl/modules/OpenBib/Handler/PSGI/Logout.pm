@@ -109,12 +109,24 @@ sub show {
     $session->clear_data();
   
     # Dann loeschen der Session in der Datenbank
-  
-    # TT-Data erzeugen
-    my $ttdata={
-    };
-  
-    return $self->print_page($config->{tt_logout_tname},$ttdata);
+
+    if ($self->param('representation') eq "html"){
+    
+	# TT-Data erzeugen
+	my $ttdata={
+	};
+	
+	return $self->print_page($config->{tt_logout_tname},$ttdata);
+    }
+    else {
+	# Bei einem stateless API Zugriff interessieren nur angemeldete Nutzer
+	if ($user->{ID}) {
+	    return $self->print_json({ success => 1 });
+	}
+	else {
+	    return $self->print_json({ success => 0 });
+	}
+    }
 }
 
 1;

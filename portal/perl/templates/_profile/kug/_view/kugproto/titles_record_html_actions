@@ -376,56 +376,6 @@ $(document).ready(function(){
 [% END %]
 <!-- Ende Literaturlisten -->
 
-[%# USE dumper;dumper.dump(normdata) %]
-<!-- Anfang Verschlagwortung in anderen Katalogen -->
-[% more_subjects = [] ;
-   subject_done  = {};
-
-   FOREACH category IN ["T0710","T0902","T0907","T0912","T0917","T0922","T0927","T0932","T0937","T0942","T0947"];
-     FOREACH item IN normdata.$category;
-       subject_done.${item.content} = 1;
-     END;
-   END ;
-
-   FOREACH item IN normdata.${"T4300"};
-      NEXT IF subject_done.${item.content} == 1;
-      more_subjects.push(item.content);
-      subject_done.${item.content} = 1;
-   END;
-%]
-
-[%# USE dumper;dumper.dump(more_subjects)%]
-[% IF more_subjects.size > 0 %]
-<div id="ob-available_subjects" class="accordion"><!-- Begin Vorhandene Schlagworte -->
-
-  <div class="card">
-    <div class="card-header" id="headingAvailableSubjects">
-      <h5 class="mb-0">
-        <a class="card-link" href="#collapseAvailableSubjects" data-toggle="collapse" data-target="#collapseAvailableSubjects" aria-expanded="false" aria-controls="collapseAvailableSubjects">
-          [% msg.maketext("Verschlagwortung dieses Titels in anderen Katalogen") %]
-        </a>
-      </h5>
-    </div>
-
-    <div id="collapseAvailableSubjects" class="collapse" aria-labelledby="headingAvailableSubjects" data-parent="#ob-available_subjects">
-      <div class="card-body">
-<p/>
-<ul>
-[% FOREACH thiscontent IN more_subjects.sort;
-
-      localurl    = "${path_prefix}/${config.get('search_loc')}.html?l=${lang};profile=${searchprofileid_of_view};ft4300=${uri_escape(thiscontent)}";
-      content     = "<a href=\"${localurl}\">${thiscontent}</a>";
-%]
-<li>[% content %]</li>
-[%- END -%]
-</ul>
-<p/>
-</div>
-</div>
-</div>
-</div>
-[% END %]
-<!-- Ende Verschlagwortung in anderen Katalogen -->
 
 <!-- Anfang Tags -->
 

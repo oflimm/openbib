@@ -69,15 +69,15 @@ use OpenBib::QueryOptions;
 use OpenBib::Session;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::PSGI';
+use base 'OpenBib::Handler::PSGI::Users::Registrations';
 
 # Run at startup
 sub setup {
     my $self = shift;
 
-    $self->start_mode('mail_confirmation');
+    $self->start_mode('show');
     $self->run_modes(
-        'register' => 'register',
+        'register'          => 'register',
         'mail_confirmation' => 'mail_confirmation',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
@@ -108,11 +108,16 @@ sub mail_confirmation {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
+    # CGI / JSON input
+    my $input_data_ref    = $self->parse_valid_input();
+    my $username          = $input_data_ref->{username};
+    my $password1         = $input_data_ref->{password1};
+    my $password2         = $input_data_ref->{password2};
+
     # CGI Args
-    my $username            = ($query->param('username'))?$query->param('username'):'';
-    my $password1           = ($query->param('password1'))?$query->param('password1'):'';
-    my $password2           = ($query->param('password2'))?$query->param('password2'):'';
-    my $portal_url          = ($query->param('wp_base'))?$query->param('wp_base'):'';
+    #my $username            = ($query->param('username'))?$query->param('username'):'';
+    #my $password1           = ($query->param('password1'))?$query->param('password1'):'';
+    #my $password2           = ($query->param('password2'))?$query->param('password2'):'';
     my $recaptcha_challenge = $query->param('recaptcha_challenge_field');
     #my $recaptcha_response  = $query->param('recaptcha_response_field');
     my $recaptcha_response  = $query->param('g-recaptcha-response');
@@ -122,65 +127,94 @@ sub mail_confirmation {
 	    $logger->debug("$qparam -> ".$query->param($qparam));
 	}
     }
-     my $result_ref = {
+
+    my $result_ref = {
         success => 0,
     };
-    my $recaptcha = Captcha::reCAPTCHA->new;
-
-    # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
-    # Client-IP setzen
-    # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
-    # Client-IP setzen
-    my $client_ip="";
-    
-    if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
-        $client_ip=$1;
-    }
 
     # Cleanup Username
     $username=~s/^\s+//g;
     $username=~s/\s+$//g;
     
     if ($username eq "" || $password1 eq "" || $password2 eq "") {
-        return $self->print_warning($msg->maketext("Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"));
+        my $code   = -1;
+	    my $reason = $self->get_error_message($code);
+        if ($self->param('representation') eq "html"){
+          return $self->print_warning($msg->maketext("Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"),-1);
+        }else{
+          $result_ref->{reason} = $reason;
+	      $result_ref->{errorcode} = $code;
+	      return $self->print_json($result_ref);   
+        }
     }
-
+    
     if ($password1 ne $password2) {
-        return $self->print_warning($msg->maketext("Die beiden eingegebenen Passworte stimmen nicht überein."));
+        my $code   = -2;
+	    my $reason = $self->get_error_message($code);
+        if ($self->param('representation') eq "html"){
+          return $self->print_warning($msg->maketext("Die beiden eingegebenen Passworte stimmen nicht überein."),-2);
+        }else{
+          $result_ref->{reason} = $reason;
+	      $result_ref->{errorcode} = $code;
+	      return $self->print_json($result_ref);   
+        }
     }
     
     # Ueberpruefen, ob es eine gueltige Mailadresse angegeben wurde.
     unless (Email::Valid->address($username)){
-        return $self->print_warning($msg->maketext("Sie haben keine gültige Mailadresse eingegeben. Gehen Sie bitte [_1]zurück[_2] und korrigieren Sie Ihre Eingabe","<a href=\"$path_prefix/$config->{users_loc}/$config->{registrations_loc}\">","</a>"));
+        my $code   = -3;
+	    my $reason = $self->get_error_message($code);
+        if ($self->param('representation') eq "html"){
+          return $self->print_warning($msg->maketext("Sie haben keine gültige Mailadresse eingegeben. Gehen Sie bitte [_1]zurück[_2] und korrigieren Sie Ihre Eingabe","<a href=\"$path_prefix/$config->{users_loc}/$config->{registrations_loc}\">","</a>"),-3);
+        }else{
+          $result_ref->{reason} = $reason;
+	      $result_ref->{errorcode} = $code;
+	      return $self->print_json($result_ref);   
+        }
     }
 
     my $authenticator_self_ref = $config->get_authenticator_self;
     
     if ($user->user_exists_in_view({ username => $username, viewname => $view, authenticatorid => $authenticator_self_ref->{id}})) {
-        my $code   = -1;
-	    my $reason = $self->get_error_message($code, $username);
+        my $code   = -4;
+	    my $reason = $self->get_error_message($code);
         if ($self->param('representation') eq "html"){
-          return $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"));
-        }else {
-         $result_ref->{reason} = $msg->maketext($reason);
-	     $result_ref->{errorcode} = $code;
-	     return $self->print_json($result_ref);
-        }    
-    }
-       
-    # Recaptcha nur verwenden, wenn Zugriffsinformationen vorhanden sind
-    if ($config->{recaptcha_private_key}){
-        # Recaptcha pruefen
-        my $recaptcha_result = $recaptcha->check_answer_v2(
-            $config->{recaptcha_private_key}, $recaptcha_response, $client_ip
-        );
-        
-        unless ( $recaptcha_result->{is_valid} ) {
-            return $self->print_warning($msg->maketext("Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte [_1]zurück[_2] und versuchen Sie es erneut.","<a href=\"$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"));
+          return $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"),-4);
+        }else{
+          $result_ref->{reason} = $reason;
+	      $result_ref->{errorcode} = $code;
+	      return $self->print_json($result_ref);   
         }
     }
 
+    
+    # Viewadmin darf ueber das ohne Captcha Nutzer registrieren
+
+    if (!$user->is_admin && !$user->is_viewadmin){
+	my $recaptcha = Captcha::reCAPTCHA->new;
+	
+	# Wenn der Request ueber einen Proxy kommt, dann urspruengliche
+	# Client-IP setzen
+	my $client_ip="";
+	
+	if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
+	    $client_ip=$1;
+	}
+		
+	# Recaptcha nur verwenden, wenn Zugriffsinformationen vorhanden sind
+	if ($config->{recaptcha_private_key}){
+	    # Recaptcha pruefen
+	    my $recaptcha_result = $recaptcha->check_answer_v2(
+		$config->{recaptcha_private_key}, $recaptcha_response, $client_ip
+		);
+	    
+	    unless ( $recaptcha_result->{is_valid} ) {
+		return $self->print_warning($msg->maketext("Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte [_1]zurück[_2] und versuchen Sie es erneut.","<a href=\"$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"));
+	    }
+	}
+    }
     $result_ref->{success} = 1;
+    
     my $registrationid = $user->add_confirmation_request({username => $username, password => $password1, viewname => $view});
 
     # Bestaetigungsmail versenden
@@ -197,17 +231,8 @@ sub mail_confirmation {
 		      scheme         => $self->param('scheme'),
 		      servername     => $self->param('servername'),
 		      path_prefix    => $self->param('path_prefix'),
-              portal_url     => $portal_url   
 		     };
 
-    my $sysprofile= $config->get_profilename_of_view($view);
-    my $maintemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
-        database     => '', # Template ist nicht datenbankabhaengig
-        view         => $view,
-        profile      => $sysprofile,
-        templatename => $config->{tt_users_registrations_mail_message_tname},
-    });
-    
     my $maintemplate = Template->new({
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
             INCLUDE_PATH   => $config->{tt_include_path},
@@ -222,7 +247,18 @@ sub mail_confirmation {
         OUTPUT        => $afile,
     });
 
-    $maintemplate->process($maintemplatename, $mainttdata ) || do { 
+    $mainttdata = $self->add_default_ttdata($mainttdata);
+    
+    my $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
+        database     => '', # Template ist nicht datenbankabhaengig
+        view         => $mainttdata->{view},
+        profile      => $mainttdata->{sysprofile},
+        templatename => $config->{tt_users_registrations_mail_message_tname},
+    });
+
+    $logger->debug("Using base Template $templatename");
+    
+    $maintemplate->process($templatename, $mainttdata ) || do { 
         $logger->error($maintemplate->error());
         $self->header_add('Status','400'); # Server Error
         return;
@@ -246,10 +282,17 @@ sub mail_confirmation {
      $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config->{contact_email}");
     # TT-Data erzeugen
     my $ttdata={
-        username      => $username,
+	registrationid => $registrationid,
+        username       => $username,
     };
-
-    return $self->print_page($config->{tt_users_registrations_confirmation_tname},$ttdata);
+    if ($self->param('representation') eq "html"){
+        # TODO GET?
+        $self->header_add('Content-Type' => 'text/html');
+        return $self->print_page($config->{tt_users_registrations_confirmation_tname},$ttdata);
+    }
+    else {
+	  return $self->print_json($result_ref);
+    }
 }
 
 sub register {
@@ -282,9 +325,6 @@ sub register {
         $client_ip = $1; # $r->connection->remote_ip($1);
     }
 
-     my $result_ref = {
-        success => 0,
-    };
     # ab jetzt ist klar, dass es den Benutzer noch nicht gibt.
     # Jetzt eintragen und session mit dem Benutzer assoziieren;
 
@@ -301,15 +341,7 @@ sub register {
 	
 	# Wurde dieser Nutzername inzwischen bereits registriert?
 	if ($user->user_exists_in_view({ username => $username, viewid => $viewid, authenticatorid => $authenticator_self_ref->{id} })) {
-	    my $code   = -1;
-	    my $reason = $self->get_error_message($code, $username);
-        if ($self->param('representation') eq "html"){
-         return $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"));
-	    }else {
-         $result_ref->{reason} = $reason;
-	     $result_ref->{errorcode} = $code;
-	    return $self->print_json($result_ref);    
-        }
+	    return $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"));
 	}
 	
 	# OK, neuer Nutzer -> eintragen
@@ -329,16 +361,9 @@ sub register {
 	$user->clear_confirmation_request({ registrationid => $registrationid });
     }
     else {
-        my $code   = -2;
-	    my $reason = $self->get_error_message($code);
-        if ($self->param('representation') eq "html"){
-         return $self->print_warning($reason, $code);
-	    }else {
-         $result_ref->{reason} = $msg->maketext($reason,"$username" );
-	     $result_ref->{errorcode} = $code;
-	    return $self->print_json($result_ref);    
-        }
+      return $self->print_warning($msg->maketext("Diese Registrierungs-ID existiert nicht für dieses Portal."));
     }
+
     # TT-Data erzeugen
     my $ttdata={
         username   => $username,
@@ -350,21 +375,48 @@ sub register {
 sub get_error_message {
     my $self=shift;
     my $errorcode=shift;
-    my $username=shift;
 
     my $msg            = $self->param('msg');
 
     my %messages = (
-        -1 => $msg->maketext("Ein Benutzer mit dem Namen $username existiert bereits."),
-        -2 => $msg->maketext("Diese Registrierungs-ID existiert nicht für dieses Portal."),
-    );
+        -1 => $msg->maketext("Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"),
+        -2 => $msg->maketext("Die beiden eingegebenen Passworte stimmen nicht überein."),
+	# wrong password
+        -3 => $msg->maketext("Sie haben keine gültige Mailadresse eingegeben."),
+	# user does not exist
+        -4 => $msg->maketext("Ein Benutzer mit diesem Namen existiert bereits"),
+	);
+
     my $unspecified = $msg->maketext("Unspezifischer Fehler-Code");
+
     if (defined $messages{$errorcode} && $messages{$errorcode}){
-	  return $messages{$errorcode}
+	return $messages{$errorcode}
     }
     else {
-	  return $unspecified;
+	return $unspecified;
     }
+}
+
+sub get_input_definition {
+    my $self=shift;
+    
+    return {
+        username => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        password1 => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        password2 => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+    };
 }
 
 1;

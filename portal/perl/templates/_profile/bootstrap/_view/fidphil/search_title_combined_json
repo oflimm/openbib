@@ -190,5 +190,12 @@
      filter = searchquery.get_filter
 
    };
-    to_json(search_result);
+
+
+IF user.get_roles_of_user.admin || user.get_roles_of_user.viewadmin;
+  to_json(search_result);
+ELSE;
+  search_result = {results = []};
+  to_json(search_result);
+END;
 %]

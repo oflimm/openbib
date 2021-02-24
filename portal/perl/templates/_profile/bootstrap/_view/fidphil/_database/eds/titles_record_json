@@ -57,7 +57,6 @@ END;
 
 thisrecord.locations = item_locations_out;
 
-testdata = user.get_roles_of_user.admin;
 
 IF user.get_roles_of_user.admin || user.get_roles_of_user.viewadmin;
   to_json(thisrecord);

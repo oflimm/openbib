@@ -353,6 +353,7 @@ sub register {
 	    $result_ref->{errorcode} = $code;
 	    return $self->print_json($result_ref);   
     }
+    }
 	
 	# OK, neuer Nutzer -> eintragen
 	$user->add({

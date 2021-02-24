@@ -328,6 +328,9 @@ sub register {
     # ab jetzt ist klar, dass es den Benutzer noch nicht gibt.
     # Jetzt eintragen und session mit dem Benutzer assoziieren;
 
+    my $result_ref = {
+        success => 0,
+    };    
     my $confirmation_info_ref = $user->get_confirmation_request({registrationid => $registrationid});
 
     my $username         = $confirmation_info_ref->{username};
@@ -339,10 +342,17 @@ sub register {
 	my $authenticator_self_ref = $config->get_authenticator_self;
 	
 	
-	# Wurde dieser Nutzername inzwischen bereits registriert?
+    # Wurde dieser Nutzername inzwischen bereits registriert?
 	if ($user->user_exists_in_view({ username => $username, viewid => $viewid, authenticatorid => $authenticator_self_ref->{id} })) {
-	    return $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"));
-	}
+	    my $code   = -4;
+	    my $reason = $self->get_error_message($code);
+        if ($self->param('representation') eq "html"){
+          return $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"));
+        }else{
+        $result_ref->{reason} = $reason;
+	    $result_ref->{errorcode} = $code;
+	    return $self->print_json($result_ref);   
+    }
 	
 	# OK, neuer Nutzer -> eintragen
 	$user->add({
@@ -361,15 +371,30 @@ sub register {
 	$user->clear_confirmation_request({ registrationid => $registrationid });
     }
     else {
-      return $self->print_warning($msg->maketext("Diese Registrierungs-ID existiert nicht für dieses Portal."));
+      my $code   = -5;
+	  my $reason = $self->get_error_message($code);
+      if ($self->param('representation') eq "html"){
+        return $self->print_warning($msg->maketext("Diese Registrierungs-ID existiert nicht für dieses Portal."));
+      }else{
+        $result_ref->{reason} = $reason;
+	    $result_ref->{errorcode} = $code;
+	    return $self->print_json($result_ref); 
+      }
     }
+    $result_ref->{success} = 1;
 
     # TT-Data erzeugen
     my $ttdata={
         username   => $username,
     };
-
-    return $self->print_page($config->{tt_users_registrations_success_tname},$ttdata);
+    if ($self->param('representation') eq "html"){
+        # TODO GET?
+        $self->header_add('Content-Type' => 'text/html');
+        return $self->print_page($config->{tt_users_registrations_success_tname},$ttdata);
+    }
+    else {
+	  return $self->print_json($result_ref);
+    }
 }
 
 sub get_error_message {
@@ -381,10 +406,9 @@ sub get_error_message {
     my %messages = (
         -1 => $msg->maketext("Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"),
         -2 => $msg->maketext("Die beiden eingegebenen Passworte stimmen nicht überein."),
-	# wrong password
         -3 => $msg->maketext("Sie haben keine gültige Mailadresse eingegeben."),
-	# user does not exist
         -4 => $msg->maketext("Ein Benutzer mit diesem Namen existiert bereits"),
+        -5 => $msg->maketext("Diese Registrierungs-ID existiert nicht für dieses Portal."),
 	);
 
     my $unspecified = $msg->maketext("Unspezifischer Fehler-Code");

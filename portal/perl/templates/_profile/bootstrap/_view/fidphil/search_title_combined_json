@@ -191,13 +191,7 @@
 
    };
 
+  
 
-   [%IF%]
    to_json(search_result);
-   [%ELSE%]
-   emptyresult = {results = []}
-   to_json(emptyresult);
-   [%END%]
-    
-
 %]

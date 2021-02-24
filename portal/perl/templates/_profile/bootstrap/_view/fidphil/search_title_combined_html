@@ -18,6 +18,8 @@ searchdata = "${searchquery.get_searchtermstring()}";
 
 -%]
 
+[%IF user.get_roles_of_user.admin || user.get_roles_of_user.viewadmin%]
+  
 [%- PROCESS common/subtemplate name="local_config" -%]
 
 <style>
@@ -62,3 +64,6 @@ ic-on-complete="$('#indicatorTab').hide();">
     </button>
   </div>
 </div>
+[%ELSE%]
+  <div></div>
+[%END%]

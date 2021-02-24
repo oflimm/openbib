@@ -56,7 +56,7 @@ FOREACH item_location IN item_locations ;
 END;
 
 thisrecord.locations = item_locations_out;
-
+[% IF userid == 28 %]
 to_json(thisrecord);
-
+[%END%]
 -%]

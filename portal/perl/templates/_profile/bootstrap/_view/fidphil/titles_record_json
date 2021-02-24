@@ -56,7 +56,15 @@ FOREACH item_location IN item_locations ;
 END;
 
 thisrecord.locations = item_locations_out;
-[% IF userid == 28 %]
-to_json(thisrecord);
-[%END%]
+
+testdata = user.get_roles_of_user.admin;
+
+IF user.get_roles_of_user.admin || user.get_roles_of_user.viewadmin;
+  thisrecord = {results = []};
+  to_json(thisrecord);
+ELSE;
+  to_json(thisrecord);
+END;
+
+
 -%]

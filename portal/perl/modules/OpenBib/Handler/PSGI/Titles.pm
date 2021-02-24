@@ -457,7 +457,7 @@ sub show_record {
 #            qopts       => $queryoptions->get_options,
             queryid     => $searchquery->get_id,
             record      => $record,
-            titleid      => $titleid,
+            titleid     => $titleid,
             user        => $user, 
             format      => $format,
 

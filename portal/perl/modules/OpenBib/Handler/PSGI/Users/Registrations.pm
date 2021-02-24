@@ -152,54 +152,57 @@ sub mail_confirmation {
 	    $logger->debug("$qparam -> ".$query->param($qparam));
 	}
     }
-    
-    my $recaptcha = Captcha::reCAPTCHA->new;
-
-    # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
-    # Client-IP setzen
-    # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
-    # Client-IP setzen
-    my $client_ip="";
-    
-    if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
-        $client_ip=$1;
-    }
 
     # Cleanup Username
     $username=~s/^\s+//g;
     $username=~s/\s+$//g;
     
     if ($username eq "" || $password1 eq "" || $password2 eq "") {
-        return $self->print_warning($msg->maketext("Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"));
+        return $self->print_warning($msg->maketext("Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"),-1);
     }
-
+    
     if ($password1 ne $password2) {
-        return $self->print_warning($msg->maketext("Die beiden eingegebenen Passworte stimmen nicht überein."));
+        return $self->print_warning($msg->maketext("Die beiden eingegebenen Passworte stimmen nicht überein."),-2);
     }
     
     # Ueberpruefen, ob es eine gueltige Mailadresse angegeben wurde.
     unless (Email::Valid->address($username)){
-        return $self->print_warning($msg->maketext("Sie haben keine gültige Mailadresse eingegeben. Gehen Sie bitte [_1]zurück[_2] und korrigieren Sie Ihre Eingabe","<a href=\"$path_prefix/$config->{users_loc}/$config->{registrations_loc}\">","</a>"));
+        return $self->print_warning($msg->maketext("Sie haben keine gültige Mailadresse eingegeben. Gehen Sie bitte [_1]zurück[_2] und korrigieren Sie Ihre Eingabe","<a href=\"$path_prefix/$config->{users_loc}/$config->{registrations_loc}\">","</a>"),-3);
     }
 
     my $authenticator_self_ref = $config->get_authenticator_self;
     
     if ($user->user_exists_in_view({ username => $username, viewname => $view, authenticatorid => $authenticator_self_ref->{id}})) {
-        return $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"));
-    }
-    
-    # Recaptcha nur verwenden, wenn Zugriffsinformationen vorhanden sind
-    if ($config->{recaptcha_private_key}){
-        # Recaptcha pruefen
-        my $recaptcha_result = $recaptcha->check_answer_v2(
-            $config->{recaptcha_private_key}, $recaptcha_response, $client_ip
-        );
-        
-        unless ( $recaptcha_result->{is_valid} ) {
-            return $self->print_warning($msg->maketext("Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte [_1]zurück[_2] und versuchen Sie es erneut.","<a href=\"$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"));
-        }
+        return $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"),-4);
     }
 
+    
+    # Viewadmin darf ueber das ohne Captcha Nutzer registrieren
+
+    if (!$user->is_admin && !$user->is_viewadmin){
+	my $recaptcha = Captcha::reCAPTCHA->new;
+	
+	# Wenn der Request ueber einen Proxy kommt, dann urspruengliche
+	# Client-IP setzen
+	my $client_ip="";
+	
+	if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
+	    $client_ip=$1;
+	}
+		
+	# Recaptcha nur verwenden, wenn Zugriffsinformationen vorhanden sind
+	if ($config->{recaptcha_private_key}){
+	    # Recaptcha pruefen
+	    my $recaptcha_result = $recaptcha->check_answer_v2(
+		$config->{recaptcha_private_key}, $recaptcha_response, $client_ip
+		);
+	    
+	    unless ( $recaptcha_result->{is_valid} ) {
+		return $self->print_warning($msg->maketext("Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte [_1]zurück[_2] und versuchen Sie es erneut.","<a href=\"$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"));
+	    }
+	}
+    }
+    
     my $registrationid = $user->add_confirmation_request({username => $username, password => $password1, viewname => $view});
 
     # Bestaetigungsmail versenden
@@ -232,7 +235,18 @@ sub mail_confirmation {
         OUTPUT        => $afile,
     });
 
-    $maintemplate->process($config->{tt_users_registrations_mail_message_tname}, $mainttdata ) || do { 
+    $mainttdata = $self->add_default_ttdata($mainttdata);
+    
+    my $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
+        database     => '', # Template ist nicht datenbankabhaengig
+        view         => $mainttdata->{view},
+        profile      => $mainttdata->{sysprofile},
+        templatename => $config->{tt_users_registrations_mail_message_tname},
+    });
+
+    $logger->debug("Using base Template $templatename");
+    
+    $maintemplate->process($templatename, $mainttdata ) || do { 
         $logger->error($maintemplate->error());
         $self->header_add('Status','400'); # Server Error
         return;
@@ -258,7 +272,8 @@ sub mail_confirmation {
 
     # TT-Data erzeugen
     my $ttdata={
-        username      => $username,
+	registrationid => $registrationid,
+        username       => $username,
     };
 
     return $self->print_page($config->{tt_users_registrations_confirmation_tname},$ttdata);

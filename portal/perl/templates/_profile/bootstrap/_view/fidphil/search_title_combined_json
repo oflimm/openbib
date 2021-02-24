@@ -190,8 +190,5 @@
      filter = searchquery.get_filter
 
    };
-
-  
-
-   to_json(search_result);
+    to_json(search_result);
 %]

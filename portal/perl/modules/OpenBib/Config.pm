@@ -227,6 +227,23 @@ sub get_number_of_all_dbs {
     return $alldbs;
 }
 
+sub get_viewname_by_id {
+    my $self   = shift;
+    my $viewid = shift;    
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # DBI: "select count(viewid) as rowcount from viewinfo where active is true"
+    my $viewinfo = $self->get_viewinfo->single({ id => $viewid });
+
+    if ($viewinfo){
+	return $viewinfo->viewname;
+    }
+
+    return;
+}
+    
 sub get_number_of_views {
     my $self = shift;
 
@@ -2659,6 +2676,20 @@ sub get_roleinfo {
     my $object = $self->get_schema->resultset('Roleinfo');
 
     return $object;
+}
+
+sub get_roleid_by_name {
+    my ($self,$rolename) = @_;
+
+    my $roleid;
+
+    my $thisrole = $self->get_roleinfo->single({ rolename => $rolename });
+
+    if ($thisrole){
+       return $thisrole->id;
+    }
+
+    return;
 }
 
 sub get_views_of_role {

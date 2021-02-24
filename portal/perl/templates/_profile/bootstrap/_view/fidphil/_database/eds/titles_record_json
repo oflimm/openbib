@@ -60,9 +60,9 @@ thisrecord.locations = item_locations_out;
 testdata = user.get_roles_of_user.admin;
 
 IF user.get_roles_of_user.admin || user.get_roles_of_user.viewadmin;
-  thisrecord = {results = []};
   to_json(thisrecord);
 ELSE;
+  thisrecord = {results = []};
   to_json(thisrecord);
 END;
 

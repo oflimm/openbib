@@ -48,7 +48,7 @@ use OpenBib::QueryOptions;
 use OpenBib::Session;
 use OpenBib::User;
 
-use base 'OpenBib::Handler::PSGI';
+use base 'OpenBib::Handler::PSGI::Users::Passwords';
 
 # Run at startup
 sub setup {
@@ -116,17 +116,39 @@ sub create_record {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
+    # CGI / JSON input
+    my $input_data_ref    = $self->parse_valid_input();
+    my $username          = $input_data_ref->{username};
+    
     # CGI Args
-    my $username  = ($query->param('username'))?$query->param('username'):'';
-
+    #my $username  = ($query->param('username'))?$query->param('username'):'';
+    my $result_ref = {
+        success => 0,
+    };
     my $loginfailed=0;
     
     if ($username eq "") {
-        return $self->print_warning($msg->maketext("Sie haben keine E-Mail Adresse eingegeben"));
+        my $code   = -1;
+	    my $reason = "Sie haben keine E-Mail Adresse eingegeben.";
+        if ($self->param('representation') eq "html"){
+           return $self->print_warning($msg->maketext("Sie haben keine E-Mail Adresse eingegeben"));
+        }else{
+          $result_ref->{reason} = $reason;
+	      $result_ref->{errorcode} = $code;
+	      return $self->print_json($result_ref);   
+        }
     }
 
     if (!$user->user_exists($username)) {
-        return $self->print_warning($msg->maketext("Dieser Nutzer ist nicht registriert."));
+        my $code   = -2;
+	    my $reason = "Dieser Nutzer ist nicht registriert.";
+        if ($self->param('representation') eq "html"){
+             return $self->print_warning($msg->maketext("Dieser Nutzer ist nicht registriert."));
+        }else{
+          $result_ref->{reason} = $reason;
+	      $result_ref->{errorcode} = $code;
+	      return $self->print_json($result_ref);   
+        }
     }
 
     # Zufaelliges 12-stelliges Passwort
@@ -137,13 +159,21 @@ sub create_record {
     my $userid = $user->get_userid_for_username($username, $view);
 
     if ($userid > 0){
-	$user->set_password({ userid => $userid, password => $password });
-	$user->reset_login_failure({ userid => $userid});
-    }
-    else {
-	return $self->print_warning($msg->maketext("Dieser Nutzer ist in diesem Portal nicht registriert."));
+	  $user->set_password({ userid => $userid, password => $password });
+	  $user->reset_login_failure({ userid => $userid});
+    }else {
+      my $code   = -3;
+	  my $reason = "Dieser Nutzer ist in diesem Portal nicht registriert.";
+      if ($self->param('representation') eq "html"){
+        return $self->print_warning($msg->maketext("Dieser Nutzer ist in diesem Portal nicht registriert."));
+      }else{
+        $result_ref->{reason} = $reason;
+	    $result_ref->{errorcode} = $code;
+	    return $self->print_json($result_ref);   
+      }
     }
     
+    $result_ref->{success} = 1;
     my $anschreiben="";
     my $afile = "an." . $$;
     
@@ -195,8 +225,26 @@ sub create_record {
     
     my $ttdata={
     };
+    if ($self->param('representation') eq "html"){
+        # TODO GET?
+        $self->header_add('Content-Type' => 'text/html');
+        return $self->print_page($config->{tt_users_passwords_success_tname},$ttdata);
+    }
+    else {
+	  return $self->print_json($result_ref);
+    }
+}
+
+sub get_input_definition {
+    my $self=shift;
     
-    return $self->print_page($config->{tt_users_passwords_success_tname},$ttdata);
+    return {
+        username => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+     };
 }
 
 1;

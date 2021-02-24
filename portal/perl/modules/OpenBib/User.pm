@@ -104,7 +104,8 @@ sub new {
         $logger->info("Total time for is ".timestr($timeall));
     }
 
-    $self->{_is_admin} = undef;
+    $self->{_is_admin}     = undef;
+    $self->{_is_viewadmin} = undef;
 
     return $self;
 }
@@ -855,6 +856,8 @@ sub add {
   
     my $logger = get_logger();
 
+    my $config = $self->get_config;
+    
     # DBI: "insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','',?,'','','','','')"
     my $new_user = $self->get_schema->resultset('Userinfo')->create({
 	creationdate    => \"NOW()", 
@@ -863,7 +866,7 @@ sub add {
         username        => $username,
         password        => $hashed_password,
         email           => $email,
-    });
+    });		
 
     if ($password){
         $new_user->update({ password => \"crypt('$password', gen_salt('bf'))" });
@@ -871,8 +874,36 @@ sub add {
     elsif ($hashed_password){
         $new_user->update({ password => $hashed_password });
     }
+
+    my $userid = $new_user->id;
+
+    my $viewname = $config->get_viewname_by_id($viewid);
+
+    my $auto_roles_ref = $config->get('auto_roles');
     
-    return $new_user->id;
+    if (defined $auto_roles_ref->{$viewname}){
+	foreach my $user_regexp (keys %{$auto_roles_ref->{$viewname}}){
+	    if ($username=~m/$user_regexp/){
+		foreach my $role (@{$auto_roles_ref->{$viewname}{$user_regexp}}){
+
+		    my $roleid = $config->get_roleid_by_name($role);
+
+		    next unless ($roleid);
+
+		    $logger->debug("Adding Role $role ($roleid) to user $userid automatically");
+		    
+		    $self->get_schema->resultset('UserRole')->create(
+			{
+			    userid => $userid,
+			    roleid => $roleid,
+			}
+			);
+		}
+	    }
+	}
+    }
+
+    return $userid;
 }
 
 sub set_password {
@@ -6588,6 +6619,49 @@ sub is_admin {
     $self->{_is_admin} = $count;
     
     return $self->{_is_admin};
+}
+
+sub is_viewadmin {
+    my ($self,$viewname)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if (defined $self->{_is_viewadmin}){
+	return 	$self->{_is_viewadmin};
+    }
+    
+    my $config = $self->get_config;
+
+    my $viewid = undef;
+
+    eval {
+	$viewid = $config->get_viewinfo->single({ viewname => $viewname })->id;
+    };
+    
+    if ($@){
+	$logger->error($@);
+    }
+    
+    # Sonst: Normale Nutzer mit der der Admin-Role
+    
+    # DBI: "select count(ur.userid) as rowcount from userrole as ur, role as r where ur.userid = ? and r.role = 'admin' and r.id=ur.roleid"
+    my $count = $self->get_schema->resultset('UserRole')->search(
+        {
+            'roleid.rolename' => 'viewadmin',
+		'userid.id'       => $self->{ID},
+		'userid.viewid'   => $viewid,
+		
+        },
+        {
+            join => ['roleid','userid'],
+        }
+    )->count;
+
+    
+    $self->{_is_viewadmin} = $count;
+    
+    return $self->{_is_viewadmin};
 }
 
 sub has_role {

@@ -191,8 +191,12 @@
 
    };
 
-   [% IF userid == 28 %]
-     to_json(thisrecord);
-[%END%]
+
+     to_json(search_result);
+   [%ELSE%]
+   emptyresult = {results = []}
+   to_json(emptyresult);
+   [%END%]
+    
 
 %]

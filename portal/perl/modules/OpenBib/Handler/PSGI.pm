@@ -1644,7 +1644,6 @@ sub parse_valid_input {
         eval {
             $input_data_ref = decode_json $json_input;
         };
-
         
         if ($@){
             $logger->error("Couldn't decode JSON POST-data");
@@ -1659,12 +1658,12 @@ sub parse_valid_input {
 	    if ($type eq "mixed_bag"){
 		my $param_prefix = $param;
 		
-                foreach my $qparam ($query->param){
-                    if ($qparam=~/^${param_prefix}_/){
+                foreach my $jsonparam (keys %$input_data_ref){
+                    if ($jsonparam=~/^${param_prefix}_/){
 
-			my $content = $query->param($qparam) || $default;
+			my $content = $input_data_ref->{$jsonparam} || $default;
 			
-			push @{$input_params_ref->{mixed_bag}{$qparam}}, $content;
+			push @{$input_params_ref->{mixed_bag}{$jsonparam}}, $content;
                     }
                 }
 	    }

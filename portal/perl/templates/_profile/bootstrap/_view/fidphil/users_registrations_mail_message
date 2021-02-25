@@ -18,8 +18,8 @@ Sehr geehrte(r) Nutzer*in,
 sie haben sich soeben im Portal des FID Philosophie registriert.
 
 Ihre Registrierung wird wirksam, wenn Sie den folgenden URL aufrufen:
-
-[% servername %]/confirm/[% registrationid %]
+[% viewinfo.description %]
+[% viewinfo.servername %]/confirm/[% registrationid %]
 
 Mit freundlichen Gruessen
 

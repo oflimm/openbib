@@ -79,8 +79,8 @@ sub cgiapp_init {
 
 
     my $r            = $self->param('r');
-    #my $view         = $self->param('view') || $self->param('viewdata');
     my $view         = $self->param('view');
+
     my $config       = OpenBib::Config->new;
 
     $self->param('config',$config);
@@ -260,10 +260,6 @@ sub cgiapp_init {
 	    $self->param('path_prefix')."/".$config->get('info_loc')."/datenschutz",		
 	    $self->param('path_prefix')."/".$config->get('users_loc')."/".$config->get('registrations_loc'),
 	    $self->param('path_prefix')."/".$config->get('users_loc')."/".$config->get('passwords_loc'),
-        #FID-Erweeiterung
-        $self->param('path_prefix')."/fid/".$config->get('login_loc'),
-        $self->param('path_prefix')."/fid/".$config->get('logout_loc'),
-        $self->param('path_prefix')."/fid/".$config->get('users_loc')."/".$config->get('registrations_loc'),
 	    );
 	
 	my $do_dispatch = 1;
@@ -597,7 +593,7 @@ sub process_uri {
 
     my $r          = $self->param('r');
     my $config     = $self->param('config');
-    my $view         = $self->param('view');
+    my $view       = $self->param('view');
     my $servername = $self->param('servername');
 
     my $path_prefix          = $config->get('base_loc');
@@ -865,7 +861,7 @@ sub negotiate_language {
     my $config         = $self->param('config');
     
     my $lang         = $r->header('Accept-Language') || '';
-    my @accepted_languages  = map { ($_)=$_=~/^(..)/} map { (split ";", $_)[0] } split (/\*s,\*s/, $lang);
+    my @accepted_languages  = map { ($_)=$_=~/^(..)/} map { (split ";", $_)[0] } split /\*s,\*s/, $lang;
     
     #if ($logger->is_debug){
     #    $logger->debug("Accept-Language: $lang - Languages: ".YAML::Dump(\@accepted_languages));
@@ -1648,7 +1644,6 @@ sub parse_valid_input {
         eval {
             $input_data_ref = decode_json $json_input;
         };
-
         
         if ($@){
             $logger->error("Couldn't decode JSON POST-data");
@@ -1663,12 +1658,12 @@ sub parse_valid_input {
 	    if ($type eq "mixed_bag"){
 		my $param_prefix = $param;
 		
-                foreach my $qparam ($query->param){
-                    if ($qparam=~/^${param_prefix}_/){
+                foreach my $jsonparam (keys %$input_data_ref){
+                    if ($jsonparam=~/^${param_prefix}_/){
 
-			my $content = $query->param($qparam) || $default;
+			my $content = $input_data_ref->{$jsonparam} || $default;
 			
-			push @{$input_params_ref->{mixed_bag}{$qparam}}, $content;
+			push @{$input_params_ref->{mixed_bag}{$jsonparam}}, $content;
                     }
                 }
 	    }

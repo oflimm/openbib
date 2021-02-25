@@ -222,10 +222,11 @@ sub mail_confirmation {
     my $afile = "an." . $$ . ".txt";
 
     my $subject = $msg->maketext("Bestaetigen Sie Ihre Registrierung");
-
+    my $viewinfo    = $config->get_viewinfo->search({ viewname => $view })->single();
     my $mainttdata = {        
                       registrationid => $registrationid,
                       view           => $view,
+                      viewinfo       => $viewinfo, 
                       config         => $config,
 		      msg            => $msg,
 		      scheme         => $self->param('scheme'),

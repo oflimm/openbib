@@ -321,17 +321,7 @@ sub get_input_definition {
             encoding => 'utf8',
             type     => 'mixed_bag', # always arrays
     },
-	bag_title => {
-            default  => '',
-            encoding => 'utf8',
-            type     => 'mixed_bag', # always arrays
-    },
-    bag_institution => {
-            default  => '',
-            encoding => 'utf8',
-            type     => 'mixed_bag', # always arrays
-    },
-    nachname => {
+	nachname => {
             default  => '',
             encoding => 'none',
             type     => 'scalar',

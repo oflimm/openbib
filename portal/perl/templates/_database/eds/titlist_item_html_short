@@ -27,6 +27,22 @@
      listid = record.listid;
      all_locations = record.get_locations;
 
+     # EDS/PDA Visibility
+     hide_hit    = 0;
+     hide_detail = 0;
+     
+     IF record.database == 'eds';
+        edsdb = record.id.match('^(.+)::').first;
+
+        IF eds_hide_hit.defined(edsdb) && NOT user.has_role('uzk') && NOT user.has_role('student') && NOT user.is_admin && NOT user.is_viewadmin ;
+            hide_hit = 1;
+        ELSIF eds_hide_detail.defined(edsdb) && NOT user.has_role('uzk') && NOT user.has_role('student') && NOT user.is_admin && NOT user.is_viewadmin ;
+	    hide_detail = 1;
+        ELSIF pda_hide_detail.defined(edsdb) && NOT user.has_role('uzk') && NOT user.has_role('student') && NOT user.is_admin && NOT user.is_viewadmin ;
+            hide_detail = 1;
+        END;
+     END;     
+
      # Filter locations
      locations = [];
   
@@ -344,7 +360,7 @@ $(document).ready(function(){
 [% IF tagname %]
         <a href="[% path_prefix %]/[% config.get('tags_loc') %]/names/id/[% tagname %]" class="ob-tags">[% tagname %]</a>
 [% END %]
-[% IF record.id && record.database %]<a class="ob-collection" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.get_encoded_id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img class="ob-collection-image" src="[% config.get_icon('listofinterest_small',view,sysprofile) %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /><span class="d-none d-sm-inline">[% msg.maketext("Merken") %]</span></a>&nbsp;&nbsp;<a class="ob-bibsonomy" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/to_bibsonomy" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy"><img src="[% config.get_icon('share_small',view,sysprofile) %]" alt="Share this"/><span class="d-none d-sm-inline">BibSonomy</span></a>
+[% IF record.id && record.database && NOT hide_hit %]<a class="ob-collection" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.get_encoded_id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img class="ob-collection-image" src="[% config.get_icon('listofinterest_small',view,sysprofile) %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /><span class="d-none d-sm-inline">[% msg.maketext("Merken") %]</span></a>&nbsp;&nbsp;<a class="ob-bibsonomy" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/to_bibsonomy" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy"><img src="[% config.get_icon('share_small',view,sysprofile) %]" alt="Share this"/><span class="d-none d-sm-inline">BibSonomy</span></a>
 [% END # id / database%]
 [% IF user_owns_litlist %]
 &nbsp;&nbsp;<a class="ob-delete" href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/items/id/[% listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("L&ouml;schen") %]</span></a>
@@ -357,7 +373,19 @@ $(document).ready(function(){
 [% END %]
         </div>
         <div class="ob-titleinfo mt-4">
-         <span class="ob-person">[% person %]</span><br />[% IF record.id && record.database %]<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %].html?l=[% lang %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong></a>[% ELSE %]<strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong>[% END %][%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span>   
+Hide Detail: [% hide_detail %]	- Hide Hit: [% hide_hit %] - ID: [% user.ID %] - Admin: [% user.is_admin %]<br/>
+[% detail_url = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.get_encoded_id}.html?l=${lang}" %]
+[% IF NOT hide_hit %]	
+         <span class="ob-person">[% person %]</span><br />
+[%  IF record.id && record.database %]
+<a href="[% IF NOT hide_detail %][% detail_url %][% ELSE %][% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %];redirect_to=[% uri_escape(detail_url) %][% END %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong></a>
+[%  ELSE %]
+<strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong>
+[%  END %]
+[%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span>   
+[% ELSE %]
+<strong><span class="ob-title"><a href="[% path_prefix %]/[% login_loc %]?l=[% lang %];redirect_to=[% uri_escape(detail_auth_url) %]">[% msg.maketext("Zugriff nur nach Authentifizierung und für Hochschulangehörige") %]</a></span></strong>
+[% END %]
 [% IF multiple_dbs == 1 %]
          <br /><img style="vertical-align:text-bottom;padding:1px;" src="[% config.get_icon('home_small',view,sysprofile) %]" alt="[% msg.maketext("Katalog") %]" title="[% msg.maketext("Katalog") %]"/>
 [%-  IF locations.size >= 1 -%]

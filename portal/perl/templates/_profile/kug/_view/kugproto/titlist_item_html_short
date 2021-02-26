@@ -357,7 +357,7 @@ $(document).ready(function(){
 [% IF record.id && record.database %]
 [% detail_url = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.get_encoded_id}.html?l=${lang}" %]
             <div class="pr-1">
-	 <a class="btn btn-primary pr-2" href="[% IF NOT hide_detail && NOT hide_hit %][% detail_url %][% ELSE %][% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %];redirect_to=[% uri_escape(detail_url) %][% END %]" alt="[% title %]" title="[% title %]"><i class="fas fa-ellipsis-h"></i> <span class="d-none d-sm-inline">Details</span></a>
+	 <a class="btn btn-primary pr-2" href="[% IF NOT hide_detail && NOT hide_hit %][% detail_url %][% ELSE %][% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %];redirect_to=[% uri_escape(detail_url) %][% END %]" alt="[% title %]" title="[% title %]">[% IF hide_detail %]<i class="fas fa-ban"></i>[% ELSE %]<i class="fas fa-ellipsis-h"></i>[% END %] <span class="d-none d-sm-inline">Details</span></a>
             </div>
 [% IF NOT with_cartitems_delete && NOT hide_hit %]
 	    <div class="pr-1">

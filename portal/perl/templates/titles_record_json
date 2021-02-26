@@ -9,10 +9,24 @@ END;
 
 record.set_circulation(circulation);
 
+thisfields = record.get_fields(msg);
+
+IF hide_hit || hide_detail ;
+  thisfields = {
+     T0331 = [{
+         content = hide_detail_msg
+     }]
+  };
+END;
+
 thisrecord = {
+           flags = {
+	      hide_hit = hide_hit
+	      hide_detail = hide_detail
+	   }
            link = {
                     rel = 'self'
-                    href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.id}.json"
+                    href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.get_encoded_id}.json"
            }
            id       = record.id
            database = {
@@ -25,7 +39,7 @@ thisrecord = {
                 description_short = dbinfo.get('dbnames').${record.database}.short
                 url               = dbinfo.get('urls').${record.database}                          
            }
-           fields      = record.get_fields(msg)
+           fields      = thisfields
            items       = record.get_holding
            circulation = record.get_circulation
 };

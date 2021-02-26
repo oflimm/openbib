@@ -1,5 +1,8 @@
 [%-
 
+     hide_hit_msg    = msg.maketext("Zugriff nur nach Authentifizierung und für Hochschulangehörige");
+     hide_detail_msg = msg.maketext("Zugriff nur nach Authentifizierung und für Hochschulangehörige");
+
      pda_hide_detail = {
       'dreierpda'     = 1
       'roemkepda'     = 1

@@ -23,6 +23,18 @@
    records = [];
 
    FOREACH record IN recordlist.get_records ;
+      thisfields = record.get_fields;
+
+[%-   PROCESS common/subtemplate name="titles_record_preprocess" -%]
+
+      IF hide_hit ;
+	    thisfields = {};
+	    thisfields.${'T0331'} = [{
+	       content = hide_hit_msg
+	       mult    = 1
+	    }];
+      END;
+      
       thisdatabase = {
          link = {
                  rel = 'self'
@@ -34,7 +46,7 @@
          url               = dbinfo.get('urls').${record.database}                          
       }
 
-      records.push({ id => record.id, database => thisdatabase, fields => record.get_fields, locations => record.get_locations });
+      records.push({ id => record.id, database => thisdatabase, fields => thisfields, locations => record.get_locations, flags => { hide_hit => hide_hit, hide_detail => hide_detail }});
    END ;
 
 

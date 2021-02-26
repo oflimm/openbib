@@ -16,6 +16,22 @@
 channel_link        = "${path_prefix}/${config.get('search_loc')}.rss?${searchquery.to_cgi_params};${queryoptions.to_cgi_params}";
 channel_description = "RSS Feed Ihrer Suchanfrage" ;
 channel_title       = "RSS Feed Ihrer Suchanfrage" ;
+
+FOREACH record IN recordlist.get_records ;
+    thisfields = record.get_fields;
+
+[%- PROCESS common/subtemplate name="titles_record_preprocess" -%]
+
+    IF hide_hit ;
+      thisfields = {};
+      thisfields.${'T0331'} = [{
+         content = hide_hit_msg
+         mult    = 1
+      }];
+      record.set_fields({ fields = thisfields});
+    END;
+END;
+
 recordlist.to_rss({ path_prefix = path_prefix, servername = servername, view = view, channel_title = channel_title, channel_link = channel_link  });
 
 -%]

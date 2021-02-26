@@ -1,69 +1,7 @@
 [%- PROCESS common/subtemplate name="local_config" -%]
+[%- PROCESS common/subtemplate name="titles_record_preprocess" -%]
 [%- PROCESS common/subtemplate name="search_title_field" -%]
-[%-
-    eds_hide_hit = {
-      'edswah' = 1
-      'eoh'    = 1
-      'flh'    = 1
-      'f3h'    = 1
-      'fmh'    = 1
-      'geh'    = 1
-      'guh'    = 1
-      'edslns' = 1
-      'kah'    = 1
-      'mzh'    = 1
-      'phl'    = 1
-      'edspdh' = 1
-      'pdh'    = 1
-      'edspzh' = 1
-      'edspvh' = 1
-      'psyh'   = 1
-      'pdx'    = 1
-      'rih'    = 1
-      'edswsc' = 1
-      'edswss' = 1
-      'dfn'    = 1
-    };
 
-    eds_hide_detail = {
-      'edsarx' = 1
-      'edsgpr' = 1
-      'edszbw' = 1
-      '8gh'    = 1
-      'lxh'    = 1
-      'cmedm'  = 1
-      'edsoai' = 1
-      'edsgso' = 1
-      'edsgsl' = 1
-      'edsdoj' = 1
-      'edsoap' = 1
-      'edsbas' = 1
-      'edsfis' = 1
-      'edsrep' = 1
-      'edswao' = 1
-    };
-
-    pda_hide_detail = {
-      'dreierpda'     = 1
-      'roemkepda'     = 1
-      'vubpda'        = 1
-      'schweitzerpda' = 1
-    };
-
-    hide_hit    = 0;
-    hide_detail = 0;
-    IF record.database == 'eds';
-       edsdb = record.id.match('^(.+)::').first;
-
-      IF eds_hide_hit.defined(edsdb) && NOT user.has_role('uzk') && NOT user.has_role('student') && NOT user.is_admin && NOT user.is_viewadmin ;
-          hide_hit = 1;
-      ELSIF eds_hide_detail.defined(edsdb) && NOT user.has_role('uzk') && NOT user.has_role('student') && NOT user.is_admin && NOT user.is_viewadmin ;
-	  hide_detail = 1;
-      ELSIF pda_hide_detail.defined(edsdb) && NOT user.has_role('uzk') && NOT user.has_role('student') && NOT user.is_admin && NOT user.is_viewadmin ;
-          hide_detail = 1;
-      END;
-    END;
--%]
 [%- IF representation == '' || representation == 'html' ;
 
     used_fields = [] ;

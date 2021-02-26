@@ -1,17 +1,16 @@
 [%#-
 #######################################################################
 #
-# Templatename: virtualsearch_result_item
+# Templatename: search_title_combined_json
 #
 # Typ         : Mastertemplate (2/3)
 #
 # Aufgabe:
 #
-# Ausgabe der Suchergebnisse *eines* Katalogs
+# Ausgabe der Suchergebnisse als JSON
 #
 #######################################################################
 -%]
-
 [%
 
    querystring_without_page = cgiapp.to_cgi_querystring({ exclude = ['page'] });
@@ -35,6 +34,19 @@
    records = [];
 
    FOREACH record IN recordlist.get_records ;
+      thisfields = record.get_fields;
+      PROCESS "common/subtemplate" name="titles_record_preprocess";
+
+      IF hide_hit ;
+	    thisfields = {};
+	    thisfields.${'T0331'} = [{
+	       content = hide_hit_msg
+	       mult    = 1
+	    }];
+      ELSIF hide_detail ;
+            thisfields.delete('eds_source');
+      END;
+
       thisrecord = {
                       link = {
                                rel = 'self'
@@ -52,7 +64,11 @@
                            url               = dbinfo.get('urls').${record.database}                          
 
                       }
-                      fields   = record.get_fields
+		      flags = {
+		         hide_hit    = hide_hit
+			 hide_detail = hide_detail
+		      }
+                      fields   = thisfields
       };
 
       item_locations = record.get_locations;

@@ -21,9 +21,13 @@
 [%-
    FOREACH record IN recordlist.get_records ;
       normset         = record.get_fields;
+
+[%-   PROCESS common/subtemplate name="titles_record_preprocess" -%]
+
 -%]
 
   <rdf:Description rdf:about="http://[% servername %][% path_prefix %]/[% config.get('databases_loc') %]/id/[%- record.database -%]/[% config.get('titles_loc') %]/id/[%- record.id -%]">
+[%- IF NOT hide_hit -%]  
 [%- FOREACH category IN [ "P0100" "P0101" "P0102" "P0103"] -%]
 [%-   FOREACH item IN normset.${category} %]
      <dc:creator>[% item.content%]</dc:creator>
@@ -66,5 +70,8 @@
      <libris:frbr_related rdf:resource="http://[% servername %][% path_prefix %]/[% config.get('databases_loc') %]/id/[%- similar_record.record.database -%]/[% config.get('titles_loc') %]/id/[%- similar_record.id-%]"/>
 [%- END %]
   </rdf:Description>
+[%- ELSE -%]
+     <dc:title>[% hide_hit_msg %]</dc:title>
+[%- END %]  
 [%- END %]
 </rdf:RDF>

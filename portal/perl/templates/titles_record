@@ -1,5 +1,7 @@
 [%- PROCESS common/subtemplate name="local_config" -%]
+[%- PROCESS common/subtemplate name="titles_record_preprocess" -%]
 [%- PROCESS common/subtemplate name="search_title_field" -%]
+
 [%- IF representation == '' || representation == 'html' ;
 
     used_fields = [] ;
@@ -37,6 +39,10 @@
       ]
 
     };
+
+    IF hide_hit || hide_detail ;
+       layout_param.delete('sidebar_template');
+    END;
 
     IF record.record_exists;
       record_exists = 1;

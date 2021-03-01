@@ -28,12 +28,12 @@
         <div class="card-header p-0 border-0">
 	  
           <div id="search_wrapper" class="input-group input-group-lg shadow-sm" style="min-width: 100%">
-            <div class="input-group-prepend">
+            <input id="freetext-input" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Suchbegriff...") %]" required="" />
+            <div class="input-group-append">
               <button type="submit" class="input-group-text ob-bg ob-border">
                 <i class="fas fa-search text-white"></i>
               </button>
             </div>
-            <input id="freetext-input" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Suchbegriff...") %]" required="" />
           </div>
         </div>
     </div>
@@ -52,7 +52,7 @@
         <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">
           <i class="fas fa-search-plus"></i> [% msg.maketext("Erweiterte Suche") %]
         </a>
-        <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/[% config.get('titles_loc') %].html?l=[% lang %];facets=mediatype,year,provenance,person,corporatebody,language">
+        <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/[% config.get('titles_loc') %].html?l=[% lang %];facets=mediatype,year,provenance,person,corporatebody,language,custom0,custom1,custom2,custom3">
           <i class="fas fa-th-list"></i> [% msg.maketext("Alle Titel") %]
         </a>
       </div>

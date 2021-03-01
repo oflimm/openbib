@@ -19,8 +19,10 @@ searchdata = "${searchquery.get_searchtermstring()}";
 -%]
 
 [%IF user.get_roles_of_user.admin || user.get_roles_of_user.viewadmin%]
-  
 [%- PROCESS common/subtemplate name="local_config" -%]
+
+<p />
+
 
 <style>
   [data-toggle="collapse"] {
@@ -34,36 +36,125 @@ searchdata = "${searchquery.get_searchtermstring()}";
     }
   }
 </style>
-<ul class="nav nav-tabs md-tabs" id="myTabMD" role="tablist">
-  <li class="nav-item">
-    <a class="nav-link active" id="books-tab-md" data-toggle="tab" href="#books-md" role="tab" aria-controls="books-md"
-      aria-selected="true">Philosopher's Index</a>
-  </li>
-  
-</ul>
-<div class="tab-content search-tabs" id="myTabContentMD">
-  
-  <div class="tab-pane fade show active" id="books-md" role="tabpanel" aria-labelledby="books-tab-md">
-    [% PROCESS common/subtemplate name="search_title_combined_html_tab" %]
+
+[%
+IF NOT viewdbs ;
+viewdbs = config.get_dbs_of_view(view);
+END ;
+IF NOT prevprofile ;
+prevprofile = session.get_profile ;
+END ;
+IF NOT searchprofileid_of_view ;
+searchprofileid_of_view = config.get_searchprofile_of_view(view) ;
+END ;
+IF NOT searchprofileid_of_sysprofile ;
+searchprofileid_of_sysprofile = config.get_searchprofile_of_systemprofile(view);
+END ;
+IF NOT searchprofileid_of_eds ;
+searchprofileid_of_eds = config.get_searchprofile_of_database('eds');
+END ;
+
+%]
+
+<div class="row flex-md-row-reverse">
+
+  <div id="ob-search_refine" class="col-xs-6 col-md-3 collapse" style="border-left: 1px solid #dbdbdb;">
+
+    [% IF hits > 0 %]
+    [% PROCESS common/subtemplate name="search_facet" %]
+    [% ELSE %]
+    [% IF viewdbs.size == 1 %]
+    <div class="ob-facets">
+      [% PROCESS common/subtemplate name="search_radius" %]
+    </div>
+    [% END %]
+    [% END %]
+  </div><!-- End: col-3 -->
+
+  <div class="col-md-9">
+
+    [% IF spelling_suggestion.resultlist %]
+    [% suggestion = searchquery.get_spelling_suggestion %]
+    [% IF suggestion%]
+    [% msg.maketext("Meinten Sie vielleicht:") %]<b><a
+        href="[% path_prefix %]/[% search_loc %]?num=[% query.param('num') %];srt=relevance_desc;st=[% query.param('st') %]fs=[% suggestion %]">[%
+        suggestion %]</b>
+    [% END %]
+    [% END %]
+
+    [% IF hits > 0 %]
+    <!-- Beginn Result Item -->
+    [%-
+    request_base = "num=${queryoptions.get_option('num')};srt=relevance_desc;page=1;" ;
+    start_range = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
+    end_range = nav.current_page*queryoptions.get_option('num');
+    IF end_range >= hits ;
+    end_range = hits;
+    END;
+
+    query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
+    -%]
+
+    <div class="ob-resultlist">
+      <div class="ob-resultheader pb-4">
+        <div class="left">
+          <div class="navbar navbar-default d-block d-md-none pl-0 mt-0" style="z-index: 1">
+            <!-- only visible in xs-->
+            <div class="container-fluid pl-0">
+              <button class="btn btn-primary navbar-btn" data-toggle="collapse" data-target="#ob-search_refine">
+                <i class="fa fa-filter"></i> [% msg.maketext("Filtern") %]
+              </button>
+            </div>
+          </div>
+          <div class="left d-none d-lg-block mt-2">
+            [% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>&nbsp;[% msg.maketext("von")
+            %]&nbsp;<b>[% hits %]</b>
+          </div>
+        </div>
+        <div class="right mt-2">
+          <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
+            <input type="hidden" name="page" value="1" />
+            <input type="hidden" name="lang" value="[% lang %]" />
+
+            [% cgiapp.to_cgi_hidden_input({ exclude = ['page','srt','srto','num']}) %]
+
+            [% PROCESS common/subtemplate name="titlist_options" this_loc=config.get('search_loc') %]
+          </form>
+
+        </div>
+      </div>
+      <div class="ob-resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+        [%- FOREACH record IN recordlist.get_records -%]
+        [% PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 database=record.database %]
+        [%- END -%]
+        <div class="ob-footer">
+          [% PROCESS common/subtemplate name="pagination" %]
+          <div class="ob-resulttime">
+            <!-- in: [% resulttime %] [% msg.maketext("Sekunden") %] -->
+          </div>
+        </div><!-- End: ob-footer -->
+      </div>
+
+      <div class="ob-resultfooter">
+        &nbsp;
+      </div>
+    </div>
+
+    <p />
+    [% ELSE %]
+    <div class="ob-no_hits">
+      <h1>[% msg.maketext("Zu Ihrer Suchanfrage konnten keine Treffer gefunden werden.") %]</h1>
+    </div>
+
+    [% END %]
+
+    [% PROCESS common/subtemplate name="search_more_tips" %]
+
   </div><!-- End: col -->
 
-  <!--- <div class="tab-pane fade" id="ebsco-md" role="tabpanel" aria-labelledby="profile-tab-md" ic-get-from="[% path_prefix %]/[% config.get('search_loc') %].html?l=en;num=20;page=1;lang=en;srt=relevance_desc;st=1;lt=;fs=[% searchdata %];profile=4" ic-indicator="#indicator" ic-trigger-on="load" 
-ic-on-complete="$('#indicatorTab').hide();">
- <i id="indicator" class="fa fa-spinner fa-spin"></i>
-</div>-->
-  <script>
 
-  </script>
-</div>
 
-<div class="navbar navbar-default d-block d-md-none pl-0" style="z-index: 1">
-  <!-- only visible in xs-->
-  <div class="container-fluid pl-0">
-    <button class="btn btn-primary navbar-btn" data-toggle="collapse" data-target="#ob-search_refine">
-      <i class="fa fa-tasks"></i> [% msg.maketext("Suchergebnis filtern & mehr") %]
-    </button>
-  </div>
 </div>
 [%ELSE%]
-  <div></div>
+<div></div>
 [%END%]

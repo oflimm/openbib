@@ -336,7 +336,7 @@ $(document).ready(function(){
        <div class="pr-1">
 	 <a class="btn btn-light pr-2" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %]" alt="[% title %]" title="[% title %]"><img src="[% config.get_icon('details',view,sysprofile) %]" alt="[% msg.maketext("Details") %]" /><span class="d-none d-sm-inline">Details</span></a>
        </div>
-[% IF NOT with_cartitems_delete %]
+[% IF 0 == 1 && NOT with_cartitems_delete %]
        <div class="pr-1">
           <a  class="btn btn-light pr-2" ic-transform-response="return incollection();" ic-get-from="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img class="ob-collection-image" src="[% config.get_icon('listofinterest_small',view,sysprofile) %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /><span class="d-none d-sm-inline">[% msg.maketext("Merken") %]</span></a>
        </div>
@@ -360,10 +360,11 @@ $(document).ready(function(){
           <a type="button" class="btn btn-light pr-2" href="[% path_prefix %]/[% config.get('cartitems_loc') %]/id/[% record.listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Löschen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("Löschen") %]</span></a>
        </div>
 [% END %]
-       <div>
+<!--       <div>
 [% IF availability == "online" %]<button class="btn btn-primary ob-availability_online mr-1"><img src="[% config.get_icon('global',view,sysprofile) %]" alt="[% msg.maketext("online") %]" /><span class="d-none d-sm-inline">[% msg.maketext("online") %]</span></button>[% IF signatur %]<span id="availability_[% record.database %]_[% uri_escape(record.id) %]"></span>[% END %][% ELSE %]<span id="availability_[% record.database %]_[% uri_escape(record.id) %]"></span>[% END %]
        </div>
-      </div>
+-->       
+      </div><!-- End ob-titleactions -->
 
       </div>
    </div>

@@ -193,11 +193,11 @@
 
 
 IF user.get_roles_of_user.admin || user.get_roles_of_user.viewadmin;
-  search_result.success = '1'; 
+  search_result.success = 1; 
   to_json(search_result);
 ELSE;
   search_result = {results = []
-                   success = '0' 
+                   success = 0 
    };
   to_json(search_result);
 END;

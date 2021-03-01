@@ -195,7 +195,13 @@ while (my $jsonline = <IN>){
 	
 	$mult++;
     }        
-    
+
+    # EasyDB-Exportsatz in Feld Bemerkung (0600)
+
+    push @{$title_ref->{fields}{'0600'}}, {
+      content => $jsonline,
+    };
+        
     # Titel
     
     if ($letter_ref->{title}){
@@ -282,6 +288,154 @@ while (my $jsonline = <IN>){
 	}
     }
 
+    # Auswertung Kategorie 'Mit Inhaltsrepraesentation'
+    {
+	
+	my $is_inhalt_volltext = 0;
+	my $is_inhalt_analog = 0;
+	
+	# Kategorie Mit Inhaltsrepraesentation: Volltext
+	if (@{$letter_ref->{'_nested:gentz_letter__transcriptions'}}){
+	    $is_inhalt_volltext = 1;
+	}
+	
+	# Kategorie Mit Inhaltsrepraesentation: analog transkribiert
+	if ($letter_ref->{'transcription_type'}){
+	    eval {
+		if ($letter_ref->{transcription_type}{_standard}{1}{text}{text}{'de-DE'} eq "Handschrift" || $letter_ref->{transcription_type}{_standard}{1}{text}{text}{'de-DE'} eq "Schreibmaschine" ){
+		    $is_inhalt_analog = 1;
+		}
+	    };
+	}
+
+	# 0517: Angaben zum Inhalt
+	if ($is_inhalt_volltext){
+	    push @{$title_ref->{fields}{'0517'}}, {
+		content => 'Volltext',
+	    }
+	}
+	if ($is_inhalt_analog){
+	    push @{$title_ref->{fields}{'0517'}}, {
+		content => 'Analog transkribiert',
+	    }
+	}
+    }
+    
+    # Auswergung Kategorie 'Kopie Original'
+    {
+
+	my $is_papierkopie_usb = 0;
+	my $is_mikrofilm_digitalisiert = 0;
+	my $is_digitalisat = 0;
+	
+	# Todo: Im Export noch keine Inhalte zum Auswerten von is_digitalisat vorhanden!
+	
+	eval {
+	    if ($letter_ref->{'hardcopy_herterich'}{_standard}{1}{text}{'de-DE'} eq "Papier"){
+		$is_papierkopie_usb = 1;
+	    }
+	    elsif ($letter_ref->{'hardcopy_herterich'}{_standard}{1}{text}{'de-DE'} eq "Mikrofilm (digitalisiert)"){
+		$is_mikrofilm_digitalisiert = 1;
+	    }
+	};
+	foreach my $herterich_record_ref (@{$letter_ref->{'_nested:gentz_letter__records_collection_herterich'}}){
+	    
+	    eval {
+		if ($herterich_record_ref->{collection_herterich_type}{_standard}{1}{text}{'de-DE'} eq "Aktenordner"){
+		    $is_papierkopie_usb = 1;
+		}
+		elsif ($herterich_record_ref->{collection_herterich_type}{_standard}{1}{text}{'de-DE'} eq "Mikrofilm"){
+		    $is_mikrofilm_digitalisiert = 1;
+		}
+	    }
+	}
+
+	# 0334: Material
+	if ($is_papierkopie_usb){
+	    push @{$title_ref->{fields}{'0334'}}, {
+		content => 'Papierkopie (USB)',
+	    }
+	}
+	if ($is_mikrofilm_digitalisiert){
+	    push @{$title_ref->{fields}{'0334'}}, {
+		content => 'Mikrofilm (digitalisiert)',
+	    }
+	}
+	
+    }
+
+
+    # Auswertung Kategorie 'Sammlung Herterich'
+    {
+
+	my $is_herterich_ungedruckt = 0;
+	my $is_herterich_gedruckt = 0;
+	my $is_herterich_archiv = 0;
+	
+	eval {
+	    if ($letter_ref->{archive}{_standard}{1}{text}{'de-DE'}){
+		$is_herterich_archiv = 1;
+	    }
+
+	    if (! defined $letter_ref->{reference_publication}{_standard}{1}{text}{'de-DE'} && ! @${$letter_ref->{'_nested:gentz_letter__doublets'}}){
+		$is_herterich_ungedruckt = 1;
+	    }
+	    if ($letter_ref->{reference_publication}{_standard}{1}{text}{'de-DE'} || @${$letter_ref->{'_nested:gentz_letter__doublets'}}){
+		$is_herterich_gedruckt = 1;
+	    }	    
+	    
+	};
+
+	# 4700: Sammlungsschwerpunkt
+	if ($is_herterich_ungedruckt){
+	    push @{$title_ref->{fields}{'4700'}}, {
+		content => 'Ungedruckt',
+	    }
+	}
+	if ($is_herterich_gedruckt){
+	    push @{$title_ref->{fields}{'4700'}}, {
+		content => 'Gedruckt',
+	    }
+	}
+	if ($is_herterich_archiv){
+	    push @{$title_ref->{fields}{'4700'}}, {
+		content => 'Archiv',
+	    }
+	}
+	
+    }
+
+    # Auswertung Kategorie 'Druckpublikationen'
+    {
+
+	my $is_druck_mehrfach = 0;
+	my $is_druck_archiv = 0;
+	
+	eval {
+	    if ($letter_ref->{archive}{_standard}{1}{text}{'de-DE'}){
+		$is_druck_archiv = 1;
+	    }
+
+	    if (@${$letter_ref->{'_nested:gentz_letter__doublets'}}){
+		$is_druck_mehrfach = 1;
+	    }	    
+	    
+	};
+
+	# 0434: Sonstige Angaben
+	if ($is_druck_mehrfach){
+	    push @{$title_ref->{fields}{'0434'}}, {
+		content => 'Mehrfach gedruckt',
+	    }
+	}
+	if ($is_druck_archiv){
+	    push @{$title_ref->{fields}{'0434'}}, {
+		content => 'Archiv',
+	    }
+	}
+	
+    }
+    
     my $is_digital = 0;
     
     # URLs

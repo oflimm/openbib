@@ -6292,6 +6292,11 @@ convtab:
           'title': 50
           'titlestring': 50
           'freesearch': 50
+      '0334': # Facette: Kopie Original
+        index:
+          'ft0334': 1
+        facet:
+          'custom1': 1
       '0335':         # Zusatz zum HST
         index:
           'ft0335': 1
@@ -6355,6 +6360,11 @@ convtab:
       '0428':
         index:
           'ft0428': 1
+      '0434': # Facette: Druckpublikationen
+        index:
+          'ft0434': 1
+        facet:
+          'custom3': 1
       '0451':
         index:
           'source': 1
@@ -6362,6 +6372,11 @@ convtab:
       '0508':
         index:
           'source': 1
+      '0517': # Facette Mit Inhaltsrepraesentation
+        index:
+          'ft0517': 1
+        facet:
+          'custom0': 1
       '0540':         # ISBN
         index:
           'isbn': 1
@@ -6625,6 +6640,11 @@ convtab:
       #     'freesearch': 1
       #   facet:
       #     'mediatype': 1
+      '4700': # Facette Sammlung Herterich
+        index:
+          'ft4700': 1
+        facet:
+          'custom2': 1
       '5050':         # Bibkey
         index:
           'bkey': 1

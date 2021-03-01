@@ -19,7 +19,12 @@ function copy_to_clipboard(formatid) {
         </button>
       </div>
       <div class="modal-body" id="apa_citation">
-[% record.to_apa_citation %]      
+[% apa_citation = record.to_apa_citation %]
+[% IF apa_citation %]
+[% apa_citation %]
+[% ELSE %]
+[% msg.maketext("Zu diesem Zitierstil konnte mit den vorhandenen Informationen kein Zitat erstellt werden.") %]
+[% END %]
       </div>
       <div class="modal-footer">
         <button type="button" onclick="copy_to_clipboard('apa_citation')" class="btn btn-primary">[% msg.maketext("Kopieren") %]</button>
@@ -39,7 +44,12 @@ function copy_to_clipboard(formatid) {
         </button>
       </div>
       <div class="modal-body" id="harvard_citation">
-[% record.to_harvard_citation  %]      
+[% harvard_citation = record.to_harvard_citation %]
+[% IF harvard_citation %]
+[% harvard_citation %]
+[% ELSE %]
+[% msg.maketext("Zu diesem Zitierstil konnte mit den vorhandenen Informationen kein Zitat erstellt werden.") %]
+[% END %]
       </div>
       <div class="modal-footer">
         <button type="button" onclick="copy_to_clipboard('harvard_citation')" class="btn btn-primary">[% msg.maketext("Kopieren") %]</button>
@@ -58,7 +68,12 @@ function copy_to_clipboard(formatid) {
         </button>
       </div>
       <div class="modal-body" id="mla_citation">
-[% record.to_mla_citation %]      
+[% mla_citation = record.to_mla_citation %]
+[% IF mla_citation %]
+[% mla_citation %]
+[% ELSE %]
+[% msg.maketext("In diesem Zitierstil konnte mit den vorhandenen Informationen kein Zitat erstellt werden.") %]
+[% END %]
       </div>
       <div class="modal-footer">
         <button type="button" onclick="copy_to_clipboard('mla_citation')" class="btn btn-primary">[% msg.maketext("Kopieren") %]</button>
@@ -104,6 +119,24 @@ function copy_to_clipboard(formatid) {
       </div>
       <div class="modal-footer">
         <button type="button" onclick="copy_to_clipboard('endnote_format')" class="btn btn-primary">[% msg.maketext("Kopieren") %]</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">[% msg.maketext("Schließen") %]</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="normdataModal" tabindex="-1" role="dialog" aria-labelledby="normdataModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="normdataModalLabel">[% msg.maketext("Normdaten") %]</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="normdata_citation">
+
+      </div>
+      <div class="modal-footer">
         <button type="button" class="btn btn-primary" data-dismiss="modal">[% msg.maketext("Schließen") %]</button>
       </div>
     </div>

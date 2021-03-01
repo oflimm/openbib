@@ -1,0 +1,24 @@
+[%#-
+#######################################################################
+#
+# Templatename: visible_categories_korset
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabekategorien fuer einen einzelnen Koerperschaftssatzes
+#
+#######################################################################
+-%]
+[%# Ausgabekategorien %]
+[% categories = [
+                 'C0800', # msg.maketext("C0800") Ansetzung
+                 'C0810', # msg.maketext("C0810") Verweisung
+                 'C0812', # msg.maketext("C0812") Abkuerzung zu Verweisungsform
+                 'C0881', # msg.maketext("C0881") Abkuerzungen der Ansetzung
+                 'C0850', # msg.maketext("C0850") Früherer/Späterer Name
+                 #'C5000', # msg.maketext("C5000") Anzahl Titel
+                ];
+
+%]

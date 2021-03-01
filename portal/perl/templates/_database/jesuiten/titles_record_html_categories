@@ -27,7 +27,6 @@
 
 <div class="table-responsive">
 <table class="table table-striped table-hover ob-title_fields">
-<tr><th class="ob-field">id</th><td>[% record.id %]</td></tr>
 
 [%-
 
@@ -165,7 +164,7 @@ FOREACH category IN categories;
          normdataicon = "";
 
          IF thisid && catalog_has_authorities ;
-            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Personen-Information\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Personen-Information\" data-toggle=\"modal\" data-target=\"#normdataModal\" data-formattitle=\"Personendaten\" data-formaturl=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
          END;
 
          icons     = "<div class=\"float-right\"><a href=\"${path_prefix}/${config.get('redirect_loc')}?type=520;url=${uri_escape(wikipediaurl)}\" target=\"_blank\" title=\"Person in Wikipedia\"><img src=\"${path_prefix}/${config.get('connector_availabilityimage_loc')}/wikipedia/${wikicontent}?lang=${lang}\" alt=\"Mashup mit Wikipedia\" /></a>${rssfeed}${normdataicon}</div>";
@@ -189,7 +188,7 @@ FOREACH category IN categories;
          normdataicon = "";
 
          IF thisid && catalog_has_authorities ;
-            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"K&ouml;rperschafts-Information\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"K&ouml;rperschafts-Information\" data-toggle=\"modal\" data-target=\"#normdataModal\" data-formattitle=\"Körperschaftsdaten\" data-formaturl=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
          END;
 
          icons     = "<div class=\"float-right\">${rssfeed}${normdataicon}</div>";
@@ -310,7 +309,7 @@ FOREACH category IN categories;
          normdataicon = "";
 
          IF thisid && catalog_has_authorities;
-            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Schlagwort-Information\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Schlagwort-Information\" data-toggle=\"modal\" data-target=\"#normdataModal\" data-formattitle=\"Schlagwortdaten\" data-formaturl=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
          END;
 
          icons     = "<div class=\"float-right\">${rssfeed}${normdataicon}</div>";
@@ -335,7 +334,7 @@ FOREACH category IN categories;
          normdataicon = "";
 
          IF thisid && catalog_has_authorities ;
-            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Systematik-Information\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Systematik-Information\" data-toggle=\"modal\" data-target=\"#normdataModal\" data-formattitle=\"Systematikdaten\" data-formaturl=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
          END;
 
          icons     = "<div class=\"float-right\">${rssfeed}${normdataicon}</div>";
@@ -408,9 +407,6 @@ END;
 -%]
 [%- IF currently_unavailable -%]
 <tr><th class="ob-field">[% msg.maketext("Volltext")%]</th><td>derzeit nicht verf&uuml;gbar (z.B. noch im Erwerbungsvorgang)</td></tr>
-[%- END -%]
-[%- IF bibkey -%]
-<tr><th class="ob-field">bibkey</th><td>[% bibkey %]</td></tr>
 [%- END -%]
 </table>
 [% ELSIF format == "BibTeX" %]

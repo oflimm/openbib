@@ -28,12 +28,12 @@
         <div class="card-header p-0 border-0">
 	  
           <div id="search_wrapper" class="input-group input-group-lg shadow-sm" style="min-width: 100%">
-            <div class="input-group-prepend">
+            <input id="freetext-input" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Suchbegriff...") %]" required="" />
+            <div class="input-group-append">
               <button type="submit" class="input-group-text ob-bg ob-border">
                 <i class="fas fa-search text-white"></i>
               </button>
             </div>
-            <input id="freetext-input" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Suchbegriff...") %]" required="" />
           </div>
         </div>
     </div>

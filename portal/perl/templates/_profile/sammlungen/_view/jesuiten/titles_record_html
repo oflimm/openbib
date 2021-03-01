@@ -90,6 +90,20 @@ $(document).ready(function(){
 
 [% PROCESS common/subtemplate name="titles_record_html_modals" %]
 
+<script>
+$('#normdataModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var formaturl = button.data('formaturl') // Extract info from data-* attributes
+  var formattitle = button.data('formattitle') // Extract info from data-* attributes
+  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+  var modal = $(this)
+  modal.find('.modal-body').html('<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>');
+  modal.find('.modal-title').text(formattitle)
+  modal.find('.modal-body').load(formaturl);
+})
+</script>
+
 <div class="content"><!-- Begin Fulltitle -->
 
 <div class="ob-category_header ob-bg text-white pt-1 pl-2 pr-2 mb-3">
@@ -172,8 +186,8 @@ $(document).ready(function(){
        searchprefix  = config.get('searchfield').subjectstring.prefix;
        localurl      = "${path_prefix}/${config.get('search_loc')}.html?l=${lang};${searchprefix}=${searchterm}";
 
-       resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('subjects_loc')}/id/${field.id}.html?l=${lang}";
-       normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Sammlung-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>";
+       resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('subjects_loc')}/id/${field.id}";
+       normdataicon = "&nbsp;<a href=\"${resourceurl}.html?l=${lang}\" title=\"Schlagwort-Information\" data-toggle=\"modal\" data-target=\"#normdataModal\" data-formattitle=\"Schlagwortdaten\" data-formaturl=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
        owner.push("<a href=\"${localurl}\">${field.content}</a>&nbsp;${normdataicon}");
      END ;
      IF provenance.defined('T4307');
@@ -182,8 +196,8 @@ $(document).ready(function(){
        searchprefix  = config.get('searchfield').corporatebodystring.prefix;
        localurl      = "${path_prefix}/${config.get('search_loc')}.html?l=${lang};${searchprefix}=${searchterm}";
 
-       resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('corporatebodies_loc')}/id/${field.id}.html?l=${lang}";
-       normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Personen-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>";
+       resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('corporatebodies_loc')}/id/${field.id}";
+       normdataicon = "&nbsp;<a href=\"${resourceurl}.html?l=${lang}\" title=\"K&ouml;rperschafts-Information\" data-toggle=\"modal\" data-target=\"#normdataModal\" data-formattitle=\"Körperschaftsdaten\" data-formaturl=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
        owner.push("<a href=\"${localurl}\">${field.content}</a>&nbsp;${normdataicon}");
      END ;
      IF provenance.defined('T4308');
@@ -191,8 +205,8 @@ $(document).ready(function(){
        searchterm    = uri_escape(field.content);
        searchprefix  = config.get('searchfield').personstring.prefix;
        localurl      = "${path_prefix}/${config.get('search_loc')}.html?l=${lang};${searchprefix}=${searchterm}";
-       resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('persons_loc')}/id/${field.id}.html?l=${lang}";
-       normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Personen-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>";
+       resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('persons_loc')}/id/${field.id}";
+       normdataicon = "&nbsp;<a href=\"${resourceurl}.html?l=${lang}\" title=\"Personen-Information\" data-toggle=\"modal\" data-target=\"#normdataModal\" data-formattitle=\"Personendaten\" data-formaturl=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
        owner.push("<a href=\"${localurl}\">${field.content}</a>&nbsp;${normdataicon}");
      END;
 

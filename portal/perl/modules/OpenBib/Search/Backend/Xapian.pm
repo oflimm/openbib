@@ -316,7 +316,11 @@ sub search {
     
     my ($is_singleterm) = $fullquerystring =~m/^(\w+)$/;
 
-    $logger->debug("Full querystring: $fullquerystring");
+    $logger->debug("Full querystring: '$fullquerystring'");
+        
+    if ($fullquerystring=~/^\*\s*$/){
+	return $self->browse($arg_ref);
+    }
     
     my $default_op_ref = {
         'and' => Search::Xapian::OP_AND,
@@ -528,6 +532,7 @@ sub browse {
     my $logger = get_logger();
 
     my $config       = $self->get_config;
+    my $searchquery  = $self->get_searchquery;
     my $queryoptions = $self->get_queryoptions;
 
     # Used Parameters
@@ -535,7 +540,7 @@ sub browse {
     my $sortorder         = (defined $self->{_options}{srto})?$self->{_options}{srto}:$queryoptions->get_option('srto');
     my $defaultop         = (defined $self->{_options}{dop})?$self->{_options}{dop}:$queryoptions->get_option('dop');
     my $facets            = (defined $self->{_options}{facets})?$self->{_options}{facets}:$queryoptions->get_option('facets');
-    my $gen_facets        = ($facets)?1:0;
+    my $gen_facets        = ($facets && $facets ne "none")?1:0;
 
     if ($logger->is_debug){
         $logger->debug("Options: ".YAML::Dump($options_ref));
@@ -568,18 +573,107 @@ sub browse {
         $current_facets_ref = {};
         map { $current_facets_ref->{$_} = 1 } split(',',$facets);
     }
+
+    my $apidb_map = $config->get_apidb_map;
     
     my $dbh;
 
-    $logger->debug("Creating Xapian DB-Object for database $self->{_database}");
+    my $searchprofile = $searchquery->get_searchprofile;
+
+    $logger->debug("Performing Authority Search") if ($self->{_authority});
     
-    eval {
-        $dbh = new Search::Xapian::Database ( $config->{xapian_index_base_path}."/".$self->{_database}) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
-    };
-    
-    if ($@) {
-        $logger->error("Database: $self->{_database} - :".$@);
-        return;
+    if ($searchprofile){
+        my $profileindex_path = $config->{xapian_index_base_path}."/_searchprofile/".$searchprofile;
+
+        if ($self->{_authority}){
+            $profileindex_path .="_authority";
+        }
+        
+        if (-d $profileindex_path || -e $profileindex_path){
+            $logger->debug("Adding Xapian DB-Object for profile $searchprofile with path $profileindex_path");
+            
+            eval {
+                $dbh = new Search::Xapian::Database ( $profileindex_path ) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+            };
+            
+            if ($@){
+                $logger->error("Initializing with Profile: $searchprofile - :".$@." not available");
+            }
+            
+        }        
+        else {
+            foreach my $database ($config->get_databases_of_searchprofile($searchprofile)) {
+
+		if (defined $apidb_map->{$database} && $apidb_map->{$database}){
+		    $logger->debug("Ignoring database $database of type api");
+		    next;
+		}
+		
+                $logger->debug("Adding Xapian DB-Object for searchindex $database");
+                
+                if (!defined $dbh){
+                    # Erstes Objekt erzeugen,
+                    
+                    $logger->debug("Creating Xapian DB-Object for database $database");                
+
+                    my $databaseindex_path = $config->{xapian_index_base_path}."/".$database;
+                    
+                    if ($self->{_authority}){
+                        $databaseindex_path .="_authority";
+                    }
+
+                    $logger->debug("Initializing Xapian Index using path $databaseindex_path");
+                    
+                    eval {
+                        $dbh = new Search::Xapian::Database ( $databaseindex_path) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+                    };
+                    
+                    if ($@){
+                        $logger->error("Initializing with searchindex: $database - :".$@." not available");
+                    }
+                }
+                else {
+                    $logger->debug("Adding searchindex $database");
+
+                    my $databaseindex_path = $config->{xapian_index_base_path}."/".$database;
+                    
+                    if ($self->{_authority}){
+                        $databaseindex_path .="_authority";
+                    }
+
+                    $logger->debug("Adding Xapian Index using path $databaseindex_path");
+                    
+                    eval {
+                        $dbh->add_database(new Search::Xapian::Database( $databaseindex_path));
+                    };
+                    
+                    if ($@){
+                        $logger->error("Adding searchindex: $database - :".$@." not available");
+                    }                        
+                }
+            }
+        }
+    }
+    elsif ($self->{_database}){
+        $logger->debug("Creating Xapian DB-Object for database $self->{_database}");
+
+        my $databaseindex_path = $config->{xapian_index_base_path}."/".$self->{_database};
+        
+        if ($self->{_authority}){
+            $databaseindex_path .="_authority";
+        }
+
+        $logger->debug("Using Xapian Index using path $databaseindex_path");
+        
+        eval {
+            $dbh = new Search::Xapian::Database ( $databaseindex_path) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+        };
+        
+        if ($@) {
+            $logger->error("Database: $self->{_database} - :".$@);
+            return;
+        }
+
     }
 
     $self->{qp} = new Search::Xapian::QueryParser() || $logger->fatal("Couldn't open/create Xapian DB $!\n");
@@ -821,6 +915,7 @@ sub get_facets {
         $logger->debug("Zeit fuer faceting $facettime");
     }
 
+    $self->{_facets} = $facets_ref;
     
     return $facets_ref;
 }

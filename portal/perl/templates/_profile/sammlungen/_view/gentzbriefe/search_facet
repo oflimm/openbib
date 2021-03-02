@@ -464,54 +464,27 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [% msg.maketext("Datensätze") %]
 </div>
 
-<!-- Begin custom0 Mit Inhaltsrepraesentation facet -->
-[%#         IF facets.defined('availability') && facets.availability.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-custom0" aria-expanded="true">
+[%# USE dumper;dumper.dump(facets.custom1)%]
+<!-- Begin custom1 Mit Inhaltsrepraesentation facet -->
+[%#         IF facets.defined('custom1') && facets.custom1.size > 0 %]
+        <h4 class="ob-facet-title [% IF facets.custom1.size > 0 %]collapse[% ELSE %]collapsed[% END %]" data-toggle="collapse" data-target="#group-custom1" aria-expanded=[% IF facets.custom1.size > 0 %]"true"[% ELSE %]"false"[% END %]>
            [% msg.maketext("Mit Inhaltsrepräsentation") %] 
         </h4>
-        <ul id="group-custom0" class="list-group in collapse show">
-[%             FOREACH termitem IN facets.custom0 ;
+        <ul id="group-custom1" class="list-group in collapse [% IF facets.custom1.size > 0 %]show[% END %]">
+[%             FOREACH termitem IN facets.custom1 ;
 
                   LAST IF loop.count > 25 ;
 %]
-[% IF facets.custom0.size > 5 && loop.count == 5 %]
-<span id="dd_custom0_[% database %]_toggle"></span>
-<div id="dd_custom0_[% database %]">
-[% END %]
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').ft0517.prefix;
-    filterstring  = "${searchprefix}:${searchterm}";
--%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% msg.maketext(searchterm) %]</a> <span class="badge badge-pill badge-secondary ml-auto">[% termitem.1 %]</span></li>
-[%             END %]
-[% IF facets.custom0.size > 5 %]
-</div>
-[% END %]
-</ul>
-<p/>
-[%#         END %]
-<!-- End custom0 facet -->
-
-<!-- Begin custom1 Kopie Original facet -->
-[%#         IF config.get('facets').custom1 && facets.defined('custom1') && facets.custom1.size > 0 %]
-        <h4 class="ob-facet-title [% IF facets.custom1.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-toggle="collapse" data-target="#group-custom1" aria-expanded=[% IF facets.custom1.size > 0 %]"false"[% ELSE %]"true"[% END %]>
-           [% msg.maketext("Kopie Original") %] 
-        </h4>
-        <ul id="group-custom1" class="list-group in collapse [% IF facets.favprovenance.size <= 0 %]show[% END %]">
-[%             FOREACH termitem IN facets.custom1 ;
-
- %]
 [% IF facets.custom1.size > 5 && loop.count == 5 %]
 <span id="dd_custom1_[% database %]_toggle"></span>
 <div id="dd_custom1_[% database %]">
 [% END %]
 [%-
     searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').ft0343.prefix;
+    searchprefix  = config.get('searchfield').ft0517.prefix;
     filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% locinfo.get('identifier').${termitem.0}.description %]</a> <span class="badge badge-pill badge-secondary ml-auto">[% termitem.1 %]</span></li>
+<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% searchterm %]</a> <span class="badge badge-pill badge-secondary ml-auto">[% termitem.1 %]</span></li>
 [%             END %]
 [% IF facets.custom1.size > 5 %]
 </div>
@@ -521,18 +494,15 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [%#         END %]
 <!-- End custom1 facet -->
 
-<div class="ob-category_header ob-bg text-white pt-1 pl-2 pr-2 mb-3">
-[% msg.maketext("Datenquelle") %]
-</div>
-
-<!-- Begin Sammlung Herterich facet -->
+[%# USE dumper;dumper.dump(facets.custom2)%]
+<!-- Begin custom2 Kopie Original facet -->
 [%#         IF config.get('facets').custom2 && facets.defined('custom2') && facets.custom2.size > 0 %]
-        <h4 class="ob-facet-title [% IF facets.custom2.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-toggle="collapse" data-target="#group-custom2" aria-expanded=[% IF facets.custom2.size > 0 %]"false"[% ELSE %]"true"[% END %]>
-           [% msg.maketext("Sammlung Herterich") %] 
+        <h4 class="ob-facet-title [% IF facets.custom2.size > 0 %]collapse[% ELSE %]collapsed[% END %]" data-toggle="collapse" data-target="#group-custom2" aria-expanded=[% IF facets.custom2.size > 0 %]"true"[% ELSE %]"false"[% END %]>
+           [% msg.maketext("Kopie Original") %] 
         </h4>
-        <ul id="group-location" class="list-group in collapse [% IF facets.custom2.size <= 0 %]show[% END %]">
+        <ul id="group-custom2" class="list-group in collapse [% IF facets.custom2.size > 0 %]show[% END %]">
 [%             FOREACH termitem IN facets.custom2 ;
-
+                  LAST IF loop.count > 25 ;
  %]
 [% IF facets.custom2.size > 5 && loop.count == 5 %]
 <span id="dd_custom2_[% database %]_toggle"></span>
@@ -540,10 +510,10 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [% END %]
 [%-
     searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').ft4700.prefix;
+    searchprefix  = config.get('searchfield').ft0334.prefix;
     filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% locinfo.get('identifier').${termitem.0}.description %]</a> <span class="badge badge-pill badge-secondary ml-auto">[% termitem.1 %]</span></li>
+<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% searchterm %]</a> <span class="badge badge-pill badge-secondary ml-auto">[% termitem.1 %]</span></li>
 [%             END %]
 [% IF facets.custom2.size > 5 %]
 </div>
@@ -553,13 +523,18 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [%#         END %]
 <!-- End custom2 facet -->
 
-<!-- Begin provenance facet -->
+<div class="ob-category_header ob-bg text-white pt-1 pl-2 pr-2 mb-3">
+[% msg.maketext("Datenquelle") %]
+</div>
+
+<!-- Begin Sammlung Herterich facet -->
 [%#         IF config.get('facets').custom3 && facets.defined('custom3') && facets.custom3.size > 0 %]
-        <h4 class="ob-facet-title [% IF facets.custom3.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-toggle="collapse" data-target="#group-custom3" aria-expanded=[% IF facets.custom3.size > 0 %]"false"[% ELSE %]"true"[% END %]>
-           [% msg.maketext("Druckpublikationen") %] 
+        <h4 class="ob-facet-title [% IF facets.custom3.size > 0 %]collapse[% ELSE %]collapsed[% END %]" data-toggle="collapse" data-target="#group-custom3" aria-expanded=[% IF facets.custom3.size > 0 %]"true"[% ELSE %]"false"[% END %]>
+           [% msg.maketext("Sammlung Herterich") %] 
         </h4>
-        <ul id="group-custom3" class="list-group in collapse [% IF facets.custom3.size <= 0 %]show[% END %]">
+        <ul id="group-custom3" class="list-group in collapse [% IF facets.custom3.size > 0 %]show[% END %]">
 [%             FOREACH termitem IN facets.custom3 ;
+                  LAST IF loop.count > 25 ;
 
  %]
 [% IF facets.custom3.size > 5 && loop.count == 5 %]
@@ -568,10 +543,10 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [% END %]
 [%-
     searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').ft0434.prefix;
+    searchprefix  = config.get('searchfield').ft4700.prefix;
     filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% locinfo.get('identifier').${termitem.0}.description %]</a> <span class="badge badge-pill badge-secondary ml-auto">[% termitem.1 %]</span></li>
+<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% searchterm %]</a> <span class="badge badge-pill badge-secondary ml-auto">[% termitem.1 %]</span></li>
 [%             END %]
 [% IF facets.custom3.size > 5 %]
 </div>
@@ -580,6 +555,35 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <p/>
 [%#         END %]
 <!-- End custom3 facet -->
+
+<!-- Begin custom4 facet -->
+[%#         IF config.get('facets').custom4 && facets.defined('custom4') && facets.custom4.size > 0 %]
+        <h4 class="ob-facet-title [% IF facets.custom4.size > 0 %]collapse[% ELSE %]collapsed[% END %]" data-toggle="collapse" data-target="#group-custom4" aria-expanded=[% IF facets.custom4.size > 0 %]"true"[% ELSE %]"false"[% END %]>
+           [% msg.maketext("Druckpublikationen") %] 
+        </h4>
+        <ul id="group-custom4" class="list-group in collapse [% IF facets.custom4.size > 0 %]show[% END %]">
+[%             FOREACH termitem IN facets.custom4 ;
+                  LAST IF loop.count > 25 ;
+
+ %]
+[% IF facets.custom4.size > 5 && loop.count == 5 %]
+<span id="dd_custom4_[% database %]_toggle"></span>
+<div id="dd_custom4_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').ft0434.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% searchterm %]</a> <span class="badge badge-pill badge-secondary ml-auto">[% termitem.1 %]</span></li>
+[%             END %]
+[% IF facets.custom4.size > 5 %]
+</div>
+[% END %]
+</ul>
+<p/>
+[%#         END %]
+<!-- End custom4 facet -->
 
 
 <div class="ob-category_header ob-bg text-white pt-1 pl-2 pr-2 mb-3">

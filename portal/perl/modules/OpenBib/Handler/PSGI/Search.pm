@@ -186,8 +186,34 @@ sub show_search_header {
     my $spelling_suggestion_ref = ($user->is_authenticated)?$user->get_spelling_suggestion():{};
 
     my $searchquery = OpenBib::SearchQuery->new({r => $r, view => $view, session => $session, config => $config});
-    $self->param('searchquery',$searchquery);
+
+    # Wildcard-Suche wird effektiv ueber Search->browse und nicht Search->search
+    # realisiert!
+    if (!$searchquery->have_searchterms){
+	$logger->debug("Suchanfrage ohne Suchbegriffe -> Wildcard-Suche");
+	$searchquery->set_searchfield('freesearch','*','AND');
+    }
+
+    # Wenn Wildcard-Suche, dann Einschraenkung der Facetten-Berechnung
+    if ($searchquery->get_searchfield('freesearch')->{'val'} =~m/^\s*\*\s*$/){
+
+	if($searchquery->single_db_in_searchprofile){
+	    if (!$queryoptions->get_option('facets')){
+		$logger->debug("Aktiviere alle Facetten");
+		my $all_facets = join(',',keys %{$config->get('facets')});
+		$queryoptions->set_option('facets',$all_facets);
+	    }
+	}
+	else {
+	    $logger->debug("Deaktiviere Facetten");
+	    $queryoptions->set_option('facets','none');
+
+	}
+	$self->param('qopts',$queryoptions);
+    }
     
+    $self->param('searchquery',$searchquery);
+        
     if ($logger->is_debug){
         $logger->debug("_searchquery: ".YAML::Dump($searchquery->{_searchquery}));
     }
@@ -224,11 +250,6 @@ sub show_search_header {
         return $returncode;
     }
     
-    if (!$searchquery->have_searchterms) {
-#        $searchquery->set_searchfield('freesearch','*','AND');
-#        return $self->print_warning($msg->maketext("Es wurde kein Suchkriterium eingegeben."));
-    }
-
     my %trefferpage  = ();
     my %dbhits       = ();
 
@@ -915,8 +936,9 @@ sub search {
 
     my $authority          = exists $arg_ref->{authority}
         ? $arg_ref->{authority}           : undef;
-    
+
     my $query        = $self->query();
+    my $view         = $self->param('view');
     my $config       = $self->param('config');
     my $queryoptions = $self->param('qopts');
     my $searchquery  = $self->param('searchquery');
@@ -932,7 +954,15 @@ sub search {
     # Besteht das Suchprofil nur aus einer Datenbank, dann den Datenbanknamen setzen.
     # So koennen per API angesteuerte Backends gemeinsam mit anderen Profilen ueber den zugehoerigen searchprofile-Parameter
     # angesteuert werden (OpenBib::Search::Factory)
-    if (!$database && $searchquery && $searchquery->get_searchprofile){
+    if ($database){
+	# Nur Kataloge im View sind erlaubt
+	my @in_restricted_dbs = $config->restrict_databases_to_view({ databases => [ $database ], view => $view });
+	unless (@in_restricted_dbs){
+	    $logger->error("Blocked access to db $database being not in view $view");
+	    $database = undef;
+	}
+    }
+    elsif (!$database && $searchquery && $searchquery->get_searchprofile){
 	my @databases = $config->get_databases_of_searchprofile($searchquery->get_searchprofile);
 	
 	if (scalar @databases == 1){

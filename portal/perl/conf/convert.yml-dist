@@ -6296,7 +6296,7 @@ convtab:
         index:
           'ft0334': 1
         facet:
-          'custom1': 1
+          'custom2': 1
       '0335':         # Zusatz zum HST
         index:
           'ft0335': 1
@@ -6364,7 +6364,7 @@ convtab:
         index:
           'ft0434': 1
         facet:
-          'custom3': 1
+          'custom4': 1
       '0451':
         index:
           'source': 1
@@ -6376,7 +6376,7 @@ convtab:
         index:
           'ft0517': 1
         facet:
-          'custom0': 1
+          'custom1': 1
       '0540':         # ISBN
         index:
           'isbn': 1
@@ -6644,7 +6644,7 @@ convtab:
         index:
           'ft4700': 1
         facet:
-          'custom2': 1
+          'custom3': 1
       '5050':         # Bibkey
         index:
           'bkey': 1

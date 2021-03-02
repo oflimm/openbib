@@ -185,6 +185,16 @@
          language       = facets.language
          tag            = facets.tag
          litlist        = facets.litlist
+         custom1        = facets.custom1
+         custom2        = facets.custom2
+         custom3        = facets.custom3
+         custom4        = facets.custom4
+         custom5        = facets.custom5
+         custom6        = facets.custom6
+         custom7        = facets.custom7
+         custom8        = facets.custom8
+         custom9        = facets.custom9
+         custom10       = facets.custom10
      }
 
      filter = searchquery.get_filter

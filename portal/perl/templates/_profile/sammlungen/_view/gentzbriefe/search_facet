@@ -525,7 +525,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [%         END %]
 <!-- End custom2 facet -->
 
-[% IF facets.custom1 || facets.custom2 %]
+[% IF facets.custom3 || facets.custom4 %]
 <div class="ob-category_header ob-bg text-white pt-1 pl-2 pr-2 mb-3">
 [% msg.maketext("Datenquelle") %]
 </div>

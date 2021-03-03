@@ -460,13 +460,15 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [%        END %]
 [% END %]
 
+[% IF facets.custom1 || facets.custom2 %]
 <div class="ob-category_header ob-bg text-white pt-1 pl-2 pr-2 mb-3">
 [% msg.maketext("Datensätze") %]
 </div>
+[% END %]
 
 [%# USE dumper;dumper.dump(facets.custom1)%]
 <!-- Begin custom1 Mit Inhaltsrepraesentation facet -->
-[%#         IF facets.defined('custom1') && facets.custom1.size > 0 %]
+[%         IF facets.defined('custom1') && facets.custom1.size > 0 %]
         <h4 class="ob-facet-title [% IF facets.custom1.size > 0 %]collapse[% ELSE %]collapsed[% END %]" data-toggle="collapse" data-target="#group-custom1" aria-expanded=[% IF facets.custom1.size > 0 %]"true"[% ELSE %]"false"[% END %]>
            [% msg.maketext("Mit Inhaltsrepräsentation") %] 
         </h4>
@@ -491,12 +493,12 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [% END %]
 </ul>
 <p/>
-[%#         END %]
+[%         END %]
 <!-- End custom1 facet -->
 
 [%# USE dumper;dumper.dump(facets.custom2)%]
 <!-- Begin custom2 Kopie Original facet -->
-[%#         IF config.get('facets').custom2 && facets.defined('custom2') && facets.custom2.size > 0 %]
+[%         IF config.get('facets').custom2 && facets.defined('custom2') && facets.custom2.size > 0 %]
         <h4 class="ob-facet-title [% IF facets.custom2.size > 0 %]collapse[% ELSE %]collapsed[% END %]" data-toggle="collapse" data-target="#group-custom2" aria-expanded=[% IF facets.custom2.size > 0 %]"true"[% ELSE %]"false"[% END %]>
            [% msg.maketext("Kopie Original") %] 
         </h4>
@@ -520,15 +522,17 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [% END %]
 </ul>
 <p/>
-[%#         END %]
+[%         END %]
 <!-- End custom2 facet -->
 
+[% IF facets.custom3 || facets.custom4 %]
 <div class="ob-category_header ob-bg text-white pt-1 pl-2 pr-2 mb-3">
 [% msg.maketext("Datenquelle") %]
 </div>
+[% END %]
 
 <!-- Begin Sammlung Herterich facet -->
-[%#         IF config.get('facets').custom3 && facets.defined('custom3') && facets.custom3.size > 0 %]
+[%         IF config.get('facets').custom3 && facets.defined('custom3') && facets.custom3.size > 0 %]
         <h4 class="ob-facet-title [% IF facets.custom3.size > 0 %]collapse[% ELSE %]collapsed[% END %]" data-toggle="collapse" data-target="#group-custom3" aria-expanded=[% IF facets.custom3.size > 0 %]"true"[% ELSE %]"false"[% END %]>
            [% msg.maketext("Sammlung Herterich") %] 
         </h4>
@@ -553,11 +557,11 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [% END %]
 </ul>
 <p/>
-[%#         END %]
+[%         END %]
 <!-- End custom3 facet -->
 
 <!-- Begin custom4 facet -->
-[%#         IF config.get('facets').custom4 && facets.defined('custom4') && facets.custom4.size > 0 %]
+[%         IF config.get('facets').custom4 && facets.defined('custom4') && facets.custom4.size > 0 %]
         <h4 class="ob-facet-title [% IF facets.custom4.size > 0 %]collapse[% ELSE %]collapsed[% END %]" data-toggle="collapse" data-target="#group-custom4" aria-expanded=[% IF facets.custom4.size > 0 %]"true"[% ELSE %]"false"[% END %]>
            [% msg.maketext("Druckpublikationen") %] 
         </h4>
@@ -582,14 +586,14 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [% END %]
 </ul>
 <p/>
-[%#         END %]
+[%         END %]
 <!-- End custom4 facet -->
 
-
+[% IF facets.mediatype || facets.year || facets.person || facets.corporatebody || facets.language %]
 <div class="ob-category_header ob-bg text-white pt-1 pl-2 pr-2 mb-3">
 [% msg.maketext("Briefspezifika") %]
 </div>
-
+[% END %]
 <!-- Begin mediatype facet -->
 [%         IF config.get('facets').mediatype && facets.defined('mediatype') && facets.mediatype.size > 0 %]
         <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-mediatype" aria-expanded="true">
@@ -1063,5 +1067,14 @@ durch zus&auml;tzliche Worte weiter eingrenzen.") %]
 <p/>
 
 <p/>
+[% ELSE %]
+
+<div class="ob-category_header ob-bg text-white pt-1 pl-2 pr-2 mb-3">[% msg.maketext("Hinweis") %]</div>
+
+<p>
+[% msg.maketext("Es ist keine Recherche-Eingrenzung möglich.") %]
+</p>
+
+
 [% END # facets=none%]
 

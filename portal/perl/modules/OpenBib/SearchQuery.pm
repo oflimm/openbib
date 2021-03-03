@@ -1035,6 +1035,14 @@ sub from_json {
     return $self;
 }
 
+sub single_db_in_searchprofile {
+   my $self = shift;
+
+   my $config = $self->get_config;
+   my @dbs = $config->get_databases_of_searchprofile($self->{_searchprofile});
+   return ($#dbs == 0)?1:0;
+}
+
 sub _html_escape {
     my ($self,$content)=@_;
 

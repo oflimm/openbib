@@ -116,17 +116,41 @@ sub create_record {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $username  = ($query->param('username'))?$query->param('username'):'';
-
+    # CGI / JSON input
+    my $input_data_ref    = $self->parse_valid_input();
+    my $username          = $input_data_ref->{username};
+    
+    my $result_ref = {
+        success => 0,
+    };
+    
     my $loginfailed=0;
     
     if ($username eq "") {
-        return $self->print_warning($msg->maketext("Sie haben keine E-Mail Adresse eingegeben"));
+        my $code   = -1;
+	my $reason = $msg->maketext("Sie haben keine E-Mail Adresse eingegeben.");
+	
+        if ($self->param('representation') eq "html"){
+           return $self->print_warning($reason);
+        }
+	else{
+	    $result_ref->{reason} = $reason;
+	    $result_ref->{errorcode} = $code;
+	    return $self->print_json($result_ref);   
+        }
     }
 
     if (!$user->user_exists($username)) {
-        return $self->print_warning($msg->maketext("Dieser Nutzer ist nicht registriert."));
+        my $code   = -2;
+	my $reason = $msg->maketext("Dieser Nutzer ist nicht registriert.");
+        if ($self->param('representation') eq "html"){
+	    return $self->print_warning($reason);
+        }
+	else{
+	    $result_ref->{reason} = $reason;
+	    $result_ref->{errorcode} = $code;
+	    return $self->print_json($result_ref);   
+        }
     }
 
     # Zufaelliges 12-stelliges Passwort
@@ -141,8 +165,19 @@ sub create_record {
 	$user->reset_login_failure({ userid => $userid});
     }
     else {
-	return $self->print_warning($msg->maketext("Dieser Nutzer ist in diesem Portal nicht registriert."));
+      my $code   = -3;
+      my $reason = $msg->maketext("Dieser Nutzer ist in diesem Portal nicht registriert.");
+      if ($self->param('representation') eq "html"){
+        return $self->print_warning($reason);
+      }
+      else{
+	  $result_ref->{reason} = $reason;
+	  $result_ref->{errorcode} = $code;
+	  return $self->print_json($result_ref);   
+      }
     }
+
+    $result_ref->{success} = 1;
     
     my $anschreiben="";
     my $afile = "an." . $$;
@@ -167,8 +202,19 @@ sub create_record {
         OUTPUT_PATH   => '/tmp',
         OUTPUT        => $afile,
     });
+
+    $mainttdata = $self->add_default_ttdata($mainttdata);
     
-    $maintemplate->process($config->{tt_users_passwords_mail_body_tname}, $mainttdata ) || do {
+    my $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
+        database     => '', # Template ist nicht datenbankabhaengig
+        view         => $mainttdata->{view},
+        profile      => $mainttdata->{sysprofile},
+        templatename => $config->{tt_users_passwords_mail_body_tname},
+									});
+    
+    $logger->debug("Using base Template $templatename");
+    
+    $maintemplate->process($templatename, $mainttdata ) || do {
         $logger->error($maintemplate->error());
         $self->header_add('Status',400); # Server Error
         return;
@@ -192,11 +238,36 @@ sub create_record {
     
     $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config->{contact_email}");
     
-    
+
+    $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
+        database     => '', # Template ist nicht datenbankabhaengig
+        view         => $mainttdata->{view},
+        profile      => $mainttdata->{sysprofile},
+        templatename => $config->{tt_users_passwords_success_tname},
+								     });	
     my $ttdata={
     };
     
-    return $self->print_page($config->{tt_users_passwords_success_tname},$ttdata);
+    if ($self->param('representation') eq "html"){
+	# TODO GET?
+	$self->header_add('Content-Type' => 'text/html');
+	return $self->print_page($templatename,$ttdata);
+    }
+    else {
+	return $self->print_json($result_ref);
+    }    
+}								     
+
+sub get_input_definition {
+    my $self=shift;
+    
+    return {
+        username => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+    };
 }
 
 1;

@@ -1139,13 +1139,20 @@ Sie diese auf sinntragende Worte reduzieren (z.B. der, die das
 weglassen) und allgemeine Worte (z.B. deutschland oder geschichte)
 durch zus&auml;tzliche Worte weiter eingrenzen.") %]
 </p>
-
 [% END %]
 </div>
 
 <p/>
 
 <p/>
+[% ELSE %]
+
+<div class="ob-category_header">[% msg.maketext("Hinweis") %]</div>
+
+<p>
+[% msg.maketext("Es ist keine Recherche-Eingrenzung möglich.") %]
+</p>
+
 [% END # facets=none%]
 <div class="ob-facets ob-facets_dbinfo">
 <div class="ob-category_header"><span id="ob-facets_dbinfo_toggle">[% msg.maketext("Datenbank-Empfehlungen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>

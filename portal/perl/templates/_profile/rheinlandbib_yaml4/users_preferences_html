@@ -154,7 +154,7 @@
 <input type="hidden" name="_method"    value="PUT" />
 
 <div class="ym-fbox-select">
-<select name="setmask">
+<select name="searchform">
 <option value="simple"[%- IF userinfo.masktype == 'simple' -%] selected="selected"[%- END -%]>[% msg.maketext("Einfache Recherchemaske") %]</option>
 <option value="advanced"[%- IF userinfo.masktype == 'advanced' -%] selected="selected"[%- END -%]>[% msg.maketext("Erweitere Recherchemaske") %]</option>
 </select>

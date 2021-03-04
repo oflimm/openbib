@@ -417,7 +417,7 @@ sub create_record {
                 $logger->debug("Weiter zur Titelid $new_titleid");
                 $self->param('status',201); # created
                 $self->param('itemid',$new_titleid);
-                $self->param('location',"$location/item/$new_titleid");
+                $self->param('location',"$location/item/".uri_escape_utf8($new_titleid));
                 $self->show_record;
                 return;
             }
@@ -515,7 +515,7 @@ sub print_collection {
     # Dispatches Args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $id             = $self->strip_suffix($self->param('titleid'));
+    my $id             = $self->strip_suffix($self->decode_id($self->param('titleid')));
 
     # Shared Args
     my $query          = $self->query();
@@ -574,7 +574,7 @@ sub save_collection {
     # Dispatched_args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $id             = $self->strip_suffix($self->param('titleid'));
+    my $id             = $self->strip_suffix($self->decode_id($self->param('titleid')));
 
     # Shared Args
     my $query          = $self->query();
@@ -631,7 +631,7 @@ sub mail_collection {
     # Dispatched Args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $id             = $self->strip_suffix($self->param('titleid'));
+    my $id             = $self->strip_suffix($self->decode_id($self->param('titleid')));
 
     # Shared Args
     my $query          = $self->query();
@@ -689,7 +689,7 @@ sub mail_collection_send {
     # Dispatched Args
     my $view           = $self->param('view')           || '';
     my $database       = $self->param('database');
-    my $id             = $self->strip_suffix($self->param('titleid'));
+    my $id             = $self->strip_suffix($self->decode_id($self->param('titleid')));
 
     # Shared Args
     my $query          = $self->query();

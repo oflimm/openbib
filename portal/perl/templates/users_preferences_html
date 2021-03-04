@@ -161,7 +161,7 @@
 
 <button class="btn btn-primary mb-2" type="submit">[% msg.maketext("&Auml;ndern") %]</button>
 
-
+</form>
 </div><!-- end card-body -->
 </div><!-- end card -->
 
@@ -203,7 +203,6 @@
 <input class="form-check-input" type="checkbox" name="livesearch_person_exact" id="livesearch_person_exact" value="1" [% IF livesearch.person.exact %]checked="checked"[% END %]/>
 <label class="form-check-label" for="livesearch_person_exact">Vorschlag nur bei exakter Wort&uuml;bereinstimmung</label>
 </div>
-</fieldset>
 
 <legend class="mt-2">[% msg.maketext("Bei der Eingabe von Schlagworten") %]</legend>
 <div class="form-check">

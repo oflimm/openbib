@@ -1,6 +1,6 @@
 [%-
 
-error = { error = err_nr, msg = err_msg };
+error = { error = err_nr, msg = err_msg, success = 0 };
 
 to_json(error);
 

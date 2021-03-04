@@ -204,14 +204,7 @@ sub authenticate {
 	my $code   = -6;
 	my $reason = $self->get_error_message($code);
 	
-	if ($self->param('representation') eq "html"){
-	    return $self->print_warning($reason);
-	}
-	else {
-	    $result_ref->{reason} = $reason;
-	    $result_ref->{errorcode} = $code;
-	    return $self->print_json($result_ref);        
-	}
+	return $self->print_warning($reason,$code);
     }
     
     # Wenn die Session schon authentifiziert ist, dann
@@ -224,14 +217,7 @@ sub authenticate {
 	    my $code   = -5;
 	    my $reason = $self->get_error_message($code);
 
-	    if ($self->param('representation') eq "html"){
-		return $self->print_warning($reason);
-	    }
-	    else {
-		$result_ref->{reason} = $reason;
-		$result_ref->{errorcode} = $code;
-		return $self->print_json($result_ref);        
-	    }
+	    return $self->print_warning($reason,$code);
 	}
 	
         my $redirecturl = "$path_prefix/$config->{users_loc}/id/[% user.ID %]/preferences.html?l=$lang";
@@ -273,9 +259,7 @@ sub authenticate {
 	    return $self->redirect($redirecturl);
 	}
 	else {
-	    $result_ref->{reason} = $reason;
-	    $result_ref->{errorcode} = $code;
-	    return $self->print_json($result_ref);        
+	    return $self->print_warning($reason,$code);
 	}
     }
 
@@ -288,16 +272,7 @@ sub authenticate {
 	    my $code   = -7;
 	    my $reason = $self->get_error_message($code);
 	    
-	    if ($self->param('representation') eq "html"){
-		
-		return $self->print_warning($reason,$code);
-	    }
-	    else {
-		$result_ref->{reason} = $reason;
-		$result_ref->{errorcode} = $code;
-		return $self->print_json($result_ref);        
-	    }
-	    
+	    return $self->print_warning($reason,$code);	    
 	}
     }
 
@@ -323,16 +298,7 @@ sub authenticate {
 	    my $code   = -5;
 	    my $reason = $self->get_error_message($code);
 	    
-	    if ($self->param('representation') eq "html"){
-		return $self->print_warning($reason,$code);
-	    }
-	    else {
-		$result_ref->{reason} = $reason;
-		$result_ref->{errorcode} = $code;
-		$result_ref->{success} = 0;
-		
-		return $self->print_json($result_ref);        
-	    }
+	    return $self->print_warning($reason,$code);
 	}
 	
 	# Jetzt wird die Session mit der Benutzerid assoziiert
@@ -408,15 +374,11 @@ sub authenticate {
 	my $reason = $self->get_error_message($code);
 
 	if ($self->param('representation') ne "html"){
-	    
-	    $result_ref->{reason} = $reason;
-	    $result_ref->{errorcode} = $code;
-	    $result_ref->{success} = 0;
-	    
-	    return $self->print_json($result_ref);
+	    return $self->print_warning($reason,$code);	    
 	}
     }
-    
+
+    # Success!
     if ($self->param('representation') eq "html"){
         $logger->debug("Redirecting to $redirecturl");
 

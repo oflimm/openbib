@@ -130,27 +130,14 @@ sub create_record {
         my $code   = -1;
 	my $reason = $msg->maketext("Sie haben keine E-Mail Adresse eingegeben.");
 	
-        if ($self->param('representation') eq "html"){
-           return $self->print_warning($reason);
-        }
-	else{
-	    $result_ref->{reason} = $reason;
-	    $result_ref->{errorcode} = $code;
-	    return $self->print_json($result_ref);   
-        }
+	return $self->print_warning($reason,$code);
     }
 
     if (!$user->user_exists($username)) {
         my $code   = -2;
 	my $reason = $msg->maketext("Dieser Nutzer ist nicht registriert.");
-        if ($self->param('representation') eq "html"){
-	    return $self->print_warning($reason);
-        }
-	else{
-	    $result_ref->{reason} = $reason;
-	    $result_ref->{errorcode} = $code;
-	    return $self->print_json($result_ref);   
-        }
+	
+	return $self->print_warning($reason,$code);
     }
 
     # Zufaelliges 12-stelliges Passwort
@@ -167,14 +154,8 @@ sub create_record {
     else {
       my $code   = -3;
       my $reason = $msg->maketext("Dieser Nutzer ist in diesem Portal nicht registriert.");
-      if ($self->param('representation') eq "html"){
-        return $self->print_warning($reason);
-      }
-      else{
-	  $result_ref->{reason} = $reason;
-	  $result_ref->{errorcode} = $code;
-	  return $self->print_json($result_ref);   
-      }
+      
+      return $self->print_warning($reason,$code);
     }
 
     $result_ref->{success} = 1;

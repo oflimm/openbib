@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Users::Preferences
 #
-#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2021 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -191,9 +191,11 @@ sub update_searchfields {
 
     my $searchfields_ref = {};
 
+    my $input_data_ref = $self->parse_valid_input('get_input_definition_searchfields');
+    
     # CGI Args
     foreach my $searchfield (keys %{$config->{default_searchfields}}){
-        $searchfields_ref->{$searchfield} = ($query->param($searchfield))?$query->param($searchfield):'0';
+        $searchfields_ref->{$searchfield} = ($input_data_ref->{$searchfield})?$input_data_ref->{$searchfield}:'0';
     }
     
     if (!$self->authorization_successful){
@@ -202,7 +204,13 @@ sub update_searchfields {
 
     $user->set_searchfields($searchfields_ref);
 
-    $self->return_baseurl;
+    if ($self->param('representation') eq "html"){
+        $self->return_baseurl;
+        return;
+    }
+    else {
+	return $self->print_json({ success => 1 });
+    }
     
     return;
 }
@@ -229,10 +237,11 @@ sub update_bibsonomy {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $bibsonomy_sync = ($query->param('bibsonomy_sync'))?$query->param('bibsonomy_sync'):'off';
-    my $bibsonomy_user = ($query->param('bibsonomy_user'))?$query->param('bibsonomy_user'):0;
-    my $bibsonomy_key  = ($query->param('bibsonomy_key'))?$query->param('bibsonomy_key'):0;
+    my $input_data_ref = $self->parse_valid_input('get_input_definition_bibsonomy');
+    
+    my $bibsonomy_sync = ($input_data_ref->{'bibsonomy_sync'})?$input_data_ref->{'bibsonomy_sync'}:'off';
+    my $bibsonomy_user = ($input_data_ref->{'bibsonomy_user'})?$input_data_ref->{'bibsonomy_user'}:0;
+    my $bibsonomy_key  = ($input_data_ref->{'bibsonomy_key'})?$input_data_ref->{'bibsonomy_key'}:0;
 
     if (!$self->authorization_successful){
         return $self->print_authorization_error();
@@ -244,7 +253,13 @@ sub update_bibsonomy {
         key       => $bibsonomy_key,
     });
 
-    $self->return_baseurl;
+    if ($self->param('representation') eq "html"){
+        $self->return_baseurl;
+        return;
+    }
+    else {
+	return $self->print_json({ success => 1 });
+    }
 
     return;
 }
@@ -277,7 +292,13 @@ sub update_bibsonomysync {
 
     $user->sync_all_to_bibsonomy;
 
-    $self->return_baseurl;
+    if ($self->param('representation') eq "html"){
+        $self->return_baseurl;
+        return;
+    }
+    else {
+	return $self->print_json({ success => 1 });
+    }
 
     return;
 }
@@ -304,21 +325,33 @@ sub update_searchform {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $setmask       = ($query->param('setmask'))?$query->param('setmask'):'';
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input('get_input_definition_searchform');
+
+    my $searchform     = ($input_data_ref->{searchform})?$input_data_ref->{searchform}:'';
+
 
     if (!$self->authorization_successful){
         return $self->print_authorization_error();
     }
 
-    if ($setmask eq "") {
-        return $self->print_warning($msg->maketext("Es wurde keine Standard-Recherchemaske ausgewählt"));
+    if ($searchform eq "") {
+        my $code   = -1;
+	my $reason = $msg->maketext("Es wurde keine Standard-Recherchemaske ausgewählt");
+	
+	return $self->print_warning($msg->maketext($reason),$code);
     }
 
-    $user->set_mask($setmask);
-    $session->set_mask($setmask);
+    $user->set_mask($searchform);
+    $session->set_mask($searchform);
 
-    $self->return_baseurl;
+    if ($self->param('representation') eq "html"){
+        $self->return_baseurl;
+        return;
+    }
+    else {
+	return $self->print_json({ success => 1 });
+    }
 
     return;
 }
@@ -345,23 +378,34 @@ sub update_password {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $password1     = ($query->param('password1'))?$query->param('password1'):'';
-    my $password2     = ($query->param('password2'))?$query->param('password2'):'';
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input('get_input_definition_password');
+
+    my $password1         = $input_data_ref->{password1};
+    my $password2         = $input_data_ref->{password2};
 
     if (!$self->authorization_successful){
         return $self->print_authorization_error();
     }
 
     if ($password1 eq "" || $password1 ne $password2) {
-        return $self->print_warning($msg->maketext("Sie haben entweder kein Passwort eingegeben oder die beiden Passworte stimmen nicht überein"));
+        my $code   = -1;
+	my $reason = $msg->maketext("Sie haben entweder kein Passwort eingegeben oder die beiden Passworte stimmen nicht überein");
+	
+	return $self->print_warning($msg->maketext($reason),$code);
     }
 
     $user->set_credentials({
         password => $password1,
     });
 
-    $self->return_baseurl;
+    if ($self->param('representation') eq "html"){
+        $self->return_baseurl;
+        return;
+    }
+    else {
+	return $self->print_json({ success => 1 });
+    }
 
     return;
 }
@@ -388,9 +432,10 @@ sub update_spelling {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $spelling_as_you_type   = ($query->param('spelling_as_you_type'))?$query->param('spelling_as_you_type'):'0';
-    my $spelling_resultlist    = ($query->param('spelling_resultlist'))?$query->param('spelling_resultlist'):'0';
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input('get_input_definition_spelling');
+    my $spelling_as_you_type   = ($input_data_ref->{'spelling_as_you_type'})?$input_data_ref->{'spelling_as_you_type'}:'0';
+    my $spelling_resultlist    = ($input_data_ref->{'spelling_resultlist'})?$input_data_ref->{'spelling_resultlist'}:'0';
 
     if (!$self->authorization_successful){
         return $self->print_authorization_error();
@@ -401,7 +446,13 @@ sub update_spelling {
         resultlist         => $spelling_resultlist,
     });
 
-    $self->return_baseurl;
+    if ($self->param('representation') eq "html"){
+        $self->return_baseurl;
+        return;
+    }
+    else {
+	return $self->print_json({ success => 1 });
+    }
 
     return;
 }
@@ -428,14 +479,14 @@ sub update_livesearch {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $livesearch_freesearch       = ($query->param('livesearch_freesearch'))?$query->param('livesearch_freesearch'):'0';
-    my $livesearch_freesearch_exact = ($query->param('livesearch_freesearch_exact'))?$query->param('livesearch_freesearch_exact'):'0';
-    my $livesearch_person           = ($query->param('livesearch_person'))?$query->param('livesearch_person'):'0';
-    my $livesearch_person_exact     = ($query->param('livesearch_person_exact'))?$query->param('livesearch_person_exact'):'0';
-    my $livesearch_subject          = ($query->param('livesearch_subject'))?$query->param('livesearch_subject'):'0';
-    my $livesearch_subject_exact    = ($query->param('livesearch_subject_exact'))?$query->param('livesearch_subject_exact'):'0';
-
+    my $input_data_ref = $self->parse_valid_input('get_input_definition_livesearch');
+    my $livesearch_freesearch       = ($input_data_ref->{'livesearch_freesearch'})?$input_data_ref->{'livesearch_freesearch'}:'0';
+    my $livesearch_freesearch_exact = ($input_data_ref->{'livesearch_freesearch_exact'})?$input_data_ref->{'livesearch_freesearch_exact'}:'0';
+    my $livesearch_person           = ($input_data_ref->{'livesearch_person'})?$input_data_ref->{'livesearch_person'}:'0';
+    my $livesearch_person_exact     = ($input_data_ref->{'livesearch_person_exact'})?$input_data_ref->{'livesearch_person_exact'}:'0';
+    my $livesearch_subject          = ($input_data_ref->{'livesearch_subject'})?$input_data_ref->{'livesearch_subject'}:'0';
+    my $livesearch_subject_exact    = ($input_data_ref->{'livesearch_subject_exact'})?$input_data_ref->{'livesearch_subject_exact'}:'0';
+    
     if (!$self->authorization_successful){
         return $self->print_authorization_error();
     }
@@ -449,7 +500,13 @@ sub update_livesearch {
         subject_exact    => $livesearch_subject_exact,
     });
 
-    $self->return_baseurl;
+    if ($self->param('representation') eq "html"){
+        $self->return_baseurl;
+        return;
+    }
+    else {
+	return $self->print_json({ success => 1 });
+    }
 
     return;
 }
@@ -476,16 +533,23 @@ sub update_autocompletion {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $setautocompletion = ($query->param('setautocompletion'))?$query->param('setautocompletion'):'livesearch';
+    my $input_data_ref = $self->parse_valid_input('get_input_definition_autocompletion');
+    my $autocompletion = ($input_data_ref->{'autocompletion'})?$input_data_ref->{'autocompletion'}:'livesearch';
+    
 
     if (!$self->authorization_successful){
         return $self->print_authorization_error();
     }
 
-    $user->set_autocompletion($setautocompletion);
+    $user->set_autocompletion($autocompletion);
 
-    $self->return_baseurl;
+    if ($self->param('representation') eq "html"){
+        $self->return_baseurl;
+        return;
+    }
+    else {
+	return $self->print_json({ success => 1 });
+    }
 
     return;
 }
@@ -511,6 +575,142 @@ sub return_baseurl {
     $self->redirect($new_location);
 
     return;
+}
+
+sub get_input_definition_password {
+    my $self=shift;
+    
+    return {
+	password1 => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+	},
+	password2 => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+    };
+}
+
+sub get_input_definition_spelling {
+    my $self=shift;
+    
+    return {
+	'spelling_as_you_type' => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+	},
+	'spelling_resultlist' => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+    };
+}
+
+sub get_input_definition_autocompletion {
+    my $self=shift;
+    
+    return {
+	'autocompletion' => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+	},
+    };
+}
+
+sub get_input_definition_searchform {
+    my $self=shift;
+    
+    return {
+	'searchform' => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+	},
+    };
+}
+
+sub get_input_definition_bibsonomy {
+    my $self=shift;
+    
+    return {
+	'bibsonomy_sync' => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+	},
+	'bibsonomy_user' => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+	},
+	'bibsonomy_key' => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+	},
+    };
+}
+
+sub get_input_definition_searchfields {
+    my $self=shift;
+
+    my $config         = $self->param('config');
+
+    my $return_ref = { };
+
+    foreach my $searchfield (keys %{$config->{default_searchfields}}){
+	$return_ref->{$searchfield} = {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+	};
+    }
+    
+    return $return_ref;
+}
+
+
+sub get_input_definition_livesearch {
+    my $self=shift;
+    
+    return {
+	'livesearch_freesearch' => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+	},
+	'livesearch_freesearch_exact' => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+	'livesearch_person' => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+	},
+	'livesearch_person_exact' => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+	'livesearch_subject' => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+	},
+	'livesearch_subject_exact' => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+    };
 }
 
 

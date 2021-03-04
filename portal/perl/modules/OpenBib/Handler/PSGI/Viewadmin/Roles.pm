@@ -218,7 +218,7 @@ sub create_record {
     my $location       = $self->param('location');
 
     # CGI / JSON input
-    my $input_data_ref = $self->parse_valid_input($self->get_input_definition);
+    my $input_data_ref = $self->parse_valid_input();
 
     # Set current view
     $input_data_ref->{viewadmins} = [$view];
@@ -277,7 +277,7 @@ sub update_record {
     my $path_prefix    = $self->param('path_prefix');
 
     # CGI / JSON input
-    my $input_data_ref = $self->parse_valid_input($self->get_input_definition);
+    my $input_data_ref = $self->parse_valid_input();
 
     $input_data_ref->{rolename} = $roleid;
 

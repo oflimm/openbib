@@ -2487,7 +2487,8 @@ sub get_serverinfo_overview {
     my $object = $self->get_serverinfo->search(
         undef,
         {
-            order_by => 'hostip',
+            order_by => ['clusterid.description','hostip'],
+	    join => ['clusterid'],
         }
     );
     

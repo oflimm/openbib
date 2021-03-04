@@ -65,6 +65,7 @@ sub setup {
         'show_record_form'          => 'show_record_form',
         'show_search'               => 'show_search',
         'show_search_form'          => 'show_search_form',
+        'update_record'             => 'update_record',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
@@ -262,5 +263,60 @@ sub show_search {
     
     return $self->print_page($config->{tt_viewadmin_users_search_tname},$ttdata);
 }
+
+sub update_record {
+    my $self = shift;
     
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $userid         = $self->strip_suffix($self->param('userid'));
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
+    
+    if (!$self->is_authenticated('viewadmin',$userid)){
+        return;
+    }
+
+    if (defined $input_data_ref->{mixed_bag}){
+	my $contentstring = {};
+	
+	eval {
+	    $contentstring= JSON::XS->new->utf8->canonical->encode($input_data_ref->{mixed_bag});
+	};
+
+	if ($@){
+	    $logger->error("Canonical Encoding failed: ".YAML::Dump($input_data_ref->{mixed_bag}));
+	}
+
+	$input_data_ref->{mixed_bag} = $contentstring; 
+    }
+   
+    $user->update_userinfo($input_data_ref) if (keys %$input_data_ref);
+
+    if ($self->param('representation') eq "html"){
+        # TODO GET?
+        return $self->redirect("$path_prefix/$config->{users_loc}/id/$user->{ID}/edit");
+    }
+    else {
+        $logger->debug("Weiter zum Record");
+        return $self->show_record;
+    }    
+}
+
 1;

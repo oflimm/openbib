@@ -1622,14 +1622,21 @@ sub read_json_input {
 }
 
 sub parse_valid_input {
-    my $self=shift;
+    my ($self,$method)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     my $query = $self->query();
 
-    my $valid_input_params_ref = $self->get_input_definition;
+    my $valid_input_params_ref = {};
+
+    if ($method){
+	$valid_input_params_ref = $self->$method;
+    }
+    else {
+	$valid_input_params_ref = $self->get_input_definition;
+    }
     
     my $input_params_ref = {};
 

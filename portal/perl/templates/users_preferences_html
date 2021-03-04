@@ -15,80 +15,6 @@
 <h2>[% msg.maketext("Grundeinstellungen") %]</h2>
 
 
-[% IF authenticator.type == 'olws' %]
-
-<div class="row">
-  <div class="col-md-6">
-<h4>[% msg.maketext("Personendaten") %]</h4>
-
-<table>
-<tr><th>[% msg.maketext("Nachname") %]:</th><td align="left">&nbsp;[% userinfo.nachname %]</td></tr>
-<tr><th>[% msg.maketext("Vorname") %]:</th><td align="left">&nbsp;[% userinfo.vorname %]</td></tr>
-[% IF userinfo.email %]
-<tr><th>[% msg.maketext("E-Mail") %]:</th><td align="left">&nbsp;[% userinfo.email %]</td></tr>
-[% END %]
-<tr><th>[% msg.maketext("Sperre") %]:</th><td align="left">&nbsp;
-[%- IF userinfo.sperre -%]
-[% msg.maketext("ja, seit") %][% userinfo.sperrdatum %] [% msg.maketext("mit Grund") %]<em>[% userinfo.sperre %]</em>
-[%- ELSE -%]
-[% msg.maketext("nein") %]
-[%- END -%]
-</td></tr>
-</table>
-  </div>
-  <div class="col-md-6">
-
-<h4>[% msg.maketext("Ausleihinformationen") %] / [% authenticator.description %]</h4>
-
-<div class="table-responsive">
-<table class="table table-striped table-hover">
-<tr><th>[% msg.maketext("Guthaben") %]:</th><td align="right">[% userinfo.gut %]&nbsp;EUR</td></tr>
-<tr><th>[% msg.maketext("Soll") %]:</th><td align="right">[% userinfo.soll %]&nbsp;EUR</td></tr>
-<tr><th>[% msg.maketext("Offene Geb&uuml;hren") %]</th><td>
-[% IF userinfo.maanz > 0 %]
-<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/reminders.html?l=[% lang %]">[% userinfo.maanz %]</a>
-[% ELSE %]
-[% userinfo.maanz %]
-[% END %]
-</td></tr>
-
-<tr><th>[% msg.maketext("Ausgeliehen") %]:</th><td align="left">
-[%- IF userinfo.avanz > 0 -%]
-<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/borrows.html?l=[% lang %]">[% userinfo.avanz %]</a>
-[%- ELSE -%]
-[%- userinfo.avanz -%]
-[%- END -%]
-</td></tr>
-<tr><th>[% msg.maketext("Vorgemerkt") %]:</th><td>
-[%- IF userinfo.vmanz > 0 -%]
-<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/reservations.html?l=[% lang %]">[% userinfo.vmanz %]</a>
-[%- ELSE -%]
-[%- userinfo.vmanz -%]
-[%- END -%]
-</td></tr>
-<tr><th>[% msg.maketext("Bestellungen") %]:</th><td align="left">
-[%- IF userinfo.bsanz > 0 -%]
-<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/id/orders.html?l=[% lang %]">[% userinfo.bsanz %]</a>
-[%- ELSE -%]
-[%- userinfo.bsanz -%]
-[%- END -%]
-</td></tr>
-</table>
-</div>
-
-  </div>
-
-</div>
-
-<p>
-[% msg.maketext("Bitte wenden Sie sich bei Unstimmigkeiten in Ihren Personendaten an die Auskunft der Bibliothek.") %]
-</p>
-
-
-<p />
-[% END %]
-
-
 [% IF 0 == 1 %]
 <div class="card">
 <div class="card-header">[% msg.maketext("Recherchemaske") %]</div>
@@ -98,7 +24,7 @@
 <input type="hidden" name="_method"    value="PUT" />
 
 <div class="form-group">
-<select class="form-control" name="setmask">
+<select class="form-control" name="searchform">
 <option value="simple"[%- IF userinfo.masktype == 'simple' -%] selected="selected"[%- END -%]>[% msg.maketext("Einfache Recherchemaske") %]</option>
 <option value="advanced"[%- IF userinfo.masktype == 'advanced' -%] selected="selected"[%- END -%]>[% msg.maketext("Erweitere Recherchemaske") %]</option>
 </select>
@@ -167,7 +93,7 @@
 <label class="form-check-label" for="toc">[% msg.maketext("T0519") %]</label>
 </div>
 
-</div>
+</div><!-- end col-md-6 -->
 
 <div class="col-md-6">
 
@@ -206,18 +132,18 @@
 <label class="form-check-label" for="year">[% msg.maketext("Erscheinungsjahr") %]</label>
 </div>
 
-</div>
-</div><!-- End grid -->
+</div><!-- end col-md-6 -->
+</div><!-- End row -->
 
 
 <button type="submit" class="btn btn-primary mb-2 mt-4">[% msg.maketext("&Auml;ndern") %]</button>
 
 </form>
-</div>
-</div>
+</div><!-- end card-body -->
+</div><!-- end card -->
 
 <p/>
-[% IF 0 == 1 %]
+
 <div class="card">
 <div class="card-header">[% msg.maketext("Automatische Vorschl&auml;ge zur Suchanfrage") %]</div>
 <div class="card-body">
@@ -226,7 +152,7 @@
 <input type="hidden" name="_method"    value="PUT" />
 
 <div class="form-group">
-<select class="form-control" name="setautocompletion">
+<select class="form-control" name="autocompletion">
 <option value="none"[%- IF userinfo.autocompletiontype == 'none' -%] selected="selected"[%- END -%]>[% msg.maketext("Keine") %]</option>
 <option value="livesearch"[%- IF userinfo.autocompletiontype == 'livesearch' -%] selected="selected"[%- END -%]>[% msg.maketext("LiveSearch") %]</option>
 <option value="spelling"[%- IF userinfo.autocompletiontype == 'spelling' -%] selected="selected"[%- END -%]>[% msg.maketext("Rechtschreibvorschläge") %]</option>
@@ -235,10 +161,23 @@
 
 <button class="btn btn-primary mb-2" type="submit">[% msg.maketext("&Auml;ndern") %]</button>
 
-<div class="border p-1">
+</form>
+</div><!-- end card-body -->
+</div><!-- end card -->
 
-<h3>[% msg.maketext("LiveSearch") %]</h3>
+<p/>
 
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <a class="card-link" href="#collapseOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          [% msg.maketext("LiveSearch") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#autocompletion">
+      <div class="card-body">
 <form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/livesearch" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="_method"    value="PUT" />
 
@@ -264,7 +203,6 @@
 <input class="form-check-input" type="checkbox" name="livesearch_person_exact" id="livesearch_person_exact" value="1" [% IF livesearch.person.exact %]checked="checked"[% END %]/>
 <label class="form-check-label" for="livesearch_person_exact">Vorschlag nur bei exakter Wort&uuml;bereinstimmung</label>
 </div>
-</fieldset>
 
 <legend class="mt-2">[% msg.maketext("Bei der Eingabe von Schlagworten") %]</legend>
 <div class="form-check">
@@ -281,16 +219,26 @@
 
 </form>
 
-</div>
+      </div>
+    </div>
+  </div>
 
 <p/>
 
-<div class="border p-1">
+  <div class="card">
+    <div class="card-header" id="headingTwo">
+      <h5 class="mb-0">
+        <a class="card-link" href="#collapseTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+          [% msg.maketext("Rechtschreibvorschläge") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#autocompletion">
+      <div class="card-body">
 
 <form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/spelling" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="_method"    value="PUT" />
-
-<h3>[% msg.maketext("Rechtschreibvorschläge") %]</h3>
 
 <div class="form-check">
 <input class="form-check-input" type="checkbox" name="spelling_as_you_type" id="spelling_as_you_type" value="1" [% IF spelling_suggestion.as_you_type %]checked="checked"[% END %]/>
@@ -305,14 +253,12 @@
 <button class="btn btn-primary mt-3 mb-2" type="submit">[% msg.maketext("&Auml;ndern") %]</button>
 
 </form>
-</div>
 
-
-</div>
-</div>
+      </div>
+    </div>
+  </div>
 
 <p/>
-[% END %]
 
 <div class="card">
 <div class="card-header">[% msg.maketext("BibSonomy") %]</div>

@@ -45,10 +45,10 @@ use OpenBib::Config::DispatchTable;
 
 use base 'CGI::Application::Dispatch::PSGI';
 
-our $DEBUG = 0;
+our $DEBUG   = 0;
 
 sub as_psgi {
-    my ( $self, %args ) = @_;
+    my ($self, %args) = @_;
 
     my $logger = get_logger();
 
@@ -57,30 +57,32 @@ sub as_psgi {
     #$logger->debug("Query: ".ref($query));
 
     # set method for http-tunnel based on _method-CGI-Parameter
-    if ( $query->param('_method') ) {
+    if ($query->param('_method')){
         $args{args_to_new}->{PARAMS}->{method} = $query->param('_method');
 
         $query->env->{REQUEST_METHOD} = $query->param('_method');
-
-  #if ($logger->is_debug){
-  #    $logger->debug("Changed method to tunneled ".$query->param('_method'));
-  #}
+        
+        #if ($logger->is_debug){
+        #    $logger->debug("Changed method to tunneled ".$query->param('_method'));
+        #}
     }
-
+    
     #$logger->debug("Dispatching as PSGI");
 
-    $args{args_to_new}->{PARAMS}->{r}     = $query;
+    $args{args_to_new}->{PARAMS}->{r} = $query;
     $args{args_to_new}->{PARAMS}->{QUERY} = $query;
-    $args{args_to_new}->{QUERY}           = $query;
+    $args{args_to_new}->{QUERY} = $query;
 
+    
     #$logger->debug("ARGS as_psgi: ".Data::Dumper::Dumper(\%args));
+    
+    my $psgi_app = $self->SUPER::as_psgi(%args) ;
 
-    my $psgi_app = $self->SUPER::as_psgi(%args);
-
-    $logger->debug( "Output is :" . Dumper(%args) );
-
+#    $logger->debug("Output is :".YAML::Dump($psgi_app));
+    
     return $psgi_app;
 }
+
 
 # sub handler : method {
 #     my ($self, $r) = @_;
@@ -99,7 +101,7 @@ sub as_psgi {
 #     $ENV{PATH_INFO} = $r->uri(); # was $r->path_info();
 
 #     my $query = Apache2::Request->new($r);
-
+    
 #     # set method for http-tunnel based on _method-CGI-Parameter
 #     if ($query->param('_method')){
 #         $r->method($query->param('_method'));
@@ -107,7 +109,7 @@ sub as_psgi {
 #             $logger->debug("Changed method to tunneled ".$query->param('_method'));
 #         }
 #     }
-
+    
 #     # setup our args to dispatch()
 #     my %args;
 #     my $config_args = $r->dir_config();
@@ -143,7 +145,7 @@ sub as_psgi {
 #         $timeall=timediff($btime,$atime);
 #         $logger->info("Total time for dispatching ".$r->uri()." is ".timestr($timeall));
 #     }
-
+    
 #     if ($logger->is_debug){
 #         $logger->debug("Dispatching done with status ".$r->status);
 #     }
@@ -160,115 +162,101 @@ sub as_psgi {
 #     }
 # }
 
+
 sub dispatch_args {
-    my ( $self, $args ) = @_;
+    my ($self, $args) = @_;
 
     my $logger = get_logger();
-
-    my $dispatch_rules = OpenBib::Config::DispatchTable->instance;
+    
+    my $dispatch_rules  = OpenBib::Config::DispatchTable->instance;
 
     my $table_ref = [];
 
-    foreach my $item ( @{$dispatch_rules} ) {
-        my $rule    = $item->{rule};
-        my $module  = $item->{module};
-        my $runmode = $item->{runmode};
+    foreach my $item (@{$dispatch_rules}){
+        my $rule       = $item->{rule};
+        my $module     = $item->{module};
+        my $runmode    = $item->{runmode};
 
-        #Ergänzung für FID
-        my $viewdata = $item->{viewdata};
+        if (defined $item->{representations}){
+            my @representations = @{$item->{representations}};
 
-        if ( defined $item->{representations} ) {
-            my @representations = @{ $item->{representations} };
-
-            foreach my $representation (@representations) {
+            foreach my $representation (@representations){
                 my $new_rule = "";
-
-                if ( $representation eq "none" ) {
-                    $new_rule = $rule;
+                
+                if ($representation eq "none"){
+                    $new_rule=$rule;
                 }
-                elsif ( $rule =~ /^(.+)(\[.+?\])$/ ) {
-                    $new_rule = "$1.$representation$2";
+                elsif ($rule=~/^(.+)(\[.+?\])$/){
+                    $new_rule="$1.$representation$2";
                 }
                 else {
-                    $new_rule = "$rule.$representation";
+                    $new_rule="$rule.$representation";
                 }
-
+                
                 push @{$table_ref}, $new_rule;
-
+                
                 my $rule_specs = {
                     'app' => "$module",
-                    'rm'  => "$runmode"
+                    'rm'  => "$runmode",
                 };
 
-                if ( defined $item->{scope} && defined $item->{scope} ) {
+                if (defined $item->{scope} && defined $item->{scope}){
                     $item->{args}->{scope} = $item->{scope};
                 }
 
-                if ( defined $item->{send_new_cookie}
-                    && $item->{send_new_cookie} )
-                {
+                if (defined $item->{send_new_cookie} && $item->{send_new_cookie} ){
                     $item->{args}->{send_new_cookie} = 1;
                 }
-                else {
-                    $item->{args}->{send_new_cookie} = 0;
-                }
-
-                if ( $item->{args} ) {
-
+		else {
+		    $item->{args}->{send_new_cookie} = 0;
+		}
+                
+                if ($item->{args}){
                     # Request-Object dazu, da sonst ueberschrieben
-                    $item->{args}->{r} = $args->{args_to_new}->{PARAMS}->{r};
-                    $item->{args}->{method} = $args->{args_to_new}->{method};
-                    $item->{args}->{QUERY}  = $args->{args_to_new}->{QUERY};
-                    if (!$args->{args_to_new}->{PARAMS}->{view}){
-                        $item->{args}->{view} = $viewdata;
-                    }
-                    $rule_specs->{args_to_new}->{PARAMS} = $item->{args};
+                    $item->{args}->{r}                   = $args->{args_to_new}->{PARAMS}->{r};
+                    $item->{args}->{method}              = $args->{args_to_new}->{method};
+                    $item->{args}->{QUERY}               = $args->{args_to_new}->{QUERY};
+                    $rule_specs->{args_to_new}->{PARAMS} = $item->{args}; 
                 }
-
+                
                 push @{$table_ref}, $rule_specs;
             }
         }
         else {
             push @{$table_ref}, $rule;
-
+            
             my $rule_specs = {
                 'app' => "$module",
-                'rm'  => "$runmode"
+                'rm'  => "$runmode",
             };
 
-            if ( defined $item->{scope} && defined $item->{scope} ) {
-                $item->{args}->{scope} = $item->{scope};
+	    if (defined $item->{scope} && defined $item->{scope}){
+		$item->{args}->{scope} = $item->{scope};
+	    }
+	    
+	    if (defined $item->{send_new_cookie} && $item->{send_new_cookie} ){
+		$item->{args}->{send_new_cookie} = 1;
+	    }
+	    else {
+		$item->{args}->{send_new_cookie} = 0;
+	    }
+            
+            if ($item->{args}){
+                # Request-Object dazu, da sonst ueberschrieben
+                $item->{args}->{r}                   = $args->{args_to_new}->{PARAMS}->{r};
+                $item->{args}->{method}              = $args->{args_to_new}->{method};
+                $item->{args}->{QUERY}               = $args->{args_to_new}->{QUERY};
+                $rule_specs->{args_to_new}->{PARAMS} = $item->{args}; 
             }
-
-            if ( defined $item->{send_new_cookie}
-                && $item->{send_new_cookie} )
-            {
-                $item->{args}->{send_new_cookie} = 1;
-            }
-            else {
-                $item->{args}->{send_new_cookie} = 0;
-            }
-
-            if ( $item->{args} ) {
-
-              # Request-Object dazu, da sonst ueberschrieben
-                    $item->{args}->{r} = $args->{args_to_new}->{PARAMS}->{r};
-                    $item->{args}->{method} = $args->{args_to_new}->{method};
-                    $item->{args}->{QUERY}  = $args->{args_to_new}->{QUERY};
-                    if (!$args->{args_to_new}->{PARAMS}->{view}){
-                        $item->{args}->{view} = $viewdata;
-                    }
-                    $rule_specs->{args_to_new}->{PARAMS} = $item->{args};
-            }
-
+            
 #            if ($item->{scope}){
-#                $rule_specs->{args_to_new}->{PARAMS}->{scope} = $item->{scope};
+#                $rule_specs->{args_to_new}->{PARAMS}->{scope} = $item->{scope}; 
 #            }
-
+            
             push @{$table_ref}, $rule_specs;
         }
     }
-
+    
     return {
         #debug => 1,
         table => $table_ref,
@@ -276,98 +264,87 @@ sub dispatch_args {
 }
 
 sub _run_app {
-    my ( $self, $module, $rm, $args, $env ) = @_;
+    my ($self, $module, $rm, $args,$env) = @_;
 
-    my $logger = get_logger();
+    my $logger=get_logger();
 
-    my $config = OpenBib::Config::File->instance;
+    my $config  = OpenBib::Config::File->instance;
 
     my $atime;
-
-    if ( $config->{benchmark} ) {
-        $atime = new Benchmark;
+    
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
     }
-
-    if ($DEBUG) {
+    
+    if($DEBUG) {
         require Data::Dumper;
-        warn "[Dispatch] Final args to pass to new(): "
-            . Data::Dumper::Dumper($args) . "\n";
+        warn "[Dispatch] Final args to pass to new(): " . Data::Dumper::Dumper($args) . "\n";
     }
 
-    if ($rm) {
+    if($rm) {
 
         # check runmode name
-        ($rm) = ( $rm =~ /^([a-zA-Z_][\w']+)$/ );
-        HTTP::Exception->throw( 400,
-            status_message => "Invalid characters in runmode name" )
-            unless $rm;
+        ($rm) = ($rm =~ /^([a-zA-Z_][\w']+)$/);
+        HTTP::Exception->throw(400, status_message => "Invalid characters in runmode name") unless $rm;
 
     }
 
     # now create and run then application object
-    warn "[Dispatch] creating instance of $module\n" if ($DEBUG);
+    warn "[Dispatch] creating instance of $module\n" if($DEBUG);
 
     my $psgi;
     eval {
         my $app = do {
-            if ( ref($args) eq 'HASH' and not defined $args->{PARAMS}{QUERY} )
-            {
+            if (ref($args) eq 'HASH' and not defined $args->{PARAMS}{QUERY}) {
                 require CGI::PSGI;
                 $args->{QUERY} = CGI::PSGI->new($env);
                 $module->new($args);
             }
-            elsif ( ref($args) eq 'HASH' and defined $args->{PARAMS}{QUERY} )
-            {
+            elsif (ref($args) eq 'HASH' and defined $args->{PARAMS}{QUERY}) {
                 $args->{QUERY} = $args->{PARAMS}{QUERY};
                 $module->new($args);
             }
-            elsif ( ref($args) eq 'HASH' ) {
+            elsif (ref($args) eq 'HASH') {
                 $module->new($args);
             }
             else {
                 $module->new();
             }
         };
-        $app->mode_param( sub { return $rm } ) if ($rm);
+        $app->mode_param(sub { return $rm }) if($rm);
         $psgi = $app->run_as_psgi;
     };
 
-    if ( $config->{benchmark} ) {
+    if ($config->{benchmark}){
         my $btime      = new Benchmark;
-        my $timeall    = timediff( $btime, $atime );
-        my $resulttime = timestr( $timeall, "nop" );
-        $resulttime =~ s/(\d+\.\d+) .*/$1/;
-
-        $logger->info(
-            "Processing runmode $rm in module $module took $resulttime seconds"
-        );
+        my $timeall    = timediff($btime,$atime);
+        my $resulttime = timestr($timeall,"nop");
+        $resulttime    =~s/(\d+\.\d+) .*/$1/;
+        
+        $logger->info("Processing runmode $rm in module $module took $resulttime seconds");
     }
 
     # App threw an HTTP::Exception? Cool. Bubble it up.
     my $e;
-    if ( $e = HTTP::Exception->caught ) {
-        $e->rethrow;
-    }
+    if ($e = HTTP::Exception->caught) {
+        $e->rethrow;   
+    } 
     else {
-        $e = Exception::Class->caught();
+          $e = Exception::Class->caught();
 
-        # catch invalid run-mode stuff
-        if ( not ref $e and $e =~ /No such run mode/ ) {
-            HTTP::Exception->throw( 404,
-                status_message => "RM '$rm' not found" );
-        }
-
-        # otherwise, it's an internal server error.
-        elsif ( defined $e and length $e ) {
-            HTTP::Exception->throw( 500,
-                status_message => "Unknown error: $e" );
-
-            #return $psgi;
-        }
-        else {
-            # no exception
-            return $psgi;
-        }
+          # catch invalid run-mode stuff
+          if (not ref $e and  $e =~ /No such run mode/) {
+              HTTP::Exception->throw(404, status_message => "RM '$rm' not found");
+          }
+          # otherwise, it's an internal server error.
+          elsif (defined $e and length $e) {
+              HTTP::Exception->throw(500, status_message => "Unknown error: $e");
+              #return $psgi;
+          }
+          else {
+              # no exception
+              return $psgi;
+          }
     }
 }
 

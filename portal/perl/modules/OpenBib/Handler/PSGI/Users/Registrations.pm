@@ -267,7 +267,9 @@ sub mail_confirmation {
 	Path            => $anschfile,
     );
     
-     $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config->{contact_email}");
+    #$mailmsg->send('sendmail', "/usr/bin/mail -s -f$config->{contact_email}");
+    $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config->{contact_email}");
+
     # TT-Data erzeugen
     my $ttdata={
 	registrationid => $registrationid,

@@ -17,7 +17,7 @@ Sehr geehrter Nutzer,
 
 sie haben sich heute im Portal "[% config.get_viewdesc_from_viewname(view) %]" selbst registriert.
 
-Ihre Registrierung wird wirksam, wenn Sie den folgenden URL aufrufen: 
+Ihre Registrierung wird wirksam, wenn Sie den folgenden URL aufrufen:
 
 [% scheme %]://[% servername %][% path_prefix %]/[% config.get('users_loc') %]/[% config.get('registrations_loc') %]/id/[% registrationid %]
 

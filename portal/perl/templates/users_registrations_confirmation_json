@@ -1,0 +1,11 @@
+[%-
+
+ this_json_output = {
+     success => 1
+     registrationid => registrationid
+     username => username
+ };
+
+to_json(this_json_output) ;
+
+-%]

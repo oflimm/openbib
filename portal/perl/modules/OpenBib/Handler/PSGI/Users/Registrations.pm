@@ -139,41 +139,55 @@ sub mail_confirmation {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $username            = ($query->param('username'))?$query->param('username'):'';
-    my $password1           = ($query->param('password1'))?$query->param('password1'):'';
-    my $password2           = ($query->param('password2'))?$query->param('password2'):'';
-    my $recaptcha_challenge = $query->param('recaptcha_challenge_field');
-    #my $recaptcha_response  = $query->param('recaptcha_response_field');
-    my $recaptcha_response  = $query->param('g-recaptcha-response');
+    # CGI / JSON input
+    my $input_data_ref      = $self->parse_valid_input();
+
+    my $username            = $input_data_ref->{username}  || '';
+    my $password1           = $input_data_ref->{password1} || '';
+    my $password2           = $input_data_ref->{password2} || '';
+    my $recaptcha_challenge = $input_data_ref->{'recaptcha_challenge_field'};
+    #my $recaptcha_response = $input_data_ref->{'recaptcha_response_field'};
+    my $recaptcha_response  = $input_data_ref->{'g-recaptcha-response'};
 
     if ($logger->is_debug){
-	foreach my $qparam ($query->param){
-	    $logger->debug("$qparam -> ".$query->param($qparam));
+	foreach my $qparam (keys %$input_data_ref){
+	    $logger->debug("$qparam -> ".$input_data_ref->{$qparam});
 	}
     }
 
+    my $result_ref = {
+        success => 0,
+    };
+    
     # Cleanup Username
     $username=~s/^\s+//g;
     $username=~s/\s+$//g;
     
     if ($username eq "" || $password1 eq "" || $password2 eq "") {
-        return $self->print_warning($msg->maketext("Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"),-1);
+        my $code   = -1;
+	my $reason = $self->get_error_message($code);
+        return $self->print_warning($reason,$code);
     }
     
     if ($password1 ne $password2) {
-        return $self->print_warning($msg->maketext("Die beiden eingegebenen Passworte stimmen nicht überein."),-2);
+        my $code   = -2;
+	my $reason = $self->get_error_message($code);
+        return $self->print_warning($reason,$code);
     }
     
     # Ueberpruefen, ob es eine gueltige Mailadresse angegeben wurde.
     unless (Email::Valid->address($username)){
-        return $self->print_warning($msg->maketext("Sie haben keine gültige Mailadresse eingegeben. Gehen Sie bitte [_1]zurück[_2] und korrigieren Sie Ihre Eingabe","<a href=\"$path_prefix/$config->{users_loc}/$config->{registrations_loc}\">","</a>"),-3);
+        my $code   = -3;
+	my $reason = $self->get_error_message($code);
+        return $self->print_warning($reason,$code);
     }
 
     my $authenticator_self_ref = $config->get_authenticator_self;
     
     if ($user->user_exists_in_view({ username => $username, viewname => $view, authenticatorid => $authenticator_self_ref->{id}})) {
-        return $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"),-4);
+        my $code   = -4;
+	my $reason = $self->get_error_message($code);
+        return $self->print_warning($reason,$code);
     }
 
     
@@ -198,7 +212,9 @@ sub mail_confirmation {
 		);
 	    
 	    unless ( $recaptcha_result->{is_valid} ) {
-		return $self->print_warning($msg->maketext("Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte [_1]zurück[_2] und versuchen Sie es erneut.","<a href=\"$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"));
+		my $code   = -6;
+		my $reason = $self->get_error_message($code);
+		return $self->print_warning($reason,$code);
 	    }
 	}
     }
@@ -209,18 +225,15 @@ sub mail_confirmation {
 
     my $afile = "an." . $$ . ".txt";
 
-    my $subject = $msg->maketext("Bestaetigen Sie Ihre Registrierung");
+    my $subject  = $msg->maketext("Bestaetigen Sie Ihre Registrierung");
+    my $viewinfo = $config->get_viewinfo->search({ viewname => $view })->single();
 
     my $mainttdata = {        
-                      registrationid => $registrationid,
-                      view           => $view,
-                      config         => $config,
-		      msg            => $msg,
-		      scheme         => $self->param('scheme'),
-		      servername     => $self->param('servername'),
-		      path_prefix    => $self->param('path_prefix'),
-		     };
+	registrationid => $registrationid,
 
+	viewinfo       => $viewinfo,
+    };
+    
     my $maintemplate = Template->new({
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
             INCLUDE_PATH   => $config->{tt_include_path},
@@ -276,7 +289,16 @@ sub mail_confirmation {
         username       => $username,
     };
 
-    return $self->print_page($config->{tt_users_registrations_confirmation_tname},$ttdata);
+    $ttdata = $self->add_default_ttdata($ttdata);
+    
+    $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
+        database     => '', # Template ist nicht datenbankabhaengig
+        view         => $ttdata->{view},
+        profile      => $ttdata->{sysprofile},
+        templatename => $config->{tt_users_registrations_confirmation_tname},
+    });
+    
+    return $self->print_page($templatename,$ttdata);
 }
 
 sub register {
@@ -325,7 +347,9 @@ sub register {
 	
 	# Wurde dieser Nutzername inzwischen bereits registriert?
 	if ($user->user_exists_in_view({ username => $username, viewid => $viewid, authenticatorid => $authenticator_self_ref->{id} })) {
-	    return $self->print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$username","<a href=\"http://$r->get_server_name$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"));
+	    my $code   = -4;
+	    my $reason = $self->get_error_message($code);
+	    return $self->print_warning($reason,$code);
 	}
 	
 	# OK, neuer Nutzer -> eintragen
@@ -345,7 +369,9 @@ sub register {
 	$user->clear_confirmation_request({ registrationid => $registrationid });
     }
     else {
-      return $self->print_warning($msg->maketext("Diese Registrierungs-ID existiert nicht für dieses Portal."));
+	my $code   = -5;
+	my $reason = $self->get_error_message($code);
+	return $self->print_warning($reason,$code);
     }
 
     # TT-Data erzeugen
@@ -353,7 +379,76 @@ sub register {
         username   => $username,
     };
 
-    return $self->print_page($config->{tt_users_registrations_success_tname},$ttdata);
+    $ttdata = $self->add_default_ttdata($ttdata);
+    
+    my $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
+        database     => '', # Template ist nicht datenbankabhaengig
+        view         => $ttdata->{view},
+        profile      => $ttdata->{sysprofile},
+        templatename => $config->{tt_users_registrations_success_tname},
+    });
+    
+    return $self->print_page($templatename,$ttdata);
 }
+
+sub get_error_message {
+    my $self=shift;
+    my $errorcode=shift;
+
+    my $msg            = $self->param('msg');
+    my $config         = $self->param('config');    
+    my $path_prefix    = $self->param('path_prefix');    
+
+    my %messages = (
+        -1 => $msg->maketext("Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"),
+        -2 => $msg->maketext("Die beiden eingegebenen Passworte stimmen nicht überein."),
+        -3 => $msg->maketext("Sie haben keine gültige Mailadresse eingegeben. Gehen Sie bitte [_1]zurück[_2] und korrigieren Sie Ihre Eingabe","<a href=\"$path_prefix/$config->{users_loc}/$config->{registrations_loc}\">","</a>"),
+        -4 => $msg->maketext("Ein Benutzer mit dem Namen existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_1]zurück[_2] und lassen es sich zumailen.","<a href=\"$path_prefix/$config->{users_loc}/$config->{passwords_loc}.html\">","</a>"),
+        -5 => $msg->maketext("Diese Registrierungs-ID existiert nicht für dieses Portal."),
+	-6 => $msg->maketext("Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte [_1]zurück[_2] und versuchen Sie es erneut.","<a href=\"$path_prefix/$config->{users_loc}/$config->{registrations_loc}.html\">","</a>"),
+	);
+
+    my $unspecified = $msg->maketext("Unspezifischer Fehler-Code");
+
+    if (defined $messages{$errorcode} && $messages{$errorcode}){
+	return $messages{$errorcode}
+    }
+    else {
+	return $unspecified;
+    }
+}
+
+sub get_input_definition {
+    my $self=shift;
+    
+    return {
+        username => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        password1 => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        password2 => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        'recaptcha_challenge_field' => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        'g-recaptcha-response' => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+    };
+}
+
 
 1;

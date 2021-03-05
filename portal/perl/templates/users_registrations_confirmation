@@ -21,6 +21,8 @@
     };
 -%]
 [%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="users_registrations_confirmation_json" -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]
 [%- END -%]

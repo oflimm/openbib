@@ -20,7 +20,7 @@ channel_title       = "RSS Feed Ihrer Suchanfrage" ;
 FOREACH record IN recordlist.get_records ;
     thisfields = record.get_fields;
 
-[%- PROCESS common/subtemplate name="titles_record_preprocess" -%]
+    PROCESS common/subtemplate name="titles_record_preprocess";
 
     IF hide_hit ;
       thisfields = {};

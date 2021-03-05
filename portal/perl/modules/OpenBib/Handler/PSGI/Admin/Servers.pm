@@ -176,7 +176,7 @@ sub create_record {
     my $location       = $self->param('location');
 
     # CGI / JSON input
-    my $input_data_ref = $self->parse_valid_input($self->get_input_definition);
+    my $input_data_ref = $self->parse_valid_input();
 
     if (!$self->authorization_successful('right_create')){
         return $self->print_authorization_error();
@@ -223,7 +223,7 @@ sub update_record {
     my $path_prefix    = $self->param('path_prefix');
 
     # CGI / JSON input
-    my $input_data_ref = $self->parse_valid_input($self->get_input_definition);
+    my $input_data_ref = $self->parse_valid_input();
 
     $input_data_ref->{id} = $serverid;
     

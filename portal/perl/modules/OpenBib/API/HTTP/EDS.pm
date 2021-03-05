@@ -218,7 +218,7 @@ sub send_search_request {
     # Default
     my $eds_reverse_sort_mapping_ref = $config->get('eds_reverse_sort_mapping');
 
-	my $sort_eds = $eds_reverse_sort_mapping_ref->{$sorttype."_".$sortorder} ? $eds_reverse_sort_mapping_ref->{$sorttype."_".$sortorder} : "releva" ;
+	my $sort_eds = $eds_reverse_sort_mapping_ref->{$sorttype."_".$sortorder} ? $eds_reverse_sort_mapping_ref->{$sorttype."_".$sortorder} : "relevance" ;
 	push @search_options, "sort=$sort_eds";
     push @search_options, "searchmode=all";
     push @search_options, "highlight=n";

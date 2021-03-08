@@ -191,6 +191,8 @@ sub send_search_request {
     my $sortorder         = $queryoptions->get_option('srto');
     my $defaultop         = $queryoptions->get_option('dop');
     my $drilldown         = $queryoptions->get_option('dd');
+    my $searchft          = $queryoptions->get_option('searchft');
+    my $showft            = $queryoptions->get_option('showft');
 
     # Pagination parameters
     my $page              = $queryoptions->get_option('page');
@@ -227,7 +229,15 @@ sub send_search_request {
     push @search_options, "autosuggest=n";
     push @search_options, "view=brief";
     #push @search_options, "view=detailed";    
-    
+
+    # necessary to make the fulltext limiter work
+    if ($searchft) {
+	push @search_options, "expander=fulltext";
+    }
+    elsif ($showft) {
+	push @search_options, "limiter=FT1:y";
+    }
+
     push @search_options, "resultsperpage=$num" if ($num);
     push @search_options, "pagenumber=$page" if ($page);
 
@@ -950,7 +960,7 @@ sub get_search_resultlist {
         my $id            = OpenBib::Common::Util::encode_id($match_ref->{database}."::".$match_ref->{id});
 	my $fields_ref    = $match_ref->{fields};
 
-        $recordlist->add(OpenBib::Record::Title->new({database => 'eds', id => $id })->set_fields_from_storable($fields_ref));
+        $recordlist->add(OpenBib::Record::Title->new({database => $self->get_database, id => $id })->set_fields_from_storable($fields_ref));
     }
 
     # if ($logger->is_debug){
@@ -1553,11 +1563,6 @@ sub parse_query {
     if ($logger->is_debug){
         $logger->debug("Query: ".YAML::Dump($query_ref));
         $logger->debug("Filter: ".YAML::Dump($filter_ref));
-    }
-
-    #necessary to make the fulltext limiter work
-    if ( $searchquery->get_searchfield('content')->{val}) {
-       push @$query_ref, "&limiter=FT:y";
     }
 
     $self->{_query}  = $query_ref;

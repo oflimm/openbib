@@ -218,8 +218,9 @@ sub send_search_request {
     # Default
     my $eds_reverse_sort_mapping_ref = $config->get('eds_reverse_sort_mapping');
 
-	my $sort_eds = $eds_reverse_sort_mapping_ref->{$sorttype."_".$sortorder} ? $eds_reverse_sort_mapping_ref->{$sorttype."_".$sortorder} : "relevance" ;
-	push @search_options, "sort=$sort_eds";
+    my $sort_eds = $eds_reverse_sort_mapping_ref->{$sorttype."_".$sortorder} ? $eds_reverse_sort_mapping_ref->{$sorttype."_".$sortorder} : "relevance" ;
+    
+    push @search_options, "sort=$sort_eds";
     push @search_options, "searchmode=all";
     push @search_options, "highlight=n";
     push @search_options, "includefacets=y";
@@ -1555,11 +1556,11 @@ sub parse_query {
     }
 
     #necessary to make the fulltext limiter work
-	if ( $searchquery->get_searchfield('fulltext')->{val}) {
+    if ( $searchquery->get_searchfield('content')->{val}) {
        push @$query_ref, "&limiter=FT:y";
     }
 
-	$self->{_query}  = $query_ref;
+    $self->{_query}  = $query_ref;
     $self->{_filter} = $filter_ref;
 
     return $self;

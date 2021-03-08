@@ -22,7 +22,7 @@
    FOREACH record IN recordlist.get_records ;
       normset         = record.get_fields;
 
-[%-   PROCESS common/subtemplate name="titles_record_preprocess" -%]
+      PROCESS common/subtemplate name="titles_record_preprocess";
 
 -%]
 

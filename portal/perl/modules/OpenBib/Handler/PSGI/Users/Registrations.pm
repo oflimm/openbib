@@ -193,7 +193,7 @@ sub mail_confirmation {
     
     # Viewadmin darf ueber das ohne Captcha Nutzer registrieren
 
-    if (!$user->is_admin && !$user->is_viewadmin){
+    if (!$user->is_admin && !$user->is_viewadmin($view)){
 	my $recaptcha = Captcha::reCAPTCHA->new;
 	
 	# Wenn der Request ueber einen Proxy kommt, dann urspruengliche

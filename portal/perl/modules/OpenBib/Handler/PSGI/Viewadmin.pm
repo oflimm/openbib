@@ -76,8 +76,9 @@ sub show_collection {
 
     # Shared Args
     my $config         = $self->param('config');
+    my $user           = $self->param('user');    
 
-    if (!$self->authorization_successful('right_read')){
+    if (!$user->is_viewadmin($view)){
         return $self->print_authorization_error();
     }
 

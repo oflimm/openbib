@@ -95,7 +95,7 @@ sub show_record {
         return $self->print_authorization_error();
     }
 
-    if (!$self->authorization_successful('right_read')){
+    if (!$user->is_viewadmin($view) && !$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
     }
 
@@ -137,7 +137,7 @@ sub show_record_form {
         return $self->print_authorization_error();
     }
 
-    if (!$self->authorization_successful('right_update')){
+    if (!$user->is_viewadmin($view) && !$self->authorization_successful('right_update')){
         return $self->print_authorization_error();
     }
 
@@ -219,7 +219,7 @@ sub update_record {
         return $self->print_authorization_error();
     }
     
-    if (!$self->authorization_successful('right_update')){
+    if (!$user->is_viewadmin($view) && !$self->authorization_successful('right_update')){
 	$logger->error("User ".$self->{ID}." has no right to update in view $view");
         return $self->print_authorization_error();
     }

@@ -112,7 +112,7 @@ sub update_record {
         return $self->print_authorization_error();
     }
     
-    if (!$self->authorization_successful('right_update')){
+    if (!$user->is_viewadmin($view) && !$self->authorization_successful('right_update')){
         return $self->print_authorization_error();
     }
 

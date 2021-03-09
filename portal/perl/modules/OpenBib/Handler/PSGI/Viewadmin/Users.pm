@@ -91,7 +91,7 @@ sub show_collection {
         return $self->print_authorization_error();
     }
     
-    if (!$self->authorization_successful('right_read')){
+    if (!$user->is_viewadmin($view) && !$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
     }
 
@@ -130,7 +130,7 @@ sub show_record_form {
         return $self->print_authorization_error();
     }
     
-    if (!$self->authorization_successful('right_update')){
+    if (!$user->is_viewadmin($view) && !$self->authorization_successful('right_update')){
         return $self->print_authorization_error();
     }
 
@@ -167,11 +167,17 @@ sub show_record {
 
     $self->param('userid',$userid);
     
+    # Der anschauende Nutzer muss selbst zum View gehoeren
     if (!$user->user_exists_in_view({ viewname => $view, userid => $user->{ID}})){
         return $self->print_authorization_error();
     }
 
-    if (!$self->authorization_successful('right_read')){
+    # Nur Nutzer des Views duerfen angezeigt werden
+    if (!$user->user_exists_in_view({ viewname => $view, userid => $userid})){
+        return $self->print_authorization_error();
+    }
+    
+    if (!$user->is_viewadmin($view) && !$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
     }
 
@@ -205,7 +211,7 @@ sub show_search_form {
         return $self->print_authorization_error();
     }
     
-    if (!$self->authorization_successful('right_read')){
+    if (!$user->is_viewadmin($view) && !$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
     }
     
@@ -246,7 +252,7 @@ sub show_search {
         return $self->print_authorization_error();
     }
 
-    if (!$self->authorization_successful('right_read')){
+    if (!$user->is_viewadmin($view) && !$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
     }
 
@@ -288,9 +294,19 @@ sub update_record {
 
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
+
+    # Der aendernde Nutzer muss selbst zum View gehoeren
+    if (!$user->user_exists_in_view({ viewname => $view, userid => $user->{ID}})){
+        return $self->print_authorization_error();
+    }
+
+    # Nur Nutzer des Views duerfen geaendert werden
+    if (!$user->user_exists_in_view({ viewname => $view, userid => $userid})){
+        return $self->print_authorization_error();
+    }
     
-    if (!$self->is_authenticated('viewadmin',$userid)){
-        return;
+    if (!$user->is_viewadmin($view) && !$self->authorization_successful('right_update')){
+        return $self->print_authorization_error();
     }
 
     if (defined $input_data_ref->{mixed_bag}){

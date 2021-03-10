@@ -235,7 +235,7 @@ sub send_search_request {
 	push @search_options, "expander=fulltext";
     }
     elsif ($showft) {
-	push @search_options, "limiter=FT1:y";
+	push @search_options, "limiter=FT:y";
     }
 
     push @search_options, "resultsperpage=$num" if ($num);

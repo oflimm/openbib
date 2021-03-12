@@ -52,7 +52,7 @@
 
 <ul class="nav nav-tabs pl-2">
   <li class="nav-item">
-    <a class="nav-link[% IF NOT current_profile == searchprofileid_of_eds && NOT current_profile == searchprofileid_of_website %] active[% END %]"  role="tab" data-toggle="tab" href="#ob-searchresult_tab_default" id="ob-searchresult_default_li">[% msg.maketext("Bücher &amp; Mehr") %]</a>
+    <a class="nav-link[% IF current_profile != searchprofileid_of_eds && current_profile != searchprofileid_of_website %] active[% END %]"  role="tab" data-toggle="tab" href="#ob-searchresult_tab_default" id="ob-searchresult_default_li">[% msg.maketext("Bücher &amp; Mehr") %]</a>
   </li>
   <li class="nav-item">
     <a class="nav-link[% IF current_profile == searchprofileid_of_eds %] active[% END %]" role="tab" data-toggle="tab" href="#ob-searchresult_tab_eds" id="ob-searchresult_eds_li">[% msg.maketext("Aufsätze &amp; Mehr") %]</a>

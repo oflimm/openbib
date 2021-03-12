@@ -303,6 +303,7 @@
     titleinfo = titleinfos.join(" | ");
 -%]
     <div class="ob-item d-flex flex-row[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+    
 <script>
 $(document).ready(function(){
    $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/availability?l=[% lang %]",

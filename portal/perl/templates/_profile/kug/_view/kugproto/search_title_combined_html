@@ -42,125 +42,81 @@
       searchprofileid_of_eds = config.get_searchprofile_of_database('eds');
    END ;
 
+   IF NOT searchprofileid_of_website ;
+      searchprofileid_of_website = config.get_searchprofile_of_database('usbweb');
+   END ;
+
 %]
 
-<div id="ob-sidebar" class="bg-light border-right min-vh-100 collapse navbar-collapse" aria-expanded="false">
-           <div id="sidebar-dismiss" class="float-right d-md-none" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fas fa-arrow-left"></i>
-           </div>
+[% current_profile = searchquery.get_searchprofile %]
 
-           <div class="sidebar-heading d-md-none">
-              <h3>Navigation</h3>
-           </div>
+<ul class="nav nav-tabs pl-2">
+  <li class="nav-item">
+    <a class="nav-link[% IF NOT current_profile == searchprofileid_of_eds && NOT current_profile == searchprofileid_of_website %] active[% END %]"  role="tab" data-toggle="tab" href="#ob-searchresult_tab_default" id="ob-searchresult_default_li">[% msg.maketext("Bücher &amp; Mehr") %]</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link[% IF current_profile == searchprofileid_of_eds %] active[% END %]" role="tab" data-toggle="tab" href="#ob-searchresult_tab_eds" id="ob-searchresult_eds_li">[% msg.maketext("Aufsätze &amp; Mehr") %]</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link[% IF current_profile == searchprofileid_of_website %] active[% END %]" role="tab" data-toggle="tab" href="#ob-searchresult_tab_website" id="ob-searchresult_website_li">[% msg.maketext("Webseite") %]</a>
+  </li>
+</ul>
 
-           <div class="sidebar-content overflow-auto h-100 pl-1">
+<!-- [% current_profile %] - View: [% searchprofileid_of_view %] - EDS [% searchprofileid_of_eds %] - Web [% searchprofileid_of_website %] -->
 
-[% IF hits > 0 %]
-[% PROCESS common/subtemplate name="search_facet" facet_prefix="sidebar" %]
-[% ELSE %]
-[%   IF viewdbs.size == 1 %]  
-<div class="ob-facets">
-[% PROCESS common/subtemplate name="search_radius" %]
-</div>
-[%   END %]
-[% END %]
-   </div>
-</div><!-- End: sidebar -->
-
-<div class="row flex-md-row">
-
-      <div id="ob-search_refine" class="col-xs-6 col-md-3 d-none d-md-block ">
-
-[% IF hits > 0 %]
-[% PROCESS common/subtemplate name="search_facet" facet_prefix="main" %]
-[% ELSE %]
-[%   IF viewdbs.size == 1 %]  
-<div class="ob-facets">
-[% PROCESS common/subtemplate name="search_radius" %]
-</div>
-[%   END %]
+<script>
+$(document).ready(function(){
+[% IF current_profile != searchprofileid_of_website %]
+    $("#ob-searchresult_website_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-searchresult_website_loading\" />"); 
+    $.get("[% path_prefix %]/[% config.get('search_loc') %].include?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp'] }) %];page=1;profile=[% searchprofileid_of_website %];[% searchquery.to_cgi_querystring({ exclude = ['profile'] }) %]",
+        function (txt){
+            $("#ob-searchresult_tab_website").html(txt);
+            $("#ob-searchresult_website_loading").hide();
+        });
 [% END %]
 
-  </div><!-- End: sidebar -->
-
-
-  <div class="col-md-9">
-
-[% IF spelling_suggestion.resultlist %]
-[%    suggestion = searchquery.get_spelling_suggestion %]
-[%     IF suggestion%]
-[%        msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% path_prefix %]/[% search_loc %]?num=[% query.param('num') %];srt=relevance_desc;st=[% query.param('st') %]fs=[% suggestion %]">[% suggestion %]</b>
-[%     END %]
+[% IF current_profile != searchprofileid_of_eds %]
+    $("#ob-searchresult_eds_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-searchresult_eds_loading\" />"); 
+    $.get("[% path_prefix %]/[% config.get('search_loc') %].include?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp'] }) %];page=1;profile=[% searchprofileid_of_eds %];[% searchquery.to_cgi_querystring({ exclude = ['profile'] }) %]",
+        function (txt){
+            $("#ob-searchresult_tab_eds").html(txt);
+            $("#ob-searchresult_eds_loading").hide();
+        });
 [% END %]
 
-[% IF hits > 0 %]
-<!-- Beginn Result Item -->
-[%-
-    request_base    = "num=${queryoptions.get_option('num')};srt=relevance_desc;page=1;" ;
-    start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
-    end_range       = nav.current_page*queryoptions.get_option('num');
-    IF end_range >= hits ;
-       end_range       = hits;
-    END;
 
-    query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
--%]
-
-<div class="ob-resultlist">
-  <div class="ob-resultheader pb-4">
-    <div class="left">
-      <div class="navbar navbar-default d-block d-md-none pl-0 mt-0" style="z-index: 1"><!-- only visible in xs-->
-        <div class="container-fluid pl-0">
-          <button class="btn btn-primary navbar-btn" data-toggle="collapse" data-target="#ob-sidebar">
-           <i class="fa fa-sliders-h"></i> [% msg.maketext("Filtern") %]
-          </button>
-       </div>
-     </div>
-     <div class="left d-none d-lg-block mt-2">
-[% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b>[% hits %]</b>
-    </div>
-    </div>
-    <div class="right mt-2">
-<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
-<input type="hidden" name="page" value="1" />
-<input type="hidden" name="lang" value="[% lang %]" />
-
-[% cgiapp.to_cgi_hidden_input({ exclude = ['page','srt','srto','num']}) %]
-
-[% PROCESS common/subtemplate name="titlist_options" this_loc=config.get('search_loc') %]
-</form>
-
-    </div>
-  </div>
-  <div class="ob-resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
-[%- FOREACH record IN recordlist.get_records -%]
-[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 database=record.database %] 
-[%- END -%]
-    <div class="ob-footer">
-[% PROCESS common/subtemplate name="pagination" %]
-      <div class="ob-resulttime">
-<!-- in: [% resulttime %] [% msg.maketext("Sekunden") %] -->
-      </div>
-    </div><!-- End: ob-footer -->
-  </div>
-
-  <div class="ob-resultfooter">
-    [% PROCESS common/subtemplate name="search_more_tips" %]
-   
-  </div>
-</div>
-
-<p/>
-[% ELSE %]
-<div class="ob-no_hits">
-<h1>[% msg.maketext("Zu Ihrer Suchanfrage konnten keine Treffer gefunden werden.") %]</h1>
-</div>
-
+[% IF current_profile == searchprofileid_of_eds || current_profile == searchprofileid_of_website %] %] 
+    $("#ob-searchresult_default_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-searchresult_default_loading\" />"); 
+    $.get("[% path_prefix %]/[% config.get('search_loc') %].include?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp'] }) %];page=1;profile=[% searchprofileid_of_view %];[% searchquery.to_cgi_querystring({ exclude = ['profile'] }) %]",
+        function (txt){
+            $("#ob-searchresult_tab_default").html(txt);
+            $("#ob-searchresult_default_loading").hide();
+        });
 [% END %]
 
-  </div><!-- End: col -->
 
+});
 
+</script>
 
-</div><!-- End: row -->
+<div class="tab-content pt-3">
 
+<div role="tabpanel" id="ob-searchresult_tab_default" class="tab-pane fade-in row [% IF current_profile != searchprofileid_of_eds && current_profile != searchprofileid_of_website %] active[% END %] flex-md-row">
+[% IF current_profile != searchprofileid_of_eds && current_profile != searchprofileid_of_website %]
+[% PROCESS common/subtemplate name="search_title_combined_include" %]
+[% END %]
+</div>
+
+<div role="tabpanel" id="ob-searchresult_tab_eds" class="tab-pane fade-in row [% IF current_profile == searchprofileid_of_eds %]active[% END %] flex-md-row">
+[% IF current_profile == searchprofileid_of_eds %]
+[% PROCESS common/subtemplate name="search_title_combined_include" %]
+[% END %]
+</div>
+
+<div role="tabpanel" id="ob-searchresult_tab_website" class="tab-pane fade-in row [% IF current_profile == searchprofileid_of_website %]active[% END %] flex-md-row">
+[% IF current_profile == searchprofileid_of_website %]
+[% PROCESS common/subtemplate name="search_title_combined_include" %]
+[% END %]
+</div>
+
+</div>

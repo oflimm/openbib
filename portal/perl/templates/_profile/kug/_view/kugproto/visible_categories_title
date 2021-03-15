@@ -27,7 +27,7 @@
                 'T0343', # msg.maketext("T0343") ?		
                 'T0100', # msg.maketext("T0100") Verfasser
                 'T0101', # msg.maketext("T0101") Person
-                'T0101', # msg.maketext("T0102") ?
+                'T0102', # msg.maketext("T0102") ?
                 'T0103', # msg.maketext("T0103") Gefeierte Person
                 'T0359', # msg.maketext("T0359") Vorl. Verfasser/Koerperschaft		
                 'T0201', # msg.maketext("T0201") Koerperschaft

@@ -48,10 +48,19 @@
 
    current_profile = searchquery.get_searchprofile;
 
+   idsuffix = "";
+
+   IF current_profile == searchprofileid_of_eds;
+     idsuffix = "_eds" ;
+   ELSIF current_profile == searchprofileid_of_website;
+     idsuffix = "_website";
+   ELSE;
+     idsuffix = "_default";
+   END;
 %]
 
-<div id="ob-sidebar[% IF current_profile == searchprofileid_of_eds %]_eds[% ELSIF current_profile == searchprofileid_of_website %]_website[% ELSE %]_default [% END %]" class="bg-light border-right min-vh-100 collapse navbar-collapse" aria-expanded="false">
-           <div id="sidebar-dismiss[% IF current_profile == searchprofileid_of_eds %]_eds[% ELSIF current_profile == searchprofileid_of_website %]_website[% ELSE %]_default [% END %]" class="float-right d-md-none" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+<div id="ob-sidebar[% idsuffix %]" class="bg-light border-right min-vh-100 collapse navbar-collapse" aria-expanded="false">
+           <div id="sidebar-dismiss[% idsuffix %]" class="float-right d-md-none" data-toggle="collapse" data-target="#ob-sidebar[% idsuffix %]" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <i class="fas fa-arrow-left"></i>
            </div>
 
@@ -73,9 +82,9 @@
    </div>
 </div><!-- End: sidebar -->
 
-<div id="ob-searchresult[% IF current_profile == searchprofileid_of_eds %]_eds[% ELSIF current_profile == searchprofileid_of_website %]_website[% ELSE %]_default [% END %]" class="row flex-md-row">
+<div id="ob-searchresult[% idsuffix %]" class="row flex-md-row">
 
-      <div id="ob-search_refine" class="col-xs-6 col-md-3 d-none d-md-block ">
+      <div id="ob-search_refine[% idsuffix %]" class="col-xs-6 col-md-3 d-none d-md-block ">
 
 [% IF hits > 0 %]
 [% PROCESS common/subtemplate name="search_facet" facet_prefix="main" %]

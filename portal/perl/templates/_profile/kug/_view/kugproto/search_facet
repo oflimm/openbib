@@ -185,194 +185,194 @@ $(document).ready(function(){
 
 // Begin Togglen / Facets Personen
 // Bild setzen
-$("#[% facet_prefix %]_person_[% database %]_toggle").html("<a href=\"#[% facet_prefix %]_person_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#[% facet_prefix %]_person_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_person_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
-$("#[% facet_prefix %]_person_[% database %]").hide();
+$("#[% facet_prefix %]_person_[% database %][% idsuffix %]").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_person_[% database %]_toggle").click(function(){
- $("#[% facet_prefix %]_person_[% database %]").toggle();
- $("#[% facet_prefix %]_person_[% database %]_toggle").html("");
+$("#[% facet_prefix %]_person_[% database %]_toggle[% idsuffix %]").click(function(){
+ $("#[% facet_prefix %]_person_[% database %][% idsuffix %]").toggle();
+ $("#[% facet_prefix %]_person_[% database %]_toggle[% idsuffix %]").html("");
 });
 
 // Begin Togglen / Facets Koerperschaften
 // Bild setzen
-$("#[% facet_prefix %]_corporatebody_[% database %]_toggle").html("<a href=\"#[% facet_prefix %]_corporatebody_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#[% facet_prefix %]_corporatebody_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_corporatebody_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
-$("#[% facet_prefix %]_corporatebody_[% database %]").hide();
+$("#[% facet_prefix %]_corporatebody_[% database %][% idsuffix %]").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_corporatebody_[% database %]_toggle").click(function(){
- $("#[% facet_prefix %]_corporatebody_[% database %]").toggle();
- $("#[% facet_prefix %]_corporatebody_[% database %]_toggle").html("");
+$("#[% facet_prefix %]_corporatebody_[% database %]_toggle[% idsuffix %]").click(function(){
+ $("#[% facet_prefix %]_corporatebody_[% database %][% idsuffix %]").toggle();
+ $("#[% facet_prefix %]_corporatebody_[% database %]_toggle[% idsuffix %]").html("");
 });
 
 // Begin Togglen / Facets Schlagworte
 // Bild setzen
-$("#[% facet_prefix %]_subjects_[% database %]_toggle").html("<a href=\"#[% facet_prefix %]_subjects_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#[% facet_prefix %]_subjects_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_subjects_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
-$("#[% facet_prefix %]_subjects_[% database %]").hide();
+$("#[% facet_prefix %]_subjects_[% database %][% idsuffix %]").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_subjects_[% database %]_toggle").click(function(){
- $("#[% facet_prefix %]_subjects_[% database %]").toggle();
- $("#[% facet_prefix %]_subjects_[% database %]_toggle").html("");
+$("#[% facet_prefix %]_subjects_[% database %]_toggle[% idsuffix %]").click(function(){
+ $("#[% facet_prefix %]_subjects_[% database %][% idsuffix %]").toggle();
+ $("#[% facet_prefix %]_subjects_[% database %]_toggle[% idsuffix %]").html("");
 });
 
 // Begin Togglen / Facets Systematik
 // Bild setzen
-$("#[% facet_prefix %]_classification_[% database %]_toggle").html("<a href=\"#[% facet_prefix %]_classification_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#[% facet_prefix %]_classification_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_classification_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
-$("#[% facet_prefix %]_classification_[% database %]").hide();
+$("#[% facet_prefix %]_classification_[% database %][% idsuffix %]").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_classification_[% database %]_toggle").click(function(){
- $("#[% facet_prefix %]_classification_[% database %]").toggle();
- $("#[% facet_prefix %]_classification_[% database %]_toggle").html("");
+$("#[% facet_prefix %]_classification_[% database %]_toggle[% idsuffix %]").click(function(){
+ $("#[% facet_prefix %]_classification_[% database %][% idsuffix %]").toggle();
+ $("#[% facet_prefix %]_classification_[% database %]_toggle[% idsuffix %]").html("");
 });
 
 // Begin Togglen / Facets Topics
 // Bild setzen
-$("#[% facet_prefix %]_topic_[% database %]_toggle").html("<a href=\"#[% facet_prefix %]_topic_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#[% facet_prefix %]_topic_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_topic_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
-$("#[% facet_prefix %]_topic_[% database %]").hide();
+$("#[% facet_prefix %]_topic_[% database %][% idsuffix %]").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_topic_[% database %]_toggle").click(function(){
- $("#[% facet_prefix %]_topic_[% database %]").toggle();
- $("#[% facet_prefix %]_topic_[% database %]_toggle").html("");
+$("#[% facet_prefix %]_topic_[% database %]_toggle[% idsuffix %]").click(function(){
+ $("#[% facet_prefix %]_topic_[% database %][% idsuffix %]").toggle();
+ $("#[% facet_prefix %]_topic_[% database %]_toggle[% idsuffix %]").html("");
 });
 
 // Begin Togglen / Facets Print Locations
 // Bild setzen
-$("#[% facet_prefix %]_location_[% database %]_toggle").html("<a href=\"#[% facet_prefix %]_location_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#[% facet_prefix %]_location_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_location_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
-$("#[% facet_prefix %]_location_[% database %]").hide();
+$("#[% facet_prefix %]_location_[% database %][% idsuffix %]").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_location_[% database %]_toggle").click(function(){
- $("#[% facet_prefix %]_location_[% database %]").toggle();
- $("#[% facet_prefix %]_location_[% database %]_toggle").html("");
+$("#[% facet_prefix %]_location_[% database %]_toggle[% idsuffix %]").click(function(){
+ $("#[% facet_prefix %]_location_[% database %][% idsuffix %]").toggle();
+ $("#[% facet_prefix %]_location_[% database %]_toggle[% idsuffix %]").html("");
 });
 
 // Begin Togglen / Facets Emedia Locations
 // Bild setzen
-$("#[% facet_prefix %]_elocation_[% database %]_toggle").html("<a href=\"#[% facet_prefix %]_elocation_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#[% facet_prefix %]_elocation_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_elocation_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
-$("#[% facet_prefix %]_elocation_[% database %]").hide();
+$("#[% facet_prefix %]_elocation_[% database %][% idsuffix %]").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_elocation_[% database %]_toggle").click(function(){
- $("#[% facet_prefix %]_elocation_[% database %]").toggle();
- $("#[% facet_prefix %]_elocation_[% database %]_toggle").html("");
+$("#[% facet_prefix %]_elocation_[% database %]_toggle[% idsuffix %]").click(function(){
+ $("#[% facet_prefix %]_elocation_[% database %][% idsuffix %]").toggle();
+ $("#[% facet_prefix %]_elocation_[% database %]_toggle[% idsuffix %]").html("");
 });
 
 // Begin Togglen / Facets Favourite Locations
 // Bild setzen
-$("#[% facet_prefix %]_favlocation_[% database %]_toggle").html("<a href=\"#[% facet_prefix %]_favlocation_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#[% facet_prefix %]_favlocation_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_favlocation_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
-$("#[% facet_prefix %]_favlocation_[% database %]").hide();
+$("#[% facet_prefix %]_favlocation_[% database %][% idsuffix %]").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_favlocation_[% database %]_toggle").click(function(){
- $("#[% facet_prefix %]_favlocation_[% database %]").toggle();
- $("#[% facet_prefix %]_favlocation_[% database %]_toggle").html("");
+$("#[% facet_prefix %]_favlocation_[% database %]_toggle[% idsuffix %]").click(function(){
+ $("#[% facet_prefix %]_favlocation_[% database %][% idsuffix %]").toggle();
+ $("#[% facet_prefix %]_favlocation_[% database %]_toggle[% idsuffix %]").html("");
 });
 
 // Begin Togglen / Facets Jahr
 // Bild setzen
-$("#[% facet_prefix %]_year_[% database %]_toggle").html("<a href=\"#[% facet_prefix %]_year_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#[% facet_prefix %]_year_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_year_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
-$("#[% facet_prefix %]_year_[% database %]").hide();
+$("#[% facet_prefix %]_year_[% database %][% idsuffix %]").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_year_[% database %]_toggle").click(function(){
- $("#[% facet_prefix %]_year_[% database %]").toggle();
- $("#[% facet_prefix %]_year_[% database %]_toggle").html("");
+$("#[% facet_prefix %]_year_[% database %]_toggle[% idsuffix %]").click(function(){
+ $("#[% facet_prefix %]_year_[% database %][% idsuffix %]").toggle();
+ $("#[% facet_prefix %]_year_[% database %]_toggle[% idsuffix %]").html("");
 });
 
 // Begin Togglen / Facets Medienart
 // Bild setzen
-$("#[% facet_prefix %]_mediatype_[% database %]_toggle").html("<a href=\"#[% facet_prefix %]_mediatype_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#[% facet_prefix %]_mediatype_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_mediatype_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
-$("#[% facet_prefix %]_mediatype_[% database %]").hide();
+$("#[% facet_prefix %]_mediatype_[% database %][% idsuffix %]").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_mediatype_[% database %]_toggle").click(function(){
- $("#[% facet_prefix %]_mediatype_[% database %]").toggle();
- $("#[% facet_prefix %]_mediatype_[% database %]_toggle").html("");
+$("#[% facet_prefix %]_mediatype_[% database %]_toggle[% idsuffix %]").click(function(){
+ $("#[% facet_prefix %]_mediatype_[% database %][% idsuffix %]").toggle();
+ $("#[% facet_prefix %]_mediatype_[% database %]_toggle[% idsuffix %]").html("");
 });
 
 // Begin Togglen / Facets Quellen
 // Bild setzen
-$("#[% facet_prefix %]_sources_[% database %]_toggle").html("<a href=\"#[% facet_prefix %]_sources_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#[% facet_prefix %]_sources_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_sources_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
-$("#[% facet_prefix %]_sources_[% database %]").hide();
+$("#[% facet_prefix %]_sources_[% database %][% idsuffix %]").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_sources_[% database %]_toggle").click(function(){
- $("#[% facet_prefix %]_sources_[% database %]").toggle();
- $("#[% facet_prefix %]_sources_[% database %]_toggle").html("");
+$("#[% facet_prefix %]_sources_[% database %]_toggle[% idsuffix %]").click(function(){
+ $("#[% facet_prefix %]_sources_[% database %][% idsuffix %]").toggle();
+ $("#[% facet_prefix %]_sources_[% database %]_toggle[% idsuffix %]").html("");
 });
 
 // Begin Togglen / Facets Medienart
 // Bild setzen
-$("#[% facet_prefix %]_provenance_[% database %]_toggle").html("<a href=\"#[% facet_prefix %]_provenance_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#[% facet_prefix %]_provenance_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_provenance_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
-$("#[% facet_prefix %]_provenance_[% database %]").hide();
+$("#[% facet_prefix %]_provenance_[% database %][% idsuffix %]").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_provenance_[% database %]_toggle").click(function(){
- $("#[% facet_prefix %]_provenance_[% database %]").toggle();
- $("#[% facet_prefix %]_provenance_[% database %]_toggle").html("");
+$("#[% facet_prefix %]_provenance_[% database %]_toggle[% idsuffix %]").click(function(){
+ $("#[% facet_prefix %]_provenance_[% database %][% idsuffix %]").toggle();
+ $("#[% facet_prefix %]_provenance_[% database %]_toggle[% idsuffix %]").html("");
 });
 
 // Begin Togglen / Facets Sprache
 // Bild setzen
-$("#[% facet_prefix %]_language_[% database %]_toggle").html("<a href=\"#[% facet_prefix %]_language_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#[% facet_prefix %]_language_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_language_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
-$("#[% facet_prefix %]_language_[% database %]").hide();
+$("#[% facet_prefix %]_language_[% database %][% idsuffix %]").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_language_[% database %]_toggle").click(function(){
- $("#[% facet_prefix %]_language_[% database %]").toggle();
- $("#[% facet_prefix %]_language_[% database %]_toggle").html("");
+$("#[% facet_prefix %]_language_[% database %]_toggle[% idsuffix %]").click(function(){
+ $("#[% facet_prefix %]_language_[% database %][% idsuffix %]").toggle();
+ $("#[% facet_prefix %]_language_[% database %]_toggle[% idsuffix %]").html("");
 });
 // Ende Togglen / Facets Sprache
 
 // Begin Togglen / Facets Katalog
 // Bild setzen
-$("#[% facet_prefix %]_databases_[% database %]_toggle").html("<a href=\"#[% facet_prefix %]_databases_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#[% facet_prefix %]_databases_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_databases_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
-$("#[% facet_prefix %]_databases_[% database %]").hide();
+$("#[% facet_prefix %]_databases_[% database %][% idsuffix %]").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_databases_[% database %]_toggle").click(function(){
- $("#[% facet_prefix %]_databases_[% database %]").toggle();
- $("#[% facet_prefix %]_databases_[% database %]_toggle").html("");
+$("#[% facet_prefix %]_databases_[% database %]_toggle[% idsuffix %]").click(function(){
+ $("#[% facet_prefix %]_databases_[% database %][% idsuffix %]").toggle();
+ $("#[% facet_prefix %]_databases_[% database %]_toggle[% idsuffix %]").html("");
 });
 // Ende Togglen / Facets Katalog
 
 
 // Begin Togglen / Facets Tags
 // Bild setzen
-$("#[% facet_prefix %]_tags_[% database %]_toggle").html("<a href=\"#[% facet_prefix %]_tags_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#[% facet_prefix %]_tags_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_tags_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
-$("#[% facet_prefix %]_tags_[% database %]").hide();
+$("#[% facet_prefix %]_tags_[% database %][% idsuffix %]").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_tags_[% database %]_toggle").click(function(){
- $("#[% facet_prefix %]_tags_[% database %]").toggle();
- $("#[% facet_prefix %]_tags_[% database %]_toggle").html("");
+$("#[% facet_prefix %]_tags_[% database %]_toggle[% idsuffix %]").click(function(){
+ $("#[% facet_prefix %]_tags_[% database %][% idsuffix %]").toggle();
+ $("#[% facet_prefix %]_tags_[% database %]_toggle[% idsuffix %]").html("");
 });
 // Ende Togglen / Facets Tag
 
 // Begin Togglen / Facets Literaturliste
 // Bild setzen
-$("#[% facet_prefix %]_litlists_[% database %]_toggle").html("<a href=\"#[% facet_prefix %]_litlists_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#[% facet_prefix %]_litlists_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_litlists_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
-$("#[% facet_prefix %]_litlists_[% database %]").hide();
+$("#[% facet_prefix %]_litlists_[% database %][% idsuffix %]").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_litlists_[% database %]_toggle").click(function(){
- $("#[% facet_prefix %]_litlists_[% database %]").toggle();
- $("#[% facet_prefix %]_litlists_[% database %]_toggle").html("");
+$("#[% facet_prefix %]_litlists_[% database %]_toggle[% idsuffix %]").click(function(){
+ $("#[% facet_prefix %]_litlists_[% database %][% idsuffix %]").toggle();
+ $("#[% facet_prefix %]_litlists_[% database %]_toggle[% idsuffix %]").html("");
 });
 // Ende Togglen / Facets Literaturliste
 
 // Begin Togglen / Facets Verfuegbarkeit
 // Bild setzen
-$("#[% facet_prefix %]_availability_[% database %]_toggle").html("<a href=\"#[% facet_prefix %]_availability_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_availability_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
-$("#[% facet_prefix %]_availability_[% database %]").hide();
+$("#[% facet_prefix %]_availability_[% database %][% idsuffix %]").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_availability_[% database %]_toggle").click(function(){
- $("#[% facet_prefix %]_availability_[% database %]").toggle();
- $("#[% facet_prefix %]_availability_[% database %]_toggle").html("");
+$("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(function(){
+ $("#[% facet_prefix %]_availability_[% database %][% idsuffix %]").toggle();
+ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").html("");
 });
 // Ende Togglen / Facets Literaturliste
 
@@ -386,7 +386,7 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle").click(function(){
 <h4>[% msg.maketext("Suchergebnis filtern") %]</h4>
 
 <!-- <div class="card">
-<div class="card-header"><span id="ob-facets_all_toggle">[% msg.maketext("Treffermenge eingrenzen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div class="card-header"><span id="ob-facets_all_toggle[% idsuffix %]">[% msg.maketext("Treffermenge eingrenzen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 
 <div class="card-body">
 <div id="ob-facets_all_toggle_do">
@@ -397,10 +397,10 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle").click(function(){
 [% IF separate_refine %]
 [%# USE dumper;dumper.dump(have_filter)%]
 [%         IF searchquery.get_filter.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-database" aria-expanded="true">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-database[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Aktive Filter") %] 
         </h4>
-        <ul id="group-database" class="list-group in collapse show">
+        <ul id="group-database[% idsuffix %]" class="list-group in collapse show">
 [%
     filter_prefix_map = {
           ${config.get('searchfield').dbstring.prefix} = msg.maketext("Katalog")
@@ -443,16 +443,16 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle").click(function(){
 [% IF qopts.get_option('sb') == "eds" %]
 <!-- Begin eds source facet -->
 [%         IF facets.defined('source') && facets.source.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-source" aria-expanded="true">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-source[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Quelle") %] 
         </h4>
-        <ul id="group-source" class="list-group in collapse show">
+        <ul id="group-source[% idsuffix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.source ;
                   LAST IF loop.count > 25 ;
 %]
 [% IF facets.source.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_sources_[% database %]_toggle"></span>
-<div id="[% facet_prefix %]_sources_[% database %]">
+<span id="[% facet_prefix %]_sources_[% database %]_toggle[% idsuffix %]"></span>
+<div id="[% facet_prefix %]_sources_[% database %][% idsuffix %]">
 [% END %]
 [%-
     searchterm    = termitem.0;
@@ -472,16 +472,16 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle").click(function(){
 
 <!-- Begin database facet -->
 [%         IF 1 == 0 && facets.defined('database') && facets.database.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-database" aria-expanded="true">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-database[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Katalog") %] 
         </h4>
-        <ul id="group-database" class="list-group in collapse show">
+        <ul id="group-database[% idsuffix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.database ;
                   LAST IF loop.count > 25 ;
 %]
 [% IF facets.database.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_databases_[% database %]_toggle"></span>
-<div id="[% facet_prefix %]_databases_[% database %]">
+<span id="[% facet_prefix %]_databases_[% database %]_toggle[% idsuffix %]"></span>
+<div id="[% facet_prefix %]_databases_[% database %][% idsuffix %]">
 [% END %]
 [%-
     searchterm    = termitem.0;
@@ -500,10 +500,10 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle").click(function(){
 
 <!-- Begin availability facet -->
 [%         IF facets.defined('availability') && facets.availability.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-availability" aria-expanded="true">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-availability[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Verfügbarkeit") %] 
         </h4>
-        <ul id="group-availability" class="list-group in collapse show">
+        <ul id="group-availability[% idsuffix %]" class="list-group in collapse show">
 [%
     # Availability Types
     # msg.maketext("online")             Online
@@ -520,8 +520,8 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle").click(function(){
                   LAST IF loop.count > 25 ;
 %]
 [% IF facets.availability.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_availability_[% database %]_toggle"></span>
-<div id="[% facet_prefix %]_availability_[% database %]">
+<span id="[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]"></span>
+<div id="[% facet_prefix %]_availability_[% database %][% idsuffix %]">
 [% END %]
 [%-
     searchterm    = termitem.0;
@@ -540,16 +540,16 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle").click(function(){
 
 <!-- Begin favlocation facet -->
 [%         IF config.get('facets').location && facets.defined('favlocation') && facets.favlocation.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-favlocation" aria-expanded="true">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-favlocation[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Mein Suchraum") %] 
         </h4>
-        <ul id="group-favlocation" class="list-group in collapse show">
+        <ul id="group-favlocation[% idsuffix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.favlocation ;
 
  %]
 [% IF facets.favlocation.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_favlocation_[% database %]_toggle"></span>
-<div id="[% facet_prefix %]_favlocation_[% database %]">
+<span id="[% facet_prefix %]_favlocation_[% database %]_toggle[% idsuffix %]"></span>
+<div id="[% facet_prefix %]_favlocation_[% database %][% idsuffix %]">
 [% END %]
 [%-
     searchterm    = termitem.0;
@@ -568,16 +568,16 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle").click(function(){
 
 <!-- Begin elocation facet -->
 [%         IF config.get('facets').location && facets.defined('elocation') && facets.elocation.size > 0 %]
-        <h4 class="ob-facet-title [% IF facets.favlocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-toggle="collapse" data-target="#group-elocation" aria-expanded=[% IF facets.favlocation.size > 0 %]"false"[% ELSE %]"true"[% END %]>
+        <h4 class="ob-facet-title [% IF facets.favlocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-toggle="collapse" data-target="#group-elocation[% idsuffix %]" aria-expanded=[% IF facets.favlocation.size > 0 %]"false"[% ELSE %]"true"[% END %]>
            [% msg.maketext("E-Medien Quelle") %] 
         </h4>
-        <ul id="group-elocation" class="list-group in collapse [% IF facets.favlocation.size <= 0 %]show[% END %]">
+        <ul id="group-elocation[% idsuffix %]" class="list-group in collapse [% IF facets.favlocation.size <= 0 %]show[% END %]">
 [%             FOREACH termitem IN facets.elocation ;
 
  %]
 [% IF facets.elocation.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_elocation_[% database %]_toggle"></span>
-<div id="[% facet_prefix %]_elocation_[% database %]">
+<span id="[% facet_prefix %]_elocation_[% database %]_toggle[% idsuffix %]"></span>
+<div id="[% facet_prefix %]_elocation_[% database %][% idsuffix %]">
 [% END %]
 [%-
     searchterm    = termitem.0;
@@ -596,16 +596,16 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle").click(function(){
 
 <!-- Begin location facet -->
 [%         IF config.get('facets').location && facets.defined('location') && facets.location.size > 0 %]
-        <h4 class="ob-facet-title [% IF facets.favlocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-toggle="collapse" data-target="#group-location" aria-expanded=[% IF facets.favlocation.size > 0 %]"false"[% ELSE %]"true"[% END %]>
+        <h4 class="ob-facet-title [% IF facets.favlocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-toggle="collapse" data-target="#group-location[% idsuffix %]" aria-expanded=[% IF facets.favlocation.size > 0 %]"false"[% ELSE %]"true"[% END %]>
            [% msg.maketext("Print-Medien Standort") %] 
         </h4>
-        <ul id="group-location" class="list-group in collapse [% IF facets.favlocation.size <= 0 %]show[% END %]">
+        <ul id="group-location[% idsuffix %]" class="list-group in collapse [% IF facets.favlocation.size <= 0 %]show[% END %]">
 [%             FOREACH termitem IN facets.location ;
 
  %]
 [% IF facets.location.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_location_[% database %]_toggle"></span>
-<div id="[% facet_prefix %]_location_[% database %]">
+<span id="[% facet_prefix %]_location_[% database %]_toggle[% idsuffix %]"></span>
+<div id="[% facet_prefix %]_location_[% database %][% idsuffix %]">
 [% END %]
 [%-
     searchterm    = termitem.0;
@@ -624,16 +624,16 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle").click(function(){
 
 <!-- Begin mediatype facet -->
 [%         IF config.get('facets').mediatype && facets.defined('mediatype') && facets.mediatype.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-mediatype" aria-expanded="true">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-mediatype[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Medientyp") %] 
         </h4>
-        <ul id="group-mediatype" class="list-group in collapse show">
+        <ul id="group-mediatype[% idsuffix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.mediatype ;
                   LAST IF loop.count > 25 ;
  %]
 [% IF facets.mediatype.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_mediatype_[% database %]_toggle"></span>
-<div id="[% facet_prefix %]_mediatype_[% database %]">
+<span id="[% facet_prefix %]_mediatype_[% database %]_toggle[% idsuffix %]"></span>
+<div id="[% facet_prefix %]_mediatype_[% database %][% idsuffix %]">
 [% END %]
 [%-
     searchterm    = termitem.0;
@@ -651,16 +651,16 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle").click(function(){
 <!-- End mediatype facet -->
 <!-- Begin topic facet -->
 [%         IF config.get('facets').topic && facets.defined('topic') && facets.topic.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-topic" aria-expanded="true">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-topic[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Themengebiet") %] 
         </h4>
-        <ul id="group-topic" class="list-group in collapse show">
+        <ul id="group-topic[% idsuffix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.topic ;
                   LAST IF loop.count > 25 ;
  %]
 [% IF facets.topic.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_topic_[% database %]_toggle"></span>
-<div id="[% facet_prefix %]_topic_[% database %]">
+<span id="[% facet_prefix %]_topic_[% database %]_toggle[% idsuffix %]"></span>
+<div id="[% facet_prefix %]_topic_[% database %][% idsuffix %]">
 [% END %]
 [%-
     searchterm    = termitem.0;
@@ -678,16 +678,16 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle").click(function(){
 <!-- End topic facet -->
 <!-- Begin subject facet -->
 [%         IF config.get('facets').subject && facets.defined('subject') && facets.subject.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-subject" aria-expanded="true">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-subject[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Schlagwort") %] 
         </h4>
-        <ul id="group-subject" class="list-group in collapse show">
+        <ul id="group-subject[% idsuffix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.subject ;
                   LAST IF loop.count > 25 ;
 %]
 [% IF facets.subject.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_subjects_[% database %]_toggle"></span>
-<div id="[% facet_prefix %]_subjects_[% database %]">
+<span id="[% facet_prefix %]_subjects_[% database %]_toggle[% idsuffix %]"></span>
+<div id="[% facet_prefix %]_subjects_[% database %][% idsuffix %]">
 [% END %]
 [%-
     searchterm    = termitem.0;
@@ -705,7 +705,7 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle").click(function(){
 <!-- End subject facet -->
 <!-- Begin year facet -->
 [%         IF config.get('facets').year && facets.defined('year') && facets.year.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-year" aria-expanded="true">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-year[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Erscheinungsjahr") %] 
         </h4>
 [%
@@ -742,19 +742,19 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle").click(function(){
       END;
 
 %]
-<div id="group-year" class="in collapse show">
+<div id="group-year[% idsuffix %]" class="in collapse show">
 [% IF facets.year.size > 1 %]
-<canvas id="ob-yearChart-[% facet_prefix %]" width="300" height="200"></canvas>
+<canvas id="ob-yearChart-[% facet_prefix %][% idsuffix %]" width="300" height="200"></canvas>
 
-<div id="ob-yearSlider" class="m-4"></div>
+<div id="ob-yearSlider[% idsuffix %]" class="m-4"></div>
 
 <p>
-[% msg.maketext("Von") %]&nbsp;&nbsp;<input id="ob-yearSlider_from" type="text" size="4" name="year_from" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input id="ob-yearSlider_to" type="text" size="4" name="year_to" value="[% searchquery.get_searchfield("year_to").val %]" />&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Los"/>
+[% msg.maketext("Von") %]&nbsp;&nbsp;<input id="ob-yearSlider_from[% idsuffix %]" type="text" size="4" name="year_from" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input id="ob-yearSlider_to[% idsuffix %]" type="text" size="4" name="year_to" value="[% searchquery.get_searchfield("year_to").val %]" />&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Los"/>
 </p>
 
 <script>
-var type_ctx = document.getElementById('ob-yearChart-[% facet_prefix %]');
-var typeChart = new Chart(type_ctx, {
+var type_ctx[% idsuffix %] = document.getElementById('ob-yearChart-[% facet_prefix %][% idsuffix %]');
+var typeChart[% idsuffix %] = new Chart(type_ctx[% idsuffix %], {
     type: 'bar',
     data: {    
         labels: [[% year_labels.join(',') %]],
@@ -795,9 +795,9 @@ var typeChart = new Chart(type_ctx, {
     }
 });
 
-var yearslider = document.getElementById('ob-yearSlider');
+var yearslider = document.getElementById('ob-yearSlider[% idsuffix %]');
 
-noUiSlider.create(yearslider, {
+noUiSlider.create(yearslider[% idsuffix %], {
     start: [[% minyear %], [% maxyear %]],
     connect: true,
     range: {
@@ -806,26 +806,26 @@ noUiSlider.create(yearslider, {
     }
 });
 
-var yearslider_from = document.getElementById('ob-yearSlider_from');
-var yearslider_to   = document.getElementById('ob-yearSlider_to');
+var yearslider_from[% idsuffix %] = document.getElementById('ob-yearSlider_from[% idsuffix %]');
+var yearslider_to[% idsuffix %]   = document.getElementById('ob-yearSlider_to[% idsuffix %]');
 
-yearslider.noUiSlider.on('update', function (values, handle) {
+yearslider[% idsuffix %].noUiSlider.on('update', function (values, handle) {
 
     var value = values[handle];
 
     if (handle) {
-        yearslider_to.value = Math.round(value);
+        yearslider_to[% idsuffix %].value = Math.round(value);
     } else {
-        yearslider_from.value = Math.round(value);
+        yearslider_from[% idsuffix %].value = Math.round(value);
     }
 });
 
-yearslider_from.addEventListener('change', function () {
-    yearslider.noUiSlider.set([this.value, null]);
+yearslider_from[% idsuffix %].addEventListener('change', function () {
+    yearslider[% idsuffix %].noUiSlider.set([this.value, null]);
 });
 
-yearslider_to.addEventListener('change', function () {
-    yearslider.noUiSlider.set([null, this.value]);
+yearslider_to[% idsuffix %].addEventListener('change', function () {
+    yearslider[% idsuffix %].noUiSlider.set([null, this.value]);
 });
 
 
@@ -837,8 +837,8 @@ yearslider_to.addEventListener('change', function () {
                   LAST IF loop.count > 25 ;
  %]
 [% IF facets.year.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_year_[% database %]_toggle"></span>
-<div id="[% facet_prefix %]_year_[% database %]">
+<span id="[% facet_prefix %]_year_[% database %]_toggle[% idsuffix %]"></span>
+<div id="[% facet_prefix %]_year_[% database %][% idsuffix %]">
 [% END %]
 [%-
     searchterm    = termitem.0;
@@ -863,16 +863,16 @@ yearslider_to.addEventListener('change', function () {
 <!-- End year facet -->
 <!-- Begin classification facet -->
 [%         IF config.get('facets').classification && facets.defined('classification') && facets.classification.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-classification" aria-expanded="true">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-classification[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Systematik") %] 
         </h4>
-        <ul id="group-classification" class="list-group in collapse show">
+        <ul id="group-classification[% idsuffix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.classification ;
                   LAST IF loop.count > 25 ;
  %]
 [% IF facets.classification.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_classification_[% database %]_toggle"></span>
-<div id="[% facet_prefix %]_classification_[% database %]">
+<span id="[% facet_prefix %]_classification_[% database %]_toggle[% idsuffix %]"></span>
+<div id="[% facet_prefix %]_classification_[% database %][% idsuffix %]">
 [% END %]
 [%-
     searchterm    = termitem.0;
@@ -890,16 +890,16 @@ yearslider_to.addEventListener('change', function () {
 <!-- End classification facet -->
 <!-- Begin provenance facet -->
 [%         IF config.get('facets').provenance && facets.defined('provenance') && facets.provenance.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-provenance" aria-expanded="true">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-provenance[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Provenienz") %] 
         </h4>
-        <ul id="group-provenance" class="list-group in collapse show">
+        <ul id="group-provenance[% idsuffix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.provenance ;
                   LAST IF loop.count > 25 ;
  %]
 [% IF facets.provenance.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_provenance_[% database %]_toggle"></span>
-<div id="[% facet_prefix %]_provenance_[% database %]">
+<span id="[% facet_prefix %]_provenance_[% database %]_toggle[% idsuffix %]"></span>
+<div id="[% facet_prefix %]_provenance_[% database %][% idsuffix %]">
 [% END %]
 [%-
     searchterm    = termitem.0;
@@ -917,16 +917,16 @@ yearslider_to.addEventListener('change', function () {
 <!-- End provenance facet -->
 <!-- Begin tag facet -->
 [%         IF config.get('facets').tag && facets.defined('tag') && facets.tag.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-tag" aria-expanded="true">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-tag[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Tags") %] 
         </h4>
-        <ul id="group-tag" class="list-group in collapse show">
+        <ul id="group-tag[% idsuffix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.tag ;
                   LAST IF loop.count > 25 ;
  %]
 [% IF facets.tag.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_tags_[% database %]_toggle"></span>
-<div id="[% facet_prefix %]_tags_[% database %]">
+<span id="[% facet_prefix %]_tags_[% database %]_toggle[% idsuffix %]"></span>
+<div id="[% facet_prefix %]_tags_[% database %][% idsuffix %]">
 [% END %]
 [%-
     searchterm    = termitem.0;
@@ -944,16 +944,16 @@ yearslider_to.addEventListener('change', function () {
 <!-- End tag facet -->
 <!-- Begin litlist facet -->
 [%         IF config.get('facets').litlist && facets.defined('litlist') && facets.litlist.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-litlist" aria-expanded="true">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-litlist[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Literaturliste") %] 
         </h4>
-        <ul id="group-litlist" class="list-group in collapse show">
+        <ul id="group-litlist[% idsuffix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.litlist ;
                   LAST IF loop.count > 25 ;
  %]
 [% IF facets.litlist.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_litlists_[% database %]_toggle"></span>
-<div id="[% facet_prefix %]_litlists_[% database %]">
+<span id="[% facet_prefix %]_litlists_[% database %]_toggle[% idsuffix %]"></span>
+<div id="[% facet_prefix %]_litlists_[% database %][% idsuffix %]">
 [% END %]
 [%-
     searchterm    = termitem.0;
@@ -972,16 +972,16 @@ yearslider_to.addEventListener('change', function () {
 
 <!-- Begin person facet -->
 [%         IF config.get('facets').person && facets.defined('person') && facets.person.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-person" aria-expanded="true">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-person[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Person") %] 
         </h4>
-        <ul id="group-person" class="list-group in collapse show">
+        <ul id="group-person[% idsuffix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.person ;
                   LAST IF loop.count > 25 ;
 %]
 [% IF facets.person.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_person_[% database %]_toggle"></span>
-<div id="[% facet_prefix %]_person_[% database %]">
+<span id="[% facet_prefix %]_person_[% database %]_toggle[% idsuffix %]"></span>
+<div id="[% facet_prefix %]_person_[% database %][% idsuffix %]">
 [% END %]
 [%-
     searchterm    = termitem.0;
@@ -1000,16 +1000,16 @@ yearslider_to.addEventListener('change', function () {
 
 <!-- Begin language facet -->
 [%         IF config.get('facets').language && facets.defined('language') && facets.language.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-language" aria-expanded="true">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-language[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Sprache") %] 
         </h4>
-        <ul id="group-language" class="list-group in collapse show">
+        <ul id="group-language[% idsuffix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.language ;
                   LAST IF loop.count > 25 ;
  %]
 [% IF facets.language.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_language_[% database %]_toggle"></span>
-<div id="[% facet_prefix %]_language_[% database %]">
+<span id="[% facet_prefix %]_language_[% database %]_toggle[% idsuffix %]"></span>
+<div id="[% facet_prefix %]_language_[% database %][% idsuffix %]">
 [% END %]
 [%-
     searchterm    = termitem.0;
@@ -1094,16 +1094,16 @@ yearslider_to.addEventListener('change', function () {
 
 <!-- Begin corporatebody facet -->
 [%         IF config.get('facets').corporatebody && facets.defined('corporatebody') && facets.corporatebody.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-corporatebody" aria-expanded="true">
+        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-corporatebody[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("K&ouml;perschaft") %] 
         </h4>
-        <ul id="group-corporatebody" class="list-group in collapse show">
+        <ul id="group-corporatebody[% idsuffix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.corporatebody ;
                   LAST IF loop.count > 25 ;
 %]
 [% IF facets.corporatebody.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_corporatebody_[% database %]_toggle"></span>
-<div id="[% facet_prefix %]_corporatebody_[% database %]">
+<span id="[% facet_prefix %]_corporatebody_[% database %]_toggle[% idsuffix %]"></span>
+<div id="[% facet_prefix %]_corporatebody_[% database %][% idsuffix %]">
 [% END %]
 [%-
     searchterm    = termitem.0;
@@ -1167,7 +1167,7 @@ durch zus&auml;tzliche Worte weiter eingrenzen.") %]
 $(document).ready(function(){
   $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/titles/recommendations.include?l=[% lang %];fs=[% searchquery.get_searchtermstring %]",
          function (txt){
-           $("#ob-dbis_recommendations").html(txt); 
+           $("#ob-dbis_recommendations[% idsuffix %]").html(txt); 
   });
 });
 
@@ -1176,7 +1176,7 @@ $(document).ready(function(){
 <div class="ob-category_header">[% msg.maketext("Datenbank-Empfehlungen") %]</div>
 
 <!-- Begin Elib DBIS-Empfehlungen -->
-<div id="ob-dbis_recommendations" class="pt-3">
+<div id="ob-dbis_recommendations[% idsuffix %]" class="pt-3">
 <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/titles/recommendations.html?l=[% lang %];fs=[% searchquery.get_searchtermstring %]">[% msg.maketext("Weiter zu den Datenbank-Empfehlungen") %]</a>
 </div>
 <!-- Ende Elib DBIS-Empfehlungen -->

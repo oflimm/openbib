@@ -320,6 +320,15 @@
 	margin-left: 10px;
 	margin-bottom: 5px;
     }
+
+    .nav-tabs .nav-link.active {
+	border-top: 3px solid orange;
+    }
+
+    .nav-link {
+	display: block;
+	padding: 0.4rem 0.5rem;
+    }
     
     .overlay {
 	display: none;

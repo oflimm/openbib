@@ -425,7 +425,7 @@ sub threadB {
     
     $logger->info("### Aufgesplittete Teil-Kataloge aus USB Katalog");
     
-    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['digisoz','provenienzen','lehrbuchsmlg','rheinabt','edz','lesesaal', 'usbhwa','usbsab', 'dissertationen'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['digisoz','provenienzen','lehrbuchsmlg','rheinabt','edz','lesesaal', 'usbhwa','usbsab', 'dissertationen','usbphil'] });
     
     ##############################
     

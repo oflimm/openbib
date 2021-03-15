@@ -66,18 +66,16 @@
 
 <script>
 $(document).ready(function(){
-[% IF current_profile == searchprofileid_of_view %]
-	    var numhits_default = $("#numhits_default").text();
-	    if (numhits_default){
-	       $("#ob-searchresult_default_li").append(" ("+numhits_default+")");
+
+[% IF current_profile == searchprofileid_of_website %]
+	    var numhits_website = $("#numhits_website").text();
+	    if (numhits_website){
+	       $("#ob-searchresult_website_li").append(" ("+numhits_website+")");
 	    }
 	    else {
-     	       $("#ob-searchresult_default_li").append(" (0)");
+     	       $("#ob-searchresult_website_li").append(" (0)");
 	    }
-        });
-[% END %]
-
-[% IF current_profile != searchprofileid_of_website %]
+[% ELSE %]
     $("#ob-searchresult_website_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-searchresult_website_loading\" />"); 
     $.get("[% path_prefix %]/[% config.get('search_loc') %].include?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp'] }) %];page=1;profile=[% searchprofileid_of_website %];[% searchquery.to_cgi_querystring({ exclude = ['profile'] }) %]",
         function (txt){
@@ -93,7 +91,15 @@ $(document).ready(function(){
         });
 [% END %]
 
-[% IF current_profile != searchprofileid_of_eds %]
+[% IF current_profile == searchprofileid_of_eds %]
+	    var numhits_eds = $("#numhits_eds").text();
+	    if (numhits_eds){
+	       $("#ob-searchresult_eds_li").append(" ("+numhits_eds+")");
+	    }
+	    else {
+     	       $("#ob-searchresult_eds_li").append(" (0)");
+	    }
+[% ELSE %]
     $("#ob-searchresult_eds_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-searchresult_eds_loading\" />"); 
     $.get("[% path_prefix %]/[% config.get('search_loc') %].include?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp'] }) %];page=1;profile=[% searchprofileid_of_eds %];[% searchquery.to_cgi_querystring({ exclude = ['profile'] }) %]",
         function (txt){
@@ -111,7 +117,15 @@ $(document).ready(function(){
 [% END %]
 
 
-[% IF current_profile == searchprofileid_of_eds || current_profile == searchprofileid_of_website %] %] 
+[% IF current_profile == searchprofileid_of_view %]
+	    var numhits_default = $("#numhits_default").text();
+	    if (numhits_default){
+	       $("#ob-searchresult_default_li").append(" ("+numhits_default+")");
+	    }
+	    else {
+     	       $("#ob-searchresult_default_li").append(" (0)");
+	    }
+[% ELSE %]
     $("#ob-searchresult_default_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-searchresult_default_loading\" />"); 
     $.get("[% path_prefix %]/[% config.get('search_loc') %].include?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp'] }) %];page=1;profile=[% searchprofileid_of_view %];[% searchquery.to_cgi_querystring({ exclude = ['profile'] }) %]",
         function (txt){
@@ -134,8 +148,8 @@ $(document).ready(function(){
 
 <div class="tab-content pt-3">
 
-<div role="tabpanel" id="ob-searchresult_tab_default" class="tab-pane fade-in row [% IF current_profile != searchprofileid_of_eds && current_profile != searchprofileid_of_website %] active[% END %] flex-md-row">
-[% IF current_profile != searchprofileid_of_eds && current_profile != searchprofileid_of_website %]
+<div role="tabpanel" id="ob-searchresult_tab_default" class="tab-pane fade-in row [% IF current_profile == searchprofileid_of_view %] active[% END %] flex-md-row">
+[% IF current_profile == searchprofileid_of_view %]
 [% PROCESS common/subtemplate name="search_title_combined_include" %]
 [% END %]
 </div>

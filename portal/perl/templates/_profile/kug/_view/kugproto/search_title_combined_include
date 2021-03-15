@@ -59,7 +59,7 @@
    END;
 %]
 
-<div id="ob-sidebar[% idsuffix %]" class="bg-light border-right min-vh-100 collapse navbar-collapse" aria-expanded="false">
+<div id="ob-sidebar[% idsuffix %]" class="bg-light border-right min-vh-100 collapse navbar-collapse pb-5" aria-expanded="false">
            <div id="sidebar-dismiss[% idsuffix %]" class="float-right d-md-none" data-toggle="collapse" data-target="#ob-sidebar[% idsuffix %]" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <i class="fas fa-arrow-left"></i>
            </div>
@@ -132,7 +132,7 @@
        </div>
      </div>
      <div class="left d-none d-lg-block mt-2">
-[% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b>[% hits %]</b>
+[% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b id="numhits[% idsuffix %]">[% hits %]</b>
     </div>
     </div>
     <div class="right mt-2">

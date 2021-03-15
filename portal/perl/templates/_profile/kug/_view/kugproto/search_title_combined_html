@@ -66,12 +66,30 @@
 
 <script>
 $(document).ready(function(){
+[% IF current_profile == searchprofileid_of_view %]
+	    var numhits_default = $("#numhits_default").text();
+	    if (numhits_default){
+	       $("#ob-searchresult_default_li").append(" ("+numhits_default+")");
+	    }
+	    else {
+     	       $("#ob-searchresult_default_li").append(" (0)");
+	    }
+        });
+[% END %]
+
 [% IF current_profile != searchprofileid_of_website %]
     $("#ob-searchresult_website_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-searchresult_website_loading\" />"); 
     $.get("[% path_prefix %]/[% config.get('search_loc') %].include?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp'] }) %];page=1;profile=[% searchprofileid_of_website %];[% searchquery.to_cgi_querystring({ exclude = ['profile'] }) %]",
         function (txt){
             $("#ob-searchresult_tab_website").html(txt);
             $("#ob-searchresult_website_loading").hide();
+	    var numhits_website = $("#numhits_website").text();
+	    if (numhits_website){
+	       $("#ob-searchresult_website_li").append(" ("+numhits_website+")");
+	    }
+	    else {
+     	       $("#ob-searchresult_website_li").append(" (0)");
+	    }
         });
 [% END %]
 
@@ -81,6 +99,14 @@ $(document).ready(function(){
         function (txt){
             $("#ob-searchresult_tab_eds").html(txt);
             $("#ob-searchresult_eds_loading").hide();
+	    var numhits_eds = $("#numhits_eds").text();
+	    if (numhits_eds){
+	       $("#ob-searchresult_eds_li").append(" ("+numhits_eds+")");
+	    }
+	    else {
+     	       $("#ob-searchresult_eds_li").append(" (0)");
+	    }
+
         });
 [% END %]
 
@@ -91,6 +117,13 @@ $(document).ready(function(){
         function (txt){
             $("#ob-searchresult_tab_default").html(txt);
             $("#ob-searchresult_default_loading").hide();
+	    var numhits_default = $("#numhits_default").text();
+	    if (numhits_default){
+	       $("#ob-searchresult_default_li").append(" ("+numhits_default+")");
+	    }
+	    else {
+     	       $("#ob-searchresult_default_li").append(" (0)");
+	    }
         });
 [% END %]
 

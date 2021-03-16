@@ -34,7 +34,10 @@
                 'T0360', # msg.maketext("T0360") Vorl. Unterreihe
                 'T0403', # msg.maketext("T0403") Auflage
                 'T0410', # msg.maketext("T0410") Verlagsort
+                'T0673', # msg.maketext("T0673") Verlagsort normiert
                 'T0412', # msg.maketext("T0412") Verlag
+                'T1680', # msg.maketext("T1680") Verlag normiert
+                'T0676', # msg.maketext("T0676") Verlag normiert
                 'T0425', # msg.maketext("T0425") ErschJahr
                 'T0424', # msg.maketext("T0424") ErschJahr/Ansetzung
                 'T0405', # msg.maketext("T0405") Erscheinungsverlauf

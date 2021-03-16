@@ -44,6 +44,7 @@
 </div>
 [% END %]
 
+<!--
 [%- cgiparam = searchfield.provenance.prefix;
     this_searchfield = 'provenance';
  -%]
@@ -51,26 +52,39 @@
 <label for="[% cgiparam %]">[% msg.maketext("Provenienz") %]</label>
 <input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
+-->
 
-[% IF available_searchfields.isbn.active %]
-[%- cgiparam = searchfield.isbn.prefix;
-    this_searchfield = 'isbn';
+[%- cgiparam = searchfield.t4308.prefix;
+    this_searchfield = 't4308';
  -%]
 <div class="form-group">
-<label for="[% cgiparam %]">[% msg.maketext("ISBN") %]</label>
+<label for="[% cgiparam %]">[% msg.maketext("Provenienz Person") %]</label>
 <input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
-[% END %]
 
-[% IF available_searchfields.issn.active %]
-[%- cgiparam = searchfield.issn.prefix;
-    this_searchfield = 'issn';
+[%- cgiparam = searchfield.t4307.prefix;
+    this_searchfield = 't4307';
  -%]
 <div class="form-group">
-<label for="[% cgiparam %]">[% msg.maketext("ISSN") %]</label>
+<label for="[% cgiparam %]">[% msg.maketext("Provenienz Körperschaft") %]</label>
 <input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
-[% END %]
+
+[%- cgiparam = searchfield.t4306.prefix;
+    this_searchfield = 't4306';
+ -%]
+<div class="form-group">
+<label for="[% cgiparam %]">[% msg.maketext("Provenienz Sammlung") %]</label>
+<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+
+[%- cgiparam = searchfield.t4310.prefix;
+    this_searchfield = 't4310';
+ -%]
+<div class="form-group">
+<label for="[% cgiparam %]">[% msg.maketext("Provenienz Beschreibung") %]</label>
+<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
 
 [% IF available_searchfields.markstring.active %]
 [%- cgiparam = searchfield.markstring.prefix;
@@ -82,33 +96,12 @@
 </div>
 [% END %]
 
-[% IF available_searchfields.titlestring.active %]
-[%- cgiparam = searchfield.titlestring.prefix;
-    this_searchfield = 'titlestring';
- -%]
-<div class="form-group">
-<label for="[% cgiparam %]">[% msg.maketext("Kompletter Titel") %]</label>
-<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
-</div>
-[% END %]
-
-
 [% IF available_searchfields.publisher.active %]
 [%- cgiparam = searchfield.publisher.prefix;
     this_searchfield = 'publisher';
  -%]
 <div class="form-group">
 <label for="[% cgiparam %]">[% msg.maketext("Verlag") %]</label>
-<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
-</div>
-[% END %]
-
-[% IF available_searchfields.source.active %]
-[%- cgiparam = searchfield.source.prefix;
-    this_searchfield = 'source';
- -%]
-<div class="form-group">
-<label for="[% cgiparam %]">[% msg.maketext("Serie/Band/Quelle") %]</label>
 <input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 [% END %]
@@ -140,12 +133,6 @@
 [% END %]
 <!-- <tr><td class="ob-field">[% msg.maketext("Eingrenzung auf Gesamttitel (Serien)") %]</td><td class="ob-field">und</td><td><input class="form-control" id="[% cgiparam %]" type="checkbox" name="serien" /></td><td></td></tr> -->
 
-<hr/>
-
-<div class="form-group">
-<label for="[% cgiparam %]">[% msg.maketext("Suchprofil") %]</label>
-[% PROCESS common/subtemplate name="searchforms_record_profile" %]
-</div>
 
 <p/>
 

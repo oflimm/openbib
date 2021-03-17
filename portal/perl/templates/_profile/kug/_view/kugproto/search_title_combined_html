@@ -46,9 +46,17 @@
       searchprofileid_of_website = config.get_searchprofile_of_database('usbweb');
    END ;
 
+#   current_profile = "";
+#   IF query.param('profile');
+#     current_profile = query.param('profile');
+#   ELSE;
+#     current_profile = searchquery.get_searchprofile;
+#   END;
+
+   current_profile = searchquery.get_searchprofile;
+
 %]
 
-[% current_profile = searchquery.get_searchprofile %]
 
 <ul class="nav nav-tabs pl-2">
   <li class="nav-item">
@@ -117,7 +125,7 @@ $(document).ready(function(){
 [% END %]
 
 
-[% IF current_profile == searchprofileid_of_view %]
+[% IF current_profile != searchprofileid_of_eds && current_profile != searchprofileid_of_website %]
 	    var numhits_default = $("#numhits_default").text();
 	    if (numhits_default){
 	       $("#ob-searchresult_default_li").append(" ("+numhits_default+")");

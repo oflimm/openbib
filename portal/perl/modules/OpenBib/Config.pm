@@ -114,7 +114,7 @@ sub get_schema {
 
 sub restrict_databases_to_view {
     my ($self,$arg_ref) = @_;
-
+    
     # Set defaults
     my $databases_ref      = exists $arg_ref->{databases}
         ? $arg_ref->{databases}       : undef;
@@ -122,9 +122,16 @@ sub restrict_databases_to_view {
     my $view               = exists $arg_ref->{view}
         ? $arg_ref->{view}            : undef;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
     my @viewdbs = $self->get_viewdbs($view);
 
     my $compare = List::Compare->new('-u',$databases_ref, \@viewdbs);
+
+    if ($logger->is_debug){
+	$logger->debug("Suchprofil-Differenz: ".YAML::Dump($compare->get_symmetric_difference()));
+    }
     
     return $compare->get_intersection;
 }
@@ -4737,8 +4744,10 @@ sub get_searchprofile_or_create {
     if ($self->{benchmark}) {
         $atime=new Benchmark;
     }
+
+    my @sorted_dbs = sort @$dbs_ref;
     
-    my $dbs_as_json = encode_json $dbs_ref;
+    my $dbs_as_json = encode_json \@sorted_dbs;
 
     $logger->debug("Databases of Searchprofile as JSON: $dbs_as_json");
 
@@ -4791,6 +4800,8 @@ sub get_searchprofile_or_create {
         }
     }
 
+    $logger->debug("Got id for Searchprofile: $searchprofileid");
+    
     return $searchprofileid 
 }
 
@@ -4957,8 +4968,12 @@ sub get_searchprofile_of_view {
     my @databases = $self->get_dbs_of_view($viewname);
 
     $logger->debug("Databases of View $viewname: ".join(',',@databases));
+
+    my $searchprofileid = $self->get_searchprofile_or_create(\@databases);
+
+    $logger->debug("Got searchprofileid $searchprofileid");
     
-    return $self->get_searchprofile_or_create(\@databases);
+    return $searchprofileid;
 }
 
 sub get_searchprofile_of_orgunit {

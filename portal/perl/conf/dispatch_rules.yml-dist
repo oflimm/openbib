@@ -564,6 +564,12 @@
    runmode: 'isbn'
    args:
       disable_content_negotiation: 1
+- # connector_cover_loc: 
+   module: 'OpenBib::Handler::PSGI::Connector::Cover'
+   rule: '/portal/:view/connector/cover/:rm/:id'
+   runmode: 'vlb'
+   args:
+      disable_content_negotiation: 1
 - # connector_daia_loc:
    module: 'OpenBib::Handler::PSGI::Connector::DAIA'
    rule: '/portal/:view/connector/daia'

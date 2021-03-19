@@ -46,12 +46,12 @@
       searchprofileid_of_website = config.get_searchprofile_of_database('usbweb');
    END ;
 
-#   current_profile = "";
-#   IF query.param('profile');
-#     current_profile = query.param('profile');
-#   ELSE;
-#     current_profile = searchquery.get_searchprofile;
-#   END;
+   current_profile = "";
+   IF query.param('profile');
+     current_profile = query.param('profile');
+   ELSE;
+     current_profile = searchquery.get_searchprofile;
+   END;
 
    current_profile = searchquery.get_searchprofile;
 

@@ -565,13 +565,13 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(
 <p/>
 [%         END %]
 <!-- End location facet -->
-
+[%# USE dumper; dumper.dump(facets.elocation)%]
 <!-- Begin elocation facet -->
 [%         IF config.get('facets').location && facets.defined('elocation') && facets.elocation.size > 0 %]
-        <h4 class="ob-facet-title [% IF facets.favlocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-toggle="collapse" data-target="#group-elocation[% idsuffix %]" aria-expanded=[% IF facets.favlocation.size > 0 %]"false"[% ELSE %]"true"[% END %]>
+        <h4 class="ob-facet-title [% IF facets.elocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-toggle="collapse" data-target="#group-elocation[% idsuffix %]" aria-expanded=[% IF facets.elocation.size > 0 %]"false"[% ELSE %]"true"[% END %]>
            [% msg.maketext("E-Medien Quelle") %] 
         </h4>
-        <ul id="group-elocation[% idsuffix %]" class="list-group in collapse [% IF facets.favlocation.size <= 0 %]show[% END %]">
+        <ul id="group-elocation[% idsuffix %]" class="list-group in collapse [% IF facets.elocation.size <= 0 %]show[% END %]">
 [%             FOREACH termitem IN facets.elocation ;
 
  %]
@@ -592,14 +592,14 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(
 </ul>
 <p/>
 [%         END %]
-<!-- End location facet -->
+<!-- End elocation facet -->
 
-<!-- Begin location facet -->
+<!-- Begin printlocation facet -->
 [%         IF config.get('facets').location && facets.defined('location') && facets.location.size > 0 %]
-        <h4 class="ob-facet-title [% IF facets.favlocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-toggle="collapse" data-target="#group-location[% idsuffix %]" aria-expanded=[% IF facets.favlocation.size > 0 %]"false"[% ELSE %]"true"[% END %]>
+        <h4 class="ob-facet-title [% IF facets.favlocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-toggle="collapse" data-target="#group-location[% idsuffix %]" aria-expanded=[% IF facets.location.size > 0 %]"false"[% ELSE %]"true"[% END %]>
            [% msg.maketext("Print-Medien Standort") %] 
         </h4>
-        <ul id="group-location[% idsuffix %]" class="list-group in collapse [% IF facets.favlocation.size <= 0 %]show[% END %]">
+        <ul id="group-location[% idsuffix %]" class="list-group in collapse [% IF facets.location.size <= 0 %]show[% END %]">
 [%             FOREACH termitem IN facets.location ;
 
  %]

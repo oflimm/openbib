@@ -4960,7 +4960,7 @@ sub get_searchprofiles_with_database {
 }
 
 sub get_searchprofile_of_view {
-    my ($self,$viewname)=@_;
+    my ($self,$viewname,$exclude_ref)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -4969,6 +4969,12 @@ sub get_searchprofile_of_view {
 
     $logger->debug("Databases of View $viewname: ".join(',',@databases));
 
+    # $exclude_ref is a arrayref
+    if ($exclude_ref){
+	my %is_excluded = map { $_ => 1 } @$exclude_ref;
+	@databases = grep { !$is_excluded{$_} } @databases;
+    }
+    
     my $searchprofileid = $self->get_searchprofile_or_create(\@databases);
 
     $logger->debug("Got searchprofileid $searchprofileid");

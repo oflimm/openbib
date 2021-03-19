@@ -1,5 +1,7 @@
 [% IF queryoptions.get_option('facets') != 'none' %]
 [% separate_refine = 1 %]
+[%# USE dumper; dumper.dump(facets) %]
+
 <div class="ob-facets ob-facets_all sliding-sidebar">
 
 [% IF qopts.get_option('sb') == "eds" || searchprofileid_of_eds == searchquery.get_searchprofile || ( qopts.get_option('sb') == "xapian" && hits <= config.get('xapian_option').maxmatch ) ;
@@ -96,33 +98,31 @@
          thislocation = loc.first;
 	 IF is_favourite_user_location.${thislocation} == 1;
 	    facets_fav.push(loc);	 
-	 ELSIF is_location_of_emedia.${thislocation} == 1;
-	    IF location_is_blacklisted.${thislocation} == 1;
-	       NEXT;
-	    END ;
-	    facets_emedia.push(loc);
-	 ELSE ;
-	    IF location_is_blacklisted.${thislocation} == 1;
-	       NEXT;
-	    END ;
-	    facets_pmedia.push(loc);	 
+	 ELSE;
+	   IF is_location_of_emedia.${thislocation} == 1;
+	     IF location_is_blacklisted.${thislocation} == 1;
+	        NEXT;
+	     END ;
+	     facets_emedia.push(loc);
+	   ELSE ;
+	     IF location_is_blacklisted.${thislocation} == 1;
+	        NEXT;
+	     END ;
+	    facets_pmedia.push(loc);
+	   END;
 	 END;
       END;
 
-      facets.delete('favlocation');
-      facets.delete('location');
-      facets.delete('elocation');      
-
-      IF facets_fav.size > 0;
+      IF NOT facets.favlocation && facets_fav.size > 0;
          facets.favlocation = facets_fav;
       END;
 
-      IF facets_emedia.size > 0;
+      IF NOT facets.elocation && facets_emedia.size > 0;
          facets.elocation = facets_emedia;
       END;
 
-      IF facets_pmedia.size > 0;
-         facets.location = facets_pmedia;
+      IF NOT facets.printlocation && facets_pmedia.size > 0;
+         facets.printlocation = facets_pmedia;
       END;
 
       bklookup    = config.load_bk;
@@ -138,6 +138,7 @@
       bklookup.${"85.98"} = "Betriebswirtschaft: Unspezifiziert";
       bklookup.${"86.98"} = "Recht: Unspezifiziert";
  %]
+
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
 [%
 
@@ -539,7 +540,7 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(
 <!-- End availability facet -->
 
 <!-- Begin favlocation facet -->
-[%         IF config.get('facets').location && facets.defined('favlocation') && facets.favlocation.size > 0 %]
+[%         IF facets.defined('favlocation') && facets.favlocation.size > 0 %]
         <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-favlocation[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Mein Suchraum") %] 
         </h4>
@@ -564,10 +565,10 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(
 </ul>
 <p/>
 [%         END %]
-<!-- End location facet -->
-[%# USE dumper; dumper.dump(facets.elocation)%]
+<!-- End favlocation facet -->
+
 <!-- Begin elocation facet -->
-[%         IF config.get('facets').location && facets.defined('elocation') && facets.elocation.size > 0 %]
+[%         IF facets.defined('elocation') && facets.elocation.size > 0 %]
         <h4 class="ob-facet-title [% IF facets.elocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-toggle="collapse" data-target="#group-elocation[% idsuffix %]" aria-expanded=[% IF facets.elocation.size > 0 %]"false"[% ELSE %]"true"[% END %]>
            [% msg.maketext("E-Medien Quelle") %] 
         </h4>
@@ -595,15 +596,15 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(
 <!-- End elocation facet -->
 
 <!-- Begin printlocation facet -->
-[%         IF config.get('facets').location && facets.defined('location') && facets.location.size > 0 %]
-        <h4 class="ob-facet-title [% IF facets.favlocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-toggle="collapse" data-target="#group-location[% idsuffix %]" aria-expanded=[% IF facets.location.size > 0 %]"false"[% ELSE %]"true"[% END %]>
+[%         IF facets.defined('printlocation') && facets.printlocation.size > 0 %]
+        <h4 class="ob-facet-title [% IF facets.printlocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-toggle="collapse" data-target="#group-location[% idsuffix %]" aria-expanded=[% IF facets.location.size > 0 %]"false"[% ELSE %]"true"[% END %]>
            [% msg.maketext("Print-Medien Standort") %] 
         </h4>
         <ul id="group-location[% idsuffix %]" class="list-group in collapse [% IF facets.location.size <= 0 %]show[% END %]">
-[%             FOREACH termitem IN facets.location ;
+[%             FOREACH termitem IN facets.printlocation ;
 
  %]
-[% IF facets.location.size > 5 && loop.count == 5 %]
+[% IF facets.printlocation.size > 5 && loop.count == 5 %]
 <span id="[% facet_prefix %]_location_[% database %]_toggle[% idsuffix %]"></span>
 <div id="[% facet_prefix %]_location_[% database %][% idsuffix %]">
 [% END %]
@@ -614,7 +615,7 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(
 -%]
 <li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% locinfo.get('identifier').${termitem.0}.description %]</a> <span class="badge badge-pill badge-secondary ml-auto">[% termitem.1 %]</span></li>
 [%             END %]
-[% IF facets.location.size > 5 %]
+[% IF facets.printlocation.size > 5 %]
 </div>
 [% END %]
 </ul>

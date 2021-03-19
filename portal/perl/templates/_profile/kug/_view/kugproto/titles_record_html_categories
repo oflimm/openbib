@@ -43,7 +43,7 @@ $('#normdataModal').on('show.bs.modal', function (event) {
 
 [%-
    request_base = config.get('search_defaultparams');
-   request_base = "l=${lang};${request_base}";
+   request_base = "l=${lang};profile=${current_profile};${request_base}";
 
    IF NOT viewdbs ;
        viewdbs = config.get_dbs_of_view(view);

@@ -25,45 +25,6 @@
 
 </style>
 
-[%
-   IF NOT viewdbs ;
-       viewdbs = config.get_dbs_of_view(view);
-   END ;
-   IF NOT prevprofile ;
-       prevprofile = session.get_profile ;
-   END ;
-   IF NOT searchprofileid_of_books ;
-      searchprofileid_of_books  = config.get_searchprofile_of_view(view,['usbweb']) ;
-   END ;
-   IF NOT searchprofileid_of_sysprofile ;
-      searchprofileid_of_sysprofile = config.get_searchprofile_of_systemprofile(view);
-   END ;
-   IF NOT searchprofileid_of_eds ;
-      searchprofileid_of_eds = config.get_searchprofile_of_database('eds');
-   END ;
-
-   IF NOT searchprofileid_of_website ;
-      searchprofileid_of_website = config.get_searchprofile_of_database('usbweb');
-   END ;
-
-#   current_profile = "";
-#   IF query.param('profile');
-#     current_profile = query.param('profile');
-#   ELSE;
-     current_profile = searchquery.get_searchprofile;
-#   END;
-
-   idsuffix = "";
-
-   IF current_profile == searchprofileid_of_eds;
-     idsuffix = "_eds" ;
-   ELSIF current_profile == searchprofileid_of_website;
-     idsuffix = "_website";
-   ELSE;
-     idsuffix = "_default";
-   END;
-%]
-
 <div id="ob-sidebar[% idsuffix %]" class="bg-light border-right min-vh-100 collapse navbar-collapse pb-5" aria-expanded="false">
            <div id="sidebar-dismiss[% idsuffix %]" class="float-right d-md-none" data-toggle="collapse" data-target="#ob-sidebar[% idsuffix %]" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <i class="fas fa-arrow-left"></i>
@@ -116,7 +77,7 @@
 [% IF hits > 0 %]
 <!-- Beginn Result Item -->
 [%-
-    request_base    = "num=${queryoptions.get_option('num')};srt=relevance_desc;page=1;" ;
+    request_base    = "num=${queryoptions.get_option('num')};profile=${current_profile};srt=relevance_desc;page=1;" ;
     start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
     end_range       = nav.current_page*queryoptions.get_option('num');
     IF end_range >= hits ;

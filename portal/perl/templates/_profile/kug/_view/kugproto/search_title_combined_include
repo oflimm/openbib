@@ -32,8 +32,8 @@
    IF NOT prevprofile ;
        prevprofile = session.get_profile ;
    END ;
-   IF NOT searchprofileid_of_view ;
-      searchprofileid_of_view  = config.get_searchprofile_of_view(view) ;
+   IF NOT searchprofileid_of_books ;
+      searchprofileid_of_books  = config.get_searchprofile_of_view(view,['usbweb']) ;
    END ;
    IF NOT searchprofileid_of_sysprofile ;
       searchprofileid_of_sysprofile = config.get_searchprofile_of_systemprofile(view);

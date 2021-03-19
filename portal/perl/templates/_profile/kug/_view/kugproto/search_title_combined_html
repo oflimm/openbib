@@ -32,11 +32,8 @@
    IF NOT prevprofile ;
        prevprofile = session.get_profile ;
    END ;
-   IF NOT searchprofileid_of_view ;
-      searchprofileid_of_view  = config.get_searchprofile_of_view(view) ;
-   END ;
-   IF NOT searchprofileid_of_sysprofile ;
-      searchprofileid_of_sysprofile = config.get_searchprofile_of_systemprofile(view);
+   IF NOT searchprofileid_of_books ;
+      searchprofileid_of_books  = config.get_searchprofile_of_view(view,['usbweb']) ;
    END ;
    IF NOT searchprofileid_of_eds ;
       searchprofileid_of_eds = config.get_searchprofile_of_database('eds');
@@ -70,7 +67,7 @@
   </li>
 </ul>
 
-<!-- [% current_profile %] - View: [% searchprofileid_of_view %] - EDS [% searchprofileid_of_eds %] - Web [% searchprofileid_of_website %] -->
+<!-- [% current_profile %] - View: [% searchprofileid_of_books %] - EDS [% searchprofileid_of_eds %] - Web [% searchprofileid_of_website %] -->
 
 <script>
 $(document).ready(function(){
@@ -125,7 +122,7 @@ $(document).ready(function(){
 [% END %]
 
 
-[% IF current_profile != searchprofileid_of_eds && current_profile != searchprofileid_of_website %]
+[% IF current_profile == searchprofileid_of_books %]
 	    var numhits_default = $("#numhits_default").text();
 	    if (numhits_default){
 	       $("#ob-searchresult_default_li").append(" ("+numhits_default+")");
@@ -135,7 +132,7 @@ $(document).ready(function(){
 	    }
 [% ELSE %]
     $("#ob-searchresult_default_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-searchresult_default_loading\" />"); 
-    $.get("[% path_prefix %]/[% config.get('search_loc') %].include?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp'] }) %];page=1;profile=[% searchprofileid_of_view %];[% searchquery.to_cgi_querystring({ exclude = ['profile'] }) %]",
+    $.get("[% path_prefix %]/[% config.get('search_loc') %].include?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp'] }) %];page=1;profile=[% searchprofileid_of_books %];[% searchquery.to_cgi_querystring({ exclude = ['profile'] }) %]",
         function (txt){
             $("#ob-searchresult_tab_default").html(txt);
             $("#ob-searchresult_default_loading").hide();
@@ -156,8 +153,8 @@ $(document).ready(function(){
 
 <div class="tab-content pt-3">
 
-<div role="tabpanel" id="ob-searchresult_tab_default" class="tab-pane fade-in row [% IF current_profile == searchprofileid_of_view %] active[% END %] flex-md-row">
-[% IF current_profile == searchprofileid_of_view %]
+<div role="tabpanel" id="ob-searchresult_tab_default" class="tab-pane fade-in row [% IF current_profile == searchprofileid_of_books %] active[% END %] flex-md-row">
+[% IF current_profile == searchprofileid_of_books %]
 [% PROCESS common/subtemplate name="search_title_combined_include" %]
 [% END %]
 </div>

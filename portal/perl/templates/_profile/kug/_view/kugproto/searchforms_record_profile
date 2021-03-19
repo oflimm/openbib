@@ -13,7 +13,7 @@
       searchprofileid_of_eds  = config.get_searchprofile_of_database('eds') ;
    END ;
    IF NOT searchprofileid_of_website ;
-      searchprofileid_of_website  = config.get_searchprofile_of_view('usbweb') ;
+      searchprofileid_of_website  = config.get_searchprofile_of_database('usbweb') ;
    END ;
 
    IF NOT prevprofile ;

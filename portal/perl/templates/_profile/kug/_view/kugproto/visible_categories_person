@@ -16,7 +16,11 @@
                  'P0800', # msg.maketext("P0800") Ansetzung
 	         'P0830', # msg.maketext("P0830") Verweisung
 	         'P0806', # msg.maketext("P0806") Daten zur Person
+	         'P0550', # msg.maketext("P0550") Beruf
+	         'P0548', # msg.maketext("P0548") Lebensjahre
+	         'P0560', # msg.maketext("P0560") Geburtsort
 
+		 
                  # Erweiterungen
 	         'P0200', # msg.maketext("P0200") Lebensjahre
 	         'P0201', # msg.maketext("P0201") Beruf

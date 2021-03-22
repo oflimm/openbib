@@ -25,35 +25,6 @@
 
 </style>
 
-[%
-   IF NOT viewdbs ;
-       viewdbs = config.get_dbs_of_view(view);
-   END ;
-   IF NOT prevprofile ;
-       prevprofile = session.get_profile ;
-   END ;
-   IF NOT searchprofileid_of_books ;
-      searchprofileid_of_books  = config.get_searchprofile_of_view(view,['usbweb']) ;
-   END ;
-   IF NOT searchprofileid_of_eds ;
-      searchprofileid_of_eds = config.get_searchprofile_of_database('eds');
-   END ;
-
-   IF NOT searchprofileid_of_website ;
-      searchprofileid_of_website = config.get_searchprofile_of_database('usbweb');
-   END ;
-
-   current_profile = "";
-   IF query.param('profile');
-     current_profile = query.param('profile');
-   ELSE;
-     current_profile = searchquery.get_searchprofile;
-   END;
-
-   current_profile = searchquery.get_searchprofile;
-
-%]
-
 
 <ul class="nav nav-tabs pl-2">
   <li class="nav-item">

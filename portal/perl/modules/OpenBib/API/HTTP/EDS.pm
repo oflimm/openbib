@@ -671,6 +671,7 @@ sub get_record {
 		DatePubCY       => 'T0425',
 		ISBN            => 'T0540',
 		ISSN	        => 'T0585',
+		TypeDocument    => 'T4410',
 	    };
 
 	    
@@ -695,7 +696,7 @@ sub get_record {
 
 		$logger->debug("Item - Label:$label - Name:$name Data:$data");
 		
-		if ($name =~ /^(Title|Author|Language|Abstract|AbstractNonEng|TitleSource|TitleSourceBook|Publisher|DatePubCY|ISBN|ISSN)$/) {
+		if ($name =~ /^(Title|Author|Language|Abstract|AbstractNonEng|TitleSource|TitleSourceBook|Publisher|DatePubCY|ISBN|ISSN|TypeDocument)$/) {
 
 		    if ($name eq 'Publisher') {
 			$data =~ s/,\s+\d{4}$//;                          # z.B. edsgsl:solis.00547468 (Hamburg : Diplomica Verl., 2009 -> Hamburg : Diplomica Verl.)
@@ -706,6 +707,11 @@ sub get_record {
 		    elsif ($name eq 'ISSN'){
 			# Normieren, hier spezielle wegen Dubletten zu  BibRelationShips
 			$data =~ s/^(\d{4})(\d{3}[0-9xX])$/$1-$2/;
+		    }
+		    elsif ($name eq 'TypeDocument'){
+			if ($data eq "Article"){
+			    $data = "Aufsatz";
+			}
 		    }
 
 		    if (defined $items_field_map_ref->{$name}){

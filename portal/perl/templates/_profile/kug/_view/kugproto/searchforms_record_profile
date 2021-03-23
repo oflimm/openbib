@@ -23,7 +23,6 @@
    checked_profile = 0 ;
 
 %]
-<!-- Prev [% prevprofile %] -  Current [% current_profile %] - [% searchquery.get_searchprofile %] - Title: [% searchprofileid_of_title %] - EDS: [% searchprofileid_of_eds %] -->
 <select name="profile" class="form-control ob-selectbox selectpicker">
    
 <optgroup label="[% msg.maketext("Suchradius") %]">

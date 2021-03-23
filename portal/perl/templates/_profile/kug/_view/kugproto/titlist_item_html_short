@@ -220,14 +220,14 @@
      END;
 
      # Einbeziehung der Zaehlfelder T5100
-     IF title && item.${'T5100'}.first.content;
-        order = item.${'T5100'}.first.content;
-        IF title == order;
-           title = "${order}.";
-        ELSE;
-           title = "${order}. ${title}";
-        END;
-     END;
+#     IF title && item.${'T5100'}.first.content;
+#        order = item.${'T5100'}.first.content;
+#        IF title == order;
+#           title = "${order}.";
+#        ELSE;
+#           title = "${order}. ${title}";
+#        END;
+#     END;
 
      # Einbeziehung des ersten Gesamttitels T5005
      IF title && super;
@@ -296,9 +296,9 @@
       titleinfos.push("<a href=\"${toc}\" target=\"_blank\">${toc_i18n}</a>") ;
     END ;
 
-    IF item.popularity ;
-      titleinfos.push("${popularity_i18n}: ${item.popularity}") ;
-    END ;
+#    IF item.popularity ;
+#      titleinfos.push("${popularity_i18n}: ${item.popularity}") ;
+#    END ;
 
     titleinfo = titleinfos.join(" | ");
 -%]

@@ -13,6 +13,15 @@
 -%]
 [%-# Ausgabekategorien -%]
 [%- categories = [
+                'T0359', # msg.maketext("T0359") Vorl. Verfasser/Koerperschaft
+                'T0670', # msg.maketext("T0670") Sachtitel in abweichender Orthographie
+                'T0333', # msg.maketext("T0333") Zu erg. Urheber/HST Urheber
+
+                'T0300', # msg.maketext("T0300") Sammlungsvermerk
+                'T0361', # msg.maketext("T0361") Vorlage beigef. Werk
+                'T0365', # msg.maketext("T0365") Gemeins. Angaben
+                'T0369', # msg.maketext("T0369") Gemeins. Angaben Verfasser
+                'T0360', # msg.maketext("T0360") Vorl. Unterreihe
                 'T0585', # msg.maketext("T0585") ISSN der Quelle
 #                'T0600', # msg.maketext("T0600") Bemerkung
                 'T0407', # msg.maketext("T0407") Massstab

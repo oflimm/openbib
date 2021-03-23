@@ -25,15 +25,6 @@
                 'T0103', # msg.maketext("T0103") Gefeierte Person
                 'T0200', # msg.maketext("T0200") Urheber
                 'T0201', # msg.maketext("T0201") Koerperschaft
-                'T0359', # msg.maketext("T0359") Vorl. Verfasser/Koerperschaft
-                'T0670', # msg.maketext("T0670") Sachtitel in abweichender Orthographie
-                'T0333', # msg.maketext("T0333") Zu erg. Urheber/HST Urheber
-
-                'T0300', # msg.maketext("T0300") Sammlungsvermerk
-                'T0361', # msg.maketext("T0361") Vorlage beigef. Werk
-                'T0365', # msg.maketext("T0365") Gemeins. Angaben
-                'T0369', # msg.maketext("T0369") Gemeins. Angaben Verfasser
-                'T0360', # msg.maketext("T0360") Vorl. Unterreihe
                 'T0403', # msg.maketext("T0403") Auflage
                 'T0410', # msg.maketext("T0410") Verlagsort
                 'T0412', # msg.maketext("T0412") Verlag

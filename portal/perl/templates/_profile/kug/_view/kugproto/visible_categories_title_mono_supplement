@@ -13,6 +13,23 @@
 -%]
 [%-# Ausgabekategorien -%]
 [%- categories = [
+                'T0405', # msg.maketext("T0405") Erscheinungsverlauf
+                'T0523', # msg.maketext("T0523") Erscheinungsweise
+                'T0591', # msg.maketext("T0591") Verfasser Quelle
+                'T0594', # msg.maketext("T0594") ErschOrt Quelle
+                'T0595', # msg.maketext("T0595") ErschJahr Quelle
+#                'T0434', # msg.maketext("T0434") Ill_Angabe
+                'T0413', # msg.maketext("T0413") Drucker
+                'T0035', # msg.maketext("T0035") ErschLand
+                'T0359', # msg.maketext("T0359") Vorl. Verfasser/Koerperschaft
+                'T0670', # msg.maketext("T0670") Sachtitel in abweichender Orthographie
+                'T0333', # msg.maketext("T0333") Zu erg. Urheber/HST Urheber
+
+                'T0300', # msg.maketext("T0300") Sammlungsvermerk
+                'T0361', # msg.maketext("T0361") Vorlage beigef. Werk
+                'T0365', # msg.maketext("T0365") Gemeins. Angaben
+                'T0369', # msg.maketext("T0369") Gemeins. Angaben Verfasser
+                'T0360', # msg.maketext("T0360") Vorl. Unterreihe
                 'T0590', # msg.maketext("T0590") HSTQuelle
                 'T0585', # msg.maketext("T0585") ISSN der Quelle
 #                'T0600', # msg.maketext("T0600") Bemerkung

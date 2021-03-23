@@ -132,12 +132,53 @@ FOREACH field IN normdata;
          content_map.${'T0200'}.push(content);
 
     CASE "T0331";
+         IF normdata.${"T0335"}.first.content ;
+	    title_supplement = normdata.${"T0335"}.first.content;
+	    content = "${content} : ${title_supplement}";
+	 END;
+	 
          content   = "<b>${highlightquery(searchquery,content)}</b>";
          IF NOT content_map.${'T0331'} ;
 	    content_map.${'T0331'} = [];
 	 END;
          content_map.${'T0331'}.push(content);
 
+    CASE "T0410";
+         IF normdata.${"T0412"}.first.content ;
+	    verlag = normdata.${"T0412"}.first.content;
+	    content = "${content} : ${verlag}";
+	 END;
+	 
+         content   = "${highlightquery(searchquery,content)}";
+         IF NOT content_map.${'T0412'} ;
+	    content_map.${'T0412'} = [];
+            content_map.${'T0412'}.push(content);
+	 END;
+
+    CASE "T0412";
+         IF normdata.${"T0410"}.first.content ;
+	    verlagsort = normdata.${"T0410"}.first.content;
+	    content = "${verlagsort} : ${content}";
+	 END;
+	 
+         content   = "${highlightquery(searchquery,content)}";
+         IF NOT content_map.${'T0412'} ;
+	    content_map.${'T0412'} = [];
+            content_map.${'T0412'}.push(content);
+	 END;
+
+    CASE "T0424" ;
+         IF NOT content_map.${'T0425'} ;
+	    content_map.${'T0425'} = [];
+            content_map.${'T0425'}.push(content);
+	 END;
+	 
+    CASE "T0425" ;
+         IF NOT content_map.${'T0425'} ;
+	    content_map.${'T0425'} = [];
+            content_map.${'T0425'}.push(content);
+	 END;
+	 
 #    CASE [ "T0531" "T0533" ];
 #         IF content.match("---&gt;: ") ;
 #            previssues = content.split("---&gt;: ");

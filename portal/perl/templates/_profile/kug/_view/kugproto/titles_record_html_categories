@@ -50,10 +50,6 @@ $('#normdataModal').on('show.bs.modal', function (event) {
 
 [%-
 
-   IF NOT searchprofileid_of_database ;
-      searchprofileid_of_database = config.get_searchprofile_of_database(record.database) ;
-   END ;
-
    request_base = config.get('search_defaultparams');
    request_base = "l=${lang};profile=${current_profile};${request_base}";
 
@@ -64,15 +60,11 @@ $('#normdataModal').on('show.bs.modal', function (event) {
    IF NOT searchprofileid_of_database ;
       searchprofileid_of_database = config.get_searchprofile_of_database(record.database) ;
    END ;
-   IF NOT searchprofileid_of_sysprofile ;
-      searchprofileid_of_sysprofile = config.get_searchprofile_of_systemprofile(view);
-   END ;
 
    IF normdata.${'T4400'}.first.content == 'online' && NOT normdata.${"T0662"}.first.content && NOT normdata.${"T2662"}.first.content;
      currently_unavailable = 1;
    END;
 
-searchprofileid_of_view  = config.get_searchprofile_of_view(view) ;
 globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
 rswkswt_done      = {};
 

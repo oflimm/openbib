@@ -93,7 +93,7 @@ $(document).ready(function(){
 [% END %]
 
 
-[% IF current_profile == searchprofileid_of_books %]
+[% IF current_profile == searchprofileid_of_books && ( current_profile != searchprofileid_of_eds || current_profile != searchprofileid_of_website ) %]
 	    var numhits_default = $("#numhits_default").text();
 	    if (numhits_default){
 	       $("#ob-searchresult_default_li").append(" ("+numhits_default+")");
@@ -101,7 +101,7 @@ $(document).ready(function(){
 	    else {
      	       $("#ob-searchresult_default_li").append(" (0)");
 	    }
-[% ELSE %]
+[% ELSIF current_profile == searchprofileid_of_eds || current_profile == searchprofileid_of_website  %]
     $("#ob-searchresult_default_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-searchresult_default_loading\" />"); 
     $.get("[% path_prefix %]/[% config.get('search_loc') %].include?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp'] }) %];page=1;profile=[% searchprofileid_of_books %];[% searchquery.to_cgi_querystring({ exclude = ['profile'] }) %]",
         function (txt){
@@ -124,8 +124,8 @@ $(document).ready(function(){
 
 <div class="tab-content pt-3">
 
-<div role="tabpanel" id="ob-searchresult_tab_default" class="tab-pane fade-in row [% IF current_profile == searchprofileid_of_books %] active[% END %] flex-md-row">
-[% IF current_profile == searchprofileid_of_books %]
+<div role="tabpanel" id="ob-searchresult_tab_default" class="tab-pane fade-in row [% IF current_profile == searchprofileid_of_books || ( current_profile != searchprofileid_of_eds && current_profile != searchprofileid_of_website ) %] active[% END %] flex-md-row">
+[% IF current_profile == searchprofileid_of_books || ( current_profile != searchprofileid_of_eds && current_profile != searchprofileid_of_website ) %]
 [% PROCESS common/subtemplate name="search_title_combined_include" %]
 [% END %]
 </div>

@@ -1,5 +1,4 @@
 [%- PROCESS common/subtemplate name="local_config" -%]
-[%- PROCESS common/subtemplate name="titles_record_preprocess" -%]
 [%- PROCESS common/subtemplate name="search_title_field" -%]
 [%- IF representation == '' || representation == 'html' ;
 

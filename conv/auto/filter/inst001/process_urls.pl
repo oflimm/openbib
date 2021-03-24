@@ -15,8 +15,8 @@ while (<>){
     #
     # Link zum Volltext:
     #
-    # Uebertragen in Titelfeld fuer Inhaltsverzeichnisse T4120
-    # Analog zu angereicherten Link zu Inhaltsverzeichnissen in E4120
+    # Uebertragen in Titelfeld fuer E-Medien T4120
+    # Analog zu angereicherten Link zu E-Medien in E4120
     #
     # Markierung von URLs nach Typ in Subfield
     #

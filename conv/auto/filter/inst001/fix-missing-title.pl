@@ -42,7 +42,7 @@ while (<>){
     if (!defined $fields_ref->{'0331'}) {
 	# UnterFall 2.1:
 	if (defined $fields_ref->{'0089'}) {
-	    $title_ref->{fields}{'0331'} = [
+	    $record_ref->{fields}{'0331'} = [
 		{
 		    mult     => 1,
 		    subfield => '',
@@ -52,7 +52,7 @@ while (<>){
 	}
 	# Unterfall 2.2:
 	elsif (defined $fields_ref->{'0455'}) {
-	    $title_ref->{fields}{'0331'} = [
+	    $record_ref->{fields}{'0331'} = [
 		{
 		    mult     => 1,
 		    subfield => '',
@@ -62,7 +62,7 @@ while (<>){
 	}
 	# Unterfall 2.3:
 	elsif (defined $fields_ref->{'0451'}) {
-	    $title_ref->{fields}{'0331'} = [
+	    $record_ref->{fields}{'0331'} = [
 		{
 		    mult     => 1,
 		    subfield => '',
@@ -72,7 +72,7 @@ while (<>){
 	}
 	# Unterfall 2.4:
 	elsif (defined $fields_ref->{'1204'}) {
-	    $title_ref->{fields}{'0331'} = [
+	    $record_ref->{fields}{'0331'} = [
 		{
 		    mult     => 1,
 		    subfield => '',
@@ -82,5 +82,5 @@ while (<>){
 	}
     }
 
-    print encode_json $fields_ref, "\n";
+    print encode_json $record_ref, "\n";
 }

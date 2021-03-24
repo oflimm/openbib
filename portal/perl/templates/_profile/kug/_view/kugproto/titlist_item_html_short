@@ -271,7 +271,7 @@
     titleinfos = [] ;
 
     # E-Book/Inhaltsverzeichnis vorhanden
-    ebook     = item.${'T4120'}.first.content ;
+    fulltext  = item.${'T4120'}.first.content ;
     toc       = item.${'T4110'}.first.content ;
 
     IF item.tags ;
@@ -284,16 +284,6 @@
          tags.push("<a href=\"${tags_url}\">${tag.tag}</a>");
       END ;
       titleinfos.push("Tags: ${tags.join(' ')}") ;
-    END ;
-
-    IF ebook ;
-      ebook = "${path_prefix}/${config.get('redirect_loc')}?type=503;url=${uri_escape(ebook)}" ;
-      titleinfos.push("<a href=\"${ebook}\" target=\"_blank\">${ebook_i18n}</a>") ;
-    END ;
-
-    IF toc ;
-#      toc = "${path_prefix}/${config.get('redirect_loc')}?type=500;url=${uri_escape(toc)}" ;
-      titleinfos.push("<a href=\"${toc}\" target=\"_blank\">${toc_i18n}</a>") ;
     END ;
 
 #    IF item.popularity ;
@@ -367,12 +357,28 @@ $(document).ready(function(){
 	    <div class="pr-1">
               <a  class="btn btn-primary pr-2" ic-transform-response="return incollection();" ic-get-from="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><i class="far fa-bookmark"></i> <span class="d-none d-sm-inline">[% msg.maketext("Merken") %]</span></a>
 	    </div>
+[% END %]
+
+[% IF toc %]
+	    <div class="pr-1">	    
+              <a class="btn btn-primary pr-2" href="[% toc %]" target="_blank" title="[% msg.maketext("Inhaltsverzeichnis") %]"><i class="fas fa-list"></i> <span class="d-none d-sm-inline">[% msg.maketext("TOC") %]</span></a>
+	    </div>
+[% END %]
+
+[% IF fulltext %]
+	    <div class="pr-1">	    
+              <a class="btn btn-primary pr-2" href="[% fulltext %]" target="_blank" title="[% msg.maketext("Volltext") %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Volltext") %]</span></a>
+	    </div>
+[% END %]
+
+[% IF NOT with_cartitems_delete && NOT hide_hit %]
 	    <div class="pr-1">
 	      <a class="btn btn-primary pr-2" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/to_bibsonomy" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy"><i class="fas fa-share-alt"></i> <span class="d-none d-sm-inline">BibSonomy</span></a>
 	    </div>       
 [% END %]
 
 [% END # id / database%]
+
 
 [% IF tagname %]
 	    <div class="pr-1">	    

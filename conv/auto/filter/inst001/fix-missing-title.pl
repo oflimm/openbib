@@ -4,8 +4,9 @@ use JSON::XS;
 use utf8;
 
 while (<>){
-    my $fields_ref = decode_json $_;
-
+    my $record_ref = decode_json $_;
+    my $fields_ref = $record_ref->{fields};
+    
     # Konzeptionelle Vorgehensweise fuer die korrekte Anzeige eines Titel in
     # der Kurztitelliste:
     #
@@ -34,7 +35,7 @@ while (<>){
     # Dann: Verwende diesen GT
     #
     # Unterfall 2.4: Es existieren keine Bandzahlen, kein Gesamttitel(451),
-    #                aber eine Zeitschriftensignatur(1203/USB-spezifisch)
+    #                aber eine Zeitschriftensignatur(1204/USB-spezifisch)
     #
     # Dann: Verwende diese Zeitschriftensignatur
     #
@@ -70,12 +71,12 @@ while (<>){
 		];
 	}
 	# Unterfall 2.4:
-	elsif (defined $fields_ref->{'1203'}) {
+	elsif (defined $fields_ref->{'1204'}) {
 	    $title_ref->{fields}{'0331'} = [
 		{
 		    mult     => 1,
 		    subfield => '',
-		    content  => $fields_ref->{'1203'}[0]{content},
+		    content  => $fields_ref->{'1204'}[0]{content},
 		},
 		];
 	}

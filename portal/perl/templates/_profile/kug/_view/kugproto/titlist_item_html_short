@@ -275,11 +275,14 @@
     toc       = item.${'T4110'}.first.content ;
 
     fulltext_availability  = "";
+    fulltext_desc  = "Volltext";
 
     IF item.${'T4120'}.first.subfield == "a";
       fulltext_availability = "lawngreen";
+      fulltext_desc = msg.maketext("Volltext mit freiem Zugang");;
     ELSIF item.${'T4120'}.first.subfield == "b";
       fulltext_availability = "yellow";
+      fulltext_desc = msg.maketext("Volltext mit beschränktem Zugang");;
     END;
 
     IF item.tags ;
@@ -369,7 +372,7 @@ $(document).ready(function(){
 
 [% IF fulltext %]
 	    <div class="pr-1">	    
-              <a class="btn btn-primary pr-2" [% IF fulltext_availability %]style="color: [% fulltext_availability %];"[% END %] href="[% fulltext %]" target="_blank" title="[% msg.maketext("Volltext") %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Volltext") %]</span></a>
+              <a class="btn btn-primary pr-2" [% IF fulltext_availability %]style="color: [% fulltext_availability %];"[% END %] href="[% fulltext %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Volltext") %]</span></a>
 	    </div>
 [% END %]
 

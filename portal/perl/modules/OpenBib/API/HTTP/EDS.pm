@@ -367,6 +367,11 @@ sub get_record {
 	};
 	
 	if ($url) { # ID=bth:94617232
+	    push @{$fields_ref->{'T4120'}}, {
+		subfield => 'b', # Eingeschraenkter Zugang / yellow
+		mult     => $link_mult, 
+		content  => $url};
+	    
 	    push @{$fields_ref->{'T0662'}}, {
 		subfield => '', 
 		mult     => $link_mult, 
@@ -388,6 +393,11 @@ sub get_record {
 	    };
 	    
 	    if ($available == 1 && $json_result_ref->{'Record'}{PLink}) {
+		push @{$fields_ref->{'T4120'}}, {
+		    subfield => 'b', # Eingeschraenkter Zugang / yellow
+		    mult     => $link_mult, 
+		    content  => $json_result_ref->{'Record'}{PLink}};
+		
 		push @{$fields_ref->{'T0662'}}, {
 		    subfield => '', 
 		    mult     => $link_mult, 
@@ -421,6 +431,12 @@ sub get_record {
 	    if ($url) {
 		$url =~ s!(.*)\#\?$!$1!; # OAIster: "#?" am Ende entfernen, z.B. ID=edsoai:edsoai.859893876 ; ID=edsoai:edsoai.690666320
 		$url =~ s!(http://etheses.bham.ac.uk/[^/]+/).*ThumbnailVersion.*\.pdf!$1!; # Sonderanpassung fuer etheses.bham.ac.uk, z.B. ID=edsoai:edsoai.690666320
+
+		push @{$fields_ref->{'T4120'}}, {
+		    subfield => 'a', # Freier Zugang / gruen 
+		    mult     => $link_mult, 
+		    content  => $url};
+		
 		push @{$fields_ref->{'T0662'}}, {
 		    subfield => '', 
 		    mult => $link_mult, 
@@ -440,6 +456,11 @@ sub get_record {
 	# Hinweis pkostaedt: Der Link "Citing Articles" funktioniert nicht in jedem Fall, z.B. ID=edswss:000312205100002
 	if ($json_result_ref->{Header}{DbId} =~ /^(edswsc|edswss)$/ && $json_result_ref->{Header}{An}) {
 	    my $url = "http://gateway.isiknowledge.com/gateway/Gateway.cgi?&GWVersion=2&SrcAuth=EBSCO&SrcApp=EDS&DestLinkType=CitingArticles&KeyUT=" . $json_result_ref->{Header}{An} . "&DestApp=WOS";
+
+	    push @{$fields_ref->{'T4120'}}, {
+		subfield => 'b', # Eingeschraenkter Zugang / yellow
+		mult     => $link_mult, 
+		content  => $url};
 	    
 	    push @{$fields_ref->{'T0662'}}, {
 		subfield => '', 
@@ -771,6 +792,12 @@ sub get_record {
 		    }
 		    
 		    if ($json_result_ref->{Header}{DbId} =~ /^(edsfis|edswao)$/) { # z.B. ID=edswao:edswao.035502584
+
+			push @{$fields_ref->{'T4120'}}, {
+			    subfield => 'a', # Freier Zugang / green
+			    mult     => $link_mult, 
+			    content  => $url};
+			
 			push @{$fields_ref->{'T0662'}}, {
 			    subfield     => '', 
 			    mult         => $link_mult, 
@@ -783,6 +810,11 @@ sub get_record {
 		    else {
 			# SSOAR, BASE, OLC, ...: Volltext-Link auslesen, z.B. ID=edsbas:edsbas.ftunivdortmund.oai.eldorado.tu.dortmund.de.2003.30139, ID=edsgoc:edsgoc.197587160X
 			if ($url && $url !~ /gesis\.org\/sowiport/) { # Sowiport-Links funktionieren nicht mehr, z.B. ID=edsgsl:edsgsl.793796
+			    push @{$fields_ref->{'T4120'}}, {
+				subfield => 'b', # Eingeschraenkter Zugang / yellow
+				mult     => $link_mult, 
+				content  => $url};
+			    
 			    push @{$fields_ref->{'T0662'}}, {
 				subfield     => '', 
 				mult         => $link_mult, 
@@ -868,6 +900,13 @@ sub get_record {
 			    if ($availability){
 				$thisfield_ref->{availability} = $availability;
 			    }
+
+			    my $availability_map_ref = {green => 'a', yellow => 'b', unknown => ''};
+			    push @{$fields_ref->{'T4120'}}, {
+				subfield => $availability_map_ref->{$availability}, # Dynamisch
+				mult     => $link_mult, 
+				content  => $url};
+			    
 			    
 			    push @{$fields_ref->{'T0662'}}, $thisfield_ref; 
 			    push @{$fields_ref->{'T0663'}}, {
@@ -1286,6 +1325,28 @@ sub process_matches {
 	};
 	
 	# $logger->debug("Processing Record ".YAML::Dump($json_result_ref->{SearchResult}{Data}{Records}));
+
+	# Volltextlinks
+	if (defined $match->{FullText} && defined $match->{FullText}{CustomLinks}){
+	    my $availability = '';
+	    if (defined $match->{FullText}{Text} && defined $match->{FullText}{Text}{Availability}){
+		if ($match->{FullText}{Text}{Availability}){
+		    $availability = 'b';
+		}
+		
+	    }
+	    
+	    foreach my $thisitem_ref (@{$match->{FullText}{CustomLinks}}){
+		
+		if ($thisitem_ref->{Category} eq "fullText"){
+		    push @{$fields_ref->{'T4120'}}, {
+			subfield => $availability,
+			content => $thisitem_ref->{Url}
+		    };		    
+		}
+	    }	    
+	}
+	
 	foreach my $thisfield (keys %{$match->{RecordInfo}{BibRecord}{BibEntity}}){
 	    
 	    if ($thisfield eq "Titles"){

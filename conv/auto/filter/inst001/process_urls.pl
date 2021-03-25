@@ -40,14 +40,58 @@ while (<>){
 	}
 
 	foreach my $item_ref (@{$fields_ref->{'0662'}}){
-	    if ($description_ref->{$item_ref->{mult}} =~m/Inhaltsverzeichnis/){
-	    $record_ref->{fields}{'4110'} = [
-		{
-		    mult     => 1,
-		    subfield => '',
-		    content  => $item_ref->{content},
-		},
-		];
+	    # Inhaltsverzeichnisse
+	    if (defined $description_ref->{$item_ref->{mult}} &&  $description_ref->{$item_ref->{mult}} =~m/Inhaltsverzeichnis/){
+		$record_ref->{fields}{'4110'} = [
+		    {
+			mult     => 1,
+			subfield => '',
+			content  => $item_ref->{content},
+		    },
+		    ];
+	    }
+
+	    # Volltexte
+	    if (
+		defined $description_ref->{$item_ref->{mult}} &&
+		
+		( $description_ref->{$item_ref->{mult}} =~m/Interna: Verlag.+?Info: kostenfrei/
+		|| $description_ref->{$item_ref->{mult}} =~m/Interna: Verlag.+?Info: Deutschlandweit zugänglich/
+		|| $description_ref->{$item_ref->{mult}} =~m/Interna: Langzeitarchivierung.+?Info: kostenfrei/
+		|| $description_ref->{$item_ref->{mult}} =~m/Interna: Digitalisierung.+?Info: kostenfrei/ )
+		){
+		$record_ref->{fields}{'4120'} = [
+		    {
+			mult     => 1,
+			subfield => 'a',
+			content  => $item_ref->{content},
+		    },
+		    ];
+	    }	    
+	    elsif (
+		defined $description_ref->{$item_ref->{mult}} && 
+		(  $description_ref->{$item_ref->{mult}} =~m/Interna: Resolving-System/
+		   || $description_ref->{$item_ref->{mult}} =~m//
+		)
+		){
+		$record_ref->{fields}{'4120'} = [
+		    {
+			mult     => 1,
+			subfield => 'b',
+			content  => $item_ref->{content},
+		    },
+		    ];
+	    }
+	    elsif (
+		defined $description_ref->{$item_ref->{mult}} && $description_ref->{$item_ref->{mult}} =~m/Interna: EZB/		
+		){
+		$record_ref->{fields}{'4120'} = [
+		    {
+			mult     => 1,
+			subfield => 'b',
+			content  => $item_ref->{content},
+		    },
+		    ];
 	    }
 	}
     }

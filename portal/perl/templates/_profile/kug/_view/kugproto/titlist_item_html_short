@@ -274,6 +274,14 @@
     fulltext  = item.${'T4120'}.first.content ;
     toc       = item.${'T4110'}.first.content ;
 
+    fulltext_availability  = "";
+
+    IF item.${'T4120'}.first.subfield == "a";
+      fulltext_availability = "green";
+    ELSIF item.${'T4120'}.first.subfield == "b";
+      fulltext_availability = "yellow";
+    END;
+
     IF item.tags ;
       tags = [];
       FOREACH tag IN item.tags ;
@@ -359,15 +367,15 @@ $(document).ready(function(){
 	    </div>
 [% END %]
 
-[% IF toc %]
+[% IF fulltext %]
 	    <div class="pr-1">	    
-              <a class="btn btn-primary pr-2" href="[% toc %]" target="_blank" title="[% msg.maketext("Inhaltsverzeichnis") %]"><i class="fas fa-list"></i> <span class="d-none d-sm-inline">[% msg.maketext("TOC") %]</span></a>
+              <a class="btn btn-primary pr-2" [% IF fulltext_availability %]style="background-color: [% fulltext_availability %];"[% END %] href="[% fulltext %]" target="_blank" title="[% msg.maketext("Volltext") %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Volltext") %]</span></a>
 	    </div>
 [% END %]
 
-[% IF fulltext %]
+[% IF toc %]
 	    <div class="pr-1">	    
-              <a class="btn btn-primary pr-2" href="[% fulltext %]" target="_blank" title="[% msg.maketext("Volltext") %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Volltext") %]</span></a>
+              <a class="btn btn-primary pr-2" href="[% toc %]" target="_blank" title="[% msg.maketext("Inhaltsverzeichnis") %]"><i class="fas fa-list"></i> <span class="d-none d-sm-inline">[% msg.maketext("TOC") %]</span></a>
 	    </div>
 [% END %]
 

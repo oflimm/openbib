@@ -25,6 +25,7 @@
                 'T0103', # msg.maketext("T0103") Gefeierte Person
                 'T0200', # msg.maketext("T0200") Urheber
                 'T0201', # msg.maketext("T0201") Koerperschaft
+                'T0750', # msg.maketext("T0750") Abstract
                 'T0403', # msg.maketext("T0403") Auflage
                 'T0410', # msg.maketext("T0410") Verlagsort
                 'T0412', # msg.maketext("T0412") Verlag
@@ -46,7 +47,10 @@
                 'T0655', # msg.maketext("T0655") EDV Adress
                 'T0451', # msg.maketext("T0451") GesTit Vorl
                 'T0590', # msg.maketext("T0590") HSTQuelle
-                'T5100', # msg.maketext("T5100") Allg. Zaehlung
+                'T0662', # msg.maketext("T0662") EDVurl
+                'T1664', # msg.maketext("T1664") Provenienz
+                'T2662', # msg.maketext("T2662") USB EDVurl
+                #'T5100', # msg.maketext("T5100") Allg. Zaehlung
                 'T5005', # msg.maketext("T5005") Uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke
                 ]

@@ -90,7 +90,7 @@
                 'T0750', # msg.maketext("T0750") Abstract
                 'T0503', # msg.maketext("T0503") Uebers. HST
                 'T0026', # msg.maketext("T0026") NE/R
-                'T0800', # msg.maketext("T0800") Art/Inhalt Medienart
+                #'T0800', # msg.maketext("T0800") Art/Inhalt Medienart
                 'T0710', # msg.maketext("T0710") Schlagwort
                 'T0902', # msg.maketext("T0902") Schlagwort
                 'T0907', # msg.maketext("T0907") Schlagwort

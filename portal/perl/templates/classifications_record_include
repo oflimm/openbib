@@ -80,7 +80,7 @@ END;
          content = normset.${'N5000'}.first.content;
 	 
          searchterm    = record.id;
-         searchprefix  = config.get('searchfield').personid.prefix;
+         searchprefix  = config.get('searchfield').classificationid.prefix;
 
          localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base};page=1;db=${database};fs=${searchprefix}:${searchterm}";
          desc      = msg.maketext("Titel ist in diesem Katalog mit der Person verknüpft");

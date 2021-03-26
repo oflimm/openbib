@@ -518,8 +518,9 @@ FOREACH field IN normdata;
             searchterms.push("id:${superid.content}");
          END;
 
+         zeigeueberordnung        = msg.maketext('Zeige Überordnung');
          localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};dop=or;fs=${searchterms.join(' ')}";
-         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get_icon('follow',view,sysprofile)}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${content}</span></a>";
+         content   = "<a class=\"btn btn-primary\" href=\"${localurl}\">${zeigeueberordnung}</a>";
          IF NOT content_map.${'T5001'} ;
 	    content_map.${'T5001'} = [];
 	 END;
@@ -529,8 +530,11 @@ FOREACH field IN normdata;
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').subid.prefix;
 
+         zeige = msg.maketext('Zeige');
+         baende = msg.maketext('Bände');
+	 
          localurl  = "${path_prefix}/${config.get('search_loc')}.html?page=1;num=20;srt=order_asc;profile=${searchprofileid_of_database};${searchprefix}=${record.id}";
-         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get_icon('follow',view,sysprofile)}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${content}</span></a>";
+         content   = "<a class=\"btn btn-primary\" href=\"${localurl}\">${zeige} ${content} ${baende}</a>";
          IF NOT content_map.${'T5002'} ;
 	    content_map.${'T5002'} = [];
 	 END;

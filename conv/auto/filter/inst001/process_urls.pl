@@ -52,6 +52,15 @@ while (<>){
 	    }
 
 	    # Volltexte
+	    #
+	    # Kriterien fuer freie Volltextlinks:
+	    #
+	    # Inhalt von 0663 (.+? steht fuer einen beliebigen Inhalt dazwischen):
+	    #
+	    # - Interna: Verlag.+?Info: kostenfrei
+	    # - Interna: Verlag.+?Info: Deutschlandweit zugänglich
+	    # - Interna: Langzeitarchivierung.+?Info: kostenfrei
+	    # - Interna: Digitalisierung.+?Info: kostenfrei
 	    if (
 		defined $description_ref->{$item_ref->{mult}} &&
 		
@@ -68,6 +77,11 @@ while (<>){
 		    },
 		    ];
 	    }	    
+	    # Kriterien fuer lizensierte Volltextlinks:
+	    #
+	    # Inhalt von 0663 (.+? steht fuer einen beliebigen Inhalt dazwischen):
+	    #
+	    # - Interna: Resolving-System
 	    elsif (
 		defined $description_ref->{$item_ref->{mult}} && 
 		(  $description_ref->{$item_ref->{mult}} =~m/Interna: Resolving-System/
@@ -82,6 +96,13 @@ while (<>){
 		    },
 		    ];
 	    }
+	    # Kriterien fuer lizensierte Volltextlinks:
+	    #
+	    # Inhalt von 0663 (.+? steht fuer einen beliebigen Inhalt dazwischen):
+	    #
+	    # - Interna: EZB
+	    # Bemerkung: EZB-Bezeichnungen kommen in der Regel mit anderen oben schon genannten Inhalten
+	    # zusammen. Deshalb sind sie nur 'zweite Wahl'
 	    elsif (
 		defined $description_ref->{$item_ref->{mult}} && $description_ref->{$item_ref->{mult}} =~m/Interna: EZB/		
 		){

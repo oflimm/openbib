@@ -69,35 +69,25 @@
 <nav class="navbar bg-light ob-sidebar">
 
  <ul class="navbar-nav">
-[% IF layout_param.active_submenu == "clouds_choice" %]
-  <li class="navbar-item active"><strong>[% msg.maketext("Katalogauswahl") %]</strong></li>
-[% ELSE %]
-   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('clouds_loc') %].html?l=[% lang %]" title="Katalogauswahl">[% msg.maketext("Katalogauswahl") %]</a></li>
-[% END %]
 [% IF layout_param.active_submenu == "clouds_year" %]
-  <li class="navbar-item active"><strong>[% msg.maketext("Jahr") %]</strong></li>
+  <li class="navbar-item active"><strong>[% msg.maketext("Erscheinungsjahr") %]</strong></li>
 [% ELSE %]
-   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/year/database/richter.html?l=[% lang %]" title="Jahr">[% msg.maketext("Jahr") %]</a></li>
+   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]" title="[% msg.maketext("Erscheinungsjahr") %]">[% msg.maketext("Erscheinungsjahr") %]</a></li>
 [% END %]
-[% IF layout_param.active_submenu == "clouds_person" %]
-  <li class="navbar-item active"><strong>[% msg.maketext("Personen") %]</strong></li>
+[% IF layout_param.active_submenu == "clouds_4316" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Zugangsjahr") %]</strong></li>
 [% ELSE %]
-   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/person/database/richter.html?l=[% lang %]" title="Personen">[% msg.maketext("Personen") %]</a></li>
+   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/[% config.get('clouds_loc') %]/id/4316.html?l=[% lang %]" title="[% msg.maketext("Zugangsjahr") %]">[% msg.maketext("Zugangsjahr") %]</a></li>
 [% END %]
-[% IF layout_param.active_submenu == "clouds_corporatebody" %]
-  <li class="navbar-item active"><strong>[% msg.maketext("K&ouml;rperschaften") %]</strong></li>
+[% IF layout_param.active_submenu == "clouds_4316" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Zugangsjahr") %]</strong></li>
 [% ELSE %]
-   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/corporatebody/database/richter.html?l=[% lang %]" title="K&ouml;rperschaften">[% msg.maketext("K&ouml;rperschaften") %]</a></li>
+   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/[% config.get('clouds_loc') %]/id/4316.html?l=[% lang %]" title="[% msg.maketext("Zugangsjahr") %]">[% msg.maketext("Zugangsjahr") %]</a></li>
 [% END %]
-[% IF layout_param.active_submenu == "clouds_subject" %]
-  <li class="navbar-item active"><strong>[% msg.maketext("Schlagwort") %]</strong></li>
+[% IF layout_param.active_submenu == "clouds_0470" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Erscheinungsort") %]</strong></li>
 [% ELSE %]
-   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/subject/database/richter.html?l=[% lang %]" title="Schlagwort">[% msg.maketext("Schlagwort") %]</a></li>
-[% END %]
-[% IF layout_param.active_submenu == "clouds_classification" %]
-  <li class="navbar-item active"><strong>[% msg.maketext("Systematik") %]</strong></li>
-[% ELSE %]
-   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/classification/database/richter.html?l=[% lang %]" title="Systematik">[% msg.maketext("Systematik") %]</a></li>
+   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/[% config.get('clouds_loc') %]/id/0470.html?l=[% lang %]" title="[% msg.maketext("Erscheinungsort") %]">[% msg.maketext("Erscheinungsort") %]</a></li>
 [% END %]
  </ul>
 </nav>

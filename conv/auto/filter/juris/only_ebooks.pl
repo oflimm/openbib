@@ -12,7 +12,7 @@ while (<>){
 
     if (defined $title_ref->{fields}{"0540"}){
 	foreach my $item_ref (@{$title_ref->{fields}{"0540"}}){
-	    $is_ebook = 1;
+	    $is_ebook = 1 if (length($item_ref->{content}) >= 10);
 	}
     }
 

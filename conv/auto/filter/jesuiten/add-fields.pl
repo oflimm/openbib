@@ -65,6 +65,22 @@ while (<>){
 	    }
 	}
     }    
+
+    # Historische Systematik in 0472 sichern und signaturlos in 4314 ersetzen
+    foreach my $field ('4314'){
+	if (defined $title_ref->{fields}{$field}){
+	    foreach my $item_ref (@{$title_ref->{fields}{$field}}){
+		my $content = $item_ref->{'content'};
+		$content =~s/\s*\;.+?$//;
+		$content =~s/\s*[A-Z][A-Z]*?\d+$//;
+		
+		push @{$title_ref->{fields}{'0472'}}, $item_ref;
+
+		$item_ref->{content} = $content;
+	    }
+	}
+    }    
+
     
     my $is_digital = 0;
 

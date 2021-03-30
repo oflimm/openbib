@@ -81,28 +81,33 @@
 
 <ul class="list-group">
 [% FOREACH item IN browselist %]
-[%  IF searchfield == "languagestring" %]
 [%
 
-    spr_tmp = item.split(';');
-    spr = [ ];
+    itemdesc = item;
+    
+    IF searchfield == "ft4314" ;
+       item = "${item}*";
+    ELSIF searchfield == "languagestring" ;
 
-    FOREACH thisspr IN spr_tmp ;
-       IF spr_mapping.${thisspr} ;
-          spr.push(spr_mapping.${thisspr});
-       ELSE;
-          spr.push(thisspr);
-       END;
-    END ;
+       spr_tmp = item.split(';');
+       spr = [ ];
 
-    sprstring = spr.join(';');
+       FOREACH thisspr IN spr_tmp ;
+          IF spr_mapping.${thisspr} ;
+             spr.push(spr_mapping.${thisspr});
+          ELSE;
+             spr.push(thisspr);
+          END;
+       END ;
+    
+       itemdesc = spr.join(';');
+    END;
 
 %]
-<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% query_args_base %];[% config.get('searchfield').${searchfield}.prefix %]=[% uri_escape(item) %]">[% sprstring %]</a></li>
-[%  ELSIF searchfield %]
-<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% query_args_base %];[% config.get('searchfield').${searchfield}.prefix %]=[% uri_escape(item) %]">[% item %]</a></li>
+[%  IF searchfield %]
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% query_args_base %];[% config.get('searchfield').${searchfield}.prefix %]=[% uri_escape(item) %]">[% itemdesc %]</a></li>
 [%  ELSE %]
-<li class="list-group-item">[% item %]</li>
+<li class="list-group-item">[% itemdesc %]</li>
 [%  END %]
 [% END %]
 </ul>

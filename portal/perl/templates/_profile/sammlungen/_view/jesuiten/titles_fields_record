@@ -19,7 +19,7 @@ IF field == '0800' ;
     ELSIF field == '0471' ;
        field_description = msg.maketext("Verlag/Drucker");
        searchfield = 'publisherstring' ;
-    ELSIF field == '4314' ;
+    ELSIF field == '0472' ;
        field_description = msg.maketext("Historische Systematik");
        searchfield = 'ft4314' ;
     ELSIF field == '4307' ;

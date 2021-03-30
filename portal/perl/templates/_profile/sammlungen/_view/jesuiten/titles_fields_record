@@ -15,7 +15,7 @@ IF field == '0800' ;
        searchfield = 'subjectstring' ;
     ELSIF field == '0470' ;
        field_description = msg.maketext("Erscheinungsort");
-       searchfield = 'place' ;
+       searchfield = 'placestring' ;
     ELSIF field == '0471' ;
        field_description = msg.maketext("Verlag/Drucker");
        searchfield = 'publisherstring' ;

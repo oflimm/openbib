@@ -66,17 +66,21 @@ while (<>){
 	}
     }    
 
-    # Historische Systematik in 0472 sichern und signaturlos in 4314 ersetzen
+    # Signaturlose Historische Systematik in 0472 vereinigen
     foreach my $field ('4314'){
 	if (defined $title_ref->{fields}{$field}){
 	    foreach my $item_ref (@{$title_ref->{fields}{$field}}){
 		my $content = $item_ref->{'content'};
-		$content =~s/\s*\;.+?$//;
-		$content =~s/\s*[A-Z][A-Z]*?\d+$//;
-		
-		push @{$title_ref->{fields}{'0472'}}, $item_ref;
-
-		$item_ref->{content} = $content;
+		if ($content =~m/^(.+?)\s*\;.+?$/ || $content =~m/^(.+?)\s*[A-Z][A-Z]*?\d+$/){
+		    push @{$title_ref->{fields}{'0472'}}, {
+			content => $1,
+			subfield => $item_ref->{'subfield'},
+			mult => $item_ref->{'mult'},
+		    };
+		}
+		else {
+		    push @{$title_ref->{fields}{'0472'}}, $item_ref;
+		}
 	    }
 	}
     }    

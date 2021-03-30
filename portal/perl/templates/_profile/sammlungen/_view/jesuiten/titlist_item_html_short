@@ -241,8 +241,8 @@
      END;
 
      # Kein verwertbarer Titel oder Titel in titles_exclude, z.B. bei Ueberordnungen?
-     IF NOT title ;
-       title = "Bitte melden Sie uns die <b>ID ${record.id}</b> und die Datenbank <b>${record.database}</b> dieses Titels als fehlerhaft zur Korrektur!";
+     IF NOT title && item.${'T0089'}.first.content;
+       title = item.${'T0089'}.first.content;
      END;
  
      # Auflage konstruieren

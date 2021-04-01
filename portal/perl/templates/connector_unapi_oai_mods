@@ -144,14 +144,14 @@
                 [%- FOREACH item IN normdata.${"T4410"} %]
                 [%- IF item.content == "Monografie" && type_is_set == "false" %]
                 <mods:issuance>monographic</mods:issuance>
-                [%- type_is_set = 'true' %]
+                [%- type_is_set = "true" %]
                 [% ELSIF item.content.content == "Zeitschrift/Serie" && type_is_set == 'false' %]
                 <mods:issuance>serial</mods:issuance>
-                [%- type_is_set = 'true' %]
+                [%- type_is_set = "true" %]
                 [%- END %]
                 [%- END %]
-                [%- IF type_is_set =="false" && super %]
-                [%- IF normdata.${"T0572"} || super.fields.${"0543"} %]
+                [%- IF type_is_set =="false" %]
+                [%- IF normdata.${"T0572"} || normdata.${"T0543"} || normdata.${"T5002"}%]
                 <mods:issuance>serial</mods:issuance>
                 [%- ELSE -%]
                 <mods:issuance>monographic</mods:issuance>
@@ -166,7 +166,8 @@
             </mods:originInfo>
             [%- IF normdata.${"T4301"}.first %]
             <mods:language>
-                <mods:languageTerm type="code" authority="iso639-2">[% normdata.${"T4301"}.first.content %]</mods:languageTerm>
+                <mods:languageTerm type="code" authority="iso639-2">[% normdata.${"T4301"}.first.content %]
+                </mods:languageTerm>
             </mods:language>
             [%-END%]
             [%- IF normdata.${"T4310"}.first %]

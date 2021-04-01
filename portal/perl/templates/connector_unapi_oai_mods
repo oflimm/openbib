@@ -140,10 +140,9 @@
                     <mods:placeTerm type="text">[% item.content %]</mods:placeTerm>
                 </mods:place>
                 [%- END %]
-                [%- type_is_set = 'false' %]
-                [%- IF normdata.${"4410"} %]
-                [%- FOREACH item IN normdata.${"4410"} %]
-                [%- IF item.content == "Monografie" && type_is_set == 'false' %]
+                [%- type_is_set = "false" %]
+                [%- FOREACH item IN normdata.${"T4410"} %]
+                [%- IF item.content == "Monografie" && type_is_set == "false" %]
                 <mods:issuance>monographic</mods:issuance>
                 [%- type_is_set = 'true' %]
                 [% ELSIF item.content.content == "Zeitschrift/Serie" && type_is_set == 'false' %]
@@ -151,8 +150,8 @@
                 [%- type_is_set = 'true' %]
                 [%- END %]
                 [%- END %]
-                [%- type_is_set == 'false' && super %]
-                [%- IF normdata.${"572"} || super.fields.${"0543"} %]
+                [%- IF type_is_set =="false" && super %]
+                [%- IF normdata.${"T0572"} || super.fields.${"0543"} %]
                 <mods:issuance>serial</mods:issuance>
                 [%- ELSE -%]
                 <mods:issuance>monographic</mods:issuance>

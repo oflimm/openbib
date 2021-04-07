@@ -65,38 +65,97 @@
             corplist.push(normdata.${"T0101"});
             END;
             %]
-            [% IF corplist && corplist.size %]
+            [%- IF corplist && corplist.size %]
             [%- FOREACH corpdata IN corplist %]
-            [% FOREACH item IN corpdata %]
+            [%- FOREACH item IN corpdata %]
             <mods:name type="corporate">
                 <mods:namePart>[% item.content %]</mods:namePart>
                 <mods:role>
-                    [% IF item.supplement %]
+                    [%- IF item.supplement %]
                     <mods:roleTerm type="code" authority="marcrelator" text="[% item.supplement %]">oth</roleTerm>
-                        [% ELSE %]
+                        [%- ELSE %]
                         <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
-                        [% END %]
+                        [%- END %]
                 </mods:role>
             </mods:name>
-            [% END %]
-            [% END %]
-            [% END %]
+            [%- END -%]
+            [%- END -%]
+            [%- END -%]
+            [%- IF normdata.${"T0331"} %]
             <mods:titleInfo>
-                [%- FOREACH item IN normdata.${"T0331"} %]
-                <mods:title>[% item.content %]</mods:title>
-                [%- END %]
-                [%- FOREACH item IN normdata.${"T0370"} %]
-                <mods:title type="alternative">[% item.content %]</mods:title>
-                [%- END %]
+                <mods:title>[% normdata.${"T0331"}.first.content %]</mods:title>
                 [%- FOREACH item IN normdata.${"T0335"} %]
                 <mods:subtitle>[% item.content %]</mods:subtitle>
-                [% END %]
+                [%- END %]
             </mods:titleInfo>
+            [%- END %]
+            [%- IF normdata.${"T0370"} -%]
+            [%- FOREACH alt_title IN normdata.${"T0370"} %]
+            <mods:titleInfo type="alternative">
+                <mods:title>[% alt_title.content %]</mods:title>
+            </mods:titleInfo>
+            [%- END %]
+            [%- END %]
+            [%- IF normdata.${"T0341"} -%]
+            [%- FOREACH title_trans IN normdata.${"T0341"} -%]
+            <mods:titleInfo type="translated">
+                <mods:title>[% title_trans.content %]</mods:title>
+            </mods:titleInfo>
+            [%- END %]
+            [%- END %]
+            [%-
+            uniform_titlelist = [];
+            IF normdata.${"T0304"};
+            uniform_titlelist.push(normdata.${"T0304"});
+            END;
+            IF normdata.${"T0306"};
+            uniform_titlelist.push(normdata.${"T0306"});
+            END;
+            IF normdata.${"T0310"};
+            uniform_titlelist.push(normdata.${"T0310"});
+            END;
+            IF normdata.${"T7304"};
+            uniform_titlelist.push(normdata.${"T7304"});
+            END; %]
+            [%- IF uniform_titlelist && uniform_titlelist.size %]
+            [%-FOREACH uniform_title_data IN uniform_titlelist %]
+            [%- FOREACH uniform_title IN uniform_title_data %]
+            <mods:titleInfo type="uniform">
+                <mods:title>[% uniform_title.content %]</mods:title>
+            </mods:titleInfo>
+            [%- END %]
+            [%- END %]
+            [%- END %]
+            [%-
+            IF normdata.${"T5005"}.first;
+            super = from_json(normdata.${"T5005"}.first.content);
+            super_title = super.fields.${'0451'}.first.content;
+            IF super.fields.${'0331'} ;
+            super_title = super.fields.${'0331'}.first.content;
+            END ;
+            END; %]
             <mods:originInfo eventType="publication">
                 [%- FOREACH item IN normdata.${"T0410"} %]
                 <mods:place>
                     <mods:placeTerm type="text">[% item.content %]</mods:placeTerm>
                 </mods:place>
+                [%- END %]
+                [%- type_is_set = "false" %]
+                [%- FOREACH item IN normdata.${"T4410"} %]
+                [%- IF item.content == "Monografie" && type_is_set == "false" %]
+                <mods:issuance>monographic</mods:issuance>
+                [%- type_is_set = "true" %]
+                [% ELSIF item.content.content == "Zeitschrift/Serie" && type_is_set == 'false' %]
+                <mods:issuance>serial</mods:issuance>
+                [%- type_is_set = "true" %]
+                [%- END %]
+                [%- END %]
+                [%- IF type_is_set =="false" %]
+                [%- IF normdata.${"T0572"} || normdata.${"T0543"} || normdata.${"T5002"}%]
+                <mods:issuance>serial</mods:issuance>
+                [%- ELSE -%]
+                <mods:issuance>monographic</mods:issuance>
+                [%- END %]
                 [%- END %]
                 [%- FOREACH item IN normdata.${"T0412"} %]
                 <mods:publisher>[% item.content %]</mods:publisher>
@@ -126,41 +185,39 @@
                 [%- END %]
             </mods:subject>
             [%- END %]
-            [%-
-            IF normdata.${"T5005"}.first;
-            super = from_json(normdata.${"T5005"}.first.content);
-            super_title = super.fields.${'0451'}.first.content;
-
-            IF super.fields.${'0331'} ;
-            super_title = super.fields.${'0331'}.first.content;
-            END ;
-            IF NOT super_title ;
-            super_title = "Zur Ueberordnung";
-            END ;
-            END;
-            -%]
-            [% IF super %]
-            <mods:relatedItem>
-                <mods:titleInfo>[% super_title %]</mods:titleInfo>
-            </mods:relatedItem>
+            [%- IF super %]
             <mods:relatedItem type="host">
                 <mods:recordInfo>
                     <mods:recordIdentifier>[% normdata.${"T0004"}.first.content %]</mods:recordIdentifier>
                 </mods:recordInfo>
+                <mods:titleInfo>
+                    <mods:title>[% super_title %]</mods:title>
+                </mods:titleInfo>
             </mods:relatedItem>
-            <mods:relatedItem>
+            <mods:part>
+                <mods:detail type="volume">
+                    [%- IF NOT normdata.${"T0331"} %]
+                    <mods:number>[% normdata.${"T0089"}.first.content %]</mods:number>
+                    [%- ELSIF normdata.${"T0455"} %]
+                    <mods:number>[% normdata.${"T0455"}.first.content %]</mods:number>
+                    [%- END %]
+                </mods:detail>
+            </mods:part>
+            [%- END %]
+            [%- IF NOT super && normdata.${"T0451"} -%]
+            <mods:relatedItem type="series">
+                <mods:titleInfo>
+                    <mods:title>[% normdata.${"T0451"}.first.content %]</mods:title>
+                </mods:titleInfo>
+                [%- IF normdata.${"T0455"} %]
                 <mods:part>
                     <mods:detail type="volume">
-                        [% IF NOT normdata.${"T0331"} %]
-                        <mods:number>[% normdata.${"T0089"}.first.content %]</mods:number>
-                        [% ELSE %]
                         <mods:number>[% normdata.${"T0455"}.first.content %]</mods:number>
-                        [%END%]
                     </mods:detail>
                 </mods:part>
+                [%- END %]
             </mods:relatedItem>
             [%END%]
         </mods>
-
     </record>
 </OAI-PMH>

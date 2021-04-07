@@ -509,6 +509,16 @@ convtab:
       '0413':         # Drucker
         index:
           'person': 1
+      '0422':
+        index:
+          'year': 1
+          'yearstring': 1
+          'freesearch': 1
+      '0423':
+        index:
+          'year': 1
+          'yearstring': 1
+          'freesearch': 1
       '0424':
         index:
           'year': 1
@@ -521,6 +531,11 @@ convtab:
           'freesearch': 1
         facet:
           'year': 1
+      '0426':
+        index:
+          'year': 1
+          'yearstring': 1
+          'freesearch': 1
       '0451':
         index:
           'source': 1
@@ -2051,6 +2066,16 @@ convtab:
       '0413':         # Drucker
         index:
           'person': 1
+      '0422':
+        index:
+          'year': 1
+          'yearstring': 1
+          'freesearch': 1
+      '0423':
+        index:
+          'year': 1
+          'yearstring': 1
+          'freesearch': 1
       '0424':
         index:
           'year': 1
@@ -2063,6 +2088,11 @@ convtab:
           'freesearch': 1
         facet:
           'year': 1
+      '0426':
+        index:
+          'year': 1
+          'yearstring': 1
+          'freesearch': 1
       '0451':
         index:
           'source': 1

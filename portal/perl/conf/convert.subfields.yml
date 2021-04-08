@@ -188,169 +188,193 @@ convtab:
 # kennzeichnet die Gewichtung der Kategorie im jeweiligen Recherchefeld
     inverted_authority_person:
       '0800':         # Ansetzung
-        index:
-          'person': 1
-          'personstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'person': 1
+            'personstring': 1
+            'freesearch': 1
       '0830':         # Verweisform
-        index:
-          'person': 1
-          'personstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'person': 1
+            'personstring': 1
+            'freesearch': 1
     inverted_person:
       '0800':         # Ansetzung
-        index:
-          'person': 1
-          'personstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'person': 1
+            'personstring': 1
+            'freesearch': 1
       '0830':         # Verweisform
-        index:
-          'person': 1
-          'personstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'person': 1
+            'personstring': 1
+            'freesearch': 1
     inverted_corporatebody:
       '0800':         # Ansetzung
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
+        '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0810':         # Verweisform
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
+        '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0812':         # Abkuerzung der Verweisform
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
+        '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0881':         # Abkuerzung der Ansetzung
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
+        '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0850':         # Frueherer/Spaeterer Name
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
+        '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
     inverted_authority_corporatebody:
       '0800':         # Ansetzung
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
+        '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0810':         # Verweisform
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
+        '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0812':         # Abkuerzung der Verweisform
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
+        '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0881':         # Abkuerzung der Ansetzung
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
+        '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0850':         # Frueherer/Spaeterer Name
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
+        '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
     inverted_holding:
       '0014':         # Signatur
-        index:
-          'mark': 1
-          'markstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'mark': 1
+            'markstring': 1
+            'freesearch': 1
     inverted_classification:
       '0800':         # Ansetzung
-        index:
-          'classification': 1
-          'classificationstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'classification': 1
+            'classificationstring': 1
+            'freesearch': 1
       '0801':         # Ansetzung
-        index:
-          'classification': 1
-          'classificationstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'classification': 1
+            'classificationstring': 1
+            'freesearch': 1
       '0830':         # Stichwort
-        index:
-          'classification': 1
-          'classificationstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'classification': 1
+            'classificationstring': 1
+            'freesearch': 1
       '0840':         # Verweisform
-        index:
-          'classification': 1
-          'classificationstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'classification': 1
+            'classificationstring': 1
+            'freesearch': 1
     inverted_subject:
       '0800':         # Ansetzung
-        index:
-          'subject': 1
-          'subjectstring': 1
-          'freesearch': 20
+        '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 20
       '0830':         # Verweisform
-        index:
-          'subject': 1
-          'subjectstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
       '0840':         # Verweisform
-        index:
-          'subject': 1
-          'subjectstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
       '0850':         # Uebergeordnete Bezeichnung
-        index:
-          'subject': 1
-          'subjectstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
       '0870':         # Frueher
-        index:
-          'subject': 1
-          'subjectstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
     inverted_authority_subject:
       '0800':         # Ansetzung
-        index:
-          'subject': 1
-          'subjectstring': 1
-          'freesearch': 20
+        '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 20
       '0830':         # Verweisform
-        index:
-          'subject': 1
-          'subjectstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
       '0840':         # Verweisform
-        index:
-          'subject': 1
-          'subjectstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
       '0850':         # Uebergeordnete Bezeichnung
-        index:
-          'subject': 1
-          'subjectstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
       '0870':         # Frueher
-        index:
-          'subject': 1
-          'subjectstring': 1
-          'freesearch': 1
-    inverted_authority_title:
-      '4310':         # T-PRO Besitzkennzeichen
-        index:
-          'freesearch': 20
-          't4310': 1
-          'ft4310': 1
+        '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
     inverted_authority_title:
       '0331':         # HST
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
+        '':
+          index:
+            'title': 1
+            'titlestring': 1
+            'freesearch': 1
     inverted_title:
       'tag':
         '':
@@ -1138,114 +1162,132 @@ convtab:
         'type': 'integervalue'
     inverted_authority_person:
       '0800':         # Ansetzung
-        index:
-          'person': 1
-          'personstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'person': 1
+            'personstring': 1
+            'freesearch': 1
       '0830':         # Verweisform
-        index:
-          'person': 1
-          'personstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'person': 1
+            'personstring': 1
+            'freesearch': 1
       '4410':         # Medientyp
-        index:
-          'mediatype': 1
-          'mediatypestring': 1
-          'freesearch': 1
-        facet:
-          'mediatype': 1
+        '':
+          index:
+            'mediatype': 1
+            'mediatypestring': 1
+            'freesearch': 1
+          facet:
+            'mediatype': 1
     inverted_person: # Fake Eintrag
       'XXXX':         # Ansetzung
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
+        '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
     inverted_corporatebody: # Fake Eintrag
       'XXXX':         # Ansetzung
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
+        '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
     inverted_subject: # Fake Eintrag
       'XXXX':         # Ansetzung
-        index:
-          'subject': 1
-          'subjectstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
     inverted_authority_corporatebody:
       '0800':         # Ansetzung
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
+        '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0810':         # Verweisform
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
+        '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0812':         # Abkuerzung der Verweisform
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
+        '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0881':         # Abkuerzung der Ansetzung
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
+        '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0850':         # Frueherer/Spaeterer Name
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
+        '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '4410':         # Medientyp
-        index:
-          'mediatype': 1
-          'mediatypestring': 1
-          'freesearch': 1
-        facet:
-          'mediatype': 1
+        '':
+          index:
+            'mediatype': 1
+            'mediatypestring': 1
+            'freesearch': 1
+          facet:
+            'mediatype': 1
     inverted_authority_title:
       '4306':         # Provenienzen Sammlung
-        index:
-          'subject': 20
-          'subjectstring': 20
-          'freesearch': 20
-          't4306': 1
-          'ft4306': 1
+        '':
+          index:
+            'subject': 20
+            'subjectstring': 20
+            'freesearch': 20
+            't4306': 1
+            'ft4306': 1
       '4307':         # Provenienzen Koerperschaften
-        index:
-          'corporatebody': 20
-          'corporatebodystring': 20
-          'freesearch': 20
-          't4307': 1
-          'ft4307': 1
+        '':
+          index:
+            'corporatebody': 20
+            'corporatebodystring': 20
+            'freesearch': 20
+            't4307': 1
+            'ft4307': 1
       '4308':         # Provenienzen Person
-        index:
-          'personbody': 20
-          'personstring': 20
-          'freesearch': 20
-          't4308': 1
-          'ft4308': 1
+        '':
+          index:
+            'personbody': 20
+            'personstring': 20
+            'freesearch': 20
+            't4308': 1
+            'ft4308': 1
       '4310':         # T-PRO Besitzkennzeichen
-        index:
-          'freesearch': 20
-          't4310': 1
-          'ft4310': 1
+        '':
+          index:
+            'freesearch': 20
+            't4310': 1
+            'ft4310': 1
       '4410':         # Medientyp
-        index:
-          'mediatype': 1
-          'mediatypestring': 1
-          'freesearch': 1
-        facet:
-          'mediatype': 1
+        '':
+          index:
+            'mediatype': 1
+            'mediatypestring': 1
+            'freesearch': 1
+          facet:
+            'mediatype': 1
       '0700':         # T-PRO Vokabularium
-        index:
-          'freesearch': 20
-          'classification': 1
-          'classificationstring': 1
-        facet:
-          'classification': 1
+        '':
+          index:
+            'freesearch': 20
+            'classification': 1
+            'classificationstring': 1
+          facet:
+            'classification': 1
     inverted_title:
       'id':           # Id
         '':
@@ -1895,178 +1937,214 @@ convtab:
      #'4725': 1        # Temporaeres Schlagwort
     inverted_authority_person:
       '0010':         # GND
-        index:
-          'gnd': 1
+        '':
+          index:
+            'gnd': 1
       '0800':         # Ansetzung
-        index:
-          'person': 1
-          'personstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'person': 1
+            'personstring': 1
+            'freesearch': 1
       '0830':         # Verweisform
-        index:
-          'person': 1
-          'personstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'person': 1
+            'personstring': 1
+            'freesearch': 1
     inverted_person:
       '0010':         # GND
-        index:
-          'gnd': 1
+        '':
+          index:
+            'gnd': 1
       '0800':         # Ansetzung
-        index:
-          'person': 1
-          'personstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'person': 1
+            'personstring': 1
+            'freesearch': 1
       '0830':         # Verweisform
-        index:
-          'person': 1
-          'personstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'person': 1
+            'personstring': 1
+            'freesearch': 1
     inverted_corporatebody:
       '0010':         # GND
-        index:
-          'gnd': 1
+        '':
+          index:
+            'gnd': 1
       '0800':         # Ansetzung
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
+        '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0810':         # Verweisform
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
+        '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0812':         # Abkuerzung der Verweisform
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
+        '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0881':         # Abkuerzung der Ansetzung
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
+        '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0850':         # Frueherer/Spaeterer Name
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
+        '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
     inverted_authority_corporatebody:
       '0010':         # GND
-        index:
-          'gnd': 1
+        '':
+          index:
+            'gnd': 1
       '0800':         # Ansetzung
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
+        '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0810':         # Verweisform
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
+        '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0812':         # Abkuerzung der Verweisform
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
+        '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0881':         # Abkuerzung der Ansetzung
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
+        '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0850':         # Frueherer/Spaeterer Name
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
+        '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
     inverted_classification:
       '0010':         # GND
-        index:
-          'gnd': 1
+        '':
+          index:
+            'gnd': 1
       '0800':         # Ansetzung
-        index:
-          'classification': 1
-          'classificationstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'classification': 1
+            'classificationstring': 1
+            'freesearch': 1
       '0801':         # Ansetzung
-        index:
-          'classification': 1
-          'classificationstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'classification': 1
+            'classificationstring': 1
+            'freesearch': 1
       '0830':         # Stichwort
-        index:
-          'classification': 1
-          'classificationstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'classification': 1
+            'classificationstring': 1
+            'freesearch': 1
       '0840':         # Verweisform
-        index:
-          'classification': 1
-          'classificationstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'classification': 1
+            'classificationstring': 1
+            'freesearch': 1
     inverted_subject:
       '0010':         # GND
-        index:
-          'gnd': 1
+        '':
+          index:
+            'gnd': 1
       '0800':         # Ansetzung
-        index:
-          'subject': 1
-          'subjectstring': 1
-          'freesearch': 20
+        '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 20
       '0830':         # Verweisform
-        index:
-          'subject': 1
-          'subjectstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
       '0840':         # Verweisform
-        index:
-          'subject': 1
-          'subjectstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
       '0850':         # Uebergeordnete Bezeichnung
-        index:
-          'subject': 1
-          'subjectstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
       '0870':         # Frueher
-        index:
-          'subject': 1
-          'subjectstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
     inverted_authority_subject:
       '0010':         # GND
-        index:
-          'gnd': 1
+        '':
+          index:
+            'gnd': 1
       '0800':         # Ansetzung
-        index:
-          'subject': 1
-          'subjectstring': 1
-          'freesearch': 20
+        '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 20
       '0830':         # Verweisform
-        index:
-          'subject': 1
-          'subjectstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
       '0840':         # Verweisform
-        index:
-          'subject': 1
-          'subjectstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
       '0850':         # Uebergeordnete Bezeichnung
-        index:
-          'subject': 1
-          'subjectstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
       '0870':         # Frueher
-        index:
-          'subject': 1
-          'subjectstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
     inverted_authority_title:
-      '4310':         # T-PRO Besitzkennzeichen
-        index:
-          'freesearch': 20
-          't4310': 1
-          'ft4310': 1
+      '0331':         # HST
+        '':
+          index:
+            'title': 1
+            'titlestring': 1
+            'freesearch': 1
     inverted_title:
       'tag':
         '':
@@ -4107,22 +4185,26 @@ convtab:
   lehrbuchsmlg:
     inverted_holding:
       '0016':         # Standort
-        index:
-          'ft0016': 1
+        '':
+          index:
+            'ft0016': 1
       '0014':         # Signatur
-        index:
-          'mark': 1
-          'markstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'mark': 1
+            'markstring': 1
+            'freesearch': 1
     inverted_authority_holding:
       '0016':         # Standort
-        index:
-          'ft0016': 1
+        '':
+          index:
+            'ft0016': 1
       '0014':         # Signatur
-        index:
-          'mark': 1
-          'markstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'mark': 1
+            'markstring': 1
+            'freesearch': 1
     inverted_title:
       'tag':
         '':
@@ -5864,13 +5946,15 @@ convtab:
   lesesaal:
     inverted_holding:
       '0016':         # Standort
-        index:
-          'ft0016': 1
+        '':
+          index:
+            'ft0016': 1
       '0014':         # Signatur
-        index:
-          'mark': 1
-          'markstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'mark': 1
+            'markstring': 1
+            'freesearch': 1
     listitemcat:
       'tag': 1
       'litlist': 1
@@ -6991,18 +7075,22 @@ convtab:
   totenzettel:
     inverted_classification:
       '0800':         # Ansetzung
-        index:
-          'classification': 1
-          'classificationstring': 1
+        '':
+          index:
+            'classification': 1
+            'classificationstring': 1
       '0801':         # Ansetzung
-        index:
-          'classification': 1
+        '':
+          index:
+            'classification': 1
       '0830':         # Stichwort
-        index:
-          'classification': 1
+        '':
+          index:
+            'classification': 1
       '0840':         # Verweisform
-        index:
-          'classification': 1
+        '':
+          index:
+            'classification': 1
     inverted_title:
       'tag':
         '':

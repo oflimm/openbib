@@ -7690,462 +7690,278 @@ convtab:
   gentzdigital:
     inverted_title:
       'tag':
-        index:
-          'tag': 1
-          'tagstring': 1
-          'freesearch': 1
-        facet:
-          'tag': 1      
+        '':
+          index:
+            'tag': 1
+            'tagstring': 1
+            'freesearch': 1
+          facet:
+            'tag': 1      
       'litlist':
-        index:
-          'litlistid': 1
-          'litlist': 1
-          'litliststring': 1
-          'freesearch': 1
-        facet:
-          'litlist': 1
+        '':
+          index:
+            'litlistid': 1
+            'litlist': 1
+            'litliststring': 1
+            'freesearch': 1
+          facet:
+            'litlist': 1
       '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
-        index:
-          'subid': 1
-#      '0014':         # Signatur, wenn nicht in den Exemplardaten
-#        index:
-#          'mark': 1
-#          'markstring': 1
+        '':
+          index:
+            'subid': 1
       '4301':
-        index:
-          'language': 1
-          'languagestring': 1
-          'freesearch': 1
-        facet:
-          'language': 1
-      '0089':
-        index:
-          'source': 1
-          'freesearch': 1
+        '':
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
+          facet:
+            'language': 1
       '0100':
-        index:
-          'ft0100': 1
-#	  'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          index:
+            'ft0100': 1
+          facet:
+            'person': 1
       '0101':
-        index:
-          'ft0101': 1
-#        index:
-#          'freesearch': 1
-#	  'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          index:
+            'ft0101': 1
+          facet:
+            'person': 1
       '0102':
-        index:
-          'ft0102': 1
-#        index:
-#          'freesearch': 1
-#	  'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          index:
+            'ft0102': 1
+          facet:
+            'person': 1
       '0103':
-        index:
-          'ft0103': 1
-#        index:
-#          'freesearch': 1
-#	  'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          index:
+            'ft0103': 1
+          facet:
+            'person': 1
       '0110':
-#        index:
-#          'freesearch': 1
-#          'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          facet:
+            'person': 1
       '0111':
-#        index:
-#          'freesearch': 1
-#          'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          facet:
+            'person': 1
       '0112':
-#        index:
-#          'freesearch': 1
-#          'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          facet:
+            'person': 1
       '0200':
-#        index:
-#          'freesearch': 1
-#          'corporatebody': 1
-#          'corporatebodystring': 1
-        facet:
-          'corporatebody': 1
+        '':
+          facet:
+            'corporatebody': 1
       '0201':
-#        index:
-#          'freesearch': 1
-#          'corporatebody': 1
-#          'corporatebodystring': 1
-        facet:
-          'corporatebody': 1
-      '0304':         # EST
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
-      '0310':         # AST
-        index:
-          'title': 1
-          'freesearch': 1
-          'titlestring': 1
+        '':
+          facet:
+            'corporatebody': 1
       '0331':         # HST
-        index:
-          'title': 50
-          'titlestring': 50
-          'freesearch': 50
+        '':
+          index:
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
       '0335':         # Zusatz zum HST
-        index:
-          'ft0335': 1
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
-      '0340':         # PSTAnsetzung
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
-      '0341':         # PSTVorlage
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
-      '0361':       # Vorlage beigefuegtes Werk
-        index:
-          'title': 40
-          'titlestring': 40
-          'freesearch': 40
-      '0370':         # WST
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
-      '0375':         # ZSTnorm
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
+        '':
+          index:
+            'ft0335': 1
+            'title': 1
+            'titlestring': 1
+            'freesearch': 1
       '0410':         # Auflage
-        index:
-          'place': 1
-          'ft0410': 1
+        '':
+          index:
+            'place': 1
+            'ft0410': 1
       '0412':         # Verlag
-        index:
-          'publisher': 1
-          'publisherstring': 1
-      '0413':         # Drucker
-        index:
-          'person': 1
+        '':
+          index:
+            'publisher': 1
+            'publisherstring': 1
       '0424':
-        index:
-          'year': 1
-          'yearstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'year': 1
+            'yearstring': 1
+            'freesearch': 1
       '0425':
-        index:
-          'year': 1
-          'yearstring': 1
-          'freesearch': 1
-        facet:
-          'year': 1
+        '':
+          index:
+            'year': 1
+            'yearstring': 1
+            'freesearch': 1
+          facet:
+            'year': 1
       '0426':
-        index:
-          'ft0426': 1
+        '':
+          index:
+            'ft0426': 1
       '0427':
-        index:
-          'ft0427': 1
+        '':
+          index:
+            'ft0427': 1
       '0428':
-        index:
-          'ft0428': 1
-      '0451':
-        index:
-          'source': 1
-          'freesearch': 1
-      '0508':
-        index:
-          'source': 1
-      '0540':         # ISBN
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '0541':         # ISBN falsch
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '0543':         # ISSN
-        index:
-          'issn': 1
-          'freesearch': 1
-      '0544':         # ISSN falsch
-        index:
-          'issn': 1
-          'freesearch': 1
-      '0547':         # ISMN ala ISBN
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '0553':         # ISBN
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '0585':         # ISSN Quelle
-        index:
-          'issn': 1
-          'freesearch': 1
-      '0590':
-        index:
-          'source': 1
-          'freesearch': 1
+        '':
+          index:
+            'ft0428': 1
       '0594':
-        index:
-          'source': 1
-      '0634':         # ISBN sekundaerform
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '0670':         # TitelOrth
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
-      '0675':         # HSTmodern
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
+        '':
+          index:
+            'source': 1
       '0700':
-        index:
-          'classificationstring': 1
-        facet:
-          'classification': 1
+        '':
+          index:
+            'classificationstring': 1
+          facet:
+            'classification': 1
       '0710':
-#        index:
-#          'freesearch': 1
-#          'subject': 1
-#          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          facet:
+            'subject': 1
       '0800':
-        index:
-          'mediatype': 1
-          'mediatypestring': 1
+        '':
+          index:
+            'mediatype': 1
+            'mediatypestring': 1
       '6053':         # Abstract
-        index:
-          'content': 1
-          'freesearch': 1
+        '':
+          index:
+            'content': 1
+            'freesearch': 1
       '0902':
-#        index:
-#          'freesearch': 1
-#          'subject': 1
-#          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          facet:
+            'subject': 1
       '0907':
-#        index:
-#          'freesearch': 1
-#          'subject': 1
-#          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          facet:
+            'subject': 1
       '0912':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '0917':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '0922':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '0927':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '0932':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '0937':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '0942':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '0947':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
-      '1203':         # Signatur, wenn nicht in den Exemplardaten
-        index:
-          'markstring': 1
-          'mark': 1
-      '1550':         # ISSN_aut_r
-        index:
-          'issn': 1
-          'freesearch': 1
-      '1551':         # ISSN_dat_r
-        index:
-          'issn': 1
-          'freesearch': 1
-      '1552':         # ISSN_www_r
-        index:
-          'issn': 1
-          'freesearch': 1
-      '1553':         # ISSN_pnt_r
-        index:
-          'issn': 1
-          'freesearch': 1
-      '1567':         # ISSN_pnt_f
-        index:
-          'issn': 1
-          'freesearch': 1
-      '1586':         # ISBN_dat_o 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1587':         # ISBN_www_o 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1588':         # ISBN_pnt_o 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1590':         # ISBN_dat_r 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1591':         # ISBN_www_r 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1592':         # ISBN_pnt_r 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1594':         # ISBN_dat_f 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1595':         # ISBN_www_f 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1596':         # ISBN_pnt_f 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1800':         # Nebeneintragung 1. Person
-        index:
-          'person': 1
-          'personstring': 1
-          'freesearch': 1
-      '1802':         # Nebeneintragung 2. Koerperschaft
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
-      '1804':         # Nebeneintragung 1. Titel EST
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
-      '1805':         # Nebeneintragung 1. Titel Ansetzungsform
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
-      '1806':         # Nebeneintragung 1. Titel in Mischform
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
+        '':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '4100':         # BK
-        index:
-          'ft4100': 1
-          'classification': 1
-        facet:
-          'classification': 1
+        '':
+          index:
+            'ft4100': 1
+            'classification': 1
+          facet:
+            'classification': 1
       '4200':         # Wikipedia
-        index:
-          'content': 1
-          'freesearch': 1
+        '':
+          index:
+            'content': 1
+            'freesearch': 1
       '4201':         # Wikipedia
-        index:
-          'content': 1
-          'freesearch': 1
+        '':
+          index:
+            'content': 1
+            'freesearch': 1
       '4202':         # Wikipedia
-        index:
-          'content': 1
-          'freesearch': 1
+        '':
+          index:
+            'content': 1
+            'freesearch': 1
       '4300':         # Fremde Schlagworte
-        index:
-          'subject': 20
-          'subjectstring': 20
-          'freesearch': 20
-          'ft4300': 1
-        facet:
-          'subject': 1
+        '':
+          index:
+            'subject': 20
+            'subjectstring': 20
+            'freesearch': 20
+            'ft4300': 1
+          facet:
+            'subject': 1
       '4400':         # Verfuegbarkeit lendable_[immediate|order|weekend] oder presence_[immediate|order]
-        index:
-          'availabilitystring': 1
-        facet:
-          'availability' : 1
+        '':
+          index:
+            'availabilitystring': 1
+          facet:
+            'availability' : 1
       '4410':         # Medientyp
-        index:
-          'mediatype': 1
-          'mediatypestring': 1
-          'freesearch': 1
-        facet:
-          'mediatype': 1
+        '':
+          index:
+            'mediatype': 1
+            'mediatypestring': 1
+            'freesearch': 1
+          facet:
+            'mediatype': 1
       '5050':         # Bibkey
-        index:
-          'bkey': 1
-          'freesearch': 1
+        '':
+          index:
+            'bkey': 1
+            'freesearch': 1
       '5051':         # Bibkey Base
-        index:
-          'bkey': 1
-          'freesearch': 1
+        '':
+          index:
+            'bkey': 1
+            'freesearch': 1
   muenzen:
     sorting_order:
       - 'P0100' # Herrscher/Regent
@@ -8175,549 +7991,450 @@ convtab:
         'type': 'integervalue'
     inverted_title:
       'tag':
-        index:
-          'tag': 1
-          'tagstring': 1
-          'freesearch': 1
-        facet:
-          'tag': 1      
+        '':
+          index:
+            'tag': 1
+            'tagstring': 1
+            'freesearch': 1
+          facet:
+            'tag': 1      
       'litlist':
-        index:
-          'litlistid': 1
-          'litlist': 1
-          'litliststring': 1
-          'freesearch': 1
-        facet:
-          'litlist': 1
+        '':
+          index:
+            'litlistid': 1
+            'litlist': 1
+            'litliststring': 1
+            'freesearch': 1
+          facet:
+            'litlist': 1
       'id':           # Id
-        index:
-          'id': 1
-          'freesearch': 1
+        '':
+          index:
+            'id': 1
+            'freesearch': 1
       '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
-        index:
-          'subid': 1
+        '':
+          index:
+            'subid': 1
       '0010':
-        index:
-          'freesearch': 1
-#      '0014':         # Signatur, wenn nicht in den Exemplardaten
-#        index:
-#          'mark': 1
-#          'markstring': 1
+        '':
+          index:
+            'freesearch': 1
       '4301':
-        index:
-          'language': 1
-          'languagestring': 1
-          'freesearch': 1
-        facet:
-          'language': 1
+        '':
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
+          facet:
+            'language': 1
       '0089':
-        index:
-          'source': 1
-          'freesearch': 1
+        '':
+          index:
+            'source': 1
+            'freesearch': 1
       '0100':
-#        index:
-#          'freesearch': 1
-#	  'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          facet:
+            'person': 1
       '0101':
-#        index:
-#          'freesearch': 1
-#	  'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          facet:
+            'person': 1
       '0102':
-#        index:
-#          'freesearch': 1
-#	  'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          facet:
+            'person': 1
       '0103':
-#        index:
-#          'freesearch': 1
-#	  'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          facet:
+            'person': 1
       '0110':
-#        index:
-#          'freesearch': 1
-#          'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          facet:
+            'person': 1
       '0111':
-#        index:
-#          'freesearch': 1
-#          'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          facet:
+            'person': 1
       '0112':
-#        index:
-#          'freesearch': 1
-#          'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          facet:
+            'person': 1
       '0200':
-#        index:
-#          'freesearch': 1
-#          'corporatebody': 1
-#          'corporatebodystring': 1
-        facet:
-          'corporatebody': 1
+        '':
+          facet:
+            'corporatebody': 1
       '0201':
-#        index:
-#          'freesearch': 1
-#          'corporatebody': 1
-#          'corporatebodystring': 1
-        facet:
-          'corporatebody': 1
+        '':
+          facet:
+            'corporatebody': 1
       '0304':         # EST
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
+        '':
+          index:
+            'title': 1
+            'titlestring': 1
+            'freesearch': 1
       '0310':         # AST
-        index:
-          'title': 1
-          'freesearch': 1
-          'titlestring': 1
+        '':
+          index:
+            'title': 1
+            'freesearch': 1
+            'titlestring': 1
       '0331':         # HST
-        index:
-          'title': 50
-          'titlestring': 50
-          'freesearch': 50
+        '':
+          index:
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
       '0332':         # HST
-        index:
-          'title': 50
-          'titlestring': 50
-          'freesearch': 50
+        '':
+          index:
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
       '0333':         # HST
-        index:
-          'title': 50
-          'titlestring': 50
-          'freesearch': 50
+        '':
+          index:
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
       '0334':         # HST
-        index:
-          'title': 50
-          'titlestring': 50
-          'freesearch': 50
+        '':
+          index:
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
       '0335':         # HST
-        index:
-          'title': 50
-          'titlestring': 50
-          'freesearch': 50
+        '':
+          index:
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
       '0336':         # HST
-        index:
-          'title': 50
-          'titlestring': 50
-          'freesearch': 50
+        '':
+          index:
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
       '0337':         # HST
-        index:
-          'title': 50
-          'titlestring': 50
-          'freesearch': 50
+        '':
+          index:
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
       '0338':
-        index:
-          'freesearch': 1
-          'ft0338': 1
-          't0338': 1
-      '0341':         # 
-        index:
-          'ft0341': 50
-          'title': 50
-          'titlestring': 50
-          'freesearch': 50
-      '0342':         # 
-        index:
-          'ft0342': 50
-          'title': 50
-          'titlestring': 50
-          'freesearch': 50
-      '0343':         # 
-        index:
-          'ft0343': 50
-          'title': 50
-          'titlestring': 50
-          'freesearch': 50
-      '0344':         # 
-        index:
-          'ft0344': 50
-          'title': 50
-          'titlestring': 50
-          'freesearch': 50
-      '0345':         # 
-        index:
-          'ft0345': 50
-          'title': 50
-          'titlestring': 50
-          'freesearch': 50
-      '0346':         # 
-        index:
-          'ft0346': 50
-          'title': 50
-          'titlestring': 50
-          'freesearch': 50
-      '0351':         # 
-        index:
-          'ft0351': 50
-          'title': 50
-          'titlestring': 50
-          'freesearch': 50
-      '0352':         # 
-        index:
-          'ft0352': 50
-          'title': 50
-          'titlestring': 50
-          'freesearch': 50
-      '0353':         # 
-        index:
-          'ft0353': 50
-          'title': 50
-          'titlestring': 50
-          'freesearch': 50
-      '0354':         # 
-        index:
-          'ft0354': 50
-          'title': 50
-          'titlestring': 50
-          'freesearch': 50
-      '0355':         # 
-        index:
-          'ft0355': 50
-          'title': 50
-          'titlestring': 50
-          'freesearch': 50
-      '0356':         # 
-        index:
-          'ft0356': 50
-          'title': 50
-          'titlestring': 50
-          'freesearch': 50
+        '':
+          index:
+            'freesearch': 1
+            'ft0338': 1
+            't0338': 1
+      '0341':
+        '':
+          index:
+            'ft0341': 50
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
+      '0342':
+        '':
+          index:
+            'ft0342': 50
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
+      '0343':
+        '':
+          index:
+            'ft0343': 50
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
+      '0344':
+        '':
+          index:
+            'ft0344': 50
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
+      '0345':
+        '':
+          index:
+            'ft0345': 50
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
+      '0346':
+        '':
+          index:
+            'ft0346': 50
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
+      '0351':
+        '':
+          index:
+            'ft0351': 50
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
+      '0352':
+        '':
+          index:
+            'ft0352': 50
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
+      '0353':
+        '':
+          index:
+            'ft0353': 50
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
+      '0354':
+        '':
+          index:
+            'ft0354': 50
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
+      '0355':
+        '':
+          index:
+            'ft0355': 50
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
+      '0356':
+        '':
+          index:
+            'ft0356': 50
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
       '0407':         # Stempelstellung
-        index:
-          'ft0407': 1
+        '':
+          index:
+            'ft0407': 1
       '0410':         # Auflage
-        index:
-          'freesearch': 1
-          'ft0410': 1
-          't0410': 1
+        '':
+          index:
+            'freesearch': 1
+            'ft0410': 1
+            't0410': 1
       '0412':         # Verlag
-        index:
-          'publisher': 1
-          'publisherstring': 1
-          'freesearch': 50
+        '':
+          index:
+            'publisher': 1
+            'publisherstring': 1
+            'freesearch': 50
       '0413':         # Drucker
-        index:
-          'person': 1
+        '':
+          index:
+            'person': 1
       '0425':
-        index:
-          'year': 1
-          'yearstring': 1
-          'freesearch': 1
-        facet:
-          'year': 1
+        '':
+          index:
+            'year': 1
+            'yearstring': 1
+            'freesearch': 1
+          facet:
+            'year': 1
       '0451':
-        index:
-          'source': 1
-          'freesearch': 1
+        '':
+          index:
+            'source': 1
+            'freesearch': 1
       '0508':
-        index:
-          'freesearch': 1
-          't0508': 1
+        '':
+          index:
+            'freesearch': 1
+            't0508': 1
       '0531':        # Mitglied Herrscherfamilie
-        index:
-          'freesearch': 1
-          't0531': 1
-          'ft0531': 1
+        '':
+          index:
+            'freesearch': 1
+            't0531': 1
+            'ft0531': 1
       '0533':         # Magistrat / Statthalter
-        index:
-          'freesearch': 1
-          't0533': 1
-          'ft0533': 1
+        '':
+          index:
+            'freesearch': 1
+            't0533': 1
+            'ft0533': 1
       '0540':         # ISBN
-        index:
-          'isbn': 1
-          'freesearch': 1
+        '':
+          index:
+            'isbn': 1
+            'freesearch': 1
       '0541':         # ISBN falsch
-        index:
-          'isbn': 1
-          'freesearch': 1
+        '':
+          index:
+            'isbn': 1
+            'freesearch': 1
       '0543':         # ISSN
-        index:
-          'issn': 1
-          'freesearch': 1
+        '':
+          index:
+            'issn': 1
+            'freesearch': 1
       '0544':         # ISSN falsch
-        index:
-          'issn': 1
-          'freesearch': 1
+        '':
+          index:
+            'issn': 1
+            'freesearch': 1
       '0547':         # ISMN ala ISBN
-        index:
-          'isbn': 1
-          'freesearch': 1
+        '':
+          index:
+            'isbn': 1
+            'freesearch': 1
       '0553':         # ISBN
-        index:
-          'isbn': 1
-          'freesearch': 1
+        '':
+          index:
+            'isbn': 1
+            'freesearch': 1
       '0585':         # ISSN Quelle
-        index:
-          'issn': 1
-          'freesearch': 1
+        '':
+          index:
+            'issn': 1
+            'freesearch': 1
       '0590':
-        index:
-          'source': 1
-          'freesearch': 1
+        '':
+          index:
+            'source': 1
+            'freesearch': 1
       '0600':
-        index:
-          'freesearch': 1
-          't0600': 1
+        '':
+          index:
+            'freesearch': 1
+            't0600': 1
       '0619':
-        index:
-          't0619': 1
-          'freesearch': 1
+        '':
+          index:
+            't0619': 1
+            'freesearch': 1
       '0634':         # ISBN sekundaerform
-        index:
-          'isbn': 1
-          'freesearch': 1
+        '':
+          index:
+            'isbn': 1
+            'freesearch': 1
       '0670':         # TitelOrth
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
+        '':
+          index:
+            'title': 1
+            'titlestring': 1
+            'freesearch': 1
       '0675':         # HSTmodern
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
+        '':
+          index:
+            'title': 1
+            'titlestring': 1
+            'freesearch': 1
       '0700':
-        index:
-          'classificationstring': 1
-        facet:
-          'classification': 1
+        '':
+          index:
+            'classificationstring': 1
+          facet:
+            'classification': 1
       '0710':
-#        index:
-#          'freesearch': 1
-#          'subject': 1
-#          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          facet:
+            'subject': 1
       '0750':         # Abstract
-        index:
-          'content': 1
-          'freesearch': 1
+        '':
+          index:
+            'content': 1
+            'freesearch': 1
       '0800':         # Medienart
-        index:
-          'mediatype': 1
-          'mediatypestring': 1
-          'freesearch': 1
-        facet:
-          'mediatype': 1
+        '': 
+          index:
+            'mediatype': 1
+            'mediatypestring': 1
+            'freesearch': 1
+          facet:
+            'mediatype': 1
       '0902':
-#        index:
-#          'freesearch': 1
-#          'subject': 1
-#          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          facet:
+            'subject': 1
       '0907':
-#        index:
-#          'freesearch': 1
-#          'subject': 1
-#          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          facet:
+            'subject': 1
       '0912':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '0917':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '0922':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '0927':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '0932':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '0937':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '0942':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '0947':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
-      '1203':         # Signatur, wenn nicht in den Exemplardaten
-        index:
-          'markstring': 1
-          'mark': 1
-      '1550':         # ISSN_aut_r
-        index:
-          'issn': 1
-          'freesearch': 1
-      '1551':         # ISSN_dat_r
-        index:
-          'issn': 1
-          'freesearch': 1
-      '1552':         # ISSN_www_r
-        index:
-          'issn': 1
-          'freesearch': 1
-      '1553':         # ISSN_pnt_r
-        index:
-          'issn': 1
-          'freesearch': 1
-      '1567':         # ISSN_pnt_f
-        index:
-          'issn': 1
-          'freesearch': 1
-      '1586':         # ISBN_dat_o 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1587':         # ISBN_www_o 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1588':         # ISBN_pnt_o 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1590':         # ISBN_dat_r 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1591':         # ISBN_www_r 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1592':         # ISBN_pnt_r 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1594':         # ISBN_dat_f 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1595':         # ISBN_www_f 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1596':         # ISBN_pnt_f 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1800':         # Nebeneintragung 1. Person
-        index:
-          'person': 1
-          'personstring': 1
-          'freesearch': 1
-      '1802':         # Nebeneintragung 2. Koerperschaft
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
-      '1804':         # Nebeneintragung 1. Titel EST
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
-      '1805':         # Nebeneintragung 1. Titel Ansetzungsform
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
-      '1806':         # Nebeneintragung 1. Titel in Mischform
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
-      '4100':         # BK
-        index:
-          'ft4100': 1
-          'classification': 1
-        facet:
-          'classification': 1
-      '4200':         # Wikipedia
-        index:
-          'content': 1
-          'freesearch': 1
-      '4201':         # Wikipedia
-        index:
-          'content': 1
-          'freesearch': 1
-      '4202':         # Wikipedia
-        index:
-          'content': 1
-          'freesearch': 1
-      '4300':         # Fremde Schlagworte
-        index:
-          'subject': 20
-          'subjectstring': 20
-          'freesearch': 20
-          'ft4300': 1
-        facet:
-          'subject': 1
-      '4400':         # Verfuegbarkeit lendable_[immediate|order|weekend] oder presence_[immediate|order]
-        index:
-          'availabilitystring': 1
-        facet:
-          'availability' : 1
-      '4410':         # Medientyp
-        index:
-          'mediatype': 1
-          'mediatypestring': 1
-          'freesearch': 1
-        facet:
-          'mediatype': 1
+        '':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '5050':         # Bibkey
-        index:
-          'bkey': 1
-          'freesearch': 1
+        '':
+          index:
+            'bkey': 1
+            'freesearch': 1
       '5051':         # Bibkey Base
-        index:
-          'bkey': 1
-          'freesearch': 1
+        '':
+          index:
+            'bkey': 1
+            'freesearch': 1
     listitemcat:
       'tag': 1
       'litlist': 1
@@ -8755,452 +8472,335 @@ convtab:
   usbbibliographie:
     inverted_title:
       'tag':
-        index:
-          'tag': 1
-          'tagstring': 1
-          'freesearch': 1
-        facet:
-          'tag': 1      
+        '':
+          index:
+            'tag': 1
+            'tagstring': 1
+            'freesearch': 1
+          facet:
+            'tag': 1      
       'litlist':
-        index:
-          'litlistid': 1
-          'litlist': 1
-          'litliststring': 1
-          'freesearch': 1
-        facet:
-          'litlist': 1
+        '':
+          index:
+            'litlistid': 1
+            'litlist': 1
+            'litliststring': 1
+            'freesearch': 1
+          facet:
+            'litlist': 1
       '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
-        index:
-          'subid': 1
-#      '0014':         # Signatur, wenn nicht in den Exemplardaten
-#        index:
-#          'mark': 1
-#          'markstring': 1
+        '':
+          index:
+            'subid': 1
       '4301':
-        index:
-          'language': 1
-          'languagestring': 1
-          'freesearch': 1
-        facet:
-          'language': 1
+        '':
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
+          facet:
+            'language': 1
       '0089':
-        index:
-          'source': 1
-          'freesearch': 1
+        '':
+          index:
+            'source': 1
+            'freesearch': 1
       '0100':
-#        index:
-#          'freesearch': 1
-#	  'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          facet:
+            'person': 1
       '0101':
-#        index:
-#          'freesearch': 1
-#	  'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          facet:
+            'person': 1
       '0102':
-#        index:
-#          'freesearch': 1
-#	  'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          facet:
+            'person': 1
       '0103':
-#        index:
-#          'freesearch': 1
-#	  'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          facet:
+            'person': 1
       '0110':
-#        index:
-#          'freesearch': 1
-#          'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          facet:
+            'person': 1
       '0111':
-#        index:
-#          'freesearch': 1
-#          'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          facet:
+            'person': 1
       '0112':
-#        index:
-#          'freesearch': 1
-#          'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          facet:
+            'person': 1
       '0200':
-#        index:
-#          'freesearch': 1
-#          'corporatebody': 1
-#          'corporatebodystring': 1
-        facet:
-          'corporatebody': 1
+        '':
+          facet:
+            'corporatebody': 1
       '0201':
-#        index:
-#          'freesearch': 1
-#          'corporatebody': 1
-#          'corporatebodystring': 1
-        facet:
-          'corporatebody': 1
+        '':
+          facet:
+            'corporatebody': 1
       '0304':         # EST
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
+        '':
+          index:
+            'title': 1
+            'titlestring': 1
+            'freesearch': 1
       '0310':         # AST
-        index:
-          'title': 1
-          'freesearch': 1
-          'titlestring': 1
+        '':
+          index:
+            'title': 1
+            'freesearch': 1
+            'titlestring': 1
       '0331':         # HST
-        index:
-          'title': 50
-          'titlestring': 50
-          'freesearch': 50
+        '':
+          index:
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
       '0335':         # Zusatz zum HST
-        index:
-          'ft0335': 1
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
+        '':
+          index:
+            'ft0335': 1
+            'title': 1
+            'titlestring': 1
+            'freesearch': 1
       '0340':         # PSTAnsetzung
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
+        '':
+          index:
+            'title': 1
+            'titlestring': 1
+            'freesearch': 1
       '0341':         # PSTVorlage
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
+        '':
+          index:
+            'title': 1
+            'titlestring': 1
+            'freesearch': 1
       '0361':       # Vorlage beigefuegtes Werk
-        index:
-          'title': 40
-          'titlestring': 40
-          'freesearch': 40
+        '':
+          index:
+            'title': 40
+            'titlestring': 40
+            'freesearch': 40
       '0370':         # WST
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
-      '0375':         # ZSTnorm
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
+        '':
+          index:
+            'title': 1
+            'titlestring': 1
+            'freesearch': 1
       '0410':         # Auflage
-        index:
-          'ft0410': 1
+        '':
+          index:
+            'ft0410': 1
       '0412':         # Verlag
-        index:
-          'publisher': 1
-          'publisherstring': 1
+        '':
+          index:
+            'publisher': 1
+            'publisherstring': 1
       '0413':         # Drucker
-        index:
-          'person': 1
+        '':
+          index:
+            'person': 1
       '0424':
-        index:
-          'year': 1
-          'yearstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'year': 1
+            'yearstring': 1
+            'freesearch': 1
       '0425':
-        index:
-          'year': 1
-          'yearstring': 1
-          'freesearch': 1
-        facet:
-          'year': 1
+        '':
+          index:
+            'year': 1
+            'yearstring': 1
+            'freesearch': 1
+          facet:
+            'year': 1
       '0451':
-        index:
-          'source': 1
-          'freesearch': 1
-      '0508':
-        index:
-          'source': 1
+        '':
+          index:
+            'source': 1
+            'freesearch': 1
       '0519':
-        index:
-          'hss': 1
+        '':
+          index:
+            'hss': 1
       '0540':         # ISBN
-        index:
-          'isbn': 1
-          'freesearch': 1
+        '':
+          index:
+            'isbn': 1
+            'freesearch': 1
       '0541':         # ISBN falsch
-        index:
-          'isbn': 1
-          'freesearch': 1
+        '':
+          index:
+            'isbn': 1
+            'freesearch': 1
       '0543':         # ISSN
-        index:
-          'issn': 1
-          'freesearch': 1
-      '0544':         # ISSN falsch
-        index:
-          'issn': 1
-          'freesearch': 1
-      '0547':         # ISMN ala ISBN
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '0553':         # ISBN
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '0585':         # ISSN Quelle
-        index:
-          'issn': 1
-          'freesearch': 1
+        '':
+          index:
+            'issn': 1
+            'freesearch': 1
       '0590':
-        index:
-          'source': 1
-          'freesearch': 1
-      '0634':         # ISBN sekundaerform
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '0670':         # TitelOrth
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
+        '':
+          index:
+            'source': 1
+            'freesearch': 1
       '0675':         # HSTmodern
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
+        '':
+          index:
+            'title': 1
+            'titlestring': 1
+            'freesearch': 1
       '0700':
-        index:
-          'classificationstring': 1
-        facet:
-          'classification': 1
+        '':
+          index:
+            'classificationstring': 1
+          facet:
+            'classification': 1
       '0710':
-#        index:
-#          'freesearch': 1
-#          'subject': 1
-#          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          facet:
+            'subject': 1
       '0750':         # Abstract
-        index:
-          'content': 1
-          'freesearch': 1
+        '':
+          index:
+            'content': 1
+            'freesearch': 1
       '0902':
-#        index:
-#          'freesearch': 1
-#          'subject': 1
-#          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          facet:
+            'subject': 1
       '0907':
-#        index:
-#          'freesearch': 1
-#          'subject': 1
-#          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          facet:
+            'subject': 1
       '0912':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '0917':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '0922':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '0927':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '0932':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '0937':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '0942':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '0947':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '1203':         # Signatur, wenn nicht in den Exemplardaten
         index:
           'markstring': 1
           'mark': 1
-      '1550':         # ISSN_aut_r
-        index:
-          'issn': 1
-          'freesearch': 1
-      '1551':         # ISSN_dat_r
-        index:
-          'issn': 1
-          'freesearch': 1
-      '1552':         # ISSN_www_r
-        index:
-          'issn': 1
-          'freesearch': 1
-      '1553':         # ISSN_pnt_r
-        index:
-          'issn': 1
-          'freesearch': 1
-      '1567':         # ISSN_pnt_f
-        index:
-          'issn': 1
-          'freesearch': 1
-      '1586':         # ISBN_dat_o 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1587':         # ISBN_www_o 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1588':         # ISBN_pnt_o 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1590':         # ISBN_dat_r 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1591':         # ISBN_www_r 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1592':         # ISBN_pnt_r 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1594':         # ISBN_dat_f 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1595':         # ISBN_www_f 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1596':         # ISBN_pnt_f 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1800':         # Nebeneintragung 1. Person
-        index:
-          'person': 1
-          'personstring': 1
-          'freesearch': 1
-      '1802':         # Nebeneintragung 2. Koerperschaft
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
-      '1804':         # Nebeneintragung 1. Titel EST
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
-      '1805':         # Nebeneintragung 1. Titel Ansetzungsform
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
-      '1806':         # Nebeneintragung 1. Titel in Mischform
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
       '4100':         # BK
-        index:
-          'ft4100': 1
-          'classification': 1
-          'classificationstring': 1
+        '':
+          index:
+            'ft4100': 1
+            'classification': 1
+            'classificationstring': 1
       '4102':         # Topic
-        index:
-          'topic': 1
-        facet:
-          'topic': 1
+        '':
+          index:
+            'topic': 1
+          facet:
+            'topic': 1
       '4111':         # TOC
-        index:
-          'toc': 1
-      '4113':         # Register
-        index:
-          'reg': 1
+        '':
+          index:
+            'toc': 1
       '4200':         # Wikipedia
-        index:
-          'content': 1
-          'freesearch': 1
+        '':
+          index:
+            'content': 1
+            'freesearch': 1
       '4201':         # Wikipedia
-        index:
-          'content': 1
-          'freesearch': 1
+        '':
+          index:
+            'content': 1
+            'freesearch': 1
       '4202':         # Wikipedia
-        index:
-          'content': 1
-          'freesearch': 1
+        '':
+          index:
+            'content': 1
+            'freesearch': 1
       '4300':         # Fremde Schlagworte
-        index:
-          'subject': 20
-          'subjectstring': 20
-          'freesearch': 20
-          'ft4300': 1
-        facet:
-          'subject': 1
-      '4400':         # Verfuegbarkeit lendable_[immediate|order|weekend] oder presence_[immediate|order]
-        index:
-          'availabilitystring': 1
-        facet:
-          'availability' : 1
+        '':
+          index:
+            'subject': 20
+            'subjectstring': 20
+            'freesearch': 20
+            'ft4300': 1
+          facet:
+            'subject': 1
       '0800':         # Medientyp (NICHT verallgemeinerter Typ 4410, da Seitennummern von Aufsaetzen in Kollation
-        index:
-          'mediatype': 1
-          'mediatypestring': 1
-          'freesearch': 1
-        facet:
-          'mediatype': 1
+        '':
+          index:
+            'mediatype': 1
+            'mediatypestring': 1
+            'freesearch': 1
+          facet:
+            'mediatype': 1
       '5050':         # Bibkey
-        index:
-          'bkey': 1
-          'freesearch': 1
+        '':
+          index:
+            'bkey': 1
+            'freesearch': 1
       '5051':         # Bibkey Base
-        index:
-          'bkey': 1
-          'freesearch': 1  
+        '':
+          index:
+            'bkey': 1
+            'freesearch': 1  
   games:
     listitemcat:
       'tag': 1
@@ -9246,445 +8846,214 @@ convtab:
   portrait:
     inverted_title:
       'tag':
-        index:
-          'tag': 1
-          'tagstring': 1
-          'freesearch': 1
-        facet:
-          'tag': 1      
+        '':
+          index:
+            'tag': 1
+            'tagstring': 1
+            'freesearch': 1
+          facet:
+            'tag': 1      
       'litlist':
-        index:
-          'litlistid': 1
-          'litlist': 1
-          'litliststring': 1
-          'freesearch': 1
-        facet:
-          'litlist': 1
+        '':
+          index:
+            'litlistid': 1
+            'litlist': 1
+            'litliststring': 1
+            'freesearch': 1
+          facet:
+            'litlist': 1
       '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
-        index:
-          'subid': 1
-#      '0014':         # Signatur, wenn nicht in den Exemplardaten
-#        index:
-#          'mark': 1
-#          'markstring': 1
+        '':
+          index:
+            'subid': 1
       '4301':
-        index:
-          'language': 1
-          'languagestring': 1
-          'freesearch': 1
-        facet:
-          'language': 1
+        '':
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
+          facet:
+            'language': 1
       '0089':
-        index:
-          'source': 1
-          'freesearch': 1
+        '':
+          index:
+            'source': 1
+            'freesearch': 1
       '0100':
-        index:
-          'ft0100': 1
-#	  'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          index:
+            'ft0100': 1
+          facet:
+            'person': 1
       '0101':
-        index:
-          'ft0101': 1
-#        index:
-#          'freesearch': 1
-#	  'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          index:
+            'ft0101': 1
+          facet:
+            'person': 1
       '0102':
-        index:
-          'ft0102': 1
-#        index:
-#          'freesearch': 1
-#	  'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          index:
+            'ft0102': 1
+          facet:
+            'person': 1
       '0103':
-        index:
-          'ft0103': 1
-#        index:
-#          'freesearch': 1
-#	  'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          index:
+            'ft0103': 1
+          facet:
+            'person': 1
       '0110':
-#        index:
-#          'freesearch': 1
-#          'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          facet:
+            'person': 1
       '0111':
-#        index:
-#          'freesearch': 1
-#          'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          facet:
+            'person': 1
       '0112':
-#        index:
-#          'freesearch': 1
-#          'person': 1
-#          'personstring': 1
-        facet:
-          'person': 1
+        '':
+          facet:
+            'person': 1
       '0200':
-#        index:
-#          'freesearch': 1
-#          'corporatebody': 1
-#          'corporatebodystring': 1
-        facet:
-          'corporatebody': 1
-      '0201':
-#        index:
-#          'freesearch': 1
-#          'corporatebody': 1
-#          'corporatebodystring': 1
-#        facet:
-#          'corporatebody': 1
-      '0304':         # EST
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
+        '':
+          facet:
+            'corporatebody': 1
       '0310':         # AST
-        index:
-          'title': 1
-          'freesearch': 1
-          'titlestring': 1
+        '':
+          index:
+            'title': 1
+            'freesearch': 1
+            'titlestring': 1
       '0331':         # HST
-        index:
-          'title': 50
-          'titlestring': 50
-          'freesearch': 50
+        '':
+          index:
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
       '0335':         # Zusatz zum HST
-        index:
-          'ft0335': 1
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
+        '':
+          index:
+            'ft0335': 1
+            'title': 1
+            'titlestring': 1
+            'freesearch': 1
       '0340':         # PSTAnsetzung
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
+        '':
+          index:
+            'title': 1
+            'titlestring': 1
+            'freesearch': 1
       '0341':         # PSTVorlage
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
+        '':
+          index:
+            'title': 1
+            'titlestring': 1
+            'freesearch': 1
       '0361':       # Vorlage beigefuegtes Werk
-        index:
-          'title': 40
-          'titlestring': 40
-          'freesearch': 40
+        '':
+          index:
+            'title': 40
+            'titlestring': 40
+            'freesearch': 40
       '0370':         # WST
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
+        '':
+          index:
+            'title': 1
+            'titlestring': 1
+            'freesearch': 1
       '0375':         # ZSTnorm
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
+        '':
+          index:
+            'title': 1
+            'titlestring': 1
+            'freesearch': 1
       '0410':         # Auflage
-        index:
-          'ft0410': 1
+        '':
+          index:
+            'ft0410': 1
       '0412':         # Verlag
-        index:
-          'publisher': 1
-          'publisherstring': 1
+        '':
+          index:
+            'publisher': 1
+            'publisherstring': 1
       '0413':         # Drucker
-        index:
-          'person': 1
+        '':
+          index:
+            'person': 1
       '0424':
-        index:
-          'year': 1
-          'yearstring': 1
-          'freesearch': 1
+        '':
+          index:
+            'year': 1
+            'yearstring': 1
+            'freesearch': 1
       '0425':
-        index:
-          'year': 1
-          'yearstring': 1
-          'freesearch': 1
-        facet:
-          'year': 1
+        '':
+          index:
+            'year': 1
+            'yearstring': 1
+            'freesearch': 1
+          facet:
+            'year': 1
       '0451':
-        index:
-          'source': 1
-          'freesearch': 1
+        '':
+          index:
+            'source': 1
+            'freesearch': 1
       '0508':
-        index:
-          'source': 1
-      '0540':         # ISBN
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '0541':         # ISBN falsch
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '0543':         # ISSN
-        index:
-          'issn': 1
-          'freesearch': 1
-      '0544':         # ISSN falsch
-        index:
-          'issn': 1
-          'freesearch': 1
-      '0547':         # ISMN ala ISBN
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '0553':         # ISBN
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '0585':         # ISSN Quelle
-        index:
-          'issn': 1
-          'freesearch': 1
+        '':
+          index:
+            'source': 1
       '0590':
-        index:
-          'source': 1
-          'freesearch': 1
-      '0634':         # ISBN sekundaerform
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '0670':         # TitelOrth
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
+        '':
+          index:
+            'source': 1
+            'freesearch': 1
       '0675':         # HSTmodern
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
+        '':
+          index:
+            'title': 1
+            'titlestring': 1
+            'freesearch': 1
       '0700':
-        index:
-          'classificationstring': 1
-        facet:
-          'classification': 1
+        '':
+          index:
+            'classificationstring': 1
+          facet:
+            'classification': 1
       '0710':
-#        index:
-#          'freesearch': 1
-#          'subject': 1
-#          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          facet:
+            'subject': 1
       '0750':         # Abstract
-        index:
-          'content': 1
-          'freesearch': 1
-      '0902':
-#        index:
-#          'freesearch': 1
-#          'subject': 1
-#          'subjectstring': 1
-        facet:
-          'subject': 1
-      '0907':
-#        index:
-#          'freesearch': 1
-#          'subject': 1
-#          'subjectstring': 1
-        facet:
-          'subject': 1
-      '0912':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
-      '0917':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
-      '0922':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
-      '0927':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
-      '0932':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
-      '0937':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
-      '0942':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
-      '0947':
-        index:
-          'freesearch': 1
-          'subject': 1
-          'subjectstring': 1
-        facet:
-          'subject': 1
+        '':
+          index:
+            'content': 1
+            'freesearch': 1
       '1203':         # Signatur, wenn nicht in den Exemplardaten
-        index:
-          'markstring': 1
-          'mark': 1
-      '1550':         # ISSN_aut_r
-        index:
-          'issn': 1
-          'freesearch': 1
-      '1551':         # ISSN_dat_r
-        index:
-          'issn': 1
-          'freesearch': 1
-      '1552':         # ISSN_www_r
-        index:
-          'issn': 1
-          'freesearch': 1
-      '1553':         # ISSN_pnt_r
-        index:
-          'issn': 1
-          'freesearch': 1
-      '1567':         # ISSN_pnt_f
-        index:
-          'issn': 1
-          'freesearch': 1
-      '1586':         # ISBN_dat_o 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1587':         # ISBN_www_o 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1588':         # ISBN_pnt_o 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1590':         # ISBN_dat_r 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1591':         # ISBN_www_r 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1592':         # ISBN_pnt_r 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1594':         # ISBN_dat_f 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1595':         # ISBN_www_f 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1596':         # ISBN_pnt_f 
-        index:
-          'isbn': 1
-          'freesearch': 1
-      '1800':         # Nebeneintragung 1. Person
-        index:
-          'person': 1
-          'personstring': 1
-          'freesearch': 1
-      '1802':         # Nebeneintragung 2. Koerperschaft
-        index:
-          'corporatebody': 1
-          'corporatebodystring': 1
-          'freesearch': 1
-      '1804':         # Nebeneintragung 1. Titel EST
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
-      '1805':         # Nebeneintragung 1. Titel Ansetzungsform
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
-      '1806':         # Nebeneintragung 1. Titel in Mischform
-        index:
-          'title': 1
-          'titlestring': 1
-          'freesearch': 1
-      '4100':         # BK
-        index:
-          'ft4100': 1
-          'classification': 1
-        facet:
-          'classification': 1
-      '4200':         # Wikipedia
-        index:
-          'content': 1
-          'freesearch': 1
-      '4201':         # Wikipedia
-        index:
-          'content': 1
-          'freesearch': 1
-      '4202':         # Wikipedia
-        index:
-          'content': 1
-          'freesearch': 1
-      '4300':         # Fremde Schlagworte
-        index:
-          'subject': 20
-          'subjectstring': 20
-          'freesearch': 20
-          'ft4300': 1
-        facet:
-          'subject': 1
-      '4400':         # Verfuegbarkeit lendable_[immediate|order|weekend] oder presence_[immediate|order]
-        index:
-          'availabilitystring': 1
-        facet:
-          'availability' : 1
+        '':
+          index:
+            'markstring': 1
+            'mark': 1
       '4410':         # Medientyp
-        index:
-          'mediatype': 1
-          'mediatypestring': 1
-          'freesearch': 1
-        facet:
-          'mediatype': 1
+        '':
+          index:
+            'mediatype': 1
+            'mediatypestring': 1
+            'freesearch': 1
+          facet:
+            'mediatype': 1
       '5050':         # Bibkey
-        index:
-          'bkey': 1
-          'freesearch': 1
+        '':
+          index:
+            'bkey': 1
+            'freesearch': 1
       '5051':         # Bibkey Base
-        index:
-          'bkey': 1
-          'freesearch': 1
+        '':
+          index:
+            'bkey': 1
+            'freesearch': 1
+          
   legacy:
     listitemcat:
       'tag': 1

@@ -403,7 +403,14 @@ convtab:
      #       'mark': 1
      #       'markstring': 1
       '4301':
-        '':
+        'a': # erfasst
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
+          facet:
+            'language': 1
+        'e': # angereichert
           index:
             'language': 1
             'languagestring': 1
@@ -2774,7 +2781,14 @@ convtab:
           facet:
             'subject': 1
       '4301':
-        '':
+        'a':
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
+          facet:
+            'language': 1
+        'e':
           index:
             'language': 1
             'languagestring': 1
@@ -3552,7 +3566,14 @@ convtab:
           facet:
             'subject': 1
       '4301':
-        '':
+        'a':
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
+          facet:
+            'language': 1
+        'e':
           index:
             'language': 1
             'languagestring': 1
@@ -3721,7 +3742,14 @@ convtab:
           index:
             'subid': 1
       '4301':
-        '':
+        'a':
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
+          facet:
+            'language': 1
+        'e':
           index:
             'language': 1
             'languagestring': 1
@@ -4243,7 +4271,14 @@ convtab:
             'markstring': 1
             'freesearch': 1
       '4301':         # Signatur, wenn nicht in den Exemplardaten
-        '':
+        'a':
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
+          facet:
+            'language': 1
+        'e':
           index:
             'language': 1
             'languagestring': 1
@@ -4787,7 +4822,14 @@ convtab:
             'source': 1
             'freesearch': 1
       '4301':
-        '':
+        'a':
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
+          facet:
+            'language': 1
+        'e':
           index:
             'language': 1
             'languagestring': 1
@@ -5078,7 +5120,14 @@ convtab:
             'source': 1
             'freesearch': 1
       '4301':
-        '':
+        'a':
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
+          facet:
+            'language': 1
+        'e':
           index:
             'language': 1
             'languagestring': 1
@@ -5370,7 +5419,14 @@ convtab:
           index:
             'mark': 1
       '4301':
-        '':
+        'a':
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
+          facet:
+            'language': 1
+        'e':
           index:
             'language': 1
             'languagestring': 1
@@ -5676,8 +5732,15 @@ convtab:
         '':
           index:
             'mark': 1
-      '4301':         # Signatur, wenn nicht in den Exemplardaten
-        '':
+      '4301':
+        'a':
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
+          facet:
+            'language': 1
+        'e':
           index:
             'language': 1
             'languagestring': 1
@@ -6013,7 +6076,14 @@ convtab:
           index:
             'mark': 1
       '4301':
-        '':
+        'a':
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
+          facet:
+            'language': 1
+        'e':
           index:
             'language': 1
             'languagestring': 1
@@ -6286,7 +6356,14 @@ convtab:
           index:
             'subid': 1
       '4301':
-        '':
+        'a':
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
+          facet:
+            'language': 1
+        'e':
           index:
             'language': 1
             'languagestring': 1
@@ -6829,7 +6906,14 @@ convtab:
           index:
             'mark': 1
       '4301':
-        '':
+        'a':
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
+          facet:
+            'language': 1
+        'e':
           index:
             'language': 1
             'languagestring': 1
@@ -7280,7 +7364,14 @@ convtab:
           index:
             'subid': 1
       '4301':
-        '':
+        'a':
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
+          facet:
+            'language': 1
+        'e':
           index:
             'language': 1
             'languagestring': 1
@@ -7799,7 +7890,14 @@ convtab:
           index:
             'subid': 1
       '4301':
-        '':
+        'a':
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
+          facet:
+            'language': 1
+        'e':
           index:
             'language': 1
             'languagestring': 1
@@ -8109,7 +8207,14 @@ convtab:
           index:
             'freesearch': 1
       '4301':
-        '':
+        'a':
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
+          facet:
+            'language': 1
+        'e':
           index:
             'language': 1
             'languagestring': 1
@@ -8581,7 +8686,14 @@ convtab:
           index:
             'subid': 1
       '4301':
-        '':
+        'a':
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
+          facet:
+            'language': 1
+        'e':
           index:
             'language': 1
             'languagestring': 1
@@ -8955,7 +9067,14 @@ convtab:
           index:
             'subid': 1
       '4301':
-        '':
+        'a':
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
+          facet:
+            'language': 1
+        'e':
           index:
             'language': 1
             'languagestring': 1

@@ -2924,6 +2924,36 @@ convtab:
           index:
             'bkey': 1
             'freesearch': 1
+      '7419':
+        'c':
+          index:
+            'year': 1
+            'yearstring': 1
+            'freesearch': 1
+      '7420':
+        'c':
+          index:
+            'year': 1
+            'yearstring': 1
+            'freesearch': 1
+      '7421':
+        'c':
+          index:
+            'year': 1
+            'yearstring': 1
+            'freesearch': 1
+      '7422':
+        'c':
+          index:
+            'year': 1
+            'yearstring': 1
+            'freesearch': 1
+      '7423':
+        'c':
+          index:
+            'year': 1
+            'yearstring': 1
+            'freesearch': 1
   jesuiten:
     inverted_title:
       'tag':

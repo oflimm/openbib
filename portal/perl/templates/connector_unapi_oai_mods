@@ -46,10 +46,12 @@
                 <mods:namePart type="given">[% given %]</mods:namePart>
                 <mods:displayForm>[% item.content %]</mods:displayForm>
                 <mods:role>
-                    [%- IF item.supplement %]
-                    <mods:roleTerm type="code" authority="marcrelator" text="[%item.supplement%]">oth</mods:roleTerm>
-                    [%- ELSE %]
+                    [%- IF item.description == 'Verfasser' %]
                     <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+                    [%- IF item.supplement.match('Hrsg') %]
+                    <mods:roleTerm type="code" authority="marcrelator" text="[% item.supplement %]">edt</mods:roleTerm>
+                    [%- ELSE %]
+                    <mods:roleTerm type="code" authority="marcrelator" text="[% item.supplement %]">oth</mods:roleTerm>
                     [%- END %]
                 </mods:role>
             </mods:name>
@@ -160,14 +162,21 @@
                 [%- FOREACH item IN normdata.${"T0412"} %]
                 <mods:publisher>[% item.content %]</mods:publisher>
                 [%- END %]
-                [%- FOREACH item IN normdata.${"T0425"} %]
-                <mods:dateIssued keyDate="yes" encoding="iso8601">[% item.content %]</mods:dateIssued>
+                [%- IF normdata.${"T0425"} %]
+                <mods:dateIssued keyDate="yes" encoding="iso8601">[% normdata.${"T0425"}.first.content%]</mods:dateIssued>
+                [%- ELSIF normdata.${"T0424"} %]
+                <mods:dateIssued keyDate="yes" encoding="iso8601">[% normdata.${"T0424"}.first.content%]</mods:dateIssued>
+                [%- END %]
+                [%- IF normdata.${"T0403"} %]
+                <mods:edition>[%- normdata.${"T0403"}.first.content %]</mods:edition>
                 [%- END %]
             </mods:originInfo>
-            [%- IF normdata.${"T4301"}.first %]
+            [%- FOREACH item IN normdata.${"T0015"} %]
             <mods:language>
-                <mods:languageTerm type="code" authority="iso639-2">[% normdata.${"T4301"}.first.content %]
-                </mods:languageTerm>
+                <mods:languageTerm type="code" authority="iso639-2">[% item.content %]</mods:languageTerm>
+                [%- FOREACH script IN normdata.${"T0516"} %]
+                <mods:scriptTerm>[% script.content %]</mods:scriptTerm>
+                [%-END%]
             </mods:language>
             [%-END%]
             [%- IF normdata.${"T4310"}.first %]
@@ -194,9 +203,15 @@
                     <mods:title>[% super_title %]</mods:title>
                 </mods:titleInfo>
             </mods:relatedItem>
+            [%- IF normdata.${"T0090"} %]
+            <mods:part order='[%- normdata.${"T0090"}.first.content % ]'>
+            [%- ELSIF normdata.${"T0456"} %]
+            <mods:part order='[%- normdata.${"T0456"}.first.content % ]'>
+            [%- ELSE -%]
             <mods:part>
+            [%- END %]
                 <mods:detail type="volume">
-                    [%- IF NOT normdata.${"T0331"} %]
+                    [%- IF normdata.${"T0089"} %]
                     <mods:number>[% normdata.${"T0089"}.first.content %]</mods:number>
                     [%- ELSIF normdata.${"T0455"} %]
                     <mods:number>[% normdata.${"T0455"}.first.content %]</mods:number>

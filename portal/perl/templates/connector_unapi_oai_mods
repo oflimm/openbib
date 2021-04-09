@@ -48,7 +48,7 @@
                 <mods:role>
                     [%- IF item.description == 'Verfasser' %]
                     <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
-                    [%- IF item.supplement.match('Hrsg') %]
+                    [%- ELSIF item.supplement.match('Hrsg') %]
                     <mods:roleTerm type="code" authority="marcrelator" text="[% item.supplement %]">edt</mods:roleTerm>
                     [%- ELSE %]
                     <mods:roleTerm type="code" authority="marcrelator" text="[% item.supplement %]">oth</mods:roleTerm>

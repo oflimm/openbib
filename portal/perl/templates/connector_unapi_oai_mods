@@ -173,7 +173,7 @@
             </mods:originInfo>
             [%- FOREACH item IN normdata.${"T0015"} %]
             <mods:language>
-                <mods:languageTerm type="code" authority="iso639-2">[% item.content %]</mods:languageTerm>
+                <mods:languageTerm type="code" authority="iso639-2">[%- item.content %]</mods:languageTerm>
                 [%- FOREACH script IN normdata.${"T0516"} %]
                 <mods:scriptTerm>[% script.content %]</mods:scriptTerm>
                 [%-END%]
@@ -204,9 +204,9 @@
                 </mods:titleInfo>
             </mods:relatedItem>
             [%- IF normdata.${"T0090"} %]
-            <mods:part order='[%- normdata.${"T0090"}.first.content % ]'>
+            <mods:part order='[%- normdata.${"T0090"}.first.content %]'>
             [%- ELSIF normdata.${"T0456"} %]
-            <mods:part order='[%- normdata.${"T0456"}.first.content % ]'>
+            <mods:part order='[%- normdata.${"T0456"}.first.content %]'>
             [%- ELSE -%]
             <mods:part>
             [%- END %]

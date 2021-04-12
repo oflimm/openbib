@@ -178,11 +178,11 @@ $(document).ready(function(){
 	    </div>
 [% END %]
 
-	    <div class="pr-3">
+	    <div class="pr-1">
 	      <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/to_bibsonomy" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy"><i class="fas fa-share-alt"></i> <span class="d-none d-sm-inline">BibSonomy</span></a>
 	    </div>       
 
-<div class="pr-1">
+	    <div class="pr-1">
  <div class="dropdown">
   <button class="btn btn-primary dropdown-toggle" type="button" id="citationMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     <i class="fas fa-quote-right"></i> [% msg.maketext("Zitat") %]
@@ -195,7 +195,7 @@ $(document).ready(function(){
     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#endnoteModal">[% msg.maketext("EndNote") %]</a>
   </div>
  </div>
-</div>
+             </div>
 
 <div class="pr-1">
     <button class="btn btn-primary sidebar-toggler" type="button" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-arrow-right"></i> <span class="d-none d-sm-inline">[% msg.maketext("Mehr") %]</span></button>

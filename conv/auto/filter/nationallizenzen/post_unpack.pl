@@ -55,5 +55,5 @@ system("cd $datadir/$pool ; cat meta.subject | $rootdir/filter/$pool/fix-subject
 
 print "### $pool: Erweiterung um Standort DE-38-USBFB \n";
 
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/remove-titles-without-urls.pl | $rootdir/filter/$pool/add-fields.pl | $rootdir/filter/$pool/add-availability.pl | | $rootdir/filter/$pool/exclude_from_wikipage.pl | $rootdir/filter/$pool/add-locationid.pl |  $rootdir/filter/$pool/process_rda_subfields.pl  | $rootdir/filter/$pool/map_rda_subfields.pl  > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/remove-titles-without-urls.pl | $rootdir/filter/$pool/add-fields.pl | $rootdir/filter/$pool/add-availability.pl | $rootdir/filter/$pool/exclude_from_wikipage.pl | $rootdir/filter/$pool/add-locationid.pl |  $rootdir/filter/$pool/process_rda_subfields.pl  | $rootdir/filter/$pool/map_rda_subfields.pl  > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 

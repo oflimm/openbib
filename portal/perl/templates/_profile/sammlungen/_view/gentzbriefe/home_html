@@ -107,7 +107,7 @@
 <div class="card-body p-0 ob-bg-tertiary">
 <h5 class="card-title p-3 mt-4 text-center">Gesamtverzeichnis Briefe von und an Friedrich Gentz</h5>
 <!-- <p class="card-text">Ansprechpartner, "Team Gentz"</p> -->
-<a class="btn btn-primary ml-3" href="[% path_prefix %]/[% config.get('info_loc') %]/ansprechpartner.html?l=[% lang %]">Mehr</a></div>
+<a class="btn btn-primary ml-3" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/[% config.get('titles_loc') %].html?l=[% lang %];facets=mediatype,year,provenance,person,corporatebody,language"">Mehr</a></div>
 </div>
 </div>
 
@@ -155,71 +155,53 @@
 -->
 
 </div>
+</div>
 
-<!--
-<hr/>
-
-<div class="container">
+<div class="container mt-5">
 
 <div class="row">
 <div class="col-md-6 pl-0 pr-0 text-center">
-  <img class="img-fluid" src="/images/openbib/views/jesuiten/jesuiten-besonderheiten-200pct.jpg" alt="Besonderheiten" />
+  <img class="img-fluid" src="/images/openbib/views/gentzbriefe/gentz-1.png" alt="Bedeutung" />
 </div>
 <div class="col-md-6 pl-5 pr-5 mt-5 pb-3">
-Auf diesem Portal werden die Ergebnisse des Projektes schon vor dessen Abschluss verfügbar gemacht und gebündelt. Den Kern machen dabei die Informationen aus dem Katalog der USB aus, die im Projekt überprüft und angereichert werden. Über die Suchfunktion sind alle Bücher durchsuchbar, die mit dem Sammlungsvermerk ‚Jesuitenbibliothek‘ markiert wurden. Über die Register können die Bücher nach festgelegten Kategorien geordnet werden – etwa nach dem Druckort, dem Zugangsjahr zur Jesuitenbibliothek oder nach Vorbesitzern. Ergänzt werden diese Listen durch Informationstexte
-</div>
-</div>
+<h4>Die Bedeutung der Sammlung Herterich</h4>
+<p>
+Text Text Text
+Text Text Text
+Text Text Text
+Text Text Text
+</p>
 
-<div class="row">
-<div class="col-md-6 pl-5 pr-5 mt-5 pb-3">
-<h4>Systematik und Aufstellung der jesuitischen Buchbestände</h4>
-<ul class="list-group">
-<li class="list-group-item">Kataloge der Jesuitenbibliothek</li>
-<li class="list-group-item">Die Bibliotheka Major: Struktur und Erfassung</li>
-<li class="list-group-item">Digitalisat des Katalogs von 1725</li>
-<li class="list-group-item">Sonderstandorte mit kurzer Beschreibung</li>
-</ul>
+<h5>
+PLUS: Bibliographie
+</h5>
 
 <a class="btn btn-primary mt-5" href="[% path_prefix %]/[% config.get('info_loc') %]/systematik.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a>
 
 </div>
-<div class="col-md-6 pl-0 pr-0 text-center">
-  <img class="img-fluid" src="/images/openbib/views/jesuiten/jesuiten-aufstellung-200pct.jpg" alt="Aufstellung" />
-</div>
-
-</div>
+</div><!-- End: row -->
 
 <div class="row">
-<div class="col-md-6 pl-0 pr-0 text-center">
-  <img class="img-fluid" src="/images/openbib/views/jesuiten/jesuiten-besonderheiten-200pct.jpg" alt="Besonderheiten" />
-</div>
-
 <div class="col-md-6 pl-5 pr-5 mt-5 pb-3">
-<h4>Weitere erfasste Besonderheiten der Bücher</h4>
-<ul class="list-group">
-<li class="list-group-item">Zugangsjahr</li>
-<li class="list-group-item">Feld 'Autoptischer Befund' mit Notizen, ehemaligen Bindeeinheiten, Einbänden, etc.</li>
-<li class="list-group-item">Reich bebildert: Beispiele aus den Büchern</li>
-</ul>
+<h4>Über Modern Academic Publishing (MAP)</h4>
 
-<a class="btn btn-primary mt-5" href="[% path_prefix %]/[% config.get('info_loc') %]/erschliessung.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a>
+<p>
+Text Text Text
+Text Text Text
+Text Text Text
+Text Text Text
+</p>
 
-</div>
-
-</div>
+<a class="btn btn-primary mt-5" href="[% path_prefix %]/[% config.get('info_loc') %]/systematik.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a>
 
 </div>
 
-<hr/>
--->
-<!--
-<div class="container pb-5 pt-3">
-<h2 class="text-center"><i class="fas fa-info"></i> [% msg.maketext("Aktuelles") %]</h2>
-
-<ul class="list-group pt-2">
-<li class="list-group-item"><a class="font-weight-bold" href="https://portal.uni-koeln.de/universitaet/aktuell/presseinformationen/detail/uni-koeln-erhaelt-bedeutende-muenzschenkung">Presseinformation der Universität zu Köln</a>, 08.07.2020: Uni Köln erhält bedeutende Münzschenkung</li>
-</ul>
-
+<div class="col-md-6 pl-0 pr-0 text-center">
+  <img class="img-fluid" src="/images/openbib/views/gentzbriefe/gentz-2.png" alt="MAP" />
 </div>
 
--->
+</div><!-- End: row -->
+
+
+</div><!-- End: container -->
+

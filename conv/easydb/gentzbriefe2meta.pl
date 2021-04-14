@@ -296,7 +296,11 @@ while (my $jsonline = <IN>){
 	
 	# Kategorie Mit Inhaltsrepraesentation: Volltext
 	if (@{$letter_ref->{'_nested:gentz_letter__transcriptions'}}){
-	    $is_inhalt_volltext = 1;
+	    foreach my $item_ref (@{$letter_ref->{'_nested:gentz_letter__transcriptions'}}){
+		if ($item_ref->{transscription_fulltext}){
+		    $is_inhalt_volltext = 1;
+		}
+	    }
 	}
 	
 	# Kategorie Mit Inhaltsrepraesentation: analog transkribiert
@@ -338,17 +342,6 @@ while (my $jsonline = <IN>){
 		$is_mikrofilm_digitalisiert = 1;
 	    }
 	};
-	foreach my $herterich_record_ref (@{$letter_ref->{'_nested:gentz_letter__records_collection_herterich'}}){
-	    
-	    eval {
-		if ($herterich_record_ref->{collection_herterich_type}{_standard}{1}{text}{'de-DE'} eq "Aktenordner"){
-		    $is_papierkopie_usb = 1;
-		}
-		elsif ($herterich_record_ref->{collection_herterich_type}{_standard}{1}{text}{'de-DE'} eq "Mikrofilm"){
-		    $is_mikrofilm_digitalisiert = 1;
-		}
-	    }
-	}
 
 	# 0334: Material
 	if ($is_papierkopie_usb){
@@ -417,7 +410,11 @@ while (my $jsonline = <IN>){
 	    }
 
 	    if (@${$letter_ref->{'_nested:gentz_letter__doublets'}}){
-		$is_druck_mehrfach = 1;
+		foreach my $item_ref (@${$letter_ref->{'_nested:gentz_letter__doublets'}}){
+		    if ($item_ref->{'doublet_publication'}){			
+			$is_druck_mehrfach = 1;
+		    }
+		}
 	    }	    
 	    
 	};

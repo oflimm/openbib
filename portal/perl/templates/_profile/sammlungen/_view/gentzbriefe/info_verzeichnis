@@ -1,18 +1,18 @@
 [%- IF representation == '' || representation == 'html' ;
     layout_param = {
 
-      'main_template' = 'info_map_html'
+      'main_template' = 'info_verzeichnis_html'
 #      'sidebar_template' = 'subnavigation'
 
       'active_menu' = 'info'
-      'active_submenu' = 'map'
+      'active_submenu' = 'editorial'
       'breadcrumb' = [
           {
              desc = msg.maketext('Start')
 	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
 	  },
 	  {
-	     desc = msg.maketext('Modern Academic Publishing')
+	     desc = msg.maketext('Briefverzeichnis')
 	     url  = '#'
 	     current = 1
 	  }

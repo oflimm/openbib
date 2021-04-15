@@ -732,8 +732,8 @@ convtab:
             'year': 1
             'yearstring': 1
             'freesearch': 1
-            facet:
-              'year': 1
+          facet:
+            'year': 1
       '0426':
         '':
           index:
@@ -818,8 +818,8 @@ convtab:
         '':
           index:
             'classificationstring': 1
-            facet:
-              'classification': 1
+          facet:
+            'classification': 1
       '0710':
         '':
           facet:
@@ -907,8 +907,8 @@ convtab:
             'freesearch': 1
             'subject': 1
             'subjectstring': 1
-            facet:
-              'subject': 1
+          facet:
+            'subject': 1
       '0927':
         '':
           index:

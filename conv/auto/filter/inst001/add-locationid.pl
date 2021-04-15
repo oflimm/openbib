@@ -246,7 +246,7 @@ while (<TITLE>){
     if (defined $title_ref->{fields}{'4802'}){
         foreach my $item (@{$title_ref->{fields}{'4802'}}){
             if ($item->{content} eq "88"){
-		my @tmp = ( "DE-Kn3-SL" );
+		my @tmp = ( "DE-Kn3-SL", "DE-38-ZBKUNST" );
 		foreach my $element (@{$element_ref}){
 		    push @tmp, $element unless ($element eq "DE-Kn3");
 		}

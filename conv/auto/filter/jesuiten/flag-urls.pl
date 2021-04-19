@@ -48,6 +48,8 @@ while (<>){
 	    }
 	}
     }
-
-    print encode_json $fields_ref, "\n";
+    
+    $record_ref->{fields} = $fields_ref;
+    
+    print encode_json $record_ref, "\n";
 }

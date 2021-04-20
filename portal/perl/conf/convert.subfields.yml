@@ -3975,6 +3975,12 @@ convtab:
             'freesearch': 1
           facet:
             'year': 1
+      '4317':
+        '':
+          index:
+            't4310': 1
+            'ft4310': 1
+            'freesearch': 1
       '4400':         # Verfuegbarkeit lendable_[immediate|order|weekend] oder visible_[immediate|order]
         '':
           index:

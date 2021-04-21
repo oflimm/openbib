@@ -150,8 +150,7 @@ $(document).ready(function(){
 [% IF searchquery.get_searchfield('freesearch').val && NOT searchquery.get_searchfield('freesearch').val.match(':') %]
 <div role="tabpanel" id="ob-searchresult_tab_yewno" class="tab-pane fade-in row flex-md-row">
 
-<div id="yewno-widget" style="height:420px;width:259px;"></div> <!-- position this where you want the widget to show up -->
-<script src="https://static.yewno.com/assets/widget/yewno.min.js"></script>
+<div id="yewno-widget" style="height:259px;width:620px;"></div> <!-- position this where you want the widget to show up -->
 <script>
 new YewnoDiscoverWidget({
 containerElementSelector: "#yewno-widget",

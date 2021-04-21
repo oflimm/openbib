@@ -36,10 +36,12 @@
   <li class="nav-item">
     <a class="nav-link[% IF current_profile == searchprofileid_of_website %] active[% END %]" role="tab" data-toggle="tab" href="#ob-searchresult_tab_website" id="ob-searchresult_website_li">[% msg.maketext("Webseite") %]</a>
   </li>
+[% IF searchquery.get_searchfield('freesearch').val && NOT searchquery.get_searchfield('freesearch').val.match(':') %]
   <li class="nav-item">
     <a class="nav-link" role="tab" data-toggle="tab" href="#ob-searchresult_tab_yewno" id="ob-searchresult_yewno_li">[% msg.maketext("Yewno") %]</a>
   </li>
 </ul>
+[% END%]
 
 <!-- [% current_profile %] - View: [% searchprofileid_of_books %] - EDS [% searchprofileid_of_eds %] - Web [% searchprofileid_of_website %] -->
 
@@ -145,6 +147,7 @@ $(document).ready(function(){
 [% END %]
 </div>
 
+[% IF searchquery.get_searchfield('freesearch').val && NOT searchquery.get_searchfield('freesearch').val.match(':') %]
 <div role="tabpanel" id="ob-searchresult_tab_yewno" class="tab-pane fade-in row flex-md-row">
 
 <div id="yewno-widget" style="height:420px;width:259px;"></div> <!-- position this where you want the widget to show up -->
@@ -152,11 +155,12 @@ $(document).ready(function(){
 <script>
 new YewnoDiscoverWidget({
 containerElementSelector: "#yewno-widget",
-urlSearchParams: ["fs"], // add your search engine's URL search params
+query: "[% searchquery.get_searchfield('freesearch').val.replace('"',' ') | html %]",
 languages: ["deu"], // available languages eng,zho,deu
 });
 </script>
 
 </div>
+[% END %]
 
 </div>

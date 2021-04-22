@@ -163,10 +163,10 @@ sub process {
         
         foreach my $item_ref (@{$fields_ref->{$field}}) {
             next unless (defined $item_ref->{content});
-            
-            if (defined $inverted_ref->{$field}->{index}) {
-                foreach my $searchfield (keys %{$inverted_ref->{$field}->{index}}) {
-                    my $weight = $inverted_ref->{$field}->{index}{$searchfield};
+	    my $subfield         = ($item_ref->{subfield})?$item_ref->{subfield}:'';
+            if (defined $inverted_ref->{$field}{$subfield}->{index}) {
+                foreach my $searchfield (keys %{$inverted_ref->{$field}{$subfield}->{index}}) {
+                    my $weight = $inverted_ref->{$field}{$subfield}->{index}{$searchfield};
                     
                     my $hash_ref = {};
                     

@@ -1938,14 +1938,24 @@ a.ext {
     color:#990000;
 }
 
+@media only screen and (max-width: 1500px) {
 
+    #ob-startpage #ob-mainsearchform .container {
+	margin: 0 auto;
+	max-width: 75%;
+    }
+}
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 1200px) {
 
     #ob-startpage #ob-mainsearchform .container {
 	margin: 0 auto;
 	max-width: 90%;
     }
+}
+
+@media only screen and (max-width: 800px) {
+
     
      /* Force table to not be like tables anymore */
      .table-flippable table, 

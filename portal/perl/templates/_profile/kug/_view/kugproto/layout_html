@@ -66,8 +66,8 @@
    <!-- End: Sidebar -->
 
    <!-- Begin: Maincontent -->
-    <div class="row">
-      <div id="ob-maincontent" class="col-md-12" >
+    <div  [% IF layout_param.css_id %]id="[% layout_param.css_id %]" [% END %]>
+      <div id="ob-maincontent" >
         [% PROCESS common/subtemplate name=layout_param.main_template %]
       </div>
     </div>

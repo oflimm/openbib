@@ -213,9 +213,9 @@
 
     #ob-startpage .landing-page-img {
 /*	background:url('/images/openbib/views/kugproto/kugproto_startpages.jpg') left 100% no-repeat; */
-	background:url('/images/openbib/views/kugproto/Treppenhaus02_V2.jpg') left 100% no-repeat;
+/*	background:url('/images/openbib/views/kugproto/Treppenhaus02_V2.jpg') left 100% no-repeat; 
 	background-position: 10% 30%;
-	background-size: cover;
+	background-size: cover; */
 	height: 400px !important;
 	border-bottom-style: solid;
 	border-bottom-color: #767171;
@@ -386,6 +386,8 @@
     .container-fluid {
 	padding-left: 0px;
 	padding-right: 0px;
+	z-index:100;
+	position:relative;
     }
 
     #ob-navbar_top {

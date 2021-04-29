@@ -129,6 +129,7 @@
      </ul>
      </nav>
   </div>
+  <!--
    <h2 class="uzk15__smallerheadlines">Unsere Partner machen uns stark!</h2> 
     
     <div class="uzk15__partner">
@@ -140,7 +141,7 @@
      </a>
     </div>
      <h2 class="uzk15__smallerheadlines uzk15__bottom"><a href="https://www.ub.uni-koeln.de/ueber_uns/kulturpartner/index_ger.html">...und viele weitere Kulturpartner und Förderer.</a></h2>
-
+-->
     
   </div>
   </div>
@@ -279,6 +280,7 @@ $(document).ready(function(){
    <small>© Universität zu Köln</small><br>
    <a href="https://www.portal.uni-koeln.de/9468.html">Datenschutzerklärung</a><br>
   </div>
+  <!--
   <div class="uzk15__seperator"></div>
   <div class="uzk15__accreditation">
    <h2 class="uzk15__smallerheadlines">Qualitätslabels der Universität zu Köln:</h2>
@@ -297,6 +299,7 @@ $(document).ready(function(){
     </dl>
    </div>
   </div>
+  -->
  </div>
  </div>
  </div>

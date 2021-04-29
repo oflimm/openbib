@@ -164,6 +164,7 @@ $(document).ready(function(){
 });
 </script>
 
+<!--
  <div class="uzk15__footersection3">
   <div class="uzk15__mainwrapper">
    <div class="uzk15__grid_100">
@@ -280,6 +281,7 @@ $(document).ready(function(){
    <small>© Universität zu Köln</small><br>
    <a href="https://www.portal.uni-koeln.de/9468.html">Datenschutzerklärung</a><br>
   </div>
+  -->
   <!--
   <div class="uzk15__seperator"></div>
   <div class="uzk15__accreditation">
@@ -299,12 +301,14 @@ $(document).ready(function(){
     </dl>
    </div>
   </div>
-  -->
- </div>
- </div>
- </div>
-<div>
 
+ </div>
+ </div>
+
+  </div>
+
+  <div>
+  -->
 </div>
 </footer>
 [% END %]

@@ -87,7 +87,7 @@ $(function () {
 }
 
 #image-area {
-position: relative;
+  position: relative;	
 }
 
 .animated-image {

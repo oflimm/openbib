@@ -1,0 +1,8 @@
+<div id="yewno-person-widget" style="height:420px;width:259px;"></div> <!-- position this where you want the widget to show up -->
+<script>
+new YewnoDiscoverWidget({
+containerElementSelector: "#yewno-person-widget",
+query: "[% normset.${"P0800"}.first.content.replace('"',' ').split(', ').reverse.join(' ') %]",
+languages: ["deu","eng"], // available languages eng,zho,deu
+});
+</script>

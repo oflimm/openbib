@@ -1,22 +1,18 @@
 [%- IF representation == '' || representation == 'html' ;
     layout_param = {
 
-      'main_template' = 'info_sammlung_html'
+      'main_template' = 'info_map_html'
 #      'sidebar_template' = 'subnavigation'
 
       'active_menu' = 'info'
-      'active_submenu' = 'sammlung'
+      'active_submenu' = 'map'
       'breadcrumb' = [
           {
              desc = msg.maketext('Start')
 	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
 	  },
-          {
-             desc = msg.maketext('Einführung')
-	     url  = '#'
-	  },
 	  {
-	     desc = msg.maketext('Sammlung Herterich')
+	     desc = msg.maketext('Modern Academic Publishing')
 	     url  = '#'
 	     current = 1
 	  }

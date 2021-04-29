@@ -193,8 +193,18 @@ convtab:
             'person': 1
             'personstring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'person': 1
+            'personstring': 1
+            'freesearch': 1
       '0830':         # Verweisform
         '':
+          index:
+            'person': 1
+            'personstring': 1
+            'freesearch': 1
+        ' ':
           index:
             'person': 1
             'personstring': 1
@@ -206,8 +216,18 @@ convtab:
             'person': 1
             'personstring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'person': 1
+            'personstring': 1
+            'freesearch': 1
       '0830':         # Verweisform
         '':
+          index:
+            'person': 1
+            'personstring': 1
+            'freesearch': 1
+        ' ':
           index:
             'person': 1
             'personstring': 1
@@ -219,8 +239,18 @@ convtab:
             'corporatebody': 1
             'corporatebodystring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0810':         # Verweisform
         '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
+        ' ':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
@@ -231,14 +261,29 @@ convtab:
             'corporatebody': 1
             'corporatebodystring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0881':         # Abkuerzung der Ansetzung
         '':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0850':         # Frueherer/Spaeterer Name
         '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
+        ' ':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
@@ -250,8 +295,18 @@ convtab:
             'corporatebody': 1
             'corporatebodystring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0810':         # Verweisform
         '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
+        ' ':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
@@ -262,14 +317,29 @@ convtab:
             'corporatebody': 1
             'corporatebodystring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0881':         # Abkuerzung der Ansetzung
         '':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0850':         # Frueherer/Spaeterer Name
         '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
+        ' ':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
@@ -288,8 +358,18 @@ convtab:
             'classification': 1
             'classificationstring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'classification': 1
+            'classificationstring': 1
+            'freesearch': 1
       '0801':         # Ansetzung
         '':
+          index:
+            'classification': 1
+            'classificationstring': 1
+            'freesearch': 1
+        ' ':
           index:
             'classification': 1
             'classificationstring': 1
@@ -300,8 +380,18 @@ convtab:
             'classification': 1
             'classificationstring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'classification': 1
+            'classificationstring': 1
+            'freesearch': 1
       '0840':         # Verweisform
         '':
+          index:
+            'classification': 1
+            'classificationstring': 1
+            'freesearch': 1
+        ' ':
           index:
             'classification': 1
             'classificationstring': 1
@@ -313,8 +403,18 @@ convtab:
             'subject': 1
             'subjectstring': 1
             'freesearch': 20
+        ' ':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 20
       '0830':         # Verweisform
         '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
+        ' ':
           index:
             'subject': 1
             'subjectstring': 1
@@ -325,14 +425,29 @@ convtab:
             'subject': 1
             'subjectstring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
       '0850':         # Uebergeordnete Bezeichnung
         '':
           index:
             'subject': 1
             'subjectstring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
       '0870':         # Frueher
         '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
+        ' ':
           index:
             'subject': 1
             'subjectstring': 1
@@ -344,8 +459,18 @@ convtab:
             'subject': 1
             'subjectstring': 1
             'freesearch': 20
+        ' ':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 20
       '0830':         # Verweisform
         '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
+        ' ':
           index:
             'subject': 1
             'subjectstring': 1
@@ -356,14 +481,29 @@ convtab:
             'subject': 1
             'subjectstring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
       '0850':         # Uebergeordnete Bezeichnung
         '':
           index:
             'subject': 1
             'subjectstring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
       '0870':         # Frueher
         '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
+        ' ':
           index:
             'subject': 1
             'subjectstring': 1
@@ -592,8 +732,8 @@ convtab:
             'year': 1
             'yearstring': 1
             'freesearch': 1
-            facet:
-              'year': 1
+          facet:
+            'year': 1
       '0426':
         '':
           index:
@@ -678,8 +818,8 @@ convtab:
         '':
           index:
             'classificationstring': 1
-            facet:
-              'classification': 1
+          facet:
+            'classification': 1
       '0710':
         '':
           facet:
@@ -767,8 +907,8 @@ convtab:
             'freesearch': 1
             'subject': 1
             'subjectstring': 1
-            facet:
-              'subject': 1
+          facet:
+            'subject': 1
       '0927':
         '':
           index:
@@ -1174,8 +1314,18 @@ convtab:
             'person': 1
             'personstring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'person': 1
+            'personstring': 1
+            'freesearch': 1
       '0830':         # Verweisform
         '':
+          index:
+            'person': 1
+            'personstring': 1
+            'freesearch': 1
+        ' ':
           index:
             'person': 1
             'personstring': 1
@@ -1216,8 +1366,18 @@ convtab:
             'corporatebody': 1
             'corporatebodystring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0810':         # Verweisform
         '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
+        ' ':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
@@ -1228,14 +1388,29 @@ convtab:
             'corporatebody': 1
             'corporatebodystring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0881':         # Abkuerzung der Ansetzung
         '':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0850':         # Frueherer/Spaeterer Name
         '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
+        ' ':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
@@ -1855,17 +2030,17 @@ convtab:
      #'0014': 1        # Signatur (in holding vorhanden)
      #'0015': 1        # Sprache
      #'0016': 1        # Standort (in holding vorhanden)
-      '0027': 1        # Art des Werkes (V oder Leer = Verfasser, S=Sachtitelwerk, U=Urheberwerk)
+     #'0027': 1        # Art des Werkes (V oder Leer = Verfasser, S=Sachtitelwerk, U=Urheberwerk)
      #'0028': 1        # Bandkennzeichen (Leer = Stuecktitel, B = Band, G = Gesamtwerk/Ueberordnung)
-      '0036': 1        # Erscheinungsform
-      '0038': 1        # Veroeffentlichungsart
-      '0042': 1        # Publikationsstatus
+     #'0036': 1        # Erscheinungsform
+     #'0038': 1        # Veroeffentlichungsart
+     #'0042': 1        # Publikationsstatus
       '0150': 1        # HBZ Personen-ID
       '0453': 1        # Id des GT
       '0454': 1        # Ansetzungsform GT
      #'0572': 1        # ZDB-ID
       '0715': 1        # Unbekannt
-      '0800': 1        # Medianart (TODO: spaeter pro Pool Listen konfigurierbar machen)
+     #'0800': 1        # Medienart
       '0802': 1        # Medien-Zustand
       '0905': 1        # RSWK-ID
       '0910': 1        # RSWK-ID
@@ -1936,7 +2111,7 @@ convtab:
       '3006': 1        # IntNotLok (z.B. retro)
       '3007': 1        # Unbekannt (Standort?)
       '3750': 1        # Nicht mehr existent
-      '4711': 1        # Unbekannt
+     #'4711': 1        # Unbekannt
      #'4712': 1        # Markierung Econbiz (wi, so, wiso)
      #'4715': 1        # Markierung EDZ
      #'4717': 1        # Markierung Fachbibliothek Versicherungswissenschaft
@@ -1953,8 +2128,18 @@ convtab:
             'person': 1
             'personstring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'person': 1
+            'personstring': 1
+            'freesearch': 1
       '0830':         # Verweisform
         '':
+          index:
+            'person': 1
+            'personstring': 1
+            'freesearch': 1
+        ' ':
           index:
             'person': 1
             'personstring': 1
@@ -1970,8 +2155,18 @@ convtab:
             'person': 1
             'personstring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'person': 1
+            'personstring': 1
+            'freesearch': 1
       '0830':         # Verweisform
         '':
+          index:
+            'person': 1
+            'personstring': 1
+            'freesearch': 1
+        ' ':
           index:
             'person': 1
             'personstring': 1
@@ -1987,8 +2182,18 @@ convtab:
             'corporatebody': 1
             'corporatebodystring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0810':         # Verweisform
         '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
+        ' ':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
@@ -1999,14 +2204,29 @@ convtab:
             'corporatebody': 1
             'corporatebodystring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0881':         # Abkuerzung der Ansetzung
         '':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0850':         # Frueherer/Spaeterer Name
         '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
+        ' ':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
@@ -2022,13 +2242,28 @@ convtab:
             'corporatebody': 1
             'corporatebodystring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0810':         # Verweisform
         '':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0812':         # Abkuerzung der Verweisform
+        ' ':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
         '':
           index:
             'corporatebody': 1
@@ -2040,8 +2275,18 @@ convtab:
             'corporatebody': 1
             'corporatebodystring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
       '0850':         # Frueherer/Spaeterer Name
         '':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
+        ' ':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
@@ -2052,6 +2297,11 @@ convtab:
           index:
             'gnd': 1
       '0800':         # Ansetzung
+        ' ':
+          index:
+            'classification': 1
+            'classificationstring': 1
+            'freesearch': 1
         '':
           index:
             'classification': 1
@@ -2063,14 +2313,29 @@ convtab:
             'classification': 1
             'classificationstring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'classification': 1
+            'classificationstring': 1
+            'freesearch': 1
       '0830':         # Stichwort
         '':
           index:
             'classification': 1
             'classificationstring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'classification': 1
+            'classificationstring': 1
+            'freesearch': 1
       '0840':         # Verweisform
         '':
+          index:
+            'classification': 1
+            'classificationstring': 1
+            'freesearch': 1
+        ' ':
           index:
             'classification': 1
             'classificationstring': 1
@@ -2086,8 +2351,18 @@ convtab:
             'subject': 1
             'subjectstring': 1
             'freesearch': 20
+        ' ':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 20
       '0830':         # Verweisform
         '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
+        ' ':
           index:
             'subject': 1
             'subjectstring': 1
@@ -2098,14 +2373,29 @@ convtab:
             'subject': 1
             'subjectstring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
       '0850':         # Uebergeordnete Bezeichnung
         '':
           index:
             'subject': 1
             'subjectstring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
       '0870':         # Frueher
         '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
+        ' ':
           index:
             'subject': 1
             'subjectstring': 1
@@ -2121,8 +2411,18 @@ convtab:
             'subject': 1
             'subjectstring': 1
             'freesearch': 20
+        ' ':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 20
       '0830':         # Verweisform
         '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
+        ' ':
           index:
             'subject': 1
             'subjectstring': 1
@@ -2133,14 +2433,29 @@ convtab:
             'subject': 1
             'subjectstring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
       '0850':         # Uebergeordnete Bezeichnung
         '':
           index:
             'subject': 1
             'subjectstring': 1
             'freesearch': 1
+        ' ':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
       '0870':         # Frueher
         '':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
+        ' ':
           index:
             'subject': 1
             'subjectstring': 1
@@ -3660,6 +3975,12 @@ convtab:
             'freesearch': 1
           facet:
             'year': 1
+      '4317':
+        '':
+          index:
+            't4310': 1
+            'ft4310': 1
+            'freesearch': 1
       '4400':         # Verfuegbarkeit lendable_[immediate|order|weekend] oder visible_[immediate|order]
         '':
           index:
@@ -7193,16 +7514,29 @@ convtab:
           index:
             'classification': 1
             'classificationstring': 1
+        ' ':
+          index:
+            'classification': 1
+            'classificationstring': 1
       '0801':         # Ansetzung
         '':
+          index:
+            'classification': 1
+        ' ':
           index:
             'classification': 1
       '0830':         # Stichwort
         '':
           index:
             'classification': 1
+        ' ':
+          index:
+            'classification': 1
       '0840':         # Verweisform
         '':
+          index:
+            'classification': 1
+        ' ':
           index:
             'classification': 1
     inverted_title:

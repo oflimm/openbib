@@ -147,6 +147,10 @@
 	padding-left: 25px;
     }
 
+    #ob-startpage #ob-maincontent {
+	padding-left: 0px;
+    }
+    
     .ob-nav_description a, .ob-nav_description a:hover {
 	color: #fff;
     }
@@ -200,34 +204,31 @@
     .bg-color {
 	color: #fff;
     }
-
+    
     #ob-startpage {
 	margin-right: 0px;
 	padding-right: 0px;
-	/*	background:url('/images/openbib/views/jesuiten/Triumph_St_Ignatius_Pozzo.jpg') 100% no-repeat;	*/
-/*	background:url('/images/openbib/views/muenzen/Muenzenhintergrund1700x991px.jpg') left 100% no-repeat;
-	background-position: 10% 30%;
-	background-size: cover;
-	height: 400px !important; */
+	padding-bottom: 0px;
     }
 
+    #ob-startpage .landing-page-img {
+/*	background:url('/images/openbib/views/kugproto/kugproto_startpages.jpg') left 100% no-repeat; */
+/*	background:url('/images/openbib/views/kugproto/Treppenhaus02_V2.jpg') left 100% no-repeat; 
+	background-position: 10% 30%;
+	background-size: cover; */
+	height: 500px !important;
+	border-bottom-style: solid;
+	border-bottom-color: #767171;
+        border-bottom-width: 5px;
+    }
+
+    
     hr {
 	border-bottom-style: solid;
 	border-bottom-color: #253746;
         border-bottom-width: 5px;	
     }
     
-    #ob-startpage .landing-page-img {
-	padding-bottom: 40px;
-	background:url('/images/openbib/views/muenzenproto/Muenzenhintergrund1700x991px.jpg') left 100% no-repeat;
-	background-position: 10% 30%;
-	background-size: cover;
-	height: 300px !important;
-	border-bottom-style: solid;
-	border-bottom-color: #253746;
-        border-bottom-width: 5px;
-
-    }
 
     .ob-bg {
 	background-color:  #3e566c;
@@ -385,6 +386,8 @@
     .container-fluid {
 	padding-left: 0px;
 	padding-right: 0px;
+	z-index:100;
+	position:relative;
     }
 
     #ob-navbar_top {
@@ -1004,9 +1007,18 @@
 	background-color: #fff;
     }
 
+    
+    #ob-startpage #ob-mainsearchform {
+	padding-top: 0px;
+    }
 
     #ob-mainsearchform .container {
 	max-width: 99%;
+    }
+    
+    #ob-startpage #ob-mainsearchform .container {
+	margin: 0 auto;
+	max-width: 60%;
     }
     
     div .ob-breadcrumb .list-group {
@@ -1929,10 +1941,25 @@ a.ext {
     color:#990000;
 }
 
+@media only screen and (max-width: 1500px) {
 
+    #ob-startpage #ob-mainsearchform .container {
+	margin: 0 auto;
+	max-width: 75%;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+
+    #ob-startpage #ob-mainsearchform .container {
+	margin: 0 auto;
+	max-width: 90%;
+    }
+}
 
 @media only screen and (max-width: 800px) {
-     
+
+    
      /* Force table to not be like tables anymore */
      .table-flippable table, 
      .table-flippable thead, 
@@ -1986,12 +2013,13 @@ a.ext {
     .col-md-3 {
 	margin-right: 0px;
 	padding-right: 0px;
-	padding-left: 20px; 
+	padding-left: 5px; 
     }
 
     .col-md-9 {
 	margin-right: 0px;
 	padding-right: 5px;
+	padding-left: 0px;
     }
 
     /* no flyout

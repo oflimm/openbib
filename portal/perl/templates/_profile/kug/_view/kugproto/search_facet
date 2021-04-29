@@ -1161,6 +1161,30 @@ durch zus&auml;tzliche Worte weiter eingrenzen.") %]
 </p>
 
 [% END # facets=none%]
+
+[% IF searchquery.get_searchfield('freesearch').val && NOT searchquery.get_searchfield('freesearch').val.match(':') %]
+
+
+<div class="ob-category_header">[% msg.maketext("Yewno") %]</div>
+
+<div style="display: flex;flex-direction: column;">
+
+<div id="yewno-facet-widget[% idsuffix %]" style="height:400px;width:259px;"></div> <!-- position this where you want the widget to show up -->
+<script>
+new YewnoDiscoverWidget({
+height: 420,
+width: 259,
+containerElementSelector: "#yewno-facet-widget[% idsuffix %]",
+query: "[% searchquery.get_searchfield('freesearch').val.replace('"',' ') | html %]",
+languages: ["deu"], // available languages eng,zho,deu
+});
+</script>
+
+</div>
+[% END %]
+
+
+
 <div class="ob-facets ob-facets_dbinfo">
 
 <!-- Anfang Elib DBIS-Empfehlungen -->

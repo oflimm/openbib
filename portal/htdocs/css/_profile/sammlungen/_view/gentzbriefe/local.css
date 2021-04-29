@@ -155,18 +155,18 @@
 
     hr {
 	border-bottom-style: solid;
-	border-bottom-color: #253746;
+	border-bottom-color: #767171;
         border-bottom-width: 5px;	
     }
     
     #ob-startpage .landing-page-img {
 	padding-bottom: 40px;
 	background:url('/images/openbib/views/gentzbriefe/gentzbg.png') left 100% no-repeat;
-/*	background-position: 10% 30%;*/
+*	background-position: 10% 30%;
 	background-size: cover;
-	height: 500px !important;
+	height: 300px !important;
 	border-bottom-style: solid;
-	border-bottom-color: #253746;
+	border-bottom-color: #767171;
         border-bottom-width: 5px;
 
     }
@@ -180,9 +180,13 @@
     }
 
     .ob-bg-secondary {
-	background-color: #253746;
+	background-color: #767171;
     }
-    
+
+    .ob-bg-tertiary {
+	background-color: #ed7d31;
+    }
+
     .ob-border {
 	border-color: #253746;
     }
@@ -226,7 +230,7 @@
     }
 
     #ob-navbar_top {
-	background-color: #253746;
+	background-color: #767171;;
 	z-index: 1000;
     }
 
@@ -267,6 +271,14 @@
 	color: #fff;
     }
 
+    #ob-startpage .card-body h5.card-title {
+	height:100px; !important;
+    }
+
+    #ob-startpage .card-body .card-text {
+	height:130px; !important;
+    }
+    
     .ob-searchbox li .dropdown-item {
 	color: #000;
     }

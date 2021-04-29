@@ -462,7 +462,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 
 [% IF facets.custom1 || facets.custom2 %]
 <div class="ob-category_header ob-bg text-white pt-1 pl-2 pr-2 mb-3">
-[% msg.maketext("Datensätze") %]
+[% msg.maketext("Briefe") %]
 </div>
 [% END %]
 

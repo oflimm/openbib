@@ -14,7 +14,7 @@
      hide_hit    = 0;
      hide_detail = 0;
 
-     IF pda_hide_detail.defined(record.database);
+     IF pda_hide_detail.defined(record.database) && NOT user.has_role('uzk') && NOT user.has_role('student') && NOT user.has_role('erwerbung') && NOT user.has_role('usb') && NOT user.has_role('librarian') && NOT user.is_admin && NOT user.is_viewadmin ;
        hide_detail = 1;     
      ELSIF record.database == 'eds';
        eds_hide_hit = {
@@ -65,7 +65,7 @@
             hide_hit = 1;
         ELSIF eds_hide_detail.defined(edsdb) && NOT user.has_role('uzk') && NOT user.has_role('student') && NOT user.is_admin && NOT user.is_viewadmin ;
 	    hide_detail = 1;
-        ELSIF pda_hide_detail.defined(edsdb) && NOT user.has_role('uzk') && NOT user.has_role('student') && NOT user.is_admin && NOT user.is_viewadmin ;
+        ELSIF pda_hide_detail.defined(edsdb) && NOT user.has_role('uzk') && NOT user.has_role('student') && NOT user.has_role('erwerbung') && NOT user.has_role('usb') && NOT user.has_role('librarian') && NOT user.is_admin && NOT user.is_viewadmin ;
             hide_detail = 1;
         END;
      END;     

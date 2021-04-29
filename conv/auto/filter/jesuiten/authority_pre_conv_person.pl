@@ -2,11 +2,11 @@
 
 #####################################################################
 #
-#  post_unpack.pl
+#  authority_pre_conv_person.pl
 #
 #  Bearbeitung der Titeldaten
 #
-#  Dieses File ist (C) 2005-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2016 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie k"onnen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -37,23 +37,9 @@ my $pool          = $ARGV[0];
 
 my $config        = new OpenBib::Config;
 
-my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
-
-my $baseurl       = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath;
-
 my $rootdir       = $config->{'autoconv_dir'};
-my $pooldir       = $rootdir."/pools";
 my $datadir       = $rootdir."/data";
-my $konvdir       = $config->{'conv_dir'};
 
-my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
-my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
+print "### $pool: Entfernen aller nicht GND-Fremdnummern sowie des (DE-588) GND-Prefixes aus Normdatei person\n";
 
-print "### $pool: Korrigiere Schlagworte bzgl. GND\n";
-
-system("cd $datadir/$pool ; cat meta.subject | $rootdir/filter/$pool/fix-subjects.pl > meta.subject.tmp ; mv -f meta.subject.tmp meta.subject");
-
-print "### $pool: Erweiterung um Standort DE-38-USBFB \n";
-
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/remove-titles-without-urls.pl | $rootdir/filter/$pool/add-fields.pl | $rootdir/filter/$pool/add-availability.pl | $rootdir/filter/$pool/exclude_from_wikipage.pl | $rootdir/filter/$pool/add-locationid.pl |  $rootdir/filter/$pool/process_rda_subfields.pl  | $rootdir/filter/$pool/map_rda_subfields.pl  > meta.title.tmp ; mv -f meta.title.tmp meta.title");
-
+system("cd $datadir/$pool ; cat authority_meta.person | $rootdir/filter/$pool/fix-gnd.pl > authority_meta.person.tmp ; mv -f authority_meta.person.tmp authority_meta.person");

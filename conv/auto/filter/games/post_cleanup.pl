@@ -2,11 +2,9 @@
 
 #####################################################################
 #
-#  alt_remote.pl
+#  post_cleanup.pl
 #
-#  iKonvertieren in das Meta-Format
-#
-#  Dieses File ist (C) 2003-2020 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -42,10 +40,12 @@ my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
 my $confdir       = $config->{'base_dir'}."/conf";
 my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
-my $mab2metaexe   = "$konvdir/mab2meta.pl";
+my $simplecsv2metaexe  = "$konvdir/simplecsv2meta.pl";
 
 my $pool          = $ARGV[0];
+my $dbinfo = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
+my $filename = $dbinfo->titlefile;
 
-print "### $pool: Konvertieren\n";
-system("cd $pooldir/$pool ; rm *.bdbrecno ; rm meta.* ; gunzip -c pool.dat.gz |  $rootdir/filter/$pool/fix-hbz.pl > pool.dat");
-system("cd $pooldir/$pool; $mab2metaexe --titlefile=pool.dat --configfile=/opt/openbib/conf/$pool.yml; gzip meta.* ; rm pool.dat *.bdbrecno ");
+print "### $pool: Metriken erstellen und cachen\n";
+system("/opt/openbib/bin/gen_bestof.pl --database=games --type=14 --field=0517");
+system("/opt/openbib/bin/gen_bestof.pl --database=games --type=14 --field=0800");

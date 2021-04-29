@@ -2,11 +2,11 @@
 
 #####################################################################
 #
-#  pre_unpack.pl
+#  authority_pre_conv_subject.pl
 #
-#  Bearbeitung der Titeldaten
+#  Bearbeitung der Schlagwort-Normdaten
 #
-#  Dieses File ist (C) 2005-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2016 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie k"onnen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -37,18 +37,9 @@ my $pool          = $ARGV[0];
 
 my $config        = new OpenBib::Config;
 
-my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
-
-my $baseurl       = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath;
-
 my $rootdir       = $config->{'autoconv_dir'};
-my $pooldir       = $rootdir."/pools";
-my $konvdir       = $config->{'conv_dir'};
+my $datadir       = $rootdir."/data";
 
-my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
-my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
+print "### $pool: Entfernen aller nicht GND-Fremdnummern sowie des (DE-588) GND-Prefixes aus Normdatei subject\n";
 
-
-print "### $pool: Erweiterung um Zugriffsinformation online\n";
-
-system("cd $pooldir/$pool ; zcat meta.title.gz| $rootdir/filter/$pool/remove-titles-without-urls.pl | $rootdir/filter/$pool/add-fields.pl | $rootdir/filter/$pool/add-availability.pl | gzip > meta.title.gz.tmp ; mv -f meta.title.gz.tmp meta.title.gz");
+system("cd $datadir/$pool ; cat authority_meta.subject | $rootdir/filter/$pool/fix-gnd.pl > authority_meta.subject.tmp ; mv -f authority_meta.subject.tmp authority_meta.subject");

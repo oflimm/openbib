@@ -152,20 +152,32 @@
                 [%- type_is_set = "true" %]
                 [%- END %]
                 [%- END %]
-                [%- IF type_is_set =="false" %]
-                [%- IF normdata.${"T0572"} || normdata.${"T0543"} || normdata.${"T5002"}%]
+                [%- IF normdata.${"T0572"} || normdata.${"T0543"} || normdata.${"T5002"} && type_is_set == 'false' %]
                 <mods:issuance>serial</mods:issuance>
-                [%- ELSE -%]
+                [%- type_is_set = "true" %]
+                [%- END %]
+                [%- IF type_is_set == 'false' -%]
                 <mods:issuance>monographic</mods:issuance>
+                [%- END %]
+                [%- IF normdata.${"T0036"} %]
+                [%- IF normdata.${"T0036"}.first.content == "p"%]
+                <mods:genre>Zeitschrift</mods:genre>
+                [%- ELSIF normdata.${"T0036"}.first.content == "z" %]
+                <mods:genre>Zeitung</mods:genre>
+                [%- END %]
+                [%- IF super.fields.${'T0036'}.first.content == "z" %]
+                <mods:genre>Zeitschriftenband</mods:genre>
                 [%- END %]
                 [%- END %]
                 [%- FOREACH item IN normdata.${"T0412"} %]
                 <mods:publisher>[% item.content %]</mods:publisher>
                 [%- END %]
                 [%- IF normdata.${"T0425"} %]
-                <mods:dateIssued keyDate="yes" encoding="iso8601">[% normdata.${"T0425"}.first.content%]</mods:dateIssued>
+                <mods:dateIssued keyDate="yes" encoding="iso8601">[% normdata.${"T0425"}.first.content%]
+                </mods:dateIssued>
                 [%- ELSIF normdata.${"T0424"} %]
-                <mods:dateIssued keyDate="yes" encoding="iso8601">[% normdata.${"T0424"}.first.content%]</mods:dateIssued>
+                <mods:dateIssued keyDate="yes" encoding="iso8601">[% normdata.${"T0424"}.first.content%]
+                </mods:dateIssued>
                 [%- END %]
                 [%- IF normdata.${"T0403"} %]
                 <mods:edition>[%- normdata.${"T0403"}.first.content %]</mods:edition>
@@ -205,34 +217,34 @@
             </mods:relatedItem>
             [%- IF normdata.${"T0090"} %]
             <mods:part order='[%- normdata.${"T0090"}.first.content %]'>
-            [%- ELSIF normdata.${"T0456"} %]
-            <mods:part order='[%- normdata.${"T0456"}.first.content %]'>
-            [%- ELSE -%]
-            <mods:part>
-            [%- END %]
-                <mods:detail type="volume">
-                    [%- IF normdata.${"T0089"} %]
-                    <mods:number>[% normdata.${"T0089"}.first.content %]</mods:number>
-                    [%- ELSIF normdata.${"T0455"} %]
-                    <mods:number>[% normdata.${"T0455"}.first.content %]</mods:number>
+                [%- ELSIF normdata.${"T0456"} %]
+                <mods:part order='[%- normdata.${"T0456"}.first.content %]'>
+                    [%- ELSE -%]
+                    <mods:part>
+                        [%- END %]
+                        <mods:detail type="volume">
+                            [%- IF normdata.${"T0089"} %]
+                            <mods:number>[% normdata.${"T0089"}.first.content %]</mods:number>
+                            [%- ELSIF normdata.${"T0455"} %]
+                            <mods:number>[% normdata.${"T0455"}.first.content %]</mods:number>
+                            [%- END %]
+                        </mods:detail>
+                    </mods:part>
                     [%- END %]
-                </mods:detail>
-            </mods:part>
-            [%- END %]
-            [%- IF NOT super && normdata.${"T0451"} -%]
-            <mods:relatedItem type="series">
-                <mods:titleInfo>
-                    <mods:title>[% normdata.${"T0451"}.first.content %]</mods:title>
-                </mods:titleInfo>
-                [%- IF normdata.${"T0455"} %]
-                <mods:part>
-                    <mods:detail type="volume">
-                        <mods:number>[% normdata.${"T0455"}.first.content %]</mods:number>
-                    </mods:detail>
-                </mods:part>
-                [%- END %]
-            </mods:relatedItem>
-            [%END%]
+                    [%- IF NOT super && normdata.${"T0451"} -%]
+                    <mods:relatedItem type="series">
+                        <mods:titleInfo>
+                            <mods:title>[% normdata.${"T0451"}.first.content %]</mods:title>
+                        </mods:titleInfo>
+                        [%- IF normdata.${"T0455"} %]
+                        <mods:part>
+                            <mods:detail type="volume">
+                                <mods:number>[% normdata.${"T0455"}.first.content %]</mods:number>
+                            </mods:detail>
+                        </mods:part>
+                        [%- END %]
+                    </mods:relatedItem>
+                    [%- END %]
         </mods>
     </record>
 </OAI-PMH>

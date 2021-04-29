@@ -165,7 +165,7 @@
                 [%- ELSIF normdata.${"T0036"}.first.content == "z" %]
                 <mods:genre>Zeitung</mods:genre>
                 [%- END %]
-                [%- IF super.fields.${'T0036'}.first.content == "z" %]
+                [%- IF super.fields.${'T0036'}.first.content == "z" && normdata.${"T0089"}.first.content %] %]
                 <mods:genre>Zeitschriftenband</mods:genre>
                 [%- END %]
                 [%- END %]

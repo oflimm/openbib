@@ -86,7 +86,12 @@ $(function () {
   }
 }
 
+#image-area {
+position: relative;
+}
+
 .animated-image {
+/*  position: absolute; */
   position: absolute;
   width: 100%;
   height: 100%;
@@ -125,7 +130,6 @@ $(function () {
   background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/AnsichtUniversitaetsstrasseV2b.png);
   background-repeat: no-repeat;
   background-size: cover;
-  background-postion: 0px 300px;
 }
 
 }
@@ -133,15 +137,18 @@ $(function () {
 @media only screen and (max-width: 800px) {
 
 .image-1 {
-    background-position: 60% 90%;
+  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/Treppenhaus02_V2_500px.jpg);
+
   }
 
 .image-2 {
-    background-position:  20% 30%;
+  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/Magazinansicht01_V2_500px.jpg);
+
   }
 
 .image-3 {
-  background-position:   30% 70%;
+  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/AnsichtUniversitaetsstrasseV2_500px.jpg);
+
 }
 
 
@@ -149,6 +156,7 @@ $(function () {
 
 </style>
 
+<div id="image-area">
   <div class="animated-image image-1"></div>
   <div class="animated-image image-2"></div>
   <div class="animated-image image-3"></div>
@@ -211,5 +219,5 @@ $(function () {
 
 </div>
 </div>
-
+</div> <!-- image_area -->
 [%# PROCESS common/subtemplate name="home_html_bottom" %]

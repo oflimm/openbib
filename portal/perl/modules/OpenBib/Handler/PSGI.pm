@@ -571,7 +571,7 @@ sub alter_negotiated_language {
     # Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter 'l'
     if ($r->param('l')){
         $logger->debug("Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter: ".$r->param('l'));
-        $self->param('lang',$r->param('l'));
+        $self->param('lang',$self->cleanup_lang($r->param('l')));
         
         # Setzen als Cookie
         $self->set_cookie('lang',$self->param('lang'));
@@ -860,7 +860,7 @@ sub negotiate_language {
     my $r              = $self->param('r');
     my $config         = $self->param('config');
     
-    my $lang         = $r->header('Accept-Language') || '';
+    my $lang           = $r->header('Accept-Language') || '';
     my @accepted_languages  = map { ($_)=$_=~/^(..)/} map { (split ";", $_)[0] } split /\*s,\*s/, $lang;
     
     #if ($logger->is_debug){
@@ -2199,6 +2199,20 @@ sub encode_id {
     my ($self,$id) = @_;
 
     return uri_escape_utf8($id);
+}
+
+sub cleanup_lang {
+    my ($self,$lang)=@_;
+
+    my $config = $self->param('config');
+
+    my $is_valid_ref = {};
+    
+    foreach my $lang (@{$config->{lang}}){
+	$is_valid_ref->{$lang} = 1;
+    }
+
+    return (defined $is_valid_ref->{$lang})?$is_valid_ref->{$lang}:'de';
 }
 
 1;

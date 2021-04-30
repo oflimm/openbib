@@ -1996,6 +1996,7 @@ sub set_cookieXX {
         -value   => $value,
         -expires => '+24h',
         -path    => $config->{base_loc},
+	-httponly => 1,
     );
     
     my $cookie_string = $cookie->as_string();
@@ -2027,6 +2028,7 @@ sub set_cookie {
         -value   => $value,
         -expires => '+24h',
         -path    => $config->{base_loc},
+	-httponly => 1,
     );
     
     push @$cookie_jar_ref, $cookie;

@@ -2212,7 +2212,7 @@ sub cleanup_lang {
 	$is_valid_ref->{$lang} = 1;
     }
 
-    return (defined $is_valid_ref->{$lang})?$is_valid_ref->{$lang}:'de';
+    return (defined $is_valid_ref->{$lang} && $is_valid_ref->{$lang})?$lang:'de';
 }
 
 1;

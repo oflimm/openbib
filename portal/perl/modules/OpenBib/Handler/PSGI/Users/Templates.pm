@@ -222,9 +222,10 @@ sub get_input_definition {
     
     return {
         templatetext => {
-            default  => '',
-            encoding => 'none',
-            type     => 'scalar',
+            default   => '',
+            encoding  => 'none',
+            type      => 'scalar',
+	    no_escape => 1,
         },
     };
 }

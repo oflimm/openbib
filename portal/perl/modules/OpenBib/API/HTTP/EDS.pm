@@ -35,6 +35,7 @@ use utf8;
 use Benchmark ':hireswallclock';
 use DBI;
 use Encode 'decode_utf8';
+use HTML::Entities;
 use Log::Log4perl qw(get_logger :levels);
 use LWP::UserAgent;
 use Storable;
@@ -1641,6 +1642,8 @@ sub parse_query {
 sub cleanup_eds_query {
     my $content = shift;
 
+    $content = decode_entities($content);
+    
     $content =~ s{(,|\:|\(|\))}{\\$1}g;
  #   $content =~ s{\[}{%5B}g;
  #   $content =~ s{\]}{%5D}g;
@@ -1658,9 +1661,11 @@ sub cleanup_eds_query {
 sub cleanup_eds_filter {
     my $content = shift;
 
+    $content = decode_entities($content);
+    
     $content = uri_escape_utf8($content);
     
-     # Runde Klammern in den Facetten duerfen nicht escaped und URL-encoded werden!
+    # Runde Klammern in den Facetten duerfen nicht escaped und URL-encoded werden!
     $content =~ s{\%5C\%28}{(}g; 
     $content =~ s{\%5C\%29}{)}g;
 

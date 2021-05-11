@@ -1076,8 +1076,9 @@ sub _html_escape {
 sub _html_unescape {
     my ($self,$content)=@_;
 
-    return decode_entities($content);
-#    return escape_html($content);
+    return decode_entities($content) if (defined $content);
+
+    return '';									
 }
 
 sub _get_searchprofile {

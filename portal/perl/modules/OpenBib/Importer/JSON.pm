@@ -49,8 +49,8 @@ use OpenBib::Index::Document;
 my %char_replacements = (
     
     # Zeichenersetzungen
-    "\n"     => "<br\/>",
-    "\r"     => "\\r",
+    "\n"     => "",
+    "\r"     => "",
     ""     => "",
 #    "\x{00}" => "",
 #    "\x{80}" => "",

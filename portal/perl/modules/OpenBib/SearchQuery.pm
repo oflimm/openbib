@@ -186,7 +186,6 @@ sub set_from_psgi_request {
             $thissearchfield_content = $thissearchfield_norm_content = escape_html(decode_utf8(uri_unescape($self->_html_unescape($query->param("$prefix"))))) || '';
 
 	    if ($logger->is_debug){
-		$logger->debug("Native  content for searchfield $prefix: ".$query->param("$prefix"));
 		$logger->debug("Escaped content for searchfield $prefix: ".$thissearchfield_content);
 	    }
 	    

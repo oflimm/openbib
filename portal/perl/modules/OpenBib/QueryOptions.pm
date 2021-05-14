@@ -119,10 +119,12 @@ sub load_from_query {
             # werden - speziell nicht bei einer anfaenglichen Suche
             # Dennoch darf - derzeit ausgehend von den Normdaten - alles
             # geholt werden
-            $self->{option}->{$option}=($self->get_query->param($option))?escape_html($self->get_query->param($option)):'';
-            if ($queryoptions_ref->{$option}{storage} eq "session"){
-                $self->{_altered} = 1;
-            }
+	    eval {
+		$self->{option}->{$option}=($self->get_query->param($option))?escape_html($self->get_query->param($option)):'';
+		if ($queryoptions_ref->{$option}{storage} eq "session"){
+		    $self->{_altered} = 1;
+		}
+	    };
         }
         else {
             $logger->debug("Option $option NOT received via HTTP");

@@ -36,6 +36,7 @@ use Benchmark ':hireswallclock';
 use Digest::MD5 qw(md5_hex);
 use Encode qw/decode_utf8/;
 use JSON::XS;
+use Lingua::Identify::CLD;
 use Log::Log4perl qw(get_logger :levels);
 use YAML ();
 use Business::ISBN;

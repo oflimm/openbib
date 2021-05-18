@@ -936,55 +936,16 @@ sub request {
 	
 	if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
 	    
-	    $logger->debug("Checking order via USB-SOAP");
-	    
-	    my @args = ($username);
-	    
-	    my $uri = "urn:/Loan";
-	    
-	    if ($circinfotable->get($database)->{circdb} ne "sisis"){
-		$uri = "urn:/Loan_inst";
-	    }
-	    
-	    # Exemplarspezifika setzen
-	    
-	    push @args, ($exemplar_ref->{gsi},$exemplar_ref->{zw});
-	    
-	    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+	    my $check_result_ref = $self->check_order($database,$username,$exemplar_ref->{gsi},$exemplar_ref->{zw});	    
 
-	    $logger->debug("Using args ".YAML::Dump(\@args));
-	    
-	    my $result_ref;
-	    
-	    eval {
-		my $soap = SOAP::Lite
-		    -> uri($uri)
-		    -> proxy($config->get('usbws_url'));
-		my $result = $soap->check_order(@args);
-		
-		unless ($result->fault) {
-		    $result_ref = $result->result;
-		    if ($logger->is_debug){
-			$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
-		    }
-		}
-		else {
-		    $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-		}
-	    };
-	    
-	    if ($@){
-		$logger->error("SOAP-Target ".$circinfotable->get($database)->{circcheckurl}." konnte nicht erreicht werden :".$@);
-	    }
+	    if (defined($check_result_ref)) {
+		$logger->debug("Result: ".YAML::Dump($check_result_ref));
 
-	    if (defined($result_ref)) {
-		$logger->debug("Result: ".YAML::Dump($result_ref));
-
-		if (defined $result_ref->{OpacBestellung} && defined $result_ref->{OpacBestellung}{ErrorCode}){
+		if (defined $check_result_ref->{OpacBestellung} && defined $check_result_ref->{OpacBestellung}{ErrorCode}){
 		    my $response_ref = {
 			"code" => 403,
 			"error" => "access_denied",
-			"error_description" => $result_ref->{OpacBestellung}{NotOK},
+			"error_description" => $check_result_ref->{OpacBestellung}{NotOK},
 		    };
 		    
 		    if ($suppressresponsecodes){
@@ -997,17 +958,17 @@ sub request {
 		    return decode_utf8(encode_json $response_ref);
 		}
 		else {
-		    if (scalar keys %{$result_ref->{OpacBestellung}} > 1 && !defined $exemplar_ref->{confirmation}){
+		    if (scalar keys %{$check_result_ref->{OpacBestellung}} > 1 && !defined $exemplar_ref->{confirmation}){
 			my $this_response_ref = {};
 			# Reject until confirmation is met
 			$this_response_ref->{status}  = 5;
 			$this_response_ref->{error}   = "confirmation required";
 			$this_response_ref->{item}    = $exemplar_ref->{item};
 			$this_response_ref->{edition} = $exemplar_ref->{edition};
-			foreach my $ortid (keys %{$result_ref->{OpacBestellung}}){
+			foreach my $ortid (keys %{$check_result_ref->{OpacBestellung}}){
 			    push @{$this_response_ref->{"condition"}{"http://purl.org/ontology/paia#StorageCondition"}{"option"}}, {
 				id    => $ortid,
-				about => $result_ref->{OpacBestellung}{$ortid},
+				about => $check_result_ref->{OpacBestellung}{$ortid},
 			    };
 			}
 
@@ -1015,23 +976,30 @@ sub request {
 			push @$response_ref, $this_response_ref;
 			
 		    }
-		    elsif (scalar keys %{$result_ref->{OpacBestellung}} > 1 && defined $exemplar_ref->{confirmation}){
+		    elsif (scalar keys %{$check_result_ref->{OpacBestellung}} > 1 && defined $exemplar_ref->{confirmation}){
 			# Check if confirmation is met
 
-			my $confirmation_is_met = -1;
+			my $ausgabeort = -1;
 			
 			if (defined $exemplar_ref->{confirmation}{"http://purl.org/ontology/paia#StorageCondition"} && ref($exemplar_ref->{confirmation}{"http://purl.org/ontology/paia#StorageCondition"}) eq "ARRAY"){
-			    foreach my $ortid (keys %{$result_ref->{OpacBestellung}}){
+			    foreach my $ortid (keys %{$check_result_ref->{OpacBestellung}}){
 				foreach my $confirmation (@{$exemplar_ref->{confirmation}{"http://purl.org/ontology/paia#StorageCondition"}}){
 				    if ($ortid eq $confirmation){
-					$confirmation_is_met = $ortid;
+					$ausgabeort = $ortid;
 				    }
 				}
 			    }
 			}
 			
 			# Then place order
-			if ($confirmation_is_met >= 0){
+			if ($ausgabeort > -1){
+			    
+			    my $order_result_ref = $self->make_order($database,$username,$exemplar_ref->{gsi},$exemplar_ref->{zw},$ausgabeort);
+			    
+
+			    if (defined $order_result_ref){
+			    }
+			    
 			}
 			# or reject again
 			else {
@@ -1053,6 +1021,17 @@ sub request {
 		    }
 		    else {
 			# Place order
+			my $ausgabeort;
+
+			foreach my $ort (keys %{$check_result_ref->{OpacBestellung}}){
+			    $ausgabeort = $ort;
+			}
+			
+			my $order_result_ref = $self->make_order($database,$username,$exemplar_ref->{gsi},$exemplar_ref->{zw},$ausgabeort);
+			
+			
+			if (defined $order_result_ref){
+			}
 		    }
 		    
 		}
@@ -1316,6 +1295,114 @@ sub get_timestamp {
     my $timestamp = sprintf ( "%04d-%02d-%02dT%02d:%02d:%02dZ",
                                    $year+1900,$mon+1,$mday,$hour,$min,$sec);
     return $timestamp;
+}
+
+
+sub check_order {
+    my ($self,$database,$username,$gsi,$zw) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    return unless ($username && $gsi && $zw);
+    
+    my $config         = $self->param('config');
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    $logger->debug("Checking order via USB-SOAP");
+	    
+    my @args = ($username,$gsi,$zw);
+	    
+    my $uri = "urn:/Loan";
+	    
+    if ($circinfotable->get($database)->{circdb} ne "sisis"){
+	$uri = "urn:/Loan_inst";
+    }
+	    
+    
+    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));
+    
+    my $result_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('usbws_url'));
+	my $result = $soap->check_order(@args);
+	
+	unless ($result->fault) {
+	    $result_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$circinfotable->get($database)->{circcheckurl}." konnte nicht erreicht werden :".$@);
+    }
+
+
+    return $result_ref;
+}
+
+sub make_order {
+    my ($self,$database,$username,$gsi,$zw,$aort) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $config         = $self->param('config');
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    $logger->debug("Checking order via USB-SOAP");
+
+    return unless ($username && $gsi && $zw && $aort > -1);
+    
+    my @args = ($username,$gsi,$zw,$aort);
+	    
+    my $uri = "urn:/Loan";
+	    
+    if ($circinfotable->get($database)->{circdb} ne "sisis"){
+	$uri = "urn:/Loan_inst";
+    }
+	        
+    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));
+    
+    my $result_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('usbws_url'));
+	my $result = $soap->make_order(@args);
+	
+	unless ($result->fault) {
+	    $result_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$circinfotable->get($database)->{circcheckurl}." konnte nicht erreicht werden :".$@);
+    }
+
+
+    return $result_ref;    
 }
 
 1;

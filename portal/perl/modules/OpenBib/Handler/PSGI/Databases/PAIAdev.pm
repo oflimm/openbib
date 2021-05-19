@@ -965,6 +965,8 @@ sub request {
 			$this_response_ref->{error}   = "confirmation required";
 			$this_response_ref->{item}    = $exemplar_ref->{item};
 			$this_response_ref->{edition} = $exemplar_ref->{edition};
+			$this_response_ref->{requested} = $exemplar_ref->{edition};
+			
 			foreach my $ortid (keys %{$check_result_ref->{OpacBestellung}}){
 			    push @{$this_response_ref->{"condition"}{"http://purl.org/ontology/paia#StorageCondition"}{"option"}}, {
 				id    => $ortid,
@@ -998,6 +1000,16 @@ sub request {
 			    
 
 			    if (defined $order_result_ref){
+				$logger->debug(YAML::Dump($order_result_ref));
+				
+				my $this_response_ref = {};
+				$this_response_ref->{status}  = 2;
+				$this_response_ref->{item}    = $exemplar_ref->{item};
+				$this_response_ref->{edition} = $exemplar_ref->{edition};
+				$this_response_ref->{requested} = $exemplar_ref->{edition};				
+				
+				push @$response_ref, $this_response_ref;
+
 			    }
 			    
 			}
@@ -1031,6 +1043,16 @@ sub request {
 			
 			
 			if (defined $order_result_ref){
+			    $logger->debug(YAML::Dump($order_result_ref));
+			    my $this_response_ref = {};
+			    
+			    $this_response_ref->{status}  = 2;
+			    $this_response_ref->{item}    = $exemplar_ref->{item};
+			    $this_response_ref->{edition} = $exemplar_ref->{edition};
+			    $this_response_ref->{requested} = $exemplar_ref->{edition};
+			    
+			    
+			    push @$response_ref, $this_response_ref;
 			}
 		    }
 		    

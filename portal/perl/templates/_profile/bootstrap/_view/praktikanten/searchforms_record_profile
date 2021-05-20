@@ -22,7 +22,7 @@
 [%- END -%]
 >[% msg.maketext("Alle Kataloge") %]</option>
 <optgroup label="[% msg.maketext("Profile") %]">
-[% searchprofileid_of_erwerbung = config.get_searchprofile_of_orgunit('usbintern','praktikanten') %]
+[% searchprofileid_of_erwerbung = config.get_searchprofile_of_orgunit('usbintern','erwerbung') %]
 <option value="[% searchprofileid_of_erwerbung %]"
 [%- IF prevprofile == searchprofileid_of_erwerbung && NOT checked_profile -%]
  selected="selected"

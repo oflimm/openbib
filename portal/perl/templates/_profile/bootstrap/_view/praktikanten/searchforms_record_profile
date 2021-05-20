@@ -1,0 +1,79 @@
+[%# USE dumper; dumper.dump(dbchoice)%]
+[%
+    searchprofileid_of_eds  = config.get_searchprofile_of_database('eds') ;
+%]
+<select name="profile" class="form-control ob-selectbox selectpicker">
+[% searchprofileid_of_view = config.get_searchprofile_of_view(view) ; checked_profile = 0 %]
+[%- IF dbchoice.id -%]
+<option value="[% dbchoice.id %]"[%- IF prevprofile == dbchoice.id && NOT checked_profile -%] selected="selected"[%- checked_profile=1 ; END -%]>[% IF dbchoice.databases.size == 1 %][% dbinfo.get('dbnames').${dbchoice.databases.first}.short %][% ELSE %]Aktuelle Katalogauswahl ([% dbchoice.databases.size %] Datenbank(en))[% END %]</option>
+[% END %]
+[% IF userprofile.size > 0 %]
+<optgroup label="Eigene Suchprofile">
+[%- FOREACH profile IN userprofile -%]
+[%     pid   = profile.key %]
+[%     pdata = profile.value %]
+<option value="[% pid %]"[%- IF prevprofile == '${pid}'  && NOT checked_profile -%] selected="selected"[%- checked_profile=1 ; END -%]>[% msg.maketext("Benutzerdefiniert") %]: [% pdata.name %]</option>
+[%  END %]
+</optgroup>
+[% END %]
+<option value="[% searchprofileid_of_view %]"
+[%- IF prevprofile == searchprofileid_of_view && NOT checked_profile -%]
+ selected="selected"
+[%- END -%]
+>[% msg.maketext("Alle Kataloge") %]</option>
+<optgroup label="[% msg.maketext("Profile") %]">
+[% searchprofileid_of_erwerbung = config.get_searchprofile_of_orgunit('usbintern','praktikanten') %]
+<option value="[% searchprofileid_of_erwerbung %]"
+[%- IF prevprofile == searchprofileid_of_erwerbung && NOT checked_profile -%]
+ selected="selected"
+[%- checked_profile=1 ; END -%]
+>Erwerbungsrelevante Datenbanken</option>
+[% FOREACH unit IN config.get_orgunitinfo_overview(sysprofile).all ;
+     searchprofileid_of_orgunit = config.get_searchprofile_of_orgunit(sysprofile,unit.orgunitname) ;
+%]
+<option value="[% searchprofileid_of_orgunit %]"
+[%- IF prevprofile == searchprofileid_of_orgunit && NOT checked_profile -%]
+ selected="selected"
+[%- checked_profile=1 ; END -%]
+>[% unit.description %]</option>
+[% END %]
+[% searchprofileid_of_bestellungen = config.get_searchprofile_of_database('bestellungen') %]
+[% searchprofileid_of_ebookpda = config.get_searchprofile_of_database('ebookpda') %]
+[% searchprofileid_of_warenkorb_usb = config.get_searchprofile_of_view('warenkorb_usb') %]
+[% searchprofileid_of_warenkorb_kmb = config.get_searchprofile_of_view('warenkorb_kmb') %]
+[% searchprofileid_of_warenkorb_uni = config.get_searchprofile_of_view('warenkorb_uni') %]
+[% searchprofileid_of_warenkorb_komplett = config.get_searchprofile_of_view('warenkorb_komplett') %]
+
+<option value="[% searchprofileid_of_bestellungen %]"
+[%- IF prevprofile == searchprofileid_of_bestellungen && NOT checked_profile -%]
+ selected="selected"
+[%- checked_profile=1 ; END -%]
+>Bestellungen</option>
+<option value="[% searchprofileid_of_ebookpda %]"
+[%- IF prevprofile == searchprofileid_of_ebookpda && NOT checked_profile -%]
+ selected="selected"
+[%- checked_profile=1 ; END -%]
+>Ebook-PDA</option>
+<option value="[% searchprofileid_of_warenkorb_usb %]"
+[%- IF prevprofile == searchprofileid_of_warenkorb_usb && NOT checked_profile -%]
+ selected="selected"
+[%- checked_profile=1 ; END -%]
+>Warenkorb USB</option>
+<option value="[% searchprofileid_of_warenkorb_kmb %]"
+[%- IF prevprofile == searchprofileid_of_warenkorb_kmb && NOT checked_profile -%]
+ selected="selected"
+[%- checked_profile=1 ; END -%]
+>Warenkorb KMB</option>
+<option value="[% searchprofileid_of_warenkorb_uni %]"
+[%- IF prevprofile == searchprofileid_of_warenkorb_uni && NOT checked_profile -%]
+ selected="selected"
+[%- checked_profile=1 ; END -%]
+>Warenkorb UNI</option>
+<option value="[% searchprofileid_of_warenkorb_komplett %]"
+[%- IF prevprofile == searchprofileid_of_warenkorb_komplett && NOT checked_profile -%]
+ selected="selected"
+[%- checked_profile=1 ; END -%]
+>Warenkorb KOMPLETT</option>
+<option value="[% searchprofileid_of_eds %]"[%- IF prevprofile == searchprofileid_of_eds && NOT checked_profile -%] selected="selected"[%- END -%]>[% msg.maketext("Aufsätze & Mehr") %]</option>
+</optgroup>
+</select>

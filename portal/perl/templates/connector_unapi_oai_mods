@@ -45,7 +45,7 @@
             <mods:name type="personal">
                 [%-
                 name_part = '';
-                IF item.content.search('<');
+                IF item.content.match('<');
                 namedata_array = item.content.split('<');
                 name_part = namedata_array.0.trim;
                 termsOfAddress = namedata_array.1.trim;
@@ -53,8 +53,8 @@
                 ELSE;  
                 name_part = item.content;
                 END;
-                IF name_part.content.search(',');
-                name_array = name_part.content.split(',');
+                IF name_part.match(',');
+                name_array = name_part.split(',');
                 family = name_array.0.trim;
                 given = name_array.1.trim;
                 ELSE;
@@ -75,11 +75,11 @@
                     [%- ELSIF item.supplement.match('Hrsg') %]
                     <mods:roleTerm type="code" authority="marcrelator">edt</mods:roleTerm>
                     [%- ELSIF item.supplement.match('Übers') %]
-                    <mods:roleTerm type="code" authority="marcrelator" text="[% item.supplement %]">trl</mods:roleTerm>
+                    <mods:roleTerm type="code" authority="marcrelator">trl</mods:roleTerm>
                     [%- ELSIF item.supplement.match('Bearb') %]
-                    <mods:roleTerm type="code" authority="marcrelator" text="[% item.supplement %]">edt</mods:roleTerm>
+                    <mods:roleTerm type="code" authority="marcrelator">edt</mods:roleTerm>
                     [%- ELSE %]
-                    <mods:roleTerm type="code" authority="marcrelator" text="[% item.supplement %]">oth</mods:roleTerm>
+                    <mods:roleTerm type="code" authority="marcrelator">oth</mods:roleTerm>
                     [%- END %]
                 </mods:role>
             </mods:name>

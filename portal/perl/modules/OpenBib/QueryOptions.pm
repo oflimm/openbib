@@ -32,6 +32,7 @@ use utf8;
 
 use DBI;
 use Encode 'decode_utf8';
+use HTML::Escape qw/escape_html/;
 use Log::Log4perl qw(get_logger :levels);
 use Storable;
 use JSON::XS qw(encode_json decode_json);
@@ -90,8 +91,8 @@ sub new {
     
     # Wenn srto in srt enthalten, dann aufteilen
     if ($self->{option}{'srt'} =~m/^([^_]+)_([^_]+)$/){
-        $self->{option}{'srt'}=$1;
-        $self->{option}{'srto'}=$2;
+        $self->{option}{'srt'} =escape_html($1);
+        $self->{option}{'srto'}=escape_html($2);
         $logger->debug("srt Option split: srt = $1, srto = $2");
     }
 
@@ -118,10 +119,12 @@ sub load_from_query {
             # werden - speziell nicht bei einer anfaenglichen Suche
             # Dennoch darf - derzeit ausgehend von den Normdaten - alles
             # geholt werden
-            $self->{option}->{$option}=$self->get_query->param($option);
-            if ($queryoptions_ref->{$option}{storage} eq "session"){
-                $self->{_altered} = 1;
-            }
+	    eval {
+		$self->{option}->{$option}=($self->get_query->param($option))?escape_html($self->get_query->param($option)):'';
+		if ($queryoptions_ref->{$option}{storage} eq "session"){
+		    $self->{_altered} = 1;
+		}
+	    };
         }
         else {
             $logger->debug("Option $option NOT received via HTTP");

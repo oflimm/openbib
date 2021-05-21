@@ -99,7 +99,6 @@ $(document).ready(function(){
 });
 </script>
 
-<input type="hidden" name="db" value="[% config.get_dbs_of_view(view).first %]" />
 <input type="hidden" name="novrp" value="1" />
 <input type="hidden" name="srt" value="year_asc" />
 

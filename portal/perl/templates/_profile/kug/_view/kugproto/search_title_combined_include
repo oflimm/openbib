@@ -15,6 +15,62 @@
 
 <p/>
 
+<div class="sticky-top">
+
+<form class="ob-mainsearchform" method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
+
+<input type="hidden" name="num"        value="20" />
+<input type="hidden" name="page"       value="1" />
+<input type="hidden" name="lang"       value="[% lang %]" />
+
+<input type="hidden" name="srt"        value="relevance_desc" />
+<input type="hidden" name="st"         value="1" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+<input type="hidden" name="profile"    value="[% searchquery.get_searchprofile %]" />
+
+<div class="container justify-content-center border shadow rounded pl-4 pr-4 pt-3 pb-2 mb-4">
+    <div class="row">    
+        <div class="col">
+            <div class="input-group">
+                <input required="required" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Unikatalog (Bücher, E-Medien, Aufsätze &amp; mehr) und USB Website") %]" />
+                <span class="input-group-btn pl-1">
+                    <button class="btn btn-primary" type="submit"><span class="fas fa-search d-md-none"></span><span class="d-none d-md-block font-weight-bold">[% msg.maketext("Suchen") %]</span></button>
+                    <span class="btn btn-primary fas fa-cog d-md-none" data-toggle="collapse" data-target="#search_options" aria-expanded="false"></span>
+                </span>
+            </div>
+       </div>
+    </div>
+    <div class="row pt-1 pb-0">     
+      <div class="col collapse d-md-block p-0" id="search_options">
+       
+         <ul class="list-group flex-row flex-wrap justify-content-md-center justify-content-sm-left">
+<!--            <li class="list-group-item pr-1" style="border: none" >
+       	      [% PROCESS common/subtemplate name="searchforms_record_profile" %]
+            </li> -->
+            <li class="list-group-item pr-1 pt-3" style="border: none" >
+             <a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
+	    </li>      	  
+            <li class="list-group-item pr-1 pt-3" style="border: none" >
+	     <a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
+	   </li>
+<!--           <li class="list-group-item  pr-1 pt-3" style="border: none" >
+	    <a  href="[% path_prefix %]/[% config.get('browse_loc') %]/[% config.get('topics_loc') %].html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a>
+	    </li>      	  -->
+         </ul>
+    </div><!-- col -->
+  </div><!-- row -->
+</div>
+
+[%# sysprofile%]
+[%# USE dumper; dumper.dump(config.get_orgunitinfo_overview(sysprofile)) ; %]
+[%# USE dumper; dumper.dump(config.get_orgunitinfo_overview(dbchoice)) ; %]
+<!-- [% msg.maketext("Recherchieren Sie in [_1] Titeln und [_2] Katalogen","${alldbcount.allcount.chunk(-3).join('.')}","${alldbs}") %] -->
+
+
+</form>
+<!-- </nav> -->
+</div><!-- End: sticky-top -->
+
 
 <style>
 [data-toggle="collapse"] {

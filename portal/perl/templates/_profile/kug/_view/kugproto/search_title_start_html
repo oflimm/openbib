@@ -37,6 +37,8 @@
      END;
 
     layout_param = {
+      'page_title' = msg.maketext("Recherche-Ergebnis")
+    
       'active_menu' = 'register'
       'breadcrumb' = [
           {
@@ -49,6 +51,8 @@
 	     current = 1
 	  }
       ]
+      
+      'without_navigation_search' = '1'
     };
 
     IF NOT qopts.get_option('sm');

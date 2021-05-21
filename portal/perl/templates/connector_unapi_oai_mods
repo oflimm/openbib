@@ -89,23 +89,37 @@
             [%-
             corplist = [];
             IF normdata.${"T0200"};
-            corplist.push(normdata.${"T0100"});
+            corp_item = {
+                values = normdata.${"T0200"}
+                field = "T0200"
+            };
+            corplist.push(corp_item);
             END;
             IF normdata.${"T0201"};
-            corplist.push(normdata.${"T0101"});
+            corp_item = {
+                values = normdata.${"T0201"}
+                field = "T0201"
+            };
+            corplist.push(corp_item);
             END;
             %]
             [%- IF corplist && corplist.size %]
             [%- FOREACH corpdata IN corplist %]
-            [%- FOREACH item IN corpdata %]
+            [%- FOREACH item IN corpdata.values %]
             <mods:name type="corporate">
                 <mods:namePart>[% item.content %]</mods:namePart>
                 <mods:role>
-                    [%- IF item.supplement %]
-                    <mods:roleTerm type="code" authority="marcrelator" text="[% item.supplement %]">oth</roleTerm>
-                        [%- ELSE %]
-                        <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
-                        [%- END %]
+                    [%- IF corpdata.field == "T0200" %]
+                    <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+                    [%- ELSIF item.supplement.match('Hrsg') %]
+                    <mods:roleTerm type="code" authority="marcrelator">edt</mods:roleTerm>
+                    [%- ELSIF item.supplement.match('Übers') %]
+                    <mods:roleTerm type="code" authority="marcrelator">trl</mods:roleTerm>
+                    [%- ELSIF item.supplement.match('Bearb') %]
+                    <mods:roleTerm type="code" authority="marcrelator">edt</mods:roleTerm>
+                    [%- ELSE %]
+                    <mods:roleTerm type="code" authority="marcrelator">oth</mods:roleTerm>
+                    [%- END %]
                 </mods:role>
             </mods:name>
             [%- END -%]

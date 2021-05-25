@@ -330,6 +330,7 @@ system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl
 system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=abgleich_ebookpda 2>&1 > /dev/null");
 system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_komplett_ohne_tmpebooks 2>&1 > /dev/null");
 system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_komplett_ohne_proquestpda 2>&1 > /dev/null");
+system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=tmpebooks 2>&1 > /dev/null");
 
 $logger->info("### Finding corresponding ebooks in inst526/inst006");
 
@@ -425,7 +426,7 @@ sub threadB {
     
     $logger->info("### Aufgesplittete Teil-Kataloge aus USB Katalog");
     
-    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['digisoz','provenienzen','lehrbuchsmlg','rheinabt','edz','lesesaal', 'usbhwa','usbsab', 'dissertationen'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['digisoz','provenienzen','lehrbuchsmlg','rheinabt','edz','lesesaal', 'usbhwa','usbsab', 'dissertationen','usbphil'] });
     
     ##############################
     

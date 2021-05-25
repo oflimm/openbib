@@ -14,8 +14,8 @@
 <!-- begin: footer -->
 
 [% IF NOT hide_foot_banner %]
-<footer class="uzk15__mainfooter mt-3" role="contentinfo">
- <div class="uzk15__footersection1">
+<footer class="uzk15__mainfooter" role="contentinfo">
+<!-- <div class="uzk15__footersection1">
   <div class="uzk15__mainwrapper">
    <div class="uzk15__grid_100">
     <p class="uzk15__autordatum">
@@ -25,7 +25,7 @@
     </p>
    </div>
   </div>
- </div>
+ </div> -->
  <div class="uzk15__footersection3 usb__footersection2">
   <div class="uzk15__mainwrapper">
    <div class="uzk15__grid_100">
@@ -129,6 +129,7 @@
      </ul>
      </nav>
   </div>
+  <!--
    <h2 class="uzk15__smallerheadlines">Unsere Partner machen uns stark!</h2> 
     
     <div class="uzk15__partner">
@@ -140,7 +141,7 @@
      </a>
     </div>
      <h2 class="uzk15__smallerheadlines uzk15__bottom"><a href="https://www.ub.uni-koeln.de/ueber_uns/kulturpartner/index_ger.html">...und viele weitere Kulturpartner und Förderer.</a></h2>
-
+-->
     
   </div>
   </div>
@@ -163,6 +164,7 @@ $(document).ready(function(){
 });
 </script>
 
+<!--
  <div class="uzk15__footersection3">
   <div class="uzk15__mainwrapper">
    <div class="uzk15__grid_100">
@@ -279,6 +281,8 @@ $(document).ready(function(){
    <small>© Universität zu Köln</small><br>
    <a href="https://www.portal.uni-koeln.de/9468.html">Datenschutzerklärung</a><br>
   </div>
+  -->
+  <!--
   <div class="uzk15__seperator"></div>
   <div class="uzk15__accreditation">
    <h2 class="uzk15__smallerheadlines">Qualitätslabels der Universität zu Köln:</h2>
@@ -297,11 +301,14 @@ $(document).ready(function(){
     </dl>
    </div>
   </div>
- </div>
- </div>
- </div>
-<div>
 
+ </div>
+ </div>
+
+  </div>
+
+  <div>
+  -->
 </div>
 </footer>
 [% END %]

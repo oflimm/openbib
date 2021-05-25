@@ -320,6 +320,7 @@ sub get_input_definition {
             default  => '',
             encoding => 'none',
             type     => 'scalar',
+	    no_escape => 1,
         },
         templatelang => {
             default  => '',

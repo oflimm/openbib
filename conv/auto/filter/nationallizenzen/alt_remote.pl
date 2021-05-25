@@ -47,5 +47,5 @@ my $mab2metaexe   = "$konvdir/mab2meta.pl";
 my $pool          = $ARGV[0];
 
 print "### $pool: Konvertieren\n";
-system("cd $pooldir/$pool ; rm *.bdbrecno ; rm meta.* ; gunzip -c pool.dat.gz > pool.dat");
+system("cd $pooldir/$pool ; rm *.bdbrecno ; rm meta.* ; gunzip -c pool.dat.gz |  $rootdir/filter/$pool/fix-hbz.pl > pool.dat");
 system("cd $pooldir/$pool; $mab2metaexe --titlefile=pool.dat --configfile=/opt/openbib/conf/$pool.yml; gzip meta.* ; rm pool.dat *.bdbrecno ");

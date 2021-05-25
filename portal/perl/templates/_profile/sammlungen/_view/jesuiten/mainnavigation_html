@@ -52,7 +52,7 @@
 <!-- Targs: [% USE dumper; dumper.dump(layout_param) %] -->
 
 <nav id="ob-navbar_top" class="navbar navbar-expand-lg navbar-light">
-  <a class="navbar-brand" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]"><span class="brand-title"><img src="/images/openbib/views/jesuiten/Ihs-logo-40px.jpg" class="img-fluid d-none d-sm-inline"  />Jesuitensammlung Köln</span></a>
+  <a class="navbar-brand" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]"><span class="brand-title"><img src="/images/openbib/views/jesuiten/Ihs-Logo-40px.png" class="img-fluid d-none d-sm-inline"  />Jesuitensammlung Köln</span></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01,#ob-sidebar" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -61,6 +61,7 @@
 
     <ul class="nav navbar-nav flex-row justify-content-between ml-auto">
            <li class="nav-item d-md-none"><a class="nav-link" href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a></li>
+           <li class="nav-item d-md-none"><a class="nav-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]">[% msg.maketext("Wortwolken") %]</a></li>
            <li class="nav-item d-md-none"><a class="nav-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/[% config.get('titles_loc') %].html?l=[% lang %]">[% msg.maketext("Alle Titel") %]</a></li>
 <!--           <li class="nav-item[% IF layout_param.active_menu == "collection" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %]</a></li> -->
 
@@ -87,7 +88,7 @@
 
 [% PROCESS common/subtemplate name="searchforms_suggestions" %]
 [% IF NOT layout_param.without_navigation_search %]
-    <div class="card border-0 d-md-none sticky-top" style="min-width: 100%!important;">
+    <div class="card border-0 sticky-top" style="min-width: 100%!important;">
       <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
 
 	<input type="hidden" name="num"        value="20" />

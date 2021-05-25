@@ -22,9 +22,15 @@
                 <a class="navbar-brand" href="https://www.ub.uni-koeln.de/" title="Universitäts- und Stadtbibliothek Köln" target="_blank">
                     <img src="/images/openbib/views/muenzen/USB_logo_1500_transparent.png"  height="50" class="d-inline-block align-top" alt="">
                 </a>
-                <a class="navbar-brand" href="https://www.dfg.de" title="Deutsche Forschungsgemeinschaft" target="_blank">
-                    <img src="/images/openbib/views/muenzen/dfg-icon.png"  height="50" class="d-inline-block align-top" alt="">
-                </a>
+                <a class="navbar-brand" href="https://www.ub.uni-koeln.de/ueber_uns/dach/lam/index_ger.html" title="LAM Projekt" target="_blank">
+                    <img src="/images/openbib/views/jesuiten/LAM_Logo.jpg"  height="50" class="d-inline-block align-top" alt="">
+                </a> 
+                <a class="navbar-brand" href="https://www.stiftungsfonds.org/" title="Kölner Gymnasial- und Stiftungsfonds" target="_blank">
+                    <img src="/images/openbib/views/jesuiten/KGSF_Logo_Versetzt_Untereinander_RGB.jpg"  height="50" class="d-inline-block align-top" alt="">
+                </a> 
+                <a class="navbar-brand" href="https://www.wallraf.museum/" title="Wallraf" target="_blank">
+                    <img src="/images/openbib/views/jesuiten/Wallraf_verlauf.png"  height="50" class="d-inline-block align-top" alt="">
+                </a> 
                 <a class="navbar-brand" href="https://www.uni-koeln.de/" title="Universität zu Köln" target="_blank">
                     <img src="/images/openbib/views/muenzenproto/013_Unisiegel_plus_Schriftzug_DE.jpg"  height="50" class="d-inline-block align-top" alt="">
                 </a> 
@@ -37,7 +43,7 @@
         <div>
             <ul class="navbar-nav">
                 <li class="nav-item mr-1">
-                    <a class="nav-link ob-text-tertiary"  href="[% path_prefix %]/[% config.get('info_loc') %]/project.html?l=[% lang %]" target="_blank"><span class="row mr-1"><i class="fas fa-address-card m-auto"></i><small class="d-none d-lg-block ml-1">[% msg.maketext("Kontakt") %]</small></span></a>
+                    <a class="nav-link ob-text-tertiary"  href="[% path_prefix %]/[% config.get('info_loc') %]/ansprechpartner.html?l=[% lang %]" target="_blank"><span class="row mr-1"><i class="fas fa-address-card m-auto"></i><small class="d-none d-lg-block ml-1">[% msg.maketext("Kontakt") %]</small></span></a>
                 </li>
                 <li class="nav-item mr-1">
                     <a class="nav-link ob-text-tertiary"  href="[% path_prefix %]/[% config.get('info_loc') %]/datenschutz.html?l=[% lang %]" target="_blank"><span class="row mr-1"><i class="fas fa-user-secret m-auto"></i><small class="d-none d-lg-block ml-1">[% msg.maketext("Datenschutz") %]</small></span></a>

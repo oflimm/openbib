@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI
 #
-#  Dieses File ist (C) 2010-2018 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2010-2021 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -38,6 +38,7 @@ use Log::Log4perl qw(get_logger :levels);
 use List::MoreUtils qw(none any);
 use Benchmark ':hireswallclock';
 use Encode qw(decode_utf8 encode_utf8);
+use HTML::Escape qw/escape_html/;
 use HTTP::Negotiate;
 use HTTP::BrowserDetect;
 use JSON::XS;
@@ -571,7 +572,7 @@ sub alter_negotiated_language {
     # Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter 'l'
     if ($r->param('l')){
         $logger->debug("Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter: ".$r->param('l'));
-        $self->param('lang',$r->param('l'));
+        $self->param('lang',$self->cleanup_lang($r->param('l')));
         
         # Setzen als Cookie
         $self->set_cookie('lang',$self->param('lang'));
@@ -860,7 +861,7 @@ sub negotiate_language {
     my $r              = $self->param('r');
     my $config         = $self->param('config');
     
-    my $lang         = $r->header('Accept-Language') || '';
+    my $lang           = $r->header('Accept-Language') || '';
     my @accepted_languages  = map { ($_)=$_=~/^(..)/} map { (split ";", $_)[0] } split /\*s,\*s/, $lang;
     
     #if ($logger->is_debug){
@@ -1685,20 +1686,32 @@ sub parse_valid_input {
         $logger->debug("CGI Input");
 
         foreach my $param (keys %$valid_input_params_ref){
-            my $type     = $valid_input_params_ref->{$param}{type};
-            my $encoding = $valid_input_params_ref->{$param}{encoding};
-            my $default  = $valid_input_params_ref->{$param}{default};
+            my $type      = $valid_input_params_ref->{$param}{type};
+            my $encoding  = $valid_input_params_ref->{$param}{encoding};
+            my $default   = $valid_input_params_ref->{$param}{default};
+	    my $no_escape = (defined $valid_input_params_ref->{$param}{no_escape})?$valid_input_params_ref->{$param}{no_escape}:0;
             
-            if ($type eq "scalar"){
-		$input_params_ref->{$param} = decode_utf8($query->param($param)) || $default;
+	    if ($type eq "scalar"){
+		my $value = decode_utf8($query->param($param)) || $default;
+
+		unless ($no_escape){
+		    $value = escape_html($value);
+		}
+		
+		$input_params_ref->{$param} = $value;
+            }
+            elsif ($type eq "bool"){
+                $input_params_ref->{$param} = escape_html($query->param($param))  || $default;
             }
             # sonst array
-            elsif ($type eq "bool"){
-                $input_params_ref->{$param} = $query->param($param)  || $default;
-            }
             elsif ($type eq "array") {
                 if ($query->param($param)){
-                    @{$input_params_ref->{$param}} = $query->param($param);
+		    if ($no_escape){
+			@{$input_params_ref->{$param}} = $query->param($param);
+		    }
+		    else {
+			@{$input_params_ref->{$param}} = map { $_=escape_html($_) } $query->param($param);
+		    }
                 }
                 else {
                     $input_params_ref->{$param} = $default;
@@ -1713,7 +1726,7 @@ sub parse_valid_input {
                         my $subfield = $3;
                         my $mult     = $4;
 
-                        my $content  = decode_utf8($query->param($qparam));
+                        my $content  = ($no_escape)?decode_utf8($query->param($qparam)):escape_html(decode_utf8($query->param($qparam)));
 
                         $logger->debug("Got $field - $prefix - $subfield - $mult - $content");
 
@@ -1732,7 +1745,7 @@ sub parse_valid_input {
                 foreach my $qparam ($query->param){
                     if ($qparam=~/^${param_prefix}_/){
 
-                        my $content  = decode_utf8($query->param($qparam)) || $default;
+                        my $content  = ($no_escape)?decode_utf8($query->param($qparam)):escape_html(decode_utf8($query->param($qparam)));
 			
 			push @{$input_params_ref->{mixed_bag}{$qparam}}, $content;
                     }
@@ -1746,7 +1759,7 @@ sub parse_valid_input {
                         my $scope    = $1;
                         my $right    = $2;
                         
-                        my $content  = decode_utf8($query->param($qparam));
+                        my $content  = escape_html(decode_utf8($query->param($qparam)));
                         
                         $logger->debug("Got $scope - $right - $content");
                         
@@ -1996,6 +2009,7 @@ sub set_cookieXX {
         -value   => $value,
         -expires => '+24h',
         -path    => $config->{base_loc},
+	-httponly => 1,
     );
     
     my $cookie_string = $cookie->as_string();
@@ -2027,6 +2041,8 @@ sub set_cookie {
         -value   => $value,
         -expires => '+24h',
         -path    => $config->{base_loc},
+	-httponly => 1,
+	-samesite => "Strict",
     );
     
     push @$cookie_jar_ref, $cookie;
@@ -2197,6 +2213,20 @@ sub encode_id {
     my ($self,$id) = @_;
 
     return uri_escape_utf8($id);
+}
+
+sub cleanup_lang {
+    my ($self,$lang)=@_;
+
+    my $config = $self->param('config');
+
+    my $is_valid_ref = {};
+    
+    foreach my $lang (@{$config->{lang}}){
+	$is_valid_ref->{$lang} = 1;
+    }
+
+    return (defined $is_valid_ref->{$lang} && $is_valid_ref->{$lang})?$lang:'de';
 }
 
 1;

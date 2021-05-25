@@ -220,14 +220,14 @@
      END;
 
      # Einbeziehung der Zaehlfelder T5100
-     IF title && item.${'T5100'}.first.content;
-        order = item.${'T5100'}.first.content;
-        IF title == order;
-           title = "${order}.";
-        ELSE;
-           title = "${order}. ${title}";
-        END;
-     END;
+#     IF title && item.${'T5100'}.first.content;
+#        order = item.${'T5100'}.first.content;
+#        IF title == order;
+#           title = "${order}.";
+#        ELSE;
+#           title = "${order}. ${title}";
+#        END;
+#     END;
 
      # Einbeziehung des ersten Gesamttitels T5005
      IF title && super;
@@ -271,8 +271,19 @@
     titleinfos = [] ;
 
     # E-Book/Inhaltsverzeichnis vorhanden
-    ebook     = item.${'T4120'}.first.content ;
+    fulltext  = item.${'T4120'}.first.content ;
     toc       = item.${'T4110'}.first.content ;
+
+    fulltext_availability  = "";
+    fulltext_desc  = "Volltext";
+
+    IF item.${'T4120'}.first.subfield == "a";
+      fulltext_availability = "lawngreen";
+      fulltext_desc = msg.maketext("Volltext mit freiem Zugang");;
+    ELSIF item.${'T4120'}.first.subfield == "b";
+      fulltext_availability = "yellow";
+      fulltext_desc = msg.maketext("Volltext mit beschränktem Zugang");;
+    END;
 
     IF item.tags ;
       tags = [];
@@ -286,23 +297,14 @@
       titleinfos.push("Tags: ${tags.join(' ')}") ;
     END ;
 
-    IF ebook ;
-      ebook = "${path_prefix}/${config.get('redirect_loc')}?type=503;url=${uri_escape(ebook)}" ;
-      titleinfos.push("<a href=\"${ebook}\" target=\"_blank\">${ebook_i18n}</a>") ;
-    END ;
-
-    IF toc ;
-#      toc = "${path_prefix}/${config.get('redirect_loc')}?type=500;url=${uri_escape(toc)}" ;
-      titleinfos.push("<a href=\"${toc}\" target=\"_blank\">${toc_i18n}</a>") ;
-    END ;
-
-    IF item.popularity ;
-      titleinfos.push("${popularity_i18n}: ${item.popularity}") ;
-    END ;
+#    IF item.popularity ;
+#      titleinfos.push("${popularity_i18n}: ${item.popularity}") ;
+#    END ;
 
     titleinfo = titleinfos.join(" | ");
 -%]
     <div class="ob-item d-flex flex-row[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+    
 <script>
 $(document).ready(function(){
    $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/availability?l=[% lang %]",
@@ -313,12 +315,15 @@ $(document).ready(function(){
 </script>
 
       <div class="ob-numbering">[% IF with_id_checkbox %]<input type="checkbox" name="id" value="[% record.listid %]"  title="collection_item" />&nbsp;[% END %][% start_range+loop.count - 1 %]</div>
-      <div class="ob-thumbnail pt-1 pl-5 mr-0 d-none d-md-block">
-    [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
+      <div class="ob-thumbnail pt-1 pl-5 pr-5 mr-0 d-none d-md-block">
+    [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]
+    [% coverapi = config.get('covers').vlb %]
+    [%# USE dumper;dumper.dump(coverapi)%]
+    <a href="[% coverapi.credits_url %]" target="_blank"><img src="[% path_prefix %]/[% config.get('connector_cover_loc') %]/vlb/[% isbn %]?size=s" title="[% coverapi.credits_text %]" /></a>[% ELSE %]&nbsp;[% END %]
       </div>
       <div class="ob-brieftitle pl-5">
 [%# USE dumper;dumper.dump(dbinfo) %]
-        <div class="ob-titleinfo mt-2">
+        <div class="ob-titleinfo pl-2 mt-2">
 [% IF NOT hide_hit %]	
          <span class="ob-person">[% person %]</span>
 	 <strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong>
@@ -349,10 +354,10 @@ $(document).ready(function(){
 [%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
 [% END %]
         </div> <!-- end: titleinfo -->
-        <div class="ob-titlemark d-flex d-none d-md-block">[% IF signatur %][% msg.maketext("Signatur") %]: <span>[% signatur | truncate(config.get('maxlength_mark')) %]</span>[% END %]
+        <div class="ob-titlemark pl-2 d-flex d-none d-md-block">[% IF signatur %][% msg.maketext("Signatur") %]: <span>[% signatur | truncate(config.get('maxlength_mark')) %]</span>[% END %]
         </div>
 
-	<div class="d-flex">
+	<div class="pl-2 d-flex">
           <div class="d-flex ob-titleactions">
 [% IF record.id && record.database %]
 [% detail_url = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.get_encoded_id}.html?l=${lang}" %]
@@ -363,12 +368,28 @@ $(document).ready(function(){
 	    <div class="pr-1">
               <a  class="btn btn-primary pr-2" ic-transform-response="return incollection();" ic-get-from="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><i class="far fa-bookmark"></i> <span class="d-none d-sm-inline">[% msg.maketext("Merken") %]</span></a>
 	    </div>
+[% END %]
+
+[% IF fulltext %]
+	    <div class="pr-1">	    
+              <a class="btn btn-primary pr-2" [% IF fulltext_availability %]style="color: [% fulltext_availability %];"[% END %] href="[% fulltext %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Volltext") %]</span></a>
+	    </div>
+[% END %]
+
+[% IF toc %]
+	    <div class="pr-1">	    
+              <a class="btn btn-primary pr-2" href="[% toc %]" target="_blank" title="[% msg.maketext("Inhaltsverzeichnis") %]"><i class="fas fa-list"></i> <span class="d-none d-sm-inline">[% msg.maketext("TOC") %]</span></a>
+	    </div>
+[% END %]
+
+[% IF NOT with_cartitems_delete && NOT hide_hit %]
 	    <div class="pr-1">
 	      <a class="btn btn-primary pr-2" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/to_bibsonomy" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy"><i class="fas fa-share-alt"></i> <span class="d-none d-sm-inline">BibSonomy</span></a>
 	    </div>       
 [% END %]
 
 [% END # id / database%]
+
 
 [% IF tagname %]
 	    <div class="pr-1">	    

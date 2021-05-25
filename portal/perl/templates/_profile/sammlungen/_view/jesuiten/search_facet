@@ -511,6 +511,13 @@ $("#dd_availability_[% database %]_toggle").click(function(){
       FOREACH year_thisitem IN facets.year;
         item      = year_thisitem.0;
         itemcount = year_thisitem.1;
+
+        IF NOT item.match('^[0-9][0-9][0-9][0-9]') ;
+	  NEXT;
+	END;
+
+        item = item.replace('^([0-9][0-9][0-9][0-9]).+','$1');
+	
         yearcount.${item} = itemcount;
         IF item < minyear ;
 	   minyear = item;
@@ -703,100 +710,6 @@ yearslider_to.addEventListener('change', function () {
 [%         END %]
 <!-- End provenance facet -->
 
-<!-- Begin availability facet -->
-[%         IF facets.defined('availability') && facets.availability.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-availability" aria-expanded="true">
-           [% msg.maketext("nach Zugriff") %] 
-        </h4>
-        <ul id="group-availability" class="list-group in collapse show">
-[%
-    # Availability Types
-    # msg.maketext("online")             Online
-    # msg.maketext("lent")               Ausgeliehen
-    # msg.maketext("lendable")           Ausleihbar
-    # msg.maketext("lendable_immediate") Ausleihbar - sofort
-    # msg.maketext("lendable_order")     Ausleihbar - nach Bestellung
-    # msg.maketext("lendable_weekend")   Ausleihbar - nur Wochenende
-    # msg.maketext("presence")           Einsehbar
-    # msg.maketext("presence_immediate") Einsehbar  - sofort
-    # msg.maketext("presence_order")     Einsehbar  - nach Bestellung
-%]
-[%             FOREACH termitem IN facets.availability ;
-                  LAST IF loop.count > 25 ;
-%]
-[% IF facets.availability.size > 5 && loop.count == 5 %]
-<span id="dd_availability_[% database %]_toggle"></span>
-<div id="dd_availability_[% database %]">
-[% END %]
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').availabilitystring.prefix;
-    filterstring  = "${searchprefix}:${searchterm}";
--%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% msg.maketext(searchterm) %]</a> <span class="badge badge-pill badge-secondary ml-auto">[% termitem.1 %]</span></li>
-[%             END %]
-[% IF facets.availability.size > 5 %]
-</div>
-[% END %]
-</ul>
-<p/>
-[%         END %]
-<!-- End availability facet -->
-
-<!-- Begin mediatype facet -->
-[%         IF config.get('facets').mediatype && facets.defined('mediatype') && facets.mediatype.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-mediatype" aria-expanded="true">
-           [% msg.maketext("nach Typ") %] 
-        </h4>
-        <ul id="group-mediatype" class="list-group in collapse show">
-[%             FOREACH termitem IN facets.mediatype ;
-                  LAST IF loop.count > 25 ;
- %]
-[% IF facets.mediatype.size > 5 && loop.count == 5 %]
-<span id="dd_mediatype_[% database %]_toggle"></span>
-<div id="dd_mediatype_[% database %]">
-[% END %]
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').mediatypestring.prefix;
-    filterstring  = "${searchprefix}:${searchterm}";
--%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a> <span class="badge badge-pill badge-secondary ml-auto">[% termitem.1 %]</span></li>
-[%             END %]
-[% IF facets.mediatype.size > 5 %]
-</div>
-[% END %]
-</ul>
-<p/>
-[%         END %]
-<!-- End mediatype facet -->
-<!-- Begin topic facet -->
-[%         IF config.get('facets').topic && facets.defined('topic') && facets.topic.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-topic" aria-expanded="true">
-           [% msg.maketext("nach Themengebieten") %] 
-        </h4>
-        <ul id="group-topic" class="list-group in collapse show">
-[%             FOREACH termitem IN facets.topic ;
-                  LAST IF loop.count > 25 ;
- %]
-[% IF facets.topic.size > 5 && loop.count == 5 %]
-<span id="dd_topic_[% database %]_toggle"></span>
-<div id="dd_topic_[% database %]">
-[% END %]
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').topic.prefix;
-    filterstring  = "${searchprefix}:${searchterm}";
--%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% topic_map.${termitem.0} %]</a>  <span class="badge badge-pill badge-secondary ml-auto">[% termitem.1 %]</span></li>
-[%             END %]
-[% IF facets.topic.size > 5 %]
-</div>
-[% END %]
-</ul>
-<p/>
-[%         END %]
-<!-- End topic facet -->
 <!-- Begin subject facet -->
 [%         IF 0 == 1 && config.get('facets').subject && facets.defined('subject') && facets.subject.size > 0 %]
         <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-subject" aria-expanded="true">
@@ -1058,30 +971,4 @@ durch zus&auml;tzliche Worte weiter eingrenzen.") %]
 
 <p/>
 [% END # facets=none%]
-<div class="ob-facets ob-facets_dbinfo">
-<div class="ob-category_header"><span id="ob-facets_dbinfo_toggle">[% msg.maketext("Datenbank-Empfehlungen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
-
-<div id="ob-facets_dbinfo_toggle_do">
-<!-- Anfang Elib DBIS-Empfehlungen -->
-<script language="JavaScript" type="text/javascript">
-$(document).ready(function(){
-// Begin Elib DBIS-Empfehlungen
-  $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/titles/recommendations.include?l=[% lang %];fs=[% searchquery.get_searchtermstring %]",
-         function (txt){
-           $("#ob-dbis_recommendations").html(txt); 
-  });
-});
-
-</script>
-
-<p/>
-
-<div id="ob-dbis_recommendations"><!-- Begin Elib DBIS-Empfehlungen -->
-<span ><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/titles/recommendations.html?l=[% lang %];fs=[% searchquery.get_searchtermstring %]">[% msg.maketext("Weiter zu den Datenbank-Empfehlungen") %]</a></span>
-</div>
-<!-- Ende Elib DBIS-Empfehlungen -->
-
-</div> <!-- End: ob-facets_dbinfo_toggle_do -->
-
-</div>
 

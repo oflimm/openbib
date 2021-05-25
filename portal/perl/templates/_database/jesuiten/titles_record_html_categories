@@ -82,6 +82,135 @@
                                  },
 };
 
+   laender_map = {
+     'EG' = 'Ägypten',
+     'AD' = 'Andorra',
+     'AR' = 'Argentinien',
+     'AM' = 'Armenien',
+     'AU' = 'Australien',
+     'BE' = 'Belgien',
+     'BO' = 'Bolivien',
+     'BR' = 'Brasilien',
+     'BG' = 'Bulgarien',
+     'CL' = 'Chile',
+     'CN' = 'China',
+     'DK' = 'Dänemark',
+     'DE' = 'Deutschland',
+     'DXDE' = 'Deutschland',
+     'EE' = 'Estland',
+     'FI' = 'Finnland',
+     'FR' = 'Frankreich',
+     'GE' = 'Georgien',
+     'GI' = 'Gibraltar',
+     'GD' = 'Grenada',
+     'GR' = 'Griechenland',
+     'GB' = 'Großbritannien',
+     'HK' = 'Hongkong',
+     'IN' = 'Indien',
+     'IQ' = 'Irak',
+     'IR' = 'Iran',
+     'IE' = 'Irland',
+     'IS' = 'Island',
+     'IL' = 'Israel',
+     'IT' = 'Italien',
+     'YUCS' = 'Jugoslawien',
+     'CA' = 'Kanada',
+     'CO' = 'Kolumbien',
+     'QV' = 'Kosovo',
+     'HR' = 'Kroatien',
+     'LV' = 'Lettland',
+     'LI' = 'Liechtenstein',
+     'LT' = 'Litauen',
+     'LU' = 'Luxemburg',
+     'MT' = 'Malta',
+     'MX' = 'Mexiko',
+     'MC' = 'Monaco',
+     'MD' = 'Moldawien',
+     'MC' = 'Monaco',
+     'ME' = 'Montenegro',
+     'NL' = 'Niederlande',
+     'NO' = 'Norwegen',
+     'AT' = 'Österreich',
+     'AAAT' = 'Österreich',
+     'PK' = 'Pakistan',
+     'PO' = 'Polen',
+     'PT' = 'Portugal',
+     'RO' = 'Rumänien',
+     'RU' = 'Russland',
+     'SM' = 'San Marino',
+     'SH' = 'Sankt Helena',
+     'SE' = 'Schweden',
+     'CH' = 'Schweiz',
+     'RS' = 'Serbien',
+     'SK' = 'Slowakei',
+     'SI' = 'Slowenien',
+     'SUHH' = 'Sowjetunion',
+     'ES' = 'Spanien',
+     'SY' = 'Syrien',
+     'CSHH' = 'Tschechoslowakei',
+     'TR' = 'Türkei',
+     'UA' = 'Ukraine',
+     'HU' = 'Ungarn',
+     'US' = 'USA',
+     'VA' = 'Vatikanstadt',
+     'BY' = 'Weißrussland',
+     'CY' = 'Zypern',
+     'ZZ' = 'Land unbekannt',
+   };
+
+   lang_map = {
+        "ara"      => msg.maketext("Arabisch"),
+        "arm"      => msg.maketext("Armenisch"),
+        "arab."    => msg.maketext("Arabisch"),
+        "ces"      => msg.maketext("Tschechisch"),
+        "chi"      => msg.maketext("Chinesisch"),
+        "cop"      => msg.maketext(""),
+        "cze"      => msg.maketext("Tschechisch"),
+        "de"       => msg.maketext("Deutsch"),
+        "dt."      => msg.maketext("Deutsch"),
+        "dut"      => msg.maketext("Niederländisch"),
+        "dut."     => msg.maketext("Niederländisch"),
+        "ell"      => msg.maketext("Neu-Griechisch"),
+        "en"       => msg.maketext("Englisch"),
+        "eng"      => msg.maketext("Englisch"),
+        "engl."    => msg.maketext("Englisch"),
+        "fin"      => msg.maketext("Finnisch"),
+        "finn."    => msg.maketext("Finnisch"),
+        "fr"       => msg.maketext("Französisch"),
+        "franz."       => msg.maketext("Französisch"),
+        "fre"      => msg.maketext("Französisch"),
+        "ger"      => msg.maketext("Deutsch"),
+        "gre"      => msg.maketext("Neu-Griechisch"),
+        "grc"      => msg.maketext("Alt-Griechisch"),
+        "griech."  => msg.maketext("Griechisch"),
+        "grk"      => msg.maketext("Griechisch"),
+        "he"       => msg.maketext("Hebräisch"),
+        "heb"      => msg.maketext("Hebräisch"),
+        "hun"      => msg.maketext("Ungarisch"),
+        "ice"      => msg.maketext("Isländisch"),
+        "islaend." => msg.maketext("Isländisch"),
+        "ita"      => msg.maketext("Italienisch"),
+        "ital."    => msg.maketext("Italienisch"),
+        "jpn"      => msg.maketext("Japanisch"),
+        "lat"      => msg.maketext("Latein"),
+        "lat."     => msg.maketext("Latein"),
+        "lats"     => msg.maketext("Latein"),
+        "nds"      => msg.maketext("Niederdeutsch"),
+        "neugriech."   => msg.maketext("Neu-Griechisch"),
+        "niederlaend." => msg.maketext("Niederländisch"),
+        "pol"      => msg.maketext("Polnisch"),
+        "rus"      => msg.maketext("Russisch"),
+        "russ."    => msg.maketext("Russisch"),
+        "spa"      => msg.maketext("Spanisch"),
+        "span."    => msg.maketext("Spanisch"),
+        "swe"      => msg.maketext("Schwedisch"),
+        "syc"      => msg.maketext("Alt-Syrisch"),
+        "tschech." => msg.maketext("Tschechisch"),
+        "tur"      => msg.maketext("Türkisch"),
+        "ungar."   => msg.maketext("Ungarisch"),
+    };
+
+
    IF NOT searchprofileid_of_database ;
       searchprofileid_of_database = config.get_searchprofile_of_database(record.database) ;
    END ;
@@ -142,6 +271,18 @@ FOREACH category IN categories;
     content = item.content;
 
     SWITCH category;
+
+    CASE "T0035";
+         laenderdesc   = laender_map.${content};
+         IF laenderdesc ;
+            content   = laenderdesc ;
+         END ;
+
+    CASE "T0015";
+         langdesc   = lang_map.${content};
+         IF langdesc ;
+            content   = langdesc ;
+         END ;
 
     CASE [ "T0100" "T0101" "T0103" ];
          thisid     = item.id;

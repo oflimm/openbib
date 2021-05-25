@@ -7,35 +7,39 @@ use utf8;
 use MediaWiki::API;
 use JSON::XS qw/decode_json encode_json/;
 
-my $mw = MediaWiki::API->new( {api_url => 'https://usbwiki.ub.uni-koeln.de/usbwiki/api.php' } );
-
-my $page = $mw->get_page( { title => 'Tmpebooks - Exkludierte Titel' } );
-
-my $page_content = $page->{'*'};
-
 my %excluded_ids = ();
-
-foreach my $line (split /\n/, $page_content){
-    $line=~s/^\s*//g;
-    $line=~s/\s*$//g;
-    $excluded_ids{$line} = 1;
-}
-
-
-$page = $mw->get_page( { title => 'Tmpebooks - Exkludierte ISBNS' } );
-
-$page_content = $page->{'*'};
-
 my %excluded_isbns = ();
 
-foreach my $line (split /\n/, $page_content){
-    $line=~s/^\s*//g;
-    $line=~s/\s*$//g;
-    $excluded_isbns{$line} = 1;
+eval {
+    my $mw = MediaWiki::API->new( {api_url => 'https://usbwiki.ub.uni-koeln.de/usbwiki/api.php' } );
+    
+    my $page = $mw->get_page( { title => 'Tmpebooks - Exkludierte Titel' } );
+    
+    my $page_content = $page->{'*'};
+    
+    
+    
+    foreach my $line (split /\n/, $page_content){
+	$line=~s/^\s*//g;
+	$line=~s/\s*$//g;
+	$excluded_ids{$line} = 1;
+    }
+    
+    
+    $page = $mw->get_page( { title => 'Tmpebooks - Exkludierte ISBNS' } );
+    
+    $page_content = $page->{'*'};
+
+    foreach my $line (split /\n/, $page_content){
+	$line=~s/^\s*//g;
+	$line=~s/\s*$//g;
+	$excluded_isbns{$line} = 1;
+    }
+};
+
+if ($@){
+    print STDERR $@,"\n";
 }
-
-
-
 
 
 while (<>){

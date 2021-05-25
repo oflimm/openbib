@@ -34,6 +34,7 @@ use Benchmark ':hireswallclock';
 use DBI;
 use Encode 'decode_utf8';
 use HTML::Entities;
+use HTML::Escape qw/escape_html/;
 use JSON::XS qw(encode_json decode_json);
 use Log::Log4perl qw(get_logger :levels);
 use Storable;
@@ -180,11 +181,19 @@ sub set_from_psgi_request {
             my $prefix = $thissearchfield->{prefix};
             my $name   = $thissearchfield->{name};
             my ($thissearchfield_content, $thissearchfield_norm_content,$thissearchfield_bool_op);
-            $thissearchfield_content = $thissearchfield_norm_content = decode_utf8(uri_unescape($query->param("$prefix"))) || '';
+
+	    # Process and escape Input
+            $thissearchfield_content = $thissearchfield_norm_content = escape_html(decode_utf8(uri_unescape($self->_html_unescape($query->param("$prefix"))))) || '';
+
+	    if ($logger->is_debug){
+		$logger->debug("Escaped content for searchfield $prefix: ".$thissearchfield_content);
+	    }
+	    
+	    # Process Bools, escaping with allowlist
             $thissearchfield_bool_op = (defined $query && $query->param("b\[$prefix\]"))?$query->param("b\[$prefix\]"):
                 (defined $legacy_bool_op_ref->{"b\[$prefix\]"} && $query->param($legacy_bool_op_ref->{"b\[$prefix\]"}))?$query->param($legacy_bool_op_ref->{"b\[$prefix\]"}):"AND";
             
-            # Inhalts-Check
+            # escaping
             $thissearchfield_bool_op = (exists $valid_bools_ref->{$thissearchfield_bool_op})?$valid_bools_ref->{$thissearchfield_bool_op}:"AND";
 
             #####################################################################
@@ -269,17 +278,19 @@ sub set_from_psgi_request {
         }
         
         foreach my $term (@terms){
-            $term = decode_utf8(uri_unescape($term));
-            
+	    $logger->debug("Native filter Term: $term");
+#            $term = decode_utf8(uri_unescape($self->_html_unescape($term)));
+	    $term = escape_html(decode_utf8(uri_unescape($self->_html_unescape($term))));
+	    
             my $string  = $term;
             
             $string = OpenBib::Common::Util::normalize({
                 content   => $string,
                 type      => 'string',
             });
-            
+            	    
             $logger->debug("Field: $field Norm: $string Term: $term");
-            
+	    
             push @{$self->{_filter}}, {
                 val    => "$field:$term",
                 term   => $term,
@@ -289,22 +300,22 @@ sub set_from_psgi_request {
         }
     }
 
-    $self->{autoplus}            = $query->param('autoplus')            || '';
-    $self->{searchtype}          = $query->param('st')                  || '';    # Search type (1=simple,2=complex)
-    $self->{drilldown}           = $query->param('dd')                  || 1;     # Drilldown ?
+    $self->{autoplus}            = ($query->param('autoplus'))?escape_html($query->param('autoplus')):'';
+    $self->{searchtype}          = ($query->param('st'))?escape_html($query->param('st')):'';    # Search type (1=simple,2=complex)
+    $self->{drilldown}           = ($query->param('dd'))?escape_html($query->param('dd')):1;     # Drilldown ?
 
     # Index zusammen mit Eingabefelder
-    $self->{authority}           = $query->param('authority')           || '';
-    $self->{personindex}         = $query->param('personindex')         || '';
-    $self->{corporatebodyindex}  = $query->param('corporatebodyindex')  || '';
-    $self->{subjectindex}        = $query->param('subjectindex')        || '';
-    $self->{classificationindex} = $query->param('classificationindex') || '';
+    $self->{authority}           = ($query->param('authority'))?escape_html($query->param('authority')):'';
+    $self->{personindex}         = ($query->param('personindex'))?escape_html($query->param('personindex')):'';
+    $self->{corporatebodyindex}  = ($query->param('corporatebodyindex'))?escape_html($query->param('corporatebodyindex')):'';
+    $self->{subjectindex}        = ($query->param('subjectindex'))?escape_html($query->param('subjectindex')):'';
+    $self->{classificationindex} = ($query->param('classificationindex'))?escape_html($query->param('classificationindex')):'';
 
     # oder Index als Separate Funktion
-    $indexterm = $indextermnorm  = decode_utf8($query->param('indexterm'))    || $query->param('indexterm') || '';
+    $indexterm = $indextermnorm  = ($query->param('indexterm'))?escape_html(decode_utf8($query->param('indexterm'))):''; #    || escape_html($query->param('indexterm')) || '';
 
-    $self->{indextype}           = decode_utf8($query->param('indextype'))    || $query->param('indextype') || '';
-    $self->{searchindex}         = $query->param('searchindex')               || '';
+    $self->{indextype}           = ($query->param('indextype'))?escape_html(decode_utf8($query->param('indextype'))):''; #    || escape_html($query->param('indextype')) || '';
+    $self->{searchindex}         = ($query->param('searchindex'))?escape_html($query->param('searchindex')):'';
     
     if ($indexterm){
         $indextermnorm  = OpenBib::Common::Util::normalize({
@@ -327,7 +338,14 @@ sub set_from_psgi_request {
     $self->{_searchprofile}  = $self->_get_searchprofile;
 
     if ($logger->is_debug){
-        $logger->debug("Searchquery-Terms: ".YAML::Dump($self->get_searchquery));
+	my $searchterms_ref = $self->get_searchquery;
+	foreach my $key (keys %$searchterms_ref){
+	    if (!$searchterms_ref->{$key}{val}){
+		delete $searchterms_ref->{$key};
+	    }
+	}
+	
+        $logger->debug("Searchquery-Terms: ".YAML::Dump($searchterms_ref));
     }
     
     return $self;
@@ -537,6 +555,9 @@ sub to_cgi_params {
 
             $logger->debug("Unescaped: ".$self->{_searchquery}->{$param}{val});
             $logger->debug("Escaped: ".uri_escape_utf8($self->{_searchquery}->{$param}{val}));
+
+            # Kein Escaping notwendig, da Parameter bereits beim Erzeugen des SearchQuery-Objektes
+            # escaped werden.									
             push @cgiparams, {
                 param  => $base_prefix.$param_suffix,
                 val    => uri_escape_utf8($self->{_searchquery}->{$param}{val}),
@@ -590,6 +611,7 @@ sub to_cgi_hidden_input {
 
     foreach my $arg_ref ($self->to_cgi_params($arg_ref)){
         push @cgiparams, "<input type=\"hidden\" name=\"$arg_ref->{param}\" value=\"".decode_utf8(uri_unescape($arg_ref->{val}))."\" />";
+#        push @cgiparams, "<input type=\"hidden\" name=\"$arg_ref->{param}\" value=\"".$arg_ref->{val}."\" />";
     }   
 
     return join("\n",@cgiparams);
@@ -1046,7 +1068,16 @@ sub single_db_in_searchprofile {
 sub _html_escape {
     my ($self,$content)=@_;
 
-    return encode_entities($content);
+#    return encode_entities($content);
+    return escape_html($content);
+}
+
+sub _html_unescape {
+    my ($self,$content)=@_;
+
+    return decode_entities($content) if (defined $content);
+
+    return '';									
 }
 
 sub _get_searchprofile {
@@ -1094,6 +1125,9 @@ sub _get_searchprofile {
     else {
         $logger->debug("Selecting databases of view");
         @databases = $config->get_dbs_of_view($view);
+        if ($logger->is_debug){
+           $logger->debug("Selecting databases of view: ".($#databases + 1));
+        }
     }
 
     # Dublette Datenbanken filtern
@@ -1103,12 +1137,16 @@ sub _get_searchprofile {
     # Nur Datenbanken sind erlaubt, die fuer den View definiert wurden
     # Damit: Katalogweise Abschottung der Views bei Recherchen
     @databases = $config->restrict_databases_to_view({ databases => \@databases, view => $view }) if ($view);
+
+    if ($logger->is_debug){
+       $logger->debug("Final databases: ".($#databases + 1));
+    }
 									
     my $searchprofile = $config->get_searchprofile_or_create(\@databases);
     
     if ($logger->is_debug){
         $logger->debug("Database List: ".YAML::Dump(\@databases));
-        $logger->debug("Searchprofie : $searchprofile");
+        $logger->debug("Searchprofile : $searchprofile");
     }
     
     return $searchprofile;

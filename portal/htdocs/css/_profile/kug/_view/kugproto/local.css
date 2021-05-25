@@ -1,6 +1,6 @@
 @media all
 {
- 
+    
     img {
 	max-width: unset;
     }
@@ -147,6 +147,10 @@
 	padding-left: 25px;
     }
 
+    #ob-startpage #ob-maincontent {
+	padding-left: 0px;
+    }
+    
     .ob-nav_description a, .ob-nav_description a:hover {
 	color: #fff;
     }
@@ -200,34 +204,31 @@
     .bg-color {
 	color: #fff;
     }
-
+    
     #ob-startpage {
 	margin-right: 0px;
 	padding-right: 0px;
-	/*	background:url('/images/openbib/views/jesuiten/Triumph_St_Ignatius_Pozzo.jpg') 100% no-repeat;	*/
-/*	background:url('/images/openbib/views/muenzen/Muenzenhintergrund1700x991px.jpg') left 100% no-repeat;
-	background-position: 10% 30%;
-	background-size: cover;
-	height: 400px !important; */
+	padding-bottom: 0px;
     }
 
+    #ob-startpage .landing-page-img {
+/*	background:url('/images/openbib/views/kugproto/kugproto_startpages.jpg') left 100% no-repeat; */
+/*	background:url('/images/openbib/views/kugproto/Treppenhaus02_V2.jpg') left 100% no-repeat; 
+	background-position: 10% 30%;
+	background-size: cover; */
+	height: 600px !important; 
+	border-bottom-style: solid;
+	border-bottom-color: #767171;
+        border-bottom-width: 5px;
+    }
+
+    
     hr {
 	border-bottom-style: solid;
 	border-bottom-color: #253746;
         border-bottom-width: 5px;	
     }
     
-    #ob-startpage .landing-page-img {
-	padding-bottom: 40px;
-	background:url('/images/openbib/views/muenzenproto/Muenzenhintergrund1700x991px.jpg') left 100% no-repeat;
-	background-position: 10% 30%;
-	background-size: cover;
-	height: 300px !important;
-	border-bottom-style: solid;
-	border-bottom-color: #253746;
-        border-bottom-width: 5px;
-
-    }
 
     .ob-bg {
 	background-color:  #3e566c;
@@ -290,7 +291,7 @@
     }
 
     /* sidebar flyin */
-    #ob-sidebar {
+    #ob-sidebar, #ob-sidebar_eds, #ob-sidebar_website, #ob-sidebar_default {
 	background-color: #fff;
 	min-width: 320px;
 	max-width: 400px;
@@ -306,12 +307,12 @@
 	transition: margin .25s ease-out;
     }
 
-    #ob-sidebar .sidebar-heading {
+    #ob-sidebar .sidebar-heading, #ob-sidebar_eds .sidebar-heading, #ob-sidebar_website .sidebar-heading, #ob-sidebar_default .sidebar-heading, {
 	padding: 1.2rem 1.25rem;
 	font-size: 1.2rem;
     }
 
-    #ob-sidebar #sidebar-dismiss {
+    #ob-sidebar #sidebar-dismiss, #ob-sidebar_eds #sidebar-dismiss_eds, #ob-sidebar_website #sidebar-dismiss_website, #ob-sidebar_default #sidebar-dismiss_default {
 	padding: 0.875rem 1.25rem;
 	font-size: 1.2rem;
     }
@@ -319,6 +320,15 @@
     .sidebar-toggler {
 	margin-left: 10px;
 	margin-bottom: 5px;
+    }
+
+    .nav-tabs .nav-link.active {
+	border-top: 3px solid orange;
+    }
+
+    .nav-link {
+	display: block;
+	padding: 0.4rem 0.5rem;
     }
     
     .overlay {
@@ -376,6 +386,8 @@
     .container-fluid {
 	padding-left: 0px;
 	padding-right: 0px;
+	z-index:100;
+	position:relative;
     }
 
     #ob-navbar_top {
@@ -431,9 +443,6 @@
     
     body {
 //	background-color: #c6af85;
-    }
-    body {
-//	background:url('/images/openbib/views/jesuiten/Triumph_St_Ignatius_Pozzo_wp25.png') 50% no-repeat;	
     }
 
     #extendedSearchModal {
@@ -942,11 +951,15 @@
 	border: 1px solid #e3e3e3;
     }
 
-    .ob-no_hits { 
+    .ob-no_hits {
+	text-align: center;
 	background-color: #fff;
 	padding: 10px;
     }
 
+    .ob-no_hits h1 {
+	padding-bottom: 50px;
+    }
     
     /*  .ob-reuse_data h4, .ob-discover_sources h4, .ob-session_history h4 {
     font-family: Arial,Verdana,Helvetica,sans-serif;
@@ -995,9 +1008,18 @@
 	background-color: #fff;
     }
 
+    
+    #ob-startpage .ob-mainsearchform {
+	padding-top: 0px;
+    }
 
-    #ob-mainsearchform .container {
+    .ob-mainsearchform .container {
 	max-width: 99%;
+    }
+    
+    #ob-startpage .ob-mainsearchform .container {
+	margin: 0 auto;
+	max-width: 60%;
     }
     
     div .ob-breadcrumb .list-group {
@@ -1920,10 +1942,25 @@ a.ext {
     color:#990000;
 }
 
+@media only screen and (max-width: 1500px) {
 
+    #ob-startpage .ob-mainsearchform .container {
+	margin: 0 auto;
+	max-width: 75%;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+
+    #ob-startpage .ob-mainsearchform .container {
+	margin: 0 auto;
+	max-width: 90%;
+    }
+}
 
 @media only screen and (max-width: 800px) {
-     
+
+    
      /* Force table to not be like tables anymore */
      .table-flippable table, 
      .table-flippable thead, 
@@ -1977,12 +2014,13 @@ a.ext {
     .col-md-3 {
 	margin-right: 0px;
 	padding-right: 0px;
-	padding-left: 20px; 
+	padding-left: 5px; 
     }
 
     .col-md-9 {
 	margin-right: 0px;
 	padding-right: 5px;
+	padding-left: 0px;
     }
 
     /* no flyout

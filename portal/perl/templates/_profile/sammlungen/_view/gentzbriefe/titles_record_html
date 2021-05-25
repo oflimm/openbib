@@ -83,7 +83,7 @@ $(document).ready(function(){
 <div class="content"><!-- Begin Fulltitle -->
 
 <div class="ob-category_header">
-Gentz Online
+[% msg.maketext("Briefdetails") %]
 </div>
 
 <div class="row flex-md-row-reverse"><!-- Begin Details -->

@@ -42,6 +42,7 @@
 
     </style>
 
+   <!-- Begin: Sidebar -->
   [% IF layout_param.sidebar_template %]
 
   [%   IF NOT layout_param.sidebar_button_in_main_template %]
@@ -62,13 +63,15 @@
 	   </div>
       </div>
    [% END %]
-   
-    <div class="row">
-      <div id="ob-maincontent" class="col-md-12" >
+   <!-- End: Sidebar -->
+
+   <!-- Begin: Maincontent -->
+    <div  [% IF layout_param.css_id %]id="[% layout_param.css_id %]" [% END %]>
+      <div id="ob-maincontent" >
         [% PROCESS common/subtemplate name=layout_param.main_template %]
       </div>
     </div>
-    <!-- end: Layout without sidebar -->      
+    <!-- End: Maincontent -->      
 
     [% PROCESS common/subtemplate name="std_footer" %]
 

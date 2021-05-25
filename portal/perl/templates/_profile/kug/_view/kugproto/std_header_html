@@ -116,6 +116,9 @@
 <!-- Then static OpenBib JS -->
 <script src="/js/_profile/bootstrap/openbib.js"></script> 
 
+<!-- And finally yewno -->
+<script src="https://static.yewno.com/assets/widget/yewno.min.js"></script>
+
     <title>[% IF layout_param.page_title %][% layout_param.page_title %][% ELSE %][% config.get_viewdesc_from_viewname(view) %][% END %]</title>
 
 <!--[if lt IE 7.]>

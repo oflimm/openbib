@@ -36,6 +36,7 @@ use Benchmark ':hireswallclock';
 use Digest::MD5 qw(md5_hex);
 use Encode qw/decode_utf8/;
 use JSON::XS;
+use Lingua::Identify::CLD;
 use Log::Log4perl qw(get_logger :levels);
 use YAML ();
 use Business::ISBN;
@@ -576,6 +577,7 @@ sub process {
         foreach my $item_ref (@{$fields_ref->{'0004'}}) {
             my $target_titleid   = $item_ref->{content};
             my $mult             = $item_ref->{mult};
+	    my $subfield         = ($item_ref->{subfield})?$item_ref->{subfield}:'';
             my $source_titleid   = $id;
             my $supplement       = "";
             my $field            = "0004";
@@ -583,9 +585,9 @@ sub process {
 	    # Keine Verlinkungen zu nicht existierenden Titelids
 	    next if (!defined $self->{storage}{titleid_exists}{$target_titleid} || ! $self->{storage}{titleid_exists}{$target_titleid});
 	    
-            if (defined $inverted_ref->{$field}->{index}) {
-                foreach my $searchfield (keys %{$inverted_ref->{$field}->{index}}) {
-                    my $weight = $inverted_ref->{$field}->{index}{$searchfield};
+            if (defined $inverted_ref->{$field}{$subfield}->{index}) {
+                foreach my $searchfield (keys %{$inverted_ref->{$field}{$subfield}->{index}}) {
+                    my $weight = $inverted_ref->{$field}{$subfield}->{index}{$searchfield};
 
                     $index_doc->add_index($searchfield, $weight, ["T$field",$target_titleid]);
                 }
@@ -853,19 +855,22 @@ sub process {
                 my $super_ref = $self->{storage}{listitemdata_superid}{$superid};
                 foreach my $field ('0100','0101','0102','0103','1800') {
                     if (defined $super_ref->{fields}{$field}) {
-                        # Anreichern fuer Facetten
-                        if (defined $inverted_ref->{$field}->{facet}){
-                            foreach my $searchfield (keys %{$inverted_ref->{$field}->{facet}}) {
-                                foreach my $item_ref (@{$super_ref->{fields}{$field}}) {
-                                    $index_doc->add_facet("facet_".$searchfield, $item_ref->{content});
-                                }
-                            }
-                        }
+			foreach my $subfield (keys %{$inverted_ref->{$field}}){
+			
+			    # Anreichern fuer Facetten
+			    if (defined $inverted_ref->{$field}{$subfield}->{facet}){
+				foreach my $searchfield (keys %{$inverted_ref->{$field}{$subfield}->{facet}}) {
+				    foreach my $item_ref (@{$super_ref->{fields}{$field}}) {
+					$index_doc->add_facet("facet_".$searchfield, $item_ref->{content});
+				    }
+				}
+			    }
 
-                        # Anreichern fuer Recherche
-                        foreach my $item_ref (@{$super_ref->{fields}{$field}}) {
-                            push @person, $item_ref->{id};
-                        }
+			    # Anreichern fuer Recherche
+			    foreach my $item_ref (@{$super_ref->{fields}{$field}}) {
+				push @person, $item_ref->{id};
+			    }
+			}
                     }
                 }
             }
@@ -1017,125 +1022,135 @@ sub process {
         }
         
         foreach my $field (keys %{$inverted_ref}){
-            # a) Indexierung in der Suchmaschine
-            if (exists $inverted_ref->{$field}->{index}){
-
-                my $flag_isbn = 0;
-                # Wird dieses Feld als ISBN genutzt, dann zusaetzlicher Inhalt
-                foreach my $searchfield (keys %{$inverted_ref->{$field}->{index}}) {
-                    if ($searchfield eq "isbn"){
-                        $flag_isbn=1;
-                    }
-                }
-                
-                foreach my $searchfield (keys %{$inverted_ref->{$field}->{index}}) {
-                    my $weight = $inverted_ref->{$field}->{index}{$searchfield};
-
-                    $logger->debug("### $database: Indexing field $field to searchfield $searchfield with weight $weight for id $id");
-                                                            
-                    if    ($field eq "tag"){
-                        if (exists $self->{storage}{listitemdata_tags}{$id}) {
-                            
-                            foreach my $tag_ref (@{$self->{storage}{listitemdata_tags}{$id}}) {
-                                $index_doc->add_index($searchfield,$weight, ['tag',$tag_ref->{tag}]);
-                            }
-                            
-                            
-                            $logger->info("### $database: Adding Tags to ID $id");
-                        }
-                        
-                    }
-                    elsif ($field eq "litlist"){
-                        if (exists $self->{storage}{listitemdata_litlists}{$id}) {
-                            foreach my $litlist_ref (@{$self->{storage}{listitemdata_litlists}{$id}}) {
-				if ($searchfield eq "litlistid"){
-				    $index_doc->add_index($searchfield,$weight, ['litlistid',$litlist_ref->{id}]);
-				}
-				else {
-				    $index_doc->add_index($searchfield,$weight, ['litlist',$litlist_ref->{title}]);
-				}
-                            }
-                            
-                            $logger->info("### $database: Adding Litlists to ID $id");
-                        }
-                    }
-                    elsif ($field eq "id"){
-                        $index_doc->add_index($searchfield,$weight, ['id',$id]);
-                        $logger->debug("### $database: Adding searchable ID $id");
-                    }
-                    else {
-                        next unless (defined $fields_ref->{$field});
-                        
-                        foreach my $item_ref (@{$fields_ref->{$field}}){
-                            next unless (defined $item_ref->{content} && length($item_ref->{content}) > 0);
-
-                            $index_doc->add_index($searchfield,$weight, ["T$field",$item_ref->{content}]);
-
-                            # Wird diese Kategorie als isbn verwendet?
-                            if ($flag_isbn) {
-                                # Alternative ISBN zur Rechercheanreicherung erzeugen
-                                my $isbn = Business::ISBN->new($item_ref->{content});
-
-                                if (defined $isbn && $isbn->is_valid) {
-                                    my $isbnXX;
-                                    if (!$isbn->prefix) { # ISBN10 haben kein Prefix
-                                        $isbnXX = $isbn->as_isbn13;
-                                    } else {
-                                        $isbnXX = $isbn->as_isbn10;
-                                    }
-                                    
-                                    if (defined $isbnXX) {
-                                        my $enriched_isbn = $isbnXX->as_string;
-
-                                        $enriched_isbn = lc($enriched_isbn);
-                                        $enriched_isbn=~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/$1$2$3$4$5$6$7$8$9$10$11$12$13/g;
-                                        $enriched_isbn=~s/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/$1$2$3$4$5$6$7$8$9$10/g;
-                                        
-                                        $index_doc->add_index($searchfield,$weight, ["T$field",$enriched_isbn]);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            
-            # b) Collapse keys in der Suchmaschine
-            if (defined $inverted_ref->{$field}->{collapse}){
-                foreach my $collapsefield (keys %{$inverted_ref->{$field}->{collapse}}) {
-		    next unless (defined $fields_ref->{$field});
+	    foreach my $subfield (keys %{$inverted_ref->{$field}}){
+		# a) Indexierung in der Suchmaschine
+		if (exists $inverted_ref->{$field}{$subfield}->{index}){
 		    
-		    foreach my $item_ref (@{$fields_ref->{$field}}) {
-			$index_doc->add_collapse("collapse_$collapsefield", $item_ref->{content});        
+		    my $flag_isbn = 0;
+		    # Wird dieses Feld als ISBN genutzt, dann zusaetzlicher Inhalt
+		    foreach my $searchfield (keys %{$inverted_ref->{$field}{$subfield}->{index}}) {
+			if ($searchfield eq "isbn"){
+			    $flag_isbn=1;
+			}
 		    }
-                }
-            }
-
-            # c) Facetten in der Suchmaschine
-            if (exists $inverted_ref->{$field}->{facet}){
-                foreach my $searchfield (keys %{$inverted_ref->{$field}->{facet}}) {
-                    if ($field eq "tag"){
-                        if (exists $self->{storage}{listitemdata_tags}{$id}) {
-                            foreach my $tag_ref (@{$self->{storage}{listitemdata_tags}{$id}}) {
-                                $index_doc->add_facet("facet_$searchfield", $tag_ref->{tag});
-                            }
-                        }
-                    }
-                    elsif ($field eq "litlist"){
-                        if (exists $self->{storage}{listitemdata_litlists}{$id}) {
-                            foreach my $litlist_ref (@{$self->{storage}{listitemdata_tags}{$id}}) {
-                                $index_doc->add_facet("facet_$searchfield", $litlist_ref->{title});
-                            }
-                        }
-                    }            
-                    else {
-                        next unless (defined $fields_ref->{$field});
-                        
-                        foreach my $item_ref (@{$fields_ref->{$field}}) {
-                            $index_doc->add_facet("facet_$searchfield", $item_ref->{content});        
-                        }
-                    }
-                }
+		    
+		    foreach my $searchfield (keys %{$inverted_ref->{$field}{$subfield}->{index}}) {
+			my $weight = $inverted_ref->{$field}{$subfield}->{index}{$searchfield};
+			
+			$logger->debug("### $database: Indexing field $field with subfield '$subfield' to searchfield $searchfield with weight $weight for id $id");
+			
+			if ($field eq "tag"){
+			    if (exists $self->{storage}{listitemdata_tags}{$id}) {
+				
+				foreach my $tag_ref (@{$self->{storage}{listitemdata_tags}{$id}}) {
+				    $index_doc->add_index($searchfield,$weight, ['tag',$tag_ref->{tag}]);
+				}
+				
+				
+				$logger->info("### $database: Adding Tags to ID $id");
+			    }
+			    
+			}
+			elsif ($field eq "litlist"){
+			    if (exists $self->{storage}{listitemdata_litlists}{$id}) {
+				foreach my $litlist_ref (@{$self->{storage}{listitemdata_litlists}{$id}}) {
+				    if ($searchfield eq "litlistid"){
+					$index_doc->add_index($searchfield,$weight, ['litlistid',$litlist_ref->{id}]);
+				    }
+				    else {
+					$index_doc->add_index($searchfield,$weight, ['litlist',$litlist_ref->{title}]);
+				    }
+				}
+				
+				$logger->info("### $database: Adding Litlists to ID $id");
+			    }
+			}
+			elsif ($field eq "id"){
+			    $index_doc->add_index($searchfield,$weight, ['id',$id]);
+			    $logger->debug("### $database: Adding searchable ID $id");
+			}
+			else {
+			    next unless (defined $fields_ref->{$field});
+			    
+			    foreach my $item_ref (@{$fields_ref->{$field}}){
+				# Potentiell fehlende subfield-Information mit Default-Wert ergaenzen
+				$item_ref->{subfield} = '' if (!defined $item_ref->{subfield});
+				next unless (defined $item_ref->{content} && length($item_ref->{content}) > 0 && $item_ref->{subfield} eq $subfield);
+				
+				$index_doc->add_index($searchfield,$weight, ["T$field",$item_ref->{content}]);
+				
+				# Wird diese Kategorie als isbn verwendet?
+				if ($flag_isbn) {
+				    # Alternative ISBN zur Rechercheanreicherung erzeugen
+				    my $isbn = Business::ISBN->new($item_ref->{content});
+				    
+				    if (defined $isbn && $isbn->is_valid) {
+					my $isbnXX;
+					if (!$isbn->prefix) { # ISBN10 haben kein Prefix
+					    $isbnXX = $isbn->as_isbn13;
+					} else {
+					    $isbnXX = $isbn->as_isbn10;
+					}
+					
+					if (defined $isbnXX) {
+					    my $enriched_isbn = $isbnXX->as_string;
+					    
+					    $enriched_isbn = lc($enriched_isbn);
+					    $enriched_isbn=~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/$1$2$3$4$5$6$7$8$9$10$11$12$13/g;
+					    $enriched_isbn=~s/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/$1$2$3$4$5$6$7$8$9$10/g;
+					    
+					    $index_doc->add_index($searchfield,$weight, ["T$field",$enriched_isbn]);
+					}
+				    }
+				}
+			    }
+			}
+		    }
+		}
+		
+		# b) Collapse keys in der Suchmaschine
+		if (defined $inverted_ref->{$field}{$subfield}->{collapse}){
+		    foreach my $collapsefield (keys %{$inverted_ref->{$field}{$subfield}->{collapse}}) {
+			next unless (defined $fields_ref->{$field});
+			
+			foreach my $item_ref (@{$fields_ref->{$field}}) {
+			    # Potentiell fehlende subfield-Information mit Default-Wert ergaenzen
+			    $item_ref->{subfield} = '' if (!defined $item_ref->{subfield});
+			    next unless ($item_ref->{subfield} eq $subfield);
+			    $index_doc->add_collapse("collapse_$collapsefield", $item_ref->{content});        
+			}
+		    }
+		}
+		
+		# c) Facetten in der Suchmaschine
+		if (exists $inverted_ref->{$field}{$subfield}->{facet}){
+		    foreach my $searchfield (keys %{$inverted_ref->{$field}{$subfield}->{facet}}) {
+			if ($field eq "tag"){
+			    if (exists $self->{storage}{listitemdata_tags}{$id}) {
+				foreach my $tag_ref (@{$self->{storage}{listitemdata_tags}{$id}}) {
+				    $index_doc->add_facet("facet_$searchfield", $tag_ref->{tag});
+				}
+			    }
+			}
+			elsif ($field eq "litlist"){
+			    if (exists $self->{storage}{listitemdata_litlists}{$id}) {
+				foreach my $litlist_ref (@{$self->{storage}{listitemdata_tags}{$id}}) {
+				    $index_doc->add_facet("facet_$searchfield", $litlist_ref->{title});
+				}
+			    }
+			}            
+			else {
+			    next unless (defined $fields_ref->{$field});
+			    
+			    foreach my $item_ref (@{$fields_ref->{$field}}) {
+				# Potentiell fehlende subfield-Information mit Default-Wert ergaenzen
+				$item_ref->{subfield} = '' if (!defined $item_ref->{subfield});
+				next unless ($item_ref->{subfield} eq $subfield);
+				$index_doc->add_facet("facet_$searchfield", $item_ref->{content});        
+			    }
+			}
+		    }
+		}
             }        
 	}
     }
@@ -1243,72 +1258,9 @@ sub process {
         }
     }
         
-    # Potentiell fehlender Titel fuer Index-Data zusammensetzen
-    {
-        # Konzeptionelle Vorgehensweise fuer die korrekte Anzeige eines Titel in
-        # der Kurztitelliste:
-        #
-        # 1. Fall: Es existiert ein HST
-        #
-        # Dann:
-        #
-        # Ist nichts zu tun
-        #
-        # 2. Fall: Es existiert kein HST(331)
-        #
-        # Dann:
-        #
-        # Unterfall 2.1: Es existiert eine (erste) Bandzahl(089)
-        #
-        # Dann: Verwende diese Bandzahl
-        #
-        # Unterfall 2.2: Es existiert keine Bandzahl(089), aber eine (erste)
-        #                Bandzahl(455)
-        #
-        # Dann: Verwende diese Bandzahl
-        #
-        # Unterfall 2.3: Es existieren keine Bandzahlen, aber ein (erster)
-        #                Gesamttitel(451)
-        #
-        # Dann: Verwende diesen GT
-        #
-        # Unterfall 2.4: Es existieren keine Bandzahlen, kein Gesamttitel(451),
-        #                aber eine Zeitschriftensignatur(1203/USB-spezifisch)
-        #
-        # Dann: Verwende diese Zeitschriftensignatur
-        #
-        if (!defined $fields_ref->{'0331'}) {
-            # UnterFall 2.1:
-            if (defined $fields_ref->{'0089'}) {
-                $index_doc->add_data('T0331',{
-                    content => $fields_ref->{'0089'}[0]{content}
-                });
-            }
-            # Unterfall 2.2:
-            elsif (defined $fields_ref->{'0455'}) {
-                $index_doc->add_data('T0331',{
-                    content => $fields_ref->{'0455'}[0]{content}
-                });
-            }
-            # Unterfall 2.3:
-            elsif (defined $fields_ref->{'0451'}) {
-                $index_doc->add_data('T0331',{
-                    content => $fields_ref->{'0451'}[0]{content}
-                });
-            }
-            # Unterfall 2.4:
-            elsif (defined $fields_ref->{'1203'}) {
-                $index_doc->add_data('T0331',{
-                    content => $fields_ref->{'1203'}[0]{content}
-                });
-            }
-            else {
-                $index_doc->add_data('T0331',{
-                    content => "Kein HST/AST vorhanden",
-                });
-            }
-        }
-        
+    # Potentiell fehlender HST fuer Index-Data zusammensetzen
+    # -> wird ausgelagert in Filter-Skript
+    {        
         # Bestimmung der Zaehlung
         
         # Fall 1: Es existiert eine (erste) Bandzahl(089)

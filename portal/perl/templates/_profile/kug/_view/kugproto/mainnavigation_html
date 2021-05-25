@@ -212,7 +212,7 @@
 <div class="navbottom pl-4 row">
 
       <div class="col-md-9 mx-auto brandname">
-        <a href="[% path_prefix %]/home"><span class="d-sm-none">KUG Portal</span><span class="d-none d-sm-block">Kölner UniversitätsGesamtkatalog</span></a>
+        <a href="[% path_prefix %]/home"><span class="d-sm-none">Universitätskatalog <b style="color: orange">Prototyp</b></span><span class="d-none d-sm-block">Kölner Universitätskatalog <b style="color: orange">Prototyp (Pre-Alpha)</b></span></a>
       </div>
       
        <div class="col-md-3 text-right d-none d-md-block">
@@ -227,7 +227,7 @@
     [% END %]
 </header>
 
-<div class="mb-3 d-none d-md-block"></div>
+<!-- <div class="mb-3 d-none d-md-block"></div> -->
 
 <!-- <nav class="navbar" id="ob-fixed_navigation" [% IF without_navigation_search %]class="ob-hidden"[% END %]> -->
 
@@ -237,7 +237,7 @@
 <div class="d-none d-md-block mb-3"></div>
 <div class="sticky-top">
 
-<form id="ob-mainsearchform" method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
+<form class="ob-mainsearchform" method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
 
 <input type="hidden" name="num"        value="20" />
 <input type="hidden" name="page"       value="1" />
@@ -251,7 +251,7 @@
     <div class="row">    
         <div class="col">
             <div class="input-group">
-                <input required="required" id="to_focus" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Suchbegriff...") %]" />
+                <input required="required" id="to_focus" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Unikatalog (Bücher, E-Medien, Aufsätze &amp; mehr) und USB Website") %]" />
                 <span class="input-group-btn pl-1">
                     <button class="btn btn-primary" type="submit"><span class="fas fa-search d-md-none"></span><span class="d-none d-md-block font-weight-bold">[% msg.maketext("Suchen") %]</span></button>
                     <span class="btn btn-primary fas fa-cog d-md-none" data-toggle="collapse" data-target="#search_options" aria-expanded="false"></span>
@@ -261,26 +261,20 @@
     </div>
     <div class="row pt-1 pb-0">     
       <div class="col collapse d-md-block p-0" id="search_options">
-<!--       <div class="d-flex flex-row">
-         <div>[% PROCESS common/subtemplate name="searchforms_record_profile" %]</div>
-	 <div class="p-1"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a></div>
-	 <div class="p-1"><a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a></div>
-	 <div class="p-1"><a  href="[% path_prefix %]/[% config.get('browse_loc') %]/[% config.get('topics_loc') %].html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a></div>
-       </div> -->
        
          <ul class="list-group flex-row flex-wrap justify-content-md-center justify-content-sm-left">
-            <li class="list-group-item pr-1" style="border: none" >
+<!--            <li class="list-group-item pr-1" style="border: none" >
        	      [% PROCESS common/subtemplate name="searchforms_record_profile" %]
-            </li>
+            </li> -->
             <li class="list-group-item pr-1 pt-3" style="border: none" >
              <a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
 	    </li>      	  
+            <li class="list-group-item  pr-1 pt-3" style="border: none" >
+	    <a  href="[% path_prefix %]/[% config.get('browse_loc') %]/[% config.get('topics_loc') %].html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a>
+	    </li>
             <li class="list-group-item pr-1 pt-3" style="border: none" >
 	     <a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
 	   </li>
-           <li class="list-group-item  pr-1 pt-3" style="border: none" >
-	    <a  href="[% path_prefix %]/[% config.get('browse_loc') %]/[% config.get('topics_loc') %].html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a>
-	    </li>      	  
          </ul>
     </div><!-- col -->
   </div><!-- row -->

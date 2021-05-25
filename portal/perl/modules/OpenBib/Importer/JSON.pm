@@ -49,8 +49,8 @@ use OpenBib::Index::Document;
 my %char_replacements = (
     
     # Zeichenersetzungen
-    "\n"     => "<br\/>",
-    "\r"     => "\\r",
+    "\n"     => "",
+    "\r"     => "",
     ""     => "",
 #    "\x{00}" => "",
 #    "\x{80}" => "",
@@ -194,9 +194,10 @@ sub process {
     foreach my $field (keys %{$fields_ref}) {
         next if ($field eq "id" || defined $blacklist_ref->{$field} );
         foreach my $item_ref (@{$fields_ref->{$field}}) {
-            if (defined $inverted_ref->{$field}->{index}) {
-                foreach my $searchfield (keys %{$inverted_ref->{$field}->{index}}) {
-                    my $weight = $inverted_ref->{$field}->{index}{$searchfield};
+	    my $subfield         = ($item_ref->{subfield})?$item_ref->{subfield}:'';
+            if (defined $inverted_ref->{$field}{$subfield}->{index}) {
+                foreach my $searchfield (keys %{$inverted_ref->{$field}{$subfield}->{index}}) {
+                    my $weight = $inverted_ref->{$field}{$subfield}->{index}{$searchfield};
                     
                     my $hash_ref = {};
                     if (defined $self->{storage}{$self->{'indexed_authority'}}{$id}) {

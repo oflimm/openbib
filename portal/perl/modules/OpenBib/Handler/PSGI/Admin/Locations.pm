@@ -374,9 +374,10 @@ sub get_input_definition {
         },
         # Muster: field_FIELD_SUBFIELD_MULT
         fields => {
-            default  => {},
-            encoding => 'none',
-            type     => 'fields',
+            default   => {},
+            encoding  => 'none',
+            type      => 'fields',
+	    no_escape => 1,
         },
         
     };

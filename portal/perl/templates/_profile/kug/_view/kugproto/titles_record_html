@@ -39,6 +39,11 @@
       isbn   = normdata.${"T0553"}.first.content.replace('-','') ;
   END ;
 
+  # E-Book/Inhaltsverzeichnis vorhanden
+  fulltext  = normdata.${'T4120'}.first.content ;
+  toc       = normdata.${'T4110'}.first.content ;
+
+
   recordname = normdata.${'T0331'}.first.content;
   IF normdata.${'PC0001'}.first.content ;
      pc = normdata.${'PC0001'}.first.content ;
@@ -108,10 +113,44 @@ $(document).ready(function(){
 <div class="col-md-9"><!-- Begin Categories -->
 
 [% IF record_exists %]
-[%   PROCESS common/subtemplate name="visible_categories_title" %]
-
+[%# USE dumper;dumper.dump(normdata)%]
+[%-
+     record_type = "" ; 
+     IF normdata.${'T4410'}.first.content.match('Monographie');
+       record_type = "mono";
+       PROCESS common/subtemplate name="visible_categories_title_mono";
+     ELSIF normdata.${'T4410'}.first.content.match('Zeitschrift/Serie');
+       record_type = "journal";        
+       PROCESS common/subtemplate name="visible_categories_title_journal";
+     ELSIF  normdata.${'T4410'}.first.content.match('Aufsatz');
+       record_type = "article";
+       PROCESS common/subtemplate name="visible_categories_title_article";
+     ELSE;
+       record_type = "default";
+       PROCESS common/subtemplate name="visible_categories_title";
+     END;
+-%]
 
 [%   PROCESS common/subtemplate name="titles_record_html_categories" %]
+
+<h5 class="pb-2"><i class="fa fa-arrow-down"></i> <a href="#title_supplemental_information" data-toggle="collapse" data-target="#title_supplemental_information" aria-expanded="false" aria-controls="title_supplemental_information" >Weitere Informationen</a></h5>
+
+<div id="title_supplemental_information" class="collapse">
+[%-
+     IF record_type == 'mono';
+       PROCESS common/subtemplate name="visible_categories_title_mono_supplement";
+     ELSIF record_type == 'journal';
+       PROCESS common/subtemplate name="visible_categories_title_journal_supplement";
+     ELSIF record_type == 'article';
+       PROCESS common/subtemplate name="visible_categories_title_article_supplement";
+     ELSE;
+       PROCESS common/subtemplate name="visible_categories_title_supplement";
+     END;
+-%]
+
+[%   PROCESS common/subtemplate name="titles_record_html_categories" %]
+</div>
+
 [% ELSE %]
 <h2>[% msg.maketext("Ein Titel mit dieser ID ist nicht (mehr) in diesem Katalog vorhanden.") %]</h2>
 [% END %]
@@ -119,7 +158,7 @@ $(document).ready(function(){
 [% IF config.get('unAPI') %]
 <abbr class="unapi-id" title="[% record.database %]:[% record.get_encoded_id %]"></abbr>
 [% END %]
-</div>
+
 
 <div class="d-flex ob-fulltitle_actions">
 
@@ -127,20 +166,36 @@ $(document).ready(function(){
          <a  class="btn btn-primary" ic-transform-response="return incollection();" ic-get-from="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><i class="far fa-bookmark"></i> <span class="d-none d-sm-inline">[% msg.maketext("Merken") %]</span></a>
   </div>
 
-	    <div class="pr-3">
+[% IF fulltext %]
+	    <div class="pr-1">	    
+              <a class="btn btn-primary pr-2" href="[% fulltext %]" target="_blank" title="[% msg.maketext("Volltext") %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Volltext") %]</span></a>
+	    </div>
+[% END %]
+
+[% IF toc %]
+	    <div class="pr-1">	    
+              <a class="btn btn-primary pr-2" href="[% toc %]" target="_blank" title="[% msg.maketext("Inhaltsverzeichnis") %]"><i class="fas fa-list"></i> <span class="d-none d-sm-inline">[% msg.maketext("TOC") %]</span></a>
+	    </div>
+[% END %]
+
+	    <div class="pr-1">
 	      <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/to_bibsonomy" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy"><i class="fas fa-share-alt"></i> <span class="d-none d-sm-inline">BibSonomy</span></a>
 	    </div>       
 
-<div class="pr-1">
-  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#apaModal">[% msg.maketext("APA") %] <span class="d-none d-sm-inline">[% msg.maketext("Zitat") %]</span></button>
-</div>
-<div class="pr-1">
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#harvardModal">[% msg.maketext("Harvard") %] <span class="d-none d-sm-inline">[% msg.maketext("Zitat") %]</span></button>
-</div>
-<div class="pr-1">
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mlaModal">[% msg.maketext("MLA") %] <span class="d-none d-sm-inline">[% msg.maketext("Zitat") %]</span></button>
-</div>
-
+	    <div class="pr-1">
+ <div class="dropdown">
+  <button class="btn btn-primary dropdown-toggle" type="button" id="citationMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fas fa-quote-right"></i> [% msg.maketext("Zitat") %]
+  </button>
+  <div class="dropdown-menu" aria-labelledby="citationMenuButton">
+    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#apaModal">[% msg.maketext("APA") %]</a>
+    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#harvardModal">[% msg.maketext("Harvard") %]</a>
+    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mlaModal">[% msg.maketext("MLA") %]</a>
+    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#bibtexModal">[% msg.maketext("BibTeX") %]</a>
+    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#endnoteModal">[% msg.maketext("EndNote") %]</a>
+  </div>
+ </div>
+             </div>
 
 <div class="pr-1">
     <button class="btn btn-primary sidebar-toggler" type="button" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-arrow-right"></i> <span class="d-none d-sm-inline">[% msg.maketext("Mehr") %]</span></button>

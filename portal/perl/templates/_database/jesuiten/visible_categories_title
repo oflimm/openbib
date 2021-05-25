@@ -33,8 +33,12 @@
                 'T0359', # msg.maketext("T0359") Vorl. Verfasser/Koerperschaft
                 'T0360', # msg.maketext("T0360") Vorl. Unterreihe
                 'T0403', # msg.maketext("T0403") Auflage
+                'T0470', # msg.maketext("T0470-jesuiten") Erscheinungsort
                 'T0410', # msg.maketext("T0410") Verlagsort
+                'T0673', # msg.maketext("T0673") Verlagsort normiert
                 'T0412', # msg.maketext("T0412") Verlag
+                'T1680', # msg.maketext("T1680") Verlag normiert
+                'T0676', # msg.maketext("T0676") Verlag normiert
                 'T0425', # msg.maketext("T0425") ErschJahr
                 'T0424', # msg.maketext("T0424") ErschJahr/Ansetzung
                 'T0405', # msg.maketext("T0405") Erscheinungsverlauf
@@ -87,7 +91,8 @@
                 'T0750', # msg.maketext("T0750") Abstract
                 'T0503', # msg.maketext("T0503") Uebers. HST
                 'T0026', # msg.maketext("T0026") NE/R
-                'T0800', # msg.maketext("T0800") Art/Inhalt Medienart
+                #'T0800', # msg.maketext("T0800") Art/Inhalt Medienart
+                'T3001', # msg.maketext("T3001") Altsignatur
                 'T0710', # msg.maketext("T0710") Schlagwort
                 'T0902', # msg.maketext("T0902") Schlagwort
                 'T0907', # msg.maketext("T0907") Schlagwort

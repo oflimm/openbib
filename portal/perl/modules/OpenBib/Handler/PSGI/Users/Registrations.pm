@@ -35,9 +35,10 @@ no warnings 'redefine';
 use utf8;
 
 use Email::Valid;               # EMail-Adressen testen
-use Email::MIME;
+#use Email::MIME;
 use Email::Stuffer;
-use Email::Sender::Simple;
+#use Email::Sender::Simple;
+use File::Slurper;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use Captcha::reCAPTCHA;
@@ -287,10 +288,11 @@ sub mail_confirmation {
     # $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config->{contact_email}");
     
     Email::Stuffer->to($user)
-              ->from($config->{contact_email})
-              ->subject($subject)
-              ->attach_file($anschfile)
-              ->send;
+        ->from($config->{contact_email})
+        ->subject($subject)
+        ->text_body(read_text($anschfile))
+        ->attach_file($anschfile)
+        ->send;
     
     # my @parts = (
     # Email::MIME->create(

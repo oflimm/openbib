@@ -290,7 +290,7 @@ sub mail_confirmation {
     Email::Stuffer->to($username)
         ->from($config->{contact_email})
         ->subject($subject)
-        ->text_body("Hallo")
+        ->text_body(read_text($anschfile))
         ->attach_file($anschfile)
         ->send;
     

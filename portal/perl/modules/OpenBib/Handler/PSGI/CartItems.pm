@@ -39,8 +39,9 @@ use URI::Escape;
 use DBI;
 use Email::Valid;
 use Encode 'decode_utf8';
+use Email::Stuffer;
+use File::Slurper 'read_binary';
 use Log::Log4perl qw(get_logger :levels);
-use MIME::Lite;
 use POSIX;
 
 use OpenBib::Common::Util;
@@ -751,7 +752,7 @@ sub mail_collection_send {
     };
 
     my $maildata="";
-    my $ofile="ml." . $$;
+    my $ofile="merkliste-" . $$ .".txt";
 
     my $datatemplate = Template->new({
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
@@ -797,7 +798,6 @@ sub mail_collection_send {
         return;
     };
   
-    my $anschreiben="";
     my $afile = "an." . $$;
 
     my $mainttdata = {
@@ -830,34 +830,16 @@ sub mail_collection_send {
 
     $maintemplate->process($messagetemplatename, $mainttdata ) || do { 
     };
-
-    my $mailmsg = MIME::Lite->new(
-        From            => $config->{contact_email},
-        To              => $email,
-        Subject         => $subject,
-        Type            => 'multipart/mixed'
-    );
-
+    
     my $anschfile="/tmp/" . $afile;
-
-    $mailmsg->attach(
-        Type            => 'TEXT',
-        Encoding        => '8bit',
-        #Data            => $anschreiben,
-	Path            => $anschfile,
-    );
-  
-    my $mailfile="/tmp/" . $ofile;
-
-    $mailmsg->attach(
-        Type            => $mimetype,
-        Encoding        => '8bit',
-        Filename        => $filename,
-        #Data            => $maildata,
-	Path            => $mailfile,
-    );
-  
-    $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config->{contact_email}");
+    my $mailfile ="/tmp/" . $ofile;
+    
+    Email::Stuffer->to($email)
+	->from($config->{contact_email})
+	->subject($subject)
+	->text_body(read_binary($anschfile))
+	->attach_file($mailfile)
+	->send;
 
     unlink $anschfile;
     unlink $mailfile;

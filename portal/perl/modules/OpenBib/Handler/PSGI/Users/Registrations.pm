@@ -35,11 +35,12 @@ no warnings 'redefine';
 use utf8;
 
 use Email::Valid;               # EMail-Adressen testen
+use Email::Stuffer;
+use File::Slurper 'read_binary';
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use Captcha::reCAPTCHA;
 use POSIX;
-use MIME::Lite;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
@@ -265,23 +266,13 @@ sub mail_confirmation {
         return;
     };
 
-    my $mailmsg = MIME::Lite->new(
-        From            => $config->{contact_email},
-        To              => $username,
-        Subject         => $subject,
-        Type            => 'multipart/mixed'
-    );
-
     my $anschfile="/tmp/" . $afile;
-
-    $mailmsg->attach(
-        Type            => 'text/plain',
-        Encoding        => '8bit',
-	Path            => $anschfile,
-    );
     
-    #$mailmsg->send('sendmail', "/usr/bin/mail -s -f$config->{contact_email}");
-    $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config->{contact_email}");
+    Email::Stuffer->to($username)
+	->from($config->{contact_email})
+	->subject($subject)
+	->text_body(read_binary($anschfile))
+	->send;
 
     # TT-Data erzeugen
     my $ttdata={

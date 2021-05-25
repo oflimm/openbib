@@ -37,8 +37,9 @@ use utf8;
 use DBI;
 use Digest::MD5;
 use Email::Valid;
+use Email::Stuffer;
+use File::Slurper 'read_binary';
 use Log::Log4perl qw(get_logger :levels);
-use MIME::Lite;
 use POSIX;
 use SOAP::Lite;
 use Socket;
@@ -238,23 +239,14 @@ sub mail {
 	$mail_to.=",$email";
     }
     
-    my $mailmsg = MIME::Lite->new(
-        From            => $config->{mailorders}{scope}{$scope}{sender},
-        To              => $mail_to,
-        Subject         => "$scope: Bestellung per Mail",
-        Type            => 'multipart/mixed'
-    );
-
     my $anschfile="/tmp/" . $afile;
 
-    $mailmsg->attach(
-        Type            => 'TEXT',
-        Encoding        => '8bit',
-	Path            => $anschfile,
-    );
-  
-    $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config->{mailorders}{scope}{$scope}{sender}");
-
+    Email::Stuffer->to($mail_to)
+	->from($config->{mailorders}{scope}{$scope}{sender})
+	->subject("$scope: Bestellung per Mail")
+	->text_body(read_binary($anschfile))
+	->send;
+    
     unlink $anschfile;
     
     return $self->print_page($config->{tt_locations_record_mailorders_mail_success_tname},$ttdata);

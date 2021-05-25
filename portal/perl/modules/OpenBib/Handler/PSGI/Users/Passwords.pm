@@ -37,8 +37,9 @@ use utf8;
 
 use DBI;
 use Encode 'decode_utf8';
+use Email::Stuffer;
+use File::Slurper 'read_binary';
 use Log::Log4perl qw(get_logger :levels);
-use MIME::Lite;
 use POSIX;
 
 use OpenBib::Common::Util;
@@ -200,26 +201,15 @@ sub create_record {
         $self->header_add('Status',400); # Server Error
         return;
     };
-    
-    my $mailmsg = MIME::Lite->new(
-        From            => $config->{contact_email},
-        To              => $username,
-        Subject         => $msg->maketext("Neues Passwort"),
-        Type            => 'multipart/mixed'
-    );
-    
+        
     my $anschfile="/tmp/" . $afile;
-    
-    $mailmsg->attach(
-        Type            => 'TEXT',
-        Encoding        => '8bit',
-        #Data            => $anschreiben,
-        Path            => $anschfile,
-    );
-    
-    $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config->{contact_email}");
-    
 
+    Email::Stuffer->to($username)
+	->from($config->{contact_email})
+	->subject($msg->maketext("Neues Passwort"))
+	->text_body(read_binary($anschfile))
+	->send;
+    
     $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
         database     => '', # Template ist nicht datenbankabhaengig
         view         => $mainttdata->{view},

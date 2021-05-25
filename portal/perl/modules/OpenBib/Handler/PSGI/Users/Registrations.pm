@@ -287,7 +287,7 @@ sub mail_confirmation {
     # #$mailmsg->send('sendmail', "/usr/bin/mail -s -f$config->{contact_email}");
     # $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config->{contact_email}");
     
-    Email::Stuffer->to($user)
+    Email::Stuffer->to($username)
         ->from($config->{contact_email})
         ->subject($subject)
         ->text_body("Hallo")

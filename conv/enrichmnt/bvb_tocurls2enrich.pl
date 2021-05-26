@@ -297,7 +297,7 @@ else {
             $enrich_data_by_bibkey_ref = [];
         }
 
-	if ($import && $count % 10000 == 0){
+	if ($$count % 10000 == 0){
 	    $logger->info("$count Datensaetze bearbeitet");
 	}
 	

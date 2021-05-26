@@ -108,7 +108,7 @@ if ($init){
 
 $logger->info("Bestimmung der Schlagworte");
 
-$format=($format)?$format:'USMARC';
+$format=($format)?$format:'MARC21';
 
 $logger->debug("Using format $format");
 
@@ -129,6 +129,12 @@ else {
 # Recover from errors
 $batch->strict_off();
 $batch->warnings_off();
+
+# Fallback to UTF8
+MARC::Charset->assume_unicode(1);
+
+# Ignore Encoding Errors
+MARC::Charset->ignore_errors(1);
 
 if ($importjson){
     if (! -e $jsonfile){
@@ -289,6 +295,11 @@ else {
             $enrich_data_by_isbn_ref   = [];
             $enrich_data_by_bibkey_ref = [];
         }
+
+	if ($count % 10000 == 0){
+	    $logger->info("$count Datensaetze bearbeitet");
+	}
+	
         $count++;
         
     }

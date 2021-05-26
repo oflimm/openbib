@@ -130,6 +130,12 @@ else {
 $batch->strict_off();
 $batch->warnings_off();
 
+# Fallback to UTF8
+MARC::Charset->assume_unicode(1);
+
+# Ignore Encoding Errors
+MARC::Charset->ignore_errors(1);
+
 if ($importjson){
     if (! -e $jsonfile){
         $logger->error("JSON-Datei $jsonfile existiert nicht");

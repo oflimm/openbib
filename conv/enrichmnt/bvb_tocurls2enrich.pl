@@ -296,6 +296,11 @@ else {
             $enrich_data_by_isbn_ref   = [];
             $enrich_data_by_bibkey_ref = [];
         }
+
+	if ($import && $count % 10000 == 0){
+	    $logger->info("$count Datensaetze bearbeitet");
+	}
+	
         $count++;
         
     }

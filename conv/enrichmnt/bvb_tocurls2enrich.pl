@@ -39,24 +39,28 @@ use Business::ISBN;
 use Encode 'decode_utf8';
 use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
-use XML::Twig::XPath;
-use XML::Simple;
+use MARC::Batch;
+use MARC::Charset 'marc8_to_utf8';
+use MARC::File::XML;
 use JSON::XS;
 
 use OpenBib::Common::Util;
+use OpenBib::Config;
 use OpenBib::Enrichment;
 use OpenBib::Catalog::Factory;
 
 # Autoflush
 $|=1;
 
-my ($help,$importjson,$import,$init,$jsonfile,$inputfile,$logfile,$loglevel);
+my ($help,$format,$use_xml,$importjson,$import,$init,$jsonfile,$inputfile,$logfile,$loglevel);
 
 &GetOptions("help"         => \$help,
             "init"         => \$init,
             "import"       => \$import,
             "inputfile=s"  => \$inputfile,
             "jsonfile=s"   => \$jsonfile,
+            "use-xml"      => \$use_xml,
+            "format=s"     => \$format,
             "import-json"  => \$importjson,
             "logfile=s"    => \$logfile,
             "loglevel=s"   => \$loglevel,
@@ -65,6 +69,8 @@ my ($help,$importjson,$import,$init,$jsonfile,$inputfile,$logfile,$loglevel);
 if ($help){
    print_help();
 }
+
+my $config = OpenBib::Config->new;
 
 $jsonfile=($jsonfile)?$jsonfile:"$inputfile.json";
 
@@ -94,12 +100,6 @@ my $origin = 24;
 
 $logger->debug("Origin: $origin");
 
-my $twig= XML::Twig::XPath->new(
-   TwigHandlers => {
-     "marc:collection/marc:record" => \&parse_record
-   }
- );
-
 if ($init){
     $logger->info("Loeschen der bisherigen Daten");
     
@@ -108,19 +108,42 @@ if ($init){
 
 $logger->info("Bestimmung der TOC-URLs");
 
-our $count=0;
+$format=($format)?$format:'USMARC';
 
-our $tocurl_tuple_count = 0;
+$logger->debug("Using format $format");
 
-our $enrich_data_by_isbn_ref   = [];
+my $batch;
+
+if ($use_xml){
+    $logger->debug("Using MARC-XML");
+    
+    MARC::File::XML->default_record_format($format);
+    
+    $batch = MARC::Batch->new('XML', $inputfile);    
+}
+else {
+    $logger->debug("Using native MARC");
+    $batch = MARC::Batch->new($format, $inputfile);
+}
+
+# Recover from errors
+$batch->strict_off();
+$batch->warnings_off();
 
 if ($importjson){
     if (! -e $jsonfile){
         $logger->error("JSON-Datei $jsonfile existiert nicht");
         exit;
     }
+
     open(JSON,$jsonfile);
 
+    my $count=1;
+    
+    my $subject_tuple_count = 1;
+    
+    my $enrich_data_by_isbn_ref   = [];
+    my $enrich_data_by_bibkey_ref = [];
     
     $logger->info("Einlesen und -laden der neuen Daten");
 
@@ -128,19 +151,23 @@ if ($importjson){
         my $item_ref = decode_json($_);
 
         push @{$enrich_data_by_isbn_ref},   $item_ref if (defined $item_ref->{isbn});
+        push @{$enrich_data_by_bibkey_ref}, $item_ref if (defined $item_ref->{bibkey});
 
-        $tocurl_tuple_count++;
+        $subject_tuple_count++;
         
         if ($count % 1000 == 0){
             $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
+            $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref })  if (@$enrich_data_by_bibkey_ref);
             $enrich_data_by_isbn_ref   = [];
+            $enrich_data_by_bibkey_ref = [];
         }
         $count++;
     }
 
     $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
+    $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref }) if (@$enrich_data_by_bibkey_ref);
     
-    $logger->info("$tocurl_tuple_count TOCURL-Tupel eingefuegt");
+    $logger->info("$subject_tuple_count RVK-Tupel eingefuegt");
 
     if ($jsonfile){
         close(JSON);
@@ -151,12 +178,132 @@ else {
     if ($jsonfile){
         open(JSON,">$jsonfile");
     }
-        
+    
+    my $count=1;
+
+    my $tocurl_tuple_count = 1;
+
+    # Logik: Bibkeys werden nur verwendet, wenn es keine ISBNs gibt. Also nicht entweder ISBN oder Bibkey, sondern sowohl ISBN wie auch Bibkey!
+    
+    my $enrich_data_by_isbn_ref = [];
+    my $enrich_data_by_bibkey_ref = [];
+    
     $logger->info("Einlesen und -laden der neuen Daten");
     
-    $twig->safe_parsefile($inputfile);
+    while (my $record = $batch->next()){
+        
+        my $encoding = $record->encoding();
+        
+        $logger->debug("Encoding:$encoding:");
+
+        my $bibkey = OpenBib::Common::Util::gen_bibkey_from_marc($record,$encoding);
+
+        my @isbns = ();
+        {
+            # ISBN
+            foreach my $field ($record->field('020')){
+                my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
+                my $content_z = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('z')):decode_utf8($field->as_string('z'));
+                
+                $content_a=~s/\s+\(.+?\)\s*$//;
+                $content_z=~s/\s+\(.+?\)\s*$//;
+                
+                if ($content_a){
+                    my $isbn = $content_a;
+                    my $isbnXX = Business::ISBN->new($content_a);
+                    
+                    if (defined $isbnXX && $isbnXX->is_valid){
+                        $isbn = $isbnXX->as_isbn13->as_string;
+                    }
+                    else {
+                        next;
+                    }
+                    
+                    $isbn = OpenBib::Common::Util::normalize({
+                        field    => 'T0540',
+                        content  => $isbn,
+                    });
+                    
+                    push @isbns, $isbn;
+                }
+            }
+        }
+        
+        my @tocurls = ();
+        {        
+            # TOCURLs
+            foreach my $fieldno ('856'){
+                foreach my $field ($record->field($fieldno)){
+                    my $content_u = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('u')):decode_utf8($field->as_string('u'));
+                    my $content_3 = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('3')):decode_utf8($field->as_string('3'));
+
+                    next unless ($content_3=~/Inhaltsverzeichnis/);
+
+		    $logger->debug("TocURL: $content_u - Desc: $content_3");
+		    
+                    push @tocurls, {
+                        content  => $content_u,
+                        subfield => 'u'
+                    } if ($content_u);
+                }
+            }
+        }
+
+        if (@isbns){
+            # Dublette TOCURL's entfernen
+            my %seen_terms  = ();
+            my @unique_isbns    = grep { ! $seen_terms{$_} ++ } @isbns;
+            
+            foreach my $isbn (@unique_isbns){
+                foreach my $tocurl (@tocurls){
+                    $logger->debug("Found $isbn -> $tocurl");
+                    my $tocurl_ref = {
+                        isbn     => $isbn,
+                        origin   => $origin,
+                        field    => '4110',
+                        subfield => $tocurl->{subfield},
+                        content  => $tocurl->{content},
+                    };
+                    
+                    print JSON encode_json($tocurl_ref),"\n" if ($jsonfile);
+                    
+                    push @{$enrich_data_by_isbn_ref}, $tocurl_ref;
+                    $tocurl_tuple_count++;
+                }
+            }
+        }
+        elsif ($bibkey){
+            foreach my $tocurl (@tocurls){
+                $logger->debug("Found Bibkey $bibkey -> $tocurl");
+                my $tocurl_ref = {
+                    bibkey   => $bibkey,
+                    origin   => $origin,
+                    field    => '4101',
+                    subfield => $tocurl->{subfield},
+                    content  => $tocurl->{content},
+                };
+                
+                print JSON encode_json($tocurl_ref),"\n" if ($jsonfile);
+                
+                push @{$enrich_data_by_bibkey_ref}, $tocurl_ref;
+                $tocurl_tuple_count++;
+            }            
+        }
+        
+        if ($import && $count % 1000 == 0){
+            $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
+            $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref })  if (@$enrich_data_by_bibkey_ref);
+            $enrich_data_by_isbn_ref   = [];
+            $enrich_data_by_bibkey_ref = [];
+        }
+        $count++;
+        
+    }
     
-    $logger->info("$count done");
+    if ($import && (@$enrich_data_by_isbn_ref || @$enrich_data_by_bibkey_ref) ){
+        $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
+        $enrichment->add_enriched_content({ matchkey => 'bibkey', content => $enrich_data_by_bibkey_ref })  if (@$enrich_data_by_bibkey_ref);
+    }
     
     $logger->info("$tocurl_tuple_count TOCURL-Tupel eingefuegt");
 
@@ -175,6 +322,8 @@ bvb_tocurls2enrich.pl - Anreicherung mit TOCURL-Informationen aus den offenen Da
 
    -init                 : Zuerst Eintraege fuer dieses Feld und Origin aus Anreicherungsdatenbank loeschen
    -import               : Einladen der verarbeiteten Daten
+   -use-xml              : MARCXML-Format verwenden
+   -format=...           : Format z.B. UNIMARC (default: USMARC)
 
    --inputfile=...       : Name der Einladedatei im MARC-Format
    --jsonfile=...        : Name der JSON-Einlade-/ausgabe-Datei
@@ -186,106 +335,6 @@ bvb_tocurls2enrich.pl - Anreicherung mit TOCURL-Informationen aus den offenen Da
 
 ENDHELP
     exit;
-}
-
-sub parse_record {
-    my($t, $titset)= @_;
-
-    my $logger = get_logger();
-
-    my @isbns = ();
-    
-    {
-	my @elements = $titset->findnodes('//marc:datafield[@tag="020"]/marc:subfield[@code="a"]');
-
-	foreach my $element (@elements){
-	    
-	    my $isbn = $element->text();
-
-	    $isbn=~s/\s+\(.+?\)\s*$//;
-	    
-	    if ($isbn){
-		my $isbn = $isbn;
-		my $isbnXX = Business::ISBN->new($isbn);
-		
-		if (defined $isbnXX && $isbnXX->is_valid){
-		    $isbn = $isbnXX->as_isbn13->as_string;
-		}
-		else {
-		    $logger->error("$isbn NOT valid!");
-		    next;
-		}
-		
-		$isbn = OpenBib::Common::Util::normalize({
-		    field    => 'T0540',
-		    content  => $isbn,
-							 });
-		
-		push @isbns, $isbn;
-	    }
-	}
-    }       
-
-    my @tocurls = ();
-    {        
-	# Tocs
-	my @elements = $titset->findnodes('//marc:datafield[@tag="856"]');
-	
-	foreach my $element (@elements){	    
-
-	    my $url  = $element->findvalue('marc:subfield[@code="u"]');
-	    my $desc = $element->findvalue('marc:subfield[@code="3"]');;
-
-	    next unless ($desc=~/Inhaltsverzeichnis/);
-
-	    $logger->debug("TocURL: $url - Desc: $desc");
-
-	    push @tocurls, {
-		content  => $url,
-		subfield => 'u'
-	    } if ($url);
-
-
-	}
-    }
-    
-    if (@isbns){
-	my %seen_terms  = ();
-	
-	my @unique_isbns    = grep { ! $seen_terms{$_} ++ } @isbns;
-	
-	foreach my $isbn (@unique_isbns){
-	    foreach my $tocurl (@tocurls){
-		$logger->debug("Found $isbn -> $tocurl");
-		my $tocurl_ref = {
-		    isbn     => $isbn,
-		    origin   => $origin,
-		    field    => '4110',
-		    subfield => $tocurl->{subfield},
-		    content  => $tocurl->{content},
-		};
-		
-		print JSON encode_json($tocurl_ref),"\n" if ($jsonfile);
-		
-		push @{$enrich_data_by_isbn_ref}, $tocurl_ref;
-		$tocurl_tuple_count++;
-	    }
-	}
-    }
-    
-    if ($count % 1000 == 0){
-	$logger->info("$count done");
-	if ($import){
-	    $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
-	    $enrich_data_by_isbn_ref   = [];
-	}
-    }
-    $count++;
-    
-    # Release memory of processed tree
-    # up to here
-    $t->purge();
-
 }
 
 sub konv {

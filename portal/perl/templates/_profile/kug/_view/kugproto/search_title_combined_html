@@ -58,7 +58,7 @@ $(document).ready(function(){
 	    }
 [% ELSE %]
     $("#ob-searchresult_website_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-searchresult_website_loading\" />"); 
-    $.get("[% path_prefix %]/[% config.get('search_loc') %].include?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp'] }) %];page=1;profile=[% searchprofileid_of_website %];[% searchquery.to_cgi_querystring({ exclude = ['profile'] }) %]",
+    $.get("[% path_prefix %]/[% config.get('search_loc') %].include?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp','facets'] }) %];page=1;profile=[% searchprofileid_of_website %];[% searchquery.to_cgi_querystring({ exclude = ['profile'] }) %]",
         function (txt){
             $("#ob-searchresult_tab_website").html(txt);
             $("#ob-searchresult_website_loading").hide();
@@ -82,7 +82,7 @@ $(document).ready(function(){
 	    }
 [% ELSE %]
     $("#ob-searchresult_eds_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-searchresult_eds_loading\" />"); 
-    $.get("[% path_prefix %]/[% config.get('search_loc') %].include?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp'] }) %];page=1;profile=[% searchprofileid_of_eds %];[% searchquery.to_cgi_querystring({ exclude = ['profile'] }) %]",
+    $.get("[% path_prefix %]/[% config.get('search_loc') %].include?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp','facets'] }) %];page=1;profile=[% searchprofileid_of_eds %];[% searchquery.to_cgi_querystring({ exclude = ['profile'] }) %]",
         function (txt){
             $("#ob-searchresult_tab_eds").html(txt);
             $("#ob-searchresult_eds_loading").hide();
@@ -108,7 +108,7 @@ $(document).ready(function(){
 	    }
 [% ELSIF current_profile == searchprofileid_of_eds || current_profile == searchprofileid_of_website  %]
     $("#ob-searchresult_default_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-searchresult_default_loading\" />"); 
-    $.get("[% path_prefix %]/[% config.get('search_loc') %].include?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp'] }) %];page=1;profile=[% searchprofileid_of_books %];[% searchquery.to_cgi_querystring({ exclude = ['profile'] }) %]",
+    $.get("[% path_prefix %]/[% config.get('search_loc') %].include?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp','facets'] }) %];page=1;profile=[% searchprofileid_of_books %];[% searchquery.to_cgi_querystring({ exclude = ['profile'] }) %]",
         function (txt){
             $("#ob-searchresult_tab_default").html(txt);
             $("#ob-searchresult_default_loading").hide();

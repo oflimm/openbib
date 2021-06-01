@@ -162,8 +162,13 @@
      END;
    END;
    exclude_args.push("profile");
+   exclude_args.push("facets");   
 
    facets_query_args_base    = cgiapp.to_cgi_querystring({ change = {'page' = 1 }, exclude = exclude_args }) ;
+
+   IF idprefix == 'default';
+      facets_query_args_base = "${facets_query_args_base};facets=none";
+   END;
 
    all_filters = [];
    have_filter = {};

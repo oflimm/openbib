@@ -108,7 +108,7 @@ $(document).ready(function(){
 	    }
 [% ELSIF current_profile == searchprofileid_of_eds || current_profile == searchprofileid_of_website  %]
     $("#ob-searchresult_default_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-searchresult_default_loading\" />"); 
-    $.get("[% path_prefix %]/[% config.get('search_loc') %].include?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp','facets'] }) %];page=1;profile=[% searchprofileid_of_books %];[% searchquery.to_cgi_querystring({ exclude = ['profile'] }) %]",
+    $.get("[% path_prefix %]/[% config.get('search_loc') %].include?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp','facets'] }) %];page=1;facets=none;profile=[% searchprofileid_of_books %];[% searchquery.to_cgi_querystring({ exclude = ['profile'] }) %]",
         function (txt){
             $("#ob-searchresult_tab_default").html(txt);
             $("#ob-searchresult_default_loading").hide();

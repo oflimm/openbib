@@ -177,7 +177,7 @@
 <div class="ob-footer">
 [% PROCESS common/subtemplate name="pagination" %]
 <div class="ob-resulttime">
-<!-- in: [% resulttime %] [% msg.maketext("Sekunden") %] -->
+in: [% resulttime %] [% msg.maketext("Sekunden") %]
 </div>
 </div><!-- End: ob-footer -->
   </div>

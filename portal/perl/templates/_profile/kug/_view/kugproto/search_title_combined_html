@@ -131,7 +131,7 @@ $(document).ready(function(){
 
 <div role="tabpanel" id="ob-searchresult_tab_default" class="tab-pane fade-in row [% IF current_profile == searchprofileid_of_books || ( current_profile != searchprofileid_of_eds && current_profile != searchprofileid_of_website ) %] active[% END %] flex-md-row">
 [% IF current_profile == searchprofileid_of_books || ( current_profile != searchprofileid_of_eds && current_profile != searchprofileid_of_website ) %]
-[% PROCESS common/subtemplate name="search_title_combined_include" %]
+[% PROCESS common/subtemplate name="search_title_combined_include" separate_facets=1 %]
 [% END %]
 </div>
 

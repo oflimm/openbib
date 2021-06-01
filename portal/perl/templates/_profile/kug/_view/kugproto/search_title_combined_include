@@ -93,7 +93,29 @@
   <div class="sidebar-content overflow-auto h-100 pl-1">
     
 [% IF hits > 0 %]
+[% IF separate_facets %]
+<script>
+$(document).ready(function(){
+   $.get("[% path_prefix %]/[% config.get('search_loc') %]/facets.include?[% cgiapp.to_cgi_querystring({ exclude = ['page','facets','num','page']}) %];facets=location,availability,person,year,subject;facet_prefix=sidebar",
+     function (txt){
+        $("#ob-separate_facets_sidebar").html(txt);
+   });
+});
+</script>
+
+<div id="ob-separate_facets_sidebar">
+<h4>[% msg.maketext("Suchergebnis filtern") %]</h4>
+
+<h5>[% msg.maketext("Die Filter-Kriterien werden bestimmt") %]</h5>
+
+<div class="text-center">
+<i class="fas fa-circle-notch fa-spin fa-4x"></i>
+</div>
+
+</div>
+[% ELSE %]
 [% PROCESS common/subtemplate name="search_facet" facet_prefix="sidebar" %]
+[% END %]
 [% ELSE %]
 [%   IF viewdbs.size == 1 %]  
 <div class="ob-facets">
@@ -110,7 +132,27 @@
   <div id="ob-search_refine[% idsuffix %]" class="col-xs-6 col-md-3 d-none d-md-block ">
 
 [% IF hits > 0 %]
+[% IF separate_facets %]
+<script>
+$(document).ready(function(){
+   $.get("[% path_prefix %]/[% config.get('search_loc') %]/facets.include?[% cgiapp.to_cgi_querystring({ exclude = ['page','facets','num','page']}) %];facets=location,availability,person,year,subject;facet_prefix=main",
+     function (txt){
+        $("#ob-separate_facets_main").html(txt);
+   });
+});
+</script>
+<div id="ob-separate_facets_main">
+<h4>[% msg.maketext("Suchergebnis filtern") %]</h4>
+
+<h5>[% msg.maketext("Die Filter-Kriterien werden bestimmt") %]</h5>
+
+<div class="text-center">
+<i class="fas fa-circle-notch fa-spin fa-4x"></i>
+</div>
+</div>
+[% ELSE %]
 [% PROCESS common/subtemplate name="search_facet" facet_prefix="main" %]
+[% END %]
 [% ELSE %]
 [%   IF viewdbs.size == 1 %]  
 <div class="ob-facets">

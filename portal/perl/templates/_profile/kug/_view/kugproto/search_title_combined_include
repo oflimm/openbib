@@ -27,7 +27,7 @@
     <input type="hidden" name="st"         value="1" />
     <input type="hidden" name="lt"         value="[% qopts.lt %]" />
     <input type="hidden" name="profile"    value="[% searchquery.get_searchprofile %]" />
-[% IF idsuffix == 'default' %]    
+[% IF idsuffix == '_default' %]    
     <input type="hidden" name="facets"     value="none" />
 [% END %]
 

@@ -53,6 +53,7 @@
    representations:
      - none
      - include
+     - json
      - html
    runmode: 'show'
 

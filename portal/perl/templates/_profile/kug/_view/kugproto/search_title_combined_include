@@ -13,6 +13,11 @@
 -%]
 [%- PROCESS common/subtemplate name="local_config" -%] 
 
+[%
+ IF idsuffix == '_default' ;
+   separate_facets = 1 ;
+ END;
+%]
 <p/>
 
 <div class="sticky-top">

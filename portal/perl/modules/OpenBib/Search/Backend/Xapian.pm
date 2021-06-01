@@ -2,7 +2,7 @@
 #
 #  OpenBib::Search::Backend::Xapian
 #
-#  Dieses File ist (C) 2006-2015 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2021 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -401,21 +401,29 @@ sub search {
     my %decider_map   = ();
     my @decider_types = ();
 
+    
     foreach my $single_facet (keys %{$config->{xapian_facet_value}}){
         if (defined $current_facets_ref->{$single_facet} && $current_facets_ref->{$single_facet}){
             push @decider_types, $config->{xapian_facet_value}{$single_facet};
         }
     }
 
-    my $decider_ref = sub {
-      foreach my $value (@decider_types){
-	my $mvalues = $_[0]->get_value($value);
-	foreach my $mvalue (split("\t",$mvalues)){
-	  $decider_map{$value}{$mvalue}+=1;
-	}
-      }
-      return 1;
-    };
+    my $spy_ref = {};
+    
+    foreach my $spy_num (@decider_types){
+	$spy_ref->{$spy_num} =  Search::Xapian::ValueCountMatchSpy->new($spy_num);
+	$enq->add_matchspy($spy_ref->{$spy_num});
+    }
+
+    # my $decider_ref = sub {
+    #   foreach my $value (@decider_types){
+    # 	my $mvalues = $_[0]->get_value($value);
+    # 	foreach my $mvalue (split("\t",$mvalues)){
+    # 	  $decider_map{$value}{$mvalue}+=1;
+    # 	}
+    #   }
+    #   return 1;
+    # };
 
     my $maxmatch=$config->{xapian_option}{maxmatch};
 
@@ -458,7 +466,8 @@ sub search {
         $logger->debug("Categories-Map: ".YAML::Dump(\%decider_map));
     }
 
-    my $mset = ($gen_facets)?$enq->get_mset($offset,$num,$maxmatch,$rset,$decider_ref):$enq->get_mset($offset,$num,$maxmatch);
+#    my $mset = ($gen_facets)?$enq->get_mset($offset,$num,$maxmatch,$rset,$decider_ref):$enq->get_mset($offset,$num,$maxmatch);
+    my $mset = $enq->get_mset($offset,$num,$maxmatch);
 
     $self->{_enq}         = $enq;
 
@@ -502,10 +511,24 @@ sub search {
     }    
     
     if ($singletermcount > $maxmatch){
-      $self->{categories} = {};
+	$self->{categories} = {};
     }
     else {
-      $self->{categories}   = \%decider_map;
+	foreach my $value (keys %$spy_ref){
+	    foreach my $this_spy ($spy_ref->{$value}){
+		my $end = $this_spy->values_end();
+		for (my $facet_value = $this_spy->values_begin(); $facet_value != $end; $facet_value++) {
+		    my $mvalues    = $facet_value->get_termname();
+		    my $valuecount = $facet_value->get_termfreq();
+		    
+		    foreach my $mvalue (split("\t",$mvalues)){
+			$decider_map{$value}{$mvalue}+=$valuecount;
+		    }
+		}
+	    }
+	}
+	
+	$self->{categories}   = \%decider_map;
     }
 
     if ($logger->is_info){

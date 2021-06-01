@@ -143,7 +143,7 @@ sub search {
         ($queryoptions->get_option('dop'))?$queryoptions->get_option('dop'):'and';
     my $facets            = (defined $self->{_options}{facets})?$self->{_options}{facets}:$queryoptions->get_option('facets');
     my $gen_facets        = ($facets eq "none")?0:1;
-
+    
     my ($atime,$btime,$timeall);
   
     if ($config->{benchmark}) {
@@ -893,6 +893,10 @@ sub get_facets {
     my $logger = get_logger();
 
     my $config = $self->get_config;
+
+    my $cutoff            = (defined $self->{_options}{cutoff})?$self->{_options}{cutoff}:0;
+
+    $logger->debug("Getting facets with cutoff $cutoff");
     
     my $ddatime   = new Benchmark;
     
@@ -922,10 +926,18 @@ sub get_facets {
         
         # Schwartz'ian Transform
         
-        @{$facets_ref->{$facet_rev_map{$type}}} = map { $_->[0] }
+        my @sorted = map { $_->[0] }
             sort { $b->[1] <=> $a->[1] }
                 map { [$_, $_->[1]] }
                     @{$contents_ref};
+
+	if ($cutoff){
+	    $logger->debug("Cutting Facets values: $cutoff");
+	    @sorted = splice(@sorted,0,$cutoff);
+	}
+
+	@{$facets_ref->{$facet_rev_map{$type}}} = @sorted;
+
     }
 
     my $ddbtime       = new Benchmark;

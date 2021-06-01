@@ -47,6 +47,14 @@
      - none
      - html
    runmode: 'show'
+- # Resource: search_loc
+   module: 'OpenBib::Handler::PSGI::Search::SeparateFacets'
+   rule: '/portal/:view/search/facets[get]'
+   representations:
+     - none
+     - include
+     - html
+   runmode: 'show'
 
 #####################################################################
 # Titel-Resource/Repraesentation

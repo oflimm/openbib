@@ -4095,11 +4095,19 @@ elasticsearch_index_mappings:
            enabled: 'false'
       popularity:
            type: 'integer'
+      db:
+           type: 'keyword'
+           index: 'true'
+           #analyze: 'default'
       id:
            type: 'keyword'
            index: 'true'
            #analyze: 'default'
       hbzid:
+           type: 'keyword'
+           index: 'true'
+           #analyze: 'default'
+      zdbid:
            type: 'keyword'
            index: 'true'
            #analyze: 'default'
@@ -4276,6 +4284,10 @@ elasticsearch_index_mappings:
            type: 'text'
            index: 'true'
            #analyze: 'default'
+      placestring:
+           type: 'text'
+           index: 'true'
+           #analyze: 'default'
       publisherstring:
            type: 'text'
            index: 'true'
@@ -4284,7 +4296,15 @@ elasticsearch_index_mappings:
            type: 'text'
            index: 'true'
            #analyze: 'default'
+      sourcestring:
+           type: 'text'
+           index: 'true'
+           #analyze: 'default'
       dbstring:
+           type: 'text'
+           index: 'true'
+           #analyze: 'default'
+      locationstring:
            type: 'text'
            index: 'true'
            #analyze: 'default'
@@ -4376,6 +4396,10 @@ elasticsearch_index_mappings:
            type: 'text'
            index: 'true'
            #analyze: 'default'
+      t0355:
+           type: 'text'
+           index: 'true'
+           #analyze: 'default'
       t0356:
            type: 'text'
            index: 'true'
@@ -4448,6 +4472,10 @@ elasticsearch_index_mappings:
            type: 'text'
            index: 'true'
            #analyze: 'default'
+      t4306:
+           type: 'text'
+           index: 'true'
+           #analyze: 'default'
       t4307:
            type: 'text'
            index: 'true'
@@ -4457,6 +4485,30 @@ elasticsearch_index_mappings:
            index: 'true'
            #analyze: 'default'
       t4310:
+           type: 'text'
+           index: 'true'
+           #analyze: 'default'
+      t4311:
+           type: 'text'
+           index: 'true'
+           #analyze: 'default'
+      t4312:
+           type: 'text'
+           index: 'true'
+           #analyze: 'default'
+      t4313:
+           type: 'text'
+           index: 'true'
+           #analyze: 'default'
+      t4314:
+           type: 'text'
+           index: 'true'
+           #analyze: 'default'
+      t4315:
+           type: 'text'
+           index: 'true'
+           #analyze: 'default'
+      t4316:
            type: 'text'
            index: 'true'
            #analyze: 'default'
@@ -4545,6 +4597,10 @@ elasticsearch_index_mappings:
            type: 'text'
            index: 'true'
            #analyze: 'default'
+      ft0355:
+           type: 'text'
+           index: 'true'
+           #analyze: 'default'
       ft0356:
            type: 'text'
            index: 'true'
@@ -4585,6 +4641,18 @@ elasticsearch_index_mappings:
            type: 'text'
            index: 'true'
            #analyze: 'default'
+      ft0434:
+           type: 'text'
+           index: 'true'
+           #analyze: 'default'
+      ft0470:
+           type: 'text'
+           index: 'true'
+           #analyze: 'default'
+      ft0517:
+           type: 'text'
+           index: 'true'
+           #analyze: 'default'
       ft0531:
            type: 'text'
            index: 'true'
@@ -4617,6 +4685,10 @@ elasticsearch_index_mappings:
            type: 'text'
            index: 'true'
            #analyze: 'default'
+      ft4306:
+           type: 'text'
+           index: 'true'
+           #analyze: 'default'
       ft4307:
            type: 'text'
            index: 'true'
@@ -4629,23 +4701,31 @@ elasticsearch_index_mappings:
            type: 'text'
            index: 'true'
            #analyze: 'default'
-      ft4800:
+      ft4311:
            type: 'text'
            index: 'true'
            #analyze: 'default'
-      ft4801:
+      ft4312:
            type: 'text'
            index: 'true'
            #analyze: 'default'
-      ft4802:
+      ft4313:
            type: 'text'
            index: 'true'
            #analyze: 'default'
-      ft4803:
+      ft4314:
            type: 'text'
            index: 'true'
            #analyze: 'default'
-      ft4804:
+      ft4315:
+           type: 'text'
+           index: 'true'
+           #analyze: 'default'
+      ft4316:
+           type: 'text'
+           index: 'true'
+           #analyze: 'default'
+      ft4700:
            type: 'text'
            index: 'true'
            #analyze: 'default'
@@ -4653,50 +4733,121 @@ elasticsearch_index_mappings:
       facet_database:
            type: 'keyword'
            index: 'true'
+           #doc_values: 'true'
            #analyze: 'default'
       facet_availability:
            type: 'keyword'
            index: 'true'
+      #doc_values: 'true'
            #analyze: 'default'
       facet_person:
            type: 'keyword'
            index: 'true'
-           #analyze: 'default'
+           #doc_values: 'true'
       facet_corporatebody:
            type: 'keyword'
            index: 'true'
+           #doc_values: 'true'
            #analyze: 'default'
       facet_subject:
            type: 'keyword'
            index: 'true'
+           #doc_values: 'true'
            #analyze: 'default'
       facet_classification:
            type: 'keyword'
            index: 'true'
+           #doc_values: 'true'
            #analyze: 'default'
       facet_year:
            type: 'keyword'
            index: 'true'
+           #doc_values: 'true'
            #analyze: 'default'
       facet_tag:
            type: 'keyword'
            index: 'true'
+           #doc_values: 'true'
            #analyze: 'default'
       facet_litlist:
            type: 'keyword'
            index: 'true'
+           #doc_values: 'true'
            #analyze: 'default'
       facet_language:
            type: 'keyword'
            index: 'true'
+           #doc_values: 'true'
            #analyze: 'default'
       facet_location:
            type: 'keyword'
            index: 'true'
+           #doc_values: 'true'
            #analyze: 'default'
       facet_mediatype:
            type: 'keyword'
            index: 'true'
+           #doc_values: 'true'
+           #analyze: 'default'
+      facet_topic:
+           type: 'keyword'
+           index: 'true'
+           #doc_values: 'true'
+           #analyze: 'default'
+      facet_provenance:
+           type: 'keyword'
+           index: 'true'
+           #doc_values: 'true'
+           #analyze: 'default'
+      facet_custom0:
+           type: 'keyword'
+           index: 'true'
+           #doc_values: 'true'
+           #analyze: 'default'
+      facet_custom1:
+           type: 'keyword'
+           index: 'true'
+           #doc_values: 'true'
+           #analyze: 'default'
+      facet_custom2:
+           type: 'keyword'
+           index: 'true'
+           #doc_values: 'true'
+           #analyze: 'default'
+      facet_custom3:
+           type: 'keyword'
+           index: 'true'
+           #doc_values: 'true'
+           #analyze: 'default'
+      facet_custom4:
+           type: 'keyword'
+           index: 'true'
+           #doc_values: 'true'
+           #analyze: 'default'
+      facet_custom5:
+           type: 'keyword'
+           index: 'true'
+           #doc_values: 'true'
+           #analyze: 'default'
+      facet_custom6:
+           type: 'keyword'
+           index: 'true'
+           #doc_values: 'true'
+           #analyze: 'default'
+      facet_custom7:
+           type: 'keyword'
+           index: 'true'
+           #doc_values: 'true'
+           #analyze: 'default'
+      facet_custom8:
+           type: 'keyword'
+           index: 'true'
+           #doc_values: 'true'
+           #analyze: 'default'
+      facet_custom9:
+           type: 'keyword'
+           index: 'true'
+           #doc_values: 'true'
            #analyze: 'default'
 
       sort_person:

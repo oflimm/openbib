@@ -1171,7 +1171,7 @@ durch zus&auml;tzliche Worte weiter eingrenzen.") %]
 
 [% END # facets=none%]
 
-[% IF searchquery.get_searchfield('freesearch').val && NOT searchquery.get_searchfield('freesearch').val.match(':') %]
+[% IF 0 == 1 && searchquery.get_searchfield('freesearch').val && NOT searchquery.get_searchfield('freesearch').val.match(':') %]
 
 
 <div class="ob-category_header">[% msg.maketext("Yewno") %]</div>

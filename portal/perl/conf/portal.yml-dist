@@ -4088,796 +4088,795 @@ searchfield:
      'type': 'string'
 
 elasticsearch_index_mappings:
-  title:
-    properties:
-      listitem:
-           type: 'object'
-           enabled: 'false'
-      popularity:
-           type: 'integer'
-      db:
-           type: 'keyword'
-           index: 'true'
-           #analyze: 'default'
-      id:
-           type: 'keyword'
-           index: 'true'
-           #analyze: 'default'
-      hbzid:
-           type: 'keyword'
-           index: 'true'
-           #analyze: 'default'
-      zdbid:
-           type: 'keyword'
-           index: 'true'
-           #analyze: 'default'
-      personid:
-           type: 'keyword'
-           index: 'true'
-           #analyze: 'default'
-      corporatebodyid:
-           type: 'keyword'
-           index: 'true'
-           #analyze: 'default'
-      classificationid:
-           type: 'keyword'
-           index: 'true'
-           #analyze: 'default'
-      subjectid:
-           type: 'keyword'
-           index: 'true'
-           #analyze: 'default'
-      subid:
-           type: 'keyword'
-           index: 'true'
-           #analyze: 'default'
-      gnd:
-           type: 'keyword'
-           index: 'true'
-           #analyze: 'default'
-      freesearch:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      person:
-           type: 'text'
-           index: 'true'
-          # boost: 20
-           #analyze: 'default'
-      title:
-           type: 'text'
-           index: 'true'
-          # boost: 20
-           #analyze: 'default'
-      subject:
-           type: 'text'
-           index: 'true'
-           #boost: 20
-           #analyze: 'default'
-      corporatebody:
-           type: 'text'
-           index: 'true'
-           #boost: 20
-           #analyze: 'default'
-      classification:
-           type: 'text'
-           index: 'true'
-           #boost: 20
-           #analyze: 'default'
-      mark:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      publisher:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      provenance:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      hss:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      isbn:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      issn:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      mediatype:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      authoritytype:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      content:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      place:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      source:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      tag:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      toc:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      reg:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      user:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      year:
-           type: 'integer'
-           index: 'true'
-           #analyze: 'default'
-      subid:
-           type: 'keyword'
-           index: 'true'
-           #analyze: 'default'
-      topic:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      titlestring:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      tagstring:
-           type: 'keyword'
-           index: 'true'
-           #analyze: 'default'
-      litliststring:
-           type: 'keyword'
-           index: 'true'
-           #analyze: 'default'
-      availabilitystring:
-           type: 'keyword'
-           index: 'true'
-           #analyze: 'default'
-      subjectstring:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      yearstring:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      languagestring:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      classificationstring:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      personstring:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      corporatebodystring:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      mediatypestring:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      markstring:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      placestring:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      publisherstring:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      provenancestring:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      sourcestring:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      dbstring:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      locationstring:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      bibkey:
-           type: 'keyword'
-           index: 'true'
-           #analyze: 'default'
-      t0016:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0100:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0101:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0102:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0103:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0200:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0201:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0304:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0334:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0335:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0338:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0341:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0342:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0343:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0344:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0345:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0346:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0351:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0352:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0353:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0354:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0355:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0356:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0407:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0410:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0411:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0412:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0413:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0425:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0426:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0427:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0428:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0531:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0533:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0619:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0700:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0710:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t0720:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t4100:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t4300:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t4306:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t4307:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t4308:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t4310:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t4311:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t4312:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t4313:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t4314:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t4315:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      t4316:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
+  properties:
+    listitem:
+         type: 'object'
+         enabled: 'false'
+    popularity:
+         type: 'integer'
+    db:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+    id:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+    hbzid:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+    zdbid:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+    personid:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+    corporatebodyid:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+    classificationid:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+    subjectid:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+    subid:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+    gnd:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+    freesearch:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    person:
+         type: 'text'
+         index: 'true'
+        # boost: 20
+         #analyze: 'default'
+    title:
+         type: 'text'
+         index: 'true'
+        # boost: 20
+         #analyze: 'default'
+    subject:
+         type: 'text'
+         index: 'true'
+         #boost: 20
+         #analyze: 'default'
+    corporatebody:
+         type: 'text'
+         index: 'true'
+         #boost: 20
+         #analyze: 'default'
+    classification:
+         type: 'text'
+         index: 'true'
+         #boost: 20
+         #analyze: 'default'
+    mark:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    publisher:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    provenance:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    hss:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    isbn:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    issn:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    mediatype:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    authoritytype:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    content:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    place:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    source:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    tag:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    toc:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    reg:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    user:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    year:
+         type: 'integer'
+         index: 'true'
+         #analyze: 'default'
+    subid:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+    topic:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    titlestring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    tagstring:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+    litliststring:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+    availabilitystring:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+    subjectstring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    yearstring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    languagestring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    classificationstring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    personstring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    corporatebodystring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    mediatypestring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    markstring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    placestring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    publisherstring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    provenancestring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    sourcestring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    dbstring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    locationstring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    bibkey:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+    t0016:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0100:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0101:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0102:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0103:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0200:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0201:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0304:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0334:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0335:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0338:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0341:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0342:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0343:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0344:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0345:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0346:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0351:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0352:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0353:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0354:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0355:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0356:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0407:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0410:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0411:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0412:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0413:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0425:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0426:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0427:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0428:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0531:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0533:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0619:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0700:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0710:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t0720:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t4100:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t4300:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t4306:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t4307:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t4308:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t4310:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t4311:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t4312:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t4313:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t4314:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t4315:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    t4316:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
 
-      ft0016:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0100:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0101:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0102:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0103:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0200:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0201:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0304:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0334:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0335:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0338:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0341:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0342:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0343:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0344:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0345:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0346:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0351:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0352:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0353:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0354:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0355:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0356:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0407:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0410:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0411:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0412:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0413:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0425:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0426:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0427:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0428:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0434:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0470:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0517:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0531:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0533:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0619:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0700:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0710:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft0720:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft4100:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft4300:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft4306:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft4307:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft4308:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft4310:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft4311:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft4312:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft4313:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft4314:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft4315:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft4316:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
-      ft4700:
-           type: 'text'
-           index: 'true'
-           #analyze: 'default'
+    ft0016:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0100:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0101:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0102:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0103:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0200:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0201:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0304:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0334:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0335:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0338:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0341:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0342:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0343:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0344:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0345:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0346:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0351:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0352:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0353:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0354:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0355:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0356:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0407:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0410:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0411:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0412:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0413:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0425:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0426:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0427:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0428:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0434:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0470:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0517:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0531:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0533:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0619:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0700:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0710:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft0720:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft4100:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft4300:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft4306:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft4307:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft4308:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft4310:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft4311:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft4312:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft4313:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft4314:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft4315:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft4316:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+    ft4700:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
 
-      facet_database:
-           type: 'keyword'
-           index: 'true'
-           #doc_values: 'true'
-           #analyze: 'default'
-      facet_availability:
-           type: 'keyword'
-           index: 'true'
-      #doc_values: 'true'
-           #analyze: 'default'
-      facet_person:
-           type: 'keyword'
-           index: 'true'
-           #doc_values: 'true'
-      facet_corporatebody:
-           type: 'keyword'
-           index: 'true'
-           #doc_values: 'true'
-           #analyze: 'default'
-      facet_subject:
-           type: 'keyword'
-           index: 'true'
-           #doc_values: 'true'
-           #analyze: 'default'
-      facet_classification:
-           type: 'keyword'
-           index: 'true'
-           #doc_values: 'true'
-           #analyze: 'default'
-      facet_year:
-           type: 'keyword'
-           index: 'true'
-           #doc_values: 'true'
-           #analyze: 'default'
-      facet_tag:
-           type: 'keyword'
-           index: 'true'
-           #doc_values: 'true'
-           #analyze: 'default'
-      facet_litlist:
-           type: 'keyword'
-           index: 'true'
-           #doc_values: 'true'
-           #analyze: 'default'
-      facet_language:
-           type: 'keyword'
-           index: 'true'
-           #doc_values: 'true'
-           #analyze: 'default'
-      facet_location:
-           type: 'keyword'
-           index: 'true'
-           #doc_values: 'true'
-           #analyze: 'default'
-      facet_mediatype:
-           type: 'keyword'
-           index: 'true'
-           #doc_values: 'true'
-           #analyze: 'default'
-      facet_topic:
-           type: 'keyword'
-           index: 'true'
-           #doc_values: 'true'
-           #analyze: 'default'
-      facet_provenance:
-           type: 'keyword'
-           index: 'true'
-           #doc_values: 'true'
-           #analyze: 'default'
-      facet_custom0:
-           type: 'keyword'
-           index: 'true'
-           #doc_values: 'true'
-           #analyze: 'default'
-      facet_custom1:
-           type: 'keyword'
-           index: 'true'
-           #doc_values: 'true'
-           #analyze: 'default'
-      facet_custom2:
-           type: 'keyword'
-           index: 'true'
-           #doc_values: 'true'
-           #analyze: 'default'
-      facet_custom3:
-           type: 'keyword'
-           index: 'true'
-           #doc_values: 'true'
-           #analyze: 'default'
-      facet_custom4:
-           type: 'keyword'
-           index: 'true'
-           #doc_values: 'true'
-           #analyze: 'default'
-      facet_custom5:
-           type: 'keyword'
-           index: 'true'
-           #doc_values: 'true'
-           #analyze: 'default'
-      facet_custom6:
-           type: 'keyword'
-           index: 'true'
-           #doc_values: 'true'
-           #analyze: 'default'
-      facet_custom7:
-           type: 'keyword'
-           index: 'true'
-           #doc_values: 'true'
-           #analyze: 'default'
-      facet_custom8:
-           type: 'keyword'
-           index: 'true'
-           #doc_values: 'true'
-           #analyze: 'default'
-      facet_custom9:
-           type: 'keyword'
-           index: 'true'
-           #doc_values: 'true'
-           #analyze: 'default'
+    facet_database:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_availability:
+         type: 'keyword'
+         index: 'true'
+    #doc_values: 'true'
+         #analyze: 'default'
+    facet_person:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+    facet_corporatebody:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_subject:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_classification:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_year:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_tag:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_litlist:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_language:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_location:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_mediatype:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_topic:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_provenance:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_custom0:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_custom1:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_custom2:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_custom3:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_custom4:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_custom5:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_custom6:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_custom7:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_custom8:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_custom9:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
 
-      sort_person:
-           type: 'keyword'
-           index: 'true'
-           #analyze: 'default'
-      sort_title:
-           type: 'keyword'
-           index: 'true'
-           #analyze: 'default'
-      sort_order:
-           type: 'keyword'
-           index: 'true'
-           #analyze: 'default'
-      sort_year:
-           type: 'keyword'
-           index: 'true'
-           #analyze: 'default'
-      sort_publisher:
-           type: 'keyword'
-           index: 'true'
-           #analyze: 'default'
-      sort_mark:
-           type: 'keyword'
-           index: 'true'
-           #analyze: 'default'
-      sort_popularity:
-           type: 'keyword'
-           index: 'true'
-           #analyze: 'default'
+    sort_person:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+    sort_title:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+    sort_order:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+    sort_year:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+    sort_publisher:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+    sort_mark:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+    sort_popularity:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
 
 elasticsearch_sorttype_value:
   'person':

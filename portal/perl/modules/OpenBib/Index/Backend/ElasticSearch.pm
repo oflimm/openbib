@@ -2,7 +2,7 @@
 #
 #  OpenBib::Index::Backend::ElasticSearch
 #
-#  Dieses File ist (C) 2013 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2013-2021 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -97,6 +97,7 @@ sub new {
     
     eval {
 	my $es = Search::Elasticsearch->new(
+	    userinfo   => $config->{elasticsearch}{userinfo},
 	    cxn_pool   => $config->{elasticsearch}{cxn_pool},    # default 'Sniff'
 	    nodes      => $config->{elasticsearch}{nodes},       # default '127.0.0.1:9200'
 	    );
@@ -110,15 +111,11 @@ sub new {
 	    
 	    $result = $es->indices->create(
 		index    => $database,
-		#	type     => 'title',
 		);
 	    $result = $es->indices->put_mapping(
 		index => $database,
-		type  => 'title',
 		body => {
-		    title => {
-			properties => $config->{elasticsearch_index_mappings}{title}{properties},
-		    }
+		    properties => $config->{elasticsearch_index_mappings}{properties},
 		}	
 		);
 	    
@@ -127,7 +124,6 @@ sub new {
 
 	my $bulk = $es->bulk_helper(
 	    index => $database,
-	    type => 'title',
 	    );
 
 	$self->{_index} = $bulk;

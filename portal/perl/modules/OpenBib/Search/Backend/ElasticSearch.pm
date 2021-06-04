@@ -153,6 +153,7 @@ sub search {
     my $dbh;
 
     my $es = Search::Elasticsearch->new(
+	userinfo   => $config->{elasticsearch}{userinfo},
 	cxn_pool   => $config->{elasticsearch}{cxn_pool},    # default 'Sniff'
 	nodes      => $config->{elasticsearch}{nodes},       # default '127.0.0.1:9200'
     );
@@ -249,7 +250,6 @@ sub search {
     
     my $results = $es->search(
         index  => $index,
-        type   => 'title',
 	body   => $body_ref,
     );
 

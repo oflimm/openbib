@@ -48,7 +48,7 @@ use OpenBib::Config;
 use OpenBib::Catalog;
 use OpenBib::Catalog::Factory;
 
-my ($database,$sync,$help,$keepfiles,$sb,$logfile,$loglevel,$updatemaster,$incremental,$reducemem);
+my ($database,$sync,$help,$keepfiles,$sb,$logfile,$loglevel,$updatemaster,$incremental,$reducemem,$searchengineonly);
 
 &GetOptions("database=s"      => \$database,
             "logfile=s"       => \$logfile,
@@ -58,6 +58,7 @@ my ($database,$sync,$help,$keepfiles,$sb,$logfile,$loglevel,$updatemaster,$incre
             "update-master"   => \$updatemaster,
             "incremental"     => \$incremental,
             "reduce-mem"      => \$reducemem,
+            "searchengine-only"      => \$searchengineonly,
 	    "search-backend=s" => \$sb,
 	    "help"            => \$help
 	    );
@@ -328,7 +329,7 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
 
 # Einladen in temporaere SQL-Datenbank
 
-{
+unless ($searchengineonly){
     my $atime = new Benchmark;
     my $duration_stage_load_db_start = ParseDate("now");
 
@@ -562,7 +563,7 @@ my $loading_error = 0;
 # Konsistenzcheck zwischen Einlade-Daten und eingeladenen Daten in der temporaeren Datenbank
 # Bei inkrementellen Updates wird auf der aktiven Datenbank aktualisiert. Daher ist kein Konsistenzcheck notwendig/moeglich
 
-unless ($incremental){
+unless ($incremental || $searchengineonly){
 
     my $table_map_ref = {
         'Title'               => 'title',
@@ -616,7 +617,7 @@ else {
 }
 
 # Tabellen aus temporaerer Datenbank in finale Datenbank verschieben
-unless ($incremental){
+unless ($incremental || $searchengineonly){
     my $atime = new Benchmark;
     my $duration_stage_switch_start = ParseDate("now");
 
@@ -689,7 +690,7 @@ unless ($incremental){
 
 # Titelanzahl in Datenbank festhalten
 
-if ($updatemaster){
+if ($updatemaster && !$searchengineonly){
     my $duration_stage_analyze_start = ParseDate("now");
 
     $logger->info("### $database: Updating Titcount");    
@@ -715,7 +716,7 @@ if ($updatemaster){
 #    system("$config->{'base_dir'}/bin/update_all_titles_table.pl --database=$database");
 #}
 
-{
+unless ($searchengineonly){
     my $duration_stage_update_enrichment_start = ParseDate("now");
 
     # Ansonsten bei jedem Node
@@ -758,7 +759,7 @@ my $duration = DateCalc($tstamp_start,$tstamp_end);
 
 $duration=Delta_Format($duration, 0,"%st seconds");
 
-if ($serverinfo){
+if ($serverinfo && !$searchengineonly){
     $logger->info("### $database: Writing updatelog");
     
     my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $database});

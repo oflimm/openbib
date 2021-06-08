@@ -28,7 +28,6 @@
                 'T0361', # msg.maketext("T0361") Beig.Werke
                 'T0333', # msg.maketext("T0333") Zu erg. Urheber/HST Urheber
                 'T0335', # msg.maketext("T0335") Zusatz zum HST
-                'T0361', # msg.maketext("T0361") Vorlage beigef. Werk
                 'T0365', # msg.maketext("T0365") Gemeins. Angaben
                 'T0359', # msg.maketext("T0359") Vorl. Verfasser/Koerperschaft
                 'T0360', # msg.maketext("T0360") Vorl. Unterreihe

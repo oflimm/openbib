@@ -8,6 +8,13 @@
                 <mods:recordIdentifier>[% record.id %]</mods:recordIdentifier>
             </mods:recordInfo>
             [%- normdata = record.get_fields -%]
+            [%- IF normdata.${"T0662"} %]
+            [%- FOREACH url IN normdata.${"T0662"} -%]
+            [%- IF url.content.match('http://www.ub.uni-koeln.de/permalink/') %]
+            <mods:identifier type="purl">[%url.content%]</mods:identifier>
+            [%- END -%]
+            [%- END -%]
+            [%- END -%]
             [%-
             personlist = [];
             IF normdata.${"T0100"};

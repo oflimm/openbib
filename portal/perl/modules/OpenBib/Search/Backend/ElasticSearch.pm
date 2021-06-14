@@ -246,9 +246,11 @@ sub search {
 
     if ($logger->is_debug){
 	$logger->debug("Request body ".YAML::Dump($body_ref));
+	$logger->debug("Index ".YAML::Dump($index));
     }
     
     my $results = $es->search(
+	track_total_hits => 1,
         index  => $index,
 	body   => $body_ref,
     );
@@ -274,7 +276,7 @@ sub search {
     }
     
 
-    $self->{resultcount} = $results->{hits}->{total};
+    $self->{resultcount} = $results->{hits}{total}{value};
 
     $self->{_matches}     = \@matches;
 

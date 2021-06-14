@@ -4,7 +4,7 @@
 
 <div class="ob-facets ob-facets_all sliding-sidebar">
 
-[% IF qopts.get_option('sb') == "eds" || searchprofileid_of_eds == searchquery.get_searchprofile || ( qopts.get_option('sb') == "xapian" && hits <= config.get('xapian_option').maxmatch ) ;
+[% IF qopts.get_option('sb') == "eds" || searchprofileid_of_eds == searchquery.get_searchprofile || ( qopts.get_option('sb') == "xapian" && hits <= config.get('xapian_option').maxmatch ) || qopts.get_option('sb') == 'elasticsearch' || qopts.get_option('sb') == 'solr' ;
       IF NOT facet_prefix ;
         IF query.param('facet_prefix') ;
          facet_prefix = query.param('facet_prefix');

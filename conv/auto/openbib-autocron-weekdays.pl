@@ -104,6 +104,7 @@ my $blacklist_ref = {
     'inst119' => 1,
     'inst119master' => 1,
     'inst123' => 1,
+    'inst123master' => 1,
     'inst125' => 1,
     'inst125master' => 1,
     'inst128' => 1,
@@ -415,7 +416,7 @@ sub threadC {
     
     $logger->info("### Kataloge mit offiziellen Literaturliste muessen immer komplett aktualisiert werden");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst123','inst218','inst401'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst218','inst401'] });
 
     ##############################
 

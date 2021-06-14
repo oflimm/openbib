@@ -104,6 +104,7 @@ my $blacklist_ref = {
     'inst119' => 1,
     'inst119master' => 1,
     'inst123' => 1,
+    'inst123master' => 1,
     'inst125' => 1,
     'inst125master' => 1,
     'inst128' => 1,    
@@ -331,6 +332,7 @@ system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl
 system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_komplett_ohne_tmpebooks 2>&1 > /dev/null");
 system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_komplett_ohne_proquestpda 2>&1 > /dev/null");
 system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=tmpebooks 2>&1 > /dev/null");
+system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=emedienkauf 2>&1 > /dev/null");
 
 $logger->info("### Finding corresponding ebooks in inst526/inst006");
 
@@ -495,7 +497,7 @@ sub threadC {
     
     $logger->info("### Kataloge mit offiziellen Literaturliste muessen immer komplett aktualisiert werden");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst123','inst218','inst401'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst123master','inst123','inst218','inst401'] });
 
     ##############################
 

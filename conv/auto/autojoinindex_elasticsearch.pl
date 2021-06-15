@@ -211,18 +211,16 @@ foreach my $searchprofile (@searchprofiles){
 	  RUNNINGTASK: while (my $response = $es->tasks->get( task_id => $result_ref->{'task'} )){
 
 	      last RUNNINGTASK if ($response->{completed});
+	      
 	      sleep 20;
 
-	      $logger->info($response->{task}{status}{created}." Titel bearbeitet");
+	      $logger->info($response->{task}{status}{created}." Titel bearbeitet") if ($response->{task}{status}{created});
 		
 	    }
 		  
-
+	    $logger->info(YAML::Dump($es->tasks->get( task_id => $result_ref->{'task'} )));
 	    
-	}
-
-	
-	$logger->info(YAML::Dump($result_ref));
+	}	
     }
     
     

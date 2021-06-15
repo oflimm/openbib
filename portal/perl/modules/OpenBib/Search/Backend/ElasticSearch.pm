@@ -163,16 +163,34 @@ sub search {
     my $index;
     
     if ($searchprofile){
-	my $valid_databases_ref = [];
 
-	foreach my $database ($config->get_databases_of_searchprofile($searchprofile)){
+	my $searchprofile_indexname = "searchprofile_$searchprofile";
 
-	    if ($es->indices->exists( index => $database )){
-		push @$valid_databases_ref, $database;
+#	if ($self->{_authority}){
+#            $searchprofile_indexname .="_authority";
+#        }
+
+	$logger->debug("Checking for index $searchprofile_indexname");
+	
+	if ($es->indices->exists( index => $searchprofile_indexname )){
+	    $index = $searchprofile_indexname;
+
+	    $logger->debug("Found merged index $index. Using it.");
+	}
+	else {
+	    my $valid_databases_ref = [];
+	    
+	    foreach my $database ($config->get_databases_of_searchprofile($searchprofile)){
+		
+		if ($es->indices->exists( index => $database )){
+		    push @$valid_databases_ref, $database;
+		}
 	    }
-        }
+	    
+	    $index = $valid_databases_ref;
 
-	$index = $valid_databases_ref;
+	    $logger->debug("Searching in several indexes");
+	}
     }
     elsif ($self->{_database}){
         $index = $self->{_database} if ($es->indices->exists( index => $self->{_database}));

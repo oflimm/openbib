@@ -183,7 +183,8 @@ sub set_from_psgi_request {
             my ($thissearchfield_content, $thissearchfield_norm_content,$thissearchfield_bool_op);
 
 	    # Process and escape Input
-            $thissearchfield_content = $thissearchfield_norm_content = escape_html(decode_utf8(uri_unescape($self->_html_unescape($query->param("$prefix"))))) || '';
+	    $thissearchfield_norm_content = decode_utf8(uri_unescape($self->_html_unescape($query->param("$prefix")))) || '';
+            $thissearchfield_content      = escape_html($thissearchfield_norm_content);
 
 	    if ($logger->is_debug){
 		$logger->debug("Escaped content for searchfield $prefix: ".$thissearchfield_content);

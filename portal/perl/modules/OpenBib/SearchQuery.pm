@@ -1146,7 +1146,7 @@ sub _get_searchprofile {
     my $searchprofile = $config->get_searchprofile_or_create(\@databases);
     
     if ($logger->is_debug){
-        $logger->debug("Database List: ".YAML::Dump(\@databases));
+        $logger->debug("Database List: ".join(",", sort @databases));
         $logger->debug("Searchprofile : $searchprofile");
     }
     

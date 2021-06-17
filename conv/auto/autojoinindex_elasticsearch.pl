@@ -207,17 +207,30 @@ foreach my $searchprofile (@searchprofiles){
 	    );
 
 	if ($result_ref->{'task'}){
+	    $logger->info("Processing titles in task ".$result_ref->{'task'});
 
-	  RUNNINGTASK: while (my $response = $es->tasks->get( task_id => $result_ref->{'task'} )){
-
+	    my $got_sigint = 0;
+	    
+	    local $SIG{INT} = sub {
+		$got_sigint = 1;
+	    };
+	    
+	  RUNNINGTASK: while (my $response = $es->tasks->get( task_id => $result_ref->{'task'} ) && !$got_sigint){
+	      
 	      last RUNNINGTASK if ($response->{completed});
 	      
 	      sleep 20;
-
-	      $logger->info($response->{task}{status}{created}." Titel bearbeitet") if ($response->{task}{status}{created});
-		
-	    }
-		  
+	      
+	      $logger->info($response->{task}{status}{created}." titles processed") if ($response->{task}{status}{created});
+	      
+	  }
+	    
+	    if ($got_sigint){
+		$logger->info("Canceling task ".$result_ref->{'task'});
+		$es->tasks->cancel( task_id => $result_ref->{'task'} );	
+	  }
+	    
+	    
 	    $logger->info(YAML::Dump($es->tasks->get( task_id => $result_ref->{'task'} )));
 	    
 	}	

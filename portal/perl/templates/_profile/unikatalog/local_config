@@ -6,10 +6,10 @@
        prevprofile = session.get_profile ;
    END ;
    IF NOT searchprofileid_of_books ;
-      searchprofileid_of_books  = config.get_searchprofile_of_view(view,['usbweb']) ;
+      searchprofileid_of_books  = config.get_searchprofile_of_orgunit('unikatalog','books',view) ;
    END ;
-   IF NOT searchprofileid_of_eds ;
-      searchprofileid_of_eds = config.get_searchprofile_of_database('eds');
+   IF NOT searchprofileid_of_articles ;
+      searchprofileid_of_articles = config.get_searchprofile_of_orgunit('unikatalog','articles',view);
    END ;
 
    IF database && NOT searchprofileid_of_title ;
@@ -18,29 +18,29 @@
       searchprofileid_of_title = config.get_searchprofile_of_database(record.database);
    END ;
 
-   IF NOT searchprofileid_of_website ;
-      searchprofileid_of_website = config.get_searchprofile_of_database('usbweb');
+   IF NOT searchprofileid_of_web ;
+      searchprofileid_of_web = config.get_searchprofile_of_orgunit('unikatalog','web',view);
    END ;
 
    current_profile = "";
    IF query.param('profile');
      current_profile = query.param('profile');
-   ELSIF searchprofileid_of_title == searchprofileid_of_eds ;
-     current_profile = searchprofileid_of_eds ;
-   ELSIF searchprofileid_of_title == searchprofileid_of_website ;
-     current_profile = searchprofileid_of_website ;
+   ELSIF searchprofileid_of_title == searchprofileid_of_articles ;
+     current_profile = searchprofileid_of_articles ;
+   ELSIF searchprofileid_of_title == searchprofileid_of_web ;
+     current_profile = searchprofileid_of_web ;
    ELSE;
      current_profile = searchprofileid_of_books;
    END;
 
    idsuffix = "";
 
-   IF current_profile == searchprofileid_of_eds;
-     idsuffix = "_eds" ;
-   ELSIF current_profile == searchprofileid_of_website;
-     idsuffix = "_website";
+   IF current_profile == searchprofileid_of_articles;
+     idsuffix = "_articles" ;
+   ELSIF current_profile == searchprofileid_of_web;
+     idsuffix = "_web";
    ELSE;
-     idsuffix = "_default";
+     idsuffix = "_books";
    END;
 
 -%]

@@ -14,9 +14,10 @@
 [%- PROCESS common/subtemplate name="local_config" -%] 
 
 [%
- IF idsuffix == '_default' ;
-   separate_facets = 1 ;
- END;
+# IF idsuffix == '_books' ;
+#   separate_facets = 1 ;
+# END;
+ separate_facets = 0 ;
 %]
 <p/>
 
@@ -26,13 +27,13 @@
     
     <input type="hidden" name="num"        value="20" />
     <input type="hidden" name="page"       value="1" />
-    <input type="hidden" name="lang"       value="[% lang %]" />
+    <input type="hidden" name="l"          value="[% lang %]" />
     
     <input type="hidden" name="srt"        value="relevance_desc" />
     <input type="hidden" name="st"         value="1" />
     <input type="hidden" name="lt"         value="[% qopts.lt %]" />
     <input type="hidden" name="profile"    value="[% searchquery.get_searchprofile %]" />
-[% IF idsuffix == '_default' %]    
+[% IF idsuffix == '_books' %]    
     <input type="hidden" name="facets"     value="none" />
 [% END %]
 
@@ -211,7 +212,7 @@ $(document).ready(function(){
     <div class="right mt-2">
       <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
 	<input type="hidden" name="page" value="1" />
-	<input type="hidden" name="lang" value="[% lang %]" />
+	<input type="hidden" name="l"    value="[% lang %]" />
 
 [% cgiapp.to_cgi_hidden_input({ exclude = ['page','srt','srto','num']}) %]
 

@@ -15,97 +15,61 @@
             [%- END -%]
             [%- END -%]
             [%- END -%]
-            [%-
-            personlist = [];
-            IF normdata.${"T0100"};
-            person_item = {
-                values = normdata.${"T0100"}
-                field = "T0100"
-            };
-            personlist.push(person_item);
-            END;
-            IF normdata.${"T0101"};
-            person_item = {
-                values = normdata.${"T0101"}
-                field = "T0101"
-            };
-            personlist.push(person_item);
-            END;
-            IF normdata.${"T0102"};
-            person_item = {
-                values = normdata.${"T0102"}
-                field = "T0102"
-            };
-            personlist.push(person_item);
-            END;
-            IF normdata.${"T0103"};
-            person_item = {
-                values = normdata.${"T0103"}
-                field = "T0103"
-            };
-            personlist.push(person_item);
-            END;
-            -%]
             [%- IF personlist && personlist.size -%]
-            [%- FOREACH persondata IN personlist %]
-            [%- FOREACH item IN persondata.values %]
-            <mods:name type="personal">
+            [%- FOREACH item IN personlist %]
+            <mods:name type="personal"  [%- IF item.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/[% item.gnd %]" [%END%]>
                 [%-
                 name_part = '';
-                IF item.content.match('<');
-                namedata_array = item.content.split('<');
-                name_part = namedata_array.0.trim;
-                termsOfAddress = namedata_array.1.trim;
-                termsOfAddress_text = termsOfAddress.remove('>');
-                ELSE;  
-                name_part = item.content;
-                END;
-                IF name_part.match(',');
-                name_array = name_part.split(',');
-                family = name_array.0.trim;
-                given = name_array.1.trim;
-                ELSE;
-                given = name_part.trim;
-                END;
-                -%]
-                [%- IF family %]
-                <mods:namePart type="family">[% family %]</mods:namePart>
-                [%- END %]
-                <mods:namePart type="given">[% given %]</mods:namePart>
-                [%- IF termsOfAddress_text %]
-                <mods:namePart type="termsOfAddress">[% termsOfAddress_text %]</mods:namePart>
-                [%- END %]
-                <mods:displayForm>[% item.content %]</mods:displayForm>
-                <mods:role>
-                    [%- IF persondata.field == "T0100" %]
-                    <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
-                    [%- ELSIF item.supplement.match('Hrsg') %]
-                    <mods:roleTerm type="code" authority="marcrelator">edt</mods:roleTerm>
-                    [%- ELSIF item.supplement.match('Übers') %]
-                    <mods:roleTerm type="code" authority="marcrelator">trl</mods:roleTerm>
-                    [%- ELSIF item.supplement.match('Bearb') %]
-                    <mods:roleTerm type="code" authority="marcrelator">edt</mods:roleTerm>
-                    [%- ELSE %]
-                    <mods:roleTerm type="code" authority="marcrelator">oth</mods:roleTerm>
+                IF item.content.match('<'); namedata_array=item.content.split('<'); name_part=namedata_array.0.trim;
+                    termsOfAddress=namedata_array.1.trim; termsOfAddress_text=termsOfAddress.remove('>');
+                    ELSE;
+                    name_part = item.content;
+                    END;
+                    IF name_part.match(',');
+                    name_array = name_part.split(',');
+                    family = name_array.0.trim;
+                    given = name_array.1.trim;
+                    ELSE;
+                    given = name_part.trim;
+                    END;
+                    -%]
+                    [%- IF family %]
+                    <mods:namePart type="family">[% family %]</mods:namePart>
                     [%- END %]
-                </mods:role>
+                    <mods:namePart type="given">[% given %]</mods:namePart>
+                    [%- IF termsOfAddress_text %]
+                    <mods:namePart type="termsOfAddress">[% termsOfAddress_text %]</mods:namePart>
+                    [%- END %]
+                    <mods:displayForm>[% item.content %]</mods:displayForm>
+                    <mods:role>
+                        [%- IF item.field == "T0100" %]
+                        <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+                        [%- ELSIF item.supplement.match('Hrsg') %]
+                        <mods:roleTerm type="code" authority="marcrelator">edt</mods:roleTerm>
+                        [%- ELSIF item.supplement.match('Übers') %]
+                        <mods:roleTerm type="code" authority="marcrelator">trl</mods:roleTerm>
+                        [%- ELSIF item.supplement.match('Bearb') %]
+                        <mods:roleTerm type="code" authority="marcrelator">edt</mods:roleTerm>
+                        [%- ELSE %]
+                        <mods:roleTerm type="code" authority="marcrelator">oth</mods:roleTerm>
+                        [%- END %]
+                    </mods:role>
             </mods:name>
-            [%- END -%]
             [%- END -%]
             [%- END -%]
             [%-
             corplist = [];
             IF normdata.${"T0200"};
             corp_item = {
-                values = normdata.${"T0200"}
-                field = "T0200"
+            values = normdata.${"T0200"}
+            field = "T0200"
             };
             corplist.push(corp_item);
             END;
             IF normdata.${"T0201"};
             corp_item = {
-                values = normdata.${"T0201"}
-                field = "T0201"
+            values = normdata.${"T0201"}
+            field = "T0201"
             };
             corplist.push(corp_item);
             END;
@@ -186,9 +150,23 @@
             END ;
             END; %]
             <mods:originInfo eventType="publication">
-                [%- FOREACH item IN normdata.${"T0410"} %]
+                [% IF normdata.${"T0410"} %]
                 <mods:place>
+                    [%- FOREACH item IN normdata.${"T0410"} %]
                     <mods:placeTerm type="text">[% item.content %]</mods:placeTerm>
+                    [%- END %]
+                    [% IF normdata.${"T0673"} %]
+                    [% norm_place = normdata.${"T0673"}.first.content %]
+                        [% IF normdata.${"T7676"} %]
+                        [% FOREACH item IN normdata.${"T7676"} %]
+                        [% IF item.subfield == "9" AND item.content.match('DE-588') %]
+                        place_gnd_array = item.content.split(')')
+                        gnd_number = place_gnd_array.1.trim;
+                        <mods:placeTerm type="text" authority="gnd" authorityURI="http://d-nb.info/gnd/[% gnd_number %]">[% norm_place%]</mods:placeTerm>
+                        [% END %]
+                        [% END %]
+                        [% END %]   
+                    [%- END %]
                 </mods:place>
                 [%- END %]
                 [%- type_is_set = "false" %]
@@ -222,9 +200,11 @@
                 <mods:publisher>[% item.content %]</mods:publisher>
                 [%- END %]
                 [%- IF normdata.${"T0425"} %]
-                <mods:dateIssued keyDate="yes" encoding="iso8601">[% normdata.${"T0425"}.first.content%]</mods:dateIssued>
+                <mods:dateIssued keyDate="yes" encoding="iso8601">[% normdata.${"T0425"}.first.content%]
+                </mods:dateIssued>
                 [%- ELSIF normdata.${"T0424"} %]
-                <mods:dateIssued keyDate="yes" encoding="iso8601">[% normdata.${"T0424"}.first.content%]</mods:dateIssued>
+                <mods:dateIssued keyDate="yes" encoding="iso8601">[% normdata.${"T0424"}.first.content%]
+                </mods:dateIssued>
                 [%- END %]
                 [%- IF normdata.${"T0403"} %]
                 <mods:edition>[%- normdata.${"T0403"}.first.content %]</mods:edition>

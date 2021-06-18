@@ -43,6 +43,7 @@ use OpenBib::Config;
 use OpenBib::Common::Util;
 use OpenBib::L10N;
 use OpenBib::Record::Title;
+use OpenBib::Record::Person;
 use OpenBib::Search::Util;
 use OpenBib::Session;
 
@@ -93,6 +94,7 @@ sub show {
             return;
         }
 
+        my $persondata = [];
         if ($unapiid){
             my ($database,$idn,$record);
 
@@ -102,10 +104,50 @@ sub show {
                 
                 $logger->debug("Database: $database - ID: $idn");
 
-                $record     = new OpenBib::Record::Title({database=>$database, id=>$idn})->load_full_record
+                $record     = new OpenBib::Record::Title({database=>$database, id=>$idn})->load_full_record;
+                if ($record->get_fields->{T0100}){
+                        my $person_item = {
+                        values => $record->get_fields->{T0100},
+                        field => "T0100"
+                     };
+                     push(@{$persondata},$person_item); 
+                };
+                if ($record->get_fields->{T0101}){
+                        my $person_item = {
+                        values => $record->get_fields->{T0101},
+                        field => "T0101"
+                     };
+                     push(@{$persondata},$person_item); 
+                };
+                  if ($record->get_fields->{T0102}){
+                        my $person_item = {
+                        values => $record->get_fields->{T0102},
+                        field => "T0102"
+                     };
+                     push(@{$persondata},$person_item); 
+                };
+                  if ($record->get_fields->{T0103}){
+                        my $person_item = {
+                        values => $record->get_fields->{T0103},
+                        field => "T0103"
+                     };
+                     push(@{$persondata},$person_item); 
+                };
+                   
                 
             }
-
+            my $personlist = [];
+            foreach my $person_sub_list (@{$persondata}){
+                foreach my $person (@{$person_sub_list->{values}}){
+                my $person_item = {
+                        gnd => get_gnd_for_person($person->{id}),
+                        field => $person_sub_list->{field},
+                        content => $person->{"content"},
+                        supplement => $person->{"supplement"}
+                    };
+                push(@{$personlist},$person_item); 
+            }
+            }
             if (!$record->record_exists){
                 $self->header_add('Status',404); # not found
                 return;
@@ -113,6 +155,7 @@ sub show {
             
             my $ttdata={
                 record          => $record,
+                personlist      => $personlist,
 
                 config          => $config,
                 msg             => $msg,
@@ -203,6 +246,11 @@ sub show {
 
         return $content;
     }
+}
+
+sub get_gnd_for_person{
+    my $self = shift;
+    return ""
 }
 
 1;

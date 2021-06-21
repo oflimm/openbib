@@ -209,13 +209,16 @@ foreach my $searchprofile (@searchprofiles){
 	if ($result_ref->{'task'}){
 	    $logger->info("Processing titles in task ".$result_ref->{'task'});
 
-	    my $got_sigint = 0;
+	    # my $got_sigint = 0;
 	    
-	    local $SIG{INT} = sub {
-		$got_sigint = 1;
-	    };
+	    # local $SIG{INT} = sub {
+	    # 	$got_sigint = 1;
+	    # };
 	    
-	  RUNNINGTASK: while (my $response = $es->tasks->get( task_id => $result_ref->{'task'} ) && !$got_sigint){
+#	  RUNNINGTASK: while (my $response = $es->tasks->get( task_id => $result_ref->{'task'} ) && !$got_sigint){
+	  RUNNINGTASK: while (my $response = $es->tasks->get( task_id => $result_ref->{'task'} )){
+
+#	      next if (ref($response) ne "HASH");
 	      
 	      last RUNNINGTASK if ($response->{completed});
 	      
@@ -225,10 +228,10 @@ foreach my $searchprofile (@searchprofiles){
 	      
 	  }
 	    
-	    if ($got_sigint){
-		$logger->info("Canceling task ".$result_ref->{'task'});
-		$es->tasks->cancel( task_id => $result_ref->{'task'} );	
-	  }
+	  #   if ($got_sigint){
+	  # 	$logger->info("Canceling task ".$result_ref->{'task'});
+	  # 	$es->tasks->cancel( task_id => $result_ref->{'task'} );	
+	  # }
 	    
 	    
 	    $logger->info(YAML::Dump($es->tasks->get( task_id => $result_ref->{'task'} )));

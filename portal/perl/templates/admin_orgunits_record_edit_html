@@ -33,6 +33,11 @@
 <input class="form-control" type="text" name="nr" id="nr" value="[% orgunitinfo.nr %]" size="20" />
 </div>
 
+<div class="form-group">
+<label for="searchprofileid">[% msg.maketext("Aktuelle Suchprofil-ID") %]</label>
+<span class="form-control">[% config.get_searchprofile_of_orgunit(profileinfo.profilename,orgunitinfo.orgunitname) %]</span>
+</div>
+
 <h1 class="display-5">[% msg.maketext("Katalogauswahl der Organisationseinheit") %]</h1>
 
 <div class="form-group">

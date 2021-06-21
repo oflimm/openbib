@@ -174,7 +174,7 @@ $(function () {
 <input type="hidden" name="srt"        value="relevance_desc" />
 <input type="hidden" name="st"         value="1" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
-<input type="hidden" name="profile"    value="[% config.get_searchprofile_of_view(view,['usbweb','usbebooks']) %]" />
+<input type="hidden" name="profile"    value="[% searchprofileid_of_books %]" />
 <input type="hidden" name="sb"         value="elasticsearch" />
 
 

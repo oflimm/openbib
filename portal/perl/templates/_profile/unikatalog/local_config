@@ -6,10 +6,10 @@
        prevprofile = session.get_profile ;
    END ;
    IF NOT searchprofileid_of_books ;
-      searchprofileid_of_books  = config.get_searchprofile_of_orgunit('unikatalog','books',view) ;
+      searchprofileid_of_books  = config.get_searchprofile_of_orgunit('unikatalog','books') ;
    END ;
    IF NOT searchprofileid_of_articles ;
-      searchprofileid_of_articles = config.get_searchprofile_of_orgunit('unikatalog','articles',view);
+      searchprofileid_of_articles = config.get_searchprofile_of_orgunit('unikatalog','articles');
    END ;
 
    IF database && NOT searchprofileid_of_title ;
@@ -19,7 +19,7 @@
    END ;
 
    IF NOT searchprofileid_of_web ;
-      searchprofileid_of_web = config.get_searchprofile_of_orgunit('unikatalog','web',view);
+      searchprofileid_of_web = config.get_searchprofile_of_orgunit('unikatalog','web');
    END ;
 
    current_profile = "";

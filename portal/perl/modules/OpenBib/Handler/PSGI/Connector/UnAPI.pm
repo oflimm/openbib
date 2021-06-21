@@ -300,7 +300,7 @@ sub collect_corporation_data {
     foreach my $corp_sub_list ( @{$corp_data} ) {
         foreach my $corp ( @{ $corp_sub_list->{values} } ) {
             my $corp_item = {
-                namedata => $self->generate_name_data( $corp->{content} ),
+                namedata => $corp->{content},
                 gnd   => $self->get_gnd_for_corporation( $corp->{id}, $database ),
                 field => $corp_sub_list->{field},
                 supplement => $corp->{supplement}

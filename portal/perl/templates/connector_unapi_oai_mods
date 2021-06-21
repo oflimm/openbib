@@ -45,7 +45,7 @@
             [%- IF corporation_list && corporation_list.size %]
             [%- FOREACH item IN corporation_list %]
             <mods:name type="corporate" [%- IF item.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/[% item.gnd %]" [%END%]>
-                <mods:namePart>[% item.content %]</mods:namePart>
+                <mods:namePart>[% item.namedata %]</mods:namePart>
                 <mods:role>
                     [%- IF corpdata.field == "T0200" %]
                     <mods:roleTerm type="code" authority="marcrelator" authorityURI="https://id.loc.gov/vocabulary/relators" valueURI="https://id.loc.gov/vocabulary/relators/aut">aut</mods:roleTerm>
@@ -56,7 +56,7 @@
                     [%- ELSIF item.supplement.match('Bearb') %]
                     <mods:roleTerm type="code" authority="marcrelator" authorityURI="https://id.loc.gov/vocabulary/relators" valueURI="https://id.loc.gov/vocabulary/relators/edt">edt</mods:roleTerm>
                     [%- ELSE %]
-                    <mods:roleTerm type="code" authority="marcrelator"authorityURI="https://id.loc.gov/vocabulary/relators" valueURI="https://id.loc.gov/vocabulary/relators/oth">oth</mods:roleTerm>
+                    <mods:roleTerm type="code" authority="marcrelator" authorityURI="https://id.loc.gov/vocabulary/relators" valueURI="https://id.loc.gov/vocabulary/relators/oth">oth</mods:roleTerm>
                     [%- END %]
                 </mods:role>
             </mods:name>

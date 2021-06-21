@@ -217,7 +217,7 @@ foreach my $searchprofile (@searchprofiles){
 	    
 	  RUNNINGTASK: while (my $response = $es->tasks->get( task_id => $result_ref->{'task'} ) && !$got_sigint){
 	      
-	      last RUNNINGTASK if ($response->{completed});
+	      last RUNNINGTASK if (ref($response) eq "HASH" && $response->{completed});
 	      
 	      sleep 20;
 	      

@@ -294,12 +294,16 @@ sub process_title_rda {
     my $current_value  = 0;
     my $currentObject  = {};
     my $counter        = 1;
+    my $is_first = 1;
     foreach my $title ( @{$rda_field_data} ) {
-
         if ( $title->{mult} != $current_value ) {
             $current_value = $title->{mult};
-            push( @{$rda_collection}, $currentObject );
-            $currentObject = {};
+            if (!$is_first){
+                push( @{$rda_collection}, $currentObject );
+                $currentObject = {};
+            }else {
+               $is_first = 0; 
+            }
         }
         if ( $title->{subfield} eq "g" ) {
             $currentObject->{title} = $title->{content};
@@ -482,12 +486,17 @@ sub process_place_rda {
     my $current_value  = 0;
     my $currentObject  = {};
     my $counter        = 1;
+    my $is_first = 1;
     foreach my $place ( @{$rda_field_data} ) {
 
         if ( $place->{mult} != $current_value ) {
             $current_value = $place->{mult};
-            push( @{$rda_collection}, $currentObject );
-            $currentObject = {};
+             if (!$is_first){
+                push( @{$rda_collection}, $currentObject );
+                $currentObject = {};
+            }else {
+               $is_first = 0; 
+            }
         }
         if ( $place->{subfield} eq "g" ) {
             $currentObject->{place_name} = $place->{content};
@@ -519,11 +528,16 @@ sub collect_publisher_data {
     my $currentObject  = {};
     my $counter        = 1;
     my $uniform_place_list = [];
+    my $is_first = 1;
     foreach my $publisher ( @{$record->get_fields->{T7677}} ) {
         if ( $publisher->{mult} != $current_value ) {
             $current_value = $publisher->{mult};
-            push( @{$uniform_place_list}, $currentObject );
-            $currentObject = {};
+            if (!$is_first){
+                push( @{$uniform_place_list}, $currentObject );
+                $currentObject = {};
+            }else {
+               $is_first = 0; 
+            }
         }
         if ( $publisher->{subfield} eq "p" ) {
             $currentObject->{publisher_name} = $publisher->{content};

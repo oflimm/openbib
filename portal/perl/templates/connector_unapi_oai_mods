@@ -18,82 +18,48 @@
             [%- IF personlist && personlist.size -%]
             [%- FOREACH item IN personlist %]
             <mods:name type="personal"  [%- IF item.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/[% item.gnd %]" [%END%]>
-                [%-
-                name_part = '';
-                IF item.content.match('<'); namedata_array=item.content.split('<'); name_part=namedata_array.0.trim;
-                    termsOfAddress=namedata_array.1.trim; termsOfAddress_text=termsOfAddress.remove('>');
-                    ELSE;
-                    name_part = item.content;
-                    END;
-                    IF name_part.match(',');
-                    name_array = name_part.split(',');
-                    family = name_array.0.trim;
-                    given = name_array.1.trim;
-                    ELSE;
-                    given = name_part.trim;
-                    END;
-                    -%]
-                    [%- IF family %]
-                    <mods:namePart type="family">[% family %]</mods:namePart>
+                    [%- IF item.namedata.family_name %]
+                    <mods:namePart type="family">[% item.namedata.family_name %]</mods:namePart>
                     [%- END %]
-                    <mods:namePart type="given">[% given %]</mods:namePart>
-                    [%- IF termsOfAddress_text %]
-                    <mods:namePart type="termsOfAddress">[% termsOfAddress_text %]</mods:namePart>
+                    <mods:namePart type="given">[% item.namedata.given_name %]</mods:namePart>
+                    [%- IF item.namedata.termsOfAddress %]
+                    <mods:namePart type="termsOfAddress">[% item.namedata.termsOfAddress %]</mods:namePart>
                     [%- END %]
-                    <mods:displayForm>[% item.content %]</mods:displayForm>
+                    <mods:displayForm>[% item.namedata.displayname %]</mods:displayForm>
                     <mods:role>
                         [%- IF item.field == "T0100" %]
-                        <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+                        <mods:roleTerm type="code" authority="marcrelator" authorityURI="https://id.loc.gov/vocabulary/relators" valueURI="https://id.loc.gov/vocabulary/relators/aut">aut</mods:roleTerm>
                         [%- ELSIF item.supplement.match('Hrsg') %]
-                        <mods:roleTerm type="code" authority="marcrelator">edt</mods:roleTerm>
+                        <mods:roleTerm type="code" authority="marcrelator" authorityURI="https://id.loc.gov/vocabulary/relators" valueURI="https://id.loc.gov/vocabulary/relators/edt">edt</mods:roleTerm>
                         [%- ELSIF item.supplement.match('Übers') %]
-                        <mods:roleTerm type="code" authority="marcrelator">trl</mods:roleTerm>
+                        <mods:roleTerm type="code" authority="marcrelator" authorityURI="https://id.loc.gov/vocabulary/relators" valueURI="https://id.loc.gov/vocabulary/relators/trl">trl</mods:roleTerm>
                         [%- ELSIF item.supplement.match('Bearb') %]
-                        <mods:roleTerm type="code" authority="marcrelator">edt</mods:roleTerm>
+                        <mods:roleTerm type="code" authority="marcrelator" authorityURI="https://id.loc.gov/vocabulary/relators" valueURI="https://id.loc.gov/vocabulary/relators/edt">edt</mods:roleTerm>
                         [%- ELSE %]
-                        <mods:roleTerm type="code" authority="marcrelator">oth</mods:roleTerm>
+                        <mods:roleTerm type="code" authority="marcrelator" authorityURI="https://id.loc.gov/vocabulary/relators" valueURI="https://id.loc.gov/vocabulary/relators/oth">oth</mods:roleTerm>
                         [%- END %]
                     </mods:role>
             </mods:name>
             [%- END -%]
             [%- END -%]
-            [%-
-            corplist = [];
-            IF normdata.${"T0200"};
-            corp_item = {
-            values = normdata.${"T0200"}
-            field = "T0200"
-            };
-            corplist.push(corp_item);
-            END;
-            IF normdata.${"T0201"};
-            corp_item = {
-            values = normdata.${"T0201"}
-            field = "T0201"
-            };
-            corplist.push(corp_item);
-            END;
-            %]
-            [%- IF corplist && corplist.size %]
-            [%- FOREACH corpdata IN corplist %]
-            [%- FOREACH item IN corpdata.values %]
-            <mods:name type="corporate">
-                <mods:namePart>[% item.content %]</mods:namePart>
+            [%- IF corporation_list && corporation_list.size %]
+            [%- FOREACH item IN corporation_list %]
+            <mods:name type="corporate" [%- IF item.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/[% item.gnd %]" [%END%]>
+                <mods:namePart>[% item.namedata %]</mods:namePart>
                 <mods:role>
                     [%- IF corpdata.field == "T0200" %]
-                    <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+                    <mods:roleTerm type="code" authority="marcrelator" authorityURI="https://id.loc.gov/vocabulary/relators" valueURI="https://id.loc.gov/vocabulary/relators/aut">aut</mods:roleTerm>
                     [%- ELSIF item.supplement.match('Hrsg') %]
-                    <mods:roleTerm type="code" authority="marcrelator">edt</mods:roleTerm>
+                    <mods:roleTerm type="code" authority="marcrelator" authorityURI="https://id.loc.gov/vocabulary/relators" valueURI="https://id.loc.gov/vocabulary/relators/edt">edt</mods:roleTerm>
                     [%- ELSIF item.supplement.match('Übers') %]
-                    <mods:roleTerm type="code" authority="marcrelator">trl</mods:roleTerm>
+                    <mods:roleTerm type="code" authority="marcrelator" authorityURI="https://id.loc.gov/vocabulary/relators" valueURI="https://id.loc.gov/vocabulary/relators/trl">trl</mods:roleTerm>
                     [%- ELSIF item.supplement.match('Bearb') %]
-                    <mods:roleTerm type="code" authority="marcrelator">edt</mods:roleTerm>
+                    <mods:roleTerm type="code" authority="marcrelator" authorityURI="https://id.loc.gov/vocabulary/relators" valueURI="https://id.loc.gov/vocabulary/relators/edt">edt</mods:roleTerm>
                     [%- ELSE %]
-                    <mods:roleTerm type="code" authority="marcrelator">oth</mods:roleTerm>
+                    <mods:roleTerm type="code" authority="marcrelator" authorityURI="https://id.loc.gov/vocabulary/relators" valueURI="https://id.loc.gov/vocabulary/relators/oth">oth</mods:roleTerm>
                     [%- END %]
                 </mods:role>
             </mods:name>
-            [%- END -%]
             [%- END -%]
             [%- END -%]
             [%- IF normdata.${"T0331"} %]

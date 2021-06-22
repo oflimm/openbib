@@ -95,8 +95,10 @@ sub show {
             return;
         }
 
-        my $personlist = [];
+        my $uniform_title_list       = [];
+        my $personlist       = [];
         my $corporation_list = [];
+        my $place_list       = [];
         if ($unapiid) {
             my ( $database, $idn, $record );
 
@@ -108,8 +110,11 @@ sub show {
 
                 $record = new OpenBib::Record::Title(
                     { database => $database, id => $idn } )->load_full_record;
-                $personlist = $self->collect_person_data($record, $database);
-                $corporation_list = $self->collect_corporation_data($record, $database);
+                $uniform_title_list = $self->collect_title_data( $record, $database );
+                $personlist = $self->collect_person_data( $record, $database );
+                $corporation_list =
+                  $self->collect_corporation_data( $record, $database );
+                $place_list = $self->collect_place_data( $record, $database );
 
             }
 
@@ -119,9 +124,12 @@ sub show {
             }
 
             my $ttdata = {
-                record     => $record,
-                personlist => $personlist,
+                record           => $record,
+                uniform_title_list  => $uniform_title_list,
+                personlist       => $personlist,
                 corporation_list => $corporation_list,
+                place_list       => $place_list,
+
 
                 config => $config,
                 msg    => $msg,
@@ -227,10 +235,95 @@ sub show {
     }
 }
 
+
+sub collect_title_data {
+    my $self       = shift;
+    my $record     = shift;
+    my $database   = shift;
+    my $already_added = [];
+    my $title_list = [];
+    
+    
+    if ( length( $record->get_fields->{T7304} ) ) {
+        my $rda_collection =
+          $self->process_title_rda( $record->get_fields->{T7304}, "T7304" );
+        push( @{$title_list}, $rda_collection );
+    }
+    
+    if ( $record->get_fields->{T0304} ) {
+        foreach my $title_item ( @{ $record->get_fields->{T0304} } ) {
+            my $title_item = {
+                title => $title_item->{content},
+                field      => "T0304"
+            };
+            push( @{$title_list}, $title_item );
+        }
+    }
+
+    if ( $record->get_fields->{T0306} ) {
+        foreach my $title_item ( @{ $record->get_fields->{T0306} } ) {
+            my $title_item = {
+                title => $title_item->{content},
+                field      => "T0306"
+            };
+            push( @{$title_list}, $title_item );
+        }
+    }
+
+    if ( $record->get_fields->{T0310} ) {
+        foreach my $title_item ( @{ $record->get_fields->{T0310} } ) {
+            my $title_item = {
+                title => $title_item->{content},
+                field      => "T0310"
+            };
+            push( @{$title_list}, $title_item );
+        }
+    }
+
+    return $title_list;
+}
+
+sub process_title_rda {
+    my $self           = shift;
+    my $rda_field_data = shift;
+    my $field_name     = shift;
+    my $rda_collection = [];
+    my $current_value  = 0;
+    my $currentObject  = {};
+    my $counter        = 1;
+    foreach my $title ( @{$rda_field_data} ) {
+
+        if ( $title->{mult} != $current_value ) {
+            $current_value = $title->{mult};
+            push( @{$rda_collection}, $currentObject );
+            $currentObject = {};
+        }
+        if ( $title->{subfield} eq "g" ) {
+            $currentObject->{title} = $title->{content};
+            $currentObject->{title} =~ s/^\s+//;
+        }
+        elsif ( $title->{subfield} eq "9"
+            and index( $title->{content}, "DE-588" ) != -1 )
+        {
+            $currentObject->{gnd} = $title->{content};
+            $currentObject->{gnd} =~ s/\(DE-588\)//;
+            $currentObject->{gnd} =~ s/^\s+//;
+            $currentObject->{field} = $field_name;
+        }
+        if ( $counter == scalar( @{$rda_field_data} ) ) {
+            push( @{$rda_collection}, $currentObject );
+        }
+        $counter++;
+
+    }
+    return $rda_collection;
+
+}
+
 sub collect_person_data {
     my $self       = shift;
     my $record     = shift;
-    my $database     = shift;
+    my $database   = shift;
     my $persondata = [];
     my $personlist = [];
     if ( $record->get_fields->{T0100} ) {
@@ -276,13 +369,28 @@ sub collect_person_data {
 
 }
 
+sub get_gnd_for_person {
+    my $self      = shift;
+    my $person_id = shift;
+    my $database  = shift;
+    my $record    = OpenBib::Record::Person->new(
+        { database => $database, id => $person_id } )->load_full_record;
+    if ( length( $record->{_fields}->{P0010} )
+        && $record->{_fields}->{P0010}->[0]->{description} eq "GND" )
+    {
+        return $record->{_fields}->{P0010}->[0]->{content};
+    }
+    return "";
+
+}
+
 sub collect_corporation_data {
-    my $self       = shift;
-    my $record     = shift;
-    my $database     = shift;
-    my $corp_data = [];
+    my $self             = shift;
+    my $record           = shift;
+    my $database         = shift;
+    my $corp_data        = [];
     my $corporation_list = [];
-     if ( $record->get_fields->{T0200} ) {
+    if ( $record->get_fields->{T0200} ) {
         my $corp_item = {
             values => $record->get_fields->{T0200},
             field  => "T0200"
@@ -296,13 +404,13 @@ sub collect_corporation_data {
         };
         push( @{$corp_data}, $corp_item );
     }
-    
+
     foreach my $corp_sub_list ( @{$corp_data} ) {
         foreach my $corp ( @{ $corp_sub_list->{values} } ) {
             my $corp_item = {
                 namedata => $corp->{content},
-                gnd   => $self->get_gnd_for_corporation( $corp->{id}, $database ),
-                field => $corp_sub_list->{field},
+                gnd => $self->get_gnd_for_corporation( $corp->{id}, $database ),
+                field      => $corp_sub_list->{field},
                 supplement => $corp->{supplement}
             };
             push( @{$corporation_list}, $corp_item );
@@ -311,36 +419,16 @@ sub collect_corporation_data {
     return $corporation_list;
 }
 
-sub get_gnd_for_person {
-    my $self      = shift;
-    my $person_id = shift;
-    my $database  = shift;
-    my $record    = OpenBib::Record::Person->new(
-        { database => $database, id => $person_id } )->load_full_record;
-    if (
-        length(
-                 $record->{_fields}->{P0010}
-              && $record->{_fields}->{P0010}->[0]->{description} eq "GND"
-        )
-      )
-    {
-        return $record->{_fields}->{P0010}->[0]->{content};
-    }
-    return "";
-
-}
-
 sub get_gnd_for_corporation {
-    my $self      = shift;
-    my $corp_id = shift;
-    my $database  = shift;
-    my $record    = OpenBib::Record::CorporateBody->new(
+    my $self     = shift;
+    my $corp_id  = shift;
+    my $database = shift;
+    my $record   = OpenBib::Record::CorporateBody->new(
         { database => $database, id => $corp_id } )->load_full_record;
     if (
-        length(
-                 $record->{_fields}->{C0010}
-              && $record->{_fields}->{C0010}->[0]->{description} eq "GND"
-        )
+        length( $record->{_fields}->{C0010} )
+        && $record->{_fields}->{C0010}->[0]->{description} eq "GND"
+
       )
     {
         return $record->{_fields}->{C0010}->[0]->{content};
@@ -349,25 +437,98 @@ sub get_gnd_for_corporation {
 
 }
 
+sub collect_place_data {
+    my $self       = shift;
+    my $record     = shift;
+    my $place_list = [];
+    if ( length( $record->get_fields->{T0410} ) ) {
+        foreach my $place ( @{ $record->get_fields->{T0410} } ) {
+            my $place_data = {
+                place_name => $place->{content},
+                field      => "T0410"
+            };
+            push( @{$place_list}, $place_data );
+        }
+    }
+    if ( length( $record->get_fields->{T7676} ) ) {
+        my $rda_collection =
+          $self->process_place_rda( $record->get_fields->{T7676}, "T7676" );
+        push( @{$place_list}, $rda_collection );
+
+    }
+    else {
+        if ( length( $record->get_fields->{T0673} ) ) {
+            foreach my $place ( @{ $record->get_fields->{T0673} } ) {
+                my $place_data = {
+                    place_name => $place->{content},
+                    field      => "T0673"
+                };
+                push( @{$place_list}, $place_data );
+            }
+
+        }
+    }
+    return $place_list;
+}
+
+sub process_place_rda {
+    my $self           = shift;
+    my $rda_field_data = shift;
+    my $field_name     = shift;
+    my $rda_collection = [];
+    my $current_value  = 0;
+    my $currentObject  = {};
+    my $counter        = 1;
+    foreach my $place ( @{$rda_field_data} ) {
+
+        if ( $place->{mult} != $current_value ) {
+            $current_value = $place->{mult};
+            push( @{$rda_collection}, $currentObject );
+            $currentObject = {};
+        }
+        if ( $place->{subfield} eq "g" ) {
+            $currentObject->{place_name} = $place->{content};
+            $currentObject->{place_name} =~ s/^\s+//;
+        }
+        elsif ( $place->{subfield} eq "9"
+            and index( $place->{content}, "DE-588" ) != -1 )
+        {
+            $currentObject->{gnd} = $place->{content};
+            $currentObject->{gnd} =~ s/\(DE-588\)//;
+            $currentObject->{gnd} =~ s/^\s+//;
+            $currentObject->{field} = $field_name;
+        }
+        if ( $counter == scalar( @{$rda_field_data} ) ) {
+            push( @{$rda_collection}, $currentObject );
+        }
+        $counter++;
+
+    }
+    return $rda_collection;
+
+}
+
 sub generate_name_data {
-    my $self = shift;
+    my $self          = shift;
     my $content_field = shift;
-    my $namedata = {};
-    my $displayname = $content_field;
-    $namedata->{displayname} = $content_field;
-    $namedata->{family_name} = "";
-    $namedata->{given_name} = "";
+    my $namedata      = {};
+    my $displayname   = $content_field;
+    $namedata->{displayname}    = $content_field;
+    $namedata->{family_name}    = "";
+    $namedata->{given_name}     = "";
     $namedata->{termsOfAddress} = "";
-    if (index($content_field, "<",) != -1) {
-        my @full_name_array = split("<", $content_field);
+    if (   index( $content_field, "/&lt;" ) != -1
+        || index( $content_field, "/<" ) != -1 )
+    {
+        my @full_name_array = split( "/&lt;", $content_field );
         $displayname = $full_name_array[0];
         $displayname =~ s/^\s+//;
         $namedata->{termsOfAddress} = $full_name_array[1];
-        $namedata->{termsOfAddress} =~ s/>//;
+        $namedata->{termsOfAddress} =~ s/\&gt;//;
         $namedata->{termsOfAddress} =~ s/^\s+//;
     }
-    if (index($displayname, ",") != -1) {
-        my @name_array = split(",", $displayname);
+    if ( index( $displayname, "," ) != -1 ) {
+        my @name_array = split( ",", $displayname );
         $namedata->{family_name} = $name_array[0];
         $namedata->{family_name} =~ s/^\s+//;
         $namedata->{given_name} = $name_array[1];

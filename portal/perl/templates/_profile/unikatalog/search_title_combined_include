@@ -34,7 +34,7 @@
     <input type="hidden" name="lt"         value="[% qopts.lt %]" />
     <input type="hidden" name="profile"    value="[% searchquery.get_searchprofile %]" />
 [% IF idsuffix == '_books' %]    
-    <input type="hidden" name="facets"     value="none" />
+    <input type="hidden" name="sb"         value="elasticsearch" />
 [% END %]
 
     <div class="container justify-content-center border shadow rounded pl-4 pr-4 pt-3 pb-2 mb-4">

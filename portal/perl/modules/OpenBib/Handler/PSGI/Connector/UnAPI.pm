@@ -382,8 +382,7 @@ sub get_gnd_for_person {
     my $database  = shift;
     my $record    = OpenBib::Record::Person->new(
         { database => $database, id => $person_id } )->load_full_record;
-    if ( length( $record->{_fields}->{P0010} )
-        && $record->{_fields}->{P0010}->[0]->{description} eq "GND" )
+    if ( length( $record->{_fields}->{P0010} ))
     {
         return $record->{_fields}->{P0010}->[0]->{content};
     }
@@ -432,11 +431,7 @@ sub get_gnd_for_corporation {
     my $database = shift;
     my $record   = OpenBib::Record::CorporateBody->new(
         { database => $database, id => $corp_id } )->load_full_record;
-    if (
-        length( $record->{_fields}->{C0010} )
-        && $record->{_fields}->{C0010}->[0]->{description} eq "GND"
-
-      )
+    if (length( $record->{_fields}->{C0010}))
     {
         return $record->{_fields}->{C0010}->[0]->{content};
     }

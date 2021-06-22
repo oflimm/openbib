@@ -99,6 +99,7 @@ sub show {
         my $personlist       = [];
         my $corporation_list = [];
         my $place_list       = [];
+        my $uniform_publisher_list = [];
         if ($unapiid) {
             my ( $database, $idn, $record );
 
@@ -113,8 +114,9 @@ sub show {
                 $uniform_title_list = $self->collect_title_data( $record, $database );
                 $personlist = $self->collect_person_data( $record, $database );
                 $corporation_list =
-                  $self->collect_corporation_data( $record, $database );
+                $self->collect_corporation_data( $record, $database );
                 $place_list = $self->collect_place_data( $record, $database );
+                $uniform_publisher_list = $self->collect_publisher_data( $record, $database );
 
             }
 
@@ -129,6 +131,7 @@ sub show {
                 personlist       => $personlist,
                 corporation_list => $corporation_list,
                 place_list       => $place_list,
+                uniform_publisher_list => $uniform_publisher_list,
 
 
                 config => $config,
@@ -506,6 +509,41 @@ sub process_place_rda {
     }
     return $rda_collection;
 
+}
+
+
+sub collect_publisher_data {
+    my $self       = shift;
+    my $record     = shift;
+    my $current_value  = 0;
+    my $currentObject  = {};
+    my $counter        = 1;
+    my $uniform_place_list = [];
+    foreach my $publisher ( @{$record->get_fields->{T7677}} ) {
+        if ( $publisher->{mult} != $current_value ) {
+            $current_value = $publisher->{mult};
+            push( @{$uniform_place_list}, $currentObject );
+            $currentObject = {};
+        }
+        if ( $publisher->{subfield} eq "p" ) {
+            $currentObject->{publisher_name} = $publisher->{content};
+            $currentObject->{publisher_name} =~ s/^\s+//;
+        }
+        elsif ( $publisher->{subfield} eq "9"
+            and index( $publisher->{content}, "DE-588" ) != -1 )
+        {
+            $currentObject->{gnd} = $publisher->{content};
+            $currentObject->{gnd} =~ s/\(DE-588\)//;
+            $currentObject->{gnd} =~ s/^\s+//;
+        }
+        if ( $counter == scalar( @{$record->get_fields->{T7677}} ) ) {
+            push( @{$uniform_place_list}, $currentObject );
+        }
+        $counter++;
+
+    }
+    return $uniform_place_list;
+    
 }
 
 sub generate_name_data {

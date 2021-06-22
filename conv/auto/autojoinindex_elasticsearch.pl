@@ -161,6 +161,7 @@ foreach my $searchprofile (@searchprofiles){
     foreach my $indexname (@databases){
 
 	if (!$es->indices->exists( index => $indexname )){
+	    $logger->info("No index $indexname found");
 	    if ($indexname =~m/authority/){
 		$sane_authority_index = 0;
 	    }
@@ -192,6 +193,17 @@ foreach my $searchprofile (@searchprofiles){
     if (!$onlyauthorities){
         $logger->info("### Merging indices to index $joinedindex");
 
+	my $result = $es->indices->create(
+	    index    => $joinedindex,
+	    );
+	
+	$result = $es->indices->put_mapping(
+	    index => $joinedindex,
+	    body => {
+		properties => $config->{elasticsearch_index_mappings}{properties},
+	    }	
+	    );			
+	
 	my $result_ref = $es->reindex(
 	    wait_for_completion => 0,
 	    

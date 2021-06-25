@@ -374,7 +374,7 @@ sub process {
 
         my $langcode= "";
 
-        # Sprachcodeanhand 0331 usw. und Linguistischer Spracherkennung
+        # Sprachcode anhand 0331 usw. und Linguistischer Spracherkennung
         
         my @langtexts = ();
         if (defined $fields_ref->{'0331'}){
@@ -485,14 +485,45 @@ sub process {
         my $type_mult = 1;
 
         my $have_type_ref = {};
+
+	# Schon vergebene Medientypen in 4410 merken, damit keine doppelte
+	# Vergabe stattfindet
         foreach my $item_ref (@{$fields_ref->{'4410'}}) {
             $have_type_ref->{$item_ref->{content}} = 1;
             $type_mult++;
         }
 
-        # Monographie:
+        # Aufsatz
+        # HSTQuelle besetzt
+        if ($fields_ref->{'0590'}) {
+            push @{$fields_ref->{'4410'}}, {
+                mult      => $type_mult++,
+                content   => 'Aufsatz',
+                subfield  => '',
+            } unless (defined $have_type_ref->{'Aufsatz'});
+        }   
+        # Hochschulschrift
+        # HSSvermerk besetzt
+        elsif ($fields_ref->{'0519'}) {
+            push @{$fields_ref->{'4410'}}, {
+                mult      => $type_mult++,
+                content   => 'Hochschulschrift',
+                subfield  => '',
+            } unless (defined $have_type_ref->{'Hochschulschrift'});
+        }           
+        # Zeitschriften/Serien:
+        # ISSN und/oder ZDB-ID besetzt
+        elsif (defined $fields_ref->{'0572'} || defined $fields_ref->{'0543'}) {
+            push @{$fields_ref->{'4410'}}, {
+                mult      => $type_mult++,
+                content   => 'Zeitschrift/Serie',
+                subfield  => '',
+            } unless (defined $have_type_ref->{'Zeitschrift/Serie'});
+        }   
+
+	# Monographie:
         # Kollation 434 besetzt und enthaelt S. bzw. p.
-        if (defined $fields_ref->{'0433'}) {
+        elsif (defined $fields_ref->{'0433'}) {
             my $is_mono   = 0;
 
             foreach my $item_ref (@{$fields_ref->{'0433'}}) {
@@ -507,36 +538,7 @@ sub process {
                 subfield  => '',
             } if ($is_mono && !defined $have_type_ref->{'Monographie'});
         }   
-        
-        # Zeitschriften/Serien:
-        # ISSN und/oder ZDB-ID besetzt
-        if (defined $fields_ref->{'0572'} || defined $fields_ref->{'0543'}) {
-            push @{$fields_ref->{'4410'}}, {
-                mult      => $type_mult++,
-                content   => 'Zeitschrift/Serie',
-                subfield  => '',
-            } unless (defined $have_type_ref->{'Zeitschrift/Serie'});
-        }   
-                
-        # Aufsatz
-        # HSTQuelle besetzt
-        if ($fields_ref->{'0590'}) {
-            push @{$fields_ref->{'4410'}}, {
-                mult      => $type_mult++,
-                content   => 'Aufsatz',
-                subfield  => '',
-            } unless (defined $have_type_ref->{'Aufsatz'});
-        }   
 
-        # Hochschulschrift
-        # HSSvermerk besetzt
-        if ($fields_ref->{'0519'}) {
-            push @{$fields_ref->{'4410'}}, {
-                mult      => $type_mult++,
-                content   => 'Hochschulschrift',
-                subfield  => '',
-            } unless (defined $have_type_ref->{'Hochschulschrift'});
-        }   
 
         # Elektronisches Medium mit Online-Zugriff
         # werden vorher katalogspezifisch per pre_unpack.pl angereichert

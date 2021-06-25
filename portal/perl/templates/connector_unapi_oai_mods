@@ -85,8 +85,8 @@
             [%- END %]
             [%- END %]
             [%- IF uniform_title_list && uniform_title_list.size %]
-            [%-FOREACH uniform_title_data IN uniform_title_list %]
-            <mods:titleInfo type="uniform" [%- IF uniform_title_data.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/[% uniform_title_data.gnd %]" [%END%]>
+            [%-FOREACH uniform_title IN uniform_title_list %]
+            <mods:titleInfo type="uniform" [%- IF uniform_title_data.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/[% uniform_title.gnd %]" [%END%]>
                 <mods:title>[% uniform_title.title %]</mods:title>
             </mods:titleInfo>
             [%- END %]

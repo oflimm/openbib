@@ -43,6 +43,17 @@
 </div>
 
 <div class="form-group">
+<label for="searchengines">[% msg.maketext("Suchmaschinen für Indexierung") %]</label>
+
+<select class="form-control" id="searchengines" name="searchengines" multiple="multiple" size="3">
+[% FOREACH this_backend IN config.get('local_search_backends') %]
+<option value="[% this_backend.name %]"[% IF searchengine_map.${this_backend.name} %] selected="selected"[% END %]>[% this_backend.desc %]</option>
+[% END %]
+</select>
+</div>
+
+
+<div class="form-group">
 <label for="system">[% msg.maketext("System") %]</label>
   <select class="form-control" name="system" id="system">
 [% FOREACH source_system IN config.get('source_systems').keys.sort %]

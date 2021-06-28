@@ -51,6 +51,9 @@ sub create_searcher {
     my $database           = exists $arg_ref->{database}
         ? $arg_ref->{database}        : undef;
 
+    my $view               = exists $arg_ref->{view}
+        ? $arg_ref->{view}            : undef;
+
     my $options_ref        = exists $arg_ref->{options}
         ? $arg_ref->{options}        : undef;
 
@@ -67,7 +70,7 @@ sub create_searcher {
     }
     
     if (!defined $database && !defined $sb){
-        $sb = $config->{local_search_backend};
+        $sb = $config->get_searchengine_of_view($view) || $config->{default_local_search_backend};
         $logger->debug("Trying to dispatch with default backend $sb");
     }
     
@@ -87,7 +90,7 @@ sub create_searcher {
             $sb = "eds";
         }
         else {
-            $sb = $config->{local_search_backend};
+	    $sb = $config->get_searchengine_of_view($view) || $config->{default_local_search_backend};
         }
     }
 

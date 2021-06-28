@@ -435,8 +435,13 @@ sub get_searchengine_of_view {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # DBI: "select description from viewinfo where viewname = ?"
-    my $searchengine = $self->get_schema->resultset('Viewinfo')->single({ viewname => $viewname})->searchengine || $self->get('default_local_search_backend');
+    # Default setzen
+    my $searchengine = $self->get('default_local_search_backend');
+
+    # Definition im View geht vor
+    eval {
+	$searchengine = $self->get_schema->resultset('Viewinfo')->single({ viewname => $viewname})->searchengine
+    }; 
     
     return $searchengine;
 }

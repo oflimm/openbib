@@ -3158,8 +3158,11 @@ sub update_databaseinfo {
 
     %$update_dbinfo_ref=%$dbinfo_ref; # copy
     
-    my @searchengines = @{$dbinfo_ref->{searchengines}};
-    delete $update_dbinfo_ref->{searchengines};
+    my @searchengines = ();
+    if (defined $dbinfo_ref->{searchengines}){
+	@searchengines = @{$dbinfo_ref->{searchengines}};
+	delete $update_dbinfo_ref->{searchengines};
+    }
 
     if ($logger->is_debug()){
 	$logger->debug("Updating databaseinfo with: ".YAML::Dump($dbinfo_ref));

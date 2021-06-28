@@ -4,7 +4,7 @@
 #
 #  ehemals VirtualSearch.pm
 #
-#  Dieses File ist (C) 1997-2015 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2021 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -176,7 +176,9 @@ sub show_search_header {
     my $writer         = $self->param('writer');
     
     # CGI Args
-    my $sb        = $query->param('sb')        || $config->{local_search_backend};
+    my $sb        = $query->param('sb') || $config->get_searchengine_of_view($view) || $config->{default_local_search_backend};
+
+    $logger->debug("Using searchengine $sb");
     
     my $trefferliste  = $query->param('trefferliste')  || '';
 
@@ -857,10 +859,10 @@ sub joined_search {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config      = $self->param('config');
-    my $searchquery = $self->param('searchquery');
-    my $session     = $self->param('session');
-    my $writer      = $self->param('writer');
+    my $config       = $self->param('config');
+    my $searchquery  = $self->param('searchquery');
+    my $session      = $self->param('session');
+    my $writer       = $self->param('writer');
     
     $logger->debug("Starting joined search");
 
@@ -944,6 +946,11 @@ sub search {
     my $searchquery  = $self->param('searchquery');
     my $session      = $self->param('session');
 
+    # Keine Suche durchfuehren, wenn Suchparameter ajax != 0
+    # Dann wird die Suche ueber die Include-Repraesentation in den Templates
+    # getriggert
+    return if ($queryoptions->get_option('ajax'));
+	       
     my $atime=new Benchmark;
     my $timeall;
     
@@ -973,6 +980,7 @@ sub search {
     my $search_args_ref = {};
     $search_args_ref->{options}      = OpenBib::Common::Util::query2hashref($query);
     $search_args_ref->{database}     = $database if (defined $database);
+    $search_args_ref->{view}         = $view if (defined $view);
     $search_args_ref->{authority}    = $authority if (defined $authority);
     $search_args_ref->{searchquery}  = $searchquery if (defined $searchquery);
     $search_args_ref->{config}       = $config if (defined $config);

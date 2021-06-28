@@ -231,7 +231,7 @@ sub show_collection {
     my $dbinfotable    = $self->param('dbinfo');
     
     # CGI Args
-    my $sb        = $query->param('sb')        || $config->{local_search_backend};
+    my $sb        = $query->param('sb')        || $config->{default_local_search_backend};
 
 
     my $search_args_ref = {};

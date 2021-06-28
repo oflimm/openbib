@@ -8,6 +8,10 @@ CREATE INDEX databaseinfo_active ON databaseinfo (active);
 CREATE INDEX databaseinfo_description ON databaseinfo (description);
 CREATE INDEX databaseinfo_locationid ON databaseinfo (locationid);
 
+ALTER TABLE databaseinfo_searchengine ADD CONSTRAINT fk_databaseinfo_searchengine_database FOREIGN KEY (dbid) REFERENCES databaseinfo (id);
+CREATE INDEX databaseinfo_searchengine_database ON databaseinfo_searchengine (dbid);
+
+
 ALTER TABLE locationinfo ADD PRIMARY KEY (id);
 CREATE INDEX locationinfo_tstamp_create on locationinfo (tstamp_create);
 CREATE INDEX locationinfo_tstamp_update on locationinfo (tstamp_update);

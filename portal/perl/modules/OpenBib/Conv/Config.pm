@@ -74,7 +74,7 @@ sub _new_instance {
     $YAML::Syck::ImplicitTyping  = 1;
     $YAML::Syck::ImplicitUnicode = 1;
     
-    # Ininitalisierung mit Config-Parametern
+    # Initalisierung mit Config-Parametern
     my $config = YAML::Syck::LoadFile("/opt/openbib/conf/convert.yml");
 
     my $self = $config->{convtab}{default};

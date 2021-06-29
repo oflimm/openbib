@@ -286,6 +286,21 @@ __PACKAGE__->add_unique_constraint("uq_databaseinfo_dbname", ["dbname"]);
 
 =head1 RELATIONS
 
+=head2 databaseinfo_searchengines
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::DatabaseinfoSearchengine>
+
+=cut
+
+__PACKAGE__->has_many(
+  "databaseinfo_searchengines",
+  "OpenBib::Schema::System::Result::DatabaseinfoSearchengine",
+  { "foreign.dbid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 databaseinfos
 
 Type: has_many
@@ -432,8 +447,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2020-10-15 13:15:46
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:W58SMrZbdRnqf9pjgRKr6g
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-06-23 13:29:14
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:aIgXOKsIm0tr1Q2tN7tTTQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

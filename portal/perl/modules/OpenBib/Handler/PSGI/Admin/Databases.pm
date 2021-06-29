@@ -223,8 +223,16 @@ sub show_record_form {
     my $searcher   = OpenBib::Search::Factory->create_searcher({database => $dbname, config => $config });
 
     my $indexed_doc_count = $searcher->get_number_of_documents; 
+
+    my $searchengine_map_ref = {};
+    
+    foreach my $this_searchengine ($dbinfo_ref->databaseinfo_searchengines){
+        $logger->debug("Adding $dbname");
+        $searchengine_map_ref->{$this_searchengine->searchengine} = 1;
+    }    
     
     my $ttdata={
+	searchengine_map => $searchengine_map_ref,
         databaseinfo => $dbinfo_ref,
         indexed_doc_count => $indexed_doc_count,
     };
@@ -255,6 +263,11 @@ sub update_record {
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
     $input_data_ref->{dbname} = $dbname; # dbname wird durch Resourcenbestandteil ueberschrieben
+
+    if ($logger->is_debug()){
+	$logger->debug("Processing databaseinfo with: ".YAML::Dump($input_data_ref));
+    }
+
     
     if ($logger->is_debug){
         $logger->debug("Info: ".YAML::Dump($input_data_ref));
@@ -301,6 +314,7 @@ sub update_record {
        delete $input_data_ref->{newdbname};
        $config->update_databaseinfo($input_data_ref);
     }
+
 	
     if ($self->param('representation') eq "html"){
         # TODO GET?
@@ -401,6 +415,11 @@ sub get_input_definition {
             default  => '',
             encoding => 'none',
             type     => 'scalar',
+        },
+        searchengines => {
+            default  => [],
+            encoding => 'none',
+            type     => 'array',
         },
         locationid => {
             default  => '',

@@ -1,12 +1,12 @@
 use utf8;
-package OpenBib::Schema::System::Result::ViewDb;
+package OpenBib::Schema::System::Result::DatabaseinfoSearchengine;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
 =head1 NAME
 
-OpenBib::Schema::System::Result::ViewDb
+OpenBib::Schema::System::Result::DatabaseinfoSearchengine
 
 =cut
 
@@ -15,19 +15,20 @@ use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<view_db>
+=head1 TABLE: C<databaseinfo_searchengine>
 
 =cut
 
-__PACKAGE__->table("view_db");
+__PACKAGE__->table("databaseinfo_searchengine");
 
 =head1 ACCESSORS
 
-=head2 viewid
+=head2 id
 
   data_type: 'bigint'
-  is_foreign_key: 1
+  is_auto_increment: 1
   is_nullable: 0
+  sequence: 'databaseinfo_searchengine_id_seq'
 
 =head2 dbid
 
@@ -35,13 +36,25 @@ __PACKAGE__->table("view_db");
   is_foreign_key: 1
   is_nullable: 0
 
+=head2 searchengine
+
+  data_type: 'text'
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
-  "viewid",
-  { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
+  "id",
+  {
+    data_type         => "bigint",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "databaseinfo_searchengine_id_seq",
+  },
   "dbid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
+  "searchengine",
+  { data_type => "text", is_nullable => 1 },
 );
 
 =head1 RELATIONS
@@ -61,24 +74,9 @@ __PACKAGE__->belongs_to(
   { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
-=head2 viewid
-
-Type: belongs_to
-
-Related object: L<OpenBib::Schema::System::Result::Viewinfo>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "viewid",
-  "OpenBib::Schema::System::Result::Viewinfo",
-  { id => "viewid" },
-  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
-);
-
 
 # Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-06-23 13:29:14
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:AyFnAIZFBt5XNClZtMH/Ng
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:4XycvaTJ9Agquq2fydYtrw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

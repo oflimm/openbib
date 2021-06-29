@@ -48,6 +48,13 @@ CREATE TABLE databaseinfo (
  digitalcount  BIGINT DEFAULT 0
 );
 
+drop table IF EXISTS databaseinfo_searchengine;
+create table databaseinfo_searchengine (
+ id            BIGSERIAL,
+ dbid          BIGINT NOT NULL,
+ searchengine  TEXT
+);
+
 drop table IF EXISTS locationinfo;
 create table locationinfo (
  id              BIGSERIAL,
@@ -126,7 +133,8 @@ CREATE TABLE viewinfo (
  active      BOOL,
  own_index   BOOL,
  force_login BOOL DEFAULT FALSE,
- restrict_intranet TEXT DEFAULT ''
+ restrict_intranet TEXT DEFAULT '',
+ searchengine TEXT DEFAULT ''
 );
 
 drop table IF EXISTS view_db;

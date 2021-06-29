@@ -2,7 +2,7 @@
 #
 #  OpenBib::Index::Factory
 #
-#  Dieses File ist (C) 2013 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2013-2021 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -51,7 +51,7 @@ sub create_indexer {
     my $config = OpenBib::Config->new;
 
     if (!defined $sb){
-        $sb = $config->{local_search_backend};
+        $sb = $config->{default_local_search_backend};
     }
 
     $logger->debug("Dispatching to Indexer Backend $sb");

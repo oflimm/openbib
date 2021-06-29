@@ -2,7 +2,7 @@
 #
 #  OpenBib::Config
 #
-#  Dieses File ist (C) 2004-2020 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2021 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -426,6 +426,24 @@ sub get_viewdesc_from_viewname {
     my $desc = $self->get_schema->resultset('Viewinfo')->single({ viewname => $viewname})->description;
     
     return $desc;
+}
+
+sub get_searchengine_of_view {
+    my $self     = shift;
+    my $viewname = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Default setzen
+    my $searchengine = $self->get('default_local_search_backend');
+
+    # Definition im View geht vor
+    eval {
+	$searchengine = $self->get_schema->resultset('Viewinfo')->single({ viewname => $viewname})->searchengine
+    }; 
+    
+    return $searchengine;
 }
 
 sub get_startpage_of_view {
@@ -1530,6 +1548,7 @@ sub get_viewinfo_overview {
 	    active => $item->active,
 	    viewname => $item->viewname,
 	    description => $item->description,
+	    searchengine => $item->searchengine,
 	    profile_name => $profile_name,
 	    profile_description => $profile_description,
 	};
@@ -2269,6 +2288,38 @@ sub get_active_databases_of_orgunit {
     }
 
     return @dblist;
+}
+
+sub get_searchengines_of_db {
+    my ($self,$dbname) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my @searchengines = ();				      
+
+    # DBI: "select system from databaseinfo where dbname = ?"
+    my $searchengines = $self->get_schema->resultset('Databaseinfo')->search(
+        {
+           'me.dbname' => $dbname,
+        },
+        {
+            select => ['databaseinfo_searchengines.searchengine'],
+            as     => ['thissearchengine'],
+            join => ['databaseinfo_searchengines'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',  
+        }
+    );
+
+    while (my $thissearchengine = $searchengines->next()){
+       push @searchengines, $thissearchengine->{thissearchengine} if (defined $thissearchengine->{thissearchengine});
+    }
+
+    if (!@searchengines){
+       push @searchengines, $self->get('default_local_search_backend');
+    }
+
+    return \@searchengines;
 }
 
 sub get_system_of_db {
@@ -3103,8 +3154,44 @@ sub update_databaseinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $self->get_schema->resultset('Databaseinfo')->single({ dbname => $dbinfo_ref->{dbname}})->update($dbinfo_ref);
+    my $update_dbinfo_ref;
 
+    %$update_dbinfo_ref=%$dbinfo_ref; # copy
+    
+    my @searchengines = ();
+    if (defined $dbinfo_ref->{searchengines}){
+	@searchengines = @{$dbinfo_ref->{searchengines}};
+	delete $update_dbinfo_ref->{searchengines};
+    }
+
+    if ($logger->is_debug()){
+	$logger->debug("Updating databaseinfo with: ".YAML::Dump($dbinfo_ref));
+    }
+    
+    $self->get_schema->resultset('Databaseinfo')->single({ dbname => $dbinfo_ref->{dbname}})->update($update_dbinfo_ref);
+
+    if (@searchengines){
+	if ($logger->is_debug()){
+	    $logger->debug("Processing searchengines for databaseinfo with: ".YAML::Dump(\@searchengines));
+	}
+
+	
+	my $dbid = $self->get_databaseinfo->single({ dbname => $dbinfo_ref->{dbname} })->id;
+
+	 $self->get_schema->resultset('DatabaseinfoSearchengine')->search_rs({ dbid => $dbid})->delete;
+	
+	my $this_searchengine_ref = [];
+	foreach my $searchengine (@searchengines){
+	    push @$this_searchengine_ref, {
+		dbid         => $dbid,
+		searchengine => $searchengine,
+	    };	
+	}
+
+	$self->get_schema->resultset('DatabaseinfoSearchengine')->populate($this_searchengine_ref);
+    }
+
+    
     # Flushen und aktualisieren in Memcached
     if (defined $self->{memc}){
         $self->memc_cleanup_databaseinfo($dbinfo_ref->{dbname});
@@ -3119,8 +3206,29 @@ sub new_databaseinfo {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $new_database = $self->get_schema->resultset('Databaseinfo')->create($dbinfo_ref);
+    my $create_dbinfo_ref;
 
+    %$create_dbinfo_ref=%$dbinfo_ref; # copy
+    
+    my @searchengines = @{$dbinfo_ref->{searchengines}};
+    delete $create_dbinfo_ref->{searchengines};
+    
+    my $new_database = $self->get_schema->resultset('Databaseinfo')->create($create_dbinfo_ref);
+
+    my $dbid = $new_database->id;
+
+    if (@searchengines){
+	my $this_searchengine_ref = [];
+	foreach my $searchengine (@searchengines){
+	    push @$this_searchengine_ref, {
+		dbid         => $dbid,
+		searchengine => $searchengine,
+	    };	
+	}
+
+	$self->get_schema->resultset('DatabaseinfoSearchengine')->populate($this_searchengine_ref);
+    }
+    
     if ($self->get_system_of_db($dbinfo_ref->{dbname}) ne "Z39.50"){
         # Und nun auch die Datenbank zuerst komplett loeschen (falls vorhanden)
         system("$self->{tool_dir}/destroypool.pl $dbinfo_ref->{dbname} > /dev/null 2>&1");
@@ -3391,6 +3499,8 @@ sub update_view {
         ? $arg_ref->{force_login}         : undef;
     my $restrict_intranet      = exists $arg_ref->{restrict_intranet}
         ? $arg_ref->{restrict_intranet}   : undef;
+    my $searchengine           = exists $arg_ref->{searchengine}
+        ? $arg_ref->{searchengine}        : undef;
 
     my $databases_ref          = exists $arg_ref->{databases}
         ? $arg_ref->{databases}           : [];
@@ -3420,6 +3530,7 @@ sub update_view {
             own_index   => $own_index,
             force_login => $force_login,
             restrict_intranet => $restrict_intranet,
+	    searchengine => $searchengine,
             active      => $active
         }
     );
@@ -3575,6 +3686,8 @@ sub new_view {
         ? $arg_ref->{force_login}         : undef;
     my $restrict_intranet      = exists $arg_ref->{restrict_intranet}
         ? $arg_ref->{restrict_intranet}   : undef;
+    my $searchengine           = exists $arg_ref->{searchengine}
+        ? $arg_ref->{searchengine}        : undef;
 
     my $databases_ref          = exists $arg_ref->{databases}
         ? $arg_ref->{databases}           : [];
@@ -3604,6 +3717,7 @@ sub new_view {
             own_index   => $own_index,
             force_login => $force_login,
 	    restrict_intranet => $restrict_intranet,
+	    searchengine => $searchengine,
             active      => $active
         }
     );

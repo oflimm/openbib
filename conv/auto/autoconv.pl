@@ -102,8 +102,6 @@ my $meta2sqlexe   = "$config->{'conv_dir'}/meta2sql.pl";
 my $meta2mexexe   = "$config->{'conv_dir'}/meta2mex.pl";
 my $pgsqlexe      = "/usr/bin/psql -U $config->{'dbuser'} ";
 
-$sb = ($sb)?$sb:$config->get('local_search_backend');
-
 my $duration_stage_collect = 0;
 my $duration_stage_unpack = 0;
 my $duration_stage_convert = 0;
@@ -402,12 +400,26 @@ unless ($searchengineonly){
     $logger->info("### $database: Benoetigte Zeit -> $resulttime");     
 }
 
-# Suchmaschinen-Index fuer Titel aufbauen
+my $use_searchengine_ref = {};
 
+# Zu nutzende lokale Suchmaschinen-Backends bestimmen
+{
+    if ($sb){
+	$use_searchengine_ref->{$sb} = 1;
+    }
+    else {
+	foreach my $searchengine (@{$config->get_searchengines_of_db($database)}){
+	    $use_searchengine_ref->{$searchengine} = 1;
+	}
+    }
+
+}
+
+# Suchmaschinen-Index fuer Titel aufbauen
 {
     my $atime = new Benchmark;
     my $duration_stage_load_index_start = ParseDate("now");
-
+    
     if ($database && -e "$config->{autoconv_dir}/filter/$database/pre_searchengine.pl"){
 	$logger->info("### $database: Verwende Plugin pre_searchengine.pl");
 	system("$config->{autoconv_dir}/filter/$database/pre_searchengine.pl $database");
@@ -418,7 +430,9 @@ unless ($searchengineonly){
 	system("$config->{autoconv_dir}/filter/$database/alt_searchengine.pl $database");
     }
     else {
-	if ($sb eq "xapian"){
+
+	# Xapian
+	if ($use_searchengine_ref->{"xapian"}){
 	    my $indexpath    = $config->{xapian_index_base_path}."/$database";
 	    my $indexpathtmp = $config->{xapian_index_base_path}."/$databasetmp";
 	    $logger->info("### $database: Importing data into Xapian searchengine");
@@ -433,20 +447,24 @@ unless ($searchengineonly){
 	    
 	    system($cmd);
 	}
-	elsif ($sb eq "solr"){
-	    $logger->info("### $database: Importing data into Solr searchengine");
-	    
-	    my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2solr.pl --loglevel=$loglevel --database=$database";
-	    
-	    $logger->info("Executing: $cmd");
-	    
-	    system($cmd);
-	}
-	elsif ($sb eq "elasticsearch"){
+
+	# Elasticsearch
+	if ($use_searchengine_ref->{"elasticsearch"}){
 	    $logger->info("### $database: Importing data into ElasticSearch searchengine");
 
 	    my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2elasticsearch.pl --database=$database";
 
+	    $logger->info("Executing: $cmd");
+	    
+	    system($cmd);
+	}
+	
+	# SOLR
+	if ($use_searchengine_ref->{"solr"}){
+	    $logger->info("### $database: Importing data into Solr searchengine");
+	    
+	    my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2solr.pl --loglevel=$loglevel --database=$database";
+	    
 	    $logger->info("Executing: $cmd");
 	    
 	    system($cmd);
@@ -482,7 +500,7 @@ unless ($searchengineonly){
 	system("$config->{autoconv_dir}/filter/$database/alt_searchengine_authority.pl $database");
     }
     else {
-	if ($sb eq "xapian"){
+	if ($use_searchengine_ref->{"xapian"}){
 	    my $authority_indexpathtmp = $config->{xapian_index_base_path}."/$authoritytmp";
 	    
 	    # Inkrementelle Aktualisierung der Normdatenindizes wird zunaechst nicht realisiert. Es werden immer anhand der aktuellen Daten alle Normdatenindizes neu erzeugt!!!
@@ -499,13 +517,28 @@ unless ($searchengineonly){
 	    
 	    system($cmd);
 	}
-	elsif ($sb eq "elasticsearch"){
-#	    $logger->info("### $database: Importing authority data into ElasticSearch searchengine");
-	    $logger->info("### $database: Authority Data import to ElasticSearch currently not supported");   
-#    system("cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2elasticsearch.pl --database=$database > /dev/null 2>&1");
+
+	# Elasticsearch
+	if ($use_searchengine_ref->{"elasticsearch"}){
+	    $logger->info("### $database: Importing authority data into ElasticSearch searchengine currently not supported");
+	    
+#	    my $cmd = "$config->{'base_dir'}/conv/authority2elasticsearch.pl --loglevel=$loglevel -with-sorting --database=$database";
+#	    $logger->info("Executing: $cmd");
+	    
+#	    system($cmd);
 
 	}
-    }
+
+    	# SOLR
+	if ($use_searchengine_ref->{"solr"}){
+	    $logger->info("### $database: Importing authority data into SOLR searchengine currently not supported");
+	    $logger->info("### $database: Authority Data import to SOLR currently not supported");   
+#	    my $cmd = "$config->{'base_dir'}/conv/authority2solr.pl --loglevel=$loglevel -with-sorting --database=$database";
+#	    $logger->info("Executing: $cmd");
+	    
+#	    system($cmd);
+	}
+}
     my $btime      = new Benchmark;
     my $timeall    = timediff($btime,$atime);
     my $resulttime = timestr($timeall,"nop");
@@ -517,22 +550,6 @@ unless ($searchengineonly){
     $duration_stage_load_authorities = Delta_Format($duration_stage_load_authorities, 0,"%st seconds");
     
     $logger->info("### $database: Benoetigte Zeit -> $resulttime");     
-}
-
-# Suchmaschinen-Index aufbauen - Elasticsearch
-
-{
-    my $atime = new Benchmark;
-
-#    $logger->info("### $database: Importing data into elasticsearch");   
-#    system("cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2elasticsearch.pl --database=$database > /dev/null 2>&1");
-
-    my $btime      = new Benchmark;
-    my $timeall    = timediff($btime,$atime);
-    my $resulttime = timestr($timeall,"nop");
-    $resulttime    =~s/(\d+\.\d+) .*/$1/;
-
-#    $logger->info("### $database: Benoetigte Zeit -> $resulttime");     
 }
 
 # Potentiell Blockierende Prozesse entfernen
@@ -649,26 +666,30 @@ unless ($incremental || $searchengineonly){
 	system("$config->{autoconv_dir}/filter/$database/alt_move_searchengine.pl $database");
     }
     else {
-	if (-d "$config->{xapian_index_base_path}/$database"){
-	    system("mv $config->{xapian_index_base_path}/$database $config->{xapian_index_base_path}/${database}tmp2");
-	}
-	
-	system("mv $config->{xapian_index_base_path}/$databasetmp $config->{xapian_index_base_path}/$database");
-	
-	if (-d "$config->{xapian_index_base_path}/${database}tmp2"){
-	    system("rm $config->{xapian_index_base_path}/${database}tmp2/* ; rmdir $config->{xapian_index_base_path}/${database}tmp2");
+	if ($use_searchengine_ref->{"xapian"}){
+	    if (-d "$config->{xapian_index_base_path}/$database"){
+		system("mv $config->{xapian_index_base_path}/$database $config->{xapian_index_base_path}/${database}tmp2");
+	    }
+	    
+	    system("mv $config->{xapian_index_base_path}/$databasetmp $config->{xapian_index_base_path}/$database");
+	    
+	    if (-d "$config->{xapian_index_base_path}/${database}tmp2"){
+		system("rm $config->{xapian_index_base_path}/${database}tmp2/* ; rmdir $config->{xapian_index_base_path}/${database}tmp2");
+	    }
 	}
     }
     $logger->info("### $database: Temporaeren Normdaten-Suchindex aktivieren");
 
-    if (-d "$config->{xapian_index_base_path}/$authority"){
-        system("mv $config->{xapian_index_base_path}/$authority $config->{xapian_index_base_path}/${authority}tmp2");
-    }
+    if ($use_searchengine_ref->{"xapian"}){
+	if (-d "$config->{xapian_index_base_path}/$authority"){
+	    system("mv $config->{xapian_index_base_path}/$authority $config->{xapian_index_base_path}/${authority}tmp2");
+	}
 
-    system("mv $config->{xapian_index_base_path}/$authoritytmp $config->{xapian_index_base_path}/$authority");
-
-    if (-d "$config->{xapian_index_base_path}/${authority}tmp2"){
-        system("rm $config->{xapian_index_base_path}/${authority}tmp2/* ; rmdir $config->{xapian_index_base_path}/${authority}tmp2");
+	system("mv $config->{xapian_index_base_path}/$authoritytmp $config->{xapian_index_base_path}/$authority");
+	
+	if (-d "$config->{xapian_index_base_path}/${authority}tmp2"){
+	    system("rm $config->{xapian_index_base_path}/${authority}tmp2/* ; rmdir $config->{xapian_index_base_path}/${authority}tmp2");
+	}
     }
     
     if ($old_database_exists){

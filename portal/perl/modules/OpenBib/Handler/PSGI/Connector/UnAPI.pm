@@ -95,10 +95,10 @@ sub show {
             return;
         }
 
-        my $uniform_title_list       = [];
-        my $personlist       = [];
-        my $corporation_list = [];
-        my $place_list       = [];
+        my $uniform_title_list     = [];
+        my $personlist             = [];
+        my $corporation_list       = [];
+        my $place_list             = [];
         my $uniform_publisher_list = [];
         if ($unapiid) {
             my ( $database, $idn, $record );
@@ -111,12 +111,14 @@ sub show {
 
                 $record = new OpenBib::Record::Title(
                     { database => $database, id => $idn } )->load_full_record;
-                $uniform_title_list = $self->collect_title_data( $record, $database );
+                $uniform_title_list =
+                  $self->collect_title_data( $record, $database );
                 $personlist = $self->collect_person_data( $record, $database );
                 $corporation_list =
-                $self->collect_corporation_data( $record, $database );
+                  $self->collect_corporation_data( $record, $database );
                 $place_list = $self->collect_place_data( $record, $database );
-                $uniform_publisher_list = $self->collect_publisher_data( $record, $database );
+                $uniform_publisher_list =
+                  $self->collect_publisher_data( $record, $database );
 
             }
 
@@ -126,13 +128,12 @@ sub show {
             }
 
             my $ttdata = {
-                record           => $record,
-                uniform_title_list  => $uniform_title_list,
-                personlist       => $personlist,
-                corporation_list => $corporation_list,
-                place_list       => $place_list,
+                record                 => $record,
+                uniform_title_list     => $uniform_title_list,
+                personlist             => $personlist,
+                corporation_list       => $corporation_list,
+                place_list             => $place_list,
                 uniform_publisher_list => $uniform_publisher_list,
-
 
                 config => $config,
                 msg    => $msg,
@@ -238,26 +239,24 @@ sub show {
     }
 }
 
-
 sub collect_title_data {
-    my $self       = shift;
-    my $record     = shift;
-    my $database   = shift;
+    my $self          = shift;
+    my $record        = shift;
+    my $database      = shift;
     my $already_added = [];
-    my $title_list = [];
-    
-    
+    my $title_list    = [];
+
     if ( length( $record->get_fields->{T7304} ) ) {
         my $rda_collection =
           $self->process_title_rda( $record->get_fields->{T7304}, "T7304" );
         push( @{$title_list}, $rda_collection );
     }
-    
+
     if ( $record->get_fields->{T0304} ) {
         foreach my $title_item ( @{ $record->get_fields->{T0304} } ) {
             my $title_item = {
                 title => $title_item->{content},
-                field      => "T0304"
+                field => "T0304"
             };
             push( @{$title_list}, $title_item );
         }
@@ -267,7 +266,7 @@ sub collect_title_data {
         foreach my $title_item ( @{ $record->get_fields->{T0306} } ) {
             my $title_item = {
                 title => $title_item->{content},
-                field      => "T0306"
+                field => "T0306"
             };
             push( @{$title_list}, $title_item );
         }
@@ -277,7 +276,7 @@ sub collect_title_data {
         foreach my $title_item ( @{ $record->get_fields->{T0310} } ) {
             my $title_item = {
                 title => $title_item->{content},
-                field      => "T0310"
+                field => "T0310"
             };
             push( @{$title_list}, $title_item );
         }
@@ -291,40 +290,28 @@ sub process_title_rda {
     my $rda_field_data = shift;
     my $field_name     = shift;
     my $rda_collection = [];
-    my $current_value  = 0;
-    my $currentObject  = {};
-    my $counter        = 1;
-    my $is_first = 1;
-    foreach my $title ( @{$rda_field_data} ) {
-        if ( $title->{mult} != $current_value ) {
-            $current_value = $title->{mult};
-            if (!$is_first){
-                push( @{$rda_collection}, $currentObject );
-                $currentObject = {};
-            }else {
-               $is_first = 0; 
+    my $mult_values    = $self->get_all_mult_values($rda_field_data);
+    foreach my $mult_value ( @{$mult_values} ) {
+        my $currentObject = {};
+        foreach my $title ( @{$rda_field_data} ) {
+            if ( $title->{mult} == $mult_value ) {
+                if ( $title->{subfield} eq "g" ) {
+                    $currentObject->{title} = $title->{content};
+                    $currentObject->{title} =~ s/^\s+//;
+                }
+                elsif ( $title->{subfield} eq "9"
+                    and index( $title->{content}, "DE-588" ) != -1 )
+                {
+                    $currentObject->{gnd} = $title->{content};
+                    $currentObject->{gnd} =~ s/\(DE-588\)//;
+                    $currentObject->{gnd} =~ s/^\s+//;
+                    $currentObject->{field} = $field_name;
+                }
             }
         }
-        if ( $title->{subfield} eq "g" ) {
-            $currentObject->{title} = $title->{content};
-            $currentObject->{title} =~ s/^\s+//;
-        }
-        elsif ( $title->{subfield} eq "9"
-            and index( $title->{content}, "DE-588" ) != -1 )
-        {
-            $currentObject->{gnd} = $title->{content};
-            $currentObject->{gnd} =~ s/\(DE-588\)//;
-            $currentObject->{gnd} =~ s/^\s+//;
-            $currentObject->{field} = $field_name;
-        }
-        if ( $counter == scalar( @{$rda_field_data} ) ) {
-            push( @{$rda_collection}, $currentObject );
-        }
-        $counter++;
-
+        push( @{$rda_collection}, $currentObject );
     }
     return $rda_collection;
-
 }
 
 sub collect_person_data {
@@ -382,8 +369,7 @@ sub get_gnd_for_person {
     my $database  = shift;
     my $record    = OpenBib::Record::Person->new(
         { database => $database, id => $person_id } )->load_full_record;
-    if ( length( $record->{_fields}->{P0010} ))
-    {
+    if ( length( $record->{_fields}->{P0010} ) ) {
         return $record->{_fields}->{P0010}->[0]->{content};
     }
     return "";
@@ -431,8 +417,7 @@ sub get_gnd_for_corporation {
     my $database = shift;
     my $record   = OpenBib::Record::CorporateBody->new(
         { database => $database, id => $corp_id } )->load_full_record;
-    if (length( $record->{_fields}->{C0010}))
-    {
+    if ( length( $record->{_fields}->{C0010} ) ) {
         return $record->{_fields}->{C0010}->[0]->{content};
     }
     return "";
@@ -478,81 +463,72 @@ sub process_place_rda {
     my $rda_field_data = shift;
     my $field_name     = shift;
     my $rda_collection = [];
-    my $current_value  = 0;
-    my $currentObject  = {};
-    my $counter        = 1;
-    my $is_first = 1;
-    foreach my $place ( @{$rda_field_data} ) {
-
-        if ( $place->{mult} != $current_value ) {
-            $current_value = $place->{mult};
-             if (!$is_first){
-                push( @{$rda_collection}, $currentObject );
-                $currentObject = {};
-            }else {
-               $is_first = 0; 
+    my $mult_values    = $self->get_all_mult_values($rda_field_data);
+    foreach my $mult_value ( @{$mult_values} ) {
+        my $currentObject = {};
+        foreach my $place ( @{$rda_field_data} ) {
+            if ( $place->{mult} == $mult_value ) {
+                if ( $place->{subfield} eq "g" ) {
+                    $currentObject->{place_name} = $place->{content};
+                    $currentObject->{place_name} =~ s/^\s+//;
+                }
+                elsif ( $place->{subfield} eq "9"
+                    and index( $place->{content}, "DE-588" ) != -1 )
+                {
+                    $currentObject->{gnd} = $place->{content};
+                    $currentObject->{gnd} =~ s/\(DE-588\)//;
+                    $currentObject->{gnd} =~ s/^\s+//;
+                    $currentObject->{field} = $field_name;
+                }
             }
         }
-        if ( $place->{subfield} eq "g" ) {
-            $currentObject->{place_name} = $place->{content};
-            $currentObject->{place_name} =~ s/^\s+//;
-        }
-        elsif ( $place->{subfield} eq "9"
-            and index( $place->{content}, "DE-588" ) != -1 )
-        {
-            $currentObject->{gnd} = $place->{content};
-            $currentObject->{gnd} =~ s/\(DE-588\)//;
-            $currentObject->{gnd} =~ s/^\s+//;
-            $currentObject->{field} = $field_name;
-        }
-        if ( $counter == scalar( @{$rda_field_data} ) ) {
-            push( @{$rda_collection}, $currentObject );
-        }
-        $counter++;
-
+        push( @{$rda_collection}, $currentObject );
     }
-    return $rda_collection;
 
 }
 
-
-sub collect_publisher_data {
-    my $self       = shift;
-    my $record     = shift;
-    my $current_value  = 0;
-    my $currentObject  = {};
-    my $counter        = 1;
-    my $uniform_place_list = [];
-    my $is_first = 1;
-    foreach my $publisher ( @{$record->get_fields->{T7677}} ) {
-        if ( $publisher->{mult} != $current_value ) {
-            $current_value = $publisher->{mult};
-            if (!$is_first){
-                push( @{$uniform_place_list}, $currentObject );
-                $currentObject = {};
-            }else {
-               $is_first = 0; 
-            }
+sub get_all_mult_values {
+    my $self           = shift;
+    my $rda_field_data = shift;
+    my @mult_values    = ();
+    foreach my $rda_field ( @{$rda_field_data} ) {
+        my $mult_value = $rda_field->{mult};
+        if ( !grep( /^$mult_value$/, @mult_values ) ) {
+            push( @mult_values, $mult_value );
         }
-        if ( $publisher->{subfield} eq "p" ) {
-            $currentObject->{publisher_name} = $publisher->{content};
-            $currentObject->{publisher_name} =~ s/^\s+//;
-        }
-        elsif ( $publisher->{subfield} eq "9"
-            and index( $publisher->{content}, "DE-588" ) != -1 )
-        {
-            $currentObject->{gnd} = $publisher->{content};
-            $currentObject->{gnd} =~ s/\(DE-588\)//;
-            $currentObject->{gnd} =~ s/^\s+//;
-        }
-        if ( $counter == scalar( @{$record->get_fields->{T7677}} ) ) {
-            push( @{$uniform_place_list}, $currentObject );
-        }
-        $counter++;
 
     }
-    return $uniform_place_list;
-    
+    return \@mult_values;
+}
+
+sub collect_publisher_data {
+    my $self   = shift;
+    my $record = shift;
+    my $mult_values =
+      $self->get_all_mult_values( @{ $record->get_fields->{T7677} } );
+    my $uniform_publisher_list = [];
+    foreach my $mult_value ( @{$mult_values} ) {
+        my $currentObject = {};
+        foreach my $publisher ( @{ $record->get_fields->{T7677} } ) {
+            if ( $publisher->{mult} == $mult_value ) {
+                if ( $publisher->{subfield} eq "p" ) {
+                    $currentObject->{publisher_name} = $publisher->{content};
+                    $currentObject->{publisher_name} =~ s/^\s+//;
+                }
+                elsif ( $publisher->{subfield} eq "9"
+                    and index( $publisher->{content}, "DE-588" ) != -1 )
+                {
+                    $currentObject->{gnd} = $publisher->{content};
+                    $currentObject->{gnd} =~ s/\(DE-588\)//;
+                    $currentObject->{gnd} =~ s/^\s+//;
+                }
+            }
+        }
+        push( @{$uniform_publisher_list}, $currentObject );
+    }
+
+    return $uniform_publisher_list;
+
 }
 
 sub generate_name_data {

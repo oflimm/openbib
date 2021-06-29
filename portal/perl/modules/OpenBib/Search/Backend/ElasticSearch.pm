@@ -2,7 +2,7 @@
 #
 #  OpenBib::Search::Backend::ElasticSearch
 #
-#  Dieses File ist (C) 2012-2017 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2012-2021 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -150,7 +150,14 @@ sub search {
         $atime=new Benchmark;
     }
 
-    my $dbh;
+    # Wenn srto in srt enthalten, dann aufteilen
+    if ($sorttype =~m/^([^_]+)_([^_]+)$/){
+        $sorttype=$1;
+        $sortorder=$2;
+        $logger->debug("srt Option split: srt = $sorttype, srto = $sortorder");
+    }
+    
+    my $use_merged_index = $config->{elasticsearch}{use_merged_index} || 0;
 
     my $es = Search::Elasticsearch->new(
 	userinfo   => $config->{elasticsearch}{userinfo},
@@ -172,7 +179,7 @@ sub search {
 
 	$logger->debug("Checking for index $searchprofile_indexname");
 	
-	if ($es->indices->exists( index => $searchprofile_indexname )){
+	if ($use_merged_index && $es->indices->exists( index => $searchprofile_indexname )){
 	    $index = $searchprofile_indexname;
 
 	    $logger->debug("Found merged index $index. Using it.");
@@ -227,8 +234,10 @@ sub search {
 
     my $sort_ref = [];
 
+    $logger->debug("Sorting with $sorttype and order $sortorder");
+
     if ($sorttype eq "relevance"){
-        push @$sort_ref, { "_score" => { order => $sortorder }};
+        push @$sort_ref, { "_score" => { order => 'desc' }};
     }
     else {
 	push @$sort_ref, { "sort_$sorttype" => { order => $sortorder }};
@@ -540,7 +549,13 @@ sub parse_query {
 #                 }
 
                 push @$query_ref, {
-		    match => { $config->{searchfield}{$field}{prefix} => $searchtermstring },
+		    match => {
+			$config->{searchfield}{$field}{prefix} => {
+			    query => $searchtermstring,
+			    operator => 'and',
+			},
+		    },
+
 		};
             }
             # Titelstring mit _ ersetzten
@@ -555,13 +570,24 @@ sub parse_query {
                 }
 
                 push @$query_ref, {
-		    match => { $config->{searchfield}{$field}{prefix} => $newsearchtermstring },
+		    match => {
+			$config->{searchfield}{$field}{prefix} => {
+			    query => $newsearchtermstring,
+			    operator => 'and',
+			},
+		    },
+
 		};
             }
             # Sonst Operator und Prefix hinzufuegen
             elsif ($searchtermstring) {
                 push @$query_ref, {
-		    match => { $config->{searchfield}{$field}{prefix} => $searchtermstring },
+		    match => {
+			$config->{searchfield}{$field}{prefix} => {
+			    query => $searchtermstring,
+			    operator => 'and',
+			},
+		    },
 		};
             }
 

@@ -1692,8 +1692,7 @@ sub parse_valid_input {
 	    my $no_escape = (defined $valid_input_params_ref->{$param}{no_escape})?$valid_input_params_ref->{$param}{no_escape}:0;
             
 	    if ($type eq "scalar"){
-		my $value = decode_utf8($query->param($param)) || $default;
-
+		my $value = ($query->param($param))?decode_utf8($query->param($param)):$default;
 		unless ($no_escape){
 		    $value = escape_html($value);
 		}
@@ -1701,7 +1700,7 @@ sub parse_valid_input {
 		$input_params_ref->{$param} = $value;
             }
             elsif ($type eq "bool"){
-                $input_params_ref->{$param} = escape_html($query->param($param))  || $default;
+                $input_params_ref->{$param} = ($query->param($param))?escape_html($query->param($param)):$default;
             }
             # sonst array
             elsif ($type eq "array") {

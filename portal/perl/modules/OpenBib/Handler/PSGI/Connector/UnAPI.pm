@@ -506,7 +506,7 @@ sub collect_publisher_data {
     my $self   = shift;
     my $record = shift;
     my $mult_values =
-    $self->get_all_mult_values( @{ $record->get_fields->{T7677} } );
+    $self->get_all_mult_values( $record->get_fields->{T7677} );
     my $uniform_publisher_list = [];
     foreach my $mult_value ( @{$mult_values} ) {
         my $currentObject = {};

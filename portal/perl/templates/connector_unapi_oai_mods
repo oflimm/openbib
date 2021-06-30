@@ -138,7 +138,8 @@
                 <mods:publisher>[% item.content %]</mods:publisher>
                 [%- END %]
                 [%- FOREACH uniform_publisher IN uniform_publisher_list %]
-                <mods:publisher [%- IF uniform_publisher.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/[% uniform_publisher.gnd %]" [%END%]>[% uniform_publisher.publisher_name %]</mods:publisher>
+                <mods:publisher [%- IF uniform_publisher.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/[% uniform_publisher.gnd %]" [%END%]>[% uniform_publisher.publisher_name %]
+                [%- IF uniform_publisher.publisher_place -%] ([%- uniform_publisher.publisher_place -%])[%- END -%]</mods:publisher>
                 [%- END %]
                 [%- IF normdata.${"T0425"} %]
                 <mods:dateIssued keyDate="yes" encoding="iso8601">[% normdata.${"T0425"}.first.content%]</mods:dateIssued>

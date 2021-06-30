@@ -370,7 +370,10 @@ sub get_gnd_for_person {
     my $record    = OpenBib::Record::Person->new(
         { database => $database, id => $person_id } )->load_full_record;
     if ( length( $record->{_fields}->{P0010} ) ) {
-        return $record->{_fields}->{P0010}->[0]->{content};
+        my $gnd_entry = $record->{_fields}->{P0010}->[0]->{content};
+        $gnd_entry =~ s/\(DE-588\)//;
+        $gnd_entry =~ s/^\s+|\s+$//g;
+        return $gnd_entry;
     }
     return "";
 
@@ -418,7 +421,10 @@ sub get_gnd_for_corporation {
     my $record   = OpenBib::Record::CorporateBody->new(
         { database => $database, id => $corp_id } )->load_full_record;
     if ( length( $record->{_fields}->{C0010} ) ) {
-        return $record->{_fields}->{C0010}->[0]->{content};
+        my $gnd_entry = $record->{_fields}->{C0010}->[0]->{content};
+        $gnd_entry =~ s/\(DE-588\)//;
+        $gnd_entry =~ s/^\s+|\s+$//g;
+        return $gnd_entry;
     }
     return "";
 
@@ -440,7 +446,7 @@ sub collect_place_data {
     if ( length( $record->get_fields->{T7676} ) ) {
         my $rda_collection =
           $self->process_place_rda( $record->get_fields->{T7676}, "T7676" );
-        push( @{$place_list}, $rda_collection );
+        push( @{$place_list}, @{$rda_collection} );
 
     }
     else {
@@ -470,20 +476,21 @@ sub process_place_rda {
             if ( $place->{mult} == $mult_value ) {
                 if ( $place->{subfield} eq "g" ) {
                     $currentObject->{place_name} = $place->{content};
-                    $currentObject->{place_name} =~ s/^\s+//;
+                    $currentObject->{place_name} =~ s/^\s+|\s+$//g;
                 }
                 elsif ( $place->{subfield} eq "9"
                     and index( $place->{content}, "DE-588" ) != -1 )
                 {
                     $currentObject->{gnd} = $place->{content};
                     $currentObject->{gnd} =~ s/\(DE-588\)//;
-                    $currentObject->{gnd} =~ s/^\s+//;
+                    $currentObject->{gnd} =~ s/^\s+|\s+$//g;
                     $currentObject->{field} = $field_name;
                 }
             }
         }
         push( @{$rda_collection}, $currentObject );
     }
+    return $rda_collection;
 
 }
 
@@ -512,16 +519,20 @@ sub collect_publisher_data {
         my $currentObject = {};
         foreach my $publisher ( @{ $record->get_fields->{T7677} } ) {
             if ( $publisher->{mult} == $mult_value ) {
-                if ( $publisher->{subfield} eq "p" ) {
+                if ( $publisher->{subfield} eq "k" ) {
                     $currentObject->{publisher_name} = $publisher->{content};
-                    $currentObject->{publisher_name} =~ s/^\s+//;
+                    $currentObject->{publisher_name} =~ s/^\s+|\s+$//g
+                }
+                if ( $publisher->{subfield} eq "h" ) {
+                        $currentObject->{publisher_place} = $publisher->{content};
+                        $currentObject->{publisher_place} =~ s/^\s+|\s+$//g
                 }
                 elsif ( $publisher->{subfield} eq "9"
                     and index( $publisher->{content}, "DE-588" ) != -1 )
                 {
                     $currentObject->{gnd} = $publisher->{content};
                     $currentObject->{gnd} =~ s/\(DE-588\)//;
-                    $currentObject->{gnd} =~ s/^\s+//;
+                    $currentObject->{gnd} =~ s/^\s+|\s+$//g
                 }
             }
         }
@@ -541,10 +552,15 @@ sub generate_name_data {
     $namedata->{family_name}    = "";
     $namedata->{given_name}     = "";
     $namedata->{termsOfAddress} = "";
-    if (   index( $content_field, "/&lt;" ) != -1
-        || index( $content_field, "/<" ) != -1 )
+    if (   index( $content_field, "&lt;" ) != -1
+        || index( $content_field, "<" ) != -1 )
     {
-        my @full_name_array = split( "/&lt;", $content_field );
+        my @full_name_array = ();
+        if (index( $content_field, "&lt;")) {
+           @full_name_array = split( "&lt;", $content_field ); 
+        }else {
+           @full_name_array = split( "<", $content_field ); 
+        }
         $displayname = $full_name_array[0];
         $displayname =~ s/^\s+//;
         $namedata->{termsOfAddress} = $full_name_array[1];
@@ -554,13 +570,13 @@ sub generate_name_data {
     if ( index( $displayname, "," ) != -1 ) {
         my @name_array = split( ",", $displayname );
         $namedata->{family_name} = $name_array[0];
-        $namedata->{family_name} =~ s/^\s+//;
+        $namedata->{family_name} =~ s/^\s+|\s+$//g;
         $namedata->{given_name} = $name_array[1];
-        $namedata->{given_name} =~ s/^\s+//;
+        $namedata->{given_name} =~ s/^\s+|\s+$//g;
     }
     else {
         $namedata->{given_name} = $displayname;
-        $namedata->{given_name} =~ s/^\s+//;
+        $namedata->{given_name} =~ s/^\s+|\s+$//g;
     }
     return $namedata;
 

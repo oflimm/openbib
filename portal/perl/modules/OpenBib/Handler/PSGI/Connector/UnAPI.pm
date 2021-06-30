@@ -493,8 +493,9 @@ sub get_all_mult_values {
     my @mult_values    = ();
     foreach my $rda_field ( @{$rda_field_data} ) {
         my $mult_value = $rda_field->{mult};
-        if ( !grep( /^$mult_value$/, @mult_values ) ) {
-            push( @mult_values, $mult_value );
+        if (grep( /^$mult_value$/, @mult_values ) ) {
+        }else {
+          push( @mult_values, $mult_value );
         }
 
     }
@@ -505,7 +506,7 @@ sub collect_publisher_data {
     my $self   = shift;
     my $record = shift;
     my $mult_values =
-      $self->get_all_mult_values( @{ $record->get_fields->{T7677} } );
+    $self->get_all_mult_values( $record->get_fields->{T7677} );
     my $uniform_publisher_list = [];
     foreach my $mult_value ( @{$mult_values} ) {
         my $currentObject = {};

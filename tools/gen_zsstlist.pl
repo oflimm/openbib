@@ -169,7 +169,7 @@ if ($enrichnatfile){
             }
         } 
         
-        my $verfuegbar  = $row->{'verfuegbar'}; 
+        my $verfuegbar  = $row->{'Available'}; 
         next unless ($verfuegbar eq "Nationallizenz"); 
         
         foreach my $issn (@issns){ 

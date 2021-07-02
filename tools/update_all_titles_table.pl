@@ -786,6 +786,11 @@ ALLTITLECONTROL
 
     unlink("$data_dir/locations_map_${database}.db");
 
+    if ($bulkinsert){
+        # Temporaer Zugriffspassword setzen
+        unlink("~/.pgpass");
+    }
+    
     $logger->info("### $database: Processing done");
 
 }

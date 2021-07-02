@@ -170,7 +170,9 @@ if ($enrichnatfile){
         } 
         
         my $verfuegbar  = $row->{'Available'}; 
-        next unless ($verfuegbar eq "Nationallizenz"); 
+        if ($verfuegbar ne "Nationallizenz"){
+	    $logger->info("Ignoriere Zeitschrift mit ID ".$row->{'ZDB-Nummer'});
+	}
         
         foreach my $issn (@issns){ 
             $issn_nationallizenzen_ref->{$issn} = $bestandsverlauf; 

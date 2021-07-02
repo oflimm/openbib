@@ -44,7 +44,7 @@ use OpenBib::Config;
 
 my $config = new OpenBib::Config;
 
-my ($help,$logfile,$loglevel,$memc_key,$list,$flush,$show);
+my ($help,$logfile,$loglevel,$memc_key,$listkeys,$flush,$show);
 
 &GetOptions(
     "logfile=s"         => \$logfile,
@@ -52,11 +52,11 @@ my ($help,$logfile,$loglevel,$memc_key,$list,$flush,$show);
     "key=s"             => \$memc_key,
     "flush"             => \$flush,
     "show"              => \$show,
-    "list"              => \$list,
+    "list-keys"         => \$listkeys,
     "help"              => \$help
     );
 
-if ($help || (!$show && !$flush && !$list)){
+if ($help || (!$show && !$flush && !$listkeys)){
     print_help();
 }
 
@@ -93,7 +93,32 @@ if ($memc_key){
     }
 
 }
-elsif ($list){
+elsif ($listkeys){
+    my $items_result = $config->{memc}->stats("items");
+
+    foreach my $server_ref (@{$config->{memcached}{servers}}){
+	my $items = $items_result->{hosts}->{$server_ref->{address}}->{items};
+	
+	my @lines = split(/\r\n/, $items);
+	
+	my %buckets = ();
+	foreach my $bucket (@lines) {
+	    $bucket =~ s/^.*:(.*):.*$/$1/ig;
+	    $buckets{$bucket} = 1;
+	}
+	
+	foreach my $bucket (sort keys %buckets) {
+	    $items_result = $config->{memc}->stats("cachedump $bucket 100000");
+	    $items = $items_result->{hosts}->{$server_ref->{address}}->{"cachedump $bucket 100000"};
+	    
+	    @lines = split(/\r\n/, $items);
+	    foreach my $ticket (@lines) {
+		$ticket =~ s/^ITEM (.*) \[.*$/$1/ig;
+		print $ticket;
+		#$memd->get($ticket);
+	    }
+	}
+    }
 }
 
 sub print_help {

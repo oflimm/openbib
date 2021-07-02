@@ -34,6 +34,7 @@
 use utf8;
 
 use Getopt::Long;
+use Log::Log4perl qw(get_logger :levels);
 use OpenBib::Common::Stopwords;
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
@@ -56,7 +57,7 @@ if ($#ARGV < 0){
     print_help();
 }
 
-my ($help,$sigel,$showall,$mode,$enrichnatfile,$bibsort,$marksort);
+my ($help,$sigel,$showall,$mode,$enrichnatfile,$bibsort,$marksort,$logfile,$loglevel);
 
 &GetOptions(
 	    "help"     => \$help,
@@ -65,6 +66,8 @@ my ($help,$sigel,$showall,$mode,$enrichnatfile,$bibsort,$marksort);
 	    "showall"  => \$showall,
             "bibsort"  => \$bibsort,
             "marksort" => \$marksort,
+            "logfile=s"  => \$logfile,
+            "loglevel=s" => \$loglevel,
             "enrichnatfile=s" => \$enrichnatfile,
 	    );
 
@@ -76,34 +79,59 @@ if (!$mode){
   $mode="tex";
 }
 
+$logfile=($logfile)?$logfile:'/var/log/openbib/gen_zsstlist.log';
+$loglevel=($loglevel)?$loglevel:'INFO';
+
+my $log4Perl_config = << "L4PCONF";
+log4perl.rootLogger=$loglevel, LOGFILE, Screen
+log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
+log4perl.appender.LOGFILE.filename=$logfile
+log4perl.appender.LOGFILE.mode=append
+log4perl.appender.LOGFILE.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.LOGFILE.layout.ConversionPattern=%d [%c]: %m%n
+log4perl.appender.Screen=Log::Dispatch::Screen
+log4perl.appender.Screen.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.Screen.layout.ConversionPattern=%d [%c]: %m%n
+L4PCONF
+
+Log::Log4perl::init(\$log4Perl_config);
+
+# Log4perl logger erzeugen
+my $logger = get_logger();
+
 print "Generating $sigel\n";
 
 if ($mode ne "tex" && $mode ne "pdf"){
-  print "Mode muss enweder tex oder pdf sein.\n";
+  $logger->error("Mode muss enweder tex oder pdf sein.");
   exit;
 }
 
 my $issn_nationallizenzen_ref = {};
 
 if ($enrichnatfile){
-    my $csv_options = { 
-        'eol' => "\n", 
-        'sep_char' => "\t", 
-        'quote_char' =>  "\"", 
-        'escape_char' => "\"", 
-        
+    my $csv_options = {
+#	'diag_verbose' => 1,
+	    'auto_diag' => 1,
+	    'allow_loose_quotes' => 1,
+	    'allow_loose_escapes' => 1,
+	    'allow_unquoted_escape' => 1,
+	    'eol' => "\n", 
+	    'sep_char' => "\t", 
+	    'quote_char' =>  '', #"\"", 
+	    'escape_char' => '', #"\"", 
+	    
     }; 
     
     open my $in,   "<:utf8",$enrichnatfile; 
     
-    my $csv = Text::CSV_XS->new($csv_options); 
+    our $csv = Text::CSV_XS->new($csv_options); 
     
     my @cols = @{$csv->getline ($in)}; 
-    my $row = {}; 
+    our $row = {}; 
 
     $csv->bind_columns (\@{$row}{@cols}); 
     
-    while ($csv->getline ($in)){ 
+    while (safe_getline($in)){ 
         my @issns = (); 
         
         foreach my $issn (split /\s*;\s*/, $row->{'E-ISSN'}){ 
@@ -114,15 +142,15 @@ if ($enrichnatfile){
             push @issns, $issn; 
         } 
         
-        my $erstes_jahr   = $row->{'erstes Jahr'}; 
-        my $erstes_volume = $row->{'erstes volume'}; 
-        my $erstes_issue  = $row->{'erstes issue'}; 
+        my $erstes_jahr   = $row->{'Erstes Jahr'}; 
+        my $erstes_volume = $row->{'Erster Jahrgang'}; 
+        my $erstes_issue  = $row->{'Erstes Heft'}; 
         
-        my $letztes_jahr   = $row->{'letztes Jahr'}; 
-        my $letztes_volume = $row->{'letztes volume'}; 
-        my $letztes_issue  = $row->{'letztes issue'}; 
+        my $letztes_jahr   = $row->{'Letztes Jahr'}; 
+        my $letztes_volume = $row->{'Letzter Jahrgang'}; 
+        my $letztes_issue  = $row->{'Letztes Heft'}; 
         
-        my $moving_wall  = $row->{'moving wall'}; 
+        my $moving_wall  = $row->{'Moving Wall'}; 
         
         my $bestandsverlauf = "$erstes_jahr";
 
@@ -168,16 +196,22 @@ if ($enrichnatfile){
                 $bestandsverlauf="$bestandsverlauf - $letztes_jahr"; 
             }
         } 
-        
-        my $verfuegbar  = $row->{'Available'}; 
-        if ($verfuegbar ne "Nationallizenz"){
-	    $logger->info("Ignoriere Zeitschrift mit ID ".$row->{'ZDB-Nummer'});
+
+        my $verfuegbar  = $row->{'Available'};
+	$logger->debug("Verfuegbarkeit: $verfuegbar");
+	$logger->debug("ISSNs: ".join(',',@issns));
+	$logger->debug("Bestandsverlauf: $bestandsverlauf");
+
+        if ($verfuegbar =~/National/){	    
+	    foreach my $issn (@issns){ 
+		$issn_nationallizenzen_ref->{$issn} = $bestandsverlauf; 
+	    }
 	}
-        
-        foreach my $issn (@issns){ 
-            $issn_nationallizenzen_ref->{$issn} = $bestandsverlauf; 
-        }
     }
+}
+
+if ($logger->is_debug){
+    $logger->debug("Bestandsverlaeufe zu ISSNs aus Nationallizenzen". YAML::Dump($issn_nationallizenzen_ref));
 }
 
 my $config      = OpenBib::Config->new;
@@ -240,7 +274,7 @@ foreach $titleid (keys %titleids){
             if (!$is_natlizenz && defined $issn_nationallizenzen_ref->{$issn_ref->{content}}){
                 $nat_bestandsverlauf = $issn_nationallizenzen_ref->{$issn_ref->{content}};
 
-#                $logger->debug("Angereichert: $issn_ref->{content} - $nat_bestandsverlauf");
+                $logger->debug("Angereichert: $issn_ref->{content} - $nat_bestandsverlauf");
 
                 push @$mexnormdata_ref, {
                     'X3330' => { 'content' => 'Nationallizenzen' },
@@ -276,7 +310,6 @@ foreach $titleid (keys %titleids){
         $natlizzahl++;
     }
     
-#    print YAML::Dump($record->get_fields),"\n";
     push @recordlist, $record;
 }
 
@@ -559,4 +592,13 @@ sub cleanrl {
     $line=~s/^'//g;
 
     return $line;
+}
+
+sub safe_getline {
+    my $in = shift;
+
+    eval {
+	$csv->getline ($in);
+    };
+    
 }

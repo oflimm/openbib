@@ -145,7 +145,7 @@ my $atime = new Benchmark;
                 my $resulttime = timestr($timeall,"nop");
                 $resulttime    =~s/(\d+\.\d+) .*/$1/;
                 $atime         = new Benchmark;
-                $logger->info("$database: $count Saetze indexiert in $resulttime Sekunden");
+                $logger->info("$database: 1000 ($count) Saetze indexiert in $resulttime Sekunden");
             }
             
             $count++;

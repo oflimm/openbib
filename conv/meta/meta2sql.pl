@@ -432,7 +432,7 @@ foreach my $type (keys %{$stammdateien_ref}) {
                 $resulttime    =~s/(\d+\.\d+) .*/$1/;
                 
                 $atime      = new Benchmark;
-                $logger->info("### $database: $count Saetze in $resulttime mit $class bearbeitet");
+                $logger->info("### $database: 1000 ($count) Saetze in $resulttime mit $class bearbeitet");
             } 
             
             $count++;
@@ -519,7 +519,7 @@ if (-f "meta.holding"){
             $resulttime    =~s/(\d+\.\d+) .*/$1/;
         
             $atime      = new Benchmark;
-            $logger->info("### $database: $count Exemplarsaetze in $resulttime bearbeitet");
+            $logger->info("### $database: 1000 ($count) Exemplarsaetze in $resulttime bearbeitet");
         }
         $count++;
     }
@@ -585,7 +585,7 @@ if ($addsuperpers) {
         }
 
        if ($count % 100000 == 0){
-            $logger->info("### $database: $count Titel");
+            $logger->info("### $database: 100000 ($count) Titel");
         }
 
         $count++;
@@ -632,7 +632,7 @@ if ($addsuperpers) {
         $storage_ref->{listitemdata_superid}{$id} = $record_ref;
 
        if ($count % 100000 == 0){
-            $logger->info("### $database: $count Titel");
+            $logger->info("### $database: 100000 ($count) Titel");
         }
 
         $count++;	
@@ -798,7 +798,7 @@ while (my $jsonline=<IN>){
         $resulttime    =~s/(\d+\.\d+) .*/$1/;
         
         $atime      = new Benchmark;
-        $logger->info("### $database: $count Titelsaetze in $resulttime bearbeitet");
+        $logger->info("### $database: 1000 ($count) Titelsaetze in $resulttime bearbeitet");
     } 
 
     $count++;

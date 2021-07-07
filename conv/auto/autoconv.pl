@@ -10,7 +10,7 @@
 #
 #  Andere : Ueber Plugins/Filter realisierbar
 #
-#  Dieses File ist (C) 1997-2017 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2021 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -43,6 +43,7 @@ use Date::Manip qw/DateCalc ParseDate Delta_Format UnixDate/;
 use DBI;
 use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
+use Parallel::ForkManager;
 
 use OpenBib::Config;
 use OpenBib::Catalog;
@@ -430,45 +431,59 @@ my $use_searchengine_ref = {};
 	system("$config->{autoconv_dir}/filter/$database/alt_searchengine.pl $database");
     }
     else {
+	my $num_parts = 0;
+	$num_parts++ if ($use_searchengine_ref->{"xapian"});
+	$num_parts++ if ($use_searchengine_ref->{"elasticsearch"});
+	$num_parts++ if ($use_searchengine_ref->{"solr"});
+	
+	my $pm = Parallel::ForkManager->new( $num_parts );
+	
+INDEX_PART:
 
-	# Xapian
-	if ($use_searchengine_ref->{"xapian"}){
-	    my $indexpath    = $config->{xapian_index_base_path}."/$database";
-	    my $indexpathtmp = $config->{xapian_index_base_path}."/$databasetmp";
-	    $logger->info("### $database: Importing data into Xapian searchengine");
-	    
-	    my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl --loglevel=$loglevel -with-sorting -with-positions --database=$databasetmp --indexpath=$indexpathtmp";
-	    
-	    if ($incremental){
-		$cmd.=" -incremental --deletefile=$rootdir/data/$database/title.delete";
+	foreach my $searchengine (keys %$use_searchengine_ref){
+	    $pm->start and next INDEX_PART; # do the fork
+
+	    # Xapian	    
+	    if ($searchengine eq "xapian"){		
+		my $indexpath    = $config->{xapian_index_base_path}."/$database";
+		my $indexpathtmp = $config->{xapian_index_base_path}."/$databasetmp";
+		$logger->info("### $database: Importing data into Xapian searchengine");
+		
+		my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl --loglevel=$loglevel -with-sorting -with-positions --database=$databasetmp --indexpath=$indexpathtmp";
+		
+		if ($incremental){
+		    $cmd.=" -incremental --deletefile=$rootdir/data/$database/title.delete";
+		}
+		
+		$logger->info("Executing: $cmd");
+		
+		system($cmd);
 	    }
 	    
-	    $logger->info("Executing: $cmd");
+	    # Elasticsearch
+	    if ($searchengine eq "elasticsearch"){
+		$logger->info("### $database: Importing data into ElasticSearch searchengine");
+		
+		my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2elasticsearch.pl --database=$database";
+		
+		$logger->info("Executing: $cmd");
+		
+		system($cmd);
+	    }
 	    
-	    system($cmd);
-	}
-
-	# Elasticsearch
-	if ($use_searchengine_ref->{"elasticsearch"}){
-	    $logger->info("### $database: Importing data into ElasticSearch searchengine");
-
-	    my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2elasticsearch.pl --database=$database";
-
-	    $logger->info("Executing: $cmd");
-	    
-	    system($cmd);
-	}
-	
-	# SOLR
-	if ($use_searchengine_ref->{"solr"}){
-	    $logger->info("### $database: Importing data into Solr searchengine");
-	    
-	    my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2solr.pl --loglevel=$loglevel --database=$database";
-	    
-	    $logger->info("Executing: $cmd");
-	    
-	    system($cmd);
-	}
+	    # SOLR
+	    if ($searchengine eq "solr"){
+		$logger->info("### $database: Importing data into Solr searchengine");
+		
+		my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2solr.pl --loglevel=$loglevel --database=$database";
+		
+		$logger->info("Executing: $cmd");
+		
+		system($cmd);
+	    }
+            $pm->finish; # do the exit in the child process		
+        }
+	$pm->wait_all_children;
     }
 
     if ($database && -e "$config->{autoconv_dir}/filter/$database/post_searchengine.pl"){
@@ -486,7 +501,7 @@ my $use_searchengine_ref = {};
     $duration_stage_load_index = DateCalc($duration_stage_load_index_start,$duration_stage_load_index_end);
     $duration_stage_load_index = Delta_Format($duration_stage_load_index, 0,"%st seconds");
     
-    $logger->info("### $database: Benoetigte Zeit -> $resulttime");     
+    $logger->info("### $database: Indexing Benoetigte Zeit -> $resulttime");     
 }
 
 # Suchmaschinen-Index fuer Normdaten aufbauen

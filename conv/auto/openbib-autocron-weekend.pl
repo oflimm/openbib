@@ -72,11 +72,11 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-my $blacklist_enrichmnt_ref = {
+my $denylist_enrichmnt_ref = {
     'bestellungen' => 1,
 };
 
-my $blacklist_ref = {
+my $denylist_ref = {
     'alekiddr' => 1,
     'doab' => 1,
     'oapen' => 1,
@@ -354,7 +354,7 @@ if ($updatemaster && $maintenance){
                                     
 $logger->info("### Cleaning up Enrichment-DB");    
 
-system("$config->{'base_dir'}/conv/remove_enriched_terms.pl --filename=$config->{'base_dir'}/conf/enrichmnt_blacklist.txt --field=4300");
+system("$config->{'base_dir'}/conv/remove_enriched_terms.pl --filename=$config->{'base_dir'}/conf/enrichmnt_denylist.txt --field=4300");
     
 if ($maintenance){
     $logger->info("### Enriching from CDM");
@@ -390,7 +390,7 @@ sub threadA {
 
     $logger->info("### Standard-Institutskataloge");
 
-    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, blacklist => $blacklist_ref, sync => 1, autoconv => 1});
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, denylist => $denylist_ref, sync => 1, autoconv => 1});
 
     ##############################
     
@@ -549,7 +549,7 @@ sub threadC {
     autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['spoho','zbmed'] });
 #    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['instzs','spoho'] });
 
-    autoconvert({ updatemaster => $updatemaster, blacklist => $blacklist_ref, sync => 1, databases => ['usbweb'] });
+    autoconvert({ updatemaster => $updatemaster, denylist => $denylist_ref, sync => 1, databases => ['usbweb'] });
     
     ##############################
     
@@ -578,8 +578,8 @@ sub autoconvert {
     my @ac_cmd = ();
     
     # Set defaults
-    my $blacklist_ref   = exists $arg_ref->{blacklist}
-        ? $arg_ref->{blacklist}             : {};
+    my $denylist_ref   = exists $arg_ref->{denylist}
+        ? $arg_ref->{denylist}             : {};
 
     my $databases_ref   = exists $arg_ref->{databases}
         ? $arg_ref->{databases}             : [];
@@ -632,8 +632,8 @@ sub autoconvert {
     }
   
     foreach my $database (@databases){
-        if (exists $blacklist_ref->{$database}){
-            $logger->info("Katalog $database auf Blacklist");
+        if (exists $denylist_ref->{$database}){
+            $logger->info("Katalog $database auf Denylist");
             next;
         }
         
@@ -642,7 +642,7 @@ sub autoconvert {
         $logger->info("Ausfuehrung von $this_cmd");
         system($this_cmd);
 
-        if ($maintenance && !defined $blacklist_enrichmnt_ref->{$database}){
+        if ($maintenance && !defined $denylist_enrichmnt_ref->{$database}){
             $logger->info("### Enriching subject headings for all institutes");
             
             system("$config->{'base_dir'}/conv/swt2enrich.pl --database=$database");

@@ -147,8 +147,8 @@ sub autoconvert {
     my @ac_cmd = ();
     
     # Set defaults
-    my $blacklist_ref   = exists $arg_ref->{blacklist}
-        ? $arg_ref->{blacklist}             : {};
+    my $denylist_ref   = exists $arg_ref->{denylist}
+        ? $arg_ref->{denylist}             : {};
 
     my $databases_ref   = exists $arg_ref->{databases}
         ? $arg_ref->{databases}             : [];
@@ -201,8 +201,8 @@ sub autoconvert {
     }
   
     foreach my $database (@databases){
-        if (exists $blacklist_ref->{$database}){
-            $logger->info("Katalog $database auf Blacklist");
+        if (exists $denylist_ref->{$database}){
+            $logger->info("Katalog $database auf Denylist");
             next;
         }
         

@@ -62,8 +62,8 @@ sub new {
     my $createindex      = exists $arg_ref->{create_index}
         ? $arg_ref->{create_index}                  : undef;
 
-    my $indexpath        = exists $arg_ref->{index_path}
-        ? $arg_ref->{index_path}                     : undef;
+    my $indexname        = exists $arg_ref->{indexname}
+        ? $arg_ref->{indexname}                     : undef;
     
     my $self = { };
 
@@ -91,6 +91,8 @@ sub new {
             $self->{_locationid}      = $locationid;
             $self->{_locationid_norm} = $locationid_norm;
         }
+
+	$indexname=($indexname)?$indexname:$database;
     }
 
     $logger->debug("Creating elasticsearch DB-Object for database $self->{_database}");
@@ -105,15 +107,15 @@ sub new {
 	my $result;
 
 	if ($createindex){
-	    if ($es->indices->exists( index => $database )){
-		$result = $es->indices->delete( index => $database );
+	    if ($es->indices->exists( index => $indexname )){
+		$result = $es->indices->delete( index => $indexname );
 	    }
 	    
 	    $result = $es->indices->create(
-		index    => $database,
+		index    => $indexname,
 		);
 	    $result = $es->indices->put_mapping(
-		index => $database,
+		index => $indexname,
 		body => {
 		    properties => $config->{elasticsearch_index_mappings}{properties},
 		}	
@@ -123,7 +125,7 @@ sub new {
 	
 
 	my $bulk = $es->bulk_helper(
-	    index => $database,
+	    index => $indexname,
 	    );
 
 	$self->{_index} = $bulk;

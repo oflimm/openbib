@@ -67,6 +67,10 @@ if ($help){
     print_help();
 }
 
+if (!-d "/var/log/openbib/authority2xapian/"){
+    mkdir "/var/log/openbib/authority2xapian/";
+}
+
 $logfile=($logfile)?$logfile:"/var/log/openbib/authority2xapian/${database}.log";
 $loglevel=($loglevel)?$loglevel:"INFO";
 
@@ -81,10 +85,6 @@ log4perl.appender.Screen=Log::Dispatch::Screen
 log4perl.appender.Screen.layout=Log::Log4perl::Layout::PatternLayout
 log4perl.appender.Screen.layout.ConversionPattern=%d [%c]: %m%n
 L4PCONF
-
-if (!-d "/var/log/openbib/authority2xapian/"){
-    mkdir "/var/log/openbib/authority2xapian/";
-}
 
 Log::Log4perl::init(\$log4Perl_config);
 
@@ -213,10 +213,13 @@ foreach my $authority_file_ref (@authority_files){
                     foreach my $field (keys %{$fields_ref}){
                         $document->set_data("$fieldprefix$field",$fields_ref->{$field});
 
-                        foreach my $searchfield (keys %{$conv_config->{"inverted_authority_".$authority_file_ref->{type}}{$field}->{index}}) {
-                            my $weight = $conv_config->{"inverted_authority_".$authority_file_ref->{type}}{$field}->{index}{$searchfield};
+			foreach my $item_ref (@{$fields_ref->{$field}}){
+			    # Subfield aus Datensatz, ggf Default '' setzen
+			    my $subfield = (defined $item_ref->{subfield})?$item_ref->{subfield}:'';
+			    
+			    foreach my $searchfield (keys %{$conv_config->{"inverted_authority_".$authority_file_ref->{type}}{$field}{$subfield}->{index}}) {
+				my $weight = $conv_config->{"inverted_authority_".$authority_file_ref->{type}}{$field}{$subfield}->{index}{$searchfield};
                             
-                            foreach my $item_ref (@{$fields_ref->{$field}}){
                                 next unless $item_ref->{content};
                                 
                                 $document->add_index($searchfield,$weight, ["$fieldprefix$field",$item_ref->{content}]);

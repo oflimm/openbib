@@ -431,39 +431,54 @@ my $use_searchengine_ref = {};
     }
     else {
 
-	# Xapian
-	if ($use_searchengine_ref->{"xapian"}){
-	    my $indexpath    = $config->{xapian_index_base_path}."/$database";
-	    my $indexpathtmp = $config->{xapian_index_base_path}."/$databasetmp";
-	    $logger->info("### $database: Importing data into Xapian searchengine");
-	    
-	    my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl --loglevel=$loglevel -with-sorting -with-positions --database=$databasetmp --indexpath=$indexpathtmp";
-	    
-	    if ($incremental){
-		$cmd.=" -incremental --deletefile=$rootdir/data/$database/title.delete";
+	my $num_searchengines = keys %$use_searchengine_ref;
+
+	if ($num_searchengines == 1){
+	    # Xapian
+	    if ($use_searchengine_ref->{"xapian"}){
+		my $indexpath    = $config->{xapian_index_base_path}."/$database";
+		my $indexpathtmp = $config->{xapian_index_base_path}."/$databasetmp";
+		$logger->info("### $database: Importing data into Xapian searchengine");
+		
+		my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl --loglevel=$loglevel -with-sorting -with-positions --database=$databasetmp --indexpath=$indexpathtmp";
+		
+		if ($incremental){
+		    $cmd.=" -incremental --deletefile=$rootdir/data/$database/title.delete";
+		}
+		
+		$logger->info("Executing: $cmd");
+		
+		system($cmd);
 	    }
 	    
-	    $logger->info("Executing: $cmd");
+	    # Elasticsearch
+	    if ($use_searchengine_ref->{"elasticsearch"}){
+		$logger->info("### $database: Importing data into ElasticSearch searchengine");
+		
+		my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2elasticsearch.pl --database=$database";
+		
+		$logger->info("Executing: $cmd");
+		
+		system($cmd);
+	    }
 	    
-	    system($cmd);
+	    # SOLR
+	    if ($use_searchengine_ref->{"solr"}){
+		$logger->info("### $database: Importing data into Solr searchengine");
+		
+		my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2solr.pl --loglevel=$loglevel --database=$database";
+		
+		$logger->info("Executing: $cmd");
+		
+		system($cmd);
+	    }
 	}
-
-	# Elasticsearch
-	if ($use_searchengine_ref->{"elasticsearch"}){
-	    $logger->info("### $database: Importing data into ElasticSearch searchengine");
-
-	    my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2elasticsearch.pl --database=$database";
-
-	    $logger->info("Executing: $cmd");
+	elsif ($num_searchengines > 1){
+	    my $cmd = "$rootdir/bin/index-in-parallel.pl --loglevel=$loglevel --database=$database --indexname=$databasetmp";
 	    
-	    system($cmd);
-	}
-	
-	# SOLR
-	if ($use_searchengine_ref->{"solr"}){
-	    $logger->info("### $database: Importing data into Solr searchengine");
-	    
-	    my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2solr.pl --loglevel=$loglevel --database=$database";
+	    $cmd.= " ".join(' ', map { $_ = "--search-backend=$_" } keys %$use_searchengine_ref);
+
+	    $cmd.= " -incremental" if ($incremental);
 	    
 	    $logger->info("Executing: $cmd");
 	    
@@ -520,12 +535,12 @@ my $use_searchengine_ref = {};
 
 	# Elasticsearch
 	if ($use_searchengine_ref->{"elasticsearch"}){
-	    $logger->info("### $database: Importing authority data into ElasticSearch searchengine currently not supported");
+	    $logger->info("### $database: Importing authority data into ElasticSearch searchengine");
 	    
-#	    my $cmd = "$config->{'base_dir'}/conv/authority2elasticsearch.pl --loglevel=$loglevel -with-sorting --database=$database";
-#	    $logger->info("Executing: $cmd");
+	    my $cmd = "$config->{'base_dir'}/conv/authority2elasticsearch.pl --loglevel=$loglevel -with-sorting --database=$database";
+	    $logger->info("Executing: $cmd");
 	    
-#	    system($cmd);
+	    system($cmd);
 
 	}
 

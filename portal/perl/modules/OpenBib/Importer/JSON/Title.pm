@@ -1259,9 +1259,74 @@ sub process {
             }
         }
     }
-        
-    # Potentiell fehlender HST fuer Index-Data zusammensetzen
-    # -> wird ausgelagert in Filter-Skript
+
+    # Potentiell fehlender Titel fuer Index-Data zusammensetzen
+    {
+        # Konzeptionelle Vorgehensweise fuer die korrekte Anzeige eines Titel in
+        # der Kurztitelliste:
+        #
+        # 1. Fall: Es existiert ein HST
+        #
+        # Dann:
+        #
+        # Es ist nichts zu tun
+        #
+        # 2. Fall: Es existiert kein HST(331)
+        #
+        # Dann:
+        #
+        # Unterfall 2.1: Es existiert eine (erste) Bandzahl(089)
+        #
+        # Dann: Verwende diese Bandzahl
+        #
+        # Unterfall 2.2: Es existiert keine Bandzahl(089), aber eine (erste)
+        #                Bandzahl(455)
+        #
+        # Dann: Verwende diese Bandzahl
+        #
+        # Unterfall 2.3: Es existieren keine Bandzahlen, aber ein (erster)
+        #                Gesamttitel(451)
+        #
+        # Dann: Verwende diesen GT
+        #
+        # Unterfall 2.4: Es existieren keine Bandzahlen, kein Gesamttitel(451),
+        #                aber eine Zeitschriftensignatur(1203/USB-spezifisch)
+        #
+        # Dann: Verwende diese Zeitschriftensignatur
+        #
+        if (!defined $fields_ref->{'0331'}) {
+            # UnterFall 2.1:
+            if (defined $fields_ref->{'0089'}) {
+                $index_doc->add_data('T0331',{
+                    content => $fields_ref->{'0089'}[0]{content}
+				     });
+            }
+            # Unterfall 2.2:
+            elsif (defined $fields_ref->{'0455'}) {
+                $index_doc->add_data('T0331',{
+                    content => $fields_ref->{'0455'}[0]{content}
+				     });
+            }
+            # Unterfall 2.3:
+            elsif (defined $fields_ref->{'0451'}) {
+                $index_doc->add_data('T0331',{
+                    content => $fields_ref->{'0451'}[0]{content}
+				     });
+            }
+            # Unterfall 2.4:
+            elsif (defined $fields_ref->{'1203'}) {
+                $index_doc->add_data('T0331',{
+                    content => $fields_ref->{'1203'}[0]{content}
+				     });
+            }
+            else {
+                $index_doc->add_data('T0331',{
+                    content => "Keine Titelangabe vorhanden",
+				     });
+            }
+        }
+    }
+
     {        
         # Bestimmung der Zaehlung
         

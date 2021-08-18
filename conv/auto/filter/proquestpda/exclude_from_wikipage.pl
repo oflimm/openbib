@@ -7,7 +7,7 @@ use utf8;
 use MediaWiki::API;
 use JSON::XS qw/decode_json encode_json/;
 
-my $mw = MediaWiki::API->new( {api_url => 'https://usbwiki.ub.uni-koeln.de/usbwiki/api.php' } );
+my $mw = MediaWiki::API->new( {api_url => 'https://intern.ub.uni-koeln.de/usbwiki/api.php' } );
 
 my $page = $mw->get_page( { title => 'Proquestpda - Exkludierte Titel' } );
 

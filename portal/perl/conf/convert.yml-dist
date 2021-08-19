@@ -2036,7 +2036,7 @@ convtab:
      #'0038': 1        # Veroeffentlichungsart
      #'0042': 1        # Publikationsstatus
       '0150': 1        # HBZ Personen-ID
-      '0453': 1        # Id des GT
+     #'0453': 1        # Id des GT
       '0454': 1        # Ansetzungsform GT
      #'0572': 1        # ZDB-ID
       '0715': 1        # Unbekannt

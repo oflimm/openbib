@@ -320,7 +320,23 @@ FOREACH field IN normdata;
 	    content_map.${'T0425'} = [];
             content_map.${'T0425'}.push(content);
 	 END;
-	 
+
+    CASE "T0433" ;
+         IF normdata.${"T0437"}.first.content ;
+	    begleitmat = normdata.${"T0437"}.first.content;
+	    content = "${content} + ${begleitmat}";
+	 END;
+
+         IF normdata.${"T0434"}.first.content ;
+	    sonstang = normdata.${"T0434"}.first.content;
+	    content = "${content} : ${sonstang}";
+	 END;
+
+         IF NOT content_map.${'T0433'} ;
+	    content_map.${'T0433'} = [];
+            content_map.${'T0433'}.push(content);
+	 END;
+
 #    CASE [ "T0531" "T0533" ];
 #         IF content.match("---&gt;: ") ;
 #            previssues = content.split("---&gt;: ");

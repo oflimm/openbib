@@ -13,6 +13,7 @@
 -%]
 [%-# Ausgabekategorien -%]
 [%- categories = [
+                'T0435', # msg.maketext("T0435") Format
                 'T0359', # msg.maketext("T0359") Vorl. Verfasser/Koerperschaft
                 'T0670', # msg.maketext("T0670") Sachtitel in abweichender Orthographie
                 'T0333', # msg.maketext("T0333") Zu erg. Urheber/HST Urheber
@@ -25,8 +26,6 @@
                 'T0585', # msg.maketext("T0585") ISSN der Quelle
 #                'T0600', # msg.maketext("T0600") Bemerkung
                 'T0407', # msg.maketext("T0407") Massstab
-                'T0434', # msg.maketext("T0434") Sonst. Angaben
-                'T0437', # msg.maketext("T0437") Begleitmat.
                 'T0504', # msg.maketext("T0504") PST Fussnote
                 'T0505', # msg.maketext("T0505") WST Fussnote
                 'T0507', # msg.maketext("T0507") Ang. HST
@@ -100,8 +99,6 @@
                 #'T5050', # msg.maketext("T5050") BibKey
                 #'T5051', # msg.maketext("T5051") BibKey Basis-String
                 #'T5055', # msg.maketext("T5055") WorkKey Basis-String
-                'T5005', # msg.maketext("T5005") Uebergeordn. Werke
-                'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke
                 'T4211', # msg.maketext("T4211") Preis
                 'T4212', # msg.maketext("T4212") Waehrung
                 'T4210', # msg.maketext("T4210") Copyright-Information

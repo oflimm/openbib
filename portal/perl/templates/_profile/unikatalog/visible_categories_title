@@ -39,9 +39,10 @@
 #                'T0434', # msg.maketext("T0434") Ill_Angabe
                 'T0413', # msg.maketext("T0413") Drucker
                 'T0035', # msg.maketext("T0035") ErschLand
-                'T0435', # msg.maketext("T0435") Format
                 'T0508', # msg.maketext("T0508") Quelle
                 'T0433', # msg.maketext("T0433") Kollation
+                'T0434', # msg.maketext("T0434") Sonst. Angaben
+                'T0437', # msg.maketext("T0437") Begleitmat.
                 'T0334', # msg.maketext("T0334") Material
                 'T0652', # msg.maketext("T0652") EDV Material
                 'T0655', # msg.maketext("T0655") EDV Adress

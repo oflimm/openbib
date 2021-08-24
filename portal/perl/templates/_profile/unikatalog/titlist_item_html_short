@@ -30,17 +30,31 @@
 
      # Filter locations
      locations = [];
-  
+
+     is_licensed = 0;
+     is_free = 0;
+     
      FOREACH loc IN all_locations ;
        IF loc.match('^DE-38$') ;
           locations.push(loc);
        ELSIF loc.match('^DE-38-[0-9][0-9][0-9]') ;
           locations.push(loc);
+         ELSIF loc.match('^freemedia') ;
+          is_free = 1;
+       ELSIF loc.match('^emedien') ;
+          is_licensed = 1;
        ELSIF NOT loc.match('^DE-38-[a-zA-Z]');   
             locations.push(loc);
        END;
      END;
-     
+
+     # E-Medien gehen vor
+     IF is_free ;
+        locations = ['freemedia'];
+     ELSIF is_licensed ;
+        locations = ['emedien'];
+     END;
+
      super = "";
      # 1. Ueberordnung?
      IF item.${'T5005'}.first.content;

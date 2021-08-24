@@ -6,11 +6,11 @@
 #
 #  Automatische Konvertierung
 #
-#  Default: Sikis-Daten
+#  Default: JSON-basiertes Metadaten-Format (angelehnt an MAB2)
 #
 #  Andere : Ueber Plugins/Filter realisierbar
 #
-#  Dieses File ist (C) 1997-2017 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2021 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -47,6 +47,7 @@ use Log::Log4perl qw(get_logger :levels);
 use OpenBib::Config;
 use OpenBib::Catalog;
 use OpenBib::Catalog::Factory;
+use OpenBib::Index::Factory;
 
 my ($database,$sync,$help,$keepfiles,$sb,$logfile,$loglevel,$updatemaster,$incremental,$reducemem,$searchengineonly);
 
@@ -416,6 +417,23 @@ my $use_searchengine_ref = {};
 }
 
 # Suchmaschinen-Index fuer Titel aufbauen
+
+my $es_indexer;
+my $es_indexname;
+my $es_new_indexname;
+my $es_authority_indexname;
+my $es_new_authority_indexname;
+
+if ($use_searchengine_ref->{"elasticsearch"}){
+    $es_indexer = OpenBib::Index::Factory->create_indexer({ sb => 'elasticsearch', database => $database, index_type => 'readwrite' });
+
+    $es_indexname = $es_indexer->get_aliased_index($database);
+    $es_authority_indexname = $es_indexer->get_aliased_index("authority_$database");
+		
+    $es_new_indexname = ($es_indexname eq "${database}_a")?"${database}_b":"${database}_a";
+    $es_new_authority_indexname = ($es_authority_indexname eq "authority_${database}_a")?"authority_${database}_b":"authority_${database}_a";
+}
+
 {
     my $atime = new Benchmark;
     my $duration_stage_load_index_start = ParseDate("now");
@@ -456,7 +474,14 @@ my $use_searchengine_ref = {};
 		$logger->info("### $database: Importing data into ElasticSearch searchengine");
 		
 		my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2elasticsearch.pl --database=$database";
-		
+
+		if ($incremental){
+		    $cmd.=" --indexname=$es_indexname -incremental --deletefile=$rootdir/data/$database/title.delete";
+		}
+		else {
+		    $cmd.=" --indexname=$es_new_indexname";
+		}
+
 		$logger->info("Executing: $cmd");
 		
 		system($cmd);
@@ -474,11 +499,27 @@ my $use_searchengine_ref = {};
 	    }
 	}
 	elsif ($num_searchengines > 1){
-	    my $cmd = "$rootdir/bin/index-in-parallel.pl --loglevel=$loglevel --database=$database --indexname=$databasetmp";
+	    my $cmd = "$rootdir/bin/index-in-parallel.pl --loglevel=$loglevel --database=$database";
 	    
 	    $cmd.= " ".join(' ', map { $_ = "--search-backend=$_" } keys %$use_searchengine_ref);
 
-	    $cmd.= " -incremental" if ($incremental);
+	    if ($incremental){
+		$cmd.= " -incremental";
+		if ($use_searchengine_ref->{'xapian'}){
+		    $cmd.= " --xapian-indexname=$database";
+		}
+		if ($use_searchengine_ref->{'elasticsearch'}){
+		    $cmd.= " --es-indexname=$es_indexname";
+		}
+	    }
+	    else {
+		if ($use_searchengine_ref->{'xapian'}){
+		    $cmd.= " --xapian-indexname=$databasetmp";
+		}
+		if ($use_searchengine_ref->{'elasticsearch'}){
+		    $cmd.= " --es-indexname=$es_new_indexname";
+		}
+	    }
 	    
 	    $logger->info("Executing: $cmd");
 	    
@@ -538,6 +579,9 @@ my $use_searchengine_ref = {};
 	    $logger->info("### $database: Importing authority data into ElasticSearch searchengine");
 	    
 	    my $cmd = "$config->{'base_dir'}/conv/authority2elasticsearch.pl --loglevel=$loglevel -with-sorting --database=$database";
+
+	    $cmd.=" --indexname=$es_new_authority_indexname";
+	    	    
 	    $logger->info("Executing: $cmd");
 	    
 	    system($cmd);
@@ -692,10 +736,21 @@ unless ($incremental || $searchengineonly){
 		system("rm $config->{xapian_index_base_path}/${database}tmp2/* ; rmdir $config->{xapian_index_base_path}/${database}tmp2");
 	    }
 	}
+
+	if ($use_searchengine_ref->{"elasticsearch"}){
+	    $es_indexer->drop_alias($database,$es_indexname);
+	    $es_indexer->create_alias($database,$es_new_indexname);
+	    #$es_indexer->drop_index($es_indexname);
+	}
+
     }
     $logger->info("### $database: Temporaeren Normdaten-Suchindex aktivieren");
 
     if ($use_searchengine_ref->{"xapian"}){
+	if (-d "$config->{xapian_index_base_path}/${authority}tmp2"){
+	    system("rm $config->{xapian_index_base_path}/${authority}tmp2/* ; rmdir $config->{xapian_index_base_path}/${authority}tmp2");
+	}
+	
 	if (-d "$config->{xapian_index_base_path}/$authority"){
 	    system("mv $config->{xapian_index_base_path}/$authority $config->{xapian_index_base_path}/${authority}tmp2");
 	}
@@ -706,7 +761,13 @@ unless ($incremental || $searchengineonly){
 	    system("rm $config->{xapian_index_base_path}/${authority}tmp2/* ; rmdir $config->{xapian_index_base_path}/${authority}tmp2");
 	}
     }
-    
+
+    if ($use_searchengine_ref->{"elasticsearch"}){
+	$es_indexer->drop_alias("authority_$database",$es_authority_indexname);
+	$es_indexer->create_alias("authority_$database",$es_new_authority_indexname);
+	#$es_indexer->drop_index($es_authority_indexname);
+    }
+
     if ($old_database_exists){
 	$postgresdbh->do("drop database ${database}tmp2");
     }

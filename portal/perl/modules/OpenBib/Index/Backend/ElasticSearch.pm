@@ -128,6 +128,7 @@ sub new {
 	    index => $indexname,
 	    );
 
+	$self->{_backend} = $es;
 	$self->{_index} = $bulk;
     };
     
@@ -139,6 +140,94 @@ sub new {
     # Backend Specific Attributes
     
     return $self;
+}
+
+sub get_backend {
+    my $self         = shift;
+
+    return $self->{_backend};
+}
+
+sub drop_index {
+    my $self         = shift;
+    my $indexname    = shift;
+
+    return unless ($indexname);
+
+    my $es = $self->get_backend;
+    
+    if ($es->indices->exists( index => $indexname )){
+	$es->indices->delete( index => $indexname );
+    }
+
+    return $self;    
+}
+
+sub get_aliased_index {
+    my $self         = shift;
+    my $aliasname    = shift;
+
+    return unless ($aliasname);
+
+    my $index_ref;
+
+    eval {
+	$index_ref = $self->get_backend->indices->get_alias(
+	    name    => $aliasname
+	    );    
+    };
+    
+    my $indexname = "${aliasname}_a";
+
+    # Ersten Indexnamen nehmen
+    if (defined $index_ref && %$index_ref){
+	foreach my $index (keys %$index_ref){
+	    $indexname = $index;
+	    last;
+	}
+    }
+
+    
+    
+    return $indexname;
+}
+
+sub drop_alias {
+    my $self         = shift;
+    my $aliasname    = shift;
+    my $indexname    = shift;
+
+    return unless ($aliasname);
+
+    my $result;
+    
+    eval {
+	$result = $self->get_backend->indices->delete_alias(
+	    name => $aliasname,
+	    index => $indexname,
+	    );
+    };
+    
+    return $result;
+}
+
+sub create_alias {
+    my $self         = shift;
+    my $aliasname    = shift;
+    my $indexname    = shift;
+
+    return unless ($aliasname || $indexname);
+
+    my $result;
+
+    eval {
+	$result = $self->get_backend->indices->put_alias(
+	    name  => $aliasname,
+	    index => $indexname,
+	    );
+    };
+    
+    return $result;
 }
 
 sub get_index {
@@ -577,7 +666,7 @@ sub create_record {
 		_id    => $id,
 		source => $doc,
 	    }
-	    );
+	    ) if (defined $id && defined $doc);
     };
     
     if ($@){

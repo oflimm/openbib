@@ -74,6 +74,9 @@ while (<HOLDING>){
         elsif ($location_ref->{content} =~m/^Fachbibliothek Rechtswissenschaft/){
             push @{$element_ref}, "DE-38-201";
         }
+        elsif ($location_ref->{content} =~m/^HF-Bibliothek/){
+            push @{$element_ref}, "DE-38-307";
+        }
         elsif ($location_ref->{content} =~m/^Fachbibliothek Slavistik/){
             push @{$element_ref}, "DE-38-USBFB";
             push @{$element_ref}, "DE-38-418";

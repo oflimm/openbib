@@ -4847,6 +4847,16 @@ sub get_id_of_selfreg_authenticator {
     return $targetid;
 }
 
+sub get_ils_of_database {
+    my ($self,$database)=@_;
+
+    my $ils = "usbws";
+
+    # todo
+
+    return $ils;
+}
+    
 sub get_searchprofile_or_create {
     my ($self,$dbs_ref)=@_;
 

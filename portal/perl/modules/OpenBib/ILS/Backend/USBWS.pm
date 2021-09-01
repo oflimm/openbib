@@ -32,22 +32,28 @@ use utf8;
 
 use base qw(OpenBib::ILS);
 
+use Benchmark;
 use Cache::Memcached::Fast;
-use Encode qw(decode_utf8 encode_utf8);
+use Encode qw/decode_utf8 encode_utf8/;
 use HTTP::Request::Common;
-use JSON::XS qw/decode_json/;
-use Log::Log4perl qw(get_logger :levels);
+use JSON::XS qw/encode_json decode_json/;
 use LWP::UserAgent;
+use Log::Log4perl qw(get_logger :levels);
 use MLDBM qw(DB_File Storable);
 use SOAP::Lite;
 use Storable ();
+use URI::Escape;
+use URI;
+use XML::Simple;
 use YAML::Syck;
 
+use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::File;
 use OpenBib::Config::CirculationInfoTable;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Config::LocationInfoTable;
+use OpenBib::User;
 
 ######################################################################
 # Authentication
@@ -57,6 +63,9 @@ sub authenticate {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
+    my $view        = exists $arg_ref->{view}
+        ? $arg_ref->{view}           : undef;
+    
     my $username    = exists $arg_ref->{username}
         ? $arg_ref->{username}       : undef;
 
@@ -77,6 +86,11 @@ sub authenticate {
     $ua->agent('USB Koeln/1.0');
     $ua->timeout(30);
 
+    my $response_ref = {
+	database => $dbname,
+	ils => 'usbws',
+    };
+        
     my $url = $config->get('usbauth_url');
 
     $url.="?userid=".uri_escape($username)."&password=".uri_escape($password);
@@ -88,7 +102,12 @@ sub authenticate {
     my $response = $ua->request($request);
 
     if ( $response->is_error() ) {
-	return $userid; # 0 = generic error
+	$response_ref->{failure} = {
+	    error => 'Missing or invalid query parameters',
+	    code => -3,  # Status: wrong password
+	};
+
+	return $response_ref;
     }
 
     $logger->debug($response->content);
@@ -117,16 +136,26 @@ sub authenticate {
     
     $logger->debug("Response Username: ".$response_username);
 
-    my $result_ref;
-    
     unless (defined $response_username && $username eq $response_username){
-	$userid = -3;  # Status: wrong password
+	$response_ref->{failure} = {
+	    error => 'wrong password',
+	    code => -3,  # Status: wrong password
+	};
 
-	return $userid;
+	return $response_ref;
     }
         
     $logger->debug("Authentication successful");
+
+    $response_ref->{successful} = 1;
     
+    # Essential Data
+    $response_ref->{userinfo}{username} = $username;    
+    $response_ref->{userinfo}{fullname} = $account_ref->{FullName};
+    $response_ref->{userinfo}{surname}  = $account_ref->{Nachname};
+    $response_ref->{userinfo}{forename} = $account_ref->{Vorname};
+    $response_ref->{userinfo}{email}    = $account_ref->{Email1};
+
     # Gegebenenfalls Benutzer lokal eintragen
     $logger->debug("Save new user");
 
@@ -143,6 +172,8 @@ sub authenticate {
 	    viewid          => undef,
 			     });
 	
+	$response_ref->{userinfo}{userid}    = $userid;
+	
 	$logger->debug("User added with new id $userid");
     }
     else {
@@ -157,6 +188,8 @@ sub authenticate {
 	
 	if ($local_user){
 	    $userid = $local_user->get_column('id');
+
+	    $response_ref->{userinfo}{userid}    = $userid;
 	}
 	
 	$logger->debug("User exists with id $userid");
@@ -168,120 +201,189 @@ sub authenticate {
     
     #$logger->debug("Updated private user info");
 
-    return $userid;
+    return $response_ref;
 }
 
 ######################################################################
 # Circulation
 ######################################################################
 
-sub get_renewals {
-    my ($self,$arg_ref) = @_;
-
-    my $result_ref = {};
-    
-    # todo
-
-    return $result_ref;
-}
-
 # Bestellungen
 sub get_orders {
-    my ($self,$arg_ref) = @_;
+    my ($self,$username) = @_;
 
-    my $result_ref = {};
-    # todo 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $database = $self->get_database;
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+    
+    my $response_ref = {};
 
-    return $result_ref;
+    if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
+
+	$logger->debug("Getting Circulation info via USB-SOAP");
+
+	my $request_types_ref = [
+	    {
+		type   => 'BESTELLUNGEN',
+		status => 2,
+	    },
+	    ];
+	
+	$response_ref = $self->send_account_request({ username => $username, types => $request_types_ref});
+    }
+    
+    return $response_ref;
 }
 
 # Vormerkungen
 sub get_reservations {
-    my ($self,$arg_ref) = @_;
+    my ($self,$username) = @_;
 
-    my $result_ref = {};
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $database = $self->get_database;
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+    
+    my $response_ref = {};
 
-    # todo
+    if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
 
-    return $result_ref;
+	$logger->debug("Getting Circulation info via USB-SOAP");
+
+	my $request_types_ref = [
+	    {
+		type   => 'VORMERKUNGEN',
+		status => 1,
+	    },
+	    ];
+	
+	$response_ref = $self->send_account_request({ username => $username, types => $request_types_ref});
+    }
+    
+    return $response_ref;
 }
 
-# Mahnungen
-sub get_reminders {
-    my ($self,$arg_ref) = @_;
+# Gebuehren abfragen
+sub get_fees {
+    my ($self,$username) = @_;
 
-    my $result_ref = {};
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $database = $self->get_database;
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+    
+    my $response_ref = {};
 
-    # todo
+    if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
 
-    return $result_ref;
+	$logger->debug("Getting Circulation info via USB-SOAP");
+
+	my $request_types_ref = [
+	    {
+		type   => 'OFFENEGEBUEHREN',
+	    },
+	    ];
+	
+	$response_ref = $self->send_account_request({ username => $username, types => $request_types_ref});
+    }
+    
+    return $response_ref;
 }
 
 # Aktive Ausleihen
 sub get_borrows {
-    my ($self,$arg_ref) = @_;
+    my ($self,$username) = @_;
 
-    my $result_ref = {};
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $database = $self->get_database;
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+    
+    my $response_ref = {};
 
-    # todo
+    if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
 
-    return $result_ref;
+	$logger->debug("Getting Circulation info via USB-SOAP");
+
+	my $request_types_ref = [
+	    {
+		type   => 'AUSLEIHEN',
+		status => 3,
+	    },
+	    ];
+	
+	$response_ref = $self->send_account_request({ username => $username, types => $request_types_ref});
+    }
+    
+    return $response_ref;
 }
 
-# Aktive Ausleihen
-sub get_idn_of_borrows {
-    my ($self,$arg_ref) = @_;
-
-    my $result_ref = {};
-
-    # todo
-
-    return $result_ref;
-}
 
 # Titel vormerken
 sub make_reservation {
     my ($self,$arg_ref) = @_;
 
-    my $result_ref = {};
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $response_ref = {};
 
     # todo
 
-    return $result_ref;
+    return $response_ref;
 }
 
 # Vormerken wiederrufen
 sub cancel_reservation {
     my ($self,$arg_ref) = @_;
 
-    my $result_ref = {};
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $response_ref = {};
 
     # todo
 
-    return $result_ref;
+    return $response_ref;
 }
 
 # Titel bestellen
 sub make_order {
     my ($self,$arg_ref) = @_;
 
-    my $result_ref = {};
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $response_ref = {};
 
     # todo
 
-    return $result_ref;
+    return $response_ref;
 }
 
 # Gesamtkonto verlaengern
 sub renew_loans {
     my ($self,$arg_ref) = @_;
 
-    my $result_ref = {};
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $response_ref = {};
 
     # todo
 
-    return $result_ref;
+    return $response_ref;
 }
+
 
 ######################################################################
 # Mediastatus
@@ -296,16 +398,16 @@ sub get_mediastatus {
     my $config    = $self->get_config;
     my $database  = $self->get_database;
     
-    my $result_ref = {};
+    my $response_ref = {};
     
     unless ($database && $titleid){
-	$result_ref = {
+	$response_ref = {
 	    timestamp   => $self->get_timestamp,
 	    circulation => [],
 	    error       => "missing parameters",	    
 	};
 	
-	return $result_ref;
+	return $response_ref;
     }
     
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->new;
@@ -490,25 +592,202 @@ sub get_mediastatus {
 	}	    
     }
     
-    $result_ref = {
+    $response_ref = {
 	id          => $titleid,
 	database    => $database,
 	items       => $items_ref,
 	timestamp   => $self->get_timestamp,
     };
     
-    $logger->debug("Circ: ".YAML::Dump($result_ref));
+    $logger->debug("Circ: ".YAML::Dump($response_ref));
             
-    return $result_ref;
+    return $response_ref;
 }
+
+######################################################################
+# Hilfsmethoden
+######################################################################
 
 sub get_timestamp {
     my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
     
     my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
     my $timestamp = sprintf ( "%04d-%02d-%02dT%02d:%02d:%02dZ",
                                    $year+1900,$mon+1,$mday,$hour,$min,$sec);
     return $timestamp;
+}
+
+sub send_account_request {
+    my ($self,$arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Set defaults
+    my $types_ref      = exists $arg_ref->{types}
+    ? $arg_ref->{types}        : [];
+    
+    my $username       = exists $arg_ref->{username}
+        ? $arg_ref->{username} : undef;
+
+    my $database       = $self->get_database;
+    my $config         = $self->get_config;
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    my $itemlist     = undef;
+    my $response_ref = {};
+
+    foreach my $type_ref (@$types_ref){
+	my @args = ($username,$type_ref->{type});
+	
+	my $uri = "urn:/Account";
+	
+	if ($circinfotable->get($database)->{circdb} ne "sisis"){
+	    $uri = "urn:/Account_inst";
+	    push @args, $database;
+	}
+	
+	eval {
+	    my $soap = SOAP::Lite
+		-> uri($uri)
+		-> proxy($config->get('usbws_url'));
+	    my $result = $soap->show_account(@args);
+	    
+	    unless ($result->fault) {
+		$itemlist = $result->result;
+		if ($logger->is_debug){
+		    $logger->debug("SOAP Result: ".YAML::Dump($itemlist));
+		}
+	    }
+	    else {
+		$logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    }
+	};
+	
+	if ($@){
+	    $logger->error("SOAP-Target ".$config->get('usbws_url')." konnte nicht erreicht werden :".$@);
+	}
+	
+	# Bei einer Ausleihbibliothek haben - falls Exemplarinformationen
+	# in den Ausleihdaten vorhanden sind -- diese Vorrange ueber die
+	# titelbasierten Exemplardaten
+	
+	
+	if (defined($itemlist)) {
+
+	    if ( %{$itemlist->{Konto}} && ($type_ref->{type} eq "AUSLEIHEN" || $type_ref->{type} eq "BESTELLUNGEN" || $type_ref->{type} eq "VORMERKUNGEN")){
+		if (defined $itemlist->{Konto}{KeineVormerkungen}){
+		    $response_ref->{no_reservations} = 1;
+		    next;
+		}
+		if (defined $itemlist->{Konto}{KeineBestellungen}){
+		    $response_ref->{no_orders} = 1;
+		    next;
+		}
+		if (defined $itemlist->{Konto}{KeineAusleihen}){
+		    $response_ref->{no_borrows} = 1;
+		    next;
+		}
+		
+		my $all_items_ref = [];
+		
+		foreach my $nr (sort keys %{$itemlist->{Konto}}){
+		    next if ($itemlist->{Konto}{$nr}{KtoTyp});
+		    push @$all_items_ref, $itemlist->{Konto}{$nr};
+		}
+		
+		foreach my $item_ref (@$all_items_ref){
+		    my @titleinfo = ();
+		    push @titleinfo, $item_ref->{Verfasser} if ($item_ref->{Verfasser});
+		    push @titleinfo, $item_ref->{Titel} if ($item_ref->{Titel});
+		    
+		    my $about = join(': ',@titleinfo);
+		    
+		    my $label     = $item_ref->{Signatur};
+		    
+		    my $this_response_ref = {
+			about   => $about,
+			edition => $item_ref->{Titlecatkey},
+			item    => $item_ref->{MedienNummer},
+			renewals => $item_ref->{VlAnz},
+			status   => $type_ref->{status},
+			label     => $label,
+		    };
+		    
+		    if ($type_ref->{type} eq "AUSLEIHEN"){
+			$this_response_ref->{starttime} = $item_ref->{Datum};
+			$this_response_ref->{endtime}   = $item_ref->{RvDatum};
+		    }
+		    elsif ($type_ref->{type} eq "VORMERKUNGEN"){
+			$this_response_ref->{starttime} = $item_ref->{Datum};
+			$this_response_ref->{endtime}   = $item_ref->{VmEnd};
+			$this_response_ref->{queue}     = $item_ref->{VmAnz};
+		    }
+		    elsif ($type_ref->{type} eq "BESTELLUNGEN"){
+			my $storage = $item_ref->{EntlZweigTxt};
+			if ($item_ref->{LesesaalTxt}){
+			    $storage.=" / ".$item_ref->{LesesaalTxt};
+			}
+			$this_response_ref->{starttime} = $item_ref->{Datum};
+			$this_response_ref->{endtime}   = $item_ref->{RvDatum};
+			$this_response_ref->{storage}   = $storage;
+		    }
+
+		    push @{$response_ref->{items}}, $this_response_ref;
+		}
+	    }
+	    elsif ($type_ref->{type} eq "OFFENEGEBUEHREN"){
+		#		next if (defined $itemlist->{Konto}{KeineOffenenGebuehren});
+		my $all_items_ref = [];
+
+		my $fee_sum = 0;
+		foreach my $nr (sort keys %{$itemlist->{Konto}}){
+		    next if ($itemlist->{Konto}{$nr}{KtoTyp});
+		    push @$all_items_ref, $itemlist->{Konto}{$nr};
+		    if ($itemlist->{Konto}{$nr}{Gebuehr}){
+			my $gebuehr = $itemlist->{Konto}{$nr}{Gebuehr};
+			$gebuehr=~s/\,/./;
+			$fee_sum+=$gebuehr;
+		    }
+		}
+
+		$response_ref->{amount} = $fee_sum." EUR";
+		
+		foreach my $item_ref (@$all_items_ref){
+		    my $this_response_ref = {};
+		    
+		    my $gebuehr = $item_ref->{Gebuehr};
+		    $gebuehr=~s/\,/./;
+
+		    my @titleinfo = ();
+		    push @titleinfo, $item_ref->{Verfasser} if ($item_ref->{Verfasser});
+		    push @titleinfo, $item_ref->{Titel} if ($item_ref->{Titel});
+		    
+		    my $description = join(': ',@titleinfo);
+		    
+		    $this_response_ref->{label} = $item_ref->{Signatur};
+		    
+		    $this_response_ref->{amount} = $gebuehr. "EUR";
+
+		    $this_response_ref->{about} = $description;
+		    $this_response_ref->{type} = $item_ref->{Text};
+		    $this_response_ref->{edition} = $item_ref->{Titlecatkey},
+		    $this_response_ref->{item} = $item_ref->{MedienNummer},
+
+		    my ($day,$month,$year) = $item_ref->{Datum} =~m/^(\d+)\.(\d+)\.(\d+)$/;
+		    $this_response_ref->{date} = $year."-".$month."-".$day."T12:00:00Z";
+		    
+		    push @{$response_ref->{fee}}, $this_response_ref;
+		}
+	    }
+	}
+    }
+
+    return $response_ref;
 }
 
 1;

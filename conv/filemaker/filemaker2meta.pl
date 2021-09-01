@@ -177,6 +177,7 @@ sub parse_titset {
 
     my $person_mult = 1;
     foreach my $singleverf (@unique_verfasser){        
+	next unless ($singleverf);
         my ($person_id,$new) = OpenBib::Conv::Common::Util::get_person_id($singleverf);
 	
         if ($new){
@@ -207,12 +208,14 @@ sub parse_titset {
     # Schlagworte
     my $subject_mult = 1;
     if(exists $metadata{'Schlagwort'} && $cols[$metadata{'Schlagwort'}]->first_child('DATA')->text()) {
-        my $swtans_all=$cols[$metadata{'Schlagwort'}]->text();
+        my $swtans_all=$cols[$metadata{'Schlagwort'}]->first_child('DATA')->text();
 
         if ($swtans_all){
             my @swts = split(" +",$swtans_all);
 
             foreach my $swtans (@swts){
+		$swtans=~s/\n//g;
+		next unless ($swtans);
                 my ($subject_id,$new) = OpenBib::Conv::Common::Util::get_subject_id($swtans);
                 
                 if ($new){

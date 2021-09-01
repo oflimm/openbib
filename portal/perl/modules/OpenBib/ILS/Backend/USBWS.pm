@@ -208,6 +208,43 @@ sub authenticate {
 # Circulation
 ######################################################################
 
+# Bestellunge, Vormerkungen und Ausleihen in einer Abfrage
+sub get_items {
+    my ($self,$username) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $response_ref = ();
+
+    my $orders_ref       = $self->get_orders($username);
+    my $reservations_ref = $self->get_reservations($username);
+    my $borrows_ref      = $self->get_borrows($username);    
+
+    if (defined $orders_ref->{no_orders}){
+	$response_ref->{no_orders} = $orders_ref->{no_orders};
+    }
+    elsif (defined $orders_ref->{items}){
+	push @{$response_ref->{items}}, @{$orders_ref->{items}};
+    }
+
+    if (defined $reservations_ref->{no_reservations}){
+	$response_ref->{no_reservations} = $reservations_ref->{no_reservations};
+    }
+    elsif (defined $reservations_ref->{items}){
+	push @{$response_ref->{items}}, @{$reservations_ref->{items}};
+    }
+    
+    if (defined $borrows_ref->{no_borrows}){
+	$response_ref->{no_borrows} = $borrows_ref->{no_borrows};
+    }
+    elsif (defined $borrows_ref->{items}){
+	push @{$response_ref->{items}}, @{$borrows_ref->{items}};
+    }
+        
+    return $response_ref;
+}
+
 # Bestellungen
 sub get_orders {
     my ($self,$username) = @_;

@@ -369,12 +369,99 @@ sub get_borrows {
 sub make_reservation {
     my ($self,$arg_ref) = @_;
 
+    # Set defaults
+    my $username        = exists $arg_ref->{username} # Nutzername
+        ? $arg_ref->{username}       : undef;
+    
+    my $gsi             = exists $arg_ref->{holdingid}  # Mediennummer
+        ? $arg_ref->{holdingid}      : undef;
+
+    my $zw              = exists $arg_ref->{unit}     # Zweigstelle
+        ? $arg_ref->{unit}           : undef;
+
+    my $aort            = exists $arg_ref->{pickup_location} # Ausgabeort
+        ? $arg_ref->{pickup_location}       : undef;
+
+    my $katkey          = exists $arg_ref->{titleid}  # Katkey fuer teilqualifizierte Vormerkung
+        ? $arg_ref->{titleid}           : undef;
+
+    my $type            = exists $arg_ref->{type}    # Typ (voll/teilqualifizierte Vormerkung)
+        ? $arg_ref->{type}              : undef;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $response_ref = {};
+    my $database = $self->get_database;
+    my $config   = $self->get_config;
 
-    # todo
+    my $response_ref = {};
+    
+    unless ($username && $gsi && $zw >= 0){
+	$response_ref =  {
+	    error => "missing parameter",
+	};
+
+	return $response_ref;
+    }
+
+    $type = (defined $type && $type eq "unqualified")?"TEIL":"VOLL";
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    $logger->debug("Making reservation via USB-SOAP");
+	    
+    my @args = ($username,$gsi,$zw,$aort);
+
+    if ($katkey && $type){
+	push @args, ($katkey,$type);
+    }
+	    
+    my $uri = "urn:/Loan";
+	    
+    if ($circinfotable->get($database)->{circdb} ne "sisis"){
+	$uri = "urn:/Loan_inst";
+    }
+	        
+    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));
+    
+    my $result_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('usbws_url'));
+	my $result = $soap->make_reservation(@args);
+	
+	unless ($result->fault) {
+	    $result_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($response_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    $response_ref = {
+		error => $result->faultcode,
+		error_description => $result->faultstring,
+	    };
+
+	    return $response_ref;
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$circinfotable->get($database)->{circcheckurl}." konnte nicht erreicht werden :".$@);
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
+	};
+	
+	return $response_ref;
+    }
+
+    $response_ref = $result_ref;
 
     return $response_ref;
 }
@@ -424,9 +511,15 @@ sub make_order {
     
     my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
 
-    $logger->debug("Checking order via USB-SOAP");
+    $logger->debug("Making order via USB-SOAP");
 
-    return unless ($username && $gsi && $zw && $aort > -1);
+    unless ($username && $gsi && $zw >= 0 && $aort >= 0){
+	$response_ref =  {
+	    error => "missing parameter",
+	};
+
+	return $response_ref;
+    }
     
     my @args = ($username,$gsi,$zw,$aort);
 	    
@@ -455,14 +548,43 @@ sub make_order {
 	    }
 	}
 	else {
-	    $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    
+	    $response_ref = {
+		error => $result->faultcode,
+		error_description => $result->faultstring,
+	    };
+	    
+	    return $response_ref;
+
 	}
     };
 	    
     if ($@){
 	$logger->error("SOAP-Target ".$circinfotable->get($database)->{circcheckurl}." konnte nicht erreicht werden :".$@);
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
+	};
+	
+	return $response_ref;
     }
 
+    if (defined $result_ref->{OpacBestellung} && defined $result_ref->{OpacBestellung}{NotOK} ){
+	$response_ref = {
+	    "code" => 403,
+		"error" => "already lent",
+		"error_description" => $result_ref->{OpacBestellung}{NotOK},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+
+    
     $response_ref = $result_ref;
 
     return $response_ref;    
@@ -561,11 +683,24 @@ sub get_mediastatus {
 		}
 		else {
 		    $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+
+		    $response_ref = {
+			error => $result->faultcode,
+			error_description => $result->faultstring,
+		    };
+		    
+		    return $response_ref;		    
 		}
 	    };
 	    
 	    if ($@){
 		$logger->error("SOAP-Target ".$circinfotable->get($database)->{circcheckurl}." konnte nicht erreicht werden :".$@);
+		$response_ref = {
+		    error => "connection error",
+		    error_description => "Problem bei der Verbindung zum Ausleihsystem",
+		};
+		
+		return $response_ref;		
 	    }
 	    
 	}
@@ -754,7 +889,7 @@ sub check_order {
 
     my $response_ref = {};
     
-    unless ($username && $gsi && $zw <= 0){
+    unless ($username && $gsi && $zw >= 0){
 	$response_ref =  {
 	    error => "missing parameter",
 	};
@@ -794,12 +929,25 @@ sub check_order {
 	    }
 	}
 	else {
-	    $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+
+	    $response_ref = {
+		error => $result->faultcode,
+		error_description => $result->faultstring,
+	    };
+	    
+	    return $response_ref;
 	}
     };
 	    
     if ($@){
 	$logger->error("SOAP-Target ".$circinfotable->get($database)->{circcheckurl}." konnte nicht erreicht werden :".$@);
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
+	};
+	
+	return $response_ref;
     }
 
     if (defined $result_ref->{OpacBestellung} && defined $result_ref->{OpacBestellung}{ErrorCode} && $result_ref->{OpacBestellung}{ErrorCode} eq "OpsOrderVomAnderemBenEntl"){
@@ -808,9 +956,12 @@ sub check_order {
 		"error" => "already lent",
 		"error_description" => $result_ref->{OpacBestellung}{NotOK},
 	};
+
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
 	
-	return $response_ref
-	
+	return $response_ref	    
     }
     # at least one pickup location
     elsif (scalar keys %{$result_ref->{OpacBestellung}} >= 1){
@@ -821,6 +972,10 @@ sub check_order {
 		about       => $result_ref->{OpacBestellung}{$pickupid},
 	    };
 	}
+
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}	
     }
 
     # Beispielrueckgabe
@@ -853,12 +1008,20 @@ sub check_reservation {
 
     my $database = $self->get_database;
     my $config   = $self->get_config;
+
+    my $response_ref = {};
     
-    return unless ($username && $gsi && $zw);
+    unless ($username && $gsi && $zw >= 0){
+	$response_ref =  {
+	    error => "missing parameter",
+	};
+
+	return $response_ref;
+    }
     
     my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
 
-    $logger->debug("Checking order via USB-SOAP");
+    $logger->debug("Checking reservation via USB-SOAP");
 	    
     my @args = ($username,$gsi,$zw);
 	    
@@ -873,33 +1036,50 @@ sub check_reservation {
     
     $logger->debug("Using args ".YAML::Dump(\@args));
     
-    my $response_ref;
+    my $result_ref;
     
     eval {
 	my $soap = SOAP::Lite
 	    -> uri($uri)
 	    -> proxy($config->get('usbws_url'));
+
+	# $soap->on_fault(sub {  return {
+	#     error => 999,
+	#     error_description => $_[1],
+	# 		       };
+	# 		});
+	
 	my $result = $soap->check_reservation(@args);
 	
 	unless ($result->fault) {
-	    $response_ref = $result->result;
+	    $result_ref = $result->result;
 	    if ($logger->is_debug){
 		$logger->debug("SOAP Result: ".YAML::Dump($response_ref));
 	    }
 	}
 	else {
-	    $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-	    $response_ref->{'OpacReservation'} = {
-		ErrorCode => $result->faultcode,
-		NotOK => $result->faultstring,
+	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    
+	    $response_ref = {
+		error => $result->faultcode,
+		error_description => $result->faultstring,
 	    };
+
+	    return $response_ref;
 	}
     };
 	    
     if ($@){
 	$logger->error("SOAP-Target ".$circinfotable->get($database)->{circcheckurl}." konnte nicht erreicht werden :".$@);
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
+	};
+	
+	return $response_ref;
     }
 
+    $response_ref = $result_ref;
 
     return $response_ref;
 }
@@ -948,12 +1128,25 @@ sub send_account_request {
 		}
 	    }
 	    else {
-		$logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+		$logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+
+		$response_ref = {
+		    error => $result->faultcode,
+		    error_description => $result->faultstring,
+		};
+		
+		return $response_ref;		
 	    }
 	};
 	
 	if ($@){
 	    $logger->error("SOAP-Target ".$config->get('usbws_url')." konnte nicht erreicht werden :".$@);
+	    $response_ref = {
+		error => "connection error",
+		error_description => "Problem bei der Verbindung zum Ausleihsystem",
+	    };
+	    
+	    return $response_ref;
 	}
 	
 	# Bei einer Ausleihbibliothek haben - falls Exemplarinformationen
@@ -965,14 +1158,23 @@ sub send_account_request {
 
 	    if ( %{$itemlist->{Konto}} && ($type_ref->{type} eq "AUSLEIHEN" || $type_ref->{type} eq "BESTELLUNGEN" || $type_ref->{type} eq "VORMERKUNGEN")){
 		if (defined $itemlist->{Konto}{KeineVormerkungen}){
+		    if ($logger->is_debug){
+			$response_ref->{debug} = $itemlist;
+		    }
 		    $response_ref->{no_reservations} = 1;
 		    next;
 		}
 		if (defined $itemlist->{Konto}{KeineBestellungen}){
+		    if ($logger->is_debug){
+			$response_ref->{debug} = $itemlist;
+		    }
 		    $response_ref->{no_orders} = 1;
 		    next;
 		}
 		if (defined $itemlist->{Konto}{KeineAusleihen}){
+		    if ($logger->is_debug){
+			$response_ref->{debug} = $itemlist;
+		    }
 		    $response_ref->{no_borrows} = 1;
 		    next;
 		}
@@ -1071,6 +1273,10 @@ sub send_account_request {
 	}
     }
 
+    if ($logger->is_debug){
+	$response_ref->{debug} = $itemlist;
+    }
+    
     return $response_ref;
 }
 

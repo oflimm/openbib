@@ -4,6 +4,7 @@
 #
 #  Dieses File ist (C) 2021 Oliver Flimm <flimm@openbib.org>
 #
+#
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
 #  Free Software Foundation herausgegeben, weitergeben und/oder
@@ -364,7 +365,6 @@ sub get_borrows {
     return $response_ref;
 }
 
-
 # Titel vormerken
 sub make_reservation {
     my ($self,$arg_ref) = @_;
@@ -394,6 +394,7 @@ sub cancel_reservation {
 }
 
 # Titel bestellen
+
 sub make_order {
     my ($self,$arg_ref) = @_;
 
@@ -401,23 +402,70 @@ sub make_order {
     my $username        = exists $arg_ref->{username} # Nutzername
         ? $arg_ref->{username}       : undef;
     
-    my $mediaid         = exists $arg_ref->{mediaid}  # Mediennummer
-        ? $arg_ref->{mediaid}        : undef;
+    my $katkey          = exists $arg_ref->{titleid}  # Katkey
+        ? $arg_ref->{titleid}        : undef;
 
-    my $unit            = exists $arg_ref->{unit}  # Zweigstelle
+    my $gsi             = exists $arg_ref->{holdingid} # Mediennummer
+        ? $arg_ref->{holdingid}      : undef;
+
+    my $zw              = exists $arg_ref->{unit}     # Zweigstelle
         ? $arg_ref->{unit}           : undef;
     
-    my $pickup_location = exists $arg_ref->{pickup_location} # Ausgabeort
+    my $aort            = exists $arg_ref->{pickup_location} # Ausgabeort
         ? $arg_ref->{pickup_location}       : undef;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $database = $self->get_database;
+    my $config   = $self->get_config;
+
     my $response_ref = {};
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
 
-    # todo
+    $logger->debug("Checking order via USB-SOAP");
 
-    return $response_ref;
+    return unless ($username && $gsi && $zw && $aort > -1);
+    
+    my @args = ($username,$gsi,$zw,$aort);
+	    
+    my $uri = "urn:/Loan";
+	    
+    if ($circinfotable->get($database)->{circdb} ne "sisis"){
+	$uri = "urn:/Loan_inst";
+    }
+	        
+    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));    
+    
+    my $result_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('usbws_url'));
+	my $result = $soap->make_order(@args);
+	
+	unless ($result->fault) {
+	    $result_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$circinfotable->get($database)->{circcheckurl}." konnte nicht erreicht werden :".$@);
+    }
+
+    $response_ref = $result_ref;
+
+    return $response_ref;    
 }
 
 # Titelbestellung widerrufen
@@ -692,8 +740,8 @@ sub check_order {
     my $username        = exists $arg_ref->{username} # Nutzername
         ? $arg_ref->{username}       : undef;
     
-    my $gsi             = exists $arg_ref->{mediaid}  # Mediennummer
-        ? $arg_ref->{mediaid}        : undef;
+    my $gsi             = exists $arg_ref->{holdingid} # Mediennummer
+        ? $arg_ref->{holdingid}        : undef;
 
     my $zw              = exists $arg_ref->{unit}     # Zweigstelle
         ? $arg_ref->{unit}           : undef;
@@ -703,8 +751,17 @@ sub check_order {
 
     my $database = $self->get_database;
     my $config   = $self->get_config;
+
+    my $response_ref = {};
     
-    return unless ($username && $gsi && $zw);
+    unless ($username && $gsi && $zw <= 0){
+	$response_ref =  {
+	    error => "missing parameter",
+	};
+
+	return $response_ref;
+    }
+
     
     my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
 
@@ -722,7 +779,7 @@ sub check_order {
     
     $logger->debug("Using args ".YAML::Dump(\@args));
     
-    my $response_ref;
+    my $result_ref;
     
     eval {
 	my $soap = SOAP::Lite
@@ -731,7 +788,7 @@ sub check_order {
 	my $result = $soap->check_order(@args);
 	
 	unless ($result->fault) {
-	    $response_ref = $result->result;
+	    $result_ref = $result->result;
 	    if ($logger->is_debug){
 		$logger->debug("SOAP Result: ".YAML::Dump($response_ref));
 	    }
@@ -745,7 +802,36 @@ sub check_order {
 	$logger->error("SOAP-Target ".$circinfotable->get($database)->{circcheckurl}." konnte nicht erreicht werden :".$@);
     }
 
+    if (defined $result_ref->{OpacBestellung} && defined $result_ref->{OpacBestellung}{ErrorCode} && $result_ref->{OpacBestellung}{ErrorCode} eq "OpsOrderVomAnderemBenEntl"){
+	$response_ref = {
+	    "code" => 403,
+		"error" => "already lent",
+		"error_description" => $result_ref->{OpacBestellung}{NotOK},
+	};
+	
+	return $response_ref
+	
+    }
+    # at least one pickup location
+    elsif (scalar keys %{$result_ref->{OpacBestellung}} >= 1){
+	
+	foreach my $pickupid (sort keys %{$result_ref->{OpacBestellung}}){
+	    push @{$response_ref->{"pickup_locations"}}, {
+		name        => $pickupid,
+		about       => $result_ref->{OpacBestellung}{$pickupid},
+	    };
+	}
+    }
 
+    # Beispielrueckgabe
+    #
+    # pickup_locations:
+    #   - about: Abholregale (zur Ausleihe)
+    #     pickupid: 0
+    #   - about: Lesesaalausgabe (Nutzung nur im Lesesaal)
+    #     pickupid: 1
+
+    
     return $response_ref;
 }
 
@@ -756,8 +842,8 @@ sub check_reservation {
     my $username        = exists $arg_ref->{username} # Nutzername
         ? $arg_ref->{username}       : undef;
     
-    my $gsi             = exists $arg_ref->{mediaid}  # Mediennummer
-        ? $arg_ref->{mediaid}        : undef;
+    my $gsi             = exists $arg_ref->{holdingid}  # Mediennummer
+        ? $arg_ref->{holdingid}      : undef;
 
     my $zw              = exists $arg_ref->{unit}     # Zweigstelle
         ? $arg_ref->{unit}           : undef;
@@ -987,6 +1073,14 @@ sub send_account_request {
 
     return $response_ref;
 }
+
+# Definition der USBWS:
+#
+# /opt/ip/var/cgi-intern/loan.pl
+# /opt/ips/usr/perl/USB/SOAP/S***s/Loan.pm
+# /opt/ips/usr/config/gateway_usb/ubkloan.xml
+# /opt/ips/usr/templates/appltemplates/USB/template.loanxml.tpl
+# /opt/ips/usr/templates/appltemplates/USB/template.loan.tpl
 
 1;
 __END__

@@ -397,6 +397,33 @@ sub cancel_reservation {
 sub make_order {
     my ($self,$arg_ref) = @_;
 
+    # Set defaults
+    my $username        = exists $arg_ref->{username} # Nutzername
+        ? $arg_ref->{username}       : undef;
+    
+    my $mediaid         = exists $arg_ref->{mediaid}  # Mediennummer
+        ? $arg_ref->{mediaid}        : undef;
+
+    my $unit            = exists $arg_ref->{unit}  # Zweigstelle
+        ? $arg_ref->{unit}           : undef;
+    
+    my $pickup_location = exists $arg_ref->{pickup_location} # Ausgabeort
+        ? $arg_ref->{pickup_location}       : undef;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $response_ref = {};
+
+    # todo
+
+    return $response_ref;
+}
+
+# Titelbestellung widerrufen
+sub cancel_order {
+    my ($self,$arg_ref) = @_;
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -657,6 +684,140 @@ sub get_timestamp {
     return $timestamp;
 }
 
+# Titelbestellung ueberpruefen => Ausgabeort bestimmen
+sub check_order {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $username        = exists $arg_ref->{username} # Nutzername
+        ? $arg_ref->{username}       : undef;
+    
+    my $gsi             = exists $arg_ref->{mediaid}  # Mediennummer
+        ? $arg_ref->{mediaid}        : undef;
+
+    my $zw              = exists $arg_ref->{unit}     # Zweigstelle
+        ? $arg_ref->{unit}           : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $database = $self->get_database;
+    my $config   = $self->get_config;
+    
+    return unless ($username && $gsi && $zw);
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    $logger->debug("Checking order via USB-SOAP");
+	    
+    my @args = ($username,$gsi,$zw);
+	    
+    my $uri = "urn:/Loan";
+	    
+    if ($circinfotable->get($database)->{circdb} ne "sisis"){
+	$uri = "urn:/Loan_inst";
+    }
+	        
+    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));
+    
+    my $response_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('usbws_url'));
+	my $result = $soap->check_order(@args);
+	
+	unless ($result->fault) {
+	    $response_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($response_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$circinfotable->get($database)->{circcheckurl}." konnte nicht erreicht werden :".$@);
+    }
+
+
+    return $response_ref;
+}
+
+sub check_reservation {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $username        = exists $arg_ref->{username} # Nutzername
+        ? $arg_ref->{username}       : undef;
+    
+    my $gsi             = exists $arg_ref->{mediaid}  # Mediennummer
+        ? $arg_ref->{mediaid}        : undef;
+
+    my $zw              = exists $arg_ref->{unit}     # Zweigstelle
+        ? $arg_ref->{unit}           : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $database = $self->get_database;
+    my $config   = $self->get_config;
+    
+    return unless ($username && $gsi && $zw);
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    $logger->debug("Checking order via USB-SOAP");
+	    
+    my @args = ($username,$gsi,$zw);
+	    
+    my $uri = "urn:/Loan";
+	    
+    if ($circinfotable->get($database)->{circdb} ne "sisis"){
+	$uri = "urn:/Loan_inst";
+    }
+	    
+    
+    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));
+    
+    my $response_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('usbws_url'));
+	my $result = $soap->check_reservation(@args);
+	
+	unless ($result->fault) {
+	    $response_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($response_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    $response_ref->{'OpacReservation'} = {
+		ErrorCode => $result->faultcode,
+		NotOK => $result->faultstring,
+	    };
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$circinfotable->get($database)->{circcheckurl}." konnte nicht erreicht werden :".$@);
+    }
+
+
+    return $response_ref;
+}
+
 sub send_account_request {
     my ($self,$arg_ref) = @_;
 
@@ -810,10 +971,10 @@ sub send_account_request {
 		    
 		    $this_response_ref->{amount} = $gebuehr. "EUR";
 
-		    $this_response_ref->{about} = $description;
-		    $this_response_ref->{type} = $item_ref->{Text};
+		    $this_response_ref->{about}   = $description;
+		    $this_response_ref->{type}    = $item_ref->{Text};
 		    $this_response_ref->{edition} = $item_ref->{Titlecatkey},
-		    $this_response_ref->{item} = $item_ref->{MedienNummer},
+		    $this_response_ref->{item}    = $item_ref->{MedienNummer},
 
 		    my ($day,$month,$year) = $item_ref->{Datum} =~m/^(\d+)\.(\d+)\.(\d+)$/;
 		    $this_response_ref->{date} = $year."-".$month."-".$day."T12:00:00Z";

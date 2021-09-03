@@ -1267,6 +1267,13 @@ sub send_account_request {
 			status   => $type_ref->{status},
 			label     => $label,
 		    };
+
+		    if ($item_ref->{EntlZweig} => 0 && $item_ref->{EntlZweigTxt}){
+			$this_response_ref->{department} = {
+			    id => $item_ref->{EntlZweig},
+			    about => $item_ref->{EntlZweigTxt},
+			};
+		    }
 		    
 		    if ($type_ref->{type} eq "AUSLEIHEN"){
 			$this_response_ref->{starttime} = $item_ref->{Datum};
@@ -1278,13 +1285,11 @@ sub send_account_request {
 			$this_response_ref->{queue}     = $item_ref->{VmAnz};
 		    }
 		    elsif ($type_ref->{type} eq "BESTELLUNGEN"){
-			my $storage = $item_ref->{EntlZweigTxt};
-			if ($item_ref->{LesesaalTxt}){
-			    $storage.=" / ".$item_ref->{LesesaalTxt};
+			if ($item_ref->{LesesaalTxt} && $this_response_ref->{department}{about}){
+			    $this_response_ref->{department}{about}.=" / ".$item_ref->{LesesaalTxt};
 			}
 			$this_response_ref->{starttime} = $item_ref->{Datum};
 			$this_response_ref->{endtime}   = $item_ref->{RvDatum};
-			$this_response_ref->{storage}   = $storage;
 		    }
 
 		    push @{$response_ref->{items}}, $this_response_ref;
@@ -1331,7 +1336,7 @@ sub send_account_request {
 		    my ($day,$month,$year) = $item_ref->{Datum} =~m/^(\d+)\.(\d+)\.(\d+)$/;
 		    $this_response_ref->{date} = $year."-".$month."-".$day."T12:00:00Z";
 		    
-		    push @{$response_ref->{fee}}, $this_response_ref;
+		    push @{$response_ref->{items}}, $this_response_ref;
 		}
 	    }
 	}

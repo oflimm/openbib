@@ -3074,8 +3074,8 @@
    args:
      'restrict_db_to_view': 1
 - # users/circulations_loc:
-   module: 'OpenBib::Handler::PSGI::Users::Circulations::Reminders'
-   rule: '/portal/:view/users/id/:userid/databases/id/:database/circulations/id/reminders[get]'
+   module: 'OpenBib::Handler::PSGI::Users::Circulations::Fees'
+   rule: '/portal/:view/users/id/:userid/databases/id/:database/circulations/id/fees[get]'
    runmode: 'show_collection'
    representations:
      - none

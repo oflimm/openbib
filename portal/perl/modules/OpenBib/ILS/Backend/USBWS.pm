@@ -735,9 +735,21 @@ sub get_mediastatus {
 		# Umwandeln
 		my $item_ref = {};
 
-		$item_ref->{'label'} = $circ_ref->{'Signatur'};
-		$item_ref->{'id'}    = $circ_ref->{'MedienNr'};
+		if ($logger->is_debug){
+		    $item_ref->{debug} = $circ_ref;
+		}
 
+		# Spezialanpassungen USB Koeln
+
+		# Ende Spezialanpassungen
+		
+		$item_ref->{'label'}  = $circ_ref->{'Signatur'};
+		$item_ref->{'id'}     = $circ_ref->{'MedienNr'};
+		$item_ref->{'remark'} = $circ_ref->{'FussNoten'};
+		$item_ref->{'boundcollection'} = $circ_ref->{'BoundCollection'};
+
+		$item_ref->{'full_location'} = $circ_ref->{ZweigAbteil};
+		
 		if ($circ_ref->{'ZweigAbteil'} =~/^(.+?)\s+\/\s+(.+?)$/){
 		    $circ_ref->{'ZweigName'} = $1;
 		    $circ_ref->{'AbteilName'} = $2;
@@ -762,69 +774,120 @@ sub get_mediastatus {
 		my $available_ref   = [];
 		my $unavailable_ref = [];
 
-		if ($circ_ref->{LeihstatusText} eq "Präsenzbestand"){
-		    push @$available_ref, {
-			service => 'presence',
-		    };
-		}
-		elsif ($circ_ref->{LeihstatusText} eq "bestellbar (Nutzung nur im Lesesaal)"){
-		    push @$available_ref, {
-			service => 'loan',
-			limitation => "bestellbar (Nutzung nur im Lesesaal)",
-			type => 'Stationary',
-		    };
-		}
-		elsif ($circ_ref->{LeihstatusText} =~m/bestellbar/ || $circ_ref->{LeihstatusText} =~m/verfügbar/){
-		    push @$available_ref, {
-			service => 'order',
-		    };
-		}
-		elsif ($circ_ref->{LeihstatusText} = "ausleihbar"){
-		    push @$available_ref, {
-			service => 'loan',
-		    };
-		}
-		elsif ($circ_ref->{LeihstatusText} = "nicht entleihbar"){
-		    push @$available_ref, {
-			service => 'presence',
-		    };
-		}
-		elsif ($circ_ref->{LeihstatusText} = "nur in bes. Lesesaal bestellbar"){
-		    push @$available_ref, {
-			service => 'order',
-			limitation => $circ_ref->{LeihstatusText},
-			type => 'Stationary',
-		    };
-		}
-		elsif ($circ_ref->{LeihstatusText} = "nur Wochenende"){
-		    push @$available_ref, {
-			service => 'loan',
-			limitation => $circ_ref->{LeihstatusText},
-			type => 'ShortLoan',
-		    };
-		}
-		elsif ($circ_ref->{LeihstatusText} =~m/entliehen/){
-		    my $this_unavailable_ref = {
-			service => 'loan',
-			expected => $circ_ref->{RueckgabeDatum},
-		    };
+		my $use_leihstatustext = 0; # sonst: Verwende Leihstatus
 
-		    if ($circ_ref->{VormerkAnzahl}){
-			$this_unavailable_ref->{queue} = $circ_ref->{VormerkAnzahl} ;
+		if ($use_leihstatustext){
+		    if ($circ_ref->{LeihstatusText} =~m/Präsenzbestand/){
+			push @$available_ref, {
+			    service => 'presence',
+			};
 		    }
-
-		    push @$unavailable_ref, $this_unavailable_ref;
-		    
+		    elsif ($circ_ref->{LeihstatusText} =~m/^bestellbar.*Lesesaal/){
+			push @$available_ref, {
+			    service => 'loan',
+			    limitation => "bestellbar (Nutzung nur im Lesesaal)",
+			    type => 'Stationary',
+			};
+		    }
+		    elsif ($circ_ref->{LeihstatusText} =~m/bestellbar/ || $circ_ref->{LeihstatusText} =~m/verfügbar/){
+			push @$available_ref, {
+			    service => 'order',
+			};
+		    }
+		    elsif ($circ_ref->{LeihstatusText} eq "ausleihbar"){
+			push @$available_ref, {
+			    service => 'loan',
+			};
+		    }
+		    elsif ($circ_ref->{LeihstatusText} eq "nicht entleihbar"){
+			push @$available_ref, {
+			    service => 'presence',
+			};
+		    }
+		    elsif ($circ_ref->{LeihstatusText} eq "nur in bes. Lesesaal bestellbar"){
+			push @$available_ref, {
+			    service => 'order',
+			    limitation => $circ_ref->{LeihstatusText},
+			    type => 'Stationary',
+			};
+		    }
+		    elsif ($circ_ref->{LeihstatusText} eq "nur Wochenende"){
+			push @$available_ref, {
+			    service => 'loan',
+			    limitation => $circ_ref->{LeihstatusText},
+			    type => 'ShortLoan',
+			};
+		    }
+		    elsif ($circ_ref->{LeihstatusText} =~m/entliehen/){
+			my $this_unavailable_ref = {
+			    service => 'loan',
+			    expected => $circ_ref->{RueckgabeDatum},
+			};
+			
+			if ($circ_ref->{VormerkAnzahl}){
+			    $this_unavailable_ref->{queue} = $circ_ref->{VormerkAnzahl} ;
+			}
+			
+			push @$unavailable_ref, $this_unavailable_ref;
+			
+		    }
+		    elsif ($circ_ref->{LeihstatusText} =~m/vermisst/){
+			my $this_unavailable_ref = {
+			    service => 'loan',
+			    expected => 'lost',
+			};
+			
+			push @$unavailable_ref, $this_unavailable_ref;
+			
+		    }
 		}
-		elsif ($circ_ref->{LeihstatusText} =~m/vermisst/){
-		    my $this_unavailable_ref = {
-			service => 'loan',
-		    };
-
-		    push @$unavailable_ref, $this_unavailable_ref;
-		    
+		else { # verwende Leihstatus
+		    if ($circ_ref->{Leihstatus} =~m/^(LSNichtLeihbar)$/){
+			push @$available_ref, {
+			    service => 'presence',
+			};
+		    }
+		    elsif ($circ_ref->{Leihstatus} =~m/^(LSLeihbarMagLE)$/){
+			push @$available_ref, {
+			    service => 'order',
+			    limitation => "bestellbar (Nutzung nur im Lesesaal)",
+			    type => 'Stationary',
+			};
+		    }
+		    elsif ($circ_ref->{Leihstatus} =~m/^(LSLeihbarMag|LSLeihbarZWMag)$/ ){
+			push @$available_ref, {
+			    service => 'order',
+			};
+		    }
+		    elsif ($circ_ref->{Leihstatus} =~m/^(LSLeihbar|LSLeihbarZWNoBS)$/){
+			push @$available_ref, {
+			    service => 'loan',
+			};
+		    }
+		    elsif ($circ_ref->{Leihstatus} =~m/^(LSEntliehen|LSEntliehenLE)$/){
+			my $this_unavailable_ref = {
+			    service => 'loan',
+			    expected => $circ_ref->{RueckgabeDatum},
+			};
+			
+			if ($circ_ref->{VormerkAnzahl}){
+			    $this_unavailable_ref->{queue} = $circ_ref->{VormerkAnzahl} ;
+			}
+			
+			push @$unavailable_ref, $this_unavailable_ref;
+			
+		    }
+		    elsif ($circ_ref->{LeihstatusText} =~m/^(LSVermisst)$/){
+			my $this_unavailable_ref = {
+			    service => 'loan',
+			    expected => 'lost',
+			};
+			
+			push @$unavailable_ref, $this_unavailable_ref;
+			
+		    }
 		}
-
+		
 		if (@$available_ref){
 		    $item_ref->{available} = $available_ref;
 		}
@@ -1043,11 +1106,6 @@ sub check_reservation {
 	    -> uri($uri)
 	    -> proxy($config->get('usbws_url'));
 
-	# $soap->on_fault(sub {  return {
-	#     error => 999,
-	#     error_description => $_[1],
-	# 		       };
-	# 		});
 	
 	my $result = $soap->check_reservation(@args);
 	
@@ -1058,13 +1116,19 @@ sub check_reservation {
 	    }
 	}
 	else {
-	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    # Problem ohne Loesung: In bestimmten Funktionen bricht der externe USBWS die Anfrage per
+	    # Logger->error_die einfach ab. Entsprechende faultcodes und
+	    # faultstrings werden dann zwar via SOAP zurueckgeliefert, aber der weitere
+	    # Code in diesem Modul bricht dann einfach ab und liefert {} zurueck
+	    # und nicht response_ref mit error und error_description
 	    
 	    $response_ref = {
 		error => $result->faultcode,
 		error_description => $result->faultstring,
 	    };
 
+	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    
 	    return $response_ref;
 	}
     };

@@ -148,12 +148,10 @@ sub show_collection {
         authenticator => $authenticator,
         loginname  => $loginname,
         password   => $password,
-        database   => $database,
 	
         fees       => $fees_ref,
-        
-        show_corporate_banner => 0,
-        show_foot_banner      => 1,
+
+        database   => $database,        
     };
       
     return $self->print_page($config->{tt_users_circulations_fees_tname},$ttdata);

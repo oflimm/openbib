@@ -172,7 +172,7 @@ sub get_items {
 
     my $orders_ref       = $self->get_orders($username);
     my $reservations_ref = $self->get_reservations($username);
-    my $borrows_ref      = $self->get_borrows($username);    
+    my $loans_ref      = $self->get_loans($username);    
 
     if (defined $orders_ref->{no_orders}){
 	$response_ref->{no_orders} = $orders_ref->{no_orders};
@@ -188,11 +188,11 @@ sub get_items {
 	push @{$response_ref->{items}}, @{$reservations_ref->{items}};
     }
     
-    if (defined $borrows_ref->{no_borrows}){
-	$response_ref->{no_borrows} = $borrows_ref->{no_borrows};
+    if (defined $loans_ref->{no_loans}){
+	$response_ref->{no_loans} = $loans_ref->{no_loans};
     }
-    elsif (defined $borrows_ref->{items}){
-	push @{$response_ref->{items}}, @{$borrows_ref->{items}};
+    elsif (defined $loans_ref->{items}){
+	push @{$response_ref->{items}}, @{$loans_ref->{items}};
     }
         
     return $response_ref;
@@ -288,7 +288,7 @@ sub get_fees {
 }
 
 # Aktive Ausleihen
-sub get_borrows {
+sub get_loans {
     my ($self,$username) = @_;
 
     # Log4perl logger erzeugen
@@ -418,17 +418,101 @@ sub make_reservation {
     return $response_ref;
 }
 
-# Vormerken wiederrufen
+# Vormerkung widerrufen
 sub cancel_reservation {
     my ($self,$arg_ref) = @_;
 
+    # Set defaults
+    my $username        = exists $arg_ref->{username} # Nutzername
+        ? $arg_ref->{username}       : undef;
+    
+    my $katkey          = exists $arg_ref->{titleid}  # Katkey
+        ? $arg_ref->{titleid}        : undef;
+
+    my $gsi             = exists $arg_ref->{holdingid} # Mediennummer
+        ? $arg_ref->{holdingid}      : undef;
+
+    my $zw              = exists $arg_ref->{unit}     # Zweigstelle
+        ? $arg_ref->{unit}           : undef;
+        
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $database = $self->get_database;
+    my $config   = $self->get_config;
+
     my $response_ref = {};
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
 
-    # todo
+    $logger->debug("Cancel reservation via USB-SOAP");
 
+    unless ($username && ($gsi || $katkey) && $zw >= 0){
+	$response_ref =  {
+	    error => "missing parameter",
+	};
+
+	return $response_ref;
+    }
+
+    # Obskures Tunneln des Katkeys in den USBWS...
+    if ($katkey){
+	$gsi = "Titel-Nr: $katkey";
+    }
+    
+    my @args = ($username,$gsi,$zw);
+	    
+    my $uri = "urn:/Loan";
+	    
+    if ($circinfotable->get($database)->{circdb} ne "sisis"){
+	$uri = "urn:/Loan_inst";
+    }
+	        
+    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));    
+    
+    my $result_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('usbws_url'));
+	my $result = $soap->cancel_reservation(@args);
+	
+	unless ($result->fault) {
+	    $result_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    
+	    $response_ref = {
+		error => $result->faultcode,
+		error_description => $result->faultstring,
+	    };
+	    
+	    return $response_ref;
+
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$circinfotable->get($database)->{circcheckurl}." konnte nicht erreicht werden :".$@);
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
+	};
+	
+	return $response_ref;
+    }
+
+    if ($logger->is_debug){
+	$logger->debug("Cancel order result".YAML::Dump($result_ref));
+    }
+    
     return $response_ref;
 }
 
@@ -542,7 +626,7 @@ sub make_order {
     return $response_ref;    
 }
 
-# Titelbestellung widerrufen
+# Magazinbestellung widerrufen (via Mail)
 sub cancel_order {
     my ($self,$arg_ref) = @_;
 
@@ -571,7 +655,7 @@ sub cancel_order {
 
     $logger->debug("Cancel reservation via USB-SOAP");
 
-    unless ($username && ($gsi || $katkey) && $zw >= 0){
+    unless ($username && ($gsi || $katkey)){
 	$response_ref =  {
 	    error => "missing parameter",
 	};
@@ -579,19 +663,20 @@ sub cancel_order {
 	return $response_ref;
     }
 
-    # Obskures Tunneln des Katkeys in den USBWS...
-    if ($katkey){
-	$gsi = "Titel-Nr: $katkey";
-    }
-    
-    my @args = ($username,$gsi,$zw);
+    # todo: Bestimmung der Parameter fuer Mailversand, ggf. durch $katkey
+
+    my $title = "";
+    my $author = "";    
+    my $date = "";    
+    my $username_full = ""; # Vorname Nachname
+    my $receipt = "";
+    my $email = "";
+    my $remark = "";
+	
+    my @args = ($title, $author, $gsi, $zw, $date, $username, $username_full, $receipt, $email, $remark);
 	    
-    my $uri = "urn:/Loan";
+    my $uri = "urn:/Mail";
 	    
-    if ($circinfotable->get($database)->{circdb} ne "sisis"){
-	$uri = "urn:/Loan_inst";
-    }
-	        
     $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
     
     $logger->debug("Using args ".YAML::Dump(\@args));    
@@ -602,7 +687,7 @@ sub cancel_order {
 	my $soap = SOAP::Lite
 	    -> uri($uri)
 	    -> proxy($config->get('usbws_url'));
-	my $result = $soap->cancel_order(@args);
+	my $result = $soap->submit_storno(@args);
 	
 	unless ($result->fault) {
 	    $result_ref = $result->result;
@@ -642,18 +727,177 @@ sub cancel_order {
 
 # Gesamtkonto verlaengern
 sub renew_loans {
-    my ($self,$arg_ref) = @_;
-
+    my ($self,$username) = @_;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
+
+    my $database = $self->get_database;
+    my $config   = $self->get_config;
+
     my $response_ref = {};
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    $logger->debug("Renew loans via USB-SOAP");
+
+    unless ($username){
+	$response_ref =  {
+	    error => "missing parameter",
+	};
+
+	return $response_ref;
+    }
+    
+    my @args = ($username);
+	    
+    my $uri = "urn:/Account";
+	    
+    if ($circinfotable->get($database)->{circdb} ne "sisis"){
+	$uri = "urn:/Account_inst";
+    }
+	        
+    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));    
+    
+    my $result_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('usbws_url'));
+	my $result = $soap->renew_loans(@args);
+	
+	unless ($result->fault) {
+	    $result_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    
+	    $response_ref = {
+		error => $result->faultcode,
+		error_description => $result->faultstring,
+	    };
+	    
+	    return $response_ref;
+
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$circinfotable->get($database)->{circcheckurl}." konnte nicht erreicht werden :".$@);
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
+	};
+	
+	return $response_ref;
+    }
 
     # todo
+    #
+    # Abstraktion der Rueckgabeinformationen in $response_ref
+    
+    $response_ref = $result_ref;
+
+    return $response_ref;    
+}
+
+# Einzelausleihe verlaengern
+sub renew_single_loan {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $username        = exists $arg_ref->{username} # Nutzername
+        ? $arg_ref->{username}       : undef;
+    
+    my $gsi             = exists $arg_ref->{holdingid} # Mediennummer
+        ? $arg_ref->{holdingid}      : undef;
+
+    my $zw              = exists $arg_ref->{unit}     # Zweigstelle
+        ? $arg_ref->{unit}           : undef;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $database = $self->get_database;
+    my $config   = $self->get_config;
+
+    my $response_ref = {};
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    $logger->debug("Renew single loan via USB-SOAP");
+
+    unless ($username && $zw >= 0 && $gsi){
+	$response_ref =  {
+	    error => "missing parameter",
+	};
+
+	return $response_ref;
+    }
+    
+    my @args = ($username,$gsi,$zw);
+	    
+    my $uri = "urn:/Account";
+	    
+    if ($circinfotable->get($database)->{circdb} ne "sisis"){
+	$uri = "urn:/Account_inst";
+    }
+	        
+    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));    
+    
+    my $result_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('usbws_url'));
+	my $result = $soap->renew_singleloan(@args);
+	
+	unless ($result->fault) {
+	    $result_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    
+	    $response_ref = {
+		error => $result->faultcode,
+		error_description => $result->faultstring,
+	    };
+	    
+	    return $response_ref;
+
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$circinfotable->get($database)->{circcheckurl}." konnte nicht erreicht werden :".$@);
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
+	};
+	
+	return $response_ref;
+    }
+
+    # todo
+    #
+    # Abstraktion der Rueckgabeinformationen in $response_ref
+    
+    $response_ref = $result_ref;
 
     return $response_ref;
 }
-
 
 ######################################################################
 # Mediastatus
@@ -1308,7 +1552,7 @@ sub send_account_request {
 		    if ($logger->is_debug){
 			$response_ref->{debug} = $itemlist;
 		    }
-		    $response_ref->{no_borrows} = 1;
+		    $response_ref->{no_loans} = 1;
 		    next;
 		}
 		

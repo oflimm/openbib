@@ -3040,8 +3040,8 @@
      - json
      - rdf
 - # users/circulations_loc:
-   module: 'OpenBib::Handler::PSGI::Users::Circulations::Borrows'
-   rule: '/portal/:view/users/id/:userid/databases/id/:database/circulations/id/borrows[get]'
+   module: 'OpenBib::Handler::PSGI::Users::Circulations::Loans'
+   rule: '/portal/:view/users/id/:userid/databases/id/:database/circulations/id/loans[get]'
    runmode: 'show_collection'
    representations:
      - none

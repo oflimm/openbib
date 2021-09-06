@@ -29,7 +29,7 @@
 [%- FOREACH order = orders.items -%]
 
 <tr>
-<td><i><a href="[% order.edition %]">[% order.about %]</a></i></td>
+<td><i><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% order.edition %].html?l=[% lang %]">[% order.about %]</a></i></td>
 <td><i>[% order.department.about %]</i></td>
 <td>
 [% IF order.MTyp == 99 %]

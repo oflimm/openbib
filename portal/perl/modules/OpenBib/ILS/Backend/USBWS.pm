@@ -546,13 +546,97 @@ sub make_order {
 sub cancel_order {
     my ($self,$arg_ref) = @_;
 
+    # Set defaults
+    my $username        = exists $arg_ref->{username} # Nutzername
+        ? $arg_ref->{username}       : undef;
+    
+    my $katkey          = exists $arg_ref->{titleid}  # Katkey
+        ? $arg_ref->{titleid}        : undef;
+
+    my $gsi             = exists $arg_ref->{holdingid} # Mediennummer
+        ? $arg_ref->{holdingid}      : undef;
+
+    my $zw              = exists $arg_ref->{unit}     # Zweigstelle
+        ? $arg_ref->{unit}           : undef;
+        
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $database = $self->get_database;
+    my $config   = $self->get_config;
+
     my $response_ref = {};
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
 
-    # todo
+    $logger->debug("Cancel reservation via USB-SOAP");
 
+    unless ($username && ($gsi || $katkey) && $zw >= 0){
+	$response_ref =  {
+	    error => "missing parameter",
+	};
+
+	return $response_ref;
+    }
+
+    # Obskures Tunneln des Katkeys in den USBWS...
+    if ($katkey){
+	$gsi = "Titel-Nr: $katkey";
+    }
+    
+    my @args = ($username,$gsi,$zw);
+	    
+    my $uri = "urn:/Loan";
+	    
+    if ($circinfotable->get($database)->{circdb} ne "sisis"){
+	$uri = "urn:/Loan_inst";
+    }
+	        
+    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));    
+    
+    my $result_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('usbws_url'));
+	my $result = $soap->cancel_order(@args);
+	
+	unless ($result->fault) {
+	    $result_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    
+	    $response_ref = {
+		error => $result->faultcode,
+		error_description => $result->faultstring,
+	    };
+	    
+	    return $response_ref;
+
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$circinfotable->get($database)->{circcheckurl}." konnte nicht erreicht werden :".$@);
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
+	};
+	
+	return $response_ref;
+    }
+
+    if ($logger->is_debug){
+	$logger->debug("Cancel order result".YAML::Dump($result_ref));
+    }
+    
     return $response_ref;
 }
 
@@ -1095,8 +1179,41 @@ sub check_reservation {
 	return $response_ref;
     }
 
-    $response_ref = $result_ref;
+    if (defined $result_ref->{VormerkBestellStorno} && defined $result_ref->{VormerkBestellStorno}{NotOK} ){
+	$response_ref = {
+	    "code" => 403,
+		"error" => "failure",
+		"error_description" => $result_ref->{VormerkBestellStorno}{NotOK},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
 
+	return $response_ref	
+    }
+    
+    my $storno_ref = $result_ref->{VormerkBestellStorno};
+
+    if ($storno_ref->{OK}){
+	my @titleinfo = ();
+	push @titleinfo, $storno_ref->{Verfasser} if ($storno_ref->{Verfasser});
+	push @titleinfo, $storno_ref->{Titel} if ($storno_ref->{Titel});
+	
+	my $about = join(': ',@titleinfo);
+
+	$response_ref->{about} = $about if ($about);
+	$response_ref->{item} = $storno_ref->{MedienNummer};
+	
+    }
+    else {
+	$response_ref = {
+	    "code" => 404,
+		"error" => "failure",
+		"error_description" => "undefined error",
+	};
+    }
+    
     return $response_ref;
 }
 

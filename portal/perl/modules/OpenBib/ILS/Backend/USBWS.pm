@@ -64,9 +64,6 @@ sub authenticate {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
-    my $view        = exists $arg_ref->{view}
-        ? $arg_ref->{view}           : undef;
-    
     my $username    = exists $arg_ref->{username}
         ? $arg_ref->{username}       : undef;
 
@@ -156,51 +153,6 @@ sub authenticate {
     $response_ref->{userinfo}{surname}  = $account_ref->{Nachname};
     $response_ref->{userinfo}{forename} = $account_ref->{Vorname};
     $response_ref->{userinfo}{email}    = $account_ref->{Email1};
-
-    # Gegebenenfalls Benutzer lokal eintragen
-    $logger->debug("Save new user");
-
-    my $user = new OpenBib::User;
-    
-    # Eintragen, wenn noch nicht existent
-    # USBWS-Kennungen werden NICHT an einen View gebunden, damit mit der gleichen Kennung verschiedene lokale Bibliothekssysteme genutzt werden koennen - spezifisch fuer die Universitaet zu Koeln
-    if (!$user->user_exists_in_view({ username => $username, authenticatorid => $self->get('id'), viewid => undef })) {
-	# Neuen Satz eintragen
-	$userid = $user->add({
-	    username        => $username,
-	    hashed_password => undef,
-	    authenticatorid => $self->get('id'),
-	    viewid          => undef,
-			     });
-	
-	$response_ref->{userinfo}{userid}    = $userid;
-	
-	$logger->debug("User added with new id $userid");
-    }
-    else {
-	my $local_user = $config->get_schema->resultset('Userinfo')->search_rs(
-	    {
-		username        => $username,
-		viewid          => undef,
-		authenticatorid => $self->get('id'),
-	    },
-	    undef
-	    )->first;
-	
-	if ($local_user){
-	    $userid = $local_user->get_column('id');
-
-	    $response_ref->{userinfo}{userid}    = $userid;
-	}
-	
-	$logger->debug("User exists with id $userid");
-	
-    }
-    
-    # Benuzerinformationen eintragen
-    #$user->set_private_info($username,\%userinfo);
-    
-    #$logger->debug("Updated private user info");
 
     return $response_ref;
 }
@@ -1268,7 +1220,7 @@ sub send_account_request {
 			label     => $label,
 		    };
 
-		    if ($item_ref->{EntlZweig} => 0 && $item_ref->{EntlZweigTxt}){
+		    if ($item_ref->{EntlZweig} >= 0 && $item_ref->{EntlZweigTxt}){
 			$this_response_ref->{department} = {
 			    id => $item_ref->{EntlZweig},
 			    about => $item_ref->{EntlZweigTxt},
@@ -1285,6 +1237,7 @@ sub send_account_request {
 			$this_response_ref->{queue}     = $item_ref->{VmAnz};
 		    }
 		    elsif ($type_ref->{type} eq "BESTELLUNGEN"){
+                        # Todo: Fernleihbestellungen erkennung und zurueckgeben
 			if ($item_ref->{LesesaalTxt} && $this_response_ref->{department}{about}){
 			    $this_response_ref->{department}{about}.=" / ".$item_ref->{LesesaalTxt};
 			}

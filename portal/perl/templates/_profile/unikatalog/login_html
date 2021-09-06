@@ -148,7 +148,7 @@
 <label for="authenticator">[% msg.maketext("mit") %]:</label>
 <select class="form-control" name="authenticatorid">
 [%- FOREACH authenticator IN available_authenticators -%]
-[%-   NEXT IF authenticator.type != 'paia' -%]
+[%-   NEXT IF authenticator.type != 'ils' -%]
 <option value="[% authenticator.id %]" [% IF authenticator.id == authenticatorid %]selected="selected"[% END %]>[% authenticator.description %]</option>
 [%- END -%]
 </select>

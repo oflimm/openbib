@@ -26,7 +26,26 @@
      department = thiscirculation.department;
      storage    = thiscirculation.storage;
 
-     standort = "${department} / ${storage}";
+     standort = department ;
+
+     IF storage ;
+        standort = "${standort} / ${storage}";
+     END ;
+
+     IF thiscirculation.department_id == "0"; # Abteilung bei entliehenen Exemplaren der Hauptabteilung ausblenden, da diese nach einer Vormerkung nicht in der Abteilung, sondern in den Abholregalen bereitgestellt werden
+       IF thiscirculation.availability == 'lent' ;
+          standort.replace('^Hauptabt.* \/ .*','Hauptabteilung');
+       END;
+     ELSE ;
+       IF standort.match('Handapp.');
+         IF thiscirculation.department_id.match('^(0|6|10|15)$');
+	   standort.replace('^(.*Handapp\.).*','$1'); # Handapp. der Hauptabteilung und FBs: Namen verbergen, z.B. ID=6445402
+	 ELSIF thiscirculation.department_id.match('^20$');
+	   standort = "KMB / Handapp.";
+	 END;
+       END;
+     END;
+
 
      # Bestimmung department_url
      library_isil = "";
@@ -91,28 +110,66 @@
         standort_with_url = standort;   
      END;
 
+    # Zusatz zum Sachtitel nicht enthalten abschneiden
     title    = normdata.${"T0331"}.first.content ;
     IF  normdata.${"T0310"}.first.content ;
        title = normdata.${"T0310"}.first.content ;
     END ;
 
+    IF thiscirculation.location_mark.match('#$') ; # LBS-Exemplare: Mediennummer statt Signatur anzeigen
+      thiscirculation.location_mark = media_nr ;
+    END;
+
+    IF thiscirculation.remark && NOT thiscirculation.remark.match('^\(.*\)$') ; # z.B. 16L7924 (FussNoten=Kopie)
+       thiscirculation.remark = "(${thiscirculation.remark})";
+    END ;
+
 -%]
 <tr><td><strong>[% standort_with_url %]</strong></td>
-<td><a class="ob-qrcode_preview" onclick="return false;" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% standort | uri %] :: [% thiscirculation.location_mark | uri %]" title="Titel :: Standort :: Signatur"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" /></a></td>
+<td><a class="ob-qrcode_preview" onclick="return false;" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% standort | uri %] :: [% thiscirculation.location_mark | uri %][% IF thiscirculation.remark %] ([% thiscirculation.remark | uri %])[% END %]" title="Titel :: Standort :: Signatur"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" /></a></td>
 [%-
 
 thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','');
 
 -%]
 <td><strong>[% thiscirculation.location_mark %]</strong>
+[% IF thiscirculation.remark %] ([% thiscirculation.remark %])[% END %]
+[% IF thiscirculation.boundcollection == "Y" %]<img src="/USB/img/bindeeinheit.gif" width="28px" height="26px" title="Dieser Titel ist Teil einer Bindeeinheit, die verschiedene Medien zusammenfasst." alt="Bindeeinheit" style="vertical-align:middle;" />[% END %]
+[% IF NOT thiscirculation.department_id.match('^(19|20|325|405|420|422|423|425|431|134|108|125|222|465|119|314|315|317)$') # Mediennummer fuer Zweigstellen 19, 20, 405, ... immer unterdruecken %]
+[%   IF thiscirculation.location_mark != thiscirculation.media_nr # Anzeige der Mediennummer fuer USB-Treffer, falls ungleich Signatur %] 
+[%     IF NOT thiscirculation.location_mark.match('^(JUR|BWL|VERSW)$') %]
+<br /><span style="color:silver">[% thiscirculation.media_nr %]</span>
+[%     END %]
+[%   END %]
+[% END %]
+[%# Signatur2 = Inventarnr bei manchen Instituten wird bewusst nicht ausgewertet #]
 [% provenances = record.get_provenances_of_media(thiscirculation.media_nr) %]
 [% IF provenances.size > 0 %]
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %];mnr=[% uri_escape(thiscirculation.media_nr) %]">Provenienzen</a>
+<br/><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %];mnr=[% uri_escape(thiscirculation.media_nr) %]">Provenienzen</a>
 [% END %]
 </td>
-<td><strong>[%- IF thiscirculation.availability == 'loan' -%]ausleihbar[% ELSIF thiscirculation.availability == 'presence' %]Pr&auml;senzbestand[% ELSIF thiscirculation.availability == 'order' %]bestellbar[% IF availability_limitation %][% END %][% ELSIF
-thiscirculation.availability == 'lent' && thiscirculation.Rueckgabe != '31.12.9999' && thiscirculation.Rueckgabe != '1.1.1753' %]entliehen<br/>bis [% thiscirculation.Rueckgabe %][%- ELSE -%][% thiscirculation.availability %][%- END -%]</strong>
-[% IF thiscirculation.standort.match('^KMB') %]
+<td>
+[% USE dumper;dumper.dump(thiscirculation) %]
+[%- IF thiscirculation.availability == 'loan' -%]
+<strong>[% msg.maketext("ausleihbar") %]</strong>
+[%  ELSIF thiscirculation.availability == 'presence' %]
+<strong>[% msg.maketext("Pr&auml;senzbestand") %]</strong>
+[%  ELSIF thiscirculation.availability == 'order' %]
+[%    IF NOT config.get('active_ils') %]
+<strong>[% msg.maketext("bestellbar") %]</strong>
+[%    ELSE %]
+<a class="btn btn-primary mb-1" href="">[% msg.maketext("Bestellen") %]</a> 
+[%    END %]
+[%  ELSIF thiscirculation.availability == 'lent' && thiscirculation.Rueckgabe != '31.12.9999' && thiscirculation.Rueckgabe != '1.1.1753' %]
+[%    IF NOT config.get('active_ils') %]
+<strong>entliehen<br/>bis [% thiscirculation.Rueckgabe %]</strong>
+[%    ELSE %]
+<strong>entliehen<br/>bis [% thiscirculation.Rueckgabe %]</strong> <a class="btn btn-primary mb-1" href="">[% msg.maketext("Vormerken") %]</a> 
+[%    END %]
+[%- ELSE -%]
+<strong>[% thiscirculation.availability %]</strong>
+[%- END -%]</strong>
+[% IF standort.match('^KMB') %]
 <p class="pt-2">
           <a href="[% path_prefix %]" class="imagelink" target="IPSorderform"><button type="button" class="btn btn-primary" title="" onclick="openMsgWin('/IPS?SERVICE=TEMPLATE&amp;SUBSERVICE=ORDERFORM&amp;FUNC=SHOWFORM&amp;SID=IPS3:ed23b095f7e36560e180ea0e164b650e&amp;LOCATION=KMB&amp;VIEW=KMB:Kataloge&amp;HITROOT=%2FSEARCH_KUGKUBI%2FSESSION%5B%40id%3D%27ID_229%27%5D%2FFORMAT%5B%40id%3D%27Full%27%5D%2FPART%5B%40id%3D%271%27%5D%2FHIT&amp;TYPE=KMB&amp;ZWEIGABTEIL=Kunst-%20und%20Museumsbibliothek%20der%20Stadt%20K%C3%B6ln%20%2F%20KMB','IPSorderform',screen.availWidth*50/100,screen.availHeight*75/100,'yes','yes');return true;">In den Lesesaal bestellen</button></a>
 </p>

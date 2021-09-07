@@ -19,17 +19,76 @@
 <tr><th>[% msg.maketext("Standort") %]</th><th>QR</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Ausleihstatus") %]</th></tr>
 </thead>
 <tbody>
+[%# USE dumper;dumper.dump(circulation)%]
 [% FOREACH thiscirculation IN circulation %]
 [%-
 
      department = thiscirculation.department;
-     department_url = thiscirculation.department_url;
      storage    = thiscirculation.storage;
 
      standort = "${department} / ${storage}";
 
+     # Bestimmung department_url
+     library_isil = "";
+
+     IF standort.match('Hauptabt.') || standort.match('Humanwiss. Abteilung') ;
+       library_isil = "DE-38";
+     ELSIF thiscirculation.department_id.match('^[0-9][0-9][0-9]');
+       kuerzel = thiscirculation.department_id.match("^([0-9][0-9][0-9])").first ;
+       IF kuerzel ;
+          library_isil = "DE-38-${kuerzel}";
+       END ;
+     ELSIF standort.match('Bibliothek der Informatik');
+       library_isil = "DE-38-526";
+     ELSIF standort.match('VWL');
+       library_isil = "DE-38-101";
+     ELSIF standort.match('Archäologisches Institut');
+       library_isil = "DE-38-427";
+     ELSIF standort.match('Forschungsstelle Afrika');
+       library_isil = "DE-38-438";
+     ELSIF standort.match('Institut für Ur- u. Frühgeschichte');
+       library_isil = "DE-38-426";
+     ELSIF standort.match('China');
+       library_isil = "DE-38-450";
+     ELSIF standort.match('Japanologie');
+       library_isil = "DE-38-459";
+     ELSIF standort.match('Slavistik');
+       library_isil = "DE-38-418";
+     ELSIF standort.match('Soziologie');
+       library_isil = "DE-38-132";
+     ELSIF standort.match('Theaterwiss. Sammlung');
+       library_isil = "DE-38-429";
+     ELSIF standort.match('Inst. für Medienkultur u. Theater');
+       library_isil = "DE-38-448";
+     ELSIF standort.match('Philosophisches Seminar');
+       library_isil = "DE-38-401";
+     END ;
+
+     IF standort.match('Historisches Institut \/ Osteuropäische Geschichte');
+       library_isil = "DE-38-425";
+     ELSIF standort.match('Kunstgeschichte \/ Architekturgeschichte');
+       library_isil = "DE-38-445";
+     ELSIF standort.match('Altertumskunde \/ Byzantinistik');
+       library_isil = "DE-38-460";
+    ELSIF standort.match('Altertumskunde \/ Mittellatein und Neulatein');
+       library_isil = "DE-38-461";
+     END;
+
+     IF database.match('inst[0-9][0-9][0-9]') && NOT database.match('inst001');
+       library_isil = database.replace('inst','');
+       library_isil = "DE-38-${library_isil}";
+       thiscirculation.department.id = 0;
+     END;
+
+     
+     IF library_isil ;
+        department_url  = "${scheme}://${servername}${path_prefix}/${config.get('locations_loc')}/id/${library_isil}";
+     END ;
+
      IF department_url;
         standort_with_url = "<a href=\"${department_url}\">${standort}</a>";
+     ELSE ;
+        standort_with_url = standort;   
      END;
 
     title    = normdata.${"T0331"}.first.content ;

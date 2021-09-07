@@ -48,6 +48,7 @@ sub create_ils {
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
+    
     $arg_ref->{config} = $config;
     
     my $ils = $config->get_ils_of_database($database);

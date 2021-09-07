@@ -57,6 +57,7 @@ use OpenBib::Index::Document;
 use OpenBib::Schema::Catalog;
 use OpenBib::Schema::Enrichment;
 use OpenBib::Schema::DBI;
+use OpenBib::ILS::Factory;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Person;
@@ -1402,79 +1403,37 @@ sub load_circulation {
     }
     
     # Ausleihinformationen der Exemplare
+
     my $circulation_ref = [];
-    {
-        my $circexlist=undef;
 
-	my $daia_ref = [];
+
+    # Bei einer Ausleihbibliothek haben - falls Exemplarinformationen
+    # in den Ausleihdaten vorhanden sind -- diese Vorrange ueber die
+    # titelbasierten Exemplardaten
+    
+    # Anreichern mit Bibliotheksinformationen
+    if ($circinfotable->has_circinfo($self->{database}) && defined $circinfotable->get($self->{database})->{circ}) {
 	
-        if ($circinfotable->has_circinfo($self->{database}) && defined $circinfotable->get($self->{database})->{circ}) {
+	my $ils = OpenBib::ILS::Factory->create_ils({ database => $self->{database} });
+	
+	my $mediastatus_ref = $ils->get_mediastatus($self->{id});
 
-            $logger->debug("Getting Circulation info via DAIA");
-            
-            eval {
-		my $ua     = $self->get_client;
+	if (defined $mediastatus_ref->{items} && @{$mediastatus_ref->{items}}){
+            for (my $i=0; $i < scalar(@{$mediastatus_ref->{items}}); $i++) {
+		my $department     = $mediastatus_ref->{items}[$i]{department}{content};
+		my $department_id  = $mediastatus_ref->{items}[$i]{department}{id};
+#		my $department_url = $mediastatus_ref->{items}[$i]{department}{href};
 
-		my $url = $circinfotable->get($self->{database})->{circcheckurl};
-		
-		$url.="?id=".$self->{database}.":".$id;
+		my $storage        = $mediastatus_ref->{items}[$i]{storage}{content};
+		my $boundcollection    = $mediastatus_ref->{items}[$i]{boundcollection};
 
-		if ($logger->is_debug()){
-		    $logger->debug("Request URL: $url");
-		}
-		
-		my $request = HTTP::Request->new('GET' => $url);
-		$request->content_type('application/json');
-		
-		my $response = $ua->request($request);
-		
-		if ($logger->is_debug){
-		    $logger->debug("Response: ".$response->content);
-		}
-		
-		if (!$response->is_success) {
-		    $logger->info($response->code . ' - ' . $response->message);
-		    return;
-		}
-
-		$circexlist = decode_json $response->content;
-		
-		if (defined($circexlist)) {
-		    $daia_ref = $circexlist->{documents}[0]{item};
-		}
-		
-		if ($logger->is_debug){
-		    $logger->debug("DAIA Result: ".YAML::Dump($circexlist));
-		}
-            };
-            
-            if ($@){
-                $logger->error("DAIA-Target ".$circinfotable->get($self->{database})->{circcheckurl}." konnte nicht erreicht werden :".$@);
-            }
-            
-        }
-        
-        # Bei einer Ausleihbibliothek haben - falls Exemplarinformationen
-        # in den Ausleihdaten vorhanden sind -- diese Vorrange ueber die
-        # titelbasierten Exemplardaten
-        
-        # Anreichern mit Bibliotheksinformationen
-        if ($circinfotable->has_circinfo($self->{database}) && defined $circinfotable->get($self->{database})->{circ}
-                && @{$daia_ref}) {
-            for (my $i=0; $i < scalar(@{$daia_ref}); $i++) {
-		my $department     = $daia_ref->[$i]{department}{content};
-		my $department_id  = $daia_ref->[$i]{department}{id};
-		my $department_url = $daia_ref->[$i]{department}{href};
-
-		my $storage        = $daia_ref->[$i]{storage}{content};
-
-		my $availability_ref   = $daia_ref->[$i]{available};
-		my $unavailability_ref = $daia_ref->[$i]{unavailable};
+		my $availability_ref   = $mediastatus_ref->{items}[$i]{available};
+		my $unavailability_ref = $mediastatus_ref->{items}[$i]{unavailable};
 		
 		my $availability     = $self->get_availability($availability_ref,$unavailability_ref);
             
-		my $location_mark    = $daia_ref->[$i]{label};
-		my $media_nr         = $daia_ref->[$i]{id};
+		my $location_mark    = $mediastatus_ref->{items}[$i]{label};
+		my $media_nr         = $mediastatus_ref->{items}[$i]{id};
 
 		my $this_item_ref = {
 		    # Legacy
@@ -1482,24 +1441,22 @@ sub load_circulation {
 		    Signatur       => $location_mark,
 		    Standort       => $department." / ".$storage,
 
-		    # DAIA
+		    # ILS analog DAIA
 		    department     => $department,
 		    department_id  => $department_id,
-		    department_url => $department_url,
+#		    department_url => $department_url,
 		    location_mark  => $location_mark,
 		    storage        => $storage,
 		    availability   => $availability,
 		    availability_info   => $availability_ref,
 		    unavailability_info => $unavailability_ref,
-		    media_nr       => $media_nr,
+		    media_nr            => $media_nr,
+		    boundcollection     => $boundcollection,
 		};
 
 		push @$circulation_ref, $this_item_ref;
             }
-        }
-        else {
-            $circulation_ref=[];
-        }
+	}
     }
 
     if ($config->{memc}){

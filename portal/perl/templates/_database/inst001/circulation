@@ -149,7 +149,7 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
 [% END %]
 </td>
 <td>
-[% USE dumper;dumper.dump(thiscirculation) %]
+[%# USE dumper;dumper.dump(thiscirculation) %]
 [%- IF thiscirculation.availability == 'loan' -%]
 <strong>[% msg.maketext("ausleihbar") %]</strong>
 [%  ELSIF thiscirculation.availability == 'presence' %]

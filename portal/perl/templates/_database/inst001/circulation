@@ -148,7 +148,7 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
 [% END %]
 </td>
 <td>
-[% USE dumper;dumper.dump(thiscirculation) %]
+[%# USE dumper;dumper.dump(thiscirculation) %]
 [%- order_type = ""; -%]
 [%# TODO: Wenn "Bestellschein" in LeihstatusText, dann Hinweis zu Bestellschein -> Button "Bestellen", z.B. ID=728147 %]
 [%-

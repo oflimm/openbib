@@ -34,18 +34,17 @@
 
      IF thiscirculation.department_id == "0"; # Abteilung bei entliehenen Exemplaren der Hauptabteilung ausblenden, da diese nach einer Vormerkung nicht in der Abteilung, sondern in den Abholregalen bereitgestellt werden
        IF thiscirculation.availability == 'lent' ;
-          standort.replace('^Hauptabt.* \/ .*','Hauptabteilung');
+          standort = standort.replace('^Hauptabt.* \/ .*','Hauptabteilung');
        END;
-     ELSE ;
-       IF standort.match('Handapp.');
-         IF thiscirculation.department_id.match('^(0|6|10|15)$');
-	   standort.replace('^(.*Handapp\.).*','$1'); # Handapp. der Hauptabteilung und FBs: Namen verbergen, z.B. ID=6445402
-	 ELSIF thiscirculation.department_id.match('^20$');
-	   standort = "KMB / Handapp.";
-	 END;
-       END;
+     END ;
+     
+     IF standort.match('Handapp.');
+       IF thiscirculation.department_id.match('^(0|6|10|15)$');
+          standort = "Handapp." ; #.replace('^(.*Handapp\.).*','$1'); # Handapp. der Hauptabteilung und FBs: Namen verbergen, z.B. ID=6445402
+       ELSIF thiscirculation.department_id.match('^20$');
+          standort = "KMB / Handapp.";
+        END;
      END;
-
 
      # Bestimmung department_url
      library_isil = "";
@@ -149,22 +148,34 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
 [% END %]
 </td>
 <td>
-[%# USE dumper;dumper.dump(thiscirculation) %]
+[% USE dumper;dumper.dump(thiscirculation) %]
+[%- order_type = ""; -%]
+[%# TODO: Wenn "Bestellschein" in LeihstatusText, dann Hinweis zu Bestellschein -> Button "Bestellen", z.B. ID=728147 %]
+[%-
+    IF standort.match('Handapp.') ;
+      IF thiscirculation.department_id.match('^(0|6|10|15|406)$') ; # Handapp. der Hauptabteilung und FBs: Bestellformular einblenden, z.B. ID=6445402, ID=6781850
+         order_type = "handset"; # Bestellformulartyp HANDSET, department_id als Parameter
+      END ;
+    END ;
+-%]
 [%- IF thiscirculation.availability == 'loan' -%]
 <strong>[% msg.maketext("ausleihbar") %]</strong>
 [%  ELSIF thiscirculation.availability == 'presence' %]
 <strong>[% msg.maketext("Pr&auml;senzbestand") %]</strong>
 [%  ELSIF thiscirculation.availability == 'order' %]
-[%    IF NOT config.get('active_ils') %]
 <strong>[% msg.maketext("bestellbar") %]</strong>
-[%    ELSE %]
+[%    IF config.get('active_ils') %]
 <a class="btn btn-primary mb-1" href="">[% msg.maketext("Bestellen") %]</a> 
 [%    END %]
+[%  ELSIF thiscirculation.availability == 'lent' && order_type == "handset" %]
+<strong>entliehen</strong>
+[%    IF config.get('active_ils') %]
+&nbsp;<a class="btn btn-primary mb-1" href="">[% msg.maketext("Bestellen") %]</a> 
+[%    END %]
 [%  ELSIF thiscirculation.availability == 'lent' && thiscirculation.Rueckgabe != '31.12.9999' && thiscirculation.Rueckgabe != '1.1.1753' %]
-[%    IF NOT config.get('active_ils') %]
-<strong>entliehen<br/>bis [% thiscirculation.Rueckgabe %]</strong>
-[%    ELSE %]
-<strong>entliehen<br/>bis [% thiscirculation.Rueckgabe %]</strong> <a class="btn btn-primary mb-1" href="">[% msg.maketext("Vormerken") %]</a> 
+<strong>entliehen<br/>bis [% thiscirculation.unavailable.first.expected %]</strong>
+[%    IF config.get('active_ils') %]
+<strong>entliehen<br/>bis [% thiscirculation.unavailable.first.expected %]</strong> <a class="btn btn-primary mb-1" href="">[% msg.maketext("Vormerken") %]</a> 
 [%    END %]
 [%- ELSE -%]
 <strong>[% thiscirculation.availability %]</strong>

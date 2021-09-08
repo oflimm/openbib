@@ -1015,7 +1015,7 @@ sub get_mediastatus {
 		# Umwandeln
 		my $item_ref = {};
 
-		if ($logger->is_debug){
+		if ($config->get('debug_ils')){
 		    $item_ref->{debug} = $circ_ref;
 		}
 
@@ -1060,6 +1060,7 @@ sub get_mediastatus {
 		    if ($circ_ref->{LeihstatusText} =~m/Präsenzbestand/){
 			push @$available_ref, {
 			    service => 'presence',
+			    content => 
 			};
 		    }
 		    elsif ($circ_ref->{LeihstatusText} =~m/^bestellbar.*Lesesaal/){
@@ -1114,7 +1115,7 @@ sub get_mediastatus {
 		    elsif ($circ_ref->{LeihstatusText} =~m/vermisst/){
 			my $this_unavailable_ref = {
 			    service => 'loan',
-			    expected => 'lost',
+#			    expected => 'lost',
 			};
 			
 			push @$unavailable_ref, $this_unavailable_ref;
@@ -1125,28 +1126,33 @@ sub get_mediastatus {
 		    if ($circ_ref->{Leihstatus} =~m/^(LSNichtLeihbar)$/){
 			push @$available_ref, {
 			    service => 'presence',
+			    content => $circ_ref->{LeihstatusText},
 			};
 		    }
 		    elsif ($circ_ref->{Leihstatus} =~m/^(LSLeihbarMagLE)$/){
 			push @$available_ref, {
 			    service => 'order',
+			    content => $circ_ref->{LeihstatusText},
 			    limitation => "bestellbar (Nutzung nur im Lesesaal)",
 			    type => 'Stationary',
 			};
 		    }
-		    elsif ($circ_ref->{Leihstatus} =~m/^(LSLeihbarMag|LSLeihbarZWMag)$/ ){
+		    elsif ($circ_ref->{Leihstatus} =~m/^(LSLeihbar|LSLeihbarMag|LSLeihbarZWMag)$/ ){
 			push @$available_ref, {
 			    service => 'order',
+			    content => $circ_ref->{LeihstatusText},
 			};
 		    }
-		    elsif ($circ_ref->{Leihstatus} =~m/^(LSLeihbar|LSLeihbarZWNoBS)$/){
+		    elsif ($circ_ref->{Leihstatus} =~m/^(LSLeihbarZWNoBS)$/){
 			push @$available_ref, {
 			    service => 'loan',
+			    content => $circ_ref->{LeihstatusText},
 			};
 		    }
 		    elsif ($circ_ref->{Leihstatus} =~m/^(LSEntliehen|LSEntliehenLE)$/){
 			my $this_unavailable_ref = {
 			    service => 'loan',
+			    content => $circ_ref->{LeihstatusText},
 			    expected => $circ_ref->{RueckgabeDatum},
 			};
 			
@@ -1157,10 +1163,22 @@ sub get_mediastatus {
 			push @$unavailable_ref, $this_unavailable_ref;
 			
 		    }
-		    elsif ($circ_ref->{LeihstatusText} =~m/^(LSVermisst)$/){
+		    elsif ($circ_ref->{Leihstatus} =~m/^(LSEntliehenNoVM)$/){
 			my $this_unavailable_ref = {
 			    service => 'loan',
-			    expected => 'lost',
+			    content => $circ_ref->{LeihstatusText},
+			    expected => $circ_ref->{RueckgabeDatum},
+			};
+
+			# no queue = no reservation!
+			push @$unavailable_ref, $this_unavailable_ref;
+			
+		    }
+		    elsif ($circ_ref->{Leihstatus} =~m/^(LSVermisst)$/){
+			my $this_unavailable_ref = {
+			    service => 'loan',
+			    content => $circ_ref->{LeihstatusText},
+#			    expected => 'lost',
 			};
 			
 			push @$unavailable_ref, $this_unavailable_ref;

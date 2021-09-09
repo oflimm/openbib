@@ -155,23 +155,19 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
 [% END %]
 </td>
 <td>
-<!--
-[% USE dumper;dumper.dump(thiscirculation) %]
-- Ausleihinfo: [% availability_info %] - Standort: [% standort %]
--->
 [%############### BESTELLSCHEIN ################# %]
 [% IF availability_info.match('Bestellschein') %]
 [%    bestellscheinparts = availability_info.match('^.* (\(.*\))'); %]
 <br/><em>Bitte füllen Sie einen konventionellen Bestellschein aus</em><br/>[% bestellscheinparts.first %]<br/>
 [%    IF config.get('active_ils') %]
-&nbsp;<a class="btn btn-primary mb-1" href="">[% msg.maketext("Bestellen") %]</a> 
+&nbsp;<a class="btn btn-primary mb-1" href="">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
 [%    END %]
 [%############### HANDAPPARAT ################# %]
 [% ELSIF standort.match('Handapp.') %]
 [%   IF thiscirculation.department_id.match('^(0|6|10|15|406)$') ; # Handapp. der Hauptabteilung und FBs: Bestellformular einblenden, z.B. ID=6445402, ID=6781850 %]
 <strong>entliehen</strong>
 [%    IF config.get('active_ils') %]
-&nbsp;<a class="btn btn-primary mb-1" href="">[% msg.maketext("Bestellen") %]</a> 
+&nbsp;<a class="btn btn-primary mb-1" href="">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
 [%    END %]
 [%   ELSE %]
 [% availability_info %]
@@ -183,17 +179,33 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
 <div style="margin-top:1em;font-weight:bold;">
            Aufgrund von Umräumarbeiten steht dieser Titel bei uns zurzeit nicht zur Verfügung.
 </div>
-[%   ELSE ;
-       show_fl = 1;
-     END %]
-[%# Todo: # pruefen, ob noch andere Exemplare existieren, die nicht vermisst werden, und dann show_fl wieder auf 0 setzen %]
+[%   ELSE %]
+[%     show_fl = 1 %]
+[%   END %]
+
+[%# Pruefen, ob noch andere Exemplare existieren, die nicht vermisst werden, und dann show_fl wieder auf 0 setzen %]
+[%-
+     FOREACH checkcirculation IN circulation ;
+       checkavailability_info = "";
+       IF checkcirculation.availability_info ;
+         checkavailability_info = checkcirculation.availability_info.first.content ;
+       ELSIF checkcirculation.unavailability_info ;
+         checkavailability_info = checkcirculation.unavailability_info.first.content ;
+       END;
+       
+       IF NOT checkavailability_info.match('"vermisst|vorübergehend nicht bestellbar|Schimmelbefall');
+       show_fl = 0 ;
+       END;
+
+     END;
+-%]
 [%   IF show_fl %]
 [%      IF availability_info.match('vermisst') ;
-          fl_info = "Titel wird in der USB vermisst (Signatur: ${thiscirculation.location_mark})";
+          fl_remark = "Titel wird in der USB vermisst (Signatur: ${thiscirculation.location_mark})";
         ELSIF availability_info.match('vorübergehend nicht bestellbar') ; # Sondertext fuer Ausweichmagazin (Signaturengruppe 599) -> Link zur Fernleihe, z.B. ID=5431387
-          fl_info = "Titel wg. Umräumarbeiten in der USB nicht verfügbar (Signatur: ${thiscirculation.location_mark})";
+          fl_remark = "Titel wg. Umräumarbeiten in der USB nicht verfügbar (Signatur: ${thiscirculation.location_mark})";
         ELSIF availability_info.match('Schimmelbefall') ; # z.B. ID=703206
-          fl_info = "Titel wg. Schimmelbefall in der USB nicht entleihbar (Signatur: ${thiscirculation.location_mark})";
+          fl_remark = "Titel wg. Schimmelbefall in der USB nicht entleihbar (Signatur: ${thiscirculation.location_mark})";
         END;
 %]
          <div style="margin-top:1em;">
@@ -204,15 +216,14 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
   ill.016.item-place-of-publication
   ill.018.item-date-of-publication
   ill.019.item-iSBN
-  ill.024.del-notes (_fl_info) %]	 
+  ill.024.del-notes (_fl_remark) %]	 
            Bitte bestellen Sie den Titel bei Bedarf über die <a class="btn btn-primary" href="" target="Ill">Fernleihe</a>. 
           </div>
-
 [%   END # end show_fl%]     
-[%############### NORMALFAELLE ################# %]
+[%############### STATUS fuer NORMALFAELLE ################# %]
 [% ELSE %]
 [%############### BESTELLBAR ################# %]
-[%   IF thiscirculation.availability == "order" %]
+[%   IF thiscirculation.availability.match('^(order|loan)$') %]
 [%     IF availability_info.match('\(') %]
 [%        textparts = availability_info.match('^(.*) (\(.*\))$') # Klammerzusatz (Anzahl der Vormerkungen, Fachbibl. XYZ) in neuer Zeile %]
 [% textparts.first %]<br/>[% textparts.last %]
@@ -226,8 +237,12 @@ Bitte wenden Sie sich an die Fachbibliothek BWL.<br>E-Mail:<a href="mailto:bwl-b
 [%       IF availability_info.match('nicht ausleihbar') %]
 Präsenzbestand
 [%       ELSE %]
-[%        textparts = availability_info.match('^(.*) (\(.*\))$') # Klammerzusatz (Anzahl der Vormerkungen, Fachbibl. XYZ) in neuer Zeile %]
+[%         IF availability_info.match('\(') %]
+[%            textparts = availability_info.match('^(.*) (\(.*\))$') # Klammerzusatz (Anzahl der Vormerkungen, Fachbibl. XYZ) in neuer Zeile %]
 [% textparts.first %]<br/>[% textparts.last %]
+[%         ELSE %]
+[%            availability_info %]
+[%         END %]
 [%       END %]
 [%     ELSIF thiscirculation.location_mark.match('^(JUR|VERSW)') %]
 Präsenzbestand
@@ -243,12 +258,20 @@ Präsenzbestand
 [%       IF availability_info.match('nicht ausleihbar') # nicht ausleihbare Bestaende der BWL sollen als Präsensbestand angezeigt werden %]
 Präsenzbestand
 [%       ELSE %]
-[%        textparts = availability_info.match('^(.*) (\(.*\))$') # Klammerzusatz (Anzahl der Vormerkungen, Fachbibl. XYZ) in neuer Zeile %]
+[%         IF availability_info.match('\(') %]
+[%            textparts = availability_info.match('^(.*) (\(.*\))$') # Klammerzusatz (Anzahl der Vormerkungen, Fachbibl. XYZ) in neuer Zeile %]
 [% textparts.first %]<br/>[% textparts.last %]
+[%         ELSE %]
+[%            availability_info %]
+[%         END %]
 [%       END %]
 [%     ELSE %]
-[%        textparts = availability_info.match('^(.*) (\(.*\))$') # Klammerzusatz (Anzahl der Vormerkungen, Fachbibl. XYZ) in neuer Zeile %]
+[%         IF availability_info.match('\(') %]
+[%            textparts = availability_info.match('^(.*) (\(.*\))$') # Klammerzusatz (Anzahl der Vormerkungen, Fachbibl. XYZ) in neuer Zeile %]
 [% textparts.first %]<br/>[% textparts.last %]
+[%         ELSE %]
+[%            availability_info %]
+[%         END %]
 [%     END %]
 [%   END %]
 [% END %]

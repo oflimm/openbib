@@ -155,6 +155,18 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
 [% END %]
 </td>
 <td>
+[%############### ANFANG CORONASONDERBEHANDLUNG ######### %]
+[%-
+    corona = 0;
+
+    # Ggf. anhand konkreter Anforderungen ueberarbeiten
+    IF thiscirculation.department_id.match('^(15|506)$') && thiscirculation.availability.match('^(order|lent)$') && NOT thiscirculation.availability_info.first.limitation;
+      corona = 1;
+    END
+-%]
+[%############### END CORONASONDERBEHANDLUNG ######### %]
+
+[%############### ANFANG MEDIENSTATUSAUSGABE ######### %]
 [%############### BESTELLSCHEIN ################# %]
 [% IF availability_info.match('Bestellschein') %]
 [%    bestellscheinparts = availability_info.match('^.* (\(.*\))'); %]
@@ -220,9 +232,9 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
            Bitte bestellen Sie den Titel bei Bedarf über die <a class="btn btn-primary" href="" target="Ill">Fernleihe</a>. 
           </div>
 [%   END # end show_fl%]     
-[%############### STATUS fuer NORMALFAELLE ################# %]
+[%############### STATUS fuer STANDARDFAELLE ########################### %]
 [% ELSE %]
-[%############### BESTELLBAR ################# %]
+[%############### AUSLEIHBAR/BESTELLBAR ############################## %]
 [%   IF thiscirculation.availability.match('^(order|loan)$') %]
 [%     IF availability_info.match('\(') %]
 [%        textparts = availability_info.match('^(.*) (\(.*\))$') # Klammerzusatz (Anzahl der Vormerkungen, Fachbibl. XYZ) in neuer Zeile %]
@@ -230,6 +242,7 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
 [%     ELSE %]
 [%        availability_info %]
 [%     END %]
+[%############### PRAESENZBESTAND/ENTLIEHEN/NICHT AUSLEIHBAR ######### %]
 [%   ELSE %]
 [%     IF thiscirculation.location_mark.match('BWL/AWM') %]
 Bitte wenden Sie sich an die Fachbibliothek BWL.<br>E-Mail:<a href="mailto:bwl-bibliothek@uni-koeln.de">bwl-bibliothek@uni-koeln.de</a>
@@ -275,7 +288,30 @@ Präsenzbestand
 [%     END %]
 [%   END %]
 [% END %]
+[%############### ENDE MEDIENSTATUSAUSGABE ######### %]
 
+[%############### ANFANG MEDIENSTATUSAKTIONEN ######### %]
+[% IF thiscirculation.availability.match('^(order)$') %]
+ <form action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/orders  ?action=make_reservation;mnr=[% thiscirculation.Mediennr %];zst=[% thiscirculation.department_id %];aort=[% thiscirculation.Ausgabeort %];validtarget=[% database %]" method="POST">
+   <input type="hidden" name="validtarget"   value="[% database %]" />
+   <input type="hidden" name="holdingid"     value="[% thiscirculation.media_nr  %]" />
+   <input type="hidden" name="unit"          value="[% thiscirculation.department_id %]" />
+   <input type="hidden" name="unit_desc"     value="[% standort %]" />
+   <input type="hidden" name="pickup_location" value="" /><!-- unbesetzt = Ausgabeort bestimmen -->
+[%   IF NOT corona %]
+[%     IF config.get('active_ils') %]
+   <input type="submit" value="Bestellen" class="btn btn-primary mb-1" title="Dieses Buch steht in einem nicht-öffentlichen Bereich. Wir suchen es für Sie heraus." />
+[%     END %]
+[%   ELSE %]
+[%     IF thiscirculation.department_id.match('^(16|506)$') %]
+<b style='color:red'>Infolge der aktuellen Corona-Maßnahmen sind derzeit keine Ausleihen oder Bestellungen von Medien  möglich!</b>
+[%     ELSIF thiscirculation.department_id.match('^(15)$') %]
+<b style='color:red'>Kein Zugriff auf Bestell- und Vormerkfunktionen.</b>
+[%     END %]
+[%   END %]
+</form>
+[% END %]
+[%############### ENDE MEDIENSTATUSAKTIONEN ######### %]
 <!--
 [%- order_type = ""; -%]
 [%# TODO: Wenn "Bestellschein" in LeihstatusText, dann Hinweis zu Bestellschein -> Button "Bestellen", z.B. ID=728147 %]

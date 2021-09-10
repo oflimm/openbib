@@ -123,7 +123,7 @@
     END ;
 
     IF thiscirculation.location_mark.match('#$') ; # LBS-Exemplare: Mediennummer statt Signatur anzeigen
-      thiscirculation.location_mark = media_nr ;
+      thiscirculation.location_mark = holdingid ;
     END;
 
     IF thiscirculation.remark && NOT thiscirculation.remark.match('^\(.*\)$') ; # z.B. 16L7924 (FussNoten=Kopie)
@@ -142,16 +142,16 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
 [% IF thiscirculation.remark %] ([% thiscirculation.remark %])[% END %]
 [% IF thiscirculation.boundcollection == "Y" %]<img src="/USB/img/bindeeinheit.gif" width="28px" height="26px" title="Dieser Titel ist Teil einer Bindeeinheit, die verschiedene Medien zusammenfasst." alt="Bindeeinheit" style="vertical-align:middle;" />[% END %]
 [% IF NOT thiscirculation.department_id.match('^(19|20|325|405|420|422|423|425|431|134|108|125|222|465|119|314|315|317)$') # Mediennummer fuer Zweigstellen 19, 20, 405, ... immer unterdruecken %]
-[%   IF thiscirculation.location_mark != thiscirculation.media_nr # Anzeige der Mediennummer fuer USB-Treffer, falls ungleich Signatur %] 
+[%   IF thiscirculation.location_mark != thiscirculation.holdingid # Anzeige der Mediennummer fuer USB-Treffer, falls ungleich Signatur %] 
 [%     IF NOT thiscirculation.location_mark.match('^(JUR|BWL|VERSW)$') %]
-<br /><span style="color:silver">[% thiscirculation.media_nr %]</span>
+<br /><span style="color:silver">[% thiscirculation.holdingid %]</span>
 [%     END %]
 [%   END %]
 [% END %]
 [%# Signatur2 = Inventarnr bei manchen Instituten wird bewusst nicht ausgewertet #]
-[% provenances = record.get_provenances_of_media(thiscirculation.media_nr) %]
+[% provenances = record.get_provenances_of_media(thiscirculation.holdingid) %]
 [% IF provenances.size > 0 %]
-<br/><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %];mnr=[% uri_escape(thiscirculation.media_nr) %]">Provenienzen</a>
+<br/><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %];mnr=[% uri_escape(thiscirculation.holdingid) %]">Provenienzen</a>
 [% END %]
 </td>
 <td>
@@ -295,7 +295,7 @@ Präsenzbestand
 [% IF thiscirculation.availability.match('^(order)$') %]
  <form  method="POST" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/orders">
    <input type="hidden" name="validtarget"   value="[% database %]" />
-   <input type="hidden" name="holdingid"     value="[% thiscirculation.media_nr  %]" />
+   <input type="hidden" name="holdingid"     value="[% thiscirculation.holdingid  %]" />
    <input type="hidden" name="unit"          value="[% thiscirculation.department_id %]" />
    <input type="hidden" name="unit_desc"     value="[% standort %]" />
    <input type="hidden" name="pickup_location" value="" /><!-- unbesetzt = Ausgabeort bestimmen -->
@@ -337,7 +337,7 @@ Präsenzbestand
 [%   IF vormerkbutton  && config.get('active_ils') %]
  <form  method="POST" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/reservations">
    <input type="hidden" name="validtarget"   value="[% database %]" />
-   <input type="hidden" name="holdingid"     value="[% thiscirculation.media_nr  %]" />
+   <input type="hidden" name="holdingid"     value="[% thiscirculation.holdingid  %]" />
    <input type="hidden" name="titleid"       value="[% record.id %]" />
    <input type="hidden" name="unit"          value="[% thiscirculation.department_id %]" />
    <input type="hidden" name="unit_desc"     value="[% standort %]" />

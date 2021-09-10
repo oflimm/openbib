@@ -1424,16 +1424,23 @@ sub load_circulation {
 		my $department_id  = $mediastatus_ref->{items}[$i]{department}{id};
 #		my $department_url = $mediastatus_ref->{items}[$i]{department}{href};
 
-		my $storage        = $mediastatus_ref->{items}[$i]{storage}{content};
+		my $storage            = $mediastatus_ref->{items}[$i]{storage}{content};
 		my $boundcollection    = $mediastatus_ref->{items}[$i]{boundcollection};
+		my $remark             = $mediastatus_ref->{items}[$i]{remark}; # z.B. Exemplarfussnote wie "Sachgruppe 22"
 
 		my $availability_ref   = $mediastatus_ref->{items}[$i]{available};
 		my $unavailability_ref = $mediastatus_ref->{items}[$i]{unavailable};
-		
+
+		# Valid values: lent|missing|loan|order|presence
 		my $availability     = $self->get_availability($availability_ref,$unavailability_ref);
-            
+
+		# unknown should not be returned, so have to log response
+		if ($availability eq "unknown"){
+		    $logger->error("Ausleihstatus konnte nicht bestimmt werden. Daten: ".YAML::Dump($mediastatus_ref->{items}[$i]{debug}));
+		}
+		
 		my $location_mark    = $mediastatus_ref->{items}[$i]{label};
-		my $media_nr         = $mediastatus_ref->{items}[$i]{id};
+		my $holdingid         = $mediastatus_ref->{items}[$i]{id};
 
 		my $this_item_ref = {
 		    # Legacy
@@ -1450,8 +1457,9 @@ sub load_circulation {
 		    availability   => $availability,
 		    availability_info   => $availability_ref,
 		    unavailability_info => $unavailability_ref,
-		    media_nr            => $media_nr,
+		    holdingid           => $holdingid,
 		    boundcollection     => $boundcollection,
+		    remark              => $remark,
 		};
 
 		push @$circulation_ref, $this_item_ref;
@@ -3875,13 +3883,16 @@ sub get_availability {
 	}
     }
 
-    if (defined $unavailability_ref && %$unavailability_ref){
-	if ($unavailability_ref->{service} eq "loan"){
-	    if (defined $unavailability_ref->{expected} && $unavailability_ref->{expected}){
-		$availability = "borrowed";
-	    }
-	    elsif (!defined $unavailability_ref->{expected}){
-		$availability = "missing";
+    if (defined $unavailability_ref && @$unavailability_ref){
+	foreach my $this_unavailability_ref (@$unavailability_ref){
+	    if ($this_unavailability_ref->{service} eq "loan"){
+		if (defined $this_unavailability_ref->{expected} && $this_unavailability_ref->{expected}){
+		    $availability = "lent";
+		}
+		
+		if (!defined $this_unavailability_ref->{expected} || $this_unavailability_ref->{expected} eq "lost"){
+		    $availability = "missing";
+		}
 	    }
 	}
     }

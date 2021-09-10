@@ -291,8 +291,9 @@ Präsenzbestand
 [%############### ENDE MEDIENSTATUSAUSGABE ######### %]
 
 [%############### ANFANG MEDIENSTATUSAKTIONEN ######### %]
+[%############### BESTELLBUTTON ######### %]
 [% IF thiscirculation.availability.match('^(order)$') %]
- <form action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/orders  ?action=make_reservation;mnr=[% thiscirculation.Mediennr %];zst=[% thiscirculation.department_id %];aort=[% thiscirculation.Ausgabeort %];validtarget=[% database %]" method="POST">
+ <form  method="POST" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/orders">
    <input type="hidden" name="validtarget"   value="[% database %]" />
    <input type="hidden" name="holdingid"     value="[% thiscirculation.media_nr  %]" />
    <input type="hidden" name="unit"          value="[% thiscirculation.department_id %]" />
@@ -310,73 +311,44 @@ Präsenzbestand
 [%     END %]
 [%   END %]
 </form>
+[%############### VORMERKBUTTON ######### %]
+[% ELSIF thiscirculation.availability.match('^(lent)$') && thiscirculation.unavailability_info.first.queue.defined %]
+[%   
+     vormerkbutton = 1 ;
+
+     IF thiscirculation.department_id == "0" && (standort.match('Lehrbuchsammlung') || record.id == 8224428);
+       # Kein Vormerkbutton bei ausgeliehenen LBS-Ex., falls andere LBS-Ex. in ZW 0 verfuegbar sind
+       # Kein Vormerkbuttion bei bei ipads, falls andere Geraete verfuegbar sind (katkey: 8224428)
+       FOREACH checkcirculation IN circulation ;
+         NEXT IF checkcirculation.department_id > 0 ;
+         checkavailability_info = "";
+         IF checkcirculation.availability_info ;
+           checkavailability_info = checkcirculation.availability_info.first.content ;
+         ELSIF checkcirculation.unavailability_info ;
+           checkavailability_info = checkcirculation.unavailability_info.first.content ;
+         END;
+       
+         IF checkavailability_info.match('^(order)$');
+           vormerkbutton = 0 ;
+         END;
+       END;
+     END;    
+%]
+[%   IF vormerkbutton  && config.get('active_ils') %]
+ <form  method="POST" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/reservations">
+   <input type="hidden" name="validtarget"   value="[% database %]" />
+   <input type="hidden" name="holdingid"     value="[% thiscirculation.media_nr  %]" />
+   <input type="hidden" name="titleid"       value="[% record.id %]" />
+   <input type="hidden" name="unit"          value="[% thiscirculation.department_id %]" />
+   <input type="hidden" name="unit_desc"     value="[% standort %]" />
+   <input type="hidden" name="num_department_holdings"  value="[% thiscirculation.num_department_holdings %]" />
+   <input type="hidden" name="pickup_location" value="" /><!-- unbesetzt = Ausgabeort bestimmen -->
+   <input type="submit" value="Vormerken" class="buttonsmall submit" />
+</form>
+[%   END %]
 [% END %]
 [%############### ENDE MEDIENSTATUSAKTIONEN ######### %]
-<!--
-[%- order_type = ""; -%]
-[%# TODO: Wenn "Bestellschein" in LeihstatusText, dann Hinweis zu Bestellschein -> Button "Bestellen", z.B. ID=728147 %]
-[%-
-    IF standort.match('Handapp.') ;
-      IF thiscirculation.department_id.match('^(0|6|10|15|406)$') ; # Handapp. der Hauptabteilung und FBs: Bestellformular einblenden, z.B. ID=6445402, ID=6781850
-         order_type = "handset"; # Bestellformulartyp HANDSET, department_id als Parameter
-      END ;
-    END ;
--%]
-[%- IF thiscirculation.availability == 'loan' -%]
-<strong>[% msg.maketext("ausleihbar") %]</strong>
-[%  ELSIF thiscirculation.availability == 'presence' %]
-<strong>[% msg.maketext("Pr&auml;senzbestand") %]</strong>
-[%  ELSIF thiscirculation.availability == 'order' %]
-<strong>[% msg.maketext("bestellbar") %]</strong>
-[%    IF config.get('active_ils') %]
-<a class="btn btn-primary mb-1" href="">[% msg.maketext("Bestellen") %]</a> 
-[%    END %]
-[%  ELSIF thiscirculation.availability == 'lent' && order_type == "handset" %]
-<strong>entliehen</strong>
-[%    IF config.get('active_ils') %]
-&nbsp;<a class="btn btn-primary mb-1" href="">[% msg.maketext("Bestellen") %]</a> 
-[%    END %]
-[%  ELSIF thiscirculation.availability == 'lent' && thiscirculation.unavailable.first.expected != '31.12.9999' && thiscirculation.unavailable.first.expected != '1.1.1753' %]
-<strong>entliehen<br/>bis [% thiscirculation.unavailable.first.expected %]</strong>
-[%    IF config.get('active_ils') %]
-<strong>entliehen<br/>bis [% thiscirculation.unavailable.first.expected %]</strong> <a class="btn btn-primary mb-1" href="">[% msg.maketext("Vormerken") %]</a> 
-[%    END %]
-[%- ELSE -%]
-<strong>[% thiscirculation.availability %]</strong>
-[%- END -%]</strong>
-[% IF standort.match('^KMB') %]
-<p class="pt-2">
-          <a href="[% path_prefix %]" class="imagelink" target="IPSorderform"><button type="button" class="btn btn-primary" title="" onclick="openMsgWin('/IPS?SERVICE=TEMPLATE&amp;SUBSERVICE=ORDERFORM&amp;FUNC=SHOWFORM&amp;SID=IPS3:ed23b095f7e36560e180ea0e164b650e&amp;LOCATION=KMB&amp;VIEW=KMB:Kataloge&amp;HITROOT=%2FSEARCH_KUGKUBI%2FSESSION%5B%40id%3D%27ID_229%27%5D%2FFORMAT%5B%40id%3D%27Full%27%5D%2FPART%5B%40id%3D%271%27%5D%2FHIT&amp;TYPE=KMB&amp;ZWEIGABTEIL=Kunst-%20und%20Museumsbibliothek%20der%20Stadt%20K%C3%B6ln%20%2F%20KMB','IPSorderform',screen.availWidth*50/100,screen.availHeight*75/100,'yes','yes');return true;">In den Lesesaal bestellen</button></a>
-</p>
-         
-<p class="pt-1">
-        <strong>KMB-Dokumentlieferdienst:</strong><br>
-          
-          
-        <a href="https://www.subito-doc.de/" target="IPSorderform">Aufsatzbestellung</a>
-	</p>
-[% END %]
--->
 </td>
-<!--
-<td class="circurl">
-[%
-     IF thiscirculation.Ausleihurl %]
-   <img style="vertical-align:bottom" src="[% config.get_icon("follow",view,sysprofile) %]" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=550;url=[% uri_escape(thiscirculation.Ausleihurl) %]">[% msg.maketext("Weiter") %]</a>
-[%   ELSE %]
-[%      IF thiscirculation.Statuscode != 0 ;
-            IF thiscirculation.Gruppe.Name.match("Handapparat") %]
-                keine Vormerkung m&ouml;glich<br/>(in [% thiscirculation.Entleiher.Name %])
-[%#          ELSIF thiscirculation.Vormerkbarkeit  %]
-<!--     <a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=make_reservation;mnr=[% thiscirculation.Mediennr %];zst=[% thiscirculation.department_id %];aort=[% thiscirculation.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>&nbsp;([% thiscirculation.Vormerkungen+1 %]. Stelle) -->
-[%          ELSE %]            
-                keine Vormerkung m&ouml;glich
-[%          END %]
-[%      ELSE %]
-Ausleihe vor Ort [%# msg.maketext("Keine Aktion m&ouml;glich") %]
-[%      END %]
-[%   END %]
-</td>-->
 </tr>
 [% END %]
 </tbody>

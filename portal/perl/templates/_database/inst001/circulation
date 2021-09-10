@@ -123,7 +123,7 @@
     END ;
 
     IF thiscirculation.location_mark.match('#$') ; # LBS-Exemplare: Mediennummer statt Signatur anzeigen
-      thiscirculation.location_mark = holdingid ;
+      thiscirculation.location_mark = thiscirculation.holdingid ;
     END;
 
     IF thiscirculation.remark && NOT thiscirculation.remark.match('^\(.*\)$') ; # z.B. 16L7924 (FussNoten=Kopie)

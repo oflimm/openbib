@@ -4,7 +4,6 @@
 #
 #  Dieses File ist (C) 2021 Oliver Flimm <flimm@openbib.org>
 #
-#
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
 #  Free Software Foundation herausgegeben, weitergeben und/oder
@@ -938,12 +937,13 @@ sub get_mediastatus {
 	    
 	    $logger->debug("Getting Circulation info via USB-SOAP");
 	    
-	    my @args = ($titleid);
+	    my @args = ($titleid,"0"); # Immer mit Zweigstelle 0 starten
 	    
 	    my $uri = "urn:/Loan";
 	    
 	    if ($circinfotable->get($database)->{circdb} ne "sisis"){
 		$uri = "urn:/Loan_inst";
+		push @args, undef; # Keine Benutzernummer		
 		push @args, $database;
 	    }
 	    
@@ -953,7 +953,7 @@ sub get_mediastatus {
 		my $soap = SOAP::Lite
 		    -> uri($uri)
 		    -> proxy($config->get('usbws_url'));
-		my $result = $soap->show_all_items(@args);
+		my $result = $soap->show_items(@args);
 		
 		unless ($result->fault) {
 		    $circexlist = $result->result;
@@ -1137,13 +1137,13 @@ sub get_mediastatus {
 			    type => 'Stationary',
 			};
 		    }
-		    elsif ($circ_ref->{Leihstatus} =~m/^(LSLeihbar|LSLeihbarMag|LSLeihbarZWMag)$/ ){
+		    elsif ($circ_ref->{Leihstatus} =~m/^(LSLeihbarMag|LSLeihbarZWMag)$/ ){
 			push @$available_ref, {
 			    service => 'order',
 			    content => $circ_ref->{LeihstatusText},
 			};
 		    }
-		    elsif ($circ_ref->{Leihstatus} =~m/^(LSLeihbarZWNoBS)$/){
+		    elsif ($circ_ref->{Leihstatus} =~m/^(LSLeihbar|LSLeihbarZWNoBS)$/){
 			push @$available_ref, {
 			    service => 'loan',
 			    content => $circ_ref->{LeihstatusText},
@@ -1156,7 +1156,7 @@ sub get_mediastatus {
 			    expected => $circ_ref->{RueckgabeDatum},
 			};
 			
-			if ($circ_ref->{VormerkAnzahl}){
+			if ($circ_ref->{VormerkAnzahl} >= 0){
 			    $this_unavailable_ref->{queue} = $circ_ref->{VormerkAnzahl} ;
 			}
 			

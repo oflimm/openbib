@@ -164,29 +164,93 @@ sub create_record {
     # Aktive Aenderungen des Nutzerkontos
     my $validtarget     = ($query->param('validtarget'    ))?$query->param('validtarget'):undef;
     my $holdingid       = ($query->param('holdingid'      ))?$query->param('holdingid'):undef; # Mediennummer
-    my $pickup_location = ($query->param('pickup_location'))?$query->param('pickup_location'):0;
-    my $unit            = ($query->param('unit'           ))?$query->param('unit'):0;
+    my $pickup_location = ($query->param('pickup_location') >= 0)?$query->param('pickup_location'):undef;
+    my $unit            = ($query->param('unit'           ) >= 0)?$query->param('unit'):0;
+
+    unless ($validtarget && $holdingid && $unit >= 0){
+	return $self->print_warning($msg->maketext("Notwendige Parameter nicht besetzt")." (validtarget: $validtarget, holdingid:$holdingid, unit:$unit)");
+    }
     
-    my ($username,$password)  = $user->get_credentials();
+    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
 
+    my $userid = $user->get_userid_of_session($session->{ID});
+    
+    $self->param('userid',$userid);
+    
+    if ($logger->debug){
+	$logger->debug("Auth successful: ".$self->authorization_successful." - Db: $database - Authenticator: $sessionauthenticator");
+    }
+    
+    if (!$self->authorization_successful || $database ne $sessionauthenticator){
+        if ($self->param('representation') eq "html"){
+            return $self->tunnel_through_authenticator('POST');            
+        }
+        else  {
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
+        }
+    }
 
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
+    my ($username,$password,$access_token) = $user->get_credentials();
+    
+    $database              = $user->get_targetdb_of_session($session->{ID});
 
     my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
-    
-    my $response_check_order_ref = $ils->check_order({ username => $username, holdingid => $holdingid, unit => $unit});
-
-    $logger->debug($response_check_order_ref);
 
     my $authenticator = $session->get_authenticator;
     
-    # TT-Data erzeugen
-    my $ttdata={
-        authenticator => $authenticator,
-        result     => $response_check_order_ref,
-    };
-    
-    return $self->print_page($config->{tt_users_circulations_make_order_tname},$ttdata);
+    if (!defined $pickup_location){
+	$logger->debug("Checking order for pickup locations");
+	
+	my $response_check_order_ref = $ils->check_order({ username => $username, holdingid => $holdingid, unit => $unit});
+
+	if ($logger->is_debug){
+	    $logger->debug("Result check_order:".YAML::Dump($response_check_order_ref));
+	}
+	
+	if ($response_check_order_ref->{error}){
+            return $self->print_warning($response_check_order_ref->{error_description});
+	}
+	elsif ($response_check_order_ref->{successful}){
+	    # TT-Data erzeugen
+	    my $ttdata={
+		database      => $database,
+		unit          => $unit,
+		holdingid     => $holdingid,
+		validtarget   => $validtarget,
+		pickup_locations => $response_check_order_ref->{pickup_locations},
+	    };
+	    
+	    return $self->print_page($config->{tt_users_circulations_check_order_tname},$ttdata);
+	    
+	}		
+    }
+    else {
+	$logger->debug("Making order");
+	
+	my $response_make_order_ref = $ils->make_order({ username => $username, holdingid => $holdingid, unit => $unit, pickup_location => $pickup_location});
+
+	if ($logger->is_debug){
+	    $logger->debug("Result make_order:".YAML::Dump($response_make_order_ref));	
+	}
+	
+	if ($response_make_order_ref->{error}){
+            return $self->print_warning($response_make_order_ref->{error_description});
+	}
+	elsif ($response_make_order_ref->{successful}){
+	    # TT-Data erzeugen
+	    my $ttdata={
+		database      => $database,
+		unit          => $unit,
+		holdingid     => $holdingid,
+		pickup_location => $pickup_location,
+		validtarget   => $validtarget,
+		order         => $response_make_order_ref,
+	    };
+	    
+	    return $self->print_page($config->{tt_users_circulations_make_order_tname},$ttdata);
+	    
+	}		
+    }
 }
 
 

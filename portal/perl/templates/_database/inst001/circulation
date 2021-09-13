@@ -343,7 +343,7 @@ Präsenzbestand
    <input type="hidden" name="unit_desc"     value="[% standort %]" />
    <input type="hidden" name="num_department_holdings"  value="[% thiscirculation.num_department_holdings %]" />
    <!-- Kein Parameter pickup_location = Ausgabeort bestimmen -->
-   <input type="submit" value="Vormerken" class="buttonsmall submit" />
+   <input type="submit" value="Vormerken" class="btn btn-primary mb-1" />
 </form>
 [%   END %]
 [% END %]

@@ -618,9 +618,30 @@ sub make_order {
 
 	return $response_ref	
     }
+    elsif (defined $result_ref->{OpacBestellung} && defined $result_ref->{OpacBestellung}{OK} ){
+	$response_ref = {
+	    "successful" => 1,
+		"message" => $result_ref->{OpacBestellung}{OK},
+		"title"   => $result_ref->{OpacBestellung}{Titel},
+		"author"  => $result_ref->{OpacBestellung}{Verfasser},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
 
-    
-    $response_ref = $result_ref;
+	return $response_ref	
+    }
+
+    $response_ref = {
+	    "code" => 405,
+		"error" => "unknown error",
+		"error_description" => "Unbekannter Fehler",
+	};
+
+    if ($logger->is_debug){
+	$response_ref->{debug} = $result_ref;
+    }
 
     return $response_ref;    
 }
@@ -1311,10 +1332,19 @@ sub check_order {
 	return $response_ref;
     }
 
-    if (defined $result_ref->{OpacBestellung} && defined $result_ref->{OpacBestellung}{ErrorCode} && $result_ref->{OpacBestellung}{ErrorCode} eq "OpsOrderVomAnderemBenEntl"){
+    if (defined $result_ref->{OpacBestellung} && defined $result_ref->{OpacBestellung}{NotOK}){
+	my $error = "unknown order failure";
+	
+	if ($result_ref->{OpacBestellung}{ErrorCode} eq "OpsOrderMehrfExemplBestellt"){
+	    $error = "already ordered";
+	}
+	elsif ($result_ref->{OpacBestellung}{ErrorCode} eq "OpsOrderVomAnderemBenEntl"){
+	    $error = "already lent by other user";	    
+	}
+	
 	$response_ref = {
 	    "code" => 403,
-		"error" => "already lent",
+		"error" => $error,
 		"error_description" => $result_ref->{OpacBestellung}{NotOK},
 	};
 

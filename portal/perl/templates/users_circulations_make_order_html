@@ -27,5 +27,7 @@
 
 [%# USE dumper; dumper.dump(order) %]
 
+<a class="btn btn-primary btn-lg mt-5" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]" role="button">[% msg.maketext('Weiter') %]</a>
+
 </div>
 </div>

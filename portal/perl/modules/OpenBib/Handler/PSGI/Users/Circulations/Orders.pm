@@ -167,6 +167,10 @@ sub create_record {
     my $pickup_location = ($query->param('pickup_location') >= 0)?$query->param('pickup_location'):undef;
     my $unit            = ($query->param('unit'           ) >= 0)?$query->param('unit'):0;
 
+    unless ($config->get('active_ils')){
+	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellunge, Vormerkungen, usw.) sind aktuell systemweit deaktiviert."));	
+    }
+    
     unless ($validtarget && $holdingid && $unit >= 0){
 	return $self->print_warning($msg->maketext("Notwendige Parameter nicht besetzt")." (validtarget: $validtarget, holdingid:$holdingid, unit:$unit)");
     }

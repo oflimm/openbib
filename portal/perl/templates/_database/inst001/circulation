@@ -298,7 +298,7 @@ Präsenzbestand
    <input type="hidden" name="holdingid"     value="[% thiscirculation.holdingid  %]" />
    <input type="hidden" name="unit"          value="[% thiscirculation.department_id %]" />
    <input type="hidden" name="unit_desc"     value="[% standort %]" />
-   <input type="hidden" name="pickup_location" value="" /><!-- unbesetzt = Ausgabeort bestimmen -->
+   <!-- Kein Parameter pickup_location = Ausgabeort bestimmen -->
 [%   IF NOT corona %]
 [%     IF config.get('active_ils') %]
    <input type="submit" value="Bestellen" class="btn btn-primary mb-1" title="Dieses Buch steht in einem nicht-öffentlichen Bereich. Wir suchen es für Sie heraus." />
@@ -342,7 +342,7 @@ Präsenzbestand
    <input type="hidden" name="unit"          value="[% thiscirculation.department_id %]" />
    <input type="hidden" name="unit_desc"     value="[% standort %]" />
    <input type="hidden" name="num_department_holdings"  value="[% thiscirculation.num_department_holdings %]" />
-   <input type="hidden" name="pickup_location" value="" /><!-- unbesetzt = Ausgabeort bestimmen -->
+   <!-- Kein Parameter pickup_location = Ausgabeort bestimmen -->
    <input type="submit" value="Vormerken" class="buttonsmall submit" />
 </form>
 [%   END %]

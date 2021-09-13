@@ -1,0 +1,31 @@
+[%#-
+#######################################################################
+#
+# Templatename: users_circulations_make_order_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe des Status einer erfolgten Bestellung
+#
+#######################################################################
+-%]
+
+<div class="card mt-5 mb-5 mr-5">
+<div class="card-header">[% msg.maketext("Bestellung") %]</div>
+<div class="card-body">
+
+[% IF title || author %]<p>
+[% IF author %][% author%]: [% END %][% IF title %][% title %][% END %]
+</p>
+[% END %]
+
+[% IF order.message %]
+<p><strong>[% order.message %]</strong></p>
+[% END %]
+
+[%# USE dumper; dumper.dump(order) %]
+
+</div>
+</div>

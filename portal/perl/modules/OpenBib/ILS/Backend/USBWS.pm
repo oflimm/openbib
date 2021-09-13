@@ -1311,6 +1311,12 @@ sub check_order {
 	    }
 	}
 	else {
+	    # Problem ohne Loesung: In bestimmten Funktionen bricht der externe USBWS die Anfrage per
+	    # Logger->error_die einfach ab. Entsprechende faultcodes und
+	    # faultstrings werden dann zwar via SOAP zurueckgeliefert, aber der weitere
+	    # Code in diesem Modul bricht dann einfach ab und liefert {} zurueck
+	    # und nicht response_ref mit error und error_description
+
 	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
 
 	    $response_ref = {
@@ -1440,7 +1446,7 @@ sub check_reservation {
 	unless ($result->fault) {
 	    $result_ref = $result->result;
 	    if ($logger->is_debug){
-		$logger->debug("SOAP Result: ".YAML::Dump($response_ref));
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
 	    }
 	}
 	else {
@@ -1450,12 +1456,12 @@ sub check_reservation {
 	    # Code in diesem Modul bricht dann einfach ab und liefert {} zurueck
 	    # und nicht response_ref mit error und error_description
 	    
+	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+
 	    $response_ref = {
 		error => $result->faultcode,
 		error_description => $result->faultstring,
 	    };
-
-	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
 	    
 	    return $response_ref;
 	}
@@ -1484,19 +1490,24 @@ sub check_reservation {
 
 	return $response_ref	
     }
+    elsif (defined $result_ref->{VormerkBestellStorno} && defined $result_ref->{VormerkBestellStorno}{OK} ){
     
-    my $storno_ref = $result_ref->{VormerkBestellStorno};
+	my $storno_ref = $result_ref->{VormerkBestellStorno};
 
-    if ($storno_ref->{OK}){
 	my @titleinfo = ();
 	push @titleinfo, $storno_ref->{Verfasser} if ($storno_ref->{Verfasser});
 	push @titleinfo, $storno_ref->{Titel} if ($storno_ref->{Titel});
 	
 	my $about = join(': ',@titleinfo);
-
-	$response_ref->{about} = $about if ($about);
-	$response_ref->{item} = $storno_ref->{MedienNummer};
 	
+	$response_ref->{about} = $about if ($about);
+	$response_ref->{holdingid} = $storno_ref->{MedienNummer};
+
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref;
     }
     else {
 	$response_ref = {

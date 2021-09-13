@@ -1,0 +1,40 @@
+[%#-
+#######################################################################
+#
+# Templatename: users_circulations_check_order_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller gemahnten Medien
+#
+#######################################################################
+-%]
+
+[%# USE dumper; dumper.dump(pickup_locations) %]
+
+<div class="card mt-5 mb-5 mr-5">
+<div class="card-header">[% msg.maketext("Auswahl des Abholorts") %]</div>
+<div class="card-body">
+ <form  method="POST" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/reservations">
+   <input type="hidden" name="validtarget"   value="[% database %]" />
+   <input type="hidden" name="holdingid"     value="[% holdingid  %]" />
+   <input type="hidden" name="unit"          value="[% unit %]" />
+   <input type="hidden" name="unit_desc"     value="[% standort %]" />
+
+[% USE dumper;dumper.dump(reservation)%]
+[% checked = 0 %]
+[% FOREACH pickup_location IN pickup_locations %]
+<div class="form-check">
+<input class="form-check-input" type="radio" name="pickup_location" id="pickup_[% pickup_location.name %]" value="[% pickup_location.name %]" [% IF checked == 0%]checked[% checked = 1 ; END; %]/>
+<label class="form-check-label" for="pickup_[% pickup_location.name %]">[% pickup_location.about %]</label>
+</div>
+[% END %]
+
+<button type="submit" class="btn btn-primary mb-2 mt-4">[% msg.maketext("Auswahl") %]</button>
+
+</form>
+
+</div>
+</div>

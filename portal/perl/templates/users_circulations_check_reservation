@@ -1,12 +1,12 @@
 [%- IF representation == '' || representation == 'html' ;
     layout_param = {
-     'page_title' = 'Vormerkung'
+     'page_title' = 'Auswahl Abholort'
 
-      'main_template' = 'users_circulations_make_reservation_html'
+      'main_template' = 'users_circulations_check_reservation_html'
       'sidebar_template' = 'users_navigation'
 
       'active_menu' = 'users'
-      'active_submenu' = 'make_reservation'
+      'active_submenu' = 'check_reservation'
       
       'breadcrumb' = [
           {
@@ -18,7 +18,7 @@
 	     url  = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/preferences.html?l=${lang}"
 	  },
 	  {
-	     desc = msg.maketext('Vormerkung')
+	     desc = msg.maketext('Auswahl Abholort')
 	     url  = '#'
 	     current = 1
 	  }

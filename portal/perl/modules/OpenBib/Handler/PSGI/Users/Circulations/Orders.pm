@@ -196,7 +196,7 @@ sub create_record {
 
     my ($username,$password,$access_token) = $user->get_credentials();
     
-    $database              = $user->get_targetdb_of_session($session->{ID});
+    $database              = $sessionauthenticator;
 
     my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
 

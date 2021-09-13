@@ -1286,7 +1286,7 @@ sub check_order {
 	unless ($result->fault) {
 	    $result_ref = $result->result;
 	    if ($logger->is_debug){
-		$logger->debug("SOAP Result: ".YAML::Dump($response_ref));
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
 	    }
 	}
 	else {
@@ -1326,7 +1326,7 @@ sub check_order {
     }
     # at least one pickup location
     elsif (scalar keys %{$result_ref->{OpacBestellung}} >= 1){
-	
+	$response_ref->{"successful"} = 1;
 	foreach my $pickupid (sort keys %{$result_ref->{OpacBestellung}}){
 	    push @{$response_ref->{"pickup_locations"}}, {
 		name        => $pickupid,

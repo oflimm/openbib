@@ -620,6 +620,11 @@ FOREACH category IN categories;
       ELSE ;
         content = content_map.${category}.join(' ; ');
       END;
+
+      # Titel hervorheben
+      IF category == "T0331";
+        content = "<span class=\"ob-title\">${content}</span>";
+      END;
 -%]
 <tr><th class="ob-field">[% msg.maketext("${thiscategory}") %]</th><td>[% content %]</td></tr>
 [%

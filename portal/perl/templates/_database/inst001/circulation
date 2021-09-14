@@ -132,14 +132,14 @@
 
 -%]
 <tr><td><strong>[% standort_with_url %]</strong></td>
-<td><a class="ob-qrcode_preview" onclick="return false;" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% standort | uri %] :: [% thiscirculation.location_mark | uri %][% IF thiscirculation.remark %] ([% thiscirculation.remark | uri %])[% END %]" title="Titel :: Standort :: Signatur"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" /></a></td>
+<td><a class="ob-qrcode_preview" onclick="return false;" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% standort | uri %] :: [% thiscirculation.location_mark | uri %][% IF thiscirculation.remark %] [% thiscirculation.remark | uri %][% END %]" title="Titel :: Standort :: Signatur"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" /></a></td>
 [%-
 
 thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','');
 
 -%]
 <td><strong>[% thiscirculation.location_mark %]</strong>
-[% IF thiscirculation.remark %] ([% thiscirculation.remark %])[% END %]
+[% IF thiscirculation.remark %] [% thiscirculation.remark %][% END %]
 [% IF thiscirculation.boundcollection == "Y" %]<img src="/USB/img/bindeeinheit.gif" width="28px" height="26px" title="Dieser Titel ist Teil einer Bindeeinheit, die verschiedene Medien zusammenfasst." alt="Bindeeinheit" style="vertical-align:middle;" />[% END %]
 [% IF NOT thiscirculation.department_id.match('^(19|20|325|405|420|422|423|425|431|134|108|125|222|465|119|314|315|317)$') # Mediennummer fuer Zweigstellen 19, 20, 405, ... immer unterdruecken %]
 [%   IF thiscirculation.location_mark != thiscirculation.holdingid # Anzeige der Mediennummer fuer USB-Treffer, falls ungleich Signatur %] 
@@ -321,27 +321,30 @@ Präsenzbestand
        # Kein Vormerkbuttion bei bei ipads, falls andere Geraete verfuegbar sind (katkey: 8224428)
        FOREACH checkcirculation IN circulation ;
          NEXT IF checkcirculation.department_id > 0 ;
-         checkavailability_info = "";
-         IF checkcirculation.availability_info ;
-           checkavailability_info = checkcirculation.availability_info.first.content ;
-         ELSIF checkcirculation.unavailability_info ;
-           checkavailability_info = checkcirculation.unavailability_info.first.content ;
-         END;
-       
-         IF checkavailability_info.match('^(order)$');
+         IF checkcirculation.availability.match('^(loan|order)$');
            vormerkbutton = 0 ;
          END;
        END;
      END;    
 %]
 [%   IF vormerkbutton  && config.get('active_ils') %]
+
+[% # (Mehrfach)exemplare pro Zweigstelle
+ 
+       num_holdings_in_unit = 0;     
+       FOREACH checkcirculation IN circulation ;
+         NEXT IF checkcirculation.department_id != thiscirculation.department_id ;
+         num_holdings_in_unit = num_holdings_in_unit + 1 ;
+       END;
+%]
+
  <form  method="POST" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/reservations">
    <input type="hidden" name="validtarget"   value="[% database %]" />
    <input type="hidden" name="holdingid"     value="[% thiscirculation.holdingid  %]" />
    <input type="hidden" name="titleid"       value="[% record.id %]" />
    <input type="hidden" name="unit"          value="[% thiscirculation.department_id %]" />
    <input type="hidden" name="unit_desc"     value="[% standort %]" />
-   <input type="hidden" name="num_department_holdings"  value="[% thiscirculation.num_department_holdings %]" />
+   <input type="hidden" name="num_holdings_in_unit"  value="[% num_holdings_in_unit %]" />
    <!-- Kein Parameter pickup_location = Ausgabeort bestimmen -->
    <input type="submit" value="Vormerken" class="btn btn-primary mb-1" />
 </form>

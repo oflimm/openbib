@@ -533,9 +533,39 @@ sub cancel_reservation {
 	return $response_ref;
     }
 
-    if ($logger->is_debug){
-	$logger->debug("Cancel order result".YAML::Dump($result_ref));
+    if (defined $result_ref->{VormerkBestellStorno} && defined $result_ref->{VormerkBestellStorno}{NotOK} ){
+	$response_ref = {
+	    "code" => 403,
+		"error" => "reservation error",
+		"error_description" => $result_ref->{VormerkBestellStorno}{NotOK},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
     }
+    elsif (defined $result_ref->{VormerkBestellStorno} && defined $result_ref->{VormerkBestellStorno}{OK} ){
+	$response_ref = {
+	    "successful" => 1,
+		"message" => $result_ref->{VormerkBestellStorno}{OK},
+		"title"   => $result_ref->{VormerkBestellStorno}{Titel},
+		"author"  => $result_ref->{VormerkBestellStorno}{Verfasser},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+
+    $response_ref = {
+	"code" => 405,
+	    "error" => "unknown error",
+	    "error_description" => "Unbekannter Fehler",
+    };
     
     return $response_ref;
 }

@@ -169,9 +169,14 @@ sub create_record {
     # Aktive Aenderungen des Nutzerkontos
     my $validtarget     = ($query->param('validtarget'    ))?$query->param('validtarget'):undef;
     my $holdingid       = ($query->param('holdingid'      ))?$query->param('holdingid'):undef; # Mediennummer
-    my $pickup_location = (defined $query->param('pickup_location') && $query->param('pickup_location') >= 0)?$query->param('pickup_location'):undef;
+    my $titleid         = ($query->param('titleid'        ))?$query->param('titleid'):undef; # Katkey
+    my $num_holdings_in_unit = ($query->param('num_holdings_in_unit'))?$query->param('num_holdings_in_unit'):undef; # Anzahl Exemplare in dieser Zweigstelle
+    
+    my $pickup_location = ($query->param('pickup_location') >= 0)?$query->param('pickup_location'):undef;
     my $unit            = ($query->param('unit'           ) >= 0)?$query->param('unit'):0;
 
+    my $type            = ($query->param('type'           ))?$query->param('type'):'';
+    
     unless ($config->get('active_ils')){
 	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellunge, Vormerkungen, usw.) sind aktuell systemweit deaktiviert."));	
     }
@@ -213,7 +218,7 @@ sub create_record {
     if (!defined $pickup_location){
 	$logger->debug("Checking reservation for pickup locations");
 	
-	my $response_check_reservation_ref = $ils->check_reservation({ username => $username, holdingid => $holdingid, unit => $unit});
+	my $response_check_reservation_ref = $ils->check_reservation({ username => $username, holdingid => $holdingid, unit => $unit });
 
 	if ($logger->is_debug){
 	    $logger->debug("Result check_reservation:".YAML::Dump($response_check_reservation_ref));
@@ -229,8 +234,10 @@ sub create_record {
 		database      => $database,
 		unit          => $unit,
 		holdingid     => $holdingid,
+		titleid       => $titleid,
 		validtarget   => $validtarget,
 		pickup_locations => $response_check_reservation_ref->{pickup_locations},
+		num_holdings_in_unit => $num_holdings_in_unit, 
 	    };
 	    
 	    return $self->print_page($config->{tt_users_circulations_check_reservation_tname},$ttdata);
@@ -240,7 +247,7 @@ sub create_record {
     else {
 	$logger->debug("Making reservation");
 	
-	my $response_make_reservation_ref = $ils->make_reservation({ username => $username, holdingid => $holdingid, unit => $unit, pickup_location => $pickup_location});
+	my $response_make_reservation_ref = $ils->make_reservation({ username => $username, holdingid => $holdingid, titleid => $titleid, unit => $unit, pickup_location => $pickup_location, type => $type});
 
 	if ($logger->is_debug){
 	    $logger->debug("Result make_reservation:".YAML::Dump($response_make_reservation_ref));	
@@ -252,12 +259,12 @@ sub create_record {
 	elsif ($response_make_reservation_ref->{successful}){
 	    # TT-Data erzeugen
 	    my $ttdata={
-		database      => $database,
-		unit          => $unit,
-		holdingid     => $holdingid,
+		database        => $database,
+		unit            => $unit,
+		holdingid       => $holdingid,
 		pickup_location => $pickup_location,
-		validtarget   => $validtarget,
-		reservation         => $response_make_reservation_ref,
+		validtarget     => $validtarget,
+		reservation     => $response_make_reservation_ref,
 	    };
 	    
 	    return $self->print_page($config->{tt_users_circulations_make_reservation_tname},$ttdata);

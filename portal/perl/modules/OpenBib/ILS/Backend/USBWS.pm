@@ -347,25 +347,21 @@ sub make_reservation {
 
     my $response_ref = {};
     
-    unless ($username && $gsi && $zw >= 0){
+    unless ($username && $gsi && $zw >= 0 && $katkey && $aort >= 0){
 	$response_ref =  {
-	    error => "missing parameter",
+	    error => "missing parameter (username: $username - gsi: $gsi - zw: $zw - katkey: $katkey - aort: $aort)",
 	};
 
 	return $response_ref;
     }
 
-    $type = (defined $type && $type eq "unqualified")?"TEIL":"VOLL";
+    $type = ($type eq "by_title")?"TEIL":"VOLL";
     
     my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
 
     $logger->debug("Making reservation via USB-SOAP");
 	    
-    my @args = ($username,$gsi,$zw,$aort);
-
-    if ($katkey && $type){
-	push @args, ($katkey,$type);
-    }
+    my @args = ($username,$gsi,$zw,$aort,$katkey,$type);
 	    
     my $uri = "urn:/Loan";
 	    
@@ -388,7 +384,7 @@ sub make_reservation {
 	unless ($result->fault) {
 	    $result_ref = $result->result;
 	    if ($logger->is_debug){
-		$logger->debug("SOAP Result: ".YAML::Dump($response_ref));
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
 	    }
 	}
 	else {
@@ -412,6 +408,35 @@ sub make_reservation {
 	return $response_ref;
     }
 
+    if (defined $result_ref->{Vormerkung} && defined $result_ref->{Vormerkung}{NotOK} ){
+	$response_ref = {
+	    "code" => 403,
+		"error" => "already lent",
+		"error_description" => $result_ref->{Vormerkung}{NotOK},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+    elsif (defined $result_ref->{Vormerkung} && defined $result_ref->{Vormerkung}{OK} ){
+	$response_ref = {
+	    "successful" => 1,
+		"message"   => $result_ref->{Vormerkung}{OK},
+		"author"    => $result_ref->{Vormerkung}{Verfasser},
+		"title"     => $result_ref->{Vormerkung}{Titel},
+		"holdingid" => $result_ref->{Vormerkung}{MedienNummer},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+       
     $response_ref = $result_ref;
 
     return $response_ref;
@@ -1374,6 +1399,19 @@ sub check_order {
 	    $response_ref->{debug} = $result_ref;
 	}	
     }
+    else {
+	$response_ref = {
+	    "code" => 404,
+		"error" => "failure",
+		"error_description" => "undefined error",
+	};
+
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+	
+	return $response_ref;
+    }
 
     # Beispielrueckgabe
     #
@@ -1477,11 +1515,11 @@ sub check_reservation {
 	return $response_ref;
     }
 
-    if (defined $result_ref->{VormerkBestellStorno} && defined $result_ref->{VormerkBestellStorno}{NotOK} ){
+    if (defined $result_ref->{VormerkungMoeglich} && defined $result_ref->{VormerkungMoeglich}{NotOK} ){
 	$response_ref = {
 	    "code" => 403,
 		"error" => "failure",
-		"error_description" => $result_ref->{VormerkBestellStorno}{NotOK},
+		"error_description" => $result_ref->{VormerkungMoeglich}{NotOK},
 	};
 	
 	if ($logger->is_debug){
@@ -1490,18 +1528,15 @@ sub check_reservation {
 
 	return $response_ref	
     }
-    elsif (defined $result_ref->{VormerkBestellStorno} && defined $result_ref->{VormerkBestellStorno}{OK} ){
-    
-	my $storno_ref = $result_ref->{VormerkBestellStorno};
-
-	my @titleinfo = ();
-	push @titleinfo, $storno_ref->{Verfasser} if ($storno_ref->{Verfasser});
-	push @titleinfo, $storno_ref->{Titel} if ($storno_ref->{Titel});
-	
-	my $about = join(': ',@titleinfo);
-	
-	$response_ref->{about} = $about if ($about);
-	$response_ref->{holdingid} = $storno_ref->{MedienNummer};
+    # at least one pickup location
+    elsif (scalar keys %{$result_ref->{VormerkungMoeglich}} >= 1){
+	$response_ref->{"successful"} = 1;
+	foreach my $pickupid (sort keys %{$result_ref->{VormerkungMoeglich}}){
+	    push @{$response_ref->{"pickup_locations"}}, {
+		name        => $pickupid,
+		about       => $result_ref->{VormerkungMoeglich}{$pickupid},
+	    };
+	}
 
 	if ($logger->is_debug){
 	    $response_ref->{debug} = $result_ref;
@@ -1515,6 +1550,12 @@ sub check_reservation {
 		"error" => "failure",
 		"error_description" => "undefined error",
 	};
+
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+	
+	return $response_ref;
     }
     
     return $response_ref;

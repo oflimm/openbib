@@ -3112,7 +3112,7 @@
      'restrict_db_to_view': 1
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Reservations'
-   rule: '/portal/:view/databases/id/:database/circulations/id/reservations/branches/id/:branchid/media/id/*[delete]'
+   rule: '/portal/:view/databases/id/:database/circulations/id/reservations[delete]'
    runmode: 'delete_record'
    args:
      'restrict_db_to_view': 1

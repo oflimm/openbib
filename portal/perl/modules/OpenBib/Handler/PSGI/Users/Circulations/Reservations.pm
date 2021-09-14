@@ -42,7 +42,7 @@ use POSIX;
 use SOAP::Lite;
 use Socket;
 use Template;
-use URI::Escape;
+use URI::Escape qw(uri_unescape);
 use JSON::XS qw/encode_json decode_json/;
 use LWP::UserAgent;
 
@@ -176,6 +176,8 @@ sub create_record {
     my $unit            = ($query->param('unit'           ) >= 0)?$query->param('unit'):0;
 
     my $type            = ($query->param('type'           ))?$query->param('type'):'';
+
+    $holdingid = uri_unescape($holdingid);
     
     unless ($config->get('active_ils')){
 	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellunge, Vormerkungen, usw.) sind aktuell systemweit deaktiviert."));	
@@ -282,8 +284,6 @@ sub delete_record {
     # Dispatched Args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $branchid       = $self->param('branchid');
-    my $mediaid        = $self->strip_suffix($self->param('dispatch_url_remainder'));
 
     # Shared Args
     my $query          = $self->query();
@@ -296,59 +296,93 @@ sub delete_record {
     my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
+
+    # CGI Args
+    my $authenticatorid = ($query->param('authenticatorid'))?$query->param('authenticatorid'):undef;
+    # Aktive Aenderungen des Nutzerkontos
+    my $validtarget     = ($query->param('validtarget'    ))?$query->param('validtarget'):undef;
+    my $holdingid       = ($query->param('holdingid'      ))?$query->param('holdingid'):undef; # Mediennummer
+    my $unit            = ($query->param('unit'           ) >= 0)?$query->param('unit'):0;
+
+    $holdingid = uri_unescape($holdingid);
     
     # Aktive Aenderungen des Nutzerkontos
 
-    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
+    unless ($config->get('active_ils')){
+	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellunge, Vormerkungen, usw.) sind aktuell systemweit deaktiviert."));	
+    }
     
-    my ($loginname,$password) = $user->get_credentials();
+    unless ($validtarget && $holdingid && $unit >= 0){
+	return $self->print_warning($msg->maketext("Notwendige Parameter nicht besetzt")." (validtarget: $validtarget, holdingid:$holdingid, unit:$unit)");
+    }
+    
+    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
 
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
-
+    my $userid = $user->get_userid_of_session($session->{ID});
+    
+    $self->param('userid',$userid);
+    
+    if ($logger->debug){
+	$logger->debug("Auth successful: ".$self->authorization_successful." - Db: $database - Authenticator: $sessionauthenticator");
+    }
+    
     if (!$self->authorization_successful || $database ne $sessionauthenticator){
+        $logger->debug("Database: $database - Authenticator: $sessionauthenticator");
+
         if ($self->param('representation') eq "html"){
-            return $self->tunnel_through_authenticator('POST');            
-        }
+#            return $self->tunnel_through_authenticator('POST',$authenticatorid);
+            return $self->tunnel_through_authenticator('POST');
+	}
         else  {
             return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
         }
     }
 
-    my $circexlist=undef;
+    my ($username,$password,$access_token) = $user->get_credentials();
+
+    $database              = $sessionauthenticator;
+
+    my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
+
+    my $authenticator = $session->get_authenticator;
+
+    $logger->debug("Canceling reservation for $holdingid in unit $unit for $username");
+	
+    my $response_cancel_reservation_ref = $ils->cancel_reservation({ username => $username, holdingid => $holdingid, unit => $unit });
     
-    $logger->info("Zweigstelle: $branchid");
-    
-    eval {
-        my $soap = SOAP::Lite
-            -> uri("urn:/Circulation")
-                -> proxy($circinfotable->get($database)->{circcheckurl});
-        my $result = $soap->cancel_reservation(
-            SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                SOAP::Data->name(username     => $loginname)->type('string'),
-                SOAP::Data->name(password     => $password)->type('string'),
-                SOAP::Data->name(mediennummer => $mediaid)->type('string'),
-                SOAP::Data->name(zweigstelle  => $branchid)->type('string'),
-                SOAP::Data->name(database     => $circinfotable->get($database)->{circdb})->type('string'))));
-        
-        unless ($result->fault) {
-            $circexlist=$result->result;
-        }
-        else {
-            $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-        }
-    };
-    
-    if ($@){
-        $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
+    if ($logger->is_debug){
+	$logger->debug("Result cancel_reservation:".YAML::Dump($response_cancel_reservation_ref));
     }
+    
+    if ($response_cancel_reservation_ref->{error}){
+	#            return $self->print_warning($response_cancel_reservation_ref->{error_description});
+	return $self->print_warning($msg->maketext("Eine Stornierung der Vormerkung für dieses Mediums durch Sie ist leider nicht möglich"));
+    }
+    elsif ($response_cancel_reservation_ref->{successful}){
+	# TT-Data erzeugen
+	my $ttdata={
+	    userid        => $userid,
+	    database      => $database,
+	    unit          => $unit,
+	    holdingid     => $holdingid,
+	    validtarget   => $validtarget,
+	    cancel_reservation  => $response_cancel_reservation_ref,
+	};
+	
+	return $self->print_page($config->{tt_users_circulations_cancel_reservation_tname},$ttdata);
+	
+    }
+    else {
+	return $self->print_warning($msg->maketext("Bei der Stornierung der Vormerkung ist ein unerwarteter Fehler aufgetreten"));
+    }
+    
+    # return unless ($self->param('representation') eq "html");
 
-    return unless ($self->param('representation') eq "html");
+    # my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{databases_loc}/id/$database/$config->{circulations_loc}/id/reservations.html";
 
-    my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{databases_loc}/id/$database/$config->{circulations_loc}/id/reservations.html";
-
-    # TODO GET?
-    $self->header_add('Content-Type' => 'text/html');
-    $self->redirect($new_location);
+    # # TODO GET?
+    # $self->header_add('Content-Type' => 'text/html');
+    # $self->redirect($new_location);
 
     return;
 }

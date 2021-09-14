@@ -123,7 +123,7 @@
 </div>
 </div>
 
-[% IF user.get_targettype_of_session(session.ID) == 'paia' %]
+[% IF user.get_targettype_of_session(session.ID) == 'ils' %]
 <p/>
 
 <div class="card">

@@ -42,7 +42,7 @@ use POSIX;
 use SOAP::Lite;
 use Socket;
 use Template;
-use URI::Escape;
+use URI::Escape qw/uri_unescape/;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
@@ -62,6 +62,7 @@ sub setup {
     $self->run_modes(
         'show_record'           => 'show_record',
         'renew_loans'           => 'renew_loans',
+        'renew_single_loan'     => 'renew_single_loan',
         'show_collection'       => 'show_collection',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
@@ -175,6 +176,95 @@ sub renew_loans {
     }
     else {
 	return $self->print_warning($msg->maketext("Bei der Gesamtkontoverlängerung ist ein unerwarteter Fehler aufgetreten"));
+    }
+}
+
+sub renew_single_loan {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $userid         = $self->param('userid');
+    my $database       = $self->param('database');
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+    my $scheme         = $self->param('scheme');
+    my $servername     = $self->param('servername');
+
+    # CGI Args
+    my $holdingid       = ($query->param('holdingid'      ))?$query->param('holdingid'):undef; # Mediennummer
+    my $unit            = ($query->param('unit'           ) >= 0)?$query->param('unit'):0; # Zweigstelle
+
+    $holdingid = uri_unescape($holdingid);
+    
+    # Aktive Aenderungen des Nutzerkontos
+
+    unless ($config->get('active_ils')){
+	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellunge, Vormerkungen, usw.) sind aktuell systemweit deaktiviert."));	
+    }
+
+    unless ($holdingid && $unit >= 0){
+	return $self->print_warning($msg->maketext("Notwendige Parameter nicht besetzt")." (holdingid:$holdingid, unit:$unit)");
+    }
+    
+    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
+
+    if (!$self->authorization_successful || $database ne $sessionauthenticator){
+        if ($self->param('representation') eq "html"){
+            return $self->tunnel_through_authenticator('POST');            
+        }
+        else  {
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
+        }
+    }
+    
+    my ($loginname,$password,$access_token) = $user->get_credentials();
+
+    $database              = $sessionauthenticator;
+    
+    my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
+
+    my $authenticator = $session->get_authenticator;
+
+    if ($logger->is_debug){
+	$logger->debug("Trying to renew single loan for user $loginname via ils for $database with holdingid $holdingid in unit $unit");
+    }
+    
+    my $response_renew_single_loan_ref = $ils->renew_single_loan($loginname,$holdingid,$unit);
+
+    if ($logger->is_debug){
+	$logger->debug("Result renew loans: ".YAML::Dump($response_renew_single_loan_ref));
+    }
+    
+    if ($response_renew_single_loan_ref->{error}){
+	return $self->print_warning($msg->maketext("Eine Verlängerung durch Sie ist leider nicht möglich"));
+    }
+    elsif ($response_renew_single_loan_ref->{successful}){
+	# TT-Data erzeugen
+	my $ttdata={
+	    userid        => $userid,
+	    database      => $database,
+	    renew_single_loan   => $response_renew_single_loan_ref,
+	};
+	
+	return $self->print_page($config->{tt_users_circulations_renew_single_loan_tname},$ttdata);
+	
+    }
+    else {
+	return $self->print_warning($msg->maketext("Bei der Verlängerung des Mediums ist ein unerwarteter Fehler aufgetreten"));
     }
 }
 

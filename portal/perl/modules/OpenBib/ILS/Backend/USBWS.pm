@@ -937,17 +937,7 @@ sub renew_loans {
 
 # Einzelausleihe verlaengern
 sub renew_single_loan {
-    my ($self,$arg_ref) = @_;
-
-    # Set defaults
-    my $username        = exists $arg_ref->{username} # Nutzername
-        ? $arg_ref->{username}       : undef;
-    
-    my $gsi             = exists $arg_ref->{holdingid} # Mediennummer
-        ? $arg_ref->{holdingid}      : undef;
-
-    my $zw              = exists $arg_ref->{unit}     # Zweigstelle
-        ? $arg_ref->{unit}           : undef;
+    my ($self,$username,$holdingid,$unit) = @_;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -959,9 +949,9 @@ sub renew_single_loan {
     
     my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
 
-    $logger->debug("Renew single loan via USB-SOAP");
+    $logger->debug("Renew loans via USB-SOAP");
 
-    unless ($username && $zw >= 0 && $gsi){
+    unless ($username && $holdingid && $unit >=0 ){
 	$response_ref =  {
 	    error => "missing parameter",
 	};
@@ -969,7 +959,7 @@ sub renew_single_loan {
 	return $response_ref;
     }
     
-    my @args = ($username,$gsi,$zw);
+    my @args = ($username,$holdingid,$unit);
 	    
     my $uri = "urn:/Account";
 	    
@@ -1019,13 +1009,48 @@ sub renew_single_loan {
 	return $response_ref;
     }
 
-    # todo
-    #
-    # Abstraktion der Rueckgabeinformationen in $response_ref
-    
-    $response_ref = $result_ref;
+    if (defined $result_ref->{EinzelVerlaengerung} && defined $result_ref->{EinzelVerlaengerung}{NotOK} ){
+	$response_ref = {
+	    "code" => 403,
+		"error" => "renew single loan failed",
+		"error_description" => $result_ref->{EinzelVerlaengerung}{NotOK},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
 
-    return $response_ref;
+	return $response_ref	
+    }
+    # result-hash: First element (0) is overview followed by itemlist
+    elsif ($result_ref->{EinzelVerlaengerung}{OK}){
+	$response_ref->{"successful"} = 1;
+	
+	$response_ref->{"message"}   = $result_ref->{EinzelVerlaengerung}{OK};
+	$response_ref->{"holdingid"} = $result_ref->{EinzelVerlaengerung}{MedienNummer};	
+	$response_ref->{"author"}    = $result_ref->{EinzelVerlaengerung}{Verfasser};
+	$response_ref->{"title"}     = $result_ref->{EinzelVerlaengerung}{Titel};
+	$response_ref->{"location_mark"} = $result_ref->{EinzelVerlaengerung}{Signatur};
+	$response_ref->{"new_date"}  = $result_ref->{EinzelVerlaengerung}{LeihfristendeNeu};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+	
+	return $response_ref;    
+    }
+
+    $response_ref = {
+	    "code" => 405,
+		"error" => "unknown error",
+		"error_description" => "Unbekannter Fehler",
+	};
+
+    if ($logger->is_debug){
+	$response_ref->{debug} = $result_ref;
+    }
+
+    return $response_ref;    
 }
 
 ######################################################################

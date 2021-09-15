@@ -12,26 +12,26 @@
 #######################################################################
 -%]
 
-[% IF borrows.no_borrows || borrows.items.size == 0 %]
+[% IF loans.no_loans || loans.items.size == 0 %]
 <div class="jumbotron">
 <h1 class="display-4">[% msg.maketext("Sie haben keine Ausleihen getätigt.") %]</h1>
 </div>
 [% ELSE  %]
 
-[%# USE dumper;dumper.dump(borrows) %]
+[%# USE dumper;dumper.dump(loans) %]
 <div class="table-responsive">
 <table class="table table-striped table-hover">
 <thead>
 <tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Verl&auml;ngerungen") %]</th><th>[% msg.maketext("Ausleihfrist") %]</th></tr>
 </thead>
 <tbody>
-[%- FOREACH borrow = borrows.items -%]
+[%- FOREACH loan = loans.items -%]
 
 <tr>
-<td><i><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% borrow.edition %].html?l=[% lang %]">[% borrow.about %]</a></i></td>
-<td>[% borrow.label %]</td>
-<td>[% borrow.renewals %]</td>
-<td>[% borrow.starttime %]-[% borrow.endtime %]</td>
+<td><i><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% loan.edition %].html?l=[% lang %]">[% loan.about %]</a></i></td>
+<td>[% loan.label %]</td>
+<td>[% loan.renewals %]</td>
+<td>[% loan.starttime %]-[% loan.endtime %]</td>
 </tr>
 [% END %]
 </tbody>
@@ -39,12 +39,12 @@
 </div>
 
 <p>
-<a class="btn btn-primary" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.dbname %]/[% config.get('circulations_loc') %]/renew_loans" title="[% msg.maketext("Gesamtkonto verl&auml;ngern") %]">[% msg.maketext("Gesamtkonto-Verl&auml;ngerung") %]</a>
+<a class="btn btn-primary" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.name %]/[% config.get('circulations_loc') %]/renew_loans" title="[% msg.maketext("Gesamtkonto verl&auml;ngern") %]">[% msg.maketext("Gesamtkonto-Verl&auml;ngerung") %]</a>
 </p>
 
 <p/>
-[% borrow_url = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/${config.get('databases_loc')}/id/${authenticator.name}/${config.get('circulations_loc')}/id/borrows.ics" %]
-Ausgeliehene Medien im <a href="[% borrow_url %]">iCalendar-Format</a> zur &Uuml;bernahme in einen Kalender <!-- oder als QR-Code <a class="preview" href="[% config.get('connector_qrcode_loc') %]?text=[% borrow_url.replace(';','%3B') %]" title="Ausleihen im iCalendar-Format via URL"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" /></a>-->
+[% loan_url = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/${config.get('databases_loc')}/id/${authenticator.name}/${config.get('circulations_loc')}/id/loans.ics" %]
+Ausgeliehene Medien im <a href="[% loan_url %]">iCalendar-Format</a> zur &Uuml;bernahme in einen Kalender <!-- oder als QR-Code <a class="preview" href="[% config.get('connector_qrcode_loc') %]?text=[% loan_url.replace(';','%3B') %]" title="Ausleihen im iCalendar-Format via URL"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" /></a>-->
 <p/>
 
 [%# USE dumper;dumper.dump(authenticator)%]

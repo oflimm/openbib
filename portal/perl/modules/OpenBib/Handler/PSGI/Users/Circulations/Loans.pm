@@ -109,6 +109,8 @@ sub show_collection {
             return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
         }
     }
+
+    $database = $sessionauthenticator ;
     
     my ($loginname,$password,$access_token) = $user->get_credentials();
 

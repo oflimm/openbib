@@ -250,7 +250,12 @@ sub renew_single_loan {
     }
     
     if ($response_renew_single_loan_ref->{error}){
-	return $self->print_warning($msg->maketext("Eine Verlängerung durch Sie ist leider nicht möglich"));
+	if ($response_renew_single_loan_ref->{error_description}){
+	    return $self->print_warning($response_renew_single_loan_ref->{error_description});
+	}
+	else {
+	    return $msg->maketext("Eine Verlängerung durch Sie ist leider nicht möglich");
+	}
     }
     elsif ($response_renew_single_loan_ref->{successful}){
 	# TT-Data erzeugen

@@ -4,17 +4,25 @@
     <record>
         <mods xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" version="3.4"
             xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd">
-            <mods:recordInfo>
-                <mods:recordIdentifier>[% record.id %]</mods:recordIdentifier>
-            </mods:recordInfo>
             [%- normdata = record.get_fields -%]
             [%- IF normdata.${"T0662"} %]
             [%- FOREACH url IN normdata.${"T0662"} -%]
             [%- IF url.content.match('http://www.ub.uni-koeln.de/permalink/') %]
             <mods:identifier type="purl">[%url.content%]</mods:identifier>
+            [%- ELSE %]
+            <mods:identifier type="purl">-</mods:identifier>
             [%- END -%]
             [%- END -%]
             [%- END -%]
+            [%- IF normdata.${"T0010"} %]
+            <mods:recordInfo>
+                <mods:recordIdentifier>[% normdata.${"T0010"}.first.content %]</mods:recordIdentifier>
+            </mods:recordInfo>
+            [%- ELSE - %]
+            <mods:recordInfo>
+                <mods:recordIdentifier>[% record.id %]</mods:recordIdentifier>
+            </mods:recordInfo>
+            [%- END - %]
             [%- IF personlist && personlist.size -%]
             [%- FOREACH item IN personlist %]
             <mods:name type="personal"  [%- IF item.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/[% item.gnd %]" [%END%]>
@@ -23,6 +31,7 @@
                     [%- END %]
                     <mods:namePart type="given">[% item.namedata.given_name %]</mods:namePart>
                     [%- IF item.namedata.termsOfAddress %]
+                    <!--ESCAPING!!!!-->
                     <mods:namePart type="termsOfAddress">[% item.namedata.termsOfAddress %]</mods:namePart>
                     [%- END %]
                     <mods:displayForm>[% item.namedata.displayname %]</mods:displayForm>
@@ -100,12 +109,19 @@
             END ;
             END; %]
             <mods:originInfo eventType="publication">
-                [%- IF place_list && place_list.size -%]
+                [%- IF place_list && place_list.size %]
                 <mods:place>
                     [%- FOREACH place IN place_list %]
                          <mods:placeTerm type="text" [%- IF place.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/[% place.gnd %]" [%END%]>[% place.place_name %]</mods:placeTerm>
-                     [% END %]     
+                    [%- END %]     
                 </mods:place>
+                [%- END %]
+                [%- FOREACH item IN normdata.${"T0412"} %]
+                <mods:publisher>[% item.content %]</mods:publisher>
+                [%- END %]
+                [%- FOREACH uniform_publisher IN uniform_publisher_list %]
+                <mods:publisher [%- IF uniform_publisher.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/[% uniform_publisher.gnd %]" [%END%]>[% uniform_publisher.publisher_name %]
+                [%- IF uniform_publisher.publisher_place -%] ([%- uniform_publisher.publisher_place -%])[%- END -%]</mods:publisher>
                 [%- END %]
                 [%- type_is_set = "false" %]
                 [%- FOREACH item IN normdata.${"T4410"} %]
@@ -117,29 +133,16 @@
                 [%- type_is_set = "true" %]
                 [%- END %]
                 [%- END %]
-                [%- IF normdata.${"T0572"} || normdata.${"T0543"} || normdata.${"T5002"} && type_is_set == 'false' %]
+                [%- IF super.fields.${'0036'}.first.content == "p" || normdata.${"T0036"}.first.content =="p" || normdata.${"T0036"}.first.content =="z" || normdata.${"T0572"} || normdata.${"T0543"} || normdata.${"T5002"} && type_is_set == 'false' %]
                 <mods:issuance>serial</mods:issuance>
                 [%- type_is_set = "true" %]
                 [%- END %]
                 [%- IF type_is_set == 'false' -%]
+                [%- IF normdata.${"T0036"}.first.content =="n" %]
+                <mods:issuance>MultiVolumeWork</mods:issuance>
+                [%- ELSE %]
                 <mods:issuance>monographic</mods:issuance>
                 [%- END %]
-                [%- IF normdata.${"T0036"} %]
-                [%- IF normdata.${"T0036"}.first.content == "p"%]
-                <mods:genre>Zeitschrift</mods:genre>
-                [%- ELSIF normdata.${"T0036"}.first.content == "z" %]
-                <mods:genre>Zeitung</mods:genre>
-                [%- END %]
-                [%- IF super.fields.${'T0036'}.first.content == "z" && normdata.${"T0089"}.first.content %] %]
-                <mods:genre>Zeitschriftenband</mods:genre>
-                [%- END %]
-                [%- END %]
-                [%- FOREACH item IN normdata.${"T0412"} %]
-                <mods:publisher>[% item.content %]</mods:publisher>
-                [%- END %]
-                [%- FOREACH uniform_publisher IN uniform_publisher_list %]
-                <mods:publisher [%- IF uniform_publisher.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/[% uniform_publisher.gnd %]" [%END%]>[% uniform_publisher.publisher_name %]
-                [%- IF uniform_publisher.publisher_place -%] ([%- uniform_publisher.publisher_place -%])[%- END -%]</mods:publisher>
                 [%- END %]
                 [%- IF normdata.${"T0425"} %]
                 <mods:dateIssued keyDate="yes" encoding="iso8601">[% normdata.${"T0425"}.first.content%]</mods:dateIssued>
@@ -150,6 +153,16 @@
                 <mods:edition>[%- normdata.${"T0403"}.first.content %]</mods:edition>
                 [%- END %]
             </mods:originInfo>
+            [%- IF normdata.${"T0036"} %]
+                [%- IF normdata.${"T0036"}.first.content == "p"%]
+                <mods:genre>Zeitschrift</mods:genre>
+                [%- ELSIF normdata.${"T0036"}.first.content == "z" %]
+                <mods:genre>Zeitung</mods:genre>
+                [%- END %]
+            [%- END %]
+            [%- IF super.fields.${'0036'}.first.content == "p"  &&normdata.${"T0089"}.first.content %]
+                <mods:genre>Zeitschriftenband</mods:genre>
+            [%- END %]
             [%- FOREACH item IN normdata.${"T0015"} %]
             <mods:language>
                 <mods:languageTerm type="code" authority="iso639-2">[%- item.content %]</mods:languageTerm>
@@ -176,7 +189,7 @@
             [%- IF super %]
             <mods:relatedItem type="host">
                 <mods:recordInfo>
-                    <mods:recordIdentifier>[% normdata.${"T0004"}.first.content %]</mods:recordIdentifier>
+                    <mods:recordIdentifier>[%- super.fields.${'0010'}.first.content %]</mods:recordIdentifier>
                 </mods:recordInfo>
                 <mods:titleInfo>
                     <mods:title>[% super_title %]</mods:title>

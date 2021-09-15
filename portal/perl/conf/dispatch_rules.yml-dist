@@ -3099,6 +3099,15 @@
    args:
      'restrict_db_to_view': 1
 - # users/circulations_loc:
+   module: 'OpenBib::Handler::PSGI::Users::Circulations'
+   rule: '/portal/:view/users/id/:userid/databases/id/:database/circulations/renew_single_loan[get]'
+   representations:
+     - none
+     - html
+   runmode: 'renew_single_loan'
+   args:
+     'restrict_db_to_view': 1
+- # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Orders'
    rule: '/portal/:view/databases/id/:database/circulations/id/orders[post]'
    runmode: 'create_record'

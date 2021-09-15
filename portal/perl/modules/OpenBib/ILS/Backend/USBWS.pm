@@ -399,7 +399,8 @@ sub make_reservation {
     };
 	    
     if ($@){
-	$logger->error("SOAP-Target ".$circinfotable->get($database)->{circcheckurl}." konnte nicht erreicht werden :".$@);
+	$logger->error("SOAP-Target ".$config->get('usbws_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+
 	$response_ref = {
 	    error => "connection error",
 	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
@@ -524,7 +525,8 @@ sub cancel_reservation {
     };
 	    
     if ($@){
-	$logger->error("SOAP-Target ".$circinfotable->get($database)->{circcheckurl}." konnte nicht erreicht werden :".$@);
+	$logger->error("SOAP-Target ".$config->get('usbws_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+
 	$response_ref = {
 	    error => "connection error",
 	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
@@ -651,7 +653,8 @@ sub make_order {
     };
 	    
     if ($@){
-	$logger->error("SOAP-Target ".$circinfotable->get($database)->{circcheckurl}." konnte nicht erreicht werden :".$@);
+	$logger->error("SOAP-Target ".$config->get('usbws_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+
 	$response_ref = {
 	    error => "connection error",
 	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
@@ -784,7 +787,8 @@ sub cancel_order {
     };
 	    
     if ($@){
-	$logger->error("SOAP-Target ".$circinfotable->get($database)->{circcheckurl}." konnte nicht erreicht werden :".$@);
+	$logger->error("SOAP-Target ".$config->get('usbws_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+
 	$response_ref = {
 	    error => "connection error",
 	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
@@ -864,7 +868,8 @@ sub renew_loans {
     };
 	    
     if ($@){
-	$logger->error("SOAP-Target ".$circinfotable->get($database)->{circcheckurl}." konnte nicht erreicht werden :".$@);
+	$logger->error("SOAP-Target ".$config->get('usbws_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+
 	$response_ref = {
 	    error => "connection error",
 	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
@@ -1002,7 +1007,8 @@ sub renew_single_loan {
     };
 	    
     if ($@){
-	$logger->error("SOAP-Target ".$circinfotable->get($database)->{circcheckurl}." konnte nicht erreicht werden :".$@);
+	$logger->error("SOAP-Target ".$config->get('usbws_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+
 	$response_ref = {
 	    error => "connection error",
 	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
@@ -1096,7 +1102,8 @@ sub get_mediastatus {
 	    };
 	    
 	    if ($@){
-		$logger->error("SOAP-Target ".$circinfotable->get($database)->{circcheckurl}." konnte nicht erreicht werden :".$@);
+		$logger->error("SOAP-Target ".$config->get('usbws_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+
 		$response_ref = {
 		    error => "connection error",
 		    error_description => "Problem bei der Verbindung zum Ausleihsystem",
@@ -1430,7 +1437,8 @@ sub check_order {
     };
 	    
     if ($@){
-	$logger->error("SOAP-Target ".$circinfotable->get($database)->{circcheckurl}." konnte nicht erreicht werden :".$@);
+	$logger->error("SOAP-Target ".$config->get('usbws_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+
 	$response_ref = {
 	    error => "connection error",
 	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
@@ -1582,7 +1590,8 @@ sub check_reservation {
     };
 	    
     if ($@){
-	$logger->error("SOAP-Target ".$circinfotable->get($database)->{circcheckurl}." konnte nicht erreicht werden :".$@);
+	$logger->error("SOAP-Target ".$config->get('usbws_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+
 	$response_ref = {
 	    error => "connection error",
 	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
@@ -1693,7 +1702,8 @@ sub send_account_request {
 	};
 	
 	if ($@){
-	    $logger->error("SOAP-Target ".$config->get('usbws_url')." konnte nicht erreicht werden :".$@);
+	    $logger->error("SOAP-Target ".$config->get('usbws_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+
 	    $response_ref = {
 		error => "connection error",
 		error_description => "Problem bei der Verbindung zum Ausleihsystem",

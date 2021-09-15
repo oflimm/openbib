@@ -44,10 +44,11 @@ use OpenBib::Config;
 use OpenBib::Index::Factory;
 use OpenBib::Common::Util;
 
-my ($database,$help,$logfile,$withsorting,$withpositions,$loglevel,$indexpath,$incremental,$deletefile);
+my ($database,$indexname,$help,$logfile,$withsorting,$withpositions,$loglevel,$indexpath,$incremental,$deletefile);
 
 &GetOptions(
     "database=s"      => \$database,
+    "indexname=s"     => \$indexname,
     "logfile=s"       => \$logfile,
     "loglevel=s"      => \$loglevel,
     "with-sorting"    => \$withsorting,
@@ -111,7 +112,7 @@ my $atime = new Benchmark;
             $create_index = 0;
         }
         
-        my $indexer = OpenBib::Index::Factory->create_indexer({ sb => 'elasticsearch', database => $database, create_index => $create_index, index_type => 'readwrite' });
+        my $indexer = OpenBib::Index::Factory->create_indexer({ sb => 'elasticsearch', database => $database, indexname => $indexname, create_index => $create_index, index_type => 'readwrite' });
 
 	if ($logger->is_debug){
 	    $logger->debug("Indexer: ".YAML::Dump($indexer));

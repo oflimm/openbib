@@ -935,12 +935,14 @@ sub request {
 	$logger->debug("Checking item in database $database: ".YAML::Dump($exemplar_ref));
 	
 	if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
-	    
+
+	    # first check order and get necessary location information about items
 	    my $check_result_ref = $self->check_order($database,$username,$exemplar_ref->{gsi},$exemplar_ref->{zw});	    
 
 	    if (defined($check_result_ref)) {
 		$logger->debug("Result: ".YAML::Dump($check_result_ref));
 
+		# error
 		if (defined $check_result_ref->{OpacBestellung} && defined $check_result_ref->{OpacBestellung}{ErrorCode}){
 		    my $response_ref = {
 			"code" => 403,
@@ -958,6 +960,7 @@ sub request {
 		    return decode_utf8(encode_json $response_ref);
 		}
 		else {
+		    # more then one location and without confirmation request
 		    if (scalar keys %{$check_result_ref->{OpacBestellung}} > 1 && !defined $exemplar_ref->{confirmation}){
 			my $this_response_ref = {};
 			# Reject until confirmation is met
@@ -975,9 +978,10 @@ sub request {
 			}
 
 
-			push @$response_ref, $this_response_ref;
+			push @{$response_ref->{doc}}, $this_response_ref;
 			
 		    }
+		    # more then one location, but with confirmation request
 		    elsif (scalar keys %{$check_result_ref->{OpacBestellung}} > 1 && defined $exemplar_ref->{confirmation}){
 			# Check if confirmation is met
 
@@ -999,6 +1003,7 @@ sub request {
 			    my $order_result_ref = $self->make_order($database,$username,$exemplar_ref->{gsi},$exemplar_ref->{zw},$ausgabeort);
 			    
 
+			    # order successful
 			    if (defined $order_result_ref){
 				$logger->debug(YAML::Dump($order_result_ref));
 				
@@ -1008,12 +1013,12 @@ sub request {
 				$this_response_ref->{edition} = $exemplar_ref->{edition};
 				$this_response_ref->{requested} = $exemplar_ref->{edition};				
 				
-				push @$response_ref, $this_response_ref;
+				push @{$response_ref->{doc}}, $this_response_ref;
 
 			    }
 			    
 			}
-			# or reject again
+			# or without valid place reject again
 			else {
 			    my $response_ref = {
 				"code" => 403,
@@ -1052,7 +1057,7 @@ sub request {
 			    $this_response_ref->{requested} = $exemplar_ref->{edition};
 			    
 			    
-			    push @$response_ref, $this_response_ref;
+			    push @{$response_ref->{doc}}, $this_response_ref;
 			}
 		    }
 		    

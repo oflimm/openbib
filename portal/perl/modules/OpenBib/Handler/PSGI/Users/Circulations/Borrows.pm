@@ -49,6 +49,7 @@ use LWP::UserAgent;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::CirculationInfoTable;
+use OpenBib::ILS::Factory;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
@@ -111,63 +112,27 @@ sub show_collection {
     
     my ($loginname,$password,$access_token) = $user->get_credentials();
 
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
+    my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
 
-    my $circexlist=undef;
-
-    my $url = $scheme."://".$servername.$path_prefix."/".$config->get('databases_loc')."/id/".$sessionauthenticator."/paia/core/".uri_escape($loginname)."/items";
-
-    my $ua = LWP::UserAgent->new();
-    $ua->agent('USB Koeln/1.0');
-    $ua->timeout(30);
-
-    my $paia_failure = 0;
+    if ($logger->is_debug){
+	$logger->debug("Trying to get borrows for user $loginname in ils for $database");
+    }
     
-    eval {
-	if ($logger->is_debug()){
-	    $logger->debug("Request URL: $url");
-	}
-	
-	my $response = $ua->get($url,
-				'Authorization' => "Bearer $access_token",
-	    );
-	
-	
-	if ($logger->is_debug){
-	    $logger->debug("Response: ".$response->content);
-	}
-	
-	if (!$response->is_success) {
-	    $logger->info($response->code . ' - ' . $response->message);
-	    return;
-	}
+    my $borrows_ref = $ils->get_borrows($loginname);
 
-	$circexlist = decode_json $response->content;
-	
-	if ($logger->is_debug){
-	    $logger->debug("PAIA Result: ".YAML::Dump($circexlist));
-	}
-    };
-    
-    if ($@){
-	$logger->error("PAIA-Target $url konnte nicht erreicht werden :".$@);
+    if ($logger->is_debug){
+	$logger->debug("Got borrows: ".YAML::Dump($borrows_ref));
     }
     
     my $authenticator = $session->get_authenticator;
-
-    my $itemlist_ref = [];
-
-    foreach my $this_item (@$circexlist){
-	push @$itemlist_ref, $this_item if ($this_item->{status} == 3);
-    }
     
     # TT-Data erzeugen
     my $ttdata={
         authenticator => $authenticator,
         loginname  => $loginname,
         password   => $password,
-        
-        borrows    => $itemlist_ref,
+	
+        borrows    => $borrows_ref,
         
         database   => $database,
     };

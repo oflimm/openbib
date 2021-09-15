@@ -515,15 +515,15 @@ if ($used01buch) {
         my @line = split("",$_);
 
         if ($usemcopynum) {            
-	    my ($d01gsi,$d01ex,$d01zweig,$d01entl,$d01mcopynum,$d01status,$d01skond,$d01ort,$d01abtlg,$d01standort)=@line[0,1,2,3,7,11,12,24,31,55];
+	    my ($d01gsi,$d01ex,$d01zweig,$d01entl,$d01mcopynum,$d01status,$d01skond,$d01ort,$d01abtlg,$d01ort2,$d01standort)=@line[0,1,2,3,7,11,12,24,31,53,55];
             #print "$d01gsi,$d01ex,$d01zweig,$d01mcopynum,$d01ort,$d01abtlg\n";
             foreach my $katkey (@{$titelbuchkey{$d01mcopynum}}) {
-                push @{$buchdaten{$katkey}}, [$d01zweig,$d01ort,$d01abtlg,$d01standort,$d01entl,$d01status,$d01skond,$d01gsi,$d01ex];
+                push @{$buchdaten{$katkey}}, [$d01zweig,$d01ort,$d01abtlg,$d01standort,$d01entl,$d01status,$d01skond,$d01gsi,$d01ex,$d01ort2];
             }
         } else {
-            my ($d01gsi,$d01ex,$d01zweig,$d01entl,$d01katkey,$d01status,$d01skond,$d01ort,$d01abtlg,$d01standort)=@line[0,1,2,3,7,11,12,24,31,55];
+            my ($d01gsi,$d01ex,$d01zweig,$d01entl,$d01katkey,$d01status,$d01skond,$d01ort,$d01abtlg,$d01ort2,$d01standort)=@line[0,1,2,3,7,11,12,24,31,53,55];
             #print "$d01gsi,$d01ex,$d01zweig,$d01katkey,$d01ort,$d01abtlg\n";
-            push @{$buchdaten{$d01katkey}}, [$d01zweig,$d01ort,$d01abtlg,$d01standort,$d01entl,$d01status,$d01skond,$d01gsi,$d01ex];
+            push @{$buchdaten{$d01katkey}}, [$d01zweig,$d01ort,$d01abtlg,$d01standort,$d01entl,$d01status,$d01skond,$d01gsi,$d01ex,$d01ort2];
         }
     }
     close(D01BUCH);
@@ -955,7 +955,9 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
             my $mediennr    = $buchsatz_ref->[7];
             my $ex          = $buchsatz_ref->[8];
             my $signatur    = $buchsatz_ref->[1];
+            my $signatur2   = $buchsatz_ref->[9];
             my $standort    = $zweigstelle{$buchsatz_ref->[0]};
+
             my $mediastatus;
 
             if ($ex ne " "){
@@ -1035,7 +1037,15 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
                     subfield => '',
                 };
             }
-          
+
+            if ($signatur2) {
+                push @{$holding_ref->{fields}{'0107'}}, { # Zweite Signatur laut MAB2 Lokaldaten
+                    content  => $signatur2,
+                    mult     => 1,
+                    subfield => '',
+                };
+            }
+	    
             if ($standort) {
                 push @{$holding_ref->{fields}{'0016'}}, {
                     content  => $standort,

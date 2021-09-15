@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Users::Circulations::Reservations
 #
-#  Dieses File ist (C) 2004-2013 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2021 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -42,13 +42,14 @@ use POSIX;
 use SOAP::Lite;
 use Socket;
 use Template;
-use URI::Escape;
+use URI::Escape qw(uri_unescape);
 use JSON::XS qw/encode_json decode_json/;
 use LWP::UserAgent;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::CirculationInfoTable;
+use OpenBib::ILS::Factory;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
@@ -112,68 +113,30 @@ sub show_collection {
     
     my ($loginname,$password,$access_token) = $user->get_credentials();
 
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
+    my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
 
-    my $circexlist=undef;
-
-    my $url = $scheme."://".$servername.$path_prefix."/".$config->get('databases_loc')."/id/".$sessionauthenticator."/paia/core/".uri_escape($loginname)."/items";
-
-    my $ua = LWP::UserAgent->new();
-    $ua->agent('USB Koeln/1.0');
-    $ua->timeout(30);
-
-    my $paia_failure = 0;
+    if ($logger->is_debug){
+	$logger->debug("Trying to get reservations for user $loginname in ils for $database");
+    }
     
-    eval {
-	if ($logger->is_debug()){
-	    $logger->debug("Request URL: $url");
-	}
-	
-	my $response = $ua->get($url,
-				'Authorization' => "Bearer $access_token",
-	    );
-	
-	
-	if ($logger->is_debug){
-	    $logger->debug("Response: ".$response->content);
-	}
-	
-	if (!$response->is_success) {
-	    $logger->info($response->code . ' - ' . $response->message);
-	    return;
-	}
+    my $reservations_ref = $ils->get_reservations($loginname);
 
-	$circexlist = decode_json $response->content;
-	
-	if ($logger->is_debug){
-	    $logger->debug("PAIA Result: ".YAML::Dump($circexlist));
-	}
-    };
-    
-    if ($@){
-	$logger->error("PAIA-Target $url konnte nicht erreicht werden :".$@);
+    if ($logger->is_debug){
+	$logger->debug("Got reservations: ".YAML::Dump($reservations_ref));
     }
     
     my $authenticator = $session->get_authenticator;
 
-    my $itemlist_ref = [];
-
-    foreach my $this_item (@$circexlist){
-	push @$itemlist_ref, $this_item if ($this_item->{status} == 1);
-    }
-
     # TT-Data erzeugen
     
     my $ttdata={
+        authenticator => $authenticator,
         loginname    => $loginname,
         password     => $password,
-        
-        reservations => $itemlist_ref,
+	
+        reservations => $reservations_ref,
         
         database     => $database,
-        
-        show_corporate_banner => 0,
-        show_foot_banner      => 1,
     };
     
     return $self->print_page($config->{tt_users_circulations_reservations_tname},$ttdata);
@@ -203,62 +166,113 @@ sub create_record {
     
     # CGI Args
     my $authenticatorid = ($query->param('authenticatorid'))?$query->param('authenticatorid'):undef;
-    my $mediennummer    = ($query->param('mediaid'        ))?$query->param('mediaid'):undef;
-    my $ausgabeort      = ($query->param('pickup'       ))?$query->param('pickup'):0;
-    my $zweigstelle     = ($query->param('branchid'        ))?$query->param('branchid'):0;
-
-    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
+    # Aktive Aenderungen des Nutzerkontos
+    my $validtarget     = ($query->param('validtarget'    ))?$query->param('validtarget'):undef;
+    my $holdingid       = ($query->param('holdingid'      ))?$query->param('holdingid'):undef; # Mediennummer
+    my $titleid         = ($query->param('titleid'        ))?$query->param('titleid'):undef; # Katkey
+    my $num_holdings_in_unit = ($query->param('num_holdings_in_unit'))?$query->param('num_holdings_in_unit'):undef; # Anzahl Exemplare in dieser Zweigstelle
     
-    my ($loginname,$password) = $user->get_credentials();
+    my $pickup_location = ($query->param('pickup_location') >= 0)?$query->param('pickup_location'):undef;
+    my $unit            = ($query->param('unit'           ) >= 0)?$query->param('unit'):0;
 
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
+    my $type            = ($query->param('type'           ))?$query->param('type'):'';
 
+    $holdingid = uri_unescape($holdingid);
+    
+    unless ($config->get('active_ils')){
+	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellunge, Vormerkungen, usw.) sind aktuell systemweit deaktiviert."));	
+    }
+    
+    unless ($validtarget && $holdingid && $unit >= 0){
+	return $self->print_warning($msg->maketext("Notwendige Parameter nicht besetzt")." (validtarget: $validtarget, holdingid:$holdingid, unit:$unit)");
+    }
+    
+    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
+
+    my $userid = $user->get_userid_of_session($session->{ID});
+    
+    $self->param('userid',$userid);
+    
+    if ($logger->debug){
+	$logger->debug("Auth successful: ".$self->authorization_successful." - Db: $database - Authenticator: $sessionauthenticator");
+    }
+    
     if (!$self->authorization_successful || $database ne $sessionauthenticator){
         $logger->debug("Database: $database - Authenticator: $sessionauthenticator");
 
         if ($self->param('representation') eq "html"){
-            return $self->tunnel_through_authenticator('POST',$authenticatorid);            
-        }
+#            return $self->tunnel_through_authenticator('POST',$authenticatorid);
+            return $self->tunnel_through_authenticator('POST');
+	}
         else  {
             return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
         }
     }
+
+    my ($username,$password,$access_token) = $user->get_credentials();
+
+    $database              = $sessionauthenticator;
+
+    my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
+
+    my $authenticator = $session->get_authenticator;
     
-    my $circexlist=undef;
-    
-    $logger->info("Zweigstelle: $zweigstelle");
-    
-    eval {
-        my $soap = SOAP::Lite
-            -> uri("urn:/Circulation")
-                -> proxy($circinfotable->get($database)->{circcheckurl});
-        my $result = $soap->make_reservation(
-            SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                SOAP::Data->name(username     => $loginname)->type('string'),
-                SOAP::Data->name(password     => $password)->type('string'),
-                SOAP::Data->name(mediennummer => $mediennummer)->type('string'),
-                SOAP::Data->name(ausgabeort   => $ausgabeort)->type('string'),
-                SOAP::Data->name(zweigstelle  => $zweigstelle)->type('string'),
-                SOAP::Data->name(database     => $circinfotable->get($database)->{circdb})->type('string'))));
-        
-        unless ($result->fault) {
-            $circexlist=$result->result;
-        }
-        else {
-            $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-        }
-    };
-    
-    if ($@){
-        $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
+    if (!defined $pickup_location){
+	$logger->debug("Checking reservation for pickup locations");
+	
+	my $response_check_reservation_ref = $ils->check_reservation({ username => $username, holdingid => $holdingid, unit => $unit });
+
+	if ($logger->is_debug){
+	    $logger->debug("Result check_reservation:".YAML::Dump($response_check_reservation_ref));
+	}
+	
+	if ($response_check_reservation_ref->{error}){
+#            return $self->print_warning($response_check_reservation_ref->{error_description});
+            return $self->print_warning($msg->maketext("Eine Vormerkung dieses Mediums durch Sie ist leider nicht möglich"));
+	}
+	elsif ($response_check_reservation_ref->{successful}){
+	    # TT-Data erzeugen
+	    my $ttdata={
+		database      => $database,
+		unit          => $unit,
+		holdingid     => $holdingid,
+		titleid       => $titleid,
+		validtarget   => $validtarget,
+		pickup_locations => $response_check_reservation_ref->{pickup_locations},
+		num_holdings_in_unit => $num_holdings_in_unit, 
+	    };
+	    
+	    return $self->print_page($config->{tt_users_circulations_check_reservation_tname},$ttdata);
+	    
+	}		
     }
-    
-    # TT-Data erzeugen
-    my $ttdata={
-        result     => $circexlist,
-    };
-    
-    return $self->print_page($config->{tt_users_circulations_make_reservation_tname},$ttdata);
+    else {
+	$logger->debug("Making reservation");
+	
+	my $response_make_reservation_ref = $ils->make_reservation({ username => $username, holdingid => $holdingid, titleid => $titleid, unit => $unit, pickup_location => $pickup_location, type => $type});
+
+	if ($logger->is_debug){
+	    $logger->debug("Result make_reservation:".YAML::Dump($response_make_reservation_ref));	
+	}
+	
+	if ($response_make_reservation_ref->{error}){
+            return $self->print_warning($response_make_reservation_ref->{error_description});
+	}
+	elsif ($response_make_reservation_ref->{successful}){
+	    # TT-Data erzeugen
+	    my $ttdata={
+		database        => $database,
+		unit            => $unit,
+		holdingid       => $holdingid,
+		pickup_location => $pickup_location,
+		validtarget     => $validtarget,
+		reservation     => $response_make_reservation_ref,
+	    };
+	    
+	    return $self->print_page($config->{tt_users_circulations_make_reservation_tname},$ttdata);
+	    
+	}		
+    }
 }
 
 sub delete_record {
@@ -270,8 +284,6 @@ sub delete_record {
     # Dispatched Args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $branchid       = $self->param('branchid');
-    my $mediaid        = $self->strip_suffix($self->param('dispatch_url_remainder'));
 
     # Shared Args
     my $query          = $self->query();
@@ -284,59 +296,93 @@ sub delete_record {
     my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
+
+    # CGI Args
+    my $authenticatorid = ($query->param('authenticatorid'))?$query->param('authenticatorid'):undef;
+    # Aktive Aenderungen des Nutzerkontos
+    my $validtarget     = ($query->param('validtarget'    ))?$query->param('validtarget'):undef;
+    my $holdingid       = ($query->param('holdingid'      ))?$query->param('holdingid'):undef; # Mediennummer
+    my $unit            = ($query->param('unit'           ) >= 0)?$query->param('unit'):0;
+
+    $holdingid = uri_unescape($holdingid);
     
     # Aktive Aenderungen des Nutzerkontos
 
-    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
+    unless ($config->get('active_ils')){
+	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellunge, Vormerkungen, usw.) sind aktuell systemweit deaktiviert."));	
+    }
     
-    my ($loginname,$password) = $user->get_credentials();
+    unless ($validtarget && $holdingid && $unit >= 0){
+	return $self->print_warning($msg->maketext("Notwendige Parameter nicht besetzt")." (validtarget: $validtarget, holdingid:$holdingid, unit:$unit)");
+    }
+    
+    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
 
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
-
+    my $userid = $user->get_userid_of_session($session->{ID});
+    
+    $self->param('userid',$userid);
+    
+    if ($logger->debug){
+	$logger->debug("Auth successful: ".$self->authorization_successful." - Db: $database - Authenticator: $sessionauthenticator");
+    }
+    
     if (!$self->authorization_successful || $database ne $sessionauthenticator){
+        $logger->debug("Database: $database - Authenticator: $sessionauthenticator");
+
         if ($self->param('representation') eq "html"){
-            return $self->tunnel_through_authenticator('POST');            
-        }
+#            return $self->tunnel_through_authenticator('POST',$authenticatorid);
+            return $self->tunnel_through_authenticator('POST');
+	}
         else  {
             return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
         }
     }
 
-    my $circexlist=undef;
+    my ($username,$password,$access_token) = $user->get_credentials();
+
+    $database              = $sessionauthenticator;
+
+    my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
+
+    my $authenticator = $session->get_authenticator;
+
+    $logger->debug("Canceling reservation for $holdingid in unit $unit for $username");
+	
+    my $response_cancel_reservation_ref = $ils->cancel_reservation({ username => $username, holdingid => $holdingid, unit => $unit });
     
-    $logger->info("Zweigstelle: $branchid");
-    
-    eval {
-        my $soap = SOAP::Lite
-            -> uri("urn:/Circulation")
-                -> proxy($circinfotable->get($database)->{circcheckurl});
-        my $result = $soap->cancel_reservation(
-            SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                SOAP::Data->name(username     => $loginname)->type('string'),
-                SOAP::Data->name(password     => $password)->type('string'),
-                SOAP::Data->name(mediennummer => $mediaid)->type('string'),
-                SOAP::Data->name(zweigstelle  => $branchid)->type('string'),
-                SOAP::Data->name(database     => $circinfotable->get($database)->{circdb})->type('string'))));
-        
-        unless ($result->fault) {
-            $circexlist=$result->result;
-        }
-        else {
-            $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-        }
-    };
-    
-    if ($@){
-        $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
+    if ($logger->is_debug){
+	$logger->debug("Result cancel_reservation:".YAML::Dump($response_cancel_reservation_ref));
     }
+    
+    if ($response_cancel_reservation_ref->{error}){
+	#            return $self->print_warning($response_cancel_reservation_ref->{error_description});
+	return $self->print_warning($msg->maketext("Eine Stornierung der Vormerkung für dieses Mediums durch Sie ist leider nicht möglich"));
+    }
+    elsif ($response_cancel_reservation_ref->{successful}){
+	# TT-Data erzeugen
+	my $ttdata={
+	    userid        => $userid,
+	    database      => $database,
+	    unit          => $unit,
+	    holdingid     => $holdingid,
+	    validtarget   => $validtarget,
+	    cancel_reservation  => $response_cancel_reservation_ref,
+	};
+	
+	return $self->print_page($config->{tt_users_circulations_cancel_reservation_tname},$ttdata);
+	
+    }
+    else {
+	return $self->print_warning($msg->maketext("Bei der Stornierung der Vormerkung ist ein unerwarteter Fehler aufgetreten"));
+    }
+    
+    # return unless ($self->param('representation') eq "html");
 
-    return unless ($self->param('representation') eq "html");
+    # my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{databases_loc}/id/$database/$config->{circulations_loc}/id/reservations.html";
 
-    my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{databases_loc}/id/$database/$config->{circulations_loc}/id/reservations.html";
-
-    # TODO GET?
-    $self->header_add('Content-Type' => 'text/html');
-    $self->redirect($new_location);
+    # # TODO GET?
+    # $self->header_add('Content-Type' => 'text/html');
+    # $self->redirect($new_location);
 
     return;
 }

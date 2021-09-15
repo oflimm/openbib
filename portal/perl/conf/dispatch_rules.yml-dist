@@ -3040,8 +3040,8 @@
      - json
      - rdf
 - # users/circulations_loc:
-   module: 'OpenBib::Handler::PSGI::Users::Circulations::Borrows'
-   rule: '/portal/:view/users/id/:userid/databases/id/:database/circulations/id/borrows[get]'
+   module: 'OpenBib::Handler::PSGI::Users::Circulations::Loans'
+   rule: '/portal/:view/users/id/:userid/databases/id/:database/circulations/id/loans[get]'
    runmode: 'show_collection'
    representations:
      - none
@@ -3074,8 +3074,8 @@
    args:
      'restrict_db_to_view': 1
 - # users/circulations_loc:
-   module: 'OpenBib::Handler::PSGI::Users::Circulations::Reminders'
-   rule: '/portal/:view/users/id/:userid/databases/id/:database/circulations/id/reminders[get]'
+   module: 'OpenBib::Handler::PSGI::Users::Circulations::Fees'
+   rule: '/portal/:view/users/id/:userid/databases/id/:database/circulations/id/fees[get]'
    runmode: 'show_collection'
    representations:
      - none
@@ -3099,6 +3099,15 @@
    args:
      'restrict_db_to_view': 1
 - # users/circulations_loc:
+   module: 'OpenBib::Handler::PSGI::Users::Circulations'
+   rule: '/portal/:view/users/id/:userid/databases/id/:database/circulations/renew_single_loan[get]'
+   representations:
+     - none
+     - html
+   runmode: 'renew_single_loan'
+   args:
+     'restrict_db_to_view': 1
+- # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Orders'
    rule: '/portal/:view/databases/id/:database/circulations/id/orders[post]'
    runmode: 'create_record'
@@ -3112,7 +3121,7 @@
      'restrict_db_to_view': 1
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Reservations'
-   rule: '/portal/:view/databases/id/:database/circulations/id/reservations/branches/id/:branchid/media/id/*[delete]'
+   rule: '/portal/:view/databases/id/:database/circulations/id/reservations[delete]'
    runmode: 'delete_record'
    args:
      'restrict_db_to_view': 1

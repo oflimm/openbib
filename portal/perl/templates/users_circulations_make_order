@@ -1,100 +1,31 @@
-[%#-
-#######################################################################
-#
-# Templatename: circulation_make_order
-#
-# Typ         : Mastertemplate       
-#
-# Aufgabe:
-#
-# Meldung nach dem Versuch eine Bestellung auszufuehren.
-#
-#######################################################################
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+     'page_title' = 'Bestellung'
+
+      'main_template' = 'users_circulations_make_order_html'
+      'sidebar_template' = 'users_navigation'
+
+      'active_menu' = 'users'
+      'active_submenu' = 'make_order'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = username
+	     url  = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/preferences.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Bestellung')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+    };
 -%]
-[% PROCESS common/subtemplate name="std_header" %]
-
-  <body>
-
-<!-- skip link navigation -->
-<ul class="ym-skiplinks">
-	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
-	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
-</ul>
-
-<div class="ym-wrapper">
-  <div class="ym-wbox">
-
-[% PROCESS common/subtemplate name="corporate_banner" %] 
-
-[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
-
-    <!-- begin: main content area #main -->
-    <div id="main">
-    <div class="ym-column linearize-level-1">
-      <div class="ym-col1">
-        <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="users_navigation" active_submenu="orders" %] 
-        </div>
-      </div>
-      <!-- end: #col1 -->
-      <!-- begin: #col3 static column -->
-      <div class="ym-col3" >
-        <div class="ym-cbox" class="ym-clearfix">
-
-   <li><h1[% msg.maketext("Bestellung") %]</h1>
-
-[%# USE dumper;dumper.dump(result); %]
-[% IF result.OpacBestellung.Ergebnis == 'N' ;
-     errorstring = result.OpacBestellung.ErrorCode ;
-%]
-<p />
-<table width="100%">
-<tr><th>[% msg.maketext("Bestellung nicht m&ouml;glich") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:9pt">
-[% msg.maketext("Eine Bestellung des von Ihnen gew&uuml;nschen
-Mediums ist leider nicht m&ouml;glich!") %]
-<p />
-[% msg.maketext("Grund:") %]
-<p/ >
-[% IF    errorstring == "OpsOrderMehrfExemplBestellt" %]
-[% msg.maketext("Sie haben dieses Medium bereits bestellt") %]
-[% ELSIF errorstring == "VMNochAusleihbar" %]
-[% msg.maketext("Dieses Medium ist direkt ausleihbar") %]
-[% ELSE %]
-[% errorstring %]
-[% END %]
-</td></tr>
-</table>
-[% ELSIF result.OpacBestellung.Ergebnis == 'J' ;
-     successstring = result.OpacBestellung.OK ;
-%]
-<p />
-<table width="100%">
-<tr><th>[% msg.maketext("Bestellung erfolgreich durchgef&uuml;hrt") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:9pt">
-[% msg.maketext("Die Bestellung wurde erfolgreich durchgef&uuml;hrt.") %]
-<p />
-<p/ >
-[% IF result.OpacBestellung.Verfasser %]
-[% msg.maketext("Verfasser") %]: [% result.OpacBestellung.Verfasser %]<br />
-[% END %]
-[% IF result.OpacBestellung.Titel %]
-[% msg.maketext("Titel") %]: [% result.OpacBestellung.Titel %]<br />
-[% END %]
-[% IF result.OpacBestellung.AusgabeOrtBez %]
-[% msg.maketext("Der Titel ist hier abholbar") %]: [% result.OpacBestellung.AusgabeOrtBez %]
-[% END %]
-[% successstring %]
-</td></tr>
-</table>
-[% END %]
-
-        </div>
-        <div class="ym-ie-clearing">&nbsp;</div>
-        <!-- End: IE Column Clearing -->
-      </div>
-     </div> <!-- end: ym-column -->
-    </div>
-    <!-- end: #main -->
-
-[% PROCESS common/subtemplate name="std_footer" %]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

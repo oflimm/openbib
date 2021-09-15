@@ -1,0 +1,31 @@
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+     'page_title' = 'Einzelverlängerung'
+
+      'main_template' = 'users_circulations_renew_single_loan_html'
+      'sidebar_template' = 'users_navigation'
+
+      'active_menu' = 'users'
+      'active_submenu' = 'renew_single_loan'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = username
+	     url  = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/preferences.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Einzelverlängerung')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

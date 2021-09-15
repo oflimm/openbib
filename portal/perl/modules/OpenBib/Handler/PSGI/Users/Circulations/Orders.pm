@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Users::Circulations::Orders
 #
-#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2021 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -47,6 +47,7 @@ use URI::Escape;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::CirculationInfoTable;
+use OpenBib::ILS::Factory;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
@@ -62,8 +63,7 @@ sub setup {
 
     $self->start_mode('show');
     $self->run_modes(
-        'show_record'           => 'show_record',
-        'create_record'           => 'create_record',
+        'create_record'         => 'create_record',
         'show_collection'       => 'show_collection',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
@@ -111,57 +111,19 @@ sub show_collection {
 
     my ($loginname,$password,$access_token) = $user->get_credentials();
 
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
+    my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
 
-    my $circexlist=undef;
-
-    my $url = $scheme."://".$servername.$path_prefix."/".$config->get('databases_loc')."/id/".$sessionauthenticator."/paia/core/".uri_escape($loginname)."/items";
-
-    my $ua = LWP::UserAgent->new();
-    $ua->agent('USB Koeln/1.0');
-    $ua->timeout(30);
-
-    my $paia_failure = 0;
+    if ($logger->is_debug){
+	$logger->debug("Trying to get orders for user $loginname in ils for $database");
+    }
     
-    eval {
-	if ($logger->is_debug()){
-	    $logger->debug("Request URL: $url");
-	}
-	
-	my $response = $ua->get($url,
-				'Authorization' => "Bearer $access_token",
-	    );
-	
-	
-	if ($logger->is_debug){
-	    $logger->debug("Response: ".$response->content);
-	}
-	
-	if (!$response->is_success) {
-	    $logger->info($response->code . ' - ' . $response->message);
-	    return;
-	}
+    my $orders_ref = $ils->get_orders($loginname);
 
-	$circexlist = decode_json $response->content;
-	
-	if ($logger->is_debug){
-	    $logger->debug("PAIA Result: ".YAML::Dump($circexlist));
-	}
-    };
-    
-    if ($@){
-	$logger->error("PAIA-Target $url konnte nicht erreicht werden :".$@);
+    if ($logger->is_debug){
+	$logger->debug("Got orders: ".YAML::Dump($orders_ref));
     }
     
     my $authenticator = $session->get_authenticator;
-
-    my $itemlist_ref = [];
-
-    foreach my $this_item (@$circexlist){
-	push @$itemlist_ref, $this_item if ($this_item->{status} == 2);
-    }
-    
-    my $authenticator=$session->get_authenticator;
 
     # TT-Data erzeugen
     my $ttdata={
@@ -169,7 +131,9 @@ sub show_collection {
         loginname  => $loginname,
         password   => $password,
         
-        orders     => $itemlist_ref,
+        orders     => $orders_ref,
+
+	database   => $database,
     };
     
     return $self->print_page($config->{tt_users_circulations_orders_tname},$ttdata);
@@ -183,8 +147,7 @@ sub create_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $userid         = $self->param('userid');
-    my $circulationid  = $self->strip_suffix($self->param('circulationid'))           || 'borrows';
+    my $database       = $self->param('database');
     
     # Shared Args
     my $query          = $self->query();
@@ -198,72 +161,100 @@ sub create_record {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
     
-    # CGI Args
-    my $action     = ($query->param('action'    ))?$query->param('action'):'none';
-    my $circaction = ($query->param('circaction'))?$query->param('circaction'):'none';
-    my $offset     = ($query->param('offset'    ))?$query->param('offset'):0;
-    my $listlength = ($query->param('listlength'))?$query->param('listlength'):10;
-
     # Aktive Aenderungen des Nutzerkontos
-    my $validtarget   = ($query->param('validtarget'))?$query->param('validtarget'):undef;
-    my $mediennummer  = ($query->param('mnr'        ))?$query->param('mnr'):undef;
-    my $ausgabeort    = ($query->param('aort'       ))?$query->param('aort'):0;
-    my $zweigstelle   = ($query->param('zst'        ))?$query->param('zst'):0;
+    my $validtarget     = ($query->param('validtarget'    ))?$query->param('validtarget'):undef;
+    my $holdingid       = ($query->param('holdingid'      ))?$query->param('holdingid'):undef; # Mediennummer
+    my $pickup_location = ($query->param('pickup_location') >= 0)?$query->param('pickup_location'):undef;
+    my $unit            = ($query->param('unit'           ) >= 0)?$query->param('unit'):0;
 
+    unless ($config->get('active_ils')){
+	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellunge, Vormerkungen, usw.) sind aktuell systemweit deaktiviert."));	
+    }
+    
+    unless ($validtarget && $holdingid && $unit >= 0){
+	return $self->print_warning($msg->maketext("Notwendige Parameter nicht besetzt")." (validtarget: $validtarget, holdingid:$holdingid, unit:$unit)");
+    }
+    
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
+
+    my $userid = $user->get_userid_of_session($session->{ID});
     
-    my ($loginname,$password) = $user->get_credentials();
-    my $database              = $user->get_targetdb_of_session($session->{ID});
-
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
-
-    unless($sessionauthenticator eq $validtarget){
-        # Aufruf-URL
-        my $return_uri = uri_escape($r->request_uri);
-        
-        $self->redirect("$config->{base_loc}/$view/$config->{login_loc}?do_login=1;type=circulation;validtarget=$validtarget;redirect_to=$return_uri");
-
-        return;
+    $self->param('userid',$userid);
+    
+    if ($logger->debug){
+	$logger->debug("Auth successful: ".$self->authorization_successful." - Db: $database - Authenticator: $sessionauthenticator");
     }
     
-    my $circexlist=undef;
-    
-    $logger->info("Zweigstelle: $zweigstelle");
-    
-    eval {
-        my $soap = SOAP::Lite
-            -> uri("urn:/Circulation")
-                -> proxy($circinfotable->get($database)->{circcheckurl});
-        my $result = $soap->make_order(
-            SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                SOAP::Data->name(username     => $loginname)->type('string'),
-                SOAP::Data->name(password     => $password)->type('string'),
-                SOAP::Data->name(mediennummer => $mediennummer)->type('string'),
-                SOAP::Data->name(ausgabeort   => $ausgabeort)->type('string'),
-                SOAP::Data->name(zweigstelle  => $zweigstelle)->type('string'),
-                SOAP::Data->name(database     => $circinfotable->get($database)->{circdb})->type('string'))));
-        
-        unless ($result->fault) {
-            $circexlist=$result->result;
+    if (!$self->authorization_successful || $database ne $sessionauthenticator){
+        if ($self->param('representation') eq "html"){
+            return $self->tunnel_through_authenticator('POST');            
         }
-        else {
-            $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+        else  {
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
         }
-    };
-    
-    if ($@){
-        $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
     }
 
-    my $authenticator=$session->get_authenticator;
+    my ($username,$password,$access_token) = $user->get_credentials();
     
-    # TT-Data erzeugen
-    my $ttdata={
-        authenticator => $authenticator,
-        result     => $circexlist,
-    };
+    $database              = $sessionauthenticator;
+
+    my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
+
+    my $authenticator = $session->get_authenticator;
     
-    return $self->print_page($config->{tt_users_circulations_make_order_tname},$ttdata);
+    if (!defined $pickup_location){
+	$logger->debug("Checking order for pickup locations");
+	
+	my $response_check_order_ref = $ils->check_order({ username => $username, holdingid => $holdingid, unit => $unit});
+
+	if ($logger->is_debug){
+	    $logger->debug("Result check_order:".YAML::Dump($response_check_order_ref));
+	}
+	
+	if ($response_check_order_ref->{error}){
+            return $self->print_warning($response_check_order_ref->{error_description});
+	}
+	elsif ($response_check_order_ref->{successful}){
+	    # TT-Data erzeugen
+	    my $ttdata={
+		database      => $database,
+		unit          => $unit,
+		holdingid     => $holdingid,
+		validtarget   => $validtarget,
+		pickup_locations => $response_check_order_ref->{pickup_locations},
+	    };
+	    
+	    return $self->print_page($config->{tt_users_circulations_check_order_tname},$ttdata);
+	    
+	}		
+    }
+    else {
+	$logger->debug("Making order");
+	
+	my $response_make_order_ref = $ils->make_order({ username => $username, holdingid => $holdingid, unit => $unit, pickup_location => $pickup_location});
+
+	if ($logger->is_debug){
+	    $logger->debug("Result make_order:".YAML::Dump($response_make_order_ref));	
+	}
+	
+	if ($response_make_order_ref->{error}){
+            return $self->print_warning($response_make_order_ref->{error_description});
+	}
+	elsif ($response_make_order_ref->{successful}){
+	    # TT-Data erzeugen
+	    my $ttdata={
+		database      => $database,
+		unit          => $unit,
+		holdingid     => $holdingid,
+		pickup_location => $pickup_location,
+		validtarget   => $validtarget,
+		order         => $response_make_order_ref,
+	    };
+	    
+	    return $self->print_page($config->{tt_users_circulations_make_order_tname},$ttdata);
+	    
+	}		
+    }
 }
 
 

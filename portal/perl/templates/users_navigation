@@ -123,7 +123,7 @@
 </div>
 </div>
 
-[% IF user.get_targettype_of_session(session.ID) == 'paia' %]
+[% IF user.get_targettype_of_session(session.ID) == 'ils' %]
 <p/>
 
 <div class="card">
@@ -133,10 +133,10 @@
 
 <nav class="navbar bg-light ob-sidebar">
  <ul class="navbar-nav">
-[%   IF layout_param.active_submenu == "borrows" %]
+[%   IF layout_param.active_submenu == "loans" %]
       <li class="nav-item active"><strong>[% msg.maketext("Ausleihen") %]</strong></li>
 [%   ELSE %]
-      <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.name %]/[% config.get('circulations_loc') %]/id/borrows.html?l=[% lang %]">[% msg.maketext("Ausleihen") %]</a></li>
+      <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.name %]/[% config.get('circulations_loc') %]/id/loans.html?l=[% lang %]">[% msg.maketext("Ausleihen") %]</a></li>
 [%   END %]
 [%   IF layout_param.active_submenu == "reservations" %]
       <li class="nav-item active"><strong>[% msg.maketext("Vormerkungen") %]</strong></li>
@@ -148,10 +148,10 @@
 [%   ELSE %]
       <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.name %]/[% config.get('circulations_loc') %]/id/orders.html?l=[% lang %]">[% msg.maketext("Bestellungen") %]</a></li>
 [%   END %]
-[%   IF layout_param.active_submenu == "reminders" %]
+[%   IF layout_param.active_submenu == "fees" %]
       <li class="nav-item active"><strong>[% msg.maketext("Überziehungen / Gebühren") %]</strong></li>
 [%   ELSE %]
-      <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.name %]/[% config.get('circulations_loc') %]/id/reminders.html?l=[% lang %]">[% msg.maketext("Überziehungen / Gebühren") %]</a></li>
+      <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.name %]/[% config.get('circulations_loc') %]/id/fees.html?l=[% lang %]">[% msg.maketext("Überziehungen / Gebühren") %]</a></li>
 [%   END %]
 </ul>
 </nav>

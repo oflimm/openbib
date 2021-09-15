@@ -2,7 +2,7 @@
 #
 #  OpenBib::Authenticator::Factory
 #
-#  Dieses File ist (C) 2019 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2019-2021 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -38,6 +38,7 @@ use OpenBib::Authenticator::Backend::SelfRegistration;
 use OpenBib::Authenticator::Backend::PAIA;
 use OpenBib::Authenticator::Backend::OLWS;
 use OpenBib::Authenticator::Backend::LDAP;
+use OpenBib::Authenticator::Backend::ILS;
     
 sub create_authenticator {
     my ($self,$arg_ref) = @_;
@@ -67,6 +68,7 @@ sub create_authenticator {
     return new OpenBib::Authenticator::Backend::PAIA($arg_ref)  if ($authenticator_ref->{type} eq "paia");
     return new OpenBib::Authenticator::Backend::OLWS($arg_ref)  if ($authenticator_ref->{type} eq "olws");
     return new OpenBib::Authenticator::Backend::LDAP($arg_ref)  if ($authenticator_ref->{type} eq "ldap");
+    return new OpenBib::Authenticator::Backend::ILS($arg_ref)  if ($authenticator_ref->{type} eq "ils");
     
     # Default is selfregistration
     return new OpenBib::Authenticator::Backend::SelfRegistration($arg_ref);

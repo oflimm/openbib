@@ -40,10 +40,12 @@ use Parallel::ForkManager;
 
 use OpenBib::Config;
 
-my ($database,$indexname,$help,@sb,$logfile,$loglevel,$incremental);
+my ($database,$indexname,$xapianindexname,$elasticsearchindexname,$help,@sb,$logfile,$loglevel,$incremental);
 
 &GetOptions("database=s"      => \$database,
 	    "indexname=s"     => \$indexname,
+	    "xapian-indexname=s"     => \$xapianindexname,
+	    "es-indexname=s"         => \$elasticsearchindexname,
             "logfile=s"       => \$logfile,
             "loglevel=s"      => \$loglevel,
             "incremental"     => \$incremental,
@@ -57,6 +59,11 @@ if ($help){
 
 if (!-d "/var/log/openbib/index-in-parallel"){
     mkdir "/var/log/openbib/index-in-parallel";
+}
+
+if ($indexname && !$xapianindexname && !$elasticsearchindexname){
+    $xapianindexname        = $indexname;
+    $elasticsearchindexname = $indexname;
 }
 
 $logfile  = ($logfile)?$logfile:"/var/log/openbib/index-in-parallel/${database}.log";
@@ -113,11 +120,11 @@ INDEX_PART:
 	
 	# Xapian	    
 	if ($searchengine eq "xapian"){		
-	    my $indexpath    = $config->{xapian_index_base_path}."/$database";
-	    my $indexpathtmp = $config->{xapian_index_base_path}."/$indexname";
+#	    my $indexpath    = $config->{xapian_index_base_path}."/$database";
+	    my $indexpathtmp = $config->{xapian_index_base_path}."/$xapianindexname";
 	    $logger->info("### $database: Importing data into Xapian searchengine");
 	    
-	    my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl --loglevel=$loglevel -with-sorting -with-positions --database=$indexname --indexpath=$indexpathtmp";
+	    my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl --loglevel=$loglevel -with-sorting -with-positions --database=$xapianindexname --indexpath=$indexpathtmp";
 	    
 	    if ($incremental){
 		$cmd.=" -incremental --deletefile=$rootdir/data/$database/title.delete";
@@ -133,7 +140,14 @@ INDEX_PART:
 	    $logger->info("### $database: Importing data into ElasticSearch searchengine");
 	    
 	    my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2elasticsearch.pl --database=$database";
-	    
+
+	    if ($incremental){
+		$cmd.=" --indexname=$elasticsearchindexname -incremental --deletefile=$rootdir/data/$database/title.delete";
+	    }
+	    else {
+		$cmd.=" --indexname=$elasticsearchindexname";
+	    }
+	    	    
 	    $logger->info("Executing: $cmd");
 	    
 	    system($cmd);

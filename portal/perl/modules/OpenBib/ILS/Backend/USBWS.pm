@@ -873,11 +873,57 @@ sub renew_loans {
 	return $response_ref;
     }
 
-    # todo
-    #
-    # Abstraktion der Rueckgabeinformationen in $response_ref
-    
-    $response_ref = $result_ref;
+    if (defined $result_ref->{GesamtVerlaengerung} && defined $result_ref->{GesamtVerlaengerung}{NotOK} ){
+	$response_ref = {
+	    "code" => 403,
+		"error" => "renew loans failed",
+		"error_description" => $result_ref->{OpacBestellung}{NotOK},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+    # result-hash: First element (0) is overview followed by itemlist
+    elsif (scalar keys %{$result_ref->{GesamtVerlaengerung}} >= 1){
+	$response_ref->{"successful"} = 1;
+	
+	foreach my $resultid (sort keys %{$result_ref->{GesamtVerlaengerung}}){
+	    if ($resultid == 0){
+		$response_ref->{num_successful_renewals} = $result_ref->{GesamtVerlaengerung}{$resultid}{AnzPos};
+		$response_ref->{num_failed_renewals} = $result_ref->{GesamtVerlaengerung}{$resultid}{AnzNeg};
+	    }
+	    else {
+		push @{$response_ref->{"items"}}, {
+		    holdingid       => $result_ref->{Gesamtverlaengerung}{$resultid}{MedienNummer},
+		    author          => $result_ref->{Gesamtverlaengerung}{$resultid}{Verfasser},
+		    title           => $result_ref->{Gesamtverlaengerung}{$resultid}{Titel},
+		    renewal_message => $result_ref->{Gesamtverlaengerung}{$resultid}{Ergebnismeldung},
+		    location_mark   => $result_ref->{Gesamtverlaengerung}{$resultid}{Signatur},
+		    department_id   => $result_ref->{Gesamtverlaengerung}{$resultid}{EntleihZweig},
+		    department_desc => $result_ref->{Gesamtverlaengerung}{$resultid}{EntleihZweigTxt},
+		    reminder_level  => $result_ref->{Gesamtverlaengerung}{$resultid}{MahnStufe},
+
+		};
+	    }
+	}
+
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}	
+    }
+
+    $response_ref = {
+	    "code" => 405,
+		"error" => "unknown error",
+		"error_description" => "Unbekannter Fehler",
+	};
+
+    if ($logger->is_debug){
+	$response_ref->{debug} = $result_ref;
+    }
 
     return $response_ref;    
 }

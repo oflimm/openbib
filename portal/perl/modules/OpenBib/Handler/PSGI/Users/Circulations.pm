@@ -77,34 +77,12 @@ sub show_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # Dispatched Ards
-    my $view           = $self->param('view');
-    my $userid         = $self->param('userid');
-
-    # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
+    # Shared args
     my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
 
-    if (!$self->authorization_successful){
-        return $self->print_authorization_error();
-    }
+    $logger->errog("Handler is obsolete");
 
-    my $authenticator=$session->get_authenticator;
-    
-    # TT-Data erzeugen
-    my $ttdata={
-        authenticator => $authenticator,
-    };
-    
-    return $self->print_page($config->{tt_users_collections_tname},$ttdata);
+    return $self->print_warning($msg->maketext("Diese Funktion wird nicht mehr unterstützt"));	
 }
 
 sub show_record {
@@ -112,653 +90,13 @@ sub show_record {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    # Dispatched Args
-    my $view           = $self->param('view');
-    my $userid         = $self->param('userid');
-    my $circulationid  = $self->strip_suffix($self->param('circulationid')) || 'borrows';
-    my $database       = $self->param('database');
 
-    # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');    
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
+    # Shared args
     my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $validtarget        = ($query->param('validtarget'))?$query->param('validtarget'):undef;
-    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
+    $logger->errog("Handler is obsolete");
 
-    if (!$self->authorization_successful || $database ne $sessionauthenticator){
-        if ($self->param('representation') eq "html"){
-            return $self->tunnel_through_authenticator('POST');            
-        }
-        else  {
-            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
-        }
-    }
-
-    if (!$self->authorization_successful){
-        return $self->print_authorization_error();
-    }
-    
-    if    ($circulationid eq "reservations"){
-        $self->show_reservations;
-    }
-    elsif ($circulationid eq "reminders"){
-        $self->show_reminders;
-    }
-    elsif ($circulationid eq "orders"){
-        $self->show_orders;
-    }
-    elsif ($circulationid eq "borrows"){
-        $self->show_borrows;
-    }
-
-    return;
-
-}
-
-sub show_reservations {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Dispatched Args
-    my $view           = $self->param('view');
-    my $userid         = $self->param('userid');
-    my $database       = $self->param('database');
-
-    # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');    
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
-    
-    # CGI Args
-    my $action     = ($query->param('action'    ))?$query->param('action'):'none';
-    my $circaction = ($query->param('circaction'))?$query->param('circaction'):'none';
-    my $offset     = ($query->param('offset'    ))?$query->param('offset'):0;
-    my $listlength = ($query->param('listlength'))?$query->param('listlength'):10;
-
-    # Aktive Aenderungen des Nutzerkontos
-    my $validtarget   = ($query->param('validtarget'))?$query->param('validtarget'):undef;
-    my $mediennummer  = ($query->param('mnr'        ))?$query->param('mnr'):undef;
-    my $ausgabeort    = ($query->param('aort'       ))?$query->param('aort'):0;
-    my $zweigstelle   = ($query->param('zst'        ))?$query->param('zst'):0;
-
-    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
-    
-    my ($loginname,$password) = $user->get_credentials();
-    #my $database              = $user->get_targetdb_of_session($session->{ID});
-
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
-
-    my $circexlist=undef;
-    
-    eval {
-        my $soap = SOAP::Lite
-            -> uri("urn:/Circulation")
-                -> proxy($circinfotable->get($database)->{circcheckurl});
-        my $result = $soap->get_reservations(
-            SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                SOAP::Data->name(username => $loginname)->type('string'),
-                SOAP::Data->name(password => $password)->type('string'),
-                SOAP::Data->name(database => $circinfotable->get($database)->{circdb})->type('string'))));
-        
-        unless ($result->fault) {
-            $circexlist=$result->result;
-        }
-        else {
-            $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-        }
-    };
-    
-    if ($@){
-        $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
-    }
-
-    my $authenticator=$session->get_authenticator;
-
-    # TT-Data erzeugen
-    
-    my $ttdata={
-        authenticator => $authenticator,
-        loginname    => $loginname,
-        password     => $password,
-        
-        reservations => $circexlist,
-        
-        database     => $database,
-        
-        show_corporate_banner => 0,
-        show_foot_banner      => 1,
-    };
-    
-    return $self->print_page($config->{tt_users_circulations_reservations_tname},$ttdata);
-}
-
-sub show_reminders {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Dispatched Args
-    my $view           = $self->param('view');
-    my $userid         = $self->param('userid');
-    my $circulationid  = $self->strip_suffix($self->param('circulationid'))           || 'borrows';
-
-    # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');    
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
-    
-    # CGI Args
-    my $action     = ($query->param('action'    ))?$query->param('action'):'none';
-    my $circaction = ($query->param('circaction'))?$query->param('circaction'):'none';
-    my $offset     = ($query->param('offset'    ))?$query->param('offset'):0;
-    my $listlength = ($query->param('listlength'))?$query->param('listlength'):10;
-
-    # Aktive Aenderungen des Nutzerkontos
-    my $validtarget   = ($query->param('validtarget'))?$query->param('validtarget'):undef;
-    my $mediennummer  = ($query->param('mnr'        ))?$query->param('mnr'):undef;
-    my $ausgabeort    = ($query->param('aort'       ))?$query->param('aort'):0;
-    my $zweigstelle   = ($query->param('zst'        ))?$query->param('zst'):0;
-
-    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
-    
-    my ($loginname,$password) = $user->get_credentials();
-    my $database              = $user->get_targetdb_of_session($session->{ID});
-
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
-
-    my $circexlist=undef;
-    
-    eval {
-        my $soap = SOAP::Lite
-            -> uri("urn:/Circulation")
-                -> proxy($circinfotable->get($database)->{circcheckurl});
-        my $result = $soap->get_reminders(
-            SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                SOAP::Data->name(username => $loginname)->type('string'),
-                SOAP::Data->name(password => $password)->type('string'),
-                SOAP::Data->name(database => $circinfotable->get($database)->{circdb})->type('string'))));
-        
-        unless ($result->fault) {
-            $circexlist=$result->result;
-        }
-        else {
-            $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-        }
-    };
-    
-    if ($@){
-        $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
-    }
-
-    my $authenticator=$session->get_authenticator;
-    
-    # TT-Data erzeugen
-    
-    my $ttdata={
-        authenticator => $authenticator,
-        loginname  => $loginname,
-        password   => $password,
-        
-        reminders  => $circexlist,
-        
-        show_corporate_banner => 0,
-        show_foot_banner      => 1,
-    };
-      
-    return $self->print_page($config->{tt_users_circulations_reminders_tname},$ttdata);
-}
-
-sub show_orders {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Dispatched Args
-    my $view           = $self->param('view');
-    my $userid         = $self->param('userid');
-    my $circulationid  = $self->strip_suffix($self->param('circulationid'))           || 'borrows';
-
-    # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');    
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
-    
-    # CGI Args
-    my $action     = ($query->param('action'    ))?$query->param('action'):'none';
-    my $circaction = ($query->param('circaction'))?$query->param('circaction'):'none';
-    my $offset     = ($query->param('offset'    ))?$query->param('offset'):0;
-    my $listlength = ($query->param('listlength'))?$query->param('listlength'):10;
-
-    # Aktive Aenderungen des Nutzerkontos
-    my $validtarget   = ($query->param('validtarget'))?$query->param('validtarget'):undef;
-    my $mediennummer  = ($query->param('mnr'        ))?$query->param('mnr'):undef;
-    my $ausgabeort    = ($query->param('aort'       ))?$query->param('aort'):0;
-    my $zweigstelle   = ($query->param('zst'        ))?$query->param('zst'):0;
-
-    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
-    
-    my ($loginname,$password) = $user->get_credentials();
-    my $database              = $user->get_targetdb_of_session($session->{ID});
-
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
-
-    my $circexlist=undef;
-    
-    eval {
-        my $soap = SOAP::Lite
-            -> uri("urn:/Circulation")
-                -> proxy($circinfotable->get($database)->{circcheckurl});
-        my $result = $soap->get_orders(
-            SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                SOAP::Data->name(username => $loginname)->type('string'),
-                SOAP::Data->name(password => $password)->type('string'),
-                SOAP::Data->name(database => $circinfotable->get($database)->{circdb})->type('string'))));
-        
-        unless ($result->fault) {
-            $circexlist=$result->result;
-        }
-        else {
-            $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-        }
-    };
-    
-    if ($@){
-        $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
-    }
-
-    my $authenticator=$session->get_authenticator;
-    
-    # TT-Data erzeugen
-    my $ttdata={
-        authenticator => $authenticator,
-        loginname  => $loginname,
-        password   => $password,
-        
-        orders     => $circexlist,
-        
-        show_corporate_banner => 0,
-        show_foot_banner      => 1,
-    };
-    
-    return $self->print_page($config->{tt_users_circulations_orders_tname},$ttdata);
-}
-
-sub show_borrows {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Dispatched Args
-    my $view           = $self->param('view');
-    my $userid         = $self->param('userid');
-    my $circulationid  = $self->strip_suffix($self->param('circulationid'))           || 'borrows';
-
-    # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');    
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
-    
-    # CGI Args
-    my $action     = ($query->param('action'    ))?$query->param('action'):'none';
-    my $circaction = ($query->param('circaction'))?$query->param('circaction'):'none';
-    my $offset     = ($query->param('offset'    ))?$query->param('offset'):0;
-    my $listlength = ($query->param('listlength'))?$query->param('listlength'):10;
-
-    # Aktive Aenderungen des Nutzerkontos
-    my $validtarget   = ($query->param('validtarget'))?$query->param('validtarget'):undef;
-    my $mediennummer  = ($query->param('mnr'        ))?$query->param('mnr'):undef;
-    my $ausgabeort    = ($query->param('aort'       ))?$query->param('aort'):0;
-    my $zweigstelle   = ($query->param('zst'        ))?$query->param('zst'):0;
-
-    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
-    
-    my ($loginname,$password) = $user->get_credentials();
-    my $database              = $user->get_targetdb_of_session($session->{ID});
-
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
-
-    my $circexlist=undef;
-    
-    eval {
-        my $soap = SOAP::Lite
-            -> uri("urn:/Circulation")
-                -> proxy($circinfotable->get($database)->{circcheckurl});
-        my $result = $soap->get_borrows(
-            SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                SOAP::Data->name(username => $loginname)->type('string'),
-                SOAP::Data->name(password => $password)->type('string'),
-                SOAP::Data->name(database => $circinfotable->get($database)->{circdb})->type('string'))));
-        
-        unless ($result->fault) {
-            $circexlist=$result->result;
-        }
-        else {
-            $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-        }
-    };
-    
-    if ($@){
-        $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
-    }
-
-    my $authenticator=$session->get_authenticator;
-    
-    # TT-Data erzeugen
-    my $ttdata={
-        authenticator => $authenticator,
-        loginname  => $loginname,
-        password   => $password,
-        
-        borrows    => $circexlist,
-        
-        database   => $database,
-    };
-    
-    return $self->print_page($config->{tt_users_circulations_borrows_tname},$ttdata);
-}
-
-sub make_reservation {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Dispatched Args
-    my $view           = $self->param('view');
-    my $userid         = $self->param('userid');
-    my $circulationid  = $self->strip_suffix($self->param('circulationid'))           || 'borrows';
-
-    # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');    
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
-    
-    # CGI Args
-    my $action     = ($query->param('action'    ))?$query->param('action'):'none';
-    my $circaction = ($query->param('circaction'))?$query->param('circaction'):'none';
-    my $offset     = ($query->param('offset'    ))?$query->param('offset'):0;
-    my $listlength = ($query->param('listlength'))?$query->param('listlength'):10;
-
-    # Aktive Aenderungen des Nutzerkontos
-    my $validtarget   = ($query->param('validtarget'))?$query->param('validtarget'):undef;
-    my $mediennummer  = ($query->param('mnr'        ))?$query->param('mnr'):undef;
-    my $ausgabeort    = ($query->param('aort'       ))?$query->param('aort'):0;
-    my $zweigstelle   = ($query->param('zst'        ))?$query->param('zst'):0;
-
-    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
-    
-    my ($loginname,$password) = $user->get_credentials();
-    my $database              = $user->get_targetdb_of_session($session->{ID});
-
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
-
-    if (! $user->{ID}){
-        if ($self->param('representation') eq "html"){
-            return $self->tunnel_through_authenticator('POST');            
-        }
-        else {
-            return $self->print_warning($msg->maketext("Sie sind nicht authentifiziert."));
-        }   
-    }
-    
-    if (!$self->authorization_successful){
-        return $self->print_authorization_error();
-    }
-    
-    my $circexlist=undef;
-    
-    $logger->info("Zweigstelle: $zweigstelle");
-    
-    eval {
-        my $soap = SOAP::Lite
-            -> uri("urn:/Circulation")
-                -> proxy($circinfotable->get($database)->{circcheckurl});
-        my $result = $soap->make_reservation(
-            SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                SOAP::Data->name(username     => $loginname)->type('string'),
-                SOAP::Data->name(password     => $password)->type('string'),
-                SOAP::Data->name(mediennummer => $mediennummer)->type('string'),
-                SOAP::Data->name(ausgabeort   => $ausgabeort)->type('string'),
-                SOAP::Data->name(zweigstelle  => $zweigstelle)->type('string'),
-                SOAP::Data->name(database     => $circinfotable->get($database)->{circdb})->type('string'))));
-        
-        unless ($result->fault) {
-            $circexlist=$result->result;
-        }
-        else {
-            $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-        }
-    };
-    
-    if ($@){
-        $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
-    }
-
-    my $authenticator=$session->get_authenticator;
-    
-    # TT-Data erzeugen
-    my $ttdata={
-        authenticator => $authenticator,
-        result     => $circexlist,
-    };
-    
-    return $self->print_page($config->{tt_users_circulations_make_reservation_tname},$ttdata);
-}
-
-
-sub cancel_reservation {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Dispatched Args
-    my $view           = $self->param('view');
-    my $userid         = $self->param('userid');
-    my $branchid       = $self->param('branchid');
-    my $mediaid        = $self->strip_suffix($self->param('mediaid'));
-
-    # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');    
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
-    
-    # Aktive Aenderungen des Nutzerkontos
-
-    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
-    
-    my ($loginname,$password) = $user->get_credentials();
-    my $database              = $user->get_targetdb_of_session($session->{ID});
-
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
-
-    if (!$self->authorization_successful){
-        return $self->print_authorization_error();
-    }
-    
-    my $circexlist=undef;
-    
-    $logger->info("Zweigstelle: $branchid");
-    
-    eval {
-        my $soap = SOAP::Lite
-            -> uri("urn:/Circulation")
-                -> proxy($circinfotable->get($database)->{circcheckurl});
-        my $result = $soap->cancel_reservation(
-            SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                SOAP::Data->name(username     => $loginname)->type('string'),
-                SOAP::Data->name(password     => $password)->type('string'),
-                SOAP::Data->name(mediennummer => $mediaid)->type('string'),
-                SOAP::Data->name(zweigstelle  => $branchid)->type('string'),
-                SOAP::Data->name(database     => $circinfotable->get($database)->{circdb})->type('string'))));
-        
-        unless ($result->fault) {
-            $circexlist=$result->result;
-        }
-        else {
-            $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-        }
-    };
-    
-    if ($@){
-        $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
-    }
-
-    my $new_location = "$config->{base_loc}/$view/$config->{circulation_loc}?action=showcirc;circaction=reservations";
-
-    # TODO internal redirect
-    $self->redirect($new_location);
-    
-    return;
-}
-
-sub make_order {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Dispatched Args
-    my $view           = $self->param('view');
-    my $userid         = $self->param('userid');
-    my $circulationid  = $self->strip_suffix($self->param('circulationid'))           || 'borrows';
-    
-    # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');    
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
-    
-    # CGI Args
-    my $action     = ($query->param('action'    ))?$query->param('action'):'none';
-    my $circaction = ($query->param('circaction'))?$query->param('circaction'):'none';
-    my $offset     = ($query->param('offset'    ))?$query->param('offset'):0;
-    my $listlength = ($query->param('listlength'))?$query->param('listlength'):10;
-
-    # Aktive Aenderungen des Nutzerkontos
-    my $validtarget   = ($query->param('validtarget'))?$query->param('validtarget'):undef;
-    my $mediennummer  = ($query->param('mnr'        ))?$query->param('mnr'):undef;
-    my $ausgabeort    = ($query->param('aort'       ))?$query->param('aort'):0;
-    my $zweigstelle   = ($query->param('zst'        ))?$query->param('zst'):0;
-
-    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
-    
-    my ($loginname,$password) = $user->get_credentials();
-    my $database              = $user->get_targetdb_of_session($session->{ID});
-
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
-
-    unless($sessionauthenticator eq $validtarget){
-        # Aufruf-URL
-        my $return_uri = uri_escape($r->request_uri);
-
-        # TODO internal redirect
-        $self->redirect($return_uri);
-
-        return;
-    }
-    
-    my $circexlist=undef;
-    
-    $logger->info("Zweigstelle: $zweigstelle");
-    
-    eval {
-        my $soap = SOAP::Lite
-            -> uri("urn:/Circulation")
-                -> proxy($circinfotable->get($database)->{circcheckurl});
-        my $result = $soap->make_order(
-            SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                SOAP::Data->name(username     => $loginname)->type('string'),
-                SOAP::Data->name(password     => $password)->type('string'),
-                SOAP::Data->name(mediennummer => $mediennummer)->type('string'),
-                SOAP::Data->name(ausgabeort   => $ausgabeort)->type('string'),
-                SOAP::Data->name(zweigstelle  => $zweigstelle)->type('string'),
-                SOAP::Data->name(database     => $circinfotable->get($database)->{circdb})->type('string'))));
-        
-        unless ($result->fault) {
-            $circexlist=$result->result;
-        }
-        else {
-            $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-        }
-    };
-    
-    if ($@){
-        $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
-    }
-
-    my $authenticator=$session->get_authenticator;
-    
-    # TT-Data erzeugen
-    my $ttdata={
-        authenticator => $authenticator,
-        result     => $circexlist,
-    };
-    
-    return $self->print_page($config->{tt_users_circulations_make_order_tname},$ttdata);
+    return $self->print_warning($msg->maketext("Diese Funktion wird nicht mehr unterstützt"));	
 }
 
 sub renew_loans {
@@ -770,6 +108,7 @@ sub renew_loans {
     # Dispatched Args
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
+    my $database       = $self->param('database');
 
     # Shared Args
     my $query          = $self->query();
@@ -782,57 +121,61 @@ sub renew_loans {
     my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
-    
-    # CGI Args
-    my $action     = ($query->param('action'    ))?$query->param('action'):'none';
-    my $circaction = ($query->param('circaction'))?$query->param('circaction'):'none';
-    my $offset     = ($query->param('offset'    ))?$query->param('offset'):0;
-    my $listlength = ($query->param('listlength'))?$query->param('listlength'):10;
+    my $scheme         = $self->param('scheme');
+    my $servername     = $self->param('servername');
 
+    # Aktive Aenderungen des Nutzerkontos
+
+    unless ($config->get('active_ils')){
+	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellunge, Vormerkungen, usw.) sind aktuell systemweit deaktiviert."));	
+    }
+    
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
-    
-    my ($loginname,$password) = $user->get_credentials();
-    my $database              = $user->get_targetdb_of_session($session->{ID});
 
-    my $circinfotable         = OpenBib::Config::CirculationInfoTable->new;
-
-    if (!$self->authorization_successful){
-        return $self->print_authorization_error();
+    if (!$self->authorization_successful || $database ne $sessionauthenticator){
+        if ($self->param('representation') eq "html"){
+            return $self->tunnel_through_authenticator('POST');            
+        }
+        else  {
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
+        }
     }
     
-    my $circexlist=undef;
-    
-    eval {
-        my $soap = SOAP::Lite
-            -> uri("urn:/Circulation")
-                -> proxy($circinfotable->get($database)->{circcheckurl});
-        my $result = $soap->renew_loans(
-            SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                SOAP::Data->name(username     => $loginname)->type('string'),
-                SOAP::Data->name(password     => $password)->type('string'),
-                SOAP::Data->name(database     => $circinfotable->get($database)->{circdb})->type('string'))));
-        
-        unless ($result->fault) {
-            $circexlist=$result->result;
-        }
-        else {
-            $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-        }
-    };
-    
-    if ($@){
-        $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
-    }
+    my ($loginname,$password,$access_token) = $user->get_credentials();
 
-    my $authenticator=$session->get_authenticator;
+    $database              = $sessionauthenticator;
     
-    # TT-Data erzeugen
-    my $ttdata={
-        authenticator => $authenticator,
-        result     => $circexlist,
-    };
+    my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
+
+    my $authenticator = $session->get_authenticator;
+
+    if ($logger->is_debug){
+	$logger->debug("Trying to renew loans for user $loginname in ils for $database");
+    }
     
-    return $self->print_page($config->{tt_users_circulations_renew_loans_tname},$ttdata);
+    my $response_renew_loans_ref = $ils->renew_loans($loginname);
+
+    if ($logger->is_debug){
+	$logger->debug("Result renew loans: ".YAML::Dump($response_renew_loans_ref));
+    }
+    
+    if ($response_renew_loans_ref->{error}){
+	return $self->print_warning($msg->maketext("Eine Gesamtkontoverlängerung durch Sie ist leider nicht möglich"));
+    }
+    elsif ($response_renew_loans_ref->{successful}){
+	# TT-Data erzeugen
+	my $ttdata={
+	    userid        => $userid,
+	    database      => $database,
+	    renew_loans   => $response_renew_loans_ref,
+	};
+	
+	return $self->print_page($config->{tt_users_circulations_renew_loans_tname},$ttdata);
+	
+    }
+    else {
+	return $self->print_warning($msg->maketext("Bei der Gesamtkontoverlängerung ist ein unerwarteter Fehler aufgetreten"));
+    }
 }
 
 1;
@@ -840,7 +183,7 @@ __END__
 
 =head1 NAME
 
-OpenBib::Circulation - Benutzerkonto
+OpenBib::Handler::PSGI::Users::Circulation - Benutzerkontofunktionen
 
 =head1 DESCRIPTION
 

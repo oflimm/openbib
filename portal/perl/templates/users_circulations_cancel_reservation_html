@@ -21,6 +21,6 @@
 [% END %]	 
          <p class="lead">[% cancel_reservation.message %]</p>
          <p class="lead">
-            <a class="btn btn-primary btn-lg" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% userid %]/[% config.get('circulations_loc') %]/id/reservations.html?l=[% lang %]" role="button">[% msg.maketext('Weiter') %]</a>
+            <a class="btn btn-primary btn-lg" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% userid %]/[% config.get('databases_loc ') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/reservations.html?l=[% lang %]" role="button">[% msg.maketext('Weiter') %]</a>
          </p>
         </div><!-- End: jumbotron -->

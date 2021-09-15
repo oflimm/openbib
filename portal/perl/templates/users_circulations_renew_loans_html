@@ -60,6 +60,7 @@
 </div>
 [% END %]
 
+<p><a class="btn btn-primary btn-lg" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% userid %]/[% config.get('databases_loc ') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/loans.html?l=[% lang %]" role="button">[% msg.maketext('Weiter') %]</a></p>
 
 </div>
 </div>

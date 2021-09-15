@@ -47,6 +47,7 @@ use OpenBib::Record::Person;
 use OpenBib::Search::Util;
 use OpenBib::Session;
 use Data::Dumper;
+use JSON::XS;
 
 use base 'OpenBib::Handler::PSGI';
 
@@ -348,6 +349,44 @@ sub collect_person_data {
         };
         push( @{$persondata}, $person_item );
     }
+    #Personendaten aus der Überordnung ziehen
+    if (scalar @{$persondata} ==0) {
+        #wie kann JSON geparst werden
+        #http://localhost:8008/portal/openbib/connector/unapi?id=rheinabt:84411&format=oai_mods
+        if ($record->get_fields->{T5005}){
+            my $super_field = $record->get_field({field => "T5005"})->[0]->{"content"};
+            my $decoded = decode_json(encode_utf8($super_field)); 
+            if ($decoded->{"fields"}->{"0100"}){
+                my $person_item = {
+                values => $decoded->{"0100"},
+                field  => "T0100"
+                };
+            push( @{$persondata}, $person_item );
+            }
+             if ($decoded->{"fields"}->{"0101"}){
+                my $person_item = {
+                values => $decoded->{"fields"}->{"0101"},
+                field  => "T0101"
+                };
+            push( @{$persondata}, $person_item );
+            }
+            if ($decoded->{"0102"}){
+                my $person_item = {
+                values => $decoded->{"fields"}->{"0102"},
+                field  => "T0102"
+                };
+            push( @{$persondata}, $person_item );
+            }
+            if ($decoded->{"0103"}){
+                my $person_item = {
+                values =>  $decoded->{"fields"}->{"0103"},
+                field  => "T0103"
+                };
+            push( @{$persondata}, $person_item );
+            }
+        }
+    }
+    
     foreach my $person_sub_list ( @{$persondata} ) {
         foreach my $person ( @{ $person_sub_list->{values} } ) {
             my $person_item = {

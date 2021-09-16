@@ -27,7 +27,6 @@
 
         <div class="jumbotron">
          <h1 class="display-4">[% msg.maketext("Anmelden") %]</h1>
-	 <p>Der Zugriff auf dieses Portal als Ausweich-Recherchesystem für alle unsere Nutzer wegen des Cyberangriffs wird hiermit eingestellt. Bitte recherchieren Sie fortan wieder im <a href="https://www.ub.uni-koeln.de" target="_blank">USB Portal</a>.</p>
  	 <p>An diesem Portal können sich nur registrierte Mitarbeiter der Bibliotheken der UzK anmelden.</p>
 	 <div id="login_targets" class="accordion">
 [% IF available_authenticator_types.${"self"} %]	 
@@ -63,7 +62,7 @@
 <input class="form-control" type="password" name="password" id="email_username" />
 </div>
 <div>
-<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('registrations_loc') %].html">[% msg.maketext("Registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('passwords_loc') %].html?l=[% lang %]">[% msg.maketext("Passwort vergessen?") %]</a>
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('registrations_loc') %].html">[% msg.maketext("Registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('passwords_loc') %].html?l=[% lang %]">[% msg.maketext("Passwort vergessen oder Konto gesperrt?") %]</a>
 </div>
 
 <p/>

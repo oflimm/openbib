@@ -103,10 +103,7 @@
             [%-
             IF normdata.${"T5005"}.first;
             super = from_json(normdata.${"T5005"}.first.content);
-            super_title = super.fields.${'0451'}.first.content;
-            IF super.fields.${'0331'} ;
-            super_title = super.fields.${'0331'}.first.content;
-            END ;
+            all_super = normdata.${"T5005"};
             END; %]
             <mods:originInfo eventType="publication">
                 [%- IF place_list && place_list.size %]
@@ -186,45 +183,51 @@
                 [%- END %]
             </mods:subject>
             [%- END %]
-            [%- IF super %]
+            [%- IF all_super %]
+            [%- FOREACH super_item IN all_super %]
+            [%- super_data = from_json(super_item.content); 
+                super_title = super_data.fields.${'0451'}.first.content;
+                IF super_data.fields.${'0331'}.first.content;
+                    super_title = super_data.fields.${'0331'}.first.content;
+                END;
+            %]
+            [%- IF loop.first && (super_data.fields.${'0036'}.first.content =="n" || super_data.fields.${'0036'}.first.content =="p"   
+                || super_data.fields.${'0036'}.first.content =="z" || super_data.fields.${'0036'}.first.content =="t") %]
             <mods:relatedItem type="host">
+            [%- ELSE %]
+            <mods:relatedItem type="series">
+            [%- END %]
                 <mods:recordInfo>
-                    <mods:recordIdentifier>[%- super.fields.${'0010'}.first.content %]</mods:recordIdentifier>
+                    <mods:recordIdentifier>[%- super_data.fields.${'0010'}.first.content %]</mods:recordIdentifier>
                 </mods:recordInfo>
                 <mods:titleInfo>
-                    <mods:title>[% super_title %]</mods:title>
+                    <mods:title>[%- super_title  %]</mods:title>
                 </mods:titleInfo>
+            [%- IF loop.first && super_data.fields.${'0036'}.first.content =="r" %]
+            [%- UNLESS normdata.${"T0090"} || normdata.${"T0089"} %]
+                <mods:part order='[%- normdata.${"T0456"}.first.content %]'>
+                      <mods:detail type="volume">
+                            <mods:number>[% normdata.${"T0455"}.first.content %]</mods:number>
+                      </mods:detail>
+                </mods:part>
+            [%- END %]
+            [%- END %]
             </mods:relatedItem>
+            [%- IF loop.first %]
             [%- IF normdata.${"T0090"} %]
             <mods:part order='[%- normdata.${"T0090"}.first.content %]'>
-                [%- ELSIF normdata.${"T0456"} %]
-                <mods:part order='[%- normdata.${"T0456"}.first.content %]'>
-                    [%- ELSE -%]
-                    <mods:part>
-                        [%- END %]
-                        <mods:detail type="volume">
+                      <mods:detail type="volume">
                             [%- IF normdata.${"T0089"} %]
                             <mods:number>[% normdata.${"T0089"}.first.content %]</mods:number>
                             [%- ELSIF normdata.${"T0455"} %]
                             <mods:number>[% normdata.${"T0455"}.first.content %]</mods:number>
                             [%- END %]
                         </mods:detail>
-                    </mods:part>
-                    [%- END %]
-                    [%- IF NOT super && normdata.${"T0451"} -%]
-                    <mods:relatedItem type="series">
-                        <mods:titleInfo>
-                            <mods:title>[% normdata.${"T0451"}.first.content %]</mods:title>
-                        </mods:titleInfo>
-                        [%- IF normdata.${"T0455"} %]
-                        <mods:part>
-                            <mods:detail type="volume">
-                                <mods:number>[% normdata.${"T0455"}.first.content %]</mods:number>
-                            </mods:detail>
-                        </mods:part>
-                        [%- END %]
-                    </mods:relatedItem>
-                    [%- END %]
+            </mods:part>
+            [%- END %]
+            [%- END %]
+        [%- END %]
+        [%- END %]
         </mods>
     </record>
 </OAI-PMH>

@@ -34,7 +34,7 @@ while (<>){
 
 		if ($cdm_id{$id}){
 		    # Replace Link
-		    $item_ref->{content}="https://www.ub.uni-koeln.de/permalink/db/digitalis/id/$id";
+		    $item_ref->{content}="https://www.ub.uni-koeln.de/permalink/db/digitalis/katkey/$id";
 		}
 		else {
 		    print INSTIDS $id,":",$item_ref->{content},"\n";

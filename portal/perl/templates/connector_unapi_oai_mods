@@ -174,9 +174,20 @@
             </mods:note>
             [%- END %]
             [%- FOREACH item IN normdata.${"T4700"} %]
-            <mods:classification authority="ZVDD">[% item.content %]</mods:classification>
+            <mods:classification authority="usb">[% item.content %]</mods:classification>
             [%- END %]
-            [%- IF normdata.${"T0710"}.first %]
+            [%- IF normdata.${"T4718"}.first.content == "rheinland"  %]
+            <mods:classification authority="usb">Sammlung Rheinland</mods:classification>
+            [%- END %]
+            [%- FOREACH item IN normdata.${"T0700"} %]
+            <mods:classification authority="BK">[% item.content %]</mods:classification>
+            [%- END %]
+            [%- FOREACH rswk_item IN rswk_keyword_list %]
+            [%- FOREACH item IN rswk_item %]
+            <mods:classification authority="RSWK">[% item.content %]</mods:classification>
+            [%- END %]
+            [%- END %]
+            [%- IF normdata.${"T0710"} %]
             <mods:subject>
                 [%- FOREACH item IN normdata.${"T0710"} %]
                 <mods:topic>[% item.content %]</mods:topic>
@@ -210,11 +221,12 @@
                             <mods:number>[% normdata.${"T0455"}.first.content %]</mods:number>
                       </mods:detail>
                 </mods:part>
+            [%- ELSE %]
             [%- END %]
             [%- END %]
             </mods:relatedItem>
             [%- IF loop.first %]
-            [%- IF normdata.${"T0090"} %]
+            [%- IF normdata.${"T0090"} || normdata.${"T0089"} %]
             <mods:part order='[%- normdata.${"T0090"}.first.content %]'>
                       <mods:detail type="volume">
                             [%- IF normdata.${"T0089"} %]

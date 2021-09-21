@@ -98,6 +98,7 @@ sub show {
 
         my $uniform_title_list     = [];
         my $personlist             = [];
+        my $rswk_keyword_list      = [];
         my $corporation_list       = [];
         my $place_list             = [];
         my $uniform_publisher_list = [];
@@ -120,6 +121,8 @@ sub show {
                 $place_list = $self->collect_place_data( $record, $database );
                 $uniform_publisher_list =
                   $self->collect_publisher_data( $record, $database );
+                $rswk_keyword_list = 
+                    $self->collect_rswk_data( $record, $database );
 
             }
 
@@ -135,6 +138,7 @@ sub show {
                 corporation_list       => $corporation_list,
                 place_list             => $place_list,
                 uniform_publisher_list => $uniform_publisher_list,
+                rswk_keyword_list      => $rswk_keyword_list,
 
                 config => $config,
                 msg    => $msg,
@@ -315,6 +319,30 @@ sub process_title_rda {
     return $rda_collection;
 }
 
+sub collect_rswk_data {
+    my $self          = shift;
+    my $record        = shift;
+    my $database      = shift;
+    my $rswk_data = [];
+    
+    if (length( $record->get_fields->{T0902} ) ) {
+        push( @{$rswk_data}, $record->get_fields->{T0902} );
+    };
+    if (length( $record->get_fields->{T0907} ) ) {
+        push( @{$rswk_data}, $record->get_fields->{T0907} );
+    };
+    if (length( $record->get_fields->{T0912} ) ) {
+        push( @{$rswk_data}, $record->get_fields->{T0912} );
+    };
+    if (length( $record->get_fields->{T0917} ) ) {
+        push( @{$rswk_data}, $record->get_fields->{T0917} );
+    };
+    if (length( $record->get_fields->{T0922} ) ) {
+        push( @{$rswk_data}, $record->get_fields->{T0922} );
+    };
+    return $rswk_data;
+}
+
 sub collect_person_data {
     my $self       = shift;
     my $record     = shift;
@@ -355,7 +383,13 @@ sub collect_person_data {
         #http://localhost:8008/portal/openbib/connector/unapi?id=rheinabt:84411&format=oai_mods
         if ($record->get_fields->{T5005}){
             my $super_field = $record->get_field({field => "T5005"})->[0]->{"content"};
-            my $decoded = decode_json(encode_utf8($super_field)); 
+            #my $decoded = decode_json(encode_utf8($super_field)); 
+            #evtl. ecnode_utf8 rausnehmen 
+            my $decoded = {};
+            $super_field=~s/\\"/"/g;
+            eval {
+                $decoded = decode_json encode_utf8($super_field);
+            };
             if ($decoded->{"fields"}->{"0100"}){
                 my $person_item = {
                 values => $decoded->{"0100"},
@@ -473,22 +507,24 @@ sub collect_place_data {
     my $self       = shift;
     my $record     = shift;
     my $place_list = [];
-    if ( length( $record->get_fields->{T0410} ) ) {
-        foreach my $place ( @{ $record->get_fields->{T0410} } ) {
-            my $place_data = {
-                place_name => $place->{content},
-                field      => "T0410"
-            };
-            push( @{$place_list}, $place_data );
-        }
-    }
+    #rda place data
     if ( length( $record->get_fields->{T7676} ) ) {
         my $rda_collection =
           $self->process_place_rda( $record->get_fields->{T7676}, "T7676" );
         push( @{$place_list}, @{$rda_collection} );
 
     }
-    else {
+    unless (length( $record->get_fields->{T7676} )) {
+        if ( length( $record->get_fields->{T0410} ) ) {
+            foreach my $place ( @{ $record->get_fields->{T0410} } ) {
+                my $place_data = {
+                    place_name => $place->{content},
+                    field      => "T0410"
+                };
+                push( @{$place_list}, $place_data );
+            }
+        }
+        else {
         if ( length( $record->get_fields->{T0673} ) ) {
             foreach my $place ( @{ $record->get_fields->{T0673} } ) {
                 my $place_data = {
@@ -500,6 +536,8 @@ sub collect_place_data {
 
         }
     }
+    }
+   
     return $place_list;
 }
 

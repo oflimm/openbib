@@ -1525,17 +1525,6 @@
    runmode: 'show_record'
    args:
       admin_loc: 'locations'
-- # locations_loc:
-   module: 'OpenBib::Handler::PSGI::Locations::MailOrders'
-   rule: '/portal/:view/locations/id/:locationid/mailorders[get]'
-   runmode: 'show_collection'
-   representations:
-     - none
-     - html
-- # locations_loc:
-   module: 'OpenBib::Handler::PSGI::Locations::MailOrders'
-   rule: '/portal/:view/locations/id/:locationid/mailorders[post]'
-   runmode: 'mail'
 - # users/locations_loc:
    scope: 'admin_locations'
    module: 'OpenBib::Handler::PSGI::Admin::Locations'
@@ -3090,6 +3079,17 @@
    runmode: 'show_record'
 
 - # users/circulations_loc:
+   module: 'OpenBib::Handler::PSGI::Users::Circulations::Mail'
+   rule: '/portal/:view/databases/id/:database/circulations/id/mail/:mailtype[get]'
+   runmode: 'show_form'
+   representations:
+     - none
+     - html
+- # users/circulations_loc:
+   module: 'OpenBib::Handler::PSGI::Users::Circulations::Mail'
+   rule: '/portal/:view/databases/id/:database/circulations/id/mail/:mailtype[post]'
+   runmode: 'mail_form'
+- # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations'
    rule: '/portal/:view/users/id/:userid/databases/id/:database/circulations/renew_loans[get]'
    representations:
@@ -3111,6 +3111,12 @@
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Orders'
    rule: '/portal/:view/databases/id/:database/circulations/id/orders[post]'
    runmode: 'create_record'
+   args:
+     'restrict_db_to_view': 1
+- # users/circulations_loc:
+   module: 'OpenBib::Handler::PSGI::Users::Circulations::Orders'
+   rule: '/portal/:view/databases/id/:database/circulations/id/orders[delete]'
+   runmode: 'delete_record'
    args:
      'restrict_db_to_view': 1
 - # users/circulations_loc:

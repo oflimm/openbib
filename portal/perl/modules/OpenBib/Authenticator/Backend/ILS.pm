@@ -137,8 +137,8 @@ sub authenticate {
 	$logger->debug("User added with new id $userid");
     }
     
-    # Benuzerinformationen eintragen
-    #$user->set_private_info($username,\%userinfo);
+    # Benuzerinformationen temporaer eintragen
+    $user->set_private_info($username,$result_ref->{userinfo});
     
     #$logger->debug("Updated private user info");
 

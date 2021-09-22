@@ -5743,6 +5743,10 @@ sub set_private_info {
   
     my $logger = get_logger();
 
+    if ($logger->is_debug()){
+	$logger->debug(YAML::Dump($userinfo_ref));
+    }
+    
     # DBI: "update userinfo set nachname = ?, vorname = ?, strasse = ?, ort = ?, plz = ?, soll = ?, gut = ?, avanz = ?, branz = ?, bsanz = ?, vmanz = ?, maanz = ?, vlanz = ?, sperre = ?, sperrdatum = ?, gebdatum = ? where username = ?"
     #      $userinfo_ref->{'Nachname'},$userinfo_ref->{'Vorname'},$userinfo_ref->{'Strasse'},$userinfo_ref->{'Ort'},$userinfo_ref->{'PLZ'},$userinfo_ref->{'Soll'},$userinfo_ref->{'Guthaben'},$userinfo_ref->{'Avanz'},$userinfo_ref->{'Branz'},$userinfo_ref->{'Bsanz'},$userinfo_ref->{'Vmanz'},$userinfo_ref->{'Maanz'},$userinfo_ref->{'Vlanz'},$userinfo_ref->{'Sperre'},$userinfo_ref->{'Sperrdatum'},$userinfo_ref->{'Geburtsdatum'},$username
     $self->get_schema->resultset('Userinfo')->single(
@@ -5751,22 +5755,23 @@ sub set_private_info {
         }
     )->update(
         {
-            nachname   => $userinfo_ref->{'Nachname'},
-            vorname    => $userinfo_ref->{'Vorname'},
-            strasse    => '',
-            ort        => '',
-            plz        => '',
-            soll       => $userinfo_ref->{'Soll'},
-            gut        => $userinfo_ref->{'Guthaben'},
-            avanz      => $userinfo_ref->{'Avanz'},
-            branz      => $userinfo_ref->{'Branz'},
-            bsanz      => $userinfo_ref->{'Bsanz'},
-            vmanz      => $userinfo_ref->{'Vmanz'},
-            maanz      => $userinfo_ref->{'Maanz'},
-            vlanz      => $userinfo_ref->{'Vlanz'},
-            sperre     => $userinfo_ref->{'Sperre'},
-            sperrdatum => $userinfo_ref->{'Sperrdatum'},
-            gebdatum   => '',
+            nachname   => $userinfo_ref->{'surname'},
+            vorname    => $userinfo_ref->{'forename'},
+	    email      => $userinfo_ref->{'email'},
+            # strasse    => '',
+            # ort        => '',
+            # plz        => '',
+            # soll       => $userinfo_ref->{'Soll'},
+            # gut        => $userinfo_ref->{'Guthaben'},
+            # avanz      => $userinfo_ref->{'Avanz'},
+            # branz      => $userinfo_ref->{'Branz'},
+            # bsanz      => $userinfo_ref->{'Bsanz'},
+            # vmanz      => $userinfo_ref->{'Vmanz'},
+            # maanz      => $userinfo_ref->{'Maanz'},
+            # vlanz      => $userinfo_ref->{'Vlanz'},
+            # sperre     => $userinfo_ref->{'Sperre'},
+            # sperrdatum => $userinfo_ref->{'Sperrdatum'},
+            # gebdatum   => '',
         }
     );
 

@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::PSGI::Locations::MailOrders
+#  OpenBib::Handler::PSGI::Users::Circulations::Mail
 #
 #  Dieses File ist (C) 2020 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::PSGI::Locations::MailOrders;
+package OpenBib::Handler::PSGI::Users::Circulations::Mail;
 
 use strict;
 use warnings;
@@ -63,8 +63,8 @@ sub setup {
 
     $self->start_mode('show');
     $self->run_modes(
-        'mail'                  => 'mail',
-        'show_collection'       => 'show_collection',
+        'mail_form'       => 'mail_form',
+        'show_form'       => 'show_form',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
@@ -73,7 +73,7 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
-sub show_collection {
+sub show_form {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -81,8 +81,97 @@ sub show_collection {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $locationid     = $self->param('locationid');
+    my $database       = $self->param('database');
+    my $mailtype       = $self->strip_suffix($self->param('mailtype'));
+    
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+    
+    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
 
+    if (!$self->authorization_successful || $database ne $sessionauthenticator){
+        if ($self->param('representation') eq "html"){
+            return $self->tunnel_through_authenticator('POST');            
+        }
+        else  {
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
+        }
+    }
+    
+    my $show_handler   = "show_$mailtype";
+
+    if ($self->can($show_handler)){
+	return $self->$show_handler;
+    }
+    else {
+        return $self->print_warning($msg->maketext("Die aufgerufene Funktion existiert nicht"));
+    }
+}
+
+sub mail_form {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+    my $mailtype       = $self->strip_suffix($self->param('mailtype'));
+    
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+
+    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
+
+    if (!$self->authorization_successful || $database ne $sessionauthenticator){
+        if ($self->param('representation') eq "html"){
+            return $self->tunnel_through_authenticator('POST');            
+        }
+        else  {
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
+        }
+    }
+    
+    my $mail_handler   = "mail_$mailtype";
+
+    if ($self->can($mail_handler)){
+	return $self->$mail_handler;
+    }
+    else {
+        return $self->print_warning($msg->maketext("Die aufgerufene Funktion existiert nicht"));
+    }
+}
+
+sub show_handset {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+    my $mailtype       = $self->param('mailtype');
+    
     # Shared Args
     my $query          = $self->query();
     my $r              = $self->param('r');
@@ -96,28 +185,49 @@ sub show_collection {
     my $path_prefix    = $self->param('path_prefix');
 
     # CGI Args
-    my $database       = ($query->param('dbname'     ))?$query->param('dbname'):'';
+    my $scope          = $query->param('scope'); # defines sender, recipient via portal.yml
     my $titleid        = ($query->param('titleid'    ))?$query->param('titleid'):'';
-    my $mark           = ($query->param('mark'       ))?$query->param('mark'):'';
-    my $mnr            = ($query->param('mnr'        ))?$query->param('mnr'):'';
+    my $label          = ($query->param('label'      ))?$query->param('label'):'';
+    my $holdingid      = ($query->param('holdingid'  ))?$query->param('holdingid'):'';
 
-    if (!$titleid){
+    $logger->debug("Dispatched to show_handset");
+    
+    if (!$titleid || !$scope){
 	return $self->print_warning("Zuwenige Parameter übergeben");
     }
 
+    # Nutzer muss am richtigen Target authentifiziert sein
+    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
+
+    if (!$self->authorization_successful || $database ne $sessionauthenticator){
+        if ($self->param('representation') eq "html"){
+            return $self->tunnel_through_authenticator('GET');            
+        }
+        else  {
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
+        }
+    }
+
+    $database = $sessionauthenticator ;
+    
+    my ($loginname,$password,$access_token) = $user->get_credentials();
+    
     my $record = new OpenBib::Record::Title({ database => $database, id => $titleid });
-    $record->load_full_record;
+    $record->load_brief_record;
+
+    my $userinfo_ref = $user->get_info($user->{ID});
     
     # TT-Data erzeugen
     my $ttdata={
-	mark       => $mark,
-	mnr        => $mnr,
-	locationid => $locationid,
+	scope      => $scope,
+	userinfo   => $userinfo_ref,
+	label      => $label, # Signatur
+	holdingid  => $holdingid,
 	record     => $record,
-	database   => $database
+	database   => $database,
     };
     
-    return $self->print_page($config->{tt_locations_record_mailorders_tname},$ttdata);
+    return $self->print_page($config->{tt_users_circulations_mail_handset_tname},$ttdata);
 }
 
 sub mail {
@@ -128,7 +238,8 @@ sub mail {
     
     # Dispatched Args
     my $view           = $self->param('view')           || '';
-    my $locationid     = $self->param('locationid')     || '';
+    my $database       = $self->param('database')       || '';
+    my $mailtype       = $self->param('mailtype');
 
     # Shared Args
     my $query          = $self->query();
@@ -143,67 +254,88 @@ sub mail {
     my $path_prefix    = $self->param('path_prefix');
     
     # CGI Args
-    my $scope       = $query->param('scope');
-    my $zweigabteil = $query->param('zweigabteil');
-    my $title       = $query->param('title');
-    my $siasnr      = $query->param('siasnr');
-    my $mnr         = $query->param('mnr');
-    my $corporation = $query->param('corporation');
-    my $person      = $query->param('person');
-    my $publisher   = $query->param('publisher');
-    my $mark        = $query->param('mark');
-    my $userid      = $query->param('userid');
-    my $username    = $query->param('username');
-    my $pickup      = $query->param('pickup');
-    my $remark      = $query->param('remark');
-    my $email       = ($query->param('email'))?$query->param('email'):'';
-    my $receipt     = $query->param('receipt');
+    my $scope         = $query->param('scope'); # defines sender, recipient via portal.yml
+    my $title         = $query->param('title');
+    my $titleid       = $query->param('titleid');
+    my $location_mark = $query->param('location_mark');
+    my $corporation   = $query->param('corporation');
+    my $person        = $query->param('person');
+    my $publisher     = $query->param('publisher');
+    my $year          = $query->param('year');
+    my $loginname     = $query->param('loginname'); # = username in userinfo
+    my $username      = $query->param('username');  # = forename surname 
+    my $remark        = $query->param('remark');
+    my $email         = ($query->param('email'))?$query->param('email'):'';
+    my $receipt       = $query->param('receipt');
 
-    # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
-    # die Session nicht authentifiziert ist
-    if ($email eq "") {
-        return $self->print_warning($msg->maketext("Sie haben keine Mailadresse eingegeben."));
+#    my $titleid        = ($query->param('titleid'    ))?$query->param('titleid'):'';
+    my $label          = ($query->param('label'      ))?$query->param('label'):'';
+    my $holdingid      = ($query->param('holdingid'  ))?$query->param('holdingid'):'';
+
+    $logger->debug("Dispatched to show_handset");
+    
+    if (!$titleid){
+	return $self->print_warning("Zuwenige Parameter übergeben");
     }
 
-    if (!defined $config->get('mailorders')->{scope}{$scope}) {
+    # Nutzer muss am richtigen Target authentifiziert sein
+    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
+
+    if (!$self->authorization_successful || $database ne $sessionauthenticator){
+        if ($self->param('representation') eq "html"){
+            return $self->tunnel_through_authenticator('GET');            
+        }
+        else  {
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
+        }
+    }
+
+    $database = $sessionauthenticator ;
+    
+    my ($accountname,$password,$access_token) = $user->get_credentials();
+
+    my $userinfo_ref = $user->get_info($user->{ID});
+
+    my $accountemail = $userinfo_ref->{email};
+    
+    # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
+    # die Session nicht authentifiziert ist
+    if ($email ne $accountemail) {
+        return $self->print_warning($msg->maketext("Ihre Mailadresse stimmt nicht mit der im Benutzerkonto ueberein."));
+    }
+
+    if ($username ne $accountname) {
+        return $self->print_warning($msg->maketext("Ihr Benutzername entspricht nicht dem verwendeten Parameter."));
+    }
+    
+    if (!defined $config->get('mail')->{scope}{$scope}) {
         return $self->print_warning($msg->maketext("Eine Bestellung ist nicht moeglich."));
     }
 
-    if (!$username || !$pickup || !$email){
+    if (!$accountname || !$accountemail){
         return $self->print_warning($msg->maketext("Sie müssen alle Pflichtfelder ausfüllen."));
     }
 
-    unless (Email::Valid->address($email)) {
-        return $self->print_warning($msg->maketext("Sie haben eine ungültige Mailadresse eingegeben."));
+    unless (Email::Valid->address($accountemail)) {
+        return $self->print_warning($msg->maketext("Sie verwenden eine ungültige Mailadresse."));
     }	
 
-    # Bei angemeldeten Usern wird deren Username als Userid gesetzt und ueberschreibt damit den Standartwert 'Anonym'
-
-    if ($user->{ID}){
-	$userid = $user->get_username;
-    }
-    
     # TT-Data erzeugen
     
     my $ttdata={
         view        => $view,
-	location    => $locationid,
 
 	scope       => $scope,
-	zweigabteil => $zweigabteil,
 	title       => $title,
-	siasnr      => $siasnr,
-	mnr         => $mnr,
+	titleid     => $titleid,
+	holdingid   => $holdingid,
 	corporation => $corporation,
 	person      => $person,
 	publisher   => $publisher,
-	mark        => $mark,
-	userid      => $userid,
+	label       => $label,
 	username    => $username,
-	pickup      => $pickup,
 	remark      => $remark,
 	email       => $email,
-
 	    
         config      => $config,
         user        => $user,
@@ -227,29 +359,29 @@ sub mail {
         OUTPUT        => $afile,
     });
 
-    $maintemplate->process($config->{tt_locations_record_mailorders_mail_body_tname}, $ttdata ) || do { 
+    $maintemplate->process($config->{tt_user_circulations_mail_handset_mail_body_tname}, $ttdata ) || do { 
         $logger->error($maintemplate->error());
         $self->header_add('Status',400); # server error
         return;
     };
 
-    my $mail_to = $config->{mailorders}{scope}{$scope}{recipient};
+    my $mail_to = $config->{mail}{scope}{$scope}{recipient};
 
     if ($receipt){
-	$mail_to.=",$email";
+	$mail_to.=",$accountemail";
     }
     
     my $anschfile="/tmp/" . $afile;
 
     Email::Stuffer->to($mail_to)
-	->from($config->{mailorders}{scope}{$scope}{sender})
+	->from($config->{mail}{scope}{$scope}{sender})
 	->subject("$scope: Bestellung per Mail")
 	->text_body(read_binary($anschfile))
 	->send;
     
     unlink $anschfile;
     
-    return $self->print_page($config->{tt_locations_record_mailorders_mail_success_tname},$ttdata);
+    return $self->print_page($config->{tt_users_circulations_mail_handset_mail_success_tname},$ttdata);
 }
 
 1;
@@ -257,13 +389,13 @@ __END__
 
 =head1 NAME
 
-OpenBib::Locations::MailOrders - Bestellung per Mail
+OpenBib::Users::Circulations::Mail - Bestellung/Kontakt/... von Nutzern per Mail
 
 =head1 DESCRIPTION
 
-Das mod_perl-Modul OpenBib::Locations::MailOrders stellt einen Dienst zur 
-verfuegung, um fuer einzelne Standorte eine vereinfachte Bestellmoeglichkeit
-von Medien ueber eine einfache Mail-Bestellung abzuwickeln.
+Das Modul OpenBib::Users::Circulations::Mail stellt einen Dienst zur 
+verfuegung, um fuer Nutzer u.a. eine vereinfachte Bestellmoeglichkeit
+von Medien abzuwickeln.
 
 =head1 AUTHOR
 

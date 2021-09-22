@@ -721,6 +721,9 @@ sub cancel_order {
     my $zw              = exists $arg_ref->{unit}     # Zweigstelle
         ? $arg_ref->{unit}           : undef;
 
+    my $zwname          = exists $arg_ref->{unitname} # Zweigstellename
+        ? $arg_ref->{unitname}       : undef;
+
     my $title           = exists $arg_ref->{title}
         ? $arg_ref->{title}          : '';
 
@@ -762,7 +765,7 @@ sub cancel_order {
 	return $response_ref;
     }
 	
-    my @args = ($title, $author, $gsi, $zw, $date, $username, $username_full, $receipt, $email, $remark);
+    my @args = ($title, $author, $gsi, $zwname, $date, $username, $username_full, $receipt, $email, $remark);
 	    
     my $uri = "urn:/Mail";
 	    
@@ -814,7 +817,11 @@ sub cancel_order {
 
     if (defined $result_ref->{OK} ){
 	$response_ref = {
-	    "successful" => 1,
+	    "successful"   => 1,
+	     author        => $author,
+	     title         => $title,
+	     username_full => $username_full,
+	     email         => $email,
 	};
 	
 	if ($logger->is_debug){

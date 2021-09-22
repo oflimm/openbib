@@ -64,6 +64,8 @@ sub setup {
     $self->start_mode('show');
     $self->run_modes(
         'create_record'         => 'create_record',
+        'delete_record'         => 'delete_record',
+        'confirm_delete_record' => 'confirm_delete_record',
         'show_collection'       => 'show_collection',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
@@ -257,6 +259,218 @@ sub create_record {
     }
 }
 
+sub delete_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+
+    # CGI Args
+    my $authenticatorid = ($query->param('authenticatorid'))?$query->param('authenticatorid'):undef;
+    # Aktive Aenderungen des Nutzerkontos
+    my $validtarget     = ($query->param('validtarget'    ))?$query->param('validtarget'):undef;
+    my $holdingid       = ($query->param('holdingid'      ))?$query->param('holdingid'):undef; # Mediennummer
+    my $unit            = ($query->param('unit'           ) >= 0)?$query->param('unit'):0;
+    my $unitname        = ($query->param('unitname'       ))?$query->param('unitname'):undef;
+    my $titleid         = ($query->param('titleid'        ))?$query->param('titleid'):undef;
+    my $title           = ($query->param('title'          ))?$query->param('title'):undef;
+    my $author          = ($query->param('author'         ))?$query->param('author'):undef;
+    my $date            = ($query->param('date'           ))?$query->param('date'):undef;
+    my $receipt         = ($query->param('receipt'        ))?$query->param('receipt'):undef;
+    my $remark          = ($query->param('remark'         ))?$query->param('remark'):undef;
+    my $username_full   = ($query->param('username_full'  ))?$query->param('username_full'):undef;
+    my $email           = ($query->param('email'          ))?$query->param('email'):undef;
+    
+    $holdingid = uri_unescape($holdingid);
+    
+    # Aktive Aenderungen des Nutzerkontos
+
+    unless ($config->get('active_ils')){
+	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellunge, Vormerkungen, usw.) sind aktuell systemweit deaktiviert."));	
+    }
+    
+    unless ($validtarget && $holdingid && $unit >= 0){
+	return $self->print_warning($msg->maketext("Notwendige Parameter nicht besetzt")." (validtarget: $validtarget, holdingid:$holdingid, unit:$unit)");
+    }
+    
+    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
+
+    my $userid = $user->get_userid_of_session($session->{ID});
+    
+    $self->param('userid',$userid);
+    
+    if ($logger->debug){
+	$logger->debug("Auth successful: ".$self->authorization_successful." - Db: $database - Authenticator: $sessionauthenticator");
+    }
+    
+    if (!$self->authorization_successful || $database ne $sessionauthenticator){
+        $logger->debug("Database: $database - Authenticator: $sessionauthenticator");
+
+        if ($self->param('representation') eq "html"){
+#            return $self->tunnel_through_authenticator('POST',$authenticatorid);
+            return $self->tunnel_through_authenticator('POST');
+	}
+        else  {
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
+        }
+    }
+
+    my ($username,$password,$access_token) = $user->get_credentials();
+
+    $database              = $sessionauthenticator;
+
+    my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
+
+    my $authenticator = $session->get_authenticator;
+
+    $logger->debug("Canceling order for $holdingid in unit $unit for $username");
+	
+    my $response_cancel_order_ref = $ils->cancel_order({ title => $title, author => $author, holdingid => $holdingid, unit => $unit, unitname => $unitname, date => $date, username => $username, username_full => $username_full, email => $email, remark => $remark, receipt => $receipt });
+    
+    if ($logger->is_debug){
+	$logger->debug("Result cancel_order:".YAML::Dump($response_cancel_order_ref));
+    }
+    
+    if ($response_cancel_order_ref->{error}){
+	#            return $self->print_warning($response_cancel_order_ref->{error_description});
+	return $self->print_warning($msg->maketext("Eine Stornierung der Vormerkung für dieses Mediums durch Sie ist leider nicht möglich"));
+    }
+    elsif ($response_cancel_order_ref->{successful}){
+	# TT-Data erzeugen
+	my $ttdata={
+	    userid        => $userid,
+	    database      => $database,
+	    unit          => $unit,
+	    holdingid     => $holdingid,
+	    validtarget   => $validtarget,
+	    cancel_order  => $response_cancel_order_ref,
+	};
+	
+	return $self->print_page($config->{tt_users_circulations_cancel_order_tname},$ttdata);
+	
+    }
+    else {
+	return $self->print_warning($msg->maketext("Bei der Stornierung der Vormerkung ist ein unerwarteter Fehler aufgetreten"));
+    }
+    
+    # return unless ($self->param('representation') eq "html");
+
+    # my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{databases_loc}/id/$database/$config->{circulations_loc}/id/orders.html";
+
+    # # TODO GET?
+    # $self->header_add('Content-Type' => 'text/html');
+    # $self->redirect($new_location);
+
+    return;
+}
+
+sub confirm_delete_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+
+    # CGI Args
+    my $authenticatorid = ($query->param('authenticatorid'))?$query->param('authenticatorid'):undef;
+    # Aktive Aenderungen des Nutzerkontos
+    my $validtarget     = ($query->param('validtarget'    ))?$query->param('validtarget'):undef;
+    my $holdingid       = ($query->param('holdingid'      ))?$query->param('holdingid'):undef; # Mediennummer
+    my $titleid         = ($query->param('titleid'        ))?$query->param('titleid'):undef; # Katkey
+    my $date            = ($query->param('date'           ))?$query->param('date'):''; # Bestelldatum
+    my $unitname        = ($query->param('unitname'       ))?$query->param('unitname'):''; 
+    my $unit            = ($query->param('unit'           ) >= 0)?$query->param('unit'):0;
+
+    $holdingid = uri_unescape($holdingid) if ($holdingid);
+    $date      = uri_unescape($date) if ($date);
+    $unitname  = uri_unescape($unitname) if ($unitname);
+    
+    # Aktive Aenderungen des Nutzerkontos
+
+    unless ($config->get('active_ils')){
+	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellunge, Vormerkungen, usw.) sind aktuell systemweit deaktiviert."));	
+    }
+    
+    unless ($validtarget && $titleid && $holdingid && $unit >= 0){
+	return $self->print_warning($msg->maketext("Notwendige Parameter nicht besetzt")." (validtarget: $validtarget, holdingid:$holdingid, unit:$unit)");
+    }
+    
+    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
+
+    my $userid = $user->get_userid_of_session($session->{ID});
+    
+    $self->param('userid',$userid);
+    
+    if ($logger->debug){
+	$logger->debug("Auth successful: ".$self->authorization_successful." - Db: $database - Authenticator: $sessionauthenticator");
+    }
+    
+    if (!$self->authorization_successful || $database ne $sessionauthenticator){
+        $logger->debug("Database: $database - Authenticator: $sessionauthenticator");
+
+        if ($self->param('representation') eq "html"){
+#            return $self->tunnel_through_authenticator('POST',$authenticatorid);
+            return $self->tunnel_through_authenticator('POST');
+	}
+        else  {
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
+        }
+    }
+
+    my ($username,$password,$access_token) = $user->get_credentials();
+
+    $database              = $sessionauthenticator;
+
+    my $record = new OpenBib::Record::Title({ database => $database, id => $titleid });
+    $record->load_brief_record;
+
+    my $userinfo_ref = $user->get_info($user->{ID});
+    
+    my $ttdata={
+	userinfo  => $userinfo_ref,
+	record    => $record,
+	unit      => $unit,
+	unitname  => $unitname,
+	holdingid => $holdingid,
+	date      => $date,
+        userid    => $userid,
+    };
+    
+    $logger->debug("Asking for confirmation");
+
+    return $self->print_page($config->{tt_users_circulations_cancel_order_confirm_tname},$ttdata);
+}
 
 1;
 __END__

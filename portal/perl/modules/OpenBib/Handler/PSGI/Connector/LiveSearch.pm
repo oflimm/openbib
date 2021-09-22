@@ -45,6 +45,14 @@ use OpenBib::Common::Util;
 use OpenBib::L10N;
 use OpenBib::Search::Util;
 use OpenBib::Session;
+use OpenBib::Search::Factory;
+use OpenBib::Search::Backend::Xapian;
+use OpenBib::Search::Backend::ElasticSearch;
+use OpenBib::Search::Backend::Z3950;
+use OpenBib::Search::Backend::EZB;
+use OpenBib::Search::Backend::DBIS;
+use OpenBib::Search::Backend::BibSonomy;
+use OpenBib::SearchQuery;
 
 use base 'OpenBib::Handler::PSGI';
 
@@ -99,6 +107,84 @@ sub show {
         $word = "$word*";
     }
 
+    my @databases     = $config->get_viewdbs($view);
+    my $searchprofile = $config->get_searchprofile_or_create(\@databases);
+    
+
+    my $searchquery = OpenBib::SearchQuery->new({ view => $view, config => $config});
+    $searchquery->set_searchfield('freesearch',$word);
+    $searchquery->set_searchprofile($searchprofile);
+
+    $self->param('searchquery',$searchquery);
+    
+    my $search_args_ref = {};
+    $search_args_ref->{authority}    = 1;
+    $search_args_ref->{searchquery}  = $searchquery if (defined $searchquery);
+    $search_args_ref->{config}       = $config if (defined $config);
+    $search_args_ref->{queryoptions} = $queryoptions if (defined $queryoptions);
+
+    my $searcher = OpenBib::Search::Factory->create_searcher($search_args_ref);
+
+    $searcher->search;
+
+    $searchquery->set_hits($searcher->get_resultcount);
+
+    my $recordlist;
+
+    if ($searcher->have_results) {
+        $recordlist = $searcher->get_records();	
+    }
+
+    my $ttdata={        
+        searchquery     => $searchquery,
+        
+        qopts           => $queryoptions->get_options,
+        queryoptions    => $queryoptions,
+        
+        query           => $query,
+
+        recordlist      => $recordlist,
+    };
+    
+    $ttdata = $self->add_default_ttdata($ttdata);
+
+    my $content = "";
+
+    my $templatename = $config->get('tt_connector_livesearch_tname');
+    
+    $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
+        database     => '',
+        view         => $ttdata->{view},
+        profile      => $ttdata->{sysprofile},
+        templatename => $templatename,
+    });
+    
+    # Start der Ausgabe mit korrektem Header
+    # $r->content_type($ttdata->{content_type});
+    
+    # Es kann kein Datenbankabhaengiges Template geben
+    
+    my $itemtemplate = Template->new({
+        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+            INCLUDE_PATH   => $config->{tt_include_path},
+            ABSOLUTE       => 1,
+        }) ],
+        #                INCLUDE_PATH   => $config->{tt_include_path},
+        #                ABSOLUTE       => 1,
+        RECURSION      => 1,
+        OUTPUT         => \$content,
+    });            
+
+    $itemtemplate->process($templatename, $ttdata) || do {
+        $logger->error("Process error for resultitem: ".$itemtemplate->error());
+        $self->header_add('Status',400); # server error
+        return;
+    };
+
+    $logger->debug("Printed: $content");
+    
+    return $content;
+    
     my $viewdb_lookup_ref = {};
     foreach my $viewdb ($config->get_viewdbs($view)){
         $viewdb_lookup_ref->{$viewdb}=1;

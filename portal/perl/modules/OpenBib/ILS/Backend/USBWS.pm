@@ -321,7 +321,7 @@ sub make_reservation {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
-    my $username        = exists $arg_ref->{username} # Nutzername
+    my $username        = exists $arg_ref->{username} # Nutzername im Bibliothekssystem
         ? $arg_ref->{username}       : undef;
     
     my $gsi             = exists $arg_ref->{holdingid}  # Mediennummer
@@ -448,7 +448,7 @@ sub cancel_reservation {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
-    my $username        = exists $arg_ref->{username} # Nutzername
+    my $username        = exists $arg_ref->{username} # Nutzername im Bibliothekssystem
         ? $arg_ref->{username}       : undef;
     
     my $katkey          = exists $arg_ref->{titleid}  # Katkey
@@ -578,7 +578,7 @@ sub make_order {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
-    my $username        = exists $arg_ref->{username} # Nutzername
+    my $username        = exists $arg_ref->{username} # Nutzername im Bibliothekssystem
         ? $arg_ref->{username}       : undef;
     
     my $katkey          = exists $arg_ref->{titleid}  # Katkey
@@ -709,7 +709,7 @@ sub cancel_order {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
-    my $username        = exists $arg_ref->{username} # Nutzername
+    my $username        = exists $arg_ref->{username} # Nutzername im Bibliothekssystem
         ? $arg_ref->{username}       : undef;
     
     my $katkey          = exists $arg_ref->{titleid}  # Katkey
@@ -720,7 +720,28 @@ sub cancel_order {
 
     my $zw              = exists $arg_ref->{unit}     # Zweigstelle
         ? $arg_ref->{unit}           : undef;
-        
+
+    my $title           = exists $arg_ref->{title}
+        ? $arg_ref->{title}          : '';
+
+    my $author          = exists $arg_ref->{author}
+        ? $arg_ref->{author}         : '';
+
+    my $date            = exists $arg_ref->{date}
+        ? $arg_ref->{date}           : '';
+
+    my $receipt         = exists $arg_ref->{receipt}
+        ? $arg_ref->{receipt}           : '';
+
+    my $remark          = exists $arg_ref->{remark}
+        ? $arg_ref->{remark}            : '';
+    
+    my $username_full   = exists $arg_ref->{username_full} # Vorname Nachname
+        ? $arg_ref->{username_full}            : '';
+    
+    my $email           = exists $arg_ref->{email}
+        ? $arg_ref->{email}             : '';
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -740,22 +761,12 @@ sub cancel_order {
 
 	return $response_ref;
     }
-
-    # todo: Bestimmung der Parameter fuer Mailversand, ggf. durch $katkey
-
-    my $title = "";
-    my $author = "";    
-    my $date = "";    
-    my $username_full = ""; # Vorname Nachname
-    my $receipt = "";
-    my $email = "";
-    my $remark = "";
 	
     my @args = ($title, $author, $gsi, $zw, $date, $username, $username_full, $receipt, $email, $remark);
 	    
     my $uri = "urn:/Mail";
 	    
-    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+    $logger->debug("Trying connection to uri $uri at ".$config->get('usbwsmail_url'));
     
     $logger->debug("Using args ".YAML::Dump(\@args));    
     
@@ -764,7 +775,7 @@ sub cancel_order {
     eval {
 	my $soap = SOAP::Lite
 	    -> uri($uri)
-	    -> proxy($config->get('usbws_url'));
+	    -> proxy($config->get('usbwsmail_url'));
 	my $result = $soap->submit_storno(@args);
 	
 	unless ($result->fault) {
@@ -787,7 +798,7 @@ sub cancel_order {
     };
 	    
     if ($@){
-	$logger->error("SOAP-Target ".$config->get('usbws_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+	$logger->error("SOAP-Target ".$config->get('usbwsmail_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
 
 	$response_ref = {
 	    error => "connection error",
@@ -799,6 +810,31 @@ sub cancel_order {
 
     if ($logger->is_debug){
 	$logger->debug("Cancel order result".YAML::Dump($result_ref));
+    }
+
+    if (defined $result_ref->{OK} ){
+	$response_ref = {
+	    "successful" => 1,
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+	
+    }
+    else {
+	$response_ref = {
+	    "code" => 403,
+		"error" => "cancel order failed",
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
     }
     
     return $response_ref;
@@ -1389,7 +1425,7 @@ sub check_order {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
-    my $username        = exists $arg_ref->{username} # Nutzername
+    my $username        = exists $arg_ref->{username} # Nutzername im Bibliothekssystem
         ? $arg_ref->{username}       : undef;
     
     my $gsi             = exists $arg_ref->{holdingid} # Mediennummer
@@ -1540,7 +1576,7 @@ sub check_reservation {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
-    my $username        = exists $arg_ref->{username} # Nutzername
+    my $username        = exists $arg_ref->{username} # Nutzername im Bibliothekssystem
         ? $arg_ref->{username}       : undef;
     
     my $gsi             = exists $arg_ref->{holdingid}  # Mediennummer

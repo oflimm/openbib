@@ -102,6 +102,7 @@ sub show {
         my $corporation_list       = [];
         my $place_list             = [];
         my $uniform_publisher_list = [];
+        my $date_values = undef;
         if ($unapiid) {
             my ( $database, $idn, $record );
 
@@ -123,6 +124,7 @@ sub show {
                   $self->collect_publisher_data( $record, $database );
                 $rswk_keyword_list = 
                     $self->collect_rswk_data( $record, $database );
+                $date_values = $self->get_date_values($record, $database);
 
             }
 
@@ -139,6 +141,7 @@ sub show {
                 place_list             => $place_list,
                 uniform_publisher_list => $uniform_publisher_list,
                 rswk_keyword_list      => $rswk_keyword_list,
+                date_values            => $date_values,
 
                 config => $config,
                 msg    => $msg,
@@ -341,6 +344,43 @@ sub collect_rswk_data {
         push( @{$rswk_data}, $record->get_fields->{T0922} );
     };
     return $rswk_data;
+}
+
+sub get_date_values() {
+    my $self       = shift;
+    my $record     = shift;
+    my $database   = shift;
+    my $date_values = {};
+    if ($record->get_fields->{T0422}) {
+        $date_values->{"start_date"} =$record->get_fields->{T0422}[0]->{content};
+    }
+    if ($record->get_fields->{T0423}) {
+        $date_values->{"end_date"} =$record->get_fields->{T0423}[0]->{content};
+    }
+    if ($record->get_fields->{T0089}){
+        if(index($record->get_fields->{T0089}[0]->{content}, ".") != -1){
+            my @splitted_string = split('\.', $record->get_fields->{T0089}[0]->{content});
+            my $date_value = $splitted_string[-1];
+            if (index($date_value, "\/") != -1 ){
+                unless ($date_values->{"start_date"}){ 
+                    my @splitted_date = split('\/', $date_value);
+                    $date_values->{"start_date"} =$splitted_date[0];
+                    $date_values->{"end_date"} =$splitted_date[1];
+                    $date_values->{"date"} = $date_value;
+                }else {
+                    $date_values->{"date"} = $date_value;
+                }
+            }else {
+                $date_values->{"date"} = $date_value;
+            }
+        }else {
+            $date_values->{"date"} = $record->get_fields->{T0089}[0]->{content};
+        }
+    }else {
+         $date_values->{"date"} = "empty"; 
+    }
+    return $date_values;
+
 }
 
 sub collect_person_data {

@@ -240,7 +240,11 @@
                 </mods:titleInfo>
             [%- IF loop.first  %]
             [%- UNLESS normdata.${"T0090"} || normdata.${"T0089"} %]
+                [%- IF normdata.${"T0456"} %]
                 <mods:part order='[%- normdata.${"T0456"}.first.content %]'>
+                [%- ELSE %]
+                <mods:part order='[%- normdata.${"T0455"}.first.content %]'>
+                [%- END %]
                       <mods:detail type="volume">
                             <mods:number>[% normdata.${"T0455"}.first.content %]</mods:number>
                       </mods:detail>

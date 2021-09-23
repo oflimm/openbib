@@ -297,6 +297,7 @@ while (my $jsonline = <IN>){
 	
 	my $is_inhalt_volltext = 0;
 	my $is_inhalt_analog = 0;
+	my $is_inhalt_ohne = 0;
 	
 	# Kategorie Mit Inhaltsrepraesentation: Volltext
 	if ($letter_ref->{'transcription_type'}){
@@ -317,8 +318,11 @@ while (my $jsonline = <IN>){
 	# Kategorie Mit Inhaltsrepraesentation: analog transkribiert
 	if ($letter_ref->{'transcription_type'}){
 	    eval {
-		if ($letter_ref->{transcription_type}{_standard}{1}{text}{'de-DE'} eq "Handschrift" || $letter_ref->{transcription_type}{_standard}{1}{text}{'de-DE'} eq "Schreibmaschine" ){
+		if ($letter_ref->{transcription_type}{_standard}{1}{text}{'de-DE'} eq "Handschrift" || $letter_ref->{transcription_type}{_standard}{1}{text}{'de-DE'} eq "Schreibmaschine"  || $letter_ref->{transcription_type}{_standard}{1}{text}{'de-DE'} eq "Ausdruck Textdatei" ){
 		    $is_inhalt_analog = 1;
+		}
+		if ($letter_ref->{transcription_type}{_standard}{1}{text}{'de-DE'} eq "ohne Transkription" ){
+		    $is_inhalt_ohne = 1;
 		}
 	    };
 	}
@@ -334,7 +338,7 @@ while (my $jsonline = <IN>){
 		content => 'Analog',
 	    }
 	}
-	if (!$is_inhalt_analog && $is_inhalt_volltext){
+	if ($is_inhalt_ohne){
 	    push @{$title_ref->{fields}{'0517'}}, {
 		content => 'Ohne',
 	    }

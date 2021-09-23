@@ -93,6 +93,9 @@ open(IN ,           "<:raw", $inputfile );
 
 my $multcount_ref = {};
 
+my $persons_done_ref = {};
+my $recipients_done_ref = {};
+
 while (my $jsonline = <IN>){
     my $item_ref = decode_json($jsonline); 
 
@@ -117,17 +120,15 @@ while (my $jsonline = <IN>){
 
     my @senders = ();
     
-    # Person
+    # Sender -> Person
     if ($letter_ref->{sender}{_standard}{1}{text}{'de-DE'}){
 	my $name = $letter_ref->{sender}{_standard}{1}{text}{'de-DE'};
-
+	my $person_id = $letter_ref->{sender}{person}{_id};
 	push @senders, $name;
-	
-	my ($person_id,$new)=OpenBib::Conv::Common::Util::get_person_id($name);
 	
 	my $mult = 1;
 	
-	if ($new){
+	if (!$persons_done_ref->{$person_id}){
 	    
 	    my $normitem_ref = {
 		'fields' => {},
@@ -140,6 +141,8 @@ while (my $jsonline = <IN>){
 	    };
 	    
 	    print PERSON encode_json $normitem_ref, "\n";
+
+	    $persons_done_ref->{$person_id} = 1;
 	}
 	
 	my $new_category = "0100";
@@ -157,17 +160,16 @@ while (my $jsonline = <IN>){
 
     my @recipients = ();
     
-    # Koerperschaft
+    # Recipient -> Koerperschaft
     foreach my $recipient_ref (@{$letter_ref->{'_nested:gentz_letter__recipients'}}){	
 	my $name = $recipient_ref->{recipient}{_standard}{1}{text}{'de-DE'};
+	my $corporatebody_id = $recipient_ref->{recipient}{person}{_id};
 
 	push  @recipients, $name;
 	
-	my ($corporatebody_id,$new) = OpenBib::Conv::Common::Util::get_corporatebody_id($name);
-	
 	my $mult = 1;
 	
-	if ($new){
+	if (!$recipients_done_ref->{$corporatebody_id}){
 	    
 	    my $normitem_ref = {
 		'fields' => {},
@@ -181,6 +183,8 @@ while (my $jsonline = <IN>){
 	    };
 	    
 	    print CORPORATEBODY encode_json $normitem_ref, "\n";
+
+	    $recipients_done_ref->{$corporatebody_id} = 1;
 	}
 	
 	my $new_category = "0200";
@@ -295,7 +299,7 @@ while (my $jsonline = <IN>){
 	my $is_inhalt_analog = 0;
 	
 	# Kategorie Mit Inhaltsrepraesentation: Volltext
-	if (@{$letter_ref->{'_nested:gentz_letter__transcriptions'}}){
+	if (defined $letter_ref->{'_nested:gentz_letter__transcriptions'} && @{$letter_ref->{'_nested:gentz_letter__transcriptions'}}){
 	    foreach my $item_ref (@{$letter_ref->{'_nested:gentz_letter__transcriptions'}}){
 		if ($item_ref->{transscription_fulltext}){
 		    $is_inhalt_volltext = 1;

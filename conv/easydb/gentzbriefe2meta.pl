@@ -299,7 +299,14 @@ while (my $jsonline = <IN>){
 	my $is_inhalt_analog = 0;
 	
 	# Kategorie Mit Inhaltsrepraesentation: Volltext
-	if (defined $letter_ref->{'_nested:gentz_letter__transcriptions'} && @{$letter_ref->{'_nested:gentz_letter__transcriptions'}}){
+	if ($letter_ref->{'transcription_type'}){
+	    eval {
+		if ($letter_ref->{transcription_type}{_standard}{1}{text}{'de-DE'} eq "digital"){
+		    $is_inhalt_volltext = 1;
+		}
+	    };
+	}
+	elsif (defined $letter_ref->{'_nested:gentz_letter__transcriptions'} && @{$letter_ref->{'_nested:gentz_letter__transcriptions'}}){
 	    foreach my $item_ref (@{$letter_ref->{'_nested:gentz_letter__transcriptions'}}){
 		if ($item_ref->{transscription_fulltext}){
 		    $is_inhalt_volltext = 1;
@@ -310,7 +317,7 @@ while (my $jsonline = <IN>){
 	# Kategorie Mit Inhaltsrepraesentation: analog transkribiert
 	if ($letter_ref->{'transcription_type'}){
 	    eval {
-		if ($letter_ref->{transcription_type}{_standard}{1}{text}{text}{'de-DE'} eq "Handschrift" || $letter_ref->{transcription_type}{_standard}{1}{text}{text}{'de-DE'} eq "Schreibmaschine" ){
+		if ($letter_ref->{transcription_type}{_standard}{1}{text}{'de-DE'} eq "Handschrift" || $letter_ref->{transcription_type}{_standard}{1}{text}{'de-DE'} eq "Schreibmaschine" ){
 		    $is_inhalt_analog = 1;
 		}
 	    };
@@ -342,9 +349,19 @@ while (my $jsonline = <IN>){
 	    if ($letter_ref->{'hardcopy_herterich'}{_standard}{1}{text}{'de-DE'} eq "Papier"){
 		$is_papierkopie_usb = 1;
 	    }
-	    elsif ($letter_ref->{'hardcopy_herterich'}{_standard}{1}{text}{'de-DE'} eq "Mikrofilm (digitalisiert)"){
+	    
+	    if ($letter_ref->{'hardcopy_herterich'}{_standard}{1}{text}{'de-DE'} eq "Mikrofilm (digitalisiert)"){
 		$is_mikrofilm_digitalisiert = 1;
 	    }
+	    
+	    if (defined $letter_ref->{'_nested:gentz_letter__digitized_versions'} && @{$letter_ref->{'_nested:gentz_letter__digitized_versions'}}){
+		foreach my $item_ref (@{$letter_ref->{'_nested:gentz_letter__digitized_versions'}}){
+		    if (defined $item_ref->{digitized_version}){
+			$is_digitalisat = 1;
+		    }
+		}
+	    }
+	    
 	};
 
 	# 0334: Material
@@ -358,6 +375,11 @@ while (my $jsonline = <IN>){
 		content => 'Mikrofilm (digitalisiert)',
 	    }
 	}
+	if ($is_digitalisat){
+	    push @{$title_ref->{fields}{'0334'}}, {
+		content => 'Digitalisat',
+	    }
+	}
 	
     }
 
@@ -365,21 +387,37 @@ while (my $jsonline = <IN>){
     # Auswertung Kategorie 'Sammlung Herterich'
     {
 
+	my $is_sammlung_herterich = 0;
 	my $is_herterich_ungedruckt = 0;
 	my $is_herterich_gedruckt = 0;
 	my $is_herterich_archiv = 0;
 	
 	eval {
-	    if ($letter_ref->{archive}{_standard}{1}{text}{'de-DE'}){
-		$is_herterich_archiv = 1;
+
+	    if (defined $letter_ref->{'_nested:gentz_letter__records_collection_herterich'} && @{$letter_ref->{'_nested:gentz_letter__records_collection_herterich'}}){
+		foreach my $item_ref (@{$letter_ref->{'_nested:gentz_letter__records_collection_herterich'}}){
+		    if (defined $item_ref->{collection_herterich} && $item_ref->{collection_herterich} =~m/^HERT/){
+			$is_sammlung_herterich = 1;
+		    }
+		}
+		
+	    }
+	    elsif (defined $letter_ref->{contentdm_id}){
+		$is_sammlung_herterich = 1;
 	    }
 
-	    if (! defined $letter_ref->{reference_publication}{_standard}{1}{text}{'de-DE'} && ! @${$letter_ref->{'_nested:gentz_letter__doublets'}}){
-		$is_herterich_ungedruckt = 1;
+	    if ($is_sammlung_herterich){
+		if ($letter_ref->{archive}{_standard}{1}{text}{'de-DE'}){
+		    $is_herterich_archiv = 1;
+		}
+		
+		if (! defined $letter_ref->{reference_publication}{_standard}{1}{text}{'de-DE'} && ! @${$letter_ref->{'_nested:gentz_letter__doublets'}}){
+		    $is_herterich_ungedruckt = 1;
+		}
+		if ($letter_ref->{reference_publication}{_standard}{1}{text}{'de-DE'} || @${$letter_ref->{'_nested:gentz_letter__doublets'}}){
+		    $is_herterich_gedruckt = 1;
+		}
 	    }
-	    if ($letter_ref->{reference_publication}{_standard}{1}{text}{'de-DE'} || @${$letter_ref->{'_nested:gentz_letter__doublets'}}){
-		$is_herterich_gedruckt = 1;
-	    }	    
 	    
 	};
 
@@ -407,20 +445,24 @@ while (my $jsonline = <IN>){
 
 	my $is_druck_mehrfach = 0;
 	my $is_druck_archiv = 0;
+	my $is_referenz_publikation = 0;
 	
 	eval {
-	    if ($letter_ref->{archive}{_standard}{1}{text}{'de-DE'}){
-		$is_druck_archiv = 1;
-	    }
-
-	    if (@${$letter_ref->{'_nested:gentz_letter__doublets'}}){
-		foreach my $item_ref (@${$letter_ref->{'_nested:gentz_letter__doublets'}}){
-		    if ($item_ref->{'doublet_publication'}){			
-			$is_druck_mehrfach = 1;
-		    }
+	    if (defined $letter_ref->{reference_publication}){
+		$is_referenz_publikation = 1;
+		
+		if ($letter_ref->{archive}{_standard}{1}{text}{'de-DE'}){
+		    $is_druck_archiv = 1;
 		}
-	    }	    
-	    
+		
+		if (@${$letter_ref->{'_nested:gentz_letter__doublets'}}){
+		    foreach my $item_ref (@${$letter_ref->{'_nested:gentz_letter__doublets'}}){
+			if ($item_ref->{'doublet_publication'}){			
+			    $is_druck_mehrfach = 1;
+			}
+		    }
+		} 
+	    }
 	};
 
 	# 0434: Sonstige Angaben
@@ -432,6 +474,11 @@ while (my $jsonline = <IN>){
 	if ($is_druck_archiv){
 	    push @{$title_ref->{fields}{'0434'}}, {
 		content => 'Archiv',
+	    }
+	}
+	if ($is_referenz_publikation){
+	    push @{$title_ref->{fields}{'0434'}}, {
+		content => 'Referenzpublikation',
 	    }
 	}
 	

@@ -373,6 +373,7 @@ sub get_date_values() {
             }
             if (index($date_value, "\/") != -1){
                 unless ($date_values->{"start_date"}) { 
+                        
                         if (index($date_value, "(") == -1){
                         my @splitted_date = split('\/', $date_value);
                         $date_values->{"start_date"} =$splitted_date[0];
@@ -383,11 +384,13 @@ sub get_date_values() {
                 }
             }
             #special cases like 10,10(1771/2003)1994 1594159
-            unless (index($date_value, "(") != -1){ 
-                   $date_values->{"date_norm"} = $date_value;
-            }else {
-                if ($record->get_fields->{T0024}[0]->{content} && length($record->get_fields->{T0024}[0]->{content}) == 4){
-                    $date_values->{"date_norm"} = $record->get_fields->{T0024}[0]->{content};
+            unless ($date_values->{"date_norm"}){
+                unless (index($date_value, "(") != -1){ 
+                    $date_values->{"date_norm"} = $date_value;
+                }else {
+                    if ($record->get_fields->{T0024}[0]->{content} && length($record->get_fields->{T0024}[0]->{content}) == 4){
+                        $date_values->{"date_norm"} = $record->get_fields->{T0024}[0]->{content};
+                    }
                 }
             }
         }

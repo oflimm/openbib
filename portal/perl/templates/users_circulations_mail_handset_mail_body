@@ -1,0 +1,43 @@
+*** E-Mail-Bestellung (Handapp.) vom [% current_date %] ***
+[%- IF holdingid -%]
+   Signatur: $shelfmark
+[%- END -%]   
+
+[%- IF title -%]
+      Titel: [% title %]
+[%- END -%]   
+[%- IF person -%]
+      Autor: [% person %]
+[%- END -%]   
+[%- IF corporation -%]
+      Körp.: [% corporation %]
+[%- END -%]   
+[%- IF publisher -%]
+ Ort/Verlag: [% publisher %]
+[%- END -%]   
+[%- IF year -%]
+     E-Jahr: [% year %]
+[%- END -%]   
+[%- IF numbering -%]
+    Bestand: [% numbering %]
+[%- END -%]   
+
+[%- IF titleid -%]
+     Katkey: [% titleid %]
+        URL: https://www.ub.uni-koeln.de/usbportal?query=USB:[% titleid %]
+[%- END -%]   
+
+
+[%- IF remark -%]
+Bemerkungen: [% remark %]
+[%- END -%]   
+
+[%- IF username -%]
+       Name: [% username %]
+[%- END -%]   
+[%- IF loginname -%]
+Benutzernr.: [% loginname %]
+[%- END -%]   
+[%- IF email -%]
+E-Mail-Adr.: [% email %]
+[%- END -%]   

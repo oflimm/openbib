@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Users::Circulations::Mail
 #
-#  Dieses File ist (C) 2020 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2020-2021 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -96,6 +96,9 @@ sub show_form {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
     
+    # Zentrale Ueberpruefung der Authentifizierung
+    
+    # Nutzer muss am richtigen Target authentifiziert sein    
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
 
     if (!$self->authorization_successful || $database ne $sessionauthenticator){
@@ -140,6 +143,9 @@ sub mail_form {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
+    # Zentrale Ueberpruefung der Authentifizierung
+    
+    # Nutzer muss am richtigen Target authentifiziert sein    
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
 
     if (!$self->authorization_successful || $database ne $sessionauthenticator){
@@ -170,7 +176,6 @@ sub show_handset {
     # Dispatched Args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $mailtype       = $self->param('mailtype');
     
     # Shared Args
     my $query          = $self->query();
@@ -196,20 +201,8 @@ sub show_handset {
 	return $self->print_warning("Zuwenige Parameter übergeben");
     }
 
-    # Nutzer muss am richtigen Target authentifiziert sein
-    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
-
-    if (!$self->authorization_successful || $database ne $sessionauthenticator){
-        if ($self->param('representation') eq "html"){
-            return $self->tunnel_through_authenticator('GET');            
-        }
-        else  {
-            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
-        }
-    }
-
-    $database = $sessionauthenticator ;
-    
+    # Zentrale Ueberpruefung der Authentifizierung bereits in show_form
+        
     my ($loginname,$password,$access_token) = $user->get_credentials();
     
     my $record = new OpenBib::Record::Title({ database => $database, id => $titleid });
@@ -230,7 +223,7 @@ sub show_handset {
     return $self->print_page($config->{tt_users_circulations_mail_handset_tname},$ttdata);
 }
 
-sub mail {
+sub mail_handset {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -239,7 +232,6 @@ sub mail {
     # Dispatched Args
     my $view           = $self->param('view')           || '';
     my $database       = $self->param('database')       || '';
-    my $mailtype       = $self->param('mailtype');
 
     # Shared Args
     my $query          = $self->query();
@@ -278,19 +270,7 @@ sub mail {
 	return $self->print_warning("Zuwenige Parameter übergeben");
     }
 
-    # Nutzer muss am richtigen Target authentifiziert sein
-    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
-
-    if (!$self->authorization_successful || $database ne $sessionauthenticator){
-        if ($self->param('representation') eq "html"){
-            return $self->tunnel_through_authenticator('GET');            
-        }
-        else  {
-            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
-        }
-    }
-
-    $database = $sessionauthenticator ;
+    # Zentrale Ueberpruefung der Authentifizierung bereits in show_form
     
     my ($accountname,$password,$access_token) = $user->get_credentials();
 
@@ -320,10 +300,14 @@ sub mail {
         return $self->print_warning($msg->maketext("Sie verwenden eine ungültige Mailadresse."));
     }	
 
+    my $current_date = strftime("%d.%m.%Y, %H:%M Uhr", localtime);
+    $current_date    =~ s!^\s!0!;
+    
     # TT-Data erzeugen
     
     my $ttdata={
-        view        => $view,
+        view         => $view,
+	current_date => $current_date,
 
 	scope       => $scope,
 	title       => $title,

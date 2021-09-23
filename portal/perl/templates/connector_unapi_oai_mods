@@ -221,7 +221,8 @@
                 END;
             %]
             [%- IF loop.first && (super_data.fields.${'0036'}.first.content =="n" || super_data.fields.${'0036'}.first.content =="p"   
-                || super_data.fields.${'0036'}.first.content =="z" || super_data.fields.${'0036'}.first.content =="t") %]
+                || super_data.fields.${'0036'}.first.content =="z" || super_data.fields.${'0036'}.first.content =="t") &&
+                 (normdata.${"T0090"} || normdata.${"T0089"}) %]
             <mods:relatedItem type="host">
             [%- ELSE %]
             <mods:relatedItem type="series">
@@ -232,7 +233,7 @@
                 <mods:titleInfo>
                     <mods:title>[%- super_title  %]</mods:title>
                 </mods:titleInfo>
-            [%- IF loop.first && super_data.fields.${'0036'}.first.content =="r" %]
+            [%- IF loop.first  %]
             [%- UNLESS normdata.${"T0090"} || normdata.${"T0089"} %]
                 <mods:part order='[%- normdata.${"T0456"}.first.content %]'>
                       <mods:detail type="volume">

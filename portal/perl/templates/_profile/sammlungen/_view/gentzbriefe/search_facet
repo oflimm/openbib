@@ -500,7 +500,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <!-- Begin custom2 Kopie Original facet -->
 [%         IF config.get('facets').custom2 && facets.defined('custom2') && facets.custom2.size > 0 %]
         <h4 class="ob-facet-title [% IF facets.custom2.size > 0 %]collapse[% ELSE %]collapsed[% END %]" data-toggle="collapse" data-target="#group-custom2" aria-expanded=[% IF facets.custom2.size > 0 %]"true"[% ELSE %]"false"[% END %]>
-           [% msg.maketext("Kopie Original") %] 
+           [% msg.maketext("Briefrepräsentation") %] 
         </h4>
         <ul id="group-custom2" class="list-group in collapse [% IF facets.custom2.size > 0 %]show[% END %]">
 [%             FOREACH termitem IN facets.custom2 ;

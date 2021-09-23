@@ -200,10 +200,15 @@
             [%- FOREACH item IN normdata.${"T0700"} %]
             <mods:classification authority="BK">[% item.content %]</mods:classification>
             [%- END %]
+            [%- rswk_list = {} %]
             [%- FOREACH rswk_item IN rswk_keyword_list %]
-            [%- FOREACH item IN rswk_item %]
-            <mods:classification authority="RSWK">[% item.content %]</mods:classification>
-            [%- END %]
+                [%- FOREACH item IN rswk_item %] 
+                    [%- value = item.content %]
+                    [%- UNLESS rswk_list.$value == 'True' %]
+                    [%- rswk_list.$value = 'True' %]
+                          <mods:classification authority="RSWK">[% value %]</mods:classification>
+                    [%- END %]
+                [%- END %]
             [%- END %]
             [%- IF normdata.${"T0710"} %]
             <mods:subject>

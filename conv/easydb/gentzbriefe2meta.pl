@@ -326,14 +326,21 @@ while (my $jsonline = <IN>){
 	# 0517: Angaben zum Inhalt
 	if ($is_inhalt_volltext){
 	    push @{$title_ref->{fields}{'0517'}}, {
-		content => 'Volltext',
+		content => 'Digital',
 	    }
 	}
 	if ($is_inhalt_analog){
 	    push @{$title_ref->{fields}{'0517'}}, {
-		content => 'Analog transkribiert',
+		content => 'Analog',
 	    }
 	}
+	if (!$is_inhalt_analog && $is_inhalt_volltext){
+	    push @{$title_ref->{fields}{'0517'}}, {
+		content => 'Ohne',
+	    }
+	}
+
+	
     }
     
     # Auswergung Kategorie 'Kopie Original'

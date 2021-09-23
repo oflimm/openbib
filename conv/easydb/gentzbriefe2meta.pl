@@ -378,7 +378,7 @@ while (my $jsonline = <IN>){
 	# 0334: Material
 	if ($is_papierkopie_usb){
 	    push @{$title_ref->{fields}{'0334'}}, {
-		content => 'Papierkopie (USB)',
+		content => 'Analog auf Papier (USB)',
 	    }
 	}
 	if ($is_mikrofilm_digitalisiert){
@@ -390,10 +390,8 @@ while (my $jsonline = <IN>){
 	    push @{$title_ref->{fields}{'0334'}}, {
 		content => 'Digitalisat',
 	    }
-	}
-	
+	}	
     }
-
 
     # Auswertung Kategorie 'Sammlung Herterich'
     {
@@ -432,22 +430,27 @@ while (my $jsonline = <IN>){
 	    
 	};
 
-	# 4700: Sammlungsschwerpunkt
-	if ($is_herterich_ungedruckt){
+	if ($is_sammlung_herterich){
 	    push @{$title_ref->{fields}{'4700'}}, {
-		content => 'Ungedruckt',
+		content => 'Daten erhoben am Original',
 	    }
 	}
-	if ($is_herterich_gedruckt){
-	    push @{$title_ref->{fields}{'4700'}}, {
-		content => 'Gedruckt',
-	    }
-	}
-	if ($is_herterich_archiv){
-	    push @{$title_ref->{fields}{'4700'}}, {
-		content => 'Archiv',
-	    }
-	}
+	# # 4700: Sammlungsschwerpunkt
+	# if ($is_herterich_ungedruckt){
+	#     push @{$title_ref->{fields}{'4700'}}, {
+	# 	content => 'Ungedruckt',
+	#     }
+	# }
+	# if ($is_herterich_gedruckt){
+	#     push @{$title_ref->{fields}{'4700'}}, {
+	# 	content => 'Gedruckt',
+	#     }
+	# }
+	# if ($is_herterich_archiv){
+	#     push @{$title_ref->{fields}{'4700'}}, {
+	# 	content => 'Archiv',
+	#     }
+	# }
 	
     }
 
@@ -457,8 +460,15 @@ while (my $jsonline = <IN>){
 	my $is_druck_mehrfach = 0;
 	my $is_druck_archiv = 0;
 	my $is_referenz_publikation = 0;
+	my $is_druckpublikation = 0;
 	
 	eval {
+	    if (defined $letter_ref->{based_on}){
+		if ($letter_ref->{based_on}{_standard}{1}{text}{'de-DE'} eq "Druckpublikation"){
+		    $is_druckpublikation = 1;
+		}
+	    }
+	    
 	    if (defined $letter_ref->{reference_publication}){
 		$is_referenz_publikation = 1;
 		
@@ -477,21 +487,26 @@ while (my $jsonline = <IN>){
 	};
 
 	# 0434: Sonstige Angaben
-	if ($is_druck_mehrfach){
+	if ($is_druckpublikation){
 	    push @{$title_ref->{fields}{'0434'}}, {
-		content => 'Mehrfach gedruckt',
+		content => 'Daten erhoben am Druck',
 	    }
 	}
-	if ($is_druck_archiv){
-	    push @{$title_ref->{fields}{'0434'}}, {
-		content => 'Archiv',
-	    }
-	}
-	if ($is_referenz_publikation){
-	    push @{$title_ref->{fields}{'0434'}}, {
-		content => 'Referenzpublikation',
-	    }
-	}
+	# if ($is_druck_mehrfach){
+	#     push @{$title_ref->{fields}{'0434'}}, {
+	# 	content => 'Mehrfach gedruckt',
+	#     }
+	# }
+	# if ($is_druck_archiv){
+	#     push @{$title_ref->{fields}{'0434'}}, {
+	# 	content => 'Archiv',
+	#     }
+	# }
+	# if ($is_referenz_publikation){
+	#     push @{$title_ref->{fields}{'0434'}}, {
+	# 	content => 'Referenzpublikation',
+	#     }
+	# }
 	
     }
     

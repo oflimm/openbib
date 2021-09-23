@@ -563,7 +563,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <!-- Begin custom4 facet -->
 [%         IF config.get('facets').custom4 && facets.defined('custom4') && facets.custom4.size > 0 %]
         <h4 class="ob-facet-title [% IF facets.custom4.size > 0 %]collapse[% ELSE %]collapsed[% END %]" data-toggle="collapse" data-target="#group-custom4" aria-expanded=[% IF facets.custom4.size > 0 %]"true"[% ELSE %]"false"[% END %]>
-           [% msg.maketext("Druckpublikationen") %] 
+           [% msg.maketext("Alle Druckpublikationen") %] 
         </h4>
         <ul id="group-custom4" class="list-group in collapse [% IF facets.custom4.size > 0 %]show[% END %]">
 [%             FOREACH termitem IN facets.custom4 ;

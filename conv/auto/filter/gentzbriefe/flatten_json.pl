@@ -11,8 +11,6 @@ foreach my $file (@files){
 
     my $data_ref = decode_json $input;
 
-    foreach my $item_ref (@{$data_ref->{objects}}){
-	print encode_json $item_ref, "\n";
-    }
+    print encode_json $data_ref, "\n";    
 }
     

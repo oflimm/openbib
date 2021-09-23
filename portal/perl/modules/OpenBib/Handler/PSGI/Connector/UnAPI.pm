@@ -372,27 +372,28 @@ sub get_date_values() {
                 $date_value = $record->get_fields->{T0089}[0]->{content};
             }
             if (index($date_value, "\/") != -1){
-                unless ($date_values->{"start_date"} || index($date_value, "(") != -1){ 
+                unless ($date_values->{"start_date"} || index($date_value, "(") == -1){ 
                         my @splitted_date = split('\/', $date_value);
                         $date_values->{"start_date"} =$splitted_date[0];
                         $date_values->{"end_date"} =$splitted_date[1];
                         if (length($date_values->{"start_date"}) == 4 && length($date_values->{"end_date"}) == 2){
                             $date_values->{"end_date"} = substr($date_values->{"start_date"}, 0,2) . $date_values->{"end_date"} ;
                         }}
+            }
                 #special cases like 10,10(1771/2003)1994 1594159
-                unless (index($date_value, "(") != -1){ 
-                    $date_values->{"date_norm"} = $date_value;
-                }else {
-                     if ($record->get_fields->{T0024}[0]->{content} && length($record->get_fields->{T0024}[0]->{content}) == 4){
-                        $date_values->{"date_norm"} = $record->get_fields->{T0024}[0]->{content};
-                     }
+            unless (index($date_value, "(") != -1){ 
+                   $date_values->{"date_norm"} = $date_value;
+            }else {
+                if ($record->get_fields->{T0024}[0]->{content} && length($record->get_fields->{T0024}[0]->{content}) == 4){
+                    $date_values->{"date_norm"} = $record->get_fields->{T0024}[0]->{content};
                 }
             }
         }
-        }
+    }
     if ($date_values->{"date"} eq $date_values->{"date_norm"} ){
             delete($date_values->{"date"});
     }
+    
     return $date_values;
 }
 

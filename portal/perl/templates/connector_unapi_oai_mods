@@ -146,7 +146,12 @@
                 [%- END %]
                 [%- IF date_values.end_date %]
                 <mods:dateIssued encoding="iso8601" point="end">[% date_values.end_date %]</mods:dateIssued>
-                <mods:dateIssued>[%- date_values.date_norm %]</mods:dateIssued>
+                    [%- IF date_values.date_norm %]
+                    <mods:dateIssued>[%- date_values.date_norm %]</mods:dateIssued>
+                    [%- END %]
+                    [%- IF date_values.date %]
+                    <mods:dateIssued>[%- date_values.date%]</mods:dateIssued>
+                    [%- END %]
                 [%- END %]
                 [%- UNLESS date_values.start_date %]
                     [%- IF date_values.date_norm %]

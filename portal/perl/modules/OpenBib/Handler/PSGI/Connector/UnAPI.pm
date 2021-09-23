@@ -359,7 +359,7 @@ sub get_date_values() {
     }
     if ($record->get_fields->{T0424}){
              $date_values->{"date"} =$record->get_fields->{T0424}[0]->{content}; 
-         }if ($record->get_fields->{T0425}){
+    }if ($record->get_fields->{T0425}){
              $date_values->{"date_norm"} =$record->get_fields->{T0425}[0]->{content};; 
     }
     unless ($record->get_fields->{T0425}){
@@ -384,7 +384,7 @@ sub get_date_values() {
         }
         }
     if ($date_values->{"date"} eq $date_values->{"date_norm"} ){
-            $date_values->{"date"} = undef;
+            delete($date_values->{"date"});
     }
     return $date_values;
 }

@@ -378,7 +378,7 @@ while (my $jsonline = <IN>){
 	# 0334: Material
 	if ($is_papierkopie_usb){
 	    push @{$title_ref->{fields}{'0334'}}, {
-		content => 'Analog auf Papier (USB)',
+		content => 'Xerokopie (USB)',
 	    }
 	}
 	if ($is_mikrofilm_digitalisiert){

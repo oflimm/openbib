@@ -399,6 +399,9 @@ sub get_date_values() {
                 }
             }
         }
+        if ($date_values->{"date"} eq $date_values->{"date_norm"} ){
+            $date_values->{"date"} = undef;
+        }
     }
     return $date_values;
 

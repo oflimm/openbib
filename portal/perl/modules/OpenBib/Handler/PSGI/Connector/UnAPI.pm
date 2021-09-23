@@ -382,7 +382,7 @@ sub get_date_values() {
                         }}
                 }
             }
-                #special cases like 10,10(1771/2003)1994 1594159
+            #special cases like 10,10(1771/2003)1994 1594159
             unless (index($date_value, "(") != -1){ 
                    $date_values->{"date_norm"} = $date_value;
             }else {

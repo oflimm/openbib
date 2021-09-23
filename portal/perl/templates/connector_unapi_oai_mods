@@ -146,16 +146,15 @@
                 [%- END %]
                 [%- IF date_values.end_date %]
                 <mods:dateIssued encoding="iso8601" point="end">[% date_values.end_date %]</mods:dateIssued>
-                <mods:dateIssued>[%- date_values.date %]</mods:dateIssued>
+                <mods:dateIssued>[%- date_values.date_norm %]</mods:dateIssued>
                 [%- END %]
                 [%- UNLESS date_values.start_date %]
-                    [%- IF date_values.date %]
-                    <mods:dateIssued keyDate="yes" encoding="iso8601">[% date_values.date%]</mods:dateIssued>
-                    [%- ELSIF normdata.${"T0424"} %]
-                    <mods:dateIssued keyDate="yes" encoding="iso8601">[% normdata.${"T0424"}.first.content%]</mods:dateIssued>
-                    [%- ELSIF normdata.${"T0425"} %]
-                    <mods:dateIssued keyDate="yes" encoding="iso8601">[% normdata.${"T0425"}.first.content%]</mods:dateIssued>
-                    [%- END %]
+                    [%- IF date_values.date_norm %]
+                    <mods:dateIssued keyDate="yes" encoding="iso8601">[% date_values.date_norm%]</mods:dateIssued>
+                     [%- END %]
+                     [%- IF date_values.date %]
+                    <mods:dateIssued>[% date_values.date %]</mods:dateIssued>
+                     [%- END %]
                 [%- END %]
                 [%- IF normdata.${"T0405"} %]
                     <mods:dateIssued>[%- normdata.${"T0405"}.first.content %]</mods:dateIssued>

@@ -366,18 +366,23 @@ sub get_date_values() {
                     my @splitted_date = split('\/', $date_value);
                     $date_values->{"start_date"} =$splitted_date[0];
                     $date_values->{"end_date"} =$splitted_date[1];
-                    $date_values->{"date"} = $date_value;
+                    $date_values->{"date_norm"} = $date_value;
                 }else {
-                    $date_values->{"date"} = $date_value;
+                    $date_values->{"date_norm"} = $date_value;
                 }
             }else {
-                $date_values->{"date"} = $date_value;
+                $date_values->{"date_norm"} = $date_value;
             }
         }else {
-            $date_values->{"date"} = $record->get_fields->{T0089}[0]->{content};
+            $date_values->{"date_norm"} = $record->get_fields->{T0089}[0]->{content};
         }
     }else {
-         $date_values->{"date"} = "empty"; 
+         if ($record->get_fields->{T0424}){
+             $date_values->{"date"} =$record->get_fields->{T0424}[0]->{content};; 
+         }if ($record->get_fields->{T0425}){
+             $date_values->{"date_norm"} =$record->get_fields->{T0425}[0]->{content};; 
+         }
+        
     }
     return $date_values;
 

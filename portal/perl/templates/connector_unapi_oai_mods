@@ -2,8 +2,8 @@
 <OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:mods="http://www.loc.gov/mods/v3">
     <record>
-        <mods xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" version="3.4"
-            xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd">
+        <mods xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" version="3.7"
+            xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd" xmlns:mods="http://www.loc.gov/mods/v3">
             [%- normdata = record.get_fields -%]
             [%- IF normdata.${"T0662"} %]
             [%- FOREACH url IN normdata.${"T0662"} -%]
@@ -200,10 +200,15 @@
             [%- FOREACH item IN normdata.${"T0700"} %]
             <mods:classification authority="BK">[% item.content %]</mods:classification>
             [%- END %]
+            [%- rswk_list = {} %]
             [%- FOREACH rswk_item IN rswk_keyword_list %]
-            [%- FOREACH item IN rswk_item %]
-            <mods:classification authority="RSWK">[% item.content %]</mods:classification>
-            [%- END %]
+                [%- FOREACH item IN rswk_item %] 
+                    [%- value = item.content %]
+                    [%- UNLESS rswk_list.$value == 'True' %]
+                    [%- rswk_list.$value = 'True' %]
+                          <mods:classification authority="RSWK">[% value %]</mods:classification>
+                    [%- END %]
+                [%- END %]
             [%- END %]
             [%- IF normdata.${"T0710"} %]
             <mods:subject>
@@ -221,7 +226,8 @@
                 END;
             %]
             [%- IF loop.first && (super_data.fields.${'0036'}.first.content =="n" || super_data.fields.${'0036'}.first.content =="p"   
-                || super_data.fields.${'0036'}.first.content =="z" || super_data.fields.${'0036'}.first.content =="t") %]
+                || super_data.fields.${'0036'}.first.content =="z" || super_data.fields.${'0036'}.first.content =="t") &&
+                 (normdata.${"T0090"} || normdata.${"T0089"}) %]
             <mods:relatedItem type="host">
             [%- ELSE %]
             <mods:relatedItem type="series">
@@ -232,9 +238,13 @@
                 <mods:titleInfo>
                     <mods:title>[%- super_title  %]</mods:title>
                 </mods:titleInfo>
-            [%- IF loop.first && super_data.fields.${'0036'}.first.content =="r" %]
+            [%- IF loop.first  %]
             [%- UNLESS normdata.${"T0090"} || normdata.${"T0089"} %]
+                [%- IF normdata.${"T0456"} %]
                 <mods:part order='[%- normdata.${"T0456"}.first.content %]'>
+                [%- ELSE %]
+                <mods:part order='[%- normdata.${"T0455"}.first.content %]'>
+                [%- END %]
                       <mods:detail type="volume">
                             <mods:number>[% normdata.${"T0455"}.first.content %]</mods:number>
                       </mods:detail>

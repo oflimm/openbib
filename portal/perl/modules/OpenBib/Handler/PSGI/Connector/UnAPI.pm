@@ -359,52 +359,47 @@ sub get_date_values() {
     }
     if ($record->get_fields->{T0424}){
              $date_values->{"date"} =$record->get_fields->{T0424}[0]->{content}; 
-         }if ($record->get_fields->{T0425}){
+    }if ($record->get_fields->{T0425}){
              $date_values->{"date_norm"} =$record->get_fields->{T0425}[0]->{content};; 
     }
-    #does not work for dates?
     unless ($record->get_fields->{T0425}){
         if ($record->get_fields->{T0089} ){
+            my $date_value = undef;
             if(index($record->get_fields->{T0089}[0]->{content}, ".") != -1){
                 my @splitted_string = split('\.', $record->get_fields->{T0089}[0]->{content});
-                my $date_value = $splitted_string[-1];
-                if (index($date_value, "\/") != -1 ){
-                    unless ($date_values->{"start_date"}){ 
+                $date_value = $splitted_string[-1];
+            }else{
+                $date_value = $record->get_fields->{T0089}[0]->{content};
+            }
+            if (index($date_value, "\/") != -1){
+                unless ($date_values->{"start_date"}) { 
+                        
+                        if (index($date_value, "(") == -1){
                         my @splitted_date = split('\/', $date_value);
                         $date_values->{"start_date"} =$splitted_date[0];
                         $date_values->{"end_date"} =$splitted_date[1];
                         if (length($date_values->{"start_date"}) == 4 && length($date_values->{"end_date"}) == 2){
                             $date_values->{"end_date"} = substr($date_values->{"start_date"}, 0,2) . $date_values->{"end_date"} ;
-                        }
-                        $date_values->{"date_norm"} = $date_value;
-                        if ($record->get_fields->{T0424}){
-                            $date_values->{"date"} =$record->get_fields->{T0424}[0]->{content};; 
-                        }
-                    }else {
-                        $date_values->{"date_norm"} = $date_value;
-                        if ($record->get_fields->{T0424}){
-                            $date_values->{"date"} =$record->get_fields->{T0424}[0]->{content};; 
-                        }
-                    }
-                }else {
-                    $date_values->{"date_norm"} = $date_value;
-                    if ($record->get_fields->{T0424}){
-                            $date_values->{"date"} =$record->get_fields->{T0424}[0]->{content};; 
-                    }
+                        }}
                 }
-            }else {
-                $date_values->{"date_norm"} = $record->get_fields->{T0089}[0]->{content};
-                if ($record->get_fields->{T0424}){
-                    $date_values->{"date"} =$record->get_fields->{T0424}[0]->{content};; 
+            }
+            #special cases like 10,10(1771/2003)1994 1594159
+            unless ($date_values->{"date_norm"}){
+                unless (index($date_value, "(") != -1){ 
+                    $date_values->{"date_norm"} = $date_value;
+                }else {
+                    if ($record->get_fields->{T0024}[0]->{content} && length($record->get_fields->{T0024}[0]->{content}) == 4){
+                        $date_values->{"date_norm"} = $record->get_fields->{T0024}[0]->{content};
+                    }
                 }
             }
         }
-        if ($date_values->{"date"} eq $date_values->{"date_norm"} ){
-            $date_values->{"date"} = undef;
-        }
     }
+    if ($date_values->{"date"} eq $date_values->{"date_norm"} ){
+            delete($date_values->{"date"});
+    }
+    
     return $date_values;
-
 }
 
 sub collect_person_data {

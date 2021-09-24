@@ -2020,7 +2020,7 @@ sub to_endnote {
     }
 
     # Exemplardaten
-    my @holdingnormset = @{$self->{_holding}};
+    my @holdingnormset = (defined $self->{_holding} && @{$self->{_holding}})?@{$self->{_holding}}:();
 
     if ($#holdingnormset > 0){
         foreach my $holding_ref (@holdingnormset){

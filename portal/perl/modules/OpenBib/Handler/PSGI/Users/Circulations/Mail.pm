@@ -103,7 +103,7 @@ sub show_form {
 
     if (!$self->authorization_successful || $database ne $sessionauthenticator){
         if ($self->param('representation') eq "html"){
-            return $self->tunnel_through_authenticator('POST');            
+            return $self->tunnel_through_authenticator('GET');            
         }
         else  {
             return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
@@ -193,11 +193,10 @@ sub show_handset {
     my $scope          = $query->param('scope'); # defines sender, recipient via portal.yml
     my $titleid        = ($query->param('titleid'    ))?$query->param('titleid'):'';
     my $label          = ($query->param('label'      ))?$query->param('label'):'';
-    my $holdingid      = ($query->param('holdingid'  ))?$query->param('holdingid'):'';
 
     $logger->debug("Dispatched to show_handset");
     
-    if (!$titleid || !$scope){
+    if (!$titleid || !$scope || !$label){
 	return $self->print_warning("Zuwenige Parameter übergeben");
     }
 
@@ -215,7 +214,6 @@ sub show_handset {
 	scope      => $scope,
 	userinfo   => $userinfo_ref,
 	label      => $label, # Signatur
-	holdingid  => $holdingid,
 	record     => $record,
 	database   => $database,
     };
@@ -247,26 +245,14 @@ sub mail_handset {
     
     # CGI Args
     my $scope         = $query->param('scope'); # defines sender, recipient via portal.yml
-    my $title         = $query->param('title');
     my $titleid       = $query->param('titleid');
-    my $location_mark = $query->param('location_mark');
-    my $corporation   = $query->param('corporation');
-    my $person        = $query->param('person');
-    my $publisher     = $query->param('publisher');
-    my $year          = $query->param('year');
-    my $loginname     = $query->param('loginname'); # = username in userinfo
-    my $username      = $query->param('username');  # = forename surname 
-    my $remark        = $query->param('remark');
-    my $email         = ($query->param('email'))?$query->param('email'):'';
+    my $label         = $query->param('label');
     my $receipt       = $query->param('receipt');
-
-#    my $titleid        = ($query->param('titleid'    ))?$query->param('titleid'):'';
-    my $label          = ($query->param('label'      ))?$query->param('label'):'';
-    my $holdingid      = ($query->param('holdingid'  ))?$query->param('holdingid'):'';
+    my $remark        = $query->param('remark');
 
     $logger->debug("Dispatched to show_handset");
     
-    if (!$titleid){
+    if (!$titleid || !$label || !$scope){
 	return $self->print_warning("Zuwenige Parameter übergeben");
     }
 
@@ -280,20 +266,8 @@ sub mail_handset {
     
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
-    if ($email ne $accountemail) {
-        return $self->print_warning($msg->maketext("Ihre Mailadresse stimmt nicht mit der im Benutzerkonto ueberein."));
-    }
-
-    if ($username ne $accountname) {
-        return $self->print_warning($msg->maketext("Ihr Benutzername entspricht nicht dem verwendeten Parameter."));
-    }
-    
-    if (!defined $config->get('mail')->{scope}{$scope}) {
+        if (!defined $config->get('mail')->{scope}{$scope}) {
         return $self->print_warning($msg->maketext("Eine Bestellung ist nicht moeglich."));
-    }
-
-    if (!$accountname || !$accountemail){
-        return $self->print_warning($msg->maketext("Sie müssen alle Pflichtfelder ausfüllen."));
     }
 
     unless (Email::Valid->address($accountemail)) {
@@ -302,25 +276,25 @@ sub mail_handset {
 
     my $current_date = strftime("%d.%m.%Y, %H:%M Uhr", localtime);
     $current_date    =~ s!^\s!0!;
-    
+
+    my $record = new OpenBib::Record::Title({ database => $database, id => $titleid });
+    $record->load_brief_record;
+
     # TT-Data erzeugen
     
     my $ttdata={
         view         => $view,
 	current_date => $current_date,
 
+	userinfo    => $userinfo_ref,
+	record      => $record,
+	
 	scope       => $scope,
-	title       => $title,
-	titleid     => $titleid,
-	holdingid   => $holdingid,
-	corporation => $corporation,
-	person      => $person,
-	publisher   => $publisher,
-	label       => $label,
-	username    => $username,
+        label       => $label,
+	email       => $accountemail,
+	loginname   => $accountname,
 	remark      => $remark,
-	email       => $email,
-	    
+	
         config      => $config,
         user        => $user,
         msg         => $msg,
@@ -343,17 +317,18 @@ sub mail_handset {
         OUTPUT        => $afile,
     });
 
-    $maintemplate->process($config->{tt_user_circulations_mail_handset_mail_body_tname}, $ttdata ) || do { 
+    $maintemplate->process($config->{tt_users_circulations_mail_handset_mail_body_tname}, $ttdata ) || do { 
         $logger->error($maintemplate->error());
         $self->header_add('Status',400); # server error
         return;
     };
 
     my $mail_to = $config->{mail}{scope}{$scope}{recipient};
-
-    if ($receipt){
-	$mail_to.=",$accountemail";
-    }
+    
+    # Fuer Tests erstmal deaktiviert...
+    # if ($receipt){
+    # 	$mail_to.=",$accountemail";
+    # }
     
     my $anschfile="/tmp/" . $afile;
 

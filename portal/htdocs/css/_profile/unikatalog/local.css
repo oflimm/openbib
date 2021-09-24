@@ -462,6 +462,10 @@
         margin-bottom: 0;
     }
 
+    // Hintergrund verdeckt nicht modal
+    .modal-backdrop {
+	position: static;
+    }
     
 [aria-expanded="false"] > .expanded,
 [aria-expanded="true"] > .collapsed {

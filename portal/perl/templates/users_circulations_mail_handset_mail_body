@@ -1,43 +1,62 @@
+[%-
+
+  fields = record.get_fields;
+
+  title     = fields.${"T0331"}.first.content;
+
+  persons   = [];
+  FOREACH thisfield IN ['P0100','P0101','P0102','P0103'];
+    IF fields.${thisfield}.defined;
+      persons.push(fields.${thisfield}.first.content);  
+    END;
+  END;
+  person = persons.join(' ; ');
+
+  corporatebodies   = [];
+  FOREACH thisfield IN ['C0200','C0201'];
+    IF fields.${thisfield}.defined;
+      corporatebodies.push(fields.${thisfield}.first.content);  
+    END;
+  END;
+  corporatebody = corporatebodies.join(' ; ');
+
+  publisher = fields.${"T0412"}.first.content;
+
+  year      = fields.${"T0425"}.first.content;
+  IF fields.${"T0424"}.defined;
+    year      = fields.${"T0424"}.first.content;  
+  END;
+
+  titleid   = record.id;
+
+   name = "";
+   IF userinfo.nachname || userinfo.vorname ;
+        IF userinfo.nachname ;
+          name = userinfo.nachname ;
+	END ;
+	IF userinfo.vorname ;
+	  name = "${userinfo.vorname} ${name}";
+	END;
+   END;
+
+-%]
 *** E-Mail-Bestellung (Handapp.) vom [% current_date %] ***
-[%- IF holdingid -%]
-   Signatur: $shelfmark
-[%- END -%]   
 
-[%- IF title -%]
+   Signatur: [% label %]
+   
       Titel: [% title %]
-[%- END -%]   
-[%- IF person -%]
       Autor: [% person %]
-[%- END -%]   
-[%- IF corporation -%]
-      Körp.: [% corporation %]
-[%- END -%]   
-[%- IF publisher -%]
+      Körp.: [% corporatebody %]
  Ort/Verlag: [% publisher %]
-[%- END -%]   
-[%- IF year -%]
      E-Jahr: [% year %]
-[%- END -%]   
-[%- IF numbering -%]
     Bestand: [% numbering %]
-[%- END -%]   
-
-[%- IF titleid -%]
+    
      Katkey: [% titleid %]
         URL: https://www.ub.uni-koeln.de/usbportal?query=USB:[% titleid %]
-[%- END -%]   
-
-
-[%- IF remark -%]
+	
 Bemerkungen: [% remark %]
-[%- END -%]   
 
-[%- IF username -%]
-       Name: [% username %]
-[%- END -%]   
-[%- IF loginname -%]
+       Name: [% name %]
 Benutzernr.: [% loginname %]
-[%- END -%]   
-[%- IF email -%]
 E-Mail-Adr.: [% email %]
-[%- END -%]   
+

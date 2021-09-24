@@ -1,0 +1,21 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_22
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+
+
+<!-- 1:1 aspect ratio -->
+<div class="embed-responsive embed-responsive-1by1">
+  <iframe class="embed-responsive-item" src="https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=1Eo1f-GuU3clUSksn9SQivJ3hQOazCLsrMndQYdBiFqM&font=Default&lang=en&initial_zoom=1&height=650"></iframe>
+</div>
+
+

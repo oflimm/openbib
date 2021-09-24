@@ -151,6 +151,27 @@ PLUS: Bibliographie
 
 <div class="row">
 <div class="col-md-6 pl-5 pr-5 mt-5 pb-3">
+<h4>Timeline</h4>
+
+<p>
+Entdecken Sie über unsere Timeline interaktiv das Leben und Wirken Friedrich von Gentz
+</p>
+
+<a class="btn btn-primary mt-5" href="[% path_prefix %]/[% config.get('info_loc') %]/timeline.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a>
+
+</div>
+
+<div class="col-md-6 pl-0 pr-0 text-center">
+  <img class="img-fluid" src="/images/openbib/views/gentzbriefe/wallraf-timeline.png" alt="Timeline Wallraf" />
+</div>
+
+</div><!-- End: row -->
+
+<div class="row">
+<div class="col-md-6 pl-0 pr-0 text-center">
+  <img class="img-fluid" src="/images/openbib/views/gentzbriefe/gentz-2.png" alt="MAP" />
+</div>
+<div class="col-md-6 pl-5 pr-5 mt-5 pb-3">
 <h4>Über Modern Academic Publishing (MAP)</h4>
 
 <p>
@@ -163,11 +184,6 @@ Text Text Text
 <a class="btn btn-primary mt-5" href="[% path_prefix %]/[% config.get('info_loc') %]/map.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a>
 
 </div>
-
-<div class="col-md-6 pl-0 pr-0 text-center">
-  <img class="img-fluid" src="/images/openbib/views/gentzbriefe/gentz-2.png" alt="MAP" />
-</div>
-
 </div><!-- End: row -->
 
 

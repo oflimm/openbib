@@ -33,7 +33,7 @@
 <div class="card mt-5 mb-5 mr-5">
 <div class="card-header">[% msg.maketext("Bestellung stornieren") %]</div>
 <div class="card-body">
- <form  method="POST" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/mail/handset">
+ <form  method="POST" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/orders">
 
 <div class="alert alert-info">
 Aufgrund interner Abläufe in der USB werden zum Zeitpunkt der Bestellung bereits Auftragszettel in unserem Magazin für die Bereitstellung der Medien gedruckt wegen derer eine Stornierung im Bibliotheksystem selbst nicht mehr möglich ist. Durch diese Stornierungsmöglichkeit hier werden Mitteilungen zur manuellen Stornierung an unsere Mitarbeiter geschickt. Aus diesem Grund tauchen hier stornierte Bestellungen vorläufig weiterhin in Ihrem Benutzerkonto auf! 
@@ -143,7 +143,17 @@ Aufgrund interner Abläufe in der USB werden zum Zeitpunkt der Bestellung bereit
 
 <div class="form-group">
       <label class="form-group-text" for="remark">[% msg.maketext("Stornogrund") %]:</label>
-      <textarea class="form-control" type="text" name="remark" placeholder="[% msg.maketext("Geben Sie hier bitte ggf. einen Stornogrund ein") %]" value="" maxlength="120" size="37" ></textarea>
+      <select name="remark" id="remark" class="form-control" size="1" style="width:15em;">
+        <option value="">[ Bitte wählen Sie aus ]</option>
+        <option value="Buch eingesehen bzw. kopiert [1]">Habe das Buch am Abholregal eingesehen bzw. kopiert</option>
+        <option value="Falsches Buch bestellt [2]">Falsches Buch bestellt</option>
+        <option value="Buch konnte nicht abgeholt werden [3]">Konnte das Buch nicht abholen</option>
+        <option value="Buch anderweitig beschafft [4]">Habe das Buch anderweitig beschafft</option>
+        <option value="Bereitstellung dauert zu lange [5]">Bereitstellung dauert mir zu lange</option>
+        <option value="Thema bzw. Seminar gewechselt [6]">Habe mein Thema bzw. Seminar gewechselt</option>
+        <option value="Buch in den Abholregalen nicht auffindbar [7]">Kann das Buch in den Abholregalen nicht finden</option>
+        <option value="Anderer Grund [8]">Anderer Grund ...</option>
+     </select>
 </div>
 
 <p/>

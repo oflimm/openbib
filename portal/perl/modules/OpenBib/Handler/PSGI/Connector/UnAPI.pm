@@ -253,11 +253,10 @@ sub collect_title_data {
     my $database      = shift;
     my $already_added = [];
     my $title_list    = [];
-
+   
     if ( length( $record->get_fields->{T7304} ) ) {
         my $rda_collection =
-          $self->process_title_rda( $record->get_fields->{T7304}, "T7304" );
-        push( @{$title_list}, $rda_collection );
+         $self->process_title_rda( $record->get_fields->{T7304}, "T7304", $title_list );
     }
 
     if ( $record->get_fields->{T0304} ) {
@@ -297,29 +296,28 @@ sub process_title_rda {
     my $self           = shift;
     my $rda_field_data = shift;
     my $field_name     = shift;
-    my $rda_collection = [];
+    my $title_list     = shift;
     my $mult_values    = $self->get_all_mult_values($rda_field_data);
     foreach my $mult_value ( @{$mult_values} ) {
         my $currentObject = {};
         foreach my $title ( @{$rda_field_data} ) {
             if ( $title->{mult} == $mult_value ) {
-                if ( $title->{subfield} eq "g" ) {
+                if ( $title->{subfield} eq "t" ) {
                     $currentObject->{title} = $title->{content};
-                    $currentObject->{title} =~ s/^\s+//;
+                    $currentObject->{title} =~ s/^\s+|\s+$//g;
                 }
                 elsif ( $title->{subfield} eq "9"
                     and index( $title->{content}, "DE-588" ) != -1 )
                 {
                     $currentObject->{gnd} = $title->{content};
                     $currentObject->{gnd} =~ s/\(DE-588\)//;
-                    $currentObject->{gnd} =~ s/^\s+//;
+                    $currentObject->{gnd} =~ s/^\s+|\s+$//g;
                     $currentObject->{field} = $field_name;
                 }
             }
         }
-        push( @{$rda_collection}, $currentObject );
+        push( @{$title_list}, $currentObject );
     }
-    return $rda_collection;
 }
 
 sub collect_rswk_data {

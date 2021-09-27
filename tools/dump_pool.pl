@@ -104,10 +104,17 @@ system("echo \"*:*:*:$config->{'dbuser'}:$config->{'dbpasswd'}\" > ~/.pgpass ; c
 
 system("$pg_dump -U $config->{'dbuser'} -C -c $database | $gzip > $tmpdir/pool.sql.gz");
 
+if (! -d "$config->{'base_dir'}/ft/xapian/index/$database"){
+    print STDERR "Indexverzeichnis existiert nicht\n";
+    exit;
+}
+
 system("cd $config->{'base_dir'}/ft/xapian/index/$database ; tar czf $tmpdir/index.tgz *");
 
 if (! -f "$tmpdir/pool.sql.gz" || ! -f "$tmpdir/index.tgz"){
-    $logger->error("Dump von Katalog oder Index existiert nicht");
+    $logger->error("Dump von Katalog oder Index existiert nicht. Cleanup.");
+    unlink  "$tmpdir/pool.sql.gz";
+    unlink  "$tmpdir/index.tgz";
     exit;
 }
 

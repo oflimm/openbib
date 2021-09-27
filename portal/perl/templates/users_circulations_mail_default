@@ -1,0 +1,28 @@
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+
+     'valid_emails' = {
+         'flimm@ub.uni-koeln.de' = 1
+     }
+
+     'page_title' = 'Bestellformular'
+
+      'main_template' = 'users_circulations_mail_default_html'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Bestellformular')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

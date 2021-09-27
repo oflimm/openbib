@@ -564,7 +564,6 @@ sub collect_place_data {
     my $self       = shift;
     my $record     = shift;
     my $place_list = [];
-    #rda place data
     if ( length( $record->get_fields->{T7676} ) ) {
         my $rda_collection =
           $self->process_place_rda( $record->get_fields->{T7676}, "T7676" );

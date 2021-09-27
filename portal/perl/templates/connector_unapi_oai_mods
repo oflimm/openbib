@@ -276,6 +276,6 @@
             [%- END %]
         [%- END %]
         [%- END %]
-        </mods>
+        </mods:mods>
     </record>
 </OAI-PMH>

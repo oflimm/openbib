@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:mods="http://www.loc.gov/mods/v3">
+    xmlns:mods="http://www.loc.gov/mods/v3" version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
     <record>
-        <mods xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" version="3.7"
-            xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd" xmlns:mods="http://www.loc.gov/mods/v3">
+        <mods>
             [%- normdata = record.get_fields -%]
             [%- IF normdata.${"T0662"} %]
             [%- FOREACH url IN normdata.${"T0662"} -%]
@@ -16,9 +15,9 @@
             [%- END -%]
             [%- IF normdata.${"T0010"} %]
             <mods:recordInfo>
-                <mods:recordIdentifier>[% normdata.${"T0010"}.first.content %]</mods:recordIdentifier>
+                <mods:recordIdentifier>[% normdata.${"T0010"}.first.content -%]</mods:recordIdentifier>
             </mods:recordInfo>
-            [%- ELSE - %]
+            [%- ELSE -%]
             <mods:recordInfo>
                 <mods:recordIdentifier>[% record.id %]</mods:recordIdentifier>
             </mods:recordInfo>
@@ -31,7 +30,6 @@
                     [%- END %]
                     <mods:namePart type="given">[% item.namedata.given_name %]</mods:namePart>
                     [%- IF item.namedata.termsOfAddress %]
-                    <!--ESCAPING!!!!-->
                     <mods:namePart type="termsOfAddress">[% item.namedata.termsOfAddress %]</mods:namePart>
                     [%- END %]
                     <mods:displayForm>[% item.namedata.displayname %]</mods:displayForm>
@@ -95,7 +93,7 @@
             [%- END %]
             [%- IF uniform_title_list && uniform_title_list.size %]
             [%-FOREACH uniform_title IN uniform_title_list %]
-            <mods:titleInfo type="uniform" [%- IF uniform_title_data.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/[% uniform_title.gnd %]" [%END%]>
+            <mods:titleInfo type="uniform" [%- IF uniform_title.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/[% uniform_title.gnd %]" [%END%]>
                 <mods:title>[% uniform_title.title %]</mods:title>
             </mods:titleInfo>
             [%- END %]
@@ -186,6 +184,19 @@
                 [%-END%]
             </mods:language>
             [%-END%]
+            [%- IF normdata.${"T0433"} || normdata.${"T0435"} || normdata.${"T0434"}  %]
+                <mods:physicalDescription>
+                [%- FOREACH extend IN normdata.${"T0433"} %]
+                <mods:extent>[%- extend.content %]</mods:extent>
+                [%-END%]
+                [%- FOREACH extend IN normdata.${"T0434"} %]
+                <mods:extent>[%- extend.content %]</mods:extent>
+                [%-END%]
+                [%- FOREACH extend IN normdata.${"T0435"} %]
+                <mods:extent>[%- extend.content %]</mods:extent>
+                [%-END%]
+                </mods:physicalDescription>
+            [%-END %]
             [%- IF normdata.${"T4310"}.first %]
             <mods:note type="ownership">
                 [% normdata.${"T4310"}.first.content %]
@@ -196,9 +207,6 @@
             [%- END %]
             [%- IF normdata.${"T4718"}.first.content == "rheinland"  %]
             <mods:classification authority="usb">Sammlung Rheinland</mods:classification>
-            [%- END %]
-            [%- FOREACH item IN normdata.${"T0700"} %]
-            <mods:classification authority="BK">[% item.content %]</mods:classification>
             [%- END %]
             [%- rswk_list = {} %]
             [%- FOREACH rswk_item IN rswk_keyword_list %]

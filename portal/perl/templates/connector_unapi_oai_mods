@@ -13,6 +13,17 @@
             [%- END -%]
             [%- END -%]
             [%- END -%]
+            [%- IF normdata.${"T0580"} %]
+                [%- FOREACH number IN normdata.${"T0580"} -%]
+                [%- IF number.content.match('VD16') %]
+                <mods:identifier type="vd16">[%- number.content%]</mods:identifier>
+                [%- ELSIF number.content.match('VD17') %]
+                <mods:identifier type="vd17">[%- number.content%]</mods:identifier>
+                [%- ELSIF number.content.match('VD18') %]
+                <mods:identifier type="vd18">[%- number.content%]</mods:identifier>
+                [%- END -%]
+                [%- END -%]
+            [%- END -%]
             [%- IF normdata.${"T0010"} %]
             <mods:recordInfo>
                 <mods:recordIdentifier>[% normdata.${"T0010"}.first.content -%]</mods:recordIdentifier>
@@ -51,7 +62,7 @@
             [%- END -%]
             [%- IF corporation_list && corporation_list.size %]
             [%- FOREACH item IN corporation_list %]
-            <mods:name type="corporate" [%- IF item.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/[% item.gnd %]" [%END%]>
+            <mods:name type="corporate"[%- IF item.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/[% item.gnd %]" [%END%]>
                 <mods:namePart>[% item.namedata %]</mods:namePart>
                 <mods:role>
                     [%- IF corpdata.field == "T0200" %]

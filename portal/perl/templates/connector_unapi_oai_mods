@@ -186,9 +186,12 @@
                 [%-END%]
             </mods:language>
             [%-END%]
-            [%- IF normdata.${"T0433"} %]
+            [%- IF normdata.${"T0433"} || normdata.${"T0435"} %]
                 <mods:physicalDescription>
                 [%- FOREACH extend IN normdata.${"T0433"} %]
+                <mods:extent>[%- extend.content %]</mods:extent>
+                [%-END%]
+                [%- FOREACH extend IN normdata.${"T0435"} %]
                 <mods:extent>[%- extend.content %]</mods:extent>
                 [%-END%]
                 </mods:physicalDescription>

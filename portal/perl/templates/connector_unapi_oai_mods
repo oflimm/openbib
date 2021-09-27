@@ -186,6 +186,13 @@
                 [%-END%]
             </mods:language>
             [%-END%]
+            [%- IF normdata.${"T0433"} %]
+                <mods:physicalDescription>
+                [%- FOREACH extend IN normdata.${"T0433"} %]
+                <mods:extent>[%- extend.content %]</mods:extent>
+                [%-END%]
+                </mods:physicalDescription>
+            [%-END %]
             [%- IF normdata.${"T4310"}.first %]
             <mods:note type="ownership">
                 [% normdata.${"T4310"}.first.content %]
@@ -196,9 +203,6 @@
             [%- END %]
             [%- IF normdata.${"T4718"}.first.content == "rheinland"  %]
             <mods:classification authority="usb">Sammlung Rheinland</mods:classification>
-            [%- END %]
-            [%- FOREACH item IN normdata.${"T0700"} %]
-            <mods:classification authority="BK">[% item.content %]</mods:classification>
             [%- END %]
             [%- rswk_list = {} %]
             [%- FOREACH rswk_item IN rswk_keyword_list %]

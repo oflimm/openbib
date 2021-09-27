@@ -330,17 +330,17 @@ while (my $jsonline = <IN>){
 	# 0517: Angaben zum Inhalt
 	if ($is_inhalt_volltext){
 	    push @{$title_ref->{fields}{'0517'}}, {
-		content => 'Digital',
+		content => 'Volltext',
 	    }
 	}
 	if ($is_inhalt_analog){
 	    push @{$title_ref->{fields}{'0517'}}, {
-		content => 'Analog',
+		content => 'analog',
 	    }
 	}
 	if ($is_inhalt_ohne){
 	    push @{$title_ref->{fields}{'0517'}}, {
-		content => 'Ohne',
+		content => 'untranskribiert',
 	    }
 	}
 

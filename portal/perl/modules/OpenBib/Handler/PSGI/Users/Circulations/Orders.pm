@@ -348,8 +348,12 @@ sub delete_record {
     }
     
     if ($response_cancel_order_ref->{error}){
-	#            return $self->print_warning($response_cancel_order_ref->{error_description});
-	return $self->print_warning($msg->maketext("Eine Stornierung der Vormerkung für dieses Mediums durch Sie ist leider nicht möglich"));
+	if (defined $response_cancel_order_ref->{error_description}){
+	    return $self->print_warning($response_cancel_order_ref->{error_description});
+	}
+	else {
+	    return $self->print_warning($msg->maketext("Eine Stornierung der Vormerkung für dieses Mediums durch Sie ist leider nicht möglich"));
+	}
     }
     elsif ($response_cancel_order_ref->{successful}){
 	# TT-Data erzeugen
@@ -458,6 +462,7 @@ sub confirm_delete_record {
     my $userinfo_ref = $user->get_info($user->{ID});
     
     my $ttdata={
+	database  => $database,
 	userinfo  => $userinfo_ref,
 	record    => $record,
 	unit      => $unit,

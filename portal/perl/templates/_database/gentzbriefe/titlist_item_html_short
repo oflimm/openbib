@@ -400,7 +400,7 @@ $(document).ready(function(){
        </div>
 [% END %]
        <div class="ob-title_availability">
-[% IF availability == "online" %]<button class="btn btn-primary ob-availability_online mr-1"><img src="[% config.get_icon('global',view,sysprofile) %]" alt="[% msg.maketext("online") %]" /><span class="d-none d-sm-inline">[% msg.maketext("online") %]</span></button>[% END %]
+[% IF availability == "online" %]<button class="btn btn-primary ob-availability_online mr-1"><i class="fas fa-check mr-2"></i><span class="d-none d-sm-inline">[% msg.maketext("validiert") %]</span></button>[% END %]
        </div>
       </div>
 

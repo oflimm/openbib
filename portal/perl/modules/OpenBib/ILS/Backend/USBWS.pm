@@ -409,6 +409,21 @@ sub make_reservation {
 	return $response_ref;
     }
 
+    # Allgemeine Fehler
+    if (defined $result_ref->{NotOK} ){
+	$response_ref = {
+	    "code" => 400,
+		"error" => "error",
+		"error_description" => $result_ref->{NotOK},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+        
     if (defined $result_ref->{Vormerkung} && defined $result_ref->{Vormerkung}{NotOK} ){
 	$response_ref = {
 	    "code" => 403,
@@ -535,6 +550,21 @@ sub cancel_reservation {
 	return $response_ref;
     }
 
+    # Allgemeine Fehler
+    if (defined $result_ref->{NotOK} ){
+	$response_ref = {
+	    "code" => 400,
+		"error" => "error",
+		"error_description" => $result_ref->{NotOK},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+    
     if (defined $result_ref->{VormerkBestellStorno} && defined $result_ref->{VormerkBestellStorno}{NotOK} ){
 	$response_ref = {
 	    "code" => 403,
@@ -663,6 +693,21 @@ sub make_order {
 	return $response_ref;
     }
 
+    # Allgemeine Fehler
+    if (defined $result_ref->{NotOK} ){
+	$response_ref = {
+	    "code" => 400,
+		"error" => "error",
+		"error_description" => $result_ref->{NotOK},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+    
     if (defined $result_ref->{OpacBestellung} && defined $result_ref->{OpacBestellung}{NotOK} ){
 	$response_ref = {
 	    "code" => 403,
@@ -748,6 +793,8 @@ sub cancel_order {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    $SIG{'DIE'} = 'IGNORE';
+
     my $database = $self->get_database;
     my $config   = $self->get_config;
 
@@ -779,6 +826,7 @@ sub cancel_order {
 	my $soap = SOAP::Lite
 	    -> uri($uri)
 	    -> proxy($config->get('usbwsmail_url'));
+
 	my $result = $soap->submit_storno(@args);
 	
 	unless ($result->fault) {
@@ -789,7 +837,7 @@ sub cancel_order {
 	}
 	else {
 	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-	    
+
 	    $response_ref = {
 		error => $result->faultcode,
 		error_description => $result->faultstring,
@@ -811,6 +859,21 @@ sub cancel_order {
 	return $response_ref;
     }
 
+    # Allgemeine Fehler
+    if (defined $result_ref->{NotOK} ){
+	$response_ref = {
+	    "code" => 400,
+		"error" => "error",
+		"error_description" => $result_ref->{NotOK},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+    
     if ($logger->is_debug){
 	$logger->debug("Cancel order result".YAML::Dump($result_ref));
     }
@@ -836,6 +899,10 @@ sub cancel_order {
 	    "code" => 403,
 		"error" => "cancel order failed",
 	};
+
+	if (defined $result_ref->{NotOK}){
+	    $response_ref->{error_description} = $result_ref->{NotOK};
+	}
 	
 	if ($logger->is_debug){
 	    $response_ref->{debug} = $result_ref;
@@ -921,6 +988,21 @@ sub renew_loans {
 	return $response_ref;
     }
 
+    # Allgemeine Fehler
+    if (defined $result_ref->{NotOK} ){
+	$response_ref = {
+	    "code" => 400,
+		"error" => "error",
+		"error_description" => $result_ref->{NotOK},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+    
     if (defined $result_ref->{GesamtVerlaengerung} && defined $result_ref->{GesamtVerlaengerung}{NotOK} ){
 	$response_ref = {
 	    "code" => 403,
@@ -1052,6 +1134,21 @@ sub renew_single_loan {
 	return $response_ref;
     }
 
+    # Allgemeine Fehler
+    if (defined $result_ref->{NotOK} ){
+	$response_ref = {
+	    "code" => 400,
+		"error" => "error",
+		"error_description" => $result_ref->{NotOK},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+    
     if (defined $result_ref->{EinzelVerlaengerung} && defined $result_ref->{EinzelVerlaengerung}{NotOK} ){
 	$response_ref = {
 	    "code" => 403,
@@ -1182,6 +1279,21 @@ sub get_mediastatus {
 		return $response_ref;		
 	    }
 	    
+	}
+
+	# Allgemeine Fehler
+	if (defined $circexlist->{NotOK} ){
+	    $response_ref = {
+		"code" => 400,
+		    "error" => "error",
+		    "error_description" => $circexlist->{NotOK},
+	    };
+	    
+	    if ($logger->is_debug){
+		$response_ref->{debug} = $circexlist;
+	    }
+	    
+	    return $response_ref	
 	}
 	
 	# Bei einer Ausleihbibliothek haben - falls Exemplarinformationen
@@ -1517,6 +1629,21 @@ sub check_order {
 	return $response_ref;
     }
 
+    # Allgemeine Fehler
+    if (defined $result_ref->{NotOK} ){
+	$response_ref = {
+	    "code" => 400,
+		"error" => "error",
+		"error_description" => $result_ref->{NotOK},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+    
     if (defined $result_ref->{OpacBestellung} && defined $result_ref->{OpacBestellung}{NotOK}){
 	my $error = "unknown order failure";
 	
@@ -1670,6 +1797,21 @@ sub check_reservation {
 	return $response_ref;
     }
 
+    # Allgemeine Fehler
+    if (defined $result_ref->{NotOK} ){
+	$response_ref = {
+	    "code" => 400,
+		"error" => "error",
+		"error_description" => $result_ref->{NotOK},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+    
     if (defined $result_ref->{VormerkungMoeglich} && defined $result_ref->{VormerkungMoeglich}{NotOK} ){
 	$response_ref = {
 	    "code" => 403,
@@ -1789,6 +1931,14 @@ sub send_account_request {
 	
 	if (defined($itemlist)) {
 
+	    if (defined $itemlist->{NotOK}){
+		$response_ref = {
+		    error => "error",
+		    error_description => $itemlist->{NotOK},
+		};
+		next ;
+	    }
+	    
 	    if ( %{$itemlist->{Konto}} && ($type_ref->{type} eq "AUSLEIHEN" || $type_ref->{type} eq "BESTELLUNGEN" || $type_ref->{type} eq "VORMERKUNGEN")){
 		if (defined $itemlist->{Konto}{KeineVormerkungen}){
 		    if ($logger->is_debug){

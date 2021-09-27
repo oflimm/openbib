@@ -44,7 +44,6 @@
 <div class="form-group">
       <label for="title">Titel</label>
       <span class="form-control">[% title %]</span>
-      <input type="hidden" name="title" value="[% uri_encode(title) %]" />
       <input type="hidden" name="titleid" value="[% titleid %]" />
 </div>
 
@@ -52,7 +51,6 @@
 <div class="form-group">
       <label for="person">[% msg.maketext("Verfasser") %]:</label>
       <span class="form-control">[% person %]</span>
-      <input type="hidden" name="person" value="[% uri_encode(person) %]" />
 </div>
 [% END %]
 
@@ -60,7 +58,6 @@
 <div class="form-group">
       <label for="corporatation">[% msg.maketext("Körperschaft") %]:</label>
       <span class="form-control">[% corporatebody %]</span>
-      <input type="hidden" name="corporation" value="[% uri_encode(corporatebody) %]" />
 </div>
 [% END %]
 
@@ -68,7 +65,6 @@
 <div class="form-group">
       <label for="publisher">[% msg.maketext("Verlag") %]:</label>
       <span class="form-control">[% publisher %]</span>
-      <input type="hidden" name="publisher" value="[% uri_escape(publisher) %]" />
 </div>
 [% END %]
 
@@ -76,7 +72,6 @@
 <div class="form-group">
       <label for="year">[% msg.maketext("Erscheinungsjahr") %]:</label>
       <span class="form-control">[% year %]</span>
-      <input type="hidden" name="year" value="[% uri_escape(year) %]" />
 </div>
 [% END %]
 
@@ -92,7 +87,7 @@
 <div class="form-group">
       <label for="location_mark">[% msg.maketext("Signatur") %]:</label>
       <span class="form-control">[% signatur %]</span>
-      <input type="hidden" name="location_mark" value="[% uri_escape(signatur) %]" />
+      <input type="hidden" name="label" value="[% uri_escape(signatur) %]" />
 </div>
 
 [% IF numbering %]
@@ -121,7 +116,7 @@
 <div class="form-group">
      <label for="loginname">[% msg.maketext("Nutzer-Kennung") %]:</label>
       <span class="form-control">[% username %]</span>
-      <input type="hidden" name="userid" value="[% username %]" />
+      <input type="hidden" name="loginname" value="[% username %]" />
 </div>
 
 <div class="form-group">
@@ -144,19 +139,10 @@
       <label class="form-check-label" for="receipt">[% msg.maketext("Ja, ich möchte eine Kopie dieser Bestellung als E-Mail erhalten") %].</label>
 </div>
 
-[% IF email %]
 <div class="form-group">
       <label for="email">[% msg.maketext("E-Mail") %]:</label>
-      <span class="form-control">[% email %]</span>
-      <input type="hidden" name="email" value="[% email %]" />
-</div>
-[% ELSE %]
-<div class="form-group">
-      <label for="email">[% msg.maketext("E-Mail") %]</label>
       <span class="form-control">[% userinfo.email %]</span>
-      <input class="form-control" type="hidden" name="email" value="[% userinfo.email %]" maxlength="60" size="37" /> 
 </div>
-[% END %]
 
 <button type="submit" class="btn btn-primary mb-2 mt-4">[% msg.maketext("Auswahl") %]</button>
 

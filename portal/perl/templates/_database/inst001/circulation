@@ -172,14 +172,28 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
 [%    bestellscheinparts = availability_info.match('^.* (\(.*\))'); %]
 <br/><em>Bitte füllen Sie einen konventionellen Bestellschein aus</em><br/>[% bestellscheinparts.first %]<br/>
 [%    IF config.get('active_ils') %]
-&nbsp;<a class="btn btn-primary mb-1" href="">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
+&nbsp;<a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/mail/default?l=[% lang %];titleid=[% record.id %];dbname=[% record.database %];scope=usb">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
 [%    END %]
 [%############### HANDAPPARAT ################# %]
 [% ELSIF standort.match('Handapp.') %]
-[%   IF thiscirculation.department_id.match('^(0|6|10|15|406)$') ; # Handapp. der Hauptabteilung und FBs: Bestellformular einblenden, z.B. ID=6445402, ID=6781850 %]
+[%   IF thiscirculation.department_id.match('^(0|6|10|15|18|406)$') ; # Handapp. der Hauptabteilung und FBs: Bestellformular einblenden, z.B. ID=6445402, ID=6781850 %]
 <strong>entliehen</strong>
 [%    IF config.get('active_ils') %]
-&nbsp;<a class="btn btn-primary mb-1" href="">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
+[%      IF    thiscirculation.department_id.match('^6$') ;
+          scope = "vwl";
+	ELSIF thiscirculation.department_id.match('^10$') ;
+          scope = "soz";
+	ELSIF thiscirculation.department_id.match('^15$') ;
+          scope = "slav";
+	ELSIF thiscirculation.department_id.match('^18$') ;
+          scope = "bwl";
+	ELSIF thiscirculation.department_id.match('^406$') ;
+          scope = "nl";
+	ELSE;
+	  scope = "usb";
+	END;
+%]
+&nbsp;<a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/mail/handset.html?l=[% lang %];titleid=[% record.id %];dbname=[% record.database %];label=[% uri_escape(thiscirculation.location_mark) %];scope=[% scope %]">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
 [%    END %]
 [%   ELSE %]
 [% availability_info %]

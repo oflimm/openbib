@@ -161,7 +161,7 @@ $(function () {
   <div class="animated-image image-2"></div>
   <div class="animated-image image-3"></div>
 
-<div class="jumbotron jumbotron-fluid mb-0 landing-page-img">
+<div class="jumbotron jumbotron-fluid mb-0 landing-page-img pl-2">
 
   <div class="container container-fluid" style="margin-top: 50px!important; min-width: 100%!important;">
 
@@ -176,7 +176,7 @@ $(function () {
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
 <input type="hidden" name="profile"    value="[% searchprofileid_of_books %]" />
 
-<div class="container justify-content-center border shadow rounded pl-2 pr-2 pt-3 pb-2 mb-4 ml-2">
+<div class="container justify-content-center border shadow rounded pl-2 pr-2 pt-3 pb-2 mb-4">
     <div class="row">    
         <div class="col">
             <div class="input-group">

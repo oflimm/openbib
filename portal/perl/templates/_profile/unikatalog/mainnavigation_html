@@ -115,12 +115,14 @@
 [%     IF config.get_viewauthenticators(view) %]
     [%  IF username %]
       [% IF NOT suppress_unauthorized %]
+           <li class="nav-item[% IF layout_param.active_menu == "loginout" %] active[% END %] p-2"><a class="nav-link btn btn-primary ml-1 mr-1" href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %];purge_private_userinfo=1">[% msg.maketext("Abmelden") %]</a></li>
                 <li class="nav-item">
           [% PROCESS common/subtemplate name="users_navigation" start=1 %]
                 </li>
-           <li class="nav-item[% IF layout_param.active_menu == "loginout" %] active[% END %]"><a class="nav-link btn btn-primary ml-1 mr-1" href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %];purge_private_userinfo=1">[% msg.maketext("Abmelden") %]</a></li>
       [% END %]
     [%  ELSE %]
+           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %] p-1"><a class="nav-link btn btn-primary ml-1 mr-1" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Anmelden") %]</a></li>
+    
            <li class="nav-item">
 <div class="card">
 
@@ -142,7 +144,6 @@
 </div>
 </div>
 </li>
-           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link btn btn-primary ml-1 mr-1" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Anmelden") %]</a></li>
     [%  END %]
 [%     END %]
 

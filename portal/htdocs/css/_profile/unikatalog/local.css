@@ -1194,6 +1194,10 @@
 	border-left: 5px red solid;    
     }
 
+    #ob-mainsearchform .col {
+	padding-right: 0px;
+    }
+    
     #ob-searchform_bottom {
 	font-size: 90%;
 	padding-top: 1em;

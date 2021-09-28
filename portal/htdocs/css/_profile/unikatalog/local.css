@@ -1,5 +1,10 @@
 @media all
 {
+    .jumbotron {
+	margin-top: 1em;
+	margin-bottom: 1em;
+	margin-right: 1em;
+    }
     
     img {
 	max-width: unset;
@@ -264,7 +269,7 @@
     }
 
     /* Navbar flyin left */
-    #navbarToggler {
+    #navbarToggler, #userToggler {
 	background-color: #fff;
 	min-width: 250px;
 	max-width: 250px;
@@ -280,13 +285,13 @@
 	transition: margin .25s ease-out;
     }
 
-    #navbarToggler .navbar-heading {
+    #navbarToggler .navbar-heading, #userbarToggler .navbar-heading {
 	padding: 0.875rem 1.25rem;
 	font-size: 1.2rem;
     }
 
-    #navbarToggler #navbar-dismiss {
-	padding: 0.875rem 1.25rem;
+    #navbarToggler #navbar-dismiss, #userToggler #navbar-user-dismiss {
+	padding: 0rem;
 	font-size: 1.2rem;
     }
 

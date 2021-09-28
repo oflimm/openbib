@@ -54,27 +54,15 @@
 
   <div class="collapse navbar-collapse" id="navbarToggler">
 
-     <div id="navbar-dismiss" class="float-right" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fas fa-arrow-left"></i>
+     <div id="navbar-dismiss" class="float-right text-white" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-window-close fa-2x p-1"></i>
      </div>
 
-     <div class="navbar-heading">
+     <div class="navbar-heading ob-bg text-white p-1 pb-0 mb-2">
             <h3>Menu</h3>
      </div>
 
     <ul class="list-unstyled components">
-           <li class="nav-item[% IF layout_param.active_menu == "collection" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %]</a></li>
-
-[%     IF config.get_viewauthenticators(view) %]
-    [%  IF username %]
-      [% IF NOT suppress_unauthorized %]
-           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/edit.html?l=[% lang %]">[% msg.maketext("Mein KUG") %]</a></li>
-           <li class="nav-item[% IF layout_param.active_menu == "loginout" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %];purge_private_userinfo=1">[% msg.maketext("Abmelden") %]</a></li>
-      [% END %]
-    [%  ELSE %]
-           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Anmelden") %]</a></li>
-    [%  END %]
-[%     END %]
 
      [% lang_desc = {
        'en' = "English"
@@ -111,8 +99,66 @@
   </div>
 
 
+  <div class="collapse navbar-collapse" id="userToggler">
+
+     <div id="navbar-user-dismiss" class="float-right text-white" data-toggle="collapse" data-target="#userToggler" aria-controls="userToggler" aria-expanded="false" aria-label="Toggle user account">
+            <i class="fas fa-window-close fa-2x p-1"></i>
+     </div>
+
+     <div class="navbar-heading ob-bg text-white p-1 pb-0 mb-2">
+            <h3>[% msg.maketext("Mein Konto") %]</h3>
+     </div>
+
+    <ul class="list-unstyled components">
+<!--           <li class="nav-item[% IF layout_param.active_menu == "collection" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %]</a></li> -->
+
+[%     IF config.get_viewauthenticators(view) %]
+    [%  IF username %]
+      [% IF NOT suppress_unauthorized %]
+                <li class="nav-item">
+          [% PROCESS common/subtemplate name="users_navigation" start=1 %]
+                </li>
+           <li class="nav-item[% IF layout_param.active_menu == "loginout" %] active[% END %]"><a class="nav-link btn btn-primary ml-1 mr-1" href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %];purge_private_userinfo=1">[% msg.maketext("Abmelden") %]</a></li>
+      [% END %]
+    [%  ELSE %]
+           <li class="nav-item">
+<div class="card">
+
+<div class="card-header"><span class="ob-nav_description">Anonym</span></div>
+
+<div class="card-body">
+
+<nav class="navbar bg-light ob-sidebar">
+
+
+ <ul class="navbar-nav">
+[% IF layout_param.active_submenu == "listofinterest" %]
+  <li class="nav-item active"><strong>[% msg.maketext("Merkliste") %]</strong></li>
+[% ELSE %]
+  <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get("cartitems_loc") %].html?l=[% lang %]">[% msg.maketext("Merkliste") %]</a></li>
+[% END %]
+</ul>
+</nav>
+</div>
+</div>
+</li>
+           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link btn btn-primary ml-1 mr-1" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Anmelden") %]</a></li>
+    [%  END %]
+[%     END %]
+
+     [% lang_desc = {
+       'en' = "English"
+       'de' = "Deutsch"
+     }
+     %]
+
+    		
+            </ul>
+  
+  </div>
+
 <header>
-<nav class="navbar navbar-expand-lg pl-4">
+<nav class="navbar navbar-expand-lg pl-2">
  
   <a class="navbar-brand d-none d-md-block" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">
   <span class="uzk15__icon-uzk">
@@ -126,9 +172,12 @@
   <a class="navbar-brand d-md-none" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">
     <h1 class="ml-0">Universität zu Köln</h1>
   </a>
+  <div class="d-flex justify-content-end">
+  <span class="d-lg-none mr-4 pt-1" data-toggle="collapse" data-target="#userToggler" aria-controls="userToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-user fa-2x"></i></span>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
+  </div>
   <div class="collapse navbar-collapse"">
 <!--    <a class="navbar-brand" href="#">Hidden brand</a> -->
 [% IF NOT suppress_unauthorized %]
@@ -168,7 +217,7 @@
            <li class="nav-item[% IF layout_param.active_menu == "loginout" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %];purge_private_userinfo=1">[% msg.maketext("Abmelden") %]</a></li>
       [% END %]
     [%  ELSE %]
-           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Anmelden") %]</a></li>
+           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]"><span class="d-none d-md-block">[% msg.maketext("Anmelden") %]</span></a></li>
     [%  END %]
 [%     END %]
 

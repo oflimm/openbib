@@ -43,7 +43,7 @@
     </style>
 
    <!-- Begin: Sidebar -->
-  [% IF layout_param.sidebar_template %]
+  [% IF layout_param.sidebar_template && NOT layout_param.sidebar_template.match('^users_') %]
 
   [%   IF NOT layout_param.sidebar_button_in_main_template %]
     <button class="btn btn-primary sidebar-toggler mt-3" type="button" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-arrow-right"></i> [% IF layout_param.sidebar_template_description %][% layout_param.sidebar_template_description %][% ELSE %]Navigation[% END %]</button>

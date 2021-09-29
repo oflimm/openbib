@@ -214,7 +214,12 @@
 [%     IF config.get_viewauthenticators(view) %]
     [%  IF username %]
       [% IF NOT suppress_unauthorized %]
-           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/edit.html?l=[% lang %]">[% msg.maketext("Mein KUG") %]</a></li>
+           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %] dropdown">
+	        <a class="nav-link dropdown-toggle" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/edit.html?l=[% lang %]" data-bs-toggle="dropdown">[% msg.maketext("Mein Konto") %]</a>
+		<div class="dropdown-menu ob-dropdown">
+    [% PROCESS common/subtemplate name="users_navigation_dropdown" %] 
+		</div>
+	   </li>
            <li class="nav-item[% IF layout_param.active_menu == "loginout" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %];purge_private_userinfo=1">[% msg.maketext("Abmelden") %]</a></li>
       [% END %]
     [%  ELSE %]

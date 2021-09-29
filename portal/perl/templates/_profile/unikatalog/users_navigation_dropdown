@@ -65,26 +65,10 @@
 <h1 class="display-5">[% authenticator.description %]</h1>
 
 <ul class="list-unstyled components">
-[%   IF layout_param.active_submenu == "loans" %]
-      <li class=" active"><strong>[% msg.maketext("Ausleihen") %]</strong></li>
-[%   ELSE %]
-      <li class=""><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.name %]/[% config.get('circulations_loc') %]/id/loans.html?l=[% lang %]">[% msg.maketext("Ausleihen") %]</a></li>
-[%   END %]
-[%   IF layout_param.active_submenu == "reservations" %]
-      <li class=" active"><strong>[% msg.maketext("Vormerkungen") %]</strong></li>
-[%   ELSE %]
-      <li class=""><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.name %]/[% config.get('circulations_loc') %]/id/reservations.html?l=[% lang %]">[% msg.maketext("Vormerkungen") %]</a></li>
-[%   END %]
-[%   IF layout_param.active_submenu == "orders" %]
-      <li class=" active"><strong>[% msg.maketext("Bestellungen") %]</strong></li>
-[%   ELSE %]
-      <li class=""><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.name %]/[% config.get('circulations_loc') %]/id/orders.html?l=[% lang %]">[% msg.maketext("Bestellungen") %]</a></li>
-[%   END %]
-[%   IF layout_param.active_submenu == "fees" %]
-      <li class=" active"><strong>[% msg.maketext("Überziehungen / Gebühren") %]</strong></li>
-[%   ELSE %]
-      <li class=""><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.name %]/[% config.get('circulations_loc') %]/id/fees.html?l=[% lang %]">[% msg.maketext("Überziehungen / Gebühren") %]</a></li>
-[%   END %]
+      <li class="[% IF layout_param.active_submenu == "loans" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.name %]/[% config.get('circulations_loc') %]/id/loans.html?l=[% lang %]">[% msg.maketext("Ausleihen") %]</a></li>
+      <li class="[% IF layout_param.active_submenu == "reservations" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.name %]/[% config.get('circulations_loc') %]/id/reservations.html?l=[% lang %]">[% msg.maketext("Vormerkungen") %]</a></li>
+      <li class="[% IF layout_param.active_submenu == "orders" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.name %]/[% config.get('circulations_loc') %]/id/orders.html?l=[% lang %]">[% msg.maketext("Bestellungen") %]</a></li>
+      <li class="[% IF layout_param.active_submenu == "fees" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.name %]/[% config.get('circulations_loc') %]/id/fees.html?l=[% lang %]">[% msg.maketext("Überziehungen / Gebühren") %]</a></li>
 </ul>
 
 </div> <!-- Ende: col -->
@@ -93,8 +77,7 @@
 [% IF user.has_role('viewadmin',user.ID) || user_gets_admin_navigation %]
 <div class="col">
 [% IF user.has_role('viewadmin',user.ID) %]
-<p/>
-[% PROCESS common/subtemplate name="viewadmin_navigation" %]
+[%   PROCESS common/subtemplate name="viewadmin_navigation_dropdown" %]
 [% END %]
 
 [%
@@ -112,8 +95,7 @@
 %]
 
 [% IF user_gets_admin_navigation %]
-<p/>
-[% PROCESS common/subtemplate name="admin_navigation" %]
+[%   PROCESS common/subtemplate name="admin_navigation_dropdown" %]
 [% END %]
 </div><!-- End: col -->
 [% END %]

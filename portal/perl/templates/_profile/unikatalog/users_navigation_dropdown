@@ -118,6 +118,7 @@
 </div><!-- End: col -->
 [% END %]
 </div><!-- End: row -->
+<a class="btn btn-primary ml-1 mr-1 mt-4" href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %];purge_private_userinfo=1">[% msg.maketext("Abmelden") %]</a>
 </div><!-- End: container -->
 </div><!-- End: card-body -->
 </div><!-- End: card -->

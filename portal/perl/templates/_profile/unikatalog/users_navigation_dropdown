@@ -74,12 +74,6 @@
 </div> <!-- Ende: col -->
 [% END %]
 
-[% IF user.has_role('viewadmin',user.ID) || user_gets_admin_navigation %]
-<div class="col">
-[% IF user.has_role('viewadmin',user.ID) %]
-[%   PROCESS common/subtemplate name="viewadmin_navigation_dropdown" %]
-[% END %]
-
 [%
 
   user_gets_admin_navigation = 0;
@@ -93,6 +87,13 @@
   END;
 
 %]
+
+[% IF user.has_role('viewadmin',user.ID) || user_gets_admin_navigation %]
+<div class="col">
+[% IF user.has_role('viewadmin',user.ID) %]
+[%   PROCESS common/subtemplate name="viewadmin_navigation_dropdown" %]
+[% END %]
+
 
 [% IF user_gets_admin_navigation %]
 [%   PROCESS common/subtemplate name="admin_navigation_dropdown" %]

@@ -395,7 +395,8 @@
     .container-fluid {
 	padding-left: 0px;
 	padding-right: 0px;
-	z-index:100;
+	//	z-index:100;
+	z-index:49;	
 	position:relative;
     }
 

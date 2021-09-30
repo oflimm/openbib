@@ -2120,7 +2120,7 @@ a.ext {
 
 }
 
-@media screen and (max-width:480px) {
+@media screen and (max-width:480px) {    
     .ob-item .ob-brieftitle {
 	padding-left: 2.5em;
 	width: 100%;
@@ -2377,4 +2377,18 @@ a.card-link, a.card-link:hover {
 //	color: #000;
 //    }
 
+}
+
+@media screen and (max-width:480px) {
+    html {
+	font-size: 0.8em;
+    }
+
+    header .navbottom {
+	height: 50px;
+    }
+    
+    header .navbottom .brandname {
+	padding-top: 9px;
+    }
 }

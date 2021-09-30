@@ -92,12 +92,12 @@
 </style>
 
 <div id="ob-sidebar[% idsuffix %]" class="bg-light border-right min-vh-100 collapse navbar-collapse pb-5" aria-expanded="false">
-  <div id="sidebar-dismiss[% idsuffix %]" class="float-right d-md-none" data-toggle="collapse" data-target="#ob-sidebar[% idsuffix %]" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-    <i class="fas fa-arrow-left"></i>
+  <div id="sidebar-dismiss[% idsuffix %]" class="float-right d-md-none text-white" data-toggle="collapse" data-target="#ob-sidebar[% idsuffix %]" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+    <i class="fas fa-window-close fa-2x p-1"></i>
   </div>
   
-  <div class="sidebar-heading d-md-none">
-    <h3>Navigation</h3>
+  <div class="sidebar-heading ob-bg text-white p-1 pb-0 mb-2 d-md-none">
+    <h3>[% msg.maketext("Filtern") %]</h3>
   </div>
   
   <div class="sidebar-content overflow-auto h-100 pl-1">

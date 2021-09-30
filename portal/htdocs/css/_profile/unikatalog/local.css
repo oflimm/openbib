@@ -153,7 +153,8 @@
     }
     
     #ob-maincontent {
-	padding-left: 25px;
+	padding-left: 10px;
+	padding-right: 10px;
     }
 
     #ob-startpage #ob-maincontent {
@@ -504,7 +505,7 @@
     }
     
     .tab-content {
-	padding: 10px;
+//	padding: 10px;
        border-left-style: solid;
        border-left-color: #edebe3;
        border-left-width: 1px;

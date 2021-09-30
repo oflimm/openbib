@@ -48,6 +48,17 @@
   END;
 
   titleid   = record.id;
+
+  hide_pickup = "";
+  
+  IF location.match("/ (Fotobib|MAKK)") ;
+    hide_pickup = "LUDWIG";
+  ELSIF location.match("/ KMB$") ;
+    IF label.match("KMB/(K|YA|YG)") ;
+      hide_pickup = "KUNST";
+    END;
+  END;
+  
   
 -%]
 <div class="card mt-5 mb-5 mr-5">
@@ -55,9 +66,8 @@
 <div class="card-body">
  <form  method="POST" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/mail/handset">
  
-     <input type="hidden" name="scope" value="[% scope %]" />
-     <input type="hidden" name="unit" value="[% unit %]" />
-     <input type="hidden" name="validtarget"   value="[% database %]" />
+     <input type="hidden" name="scope"       value="[% scope %]" />
+     <input type="hidden" name="location"    value="[% location %]" />
 
 <legend class="mt-2">[% msg.maketext("Titelangaben") %]</legend>
 
@@ -109,6 +119,9 @@
      ELSE ;
        signatur = holdingid ;
      END;
+
+
+     
 %]
 
 <div class="form-group">
@@ -159,12 +172,21 @@
 
 <p/>
 
-<legend class="mt-2">[% msg.maketext("Bestellquittung") %]</legend>
-<div class="form-check">
+<legend class="mt-2">[% msg.maketext("Abholort") %]</legend>
 
-      <input class="form-check-input" type="checkbox" name="receipt"/>
-      <label class="form-check-label" for="receipt">[% msg.maketext("Ja, ich möchte eine Kopie dieser Bestellung als E-Mail erhalten") %].</label>
+[% IF hide_pickup != "LUDWIG" %]
+<div class="form-check">
+      <input class="form-check-input" type="radio" name="pickup_location" value="Lesesaal im Museum Ludwig"/>
+      <label class="form-check-label" for="pickup_location">Lesesaal im Museum Ludwig</label>
 </div>
+[% END %]
+
+[% IF hide_pickup != "KUNST" %]
+<div class="form-check">
+      <input class="form-check-input" type="radio" name="pickup_location" value="Lesesaal im Museum für angewandte Kunst"/>
+      <label class="form-check-label" for="pickup_location">Lesesaal im Museum für angewandte Kunst</label>
+</div>
+[% END %]
 
 <div class="form-group">
       <label for="email">[% msg.maketext("E-Mail") %]:</label>

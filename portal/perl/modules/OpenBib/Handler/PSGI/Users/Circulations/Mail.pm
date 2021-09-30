@@ -44,7 +44,7 @@ use POSIX;
 use SOAP::Lite;
 use Socket;
 use Template;
-use URI::Escape;
+use URI::Escape qw(uri_unescape);
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
@@ -95,25 +95,33 @@ sub show_form {
     my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
+
+    my $mailtype_noauth_ref = {
+	"kmb" => 1,
+        "kmbcopy" => 1,
+    };
     
     # Zentrale Ueberpruefung der Authentifizierung
+
+    unless (defined $mailtype_noauth_ref->{$mailtype}){
     
-    # Nutzer muss am richtigen Target authentifiziert sein    
-    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
-
-    if (!$self->authorization_successful || $database ne $sessionauthenticator){
-        if ($self->param('representation') eq "html"){
-            return $self->tunnel_through_authenticator('GET');            
-        }
-        else  {
-            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
-        }
+	# Nutzer muss am richtigen Target authentifiziert sein    
+	my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
+	
+	if (!$self->authorization_successful || $database ne $sessionauthenticator){
+	    if ($self->param('representation') eq "html"){
+		return $self->tunnel_through_authenticator('GET');            
+	    }
+	    else  {
+		return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
+	    }
+	}
     }
-
+    
     my $mailtype_is_valid_ref = {
 	"handset" => 1,
-	    "kmb" => 1,
-	    "default" => 1,
+        "kmb" => 1,
+        "default" => 1,
     };
     
     my $show_handler   = "show_$mailtype";
@@ -149,24 +157,32 @@ sub mail_form {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    # Zentrale Ueberpruefung der Authentifizierung
+    my $mailtype_noauth_ref = {
+	"kmb" => 1,
+        "kmbcopy" => 1,
+    };
     
-    # Nutzer muss am richtigen Target authentifiziert sein    
-    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
+    # Zentrale Ueberpruefung der Authentifizierung
 
-    if (!$self->authorization_successful || $database ne $sessionauthenticator){
-        if ($self->param('representation') eq "html"){
-            return $self->tunnel_through_authenticator('POST');            
-        }
-        else  {
-            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
-        }
+    unless (defined $mailtype_noauth_ref->{$mailtype}){
+	
+	# Nutzer muss am richtigen Target authentifiziert sein    
+	my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
+	
+	if (!$self->authorization_successful || $database ne $sessionauthenticator){
+	    if ($self->param('representation') eq "html"){
+		return $self->tunnel_through_authenticator('POST');            
+	    }
+	    else  {
+		return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
+	    }
+	}
     }
 
     my $mailtype_is_valid_ref = {
 	"handset" => 1,
-	    "kmb" => 1,
-	    "default" => 1,
+        "kmb" => 1,
+        "default" => 1,
     };
     
     my $mail_handler   = "mail_$mailtype";
@@ -201,17 +217,21 @@ sub show_handset {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    # CGI Args
-    my $scope          = $query->param('scope'); # defines sender, recipient via portal.yml
-    my $titleid        = ($query->param('titleid'    ))?$query->param('titleid'):'';
-    my $label          = ($query->param('label'      ))?$query->param('label'):'';
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
 
+    # CGI Args
+    my $scope          = $input_data_ref->{'scope'}; # defines sender, recipient via portal.yml
+    my $titleid        = $input_data_ref->{'titleid'};
+    my $label          = $input_data_ref->{'label'};
+    my $location       = $input_data_ref->{'location'};
+    
     $logger->debug("Dispatched to show_handset");
     
-    if (!$titleid || !$scope || !$label){
+    if (!$titleid || !$scope || !$label || !$location){
 	return $self->print_warning("Zuwenige Parameter übergeben");
     }
-
+    
     # Zentrale Ueberpruefung der Authentifizierung bereits in show_form
         
     my ($loginname,$password,$access_token) = $user->get_credentials();
@@ -225,7 +245,8 @@ sub show_handset {
     my $ttdata={
 	scope      => $scope,
 	userinfo   => $userinfo_ref,
-	label      => $label, # Signatur
+	location   => $location, # Standort = Zweigstelle / Abteilung
+	label      => $label,    # Signatur
 	record     => $record,
 	database   => $database,
     };
@@ -255,14 +276,77 @@ sub show_default {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
+
     # CGI Args
-    my $scope          = $query->param('scope'); # defines sender, recipient via portal.yml
-    my $titleid        = ($query->param('titleid'    ))?$query->param('titleid'):'';
-    my $label          = ($query->param('label'      ))?$query->param('label'):'';
+    my $scope          = $input_data_ref->{'scope'}; # defines sender, recipient via portal.yml
+    my $titleid        = $input_data_ref->{'titleid'};
+    my $label          = $input_data_ref->{'label'};
+    my $location       = $input_data_ref->{'location'};
 
     $logger->debug("Dispatched to show_default");
     
-    if (!$titleid || !$scope || !$label){
+    if (!$titleid || !$scope || !$label || !$location){
+	return $self->print_warning("Zuwenige Parameter übergeben");
+    }
+
+    # Zentrale Ueberpruefung der Authentifizierung bereits in show_form
+        
+    my ($loginname,$password,$access_token) = $user->get_credentials();
+    
+    my $record = new OpenBib::Record::Title({ database => $database, id => $titleid });
+    $record->load_brief_record;
+
+    my $userinfo_ref = $user->get_info($user->{ID});
+    
+    # TT-Data erzeugen
+    my $ttdata={
+	scope      => $scope,
+	userinfo   => $userinfo_ref,
+	location   => $location, # Standort = Zweigstelle / Abteilung
+	label      => $label,    # Signatur
+	record     => $record,
+	database   => $database,
+    };
+    
+    return $self->print_page($config->{tt_users_circulations_mail_default_tname},$ttdata);
+}
+
+sub show_kmb {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+    
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
+
+    # CGI Args
+    my $scope          = $input_data_ref->{'scope'}; # defines sender, recipient via portal.yml
+    my $titleid        = $input_data_ref->{'titleid'};
+    my $label          = $input_data_ref->{'label'};
+    my $location       = $input_data_ref->{'location'};
+
+    $logger->debug("Dispatched to show_handset");
+    
+    if (!$titleid || !$scope || !$label || !$location){
 	return $self->print_warning("Zuwenige Parameter übergeben");
     }
 
@@ -280,11 +364,12 @@ sub show_default {
 	scope      => $scope,
 	userinfo   => $userinfo_ref,
 	label      => $label, # Signatur
+	location   => $location, # Standort = Zweigstelle / Abteilung
 	record     => $record,
 	database   => $database,
     };
     
-    return $self->print_page($config->{tt_users_circulations_mail_default_tname},$ttdata);
+    return $self->print_page($config->{tt_users_circulations_mail_kmb_tname},$ttdata);
 }
 
 sub mail_handset {
@@ -309,16 +394,20 @@ sub mail_handset {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
     
-    # CGI Args
-    my $scope         = $query->param('scope'); # defines sender, recipient via portal.yml
-    my $titleid       = $query->param('titleid');
-    my $label         = $query->param('label');
-    my $receipt       = $query->param('receipt');
-    my $remark        = $query->param('remark');
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
 
+    # CGI Args
+    my $scope          = $input_data_ref->{'scope'}; # defines sender, recipient via portal.yml
+    my $titleid        = $input_data_ref->{'titleid'};
+    my $label          = $input_data_ref->{'label'};
+    my $location       = $input_data_ref->{'location'};
+    my $receipt        = $input_data_ref->{'receipt'};
+    my $remark         = $input_data_ref->{'remark'};
+    
     $logger->debug("Dispatched to show_handset");
     
-    if (!$titleid || !$label || !$scope){
+    if (!$titleid || !$label || !$scope || !$location){
 	return $self->print_warning("Zuwenige Parameter übergeben");
     }
 
@@ -357,6 +446,7 @@ sub mail_handset {
 	
 	scope       => $scope,
         label       => $label,
+	location    => $location, # Standort = Zweigstelle / Abteilung
 	email       => $accountemail,
 	loginname   => $accountname,
 	remark      => $remark,
@@ -409,6 +499,136 @@ sub mail_handset {
     return $self->print_page($config->{tt_users_circulations_mail_handset_mail_success_tname},$ttdata);
 }
 
+sub mail_kmb {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    # Dispatched Args
+    my $view           = $self->param('view')           || '';
+    my $database       = $self->param('database')       || '';
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+    
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
+
+    # CGI Args
+    my $scope          = $input_data_ref->{'scope'}; # defines sender, recipient via portal.yml
+    my $titleid        = $input_data_ref->{'titleid'};
+    my $label          = $input_data_ref->{'label'};
+    my $location       = $input_data_ref->{'location'};
+    # Kein Receipt, da unauthentifiziert!
+    my $remark         = $input_data_ref->{'remark'};
+    my $pickup_location= $input_data_ref->{'pickup_location'};
+    
+    $logger->debug("Dispatched to show_kmb");
+    
+    if (!$titleid || !$label || !$scope || !$location){
+	return $self->print_warning("Zuwenige Parameter übergeben");
+    }
+
+    # Zentrale Ueberpruefung der Authentifizierung bereits in show_form
+    
+    my ($accountname,$password,$access_token) = $user->get_credentials();
+
+    my $userinfo_ref = $user->get_info($user->{ID});
+
+    my $accountemail = $userinfo_ref->{email};
+    
+    # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
+    # die Session nicht authentifiziert ist
+        if (!defined $config->get('mail')->{scope}{$scope}) {
+        return $self->print_warning($msg->maketext("Eine Bestellung ist nicht moeglich."));
+    }
+
+    unless (Email::Valid->address($accountemail)) {
+        return $self->print_warning($msg->maketext("Sie verwenden eine ungültige Mailadresse."));
+    }	
+
+    my $current_date = strftime("%d.%m.%Y, %H:%M Uhr", localtime);
+    $current_date    =~ s!^\s!0!;
+
+    my $record = new OpenBib::Record::Title({ database => $database, id => $titleid });
+    $record->load_brief_record;
+
+    # TT-Data erzeugen
+    
+    my $ttdata={
+        view         => $view,
+	current_date => $current_date,
+
+	userinfo    => $userinfo_ref,
+	record      => $record,
+	database    => $database,
+	
+	scope       => $scope,
+        label       => $label,
+	location    => $location, # Standort = Zweigstelle / Abteilung
+	email       => $accountemail,
+	loginname   => $accountname,
+	remark      => $remark,
+	pickup_location => $pickup_location,	
+	
+        config      => $config,
+        user        => $user,
+        msg         => $msg,
+    };
+
+    my $anschreiben="";
+    my $afile = "an." . $$;
+
+    my $maintemplate = Template->new({
+        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+            INCLUDE_PATH   => $config->{tt_include_path},
+            ABSOLUTE       => 1,
+        }) ],
+        #        ABSOLUTE      => 1,
+        #        INCLUDE_PATH  => $config->{tt_include_path},
+        # Es ist wesentlich, dass OUTPUT* hier und nicht im
+        # Template::Provider definiert wird
+        RECURSION      => 1,
+        OUTPUT_PATH   => '/tmp',
+        OUTPUT        => $afile,
+    });
+
+    $maintemplate->process($config->{tt_users_circulations_mail_kmb_mail_body_tname}, $ttdata ) || do { 
+        $logger->error($maintemplate->error());
+        $self->header_add('Status',400); # server error
+        return;
+    };
+
+    my $mail_to = $config->{mail}{scope}{$scope}{recipient};
+    
+    # Fuer Tests erstmal deaktiviert...
+    # if ($receipt){
+    # 	$mail_to.=",$accountemail";
+    # }
+    
+    my $anschfile="/tmp/" . $afile;
+
+    Email::Stuffer->to($mail_to)
+	->from($config->{mail}{scope}{$scope}{sender})
+	->subject("$scope: Bestellung in den Lesesaal der KMB")
+	->text_body(read_binary($anschfile))
+	->send;
+    
+    unlink $anschfile;
+    
+    return $self->print_page($config->{tt_users_circulations_mail_kmb_mail_success_tname},$ttdata);
+}
+
 sub mail_default {
     my $self = shift;
 
@@ -431,17 +651,21 @@ sub mail_default {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
     
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
+
     # CGI Args
-    my $scope         = $query->param('scope'); # defines sender, recipient via portal.yml
-    my $titleid       = $query->param('titleid');
-    my $label         = $query->param('label');
-    my $receipt       = $query->param('receipt');
-    my $remark        = $query->param('remark');
-    my $period        = $query->param('period');
+    my $scope          = $input_data_ref->{'scope'}; # defines sender, recipient via portal.yml
+    my $titleid        = $input_data_ref->{'titleid'};
+    my $label          = $input_data_ref->{'label'};
+    my $location       = $input_data_ref->{'location'};
+    my $receipt        = $input_data_ref->{'receipt'};
+    my $remark         = $input_data_ref->{'remark'};
+    my $period         = $input_data_ref->{'period'};
 
     $logger->debug("Dispatched to show_default");
     
-    if (!$titleid || !$label || !$scope){
+    if (!$titleid || !$label || !$scope || !$location){
 	return $self->print_warning("Zuwenige Parameter übergeben");
     }
 
@@ -480,6 +704,7 @@ sub mail_default {
 	
 	scope       => $scope,
         label       => $label,
+	location    => $location, # Standort = Zweigstelle / Abteilung
 	email       => $accountemail,
 	loginname   => $accountname,
 	remark      => $remark,
@@ -532,6 +757,59 @@ sub mail_default {
     
     return $self->print_page($config->{tt_users_circulations_mail_default_mail_success_tname},$ttdata);
 }
+
+sub get_input_definition {
+    my $self=shift;
+    
+    return {
+        titleid => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        label => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        location => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        email => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        scope => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        receipt => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        remark => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        period => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        pickup_location => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+    };
+}
+
 
 1;
 __END__

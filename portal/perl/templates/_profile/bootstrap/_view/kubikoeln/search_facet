@@ -5,6 +5,7 @@
 [% IF qopts.get_option('sb') == "eds" || searchprofileid_of_eds == searchquery.get_searchprofile || ( qopts.get_option('sb') == "xapian" && hits <= config.get('xapian_option').maxmatch ) ;
 
       location_is_allowed = {
+         'DE-38' = 1
          'DE-Kn3' = 1
          'DE-38-428' = 1
          'DE-38-445' = 1

@@ -746,8 +746,8 @@ sub can_access_view {
     # Standardmaessig darf jeder Nutzer jeden View verwenden
     my $user_shall_access = 1;
 
-    my $restrict_intranet = $viewinfo->restrict_intranet;
-    my $force_login       = $viewinfo->force_login;
+    my $restrict_intranet = ($viewinfo)?$viewinfo->restrict_intranet:0;
+    my $force_login       = ($viewinfo)?$viewinfo->force_login:0;
     
     # IP-Eingrenzung?
     if ($viewinfo && $restrict_intranet){

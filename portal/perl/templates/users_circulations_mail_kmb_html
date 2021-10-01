@@ -51,10 +51,10 @@
 
   hide_pickup = "";
   
-  IF location.match("/ (Fotobib|MAKK)") ;
+  IF title_location.match('/ (Fotobib|MAKK)') ;
     hide_pickup = "LUDWIG";
-  ELSIF location.match("/ KMB$") ;
-    IF label.match("KMB/(K|YA|YG)") ;
+  ELSIF title_location.match('/ KMB$') ;
+    IF label.match('KMB/(K|YA|YG)') ;
       hide_pickup = "KUNST";
     END;
   END;
@@ -72,7 +72,7 @@ Sie werden über den Eingang der Bestellung nicht gesondert benachrichtigt.
  <form  method="POST" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/mail/kmb">
  
      <input type="hidden" name="scope"       value="[% scope %]" />
-     <input type="hidden" name="location"    value="[% location %]" />
+     <input type="hidden" name="location"    value="[% title_location %]" />
 
 <legend class="mt-2">[% msg.maketext("Titelangaben") %]</legend>
 
@@ -182,6 +182,8 @@ Sie werden über den Eingang der Bestellung nicht gesondert benachrichtigt.
       <label class="form-check-label" for="pickup_location">Lesesaal im Museum für angewandte Kunst</label>
 </div>
 [% END %]
+
+<p/>
 
 <div class="form-group">
       <label class="form-group-text" for="remark">[% msg.maketext("Bemerkung") %]:</label>

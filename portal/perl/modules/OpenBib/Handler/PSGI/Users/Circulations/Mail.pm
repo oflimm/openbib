@@ -247,7 +247,7 @@ sub show_handset {
     my $ttdata={
 	scope      => $scope,
 	userinfo   => $userinfo_ref,
-	location   => $location, # Standort = Zweigstelle / Abteilung
+	title_location   => $location, # Standort = Zweigstelle / Abteilung
 	label      => $label,    # Signatur
 	record     => $record,
 	database   => $database,
@@ -306,7 +306,7 @@ sub show_default {
     my $ttdata={
 	scope      => $scope,
 	userinfo   => $userinfo_ref,
-	location   => $location, # Standort = Zweigstelle / Abteilung
+	title_location   => $location, # Standort = Zweigstelle / Abteilung
 	label      => $label,    # Signatur
 	record     => $record,
 	database   => $database,
@@ -366,7 +366,7 @@ sub show_kmb {
 	scope      => $scope,
 	userinfo   => $userinfo_ref,
 	label      => $label, # Signatur
-	location   => $location, # Standort = Zweigstelle / Abteilung
+	title_location   => $location, # Standort = Zweigstelle / Abteilung
 	record     => $record,
 	database   => $database,
     };
@@ -425,7 +425,7 @@ sub show_kmbcopy {
 	scope      => $scope,
 	userinfo   => $userinfo_ref,
 	label      => $label, # Signatur
-	location   => $location, # Standort = Zweigstelle / Abteilung
+	title_location   => $location, # Standort = Zweigstelle / Abteilung
 	record     => $record,
 	database   => $database,
     };
@@ -507,7 +507,7 @@ sub mail_handset {
 	
 	scope       => $scope,
         label       => $label,
-	location    => $location, # Standort = Zweigstelle / Abteilung
+	title_location    => $location, # Standort = Zweigstelle / Abteilung
 	email       => $accountemail,
 	loginname   => $accountname,
 	remark      => $remark,
@@ -631,7 +631,7 @@ sub mail_kmb {
 	
 	scope       => $scope,
         label       => $label,
-	location    => $location, # Standort = Zweigstelle / Abteilung
+	title_location    => $location, # Standort = Zweigstelle / Abteilung
 	email       => $email,
 	username    => $username,
 	remark      => $remark,
@@ -956,7 +956,7 @@ sub mail_default {
 	
 	scope       => $scope,
         label       => $label,
-	location    => $location, # Standort = Zweigstelle / Abteilung
+	title_location    => $location, # Standort = Zweigstelle / Abteilung
 	email       => $accountemail,
 	loginname   => $accountname,
 	remark      => $remark,

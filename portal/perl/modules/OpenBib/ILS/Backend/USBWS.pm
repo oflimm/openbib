@@ -1218,7 +1218,6 @@ sub get_mediastatus {
 	return $response_ref;
     }
     
-    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->new;
     my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
     my $locinfotable  = OpenBib::Config::LocationInfoTable->new;
 
@@ -1308,21 +1307,8 @@ sub get_mediastatus {
 		
 		$logger->debug(YAML::Dump($circ_ref));
 		
-		my $zweigabteil = $circ_ref->{'ZweigAbteil'};
+		$circ_ref->{'ZweigAbteil'} = $self->resolve_msg($circ_ref->{'ZweigAbteil'});
 		
-		$logger->debug("Matching $zweigabteil");
-		if ($zweigabteil=~m/^\$msg\{USB-KUG-Locations,(.+?)\}/){
-		    my $isil=$1;
-		    
-		    my $zweigname = $locinfotable->get('identifier')->{$isil}{description};
-		    $logger->debug("Found $zweigname");
-		    
-		    $circ_ref->{'ZweigAbteil'} =~s/^\$msg\{USB-KUG-Locations,.+?\}/$zweigname/;		    		    		    
-		}
-		else {
-		    $logger->debug("No match");
-		}
-
 		# Umwandeln
 		my $item_ref = {};
 
@@ -2067,6 +2053,111 @@ sub send_account_request {
     }
     
     return $response_ref;
+}
+
+sub resolve_msg {
+    my ($self,$content) = @_;
+
+    # Hintergrund: In den USBWS werden Inhalte ueber externe Message-Kataloge definiert, auf die wir hier keinen Zugriff haben.
+    # Daher werden die benoetigten und beisher fehlende Eintraege unter $dictionary_ref definiert. Einige Message-Kataloge werden wiederum
+    # von der KUG Infrastruktur als Instutskatalognamen oder ISIL-Bezeichnungen aufgebaut, so dass versucht wird diese Meldungen hier
+    # zu erkennen und dann direkt aus der Infrastruktur zu befuellen.
+    #
+    # Beispielinhalte der USBWS: '$msg{USB-KUG,kmb} / MAKK' bzw. '$msg{USB-KUG-LOCATIONS,DE-38-102}'
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $dictionary_ref = {
+	'USB-KUG' => {
+	    'stdorte_url' => '/lernen_arbeiten/lernen/standorte/',
+		'sab_url'     => '/lernen_arbeiten/lernen/standorte/sofortausleihbereich/',
+		'magazin_url' => '/lernen_arbeiten/lernen/standorte/magazin/',
+		'ls_url'      => '/lernen_arbeiten/lernen/standorte/lesesaele/',
+		'lbs_url'     => '/lernen_arbeiten/lernen/standorte/lbs/',
+		'gruppen_url' => '/lernen_arbeiten/lernen/standorte/gruppenarbeitsplaetze/',
+		'fbv_url'     => '/lernen_arbeiten/bibliotheken/38_123/',
+		'lshis_url'   => '/lernen_arbeiten/lernen/standorte/lshist/',
+		'instHWA_url' => '/lernen_arbeiten/lernen/standorte/lesesaal_humanwissenschaft/index_ger.html',
+		'hwamag_url'  => '/lernen_arbeiten/lernen/standorte/magazinausleihe_hwa/',
+		'hwalshp_url' => '/lernen_arbeiten/lernen/standorte/lesesaal_heilpaedagogik/',
+		'hwalbs_url'  => '/lernen_arbeiten/lernen/standorte/lehrbuchsammlung_humanwissenschaft/',
+		'hwalshw_url' => '/lernen_arbeiten/lernen/standorte/lesesaal_humanwissenschaft/',
+		'kmb'         => 'Kunst- und Museumsbibliothek Köln',
+		'kmb_url'     => 'https://www.museenkoeln.de/kunst-und-museumsbibliothek',
+		'kmbmakk'     => 'Museum für Angewandte Kunst Köln',
+		'kmbmakk_url' => 'https://museenkoeln.de/museum-fuer-angewandte-kunst/Grafik-und-Plakat',
+		'kmbdsl'      => 'Performance-Archiv „Die Schwarze Lade“',
+		'kmbdsl_url'  => 'http://www.blackkit.org/',
+		'kmbwrm'      => 'WRM / Graphische Sammlung',
+		'kmbwrm_url'  => 'https://www.wallraf.museum/sammlungen/graphische-sammlung/vorlageservice/',
+		'inst101_url' => '/lernen_arbeiten/bibliotheken/38_101/',
+		'inst102_url' => '/lernen_arbeiten/bibliotheken/38_102/',
+		'inst106_url' => '/lernen_arbeiten/bibliotheken/38_106/',
+		'inst307_url' => '/lernen_arbeiten/lernen/standorte/lesesaal_heilpaedagogik/',
+	},
+	
+    };
+    
+    my $locinfotable  = OpenBib::Config::LocationInfoTable->new;
+    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->new;
+
+    if ($content=~m/^\$msg\{USB-KUG-Locations,(.+?)\}/){
+	my $isil=$1;
+	
+	my $zweigname = $locinfotable->get('identifier')->{$isil}{description};
+	$logger->debug("Found $zweigname");
+	
+	$content =~s/^\$msg\{USB-KUG-Locations,.+?\}/$zweigname/;		    		    		    
+    }    
+    elsif ($content =~m/\$msg\{([^,]+),(.+?)}/){
+	my $dictionary = $1;
+	my $term       = $2;
+
+	if ($logger->is_debug){
+	    $logger->debug("Dict: $dictionary - Term: $term");
+	}
+
+	if (defined $dictionary_ref->{$dictionary} && defined $dictionary_ref->{$dictionary}{$term}){
+	    my $newterm = $dictionary_ref->{$dictionary}{$term};
+	    $content =~s/^\$msg\{[^,]+,.+?\}/$newterm/;
+
+	    if ($logger->is_debug){
+		$logger->debug("Found $newterm and changed to $content");
+	    }
+
+	}
+	elsif ($dictionary eq "USB-KUG"){
+	    # Kein URL
+	    if (! $term =~m/_url/){
+		my $dbname = $dbinfotable->get('dbnames')->{$term};
+
+		if ($dbname){
+		    $content =~s/^\$msg\{[^,]+,.+?\}/$dbname/;
+		    
+		    if ($logger->is_debug){
+			$logger->debug("Found $dbname and changed to $content");
+		    }
+		}
+	    }
+	    elsif ($term =~m/^(.+?)_url/){
+		my $dbname = $1;
+		
+		my $url = $dbinfotable->get('urls')->{$dbname};
+
+		if ($url){
+		    $content =~s/^\$msg\{[^,]+,.+?\}/$url/;
+		    
+		    if ($logger->is_debug){
+			$logger->debug("Found $url and changed to $content");
+		    }
+		}
+		
+	    }	    
+	}	
+    }
+    
+    return $content;
 }
 
 # Definition der USBWS:

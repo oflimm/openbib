@@ -172,7 +172,7 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
 [%    bestellscheinparts = availability_info.match('^.* (\(.*\))'); %]
 <br/><em>Bitte füllen Sie einen konventionellen Bestellschein aus</em><br/>[% bestellscheinparts.first %]<br/>
 [%    IF config.get('active_ils') %]
-&nbsp;<a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/mail/default?l=[% lang %];titleid=[% record.id %];dbname=[% record.database %];scope=usb">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
+&nbsp;<a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/mail/default?l=[% lang %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];location=[% standort |uri %];scope=usb">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
 [%    END %]
 [%############### HANDAPPARAT ################# %]
 [% ELSIF standort.match('Handapp.') %]
@@ -193,7 +193,7 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
 	  scope = "usb";
 	END;
 %]
-&nbsp;<a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/mail/handset.html?l=[% lang %];titleid=[% record.id %];dbname=[% record.database %];label=[% uri_escape(thiscirculation.location_mark) %];scope=[% scope %]">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
+&nbsp;<a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/mail/handset.html?l=[% lang %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];location=[% standort |uri %];scope=[% scope %]">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
 [%    END %]
 [%   ELSE %]
 [% availability_info %]

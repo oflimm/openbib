@@ -1,0 +1,287 @@
+[%-
+
+  fields = record.get_fields;
+
+  title     = fields.${"T0331"}.first.content;
+
+  persons   = [];
+  FOREACH thisfield IN ['P0100','P0101','P0102','P0103'];
+    IF fields.${thisfield}.defined;
+      persons.push(fields.${thisfield}.first.content);  
+    END;
+  END;
+  person = persons.join(' ; ');
+
+  corporatebodies   = [];
+  FOREACH thisfield IN ['C0200','C0201'];
+    IF fields.${thisfield}.defined;
+      corporatebodies.push(fields.${thisfield}.first.content);  
+    END;
+  END;
+  corporatebody = corporatebodies.join(' ; ');
+
+  publisher = fields.${"T0412"}.first.content;
+
+  year      = fields.${"T0425"}.first.content;
+  IF fields.${"T0424"}.defined;
+    year      = fields.${"T0424"}.first.content;  
+  END;
+
+  super = "";
+  # 1. Ueberordnung?
+  IF fields.${'T5005'}.first.content;
+     super = from_json(fields.${'T5005'}.first.content);
+  END;
+
+  source    = "";
+  IF fields.${"T0451"}.defined;
+    source  = fields.${"T0451"}.first.content;  
+  ELSIF fields.${"T0508"}.defined;
+    source  = fields.${"T0508"}.first.content;  
+  ELSIF fields.${"T0590"}.defined;
+    source  = fields.${"T0590"}.first.content;
+  ELSIF super ;
+     super_title = super.fields.${'0451'}.first.content;
+     IF super.fields.${'0331'} ;
+        source   = super.fields.${'0331'}.first.content;
+     END ;
+  END;
+
+  titleid   = record.id;
+  
+-%]
+
+ <div id="kmbcopy_agb" class="accordion">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <a class="card-link" href="#collapseOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+          [% msg.maketext("Allgemeine Geschäftsbedingungen") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#kmbcopy_agb">
+      <div class="card-body">
+        <h4>Bestellung</h4>
+
+	<p>Es können Papierkopien von Aufsätzen oder einzelnen Kapiteln aus monographischen Werken bestellt werden, sofern die Bestellung einen gewissen Umfang nicht überschreitet (max. 25 Seiten oder 15 Prozent des Gesamtwerks).</p><p>Die Bestellungen werden im bitonalen oder Graustufen-Modus (16 oder 256 Graustufen) in der Regel mit einer Auflösung von 300 dpi gescannt.<br/>Sie erhalten einen Ausdruck des gescannten Dokuments per Briefpost zugeschickt.</p>
+	
+        <p>Die Angabe sowohl einer postalischen als auch einer E-Mail-Adresse ist zwingend. Ebenso notwendig ist die wahrheitsgemässe Zuordnung zu einer der vier Kundengruppen. Wir behalten uns vor, die Richtigkeit Ihrer Angaben zu überprüfen.</p><h4>Preise</h4><p>Bestellung bis 20 Seiten: 5,50 Euro zzgl. Porto<br/>Jede weitere Seite: 0,20 Euro</p><p>Ansonsten gelten die Bestimmungen des Gesetzes über Urheberrecht und verwandte Schutzrechte.</p>
+        <h4>Lieferung und Bezahlung</h4><p>Ihre Bestellung wird von uns in der Regel innerhalb von drei Werktagen bearbeitet. Nach der Lieferung erhalten Sie von uns per E-Mail eine Rechnung über das von Ihnen zu entrichtende Entgelt. Sollten Sie zwingend eine postalische Rechnungszustellung wünschen, müssen Sie dies im Feld "Bemerkung zur Bestellung" vermerken. Hier muss ebenfalls eine Rechnungsadresse eingegeben werden, sofern diese von der angegebenen postalischen Adresse abweicht. Bei Postversand der Rechnung wird zusätzlich das Briefporto in Rechnung gestellt. Sie können die Rechnung nur per Überweisung begleichen. Andere Zahlungsarten sind leider nicht möglich. Bitte überweisen Sie das Entgelt mit folgenden Angaben:</p>
+        <p>[% config.get('kmb_bankverbindung_html') %]</p><p>Bitte beachten Sie, dass eventuelle Bankgebühren vom Besteller zu entrichten und zusammen mit dem Gesamtbetrag der Rechnung zu überweisen sind.</p>
+      </div>
+    </div>
+  </div>
+ </div>
+
+ <form  method="POST" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/mail/kmbcopy">
+ 
+     <input type="hidden" name="scope"       value="[% scope %]" />
+     <input type="hidden" name="location"    value="[% location %]" />
+
+<legend class="mt-2">[% msg.maketext("Titelangaben") %]</legend>
+
+<div class="form-group">
+      <label for="title">Titel</label>
+      <span class="form-control">[% title %]</span>
+      <input type="hidden" name="titleid" value="[% titleid %]" />
+</div>
+
+[% IF person %]
+<div class="form-group">
+      <label for="person">[% msg.maketext("Verfasser") %]:</label>
+      <span class="form-control">[% person %]</span>
+</div>
+[% END %]
+
+[% IF corporatebody %]
+<div class="form-group">
+      <label for="corporatation">[% msg.maketext("Körperschaft") %]:</label>
+      <span class="form-control">[% corporatebody %]</span>
+</div>
+[% END %]
+
+[% IF publisher %]
+<div class="form-group">
+      <label for="publisher">[% msg.maketext("Verlag") %]:</label>
+      <span class="form-control">[% publisher %]</span>
+</div>
+[% END %]
+
+[%
+     signatur = "";
+     IF label ;
+       signatur = label ;
+     ELSE ;
+       signatur = holdingid ;
+     END;
+%]
+
+<div class="form-group">
+      <label for="location_mark">[% msg.maketext("Signatur") %]:</label>
+      <span class="form-control">[% signatur %]</span>
+      <input type="hidden" name="label" value="[% uri_escape(signatur) %]" />
+</div>
+
+<div class="form-group">
+      <label for="location_mark">[% msg.maketext("In") %]:</label>
+      <span class="form-control">[% source %]</span>
+      <input type="hidden" name="label" value="[% uri_escape(source) %]" />
+</div>
+
+[% IF numbering %]
+<div class="form-group">
+     <label for="numbering">[% msg.maketext("Bestand in der KMB") %]:</label>
+      <span class="form-control">[% numbering %]</span>
+      <input type="hidden" name="numbering" value="[% uri_escape(numbering) %]" />
+</div>
+[% END %]
+
+<p>Mit * gekennzeichnete Felder sind Pflichtfelder</p>
+
+[% is_zeitschrift = fields.${"T0405"}.first.content # hat Erscheinungsverlauf %]
+[% IF is_zeitschrift %]
+<div class="form-group">
+      <label for="articleauthor">[% msg.maketext("Artikelautor") %] (*):</label>
+      <input class="form-control" type="text" name="articleauthor" value="" />
+</div>
+
+<div class="form-group">
+      <label for="articletitle">[% msg.maketext("Artikeltitel") %] (*):</label>
+      <input class="form-control" type="text" name="articletitle" value="" />
+</div>
+
+<div class="form-group">
+      <label for="volume">[% msg.maketext("Band") %] (*):</label>
+      <input class="form-control" type="text" name="volume" value="" />
+</div>
+
+<div class="form-group">
+      <label for="issue">[% msg.maketext("Heft") %]:</label>
+      <input class="form-control" type="text" name="issue" value="" />
+</div>
+<div class="form-group">
+      <label for="year">[% msg.maketext("Jahrgang") %] (*):</label>
+      <input class="form-control" type="text" name="year" value="" />
+</div>
+<div class="form-group">
+      <label for="pages">[% msg.maketext("Seitenangaben") %] (*):</label>
+      <input class="form-control" type="text" name="pages" value="" />
+</div>
+[% ELSE # Monographie %]
+
+[%   IF year %]
+<div class="form-group">
+      <label for="year">[% msg.maketext("Erscheinungsjahr") %]:</label>
+      <span class="form-control">[% year %]</span>
+      <input type="hidden" name="year" value="[% uri_escape(year) %]" />
+</div>
+[%   END %]
+
+<div class="form-group">
+      <label for="pages">[% msg.maketext("Seitenangaben") %] (*):</label>
+      <input class="form-control" type="text" name="pages" value="" />
+</div>
+
+<div class="form-group">
+      <label for="articleauthor">[% msg.maketext("Artikelautor") %]:</label>
+      <input class="form-control" type="text" name="articleauthor" value="" />
+</div>
+
+<div class="form-group">
+      <label for="articletitle">[% msg.maketext("Artikeltitel") %]:</label>
+      <input class="form-control" type="text" name="articletitle" value="" />
+</div>
+
+<div class="form-group">
+      <label for="volume">[% msg.maketext("Band") %]:</label>
+      <input class="form-control" type="text" name="volume" value="" />
+</div>
+[% END %]
+
+<legend class="mt-2">[% msg.maketext("Weitere Angaben zur Bestellung") %]</legend>
+
+<div class="form-group">
+      <label for="username">[% msg.maketext("Nutzername") %] (*):</label>
+      <input class="form-control" type="text" name="username" value="" />
+</div>
+
+<legend class="mt-2">[% msg.maketext("Lieferart") %] (*)</legend>
+
+<!-- 
+<div class="form-check">
+      <input class="form-check-input" type="radio" name="shipment" value="E-Mail"/>
+      <label class="form-check-label" for="shipment">E-Mail</label>
+</div>
+-->
+
+<div class="form-check">
+      <input class="form-check-input" type="radio" name="shipment" value="Post" checked/>
+      <label class="form-check-label" for="shipment">Post</label>
+</div>
+
+<p/>
+
+<div class="form-group">
+      <label for="address">[% msg.maketext("Liefer- und Rechnungsadresse") %] (*):</label>
+      <input class="form-control" type="text" name="address" value="" />
+</div>
+
+
+<div class="form-group">
+      <label for="email">[% msg.maketext("E-Mail") %] (*):</label>
+      <input class="form-control" type="text" name="email" value="" />
+</div>
+
+<div class="form-group">
+      <label class="form-group-text" for="remark">[% msg.maketext("Bemerkung") %]:</label>
+      <textarea class="form-control" type="text" name="remark" placeholder="[% msg.maketext("Geben Sie hier bitte ggf. Bemerkungen zu Ihrer Bestellung ein") %]" value="" maxlength="120" size="37" ></textarea>
+</div>
+
+<legend class="mt-2">[% msg.maketext("Kundengruppe") %] (*)</legend>
+
+<div class="form-check">
+      <input class="form-check-input" type="radio" name="customergroup" value="1" checked/>
+      <label class="form-check-label" for="customergroup">Kundengruppe 1</label>
+      Angehörige und Mitarbeiter von Hochschulen (außer Studierende), von überwiegend aus öffentlichen Mitteln finanzierten Wissenschafts- und Forschungseinrichtungen und von juristischen Personen des öffentlichen Rechts, jeweils einschließlich ihrer Mitglieder
+</div>
+
+<div class="form-check">
+      <input class="form-check-input" type="radio" name="customergroup" value="1a" />
+      <label class="form-check-label" for="customergroup">Kundengruppe 1a</label>
+      Schüler, Auszubildende, Studierende
+</div>
+
+<div class="form-check">
+      <input class="form-check-input" type="radio" name="customergroup" value="2" />
+      <label class="form-check-label" for="customergroup">Kundengruppe 2</label>
+      Privatpersonen
+</div>
+
+<div class="form-check">
+      <input class="form-check-input" type="radio" name="customergroup" value="3" />
+      <label class="form-check-label" for="customergroup">Kundengruppe 3</label>
+      Alle Personen, die nicht den Kundengruppen 1 bis 2 angehören, einschließlich gewerbliche Unternehmen und Personen, die in deren Namen bzw. Interesse handeln
+</div>
+
+<p>
+Standardmäßig erfolgt der Versand der Rechnung per E-Mail. Wenn Sie den Versand der Rechnung per Post wünschen, tragen Sie dies bitte im Bemerkungsfeld ein. Bei Postversand der Rechnung wird das Porto für den Rechnungsbrief in Rechnung gestellt.
+</p>
+
+<p>
+Die fälligen Entgelte sind unmittelbar nach Eingang der Rechnung zu überweisen.
+</p>
+
+<legend class="mt-2">[% msg.maketext("Einverständniserklärung") %] (*)</legend>
+<div class="form-check">
+
+      <input class="form-check-input" type="checkbox" name="confirm"/>
+      <label class="form-check-label" for="confirm">[% msg.maketext("Ja, Ich akzeptiere die Allgemeinen Geschäftsbedingungen für den KMB-Dokumentlieferdienst") %]</label>
+</div>
+
+
+<button type="submit" class="btn btn-primary mb-2 mt-4">[% msg.maketext("Auswahl") %]</button>
+
+</form>
+

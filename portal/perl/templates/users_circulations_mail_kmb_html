@@ -64,7 +64,12 @@
 <div class="card mt-5 mb-5 mr-5">
 <div class="card-header">[% msg.maketext("Bestellung in den Lesesaal der KMB") %]</div>
 <div class="card-body">
- <form  method="POST" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/mail/handset">
+
+Bitte füllen Sie das Bestellformular vollständig aus. Ihr Bestellwunsch wird per E-Mail an unsere Benutzungsabteilung übermittelt und liegt in der Regel innerhalb von 3 Werktagen 14 Tage lang für Sie bereit.
+
+Sie werden über den Eingang der Bestellung nicht gesondert benachrichtigt.
+
+ <form  method="POST" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/mail/kmb">
  
      <input type="hidden" name="scope"       value="[% scope %]" />
      <input type="hidden" name="location"    value="[% location %]" />
@@ -153,26 +158,16 @@
 
 <legend class="mt-2">[% msg.maketext("Weitere Angaben zur Bestellung") %]</legend>
 
-<div class="form-group">
-     <label for="loginname">[% msg.maketext("Nutzer-Kennung") %]:</label>
-      <span class="form-control">[% username %]</span>
-      <input type="hidden" name="loginname" value="[% username %]" />
-</div>
+<p>Mit * gekennzeichnete Felder sind Pflichtfelder und müssen ausgefüllt werden.</p>
 
 <div class="form-group">
-      <label for="username">[% msg.maketext("Name") %]:</label>
-      <span class="form-control">[% name %]</span>
-      <input type="hidden" name="username" value="[% name %]" />
-</div>
-
-<div class="form-group">
-      <label class="form-group-text" for="remark">[% msg.maketext("Bemerkung") %]:</label>
-      <textarea class="form-control" type="text" name="remark" placeholder="[% msg.maketext("Geben Sie hier bitte ggf. Bemerkungen zu Ihrer Bestellung ein") %]" value="" maxlength="120" size="37" ></textarea>
+     <label for="username">[% msg.maketext("Name, Vorname") %] (*):</label>
+      <input class="form-control" type="text" name="loginname" value="" />
 </div>
 
 <p/>
 
-<legend class="mt-2">[% msg.maketext("Abholort") %]</legend>
+<legend class="mt-2">[% msg.maketext("Bereitstellungsort") %]</legend>
 
 [% IF hide_pickup != "LUDWIG" %]
 <div class="form-check">
@@ -189,8 +184,13 @@
 [% END %]
 
 <div class="form-group">
+      <label class="form-group-text" for="remark">[% msg.maketext("Bemerkung") %]:</label>
+      <textarea class="form-control" type="text" name="remark" placeholder="[% msg.maketext("Geben Sie hier bitte ggf. Bemerkungen zu Ihrer Bestellung ein") %]" value="" maxlength="120" size="37" ></textarea>
+</div>
+
+<div class="form-group">
       <label for="email">[% msg.maketext("E-Mail") %]:</label>
-      <span class="form-control">[% userinfo.email %]</span>
+      <input class="form-control" type="text" name="email" value="" />
 </div>
 
 <button type="submit" class="btn btn-primary mb-2 mt-4">[% msg.maketext("Auswahl") %]</button>

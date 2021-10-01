@@ -365,6 +365,20 @@ Präsenzbestand
 [%   END %]
 [% END %]
 [%############### ENDE MEDIENSTATUSAKTIONEN ######### %]
+
+[%############### ANFANG KMB,CAMPUSLIEFERDIENST,ILLIAS ######### %]
+
+[%############### ANFANG KMB ######### %]
+[% IF thiscirculation.department_id == '20' #KMB: Bestellbutton mit Sprung ins KuBi-Portal bzw. zur Bestellmaske, z.B. ID=inst001:7140497 %]
+[%   IF NOT standort.match('(Museum für Angewandte Kunst|Graphische Sammlung|Schwarze Lade)') # Bestellfunktionen fuer KMB-Bestand im MAKK, WRM (Graphische Sammlung) und DSL unterdruecken %]
+[%#     IF config.get('active_ils') %]
+<p><a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/mail/kmb.html?l=[% lang %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];location=[% standort |uri %];scope=kmb">[% msg.maketext("In den Lesesaal bestellen") %]</a></p> 
+[%#     END %]
+[%   END %]
+[% END %]
+[%############### ENDE KMB ######### %]
+
+[%############### ENDE KMB,CAMPUSLIEFERDIENST,ILLIAS ######### %]
 </td>
 </tr>
 [% END %]

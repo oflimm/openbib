@@ -60,7 +60,7 @@
    END;
 
 -%]
-*** E-Mail-Bestellung (Handapp.) vom [% current_date %] ***
+*** Bestellung in den [% pickup_location %] vom [% current_date %] ***
 
    Signatur: [% label %]
    

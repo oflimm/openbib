@@ -73,7 +73,7 @@
          In: [% source %]
     
      Katkey: [% titleid %]
-        URL: https://www.ub.uni-koeln.de/usbportal?query=USB:[% titleid %]
+        URL: https://www.kubi-koeln.de/portal?query=inst001:[% titleid %]
 	
 Bemerkungen: [% remark %]
 

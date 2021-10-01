@@ -490,7 +490,7 @@ sub mail_handset {
 
     Email::Stuffer->to($mail_to)
 	->from($config->{mail}{scope}{$scope}{sender})
-	->subject("$scope: Bestellung aus Handapparat per Mail")
+	->subject("Bestellung aus Handapparat per Mail ($scope)")
 	->text_body(read_binary($anschfile))
 	->send;
     
@@ -618,9 +618,13 @@ sub mail_kmb {
     
     my $anschfile="/tmp/" . $afile;
 
+    # $pickup_location =~ s!f\xC3\xBCr!=?ISO-8859-15?Q?f=FCr?=!;
+    
     Email::Stuffer->to($mail_to)
-	->from($config->{mail}{scope}{$scope}{sender})
-	->subject("$scope: Bestellung in den Lesesaal der KMB")
+	->from("no-reply\@ub.uni-koeln.de")
+	->reply_to($config->{mail}{scope}{$scope}{sender})
+	->header("Content-Type" => 'text/plain; charset="utf-8"')
+	->subject("KMB-Bestellung: $pickup_location ($scope)")
 	->text_body(read_binary($anschfile))
 	->send;
     
@@ -749,7 +753,7 @@ sub mail_default {
 
     Email::Stuffer->to($mail_to)
 	->from($config->{mail}{scope}{$scope}{sender})
-	->subject("$scope: Bestellung per Mail")
+	->subject("Bestellung per Mail ($scope)")
 	->text_body(read_binary($anschfile))
 	->send;
     

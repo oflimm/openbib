@@ -14,10 +14,14 @@
 
 <div class="jumbotron mt-3">
 
-<h1 class="display-4">[% msg.maketext("Die Bestellung wurde erfolgreich übertragen, aber erscheint nicht in Ihrem Konto.") %]</h1>
+<h1 class="display-4">[% msg.maketext("Ihr Bestellwunsch wurde an unsere Benutzungsabteilung übermittelt und liegt in der Regel innerhalb von 3 Arbeitstagen 14 Tage lang für Sie bereit.") %]</h1>
 
 <p class="lead">
-[% msg.maketext("Wir melden uns in den nächsten Tagen per E-Mail bei Ihnen.") %]
+[% msg.maketext("Sie werden über den Eingang der Bestellung <strong>nicht</strong> gesondert benachrichtigt.") %]
+</p>
+
+<p class="lead">
+[% msg.maketext("Bei Rückfragen wenden Sie sich bitte an <a href=\"mailto:kmb@stadt-koeln.de\">kmb@stadt-koeln.de</a>.") %]
 </p>
 
 <p class="lead">

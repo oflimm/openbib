@@ -374,6 +374,10 @@ Präsenzbestand
 [%#     IF config.get('active_ils') %]
 <br/><span style="color: red"> Die Nutzung der Lesesäle ist momentan nur nach Terminvereinbarung möglich.</span>
 <p><a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/mail/kmb.html?l=[% lang %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];location=[% standort |uri %];scope=kmb">[% msg.maketext("In den Lesesaal bestellen") %]</a></p> 
+<p>
+<b>KMB-Dokumentlieferdienst:</b><br/>
+<a href="https://www.subito-doc.de/" target="_blank">Aufsatzbestellung</a>
+</p>
 [%#     END %]
 [%   END %]
 [% END %]

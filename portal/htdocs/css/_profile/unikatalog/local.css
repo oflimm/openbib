@@ -158,7 +158,13 @@
     }
 
     #ob-startpage #ob-maincontent {
+	padding-top: 0px;
 	padding-left: 0px;
+	padding-right: 0px;
+    }
+
+    #ob-startpage #ob-maincontent .jumbotron {
+	margin-top: 0px;
     }
     
     .ob-nav_description a, .ob-nav_description a:hover {

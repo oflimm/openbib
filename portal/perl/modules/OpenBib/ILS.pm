@@ -70,6 +70,206 @@ sub new {
     return $self;
 }
 
+# Gemeinsame Dienstmethoden fuer alle Backends (Campuslieferdienst, Elektronischer Semesterapparat
+
+sub make_campus_order {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $title            = exists $arg_ref->{title}
+        ? $arg_ref->{title}           : undef;
+    
+    my $katkey           = exists $arg_ref->{titleid}  # Katkey
+        ? $arg_ref->{titleid}         : undef;
+
+    my $author           = exists $arg_ref->{author}
+        ? $arg_ref->{author}          : undef;
+    
+    my $corporation      = exists $arg_ref->{corporation}
+        ? $arg_ref->{corporation}     : undef;
+    
+    my $publisher        = exists $arg_ref->{publisher}
+        ? $arg_ref->{publisher}       : undef;
+    
+    my $year             = exists $arg_ref->{year}
+        ? $arg_ref->{year}            : undef;
+    
+    my $numbering        = exists $arg_ref->{numbering}
+        ? $arg_ref->{numbering}       : undef;
+
+    my $label            = exists $arg_ref->{label}    # Signatur/Mediennummer
+        ? $arg_ref->{label}           : undef;
+
+    my $isbn             = exists $arg_ref->{isbn}
+        ? $arg_ref->{isbn}            : undef;
+    
+    my $issn             = exists $arg_ref->{issn}
+        ? $arg_ref->{issn}            : undef;
+    
+    my $articleauthor    = exists $arg_ref->{articleauthor}
+        ? $arg_ref->{articleauthor}   : undef;
+    
+    my $articletitle     = exists $arg_ref->{artitletitle}
+        ? $arg_ref->{artitletitle}    : undef;
+    
+    my $volume           = exists $arg_ref->{volume}
+        ? $arg_ref->{volume}          : undef;
+    
+    my $issue           = exists $arg_ref->{issue}
+        ? $arg_ref->{issue}           : undef;
+    
+    my $pages           = exists $arg_ref->{pages}
+        ? $arg_ref->{pages}           : undef;
+    
+    my $refid           = exists $arg_ref->{refid}
+        ? $arg_ref->{refid}           : undef;
+    
+    my $userid          = exists $arg_ref->{userid}
+        ? $arg_ref->{userid}          : undef;
+    
+    my $username        = exists $arg_ref->{username}
+        ? $arg_ref->{username}        : undef;
+    
+    my $receipt         = exists $arg_ref->{receipt}
+        ? $arg_ref->{receipt}         : undef;
+    
+    my $email           = exists $arg_ref->{email}
+        ? $arg_ref->{email}           : undef;
+    
+    my $remark          = exists $arg_ref->{remark}
+        ? $arg_ref->{remark}          : undef;
+    
+    my $zweig           = exists $arg_ref->{unit}     # Zweigstelle
+        ? $arg_ref->{unit}            : undef;
+
+    my $zweigabteil     = exists $arg_ref->{location}
+        ? $arg_ref->{location}        : undef;
+
+    my $domain          = exists $arg_ref->{domain}
+        ? $arg_ref->{domain}          : undef;
+    
+    my $subdomain       = exists $arg_ref->{subdomain}
+        ? $arg_ref->{subdomain}       : undef;
+        
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $database = $self->get_database;
+    my $config   = $self->get_config;
+
+    my $response_ref = {};
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    $logger->debug("Making order via USB-SOAP");
+
+    unless ($username && $label && $zweig >= 0){
+	$response_ref =  {
+	    error => "missing parameter",
+	};
+
+	return $response_ref;
+    }
+    
+    my @args = ($title, $katkey, $author, $corporation, $publisher, $year, $numbering, $label,$isbn, $issn, $articleauthor, $articletitle, $volume, $issue, $pages,$refid, $userid, $username, $receipt, $email, $remark, $zweig, $zweigabteil,$domain,$subdomain);
+	    
+    my $uri = "urn:/MyBib";
+	        
+    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));    
+    
+    my $result_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('usbws_url'));
+	my $result = $soap->submit_campusorder(@args);
+	
+	unless ($result->fault) {
+	    $result_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    
+	    $response_ref = {
+		error => $result->faultcode,
+		error_description => $result->faultstring,
+	    };
+	    
+	    return $response_ref;
+
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$config->get('usbws_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem bei der Verbindung zum MyBib-System",
+	};
+	
+	return $response_ref;
+    }
+
+    # Allgemeine Fehler
+    if (defined $result_ref->{NotOK} ){
+	$response_ref = {
+	    "code" => 400,
+		"error" => "error",
+		"error_description" => $result_ref->{NotOK},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+    
+    if (defined $result_ref->{order_acquire} && defined $result_ref->{order_acquire}{Error} ){
+	$response_ref = {
+	    "code" => 403,
+		"error" => "order acquire failed",
+		"error_description" => $result_ref->{order_acquire}{Error},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+    elsif (defined $result_ref->{OK}){
+	$response_ref = {
+	    "successful" => 1,
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+
+    $response_ref = {
+	    "code" => 405,
+		"error" => "unknown error",
+		"error_description" => "Unbekannter Fehler",
+	};
+
+    if ($logger->is_debug){
+	$response_ref->{debug} = $result_ref;
+    }
+
+    return $response_ref;    
+}
+
 sub get_config {
     my $self = shift;
 

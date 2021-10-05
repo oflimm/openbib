@@ -1,0 +1,362 @@
+#####################################################################
+#
+#  OpenBib::Handler::PSGI::Users::Circulations::CampusOrders
+#
+#  Dieses File ist (C) 2021 Oliver Flimm <flimm@openbib.org>
+#
+#  Dieses Programm ist freie Software. Sie koennen es unter
+#  den Bedingungen der GNU General Public License, wie von der
+#  Free Software Foundation herausgegeben, weitergeben und/oder
+#  modifizieren, entweder unter Version 2 der Lizenz oder (wenn
+#  Sie es wuenschen) jeder spaeteren Version.
+#
+#  Die Veroeffentlichung dieses Programms erfolgt in der
+#  Hoffnung, dass es Ihnen von Nutzen sein wird, aber OHNE JEDE
+#  GEWAEHRLEISTUNG - sogar ohne die implizite Gewaehrleistung
+#  der MARKTREIFE oder der EIGNUNG FUER EINEN BESTIMMTEN ZWECK.
+#  Details finden Sie in der GNU General Public License.
+#
+#  Sie sollten eine Kopie der GNU General Public License zusammen
+#  mit diesem Programm erhalten haben. Falls nicht, schreiben Sie
+#  an die Free Software Foundation, Inc., 675 Mass Ave, Cambridge,
+#  MA 02139, USA.
+#
+#####################################################################
+
+#####################################################################
+# Einladen der benoetigten Perl-Module
+#####################################################################
+
+package OpenBib::Handler::PSGI::Users::Circulations::CampusOrders;
+
+use strict;
+use warnings;
+no warnings 'redefine';
+use utf8;
+
+use DBI;
+use Digest::MD5;
+use Email::Valid;
+use Log::Log4perl qw(get_logger :levels);
+use POSIX;
+use SOAP::Lite;
+use Socket;
+use Template;
+use URI::Escape;
+
+use OpenBib::Common::Util;
+use OpenBib::Config;
+use OpenBib::Config::CirculationInfoTable;
+use OpenBib::ILS::Factory;
+use OpenBib::L10N;
+use OpenBib::QueryOptions;
+use OpenBib::Session;
+use OpenBib::User;
+use JSON::XS qw/encode_json decode_json/;
+use LWP::UserAgent;
+
+use base 'OpenBib::Handler::PSGI::Users';
+
+# Run at startup
+sub setup {
+    my $self = shift;
+
+    $self->start_mode('show');
+    $self->run_modes(
+        'create_record'         => 'create_record',
+        'dispatch_to_representation'           => 'dispatch_to_representation',
+    );
+
+    # Use current path as template path,
+    # i.e. the template is in the same directory as this script
+#    $self->tmpl_path('./');
+}
+
+sub create_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+    
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
+
+    # CGI Args
+    my $validtarget    = $input_data_ref->{'validtarget'};
+    my $titleid        = $input_data_ref->{'titleid'};
+    my $label          = $input_data_ref->{'label'};
+    my $location       = $input_data_ref->{'location'};
+    my $domain         = $input_data_ref->{'domain'};
+    my $subdomain      = $input_data_ref->{'subdomain'};
+    my $receipt        = $input_data_ref->{'receipt'};
+    my $unit           = $input_data_ref->{'unit'};
+    my $title          = $input_data_ref->{'title'};
+    my $author         = $input_data_ref->{'author'};
+    my $volume         = $input_data_ref->{'volume'};
+    my $source         = $input_data_ref->{'source'};
+    my $articleauthor  = $input_data_ref->{'articleauthor'};
+    my $articletitle   = $input_data_ref->{'artitletitle'};
+    my $issue          = $input_data_ref->{'issue'};
+    my $pages          = $input_data_ref->{'pages'};
+    my $remark         = $input_data_ref->{'remark'};
+    my $year           = $input_data_ref->{'year'};
+    my $email          = $input_data_ref->{'email'};
+    my $numbering      = $input_data_ref->{'numbering'};
+    my $issn           = $input_data_ref->{'issn'};
+    my $isbn           = $input_data_ref->{'isbn'};
+    my $publisher      = $input_data_ref->{'publisher'};
+    my $corporation    = $input_data_ref->{'corporation'};
+    my $refid          = $input_data_ref->{'refid'};
+   
+    unless ($config->get('active_ils')){
+	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellungen, Vormerkungen, Campuslieferdienst usw.) sind aktuell systemweit deaktiviert."));	
+    }
+	    
+    unless ($validtarget && $label && $unit >= 0){
+	return $self->print_warning($msg->maketext("Notwendige Parameter nicht besetzt")." (validtarget: $validtarget, label:$label, unit:$unit)");
+    }
+    
+    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
+
+    my $userid = $user->get_userid_of_session($session->{ID});
+    
+    $self->param('userid',$userid);
+    
+    if ($logger->debug){
+	$logger->debug("Auth successful: ".$self->authorization_successful." - Db: $database - Authenticator: $sessionauthenticator");
+    }
+    
+    if (!$self->authorization_successful || $database ne $sessionauthenticator){
+        if ($self->param('representation') eq "html"){
+            return $self->tunnel_through_authenticator('POST');            
+        }
+        else  {
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
+        }
+    }
+
+    my ($username,$password,$access_token) = $user->get_credentials();
+
+    unless ($username =~ m/^(B|S)/){
+	return $self->print_warning($msg->maketext("Sie gehören nicht zu den autorisierten Nutzergruppen für den Campuslieferdienst"));
+    }
+    
+    $database              = $sessionauthenticator;
+
+    my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
+
+    my $authenticator = $session->get_authenticator;
+    
+    if (!defined $domain){
+	$logger->debug("Showing campus orderform");
+	
+	# TT-Data erzeugen
+	my $ttdata={
+	    database      => $database,
+	    unit          => $unit,
+	    label         => $label,
+	    validtarget   => $validtarget,
+	};
+	
+	return $self->print_page($config->{tt_users_circulations_check_campus_order_tname},$ttdata);
+    }
+    else {
+	$logger->debug("Making campus order");
+
+	if (!$pages){
+	    return $self->print_warning("Bitte geben Sie die gewünschten Seiten an.");
+	}
+	
+	if (!$email){
+	    return $self->print_warning("Zur Nutzung des Campuslieferdienstes ist eine E-Mail-Adresse in Ihrem Bibliothekskonto erforderlich.");
+	}
+	
+	if (!$titleid){
+	    return $self->print_warning("Fehler bei der Übertragung der Datensatz-ID.");
+	}
+	
+	if (!$label){
+	    return $self->print_warning("Fehler bei der Übertragung der Signatur.");
+	}
+	
+	if (!$title){
+	    return $self->print_warning("Fehler bei der Übertragung des Titels.");
+	}
+		
+	my $response_make_campus_order_ref = $ils->make_campus_order({ title => $title, titleid => $titleid, author => $author, coporation => $corporation, publisher => $publisher, year => $year, numbering => $numbering, label => $label, isbn => $isbn, issn => $issn, articleauthor => $articleauthor, articletitle => $articletitle, volume => $volume, issue => $issue, pages => $pages, refid => $refid, userid => $userid, username => $username, receipt => $receipt, email => $email, remark => $remark, unit => $unit, location => $location, domain => $domain, subdomain => $subdomain });
+
+	if ($logger->is_debug){
+	    $logger->debug("Result make_order:".YAML::Dump($response_make_campus_order_ref));	
+	}
+	
+	if ($response_make_campus_order_ref->{error}){
+            return $self->print_warning($response_make_campus_order_ref->{error_description});
+	}
+	elsif ($response_make_campus_order_ref->{successful}){
+	    # TT-Data erzeugen
+	    my $ttdata={
+		database      => $database,
+		unit          => $unit,
+		label         => $label,
+		validtarget   => $validtarget,
+		campus_order  => $response_make_campus_order_ref,
+	    };
+	    
+	    return $self->print_page($config->{tt_users_circulations_make_campus_order_tname},$ttdata);
+	    
+	}		
+    }
+}
+
+sub get_input_definition {
+    my $self=shift;
+    
+    return {
+        validtarget => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        titleid => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        label => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        location => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        email => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        unit => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        receipt => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        remark => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        period => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        source => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        articleauthor => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        articletitle => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        volume => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        issue => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        pages => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        year => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        username => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        isbn => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        issn => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        numbering => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        domain => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        subdomain => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+    };
+}
+
+1;
+__END__
+
+=head1 NAME
+
+OpenBib::Circulation - Benutzerkonto
+
+=head1 DESCRIPTION
+
+Das mod_perl-Modul OpenBib::UserPrefs bietet dem Benutzer des 
+Suchportals einen Einblick in das jeweilige Benutzerkonto und gibt
+eine Aufstellung der ausgeliehenen, vorgemerkten sowie ueberzogenen
+Medien.
+
+=head1 AUTHOR
+
+ Oliver Flimm <flimm@openbib.org>
+
+=cut

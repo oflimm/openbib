@@ -415,7 +415,7 @@ Präsenzbestand
 %]
 [%    IF thiscirculation.availability != 'vermisst' %]
 [%#     IF config.get('active_ils') %]
-<p><a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/mail/kmb.html?l=[% lang %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];location=[% standort |uri %];domain=[% domain %];subdomain=[% subdomain %];scope=campus">[% msg.maketext("Campuslieferdienst") %]</a></p> 
+<p><a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/campusorders.html?l=[% lang %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];location=[% standort |uri %];domain=[% domain %];subdomain=[% subdomain %]">[% msg.maketext("Campuslieferdienst") %]</a></p> 
 [%#     END %]
 
 [%    END %]

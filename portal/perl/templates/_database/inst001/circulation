@@ -7,7 +7,7 @@
 #
 # Aufgabe:
 #
-# Ausgabe der Ausleih/Explar-Informationen (via OLWS)
+# Ausgabe der Ausleih/Explar-Informationen (via ILS)
 #
 #######################################################################
 -%]
@@ -304,6 +304,16 @@ Präsenzbestand
 [% END %]
 [%############### ENDE MEDIENSTATUSAUSGABE ######### %]
 
+[%
+
+   scan_dienst = "campus"; # Default: Campuslieferdienst
+
+   IF view == "ilias";
+     scan_dienst = "ilias"; # Elektronischer Semesterapparat / ILIAS
+   END;
+
+%]
+
 [%############### ANFANG MEDIENSTATUSAKTIONEN ######### %]
 [%############### BESTELLBUTTON ######### %]
 [% IF thiscirculation.availability.match('^(order)$') %]
@@ -369,7 +379,7 @@ Präsenzbestand
 [%############### ANFANG KMB,CAMPUSLIEFERDIENST,ILLIAS ######### %]
 
 [%############### ANFANG KMB ######### %]
-[% IF thiscirculation.department_id == '20' #KMB: Bestellbutton mit Sprung ins KuBi-Portal bzw. zur Bestellmaske, z.B. ID=inst001:7140497 %]
+[% IF thiscirculation.department_id == '20' # KMB: Bestellbutton mit Sprung ins KuBi-Portal bzw. zur Bestellmaske, z.B. ID=inst001:7140497 %]
 [%   IF NOT standort.match('(Museum für Angewandte Kunst|Graphische Sammlung|Schwarze Lade)') # Bestellfunktionen fuer KMB-Bestand im MAKK, WRM (Graphische Sammlung) und DSL unterdruecken %]
 [%#     IF config.get('active_ils') %]
 <br/><span style="color: red"> Die Nutzung der Lesesäle ist momentan nur nach Terminvereinbarung möglich.</span>
@@ -380,8 +390,41 @@ Präsenzbestand
 </p>
 [%#     END %]
 [%   END %]
-[% END %]
 [%############### ENDE KMB ######### %]
+
+[%############### ANFANG CAMPUSLIEFERDIENST ######### %]
+[% ELSIF scan_dienst == "campus" %]
+[%############### ENDE CAMPUSLIEFERDIENST ######### %]
+
+[%  IF thiscirculation.department_id.match('^(0|4)$') && username.match('^(B|S)') %]
+[%    
+      subdomain = "";
+      IF thiscirculation.availability.match('^(lent)$') ;
+        subdomain = "avv";
+      END;
+
+      IF standort.match('(EWA|HWA|Humanwiss)');
+        domain = "hwa";
+      ELSE ;
+        IF standort.match('Ausweich') ;
+           domain = "awm";
+        ELSE ;
+           domain = "usb";
+        END ;
+      END;
+%]
+[%    IF thiscirculation.availability != 'vermisst' %]
+[%#     IF config.get('active_ils') %]
+<p><a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/mail/kmb.html?l=[% lang %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];location=[% standort |uri %];domain=[% domain %];subdomain=[% subdomain %];scope=campus">[% msg.maketext("Campuslieferdienst") %]</a></p> 
+[%#     END %]
+
+[%    END %]
+[%  END %]
+
+[%############### ANFANG ILIAS ######### %]
+[% ELSIF scan_dienst == "ilias" %]
+[% END %]
+[%############### ENDE ILIAS ######### %]
 
 [%############### ENDE KMB,CAMPUSLIEFERDIENST,ILLIAS ######### %]
 </td>

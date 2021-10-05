@@ -174,10 +174,8 @@
     <h1 class="ml-0">Universität zu Köln</h1>
   </a>
   <div class="d-flex justify-content-end">
-  <span class="d-lg-none mr-4 pt-1" data-toggle="collapse" data-target="#userToggler" aria-controls="userToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-user fa-2x"></i></span>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+    <span class="d-lg-none mr-4 p-1" data-toggle="collapse" data-target="#userToggler" aria-controls="userToggler" aria-expanded="false" aria-label="Toggle user controls"><i class="fas fa-user fa-2x"></i></span>
+    <span class="d-lg-none p-1" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-bars fa-2x"></i></span>
   </div>
   <div class="collapse navbar-collapse"">
 <!--    <a class="navbar-brand" href="#">Hidden brand</a> -->

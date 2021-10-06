@@ -1553,8 +1553,13 @@ sub get_lastresultset {
     # Bestimmen des vorigen und naechsten Treffer einer
     # vorausgegangenen Kurztitelliste
 
-    # DBI: "select lastresultset from session where sessionid = ?"
-    my $lastresultset = $self->get_schema->resultset('Sessioninfo')->single({ sessionid => $self->{ID} })->lastresultset;
+    # DBI: select lastresultset from session where sessionid = ?
+    my $thissession = $self->get_schema->resultset('Sessioninfo')->single({ sessionid => $self->{ID} });		    
+    my $lastresultset = "";
+
+    if ($thissession){
+       $lastresultset = $thissession->lastresultset;
+    }
 
     return $lastresultset;
 }

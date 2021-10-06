@@ -415,7 +415,23 @@ Präsenzbestand
 %]
 [%    IF thiscirculation.availability != 'vermisst' %]
 [%#     IF config.get('active_ils') %]
-<p><a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/campusorders.html?l=[% lang %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];location=[% standort |uri %];domain=[% domain %];subdomain=[% subdomain %]">[% msg.maketext("Campuslieferdienst") %]</a></p> 
+<p>
+ <form  method="POST" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/campusorders">
+   <input type="hidden" name="l"             value="[% lang %]" />
+   <input type="hidden" name="validtarget"   value="[% database %]" />
+   <input type="hidden" name="label"         value="[% thiscirculation.location_mark |uri  %]" />
+   <input type="hidden" name="titleid"       value="[% record.id %]" />
+   <input type="hidden" name="unit"          value="[% thiscirculation.department_id %]" />
+   <input type="hidden" name="unit_desc"     value="[% standort |uri %]" />
+   <input type="hidden" name="domain"        value="[% domain |uri %]" />
+   <input type="hidden" name="subdomain"     value="[% subdomain |uri %]" />
+   <input type="hidden" name="confirm"     value="1" />
+
+   <input type="submit" value="[% msg.maketext("Campuslieferdienst") %]" class="btn btn-primary mb-1" />
+</form>
+
+<!--
+<a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/campusorders.html?l=[% lang %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];location=[% standort |uri %];domain=[% domain %];subdomain=[% subdomain %];confirm=1">[% msg.maketext("Campuslieferdienst") %]</a></p> -->
 [%#     END %]
 
 [%    END %]

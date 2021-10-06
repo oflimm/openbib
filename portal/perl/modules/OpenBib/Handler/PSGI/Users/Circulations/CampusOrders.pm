@@ -101,7 +101,7 @@ sub create_record {
     my $validtarget    = $input_data_ref->{'validtarget'};
     my $titleid        = $input_data_ref->{'titleid'};
     my $label          = $input_data_ref->{'label'};
-    my $location       = $input_data_ref->{'location'};
+    my $unit_desc      = $input_data_ref->{'unit_desc'};
     my $domain         = $input_data_ref->{'domain'};
     my $subdomain      = $input_data_ref->{'subdomain'};
     my $receipt        = $input_data_ref->{'receipt'};
@@ -116,19 +116,19 @@ sub create_record {
     my $pages          = $input_data_ref->{'pages'};
     my $remark         = $input_data_ref->{'remark'};
     my $year           = $input_data_ref->{'year'};
-    my $email          = $input_data_ref->{'email'};
     my $numbering      = $input_data_ref->{'numbering'};
     my $issn           = $input_data_ref->{'issn'};
     my $isbn           = $input_data_ref->{'isbn'};
     my $publisher      = $input_data_ref->{'publisher'};
     my $corporation    = $input_data_ref->{'corporation'};
     my $refid          = $input_data_ref->{'refid'};
+    my $confirm        = $input_data_ref->{'confirm'};
    
     unless ($config->get('active_ils')){
 	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellungen, Vormerkungen, Campuslieferdienst usw.) sind aktuell systemweit deaktiviert."));	
     }
 	    
-    unless ($validtarget && $label && $unit >= 0){
+    unless ($validtarget && $label && $unit >= 0 && $titleid){
 	return $self->print_warning($msg->maketext("Notwendige Parameter nicht besetzt")." (validtarget: $validtarget, label:$label, unit:$unit)");
     }
     
@@ -151,9 +151,9 @@ sub create_record {
         }
     }
 
-    my ($username,$password,$access_token) = $user->get_credentials();
+    my ($accountname,$password,$access_token) = $user->get_credentials();
 
-    unless ($username =~ m/^(B|S)/){
+    unless ($accountname =~ m/^(B|S)/){
 	return $self->print_warning($msg->maketext("Sie gehören nicht zu den autorisierten Nutzergruppen für den Campuslieferdienst"));
     }
     
@@ -162,16 +162,65 @@ sub create_record {
     my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
 
     my $authenticator = $session->get_authenticator;
+
+    my $userinfo_ref = $user->get_info($user->{ID});
+
+    my $realname = "";
+
+    if ($userinfo_ref->{nachname} || $userinfo_ref->{vorname}){
+	if ($userinfo_ref->{nachname}){
+	    $realname = $userinfo_ref->{nachname};
+	}
+
+	if ($userinfo_ref->{vorname}){
+	    $realname = $realname.", ".$userinfo_ref->{vorname};
+	}
+
+    }
+
+    my $email = "";
+    if ($userinfo_ref->{email}){
+	$email = $userinfo_ref->{email};
+    }
+
+    my $record = new OpenBib::Record::Title({ database => $database, id => $titleid });
+    $record->load_full_record;
     
-    if (!defined $domain){
+    if ($confirm){
 	$logger->debug("Showing campus orderform");
 	
 	# TT-Data erzeugen
 	my $ttdata={
-	    database      => $database,
-	    unit          => $unit,
-	    label         => $label,
-	    validtarget   => $validtarget,
+	    userinfo       => $userinfo_ref,
+	    record         => $record,
+	    database       => $database,
+	    validtarget    => $validtarget,
+	    title          => $title,
+	    titleid        => $titleid,
+	    author         => $author,
+	    coporation     => $corporation,
+	    publisher      => $publisher,
+	    year           => $year,
+	    realname       => $realname,
+	    numbering      => $numbering,
+	    label          => $label,
+	    isbn           => $isbn,
+	    issn           => $issn,
+	    articleauthor  => $articleauthor,
+	    articletitle   => $articletitle,
+	    volume         => $volume,
+	    issue          => $issue,
+	    pages          => $pages,
+	    refid          => $refid,
+	    userid         => $userid,
+	    accountname    => $accountname,
+	    receipt        => $receipt,
+	    email          => $userinfo_ref->{email},
+	    remark         => $remark,
+	    unit           => $unit,
+	    unit_desc      => $unit_desc,
+	    domain         => $domain,
+	    subdomain      => $subdomain	    
 	};
 	
 	return $self->print_page($config->{tt_users_circulations_check_campus_order_tname},$ttdata);
@@ -199,7 +248,7 @@ sub create_record {
 	    return $self->print_warning("Fehler bei der Übertragung des Titels.");
 	}
 		
-	my $response_make_campus_order_ref = $ils->make_campus_order({ title => $title, titleid => $titleid, author => $author, coporation => $corporation, publisher => $publisher, year => $year, numbering => $numbering, label => $label, isbn => $isbn, issn => $issn, articleauthor => $articleauthor, articletitle => $articletitle, volume => $volume, issue => $issue, pages => $pages, refid => $refid, userid => $userid, username => $username, receipt => $receipt, email => $email, remark => $remark, unit => $unit, location => $location, domain => $domain, subdomain => $subdomain });
+	my $response_make_campus_order_ref = $ils->make_campus_order({ title => $title, titleid => $titleid, author => $author, coporation => $corporation, publisher => $publisher, year => $year, numbering => $numbering, label => $label, isbn => $isbn, issn => $issn, articleauthor => $articleauthor, articletitle => $articletitle, volume => $volume, issue => $issue, pages => $pages, refid => $refid, userid => $accountname, username => $realname, receipt => $receipt, email => $email, remark => $remark, unit => $unit, location => $unit_desc, domain => $domain, subdomain => $subdomain });
 
 	if ($logger->is_debug){
 	    $logger->debug("Result make_order:".YAML::Dump($response_make_campus_order_ref));	
@@ -243,7 +292,7 @@ sub get_input_definition {
             encoding => 'utf8',
             type     => 'scalar',
         },
-        location => {
+        unit_desc => {
             default  => '',
             encoding => 'utf8',
             type     => 'scalar',
@@ -308,7 +357,7 @@ sub get_input_definition {
             encoding => 'utf8',
             type     => 'scalar',
         },
-        username => {
+        realname => {
             default  => '',
             encoding => 'utf8',
             type     => 'scalar',
@@ -335,6 +384,11 @@ sub get_input_definition {
         },
         subdomain => {
             default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        confirm => {
+            default  => 0,
             encoding => 'utf8',
             type     => 'scalar',
         },

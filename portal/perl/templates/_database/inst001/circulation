@@ -437,6 +437,29 @@ Präsenzbestand
 
 [%############### ANFANG ILIAS ######### %]
 [% ELSIF scan_dienst == "ilias" %]
+[%  IF thiscirculation.department_id.match('^(0|4)$') && qopts.get_option('refid') %]
+[%    IF thiscirculation.availability != 'vermisst' %]
+[%      IF config.get('active_ils') %]
+<p>
+ <form  method="POST" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/iliasorders">
+   <input type="hidden" name="l"             value="[% lang %]" />
+   <input type="hidden" name="validtarget"   value="[% database %]" />
+   <input type="hidden" name="label"         value="[% thiscirculation.location_mark |uri  %]" />
+   <input type="hidden" name="titleid"       value="[% record.id %]" />
+   <input type="hidden" name="unit"          value="[% thiscirculation.department_id %]" />
+   <input type="hidden" name="unit_desc"     value="[% standort |uri %]" />
+   <input type="hidden" name="domain"        value="[% domain |uri %]" />
+   <input type="hidden" name="subdomain"     value="[% subdomain |uri %]" />
+   <input type="hidden" name="confirm"     value="1" />
+
+   <input type="submit" value="[% msg.maketext("E-Semesterapparat") %]" class="btn btn-primary mb-1" />
+   <p>Ausgewählte Seiten aus diesem Buch als PDF-Datei für Ihren Elektronischen Semesterapparat bestellen.</p>
+</form>
+
+[%      END %]
+
+[%    END %]
+[%  END %]
 [% END %]
 [%############### ENDE ILIAS ######### %]
 

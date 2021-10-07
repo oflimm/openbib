@@ -6,6 +6,10 @@
   
   title     = fields.${"T0331"}.first.content;
 
+  IF NOT title && fields.${'T0089'}.first.content;
+     title = fields.${'T0089'}.first.content;
+  END ;
+
   IF fields.${"T0335"}.defined ;
      titlesup = fields.${"T0335"}.first.content;
      title = "${title} : ${titlesup}";
@@ -50,20 +54,26 @@
     year      = fields.${"T0424"}.first.content;  
   END;
 
-  IF fields.${"T0540"}.defined;
-    isbn = fields.${"T0540"}.first.content;  
-  ELSIF fields.${"T0553"}.defined;
-    isbn = fields.${"T0553"}.first.content;  
-  END;
-
-  IF fields.${"T0543"}.defined;
-    issn = fields.${"T0540"}.first.content;  
-  END;
-
   super = "";
   # 1. Ueberordnung?
   IF fields.${'T5005'}.first.content;
      super = from_json(fields.${'T5005'}.first.content);
+  END;
+
+  IF fields.${"T0540"}.defined;
+    isbn = fields.${"T0540"}.first.content;  
+  ELSIF fields.${"T0553"}.defined;
+    isbn = fields.${"T0553"}.first.content;  
+  ELSIF super && super.fields.${"0540"};
+    issn = super.fields.${"0540"}.first.content;  
+  ELSIF super && super.fields.${"0553"};
+    issn = super.fields.${"0553"}.first.content;  
+  END;
+
+  IF fields.${"T0543"}.defined;
+    issn = fields.${"T0543"}.first.content;  
+  ELSIF super && super.fields.${"0543"};
+    issn = super.fields.${"0543"}.first.content;  
   END;
 
   source    = "";
@@ -84,7 +94,7 @@
   
 -%]
 
-[%# USE dumper;dumper.dump(circulations)%]
+[%# USE dumper;dumper.dump(super)%]
 <div class="card mt-5 mb-5 mr-5">
 <div class="card-header">[% msg.maketext("Digitalisierungsauftrag") %]</div>
 <div class="card-body">
@@ -97,11 +107,13 @@
 
 <legend class="mt-2">[% msg.maketext("Titelangaben") %]</legend>
 
+[% IF title %]
 <div class="form-group">
       <label for="title">Titel</label>
       <span class="form-control">[% title %]</span>
       <input type="hidden" name="title"   value="[% title | uri %]" />
 </div>
+[% END %]
 
 [% IF person %]
 <div class="form-group">
@@ -136,25 +148,27 @@
      END;
 %]
 
+[% IF signatur %]
 <div class="form-group">
       <label for="location_mark">[% msg.maketext("Signatur") %]:</label>
       <span class="form-control">[% signatur %]</span>
-      <input type="hidden" name="label" value="[% uri_escape(signatur) %]" />
+      <input type="hidden" name="label" value="[% signatur | uri %]" />
 </div>
+[% END %]
 
 [% IF isbn %]
 <div class="form-group">
       <label for="location_mark">[% msg.maketext("ISBN") %]:</label>
       <span class="form-control">[% isbn %]</span>
-      <input type="hidden" name="isbn" value="[% uri_escape(isbn) %]" />
+      <input type="hidden" name="isbn" value="[% isbn | uri %]" />
 </div>
 [% END %]
 
 [% IF issn %]
 <div class="form-group">
-      <label for="location_mark">[% msg.maketext("ISBN") %]:</label>
-      <span class="form-control">[% isbn %]</span>
-      <input type="hidden" name="isbn" value="[% uri_escape(isbn) %]" />
+      <label for="location_mark">[% msg.maketext("ISSN") %]:</label>
+      <span class="form-control">[% issn %]</span>
+      <input type="hidden" name="isbn" value="[% issn | uri %]" />
 </div>
 [% END %]
 
@@ -162,7 +176,7 @@
 <div class="form-group">
       <label for="location_mark">[% msg.maketext("In") %]:</label>
       <span class="form-control">[% source %]</span>
-      <input type="hidden" name="label" value="[% uri_escape(source) %]" />
+      <input type="hidden" name="label" value="[% source | uri %]" />
 </div>
 [% END %]
 

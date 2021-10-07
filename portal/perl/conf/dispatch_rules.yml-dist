@@ -3120,6 +3120,12 @@
    args:
      'restrict_db_to_view': 1
 - # users/circulations_loc:
+   module: 'OpenBib::Handler::PSGI::Users::Circulations::IliasOrders'
+   rule: '/portal/:view/databases/id/:database/circulations/id/iliasorders[post]'
+   runmode: 'create_record'
+   args:
+     'restrict_db_to_view': 1
+- # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Orders'
    rule: '/portal/:view/databases/id/:database/circulations/id/orders[delete]'
    runmode: 'delete_record'

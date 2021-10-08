@@ -647,26 +647,28 @@ sub collect_provenance_data {
     my $record = shift;
     my $database = shift;
     my $provenance_data = [];
-    my $indexPosition = 0;
     foreach my $prov_field ( @{$record->get_fields->{T4310}} ) {
         my $prov_data = {};
         $prov_data->{"prov_text"} = $prov_field->{content};
-        $provenance_data->[$indexPosition] = $prov_data;
-        $indexPosition = $indexPosition+1;
+        $provenance_data->[$prov_field->{mult}] = $prov_data;
     }
-    $indexPosition = 0;
-    foreach my $prov_field ( @{$record->get_fields->{T4307}} ) {
-        $provenance_data->[$indexPosition]->{"prov_norm"} = $prov_field->{content};
+    foreach my $prov_field ( @{$record->get_fields->{T4309}} ) {
+        $provenance_data->[$prov_field->{mult}]->{"prov_signatur"} = $prov_field->{content};
+    }
+    foreach my $prov_field ( @{$record->get_fields->{T4308}} ) {
+        $provenance_data->[$prov_field->{mult}]->{"prov_norm"} = $prov_field->{content};
         if ($prov_field->{id}){
-            if ($prov_field->{description} == "Vorbesitzer - Körperschaft"){
-            $provenance_data->[$indexPosition]->{"prov_gnd"} = $self->get_gnd_for_corporation($prov_field->{id}, $database );
-            }else {
-            $provenance_data->[$indexPosition]->{"prov_gnd"} = $self->get_gnd_for_person( $prov_field->{id}, $database );    
+            $provenance_data->[$prov_field->{mult}]->{"prov_gnd"} = $self->get_gnd_for_person( $prov_field->{id}, $database );    
             }
         }
-        $indexPosition = $indexPosition+1;
+    foreach my $prov_field ( @{$record->get_fields->{T4307}} ) {
+        $provenance_data->[$prov_field->{mult}]->{"prov_norm"} = $prov_field->{content};
+        if ($prov_field->{id}){
+            $provenance_data->[$prov_field->{mult}]->{"prov_gnd"} = $self->get_gnd_for_corporation($prov_field->{id}, $database );
+        }
     }
-    return $provenance_data;
+    my @filtered_list = grep(defined, @{$provenance_data});
+    return \@filtered_list;
 }
 
 sub collect_publisher_data {

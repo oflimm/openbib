@@ -24,15 +24,21 @@
                 [%- END -%]
                 [%- END -%]
             [%- END -%]
+            [%- IF normdata.${"T1024"} %]
+                [%- FOREACH number IN normdata.${"T1024"} -%]
+                [%- IF number.content.match('ZDB') %]
+                 <mods:identifier type="zdb">[%- number.content.replace('ZDB', '')%]</mods:identifier>
+                [%- END -%]
+                [%- END -%]
+            [%- END -%]
             [%- IF normdata.${"T0010"} %]
             <mods:recordInfo>
-                <mods:recordIdentifier>[% normdata.${"T0010"}.first.content -%]</mods:recordIdentifier>
+                <mods:recordIdentifier source="HBZ">[% normdata.${"T0010"}.first.content -%]</mods:recordIdentifier>
             </mods:recordInfo>
-            [%- ELSE -%]
+            [%- END -%]
             <mods:recordInfo>
-                <mods:recordIdentifier>[% record.id %]</mods:recordIdentifier>
+                <mods:recordIdentifier source="usb">[% record.id %]</mods:recordIdentifier>
             </mods:recordInfo>
-            [%- END - %]
             [%- IF personlist && personlist.size -%]
             [%- FOREACH item IN personlist %]
             <mods:name type="personal"  [%- IF item.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/[% item.gnd %]" [%END%]>
@@ -214,7 +220,7 @@
             [%-END %]
             [%- FOREACH provenance IN provenance_data %]
             <mods:note type="ownership">
-                [% provenance_data.0.prov_text %]||http://d-nb.info/gnd/[% provenance.prov_gnd %]||[%- IF provenance.prov_norm %][% provenance.prov_norm %][%- END %]|
+                [% provenance.prov_signatur %]||[% provenance.prov_text %][%- IF provenance.prov_gnd %]||http://d-nb.info/gnd/[% provenance.prov_gnd %][%END%][%- IF provenance.prov_norm %]||[% provenance.prov_norm %][%- END %]
             </mods:note>
             [%- END %]
             [%- FOREACH uniform_publisher IN uniform_publisher_list %]

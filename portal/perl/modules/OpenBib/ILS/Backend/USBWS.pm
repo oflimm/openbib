@@ -1926,6 +1926,7 @@ sub send_account_request {
 	    }
 	    
 	    if ( %{$itemlist->{Konto}} && ($type_ref->{type} eq "AUSLEIHEN" || $type_ref->{type} eq "BESTELLUNGEN" || $type_ref->{type} eq "VORMERKUNGEN")){
+		
 		if (defined $itemlist->{Konto}{KeineVormerkungen}){
 		    if ($logger->is_debug){
 			$response_ref->{debug} = $itemlist;
@@ -1947,7 +1948,7 @@ sub send_account_request {
 		    $response_ref->{no_loans} = 1;
 		    next;
 		}
-		
+
 		my $all_items_ref = [];
 		
 		foreach my $nr (sort keys %{$itemlist->{Konto}}){
@@ -2005,6 +2006,14 @@ sub send_account_request {
 		#		next if (defined $itemlist->{Konto}{KeineOffenenGebuehren});
 		my $all_items_ref = [];
 
+		if (defined $itemlist->{Konto}{KeineOffenenGebuehren}){
+		    if ($logger->is_debug){
+			$response_ref->{debug} = $itemlist;
+		    }
+		    $response_ref->{no_fees} = 1;
+		    next;
+		}
+		
 		my $fee_sum = 0;
 		foreach my $nr (sort keys %{$itemlist->{Konto}}){
 		    next if ($itemlist->{Konto}{$nr}{KtoTyp});

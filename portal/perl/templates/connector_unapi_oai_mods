@@ -266,9 +266,15 @@
             [%- ELSE %]
             <mods:relatedItem type="series">
             [%- END %]
+                 [%- IF super_data.fields.${'1649'} %]
                 <mods:recordInfo>
-                    <mods:recordIdentifier>[%- super_data.fields.${'0010'}.first.content %]</mods:recordIdentifier>
+                    <mods:recordIdentifier source="usb_e">[%- super_data.fields.${'1649'}.first.content %]</mods:recordIdentifier>
                 </mods:recordInfo>
+                [%- ELSE %]
+                <mods:recordInfo>
+                    <mods:recordIdentifier source="usb_print">[%- super_data.fields.${'0010'}.first.content %]</mods:recordIdentifier>
+                </mods:recordInfo>
+                [%- END %]
                 <mods:titleInfo>
                     <mods:title>[%- super_title  %]</mods:title>
                 </mods:titleInfo>

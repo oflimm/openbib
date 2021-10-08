@@ -102,6 +102,7 @@ sub show {
         my $corporation_list       = [];
         my $place_list             = [];
         my $uniform_publisher_list = [];
+        my $provenance_data = [];
         my $date_values = undef;
         if ($unapiid) {
             my ( $database, $idn, $record );
@@ -124,6 +125,7 @@ sub show {
                   $self->collect_publisher_data( $record, $database );
                 $rswk_keyword_list = 
                     $self->collect_rswk_data( $record, $database );
+                    $provenance_data = $self->collect_provenance_data($record, $database);
                 $date_values = $self->get_date_values($record, $database);
 
             }
@@ -142,6 +144,7 @@ sub show {
                 uniform_publisher_list => $uniform_publisher_list,
                 rswk_keyword_list      => $rswk_keyword_list,
                 date_values            => $date_values,
+                provenance_data        => $provenance_data,
 
                 config => $config,
                 msg    => $msg,
@@ -570,8 +573,7 @@ sub collect_place_data {
         push( @{$place_list}, @{$rda_collection} );
 
     }
-    unless (length( $record->get_fields->{T7676} )) {
-        if ( length( $record->get_fields->{T0410} ) ) {
+    if ( length( $record->get_fields->{T0410} ) ) {
             foreach my $place ( @{ $record->get_fields->{T0410} } ) {
                 my $place_data = {
                     place_name => $place->{content},
@@ -580,8 +582,7 @@ sub collect_place_data {
                 push( @{$place_list}, $place_data );
             }
         }
-        else {
-        if ( length( $record->get_fields->{T0673} ) ) {
+    if ( length( $record->get_fields->{T0673} ) ) {
             foreach my $place ( @{ $record->get_fields->{T0673} } ) {
                 my $place_data = {
                     place_name => $place->{content},
@@ -591,9 +592,8 @@ sub collect_place_data {
             }
 
         }
-    }
-    }
-   
+    
+       
     return $place_list;
 }
 
@@ -642,6 +642,33 @@ sub get_all_mult_values {
     return \@mult_values;
 }
 
+sub collect_provenance_data {
+    my $self   = shift;
+    my $record = shift;
+    my $database = shift;
+    my $provenance_data = [];
+    my $indexPosition = 0;
+    foreach my $prov_field ( @{$record->get_fields->{T4310}} ) {
+        my $prov_data = {};
+        $prov_data->{"prov_text"} = $prov_field->{content};
+        $provenance_data->[$indexPosition] = $prov_data;
+        $indexPosition = $indexPosition+1;
+    }
+    $indexPosition = 0;
+    foreach my $prov_field ( @{$record->get_fields->{T4307}} ) {
+        $provenance_data->[$indexPosition]->{"prov_norm"} = $prov_field->{content};
+        if ($prov_field->{id}){
+            if ($prov_field->{description} == "Vorbesitzer - Körperschaft"){
+            $provenance_data->[$indexPosition]->{"prov_gnd"} = $self->get_gnd_for_corporation($prov_field->{id}, $database );
+            }else {
+            $provenance_data->[$indexPosition]->{"prov_gnd"} = $self->get_gnd_for_person( $prov_field->{id}, $database );    
+            }
+        }
+        $indexPosition = $indexPosition+1;
+    }
+    return $provenance_data;
+}
+
 sub collect_publisher_data {
     my $self   = shift;
     my $record = shift;
@@ -655,12 +682,15 @@ sub collect_publisher_data {
                 if ( $publisher->{subfield} eq "k" ) {
                     $currentObject->{publisher_name} = $publisher->{content};
                     $currentObject->{publisher_name} =~ s/^\s+|\s+$//g
+                }if ( $publisher->{subfield} eq "p" ) {
+                    $currentObject->{publisher_name} = $publisher->{content};
+                    $currentObject->{publisher_name} =~ s/^\s+|\s+$//g
                 }
                 if ( $publisher->{subfield} eq "h" ) {
                         $currentObject->{publisher_place} = $publisher->{content};
                         $currentObject->{publisher_place} =~ s/^\s+|\s+$//g
                 }
-                elsif ( $publisher->{subfield} eq "9"
+                if ( $publisher->{subfield} eq "9"
                     and index( $publisher->{content}, "DE-588" ) != -1 )
                 {
                     $currentObject->{gnd} = $publisher->{content};

@@ -2,11 +2,12 @@
 #
 #  OpenBib::API::HTTP::JOP.pm
 #
-#  Objektorientiertes Interface zum API von Journals Online & Print
+#  Objektorientiertes Interface zum Verfuegbarkeits-API
+#  von Journals Online & Print (JOP)
 #
-#  Individuelles API ohne OpenBib Standardisierung!
+#  Kein vollwertiges Recherche-API!
+#  Daher keine Verwendung als OpenBib Search Backend moeglich!
 #  Eigene Suchparameter, eigenes Suchergebnis
-#  Keine Verwendung in OpenBib Search Backend moeglich!
 #
 #  Dieses File ist (C) 2021- Oliver Flimm <flimm@openbib.org>
 #
@@ -267,39 +268,25 @@ sub parse_query {
 	pages => {
 	    type => "ft",
 	},
+	date => {
+	    type => "ft",
+	},
     };
     
-    my @searchterms = ();
+    my @searchstrings = ();
+
     foreach my $field (keys %{$api_searchfield_ref}){
         my $searchtermstring = (defined $searchquery->get_searchfield($field)->{val})?$searchquery->get_searchfield($field)->{val}:'';
         if ($searchtermstring){ 
-            # Freie Suche einfach uebernehmen
-            if ($field eq "genre" && $searchtermstring) {
-                push @searchterms, {
-                    field   => 'genre',
-                    content => $searchtermstring
-                };
-            }
-            elsif ($field eq "issn" && $searchtermstring) {
-                push @searchterms, {
-                    field   => 'issn',
-                    content => $searchtermstring
-                };
-            }
+            # Alle besetzten Parameter 1:1 uebernehmen
+            push @searchstrings, $field."=".$searchtermstring;
         }
-    }
-
-    my @searchstrings = ();
-
-    foreach my $search_ref (@searchterms){
-        if ($search_ref->{field} && $search_ref->{content}){
-            push @searchstrings, $search_ref->{field}."=".$search_ref->{content};
-        }
-    }
-    
+    }        
 
     my $apiquerystring = join("&",@searchstrings);
+
     $logger->debug("API-Querystring: $apiquerystring");
+
     $self->{_querystring} = $apiquerystring;
 
     return $self;

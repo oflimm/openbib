@@ -796,7 +796,7 @@ if ($updatemaster && !$searchengineonly){
     $logger->info("### $database: Updating clouds");
 
     foreach my $thistype (qw/1 3 4 5 6 7 9/){
-        system("$config->{'base_dir'}/bin/gen_bestof.pl --type=$thistype --database=$database");
+        system("$config->{'base_dir'}/bin/gen_metrics.pl --type=$thistype --database=$database");
     }
 
     my $duration_stage_analyze_end = ParseDate("now");

@@ -179,7 +179,7 @@ if ($updatemaster && $maintenance){
     $logger->info("### Updating clouds");
     
     foreach my $thistype (qw/2/){
-        system("$config->{'base_dir'}/bin/gen_bestof.pl --type=$thistype");
+        system("$config->{'base_dir'}/bin/gen_metrics.pl --type=$thistype");
     }
 }
                                     

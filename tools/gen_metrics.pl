@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 #####################################################################
 #
-#  gen_bestof.pl
+#  gen_metrics.pl
 #
 #  Erzeugen von BestOf-Analysen aus Relevance-Statistik-Daten
 #
@@ -66,7 +66,7 @@ if ($help){
 
 $num=($num)?$num:200;
 
-$logfile=($logfile)?$logfile:'/var/log/openbib/gen_bestof.log';
+$logfile=($logfile)?$logfile:'/var/log/openbib/gen_metrics.log';
 
 my $log4Perl_config = << "L4PCONF";
 log4perl.rootLogger=INFO, LOGFILE, Screen
@@ -1149,7 +1149,7 @@ sub gen_cloud_class {
 
 sub print_help {
     print << "ENDHELP";
-gen_bestof.pl - Erzeugen von BestOf-Analysen aus Relevance-Statistik-Daten
+gen_metrics.pl - Erzeugen und Cachen von Metriken aus Katalog- oder Statistik-Daten
 
    Optionen:
    -help                 : Diese Informationsseite

@@ -336,7 +336,7 @@ if ($updatemaster && $maintenance){
     $logger->info("### Updating clouds");
     
     foreach my $thistype (qw/2 8 10 11 12 13/){
-        system("$config->{'base_dir'}/bin/gen_bestof.pl --type=$thistype");
+        system("$config->{'base_dir'}/bin/gen_metrics.pl --type=$thistype");
     }
 }
 
@@ -403,7 +403,7 @@ sub threadC {
     
     autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['gentzdigital'] });
     
-    system("$config->{'base_dir'}/bin/gen_bestof.pl --database=gentzdigital --type=5 --num=100");
+    system("$config->{'base_dir'}/bin/gen_metrics.pl --database=gentzdigital --type=5 --num=100");
 
     ##############################    
 

@@ -569,8 +569,51 @@ while (my $jsonline = <IN>){
     }
     
     my $is_digital = 0;
+
+
+    # URLs zu den Digitalisaten
+
+    my $url_mult = 1;
+    if (defined $item_ref->{'_nested:gentz_letter__digitized_versions'} && @{$item_ref->{'_nested:gentz_letter__digitized_versions'}}){
+	
+	foreach my $digitized_ref (@{$item_ref->{'_nested:gentz_letter__digitized_versions'}}){
+
+	    my $description = $digitized_ref->{description};
+	    
+	    # URLs
+	    foreach my $file_ref (@{$digitized_ref->{'_nested:digitized_version__files'}}){
+		
+		# Volles Bild zum Download
+		if ($file_ref->{versions}{original}{url}){
+		    push @{$title_ref->{fields}{'0662'}}, {
+			mult => $url_mult,
+			content => $file_ref->{versions}{original}{download_url},
+		    };
+		    $is_digital = 1;
+		}
+		
+		# Thumbnail
+		if ($file_ref->{versions}{small}{url}){
+		    push @{$title_ref->{fields}{'2662'}}, {
+			mult => $url_mult,
+			content => $file_ref->{versions}{small}{url},
+		    };
+		    $is_digital = 1;
+		}
+		
+		if ($description){
+		    push @{$title_ref->{fields}{'0663'}}, {
+			mult => $url_mult,
+			content => $description,
+		    };
+		}
+		
+		$url_mult++;
+	    }
+	}
+    }
     
-    # URLs
+    # URLs zu den Transcriptions
 
     foreach my $transcription_ref (@{$item_ref->{'_nested:gentz_letter__transcriptions'}}){
 
@@ -585,9 +628,12 @@ while (my $jsonline = <IN>){
 	# URLs
 	my $file_ref = $transcription_ref->{transcription_file} ;
 
+	my $description = $transcription_ref->{transcription_name};
+	
 	# Volles Bild zum Download
 	if ($file_ref->{versions}{original}{url}){
 	    push @{$title_ref->{fields}{'0662'}}, {
+		mult => $url_mult,
 		content => $file_ref->{versions}{original}{download_url},
 	    };
 	    $is_digital = 1;
@@ -596,10 +642,20 @@ while (my $jsonline = <IN>){
 	# Thumbnail
 	if ($file_ref->{versions}{small}{url}){
 	    push @{$title_ref->{fields}{'2662'}}, {
+		mult => $url_mult,
 		content => $file_ref->{versions}{small}{url},
 	    };
 	    $is_digital = 1;
-	}	    
+	}
+
+	if ($description){
+	    push @{$title_ref->{fields}{'0663'}}, {
+		mult => $url_mult,
+		content => $description,
+	    };
+	}	
+
+	$url_mult++;
     }
     
 

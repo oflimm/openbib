@@ -103,103 +103,131 @@ while (my $jsonline = <IN>){
 	$logger->debug(YAML::Dump($item_ref));
     }
     
-    my $letter_ref = $item_ref->{gentz_letter};
-    
     my $title_ref = {
         'fields' => {},
     };
 
     $multcount_ref = {};
 
-    if ($letter_ref->{contentdm_id}){
-	$title_ref->{id} = $letter_ref->{contentdm_id};
+    if ($item_ref->{contentdm_id}){
+	$title_ref->{id} = $item_ref->{contentdm_id};
     }
     else {
-	$title_ref->{id} = $letter_ref->{_id};
+	$title_ref->{id} = $item_ref->{_system_object_id};
     }
 
     my @senders = ();
     
-    # Sender -> Person
-    if ($letter_ref->{sender}{_standard}{1}{text}{'de-DE'}){
-	my $name = $letter_ref->{sender}{_standard}{1}{text}{'de-DE'};
-	my $person_id = $letter_ref->{sender}{person}{_id};
-	push @senders, $name;
-	
-	my $mult = 1;
-	
-	if (!$persons_done_ref->{$person_id}){
+    if (defined $item_ref->{sender}){
+	if ($item_ref->{sender}{familyname} || $item_ref->{sender}{givenname}){
+	    my @name = ();
+	    push @name, $item_ref->{sender}{givenname} if ($item_ref->{sender}{givenname});
+	    push @name, $item_ref->{sender}{familyname} if ($item_ref->{sender}{familyname});
 	    
-	    my $normitem_ref = {
-		'fields' => {},
-	    };
-	    $normitem_ref->{id} = $person_id;
-	    push @{$normitem_ref->{fields}{'0800'}}, {
-		mult     => 1,
-		subfield => '',
-		content  => $name,
+	    my $name = join(' ',@name);
+	    
+	    my $person_id = $item_ref->{sender}{_id};
+	    
+	    push @senders, $name;
+	    
+	    my $mult = 1;
+	    
+	    if (!$persons_done_ref->{$person_id}){
+		
+		my $normitem_ref = {
+		    'fields' => {},
+		};
+		$normitem_ref->{id} = $person_id;
+		push @{$normitem_ref->{fields}{'0800'}}, {
+		    mult     => 1,
+		    subfield => '',
+		    content  => $name,
+		};
+		
+		if ($item_ref->{sender}{person_gndid}{conceptURI}){
+		    push @{$normitem_ref->{fields}{'0312'}}, { # PND/GND
+			mult     => 1,
+			subfield => '',
+			content  => $item_ref->{sender}{person_gndid}{conceptURI},
+		    };		
+		}
+		
+		print PERSON encode_json $normitem_ref, "\n";
+		
+		$persons_done_ref->{$person_id} = 1;
+	    }
+	    
+	    my $new_category = "0100";
+	    
+	    push @{$title_ref->{fields}{$new_category}}, {
+		content    => $name,
+		mult       => $mult,
+		subfield   => '',
+		id         => $person_id,
+		supplement => '',
 	    };
 	    
-	    print PERSON encode_json $normitem_ref, "\n";
-
-	    $persons_done_ref->{$person_id} = 1;
-	}
-	
-	my $new_category = "0100";
-	
-	push @{$title_ref->{fields}{$new_category}}, {
-	    content    => $name,
-	    mult       => $mult,
-	    subfield   => '',
-	    id         => $person_id,
-	    supplement => '',
-	};
-	
-	$mult++;
-    }        
-
+	    $mult++;
+	}        
+    }
+    
     my @recipients = ();
     
-    # Recipient -> Koerperschaft
-    foreach my $recipient_ref (@{$letter_ref->{'_nested:gentz_letter__recipients'}}){	
-	my $name = $recipient_ref->{recipient}{_standard}{1}{text}{'de-DE'};
-	my $corporatebody_id = $recipient_ref->{recipient}{person}{_id};
-
-	push  @recipients, $name;
-	
-	my $mult = 1;
-	
-	if (!$recipients_done_ref->{$corporatebody_id}){
+    if (defined $item_ref->{'_nested:gentz_letter__recipients'}){
+	foreach my $recipient_ref (@{$item_ref->{'_nested:gentz_letter__recipients'}}){
 	    
-	    my $normitem_ref = {
-		'fields' => {},
+	    my @name = ();
+	    push @name, $recipient_ref->{givenname} if ($recipient_ref->{givenname});
+	    push @name, $recipient_ref->{familyname} if ($recipient_ref->{familyname});
+	    
+	    my $name = join(' ',@name);
+	    
+	    my $person_id = $recipient_ref->{_id};
+	    
+	    push  @recipients, $name;
+	    
+	    my $mult = 1;
+	    
+	    if (!$persons_done_ref->{$person_id}){
+		
+		my $normitem_ref = {
+		    'fields' => {},
+		};
+		
+		$normitem_ref->{id} = $person_id;
+		push @{$normitem_ref->{fields}{'0800'}}, {
+		    mult     => 1,
+		    subfield => '',
+		    content  => $name,
+		};
+		
+		if ($recipient_ref->{person_gndid}{conceptURI}){
+		    push @{$normitem_ref->{fields}{'0312'}}, { # PND/GND
+			mult     => 1,
+			subfield => '',
+			content  => $recipient_ref->{person_gndid}{conceptURI},
+		    };		
+		}
+		
+		print PERSON encode_json $normitem_ref, "\n";
+		
+		$persons_done_ref->{$person_id} = 1;
+	    }
+	    
+	    my $new_category = "0101";
+	    
+	    push @{$title_ref->{fields}{$new_category}}, {
+		content    => $name,
+		mult       => $mult,
+		subfield   => '',
+		id         => $person_id,
+		supplement => '',
 	    };
 	    
-	    $normitem_ref->{id} = $corporatebody_id;
-	    push @{$normitem_ref->{fields}{'0800'}}, {
-		mult     => 1,
-		subfield => '',
-		content  => $name,
-	    };
-	    
-	    print CORPORATEBODY encode_json $normitem_ref, "\n";
-
-	    $recipients_done_ref->{$corporatebody_id} = 1;
-	}
-	
-	my $new_category = "0200";
-	
-	push @{$title_ref->{fields}{$new_category}}, {
-	    content    => $name,
-	    mult       => $mult,
-	    subfield   => '',
-	    id         => $corporatebody_id,
-	    supplement => '',
-	};
-	
-	$mult++;
-    }        
-
+	    $mult++;
+	}        
+    }
+    
     # EasyDB-Exportsatz in Feld Bemerkung (0600)
 
     push @{$title_ref->{fields}{'0600'}}, {
@@ -208,87 +236,121 @@ while (my $jsonline = <IN>){
         
     # Titel
     
-    if ($letter_ref->{title}){
+    if ($item_ref->{title}){
 	push @{$title_ref->{fields}{'0331'}}, {
-	    content => $letter_ref->{title},
+	    content => $item_ref->{title},
 	}
     }
 
-    if ($letter_ref->{reference_publication_incipit}){
+    if ($item_ref->{reference_publication_incipit}){
 	push @{$title_ref->{fields}{'0335'}}, {
-	    content => $letter_ref->{reference_publication_incipit},
+	    content => $item_ref->{reference_publication_incipit},
 	}
     }
 
-    if ($letter_ref->{reference_publication}{_standard}{3}{text}{'de-DE'}){
-	push @{$title_ref->{fields}{'0591'}}, {
-	    content => $letter_ref->{reference_publication}{_standard}{3}{text}{'de-DE'},
+    if (defined $item_ref->{reference_publication}){
+	my $print_editors = $item_ref->{reference_publication}{'_nested:printed_publication__print_editors'};
+
+	if ($print_editors){
+	    foreach my $editor_ref (@{$item_ref->{reference_publication}{'_nested:printed_publication__print_editors'}}){
+		if ($editor_ref->{print_editor}){
+		    my $content = $editor_ref->{print_editor};
+		    
+		    if ($item_ref->{reference_publication}{print_additional_info}){
+			$content.="; [".$item_ref->{reference_publication}{print_additional_info}."]";
+		    }
+		    
+		    push @{$title_ref->{fields}{'0591'}}, {
+			content => $content,
+		    }		    
+		}
+	    }
 	}
     }
 
-    if ($letter_ref->{reference_publication}{_standard}{1}{text}{'de-DE'}){
+    if ($item_ref->{reference_publication}{print_title}){
+	my $content = $item_ref->{reference_publication}{print_title};
+
+	if ($item_ref->{reference_publication}{print_publication_year}){
+	    $content.=", (".$item_ref->{reference_publication}{print_publication_year}.")";
+	}
+	
 	push @{$title_ref->{fields}{'0590'}}, {
-	    content => $letter_ref->{reference_publication}{_standard}{1}{text}{'de-DE'},
+	    content => $content,
 	}
     }
 
-    if ($letter_ref->{reference_publication_date}){
+    if ($item_ref->{reference_publication_date}){
 	push @{$title_ref->{fields}{'0595'}}, {
-	    content => $letter_ref->{reference_publication_date},
+	    content => $item_ref->{reference_publication_date},
 	}
     }
     
-    if ($letter_ref->{reference_publication_page}){
+    if ($item_ref->{reference_publication_page}){
 	push @{$title_ref->{fields}{'0433'}}, {
-	    content => $letter_ref->{reference_publication_page},
+	    content => $item_ref->{reference_publication_page},
 	}
     }
 
     my $year = "";
     
-    if ($letter_ref->{sent_date_original}){
-	($year) = $letter_ref->{sent_date_original} =~m/(\d\d\d\d)/;
+    if ($item_ref->{sent_date_original}){
+	($year) = $item_ref->{sent_date_original} =~m/(\d\d\d\d)/;
 	
 	push @{$title_ref->{fields}{'0424'}}, {
-	    content => $letter_ref->{sent_date_original},
+	    content => $item_ref->{sent_date_original},
 	}
     }
 
-    if ($year || $letter_ref->{sent_date_year}){
-	$year = ($letter_ref->{sent_date_year})?$letter_ref->{sent_date_year}:$year;
+    if ($year || $item_ref->{sent_date_year}){
+	$year = ($item_ref->{sent_date_year})?$item_ref->{sent_date_year}:$year;
 	
 	push @{$title_ref->{fields}{'0425'}}, {
 	    content => $year,
 	}
     }
 
-    if ($letter_ref->{sent_location_normalized}{_standard}{1}{text}{'de-DE'}){
+    if ($item_ref->{sent_location_normalized}{name}){
 	push @{$title_ref->{fields}{'0410'}}, {
-	    content => $letter_ref->{sent_location_normalized}{_standard}{1}{text}{'de-DE'},
+	    content => $item_ref->{sent_location_normalized}{name},
+	}
+    }
+
+    if (defined $item_ref->{sent_location_normalized}{geoname} && $item_ref->{sent_location_normalized}{geoname}{conceptURI}){
+	push @{$title_ref->{fields}{'0410'}}, {
+	    subfield => "a",
+	    content => $item_ref->{sent_location_normalized}{geoname}{conceptURI},
 	}
     }
     
-    if ($letter_ref->{format_size}){
+    if (defined $item_ref->{sent_location_normalized}{gnd_location} && $item_ref->{sent_location_normalized}{gnd_location}{conceptURI}){
+	push @{$title_ref->{fields}{'0410'}}, {
+	    subfield => "b",
+	    content => $item_ref->{sent_location_normalized}{gnd_location}{conceptURI},
+	}
+    }
+    
+    if ($item_ref->{format_size}){
 	push @{$title_ref->{fields}{'0433'}}, {
-	    content => $letter_ref->{format_size},
+	    content => $item_ref->{format_size},
 	}
     }
 
-    if ($letter_ref->{language}{_standard}{1}{text}{'de-DE'}){
+    if ($item_ref->{language}{_standard}{1}{text}{'de-DE'}){
 	push @{$title_ref->{fields}{'0015'}}, {
-	    content => $letter_ref->{language}{_standard}{1}{text}{'de-DE'},
+	    content => $item_ref->{language}{_standard}{1}{text}{'de-DE'},
 	}
     }
 
-    if ($letter_ref->{archive}{_standard}{1}{text}{'de-DE'}){
+    if ($item_ref->{archive}{name}){
 	push @{$title_ref->{fields}{'0412'}}, {
-	    content => $letter_ref->{archive}{_standard}{1}{text}{'de-DE'},
+	    content => $item_ref->{archive}{name},
 	}
     }
 
-    if ($letter_ref->{provenance}){
+    if ($item_ref->{provenance}){
 	push @{$title_ref->{fields}{'1664'}}, {
-	    content => $letter_ref->{provenance},
+	    content => $item_ref->{provenance},
 	}
     }
 
@@ -300,28 +362,28 @@ while (my $jsonline = <IN>){
 	my $is_inhalt_ohne = 0;
 	
 	# Kategorie Mit Inhaltsrepraesentation: Volltext
-	if ($letter_ref->{'transcription_type'}){
+	if ($item_ref->{'transcription_type'}){
 	    eval {
-		if ($letter_ref->{transcription_type}{_standard}{1}{text}{'de-DE'} eq "digital"){
+		if ($item_ref->{transcription_type}{_standard}{1}{text}{'de-DE'} eq "digital"){
 		    $is_inhalt_volltext = 1;
 		}
 	    };
 	}
-	elsif (defined $letter_ref->{'_nested:gentz_letter__transcriptions'} && @{$letter_ref->{'_nested:gentz_letter__transcriptions'}}){
-	    foreach my $item_ref (@{$letter_ref->{'_nested:gentz_letter__transcriptions'}}){
-		if ($item_ref->{transscription_fulltext}){
+	elsif (defined $item_ref->{'_nested:gentz_letter__transcriptions'} && @{$item_ref->{'_nested:gentz_letter__transcriptions'}}){
+	    foreach my $subitem_ref (@{$item_ref->{'_nested:gentz_letter__transcriptions'}}){
+		if ($subitem_ref->{transscription_fulltext}){
 		    $is_inhalt_volltext = 1;
 		}
 	    }
 	}
 	
 	# Kategorie Mit Inhaltsrepraesentation: analog transkribiert
-	if ($letter_ref->{'transcription_type'}){
+	if ($item_ref->{'transcription_type'}){
 	    eval {
-		if ($letter_ref->{transcription_type}{_standard}{1}{text}{'de-DE'} eq "Handschrift" || $letter_ref->{transcription_type}{_standard}{1}{text}{'de-DE'} eq "Schreibmaschine"  || $letter_ref->{transcription_type}{_standard}{1}{text}{'de-DE'} eq "Ausdruck Textdatei" ){
+		if ($item_ref->{transcription_type}{_standard}{1}{text}{'de-DE'} eq "Handschrift" || $item_ref->{transcription_type}{_standard}{1}{text}{'de-DE'} eq "Schreibmaschine"  || $item_ref->{transcription_type}{_standard}{1}{text}{'de-DE'} eq "Ausdruck Textdatei" ){
 		    $is_inhalt_analog = 1;
 		}
-		if ($letter_ref->{transcription_type}{_standard}{1}{text}{'de-DE'} eq "ohne Transkription" ){
+		if ($item_ref->{transcription_type}{_standard}{1}{text}{'de-DE'} eq "ohne Transkription" ){
 		    $is_inhalt_ohne = 1;
 		}
 	    };
@@ -357,17 +419,17 @@ while (my $jsonline = <IN>){
 	# Todo: Im Export noch keine Inhalte zum Auswerten von is_digitalisat vorhanden!
 	
 	eval {
-	    if ($letter_ref->{'hardcopy_herterich'}{_standard}{1}{text}{'de-DE'} eq "Papier"){
+	    if (defined $item_ref->{'hardcopy_herterich'} && $item_ref->{'hardcopy_herterich'}{_standard}{1}{text}{'de-DE'} eq "Papier"){
 		$is_papierkopie_usb = 1;
 	    }
 	    
-	    if ($letter_ref->{'hardcopy_herterich'}{_standard}{1}{text}{'de-DE'} eq "Mikrofilm (digitalisiert)"){
+	    if (defined $item_ref->{'hardcopy_herterich'} && $item_ref->{'hardcopy_herterich'}{_standard}{1}{text}{'de-DE'} eq "Mikrofilm (digitalisiert)"){
 		$is_mikrofilm_digitalisiert = 1;
 	    }
 	    
-	    if (defined $letter_ref->{'_nested:gentz_letter__digitized_versions'} && @{$letter_ref->{'_nested:gentz_letter__digitized_versions'}}){
-		foreach my $item_ref (@{$letter_ref->{'_nested:gentz_letter__digitized_versions'}}){
-		    if (defined $item_ref->{digitized_version}){
+	    if (defined $item_ref->{'_nested:gentz_letter__digitized_versions'} && @{$item_ref->{'_nested:gentz_letter__digitized_versions'}}){
+		foreach my $subitem_ref (@{$item_ref->{'_nested:gentz_letter__digitized_versions'}}){
+		    if (defined $subitem_ref->{digitized_version}){
 			$is_digitalisat = 1;
 		    }
 		}
@@ -403,27 +465,27 @@ while (my $jsonline = <IN>){
 	
 	eval {
 
-	    if (defined $letter_ref->{'_nested:gentz_letter__records_collection_herterich'} && @{$letter_ref->{'_nested:gentz_letter__records_collection_herterich'}}){
-		foreach my $item_ref (@{$letter_ref->{'_nested:gentz_letter__records_collection_herterich'}}){
-		    if (defined $item_ref->{collection_herterich} && $item_ref->{collection_herterich} =~m/^HERT/){
+	    if (defined $item_ref->{'_nested:gentz_letter__records_collection_herterich'} && @{$item_ref->{'_nested:gentz_letter__records_collection_herterich'}}){
+		foreach my $subitem_ref (@{$item_ref->{'_nested:gentz_letter__records_collection_herterich'}}){
+		    if (defined $subitem_ref->{collection_herterich} && $subitem_ref->{collection_herterich} =~m/^HERT/){
 			$is_sammlung_herterich = 1;
 		    }
 		}
 		
 	    }
-	    elsif (defined $letter_ref->{contentdm_id}){
+	    elsif (defined $item_ref->{contentdm_id}){
 		$is_sammlung_herterich = 1;
 	    }
 
 	    if ($is_sammlung_herterich){
-		if ($letter_ref->{archive}{_standard}{1}{text}{'de-DE'}){
+		if ($item_ref->{archive}{name}){
 		    $is_herterich_archiv = 1;
 		}
 		
-		if (! defined $letter_ref->{reference_publication}{_standard}{1}{text}{'de-DE'} && ! @${$letter_ref->{'_nested:gentz_letter__doublets'}}){
+		if (! defined $item_ref->{reference_publication}{print_title} && ! @${$item_ref->{'_nested:gentz_letter__doublets'}}){
 		    $is_herterich_ungedruckt = 1;
 		}
-		if ($letter_ref->{reference_publication}{_standard}{1}{text}{'de-DE'} || @${$letter_ref->{'_nested:gentz_letter__doublets'}}){
+		if ($item_ref->{reference_publication}{print_title} || @${$item_ref->{'_nested:gentz_letter__doublets'}}){
 		    $is_herterich_gedruckt = 1;
 		}
 	    }
@@ -463,22 +525,22 @@ while (my $jsonline = <IN>){
 	my $is_druckpublikation = 0;
 	
 	eval {
-	    if (defined $letter_ref->{based_on}){
-		if ($letter_ref->{based_on}{_standard}{1}{text}{'de-DE'} eq "Druckpublikation"){
+	    if (defined $item_ref->{based_on}){
+		if ($item_ref->{based_on}{_standard}{1}{text}{'de-DE'} eq "Druckpublikation"){
 		    $is_druckpublikation = 1;
 		}
 	    }
 	    
-	    if (defined $letter_ref->{reference_publication}){
+	    if (defined $item_ref->{reference_publication}){
 		$is_referenz_publikation = 1;
 		
-		if ($letter_ref->{archive}{_standard}{1}{text}{'de-DE'}){
+		if ($item_ref->{archive}{name}){
 		    $is_druck_archiv = 1;
 		}
 		
-		if (@${$letter_ref->{'_nested:gentz_letter__doublets'}}){
-		    foreach my $item_ref (@${$letter_ref->{'_nested:gentz_letter__doublets'}}){
-			if ($item_ref->{'doublet_publication'}){			
+		if (@${$item_ref->{'_nested:gentz_letter__doublets'}}){
+		    foreach my $subitem_ref (@${$item_ref->{'_nested:gentz_letter__doublets'}}){
+			if ($subitem_ref->{'doublet_publication'}){			
 			    $is_druck_mehrfach = 1;
 			}
 		    }
@@ -514,7 +576,7 @@ while (my $jsonline = <IN>){
     
     # URLs
 
-    foreach my $transcription_ref (@{$letter_ref->{'_nested:gentz_letter__transcriptions'}}){
+    foreach my $transcription_ref (@{$item_ref->{'_nested:gentz_letter__transcriptions'}}){
 
 	if ($transcription_ref->{transcription_fulltext}){
 	    push @{$title_ref->{fields}{'6053'}}, {

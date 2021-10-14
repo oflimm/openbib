@@ -113,7 +113,7 @@ while (my $jsonline = <IN>){
 	$title_ref->{id} = $item_ref->{contentdm_id};
     }
     else {
-	$title_ref->{id} = $item_ref->{_system_object_id};
+	$title_ref->{id} = $item_ref->{_id};
     }
 
     my @senders = ();
@@ -364,7 +364,7 @@ while (my $jsonline = <IN>){
 	# Kategorie Mit Inhaltsrepraesentation: Volltext
 	if ($item_ref->{'transcription_type'}){
 	    eval {
-		if ($item_ref->{transcription_type}{_standard}{1}{text}{'de-DE'} eq "digital"){
+		if ($item_ref->{transcription_type}{'de-DE'} eq "digital"){
 		    $is_inhalt_volltext = 1;
 		}
 	    };
@@ -380,10 +380,10 @@ while (my $jsonline = <IN>){
 	# Kategorie Mit Inhaltsrepraesentation: analog transkribiert
 	if ($item_ref->{'transcription_type'}){
 	    eval {
-		if ($item_ref->{transcription_type}{_standard}{1}{text}{'de-DE'} eq "Handschrift" || $item_ref->{transcription_type}{_standard}{1}{text}{'de-DE'} eq "Schreibmaschine"  || $item_ref->{transcription_type}{_standard}{1}{text}{'de-DE'} eq "Ausdruck Textdatei" ){
+		if ($item_ref->{transcription_type}{'de-DE'} eq "Handschrift" || $item_ref->{transcription_type}{'de-DE'} eq "Schreibmaschine"  || $item_ref->{transcription_type}{'de-DE'} eq "Ausdruck Textdatei" ){
 		    $is_inhalt_analog = 1;
 		}
-		if ($item_ref->{transcription_type}{_standard}{1}{text}{'de-DE'} eq "ohne Transkription" ){
+		if ($item_ref->{transcription_type}{'de-DE'} eq "ohne Transkription" ){
 		    $is_inhalt_ohne = 1;
 		}
 	    };
@@ -428,11 +428,7 @@ while (my $jsonline = <IN>){
 	    }
 	    
 	    if (defined $item_ref->{'_nested:gentz_letter__digitized_versions'} && @{$item_ref->{'_nested:gentz_letter__digitized_versions'}}){
-		foreach my $subitem_ref (@{$item_ref->{'_nested:gentz_letter__digitized_versions'}}){
-		    if (defined $subitem_ref->{digitized_version}){
-			$is_digitalisat = 1;
-		    }
-		}
+		$is_digitalisat = 1;
 	    }
 	    
 	};
@@ -526,7 +522,7 @@ while (my $jsonline = <IN>){
 	
 	eval {
 	    if (defined $item_ref->{based_on}){
-		if ($item_ref->{based_on}{_standard}{1}{text}{'de-DE'} eq "Druckpublikation"){
+		if ($item_ref->{based_on}{'de-DE'} eq "Druckpublikation"){
 		    $is_druckpublikation = 1;
 		}
 	    }
@@ -587,25 +583,25 @@ while (my $jsonline = <IN>){
 	
 
 	# URLs
-	foreach my $file_ref (@{$transcription_ref->{transcription_file}}){
+	my $file_ref = $transcription_ref->{transcription_file} ;
 
-	    # Volles Bild zum Download
-	    if ($file_ref->{versions}{original}{url}){
-		push @{$title_ref->{fields}{'0662'}}, {
-		    content => $file_ref->{versions}{original}{download_url},
-		};
-		$is_digital = 1;
-	    }
-
-	    # Thumbnail
-	    if ($file_ref->{versions}{small}{url}){
-		push @{$title_ref->{fields}{'2662'}}, {
-		    content => $file_ref->{versions}{small}{url},
-		};
-		$is_digital = 1;
-	    }	    
+	# Volles Bild zum Download
+	if ($file_ref->{versions}{original}{url}){
+	    push @{$title_ref->{fields}{'0662'}}, {
+		content => $file_ref->{versions}{original}{download_url},
+	    };
+	    $is_digital = 1;
 	}
+	
+	# Thumbnail
+	if ($file_ref->{versions}{small}{url}){
+	    push @{$title_ref->{fields}{'2662'}}, {
+		content => $file_ref->{versions}{small}{url},
+	    };
+	    $is_digital = 1;
+	}	    
     }
+    
 
     if ($is_digital){
 	push @{$title_ref->{fields}{'4400'}}, {

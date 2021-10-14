@@ -179,13 +179,15 @@ while (<TITLE>){
         $title_has_parent{$titleid} = $title_ref->{fields}{'0004'}[0]{content};
     }
 
-    if (defined $title_ref->{fields}{'4715'}){
-        foreach my $item (@{$title_ref->{fields}{'4715'}}){
-            if ($item->{content} eq "edz"){
-                push @{$element_ref}, "DE-38-EDZ";
-            }
-        }
-    }
+    # Das EDZ wurde aufgeloest und die Bestaende sind im Magazin
+    #
+    # if (defined $title_ref->{fields}{'4715'}){
+    #     foreach my $item (@{$title_ref->{fields}{'4715'}}){
+    #         if ($item->{content} eq "edz"){
+    #             push @{$element_ref}, "DE-38-EDZ";
+    #         }
+    #     }
+    # }
 
     # Thematische Markierung fuer ZB-Kunst
     if (defined $title_ref->{fields}{'4723'}){

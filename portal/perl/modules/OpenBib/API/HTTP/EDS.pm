@@ -228,8 +228,8 @@ sub send_search_request {
     push @search_options, "highlight=n";
     push @search_options, "includefacets=y";
     push @search_options, "autosuggest=n";
-    push @search_options, "view=brief";
-    #push @search_options, "view=detailed";    
+    #push @search_options, "view=brief";
+    push @search_options, "view=detailed";    
 
     # necessary to make the fulltext limiter work
     if ($searchft) {

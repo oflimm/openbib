@@ -13,6 +13,9 @@
             [%- END -%]
             [%- END -%]
             [%- END -%]
+            [%- IF normdata.${"T0578"} %]
+            <mods:identifier type="fingerprint">[%- normdata.${"T0578"}.first.content %]</mods:identifier>
+            [%- END -%]
             [%- IF normdata.${"T0580"} %]
                 [%- FOREACH number IN normdata.${"T0580"} -%]
                 [%- IF number.content.match('VD16') %]

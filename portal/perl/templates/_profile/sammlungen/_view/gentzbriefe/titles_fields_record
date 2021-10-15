@@ -1,35 +1,23 @@
 [%- PROCESS common/subtemplate name="local_config" -%] 
 [%- IF representation == '' || representation == 'html' ;
 
-IF field == '1664' ;
+    IF field == '1664' ;
        field_description = msg.maketext("Provenienzen");
     ELSIF field == '0100' ;
-       field_description = msg.maketext("Verfasser");
-       searchfield = 'personstring' ;
-    ELSIF field == '0200' ;
-       field_description = msg.maketext("Körperschaft");
-       searchfield = 'corporatebodystring' ;
-    ELSIF field == '0700' ;
-       field_description = msg.maketext("Klassifikation");
-       searchfield = 'classificationstring' ;
-    ELSIF field == '0710' ;
-       field_description = msg.maketext("Schlagwort");
-       searchfield = 'subjectstring' ;
-    ELSIF field == '0410' ;
-       field_description = msg.maketext("Verlagsort");
-       searchfield = 'ft0410' ;
+       field_description = msg.maketext("T0100-gentzdigital"); # Briefaussteller
+       searchfield = 'ft0100' ;
+    ELSIF field == '0101' ;
+       field_description = msg.maketext("T0101-gentzdigital"); # Briefempfaenger
+       searchfield = 'ft0101' ;
+    ELSIF field == '0412' ;
+       field_description = msg.maketext("Herkunft");
+       searchfield = 'ft0412' ;
     ELSIF field == '0424' ;
        field_description = msg.maketext("T${field}");
        searchfield = 'yearstring' ;
     ELSIF field == '0425' ;
        field_description = msg.maketext("Jahr");
        searchfield = 'yearstring' ;
-    ELSIF field == '0200' ;
-       field_description = 'Briefempfänger';
-       searchfield = 'corporatebodystring' ;
-    ELSIF field == '0100' ;
-       field_description = 'Briefaussteller';
-       searchfield = 'personstring' ;
     ELSE ;
        field_description = msg.maketext("T${field}");
     END ;

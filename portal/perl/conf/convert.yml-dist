@@ -7751,44 +7751,16 @@ convtab:
         '':
           index:
             'ft0100': 1
+            't0100': 1
+            'freesearch': 1
           facet:
             'person': 1
       '0101':
         '':
           index:
             'ft0101': 1
-          facet:
-            'person': 1
-      '0102':
-        '':
-          index:
-            'ft0102': 1
-          facet:
-            'person': 1
-      '0103':
-        '':
-          index:
-            'ft0103': 1
-          facet:
-            'person': 1
-      '0110':
-        '':
-          facet:
-            'person': 1
-      '0111':
-        '':
-          facet:
-            'person': 1
-      '0112':
-        '':
-          facet:
-            'person': 1
-      '0200':
-        '':
-          facet:
-            'corporatebody': 1
-      '0201':
-        '':
+            't0101': 1
+            'freesearch': 1
           facet:
             'corporatebody': 1
       '0304':         # EST

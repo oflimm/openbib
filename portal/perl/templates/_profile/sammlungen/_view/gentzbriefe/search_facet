@@ -466,6 +466,35 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 </div>
 [% END %]
 
+<!-- Begin custom5 Ueberlieferung facet -->
+[%         IF facets.defined('custom5') && facets.custom5.size > 0 %]
+        <h4 class="ob-facet-title [% IF facets.custom5.size > 0 %]collapse[% ELSE %]collapsed[% END %]" data-toggle="collapse" data-target="#group-custom5" aria-expanded=[% IF facets.custom5.size > 0 %]"true"[% ELSE %]"false"[% END %]>
+           [% msg.maketext("Überlieferung") %] 
+        </h4>
+        <ul id="group-custom5" class="list-group in collapse [% IF facets.custom5.size > 0 %]show[% END %]">
+[%             FOREACH termitem IN facets.custom5 ;
+
+                  LAST IF loop.count > 25 ;
+%]
+[% IF facets.custom5.size > 5 && loop.count == 5 %]
+<span id="dd_custom5_[% database %]_toggle"></span>
+<div id="dd_custom5_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').ft0470.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% searchterm %]</a> <span class="badge badge-pill badge-secondary ml-auto">[% termitem.1 %]</span></li>
+[%             END %]
+[% IF facets.custom5.size > 5 %]
+</div>
+[% END %]
+</ul>
+<p/>
+[%         END %]
+<!-- End custom5 facet -->
+
 [%# USE dumper;dumper.dump(facets.custom1)%]
 <!-- Begin custom1 Mit Inhaltsrepraesentation facet -->
 [%         IF facets.defined('custom1') && facets.custom1.size > 0 %]

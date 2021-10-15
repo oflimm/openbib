@@ -366,12 +366,12 @@ while (my $jsonline = <IN>){
     }
 
     # Auswertung Kategorie 'Mit Inhaltsrepraesentation'
-    {
-	
-	my $is_inhalt_volltext = 0;
-	my $is_inhalt_analog = 0;
-	my $is_inhalt_ohne = 0;
-	
+    
+    my $is_inhalt_volltext = 0;
+    my $is_inhalt_analog = 0;
+    my $is_inhalt_ohne = 0;
+    
+    {	
 	# Kategorie Mit Inhaltsrepraesentation: Volltext
 	if ($item_ref->{'transcription_type'}){
 	    eval {
@@ -421,12 +421,13 @@ while (my $jsonline = <IN>){
     }
     
     # Auswergung Kategorie 'Kopie Original'
+    
+    my $is_papierkopie_usb = 0;
+    my $is_mikrofilm_digitalisiert = 0;
+    my $is_digitalisat = 0;
+    
     {
 
-	my $is_papierkopie_usb = 0;
-	my $is_mikrofilm_digitalisiert = 0;
-	my $is_digitalisat = 0;
-	
 	# Todo: Im Export noch keine Inhalte zum Auswerten von is_digitalisat vorhanden!
 	
 	eval {
@@ -463,12 +464,13 @@ while (my $jsonline = <IN>){
     }
 
     # Auswertung Kategorie 'Sammlung Herterich'
-    {
 
-	my $is_sammlung_herterich = 0;
-	my $is_herterich_ungedruckt = 0;
-	my $is_herterich_gedruckt = 0;
-	my $is_herterich_archiv = 0;
+    my $is_sammlung_herterich = 0;
+    my $is_herterich_ungedruckt = 0;
+    my $is_herterich_gedruckt = 0;
+    my $is_herterich_archiv = 0;
+    
+    {
 	
 	eval {
 
@@ -524,12 +526,13 @@ while (my $jsonline = <IN>){
     }
 
     # Auswertung Kategorie 'Druckpublikationen'
+    
+    my $is_druck_mehrfach = 0;
+    my $is_druck_archiv = 0;
+    my $is_referenz_publikation = 0;
+    my $is_druckpublikation = 0;
+    
     {
-
-	my $is_druck_mehrfach = 0;
-	my $is_druck_archiv = 0;
-	my $is_referenz_publikation = 0;
-	my $is_druckpublikation = 0;
 	
 	eval {
 	    if (defined $item_ref->{based_on}){
@@ -577,6 +580,31 @@ while (my $jsonline = <IN>){
 	#     }
 	# }
 	
+    }
+
+    # Auswertung Kategorie Ueberlieferung
+
+    my $is_gedruckt = 0;
+    my $is_handschriftlich = 0;
+
+    {
+	if ($is_referenz_publikation || $is_druck_mehrfach){
+	    $is_gedruckt = 1;
+	}
+	else {
+	    $is_handschriftlich = 1;
+	}
+	
+	if ($is_gedruckt){
+	    push @{$title_ref->{fields}{'0470'}}, {
+		content => 'gedruckt',
+	    }
+	}
+	elsif ($is_handschriftlich){
+	    push @{$title_ref->{fields}{'0470'}}, {
+		content => 'gedruckt',
+	    }
+	}
     }
     
     my $is_digital = 0;

@@ -112,8 +112,12 @@ while (my $jsonline = <IN>){
     if ($item_ref->{contentdm_id}){
 	$title_ref->{id} = $item_ref->{contentdm_id};
     }
-    else {
+    elsif ($item_ref->{_id}) {
 	$title_ref->{id} = $item_ref->{_id};
+    }
+    else {
+	$logger->error("No id found for record: ".YAML::Dump($item_ref));
+	exit;
     }
 
     my @senders = ();

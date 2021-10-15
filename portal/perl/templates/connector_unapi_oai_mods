@@ -55,17 +55,17 @@
                     <mods:displayForm>[% item.namedata.displayname %]</mods:displayForm>
                     <mods:role>
                         [%- IF item.field == "T0100" %]
-                        <mods:roleTerm type="code" authority="marcrelator" authorityURI="https://id.loc.gov/vocabulary/relators" valueURI="https://id.loc.gov/vocabulary/relators/aut">aut</mods:roleTerm>
+                        <mods:roleTerm type="code" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators" valueURI="http://id.loc.gov/vocabulary/relators/aut">aut</mods:roleTerm>
                         [%- ELSIF item.supplement.match('Urheb') %]
-                        <mods:roleTerm type="code" authority="marcrelator" authorityURI="https://id.loc.gov/vocabulary/relators" valueURI="https://id.loc.gov/vocabulary/relators/aut">aut</mods:roleTerm>
+                        <mods:roleTerm type="code" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators" valueURI="http://id.loc.gov/vocabulary/relators/aut">aut</mods:roleTerm>
                         [%- ELSIF item.supplement.match('Hrsg') %]
-                        <mods:roleTerm type="code" authority="marcrelator" authorityURI="https://id.loc.gov/vocabulary/relators" valueURI="https://id.loc.gov/vocabulary/relators/edt">edt</mods:roleTerm>
+                        <mods:roleTerm type="code" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators" valueURI="http://id.loc.gov/vocabulary/relators/edt">edt</mods:roleTerm>
                         [%- ELSIF item.supplement.match('Übers') %]
-                        <mods:roleTerm type="code" authority="marcrelator" authorityURI="https://id.loc.gov/vocabulary/relators" valueURI="https://id.loc.gov/vocabulary/relators/trl">trl</mods:roleTerm>
+                        <mods:roleTerm type="code" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators" valueURI="http://id.loc.gov/vocabulary/relators/trl">trl</mods:roleTerm>
                         [%- ELSIF item.supplement.match('Bearb') %]
-                        <mods:roleTerm type="code" authority="marcrelator" authorityURI="https://id.loc.gov/vocabulary/relators" valueURI="https://id.loc.gov/vocabulary/relators/edt">edt</mods:roleTerm>
+                        <mods:roleTerm type="code" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators" valueURI="http://id.loc.gov/vocabulary/relators/edt">edt</mods:roleTerm>
                         [%- ELSE %]
-                        <mods:roleTerm type="code" authority="marcrelator" authorityURI="https://id.loc.gov/vocabulary/relators" valueURI="https://id.loc.gov/vocabulary/relators/oth">oth</mods:roleTerm>
+                        <mods:roleTerm type="code" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators" valueURI="http://id.loc.gov/vocabulary/relators/oth">oth</mods:roleTerm>
                         [%- IF item.supplement %]
                         <mods:roleTerm type="text">[%- item.supplement | replace('¬', '') %]</mods:roleTerm>
                         [%- END %]
@@ -80,15 +80,15 @@
                 <mods:namePart>[% item.namedata %]</mods:namePart>
                 <mods:role>
                     [%- IF item.field == "T0200" %]
-                    <mods:roleTerm type="code" authority="marcrelator" authorityURI="https://id.loc.gov/vocabulary/relators" valueURI="https://id.loc.gov/vocabulary/relators/aut">aut</mods:roleTerm>
+                    <mods:roleTerm type="code" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators" valueURI="http://id.loc.gov/vocabulary/relators/aut">aut</mods:roleTerm>
                     [%- ELSIF item.supplement.match('Hrsg') %]
-                    <mods:roleTerm type="code" authority="marcrelator" authorityURI="https://id.loc.gov/vocabulary/relators" valueURI="https://id.loc.gov/vocabulary/relators/edt">edt</mods:roleTerm>
+                    <mods:roleTerm type="code" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators" valueURI="http://id.loc.gov/vocabulary/relators/edt">edt</mods:roleTerm>
                     [%- ELSIF item.supplement.match('Übers') %]
-                    <mods:roleTerm type="code" authority="marcrelator" authorityURI="https://id.loc.gov/vocabulary/relators" valueURI="https://id.loc.gov/vocabulary/relators/trl">trl</mods:roleTerm>
+                    <mods:roleTerm type="code" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators" valueURI="http://id.loc.gov/vocabulary/relators/trl">trl</mods:roleTerm>
                     [%- ELSIF item.supplement.match('Bearb') %]
-                    <mods:roleTerm type="code" authority="marcrelator" authorityURI="https://id.loc.gov/vocabulary/relators" valueURI="https://id.loc.gov/vocabulary/relators/edt">edt</mods:roleTerm>
+                    <mods:roleTerm type="code" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators" valueURI="http://id.loc.gov/vocabulary/relators/edt">edt</mods:roleTerm>
                     [%- ELSE %]
-                    <mods:roleTerm type="code" authority="marcrelator" authorityURI="https://id.loc.gov/vocabulary/relators" valueURI="https://id.loc.gov/vocabulary/relators/oth">oth</mods:roleTerm>
+                    <mods:roleTerm type="code" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators" valueURI="http://id.loc.gov/vocabulary/relators/oth">oth</mods:roleTerm>
                     [%- IF item.supplement %]
                         <mods:roleTerm type="text">[%- item.supplement %] | replace('¬', '') %]</mods:roleTerm>
                     [%- END %]
@@ -97,6 +97,11 @@
             </mods:name>
             [%- END -%]
             [%- END -%]
+            [%-
+            IF normdata.${"T5005"}.first;
+            super = from_json(normdata.${"T5005"}.first.content);
+            all_super = normdata.${"T5005"};
+            END; %]
             [%- IF normdata.${"T0331"} %]
             <mods:titleInfo>
                 <mods:title>[% normdata.${"T0331"}.first.content %]</mods:title>
@@ -104,33 +109,30 @@
                 <mods:subTitle>[% item.content %]</mods:subTitle>
                 [%- END %]
             </mods:titleInfo>
+            [%- ELSIF normdata.${"T0089"} && super.fields.${'0331'}.first.content %]
+            <mods:titleInfo>
+                <mods:title>[%- super.fields.${"0331"}.first.content %] / [% normdata.${"T0089"}.first.content %]</mods:title>
+            </mods:titleInfo>
             [%- END %]
-            [%- IF normdata.${"T0370"} -%]
-            [%- FOREACH alt_title IN normdata.${"T0370"} %]
+            [%- IF title_list && title_list.size %]
+            [%-FOREACH title IN title_list %]
+            [%- IF title.field == "T0370" || title.field == "T0361" -%]
             <mods:titleInfo type="alternative">
-                <mods:title>[% alt_title.content %]</mods:title>
+                <mods:title>[% title.title %]</mods:title>
             </mods:titleInfo>
             [%- END %]
-            [%- END %]
-            [%- IF normdata.${"T0341"} -%]
-            [%- FOREACH title_trans IN normdata.${"T0341"} -%]
+            [%- IF title.field == "T0341" %]
             <mods:titleInfo type="translated">
-                <mods:title>[% title_trans.content %]</mods:title>
+                <mods:title>[% title.title %]</mods:title>
+            </mods:titleInfo>
+            [%- END %]
+            [%- IF title.field == "T0304" || title.field == "T0310" || title.field == "T7303" -%]
+            <mods:titleInfo type="uniform" [%- IF title.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/[% title.gnd %]" [%END%]>
+                <mods:title>[% title.title %]</mods:title>
             </mods:titleInfo>
             [%- END %]
             [%- END %]
-            [%- IF uniform_title_list && uniform_title_list.size %]
-            [%-FOREACH uniform_title IN uniform_title_list %]
-            <mods:titleInfo type="uniform" [%- IF uniform_title.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/[% uniform_title.gnd %]" [%END%]>
-                <mods:title>[% uniform_title.title %]</mods:title>
-            </mods:titleInfo>
             [%- END %]
-            [%- END %]
-            [%-
-            IF normdata.${"T5005"}.first;
-            super = from_json(normdata.${"T5005"}.first.content);
-            all_super = normdata.${"T5005"};
-            END; %]
             <mods:originInfo eventType="publication">
                 [%- IF place_list && place_list.size %]
                 <mods:place>
@@ -168,20 +170,20 @@
                 [%- END %]
                 [%- IF date_values.end_date %]
                 <mods:dateIssued encoding="iso8601" point="end">[% date_values.end_date %]</mods:dateIssued>
-                    [%- IF date_values.date_norm %]
-                    <mods:dateIssued>[%- date_values.date_norm %]</mods:dateIssued>
-                    [%- END %]
-                    [%- IF date_values.date %]
-                    <mods:dateIssued>[%- date_values.date%]</mods:dateIssued>
-                    [%- END %]
+                [%- IF date_values.date_norm %]
+                <mods:dateIssued>[%- date_values.date_norm %]</mods:dateIssued>
+                [%- END %]
+                [%- IF date_values.date %]
+                <mods:dateIssued>[%- date_values.date%]</mods:dateIssued>
+                [%- END %]
                 [%- END %]
                 [%- UNLESS date_values.start_date %]
-                    [%- IF date_values.date_norm %]
-                    <mods:dateIssued keyDate="yes" encoding="iso8601">[% date_values.date_norm%]</mods:dateIssued>
-                     [%- END %]
-                     [%- IF date_values.date %]
-                    <mods:dateIssued>[% date_values.date %]</mods:dateIssued>
-                     [%- END %]
+                [%- IF date_values.date_norm %]
+                <mods:dateIssued keyDate="yes" encoding="iso8601">[% date_values.date_norm%]</mods:dateIssued>
+                [%- END %]
+                [%- IF date_values.date %]
+                <mods:dateIssued>[% date_values.date %]</mods:dateIssued>
+                [%- END %]
                 [%- END %]
                 [%- IF normdata.${"T0405"} %]
                     <mods:dateIssued>[%- normdata.${"T0405"}.first.content %]</mods:dateIssued>
@@ -209,8 +211,8 @@
             </mods:language>
             [%-END%]
             [%- IF normdata.${"T0433"} || normdata.${"T0435"} || normdata.${"T0434"}  %]
-                <mods:physicalDescription>
-                [%- FOREACH extend IN normdata.${"T0433"} %]
+            <mods:physicalDescription>
+            [%- FOREACH extend IN normdata.${"T0433"} %]
                 <mods:extent>[%- extend.content %]</mods:extent>
                 [%-END%]
                 [%- FOREACH extend IN normdata.${"T0434"} %]
@@ -219,16 +221,14 @@
                 [%- FOREACH extend IN normdata.${"T0435"} %]
                 <mods:extent>[%- extend.content %]</mods:extent>
                 [%-END%]
-                </mods:physicalDescription>
-            [%-END %]
-            [%- FOREACH provenance IN provenance_data %]
-            <mods:note type="ownership">
-                [% provenance.prov_signatur %]||[% provenance.prov_text %][%- IF provenance.prov_gnd %]||http://d-nb.info/gnd/[% provenance.prov_gnd %][%END%][%- IF provenance.prov_norm %]||[% provenance.prov_norm %][%- END %]
-            </mods:note>
+            </mods:physicalDescription>
+            [%-END -%]
+            [%-FOREACH provenance IN provenance_data -%]
+            <mods:note type="ownership">[% provenance.prov_signatur %]||[% provenance.prov_text %][%- IF provenance.prov_gnd %]||http://d-nb.info/gnd/[% provenance.prov_gnd %][%END%][%- IF provenance.prov_norm %]||[% provenance.prov_norm %][%- END %]</mods:note>
             [%- END %]
             [%- FOREACH uniform_publisher IN uniform_publisher_list %]
             [%- IF uniform_publisher.gnd -%] 
-                <mods:note type="statement of responsibility">Publisher||[%- uniform_publisher.publisher_name %][%- IF uniform_publisher.publisher_place %] ([%- uniform_publisher.publisher_place -%])[%- END %]||http://d-nb.info/gnd/[% uniform_publisher.gnd %]</mods:note>
+            <mods:note type="statement of responsibility">Publisher||[%- uniform_publisher.publisher_name %][%- IF uniform_publisher.publisher_place %] ([%- uniform_publisher.publisher_place -%])[%- END %]||http://d-nb.info/gnd/[% uniform_publisher.gnd %]</mods:note>
             [%- END %]
             [%- END %]
             [%- FOREACH item IN normdata.${"T4700"} %]
@@ -307,6 +307,15 @@
                             [%- END %]
                         </mods:detail>
             </mods:part>
+            [%- END %]
+            [%- END %]
+            [%- IF contained_works && contained_works.size %]
+            [%-FOREACH contained_work IN contained_works %]
+            <mods:part type="constituent">
+             <mods:detail>
+              <mods:title>[%- IF contained_work.person %][%contained_work.person %]: [%-END%][%- contained_work.title %]</mods:title>
+             </mods:detail>
+            </mods:part> 
             [%- END %]
             [%- END %]
         [%- END %]

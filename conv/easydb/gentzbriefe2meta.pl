@@ -314,25 +314,32 @@ while (my $jsonline = <IN>){
 	}
     }
 
+
+    my $location_mult = 1;
+        
     if ($item_ref->{sent_location_normalized}{name}){
 	push @{$title_ref->{fields}{'0410'}}, {
+	    mult => $location_mult,
 	    content => $item_ref->{sent_location_normalized}{name},
 	}
     }
 
     if (defined $item_ref->{sent_location_normalized}{geoname} && $item_ref->{sent_location_normalized}{geoname}{conceptURI}){
-	push @{$title_ref->{fields}{'0410'}}, {
+	push @{$title_ref->{fields}{'2410'}}, {
+	    mult => $location_mult,
 	    subfield => "a",
 	    content => $item_ref->{sent_location_normalized}{geoname}{conceptURI},
 	}
     }
     
     if (defined $item_ref->{sent_location_normalized}{gnd_location} && $item_ref->{sent_location_normalized}{gnd_location}{conceptURI}){
-	push @{$title_ref->{fields}{'0410'}}, {
+	push @{$title_ref->{fields}{'2410'}}, {
+	    mult => $location_mult,
 	    subfield => "b",
 	    content => $item_ref->{sent_location_normalized}{gnd_location}{conceptURI},
 	}
     }
+
     
     if ($item_ref->{format_size}){
 	push @{$title_ref->{fields}{'0433'}}, {

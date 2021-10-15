@@ -7875,6 +7875,12 @@ convtab:
           index:
             'source': 1
             'freesearch': 1
+      '0470': # Facette Ueberlieferung
+        '':
+          index:
+            'ft0470': 1
+          facet:
+            'custom5': 1
       '0508':
         '':
           index:

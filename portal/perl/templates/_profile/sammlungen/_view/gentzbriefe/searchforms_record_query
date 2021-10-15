@@ -14,25 +14,21 @@
 </div>
 [% END %]
 
-[% IF available_searchfields.person.active %]
-[%- cgiparam = searchfield.person.prefix;
-    this_searchfield = 'person';
+[%- cgiparam = searchfield.t0100.prefix;
+    this_searchfield = 'f0100';
  -%]
 <div class="form-group">
 <label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0100-gentzdigital") %]</label>
 <input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
-[% END %]
 
-[% IF available_searchfields.corporatebody.active %]
-[%- cgiparam = searchfield.corporatebody.prefix;
-    this_searchfield = 'corporatebody';
+[%- cgiparam = searchfield.t0101.prefix;
+    this_searchfield = 't0101';
  -%]
 <div class="form-group">
 <label for="[% cgiparam %]">[% msg.maketext("T0200-gentzdigital") %]</label>
 <input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
-[% END %]
 
 [% IF available_searchfields.title.active %]
 [%- cgiparam = searchfield.title.prefix;

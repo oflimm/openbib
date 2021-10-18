@@ -98,6 +98,40 @@ if (!$type){
   exit;
 }
 
+my $is_person_field_ref = {
+    '0100' => 1,
+    '0101' => 1,
+    '0102' => 1,
+    '0103' => 1,
+    '1800' => 1,
+    '4308' => 1,
+};
+
+my $is_corporatebody_field_ref = {
+    '0200' => 1,
+    '0201' => 1,
+    '1802' => 1,
+    '4307' => 1,
+};
+
+my $is_classification_field_ref = {
+    '0700' => 1,
+};
+
+my $is_subject_field_ref = {
+    '0710' => 1,
+    '0902' => 1,
+    '0907' => 1,
+    '0912' => 1,
+    '0917' => 1,
+    '0922' => 1,
+    '0927' => 1,
+    '0932' => 1,
+    '0937' => 1,
+    '0942' => 1,
+    '0947' => 1,
+};
+
 # Typ 1 => Meistaufgerufene Titel pro Datenbank
 if ($type == 1){
     my @databases = ();
@@ -1013,8 +1047,9 @@ if ($type == 13){
 
 # Typ 14 => Meistvorkommender Feldinhalt pro Datenbank
 if ($type == 14 && $field){
+    
     my @databases = ();
-
+    
     if ($database){
         push @databases, $database;
     }
@@ -1027,43 +1062,116 @@ if ($type == 14 && $field){
 
         my $maxcount=0;
 	my $mincount=999999999;
-
+	
         my $catalog = new OpenBib::Catalog({ database => $database });
-
+	
         my $bestof_ref=[];
-
-        # DBI: "select count(distinct id) as scount, content from title where category=425 and content regexp ? group by content order by scount DESC" mit RegEXP "^[0-9][0-9][0-9][0-9]\$"
-        my $usage = $catalog->get_schema->resultset('Title')->search_rs(
-            {
-                'title_fields.field' => $field,
-            },
-            {
-                select   => ['title_fields.content', {'count' => 'title_fields.titleid'}],
-                as       => ['thiscontent','titlecount'],
-                join     => ['title_fields'],
-                group_by => ['title_fields.content'],
-                order_by => { -desc => \'count(title_fields.titleid)' },
-                rows     => $num,
-            }
-        );
-
-        foreach my $item ($usage->all){
-            my $content = $item->get_column('thiscontent');
-            my $count   = $item->get_column('titlecount');
-
-            if ($maxcount < $count){
-                $maxcount = $count;
-            }
-
-            if ($mincount > $count){
-                $mincount = $count;
-            }
-            
-            push @$bestof_ref, {
-                item  => $content,
-                count => $count,
-            };
+	
+	my $usage;
+	
+	if (defined $is_person_field_ref->{$field}){
+	    $usage = $catalog->get_schema->resultset('Person')->search_rs(
+		{
+		    'person_fields.field' => 800,
+		    'title_people.field' => $field,
+		     
+		},
+		{
+		    select   => ['person_fields.content', {'count' => 'title_people.titleid'}],
+		    as       => ['thiscontent','titlecount'],
+		    join     => ['person_fields','title_people'],
+		    group_by => ['title_people.personid','person_fields.content'],
+		    order_by => { -desc => \'count(title_people.titleid)' },
+		}
+		);
+	    
         }
+	elsif (defined $is_corporatebody_field_ref->{$field}){
+	    $usage = $catalog->get_schema->resultset('Corporatebody')->search_rs(
+		{
+		    'corporatebody_fields.field' => 800,
+		    'title_corporatebodies.field' => $field,
+		     
+		},
+		{
+		    select   => ['corporatebody_fields.content', {'count' => 'title_corporatebodies.titleid'}],
+		    as       => ['thiscontent','titlecount'],
+		    join     => ['corporatebody_fields','title_corporatebodies'],
+		    group_by => ['title_corporatebodies.personid','corporatebody_fields.content'],
+		    order_by => { -desc => \'count(title_corporatebodies.titleid)' },
+		}
+		);
+        }
+	elsif (defined $is_classification_field_ref->{$field}){
+	    $usage = $catalog->get_schema->resultset('Classification')->search_rs(
+		{
+		    'classification_fields.field' => 800,
+		    'title_classifications.field' => $field,
+		     
+		},
+		{
+		    select   => ['classification_fields.content', {'count' => 'title_classifications.titleid'}],
+		    as       => ['thiscontent','titlecount'],
+		    join     => ['classification_fields','title_classifications'],
+		    group_by => ['title_classifications.classificationid','classifications_field.content'],
+		    order_by => { -desc => \'count(title_classifications.titleid)' },
+		}
+		);
+        }
+	elsif (defined $is_subject_field_ref->{$field}){
+	    $usage = $catalog->get_schema->resultset('Subject')->search_rs(
+		{
+		    'subject_fields.field' => 800,
+		    'title_subjects.field' => $field,
+                     'subject_fields.mult'  => 1,
+		     
+		},
+		{
+		    select   => ['subject_fields.content', {'count' => 'title_subjects.titleid'}],
+		    as       => ['thiscontent','titlecount'],
+		    join     => ['subject_fields','title_subjects'],
+		    group_by => ['title_subjects.subjectid','subject_fields.content'],
+		    order_by => { -desc => \'count(title_subjects.titleid)' },
+		}
+		);
+        }	
+        else {
+	    # DBI: "select count(distinct id) as scount, content from title where category=425 and content regexp ? group by content order by scount DESC" mit RegEXP "^[0-9][0-9][0-9][0-9]\$"
+	    $usage = $catalog->get_schema->resultset('Title')->search_rs(
+		{
+		    'title_fields.field' => $field,
+		},
+		{
+		    select   => ['title_fields.content', {'count' => 'title_fields.titleid'}],
+		    as       => ['thiscontent','titlecount'],
+		    join     => ['title_fields'],
+		    group_by => ['title_fields.content'],
+		    order_by => { -desc => \'count(title_fields.titleid)' },
+		    rows     => $num,
+		}
+		);
+	    
+        }
+	
+	if ($usage){
+	    foreach my $item ($usage->all){
+		my $content = $item->get_column('thiscontent');
+		my $count   = $item->get_column('titlecount');
+		
+		if ($maxcount < $count){
+		    $maxcount = $count;
+		}
+		
+		if ($mincount > $count){
+		    $mincount = $count;
+		}
+		
+		push @$bestof_ref, {
+		    item  => $content,
+		    count => $count,
+		};
+	    }
+	}
 
 	$bestof_ref = gen_cloud_class({
 				       items => $bestof_ref, 

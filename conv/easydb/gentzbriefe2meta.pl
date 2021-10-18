@@ -109,10 +109,7 @@ while (my $jsonline = <IN>){
 
     $multcount_ref = {};
 
-    if ($item_ref->{contentdm_id}){
-	$title_ref->{id} = $item_ref->{contentdm_id};
-    }
-    elsif ($item_ref->{_id}) {
+    if ($item_ref->{_id}) {
 	$title_ref->{id} = $item_ref->{_id};
     }
     else {
@@ -120,6 +117,13 @@ while (my $jsonline = <IN>){
 	exit;
     }
 
+    if (defined $have_titleid_ref->{$title_ref->{id}}){
+	$logger->error("Doppelte ID: ".$title_ref->{id}."(_id: ".$item_ref->{_id}.", contentdm_id: ".$item_ref->{contentdm_id});
+	next;
+    }
+
+    $have_titleid_ref->{$title_ref->{id}} = 1;
+    
     my @senders = ();
     
     if (defined $item_ref->{sender}){

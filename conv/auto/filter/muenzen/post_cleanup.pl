@@ -35,3 +35,10 @@
 print "### $pool: Dropdown-Menu fuer erweiterte Suche cachen\n";
 
 system("$rootdir/filter/$pool/store_searchform_choices.pl");
+
+print "### $pool: Metriken erstellen und cachen\n";
+system("/opt/openbib/bin/gen_metrics.pl --database=muenzen --type=14 --field=0100");
+system("/opt/openbib/bin/gen_metrics.pl --database=muenzen --type=14 --field=0800");
+system("/opt/openbib/bin/gen_metrics.pl --database=muenzen --type=14 --field=0710");
+system("/opt/openbib/bin/gen_metrics.pl --database=muenzen --type=14 --field=0338");
+

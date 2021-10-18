@@ -144,7 +144,7 @@
      # Ejahr konstruieren
      yearofpub = item.${'T0425'}.first.content;
 
-     availability = item.${'T4400'}.first.content;
+     availability = item.${'T0511'}.first.content;
 
      # Signaturen konstruieren
      signaturen = [];
@@ -278,7 +278,7 @@ $(document).ready(function(){
        </div>
 [% END %]
        <div class="ob-title_availability">
-[% IF availability == "online" %]<button class="btn btn-primary ob-availability_online mr-1"><i class="fas fa-check mr-2"></i><span class="d-none d-sm-inline">[% msg.maketext("validiert") %]</span></button>[% END %]
+[% IF availability == "validiert" %]<button class="btn btn-primary ob-availability_online mr-1"><i class="fas fa-check mr-2"></i><span class="d-none d-sm-inline">[% msg.maketext("validiert") %]</span></button>[% ELSIF availability == "Ersterhebung" %]<button class="btn btn-primary ob-availability_presence mr-1"><span class="d-none d-sm-inline">[% msg.maketext("Ersterhebung") %]</span></button>[% END %]
        </div>
       </div>
 

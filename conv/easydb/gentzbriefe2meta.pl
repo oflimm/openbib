@@ -235,19 +235,25 @@ while (my $jsonline = <IN>){
     # EasyDB-Exportsatz in Feld Bemerkung (0600)
 
     push @{$title_ref->{fields}{'0600'}}, {
-      content => $jsonline,
+	mult     => 1,
+	subfield => '',
+	content => $jsonline,
     };
         
     # Titel
     
     if ($item_ref->{title}){
 	push @{$title_ref->{fields}{'0331'}}, {
+	    mult     => 1,
+	    subfield => '',
 	    content => $item_ref->{title},
 	}
     }
 
     if ($item_ref->{reference_publication_incipit}){
 	push @{$title_ref->{fields}{'0335'}}, {
+	    mult     => 1,
+	    subfield => '',
 	    content => $item_ref->{reference_publication_incipit},
 	}
     }
@@ -265,6 +271,8 @@ while (my $jsonline = <IN>){
 		    }
 		    
 		    push @{$title_ref->{fields}{'0591'}}, {
+			mult     => 1,
+			subfield => '',
 			content => $content,
 		    }		    
 		}
@@ -280,18 +288,24 @@ while (my $jsonline = <IN>){
 	}
 	
 	push @{$title_ref->{fields}{'0590'}}, {
+	    mult     => 1,
+	    subfield => '',
 	    content => $content,
 	}
     }
 
     if ($item_ref->{reference_publication_date}){
 	push @{$title_ref->{fields}{'0595'}}, {
+	    mult     => 1,
+	    subfield => '',
 	    content => $item_ref->{reference_publication_date},
 	}
     }
     
     if ($item_ref->{reference_publication_page}){
 	push @{$title_ref->{fields}{'0433'}}, {
+	    mult     => 1,
+	    subfield => '',
 	    content => $item_ref->{reference_publication_page},
 	}
     }
@@ -302,6 +316,8 @@ while (my $jsonline = <IN>){
 	($year) = $item_ref->{sent_date_original} =~m/(\d\d\d\d)/;
 	
 	push @{$title_ref->{fields}{'0424'}}, {
+	    mult     => 1,
+	    subfield => '',
 	    content => $item_ref->{sent_date_original},
 	}
     }
@@ -310,6 +326,8 @@ while (my $jsonline = <IN>){
 	$year = ($item_ref->{sent_date_year})?$item_ref->{sent_date_year}:$year;
 	
 	push @{$title_ref->{fields}{'0425'}}, {
+	    mult     => 1,
+	    subfield => '',
 	    content => $year,
 	}
     }
@@ -320,6 +338,7 @@ while (my $jsonline = <IN>){
     if ($item_ref->{sent_location_normalized}{name}){
 	push @{$title_ref->{fields}{'0410'}}, {
 	    mult => $location_mult,
+	    subfield => '',
 	    content => $item_ref->{sent_location_normalized}{name},
 	}
     }
@@ -343,24 +362,45 @@ while (my $jsonline = <IN>){
     
     if ($item_ref->{format_size}){
 	push @{$title_ref->{fields}{'0433'}}, {
+	    mult     => 1,
+	    subfield => '',
 	    content => $item_ref->{format_size},
 	}
     }
 
     if ($item_ref->{language}{_standard}{1}{text}{'de-DE'}){
 	push @{$title_ref->{fields}{'0015'}}, {
+	    mult     => 1,
+	    subfield => '',
 	    content => $item_ref->{language}{_standard}{1}{text}{'de-DE'},
 	}
     }
 
+    # validiert?
+    if ($item_ref->{_tags}){
+	foreach my $tags_ref (@{$item_ref->{_tags}}){
+	    if ($tags_ref->{_name}{'de-DE'} && ($tags_ref->{_name}{'de-DE'} eq "validiert" || $tags_ref->{_name}{'de-DE'} eq "Ersterhebung")){
+		push @{$title_ref->{fields}{'0511'}}, {
+		    mult     => 1,
+		    subfield => '',
+		    content => $tags_ref->{_name}{'de-DE'},
+		};
+	    }
+	}
+    }
+    
     if ($item_ref->{archive}{name}){
 	push @{$title_ref->{fields}{'0412'}}, {
+	    mult     => 1,
+	    subfield => '',
 	    content => $item_ref->{archive}{name},
 	}
     }
 
     if ($item_ref->{provenance}){
 	push @{$title_ref->{fields}{'1664'}}, {
+	    mult     => 1,
+	    subfield => '',
 	    content => $item_ref->{provenance},
 	}
     }
@@ -403,16 +443,22 @@ while (my $jsonline = <IN>){
 	# 0517: Angaben zum Inhalt
 	if ($is_inhalt_volltext){
 	    push @{$title_ref->{fields}{'0517'}}, {
+		mult     => 1,
+		subfield => '',
 		content => 'Volltext',
 	    }
 	}
 	if ($is_inhalt_analog){
 	    push @{$title_ref->{fields}{'0517'}}, {
+		mult     => 1,
+		subfield => '',
 		content => 'analog',
 	    }
 	}
 	if ($is_inhalt_ohne){
 	    push @{$title_ref->{fields}{'0517'}}, {
+		mult     => 1,
+		subfield => '',
 		content => 'untranskribiert',
 	    }
 	}
@@ -448,16 +494,22 @@ while (my $jsonline = <IN>){
 	# 0334: Material
 	if ($is_papierkopie_usb){
 	    push @{$title_ref->{fields}{'0334'}}, {
+		mult     => 1,
+		subfield => '',
 		content => 'Xerokopie (USB)',
 	    }
 	}
 	if ($is_mikrofilm_digitalisiert){
 	    push @{$title_ref->{fields}{'0334'}}, {
+		mult     => 1,
+		subfield => '',
 		content => 'Mikrofilm (digitalisiert)',
 	    }
 	}
 	if ($is_digitalisat){
 	    push @{$title_ref->{fields}{'0334'}}, {
+		mult     => 1,
+		subfield => '',
 		content => 'Digitalisat',
 	    }
 	}	
@@ -503,6 +555,8 @@ while (my $jsonline = <IN>){
 
 	if ($is_sammlung_herterich){
 	    push @{$title_ref->{fields}{'4700'}}, {
+		mult     => 1,
+		subfield => '',
 		content => 'Daten erhoben am Original',
 	    }
 	}
@@ -561,6 +615,8 @@ while (my $jsonline = <IN>){
 	# 0434: Sonstige Angaben
 	if ($is_druckpublikation){
 	    push @{$title_ref->{fields}{'0434'}}, {
+		mult     => 1,
+		subfield => '',
 		content => 'Daten erhoben am Druck',
 	    }
 	}
@@ -597,12 +653,16 @@ while (my $jsonline = <IN>){
 	
 	if ($is_gedruckt){
 	    push @{$title_ref->{fields}{'0470'}}, {
+		mult     => 1,
+		subfield => '',
 		content => 'gedruckt',
 	    }
 	}
 	elsif ($is_handschriftlich){
 	    push @{$title_ref->{fields}{'0470'}}, {
-		content => 'gedruckt',
+		mult     => 1,
+		subfield => '',
+		content => 'handschriftlich',
 	    }
 	}
     }
@@ -626,6 +686,7 @@ while (my $jsonline = <IN>){
 		if ($file_ref->{versions}{original}{url}){
 		    push @{$title_ref->{fields}{'0662'}}, {
 			mult => $url_mult,
+			subfield => '',
 			content => $file_ref->{versions}{original}{download_url},
 		    };
 		    $is_digital = 1;
@@ -635,6 +696,7 @@ while (my $jsonline = <IN>){
 		if ($file_ref->{versions}{small}{url}){
 		    push @{$title_ref->{fields}{'2662'}}, {
 			mult => $url_mult,
+			subfield => '',
 			content => $file_ref->{versions}{small}{url},
 		    };
 		    $is_digital = 1;
@@ -643,6 +705,7 @@ while (my $jsonline = <IN>){
 		if ($description){
 		    push @{$title_ref->{fields}{'0663'}}, {
 			mult => $url_mult,
+			subfield => '',
 			content => $description,
 		    };
 		}
@@ -658,7 +721,8 @@ while (my $jsonline = <IN>){
 
 	if ($transcription_ref->{transcription_fulltext}){
 	    push @{$title_ref->{fields}{'6053'}}, {
-		mult    => 1,
+		mult     => 1,
+		subfield => '',
 		content => $transcription_ref->{'transcription_fulltext'},
 	    }
 	}
@@ -673,6 +737,7 @@ while (my $jsonline = <IN>){
 	if ($file_ref->{versions}{original}{url}){
 	    push @{$title_ref->{fields}{'0662'}}, {
 		mult => $url_mult,
+		subfield => '',
 		content => $file_ref->{versions}{original}{download_url},
 	    };
 	    $is_digital = 1;
@@ -682,6 +747,7 @@ while (my $jsonline = <IN>){
 	if ($file_ref->{versions}{small}{url}){
 	    push @{$title_ref->{fields}{'2662'}}, {
 		mult => $url_mult,
+		subfield => '',
 		content => $file_ref->{versions}{small}{url},
 	    };
 	    $is_digital = 1;
@@ -690,6 +756,7 @@ while (my $jsonline = <IN>){
 	if ($description){
 	    push @{$title_ref->{fields}{'0663'}}, {
 		mult => $url_mult,
+		subfield => '',
 		content => $description,
 	    };
 	}	

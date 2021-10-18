@@ -1,0 +1,302 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_metrics_html
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Informationen zur Struktur des Bestands
+#
+#######################################################################
+-%]
+
+          <div class="row">
+            <div class="col-md-6 mt-2">
+
+<div class="card h-100">
+<div class="card-header"><h4>[% msg.maketext("Typ") %]</h4></div>
+
+<div class="card-body">
+
+[%
+      type_funcargs = { id => 'POOL-0800', type => 14 } ;
+      type_resultlist = statistics.get_result(type_funcargs);
+
+      typecount = {};
+      FOREACH type_thisitem IN type_resultlist;
+        item      = type_thisitem.item;
+        itemcount = type_thisitem.count;
+        typecount.${item} = itemcount;
+      END;
+
+      type_labels = [];
+      type_itemcounts = [];
+      FOREACH type_label IN typecount.keys.sort ;
+        type_labels.push("'${type_label}'");
+	type_itemcounts.push(typecount.${type_label});
+
+      END;
+%]
+
+<canvas id="typeChart" width="400" height="400"></canvas>
+<script>
+var type_ctx = document.getElementById('typeChart');
+var typeChart = new Chart(type_ctx, {
+    type: 'doughnut',
+    data: {    
+        labels: [[% type_labels.join(',') %]],
+        datasets: [{
+            label: 'Zahl der Briefe',
+            data: [[% type_itemcounts.join(',') %]],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(77, 166, 255, 0.5)',
+                'rgba(218, 165, 32, 0.5)',
+                'rgba(175, 0, 42, 0.5)'		
+	    ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(77, 166, 255, 1)',
+                'rgba(218, 165, 32, 1)',
+                'rgba(175, 0, 42, 1)'		
+	    ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+	layout: {
+            padding: {
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 100
+            }
+        }
+
+	
+    }
+});
+</script>
+
+
+</div>
+</div>
+
+            </div>
+            <div class="col-md-6 mt-2">
+
+<div class="card h-100">
+<div class="card-header"><h4>[% msg.maketext("Jahresangaben") %]</h4></div>
+
+<div class="card-body">
+
+[%
+      year_funcargs = { id => 'POOL-0425', type => 14 } ;
+      year_resultlist = statistics.get_result(year_funcargs);
+
+      yearcount = {};
+      FOREACH year_thisitem IN year_resultlist;
+        item      = year_thisitem.item;
+        itemcount = year_thisitem.count;
+        yearcount.${item} = itemcount;
+      END;
+
+      year_labels = [];
+      year_itemcounts = [];
+      FOREACH year_label IN yearcount.keys.sort ;
+        year_labels.push("'${year_label}'");
+	year_itemcounts.push(yearcount.${year_label});
+
+      END;
+%]
+
+<canvas id="yearChart" width="400" height="400"></canvas>
+<script>
+var ctx = document.getElementById('yearChart');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {    
+        labels: [[% year_labels.join(',') %]],
+        datasets: [{
+            label: 'Zahl der Briefe',
+            data: [[% year_itemcounts.join(',') %]],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+</script>
+
+</div>
+</div>
+
+                    </div>
+                    </div>
+
+
+
+          <div class="row">
+            <div class="col-md-6 mt-2">
+
+<div class="card h-100">
+<div class="card-header"><h4>[% msg.maketext("Orte / Doughnut") %]</h4></div>
+
+<div class="card-body">
+
+[%
+      placedoughnut_funcargs = { id => 'POOL-0410', type => 14 } ;
+      placedoughnut_resultlist = statistics.get_result(placedoughnut_funcargs);
+
+      placedoughnutcount = {};
+      FOREACH placedoughnut_thisitem IN placedoughnut_resultlist;
+        item      = placedoughnut_thisitem.item.replace('\'',' ');
+        itemcount = placedoughnut_thisitem.count;
+        placedoughnutcount.${item} = itemcount;
+      END;
+
+      placedoughnut_labels = [];
+      placedoughnut_itemcounts = [];
+      FOREACH placedoughnut_label IN placedoughnutcount.keys.sort ;
+        placedoughnut_labels.push("'${placedoughnut_label}'");
+	placedoughnut_itemcounts.push(placedoughnutcount.${placedoughnut_label});
+
+      END;
+%]
+
+<canvas id="placedoughnutChart" width="400" height="400"></canvas>
+<script>
+var placedoughnut_ctx = document.getElementById('placedoughnutChart');
+var placedoughnutChart = new Chart(placedoughnut_ctx, {
+    type: 'doughnut',
+    data: {    
+        labels: [[% placedoughnut_labels.join(',') %]],
+        datasets: [{
+            label: 'Zahl der Briefe',
+            data: [[% placedoughnut_itemcounts.join(',') %]],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(77, 166, 255, 0.5)',
+                'rgba(218, 165, 32, 0.5)',
+                'rgba(175, 0, 42, 0.5)'		
+	    ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(77, 166, 255, 1)',
+                'rgba(218, 165, 32, 1)',
+                'rgba(175, 0, 42, 1)'		
+	    ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+	layout: {
+            padding: {
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 100
+            }
+        }
+
+	
+    }
+});
+</script>
+
+
+</div>
+</div>
+
+            </div>
+            <div class="col-md-6 mt-2">
+
+<div class="card h-100">
+<div class="card-header"><h4>[% msg.maketext("Orte / Bars") %]</h4></div>
+
+<div class="card-body">
+
+[%
+      place_funcargs = { id => 'POOL-0410', type => 14 } ;
+      place_resultlist = statistics.get_result(place_funcargs);
+
+      placecount = {};
+      FOREACH place_thisitem IN place_resultlist;
+        item      = place_thisitem.item;
+        itemcount = place_thisitem.count;
+        placecount.${item} = itemcount;
+      END;
+
+      place_labels = [];
+      place_itemcounts = [];
+      FOREACH place_label IN placecount.keys.sort ;
+        place_labels.push("'${place_label}'");
+	place_itemcounts.push(placecount.${place_label});
+
+      END;
+%]
+
+<canvas id="placeChart" width="400" height="400"></canvas>
+<script>
+var ctx = document.getElementById('placeChart');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {    
+        labels: [[% place_labels.join(',') %]],
+        datasets: [{
+            label: 'Zahl der Briefe',
+            data: [[% place_itemcounts.join(',') %]],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+</script>
+
+</div>
+</div>
+
+                    </div>
+                    </div>
+		    

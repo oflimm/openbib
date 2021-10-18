@@ -96,12 +96,13 @@ sub show {
             return;
         }
 
-        my $uniform_title_list     = [];
+        my $title_list     = [];
         my $personlist             = [];
         my $rswk_keyword_list      = [];
         my $corporation_list       = [];
         my $place_list             = [];
         my $uniform_publisher_list = [];
+        my $contained_works        = []; 
         my $provenance_data = [];
         my $date_values = undef;
         if ($unapiid) {
@@ -115,8 +116,10 @@ sub show {
 
                 $record = new OpenBib::Record::Title(
                     { database => $database, id => $idn } )->load_full_record;
-                $uniform_title_list =
+                $title_list =
                   $self->collect_title_data( $record, $database );
+                $contained_works =
+                  $self->collect_contained_works( $record, $database );
                 $personlist = $self->collect_person_data( $record, $database );
                 $corporation_list =
                   $self->collect_corporation_data( $record, $database );
@@ -137,7 +140,7 @@ sub show {
 
             my $ttdata = {
                 record                 => $record,
-                uniform_title_list     => $uniform_title_list,
+                title_list     => $title_list,
                 personlist             => $personlist,
                 corporation_list       => $corporation_list,
                 place_list             => $place_list,
@@ -145,6 +148,7 @@ sub show {
                 rswk_keyword_list      => $rswk_keyword_list,
                 date_values            => $date_values,
                 provenance_data        => $provenance_data,
+                contained_works        => $contained_works,
 
                 config => $config,
                 msg    => $msg,
@@ -257,21 +261,17 @@ sub collect_title_data {
     my $already_added = [];
     my $title_list    = [];
    
-    if ( length( $record->get_fields->{T7304} ) ) {
-        my $rda_collection =
-         $self->process_title_rda( $record->get_fields->{T7304}, "T7304", $title_list );
-    }
-
-    if ( $record->get_fields->{T0304} ) {
-        foreach my $title_item ( @{ $record->get_fields->{T0304} } ) {
+    #Weiterer/Alternativer Titel
+    if ( length( $record->get_fields->{T0370} ) ) {
+        foreach my $title_item ( @{ $record->get_fields->{T0370} } ) {
             my $title_item = {
                 title => $title_item->{content},
-                field => "T0304"
+                field => "T0370"
             };
             push( @{$title_list}, $title_item );
         }
     }
-
+    #Weiterer/Alternativer Titel
     if ( $record->get_fields->{T0306} ) {
         foreach my $title_item ( @{ $record->get_fields->{T0306} } ) {
             my $title_item = {
@@ -282,16 +282,44 @@ sub collect_title_data {
         }
     }
 
-    if ( $record->get_fields->{T0310} ) {
-        foreach my $title_item ( @{ $record->get_fields->{T0310} } ) {
+    #Übersetzter Titel
+    if ( $record->get_fields->{T0341} ) {
+        foreach my $title_item ( @{ $record->get_fields->{T0341} } ) {
             my $title_item = {
                 title => $title_item->{content},
-                field => "T0310"
+                field => "T0341"
             };
             push( @{$title_list}, $title_item );
         }
     }
 
+    #Einheitstitel
+    if ( length( $record->get_fields->{T7303} ) ) {
+        my $rda_collection =
+         $self->process_title_rda( $record->get_fields->{T7303}, "T7303", $title_list );
+    }
+    unless (length( $record->get_fields->{T7303} )){
+    #Einheitstitel
+        if ( $record->get_fields->{T0304} ) {
+            foreach my $title_item ( @{ $record->get_fields->{T0304} } ) {
+                my $title_item = {
+                    title => $title_item->{content},
+                    field => "T0304"
+                };
+                push( @{$title_list}, $title_item );
+            }
+        }
+        #Einheitstitel
+        if ( $record->get_fields->{T0310} ) {
+            foreach my $title_item ( @{ $record->get_fields->{T0310} } ) {
+                my $title_item = {
+                    title => $title_item->{content},
+                    field => "T0310"
+                };
+                push( @{$title_list}, $title_item );
+            }
+        }
+    }
     return $title_list;
 }
 
@@ -309,6 +337,10 @@ sub process_title_rda {
                     $currentObject->{title} = $title->{content};
                     $currentObject->{title} =~ s/^\s+|\s+$//g;
                 }
+                elsif ( $title->{subfield} eq "p" || $title->{subfield} eq "a"  ) {
+                    $currentObject->{person} = $title->{content};
+                    $currentObject->{person} =~ s/^\s+|\s+$//g;
+                }
                 elsif ( $title->{subfield} eq "9"
                     and index( $title->{content}, "DE-588" ) != -1 )
                 {
@@ -319,8 +351,34 @@ sub process_title_rda {
                 }
             }
         }
+        $currentObject->{field} = $field_name;
         push( @{$title_list}, $currentObject );
     }
+}
+
+sub collect_contained_works {
+    my $self          = shift;
+    my $record        = shift;
+    my $database      = shift;
+    my $contained_works = [];
+    #Angebundenes Werk RDA
+    if ( length( $record->get_fields->{T7304} ) ) {
+        my $rda_collection =
+         $self->process_title_rda( $record->get_fields->{T7304}, "T7304", $contained_works );
+    }
+    #Angebundenes Werk RAK
+    unless (length( $record->get_fields->{T7304} )){
+    if ( length( $record->get_fields->{T0361} ) ) {
+        foreach my $title_item ( @{ $record->get_fields->{T0361} } ) {
+            my $title_item = {
+                title => $title_item->{content},
+                field => "T0361"
+            };
+            push( @{$contained_works}, $title_item );
+        }
+    }
+    }
+   return $contained_works;
 }
 
 sub collect_rswk_data {

@@ -381,7 +381,54 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 
 [% PROCESS common/subtemplate name="search_radius" %]
 
+<!--
 <h4>[% msg.maketext("Filteroptionen alle Titel") %]</h4>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" integrity="sha512-xmGTNt20S0t62wHLmQec2DauG9T+owP9e6VU8GigI0anN7OXLip9i7IwEhelasml2osdxX71XcYm6BQunTQeQg==" crossorigin="anonymous" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.js" integrity="sha512-VvWznBcyBJK71YKEKDMpZ0pCVxjNuKwApp4zLF3ul+CiflQi6aIJR+aZCP/qWsoFBA28avL5T5HA+RE+zrGQYg==" crossorigin="anonymous"></script>
+    <style type="text/css">
+
+        .bootstrap-tagsinput{
+
+            width: 100%;
+
+        }
+
+        .label-info{
+
+            background-color: #17a2b8;
+
+
+        }
+
+        .label {
+
+            display: inline-block;
+
+            padding: .25em .4em;
+
+            font-size: 75%;
+
+            font-weight: 700;
+
+            line-height: 1;
+
+            text-align: center;
+
+            white-space: nowrap;
+
+            vertical-align: baseline;
+
+            border-radius: .25rem;
+
+            transition: color .15s ease-in-out,background-color .15s ease-in-out,
+
+            border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+
+        }
+
+    </style>
+-->
 
     <div class="card border-0 d-none d-md-block" style="min-width: 100%!important;">
 
@@ -397,7 +444,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
         <div class="card-header p-0 border-0">
 	  
           <div id="search_wrapper" class="input-group input-group-lg shadow-sm" style="min-width: 100%">
-            <input id="freetext-input" class="form-control" type="text" name="fs" title="[% searchquery.get_searchfield('freesearch').val | html %]" value="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Suchbegriff...") %]" required="" />
+            <input id="freetext-input" class="form-control" type="text" name="fs" title="[% searchquery.get_searchfield('freesearch').val | html %]" value="[% searchquery.get_searchfield('freesearch').val.replace(" ",",") | html %]" placeholder="[% msg.maketext("Suchbegriff...") %]" required="" data-role="tagsinput" />
             <div class="input-group-append">
               <button type="submit" class="input-group-text ob-bg ob-border">
                 <i class="fas fa-search text-white"></i>

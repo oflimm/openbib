@@ -13,7 +13,7 @@
 -%]
 
           <div class="row">
-            <div class="col-md-6 mt-2">
+            <div class="col-md-4 mt-2">
 
 <div class="card h-100">
 <div class="card-header"><h4>[% msg.maketext("Typ der Briefe") %]</h4></div>
@@ -95,6 +95,175 @@ var typeChart = new Chart(type_ctx, {
 </div>
 
             </div>
+            <div class="col-md-4 mt-2">
+
+<div class="card h-100">
+<div class="card-header"><h4>[% msg.maketext("Validierung") %]</h4></div>
+
+<div class="card-body">
+
+[%
+      valid_funcargs = { id => 'gentzbriefe-0511', type => 14 } ;
+      valid_resultlist = statistics.get_result(valid_funcargs);
+
+      validcount = {};
+      FOREACH valid_thisitem IN valid_resultlist;
+        item      = valid_thisitem.item;
+        itemcount = valid_thisitem.count;
+        validcount.${item} = itemcount;
+      END;
+
+      valid_labels = [];
+      valid_itemcounts = [];
+      FOREACH valid_label IN validcount.keys.sort ;
+        valid_labels.push("'${valid_label}'");
+	valid_itemcounts.push(validcount.${valid_label});
+
+      END;
+%]
+
+<canvas id="validChart" width="400" height="400"></canvas>
+<script>
+var valid_ctx = document.getElementById('validChart');
+var validChart = new Chart(valid_ctx, {
+    type: 'doughnut',
+    data: {    
+        labels: [[% valid_labels.join(',') %]],
+        datasets: [{
+            label: 'Zahl der Briefe',
+            data: [[% valid_itemcounts.join(',') %]],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(77, 166, 255, 0.5)',
+                'rgba(218, 165, 32, 0.5)',
+                'rgba(175, 0, 42, 0.5)'		
+	    ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(77, 166, 255, 1)',
+                'rgba(218, 165, 32, 1)',
+                'rgba(175, 0, 42, 1)'		
+	    ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+	layout: {
+            padding: {
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 100
+            }
+        }
+
+	
+    }
+});
+</script>
+
+
+</div>
+</div>
+
+                    </div>
+            <div class="col-md-4 mt-2">
+
+<div class="card h-100">
+<div class="card-header"><h4>[% msg.maketext("Sprachen") %]</h4></div>
+
+<div class="card-body">
+
+[%
+      language_funcargs = { id => 'gentzbriefe-0015', type => 14 } ;
+      language_resultlist = statistics.get_result(language_funcargs);
+
+      languagecount = {};
+      FOREACH language_thisitem IN language_resultlist;
+        item      = language_thisitem.item;
+        itemcount = language_thisitem.count;
+        languagecount.${item} = itemcount;
+      END;
+
+      language_labels = [];
+      language_itemcounts = [];
+      FOREACH language_label IN languagecount.keys.sort ;
+        language_labels.push("'${language_label}'");
+	language_itemcounts.push(languagecount.${language_label});
+
+      END;
+%]
+
+<canvas id="languageChart" width="400" height="400"></canvas>
+<script>
+var language_ctx = document.getElementById('languageChart');
+var languageChart = new Chart(language_ctx, {
+    type: 'doughnut',
+    data: {    
+        labels: [[% language_labels.join(',') %]],
+        datasets: [{
+            label: 'Zahl der Briefe',
+            data: [[% language_itemcounts.join(',') %]],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(77, 166, 255, 0.5)',
+                'rgba(218, 165, 32, 0.5)',
+                'rgba(175, 0, 42, 0.5)'		
+	    ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(77, 166, 255, 1)',
+                'rgba(218, 165, 32, 1)',
+                'rgba(175, 0, 42, 1)'		
+	    ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+	layout: {
+            padding: {
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 100
+            }
+        }
+
+	
+    }
+});
+</script>
+
+
+</div>
+</div>
+
+                    </div>
+                    </div>
+
+
+
+          <div class="row">
             <div class="col-md-6 mt-2">
 
 <div class="card h-100">
@@ -148,93 +317,6 @@ var myChart = new Chart(ctx, {
     }
 });
 </script>
-
-</div>
-</div>
-
-                    </div>
-                    </div>
-
-
-
-          <div class="row">
-            <div class="col-md-6 mt-2">
-
-<div class="card h-100">
-<div class="card-header"><h4>[% msg.maketext("Orte der Briefe / Doughnut") %]</h4></div>
-
-<div class="card-body">
-
-[%
-      placedoughnut_funcargs = { id => 'gentzbriefe-0410', type => 14 } ;
-      placedoughnut_resultlist = statistics.get_result(placedoughnut_funcargs);
-
-      placedoughnutcount = {};
-      FOREACH placedoughnut_thisitem IN placedoughnut_resultlist;
-        item      = placedoughnut_thisitem.item.replace('\'',' ');
-        itemcount = placedoughnut_thisitem.count;
-        placedoughnutcount.${item} = itemcount;
-      END;
-
-      placedoughnut_labels = [];
-      placedoughnut_itemcounts = [];
-      FOREACH placedoughnut_label IN placedoughnutcount.keys.sort ;
-        placedoughnut_labels.push("'${placedoughnut_label}'");
-	placedoughnut_itemcounts.push(placedoughnutcount.${placedoughnut_label});
-
-      END;
-%]
-
-<canvas id="placedoughnutChart" width="400" height="400"></canvas>
-<script>
-var placedoughnut_ctx = document.getElementById('placedoughnutChart');
-var placedoughnutChart = new Chart(placedoughnut_ctx, {
-    type: 'doughnut',
-    data: {    
-        labels: [[% placedoughnut_labels.join(',') %]],
-        datasets: [{
-            label: 'Zahl der Briefe',
-            data: [[% placedoughnut_itemcounts.join(',') %]],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-                'rgba(77, 166, 255, 0.5)',
-                'rgba(218, 165, 32, 0.5)',
-                'rgba(175, 0, 42, 0.5)'		
-	    ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)',
-                'rgba(77, 166, 255, 1)',
-                'rgba(218, 165, 32, 1)',
-                'rgba(175, 0, 42, 1)'		
-	    ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-	layout: {
-            padding: {
-                left: 0,
-                right: 0,
-                top: 0,
-                bottom: 100
-            }
-        }
-
-	
-    }
-});
-</script>
-
 
 </div>
 </div>
@@ -299,4 +381,68 @@ var myChart = new Chart(ctx, {
 
                     </div>
                     </div>
-		    
+
+
+          <div class="row">
+            <div class="col-md-12 mt-2">
+
+<div class="card h-100">
+<div class="card-header"><h4>[% msg.maketext("Archive") %]</h4></div>
+
+<div class="card-body">
+
+[%
+      archive_funcargs = { id => 'gentzbriefe-0200', type => 14 } ;
+      archive_resultlist = statistics.get_result(archive_funcargs);
+
+      archivecount = {};
+      FOREACH archive_thisitem IN archive_resultlist;
+        item      = archive_thisitem.item;
+        itemcount = archive_thisitem.count;
+        archivecount.${item} = itemcount;
+      END;
+
+      archive_labels = [];
+      archive_itemcounts = [];
+      FOREACH archive_label IN archivecount.keys.sort ;
+        archive_labels.push("\"${archive_label}\"");
+	archive_itemcounts.push(archivecount.${archive_label});
+
+      END;
+%]
+
+[%# USE dumper;dumper.dump(archive_resultlist) %]
+<canvas id="archiveChart" width="400" height="400"></canvas>
+<script>
+var archive_ctx = document.getElementById('archiveChart');
+var archiveChart = new Chart(archive_ctx, {
+    type: 'bar',
+    data: {    
+        labels: [[% archive_labels.join(',') %]],
+        datasets: [{
+            label: 'Zahl der Briefe',
+            data: [[% archive_itemcounts.join(',') %]],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+</script>
+
+
+</div>
+</div>
+
+            </div>
+
+                    </div>

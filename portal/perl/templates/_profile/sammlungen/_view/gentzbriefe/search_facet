@@ -175,7 +175,7 @@
 <!-- End -->
 
 <!-- Searchquery Args -->
-[% searchquery.to_cgi_hidden_input({ exclude_filter = [ 'all' ], exclude = [ 'year_from','year_to' ] }) %]
+[% searchquery.to_cgi_hidden_input({ exclude_filter = [ 'all' ], exclude = [ 'year_from','year_to','freesearch' ] }) %]
 <!-- End -->
 
 <script type="text/javascript">
@@ -380,11 +380,12 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 [%# USE dumper;dumper.dump(category_map)%]
 
 [% PROCESS common/subtemplate name="search_radius" %]
-[% IF layout_param.main_template == 'titles_html' %]
+
 <h4>[% msg.maketext("Filteroptionen alle Titel") %]</h4>
 
     <div class="card border-0 d-none d-md-block" style="min-width: 100%!important;">
 
+<!--
 	<input type="hidden" name="num"        value="20" />
 	<input type="hidden" name="page"       value="1" />
 	<input type="hidden" name="l"          value="[% lang %]" />
@@ -392,10 +393,11 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 	<input type="hidden" name="srt"        value="relevance_desc" />
 	<input type="hidden" name="st"         value="1" />
 	<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+-->	
         <div class="card-header p-0 border-0">
 	  
           <div id="search_wrapper" class="input-group input-group-lg shadow-sm" style="min-width: 100%">
-            <input id="freetext-input" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Suchbegriff...") %]" required="" />
+            <input id="freetext-input" class="form-control" type="text" name="fs" title="[% searchquery.get_searchfield('freesearch').val | html %]" value="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Suchbegriff...") %]" required="" />
             <div class="input-group-append">
               <button type="submit" class="input-group-text ob-bg ob-border">
                 <i class="fas fa-search text-white"></i>
@@ -405,7 +407,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
         </div>
     </div>
 
-[% END  %]
+
 <!-- <div class="card">
 <div class="card-header"><span id="ob-facets_all_toggle">[% msg.maketext("Treffermenge eingrenzen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 

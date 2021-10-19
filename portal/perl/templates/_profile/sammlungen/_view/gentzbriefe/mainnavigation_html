@@ -68,8 +68,8 @@
                <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0100.html?l=[% lang %];page=1">[% msg.maketext("Aussteller") %]</a></li>
                <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0101.html?l=[% lang %];page=1">[% msg.maketext("Empfänger") %]</a></li>
                <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0410.html?l=[% lang %];page=1">[% msg.maketext("Ausstellungsorte") %]</a></li>
-               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0412.html?l=[% lang %];page=1">[% msg.maketext("Archive") %]</a></li>
-               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/1664.html?l=[% lang %];page=1">[% msg.maketext("Provenienzen") %]</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0200.html?l=[% lang %];page=1">[% msg.maketext("Archive") %]</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0590.html?l=[% lang %];page=1">[% msg.maketext("Druckpublikationen") %]</a></li>
              </ul>
 	   </li>
            <li class="nav-item d-md-none"><a class="nav-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/[% config.get('titles_loc') %].html?l=[% lang %]">[% msg.maketext("Alle Titel") %]</a></li>

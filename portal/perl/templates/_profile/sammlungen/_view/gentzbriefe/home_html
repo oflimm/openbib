@@ -45,7 +45,7 @@
                <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0100.html?l=[% lang %];page=1">[% msg.maketext("Aussteller") %]</a></li>
                <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0101.html?l=[% lang %];page=1">[% msg.maketext("Empfänger") %]</a></li>
                <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0410.html?l=[% lang %];page=1">[% msg.maketext("Ausstellungsorte") %]</a></li>
-               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0412.html?l=[% lang %];page=1">[% msg.maketext("Archive") %]</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0200.html?l=[% lang %];page=1">[% msg.maketext("Archive") %]</a></li>
                <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0590.html?l=[% lang %];page=1">[% msg.maketext("Druckpublikationen") %]</a></li>
              </ul>
 	     
@@ -65,7 +65,7 @@
                <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0100.html?l=[% lang %];page=1">[% msg.maketext("Aussteller") %]</a></li>
                <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0101.html?l=[% lang %];page=1">[% msg.maketext("Empfänger") %]</a></li>
                <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0410.html?l=[% lang %];page=1">[% msg.maketext("Ausstellungsorte") %]</a></li>
-               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0412.html?l=[% lang %];page=1">[% msg.maketext("Archive") %]</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0200.html?l=[% lang %];page=1">[% msg.maketext("Archive") %]</a></li>
                <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/titles/fields/id/0590.html?l=[% lang %];page=1">[% msg.maketext("Druckpublikationen") %]</a></li>
              </ul>
          <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;"  href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">

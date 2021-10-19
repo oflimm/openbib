@@ -469,11 +469,11 @@ while (my $jsonline = <IN>){
     }
 
     ### language -> 0015
-    if ($item_ref->{language}{_standard}{1}{text}{'de-DE'}){
+    if ($item_ref->{language}{'de-DE'}){
 	push @{$title_ref->{fields}{'0015'}}, {
 	    mult     => 1,
 	    subfield => '',
-	    content => $item_ref->{language}{_standard}{1}{text}{'de-DE'},
+	    content => $item_ref->{language}{'de-DE'},
 	}
     }
 
@@ -887,13 +887,13 @@ while (my $jsonline = <IN>){
     my $mediatype = "";
 
     foreach my $sender (@senders){
-	if ($sender eq "Friedrich Gentz"){
+	if ($sender eq "Gentz, Friedrich"){
 	    $mediatype = "Briefe von Gentz";
 	}
     }
 
     foreach my $recipient (@recipients){
-	if ($recipient eq "Friedrich Gentz"){
+	if ($recipient eq "Gentz, Friedrich"){
 	    $mediatype = "Briefe an Gentz";
 	}
     }

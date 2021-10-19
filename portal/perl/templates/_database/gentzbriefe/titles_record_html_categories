@@ -27,7 +27,6 @@
 
 <div class="table-responsive">
 <table class="table table-striped table-hover ob-title_fields">
-<tr><th class="ob-field">id</th><td>[% record.id %]</td></tr>
 
 [%-
    request_base = config.get('search_defaultparams');
@@ -130,6 +129,7 @@ FOREACH category IN categories;
     CASE [ "T0543" "T0585" ];
          ezburl  = "${config.get('ezb_exturl')}&jq_term1=${content}";
          content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=530;url=${uri_escape(ezburl)}\" class=\"ext\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
+
 
     CASE [ "T0662" "T2662" ];
          thismult = item.mult ;
@@ -323,7 +323,7 @@ FOREACH category IN categories;
 END;
 -%]
 
-[% IF normdata.${"T0662"} %]
+[% IF 0 == 1 && normdata.${"T0662"} %]
 <tr><th class="ob-field">[% msg.maketext("Volltext") %]</th><td><a class="btn btn-primary" href="[% normdata.${"T0662"}.first.content %]" target="_blank"><i class="fas fa-download"></i> Download</a></td></tr>
 [% END %]
 </table>

@@ -1,0 +1,23 @@
+[%#-
+#######################################################################
+#
+# Templatename: visible_categories_titset
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabekategorien fuer einen einzelnen Titelsatz
+#
+#######################################################################
+-%]
+[%-# Ausgabekategorien -%]
+[%- categories = [
+                'T0412', # msg.maketext("T0412-gentzbriefe") Archiv
+                'T0413', # msg.maketext("T0413-gentzbriefe") Status		
+                'T1664', # msg.maketext("T1664-gentzbriefe") Archivangaben
+                'T0433', # msg.maketext("T0433-gentzbriefe") Format und Umfang
+                'TXXXX', # msg.maketext("TXXXX-gentzbriefe") Besondere Ueberlieferung (transmission_type)
+                ]
+
+-%]

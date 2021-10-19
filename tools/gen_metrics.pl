@@ -1097,7 +1097,7 @@ if ($type == 14 && $field){
 		    select   => ['corporatebody_fields.content', {'count' => 'title_corporatebodies.titleid'}],
 		    as       => ['thiscontent','titlecount'],
 		    join     => ['corporatebody_fields','title_corporatebodies'],
-		    group_by => ['title_corporatebodies.personid','corporatebody_fields.content'],
+		    group_by => ['title_corporatebodies.corporatebodyid','corporatebody_fields.content'],
 		    order_by => { -desc => \'count(title_corporatebodies.titleid)' },
 		}
 		);

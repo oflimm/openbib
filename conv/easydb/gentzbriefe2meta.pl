@@ -94,6 +94,7 @@ open(IN ,           "<:raw", $inputfile );
 my $multcount_ref = {};
 
 my $persons_done_ref = {};
+my $corporatebodies_done_ref = {};
 my $recipients_done_ref = {};
 
 while (my $jsonline = <IN>){
@@ -123,16 +124,32 @@ while (my $jsonline = <IN>){
     }
 
     $have_titleid_ref->{$title_ref->{id}} = 1;
-    
+
+    ### contentdm_id -> 0010
+    if ($item_ref->{contentdm_id}){
+	push @{$title_ref->{fields}{'0010'}}, {
+	    mult     => 1,
+	    subfield => '',
+	    content => $item_ref->{contentdm_id},
+	};
+    }
+
+    ### sender -> 0100 (Personen)
     my @senders = ();
     
     if (defined $item_ref->{sender}){
+	my @name = ();
+	
 	if ($item_ref->{sender}{familyname} || $item_ref->{sender}{givenname}){
-	    my @name = ();
-	    push @name, $item_ref->{sender}{givenname} if ($item_ref->{sender}{givenname});
 	    push @name, $item_ref->{sender}{familyname} if ($item_ref->{sender}{familyname});
-	    
-	    my $name = join(' ',@name);
+	    push @name, $item_ref->{sender}{givenname} if ($item_ref->{sender}{givenname});
+	}
+	elsif ($item_ref->{sender}{name}){
+	    push @name, $item_ref->{sender}{name};
+	}
+	
+	if (@name){
+	    my $name = join(', ',@name);
 	    
 	    my $person_id = $item_ref->{sender}{_id};
 	    
@@ -176,8 +193,10 @@ while (my $jsonline = <IN>){
 	    };
 	    
 	    $mult++;
-	}        
+	}
     }
+
+    ### _nested:gentz_letter__recipients -> 0101 (Personen)
     
     my @recipients = ();
     
@@ -185,10 +204,16 @@ while (my $jsonline = <IN>){
 	foreach my $recipient_ref (@{$item_ref->{'_nested:gentz_letter__recipients'}}){
 	    
 	    my @name = ();
-	    push @name, $recipient_ref->{givenname} if ($recipient_ref->{givenname});
-	    push @name, $recipient_ref->{familyname} if ($recipient_ref->{familyname});
+	    if ($recipient_ref->{familyname} || $recipient_ref->{givenname}){
+		push @name, $recipient_ref->{familyname} if ($recipient_ref->{familyname});
+		push @name, $recipient_ref->{givenname} if ($recipient_ref->{givenname});
+
+	    }
+	    elsif ($recipient_ref->{name}){ # Koerperschaft....
+		push @name, $recipient_ref->{name};
+	    }
 	    
-	    my $name = join(' ',@name);
+	    my $name = join(', ',@name);
 	    
 	    my $person_id = $recipient_ref->{_id};
 	    
@@ -235,17 +260,70 @@ while (my $jsonline = <IN>){
 	    $mult++;
 	}        
     }
-    
-    # EasyDB-Exportsatz in Feld Bemerkung (0600)
 
-    push @{$title_ref->{fields}{'0600'}}, {
+    ### archive -> 0200 (Koerperschaften)
+    if (defined $item_ref->{archive}){
+	my $name = $item_ref->{archive}{name};
+	
+	my $corporatebody_id = $item_ref->{archive}{_id};
+	    
+	my $mult = 1;
+	
+	if (!$corporatebodies_done_ref->{$corporatebody_id}){
+		
+	    my $normitem_ref = {
+		'fields' => {},
+	    };
+	    $normitem_ref->{id} = $corporatebody_id;
+	    push @{$normitem_ref->{fields}{'0800'}}, {
+		mult     => 1,
+		subfield => '',
+		content  => $name,
+	    };
+	    
+	    if ($item_ref->{archive}{archive_location}){
+		push @{$normitem_ref->{fields}{'0810'}}, { # Ort
+		    mult     => 1,
+		    subfield => '',
+		    content  => $item_ref->{archive}{archive_location},
+		};		
+	    }
+	    
+	    if ($item_ref->{archive}{archive_country}){
+		push @{$normitem_ref->{fields}{'0820'}}, { # Land
+		    mult     => 1,
+		    subfield => '',
+		    content  => $item_ref->{archive}{archive_country},
+		};		
+	    }
+		
+	    print CORPORATEBODY encode_json $normitem_ref, "\n";
+		
+	    $corporatebodies_done_ref->{$corporatebody_id} = 1;
+
+	}
+	
+	my $new_category = "0200";
+	
+	push @{$title_ref->{fields}{$new_category}}, {
+	    content    => $name,
+	    mult       => $mult,
+	    subfield   => '',
+	    id         => $corporatebody_id,
+	    supplement => '',
+	};
+	
+	$mult++;
+    }
+    
+    ### Gesamter Exportsatz -> 0001
+    push @{$title_ref->{fields}{'0001'}}, {
 	mult     => 1,
 	subfield => '',
 	content => $jsonline,
     };
         
-    # Titel
-    
+    ### title -> 0331    
     if ($item_ref->{title}){
 	push @{$title_ref->{fields}{'0331'}}, {
 	    mult     => 1,
@@ -253,7 +331,8 @@ while (my $jsonline = <IN>){
 	    content => $item_ref->{title},
 	}
     }
-
+    
+    ### reference_publication_incipit -> 0335
     if ($item_ref->{reference_publication_incipit}){
 	push @{$title_ref->{fields}{'0335'}}, {
 	    mult     => 1,
@@ -262,6 +341,16 @@ while (my $jsonline = <IN>){
 	}
     }
 
+    ### incipit -> 0336
+    if ($item_ref->{incipit}){
+	push @{$title_ref->{fields}{'0336'}}, {
+	    mult     => 1,
+	    subfield => '',
+	    content => $item_ref->{incipit},
+	}
+    }
+    
+    ### reference_publication/_nested:printed_publication_print_editor -> 0591
     if (defined $item_ref->{reference_publication}){
 	my $print_editors = $item_ref->{reference_publication}{'_nested:printed_publication__print_editors'};
 
@@ -284,6 +373,7 @@ while (my $jsonline = <IN>){
 	}
     }
 
+    ### reference_publication/print_title -> 0590
     if ($item_ref->{reference_publication}{print_title}){
 	my $content = $item_ref->{reference_publication}{print_title};
 
@@ -298,6 +388,7 @@ while (my $jsonline = <IN>){
 	}
     }
 
+    ### reference_publication_date -> 0595
     if ($item_ref->{reference_publication_date}){
 	push @{$title_ref->{fields}{'0595'}}, {
 	    mult     => 1,
@@ -305,7 +396,8 @@ while (my $jsonline = <IN>){
 	    content => $item_ref->{reference_publication_date},
 	}
     }
-    
+
+    ### reference_publication_page -> 0443
     if ($item_ref->{reference_publication_page}){
 	push @{$title_ref->{fields}{'0433'}}, {
 	    mult     => 1,
@@ -314,6 +406,7 @@ while (my $jsonline = <IN>){
 	}
     }
 
+    ### sent_date_original -> 0424
     my $year = "";
     
     if ($item_ref->{sent_date_original}){
@@ -326,6 +419,7 @@ while (my $jsonline = <IN>){
 	}
     }
 
+    ### sent_date_year || sent_date_original -> 0425
     if ($year || $item_ref->{sent_date_year}){
 	$year = ($item_ref->{sent_date_year})?$item_ref->{sent_date_year}:$year;
 	
@@ -337,6 +431,8 @@ while (my $jsonline = <IN>){
     }
 
 
+    ### sent_location_normalized -> Multgruppe 0410/2410a/2410b
+    # Alternativ: Eigene Normdatei (Klassifikation oder Schlagwort)
     my $location_mult = 1;
         
     if ($item_ref->{sent_location_normalized}{name}){
@@ -363,7 +459,7 @@ while (my $jsonline = <IN>){
 	}
     }
 
-    
+    ### format_size -> 0433
     if ($item_ref->{format_size}){
 	push @{$title_ref->{fields}{'0433'}}, {
 	    mult     => 1,
@@ -372,6 +468,7 @@ while (my $jsonline = <IN>){
 	}
     }
 
+    ### language -> 0015
     if ($item_ref->{language}{_standard}{1}{text}{'de-DE'}){
 	push @{$title_ref->{fields}{'0015'}}, {
 	    mult     => 1,
@@ -380,7 +477,7 @@ while (my $jsonline = <IN>){
 	}
     }
 
-    # validiert?
+    ### _tags (validiert/Ersterhebung) -> 0511
     if ($item_ref->{_tags}){
 	foreach my $tags_ref (@{$item_ref->{_tags}}){
 	    if ($tags_ref->{_name}{'de-DE'} && ($tags_ref->{_name}{'de-DE'} eq "validiert" || $tags_ref->{_name}{'de-DE'} eq "Ersterhebung")){
@@ -392,15 +489,17 @@ while (my $jsonline = <IN>){
 	    }
 	}
     }
-    
-    if ($item_ref->{archive}{name}){
-	push @{$title_ref->{fields}{'0412'}}, {
-	    mult     => 1,
-	    subfield => '',
-	    content => $item_ref->{archive}{name},
-	}
-    }
 
+    # jetzt in 0200
+    # if ($item_ref->{archive}{name}){
+    # 	push @{$title_ref->{fields}{'0412'}}, {
+    # 	    mult     => 1,
+    # 	    subfield => '',
+    # 	    content => $item_ref->{archive}{name},
+    # 	}
+    # }
+
+    ### provenance -> 1664
     if ($item_ref->{provenance}){
 	push @{$title_ref->{fields}{'1664'}}, {
 	    mult     => 1,
@@ -409,8 +508,7 @@ while (my $jsonline = <IN>){
 	}
     }
 
-    # Auswertung Kategorie 'Mit Inhaltsrepraesentation'
-    
+    # Auswertung Kategorie 'Mit Inhaltsrepraesentation'    
     my $is_inhalt_volltext = 0;
     my $is_inhalt_analog = 0;
     my $is_inhalt_ohne = 0;
@@ -495,12 +593,19 @@ while (my $jsonline = <IN>){
 	    
 	};
 
-	# 0334: Material
+	# 0334: Material = Kopie Originalbrief
 	if ($is_papierkopie_usb){
 	    push @{$title_ref->{fields}{'0334'}}, {
 		mult     => 1,
 		subfield => '',
-		content => 'Xerokopie (USB)',
+		content => 'Xerokopie (USB), identifizert',
+	    }
+	}
+	else {
+	    push @{$title_ref->{fields}{'0334'}}, {
+		mult     => 1,
+		subfield => '',
+		content => 'Xerokopie möglich, Materialabgleich offen',
 	    }
 	}
 	if ($is_mikrofilm_digitalisiert){
@@ -511,7 +616,7 @@ while (my $jsonline = <IN>){
 	    }
 	}
 	if ($is_digitalisat){
-	    push @{$title_ref->{fields}{'0334'}}, {
+	    push @{$title_ref->{fields}{'0333'}}, {
 		mult     => 1,
 		subfield => '',
 		content => 'Digitalisat',
@@ -778,6 +883,7 @@ while (my $jsonline = <IN>){
     }
 
 
+    ### Analyse: Einordnung der Briefe von/an Gentz bzw. Dritter -> 0800
     my $mediatype = "";
 
     foreach my $sender (@senders){
@@ -805,7 +911,10 @@ while (my $jsonline = <IN>){
 	    }
 	    ];
     }
-    
+
+    ### Briefe von Gentz/Jahr -> 0426 bzw. 0425/0426 (ohne Jahr)
+    ### Briefe an Gentz/Jahr  -> 0427 bzw. 0425/0427 (ohne Jahr)    
+    ### Briefe Dritter        -> 0428 bzw. 0425/0428 (ohne Jahr)    
     if ($mediatype eq "Briefe von Gentz"){
 	if ($year){
 	    $title_ref->{fields}{'0426'} = [

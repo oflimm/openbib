@@ -320,7 +320,7 @@ while (my $jsonline = <IN>){
     push @{$title_ref->{fields}{'0001'}}, {
 	mult     => 1,
 	subfield => '',
-	content => $jsonline,
+	content => $item_ref,
     };
         
     ### title -> 0331    
@@ -350,6 +350,21 @@ while (my $jsonline = <IN>){
 	}
     }
     
+    ### reference_publication/print_title -> 0590
+    if ($item_ref->{reference_publication}{print_title}){
+	my $content = $item_ref->{reference_publication}{print_title};
+
+	if ($item_ref->{reference_publication}{print_publication_year}){
+	    $content.=", (".$item_ref->{reference_publication}{print_publication_year}.")";
+	}
+	
+	push @{$title_ref->{fields}{'0590'}}, {
+	    mult     => 1,
+	    subfield => '',
+	    content => $content,
+	}
+    }
+
     ### reference_publication/_nested:printed_publication_print_editor -> 0591
     if (defined $item_ref->{reference_publication}){
 	my $print_editors = $item_ref->{reference_publication}{'_nested:printed_publication__print_editors'};
@@ -373,21 +388,40 @@ while (my $jsonline = <IN>){
 	}
     }
 
-    ### reference_publication/print_title -> 0590
-    if ($item_ref->{reference_publication}{print_title}){
-	my $content = $item_ref->{reference_publication}{print_title};
 
-	if ($item_ref->{reference_publication}{print_publication_year}){
-	    $content.=", (".$item_ref->{reference_publication}{print_publication_year}.")";
-	}
-	
-	push @{$title_ref->{fields}{'0590'}}, {
+    ### reference_publication/print_locations -> 0592
+    if (defined $item_ref->{reference_publication}){
+	my $print_locations = $item_ref->{reference_publication}{'print_locations'};
+
+	push @{$title_ref->{fields}{'0592'}}, {
 	    mult     => 1,
 	    subfield => '',
-	    content => $content,
-	}
+	    content => $print_locations,
+	} if ($print_locations);		    
     }
 
+    ### reference_publication/print_publication_type -> 0593
+    if (defined $item_ref->{reference_publication}){
+	my $print_type = $item_ref->{reference_publication}{'print_publication_type'}{'de-DE'};
+
+	push @{$title_ref->{fields}{'0593'}}, {
+	    mult     => 1,
+	    subfield => '',
+	    content => $print_type,
+	} if ($print_type);		    
+    }
+
+    ### reference_publication/print_publication_type -> 0594
+    if (defined $item_ref->{reference_publication}){
+	my $print_type = $item_ref->{reference_publication}{'print_publication_type'}{'de-DE'};
+
+	push @{$title_ref->{fields}{'0593'}}, {
+	    mult     => 1,
+	    subfield => '',
+	    content => $print_type,
+	} if ($print_type);		    
+    }
+    
     ### reference_publication_date -> 0595
     if ($item_ref->{reference_publication_date}){
 	push @{$title_ref->{fields}{'0595'}}, {
@@ -406,6 +440,42 @@ while (my $jsonline = <IN>){
 	}
     }
 
+    ### based_on -> 0451
+    if ($item_ref->{based_on}){
+	push @{$title_ref->{fields}{'0451'}}, {
+	    mult     => 1,
+	    subfield => '',
+	    content => $item_ref->{based_on}{'de-DE'},
+	}
+    }
+
+    ### tanscription_creator -> 0480
+    if ($item_ref->{transcription_creator}){
+	push @{$title_ref->{fields}{'0480'}}, {
+	    mult     => 1,
+	    subfield => '',
+	    content => $item_ref->{transcription_creator},
+	}
+    }
+    
+    ### tanscription_method -> 0481
+    if ($item_ref->{transcription_method}){
+	push @{$title_ref->{fields}{'0481'}}, {
+	    mult     => 1,
+	    subfield => '',
+	    content => $item_ref->{transcription_method}{'de-DE'},
+	}
+    }
+
+    ### tanscription_creator -> 0482
+    if ($item_ref->{transcription_type}){
+	push @{$title_ref->{fields}{'0482'}}, {
+	    mult     => 1,
+	    subfield => '',
+	    content => $item_ref->{transcription_type}{'de-DE'},
+	}
+    }
+    
     ### sent_date_original -> 0424
     my $year = "";
     
@@ -430,6 +500,27 @@ while (my $jsonline = <IN>){
 	}
     }
 
+    ### _nested:gentz_letter__records_collection_herterich/collection_herterich -> 0490
+    ### _nested:gentz_letter__records_collection_herterich/collection_herterich_type -> 0491
+    my $herterich_mult = 1;
+
+    if (defined $item_ref->{'_nested:gentz_letter__records_collection_herterich'} && @{$item_ref->{'_nested:gentz_letter__records_collection_herterich'}}){
+	foreach my $subitem_ref (@{$item_ref->{'_nested:gentz_letter__records_collection_herterich'}}){
+	    push @{$title_ref->{fields}{'0490'}}, {
+		mult     => $herterich_mult,
+		subfield => '',
+		content => $subitem_ref->{collection_herterich},
+	    } if ($subitem_ref->{collection_herterich});
+
+	    push @{$title_ref->{fields}{'0491'}}, {
+		mult     => $herterich_mult,
+		subfield => '',
+		content => $subitem_ref->{collection_herterich_type}{'de-DE'},
+	    } if ($subitem_ref->{collection_herterich_type});
+
+	    $herterich_mult++;
+	}
+    }    
 
     ### sent_location_normalized -> Multgruppe 0410/2410a/2410b
     # Alternativ: Eigene Normdatei (Klassifikation oder Schlagwort)
@@ -490,15 +581,32 @@ while (my $jsonline = <IN>){
 	}
     }
 
-    # jetzt in 0200
-    # if ($item_ref->{archive}{name}){
-    # 	push @{$title_ref->{fields}{'0412'}}, {
-    # 	    mult     => 1,
-    # 	    subfield => '',
-    # 	    content => $item_ref->{archive}{name},
-    # 	}
-    # }
+    ### archiv(name+archive_location+archive_country) -> 0412
+    if ($item_ref->{archive}{name}){
+	my @names = ();
 
+	push @names, $item_ref->{archive}{name} if ($item_ref->{archive}{name});
+	push @names, $item_ref->{archive}{archive_location} if ($item_ref->{archive}{archive_location});
+	push @names, $item_ref->{archive}{archive_country} if ($item_ref->{archive}{archive_country});
+
+	my $name = join(', ',@names);
+	
+    	push @{$title_ref->{fields}{'0412'}}, {
+    	    mult     => 1,
+    	    subfield => '',
+    	    content => $name,
+    	}
+    }
+
+    ### status_archive -> 0413
+    if ($item_ref->{status_archive}){
+	push @{$title_ref->{fields}{'0413'}}, {
+	    mult     => 1,
+	    subfield => '',
+	    content => $item_ref->{status_archive}{'de-DE'},
+	}
+    }
+    
     ### provenance -> 1664
     if ($item_ref->{provenance}){
 	push @{$title_ref->{fields}{'1664'}}, {
@@ -508,6 +616,47 @@ while (my $jsonline = <IN>){
 	}
     }
 
+    ### _nested:gentz_letter__doublets -> Multgruppe 460ff
+    my $doublets_mult = 1;
+    if (defined $item_ref->{'_nested:gentz_letter__doublets'} && @{$item_ref->{'_nested:gentz_letter__doublets'}}){
+	foreach my $subitem_ref (@{$item_ref->{'_nested:gentz_letter__doublets'}}){
+	    push @{$title_ref->{fields}{'0460'}}, {
+		mult     => $doublets_mult,
+		subfield => '',
+		content => $subitem_ref->{doublet_publication}{print_title},
+	    } if ($subitem_ref->{doublet_publication}{print_title});
+	    
+	    push @{$title_ref->{fields}{'0461'}}, {
+		mult     => $doublets_mult,
+		subfield => '',
+		content => $subitem_ref->{page_doublet},
+	    } if ($subitem_ref->{page_doublet});
+	    
+	    push @{$title_ref->{fields}{'0462'}}, {
+		mult     => $doublets_mult,
+		subfield => '',
+		content => $subitem_ref->{incipit_doublet},
+	    } if ($subitem_ref->{incipit_doublet});
+
+	    push @{$title_ref->{fields}{'0463'}}, {
+		mult     => $doublets_mult,
+		subfield => '',
+		content => $subitem_ref->{sent_location_doublet},
+	    } if ($subitem_ref->{sent_location_doublet});
+
+	    push @{$title_ref->{fields}{'0464'}}, {
+		mult     => $doublets_mult,
+		subfield => '',
+		content => $subitem_ref->{doublet_publication}{print_locations},
+	    } if ($subitem_ref->{doublet_publication}{print_locations});
+	    
+
+	    $doublets_mult++;
+	}
+    } 
+    
+
+    
     # Auswertung Kategorie 'Mit Inhaltsrepraesentation'    
     my $is_inhalt_volltext = 0;
     my $is_inhalt_analog = 0;

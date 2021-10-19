@@ -80,8 +80,6 @@ $(document).ready(function(){
 
 [% IF NOT hide_detail && NOT hide_hit %]
 
-[% src = from_json(normdata.${"T0001"}.first.content ) %]
-
 [%# USE dumper;dumper.dump(src) %]
 [% PROCESS common/subtemplate name="titles_record_html_modals" %]
 
@@ -117,6 +115,7 @@ $(document).ready(function(){
     </div>
     <div id="collapseAbschnitt1" class="collapse show" aria-labelledby="headingAbschnitt1" data-parent="#brief_details">
       <div class="card-body">
+
 
 [%   PROCESS common/subtemplate name="visible_categories_title_ab1" %]
 [%   PROCESS common/subtemplate name="titles_record_html_categories" %]
@@ -174,9 +173,67 @@ $(document).ready(function(){
     <div id="collapseAbschnitt4" class="collapse" aria-labelledby="headingAbschnitt4" data-parent="#brief_details">
       <div class="card-body">
 
-[%   PROCESS common/subtemplate name="visible_categories_title_ab4" %]
-[%   PROCESS common/subtemplate name="titles_record_html_categories" %]
+[%-
 
+     src = {};
+
+     IF normdata.${"T0001"}.first.content ;
+       src = from_json(normdata.${"T0001"}.first.content);
+     END;
+     
+     publist = {};
+
+     IF src.reference_publication.defined ;
+        refpub = src.reference_publication;
+	
+        ref_title    = refpub.standard.${"de-DE"};
+        ref_location = refpub.print_locations;
+        ref_type     = refpub.print_publication_type.${"de-DE"};
+        ref_year     = refpub.print_publication_year;
+	ref_page     = src.reference_publication_page ;
+	ref_incipit  = src.reference_publication_incipit ;                 
+
+        thisitem =  {
+	     location = ref_location
+	     type     = ref_type
+	     year     = ref_year
+	     page     = ref_page
+	     incipit  = ref_incipit
+	};
+
+        publist.${ref_title} = thisitem;
+     END;
+
+     IF src.item('_nested:gentz_letter__doublets') ;
+        refdoub = src.item('_nested:gentz_letter__doublets');
+
+        FOREACH item IN refdoub ;
+
+           ref_title    = item.doublet_publication.standard.${"de-DE"};
+           ref_location = item.doublet_publication.print_locations;
+           ref_type     = item.doublet_publication.print_publication_type.${"de-DE"};
+           ref_year     = item.doublet_publication.print_publication_year;
+	   ref_page     = item.page_doublet ;
+	   ref_incipit  = item.incipit_doublet;
+
+           thisitem =  {
+	     location = ref_location
+	     type     = ref_type
+	     year     = ref_year
+	     page     = ref_page
+	     incipit  = ref_incipit
+	   };
+
+          publist.${ref_title} = thisitem;
+	END;
+     END;
+-%]
+
+<ul>
+[% FOREACH title IN publist.keys.sort %]
+<li>[% title %], [% publist.${title}.page %], [% publist.${title}.incipit %]</li>
+[% END %]
+<ul>
       </div>
     </div>
   </div>

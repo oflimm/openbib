@@ -26,7 +26,7 @@
 [% IF format == "full" %]
 
 <div class="table-responsive">
-<table class="table table-striped table-hover ob-title_fields">
+  <table class="table table-striped table-hover ob-title_fields">
 
 [%-
    request_base = config.get('search_defaultparams');
@@ -317,16 +317,17 @@ FOREACH category IN categories;
    END;
 
 -%]
-<tr><th class="ob-field">[% msg.maketext("${thiscategory}") %]</th><td>[% content %]</td></tr>
+   <tr><th class="ob-field">[% msg.maketext("${thiscategory}") %]</th><td>[% content %]</td></tr>
 [%
    END;
 END;
 -%]
 
 [% IF 0 == 1 && normdata.${"T0662"} %]
-<tr><th class="ob-field">[% msg.maketext("Volltext") %]</th><td><a class="btn btn-primary" href="[% normdata.${"T0662"}.first.content %]" target="_blank"><i class="fas fa-download"></i> Download</a></td></tr>
+   <tr><th class="ob-field">[% msg.maketext("Volltext") %]</th><td><a class="btn btn-primary" href="[% normdata.${"T0662"}.first.content %]" target="_blank"><i class="fas fa-download"></i> Download</a></td></tr>
 [% END %]
-</table>
+  </table>
+</div>
 [% ELSIF format == "BibTeX" %]
 <div>
 <pre>

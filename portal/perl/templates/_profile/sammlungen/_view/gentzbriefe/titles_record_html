@@ -142,7 +142,6 @@
 	</div>
 [% END %]
 
-[% IF src.reference_publication.defined || src.item('_nested:gentz_letter__doublets') %]
 [%-
      
      publist = {};
@@ -157,15 +156,17 @@
 	ref_page     = src.reference_publication_page ;
 	ref_incipit  = src.reference_publication_incipit ;                 
 
-        thisitem =  {
+	IF (ref_title) ;
+          thisitem =  {
 	     location = ref_location
 	     type     = ref_type
 	     year     = ref_year
 	     page     = ref_page
 	     incipit  = ref_incipit
-	};
+          };
 
-        publist.${ref_title} = thisitem;
+          publist.${ref_title} = thisitem;
+	END;
      END;
 
      IF src.item('_nested:gentz_letter__doublets') ;
@@ -180,19 +181,24 @@
 	   ref_page     = item.page_doublet ;
 	   ref_incipit  = item.incipit_doublet;
 
-           thisitem =  {
-	     location = ref_location
-	     type     = ref_type
-	     year     = ref_year
-	     page     = ref_page
-	     incipit  = ref_incipit
-	   };
+           IF (ref_title) ;
+	
+             thisitem =  {
+	       location = ref_location
+	       type     = ref_type
+	       year     = ref_year
+	       page     = ref_page
+	       incipit  = ref_incipit
+	     };
 
-          publist.${ref_title} = thisitem;
+             publist.${ref_title} = thisitem;
+	   END;
 	END;
      END;
 -%]
 	
+[%# IF src.reference_publication.defined || src.item('_nested:gentz_letter__doublets') %]
+[% IF publist.keys.size > 0 %]
 	<div class="card">
 	  <div class="card-header" id="headingAbschnitt4">
 	    <h5 class="mb-0">
@@ -204,7 +210,7 @@
 	  <div id="collapseAbschnitt4" class="collapse" aria-labelledby="headingAbschnitt4" data-parent="#brief_details">
 	    <div class="card-body">
 
-
+[%# USE dumper;dumper.dump(publist)%]
               <ul>
 [% FOREACH title IN publist.keys.sort %]
 [%-
@@ -251,11 +257,12 @@
 [%   FOREACH versionfile IN digifile.item('_nested:digitized_version__files') %]
 
 <div class="p-5">
+  <h3 class="display-5 mt-3 mb-3">
+    [% digifile.name %] [% IF digifile.description %]/ [% digifile.description %][% END %]
+</h3>
+
   <img class="img-fluid" src="[% versionfile.versions.full.url %]"/>
   
-  <p class="mt-3">
-    [% digifile.name %] [% IF digifile.description %]([% digifile.description %])[% END %]
-  </p>
 
   <p class="mt-3">
     <a class="btn btn-primary mt-3" href="[% versionfile.versions.original.download_url %]" target="_blank"><i class="fas fa-download"></i> Download</a>

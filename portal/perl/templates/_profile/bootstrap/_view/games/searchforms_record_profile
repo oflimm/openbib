@@ -1,0 +1,54 @@
+[%# USE dumper; dumper.dump(dbchoice)%]
+[%
+   orgunitname = config.get_orgunitname_of_db_in_view(viewdbs.first,view);
+   IF NOT prevprofile ;
+       prevprofile = session.get_profile ;
+   END ;
+   IF NOT searchprofileid_of_view ;
+      searchprofileid_of_view  = config.get_searchprofile_of_view(view) ;
+   END ;
+   IF NOT searchprofileid_of_sysprofile ;
+      searchprofileid_of_sysprofile = config.get_searchprofile_of_systemprofile(view);
+   END ;
+
+   checked_profile = 0 ;
+
+   IF user.ID ;
+      usersearchprofiles = user.get_all_searchprofiles;
+   END ;
+%]
+
+<select name="profile" class="form-control ob-selectbox selectpicker">
+   
+[% IF 0 == 1 && usersearchprofiles  %]
+<optgroup label="Eigene Suchprofile">
+[%- FOREACH profile IN usersearchprofiles -%]
+[%     pid   = profile.searchprofileid %]
+[%     pname = profile.profilename %]
+<option value="[% pid %]"[%- IF prevprofile == '${pid}'  && NOT checked_profile -%] selected="selected"[%- checked_profile=1 ; END -%]>[% pname %]</option>
+[%  END %]
+</optgroup>
+[% END %]
+<optgroup label="[% msg.maketext("Suchradius") %]">
+[% IF viewdbs.size == 1 %]  
+<option value="[% searchprofileid_of_view %]"[%- IF prevprofile == searchprofileid_of_view && NOT checked_profile -%] selected="selected"[%- checked_profile=1 ; END -%]>[% dbinfo.get('dbnames').${viewdbs.first}.short %]</option>
+[%  FOREACH unit IN config.get_orgunitinfo_overview(sysprofile).all ;
+     IF unit.orgunitname == orgunitname ;
+      searchprofileid_of_orgunit = config.get_searchprofile_of_orgunit(sysprofile,unit.orgunitname) ;
+%]
+<option value="[% searchprofileid_of_orgunit %]"[%- IF prevprofile == searchprofileid_of_orgunit && NOT checked_profile -%] selected="selected"[%- checked_profile=1 ; END -%]>[% unit.description %]</option>
+[%   END;
+    END; %]
+[% END %]
+<option value="[% searchprofileid_of_view %]"[%- IF prevprofile == searchprofileid_of_view && NOT checked_profile -%] selected="selected"[%- END -%]>[% msg.maketext("Alle Kataloge") %]</option>
+</optgroup>
+[% IF 0 == 1 %]
+<optgroup label="[% msg.maketext("Allgemeine Suchprofile") %]">
+[% FOREACH unit IN config.get_orgunitinfo_overview(sysprofile).all ;
+     searchprofileid_of_orgunit = config.get_searchprofile_of_orgunit(sysprofile,unit.orgunitname) ;
+%]
+<option value="[% searchprofileid_of_orgunit %]"[%- IF prevprofile == searchprofileid_of_orgunit && NOT checked_profile -%] selected="selected"[%- checked_profile=1 ; END -%]>[% unit.description %]</option>
+[% END %]
+</optgroup>
+[% END %]
+</select>

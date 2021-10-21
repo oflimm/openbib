@@ -625,6 +625,7 @@ sub collect_place_data {
     my $self       = shift;
     my $record     = shift;
     my $place_list = [];
+    
     if ( length( $record->get_fields->{T7676} ) ) {
         my $rda_collection =
           $self->process_place_rda( $record->get_fields->{T7676}, "T7676" );
@@ -661,6 +662,8 @@ sub process_place_rda {
     my $field_name     = shift;
     my $rda_collection = [];
     my $mult_values    = $self->get_all_mult_values($rda_field_data);
+    
+    
     foreach my $mult_value ( @{$mult_values} ) {
         my $currentObject = {};
         foreach my $place ( @{$rda_field_data} ) {

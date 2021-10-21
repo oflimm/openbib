@@ -3,9 +3,9 @@
 #
 #  gen_metrics.pl
 #
-#  Erzeugen von BestOf-Analysen aus Relevance-Statistik-Daten
+#  Erzeugen von Metriken aus Katalog- sowie Relevance-Statistik-Daten
 #
-#  Dieses File ist (C) 2006-2015 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2021 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -144,9 +144,9 @@ if ($type == 1){
     }
     
     foreach my $database (@databases){
-        $logger->info("Generating Type 1 BestOf-Values for database $database");
+        $logger->info("Generating Type 1 metrics for database $database");
 
-        my $bestof_ref=[];
+        my $metrics_ref=[];
 
         # DBI "select id, count(sid) as sidcount from titleusage where origin=2 and dbname=? and DATE_SUB(CURDATE(),INTERVAL 6 MONTH) <= tstamp group by id order by idcount desc limit 20"
         my $titleusage = $statistics->get_schema->resultset('Titleusage')->search_rs(
@@ -173,7 +173,7 @@ if ($type == 1){
             
             my $item=OpenBib::Record::Title->new({database => $database, id => $titleid, config => $config})->load_brief_record->to_hash;
 
-            push @$bestof_ref, {
+            push @$metrics_ref, {
                 item  => $item,
                 count => $count,
             };
@@ -182,7 +182,7 @@ if ($type == 1){
         $statistics->cache_data({
             type => 1,
             id   => $database,
-            data => $bestof_ref,
+            data => $metrics_ref,
         });
     }
 }
@@ -199,7 +199,7 @@ if ($type == 2){
     }
 
     foreach my $view (sort @views){
-        $logger->info("Generating Type 2 BestOf-Values for view $view");
+        $logger->info("Generating Type 2 metrics for view $view");
 
         my $viewdb_ref = [];
         foreach my $dbname ($config->get_viewdbs($view)){
@@ -208,7 +208,7 @@ if ($type == 2){
 
         next unless (@$viewdb_ref);
         
-        my $bestof_ref=[];
+        my $metrics_ref=[];
         # DBI: "select dbname, count(katkey) as kcount from titleusage where origin=2 group by dbname order by kcount desc limit 20"
         my $databaseusage = $statistics->get_schema->resultset('Titleusage')->search_rs(
             {
@@ -231,7 +231,7 @@ if ($type == 2){
             my $dbname = $item->get_column('dbname');
             my $count  = $item->get_column('kcount');
             
-            push @$bestof_ref, {
+            push @$metrics_ref, {
                 item  => $dbname,
                 count => $count,
             };
@@ -240,7 +240,7 @@ if ($type == 2){
         $statistics->cache_data({
             type => 2,
             id   => $view,
-            data => $bestof_ref,
+            data => $metrics_ref,
         });
     }
 }
@@ -257,14 +257,14 @@ if ($type == 3){
     }
 
     foreach my $database (@databases){
-        $logger->info("Generating Type 3 BestOf-Values for database $database");
+        $logger->info("Generating Type 3 metrics for database $database");
 
         my $maxcount=0;
 	my $mincount=999999999;
 
         my $catalog = new OpenBib::Catalog({ database => $database });
         
-        my $bestof_ref=[];
+        my $metrics_ref=[];
 
         # DBI: "select subject.content , count(distinct sourceid) as scount from conn, subject where sourcetype=1 and targettype=4 and subject.category=1 and subject.id=conn.targetid group by targetid order by scount desc limit 200"
         my $usage = $catalog->get_schema->resultset('Subject')->search_rs(
@@ -294,33 +294,33 @@ if ($type == 3){
                 $mincount = $count;
             }
             
-            push @$bestof_ref, {
+            push @$metrics_ref, {
                 item  => $content,
                 count => $count,
             };
         }
         
-	$bestof_ref = gen_cloud_class(
+	$metrics_ref = gen_cloud_class(
             {
-                items => $bestof_ref, 
+                items => $metrics_ref, 
                 min   => $mincount, 
                 max   => $maxcount, 
                 type  => $config->{best_of}{$type}{cloud}
             }
         );
 
-        my $sortedbestof_ref ;
+        my $sortedmetrics_ref ;
         my $collator = Unicode::Collate->new();
         
-        @{$sortedbestof_ref} = map { $_->[0] }
+        @{$sortedmetrics_ref} = map { $_->[0] }
             sort { $collator->cmp($a->[1],$b->[1]) }
                 map { [$_, $_->{item}] }
-                    @{$bestof_ref};
+                    @{$metrics_ref};
         
         $statistics->cache_data({
             type => 3,
             id   => $database,
-            data => $sortedbestof_ref,
+            data => $sortedmetrics_ref,
         });
     }
 }
@@ -337,14 +337,14 @@ if ($type == 4){
     }
 
     foreach my $database (@databases){
-        $logger->info("Generating Type 4 BestOf-Values for database $database");
+        $logger->info("Generating Type 4 metrics for database $database");
 
         my $maxcount=0;
 	my $mincount=999999999;
 
         my $catalog = new OpenBib::Catalog({ database => $database });
 
-        my $bestof_ref=[];
+        my $metrics_ref=[];
 
         # DBI: "select classification.content , count(distinct sourceid) as scount from conn, classification where sourcetype=1 and targettype=5 and classification.category=1 and classification.id=conn.targetid group by targetid order by scount desc limit 200"
         my $usage = $catalog->get_schema->resultset('Classification')->search_rs(
@@ -373,31 +373,31 @@ if ($type == 4){
                 $mincount = $count;
             }
             
-            push @$bestof_ref, {
+            push @$metrics_ref, {
                 item  => $content,
                 count => $count,
             };
         }
 
-	$bestof_ref = gen_cloud_class({
-				       items => $bestof_ref, 
+	$metrics_ref = gen_cloud_class({
+				       items => $metrics_ref, 
 				       min   => $mincount, 
 				       max   => $maxcount, 
 				       type  => $config->{best_of}{$type}{cloud}});
 
 
-        my $sortedbestof_ref ;
+        my $sortedmetrics_ref ;
         my $collator = Unicode::Collate->new();
         
-        @{$sortedbestof_ref} = map { $_->[0] }
+        @{$sortedmetrics_ref} = map { $_->[0] }
             sort { $collator->cmp($a->[1],$b->[1]) }
                 map { [$_, $_->{item}] }
-                    @{$bestof_ref};
+                    @{$metrics_ref};
         
         $statistics->cache_data({
             type => 4,
             id   => $database,
-            data => $sortedbestof_ref,
+            data => $sortedmetrics_ref,
         });
     }
 }
@@ -414,14 +414,14 @@ if ($type == 5){
     }
 
     foreach my $database (@databases){
-        $logger->info("Generating Type 5 BestOf-Values for database $database");
+        $logger->info("Generating Type 5 metrics for database $database");
 
         my $maxcount=0;
 	my $mincount=999999999;
 
         my $catalog = new OpenBib::Catalog({ database => $database });
 
-        my $bestof_ref=[];
+        my $metrics_ref=[];
 
         # DBI: "select corporatebody.content , count(distinct sourceid) as scount from conn, corporatebody where sourcetype=1 and targettype=3 and corporatebody.category=1 and corporatebody.id=conn.targetid group by targetid order by scount desc limit 200"
         my $usage = $catalog->get_schema->resultset('Corporatebody')->search_rs(
@@ -450,30 +450,30 @@ if ($type == 5){
                 $mincount = $count;
             }
             
-            push @$bestof_ref, {
+            push @$metrics_ref, {
                 item  => $content,
                 count => $count,
             };
         }
 
-	$bestof_ref = gen_cloud_class({
-				       items => $bestof_ref, 
+	$metrics_ref = gen_cloud_class({
+				       items => $metrics_ref, 
 				       min   => $mincount, 
 				       max   => $maxcount, 
 				       type  => $config->{best_of}{$type}{cloud}});
 
-        my $sortedbestof_ref ;
+        my $sortedmetrics_ref ;
         my $collator = Unicode::Collate->new();
         
-        @{$sortedbestof_ref} = map { $_->[0] }
+        @{$sortedmetrics_ref} = map { $_->[0] }
             sort { $collator->cmp($a->[1],$b->[1]) }
                 map { [$_, $_->{item}] }
-                    @{$bestof_ref};
+                    @{$metrics_ref};
         
         $statistics->cache_data({
             type => 5,
             id   => $database,
-            data => $sortedbestof_ref,
+            data => $sortedmetrics_ref,
         });
     }
 }
@@ -490,14 +490,14 @@ if ($type == 6){
     }
 
     foreach my $database (@databases){
-        $logger->info("Generating Type 6 BestOf-Values for database $database");
+        $logger->info("Generating Type 6 metrics for database $database");
 
         my $maxcount=0;
 	my $mincount=999999999;
 
         my $catalog = new OpenBib::Catalog({ database => $database });
 
-        my $bestof_ref=[];
+        my $metrics_ref=[];
 
         # DBI: "select person.content , count(distinct sourceid) as scount from conn, person where sourcetype=1 and targettype=2 and person.category=1 and person.id=conn.targetid group by targetid order by scount desc limit 200"
         my $usage = $catalog->get_schema->resultset('Person')->search_rs(
@@ -527,31 +527,31 @@ if ($type == 6){
                 $mincount = $count;
             }
             
-            push @$bestof_ref, {
+            push @$metrics_ref, {
                 item  => $content,
                 count => $count,
             };
         }
 
-	$bestof_ref = gen_cloud_class({
-				       items => $bestof_ref, 
+	$metrics_ref = gen_cloud_class({
+				       items => $metrics_ref, 
 				       min   => $mincount, 
 				       max   => $maxcount, 
 				       type  => $config->{best_of}{$type}{cloud}});
 
 
-        my $sortedbestof_ref ;
+        my $sortedmetrics_ref ;
         my $collator = Unicode::Collate->new();
         
-        @{$sortedbestof_ref} = map { $_->[0] }
+        @{$sortedmetrics_ref} = map { $_->[0] }
             sort { $collator->cmp($a->[1],$b->[1]) }
                 map { [$_, $_->{item}] }
-                    @{$bestof_ref};
+                    @{$metrics_ref};
 
         $statistics->cache_data({
             type => 6,
             id   => $database,
-            data => $sortedbestof_ref,
+            data => $sortedmetrics_ref,
         });
     }
 }
@@ -568,12 +568,12 @@ if ($type == 7){
     }
 
     foreach my $database (@databases){
-        $logger->info("Generating Type 7 BestOf-Values for database $database");
+        $logger->info("Generating Type 7 metrics for database $database");
 
         my $maxcount=0;
 	my $mincount=999999999;
 
-        my $bestof_ref=[];
+        my $metrics_ref=[];
         
         # DBI: "select t.id,t.tag,count(tt.tagid) as scount from tags as t, tittag as tt where tt.dbname=? and tt.tagid=t.id group by tt.tagid"
         my $usage = $user->get_schema->resultset('Tag')->search_rs(
@@ -602,32 +602,32 @@ if ($type == 7){
                 $mincount = $count;
             }
             
-            push @$bestof_ref, {
+            push @$metrics_ref, {
                 item  => $content,
                 id    => $id,
                 count => $count,
             };
         }
 
-	$bestof_ref = gen_cloud_class({
-				       items => $bestof_ref, 
+	$metrics_ref = gen_cloud_class({
+				       items => $metrics_ref, 
 				       min   => $mincount, 
 				       max   => $maxcount, 
 				       type  => $config->{best_of}{$type}{cloud}});
 
 
-        my $sortedbestof_ref ;
+        my $sortedmetrics_ref ;
         my $collator = Unicode::Collate->new();
         
-        @{$sortedbestof_ref} = map { $_->[0] }
+        @{$sortedmetrics_ref} = map { $_->[0] }
             sort { $collator->cmp($a->[1],$b->[1]) }
                 map { [$_, $_->{item}] }
-                    @{$bestof_ref};
+                    @{$metrics_ref};
         
         $statistics->cache_data({
             type => 7,
             id   => $database,
-            data => $sortedbestof_ref,
+            data => $sortedmetrics_ref,
         });
     }
 }
@@ -644,7 +644,7 @@ if ($type == 8){
     }
 
     foreach my $view (@views){
-        $logger->info("Generating Type 8 BestOf-Values for view $view");
+        $logger->info("Generating Type 8 metrics for view $view");
 
 	my $cat2type_ref = {
 			    fs        => 1,
@@ -662,9 +662,9 @@ if ($type == 8){
 			    ejahr     => 13,
 			   };
 
-	my $bestof_ref={};
+	my $metrics_ref={};
         foreach my $category (qw/all fs hst verf swt/){
-	  my $thisbestof_ref=[];
+	  my $thismetrics_ref=[];
 	  my $sqlstring;
 
           my $maxcount=0;
@@ -692,39 +692,39 @@ if ($type == 8){
 	      $mincount = $count;
             }
             
-            push @$thisbestof_ref, {
+            push @$thismetrics_ref, {
 				item  => $content,
 				count => $count,
             };
 	  }
 
-	  $thisbestof_ref = gen_cloud_class({
-              items => $thisbestof_ref, 
+	  $thismetrics_ref = gen_cloud_class({
+              items => $thismetrics_ref, 
               min   => $mincount, 
               max   => $maxcount, 
               type  => $config->{best_of}{$type}{cloud}});
           
           
-          my $sortedbestof_ref ;
+          my $sortedmetrics_ref ;
           my $collator = Unicode::Collate->new();
           
-          @{$sortedbestof_ref} = map { $_->[0] }
+          @{$sortedmetrics_ref} = map { $_->[0] }
               sort { $collator->cmp($a->[1],$b->[1]) }
                   map { [$_, $_->{item}] }
-                      @{$thisbestof_ref};
+                      @{$thismetrics_ref};
           
           
-	  $bestof_ref->{$category}=$sortedbestof_ref;
+	  $metrics_ref->{$category}=$sortedmetrics_ref;
       }
         
         if ($logger->is_debug){
-            $logger->debug(YAML::Dump($bestof_ref));
+            $logger->debug(YAML::Dump($metrics_ref));
         }
         
         $statistics->cache_data({
             type => 8,
             id   => $view,
-            data => $bestof_ref,
+            data => $metrics_ref,
         });
     }
 }
@@ -741,14 +741,14 @@ if ($type == 9){
     }
     
     foreach my $database (@databases){
-        $logger->info("Generating Type 9 BestOf-Values for database $database");
+        $logger->info("Generating Type 9 metrics for database $database");
 
         my $maxcount=0;
 	my $mincount=999999999;
 
         my $catalog = new OpenBib::Catalog({ database => $database });
 
-        my $bestof_ref=[];
+        my $metrics_ref=[];
 
         # DBI: "select count(distinct id) as scount, content from title where category=425 and content regexp ? group by content order by scount DESC" mit RegEXP "^[0-9][0-9][0-9][0-9]\$"
         my $usage = $catalog->get_schema->resultset('Title')->search_rs(
@@ -777,30 +777,30 @@ if ($type == 9){
                 $mincount = $count;
             }
             
-            push @$bestof_ref, {
+            push @$metrics_ref, {
                 item  => $content,
                 count => $count,
             };
         }
 
-	$bestof_ref = gen_cloud_class({
-				       items => $bestof_ref, 
+	$metrics_ref = gen_cloud_class({
+				       items => $metrics_ref, 
 				       min   => $mincount, 
 				       max   => $maxcount, 
 				       type  => $config->{best_of}{$type}{cloud}});
 
-        my $sortedbestof_ref ;
+        my $sortedmetrics_ref ;
         my $collator = Unicode::Collate->new();
         
-        @{$sortedbestof_ref} = map { $_->[0] }
+        @{$sortedmetrics_ref} = map { $_->[0] }
             sort { $collator->cmp($a->[1],$b->[1]) }
                 map { [$_, $_->{item}] }
-                    @{$bestof_ref};
+                    @{$metrics_ref};
         
         $statistics->cache_data({
             type => 9,
             id   => $database,
-            data => $sortedbestof_ref,
+            data => $sortedmetrics_ref,
         });
     }
 }
@@ -817,7 +817,7 @@ if ($type == 10){
     }
 
     foreach my $view (@views){
-        $logger->info("Generating Type 10 BestOf-Values for view $view");
+        $logger->info("Generating Type 10 metrics for view $view");
 
         my @databases = $config->get_dbs_of_view($view);
         
@@ -875,7 +875,7 @@ if ($type == 11){
 
     foreach my $view (@views){
 #        next if ($view eq "kug");
-        $logger->info("Generating Type 11 BestOf-Values for view $view");
+        $logger->info("Generating Type 11 metrics for view $view");
 
         my @databases = $config->get_dbs_of_view($view);
         
@@ -931,12 +931,12 @@ if ($type == 12){
         = DBI->connect("DBI:Pg:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    $logger->info("Generating Type 12 BestOf-Values");
+    $logger->info("Generating Type 12 metrics");
 
     my $maxcount=0;
     my $mincount=999999999;
     
-    my $bestof_ref=[];
+    my $metrics_ref=[];
     my $request = $dbh->prepare("select content as id, count(content) as scount from eventlog where type = 800 group by content order by scount DESC limit 200");
     $request->execute();
     while (my $result=$request->fetchrow_hashref){
@@ -957,7 +957,7 @@ if ($type == 12){
         }
 
         # Nur oeffentliche Literaturlisten verwenden
-        push @$bestof_ref, {
+        push @$metrics_ref, {
             item       => $content,
             id         => $id,
             count      => $count,
@@ -965,24 +965,24 @@ if ($type == 12){
         } if ($properties_ref->{type} == 1);
     }
     
-    $bestof_ref = gen_cloud_class({
-        items => $bestof_ref, 
+    $metrics_ref = gen_cloud_class({
+        items => $metrics_ref, 
         min   => $mincount, 
         max   => $maxcount, 
         type  => $config->{best_of}{$type}{cloud}});
 
-    my $sortedbestof_ref ;
+    my $sortedmetrics_ref ;
     my $collator = Unicode::Collate->new();
     
-    @{$sortedbestof_ref} = map { $_->[0] }
+    @{$sortedmetrics_ref} = map { $_->[0] }
         sort { $collator->cmp($a->[1],$b->[1]) }
             map { [$_, $_->{item}] }
-                @{$bestof_ref};
+                @{$metrics_ref};
     
     $statistics->cache_data({
         type => 12,
         id   => 'litlist_usage',
-        data => $sortedbestof_ref,
+        data => $sortedmetrics_ref,
     });
 }
 
@@ -998,7 +998,7 @@ if ($type == 13){
     }
 
     foreach my $view (sort @views){
-        $logger->info("Generating Type 13 BestOf-Values for view $view");
+        $logger->info("Generating Type 13 metrics for view $view");
 
         my $viewdb_ref = [];
         foreach my $dbname ($config->get_viewdbs($view)){
@@ -1007,7 +1007,7 @@ if ($type == 13){
 
         next unless (@$viewdb_ref);
 
-        my $bestof_ref=[];
+        my $metrics_ref=[];
 
         my $titleusage = $statistics->get_schema->resultset('Titleusage')->search_rs(
             {
@@ -1031,7 +1031,7 @@ if ($type == 13){
 
             my $item=OpenBib::Record::Title->new({database => $database, id => $titleid, config => $config})->load_brief_record()->to_hash;
 
-            push @$bestof_ref, {
+            push @$metrics_ref, {
                 item  => $item,
                 count => $count,
             };
@@ -1040,7 +1040,7 @@ if ($type == 13){
         $statistics->cache_data({
             type => 13,
             id   => $view,
-            data => $bestof_ref,
+            data => $metrics_ref,
         });
     }
 }
@@ -1058,14 +1058,14 @@ if ($type == 14 && $field){
     }
     
     foreach my $database (@databases){
-        $logger->info("Generating Type 14 BestOf-Values for database $database");
+        $logger->info("Generating Type 14 metrics for database $database in field $field");
 
         my $maxcount=0;
 	my $mincount=999999999;
 	
         my $catalog = new OpenBib::Catalog({ database => $database });
 	
-        my $bestof_ref=[];
+        my $metrics_ref=[];
 	
 	my $usage;
 	
@@ -1166,31 +1166,31 @@ if ($type == 14 && $field){
 		    $mincount = $count;
 		}
 		
-		push @$bestof_ref, {
+		push @$metrics_ref, {
 		    item  => $content,
 		    count => $count,
 		};
 	    }
 	}
 
-	$bestof_ref = gen_cloud_class({
-				       items => $bestof_ref, 
+	$metrics_ref = gen_cloud_class({
+				       items => $metrics_ref, 
 				       min   => $mincount, 
 				       max   => $maxcount, 
 				       type  => $config->{best_of}{$type}{cloud}});
 
-        my $sortedbestof_ref ;
+        my $sortedmetrics_ref ;
         my $collator = Unicode::Collate->new();
         
-        @{$sortedbestof_ref} = map { $_->[0] }
+        @{$sortedmetrics_ref} = map { $_->[0] }
             sort { $collator->cmp($a->[1],$b->[1]) }
                 map { [$_, $_->{item}] }
-                    @{$bestof_ref};
+                    @{$metrics_ref};
         
         $statistics->cache_data({
             type => 14,
             id   => "$database-$field",
-            data => $sortedbestof_ref,
+            data => $sortedmetrics_ref,
         });
     }
 }

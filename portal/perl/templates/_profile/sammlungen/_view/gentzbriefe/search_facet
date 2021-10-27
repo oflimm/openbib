@@ -548,7 +548,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <!-- Begin custom1 Mit Inhaltsrepraesentation facet -->
 [%         IF facets.defined('custom1') && facets.custom1.size > 0 %]
         <h4 class="ob-facet-title [% IF facets.custom1.size > 0 %]collapse[% ELSE %]collapsed[% END %]" data-toggle="collapse" data-target="#group-custom1" aria-expanded=[% IF facets.custom1.size > 0 %]"true"[% ELSE %]"false"[% END %]>
-           [% msg.maketext("Transkriptionsformen") %] 
+           [% msg.maketext("Transkriptionen Originale") %] 
         </h4>
         <ul id="group-custom1" class="list-group in collapse [% IF facets.custom1.size > 0 %]show[% END %]">
 [%             FOREACH termitem IN facets.custom1 ;

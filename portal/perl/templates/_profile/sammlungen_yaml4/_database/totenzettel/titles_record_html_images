@@ -15,21 +15,25 @@
 #######################################################################
 -%]
 <!-- Anfang Umschlagbilder -->
-[% IF normdata.${"T6054"} ;
-     FOREACH item IN normdata.${"T6054"} ;
-       cdm_ptr = item.content ;
+[% IF normdata.${"T2662"} ;
+     FOREACH item IN normdata.${"T2662"} ;
+       url = item.content ;
        thismult = item.mult ;
-       FOREACH thisitem IN normdata.${"T6050"} ;
+       FOREACH thisitem IN normdata.${"T0663"} ;
            IF thisitem.mult == thismult ;
               description = thisitem.content ;
            END ;
        END ;
+       FOREACH thisitem IN normdata.${"T0662"} ;
+           IF thisitem.mult == thismult ;
+              full_url = thisitem.content ;
+           END ;
+       END ;
+       
 %]
 [%# USE dumper;dumper.dump(normdata)%]
-<center><a href="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/totenzettel&CISOPTR=[% cdm_ptr %]&DMSCALE=100.00000&DMWIDTH=8000&DMHEIGHT=8000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" target="_blank"><img src="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/totenzettel&CISOPTR=[% cdm_ptr %]&DMSCALE=20.00000&DMWIDTH=8000&DMHEIGHT=8000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" width="300"/></a><br/><i>[% description %]</i><center>
+<center><a href="[% full_url %]" target="_blank"><img src="[% url %]" width="300"/></a><br/><i>[% description %]</i><center>
 <p/>
 [%   END %]
-[% ELSE %]
-<center><a href="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/totenzettel&CISOPTR=[% record.id %]&DMSCALE=100.00000&DMWIDTH=8000&DMHEIGHT=8000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" target="_blank"><img src="http://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/totenzettel&CISOPTR=[% record.id %]&DMSCALE=20.00000&DMWIDTH=8000&DMHEIGHT=8000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" width="300"/></a></center>
 [% END %]
 <!-- Ende Umschlagbilder -->

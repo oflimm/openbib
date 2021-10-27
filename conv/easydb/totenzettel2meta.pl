@@ -34,6 +34,7 @@ use Encode 'decode';
 use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
 use JSON::XS;
+use Text::Unidecode;
 use YAML::Syck;
 
 use OpenBib::Config;
@@ -122,8 +123,11 @@ while (my $jsonline = <IN>){
 
     $multcount_ref = {};
 
-    if ($item_ref->{_id}) {
-	$title_ref->{id} = $item_ref->{_id};
+    if ($item_ref->{contentdm_id}){
+    	$title_ref->{id} = $item_ref->{contentdm_id};
+    }
+    elsif ($item_ref->{_system_object_id}) {
+	$title_ref->{id} = "edb_".$item_ref->{_system_object_id};
     }
     else {
 	$logger->error("No id found for record: ".YAML::Dump($item_ref));
@@ -131,7 +135,7 @@ while (my $jsonline = <IN>){
     }
 
     if (defined $have_titleid_ref->{$title_ref->{id}}){
-	$logger->error("Doppelte ID: ".$title_ref->{id}."(_id: ".$item_ref->{_id}.", contentdm_id: ".$item_ref->{contentdm_id});
+	$logger->error("Doppelte ID: ".$title_ref->{id}."(_system_object_id: ".$item_ref->{_system_object_id}.", contentdm_id: ".$item_ref->{contentdm_id});
 	next;
     }
 
@@ -249,24 +253,35 @@ while (my $jsonline = <IN>){
     if (defined $item_ref->{'_nested:death_notes__professions_stands_normalized'} && @{$item_ref->{'_nested:death_notes__professions_stands_normalized'}}){
 	my $mult = 1;
 	foreach my $stands_ref (@{$item_ref->{'_nested:death_notes__professions_stands_normalized'}}){
-	    if (defined $stands_ref->{profession_stand_normalizedtitle_original}{_standard}{1}{text}{'de-DE'}){
+	    if (defined $stands_ref->{profession_stand_normalized}{_standard}{1}{text}{'de-DE'}){
 		push @{$title_ref->{fields}{'0433'}}, {
 		    mult     => $mult,
 		    subfield => '',
-		    content => $stands_ref->{profession_stand_normalizedtitle_original}{_standard}{1}{text}{'de-DE'},
+		    content => $stands_ref->{profession_stand_normalized}{_standard}{1}{text}{'de-DE'},
 		};
 		$mult++;
 	    }
 	}
     }
 
-    ### Trauernde -> 0451 fehlt!
-    if ($item_ref->{fehlt}){
-	push @{$title_ref->{fields}{'0451'}}, {
-	    mult     => 1,
-	    subfield => '',
-	    content => $item_ref->{fehlt},
-	};
+    ### bereaved_persons -> 0451
+    if (defined $item_ref->{'bereaved_persons'}){
+	my $mult = 1;
+	
+	my $names = $item_ref->{'bereaved_persons'};
+	
+	foreach my $name (split(' / ',$names)){
+	    	    
+	    my $new_category = "0451";
+	    
+	    push @{$title_ref->{fields}{$new_category}}, {
+		content    => $name,
+		mult       => $mult,
+		subfield   => '',
+	    };
+
+	    $mult++;
+	}        
     }
 
     ### search_terms -> 0600
@@ -300,7 +315,7 @@ while (my $jsonline = <IN>){
 		content  => $name,
 	    };
 	    
-	    print PERSON encode_json $normitem_ref, "\n";
+	    print CLASSIFICATION encode_json $normitem_ref, "\n";
 
 	    $classifications_done_ref->{$classification_id} = 1;
 	}
@@ -326,7 +341,7 @@ while (my $jsonline = <IN>){
 	    content => $thisdate,
 	};
 
-	if ($thisdate =~m/^(\d\d\d\d)$/){
+	if ($thisdate =~m/(\d\d\d\d)/){
 	    push @{$title_ref->{fields}{'0426'}}, {
 		mult     => 1,
 		subfield => '',
@@ -346,7 +361,7 @@ while (my $jsonline = <IN>){
 	    content => $thisdate,
 	};
 
-	if ($thisdate =~m/^(\d\d\d\d)$/){
+	if ($thisdate =~m/(\d\d\d\d)/){
 	    push @{$title_ref->{fields}{'0425'}}, {
 		mult     => 1,
 		subfield => '',

@@ -41,7 +41,7 @@ my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
 my $confdir       = $config->{'base_dir'}."/conf";
 my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
-my $cdm2metaexe   = "$konvdir/cdm2meta.pl";
+my $easydb2metaexe = "$konvdir/totenzettel2meta.pl";
 
 my $pool          = $ARGV[0];
 
@@ -57,6 +57,6 @@ if ($dbinfo->protocol eq "http" && $dbinfo->remoteuser ne "" && $dbinfo->remotep
 }
 
 print "### $pool: Datenabzug via http von $url\n";
-system("cd $pooldir/$pool ; rm *.xml meta.*");
+system("cd $pooldir/$pool ; rm *.json* meta.*");
 system("$wgetexe $httpauthstring -P $pooldir/$pool/ $url > /dev/null 2>&1 ");
-system("cd $pooldir/$pool; $cdm2metaexe --inputfile=$titlefile --configfile=$confdir/$pool.yml; gzip meta.*");
+system("cd $pooldir/$pool; $easydb2metaexe --inputfile=$titlefile ; gzip meta.*");

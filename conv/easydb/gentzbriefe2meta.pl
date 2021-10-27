@@ -467,7 +467,7 @@ while (my $jsonline = <IN>){
 	}
     }
 
-    ### tanscription_creator -> 0482
+    ### tanscription_type -> 0482
     if ($item_ref->{transcription_type}){
 	push @{$title_ref->{fields}{'0482'}}, {
 	    mult     => 1,
@@ -475,7 +475,16 @@ while (my $jsonline = <IN>){
 	    content => $item_ref->{transcription_type}{'de-DE'},
 	}
     }
-    
+
+    ### transmission_type -> 
+    if ($item_ref->{status_archive}){
+	push @{$title_ref->{fields}{'0483'}}, {
+	    mult     => 1,
+	    subfield => '',
+	    content => $item_ref->{transmission_type},
+	}
+    }
+            
     ### sent_date_original -> 0424
     my $year = "";
     
@@ -596,6 +605,15 @@ while (my $jsonline = <IN>){
     	    subfield => '',
     	    content => $name,
     	}
+    }
+
+    ### citation -> 0522
+    if ($item_ref->{status_archive}){
+	push @{$title_ref->{fields}{'0522'}}, {
+	    mult     => 1,
+	    subfield => '',
+	    content => $item_ref->{citation},
+	}
     }
 
     ### status_archive -> 0413
@@ -728,11 +746,11 @@ while (my $jsonline = <IN>){
 	# Todo: Im Export noch keine Inhalte zum Auswerten von is_digitalisat vorhanden!
 	
 	eval {
-	    if (defined $item_ref->{'hardcopy_herterich'} && $item_ref->{'hardcopy_herterich'}{_standard}{1}{text}{'de-DE'} eq "Papier"){
+	    if (defined $item_ref->{'hardcopy_herterich'} && $item_ref->{'hardcopy_herterich'}{'de-DE'} eq "Papier"){
 		$is_papierkopie_usb = 1;
 	    }
 	    
-	    if (defined $item_ref->{'hardcopy_herterich'} && $item_ref->{'hardcopy_herterich'}{_standard}{1}{text}{'de-DE'} eq "Mikrofilm (digitalisiert)"){
+	    if (defined $item_ref->{'hardcopy_herterich'} && $item_ref->{'hardcopy_herterich'}{'de-DE'} eq "Mikrofilm (digitalisiert)"){
 		$is_mikrofilm_digitalisiert = 1;
 	    }
 	    
@@ -754,7 +772,7 @@ while (my $jsonline = <IN>){
 	    push @{$title_ref->{fields}{'0334'}}, {
 		mult     => 1,
 		subfield => '',
-		content => 'Xerokopie möglich, Materialabgleich offen',
+		content => '"Xerokopie (USB), naheliegend, Verzeichnung offen',
 	    }
 	}
 	if ($is_mikrofilm_digitalisiert){

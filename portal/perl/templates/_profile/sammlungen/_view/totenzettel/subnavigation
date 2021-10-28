@@ -50,6 +50,7 @@
   <li class="navbar-item[% IF layout_param.active_submenu == "register_T0426" %] active[% END %]"> <a class="navbar-link[% IF layout_param.active_submenu == "register_T0426" %] active" [% END %]" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/titles/fields/id/0426.html?l=[% lang %]">[% msg.maketext('Geburtsjahre') %]</a></li>
   <li class="navbar-item[% IF layout_param.active_submenu == "register_T0410" %] active[% END %]"> <a class="navbar-link[% IF layout_param.active_submenu == "register_T0410" %] active" [% END %]" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/titles/fields/id/0410.html?l=[% lang %]">[% msg.maketext('Sterbeorte') %]</a></li>
   <li class="navbar-item[% IF layout_param.active_submenu == "register_T0411" %] active[% END %]"> <a class="navbar-link[% IF layout_param.active_submenu == "register_T0411" %] active" [% END %]" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/titles/fields/id/0411.html?l=[% lang %]">[% msg.maketext('Geburtsorte') %]</a></li>
+  <li class="navbar-item[% IF layout_param.active_submenu == "register_T0700" %] active[% END %]"> <a class="navbar-link[% IF layout_param.active_submenu == "register_T0411" %] active" [% END %]" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/titles/fields/id/0700.html?l=[% lang %]">[% msg.maketext('Provenienzen') %]</a></li>
  </ul>
 </nav>
 </div>

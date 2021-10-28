@@ -1,0 +1,45 @@
+[%#-
+#######################################################################
+#
+# Templatename: visible_categories_titset
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabekategorien fuer einen einzelnen Titelsatz
+#
+#######################################################################
+-%]
+[%# Ausgabekategorien %]
+[% categories = [
+                #'T0100', # msg.maketext("T0100-totenzettel") Name
+                'T0331', # msg.maketext("T0331-totenzettel") Name
+                'T0370', # msg.maketext("T0370-totenzettel") Geburtsname
+                'T0310', # msg.maketext("T0310-totenzettel") Ordensname
+                'T0335', # msg.maketext("T0335-totenzettel") Titel
+                'T0433', # msg.maketext("T0433-totenzettel") Beruf
+                'T0411', # msg.maketext("T0411-totenzettel") Geburtsort
+                'T0595', # msg.maketext("T0595-totenzettel") Geburtsdatum
+                'T0410', # msg.maketext("T0410-totenzettel") Sterbeort
+                'T0424', # msg.maketext("T0424-totenzettel") Sterbedatum
+                'T0103', # msg.maketext("T0103-totenzettel") Kinder
+                'T0101', # msg.maketext("T0101-totenzettel") Vater
+                'T0102', # msg.maketext("T0102-totenzettel") Mutter
+                'T0451', # msg.maketext("T0451-totenzettel") Trauernde
+                #'T0425', # msg.maketext("T0425-totenzettel") Geburtsjahr
+                #'T0426', # msg.maketext("T0426-totenzettel") Sterbejahr
+                 'T0700', # msg.maketext("T0700-totenzettel") Provenienz
+                'T0662', # msg.maketext("T0662") EDVurl
+                'T1664', # msg.maketext("T1664") Provenienz
+                #'T2662', # msg.maketext("T2662-totenzettel") Gesamt-Digitalisat: URL
+                #'T2663', # msg.maketext("T2663") USB URLInfo
+                'E4110', # msg.maketext("E4110") Inhaltsverzeichnis
+                'E4120', # msg.maketext("E4120") Ebook-URL
+                #'T4500', # msg.maketext("T4500") Nutzer-Tags
+                'T0600', # msg.maketext("T0600") Bemerkung
+                'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke
+                'T5100', # msg.maketext("T5100") Allg. Zaehlung
+                ]
+
+%]

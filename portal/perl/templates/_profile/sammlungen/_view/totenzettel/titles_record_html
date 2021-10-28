@@ -96,7 +96,9 @@ $(document).ready(function(){
 <div class="col-md-6">
 [%   PROCESS common/subtemplate name="titles_record_html_categories" %]
 
+[% IF holding.size > 0 %]
 [%   PROCESS common/subtemplate name="holding" %]
+[% END %]
 
 </div>
 </div>

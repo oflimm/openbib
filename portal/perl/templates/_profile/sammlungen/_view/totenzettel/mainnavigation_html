@@ -88,7 +88,7 @@
 
 [% PROCESS common/subtemplate name="searchforms_suggestions" %]
 [% IF NOT layout_param.without_navigation_search %]
-    <div class="card border-0 [% IF layout.param.main_template == 'home_html' %]d-md-none [% END %]sticky-top" style="min-width: 100%!important;">
+    <div class="card border-0 [% IF layout_param.main_template == 'home_html' %]d-md-none [% END %]sticky-top" style="min-width: 100%!important;">
       <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
 
 	<input type="hidden" name="num"        value="20" />

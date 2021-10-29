@@ -30,7 +30,7 @@
        
 %]
 [%# USE dumper;dumper.dump(normdata)%]
-<center><a href="[% full_url.replace('http://easydb2.ub.uni-koeln.de/','/easydb2/') %]" target="_blank"><img src="[% url.replace('http://easydb2.ub.uni-koeln.de/','/easydb2/') %] %]" width="300"/></a><br/><i>[% description %]</i><center>
+<center><a href="[% full_url.replace('http://easydb2.ub.uni-koeln.de/','/easydb2/') %]" target="_blank"><img src="[% url.replace('http://easydb2.ub.uni-koeln.de/','/easydb2/') %]" width="300"/></a><br/><i>[% description %]</i><center>
 <p/>
 [%   END %]
 [% END %]

@@ -156,6 +156,7 @@ FOREACH category IN categories;
                thiscontent = thiscontent.substr(0,60);
                thiscontent = "${thiscontent}...";
             END ;
+	    content = content.replace('http://easydb2.ub.uni-koeln.de/','/easydb2/');
             content   = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
          ELSE ;
             thiscontent = content;
@@ -163,6 +164,7 @@ FOREACH category IN categories;
                thiscontent = thiscontent.substr(0,60);
                thiscontent = "${thiscontent}...";
             END ;
+	    content = content.replace('http://easydb2.ub.uni-koeln.de/','/easydb2/');
             content   = "<a href=\"${content}\" class=\"btn btn-primary\" target=\"_blank\">${msg.maketext('Zum Volltext')}</a>";
          END ;
 

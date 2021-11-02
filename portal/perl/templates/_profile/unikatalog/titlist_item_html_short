@@ -75,7 +75,8 @@
 
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+         #persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+         persons.push(part.content);
          personslength = personslength+thislength ;
        ELSE ;
          truncatepers = 1 ;
@@ -102,7 +103,8 @@
 
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+         persons.push(part.content);
+         #persons.push("<a href=\"${globalurl}\">${part.content}</a>");
          personslength = personslength+thislength ;
        ELSE ;
          truncatepers = 1 ;
@@ -134,7 +136,8 @@
 
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+         persons.push(part.content);
+         #persons.push("<a href=\"${globalurl}\">${part.content}</a>");
          personslength = personslength+thislength ;
        ELSE ;
          truncatepers = 1 ;
@@ -157,7 +160,8 @@
 
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+         persons.push(part.content);
+         #persons.push("<a href=\"${globalurl}\">${part.content}</a>");
          personslength = personslength+thislength ;
        ELSE ;
          truncatepers = 1 ;
@@ -196,7 +200,8 @@
 
            globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-           persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+           persons.push(part.content);
+           #persons.push("<a href=\"${globalurl}\">${part.content}</a>");
            personslength = personslength+thislength ;
          ELSE ;
            truncatepers = 1 ;
@@ -214,7 +219,8 @@
 
            globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-           persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+           persons.push(part.content);
+           #persons.push("<a href=\"${globalurl}\">${part.content}</a>");
            personslength = personslength+thislength ;
          ELSE ;
            truncatepers = 1 ;
@@ -244,6 +250,12 @@
         IF super.fields.${'0331'} ;
            super_title   = super.fields.${'0331'}.first.content;
         END ;
+
+        # Schriftenreihe
+	IF item.${'0453'}.first.content ;
+	   reihenzaehlung = item.${'0453'}.first.content ;
+	   super_title = "${super_title} ; ${reihenzaehlung}";
+	END;
 
         IF super_title ;
            title = "${title} (${super_title})";

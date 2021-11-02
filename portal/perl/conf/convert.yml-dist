@@ -70,12 +70,12 @@ convtab:
      #'1201': 1        # Bestandsluecken (in holding verwenden wir 1204)
      #'1202': 1        # Bemerkungen zum Bestand
      #'1299': 1        # ZDB Mikro
-      '1527': 1        # ID der Parallelausgabe
-      '1529': 1        # Fortlaufende Beilage Titel?
-      '1530': 1        # ID des Bezugswerkes
-      '1531': 1        # ID der frueheren Ausgabe
-      '1532': 1        # ID fruehrer Hinweis
-      '1533': 1        # ID Titelkonkordanz
+     #'1527': 1        # ID der Parallelausgabe
+     #'1529': 1        # Fortlaufende Beilage Titel?
+     #'1530': 1        # ID des Bezugswerkes
+     #'1531': 1        # ID der frueheren Ausgabe
+     #'1532': 1        # ID fruehrer Hinweis
+     #'1533': 1        # ID Titelkonkordanz
      #'1534': 1        # ID spaeterer Hinweis ?
      #'1600': 1        # Hinweis auf Pseudo-Orte (TODO: Zweigstellen, Lesesaaltheke etc.)
       '1671': 1        # Verbreitungsort
@@ -7592,6 +7592,13 @@ convtab:
             'freesearch': 1
           facet:
             'person': 1
+      '0331':         # Name
+        '':
+          index:
+            'person': 1
+            'freesearch': 1
+          facet:
+            'person': 1
       '0370':         # Geburtsname
         '':
           index:
@@ -7781,6 +7788,12 @@ convtab:
             'title': 50
             'titlestring': 50
             'freesearch': 50
+      '0333': # Facette: Kopie Original
+        '':
+          index:
+            'ft0334': 1
+          facet:
+            'custom2': 1
       '0334': # Facette: Kopie Original
         '':
           index:

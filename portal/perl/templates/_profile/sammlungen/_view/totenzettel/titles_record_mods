@@ -61,7 +61,6 @@ FOREACH version IN easydb.item('_nested:death_notes__digitized_versions') ;
 END ;
 
 -%]
-[%# USE dumper;dumper.dump(easydb)%]
 <?xml version="1.0" encoding="UTF-8"?>
 <mets:mets xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/mets/mets.xsd">
   <mets:metsHdr>

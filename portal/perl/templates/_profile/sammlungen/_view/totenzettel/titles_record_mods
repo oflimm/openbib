@@ -31,11 +31,12 @@ genre = "Totenzettel";
 
 images = [];
 
+id = 1;
+
 FOREACH version IN easydb.item('_nested:death_notes__digitized_versions') ;
 
   desc = version.death_note_type.${"de-DE"};
 
-  id = 1;
   min = "";
   max = ""
   default = "";

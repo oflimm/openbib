@@ -6,7 +6,7 @@ owner_logo = "http://www.ub.uni-koeln.de/cdm4/images/dfgviewer_usblogo.gif";
 owner_siteurl = "https://totenzettel.ub.uni-koeln.de/";
 #owner_siteurl = "https://www.ub.uni-koeln.de/sammlungen/entdecken/syst/digital/index_ger.html";
 
-pysical_location = "Universitäts- und Stadtbibliothek Köln";
+physical_location = "Universitäts- und Stadtbibliothek Köln";
 access_condition = "No Copyright";
 
 reference_url = "https://totenzettel.ub.uni-koeln.de/portal/databases/id/${record.database}/titles/id/${record.id}.html";

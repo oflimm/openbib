@@ -403,7 +403,7 @@ $(document).ready(function(){
 	    </div>
 [% END %]
 
-[% IF NOT with_cartitems_delete && NOT hide_hit %]
+[% IF 0 == 1 && NOT with_cartitems_delete && NOT hide_hit %]
 	    <div class="pr-1">
 	      <a class="btn btn-primary pr-2" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/to_bibsonomy" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy"><i class="fas fa-share-alt"></i> <span class="d-none d-sm-inline">BibSonomy</span></a>
 	    </div>       

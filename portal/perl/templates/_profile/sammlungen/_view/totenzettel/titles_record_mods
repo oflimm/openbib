@@ -92,7 +92,7 @@ END ;
 	  <mods:location>
 	    <mods:physicalLocation>[% physical_location %]</mods:physicalLocation>
 	    <mods:url>
-	      http://www.ub.uni-koeln.de/permalink/2010/01/totenzettel,5
+	      [% presentation_url %]
 	    </mods:url>
 	  </mods:location>
 	  <mods:accessCondition type="use and reproduction">[% access_condition %]</mods:accessCondition>

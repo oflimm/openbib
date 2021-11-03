@@ -26,7 +26,7 @@
                 'T0200', # msg.maketext("T0200") Urheber
                 'T0201', # msg.maketext("T0201") Koerperschaft
                 'T0403', # msg.maketext("T0403") Auflage
-                'T0410', # msg.maketext("T0410") Verlagsort
+                #'T0410', # msg.maketext("T0410") Verlagsort
                 'T0412', # msg.maketext("T0412") Verlag
                 'T0425', # msg.maketext("T0425") ErschJahr
                 #'T0424', # msg.maketext("T0424") ErschJahr/Ansetzung

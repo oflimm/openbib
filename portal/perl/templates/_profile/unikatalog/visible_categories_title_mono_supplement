@@ -82,9 +82,6 @@
                 'T0700', # msg.maketext("T0700") Notation
                 'E4100', # msg.maketext("E4100") Basisklassifikation
                 'E4102', # msg.maketext("E4102") KUG Themengebiet
-                'T0540', # msg.maketext("T0540") ISBN
-                'T0553', # msg.maketext("T0553") ArtikelNr. als 13-stellige ISBN
-                'T0543', # msg.maketext("T0543") ISSN
                 'T0662', # msg.maketext("T0662") EDVurl
                 'T1664', # msg.maketext("T1664") Provenienz
                 'T2662', # msg.maketext("T2662") USB EDVurl

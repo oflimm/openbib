@@ -7654,6 +7654,10 @@ convtab:
           index:
             'person': 1
             'freesearch': 1
+      '0600':
+        '':
+          index:
+            'freesearch': 1
       '0700':
         '':
           index:

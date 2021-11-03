@@ -293,18 +293,6 @@ FOREACH field IN normdata;
 	 END;
          content_map.${'T0331'}.push(content);
 
-    CASE "T0410";
-         IF normdata.${"T0412"}.first.content ;
-	    verlag = normdata.${"T0412"}.first.content;
-	    content = "${content} : ${verlag}";
-	 END;
-	 
-         content   = "${highlightquery(searchquery,content)}";
-         IF NOT content_map.${'T0412'} ;
-	    content_map.${'T0412'} = [];
-	 END;
-         content_map.${'T0412'}.push(content);
-
     CASE "T0412";
          IF normdata.${"T0410"}.first.content ;
 	    verlagsort = normdata.${"T0410"}.first.content;

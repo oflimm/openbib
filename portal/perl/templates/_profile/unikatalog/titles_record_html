@@ -85,8 +85,6 @@ $(document).ready(function(){
 
 [% IF NOT hide_detail && NOT hide_hit %]
 
-[% PROCESS common/subtemplate name="titles_record_html_modals" %]
-
 <div class="content"><!-- Begin Fulltitle -->
 
 <div class="ob-category_header">

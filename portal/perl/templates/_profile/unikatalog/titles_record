@@ -12,6 +12,8 @@
        used_fields.push( "<b>${fieldname}</b>: ${fieldcontent}" );
     END;
 
+    show_modals = 1;
+    
     layout_param = {
      'page_title' = "Titel anzeigen"
 

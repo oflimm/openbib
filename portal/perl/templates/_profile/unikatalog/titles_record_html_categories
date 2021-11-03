@@ -25,20 +25,6 @@
 -%]
 [% IF format == "full" %]
 
-<script>
-$('#normdataModal').on('show.bs.modal', function (event) {
-  var button = $(event.relatedTarget) // Button that triggered the modal
-  var formaturl = button.data('formaturl') // Extract info from data-* attributes
-  var formattitle = button.data('formattitle') // Extract info from data-* attributes
-  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-  var modal = $(this)
-  modal.find('.modal-body').html('<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>');
-  modal.find('.modal-title').text(formattitle)
-  modal.find('.modal-body').load(formaturl);
-})
-</script>
-
 
 [%   PROCESS common/subtemplate name="titles_record_html_sammlungslinks" %]
 

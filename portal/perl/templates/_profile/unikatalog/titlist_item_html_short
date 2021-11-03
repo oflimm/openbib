@@ -245,21 +245,17 @@
      END;
 
      # Einbeziehung des ersten Gesamttitels T5005
-     IF title && super;
+     IF item.${'T0451'}.first.content;
+        super_title = item.${'T0451'}.first.content;     
+     ELSIF title && super;
         super_title = super.fields.${'0451'}.first.content;
         IF super.fields.${'0331'} ;
            super_title   = super.fields.${'0331'}.first.content;
         END ;
+     END;
 
-        # Schriftenreihe
-	IF item.${'0453'}.first.content ;
-	   reihenzaehlung = item.${'0453'}.first.content ;
-	   super_title = "${super_title} ; ${reihenzaehlung}";
-	END;
-
-        IF super_title ;
-           title = "${title} (${super_title})";
-        END;
+     IF title && super_title ;
+        title = "${title} (${super_title})";
      END;
 
      # Kein verwertbarer Titel oder Titel in titles_exclude, z.B. bei Ueberordnungen?
@@ -336,13 +332,15 @@ $(document).ready(function(){
 </script>
 
       <div class="ob-numbering">[% IF with_id_checkbox %]<input type="checkbox" name="id" value="[% record.listid %]"  title="collection_item" />&nbsp;[% END %][% start_range+loop.count - 1 %]</div>
+[% IF 0 == 1 %]      
       <div class="ob-thumbnail pt-1 pl-5 pr-5 mr-0 d-none d-md-block">
     [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]
     [% coverapi = config.get('covers').vlb %]
     [%# USE dumper;dumper.dump(coverapi)%]
     <a href="[% coverapi.credits_url %]" target="_blank"><img src="[% path_prefix %]/[% config.get('connector_cover_loc') %]/vlb/[% isbn %]?size=s" title="[% coverapi.credits_text %]" /></a>[% ELSE %]&nbsp;[% END %]
       </div>
-      <div class="ob-brieftitle pl-5">
+[% END %]      
+      <div class="ob-brieftitle pl-4">
 [%# USE dumper;dumper.dump(dbinfo) %]
         <div class="ob-titleinfo pl-2 mt-2">
 [% IF NOT hide_hit %]	

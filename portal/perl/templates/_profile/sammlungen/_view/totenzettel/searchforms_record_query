@@ -27,8 +27,8 @@
 
 
 [% IF available_searchfields.classification.active %]
-[%- cgiparam = searchfield.classificationstring.prefix;
-    this_searchfield = 'classificationstring';
+[%- cgiparam = searchfield.classification.prefix;
+    this_searchfield = 'classification';
  -%]
 <div class="form-group">
 <label for="[% cgiparam %]">[% msg.maketext("Provenienz") %]</label>

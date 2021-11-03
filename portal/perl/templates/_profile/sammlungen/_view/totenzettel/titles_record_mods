@@ -62,8 +62,13 @@ END ;
 
 -%]
 <?xml version="1.0" encoding="UTF-8"?>
-<mets:mets xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/mets/mets.xsd">
-  <mets:metsHdr>
+<mets:mets xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/mets/mets.xsd"
+ xmlns:mets="http://www.loc.gov/METS/"
+ xmlns:mods="http://www.loc.gov/mods/v3"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:dv="http://dfg-viewer.de/">
+ <mets:metsHdr>
     <mets:agent ROLE="CREATOR" TYPE="ORGANIZATION">
       <mets:name>Universitäts- und Stadtbibliothek Köln</mets:name>
     </mets:agent>
@@ -71,13 +76,17 @@ END ;
   <mets:dmdSec ID="dmdusbk[% record.id %]">
     <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
       <mets:xmlData>
-	<mods:mods version="3.3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">
+	<mods:mods xmlns:mods="http://www.loc.gov/mods/v3" version="3.3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">
 	  <mods:recordInfo>
 	    <mods:recordIdentifier source="USBKATKEY">[% record.id %]</mods:recordIdentifier>
 	  </mods:recordInfo>
 	  <mods:titleInfo>
 	    <mods:title>[% name %]</mods:title>
 	  </mods:titleInfo>
+	  <mods:name type="personal">
+	    <mods:namePart type="given">[% name %]</mods:namePart>
+	    <mods:displayForm>[% name %]</mods:displayForm>
+	  </mods:name>	  
 	  <mods:originInfo>
 	    <mods:place>
 	      <mods:placeTerm type="text">[% place %]</mods:placeTerm>
@@ -104,7 +113,7 @@ END ;
     <mets:rightsMD ID="rightsusbk[% record.id %]">
       <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
 	<mets:xmlData>
-	  <dv:rights>
+	  <dv:rights xmlns:dv="http://dfg-viewer.de/">
 	    <dv:owner>[% owner %]</dv:owner>
 	    <dv:ownerContact>[% owner_contact %]</dv:ownerContact>
 	    <dv:ownerLogo>
@@ -120,7 +129,7 @@ END ;
     <mets:digiprovMD ID="digiprovusbk[% record.id %]">
       <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
 	<mets:xmlData>
-	  <dv:links>
+	  <dv:links xmlns:dv="http://dfg-viewer.de/">
 	    <dv:presentation>
 	      [% presentation_url %]
 	    </dv:presentation>

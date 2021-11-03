@@ -218,12 +218,20 @@ FOREACH field IN normdata;
          IF laenderdesc ;
             content   = laenderdesc ;
          END ;
+         IF NOT content_map.${'T0035'} ;
+	    content_map.${'T0035'} = [];
+	 END;
+         content_map.${'T0035'}.push(content);
 
     CASE "T0015";
          langdesc   = lang_map.${content};
          IF langdesc ;
             content   = langdesc ;
          END ;
+         IF NOT content_map.${'T0015'} ;
+	    content_map.${'T0015'} = [];
+	 END;
+         content_map.${'T0015'}.push(content);
 	 
     CASE [ "T0100" "T0101" "T0103" ];
          thisid     = item.id;
@@ -294,8 +302,8 @@ FOREACH field IN normdata;
          content   = "${highlightquery(searchquery,content)}";
          IF NOT content_map.${'T0412'} ;
 	    content_map.${'T0412'} = [];
-            content_map.${'T0412'}.push(content);
 	 END;
+         content_map.${'T0412'}.push(content);
 
     CASE "T0412";
          IF normdata.${"T0410"}.first.content ;
@@ -306,20 +314,20 @@ FOREACH field IN normdata;
          content   = "${highlightquery(searchquery,content)}";
          IF NOT content_map.${'T0412'} ;
 	    content_map.${'T0412'} = [];
-            content_map.${'T0412'}.push(content);
 	 END;
+         content_map.${'T0412'}.push(content);
 
     CASE "T0424" ;
          IF NOT content_map.${'T0425'} ;
 	    content_map.${'T0425'} = [];
-            content_map.${'T0425'}.push(content);
 	 END;
+         content_map.${'T0425'}.push(content);
 	 
     CASE "T0425" ;
          IF NOT content_map.${'T0425'} ;
 	    content_map.${'T0425'} = [];
-            content_map.${'T0425'}.push(content);
 	 END;
+         content_map.${'T0425'}.push(content);
 
     CASE "T0433" ;
          IF normdata.${"T0437"}.first.content ;
@@ -334,8 +342,8 @@ FOREACH field IN normdata;
 
          IF NOT content_map.${'T0433'} ;
 	    content_map.${'T0433'} = [];
-            content_map.${'T0433'}.push(content);
 	 END;
+         content_map.${'T0433'}.push(content);
 
 #    CASE [ "T0531" "T0533" ];
 #         IF content.match("---&gt;: ") ;
@@ -346,12 +354,11 @@ FOREACH field IN normdata;
 #         END ;
           
     CASE "T0540";
-         wikipediaurl = "http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}";
-         content   = "${highlightquery(searchquery,content)} <span><a class=\"isbn\" href=\"${path_prefix}/${config.get('redirect_loc')}?type=521;url=${uri_escape(wikipediaurl)}\" target=\"_blank\" title=\"Titel in Wikipedia\"><img src=\"${config.get_icon('wikipedia',view,sysprofile)}\" alt=\"Mashup mit Wikipedia\" /></a></span>";
-         content_map.${'T0540'}.push(content);
+         content   = "${highlightquery(searchquery,content)}";
          IF NOT content_map.${'T0540'} ;
 	    content_map.${'T0540'} = [];
 	 END;
+         content_map.${'T0540'}.push(content);
 
     CASE [ "T0543" "T0585" ];
          ezburl  = "${config.get('ezb_exturl')}&jq_term1=${content}";

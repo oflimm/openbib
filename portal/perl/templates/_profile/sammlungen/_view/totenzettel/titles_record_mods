@@ -4,7 +4,6 @@ owner = "Universitäts- und Stadtbibliothek Köln";
 owner_contact = "mailto:webmaster@ub.uni-koeln.de";
 owner_logo = "http://www.ub.uni-koeln.de/cdm4/images/dfgviewer_usblogo.gif";
 owner_siteurl = "https://totenzettel.ub.uni-koeln.de/";
-#owner_siteurl = "https://www.ub.uni-koeln.de/sammlungen/entdecken/syst/digital/index_ger.html";
 
 physical_location = "Universitäts- und Stadtbibliothek Köln";
 access_condition = "No Copyright";
@@ -21,13 +20,12 @@ IF fields.${"T0001"}.first.content ;
   easydb = from_json(fields.${"T0001"}.first.content);
 END;
 
-title = "Totenzettel";
-
-name = fields.${'T0331'}.first.content;  
-place = fields.${'T0410'}.first.content; # Sterbeort
-date = fields.${'T0424'}.first.content; # Sterbedatum
+title     = "Totenzettel";
+name      = fields.${'T0331'}.first.content;  
+place     = fields.${'T0410'}.first.content; # Sterbeort
+date      = fields.${'T0424'}.first.content; # Sterbedatum
 date_year = fields.${'T0425'}.first.content; # Sterbejahr
-genre = "Totenzettel";
+genre     = "Totenzettel";
 
 images = [];
 

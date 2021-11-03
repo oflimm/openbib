@@ -334,6 +334,7 @@ $(document).ready(function(){
    });
 });
 </script>
+[% detail_url = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.get_encoded_id}.html?l=${lang}" %]
 
       <div class="ob-numbering">[% IF with_id_checkbox %]<input type="checkbox" name="id" value="[% record.listid %]"  title="collection_item" />&nbsp;[% END %][% start_range+loop.count - 1 %]</div>
 [% IF 0 == 1 %]      
@@ -349,7 +350,7 @@ $(document).ready(function(){
         <div class="ob-titleinfo pl-2 mt-2">
 [% IF NOT hide_hit %]	
          <span class="ob-person">[% person %]</span>
-	 <strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong>
+	 <strong><span class="ob-title"><a href="[% detail_url %]">[% title | truncate(config.get('maxlength_title')) %]</a></span></strong>
 [%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span>
 [% ELSE %]
          <strong><span class="ob-title">[% hide_hit_msg %]</span></strong>
@@ -383,7 +384,6 @@ $(document).ready(function(){
 	<div class="pl-2 d-flex">
           <div class="d-flex ob-titleactions">
 [% IF record.id && record.database %]
-[% detail_url = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.get_encoded_id}.html?l=${lang}" %]
             <div class="pr-1">
 	 <a class="btn btn-primary pr-2" href="[% IF NOT hide_detail && NOT hide_hit %][% detail_url %][% ELSE %][% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %];redirect_to=[% uri_escape(detail_url) %][% END %]" alt="[% title %]" title="[% title %]">[% IF hide_detail %]<i class="fas fa-ban"></i>[% ELSE %]<i class="fas fa-eye"></i>[% END %] <span class="d-none d-sm-inline">Details</span></a>
             </div>

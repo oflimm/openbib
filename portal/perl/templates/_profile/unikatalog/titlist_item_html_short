@@ -242,6 +242,10 @@
      # Einbeziehung der Zaehlfelder T5100
      IF NOT title && item.${'T5100'}.first.content;
        title = item.${'T5100'}.first.content;
+     # Einbeziehung der Zaehlfelder T5100
+     ELSIF title && item.${'T5100'}.first.content;
+       zaehlung = item.${'T5100'}.first.content;
+       title = "${zaehlung}. ${title}";
      END;
 
      # Einbeziehung des ersten Gesamttitels T5005

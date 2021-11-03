@@ -482,6 +482,7 @@
     // Hintergrund verdeckt nicht modal
     .modal-backdrop {
 	position: static;
+	z-index: 40;
     }
     
 [aria-expanded="false"] > .expanded,

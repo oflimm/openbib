@@ -356,7 +356,7 @@ $(document).ready(function(){
          <strong><span class="ob-title">[% hide_hit_msg %]</span></strong>
 [% END %]
 [% IF multiple_dbs == 1 %]
-         <br /><img style="vertical-align:text-bottom;padding:1px;" src="[% config.get_icon('home_small',view,sysprofile) %]" alt="[% msg.maketext("Katalog") %]" title="[% msg.maketext("Katalog") %]"/>
+         <br /><i class="fas fa-map-marker-alt"></i>
 [%-  IF locations.size >= 1 -%]
 [%      IF locations.size == 1 %]
          <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locations.first %].html?l=[% lang %]">[% locinfo.identifier.${locations.first}.description %]</a>

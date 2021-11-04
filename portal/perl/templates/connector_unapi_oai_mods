@@ -35,9 +35,7 @@
                 [%- END -%]
             [%- END -%]
             [%- IF normdata.${"T0010"} %]
-            <mods:recordInfo>
-                <mods:recordIdentifier source="HBZ">[% normdata.${"T0010"}.first.content -%]</mods:recordIdentifier>
-            </mods:recordInfo>
+                <mods:identifier type="HBZ">[% normdata.${"T0010"}.first.content -%]</mods:identifier>
             [%- END -%]
             <mods:recordInfo>
                 <mods:recordIdentifier source="usb">[% record.id %]</mods:recordIdentifier>

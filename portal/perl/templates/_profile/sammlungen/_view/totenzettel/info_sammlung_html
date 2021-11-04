@@ -1,0 +1,15 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_project_html
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+
+[% config.get_templatetext('info_sammlung',view,lang) %]

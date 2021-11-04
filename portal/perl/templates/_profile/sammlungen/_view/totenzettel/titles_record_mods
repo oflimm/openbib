@@ -1,0 +1,179 @@
+[%-
+
+owner = "Universitäts- und Stadtbibliothek Köln";
+owner_contact = "mailto:webmaster@ub.uni-koeln.de";
+owner_logo = "http://www.ub.uni-koeln.de/cdm4/images/dfgviewer_usblogo.gif";
+owner_siteurl = "https://totenzettel.ub.uni-koeln.de/";
+
+physical_location = "Universitäts- und Stadtbibliothek Köln";
+access_condition = "No Copyright";
+
+reference_url = "https://totenzettel.ub.uni-koeln.de/portal/databases/id/${record.database}/titles/id/${record.id}.html";
+
+presentation_url = reference_url ;
+
+fields = record.get_fields
+
+easydb = {};
+
+IF fields.${"T0001"}.first.content ;
+  easydb = from_json(fields.${"T0001"}.first.content);
+END;
+
+title     = "Totenzettel";
+name      = fields.${'T0331'}.first.content;  
+place     = fields.${'T0410'}.first.content; # Sterbeort
+date      = fields.${'T0424'}.first.content; # Sterbedatum
+date_year = fields.${'T0425'}.first.content; # Sterbejahr
+genre     = "Totenzettel";
+
+images = [];
+
+id = 1;
+
+FOREACH version IN easydb.item('_nested:death_notes__digitized_versions') ;
+
+  desc = version.death_note_type.${"de-DE"};
+
+  min = "";
+  max = ""
+  default = "";
+
+  
+  FOREACH file IN version.file ;
+   max     = file.versions.huge.url ;
+   min     = file.versions.small.url ;
+   default = file.versions.original.url ;
+  END;
+
+  thisimage = {
+    id = id
+    max = max
+    min = min
+    default = default
+    desc = desc
+  };
+
+  images.push(thisimage);
+  id = id + 1;
+END ;
+
+-%]
+<?xml version="1.0" encoding="UTF-8"?>
+<mets:mets xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/mets/mets.xsd"
+ xmlns:mets="http://www.loc.gov/METS/"
+ xmlns:mods="http://www.loc.gov/mods/v3"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:dv="http://dfg-viewer.de/">
+ <mets:metsHdr>
+    <mets:agent ROLE="CREATOR" TYPE="ORGANIZATION">
+      <mets:name>Universitäts- und Stadtbibliothek Köln</mets:name>
+    </mets:agent>
+  </mets:metsHdr>
+  <mets:dmdSec ID="dmdusbk[% record.id %]">
+    <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+      <mets:xmlData>
+	<mods:mods xmlns:mods="http://www.loc.gov/mods/v3" version="3.3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">
+	  <mods:recordInfo>
+	    <mods:recordIdentifier source="USBKATKEY">[% record.id %]</mods:recordIdentifier>
+	  </mods:recordInfo>
+	  <mods:titleInfo>
+	    <mods:title>[% name %]</mods:title>
+	  </mods:titleInfo>
+	  <mods:name type="personal">
+	    <mods:namePart type="given">[% name %]</mods:namePart>
+	    <mods:displayForm>[% name %]</mods:displayForm>
+	  </mods:name>	  
+	  <mods:originInfo>
+	    <mods:place>
+	      <mods:placeTerm type="text">[% place %]</mods:placeTerm>
+	    </mods:place>
+	    <mods:dateIssued>[% date %]</mods:dateIssued>
+	    <mods:dateIssued keyDate="yes" encoding="w3cdtf">[% date_year %]</mods:dateIssued>
+	  </mods:originInfo>
+	  <mods:genre>[% genre %]</mods:genre>
+	  <mods:language>
+	    <mods:languageTerm type="code" authority="iso639-2b">und</mods:languageTerm>
+	  </mods:language>
+	  <mods:location>
+	    <mods:physicalLocation>[% physical_location %]</mods:physicalLocation>
+	    <mods:url>
+	      [% presentation_url %]
+	    </mods:url>
+	  </mods:location>
+	  <mods:accessCondition type="use and reproduction">[% access_condition %]</mods:accessCondition>
+	</mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:amdSec ID="amdusbk[% record.id %]">
+    <mets:rightsMD ID="rightsusbk[% record.id %]">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+	<mets:xmlData>
+	  <dv:rights xmlns:dv="http://dfg-viewer.de/">
+	    <dv:owner>[% owner %]</dv:owner>
+	    <dv:ownerContact>[% owner_contact %]</dv:ownerContact>
+	    <dv:ownerLogo>
+	      [% owner_logo %]
+	    </dv:ownerLogo>
+	    <dv:ownerSiteURL>
+	      [% owner_siteurl %]
+	    </dv:ownerSiteURL>
+	  </dv:rights>
+	</mets:xmlData>
+      </mets:mdWrap>
+    </mets:rightsMD>
+    <mets:digiprovMD ID="digiprovusbk[% record.id %]">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+	<mets:xmlData>
+	  <dv:links xmlns:dv="http://dfg-viewer.de/">
+	    <dv:presentation>
+	      [% presentation_url %]
+	    </dv:presentation>
+	  </dv:links>
+	</mets:xmlData>
+      </mets:mdWrap>
+    </mets:digiprovMD>
+  </mets:amdSec>
+  <mets:fileSec>
+    <mets:fileGrp USE="DEFAULT">
+[% FOREACH thisimage IN images %]      
+      <mets:file ID="img[% thisimage.id %]" MIMETYPE="image/jpeg">
+	<mets:FLocat LOCTYPE="URL" xlink:href="[% thisimage.default %]"/>
+      </mets:file>
+[% END %]      
+    </mets:fileGrp>
+    <mets:fileGrp USE="MAX">
+[% FOREACH thisimage IN images %]            
+      <mets:file ID="imgmax[% thisimage.id %]" MIMETYPE="image/jpeg">
+	<mets:FLocat LOCTYPE="URL" xlink:href="[% thisimage.max %]"/>
+      </mets:file>
+[% END %]      
+    </mets:fileGrp>
+    <mets:fileGrp USE="MIN">
+[% FOREACH thisimage IN images %]            
+      <mets:file ID="imgmin[% thisimage.id %]" MIMETYPE="image/jpeg">
+	<mets:FLocat LOCTYPE="URL" xlink:href="[% thisimage.min %]"/>
+      </mets:file>
+[% END %]      
+    </mets:fileGrp>
+  </mets:fileSec>
+  <mets:structMap TYPE="PHYSICAL">
+    <mets:div ID="physusbk[% record.id %]" TYPE="physSequence">
+[% FOREACH thisimage IN images %]            
+      <mets:div ID="div[% thisimage.id %]" ORDER="[% thisimage.id %]" ORDERLABEL="[% thisimage.desc %]" LABEL="" TYPE="page">
+	<mets:fptr FILEID="img[% thisimage.id %]"/>
+	<mets:fptr FILEID="imgmax[% thisimage.id %]"/>
+	<mets:fptr FILEID="imgmin[% thisimage.id %]"/>
+      </mets:div>
+[% END %]      
+    </mets:div>
+  </mets:structMap>
+  <mets:structMap TYPE="LOGICAL">
+    <mets:div ID="logusbk[% record.id %]" DMDID="dmdusbk[% record.id %]" ADMID="amdusbk[% record.id %]" LABEL="[% name %]" TYPE="monograph"> </mets:div>
+  </mets:structMap>
+  <mets:structLink>
+    <mets:smLink xlink:from="logusbk[% record.id %]" xlink:to="physusbk[% record.id %]"/>
+  </mets:structLink>
+</mets:mets>

@@ -25,20 +25,6 @@
 -%]
 [% IF format == "full" %]
 
-<script>
-$('#normdataModal').on('show.bs.modal', function (event) {
-  var button = $(event.relatedTarget) // Button that triggered the modal
-  var formaturl = button.data('formaturl') // Extract info from data-* attributes
-  var formattitle = button.data('formattitle') // Extract info from data-* attributes
-  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-  var modal = $(this)
-  modal.find('.modal-body').html('<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>');
-  modal.find('.modal-title').text(formattitle)
-  modal.find('.modal-body').load(formaturl);
-})
-</script>
-
 
 [%   PROCESS common/subtemplate name="titles_record_html_sammlungslinks" %]
 
@@ -218,12 +204,20 @@ FOREACH field IN normdata;
          IF laenderdesc ;
             content   = laenderdesc ;
          END ;
+         IF NOT content_map.${'T0035'} ;
+	    content_map.${'T0035'} = [];
+	 END;
+         content_map.${'T0035'}.push(content);
 
     CASE "T0015";
          langdesc   = lang_map.${content};
          IF langdesc ;
             content   = langdesc ;
          END ;
+         IF NOT content_map.${'T0015'} ;
+	    content_map.${'T0015'} = [];
+	 END;
+         content_map.${'T0015'}.push(content);
 	 
     CASE [ "T0100" "T0101" "T0103" ];
          thisid     = item.id;
@@ -285,18 +279,6 @@ FOREACH field IN normdata;
 	 END;
          content_map.${'T0331'}.push(content);
 
-    CASE "T0410";
-         IF normdata.${"T0412"}.first.content ;
-	    verlag = normdata.${"T0412"}.first.content;
-	    content = "${content} : ${verlag}";
-	 END;
-	 
-         content   = "${highlightquery(searchquery,content)}";
-         IF NOT content_map.${'T0412'} ;
-	    content_map.${'T0412'} = [];
-            content_map.${'T0412'}.push(content);
-	 END;
-
     CASE "T0412";
          IF normdata.${"T0410"}.first.content ;
 	    verlagsort = normdata.${"T0410"}.first.content;
@@ -306,20 +288,20 @@ FOREACH field IN normdata;
          content   = "${highlightquery(searchquery,content)}";
          IF NOT content_map.${'T0412'} ;
 	    content_map.${'T0412'} = [];
-            content_map.${'T0412'}.push(content);
 	 END;
+         content_map.${'T0412'}.push(content);
 
     CASE "T0424" ;
          IF NOT content_map.${'T0425'} ;
 	    content_map.${'T0425'} = [];
-            content_map.${'T0425'}.push(content);
 	 END;
+         content_map.${'T0425'}.push(content);
 	 
     CASE "T0425" ;
          IF NOT content_map.${'T0425'} ;
 	    content_map.${'T0425'} = [];
-            content_map.${'T0425'}.push(content);
 	 END;
+         content_map.${'T0425'}.push(content);
 
     CASE "T0433" ;
          IF normdata.${"T0437"}.first.content ;
@@ -334,8 +316,8 @@ FOREACH field IN normdata;
 
          IF NOT content_map.${'T0433'} ;
 	    content_map.${'T0433'} = [];
-            content_map.${'T0433'}.push(content);
 	 END;
+         content_map.${'T0433'}.push(content);
 
 #    CASE [ "T0531" "T0533" ];
 #         IF content.match("---&gt;: ") ;
@@ -346,12 +328,11 @@ FOREACH field IN normdata;
 #         END ;
           
     CASE "T0540";
-         wikipediaurl = "http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}";
-         content   = "${highlightquery(searchquery,content)} <span><a class=\"isbn\" href=\"${path_prefix}/${config.get('redirect_loc')}?type=521;url=${uri_escape(wikipediaurl)}\" target=\"_blank\" title=\"Titel in Wikipedia\"><img src=\"${config.get_icon('wikipedia',view,sysprofile)}\" alt=\"Mashup mit Wikipedia\" /></a></span>";
-         content_map.${'T0540'}.push(content);
+         content   = "${highlightquery(searchquery,content)}";
          IF NOT content_map.${'T0540'} ;
 	    content_map.${'T0540'} = [];
 	 END;
+         content_map.${'T0540'}.push(content);
 
     CASE [ "T0543" "T0585" ];
          ezburl  = "${config.get('ezb_exturl')}&jq_term1=${content}";

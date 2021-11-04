@@ -1,0 +1,22 @@
+[%#-
+#######################################################################
+#
+# Templatename: titlist_options
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Optionen einer Liste (Sortierung etc.)
+#
+#######################################################################
+-%]
+<select name="srt" class="custom-select autosubmit" style="width:auto;">
+[% IF NOT no_relevance %]  <option value="relevance_desc"[%- IF query.param('srt') == 'relevance_dsc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Relevanz") %]</option>[% END %]
+  <option value="popularity_desc"[%- IF query.param('srt') == 'popularity_desc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
+  <option value="year_desc"[%- IF query.param('srt') == 'year_desc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Sterbejahr") %]&nbsp;&darr;</option>
+  <option value="year_asc"[%- IF query.param('srt') == 'year_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Sterbejahr") %]&nbsp;&uarr;</option>
+  <option value="title_asc"[%- IF query.param('srt') == 'title_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Verstorbenen") %]</option>
+</select>
+
+<button class="btn btn-primary p-1 ob-nojs_show" type="submit">[% msg.maketext("Los") %]</button>

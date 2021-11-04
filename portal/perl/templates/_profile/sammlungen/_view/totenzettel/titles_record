@@ -12,15 +12,10 @@
        used_fields.push( "<b>${fieldname}</b>: ${fieldcontent}" );
     END;
 
-    show_modals = 1;
-    
     layout_param = {
      'page_title' = "Titel anzeigen"
 
       'main_template' = 'titles_record_html'
-      'sidebar_template' = 'titles_record_html_actions'
-      'sidebar_template_description' = msg.maketext("Titel speichern &amp; weiterverarbeiten")
-      'sidebar_button_in_main_template' = 1
 
       'active_submenu' = 'database'
       'database' = databaseinfo.dbname
@@ -40,10 +35,6 @@
       ]
 
     };
-
-    IF hide_hit || hide_detail ;
-       layout_param.delete('sidebar_template');
-    END;
 
     IF record.record_exists;
       record_exists = 1;

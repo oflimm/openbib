@@ -26,7 +26,7 @@
                 'T0200', # msg.maketext("T0200") Urheber
                 'T0201', # msg.maketext("T0201") Koerperschaft
                 'T0403', # msg.maketext("T0403") Auflage
-                'T0410', # msg.maketext("T0410") Verlagsort
+                #'T0410', # msg.maketext("T0410") Verlagsort
                 'T0412', # msg.maketext("T0412") Verlag
                 'T0425', # msg.maketext("T0425") ErschJahr
                 #'T0424', # msg.maketext("T0424") ErschJahr/Ansetzung
@@ -35,6 +35,9 @@
 #                'T0434', # msg.maketext("T0434") Sonst. Angaben
 #                'T0437', # msg.maketext("T0437") Begleitmat.
                 'T0334', # msg.maketext("T0334") Material
+                'T0540', # msg.maketext("T0540") ISBN
+                'T0553', # msg.maketext("T0553") ArtikelNr. als 13-stellige ISBN
+                'T0543', # msg.maketext("T0543") ISSN
                 'T0652', # msg.maketext("T0652") EDV Material
                 'T0655', # msg.maketext("T0655") EDV Adress
                 'T0451', # msg.maketext("T0451") GesTit Vorl

@@ -223,7 +223,7 @@
     <div class="ob-item[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
       <div class="ob-numbering">[% start_range+loop.count - 1 %]</div>
       <div class="ob-thumbnail">
-    [% IF item.${'T2662'}.first.content %]<img src="[% item.${'T2662'}.first.content %]" title="Thumbnail des Totenzettels" /></a>[% ELSE %]&nbsp;[% END %]
+    [% IF item.${'T2662'}.first.content %]<img style="height:120px;" src="[% item.${'T2662'}.first.content %]" title="Thumbnail des Totenzettels" /></a>[% ELSE %]&nbsp;[% END %]
       </div>
       <div class="ob-brieftitle">
 [%# USE dumper;dumper.dump(item) %]

@@ -109,6 +109,7 @@
 <script src="/js/jquery.autocomplete.js"></script>
 <script src="/js/Chart.bundle.min.js"></script>
 <script src="/js/nouislider.min.js"></script>
+<script src="/js/htmx.min.js"></script>
 
 
 <!-- <script src="/js/bootstrap-material-design.min.js"></script> -->

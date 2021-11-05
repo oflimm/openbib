@@ -409,8 +409,15 @@ sub create_record {
         # Einfuegen eines Titels in die Merkliste
         my $new_titleid = $self->add_item_to_collection($input_data_ref);
         
-        if ($self->param('representation') eq "html"){
-            return $self->print_info($msg->maketext("Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."));
+        if ($self->param('representation') eq "html" || $self->param('representation') eq "include"){
+	    my $ttdata={
+		cartitem_id => $new_titleid,
+		input_data  => $input_data_ref,
+		view        => $view,
+		userid      => $userid,		
+	    };
+	    
+            return $self->print_page($config->{tt_cartitems_add_tname},$ttdata);
         }
         else {
             $logger->debug("Weiter zum Record");
@@ -463,9 +470,15 @@ sub update_record {
     # Einfuegen eines Titels in die Merkliste
     $self->update_item_in_collection($input_data_ref);
 
-    return unless ($self->param('representation') eq "html");
+    return unless ($self->param('representation') eq "html" || $self->param('representation') eq "include" );
 
-    return $self->print_info($msg->maketext("Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."));
+    my $ttdata={
+	cartitem_id => $itemid,
+	input_data  => $input_data_ref,
+	view        => $view,
+    };
+    
+    return $self->print_page($config->{tt_cartitems_add_tname},$ttdata);    
 }
 
 sub delete_record {

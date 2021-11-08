@@ -245,6 +245,8 @@ sub get_titles_record {
     my $costs       =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/costs');
     my $remarks     =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/remarks');
 
+    my @periods =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/periods/period');
+    
     $record->set_field({field => 'T0331', subfield => '', mult => 1, content => $title}) if ($title);
     $record->set_field({field => 'T0412', subfield => '', mult => 1, content => $publisher}) if ($publisher);
 
@@ -278,50 +280,104 @@ sub get_titles_record {
         $record->set_field({field => 'T2662', subfield => '', mult => 1, content => $homepage});
     }
 
-    # Readme-Informationen verarbeiten
+    $mult = 1;
+    foreach my $period (@periods){
+	my $color = $period->findvalue('journal_color/@color');
+	
+	$logger->debug("Color: $color");
+	
+	my $image = $config->get('dbis_green_yellow_red_img');
+	
+	if    ($color == 'green'){
+	    $image = $config->get('dbis_green_img');
+	}
+	elsif ($color == 'yellow'){
+	    $image = $config->get('dbis_yellow_img');
+	}
+	elsif ($color == 3){
+	    $image = $config->get('dbis_green_yellow_img');
+	}
+	elsif ($color == 'red'){
+	    $image = $config->get('dbis_red_img');
+	}
+	elsif ($color == 5){
+	    $image = $config->get('dbis_green_green_red_img');
+	}
+	elsif ($color == 6){
+	    $image = $config->get('dbis_yellow_red_img');
+	}
 
-    my $readme = $self->_get_readme({id => $id});
+	my $label = $period->findvalue('label');
 
-    $mult=2;
-    if ($readme->{location}){
-        $record->set_field({field => 'T0662', subfield => '', mult => $mult, content => $readme->{location} });
-        $record->set_field({field => 'T0663', subfield => '', mult => $mult, content => 'ReadMe'});
+	$label=~s/\s+/ /g;
+	
+	my $warpto_link = $period->findvalue('warpto_link/@url');
+	my $readme_link = $period->findvalue('readme_link/@url');
+
+	$warpto_link = uri_unescape($warpto_link);
+	
+	if ($logger->is_debug){
+	    $logger->debug("L: $label WL: $warpto_link RL: $readme_link");
+	}
+
+	$record->set_field({field => 'T0663', subfield => '', mult => $mult, content => "<img src=\"$image\" alt=\"$color\"/> $label" });
+	$record->set_field({field => 'T0662', subfield => '', mult => $mult, content => $warpto_link });
+	$mult++;
+	$record->set_field({field => 'T0663', subfield => '', mult => $mult, content => "ReadMe: $label" });
+	$record->set_field({field => 'T0662', subfield => '', mult => $mult, content => $readme_link });
+	$mult++;
     }
-    elsif ($readme->{periods}){
-        foreach my $period (@{$readme->{periods}}){
-            my $color = $period->{color};
 
-            $logger->debug("Color: $color");
-            
-            my $image = $config->get('dbis_green_yellow_red_img');
 
-            if    ($color == 'green'){
-                $image = $config->get('dbis_green_img');
-            }
-            elsif ($color == 'yellow'){
-                $image = $config->get('dbis_yellow_img');
-            }
-            elsif ($color == 3){
-                $image = $config->get('dbis_green_yellow_img');
-            }
-            elsif ($color == 'red'){
-                $image = $config->get('dbis_red_img');
-            }
-            elsif ($color == 5){
-                $image = $config->get('dbis_green_green_red_img');
-            }
-            elsif ($color == 6){
-                $image = $config->get('dbis_yellow_red_img');
-            }
+    # # Readme-Informationen verarbeiten
+
+
+    
+    # my $readme     =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/');
+
+    
+    # my $readme = $self->_get_readme({id => $id});
+
+    # $mult=2;
+    # if ($readme->{location}){
+    #     $record->set_field({field => 'T0662', subfield => '', mult => $mult, content => $readme->{location} });
+    #     $record->set_field({field => 'T0663', subfield => '', mult => $mult, content => 'ReadMe'});
+    # }
+    # elsif ($readme->{periods}){
+    #     foreach my $period (@{$readme->{periods}}){
+    #         my $color = $period->{color};
+
+    #         $logger->debug("Color: $color");
             
-            $record->set_field({field => 'T0663', subfield => '', mult => $mult, content => "<img src=\"$image\" alt=\"$period->{color}\"/>&nbsp;$period->{label}" });
-            $record->set_field({field => 'T0662', subfield => '', mult => $mult, content => $period->{warpto_link} });
-            $mult++;
-            $record->set_field({field => 'T0663', subfield => '', mult => $mult, content => "ReadMe: $period->{label}" });
-            $record->set_field({field => 'T0662', subfield => '', mult => $mult, content => $period->{readme_link} });
-            $mult++;
-        }
-    }
+    #         my $image = $config->get('dbis_green_yellow_red_img');
+
+    #         if    ($color == 'green'){
+    #             $image = $config->get('dbis_green_img');
+    #         }
+    #         elsif ($color == 'yellow'){
+    #             $image = $config->get('dbis_yellow_img');
+    #         }
+    #         elsif ($color == 3){
+    #             $image = $config->get('dbis_green_yellow_img');
+    #         }
+    #         elsif ($color == 'red'){
+    #             $image = $config->get('dbis_red_img');
+    #         }
+    #         elsif ($color == 5){
+    #             $image = $config->get('dbis_green_green_red_img');
+    #         }
+    #         elsif ($color == 6){
+    #             $image = $config->get('dbis_yellow_red_img');
+    #         }
+            
+    #         $record->set_field({field => 'T0663', subfield => '', mult => $mult, content => "<img src=\"$image\" alt=\"$period->{color}\"/>&nbsp;$period->{label}" });
+    #         $record->set_field({field => 'T0662', subfield => '', mult => $mult, content => $period->{warpto_link} });
+    #         $mult++;
+    #         $record->set_field({field => 'T0663', subfield => '', mult => $mult, content => "ReadMe: $period->{label}" });
+    #         $record->set_field({field => 'T0662', subfield => '', mult => $mult, content => $period->{readme_link} });
+    #         $mult++;
+    #     }
+    # }
 
     $record->set_holding([]);
     $record->set_circulation([]);

@@ -253,6 +253,7 @@ sub show_record {
     my $queryid       = $query->param('queryid')   || '';
     my $format        = $query->param('format')    || 'full';
     my $no_log        = $query->param('no_log')    || '';
+    my $flushcache    = $query->param('flush_cache')    || '';
 
     my $database_in_view = 0;
 
@@ -295,6 +296,13 @@ sub show_record {
         return;
     }
 
+
+    # Flush from memcached
+    if ($flushcache){
+	my $memc_key = "record:title:full:$database:$titleid";
+	$config->{memc}->delete($memc_key) if ($config->{memc});
+    }
+        
     my ($atime,$btime,$timeall)=(0,0,0);
 
     if ($config->{benchmark}) {

@@ -1,0 +1,14 @@
+[%#-
+#######################################################################
+#
+# Templatename: cartitems_add
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Informations-Meldung
+#
+#######################################################################
+-%]
+<i class="fas fa-bookmark"></i> <span class="d-none d-sm-inline">[% msg.maketext("Gemerkt") %]</span>

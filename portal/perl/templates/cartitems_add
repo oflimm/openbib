@@ -1,0 +1,26 @@
+[%- PROCESS common/subtemplate name="local_config" -%] 
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+      'page_title' = "Meldung"
+
+      'main_template' = 'cartitems_add_html'
+
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Meldung')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="cartitems_add_include" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

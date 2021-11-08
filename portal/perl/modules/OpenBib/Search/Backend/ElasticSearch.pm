@@ -133,14 +133,14 @@ sub search {
     my $queryoptions = $self->get_queryoptions;
 
     # Used Parameters
-    my $sorttype          = $queryoptions->get_option('srt');
-    my $sortorder         = $queryoptions->get_option('srto');
+    my $sorttype          = $queryoptions->get_option('srt')  || 'year';
+    my $sortorder         = $queryoptions->get_option('srto') || 'desc';
     my $defaultop         = $queryoptions->get_option('dop');
     my $drilldown         = $queryoptions->get_option('dd');
 
     # Pagination parameters
-    my $page              = $queryoptions->get_option('page');
-    my $num               = $queryoptions->get_option('num');
+    my $page              = $queryoptions->get_option('page') || 1;
+    my $num               = $queryoptions->get_option('num')  || 10;
 
     my $from              = ($page - 1)*$num;
     

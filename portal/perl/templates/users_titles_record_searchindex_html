@@ -12,14 +12,17 @@
 #######################################################################
 -%]
 [%-
-  title      = msg.maketext("Titel-Information: [_1] in Katalog [_2]",recordname,dbdesc)
+  title      = msg.maketext("Titel-Information: [_1] in Katalog [_2]",recordname,dbdesc);
+
+  facets     = config.get('facets');
+  
 -%]
 
 <h1>Informationen im Suchindex</h1>
 
 <h2>Terms</h2>
 
-[% IF terms.length > 0 %]
+[% IF terms %]
 <p>
 [% terms.join(' ') %]
 </p>

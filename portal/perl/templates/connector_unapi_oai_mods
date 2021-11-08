@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:mods="http://www.loc.gov/mods/v3" version="3.7" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+    xmlns:mods="http://www.loc.gov/mods/v3" version="3.7"
+    xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
     <record>
         <mods:mods>
             [%- normdata = record.get_fields -%]
@@ -17,78 +18,102 @@
             <mods:identifier type="fingerprint">[%- normdata.${"T0578"}.first.content %]</mods:identifier>
             [%- END -%]
             [%- IF normdata.${"T0580"} %]
-                [%- FOREACH number IN normdata.${"T0580"} -%]
-                [%- IF number.content.match('VD16') %]
-                <mods:identifier type="vd16">[%- number.content%]</mods:identifier>
-                [%- ELSIF number.content.match('VD17') %]
-                <mods:identifier type="vd17">[%- number.content%]</mods:identifier>
-                [%- ELSIF number.content.match('VD18') %]
-                <mods:identifier type="vd18">[%- number.content%]</mods:identifier>
-                [%- END -%]
-                [%- END -%]
+            [%- FOREACH number IN normdata.${"T0580"} -%]
+            [%- IF number.content.match('VD16') %]
+            <mods:identifier type="vd16">[%- number.content%]</mods:identifier>
+            [%- ELSIF number.content.match('VD17') %]
+            <mods:identifier type="vd17">[%- number.content%]</mods:identifier>
+            [%- ELSIF number.content.match('VD18') %]
+            <mods:identifier type="vd18">[%- number.content%]</mods:identifier>
+            [%- END -%]
+            [%- END -%]
             [%- END -%]
             [%- IF normdata.${"T1024"} %]
-                [%- FOREACH number IN normdata.${"T1024"} -%]
-                [%- IF number.content.match('ZDB') %]
-                 <mods:identifier type="zdb">[%- number.content.replace('ZDB', '')%]</mods:identifier>
-                [%- END -%]
-                [%- END -%]
+            [%- FOREACH number IN normdata.${"T1024"} -%]
+            [%- IF number.content.match('ZDB') %]
+            <mods:identifier type="zdb">[%- number.content.replace('ZDB', '')%]</mods:identifier>
+            [%- END -%]
+            [%- END -%]
             [%- END -%]
             [%- IF normdata.${"T0010"} %]
-                <mods:identifier type="HBZ">[% normdata.${"T0010"}.first.content -%]</mods:identifier>
+            <mods:identifier type="HBZ">[% normdata.${"T0010"}.first.content -%]</mods:identifier>
             [%- END -%]
             <mods:recordInfo>
                 <mods:recordIdentifier source="usb">[% record.id %]</mods:recordIdentifier>
             </mods:recordInfo>
             [%- IF personlist && personlist.size -%]
             [%- FOREACH item IN personlist %]
-            <mods:name type="personal"  [%- IF item.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/[% item.gnd %]" [%END%]>
-                    [%- IF item.namedata.family_name %]
-                    <mods:namePart type="family">[% item.namedata.family_name %]</mods:namePart>
+            <mods:name type="personal" [%- IF item.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/"
+                valueURI="http://d-nb.info/gnd/[% item.gnd %]" [%END%]>
+                [%- IF item.namedata.family_name %]
+                <mods:namePart type="family">[% item.namedata.family_name %]</mods:namePart>
+                [%- END %]
+                <mods:namePart type="given">[% item.namedata.given_name %]</mods:namePart>
+                [%- IF item.namedata.termsOfAddress %]
+                <mods:namePart type="termsOfAddress">[% item.namedata.termsOfAddress %]</mods:namePart>
+                [%- END %]
+                <mods:displayForm>[% item.namedata.displayname %]</mods:displayForm>
+                <mods:role>
+                    [%- IF item.field == "T0100" %]
+                    <mods:roleTerm type="code" authority="marcrelator"
+                        authorityURI="http://id.loc.gov/vocabulary/relators"
+                        valueURI="http://id.loc.gov/vocabulary/relators/aut">aut</mods:roleTerm>
+                    [%- ELSIF item.supplement.match('Urheb') %]
+                    <mods:roleTerm type="code" authority="marcrelator"
+                        authorityURI="http://id.loc.gov/vocabulary/relators"
+                        valueURI="http://id.loc.gov/vocabulary/relators/aut">aut</mods:roleTerm>
+                    [%- ELSIF item.supplement.match('Hrsg') %]
+                    <mods:roleTerm type="code" authority="marcrelator"
+                        authorityURI="http://id.loc.gov/vocabulary/relators"
+                        valueURI="http://id.loc.gov/vocabulary/relators/edt">edt</mods:roleTerm>
+                    [%- ELSIF item.supplement.match('Übers') %]
+                    <mods:roleTerm type="code" authority="marcrelator"
+                        authorityURI="http://id.loc.gov/vocabulary/relators"
+                        valueURI="http://id.loc.gov/vocabulary/relators/trl">trl</mods:roleTerm>
+                    [%- ELSIF item.supplement.match('Bearb') %]
+                    <mods:roleTerm type="code" authority="marcrelator"
+                        authorityURI="http://id.loc.gov/vocabulary/relators"
+                        valueURI="http://id.loc.gov/vocabulary/relators/edt">edt</mods:roleTerm>
+                    [%- ELSE %]
+                    <mods:roleTerm type="code" authority="marcrelator"
+                        authorityURI="http://id.loc.gov/vocabulary/relators"
+                        valueURI="http://id.loc.gov/vocabulary/relators/oth">oth</mods:roleTerm>
+                    [%- IF item.supplement %]
+                    <mods:roleTerm type="text">[%- item.supplement | replace('¬', '') %]</mods:roleTerm>
                     [%- END %]
-                    <mods:namePart type="given">[% item.namedata.given_name %]</mods:namePart>
-                    [%- IF item.namedata.termsOfAddress %]
-                    <mods:namePart type="termsOfAddress">[% item.namedata.termsOfAddress %]</mods:namePart>
                     [%- END %]
-                    <mods:displayForm>[% item.namedata.displayname %]</mods:displayForm>
-                    <mods:role>
-                        [%- IF item.field == "T0100" %]
-                        <mods:roleTerm type="code" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators" valueURI="http://id.loc.gov/vocabulary/relators/aut">aut</mods:roleTerm>
-                        [%- ELSIF item.supplement.match('Urheb') %]
-                        <mods:roleTerm type="code" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators" valueURI="http://id.loc.gov/vocabulary/relators/aut">aut</mods:roleTerm>
-                        [%- ELSIF item.supplement.match('Hrsg') %]
-                        <mods:roleTerm type="code" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators" valueURI="http://id.loc.gov/vocabulary/relators/edt">edt</mods:roleTerm>
-                        [%- ELSIF item.supplement.match('Übers') %]
-                        <mods:roleTerm type="code" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators" valueURI="http://id.loc.gov/vocabulary/relators/trl">trl</mods:roleTerm>
-                        [%- ELSIF item.supplement.match('Bearb') %]
-                        <mods:roleTerm type="code" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators" valueURI="http://id.loc.gov/vocabulary/relators/edt">edt</mods:roleTerm>
-                        [%- ELSE %]
-                        <mods:roleTerm type="code" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators" valueURI="http://id.loc.gov/vocabulary/relators/oth">oth</mods:roleTerm>
-                        [%- IF item.supplement %]
-                        <mods:roleTerm type="text">[%- item.supplement | replace('¬', '') %]</mods:roleTerm>
-                        [%- END %]
-                        [%- END %]
-                    </mods:role>
+                </mods:role>
             </mods:name>
             [%- END -%]
             [%- END -%]
             [%- IF corporation_list && corporation_list.size %]
             [%- FOREACH item IN corporation_list %]
-            <mods:name type="corporate"[%- IF item.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/[% item.gnd %]" [%END%]>
+            <mods:name type="corporate" [%- IF item.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/"
+                valueURI="http://d-nb.info/gnd/[% item.gnd %]" [%END%]>
                 <mods:namePart>[% item.namedata %]</mods:namePart>
                 <mods:role>
                     [%- IF item.field == "T0200" %]
-                    <mods:roleTerm type="code" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators" valueURI="http://id.loc.gov/vocabulary/relators/aut">aut</mods:roleTerm>
+                    <mods:roleTerm type="code" authority="marcrelator"
+                        authorityURI="http://id.loc.gov/vocabulary/relators"
+                        valueURI="http://id.loc.gov/vocabulary/relators/aut">aut</mods:roleTerm>
                     [%- ELSIF item.supplement.match('Hrsg') %]
-                    <mods:roleTerm type="code" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators" valueURI="http://id.loc.gov/vocabulary/relators/edt">edt</mods:roleTerm>
+                    <mods:roleTerm type="code" authority="marcrelator"
+                        authorityURI="http://id.loc.gov/vocabulary/relators"
+                        valueURI="http://id.loc.gov/vocabulary/relators/edt">edt</mods:roleTerm>
                     [%- ELSIF item.supplement.match('Übers') %]
-                    <mods:roleTerm type="code" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators" valueURI="http://id.loc.gov/vocabulary/relators/trl">trl</mods:roleTerm>
+                    <mods:roleTerm type="code" authority="marcrelator"
+                        authorityURI="http://id.loc.gov/vocabulary/relators"
+                        valueURI="http://id.loc.gov/vocabulary/relators/trl">trl</mods:roleTerm>
                     [%- ELSIF item.supplement.match('Bearb') %]
-                    <mods:roleTerm type="code" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators" valueURI="http://id.loc.gov/vocabulary/relators/edt">edt</mods:roleTerm>
+                    <mods:roleTerm type="code" authority="marcrelator"
+                        authorityURI="http://id.loc.gov/vocabulary/relators"
+                        valueURI="http://id.loc.gov/vocabulary/relators/edt">edt</mods:roleTerm>
                     [%- ELSE %]
-                    <mods:roleTerm type="code" authority="marcrelator" authorityURI="http://id.loc.gov/vocabulary/relators" valueURI="http://id.loc.gov/vocabulary/relators/oth">oth</mods:roleTerm>
+                    <mods:roleTerm type="code" authority="marcrelator"
+                        authorityURI="http://id.loc.gov/vocabulary/relators"
+                        valueURI="http://id.loc.gov/vocabulary/relators/oth">oth</mods:roleTerm>
                     [%- IF item.supplement %]
-                        <mods:roleTerm type="text">[%- item.supplement %] | replace('¬', '') %]</mods:roleTerm>
+                    <mods:roleTerm type="text">[%- item.supplement %] | replace('¬', '') %]</mods:roleTerm>
                     [%- END %]
                     [%- END %]
                 </mods:role>
@@ -109,7 +134,8 @@
             </mods:titleInfo>
             [%- ELSIF normdata.${"T0089"} && super.fields.${'0331'}.first.content %]
             <mods:titleInfo>
-                <mods:title>[%- super.fields.${"0331"}.first.content %] / [% normdata.${"T0089"}.first.content %]</mods:title>
+                <mods:title>[%- super.fields.${"0331"}.first.content %] / [% normdata.${"T0089"}.first.content %]
+                </mods:title>
             </mods:titleInfo>
             [%- END %]
             [%- IF title_list && title_list.size %]
@@ -125,7 +151,8 @@
             </mods:titleInfo>
             [%- END %]
             [%- IF title.field == "T0304" || title.field == "T0310" || title.field == "T7303" -%]
-            <mods:titleInfo type="uniform" [%- IF title.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/[% title.gnd %]" [%END%]>
+            <mods:titleInfo type="uniform" [%- IF title.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/"
+                valueURI="http://d-nb.info/gnd/[% title.gnd %]" [%END%]>
                 <mods:title>[% title.title %]</mods:title>
             </mods:titleInfo>
             [%- END %]
@@ -135,8 +162,10 @@
                 [%- IF place_list && place_list.size %]
                 <mods:place>
                     [%- FOREACH place IN place_list %]
-                        <mods:placeTerm type="text" [%- IF place.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/[% place.gnd %]"[%END%][%IF place.field=="T0673"%]lang="deu"[%END%]>[% place.place_name %]</mods:placeTerm>
-                    [%- END %]     
+                    <mods:placeTerm type="text" [%- IF place.gnd -%] authority="gnd"
+                        authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/[% place.gnd %]" [%END%][%IF
+                        place.field=="T0673" %]lang="deu" [%END%]>[% place.place_name %]</mods:placeTerm>
+                    [%- END %]
                 </mods:place>
                 [%- END %]
                 [%- FOREACH item IN normdata.${"T0412"} %]
@@ -147,7 +176,8 @@
                 <mods:issuance>monographic</mods:issuance>
                 [%- type_is_set = "true" %]
                 [%- END %]
-                [%- IF (normdata.${"T0036"}.first.content == "p" || normdata.${"T0036"}.first.content =="z") && type_is_set == 'false' %]
+                [%- IF (normdata.${"T0036"}.first.content == "p" || normdata.${"T0036"}.first.content =="z") &&
+                type_is_set == 'false' %]
                 <mods:issuance>serial</mods:issuance>
                 [%- type_is_set = "true" %]
                 [%- END %]
@@ -158,12 +188,13 @@
                 [%- END %]
                 [%- END %]
                 [%- IF type_is_set == 'false' -%]
-                [%- IF  super.fields.${'0036'}.first.content == "t"  || super.fields.${'0036'}.first.content == "n"  %]
+                [%- IF super.fields.${'0036'}.first.content == "t" || super.fields.${'0036'}.first.content == "n" %]
                 <mods:issuance>monographic</mods:issuance>
                 [%- END %]
                 [%- END %]
                 [%- IF date_values.start_date %]
-                <mods:dateIssued keyDate="yes" encoding="iso8601" point="start">[%- date_values.start_date %]</mods:dateIssued>
+                <mods:dateIssued keyDate="yes" encoding="iso8601" point="start">[%- date_values.start_date %]
+                </mods:dateIssued>
                 [%- END %]
                 [%- IF date_values.end_date %]
                 <mods:dateIssued encoding="iso8601" point="end">[% date_values.end_date %]</mods:dateIssued>
@@ -206,9 +237,9 @@
                 [%-END%]
             </mods:language>
             [%-END%]
-            [%- IF normdata.${"T0433"} || normdata.${"T0435"} || normdata.${"T0434"}  %]
+            [%- IF normdata.${"T0433"} || normdata.${"T0435"} || normdata.${"T0434"} %]
             <mods:physicalDescription>
-            [%- FOREACH extend IN normdata.${"T0433"} %]
+                [%- FOREACH extend IN normdata.${"T0433"} %]
                 <mods:extent>[%- extend.content %]</mods:extent>
                 [%-END%]
                 [%- FOREACH extend IN normdata.${"T0434"} %]
@@ -220,28 +251,33 @@
             </mods:physicalDescription>
             [%-END -%]
             [%-FOREACH provenance IN provenance_data -%]
-            <mods:note type="ownership">[% provenance.prov_signatur %]||[% provenance.prov_text %][%- IF provenance.prov_gnd %]||http://d-nb.info/gnd/[% provenance.prov_gnd %][%END%][%- IF provenance.prov_norm %]||[% provenance.prov_norm %][%- END %]</mods:note>
+            <mods:note type="ownership">signatur::[% provenance.prov_signatur %]|||beschreibung::[% provenance.prov_text
+                %][%- IF provenance.prov_person %]|||person::[% provenance.prov_person %][%- END %][%- IF
+                provenance.prov_corp %]|||corp::[% provenance.prov_corp %][%- END %][%- IF provenance.prov_gnd
+                %]|||gnd::http://d-nb.info/gnd/[% provenance.prov_gnd %][%END%]</mods:note>
             [%- END %]
             [%- FOREACH uniform_publisher IN uniform_publisher_list %]
-            [%- IF uniform_publisher.gnd -%] 
-            <mods:note type="statement of responsibility">Publisher||[%- uniform_publisher.publisher_name %][%- IF uniform_publisher.publisher_place %] ([%- uniform_publisher.publisher_place -%])[%- END %]||http://d-nb.info/gnd/[% uniform_publisher.gnd %]</mods:note>
+            [%- IF uniform_publisher.gnd -%]
+            <mods:note type="statement of responsibility">Publisher||[%- uniform_publisher.publisher_name %][%- IF
+                uniform_publisher.publisher_place %] ([%- uniform_publisher.publisher_place -%])[%- END
+                %]||http://d-nb.info/gnd/[% uniform_publisher.gnd %]</mods:note>
             [%- END %]
             [%- END %]
             [%- FOREACH item IN normdata.${"T4700"} %]
             <mods:classification authority="usb">[% item.content %]</mods:classification>
             [%- END %]
-            [%- IF normdata.${"T4718"}.first.content == "rheinland"  %]
+            [%- IF normdata.${"T4718"}.first.content == "rheinland" %]
             <mods:classification authority="usb">Sammlung Rheinland</mods:classification>
             [%- END %]
             [%- rswk_list = {} %]
             [%- FOREACH rswk_item IN rswk_keyword_list %]
-                [%- FOREACH item IN rswk_item %] 
-                    [%- value = item.content %]
-                    [%- UNLESS rswk_list.$value == 'True' %]
-                    [%- rswk_list.$value = 'True' %]
-                          <mods:classification authority="RSWK">[% value %]</mods:classification>
-                    [%- END %]
-                [%- END %]
+            [%- FOREACH item IN rswk_item %]
+            [%- value = item.content %]
+            [%- UNLESS rswk_list.$value == 'True' %]
+            [%- rswk_list.$value = 'True' %]
+            <mods:classification authority="RSWK">[% value %]</mods:classification>
+            [%- END %]
+            [%- END %]
             [%- END %]
             [%- IF normdata.${"T0710"} %]
             <mods:subject>
@@ -252,70 +288,72 @@
             [%- END %]
             [%- IF all_super %]
             [%- FOREACH super_item IN all_super %]
-            [%- super_data = from_json(super_item.content); 
-                super_title = super_data.fields.${'0451'}.first.content;
-                IF super_data.fields.${'0331'}.first.content;
-                    super_title = super_data.fields.${'0331'}.first.content;
-                END;
+            [%- super_data = from_json(super_item.content);
+            super_title = super_data.fields.${'0451'}.first.content;
+            IF super_data.fields.${'0331'}.first.content;
+            super_title = super_data.fields.${'0331'}.first.content;
+            END;
             %]
-            [%- IF loop.first && (super_data.fields.${'0036'}.first.content =="n" || super_data.fields.${'0036'}.first.content =="p"   
-                || super_data.fields.${'0036'}.first.content =="z" || super_data.fields.${'0036'}.first.content =="t") &&
-                 (normdata.${"T0090"} || normdata.${"T0089"}) %]
+            [%- IF loop.first && (super_data.fields.${'0036'}.first.content =="n" ||
+            super_data.fields.${'0036'}.first.content =="p"
+            || super_data.fields.${'0036'}.first.content =="z" || super_data.fields.${'0036'}.first.content =="t") &&
+            (normdata.${"T0090"} || normdata.${"T0089"}) %]
             <mods:relatedItem type="host">
-            [%- ELSE %]
-            <mods:relatedItem type="series">
-            [%- END %]
-                 [%- IF super_data.fields.${'1649'} %]
-                <mods:recordInfo>
-                    <mods:recordIdentifier source="usb_e">[%- super_data.fields.${'1649'}.first.content %]</mods:recordIdentifier>
-                </mods:recordInfo>
                 [%- ELSE %]
-                <mods:recordInfo>
-                    <mods:recordIdentifier source="usb_print">[%- super_data.fields.${'0010'}.first.content %]</mods:recordIdentifier>
-                </mods:recordInfo>
-                [%- END %]
-                <mods:titleInfo>
-                    <mods:title>[%- super_title  %]</mods:title>
-                </mods:titleInfo>
-            [%- IF loop.first  %]
-            [%- UNLESS normdata.${"T0090"} || normdata.${"T0089"} %]
-                [%- IF normdata.${"T0456"} %]
-                <mods:part order='[%- normdata.${"T0456"}.first.content %]'>
-                [%- ELSE %]
-                <mods:part order='[%- normdata.${"T0455"}.first.content %]'>
-                [%- END %]
-                      <mods:detail type="volume">
-                            <mods:number>[% normdata.${"T0455"}.first.content %]</mods:number>
-                      </mods:detail>
-                </mods:part>
-            [%- ELSE %]
-            [%- END %]
-            [%- END %]
-            </mods:relatedItem>
-            [%- IF loop.first %]
-            [%- IF normdata.${"T0090"} || normdata.${"T0089"} %]
-            <mods:part order='[%- normdata.${"T0024"}.first.content %]'>
-                      <mods:detail type="volume">
-                            [%- IF normdata.${"T0089"} %]
-                            <mods:number>[% normdata.${"T0089"}.first.content %]</mods:number>
-                            [%- ELSIF normdata.${"T0455"} %]
-                            <mods:number>[% normdata.${"T0455"}.first.content %]</mods:number>
+                <mods:relatedItem type="series">
+                    [%- END %]
+                    [%- IF super_data.fields.${'1649'} %]
+                    <mods:recordInfo>
+                        <mods:recordIdentifier source="usb_e">[%- super_data.fields.${'1649'}.first.content %]
+                        </mods:recordIdentifier>
+                    </mods:recordInfo>
+                    [%- ELSE %]
+                    <mods:recordInfo>
+                        <mods:recordIdentifier source="usb_print">[%- super_data.fields.${'0010'}.first.content %]
+                        </mods:recordIdentifier>
+                    </mods:recordInfo>
+                    [%- END %]
+                    <mods:titleInfo>
+                        <mods:title>[%- super_title %]</mods:title>
+                    </mods:titleInfo>
+                    [%- IF loop.first %]
+                    [%- UNLESS normdata.${"T0090"} || normdata.${"T0089"} %]
+                    [%- IF normdata.${"T0456"} %]
+                    <mods:part order='[%- normdata.${"T0456"}.first.content %]'>
+                        [%- ELSE %]
+                        <mods:part order='[%- normdata.${"T0455"}.first.content %]'>
                             [%- END %]
-                        </mods:detail>
-            </mods:part>
-            [%- END %]
-            [%- END %]
-            [%- IF contained_works && contained_works.size %]
-            [%-FOREACH contained_work IN contained_works %]
-            <mods:part type="constituent">
-             <mods:detail>
-              <mods:title>[%- IF contained_work.person %][%contained_work.person %]: [%-END%][%- contained_work.title %]</mods:title>
-             </mods:detail>
-            </mods:part> 
-            [%- END %]
-            [%- END %]
-        [%- END %]
-        [%- END %]
+                            <mods:detail type="volume">
+                                <mods:number>[% normdata.${"T0455"}.first.content %]</mods:number>
+                            </mods:detail>
+                        </mods:part>
+                        [%- END %]
+                        [%- END %]
+                </mods:relatedItem>
+                [%- IF loop.first %]
+                [%- IF normdata.${"T0090"} || normdata.${"T0089"} %]
+                <mods:part order='[%- normdata.${"T0024"}.first.content %]'>
+                    <mods:detail type="volume">
+                        [%- IF normdata.${"T0089"} %]
+                        <mods:number>[% normdata.${"T0089"}.first.content %]</mods:number>
+                        [%- ELSIF normdata.${"T0455"} %]
+                        <mods:number>[% normdata.${"T0455"}.first.content %]</mods:number>
+                        [%- END %]
+                    </mods:detail>
+                </mods:part>
+                [%- END %]
+                [%- END %]
+                [%- END %]
+                [%- END %]
+                [%- IF contained_works && contained_works.size %]
+                [%-FOREACH contained_work IN contained_works %]
+                <mods:part type="constituent">
+                    <mods:detail>
+                        <mods:title>[%- IF contained_work.person %][%contained_work.person %]: [%-END%][%-contained_work.title %]</mods:title>
+                    </mods:detail>
+                </mods:part>
+                [%- END %]
+                [%- END %]
         </mods:mods>
     </record>
 </OAI-PMH>

@@ -102,7 +102,7 @@ $(document).ready(function(){
 <div class="row flex-md-row-reverse"><!-- Begin Details -->
 
 <!-- <div class="col-xs-6 col-md-3 ob-titleimage"><!-- Begin Images -->
-<div class="col-md-3"><!-- Begin Images -->
+<div class="col-md-3 ob-titleimage"><!-- Begin Images -->
 [% PROCESS common/subtemplate name="titles_record_html_images" %]
 </div><!-- End Col Images -->
 

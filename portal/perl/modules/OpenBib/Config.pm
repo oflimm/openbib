@@ -3995,21 +3995,24 @@ sub update_orgunit {
         
         my $this_db_ref = [];
 
-        eval {
-          foreach my $dbname (@$databases_ref){
-              my $dbinfo_ref = $self->get_databaseinfo->single({ 'dbname' => $dbname });
-              my $dbid = $dbinfo_ref->id;
+        foreach my $dbname (@$databases_ref){
+          my $dbid;
 
-              push @$this_db_ref, {
+          eval {
+              my $dbinfo_ref = $self->get_databaseinfo->single({ 'dbname' => $dbname });
+              $dbid = $dbinfo_ref->id;
+          };
+
+          if ($@){
+             $logger->error("Error getting dbid for $dbname");
+          }
+
+          push @$this_db_ref, {
                   orgunitid   => $orgunitid,
                   dbid        => $dbid,
-              } if ($dbid);
-          }
-        };
-
-        if ($@){
-           $logger->error("Error getting dbid");
+          } if ($dbid);
         }
+
         
         # Dann die zugehoerigen Datenbanken eintragen
         $self->get_schema->resultset('OrgunitDb')->populate($this_db_ref);

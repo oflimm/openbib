@@ -1891,6 +1891,11 @@ a.ext {
     width: 98%;
 }
 
+.ob-titleimage {
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .ob-titleimage img {
     display: block;
     margin-top: 15px;

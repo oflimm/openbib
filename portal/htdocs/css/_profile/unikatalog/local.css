@@ -324,12 +324,12 @@
     }
 
     #ob-sidebar .sidebar-heading, #ob-sidebar_eds .sidebar-heading, #ob-sidebar_website .sidebar-heading, #ob-sidebar_default .sidebar-heading, {
+	
 	padding: 1.2rem 1.25rem;
 	font-size: 1.2rem;
     }
 
     #ob-sidebar #sidebar-dismiss, #ob-sidebar_eds #sidebar-dismiss_eds, #ob-sidebar_website #sidebar-dismiss_website, #ob-sidebar_default #sidebar-dismiss_default {
-	padding: 0.875rem 1.25rem;
 	font-size: 1.2rem;
     }
 

@@ -116,12 +116,12 @@
     .col-md-3 {
 	margin-right: 0px;
 	padding-right: 0px;
-	padding-left: 10px; 
+	//padding-left: 5px; 
     }
 
     .col-md-9 {
 	margin-left: 0px;
-	padding-right: 10px;
+	padding-right: 5px;
     }
 
     .col-xs-6 {
@@ -199,6 +199,11 @@
     
     /* other settings */
 
+
+    .ob-bottominfo {
+	padding-right: 10px;
+    }
+    
     .ob-page_footer {
 	position:absolute;
 	padding-top: 20px;
@@ -2043,14 +2048,14 @@ a.ext {
 @media only screen and (max-width: 768px) {
     .col-md-3 {
 	margin-right: 0px;
-	padding-right: 0px;
-	padding-left: 5px; 
+	//padding-right: 0px;
+	//padding-left: 5px; 
     }
 
     .col-md-9 {
 	margin-right: 0px;
 	padding-right: 5px;
-	padding-left: 0px;
+	//padding-left: 0px;
     }
 
     #ob-sidebar_books, #ob-sidebar_articles, #ob-sidebar_web {

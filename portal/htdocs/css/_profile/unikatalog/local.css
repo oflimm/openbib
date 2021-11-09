@@ -480,7 +480,7 @@
     }
 
     // Hintergrund verdeckt nicht modal
-    .modal-backdrop {
+    .modal-backdrop, .modal-backdrop.fade.show {
 	position: static;
 	z-index: 40;
     }
@@ -2053,6 +2053,12 @@ a.ext {
 	padding-left: 0px;
     }
 
+    #ob-sidebar_books, #ob-sidebar_articles, #ob-sidebar_web {
+	position: absolute;
+	top: 0px;
+	z-index: 100;
+	max-width: 80%;
+    }
     /* no flyout
     #ob-sidebar .card {
 	margin-right: 10px;

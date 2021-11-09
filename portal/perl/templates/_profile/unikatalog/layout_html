@@ -49,12 +49,12 @@
     <button class="btn btn-primary sidebar-toggler mt-3" type="button" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-arrow-right"></i> [% IF layout_param.sidebar_template_description %][% layout_param.sidebar_template_description %][% ELSE %]Navigation[% END %]</button>
   [%   END %]
   
-      <div id="ob-sidebar" class="bg-light border-right min-vh-100 collapse navbar-collapse" aria-expanded="false">
-           <div id="sidebar-dismiss" class="float-right" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fas fa-arrow-left"></i>
+      <div id="ob-sidebar" class=" border-right min-vh-100 collapse navbar-collapse" aria-expanded="false">
+           <div id="sidebar-dismiss" class="float-right d-md-none text-white" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-window-close fa-2x p-1"></i>
            </div>
 
-           <div class="sidebar-heading">
+           <div class="sidebar-heading ob-bg text-white p-1 pb-0 mb-2 d-md-none">
               <h3>[% IF layout_param.sidebar_template_description %][% layout_param.sidebar_template_description %][% ELSE %]Navigation[% END %]</h3>
            </div>
 

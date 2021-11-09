@@ -19,7 +19,7 @@
 
       'main_template' = 'titles_record_html'
       'sidebar_template' = 'titles_record_html_actions'
-      'sidebar_template_description' = msg.maketext("Titel speichern &amp; weiterverarbeiten")
+      'sidebar_template_description' = msg.maketext("Titelaktionen")
       'sidebar_button_in_main_template' = 1
 
       'active_submenu' = 'database'

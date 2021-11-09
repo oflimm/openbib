@@ -96,15 +96,15 @@ sub show {
             return;
         }
 
-        my $title_list     = [];
+        my $title_list             = [];
         my $personlist             = [];
         my $rswk_keyword_list      = [];
         my $corporation_list       = [];
         my $place_list             = [];
         my $uniform_publisher_list = [];
-        my $contained_works        = []; 
-        my $provenance_data = [];
-        my $date_values = undef;
+        my $contained_works        = [];
+        my $provenance_data        = [];
+        my $date_values            = undef;
         if ($unapiid) {
             my ( $database, $idn, $record );
 
@@ -116,8 +116,7 @@ sub show {
 
                 $record = new OpenBib::Record::Title(
                     { database => $database, id => $idn } )->load_full_record;
-                $title_list =
-                  $self->collect_title_data( $record, $database );
+                $title_list = $self->collect_title_data( $record, $database );
                 $contained_works =
                   $self->collect_contained_works( $record, $database );
                 $personlist = $self->collect_person_data( $record, $database );
@@ -126,10 +125,11 @@ sub show {
                 $place_list = $self->collect_place_data( $record, $database );
                 $uniform_publisher_list =
                   $self->collect_publisher_data( $record, $database );
-                $rswk_keyword_list = 
-                    $self->collect_rswk_data( $record, $database );
-                    $provenance_data = $self->collect_provenance_data($record, $database);
-                $date_values = $self->get_date_values($record, $database);
+                $rswk_keyword_list =
+                  $self->collect_rswk_data( $record, $database );
+                $provenance_data =
+                  $self->collect_provenance_data( $record, $database );
+                $date_values = $self->get_date_values( $record, $database );
 
             }
 
@@ -140,7 +140,7 @@ sub show {
 
             my $ttdata = {
                 record                 => $record,
-                title_list     => $title_list,
+                title_list             => $title_list,
                 personlist             => $personlist,
                 corporation_list       => $corporation_list,
                 place_list             => $place_list,
@@ -260,7 +260,7 @@ sub collect_title_data {
     my $database      = shift;
     my $already_added = [];
     my $title_list    = [];
-   
+
     #Weiterer/Alternativer Titel
     if ( length( $record->get_fields->{T0370} ) ) {
         foreach my $title_item ( @{ $record->get_fields->{T0370} } ) {
@@ -271,6 +271,7 @@ sub collect_title_data {
             push( @{$title_list}, $title_item );
         }
     }
+
     #Weiterer/Alternativer Titel
     if ( $record->get_fields->{T0306} ) {
         foreach my $title_item ( @{ $record->get_fields->{T0306} } ) {
@@ -296,10 +297,12 @@ sub collect_title_data {
     #Einheitstitel
     if ( length( $record->get_fields->{T7303} ) ) {
         my $rda_collection =
-         $self->process_title_rda( $record->get_fields->{T7303}, "T7303", $title_list );
+          $self->process_title_rda( $record->get_fields->{T7303},
+            "T7303", $title_list );
     }
-    unless (length( $record->get_fields->{T7303} )){
-    #Einheitstitel
+    unless ( length( $record->get_fields->{T7303} ) ) {
+
+        #Einheitstitel
         if ( $record->get_fields->{T0304} ) {
             foreach my $title_item ( @{ $record->get_fields->{T0304} } ) {
                 my $title_item = {
@@ -309,6 +312,7 @@ sub collect_title_data {
                 push( @{$title_list}, $title_item );
             }
         }
+
         #Einheitstitel
         if ( $record->get_fields->{T0310} ) {
             foreach my $title_item ( @{ $record->get_fields->{T0310} } ) {
@@ -337,7 +341,8 @@ sub process_title_rda {
                     $currentObject->{title} = $title->{content};
                     $currentObject->{title} =~ s/^\s+|\s+$//g;
                 }
-                elsif ( $title->{subfield} eq "p" || $title->{subfield} eq "a"  ) {
+                elsif ( $title->{subfield} eq "p" || $title->{subfield} eq "a" )
+                {
                     $currentObject->{person} = $title->{content};
                     $currentObject->{person} =~ s/^\s+|\s+$//g;
                 }
@@ -354,116 +359,136 @@ sub process_title_rda {
         $currentObject->{field} = $field_name;
         push( @{$title_list}, $currentObject );
     }
-    my @filtered_title_list = grep(defined, @{$title_list});
+    my @filtered_title_list = grep( defined, @{$title_list} );
     return \@filtered_title_list;
 }
 
 sub collect_contained_works {
-    my $self          = shift;
-    my $record        = shift;
-    my $database      = shift;
+    my $self            = shift;
+    my $record          = shift;
+    my $database        = shift;
     my $contained_works = [];
+
     #Angebundenes Werk RDA
     if ( length( $record->get_fields->{T7304} ) ) {
         my $rda_collection =
-         $self->process_title_rda( $record->get_fields->{T7304}, "T7304");
-         foreach my $title_item (@{ $rda_collection }){
-             push( @{$contained_works}, $title_item );
-         }
-         
-    }
-    #Angebundenes Werk RAK
-    unless (length( $record->get_fields->{T7304} )){
-    if ( length( $record->get_fields->{T0361} ) ) {
-        foreach my $title_item ( @{ $record->get_fields->{T0361} } ) {
-            my $title_item = {
-                title => $title_item->{content},
-                field => "T0361"
-            };
+          $self->process_title_rda( $record->get_fields->{T7304}, "T7304" );
+        foreach my $title_item ( @{$rda_collection} ) {
             push( @{$contained_works}, $title_item );
         }
+
     }
+
+    #Angebundenes Werk RAK
+    unless ( length( $record->get_fields->{T7304} ) ) {
+        if ( length( $record->get_fields->{T0361} ) ) {
+            foreach my $title_item ( @{ $record->get_fields->{T0361} } ) {
+                my $title_item = {
+                    title => $title_item->{content},
+                    field => "T0361"
+                };
+                push( @{$contained_works}, $title_item );
+            }
+        }
     }
     return $contained_works;
 }
 
 sub collect_rswk_data {
-    my $self          = shift;
-    my $record        = shift;
-    my $database      = shift;
+    my $self      = shift;
+    my $record    = shift;
+    my $database  = shift;
     my $rswk_data = [];
-    
-    if (length( $record->get_fields->{T0902} ) ) {
+
+    if ( length( $record->get_fields->{T0902} ) ) {
         push( @{$rswk_data}, $record->get_fields->{T0902} );
-    };
-    if (length( $record->get_fields->{T0907} ) ) {
+    }
+    if ( length( $record->get_fields->{T0907} ) ) {
         push( @{$rswk_data}, $record->get_fields->{T0907} );
-    };
-    if (length( $record->get_fields->{T0912} ) ) {
+    }
+    if ( length( $record->get_fields->{T0912} ) ) {
         push( @{$rswk_data}, $record->get_fields->{T0912} );
-    };
-    if (length( $record->get_fields->{T0917} ) ) {
+    }
+    if ( length( $record->get_fields->{T0917} ) ) {
         push( @{$rswk_data}, $record->get_fields->{T0917} );
-    };
-    if (length( $record->get_fields->{T0922} ) ) {
+    }
+    if ( length( $record->get_fields->{T0922} ) ) {
         push( @{$rswk_data}, $record->get_fields->{T0922} );
-    };
+    }
     return $rswk_data;
 }
 
 sub get_date_values() {
-    my $self       = shift;
-    my $record     = shift;
-    my $database   = shift;
+    my $self        = shift;
+    my $record      = shift;
+    my $database    = shift;
     my $date_values = {};
-    if ($record->get_fields->{T0422}) {
-        $date_values->{"start_date"} =$record->get_fields->{T0422}[0]->{content};
+    if ( $record->get_fields->{T0422} ) {
+        $date_values->{"start_date"} =
+          $record->get_fields->{T0422}[0]->{content};
     }
-    if ($record->get_fields->{T0423}) {
-        $date_values->{"end_date"} =$record->get_fields->{T0423}[0]->{content};
+    if ( $record->get_fields->{T0423} ) {
+        $date_values->{"end_date"} = $record->get_fields->{T0423}[0]->{content};
     }
-    if ($record->get_fields->{T0424}){
-             $date_values->{"date"} =$record->get_fields->{T0424}[0]->{content}; 
-    }if ($record->get_fields->{T0425}){
-             $date_values->{"date_norm"} =$record->get_fields->{T0425}[0]->{content};; 
+    if ( $record->get_fields->{T0424} ) {
+        $date_values->{"date"} = $record->get_fields->{T0424}[0]->{content};
     }
-    unless ($record->get_fields->{T0425}){
-        if ($record->get_fields->{T0089} ){
+    if ( $record->get_fields->{T0425} ) {
+        $date_values->{"date_norm"} =
+          $record->get_fields->{T0425}[0]->{content};
+    }
+    unless ( $record->get_fields->{T0425} ) {
+        if ( $record->get_fields->{T0089} ) {
             my $date_value = undef;
-            if(index($record->get_fields->{T0089}[0]->{content}, ".") != -1){
-                my @splitted_string = split('\.', $record->get_fields->{T0089}[0]->{content});
+            if (
+                index( $record->get_fields->{T0089}[0]->{content}, "." ) != -1 )
+            {
+                my @splitted_string =
+                  split( '\.', $record->get_fields->{T0089}[0]->{content} );
                 $date_value = $splitted_string[-1];
-            }else{
+            }
+            else {
                 $date_value = $record->get_fields->{T0089}[0]->{content};
             }
-            if (index($date_value, "\/") != -1){
-                unless ($date_values->{"start_date"}) { 
-                        
-                        if (index($date_value, "(") == -1){
-                        my @splitted_date = split('\/', $date_value);
-                        $date_values->{"start_date"} =$splitted_date[0];
-                        $date_values->{"end_date"} =$splitted_date[1];
-                        if (length($date_values->{"start_date"}) == 4 && length($date_values->{"end_date"}) == 2){
-                            $date_values->{"end_date"} = substr($date_values->{"start_date"}, 0,2) . $date_values->{"end_date"} ;
-                        }}
+            if ( index( $date_value, "\/" ) != -1 ) {
+                unless ( $date_values->{"start_date"} ) {
+
+                    if ( index( $date_value, "(" ) == -1 ) {
+                        my @splitted_date = split( '\/', $date_value );
+                        $date_values->{"start_date"} = $splitted_date[0];
+                        $date_values->{"end_date"}   = $splitted_date[1];
+                        if (   length( $date_values->{"start_date"} ) == 4
+                            && length( $date_values->{"end_date"} ) == 2 )
+                        {
+                            $date_values->{"end_date"} =
+                              substr( $date_values->{"start_date"}, 0, 2 )
+                              . $date_values->{"end_date"};
+                        }
+                    }
                 }
             }
+
             #special cases like 10,10(1771/2003)1994 1594159
-            unless ($date_values->{"date_norm"}){
-                unless (index($date_value, "(") != -1){ 
+            unless ( $date_values->{"date_norm"} ) {
+                unless ( index( $date_value, "(" ) != -1 ) {
                     $date_values->{"date_norm"} = $date_value;
-                }else {
-                    if ($record->get_fields->{T0024}[0]->{content} && length($record->get_fields->{T0024}[0]->{content}) == 4){
-                        $date_values->{"date_norm"} = $record->get_fields->{T0024}[0]->{content};
+                }
+                else {
+                    if ( $record->get_fields->{T0024}[0]->{content}
+                        && length( $record->get_fields->{T0024}[0]->{content} )
+                        == 4 )
+                    {
+                        $date_values->{"date_norm"} =
+                          $record->get_fields->{T0024}[0]->{content};
                     }
                 }
             }
         }
     }
-    if ($date_values->{"date"} eq $date_values->{"date_norm"} ){
-            delete($date_values->{"date"});
+    if ( $date_values->{"date"} eq $date_values->{"date_norm"} ) {
+        delete( $date_values->{"date"} );
     }
-    
+
     return $date_values;
 }
 
@@ -501,50 +526,52 @@ sub collect_person_data {
         };
         push( @{$persondata}, $person_item );
     }
+
     #Personendaten aus der Überordnung ziehen
-    if (scalar @{$persondata} ==0) {
-        #wie kann JSON geparst werden
-        #http://localhost:8008/portal/openbib/connector/unapi?id=rheinabt:84411&format=oai_mods
-        if ($record->get_fields->{T5005}){
-            my $super_field = $record->get_field({field => "T5005"})->[0]->{"content"};
-            #my $decoded = decode_json(encode_utf8($super_field)); 
-            #evtl. ecnode_utf8 rausnehmen 
+    if ( scalar @{$persondata} == 0 ) {
+
+#wie kann JSON geparst werden
+#http://localhost:8008/portal/openbib/connector/unapi?id=rheinabt:84411&format=oai_mods
+        if ( $record->get_fields->{T5005} ) {
+            my $super_field =
+              $record->get_field( { field => "T5005" } )->[0]->{"content"};
+
+            #my $decoded = decode_json(encode_utf8($super_field));
+            #evtl. ecnode_utf8 rausnehmen
             my $decoded = {};
-            $super_field=~s/\\"/"/g;
-            eval {
-                $decoded = decode_json encode_utf8($super_field);
-            };
-            if ($decoded->{"fields"}->{"0100"}){
+            $super_field =~ s/\\"/"/g;
+            eval { $decoded = decode_json encode_utf8($super_field); };
+            if ( $decoded->{"fields"}->{"0100"} ) {
                 my $person_item = {
-                values => $decoded->{"0100"},
-                field  => "T0100"
+                    values => $decoded->{"0100"},
+                    field  => "T0100"
                 };
-            push( @{$persondata}, $person_item );
+                push( @{$persondata}, $person_item );
             }
-             if ($decoded->{"fields"}->{"0101"}){
+            if ( $decoded->{"fields"}->{"0101"} ) {
                 my $person_item = {
-                values => $decoded->{"fields"}->{"0101"},
-                field  => "T0101"
+                    values => $decoded->{"fields"}->{"0101"},
+                    field  => "T0101"
                 };
-            push( @{$persondata}, $person_item );
+                push( @{$persondata}, $person_item );
             }
-            if ($decoded->{"0102"}){
+            if ( $decoded->{"0102"} ) {
                 my $person_item = {
-                values => $decoded->{"fields"}->{"0102"},
-                field  => "T0102"
+                    values => $decoded->{"fields"}->{"0102"},
+                    field  => "T0102"
                 };
-            push( @{$persondata}, $person_item );
+                push( @{$persondata}, $person_item );
             }
-            if ($decoded->{"0103"}){
+            if ( $decoded->{"0103"} ) {
                 my $person_item = {
-                values =>  $decoded->{"fields"}->{"0103"},
-                field  => "T0103"
+                    values => $decoded->{"fields"}->{"0103"},
+                    field  => "T0103"
                 };
-            push( @{$persondata}, $person_item );
+                push( @{$persondata}, $person_item );
             }
         }
     }
-    
+
     foreach my $person_sub_list ( @{$persondata} ) {
         foreach my $person ( @{ $person_sub_list->{values} } ) {
             my $person_item = {
@@ -631,66 +658,59 @@ sub collect_place_data {
     my $self       = shift;
     my $record     = shift;
     my $place_list = [];
-    
-    if ( length( $record->get_fields->{T7676} ) ) {
-        my $rda_collection =
-          $self->process_place_rda( $record->get_fields->{T7676}, "T7676" );
-        push( @{$place_list}, @{$rda_collection} );
+    my $mult_values =
+    $self->get_all_mult_values( $record->get_fields->{T0410} );
 
-    }
-    if ( length( $record->get_fields->{T0410} ) ) {
-            foreach my $place ( @{ $record->get_fields->{T0410} } ) {
-                my $place_data = {
-                    place_name => $place->{content},
-                    field      => "T0410"
-                };
-                push( @{$place_list}, $place_data );
-            }
-        }
-    if ( length( $record->get_fields->{T0673} ) ) {
-            foreach my $place ( @{ $record->get_fields->{T0673} } ) {
-                my $place_data = {
-                    place_name => $place->{content},
-                    field      => "T0673"
-                };
-                push( @{$place_list}, $place_data );
-            }
-
-        }
-    
-       
-    return $place_list;
-}
-
-sub process_place_rda {
-    my $self           = shift;
-    my $rda_field_data = shift;
-    my $field_name     = shift;
-    my $rda_collection = [];
-    my $mult_values    = $self->get_all_mult_values($rda_field_data);
-    
-    
     foreach my $mult_value ( @{$mult_values} ) {
-        my $currentObject = {};
-        foreach my $place ( @{$rda_field_data} ) {
-            if ( $place->{mult} == $mult_value ) {
-                if ( $place->{subfield} eq "g" ) {
-                    $currentObject->{place_name} = $place->{content};
-                    $currentObject->{place_name} =~ s/^\s+|\s+$//g;
+        my $currentPlaceObject = {};
+        if ( length( $record->get_fields->{T7676} ) ) {
+            foreach my $place_rda_data ( @{ $record->get_fields->{T7676} } ) {
+                if ( $place_rda_data->{mult} == $mult_value ) {
+                    if ( $place_rda_data->{subfield} eq "g" ) {
+                        $currentPlaceObject->{"place_rda"}->{place_name} =
+                          $place_rda_data->{content};
+                        $currentPlaceObject->{"place_rda"}->{place_name} =~
+                          s/^\s+|\s+$//g;
+                    }
+                    elsif ( $place_rda_data->{subfield} eq "9"
+                        and index( $place_rda_data->{content}, "DE-588" ) !=
+                        -1 )
+                    {
+                        $currentPlaceObject->{"place_rda"}->{gnd} =
+                          $place_rda_data->{content};
+                        $currentPlaceObject->{"place_rda"}->{gnd} =~
+                          s/\(DE-588\)//;
+                        $currentPlaceObject->{"place_rda"}->{gnd} =~
+                          s/^\s+|\s+$//g;
+                    }
                 }
-                elsif ( $place->{subfield} eq "9"
-                    and index( $place->{content}, "DE-588" ) != -1 )
-                {
-                    $currentObject->{gnd} = $place->{content};
-                    $currentObject->{gnd} =~ s/\(DE-588\)//;
-                    $currentObject->{gnd} =~ s/^\s+|\s+$//g;
-                    $currentObject->{field} = $field_name;
+
+            }
+
+        }
+        if ( length( $record->get_fields->{T0410} ) ) {
+            foreach my $place ( @{ $record->get_fields->{T0410} } ) {
+                if ( $place->{mult} == $mult_value ) {
+                    $currentPlaceObject->{"place_free"}->{place_name} =
+                      $place->{content},;
                 }
             }
         }
-        push( @{$rda_collection}, $currentObject );
+
+        if ( length( $record->get_fields->{T0673} ) ) {
+            foreach my $place ( @{ $record->get_fields->{T0673} } ) {
+                if ( $place->{mult} == $mult_value ) {
+                    $currentPlaceObject->{"place_norm"}->{place_name} =
+                      $place->{content},;
+                }
+            }
+        }
+
+        $place_list->[$mult_value] = $currentPlaceObject;
     }
-    return $rda_collection;
+
+    my @filtered_place_list = grep( defined, @{$place_list} );
+    return \@filtered_place_list;
 
 }
 
@@ -700,9 +720,10 @@ sub get_all_mult_values {
     my @mult_values    = ();
     foreach my $rda_field ( @{$rda_field_data} ) {
         my $mult_value = $rda_field->{mult};
-        if (grep( /^$mult_value$/, @mult_values ) ) {
-        }else {
-          push( @mult_values, $mult_value );
+        if ( grep( /^$mult_value$/, @mult_values ) ) {
+        }
+        else {
+            push( @mult_values, $mult_value );
         }
 
     }
@@ -710,31 +731,36 @@ sub get_all_mult_values {
 }
 
 sub collect_provenance_data {
-    my $self   = shift;
-    my $record = shift;
-    my $database = shift;
+    my $self            = shift;
+    my $record          = shift;
+    my $database        = shift;
     my $provenance_data = [];
-    foreach my $prov_field ( @{$record->get_fields->{T4310}} ) {
+    foreach my $prov_field ( @{ $record->get_fields->{T4310} } ) {
         my $prov_data = {};
         $prov_data->{"prov_text"} = $prov_field->{content};
-        $provenance_data->[$prov_field->{mult}] = $prov_data;
+        $provenance_data->[ $prov_field->{mult} ] = $prov_data;
     }
-    foreach my $prov_field ( @{$record->get_fields->{T4309}} ) {
-        $provenance_data->[$prov_field->{mult}]->{"prov_signatur"} = $prov_field->{content};
+    foreach my $prov_field ( @{ $record->get_fields->{T4309} } ) {
+        $provenance_data->[ $prov_field->{mult} ]->{"prov_signatur"} =
+          $prov_field->{content};
     }
-    foreach my $prov_field ( @{$record->get_fields->{T4308}} ) {
-        $provenance_data->[$prov_field->{mult}]->{"prov_person"} = $prov_field->{content};
-        if ($prov_field->{id}){
-            $provenance_data->[$prov_field->{mult}]->{"prov_gnd"} = $self->get_gnd_for_person( $prov_field->{id}, $database );    
-            }
-        }
-    foreach my $prov_field ( @{$record->get_fields->{T4307}} ) {
-        $provenance_data->[$prov_field->{mult}]->{"prov_corp"} = $prov_field->{content};
-        if ($prov_field->{id}){
-            $provenance_data->[$prov_field->{mult}]->{"prov_gnd"} = $self->get_gnd_for_corporation($prov_field->{id}, $database );
+    foreach my $prov_field ( @{ $record->get_fields->{T4308} } ) {
+        $provenance_data->[ $prov_field->{mult} ]->{"prov_person"} =
+          $prov_field->{content};
+        if ( $prov_field->{id} ) {
+            $provenance_data->[ $prov_field->{mult} ]->{"prov_gnd"} =
+              $self->get_gnd_for_person( $prov_field->{id}, $database );
         }
     }
-    my @filtered_list = grep(defined, @{$provenance_data});
+    foreach my $prov_field ( @{ $record->get_fields->{T4307} } ) {
+        $provenance_data->[ $prov_field->{mult} ]->{"prov_corp"} =
+          $prov_field->{content};
+        if ( $prov_field->{id} ) {
+            $provenance_data->[ $prov_field->{mult} ]->{"prov_gnd"} =
+              $self->get_gnd_for_corporation( $prov_field->{id}, $database );
+        }
+    }
+    my @filtered_list = grep( defined, @{$provenance_data} );
     return \@filtered_list;
 }
 
@@ -742,7 +768,7 @@ sub collect_publisher_data {
     my $self   = shift;
     my $record = shift;
     my $mult_values =
-    $self->get_all_mult_values( $record->get_fields->{T7677} );
+      $self->get_all_mult_values( $record->get_fields->{T7677} );
     my $uniform_publisher_list = [];
     foreach my $mult_value ( @{$mult_values} ) {
         my $currentObject = {};
@@ -750,21 +776,22 @@ sub collect_publisher_data {
             if ( $publisher->{mult} == $mult_value ) {
                 if ( $publisher->{subfield} eq "k" ) {
                     $currentObject->{publisher_name} = $publisher->{content};
-                    $currentObject->{publisher_name} =~ s/^\s+|\s+$//g
-                }if ( $publisher->{subfield} eq "p" ) {
+                    $currentObject->{publisher_name} =~ s/^\s+|\s+$//g;
+                }
+                if ( $publisher->{subfield} eq "p" ) {
                     $currentObject->{publisher_name} = $publisher->{content};
-                    $currentObject->{publisher_name} =~ s/^\s+|\s+$//g
+                    $currentObject->{publisher_name} =~ s/^\s+|\s+$//g;
                 }
                 if ( $publisher->{subfield} eq "h" ) {
-                        $currentObject->{publisher_place} = $publisher->{content};
-                        $currentObject->{publisher_place} =~ s/^\s+|\s+$//g
+                    $currentObject->{publisher_place} = $publisher->{content};
+                    $currentObject->{publisher_place} =~ s/^\s+|\s+$//g;
                 }
                 if ( $publisher->{subfield} eq "9"
                     and index( $publisher->{content}, "DE-588" ) != -1 )
                 {
                     $currentObject->{gnd} = $publisher->{content};
                     $currentObject->{gnd} =~ s/\(DE-588\)//;
-                    $currentObject->{gnd} =~ s/^\s+|\s+$//g
+                    $currentObject->{gnd} =~ s/^\s+|\s+$//g;
                 }
             }
         }
@@ -788,10 +815,11 @@ sub generate_name_data {
         || index( $content_field, "<" ) != -1 )
     {
         my @full_name_array = ();
-        if (index( $content_field, "&lt;")) {
-           @full_name_array = split( "&lt;", $content_field ); 
-        }else {
-           @full_name_array = split( "<", $content_field ); 
+        if ( index( $content_field, "&lt;" ) ) {
+            @full_name_array = split( "&lt;", $content_field );
+        }
+        else {
+            @full_name_array = split( "<", $content_field );
         }
         $displayname = $full_name_array[0];
         $displayname =~ s/^\s+//;

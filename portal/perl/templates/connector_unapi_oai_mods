@@ -128,14 +128,13 @@
             [%- IF normdata.${"T0331"} %]
             <mods:titleInfo>
                 <mods:title>[% normdata.${"T0331"}.first.content %]</mods:title>
-                [%- FOREACH item IN normdata.${"T0335"} %]
-                <mods:subTitle>[% item.content %]</mods:subTitle>
-                [%- END %]
+            [%- FOREACH item IN normdata.${"T0335"} %]
+            <mods:subTitle>[% item.content %]</mods:subTitle>
+            [%- END %]
             </mods:titleInfo>
             [%- ELSIF normdata.${"T0089"} && super.fields.${'0331'}.first.content %]
             <mods:titleInfo>
-                <mods:title>[%- super.fields.${"0331"}.first.content %] / [% normdata.${"T0089"}.first.content %]
-                </mods:title>
+                <mods:title>[%- super.fields.${"0331"}.first.content %] / [% normdata.${"T0089"}.first.content %]</mods:title>
             </mods:titleInfo>
             [%- END %]
             [%- IF title_list && title_list.size %]
@@ -160,13 +159,16 @@
             [%- END %]
             <mods:originInfo eventType="publication">
                 [%- IF place_list && place_list.size %]
+                [%- FOREACH place IN place_list %]
                 <mods:place>
-                    [%- FOREACH place IN place_list %]
-                    <mods:placeTerm type="text" [%- IF place.gnd -%] authority="gnd"
-                        authorityURI="http://d-nb.info/gnd/" valueURI="http://d-nb.info/gnd/[% place.gnd %]" [%END%][%IF
-                        place.field=="T0673" %]lang="deu" [%END%]>[% place.place_name %]</mods:placeTerm>
+                    [%- IF place.place_norm %]
+                    <mods:placeTerm type="text" lang="deu">[% place.place_norm.place_name %]</mods:placeTerm>
+                    [%- END %]
+                    [%- IF place.place_free && place.place_free.place_name != place.place_norm.place_name %]
+                    <mods:placeTerm>[% place.place_free.place_name %]</mods:placeTerm>
                     [%- END %]
                 </mods:place>
+                [%- END %]
                 [%- END %]
                 [%- FOREACH item IN normdata.${"T0412"} %]
                 <mods:publisher>[% item.content %]</mods:publisher>
@@ -193,8 +195,7 @@
                 [%- END %]
                 [%- END %]
                 [%- IF date_values.start_date %]
-                <mods:dateIssued keyDate="yes" encoding="iso8601" point="start">[%- date_values.start_date %]
-                </mods:dateIssued>
+                <mods:dateIssued keyDate="yes" encoding="iso8601" point="start">[%- date_values.start_date %]</mods:dateIssued>
                 [%- END %]
                 [%- IF date_values.end_date %]
                 <mods:dateIssued encoding="iso8601" point="end">[% date_values.end_date %]</mods:dateIssued>

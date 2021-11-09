@@ -354,6 +354,8 @@ sub process_title_rda {
         $currentObject->{field} = $field_name;
         push( @{$title_list}, $currentObject );
     }
+    my @filtered_title_list = grep(defined, @{$title_list});
+    return \@filtered_title_list;
 }
 
 sub collect_contained_works {
@@ -364,7 +366,11 @@ sub collect_contained_works {
     #Angebundenes Werk RDA
     if ( length( $record->get_fields->{T7304} ) ) {
         my $rda_collection =
-         $self->process_title_rda( $record->get_fields->{T7304}, "T7304", $contained_works );
+         $self->process_title_rda( $record->get_fields->{T7304}, "T7304");
+         foreach my $title_item (@{ $rda_collection }){
+             push( @{$contained_works}, $title_item );
+         }
+         
     }
     #Angebundenes Werk RAK
     unless (length( $record->get_fields->{T7304} )){
@@ -378,7 +384,7 @@ sub collect_contained_works {
         }
     }
     }
-   return $contained_works;
+    return $contained_works;
 }
 
 sub collect_rswk_data {
@@ -717,13 +723,13 @@ sub collect_provenance_data {
         $provenance_data->[$prov_field->{mult}]->{"prov_signatur"} = $prov_field->{content};
     }
     foreach my $prov_field ( @{$record->get_fields->{T4308}} ) {
-        $provenance_data->[$prov_field->{mult}]->{"prov_norm"} = $prov_field->{content};
+        $provenance_data->[$prov_field->{mult}]->{"prov_person"} = $prov_field->{content};
         if ($prov_field->{id}){
             $provenance_data->[$prov_field->{mult}]->{"prov_gnd"} = $self->get_gnd_for_person( $prov_field->{id}, $database );    
             }
         }
     foreach my $prov_field ( @{$record->get_fields->{T4307}} ) {
-        $provenance_data->[$prov_field->{mult}]->{"prov_norm"} = $prov_field->{content};
+        $provenance_data->[$prov_field->{mult}]->{"prov_corp"} = $prov_field->{content};
         if ($prov_field->{id}){
             $provenance_data->[$prov_field->{mult}]->{"prov_gnd"} = $self->get_gnd_for_corporation($prov_field->{id}, $database );
         }

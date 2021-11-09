@@ -3963,33 +3963,60 @@ sub update_orgunit {
 
     # Zuerst die Aenderungen in der Tabelle Orgunit vornehmen
 
-    my $profileinfo_ref = $self->get_profileinfo->single({ 'profilename' => $profilename });
-    my $orgunitinfo_ref = $self->get_orgunitinfo->search_rs({ 'orgunitname' => $orgunitname, 'profileid' => $profileinfo_ref->id })->single();
+    my $profileid;
 
-    $orgunitinfo_ref->update({ description => $description, nr => $nr, own_index => $own_index });
+    eval {					       
+       my $profileinfo_ref = $self->get_profileinfo->single({ 'profilename' => $profilename });
 
-    # DBI: "delete from orgunit_db where profilename = ? and orgunitname = ?"
-    # Datenbanken zunaechst loeschen
-    $self->get_schema->resultset('OrgunitDb')->search_rs({ orgunitid => $orgunitinfo_ref->id})->delete;
+       $profileid = $profileinfo_ref->id;
+    };					       
 
-    # DBI: "insert into orgunit_db values (?,?,?)"
-    if (@$databases_ref){
+    if ($@){
+       $logger->error("Profile $profilename not found: ".$@);
+    }
+
+    my $orgunitinfo_ref = $self->get_orgunitinfo->search_rs({ 'orgunitname' => $orgunitname, 'profileid' => $profileid })->single();
+
+    if ($orgunitinfo_ref){
+      my $orgunitid = $orgunitinfo_ref->id;
+
+      $orgunitinfo_ref->update({ description => $description, nr => $nr, own_index => $own_index });
+
+      # DBI: "delete from orgunit_db where profilename = ? and orgunitname = ?"
+      # Datenbanken zunaechst loeschen
+      $self->get_schema->resultset('OrgunitDb')->search_rs({ orgunitid => $orgunitid})->delete;
+
+      # DBI: "insert into orgunit_db values (?,?,?)"
+      if (@$databases_ref){
 
         if ($logger->is_debug){
             $logger->debug("Datenbanken ".YAML::Dump($databases_ref));
         }
         
         my $this_db_ref = [];
-        foreach my $dbname (@$databases_ref){
-            my $dbinfo_ref = $self->get_databaseinfo->single({ 'dbname' => $dbname });
-            push @$this_db_ref, {
-                orgunitid   => $orgunitinfo_ref->id,
-                dbid      => $dbinfo_ref->id,
-            };
+
+        eval {
+          foreach my $dbname (@$databases_ref){
+              my $dbinfo_ref = $self->get_databaseinfo->single({ 'dbname' => $dbname });
+              my $dbid = $dbinfo_ref->id;
+
+              push @$this_db_ref, {
+                  orgunitid   => $orgunitid,
+                  dbid        => $dbid,
+              } if ($dbid);
+          }
+        };
+
+        if ($@){
+           $logger->error("Error getting dbid");
         }
         
         # Dann die zugehoerigen Datenbanken eintragen
         $self->get_schema->resultset('OrgunitDb')->populate($this_db_ref);
+      }
+    }
+    else {
+       $logger->error("Orgunit $orgunitname not found in profile $profilename ($profileid)");
     }
 
     return;

@@ -339,6 +339,10 @@ sub update_record {
         return $self->print_warning($msg->maketext("Es existiert keine Organisationseinheit unter diesem Namen in diesem Profil"));
     }
 
+    if ($logger->is_debug){
+	$logger->debug("Passing orgunit data: ".YAML::Dump($input_data_ref));
+    }
+    
     $config->update_orgunit($input_data_ref);
 
     if ($self->param('representation') eq "html"){

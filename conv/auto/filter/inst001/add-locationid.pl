@@ -219,7 +219,7 @@ while (<TITLE>){
             if ($item->{content} eq "online"){
 #                 $element_ref = [];		
                  push @{$element_ref}, "emedien";
-                 push @{$element_ref}, "usbebooks";
+                 push @{$element_ref}, "DE-38-EBOOKS";
             }
         }
     }

@@ -50,11 +50,11 @@
   [%   END %]
   
       <div id="ob-sidebar" class=" border-right min-vh-100 collapse navbar-collapse" aria-expanded="false">
-           <div id="sidebar-dismiss" class="float-right d-md-none text-white" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+           <div id="sidebar-dismiss" class="float-right text-white" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <i class="fas fa-window-close fa-2x p-1"></i>
            </div>
 
-           <div class="sidebar-heading ob-bg text-white p-1 pb-0 mb-2 d-md-none">
+           <div class="sidebar-heading ob-bg text-white p-1 pb-0 mb-2">
               <h3>[% IF layout_param.sidebar_template_description %][% layout_param.sidebar_template_description %][% ELSE %]Navigation[% END %]</h3>
            </div>
 

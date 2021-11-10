@@ -97,9 +97,9 @@ $(document).ready(function(){
 
 <div class="ob-category_header">
 [%-  IF is_freemedia -%]
-[% locinfo.identifier.${"freemedia"}.description %]
+         [% locinfo.identifier.${"freemedia"}.description %]
 [%-  ELSIF is_licensedmedia -%]
-[% locinfo.identifier.${"emedien"}.description %]
+         [% locinfo.identifier.${"emedien"}.description %]
 [%-  ELSIF locations.size >= 1 -%]
 [%      IF locations.size == 1 %]
          [% locinfo.identifier.${locations.first}.description %]

@@ -41,6 +41,9 @@
                 'T0652', # msg.maketext("T0652") EDV Material
                 'T0655', # msg.maketext("T0655") EDV Adress
                 'T0451', # msg.maketext("T0451") GesTit Vorl
+                'T0662', # msg.maketext("T0662") EDVurl
+                'T2662', # msg.maketext("T2662") USB EDVurl
+                'T2663', # msg.maketext("T2663") USB URLInfo
                 'T5100', # msg.maketext("T5100") Allg. Zaehlung
                 'T5005', # msg.maketext("T5005") Uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke

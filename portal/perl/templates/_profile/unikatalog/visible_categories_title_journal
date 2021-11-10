@@ -49,6 +49,9 @@
                 'T0035', # msg.maketext("T0035") ErschLand
                 'T0435', # msg.maketext("T0435") Format
                 'T0543', # msg.maketext("T0543") ISSN
+                'T0662', # msg.maketext("T0662") EDVurl
+                'T2662', # msg.maketext("T2662") USB EDVurl
+                'T2663', # msg.maketext("T2663") USB URLInfo
                 'T5100', # msg.maketext("T5100") Allg. Zaehlung
                 'T5005', # msg.maketext("T5005") Uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke

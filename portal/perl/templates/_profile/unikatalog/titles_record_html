@@ -22,6 +22,9 @@
 
   # Filter locations
   locations = [];
+
+  is_freemedia = 0;
+  is_licensedmedia = 0;
   
   FOREACH loc IN all_locations ;
     IF loc.match('^DE-38$') ;
@@ -29,7 +32,12 @@
     ELSIF loc.match('^DE-38-[0-9][0-9][0-9]') ;
        locations.push(loc);
     ELSIF NOT loc.match('^DE-38-[a-zA-Z]');   
-         locations.push(loc);
+       locations.push(loc);
+    END;
+    IF loc.match('emedien') ;
+       is_licensedmedia = 1;
+    ELSIF loc.match('freemedia') ;
+       is_freemedia = 1;
     END;
   END;
 
@@ -88,7 +96,11 @@ $(document).ready(function(){
 <div class="content"><!-- Begin Fulltitle -->
 
 <div class="ob-category_header">
-[%-  IF locations.size >= 1 -%]
+[%-  IF is_freemedia -%]
+[% locinfo.identifier.${"freemedia"}.description %]
+[%-  ELSIF is_licensedmedia -%]
+[% locinfo.identifier.${"emedien"}.description %]
+[%-  ELSIF locations.size >= 1 -%]
 [%      IF locations.size == 1 %]
          [% locinfo.identifier.${locations.first}.description %]
 [%      ELSIF locations.size > 1 %]

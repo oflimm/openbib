@@ -153,14 +153,14 @@
     }
     
     #ob-maincontent {
-	padding-left: 10px;
-	padding-right: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
     }
 
     #ob-startpage #ob-maincontent {
-	padding-top: 0px;
-	padding-left: 0px;
-	padding-right: 0px;
+	margin-top: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
     }
 
     #ob-startpage #ob-maincontent .jumbotron {
@@ -1801,7 +1801,7 @@
 }
 
 .ob-title_record {
-    padding: 5px;
+    margin-left: 10px;
 }
 
 #ob-additional_title_info {
@@ -2053,14 +2053,14 @@ a.ext {
 @media only screen and (max-width: 768px) {
     .col-md-3 {
 	margin-right: 0px;
-	//padding-right: 0px;
-	//padding-left: 5px; 
+	/* padding-right: 0px;
+	padding-left: 5px;  */
     }
 
     .col-md-9 {
 	margin-right: 0px;
 	padding-right: 5px;
-	//padding-left: 0px;
+        padding-left: 0px;
     }
 
     #ob-sidebar_books, #ob-sidebar_articles, #ob-sidebar_web {

@@ -2169,11 +2169,12 @@ a.ext {
 
     table.ob-title_fields th {
 	border-top: 0;
-	padding: 0.3em 0 0.1em 0.1em;
+	padding: 0.3em 0 0.1em 0.8em;
     }
     
     table.ob-title_fields td {
-	padding: 0 0 0.5em 0.1em;
+	font-size:1.1em;
+	padding: 0.3 0 0.5em 0.2em;
     }
 
     /*

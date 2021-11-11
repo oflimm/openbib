@@ -352,121 +352,6 @@ sub set_from_psgi_request {
     return $self;
 }
 
-sub load  {
-    my ($self,$arg_ref)=@_;
-
-    # Set defaults
-    my $sid                    = exists $arg_ref->{sid}
-        ? $arg_ref->{sid}                 : undef;
-    my $queryid                = exists $arg_ref->{queryid}
-        ? $arg_ref->{queryid}             : undef;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my ($thisquery,$thiststamp);
-    
-    eval {
-	# DBI: "select queryid,query from queries where sessionID = ? and queryid = ?"
-	my $query = $self->get_schema->resultset('Query')->search(
-	    {
-		'sid.id'        => $sid,
-		    'me.queryid'    => $queryid,
-	    },
-	    {
-		select => ['me.tstamp','me.query'],
-		as     => ['thiststamp','thisquery'],
-		join => ['sid'],
-	    }
-	    )->single;
-	
-	if ($query){
-	    $thisquery  = scalar $query->get_column('thisquery');
-	    $thiststamp = scalar $query->get_column('thiststamp');
-	}
-    };
-
-    if ($@){
-	$logger->error($@);
-    }
-    
-    $logger->debug("$sid/$queryid -> $thisquery");
-    $self->from_json("$thisquery");
-    $self->set_id($queryid);
-    $self->set_tstamp($thiststamp);
-    
-    return $self;
-}
-
-sub save  {
-    my ($self,$arg_ref)=@_;
-
-    # Set defaults
-    my $sid               = exists $arg_ref->{sid}
-        ? $arg_ref->{sid}            : undef;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    unless ($sid){
-        return $self;
-    }
-
-    my $config = $self->get_config;
-    
-    $logger->debug("sid: $sid");
-    
-    my $query_obj_string = "";
-    
-    if ($config->{internal_serialize_type} eq "packed_storable"){
-        $query_obj_string = unpack "H*", Storable::freeze($self);
-    }
-    elsif ($config->{internal_serialize_type} eq "json"){
-        $query_obj_string = $self->to_json;
-    }
-    else {
-        $query_obj_string = unpack "H*", Storable::freeze($self);
-    }
-
-    $logger->debug("Query Object: ".$query_obj_string);
-
-    # DBI: "select queryid from queries where query = ? and sessionid = ?"
-    my $searchquery = $self->get_schema->resultset('Query')->search(
-        {
-            'sid.id'        => $sid,
-            'me.query'      => $query_obj_string,
-        },
-        {
-            select => 'me.queryid',
-            as     => 'thisqueryid',
-            join => 'sid'
-        }
-    );
-
-    my $searchquery_exists = $searchquery->count;
-    # Wenn noch nicht vorhanden, dann eintragen
-
-    if (!$searchquery_exists){
-        # DBI: "insert into queries (queryid,sessionid,query) values (NULL,?,?)"
-        my $new_query = $self->get_schema->resultset('Query')->create({ sid => $sid, query => $query_obj_string , searchprofileid => $self->get_searchprofile, tstamp => \'NOW()' });
-
-        my $new_queryid = scalar $new_query->get_column('queryid');
-        
-        $self->set_id($new_queryid);
-        
-         $logger->debug("Saving SearchQuery: sessionid,query_obj_string = $sid,$query_obj_string to id ".$self->get_id);
-    }
-    else {
-        my $this_queryid = scalar $searchquery->get_column('thisqueryid');
-        
-        $self->set_id($this_queryid);
-        $logger->debug("Query already exists: $query_obj_string");
-    }
-
-    $logger->debug("SearchQuery has id ".$self->get_id) if (defined $self->get_id);
-    
-    return $self;
-}
 
 sub is_authority {
     my ($self)=@_;
@@ -496,6 +381,42 @@ sub get_filter {
     my ($self)=@_;
 
     return $self->{_filter};
+}
+
+sub set_filter {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $field        = exists $arg_ref->{field}
+        ? $arg_ref->{field}         : undef;
+    my $term        = exists $arg_ref->{term}
+        ? $arg_ref->{term}         : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    if ($field && $term){
+
+	my $string  = $term;
+	
+	$string = OpenBib::Common::Util::normalize({
+	    content   => $string,
+	    type      => 'string',
+						   });
+            	    
+	$logger->debug("Field: $field Norm: $string Term: $term");
+
+	push @{$self->{_filter}}, {
+	    val    => "$field:$term",
+	    term   => $term,
+	    norm   => $string,
+	    field  => $field,
+	};
+
+	$self->{_have_searchterms} = 1;
+    }
+
+    return $self;
 }
 
 sub to_cgi_params {
@@ -1233,6 +1154,122 @@ sub disconnectDB {
     }
     
     return;
+}
+
+sub load  {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $sid                    = exists $arg_ref->{sid}
+        ? $arg_ref->{sid}                 : undef;
+    my $queryid                = exists $arg_ref->{queryid}
+        ? $arg_ref->{queryid}             : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my ($thisquery,$thiststamp);
+    
+    eval {
+	# DBI: "select queryid,query from queries where sessionID = ? and queryid = ?"
+	my $query = $self->get_schema->resultset('Query')->search(
+	    {
+		'sid.id'        => $sid,
+		    'me.queryid'    => $queryid,
+	    },
+	    {
+		select => ['me.tstamp','me.query'],
+		as     => ['thiststamp','thisquery'],
+		join => ['sid'],
+	    }
+	    )->single;
+	
+	if ($query){
+	    $thisquery  = scalar $query->get_column('thisquery');
+	    $thiststamp = scalar $query->get_column('thiststamp');
+	}
+    };
+
+    if ($@){
+	$logger->error($@);
+    }
+    
+    $logger->debug("$sid/$queryid -> $thisquery");
+    $self->from_json("$thisquery");
+    $self->set_id($queryid);
+    $self->set_tstamp($thiststamp);
+    
+    return $self;
+}
+
+sub save  {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $sid               = exists $arg_ref->{sid}
+        ? $arg_ref->{sid}            : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    unless ($sid){
+        return $self;
+    }
+
+    my $config = $self->get_config;
+    
+    $logger->debug("sid: $sid");
+    
+    my $query_obj_string = "";
+    
+    if ($config->{internal_serialize_type} eq "packed_storable"){
+        $query_obj_string = unpack "H*", Storable::freeze($self);
+    }
+    elsif ($config->{internal_serialize_type} eq "json"){
+        $query_obj_string = $self->to_json;
+    }
+    else {
+        $query_obj_string = unpack "H*", Storable::freeze($self);
+    }
+
+    $logger->debug("Query Object: ".$query_obj_string);
+
+    # DBI: "select queryid from queries where query = ? and sessionid = ?"
+    my $searchquery = $self->get_schema->resultset('Query')->search(
+        {
+            'sid.id'        => $sid,
+            'me.query'      => $query_obj_string,
+        },
+        {
+            select => 'me.queryid',
+            as     => 'thisqueryid',
+            join => 'sid'
+        }
+    );
+
+    my $searchquery_exists = $searchquery->count;
+    # Wenn noch nicht vorhanden, dann eintragen
+
+    if (!$searchquery_exists){
+        # DBI: "insert into queries (queryid,sessionid,query) values (NULL,?,?)"
+        my $new_query = $self->get_schema->resultset('Query')->create({ sid => $sid, query => $query_obj_string , searchprofileid => $self->get_searchprofile, tstamp => \'NOW()' });
+
+        my $new_queryid = scalar $new_query->get_column('queryid');
+        
+        $self->set_id($new_queryid);
+        
+         $logger->debug("Saving SearchQuery: sessionid,query_obj_string = $sid,$query_obj_string to id ".$self->get_id);
+    }
+    else {
+        my $this_queryid = scalar $searchquery->get_column('thisqueryid');
+        
+        $self->set_id($this_queryid);
+        $logger->debug("Query already exists: $query_obj_string");
+    }
+
+    $logger->debug("SearchQuery has id ".$self->get_id) if (defined $self->get_id);
+    
+    return $self;
 }
 
 sub DESTROY {

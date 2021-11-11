@@ -174,9 +174,9 @@
 
 [% IF source %]
 <div class="form-group">
-      <label for="location_mark">[% msg.maketext("In") %]:</label>
+      <label for="source">[% msg.maketext("In") %]:</label>
       <span class="form-control">[% source %]</span>
-      <input type="hidden" name="label" value="[% source | uri %]" />
+      <input type="hidden" name="source" value="[% source | uri %]" />
 </div>
 [% END %]
 

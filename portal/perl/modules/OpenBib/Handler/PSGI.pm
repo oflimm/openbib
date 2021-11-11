@@ -56,7 +56,10 @@ use OpenBib::Common::Util;
 use OpenBib::Container;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
+use OpenBib::RecordList::Title;
 use OpenBib::Session;
+use OpenBib::SearchQuery;
+use OpenBib::Search::Factory;
 use OpenBib::Template::Provider;
 use OpenBib::User;
 
@@ -2226,6 +2229,106 @@ sub cleanup_lang {
     }
 
     return (defined $is_valid_ref->{$lang} && $is_valid_ref->{$lang})?$lang:'de';
+}
+
+sub check_online_media {
+    my ($self,$arg_ref)=@_;
+    
+    # Set defaults
+    my $view     = exists $arg_ref->{view}
+        ? $arg_ref->{view}        : undef;
+    my $isbn     = exists $arg_ref->{isbn}
+        ? $arg_ref->{isbn}        : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r       = $self->param('r');
+    my $config  = $self->param('config');
+
+    $logger->debug("Checking online availability of isbn $isbn for view $view");
+    
+    my $searchprofile = $config->get_searchprofile_of_view($view);
+    
+    my $searchquery = new OpenBib::SearchQuery();
+
+    $isbn = OpenBib::Common::Util::normalize({ field => 'T0540', content => $isbn });
+    
+    $searchquery->set_searchfield('isbn',$isbn,'AND');
+    $searchquery->set_filter({ field => 'favail', term => 'online'});
+    $searchquery->set_searchprofile($searchprofile);
+        
+    my $queryoptions = new OpenBib::QueryOptions;
+    
+    $queryoptions->set_option('num',10);
+    $queryoptions->set_option('srt','relevance_asc');    
+    $queryoptions->set_option('page',1);
+    $queryoptions->set_option('facets','none');
+    
+    my $search_args_ref = {
+	view         => $view,
+	searchprofile => $searchprofile,
+	searchquery  => $searchquery,
+	queryoptions => $queryoptions,
+    };
+    
+    my $searcher = OpenBib::Search::Factory->create_searcher($search_args_ref);
+
+    # Recherche starten
+    $searcher->search;
+    
+    $searchquery->set_hits($searcher->get_resultcount);
+
+    my $recordlist = new OpenBib::RecordList::Title;
+    
+    if ($searcher->have_results) {
+	$recordlist = $searcher->get_records();
+    }
+    
+    return $recordlist;
+}
+
+
+sub ip_from_local_network {
+    my $self = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $config       = $self->param('config');
+    
+    my $remote_ip    = $self->param('remote_ip');
+    
+    my $ip_from_local_network = 0;
+
+    my $remote_address;
+    
+    eval {
+	$remote_address = NetAddr::IP->new($remote_ip);
+    };
+    
+    if (!$@){
+	my $local_networks_ref = $config->get('local_networks') || [];
+	
+	foreach my $ip (@$local_networks_ref){
+	    $logger->debug("Checking remote ip $remote_ip with allowed ip range $ip");
+	    
+	    my $address_range;
+	    
+	    eval {
+		$address_range = NetAddr::IP->new($ip);
+	    };
+	    
+	    next if (!$address_range);
+	    
+	    if ($remote_address->within($address_range)){
+		$ip_from_local_network = 1;
+		$logger->debug("IP $remote_ip considered in local network $ip");
+	    }
+	}
+    }
+
+    return $ip_from_local_network;
 }
 
 1;

@@ -211,6 +211,12 @@ sub get_database {
     return $self->{_database};
 }
 
+sub get_resultcount {
+    my $self = shift;
+
+    return $self->{resultcount};
+}
+
 sub DESTROY {
     my $self = shift;
 

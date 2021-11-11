@@ -1277,7 +1277,7 @@
 
 [% IF locations.size > 0 %]
 
-
+<!--
 <div id="map">
     <div id="mapDiv"></div>
     <div id="suchleiste"><span id="tb_cont"><input type="search" list="theDataList" placeholder="Bibliothek finden.." name="fname" id="suche" /><span onclick="clearSearch()" style="top: 0px;" id="clear_input">X</span></span>
@@ -1287,6 +1287,7 @@
         <div id="einstellungen"></div>
     </div>
 </div>
+-->
 <datalist id="theDataList"></datalist>
 
 <script src="https://kug.ub.uni-koeln.de/js/leaflet.js"></script>

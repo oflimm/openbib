@@ -1277,7 +1277,7 @@
 
 [% IF locations.size > 0 %]
 
-<!--
+
 <div id="map">
     <div id="mapDiv"></div>
     <div id="suchleiste"><span id="tb_cont"><input type="search" list="theDataList" placeholder="Bibliothek finden.." name="fname" id="suche" /><span onclick="clearSearch()" style="top: 0px;" id="clear_input">X</span></span>
@@ -1286,7 +1286,7 @@
     <div id="filterPanel" style="display: none;">
         <div id="einstellungen"></div>
     </div>
-</div> -->
+</div>
 <datalist id="theDataList"></datalist>
 
 <script src="https://kug.ub.uni-koeln.de/js/leaflet.js"></script>
@@ -2966,7 +2966,7 @@ function showPopupText(text, mitInfo) {
             else if (zeiten === 2)
                 status = '<div id="status" class="status_geschlossen"><strong id="strong" style="color: white">' + print + ' geschlossen</strong></div>';
             else if (zeiten === 'undefined' || zeiten === 0)
-                status = '<div id="status" class="status_keineInformation"><strong id="strong" style="color: black">Keine Informationen</strong></div>';
+                status = '<div id="status" class="status_keineInformation"><strong id="strong" style="color: black">Keine Informationen zur Öffnung</strong></div>';
 
 
             displayFromMobile = institute[t].sigel;
@@ -5062,7 +5062,7 @@ var semesterZeit = [
     art         = location.fields.${"L0180"}.first.content;
     url         = location.fields.${"L0090"}.first.content;
     arbeitsplaetze = location.fields.${"L0270"}.first.content;
-    zeiten      = 'wg. Corona geschlossen';#location.fields.${"L0110"}.first.content;
+    zeiten      = 'Bitte wenden Sie sich direkt an die Bibliothek';#location.fields.${"L0110"}.first.content;
     IF art.match('Präsenz');
        art = "Präsenz";
     ELSIF art.match('Ausleih');

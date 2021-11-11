@@ -250,54 +250,75 @@ sub create_record {
 	}
 	
 	# Ueberpruefen auf elektronische Verfuegbarkeit via JOP
-
-	my $jopquery = new OpenBib::SearchQuery;
-
-	$jopquery->set_searchfield('issn',$issn) if ($issn);
-	$jopquery->set_searchfield('volume',$volume) if ($volume);
-	$jopquery->set_searchfield('issue',$issue) if ($issue);
-	$jopquery->set_searchfield('pages',$pages) if ($pages);
-	$jopquery->set_searchfield('date',$year) if ($year);
-
-	if ($title){
-	    $jopquery->set_searchfield('genre','article');
-	}
-	elsif ($volume){
-	    $jopquery->set_searchfield('genre','article');
-	}
-	else {
-	    $jopquery->set_searchfield('genre','journal');
-	}
-	
-	# bibid set via portal.yml
-	my $api = OpenBib::API::HTTP::JOP->new({ searchquery => $jopquery });
-
-	my $search = $api->search();
-
-	my $result_ref = $search->get_search_resultlist;
-
-	my $jop_online = 0;
-	
-	foreach my $item_ref (@$result_ref){
-	    if ($item_ref->{type} eq "online" && $item_ref->{state} =~m/^(0|2)$/){ # nur gruene und gelbe Titel beruecksichtigen, d.h. im Zweifelsfall wird die Bestellung durchgelassen
-		$jop_online = 1;
-	    }	    
-	}
-
-	if ($jop_online){
-	    # TT-Data erzeugen
-	    my $ttdata={
-		database      => $database,
-		unit          => $unit,
-		label         => $label,
-		validtarget   => $validtarget,
-		jop_online    => $jop_online,
-		jop           => $result_ref,
-	    };
+	if ($issn){
+	    my $jopquery = new OpenBib::SearchQuery;
 	    
-	    return $self->print_page($config->{tt_users_circulations_make_campus_order_tname},$ttdata);
+	    $jopquery->set_searchfield('issn',$issn) if ($issn);
+	    $jopquery->set_searchfield('volume',$volume) if ($volume);
+	    $jopquery->set_searchfield('issue',$issue) if ($issue);
+	    $jopquery->set_searchfield('pages',$pages) if ($pages);
+	    $jopquery->set_searchfield('date',$year) if ($year);
+	    
+	    if ($title){
+		$jopquery->set_searchfield('genre','article');
+	    }
+	    elsif ($volume){
+		$jopquery->set_searchfield('genre','article');
+	    }
+	    else {
+		$jopquery->set_searchfield('genre','journal');
+	    }
+	    
+	    # bibid set via portal.yml
+	    my $api = OpenBib::API::HTTP::JOP->new({ searchquery => $jopquery });
+	    
+	    my $search = $api->search();
+	    
+	    my $result_ref = $search->get_search_resultlist;
+	    
+	    my $jop_online = 0;
+	    
+	    foreach my $item_ref (@$result_ref){
+		if ($item_ref->{type} eq "online" && $item_ref->{state} =~m/^(0|2)$/){ # nur gruene und gelbe Titel beruecksichtigen, d.h. im Zweifelsfall wird die Bestellung durchgelassen
+		    $jop_online = 1;
+		}	    
+	    }
+	    
+	    if ($jop_online){
+		# TT-Data erzeugen
+		my $ttdata={
+		    database      => $database,
+		    unit          => $unit,
+		    label         => $label,
+		    validtarget   => $validtarget,
+		    jop_online    => $jop_online,
+		    jop           => $result_ref,
+		};
+		
+		return $self->print_page($config->{tt_users_circulations_make_campus_order_tname},$ttdata);
+	    }
 	}
+	# Ueberpruefen auf elektronische Verfuegbarkeit an der UzK (KUG)	
+	elsif ($isbn){
+	    my $online_media = $self->check_online_media({ view => 'uni', isbn => $isbn});
 
+	    if ($online_media->size() > 0){
+		
+		# TT-Data erzeugen
+		my $ttdata={
+		    database      => $database,
+		    unit          => $unit,
+		    label         => $label,
+		    validtarget   => $validtarget,
+		    uzk_online    => 1,
+		    online_media  => $online_media,
+		};
+		
+		return $self->print_page($config->{tt_users_circulations_make_campus_order_tname},$ttdata);
+	    }
+
+	}
+	
 	# Production
 	# my $response_make_campus_order_ref = $ils->make_campus_order({ title => $title, titleid => $titleid, author => $author, coporation => $corporation, publisher => $publisher, year => $year, numbering => $numbering, label => $label, isbn => $isbn, issn => $issn, articleauthor => $articleauthor, articletitle => $articletitle, volume => $volume, issue => $issue, pages => $pages, refid => $refid, userid => $accountname, username => $realname, receipt => $receipt, email => $email, remark => $remark, unit => $unit, location => $unit_desc, domain => $domain, subdomain => $subdomain });
 

@@ -145,9 +145,9 @@ sub search {
     my $electronic_states_ref = {
 	'-1' => 'error', # ISSN nicht eindeutig
 	    '0' => "green", # Standort-unabhängig frei zugänglich
-	    '1' => 'green', # Standort-unabhängig teilweise zugänglich (Unschärfe bedingt durch unspezifische Anfrage oder Moving-Wall)
+	    '1' => 'green_yellow_red', # Standort-unabhängig teilweise zugänglich (Unschärfe bedingt durch unspezifische Anfrage oder Moving-Wall)
 	    '2' => 'yellow', # Lizenziert
-	    '3' => 'yellow', # Für gegebene Bibliothek teilweise lizenziert (Unschärfe bedingt durch unspezifische Anfrage oder Moving-Wall)
+	    '3' => 'yellow_red', # Für gegebene Bibliothek teilweise lizenziert (Unschärfe bedingt durch unspezifische Anfrage oder Moving-Wall)
 	    '4' => 'red', # nicht lizenziert
 	    '5' => 'red', # Zeitschrift gefunden Angaben über Erscheinungsjahr, Datum ... liegen außerhalb des hinterlegten bibliothekarischen Zeitraums
 	    '10' => 'unknown', # Unbekannt (ISSN unbekannt, Bibliothek unbekannt)

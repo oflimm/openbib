@@ -67,6 +67,8 @@
        library_isil = "DE-38-526";
      ELSIF standort.match('VWL');
        library_isil = "DE-38-101";
+     ELSIF standort.match('HF-Bibliothek');
+       library_isil = "DE-38-307";
      ELSIF standort.match('Archäologisches Institut');
        library_isil = "DE-38-427";
      ELSIF standort.match('Forschungsstelle Afrika');

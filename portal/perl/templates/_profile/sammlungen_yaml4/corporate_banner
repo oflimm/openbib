@@ -2,7 +2,7 @@
     <header role="banner">
 [% IF NOT no_topnav %]
       <div id="topnav" role="contentinfo">
-        <span><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% config.get_dbs_of_view(view).first %]/titles/recent.rss?l=[% lang %]"><img style="vertical-align: bottom;" src="[% config.get('rssfeed_img') %]" alt="RSS-Feed"/></a> | [% IF config.get('lang').size > 1 %][% FOREACH l IN config.get('lang') %][% NEXT IF l == lang %] <a href="[% path %]?[% cgiapp.to_cgi_querystring(change = { l = l }) %]"><img style="vertical-align: bottom;" src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a> |[% END %][% END %] [% IF config.get('login_active') == 1 %]
+        <span><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% config.get_dbs_of_view(view).first %]/titles/recent.rss?l=[% lang %]"><img style="vertical-align: bottom;" src="[% config.get('rssfeed_img') %]" alt="RSS-Feed"/></a> | [% IF config.get('lang').size > 1 %][% FOREACH l IN config.get('lang') %][% NEXT IF l == lang %] <a href="[% path %]?[% cgiapp.to_cgi_querystring(change = { l = l }) %]"><img style="vertical-align: bottom;" src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a> |[% END %][% END %] [% IF config.get('active_login') == 1 %]
 [% IF username %]
           <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% msg.maketext("Meine Sammlung") %]</a>
 | <a href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %]" target="_parent"><b>[% msg.maketext("Abmelden") %] [[% username %]]</b></a></span>

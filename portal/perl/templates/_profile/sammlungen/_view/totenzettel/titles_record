@@ -81,6 +81,8 @@
 [%- PROCESS common/subtemplate name="titles_record_mobile" -%]
 [%- ELSIF representation == 'mods' -%]
 [%- PROCESS common/subtemplate name="titles_record_mods" -%]
+[%- ELSIF representation == 'mets' -%]
+[%- PROCESS common/subtemplate name="titles_record_mets" -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]
 [%- END -%]

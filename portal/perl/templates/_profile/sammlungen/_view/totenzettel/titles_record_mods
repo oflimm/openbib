@@ -46,11 +46,12 @@ FOREACH version IN easydb.item('_nested:death_notes__digitized_versions') ;
    default = file.versions.original.url ;
   END;
 
+  # Upgrade urls to https
   thisimage = {
     id = id
-    max = max
-    min = min
-    default = default
+    max = max.replace('http://easydb2.ub.uni-koeln.de/','https://easydb2.ub.uni-koeln.de/easydb2/')
+    min = min.replace('http://easydb2.ub.uni-koeln.de/','https://easydb2.ub.uni-koeln.de/easydb2/')
+    default = default.replace('http://easydb2.ub.uni-koeln.de/','https://easydb2.ub.uni-koeln.de/easydb2/')
     desc = desc
   };
 

@@ -125,8 +125,8 @@ sub create_record {
     my $refid          = $input_data_ref->{'refid'};
     my $confirm        = $input_data_ref->{'confirm'};
    
-    unless ($config->get('active_ils')){
-	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellungen, Vormerkungen, Campuslieferdienst usw.) sind aktuell systemweit deaktiviert."));	
+    unless ($config->get('active_campusorder')){
+	return $self->print_warning($msg->maketext("Der Campuslieferdienst ist aktuell systemweit deaktiviert."));	
     }
 	    
     unless ($validtarget && $label && $unit >= 0 && $titleid){

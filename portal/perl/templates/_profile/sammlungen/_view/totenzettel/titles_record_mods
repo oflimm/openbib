@@ -48,9 +48,9 @@ FOREACH version IN easydb.item('_nested:death_notes__digitized_versions') ;
 
   thisimage = {
     id = id
-    max = max.replace('http://easydb2.ub.uni-koeln.de/','https://totenzettel.ub.uni-koeln.de/easydb2/')
-    min = min.replace('http://easydb2.ub.uni-koeln.de/','https://totenzettel.ub.uni-koeln.de/easydb2/')
-    default = default.replace('http://easydb2.ub.uni-koeln.de/','https://totenzettel.ub.uni-koeln.de/easydb2/')
+    max = max
+    min = min
+    default = default
     desc = desc
   };
 

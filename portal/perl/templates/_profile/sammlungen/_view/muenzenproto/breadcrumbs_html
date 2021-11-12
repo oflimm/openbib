@@ -16,7 +16,7 @@
 [% IF layout_param.breadcrumb %]
 <div class="ob-breadcrumb">
 <ol class="list-group list-group-horizontal">
-   <li class="list-group-item ob-navitem"><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</li>
+   <li class="list-group-item ob-navitem"><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
    <li class="list-group-item ob-navitem"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">[% msg.maketext("Suchen") %]</a></li>
    <li class="list-group-item ob-navitem"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/[% config.get('titles_loc') %]/fields/id/0100.html?l=[% lang %]">[% msg.maketext("Register") %]</a></li>
    <li class="list-group-item ob-navitem"><a href="[% path_prefix %]/[% config.get('info_loc') %]/staedte.html?l=[% lang %]">[% msg.maketext("Karte") %]</a></li>

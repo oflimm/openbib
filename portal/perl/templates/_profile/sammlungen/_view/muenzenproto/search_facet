@@ -524,7 +524,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
         <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-year" aria-expanded="true">
            [% msg.maketext("nach Datierung") %] 
         </h4>
-[%
+[% IF 0 == 1 ;
       minyear = 9999;
       maxyear = -9999;
       
@@ -533,7 +533,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
         item      = year_thisitem.0;
         itemcount = year_thisitem.1;
         
-        itemmatch = item.match('(-?\d?\d?\d?\d?) - (-?\d?\d?\d?\d?)');
+        itemmatch = item.match('(-?\d?\d?\d?\d?)\s+-\s+(-?\d?\d?\d?\d?)');
 
 	itemyear_min = itemmatch.0;
 	itemyear_max = itemmatch.1;
@@ -556,7 +556,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
         year_labels.push("'${year_label}'");
         year_itemcounts.push(yearcount.${year_label});
       END;
-
+  END;
 %]
 <div id="group-year" class="in collapse show">
 [% IF 0 == 1 && facets.year.size > 1 %]

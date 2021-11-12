@@ -1150,7 +1150,7 @@ sub clear_data {
     my $config = $self->get_config;
     
     # Wenn Statistik-DB deaktiviert ist, werden alle Sessiondaten in der System-DB gesammelt und nicht verworfen
-    if ($config->{statisticsdb_enable}){
+    if ($config->{active_statisticsdb}){
         $self->save_eventlog_to_statisticsdb;
 	
 	# dann Sessiondaten loeschen

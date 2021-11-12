@@ -305,16 +305,14 @@
             <mods:relatedItem type="host">
                 [%- ELSE %]
                 <mods:relatedItem type="series">
-                    [%- END %]
-                    [%- IF super_data.fields.${'1649'} %]
+                [%- END %]
+                    [%- IF super_data.fields.${'1649'} and 0 == 1 %]
                     <mods:recordInfo>
-                        <mods:recordIdentifier source="usb_e">[%- super_data.fields.${'1649'}.first.content %]
-                        </mods:recordIdentifier>
+                        <mods:recordIdentifier source="usb_e">[%- super_data.fields.${'1649'}.first.content %]</mods:recordIdentifier>
                     </mods:recordInfo>
                     [%- ELSE %]
-                    <mods:recordInfo>gits
-                        <mods:recordIdentifier source="usb_print">[%- super_data.id %]
-                        </mods:recordIdentifier>
+                    <mods:recordInfo>
+                        <mods:recordIdentifier source="usb_print">[%- super_data.id %]</mods:recordIdentifier>
                     </mods:recordInfo>
                     [%- END %]
                     <mods:titleInfo>

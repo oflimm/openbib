@@ -312,7 +312,7 @@
                         </mods:recordIdentifier>
                     </mods:recordInfo>
                     [%- ELSE %]
-                    <mods:recordInfo>
+                    <mods:recordInfo>gits
                         <mods:recordIdentifier source="usb_print">[%- super_data.id %]
                         </mods:recordIdentifier>
                     </mods:recordInfo>

@@ -38,8 +38,24 @@
             [%- IF normdata.${"T0010"} %]
             <mods:identifier type="HBZ">[% normdata.${"T0010"}.first.content -%]</mods:identifier>
             [%- END -%]
+            [%-
+            IF normdata.${"T5005"}.first;
+            super = from_json(normdata.${"T5005"}.first.content);
+            all_super = normdata.${"T5005"};
+            END; %]
+            [%- FOREACH super_item IN all_super %]
+            [%- super_data = from_json(super_item.content);%]
+            [%- IF loop.first && (super_data.fields.${'0036'}.first.content =="n" ||
+            super_data.fields.${'0036'}.first.content =="p"
+            || super_data.fields.${'0036'}.first.content =="z" || super_data.fields.${'0036'}.first.content =="t") &&
+            (normdata.${"T0090"} || normdata.${"T0089"}) %]
+            <mods:identifier type="HBZ_UEB_HOST">[% super_data.fields.${'0010'}.first.content -%]</mods:identifier>
+            [%- ELSE -%]
+            <mods:identifier type="HBZ_UEB">[% super_data.fields.${'0010'}.first.content -%]</mods:identifier>
+            [%- END -%]
+            [%- END -%]
             <mods:recordInfo>
-                <mods:recordIdentifier source="usb">[% record.id %]</mods:recordIdentifier>
+                <mods:recordIdentifier source="DE-38">[% record.id %]</mods:recordIdentifier>
             </mods:recordInfo>
             [%- IF personlist && personlist.size -%]
             [%- FOREACH item IN personlist %]
@@ -120,11 +136,6 @@
             </mods:name>
             [%- END -%]
             [%- END -%]
-            [%-
-            IF normdata.${"T5005"}.first;
-            super = from_json(normdata.${"T5005"}.first.content);
-            all_super = normdata.${"T5005"};
-            END; %]
             [%- IF normdata.${"T0331"} %]
             <mods:titleInfo>
                 <mods:title>[% normdata.${"T0331"}.first.content %]</mods:title>
@@ -302,16 +313,14 @@
             <mods:relatedItem type="host">
                 [%- ELSE %]
                 <mods:relatedItem type="series">
-                    [%- END %]
-                    [%- IF super_data.fields.${'1649'} %]
+                [%- END %]
+                    [%- IF super_data.fields.${'1649'} and 0 == 1 %]
                     <mods:recordInfo>
-                        <mods:recordIdentifier source="usb_e">[%- super_data.fields.${'1649'}.first.content %]
-                        </mods:recordIdentifier>
+                        <mods:recordIdentifier source="usb_e">[%- super_data.fields.${'1649'}.first.content %]</mods:recordIdentifier>
                     </mods:recordInfo>
                     [%- ELSE %]
                     <mods:recordInfo>
-                        <mods:recordIdentifier source="usb_print">[%- super_data.fields.${'0010'}.first.content %]
-                        </mods:recordIdentifier>
+                        <mods:recordIdentifier source="DE-38">[%- super_data.id %]</mods:recordIdentifier>
                     </mods:recordInfo>
                     [%- END %]
                     <mods:titleInfo>

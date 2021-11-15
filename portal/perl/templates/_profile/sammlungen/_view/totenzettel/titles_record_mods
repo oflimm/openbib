@@ -41,9 +41,9 @@ FOREACH version IN easydb.item('_nested:death_notes__digitized_versions') ;
 
   
   FOREACH file IN version.file ;
-   max     = file.versions.huge.download_url ;
-   min     = file.versions.small.download_url ;
-   default = file.versions.original.download_url ;
+   max     = file.versions.huge.url ;
+   min     = file.versions.small.url ;
+   default = file.versions.original.url ;
   END;
 
   # Upgrade urls to https

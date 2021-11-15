@@ -41,17 +41,17 @@ FOREACH version IN easydb.item('_nested:death_notes__digitized_versions') ;
 
   
   FOREACH file IN version.file ;
-   max     = file.versions.huge.deep_link_url ;
-   min     = file.versions.small.deep_link_url ;
-   default = file.versions.original.deep_link_url ;
+   max     = file.versions.huge.download_url ;
+   min     = file.versions.small.download_url ;
+   default = file.versions.original.download_url ;
   END;
 
   # Upgrade urls to https
   thisimage = {
     id = id
-    max = max.replace('http://easydb2.ub.uni-koeln.de/','https://easydb2.ub.uni-koeln.de/easydb2/')
-    min = min.replace('http://easydb2.ub.uni-koeln.de/','https://easydb2.ub.uni-koeln.de/easydb2/')
-    default = default.replace('http://easydb2.ub.uni-koeln.de/','https://easydb2.ub.uni-koeln.de/easydb2/')
+    max = max.replace('http://easydb2.ub.uni-koeln.de/','https://totenzettel.ub.uni-koeln.de/easydb2/')
+    min = min.replace('http://easydb2.ub.uni-koeln.de/','https://totenzettel.ub.uni-koeln.de/easydb2/')
+    default = default.replace('http://easydb2.ub.uni-koeln.de/','https://totenzettel.ub.uni-koeln.de/easydb2/')
     desc = desc
   };
 

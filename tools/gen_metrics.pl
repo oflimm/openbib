@@ -305,7 +305,7 @@ if ($type == 3){
                 items => $metrics_ref, 
                 min   => $mincount, 
                 max   => $maxcount, 
-                type  => $config->{best_of}{$type}{cloud}
+                type  => $config->{metrics}{$type}{cloud}
             }
         );
 
@@ -383,7 +383,7 @@ if ($type == 4){
 				       items => $metrics_ref, 
 				       min   => $mincount, 
 				       max   => $maxcount, 
-				       type  => $config->{best_of}{$type}{cloud}});
+				       type  => $config->{metrics}{$type}{cloud}});
 
 
         my $sortedmetrics_ref ;
@@ -460,7 +460,7 @@ if ($type == 5){
 				       items => $metrics_ref, 
 				       min   => $mincount, 
 				       max   => $maxcount, 
-				       type  => $config->{best_of}{$type}{cloud}});
+				       type  => $config->{metrics}{$type}{cloud}});
 
         my $sortedmetrics_ref ;
         my $collator = Unicode::Collate->new();
@@ -537,7 +537,7 @@ if ($type == 6){
 				       items => $metrics_ref, 
 				       min   => $mincount, 
 				       max   => $maxcount, 
-				       type  => $config->{best_of}{$type}{cloud}});
+				       type  => $config->{metrics}{$type}{cloud}});
 
 
         my $sortedmetrics_ref ;
@@ -613,7 +613,7 @@ if ($type == 7){
 				       items => $metrics_ref, 
 				       min   => $mincount, 
 				       max   => $maxcount, 
-				       type  => $config->{best_of}{$type}{cloud}});
+				       type  => $config->{metrics}{$type}{cloud}});
 
 
         my $sortedmetrics_ref ;
@@ -702,7 +702,7 @@ if ($type == 8){
               items => $thismetrics_ref, 
               min   => $mincount, 
               max   => $maxcount, 
-              type  => $config->{best_of}{$type}{cloud}});
+              type  => $config->{metrics}{$type}{cloud}});
           
           
           my $sortedmetrics_ref ;
@@ -787,7 +787,7 @@ if ($type == 9){
 				       items => $metrics_ref, 
 				       min   => $mincount, 
 				       max   => $maxcount, 
-				       type  => $config->{best_of}{$type}{cloud}});
+				       type  => $config->{metrics}{$type}{cloud}});
 
         my $sortedmetrics_ref ;
         my $collator = Unicode::Collate->new();
@@ -969,7 +969,7 @@ if ($type == 12){
         items => $metrics_ref, 
         min   => $mincount, 
         max   => $maxcount, 
-        type  => $config->{best_of}{$type}{cloud}});
+        type  => $config->{metrics}{$type}{cloud}});
 
     my $sortedmetrics_ref ;
     my $collator = Unicode::Collate->new();
@@ -1177,7 +1177,7 @@ if ($type == 14 && $field){
 				       items => $metrics_ref, 
 				       min   => $mincount, 
 				       max   => $maxcount, 
-				       type  => $config->{best_of}{$type}{cloud}});
+				       type  => $config->{metrics}{$type}{cloud}});
 
         my $sortedmetrics_ref ;
         my $collator = Unicode::Collate->new();
@@ -1263,7 +1263,7 @@ gen_metrics.pl - Erzeugen und Cachen von Metriken aus Katalog- oder Statistik-Da
    -help                 : Diese Informationsseite
    --database=...        : Einzelner Katalog
    --logfile=...         : Alternatives Logfile
-   --type=...            : BestOf-Typ
+   --type=...            : Metrik-Typ
 
    Typen:
 

@@ -6,7 +6,7 @@
 #
 #  CRON-Job zum automatischen aktualisieren aller OpenBib-Datenbanken
 #
-#  Dieses File ist (C) 1997-2019 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2021 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -432,7 +432,7 @@ sub threadB {
     
     $logger->info("### Aufgesplittete Teil-Kataloge aus USB Katalog");
     
-    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['digisoz','provenienzen','lehrbuchsmlg','rheinabt','edz','lesesaal', 'usbhwa','usbsab', 'dissertationen','usbphil'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['digisoz','provenienzen','jesuiten','lehrbuchsmlg','rheinabt','edz','lesesaal', 'usbhwa','usbsab', 'dissertationen','usbphil'] });
     
     ##############################
     

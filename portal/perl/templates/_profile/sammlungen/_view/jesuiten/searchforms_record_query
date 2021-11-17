@@ -70,13 +70,6 @@
 <input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
-[%- cgiparam = searchfield.t4306.prefix;
-    this_searchfield = 't4306';
- -%]
-<div class="form-group">
-<label for="[% cgiparam %]">[% msg.maketext("Provenienz Sammlung") %]</label>
-<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
-</div>
 
 [%- cgiparam = searchfield.t4310.prefix;
     this_searchfield = 't4310';

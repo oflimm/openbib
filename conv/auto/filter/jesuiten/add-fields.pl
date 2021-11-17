@@ -6,7 +6,8 @@ while (<>){
     my $title_ref = decode_json $_;
 
     # Verlagsorte in 0470 vereinigen
-    foreach my $field ('0410','0440','0673','7676'){
+#    foreach my $field ('0410','0440','0673','7676'){
+    foreach my $field ('0673','7676'){
 	if (defined $title_ref->{fields}{$field}){
 	    my $rda_ref = {};
 
@@ -37,7 +38,8 @@ while (<>){
     }
 
     # Verlage in 0471 vereinigen
-    foreach my $field ('0412','0413','1680','1681','0676','7677'){
+#    foreach my $field ('0412','0413','1680','1681','0676','7677'){
+    foreach my $field ('1680','0676','7677'){
 	if (defined $title_ref->{fields}{$field}){
 	    my $rda_ref = {};
 

@@ -82,7 +82,7 @@
     this_searchfield = 't4310';
  -%]
 <div class="form-group">
-<label for="[% cgiparam %]">[% msg.maketext("Provenienz Beschreibung") %]</label>
+<label for="[% cgiparam %]">[% msg.maketext("Provenienz Beschreibung") %] / [% msg.maketext("Autoptischer Befund") %]</label>
 <input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 

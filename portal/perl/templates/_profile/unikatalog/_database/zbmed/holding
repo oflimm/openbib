@@ -74,7 +74,7 @@
 [%   IF have_standort %]
 <td>[% thisholding.${"X0016"}.content %]</td>
 [% END %]
-<td><strong><span class="ob-mark">[% thisholding.${"X0014"}.content %]</span></strong><a class="btn btn-primary mb-1 mt-2" href="https://www.livivo.de/doc/[% record.id %]">[% msg.maketext("Ausleihsystem (LIVIVO)") %]</a></td>[% IF have_bestandsverlauf %]<td>[% IF thisholding.${"X1200"} %][% thisholding.${"X1200"}.content %] [% END %][% thisholding.${"X1204"}.content %][% IF thisholding.${"X1203"} %] ([% thisholding.${"X1203"}.content %])[% END %]</td>[% END %]</tr>
+<td><strong><span class="ob-mark">[% thisholding.${"X0014"}.content %]</span></strong><br/><a class="btn btn-primary mb-1 mt-2" href="https://www.livivo.de/doc/[% record.id %]">[% msg.maketext("Ausleihsystem (LIVIVO)") %]</a></td>[% IF have_bestandsverlauf %]<td>[% IF thisholding.${"X1200"} %][% thisholding.${"X1200"}.content %] [% END %][% thisholding.${"X1204"}.content %][% IF thisholding.${"X1203"} %] ([% thisholding.${"X1203"}.content %])[% END %]</td>[% END %]</tr>
 [% END %]
 </tbody>
 </table>

@@ -1152,6 +1152,10 @@ sub normalize {
     $content=~s/&[gl]t;//g;
     $content=~s/&quot;//g;
     $content=~s/&amp;//g;
+    # insbesonder > und <
+    $content=~s/&[gl]t;//g;
+    $content=~s/<//g;
+    $content=~s/>//g;    
 
     # Ausfiltern von Supplements in []
     # $content=~s/\[.*?\]//g;
@@ -1172,7 +1176,7 @@ sub normalize {
         $content=~s/\s+<.*?>//g;
     }
 
-    $logger->debug("Checkpoint 1: $content");
+    $logger->debug("Checkpoint 1: '$content'");
     
     # Restliche Sonderzeichen quick and dirty mit Text::Unidecode umwandeln
     $content=unidecode($content);
@@ -1180,7 +1184,7 @@ sub normalize {
     # Kleinschreibung nachtraeglich fuer ggf. von unidecode in Grossbuchstaben umgewandelte Zeichen
     $content=lc($content);
  
-    $logger->debug("Checkpoint post unidecode: $content");
+    $logger->debug("Checkpoint post unidecode: '$content'");
 
     # Recherche
     if ($searchreq){
@@ -1240,7 +1244,7 @@ sub normalize {
         }
     }
 
-     $logger->debug("Checkpoint 2: $content");
+     $logger->debug("Checkpoint 2: '$content'");
     
     # Leerzeichen bei CJK einfuegen
 

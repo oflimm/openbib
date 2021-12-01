@@ -44,7 +44,7 @@
 %]
 
 [%- IF resultlist.size > 5 -%]
-[%- searchprefix  = config.get('searchfield').ft0471.prefix -%]
+[%- searchprefix  = config.get('searchfield').publisherstring.prefix -%]
 [%- default_query_options = queryoptions.to_cgi_params({exclude = ['profile','page','db']}) -%]
 
 <ol class="ob-cloud">

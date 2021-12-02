@@ -171,7 +171,7 @@ $('#normdataModal').on('show.bs.modal', function (event) {
 [% IF has_provenance %]
 <table class="table">
 <thead>
-<tr align="center"><th>Provenienz</th>[% IF has_4310 %]<th>Merkmal</th>[% END %][% IF has_4317 %]<th>Bemerkung</th>[% END %][% IF has_4316 %]<th>Zugangsjahr</th>[% END %][% IF has_4311 %]<th>Sigel</th>[% END %]<th>Mediennummer</th>[% IF has_4314 %]<th>Hist. Signatur/Aufstellung</th>[% END %][% IF has_4312 %]<th>Selektionskennzeichen</th>[% END %][% IF has_4315 %]<th>Scan</th>[% END %]</tr>
+<tr align="center"><th>[% msg.maketext("Provenienz") %]</th>[% IF has_4310 %]<th>[% msg.maketext("Merkmal") %]</th>[% END %][% IF has_4317 %]<th>[% msg.maketext("Bemerkung") %]</th>[% END %][% IF has_4316 %]<th>[% msg.maketext("Zugangsjahr") %]</th>[% END %][% IF has_4311 %]<th>[% msg.maketext("Sigel") %]</th>[% END %]<th>[% msg.maketext("Mediennummer") %]</th>[% IF has_4314 %]<th>[% msg.maketext("Hist. Signatur/Aufstellung") %]</th>[% END %][% IF has_4312 %]<th>[% msg.maketext("Selektionskennzeichen") %]</th>[% END %][% IF has_4315 %]<th>[% msg.maketext("Scan") %]</th>[% END %]</tr>
 </thead>
 <tbody>
 
@@ -281,7 +281,7 @@ $('#normdataModal').on('show.bs.modal', function (event) {
 </table>
 
 [% ELSE  %]
-<p style="font-size:1.2em;font-face:bold;">F&uuml;r diese &uuml;bergeordnete Titelaufnahme stehen keine Provenienzinformationen zur Verf&uuml;gung.</p>
+<p style="font-size:1.2em;font-face:bold;">[% msg.maketext("F&uuml;r diese &uuml;bergeordnete Titelaufnahme stehen keine Provenienzinformationen zur Verf&uuml;gung.") %]</p>
 [% END %]
 
 </div>

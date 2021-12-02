@@ -1,0 +1,46 @@
+Mehrsprachigkeit in OpenBib
+
+Basis die Umsetzung von Mehrsprachigkeit ist der Standard gettext und die Methode maketext im Message-Objekt OpenBib::L10N.
+
+In Perl-Programmen:
+
+my $msg = OpenBib::L10N->get_handle($self->param('lang')) || $logger->error("L10N-Fehler");
+$msg->maketext("Bitte übersetz mich!");
+
+oder Templates:
+
+msg.maketext("Bitte übersetz mich!")
+
+Folgende Schritte muessen in diesem Verzeichnis im ausgecheckten
+git-Tree ausgefuehrt werden:
+
+1) Ggf. Aktualisierung der Datei FILES, in der die Dateinamen und
+(relativen) Pfade aller Module und Templates nachgehalten werden
+
+openbib@sake:/opt/git/openbib-current/portal/perl/locales>find ../modules/ -type f > m
+openbib@sake:/opt/git/openbib-current/portal/perl/locales>find ../templates/ -type f > t
+openbib@sake:/opt/git/openbib-current/portal/perl/locales>cat t m|sort -u > FILES
+
+2) Erzeugen des unuebersetzten Basis Message-Katalogs messages.po mit dem Skript xgettext.pl
+
+openbib@sake:/opt/git/openbib-current/portal/perl/locales>../../../tools/xgettext.pl 
+
+3) Aktualisierung der bereits uebersetzten Message-Katalog, z.B. fuer Deutsch (de) und Englisch (en)
+
+openbib@sake:/opt/git/openbib-current/portal/perl/locales>msgmerge -U de/LC_MESSAGES/openbib.po messages.po 
+openbib@sake:/opt/git/openbib-current/portal/perl/locales>msgmerge -U en/LC_MESSAGES/openbib.po messages.po 
+
+4) Uebersetzen der Message-Kataloge openbib.po aus 3) z.B. mit dem KDE-Programm lokalize unter Linux
+
+openbib@sake:/opt/git/openbib-current/portal/perl/locales>lokalize &
+
+5) Packen der fertig uebersetzten Message-Kataloge openbib.po nach openbib.mo
+
+openbib@sake:/opt/git/openbib-current/portal/perl/locales/de/LC_MESSAGES>./gen_mo.sh 
+openbib@sake:/opt/git/openbib-current/portal/perl/locales/en/LC_MESSAGES>./gen_mo.sh 
+
+Fertig!
+
+
+
+

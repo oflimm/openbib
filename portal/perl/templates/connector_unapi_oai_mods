@@ -185,7 +185,7 @@
                 <mods:publisher>[% item.content %]</mods:publisher>
                 [%- END %]
                 [%- type_is_set = "false" %]
-                [%- IF normdata.${"T0036"}.first.content =="m" && type_is_set == "false" %]
+                [%- IF (normdata.${"T0036"}.first.content =="m" || normdata.${"T0036"}.first.content =="s") && type_is_set == "false" %]
                 <mods:issuance>monographic</mods:issuance>
                 [%- type_is_set = "true" %]
                 [%- END %]

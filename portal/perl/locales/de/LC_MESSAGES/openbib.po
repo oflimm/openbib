@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2021-12-01 12:18+0100\n"
+"PO-Revision-Date: 2021-12-02 08:17+0100\n"
 "Last-Translator: openbib <flimm@openbib.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -31770,7 +31770,6 @@ msgstr "Geburtsort"
 #: ../templates/_database/einbaende/visible_categories_title:20
 #: ../templates/_database/inst001/visible_categories_title:37
 #: ../templates/_database/inst404card/visible_categories_title:38
-#: ../templates/_database/jesuiten/visible_categories_title:39
 #: ../templates/_database/kapsel/visible_categories_title:38
 #: ../templates/_database/landschaft/visible_categories_title:38
 #: ../templates/_database/richter/visible_categories_title:36
@@ -31866,6 +31865,10 @@ msgstr "Handschriftl. Ueberlieferung"
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/searchforms_record_query:151
 msgid "T0412-gentzdigital"
 msgstr "Handschriftl. Überlieferung"
+
+#: ../templates/_database/jesuiten/visible_categories_title:39
+msgid "T0412-jesuiten"
+msgstr "Verlag/Drucker"
 
 #: ../templates/_profile/sammlungen_yaml4/_database/zpe/visible_categories_title:21
 msgid "T0412-zpe"

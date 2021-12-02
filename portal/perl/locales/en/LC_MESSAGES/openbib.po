@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2021-12-01 14:48+0100\n"
+"PO-Revision-Date: 2021-12-02 08:50+0100\n"
 "Last-Translator: openbib <flimm@openbib.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -8869,8 +8869,8 @@ msgid ""
 "Eine Stornierung der Vormerkung für dieses Mediums durch Sie ist leider "
 "nicht möglich"
 msgstr ""
-"A cancellation of your reservation for the requested medium was not"
-" successful!"
+"A cancellation of your reservation for the requested medium was not "
+"successful!"
 
 #: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:257
 msgid "Eine Verlängerung durch Sie ist leider nicht möglich"
@@ -17802,22 +17802,24 @@ msgid ""
 "Leider k&ouml;nnen wir Ihnen für diesen Katalog keine Wolke Provenienz/"
 "Körperschaft anbieten."
 msgstr ""
-"Unfortunately we cannot present a cloud of provenance/corporate body for this "
-"catalog."
+"Unfortunately we cannot present a cloud of provenance/corporate body for "
+"this catalog."
 
 #: ../templates/_profile/sammlungen/_view/jesuiten/clouds_provenanceperson_html:62
 msgid ""
 "Leider k&ouml;nnen wir Ihnen für diesen Katalog keine Wolke Provenienz/"
 "Person anbieten."
 msgstr ""
-"Unfortunately we cannot present a cloud of provenance/person for this catalog."
+"Unfortunately we cannot present a cloud of provenance/person for this "
+"catalog."
 
 #: ../templates/_profile/sammlungen/_view/jesuiten/clouds_publisherprinter_html:61
 msgid ""
 "Leider k&ouml;nnen wir Ihnen für diesen Katalog keine Wolke Verlag/Drucker "
 "anbieten."
 msgstr ""
-"Unfortunately we cannot present a cloud of publisher/printer for this catalog."
+"Unfortunately we cannot present a cloud of publisher/printer for this "
+"catalog."
 
 #: ../templates/_profile/rheinlandbib_yaml4/clouds_year_html:102
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/clouds_year_html:102
@@ -23442,7 +23444,7 @@ msgstr "Provenances/Corporate Body"
 #: ../templates/_profile/sammlungen/_view/testsammlung/subnavigation:56
 #: ../templates/_profile/sammlungen/_view/testsammlung/titles_fields_record:29
 msgid "Provenienz/Person"
-msgstr "Provenances/person"
+msgstr "Provenance/Person"
 
 #: ../templates/_profile/rheinlandbib_yaml4/search_title_field:57
 #: ../templates/_profile/sammlungen_yaml4/_view/portrait/search_title_field:64
@@ -31434,7 +31436,6 @@ msgstr "Place of birth"
 #: ../templates/_database/einbaende/visible_categories_title:20
 #: ../templates/_database/inst001/visible_categories_title:37
 #: ../templates/_database/inst404card/visible_categories_title:38
-#: ../templates/_database/jesuiten/visible_categories_title:39
 #: ../templates/_database/kapsel/visible_categories_title:38
 #: ../templates/_database/landschaft/visible_categories_title:38
 #: ../templates/_database/richter/visible_categories_title:36
@@ -31530,6 +31531,10 @@ msgstr "Handwritten record"
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/searchforms_record_query:151
 msgid "T0412-gentzdigital"
 msgstr "Handwritten record"
+
+#: ../templates/_database/jesuiten/visible_categories_title:39
+msgid "T0412-jesuiten"
+msgstr "Publisher/Printer"
 
 #: ../templates/_profile/sammlungen_yaml4/_database/zpe/visible_categories_title:21
 msgid "T0412-zpe"
@@ -31986,7 +31991,6 @@ msgid "T0433"
 msgstr "Extent of item"
 
 #: ../templates/_database/gentzbriefe/visible_categories_title_ab2:19
-#, fuzzy
 msgid "T0433-gentzbriefe"
 msgstr "Size/Extent of item"
 

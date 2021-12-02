@@ -547,7 +547,7 @@ FOREACH category IN categories;
 END;
 -%]
 [%- IF currently_unavailable -%]
-<tr><th class="ob-field">[% msg.maketext("Volltext")%]</th><td>derzeit nicht verf&uuml;gbar (z.B. noch im Erwerbungsvorgang)</td></tr>
+<tr><th class="ob-field">[% msg.maketext("Volltext")%]</th><td>[% msg.maketext("derzeit nicht verf&uuml;gbar (z.B. noch im Erwerbungsvorgang)") %]</td></tr>
 [%- END -%]
 </table>
 [% ELSIF format == "BibTeX" %]

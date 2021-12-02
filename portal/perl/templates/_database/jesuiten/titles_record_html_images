@@ -28,7 +28,7 @@
 <a class="invisible" href="[% cdm_url %]" target="_blank"><img id="cover_full" src="[% cdm_imgurl %]"/></a>
 
 <p/>
-<a href="[% cdm_url %]" target="_blank">Zum Digitalisat in ContentDM</a>
+<a href="[% cdm_url %]" target="_blank">[% msg.maketext("Zum Digitalisat") %]</a>
   [% END %]
 [% ELSE %]
 [%   IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]
@@ -40,7 +40,7 @@
 
 [% IF normdata.${"T6051"} %]
 <p>
-<a href="http://dfg-viewer.de/show/?set[mets]=http%3A%2F%2F[%servername%]%2F[% path_prefix %]%2Fconnector%2Funapi%3Fid%3D[%record.database%]%3A[%record.id%]%26format%3Dmets" target="_blank"><center><img src="http://dfg-viewer.de/fileadmin/images/dfgviewer_logo_viewer.gif" title="DFG-Viewer" /><br/>[Online lesen im DFG-Viewer]</center></a>
+<a href="http://dfg-viewer.de/show/?set[mets]=http%3A%2F%2F[%servername%]%2F[% path_prefix %]%2Fconnector%2Funapi%3Fid%3D[%record.database%]%3A[%record.id%]%26format%3Dmets" target="_blank"><center><img src="http://dfg-viewer.de/fileadmin/images/dfgviewer_logo_viewer.gif" title="DFG-Viewer" /><br/>[[% msg.maketext("Online lesen im DFG-Viewer") %]]</center></a>
 </p>
 [% END %]
 [%- IF isbn -%]

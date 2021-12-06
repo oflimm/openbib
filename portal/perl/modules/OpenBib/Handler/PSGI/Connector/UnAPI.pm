@@ -189,10 +189,10 @@ sub show {
                     $is_valid_title = 1;
                 }
             }
-            if (!$is_valid_title){
-                $self->header_add( 'Status', 400 );    # server error
-                return "Der Katkey $idn existiert nicht";
-            }
+            # if (!$is_valid_title){
+            #     $self->header_add( 'Status', 400 );    # server error
+            #     return "Der Katkey $idn existiert nicht";
+            # }
             if ( $format_info{$format} ) {
                 $self->header_add( 'Content-Type', $format_info{$format} );
             }

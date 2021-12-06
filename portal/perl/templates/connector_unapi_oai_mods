@@ -202,7 +202,8 @@
                 [%- END %]
                 [%- IF type_is_set == 'false' -%]
                 [%- IF super.fields.${'0036'}.first.content == "t" || super.fields.${'0036'}.first.content == "n" %]
-                <mods:issuance>monographic</mods:issuance>
+                <mods:issuance>single unit</mods:issuance>
+                [%- type_is_set = "true" %]
                 [%- END %]
                 [%- END %]
                 [%- IF date_values.start_date %]

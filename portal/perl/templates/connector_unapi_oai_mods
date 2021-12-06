@@ -2,9 +2,16 @@
 <OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:mods="http://www.loc.gov/mods/v3" version="3.7"
     xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">
+    [%- title_exists = 0 %]
+    [%- normdata = record.get_fields -%]
+        [%- FOREACH key IN normdata.keys -%]
+            [%- IF normdata.$key.size %]
+            [%- title_exists = 1 %]
+            [%- END %]
+        [%- END %]
+    [%- IF title_exists -%]
     <record>
         <mods:mods>
-            [%- normdata = record.get_fields -%]
             [%- IF normdata.${"T0662"} %]
             [%- FOREACH url IN normdata.${"T0662"} -%]
             [%- IF url.content.match('http://www.ub.uni-koeln.de/permalink/') %]
@@ -364,4 +371,7 @@
                 [%- END %]
         </mods:mods>
     </record>
+    [%- ELSE %]
+    <error code="idDoesNotExist"></error>
+    [%- END %]
 </OAI-PMH>

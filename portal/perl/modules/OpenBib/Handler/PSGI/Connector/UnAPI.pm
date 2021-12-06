@@ -183,13 +183,22 @@ sub show {
             my %format_info = ( bibtex => 'text/plain', );
 
             # Dann Ausgabe des neuen Headers
+            my $is_valid_title = 0;
+            foreach my $val (values %{$record->get_fields}) { 
+                 if(@{$val}){
+                    $is_valid_title = 1;
+                }
+            }
+            if (!$is_valid_title){
+                $self->header_add( 'Status', 400 );    # server error
+                return "Der Katkey $idn existiert nicht";
+            }
             if ( $format_info{$format} ) {
                 $self->header_add( 'Content-Type', $format_info{$format} );
             }
             else {
                 $self->header_add( 'Content-Type', 'application/xml' );
             }
-
             $template->process( $config->{$templatename}, $ttdata ) || do {
                 $logger->error( $template->error() );
                 $self->header_add( 'Status', 400 );    # server error
@@ -244,7 +253,9 @@ sub show {
 
         # Dann Ausgabe des neuen Headers
         $self->header_add( 'Content-Type', 'application/xml' );
-
+   
+      
+        
         $template->process( $templatename, $ttdata ) || do {
             $logger->error( $template->error() );
             $self->header_add( 'Status', 400 );    # server error

@@ -249,14 +249,19 @@
             [%- ELSIF super.fields.${'0036'}.first.content == "z" && normdata.${"T0089"}.first.content %]
             <mods:genre>Zeitungsband</mods:genre>
             [%- END %]
+            [%- IF normdata.${"T0015"} %]
             [%- FOREACH item IN normdata.${"T0015"} %]
             <mods:language>
                 <mods:languageTerm type="code" authority="iso639-2b">[%- item.content %]</mods:languageTerm>
-                [%- FOREACH script IN normdata.${"T0516"} %]
-                <mods:scriptTerm>[% script.content %]</mods:scriptTerm>
-                [%-END%]
             </mods:language>
             [%-END%]
+            [%- ELSIF normdata.${"T4301"} %]
+            [%- FOREACH item IN normdata.${"T0015"} %]
+            <mods:language>
+                <mods:languageTerm type="code" authority="iso639-2b">[%- item.content %]</mods:languageTerm>
+            </mods:language>            
+            [%- END %]
+            [%- END %]
             [%- IF normdata.${"T0433"} || normdata.${"T0435"} || normdata.${"T0434"} %]
             <mods:physicalDescription>
                 [%- FOREACH extend IN normdata.${"T0433"} %]

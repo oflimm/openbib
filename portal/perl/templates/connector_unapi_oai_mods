@@ -256,7 +256,7 @@
             </mods:language>
             [%-END%]
             [%- ELSIF normdata.${"T4301"} %]
-            [%- FOREACH item IN normdata.${"T0015"} %]
+            [%- FOREACH item IN normdata.${"T4301"} %]
             <mods:language>
                 <mods:languageTerm type="code" authority="iso639-2b">[%- item.content %]</mods:languageTerm>
             </mods:language>            

@@ -242,12 +242,10 @@
      is_schriftenreihe = 0;
      is_mehrbaendig    = 0;
 
-     IF item.${'T0451'}.first.content;
-       is_schriftenreihe = 1;
-     END;
-
      IF item.${'T0089'}.first.content;
        is_mehrbaendig = 1;
+     ELSIF item.${'T0451'}.first.content;
+       is_schriftenreihe = 1;
      END;
 
      zaehlung = "";

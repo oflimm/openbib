@@ -239,25 +239,57 @@
          title = item.${'T0310'}.first.content;
      END;
 
-     # Einbeziehung der Zaehlfelder T5100
-     IF NOT title && item.${'T5100'}.first.content;
-       title = item.${'T5100'}.first.content;
-     # Einbeziehung der Zaehlfelder T5100
-     ELSIF title && item.${'T0455'}.first.content;
-       zaehlung = item.${'T0455'}.first.content;
-       title = "${zaehlung}. ${title}";
+     is_schriftenreihe = 0;
+     is_mehrbaendig = 0;
+
+     IF item.${'T0451'}.first.content;
+       is_schriftenreihe = 1;
+     END;
+
+     IF item.${'T0089'}.first.content;
+       is_mehrbaendig = 1;
+     END;
+
+     zaehlung = "";
+     
+     # Zaehlung Anfang Titel
+     IF is_schriftenreihe;
+       IF item.${'T0456'}.first.content;
+          zaehlung = item.${'T0456'}.first.content;
+          title = "${zaehlung}. ${title}";
+       ELSIF item.${'T0455'}.first.content;
+          zaehlung = item.${'T0455'}.first.content;
+          title = "${zaehlung}. ${title}";
+       END;
+     ELSIF is_mehrbaendig;
+       IF item.${'T0090'}.first.content;
+          zaehlung = item.${'T0090'}.first.content;
+          title = "${zaehlung}. ${title}";
+       ELSIF item.${'T0089'}.first.content;
+          zaehlung = item.${'T0089'}.first.content;
+          title = "${zaehlung}. ${title}";
+       END;     
      END;
 
      super_title = "";
-     
-     # Einbeziehung des ersten Gesamttitels T5005
-     IF item.${'T0451'}.first.content;
-        super_title = item.${'T0451'}.first.content;     
-     ELSIF title && super;
-        super_title = super.fields.${'0451'}.first.content;
-        IF super.fields.${'0331'} ;
-           super_title   = super.fields.${'0331'}.first.content;
-        END ;
+
+     # Uebergeordneter Titel in Klammern (super_title)
+     IF is_schriftenreihe;
+       IF item.${'T0451'}.first.content;
+          super_title = item.${'T0451'}.first.content;
+       ELSIF super;
+         IF super.fields.${'0331'} ;
+            super_title   = super.fields.${'0331'}.first.content;
+         ELSIF super.fields.${'0451'} ;
+            super_title   = super.fields.${'0451'}.first.content;
+         END;
+       END;
+     ELSIF is_mehrbaendig;
+       IF super;
+         IF super.fields.${'0331'} ;
+            super_title   = super.fields.${'0331'}.first.content;
+	 END;
+       END;
      END;
 
      IF title && super_title ;

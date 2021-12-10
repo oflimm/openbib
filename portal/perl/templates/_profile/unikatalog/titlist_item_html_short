@@ -243,11 +243,13 @@
      IF NOT title && item.${'T5100'}.first.content;
        title = item.${'T5100'}.first.content;
      # Einbeziehung der Zaehlfelder T5100
-     ELSIF title && item.${'T5100'}.first.content;
-       zaehlung = item.${'T5100'}.first.content;
+     ELSIF title && item.${'T0455'}.first.content;
+       zaehlung = item.${'T0455'}.first.content;
        title = "${zaehlung}. ${title}";
      END;
 
+     super_title = "";
+     
      # Einbeziehung des ersten Gesamttitels T5005
      IF item.${'T0451'}.first.content;
         super_title = item.${'T0451'}.first.content;     

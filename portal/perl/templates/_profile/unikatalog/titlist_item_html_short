@@ -240,7 +240,7 @@
      END;
 
      is_schriftenreihe = 0;
-     is_mehrbaendig = 0;
+     is_mehrbaendig    = 0;
 
      IF item.${'T0451'}.first.content;
        is_schriftenreihe = 1;
@@ -256,17 +256,29 @@
      IF is_schriftenreihe;
        IF item.${'T0456'}.first.content;
           zaehlung = item.${'T0456'}.first.content;
+	  IF zaehlung == title ;
+	     title = "";
+	  END;
           title = "${zaehlung}. ${title}";
        ELSIF item.${'T0455'}.first.content;
           zaehlung = item.${'T0455'}.first.content;
+	  IF zaehlung == title ;
+	     title = "";
+	  END;
           title = "${zaehlung}. ${title}";
        END;
      ELSIF is_mehrbaendig;
        IF item.${'T0090'}.first.content;
           zaehlung = item.${'T0090'}.first.content;
+	  IF zaehlung == title ;
+	     title = "";
+	  END;
           title = "${zaehlung}. ${title}";
        ELSIF item.${'T0089'}.first.content;
           zaehlung = item.${'T0089'}.first.content;
+	  IF zaehlung == title ;
+	     title = "";
+	  END;
           title = "${zaehlung}. ${title}";
        END;     
      END;

@@ -110,8 +110,8 @@ while (my $jsonline = <IN>){
 
     $multcount_ref = {};
 
-    if ($item_ref->{_id}) {
-	$title_ref->{id} = $item_ref->{_id};
+    if ($item_ref->{_system_object_id}) {
+	$title_ref->{id} = $item_ref->{_system_object_id};
     }
     else {
 	$logger->error("No id found for record: ".YAML::Dump($item_ref));
@@ -119,7 +119,7 @@ while (my $jsonline = <IN>){
     }
 
     if (defined $have_titleid_ref->{$title_ref->{id}}){
-	$logger->error("Doppelte ID: ".$title_ref->{id}."(_id: ".$item_ref->{_id}.", contentdm_id: ".$item_ref->{contentdm_id});
+	$logger->error("Doppelte ID: ".$title_ref->{id}."(_system_object_id: ".$item_ref->{_system_object_id}.", contentdm_id: ".$item_ref->{contentdm_id});
 	next;
     }
 
@@ -151,7 +151,7 @@ while (my $jsonline = <IN>){
 	if (@name){
 	    my $name = join(', ',@name);
 	    
-	    my $person_id = $item_ref->{sender}{_id};
+	    my $person_id = $item_ref->{sender}{_system_object_id};
 	    
 	    push @senders, $name;
 	    
@@ -215,7 +215,7 @@ while (my $jsonline = <IN>){
 	    
 	    my $name = join(', ',@name);
 	    
-	    my $person_id = $recipient_ref->{_id};
+	    my $person_id = $recipient_ref->{_system_object_id};
 	    
 	    push  @recipients, $name;
 	    
@@ -265,7 +265,7 @@ while (my $jsonline = <IN>){
     if (defined $item_ref->{archive}){
 	my $name = $item_ref->{archive}{name};
 	
-	my $corporatebody_id = $item_ref->{archive}{_id};
+	my $corporatebody_id = $item_ref->{archive}{_system_object_id};
 	    
 	my $mult = 1;
 	
@@ -608,7 +608,7 @@ while (my $jsonline = <IN>){
     }
 
     ### citation -> 0522
-    if ($item_ref->{status_archive}){
+    if ($item_ref->{citation}){
 	push @{$title_ref->{fields}{'0522'}}, {
 	    mult     => 1,
 	    subfield => '',
@@ -797,7 +797,7 @@ while (my $jsonline = <IN>){
     my $is_herterich_ungedruckt = 0;
     my $is_herterich_gedruckt = 0;
     my $is_herterich_archiv = 0;
-    
+
     {
 	
 	eval {
@@ -855,6 +855,43 @@ while (my $jsonline = <IN>){
 	
     }
 
+    # Todo
+    #
+    # Neue Kategorie zur Facettierung mit Inhalten gedruckt und ungegedruckt
+    # Besetzung entsprechen Hertericht (s.o.) aber fortan unabhaengig der Sammlung Hertericht
+    # Zusaetzlich Anhaengsel " (Stand 2021)" in der Facettierung
+
+    my $is_generell_ungedruckt = 0;
+    my $is_generell_gedruckt = 0;
+
+    {
+	
+	eval {	    		
+	    if (! defined $item_ref->{reference_publication}{print_title} && ! @${$item_ref->{'_nested:gentz_letter__doublets'}}){
+		$is_generell_ungedruckt = 1;
+	    }
+	    if ($item_ref->{reference_publication}{print_title} || @${$item_ref->{'_nested:gentz_letter__doublets'}}){
+		$is_generell_gedruckt = 1;
+	    }
+	};
+
+	if ($is_generell_gedruckt){
+	    push @{$title_ref->{fields}{'0471'}}, {
+		mult     => 1,
+		subfield => '',
+		content => 'gedruckt',
+	    }
+	}
+	elsif ($is_generell_ungedruckt){
+	    push @{$title_ref->{fields}{'0471'}}, {
+		mult     => 1,
+		subfield => '',
+		content => 'ungedruckt',
+	    }
+	}	
+    }
+
+    
     # Auswertung Kategorie 'Druckpublikationen'
     
     my $is_druck_mehrfach = 0;

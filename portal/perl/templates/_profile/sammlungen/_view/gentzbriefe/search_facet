@@ -444,7 +444,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
         <div class="card-header p-0 border-0">
 	  
           <div id="search_wrapper" class="input-group input-group-lg shadow-sm" style="min-width: 100%">
-            <input id="freetext-input" class="form-control" type="text" name="fs" title="[% searchquery.get_searchfield('freesearch').val | html %]" value="[% searchquery.get_searchfield('freesearch').val.replace(" ",",") | html %]" placeholder="[% msg.maketext("Suchbegriff...") %]" required="" data-role="tagsinput" />
+            <input id="freetext-input" class="form-control" type="text" name="fs" title="[% searchquery.get_searchfield('freesearch').val | html %]" value="[% searchquery.get_searchfield('freesearch').val.replace(" ",",") | html %]" placeholder="[% msg.maketext("Suchbegriff...") %]" data-role="tagsinput" />
             <div class="input-group-append">
               <button type="submit" class="input-group-text ob-bg ob-border">
                 <i class="fas fa-search text-white"></i>
@@ -454,8 +454,8 @@ $("#dd_availability_[% database %]_toggle").click(function(){
         </div>
     </div>
 
-    <div>
-    <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/[% config.get('titles_loc') %].html?l=[% lang %];facets=mediatype,year,provenance,person,corporatebody,language,custom1,custom2,custom3,custom4,custom5">[% msg.maketext("Zur Gesamtübersicht") %]</a>
+    <div class="mt-1">
+    <i class="fas fa-caret-right"></i> <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/[% config.get('titles_loc') %].html?l=[% lang %];facets=mediatype,year,provenance,person,corporatebody,language,custom1,custom2,custom3,custom4,custom5">[% msg.maketext("Zur Gesamtübersicht") %]</a>
     </div>
 
 
@@ -811,7 +811,7 @@ noUiSlider.create(yearslider, {
 var yearslider_from = document.getElementById('ob-yearSlider_from');
 var yearslider_to   = document.getElementById('ob-yearSlider_to');
 
-yearslider.noUiSlider.on('update', function (values, handle) {
+yearslider.noUiSlider.on('slide', function (values, handle) {
 
     var value = values[handle];
 

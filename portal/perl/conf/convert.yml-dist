@@ -1231,6 +1231,7 @@ convtab:
       '0451': 1
       '0453': 1
       '0455': 1
+      '0456': 1
       '0540': 1
       '0543': 1
       '0553': 1
@@ -7807,7 +7808,7 @@ convtab:
             'ft0334': 1
           facet:
             'custom2': 1
-      '0335':         # Zusatz zum HST
+      '0335':         # reference_publication_incipit
         '':
           index:
             'ft0335': 1
@@ -7899,6 +7900,12 @@ convtab:
         '':
           index:
             'ft0470': 1
+          facet:
+            'custom5': 1
+      '0471': # Facette Ueberlieferung / gedruck u. ungedruckt
+        '':
+          index:
+            'ft0471': 1
           facet:
             'custom5': 1
       '0508':

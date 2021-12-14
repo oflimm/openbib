@@ -129,8 +129,21 @@
 
 <div class="row">
 <div class="col-md-6 pl-0 pr-0 text-center">
-  <img class="img-fluid" src="/images/openbib/views/gentzbriefe/gentz-1.png" alt="Bedeutung der Sammlung" />
+  <img class="img-fluid" src="/images/openbib/views/gentzbriefe/gentz-timeline.png" alt="Timeline Wallraf" />
 </div>
+<div class="col-md-6 pl-5 pr-5 mt-5 pb-3">
+<h4>Timeline</h4>
+
+<p>
+Entdecken Sie über unsere Timeline interaktiv das Leben und Wirken Friedrich von Gentz
+</p>
+
+<a class="btn btn-primary mt-5" href="[% path_prefix %]/[% config.get('info_loc') %]/timeline.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a>
+
+</div>
+</div><!-- End: row -->
+
+<div class="row">
 <div class="col-md-6 pl-5 pr-5 mt-5 pb-3">
 <h4>Die Bedeutung der Sammlung Herterich</h4>
 <p>
@@ -147,25 +160,13 @@ PLUS: Bibliographie
 <a class="btn btn-primary mt-5" href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a>
 
 </div>
-</div><!-- End: row -->
-
-<div class="row">
-<div class="col-md-6 pl-5 pr-5 mt-5 pb-3">
-<h4>Timeline</h4>
-
-<p>
-Entdecken Sie über unsere Timeline interaktiv das Leben und Wirken Friedrich von Gentz
-</p>
-
-<a class="btn btn-primary mt-5" href="[% path_prefix %]/[% config.get('info_loc') %]/timeline.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a>
-
-</div>
 
 <div class="col-md-6 pl-0 pr-0 text-center">
-  <img class="img-fluid" src="/images/openbib/views/gentzbriefe/wallraf-timeline.png" alt="Timeline Wallraf" />
+  <img class="img-fluid" src="/images/openbib/views/gentzbriefe/gentz-1.png" alt="Bedeutung der Sammlung" />
 </div>
 
 </div><!-- End: row -->
+
 
 <div class="row">
 <div class="col-md-6 pl-0 pr-0 text-center">

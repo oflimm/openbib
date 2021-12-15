@@ -161,8 +161,10 @@
     
     #ob-startpage .landing-page-img {
 	padding-bottom: 40px;
-	background:url('/images/openbib/views/gentzbriefe/gentzbg.png') left 100% no-repeat;
-*	background-position: 10% 30%;
+/*	background:url('/images/openbib/views/gentzbriefe/gentzbg.png') left 100% no-repeat;
+	background-position: 10% 30%;  */
+	background:url('/images/openbib/views/gentzbriefe/016_Slider_MAP_Portal_3_Gentz.jpg') left 100% no-repeat; 	
+	background-position: 90% 40%;	
 	background-size: cover;
 	height: 300px !important;
 	border-bottom-style: solid;

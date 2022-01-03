@@ -14,37 +14,47 @@ Open Source Recherche-Infrastruktur:
   werden (JSON-API) sowie Informationen im Semantic Web bereitstellen
   (RDF).
 
-* Dienste und Titel-URLs sind Hause aus Perma-Links.
+* Dienste und Titel-URLs sind von Hause aus Perma-Links.
 
 Github liefert hierzu die benoetigte Infrastrukur, insbesondere mit
 dem Revisions-Verwaltungssystem Git.
 
-Das Rechercheportal OpenBib geht auf ein von mir (Oliver Flimm
-<flimm@openbib.org>) unter die GPL (Version >= 2) gestelltes
-Freizeitprojekt aus dem Jahr 1997 zurueck, das urspruenglich den
-Arbeitsnamen 'Biblio' trug. Noch im selben Jahr ueberliess ich es nach
-einer Vorfuehrung der Universitaets- und Stadtbibliothek Koeln (USB
-Koeln) unter den Bedingungen der GPL zur freien Nutzung. Seither wurde
-es von mir stetig weiterentwickelt und zunaechst als KVIK (Koelner
-Virtueller Institutsgesamtkatalog) sowie derzeit als KUG (Koelner
-UniversitaetsGesamtkatalog) an der USB Koeln betrieben.
+Das Rechercheportal OpenBib geht auf ein von mir unter die GPL
+(Version >= 2) gestelltes Freizeitprojekt aus dem Jahr 1997 zurueck,
+das urspruenglich den Arbeitsnamen 'Biblio' trug. Noch im selben Jahr
+ueberliess ich es nach einer Vorfuehrung der Universitaets- und
+Stadtbibliothek Koeln (USB Koeln) unter den Bedingungen der GPL zur
+freien Nutzung. Seither wurde es von mir stetig weiterentwickelt und
+zunaechst als KVIK (Koelner Virtueller Institutsgesamtkatalog) sowie
+derzeit als KUG (Koelner UniversitaetsGesamtkatalog) an der USB Koeln
+betrieben.
 
-Die Produktionsversion dieses Recherche-Portals ist unter dem URL
-http://kug.ub.uni-koeln.de/ verfuegbar.
+Die Produktionsversionen der mit dieser Recherche-Infrastruktur
+erstellen Portale ist z.B. unter
+
+* https://muenzen.uni-koeln.de/
+* https://jesuitensammlung.ub.uni-koeln.de
+* https://gentz-digital.ub.uni-koeln.de
+
+verfuegbar.
 
 Als verwendete Komponenten kommen Perl als Programmiersprache,
 PostgreSQL als Datenbank sowie starman mit PSGI als Web-Frontend zum
-Einsatz. Entwicklungsplattform ist Linux. Als 'Datenlieferanten' sind
-derzeit verschiedene proprietaere Bibliothekssysteme bis hin zu CSV
-und XML- Dateien nutzbar. Eine Ausdehnung auf andere Datenquellen von
-externer Seite ist ausdruecklich erwuenscht.
+Einsatz. Es koennen verschiedene Suchmaschinen-Systeme wie Xapian oder
+Elasticsearch verwendet werden. Entwicklungsplattform ist Linux. Als
+'Datenlieferanten' sind derzeit verschiedene proprietaere
+Bibliothekssysteme bis hin zu CSV und XML- Dateien nutzbar. Eine
+Ausdehnung auf andere Datenquellen von externer Seite ist
+ausdruecklich erwuenscht.
 
 Darueberhinaus koennen auch OAI-Datenquellen abgefragt und in das
 System eingespielt werden.
 
 Primäre Zielgruppe dieses Projektes sind deutschsprachige
-Bibliotheken, die einen Gesamtkatalog ihrer Einzelbestaende ueber ein
-Web-Frontend anbieten wollen und die sowohl die Flexibilitaet wie auch
-den freien Charakter einer OpenSource-Loesung benoetigen.
+Bibliotheken, die neben einen Gesamtkatalog ihrer Einzelbestaende auch
+viele weitere Portale - z.B. Sammlungs- oder Projekt-Portale - auf
+einer Software-Basis ueber ein Web-Frontend anbieten wollen und die
+sowohl die Flexibilitaet wie auch den freien Charakter einer
+OpenSource-Loesung benoetigen.
 
 Oliver Flimm                                          Koeln, 2.3.2016

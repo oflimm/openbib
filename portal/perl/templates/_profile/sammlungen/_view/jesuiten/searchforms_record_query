@@ -73,10 +73,51 @@
 
 [%- cgiparam = searchfield.t4310.prefix;
     this_searchfield = 't4310';
+
+     t4310_values = [
+"",
+"Annotationen",
+"Aufdruck auf Einband",
+"Autogramm",
+"Besitzvermerk, gedr.",
+"Besitzvermerk, hs.",
+"Buchrücken",
+"Buchschnitt",
+"Einband",
+"Einlage",
+"Etikett",
+"Exlibris",
+"Inhaltsverzeichnis, hs.",
+"Notiz*",
+"Indiz",
+"Initiale",
+"Kolorierung*",
+"Monogramm",
+"Prämienband",
+"Provenienzvermerk, entfernter",
+"Provenienzvermerk, unkenntlich gemachter",
+"Schnittsignatur",
+"Signatur",
+"Stempel",
+"Streichungen",
+"Supralibros",
+"Überklebungen",
+"Unterstreichungen",
+"Verzierung*",
+"Wappenstempel",
+"Widmung",
+"Zeichnung*",
+"Zensur",
+"zusammengebunden mit",
+     ];
  -%]
 <div class="form-group">
 <label for="[% cgiparam %]">[% msg.maketext("Provenienz Beschreibung") %] / [% msg.maketext("Autoptischer Befund") %]</label>
-<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<select class="form-control" id="[% cgiparam %]" name="[% cgiparam %]">
+[% FOREACH befund IN t4310_values %]
+<option value="[% befund %]">[% befund %]</option>
+[% END %]
+</select>
 </div>
 
 [% IF available_searchfields.markstring.active %]

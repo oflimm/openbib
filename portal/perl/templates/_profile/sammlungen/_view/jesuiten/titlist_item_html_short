@@ -295,9 +295,9 @@
       titleinfos.push("<a href=\"${toc}\" target=\"_blank\">${toc_i18n}</a>") ;
     END ;
 
-    IF item.popularity ;
-      titleinfos.push("${popularity_i18n}: ${item.popularity}") ;
-    END ;
+#    IF item.popularity ;
+#      titleinfos.push("${popularity_i18n}: ${item.popularity}") ;
+#    END ;
 
     titleinfo = titleinfos.join(" | ");
 -%]

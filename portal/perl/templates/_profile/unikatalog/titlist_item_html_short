@@ -370,14 +370,6 @@
 -%]
     <div class="ob-item d-flex flex-row[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
     
-<script>
-$(document).ready(function(){
-   $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/availability?l=[% lang %]",
-     function (txt){
-        $("#availability_[% record.database %]_[% record.get_encoded_id %]").html(txt);
-   });
-});
-</script>
 [% detail_url = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.get_encoded_id}.html?l=${lang}" %]
 
       <div class="ob-numbering">[% IF with_id_checkbox %]<input type="checkbox" name="id" value="[% record.listid %]"  title="collection_item" />&nbsp;[% END %][% start_range+loop.count - 1 %]</div>
@@ -479,7 +471,7 @@ $(document).ready(function(){
 	    </div>
 [% END %]
           </div><!-- end ob-titleactions -->
-	   <div class="ml-auto ob-availability">[% IF availability == "online" %]<button class="btn btn-primary ob-availability_online mb-1 mr-1 pr-2"><img src="[% config.get_icon('global',view,sysprofile) %]" alt="[% msg.maketext("online") %]" /><span  class="pl-1 d-none d-sm-inline">[% msg.maketext("online ") %]</span></button>[% IF signatur %]<span id="availability_[% record.database %]_[% record.get_encoded_id %]"></span>[% END %][% ELSE %]<span id="availability_[% record.database %]_[% record.get_encoded_id %]"></span>[% END %]
+	   <div class="ml-auto ob-availability">[% IF availability == "online" %]<button class="btn btn-primary ob-availability_online mb-1 mr-1 pr-2"><img src="[% config.get_icon('global',view,sysprofile) %]" alt="[% msg.maketext("online") %]" /><span  class="pl-1 d-none d-sm-inline">[% msg.maketext("online ") %]</span></button>[% ELSE %]<span id="availability_[% record.database %]_[% record.get_encoded_id %]" hx-get="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/availability?l=[% lang %]" hx-trigger="revealed"></span>[% END %]
 	   </div>
 	</div><!-- end: flex -->
 	

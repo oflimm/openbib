@@ -75,7 +75,6 @@
     this_searchfield = 't4310';
 
      t4310_values = [
-"",
 "Annotationen",
 "Aufdruck auf Einband",
 "Autogramm",
@@ -114,6 +113,8 @@
 <div class="form-group">
 <label for="[% cgiparam %]">[% msg.maketext("Provenienz Beschreibung") %] / [% msg.maketext("Autoptischer Befund") %]</label>
 <select class="form-control" id="[% cgiparam %]" name="[% cgiparam %]">
+<option value="">[% msg.maketext("Bitte wählen Sie einen Begriff aus") %]</option>
+<option value="">[% msg.maketext("Kein Eintrag") %]</option>
 [% FOREACH befund IN t4310_values %]
 <option value="[% befund %]">[% befund %]</option>
 [% END %]

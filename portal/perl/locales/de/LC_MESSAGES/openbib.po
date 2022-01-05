@@ -2,12 +2,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
 #
-# Oliver Flimm <flimm@openbib.org>, 2006, 2007, 2008, 2009, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021.
+# Oliver Flimm <flimm@openbib.org>, 2006, 2007, 2008, 2009, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2021-12-02 08:17+0100\n"
+"PO-Revision-Date: 2022-01-05 14:54+0100\n"
 "Last-Translator: openbib <flimm@openbib.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -32669,7 +32669,7 @@ msgstr "Begleitmaterial"
 #: ../templates/_profile/kug/_view/kugproto/visible_categories_title.usbportal:99
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:99
 msgid "T0440"
-msgstr ""
+msgstr "Verlagsort"
 
 #: ../templates/_profile/sammlungen_yaml4/_database/maxbruch/visible_categories_title:37
 msgid "T0440-maxbruch"

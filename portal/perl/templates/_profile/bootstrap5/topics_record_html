@@ -1,0 +1,95 @@
+[%#-
+#######################################################################
+#
+# Templatename: topics_record_edit
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Themengebietes
+#
+#######################################################################
+-%]
+[%
+  bks         = config.load_bk;
+
+  bklist = [];
+  FOREACH bk IN bks;
+    IF bk.key.length == 2;
+      thisbk = {
+        classification   => bk.key,
+        desc             => bk.value,
+      };
+      bklist.push(thisbk);
+    END ;
+  END ;
+
+%]
+
+<h3>[% topic.id %] - [% topic.name %] [% IF topic.description %]([% topic.description %])[% END %]</h3>
+
+
+          <div class="row">
+            <div class="col-md-4 mt-2">
+
+<div class="card h-100">
+<div class="card-header">[% msg.maketext("Basisklassifikation") %]</div>
+<div class="card-body">
+
+<ul class="list-group">
+[%
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'bk', topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+%]
+[% FOREACH bk IN bklist %]
+[% IF classification_selected.${bk.classification}  %]<li class="list-group-item">[% bk.classification %] [% bk.desc %]</li>[% END %]
+[% END %]
+</ul>
+</div>
+</div>
+            </div>
+            <div class="col-md-4 mt-2">
+
+<div class="card h-100">
+<div class="card-header">[% msg.maketext("EZB") %]</div>
+<div class="card-body">
+
+<ul class="list-group">
+[%-
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'ezb', topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+-%]
+[% FOREACH ezb_topic IN ezb.get_classifications %]
+[%   IF classification_selected.${ezb_topic.name}  %]<li class="list-group-item">[% ezb_topic.name %] [% ezb_topic.desc | truncate(100)%]</li>[% END %]
+[% END %]
+</ul>
+</div>
+</div>
+            </div>
+            <div class="col-md-4 mt-2">
+
+
+<div class="card h-100">
+<div class="card-header">[% msg.maketext("DBIS") %]</div>
+<div class="card-body">
+
+<ul class="list-group">
+[%-
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'dbis', topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+-%]
+[% FOREACH dbis_topic IN dbis.get_classifications %]
+[% IF classification_selected.${dbis_topic.name}  %]<li class="list-group-item">[% dbis_topic.name %] [% dbis_topic.desc %]</li>[% END %]
+[% END %]
+</ul>
+</div>
+</div>
+            </div>
+            </div>

@@ -1,0 +1,76 @@
+[%#-
+#######################################################################
+#
+# Templatename: managecartitems_save_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Abspeichern der Merkliste in eine Datei im HTML-Format
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+[% PROCESS common/subtemplate name="visible_categories_title" %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "collection" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1 ob-hidden">
+        <div class="ym-cbox" class="ym-clearfix">
+
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+    <form method="get" action="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]">
+      
+      <input type="hidden" name="action"    value="show" />
+      
+      <ul class="tabbingmenu">
+	<li><a class="active" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?action=show;type=HTML">[% msg.maketext("Merkliste") %]</a></li>
+      </ul>
+      
+      <div class="content">
+	
+	<p />
+	  
+	<ul class="tabbingmenu">
+	  <li><a[%- IF type == 'HTML' -%] class="active"[%- END -%] href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?action=show;type=HTML">HTML</a></li>
+	</ul>
+	
+	<div class="content">
+	  
+	  <p />
+[% IF format == 'full' %]
+[%   PROCESS common/subtemplate name="cartitems_html_full" database="${record.database}" %]
+[% END %]
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

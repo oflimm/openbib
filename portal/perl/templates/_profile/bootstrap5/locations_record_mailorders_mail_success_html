@@ -1,0 +1,40 @@
+[%#-
+#######################################################################
+#
+# Templatename: home
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Portalinformationen
+#
+#######################################################################
+-%]
+
+        <div class="jumbotron">
+         <h1 class="display-4">[% msg.maketext("Die Bestellung des folgenden Mediums wurde abgeschickt.") %]</h1>
+         <p class="lead">
+
+          <table class="table">
+	   <th>Nutzer-ID</th><td>[% userid %]</td></tr>
+           <th>Name des Nutzers</th><td>[% username %]</td></tr>
+           <th>E-Mail</th><td>[% email %]</td></tr>
+           <th>Person</th><td>[% person %]</td></tr>
+           <th>Koerperschaft</th><td>[% corporation %]</td></tr>
+           <th>Titel</th><td>[% title %]</td></tr>
+           <th>Verlag</th><td>[% publisher %]</td></tr>
+           <th>Signatur</th><td>[% mark %]</td></tr>
+           <th>Mediennummer</th><td>[% mnr %]</td></tr>
+           <th>Bereitstellungsort</th><td>[% pickup %]</td></tr>
+           <th>Bemerkungen</th><td>[% remark %]</td></tr>
+          </table>
+
+          <p class="pb-3">
+             Sie k&ouml;nnen das Medium in der Regel in 3 Tagen abholen.
+          </p>
+
+
+            <a class="btn btn-primary btn-lg" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]" role="button">[% msg.maketext('Weiter') %]</a>
+         </p>
+        </div><!-- End: jumbotron -->

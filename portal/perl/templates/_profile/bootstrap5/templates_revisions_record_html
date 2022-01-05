@@ -1,0 +1,22 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_templates_record_edit
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Templates
+#
+#######################################################################
+-%]
+
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+<tr><th>[% msg.maketext("Id") %]</th><td>[% revision.id %]</td></tr>
+<tr><th>[% msg.maketext("Datum") %]</th><td>[% revision.tstamp %]</td></tr>
+<tr><th>[% msg.maketext("Darstellung") %]</th><td>[% revision.templatetext %]</td></tr>
+<tr><th>[% msg.maketext("Text") %]</th><td>[% revision.templatetext | html %]</td></tr>
+</table>
+</div>

@@ -1,0 +1,84 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_roles
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersicht der aktuellen Einstellungen des Betriebs
+#
+#######################################################################
+-%]
+
+[% IF user.has_right({scope = 'admin_roles', right = 'right_create'}) %]
+<div id="new_item" class="accordion">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <a class="card-link collapsed" href="#collapseOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+          [% msg.maketext("Neue Rolle anlegen") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#new_item">
+      <div class="card-body">
+<form method="post" action="[% path_prefix %]/[% config.get('roles_loc') %]">
+
+<div class="form-group">
+<label for="rolename">[% msg.maketext("Name") %]</label>
+<input class="form-control" type="text" name="rolename" id="rolename"/>
+</div>
+
+<div class="form-group">
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<input class="form-control" type="text" name="description" id="description"/>
+</div>
+
+<button type="submit" name="do_new" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>
+
+</form>
+</div>
+</div>
+</div>
+</div>
+
+<p />
+[% END # right_create %]
+
+[%# USE dumper;dumper.dump(serverinfos)%]
+[% IF roleinfos.count > 0 %]
+
+<h3>[% msg.maketext("Bereits existierende Rollen") %]</h3>
+
+<div class="table-responsive text-nowrap">
+<table class="table table-striped table-hover">
+<thead>
+<tr><th>[% msg.maketext("Name") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th></th><th></th><th></th></tr>
+</thead>
+<tbody>
+[% FOREACH roleinfo IN roleinfos.all %]
+<tr>
+<td>
+[% IF roleinfo.rolename == 'admin' %][% roleinfo.rolename %][% ELSE %]
+[%   IF user.has_right({scope = 'admin_roles', right = 'right_update'}) %]
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('roles_loc') %]/id/[% roleinfo.rolename %]/edit.html?l=[% lang %]">[% roleinfo.rolename %]</a>
+[%   ELSIF user.has_right({scope = 'admin_roles', right = 'right_read'}) %]
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('roles_loc') %]/id/[% roleinfo.rolename %].html?l=[% lang %]">[% roleinfo.rolename %]</a>
+[%   END %]
+[% END %]
+</td>
+<td>[% roleinfo.description %]</td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>[% IF roleinfo.rolename != 'admin' && user.has_right({scope = 'admin_roles', right = 'right_delete'}) %]<form method="post" action="[% path_prefix %]/[% config.get('roles_loc') %]/id/[% roleinfo.rolename %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><button type="submit" name="do_new" class="btn btn-primary mb-2">[% msg.maketext("L&ouml;schen") %]</button>
+</form>[% END %]
+</td>
+</tr>
+[% END %]
+</tbody>
+</table>
+</div>
+[% END %]
+

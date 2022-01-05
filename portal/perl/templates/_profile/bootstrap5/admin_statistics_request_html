@@ -1,0 +1,31 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_statistics_request_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersicht der wichtigsten statistischen Daten sowie
+# Verweise auf andere Sub-Templates (via stid = sub-template-id) mit
+# weiteren statistischen Auswertungen.
+#
+#######################################################################
+-%]
+
+[% PROCESS common/subtemplate name="admin_statistics_paging_monthly" statisticsid="request" %] 
+
+<p/>
+
+<h3>[% msg.maketext("Aufrufe in OpenBib") %]</h3>
+
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+<tr><th>[% msg.maketext("Anzahl Aufrufe RSS-Feeds") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 801, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Anzahl Aufrufe Literaturlisten") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 800, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Anzahl Aufrufe PermaLink (Einzeltitel)") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 802, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Anzahl Aufrufe PermaLink (Literaturliste)") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 803, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Anzahl Aufrufe Titelliste zu einem Tag") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 804, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) %][% ret.number %]</b></td></tr>
+</table>
+</div>

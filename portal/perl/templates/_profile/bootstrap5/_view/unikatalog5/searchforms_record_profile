@@ -1,0 +1,37 @@
+[%# USE dumper; dumper.dump(dbchoice)%]
+[%
+
+
+   orgunitname = config.get_orgunitname_of_db_in_view(viewdbs.first,view);
+   IF NOT prevprofile ;
+       prevprofile = session.get_profile ;
+   END ;
+   IF NOT searchprofileid_of_books ;
+      searchprofileid_of_books  = config.get_searchprofile_of_view(view,['usbweb','usbebooks']) ;
+   END ;
+   IF NOT searchprofileid_of_eds ;
+      searchprofileid_of_eds  = config.get_searchprofile_of_database('eds') ;
+   END ;
+   IF NOT searchprofileid_of_website ;
+      searchprofileid_of_website  = config.get_searchprofile_of_database('usbweb') ;
+   END ;
+   IF NOT searchprofileid_of_usbebooks ;
+      searchprofileid_of_usbebooks  = config.get_searchprofile_of_database('usbebooks') ;
+   END ;
+
+   IF NOT prevprofile ;
+       prevprofile = searchprofileid_of_books ;
+   END ;
+
+   checked_profile = 0 ;
+
+%]
+<select name="profile" class="form-control ob-selectbox selectpicker">
+   
+<optgroup label="[% msg.maketext("Suchradius") %]">
+<option value="[% searchprofileid_of_books %]"[%- IF prevprofile == searchprofileid_of_books && NOT checked_profile -%] selected[%- checked_profile = 1 ; END -%]>[% msg.maketext("Bücher & Mehr") %]</option>
+<option value="[% searchprofileid_of_eds %]"[%- IF prevprofile == searchprofileid_of_eds && NOT checked_profile -%] selected[%-  checked_profile = 1 ; END -%]>[% msg.maketext("Aufsätze & Mehr") %]</option>
+<option value="[% searchprofileid_of_website %]"[%- IF prevprofile == searchprofileid_of_website && NOT checked_profile -%] selected[%-  checked_profile = 1 ; END -%]>[% msg.maketext("Webseite") %]</option>
+<option value="[% searchprofileid_of_usbebooks %]"[%- IF prevprofile == searchprofileid_of_usbebooks && NOT checked_profile -%] selected[%-  checked_profile = 1 ; END -%]>[% msg.maketext("Testkatalog: E-Medien USB-Katalog") %]</option>
+</optgroup>
+</select>

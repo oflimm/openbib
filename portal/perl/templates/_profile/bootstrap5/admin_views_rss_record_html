@@ -1,0 +1,53 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editview
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Views
+#
+#######################################################################
+-%]
+
+<form method="post" action="[% path_prefix %]/[% config.get('admin_views_loc') %]/[% viewinfo.viewname %]/rss">
+<input type="hidden" name="_method"     value="PUT" />
+
+<h1 class="display-5">[% msg.maketext("RSS anzeigen") %]</h1>
+
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+<tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><span style="color:blue">[% viewinfo.viewname %]</span></td></tr>
+<tr><td><b>[% msg.maketext("Beschreibung") %]</b></td><td>[% viewinfo.description %]</td></tr>
+</table>
+</div>
+
+<h2>[% msg.maketext("RSS-Feed zu diesem View") %]</h2>
+
+[%# USE dumper;dumper.dump(allrssfeeds)%]
+<ul>
+[% FOREACH singlefeed IN allrssfeeds %]
+[% feedid = singlefeed.feedid %]
+[% NEXT IF singlefeed.type != 1 %]
+[% IF viewinfo.viewrssfeed.${feedid} %]<li>[% singlefeed.dbname %]: [% dbinfo.get('dbnames').${singlefeed.dbname}.full |truncate(60) %]</li>[% END %]
+[% END %]
+</ul>
+
+
+<p />
+
+<p />
+
+<h2>[% msg.maketext("Prim&auml;rer Feed f&uuml;r das Browser Auto-Discovery") %]</h2>
+
+<ul>
+[% FOREACH singlefeed IN allrssfeeds %]
+[% feedid = singlefeed.feedid %]
+[% NEXT IF singlefeed.type != 1 %]
+
+[% IF viewinfo.primrssfeed == feedid %]<li>[% singlefeed.dbname %]: [% dbinfo.get('dbnames').${singlefeed.dbname}.full |truncate(60) %]</li>[% END %]
+
+[% END %]
+</ul>

@@ -1,0 +1,235 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_databases_record_edit
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Kataloges
+#
+#######################################################################
+-%]
+
+<form method="post" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% databaseinfo.dbname %]">
+<input type="hidden" name="_method"    value="PUT" />
+
+<h1 class="display-5">[% msg.maketext("Allgemeine Kataloginformationen") %]</h1>
+
+<div class="form-group">
+<label for="dbname">[% msg.maketext("DB-Name") %]</label>
+<span class="form-control">[% databaseinfo.dbname %]</span>
+</div>
+
+<div class="form-group">
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<input class="form-control" type="text" name="description" id="description" value="[% databaseinfo.description %]" size="20" />
+</div>
+
+<div class="form-group">
+<label for="shortdesc">[% msg.maketext("Kurzbeschreibung") %]</label>
+<input class="form-control" type="text" name="shortdesc" id="shortdesc" value="[% databaseinfo.shortdesc %]" size="20" />
+</div>
+
+<div class="form-group">
+<label for="parentdbid">[% msg.maketext("Teilbestand von Katalog") %]</label>
+  <select class="form-control" name="parentdbid" id="parentdbid">
+       <option value="" [% IF NOT databaseinfo.parentdbid %]selected[% END %]>[% msg.maketext("Keine") %]</option>
+[% FOREACH thisdbname IN config.get_active_databases.sort %]
+       <option value="[% thisdbname %]" [% IF databaseinfo.parentdbid.dbname == thisdbname %]selected[% END %]>[% thisdbname %]: [% dbinfo.get('dbnames').${thisdbname}.short %]</option>
+[% END %]
+   </select>
+</div>
+
+<div class="form-group">
+<label for="searchengines">[% msg.maketext("Suchmaschinen für Indexierung") %]</label>
+
+<select class="form-control" id="searchengines" name="searchengines" multiple="multiple" size="3">
+[% FOREACH this_backend IN config.get('local_search_backends') %]
+<option value="[% this_backend.name %]"[% IF searchengine_map.${this_backend.name} %] selected="selected"[% END %]>[% this_backend.desc %]</option>
+[% END %]
+</select>
+</div>
+
+
+<div class="form-group">
+<label for="system">[% msg.maketext("System") %]</label>
+  <select class="form-control" name="system" id="system">
+[% FOREACH source_system IN config.get('source_systems').keys.sort %]
+       <option value="[% source_system %]" [% IF databaseinfo.system == source_system %]selected[% END %]>[% source_system %]</option>
+[% END %]
+   </select>
+</div>
+
+<div class="form-group">
+<label for="sigel">[% msg.maketext("Sigel") %]</label>
+<input class="form-control" type="text" name="sigel" id="sigel" value="[% databaseinfo.sigel %]" size="3" />
+</div>
+
+<div class="form-group">
+<label for="url">[% msg.maketext("URL") %]</label>
+<input class="form-control" type="text" name="url" id="url" value="[% databaseinfo.url %]" size="15" />
+</div>
+
+<div class="form-group">
+<label for="locationid">[% msg.maketext("Bibinformationen statt URL") %]</label>
+  <select class="form-control" name="locationid" id ="locationid">
+       <option value="" [% IF NOT databaseinfo.locationid %]selected="selected"[% END %]>[% msg.maketext("Keine") %]</option>
+[% FOREACH locationinfo IN config.get_locationinfo_overview %]
+       <option value="[% locationinfo.identifier %]" [% IF databaseinfo.locationid.identifier == locationinfo.identifier %]selected="selected"[% END %]>[% locationinfo.identifier %]: [% locationinfo.description %]</option>
+[% END %]
+  </select>
+</div>
+
+<div class="form-group">
+<label for="active">[% msg.maketext("Aktiv") %]</label>
+  <select class="form-control" name="active" id="active">
+    <option value="true" [%- IF databaseinfo.active == 1 -%]selected[%- END -%]>[% msg.maketext("Ja") %]</option>
+    <option value="false" [%- IF databaseinfo.active == 0 -%]selected[%- END -%]>[% msg.maketext("Nein") %]</option></select>
+  </select>
+</div>
+
+<div class="form-group">
+<label>[% msg.maketext("Titel in Datenbank") %]</label>
+[% databaseinfo.allcount.chunk(-3).join('.') %]
+</div>
+
+<div class="form-group">
+<label>&nbsp;&nbsp;[% msg.maketext("davon Zeitschriften/Serien") %]</label>
+[% databaseinfo.journalcount.chunk(-3).join('.') %]
+</div>
+
+<div class="form-group">
+<label>&nbsp;&nbsp;[% msg.maketext("davon Artikel") %]</label>
+[% databaseinfo.articlecount.chunk(-3).join('.') %]
+</div>
+
+<div class="form-group">
+<label>&nbsp;&nbsp;[% msg.maketext("davon Digital") %]</label>
+[% databaseinfo.digitalcount.chunk(-3).join('.') %]
+</div>
+
+<div class="form-group">
+<label>[% msg.maketext("Titel in Suchindex") %]</label>
+[% indexed_doc_count.chunk(-3).join('.') %]
+</div>
+
+<p/>
+
+<h1 class="display-6">[% msg.maketext("Datenquelle") %]</h1>
+
+<div class="form-group">
+<label for="protocol">[% msg.maketext("Protokoll") %]</label>
+  <select class="form-control" name="protocol" id="protocol">
+    <option value="ftp" [% IF databaseinfo.protocol == 'ftp' %]selected[% END %]>[% msg.maketext("FTP") %]</option>
+    <option value="http" [% IF databaseinfo.protocol == 'http' %]selected[% END %]>[% msg.maketext("HTTP") %]</option>
+    <option value="https" [% IF databaseinfo.protocol == 'https' %]selected[% END %]>HTTPS</option>
+    <option value="lokal" [% IF databaseinfo.protocol == 'lokal' %]selected[% END %]>[% msg.maketext("Lokal") %]</option>
+    <option value="api" [% IF databaseinfo.protocol == 'api' %]selected[% END %]>[% msg.maketext("API") %]</option>
+  </select>
+</div>
+
+<div class="form-group">
+<label for="host">[% msg.maketext("Entfernter Rechnername") %]</label>
+<input class="form-control" type="text" name="host" id="host" value="[% databaseinfo.host %]" size="20" />
+</div>
+
+<div class="form-group">
+<label for="remotepath">[% msg.maketext("Entferntes Verzeichnis") %]</label>
+<input class="form-control" type="text" name="remotepath" id="remotepath" value="[% databaseinfo.remotepath %]" size="20" />
+</div>
+
+<div class="form-group">
+<label for="remoteuser">[% msg.maketext("Entfernter Nutzername") %]</label>
+<input class="form-control" type="text" name="remoteuser" id="remoteuser" value="[% databaseinfo.remoteuser %]" size="20" />
+</div>
+
+<div class="form-group">
+<label for="remotepassword">[% msg.maketext("Entferntes Passwort") %]</label>
+<input class="form-control" type="password" name="remotepassword" id="remotepassword" value="[% databaseinfo.remotepassword %]" size="20" />
+</div>
+
+<div class="form-group">
+<label for="titlefile">[% msg.maketext("Titel-Datei") %]</label>
+<input class="form-control" type="text" name="titlefile" id="titlefile" value="[% databaseinfo.titlefile %]" size="20" />
+</div>
+
+<div class="form-group">
+<label for="personfile">[% msg.maketext("Personen-Datei") %]</label>
+<input class="form-control" type="text" name="personfile" id="personfile" value="[% databaseinfo.personfile %]" size="20" />
+</div>
+
+<div class="form-group">
+<label for="corporatebodyfile">[% msg.maketext("K&ouml;rperschafts-Datei") %]</label>
+<input class="form-control" type="text" name="corporatebodyfile" id="corporatebodyfile" value="[% databaseinfo.corporatebodyfile %]" size="20" />
+</div>
+
+<div class="form-group">
+<label for="classificationfile">[% msg.maketext("Notations-Datei") %]</label>
+<input class="form-control" type="text" name="classificationfile" id="classificationfile" value="[% databaseinfo.classificationfile %]" size="20" />
+</div>
+
+<div class="form-group">
+<label for="subjectfile">[% msg.maketext("Schlagwort-Datei") %]</label>
+<input class="form-control" type="text" name="subjectfile" id="subjectfile" value="[% databaseinfo.subjectfile %]" size="20" />
+</div>
+
+<div class="form-group">
+<label for="holdingfile">[% msg.maketext("Exemplar-Datei") %]</label>
+<input class="form-control" type="text" name="holdingfile" id="holdingfile" value="[% databaseinfo.holdingfile %]" size="20" />
+</div>
+
+<div class="form-group">
+<label for="autoconvert">[% msg.maketext("Autokonvertierung (cron)") %]</label>
+  <select class="form-control" name="autoconvert" id="autoconvert">
+    <option value="false" [% IF databaseinfo.autoconvert == 0 %]selected[% END %]>[% msg.maketext("Nein") %]</option>
+    <option value="true" [% IF databaseinfo.autoconvert == 1 %]selected[% END %]>[% msg.maketext("Ja") %]</option>
+  </select>
+</div>
+
+<p />
+
+<h1 class="display-5">[% msg.maketext("Ausleih-Einstellungen") %]</h1>
+
+<div class="form-group">
+<label for="cird">[% msg.maketext("Zugriff &uuml;ber DAIA") %]</label>
+  <select class="form-control" name="circ" id="circ">
+    <option value="false" [% IF databaseinfo.circ == 0 %]selected[% END %]>[% msg.maketext("Nein") %]</option>
+    <option value="true" [% IF databaseinfo.circ == 1 %]selected[% END %]>[% msg.maketext("Ja") %]</option>
+  </select>
+</div>
+
+<!-- 
+<div class="form-group">
+<label for="host">[% msg.maketext("OLWS DB-Name im Lokalsystem") %]</label>
+<input class="form-control" type="text" name="circdb" id="circdb" value="[% databaseinfo.circdb %]" size="20" />
+</div>
+-->
+
+<div class="form-group">
+<label for="circwsurl">[% msg.maketext("DAIA Zugriffs-URL") %]</label>
+<input class="form-control" type="text" name="circwsurl" id="circwsurl" value="[% databaseinfo.circwsurl %]" size="20" />
+</div>
+
+<div class="form-group">
+<label for="circurl">[% msg.maketext("Externer WebOPAC-URL") %]</label>
+<input class="form-control" type="text" name="circurl" id="circurl" value="[% databaseinfo.circurl %]" size="20" />
+</div>
+
+<h1 class="display-5">Neuen Katalog mit diesen Daten erzeugen</h1>
+
+<div class="form-group">
+<label for="newdbname">Neuer DB-Name</label>
+<input class="form-control" type="text" name="newdbname" id="newdbname" value="" size="20" />
+</div>
+
+<button type="submit" name="do_change" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>
+
+[%- IF user.has_right({scope = 'admin_clusters', right = 'right_delete'}) -%]
+&nbsp;&nbsp;&nbsp;
+
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% databaseinfo.dbname %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+[%- END -%]
+
+</form>

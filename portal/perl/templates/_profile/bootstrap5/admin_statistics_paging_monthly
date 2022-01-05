@@ -1,0 +1,35 @@
+<div class="ob-listoptions">
+<center>
+[%-
+
+  IF month == '01';
+    prev_month = 12;
+    prev_year  = year - 1;
+    next_month = 2;
+    next_year  = year ;
+  ELSIF month == '12';
+    prev_month = 11;
+    prev_year  = year ;
+    next_month = 1;
+    next_year  = year + 1 ;
+  ELSE ;
+    prev_month = month - 1;
+    prev_year  = year ;
+    next_month = month + 1;
+    next_year  = year ;
+  END ;
+
+-%]
+
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/[% statisticsid %].html?l=[% lang %]&year=[% year - 1 %]&month=[% month %]">[% month.replace('^0','') %].[% year - 1 %]</a>&nbsp;
+&nbsp;...&nbsp;
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/[% statisticsid %].html?l=[% lang %]&year=[% prev_year %]&month=[% prev_month %]">[% prev_month %].[% prev_year %]</a>&nbsp;
+
+&nbsp;<b>[% month.replace('^0','') %].[% year %]</b>&nbsp;
+
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/[% statisticsid %].html?l=[% lang %]&year=[% next_year %]&month=[% next_month %]">[% next_month %].[% next_year %]</a>&nbsp;
+&nbsp;...&nbsp;
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/[% statisticsid %].html?l=[% lang %]&year=[% year + 1 %]&month=[% month %]">[% month.replace('^0','') %].[% year + 1 %]</a>&nbsp;
+
+</center>
+</div>

@@ -1,0 +1,87 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_impressum
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe des Impressum
+#
+#######################################################################
+-%]
+[%
+
+   norm_desc = {
+      'title' = 'Titelfeld'
+      'person' = 'Personenfeld'
+      'corporatebody' = 'Körperschaftsfeld'
+      'classification' = 'Notationsfeld'
+      'holding' = 'Exemplarfeld'
+      'subject' = 'Schlagwortfeld'
+   };
+
+%]
+
+<h3>Informationen zur Indexierung der Suchfelder pro Katalog</h3>
+
+[% configuration = convconfig.analyze_index_configuration %]
+
+<h4>Standardkonfiguration</h4>
+
+[% PROCESS common/subtemplate name="search_title_field" view="take_uppermost_config" %] 
+
+<dl>
+
+[% FOREACH searchfield IN configuration.${"default"}.keys.sort %]
+
+
+<dt>[% IF field_map.${searchfield}.defined %][% searchfield %]: [% field_map.${searchfield} %][% ELSE %][% searchfield %][% END %]</dt>
+
+[%
+   fields = [];
+   FOREACH field IN configuration.${"default"}.${searchfield} ;
+     this_desc = norm_desc.${field.authority};
+     fields.push("${field.field} (${this_desc})");
+   END;
+%]
+
+<dd>
+[% fields.sort.join(' ; ')%]
+</dd>
+
+[% END %]
+
+</dl>
+
+[% FOREACH dbconfig IN configuration.keys.sort %]
+[% NEXT IF dbconfig == 'default' %]
+
+[% PROCESS common/subtemplate name="search_title_field" view=dbconfig %] 
+
+<h4>[% dbinfo.get('dbnames').${dbconfig}.full  %] (DB: [% dbconfig %])</h4>
+
+<dl>
+
+[% FOREACH searchfield IN configuration.${dbconfig}.keys.sort %]
+
+
+<dt>[% IF field_map.${searchfield}.defined %][% searchfield %]: [% field_map.${searchfield} %][% ELSE %][% searchfield %][% END %]</dt>
+
+[%
+   fields = [];
+   FOREACH field IN configuration.${dbconfig}.${searchfield} ;
+     this_desc = norm_desc.${field.authority};
+     fields.push("${field.field} (${this_desc})");
+   END;
+%]
+
+<dd>
+[% fields.sort.join(' ; ')%]
+</dd>
+
+[% END %]
+
+</dl>
+[% END %]

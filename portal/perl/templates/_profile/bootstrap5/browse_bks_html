@@ -1,0 +1,41 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_browsetit
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Inhalte einer Titel-Kategorie
+#
+#######################################################################
+-%]
+[%
+  bks        = config.load_bk;
+
+%]
+
+
+[%
+bklist = [];
+FOREACH bk IN bks;
+%]
+[%
+  IF bk.key.length == 2  ;
+    bklist.push(bk.key);
+  END ;
+END ;
+
+bklist = bklist.sort;
+
+%]
+
+[%# USE dumper;dumper.dump(thisbklist)%]
+<h4>[% msg.maketext("Basisklassifikation - Hauptgruppen") %]</h4>
+
+<ul class="list-group">
+[% FOREACH bk IN bklist %]
+<li class="list-group-item">[% bk %] / <a href="[% path_prefix %]/[% config.get('browse_loc') %]/bks/id/[% bk %].html?l=[% lang %]">[% bks.${bk} %]</a></li>
+[% END %]
+</ul>

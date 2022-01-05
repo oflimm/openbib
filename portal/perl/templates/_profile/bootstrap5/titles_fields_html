@@ -1,0 +1,33 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_browsetit
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Inhalte einer Titel-Kategorie
+#
+#######################################################################
+-%]
+
+<h2>Felder</h2>
+
+[% PROCESS common/subtemplate name="visible_categories_title" %]
+
+
+<ul class="list-group">
+
+[%# USE dumper;dumper.dump(fields)%]
+[% FOREACH category IN categories ;
+   thiscategory = category ;
+   IF config.get('categorymapping').${database}.$category ;
+     thiscategory = "${category}-${database}" ;
+   END;
+%]
+[%  IF fields.${category.replace('T','')}%]
+<li class="list-group-item"><strong>[% category.replace('T','') %]</strong> <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% category.replace('T','') %].html?l=[% lang %]">[% msg.maketext("${thiscategory}") %]</a></li>
+[%  END %]
+[% END %]
+</ul>

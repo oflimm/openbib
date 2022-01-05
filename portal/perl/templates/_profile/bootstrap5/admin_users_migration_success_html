@@ -1,0 +1,15 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_users_migration_success_html
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Informationen ueber den Benutzer
+#
+#######################################################################
+-%]
+
+<h2>[% msg.maketext("Die ausgewählten nutzergenerierten Inhalte (Literaturlisten, Tags, Merkliste) wurden erfolgreich von der alten Kennung zur neuen Kennung verschoben.") %]</h2>

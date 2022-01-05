@@ -1,0 +1,49 @@
+[%#-
+#######################################################################
+#
+# Templatename: connector_similarsubjects_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+#
+#######################################################################
+-%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
+
+[%- IF similar_subjects.size > 1 %]
+<!-- Beginn Tag-Cloud -->
+[%
+   css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+   ];
+%]
+<ol class="ob-cloud">
+[%- FOREACH thisitem IN similar_subjects -%]
+[% item      = thisitem.item;
+   swtid     = thisitem.id;
+   itemcount = thisitem.count;
+   classnr   = thisitem.class;
+   itemclass = css_classes.$classnr;
+   NEXT IF classnr <= 1;
+   classnr = classnr - 1;
+
+   searchterm    = uri_escape(item);
+   searchprefix  = config.get('searchfield').subjectstring.prefix;
+
+   localurl  = "${path_prefix}/${config.get('search_loc')}.html?l=${lang};page=1;db=${database};${searchprefix}=${searchterm}";
+
+%]
+<li class="p-1 [% itemclass %]"><span>[% itemcount %] Titel haben das Schlagwort</span><a href="[% localurl %]" class="tag" title="[% itemcount %] Titel haben das Schlagwort [% item %]">[% item %]</a></li>
+[% END %]
+</ol>
+[% ELSE %]
+[% msg.maketext("Es konnten keine verwandten Themen bestimmt werden.") %]
+[% END %]

@@ -1,0 +1,28 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von katalogspezifischen Wortwolken
+#
+#######################################################################
+-%]
+     <h1>[% msg.maketext("Tags") %]</h1>
+
+
+[%# USE dumper;dumper.dump(public_tags)%]
+<ul class="list-group">
+[%- FOREACH thistag IN public_tags -%]
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('tags_loc') %]/names/id/[% thistag.tagname %].html">[% thistag.tagname %] ([% thistag.itemcount %])</a></li>
+[% END %]
+</ul>
+
+<p />
+
+  <div class="ob-footer">
+[% PROCESS common/subtemplate name="pagination" %]
+  </div>

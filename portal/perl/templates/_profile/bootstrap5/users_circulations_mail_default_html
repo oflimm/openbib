@@ -1,0 +1,166 @@
+[%-
+
+  # Bestellung von Titeln ohne Buchdaten per Mail
+  
+  fields = record.get_fields;
+
+  title     = fields.${"T0331"}.first.content;
+
+  persons   = [];
+  FOREACH thisfield IN ['P0100','P0101','P0102','P0103'];
+    IF fields.${thisfield}.defined;
+      persons.push(fields.${thisfield}.first.content);  
+    END;
+  END;
+  person = persons.join(' ; ');
+
+  corporatebodies   = [];
+  FOREACH thisfield IN ['C0200','C0201'];
+    IF fields.${thisfield}.defined;
+      corporatebodies.push(fields.${thisfield}.first.content);  
+    END;
+  END;
+  corporatebody = corporatebodies.join(' ; ');
+
+  publisher = fields.${"T0412"}.first.content;
+
+  year      = fields.${"T0425"}.first.content;
+  IF fields.${"T0424"}.defined;
+    year      = fields.${"T0424"}.first.content;  
+  END;
+
+  titleid   = record.id;
+  
+-%]
+<div class="card mt-5 mb-5 mr-5">
+<div class="card-header">[% msg.maketext("Bestellung") %]</div>
+<div class="card-body">
+ <form  method="POST" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/mail/default">
+ 
+     <input type="hidden" name="scope"       value="[% scope %]" />
+     <input type="hidden" name="location"    value="[% title_location %]" />
+
+<legend class="mt-2">[% msg.maketext("Titelangaben") %]</legend>
+
+<div class="form-group">
+      <label for="title">Titel</label>
+      <span class="form-control">[% title %]</span>
+      <input type="hidden" name="titleid" value="[% titleid %]" />
+</div>
+
+[% IF person %]
+<div class="form-group">
+      <label for="person">[% msg.maketext("Verfasser") %]:</label>
+      <span class="form-control">[% person %]</span>
+</div>
+[% END %]
+
+[% IF corporatebody %]
+<div class="form-group">
+      <label for="corporatation">[% msg.maketext("Körperschaft") %]:</label>
+      <span class="form-control">[% corporatebody %]</span>
+</div>
+[% END %]
+
+[% IF publisher %]
+<div class="form-group">
+      <label for="publisher">[% msg.maketext("Verlag") %]:</label>
+      <span class="form-control">[% publisher %]</span>
+</div>
+[% END %]
+
+[% IF year %]
+<div class="form-group">
+      <label for="year">[% msg.maketext("Erscheinungsjahr") %]:</label>
+      <span class="form-control">[% year %]</span>
+</div>
+[% END %]
+
+[%
+     signatur = "";
+     IF label ;
+       signatur = label ;
+     ELSE ;
+       signatur = holdingid ;
+     END;
+%]
+
+<div class="form-group">
+      <label for="location_mark">[% msg.maketext("Signatur") %]:</label>
+      <span class="form-control">[% signatur %]</span>
+      <input type="hidden" name="label" value="[% uri_escape(signatur) %]" />
+</div>
+
+[% IF numbering %]
+<div class="form-group">
+     <label for="numbering">[% msg.maketext("Bestand in der USB") %]:</label>
+      <span class="form-control">[% numbering %]</span>
+      <input type="hidden" name="numbering" value="[% uri_escape(numbering) %]" />
+</div>
+[% END %]
+
+[% IF NOT fields.${"T0004"}.defined #  in IPS: TYP ungleich "volume". Bei Bandsaetzen aus KS/V kein Eingabefeld fuer den Zeitraum %]
+<div class="form-group">
+     <label for="period">[% msg.maketext("Gewünschtes Datum") %]:</label>
+     <input type="text" class="form-control" name="period" value="" /> [% msg.maketext("Beispiele: 04.01.1920 ; März - April 1920 ; 1920 komplett") %]
+</div>
+[% ELSE %]
+[%   IF NOT fields.${"T5100"}.defined # in IPS: BD definiert %]
+      <input type="hidden" name="period" value="[% fields.${"T5100"}.first.content | uri %]" />
+[%   ELSE %]
+      <input type="hidden" name="period" value="[Kompletter Band]" />
+[%   END %]
+[% END %]
+
+[%
+   name = "";
+   IF userinfo.nachname || userinfo.vorname ;
+        IF userinfo.nachname ;
+          name = userinfo.nachname ;
+	END ;
+	IF userinfo.vorname ;
+	  name = "${userinfo.vorname} ${name}";
+	END;
+   END;
+
+%]
+
+<legend class="mt-2">[% msg.maketext("Weitere Angaben zur Bestellung") %]</legend>
+
+<div class="form-group">
+     <label for="loginname">[% msg.maketext("Nutzer-Kennung") %]:</label>
+      <span class="form-control">[% username %]</span>
+      <input type="hidden" name="loginname" value="[% username %]" />
+</div>
+
+<div class="form-group">
+      <label for="username">[% msg.maketext("Name") %]:</label>
+      <span class="form-control">[% name %]</span>
+      <input type="hidden" name="username" value="[% name %]" />
+</div>
+
+<div class="form-group">
+      <label class="form-group-text" for="remark">[% msg.maketext("Bemerkung") %]:</label>
+      <textarea class="form-control" type="text" name="remark" placeholder="[% msg.maketext("Geben Sie hier bitte ggf. Bemerkungen zu Ihrer Bestellung ein") %]" value="" maxlength="120" size="37" ></textarea>
+</div>
+
+<p/>
+
+<legend class="mt-2">[% msg.maketext("Bestellquittung") %]</legend>
+<div class="form-check">
+
+      <input class="form-check-input" type="checkbox" name="receipt"/>
+      <label class="form-check-label" for="receipt">[% msg.maketext("Ja, ich möchte eine Kopie dieser Bestellung als E-Mail erhalten") %].</label>
+</div>
+
+<div class="form-group">
+      <label for="email">[% msg.maketext("E-Mail") %]:</label>
+      <span class="form-control">[% userinfo.email %]</span>
+</div>
+
+<button type="submit" class="btn btn-primary mb-2 mt-4">[% msg.maketext("Auswahl") %]</button>
+
+</form>
+
+</div>
+</div>

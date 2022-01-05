@@ -1,0 +1,111 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_item
+#
+# Typ         : Mastertemplate (2/3)
+#
+# Aufgabe:
+#
+# Ausgabe der Suchergebnisse *eines* Katalogs
+#
+#######################################################################
+-%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
+
+<p/>
+
+<div class="row">
+[% IF hits > 0 %]
+  <div class="col-md-4">
+[% PROCESS common/subtemplate name="authority_search_facet" %]
+[% ELSE %]
+[%
+   IF NOT viewdbs ;
+       viewdbs = config.get_dbs_of_view(view);
+   END ;
+   IF NOT prevprofile ;
+       prevprofile = session.get_profile ;
+   END ;
+   IF NOT searchprofileid_of_view ;
+      searchprofileid_of_view  = config.get_searchprofile_of_view(view) ;
+   END ;
+   IF NOT searchprofileid_of_sysprofile ;
+      searchprofileid_of_sysprofile = config.get_searchprofile_of_systemprofile(view);
+   END ;
+
+%]
+
+[%   IF viewdbs.size == 1 %]  
+<div class="ob-facets">
+[% PROCESS common/subtemplate name="search_radius" %]
+</div>
+[%   END %]
+  </div>
+[% END %]
+
+  <div class="col-md-8">
+
+[% IF spelling_suggestion.resultlist %]
+[%    suggestion = searchquery.get_spelling_suggestion %]
+[%     IF suggestion%]
+[%        msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% path_prefix %]/[% search_loc %]?num=[% query.param('num') %];srt=relevance_desc;st=[% query.param('st') %]fs=[% suggestion %]">[% suggestion %]</b>
+[%     END %]
+[% END %]
+
+[% IF hits > 0 %]
+<!-- Beginn Result Item -->
+[%-
+    request_base    = "num=${queryoptions.get_option('num')};srt=relevance_desc;page=1;" ;
+    start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
+    end_range       = nav.current_page*queryoptions.get_option('num');
+    IF end_range >= hits ;
+       end_range       = hits;
+    END;
+
+    query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
+-%]
+
+<div class="ob-resultlist">
+  <div class="ob-resultheader">
+    <div class="left">
+[% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b>[% hits %]</b>
+    </div>
+    <div class="right">
+<form method="get" action="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]">
+<input type="hidden" name="page" value="1" />
+
+[% cgiapp.to_cgi_hidden_input({ exclude = ['page','srt','srto']}) %]
+
+[% PROCESS common/subtemplate name="authlist_options" this_loc=config.get('search_loc') %]
+</form>
+
+    </div>
+  </div>
+  <div class="ob-resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+[%- FOREACH record IN recordlist.get_records -%]
+[%    PROCESS common/subtemplate name="authlist_item_html_short" multiple_dbs=1 database=record.database %] 
+[%- END -%]
+  <div class="ob-footer">
+[% PROCESS common/subtemplate name="pagination" %]
+    <div class="ob-resulttime">
+<!-- in: [% resulttime %] [% msg.maketext("Sekunden") %] -->
+    </div>
+  </div>
+</div>
+<div class="ob-resultfooter">
+   &nbsp;
+</div>
+<p/>
+[% ELSE %]
+<div class="ob-no_hits">
+<h1>[% msg.maketext("Zu Ihrer Suchanfrage konnten keine Treffer gefunden werden.") %]</h1>
+</div>
+
+[% END %]
+<p/>
+
+  </div>
+
+</div>
+

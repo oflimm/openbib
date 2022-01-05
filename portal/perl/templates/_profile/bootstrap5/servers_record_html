@@ -1,0 +1,40 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editcat
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Kataloges
+#
+#######################################################################
+-%]
+
+<h3>[% msg.maketext("Server") %]</h3>
+
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+<tr><th>[% msg.maketext("Id") %]</th><td>[% serverinfo.id %]</td></tr>
+<tr><th>[% msg.maketext("IP-Adresse") %]</th><td>[% serverinfo.hostip %]</td></tr>
+<tr><th>[% msg.maketext("Beschreibung") %]</th><td>[% serverinfo.description %]</td></tr>
+<tr><th>[% msg.maketext("Status") %]</th><td>
+[% IF serverinfo.status == '' %][% msg.maketext("Keiner") %][% END %]
+[% IF serverinfo.status == 'updating' %][% msg.maketext("Aktualisieren") %][% END %]
+[% IF serverinfo.status == 'updated' %][% msg.maketext("Fertig mit Aktualisierung") %][% END %]
+[% IF serverinfo.status == 'searchable' %][% msg.maketext("Recherchierbar") %][% END %]
+</td></tr>
+
+<tr><th>[% msg.maketext("Cluster") %]</th><td>
+[%  FOREACH clusterinfo IN config.get_clusterinfo_overview.all %]
+[% IF serverinfo.clusterid.id == clusterinfo.id %]<a href="[% path_prefix%]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %].html?l=[% lang %]">[% clusterinfo.description %]</a>[% END %]
+[% END %]
+</td></tr>
+
+<tr><th>[% msg.maketext("Aktiv") %]</th><td>
+[%- IF databaseinfo.active -%][% msg.maketext("Ja") %][%- END -%]
+[%- IF NOT databaseinfo.active -%][% msg.maketext("Nein") %]</option>[%- END -%]
+</td></tr>
+</table>
+</div>

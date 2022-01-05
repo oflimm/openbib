@@ -1,0 +1,140 @@
+[%#-
+#######################################################################
+#
+# Templatename: databasechoice
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Katalogauswahlliste/-tabelle
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+<script language="JavaScript" type="text/javascript">
+<!--
+
+function update_fak(yourform, checked, fak) {
+    for (var i = 0; i < yourform.elements.length; i++) {
+         if (yourform.elements[i].title.indexOf(fak) != -1) {
+              yourform.elements[i].checked = checked;
+         }
+    }
+}
+
+// -->
+</script>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "databasechoice" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+         <li><a href="#" class="lastitem">[% msg.maketext("Katalogauswahl") %]</a></li>
+      </ul>
+     </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div id="col1 ob-hidden" role="complementary">
+        <div class="ym-cbox" class="ym-clearfix">
+
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div id="col3" class="width:99%" role="main" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+<form method="post" action="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/session" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="num" value="-1" />
+<input type="hidden" name="l" value="[% lang %]" />
+
+
+[%# USE dumper;dumper.dump(catdb)%]
+[%# USE dumper;dumper.dump(config.get_orgunitinfo_overview(profile)) %]
+<p />
+<table>
+<tr><td class="thickheadline" align="left"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /></td><td colspan="[% colspan - 1 %]"><b>[% msg.maketext("Alle Kataloge") %]</b></td></tr>
+
+[%- FOREACH category = config.get_orgunitinfo_overview(profile).all -%]
+[%- is_empty = 1 ;
+    FOREACH db = catdb ;
+      IF db.category == category.description && db.db != '' ; 
+        is_empty = 0 ;
+      END ;
+    END ;
+-%]
+[%- IF NOT is_empty -%]
+[%- IF category.nr >= 1 -%]
+<tr><td colspan="[% colspan %]">&nbsp;</td></tr>
+[%- END -%]
+
+<tr><td class="thickheadline" align="left"><input type="checkbox" name="fakult" value="inst[% category.nr %]" onclick="update_fak(this.form, this.checked,'inst[% category.nr %]')" title="inst" /></td><td colspan="[% colspan - 1 %]"><b>[% category.description %]</b></td></tr>
+
+[%- FOREACH db = catdb -%]
+[%- IF db.category == category.description -%]
+[%- IF db.column == 1 -%]
+<tr><td><input type="checkbox" name="db" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td>[%- IF db.use_libinfo %]<a href="[% path_prefix %]/[% config.get('libraries_loc') %]/[% db.db %]">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
+[%- END -%]
+[%- IF db.column > 1 && db.column < maxcolumn -%]
+[%- IF db.db -%]
+<td><input type="checkbox" name="db" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td>[%- IF db.use_libinfo %]<a href="[% path_prefix %]/[% config.get('libraries_loc') %]/[% db.db %]">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
+[%- ELSE -%]
+<td>&nbsp;</td><td>&nbsp;</td>
+[%- END -%]
+
+[%- END -%]
+[%- IF db.column == maxcolumn -%]
+[%- IF db.column != 1 -%]
+
+[%- IF db.db -%]
+<td><input type="checkbox" name="db" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td>[%- IF db.use_libinfo %]<a href="[% path_prefix %]/[% config.get('libraries_loc') %]/[% db.db %]">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
+[%- ELSE -%]
+<td>&nbsp;</td><td>&nbsp;</td>
+[%- END -%]
+
+[%- END -%]
+</tr>
+[%- END -%]
+[%- END -%]
+[%- END -%]
+[%- END -%]
+[%- END -%]
+</table>
+<p />
+
+<input type="submit" value="[% msg.maketext("Auswählen") %]" />
+
+</form>
+<p />
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]
+

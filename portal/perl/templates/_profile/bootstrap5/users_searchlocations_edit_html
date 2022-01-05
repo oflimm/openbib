@@ -80,7 +80,7 @@
 [%- FOREACH thislocation IN searchlocations -%]
 [%    NEXT IF is_location_of_emedia.${thislocation.identifier} != 1; %]
 
-<li class="ob-facet-item d-flex"><input type="checkbox" name="location" value="[% thislocation.identifier %]" title="[% thislocation.description %]" [% IF checkedloc.${thislocation.identifier} %]checked="checked"[% END %] class="mr-2" /><a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% thislocation.identifier %]">[% thislocation.description %]</a></li>
+<li class="ob-facet-item d-flex"><input type="checkbox" name="location" value="[% thislocation.identifier %]" title="[% thislocation.description %]" [% IF checkedloc.${thislocation.identifier} %]checked="checked"[% END %] class="me-2" /><a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% thislocation.identifier %]">[% thislocation.description %]</a></li>
 [%- END -%]
 </ul>
 </div>
@@ -124,7 +124,7 @@
         <ul id="group-location" class="list-group in collapse show">
 [%- FOREACH thislocation IN searchlocations -%]
 [%    NEXT IF is_location_of_emedia.${thislocation.identifier} == 1; %]
-<li class="ob-facet-item d-flex"><input type="checkbox" name="location" value="[% thislocation.identifier %]" title="[% thislocation.description %]" [% IF checkedloc.${thislocation.identifier} %]checked="checked"[% END %] class="mr-2" /><a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% thislocation.identifier %]">[% thislocation.description %]</a></li>
+<li class="ob-facet-item d-flex"><input type="checkbox" name="location" value="[% thislocation.identifier %]" title="[% thislocation.description %]" [% IF checkedloc.${thislocation.identifier} %]checked="checked"[% END %] class="me-2" /><a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% thislocation.identifier %]">[% thislocation.description %]</a></li>
 [%- END -%]
 </ul>
 </div>

@@ -83,7 +83,7 @@ FOREACH category IN categories;
             normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Personen-Information\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
          END;
 
-         icons     = "<div class=\"float-right\"><a href=\"${path_prefix}/${config.get('redirect_loc')}?type=520;url=${uri_escape(wikipediaurl)}\" target=\"_blank\" title=\"Person in Wikipedia\"><img src=\"${path_prefix}/${config.get('connector_availabilityimage_loc')}/wikipedia/${wikicontent}?lang=${lang}\" alt=\"Mashup mit Wikipedia\" /></a>${rssfeed}${normdataicon}</div>";
+         icons     = "<div class=\"float-end\"><a href=\"${path_prefix}/${config.get('redirect_loc')}?type=520;url=${uri_escape(wikipediaurl)}\" target=\"_blank\" title=\"Person in Wikipedia\"><img src=\"${path_prefix}/${config.get('connector_availabilityimage_loc')}/wikipedia/${wikicontent}?lang=${lang}\" alt=\"Mashup mit Wikipedia\" /></a>${rssfeed}${normdataicon}</div>";
          content   = "${icons}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
@@ -107,7 +107,7 @@ FOREACH category IN categories;
             normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"K&ouml;rperschafts-Information\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
          END;
 
-         icons     = "<div class=\"float-right\">${rssfeed}${normdataicon}</div>";
+         icons     = "<div class=\"float-end\">${rssfeed}${normdataicon}</div>";
 
          content   = "${icons}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
@@ -124,7 +124,7 @@ FOREACH category IN categories;
           
     CASE "T0540";
          wikipediaurl = "http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}";
-         content   = "<div class=\"float-right\"><a class=\"isbn\" href=\"${path_prefix}/${config.get('redirect_loc')}?type=521;url=${uri_escape(wikipediaurl)}\" target=\"_blank\" title=\"Titel in Wikipedia\"><img src=\"${config.get_icon('wikipedia',view,sysprofile)}\" alt=\"Mashup mit Wikipedia\" /></a></div>${highlightquery(searchquery,content)}";
+         content   = "<div class=\"float-end\"><a class=\"isbn\" href=\"${path_prefix}/${config.get('redirect_loc')}?type=521;url=${uri_escape(wikipediaurl)}\" target=\"_blank\" title=\"Titel in Wikipedia\"><img src=\"${config.get_icon('wikipedia',view,sysprofile)}\" alt=\"Mashup mit Wikipedia\" /></a></div>${highlightquery(searchquery,content)}";
 
     CASE [ "T0543" "T0585" ];
          ezburl  = "${config.get('ezb_exturl')}&jq_term1=${content}";
@@ -228,7 +228,7 @@ FOREACH category IN categories;
             normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Schlagwort-Information\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
          END;
 
-         icons     = "<div class=\"float-right\">${rssfeed}${normdataicon}</div>";
+         icons     = "<div class=\"float-end\">${rssfeed}${normdataicon}</div>";
 
          content   = "${icons}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
          rswkswt_done.${thiscontent} = 1;
@@ -253,7 +253,7 @@ FOREACH category IN categories;
             normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Systematik-Information\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
          END;
 
-         icons     = "<div class=\"float-right\">${rssfeed}${normdataicon}</div>";
+         icons     = "<div class=\"float-end\">${rssfeed}${normdataicon}</div>";
 
          content   = "${icons}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 

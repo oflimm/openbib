@@ -26,7 +26,7 @@
 </style>
 
 
-<ul class="nav nav-tabs pl-2">
+<ul class="nav nav-tabs ps-2">
   <li class="nav-item">
     <a class="nav-link[% IF current_profile != searchprofileid_of_articles && current_profile != searchprofileid_of_web %] active[% END %]"  role="tab" data-toggle="tab" href="#ob-searchresult_tab_books" id="ob-searchresult_books_li">[% msg.maketext("Bücher &amp; Mehr") %]</a>
   </li>

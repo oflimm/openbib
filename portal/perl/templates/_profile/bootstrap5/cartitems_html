@@ -40,8 +40,8 @@ function update_collection(yourform, checked, item) {
 </style>
 
 [% IF recordlist.get_size > 0 %]
-      <div class="navbar navbar-default d-block d-md-none pl-0" style="z-index: 0"><!-- only visible in xs-->
-        <div class="container-fluid pl-0">
+      <div class="navbar navbar-default d-block d-md-none ps-0" style="z-index: 0"><!-- only visible in xs-->
+        <div class="container-fluid ps-0">
           <span class="btn btn-primary navbar-btn" data-toggle="collapse" data-target="#ob-sidebar">
             <i class="fa fa-list"></i> [% msg.maketext("Aktionen") %]
           </span>

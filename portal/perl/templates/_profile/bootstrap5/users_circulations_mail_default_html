@@ -32,7 +32,7 @@
   titleid   = record.id;
   
 -%]
-<div class="card mt-5 mb-5 mr-5">
+<div class="card mt-5 mb-5 me-5">
 <div class="card-header">[% msg.maketext("Bestellung") %]</div>
 <div class="card-body">
  <form  method="POST" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/mail/default">

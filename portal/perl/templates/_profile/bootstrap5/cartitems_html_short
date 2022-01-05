@@ -18,7 +18,7 @@
 
 <!-- Titlelist begins here -->
 <div class="ob-resultlist">
-  <div class="row pl-2">
+  <div class="row ps-2">
     <div class="col-md-6 d-flex justify-content-start">
        <input type="checkbox" name="collection" value="select" onclick="update_collection(this.form, this.checked,'collection_item')" />&nbsp;<b>[% msg.maketext("Alle Eintr&auml;ge ausw&auml;hlen") %]</b>
     </div>

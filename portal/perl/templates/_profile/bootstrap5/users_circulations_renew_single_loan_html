@@ -14,7 +14,7 @@
 
 [%# USE dumper; dumper.dump(renew_loans) %]
 
-<div class="card mt-5 mb-5 mr-5">
+<div class="card mt-5 mb-5 me-5">
 <div class="card-header">[% msg.maketext("Einzelverlängerung") %]</div>
 <div class="card-body">
 

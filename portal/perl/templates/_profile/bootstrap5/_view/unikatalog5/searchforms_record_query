@@ -241,11 +241,11 @@
 
 <div class="d-flex ob-fulltitle_actions">
 
-<div class="pr-1">
+<div class="pe-1">
 <button class="btn btn-primary" type="submit">[% msg.maketext("Suchen") %]</button>
 </div>
 
-<div class="pr-1">
+<div class="pe-1">
     <button class="btn btn-primary sidebar-toggler" type="button" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-arrow-right"></i> <span class="d-none d-sm-inline">[% msg.maketext("Mehr") %]</span></button>
 </div>
 

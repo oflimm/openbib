@@ -49,8 +49,8 @@
     <button class="btn btn-primary sidebar-toggler mt-3" type="button" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-arrow-right"></i> [% IF layout_param.sidebar_template_description %][% layout_param.sidebar_template_description %][% ELSE %]Navigation[% END %]</button>
   [%   END %]
   
-      <div id="ob-sidebar" class=" border-right min-vh-100 collapse navbar-collapse" aria-expanded="false">
-           <div id="sidebar-dismiss" class="float-right text-white" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+      <div id="ob-sidebar" class=" border-end min-vh-100 collapse navbar-collapse" aria-expanded="false">
+           <div id="sidebar-dismiss" class="float-end text-white" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <i class="fas fa-window-close fa-2x p-1"></i>
            </div>
 

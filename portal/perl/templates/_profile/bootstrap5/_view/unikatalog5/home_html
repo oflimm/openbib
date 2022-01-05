@@ -161,7 +161,7 @@ $(function () {
   <div class="animated-image image-2"></div>
   <div class="animated-image image-3"></div>
 
-<div class="jumbotron jumbotron-fluid mb-0 landing-page-img pl-2">
+<div class="jumbotron jumbotron-fluid mb-0 landing-page-img ps-2">
 
   <div class="container container-fluid" style="margin-top: 50px!important; min-width: 100%!important;">
 
@@ -176,12 +176,12 @@ $(function () {
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
 <input type="hidden" name="profile"    value="[% searchprofileid_of_books %]" />
 
-<div class="container justify-content-center border shadow rounded pl-2 pr-2 pt-3 pb-2 mb-4">
+<div class="container justify-content-center border shadow rounded ps-2 pe-2 pt-3 pb-2 mb-4">
     <div class="row">    
         <div class="col">
             <div class="input-group">
                 <input required="required" id="to_focus" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Unikatalog (Bücher, E-Medien, Aufsätze &amp; mehr) und USB Website") %]" />
-                <span class="input-group-btn pl-1">
+                <span class="input-group-btn ps-1">
                     <button class="btn btn-primary" type="submit"><span class="fas fa-search d-md-none"></span><span class="d-none d-md-block font-weight-bold">[% msg.maketext("Suchen") %]</span></button>
                     <span class="btn btn-primary fas fa-cog d-md-none" data-toggle="collapse" data-target="#search_options" aria-expanded="false"></span>
                 </span>
@@ -192,16 +192,16 @@ $(function () {
       <div class="col collapse d-md-block p-0" id="search_options">
        
          <ul class="list-group flex-row flex-wrap justify-content-md-center justify-content-sm-left">
-<!--            <li class="list-group-item pr-1" style="border: none" >
+<!--            <li class="list-group-item pe-1" style="border: none" >
        	      [% PROCESS common/subtemplate name="searchforms_record_profile" %]
             </li> -->
-            <li class="list-group-item pr-1 pt-3" style="border: none" >
+            <li class="list-group-item pe-1 pt-3" style="border: none" >
              <a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
 	    </li>      	  
-            <li class="list-group-item  pr-1 pt-3" style="border: none" >
+            <li class="list-group-item  pe-1 pt-3" style="border: none" >
               <a  href="[% path_prefix %]/[% config.get('browse_loc') %]/[% config.get('topics_loc') %].html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a>
 	    </li>
-            <li class="list-group-item pr-1 pt-3" style="border: none" >
+            <li class="list-group-item pe-1 pt-3" style="border: none" >
 	     <a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
 	   </li>
          </ul>

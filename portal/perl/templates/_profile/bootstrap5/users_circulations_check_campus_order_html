@@ -95,7 +95,7 @@
 -%]
 
 [%# USE dumper;dumper.dump(super)%]
-<div class="card mt-5 mb-5 mr-5">
+<div class="card mt-5 mb-5 me-5">
 <div class="card-header">[% msg.maketext("Digitalisierungsauftrag") %]</div>
 <div class="card-body">
 

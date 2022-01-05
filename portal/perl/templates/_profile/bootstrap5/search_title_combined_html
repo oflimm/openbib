@@ -46,7 +46,7 @@
 
 <div class="row flex-md-row-reverse">
 
-  <div id="ob-search_refine" class="col-xs-6 col-md-3 collapse" style="border-left: 1px solid #dbdbdb;">
+  <div id="ob-search_refine" class="col-xs-6 col-md-3 collapse" style="border-start: 1px solid #dbdbdb;">
 
 [% IF hits > 0 %]
 [% PROCESS common/subtemplate name="search_facet" %]
@@ -84,8 +84,8 @@
 <div class="ob-resultlist">
   <div class="ob-resultheader pb-4">
     <div class="left">
-      <div class="navbar navbar-default d-block d-md-none pl-0 mt-0" style="z-index: 1"><!-- only visible in xs-->
-        <div class="container-fluid pl-0">
+      <div class="navbar navbar-default d-block d-md-none ps-0 mt-0" style="z-index: 1"><!-- only visible in xs-->
+        <div class="container-fluid ps-0">
           <button class="btn btn-primary navbar-btn" data-toggle="collapse" data-target="#ob-search_refine">
            <i class="fa fa-filter"></i> [% msg.maketext("Filtern") %]
           </button>

@@ -25,7 +25,7 @@
   #USE dumper;dumper.dump(available_authenticators);dumper.dump(available_authenticator_types);
 %]
 
-        <div class="jumbotron">
+        <div class="ob-jumbotron">
          <h1 class="display-4">[% msg.maketext("Anmelden") %]</h1>
  	 <p>An diesem Portal können sich nur registrierte Mitarbeiter der Bibliotheken der UzK anmelden.</p>
 	 <div id="login_targets" class="accordion">
@@ -273,7 +273,7 @@
 [% END %]
 
          </div><!-- End: login_targets -->
-        </div><!-- End: jumbotron -->
+        </div><!-- End: ob-jumbotron -->
 
 
 <p/>

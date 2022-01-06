@@ -77,7 +77,7 @@ function update_collection(yourform, checked, item) {
 [%   END %]
 
 [% ELSE %]
-         <div class="jumbotron">
+         <div class="ob-jumbotron">
 <h1 class="display-4">[% msg.maketext("Derzeit ist Ihre Merkliste leer") %]</h1>
          </div>
 [% END %]

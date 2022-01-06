@@ -16,7 +16,7 @@
 [%- popularity_i18n = msg.maketext("Popularität") -%]
 
 [% IF private_tags.size == 0 %]
-<div class="jumbotron">
+<div class="ob-jumbotron">
    <h1 class="display-4">Bisher wurden keine Tags vergeben</h1>
 </div>
 [% ELSE %]

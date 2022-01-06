@@ -15,7 +15,7 @@
 [%# USE dumper;dumper.dump(reminders)%]
 
 [% IF reminders.fee.size == 0 %]
-<div class="jumbotron">
+<div class="ob-jumbotron">
 <h1 class="display-4">[% msg.maketext("Es sind keine Gebühren angefallen.") %]</h1>
 </div>
 [% ELSE  %]

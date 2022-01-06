@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-        <div class="jumbotron">
+        <div class="ob-jumbotron">
          <h1 class="display-4">[% msg.maketext("Registrieren") %]</h1>
 
 <form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('registrations_loc') %]" enctype="application/x-www-form-urlencoded">
@@ -42,4 +42,4 @@
 
 </form>
 
-</div><!-- End: jumbotron -->
+</div><!-- End: ob-jumbotron -->

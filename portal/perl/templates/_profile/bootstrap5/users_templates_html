@@ -34,7 +34,7 @@
 </table>
 </div>
 [% ELSE %]
-<div class="jumbotron">
+<div class="ob-jumbotron">
 <h1 class="display-4">[% msg.maketext('Keine Templates vorhanden') %]</h1>
 
 <p class="lead">[% msg.maketext('Ihrer Kennung sind noch keine Templates zugeordnet') %]</p>

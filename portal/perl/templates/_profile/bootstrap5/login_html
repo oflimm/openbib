@@ -19,7 +19,7 @@
  # USE dumper;dumper.dump(available_authenticators);
 %]
 
-        <div class="jumbotron">
+        <div class="ob-jumbotron">
          <h1 class="display-4">[% msg.maketext("Anmelden") %]</h1>
 	 <div id="login_targets" class="accordion">
 
@@ -72,7 +72,7 @@
   </div>
 </div>
 
-        </div><!-- End: jumbotron -->
+        </div><!-- End: ob-jumbotron -->
 
 
 <p/>

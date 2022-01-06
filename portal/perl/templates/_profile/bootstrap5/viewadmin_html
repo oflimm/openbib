@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 
-<div class="jumbotron">
+<div class="ob-jumbotron">
           <h1 class="display-4">Die Portal Administration</h1>
 
 <p>Der Portaladministrator kann hier seinen View administrieren, lokale Rollen vergeben sowie Nutzern seines Portals diesen lokalen Rollen zuordnen.</p>

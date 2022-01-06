@@ -93,7 +93,7 @@ class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearof
 <!-- End Reviews -->
 
 [% ELSE %]
-<div class="jumbotron">
+<div class="ob-jumbotron">
 <h1 class="display-4">[% msg.maketext('Keine Rezensionen vorhanden') %]</h1>
 
 <p class="lead">[% msg.maketext("Bisher haben Sie noch keine Rezensionen geschrieben oder Bewertungen vergeben.") %]</p>

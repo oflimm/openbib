@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 
-<div class="jumbotron mt-3">
+<div class="ob-jumbotron mt-3">
 
 <h1 class="display-4">[% msg.maketext("Ihr Bestellwunsch wurde an unsere Benutzungsabteilung übermittelt und liegt in der Regel innerhalb von 3 Arbeitstagen 14 Tage lang für Sie bereit.") %]</h1>
 

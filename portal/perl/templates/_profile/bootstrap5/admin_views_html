@@ -29,32 +29,30 @@
 <form method="post" action="[% path_prefix %]/[% config.get('views_loc') %]">
 
 <div class="form-floating mb-3">
-<label for="viewname">[% msg.maketext("Viewname") %]</label>
 <input class="form-control" type="text" name="viewname" id="viewname"/>
+<label for="viewname">[% msg.maketext("Viewname") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="description">[% msg.maketext("Beschreibung") %]</label>
 <input class="form-control" type="text" name="description" id="description"/>
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="profilename">[% msg.maketext("Katalog-Profile") %]</label>
-
 <select class="form-control" id="profilename" name="profilename">
 [% FOREACH profile IN config.get_profileinfo_overview.all %]
   <option value="[% profile.profilename %]">[% profile.description %]</option>
 [% END %]
 </select>
+<label for="profilename">[% msg.maketext("Katalog-Profile") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="active">[% msg.maketext("Aktiv") %]</label>
-
 <select class="form-control" id="active" name="active">
 <option value="true">[% msg.maketext("Ja") %]</option>
 <option value="false">[% msg.maketext("Nein") %]</option>
 </select>
+<label for="active">[% msg.maketext("Aktiv") %]</label>
 </div>
 
 <button type="submit" name="do_new" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>

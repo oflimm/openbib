@@ -18,20 +18,20 @@
 <h1 class="display-5">[% msg.maketext("Katalog-Profil bearbeiten") %]</h1>
 
 <div class="form-floating mb-3">
-<label for="profilename">[% msg.maketext("Profil-Name") %]</label>
 <span class="form-control">[% profileinfo.profilename %]</span>
+<label for="profilename">[% msg.maketext("Profil-Name") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="description">[% msg.maketext("Beschreibung") %]</label>
 <input class="form-control" type="text" name="description" id="description" value="[% profileinfo.description %]" size="20" />
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
 </div>
 
 <h1 class="display-5">[% msg.maketext("Neues Katalog-Profil mit diesen Daten erzeugen") %]</h1>
 
 <div class="form-floating mb-3">
-<label for="newprofilename">[% msg.maketext("Neuer Profil-Name") %]</label>
 <input class="form-control" type="text" name="newprofilename" id="newprofilename" value="" size="20" />
+<label for="newprofilename">[% msg.maketext("Neuer Profil-Name") %]</label>
 </div>
 
 
@@ -63,13 +63,13 @@
 <form method="post" action="[% path_prefix %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %]/[% config.get('orgunits_loc') %]">
 
 <div class="form-floating mb-3">
-<label for="orgunitname">[% msg.maketext("Name der Organisationseinheit") %]</label>[
 <input class="form-control" type="text" name="orgunitname" id="orgunitname" />
+<label for="orgunitname">[% msg.maketext("Name der Organisationseinheit") %]</label>[
 </div>
 
 <div class="form-floating mb-3">
-<label for="description">[% msg.maketext("Beschreibung") %]</label>
 <input class="form-control" type="text" name="description" id="description" size="20" />
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
 </div>
 
 <button type="submit" name="do_new" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>

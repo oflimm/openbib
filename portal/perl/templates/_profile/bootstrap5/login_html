@@ -49,13 +49,15 @@
 <p/>
 
 <div class="form-floating mb-3">
-<label for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>
 <input class="form-control" type="text" name="username" id="email_username" value="[% username %]" />
+<label for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>
 </div>
+
 <div class="form-floating mb-3">
-<label for="email_password"/>[% msg.maketext("Passwort") %]</label>
 <input class="form-control" type="password" name="password" id="email_username" />
+<label for="email_password"/>[% msg.maketext("Passwort") %]</label>
 </div>
+
 <div>
 <a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('registrations_loc') %].html">[% msg.maketext("Registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('passwords_loc') %].html?l=[% lang %]">[% msg.maketext("Passwort vergessen oder Konto gesperrt?") %]</a>
 </div>

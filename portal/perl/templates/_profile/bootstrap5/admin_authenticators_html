@@ -29,32 +29,32 @@
 <form method="post" action="[% path_prefix %]/[% config.get('authenticators_loc') %]">
 
 <div class="form-floating mb-3">
-<label for="name">[% msg.maketext("Name") %]</label>
 <input class="form-control" type="text" name="name" id="name" />
+<label for="name">[% msg.maketext("Name") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="description">[% msg.maketext("Beschreibung") %]</label>
 <input class="form-control" type="text" name="description" id="description" />
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="type">[% msg.maketext("Typ") %]</label>
   <select class="form-control" name="type" id="type">
     <option value="self">[% msg.maketext("Selbstregistrierung") %]</option>
     <option value="ldap">[% msg.maketext("LDAP") %]</option>
     <option value="olws">[% msg.maketext("OLWS") %]</option>
     <option value="paia">[% msg.maketext("PAIA") %]</option>
   </select>
+<label for="type">[% msg.maketext("Typ") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="views">[% msg.maketext("Views") %]</label>
   <select class="form-control" name="views" multiple="multiple" size="5" id="views">
 [% FOREACH thisview IN config.get_viewinfo_overview %]  
     <option value="[% thisview.viewname %]">[% thisview.viewname %] - [% thisview.description %]</option>
 [% END %]
   </select>
+<label for="views">[% msg.maketext("Views") %]</label>
 </div>
 
 

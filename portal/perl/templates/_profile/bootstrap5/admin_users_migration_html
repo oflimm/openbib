@@ -24,28 +24,28 @@ werden sollen.") %]
 </p>
 
 <div class="form-floating mb-3">
-<label for="oldusername">[% msg.maketext("Alte Benutzernummer bzw. E-Mail-Adresse") %]</label>
 <input class="form-control" type="text" name="oldusername" id="oldusername" />
+<label for="oldusername">[% msg.maketext("Alte Benutzernummer bzw. E-Mail-Adresse") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="newusername">[% msg.maketext("Neue Benutzernummer bzw. E-Mail-Adresse") %]</label>
 <input class="form-control" type="text" name="newusername" id="newusername" />
+<label for="newusername">[% msg.maketext("Neue Benutzernummer bzw. E-Mail-Adresse") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="migrate_collections">[% msg.maketext("Merkliste") %]</label>
 <input class="form-control" type="checkbox" name="migrate_collections" id="migrate_collections" value="1" checked="checked" />
+<label for="migrate_collections">[% msg.maketext("Merkliste") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="migrate_litlists">[% msg.maketext("Literaturlisten") %]</label>
 <input class="form-control" type="checkbox" name="migrate_litlists" id="migrate_litlists" value="1" checked="checked" />
+<label for="migrate_litlists">[% msg.maketext("Literaturlisten") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="migrate_tags">[% msg.maketext("Tags") %]</label>
 <input class="form-control" type="checkbox" name="migrate_tags" id="migrate_tags" value="1" checked="checked" />
+<label for="migrate_tags">[% msg.maketext("Tags") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Inhalte zu neuer Kennung verschieben") %]</button>

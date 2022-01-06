@@ -18,7 +18,6 @@
 <h1 class="display-5">[% msg.maketext("RSS-Einstellungen &auml;ndern") %]</h1>
 
 <div class="form-floating mb-3">
-<label for="rssfeeds">[% msg.maketext("RSS-Feed zu diesem View") %]</label>
 <select class="form-control" name="rssfeeds" id="rssfeeds" multiple="multiple" size="10">
 [% FOREACH singlefeed IN allrssfeeds %]
 [% feedid = singlefeed.feedid %]
@@ -26,10 +25,10 @@
 <option value="[% feedid %]" [% IF viewrssfeed.${feedid} %]selected="selected"[% END %]>[% singlefeed.dbname %]: [% dbinfo.get('dbnames').${singlefeed.dbname}.full |truncate(60) %]</option>
 [% END %]
 </select>
+<label for="rssfeeds">[% msg.maketext("RSS-Feed zu diesem View") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="primrssfeed">[% msg.maketext("Welcher RSS-Feed soll der prim&auml;re Feed f&uuml;r das Browser Auto-Discovery sein") %]</label>
 <select class="form-control" name="primrssfeed" id="primrssfeed">
 [% FOREACH singlefeed IN allrssfeeds %]
 [% feedid = singlefeed.feedid %]
@@ -37,6 +36,7 @@
 <option value="[% feedid %]" [% IF viewinfo.rssid.id == feedid %]selected="selected"[% END %]>[% singlefeed.dbname %]: [% dbinfo.get('dbnames').${singlefeed.dbname}.full |truncate(60) %]</option>
 [% END %]
 </select>
+<label for="primrssfeed">[% msg.maketext("Welcher RSS-Feed soll der prim&auml;re Feed f&uuml;r das Browser Auto-Discovery sein") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Ändern") %]</button>

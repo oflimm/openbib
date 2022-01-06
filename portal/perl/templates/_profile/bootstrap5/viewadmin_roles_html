@@ -28,13 +28,13 @@
 <form method="post" action="[% path_prefix %]/[% config.get('viewadmin_loc') %]/[% config.get('roles_loc') %]">
 
 <div class="form-floating mb-3">
-<label for="rolename">[% msg.maketext("Name") %]</label>
 <input class="form-control" type="text" name="rolename" id="rolename"/>
+<label for="rolename">[% msg.maketext("Name") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="description">[% msg.maketext("Beschreibung") %]</label>
 <input class="form-control" type="text" name="description" id="description"/>
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
 </div>
 
 <button type="submit" name="do_new" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>

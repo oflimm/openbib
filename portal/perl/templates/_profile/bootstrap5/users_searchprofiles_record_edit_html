@@ -32,8 +32,8 @@ function update_fak(yourform, checked, fak) {
 <h1 class="display-5">[% msg.maketext("Suchprofil bearbeiten") %]</h1>
 
 <div class="form-floating mb-3">
-<label for="profilename">[% msg.maketext("Name") %]</label>
 <input class="form-control" type="text" name="profilename" id="profilename" value="[% profilename %]" />
+<label for="profilename">[% msg.maketext("Name") %]</label>
 </div>
 
 [%# USE dumper;dumper.dump(catdb)%]

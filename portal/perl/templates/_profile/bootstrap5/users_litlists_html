@@ -28,20 +28,19 @@
 <form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]">
 
 <div class="form-floating mb-3">
-<label for="title">[% msg.maketext("Titel der Liste") %]</label>
 <input class="form-control" type="text" name="title" id="title" size="50" />
+<label for="title">[% msg.maketext("Titel der Liste") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="type">[% msg.maketext("Sichtbarkeit") %]</label>
 <select class="form-control" name="type">
   <option value="1">[% msg.maketext("&ouml;ffentlich") %]</option>
   <option value="2">[% msg.maketext("privat") %]</option>
 </select>
+<label for="type">[% msg.maketext("Sichtbarkeit") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="topics">[% msg.maketext("Ordnen Sie Ihre Literaturliste thematisch ein") %]</label>
 <select class="form-control" name="topics" multiple="multiple" size="5">
 
 [% FOREACH topic IN topics %]
@@ -49,6 +48,7 @@
 
 [% END %]
 </select>
+<label for="topics">[% msg.maketext("Ordnen Sie Ihre Literaturliste thematisch ein") %]</label>
 </div>
 
 <button input type="submit" name="do_addlist" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>

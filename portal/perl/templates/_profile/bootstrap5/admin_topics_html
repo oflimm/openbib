@@ -30,13 +30,13 @@
 <form method="post" action="[% path_prefix %]/[% config.get('topics_loc') %]">
 
 <div class="form-floating mb-3">
-<label for="name">[% msg.maketext("Themengebiet") %]</label>
 <input class="form-control" type="text" name="name" id="name" size="8" />
+<label for="name">[% msg.maketext("Themengebiet") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="description">[% msg.maketext("Beschreibung") %]</label>
 <input class="form-control" type="text" name="description" id="description" size="20" />
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
 </div>
 
 <button type="submit" name="do_new" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>

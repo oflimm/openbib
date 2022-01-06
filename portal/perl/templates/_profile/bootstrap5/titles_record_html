@@ -255,18 +255,18 @@ value="5"/>&nbsp;[% msg.maketext("sehr gut") %]</td></tr>
 <h4>[% msg.maketext("Rezension") %]</h4>
 
 <div class="form-floating mb-3">
-<label for="review_nickname">[% msg.maketext("Pseudonym") %]</label>
 <input class="form-control" id="review_nickname" type="text" name="nickname" value="" />
+<label for="review_nickname">[% msg.maketext("Pseudonym") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="review_title">[% msg.maketext("Titel") %]</label>
 <input class="form-control" id="review_title" type="text" name="title" value=""  />
+<label for="review_title">[% msg.maketext("Titel") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="review_text">[% msg.maketext("Rezension") %]</label>
 <textarea class="form-control" id="review_text" cols="80" rows="10" name="review"></textarea>
+<label for="review_text">[% msg.maketext("Rezension") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Aufnehmen") %]</button>&nbsp;&nbsp;<button class="btn btn-primary mb-2" type="reset">[% msg.maketext("Löschen") %]</button>

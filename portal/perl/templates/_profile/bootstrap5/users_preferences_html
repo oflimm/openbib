@@ -274,13 +274,13 @@
 </div>
 
 <div class="form-floating mb-3 mt-4">
-<label for="bibsonomy_user">[% msg.maketext("BibSonomy-API-User") %]</label>
 <input class="form-control" type="text" name="bibsonomy_user" id="bibsonomy_user" value="[% bibsonomy.user %]"/>
+<label for="bibsonomy_user">[% msg.maketext("BibSonomy-API-User") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="bibsonomy_key">[% msg.maketext("BibSonomy-API-Key") %]</label>
 <input class="form-control" type="text" name="bibsonomy_key" id="bibsonomy_key" value="[% bibsonomy.key %]"/>
+<label for="bibsonomy_key">[% msg.maketext("BibSonomy-API-Key") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2 mt-4" type="submit">[% msg.maketext("&Auml;ndern") %]</button>

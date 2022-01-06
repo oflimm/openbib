@@ -29,8 +29,8 @@
 <form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %]">
 
 <div class="form-floating mb-3">
-<label for="profilename">[% msg.maketext("Names des Profils") %]</label>
 <input class="form-control" type="text" name="profilename" id="profilename" size="50" />
+<label for="profilename">[% msg.maketext("Names des Profils") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Neu") %]</button>

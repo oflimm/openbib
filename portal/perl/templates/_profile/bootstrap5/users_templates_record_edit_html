@@ -21,23 +21,23 @@
 <h1 class="display-5">[% msg.maketext("Template bearbeiten") %]</h1>
 
 <div class="form-floating mb-3">
-<label for="id">[% msg.maketext("Id") %]</label>
 <span class="form-control">[% templateinfo.id %]</span>
+<label for="id">[% msg.maketext("Id") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="templatelang">[% msg.maketext("Sprache") %]</label>
 <span class="form-control"><img style="vertical-align: bottom;" src="/images/openbib/[% templateinfo.templatelang %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",templateinfo.templatelang) %]" /></span>
+<label for="templatelang">[% msg.maketext("Sprache") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="viewname">[% msg.maketext("View") %]</label>
 <span class="form-control">[% templateinfo.viewid.viewname %]: [% templateinfo.viewid.description %]</span>
+<label for="viewname">[% msg.maketext("View") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="templatename">[% msg.maketext("Name") %]</label>
 <span class="form-control">[% templateinfo.templatename %]</span>
+<label for="templatename">[% msg.maketext("Name") %]</label>
 </div>
 
 <div class="form-floating mb-3">

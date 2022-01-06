@@ -25,13 +25,13 @@
 <h1 class="display-5">[% msg.maketext("Ihre Eingabe") %]</h1>
 
 <div class="form-floating mb-3">
-<label for="email">[% msg.maketext("E-Mail-Adresse") %]</label>
 <input class="form-control" [% IF user.ID.substr('@') %]placeholder="[% user.ID %]"[% END %] type="text" name="email" id="email" value="[% username %]" />
+<label for="email">[% msg.maketext("E-Mail-Adresse") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="subject">[% msg.maketext("Betreff") %]</label>
 <input class="form-control" placeholder="[% msg.maketext("Meine Merkliste") %]" type="text" name="subject" id="subject" value="" />
+<label for="subject">[% msg.maketext("Betreff") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2 type="submit">[% msg.maketext("Abschicken") %]</button>

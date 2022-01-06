@@ -690,45 +690,45 @@ function update_gnd (){
     this_searchfield = 'freesearch';
 -%]
 <div class="ym-fbox-text">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Freie Suche") %]</label>
 <input onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" size="30" maxlength="200" />
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Freie Suche") %]</label>
 </div>
 
 [%- cgiparam = config.searchfield.gnd.prefix;
     this_searchfield = 'gnd';
  -%]
 <div class="ym-fbox-text">
-<label for="autocomplete_[% cgiparam %]">GND</label>
 <input onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="autocomplete_[% cgiparam %]">GND</label>
 </div>
 
 [%- cgiparam = config.searchfield.person.prefix;
     this_searchfield = 'person';
  -%]
 <div class="ym-fbox-text">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Personen") %]</label>
 <input onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" size="30" maxlength="200" />
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Personen") %]</label>
 </div>
 
 [%- cgiparam = config.searchfield.corporatebody.prefix;
     this_searchfield = 'corporatebody';
  -%]
 <div class="ym-fbox-text">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Institutionen") %]</label>
 <input onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" size="30" maxlength="200" />
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Institutionen") %]</label>
 </div>
 
 [%- cgiparam = config.searchfield.subject.prefix;
     this_searchfield = 'subject';
  -%]
 <div class="ym-fbox-text">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Schlagworte") %]</label>
 <input onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" size="30" maxlength="200" />
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Schlagworte") %]</label>
 </div>
 
 <div class="ym-fbox-select">
-<label for="[% cgiparam %]">[% msg.maketext("in:") %]</label>
 [% PROCESS common/subtemplate name="searchforms_record_profile" %]
+<label for="[% cgiparam %]">[% msg.maketext("in:") %]</label>
 </div>
 
 <p/>

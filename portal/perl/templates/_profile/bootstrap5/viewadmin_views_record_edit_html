@@ -18,112 +18,109 @@
 <h1 class="display-5">[% msg.maketext("View bearbeiten") %]</h1>
 
 <div class="form-floating mb-3">
-<label for="viewname">[% msg.maketext("Viewname") %]</label>
 <span class="form-control">[% viewinfo.viewname %]</span>
+<label for="viewname">[% msg.maketext("Viewname") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="description">[% msg.maketext("Beschreibung") %]</label>
 <input class="form-control" type="text" name="description" id="description" value="[% viewinfo.description %]" size="40" />
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="profilename">[% msg.maketext("Katalog-Profile") %]</label>
-
 <select class="form-control" id="profilename" name="profilename">
 [% FOREACH profile IN config.get_profileinfo_overview.all %]
   <option value="[% profile.profilename %]" [% IF viewinfo.profileid.id == profile.id %] selected="selected"[% END %]>[% profile.description %]</option>
 [% END %]
 </select>
+<label for="profilename">[% msg.maketext("Katalog-Profile") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="stripuri">[% msg.maketext("URI ohne View") %]</label>
-
 <select class="form-control" id="stripuri" name="stripuri">
 <option value="true" [% IF viewinfo.stripuri == 1 %]selected[% END %]>[% msg.maketext("Ja") %]</option>
 <option value="false" [% IF viewinfo.stripuri == 0 %]selected[% END %]>[% msg.maketext("Nein") %]</option>
 </select>
+<label for="stripuri">[% msg.maketext("URI ohne View") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="active">[% msg.maketext("Aktiv") %]</label>
-
 <select class="form-control" id="active" name="active">
 <option value="true" [% IF viewinfo.active == 1 %]selected[% END %]>[% msg.maketext("Ja") %]</option>
 <option value="false" [% IF viewinfo.active == 0 %]selected[% END %]>[% msg.maketext("Nein") %]</option>
 </select>
+<label for="active">[% msg.maketext("Aktiv") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="servername">[% msg.maketext("Eigener Servername in URI") %]</label>
 <input class="form-control" type="text" name="servername" id="servername" value="[% viewinfo.servername %]" size="40" />
+<label for="servername">[% msg.maketext("Eigener Servername in URI") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="start_loc">[% msg.maketext("Eigener Start-URI-Pfad") %]</label>
 <input class="form-control"  type="text" name="start_loc" id="start_loc" value="[% viewinfo.start_loc %]" size="40" />
+<label for="start_loc">[% msg.maketext("Eigener Start-URI-Pfad") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="databases">[% msg.maketext("Katalogauswahl zu diesem View") %]</label>
 <select class="form-control"  id="databases" name="databases" multiple="multiple" size="20">
 [% FOREACH singledb IN dbnames %]
 <option value="[% singledb %]" [% IF selected_viewdbs.${singledb} %]selected="selected"[% END %]>[% singledb %]: [% IF dbinfo.get('dbnames').${singledb}.short %][% dbinfo.get('dbnames').${singledb}.short %][% ELSE %][% dbinfo.get('dbnames').${singledb}.full %][% END %]</option>
 [% END %]
 </select>
+<label for="databases">[% msg.maketext("Katalogauswahl zu diesem View") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="locations">[% msg.maketext("Recherche-Einschränkung auf Standorte") %]</label>
 <select class="form-control"  id="locations" name="locations" multiple="multiple" size="20">
 [% FOREACH singleloc IN locations %]
 <option value="[% singleloc.identifier %]" [% IF selected_viewlocations.${singleloc.identifier} %]selected="selected"[% END %]>[% singleloc.identifier %]: [% singleloc.description %]</option>
 [% END %]
 </select>
+<label for="locations">[% msg.maketext("Recherche-Einschränkung auf Standorte") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="own_index">[% msg.maketext("Eigener Index") %]</label>
 <select class="form-control"  id="own_index" name="own_index">
 <option value="1" [% IF viewinfo.own_index %]selected="selected"[% END %]>[% msg.maketext("Ja") %]</option>
 <option value="0" [% IF NOT viewinfo.own_index %]selected="selected"[% END %]>[% msg.maketext("Nein") %]</option>
 </select>
+<label for="own_index">[% msg.maketext("Eigener Index") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="force_login">[% msg.maketext("Login zwingend für den Zugriff") %]</label>
 <select class="form-control"  id="force_login" name="force_login">
 <option value="1" [% IF viewinfo.force_login %]selected="selected"[% END %]>[% msg.maketext("Ja") %]</option>
 <option value="0" [% IF NOT viewinfo.force_login %]selected="selected"[% END %]>[% msg.maketext("Nein") %]</option>
 </select>
+<label for="force_login">[% msg.maketext("Login zwingend für den Zugriff") %]</label>
 </div>
 
 
 <div class="form-floating mb-3">
-<label for="restrict_intranet">[% msg.maketext("Einschränkung auf Intranet-IPs") %]</label>
 <textarea class="form-control" name="restrict_intranet" id="restrict_intranet" value="[% viewinfo.restrict_intranet %]" rows="5">[% viewinfo.restrict_intranet %]</textarea>
+<label for="restrict_intranet">[% msg.maketext("Einschränkung auf Intranet-IPs") %]</label>
 </div>
 
 
 <div class="form-floating mb-3">
-<label for="roles">[% msg.maketext("Berechtigte Rollen für den Zugriff") %]</label>
 <select class="form-control"  id="roles" name="roles" multiple="multiple" size="20">
 [% FOREACH singlerole IN config.get_roleinfo_overview.all %]
 <option value="[% singlerole.rolename %]" [% IF selected_viewroles.${singlerole.rolename} %]selected="selected"[% END %]>[% singlerole.description%][% IF user.role_exists_in_view({ viewname = view, rolename = singlerole.rolename})%] ([% msg.maketext("lokal") %])[% END %]</option>
 [% END %]
 </select>
+<label for="roles">[% msg.maketext("Berechtigte Rollen für den Zugriff") %]</label>
 </div>
 
 [% authenticators = config.get_authenticators %]
 [% IF authenticators.size > 0 %]
 <div class="form-floating mb-3">
-<label for="authenticators">[% msg.maketext("Anmeldeziele") %]</label>
 <select class="form-control"  id="authenticators" name="authenticators" multiple="multiple" size="20">
 [% FOREACH target IN authenticators %]
 <option value="[% target.id %]" [% IF selected_viewauthenticators.${target.id} %]selected="selected"[% END %]>[% target.description%]</option>
 [% END %]
 </select>
+<label for="authenticators">[% msg.maketext("Anmeldeziele") %]</label>
 </div>
 [% END %]
 <button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Ändern") %]</button>

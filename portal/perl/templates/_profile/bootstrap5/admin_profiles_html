@@ -29,13 +29,13 @@
 <form method="post" action="[% path_prefix %]/[% config.get('profiles_loc') %]">
 
 <div class="form-floating mb-3">
-<label for="profilename">[% msg.maketext("Profil-Name") %]</label>
 <input class="form-control" type="text" name="profilename" id="profilename" size="8" />
+<label for="profilename">[% msg.maketext("Profil-Name") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="description">[% msg.maketext("Beschreibung") %]</label>
 <input class="form-control" type="text" name="description" id="description" size="20" />
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
 </div>
 
 <button type="submit" name="do_new" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>

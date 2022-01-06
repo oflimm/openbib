@@ -18,18 +18,18 @@
 <h1 class="display-5">[% msg.maketext("Rolle bearbeiten") %]</h1>
 
 <div class="form-floating mb-3">
-<label for="id">[% msg.maketext("Id") %]</label>
 <span class="form-control">[% roleinfo.id %]</span>
+<label for="id">[% msg.maketext("Id") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="rolename">[% msg.maketext("Name") %]</label>
 <input class="form-control" type="text" name="rolename" id="rolename" value="[% roleinfo.rolename %]"/>
+<label for="rolename">[% msg.maketext("Name") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="description">[% msg.maketext("Beschreibung") %]</label>
 <input class="form-control" type="text" name="description" id="description" value="[% roleinfo.description %]"/>
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
 </div>
 
 

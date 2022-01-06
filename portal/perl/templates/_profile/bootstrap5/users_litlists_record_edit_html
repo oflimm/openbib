@@ -69,23 +69,23 @@
 <form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]">
 
 <div class="form-floating mb-3">
-<label for="title">[% msg.maketext("Titel der Liste") %]</label>
 <input class="form-control" type="text" name="title" id="title" value="[% litlist.properties.title %]" size="20"/>
+<label for="title">[% msg.maketext("Titel der Liste") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="type">[% msg.maketext("Sichtbarkeit") %]</label>
 <select class="form-control" name="type" id="type"><option value="1" [% IF litlist.properties.type == 1%] selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option><option value="2"[% IF litlist.properties.type == 2 %] selected="selected"[% END %]>[% msg.maketext("privat") %]</option></select>
+<label for="type">[% msg.maketext("Sichtbarkeit") %]</label>
 </div>
 
 [%- IF userrole.${"librarian"} || userrole.${"lecturer"} -%]
 <div class="form-floating mb-3">
-<label for="lecture">[% msg.maketext("Offiziell") %]</label>
 <select class="form-control" name="lecture" id="lecture"><option value="1" [% IF litlist.properties.lecture == 1%] selected="selected"[% END %]>[% msg.maketext("Ja") %]</option><option value="0"[% IF litlist.properties.lecture == 0 %] selected="selected"[% END %]>[% msg.maketext("Nein") %]</option></select>
+<label for="lecture">[% msg.maketext("Offiziell") %]</label>
+</div>
 [%- END -%]
 
 <div class="form-floating mb-3">
-<label for="topics">Ordnen Sie Ihre Literaturliste thematisch ein</label>
 <select class="form-control" name="topics" id="topics" multiple="multiple" size="5">
 
 [% FOREACH topic IN topics %]
@@ -93,6 +93,7 @@
 [% END %]
 
 </select>
+<label for="topics">Ordnen Sie Ihre Literaturliste thematisch ein</label>
 </div>
 
 <button type="submit" name="do_changelist" class="btn btn-primary mb-2">[% msg.maketext("&Auml;ndern") %]</button>

@@ -28,34 +28,34 @@
 <form method="post" action="[% path_prefix %]/[% config.get('templates_loc') %]" >
 
 <div class="form-floating mb-3">
-<label for="templatelang">[% msg.maketext("Sprache") %]</label>
   <select class="form-control" name="templatelang" id="templatelang">
      <option value="de">[% msg.maketext("Deutsch") %]</option>
      <option value="en">[% msg.maketext("Englisch") %]</option>
   </select>
+<label for="templatelang">[% msg.maketext("Sprache") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="templatename">[% msg.maketext("Name") %]</label>
   <select class="form-control" name="templatename" id="templatename">
 [% FOREACH templatename IN all_templates.keys.sort %]    
      <option value="[% templatename %]">[% templatename %]</option>
 [% END %]
   </select>
+<label for="templatename">[% msg.maketext("Name") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="viewname">[% msg.maketext("View") %]</label>
   <select class="form-control" name="viewname" id="viewname">
 [% FOREACH viewinfo IN config.get_viewinfo_overview %]    
      <option value="[% viewinfo.viewname %]">[% viewinfo.viewname %]: [% viewinfo.description %]</option>
 [% END %]
   </select>
+<label for="viewname">[% msg.maketext("View") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="templatetext">[% msg.maketext("Text") %]</label>
 <textarea class="form-control" name="templatetext" id="templatetext" cols="60" rows="20"  ></textarea>
+<label for="templatetext">[% msg.maketext("Text") %]</label>
 </div>
 
 <button type="submit" name="do_new" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>

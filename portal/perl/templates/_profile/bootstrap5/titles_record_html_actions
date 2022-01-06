@@ -118,8 +118,8 @@
 <input type="hidden" name="titleid"           value="[% record.get_encoded_id %]" />
 <input type="hidden" name="dbname"            value="[% record.database %]" />
 <div class="form-floating mb-3">
-<label for="litlistid">[% msg.maketext("Name") %]</label>
 <select class="form-control" name="litlistid" id="litlistid">[% FOREACH litlist IN userlitlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>
+<label for="litlistid">[% msg.maketext("Name") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Los") %]</button>
@@ -136,13 +136,13 @@
 <input type="hidden" name="dbname"           value="[% record.database %]" />
 
 <div class="form-floating mb-3">
-<label for="title">[% msg.maketext("Name") %]</label>
 <input class="form-control" type="text" name="title" id="title" size="20" />
+<label for="title">[% msg.maketext("Name") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="type">[% msg.maketext("Sichtbarkeit") %]</label>
 <select class="form-control" name="type" id="type"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select>
+<label for="type">[% msg.maketext("Sichtbarkeit") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Los") %]</button>
@@ -193,16 +193,16 @@
 <legend>[% msg.maketext("Eingabe neuer Tags") %]</legend>
 
 <div class="form-floating mb-3">
-<label for="tags">[% msg.maketext("Tags") %]</label>
 <input class="form-control" type="text" name="tags" value="" size="20" maxlength="200" id="tags"/>
+<label for="tags">[% msg.maketext("Tags") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="tags_type">[% msg.maketext("Sichtbarkeit") %]</label>
 <select class="form-control" name="type" id="tags_type">
   <option value="1">[% msg.maketext("&ouml;ffentlich") %]</option>
   <option value="2">[% msg.maketext("privat") %]</option>
 </select>
+<label for="tags_type">[% msg.maketext("Sichtbarkeit") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Hinzuf&uuml;gen") %]</button>
@@ -289,16 +289,16 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 <input type="hidden" name="redirect_to" value="[% uri_escape(location) %]" />
 
 <div class="form-floating mb-3">
-<label for="tags">[% msg.maketext("Tags") %]</label>
 <input class="form-control" type="text" name="tags" id="tags" value="" size="30" maxlength="200"/>
+<label for="tags">[% msg.maketext("Tags") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="type">[% msg.maketext("Typ:") %]</label>
 <select class="form-control" name="type">
   <option value="1" [% IF private_tags.first.type == 1 %]selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option>
   <option value="2" [% IF private_tags.first.type == 2 %]selected="selected"[% END %]>[% msg.maketext("privat") %]</option>
 </select>
+<label for="type">[% msg.maketext("Typ:") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Hinzuf&uuml;gen") %]</button>

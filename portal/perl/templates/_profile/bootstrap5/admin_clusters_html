@@ -27,26 +27,26 @@
 <form method="post" action="[% path_prefix %]/[% config.get('clusters_loc') %]" >
 
 <div class="form-floating mb-3">
-<label for="description">[% msg.maketext("Beschreibung") %]</label>
 <input class="form-control" type="text" name="description" id="description"/>
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="status">[% msg.maketext("Status") %]</label>
   <select class="form-control" name="status" id="status">
      <option value="">[% msg.maketext("Keiner") %]</option>
      <option value="updating">[% msg.maketext("Aktualisieren") %]</option>
      <option value="updating_done" selected>[% msg.maketext("Fertig mit Aktualisierung") %]</option>
      <option value="searchable" selected>[% msg.maketext("Recherchierbar") %]</option>
   </select>
+<label for="status">[% msg.maketext("Status") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="active">[% msg.maketext("Aktiv") %]</label>
   <select class="form-control" name="active" id="active">
      <option value="true">[% msg.maketext("Ja") %]</option>
      <option value="false" selected>[% msg.maketext("Nein") %]</option>
   </select>
+<label for="active">[% msg.maketext("Aktiv") %]</label>
 </div>
 
 <button type="submit" name="do_new" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>

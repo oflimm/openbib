@@ -22,8 +22,8 @@
 <h3>[% msg.maketext("Tag in allen Titeln ändern") %]</h3>
 
 <div class="form-floating mb-3">
-<label for="to">[% msg.maketext("Neuer Tagname") %]</label>
 <input class="form-control" type="text" name="to" id="to" />
+<label for="to">[% msg.maketext("Neuer Tagname") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Ändern") %]</button>

@@ -19,13 +19,13 @@
 <form method="post" action="[% path_prefix %]/[% config.get('tags_loc') %]" enctype="application/x-www-form-urlencoded">
 
 <div class="form-floating mb-3">
-<label for="oldtag">[% msg.maketext("Zu ersetzendes Tag") %]</label>
 <input class="form-control" type="text" name="oldtag" size="30" id="oldtag">
+<label for="oldtag">[% msg.maketext("Zu ersetzendes Tag") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<label for="newtag">[% msg.maketext("Neuer Tag-Name") %]</label>
 <input class="form-control" type="text" name="newtag" size="30" id="newtag">
+<label for="newtag">[% msg.maketext("Neuer Tag-Name") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2" type="submit" name="do_change">[% msg.maketext("&Auml;ndern") %]"></button>

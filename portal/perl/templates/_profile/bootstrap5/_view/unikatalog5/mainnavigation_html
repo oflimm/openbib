@@ -206,7 +206,7 @@
     </ul> -->
 [% END # End: suppress_unauthorized %]
 
-    <ul class="nav navbar-nav flex-row justify-content-between ms-auto">
+    <ul class="nav navbar-nav flex-row justify-content-between ms-auto me-3 text-white">
            <li class="nav-item[% IF layout_param.active_menu == "collection" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %]</a></li>
 
 [%     IF config.get_viewauthenticators(view) %]
@@ -260,7 +260,7 @@
   </div>
 </nav>
 
-<hr/>
+<div class="uzk15_header_separator"/></div>
 
 <div class="navbottom ps-4 row">
 
@@ -300,7 +300,7 @@
 <input type="hidden" name="st"         value="1" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
 
-<div class="container justify-content-center border shadow rounded ps-2 pe-2 pt-3 pb-2 mb-4">
+<div class="container justify-content-center border shadow rounded ps-5 pe-5 pt-3 pb-2 mb-4">
     <div class="row">    
         <div class="col">
             <div class="input-group">

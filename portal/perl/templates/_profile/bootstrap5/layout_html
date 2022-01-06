@@ -35,7 +35,7 @@
     [% IF layout_param.sidebar_template %]
     <!-- begin: Layout with collapsable sidebar -->
     <style>
-    [data-toggle="collapse"] {
+    [data-bs-toggle="collapse"] {
       cursor: pointer;
     }
 

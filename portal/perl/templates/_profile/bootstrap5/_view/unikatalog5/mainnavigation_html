@@ -54,7 +54,7 @@
 
   <div class="collapse navbar-collapse" id="navbarToggler">
 
-     <div id="navbar-dismiss" class="float-end text-white" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+     <div id="navbar-dismiss" class="float-end text-white" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <i class="fas fa-window-close fa-2x p-1"></i>
      </div>
 
@@ -101,7 +101,7 @@
 
   <div class="collapse navbar-collapse" id="userToggler">
 
-     <div id="navbar-user-dismiss" class="float-end text-white" data-toggle="collapse" data-target="#userToggler" aria-controls="userToggler" aria-expanded="false" aria-label="Toggle user account">
+     <div id="navbar-user-dismiss" class="float-end text-white" data-bs-toggle="collapse" data-bs-target="#userToggler" aria-controls="userToggler" aria-expanded="false" aria-label="Toggle user account">
             <i class="fas fa-window-close fa-2x p-1"></i>
      </div>
 
@@ -174,8 +174,8 @@
     <h1 class="ms-0">Universität zu Köln</h1>
   </a>
   <div class="d-flex justify-content-end">
-    <span class="d-lg-none me-4 p-1" data-toggle="collapse" data-target="#userToggler" aria-controls="userToggler" aria-expanded="false" aria-label="Toggle user controls"><i class="fas fa-user fa-2x"></i></span>
-    <span class="d-lg-none p-1" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-bars fa-2x"></i></span>
+    <span class="d-lg-none me-4 p-1" data-bs-toggle="collapse" data-bs-target="#userToggler" aria-controls="userToggler" aria-expanded="false" aria-label="Toggle user controls"><i class="fas fa-user fa-2x"></i></span>
+    <span class="d-lg-none p-1" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-bars fa-2x"></i></span>
   </div>
   <div class="collapse navbar-collapse"">
 <!--    <a class="navbar-brand" href="#">Hidden brand</a> -->
@@ -183,7 +183,7 @@
 <!--    <ul class="navbar-nav me-auto mt-2 mt-lg-0">
 
       <li class="nav-item[% IF layout_param.active_menu == "search" %] active[% END %] dropdown">
-       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           [% msg.maketext("Suche") %]
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -194,7 +194,7 @@
 
 
       <li class="nav-item[% IF layout_param.active_menu == "browse" %] active[% END %] dropdown">
-       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           [% msg.maketext("Browsen") %]
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -307,7 +307,7 @@
                 <input required="required" id="to_focus" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Unikatalog (Bücher, E-Medien, Aufsätze &amp; mehr) und USB Website") %]" />
                 <span class="input-group-btn ps-1">
                     <button class="btn btn-primary" type="submit"><span class="fas fa-search d-md-none"></span><span class="d-none d-md-block font-weight-bold">[% msg.maketext("Suchen") %]</span></button>
-                    <span class="btn btn-primary fas fa-cog d-md-none" data-toggle="collapse" data-target="#search_options" aria-expanded="false"></span>
+                    <span class="btn btn-primary fas fa-cog d-md-none" data-bs-toggle="collapse" data-bs-target="#search_options" aria-expanded="false"></span>
                 </span>
             </div>
        </div>

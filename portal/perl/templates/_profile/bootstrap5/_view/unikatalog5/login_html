@@ -35,7 +35,7 @@
   <div class="card">
     <div class="card-header" id="headingOLWS">
       <h5 class="mb-0">
-        <a class="card-link collapsed" href="#collapseOLWS" data-toggle="collapse" data-target="#collapseOLWS" aria-expanded="false" aria-controls="collapseOLWS">
+        <a class="card-link collapsed" href="#collapseOLWS" data-bs-toggle="collapse" data-bs-target="#collapseOLWS" aria-expanded="false" aria-controls="collapseOLWS">
           [% msg.maketext("Anmeldung mit einem Benutzerausweis") %]
         </a>
       </h5>
@@ -84,7 +84,7 @@
   <div class="card">
     <div class="card-header" id="headingILS">
       <h5 class="mb-0">
-        <a class="card-link collapsed" href="#collapseILS" data-toggle="collapse" data-target="#collapseILS" aria-expanded="true" aria-controls="collapseILS">
+        <a class="card-link collapsed" href="#collapseILS" data-bs-toggle="collapse" data-bs-target="#collapseILS" aria-expanded="true" aria-controls="collapseILS">
           [% msg.maketext("Anmeldung mit einem Benutzerausweis") %]
         </a>
       </h5>
@@ -133,7 +133,7 @@
   <div class="card">
     <div class="card-header" id="headingPAIA">
       <h5 class="mb-0">
-        <a class="card-link collapsed" href="#collapsePAIA" data-toggle="collapse" data-target="#collapsePAIA" aria-expanded="false" aria-controls="collapsePAIA">
+        <a class="card-link collapsed" href="#collapsePAIA" data-bs-toggle="collapse" data-bs-target="#collapsePAIA" aria-expanded="false" aria-controls="collapsePAIA">
           [% msg.maketext("Anmeldung mit einem Benutzerausweis") %]
         </a>
       </h5>
@@ -182,7 +182,7 @@
   <div class="card">
     <div class="card-header" id="headingLDAP">
       <h5 class="mb-0">
-        <a class="card-link collapsed" href="#collapseLDAP" data-toggle="collapse" data-target="#collapseLDAP" aria-expanded="false" aria-controls="collapseLDAP">
+        <a class="card-link collapsed" href="#collapseLDAP" data-bs-toggle="collapse" data-bs-target="#collapseLDAP" aria-expanded="false" aria-controls="collapseLDAP">
           [% msg.maketext("Anmeldung über einen Verzeichnis-Dienst") %]
         </a>
       </h5>
@@ -231,7 +231,7 @@
   <div class="card">
     <div class="card-header" id="headingSelf">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseSelf" data-toggle="collapse" data-target="#collapseSelf" aria-expanded="false" aria-controls="collapseSelf">
+        <a class="card-link" href="#collapseSelf" data-bs-toggle="collapse" data-bs-target="#collapseSelf" aria-expanded="false" aria-controls="collapseSelf">
           [% msg.maketext("Anmeldung mit einer E-Mail-Adresse") %]
         </a>
       </h5>

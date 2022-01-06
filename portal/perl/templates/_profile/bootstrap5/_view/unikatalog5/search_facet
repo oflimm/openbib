@@ -413,7 +413,7 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(
 [% IF separate_refine %]
 [%# USE dumper;dumper.dump(have_filter)%]
 [%         IF searchquery.get_filter.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-database[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-database[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Aktive Filter") %] 
         </h4>
         <ul id="group-database[% idsuffix %]" class="list-group in collapse show">
@@ -459,7 +459,7 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(
 [% IF qopts.get_option('sb') == "eds" %]
 <!-- Begin eds source facet -->
 [%         IF facets.defined('source') && facets.source.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-source[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-source[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Quelle") %] 
         </h4>
         <ul id="group-source[% idsuffix %]" class="list-group in collapse show">
@@ -488,7 +488,7 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(
 
 <!-- Begin database facet -->
 [%         IF 1 == 0 && facets.defined('database') && facets.database.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-database[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-database[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Katalog") %] 
         </h4>
         <ul id="group-database[% idsuffix %]" class="list-group in collapse show">
@@ -516,7 +516,7 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(
 
 <!-- Begin availability facet -->
 [%         IF facets.defined('availability') && facets.availability.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-availability[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-availability[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Verfügbarkeit") %] 
         </h4>
         <ul id="group-availability[% idsuffix %]" class="list-group in collapse show">
@@ -556,7 +556,7 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(
 
 <!-- Begin favlocation facet -->
 [%         IF facets.defined('favlocation') && facets.favlocation.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-favlocation[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-favlocation[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Mein Suchraum") %] 
         </h4>
         <ul id="group-favlocation[% idsuffix %]" class="list-group in collapse show">
@@ -584,7 +584,7 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(
 
 <!-- Begin elocation facet -->
 [%         IF facets.defined('elocation') && facets.elocation.size > 0 %]
-        <h4 class="ob-facet-title [% IF facets.elocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-toggle="collapse" data-target="#group-elocation[% idsuffix %]" aria-expanded=[% IF facets.elocation.size > 0 %]"false"[% ELSE %]"true"[% END %]>
+        <h4 class="ob-facet-title [% IF facets.elocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-bs-toggle="collapse" data-bs-target="#group-elocation[% idsuffix %]" aria-expanded=[% IF facets.elocation.size > 0 %]"false"[% ELSE %]"true"[% END %]>
            [% msg.maketext("E-Medien Quelle") %] 
         </h4>
         <ul id="group-elocation[% idsuffix %]" class="list-group in collapse [% IF facets.elocation.size <= 0 %]show[% END %]">
@@ -612,7 +612,7 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(
 
 <!-- Begin printlocation facet -->
 [%         IF facets.defined('printlocation') && facets.printlocation.size > 0 %]
-        <h4 class="ob-facet-title [% IF facets.printlocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-toggle="collapse" data-target="#group-location[% idsuffix %]" aria-expanded=[% IF facets.location.size > 0 %]"false"[% ELSE %]"true"[% END %]>
+        <h4 class="ob-facet-title [% IF facets.printlocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-bs-toggle="collapse" data-bs-target="#group-location[% idsuffix %]" aria-expanded=[% IF facets.location.size > 0 %]"false"[% ELSE %]"true"[% END %]>
            [% msg.maketext("Print-Medien Standort") %] 
         </h4>
         <ul id="group-location[% idsuffix %]" class="list-group in collapse [% IF facets.location.size <= 0 %]show[% END %]">
@@ -640,7 +640,7 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(
 
 <!-- Begin mediatype facet -->
 [%         IF config.get('facets').mediatype && facets.defined('mediatype') && facets.mediatype.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-mediatype[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-mediatype[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Medientyp") %] 
         </h4>
         <ul id="group-mediatype[% idsuffix %]" class="list-group in collapse show">
@@ -667,7 +667,7 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(
 <!-- End mediatype facet -->
 <!-- Begin topic facet -->
 [%         IF config.get('facets').topic && facets.defined('topic') && facets.topic.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-topic[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-topic[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Themengebiet") %] 
         </h4>
         <ul id="group-topic[% idsuffix %]" class="list-group in collapse show">
@@ -694,7 +694,7 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(
 <!-- End topic facet -->
 <!-- Begin subject facet -->
 [%         IF config.get('facets').subject && facets.defined('subject') && facets.subject.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-subject[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-subject[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Schlagwort") %] 
         </h4>
         <ul id="group-subject[% idsuffix %]" class="list-group in collapse show">
@@ -721,7 +721,7 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(
 <!-- End subject facet -->
 <!-- Begin year facet -->
 [%         IF config.get('facets').year && facets.defined('year') && facets.year.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-year[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-year[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Erscheinungsjahr") %] 
         </h4>
 [%
@@ -879,7 +879,7 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 <!-- End year facet -->
 <!-- Begin classification facet -->
 [%         IF config.get('facets').classification && facets.defined('classification') && facets.classification.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-classification[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-classification[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Systematik") %] 
         </h4>
         <ul id="group-classification[% idsuffix %]" class="list-group in collapse show">
@@ -906,7 +906,7 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 <!-- End classification facet -->
 <!-- Begin provenance facet -->
 [%         IF config.get('facets').provenance && facets.defined('provenance') && facets.provenance.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-provenance[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-provenance[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Provenienz") %] 
         </h4>
         <ul id="group-provenance[% idsuffix %]" class="list-group in collapse show">
@@ -933,7 +933,7 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 <!-- End provenance facet -->
 <!-- Begin tag facet -->
 [%         IF config.get('facets').tag && facets.defined('tag') && facets.tag.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-tag[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-tag[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Tags") %] 
         </h4>
         <ul id="group-tag[% idsuffix %]" class="list-group in collapse show">
@@ -960,7 +960,7 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 <!-- End tag facet -->
 <!-- Begin litlist facet -->
 [%         IF config.get('facets').litlist && facets.defined('litlist') && facets.litlist.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-litlist[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-litlist[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Literaturliste") %] 
         </h4>
         <ul id="group-litlist[% idsuffix %]" class="list-group in collapse show">
@@ -988,7 +988,7 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 
 <!-- Begin person facet -->
 [%         IF config.get('facets').person && facets.defined('person') && facets.person.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-person[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-person[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Person") %] 
         </h4>
         <ul id="group-person[% idsuffix %]" class="list-group in collapse show">
@@ -1016,7 +1016,7 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 
 <!-- Begin language facet -->
 [%         IF config.get('facets').language && facets.defined('language') && facets.language.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-language[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-language[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Sprache") %] 
         </h4>
         <ul id="group-language[% idsuffix %]" class="list-group in collapse show">
@@ -1110,7 +1110,7 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 
 <!-- Begin corporatebody facet -->
 [%         IF config.get('facets').corporatebody && facets.defined('corporatebody') && facets.corporatebody.size > 0 %]
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-corporatebody[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-corporatebody[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("K&ouml;perschaft") %] 
         </h4>
         <ul id="group-corporatebody[% idsuffix %]" class="list-group in collapse show">

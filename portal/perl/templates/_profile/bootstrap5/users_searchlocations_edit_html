@@ -73,7 +73,7 @@
 
 <div class="ob-facets ob-facets_all sliding-sidebar">
 
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-elocation" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-elocation" aria-expanded="true">
            [% msg.maketext("E-Medien Quelle") %] 
         </h4>
         <ul id="group-elocation" class="list-group in collapse show">
@@ -88,7 +88,7 @@
 <!--  <div class="card">
     <div class="card-header" id="headingOne">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        <a class="card-link" href="#collapseOne" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
           [% msg.maketext("E-Medien Quellen") %]
         </a>
       </h5>
@@ -118,7 +118,7 @@
 
 <div class="ob-facets ob-facets_all sliding-sidebar">
 
-        <h4 class="ob-facet-title" data-toggle="collapse" data-target="#group-location" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-location" aria-expanded="true">
            [% msg.maketext("Print-Medien Standort") %] 
         </h4>
         <ul id="group-location" class="list-group in collapse show">

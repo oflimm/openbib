@@ -96,7 +96,7 @@
   <div class="card">
     <div class="card-header" id="headingOne">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        <a class="card-link" href="#collapseOne" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
           [% msg.maketext("Andere Listen dieses Nutzers") %]
         </a>
       </h5>
@@ -124,7 +124,7 @@
  <div class="card">
     <div class="card-header" id="headingTwo">
       <h5 class="mb-0">
-        <a class="card-link collapsed" href="#collapseTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+        <a class="card-link collapsed" href="#collapseTwo" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
           [% msg.maketext("Listen mit gemeinsamen Titeln") %]
         </a>
       </h5>

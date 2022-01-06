@@ -36,7 +36,7 @@
   <div class="card">
     <div class="card-header" id="headingFormats">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseFormats" data-toggle="collapse" data-target="#collapseFormats" aria-expanded="false" aria-controls="collapseFormats">
+        <a class="card-link" href="#collapseFormats" data-bs-toggle="collapse" data-bs-target="#collapseFormats" aria-expanded="false" aria-controls="collapseFormats">
           [% msg.maketext("Andere Formate") %]
         </a>
       </h5>
@@ -57,7 +57,7 @@
   <div class="card">
     <div class="card-header" id="headingOne">
       <h5 class="mb-0">
-        <a class="card-link collapsed" href="#collapseOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+        <a class="card-link collapsed" href="#collapseOne" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
           [% msg.maketext("Einstellungen &auml;ndern") %]
         </a>
       </h5>

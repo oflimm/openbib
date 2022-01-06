@@ -17,7 +17,7 @@
 
 
 <style>
-[data-toggle="collapse"] {
+[data-bs-toggle="collapse"] {
   cursor: pointer;
 }
 
@@ -86,7 +86,7 @@
     <div class="left">
       <div class="navbar navbar-default d-block d-md-none ps-0 mt-0" style="z-index: 1"><!-- only visible in xs-->
         <div class="container-fluid ps-0">
-          <button class="btn btn-primary navbar-btn" data-toggle="collapse" data-target="#ob-search_refine">
+          <button class="btn btn-primary navbar-btn" data-bs-toggle="collapse" data-bs-target="#ob-search_refine">
            <i class="fa fa-filter"></i> [% msg.maketext("Filtern") %]
           </button>
        </div>

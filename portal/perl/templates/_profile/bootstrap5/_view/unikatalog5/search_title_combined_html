@@ -17,7 +17,7 @@
 
 
 <style>
-[data-toggle="collapse"] {
+[data-bs-toggle="collapse"] {
   cursor: pointer;
 }
 
@@ -26,19 +26,19 @@
 </style>
 
 
-<ul class="nav nav-tabs ps-2">
-  <li class="nav-item">
-    <a class="nav-link[% IF current_profile != searchprofileid_of_articles && current_profile != searchprofileid_of_web %] active[% END %]"  role="tab" data-toggle="tab" href="#ob-searchresult_tab_books" id="ob-searchresult_books_li">[% msg.maketext("Bücher &amp; Mehr") %]</a>
+<ul class="nav nav-tabs ps-2" id="ob-searchresult_tabs" role="tablist">
+  <li class="nav-item" role="presentation">
+    <a class="nav-link[% IF current_profile != searchprofileid_of_articles && current_profile != searchprofileid_of_web %] active[% END %]" role="tab" data-bs-toggle="tab" href="#ob-searchresult_tab_books" id="ob-searchresult_books_li">[% msg.maketext("Bücher &amp; Mehr") %]</a>
   </li>
-  <li class="nav-item">
-    <a class="nav-link[% IF current_profile == searchprofileid_of_articles %] active[% END %]" role="tab" data-toggle="tab" href="#ob-searchresult_tab_articles" id="ob-searchresult_articles_li">[% msg.maketext("Aufsätze &amp; Mehr") %]</a>
+  <li class="nav-item" role="presentation">
+    <a class="nav-link[% IF current_profile == searchprofileid_of_articles %] active[% END %]" role="tab" data-bs-toggle="tab" href="#ob-searchresult_tab_articles" id="ob-searchresult_articles_li">[% msg.maketext("Aufsätze &amp; Mehr") %]</a>
   </li>
-  <li class="nav-item">
-    <a class="nav-link[% IF current_profile == searchprofileid_of_web %] active[% END %]" role="tab" data-toggle="tab" href="#ob-searchresult_tab_web" id="ob-searchresult_web_li">[% msg.maketext("Webseite") %]</a>
+  <li class="nav-item" role="presentation">
+    <a class="nav-link[% IF current_profile == searchprofileid_of_web %] active[% END %]" role="tab" data-bs-toggle="tab" href="#ob-searchresult_tab_web" id="ob-searchresult_web_li">[% msg.maketext("Webseite") %]</a>
   </li>
 [% IF searchquery.get_searchfield('freesearch').val && NOT searchquery.get_searchfield('freesearch').val.match(':') %]
-  <li class="nav-item">
-    <a class="nav-link" role="tab" data-toggle="tab" href="#ob-searchresult_tab_yewno" id="ob-searchresult_yewno_li">[% msg.maketext("Yewno") %]</a>
+  <li class="nav-item" role="presentation">
+    <a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-searchresult_tab_yewno" id="ob-searchresult_yewno_li">[% msg.maketext("Yewno") %]</a>
   </li>
 </ul>
 [% END%]

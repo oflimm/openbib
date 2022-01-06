@@ -8,7 +8,7 @@
   <div class="card">
     <div class="card-header" id="headingActions">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseActions" data-toggle="collapse" data-target="#collapseActions" aria-expanded="true" aria-controls="collapseActions">
+        <a class="card-link" href="#collapseActions" data-bs-toggle="collapse" data-bs-target="#collapseActions" aria-expanded="true" aria-controls="collapseActions">
           [% msg.maketext("Aktionen") %]
         </a>
       </h5>
@@ -42,7 +42,7 @@
   <div class="card">
     <div class="card-header" id="headingFormats">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseFormats" data-toggle="collapse" data-target="#collapseFormats" aria-expanded="false" aria-controls="collapseFormats">
+        <a class="card-link" href="#collapseFormats" data-bs-toggle="collapse" data-bs-target="#collapseFormats" aria-expanded="false" aria-controls="collapseFormats">
           [% msg.maketext("Andere Formate") %]
         </a>
       </h5>
@@ -73,7 +73,7 @@
   <div class="card">
     <div class="card-header" id="headingLitlists">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseLitlists" data-toggle="collapse" data-target="#collapseLitlists" aria-expanded="false" aria-controls="collapseLitlists">
+        <a class="card-link" href="#collapseLitlists" data-bs-toggle="collapse" data-bs-target="#collapseLitlists" aria-expanded="false" aria-controls="collapseLitlists">
           [% msg.maketext("Literaturliste") %]
         </a>
       </h5>
@@ -138,7 +138,7 @@
   <div class="card">
     <div class="card-header" id="headingTagging">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseTagging" data-toggle="collapse" data-target="#collapseTagging" aria-expanded="false" aria-controls="collapseTagging">
+        <a class="card-link" href="#collapseTagging" data-bs-toggle="collapse" data-bs-target="#collapseTagging" aria-expanded="false" aria-controls="collapseTagging">
           [% msg.maketext("Tagging") %]
         </a>
       </h5>

@@ -45,7 +45,7 @@
             <input required="required" class="form-control" type="text" name="fs" value="[% searchquery.get_searchfield('freesearch').val | html %]" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Unikatalog (Bücher, E-Medien, Aufsätze &amp; mehr) und USB Website") %]" />
             <span class="input-group-btn ps-1">
               <button class="btn btn-primary" type="submit"><span class="fas fa-search d-md-none"></span><span class="d-none d-md-block font-weight-bold">[% msg.maketext("Suchen") %]</span></button>
-              <span class="btn btn-primary fas fa-cog d-md-none" data-toggle="collapse" data-target="#search_options" aria-expanded="false"></span>
+              <span class="btn btn-primary fas fa-cog d-md-none" data-bs-toggle="collapse" data-bs-target="#search_options" aria-expanded="false"></span>
             </span>
           </div>
 	</div>
@@ -83,7 +83,7 @@
 
 
 <style>
-[data-toggle="collapse"] {
+[data-bs-toggle="collapse"] {
   cursor: pointer;
 }
 
@@ -92,7 +92,7 @@
 </style>
 
 <div id="ob-sidebar[% idsuffix %]" class="bg-light border-end min-vh-100 collapse navbar-collapse pb-5" aria-expanded="false">
-  <div id="sidebar-dismiss[% idsuffix %]" class="float-end d-md-none text-white" data-toggle="collapse" data-target="#ob-sidebar[% idsuffix %]" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+  <div id="sidebar-dismiss[% idsuffix %]" class="float-end d-md-none text-white" data-bs-toggle="collapse" data-bs-target="#ob-sidebar[% idsuffix %]" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
     <i class="fas fa-window-close fa-2x p-1"></i>
   </div>
   
@@ -201,7 +201,7 @@ $(document).ready(function(){
     <div class="left">
       <div class="navbar navbar-default d-block d-md-none ps-0 mt-0" style="z-index: 1"><!-- only visible in xs-->
         <div class="container-fluid ps-0">
-          <button class="btn btn-primary navbar-btn" data-toggle="collapse" data-target="#ob-sidebar[% idsuffix %]">
+          <button class="btn btn-primary navbar-btn" data-bs-toggle="collapse" data-bs-target="#ob-sidebar[% idsuffix %]">
             <i class="fa fa-sliders-h"></i> [% msg.maketext("Filtern") %]
           </button>
 	</div>

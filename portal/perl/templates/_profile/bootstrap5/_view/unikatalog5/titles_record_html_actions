@@ -23,7 +23,7 @@
   <div class="card">
     <div class="card-header" id="headingLitlists">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseLitlists" data-toggle="collapse" data-target="#collapseLitlists" aria-expanded="false" aria-controls="collapseLitlists">
+        <a class="card-link" href="#collapseLitlists" data-bs-toggle="collapse" data-bs-target="#collapseLitlists" aria-expanded="false" aria-controls="collapseLitlists">
           [% msg.maketext("Literaturliste") %]
         </a>
       </h5>
@@ -99,7 +99,7 @@
   <div class="card">
     <div class="card-header" id="headingTagging">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseTagging" data-toggle="collapse" data-target="#collapseTagging" aria-expanded="false" aria-controls="collapseTagging">
+        <a class="card-link" href="#collapseTagging" data-bs-toggle="collapse" data-bs-target="#collapseTagging" aria-expanded="false" aria-controls="collapseTagging">
           [% msg.maketext("Tagging") %]
         </a>
       </h5>
@@ -268,7 +268,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
   <div class="card">
     <div class="card-header" id="headingRecommendations">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseRecommendations" data-toggle="collapse" data-target="#collapseRecommendations" aria-expanded="false" aria-controls="collapseRecommendations">
+        <a class="card-link" href="#collapseRecommendations" data-bs-toggle="collapse" data-bs-target="#collapseRecommendations" aria-expanded="false" aria-controls="collapseRecommendations">
           [% msg.maketext("Empfehlungen") %]
         </a>
       </h5>
@@ -327,7 +327,7 @@ $(document).ready(function(){
   <div class="card">
     <div class="card-header" id="headingRelated">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseRelated" data-toggle="collapse" data-target="#collapseRelated" aria-expanded="false" aria-controls="collapseRelated">
+        <a class="card-link" href="#collapseRelated" data-bs-toggle="collapse" data-bs-target="#collapseRelated" aria-expanded="false" aria-controls="collapseRelated">
           [% msg.maketext("Literaturanalyse in der Wikipedia") %]
         </a>
       </h5>
@@ -354,7 +354,7 @@ $(document).ready(function(){
   <div class="card">
     <div class="card-header" id="headingAvailableLitlists">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseAvailableLitlists" data-toggle="collapse" data-target="#collapseAvailableLitlists" aria-expanded="false" aria-controls="collapseAvailableLitlists">
+        <a class="card-link" href="#collapseAvailableLitlists" data-bs-toggle="collapse" data-bs-target="#collapseAvailableLitlists" aria-expanded="false" aria-controls="collapseAvailableLitlists">
           [% msg.maketext("Literaturlisten") %]
         </a>
       </h5>
@@ -396,7 +396,7 @@ $(document).ready(function(){
   <div class="card">
     <div class="card-header" id="headingAvailableTags">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseAvailableTags" data-toggle="collapse" data-target="#collapseAvailableTags" aria-expanded="false" aria-controls="collapseAvailableTags">
+        <a class="card-link" href="#collapseAvailableTags" data-bs-toggle="collapse" data-bs-target="#collapseAvailableTags" aria-expanded="false" aria-controls="collapseAvailableTags">
           [% msg.maketext("Tags") %]
         </a>
       </h5>
@@ -440,7 +440,7 @@ $(document).ready(function(){
   <div class="card">
     <div class="card-header" id="headingSimilarPersons">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseSimilarPersons" data-toggle="collapse" data-target="#collapseSimilarPersons" aria-expanded="false" aria-controls="collapseSimilarPersons">
+        <a class="card-link" href="#collapseSimilarPersons" data-bs-toggle="collapse" data-bs-target="#collapseSimilarPersons" aria-expanded="false" aria-controls="collapseSimilarPersons">
           [% msg.maketext("Verwandte Personen") %]
         </a>
       </h5>
@@ -473,7 +473,7 @@ $(document).ready(function(){
   <div class="card">
     <div class="card-header" id="headingSimilarSubjects">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseSimilarSubjects" data-toggle="collapse" data-target="#collapseSimilarSubjects" aria-expanded="false" aria-controls="collapseSimilarSubjects">
+        <a class="card-link" href="#collapseSimilarSubjects" data-bs-toggle="collapse" data-bs-target="#collapseSimilarSubjects" aria-expanded="false" aria-controls="collapseSimilarSubjects">
           [% msg.maketext("Verwandte Themen") %]
         </a>
       </h5>
@@ -496,7 +496,7 @@ $(document).ready(function(){
   <div class="card">
     <div class="card-header" id="headingMisc">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseMisc" data-toggle="collapse" data-target="#collapseMisc" aria-expanded="false" aria-controls="collapseMisc">
+        <a class="card-link" href="#collapseMisc" data-bs-toggle="collapse" data-bs-target="#collapseMisc" aria-expanded="false" aria-controls="collapseMisc">
           [% msg.maketext("Verschiedenes") %]
         </a>
       </h5>

@@ -145,7 +145,7 @@ $(document).ready(function(){
 
 [%   PROCESS common/subtemplate name="titles_record_html_categories" %]
 
-<h5 class="pb-2"><i class="fa fa-arrow-down"></i> <a href="#title_supplemental_information" data-toggle="collapse" data-target="#title_supplemental_information" aria-expanded="false" aria-controls="title_supplemental_information" >Weitere Informationen</a></h5>
+<h5 class="pb-2"><i class="fa fa-arrow-down"></i> <a href="#title_supplemental_information" data-bs-toggle="collapse" data-bs-target="#title_supplemental_information" aria-expanded="false" aria-controls="title_supplemental_information" >Weitere Informationen</a></h5>
 
 <div id="title_supplemental_information" class="collapse">
 [%-
@@ -196,21 +196,23 @@ $(document).ready(function(){
 
 	    <div class="pe-1">
  <div class="dropdown">
-  <button class="btn btn-primary dropdown-toggle" type="button" id="citationMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+   <button class="btn btn-primary dropdown-toggle" type="button" id="citationMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+<!--  <button class="btn btn-primary dropdown-toggle" type="button" id="citationMenuButton" data-bs-toggle="dropdown"> -->
     <i class="fas fa-quote-right"></i> [% msg.maketext("Zitat") %]
   </button>
-  <div class="dropdown-menu" aria-labelledby="citationMenuButton">
-    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#apaModal">[% msg.maketext("APA") %]</a>
-    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#harvardModal">[% msg.maketext("Harvard") %]</a>
-    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#mlaModal">[% msg.maketext("MLA") %]</a>
-    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#bibtexModal">[% msg.maketext("BibTeX") %]</a>
-    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#endnoteModal">[% msg.maketext("EndNote") %]</a>
-  </div>
+  <ul class="dropdown-menu" aria-labelledby="citationMenuButton">
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#apaModal">[% msg.maketext("APA") %]</a></li>
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#harvardModal">[% msg.maketext("Harvard") %]</a></li>
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#mlaModal">[% msg.maketext("MLA") %]</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#bibtexModal">[% msg.maketext("BibTeX") %]</a></li>
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#endnoteModal">[% msg.maketext("EndNote") %]</a></li>
+  </ul>
  </div>
              </div>
 
 <div class="pe-1">
-    <button class="btn btn-primary sidebar-toggler" type="button" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-arrow-right"></i> <span class="d-none d-sm-inline">[% msg.maketext("Mehr") %]</span></button>
+    <button class="btn btn-primary sidebar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-arrow-right"></i> <span class="d-none d-sm-inline">[% msg.maketext("Mehr") %]</span></button>
 </div>
 
 
@@ -271,18 +273,18 @@ $(document).ready(function(){
 
 <ul class="nav nav-tabs" role="tablist">
 [%   IF circulation.size > 0 %]
-<li class="nav-item"><a class="nav-link active" role="tab" data-toggle="tab" href="#ob-circulation_info">[% msg.maketext("Ausleihe/Exemplare") %]</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#ob-circulation_info">[% msg.maketext("Ausleihe/Exemplare") %]</a></li>
 [%   ELSIF holding.size > 0 %]
-<li class="nav-item"><a class="nav-link active" role="tab" data-toggle="tab" href="#ob-holding_info">[% msg.maketext("Bestand") %]</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#ob-holding_info">[% msg.maketext("Bestand") %]</a></li>
 [%   END %]
 
 [%   IF journaltocs_feed %]
-<li class="nav-item"><a class="nav-link" role="tab" data-toggle="tab" href="#ob-journaltocs">[% msg.maketext("Letzte Artikel") %]</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-journaltocs">[% msg.maketext("Letzte Artikel") %]</a></li>
 [%   END %]
-<li class="nav-item"><a class="nav-link" role="tab" data-toggle="tab" href="#ob-same_records" id="ob-same_records_li">[% msg.maketext("In anderen Katalogen") %]</a></li>
-<li class="nav-item"><a class="nav-link" role="tab" data-toggle="tab" href="#ob-similar_records" id="ob-similar_records_li">[% msg.maketext("Andere Ausgaben") %]</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-same_records" id="ob-same_records_li">[% msg.maketext("In anderen Katalogen") %]</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-similar_records" id="ob-similar_records_li">[% msg.maketext("Andere Ausgaben") %]</a></li>
 [%   IF config.get('reviews') %]
-<li class="nav-item"><a class="nav-link" role="tab" data-toggle="tab" href="#ob-reviews">[% msg.maketext("Bewertungen/Rezensionen") %]</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-reviews">[% msg.maketext("Bewertungen/Rezensionen") %]</a></li>
 [%   END %]
 </ul>
 

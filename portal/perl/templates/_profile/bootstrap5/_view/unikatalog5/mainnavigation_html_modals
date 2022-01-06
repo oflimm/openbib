@@ -3,7 +3,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="loginModalLabel">[% msg.maketext("Anmelden") %]</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -11,7 +11,7 @@
 [% PROCESS common/subtemplate name="login_html" %]
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">[% msg.maketext("Schließen") %]</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>
       </div>
     </div>
   </div>
@@ -21,7 +21,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="registerModalLabel">[% msg.maketext("Anmelden") %]</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -29,7 +29,7 @@
 [% PROCESS common/subtemplate name="users_registrations_html" %]
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">[% msg.maketext("Schließen") %]</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>
       </div>
     </div>
   </div>

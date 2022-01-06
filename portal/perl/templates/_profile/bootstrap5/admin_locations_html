@@ -30,22 +30,22 @@
       <div class="card-body">
 <form method="post" action="[% path_prefix %]/[% config.get('locations_loc') %]">
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="identifier">[% msg.maketext("Identifier") %]</label>
 <input class="form-control" type="text" name="identifier" id="identifier" size="8" />
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="description">[% msg.maketext("Beschreibung") %]</label>
 <input class="form-control" type="text" name="description" id="description" size="20" />
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="shortdesc">[% msg.maketext("Kurzbeschreibung") %]</label>
 <input class="form-control" type="text" name="shortdesc" id="shortdesc" size="20" />
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="type">[% msg.maketext("Typ") %]</label>
   <select class="form-control" name="type" id="type">
 [% FOREACH location_type IN config.get('location_types') %]

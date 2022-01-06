@@ -93,7 +93,7 @@
 
 <h5>[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> in die bestehende Literaturliste &uuml;bernehmen: ") %]</h5>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="litlistid">[% msg.maketext("Name") %]</label>
 <select class="form-control" name="litlistid" id="litlistid">
 [% FOREACH litlist IN litlists %]
@@ -110,12 +110,12 @@
 
 <h5>[% msg.maketext("Anlegen einer neuen Literaturliste: ") %]</h5>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="title">[% msg.maketext("Name") %]</label>
 <input class="form-control" type="text" name="title" id="title" size="20" />
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="littype">[% msg.maketext("Typ") %]</label>
 <select class="form-control" name="littype" id="littype">
   <option value="1">[% msg.maketext("&ouml;ffentlich") %]</option>
@@ -151,12 +151,12 @@
 
 <h5>[% msg.maketext("Eingabe neuer Tags") %]</h5>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for"tags">[% msg.maketext("Tags") %]</label>
 <input class="form-control" type="text" name="tags" value="" size="20" maxlength="200" id="tags"/>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="tags_type">[% msg.maketext("Typ") %]</label>
 <select class="form-control" name="tags_type" id="tags_type">
   <option value="1">[% msg.maketext("&ouml;ffentlich") %]</option>

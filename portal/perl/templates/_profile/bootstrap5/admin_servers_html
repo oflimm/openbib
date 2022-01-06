@@ -27,17 +27,17 @@
       <div class="card-body">
 <form method="post" action="[% path_prefix %]/[% config.get('servers_loc') %]">
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="hostip">[% msg.maketext("IP-Adresse") %]</label>
 <input class="form-control" type="text" name="hostip" id="hostip"/>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="description">[% msg.maketext("Beschreibung") %]</label>
 <input class="form-control" type="text" name="description" id="description"/>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="status">[% msg.maketext("Status") %]</label>
   <select class="form-control" name="status" id="status">
      <option value="updatable">[% msg.maketext("Aktualisierbar") %]</option>
@@ -48,7 +48,7 @@
 </div>
 
 [% IF config.get_clusterinfo_overview.count > 0 %]
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="clusterid">[% msg.maketext("Cluster") %]</label>
   <select class="form-control" name="clusterid" id="clusterid">
 [%  FOREACH clusterinfo IN config.get_clusterinfo_overview.all %]
@@ -58,7 +58,7 @@
 </div>
 [% END %]
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="active">[% msg.maketext("Aktiv") %]</label>
   <select class="form-control" name="active" id="active">
      <option value="true">[% msg.maketext("Ja") %]</option>

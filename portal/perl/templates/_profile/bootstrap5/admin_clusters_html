@@ -26,12 +26,12 @@
       <div class="card-body">
 <form method="post" action="[% path_prefix %]/[% config.get('clusters_loc') %]" >
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="description">[% msg.maketext("Beschreibung") %]</label>
 <input class="form-control" type="text" name="description" id="description"/>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="status">[% msg.maketext("Status") %]</label>
   <select class="form-control" name="status" id="status">
      <option value="">[% msg.maketext("Keiner") %]</option>
@@ -41,7 +41,7 @@
   </select>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="active">[% msg.maketext("Aktiv") %]</label>
   <select class="form-control" name="active" id="active">
      <option value="true">[% msg.maketext("Ja") %]</option>

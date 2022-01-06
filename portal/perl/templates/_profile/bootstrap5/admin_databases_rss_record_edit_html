@@ -36,12 +36,12 @@ yesno = {
 
 <h1 class="display-5">[% msg.maketext("RSS-Einstellungen &auml;ndern") %]</h1>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="dbname">[% msg.maketext("Art des Feeds") %]</label>
 <span id="dbname" class="form-control">[% typedescription.${rssinfo.type} %]</span>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="active">[% msg.maketext("Aktiv") %]</label>
   <select class="form-control" name="active" id="active">
     <option value="true" [%- IF rssinfo.active == 1 -%]selected[%- END -%]>[% msg.maketext("Ja") %]</option>

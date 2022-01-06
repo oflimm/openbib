@@ -106,7 +106,7 @@ function update_gnd (){
 [%- cgiparam = config.searchfield.freesearch.prefix ;
     this_searchfield = 'freesearch';
 -%]
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="to_focus">[% msg.maketext("Freie Suche") %]</label>
 <input class="form-control" onkeypress="update_[% cgiparam %]()" id="to_focus" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
@@ -114,7 +114,7 @@ function update_gnd (){
 [%- cgiparam = config.searchfield.gnd.prefix;
     this_searchfield = 'gnd';
  -%]
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="autocomplete_[% cgiparam %]">GND</label>
 <input class="form-control" onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
@@ -122,7 +122,7 @@ function update_gnd (){
 [%- cgiparam = config.searchfield.person.prefix;
     this_searchfield = 'person';
  -%]
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="autocomplete_[% cgiparam %]">[% msg.maketext("Personen") %]</label>
 <input class="form-control" onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
@@ -130,7 +130,7 @@ function update_gnd (){
 [%- cgiparam = config.searchfield.corporatebody.prefix;
     this_searchfield = 'corporatebody';
  -%]
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="autocomplete_[% cgiparam %]">[% msg.maketext("Institutionen") %]</label>
 <input class="form-control" onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
@@ -138,12 +138,12 @@ function update_gnd (){
 [%- cgiparam = config.searchfield.subject.prefix;
     this_searchfield = 'subject';
  -%]
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="autocomplete_[% cgiparam %]">[% msg.maketext("Schlagworte") %]</label>
 <input class="form-control" onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="[% cgiparam %]">[% msg.maketext("Suchprofil") %]</label>
 [% PROCESS common/subtemplate name="searchforms_record_profile" %]
 </div>

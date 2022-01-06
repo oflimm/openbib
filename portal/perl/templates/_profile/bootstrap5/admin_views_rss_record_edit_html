@@ -17,7 +17,7 @@
 
 <h1 class="display-5">[% msg.maketext("RSS-Einstellungen &auml;ndern") %]</h1>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="rssfeeds">[% msg.maketext("RSS-Feed zu diesem View") %]</label>
 <select class="form-control" name="rssfeeds" id="rssfeeds" multiple="multiple" size="10">
 [% FOREACH singlefeed IN allrssfeeds %]
@@ -28,7 +28,7 @@
 </select>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="primrssfeed">[% msg.maketext("Welcher RSS-Feed soll der prim&auml;re Feed f&uuml;r das Browser Auto-Discovery sein") %]</label>
 <select class="form-control" name="primrssfeed" id="primrssfeed">
 [% FOREACH singlefeed IN allrssfeeds %]

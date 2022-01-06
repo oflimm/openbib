@@ -28,17 +28,17 @@
       <div class="card-body">
 <form method="post" action="[% path_prefix %]/[% config.get('views_loc') %]">
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="viewname">[% msg.maketext("Viewname") %]</label>
 <input class="form-control" type="text" name="viewname" id="viewname"/>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="description">[% msg.maketext("Beschreibung") %]</label>
 <input class="form-control" type="text" name="description" id="description"/>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="profilename">[% msg.maketext("Katalog-Profile") %]</label>
 
 <select class="form-control" id="profilename" name="profilename">
@@ -48,7 +48,7 @@
 </select>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="active">[% msg.maketext("Aktiv") %]</label>
 
 <select class="form-control" id="active" name="active">

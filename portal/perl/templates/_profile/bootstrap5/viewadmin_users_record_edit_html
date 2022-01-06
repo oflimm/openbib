@@ -71,7 +71,7 @@
 
 <h3 class="display-5">[% msg.maketext("Rolle zuordnen") %]</h3>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="roles">[% msg.maketext("Rollen") %]</label>
 <select class="form-control" name="roles" multiple="multiple" size="5">
 [% FOREACH role IN roles %]
@@ -94,7 +94,7 @@
 
 <h3 class="display-5">[% msg.maketext("Templates zuordnen") %]</h3>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="templates">[% msg.maketext("Templates") %]</label>
 <select class="form-control" name="templates" multiple="multiple" size="15">
 [% FOREACH template IN templates %]

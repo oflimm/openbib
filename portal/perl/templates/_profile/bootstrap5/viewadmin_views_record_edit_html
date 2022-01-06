@@ -17,17 +17,17 @@
 
 <h1 class="display-5">[% msg.maketext("View bearbeiten") %]</h1>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="viewname">[% msg.maketext("Viewname") %]</label>
 <span class="form-control">[% viewinfo.viewname %]</span>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="description">[% msg.maketext("Beschreibung") %]</label>
 <input class="form-control" type="text" name="description" id="description" value="[% viewinfo.description %]" size="40" />
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="profilename">[% msg.maketext("Katalog-Profile") %]</label>
 
 <select class="form-control" id="profilename" name="profilename">
@@ -37,7 +37,7 @@
 </select>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="stripuri">[% msg.maketext("URI ohne View") %]</label>
 
 <select class="form-control" id="stripuri" name="stripuri">
@@ -46,7 +46,7 @@
 </select>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="active">[% msg.maketext("Aktiv") %]</label>
 
 <select class="form-control" id="active" name="active">
@@ -55,17 +55,17 @@
 </select>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="servername">[% msg.maketext("Eigener Servername in URI") %]</label>
 <input class="form-control" type="text" name="servername" id="servername" value="[% viewinfo.servername %]" size="40" />
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="start_loc">[% msg.maketext("Eigener Start-URI-Pfad") %]</label>
 <input class="form-control"  type="text" name="start_loc" id="start_loc" value="[% viewinfo.start_loc %]" size="40" />
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="databases">[% msg.maketext("Katalogauswahl zu diesem View") %]</label>
 <select class="form-control"  id="databases" name="databases" multiple="multiple" size="20">
 [% FOREACH singledb IN dbnames %]
@@ -74,7 +74,7 @@
 </select>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="locations">[% msg.maketext("Recherche-Einschränkung auf Standorte") %]</label>
 <select class="form-control"  id="locations" name="locations" multiple="multiple" size="20">
 [% FOREACH singleloc IN locations %]
@@ -83,7 +83,7 @@
 </select>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="own_index">[% msg.maketext("Eigener Index") %]</label>
 <select class="form-control"  id="own_index" name="own_index">
 <option value="1" [% IF viewinfo.own_index %]selected="selected"[% END %]>[% msg.maketext("Ja") %]</option>
@@ -91,7 +91,7 @@
 </select>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="force_login">[% msg.maketext("Login zwingend für den Zugriff") %]</label>
 <select class="form-control"  id="force_login" name="force_login">
 <option value="1" [% IF viewinfo.force_login %]selected="selected"[% END %]>[% msg.maketext("Ja") %]</option>
@@ -100,13 +100,13 @@
 </div>
 
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="restrict_intranet">[% msg.maketext("Einschränkung auf Intranet-IPs") %]</label>
 <textarea class="form-control" name="restrict_intranet" id="restrict_intranet" value="[% viewinfo.restrict_intranet %]" rows="5">[% viewinfo.restrict_intranet %]</textarea>
 </div>
 
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="roles">[% msg.maketext("Berechtigte Rollen für den Zugriff") %]</label>
 <select class="form-control"  id="roles" name="roles" multiple="multiple" size="20">
 [% FOREACH singlerole IN config.get_roleinfo_overview.all %]
@@ -117,7 +117,7 @@
 
 [% authenticators = config.get_authenticators %]
 [% IF authenticators.size > 0 %]
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="authenticators">[% msg.maketext("Anmeldeziele") %]</label>
 <select class="form-control"  id="authenticators" name="authenticators" multiple="multiple" size="20">
 [% FOREACH target IN authenticators %]

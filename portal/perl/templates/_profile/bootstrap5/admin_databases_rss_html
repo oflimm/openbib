@@ -58,7 +58,7 @@ END ;
 
 <form method="post" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% katalog.dbname %]/rss">
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="type">[% msg.maketext("Art des Feeds") %]</label>
   <select class="form-control" name="type" id="type">
 [% FOREACH type IN available_types.keys %]
@@ -67,7 +67,7 @@ END ;
   </select>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="active">[% msg.maketext("Aktiv") %]</label>
   <select class="form-control" name="active" id="active">
     <option value="true" [%- IF databaseinfo.active == 1 -%]selected[%- END -%]>[% msg.maketext("Ja") %]</option>

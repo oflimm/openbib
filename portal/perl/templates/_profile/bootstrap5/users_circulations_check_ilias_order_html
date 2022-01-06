@@ -108,7 +108,7 @@
 <legend class="mt-2">[% msg.maketext("Titelangaben") %]</legend>
 
 [% IF title %]
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="title">Titel</label>
       <span class="form-control">[% title %]</span>
       <input type="hidden" name="title"   value="[% title | uri %]" />
@@ -116,7 +116,7 @@
 [% END %]
 
 [% IF person %]
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="person">[% msg.maketext("Verfasser") %]:</label>
       <span class="form-control">[% person %]</span>
      <input type="hidden" name="author"     value="[% person | uri %]" />
@@ -124,7 +124,7 @@
 [% END %]
 
 [% IF corporatebody %]
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="corporation">[% msg.maketext("Körperschaft") %]:</label>
       <span class="form-control">[% corporatebody %]</span>
      <input type="hidden" name="corporation"     value="[% corporatebody | uri %]" />
@@ -132,7 +132,7 @@
 [% END %]
 
 [% IF publisher %]
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="publisher">[% msg.maketext("Ort/Verlag") %]:</label>
       <span class="form-control">[% publisher %]</span>
      <input type="hidden" name="publisher"     value="[% publisher | uri %]" />
@@ -149,7 +149,7 @@
 %]
 
 [% IF signatur %]
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="location_mark">[% msg.maketext("Signatur") %]:</label>
       <span class="form-control">[% signatur %]</span>
       <input type="hidden" name="label" value="[% signatur | uri %]" />
@@ -157,7 +157,7 @@
 [% END %]
 
 [% IF isbn %]
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="location_mark">[% msg.maketext("ISBN") %]:</label>
       <span class="form-control">[% isbn %]</span>
       <input type="hidden" name="isbn" value="[% isbn | uri %]" />
@@ -165,7 +165,7 @@
 [% END %]
 
 [% IF issn %]
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="location_mark">[% msg.maketext("ISSN") %]:</label>
       <span class="form-control">[% issn %]</span>
       <input type="hidden" name="isbn" value="[% issn | uri %]" />
@@ -173,7 +173,7 @@
 [% END %]
 
 [% IF source %]
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="source">[% msg.maketext("In") %]:</label>
       <span class="form-control">[% source %]</span>
       <input type="hidden" name="source" value="[% source | uri %]" />
@@ -181,7 +181,7 @@
 [% END %]
 
 [% IF numbering %]
-<div class="form-group">
+<div class="form-floating mb-3">
      <label for="numbering">[% msg.maketext("Bestand in der USB") %]:</label>
       <span class="form-control">[% numbering %]</span>
       <input type="hidden" name="numbering" value="[% uri_escape(numbering) %]" />
@@ -192,59 +192,59 @@
 
 [% is_zeitschrift = fields.${"T0405"}.first.content # hat Erscheinungsverlauf %]
 [% IF is_zeitschrift %]
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="articleauthor">[% msg.maketext("Artikelautor") %] (*):</label>
       <input class="form-control" type="text" name="articleauthor" value="" placeholder="[% msg.maketext("Bitte Autor des Artikels eingeben, falls vorhanden") %]"/>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="articletitle">[% msg.maketext("Artikeltitel") %] (*):</label>
       <input class="form-control" type="text" name="articletitle" value="" placeholder="[% msg.maketext("Bitte Titel des Artikels eingeben, falls vorhanden") %]"/>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="volume">[% msg.maketext("Band") %] (*):</label>
       <input class="form-control" type="text" name="volume" value="" placeholder="[% msg.maketext("Bitte Bandangabe eingeben, falls vorhanden") %]"/>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="issue">[% msg.maketext("Heft") %]:</label>
       <input class="form-control" type="text" name="issue" value="" placeholder="[% msg.maketext("Bitte Heft eingeben, falls vorhanden") %]"/>
 </div>
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="year">[% msg.maketext("Jahrgang") %] (*):</label>
       <input class="form-control" type="text" name="year" value="" placeholder="[% msg.maketext("Bitte Jahr eingeben, falls vorhanden") %]"/>
 </div>
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="pages">[% msg.maketext("Seitenangaben") %] (*):</label>
       <input class="form-control" type="text" name="pages" value="" placeholder="[% msg.maketext("Bitte Seitenangaben, z.B. 3-9, eingeben") %]" />
 </div>
 [% ELSE # Monographie %]
 
 [%   IF year %]
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="year">[% msg.maketext("Erscheinungsjahr") %]:</label>
       <span class="form-control">[% year %]</span>
       <input type="hidden" name="year" value="[% uri_escape(year) %]" />
 </div>
 [%   END %]
 
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="pages">[% msg.maketext("Seitenangaben") %] (*):</label>
       <input class="form-control" type="text" name="pages" value="" placeholder="[% msg.maketext("Bitte Seitenangaben, z.B. 3-9, eingeben") %]"/>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="articleauthor">[% msg.maketext("Artikelautor") %]:</label>
       <input class="form-control" type="text" name="articleauthor" value="" placeholder="[% msg.maketext("Bitte Autor des Artikels eingeben, falls vorhanden") %]" />
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="articletitle">[% msg.maketext("Artikeltitel") %]:</label>
       <input class="form-control" type="text" name="articletitle" value=""  placeholder="[% msg.maketext("Bitte Titel des Artikels eingeben, falls vorhanden") %]" />
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="volume">[% msg.maketext("Band") %]:</label>
       <input class="form-control" type="text" name="volume" value=""  placeholder="[% msg.maketext("Bitte Bandangabe eingeben, falls vorhanden") %]" />
 </div>
@@ -252,12 +252,12 @@
 
 <legend class="mt-2">[% msg.maketext("Weitere Angaben zur Bestellung") %]</legend>
 
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="username">[% msg.maketext("Nachname, Vorname") %] (*):</label>
       <span class="form-control">[% realname %]</span>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="email">[% msg.maketext("E-Mail") %] (*):</label>
       <span class="form-control">[% userinfo.email %]</span>
 </div>
@@ -271,8 +271,8 @@
 
 <p/>
 
-<div class="form-group">
-      <label class="form-group-text" for="remark">[% msg.maketext("Bemerkung") %]:</label>
+<div class="form-floating mb-3">
+      <label class="form-floating mb-3-text" for="remark">[% msg.maketext("Bemerkung") %]:</label>
       <textarea class="form-control" type="text" name="remark" placeholder="[% msg.maketext("Geben Sie hier bitte ggf. Bemerkungen zu Ihrer Bestellung ein") %]" value="" maxlength="120" size="37" ></textarea>
 </div>
 

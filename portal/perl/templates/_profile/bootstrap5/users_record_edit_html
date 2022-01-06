@@ -21,7 +21,7 @@
 [%# USE dumper;dumper.dump(userinfo.mixed_bag)%]
 
 <!--
-<div class="form-group mt-4">
+<div class="form-floating mb-3 mt-4">
 <label for="bag_title">[% msg.maketext("Anrede") %]</label>
   <select class="form-control" name="bag_title" id="bag_title">
        <option value="none" [% IF userinfo.mixed_bag.bag_title.first == 'none' %]selected[% END %]>[% msg.maketext("Keine") %]</option>
@@ -31,55 +31,55 @@
    </select>
 </div>
 
-<div class="form-group mt-4">
+<div class="form-floating mb-3 mt-4">
 <label for="bag_institution">[% msg.maketext("Heimatinstitution") %]</label>
 <input class="form-control" type="text" name="bag_institution" id="bag_institution" value="[% userinfo.mixed_bag.bag_institution.first %]"/>
 </div>
 
 -->
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="username">[% msg.maketext("Benutzername") %]</label>
 <span class="form-control" id="username">[% userinfo.username %]</span>
 </div>
 
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="authenticator">[% msg.maketext("Authentifizierung") %]</label>
 <span class="form-control" id="authenticator">[% authenticator.description %]</span>
 </div>
 [%# USE dumper;dumper.dump(views)%]
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="view">[% msg.maketext("Portal") %]</label>
 <span class="form-control" id="view">[% IF userinfo.viewname %][% config.get_viewdesc_from_viewname(userinfo.viewname) %][% ELSE %][% msg.maketext("Zugriff auf alle Portale") %][% END %]</span>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="nachname">[% msg.maketext("Nachname") %]</label>
 <input class="form-control" id="nachname" type="text" name="nachname" value="[% userinfo.nachname %]" size="30" maxlength="200" />
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="vorname">[% msg.maketext("Vorname") %]</label>
 <input class="form-control" id="vorname" type="text" name="vorname" value="[% userinfo.vorname %]" size="30" maxlength="200" />
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="email">[% msg.maketext("E-Mail") %]</label>
 <input class="form-control" id="email" type="text" name="email" value="[% userinfo.email %]" size="30" maxlength="200" />
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="gebdatum">[% msg.maketext("Geburtsdatum") %]</label>
 <input class="form-control" id="gebdatum" type="text" name="gebdatum" value="[% userinfo.gebdatum %]" size="30" maxlength="200" />
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="status">[% msg.maketext("Status") %]</label>
 <span class="form-control" id="status">[% userinfo.status %]</span>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="sperre">[% msg.maketext("Sperre") %]</label>
 <span class="form-control" id="sperre">
 [%- IF userinfo.sperre -%]
@@ -112,11 +112,11 @@
 <div class="table-responsive">
 <form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/password" enctype="application/x-www-form-urlencoded">
 
-<div class="form-group mt-2">
+<div class="form-floating mb-3 mt-2">
 <label for="password">[% msg.maketext("Passwort") %]</label>
 <input class="form-control" type="password" name="password1" value="" />
 </div>
-<div class="form-group mt-2">
+<div class="form-floating mb-3 mt-2">
 <label for="password">[% msg.maketext("Passwort wiederholt") %]</label>
 <input class="form-control" type="password" name="password2" value="" />
 </div>

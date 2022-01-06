@@ -28,12 +28,12 @@
       <div class="card-body">
 <form method="post" action="[% path_prefix %]/[% config.get('profiles_loc') %]">
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="profilename">[% msg.maketext("Profil-Name") %]</label>
 <input class="form-control" type="text" name="profilename" id="profilename" size="8" />
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="description">[% msg.maketext("Beschreibung") %]</label>
 <input class="form-control" type="text" name="description" id="description" size="20" />
 </div>

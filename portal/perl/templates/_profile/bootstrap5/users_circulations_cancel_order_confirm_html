@@ -46,13 +46,13 @@ Aufgrund interner Abläufe in der USB werden zum Zeitpunkt der Bestellung bereit
 
 <legend class="mt-2">[% msg.maketext("Angaben zur Bestellung") %]</legend>
 
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="date">Bestelldatum</label>
       <span class="form-control">[% date %]</span>
       <input type="hidden" name="date" value="[% uri_encode(date) %]" />
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="date">Zweigstelle</label>
       <span class="form-control">[% unitname %]</span>
       <input type="hidden" name="unitname" value="[% uri_encode(unitname) %]" />
@@ -60,7 +60,7 @@ Aufgrund interner Abläufe in der USB werden zum Zeitpunkt der Bestellung bereit
 
 <legend class="mt-2">[% msg.maketext("Titelangaben") %]</legend>
 
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="title">Titel</label>
       <span class="form-control">[% title %]</span>
       <input type="hidden" name="title" value="[% uri_encode(title) %]" />
@@ -68,7 +68,7 @@ Aufgrund interner Abläufe in der USB werden zum Zeitpunkt der Bestellung bereit
 </div>
 
 [% IF person %]
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="author">[% msg.maketext("Verfasser") %]:</label>
       <span class="form-control">[% person %]</span>
       <input type="hidden" name="author" value="[% uri_encode(person) %]" />
@@ -76,7 +76,7 @@ Aufgrund interner Abläufe in der USB werden zum Zeitpunkt der Bestellung bereit
 [% END %]
 
 [% IF corporatebody %]
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="corporatation">[% msg.maketext("Körperschaft") %]:</label>
       <span class="form-control">[% corporatebody %]</span>
       <input type="hidden" name="corporation" value="[% uri_encode(corporatebody) %]" />
@@ -84,7 +84,7 @@ Aufgrund interner Abläufe in der USB werden zum Zeitpunkt der Bestellung bereit
 [% END %]
 
 [% IF publisher %]
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="publisher">[% msg.maketext("Verlag") %]:</label>
       <span class="form-control">[% publisher %]</span>
       <input type="hidden" name="publisher" value="[% uri_escape(publisher) %]" />
@@ -92,7 +92,7 @@ Aufgrund interner Abläufe in der USB werden zum Zeitpunkt der Bestellung bereit
 [% END %]
 
 [% IF year %]
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="year">[% msg.maketext("Erscheinungsjahr") %]:</label>
       <span class="form-control">[% year %]</span>
       <input type="hidden" name="year" value="[% uri_escape(year) %]" />
@@ -108,7 +108,7 @@ Aufgrund interner Abläufe in der USB werden zum Zeitpunkt der Bestellung bereit
      END;
 %]
 
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="location_mark">[% msg.maketext("Signatur") %]:</label>
       <span class="form-control">[% signatur %]</span>
       <input type="hidden" name="holdingid" value="[% uri_escape(signatur) %]" />
@@ -129,20 +129,20 @@ Aufgrund interner Abläufe in der USB werden zum Zeitpunkt der Bestellung bereit
 
 <legend class="mt-2">[% msg.maketext("Weitere Angaben zur Stornierung") %]</legend>
 
-<div class="form-group">
+<div class="form-floating mb-3">
      <label for="loginname">[% msg.maketext("Nutzer-Kennung") %]:</label>
       <span class="form-control">[% username %]</span>
       <input type="hidden" name="userid" value="[% username %]" />
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="username">[% msg.maketext("Name") %]:</label>
       <span class="form-control">[% name %]</span>
       <input type="hidden" name="username" value="[% name %]" />
 </div>
 
-<div class="form-group">
-      <label class="form-group-text" for="remark">[% msg.maketext("Stornogrund") %]:</label>
+<div class="form-floating mb-3">
+      <label class="form-floating mb-3-text" for="remark">[% msg.maketext("Stornogrund") %]:</label>
       <select name="remark" id="remark" class="form-control" size="1" style="width:15em;">
         <option value="">[ Bitte wählen Sie aus ]</option>
         <option value="Buch eingesehen bzw. kopiert [1]">Habe das Buch am Abholregal eingesehen bzw. kopiert</option>
@@ -166,13 +166,13 @@ Aufgrund interner Abläufe in der USB werden zum Zeitpunkt der Bestellung bereit
 </div>
 
 [% IF email %]
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="email">[% msg.maketext("E-Mail") %]:</label>
       <span class="form-control">[% email %]</span>
       <input type="hidden" name="email" value="[% email %]" />
 </div>
 [% ELSE %]
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="email">[% msg.maketext("E-Mail") %]</label>
       <span class="form-control">[% userinfo.email %]</span>
       <input class="form-control" type="hidden" name="email" value="[% userinfo.email %]" maxlength="60" size="37" /> 

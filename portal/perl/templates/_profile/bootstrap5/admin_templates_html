@@ -27,7 +27,7 @@
       <div class="card-body">
 <form method="post" action="[% path_prefix %]/[% config.get('templates_loc') %]" >
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="templatelang">[% msg.maketext("Sprache") %]</label>
   <select class="form-control" name="templatelang" id="templatelang">
      <option value="de">[% msg.maketext("Deutsch") %]</option>
@@ -35,7 +35,7 @@
   </select>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="templatename">[% msg.maketext("Name") %]</label>
   <select class="form-control" name="templatename" id="templatename">
 [% FOREACH templatename IN all_templates.keys.sort %]    
@@ -44,7 +44,7 @@
   </select>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="viewname">[% msg.maketext("View") %]</label>
   <select class="form-control" name="viewname" id="viewname">
 [% FOREACH viewinfo IN config.get_viewinfo_overview %]    
@@ -53,7 +53,7 @@
   </select>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="templatetext">[% msg.maketext("Text") %]</label>
 <textarea class="form-control" name="templatetext" id="templatetext" cols="60" rows="20"  ></textarea>
 </div>

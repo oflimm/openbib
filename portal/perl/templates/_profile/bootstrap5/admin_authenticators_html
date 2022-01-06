@@ -28,17 +28,17 @@
       <div class="card-body">
 <form method="post" action="[% path_prefix %]/[% config.get('authenticators_loc') %]">
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="name">[% msg.maketext("Name") %]</label>
 <input class="form-control" type="text" name="name" id="name" />
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="description">[% msg.maketext("Beschreibung") %]</label>
 <input class="form-control" type="text" name="description" id="description" />
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="type">[% msg.maketext("Typ") %]</label>
   <select class="form-control" name="type" id="type">
     <option value="self">[% msg.maketext("Selbstregistrierung") %]</option>
@@ -48,7 +48,7 @@
   </select>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="views">[% msg.maketext("Views") %]</label>
   <select class="form-control" name="views" multiple="multiple" size="5" id="views">
 [% FOREACH thisview IN config.get_viewinfo_overview %]  

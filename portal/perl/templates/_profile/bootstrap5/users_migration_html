@@ -34,12 +34,12 @@ ein, von der Inhalte zu dieser hin verschoben werden sollen.") %]</p>
 
 <p/>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="oldusername">[% msg.maketext("Alte Benutzernummer bzw. E-Mail-Adresse") %]</label>
 <input class="form-control" type="text" name="oldusername" id="oldusername" />
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="oldpassword"/>[% msg.maketext("Altes Passwort") %]</label>
 <input class="form-control" type="password" name="oldpassword" id="oldpassword" />
 </div>

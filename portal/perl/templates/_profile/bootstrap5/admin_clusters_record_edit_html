@@ -17,17 +17,17 @@
 
 <h1 class="display-5">[% msg.maketext("Cluster bearbeiten") %]</h1>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="id">[% msg.maketext("Id") %]</label>
 <span class="form-control">[% clusterinfo.id %]</span>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="description">[% msg.maketext("Beschreibung") %]</label>
 <input class="form-control" type="text" name="description" id="description" value="[% clusterinfo.description %]"/>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="status">[% msg.maketext("Status") %]</label>
   <select class="form-control" name="status" id="status">
      <option value="updatable" [% IF clusterinfo.status == 'updatable' %]selected="selected"[% END %]>[% msg.maketext("Akualisierbar") %]</option>
@@ -37,7 +37,7 @@
   </select>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="active">[% msg.maketext("Aktiv") %]</label>
   <select class="form-control" name="active" id="active">
      <option value="true" [%- IF clusterinfo.active -%]selected="selected"[%- END -%]>[% msg.maketext("Ja") %]</option>

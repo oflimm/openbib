@@ -30,18 +30,18 @@
       <div class="card-body">
 <form method="post" action="[% path_prefix %]/[% config.get('databases_loc') %]">
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="dbname">[% msg.maketext("DB-Name") %]</label>
 <input class="form-control" type="text" name="dbname" id="dbname" size="8" />
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="description">[% msg.maketext("Beschreibung") %]</label>
 <input class="form-control" type="text" name="description" id="description" size="20" />
 </div>
 
 <!--
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="system">[% msg.maketext("System") %]</label>
   <select class="form-control" name="system" id="system">
 [% FOREACH source_system IN config.get('source_systems').keys.sort %]
@@ -50,17 +50,17 @@
    </select>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="sigel">[% msg.maketext("Sigel") %]</label>
 <input class="form-control" type="text" name="sigel" id="sigel" size="3" />
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="url">[% msg.maketext("URL") %]</label>
 <input class="form-control" type="text" name="url" id="url" size="15" />
 </div>
 -->
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="active">[% msg.maketext("Aktiv") %]</label>
   <select class="form-control" name="active" id="active">
      <option value="true">[% msg.maketext("Ja") %]</option>

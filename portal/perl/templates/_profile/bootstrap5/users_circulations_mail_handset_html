@@ -40,35 +40,35 @@
 
 <legend class="mt-2">[% msg.maketext("Titelangaben") %]</legend>
 
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="title">Titel</label>
       <span class="form-control">[% title %]</span>
       <input type="hidden" name="titleid" value="[% titleid %]" />
 </div>
 
 [% IF person %]
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="person">[% msg.maketext("Verfasser") %]:</label>
       <span class="form-control">[% person %]</span>
 </div>
 [% END %]
 
 [% IF corporatebody %]
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="corporatation">[% msg.maketext("Körperschaft") %]:</label>
       <span class="form-control">[% corporatebody %]</span>
 </div>
 [% END %]
 
 [% IF publisher %]
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="publisher">[% msg.maketext("Verlag") %]:</label>
       <span class="form-control">[% publisher %]</span>
 </div>
 [% END %]
 
 [% IF year %]
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="year">[% msg.maketext("Erscheinungsjahr") %]:</label>
       <span class="form-control">[% year %]</span>
 </div>
@@ -83,14 +83,14 @@
      END;
 %]
 
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="location_mark">[% msg.maketext("Signatur") %]:</label>
       <span class="form-control">[% signatur %]</span>
       <input type="hidden" name="label" value="[% uri_escape(signatur) %]" />
 </div>
 
 [% IF numbering %]
-<div class="form-group">
+<div class="form-floating mb-3">
      <label for="numbering">[% msg.maketext("Bestand in der USB") %]:</label>
       <span class="form-control">[% numbering %]</span>
       <input type="hidden" name="numbering" value="[% uri_escape(numbering) %]" />
@@ -112,20 +112,20 @@
 
 <legend class="mt-2">[% msg.maketext("Weitere Angaben zur Bestellung") %]</legend>
 
-<div class="form-group">
+<div class="form-floating mb-3">
      <label for="loginname">[% msg.maketext("Nutzer-Kennung") %]:</label>
       <span class="form-control">[% username %]</span>
       <input type="hidden" name="loginname" value="[% username %]" />
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="username">[% msg.maketext("Name") %]:</label>
       <span class="form-control">[% name %]</span>
       <input type="hidden" name="username" value="[% name %]" />
 </div>
 
-<div class="form-group">
-      <label class="form-group-text" for="remark">[% msg.maketext("Bemerkung") %]:</label>
+<div class="form-floating mb-3">
+      <label class="form-floating mb-3-text" for="remark">[% msg.maketext("Bemerkung") %]:</label>
       <textarea class="form-control" type="text" name="remark" placeholder="[% msg.maketext("Geben Sie hier bitte ggf. Bemerkungen zu Ihrer Bestellung ein") %]" value="" maxlength="120" size="37" ></textarea>
 </div>
 
@@ -138,7 +138,7 @@
       <label class="form-check-label" for="receipt">[% msg.maketext("Ja, ich möchte eine Kopie dieser Bestellung als E-Mail erhalten") %].</label>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="email">[% msg.maketext("E-Mail") %]:</label>
       <span class="form-control">[% userinfo.email %]</span>
 </div>

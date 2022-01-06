@@ -102,42 +102,42 @@ Sie werden über den Eingang der Bestellung <b>nicht</b> gesondert benachrichtig
 
 <legend class="mt-2">[% msg.maketext("Titelangaben") %]</legend>
 
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="title">Titel</label>
       <span class="form-control">[% title %]</span>
       <input type="hidden" name="titleid" value="[% titleid %]" />
 </div>
 
 [% IF person %]
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="person">[% msg.maketext("Autor") %]:</label>
       <span class="form-control">[% person %]</span>
 </div>
 [% END %]
 
 [% IF corporatebody %]
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="corporatation">[% msg.maketext("Körperschaft") %]:</label>
       <span class="form-control">[% corporatebody %]</span>
 </div>
 [% END %]
 
 [% IF publisher %]
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="publisher">[% msg.maketext("Ort/Verlag") %]:</label>
       <span class="form-control">[% publisher %]</span>
 </div>
 [% END %]
 
 [% IF year %]
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="year">[% msg.maketext("Erscheinungsjahr") %]:</label>
       <span class="form-control">[% year %]</span>
 </div>
 [% END %]
 
 [% IF source %]
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="source">[% msg.maketext("In") %]:</label>
       <span class="form-control">[% source %]</span>
 </div>
@@ -155,14 +155,14 @@ Sie werden über den Eingang der Bestellung <b>nicht</b> gesondert benachrichtig
      
 %]
 
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="location_mark">[% msg.maketext("Signatur") %]:</label>
       <span class="form-control">[% signatur %]</span>
       <input type="hidden" name="label" value="[% uri_escape(signatur) %]" />
 </div>
 
 [% IF numbering %]
-<div class="form-group">
+<div class="form-floating mb-3">
      <label for="numbering">[% msg.maketext("Bestand in der USB") %]:</label>
       <span class="form-control">[% numbering %]</span>
       <input type="hidden" name="numbering" value="[% uri_escape(numbering) %]" />
@@ -186,7 +186,7 @@ Sie werden über den Eingang der Bestellung <b>nicht</b> gesondert benachrichtig
 
 <p>Mit * gekennzeichnete Felder sind Pflichtfelder und müssen ausgefüllt werden.</p>
 
-<div class="form-group">
+<div class="form-floating mb-3">
      <label for="username">[% msg.maketext("Name, Vorname") %] (*):</label>
       <input class="form-control" type="text" name="loginname" value="" />
 </div>
@@ -211,12 +211,12 @@ Sie werden über den Eingang der Bestellung <b>nicht</b> gesondert benachrichtig
 
 <p/>
 
-<div class="form-group">
-      <label class="form-group-text" for="remark">[% msg.maketext("Bemerkung") %]:</label>
+<div class="form-floating mb-3">
+      <label class="form-floating mb-3-text" for="remark">[% msg.maketext("Bemerkung") %]:</label>
       <textarea class="form-control" type="text" name="remark" placeholder="[% msg.maketext("Geben Sie hier bitte ggf. Bemerkungen zu Ihrer Bestellung ein") %]" value="" maxlength="120" size="37" ></textarea>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
       <label for="email">[% msg.maketext("E-Mail") %] (*):</label>
       <input class="form-control" type="text" name="email" value="" />
 </div>

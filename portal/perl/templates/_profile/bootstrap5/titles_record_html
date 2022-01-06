@@ -254,17 +254,17 @@ value="5"/>&nbsp;[% msg.maketext("sehr gut") %]</td></tr>
 
 <h4>[% msg.maketext("Rezension") %]</h4>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="review_nickname">[% msg.maketext("Pseudonym") %]</label>
 <input class="form-control" id="review_nickname" type="text" name="nickname" value="" />
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="review_title">[% msg.maketext("Titel") %]</label>
 <input class="form-control" id="review_title" type="text" name="title" value=""  />
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="review_text">[% msg.maketext("Rezension") %]</label>
 <textarea class="form-control" id="review_text" cols="80" rows="10" name="review"></textarea>
 </div>

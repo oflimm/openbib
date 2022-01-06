@@ -23,7 +23,7 @@
 
 <input type="hidden" name="_method"    value="PUT" />
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <select class="form-control" name="searchform">
 <option value="simple"[%- IF userinfo.masktype == 'simple' -%] selected="selected"[%- END -%]>[% msg.maketext("Einfache Recherchemaske") %]</option>
 <option value="advanced"[%- IF userinfo.masktype == 'advanced' -%] selected="selected"[%- END -%]>[% msg.maketext("Erweitere Recherchemaske") %]</option>
@@ -151,7 +151,7 @@
 <form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/autocompletion" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="_method"    value="PUT" />
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <select class="form-control" name="autocompletion">
 <option value="none"[%- IF userinfo.autocompletiontype == 'none' -%] selected="selected"[%- END -%]>[% msg.maketext("Keine") %]</option>
 <option value="livesearch"[%- IF userinfo.autocompletiontype == 'livesearch' -%] selected="selected"[%- END -%]>[% msg.maketext("LiveSearch") %]</option>
@@ -273,12 +273,12 @@
 <label class="form-check-label" for="bibsonomy_sync">[% msg.maketext("Abgleich zu BibSonomy") %]</label>
 </div>
 
-<div class="form-group mt-4">
+<div class="form-floating mb-3 mt-4">
 <label for="bibsonomy_user">[% msg.maketext("BibSonomy-API-User") %]</label>
 <input class="form-control" type="text" name="bibsonomy_user" id="bibsonomy_user" value="[% bibsonomy.user %]"/>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <label for="bibsonomy_key">[% msg.maketext("BibSonomy-API-Key") %]</label>
 <input class="form-control" type="text" name="bibsonomy_key" id="bibsonomy_key" value="[% bibsonomy.key %]"/>
 </div>

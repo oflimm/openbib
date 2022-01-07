@@ -4,9 +4,9 @@
 #
 #  alt_remote.pl
 #
-#  Holen via http und konvertieren in das Meta-Format
+#  Konvertieren in das Meta-Format
 #
-#  Dieses File ist (C) 2003-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -41,20 +41,26 @@ my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
 my $confdir       = $config->{'base_dir'}."/conf";
 my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
-my $simplexml2metaexe  = "$konvdir/simplexml2meta.pl";
+my $marc2metaexe   = "$konvdir/marc2meta.pl";
 
 my $pool          = $ARGV[0];
 
 my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 
-my $url           = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->titlefile;
+my $filename   = "pool.mrc";
+my $url        = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->titlefile;
 
 my $httpauthstring="";
 if ($dbinfo->protocol eq "http" && $dbinfo->remoteuser ne "" && $dbinfo->remotepassword ne ""){
     $httpauthstring=" --http-user=".$dbinfo->remoteuser." --http-password=".$dbinfo->remotepassword;
 }
 
-print "### $pool: Datenabzug via http von $url\n";
-system("cd $pooldir/$pool ; rm meta.*");
-#system("$wgetexe $httpauthstring -P $pooldir/$pool/ $url > /dev/null 2>&1 ");
-system("cd $pooldir/$pool; $simplexml2metaexe --inputfile=".$dbinfo->titlefile." --configfile=$confdir/$pool.yml; gzip meta.*");
+print "### $pool: Datenabzug von $url\n";
+
+system("cd $pooldir/$pool ; rm meta.* *.mrc");
+system("$wgetexe $httpauthstring -O $pooldir/$pool/$filename \"$url\" > /dev/null 2>&1 ");
+
+print "### $pool: Heilen der Daten mit yaz-marcdump $filename\n";
+system("cd $pooldir/$pool ; /usr/bin/yaz-marcdump -o marc $filename > ${filename}.tmp ; mv -f ${filename}.tmp $filename");
+print "### $pool: Konvertierung von $filename\n";
+system("cd $pooldir/$pool; $marc2metaexe --database=$pool --configfile=/opt/openbib/conf/${pool}.yml --inputfile=$filename ; gzip meta.*");

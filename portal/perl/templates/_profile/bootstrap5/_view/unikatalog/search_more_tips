@@ -1,0 +1,43 @@
+<div class="container pt-2 pb-5">
+  <div class="row">
+    <div class="col-md-4 ps-1 pe-1 pb-1">
+      <div class="card mt-1 h-100">
+	<div class="card-header pb-2 text-center"><h5>[% msg.maketext("Nicht das Gesuchte gefunden?") %]</h5></div>
+	<div class="card-body">
+	  [% msg.maketext("Bestellen Sie Literatur aus anderen Bibliotheken per Fernleihe: ") %]
+	  <ul style="margin-top:0.5em;">
+            <li><a href="https://www.ub.uni-koeln.de/IPS?SERVICE=TEMPLATE&amp;SUBSERVICE=SEARCHMASK&amp;SID=IPS1:b27424f2668e50e9d20e8b92349d031b&amp;LOCATION=USB&amp;VIEW=USB%3AILLMono&amp;LANGUAGE=de&amp;SEARCHMODE=ext">Buch bestellen</a><br><a target='_blank' href="https://youtu.be/HOpYAvYndVQ"><img src="/images/openbib/uzk15/youtube_icon.jpg" width="20px" alt="YouTube-Icon" title="Buchausleihe als Kopie" class="imageyt" style="margin-right:0.6em;" />So geht's</a></li>
+            <li><a href="https://www.ub.uni-koeln.de/IPS?SERVICE=TEMPLATE&amp;SUBSERVICE=SEARCHMASK&amp;SID=IPS1:b27424f2668e50e9d20e8b92349d031b&amp;LOCATION=USB&amp;VIEW=USB%3AILLArticle&amp;LANGUAGE=de&amp;SEARCHMODE=ext">Zeitschriftenartikel bestellen</a><br><a target='_blank' href="https://youtu.be/gYL-aDqbraE"><img src="/images/openbib/uzk15/youtube_icon.jpg" width="20px" alt="YouTube-Icon" title="Buchausleihe als Kopie" class="imageyt" style="margin-right:0.6em;" />So geht's</a></li>
+          </ul>
+	</div>
+      </div>
+    </div>
+    <div class="col-md-4 ps-1 pe-1 pb-1">
+      <div class="card mt-1 h-100">
+	<div class="card-header pb-2 text-center"><h5>[% msg.maketext("Tipps zur Suche") %]</h5></div>
+	<div class="card-body">
+	  <ul>
+            <li>Suchen Sie mit wenigen Begriffen, z.&nbsp;B. mit einem Wort aus dem Titel und dem Nachnamen des Autors.</li>
+            
+            <li>Verwenden Sie am Wortende das Sternchen&nbsp;<strong>*</strong>&nbsp;als Platzhalter.</li>
+            
+          </ul>
+	</div>
+      </div>
+    </div>
+    <div class="col-md-4 ps-1 pe-1 pb-1">
+      <div class="card mt-1 h-100">
+	<div class="card-header pb-2 text-center"><h5>[% msg.maketext("Weitere Informationen") %]</h5></div>
+	<div class="card-body">
+	  <ul>
+            <li><a href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/index_ger.html">Effektiv Suchen</a></li>
+            <li><a href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/index_ger.html">Suche nach Medienarten</a></li>           
+            <li><a href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/anschaffungsvorschlag/index_ger.html">Anschaffungsvorschlag</a></li>
+            <li><a href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/ueberregional/index_ger.html">Hinweise zur Fernleihe</a></li>
+            <li><a href="https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/audio/index_ger.html"><img src="/images/openbib/uzk15/youtube_icon.jpg" width="20px" alt="YouTube-Icon" title="Bibliothek erkunden" class="imageyt" style="margin-right:0.6em;" />Bibliothek erkunden</a></li>
+          </ul>
+	</div>
+      </div>
+    </div>
+  </div>
+</div>

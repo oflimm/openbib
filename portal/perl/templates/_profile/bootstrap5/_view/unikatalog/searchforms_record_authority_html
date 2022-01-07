@@ -1,0 +1,165 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchform_advance
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Erweiterten Suchmaske
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="searchforms_suggestions" %]
+
+<script type="text/javascript">
+function update_per (){
+  if ($("#autocomplete_per").val().length > 0){
+     $("#autocomplete_gnd").prop('disabled', true);	
+     $("#autocomplete_subj").prop('disabled', true);
+     $("#autocomplete_corp").prop('disabled', true);
+     $("#to_focus").prop('disabled', true);
+  }
+  else {
+     $("#autocomplete_gnd").prop('disabled',false);
+     $("#autocomplete_subj").prop('disabled',false);
+     $("#autocomplete_corp").prop('disabled',false);
+     $("#to_focus").prop('disabled',false);
+  }
+};
+
+function update_subj (){
+  if ($("#autocomplete_subj").val().length > 0){
+     $("#autocomplete_gnd").prop('disabled',true);
+     $("#autocomplete_per").prop('disabled', true);
+     $("#autocomplete_corp").prop('disabled', true);
+     $("#to_focus").prop('disabled', true);
+  }
+  else {
+     $("#autocomplete_gnd").prop('disabled',false);
+     $("#autocomplete_per").prop('disabled',false);
+     $("#autocomplete_corp").prop('disabled',false);
+     $("#to_focus").prop('disabled',false);
+  }
+};
+
+function update_corp (){
+  if ($("#autocomplete_corp").val().length > 0){
+     $("#autocomplete_gnd").prop('disabled',true);
+     $("#autocomplete_subj").prop('disabled', true);
+     $("#autocomplete_per").prop('disabled', true);
+     $("#to_focus").prop('disabled', true);
+  }
+  else {
+     $("#autocomplete_gnd").prop('disabled',false);
+     $("#autocomplete_subj").prop('disabled',false);
+     $("#autocomplete_per").prop('disabled',false);
+     $("#to_focus").prop('disabled',false);
+  }
+};
+
+function update_fs (){
+  if ($("#to_focus").val().length > 0){
+     $("#autocomplete_gnd").prop('disabled',true);
+     $("#autocomplete_subj").prop('disabled', true);
+     $("#autocomplete_per").prop('disabled', true);
+     $("#autocomplete_corp").prop('disabled', true);
+  }
+  else {
+     $("#autocomplete_gnd").prop('disabled',false);
+     $("#autocomplete_subj").prop('disabled',false);
+     $("#autocomplete_per").prop('disabled',false);
+     $("#autocomplete_corp").prop('disabled',false);
+  }
+};
+
+function update_gnd (){
+  if ($("#autocomplete_gnd").val().length > 0){
+     $("#autocomplete_subj").prop('disabled', true);
+     $("#autocomplete_per").prop('disabled', true);
+     $("#autocomplete_corp").prop('disabled', true);
+     $("#to_focus").prop('disabled', true);
+  }
+  else {
+     $("#autocomplete_subj").prop('disabled',false);
+     $("#autocomplete_per").prop('disabled',false);
+     $("#autocomplete_corp").prop('disabled',false);
+     $("#to_focus").prop('disabled', false);
+  }
+};
+
+</script>
+
+<form method="get" action="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]">
+<input type="hidden" name="num"        value="20" />
+<input type="hidden" name="page"       value="1" />
+
+<input type="hidden" name="srt"        value="authority_asc" />
+<input type="hidden" name="st"         value="3" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+
+<h1 class="display-5">[% msg.maketext("Normdaten") %]</h1>
+
+[%# USE dumper;dumper.dump(available_searchfields)%]
+
+[%- cgiparam = config.searchfield.freesearch.prefix ;
+    this_searchfield = 'freesearch';
+-%]
+<div class="form-floating mb-3">
+<input class="form-control" onkeypress="update_[% cgiparam %]()" id="to_focus" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="to_focus">[% msg.maketext("Freie Suche") %]</label>
+</div>
+
+[%- cgiparam = config.searchfield.gnd.prefix;
+    this_searchfield = 'gnd';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="autocomplete_[% cgiparam %]">GND</label>
+</div>
+
+[%- cgiparam = config.searchfield.person.prefix;
+    this_searchfield = 'person';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Personen") %]</label>
+</div>
+
+[%- cgiparam = config.searchfield.corporatebody.prefix;
+    this_searchfield = 'corporatebody';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Institutionen") %]</label>
+</div>
+
+[%- cgiparam = config.searchfield.subject.prefix;
+    this_searchfield = 'subject';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Schlagworte") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+[% PROCESS common/subtemplate name="searchforms_record_profile" %]
+<label for="[% cgiparam %]">[% msg.maketext("Suchprofil") %]</label>
+</div>
+
+<p/>
+
+<div class="d-flex ob-fulltitle_actions">
+
+<div class="pe-1">
+<button class="btn btn-primary" type="submit">[% msg.maketext("Suchen") %]</button>
+</div>
+
+<div class="pe-1">
+    <button class="btn btn-primary sidebar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-arrow-right"></i> <span class="d-none d-sm-inline">[% msg.maketext("Mehr") %]</span></button>
+</div>
+
+</div>
+
+</form>

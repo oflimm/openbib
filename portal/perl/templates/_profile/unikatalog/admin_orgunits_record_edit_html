@@ -1,0 +1,66 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_orgunit_record_edit
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Zuordnung der Datenbanken zu einer Organisationseinheit eines einzelnen Profiles
+#b
+#######################################################################
+-%]
+<h1>[% orgunitinfo.description %]</h1>
+
+<form method="post" action="[% path_prefix %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %]/[% config.get('orgunits_loc') %]/id/[% orgunitinfo.orgunitname %]">
+<input type="hidden" name="_method"    value="PUT" />
+
+<h1 class="display-5">[% msg.maketext("Organisationseinheit bearbeiten") %]</h1>
+
+<div class="form-floating mb-3">
+<span class="form-control">[% orgunitinfo.orgunitname %]</span>
+<label for="orgunitname">[% msg.maketext("Organisationseinheit") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" type="text" name="description" id="description" value="[% orgunitinfo.description %]" size="20" />
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" type="text" name="nr" id="nr" value="[% orgunitinfo.nr %]" size="20" />
+<label for="nr">[% msg.maketext("Nr") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<span class="form-control">[% config.get_searchprofile_of_orgunit(profileinfo.profilename,orgunitinfo.orgunitname) %]</span>
+<label for="searchprofileid">[% msg.maketext("Aktuelle Suchprofil-ID") %]</label>
+</div>
+
+<h1 class="display-5">[% msg.maketext("Katalogauswahl der Organisationseinheit") %]</h1>
+
+<div class="form-floating mb-3">
+<select class="form-control" id="databases" name="databases" multiple="multiple" size="20">
+[% FOREACH singledb IN activedbs.all %]
+<option value="[% singledb.dbname %]"[% IF orgunitdb_map.${singledb.dbname} %] selected="selected"[% END %]>[% singledb.dbname %]: [% singledb.description | truncate(100) %]</option>
+[% END %]
+</select>
+<label for="databases">[% msg.maketext("Kataloge") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<select class="form-control" id="own_index" name="own_index">
+<option value="1" [% IF orgunitinfo.own_index %]selected="selected"[% END %]>[% msg.maketext("Ja") %]</option>
+<option value="0" [% IF NOT orgunitinfo.own_index %]selected="selected"[% END %]>[% msg.maketext("Nein") %]</option>
+</select>
+<label for="own_index">[% msg.maketext("Eigener Index") %]</label>
+</div>
+
+<button type="submit" name="do_change" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>
+
+&nbsp;&nbsp;&nbsp;
+
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %]/[% config.get('orgunits_loc') %]/id/[% orgunitinfo.orgunitname %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+
+</form>

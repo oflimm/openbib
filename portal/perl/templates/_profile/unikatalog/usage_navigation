@@ -1,0 +1,20 @@
+<div class="card">
+<div class="card-header">[% msg.maketext("Nutzung") %]</div>
+<div class="card-body">
+<nav class="navbar bg-light ob-sidebar">
+
+ <ul class="navbar-nav">
+[% IF layout_param.active_submenu == "titles" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Titel") %]</strong></li>
+[% ELSE %]
+  <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/[% config.get('titles_loc') %]/popular.html?l=[% lang %]">[% msg.maketext("Titel") %]</a></li>
+[% END %]
+[% IF layout_param.active_submenu == "databases" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Kataloge") %]</strong></li>
+[% ELSE %]
+  <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/popular.html?l=[% lang %]">[% msg.maketext("Kataloge") %]</a></li>
+[% END %]
+ </ul>
+</nav>
+</div>
+</div>

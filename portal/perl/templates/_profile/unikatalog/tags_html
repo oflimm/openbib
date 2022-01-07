@@ -1,0 +1,56 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showtitlist
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe einer Titel-Kurztrefferliste
+#
+#######################################################################
+-%]
+[%- ebook_i18n      = msg.maketext("E-Book") -%]
+[%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
+[%- popularity_i18n = msg.maketext("Popularität") -%]
+
+[% IF public_tags.size == 0 %]
+
+   <h1>Bisher wurden keine Tags vergeben</h1>
+
+[% ELSE %]
+
+[%-
+    start_range     = nav.current_page*qopts.get_option('num') - qopts.get_option('num') + 1;
+    end_range       = public_tags.size;
+-%]
+
+[%# USE dumper;dumper.dump(public_tags)%]
+<!-- Titlelist begins here -->
+<div class="ob-resultlist">
+  <div class="ob-resultheader">
+    <div class="left">
+[% total_count %]  [% msg.maketext("Tags") %]
+    </div>
+    <div class="right">
+    </div>    
+  </div>
+  <div class="ob-resultitems fullwidth[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+[%- FOREACH tag IN public_tags ;
+      record  = tag.record ;
+      tagname = tag.tagname ;
+-%]
+[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 %] 
+[%- END -%]
+  </div>
+</div>
+<!-- Titlelist ends here -->
+
+<p/>
+
+  <div class="ob-footer">
+[% PROCESS common/subtemplate name="pagination" %]
+  </div>
+
+[% END %]

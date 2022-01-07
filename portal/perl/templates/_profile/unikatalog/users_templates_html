@@ -1,0 +1,42 @@
+[%#-
+#######################################################################
+#
+# Templatename: users_templates
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersicht der aktuellen Einstellungen des Betriebs
+#
+#######################################################################
+-%]
+
+[% IF usertemplates.count > 0 %]
+
+<h3>[% msg.maketext("Templates") %]</h3>
+
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+<thead>
+<tr><th>[% msg.maketext("Id") %]</th><th>[% msg.maketext("Sprache") %]</th><th>[% msg.maketext("Name") %]</th><th>[% msg.maketext("View") %]</th></tr>
+</thead>
+<tbody>
+[% FOREACH usertemplate IN usertemplates.all %]
+<tr>
+<td>[% usertemplate.templateid.id %]</td>
+<td><img style="vertical-align: bottom;" src="/images/openbib/[% usertemplate.templateid.templatelang %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",usertemplate.templateid.templatelang) %]" /></td>
+<td><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('templates_loc') %]/id/[% usertemplate.templateid.id %]/edit.html?l=[% lang %]">[% usertemplate.templateid.templatename %]</a></td>
+<td>[% usertemplate.templateid.viewid.viewname %]: [% usertemplate.templateid.viewid.description %]</td>
+</tr>
+[% END %]
+</tbody>
+</table>
+</div>
+[% ELSE %]
+<div class="ob-jumbotron">
+<h1 class="display-4">[% msg.maketext('Keine Templates vorhanden') %]</h1>
+
+<p class="lead">[% msg.maketext('Ihrer Kennung sind noch keine Templates zugeordnet') %]</p>
+</div>
+[% END %]

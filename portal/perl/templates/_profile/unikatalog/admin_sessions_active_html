@@ -1,0 +1,35 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_session_active_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller aktuell bestehenden Sessions
+# mit ihren wichtigsten Informationen
+#
+#######################################################################
+-%]
+
+<h2>[% total_count %] Sessions aktiv.</h2>
+
+<h3>[% msg.maketext("Bestehende Sessions") %]</h3>
+
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+<thead>
+<tr><th>[% msg.maketext('Id') %]</th><th>[% msg.maketext("Session-ID") %]</th><th>[% msg.maketext("Beginn") %]</th><th align="middle">[% msg.maketext("Benutzer") %]</th><th align="middle">[% msg.maketext("Initiale Suchen") %]</th></tr>
+</thead>
+<tbody>
+[% FOREACH this_session IN sessions %]
+<tr><td>[% this_session.id %]</td><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/active/id/[% this_session.id %].html?l=[% lang %]">[% this_session.sessionid %]</a></td><td>[% this_session.createtime %]</td><td align="middle">[% this_session.username %]</td><td align="middle">[% this_session.numqueries %]</td></tr>
+[% END %]
+</tbody>
+</table>
+</div>
+
+  <div class="ob-footer">
+[% PROCESS common/subtemplate name="pagination" %]
+  </div>

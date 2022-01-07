@@ -25,7 +25,7 @@
   #USE dumper;dumper.dump(available_authenticators);dumper.dump(available_authenticator_types);
 %]
 
-        <div class="jumbotron">
+        <div class="ob-jumbotron">
          <h1 class="display-4">[% msg.maketext("Anmelden") %]</h1>
  	 <p>An diesem Portal können sich nur registrierte Mitarbeiter der Bibliotheken der UzK anmelden.</p>
 	 <div id="login_targets" class="accordion">
@@ -35,7 +35,7 @@
   <div class="card">
     <div class="card-header" id="headingOLWS">
       <h5 class="mb-0">
-        <a class="card-link collapsed" href="#collapseOLWS" data-toggle="collapse" data-target="#collapseOLWS" aria-expanded="false" aria-controls="collapseOLWS">
+        <a class="card-link collapsed" href="#collapseOLWS" data-bs-toggle="collapse" data-bs-target="#collapseOLWS" aria-expanded="false" aria-controls="collapseOLWS">
           [% msg.maketext("Anmeldung mit einem Benutzerausweis") %]
         </a>
       </h5>
@@ -50,23 +50,24 @@
 
 <p/>
 
-<div class="form-group">
-<label for="authenticator">[% msg.maketext("mit") %]:</label>
+<div class="form-floating mb-3">
 <select class="form-control" name="authenticatorid">
 [%- FOREACH authenticator IN available_authenticators -%]
 [%-   NEXT IF authenticator.type != 'olws' -%]
 <option value="[% authenticator.id %]" [% IF authenticator.id == authenticatorid %]selected="selected"[% END %]>[% authenticator.description %]</option>
 [%- END -%]
 </select>
+<label for="authenticator">[% msg.maketext("mit") %]:</label>
 </div>
 
-<div class="form-group">
-<label for="username">[% msg.maketext("Benutzernummer") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="username" id="username" value="[% username %]" />
+<label for="username">[% msg.maketext("Benutzernummer") %]</label>
 </div>
-<div class="form-group">
-<label for="password"/>[% msg.maketext("Passwort") %]</label>
+
+<div class="form-floating mb-3">
 <input class="form-control" type="password" name="password" id="password" />
+<label for="password"/>[% msg.maketext("Passwort") %]</label>
 </div>
 
 <p/>
@@ -83,7 +84,7 @@
   <div class="card">
     <div class="card-header" id="headingILS">
       <h5 class="mb-0">
-        <a class="card-link collapsed" href="#collapseILS" data-toggle="collapse" data-target="#collapseILS" aria-expanded="true" aria-controls="collapseILS">
+        <a class="card-link collapsed" href="#collapseILS" data-bs-toggle="collapse" data-bs-target="#collapseILS" aria-expanded="true" aria-controls="collapseILS">
           [% msg.maketext("Anmeldung mit einem Benutzerausweis") %]
         </a>
       </h5>
@@ -98,23 +99,24 @@
 
 <p/>
 
-<div class="form-group">
-<label for="authenticator">[% msg.maketext("mit") %]:</label>
+<div class="form-floating mb-3">
 <select class="form-control" name="authenticatorid">
 [%- FOREACH authenticator IN available_authenticators -%]
 [%-   NEXT IF authenticator.type != 'ils' -%]
 <option value="[% authenticator.id %]" [% IF authenticator.id == authenticatorid %]selected="selected"[% END %]>[% authenticator.description %]</option>
 [%- END -%]
 </select>
+<label for="authenticator">[% msg.maketext("mit") %]:</label>
 </div>
 
-<div class="form-group">
-<label for="username">[% msg.maketext("Benutzernummer") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="username" id="username" value="[% username %]" />
+<label for="username">[% msg.maketext("Benutzernummer") %]</label>
 </div>
-<div class="form-group">
-<label for="password"/>[% msg.maketext("Passwort") %]</label>
+
+<div class="form-floating mb-3">
 <input class="form-control" type="password" name="password" id="password" />
+<label for="password"/>[% msg.maketext("Passwort") %]</label>
 </div>
 
 <p/>
@@ -131,7 +133,7 @@
   <div class="card">
     <div class="card-header" id="headingPAIA">
       <h5 class="mb-0">
-        <a class="card-link collapsed" href="#collapsePAIA" data-toggle="collapse" data-target="#collapsePAIA" aria-expanded="false" aria-controls="collapsePAIA">
+        <a class="card-link collapsed" href="#collapsePAIA" data-bs-toggle="collapse" data-bs-target="#collapsePAIA" aria-expanded="false" aria-controls="collapsePAIA">
           [% msg.maketext("Anmeldung mit einem Benutzerausweis") %]
         </a>
       </h5>
@@ -146,23 +148,24 @@
 
 <p/>
 
-<div class="form-group">
-<label for="authenticator">[% msg.maketext("mit") %]:</label>
+<div class="form-floating mb-3">
 <select class="form-control" name="authenticatorid">
 [%- FOREACH authenticator IN available_authenticators -%]
 [%-   NEXT IF authenticator.type != 'paia' -%]
 <option value="[% authenticator.id %]" [% IF authenticator.id == authenticatorid %]selected="selected"[% END %]>[% authenticator.description %]</option>
 [%- END -%]
 </select>
+<label for="authenticator">[% msg.maketext("mit") %]:</label>
 </div>
 
-<div class="form-group">
-<label for="username">[% msg.maketext("Benutzernummer") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="username" id="username" value="[% username %]" />
+<label for="username">[% msg.maketext("Benutzernummer") %]</label>
 </div>
-<div class="form-group">
-<label for="password"/>[% msg.maketext("Passwort") %]</label>
+
+<div class="form-floating mb-3">
 <input class="form-control" type="password" name="password" id="password" />
+<label for="password"/>[% msg.maketext("Passwort") %]</label>
 </div>
 
 <p/>
@@ -179,7 +182,7 @@
   <div class="card">
     <div class="card-header" id="headingLDAP">
       <h5 class="mb-0">
-        <a class="card-link collapsed" href="#collapseLDAP" data-toggle="collapse" data-target="#collapseLDAP" aria-expanded="false" aria-controls="collapseLDAP">
+        <a class="card-link collapsed" href="#collapseLDAP" data-bs-toggle="collapse" data-bs-target="#collapseLDAP" aria-expanded="false" aria-controls="collapseLDAP">
           [% msg.maketext("Anmeldung über einen Verzeichnis-Dienst") %]
         </a>
       </h5>
@@ -194,23 +197,24 @@
 
 <p/>
 
-<div class="form-group">
-<label for="authenticator">[% msg.maketext("mit") %]:</label>
+<div class="form-floating mb-3">
 <select class="form-control" name="authenticatorid">
 [%- FOREACH authenticator IN available_authenticators -%]
 [%-   NEXT IF authenticator.type != 'ldap' -%]
 <option value="[% authenticator.id %]" [% IF authenticator.id == authenticatorid %]selected="selected"[% END %]>[% authenticator.description %]</option>
 [%- END -%]
 </select>
+<label for="authenticator">[% msg.maketext("mit") %]:</label>
 </div>
 
-<div class="form-group">
-<label for="username">[% msg.maketext("Benutzernummer") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="username" id="username" value="[% username %]" />
+<label for="username">[% msg.maketext("Benutzernummer") %]</label>
 </div>
-<div class="form-group">
-<label for="password"/>[% msg.maketext("Passwort") %]</label>
+
+<div class="form-floating mb-3">
 <input class="form-control" type="password" name="password" id="password" />
+<label for="password"/>[% msg.maketext("Passwort") %]</label>
 </div>
 
 <p/>
@@ -227,7 +231,7 @@
   <div class="card">
     <div class="card-header" id="headingSelf">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseSelf" data-toggle="collapse" data-target="#collapseSelf" aria-expanded="false" aria-controls="collapseSelf">
+        <a class="card-link" href="#collapseSelf" data-bs-toggle="collapse" data-bs-target="#collapseSelf" aria-expanded="false" aria-controls="collapseSelf">
           [% msg.maketext("Anmeldung mit einer E-Mail-Adresse") %]
         </a>
       </h5>
@@ -247,14 +251,16 @@
 
 <p/>
 
-<div class="form-group">
-<label for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="username" id="email_username" value="[% username %]" />
+<label for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>
 </div>
-<div class="form-group">
-<label for="email_password"/>[% msg.maketext("Passwort") %]</label>
+
+<div class="form-floating mb-3">
 <input class="form-control" type="password" name="password" id="email_username" />
+<label for="email_password"/>[% msg.maketext("Passwort") %]</label>
 </div>
+
 <div>
 <a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('registrations_loc') %].html">[% msg.maketext("Registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('passwords_loc') %].html?l=[% lang %]">[% msg.maketext("Passwort vergessen oder Konto gesperrt?") %]</a>
 </div>
@@ -273,7 +279,7 @@
 [% END %]
 
          </div><!-- End: login_targets -->
-        </div><!-- End: jumbotron -->
+        </div><!-- End: ob-jumbotron -->
 
 
 <p/>

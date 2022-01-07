@@ -1,0 +1,104 @@
+[%#-
+#######################################################################
+#
+# Templatename: users_reviews_collection_html
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Rezensionen eines Benutzers
+#
+#######################################################################
+-%]
+
+<h1>[% msg.maketext("Rezensionen") %]</h1>
+
+[%- IF reviews.size > 0 -%]
+<!-- Begin Reviews -->
+
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+[%- FOREACH item IN reviews -%]
+
+[%# Verfasser konstruieren %]
+[%- persons = [] -%]
+[%- FOREACH part IN item.titnormset.${'P0100'}  -%]
+[%- persons.push("<a href=\"${path_prefix}/${config.get('indexes_loc')}?database=${item.titnormset.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.titnormset.${'P0101'}  -%]
+[%- persons.push("<a href=\"${path_prefix}/${config.get('indexes_loc')}?database=${item.titnormset.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.titnormset.${'C0200'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- persons.push("<a href=\"${path_prefix}/${config.get('indexes_loc')}?database=${item.titnormset.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- FOREACH part IN item.titnormset.${'C0201'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- persons.push("<a href=\"${path_prefix}/${config.get('indexes_loc')}?database=${item.titnormset.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- person = persons.join(' ; ') -%]
+
+[%# Titel konstruieren %]
+[%- title = item.titnormset.${'T0331'}.first.content -%]
+[%- IF item.titnormset.${'T0310'}.first.content -%]
+[%- title = item.titnormset.${'T0310'}.first.content -%]
+[%- END -%]
+
+[%# Einbeziehung der Zaehlfelder T5100 %]
+[%- IF title && item.titnormset.${'T5100'}.first.content -%]
+[%-    order = item.titnormset.${'T5100'}.first.content -%]
+[%-    IF title == order -%]
+[%-      title = "${order}."-%]
+[%-    ELSE -%]
+[%-      title = "${order}. ${title}" -%]
+[%-    END -%]
+[%- END -%]
+
+[%# Verlage konstruieren %]
+[%- publisher = item.titnormset.${'T0412'}.first.content -%]
+
+[%# Ejahr konstruieren %]
+[%- yearofpub = item.titnormset.${'T0425'}.first.content -%]
+
+[%# Signaturen konstruieren %]
+[%- signaturen = [] -%]
+[%- FOREACH part IN item.titnormset.${'X0014'} -%]
+[%- signaturen.push("${part.content}") -%]
+[%- END -%]
+[%- signatur = signaturen.sort.unique.join(' ; ') -%]
+[%- dbdesc   = dbinfo.get('dbnames').${item.titnormset.database}.full -%]
+[%- dburl    = dbinfo.get('urls').${item.titnormset.database} -%]
+
+<tr><td class="boxedclear">
+<p>
+<span class="rlauthor">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('indexes_loc') %]?search=Mehrfachauswahl;srt=[% srt %];database=[% item.titnormset.${"database"} %];searchsingletit=[% item.titnormset.id %]"><strong><span class="ob-title">[% title %]</span></strong></a>, <span
+class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span><br />aus:&nbsp;<i><a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></i>
+</p>
+
+<span class="ob-reviewtitle">[% item.title %]</span> von <span class="ob-reviewnick">[% IF item.nickname %][% item.nickname %][% ELSE %]Anonym[% END %]</span>&nbsp;&nbsp;(Bewertung: <span class="ob-reviewrating">[% item.rating %]</span>)</dt>
+
+<p />[%    IF item.review %][% item.review %][% END %]
+
+<p>
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('reviews_loc') %]/id/[% item.id %]/edit"><span>Bearbeiten</span></a><a class="btn btn-primary mb-2 ms-5" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=DELETE;confirm=1"><span>L&ouml;schen</span></a>
+</p>
+</td></tr>
+<tr><td></td></tr>
+[%  END %]
+</table>
+</div>
+<!-- End Reviews -->
+
+[% ELSE %]
+<div class="ob-jumbotron">
+<h1 class="display-4">[% msg.maketext('Keine Rezensionen vorhanden') %]</h1>
+
+<p class="lead">[% msg.maketext("Bisher haben Sie noch keine Rezensionen geschrieben oder Bewertungen vergeben.") %]</p>
+
+<p class="lead">[% msg.maketext("Um eine Rezension zu schreiben rufen Sie bitte den entsprechenden Titel auf und geben dort Ihre Rezension und/oder Bewertung ein.") %]</p>
+
+</div>
+[% END %]

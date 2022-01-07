@@ -1,0 +1,70 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editcat_rss
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen der RSS-Feeds
+# eines einzelnen Kataloges
+#
+#######################################################################
+-%]
+[%
+typedescription = {
+   '1' = msg.maketext("Neuaufnahmen (generell)")
+   '2' = msg.maketext("Neuaufnahmen nach Verfasser")
+   '3' = msg.maketext("Neuaufnahmen nach K&ouml;rperschaft") 
+   '4' = msg.maketext("Neuaufnahmen nach Schlagwort")
+   '5' = msg.maketext("Neuaufnahmen nach Systematik")
+};
+
+yesno = {
+   '0' = msg.maketext("Nein")
+   '1' = msg.maketext("Ja")
+};
+
+available_types = {
+ '1' = '1'
+ '2' = '2'
+ '3' = '3'
+ '4' = '4'
+ '5' = '5'
+};
+
+FOREACH feed IN katalog.rssfeeds ;
+ available_types.delete(feed.type) ;
+END ;
+%]
+
+[% IF katalog.rssfeeds.size > 0 %]
+
+<h3>[% msg.maketext("RSS-Feeds") %]</h3>
+
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+<tr>
+<th>Id</th><th>[% msg.maketext("Art des Feeds") %]</th><!-- <td>Unter-Art</td><td>Beschreibung Unter-Art</td> --><th>[% msg.maketext("Aktiv") %]</th>
+</tr>
+
+[% FOREACH feed IN katalog.rssfeeds %]
+<tr  [% IF feed.active == 1 %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]>
+<td>[% feed.id %]</td>
+<td>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% katalog.dbname %]/rss/id/[% feed.id %].html?l=[% lang %]">[% typedescription.${feed.type} %]</a>
+</td>
+<!-- <td>[% feed.subtype %]</td>
+<td>[% feed.subtypedesc %]</td>
+-->
+<td>[% yesno.${feed.active} %]</td>
+</tr>
+[% END %]
+</table>
+[% ELSE %]
+[% msg.maketext("Es sind noch keine RSS-Feeds f&uuml;r diesen Katalog eingerichtet.") %]
+[% END %]
+</td></tr>
+</table>
+</div>

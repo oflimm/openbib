@@ -1,0 +1,112 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf8">
+   <title>USB K&ouml;ln</title>
+   <link rel="stylesheet" type="text/css" href="http://www.ub.uni-koeln.de/stylesheet_default.css" />
+   <link rel="stylesheet" type="text/css" href="http://kug.ub.uni-koeln.de/css/_profile/kug/local.css" />
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#000080" vlink="#003300" alink="#FF0000">
+
+[%-
+    query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
+-%]
+
+<h3>[% signaturdesc %]</h3>
+
+[%# USE dumper ; dumper.dump (itemlist) %]
+[% IF itemlist.size > 0 %]
+<table>
+<tr><td><b>Verfasser/Personen</b></td><td><b>Titel</b></td><td><b>Jahr</b></td><td><b>Signatur</b></td></tr>
+[%  FOREACH item IN itemlist ;
+
+    super = "";
+    # 1. Ueberordnung?
+    IF item.${'T5005'}.first.content;
+       super = item.${'T5005'}.first.content;
+    END;
+
+    # Verfasser konstruieren 
+    persons = [] ;
+    FOREACH part IN item.${'T0100'}  ;
+      persons.push("${part.content}") ;
+    END ;
+    FOREACH part IN item.${'T0101'}  ;
+      persons.push("${part.content}") ;
+    END ;
+    FOREACH part IN item.${'T0200'}  ;
+      persons.push("${part.content}") ;
+    END ;
+    FOREACH part IN item.${'T0201'}  ;
+      persons.push("${part.content}") ;
+    END ;
+    person = persons.join(' ; ') ;
+
+    IF NOT person ;
+     FOREACH part IN super.fields.${'0100'}  ;
+      persons.push("${part.content}") ;
+     END ;
+     FOREACH part IN super.fields.${'0101'}  ;
+      persons.push("${part.content}") ;
+     END ;
+     FOREACH part IN super.fields.${'0200'}  ;
+      persons.push("${part.content}") ;
+     END ;
+     FOREACH part IN super.fields.${'0201'}  ;
+      persons.push("${part.content}") ;
+     END ;
+
+     person = persons.join(' ; ') ;
+    END ;
+    # Titel konstruieren 
+    title = item.${'T0331'}.first.content ;
+    IF item.${'T0310'}.first.content ;
+       title = item.${'T0310'}.first.content ;
+    END ;
+    #Einbeziehung der Zaehlfelder T5100 
+    IF title && item.${'T5100'}.first.content ;
+       order = item.${'T5100'}.first.content ;
+       IF title == order ;
+         title = "${order}.";
+       ELSE ;
+         title = "${order}. ${title}" ;
+       END ;
+    END ;
+    #Gesamttitel eingeziehen 
+    IF super.fields.${'0331'}.first.content ;
+    gt = super.fields.${'0331'}.first.content ;
+    title = "${title} (${gt})" ;
+    END ;
+    #Verlage konstruieren 
+    publisher = item.${'T0412'}.first.content ;
+    #Ejahr konstruieren 
+    yearofpub = item.${'T0425'}.first.content ;
+    #Signaturen konstruieren 
+    signaturen = [] ;
+    FOREACH part IN item.${'X0014'} ;
+      signaturen.push("${part.content}") ;
+    END ;
+    signatur = signaturen.sort.unique.join(' ; ') -%]
+[%# USE dumper;dumper.dump(super)%]
+<tr><td>[% IF person %][% person %][% ELSE %]Nicht vorhanden[% END %]</td><td><a href="http://kug.ub.uni-koeln.de/portal/kug/databases/id/[% database %]/titles/id/[% item.id %].html?l=de" target="_blank"><b>[% IF title %][% title %][% ELSE %]Nicht vorhanden[% END %]</b></a></td><td>[% yearofpub %]</td><td><b>[% signatur %]</b></td></tr>
+[%    END %]
+</table>
+[% ELSE %]
+<h1>Es wurden keine Treffer zu dieser Grundsignatur gefunden.</h1>
+[% END %]
+
+<p>
+<b><font color="red">Achtung:</font></b>&nbsp;In dieser Datenbank existieren derzeit keine Verkn&uuml;pfungen zwischen &uuml;ber- und untergeordneten Titels&auml;tzen. Dadurch kann es vorkommen, da&szlig; bei einigen Titeln keine Verfasserinformationen ermittelt werden konnten und dann eine entsprechende Eintragung in der Liste erfolgt. Ebenso k&ouml;nnen in diesen F&auml;llen weitere Informationen fehlen. 
+ 
+<!---------------------- Inhalt Ende --------------------------------------->
+
+<p/>
+
+  <div class="ob-footer">
+[% PROCESS common/subtemplate name="pagination" %]
+    <div class="ob-resulttime">
+<!-- in: [% resulttime %] [% msg.maketext("Sekunden") %] -->
+    </div>
+  </div>
+
+</body>
+</html>

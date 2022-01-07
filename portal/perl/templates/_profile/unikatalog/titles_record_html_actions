@@ -15,7 +15,7 @@
   END ;
 %]
 
-<h4>[% msg.maketext("Dieser Titel") %]</h4>
+<h5>[% msg.maketext("Dieser Titel") %]</h5>
 
 [% IF config.get('litlists') %]
 <div id="ob-litlists" class="accordion"><!-- Begin Litlist -->
@@ -23,7 +23,7 @@
   <div class="card">
     <div class="card-header" id="headingLitlists">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseLitlists" data-toggle="collapse" data-target="#collapseLitlists" aria-expanded="false" aria-controls="collapseLitlists">
+        <a class="card-link" href="#collapseLitlists" data-bs-toggle="collapse" data-bs-target="#collapseLitlists" aria-expanded="false" aria-controls="collapseLitlists">
           [% msg.maketext("Literaturliste") %]
         </a>
       </h5>
@@ -39,13 +39,13 @@
 %]
 <form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]">
 
-<legend>[% msg.maketext("&Uuml;bernahme dieses Titels in die bestehende Literaturliste: ") %]</legend>
+<h5>[% msg.maketext("&Uuml;bernahme dieses Titels in die bestehende Literaturliste: ") %]</h5>
 <input type="hidden" name="redirect_to"       value="[% uri_escape(location) %]" />
 <input type="hidden" name="titleid"           value="[% record.get_encoded_id %]" />
 <input type="hidden" name="dbname"            value="[% record.database %]" />
-<div class="form-group">
-<label for="litlistid">[% msg.maketext("Name") %]</label>
+<div class="form-floating mb-3">
 <select class="form-control" name="litlistid" id="litlistid">[% FOREACH litlist IN userlitlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>
+<label for="litlistid">[% msg.maketext("Name") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Los") %]</button>
@@ -56,19 +56,19 @@
 <p>
 <form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]">
 
-<legend>[% msg.maketext("&Uuml;bernahme dieses Titels in eine neue Literaturliste: ") %]</legend>
+<h5>[% msg.maketext("&Uuml;bernahme dieses Titels in eine neue Literaturliste: ") %]</h5>
 <input type="hidden" name="redirect_to"      value="[% uri_escape(location) %]" />
 <input type="hidden" name="titleid"          value="[% record.get_encoded_id %]" />
 <input type="hidden" name="dbname"           value="[% record.database %]" />
 
-<div class="form-group">
-<label for="title">[% msg.maketext("Name") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="title" id="title" size="20" />
+<label for="title">[% msg.maketext("Name") %]</label>
 </div>
 
-<div class="form-group">
-<label for="type">[% msg.maketext("Sichtbarkeit") %]</label>
+<div class="form-floating mb-3">
 <select class="form-control" name="type" id="type"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select>
+<label for="type">[% msg.maketext("Sichtbarkeit") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Los") %]</button>
@@ -99,7 +99,7 @@
   <div class="card">
     <div class="card-header" id="headingTagging">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseTagging" data-toggle="collapse" data-target="#collapseTagging" aria-expanded="false" aria-controls="collapseTagging">
+        <a class="card-link" href="#collapseTagging" data-bs-toggle="collapse" data-bs-target="#collapseTagging" aria-expanded="false" aria-controls="collapseTagging">
           [% msg.maketext("Tagging") %]
         </a>
       </h5>
@@ -116,19 +116,19 @@
 <input type="hidden" name="titleid" value="[% record.get_encoded_id %]"/>
 
 
-<legend>[% msg.maketext("Eingabe neuer Tags") %]</legend>
+<h5>[% msg.maketext("Eingabe neuer Tags") %]</h5>
 
-<div class="form-group">
-<label for="tags">[% msg.maketext("Tags") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="tags" value="" size="20" maxlength="200" id="tags"/>
+<label for="tags">[% msg.maketext("Tags") %]</label>
 </div>
 
-<div class="form-group">
-<label for="tags_type">[% msg.maketext("Sichtbarkeit") %]</label>
+<div class="form-floating mb-3">
 <select class="form-control" name="type" id="tags_type">
   <option value="1">[% msg.maketext("&ouml;ffentlich") %]</option>
   <option value="2">[% msg.maketext("privat") %]</option>
 </select>
+<label for="tags_type">[% msg.maketext("Sichtbarkeit") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Hinzuf&uuml;gen") %]</button>
@@ -139,7 +139,7 @@
     IF username ;
 %]
 
-<h4>[% msg.maketext("Übernahme eigener Tags") %]</h4>
+<h5>[% msg.maketext("Übernahme eigener Tags") %]</h5>
 
 <!-- Beginn Tag-Cloud -->
 
@@ -190,7 +190,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 %]
 [%  IF config.get('social_tagging') && all_tags.size > 0 %]
 <!-- Beginn generelle Tag-Uebernahme -->
-<h4>[% msg.maketext("Übernahme bereits von Nutzern vergebener Tags") %]</h4>
+<h5>[% msg.maketext("Übernahme bereits von Nutzern vergebener Tags") %]</h5>
 
 <ol class="ob-cloud">
 [%-   FOREACH thisitem IN all_tags -%]
@@ -214,17 +214,17 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 <input type="hidden" name="titleid" value="[% record.get_encoded_id %]"/>
 <input type="hidden" name="redirect_to" value="[% uri_escape(location) %]" />
 
-<div class="form-group">
-<label for="tags">[% msg.maketext("Tags") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="tags" id="tags" value="" size="30" maxlength="200"/>
+<label for="tags">[% msg.maketext("Tags") %]</label>
 </div>
 
-<div class="form-group">
-<label for="type">[% msg.maketext("Typ:") %]</label>
+<div class="form-floating mb-3">
 <select class="form-control" name="type">
   <option value="1" [% IF private_tags.first.type == 1 %]selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option>
   <option value="2" [% IF private_tags.first.type == 2 %]selected="selected"[% END %]>[% msg.maketext("privat") %]</option>
 </select>
+<label for="type">[% msg.maketext("Typ:") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Hinzuf&uuml;gen") %]</button>
@@ -258,7 +258,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 [% IF NOT disable_discover_sources %]
 <div class="ob-discover_sources"><!-- Begin Discover-Sources -->
 
-<h4>[% msg.maketext("Entdecken Sie weitere Titel") %]</h4>
+<h5>[% msg.maketext("Entdecken Sie weitere Titel") %]</h5>
 
 <p/>
 
@@ -268,7 +268,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
   <div class="card">
     <div class="card-header" id="headingRecommendations">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseRecommendations" data-toggle="collapse" data-target="#collapseRecommendations" aria-expanded="false" aria-controls="collapseRecommendations">
+        <a class="card-link" href="#collapseRecommendations" data-bs-toggle="collapse" data-bs-target="#collapseRecommendations" aria-expanded="false" aria-controls="collapseRecommendations">
           [% msg.maketext("Empfehlungen") %]
         </a>
       </h5>
@@ -327,7 +327,7 @@ $(document).ready(function(){
   <div class="card">
     <div class="card-header" id="headingRelated">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseRelated" data-toggle="collapse" data-target="#collapseRelated" aria-expanded="false" aria-controls="collapseRelated">
+        <a class="card-link" href="#collapseRelated" data-bs-toggle="collapse" data-bs-target="#collapseRelated" aria-expanded="false" aria-controls="collapseRelated">
           [% msg.maketext("Literaturanalyse in der Wikipedia") %]
         </a>
       </h5>
@@ -354,7 +354,7 @@ $(document).ready(function(){
   <div class="card">
     <div class="card-header" id="headingAvailableLitlists">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseAvailableLitlists" data-toggle="collapse" data-target="#collapseAvailableLitlists" aria-expanded="false" aria-controls="collapseAvailableLitlists">
+        <a class="card-link" href="#collapseAvailableLitlists" data-bs-toggle="collapse" data-bs-target="#collapseAvailableLitlists" aria-expanded="false" aria-controls="collapseAvailableLitlists">
           [% msg.maketext("Literaturlisten") %]
         </a>
       </h5>
@@ -396,7 +396,7 @@ $(document).ready(function(){
   <div class="card">
     <div class="card-header" id="headingAvailableTags">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseAvailableTags" data-toggle="collapse" data-target="#collapseAvailableTags" aria-expanded="false" aria-controls="collapseAvailableTags">
+        <a class="card-link" href="#collapseAvailableTags" data-bs-toggle="collapse" data-bs-target="#collapseAvailableTags" aria-expanded="false" aria-controls="collapseAvailableTags">
           [% msg.maketext("Tags") %]
         </a>
       </h5>
@@ -440,7 +440,7 @@ $(document).ready(function(){
   <div class="card">
     <div class="card-header" id="headingSimilarPersons">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseSimilarPersons" data-toggle="collapse" data-target="#collapseSimilarPersons" aria-expanded="false" aria-controls="collapseSimilarPersons">
+        <a class="card-link" href="#collapseSimilarPersons" data-bs-toggle="collapse" data-bs-target="#collapseSimilarPersons" aria-expanded="false" aria-controls="collapseSimilarPersons">
           [% msg.maketext("Verwandte Personen") %]
         </a>
       </h5>
@@ -473,7 +473,7 @@ $(document).ready(function(){
   <div class="card">
     <div class="card-header" id="headingSimilarSubjects">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseSimilarSubjects" data-toggle="collapse" data-target="#collapseSimilarSubjects" aria-expanded="false" aria-controls="collapseSimilarSubjects">
+        <a class="card-link" href="#collapseSimilarSubjects" data-bs-toggle="collapse" data-bs-target="#collapseSimilarSubjects" aria-expanded="false" aria-controls="collapseSimilarSubjects">
           [% msg.maketext("Verwandte Themen") %]
         </a>
       </h5>
@@ -496,7 +496,7 @@ $(document).ready(function(){
   <div class="card">
     <div class="card-header" id="headingMisc">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseMisc" data-toggle="collapse" data-target="#collapseMisc" aria-expanded="false" aria-controls="collapseMisc">
+        <a class="card-link" href="#collapseMisc" data-bs-toggle="collapse" data-bs-target="#collapseMisc" aria-expanded="false" aria-controls="collapseMisc">
           [% msg.maketext("Verschiedenes") %]
         </a>
       </h5>
@@ -536,7 +536,7 @@ $("#history_toggle").click(function(){
 [% recent_titles = session.get_recently_selected_titles %]
 [% IF recent_titles.get_size > 0 %]
 <div class="ob-session_history"><!-- Begin Historie -->
-<h4>[% msg.maketext("Diese Titel interessierten Sie bereits:") %]</h4>
+<h5>[% msg.maketext("Diese Titel interessierten Sie bereits:") %]</h5>
 
 <!-- <div id="ob-record_title_history_toggle_do"> -->
 <p/>

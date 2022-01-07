@@ -1,0 +1,104 @@
+[%#-
+#######################################################################
+#
+# Templatename: databaseprofile
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Katalogauswahlliste/-tabelle und weiterer
+# Eingabeelemte fuer die Erstellung und Bearbeitung eigener
+# Katalogsuchprofile
+#
+#######################################################################
+-%]
+<script language="JavaScript" type="text/javascript">
+<!--
+
+function update_fak(yourform, checked, fak) {
+    for (var i = 0; i < yourform.elements.length; i++) {
+         if (yourform.elements[i].title.indexOf(fak) != -1) {
+              yourform.elements[i].checked = checked;
+         }
+    }
+}
+
+// -->
+</script>
+
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %]/id/[% profileid %]" enctype="application/x-www-form-urlencoded">
+
+<h1 class="display-5">[% msg.maketext("Suchprofil bearbeiten") %]</h1>
+
+<div class="form-floating mb-3">
+<input class="form-control" type="text" name="profilename" id="profilename" value="[% profilename %]" />
+<label for="profilename">[% msg.maketext("Name") %]</label>
+</div>
+
+[%# USE dumper;dumper.dump(catdb)%]
+[%# USE dumper;dumper.dump(config.get_orgunitinfo_overview(profile)) %]
+<p />
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+<tr><td class="thickheadline" align="left"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /></td><td colspan="[% colspan - 1 %]" ><b>[% msg.maketext("Alle Kataloge") %]</b></td></tr>
+
+[%- FOREACH category = config.get_orgunitinfo_overview(sysprofile).all -%]
+[%- is_empty = 1 ;
+    FOREACH db = catdb ;
+      IF db.category == category.description && db.db != '' ; 
+        is_empty = 0 ;
+      END ;
+    END ;
+-%]
+[%- IF NOT is_empty -%]
+[%- IF category.nr >= 1 -%]
+<tr><td colspan="[% colspan %]">&nbsp;</td></tr>
+[%- END -%]
+
+<tr><td class="thickheadline" align="left"><input type="checkbox" name="fakult" value="inst[% category.nr %]" onclick="update_fak(this.form, this.checked,'inst[% category.nr %]')" title="inst" /></td><td colspan="[% colspan - 1 %]" ><b>[% category.description %]</b></td></tr>
+
+[%- FOREACH db = catdb -%]
+[%- IF db.category == category.description -%]
+[%- IF db.column == 1 -%]
+<tr><td><input type="checkbox" name="db" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td>[%- IF db.use_libinfo %]<a href="[% path_prefix %]/[% config.get('libraries_loc') %]/[% db.db %]">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
+[%- END -%]
+[%- IF db.column > 1 && db.column < maxcolumn -%]
+[%- IF db.db -%]
+<td><input type="checkbox" name="db" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td>[%- IF db.use_libinfo %]<a href="[% path_prefix %]/[% config.get('libraries_loc') %]/[% db.db %]">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
+[%- ELSE -%]
+<td>&nbsp;</td><td>&nbsp;</td>
+[%- END -%]
+
+[%- END -%]
+[%- IF db.column == maxcolumn -%]
+[%- IF db.column != 1 -%]
+
+[%- IF db.db -%]
+<td><input type="checkbox" name="db" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td>[%- IF db.use_libinfo %]<a href="[% path_prefix %]/[% config.get('libraries_loc') %]/[% db.db %]">[% db.name %]</a>[%- ELSE -%]<a href="[% db.url %]" target="_blank">[% db.name %]</a>[%- END -%]</td>
+[%- ELSE -%]
+<td>&nbsp;</td><td>&nbsp;</td>
+[%- END -%]
+
+[%- END -%]
+</tr>
+[%- END -%]
+[%- END -%]
+[%- END -%]
+[%- END -%]
+[%- END -%]
+</table>
+<p />
+</td></tr>
+</table>
+</div>
+
+<p />
+
+<button type="submit" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %]/id/[% profileid %]?_method=DELETE;confirm=1" title="[% msg.maketext("Entfernen") %]" class="btn btn-primary mb-2">[% msg.maketext("Löschen") %]</a>
+
+</form>

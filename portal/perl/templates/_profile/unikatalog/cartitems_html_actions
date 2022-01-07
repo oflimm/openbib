@@ -8,7 +8,7 @@
   <div class="card">
     <div class="card-header" id="headingActions">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseActions" data-toggle="collapse" data-target="#collapseActions" aria-expanded="true" aria-controls="collapseActions">
+        <a class="card-link" href="#collapseActions" data-bs-toggle="collapse" data-bs-target="#collapseActions" aria-expanded="true" aria-controls="collapseActions">
           [% msg.maketext("Aktionen") %]
         </a>
       </h5>
@@ -42,7 +42,7 @@
   <div class="card">
     <div class="card-header" id="headingFormats">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseFormats" data-toggle="collapse" data-target="#collapseFormats" aria-expanded="false" aria-controls="collapseFormats">
+        <a class="card-link" href="#collapseFormats" data-bs-toggle="collapse" data-bs-target="#collapseFormats" aria-expanded="false" aria-controls="collapseFormats">
           [% msg.maketext("Andere Formate") %]
         </a>
       </h5>
@@ -73,7 +73,7 @@
   <div class="card">
     <div class="card-header" id="headingLitlists">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseLitlists" data-toggle="collapse" data-target="#collapseLitlists" aria-expanded="false" aria-controls="collapseLitlists">
+        <a class="card-link" href="#collapseLitlists" data-bs-toggle="collapse" data-bs-target="#collapseLitlists" aria-expanded="false" aria-controls="collapseLitlists">
           [% msg.maketext("Literaturliste") %]
         </a>
       </h5>
@@ -93,13 +93,13 @@
 
 <h5>[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> in die bestehende Literaturliste &uuml;bernehmen: ") %]</h5>
 
-<div class="form-group">
-<label for="litlistid">[% msg.maketext("Name") %]</label>
+<div class="form-floating mb-3">
 <select class="form-control" name="litlistid" id="litlistid">
 [% FOREACH litlist IN litlists %]
   <option value="[% litlist.id %]">[% litlist.title %]</option>
 [% END %]
 </select>
+<label for="litlistid">[% msg.maketext("Name") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2" type="submit" name="do_litlists_addentry" value="1">[% msg.maketext("Los") %]</button>
@@ -110,17 +110,17 @@
 
 <h5>[% msg.maketext("Anlegen einer neuen Literaturliste: ") %]</h5>
 
-<div class="form-group">
-<label for="title">[% msg.maketext("Name") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="title" id="title" size="20" />
+<label for="title">[% msg.maketext("Name") %]</label>
 </div>
 
-<div class="form-group">
-<label for="littype">[% msg.maketext("Typ") %]</label>
+<div class="form-floating mb-3">
 <select class="form-control" name="littype" id="littype">
   <option value="1">[% msg.maketext("&ouml;ffentlich") %]</option>
   <option value="2">[% msg.maketext("privat") %]</option>
 </select>
+<label for="littype">[% msg.maketext("Typ") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2" type="submit" name="do_addlitlist" value="1">[% msg.maketext("Los") %]</button>
@@ -138,7 +138,7 @@
   <div class="card">
     <div class="card-header" id="headingTagging">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseTagging" data-toggle="collapse" data-target="#collapseTagging" aria-expanded="false" aria-controls="collapseTagging">
+        <a class="card-link" href="#collapseTagging" data-bs-toggle="collapse" data-bs-target="#collapseTagging" aria-expanded="false" aria-controls="collapseTagging">
           [% msg.maketext("Tagging") %]
         </a>
       </h5>
@@ -151,17 +151,17 @@
 
 <h5>[% msg.maketext("Eingabe neuer Tags") %]</h5>
 
-<div class="form-group">
-<label for"tags">[% msg.maketext("Tags") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="tags" value="" size="20" maxlength="200" id="tags"/>
+<label for"tags">[% msg.maketext("Tags") %]</label>
 </div>
 
-<div class="form-group">
-<label for="tags_type">[% msg.maketext("Typ") %]</label>
+<div class="form-floating mb-3">
 <select class="form-control" name="tags_type" id="tags_type">
   <option value="1">[% msg.maketext("&ouml;ffentlich") %]</option>
   <option value="2">[% msg.maketext("privat") %]</option>
 </select>
+<label for="tags_type">[% msg.maketext("Typ") %]</label>
 </div>
 
 <button class="btn btn-primary mt-1 mb-2" type="submit" name="do_addtags" value="1">[% msg.maketext("Hinzuf&uuml;gen") %]</button>

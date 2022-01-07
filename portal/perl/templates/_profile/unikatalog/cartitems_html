@@ -31,7 +31,7 @@ function update_collection(yourform, checked, item) {
 
 <!-- begin: Layout with collapsable sidebar -->
 <style>
-[data-toggle="collapse"] {
+[data-bs-toggle="collapse"] {
   cursor: pointer;
 }
 
@@ -41,9 +41,9 @@ function update_collection(yourform, checked, item) {
 
 
 [% IF recordlist.get_size > 0 %]
-      <div id="ob-sidebar" class="bg-light border-right min-vh-100 collapse navbar-collapse" aria-expanded="false">
+      <div id="ob-sidebar" class="bg-light border-end min-vh-100 collapse navbar-collapse" aria-expanded="false">
 
-           <div id="sidebar-dismiss" class="float-right" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+           <div id="sidebar-dismiss" class="float-end" data-bs-toggle="collapse" data-bs-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <i class="fas fa-arrow-left"></i>
            </div>
 
@@ -80,18 +80,18 @@ function update_collection(yourform, checked, item) {
 
 <div class="d-flex ob-fulltitle_actions">
 
-<div class="pr-1">
+<div class="pe-1">
 <button class="btn btn-primary" type="submit" name="do_cartitems_delentry" value="1"><i class="fas fa-trash"></i> [% msg.maketext("Ausgewählte Titel löschen") %]</button>
 </div>
 
-<div class="pr-1">
-    <button class="btn btn-primary sidebar-toggler" type="button" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-arrow-right"></i> <span class="d-none d-sm-inline">[% msg.maketext("Mehr") %]</span></button>
+<div class="pe-1">
+    <button class="btn btn-primary sidebar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-arrow-right"></i> <span class="d-none d-sm-inline">[% msg.maketext("Mehr") %]</span></button>
 </div>
 
 </div>
 
 [% ELSE %]
-         <div class="jumbotron">
+         <div class="ob-jumbotron">
 <h1 class="display-4">[% msg.maketext("Derzeit ist Ihre Merkliste leer") %]</h1>
          </div>
 [% END %]

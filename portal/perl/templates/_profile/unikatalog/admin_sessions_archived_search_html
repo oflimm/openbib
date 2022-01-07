@@ -1,0 +1,34 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_sessio_archived_search
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller aktuell bestehenden Sessions
+# mit ihren wichtigsten Informationen
+#
+#######################################################################
+-%]
+
+<h3>Session-Explorer</h3>
+
+[% IF sessions.size > 0 %]
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+<thead>
+<tr><th>[% msg.maketext("Id") %]</th><th>[% msg.maketext("Session-ID") %]</th><th>[% msg.maketext("Beginn") %]</th></tr>
+</thead>
+<tbody>
+[% FOREACH thissession IN sessions %]
+<tr><td>[% thissession.id %]</td><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/archived/id/[% thissession.id %].html?l=[% lang %]">[% thissession.sessionid %]</a></td><td>[% thissession.createtime %]</td></tr>
+[% END %]
+</tbody>
+</table>
+</div>
+[% ELSE %]
+[% msg.maketext("Es wurden keine archivierten Sessions in diesem
+Zeitraum gefunden") %]
+[% END %]

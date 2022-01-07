@@ -1,0 +1,154 @@
+[%#-
+#######################################################################
+#
+# Templatename: litlists_record_html
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Neuanlegen und Ausgabe bestehender Literaturlisten
+#
+#######################################################################
+-%]
+[%- ebook_i18n      = msg.maketext("E-Book") -%]
+[%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
+[%- popularity_i18n = msg.maketext("Popularität") -%]
+[% PROCESS common/subtemplate name="visible_categories_title" %]
+
+<div class="ob-page_title">Literaturliste: [% litlist.properties.title %][%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.get_icon('university',view,sysprofile) %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- ELSE -%]&nbsp;<img src="[% config.get_icon('persons',view,sysprofile) %]" title="[% msg.maketext("Öffentliche Literaturliste von Nutzern") %]" alt="[% msg.maketext("Öffentliche Literaturliste von Nutzern") %]" style="vertical-align:bottom"/>[%- END -%]</div> <div class="ob-page_subtitle"><b>[% msg.maketext("Themengebiete") %]</b>:&nbsp;
+[%- IF litlist.properties.topics.size -%]
+[%- FOREACH topic IN litlist.properties.topics-%]
+<a href="[% path_prefix %]/[% config.get('litlists_loc') %]/[% config.get('topics_loc') %]/id/[% topic.id %].html?l=[% lang %]">[% topic.name %]</a>&nbsp;&nbsp;
+[%- END-%]
+[%- ELSE -%]
+[% msg.maketext("Keine") %]
+[%- END-%]
+</div>
+
+[% userrole = user.get_roles_of_user(litlist.properties.userid) %]
+
+[% IF litlist.recordlist.get_size > 0 %]
+[%-
+    start_range     = 1;
+    end_range       = litlist.get_size;
+-%]
+
+<!-- Titlelist begins here -->
+<div class="ob-resultlist">
+  <div class="ob-resultheader">
+    <div class="left">
+[% litlist.recordlist.get_size %] [% msg.maketext("Titel") %]
+    </div>
+    <div class="right">
+<form method="get" action="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]">
+
+[% PROCESS common/subtemplate name="titlist_options" this_loc="${path_prefix}/${config.get('litlists_loc')}/id/${litlist.properties.id}" no_relevance=1%]
+
+</form>
+    </div>
+  </div>
+
+  <div class="ob-resultitems [% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+
+[% IF format == 'Text' %]
+
+[% PROCESS common/subtemplate name="litlists_record_html_as_text" %]
+
+[% ELSIF format == 'BibTeX' %]
+
+[% PROCESS common/subtemplate name="litlists_record_html_as_bibtex" %]
+
+[% ELSIF format == 'EndNote' %]
+
+[% PROCESS common/subtemplate name="litlists_record_html_as_endnote" %]
+
+[% ELSIF format == 'short' %]
+
+[% PROCESS common/subtemplate name="litlists_record_html_short" %] 
+
+[% ELSIF format == 'full' %]
+
+[% PROCESS common/subtemplate name="litlists_record_html_full" %]
+
+[%- END # Ende Alles -%]
+
+  </div>
+</div>
+
+<!-- Titlelist ends here -->
+
+[% ELSE %]
+
+<h1>Diese Literaturliste enth&auml;lt keine Titel</h1>
+
+[% END %]
+
+[%# USE dumper;dumper.dump(other_litlists)%]
+
+[% IF other_litlists.same_user.size > 0 || other_litlists.same_title.size > 0%] 
+[% is_active = 1 %]
+<p />
+
+<div id="litlists_show" class="accordion">
+[%    IF other_litlists.same_user.size > 0 %]
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <a class="card-link[% IF is_active == 0 %] collapsed[% END %]" href="#collapseOne" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="[% IF is_active %]true[% ELSE %]false[% END %]" aria-controls="collapseOne">
+          [% msg.maketext("Andere Listen dieses Nutzers") %]
+        </a>
+      </h5>
+    </div>
+    <div id="collapseOne" class="collapse[% IF is_active %] show[% END %]" aria-labelledby="headingOne" data-parent="#litlists_show">
+      <div class="card-body">
+<!-- Begin: Gleicher Nutzer -->
+
+<ul>
+[%      FOREACH other_litlist IN other_litlists.same_user %]
+[%        IF other_litlist.type == 1 %]
+<li><a href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% other_litlist.id %].html?l=[% lang %]"><b>[% other_litlist.title %]</b></a>&nbsp([% other_litlist.itemcount %] Titel)[%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.get_icon('university',view,sysprofile) %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
+[%        END %]
+[%      END %]
+
+</ul>
+
+<!-- Ende: Gleicher Nutzer -->
+
+      </div>
+    </div>
+  </div>
+[% is_active = 0 ;
+   END %]
+[% IF other_litlists.same_title.size > 0 %] 
+ <div class="card">
+    <div class="card-header" id="headingTwo">
+      <h5 class="mb-0">
+        <a class="card-link[% IF is_active == 0 %] collapsed[% END %]" href="#collapseTwo" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="[% IF is_active %]true[% ELSE %]false[% END %]" aria-controls="collapseTwo">
+          [% msg.maketext("Listen mit gemeinsamen Titeln") %]
+        </a>
+      </h5>
+    </div>
+    <div id="collapseTwo" class="collapse[% IF is_active %] show [% END %]" aria-labelledby="headingTwo" data-parent="#litlists_show">
+      <div class="card-body">
+<!-- Begin: Gleicher Titel -->
+
+<ul>
+[%    FOREACH other_litlist IN other_litlists.same_title %]
+[%         IF other_litlist.type == 1 %]
+<li><a href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% other_litlist.id %].html?l=[% lang %]"><b>[% other_litlist.title %]</b></a>&nbsp([% other_litlist.itemcount %] Titel)&nbsp;[%- IF other_litlist.lecture -%]&nbsp;<img src="[% config.get_icon('university',view,sysprofile) %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</td><td align="center"><a href="http://[% config.get('loadbalancerservername') %][% config.get('connector_permalink_loc') %]/[% other_litlist.userid %]/[% other_litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="[% config.get_icon('permalink',view,sysprofile) %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a></td></tr>
+[%       END %]
+[%    END %]
+
+</ul>
+
+<!-- Ende: Gleiche Titel -->
+      </div>
+    </div>
+  </div>
+[% END %]
+</div>
+
+<p/>
+
+[% END %]

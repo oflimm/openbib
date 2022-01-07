@@ -1,0 +1,59 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_statistics_client_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersicht der wichtigsten statistischen Daten sowie
+# Verweise auf andere Sub-Templates (via stid = sub-template-id) mit
+# weiteren statistischen Auswertungen.
+#
+#######################################################################
+-%]
+
+[% PROCESS common/subtemplate name="admin_statistics_paging_monthly" statisticsid="client" %] 
+
+<p/>
+
+<h3>[% msg.maketext("Zugreifende IP's nach Region") %]</h3>
+
+[% 
+   allcount = statistics.get_number_of_event({ type => 102, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) ;
+
+   ubcount1 = statistics.get_number_of_event({ type => 102, content => '134.95.52.%', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) ; 
+   ubcount2 = statistics.get_number_of_event({ type => 102, content => '134.95.54.%', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) ; 
+   ubcount  = ubcount1.number + ubcount2.number ;
+
+   unicount1 = statistics.get_number_of_event({ type => 102, content => '134.95.%', from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) ; 
+
+   unicount = unicount1.number - ubcount ;
+
+   externcount = allcount.number - ubcount - unicount ; 
+%]
+[% IF allcount.number %]
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+<tr><th>Bibliothek</th><td><b>[% ubcount %]</b> </td><td>([% ubcount * 100 / allcount.number | format("%.3f") %]) Prozent </td></tr>
+<tr><th>Universit&auml;t</th><td><b>[% unicount %]</b> </td><td>([% unicount * 100 / allcount.number | format("%.3f") %]) Prozent </td></tr>
+<tr><th>Extern</th><td><b>[% externcount %]</b> </td><td>([% externcount * 100 / allcount.number | format("%.3f") %]) Prozent </td></tr>
+</table>
+</div>
+[% ELSE %]
+Es liegen keine Daten vor
+[% END %]
+
+<p />
+
+<h3>[% msg.maketext("Zugreifende IP's nach H&auml;ufigkeit") %]</h3>
+
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+[% clients = statistics.get_ranking_of_event({ type => 102, limit => 50, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) %]
+[% FOREACH client IN clients %]
+<tr><th>[% client.content %]</th><td><b>[% client.number %]</b> </td><td>([% client.number * 100 / allcount.number | format ("%.3f") %]) Prozent</td></tr>
+[% END %]
+</table>
+</div>

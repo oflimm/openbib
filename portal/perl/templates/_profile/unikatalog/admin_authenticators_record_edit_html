@@ -1,0 +1,69 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_authenticators_record_edit_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines Anmeldeziels
+#
+#######################################################################
+-%]
+
+<form method="post" action="[% path_prefix %]/[% config.get('authenticators_loc') %]/id/[% authenticatorinfo.id %]">
+<input type="hidden" name="_method"     value="PUT" />
+
+<h1 class="display-5">[% msg.maketext("Anmeldeziel bearbeiten") %]</h1>
+
+<div class="form-floating mb-3">
+<span class="form-control">[% authenticatorinfo.id %]</span>
+<label for="id">[% msg.maketext("Id") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" type="text" name="name" id="name"  value="[% authenticatorinfo.name %]"/>
+<label for="name">[% msg.maketext("Name") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" type="text" name="description" id="description" value="[% authenticatorinfo.description %]"/>
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+  <select class="form-control" name="type" id="type">
+    <option value="self" [% IF authenticatorinfo.type == 'self' %]selected="selected"[% END %]>[% msg.maketext("Selbstregistrierung") %]</option>
+    <option value="ldap" [% IF authenticatorinfo.type == 'ldap' %]selected="selected"[% END %]>[% msg.maketext("LDAP") %]</option>
+    <option value="olws" [% IF authenticatorinfo.type == 'olws' %]selected="selected"[% END %]>[% msg.maketext("OLWS") %]</option>
+    <option value="paia" [% IF authenticatorinfo.type == 'paia' %]selected="selected"[% END %]>[% msg.maketext("PAIA") %]</option>
+    <option value="ils"  [% IF authenticatorinfo.type == 'ils' %]selected="selected"[% END %]>[% msg.maketext("ILS") %]</option>
+  </select>
+<label for="type">[% msg.maketext("Typ") %]</label>
+</div>
+
+[%
+   selected_views = {};
+   FOREACH thisview IN authenticatorinfo.views ;
+     selected_views.${thisview} = 1;
+   END;
+%]
+
+<div class="form-floating mb-3">
+  <select class="form-control" name="views" multiple="multiple" size="20" id="views">
+[% FOREACH thisview IN config.get_viewinfo_overview %]  
+    <option value="[% thisview.viewname %]" [% IF selected_views.${thisview.viewname} %]selected="selected"[% END %]>[% thisview.viewname %] - [% thisview.description %]</option>
+[% END %]
+  </select>
+<label for="views">[% msg.maketext("Views") %]</label>
+</div>
+
+<button type="submit" name="do_change" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>
+
+&nbsp;&nbsp;&nbsp;
+
+<a class="btn btn-primary mb-2" role="button" href="[% path_prefix %]/[% config.get('authenticators_loc') %]/id/[% authenticatorinfo.id %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+
+</form>
+

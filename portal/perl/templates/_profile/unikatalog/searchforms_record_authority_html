@@ -106,58 +106,58 @@ function update_gnd (){
 [%- cgiparam = config.searchfield.freesearch.prefix ;
     this_searchfield = 'freesearch';
 -%]
-<div class="form-group">
-<label for="to_focus">[% msg.maketext("Freie Suche") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" onkeypress="update_[% cgiparam %]()" id="to_focus" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="to_focus">[% msg.maketext("Freie Suche") %]</label>
 </div>
 
 [%- cgiparam = config.searchfield.gnd.prefix;
     this_searchfield = 'gnd';
  -%]
-<div class="form-group">
-<label for="autocomplete_[% cgiparam %]">GND</label>
+<div class="form-floating mb-3">
 <input class="form-control" onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="autocomplete_[% cgiparam %]">GND</label>
 </div>
 
 [%- cgiparam = config.searchfield.person.prefix;
     this_searchfield = 'person';
  -%]
-<div class="form-group">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Personen") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Personen") %]</label>
 </div>
 
 [%- cgiparam = config.searchfield.corporatebody.prefix;
     this_searchfield = 'corporatebody';
  -%]
-<div class="form-group">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Institutionen") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Institutionen") %]</label>
 </div>
 
 [%- cgiparam = config.searchfield.subject.prefix;
     this_searchfield = 'subject';
  -%]
-<div class="form-group">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Schlagworte") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Schlagworte") %]</label>
 </div>
 
-<div class="form-group">
-<label for="[% cgiparam %]">[% msg.maketext("Suchprofil") %]</label>
+<div class="form-floating mb-3">
 [% PROCESS common/subtemplate name="searchforms_record_profile" %]
+<label for="[% cgiparam %]">[% msg.maketext("Suchprofil") %]</label>
 </div>
 
 <p/>
 
 <div class="d-flex ob-fulltitle_actions">
 
-<div class="pr-1">
+<div class="pe-1">
 <button class="btn btn-primary" type="submit">[% msg.maketext("Suchen") %]</button>
 </div>
 
-<div class="pr-1">
-    <button class="btn btn-primary sidebar-toggler" type="button" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-arrow-right"></i> <span class="d-none d-sm-inline">[% msg.maketext("Mehr") %]</span></button>
+<div class="pe-1">
+    <button class="btn btn-primary sidebar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-arrow-right"></i> <span class="d-none d-sm-inline">[% msg.maketext("Mehr") %]</span></button>
 </div>
 
 </div>

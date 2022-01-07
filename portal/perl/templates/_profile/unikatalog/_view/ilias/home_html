@@ -1,0 +1,92 @@
+[%#-
+#######################################################################
+#
+# Templatename: home_html
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Startseite
+#
+#######################################################################
+-%]
+
+<div class="alert alert-info m-5">
+<h1 class="display-5">[% msg.maketext("Bestellung von Dokumenten für Elektronische Semesterapparate in ILIAS") %]</h1>
+
+<p>
+Über diesen Dienst können Sie Aufsätze aus Zeitschriften bzw. kleine Teile aus Büchern aus dem Bestand der USB Köln bestellen.
+</p>
+
+<p>
+Die bestellten Dokumente werden von der USB digitalisiert und als PDF-Dateien automatisch in Ihren Kurs (ref_id=[% qopts.get_option('ref_id') %]) auf der ILIAS-Plattform übertragen.
+</p>
+
+<p>
+Bitte beachten Sie, dass sich die Bereitstellung der Materialien in den ILIAS-Kursen aufgrund der bestehenden COVID19-Schutzmaßnahmen (insbes. Schließungen von Bibliotheken) verzögern kann.
+</p>
+
+</div>
+
+  <div class="container container-fluid" style="margin-top: 50px!important; min-width: 100%!important;">
+
+<form id="ob-mainsearchform" method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
+
+<input type="hidden" name="num"        value="20" />
+<input type="hidden" name="page"       value="1" />
+<input type="hidden" name="l"          value="[% lang %]" />
+
+<input type="hidden" name="srt"        value="relevance_desc" />
+<input type="hidden" name="st"         value="1" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+
+<div class="container justify-content-center border shadow rounded pl-2 pr-2 pt-3 pb-2 mb-4">
+    <div class="row">    
+        <div class="col">
+            <div class="input-group">
+                <input required="required" id="to_focus" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Unikatalog (Bücher, E-Medien, Aufsätze &amp; mehr) und USB Website") %]" />
+                <span class="input-group-btn pl-1">
+                    <button class="btn btn-primary" type="submit"><span class="fas fa-search d-md-none"></span><span class="d-none d-md-block font-weight-bold">[% msg.maketext("Suchen") %]</span></button>
+                    <span class="btn btn-primary fas fa-cog d-md-none" data-toggle="collapse" data-target="#search_options" aria-expanded="false"></span>
+                </span>
+            </div>
+       </div>
+    </div>
+    <div class="row pt-1 pb-0">     
+      <div class="col collapse d-md-block p-0" id="search_options">
+       
+         <ul class="list-group flex-row flex-wrap justify-content-md-center justify-content-sm-left">
+            <li class="list-group-item pr-1 pt-3" style="border: none" >
+             <a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
+	    </li>      	  
+            <li class="list-group-item pr-1 pt-3" style="border: none" >
+	     <a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
+	   </li>
+         </ul>
+    </div><!-- col -->
+  </div><!-- row -->
+</div>
+
+[%# sysprofile%]
+[%# USE dumper; dumper.dump(config.get_orgunitinfo_overview(sysprofile)) ; %]
+[%# USE dumper; dumper.dump(config.get_orgunitinfo_overview(dbchoice)) ; %]
+<!-- [% msg.maketext("Recherchieren Sie in [_1] Titeln und [_2] Katalogen","${alldbcount.allcount.chunk(-3).join('.')}","${alldbs}") %] -->
+
+
+</form>
+<!-- </nav> -->
+
+<div class="alert alert-info m-5">
+<p>
+Um einen Zeitschriftenaufsatz oder ein Buchkapitel zu bestellen, recherchieren Sie bitte zunächst den Titel der Zeitschrift bzw. des Buches im USB-Katalog. Bei Titeln, die in der USB in gedruckter Form vorliegen, finden Sie in der Detailanzeige den Button "ILIAS-Bestellung", der Sie direkt zum Bestellformular führt.
+</p>
+
+<p>
+Titel, die bereits in elektronischer Form vorliegen (E-Books, E-Journals etc.), können nicht über diesen Dienst bestellt werden. Bitte binden Sie diese Medien über einen Link in Ihren ILIAS-Kurs ein.
+</p>
+</div>
+
+
+</div>
+

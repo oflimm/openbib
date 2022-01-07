@@ -1,0 +1,70 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_roles_record_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Rolleninformationen
+#
+#######################################################################
+-%]
+
+<h2>[% msg.maketext("Rolle") %] [% roleinfo.description %]</h2>
+
+<div class="table-responsive text-nowrap">
+<table class="table table-striped table-hover">
+
+<tr>
+<th>[% msg.maketext("Id") %]</th>
+<td>[% roleinfo.id %]</td>
+</tr>
+
+<tr>
+<th>[% msg.maketext("Name") %]</th>
+<td>[% roleinfo.rolename %]</td>
+</tr>
+
+<tr>
+<th>[% msg.maketext("Beschreibung") %]</th>
+<td>[% roleinfo.description %]</td>
+</tr>
+
+<tr>
+<th>[% msg.maketext("Einschränkung auf View") %]</th>
+<td>
+[% IF selected_views %]
+<ul>
+[% FOREACH singleview IN viewinfos %]
+[%   IF selected_views.${singleview.viewname} %]
+<li>[% singleview.viewname %]: [% singleview.description %]</li>
+[%   END %]
+[% END %]
+</ul>
+[% ELSE %]
+[% msg.maktexte("Keine") %]
+[% END %]
+</td>
+</tr>
+
+<tr>
+<th>[% msg.maketext("Berechtigungen") %]</th>
+<td>
+<table class="table" id="rights">
+<tr><th>[% msg.maketext("Gültigkeitsbereich") %]</th><th>[% msg.maketext("Erzeugen") %]</th><th>[% msg.maketext("Lesen") %]</th><th>[% msg.maketext("Ändern") %]</th><th>[% msg.maketext("Löschen") %]</th></tr>
+[% FOREACH scope IN config.get_scopes %]
+<tr>
+ <td>[% scope %]</td>
+ <td>[% IF rights_of_role.${scope}.right_create %]<span style="color:green">[% msg.maketext("Ja") %]</span>[% ELSE %]<span style="color:red">[% msg.maketext("Nein") %]</span>[% END %]</td>
+ <td>[% IF rights_of_role.${scope}.right_read %]<span style="color:green">[% msg.maketext("Ja") %]</span>[% ELSE %]<span style="color:red">[% msg.maketext("Nein") %]</span>[% END %]</td>
+ <td>[% IF rights_of_role.${scope}.right_update %]<span style="color:green">[% msg.maketext("Ja") %]</span>[% ELSE %]<span style="color:red">[% msg.maketext("Nein") %]</span>[% END %]</td>
+ <td>[% IF rights_of_role.${scope}.right_delete %]<span style="color:green">[% msg.maketext("Ja") %]</span>[% ELSE %]<span style="color:red">[% msg.maketext("Nein") %]</span>[% END %]</td>
+</tr>
+[% END %]
+</table>
+</td>
+</tr>
+</table>
+</div>

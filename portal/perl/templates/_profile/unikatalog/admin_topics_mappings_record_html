@@ -1,0 +1,137 @@
+[%#-
+#######################################################################
+#
+# Templatename: topic_record_edit
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Themengebietes
+#
+#######################################################################
+-%]
+[%
+  bks         = config.load_bk;
+
+  bklist = [];
+  FOREACH bk IN bks;
+    IF bk.key.length == 2;
+      thisbk = {
+        classification   => bk.key,
+        desc             => bk.value,
+      };
+      bklist.push(thisbk);
+    END ;
+  END ;
+
+  rvks         = config.load_rvk;
+
+  rvklist = [];
+  FOREACH rvk IN rvks;
+      thisrvk = {
+        classification   => rvk.key,
+        desc             => rvk.value,
+      };
+      rvklist.push(thisrvk);
+  END ;
+
+  ddcs        = config.load_ddc;
+
+  ddclist = [];
+  FOREACH ddc IN ddcs;
+    IF ddc.key.length == 3;
+      thisddc = {
+        classification   => ddc.key,
+        desc             => ddc.value,
+      };
+      ddclist.push(thisddc);
+    END ;
+  END ;
+
+  lccs        = config.load_lcc;
+
+  lcclist = [];
+  FOREACH lcc IN lccs;
+    thislcc = {
+      classification   => lcc.key,
+      desc             => lcc.value,
+    };
+    lcclist.push(thislcc);
+  END ;
+
+%]
+
+<table class="table table-striped table-hover">
+<tr><th>[% msg.maketext("Themengebiet") %]</th><td>[% topic.name %]</td></tr>
+<tr><th>[% msg.maketext("Beschreibung") %]</th><td>[% topic.description %]</td></tr>
+<tr><th>[% msg.maketext("Mapping") %]</th><td>[% type %]</td></tr>
+</table>
+
+<p/>
+
+<h3>[% msg.maketext("Themengebiete") %]</h3>
+
+<ul>
+[% IF type == "bk" %]
+[%
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'bk', topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+%]
+[%  FOREACH bk IN bklist %]
+[%   IF classification_selected.${bk.classification}  %]<li>[% bk.classification %] [% bk.desc %]</li>[% END %]
+[%  END %]
+[% END %]
+
+[% IF type == "ezb" || type == "dbis" %]
+[%
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => type, topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+%]
+[%  FOREACH thisclassification IN mapping.get_classifications %]
+[%   IF classification_selected.${thisclassification.name}  %]<li>[% thisclassification.name %] [% thisclassification.desc %]</li>[% END %]
+[%  END %]
+[% END%]
+
+[% IF type == "rvk" %]
+[%
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => type, topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+%]
+[%  FOREACH thisclassification IN rvklist %]
+[%   IF classification_selected.${thisclassification.classification}  %]<li>[% thisclassification.classification %] [% thisclassification.desc %]</li>[% END %]
+[%  END %]
+[% END%]
+
+[% IF type == "ddc" %]
+[%
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => type, topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+%]
+[%  FOREACH thisclassification IN ddclist %]
+[%   IF classification_selected.${thisclassification.classification}  %]<li>[% thisclassification.classification %]</li>[% END %]
+[%  END %]
+[% END%]
+
+[% IF type == "lcc" %]
+[%
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => type, topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+%]
+[%  FOREACH thisclassification IN lcclist %]
+[%   IF classification_selected.${thisclassification.classification}  %]<li>[% thisclassification.classification %] [% thisclassification.desc %]</li>[% END %]
+[%  END %]
+[% END%]
+
+</ul>
+

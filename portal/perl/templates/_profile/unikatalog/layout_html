@@ -34,7 +34,7 @@
 
     <!-- begin: Layout with collapsable sidebar -->
     <style>
-    [data-toggle="collapse"] {
+    [data-bs-toggle="collapse"] {
       cursor: pointer;
     }
 
@@ -46,15 +46,16 @@
   [% IF layout_param.sidebar_template && NOT layout_param.sidebar_template.match('^users_') %]
 
   [%   IF NOT layout_param.sidebar_button_in_main_template %]
-    <button class="btn btn-primary sidebar-toggler mt-3" type="button" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-arrow-right"></i> [% IF layout_param.sidebar_template_description %][% layout_param.sidebar_template_description %][% ELSE %]Navigation[% END %]</button>
+    <button class="btn btn-primary sidebar-toggler mt-3" type="button" data-bs-toggle="collapse" data-bs-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-arrow-right"></i> [% IF layout_param.sidebar_template_description %][% layout_param.sidebar_template_description %][% ELSE %]Navigation[% END %]</button>
   [%   END %]
   
-      <div id="ob-sidebar" class=" border-right min-vh-100 collapse navbar-collapse" aria-expanded="false">
-           <div id="sidebar-dismiss" class="float-right text-white" data-toggle="collapse" data-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fas fa-window-close fa-2x p-1"></i>
+      <div id="ob-sidebar" class=" border-end min-vh-100 collapse navbar-collapse" aria-expanded="false">
+           <div id="sidebar-dismiss" class="float-end text-white" data-bs-toggle="collapse" data-bs-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+            <button type="button" class="btn-close me-2" data-bs-dismiss="modal" aria-label="Schließen">
+        </button>
            </div>
 
-           <div class="sidebar-heading ob-bg text-white p-1 pb-0 mb-2">
+           <div class="sidebar-heading p-1 ps-3 pb-0 mb-2">
               <h3>[% IF layout_param.sidebar_template_description %][% layout_param.sidebar_template_description %][% ELSE %]Navigation[% END %]</h3>
            </div>
 
@@ -91,7 +92,7 @@
 [%   PROCESS common/subtemplate name="cartitems_html_modals" %]
 
 [% IF show_modals && NOT hide_detail && NOT hide_hit %]
-%]
+
 [%   PROCESS common/subtemplate name="titles_record_html_modals" %]
 
 <script>

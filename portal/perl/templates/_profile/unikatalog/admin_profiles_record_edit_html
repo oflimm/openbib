@@ -1,0 +1,109 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_profile_record_edit
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Profiles
+#
+#######################################################################
+-%]
+
+<form method="post" action="[% path_prefix %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %]">
+<input type="hidden" name="_method"    value="PUT" />
+
+<h1 class="display-5">[% msg.maketext("Katalog-Profil bearbeiten") %]</h1>
+
+<div class="form-floating mb-3">
+<span class="form-control">[% profileinfo.profilename %]</span>
+<label for="profilename">[% msg.maketext("Profil-Name") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" type="text" name="description" id="description" value="[% profileinfo.description %]" size="20" />
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
+</div>
+
+<h1 class="display-5">[% msg.maketext("Neues Katalog-Profil mit diesen Daten erzeugen") %]</h1>
+
+<div class="form-floating mb-3">
+<input class="form-control" type="text" name="newprofilename" id="newprofilename" value="" size="20" />
+<label for="newprofilename">[% msg.maketext("Neuer Profil-Name") %]</label>
+</div>
+
+
+<button type="submit" name="do_change" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>
+
+[% IF profileinfo.viewinfos.size <= 0 %]
+&nbsp;&nbsp;&nbsp;
+
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+[% END %]
+
+<p class="alert alert-info">[% msg.maketext("Achtung: Ein Katalog-Profil kann erst dann gelöscht werden, wenn es von keinen Views mehr genutzt wird!") %]</p>
+</form>
+
+<p />
+
+<div id="new_item" class="accordion">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <a class="card-link collapsed" href="#collapseOne" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+          [% msg.maketext("Neue Organisationseinheit anlegen") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#new_item">
+      <div class="card-body">
+<form method="post" action="[% path_prefix %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %]/[% config.get('orgunits_loc') %]">
+
+<div class="form-floating mb-3">
+<input class="form-control" type="text" name="orgunitname" id="orgunitname" />
+<label for="orgunitname">[% msg.maketext("Name der Organisationseinheit") %]</label>[
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" type="text" name="description" id="description" size="20" />
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
+</div>
+
+<button type="submit" name="do_new" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>
+
+</form>
+</div>
+</div>
+</div>
+</div>
+
+[% IF orgunits.all %]
+
+
+
+<p/>
+
+<h3>[% msg.maketext("Bereits existierende Organisationseinheiten") %]</h3>
+
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+<thead>
+<tr><td><b>[% msg.maketext("Name") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>Nr</b></td><td><b>[% msg.maketext("Kataloge") %]</b></td><td></td></tr>
+</thead>
+<tbody>
+[% FOREACH thisorgunit IN orgunits.all %]
+<tr><td>[% thisorgunit.orgunitname %]</td><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %]/[% config.get('orgunits_loc') %]/id/[% thisorgunit.orgunitname %]/edit.html?l=[% lang %]">[% thisorgunit.description %]</a></td><td>[% thisorgunit.nr %]</td><td><ul>[% FOREACH item IN config.get_orgunitdbs(profileinfo.profilename,thisorgunit.orgunitname).sort %]<li>[% item %]: [% dbinfo.get('dbnames').${item}.full %]</li>[% END %]</ul></td></tr>
+[% END %]
+</tbody>
+</table>
+</div>
+[% ELSE %]
+<p/>
+
+<h3>[% msg.maketext("Sie haben in diesem Profil noch keine Organisationseinheiten angelegt.") %]</h3>
+[% END %]
+
+

@@ -1,0 +1,33 @@
+[%#-
+#######################################################################
+#
+# Templatename: users_circulations_make_reservation_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe des Status einer erfolgten Vormerkung
+#
+#######################################################################
+-%]
+
+<div class="card mt-5 mb-5 me-5">
+<div class="card-header">[% msg.maketext("Vormerkung") %]</div>
+<div class="card-body">
+
+[% IF title || author %]<p>
+[% IF author %][% author%]: [% END %][% IF title %][% title %][% END %]
+</p>
+[% END %]
+
+[% IF reservation.message %]
+<p><strong>[% reservation.message %]</strong></p>
+[% END %]
+
+[%# USE dumper; dumper.dump(reservation) %]
+
+<a class="btn btn-primary btn-lg mt-5" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]" role="button">[% msg.maketext('Weiter') %]</a>
+
+</div>
+</div>

@@ -1,0 +1,26 @@
+[%#-
+#######################################################################
+#
+# Templatename: users_circulations_cancel_reservation_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ergbnis der Stornierung einer Vormerkung
+#
+#######################################################################
+-%]
+
+[%# USE dumper; dumper.dump(cancel_reservation) %]
+
+        <div class="ob-jumbotron">
+         <h1 class="display-4">[% msg.maketext("Stornierung der Vormerkung") %]</h1>
+[% IF cancel_reservation.author || cancel_reservation.title %]	 
+         <p class="lead">[% IF cancel_reservation.author %][% cancel_reservation.author %]: [% END %][% IF cancel_reservation.title %][% cancel_reservation.title %][% END %]</p>
+[% END %]	 
+         <p class="lead">[% cancel_reservation.message %]</p>
+         <p class="lead">
+            <a class="btn btn-primary btn-lg" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% userid %]/[% config.get('databases_loc ') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/reservations.html?l=[% lang %]" role="button">[% msg.maketext('Weiter') %]</a>
+         </p>
+        </div><!-- End: ob-jumbotron -->

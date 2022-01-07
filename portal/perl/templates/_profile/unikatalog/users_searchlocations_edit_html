@@ -1,0 +1,140 @@
+[%#-
+#######################################################################
+#
+# Templatename: databaseprofile
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Katalogauswahlliste/-tabelle und weiterer
+# Eingabeelemte fuer die Erstellung und Bearbeitung eigener
+# Katalogsuchprofile
+#
+#######################################################################
+-%]
+[%
+      is_location_of_emedia = {
+         freemedia = 1
+         emedien = 1
+         bdr = 1
+	 digitalis = 1
+	 doab = 1
+	 eupub = 1
+	 freebooks = 1
+	 gallica = 1
+	 gdea = 1
+	 gdz = 1
+	 gresham_oer = 1
+	 gutenberg = 1
+	 hathitrust = 1
+	 intechopen = 1
+	 khanacademy = 1
+	 'DE-38-KAPSEL' = 1
+	 loc = 1
+	 loviscach_oer = 1
+	 mdz = 1
+	 mitocw_oer = 1
+	 nationallizenzen = 1
+	 ndltd = 1
+	 nla = 1
+	 nomos = 1
+	 nptelhrd_oer = 1
+	 nsdl = 1
+	 oapen = 1
+	 ocwconsortium = 1
+	 openlibrary = 1
+	 otl = 1
+	 stanford_oer = 1
+	 ucberkeley_oer = 1
+	 ucla_oer = 1	 
+	 usbebooks = 1
+	 usbweb = 1
+	 wikisource_de = 1
+	 yale_oer = 1
+      };
+%]
+
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchlocations_loc') %]" enctype="application/x-www-form-urlencoded">
+
+<h1 class="display-5">[% msg.maketext("Suchraum definieren") %]</h1>
+
+[%# USE dumper;dumper.dump(checkedloc)%]
+[%# USE dumper;dumper.dump(searchlocations)%]
+<p />
+
+<button type="submit" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchlocations_loc') %]?_method=DELETE;confirm=1" title="[% msg.maketext("Entfernen") %]" class="btn btn-primary mb-2">[% msg.maketext("Löschen") %]</a>
+
+<p />
+
+<div class="ob-facets ob-facets_all sliding-sidebar">
+
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-elocation" aria-expanded="true">
+           [% msg.maketext("E-Medien Quelle") %] 
+        </h4>
+        <ul id="group-elocation" class="list-group in collapse show">
+[%- FOREACH thislocation IN searchlocations -%]
+[%    NEXT IF is_location_of_emedia.${thislocation.identifier} != 1; %]
+
+<li class="ob-facet-item d-flex"><input type="checkbox" name="location" value="[% thislocation.identifier %]" title="[% thislocation.description %]" [% IF checkedloc.${thislocation.identifier} %]checked="checked"[% END %] class="me-2" /><a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% thislocation.identifier %]">[% thislocation.description %]</a></li>
+[%- END -%]
+</ul>
+</div>
+
+<!--  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <a class="card-link" href="#collapseOne" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          [% msg.maketext("E-Medien Quellen") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#login_targets">
+      <div class="card-body">
+
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+[%# FOREACH thislocation IN searchlocations -%]
+[%#    NEXT IF is_location_of_emedia.${thislocation.identifier} != 1; %]
+
+<tr><td><input type="checkbox" name="location" value="[% thislocation.identifier %]" title="[% thislocation.description %]" [% IF checkedloc.${thislocation.identifier} %]checked="checked"[% END %]/></td><td><a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% thislocation.identifier %]">[% thislocation.description %]</a></td></tr>
+[%# END -%]
+</table>
+<p />
+</td></tr>
+</table>
+</div>
+
+    </div>
+  </div>
+</div>
+--> 
+<p/>
+
+<div class="ob-facets ob-facets_all sliding-sidebar">
+
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-location" aria-expanded="true">
+           [% msg.maketext("Print-Medien Standort") %] 
+        </h4>
+        <ul id="group-location" class="list-group in collapse show">
+[%- FOREACH thislocation IN searchlocations -%]
+[%    NEXT IF is_location_of_emedia.${thislocation.identifier} == 1; %]
+<li class="ob-facet-item d-flex"><input type="checkbox" name="location" value="[% thislocation.identifier %]" title="[% thislocation.description %]" [% IF checkedloc.${thislocation.identifier} %]checked="checked"[% END %] class="me-2" /><a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% thislocation.identifier %]">[% thislocation.description %]</a></li>
+[%- END -%]
+</ul>
+</div>
+
+<p />
+
+<button type="submit" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchlocations_loc') %]?_method=DELETE;confirm=1" title="[% msg.maketext("Entfernen") %]" class="btn btn-primary mb-2">[% msg.maketext("Löschen") %]</a>
+
+</form>

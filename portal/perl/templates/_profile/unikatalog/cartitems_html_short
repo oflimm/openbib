@@ -1,0 +1,40 @@
+[%#-
+#######################################################################
+#
+# Templatename: managecartitems_tit_as_html
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe *eines* Merklisten-Items im HTML-Format *mit* Funktions-
+# elementen
+#
+#######################################################################
+-%]
+[%- ebook_i18n      = msg.maketext("E-Book") -%]
+[%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
+[%- popularity_i18n = msg.maketext("Popularität") -%]
+
+<!-- Titlelist begins here -->
+<div class="ob-resultlist">
+  <div class="row ps-2">
+    <div class="col-md-6 d-flex justify-content-start">
+       <input type="checkbox" name="collection" value="select" onclick="update_collection(this.form, this.checked,'collection_item')" />&nbsp;<b>[% msg.maketext("Alle Eintr&auml;ge ausw&auml;hlen") %]</b>
+    </div>
+    <div class="col-md-6 d-flex justify-content-end">
+[%# PROCESS common/subtemplate name="titlist_options" this_loc=config.get('cartitems_loc') no_jn=1 no_relevance=1 %]
+    </div>
+  </div>
+
+  <div class="ob-resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+[% IF format == 'short' %]
+[%- FOREACH record IN recordlist.get_records -%]
+[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 database=record.database with_id_checkbox=1 with_cartitems_delete=1 start_range=1 %] 
+[%- END -%]
+
+[%-END -%]
+ </div>
+</div>
+<!-- Titlelist ends here -->
+

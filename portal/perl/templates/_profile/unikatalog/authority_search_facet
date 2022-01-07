@@ -1,0 +1,746 @@
+<div class="ob-facets">
+[% IF hits <= config.get('xapian_option').maxmatch %]
+
+<form method="get" action="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %].html">
+[%
+
+   exclude_args = [ ];
+   FOREACH field IN config.searchfield.keys ;
+     thisprefix = config.searchfield.${field}.prefix;
+     exclude_args.push(thisprefix);
+     exclude_args.push("b${thisprefix}");
+     exclude_args.push("f\[${thisprefix}\]");
+   END;
+   exclude_args.push("profile");
+
+   facets_query_args_base    = cgiapp.to_cgi_querystring({ change = {'page' = 1 }, exclude = exclude_args }) ;
+
+   all_filters = [];
+   have_filter = {};
+       FOREACH filter IN searchquery.get_filter ;
+          all_filters.push("f[${filter.field}]=${filter.term}");
+          have_filter.${"${filter.field}:${filter.term}"} = 1;
+   END ;
+
+   topic_map = {};
+   FOREACH topic IN user.get_topics;
+      topic_map.${topic.id} = topic.name;
+   END;
+%]
+
+[% cgiapp.to_cgi_hidden_input({ change = {'page' = 1 }, exclude = exclude_args }) %]
+
+[% searchquery.to_cgi_hidden_input({ exclude_filter = [ 'all' ] }) %]
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+// Begin Togglen / Facets Personen
+// Bild setzen
+$("#dd_person_[% database %]_toggle").html("<b>[<a href=\"#dd_person_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+// Zuerst verstecken
+$("#dd_person_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_person_[% database %]_toggle").click(function(){
+ $("#dd_person_[% database %]").toggle();
+ $("#dd_person_[% database %]_toggle").html("");
+});
+
+// Begin Togglen / Facets Koerperschaften
+// Bild setzen
+$("#dd_corporatebody_[% database %]_toggle").html("<b>[<a href=\"#dd_corporatebody_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+// Zuerst verstecken
+$("#dd_corporatebody_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_corporatebody_[% database %]_toggle").click(function(){
+ $("#dd_corporatebody_[% database %]").toggle();
+ $("#dd_corporatebody_[% database %]_toggle").html("");
+});
+
+// Begin Togglen / Facets Schlagworte
+// Bild setzen
+$("#dd_subjects_[% database %]_toggle").html("<b>[<a href=\"#dd_subjects_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+// Zuerst verstecken
+$("#dd_subjects_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_subjects_[% database %]_toggle").click(function(){
+ $("#dd_subjects_[% database %]").toggle();
+ $("#dd_subjects_[% database %]_toggle").html("");
+});
+
+// Begin Togglen / Facets Systematik
+// Bild setzen
+$("#dd_classification_[% database %]_toggle").html("<b>[<a href=\"#dd_classification_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+// Zuerst verstecken
+$("#dd_classification_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_classification_[% database %]_toggle").click(function(){
+ $("#dd_classification_[% database %]").toggle();
+ $("#dd_classification_[% database %]_toggle").html("");
+});
+
+// Begin Togglen / Facets Topics
+// Bild setzen
+$("#dd_topic_[% database %]_toggle").html("<b>[<a href=\"#dd_topic_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+// Zuerst verstecken
+$("#dd_topic_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_topic_[% database %]_toggle").click(function(){
+ $("#dd_topic_[% database %]").toggle();
+ $("#dd_topic_[% database %]_toggle").html("");
+});
+
+// Begin Togglen / Facets Jahr
+// Bild setzen
+$("#dd_year_[% database %]_toggle").html("<b>[<a href=\"#dd_year_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+// Zuerst verstecken
+$("#dd_year_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_year_[% database %]_toggle").click(function(){
+ $("#dd_year_[% database %]").toggle();
+ $("#dd_year_[% database %]_toggle").html("");
+});
+
+// Begin Togglen / Facets Medienart
+// Bild setzen
+$("#dd_mediatype_[% database %]_toggle").html("<b>[<a href=\"#dd_mediatype_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+// Zuerst verstecken
+$("#dd_mediatype_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_mediatype_[% database %]_toggle").click(function(){
+ $("#dd_mediatype_[% database %]").toggle();
+ $("#dd_mediatype_[% database %]_toggle").html("");
+});
+
+// Begin Togglen / Facets Sprache
+// Bild setzen
+$("#dd_language_[% database %]_toggle").html("<b>[<a href=\"#dd_language_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+// Zuerst verstecken
+$("#dd_language_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_language_[% database %]_toggle").click(function(){
+ $("#dd_language_[% database %]").toggle();
+ $("#dd_language_[% database %]_toggle").html("");
+});
+// Ende Togglen / Facets Sprache
+
+// Begin Togglen / Facets Katalog
+// Bild setzen
+$("#dd_databases_[% database %]_toggle").html("<b>[<a href=\"#dd_databases_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+// Zuerst verstecken
+$("#dd_databases_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_databases_[% database %]_toggle").click(function(){
+ $("#dd_databases_[% database %]").toggle();
+ $("#dd_databases_[% database %]_toggle").html("");
+});
+// Ende Togglen / Facets Katalog
+
+// Begin Togglen / Facets Tags
+// Bild setzen
+$("#dd_tags_[% database %]_toggle").html("<b>[<a href=\"#dd_tags_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+// Zuerst verstecken
+$("#dd_tags_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_tags_[% database %]_toggle").click(function(){
+ $("#dd_tags_[% database %]").toggle();
+ $("#dd_tags_[% database %]_toggle").html("");
+});
+// Ende Togglen / Facets Tag
+
+// Begin Togglen / Facets Literaturliste
+// Bild setzen
+$("#dd_litlists_[% database %]_toggle").html("<b>[<a href=\"#dd_litlists_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+// Zuerst verstecken
+$("#dd_litlists_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_litlists_[% database %]_toggle").click(function(){
+ $("#dd_litlists_[% database %]").toggle();
+ $("#dd_litlists_[% database %]_toggle").html("");
+});
+// Ende Togglen / Facets Literaturliste
+
+// Begin Togglen / Facets Verfuegbarkeit
+// Bild setzen
+$("#dd_availability_[% database %]_toggle").html("<b>[<a href=\"#dd_availability_[% database %]_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
+// Zuerst verstecken
+$("#dd_availability_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_availability_[% database %]_toggle").click(function(){
+ $("#dd_availability_[% database %]").toggle();
+ $("#dd_availability_[% database %]_toggle").html("");
+});
+// Ende Togglen / Facets Literaturliste
+
+});
+
+</script>
+[%# USE dumper;dumper.dump(category_map)%]
+
+<div class="ob-category_header">[% msg.maketext("Treffermenge eingrenzen") %]</div>
+
+[% IF separate_refine %]
+[%# USE dumper;dumper.dump(have_filter)%]
+[%         IF searchquery.get_filter.size > 0 %]
+<dl>
+<dt class="ob-headline" >[% msg.maketext("Aktive Filter") %]</dt>
+[%
+    filter_prefix_map = {
+          ${config.get('searchfield').dbstring.prefix} = msg.maketext("Katalog")
+          ${config.get('searchfield').personstring.prefix} = msg.maketext("Person")
+          ${config.get('searchfield').corporatebodystring.prefix} = msg.maketext("K&ouml;perschaft")
+          ${config.get('searchfield').subjectstring.prefix} = msg.maketext("Thema")
+          ${config.get('searchfield').classificationstring.prefix} = msg.maketext("Systematik")
+          ${config.get('searchfield').topic.prefix} = msg.maketext("Themengebiet")
+          ${config.get('searchfield').mediatypestring.prefix} = msg.maketext("Medientyp")
+          ${config.get('searchfield').languagestring.prefix} = msg.maketext("Sprache")
+          ${config.get('searchfield').yearstring.prefix} = msg.maketext("Jahr")
+          ${config.get('searchfield').tagstring.prefix} = msg.maketext("Tag")
+          ${config.get('searchfield').litliststring.prefix} = msg.maketext("Literaturliste")
+          ${config.get('searchfield').availabilitystring.prefix} = msg.maketext("Verfügbarkeit")
+};
+
+%]
+[%             FOREACH filter IN searchquery.get_filter ;
+                   this_filters = [];
+                   this_filterstring = "f[${filter.field}]=${filter.term}";
+                   FOREACH all_filter IN all_filters;
+                       IF all_filter != this_filterstring ;
+                           this_filters.push(all_filter);
+                       END;
+                   END ;
+%]
+[%# USE dumper;dumper.dump(category_map) %]
+<dd><a href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude_filter = [ filter.val ] }) %]" title="[% msg.maketext("Entfernen") %]"><img style="vertical-align:bottom" src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>&nbsp;[% filter_prefix_map.${filter.field} %]: [% IF filter.field == "fdb" %][% dbinfo.get('dbnames').${filter.term}.short %][% ELSE %][% filter.term %][% END %]</dd>
+[%             END %]
+</dl>
+[%        END %]
+[% END %]
+<!-- Begin database facet -->
+[%         IF facets.database.size > 0 %]
+<dl class="ob-items">
+<dt class="ob-headline" id="dd_databases_[% database %]_anchor">[% msg.maketext("nach Katalog") %]</dt>
+[%             FOREACH termitem IN facets.database ;
+                  LAST IF loop.count > 25 ;
+%]
+[% IF facets.database.size > 5 && loop.count == 5 %]
+<span id="dd_databases_[% database %]_toggle"></span>
+<div id="dd_databases_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').dbstring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% dbinfo.get('dbnames').${termitem.0}.short %]</a>&nbsp;([% termitem.1 %])</dd>
+[%             END %]
+[% IF facets.database.size > 5 %]
+</div>
+[% END %]
+</dl>
+[%         END %]
+<!-- End database facet -->
+
+<!-- Begin availability facet -->
+[%         IF facets.availability.size > 0 %]
+<dl class="ob-items">
+[%
+    # Availability Types
+    # msg.maketext("online")             Online
+    # msg.maketext("lendable")           Ausleihbar
+    # msg.maketext("lendable_immediate") Ausleihbar - sofort
+    # msg.maketext("lendable_order")     Ausleihbar - nach Bestellung
+    # msg.maketext("lendable_weekend")   Ausleihbar - nur Wochenende
+    # msg.maketext("presence")           Einsehbar
+    # msg.maketext("presence_immediate") Einsehbar  - sofort
+    # msg.maketext("presence_order")     Einsehbar  - nach Bestellung
+%]
+<dt class="ob-headline" id="dd_availability_[% database %]_anchor">[% msg.maketext("nach Zugriff") %]</dt>
+[%             FOREACH termitem IN facets.availability ;
+                  LAST IF loop.count > 25 ;
+%]
+[% IF facets.availability.size > 5 && loop.count == 5 %]
+<span id="dd_availability_[% database %]_toggle"></span>
+<div id="dd_availability_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').availabilitystring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% msg.maketext(searchterm) %]</a>&nbsp;([% termitem.1 %])</dd>
+[%             END %]
+[% IF facets.availability.size > 5 %]
+</div>
+[% END %]
+</dl>
+[%         END %]
+<!-- End availability facet -->
+
+<!-- Begin mediatype facet -->
+[%         IF config.get('facets').mediatype && facets.mediatype.size > 0 %]
+<dl class="ob-items">
+<dt class="ob-headline" id="dd_mediatype_[% database %]_anchor">[% msg.maketext("nach Typ") %]</dt>
+[%             FOREACH termitem IN facets.mediatype ;
+                  LAST IF loop.count > 25 ;
+ %]
+[% IF facets.mediatype.size > 5 && loop.count == 5 %]
+<span id="dd_mediatype_[% database %]_toggle"></span>
+<div id="dd_mediatype_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').mediatypestring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])</dd>
+[%             END %]
+[% IF facets.mediatype.size > 5 %]
+</div>
+[% END %]
+</dl>
+[%         END %]
+<!-- End mediatype facet -->
+<!-- Begin topic facet -->
+[%         IF config.get('facets').topic && facets.topic.size > 0 %]
+<dl class="ob-items">
+<dt class="ob-headline" id="dd_topic_[% database %]_anchor">[% msg.maketext("nach Themengebieten") %]</dt>
+[%             FOREACH termitem IN facets.topic ;
+                  LAST IF loop.count > 25 ;
+ %]
+[% IF facets.topic.size > 5 && loop.count == 5 %]
+<span id="dd_topic_[% database %]_toggle"></span>
+<div id="dd_topic_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').topic.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% topic_map.${termitem.0} %]</a>&nbsp;([% termitem.1 %])</dd>
+[%             END %]
+[% IF facets.topic.size > 5 %]
+</div>
+[% END %]
+</dl>
+[%         END %]
+<!-- End topic facet -->
+<!-- Begin subject facet -->
+[%         IF config.get('facets').subject && facets.subject.size > 0 %]
+<dl class="ob-items">
+<dt class="ob-headline" id="dd_subjects_[% database %]_anchor">[% msg.maketext("nach Themen") %]</dt>
+[%             FOREACH termitem IN facets.subject ;
+                  LAST IF loop.count > 25 ;
+%]
+[% IF facets.subject.size > 5 && loop.count == 5 %]
+<span id="dd_subjects_[% database %]_toggle"></span>
+<div id="dd_subjects_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').subjectstring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])</dd>
+[%             END %]
+[% IF facets.subject.size > 5 %]
+</div>
+[% END %]
+</dl>
+[%         END %]
+<!-- End subject facet -->
+<!-- Begin year facet -->
+[%         IF config.get('facets').year && facets.year.size > 0 %]
+<dl class="ob-items">
+<dt class="ob-headline" id="dd_year_[% database %]_anchor">[% msg.maketext("nach Jahr") %]</dt>
+[%             FOREACH termitem IN facets.year ;
+                  LAST IF loop.count > 25 ;
+ %]
+[% IF facets.year.size > 5 && loop.count == 5 %]
+<span id="dd_year_[% database %]_toggle"></span>
+<div id="dd_year_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').yearstring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1%])</dd>
+[%             END %]
+[% IF facets.year.size > 5 %]
+</div>
+[% END %]
+</dl>
+[%         END %]
+<!-- End year facet -->
+<!-- Begin classification facet -->
+[%         IF config.get('facets').classification && facets.classification.size > 0 %]
+<dl class="ob-items">
+<dt class="ob-headline" id="dd_classification_[% database %]_anchor">[% msg.maketext("nach Systematik") %]</dt>
+[%             FOREACH termitem IN facets.classification ;
+                  LAST IF loop.count > 25 ;
+ %]
+[% IF facets.classification.size > 5 && loop.count == 5 %]
+<span id="dd_classification_[% database %]_toggle"></span>
+<div id="dd_classification_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').classificationstring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])</dd>
+[%             END %]
+[% IF facets.classification.size > 5 %]
+</div>
+[% END %]
+</dl>
+[%         END %]
+<!-- End classification facet -->
+<!-- Begin tag facet -->
+[%         IF config.get('facets').tag && facets.tag.size > 0 %]
+<dl class="ob-items">
+<dt class="ob-headline" id="dd_tags_[% database %]_anchor">[% msg.maketext("nach Tags") %]</dt>
+[%             FOREACH termitem IN facets.tag ;
+                  LAST IF loop.count > 25 ;
+ %]
+[% IF facets.tag.size > 5 && loop.count == 5 %]
+<span id="dd_tags_[% database %]_toggle"></span>
+<div id="dd_tags_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').tagstring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])</dd>
+[%             END %]
+[% IF facets.tag.size > 5 %]
+</div>
+[% END %]
+</dl>
+[%         END %]
+<!-- End tag facet -->
+<!-- Begin litlist facet -->
+[%         IF config.get('facets').litlist && facets.litlist.size > 0 %]
+<dl class="ob-items">
+<dt class="ob-headline" id="dd_litlists_[% database %]_anchor">[% msg.maketext("nach Literaturliste") %]</dt>
+[%             FOREACH termitem IN facets.litlist ;
+                  LAST IF loop.count > 25 ;
+ %]
+[% IF facets.litlist.size > 5 && loop.count == 5 %]
+<span id="dd_litlists_[% database %]_toggle"></span>
+<div id="dd_litlists_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').litliststring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% searchterm |uri %][% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])</dd>
+[%             END %]
+[% IF facets.litlist.size > 5 %]
+</div>
+[% END %]
+</dl>
+[%         END %]
+<!-- End litlist facet -->
+<!-- Begin person facet -->
+[%         IF config.get('facets').person && facets.person.size > 0 %]
+<dl class="ob-items">
+<dt class="ob-headline" id="dd_person_[% database %]_anchor">[% msg.maketext("nach Personen") %]</dt>
+[%             FOREACH termitem IN facets.person ;
+                  LAST IF loop.count > 25 ;
+%]
+[% IF facets.person.size > 5 && loop.count == 5 %]
+<span id="dd_person_[% database %]_toggle"></span>
+<div id="dd_person_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').personstring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])</dd>
+[%             END %]
+[% IF facets.person.size > 5 %]
+</div>
+[% END %]
+</dl>
+[%         END %]
+<!-- End person facet -->
+<!-- Begin corporatebody facet -->
+[%         IF config.get('facets').corporatebody && facets.corporatebody.size > 0 %]
+<dl class="ob-items">
+<dt class="ob-headline" id="dd_corporatebody_[% database %]_anchor">[% msg.maketext("nach K&ouml;perschaften") %]</dt>
+<tr><td>
+[%             FOREACH termitem IN facets.corporatebody ;
+                  LAST IF loop.count > 25 ;
+%]
+[% IF facets.corporatebody.size > 5 && loop.count == 5 %]
+<span id="dd_corporatebody_[% database %]_toggle"></span>
+<div id="dd_corporatebody_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').corporatebodystring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])</dd>
+[%             END %]
+[% IF facets.corporatebody.size > 5 %]
+</div>
+[% END %]
+</dl>
+[%         END %]
+<!-- End corporatebody facet -->
+<!-- Begin language facet -->
+[%         IF config.get('facets').language && facets.language.size > 0 %]
+<dl class="ob-items">
+<dt class="ob-headline" id="dd_language_[% database%]_anchor">[% msg.maketext("nach Sprache") %]</dt>
+[%             FOREACH termitem IN facets.language ;
+                  LAST IF loop.count > 25 ;
+ %]
+[% IF facets.language.size > 5 && loop.count == 5 %]
+<span id="dd_language_[% database %]_toggle"></span>
+<div id="dd_language_[% database %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').languagestring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+
+    spr_mapping = {
+        "de"       => msg.maketext("Deutsch"),
+        "dt."      => msg.maketext("Deutsch"),
+        "ger"      => msg.maketext("Deutsch"),
+        "en"       => msg.maketext("Englisch"),
+        "eng"      => msg.maketext("Englisch"),
+        "engl."    => msg.maketext("Englisch"),
+        "fr"       => msg.maketext("Französisch"),
+        "fre"       => msg.maketext("Französisch"),
+        "franz."       => msg.maketext("Französisch"),
+        "lat"      => msg.maketext("Latein"),
+        "lats"     => msg.maketext("Latein"),
+        "gre"      => msg.maketext("Griechisch"),
+        "griech."  => msg.maketext("Griechisch"),
+        "neugriech."  => msg.maketext("Neu-Griechisch"),
+        "hun"      => msg.maketext("Ungarisch"),
+        "ungar."   => msg.maketext("Ungarisch"),
+        "ita"      => msg.maketext("Italienisch"),
+        "ital."      => msg.maketext("Italienisch"),
+        "spa"      => msg.maketext("Spanisch"),
+        "span."    => msg.maketext("Spanisch"),
+        "rus"      => msg.maketext("Russisch"),
+        "russ."    => msg.maketext("Russisch"),
+        "jpn"      => msg.maketext("Japanisch"),
+        "swe"      => msg.maketext("Schwedisch"),
+        "tur"      => msg.maketext("Türkisch"),
+        "tschech." => msg.maketext("Tschechisch"),
+        "pol"      => msg.maketext("Polnisch"),
+        "niederlaend." => msg.maketext("Niederländisch"),
+        "dut." => msg.maketext("Niederländisch"),
+        "islaend." => msg.maketext("Isländisch"),
+        "finn." => msg.maketext("Finnisch"),
+        "chi" => msg.maketext("Chinesisch"),
+        "arab." => msg.maketext("Arabisch"),
+
+    };
+
+    spr_tmp = termitem.0.split(';');
+    spr = [ ];
+
+    FOREACH thisspr IN spr_tmp ;
+       IF spr_mapping.${thisspr} ;
+          spr.push(spr_mapping.${thisspr});
+       ELSE;
+          spr.push(thisspr);
+       END;
+    END ;
+
+    sprstring = spr.join(';');
+
+-%]
+<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% sprstring %]</a>&nbsp;([% termitem.1 %])</dd>
+[%             END %]
+[% IF facets.language.size > 5 %]
+</div>
+[% END %]
+</dl>
+[%        END %]
+<!-- End language facet -->
+
+
+
+</form>
+[% ELSE %]
+
+<div class="ob-category_header">[% msg.maketext("Treffermenge eingrenzen") %]</div>
+
+<p>
+[% msg.maketext("Die Trefferliste zu Ihrer Suchanfrage ist so umfangreich, dass eine
+sinnvolle Eingrenzung durch eine Rechercheverfeinerung nicht
+m&ouml;glich ist.") %]
+</p>
+
+<p>
+[% msg.maketext("Versuchen Sie daher Ihre Rechercheanfrage zu pr&auml;zisieren, indem
+Sie diese auf sinntragende Worte reduzieren (z.B. der, die das
+weglassen) und allgemeine Worte (z.B. deutschland oder geschichte)
+durch zus&auml;tzliche Worte weiter eingrenzen.") %]
+</p>
+
+
+[% END %]
+
+<div class="ob-category_header">[% msg.maketext("Suchbegriffe anpassen") %]</div>
+
+<script type="text/javascript">
+
+function update_per (){
+  if ($("#autocomplete_per").val().length > 0){
+     $("#autocomplete_gnd").prop('disabled', true);	
+     $("#autocomplete_subj").prop('disabled', true);
+     $("#autocomplete_corp").prop('disabled', true);
+     $("#autocomplete_fs").prop('disabled', true);
+  }
+  else {
+     $("#autocomplete_gnd").prop('disabled',false);
+     $("#autocomplete_subj").prop('disabled',false);
+     $("#autocomplete_corp").prop('disabled',false);
+     $("#autocomplete_fs").prop('disabled',false);
+  }
+};
+
+function update_subj (){
+  if ($("#autocomplete_subj").val().length > 0){
+     $("#autocomplete_gnd").prop('disabled',true);
+     $("#autocomplete_per").prop('disabled', true);
+     $("#autocomplete_corp").prop('disabled', true);
+     $("#autocomplete_fs").prop('disabled', true);
+  }
+  else {
+     $("#autocomplete_gnd").prop('disabled',false);
+     $("#autocomplete_per").prop('disabled',false);
+     $("#autocomplete_corp").prop('disabled',false);
+     $("#autocomplete_fs").prop('disabled',false);
+  }
+};
+
+function update_corp (){
+  if ($("#autocomplete_corp").val().length > 0){
+     $("#autocomplete_gnd").prop('disabled',true);
+     $("#autocomplete_subj").prop('disabled', true);
+     $("#autocomplete_per").prop('disabled', true);
+     $("#autocomplete_fs").prop('disabled', true);
+  }
+  else {
+     $("#autocomplete_gnd").prop('disabled',false);
+     $("#autocomplete_subj").prop('disabled',false);
+     $("#autocomplete_per").prop('disabled',false);
+     $("#autocomplete_fs").prop('disabled',false);
+  }
+};
+
+function update_fs (){
+  if ($("#autocomplete_fs").val().length > 0){
+     $("#autocomplete_gnd").prop('disabled',true);
+     $("#autocomplete_subj").prop('disabled', true);
+     $("#autocomplete_per").prop('disabled', true);
+     $("#autocomplete_corp").prop('disabled', true);
+  }
+  else {
+     $("#autocomplete_gnd").prop('disabled',false);
+     $("#autocomplete_subj").prop('disabled',false);
+     $("#autocomplete_per").prop('disabled',false);
+     $("#autocomplete_corp").prop('disabled',false);
+  }
+};
+
+function update_gnd (){
+  if ($("#autocomplete_gnd").val().length > 0){
+     $("#autocomplete_subj").prop('disabled', true);
+     $("#autocomplete_per").prop('disabled', true);
+     $("#autocomplete_corp").prop('disabled', true);
+     $("#autocomplete_fs").prop('disabled', true);
+  }
+  else {
+     $("#autocomplete_subj").prop('disabled',false);
+     $("#autocomplete_per").prop('disabled',false);
+     $("#autocomplete_corp").prop('disabled',false);
+     $("#autocomplete_fs").prop('disabled', false);
+  }
+};
+
+</script>
+
+<form class="ym-form" method="get" action="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %].html">
+
+<input type="hidden" name="num"        value="20" />
+<input type="hidden" name="page"       value="1" />
+
+<input type="hidden" name="srt"        value="authority_asc" />
+<input type="hidden" name="st"         value="3" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+
+<fieldset class="ym-full">
+
+
+[%- cgiparam = config.searchfield.freesearch.prefix ;
+    this_searchfield = 'freesearch';
+-%]
+<div class="ym-fbox-text">
+<input onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" size="30" maxlength="200" />
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Freie Suche") %]</label>
+</div>
+
+[%- cgiparam = config.searchfield.gnd.prefix;
+    this_searchfield = 'gnd';
+ -%]
+<div class="ym-fbox-text">
+<input onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="autocomplete_[% cgiparam %]">GND</label>
+</div>
+
+[%- cgiparam = config.searchfield.person.prefix;
+    this_searchfield = 'person';
+ -%]
+<div class="ym-fbox-text">
+<input onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" size="30" maxlength="200" />
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Personen") %]</label>
+</div>
+
+[%- cgiparam = config.searchfield.corporatebody.prefix;
+    this_searchfield = 'corporatebody';
+ -%]
+<div class="ym-fbox-text">
+<input onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" size="30" maxlength="200" />
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Institutionen") %]</label>
+</div>
+
+[%- cgiparam = config.searchfield.subject.prefix;
+    this_searchfield = 'subject';
+ -%]
+<div class="ym-fbox-text">
+<input onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" size="30" maxlength="200" />
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Schlagworte") %]</label>
+</div>
+
+<div class="ym-fbox-select">
+[% PROCESS common/subtemplate name="searchforms_record_profile" %]
+<label for="[% cgiparam %]">[% msg.maketext("in:") %]</label>
+</div>
+
+<p/>
+
+<div class="ym-fbox-button">
+<input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" />
+</div>
+
+</fieldset>
+
+</form>
+
+</div>
+
+<p/>

@@ -1,0 +1,23 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editauthenticator
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines Anmeldeziels
+#
+#######################################################################
+-%]
+
+<h3>[% msg.maketext("Anmeldeziel") %]</h3>
+
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+<tr><th>[% msg.maketext("Id") %]</th><td>[% authenticatorinfo.id %]</td></tr>
+<tr><th>[% msg.maketext("Beschreibung") %]</th><td>[% authenticatorinfo.description %]</td></tr>
+<tr><th>[% msg.maketext("Typ") %]</th><td>[% authenticatorinfo.type %]</td></tr>
+</table>
+</div>

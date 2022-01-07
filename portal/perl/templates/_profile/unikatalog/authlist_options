@@ -1,0 +1,20 @@
+[%#-
+#######################################################################
+#
+# Templatename: titlist_options
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Optionen einer Liste (Sortierung etc.)
+#
+#######################################################################
+-%]
+<b>[% msg.maketext("Sortierung") %]:</b>&nbsp;
+<select name="srt" class="autosubmit">
+  <option value="authority_desc"[%- IF query.param('srt') == 'authority_desc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Ansetzung") %]&nbsp;&darr;</option>
+  <option value="authority_asc"[%- IF query.param('srt') == 'authority_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Ansetzung") %]&nbsp;&uarr;</option>
+</select>
+
+<input class="ob-nojs_show" type="submit" value="[% msg.maketext("Los") %]" />

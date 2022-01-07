@@ -374,16 +374,16 @@
 
       <div class="ob-numbering">[% IF with_id_checkbox %]<input type="checkbox" name="id" value="[% record.listid %]"  title="collection_item" />&nbsp;[% END %][% start_range+loop.count - 1 %]</div>
 [% IF 0 == 1 %]      
-      <div class="ob-thumbnail pt-1 pl-5 pr-5 mr-0 d-none d-md-block">
+      <div class="ob-thumbnail pt-1 ps-5 pe-5 me-0 d-none d-md-block">
     [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]
     [% coverapi = config.get('covers').vlb %]
     [%# USE dumper;dumper.dump(coverapi)%]
     <a href="[% coverapi.credits_url %]" target="_blank"><img src="[% path_prefix %]/[% config.get('connector_cover_loc') %]/vlb/[% isbn %]?size=s" title="[% coverapi.credits_text %]" /></a>[% ELSE %]&nbsp;[% END %]
       </div>
 [% END %]      
-      <div class="ob-brieftitle pl-4">
+      <div class="ob-brieftitle ps-4">
 [%# USE dumper;dumper.dump(dbinfo) %]
-        <div class="ob-titleinfo pl-2 mt-2">
+        <div class="ob-titleinfo ps-2 mt-2">
 [% IF NOT hide_hit %]	
          <span class="ob-person">[% person %]</span>
 	 <strong><span class="ob-title"><a href="[% detail_url %]">[% title | truncate(config.get('maxlength_title')) %]</a></span></strong>
@@ -414,36 +414,36 @@
 [%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
 [% END %]
         </div> <!-- end: titleinfo -->
-        <div class="ob-titlemark pl-2 d-flex d-none d-md-block">[% IF signatur %][% msg.maketext("Signatur") %]: <span>[% signatur | truncate(config.get('maxlength_mark')) %]</span>[% END %]
+        <div class="ob-titlemark ps-2 d-flex d-none d-md-block">[% IF signatur %][% msg.maketext("Signatur") %]: <span>[% signatur | truncate(config.get('maxlength_mark')) %]</span>[% END %]
         </div>
 
-	<div class="pl-2 d-flex">
+	<div class="ps-2 d-flex">
           <div class="d-flex ob-titleactions">
 [% IF record.id && record.database %]
-            <div class="pr-1">
-	 <a class="btn btn-primary pr-2" href="[% IF NOT hide_detail && NOT hide_hit %][% detail_url %][% ELSE %][% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %];redirect_to=[% uri_escape(detail_url) %][% END %]" alt="[% title %]" title="[% title %]">[% IF hide_detail %]<i class="fas fa-ban"></i>[% ELSE %]<i class="fas fa-eye"></i>[% END %] <span class="d-none d-sm-inline">Details</span></a>
+            <div class="pe-1">
+	 <a class="btn btn-primary pe-2" href="[% IF NOT hide_detail && NOT hide_hit %][% detail_url %][% ELSE %][% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %];redirect_to=[% uri_escape(detail_url) %][% END %]" alt="[% title %]" title="[% title %]">[% IF hide_detail %]<i class="fas fa-ban"></i>[% ELSE %]<i class="fas fa-eye"></i>[% END %] <span class="d-none d-sm-inline">Details</span></a>
             </div>
 [% IF NOT with_cartitems_delete && NOT hide_hit %]
-	    <div class="pr-1">
-              <a  class="btn btn-primary pr-2" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" hx-headers='{"Content-Type": "application/xml+html"}' href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><i class="far fa-bookmark"></i> <span class="d-none d-sm-inline">[% msg.maketext("Merken") %]</span></a>
+	    <div class="pe-1">
+              <a  class="btn btn-primary pe-2" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" hx-headers='{"Content-Type": "application/xml+html"}' href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><i class="far fa-bookmark"></i> <span class="d-none d-sm-inline">[% msg.maketext("Merken") %]</span></a>
 	    </div>
 [% END %]
 
 [% IF fulltext %]
-	    <div class="pr-1">	    
-              <a class="btn btn-primary pr-2" [% IF fulltext_availability %]style="color: [% fulltext_availability %];"[% END %] href="[% fulltext %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Volltext") %]</span></a>
+	    <div class="pe-1">	    
+              <a class="btn btn-primary pe-2" [% IF fulltext_availability %]style="color: [% fulltext_availability %];"[% END %] href="[% fulltext %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Volltext") %]</span></a>
 	    </div>
 [% END %]
 
 [% IF toc %]
-	    <div class="pr-1">	    
-              <a class="btn btn-primary pr-2" href="[% toc %]" target="_blank" title="[% msg.maketext("Inhaltsverzeichnis") %]"><i class="fas fa-list"></i> <span class="d-none d-sm-inline">[% msg.maketext("TOC") %]</span></a>
+	    <div class="pe-1">	    
+              <a class="btn btn-primary pe-2" href="[% toc %]" target="_blank" title="[% msg.maketext("Inhaltsverzeichnis") %]"><i class="fas fa-list"></i> <span class="d-none d-sm-inline">[% msg.maketext("TOC") %]</span></a>
 	    </div>
 [% END %]
 
 [% IF 0 == 1 && NOT with_cartitems_delete && NOT hide_hit %]
-	    <div class="pr-1">
-	      <a class="btn btn-primary pr-2" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/to_bibsonomy" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy"><i class="fas fa-share-alt"></i> <span class="d-none d-sm-inline">BibSonomy</span></a>
+	    <div class="pe-1">
+	      <a class="btn btn-primary pe-2" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/to_bibsonomy" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy"><i class="fas fa-share-alt"></i> <span class="d-none d-sm-inline">BibSonomy</span></a>
 	    </div>       
 [% END %]
 
@@ -451,27 +451,27 @@
 
 
 [% IF tagname %]
-	    <div class="pr-1">	    
+	    <div class="pe-1">	    
               <a href="[% path_prefix %]/[% config.get('tags_loc') %]/names/id/[% tagname %]" class="ob-tags">[% tagname %]</a>
 	    </div>
 [% END %]
 	
 [% IF user_owns_litlist %]
-	    <div class="pr-1">
-	      <a class="ob-delete btn btn-primary pr-2" href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/items/id/[% listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("L&ouml;schen") %]</span></a>
+	    <div class="pe-1">
+	      <a class="ob-delete btn btn-primary pe-2" href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/items/id/[% listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("L&ouml;schen") %]</span></a>
 	    </div>
 [% END %]
 [% IF parameter.private_tags %]
-	    <div class="pr-1">
-	      <a class="ob-collection btn btn-primary pr-2" href="[% path_prefix %]/[% config.get('tags_loc') %]/[% parameter.tag %]?titleid=[% record.get_encoded_id %];dbname=[% record.database %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("L&ouml;schen") %]</span></a>
+	    <div class="pe-1">
+	      <a class="ob-collection btn btn-primary pe-2" href="[% path_prefix %]/[% config.get('tags_loc') %]/[% parameter.tag %]?titleid=[% record.get_encoded_id %];dbname=[% record.database %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("L&ouml;schen") %]</span></a>
 	    </div>
 [% END %]
 [% IF with_cartitems_delete %]
-	    <div class="pr-1"><a class="btn btn-primary pr-2" href="[% path_prefix %]/[% config.get('cartitems_loc') %]/id/[% record.listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><i class="fas fa-trash"></i> <span class="d-none d-sm-inline">[% msg.maketext("Löschen") %]</span></a>
+	    <div class="pe-1"><a class="btn btn-primary pe-2" href="[% path_prefix %]/[% config.get('cartitems_loc') %]/id/[% record.listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><i class="fas fa-trash"></i> <span class="d-none d-sm-inline">[% msg.maketext("Löschen") %]</span></a>
 	    </div>
 [% END %]
           </div><!-- end ob-titleactions -->
-	   <div class="ml-auto ob-availability">[% IF availability == "online" %]<button class="btn btn-primary ob-availability_online mb-1 mr-1 pr-2"><img src="[% config.get_icon('global',view,sysprofile) %]" alt="[% msg.maketext("online") %]" /><span  class="pl-1 d-none d-sm-inline">[% msg.maketext("online ") %]</span></button>[% ELSE %]<span id="availability_[% record.database %]_[% record.get_encoded_id %]" hx-get="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/availability?l=[% lang %]" hx-trigger="revealed"></span>[% END %]
+	   <div class="ms-auto ob-availability">[% IF availability == "online" %]<button class="btn btn-primary ob-availability_online mb-1 me-1 pe-2"><img src="[% config.get_icon('global',view,sysprofile) %]" alt="[% msg.maketext("online") %]" /><span  class="ps-1 d-none d-sm-inline">[% msg.maketext("online ") %]</span></button>[% ELSE %]<span id="availability_[% record.database %]_[% record.get_encoded_id %]" hx-get="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/availability?l=[% lang %]" hx-trigger="revealed"></span>[% END %]
 	   </div>
 	</div><!-- end: flex -->
 	

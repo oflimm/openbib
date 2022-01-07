@@ -1,0 +1,41 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[%
+      funcargs = { id => view, type => 2 } ;
+      resultlist = statistics.get_result(funcargs);
+%]
+[%# USE dumper;dumper.dump(resultlist)%]
+<h3>[% msg.maketext("Die 20 meist genutzten Kataloge bezogen auf die Titelzugriffe") %]</h3>
+
+[% IF resultlist %]
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+<thead>
+<tr><th>#</th><th>[% msg.maketext('Katalog') %]</th><th>[% msg.maketext('Titelaufrufe') %]</th></tr>
+</thead>
+<tbody>
+<!-- Beginn Result Item -->
+[%- FOREACH thisitem IN resultlist -%]
+[% item      = thisitem.item;
+   itemcount = thisitem.count;
+%]
+<tr><td><b>[% loop.count %]</b></td><td><a href="[% path_prefix %]/[% config.get("databases_loc") %]/id/[% item %]/titles/popular.html?l=[% lang %]">[% dbinfo.get('dbnames').${item}.short %]</a></td><td>[% itemcount %]</td></tr>
+[% END %]
+</tbody>
+</table>
+</div>
+[% ELSE %]
+[% msg.maketext('Es liegen derzeit keine Daten vor.') %]
+[% END %]
+<p />

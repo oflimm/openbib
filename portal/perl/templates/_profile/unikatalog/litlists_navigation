@@ -1,0 +1,61 @@
+[%#-
+#######################################################################
+#
+# Templatename: litlists_navigatio
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Unternavigations-Menu 
+#
+# Parameter active_menu zur Kennzeichnung aktiver Menupunkte:
+#
+# searchmask
+# cloud
+# info
+#
+#######################################################################
+-%]
+<div class="card">
+<div class="card-header">[% msg.maketext("Literaturlisten") %]</div>
+
+<div class="card-body">
+<nav class="navbar bg-light ob-sidebar">
+<ul class="navbar-nav">
+[% IF layout_param.active_submenu == "litlists_all" %]
+  <li class="nav-item active"><strong>[% msg.maketext("Alle Listen") %]</strong></li>
+[% ELSE %]
+   <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('litlists_loc') %].html?l=[% lang %]">[% msg.maketext("Alle Listen") %]</a></li>
+[% END %]
+[% IF layout_param.active_submenu == "litlists_recent" %]
+  <li class="nav-item active"><strong>[% msg.maketext("Zuletzt angelegt") %]</strong></li>
+[% ELSE %]
+   <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('litlists_loc') %]/recent.html?l=[% lang %];num=20">[% msg.maketext("Zuletzt angelegt") %]</a></li>
+[% END %]
+[% IF layout_param.active_submenu == "litlists_topics" %]
+  <li class="nav-item active"><strong>[% msg.maketext("Themengebiete") %]</strong></li>
+[% ELSE %]
+   <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('litlists_loc') %]/topics.html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a></li>
+[% END %]
+[% IF topicid %]
+   <li class="nav-item"><span>[% FOREACH topic IN topics %][% IF topic.id == topicid %][% topic.name%][% END %][% END %]</span>
+     <ul>
+[%   IF layout_param.active_submenu == "litlists_topic_all" %]
+   <li class="nav-item active"><strong>[% msg.maketext("Alle Listen") %]</strong></li>
+[%   ELSE %]
+   <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('litlists_loc') %]/topics/id/[% topicid %].html?l=[% lang %]">[% msg.maketext("Alle Listen") %]</a></li>
+[%   END %]
+[%   IF layout_param.active_submenu == "litlists_topic_recent" %]
+       <li class="nav-item active"><strong>[% msg.maketext("Zuletzt angelegt") %]</strong></li>
+[%   ELSE %]
+       <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('litlists_loc') %]/topics/id/[% topicid %]/recent.html?l=[% lang %];num=20">[% msg.maketext("Zuletzt angelegt") %]</a></li>
+[% END %]
+    </ul>
+  </li>
+[% END %]
+
+ </ul>
+</nav>
+</div>
+</div>

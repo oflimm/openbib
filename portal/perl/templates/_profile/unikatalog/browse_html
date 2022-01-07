@@ -1,0 +1,22 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_browsetit
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Inhalte einer Titel-Kategorie
+#
+#######################################################################
+-%]
+
+<h4>[% msg.maketext("Blättern nach") %]</h4>
+
+<p />
+<ul class="list-group">
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('browse_loc') %]/topics.html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a></li>
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('browse_loc') %]/bks.html?l=[% lang %]">[% msg.maketext("Basisklassifikation") %]</a></li>
+</ul>
+

@@ -182,7 +182,7 @@ while (my $record = safe_next($batch)){
 
     my $encoding;
     
-    if ($globalencoding eq "UTF-8" || $globalencoding eq "MARC-8"){
+    if (defined $globalencoding && ($globalencoding eq "UTF-8" || $globalencoding eq "MARC-8")){
 	$record->encoding($globalencoding);
 	$encoding=$globalencoding;
     }
@@ -1303,6 +1303,50 @@ while (my $record = safe_next($batch)){
 	    
             print HOLDING encode_json $holding_ref,"\n";
         }
+
+	if ($configfile && defined $convconfig->{localfields}{holdings}){
+
+#	    $logger->info("Processing local holding fields");
+	    
+	    my $localfields_ref = $convconfig->{localfields}{holdings};
+
+	    foreach my $localfield (keys %{$localfields_ref}){
+#		$logger->info("Processing field $localfield");
+		
+		foreach my $field ($record->field($localfield)){
+		    
+		    my $holding_ref = {
+			'id'     => $mexid++,
+			    'fields' => {
+				'0004' =>
+				    [
+				     {
+					 mult     => 1,
+					 subfield => '',
+					 content  => $title_ref->{id},
+				     },
+				    ],
+			},
+		    };
+
+		    foreach my $subfield (keys %{$localfields_ref->{$localfield}}){
+
+			my $destfield = $localfields_ref->{$localfield}{$subfield};
+			my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string($subfield)):$field->as_string($subfield);
+			
+			
+			push @{$holding_ref->{fields}{$destfield}}, {
+			    content  => konv($content),
+			    subfield => '',
+			    mult     => 1,
+			};
+			
+		    }
+		    
+		    print HOLDING encode_json $holding_ref,"\n";
+		}		
+	    }	    
+	}
     }
 
     if ($configfile && $convconfig->{exclude}{by_availability}){
@@ -1411,16 +1455,18 @@ sub get_linkage_fields {
     
     my ($linkage_fieldnumber,$linkage_count) = $linkage =~m/^(\d\d\d)-(\d+)/;
 
-    foreach my $thislinkage_field ($record->field($linkage_fieldnumber)){
-        my $thiscontent_6 = ($encoding eq "MARC-8")?marc8_to_utf8($thislinkage_field->as_string('6')):$thislinkage_field->as_string('6');
-        
-        my ($thislinkage_fieldnumber,$thislinkage_count) = $thiscontent_6 =~m/^(\d\d\d)-(\d+)/;
-
-        next unless (defined $thislinkage_fieldnumber);
-        
-        if ($thislinkage_fieldnumber == $fieldnumber && $thislinkage_count == $linkage_count){
-            push @{$linkage_fields_ref}, $thislinkage_field;
-        }
+    if ($linkage_fieldnumber){
+	foreach my $thislinkage_field ($record->field($linkage_fieldnumber)){
+	    my $thiscontent_6 = ($encoding eq "MARC-8")?marc8_to_utf8($thislinkage_field->as_string('6')):$thislinkage_field->as_string('6');
+	    
+	    my ($thislinkage_fieldnumber,$thislinkage_count) = $thiscontent_6 =~m/^(\d\d\d)-(\d+)/;
+	    
+	    next unless (defined $thislinkage_fieldnumber);
+	    
+	    if ($thislinkage_fieldnumber == $fieldnumber && $thislinkage_count == $linkage_count){
+		push @{$linkage_fields_ref}, $thislinkage_field;
+	    }
+	}
     }
 
     return $linkage_fields_ref;

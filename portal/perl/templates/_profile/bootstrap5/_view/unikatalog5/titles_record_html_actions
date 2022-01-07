@@ -15,7 +15,7 @@
   END ;
 %]
 
-<h4>[% msg.maketext("Dieser Titel") %]</h4>
+<h5>[% msg.maketext("Dieser Titel") %]</h5>
 
 [% IF config.get('litlists') %]
 <div id="ob-litlists" class="accordion"><!-- Begin Litlist -->
@@ -39,7 +39,7 @@
 %]
 <form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]">
 
-<legend>[% msg.maketext("&Uuml;bernahme dieses Titels in die bestehende Literaturliste: ") %]</legend>
+<h5>[% msg.maketext("&Uuml;bernahme dieses Titels in die bestehende Literaturliste: ") %]</h5>
 <input type="hidden" name="redirect_to"       value="[% uri_escape(location) %]" />
 <input type="hidden" name="titleid"           value="[% record.get_encoded_id %]" />
 <input type="hidden" name="dbname"            value="[% record.database %]" />
@@ -56,7 +56,7 @@
 <p>
 <form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]">
 
-<legend>[% msg.maketext("&Uuml;bernahme dieses Titels in eine neue Literaturliste: ") %]</legend>
+<h5>[% msg.maketext("&Uuml;bernahme dieses Titels in eine neue Literaturliste: ") %]</h5>
 <input type="hidden" name="redirect_to"      value="[% uri_escape(location) %]" />
 <input type="hidden" name="titleid"          value="[% record.get_encoded_id %]" />
 <input type="hidden" name="dbname"           value="[% record.database %]" />
@@ -116,7 +116,7 @@
 <input type="hidden" name="titleid" value="[% record.get_encoded_id %]"/>
 
 
-<legend>[% msg.maketext("Eingabe neuer Tags") %]</legend>
+<h5>[% msg.maketext("Eingabe neuer Tags") %]</h5>
 
 <div class="form-floating mb-3">
 <input class="form-control" type="text" name="tags" value="" size="20" maxlength="200" id="tags"/>
@@ -139,7 +139,7 @@
     IF username ;
 %]
 
-<h4>[% msg.maketext("Übernahme eigener Tags") %]</h4>
+<h5>[% msg.maketext("Übernahme eigener Tags") %]</h5>
 
 <!-- Beginn Tag-Cloud -->
 
@@ -190,7 +190,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 %]
 [%  IF config.get('social_tagging') && all_tags.size > 0 %]
 <!-- Beginn generelle Tag-Uebernahme -->
-<h4>[% msg.maketext("Übernahme bereits von Nutzern vergebener Tags") %]</h4>
+<h5>[% msg.maketext("Übernahme bereits von Nutzern vergebener Tags") %]</h5>
 
 <ol class="ob-cloud">
 [%-   FOREACH thisitem IN all_tags -%]
@@ -258,7 +258,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 [% IF NOT disable_discover_sources %]
 <div class="ob-discover_sources"><!-- Begin Discover-Sources -->
 
-<h4>[% msg.maketext("Entdecken Sie weitere Titel") %]</h4>
+<h5>[% msg.maketext("Entdecken Sie weitere Titel") %]</h5>
 
 <p/>
 
@@ -536,7 +536,7 @@ $("#history_toggle").click(function(){
 [% recent_titles = session.get_recently_selected_titles %]
 [% IF recent_titles.get_size > 0 %]
 <div class="ob-session_history"><!-- Begin Historie -->
-<h4>[% msg.maketext("Diese Titel interessierten Sie bereits:") %]</h4>
+<h5>[% msg.maketext("Diese Titel interessierten Sie bereits:") %]</h5>
 
 <!-- <div id="ob-record_title_history_toggle_do"> -->
 <p/>

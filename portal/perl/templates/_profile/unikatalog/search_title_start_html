@@ -16,6 +16,8 @@
 [% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
 [%- request_base    = "l=${lang};num=${hitrange};srt=${sorttype}_${sortorder};"  -%]
 
+[% PROCESS common/subtemplate name="search_title_field" %]
+
 [%-
 
     cgi_querystring     = cgiapp.to_cgi_querystring;

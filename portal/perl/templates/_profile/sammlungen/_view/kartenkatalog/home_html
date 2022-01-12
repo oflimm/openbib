@@ -57,53 +57,20 @@
 
 <div class="text-center ob-bg text-white"><h4>[% msg.maketext("DER KARTENKATALOG DER PHILOSOPHISCHEN FAKULTÄT") %]</h4></div>
 
-<!--
-<div class="container pb-5">
-  <div class="row">
-    <div class="col-md-4 pl-5 pr-5 pb-5">
-      <div class="card mt-5 h-100">
-	<div class="card-header pb-2 text-center"><i class="fas fa-info fa-2x"></i></div>
-	<div class="card-body">
-	  <h4 class="card-subtitle pb-3 text-center">[% msg.maketext("Projekt") %]</h4>
-	  <p class="card-text">[% msg.maketext("Informationen zum abgeschlossenen Digitalis-Projekt") %]</p>
-	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('info_loc') %]/project.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a></div>
-      </div>
-    </div>
-    <div class="col-md-4 pl-5 pr-5 pb-5">
-      <div class="card mt-5 h-100">
-	<div class="card-header pb-2 text-center"><i class="fas fa-list-ul fa-2x"></i></div>
-	<div class="card-body">
-	  <h4 class="card-subtitle pb-3 text-center">[% msg.maketext("Register") %]</h4>
-	  <p class="card-text">[% msg.maketext("Systematisches Browsen im Bestand") %]</p>
-	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/digitalis/[% config.get('titles_loc') %]/fields/id/0100.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a></div>
-      </div>
-    </div>
-    <div class="col-md-4 pl-5 pr-5 pb-5">
-      <div class="card mt-5 h-100">
-	<div class="card-header pb-2 text-center"><i class="fas fa-cloud fa-2x"></i></div>
-	<div class="card-body">
-	  <h4 class="card-subtitle pb-3 text-center">[% msg.maketext("Wortwolken") %]</h4>
-	  <p class="card-text">[% msg.maketext("Eine quantifizierende Darstellung des Bestands") %]</p>
-	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/digitalis/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<hr/>
-
--->
-
 <div class="container">
+
+<p>Aus Sicherheitsgründen musste leider der bisherige Digitale Kartenkatalog der Philosophischen Fakultät mit seiner 16 Jahren alten Software vom Netz genommen werden.</p>
 
 <p>In diesem Portal können die digitalisierten Kartenkataloge der Philosophischen Fakultät durchsucht werden. Zusätzlich kann in den Katalogen auch klassisch in den Karten geblättert werden.</p>
 
 <p>
 Grundlage der Recherche ist eine Analyse der Karten mit OCR (Optische Bilderkennung) und dem System tesseract.</p>
 
-<p>
-Die Text auf den Karten für die Indexierung wurde sehr gut erkannt, ist jedoch nicht immer perfekt. Die Gründe hierfür liegen aber sehr oft auch beim Ausgangsmaterial der Katalogkarten mit handschriftlichen Notizen usw.
+<p class="alert alert-info"> Auch wenn die Texterkennung in der Regel gute
+Ergebnisse erreichte, so kann nicht ausgeschlossen werden, dass
+Begriffe und Titel bei der Recherche dennoch nicht gefunden werden
+können. Auf den vollständigen Bestand an Katalogkarten können Sie
+immer über <strong>Blättern in einzelnen Katalogen</strong> zugreifen.
 </p>
 
 <hr/>

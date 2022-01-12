@@ -23,6 +23,36 @@
     </li>
 [% END %]
 
+[% IF nav.current_page > 100 %]
+    <li class="page-item">
+       <a class="page-link" href="[% path %]?page=[% nav.current_page - 100 %][% IF query_args_base %];[% query_args_base %][% END %]">100 Zurück</a>
+    </li>
+[% ELSE %]
+    <li class="page-item disabled">
+       <span class="page-link">100 Zurück</a>
+    </li>
+[% END %]
+
+[% IF nav.current_page > 500 %]
+    <li class="page-item">
+       <a class="page-link" href="[% path %]?page=[% nav.current_page - 500 %][% IF query_args_base %];[% query_args_base %][% END %]">500 Zurück</a>
+    </li>
+[% ELSE %]
+    <li class="page-item disabled">
+       <span class="page-link">500 Zurück</a>
+    </li>
+[% END %]
+
+[% IF nav.current_page > 1000 %]
+    <li class="page-item">
+       <a class="page-link" href="[% path %]?page=[% nav.current_page - 1000 %][% IF query_args_base %];[% query_args_base %][% END %]">1000 Zurück</a>
+    </li>
+[% ELSE %]
+    <li class="page-item disabled">
+       <span class="page-link">1000 Zurück</a>
+    </li>
+[% END %]
+
 
 [%- IF nav.pages_in_set.first > nav.first_page -%]
     <li class="page-item">
@@ -64,6 +94,41 @@
        <span class="page-link">25 Vor</span>
     </li>
 [% END %]
+
+[%-# Navigation: Vor -%]
+[% IF nav.current_page < nav.last_page - 100 %]
+    <li class="page-item">
+       <a class="page-link" href="[% path %]?page=[% nav.current_page + 100 %][% IF query_args_base %];[% query_args_base %][% END %]">100 Vor</a>
+    </li>
+[% ELSE %]
+    <li class="page-item disabled">
+       <span class="page-link">100 Vor</span>
+    </li>
+[% END %]
+
+[%-# Navigation: Vor -%]
+[% IF nav.current_page < nav.last_page - 500 %]
+    <li class="page-item">
+       <a class="page-link" href="[% path %]?page=[% nav.current_page + 500 %][% IF query_args_base %];[% query_args_base %][% END %]">500 Vor</a>
+    </li>
+[% ELSE %]
+    <li class="page-item disabled">
+       <span class="page-link">500 Vor</span>
+    </li>
+[% END %]
+
+
+[%-# Navigation: Vor -%]
+[% IF nav.current_page < nav.last_page - 1000 %]
+    <li class="page-item">
+       <a class="page-link" href="[% path %]?page=[% nav.current_page + 1000 %][% IF query_args_base %];[% query_args_base %][% END %]">1000 Vor</a>
+    </li>
+[% ELSE %]
+    <li class="page-item disabled">
+       <span class="page-link">1000 Vor</span>
+    </li>
+[% END %]
+
 
 [% IF nav.current_page < nav.last_page %]
     <li class="page-item">

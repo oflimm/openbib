@@ -17,8 +17,8 @@
 <div id="extended-info" class="d-flex justify-content-center footer-logo-box">
     <div>
             <ul class="list-group list-group-horizontal flex-column flex-md-row justify-content-center">
-                <a class="navbar-brand" href="https://wiso.uni-koeln.de/" title="Wirtschafts- und Sozialwissenschaftliche Fakultät" target="_blank">
-                    <img src="/images/openbib/logowiso.jpg"  height="50" class="d-inline-block align-top" alt="">
+                <a class="navbar-brand" href="https://phil-fak.uni-koeln.de" title="Philosophische Fakultät" target="_blank">
+                    <img src="/images/openbib/views/logophilfak.gif"  height="50" class="d-inline-block align-top" alt="">
                 </a>
                 <a class="navbar-brand" href="https://www.ub.uni-koeln.de/" title="Universitäts- und Stadtbibliothek Köln" target="_blank">
                     <img src="/images/openbib/views/muenzen/USB_logo_1500_transparent.png"  height="50" class="d-inline-block align-top" alt="">

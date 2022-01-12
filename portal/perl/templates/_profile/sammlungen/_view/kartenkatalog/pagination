@@ -5,11 +5,11 @@
 [%-# Navigation: Zurueck -%]  
 [% IF nav.current_page > 1 %]
     <li class="page-item">
-       <a class="page-link" href="[% path %]?page=[% nav.current_page - 1 %][% IF query_args_base %];[% query_args_base %][% END %]">1 Zurück</a>
+       <a class="page-link" href="[% path %]?page=[% nav.current_page - 1 %][% IF query_args_base %];[% query_args_base %][% END %]"><i class="fas fa-angle-left"></i></a>
     </li>
 [% ELSE %]
     <li class="page-item disabled">
-       <span class="page-link">1 Zurück</a>
+       <span class="page-link"><i class="fas fa-angle-left"></i></a>
     </li>
 [% END %]
 
@@ -17,7 +17,7 @@
     <li class="page-item">
       <div class="dropdown">
 	<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButtonback" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	  Weiter Zurück
+	  <i class="fas fa-angle-double-left"></i>
 	</button>
 	<div class="dropdown-menu" aria-labelledby="dropdownMenuButtonback">
 	   [% IF nav.current_page > 25 %]
@@ -43,7 +43,7 @@
     </li>
 [%- END -%]
 [%- IF nav.pages_in_set.first - 1 > nav.first_page -%]
-    <li class="page-item">
+    <li class="page-item d-none d-md-block">
        <span class="page-link disabled">...</span><!-- <a class="page-link" href="[% path %]?page=[% nav.last_page %][% IF query_args_base %];[% query_args_base %][% END %]">[% nav.last_page %]</a> -->
     </li>
 [%- END -%]
@@ -62,7 +62,7 @@
 [%- END -%]
 
 [%- IF lastpage < nav.last_page -%]
-    <li class="page-item">
+    <li class="page-item d-none d-md-block">
        <span class="page-link disabled">...</span><!-- <a class="page-link" href="[% path %]?page=[% nav.last_page %][% IF query_args_base %];[% query_args_base %][% END %]">[% nav.last_page %]</a> -->
     </li>
 [%- END -%]
@@ -70,8 +70,8 @@
 [% IF nav.current_page < nav.last_page - 25 %]    
     <li class="page-item">
       <div class="dropdown">
-	<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButtonforward" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	  Weiter Vor
+	<button class="btn btn-primary-invert dropdown-toggle" type="button" id="dropdownMenuButtonforward" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+         <i class="fas fa-angle-double-right"></i>
 	</button>
 	<div class="dropdown-menu" aria-labelledby="dropdownMenuButtonforward">
           [% IF nav.current_page < nav.last_page - 25 %]
@@ -93,11 +93,11 @@
     
 [% IF nav.current_page < nav.last_page %]
     <li class="page-item">
-       <a class="page-link" href="[% path %]?page=[% nav.current_page + 1 %][% IF query_args_base %];[% query_args_base %][% END %]">1 Vor</a>
+       <a class="page-link" href="[% path %]?page=[% nav.current_page + 1 %][% IF query_args_base %];[% query_args_base %][% END %]"><i class="fas fa-angle-right"></i></a>
     </li>
 [% ELSE %]
     <li class="page-item disabled">
-       <span class="page-link">1 Vor</span>
+       <span class="page-link"><i class="fas fa-angle-right"></i></span>
     </li>
 [% END %]
   </ul>

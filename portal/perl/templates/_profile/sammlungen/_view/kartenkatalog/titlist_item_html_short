@@ -340,6 +340,7 @@
 	    <p>
 	      [% item.${'T0750'}.first.content %]
 	    </p>
+	    <p><i class="fas fa-map-marker-alt"></i> [% dbinfo.get('dbnames').${record.database}.full %]</p>
 	    <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#cardimageModal[% record.id %]">[% msg.maketext("Vollanzeige") %]</a>
 	  </div>
 	</div>

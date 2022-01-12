@@ -1,11 +1,7 @@
 [%# USE dumper; dumper.dump(dbchoice)%]
 [%
 
-   kartenkataloge = [
-      'inst311karten',
-      'inst325karten',
-      'inst404karten',
-   ];
+   kartenkataloge = config.get_dbs_of_view(view);
 
    IF NOT searchprofileid_of_view ;
       searchprofileid_of_view  = config.get_searchprofile_of_view(view) ;

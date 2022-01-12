@@ -95,28 +95,6 @@
     </li>
 [% END %]
 
-[%-# Navigation: Vor -%]
-[% IF nav.current_page < nav.last_page - 100 %]
-    <li class="page-item">
-       <a class="page-link" href="[% path %]?page=[% nav.current_page + 100 %][% IF query_args_base %];[% query_args_base %][% END %]">100 Vor</a>
-    </li>
-[% ELSE %]
-    <li class="page-item disabled">
-       <span class="page-link">100 Vor</span>
-    </li>
-[% END %]
-
-[%-# Navigation: Vor -%]
-[% IF nav.current_page < nav.last_page - 500 %]
-    <li class="page-item">
-       <a class="page-link" href="[% path %]?page=[% nav.current_page + 500 %][% IF query_args_base %];[% query_args_base %][% END %]">500 Vor</a>
-    </li>
-[% ELSE %]
-    <li class="page-item disabled">
-       <span class="page-link">500 Vor</span>
-    </li>
-[% END %]
-
 
 [%-# Navigation: Vor -%]
 [% IF nav.current_page < nav.last_page - 1000 %]

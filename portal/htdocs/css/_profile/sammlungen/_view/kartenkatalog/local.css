@@ -106,6 +106,16 @@
 	background: #253746;
     }
 
+    .btn-primary-invert {
+	color: #253746;
+	background: #fff;
+    }
+
+    .btn-primary-invert:hover {
+	background: #253746;
+	color: #fff;
+    }
+    
     .btn-primary:hover {
 	background-color: #a0adb6 !important ;
 	border-color: #253746;

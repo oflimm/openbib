@@ -108,7 +108,7 @@ Grundlage der Recherche ist eine Analyse der Karten mit OCR (Optische Bilderkenn
 
 <ul class="list-group">
 [% FOR katalog IN kartenkataloge %]
-<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% katalog %]/titles.html?l=[% lang %]&srt=title_asc">[% dbinfo.get('dbnames').${katalog}.full %]</a></li>
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% katalog %]/titles.html?l=[% lang %]&srt=title_asc">[% dbinfo.get('dbnames').${katalog}.full %]</a> ([% config.get_number_of_titles({ database = katalog}).allcount%] Katalogkarten)</li>
 [% END %]
 </ul>
 

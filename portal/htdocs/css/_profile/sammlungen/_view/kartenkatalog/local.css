@@ -1786,6 +1786,10 @@ a.ext {
 }
 
 @media only screen and (max-width: 768px) {
+    #ob-startpage .landing-page-img {
+	background-position: 60% 30%;
+    }
+    
     .col-md-3 {
 	margin-right: 0px;
 	padding-right: 0px;
@@ -1803,6 +1807,10 @@ a.ext {
 }
 
 @media only screen and (max-width: 575px) {
+    #ob-startpage .landing-page-img {
+	background-position: 60% 30%;
+    }
+
 
     .ob-availability_online {
 	/*    margin-top: -3px; */
@@ -1873,6 +1881,10 @@ a.ext {
 }
 
 @media screen and (max-width:480px) {
+    #ob-startpage .landing-page-img {
+	background-position: 60% 30%;
+    }
+    
     .ob-item .ob-brieftitle {
 	padding-left: 2.5em;
 	width: 100%;

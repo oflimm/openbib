@@ -102,6 +102,8 @@
 <p>
 Grundlage der Recherche ist eine Analyse der Karten mit OCR (Optische Bilderkennung) und dem System tesseract.</p>
 
+<hr/>
+
 <h4>Blättern in einzelnen Katalogen</h4>
 
 [% kartenkataloge = config.get_dbs_of_view(view); %]

@@ -18,7 +18,7 @@
 <hr/>
 
 <div class="form-group">
-<label for="[% cgiparam %]">[% msg.maketext("Suchprofil") %]</label>
+<label for="[% cgiparam %]">[% msg.maketext("Kartenkatalog") %]</label>
 [% PROCESS common/subtemplate name="searchforms_record_profile" %]
 </div>
 

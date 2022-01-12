@@ -545,6 +545,10 @@
     }
 
     .ob-item .ob-brieftitle {
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+	padding-top: 2.5em;
+	padding-bottom: 0.5em;
 	width: 100%;
 /*    position: relative; 
       float: left; 
@@ -1896,7 +1900,6 @@ a.ext {
     }
     
     .ob-item .ob-brieftitle {
-	padding-left: 2.5em;
 	width: 100%;
 /*    position: relative; 
       float: left; 

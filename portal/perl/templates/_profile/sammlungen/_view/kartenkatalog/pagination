@@ -33,15 +33,6 @@
     </li>
 [% END %]
 
-[% IF nav.current_page > 500 %]
-    <li class="page-item">
-       <a class="page-link" href="[% path %]?page=[% nav.current_page - 500 %][% IF query_args_base %];[% query_args_base %][% END %]">500 Zurück</a>
-    </li>
-[% ELSE %]
-    <li class="page-item disabled">
-       <span class="page-link">500 Zurück</a>
-    </li>
-[% END %]
 
 [% IF nav.current_page > 1000 %]
     <li class="page-item">

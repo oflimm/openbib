@@ -330,7 +330,7 @@
 </div>
 
       <div class="ob-numbering">[% IF with_id_checkbox %]<input type="checkbox" name="id" value="[% record.listid %]"  title="collection_item" />&nbsp;[% END %][% start_range+loop.count - 1 %]</div>
-      <div class="ob-brieftitle mt-2 ml-5">
+      <div class="ob-brieftitle">
 	<div class="row flex-md-row">
 	  <div class="col-md-6 col-xs-8">
        	    <a href="#" data-toggle="modal" data-target="#cardimageModal[% record.id %]"><img class="img-fluid" src="/cardimages/[% item.${'T2662'}.first.content %]" /></a>

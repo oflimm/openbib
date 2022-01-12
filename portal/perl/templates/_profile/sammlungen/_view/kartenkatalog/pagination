@@ -16,7 +16,7 @@
 [% IF nav.current_page > 25 %]
     <li class="page-item">
       <div class="dropdown">
-	<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButtonback" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	<button class="btn btn-primary-invert dropdown-toggle" type="button" id="dropdownMenuButtonback" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	  <i class="fas fa-angle-double-left"></i>
 	</button>
 	<div class="dropdown-menu" aria-labelledby="dropdownMenuButtonback">

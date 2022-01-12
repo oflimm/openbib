@@ -66,12 +66,18 @@
 <p>
 Grundlage der Recherche ist eine Analyse der Karten mit OCR (Optische Bilderkennung) und dem System tesseract.</p>
 
-<p class="alert alert-info"> Auch wenn die Texterkennung in der Regel gute
-Ergebnisse erreichte, so kann nicht ausgeschlossen werden, dass
-Begriffe und Titel bei der Recherche dennoch nicht gefunden werden
-können. Auf den vollständigen Bestand an Katalogkarten können Sie
+<div class="alert alert-info">
+
+<p>Auch wenn die Texterkennung in der Regel
+gute Ergebnisse erreichte, so kann nicht ausgeschlossen werden, dass
+Begriffe und Titel bei der Recherche dennoch nicht gefunden
+werden. Die Texterkennung soll sukzessive weiter verbessert werden.
+</p>
+<p>
+Auf den vollständigen Bestand an Katalogkarten können Sie
 immer über <strong>Blättern in einzelnen Katalogen</strong> zugreifen.
 </p>
+</div>
 
 <hr/>
 

@@ -5,46 +5,38 @@
 [%-# Navigation: Zurueck -%]  
 [% IF nav.current_page > 1 %]
     <li class="page-item">
-       <a class="page-link" href="[% path %]?page=[% nav.current_page - 1 %][% IF query_args_base %];[% query_args_base %][% END %]">Zurück</a>
+       <a class="page-link" href="[% path %]?page=[% nav.current_page - 1 %][% IF query_args_base %];[% query_args_base %][% END %]">1 Zurück</a>
     </li>
 [% ELSE %]
     <li class="page-item disabled">
-       <span class="page-link">Zurück</a>
+       <span class="page-link">1 Zurück</a>
     </li>
 [% END %]
 
 [% IF nav.current_page > 25 %]
     <li class="page-item">
-       <a class="page-link" href="[% path %]?page=[% nav.current_page - 25 %][% IF query_args_base %];[% query_args_base %][% END %]">25 Zurück</a>
-    </li>
-[% ELSE %]
-    <li class="page-item disabled">
-       <span class="page-link">25 Zurück</a>
-    </li>
-[% END %]
-
-[% IF nav.current_page > 100 %]
-    <li class="page-item">
-       <a class="page-link" href="[% path %]?page=[% nav.current_page - 100 %][% IF query_args_base %];[% query_args_base %][% END %]">100 Zurück</a>
-    </li>
-[% ELSE %]
-    <li class="page-item disabled">
-       <span class="page-link">100 Zurück</a>
-    </li>
-[% END %]
-
-
-[% IF nav.current_page > 1000 %]
-    <li class="page-item">
-       <a class="page-link" href="[% path %]?page=[% nav.current_page - 1000 %][% IF query_args_base %];[% query_args_base %][% END %]">1000 Zurück</a>
-    </li>
-[% ELSE %]
-    <li class="page-item disabled">
-       <span class="page-link">1000 Zurück</a>
+      <div class="dropdown">
+	<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButtonback" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	  Weiter Zurück
+	</button>
+	<div class="dropdown-menu" aria-labelledby="dropdownMenuButtonback">
+	   [% IF nav.current_page > 25 %]
+	   <a class="dropdown-item" href="[% path %]?page=[% nav.current_page - 25 %][% IF query_args_base %];[% query_args_base %][% END %]">- 25</a>
+	   [% END %]
+           [% IF nav.current_page > 100 %]
+	   <a class="dropdown-item" href="[% path %]?page=[% nav.current_page - 100 %][% IF query_args_base %];[% query_args_base %][% END %]">- 100</a>
+	   [% END %]
+	   [% IF nav.current_page > 500 %]
+	   <a class="dropdown-item" href="[% path %]?page=[% nav.current_page - 500 %][% IF query_args_base %];[% query_args_base %][% END %]">- 500</a>
+	   [% END %]
+	   [% IF nav.current_page > 1000 %]	   
+	   <a class="dropdown-item" href="[% path %]?page=[% nav.current_page - 1000 %][% IF query_args_base %];[% query_args_base %][% END %]">- 1000</a>
+	   [% END %]
+	</div>
+      </div>
     </li>
 [% END %]
-
-
+    
 [%- IF nav.pages_in_set.first > nav.first_page -%]
     <li class="page-item">
        <a class="page-link" href="[% path %]?page=[% nav.first_page %][% IF query_args_base %];[% query_args_base %][% END %]">[% nav.first_page %]</a>
@@ -75,47 +67,37 @@
     </li>
 [%- END -%]
 
-[%-# Navigation: Vor -%]
-[% IF nav.current_page < nav.last_page - 25 %]
+[% IF nav.current_page < nav.last_page - 25 %]    
     <li class="page-item">
-       <a class="page-link" href="[% path %]?page=[% nav.current_page + 25 %][% IF query_args_base %];[% query_args_base %][% END %]">25 Vor</a>
-    </li>
-[% ELSE %]
-    <li class="page-item disabled">
-       <span class="page-link">25 Vor</span>
+      <div class="dropdown">
+	<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButtonforward" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	  Weiter Vor
+	</button>
+	<div class="dropdown-menu" aria-labelledby="dropdownMenuButtonforward">
+          [% IF nav.current_page < nav.last_page - 25 %]
+	  <a class="dropdown-item" href="[% path %]?page=[% nav.current_page + 25 %][% IF query_args_base %];[% query_args_base %][% END %]">+ 25</a>
+	  [% END %]
+          [% IF nav.current_page < nav.last_page - 100 %]	  
+	  <a class="dropdown-item" href="[% path %]?page=[% nav.current_page + 100 %][% IF query_args_base %];[% query_args_base %][% END %]">+ 100</a>
+	  [% END %]
+          [% IF nav.current_page < nav.last_page - 500 %]	  
+	  <a class="dropdown-item" href="[% path %]?page=[% nav.current_page + 500 %][% IF query_args_base %];[% query_args_base %][% END %]">+ 500</a>
+	  [% END %]
+          [% IF nav.current_page < nav.last_page - 1000 %]	  
+	  <a class="dropdown-item" href="[% path %]?page=[% nav.current_page + 1000 %][% IF query_args_base %];[% query_args_base %][% END %]">+ 1000</a>
+	  [% END %]
+	</div>
+      </div>
     </li>
 [% END %]
-
-[%-# Navigation: Vor -%]
-[% IF nav.current_page < nav.last_page - 100 %]
-    <li class="page-item">
-       <a class="page-link" href="[% path %]?page=[% nav.current_page + 100 %][% IF query_args_base %];[% query_args_base %][% END %]">100 Vor</a>
-    </li>
-[% ELSE %]
-    <li class="page-item disabled">
-       <span class="page-link">100 Vor</span>
-    </li>
-[% END %]
-
-[%-# Navigation: Vor -%]
-[% IF nav.current_page < nav.last_page - 1000 %]
-    <li class="page-item">
-       <a class="page-link" href="[% path %]?page=[% nav.current_page + 1000 %][% IF query_args_base %];[% query_args_base %][% END %]">1000 Vor</a>
-    </li>
-[% ELSE %]
-    <li class="page-item disabled">
-       <span class="page-link">1000 Vor</span>
-    </li>
-[% END %]
-
-
+    
 [% IF nav.current_page < nav.last_page %]
     <li class="page-item">
-       <a class="page-link" href="[% path %]?page=[% nav.current_page + 1 %][% IF query_args_base %];[% query_args_base %][% END %]">Vor</a>
+       <a class="page-link" href="[% path %]?page=[% nav.current_page + 1 %][% IF query_args_base %];[% query_args_base %][% END %]">1 Vor</a>
     </li>
 [% ELSE %]
     <li class="page-item disabled">
-       <span class="page-link">Vor</span>
+       <span class="page-link">1 Vor</span>
     </li>
 [% END %]
   </ul>

@@ -102,6 +102,10 @@
 <p>
 Grundlage der Recherche ist eine Analyse der Karten mit OCR (Optische Bilderkennung) und dem System tesseract.</p>
 
+<p>
+Die Text auf den Karten für die Indexierung wurde sehr gut erkannt, ist jedoch nicht immer perfekt. Die Gründe hierfür liegen aber sehr oft auch beim Ausgangsmaterial der Katalogkarten mit handschriftlichen Notizen usw.
+</p>
+
 <hr/>
 
 <h4>Blättern in einzelnen Katalogen</h4>

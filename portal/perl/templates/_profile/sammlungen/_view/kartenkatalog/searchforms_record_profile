@@ -7,12 +7,17 @@
       'inst404karten',
    ];
 
+   IF NOT searchprofileid_of_view ;
+      searchprofileid_of_view  = config.get_searchprofile_of_view(view) ;
+   END ;
+
    checked_profile = 0 ;
 
 #   USE dumper;dumper.dump(dbinfo);
 %]
 
 <select name="profile" class="form-control ob-selectbox selectpicker">
+<option value="[% searchprofileid_of_view %]"[%- IF prevprofile == searchprofileid_of_view && NOT checked_profile -%] selected="selected"[%- END -%]>[% msg.maketext("Alle Kataloge") %]</option>
    
 [%
    FOR katalog IN kartenkataloge ;

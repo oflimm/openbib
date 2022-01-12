@@ -1,0 +1,113 @@
+[%-
+#######################################################################
+#
+# Templatename: mainnavigation
+#
+# Typ         : Subtemplage       
+#
+# Aufgabe:
+#
+# Ausgabe der Hauptmenu-Punkte
+#
+# Parameter active_menu zur Kennzeichnung aktiver Menupunkte:
+#
+# databasechoice
+# searchform
+# resultlists
+# collection
+# startpage
+# rssfeeds
+# login
+# info
+# tutorial
+#
+#######################################################################
+-%]
+<style>
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu a::after {
+  transform: rotate(-90deg);
+  position: absolute;
+  right: 6px;
+  top: .8em;
+}
+
+.dropdown-submenu .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-left: .1rem;
+  margin-right: .1rem;
+}
+</style>
+
+<!--
+-->
+
+[%- username = user.get_username -%]
+    <!-- begin: main navigation  -->
+
+<!-- Targs: [% USE dumper; dumper.dump(layout_param) %] -->
+
+<nav id="ob-navbar_top" class="navbar navbar-expand-lg navbar-light">
+  <a class="navbar-brand" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]"><span class="brand-title"><img src="/images/openbib/views/[% view %]/kartenkatalog-logo-48px.png" class="img-fluid"  />Kartenkatalog    
+</span></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01,#ob-sidebar" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+<!--    <a class="navbar-brand" href="#">Hidden brand</a> -->
+
+    <ul class="nav navbar-nav flex-row justify-content-between ml-auto">
+           <li class="nav-item d-md-none"><a class="nav-link" href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">[% msg.maketext("Suche in einzelnem Katalog") %]</a></li>
+
+[%    IF config.get_viewauthenticators(view) %]
+    [% IF username %]
+      [% IF NOT suppress_unauthorized %]
+           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% msg.maketext("Mein Portal") %]</a></li>
+           <li class="nav-item[% IF layout_param.active_menu == "loginout" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %]">[% msg.maketext("Abmelden") %]</a></li>
+      [% END %]
+    [% ELSE %]
+           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Anmelden") %]</a></li>
+    [% END%]
+[%    END %]
+
+               <li class="nav-item">		
+                   <div class="nav-link text-nowrap text-white"><a class="[% IF lang == 'de' %] active[% END %]" href="[% path %]?[% IF cgiapp.to_cgi_querystring({ exclude = ['l']}) %][% cgiapp.to_cgi_querystring({ exclude = ['l']}) %];l=de[% ELSE %]l=de[% END %]">de</a> | <a class="[% IF lang == 'en' %] active[% END %]" href="[% path %]?[% IF cgiapp.to_cgi_querystring({ exclude = ['l']}) %][% cgiapp.to_cgi_querystring({ exclude = ['l']}) %];l=en[% ELSE %]l=en[% END %]">en</a>  <img class="pr-1" src="/images/openbib/Globus_fuer_Sprache_24px.png" /></div>
+               </li>    		
+            </ul>
+  
+  </div>
+</nav>
+
+<!-- <nav class="navbar" id="ob-fixed_navigation" [% IF without_navigation_search %]class="ob-hidden"[% END %]> -->
+
+[% PROCESS common/subtemplate name="searchforms_suggestions" %]
+[% IF NOT layout_param.without_navigation_search %]
+    <div class="card border-0 d-md-none sticky-top" style="min-width: 100%!important;">
+      <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
+
+	<input type="hidden" name="num"        value="20" />
+	<input type="hidden" name="page"       value="1" />
+	<input type="hidden" name="l"          value="[% lang %]" />
+	
+	<input type="hidden" name="srt"        value="relevance_desc" />
+	<input type="hidden" name="st"         value="1" />
+	<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+        <div class="card-header p-0 border-0">
+	  
+          <div id="search_wrapper_top" class="input-group input-group-lg shadow-sm" style="min-width: 100%">
+            <div class="input-group-prepend">
+              <button type="submit" class="input-group-text ob-bg ob-border">
+                <i class="fas fa-search text-white"></i>
+              </button>
+            </div>
+            <input id="freetext-input" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Suchbegriff...") %]" required="" />
+          </div>
+        </div>
+      </form>      
+    </div>
+[% END %]
+    <!-- end: main navigation -->

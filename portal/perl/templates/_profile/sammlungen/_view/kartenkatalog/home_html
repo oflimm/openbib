@@ -106,6 +106,8 @@ Grundlage der Recherche ist eine Analyse der Karten mit OCR (Optische Bilderkenn
 
 <ul class="list-group">
 <li class="list-group-item"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/inst311karten/titles.html?l=[% lang %]&srt=title_asc">Katholische / Evangelische Theologie - Gemeinsame Bibliothek (Klosterstr.)</a></li>
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/inst325karten/titles.html?l=[% lang %]&srt=title_asc">Katholische Theologie - Bibliothek Brosseder (Klosterstr.)</a></li>
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/inst404karten/titles.html?l=[% lang %]&srt=title_asc">Klassische Philologie - Alte Geschichte (bis Anschaffungsjahr 1998)</a></li>
 </ul>
 
 </div>

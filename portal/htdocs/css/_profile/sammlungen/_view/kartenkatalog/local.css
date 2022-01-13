@@ -1748,9 +1748,8 @@ a.ext {
 
 .ob-highlight_searchterm {
     color:#990000;
+    font-weight: bold;
 }
-
-
 
 @media only screen and (max-width: 800px) {
      

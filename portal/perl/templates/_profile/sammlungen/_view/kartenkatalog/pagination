@@ -17,7 +17,7 @@
     <li class="page-item">
       <div class="dropdown">
 	<button class="btn btn-primary-invert dropdown-toggle" type="button" id="dropdownMenuButtonback" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	  <i class="fas fa-angle-double-left"></i>
+	  <i class="fas fa-angle-double-left text-black"></i>
 	</button>
 	<div class="dropdown-menu" aria-labelledby="dropdownMenuButtonback">
 	   [% IF nav.current_page > 25 %]
@@ -71,7 +71,7 @@
     <li class="page-item">
       <div class="dropdown">
 	<button class="btn btn-primary-invert dropdown-toggle" type="button" id="dropdownMenuButtonforward" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-         <i class="fas fa-angle-double-right"></i>
+         <i class="fas fa-angle-double-right text-black"></i>
 	</button>
 	<div class="dropdown-menu" aria-labelledby="dropdownMenuButtonforward">
           [% IF nav.current_page < nav.last_page - 25 %]

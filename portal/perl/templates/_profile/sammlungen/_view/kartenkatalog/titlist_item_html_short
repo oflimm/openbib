@@ -338,10 +338,14 @@
 	  <div class="col-md-6 col-xs-4">
 	    <h5 class="pt-2">OCR-Text</h5>
 	    <p>
-	      [% content = item.${'T0750'}.first.content ;
-	         highlighted = highlightquery(searchquery,content) ;
+	      [% IF highlightquery ;
+	           content = item.${'T0750'}.first.content ;
+	           highlighted = highlightquery(searchquery,content) ;
 	      %]
 	      [% highlighted %]
+	      [% ELSE %]
+	      [% item.${'T0750'}.first.content %]
+	      [% END %]
 	    </p>
 	    <p><i class="fas fa-map-marker-alt"></i>
 [%      IF locations.size == 1 %]

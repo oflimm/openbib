@@ -343,9 +343,24 @@
 	      %]
 	      [% highlighted %]
 	    </p>
-	    <p><i class="fas fa-map-marker-alt"></i> [% dbinfo.get('dbnames').${record.database}.full %]</p>
-	    <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#cardimageModal[% record.id %]">[% msg.maketext("Vollanzeige") %]</a>
-	  </div>
+	    <p><i class="fas fa-map-marker-alt"></i>
+[%      IF locations.size == 1 %]
+              <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locations.first %].html?l=[% lang %]">[% dbinfo.get('dbnames').${record.database}.full %]</a>
+[%      ELSE %]
+              [% dbinfo.get('dbnames').${record.database}.full %]
+[%      END %]
+            </p>
+	    <div class="d-flex">
+             <p>
+	      <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#cardimageModal[% record.id %]">[% msg.maketext("Vollanzeige") %]</a>
+	     </p>
+[%      IF locations.size == 1 %]
+             <p class="pl-1">
+         <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locations.first %].html?l=[% lang %]">[% msg.maketext("Standortinfo") %]</a>
+	     </p>
+[%      END %]
+           </div>
+ 	  </div>
 	</div>
       </div> <!-- end: ob-brieftitle -->
       <div class="d-flex ob-titleactions pb-1 pt-2">

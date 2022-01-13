@@ -338,13 +338,16 @@
 	  <div class="col-md-6 col-xs-4">
 	    <h5 class="pt-2">OCR-Text</h5>
 	    <p>
-	      [% IF highlightquery ;
-	           content = item.${'T0750'}.first.content ;
+	      [%
+	         content = item.${'T0750'}.first.content ;
+		 content = content.replace('\w{30,}','');
+	      %]
+	      [% IF searchquery.defined ;
 	           highlighted = highlightquery(searchquery,content) ;
 	      %]
 	      [% highlighted %]
 	      [% ELSE %]
-	      [% item.${'T0750'}.first.content %]
+	      [% content %]
 	      [% END %]
 	    </p>
 	    <p><i class="fas fa-map-marker-alt"></i>

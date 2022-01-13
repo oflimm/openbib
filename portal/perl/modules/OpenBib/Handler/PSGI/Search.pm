@@ -1118,6 +1118,8 @@ sub print_resultitem {
         
 #        lastquery       => $request->querystring,
         resulttime      => $self->param('searchtime'),
+
+	highlightquery  => \&highlightquery,
     };
     
     $ttdata = $self->add_default_ttdata($ttdata);
@@ -1217,5 +1219,42 @@ sub get_templatename_of_joined_search {
     
     return $config->{tt_search_title_combined_tname};
 }
+
+sub highlightquery {
+    my ($searchquery,$content) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    # Highlight Query
+
+    return $content unless ($searchquery && ref $searchquery eq "OpenBib::SearchQuery");
+
+    my $term_ref = $searchquery->get_searchterms();
+
+    return $content if (scalar(@$term_ref) <= 0);
+
+    if ($logger->is_debug){
+        $logger->debug("Terms: ".YAML::Dump($term_ref));
+    }
+    
+    my $terms = join("|", grep /^\w{3,}/ ,@$term_ref);
+
+    return $content if (!$terms);
+    
+    if ($logger->is_debug){
+        $logger->debug("Term_ref: ".YAML::Dump($term_ref)."\nTerms: $terms");
+        $logger->debug("Content vor: ".$content);
+    }
+    
+    $content=~s/\b($terms)/<span class="ob-highlight_searchterm">$1<\/span>/ig unless ($content=~/http/);
+
+    if ($logger->is_debug){
+        $logger->debug("Content nach: ".$content);
+    }
+    
+    return $content;
+}
+
 
 1;

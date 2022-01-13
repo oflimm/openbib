@@ -338,7 +338,10 @@
 	  <div class="col-md-6 col-xs-4">
 	    <h5 class="pt-2">OCR-Text</h5>
 	    <p>
-	      [% item.${'T0750'}.first.content %]
+	      [% content = item.${'T0750'}.first.content ;
+	         highlighted = highlightquery(searchquery,content) ;
+	      %]
+	      [% highlighted %]
 	    </p>
 	    <p><i class="fas fa-map-marker-alt"></i> [% dbinfo.get('dbnames').${record.database}.full %]</p>
 	    <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#cardimageModal[% record.id %]">[% msg.maketext("Vollanzeige") %]</a>

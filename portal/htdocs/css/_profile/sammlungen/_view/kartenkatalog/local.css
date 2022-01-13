@@ -107,11 +107,15 @@
     }
 
     .btn-primary-invert {
+	border: 1px solid #dee2e6;
+	box-shadow: none;
 	color: #253746;
-	background: #fff;
+	background: #fff;	
     }
 
     .btn-primary-invert:hover {
+	border: 1px solid #dee2e6;
+	box-shadow: none;	
 	background: #253746;
 	color: #fff;
     }

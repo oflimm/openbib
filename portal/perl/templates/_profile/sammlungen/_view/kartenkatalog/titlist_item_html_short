@@ -340,7 +340,7 @@
 	    <p>
 	      [%
 	         content = item.${'T0750'}.first.content ;
-		 content = content.replace('\w{30,}','');
+		 content = content.replace('\w{25,}','');
 	      %]
 	      [% IF searchquery.defined ;
 	           highlighted = highlightquery(searchquery,content) ;

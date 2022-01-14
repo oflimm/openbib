@@ -32,6 +32,9 @@
 	   [% IF nav.current_page > 1000 %]	   
 	   <a class="dropdown-item" href="[% path %]?page=[% nav.current_page - 1000 %][% IF query_args_base %];[% query_args_base %][% END %]">- 1000</a>
 	   [% END %]
+	   [% IF nav.current_page > 10000 %]	   
+	   <a class="dropdown-item" href="[% path %]?page=[% nav.current_page - 1000 %][% IF query_args_base %];[% query_args_base %][% END %]">- 10000</a>
+	   [% END %]
 	</div>
       </div>
     </li>
@@ -85,6 +88,9 @@
 	  [% END %]
           [% IF nav.current_page < nav.last_page - 1000 %]	  
 	  <a class="dropdown-item" href="[% path %]?page=[% nav.current_page + 1000 %][% IF query_args_base %];[% query_args_base %][% END %]">+ 1000</a>
+	  [% END %]
+          [% IF nav.current_page < nav.last_page - 10000 %]	  
+	  <a class="dropdown-item" href="[% path %]?page=[% nav.current_page + 1000 %][% IF query_args_base %];[% query_args_base %][% END %]">+ 10000</a>
 	  [% END %]
 	</div>
       </div>

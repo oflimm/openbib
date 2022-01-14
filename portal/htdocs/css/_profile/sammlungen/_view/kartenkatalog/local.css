@@ -1947,6 +1947,11 @@ a.ext {
 }
 
 @media (min-width: 768px) {
+    #ob-startpage #search_wrapper_top {
+	display: none;
+    }
+
+    
   .modal-xl {
     width: 90%;
    max-width:1200px;

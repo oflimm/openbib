@@ -33,7 +33,7 @@
 	   <a class="dropdown-item" href="[% path %]?page=[% nav.current_page - 1000 %][% IF query_args_base %];[% query_args_base %][% END %]">- 1000</a>
 	   [% END %]
 	   [% IF nav.current_page > 5000 %]	   
-	   <a class="dropdown-item" href="[% path %]?page=[% nav.current_page - 1000 %][% IF query_args_base %];[% query_args_base %][% END %]">- 5000</a>
+	   <a class="dropdown-item" href="[% path %]?page=[% nav.current_page - 5000 %][% IF query_args_base %];[% query_args_base %][% END %]">- 5000</a>
 	   [% END %]
 	</div>
       </div>
@@ -90,7 +90,7 @@
 	  <a class="dropdown-item" href="[% path %]?page=[% nav.current_page + 1000 %][% IF query_args_base %];[% query_args_base %][% END %]">+ 1000</a>
 	  [% END %]
           [% IF nav.current_page < nav.last_page - 5000 %]	  
-	  <a class="dropdown-item" href="[% path %]?page=[% nav.current_page + 1000 %][% IF query_args_base %];[% query_args_base %][% END %]">+ 5000</a>
+	  <a class="dropdown-item" href="[% path %]?page=[% nav.current_page + 5000 %][% IF query_args_base %];[% query_args_base %][% END %]">+ 5000</a>
 	  [% END %]
 	</div>
       </div>

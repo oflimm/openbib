@@ -84,11 +84,19 @@ immer über <strong>Blättern in einzelnen Katalogen</strong> zugreifen.
 
 <h4>Blättern in einzelnen Katalogen</h4>
 
-[% kartenkataloge = config.get_dbs_of_view(view); %]
+[%
+   kartenkataloge = {};
+
+   FOR katalog IN config.get_dbs_of_view(view);
+      katalogname = dbinfo.get('dbnames').${katalog}.full ;
+      kartenkataloge.${katalogname} = katalog;
+   END;
+   
+%]
 
 <ul class="list-group">
-[% FOR katalog IN kartenkataloge %]
-<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% katalog %]/titles.html?l=[% lang %]&srt=title_asc">[% dbinfo.get('dbnames').${katalog}.full %]</a> ([% config.get_number_of_titles({ database = katalog}).allcount%] Katalogkarten)</li>
+[% FOR katalogname IN kartenkataloge.keys.sort %]
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% kartenkataloge.${katalogname} %]/titles.html?l=[% lang %]&srt=title_asc">[% katalogname %]</a> ([% config.get_number_of_titles({ database = kartenkataloge.${katalogname}}).allcount%] Katalogkarten)</li>
 [% END %]
 </ul>
 

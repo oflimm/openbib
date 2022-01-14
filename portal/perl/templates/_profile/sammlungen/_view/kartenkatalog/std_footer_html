@@ -30,7 +30,7 @@
     </div>
 </div>
 
-<nav id="ff" class="navbar navbar-expand bg-light navbar-light d-flex flex-column mt-3">
+<nav id="ff" class="navbar navbar-expand bg-light navbar-light d-flex flex-column mt-3" style="z-index:0">
     <div class="d-flex flex-row justify-content-center w-100">
         <div>
             <ul class="navbar-nav">

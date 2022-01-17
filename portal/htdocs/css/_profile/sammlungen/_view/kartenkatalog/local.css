@@ -663,6 +663,11 @@
        margin: -20px 5px 80px 120px;*/
     }
 
+    .ob-resultitems .ob-header {
+	width: 99%;
+	position: relative;
+    }
+    
     .ob-resultitems .ob-footer {
 	width: 99%;
 	/*  float: left; */

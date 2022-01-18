@@ -50,6 +50,6 @@ my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
 my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
 
 
-print "### $pool: Cleanup der OCR-Daten \n";
+print "### $pool: Cleanup der OCR-Daten und Anreicherung mit Bemerkungen\n";
 
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/cleanup-ocr.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/cleanup-ocr.pl | $rootdir/filter/$pool/add-comments.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");

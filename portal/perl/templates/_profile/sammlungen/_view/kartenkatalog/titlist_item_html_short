@@ -336,12 +336,14 @@
        	    <a href="#" data-toggle="modal" data-target="#cardimageModal[% record.id %]"><img class="img-fluid" src="/cardimages/[% item.${'T2662'}.first.content %]" /></a>
 	  </div>
 	  <div class="col-md-6 col-xs-4">
-	    <h5 class="pt-2">OCR-Text</h5>
-	    <p>
 	      [%
 	         content = item.${'T0750'}.first.content ;
 		 content = content.replace('\w{25,}','');
-	      %]
+ 		 content = content.replace('^\s+','');
+	      %]	  
+	    <h5 class="pt-2">OCR-Text</h5>
+	    [% IF content %]
+	    <p>
 	      [% IF searchquery.defined ;
 	           highlighted = highlightquery(searchquery,content) ;
 	      %]
@@ -350,6 +352,14 @@
 	      [% content %]
 	      [% END %]
 	    </p>
+            [% ELSE %]
+	    <p>Es wurde kein Text von der OCR erkannt</p>
+	    [% END %]
+[% IF item.${'T0403'}.first.content %]
+	    <p><b>Bemerkung</b>: [% item.${'T0403'}.first.content %]	    
+	    </p>
+[% END %]
+
 	    <p><i class="fas fa-map-marker-alt"></i>
 [%      IF locations.size == 1 %]
               <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locations.first %].html?l=[% lang %]">[% dbinfo.get('dbnames').${record.database}.full %]</a>

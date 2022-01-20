@@ -534,7 +534,7 @@ while (<>){
 
     if (defined $fields_ref->{'0078'} || defined $fields_ref->{'1209'}){
 	$pakete = (defined $fields_ref->{'0078'})?$fields_ref->{'0078'}[0]{content}:"";
-	if (defined $$fields_ref->{'1209'}){
+	if (defined $fields_ref->{'1209'}){
 	    $pakete.="; ".$fields_ref->{'1209'}[0]{content};
 	}
     }

@@ -82,7 +82,7 @@ while (<>){
 	    if ($content =~m/^https?:\/\/kups\.ub\.uni\-koeln\.de/){
 		push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
-			subfield => 'a', # green
+			subfield => 'g', # green
 			content  => $content,
 		};
 		

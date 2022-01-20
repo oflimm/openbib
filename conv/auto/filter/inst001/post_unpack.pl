@@ -52,7 +52,7 @@ my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
 
 print "### $pool: Erweiterung um Zugriffsinformation online, Typ Digital und Themengebiet \n";
 
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-fields.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title ; cat meta.title | $rootdir/filter/$pool/add-locationid.pl | $rootdir/filter/$pool/process_rda_subfields.pl | $rootdir/filter/$pool/gen_local_topic.pl  > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-fields.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title ; cat meta.title | $rootdir/filter/$pool/add-locationid.pl | $rootdir/filter/$pool/process_rda_subfields.pl | $rootdir/filter/$pool/gen_local_topic.pl | $rootdir/filter/$pool/process_urls.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 
 print "### $pool: Entfernen aller nicht GND-Fremdnummern sowie des (DE-588) GND-Prefixes \n";
 

@@ -29,7 +29,8 @@ while (<>){
     # Zugriffstatus
     #
     # '' : Keine Ampel
-    # ' ': Unbestimmt
+    # ' ': Unbestimmt g oder y oder r
+    # 'f': Unbestimmt, aber Volltext Zugriff g oder y (fulltext)
     # 'g': Freier Zugriff (green)
     # 'y': Eingeschraenkter Zugriff (yellow)
     # 'r': Kein Zugriff (red)
@@ -87,7 +88,7 @@ while (<>){
 	    elsif ($content =~m/^https?:\/\/www\.ub\.uni\-koeln\.de\/permalink/){
 		push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
-			subfield => ' ', # unbestimmt. Es gibt auch gelbe Objekte ID=6612903
+			subfield => 'f', # fulltext = green or yellow. Es gibt auch gelbe Objekte ID=6612903
 			content  => $content,
 		};
 		
@@ -240,10 +241,10 @@ while (<>){
 		};
 	    }
 	    # Lokale Digitalisate
-	    elsif ($content =~m/^https?:\/\/www\.ub\.uni\-koeln\.de\/permalink/){
+	    elsif ($content =~m/https?:\/\/www\.ub\.uni\-koeln\.de\/permalink/){
 		push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
-			subfield => ' ', # unbestimmt. Es gibt auch gelbe Objekte ID=6612903
+			subfield => 'f', # fulltext = green or yellow. Es gibt auch gelbe Objekte ID=6612903
 			content  => $content,
 		};
 		
@@ -734,10 +735,10 @@ while (<>){
 
     if (defined $fields_ref->{'4662'}){
 	foreach my $item_ref (@{$fields_ref->{'4662'}}){
-	    if ($item_ref->{subfield} =~m/(g|y)/){
+	    if ($item_ref->{subfield} =~m/(g|y|f)/){
 		$record_ref->{fields}{'4120'} = [{
 		    mult     => 1,
-		    subfield => '',
+		    subfield => $item_ref->{subfield},
 		    content  => $item_ref->{content},
 						 }];
 	    }

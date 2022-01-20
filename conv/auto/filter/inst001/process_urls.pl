@@ -59,10 +59,10 @@ while (<>){
     # Zuerst Analyse der Links in 2662
     if (defined $fields_ref->{'2662'}) {
 
-	my $description_ref = {};
+	my $linktext_ref = {};
 
 	foreach my $item_ref (@{$fields_ref->{'2663'}}){
-	    $description_ref->{$item_ref->{mult}} = $item_ref->{content};
+	    $linktext_ref->{$item_ref->{mult}} = $item_ref->{content};
 	}
 	
 	foreach my $item_ref (@{$fields_ref->{'2662'}}){
@@ -163,7 +163,7 @@ while (<>){
 		};
 	    }
 	    # E-Books mit lokaler URL, z.B.: ID=5902307
-	    elsif (defined $description_ref->{$item_ref->{mult}} && $description_ref->{$item_ref->{mult}} =~m/Zugriff nur im Hochschulnetz/){
+	    elsif (defined $linktext_ref->{$item_ref->{mult}} && $linktext_ref->{$item_ref->{mult}} =~m/Zugriff nur im Hochschulnetz/){
 		my $url         = $content;
 		my $description = "E-Book im Volltext";
 		my $access      = "y"; # yellow
@@ -319,7 +319,7 @@ while (<>){
 		};
 	    }
 	    # E-Books mit lokaler URL, z.B.: ID=5902307
-	    elsif (defined $description_ref->{$item_ref->{mult}} && $description_ref->{$item_ref->{mult}} =~m/Zugriff nur im Hochschulnetz/){
+	    elsif (defined $linktext_ref->{$item_ref->{mult}} && $linktext_ref->{$item_ref->{mult}} =~m/Zugriff nur im Hochschulnetz/){
 		my $url         = $content;
 		my $description = "E-Book im Volltext";
 		my $access      = "y"; # yellow

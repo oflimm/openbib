@@ -44,7 +44,6 @@ while (<>){
     
     # Kategorieinhalte zusammenfuehren zum vereinfachten Matchen 0662/2662
     my $all_0662 = "";
-    my $all_2662 = "";
     
     if (defined $fields_ref->{'0662'}) {
 	my @content_0662 = ();
@@ -65,14 +64,6 @@ while (<>){
 	foreach my $item_ref (@{$fields_ref->{'2663'}}){
 	    $description_ref->{$item_ref->{mult}} = $item_ref->{content};
 	}
-
-	# Kategorieinhalte zusammenfuehren zum vereinfachten Matchen 2662	
-	my @content_2662 = ();
-	foreach my $item_ref (@{$fields_ref->{'2662'}}){
-	    push @content_2662, $item_ref->{content};
-	}
-
-	$all_2662 = join(' ; ',@content_2662);
 	
 	foreach my $item_ref (@{$fields_ref->{'2662'}}){
 	    my $content = $item_ref->{content};
@@ -107,8 +98,7 @@ while (<>){
 		};
 	    }
 	    # EZB Zeitschriften
-	    elsif ($content =~m/^https?:\/\/www\.bibliothek\.uni\-regensburg\.de\/ezeit\//
-		   or $all_0662 =~m/https?:\/\/www\.bibliothek\.uni\-regensburg\.de\/ezeit\//){ # Bsp.: ISSN=1572-8358
+	    elsif ($content =~m/^https?:\/\/www\.bibliothek\.uni\-regensburg\.de\/ezeit\//){ # Bsp.: ISSN=1572-8358
 
 		$have_ezb = 1;
 		
@@ -234,11 +224,121 @@ while (<>){
 	foreach my $item_ref (@{$fields_ref->{'0662'}}){
 	    my $content = $item_ref->{content};
 	    my $mult    = $mult_ref->{'4662'}++;
-	    
-	    # Uebertragen in Titelfeld fuer Inhaltsverzeichnisse T4110
 
+	    # Hochschulschriften
+	    if ($content =~m/^https?:\/\/kups\.ub\.uni\-koeln\.de/){
+		push @{$record_ref->{fields}{'4662'}}, {
+			mult     => $mult,
+			subfield => 'g', # green
+			content  => $content,
+		};
+		
+		push @{$record_ref->{fields}{'4663'}}, {
+			mult     => $mult,
+			subfield => '',
+			content  => "Elektronische Hochschulschrift im Volltext",
+		};
+	    }
+	    # Lokale Digitalisate
+	    elsif ($content =~m/^https?:\/\/www\.ub\.uni\-koeln\.de\/permalink/){
+		push @{$record_ref->{fields}{'4662'}}, {
+			mult     => $mult,
+			subfield => ' ', # unbestimmt. Es gibt auch gelbe Objekte ID=6612903
+			content  => $content,
+		};
+		
+		push @{$record_ref->{fields}{'4663'}}, {
+			mult     => $mult,
+			subfield => '',
+			content  => "Volltext",
+		};
+	    }
+	    # EZB Zeitschriften
+	    elsif ($content =~m/^https?:\/\/www\.bibliothek\.uni\-regensburg\.de\/ezeit\// && !$have_ezb){ # Bsp.: ISSN=1572-8358
+
+		$have_ezb = 1;
+		
+		my $url         = $content;
+		my $description = "Elektronische Zeitschrift im Volltext";
+		my $access      = " "; # Default: unknown
+
+		if ($all_0662 =~m/https?:\/\/www\.ub\.uni-koeln\.de\/permalink\//){
+		    $access     = "g"; # green
+		}
+		else {
+		    $access     = "y"; # yellow
+		}
+
+		# Lokal vorhanden Bsp.: ID=Rendite (Hallische Jahrbuecher / Intelligenzblatt)
+		# Dann: EZB-Frontdoor umgehen, falls Permalink der USB existiert
+		if ($all_0662 =~m/(https?:\/\/www\.ub\.uni-koeln\.de\/permalink\/.+?katkey:\d+)/){
+		    $url        = $1;
+		}
+
+		# Nicht implementiert: EZB-Frontdoor-Link durch Permalink zum ejinfo-Service der USB ersetzen
+		# Gff. spaeter EZB-Frontdoor-Link auf EZB-Integration in OpenBib umbiegen
+		
+		push @{$record_ref->{fields}{'4662'}}, {
+			mult     => $mult,
+			subfield => $access,
+			content  => $url,
+		};
+		
+		push @{$record_ref->{fields}{'4663'}}, {
+			mult     => $mult,
+			subfield => '',
+			content  => $description,
+		};
+	    }
+	    # Datenbanken
+	    elsif ($content =~m/^^https?:\/\/www\.bibliothek\.uni\-regensburg\.de\/dbinfo\/|cdroms\.digibib\.net|\.ica$/
+		   or $content =~m/https?:\/\/www\.ub\.uni\-koeln\.de\/usbportal\?service=dbinfo/){ # Bsp.: TI=wiso-net
+		$have_dbis = 1;
+
+		my $url         = $content;
+		my $description = "Datenbankrecherche starten";
+		my $access      = "y"; # yellow
+
+		if ($titleid == 5255340 && $content =~m/id=1061/){
+		    $description = "MLA directory of periodicals";
+		}
+		elsif ($titleid == 5255340 && $content =~m/id=76/){
+		    $description = "MLA international bibliography";
+		}
+		
+		push @{$record_ref->{fields}{'4662'}}, {
+			mult     => $mult,
+			subfield => $access,
+			content  => $content,
+		};
+		
+		push @{$record_ref->{fields}{'4663'}}, {
+			mult     => $mult,
+			subfield => '',
+			content  => $description,
+		};
+	    }
+	    # E-Books mit lokaler URL, z.B.: ID=5902307
+	    elsif (defined $description_ref->{$item_ref->{mult}} && $description_ref->{$item_ref->{mult}} =~m/Zugriff nur im Hochschulnetz/){
+		my $url         = $content;
+		my $description = "E-Book im Volltext";
+		my $access      = "y"; # yellow
+		
+		push @{$record_ref->{fields}{'4662'}}, {
+			mult     => $mult,
+			subfield => $access,
+			content  => $content,
+		};
+		
+		push @{$record_ref->{fields}{'4663'}}, {
+			mult     => $mult,
+			subfield => '',
+			content  => $description,
+		};
+	    }
 	    
-	    if (defined $linktext_ref->{$item_ref->{mult}} && $linktext_ref->{$item_ref->{mult}} =~m/Inhaltsverzeichnis|Inh\.\-Verz\./){ # Inhaltsverzeichnisse
+	    # Uebertragen in Titelfeld fuer Inhaltsverzeichnisse T4110	    
+	    elsif (defined $linktext_ref->{$item_ref->{mult}} && $linktext_ref->{$item_ref->{mult}} =~m/Inhaltsverzeichnis|Inh\.\-Verz\./){ # Inhaltsverzeichnisse
 
 		# Falls bereits ein Link "Inhaltsverzeichnis" existiert, nur insgesamt einen Link berücksichtigen
 		if ($content =~m/hbz\-nrw\.de/){ # hbz-Inhaltsverzeichnis hat Vorrang, z.B. ID=7741043
@@ -261,7 +361,7 @@ while (<>){
 	    # Wenn Linktext zum aktuellen Link vorhanden ist
 	    # (Zuordnung ueber mult) kann dieser zur Analyse
 	    # herangezogen werden
-	    if (defined $linktext_ref->{$item_ref->{mult}}){
+	    elsif (defined $linktext_ref->{$item_ref->{mult}}){
 		my $linktext = $linktext_ref->{$item_ref->{mult}};
 		
 		if ($linktext =~m/(Digitalisierung|Langzeitarchivierung|Volltext)\; Info: kostenfrei/i # ID=6521146 ; Projekt Digitalis, Bsp.: Achenbach Berggesetzgebung

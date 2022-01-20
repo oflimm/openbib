@@ -208,17 +208,21 @@ while (<>){
 
 	# Zuerst Linkbeschreibung zu einfacheren Matchen aus 0663 und 0655 merken
 	my $linktext_ref = {};
-	
-	foreach my $item_ref (@{$fields_ref->{'0663'}}){
-	    $linktext_ref->{$item_ref->{mult}} = $item_ref->{content};
-	}
-	
-	foreach my $item_ref (@{$fields_ref->{'0655'}}){
-	    if (defined $linktext_ref->{$item_ref->{mult}}){
-		$linktext_ref->{$item_ref->{mult}} .= " ; ".$item_ref->{content};
+
+	if (defined $fields_ref->{'0663'}){
+	    foreach my $item_ref (@{$fields_ref->{'0663'}}){
+		$linktext_ref->{$item_ref->{mult}} = $item_ref->{content};
 	    }
-	    else {
-		$linktext_ref->{$item_ref->{mult}} = $item_ref->{content};		
+	}
+
+	if (defined $fields_ref->{'0655'}){	
+	    foreach my $item_ref (@{$fields_ref->{'0655'}}){
+		if (defined $linktext_ref->{$item_ref->{mult}}){
+		    $linktext_ref->{$item_ref->{mult}} .= " ; ".$item_ref->{content};
+		}
+		else {
+		    $linktext_ref->{$item_ref->{mult}} = $item_ref->{content};		
+		}
 	    }
 	}
 

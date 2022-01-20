@@ -630,13 +630,14 @@ while (<>){
 
     if (defined $fields_ref->{'4662'}){
 	foreach my $item_ref (@{$fields_ref->{'4662'}}){
-	    if ($item_ref->{subfield} =~m/(a|y)/){
+	    if ($item_ref->{subfield} =~m/(g|y)/){
 		$record_ref->{fields}{'4120'} = [{
 		    mult     => 1,
 		    subfield => '',
 		    content  => $item_ref->{content},
 						 }];
 	    }
+	    last;
 	}	
     }    
     

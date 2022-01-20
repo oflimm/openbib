@@ -76,9 +76,7 @@ while (<>){
 	
 	foreach my $item_ref (@{$fields_ref->{'2662'}}){
 	    my $content = $item_ref->{content};
-	    my $mult    = $mult_ref->{'4662'};
-
-	    $mult_ref->{'4662'} = $mult_ref->{'4662'} + 1;
+	    my $mult    = $mult_ref->{'4662'}++;
 
 	    # Hochschulschriften
 	    if ($content =~m/^https?:\/\/kups\.ub\.uni\-koeln\.de/){
@@ -171,7 +169,7 @@ while (<>){
 		};
 	    }
 	    # E-Books mit lokaler URL, z.B.: ID=5902307
-	    elsif ($description_ref->{$mult} =~m/Zugriff nur im Hochschulnetz/){
+	    elsif (defined $description_ref->{$item_ref->{mult}} && $description_ref->{$item_ref->{mult}} =~m/Zugriff nur im Hochschulnetz/){
 		my $url         = $content;
 		my $description = "E-Book im Volltext";
 		my $access      = "y"; # yellow
@@ -227,9 +225,7 @@ while (<>){
 	# Dann alle Links nacheinander durchgehen
 	foreach my $item_ref (@{$fields_ref->{'0662'}}){
 	    my $content = $item_ref->{content};
-	    my $mult    = $mult_ref->{'4662'};
-
-	    $mult_ref->{'4662'} = $mult_ref->{'4662'} + 1;	    
+	    my $mult    = $mult_ref->{'4662'}++;
 	    
 	    # Uebertragen in Titelfeld fuer Inhaltsverzeichnisse T4110
 

@@ -626,6 +626,19 @@ while (<>){
 	}       
     }
     
+    # Volltext-Links zusaetzlich in 4120 ablegen fuer direkte Verlinkung in Trefferliste
+
+    if (defined $fields_ref->{'4662'}){
+	foreach my $item_ref (@{$fields_ref->{'4662'}}){
+	    if ($item_ref->{subfield} =~m/(a|y)/){
+		$record_ref->{fields}{'4120'} = [{
+		    mult     => 1,
+		    subfield => '',
+		    content  => $item_ref->{content},
+						 }];
+	    }
+	}	
+    }    
     
     print encode_json $record_ref, "\n";
 }

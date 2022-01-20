@@ -75,7 +75,7 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-my $subset = new OpenBib::Catalog::Subset("inst301",$pool);
+my $subset = new OpenBib::Catalog::Subset("inst301retro",$pool);
 $subset->identify_by_mark('^310 \\$');
 $subset->write_set("inst303");
 

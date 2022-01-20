@@ -36,7 +36,7 @@ while (<>){
 
     my $mult_ref = {};
 
-    $mult_ref->{'4662'} = 1 if (!defined $mult_ref->{'4662'});
+    $mult_ref->{'4662'} = 1;
 
     my $have_ezb  = 0;
     my $have_dbis = 0;
@@ -76,7 +76,9 @@ while (<>){
 	
 	foreach my $item_ref (@{$fields_ref->{'2662'}}){
 	    my $content = $item_ref->{content};
-	    my $mult    = $mult_ref->{'4662'}++;
+	    my $mult    = $mult_ref->{'4662'};
+
+	    $mult_ref->{'4662'} = $mult_ref->{'4662'} + 1;
 
 	    # Hochschulschriften
 	    if ($content =~m/^https?:\/\/kups\.ub\.uni\-koeln\.de/){
@@ -225,9 +227,10 @@ while (<>){
 	# Dann alle Links nacheinander durchgehen
 	foreach my $item_ref (@{$fields_ref->{'0662'}}){
 	    my $content = $item_ref->{content};
-	    my $mult    = $mult_ref->{'4662'}++;
+	    my $mult    = $mult_ref->{'4662'};
+
+	    $mult_ref->{'4662'} = $mult_ref->{'4662'} + 1;	    
 	    
-	    #
 	    # Uebertragen in Titelfeld fuer Inhaltsverzeichnisse T4110
 
 	    

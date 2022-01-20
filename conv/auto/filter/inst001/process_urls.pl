@@ -16,29 +16,33 @@ while (<>){
     
     # Uebertragung der URLs in andere Katagorie
     #
-    # Link zum Volltext:
+    # Link in content von 4662
+    # Zugriffsstatus in subfield von 4662
+    # Beschreibungstext in content von 4663
     #
-    # Uebertragen in Titelfeld fuer E-Medien T4120
-    # Analog zu angereicherten Link zu E-Medien in E4120
+    # Eintraege von 4662 und 4663 bilden eine Multgruppe (Zuordnung via mult)   
     #
-    # Markierung von URLs nach Typ in Subfield
+    # Ausnahme Links zu Inhaltsvereichnissen
+    # Link zum Inhaltsverzeichnis in content von 4110 analog
+    # zu angereicherten Links zu Inhaltsverzeichnissen in E4110
     #
-    #  : Unbekannt
-    # a: Freier Zugriff    
-    # b: Eingeschraenkter Zugriff
-    # c: Kein Zugriff
-
-    # Uebertragung der URLs in andere Katagorie    
+    # Zugriffstatus
+    #
+    # '' : Keine Ampel
+    # ' ': Unbestimmt
+    # 'g': Freier Zugriff (green)
+    # 'y': Eingeschraenkter Zugriff (yellow)
+    # 'r': Kein Zugriff (red)
 
     my $mult_ref = {};
 
-    $mult_ref->{'4120'} = 1 if (!defined $mult_ref->{'4120'});
+    $mult_ref->{'4662'} = 1 if (!defined $mult_ref->{'4662'});
 
-    my $have_ezb = 0;
+    my $have_ezb  = 0;
     my $have_dbis = 0;
-    my $have_toc = 0;
+    my $have_toc  = 0;
     
-    # Kategorieinhalte zusammenfuehren zum vereinfachten Matchen 0662
+    # Kategorieinhalte zusammenfuehren zum vereinfachten Matchen 0662/2662
     my $all_0662 = "";
     my $all_2662 = "";
     
@@ -50,8 +54,10 @@ while (<>){
 
 	$all_0662 = join(' ; ',@content_0662);
     }
-   
-    # Zuerst 2662
+
+    # Ab jetzt Analyse der Kategoriebesetzung
+
+    # Zuerst Analyse der Links in 2662
     if (defined $fields_ref->{'2662'}) {
 
 	my $description_ref = {};
@@ -70,17 +76,17 @@ while (<>){
 	
 	foreach my $item_ref (@{$fields_ref->{'2662'}}){
 	    my $content = $item_ref->{content};
-	    my $mult    = $mult_ref->{'4120'}++;
+	    my $mult    = $mult_ref->{'4662'}++;
 
 	    # Hochschulschriften
 	    if ($content =~m/^https?:\/\/kups\.ub\.uni\-koeln\.de/){
-		push @{$record_ref->{fields}{'4120'}}, {
+		push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
 			subfield => 'a', # green
 			content  => $content,
 		};
 		
-		push @{$record_ref->{fields}{'4121'}}, {
+		push @{$record_ref->{fields}{'4663'}}, {
 			mult     => $mult,
 			subfield => '',
 			content  => "Elektronische Hochschulschrift im Volltext",
@@ -88,13 +94,13 @@ while (<>){
 	    }
 	    # Lokale Digitalisate
 	    elsif ($content =~m/^https?:\/\/www\.ub\.uni\-koeln\.de\/permalink/){
-		push @{$record_ref->{fields}{'4120'}}, {
+		push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
 			subfield => ' ', # unbestimmt. Es gibt auch gelbe Objekte ID=6612903
 			content  => $content,
 		};
 		
-		push @{$record_ref->{fields}{'4121'}}, {
+		push @{$record_ref->{fields}{'4663'}}, {
 			mult     => $mult,
 			subfield => '',
 			content  => "Volltext",
@@ -122,13 +128,13 @@ while (<>){
 		# Nicht implementiert: EZB-Frontdoor-Link durch Permalink zum ejinfo-Service der USB ersetzen
 		# Gff. spaeter EZB-Frontdoor-Link auf EZB-Integration in OpenBib umbiegen
 		
-		push @{$record_ref->{fields}{'4120'}}, {
+		push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
 			subfield => $access,
 			content  => $url,
 		};
 		
-		push @{$record_ref->{fields}{'4121'}}, {
+		push @{$record_ref->{fields}{'4663'}}, {
 			mult     => $mult,
 			subfield => '',
 			content  => $description,
@@ -150,13 +156,13 @@ while (<>){
 		    $description = "MLA international bibliography";
 		}
 		
-		push @{$record_ref->{fields}{'4120'}}, {
+		push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
 			subfield => $access,
 			content  => $content,
 		};
 		
-		push @{$record_ref->{fields}{'4121'}}, {
+		push @{$record_ref->{fields}{'4663'}}, {
 			mult     => $mult,
 			subfield => '',
 			content  => $description,
@@ -168,26 +174,26 @@ while (<>){
 		my $description = "E-Book im Volltext";
 		my $access      = "y"; # yellow
 		
-		push @{$record_ref->{fields}{'4120'}}, {
+		push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
 			subfield => $access,
 			content  => $content,
 		};
 		
-		push @{$record_ref->{fields}{'4121'}}, {
+		push @{$record_ref->{fields}{'4663'}}, {
 			mult     => $mult,
 			subfield => '',
 			content  => $description,
 		};
 	    }
 	    else { # Bsp.: ID=277940
-		push @{$record_ref->{fields}{'4120'}}, {
+		push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
 			subfield => ' ', # Unbestimmt
 			content  => $content,
 		};
 		
-		push @{$record_ref->{fields}{'4121'}}, {
+		push @{$record_ref->{fields}{'4663'}}, {
 			mult     => $mult,
 			subfield => '',
 			content  => $content,
@@ -197,8 +203,10 @@ while (<>){
 	}
     }
     
-    # Dann 0662
+    # Dann Analyse der Links in 0662
     if (defined $fields_ref->{'0662'}) {
+
+	# Zuerst Linkbeschreibung zu einfacheren Matchen aus 0663 und 0655 merken
 	my $linktext_ref = {};
 	
 	foreach my $item_ref (@{$fields_ref->{'0663'}}){
@@ -214,18 +222,16 @@ while (<>){
 	    }
 	}
 
+	# Dann alle Links nacheinander durchgehen
 	foreach my $item_ref (@{$fields_ref->{'0662'}}){
 	    my $content = $item_ref->{content};
-	    my $mult    = $mult_ref->{'4120'}++;
+	    my $mult    = $mult_ref->{'4662'}++;
 	    
-	    # Inhaltsverzeichnisse
-	    #
-	    # Link zum Inhaltsverzeichnis:
 	    #
 	    # Uebertragen in Titelfeld fuer Inhaltsverzeichnisse T4110
-	    # Analog zu angereicherten Link zu Inhaltsverzeichnissen in E4110
+
 	    
-	    if (defined $linktext_ref->{$item_ref->{mult}} && $linktext_ref->{$item_ref->{mult}} =~m/Inhaltsverzeichnis|Inh\.\-Verz\./){
+	    if (defined $linktext_ref->{$item_ref->{mult}} && $linktext_ref->{$item_ref->{mult}} =~m/Inhaltsverzeichnis|Inh\.\-Verz\./){ # Inhaltsverzeichnisse
 
 		# Falls bereits ein Link "Inhaltsverzeichnis" existiert, nur insgesamt einen Link berücksichtigen
 		if ($content =~m/hbz\-nrw\.de/){ # hbz-Inhaltsverzeichnis hat Vorrang, z.B. ID=7741043
@@ -245,22 +251,9 @@ while (<>){
 		$have_toc = 1;
 	    }
 
-	    # Volltexte
-	    #
-	    # Link zum Inhaltsverzeichnis:
-	    #
-	    # Uebertragen in Titelfeld fuer Volltext-URls T4120 + Mult-Nummer
-	    # Bestimmung des Zugriffstatus und Abspeicherung in Subfeld von T4120
-	    # Bestimmung des Link-Textes in T4121 + Mult-Nummer
-	    
-	    # Freie Volltextlinks:
-	    #
-	    # Inhalt von 0663 (.+? steht fuer einen beliebigen Inhalt dazwischen):
-	    #
-	    # - Interna: Verlag.+?Info: kostenfrei
-	    # - Interna: Verlag.+?Info: Deutschlandweit zugänglich
-	    # - Interna: Langzeitarchivierung.+?Info: kostenfrei
-	    # - Interna: Digitalisierung.+?Info: kostenfrei
+	    # Wenn Linktext zum aktuellen Link vorhanden ist
+	    # (Zuordnung ueber mult) kann dieser zur Analyse
+	    # herangezogen werden
 	    if (defined $linktext_ref->{$item_ref->{mult}}){
 		my $linktext = $linktext_ref->{$item_ref->{mult}};
 		
@@ -272,13 +265,13 @@ while (<>){
 		    my $url         = $content;
 		    my $access      = "g"; # green
 
-		    push @{$record_ref->{fields}{'4120'}}, {
+		    push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
 			subfield => $access,
 			content  => $url,
 		    };
 		    
-		    push @{$record_ref->{fields}{'4121'}}, {
+		    push @{$record_ref->{fields}{'4663'}}, {
 			mult     => $mult,
 			subfield => '',
 			content  => $description,
@@ -296,13 +289,13 @@ while (<>){
 			$description = "Webseite ($description)";			
 		    }
 
-		    push @{$record_ref->{fields}{'4120'}}, {
+		    push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
 			subfield => $access,
 			content  => $url,
 		    };
 		    
-		    push @{$record_ref->{fields}{'4121'}}, {
+		    push @{$record_ref->{fields}{'4663'}}, {
 			mult     => $mult,
 			subfield => '',
 			content  => $description,
@@ -313,13 +306,13 @@ while (<>){
 		    my $url         = $content;
 		    my $access      = ""; # Keine Ampel
 
-		    push @{$record_ref->{fields}{'4120'}}, {
+		    push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
 			subfield => $access,
 			content  => $url,
 		    };
 		    
-		    push @{$record_ref->{fields}{'4121'}}, {
+		    push @{$record_ref->{fields}{'4663'}}, {
 			mult     => $mult,
 			subfield => '',
 			content  => $description,
@@ -342,13 +335,13 @@ while (<>){
 		    my $url         = $content;
 		    my $access      = ""; # Keine Ampel
 
-		    push @{$record_ref->{fields}{'4120'}}, {
+		    push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
 			subfield => $access,
 			content  => $url,
 		    };
 		    
-		    push @{$record_ref->{fields}{'4121'}}, {
+		    push @{$record_ref->{fields}{'4663'}}, {
 			mult     => $mult,
 			subfield => '',
 			content  => $description,
@@ -364,13 +357,13 @@ while (<>){
 		    my $url         = $content;
 		    my $access      = ""; # Keine Ampel
 
-		    push @{$record_ref->{fields}{'4120'}}, {
+		    push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
 			subfield => $access,
 			content  => $url,
 		    };
 		    
-		    push @{$record_ref->{fields}{'4121'}}, {
+		    push @{$record_ref->{fields}{'4663'}}, {
 			mult     => $mult,
 			subfield => '',
 			content  => $description,
@@ -404,7 +397,7 @@ while (<>){
 		else {
 		    my $description = $linktext;
 		    my $url         = $content;
-
+		    my $access      = ''; # Default: keine Ampel. Ggf. Anpassung (s.u.)
 		    $description =~ s!.*Interna: (.+)!$1!; 
 		    $description =~ s!(.+); Bez.: \d[^;]*!$1!; # ID=6685427 
 		    $description =~ s!.*Bezugswerk: ([^\;]+).*!$1!; # Bsp.: ID=7733592 (ADAM-Links)
@@ -421,14 +414,19 @@ while (<>){
                     $description =~ s!Inh\.\-Verz\.!Inhaltsverzeichnis!; # Bsp.: ID=6595544 (DNB-Inhaltsverzeichnis)
                     $description =~ s!^Info: !!; # Bsp.: ID=6779590
                     $description = $url if $description =~ /^Verlag;/; # Bsp.: ID=6111996 (Bibliotheksdienst)
-		}
 
-		# Alte Kriterien
-		# $linktext_ref->{$item_ref->{mult}} =~m/Interna: Verlag.+?Info: kostenfrei/
-		# $linktext_ref->{$item_ref->{mult}} =~m/Interna: Verlag.+?Info: Deutschlandweit zugänglich/
-		# $linktext_ref->{$item_ref->{mult}} =~m/Interna: Langzeitarchivierung.+?Info: kostenfrei/
-		# $linktext_ref->{$item_ref->{mult}} =~m/Interna: Digitalisierung.+?Info: kostenfrei/ )
-		
+		    push @{$record_ref->{fields}{'4662'}}, {
+			mult     => $mult,
+			subfield => $access,
+			content  => $url,
+		    };
+		    
+		    push @{$record_ref->{fields}{'4663'}}, {
+			mult     => $mult,
+			subfield => '',
+			content  => $description,
+		    };		    		    
+		}
 	    }
 	    else { # Keine Linkbeschreibung in 663 oder 655 vorhanden
 
@@ -437,13 +435,13 @@ while (<>){
 		    my $url = $content;
 		    my $access = "g"; # green
 
-		    push @{$record_ref->{fields}{'4120'}}, {
+		    push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
 			subfield => $access,
 			content  => $url,
 		    };
 		    
-		    push @{$record_ref->{fields}{'4121'}}, {
+		    push @{$record_ref->{fields}{'4663'}}, {
 			mult     => $mult,
 			subfield => '',
 			content  => $description,
@@ -455,13 +453,13 @@ while (<>){
 		    my $url = $content;
 		    my $access = "g"; # green
 
-		    push @{$record_ref->{fields}{'4120'}}, {
+		    push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
 			subfield => $access,
 			content  => $url,
 		    };
 		    
-		    push @{$record_ref->{fields}{'4121'}}, {
+		    push @{$record_ref->{fields}{'4663'}}, {
 			mult     => $mult,
 			subfield => '',
 			content  => $description,
@@ -472,13 +470,13 @@ while (<>){
 		    my $url = $content;
 		    my $access = "g"; # green
 
-		    push @{$record_ref->{fields}{'4120'}}, {
+		    push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
 			subfield => $access,
 			content  => $url,
 		    };
 		    
-		    push @{$record_ref->{fields}{'4121'}}, {
+		    push @{$record_ref->{fields}{'4663'}}, {
 			mult     => $mult,
 			subfield => '',
 			content  => $description,
@@ -499,13 +497,13 @@ while (<>){
 		    my $url = $content;
 		    my $access = ""; # keine Ampel;
 
-		    push @{$record_ref->{fields}{'4120'}}, {
+		    push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
 			subfield => $access,
 			content  => $url,
 		    };
 		    
-		    push @{$record_ref->{fields}{'4121'}}, {
+		    push @{$record_ref->{fields}{'4663'}}, {
 			mult     => $mult,
 			subfield => '',
 			content  => $description,
@@ -516,13 +514,13 @@ while (<>){
 		    my $url = $content;
 		    my $access = ""; # keine Ampel;
 
-		    push @{$record_ref->{fields}{'4120'}}, {
+		    push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
 			subfield => $access,
 			content  => $url,
 		    };
 		    
-		    push @{$record_ref->{fields}{'4121'}}, {
+		    push @{$record_ref->{fields}{'4663'}}, {
 			mult     => $mult,
 			subfield => '',
 			content  => $description,
@@ -532,17 +530,99 @@ while (<>){
 	}
     }
 
-    # Zweiter Durchang durch alle Links und Analyse weiterer Kategorien
+    my $pakete = "";
 
-    my $linktext_ref = {};
+    if (defined $fields_ref->{'0078'} || defined $fields_ref->{'1209'}){
+	$pakete = (defined $fields_ref->{'0078'})?$fields_ref->{'0078'}[0]{content}:"";
+	if (defined $$fields_ref->{'1209'}){
+	    $pakete.="; ".$fields_ref->{'1209'}[0]{content};
+	}
+    }
+
+    # Wichtig: Damit 4410 ausgewertet werden kann muss vorher add_fields.pl gelaufen sein!!!
     
-    foreach my $item_ref (@{$fields_ref->{'4121'}}){
-	$linktext_ref->{$item_ref->{mult}} = $item_ref->{content};
+    my $is_digital = 0;
+
+    if (defined $fields_ref->{'4410'}){
+	foreach my $item_ref (@{$fields_ref->{'4410'}}){
+	    if ($item_ref->{content} eq "Digital"){
+		$is_digital = 1;
+	    }
+	}
     }
 
-    foreach my $item_ref (@{$fields_ref->{'4120'}}){
-	# Todo	
+    my $has_isbn = 0;
+
+    if (defined $fields_ref->{'0540'} || defined $fields_ref->{'0541'}){
+	$has_isbn = 1;
     }
 
+    my $restricted_access = 0;
+
+    if (defined $fields_ref->{'1203'}){
+	foreach my $item_ref (@{$fields_ref->{'1203'}}){
+	    if ($item_ref->{content} =~m/Zugriff nur im Hochschulnetz/){
+		$restricted_access = 1;
+	    }
+	}
+    }
+
+    if (defined $fields_ref->{'1212'}){
+	foreach my $item_ref (@{$fields_ref->{'1212'}}){
+	    if ($item_ref->{content} =~m/Zugriff nur im Hochschulnetz/){
+		$restricted_access = 1;
+	    }
+	}
+    }
+
+    if (defined $fields_ref->{'2663'}){
+	foreach my $item_ref (@{$fields_ref->{'2663'}}){
+	    if ($item_ref->{content} =~m/Zugriff nur im Hochschulnetz/){
+		$restricted_access = 1;
+	    }
+	}
+    }
+        
+    # Zweiter Durchang durch alle Links und Analyse weiterer Kategorien
+    if (defined $fields_ref->{'4662'}){
+	my $i = 0;
+	while (defined $fields_ref->{'4662'}[$i]){
+	    my $url         = $fields_ref->{'4662'}[$i]{content};
+	    my $description = (defined $fields_ref->{'4663'} && defined $fields_ref->{'4663'}[$i])?$fields_ref->{'4663'}[$i]{content}:"";
+	    
+	    if ($is_digital && $url !~ /dbinfo/ && $description !~ /^(Inhalt|Verlag)/ &&
+		($has_isbn or $pakete=~m/(oecd|ZDB-14-DLO|ZDB-57-DVR|ZDB-57-DSG|ZDB-57-DFS)$/)){ # ggf. Bedingung ergaenzen: Hat ISBN der Paralellausgabe in '1586', '1587', '1588', '1590', '1591', '1592', '1594', '1595', '1596'
+		$description = "E-Book im Volltext";
+		$fields_ref->{'4663'}[$i]{content} = $description;
+	    }
+
+	    if ($description =~m/Volltext/ && $restricted_access){
+		$fields_ref->{'4662'}[$i]{subfield} = "y"; # yellow
+	    }
+	    elsif ($pakete =~m/(ZDB-57-DVR|ZDB-57-DSG|ZDB-57-DFS)/){ # Freie E-Books aus dem Projekt Digi20
+		$fields_ref->{'4662'}[$i]{subfield} = "g"; # green Bsp.: ID=6822919		
+	    }
+	    elsif ($pakete =~m/(ZDB-2-SWI|ZDB-2-SNA|ZDB-2-STI|ZDB-2-SGR|ZDB-2-SGRSpringer|ZDB-2-SEP|ZDB-2-SBE|ZDB-2-CMS|ZDB-2-PHA|ZDB-13-SOC|ZDB-14-DLO|ZDB-5-WEB|ZDB-5-WMS|ZDB-5-WMW|ZDB-18-BEO|ZDB-18-BOH|ZDB-18-BST|ZDB-2-SMA|ZDB-2-MGE|ZDB-2-SZR|ZDB-2-BUM|ZDB-2-ECF|ZDB-2-SCS|ZDB-2-ESA|ZDB-23-DGG|ZDB-98-IGB)/){
+		$fields_ref->{'4662'}[$i]{subfield} = "y"; # yellow
+		$fields_ref->{'4663'}[$i]{content}  = "E-Book im Volltext" if ($description !~m/Verlag/);
+		
+	    }
+	    elsif ($pakete =~m/ZDB-2-SpringerOpen/) { # z.B. ID=7807222, ID=6813324
+		$fields_ref->{'4662'}[$i]{subfield} = "g"; # green
+		$fields_ref->{'4663'}[$i]{content}  = "E-Book im Volltext";
+	    }
+	    elsif ($pakete =~m/(ZDB-185-STD|ZDB-185-SDI)/){ # Statista-Dossiers
+		$fields_ref->{'4662'}[$i]{subfield} = "y"; # yellow
+		$fields_ref->{'4663'}[$i]{content}  = "Dossier im Volltext";
+	    }
+	    elsif ($pakete =~m/ZDB-101-VTB/){ # video2brain
+		$fields_ref->{'4663'}[$i]{content}  = "Video";
+	    }
+	    
+	    $i++;
+	}       
+    }
+    
+    
     print encode_json $record_ref, "\n";
 }

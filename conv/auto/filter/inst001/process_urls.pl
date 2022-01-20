@@ -107,22 +107,26 @@ while (<>){
 		};
 	    }
 	    # EZB Zeitschriften
-	    elsif ($content =~m/^https?:\/\/www\.bibliothek\.uni\-regensburg\.de\/ezeit\//){ # Bsp.: ISSN=1572-8358
+	    elsif ($content =~m/^https?:\/\/www\.bibliothek\.uni\-regensburg\.de\/ezeit\//
+		   or $all_0662 =~m/https?:\/\/www\.bibliothek\.uni\-regensburg\.de\/ezeit\//){ # Bsp.: ISSN=1572-8358
+
 		$have_ezb = 1;
 		
 		my $url         = $content;
 		my $description = "Elektronische Zeitschrift im Volltext";
-		my $access      = "u"; # unknown
+		my $access      = " "; # Default: unknown
 
-		# Lokal vorhanden Bsp.: ID=Rendite (Hallische Jahrbuecher / Intelligenzblatt)
-		# Dann: EZB-Frontdoor umgehen, falls Permalink der USB existiert
-		
-		if ($all_0662 =~m/(https?:\/\/www\.ub\.uni-koeln\.de\/permalink\/.+?katkey:\d+)/){
-		    $url        = $1;
+		if ($all_0662 =~m/https?:\/\/www\.ub\.uni-koeln\.de\/permalink\//){
 		    $access     = "g"; # green
 		}
 		else {
 		    $access     = "y"; # yellow
+		}
+
+		# Lokal vorhanden Bsp.: ID=Rendite (Hallische Jahrbuecher / Intelligenzblatt)
+		# Dann: EZB-Frontdoor umgehen, falls Permalink der USB existiert
+		if ($all_0662 =~m/(https?:\/\/www\.ub\.uni-koeln\.de\/permalink\/.+?katkey:\d+)/){
+		    $url        = $1;
 		}
 
 		# Nicht implementiert: EZB-Frontdoor-Link durch Permalink zum ejinfo-Service der USB ersetzen

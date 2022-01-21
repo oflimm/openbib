@@ -342,12 +342,14 @@
     fulltext_availability  = "";
     fulltext_desc  = "Volltext";
 
-    IF item.${'T4120'}.first.subfield == "a";
+    IF item.${'T4120'}.first.subfield == "g";
       fulltext_availability = "lawngreen";
       fulltext_desc = msg.maketext("Volltext mit freiem Zugang");;
-    ELSIF item.${'T4120'}.first.subfield == "b";
+    ELSIF item.${'T4120'}.first.subfield == "y";
       fulltext_availability = "yellow";
       fulltext_desc = msg.maketext("Volltext mit beschränktem Zugang");;
+    ELSIF item.${'T4120'}.first.subfield == "f";
+      fulltext_desc = msg.maketext("Volltext mit unbekanntem Zugang");;
     END;
 
     IF item.tags ;

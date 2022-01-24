@@ -761,7 +761,7 @@ while (my $jsonline = <IN>){
 	    push @{$title_ref->{fields}{'0334'}}, {
 		mult     => 1,
 		subfield => '',
-		content => '"Xerokopie (USB), naheliegend, Verzeichnung offen',
+		content => 'Xerokopie (USB), naheliegend, Verzeichnung offen',
 	    }
 	}
 	if ($is_mikrofilm_digitalisiert){

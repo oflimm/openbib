@@ -190,11 +190,11 @@ rswkswt_done      = {};
 
 # Switching processed links
 
-IF normdata.fields.${'4662'} ;
-   normdata.fields.${'0662'} = normdata.fields.${'4662'};
-   normdata.fields.${'0663'} = normdata.fields.${'4663'};
-   normdata.fields.${'2662'}.delete;
-   normdata.fields.${'2663'}.delete;    
+IF normdata.${'4662'}.defined ;
+   normdata.${'0662'} = normdata.${'4662'};
+   normdata.${'0663'} = normdata.${'4663'};
+   normdata.${'2662'}.delete;
+   normdata.${'2663'}.delete;    
 END;
 
 content_map = {};

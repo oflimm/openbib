@@ -1200,20 +1200,21 @@ while (my $record = safe_next($batch)){
         foreach my $field ($record->field('856')){
             my @content_u = $field->subfield('u');
             my @content_z = $field->subfield('z');
+            my @content_3 = $field->subfield('3');	    
             for (my $idx=0;$idx <= $#content_u; $idx++){
                 my $content_u_string = ($encoding eq "MARC-8")?marc8_to_utf8($content_u[$idx]):$content_u[$idx];
 
 		$content_u_string=~s/&amp;/&/g;
 		
                 my $content_z_string = "" ;
+                my $content_3_string = "" ;		
 
-                if ($content_z[$idx]){
+		if ($content_3[$idx]){
+                    $content_3_string = ($encoding eq "MARC-8")?marc8_to_utf8($content_3[$idx]):$content_3[$idx];
+		}
+                elsif ($content_z[$idx]){
                     $content_z_string = ($encoding eq "MARC-8")?marc8_to_utf8($content_z[$idx]):$content_z[$idx];
                 }
-
-		if ($logger->is_debug){
-		    $logger->debug("");
-		}
 		
                 if ($content_u_string){
                     my $multcount=++$multcount_ref->{'0662'};
@@ -1224,7 +1225,14 @@ while (my $record = safe_next($batch)){
                         mult     => $multcount,
                     };
                     
-                    if ($content_z_string){
+                    if ($content_3_string){
+                        push @{$title_ref->{fields}{'0663'}}, {
+                            content  => konv($content_3_string),
+                            subfield => '',
+                            mult     => $multcount,
+                        };
+                    }
+                    elsif ($content_z_string){
                         push @{$title_ref->{fields}{'0663'}}, {
                             content  => konv($content_z_string),
                             subfield => '',

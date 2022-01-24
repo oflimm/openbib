@@ -7950,9 +7950,7 @@ convtab:
       '0590':
         '':
           index:
-            'source': 1
-            'sourcestring': 1
-            'freesearch': 1
+            'ft0590': 1
       '0594':
         '':
           index:

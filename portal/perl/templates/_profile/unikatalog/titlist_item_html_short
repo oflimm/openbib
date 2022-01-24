@@ -423,7 +423,7 @@
           <div class="d-flex ob-titleactions">
 [% IF record.id && record.database %]
             <div class="pe-1">
-	 <a class="btn btn-primary pe-2" href="[% IF NOT hide_detail && NOT hide_hit %][% detail_url %][% ELSE %][% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %];redirect_to=[% uri_escape(detail_url) %][% END %]" alt="[% title %]" title="[% title %]">[% IF hide_detail %]<i class="fas fa-ban"></i>[% ELSE %]<i class="fas fa-eye"></i>[% END %] <span class="d-none d-sm-inline">Details</span></a>
+              <a class="btn btn-primary pe-2" href="[% IF NOT hide_detail && NOT hide_hit %][% detail_url %][% ELSE %][% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %];redirect_to=[% uri_escape(detail_url) %][% END %]" alt="[% title %]" title="[% title %]">[% IF hide_detail %]<i class="fas fa-ban"></i>[% ELSE %]<i class="fas fa-eye"></i>[% END %] <span class="d-none d-sm-inline">Details</span></a>
             </div>
 [% IF NOT with_cartitems_delete && NOT hide_hit %]
 	    <div class="pe-1">

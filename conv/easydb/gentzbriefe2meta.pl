@@ -350,18 +350,15 @@ while (my $jsonline = <IN>){
 	}
     }
     
-    ### reference_publication/print_title -> 0590
-    if ($item_ref->{reference_publication}{print_title}){
-	my $content = $item_ref->{reference_publication}{print_title};
-
-	if ($item_ref->{reference_publication}{print_publication_year}){
-	    $content.=", (".$item_ref->{reference_publication}{print_publication_year}.")";
-	}
-	
-	push @{$title_ref->{fields}{'0590'}}, {
-	    mult     => 1,
-	    subfield => '',
-	    content => $content,
+    ### printed_publications -> 0590
+    if (defined $item_ref->{printed_publications} && @{$item_ref->{printed_publications}}){
+	my $pubmult = 1;
+	foreach my $publication (@{$item_ref->{printed_publications}}){
+	    push @{$title_ref->{fields}{'0590'}}, {
+		mult     => $pubmult++,
+		subfield => '',
+		content => $publication,
+	    };
 	}
     }
 
@@ -590,20 +587,12 @@ while (my $jsonline = <IN>){
 	}
     }
 
-    ### archiv(name+archive_location+archive_country) -> 0412
-    if ($item_ref->{archive}{name}){
-	my @names = ();
-
-	push @names, $item_ref->{archive}{name} if ($item_ref->{archive}{name});
-	push @names, $item_ref->{archive}{archive_location} if ($item_ref->{archive}{archive_location});
-	push @names, $item_ref->{archive}{archive_country} if ($item_ref->{archive}{archive_country});
-
-	my $name = join(', ',@names);
-	
+    ### archive/text_register -> 0412
+    if (defined $item_ref->{archive} && defined $item_ref->{archive}{text_register}){
     	push @{$title_ref->{fields}{'0412'}}, {
     	    mult     => 1,
     	    subfield => '',
-    	    content => $name,
+    	    content => $item_ref->{archive}{text_register},
     	}
     }
 
@@ -854,43 +843,6 @@ while (my $jsonline = <IN>){
 	# }
 	
     }
-
-    # Todo
-    #
-    # Neue Kategorie zur Facettierung mit Inhalten gedruckt und ungegedruckt
-    # Besetzung entsprechen Hertericht (s.o.) aber fortan unabhaengig der Sammlung Hertericht
-    # Zusaetzlich Anhaengsel " (Stand 2021)" in der Facettierung
-
-    my $is_generell_ungedruckt = 0;
-    my $is_generell_gedruckt = 0;
-
-    {
-	
-	eval {	    		
-	    if (! defined $item_ref->{reference_publication}{print_title} && ! @${$item_ref->{'_nested:gentz_letter__doublets'}}){
-		$is_generell_ungedruckt = 1;
-	    }
-	    if ($item_ref->{reference_publication}{print_title} || @${$item_ref->{'_nested:gentz_letter__doublets'}}){
-		$is_generell_gedruckt = 1;
-	    }
-	};
-
-	if ($is_generell_gedruckt){
-	    push @{$title_ref->{fields}{'0471'}}, {
-		mult     => 1,
-		subfield => '',
-		content => 'gedruckt',
-	    }
-	}
-	elsif ($is_generell_ungedruckt){
-	    push @{$title_ref->{fields}{'0471'}}, {
-		mult     => 1,
-		subfield => '',
-		content => 'ungedruckt',
-	    }
-	}	
-    }
-
     
     # Auswertung Kategorie 'Druckpublikationen'
     
@@ -960,9 +912,6 @@ while (my $jsonline = <IN>){
 	if ($is_referenz_publikation || $is_druck_mehrfach){
 	    $is_gedruckt = 1;
 	}
-	else {
-	    $is_handschriftlich = 1;
-	}
 	
 	if ($is_gedruckt){
 	    push @{$title_ref->{fields}{'0470'}}, {
@@ -971,7 +920,8 @@ while (my $jsonline = <IN>){
 		content => 'gedruckt',
 	    }
 	}
-	elsif ($is_handschriftlich){
+	else {
+	    # Beispiel: "contentdm_id": "18200126"
 	    push @{$title_ref->{fields}{'0470'}}, {
 		mult     => 1,
 		subfield => '',

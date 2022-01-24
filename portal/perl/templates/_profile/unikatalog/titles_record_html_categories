@@ -193,8 +193,8 @@ rswkswt_done      = {};
 IF normdata.fields.${'4662'} ;
    normdata.fields.${'0662'} = normdata.fields.${'4662'};
    normdata.fields.${'0663'} = normdata.fields.${'4663'};
-   delete normdata.fields.${'2662'};
-   delete normdata.fields.${'2663'};    
+   normdata.fields.${'2662'}.delete;
+   normdata.fields.${'2663'}.delete;    
 END;
 
 content_map = {};

@@ -364,6 +364,9 @@ while (<>){
 	    # herangezogen werden
 	    elsif (defined $linktext_ref->{$item_ref->{mult}}){
 		my $linktext = $linktext_ref->{$item_ref->{mult}};
+
+		$linktext =~ s!.*Interna: (.+)!$1!; 
+		$linktext =~ s!(.+); Bez.: \d[^;]*!$1!; # ID=6685427 
 		
 		if ($linktext =~m/(Digitalisierung|Langzeitarchivierung|Volltext)\; Info: kostenfrei/i # ID=6521146 ; Projekt Digitalis, Bsp.: Achenbach Berggesetzgebung
                     or $linktext =~m/Info: kostenfrei; Bezugswerk: Volltext/i # ID=6625319
@@ -506,8 +509,6 @@ while (<>){
 		    my $description = $linktext;
 		    my $url         = $content;
 		    my $access      = ''; # Default: keine Ampel. Ggf. Anpassung (s.u.)
-		    $description =~ s!.*Interna: (.+)!$1!; 
-		    $description =~ s!(.+); Bez.: \d[^;]*!$1!; # ID=6685427 
 		    $description =~ s!.*Bezugswerk: ([^\;]+).*!$1!; # Bsp.: ID=7733592 (ADAM-Links)
                     $description =~ s!.*Link-Text: ([^;]+).*!$1!; # Bsp.: ISBN=978-3-86009-086-2
                     $description =~ s!^Metadaten$!Dokumentbeschreibung!; # Bsp.: ISBN=978-3-86009-086-2

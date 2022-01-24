@@ -7902,12 +7902,6 @@ convtab:
             'ft0470': 1
           facet:
             'custom5': 1
-      '0471': # Facette Ueberlieferung / gedruck u. ungedruckt
-        '':
-          index:
-            'ft0471': 1
-          facet:
-            'custom6': 1
       '0508':
         '':
           index:
@@ -7957,6 +7951,7 @@ convtab:
         '':
           index:
             'source': 1
+            'sourcestring': 1
             'freesearch': 1
       '0594':
         '':

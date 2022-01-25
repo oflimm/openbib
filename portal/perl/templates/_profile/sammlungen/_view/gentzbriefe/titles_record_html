@@ -240,10 +240,31 @@
     <div role="tabpanel" class="tab-pane fade-in" aria-labelledby="fulltext_info" id="ob-fulltext_info">
       <div class="p-3">
 	[% normdata.${"T6053"}.first.content %]
-	
-	[% IF normdata.${"T0662"} %]
+
+[%
+   download_url = "";
+
+   IF normdata.${"T0662"};
+     download_url = normdata.${"T0662"}.first.content ;
+   END;
+   
+   IF src.item('_nested:gentz_letter__transcriptions') ;
+
+     transcriptions = src.item('_nested:gentz_letter__transcriptions') ;
+
+     FOREACH transcription IN transcriptions ;
+       IF transcription.transcription_file.versions.original.download_url ;
+          download_url = transcription.transcription_file.versions.original.download_url ;
+       END;
+     END;
+
+   END;
+
+%]
+
+	[% IF download_url %]
 	<p>
-	  <a class="btn btn-primary mt-3" href="[% normdata.${"T0662"}.first.content %]" target="_blank"><i class="fas fa-download"></i> Download</a></p>
+	  <a class="btn btn-primary mt-3" href="[% download_url %]" target="_blank"><i class="fas fa-download"></i> Download</a></p>
 [% END %]
       </div>	
     </div><!-- End: ob-fulltext_info -->

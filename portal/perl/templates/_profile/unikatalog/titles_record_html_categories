@@ -194,7 +194,21 @@ IF normdata.${'T4662'}.defined ;
    normdata.${'T0662'} = normdata.${'T4662'};
    normdata.${'T0663'} = normdata.${'T4663'};
    normdata.${'T2662'}.delete;
-   normdata.${'T2663'}.delete;    
+   normdata.${'T2663'}.delete;
+ELSE;
+   normdata.${'T0662'}.delete;
+   normdata.${'T0663'}.delete;
+   normdata.${'T2662'}.delete;
+   normdata.${'T2663'}.delete;
+END;
+
+# Lizensierter Volltext? (Ausgabe Zugriffshinweis)
+is_licensed = 0;
+
+FOREACH item IN normdata.${'T4120'} ;
+   IF item.subfield == "y";
+      is_licensed = 1;
+   END;
 END;
 
 content_map = {};

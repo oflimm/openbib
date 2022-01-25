@@ -13,15 +13,15 @@
 -%]
 [%-# Ausgabekategorien -%]
 [%- categories = [
-                'T0100', # msg.maketext("T0100-gentzdigital") Briefaussteller
-                'T0101', # msg.maketext("T0101-gentzdigital") Briefempfaenger
-                'T0410', # msg.maketext("T0410-gentzdigital") Aufstellungsort
-                'T0424', # msg.maketext("T0424-gentzdigital") Datum
-                'T0412', # msg.maketext("T0412-gentzdigital") Handschriftl. Ueberlieferung
-                'T0433', # msg.maketext("T0433-gentzdigital") Format/Umfang
-                'T0594', # msg.maketext("T0594-gentzdigital") Druckorte
-                'T0335', # msg.maketext("T0335-gentzdigital") Incipit  
-                'T0800', # msg.maketext("T0800-gentzdigital") Brieftyp
+                'T0100', # msg.maketext("T0100-gentzbriefe") Briefaussteller
+                'T0101', # msg.maketext("T0101-gentzbriefe") Briefempfaenger
+                'T0410', # msg.maketext("T0410-gentzbriefe") Aufstellungsort
+                'T0424', # msg.maketext("T0424-gentzbriefe") Datum
+                'T0412', # msg.maketext("T0412-gentzbriefe") Handschriftl. Ueberlieferung
+                'T0433', # msg.maketext("T0433-gentzbriefe") Format/Umfang
+                'T0594', # msg.maketext("T0594-gentzbriefe") Druckorte
+                'T0335', # msg.maketext("T0335-gentzbriefe") Incipit  
+                'T0800', # msg.maketext("T0800-gentzbriefe") Brieftyp
                 'T0425', # msg.maketext("T0425") 
                 'T1664', # msg.maketext("T1664") 
                 'T0015', # msg.maketext("T0015") 

@@ -312,8 +312,8 @@ FOREACH category IN categories;
    # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
    # kodiert.
    thiscategory = category ;
-   IF config.get('categorymapping').${"gentzdigital"}.$category ;
-     thiscategory = "${category}-gentzdigital" ;
+   IF config.get('categorymapping').${record.database}.$category ;
+     thiscategory = "${category}-${record.database}" ;
    END;
 
 -%]

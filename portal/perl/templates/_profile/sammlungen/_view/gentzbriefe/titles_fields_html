@@ -1,0 +1,58 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_browsetit
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Inhalte einer Titel-Kategorie
+#
+#######################################################################
+-%]
+
+[%- categories = [
+                'T0100', # msg.maketext("T0100-gentzbriefe") Briefaussteller
+                'T0101', # msg.maketext("T0101-gentzbriefe") Briefempfaenger
+                'T0410', # msg.maketext("T0410-gentzbriefe") Aufstellungsort
+                'T0424', # msg.maketext("T0424-gentzbriefe") Datum
+                'T0412', # msg.maketext("T0412-gentzbriefe") Handschriftl. Ueberlieferung
+                'T0433', # msg.maketext("T0433-gentzbriefe") Format/Umfang
+                'T0594', # msg.maketext("T0594-gentzbriefe") Druckorte
+                'T0335', # msg.maketext("T0335-gentzbriefe") Incipit  
+                'T0800', # msg.maketext("T0800-gentzbriefe") Brieftyp
+                'T0425', # msg.maketext("T0425") 
+                'T1664', # msg.maketext("T1664") 
+                'T0015', # msg.maketext("T0015") 
+                'T0590', # msg.maketext("T0590") 
+                'T0591', # msg.maketext("T0591") 
+                'T0595', # msg.maketext("T0595") 
+                'T6053', # msg.maketext("T6053") Text
+                'T5005', # msg.maketext("T5005") Uebergeordn. Werke
+                'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke
+                'T4210', # msg.maketext("T4210") Copyright-Information
+                'T5100', # msg.maketext("T5100") Allg. Zaehlung
+                ]
+
+-%]
+
+<h2>Felder</h2>
+
+[% PROCESS common/subtemplate name="visible_categories_title" %]
+
+
+<ul class="list-group">
+
+[%# USE dumper;dumper.dump(fields)%]
+[% FOREACH category IN categories ;
+   thiscategory = category ;
+   IF config.get('categorymapping').${database}.$category ;
+     thiscategory = "${category}-${database}" ;
+   END;
+%]
+[%  IF fields.${category.replace('T','')}%]
+<li class="list-group-item"><strong>[% category.replace('T','') %]</strong> <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% category.replace('T','') %].html?l=[% lang %]">[% msg.maketext("${thiscategory}") %]</a></li>
+[%  END %]
+[% END %]
+</ul>

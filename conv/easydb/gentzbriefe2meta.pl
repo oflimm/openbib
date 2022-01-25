@@ -363,7 +363,8 @@ while (my $jsonline = <IN>){
     }
 
     ### reference_publication/_nested:printed_publication_print_editor -> 0591
-    if (defined $item_ref->{reference_publication}){
+    if (defined $item_ref->{reference_publication} && defined $item_ref->{reference_publication}{'_nested:printed_publication__print_editors'}){
+	
 	my $print_editors = $item_ref->{reference_publication}{'_nested:printed_publication__print_editors'};
 
 	if ($print_editors){
@@ -387,7 +388,7 @@ while (my $jsonline = <IN>){
 
 
     ### reference_publication/print_locations -> 0592
-    if (defined $item_ref->{reference_publication}){
+    if (defined $item_ref->{reference_publication} && defined $item_ref->{reference_publication}{'print_locations'}){
 	my $print_locations = $item_ref->{reference_publication}{'print_locations'};
 
 	push @{$title_ref->{fields}{'0592'}}, {
@@ -398,7 +399,7 @@ while (my $jsonline = <IN>){
     }
 
     ### reference_publication/print_publication_type -> 0593
-    if (defined $item_ref->{reference_publication}){
+    if (defined $item_ref->{reference_publication} && defined $item_ref->{reference_publication}{'print_publication_type'}){
 	my $print_type = $item_ref->{reference_publication}{'print_publication_type'}{'de-DE'};
 
 	push @{$title_ref->{fields}{'0593'}}, {
@@ -409,7 +410,7 @@ while (my $jsonline = <IN>){
     }
 
     ### reference_publication/print_publication_type -> 0594
-    if (defined $item_ref->{reference_publication}){
+    if (defined $item_ref->{reference_publication} && defined $item_ref->{reference_publication}{'print_publication_type'}){
 	my $print_type = $item_ref->{reference_publication}{'print_publication_type'}{'de-DE'};
 
 	push @{$title_ref->{fields}{'0593'}}, {
@@ -808,10 +809,10 @@ while (my $jsonline = <IN>){
 		    $is_herterich_archiv = 1;
 		}
 		
-		if (! defined $item_ref->{reference_publication}{print_title} && ! @${$item_ref->{'_nested:gentz_letter__doublets'}}){
+		if (defined $item_ref->{reference_publication} && ! defined $item_ref->{reference_publication}{print_title} && ! @${$item_ref->{'_nested:gentz_letter__doublets'}}){
 		    $is_herterich_ungedruckt = 1;
 		}
-		if ($item_ref->{reference_publication}{print_title} || @${$item_ref->{'_nested:gentz_letter__doublets'}}){
+		if (defined $item_ref->{reference_publication} && $item_ref->{reference_publication}{print_title} || @${$item_ref->{'_nested:gentz_letter__doublets'}}){
 		    $is_herterich_gedruckt = 1;
 		}
 	    }
@@ -863,18 +864,19 @@ while (my $jsonline = <IN>){
 	    if (defined $item_ref->{reference_publication}){
 		$is_referenz_publikation = 1;
 		
-		if ($item_ref->{archive}{name}){
-		    $is_druck_archiv = 1;
-		}
-		
-		if (@${$item_ref->{'_nested:gentz_letter__doublets'}}){
-		    foreach my $subitem_ref (@${$item_ref->{'_nested:gentz_letter__doublets'}}){
-			if ($subitem_ref->{'doublet_publication'}){			
-			    $is_druck_mehrfach = 1;
-			}
-		    }
-		} 
 	    }
+
+	    if ($item_ref->{archive}{name}){
+		$is_druck_archiv = 1;
+	    }
+
+	    if (defined $item_ref->{'_nested:gentz_letter__doublets'} && @${$item_ref->{'_nested:gentz_letter__doublets'}}){
+		foreach my $subitem_ref (@${$item_ref->{'_nested:gentz_letter__doublets'}}){
+		    if ($subitem_ref->{'doublet_publication'}){			
+			$is_druck_mehrfach = 1;
+		    }
+		}
+	    } 	    
 	};
 
 	# 0434: Sonstige Angaben
@@ -914,6 +916,8 @@ while (my $jsonline = <IN>){
 	}
 	
 	if ($is_gedruckt){
+
+	    $logger->debug("Referenzpub:".YAML::Dump($item_ref->{reference_publication}));
 	    push @{$title_ref->{fields}{'0470'}}, {
 		mult     => 1,
 		subfield => '',

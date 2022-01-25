@@ -594,6 +594,7 @@ FOREACH field IN normdata;
 END;
 
 display_types = {
+   'T0662' => 'list',
    'T0710' => 'list',
    'T0700' => 'list',   
 };

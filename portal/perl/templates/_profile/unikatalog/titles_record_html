@@ -145,6 +145,12 @@ $(document).ready(function(){
 
 [%   PROCESS common/subtemplate name="titles_record_html_categories" %]
 
+[% IF is_licensed %]
+<div class="alert alert-info">
+Zugriff nur im <a href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/nutzungshinweise/">Netz der Universität Köln</a> bzw. für autorisierte Benutzer. Die <a href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/besonderheiten/">Druck- und Downloadmöglichkeiten</a> variieren je nach Anbieter.
+</div>
+[% END %]
+
 <h5 class="pb-2"><i class="fa fa-arrow-down"></i> <a href="#title_supplemental_information" data-bs-toggle="collapse" data-bs-target="#title_supplemental_information" aria-expanded="false" aria-controls="title_supplemental_information" >Weitere Informationen</a></h5>
 
 <div id="title_supplemental_information" class="collapse">

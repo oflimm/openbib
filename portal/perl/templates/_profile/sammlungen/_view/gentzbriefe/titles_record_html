@@ -305,6 +305,15 @@
 
 </div><!-- End Fulltitle -->
 
+[% IF src.item('citation') %]
+<div class="alert alert-secondary mt-2">
+<h5>[% msg.maketext("Empfohlene Zitation:") %]</h5>
+
+[% src.item('citation') %]
+
+</div>
+[% END %]
+
 [% ELSE %]
 [% detail_url = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.get_encoded_id}.html?l=${lang}" %]
         <div class="jumbotron">

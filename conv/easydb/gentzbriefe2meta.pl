@@ -331,6 +331,24 @@ while (my $jsonline = <IN>){
 	    content => $item_ref->{title},
 	}
     }
+
+    ### presented_on -> 0523    
+    if ($item_ref->{presented_on}){
+	push @{$title_ref->{fields}{'0523'}}, {
+	    mult     => 1,
+	    subfield => '',
+	    content => $item_ref->{presented_on},
+	}
+    }
+
+    ### transmission_type -> 0525
+    if ($item_ref->{transmission_type}){
+	push @{$title_ref->{fields}{'0525'}}, {
+	    mult     => 1,
+	    subfield => '',
+	    content => $item_ref->{transmission_type},
+	}
+    }
     
     ### reference_publication_incipit -> 0335
     if ($item_ref->{reference_publication_incipit}){

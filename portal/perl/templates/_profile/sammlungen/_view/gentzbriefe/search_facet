@@ -485,13 +485,20 @@ $("#dd_availability_[% database %]_toggle").click(function(){
           ${config.get('searchfield').classificationstring.prefix} = msg.maketext("Systematik")
           ${config.get('searchfield').topic.prefix} = msg.maketext("Themengebiet")
           ${config.get('searchfield').locationstring.prefix} = msg.maketext("Standort")
-          ${config.get('searchfield').mediatypestring.prefix} = msg.maketext("Medientyp")
           ${config.get('searchfield').provenancestring.prefix} = msg.maketext("Provenienz")
           ${config.get('searchfield').languagestring.prefix} = msg.maketext("Sprache")
           ${config.get('searchfield').yearstring.prefix} = msg.maketext("Jahr")
           ${config.get('searchfield').tagstring.prefix} = msg.maketext("Tag")
           ${config.get('searchfield').litliststring.prefix} = msg.maketext("Literaturliste")
           ${config.get('searchfield').availabilitystring.prefix} = msg.maketext("Verfügbarkeit")
+	  ${config.get('searchfield').ft0470.prefix} = msg.maketext("Überlieferung")
+          ${config.get('searchfield').ft0517.prefix} = msg.maketext("Transkriptionen Originale")
+          ${config.get('searchfield').ft0334.prefix} = msg.maketext("Repräsentationen Originale")
+          ${config.get('searchfield').ft4700.prefix} = msg.maketext("Sammlung Herterich")
+          ${config.get('searchfield').ft0434.prefix} = msg.maketext("Druckpublikationen")
+          ${config.get('searchfield').mediatypestring.prefix} = msg.maketext("Typ")
+          ${config.get('searchfield').ft0100.prefix} = msg.maketext("Briefaussteller")
+          ${config.get('searchfield').ft0101.prefix} = msg.maketext("Briefempfänger")
 };
 
 %]

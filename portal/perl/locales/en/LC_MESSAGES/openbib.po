@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2022-01-26 08:03+0100\n"
+"PO-Revision-Date: 2022-01-26 08:19+0100\n"
 "Last-Translator: openbib <flimm@openbib.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -38058,7 +38058,7 @@ msgstr "Publisher"
 #: ../templates/_database/gentzbriefe/visible_categories_title_ab2:16
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:23
 msgid "T0412-gentzbriefe"
-msgstr "Handwritten record"
+msgstr "Archive"
 
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:84
 #: ../templates/_profile/sammlungen_yaml4/_database/gentzdigital/visible_categories_title:20

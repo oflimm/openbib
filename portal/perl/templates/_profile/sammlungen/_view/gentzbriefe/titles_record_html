@@ -250,7 +250,7 @@
 
 [% IF publist.${title}.reference_location %]
 <p>
-<strong>[% msg.maketext("Ausstellort") %]:</strong> [% publist.${title}.location %]
+<strong>[% msg.maketext("Ausstellort") %]:</strong> [% publist.${title}.reference_location %]
 </p>
 [% END %]
 

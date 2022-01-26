@@ -19,7 +19,7 @@
                 'T0101', # msg.maketext("T0101-gentzbriefe") Briefempfaenger
                 'T0410', # msg.maketext("T0410-gentzbriefe") Ausstellungsort
                 'T0424', # msg.maketext("T0424-gentzbriefe") Datum
-                'TXXXX', # msg.maketext("TXXXX-gentzbriefe") Praesentationsvermerk (presented_on)
+                'T0523', # msg.maketext("T0523-gentzbriefe") Praesentationsvermerk (presented_on)
                 'T0336', # msg.maketext("T0336-gentzbriefe") Incipit
                 ]
 

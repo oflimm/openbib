@@ -13,34 +13,34 @@
 
 <div class="form-check">
   <input class="form-check-input" id="access_green" type="checkbox" name="access_green" value="1" [%- IF query.param('access_green') -%]checked="checked"[%- END -%] />
-  <label for="access_green"><img src="[% config.get('dbis_green_img') %]" alt="green"/>&nbsp;[% msg.maketext("mit frei zugänglichen Volltextartikeln") %]</label>
+  <label class="form-check-label" for="access_green"><img src="[% config.get('dbis_green_img') %]" alt="green"/>&nbsp;[% msg.maketext("mit frei zugänglichen Volltextartikeln") %]</label>
 </div>
 
 <div class="form-check">
   <input class="form-check-input" id="access_yellow" type="checkbox" name="access_yellow" value="1" [%- IF query.param('access_yellow') -%]checked="checked"[%- END -%] />
-  <label for="access_yellow"><img src="[% config.get('dbis_yellow_img') %]" alt="yellow"/>&nbsp;[% msg.maketext("mit Volltextartikeln, die nur im Uni-Netz zugänglich sind") %]</label>
+  <label class="form-check-label" for="access_yellow"><img src="[% config.get('dbis_yellow_img') %]" alt="yellow"/>&nbsp;[% msg.maketext("mit Volltextartikeln, die nur im Uni-Netz zugänglich sind") %]</label>
 </div>
 
 <div class="form-check">
   <input class="form-check-input" id="access_red" type="checkbox" name="access_red" value="1" [%- IF query.param('access_red') -%]checked="checked"[%- END -%] />
-  <label for="access_ref"><img src="[% config.get('dbis_red_img') %]" alt="red"/>&nbsp;[% msg.maketext("ohne Zugriff auf Volltextartikel (Inhaltsverzeichnisse und Abstracts sind in der Regel frei zugänglich)") %]</label>
+  <label class="form-check-label" for="access_ref"><img src="[% config.get('dbis_red_img') %]" alt="red"/>&nbsp;[% msg.maketext("ohne Zugriff auf Volltextartikel (Inhaltsverzeichnisse und Abstracts sind in der Regel frei zugänglich)") %]</label>
 </div>
 
-<div class="form-check">
+<div class="form-check mb-3">
   <input class="form-check-input" id="access_national" type="checkbox" name="access_national" value="1" [%- IF query.param('access_national') -%]checked="checked"[%- END -%] />
-  <label for="access_national"><img src="[% config.get('dbis_de_img') %]" alt="Nationallizenzen"/>&nbsp;[% msg.maketext("deutschlandweit frei zugänglich (DFG-geförderte Nationallizenz)") %]</label>
+  <label class="form-check-label" for="access_national"><img src="[% config.get('dbis_de_img') %]" alt="Nationallizenzen"/>&nbsp;[% msg.maketext("deutschlandweit frei zugänglich (DFG-geförderte Nationallizenz)") %]</label>
 </div>
 
-<div class="form-group">
-  <label for="cln"><b>[% msg.maketext("in:") %]</b></label>
+<div class="form-floating mb-3">
   <select class="form-control" id="cln" name="cln"><option value="" [% IF classification_name == 'all' %]selected="selected"[% END %]>[% msg.maketext("Alle Fachgebiete") %]</option>[%- FOREACH classification IN container.get('classifications') -%]
 <option value="[% classification.name %]" [% IF classification_name == classification.name %]selected="selected"[% END %]>[% classification.desc | truncate(25) %]</option>[%- END -%]
   </select>
+  <label for="cln"><b>[% msg.maketext("Fachgebiet") %]</b></label>
 </div>
 
-<div class="form-group">
-<label for="dbis_name">[% msg.maketext("Name") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" id="dbis_name" class="fs_field" type="text" name="tit" value="" size="13" maxlength="200" />
+<label for="dbis_name">[% msg.maketext("Name") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2" type="submit" name="search">[% msg.maketext("Suchen") %]</button>

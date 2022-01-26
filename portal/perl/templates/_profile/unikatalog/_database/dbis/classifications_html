@@ -1,0 +1,77 @@
+[%#-
+#######################################################################
+#
+# Templatename: classification_collection_html
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der DBIS Fachgruppen
+#
+#######################################################################
+-%]
+
+<h3>[% msg.maketext("Datenbanken der Universität zu Köln") %]</h3>
+
+<p/>
+
+<h5>[% msg.maketext("Fachgebiete") %]</h5>
+
+    <div class="row flex-md-row-reverse">
+      <div class="col-md-3">
+        [% PROCESS common/subtemplate name=layout_param.sidebar_template %]
+      </div>
+      <div class="col-md-9" >
+
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#ob-dbis_cloud">[% msg.maketext("Wolke") %]</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-dbis_list">[% msg.maketext("Liste") %]</a></li>
+</ul>
+
+<div class="tab-content pt-3 mb-2">
+
+<div role="tabpanel" class="tab-pane fade-in active" id="ob-dbis_cloud">
+
+<!-- Beginn Tag-Cloud -->
+[%
+   css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+   ];
+%]
+<ol class="ob-cloud">
+[% FOREACH classification IN classifications %]
+[%-
+   classnr       = classification.class;
+   itemclass     = css_classes.$classnr;
+   searchterm    = classification.name;
+   searchprefix  = config.get('searchfield').classification.prefix;
+-%]
+<li class="[% itemclass %]"><span>[% classification.count %] Titel sind in der Fachgruppe</span><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=dbis;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% IF query.param('access_national') %]access_national=1;[% END %][% searchprefix %]=[% searchterm %]"  class="tag" title="[% classification.count %] Zeitschriften sind in der Fachgruppe [% classification.desc %]">[% classification.desc %]</a></li>
+[% END %]
+</ol>
+<!-- Ende Tag-Cloud -->
+
+</div>
+
+<div role="tabpanel" class="tab-pane fade-in" id="ob-dbis_list">
+
+<ul class="list-group">
+[% FOREACH classification IN classifications;
+   searchterm    = classification.name;
+   searchprefix  = config.get('searchfield').classification.prefix;
+%]
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=dbis;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% IF query.param('access_national') %]access_national=1;[% END %][% searchprefix %]=[% searchterm %]">[% classification.desc %]</a> ([% classification.count %])</li>
+[% END %]
+</ul>
+</div>
+</div><!-- End: Tabcontent -->
+
+      </div>
+    </div>

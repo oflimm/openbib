@@ -32,8 +32,10 @@
 </div>
 
 <div class="form-floating mb-3">
-  <select class="form-control" id="cln" name="cln"><option value="" [% IF classification_name == 'all' %]selected="selected"[% END %]>[% msg.maketext("Alle Fachgebiete") %]</option>[%- FOREACH classification IN container.get('classifications') -%]
-<option value="[% classification.name %]" [% IF classification_name == classification.name %]selected="selected"[% END %]>[% classification.desc | truncate(25) %]</option>[%- END -%]
+  <select class="form-control" id="cln" name="cln"><option value="" [% IF classification_name == 'all' %]selected="selected"[% END %]>[% msg.maketext("Alle Fachgebiete") %]</option>
+[%- FOREACH classification IN container.get('classifications') -%]
+<option value="[% classification.name %]" [% IF classification_name == classification.name %]selected="selected"[% END %]>[% classification.desc | truncate(25) %]</option>
+[%- END -%]
   </select>
   <label for="cln"><b>[% msg.maketext("Fachgebiet") %]</b></label>
 </div>
@@ -49,3 +51,20 @@
 </div>
 </div>
 <p/>
+
+[% IF layout_param.main_template != 'classifications_html' && container.get('classifications')  %]
+<div class="card">
+<div class="card-header">[% msg.maketext("Gesamtübersicht") %]</div>
+
+<div class="card-body">
+<ul class="list-group">
+[% FOREACH classification IN container.get('classifications');
+   searchterm    = classification.name;
+   searchprefix  = config.get('searchfield').classification.prefix;
+ %]
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=dbis;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% IF query.param('access_national') %]access_national=1;[% END %][% searchprefix %]=[% searchterm %]">[% IF classification_name == classification.name %]<b>[% classification.desc %]</b>[% ELSE %][% classification.desc %][% END %]</a><!-- ([% classification.count %])--></li>
+[% END %]
+</ul>
+</div>
+</div>
+[% END %]

@@ -82,7 +82,7 @@ in: [% resulttime %] [% msg.maketext("Sekunden") %]
   <div class="ob-resultfooter">
 &nbsp;
   </div><!-- /.ob-resultfooter -->
-
+</div><!-- /.ob-resultlist -->
 [% ELSE %]
   <div class="ob-no_hits">
     <h1>[% msg.maketext("Zu Ihrer Suchanfrage konnten keine Treffer gefunden werden.") %]</h1>
@@ -91,8 +91,6 @@ in: [% resulttime %] [% msg.maketext("Sekunden") %]
    
   </div>  
 [% END %]
-
-</div><!-- /.ob-resultlist -->
 
    </div>
    <div class="col-md-3">

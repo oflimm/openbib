@@ -51,8 +51,7 @@
 </div>
 <p/>
 
-<p/>
-
+[% IF layout_param.main_template != 'classifications_html' && container.get('classifications') %]
 <div class="card">
 <div class="card-header">[% msg.maketext("Gesamtübersicht") %]</div>
 
@@ -67,3 +66,4 @@
 </ul>
 </div>
 </div>
+[% END %]

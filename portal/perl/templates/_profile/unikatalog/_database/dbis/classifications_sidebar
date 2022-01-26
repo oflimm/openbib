@@ -1,3 +1,8 @@
+[%-
+  IF container.get('classifications_dbis') ;
+    classifications =  container.get('classifications_dbis');
+  END;
+-%]
 <div class="card">
 
 <div class="card-header">[% msg.maketext("Suche nach Datenbanken") %]</div>
@@ -33,7 +38,7 @@
 
 <div class="form-floating mb-3">
   <select class="form-control" id="cln" name="cln"><option value="" [% IF classification_name == 'all' %]selected="selected"[% END %]>[% msg.maketext("Alle Fachgebiete") %]</option>
-[%- FOREACH classification IN container.get('classifications') -%]
+[%- FOREACH classification IN classifications -%]
 <option value="[% classification.name %]" [% IF classification_name == classification.name %]selected="selected"[% END %]>[% classification.desc | truncate(25) %]</option>
 [%- END -%]
   </select>
@@ -52,13 +57,13 @@
 </div>
 <p/>
 
-[% IF layout_param.main_template != 'classifications_html' && container.get('classifications')  %]
+[% IF layout_param.main_template != 'classifications_html'  %]
 <div class="card">
 <div class="card-header">[% msg.maketext("Gesamtübersicht") %]</div>
 
 <div class="card-body">
 <ul class="list-group">
-[% FOREACH classification IN container.get('classifications');
+[% FOREACH classification IN classifications ;
    searchterm    = classification.name;
    searchprefix  = config.get('searchfield').classification.prefix;
  %]

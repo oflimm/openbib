@@ -1,0 +1,69 @@
+<div class="card">
+<div class="card-header">[% msg.maketext("Suche nach Zeitschriften") %]</div>
+<div class="card-body">
+
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+<input type="hidden" name="db"        value="ezb" />
+<input type="hidden" name="l"         value="[% lang %]" />
+<input type="hidden" name="sm"        value="seq" />
+<input type="hidden" name="page"      value="1" />
+<input type="hidden" name="num"       value="20" />
+
+[% classification_name = searchquery.get_searchfield('classification').val %]
+
+<div class="form-check">
+  <input class="form-check-input" id="access_green" type="checkbox" name="access_green" value="1" [%- IF query.param('access_green') -%]checked="checked"[%- END -%] />
+  <label class="form-check-label" for="access_green"><img src="[% config.get('dbis_green_img') %]" alt="green"/>&nbsp;[% msg.maketext("mit frei zugänglichen Volltextartikeln") %]</label>
+</div>
+
+<div class="form-check">
+  <input class="form-check-input" id="access_yellow" type="checkbox" name="access_yellow" value="1" [%- IF query.param('access_yellow') -%]checked="checked"[%- END -%] />
+  <label class="form-check-label" for="access_yellow"><img src="[% config.get('dbis_yellow_img') %]" alt="yellow"/>&nbsp;[% msg.maketext("mit Volltextartikeln, die nur im Uni-Netz zugänglich sind") %]</label>
+</div>
+
+<div class="form-check mb-3">
+  <input class="form-check-input" id="access_red" type="checkbox" name="access_red" value="1" [%- IF query.param('access_red') -%]checked="checked"[%- END -%] />
+  <label class="form-check-label" for="access_ref"><img src="[% config.get('dbis_red_img') %]" alt="red"/>&nbsp;[% msg.maketext("ohne Zugriff auf Volltextartikel (Inhaltsverzeichnisse und Abstracts sind in der Regel frei zugänglich)") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+  <select class="form-control" id="cln" name="cln">
+    <option value="" [% IF classification_name == 'all' %]selected="selected"[% END %]>[% msg.maketext("Alle Fachgebiete") %]</option>
+    
+[%- FOREACH classification IN classifications -%]
+<option value="[% classification.name %]" [% IF classification_name == classification.name %]selected="selected"[% END %]>[% classification.desc | truncate(25) %]</option>
+[%- END -%]
+  </select>
+  <label for="cln"><b>[% msg.maketext("Fachgebiet") %]</b></label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" id="ezb_name" class="fs_field" type="text" name="tit" value="" size="13" maxlength="200" />
+<label for="ezb_name">[% msg.maketext("Name") %]</label>
+</div>
+
+<button class="btn btn-primary mb-2" type="submit" name="search">[% msg.maketext("Suchen") %]</button>
+
+</form>
+
+
+</div>
+</div>
+<p/>
+
+<p/>
+
+<div class="card">
+<div class="card-header">[% msg.maketext("Gesamtübersicht") %]</div>
+
+<div class="card-body">
+<ul class="list-group">
+[% FOREACH classification IN container.get('classifications');
+   searchterm    = classification.name;
+   searchprefix  = config.get('searchfield').classification.prefix;
+ %]
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% IF query.param('access_national') %]access_national=1;[% END %][% searchprefix %]=[% searchterm %]">[% IF classification_name == classification.name %]<b>[% classification.desc %]</b>[% ELSE %][% classification.desc %][% END %]</a><!-- ([% classification.count %])--></li>
+[% END %]
+</ul>
+</div>
+</div>

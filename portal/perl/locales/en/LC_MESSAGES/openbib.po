@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2022-01-25 14:46+0100\n"
+"PO-Revision-Date: 2022-01-26 08:03+0100\n"
 "Last-Translator: openbib <flimm@openbib.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -238,7 +238,7 @@ msgstr "${category}"
 #: ../templates/_profile/rheinlandbib_yaml4/titles_record_mobile_categories:269
 #: ../templates/_profile/sammlungen/_view/digitalis/titles_record_html_categories:320
 #: ../templates/_profile/sammlungen/_view/digitalis/titles_record_html_categories:348
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:55
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:52
 #: ../templates/_profile/sammlungen/_view/totenzettel/titles_record_html_categories:322
 #: ../templates/_profile/sammlungen/_view/totenzettel/titles_record_html_categories:352
 #: ../templates/_profile/sammlungen_yaml4/_database/einbaende/titles_record_html_categories:353
@@ -10840,7 +10840,7 @@ msgstr "A topic with this name already exists."
 #: ../templates/_profile/rheinlandbib_yaml4/titles_record_html:202
 #: ../templates/_profile/rheinlandbib_yaml4/titles_record_html~:203
 #: ../templates/_profile/sammlungen/_view/digitalis/titles_record_html:95
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:281
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:302
 #: ../templates/_profile/sammlungen/_view/jesuiten/titles_record_html:299
 #: ../templates/_profile/sammlungen/_view/testsammlung/titles_record_html:290
 #: ../templates/_profile/sammlungen/_view/usbbibliographie/titles_record_html:105
@@ -11335,6 +11335,10 @@ msgstr "Elise Richter in Wiener Bilder issue 38, 1907"
 #: ../templates/titles_record_html_actions:346
 msgid "Empfehlungen"
 msgstr "Recommendations"
+
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:310
+msgid "Empfohlene Zitation:"
+msgstr ""
 
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/home_html:46
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/home_html:66
@@ -19521,7 +19525,7 @@ msgid "Kein Eintrag"
 msgstr "No entry"
 
 #: ../templates/_profile/bootstrap5/titles_record_html:115
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:280
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:301
 #: ../templates/titles_record_html:115
 msgid "Kein Titel"
 msgstr "No title"
@@ -19530,7 +19534,7 @@ msgstr "No title"
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/titles_record_html:434
 #: ../templates/_profile/bootstrap5/titles_record_html:337
 #: ../templates/_profile/kug/_view/kugproto/titles_record_html:419
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:290
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:320
 #: ../templates/_profile/unikatalog/titles_record_html:440
 #: ../templates/titles_record_html:337
 msgid "Kein Zugriff"
@@ -35211,7 +35215,6 @@ msgstr "Location mark"
 #: ../templates/_profile/rheinlandbib_yaml4/_database/herzogenrath/visible_categories_title:87
 #: ../templates/_profile/rheinlandbib_yaml4/all_categories_title:34
 #: ../templates/_profile/rheinlandbib_yaml4/visible_categories_title:87
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:27
 #: ../templates/_profile/sammlungen_yaml4/_database/fotobuecher/visible_categories_title:87
 #: ../templates/_profile/sammlungen_yaml4/_database/inst404abklatsch/visible_categories_title:85
 #: ../templates/_profile/sammlungen_yaml4/_database/kapsel/visible_categories_title:87
@@ -36026,6 +36029,10 @@ msgstr "Region"
 msgid "T0200-filme"
 msgstr "Director"
 
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:18
+msgid "T0200-gentzbriefe"
+msgstr "Archive"
+
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:29
 #: ../templates/_profile/sammlungen_yaml4/_database/gentzdigital/visible_categories_title:17
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/clouds_corporatebody_html:51
@@ -36725,6 +36732,7 @@ msgid "T0334"
 msgstr "Material type"
 
 #: ../templates/_database/gentzbriefe/visible_categories_title_ab3:20
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:19
 msgid "T0334-gentzbriefe"
 msgstr "Copy original"
 
@@ -36840,7 +36848,7 @@ msgid "T0335-einbaende"
 msgstr "Description of motive"
 
 #: ../templates/_database/gentzbriefe/visible_categories_title:23
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:23
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:20
 msgid "T0335-gentzbriefe"
 msgstr "Incipit reference publication"
 
@@ -36872,6 +36880,7 @@ msgid "T0335-zpe"
 msgstr "Table"
 
 #: ../templates/_database/gentzbriefe/visible_categories_title_ab1:23
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:21
 msgid "T0336-gentzbriefe"
 msgstr "Incipit"
 
@@ -37901,7 +37910,7 @@ msgstr "Place of publication"
 
 #: ../templates/_database/gentzbriefe/visible_categories_title:18
 #: ../templates/_database/gentzbriefe/visible_categories_title_ab1:20
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:18
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:22
 msgid "T0410-gentzbriefe"
 msgstr "Sent location normalized"
 
@@ -38047,7 +38056,7 @@ msgstr "Publisher"
 
 #: ../templates/_database/gentzbriefe/visible_categories_title:20
 #: ../templates/_database/gentzbriefe/visible_categories_title_ab2:16
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:20
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:23
 msgid "T0412-gentzbriefe"
 msgstr "Handwritten record"
 
@@ -38155,6 +38164,7 @@ msgid "T0413-einbaende"
 msgstr "Printer"
 
 #: ../templates/_database/gentzbriefe/visible_categories_title_ab2:17
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:24
 msgid "T0413-gentzbriefe"
 msgstr "Printer"
 
@@ -38317,7 +38327,7 @@ msgstr "Year of publication"
 
 #: ../templates/_database/gentzbriefe/visible_categories_title:19
 #: ../templates/_database/gentzbriefe/visible_categories_title_ab1:21
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:19
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:25
 msgid "T0424-gentzbriefe"
 msgstr "Sent date original"
 
@@ -38379,7 +38389,6 @@ msgstr "Date of death"
 #: ../templates/_profile/rheinlandbib_yaml4/_database/herzogenrath/visible_categories_title:39
 #: ../templates/_profile/rheinlandbib_yaml4/all_categories_title:65
 #: ../templates/_profile/rheinlandbib_yaml4/visible_categories_title:39
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:25
 #: ../templates/_profile/sammlungen_yaml4/_database/fotobuecher/visible_categories_title:39
 #: ../templates/_profile/sammlungen_yaml4/_database/kapsel/visible_categories_title:39
 #: ../templates/_profile/sammlungen_yaml4/_database/maxbruch/visible_categories_title:40
@@ -38571,7 +38580,7 @@ msgstr "Extent of item"
 
 #: ../templates/_database/gentzbriefe/visible_categories_title:21
 #: ../templates/_database/gentzbriefe/visible_categories_title_ab2:19
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:21
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:26
 msgid "T0433-gentzbriefe"
 msgstr "Size/Extent of item"
 
@@ -39048,6 +39057,7 @@ msgid "T0451"
 msgstr "Series title"
 
 #: ../templates/_database/gentzbriefe/visible_categories_title_ab1:17
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:27
 msgid "T0451-gentzbriefe"
 msgstr "Base data from"
 
@@ -39071,18 +39081,22 @@ msgid "T0470-jesuiten"
 msgstr "Place of publication"
 
 #: ../templates/_database/gentzbriefe/visible_categories_title_ab3:18
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:28
 msgid "T0480-gentzbriefe"
 msgstr "Creator of transcription"
 
 #: ../templates/_database/gentzbriefe/visible_categories_title_ab3:19
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:29
 msgid "T0482-gentzbriefe"
 msgstr "Type of transcription"
 
 #: ../templates/_database/gentzbriefe/visible_categories_title_ab3:16
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:30
 msgid "T0490-gentzbriefe"
 msgstr "Collection Herterich"
 
 #: ../templates/_database/gentzbriefe/visible_categories_title_ab3:17
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:31
 msgid "T0491-gentzbriefe"
 msgstr "Type Collection Herterich"
 
@@ -40616,6 +40630,10 @@ msgstr "Split note for serials"
 msgid "T0523"
 msgstr "Frequency of publication"
 
+#: ../templates/_database/gentzbriefe/visible_categories_title_ab1:22
+msgid "T0523-gentzbriefe"
+msgstr "Presented on"
+
 #: ../templates/_database/bestellungen/visible_categories_title:76
 #: ../templates/_database/inst001/visible_categories_title:71
 #: ../templates/_database/inst404card/visible_categories_title:73
@@ -40701,6 +40719,10 @@ msgstr "Frequency of publication"
 #: ../templates/visible_categories_title:73
 msgid "T0525"
 msgstr "Statements of source note"
+
+#: ../templates/_database/gentzbriefe/visible_categories_title_ab2:20
+msgid "T0525-gentzbriefe"
+msgstr "Transmission type"
 
 #: ../templates/_profile/kug_yaml4/_database/inst450/visible_categories_title:31
 msgid "T0525-inst450"
@@ -41936,7 +41958,6 @@ msgstr "ISBN source"
 #: ../templates/_profile/rheinlandbib_yaml4/_database/herzogenrath/visible_categories_title:56
 #: ../templates/_profile/rheinlandbib_yaml4/all_categories_title:103
 #: ../templates/_profile/rheinlandbib_yaml4/visible_categories_title:56
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:28
 #: ../templates/_profile/sammlungen_yaml4/_database/fotobuecher/visible_categories_title:56
 #: ../templates/_profile/sammlungen_yaml4/_database/inst404abklatsch/visible_categories_title:54
 #: ../templates/_profile/sammlungen_yaml4/_database/kapsel/visible_categories_title:56
@@ -41977,6 +41998,10 @@ msgstr "ISBN source"
 #: ../templates/visible_categories_title:56
 msgid "T0590"
 msgstr "Title source"
+
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:32
+msgid "T0590-gentzbriefe"
+msgstr "Printed publications"
 
 #: ../templates/_profile/sammlungen_yaml4/_database/pruessen/visible_categories_title:56
 msgid "T0590-pruessen"
@@ -42027,7 +42052,6 @@ msgstr "Released"
 #: ../templates/_profile/rheinlandbib_yaml4/_database/herzogenrath/visible_categories_title:43
 #: ../templates/_profile/rheinlandbib_yaml4/all_categories_title:104
 #: ../templates/_profile/rheinlandbib_yaml4/visible_categories_title:43
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:29
 #: ../templates/_profile/sammlungen_yaml4/_database/fotobuecher/visible_categories_title:43
 #: ../templates/_profile/sammlungen_yaml4/_database/inst404abklatsch/visible_categories_title:41
 #: ../templates/_profile/sammlungen_yaml4/_database/kapsel/visible_categories_title:43
@@ -42175,7 +42199,7 @@ msgid "T0594"
 msgstr "Publication place of source"
 
 #: ../templates/_database/gentzbriefe/visible_categories_title:22
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:22
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:33
 msgid "T0594-gentzbriefe"
 msgstr "Publication type"
 
@@ -42235,7 +42259,6 @@ msgstr "Landscape of origin"
 #: ../templates/_profile/rheinlandbib_yaml4/_database/herzogenrath/visible_categories_title:45
 #: ../templates/_profile/rheinlandbib_yaml4/all_categories_title:106
 #: ../templates/_profile/rheinlandbib_yaml4/visible_categories_title:45
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:30
 #: ../templates/_profile/sammlungen_yaml4/_database/fotobuecher/visible_categories_title:45
 #: ../templates/_profile/sammlungen_yaml4/_database/inst404abklatsch/visible_categories_title:43
 #: ../templates/_profile/sammlungen_yaml4/_database/kapsel/visible_categories_title:45
@@ -43476,7 +43499,7 @@ msgid "T0800-einbaende"
 msgstr "Type"
 
 #: ../templates/_database/gentzbriefe/visible_categories_title:24
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:24
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:34
 msgid "T0800-gentzbriefe"
 msgstr "Type of letter"
 
@@ -44486,7 +44509,6 @@ msgstr "Remark"
 #: ../templates/_profile/rheinlandbib_yaml4/_database/herzogenrath/visible_categories_title:112
 #: ../templates/_profile/rheinlandbib_yaml4/all_categories_title:128
 #: ../templates/_profile/rheinlandbib_yaml4/visible_categories_title:113
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:26
 #: ../templates/_profile/sammlungen/_view/totenzettel/visible_categories_title:34
 #: ../templates/_profile/sammlungen_yaml4/_database/fotobuecher/visible_categories_title:113
 #: ../templates/_profile/sammlungen_yaml4/_database/kapsel/visible_categories_title:112
@@ -44529,6 +44551,7 @@ msgid "T1664"
 msgstr "Provenance"
 
 #: ../templates/_database/gentzbriefe/visible_categories_title_ab2:18
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:35
 msgid "T1664-gentzbriefe"
 msgstr ""
 
@@ -44993,7 +45016,6 @@ msgstr "Wikipedia article (french)"
 #: ../templates/_profile/kug/_view/kugproto/visible_categories_title_supplement:107
 #: ../templates/_profile/rheinlandbib_yaml4/all_categories_title:140
 #: ../templates/_profile/rheinlandbib_yaml4/visible_categories_title:143
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:34
 #: ../templates/_profile/sammlungen_yaml4/_database/fotobuecher/visible_categories_title:143
 #: ../templates/_profile/sammlungen_yaml4/_database/gentzdigital/visible_categories_title:28
 #: ../templates/_profile/sammlungen_yaml4/_database/landschaft/titles_record_html_categories:278
@@ -45683,7 +45705,6 @@ msgstr "# of superordinate titles"
 #: ../templates/_profile/rheinlandbib_yaml4/_database/herzogenrath/visible_categories_title:121
 #: ../templates/_profile/rheinlandbib_yaml4/all_categories_title:149
 #: ../templates/_profile/rheinlandbib_yaml4/visible_categories_title:140
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:33
 #: ../templates/_profile/sammlungen/_view/totenzettel/visible_categories_title:41
 #: ../templates/_profile/sammlungen_yaml4/_database/einbaende/visible_categories_title:26
 #: ../templates/_profile/sammlungen_yaml4/_database/fotobuecher/visible_categories_title:140
@@ -45780,7 +45801,6 @@ msgstr "# of superordinate titles"
 #: ../templates/_profile/rheinlandbib_yaml4/_database/herzogenrath/visible_categories_title:120
 #: ../templates/_profile/rheinlandbib_yaml4/all_categories_title:150
 #: ../templates/_profile/rheinlandbib_yaml4/visible_categories_title:139
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:32
 #: ../templates/_profile/sammlungen_yaml4/_database/einbaende/visible_categories_title:25
 #: ../templates/_profile/sammlungen_yaml4/_database/fotobuecher/visible_categories_title:139
 #: ../templates/_profile/sammlungen_yaml4/_database/gentzdigital/visible_categories_title:26
@@ -45952,7 +45972,6 @@ msgstr "WorkKey-Base"
 #: ../templates/_profile/rheinlandbib_yaml4/_database/herzogenrath/visible_categories_title:122
 #: ../templates/_profile/rheinlandbib_yaml4/all_categories_title:153
 #: ../templates/_profile/rheinlandbib_yaml4/visible_categories_title:145
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:35
 #: ../templates/_profile/sammlungen/_view/totenzettel/visible_categories_title:42
 #: ../templates/_profile/sammlungen_yaml4/_database/fotobuecher/visible_categories_title:144
 #: ../templates/_profile/sammlungen_yaml4/_database/gentzdigital/visible_categories_title:29
@@ -46021,7 +46040,6 @@ msgstr "Digital item: Thumbnail-URL"
 
 #: ../templates/_database/gentzbriefe/visible_categories_title:31
 #: ../templates/_profile/rheinlandbib_yaml4/all_categories_title:157
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:31
 #: ../templates/_profile/sammlungen_yaml4/_database/gentzdigital/visible_categories_title:25
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:157
 #: ../templates/_profile/yaml4/all_categories_title:157
@@ -46118,8 +46136,6 @@ msgid "TOC"
 msgstr "TOC"
 
 #: ../templates/_database/gentzbriefe/visible_categories_title_ab1:16
-#: ../templates/_database/gentzbriefe/visible_categories_title_ab1:22
-#: ../templates/_database/gentzbriefe/visible_categories_title_ab2:20
 msgid "TXXXX-gentzbriefe"
 msgstr ""
 
@@ -50330,7 +50346,7 @@ msgstr "Website"
 #: ../templates/_profile/kug_yaml4/_database/wiso/circulation:174
 #: ../templates/_profile/kug_yaml4/_database/zbmed/circulation:53
 #: ../templates/_profile/rheinlandbib_yaml4/circulation:55
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:293
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:323
 #: ../templates/_profile/sammlungen_yaml4/_database/artmann/circulation:165
 #: ../templates/_profile/sammlungen_yaml4/_database/dante/circulation:165
 #: ../templates/_profile/sammlungen_yaml4/_database/dirksen/circulation:165

@@ -74,3 +74,12 @@
 </div>
 </div>
 [% END %]
+
+<div class="alert alert-secondary mt-2"> 
+        
+Ansprechpartner:<br><a href="mailto:ezb@ub.uni-koeln.de">Team E-Zeitschriften</a><br>
+<span style="font-size:0.8em;">
+  Powered by <a href="http://ezb.uni-regensburg.de/ezeit/vascoda/vifa/link_de.php" target="_blank">EZB</a>
+</span>
+
+</div>

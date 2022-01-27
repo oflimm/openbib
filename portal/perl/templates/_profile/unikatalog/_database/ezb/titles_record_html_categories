@@ -216,6 +216,10 @@ FOREACH category IN categories;
 	 content       = "${path_prefix}/${config.get('redirect_loc')}?type=503;url=${uri_escape(content)}" ;
 	 content       = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${thiscontent}</a>";
 
+    CASE "T4120";
+         thiscontent   = "Greifen Sie hier online auf den Volltext zu";
+	 content       = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${thiscontent}</a>";
+
     CASE "E4300";
          thiscontent = item.content;
 

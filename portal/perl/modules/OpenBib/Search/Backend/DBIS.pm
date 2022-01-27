@@ -92,7 +92,7 @@ sub get_records {
 
     my $container = OpenBib::Container->instance;
 
-    $container->register('classifications',$classifications_ref);
+    $container->register('classifications_dbis',$classifications_ref);
 
     $logger->debug(YAML::Dump($classifications_ref));
     

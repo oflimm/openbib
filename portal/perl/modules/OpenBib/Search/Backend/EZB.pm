@@ -91,7 +91,7 @@ sub get_records {
 
     my $container = OpenBib::Container->instance;
 
-    $container->register('classifications',$classifications_ref);
+    $container->register('classifications_ezb',$classifications_ref);
     
     my $recordlist = $self->get_api->get_search_resultlist;
     

@@ -106,6 +106,10 @@ sub new {
 
     my $colors = $access_green + $access_yellow*2 + $access_red*4;
 
+    $logger->debug("green: $access_green ; yellow: $access_yellow ; red: $access_red");
+    $logger->debug("colors: $colors");
+
+    
     if (!$colors){
         $colors=$config->{ezb_colors};
 
@@ -118,6 +122,8 @@ sub new {
         $access_red    = ($colors_mask & 0b100)?1:0;
     }
 
+    $logger->debug("Postprocessed colors: $colors");
+    
     my $self = { };
 
     bless ($self, $class);
@@ -231,7 +237,7 @@ sub get_titles_record {
         push @{$subjects_ref}, $subject_node->textContent;
     }
 
-    my @homepages_nodes =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/detail/hompages/homepage');
+    my @homepages_nodes =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/detail/homepages/homepage');
 
     my $homepages_ref = [];
 
@@ -244,12 +250,34 @@ sub get_titles_record {
     my $appearence  =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/appearence');
     my $costs       =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/costs');
     my $remarks     =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/remarks');
-
+    my $journal_color  =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/journal_color/@color');
+    
     my @periods =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/periods/period');
+
+    my @issns =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/detail/P_ISSNs/P_ISSN');
+
+    my $issns_ref = [];
+
+    foreach my $issn_node (@issns){
+        push @{$issns_ref}, $issn_node->textContent;
+    }
     
     $record->set_field({field => 'T0331', subfield => '', mult => 1, content => $title}) if ($title);
     $record->set_field({field => 'T0412', subfield => '', mult => 1, content => $publisher}) if ($publisher);
 
+    my $erscheinungsverlauf = "";
+
+    if ($firstvolume){
+	$erscheinungsverlauf.="Jg. $firstvolume";
+    }
+    if ($firstdate){
+	$erscheinungsverlauf.=" ($firstdate)";
+    }
+
+    if ($erscheinungsverlauf){
+        $record->set_field({field => 'T0405', subfield => '', mult => 1, content => $erscheinungsverlauf});
+    }
+    
     if ($zdb_node_ref->{ZDB_number}{url}){
         $record->set_field({field => 'T0662', subfield => '', mult => 1, content => $zdb_node_ref->{ZDB_number}{url}})
     }
@@ -271,13 +299,36 @@ sub get_titles_record {
         $record->set_field({field => 'T0710', subfield => '', mult => $mult, content => $subject});
         $mult++;
     }
-    
+
+    $mult=1;
+    foreach my $issn (@$issns_ref){
+        $record->set_field({field => 'T0543', subfield => '', mult => $mult, content => $issn});
+        $mult++;
+    }
+	
     $record->set_field({field => 'T0523', subfield => '', mult => 1, content => $appearence}) if ($appearence);
     $record->set_field({field => 'T0511', subfield => '', mult => 1, content => $costs}) if ($costs);
     $record->set_field({field => 'T0501', subfield => '', mult => 1, content => $remarks}) if ($remarks);
 
+    my $type_mapping_ref = {
+	'green'    => 'g', # green
+	'yellow'   => 'y', # yellow
+	'red'      => 'r', # red
+    };
+
+    my $access_type = $type_mapping_ref->{$journal_color};
+
+    $logger->debug("journal_color: $journal_color ; access_type: $access_type");
+
+    if ($logger->is_debug){
+	$logger->debug("Homepages: ".YAML::Dump($homepages_ref));
+    }
+
+    my $mult_fulltext = 1;
     foreach my $homepage (@$homepages_ref){
-        $record->set_field({field => 'T2662', subfield => '', mult => 1, content => $homepage});
+	$record->set_field({field => 'T4120', subfield => $access_type, mult => $mult_fulltext++, content => $homepage });
+
+#        $record->set_field({field => 'T2662', subfield => '', mult => 1, content => $homepage});
     }
 
     $mult = 1;
@@ -285,26 +336,31 @@ sub get_titles_record {
 	my $color = $period->findvalue('journal_color/@color');
 	
 	$logger->debug("Color: $color");
-	
+
 	my $image = $config->get('dbis_green_yellow_red_img');
 	
 	if    ($color == 'green'){
 	    $image = $config->get('dbis_green_img');
+	    $access_type = "g";
 	}
 	elsif ($color == 'yellow'){
 	    $image = $config->get('dbis_yellow_img');
+	    $access_type = "y";
 	}
 	elsif ($color == 3){
 	    $image = $config->get('dbis_green_yellow_img');
+	    $access_type = "f"; # fulltext available
 	}
 	elsif ($color == 'red'){
 	    $image = $config->get('dbis_red_img');
+	    $access_type = "r";	    
 	}
 	elsif ($color == 5){
 	    $image = $config->get('dbis_green_green_red_img');
 	}
 	elsif ($color == 6){
 	    $image = $config->get('dbis_yellow_red_img');
+	    $access_type = "y";	    
 	}
 
 	my $label = $period->findvalue('label');
@@ -320,11 +376,13 @@ sub get_titles_record {
 	    $logger->debug("L: $label WL: $warpto_link RL: $readme_link");
 	}
 
-	$record->set_field({field => 'T0663', subfield => '', mult => $mult, content => "<img src=\"$image\" alt=\"$color\"/> $label" });
-	$record->set_field({field => 'T0662', subfield => '', mult => $mult, content => $warpto_link });
-	$mult++;
-	$record->set_field({field => 'T0663', subfield => '', mult => $mult, content => "ReadMe: $label" });
+#	$record->set_field({field => 'T0663', subfield => '', mult => $mult, content => "<img src=\"$image\" alt=\"$color\"/> $label" });
+
+	
+	$record->set_field({field => 'T4120', subfield => $access_type, mult => $mult_fulltext++, content => $warpto_link });
+	
 	$record->set_field({field => 'T0662', subfield => '', mult => $mult, content => $readme_link });
+	$record->set_field({field => 'T0663', subfield => '', mult => $mult, content => "ReadMe: $label" });
 	$mult++;
     }
 

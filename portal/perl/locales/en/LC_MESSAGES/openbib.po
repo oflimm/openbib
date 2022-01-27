@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2022-01-26 08:19+0100\n"
+"PO-Revision-Date: 2022-01-27 07:51+0100\n"
 "Last-Translator: openbib <flimm@openbib.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -34099,7 +34099,7 @@ msgstr "Search in single catalog"
 #: ../templates/_profile/kug_yaml4/_database/dbis/search_title_item_html:70
 #: ../templates/_profile/yaml4/_database/dbis/classifications_html:49
 msgid "Suche nach Datenbanken"
-msgstr "Search forl databases"
+msgstr "Search for databases"
 
 #: ../templates/_database/ezb/classifications_sidebar:2
 #: ../templates/_database/ezb/search_title_item_html:98

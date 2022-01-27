@@ -318,6 +318,7 @@ END;
 <tr><th class="ob-field">bibkey</th><td>[% bibkey %]</td></tr>
 [%- END -%]
 </table>
+</div>
 [% ELSIF format == "BibTeX" %]
 <div>
 <pre>

@@ -27,8 +27,8 @@
 </div>
 
 <div class="form-check">
-  <input class="form-check-input" id="access_red" type="checkbox" name="access_red" value="1" [%- IF query.param('access_red') -%]checked="checked"[%- END -%] />
-  <label class="form-check-label" for="access_ref"><img src="[% config.get('dbis_red_img') %]" alt="red"/>&nbsp;[% msg.maketext("ohne Zugriff auf Volltextartikel (Inhaltsverzeichnisse und Abstracts sind in der Regel frei zugänglich)") %]</label>
+  <input class="form-check-input" id="access_ppu" type="checkbox" name="access_ppu" value="1" [%- IF query.param('access_ppu') -%]checked="checked"[%- END -%] />
+  <label class="form-check-label" for="access_ppu"><img src="[% config.get('dbis_ppu_img') %]" alt="Pay-per-use"/>&nbsp;[% msg.maketext("kostengünstiges Pay-per-Use-Angebot (DFG-gefördert)") %]</label>
 </div>
 
 <div class="form-check mb-3">

@@ -98,12 +98,18 @@ sub new {
     my $access_red             = exists $arg_ref->{access_red}
         ? $arg_ref->{access_red}              : 0;
 
+    my $access_ppu             = exists $arg_ref->{access_ppu}
+        ? $arg_ref->{access_ppu}              : 0;
+    
     my $access_national        = exists $arg_ref->{access_national}
         ? $arg_ref->{access_national}         : 0;
     
-    my $colors  = $access_green + $access_yellow*44;
-    my $ocolors = $access_red*8 + $access_national*32;
+    my $colors  = $access_green + $access_yellow*4 + $access_yellow*8 + $access_red*32;
+    my $ocolors = $access_ppu*8 + $access_national*32;
 
+    $logger->debug("green: $access_green ; yellow: $access_yellow ; red: $access_red ; ppu: $access_ppu ; national: $access_national");
+    $logger->debug("colors: $colors ; ocolors: $ocolors");
+    
     # Wenn keine Parameter uebergeben wurden, dann Defaults nehmen
     if (!$colors && !$ocolors){
         $logger->debug("Using defaults for color and ocolor");
@@ -119,6 +125,7 @@ sub new {
         $access_green    = ($colors_mask  & 0b000001)?1:0;
         $access_yellow   = ($colors_mask  & 0b101100)?1:0;
     }
+    # Eins von colors oder ocolors ist besetzt (oder auch keines)
     else {
         $logger->debug("Using CGI values for color and ocolor");
         $logger->debug("access_red: $access_red - access_national: $access_national - access_green: $access_green - access_yellow: $access_yellow");
@@ -126,6 +133,8 @@ sub new {
         $colors = "" unless ($colors);
         $ocolors = "" unless ($ocolors);
     }
+
+    $logger->debug("Postprocessed colors: $colors ; ocolors: $ocolors");
     
     my $self = { };
 
@@ -165,6 +174,7 @@ sub new {
     $self->{bibid}           = $bibid;
     $self->{lang}            = $lang if ($lang);
     $self->{colors}          = $colors if ($colors);
+    $self->{ocolors}         = $colors if ($ocolors);
     
     return $self;
 }
@@ -675,9 +685,9 @@ sub parse_query {
     if (defined $searchquery->get_searchfield('classification')->{val} && $searchquery->get_searchfield('classification')->{val}){
         push @searchstrings, "gebiete[]=".$searchquery->get_searchfield('classification')->{val};
     }
-    else {
-        push @searchstrings, "gebiete[]=all";
-    }
+#    else {
+#        push @searchstrings, "gebiete[]=all";
+#    }
 
     my $dbisquerystring = join("&",@searchstrings);
     $logger->debug("DBIS-Querystring: $dbisquerystring");

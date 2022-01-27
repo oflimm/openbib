@@ -55,6 +55,16 @@ sub new {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    # Processing access rights
+    my $queryoptions       = exists $arg_ref->{queryoptions}
+        ? $arg_ref->{queryoptions}            : OpenBib::QueryOptions->new;
+    
+    $arg_ref->{access_green}    = $queryoptions->get_option('access_green') || 0;
+    $arg_ref->{access_yellow}   = $queryoptions->get_option('access_yellow') || 0;
+    $arg_ref->{access_ppu}      = $queryoptions->get_option('access_ppu') || 0;
+    $arg_ref->{access_national} = $queryoptions->get_option('access_national') || 0;
+    $arg_ref->{access_red}      = $queryoptions->get_option('access_red') || 0;
+    
     my $api = new OpenBib::API::HTTP::DBIS($arg_ref);
     
     my $self = { };
@@ -63,7 +73,7 @@ sub new {
 
     $self->{api}  = $api;
     $self->{args} = $arg_ref;
-        
+          
     return $self;
 }
 

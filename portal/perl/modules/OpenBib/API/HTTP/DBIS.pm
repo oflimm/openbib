@@ -216,11 +216,16 @@ sub get_titles_record {
     
     my $db_type_ref = [];
     my @db_type_nodes = $root->findnodes('/dbis_page/list_dbs/db_type_infos/db_type_info');
+    my $mult = 1;
     foreach my $db_type_node (@db_type_nodes){
         my $this_db_type_ref = {};
+
         $this_db_type_ref->{desc}       = $db_type_node->findvalue('db_type_long_text');
         $this_db_type_ref->{desc_short} = $db_type_node->findvalue('db_type');
         $this_db_type_ref->{desc}=~s/\|/<br\/>/g;
+	
+	$record->set_field({field => 'T0800', subfield => '', mult => $mult++, content => $this_db_type_ref->{desc_short}}) if ($this_db_type_ref->{desc_short});
+	
         push @$db_type_ref, $this_db_type_ref;
     }
 
@@ -237,16 +242,38 @@ sub get_titles_record {
     my $access_ref = {};
     $access_ref->{other} = [];
 
+    my $type_mapping_ref = {
+	'free' => 'g', # green
+	'free' => 'g', # green	    
+    };
+    
     my @access_nodes = $root->findnodes('/dbis_page/details/accesses/access');
 
     foreach my $this_node (@access_nodes){
-        $access_ref->{main}     =  $this_node->findvalue('@href') if ($this_node->findvalue('@main') eq "Y");
-        push @{$access_ref->{other}}, $this_node->findvalue('@href') if ($this_node->findvalue('@main') eq "N");
+	if ($this_node->findvalue('@main') eq "Y"){
+	    $access_ref->{main}      =  $this_node->findvalue('@href');
+	    $access_ref->{main_type} =  $this_node->findvalue('@type');
+	}
+	elsif ($this_node->findvalue('@main') eq "N"){
+	    my $others_ref = {};
+	    
+	    if ($this_node->findvalue('@href')){
+		$others_ref->{url} = $this_node->findvalue('@href');
+	    }
+	    if ( $this_node->findvalue('@type')){
+		$others_ref->{type} = $this_node->findvalue('@type');
+	    }
+
+	    push @{$access_ref->{other}}, $others_ref;
+	}
     }
     
     my $hints   =  $root->findvalue('/dbis_page/details/hints');
     my $content =  $root->findvalue('/dbis_page/details/content');
     my $instructions =  $root->findvalue('/dbis_page/details/instructions');
+    my $publisher =  $root->findvalue('/dbis_page/details/publisher');
+    my $report_periods =  $root->findvalue('/dbis_page/details/report_periods');
+    my $appearence =  $root->findvalue('/dbis_page/details/appearence');
 
     my @subjects_nodes =  $root->findnodes('/dbis_page/details/subjects/subject');
 
@@ -266,7 +293,7 @@ sub get_titles_record {
 
     $record->set_field({field => 'T0331', subfield => '', mult => 1, content => $title_ref->{main}}) if ($title_ref->{main});
 
-    my $mult=1;
+    $mult=1;
     if (defined $title_ref->{other}){
         foreach my $othertitle (@{$title_ref->{other}}){
             $record->set_field({field => 'T0370', subfield => '', mult => $mult, content => $othertitle});
@@ -276,13 +303,19 @@ sub get_titles_record {
 
     $mult=1;
     if (defined $access_ref->{main}){
-        $record->set_field({field => 'T0662', subfield => '', mult => $mult, content => $config->{dbis_baseurl}.$access_ref->{main}}) if ($access_ref->{main});
-        $mult++;
+	if ($access_ref->{main}){
+	    my $access_type = $type_mapping_ref->{$access_ref->{main_type}};
+	    $record->set_field({field => 'T0662', subfield => $access_type, mult => $mult, content => $config->{dbis_baseurl}.$access_ref->{main}});
+		
+	    $record->set_field({field => 'T4120', subfield => $access_type, mult => $mult, content => $config->{dbis_baseurl}.$access_ref->{main}});
+		
+	    $mult++;
+	}
     }
 
     if (defined $access_ref->{other}){
-        foreach my $access (@{$access_ref->{other}}){
-            $record->set_field({field => 'T0662', subfield => '', mult => $mult, content => $config->{dbis_baseurl}.$access }) if ($access);
+        foreach my $access_ref (@{$access_ref->{other}}){
+            $record->set_field({field => 'T2662', subfield => '', mult => $mult, content => $config->{dbis_baseurl}.$access_ref->{url} }) if ($access_ref->{url});
             $mult++;
         }
     }
@@ -301,12 +334,18 @@ sub get_titles_record {
     
     $record->set_field({field => 'T0750', subfield => '', mult => 1, content => $content}) if ($content);
 
+    $record->set_field({field => 'T0412', subfield => '', mult => 1, content => $publisher}) if ($publisher);
+
+    $record->set_field({field => 'T0523', subfield => '', mult => 1, content => $report_periods}) if ($report_periods);
+
+    $record->set_field({field => 'T0508', subfield => '', mult => 1, content => $appearence}) if ($appearence);
+    
     $mult=1;
     if ($access_info_ref->{desc_short}){
         $record->set_field({field => 'T0501', subfield => '', mult => $mult, content => $access_info_ref->{desc_short}});
         $mult++;
     }
-
+    
     $record->set_field({field => 'T0501', subfield => '', mult => $mult, content => $instructions}) if ($instructions);
 
     $record->set_holding([]);

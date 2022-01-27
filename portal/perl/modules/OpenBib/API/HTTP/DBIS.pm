@@ -210,9 +210,18 @@ sub get_titles_record {
 
     my $access_info_ref = {};
     
+    $access_info_ref->{id}         = $root->findvalue('/dbis_page/details/db_access_info/@access_id');
     $access_info_ref->{icon_url}   = $root->findvalue('/dbis_page/details/db_access_info/@access_icon');
     $access_info_ref->{desc}       = $root->findvalue('/dbis_page/details/db_access_info/db_access');
     $access_info_ref->{desc_short} = $root->findvalue('/dbis_page/details/db_access_info/db_access_short_text');
+
+    my $type_mapping_ref = {
+	'access_0'    => 'g', # green
+	'access_2'    => 'y', # yellow
+	'access_500'  => 'n', # national license
+    };
+    
+    my $access_type = $type_mapping_ref->{$access_info_ref->{id}};
     
     my $db_type_ref = [];
     my @db_type_nodes = $root->findnodes('/dbis_page/list_dbs/db_type_infos/db_type_info');
@@ -242,11 +251,6 @@ sub get_titles_record {
     my $access_ref = {};
     $access_ref->{other} = [];
 
-    my $type_mapping_ref = {
-	'free' => 'g', # green
-	'free' => 'g', # green	    
-    };
-    
     my @access_nodes = $root->findnodes('/dbis_page/details/accesses/access');
 
     foreach my $this_node (@access_nodes){
@@ -304,7 +308,6 @@ sub get_titles_record {
     $mult=1;
     if (defined $access_ref->{main}){
 	if ($access_ref->{main}){
-	    my $access_type = $type_mapping_ref->{$access_ref->{main_type}};
 	    $record->set_field({field => 'T0662', subfield => $access_type, mult => $mult, content => $config->{dbis_baseurl}.$access_ref->{main}});
 		
 	    $record->set_field({field => 'T4120', subfield => $access_type, mult => $mult, content => $config->{dbis_baseurl}.$access_ref->{main}});

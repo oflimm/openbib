@@ -1,0 +1,24 @@
+[%#-
+#######################################################################
+#
+# Templatename: visible_categories_titset
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabekategorien fuer einen einzelnen Titelsatz
+#
+#######################################################################
+-%]
+[%-# Ausgabekategorien -%]
+[%- categories = [
+                'T0331', # msg.maketext("T0331") HST
+                'T0370', # msg.maketext("T0370") WST
+                'T4120', # msg.maketext("T4120") Zugang (Haupt-URL)
+                'T0501', # msg.maketext("T0501") Verfuegbarkeit
+                'T0750', # msg.maketext("T0750") Inhalt
+                'T2662', # msg.maketext("T2662") Weitere URLs
+                ]
+
+-%]

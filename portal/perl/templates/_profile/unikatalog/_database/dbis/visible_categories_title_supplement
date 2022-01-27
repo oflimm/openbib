@@ -1,0 +1,25 @@
+[%#-
+#######################################################################
+#
+# Templatename: visible_categories_titset
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabekategorien fuer einen einzelnen Titelsatz
+#
+#######################################################################
+-%]
+[%-# Ausgabekategorien -%]
+[%- categories = [
+                'T0700', # msg.maketext("T0700") Fachgebiete
+                'T0710', # msg.maketext("T0710") Schlagwoerter
+                'T0508', # msg.maketext("T0508") Erscheinungsform
+		'T0800', # msg.maketext("T0800") Datenbanktyp
+		'T0412', # msg.maketext("T0412") Verlag
+		'T0523', # msg.maketext("T0523") Berichtszeitraum
+
+                ]
+
+-%]

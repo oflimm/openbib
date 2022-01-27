@@ -19,17 +19,17 @@
 
 <div class="form-check">
   <input class="form-check-input" id="access_green" type="checkbox" name="access_green" value="1" [%- IF query.param('access_green') -%]checked="checked"[%- END -%] />
-  <label class="form-check-label" for="access_green"><img src="[% config.get('dbis_green_img') %]" alt="green"/>&nbsp;[% msg.maketext("mit frei zugänglichen Volltextartikeln") %]</label>
+  <label class="form-check-label" for="access_green"><img src="[% config.get('ezb_green_img') %]" alt="green"/>&nbsp;[% msg.maketext("mit frei zugänglichen Volltextartikeln") %]</label>
 </div>
 
 <div class="form-check">
   <input class="form-check-input" id="access_yellow" type="checkbox" name="access_yellow" value="1" [%- IF query.param('access_yellow') -%]checked="checked"[%- END -%] />
-  <label class="form-check-label" for="access_yellow"><img src="[% config.get('dbis_yellow_img') %]" alt="yellow"/>&nbsp;[% msg.maketext("mit Volltextartikeln, die nur im Uni-Netz zugänglich sind") %]</label>
+  <label class="form-check-label" for="access_yellow"><img src="[% config.get('ezb_yellow_img') %]" alt="yellow"/>&nbsp;[% msg.maketext("mit Volltextartikeln, die nur im Uni-Netz zugänglich sind") %]</label>
 </div>
 
 <div class="form-check mb-3">
   <input class="form-check-input" id="access_red" type="checkbox" name="access_red" value="1" [%- IF query.param('access_red') -%]checked="checked"[%- END -%] />
-  <label class="form-check-label" for="access_ref"><img src="[% config.get('dbis_red_img') %]" alt="red"/>&nbsp;[% msg.maketext("ohne Zugriff auf Volltextartikel (Inhaltsverzeichnisse und Abstracts sind in der Regel frei zugänglich)") %]</label>
+  <label class="form-check-label" for="access_ref"><img src="[% config.get('ezb_red_img') %]" alt="red"/>&nbsp;[% msg.maketext("ohne Zugriff auf Volltextartikel (Inhaltsverzeichnisse und Abstracts sind in der Regel frei zugänglich)") %]</label>
 </div>
 
 <div class="form-floating mb-3">

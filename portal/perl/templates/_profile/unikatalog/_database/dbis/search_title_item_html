@@ -48,6 +48,20 @@
         allsubjects.${subject} = 1;
       END ;
     END ;
+
+    IF container.get('classifications_dbis') ;
+      classifications =  container.get('classifications_dbis');
+    END;
+
+    classification_name = searchquery.get_searchfield('classification').val ;
+
+    classification_desc = "";
+
+    FOREACH classification IN classifications ;
+      IF classification_name == classification.name ; 
+        classification_desc = classification.desc ;
+      END;
+    END;
 -%]
 
 [%# USE dumper;dumper.dump(nav)%]
@@ -56,9 +70,15 @@
 [%# USE dumper;dumper.dump(recordlist.generic_attributes)%]
 
 <div class="row">
+<h2>[% msg.maketext("Datenbanken der Universität zu Köln") %]</h2>
+
+[% IF classification_desc %]
+<h3>[% msg.maketext("Fachgebiet:") %] [% classification_desc %]</h3>
+[% END %]
 
   <div class="col-md-9">
 [% IF recordlist.get_size > 0 %]
+
 
 <div class="ob-resultlist">
   <div class="ob-resultheader pb-4">

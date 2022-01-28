@@ -264,7 +264,7 @@
 </p>
 [% END %]
 
-<div class="alert alert-secondary">
+<hr/>
 
 <h5>[% msg.maketext("Informationen zur Unterscheidung der Briefe") %]</h5>
 [% IF publist.${title}.incipit %]
@@ -291,7 +291,6 @@
 </p>
 [% END %]
 
-</div>
 
 </div><!-- End: titleinfo -->
       </div><!-- End: brieftitle -->

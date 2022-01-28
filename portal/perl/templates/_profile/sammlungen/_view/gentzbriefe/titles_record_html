@@ -102,12 +102,12 @@
 	  </div>
 	</div>
 
-[% IF normdata.item('T0412') || normdata.item('T0413') %]
+[% IF normdata.item('T0412') || normdata.item('T0525') %]
 	<div class="card">
 	  <div class="card-header" id="headingAbschnitt2">
 	    <h5 class="mb-0">
               <a class="card-link collapsed" href="#collapseAbschnitt2" data-toggle="collapse" data-target="#collapseAbschnitt2" aria-expanded="false" aria-controls="collapseAbschnitt2">
-		[% msg.maketext("Archiv") %]
+		[% msg.maketext("Provenienz") %]
               </a>
 	    </h5>
 	  </div>

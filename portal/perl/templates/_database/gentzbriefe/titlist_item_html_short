@@ -249,7 +249,7 @@ $(document).ready(function(){
 [% END %]
 [% IF record.id && record.database %]
        <div class="pr-1">
-	 <a class="btn btn-light pr-2" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %]" alt="[% title %]" title="[% title %]"><img src="[% config.get_icon('details',view,sysprofile) %]" alt="[% msg.maketext("Details") %]" /><span class="d-none d-sm-inline">Details</span></a>
+	 <a class="btn btn-light pr-2" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %]" alt="[% title %]" title="[% title %]"><i class="fas fa-eye"></i> <span class="d-none d-sm-inline">Details</span></a>
        </div>
        <!--
 [% IF NOT with_cartitems_delete %]

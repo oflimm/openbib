@@ -154,7 +154,16 @@
         IF src.reference_publication_date.defined ;	
           ref_date     = src.reference_publication_date;
         END;
-	
+
+
+        ref_person   = [];
+
+        FOREACH print_editor IN refpub.item('_nested:printed_publication__print_editors');
+
+          ref_person.push("${print_editor.print_editor} (Hrsg.)");
+
+        END;
+
         ref_title    = refpub.standard.${"de-DE"};
         ref_location = refpub.print_locations;
         ref_type     = refpub.print_publication_type.${"de-DE"};
@@ -170,6 +179,7 @@
 	     year     = ref_year
              url      = ref_url
 	     page     = ref_page
+	     person   = ref_person
 	     incipit  = ref_incipit
              date     = ref_date
           };
@@ -191,6 +201,13 @@
            ref_date     = item.sent_date_doublet;
 	   ref_page     = item.page_doublet ;
 	   ref_incipit  = item.incipit_doublet;
+
+           ref_person   = [];
+
+           FOREACH print_editor IN refdoub.doublet_publication.item('_nested:printed_publication__print_editors');
+
+             ref_person.push("${print_editor.print_editor} (Hrsg.)");
+           END;
 
            IF (ref_title) ;
 	
@@ -231,9 +248,14 @@
       <div class="ob-numbering">[% start_range+loop.count - 1 %]</div>
       <div class="ob-brieftitle pl-2">
 	<div class="ob-titleinfo mt-4 pl-4">
-
+[%# USE dumper;dumper.dump(publist)%]
+[% IF publist.${title}.person %]
+	 <p>
+	    <strong>[% msg.maketext("Person") %]:</strong> [% publist.${title}.person.join(' ; ') %]
+         </p>
+[% END %]
 	  <p>
-	    <strong>[% msg.maketext("Titel") %]:</strong> [% title %]
+	    <strong>[% msg.maketext("Kurztitel") %]:</strong> [% title %]
          </p>
 
 [% IF publist.${title}.url %]

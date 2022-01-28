@@ -346,7 +346,7 @@ while (my $jsonline = <IN>){
 	push @{$title_ref->{fields}{'0525'}}, {
 	    mult     => 1,
 	    subfield => '',
-	    content => $item_ref->{transmission_type},
+	    content => $item_ref->{transmission_type}{'de-DE'},
 	}
     }
     

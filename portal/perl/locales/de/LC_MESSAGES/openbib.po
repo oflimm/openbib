@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2022-01-26 08:21+0100\n"
+"PO-Revision-Date: 2022-01-28 12:50+0100\n"
 "Last-Translator: openbib <flimm@openbib.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -44887,7 +44887,7 @@ msgstr "Provenienz"
 #: ../templates/_database/gentzbriefe/visible_categories_title_ab2:18
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:35
 msgid "T1664-gentzbriefe"
-msgstr ""
+msgstr "Archivangaben"
 
 #: ../templates/_profile/kug_yaml4/_database/inst404abklatsch/visible_categories_title:109
 #: ../templates/_profile/sammlungen_yaml4/_database/inst404abklatsch/visible_categories_title:109

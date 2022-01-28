@@ -110,8 +110,11 @@ while (my $jsonline = <IN>){
 
     $multcount_ref = {};
 
-    if ($item_ref->{_system_object_id}) {
-	$title_ref->{id} = $item_ref->{_system_object_id};
+    if ($item_ref->{contentdm_id}) {
+	$title_ref->{id} = $item_ref->{contentdm_id};	
+    }    
+    elsif ($item_ref->{_system_object_id}) {
+	$title_ref->{id} = "edb".$item_ref->{_system_object_id};
     }
     else {
 	$logger->error("No id found for record: ".YAML::Dump($item_ref));

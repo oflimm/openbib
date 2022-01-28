@@ -264,6 +264,9 @@
 </p>
 [% END %]
 
+<div class="alert alert-secondary">
+
+<h5>[% msg.maketext("Informationen zur Unterscheidung der Briefe") %]</h5>
 [% IF publist.${title}.incipit %]
 <p>
 <strong>[% msg.maketext("Incipit") %]:</strong> [% publist.${title}.incipit %]
@@ -287,6 +290,8 @@
 <strong>[% msg.maketext("Datum") %]:</strong> [% publist.${title}.date %]
 </p>
 [% END %]
+
+</div>
 
 </div><!-- End: titleinfo -->
       </div><!-- End: brieftitle -->
@@ -376,11 +381,26 @@
 
 </div><!-- End Fulltitle -->
 
+<script>
+function copy_to_clipboard(formatid) {
+    var range = document.createRange();
+    range.selectNode(document.getElementById(formatid));
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand("copy");
+    window.getSelection().removeAllRanges();
+} 
+</script>
+
 [% IF src.item('citation') %]
 <div class="alert alert-secondary mt-2">
 <h5>[% msg.maketext("Empfohlene Zitation:") %]</h5>
 
-[% src.item('citation') %]
+<div id="gentzbriefe_citation">[% src.item('citation') %]</div>
+
+<!--
+<button type="button" onclick="copy_to_clipboard('gentzbriefe_citation')" class="btn btn-primary mt-2">[% msg.maketext("Kopieren") %]</button>
+-->
 
 </div>
 [% END %]

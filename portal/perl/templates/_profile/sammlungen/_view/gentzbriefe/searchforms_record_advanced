@@ -3,7 +3,7 @@
      'page_title' = msg.maketext("Selektive Suche")
 
       'main_template' = 'searchforms_record_advanced_html'
-      'sidebar_template' = 'subnavigation'
+      #'sidebar_template' = 'subnavigation'
       'active_menu' = 'searchform'
       'active_submenu' = 'searchform_advanced'
 

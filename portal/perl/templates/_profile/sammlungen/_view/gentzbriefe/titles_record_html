@@ -266,7 +266,7 @@
 
 <hr/>
 
-<h5>[% msg.maketext("Informationen zur Unterscheidung der Briefe") %]</h5>
+<h5>[% msg.maketext("Unterschiede in den Briefinformationen") %]</h5>
 [% IF publist.${title}.incipit %]
 <p>
 <strong>[% msg.maketext("Incipit") %]:</strong> [% publist.${title}.incipit %]

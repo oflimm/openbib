@@ -1,6 +1,6 @@
 [%- searchfield = config.get('searchfield') -%]
 
-<h1 class="display-5">[% msg.maketext("Erweiterte Suche") %]</h1>
+<h1 class="display-5">[% msg.maketext("Selektive Suche") %]</h1>
 
 [%# USE dumper;dumper.dump(available_searchfields)%]
 
@@ -9,7 +9,7 @@
     this_searchfield = 'freesearch';
 -%]
 <div class="form-group">
-<label for="to_focus">[% msg.maketext("Freie Suche") %]</label>
+<label for="to_focus">[% msg.maketext("Suchbegriff(e)") %]</label>
 <input class="form-control" id="to_focus" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 [% END %]
@@ -18,37 +18,25 @@
     this_searchfield = 'f0100';
  -%]
 <div class="form-group">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0100-gentzdigital") %]</label>
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Briefaussteller") %]</label>
 <input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
 [%- cgiparam = searchfield.t0101.prefix;
-    this_searchfield = 't0101';
+    this_searchfield = 'f0101';
  -%]
 <div class="form-group">
-<label for="[% cgiparam %]">[% msg.maketext("T0200-gentzdigital") %]</label>
-<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Briefempfänger") %]</label>
+<input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
-[% IF available_searchfields.title.active %]
-[%- cgiparam = searchfield.title.prefix;
-    this_searchfield = 'title';
+[%- cgiparam = searchfield.t0410.prefix;
+    this_searchfield = 't0410';
  -%]
 <div class="form-group">
-<label for="[% cgiparam %]">[% msg.maketext("Titelworte") %]</label>
+<label for="[% cgiparam %]">[% msg.maketext("Ausstellungsort") %]</label>
 <input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
-[% END %]
-
-[% IF available_searchfields.place.active %]
-[%- cgiparam = searchfield.place.prefix;
-    this_searchfield = 'place';
- -%]
-<div class="form-group">
-<label for="[% cgiparam %]">[% msg.maketext("T0410-gentzdigital") %]</label>
-<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
-</div>
-[% END %]
 
 [% IF available_searchfields.year.active %]
 [%- cgiparam      = searchfield.yearstring.prefix;
@@ -76,48 +64,6 @@
 </div>
 [% END %]
 
-[% IF available_searchfields.publisher.active %]
-[%- cgiparam = searchfield.publisher.prefix;
-    this_searchfield = 'publisher';
- -%]
-<div class="form-group">
-<label for="[% cgiparam %]">[% msg.maketext("T0412-gentzdigital") %]</label>
-<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
-</div>
-[% END %]
-
-[% IF available_searchfields.source.active %]
-[%- cgiparam = searchfield.source.prefix;
-    this_searchfield = 'source';
- -%]
-<div class="form-group">
-<label for="[% cgiparam %]">[% msg.maketext("T0594-gentzdigital") %]</label>
-<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
-</div>
-[% END %]
-
-[%- cgiparam = searchfield.provenance.prefix;
-    this_searchfield = 'provenance';
- -%]
-<div class="form-group">
-<label for="[% cgiparam %]">[% msg.maketext("Provenienz") %]</label>
-<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
-</div>
-
-[% IF available_searchfields.mediatype.active %]
-[%- cgiparam = searchfield.mediatypestring.prefix;
-    this_searchfield = 'mediatypestring';
- -%]
-<div class="form-group">
-<label for="[% cgiparam %]">[% msg.maketext("T0800-gentzdigital") %]</label>
-<select class="form-control" id="[% cgiparam %]" name="[% cgiparam %]">
-<option value="" selected="selected">Keiner ausgewählt</option>
-<option value="Briefe von Gentz">Briefe von Gentz</option>
-<option value="Briefe an Gentz">Briefe an Gentz</option>
-<option value="Briefe Dritter">Briefe Dritter</option>
-</select>
-</div>
-[% END %]
 
 <p/>
 

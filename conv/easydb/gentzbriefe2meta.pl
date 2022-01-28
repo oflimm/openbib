@@ -122,8 +122,11 @@ while (my $jsonline = <IN>){
     }
 
     if (defined $have_titleid_ref->{$title_ref->{id}}){
+	# Kann nur mit doppelten ContentDM-IDs passieren. Dann nehme die Systemobjectid
+	$title_ref->{id} = "edb".$item_ref->{_system_object_id};
+	
 	$logger->error("Doppelte ID: ".$title_ref->{id}."(_system_object_id: ".$item_ref->{_system_object_id}.", contentdm_id: ".$item_ref->{contentdm_id});
-	next;
+
     }
 
     $have_titleid_ref->{$title_ref->{id}} = 1;

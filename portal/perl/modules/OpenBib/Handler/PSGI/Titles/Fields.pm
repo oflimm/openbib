@@ -442,6 +442,7 @@ sub show_record {
 	};
 
 	if ($start){
+	    $start = decode_utf8($start);
 	    $where_ref->{content} = { -ilike => "$start\%" };
 	}
 	

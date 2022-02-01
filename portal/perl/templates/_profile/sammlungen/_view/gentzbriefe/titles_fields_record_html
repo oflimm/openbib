@@ -36,6 +36,12 @@
 [% END %]
 </ul>
 
+[% ELSE %]
+
+<div class="alert alert-secondary">[% msg.maketext("Zu diesem Register gibt es keine Einträge")%]</div>
+
+[% END %]
+
 [%  IF field != 'year' %]
 <div class="ob-alphabetic_index">
 <p>
@@ -72,12 +78,5 @@
 <p/>
 </div>
 [%  END %]
-
-
-[% ELSE %]
-
-<div class="alert alert-secondary">[% msg.maketext("Zu diesem Register gibt es keine Einträge")%]</div>
-
-[% END %]
 
 [% PROCESS common/subtemplate name="pagination" %]

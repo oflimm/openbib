@@ -347,7 +347,7 @@
       fulltext_desc = msg.maketext("Volltext mit freiem Zugang");;
     ELSIF item.${'T4120'}.first.subfield == "y";
       fulltext_availability = "yellow";
-      fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer" möglich.");;
+      fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer");
     ELSIF item.${'T4120'}.first.subfield == "f";
       fulltext_desc = msg.maketext("Volltext mit unbekanntem Zugang");;
     END;

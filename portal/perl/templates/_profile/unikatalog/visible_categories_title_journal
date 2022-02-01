@@ -46,7 +46,7 @@
                 'T0595', # msg.maketext("T0595") ErschJahr Quelle
 #                'T0434', # msg.maketext("T0434") Ill_Angabe
                 'T0413', # msg.maketext("T0413") Drucker
-                'T0035', # msg.maketext("T0035") ErschLand
+#                'T0035', # msg.maketext("T0035") ErschLand
                 'T0435', # msg.maketext("T0435") Format
                 'T0543', # msg.maketext("T0543") ISSN
                 'T0662', # msg.maketext("T0662") EDVurl

@@ -135,6 +135,17 @@
        border-bottom-width: 0px;
     }
 
+    .ob-alphabetic_index {
+	padding-top: 1em;
+	padding-left: 5px;
+    }
+
+    .ob-alphabetic_index a {
+	padding-right: 5px;
+	font-size: 1.1em;
+//	font-weight: bold;
+    }
+    
     .ob-page_footer .row {
 	margin-right: 0px;
     }

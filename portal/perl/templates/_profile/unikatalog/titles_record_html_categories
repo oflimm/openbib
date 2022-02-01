@@ -386,7 +386,7 @@ FOREACH field IN normdata;
            END ;
          END ;
 
-         IF item.subfeld == 'y';
+         IF item.subfield == 'y';
 	   ampel =  "<img src=\"${config.get('dbis_yellow_img')}\" alt=\"Restricted  Access\" />" ;
 	 ELSIF item.subfield == 'g';
 	   ampel =  "<img src=\"${config.get('dbis_green_img')}\" alt=\"Free Access\" />" ;

@@ -392,7 +392,13 @@ FOREACH field IN normdata;
 	   ampel =  "<img src=\"${config.get('dbis_green_img')}\" alt=\"Free Access\" />" ;
 	 END;
 
-         IF thiscontent ;
+         IF content.match('usbportal\?service=dbinfo&.*?id=\d+');
+           matchresult = content.match('usbportal\?service=dbinfo&.*?id=(\d+)');
+           content = "${path_prefix}/databases/id/dbis/titles/id/${matchresult.first}.html?l=${lang}";
+         END;
+
+
+         IF thiscontent ;	 
             IF content.match('digitool.hbz-nrw.de') ;
                thiscontent = "<img src=\"${config.get_icon('pdf',view,sysprofile)}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)" ;
 #               content     = "${path_prefix}/${config.get('redirect_loc')}?type=500;url=${uri_escape(content)}" ;

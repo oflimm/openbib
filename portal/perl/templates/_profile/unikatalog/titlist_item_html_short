@@ -354,7 +354,7 @@
 
     IF fulltext.match('usbportal\?service=dbinfo&.*?id=\d+');
        matchresult = fulltext.match('usbportal\?service=dbinfo&.*?id=(\d+)');
-       fulltext = "${path_prefix}/databases/id/dbis/titles/id/${matchresult.first}";
+       fulltext = "${path_prefix}/databases/id/dbis/titles/id/${matchresult.first}.html?l=${lang}";
 #    ELSIF fulltext.match('usbportal\?service=ejinfo&id=\d+');
 #       matchresult = fulltext.match('usbportal\?service=dbinfo&id=(\d+)');
 #       fulltext = "${path_prefix}/databases/id/dbis/titles/id/${matchresult.first}";

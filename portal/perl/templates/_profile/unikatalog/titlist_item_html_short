@@ -335,15 +335,30 @@
 
     titleinfos = [] ;
 
+# Testtitel
+#
+#    item.${'T4120'} = [
+#      {
+#         mult = 1
+#         subfield = 'y'
+#         content = "http://www.ub.uni-koeln.de/usbportal?service=dbinfo&id=5660"
+
+#}
+#    ];
+
     # E-Book/Inhaltsverzeichnis vorhanden
     fulltext  = item.${'T4120'}.first.content ;
     toc       = item.${'T4110'}.first.content ;
 
     # DBIS/EZB? Dann umleiten
 
-    IF fulltext.match("usbportal?service=dbinfo&id=[0-9]+");
-       matchresult = fulltext.match("usbportal?service=dbinfo&id=([0-9]+)");
+    IF fulltext.match('usbportal\?service=dbinfo&id=\d+');
+       matchresult = fulltext.match('usbportal\?service=dbinfo&id=(\d+)');
        fulltext = "${path_prefix}/databases/id/dbis/titles/id/${matchresult.first}";
+#    ELSIF fulltext.match('usbportal\?service=ejinfo&id=\d+');
+#       matchresult = fulltext.match('usbportal\?service=dbinfo&id=(\d+)');
+#       fulltext = "${path_prefix}/databases/id/dbis/titles/id/${matchresult.first}";
+
     END;
 
     fulltext_availability  = "";

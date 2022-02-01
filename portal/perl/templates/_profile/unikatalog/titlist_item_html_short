@@ -339,6 +339,13 @@
     fulltext  = item.${'T4120'}.first.content ;
     toc       = item.${'T4110'}.first.content ;
 
+    # DBIS/EZB? Dann umleiten
+
+    IF fulltext.match("usbportal?service=dbinfo&id=[0-9]+");
+       matchresult = fulltext.match("usbportal?service=dbinfo&id=([0-9]+)");
+       fulltext = "${path_prefix}/databases/id/dbis/titles/id/${matchresult.first}";
+    END;
+
     fulltext_availability  = "";
     fulltext_desc  = "Volltext";
 

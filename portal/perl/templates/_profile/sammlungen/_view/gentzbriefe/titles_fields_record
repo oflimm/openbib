@@ -10,7 +10,7 @@
        field_description = msg.maketext("T0101-gentzbriefe"); # Briefempfaenger
        searchfield = 'ft0101' ;
     ELSIF field == '0410' ;
-       field_description = msg.maketext("T0410-gentzbriefe");
+       field_description = msg.maketext("Ausstellungsorte");
        searchfield = 'ft0410' ;
     ELSIF field == '0412' ;
        field_description = msg.maketext("T0412-gentzbriefe");

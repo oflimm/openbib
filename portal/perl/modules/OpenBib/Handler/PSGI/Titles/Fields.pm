@@ -101,20 +101,6 @@ sub show_collection {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
 
-    my $database_in_view = 0;
-
-    foreach my $dbname ($config->get_viewdbs($view)){
-        if ($dbname eq $database){
-            $database_in_view = 1;
-            last;
-        }
-    }
-
-    unless ($database_in_view || $user->is_admin){
-        $self->header_add('Status' => 404); # NOT_FOUND
-        return;
-    }
-    
     my $catalog = new OpenBib::Catalog({ database => $database });
 
     my $fields = $catalog->get_schema->resultset('TitleField')->search_rs(
@@ -195,24 +181,15 @@ sub show_record {
 
     my $no_log            = $query->param('no_log')            || '';
 
+    my $start             = $query->param('start')             || '';
+
     # Sub-Template ID
     my $stid              = $query->param('stid')              || '';
 
-
-    my $database_in_view = 0;
-
-    foreach my $dbname ($config->get_viewdbs($view)){
-        if ($dbname eq $database){
-            $database_in_view = 1;
-            last;
-        }
+    unless ($config->database_defined_in_view({ database => $database, view => $view })){
+	return $self->print_warning($msg->maketext("Zugriff auf Katalog $database verweigert.")) if (!$user->is_admin);	    
     }
-
-    unless ($database_in_view || $user->is_admin){
-        $self->header_add('Status' => 404); # NOT_FOUND
-        return;
-    }
-    
+        
     #####################################################################
     # Verbindung zur SQL-Datenbank herstellen
 
@@ -305,8 +282,11 @@ sub show_record {
 
     my $browselist_ref = [];
     my $hits           = 0;
-    
+
+    # Welche Kategorien sind mit Nordaten verknuepft, so dass dort die Ansetzungsform bestimmt werden muss
     my $conn_field_ref = {
+        '0014' => 'holding',
+        '0016' => 'holding',
         '0100' => 'person',
         '0101' => 'person',
         '0102' => 'person',
@@ -370,46 +350,75 @@ sub show_record {
                 join => ['classificationid', { 'classificationid' => 'classification_fields' }],
             },
             'holding' => {
-                resultset => 'TitleHolding',
-                field => 'holding_fields.field',
-                select => 'holding_fields.content',
-                join => ['holdingid', { 'holdingid' => 'holding_fields' }],
+                resultset => 'HoldingField',
+                field => 'field',
+                select => 'content',
             },
         );
         
         # DBI: "select distinct norm.content as content from $normtable as norm, conn where conn.field=? and conn.sourcetype=1 and conn.targettype=? and conn.targetid=norm.id and norm.field=1 order by content $limits ";
         $logger->debug("Type $table -> $table_type{$table}{resultset}");
-        $contents = $schema->resultset($table_type{$table}{resultset})->search_rs(
-            {
-                $table_type{$table}{field} => 800, # Ansetzungsform
-                'me.field' => $field
-            },
-            {
-                select   => [$table_type{$table}{select}],
-                group_by => $table_type{$table}{select},
-                as       => ['thiscontent'],
-                join     => $table_type{$table}{join},
-            }
-        );
-        
-        $hits = $contents->count;
-        
-        $contents = $schema->resultset($table_type{$table}{resultset})->search_rs(
-            {
-                $table_type{$table}{field} => 800, # Ansetzungsform
-                'me.field' => $field
-            },
-            {
-                select   => [$table_type{$table}{select}],
-                group_by => $table_type{$table}{select},
-                order_by => [ { -asc => $table_type{$table}{select} } ],
-                as       => ['thiscontent'],
-                join     => $table_type{$table}{join},
-                rows => $hitrange,
-                offset => $offset,
-            }
-        );            
-        
+
+	if ($table eq "holding"){
+	    $contents = $schema->resultset($table_type{$table}{resultset})->search_rs(
+		{
+		    $table_type{$table}{field} => $field,
+		},
+		{
+		    select   => [$table_type{$table}{select}],
+		    group_by => $table_type{$table}{select},
+		    as       => ['thiscontent'],
+		}
+		);
+	    
+	    $hits = $contents->count;
+	    
+	    $contents = $schema->resultset($table_type{$table}{resultset})->search_rs(
+		{
+		    $table_type{$table}{field} => $field,
+		},
+		{
+		    select   => [$table_type{$table}{select}],
+		    group_by => $table_type{$table}{select},
+		    order_by => [ { -asc => $table_type{$table}{select} } ],
+		    as       => ['thiscontent'],
+		    rows => $hitrange,
+		    offset => $offset,
+		}
+		);            
+	}
+	else {	
+	    $contents = $schema->resultset($table_type{$table}{resultset})->search_rs(
+		{
+		    $table_type{$table}{field} => 800, # Ansetzungsform
+			'me.field' => $field
+		},
+		{
+		    select   => [$table_type{$table}{select}],
+		    group_by => $table_type{$table}{select},
+		    as       => ['thiscontent'],
+		    join     => $table_type{$table}{join},
+		}
+		);
+	    
+	    $hits = $contents->count;
+	    
+	    $contents = $schema->resultset($table_type{$table}{resultset})->search_rs(
+		{
+		    $table_type{$table}{field} => 800, # Ansetzungsform
+			'me.field' => $field
+		},
+		{
+		    select   => [$table_type{$table}{select}],
+		    group_by => $table_type{$table}{select},
+		    order_by => [ { -asc => $table_type{$table}{select} } ],
+		    as       => ['thiscontent'],
+		    join     => $table_type{$table}{join},
+		    rows => $hitrange,
+		    offset => $offset,
+		}
+		);            
+	}        
     }
     # Sonst direkt in den Titelfeldern
     else {
@@ -427,11 +436,17 @@ sub show_record {
         );
         
         $hits = $contents->count;
-        
+
+        my $where_ref = {
+	    'field'   => $field,
+	};
+
+	if ($start){
+	    $where_ref->{content} = { -ilike => "$start\%" };
+	}
+	
         $contents = $schema->resultset('TitleField')->search_rs(
-            {
-                'field'   => $field,
-            },
+            $where_ref,
             {
                 select   => ['content'],
                 as       => ['thiscontent'],

@@ -358,6 +358,9 @@
     ELSIF fulltext.match('usbportal\?service=ejinfo&id=\d+');
        matchresult = fulltext.match('usbportal\?service=ejinfo&id=(zdb:\d+\-?\d)');
        fulltext = "${path_prefix}/databases/id/dbis/titles/id/${matchresult.first}";
+    ELSIF fulltext.match('frontdoor.phtml\?id=\d+');
+       matchresult = fulltext.match('frontdoor.phtml\?id=(\d+)');
+       fulltext = "${path_prefix}/databases/id/dbis/titles/id/${matchresult.first}";
     END;
 
     fulltext_availability  = "";

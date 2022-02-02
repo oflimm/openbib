@@ -187,8 +187,47 @@ sub get_titles_record {
 
     my $record = new OpenBib::Record::Title({ database => $self->{database}, id => $id });
 
-    my $url="http://rzblx1.uni-regensburg.de/ezeit/detail.phtml?colors=".((defined $arg_ref->{colors})?$arg_ref->{colors}:$config->{ezb_colors})."&bibid=".((defined $arg_ref->{bibid})?$arg_ref->{bibid}:$config->{ezb_bibid})."&lang=".((defined $arg_ref->{lang})?$arg_ref->{lang}:"de")."&jour_id=$id&xmloutput=1";
+    # Referenzierung mit zdbid? Dann zuerst die EZB-ID bestimmen
 
+    if ($id=~m/^zdb:(.+?)$/){
+	my $zdbid=$1;
+	
+	my $url="http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?colors=$self->{colors}&bibid=$self->{bibid}&jq_type1=ZD&jq_term1=$zdbid&hits_per_page=1&offset=0&lang=de&xmloutput=1";
+
+	$logger->debug("Lookup-URL: $url");
+	
+	my $request = HTTP::Request->new('GET' => $url);
+	
+	my $response = $ua->request($request);
+	
+	if ($logger->is_debug){
+	    $logger->debug("Response: ".$response->content);
+	}
+	
+	if (!$response->is_success) {
+	    $logger->info($response->code . ' - ' . $response->message);
+	    return $record;
+	}
+	
+	my $parser = XML::LibXML->new();
+	my $tree   = $parser->parse_string($response->content);
+	my $root   = $tree->getDocumentElement;
+
+	my $jourid = "";
+	foreach my $journal_node ($root->findnodes('/ezb_page/ezb_alphabetical_list_searchresult/alphabetical_order/journals/journal')){
+	    $jourid = $journal_node->findvalue('@jourid');
+	    last;
+	}
+
+	return $record unless ($jourid);
+
+	$logger->debug("Found EZB-ID $jourid for ZDB-ID $zdbid");
+	
+	$id = $jourid;
+    }
+    
+    my $url="http://rzblx1.uni-regensburg.de/ezeit/detail.phtml?colors=".((defined $arg_ref->{colors})?$arg_ref->{colors}:$config->{ezb_colors})."&bibid=".((defined $arg_ref->{bibid})?$arg_ref->{bibid}:$config->{ezb_bibid})."&lang=".((defined $arg_ref->{lang})?$arg_ref->{lang}:"de")."&jour_id=$id&xmloutput=1";
+        
     my $titles_ref = [];
     
     $logger->debug("Request: $url");

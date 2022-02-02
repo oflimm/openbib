@@ -360,7 +360,7 @@
        fulltext = "${path_prefix}/databases/id/ezb/titles/id/${matchresult.first}";
     ELSIF fulltext.match('frontdoor.phtml\?id=\d+');
        matchresult = fulltext.match('frontdoor.phtml\?id=(\d+)');
-       fulltext = "${path_prefix}/databases/id/ezb/titles/id/${matchresult.first}";
+       fulltext = "${path_prefix}/databases/id/ezb/titles/id/zdb:${matchresult.first}";
     END;
 
     fulltext_availability  = "";

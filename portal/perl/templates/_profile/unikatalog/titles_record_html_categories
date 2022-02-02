@@ -401,6 +401,12 @@ FOREACH field IN normdata;
          IF content.match('usbportal\?service=dbinfo&.*?id=\d+');
            matchresult = content.match('usbportal\?service=dbinfo&.*?id=(\d+)');
            content = "${path_prefix}/databases/id/dbis/titles/id/${matchresult.first}.html?l=${lang}";
+         ELSIF fulltext.match('usbportal\?service=ejinfo&id=');
+            matchresult = fulltext.match('usbportal\?service=ejinfo&id=(zdb:\d+\-?\d)');
+            content = "${path_prefix}/databases/id/ezb/titles/id/${matchresult.first}";
+         ELSIF fulltext.match('frontdoor.phtml\?id=\d+');
+            matchresult = fulltext.match('frontdoor.phtml\?id=(\d+)');
+            content = "${path_prefix}/databases/id/ezb/titles/id/zdb:${matchresult.first}";
          END;
 
 

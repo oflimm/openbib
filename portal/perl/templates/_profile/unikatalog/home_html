@@ -220,5 +220,37 @@ $(function () {
 
 </div>
 </div>
+
+<div class="container pb-5">
+  <div class="row">
+    <div class="col-md-4 ps-3 pe-1 pb-3">
+      <div class="card mt-2 h-100">
+	<div class="card-body pb-0">
+	  <h4 class="card-subtitle pb-1 text-center">[% msg.maketext("Yewno") %]</h4>
+	  <p class="card-text">[% msg.maketext("Wissenslandkarten entdecken, erkunden, erforschen") %]</p>
+	  <a class="btn btn-primary" href="https://yewno.ub.uni-koeln.de/" target="_blank">[% msg.maketext("Mehr") %]</a></div>
+      </div>
+    </div>  
+    <div class="col-md-4 ps-3 pe-1 pb-3">
+      <div class="card mt-2 h-100">
+	<div class="card-body pb-0">
+	  <h4 class="card-subtitle pb-1 text-center">[% msg.maketext("Zeitschriften") %]</h4>
+	  <p class="card-text">[% msg.maketext("Online-Zugriff auf alle Elektronische Zeitschriften an der Universität") %]</p>
+	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/ezb/classifications.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a></div>
+      </div>
+    </div>
+    <div class="col-md-4 ps-3 pe-1 pb-3">
+      <div class="card mt-2 h-100">
+	<div class="card-body pb-0">
+	  <h4 class="card-subtitle pb-1 text-center">[% msg.maketext("Datenbanken") %]</h4>
+	  <p class="card-text">[% msg.maketext("Online-Zugang zu allen Datenbanken an der Universität.") %]</p>
+	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/classifications.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 </div> <!-- image_area -->
 [%# PROCESS common/subtemplate name="home_html_bottom" %]

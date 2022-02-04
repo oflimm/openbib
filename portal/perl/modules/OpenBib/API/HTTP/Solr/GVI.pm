@@ -570,11 +570,13 @@ sub parse_query {
 	
         my $searchtermstring = (defined $searchquery->get_searchfield($field)->{val})?$searchquery->get_searchfield($field)->{val}:'';
         my $bool             = (defined $searchquery->get_searchfield($field)->{bool})?$searchquery->get_searchfield($field)->{bool}:'AND';
-		
-	push @{$query_ref->{'bool'}{'must'}},     $gvi_searchfield.":".$searchtermstring if ($bool eq "AND");
-	push @{$query_ref->{'bool'}{'must_not'}}, $gvi_searchfield.":".$searchtermstring if ($bool eq "AND NOT");
-	push @{$query_ref->{'bool'}{'should'}},   $gvi_searchfield.":".$searchtermstring if ($bool eq "OR");
-	$query_count++;
+
+	if ($gvi_searchfield && $searchtermstring){
+	    push @{$query_ref->{'bool'}{'must'}},     $gvi_searchfield.":".$searchtermstring if ($bool eq "AND");
+	    push @{$query_ref->{'bool'}{'must_not'}}, $gvi_searchfield.":".$searchtermstring if ($bool eq "AND NOT");
+	    push @{$query_ref->{'bool'}{'should'}},   $gvi_searchfield.":".$searchtermstring if ($bool eq "OR");
+	    $query_count++;
+	}
     }
 
     # No Filters for now

@@ -235,7 +235,7 @@ $(function () {
       <div class="card mt-2 h-100">
 	<div class="card-body pb-0">
 	  <h4 class="card-subtitle pb-1 text-center">[% msg.maketext("Zeitschriften") %]</h4>
-	  <p class="card-text">[% msg.maketext("Online-Zugriff auf alle Elektronische Zeitschriften an der Universität") %]</p>
+	  <p class="card-text">[% msg.maketext("Online-Zugriff auf alle Elektronischen Zeitschriften an der Universität") %]</p>
 	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/ezb/classifications.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a></div>
       </div>
     </div>

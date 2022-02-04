@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::API::HTTP::Solr.pm
+#  OpenBib::API::HTTP::Solr::GVI.pm
 #
 #  Objektorientiertes Interface zum Solr JSON-API des GVI
 #
@@ -70,11 +70,11 @@ sub send_retrieve_request {
     my $ua     = $self->get_client;
 
 
-    my $url = $config->get('solr')->{'search_url'};
+    my $url = $config->get('solr')->{'gvi'}{'search_url'};
 
     my $header = ['Content-Type' => 'application/json; charset=UTF-8'];
     my $json_query_ref = {
-	'query' => { bool => { must => ["fullid:($database\\:$id)"]}},
+	'query' => { bool => { must => ["id:$id)"]}},
     };
 
     my $encoded_json = encode_utf8(encode_json($json_query_ref));
@@ -364,7 +364,7 @@ sub get_search_resultlist {
         my $id            = OpenBib::Common::Util::encode_id($match_ref->{database}."::".$match_ref->{id});
 	my $fields_ref    = $match_ref->{fields};
 
-        $recordlist->add(OpenBib::Record::Title->new({database => 'eds', id => $id })->set_fields_from_storable($fields_ref));
+        $recordlist->add(OpenBib::Record::Title->new({database => 'gvi', id => $id })->set_fields_from_storable($fields_ref));
     }
 
     # if ($logger->is_debug){
@@ -386,6 +386,7 @@ sub process_matches {
     
     foreach my $match (@{$json_result_ref->{response}{docs}}){
 	my $full_record = encode_utf8($match->{fullrecord});
+#	my $full_record = $match->{fullrecord};
 
 	my $fields_ref = {};
 
@@ -397,24 +398,54 @@ sub process_matches {
 
 	$logger->debug("Got $full_record");
 
+	my $record_id = 0;
 	if ($full_record){
 	    eval {
+		my $field_mult_ref = {};
 		open(my $fh, "<", \$full_record);
 		my $batch = MARC::Batch->new( 'XML', $fh );
+		# Fallback to UTF8
+
+		# Recover from errors
+		$batch->strict_off();
+		$batch->warnings_off();
+
+		# Fallback to UTF8
+		MARC::Charset->assume_unicode(1);
+		# Ignore Encoding Errors
+		MARC::Charset->ignore_errors(1);
+
 		while (my $record = $batch->next() ){
+		    my $encoding = $record->encoding();
+		    
 		    # Process all fields
 		    foreach my $field ($record->fields()){
-			my $field_nr = $field->tag();
+			my $field_nr = "T".$field->tag();
+			$field_mult_ref->{$field_nr} = 1 unless (defined $field_mult_ref->{$field_nr});
 			foreach my $subfield_ref ($field->subfields()){
+			    my $content = $subfield_ref->[1];
+
+			    if ($encoding eq "MARC-8"){
+				$content = marc8_to_utf8($content);
+			    }
+			    else {
+				$content = decode_utf8($content);	
+			    }
+			    
 			    push @{$fields_ref->{$field_nr}}, {
 				subfield => $subfield_ref->[0],
-				content  => $subfield_ref->[1],
-			    }
+				content  => $content,
+				mult     => $field_mult_ref->{$field_nr},
+			    };
 			}		    
+			$field_mult_ref->{$field_nr} = $field_mult_ref->{$field_nr} + 1;
 		    }
 		}
 		close $fh;
 	    };
+	    if ($@){
+		$logger->error($@);
+	    }
 	}
 	# Gesamtresponse in response_source
 	push @{$fields_ref->{'response_source'}}, {

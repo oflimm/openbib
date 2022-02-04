@@ -162,11 +162,14 @@ sub send_search_request {
 	}
 	
 	foreach my $thisfacet (keys %$current_facets_ref){
-	    $json_facets_ref->{$thisfacet} = {
-		'type' => 'terms',
-		    'field' => "facet_".$thisfacet,
-		    'limit' => 50
-	    };
+	    if ($config->get('solr_facet_mapping')->{'gvi'}{$thisfacet}){
+		my $gvi_facet = $config->get('solr_facet_mapping')->{'gvi'}{$thisfacet};
+		$json_facets_ref->{$thisfacet} = {
+		    'type' => 'terms',
+			'field' => $gvi_facet,
+			'limit' => 50
+		};
+	    }
 	}
     }
 
@@ -213,15 +216,15 @@ sub send_search_request {
 	    'offset' => $from,	    
     };
 
-    # # Filter hinzufuegen
-    # if (@$filter_ref){
-    # 	$json_query_ref->{filter} = $filter_ref;
-    # }
+    # Filter hinzufuegen
+    if (@$filter_ref){
+    	$json_query_ref->{filter} = $filter_ref;
+    }
 
-    # # Facetten aktivieren
-    # if (keys %$json_facets_ref){
-    # 	$json_query_ref->{facet} = $json_facets_ref;
-    # }
+    # Facetten aktivieren
+    if (keys %$json_facets_ref){
+    	$json_query_ref->{facet} = $json_facets_ref;
+    }
 
     # # Sortierung
     # if ($sorttype ne "relevance") { # default
@@ -322,6 +325,10 @@ sub search {
     
     my $json_result_ref = $self->send_search_request($arg_ref);
 
+    if ($logger->is_debug){
+	$logger->debug("GVI JSON Result".YAML::Dump($json_result_ref));
+    }
+    
     my @matches = $self->process_matches($json_result_ref);
 
     $self->process_facets($json_result_ref);
@@ -585,6 +592,29 @@ sub parse_query {
     
     my $filter_ref = [];
 
+    if ($logger->is_debug){
+        $logger->debug("All filters: ".YAML::Dump($searchquery->get_filter));
+    }
+
+    my $solr_filter_field_ref = $config->get('solr_filter_field')->{'gvi'};
+    
+    if (@{$searchquery->get_filter}){
+        $filter_ref = [ ];
+        foreach my $thisfilter_ref (@{$searchquery->get_filter}){
+            my $field = $solr_filter_field_ref->{$thisfilter_ref->{field}};
+            my $term  = $thisfilter_ref->{term};
+#            $term=~s/_/ /g;
+            
+            $logger->debug("Filter: $field / Term: $term (Filter-Field: ".$thisfilter_ref->{field}.")");
+
+	    if ($field && $term){
+		push @$filter_ref, "$field:$term";
+		$filter_count++;
+	    }
+        }
+	
+    }
+    
     if ($logger->is_debug){
         $logger->debug("Query: ".YAML::Dump($query_ref));
         $logger->debug("Filter: ".YAML::Dump($filter_ref));

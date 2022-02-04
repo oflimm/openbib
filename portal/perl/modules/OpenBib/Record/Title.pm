@@ -3243,6 +3243,60 @@ sub to_abstract_fields {
     return $abstract_fields_ref;
 }
 
+sub to_custom_field_scheme_1 {
+    my ($self) = @_;
+
+    # Umwandlung des ggf. z.B. bereits mit MARC21 (Sub)Feldern gefuellten Internformats
+    # in ein besser in den Templates auswertbares Daten-Schema
+    #
+    # Beispiel:
+
+    # my $example_ref = {
+    # 	# Key: T=Title + (MARC)Fieldno
+    # 	'T100' => [	    
+    # 	    {
+    # 		# Mult-Feld
+    # 		'mult' => 1, # erster Autor
+
+    # 		    # Subfelder
+    # 		    'a' => 'Morgan, John Pierpont',
+    # 		    'd' => '1837-1913',
+    # 		    'e' => 'collector',
+    # 	    },
+    # 	    {
+    # 		# Mult-Feld
+    # 		'mult' => 2, # Zweiter Autor
+
+    # 		    # Subfelder
+    # 		    'a' => 'Adams, Henry',
+    # 		    'd' => '1838-1918',
+    # 	    },
+    # 	    ],
+    # };
+    
+    my $field_scheme_ref = {};
+
+    foreach my $fieldname (keys %{$self->{_fields}}){
+	my $tmp_scheme_ref = {};
+
+	foreach my $item_ref (@{$self->{_fields}{$fieldname}}){
+	    $tmp_scheme_ref->{$item_ref->{mult}}{$item_ref->{subfield}} = $item_ref->{content};
+	}
+
+	foreach my $mult (sort keys %$tmp_scheme_ref){
+	    my $tmp2_scheme_ref = {
+		mult => $mult,
+	    };
+	    foreach my $subfield (keys %{$tmp_scheme_ref->{$mult}}){	    
+		$tmp2_scheme_ref->{$subfield} = $tmp_scheme_ref->{$mult}{$subfield};
+	    }
+	    push @{$field_scheme_ref->{$fieldname}}, $tmp2_scheme_ref;
+	}	
+    }
+   
+    return $field_scheme_ref;
+}
+
 sub to_tags {
     my ($self) = @_;
 

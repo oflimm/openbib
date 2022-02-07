@@ -174,13 +174,13 @@ $(function () {
 <input type="hidden" name="srt"        value="relevance_desc" />
 <input type="hidden" name="st"         value="1" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
-<input type="hidden" name="profile"    value="[% searchprofileid_of_books %]" />
+<input type="hidden" name="profile"    value="[% searchprofileid_of_view %]" />
 
 <div class="container justify-content-center border shadow rounded ps-2 pe-2 pt-3 pb-2 mb-4">
     <div class="row">    
         <div class="col">
             <div class="input-group">
-                <input required="required" id="to_focus" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Unikatalog (Bücher, E-Medien, Aufsätze &amp; mehr) und USB Website") %]" />
+                <input required="required" id="to_focus" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Geben Sie hier Ihre Suchbegriffe ein") %]" />
                 <span class="input-group-btn ps-1">
                     <button class="btn btn-primary" type="submit"><span class="fas fa-search d-md-none"></span><span class="d-none d-md-block font-weight-bold">[% msg.maketext("Suchen") %]</span></button>
                     <span class="btn btn-primary fas fa-cog d-md-none" data-bs-toggle="collapse" data-bs-target="#search_options" aria-expanded="false"></span>

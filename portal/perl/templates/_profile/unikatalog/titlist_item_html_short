@@ -409,7 +409,7 @@
 [% END %]      
       <div class="ob-brieftitle ps-4">
 [%# USE dumper;dumper.dump(dbinfo) %]
-        <div class="ob-titleinfo ps-2 mt-2">
+        <div class="ob-titleinfo ps-2 mt-4">
 [% IF NOT hide_hit %]	
          <span class="ob-person">[% person %]</span>
 	 <strong><span class="ob-title"><a href="[% detail_url %]">[% title %]</a></span></strong>

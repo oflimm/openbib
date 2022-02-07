@@ -29,6 +29,7 @@
 
   <div class="ob-resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 [% IF format == 'short' %]
+[%# USE dumper;dumper.dump(recordlist.to_ids)%]
 [%- FOREACH record IN recordlist.get_records -%]
 [%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 database=record.database with_id_checkbox=1 with_cartitems_delete=1 start_range=1 %] 
 [%- END -%]

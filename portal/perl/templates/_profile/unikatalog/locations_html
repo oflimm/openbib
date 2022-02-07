@@ -40,8 +40,8 @@
     map.addLayer(markers);
 
 [% FOREACH location IN locations %]
-[%  NEXT IF NOT location.identifier.match('^DE-38') %]
 [%  coordinates = location.fields.${"L0280"}.first.content.split(',').reverse.join(',') %]
+[%  NEXT IF NOT coordinates %]
 [%  IF coordinates %]
     var lonLat[% location.id %] = new OpenLayers.LonLat( [% coordinates %] ).transform(
             new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
@@ -67,7 +67,8 @@
 <tr><th>[% msg.maketext("Identifier") %]</th><!-- <th>[% msg.maketext("Typ") %]</th> --><th>[% msg.maketext("Beschreibung") %]</th><!-- <th>[% msg.maketext("Kurzbeschreibung") %]</th> --></tr>
 [% FOREACH location IN locations %]
 [%   IF location.type == 'ISIL' %]
-[%  NEXT IF NOT location.identifier.match('^DE-38') %]
+[%  coordinates = location.fields.${"L0280"}.first.content.split(',').reverse.join(',') %]
+[%  NEXT IF NOT coordinates %]
 <tr>
 <td><a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% location.identifier %].html?l=[% lang %]">[% location.identifier %]</a></td>
 <!-- <td>[% location.type %]</td> -->

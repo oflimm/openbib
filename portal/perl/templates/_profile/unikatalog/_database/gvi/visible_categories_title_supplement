@@ -51,7 +51,7 @@
                 'T0619', # msg.maketext("T0619") Jahr Vorlage
                 'T0580', # msg.maketext("T0580") Nachweise / Sonstige Nummern
                 'T0646', # msg.maketext("T0646") Filmbesitz
-                'T0015', # msg.maketext("T0015") Sprache
+                'Sprache', # msg.maketext("Sprache") T041a
                 'T0516', # msg.maketext("T0516") Sprache
                 'T0750', # msg.maketext("T0750") Abstract
                 'T0503', # msg.maketext("T0503") Uebers. HST

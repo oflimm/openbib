@@ -21,6 +21,8 @@
       topic_map.${topic.id} = topic.name;
    END;
 
+   normdata = record.to_custom_field_scheme_1;
+   
    catalog_has_authorities = config.get('source_systems').${config.get_system_of_db(record.database)}.has_authorities;
 -%]
 [% IF format == "full" %]
@@ -226,9 +228,8 @@ FOREACH field IN normdata;
 
   category = field.key ;
 
-  FOREACH item IN field.value;
-    content      = item.content;
-
+  FOREACH thisfield IN field.value;
+    
     SWITCH category;
 
     CASE "T0035";
@@ -241,21 +242,43 @@ FOREACH field IN normdata;
 	 END;
          content_map.${'T0035'}.push(content);
 
-    CASE "T0015";
+    CASE "T020";
+    
+         content = thisfield.${'9'};
+
+         IF thisfield.${'a'} && NOT content;
+	   content = thisfield.${'a'};
+         END;
+	 
+         IF content ;
+           IF NOT content_map.${'ISBN'} ;
+	      content_map.${'ISBN'} = [];
+	   END;
+           content_map.${'ISBN'}.push(content);
+	 END;
+
+    CASE "T041"; # Sprache
+         content = thisfield.${'a'} ;
+
          langdesc   = lang_map.${content};
          IF langdesc ;
             content   = langdesc ;
-         END ;
-         IF NOT content_map.${'T0015'} ;
-	    content_map.${'T0015'} = [];
-	 END;
-         content_map.${'T0015'}.push(content);
-	 
-    CASE [ "T0100" "T0101" "T0103" ];
-         thisid     = item.id;
+         END;
 
-         searchterm    = uri_escape(item.content);
-         searchprefix  = config.get('searchfield').personstring.prefix;
+         IF content ;
+           IF NOT content_map.${"Sprache"} ;
+	      content_map.${"sprache"} = [];
+	   END;
+           content_map.${"Sprache"}.push(content);
+	 END;
+	 
+    CASE [ "T100"  ];
+         content = thisfield.${'a'} ;
+	 supplement = thisitem.${'e'} ;
+         thisid  = thisfield.${'3'};
+
+         searchterm    = uri_escape(content);
+         searchprefix  = config.get('searchfield').person.prefix;
 
          resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('persons_loc')}/id/${thisid}";
          localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
@@ -268,351 +291,94 @@ FOREACH field IN normdata;
 
          icons     = "<span>${normdataicon}</span>";
 	 
-         content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement} ${icons}";
-         IF NOT content_map.${'T0100'} ;
-	    content_map.${'T0100'} = [];
+         content   = "<a href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${supplement} ${icons}";
+
+         IF content ;
+           IF NOT content_map.${'Person'} ;
+	     content_map.${'Person'} = [];
+	   END;
+           content_map.${'Person'}.push(content);
 	 END;
-         content_map.${'T0100'}.push(content);
-
-    CASE [ "T0200" "T0201" ];
-         thisid     = item.id;
 
 
-         searchterm    = uri_escape(item.content);
-         searchprefix  = config.get('searchfield').corporatebodystring.prefix;
-
-         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('corporatebodies_loc')}/id/${thisid}";
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
-
-         normdataicon = "";
-
-         IF thisid && catalog_has_authorities ;
-            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"K&ouml;rperschafts-Information\"  data-bs-toggle=\"modal\" data-bs-target=\"#normdataModal\" data-formattitle=\"Körperschaftsdaten\" data-formaturl=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
-         END;
-
-         icons     = "<span>${normdataicon}</span>";
-
-         content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement} ${icons}";
+    CASE "T245"; # HST
+         content = thisfield.${'a'} ;
 	 
-         IF NOT content_map.${'T0200'} ;
-	    content_map.${'T0200'} = [];
-	 END;
-         content_map.${'T0200'}.push(content);
-
-    CASE "T0331";
-         IF normdata.${"T0335"}.first.content ;
-	    title_supplement = normdata.${"T0335"}.first.content;
+         IF thisfield.${'b'} ;
+	    title_supplement = thisfield.${'b'};
 	    content = "${content} : ${title_supplement}";
 	 END;
 	 
          content   = "<b>${highlightquery(searchquery,content)}</b>";
-         IF NOT content_map.${'T0331'} ;
-	    content_map.${'T0331'} = [];
-	 END;
-         content_map.${'T0331'}.push(content);
 
-    CASE "T0412";
-         IF normdata.${"T0410"}.first.content ;
-	    verlagsort = normdata.${"T0410"}.first.content;
-	    content = "${verlagsort} : ${content}";
+         IF content ;
+           IF NOT content_map.${'Titel'} ;
+	     content_map.${'Titel'} = [];
+	   END;
+           content_map.${'Titel'}.push(content);
 	 END;
+
+    CASE "T250"; # Auflage
+         content = thisfield.${'a'} ;
+
+         IF content ;
+           IF NOT content_map.${'Ausgabe'} ;
+	     content_map.${'Ausgabe'} = [];
+	   END;
+           content_map.${'Ausgabe'}.push(content);
+	 END;
+
+    CASE [ "T260" "T264" ]; # 
+         jahr = "";
+	 IF thisfield.${'c'} ;
+	   jahr = thisfield.${'c'};
+	 END;
+
+         ortverlag = [];
+
+         IF thisfield.${'a'} ; # Ort
+	   ortverlag.push(thisfield.${'a'});
+	 END;
+
+         IF thisfield.${'b'} ; # Verlag
+           ortverlag.push(thisfield.${'b'});
+         END;
 	 
-         content   = "${highlightquery(searchquery,content)}";
-         IF NOT content_map.${'T0412'} ;
-	    content_map.${'T0412'} = [];
-	 END;
-         content_map.${'T0412'}.push(content);
+         ortverlagcontent = ortverlag.join(' : ');
 
-    CASE "T0424" ;
-         IF NOT content_map.${'T0425'} ;
-	    content_map.${'T0425'} = [];
-	 END;
-         content_map.${'T0425'}.push(content);
-	 
-    CASE "T0425" ;
-         IF NOT content_map.${'T0425'} ;
-	    content_map.${'T0425'} = [];
-	 END;
-         content_map.${'T0425'}.push(content);
-
-    CASE "T0433" ;
-         IF normdata.${"T0437"}.first.content ;
-	    begleitmat = normdata.${"T0437"}.first.content;
-	    content = "${content} + ${begleitmat}";
-	 END;
-
-         IF normdata.${"T0434"}.first.content ;
-	    sonstang = normdata.${"T0434"}.first.content;
-	    content = "${content} : ${sonstang}";
-	 END;
-
-         IF NOT content_map.${'T0433'} ;
-	    content_map.${'T0433'} = [];
-	 END;
-         content_map.${'T0433'}.push(content);
-
-#    CASE [ "T0531" "T0533" ];
-#         IF content.match("---&gt;: ") ;
-#            previssues = content.split("---&gt;: ");
-#            globalurl  = "${path_prefix}/${config.get('search_loc')}.html?searchall=1;hststring=${previssues.1}";
-#            localurl   = "${path_prefix}/${config.get('indexes_loc')}?fdb=${record.database};searchtitofcnt=${previssues.1.replace('&amp;','%26')}*;category=T0331;category=T0310;num=${qopts.num}";
-#            content    = "&nbsp;${previssues.0}--&gt;: <a href=\"${localurl}\">${previssues.1}</a>";
-#         END ;
-          
-    CASE "T0540";
-         content   = "${highlightquery(searchquery,content)}";
-         IF NOT content_map.${'T0540'} ;
-	    content_map.${'T0540'} = [];
-	 END;
-         content_map.${'T0540'}.push(content);
-
-    CASE [ "T0543" "T0585" ];
-         ezburl  = "${config.get('ezb_exturl')}&jq_term1=${content}";
-         content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=530;url=${uri_escape(ezburl)}\" class=\"ext\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
-         IF NOT content_map.${'T0543'} ;
-	    content_map.${'T0543'} = [];
-	 END;
-         content_map.${'T0543'}.push(content);
-
-    CASE [ "T0662" "T2662" ];
-         thismult = item.mult ;
-         thiscontent   = '' ;
-	 ampel = '';
-         IF category == 'T0662' ;
-           FOREACH thisitem IN normdata.${"T0663"} ;
-             IF thisitem.mult == thismult ;
-                thiscontent = thisitem.content ;
-             END ;
-           END ;
-         ELSIF category == 'T2662' ;
-           FOREACH thisitem IN normdata.${"T2663"} ;
-             IF thisitem.mult == thismult ;
-                thiscontent = thisitem.content ;
-             END ;
-           END ;
-         END ;
-
-         IF item.subfield == 'y';
-	   ampel =  "<img src=\"${config.get('dbis_yellow_img')}\" alt=\"Restricted  Access\" />" ;
-	 ELSIF item.subfield == 'g';
-	   ampel =  "<img src=\"${config.get('dbis_green_img')}\" alt=\"Free Access\" />" ;
-	 END;
-
-         IF content.match('usbportal\?service=dbinfo&.*?id=\d+');
-           matchresult = content.match('usbportal\?service=dbinfo&.*?id=(\d+)');
-           content = "${path_prefix}/databases/id/dbis/titles/id/${matchresult.first}.html?l=${lang}";
-         ELSIF fulltext.match('usbportal\?service=ejinfo&id=');
-            matchresult = fulltext.match('usbportal\?service=ejinfo&id=(zdb:\d+\-?\d)');
-            content = "${path_prefix}/databases/id/ezb/titles/id/${matchresult.first}";
-         ELSIF fulltext.match('frontdoor.phtml\?id=\d+');
-            matchresult = fulltext.match('frontdoor.phtml\?id=(\d+)');
-            content = "${path_prefix}/databases/id/ezb/titles/id/zdb:${matchresult.first}";
+         IF ortverlagcontent ;
+           IF NOT content_map.${'Ort/Verlag'} ;
+            content_map.${'Ort/Verlag'} = [];
+	   END;
+           content_map.${'Ort/Verlag'}.push(ortverlagcontent);
          END;
 
-
-         IF thiscontent ;	 
-            IF content.match('digitool.hbz-nrw.de') ;
-               thiscontent = "<img src=\"${config.get_icon('pdf',view,sysprofile)}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)" ;
-#               content     = "${path_prefix}/${config.get('redirect_loc')}?type=500;url=${uri_escape(content)}" ;
-            END ;
-#            IF thiscontent.length > 60 ;
-#               thiscontent = thiscontent.substr(0,60);
-#               thiscontent = "${thiscontent}...";
-#            END ;
-            content   = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
-         ELSE ;
-            thiscontent = content;
-#            IF thiscontent.length > 60 ;
-#               thiscontent = thiscontent.substr(0,60);
-#               thiscontent = "${thiscontent}...";
-#            END ;
-            content   = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
-         END ;
-	 content = "${content} ${ampel}";
-         IF NOT content_map.${'T0662'} ;
-	    content_map.${'T0662'} = [];
-	 END;
-         content_map.${'T0662'}.push(content);
-
-    CASE [ "E4100" "T4100" ];
-         searchterm    = uri_escape(item.content);
-         searchprefix  = config.get('searchfield').ft4100.prefix;
-
-         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
-         bkdesc      = bklookup.${content};
-         content     = "<a href=\"${localurl}\">${content}</a>";
-         IF bkdesc ;
-            content   = "${content} (${bkdesc})" ;
-         END ;
-         IF NOT content_map.${'E4100'} ;
-	    content_map.${'E4100'} = [];
-	 END;
-         content_map.${'E4100'}.push(content);
-	 
-    CASE "E4102";
-         topicdesc   = topic_map.${content};
-         IF topicdesc ;
-            content   = topicdesc ;
-         END ;
-         IF NOT content_map.${'E4102'} ;
-	    content_map.${'E4102'} = [];
-	 END;
-         content_map.${'E4102'}.push(content);
-	 
-    CASE "E4110";
-         thiscontent   = "<img src=\"${config.get_icon('pdf',view,sysprofile)}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)";
-#         content       = "${path_prefix}/${config.get('redirect_loc')}?type=500;url=${uri_escape(content)}" ;
-         content       = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
-         IF NOT content_map.${'E4110'} ;
-	    content_map.${'E4110'} = [];
-	 END;
-         content_map.${'T4110'}.push(content);
-	 
-    CASE "E4120";
-         thiscontent   = "Greifen Sie hier online auf den Volltext zu";
-	 content       = "${path_prefix}/${config.get('redirect_loc')}?type=503;url=${uri_escape(content)}" ;
-	 content       = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${thiscontent}</a>";
-         IF NOT content_map.${'E4120'} ;
-	    content_map.${'E4120'} = [];
-	 END;
-         content_map.${'E4120'}.push(content);
-
-    CASE "E4300";
-         thiscontent = item.content;
-
-         searchterm    = uri_escape(item.content);
-         searchprefix  = config.get('searchfield').ft4300.prefix;
-
-         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
-
-         NEXT IF rswkswt_done.${thiscontent} == 1;
-	 content       = "<a href=\"${localurl}\">${content}</a>";
-         rswkswt_done.${thiscontent} = 1;
-         IF NOT content_map.${'E4300'} ;
-	    content_map.${'E4300'} = [];
-	 END;
-         content_map.${'E4300'}.push(content);
-	 
-    CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];
-         thisid     = item.id;
-
-         thiscontent = item.content;
-
-         NEXT IF rswkswt_done.${thiscontent} == 1;
-
-         searchterm    = uri_escape(item.content);
-         searchprefix  = config.get('searchfield').subjectstring.prefix;
-
-         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('subjects_loc')}/id/${thisid}";
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
-
-         normdataicon = "";
-
-         IF thisid && catalog_has_authorities;
-            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Schlagwort-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#normdataModal\" data-formattitle=\"Schlagwortdaten\" data-formaturl=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+         IF jahr ;
+           IF NOT content_map.${'Jahr'} ;
+             content_map.${'Jahr'} = [];
+	   END;
+           content_map.${'Jahr'}.push(jahr);
          END;
 
-         icons     = "<span>${normdataicon}</span";
+    CASE "T300"; # 
+         umfang = [];
 
-         content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement} ${icons}";
-         rswkswt_done.${thiscontent} = 1;
-         IF NOT content_map.${'T0710'} ;
-	    content_map.${'T0710'} = [];
+         IF thisfield.${'a'} ; # Kollation
+	   umfang.push(thisfield.${'a'});
 	 END;
-         content_map.${'T0710'}.push(content);
 
-    CASE "T0700";
-         thisid     = item.id;
-
-         searchterm    = uri_escape(item.content);
-         searchprefix  = config.get('searchfield').classificationstring.prefix;
-
-         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('classifications_loc')}/id/${thisid}";
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
-
-         normdataicon = "";
-
-         IF thisid && catalog_has_authorities ;
-            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Systematik-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#normdataModal\" data-formattitle=\"Systematikdaten\" data-formaturl=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+         IF thisfield.${'b'} ; # Illustr.
+           umfang.push(thisfield.${'b'});
          END;
-
-         icons     = "<span>${normdataicon}</span>";
-
-         content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement} ${icons}";
-         IF NOT content_map.${'T0700'} ;
-	    content_map.${'T0700'} = [];
-	 END;
-         content_map.${'T0700'}.push(content);
 	 
-    CASE "T1600";
-         IF content.match('Sie einen Bestellschein aus');
-             content = "${content} Ebenso können Sie eine Mail an die <a href=\"http://www.ub.uni-koeln.de/res/listen_e_mail/ortsleihe/index_ger.html\" class=\"ext\" target=\"_blank\">Ortsleihe</a> schicken";
+         umfangcontent = umfang.join(' : ');
+
+         IF umfangcontent ;
+           IF NOT content_map.${'Umfang'} ;
+            content_map.${'Umfang'} = [];
+	   END;
+           content_map.${'Umfang'}.push(umfangcontent);
          END;
-         IF NOT content_map.${'T1600'} ;
-	    content_map.${'T1600'} = [];
-	 END;
-         content_map.${'T1600'}.push(content);
-	 
-    CASE "T4500";
-         # Dummy-Eintrag, damit dieser Eintrag nicht vom higlightquery
-         # erwischt wird
-         content   = content ;
-         IF NOT content_map.${'T4500'} ;
-	    content_map.${'T4500'} = [];
-	 END;
-         content_map.${'T4500'}.push(content);
-	 
-    CASE "T5001";
-         searchterms = [];
-         FOREACH superid IN normdata.${"T0004"};
-            searchterms.push("id:${superid.content}");
-         END;
-
-         zeigeueberordnung        = msg.maketext('Zeige Überordnung');
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};dop=or;fs=${searchterms.join(' ')}";
-         content   = "<a class=\"btn btn-primary\" href=\"${localurl}\">${zeigeueberordnung}</a>";
-         IF NOT content_map.${'T5001'} ;
-	    content_map.${'T5001'} = [];
-	 END;
-         content_map.${'T5001'}.push(content);
-
-    CASE "T5002";
-         searchterm    = item.content;
-         searchprefix  = config.get('searchfield').subid.prefix;
-
-         zeige = msg.maketext('Zeige');
-         baende = msg.maketext('Bände');
-	 
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?page=1;num=20;srt=order_asc;profile=${searchprofileid_of_database};${searchprefix}=${record.id}";
-         content   = "<a class=\"btn btn-primary\" href=\"${localurl}\">${zeige} ${content} ${baende}</a>";
-         IF NOT content_map.${'T5002'} ;
-	    content_map.${'T5002'} = [];
-	 END;
-         content_map.${'T5002'}.push(content);
-	 
-    CASE "T5005";
-         super         = from_json(content);
-
-         searchterm    = super.id;
-         searchprefix  = config.get('searchfield').id.prefix;
-
-         super_title   = super.fields.${'0451'}.first.content;
-
-         IF super.fields.${'0331'} ;
-            super_title   = super.fields.${'0331'}.first.content;
-         END ;
-
-         IF NOT super_title ;
-            super_title = "Zur &Uuml;berordnung";
-         END ;
-
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
-         content   = "<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${super_title}</span></a>";
-         IF NOT content_map.${'T5005'} ;
-	    content_map.${'T5005'} = [];
-	 END;
-         content_map.${'T5005'}.push(content);
-
     CASE ;
          content   = highlightquery(searchquery,item.content);
          IF NOT content_map.${category} ;
@@ -631,15 +397,6 @@ display_types = {
 
 
 FOREACH category IN categories;
-
-   # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
-   # in Config.pm fuer die entsprechende Datenbank definiert
-   # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
-   # kodiert.
-   thiscategory = category ;
-   IF config.get('categorymapping').${record.database}.$category ;
-     thiscategory = "${category}-${record.database}" ;
-   END;
 
    IF content_map.${category}.first;
       IF display_types.${category} == 'list' ;
@@ -661,7 +418,7 @@ FOREACH category IN categories;
         content = "<span class=\"ob-title\">${content}</span>";
       END;
 -%]
-<tr><th class="ob-field">[% msg.maketext("${thiscategory}") %]</th><td>[% content %]</td></tr>
+<tr><th class="ob-field">[% msg.maketext("${category}") %]</th><td>[% content %]</td></tr>
 [%
    END;
 END;

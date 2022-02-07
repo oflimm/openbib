@@ -304,7 +304,13 @@ sub get_record {
     };
 
     foreach my $match (@{$json_result_ref->{response}{docs}}){
-	my $full_record = encode_utf8($match->{fullrecord});
+	my $full_record = $match->{fullrecord};
+
+	# Cleanup UTF8
+	# see: https://blog.famzah.net/2010/07/01/filter-a-character-sequence-leaving-only-valid-utf-8-characters/
+	$full_record =~ s/.*?((?:[\t\n\r\x20-\x7E])+|(?:\xD0[\x90-\xBF])+|(?:\xD1[\x80-\x8F])+|(?:\xC3[\x80-\xBF])+|).*?/$1/sg;
+
+	$full_record = encode_utf8($full_record);
 
 	my ($atime,$btime,$timeall);
 	
@@ -472,8 +478,13 @@ sub process_matches {
     my @matches = ();
     
     foreach my $match (@{$json_result_ref->{response}{docs}}){
-	my $full_record = encode_utf8($match->{fullrecord});
-#	my $full_record = $match->{fullrecord};
+	my $full_record = $match->{fullrecord};
+
+	# Cleanup UTF8
+	# see: https://blog.famzah.net/2010/07/01/filter-a-character-sequence-leaving-only-valid-utf-8-characters/
+	$full_record =~ s/.*?((?:[\t\n\r\x20-\x7E])+|(?:\xD0[\x90-\xBF])+|(?:\xD1[\x80-\x8F])+|(?:\xC3[\x80-\xBF])+|).*?/$1/sg;
+
+	$full_record = encode_utf8($full_record);
 
 	my $fields_ref = {};
 

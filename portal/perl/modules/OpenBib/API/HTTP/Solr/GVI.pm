@@ -73,8 +73,15 @@ sub send_retrieve_request {
     my $url = $config->get('solr')->{'gvi'}{'search_url'};
 
     my $header = ['Content-Type' => 'application/json; charset=UTF-8'];
+
+    # Escape id
+    $id=~s/\(/\\\(/g;
+    $id=~s/\)/\\\)/g;
+    
     my $json_query_ref = {
-	'query' => { bool => { must => ["id:$id)"]}},
+	'query' => { 'bool' => { 'must' => ["id:$id"]}},
+#	'query' => { $id => { 'df' => 'id'}},
+
     };
 
     my $encoded_json = encode_utf8(encode_json($json_query_ref));
@@ -283,6 +290,8 @@ sub get_record {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config       = $self->get_config;
+    
     my $json_result_ref = $self->send_retrieve_request($arg_ref);
 
     my $record = new OpenBib::Record::Title({ database => $database, id => $id });
@@ -295,10 +304,81 @@ sub get_record {
     };
 
     foreach my $match (@{$json_result_ref->{response}{docs}}){
-	$fields_ref = decode_json $match->{fullrecord};
+	my $full_record = encode_utf8($match->{fullrecord});
 
-	delete $fields_ref->{id};
-	delete $fields_ref->{database};
+	my ($atime,$btime,$timeall);
+	
+	if ($config->{benchmark}) {
+	    $atime=new Benchmark;
+	}
+
+	$logger->debug("Got $full_record");
+
+	my $record_id = 0;
+	if ($full_record){
+	    eval {
+		my $field_mult_ref = {};
+		open(my $fh, "<", \$full_record);
+		my $batch = MARC::Batch->new( 'XML', $fh );
+		# Fallback to UTF8
+
+		# Recover from errors
+		$batch->strict_off();
+		$batch->warnings_off();
+
+		# Fallback to UTF8
+		MARC::Charset->assume_unicode(1);
+		# Ignore Encoding Errors
+		MARC::Charset->ignore_errors(1);
+
+		while (my $record = $batch->next() ){
+		    my $encoding = $record->encoding();
+		    
+		    # Process all fields
+		    foreach my $field ($record->fields()){
+			my $field_nr = "T".$field->tag();
+			$field_mult_ref->{$field_nr} = 1 unless (defined $field_mult_ref->{$field_nr});
+			foreach my $subfield_ref ($field->subfields()){
+			    my $content = $subfield_ref->[1];
+
+			    if ($encoding eq "MARC-8"){
+				$content = marc8_to_utf8($content);
+			    }
+			    else {
+				$content = decode_utf8($content);	
+			    }
+			    
+			    push @{$fields_ref->{$field_nr}}, {
+				subfield => $subfield_ref->[0],
+				content  => $content,
+				mult     => $field_mult_ref->{$field_nr},
+			    };
+			}		    
+			$field_mult_ref->{$field_nr} = $field_mult_ref->{$field_nr} + 1;
+		    }
+		}
+		close $fh;
+
+		if ($config->{benchmark}) {
+		    my $stime        = new Benchmark;
+		    my $stimeall     = timediff($stime,$atime);
+		    my $parsetime   = timestr($stimeall,"nop");
+		    $parsetime      =~s/(\d+\.\d+) .*/$1/;
+		    
+		    $logger->info("Zeit um Treffer zu parsen $parsetime");
+		}
+		
+	    };
+	    if ($@){
+		$logger->error($@);
+	    }
+
+	    last;
+	}
+	# Gesamtresponse in response_source
+	push @{$fields_ref->{'response_source'}}, {
+	    content => $match
+	};
     }
     
     $record->set_fields_from_storable($fields_ref);
@@ -368,7 +448,7 @@ sub get_search_resultlist {
 
     foreach my $match_ref (@matches) {
 
-        my $id            = OpenBib::Common::Util::encode_id($match_ref->{database}."::".$match_ref->{id});
+        my $id            = OpenBib::Common::Util::encode_id($match_ref->{id});
 	my $fields_ref    = $match_ref->{fields};
 
         $recordlist->add(OpenBib::Record::Title->new({database => 'gvi', id => $id })->set_fields_from_storable($fields_ref));
@@ -550,23 +630,6 @@ sub parse_query {
     my $config = $self->get_config;
 
     my $query_count = 1;
-
-    # Searchfield_mapping: Maps $config->{searchfield} to this Solr instance
-    # https://github.com/gemeinsamerverbuendeindex/gvi/blob/develop/solr_config/schema.xml
-    my $searchfield_mapping_ref = {
-	'freesearch'    => 'allfields',
-        'person'        => 'author',
-	'corporatebody' => 'author',	    
-	'title'         => 'title',
-	'titlestring'   => 'title_phrase',
-	'publisher'     => 'publisher',
-	'zdbid'         => 'zdb_id',
-	'isbn'          => 'isbn',
-	'issn'          => 'issn',
-	'year'          => 'publish_date',
-	'content'       => 'summary',
-	'subject'       => 'subject_all',
-    };
     
     my $query_ref = {};
 

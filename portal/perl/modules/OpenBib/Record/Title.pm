@@ -3246,6 +3246,9 @@ sub to_abstract_fields {
 sub to_custom_field_scheme_1 {
     my ($self) = @_;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
     # Umwandlung des ggf. z.B. bereits mit MARC21 (Sub)Feldern gefuellten Internformats
     # in ein besser in den Templates auswertbares Daten-Schema
     #
@@ -3276,24 +3279,55 @@ sub to_custom_field_scheme_1 {
     
     my $field_scheme_ref = {};
 
-    foreach my $fieldname (keys %{$self->{_fields}}){
-	my $tmp_scheme_ref = {};
-
-	foreach my $item_ref (@{$self->{_fields}{$fieldname}}){
-	    $tmp_scheme_ref->{$item_ref->{mult}}{$item_ref->{subfield}} = $item_ref->{content};
+    if (defined $self->{_fields}){
+	if ($logger->is_debug){
+	    $logger->debug("Source-Fields ". YAML::Dump($self->{_fields}));
 	}
 
-	foreach my $mult (sort keys %$tmp_scheme_ref){
-	    my $tmp2_scheme_ref = {
-		mult => $mult,
-	    };
-	    foreach my $subfield (keys %{$tmp_scheme_ref->{$mult}}){	    
-		$tmp2_scheme_ref->{$subfield} = $tmp_scheme_ref->{$mult}{$subfield};
+	my $field_mult_ref = {};
+	
+	foreach my $fieldname (keys %{$self->{_fields}}){
+	    next if ($fieldname eq "id" || $fieldname eq "database" || $fieldname eq "locations");
+	    
+	    my $tmp_scheme_ref = {};
+
+	    if (defined $self->{_fields}{$fieldname}){
+		foreach my $item_ref (@{$self->{_fields}{$fieldname}}){
+		    $item_ref->{subfield} = " " unless ($item_ref->{subfield});
+		    unless ($item_ref->{mult}){
+			$item_ref->{mult} = (defined $field_mult_ref->{$fieldname})?$field_mult_ref->{$fieldname}++:1;
+		    }
+		    
+		    $tmp_scheme_ref->{$item_ref->{mult}}{$item_ref->{subfield}} = $item_ref->{content} if (defined $item_ref->{mult} && defined $item_ref->{subfield} && $item_ref->{content});
+		}
 	    }
-	    push @{$field_scheme_ref->{$fieldname}}, $tmp2_scheme_ref;
-	}	
+
+	    if ($logger->is_debug){
+		$logger->debug("Interim-Fields 1". YAML::Dump($tmp_scheme_ref));
+	    }
+	    
+	    foreach my $mult (sort keys %$tmp_scheme_ref){
+		my $tmp2_scheme_ref = {
+		    mult => $mult,
+		};
+		foreach my $subfield (keys %{$tmp_scheme_ref->{$mult}}){	    
+		    $tmp2_scheme_ref->{$subfield} = $tmp_scheme_ref->{$mult}{$subfield};
+		}
+
+		if ($logger->is_debug){
+		    $logger->debug("Interim-Fields 2". YAML::Dump($tmp2_scheme_ref));
+		}
+
+		push @{$field_scheme_ref->{$fieldname}}, $tmp2_scheme_ref;
+	    }
+	    
+	}
     }
-   
+
+    if ($logger->is_debug){
+	$logger->debug("Destination-Fields ". YAML::Dump($field_scheme_ref));
+    }
+
     return $field_scheme_ref;
 }
 

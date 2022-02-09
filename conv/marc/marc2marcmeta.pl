@@ -212,6 +212,8 @@ while (my $record = safe_next($batch)){
 	$logger->error("Titelsatz hat keine ID in 001");
 	next;
     }
+
+    $titleid=~s/\s//g;
     
     $title_ref->{id} = $titleid;
     
@@ -234,7 +236,7 @@ while (my $record = safe_next($batch)){
 	    
 	    push @{$title_ref->{'fields'}{$field_nr}}, {
 		subfield => $subfield_ref->[0],
-		content  => $content,
+		content  => cleanup($content),
 		mult     => $field_mult_ref->{$field_nr},
 	    };
 	}
@@ -322,7 +324,7 @@ while (my $record = safe_next($batch)){
 	    if ($field_nr eq "082"){
 		my $linkage = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('6')):$field->as_string('6');
 
-		my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string($field)):$field->as_string($field);
+		my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
 
 		# Linkage = Verweis zur ID des Nordatensates
 
@@ -420,13 +422,13 @@ while (my $record = safe_next($batch)){
 		    }
 		    
 		    push @{$holding_ref->{fields}{'0016'}}, {
-			content  => konv($content_c),
+			content  => cleanup($content_c),
 			subfield => '',
 			mult     => 1,
 		    };
 		    
 		    push @{$holding_ref->{fields}{'0014'}}, {
-			content  => konv($content_h),
+			content  => cleanup($content_h),
 			subfield => '',
 			mult     => 1,
 		    };
@@ -437,13 +439,13 @@ while (my $record = safe_next($batch)){
 		    my $content_i = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('i')):$field->as_string('i');
 		    
 		    push @{$holding_ref->{fields}{'0016'}}, {
-			content  => konv($content_a),
+			content  => cleanup($content_a),
 			subfield => '',
 			mult     => 1,
 		    };
 		    
 		    push @{$holding_ref->{fields}{'0014'}}, {
-			content  => konv($content_i),
+			content  => cleanup($content_i),
 			subfield => '',
 			mult     => 1,
 		    };
@@ -485,7 +487,7 @@ while (my $record = safe_next($batch)){
 			    
 			    
 			    push @{$holding_ref->{fields}{$destfield}}, {
-				content  => konv($content),
+				content  => cleanup($content),
 				subfield => '',
 				mult     => 1,
 			    };
@@ -572,24 +574,6 @@ close(HOLDING);
 
 close(DAT);
 
-sub konv {
-    my $content = shift;
-
-    $content=~s/\s*[.,:\/]\s*$//g;
-    $content=~s/&/&amp;/g;
-    $content=~s/</&lt;/g;
-    $content=~s/>/&gt;/g;
-    # Buchstabenersetzungen Grundbuchstabe plus Diaeresis
-    $content=~s/u\x{0308}/ü/g;
-    $content=~s/a\x{0308}/ä/g;
-    $content=~s/o\x{0308}/ö/g;
-    $content=~s/U\x{0308}/Ü/g;
-    $content=~s/A\x{0308}/Ä/g;
-    $content=~s/O\x{0308}/Ö/g;
-
-    return $content;
-}
-
 sub add_person {
     my ($person_id,$content_0,$content_a,$content_c,$content_d,$title_ref) = @_;
 
@@ -614,7 +598,7 @@ sub add_person {
     push @{$item_ref->{fields}{'0800'}}, {
 	mult     => 1,
 	subfield => '',
-	content  => konv($content_a),
+	content  => cleanup($content_a),
     };
     
     # Beruf
@@ -622,7 +606,7 @@ sub add_person {
 	push @{$item_ref->{fields}{'0201'}}, {
 	    mult     => 1,
 	    subfield => '',
-	    content  => konv($content_c),
+	    content  => cleanup($content_c),
 	};
     }
     
@@ -632,7 +616,7 @@ sub add_person {
 	push @{$item_ref->{fields}{'0200'}}, {
 	    mult     => 1,
 	    subfield => '',
-	    content  => konv($content_d),
+	    content  => cleanup($content_d),
 	};
     }
     
@@ -660,7 +644,7 @@ sub add_corporatebody {
     push @{$item_ref->{fields}{'0800'}}, {
 	mult     => 1,
 	subfield => '',
-	content  => konv($content_a),
+	content  => cleanup($content_a),
     };
         
     print CORPORATEBODY encode_json $item_ref, "\n";
@@ -687,7 +671,7 @@ sub add_classification {
     push @{$item_ref->{fields}{'0800'}}, {
 	mult     => 1,
 	subfield => '',
-	content  => konv($content_a),
+	content  => cleanup($content_a),
     };
         
     print CLASSIFICATION encode_json $item_ref, "\n";
@@ -714,7 +698,7 @@ sub add_subject {
     push @{$item_ref->{fields}{'0800'}}, {
 	mult     => 1,
 	subfield => '',
-	content  => konv($content),
+	content  => cleanup($content),
     };
         
     print SUBJECT encode_json $item_ref, "\n";
@@ -722,6 +706,28 @@ sub add_subject {
     return;
 }
 
+sub cleanup {
+    my $content = shift;
+
+    # Cleanup UTF8
+    # see: https://blog.famzah.net/2010/07/01/filter-a-character-sequence-leaving-only-valid-utf-8-characters/
+    $content =~ s/.*?((?:[\t\n\r\x20-\x7E])+|(?:\xD0[\x90-\xBF])+|(?:\xD1[\x80-\x8F])+|(?:\xC3[\x80-\xBF])+|).*?/$1/sg;
+
+    $content=~s/\s*[.,:\/]\s*$//g;
+    $content=~s/&/&amp;/g;
+    $content=~s/</&lt;/g;
+    $content=~s/>/&gt;/g;
+
+    # Buchstabenersetzungen Grundbuchstabe plus Diaeresis
+    $content=~s/u\x{0308}/ü/g;
+    $content=~s/a\x{0308}/ä/g;
+    $content=~s/o\x{0308}/ö/g;
+    $content=~s/U\x{0308}/Ü/g;
+    $content=~s/A\x{0308}/Ä/g;
+    $content=~s/O\x{0308}/Ö/g;
+    
+    return $content;
+}
 
 sub safe_next {
     my $batch = shift;

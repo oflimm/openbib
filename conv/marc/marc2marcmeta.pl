@@ -213,6 +213,9 @@ while (my $record = safe_next($batch)){
 	next;
     }
 
+    # Cleanup Identifier. No slashes!
+    $titleid=~s/\//_/g;
+    $titleid=~s/\\/_/g;    
     $titleid=~s/\s//g;
     
     $title_ref->{id} = $titleid;

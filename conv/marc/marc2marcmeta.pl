@@ -224,7 +224,7 @@ while (my $record = safe_next($batch)){
     
     # Process all fields
     foreach my $field ($record->fields()){
-	my $field_nr = $field->tag();
+	my $field_nr = sprintf "%04d", $field->tag();
 	$field_mult_ref->{$field_nr} = 1 unless (defined $field_mult_ref->{$field_nr});
 	# Immer alle Subfelder uebertragen
 	foreach my $subfield_ref ($field->subfields()){
@@ -249,7 +249,7 @@ while (my $record = safe_next($batch)){
 	# Verfasser
 	{
 	    # Verfasser
-	    if ($field_nr eq "100" || $field_nr eq "700"){
+	    if ($field_nr eq "0100" || $field_nr eq "0700"){
 
 		my $linkage = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('6')):$field->as_string('6');
 		
@@ -293,7 +293,7 @@ while (my $record = safe_next($batch)){
 
 	# Koerperschaften
 	{
-	    if ($field_nr eq "110" || $field_nr eq "710"){
+	    if ($field_nr eq "0110" || $field_nr eq "0710"){
 		my $linkage = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('6')):$field->as_string('6');
 
 		my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
@@ -324,7 +324,7 @@ while (my $record = safe_next($batch)){
 	
 	# Klassifikationen	
 	{
-	    if ($field_nr eq "082"){
+	    if ($field_nr eq "0082"){
 		my $linkage = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('6')):$field->as_string('6');
 
 		my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
@@ -355,7 +355,7 @@ while (my $record = safe_next($batch)){
 	
 	# Schlagworte
 	{        
-	    if ($field_nr eq "650" || $field_nr eq "650"){
+	    if ($field_nr eq "0650" || $field_nr eq "0650"){
 		my $linkage = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('6')):$field->as_string('6');
 		
 		my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
@@ -392,7 +392,7 @@ while (my $record = safe_next($batch)){
 	
 	# Exemplardaten
 	{ 
-	    if ($field_nr eq "852"){
+	    if ($field_nr eq "0852"){
 		my $indicator_1 = $field->indicator(1);
 		my $indicator_2 = $field->indicator(2);
 		

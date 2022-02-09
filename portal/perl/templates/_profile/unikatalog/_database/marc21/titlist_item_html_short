@@ -68,7 +68,8 @@
      personslength = 0 ;
      truncatepers  = 0 ;
 
-     FOREACH part IN item.${'T100'} ;
+     # Personen
+     FOREACH part IN item.${'T0100'} ;
        thislength = part.content.length ;
        IF (thislength+personslength) < config.get('maxlength_person') ;
          searchterm    = uri_escape(part.${'a'});
@@ -82,7 +83,24 @@
          truncatepers = 1 ;
        END ;
      END ;
-     FOREACH part IN item.${'T110'}  ;
+
+     FOREACH part IN item.${'T0700'} ;
+       thislength = part.content.length ;
+       IF (thislength+personslength) < config.get('maxlength_person') ;
+         searchterm    = uri_escape(part.${'a'});
+         searchprefix  = config.get('searchfield').personstring.prefix;
+
+         globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         persons.push(part.${'a'});
+         personslength = personslength+thislength ;
+       ELSE ;
+         truncatepers = 1 ;
+       END ;
+     END ;
+
+     # Koerperschaften
+     FOREACH part IN item.${'T0110'}  ;
        thiscontent = part.${'a'};
        IF part.${'e'} ;
           e = part.${'e'} ;
@@ -101,7 +119,27 @@
          truncatepers = 1 ;
        END ;
      END ;
-     
+
+     FOREACH part IN item.${'T0710'}  ;
+       thiscontent = part.${'a'};
+       IF part.${'e'} ;
+          e = part.${'e'} ;
+          thiscontent = "${thiscontent} ${e}" ;
+       END ;
+       thislength = part.content.length ;
+       IF (thislength+personslength) < config.get('maxlength_person') ;
+         searchterm    = uri_escape(part.${'a'});
+         searchprefix  = config.get('searchfield').personstring.prefix;
+
+         globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         persons.push(part.${'a'});
+         personslength = personslength+thislength ;
+       ELSE ;
+         truncatepers = 1 ;
+       END ;
+     END ;
+
      person = persons.join(' ; ') ;
      IF truncatepers ;
        person = "$person [...]" ;
@@ -151,10 +189,10 @@
      END ;
 
      # Titel konstruieren
-     title = item.${"T245"}.first.${'a'};
+     title = item.${"T0245"}.first.${'a'};
 
-     IF item.${"T245"}.first.${'d'};
-       d = item.${"T245"}.first.${'d'};
+     IF item.${"T0245"}.first.${'d'};
+       d = item.${"T0245"}.first.${'d'};
        title = "${title} ${d}";
      END;
      
@@ -238,10 +276,14 @@
      edition = item.${'T0403'}.first.content;
 
      # Verlage konstruieren
-     publisher = item.${'T264'}.first.${'b'};
+     publisher = item.${'T0260'}.first.${'b'};
 
+     IF NOT publisher && item.${'T0264'}.first.${'b'};
+        publisher = item.${'T0264'}.first.${'b'};
+     END;
+     
      # Ejahr konstruieren
-     yearofpub = item.${'T264'}.first.${'c'};
+     yearofpub = item.${'T0264'}.first.${'c'};
 
      availability = item.${'T4400'}.first.content;
 

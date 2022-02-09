@@ -201,7 +201,7 @@ while (my $record = safe_next($batch)){
 
     if (!$titleid){
 	my $isbnfield = $record->field('020');
-	my $isbn = (defined $isbnfield->as_string('a'))?$isbnfield->as_string('a'):undef;
+	my $isbn = (defined $isbnfield && defined $isbnfield->as_string('a'))?$isbnfield->as_string('a'):undef;
 	# Cleanup
 	$isbn=~s/[^0-9xX]//g;
 
@@ -410,7 +410,7 @@ while (my $record = safe_next($batch)){
 		    },
 		};
 		
-		if ($indicator_1 == 8){
+		if ($indicator_1 eq "8"){
 		    my $content_b = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('b')):$field->as_string('b');
 		    my $content_c = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('c')):$field->as_string('c');
 		    my $content_h = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('h')):$field->as_string('h');

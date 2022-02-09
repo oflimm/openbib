@@ -71,6 +71,9 @@ sub new {
 
     my $storage   = exists $arg_ref->{storage}
         ? $arg_ref->{storage}        : {};
+
+    my $scheme    = exists $arg_ref->{scheme}
+        ? $arg_ref->{scheme}         : ""; # eg. marc
     
     # Log4perl logger erzeugen
     my $logger = get_logger();

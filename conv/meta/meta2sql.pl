@@ -81,7 +81,7 @@ my $chars_to_replace = join '|',
 
 $chars_to_replace = qr/$chars_to_replace/;
 
-my ($database,$reducemem,$addsuperpers,$addmediatype,$addlanguage,$incremental,$keepfiles,$logfile,$loglevel,$count,$help);
+my ($database,$reducemem,$scheme,$addsuperpers,$addmediatype,$addlanguage,$incremental,$keepfiles,$logfile,$loglevel,$count,$help);
 
 &GetOptions(
     "reduce-mem"     => \$reducemem,
@@ -91,6 +91,7 @@ my ($database,$reducemem,$addsuperpers,$addmediatype,$addlanguage,$incremental,$
     "keep-files"     => \$keepfiles,
     "incremental"    => \$incremental,
     "database=s"     => \$database,
+    "scheme=s"       => \$scheme,
     "logfile=s"      => \$logfile,
     "loglevel=s"     => \$loglevel,
     "help"           => \$help,
@@ -391,6 +392,7 @@ foreach my $type (keys %{$stammdateien_ref}) {
         my $importer = $class->new({
             storage         => $storage_ref,
             database        => $database,
+	    scheme          => $scheme,
         });
         
         while (my $jsonline=<IN>){
@@ -480,6 +482,7 @@ if (-f "meta.holding"){
     my $importer = OpenBib::Importer::JSON::Holding->new({
         storage         => $storage_ref,
         database        => $database,
+	scheme          => $scheme,
     });
     
     while (my $jsonline=<IN>) {
@@ -713,6 +716,7 @@ my $importer = OpenBib::Importer::JSON::Title->new({
     addmediatype    => $addmediatype,
     local_enrichmnt => $local_enrichmnt,
     storage         => $storage_ref,
+    scheme          => $scheme,
 });
 
 while (my $jsonline=<IN>){

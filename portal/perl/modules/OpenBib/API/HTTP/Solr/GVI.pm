@@ -296,7 +296,7 @@ sub get_record {
 
     my $record = new OpenBib::Record::Title({ database => $database, id => $id });
 
-    my $fields_ref = ();
+    my $fields_ref = {};
 
     # Gesamtresponse in response_source
     push @{$fields_ref->{'response_source'}}, {

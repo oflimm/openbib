@@ -49,7 +49,7 @@ use OpenBib::Catalog;
 use OpenBib::Catalog::Factory;
 use OpenBib::Index::Factory;
 
-my ($database,$sync,$help,$keepfiles,$sb,$logfile,$loglevel,$updatemaster,$incremental,$reducemem,$searchengineonly);
+my ($database,$sync,$scheme,$help,$keepfiles,$sb,$logfile,$loglevel,$updatemaster,$incremental,$reducemem,$searchengineonly);
 
 &GetOptions("database=s"      => \$database,
             "logfile=s"       => \$logfile,
@@ -59,6 +59,7 @@ my ($database,$sync,$help,$keepfiles,$sb,$logfile,$loglevel,$updatemaster,$incre
             "update-master"   => \$updatemaster,
             "incremental"     => \$incremental,
             "reduce-mem"      => \$reducemem,
+            "scheme=s"        => \$scheme,
             "searchengine-only"      => \$searchengineonly,
 	    "search-backend=s" => \$sb,
 	    "help"            => \$help
@@ -301,6 +302,10 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
 
         if ($keepfiles){
             $cmd.=" -keep-files";
+        }
+
+        if ($scheme){
+            $cmd.=" --scheme=$scheme";
         }
 	
         $logger->info("Executing in $rootdir/data/$database : $cmd");

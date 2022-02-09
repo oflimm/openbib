@@ -335,13 +335,24 @@ FOREACH field IN normdata;
 	    content = "${content} : ${title_supplement}";
 	 END;
 	 
-         content   = "<b>${highlightquery(searchquery,content)}</b>";
-
          IF content ;
+           content   = "<b>${highlightquery(searchquery,content)}</b>";
+
            IF NOT content_map.${'Titel'} ;
 	     content_map.${'Titel'} = [];
 	   END;
            content_map.${'Titel'}.push(content);
+	 END;
+
+         content = thisfield.${'c'} ;
+
+         IF content ;
+           content   = "${highlightquery(searchquery,content)}";
+	 
+           IF NOT content_map.${'Verfasserangabe'} ;
+	     content_map.${'Verfasserangabe'} = [];
+	   END;
+           content_map.${'Verfasserangabe'}.push(content);
 	 END;
 
     CASE "T0250"; # Auflage

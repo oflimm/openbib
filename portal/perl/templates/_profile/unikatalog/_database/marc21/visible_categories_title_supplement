@@ -14,7 +14,7 @@
 [%-# Ausgabekategorien -%]
 [%- categories = [
                 'T0435', # msg.maketext("T0435") Format
-                'T0359', # msg.maketext("T0359") Vorl. Verfasser/Koerperschaft
+                'Verfasserangabe', # msg.maketext("Verfasserangabe") Vorl. Verfasser/Koerperschaft
                 'T0670', # msg.maketext("T0670") Sachtitel in abweichender Orthographie
                 'T0333', # msg.maketext("T0333") Zu erg. Urheber/HST Urheber
 

@@ -41,7 +41,7 @@ my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
 my $confdir       = $config->{'base_dir'}."/conf";
 my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
-my $marc2metaexe   = "$konvdir/marc2meta.pl";
+my $marc2metaexe   = "$konvdir/marc2marcmeta.pl";
 
 my $pool          = $ARGV[0];
 
@@ -49,5 +49,5 @@ my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->s
 
 my $filename      = $dbinfo->titlefile;
 print "### $pool: Konvertierung von $filename\n";
-system("cd $pooldir/$pool ; rm meta.*");
+system("cd $pooldir/$pool ; rm meta.* ");
 system("cd $pooldir/$pool; $marc2metaexe --database=$pool --inputfile=$filename ; gzip meta.*");

@@ -30,8 +30,8 @@
 
 [%   PROCESS common/subtemplate name="titles_record_html_sammlungslinks" %]
 
-[% USE dumper;dumper.dump(record.get_fields)%]
-[% USE dumper;dumper.dump(normdata)%]
+[%# USE dumper;dumper.dump(record.get_fields)%]
+[%# USE dumper;dumper.dump(normdata)%]
 
 <div class="table-responsive">
 <table class="table table-striped table-hover ob-title_fields">

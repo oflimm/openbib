@@ -272,10 +272,10 @@ FOREACH field IN normdata;
            content_map.${"Sprache"}.push(content);
 	 END;
 	 
-    CASE [ "T0100"  ];
+    CASE [ "T0100" "T0700" ];
          content = thisfield.${'a'} ;
 	 supplement = thisitem.${'e'} ;
-         thisid  = thisfield.${'3'};
+         thisid  = thisfield.${'6'};
 
          searchterm    = uri_escape(content);
          searchprefix  = config.get('searchfield').person.prefix;
@@ -291,15 +291,41 @@ FOREACH field IN normdata;
 
          icons     = "<span>${normdataicon}</span>";
 	 
-         content   = "<a href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${supplement} ${icons}";
-
          IF content ;
+           content   = "<a href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${supplement} ${icons}";
            IF NOT content_map.${'Person'} ;
 	     content_map.${'Person'} = [];
 	   END;
            content_map.${'Person'}.push(content);
 	 END;
 
+    CASE [ "T0110" "T0710" ];
+         content = thisfield.${'a'} ;
+	 supplement = thisitem.${'e'} ;
+         thisid  = thisfield.${'6'};
+
+         searchterm    = uri_escape(content);
+         searchprefix  = config.get('searchfield').corporatebodystring.prefix;
+
+         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('corporatebodies_loc')}/id/${thisid}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         normdataicon = "";
+
+         IF thisid && catalog_has_authorities ;
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"K&ouml;rperschafts-Information\"  data-bs-toggle=\"modal\" data-bs-target=\"#normdataModal\" data-formattitle=\"Körperschaftsdaten\" data-formaturl=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+         END;
+
+         icons     = "<span>${normdataicon}</span>";
+	 
+         IF content ;
+           content   = "<a href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${item.supplement} ${icons}";
+	 
+           IF NOT content_map.${'Institution'} ;
+	     content_map.${'Institution'} = [];
+	   END;
+           content_map.${'Institution'}.push(content);
+	 END;
 
     CASE "T0245"; # HST
          content = thisfield.${'a'} ;

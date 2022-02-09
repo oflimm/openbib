@@ -21,10 +21,7 @@
                 'T0370', # msg.maketext("T0370") WST
                 'T0341', # msg.maketext("T0341") PSTVorlage
                 'Person', # msg.maketext("Person") Verfasser
-                'T0101', # msg.maketext("T0101") Person
-                'T0103', # msg.maketext("T0103") Gefeierte Person
-                'T0200', # msg.maketext("T0200") Urheber
-                'T0201', # msg.maketext("T0201") Koerperschaft
+                'Institution', # msg.maketext("Institution") Koerperschaft
                 'Ausgabe', # msg.maketext("Ausgabe") Auflage T250a
                 #'T0410', # msg.maketext("T0410") Verlagsort
                 'Ort/Verlag', # msg.maketext("Ort/Verlag") T260b/a

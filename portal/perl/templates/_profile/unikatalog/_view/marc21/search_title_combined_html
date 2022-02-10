@@ -231,7 +231,7 @@ $(document).ready(function(){
   </div>
   <div class="ob-resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 [%- FOREACH record IN recordlist.get_records -%]
-[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 database='gvi' %] 
+[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 database=record.database %] 
 [%- END -%]
 <div class="ob-footer">
 [% PROCESS common/subtemplate name="pagination" %]

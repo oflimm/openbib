@@ -1842,9 +1842,9 @@ sub set_fields_from_storable {
 
     # (Re-)Initialisierung
     delete $self->{_exists}        if (exists $self->{_exists});
-    delete $self->{_fields}       if (exists $self->{_fields});
-    delete $self->{_holding}        if (exists $self->{_holding});
-    delete $self->{_circulation}    if (exists $self->{_circulation});
+    delete $self->{_fields}        if (exists $self->{_fields});
+    delete $self->{_holding}       if (exists $self->{_holding});
+    delete $self->{_circulation}   if (exists $self->{_circulation});
 
     if ($logger->is_debug){
         $logger->debug("Got :".YAML::Dump($storable_ref));
@@ -1852,7 +1852,16 @@ sub set_fields_from_storable {
 
     if (defined $storable_ref->{locations}){
 	$self->{_locations} = $storable_ref->{locations};
+	$storable_ref->{locations} = [];
 	delete $storable_ref->{locations};
+    }
+
+    if (defined $storable_ref->{id}){
+	delete $storable_ref->{id};
+    }
+
+    if (defined $storable_ref->{database}){
+	delete $storable_ref->{database};
     }
     
     $self->{_fields} = $storable_ref;
@@ -3285,9 +3294,20 @@ sub to_custom_field_scheme_1 {
 	}
 
 	my $field_mult_ref = {};
+
+	my $excluded_fields_ref = {
+	    "id"         => 1,
+	    "database"   => 1,
+	    "locations"  => 1,
+	    "tags"       => 1,
+	    "popularity" => 1,
+	};
 	
 	foreach my $fieldname (keys %{$self->{_fields}}){
-	    next if ($fieldname eq "id" || $fieldname eq "database" || $fieldname eq "locations");
+	    if (defined $excluded_fields_ref->{$fieldname}){
+		$field_scheme_ref->{$fieldname} = $self->{_fields}{$fieldname};
+		next;
+	    }
 	    
 	    my $tmp_scheme_ref = {};
 

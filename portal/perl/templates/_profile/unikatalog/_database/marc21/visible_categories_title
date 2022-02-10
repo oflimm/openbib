@@ -42,7 +42,7 @@
                 'T0334', # msg.maketext("T0334") Material
                 'ISBN', # msg.maketext("ISBN") T020/9
                 'T0553', # msg.maketext("T0553") ArtikelNr. als 13-stellige ISBN
-                'T0543', # msg.maketext("T0543") ISSN
+                'ISSN', # msg.maketext("ISSN") ISSN
                 'T0652', # msg.maketext("T0652") EDV Material
                 'T0655', # msg.maketext("T0655") EDV Adress
                 'T0451', # msg.maketext("T0451") GesTit Vorl

@@ -219,6 +219,13 @@ while (my $record = safe_next($batch)){
     $titleid=~s/\s//g;
     
     $title_ref->{id} = $titleid;
+
+    if (defined $have_title_ref->{$title_ref->{id}}){
+        $logger->info("Doppelte ID ".$title_ref->{id});
+        next;
+    }
+
+    $have_title_ref->{$title_ref->{id}} = 1;
     
     my $field_mult_ref = {};
     

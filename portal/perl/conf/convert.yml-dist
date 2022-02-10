@@ -10383,6 +10383,7 @@ convtab:
           index:
             'freesearch': 1
             'subject': 1
+            'subjectstring': 1	    
           facet:
             'subject': 1
       '0610': # Schlagwort
@@ -10390,6 +10391,7 @@ convtab:
           index:
             'freesearch': 1
             'subject': 1
+            'subjectstring': 1	    
           facet:
             'subject': 1
       '0648': # Schlagwort
@@ -10397,6 +10399,7 @@ convtab:
           index:
             'freesearch': 1
             'subject': 1
+            'subjectstring': 1	    
           facet:
             'subject': 1
       '0650': # Schlagwort
@@ -10404,6 +10407,7 @@ convtab:
           index:
             'freesearch': 1
             'subject': 1
+            'subjectstring': 1	    
           facet:
             'subject': 1
       '0651': # Schlagwort
@@ -10411,6 +10415,7 @@ convtab:
           index:
             'freesearch': 1
             'subject': 1
+            'subjectstring': 1	    
           facet:
             'subject': 1
       '0655': # Schlagwort
@@ -10418,6 +10423,7 @@ convtab:
           index:
             'freesearch': 1
             'subject': 1
+            'subjectstring': 1	    
           facet:
             'subject': 1
       '0688': # Schlagwort
@@ -10425,6 +10431,7 @@ convtab:
           index:
             'freesearch': 1
             'subject': 1
+            'subjectstring': 1	    
           facet:
             'subject': 1
       '0520':         # Abstract
@@ -11357,6 +11364,7 @@ convtab:
           index:
             'freesearch': 1
             'subject': 1
+            'subjectstring': 1	    
           facet:
             'subject': 1
       '0610': # Schlagwort
@@ -11364,6 +11372,7 @@ convtab:
           index:
             'freesearch': 1
             'subject': 1
+            'subjectstring': 1	    
           facet:
             'subject': 1
       '0648': # Schlagwort
@@ -11371,6 +11380,7 @@ convtab:
           index:
             'freesearch': 1
             'subject': 1
+            'subjectstring': 1	    
           facet:
             'subject': 1
       '0650': # Schlagwort
@@ -11378,6 +11388,7 @@ convtab:
           index:
             'freesearch': 1
             'subject': 1
+            'subjectstring': 1	    
           facet:
             'subject': 1
       '0651': # Schlagwort
@@ -11385,6 +11396,7 @@ convtab:
           index:
             'freesearch': 1
             'subject': 1
+            'subjectstring': 1	    
           facet:
             'subject': 1
       '0655': # Schlagwort
@@ -11392,6 +11404,7 @@ convtab:
           index:
             'freesearch': 1
             'subject': 1
+            'subjectstring': 1	    
           facet:
             'subject': 1
       '0688': # Schlagwort
@@ -11399,6 +11412,7 @@ convtab:
           index:
             'freesearch': 1
             'subject': 1
+            'subjectstring': 1	    
           facet:
             'subject': 1
       '0520':         # Abstract

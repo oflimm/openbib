@@ -188,6 +188,11 @@
        END ;
      END ;
 
+     # Sonst aus Titelfeld 245
+     IF NOT person && item.${"T0245"}.first.${'c'};
+       person = item.${"T0245"}.first.${'c'};
+     END;
+
      # Titel konstruieren
      title = item.${"T0245"}.first.${'a'};
 

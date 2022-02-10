@@ -3264,8 +3264,8 @@ sub to_custom_field_scheme_1 {
     # Beispiel:
 
     # my $example_ref = {
-    # 	# Key: T=Title + (MARC)Fieldno
-    # 	'T100' => [	    
+    # 	# Key: T=Title + (MARC)Fieldno (4 stellig vorgenullt)
+    # 	'T0100' => [	    
     # 	    {
     # 		# Mult-Feld
     # 		'mult' => 1, # erster Autor
@@ -3294,17 +3294,9 @@ sub to_custom_field_scheme_1 {
 	}
 
 	my $field_mult_ref = {};
-
-	my $excluded_fields_ref = {
-	    "id"         => 1,
-	    "database"   => 1,
-	    "locations"  => 1,
-	    "tags"       => 1,
-	    "popularity" => 1,
-	};
 	
 	foreach my $fieldname (keys %{$self->{_fields}}){
-	    if (defined $excluded_fields_ref->{$fieldname}){
+	    if ($fieldname !~ m/^[TPCNSX]C?\d+/){
 		$field_scheme_ref->{$fieldname} = $self->{_fields}{$fieldname};
 		next;
 	    }

@@ -1605,7 +1605,7 @@ sub process_marc {
     # Anreicherungs-IDs bestimmen
 
     # ISBN
-    foreach my $field ('020') {
+    foreach my $field ('0020') {
         if (defined $fields_ref->{$field}) {
             foreach my $item_ref (@{$fields_ref->{$field}}) {
 
@@ -1628,7 +1628,7 @@ sub process_marc {
     }
 
     # ISSN
-    foreach my $field ('022') {
+    foreach my $field ('0022') {
         if (defined $fields_ref->{$field}) {
             foreach my $item_ref (@{$fields_ref->{$field}}) {
 		if ($item_ref->{subfield} eq "a"){
@@ -1655,11 +1655,11 @@ sub process_marc {
     my $valid_language_available=0;
     my $mult_lang = 1;
 
-    if (defined $fields_ref->{'041'}){
+    if (defined $fields_ref->{'0041'}){
 
 	# First cleanup multiple Languages
 	my $single_lang_ref = {};
-	foreach my $item_ref (@{$fields_ref->{'041'}}){
+	foreach my $item_ref (@{$fields_ref->{'0041'}}){
 	    if ($item_ref->{subfield} eq "a"){
 		if ($item_ref->{content} =~m/\;/){
 		    my @langs=split(';',$item_ref->{content});
@@ -1682,10 +1682,10 @@ sub process_marc {
 	    };
 	}
 
-	$fields_ref->{'041'} = $new_lang_ref;
+	$fields_ref->{'0041'} = $new_lang_ref;
 	
 	$mult_lang = 1;
-        foreach my $item_ref (@{$fields_ref->{'041'}}){
+        foreach my $item_ref (@{$fields_ref->{'0041'}}){
             my $valid_lang = OpenBib::Common::Util::normalize_lang($item_ref->{content});
             if (defined $valid_lang){
                 $valid_language_available = 1;
@@ -1708,14 +1708,14 @@ sub process_marc {
         
         my @langtexts = ();
 	# HST und Zusatz
-        if (defined $fields_ref->{'245'}){
-            foreach my $item_ref (@{$fields_ref->{'245'}}) {
+        if (defined $fields_ref->{'0245'}){
+            foreach my $item_ref (@{$fields_ref->{'0245'}}) {
                 push @langtexts, $item_ref->{content} if ($item_ref->{subfield} =~m/^(a|b)$/);
 	    }            
 	}
 	# GT
-        if (defined $fields_ref->{'490'}){
-            foreach my $item_ref (@{$fields_ref->{'490'}}) {
+        if (defined $fields_ref->{'0490'}){
+            foreach my $item_ref (@{$fields_ref->{'0490'}}) {
                 push @langtexts, $item_ref->{content} if ($item_ref->{subfield} =~m/^(a|b)$/);
             }            
         }
@@ -1822,8 +1822,8 @@ sub process_marc {
 
         # Aufsatz
         # HSTQuelle besetzt
-        if ($fields_ref->{'773'}) {
-	    foreach my $item_ref (@{$fields_ref->{'773'}}) {
+        if ($fields_ref->{'0773'}) {
+	    foreach my $item_ref (@{$fields_ref->{'0773'}}) {
 		unless (defined $have_type_ref->{'Aufsatz'}){
 		    push @{$fields_ref->{'4410'}}, {
 			mult      => $type_mult++,
@@ -1835,8 +1835,8 @@ sub process_marc {
         }   
         # Hochschulschrift
         # HSSvermerk besetzt
-        elsif ($fields_ref->{'502'}) {	    
-	    foreach my $item_ref (@{$fields_ref->{'502'}}) {
+        elsif ($fields_ref->{'0502'}) {	    
+	    foreach my $item_ref (@{$fields_ref->{'0502'}}) {
 		unless (defined $have_type_ref->{'Hochschulschrift'}){
 		    push @{$fields_ref->{'4410'}}, {
 			mult      => $type_mult++,
@@ -1848,8 +1848,8 @@ sub process_marc {
         }           
         # Zeitschriften/Serien:
         # ISSN und/oder ZDB-ID besetzt
-        elsif (defined $fields_ref->{'773'} || defined $fields_ref->{'022'}) {
-	    foreach my $item_ref (@{$fields_ref->{'773'}}) {
+        elsif (defined $fields_ref->{'0773'} || defined $fields_ref->{'0022'}) {
+	    foreach my $item_ref (@{$fields_ref->{'0773'}}) {
 		unless (defined $have_type_ref->{'Zeitschrift/Serie'}){
 		    push @{$fields_ref->{'4410'}}, {
 			mult      => $type_mult++,
@@ -1857,7 +1857,7 @@ sub process_marc {
 			subfield  => 'e', # enriched
 		    } if ($item_ref->{subfield} =~m/^a$/);
 		}
-		foreach my $item_ref (@{$fields_ref->{'022'}}) {
+		foreach my $item_ref (@{$fields_ref->{'0022'}}) {
 		    unless (defined $have_type_ref->{'Zeitschrift/Serie'}){
 			push @{$fields_ref->{'4410'}}, {
 			    mult      => $type_mult++,
@@ -1870,10 +1870,10 @@ sub process_marc {
 	}
 	# Monographie:
         # Kollation 300a besetzt und enthaelt S. bzw. p.
-        elsif (defined $fields_ref->{'300'}) {
+        elsif (defined $fields_ref->{'0300'}) {
             my $is_mono   = 0;
 
-            foreach my $item_ref (@{$fields_ref->{'300'}}) {
+            foreach my $item_ref (@{$fields_ref->{'0300'}}) {
                 if ($item_ref->{'content'} =~m/[Sp]\./ && $item_ref->{subfield} =~m/^a$/){
                     $is_mono = 1;
                 }
@@ -1892,14 +1892,14 @@ sub process_marc {
     } 
 
     # Jahreszahlen umwandeln
-    if (defined $fields_ref->{'260'} || defined $fields_ref->{'264'}) {        
+    if (defined $fields_ref->{'0260'} || defined $fields_ref->{'0264'}) {        
         my $array_ref=[];
 
         if (exists $self->{storage}{listitemdata_enriched_years}{$id}){
             $array_ref = $self->{storage}{listitemdata_enriched_years}{$id};
         }
 
-	foreach my $field ('260','264'){
+	foreach my $field ('0260','0264'){
 	    foreach my $item_ref (@{$fields_ref->{$field}}){
 		if ($item_ref->{subfield} eq "c"){
 		    my $date = $item_ref->{content};
@@ -1926,8 +1926,8 @@ sub process_marc {
     }
 
     # Verknuepfungskategorien zwischen Titeln bearbeiten    
-    if (defined $fields_ref->{'830'}) {
-        foreach my $item_ref (@{$fields_ref->{'830'}}) {
+    if (defined $fields_ref->{'0830'}) {
+        foreach my $item_ref (@{$fields_ref->{'0830'}}) {
 	    if ($item_ref->{subfield} eq "w"){
 		my $target_titleid   = $item_ref->{content};
 		my $mult             = $item_ref->{mult};
@@ -1977,11 +1977,15 @@ sub process_marc {
     
 
     # Verfasser/Personen Normdaten verknuepfen
-    foreach my $field ('100','700') {
+    foreach my $field ('0100','0700') {
         if (defined $fields_ref->{$field}) {
             foreach my $item_ref (@{$fields_ref->{$field}}) {
                 # Verknuepfungsfelder werden ignoriert
 	        #$item_ref->{ignore} = 1;
+
+		if ($item_ref->{subfield} eq "a"){ # Ansetzung
+		    push @personcorporatebody, $item_ref->{content};
+		}
 		
 		if ($item_ref->{subfield} eq "6"){ # Linkage
 		    my $mult       = $item_ref->{mult};
@@ -1989,11 +1993,9 @@ sub process_marc {
 		    my $titleid    = $id;
 		    my $supplement = $item_ref->{supplement};
 		    
-		    next unless $personid;
-
 		    # Eine m:n Verknuepfung zum Personen-Normdatensatz wird nur vorgenommen, wenn
 		    # der Normdatensatz mit der ID existiert.
-		    if (defined $self->{storage}{listitemdata_person}{$personid}){
+		    if ($personid && defined $self->{storage}{listitemdata_person}{$personid}){
 			$supplement = $self->cleanup_content($supplement);
 			push @{$self->{_columns_title_person}}, [$self->{title_person_serialid},$field,$mult,$id,$personid,$supplement];
 			#push @{$self->{_columns_title_person}}, ['',$field,$mult,$id,$personid,$supplement];
@@ -2001,10 +2003,6 @@ sub process_marc {
 		    }
 
 		    push @person, $personid;		    
-		}
-
-		if ($item_ref->{subfield} eq "a"){ # Ansetzung
-		    push @personcorporatebody, $item_ref->{content};
 		}
 		
 		# if ($item_ref->{subfield} eq "a"){ # Main Entry
@@ -2034,12 +2032,16 @@ sub process_marc {
     }
         
     # Koerperschaften/Urheber Normdaten Verknuepfen
-    foreach my $field ('110','710') {
+    foreach my $field ('0110','0111','0710') {
         if (defined $fields_ref->{$field}) {
             foreach my $item_ref (@{$fields_ref->{$field}}) {
                 # Verknuepfungsfelder werden ignoriert
                 #$item_ref->{ignore} = 1;
 
+		if ($item_ref->{subfield} eq "a"){ # Ansetzung
+		    push @personcorporatebody, $item_ref->{content};
+		}
+		
 		if ($item_ref->{subfield} eq "6"){ # Linkage		
 		    my $mult            = $item_ref->{mult};
 		    my $corporatebodyid = $item_ref->{id};
@@ -2051,19 +2053,13 @@ sub process_marc {
 		    #                     $field = "0200";   
 		    #                 }
 		    
-		    next unless $corporatebodyid;
-		    
-		    if (defined $self->{storage}{listitemdata_corporatebody}{$corporatebodyid}){
+		    if ($corporatebodyid && defined $self->{storage}{listitemdata_corporatebody}{$corporatebodyid}){
 			$supplement = $self->cleanup_content($supplement);
 			push @{$self->{_columns_title_corporatebody}}, [$self->{title_corporatebody_serialid},$field,$mult,$id,$corporatebodyid,$supplement];
 			#push @{$self->{_columns_title_corporatebody}}, ['',$field,$mult,$id,$corporatebodyid,$supplement];
 			$self->{title_corporatebody_serialid}++;
 		    }
                 }
-
-		if ($item_ref->{subfield} eq "a"){ # Ansetzung
-		    push @personcorporatebody, $item_ref->{content};
-		}
 		
                 # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
                 # auch wirklich existiert -> schlechte Katalogisate
@@ -2095,7 +2091,7 @@ sub process_marc {
     }
         
     # Klassifikation
-    foreach my $field ('0700') {
+    foreach my $field ('0082','0084') {
         if (defined $fields_ref->{$field}) {
             foreach my $item_ref (@{$fields_ref->{$field}}) {
                 # Verknuepfungsfelder werden ignoriert
@@ -2143,7 +2139,7 @@ sub process_marc {
     }
     
     # Schlagworte
-    foreach my $field ('600','610','648','650','651','655','688','689') {
+    foreach my $field ('0600','0610','0648','0650','0651','0655','0688','0689') {
         if (defined $fields_ref->{$field}) {
             foreach my $item_ref (@{$fields_ref->{$field}}) {
                 # Verknuepfungsfelder werden ignoriert
@@ -2198,7 +2194,7 @@ sub process_marc {
         foreach my $superid (@superids) {
             if ($superid && exists $self->{storage}{listitemdata_superid}{$superid}) {
                 my $super_ref = $self->{storage}{listitemdata_superid}{$superid};
-                foreach my $field ('100','700') {
+                foreach my $field ('0100','0700') {
                     if (defined $super_ref->{fields}{$field}) {
 			foreach my $subfield (keys %{$inverted_ref->{$field}}){
 			
@@ -2675,46 +2671,67 @@ sub process_marc {
     {        
         # Bestimmung der Zaehlung
         
-        # Fall 1: Es existiert eine (erste) Bandzahl(089)
+        # Fall 1: Es existiert eine (erste) Bandbenennung-/zaehlung(245n)
         #
-        # Dann: Setze diese Bandzahl
+        # Dann: Setze diese Bandbenennung
         #
-        # Fall 2: Es existiert keine Bandzahl(089), aber eine (erste)
-        #                Bandzahl(455)
+        # Fall 2: Es existiert keine Bandbenennung(245n), aber eine (erste)
+        #                Bandangabe in Sortierform (773q)
         #
-        # Dann: Setze diese Bandzahl
+        # Dann: Setze diese Bandangabe
         
-        # # Fall 1:
-        # if (defined $fields_ref->{'0089'}) {
-        #     $index_doc->set_data('T5100', [
-        #         {
-        #             content => $fields_ref->{'0089'}[0]{content}
-        #         }
-        #     ]);
-        # }
-        # # Fall 2:
-        # elsif (defined $fields_ref->{'0455'}) {
-        #     $index_doc->set_data('T5100', [
-        #         {
-        #             content => $fields_ref->{'0455'}[0]{content}
-        #         }
-        #     ]);
-        # }
+        # Fall 1:
+        if (defined $fields_ref->{'0245'}) {
+	    foreach my $item_ref (@{$fields_ref->{'0245'}}){
+		if ($item_ref->{subfield} eq "n"){
+		    $index_doc->set_data('T5100', [
+					     {
+						 subfield => 'a',
+						 mult => 1,
+						 content => $item_ref->{content}
+					     }
+					 ]);
+		}
+	    }
+        }
+        # Fall 2:
+        elsif (defined $fields_ref->{'0773'}) {
+	    foreach my $item_ref (@{$fields_ref->{'0773'}}){
+		if ($item_ref->{subfield} eq "q"){
+		    $index_doc->set_data('T5100', [
+					     {
+						 subfield => 'a',
+						 mult => 1,
+						 content => $item_ref->{content}
+					     }
+					 ]);
+		}
+	    }
+        }
         
         # Exemplardaten-Hash zu listitem-Hash hinzufuegen
         if (exists $self->{storage}{listitemdata_holding}{$id}){
             my $thisholdings = $self->{storage}{listitemdata_holding}{$id};
+	    my $mult0014 = 1;
             foreach my $content (@{$thisholdings}) {
                 # $content = decode_utf8($content);
 
                 $index_doc->add_data('X0014', {
+		    subfield  => 'a',
+		    mult      => $mult0014++,
                     content => $content,
                 });
             }
         }
-        
+
+	if ($logger->is_debug){
+	    $logger->debug("PC0001: ".YAML::Dump(\@personcorporatebody));
+	}
+	
         # Kombinierte Verfasser/Koerperschaft hinzufuegen fuer Sortierung
         $index_doc->add_data('PC0001', {
+	    subfield  => 'a',
+	    mult      => 1,
             content   => join(" ; ",@personcorporatebody),
         });
     }
@@ -2729,8 +2746,8 @@ sub process_marc {
     
     my $create_tstamp = "1970-01-01 12:00:00";
     
-    if (defined $fields_ref->{'008'} && defined $fields_ref->{'008'}[0]) {
-	my $createdate = substr($fields_ref->{'008'}[0]{content},0,5);
+    if (defined $fields_ref->{'0008'} && defined $fields_ref->{'0008'}[0]) {
+	my $createdate = substr($fields_ref->{'0008'}[0]{content},0,5);
 	my ($day,$month,$year) = $createdate =~m/(\d\d)(\d\d)(\d\d)/;
 	if ($day && $month && $year){
 	    $year = ($year < 70)?$year + 2000:$year + 1900;	    
@@ -2740,8 +2757,8 @@ sub process_marc {
 
     my $update_tstamp = "1970-01-01 12:00:00"; 
     
-    if (defined $fields_ref->{'005'} && defined $fields_ref->{'005'}[0]) {
-        $update_tstamp = $fields_ref->{'005'}[0]{content};        
+    if (defined $fields_ref->{'0005'} && defined $fields_ref->{'0005'}[0]) {
+        $update_tstamp = $fields_ref->{'0005'}[0]{content};        
     }
     
     # Primaeren Normdatensatz erstellen und schreiben

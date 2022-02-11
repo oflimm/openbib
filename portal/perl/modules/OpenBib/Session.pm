@@ -712,13 +712,17 @@ sub get_items_in_collection {
         my $tstamp     = $item->{thiststamp};
         my $comment    = $item->{thiscomment};
 
+	if ($logger->is_debug()){
+	    $logger->debug("Found Cartitem - DB: $database / ID: $titleid / Cache:$titlecache");
+	}
+	
         if ($titlecache) {
             my $record = new OpenBib::Record::Title({listid => $listid, date => $tstamp, comment => $comment});
             $record->from_json($titlecache);
             $recordlist->add($record);
         }
         elsif ($database && $titleid){
-            $recordlist->add(new OpenBib::Record::Title({ database => $database, id => $titleid, listid => $listid, , date => $tstamp, comment => $comment})->load_brief_record);
+            $recordlist->add(new OpenBib::Record::Title({ database => $database, id => $titleid, listid => $listid, date => $tstamp, comment => $comment})->load_brief_record);
         }
     }
 

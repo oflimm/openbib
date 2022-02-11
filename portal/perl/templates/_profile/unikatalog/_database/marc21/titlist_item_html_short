@@ -120,6 +120,26 @@
        END ;
      END ;
 
+     FOREACH part IN item.${'T0111'}  ;
+       thiscontent = part.${'a'};
+       IF part.${'e'} ;
+          e = part.${'e'} ;
+          thiscontent = "${thiscontent} ${e}" ;
+       END ;
+       thislength = part.content.length ;
+       IF (thislength+personslength) < config.get('maxlength_person') ;
+         searchterm    = uri_escape(part.${'a'});
+         searchprefix  = config.get('searchfield').personstring.prefix;
+
+         globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         persons.push(part.${'a'});
+         personslength = personslength+thislength ;
+       ELSE ;
+         truncatepers = 1 ;
+       END ;
+     END ;
+
      FOREACH part IN item.${'T0710'}  ;
        thiscontent = part.${'a'};
        IF part.${'e'} ;
@@ -189,9 +209,9 @@
      END ;
 
      # Sonst aus Titelfeld 245
-     IF NOT person && item.${"T0245"}.first.${'c'};
-       person = item.${"T0245"}.first.${'c'};
-     END;
+#     IF NOT person && item.${"T0245"}.first.${'c'};
+#       person = item.${"T0245"}.first.${'c'};
+#     END;
 
      # Titel konstruieren
      title = item.${"T0245"}.first.${'a'};

@@ -10769,16 +10769,15 @@ convtab:
       - 'P0800'
       - 'C0800'
       - 'S0800'
-      - 'PC0001'
-      - 'T0331'
-      - 'T5100'
-      - 'T0425' 
-      - 'T0424' # 424 hiner 425, d.h. 424 wichtiger, falls besetzt und gleiches Sortierungsfeld
-      - 'T0412'
-      - 'X0014'
+      - 'PC0001:a'
+      - 'T0245:a'
+      - 'T5100:a'
+      - 'T0264:c' 
+      - 'T0246:b'
+      - 'X0014:a'
       - 'popularity'
     sorting:
-      'P0800':
+      'T0800':
         'sortfield': 'authority' # Normdaten-Ansetzungsform Person
         'type': 'stringfield'
       'C0800':
@@ -10787,31 +10786,26 @@ convtab:
       'S0800':
         'sortfield': 'authority' # Normdaten-Ansetzungsform Schlagwort
         'type': 'stringfield'
-      'PC0001':
+      'PC0001:a':
         'sortfield': 'person'    # Verfasser/Koepeschaft
         'type': 'stringfield'
-      'T0331':                   # Titel
+      'T0245:a':                   # Titel
         'sortfield': 'title'
         'type': 'stringfield'
         'filter':
            - 'filter_strip_nonsortable_word'
-      'T5100':
+      'T5100:a':
         'sortfield': 'order'     # Zaehlung
         'type': 'integerfield'
-      'T0425':
+      'T0264:c':
         'sortfield': 'year'      # Jahr
         'type': 'integerfield'       
         'filter':
            - 'filter_force_signed_year'
-      'T0424':
-        'sortfield': 'year'      # Jahr
-        'type': 'integerfield'
-        'filter':
-           - 'filter_force_signed_year'
-      'T0412':
+      'T0246:b':
         'sortfield': 'publisher' # Verlag
         'type': 'stringfield'
-      'X0014':
+      'X0014:a':
         'sortfield': 'mark'      # Signatur
         'type': 'stringfield'
       'popularity':

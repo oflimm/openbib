@@ -25,13 +25,25 @@
       <div class="col-md-9" >
 
 <ul class="nav nav-tabs" role="tablist">
-<li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#ob-ezb_cloud">[% msg.maketext("Wolke") %]</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-ezb_list">[% msg.maketext("Liste") %]</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#ob-ezb_list">[% msg.maketext("Liste") %]</a></li>
+<li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-ezb_cloud">[% msg.maketext("Wolke") %]</a></li>
 </ul>
 
 <div class="tab-content pt-3 mb-2">
 
-<div role="tabpanel" class="tab-pane fade-in active" id="ob-ezb_cloud">
+<div role="tabpanel" class="tab-pane fade-in active" id="ob-ezb_list">
+
+<ul class="list-group">
+[% FOREACH classification IN classifications;
+   searchterm    = classification.name;
+   searchprefix  = config.get('searchfield').classification.prefix;
+%]
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% IF query.param('access_national') %]access_national=1;[% END %][% searchprefix %]=[% searchterm %]">[% classification.desc %]</a> ([% classification.count %])</li>
+[% END %]
+</ul>
+</div>
+
+<div role="tabpanel" class="tab-pane fade-in" id="ob-ezb_cloud">
 
 <!-- Beginn Tag-Cloud -->
 [%
@@ -60,17 +72,6 @@
 
 </div>
 
-<div role="tabpanel" class="tab-pane fade-in" id="ob-ezb_list">
-
-<ul class="list-group">
-[% FOREACH classification IN classifications;
-   searchterm    = classification.name;
-   searchprefix  = config.get('searchfield').classification.prefix;
-%]
-<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% IF query.param('access_national') %]access_national=1;[% END %][% searchprefix %]=[% searchterm %]">[% classification.desc %]</a> ([% classification.count %])</li>
-[% END %]
-</ul>
-</div>
 </div><!-- End: Tabcontent -->
 
       </div>

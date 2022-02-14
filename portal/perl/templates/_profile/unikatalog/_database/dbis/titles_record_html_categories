@@ -222,7 +222,7 @@ FOREACH category IN categories;
 
     CASE "T4120";
          thiscontent   = msg.maketext("Datenbankrecherche starten");
-	 content       = "${path_prefix}/${config.get('redirect_loc')}?type=503;url=${uri_escape(content)}" ;
+	 #content       = "${path_prefix}/${config.get('redirect_loc')}?type=503;url=${uri_escape(content)}" ;
 	 content       = "<a href=\"${content}\" class=\"ext\" target=\"_blank\"><b>${thiscontent}</b></a>";
 
     CASE "E4300";

@@ -65,6 +65,12 @@ while (<>){
 	foreach my $item_ref (@{$fields_ref->{'2663'}}){
 	    $linktext_ref->{$item_ref->{mult}} = $item_ref->{content};
 	}
+
+	my $field2080_ref = {};
+
+	foreach my $item_ref (@{$fields_ref->{'2080'}}){
+	    $field2080_ref->{$item_ref->{mult}} = $item_ref->{content};
+	}
 	
 	foreach my $item_ref (@{$fields_ref->{'2662'}}){
 	    my $content = $item_ref->{content};
@@ -180,6 +186,60 @@ while (<>){
 			subfield => '',
 			content  => $description,
 		};
+	    }
+	    elsif (defined $field2080_ref->{$item_ref->{mult}} && $field2080_ref->{$item_ref->{mult}} =~m/^iall$/){
+		my $url         = $content;
+		my $description = "Zum Volltext";
+		my $access      = "y"; # yellow
+		
+		push @{$record_ref->{fields}{'4662'}}, {
+			mult     => $mult,
+			subfield => $access,
+			content  => $content,
+		};
+		
+		push @{$record_ref->{fields}{'4663'}}, {
+			mult     => $mult,
+			subfield => '',
+			content  => $description,
+		};
+		
+	    }
+	    elsif (defined $field2080_ref->{$item_ref->{mult}} && $field2080_ref->{$item_ref->{mult}} =~m/^OA$/){
+		my $url         = $content;
+		my $description = "Zum Volltext";
+		my $access      = "g"; # green
+		
+		push @{$record_ref->{fields}{'4662'}}, {
+			mult     => $mult,
+			subfield => $access,
+			content  => $content,
+		};
+		
+		push @{$record_ref->{fields}{'4663'}}, {
+			mult     => $mult,
+			subfield => '',
+			content  => $description,
+		};
+		
+	    }
+	    elsif (defined $field2080_ref->{$item_ref->{mult}} && $field2080_ref->{$item_ref->{mult}} =~m/^iall; OA$/){
+		my $url         = $content;
+		my $description = "Zum Volltext";
+		my $access      = "f"; # unbestimmt, aber Volltext (green/yellow)
+		
+		push @{$record_ref->{fields}{'4662'}}, {
+			mult     => $mult,
+			subfield => $access,
+			content  => $content,
+		};
+		
+		push @{$record_ref->{fields}{'4663'}}, {
+			mult     => $mult,
+			subfield => '',
+			content  => $description,
+		};
+		
 	    }
 	    else { # Bsp.: ID=277940
 		push @{$record_ref->{fields}{'4662'}}, {

@@ -274,13 +274,10 @@
                 <mods:extent>[%- extend.content %]</mods:extent>
                 [%-END%]
             </mods:physicalDescription>
-            [%-END -%]
-            [%-FOREACH provenance IN provenance_data -%]
-            <mods:note type="ownership">signatur::[% provenance.prov_signatur %]|||beschreibung::[% provenance.prov_text
-                %][%- IF provenance.prov_person %]|||person::[% provenance.prov_person %][%- END %][%- IF
-                provenance.prov_corp %]|||corp::[% provenance.prov_corp %][%- END %][%- IF provenance.prov_gnd
-                %]|||gnd::http://d-nb.info/gnd/[% provenance.prov_gnd %][%END%]</mods:note>
-            [%- END %]
+            [%-END %]
+            [%- IF provenance_data %]
+            <mods:note type="ownership">[%- provenance_data -%]</mods:note>
+            [%-END %]
             [%- FOREACH uniform_publisher IN uniform_publisher_list %]
             [%- IF uniform_publisher.gnd -%]
             <mods:note type="statement of responsibility">Publisher||[%- uniform_publisher.publisher_name %][%- IF

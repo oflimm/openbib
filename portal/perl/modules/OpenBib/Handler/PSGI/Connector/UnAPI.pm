@@ -127,8 +127,11 @@ sub show {
                   $self->collect_publisher_data( $record, $database );
                 $rswk_keyword_list =
                   $self->collect_rswk_data( $record, $database );
-                $provenance_data =
-                  $self->collect_provenance_data( $record, $database );
+                $provenance_data = undef;
+                my $provenance_elements = $self->collect_provenance_data( $record, $database );
+                if (@{$provenance_elements} != 0){
+                    $provenance_data =JSON::XS->new->latin1->encode( $provenance_elements);
+                }
                 $date_values = $self->get_date_values( $record, $database );
 
             }

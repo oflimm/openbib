@@ -13,6 +13,8 @@
 -%]
 [%-
 
+  toc_i18n        = msg.maketext("Inhaltsverzeichnis");
+
   request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db']}) ;
   normdata        = record.get_fields ;
   holding         = record.get_holding ;
@@ -192,7 +194,7 @@ Zugriff nur im <a href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medi
 
 [% IF toc %]
 	    <div class="pe-1">	    
-              <a class="btn btn-primary pe-2" href="[% toc %]" target="_blank" title="[% msg.maketext("Inhaltsverzeichnis") %]"><i class="fas fa-list"></i> <span class="d-none d-sm-inline">[% msg.maketext("TOC") %]</span></a>
+              <a class="btn btn-primary pe-2" href="[% toc %]" target="_blank" title="[% msg.maketext("Inhaltsverzeichnis") %]"><i class="fas fa-list"></i> <span class="d-none d-sm-inline">[% toc_i18n %]</span></a>
 	    </div>
 [% END %]
 

@@ -463,7 +463,7 @@
 
 [% IF toc %]
 	    <div class="pe-1">	    
-              <a class="btn btn-primary pe-2" href="[% toc %]" target="_blank" title="[% msg.maketext("Inhaltsverzeichnis") %]"><i class="fas fa-list"></i> <span class="d-none d-sm-inline">[% msg.maketext("TOC") %]</span></a>
+              <a class="btn btn-primary pe-2" href="[% toc %]" target="_blank" title="[% msg.maketext("Inhaltsverzeichnis") %]"><i class="fas fa-list"></i> <span class="d-none d-sm-inline">[% toc_i18n %]</span></a>
 	    </div>
 [% END %]
 

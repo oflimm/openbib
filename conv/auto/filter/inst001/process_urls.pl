@@ -193,7 +193,7 @@ while (<>){
 	    # KMB
 	    elsif (defined $linktext_ref->{$item_ref->{mult}} && $linktext_ref->{$item_ref->{mult}} =~m/Zugriff im Netz der Kunst- und Museumsbibliothek möglich/ ){
 		my $url         = $content;
-		my $description = "E-Book im Volltext";
+		my $description = "E-Book im Volltext (KMB)";
 		my $access      = "y"; # yellow
 		
 		push @{$record_ref->{fields}{'4662'}}, {

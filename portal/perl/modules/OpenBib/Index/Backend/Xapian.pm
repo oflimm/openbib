@@ -569,9 +569,15 @@ sub create_document {
         
         foreach my $field (@{$convconfig->get('sorting_order')}){
 	    my ($basefield,$subfield) = ('','');
+
+	    # Basefield:Subfield
 	    if ($field =~m/^(.+?):(.)/){
 		$basefield     = $1;
-		$subfield = $2;
+		$subfield      = $2;
+	    }
+	    # Sonst Feld
+	    else {
+		$basefield = $field;
 	    }
 	    
             next unless (defined $record_ref->{$basefield});

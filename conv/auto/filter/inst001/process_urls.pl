@@ -66,10 +66,13 @@ while (<>){
 	    $linktext_ref->{$item_ref->{mult}} = $item_ref->{content};
 	}
 
-	my $field2080_ref = {};
+	# Andere Felder aus der Multgruppe zu 2662/2663
+	# als Entscheidungskriterium
+	
+	my $field1209_ref = {};
 
-	foreach my $item_ref (@{$fields_ref->{'2080'}}){
-	    $field2080_ref->{$item_ref->{mult}} = $item_ref->{content};
+	foreach my $item_ref (@{$fields_ref->{'1209'}}){
+	    $field1209_ref->{$item_ref->{mult}} = $item_ref->{content};
 	}
 	
 	foreach my $item_ref (@{$fields_ref->{'2662'}}){
@@ -187,9 +190,10 @@ while (<>){
 			content  => $description,
 		};
 	    }
-	    elsif (defined $field2080_ref->{$item_ref->{mult}} && $field2080_ref->{$item_ref->{mult}} =~m/^iall$/){
+	    # KMB
+	    elsif (defined $linktext_ref->{$item_ref->{mult}} && $linktext_ref->{$item_ref->{mult}} =~m/Zugriff im Netz der Kunst- und Museumsbibliothek möglich/ ){
 		my $url         = $content;
-		my $description = "Zum Volltext";
+		my $description = "E-Book im Volltext";
 		my $access      = "y"; # yellow
 		
 		push @{$record_ref->{fields}{'4662'}}, {
@@ -203,11 +207,11 @@ while (<>){
 			subfield => '',
 			content  => $description,
 		};
-		
 	    }
-	    elsif (defined $field2080_ref->{$item_ref->{mult}} && $field2080_ref->{$item_ref->{mult}} =~m/^OA$/){
+	    # OA
+	    elsif (defined $linktext_ref->{$item_ref->{mult}} && ( $linktext_ref->{$item_ref->{mult}} =~m/^Open access. Im Internet weltweit frei verfügbar/ || $linktext_ref->{$item_ref->{mult}} =~m/^Frei zugänglich/ )){
 		my $url         = $content;
-		my $description = "Zum Volltext";
+		my $description = "E-Book im Volltext";
 		my $access      = "g"; # green
 		
 		push @{$record_ref->{fields}{'4662'}}, {
@@ -221,12 +225,12 @@ while (<>){
 			subfield => '',
 			content  => $description,
 		};
-		
 	    }
-	    elsif (defined $field2080_ref->{$item_ref->{mult}} && $field2080_ref->{$item_ref->{mult}} =~m/^iall; OA$/){
+	    
+	    elsif (defined $field1209_ref->{$item_ref->{mult}} && $field1209_ref->{$item_ref->{mult}} =~m/^fzo$/){
 		my $url         = $content;
-		my $description = "Zum Volltext";
-		my $access      = "f"; # unbestimmt, aber Volltext (green/yellow)
+		my $description = "Volltext";
+		my $access      = "g"; # green
 		
 		push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,

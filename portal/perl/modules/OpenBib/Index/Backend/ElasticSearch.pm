@@ -1,4 +1,4 @@
-#####################################################################
+####################################################################
 #
 #  OpenBib::Index::Backend::ElasticSearch
 #
@@ -580,11 +580,36 @@ sub create_document {
         }
         
         foreach my $field (@{$convconfig->get('sorting_order')}){
-            next unless (defined $record_ref->{$field});
+	    my ($basefield,$subfield) = ('','');
+
+	    # Basefield:Subfield
+	    if ($field =~m/^(.+?):(.)/){
+		$basefield     = $1;
+		$subfield      = $2;
+	    }
+	    # Sonst Feld
+	    else {
+		$basefield = $field;
+	    }
+	    
+            next unless (defined $record_ref->{$basefield});
 	    
             # Bibliogr. Feldinhalte mit Zeichenketten
             if ($convconfig->get('sorting')->{$field}->{type} eq "stringfield"){
-                my $content = (defined $record_ref->{$field}[0]{content})?$record_ref->{$field}[0]{content}:"";
+		my $content = "";
+
+		if ($subfield){
+		    foreach my $item_ref (@{$record_ref->{$basefield}}){
+			if ($item_ref->{subfield} eq $subfield){
+			    $content = $item_ref->{content};
+			    last;
+			}
+		    }
+		}
+		else {
+		    $content = (defined $record_ref->{$field}[0]{content})?$record_ref->{$field}[0]{content}:"";
+		}
+		
                 next unless ($content);
                 
                 if (defined $convconfig->get('sorting')->{$field}{filter}){
@@ -608,7 +633,20 @@ sub create_document {
             }
             # Bibliogr. Feldinhalte mit Integerwerten
             elsif ($convconfig->get('sorting')->{$field}->{type} eq "integerfield"){
-                my $content = (defined $record_ref->{$field}[0]{content})?$record_ref->{$field}[0]{content}:0;
+		my $content = "";
+
+		if ($subfield){
+		    foreach my $item_ref (@{$record_ref->{$basefield}}){
+			if ($item_ref->{subfield} eq $subfield){
+			    $content = $item_ref->{content};
+			    last;
+			}
+		    }
+		}
+		else {
+		    $content = (defined $record_ref->{$field}[0]{content})?$record_ref->{$field}[0]{content}:"";
+		}
+		
                 next unless ($content);
 		
                 if (defined $convconfig->get('sorting')->{$field}{filter}){
@@ -630,10 +668,12 @@ sub create_document {
 	    }
             # Integerwerte jenseits der bibliogr. Felder, also z.B. popularity
             elsif ($convconfig->get('sorting')->{$field}->{type} eq "integervalue"){
-                my $content = 0 ;
+
+		my $content = 0 ;
                 if (defined $record_ref->{$field}){
                     ($content) = $record_ref->{$field}=~m/^(-?\d+)/;
                 }
+
                 if ($content){
 		    #                   $content = sprintf "%08d",$content;
                     $logger->debug("Adding $content as sortvalue");

@@ -587,7 +587,7 @@ sub create_document {
             if ($convconfig->get('sorting')->{$field}->{type} eq "stringfield"){
 		my $content = "";
 
-		if (reftype($record_ref->{$basefield}) eq "ARRAY"){
+		if (defined reftype($record_ref->{$basefield}) && reftype($record_ref->{$basefield}) eq "ARRAY"){
 		    if ($subfield){
 			foreach my $item_ref (@{$record_ref->{$basefield}}){
 			    if ($item_ref->{subfield} eq $subfield){
@@ -600,7 +600,7 @@ sub create_document {
 			$content = (defined $record_ref->{$field}[0]{content})?$record_ref->{$field}[0]{content}:"";
 		    }
 		}
-		else { # Scalar
+		elsif (! defined reftype($record_ref->{$basefield})){ # Scalar
 		    $content = $record_ref->{$field};
 		}
 		
@@ -634,7 +634,7 @@ sub create_document {
             elsif ($convconfig->get('sorting')->{$field}->{type} eq "integerfield"){
 		my $content = "";
 
-		if (reftype($record_ref->{$basefield}) eq "ARRAY"){
+		if (defined reftype($record_ref->{$basefield}) && reftype($record_ref->{$basefield}) eq "ARRAY"){
 		    if ($subfield){
 			foreach my $item_ref (@{$record_ref->{$basefield}}){
 			    if ($item_ref->{subfield} eq $subfield){
@@ -647,7 +647,7 @@ sub create_document {
 			$content = (defined $record_ref->{$field}[0]{content})?$record_ref->{$field}[0]{content}:"";
 		    }
 		}
-		else { # Scalar
+		elsif (! defined reftype($record_ref->{$basefield})){ # Scalar
 		    $content = $record_ref->{$field};
 		}
 
@@ -680,7 +680,7 @@ sub create_document {
             elsif ($convconfig->get('sorting')->{$field}->{type} eq "integervalue"){
                 my $fieldcontent = 0 ;
 
-		if (reftype($record_ref->{$basefield}) eq "ARRAY"){		
+		if (defined reftype($record_ref->{$basefield}) && reftype($record_ref->{$basefield}) eq "ARRAY"){		
 		    if ($subfield){
 			foreach my $item_ref (@{$record_ref->{$basefield}}){
 			    if ($item_ref->{subfield} eq $subfield){
@@ -693,7 +693,7 @@ sub create_document {
 			$fieldcontent = (defined $record_ref->{$field}[0]{content})?$record_ref->{$field}[0]{content}:0;		    
 		    }
 		}
-		else { # Scalar
+		elsif (! defined reftype($record_ref->{$basefield})){ # Scalar
 		    $fieldcontent = $record_ref->{$field};
 		}
 		

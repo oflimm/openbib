@@ -600,7 +600,7 @@ sub create_document {
 			$content = (defined $record_ref->{$field}[0]{content})?$record_ref->{$field}[0]{content}:"";
 		    }
 		}
-		elsif (! defined reftype($record_ref->{$basefield})){ # Scalar
+		else { # Scalar
 		    $content = $record_ref->{$field};
 		}
 		
@@ -647,7 +647,7 @@ sub create_document {
 			$content = (defined $record_ref->{$field}[0]{content})?$record_ref->{$field}[0]{content}:"";
 		    }
 		}
-		elsif (! defined reftype($record_ref->{$basefield})){ # Scalar
+		else { # Scalar
 		    $content = $record_ref->{$field};
 		}
 
@@ -693,7 +693,7 @@ sub create_document {
 			$fieldcontent = (defined $record_ref->{$field}[0]{content})?$record_ref->{$field}[0]{content}:0;		    
 		    }
 		}
-		elsif (! defined reftype($record_ref->{$basefield})){ # Scalar
+		else { # Scalar
 		    $fieldcontent = $record_ref->{$field};
 		}
 		

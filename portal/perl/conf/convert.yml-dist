@@ -1267,7 +1267,7 @@ convtab:
       - 'T0424' # 424 hiner 425, d.h. 424 wichtiger, falls besetzt und gleiches Sortierungsfeld
       - 'T0412'
       - 'X0014'
-#      - 'popularity'
+      - 'popularity'
     sorting:
       'P0800':
         'sortfield': 'authority' # Normdaten-Ansetzungsform Person
@@ -1308,9 +1308,9 @@ convtab:
       'X0014':
         'sortfield': 'mark'      # Signatur
         'type': 'stringfield'
-#      'popularity':
-#        'sortfield': 'popularity'# Popularitaet
-#        'type': 'integervalue'
+      'popularity':
+        'sortfield': 'popularity'# Popularitaet
+        'type': 'integervalue'
     inverted_authority_person:
       '0800':         # Ansetzung
         '':
@@ -9800,7 +9800,7 @@ convtab:
       - 'T0264:c' 
       - 'T0246:b'
       - 'X0014:a'
-#      - 'popularity'
+      - 'popularity'
     sorting:
       'T0800':
         'sortfield': 'authority' # Normdaten-Ansetzungsform Person
@@ -9833,9 +9833,9 @@ convtab:
       'X0014:a':
         'sortfield': 'mark'      # Signatur
         'type': 'stringfield'
-#      'popularity':
-#        'sortfield': 'popularity'# Popularitaet
-#        'type': 'integervalue'
+      'popularity':
+        'sortfield': 'popularity'# Popularitaet
+        'type': 'integervalue'
 
 # Kategorien, die in den einzelnen Normdaten indexiert werden
 # Unter index werden die Recherchefelder aufgefuehrt, in dem der Inhalt der
@@ -10775,7 +10775,7 @@ convtab:
       - 'T0264:c' 
       - 'T0246:b'
       - 'X0014:a'
-#      - 'popularity'
+      - 'popularity'
     sorting:
       'T0800':
         'sortfield': 'authority' # Normdaten-Ansetzungsform Person
@@ -10808,9 +10808,9 @@ convtab:
       'X0014:a':
         'sortfield': 'mark'      # Signatur
         'type': 'stringfield'
-#      'popularity':
-#        'sortfield': 'popularity'# Popularitaet
-#        'type': 'integervalue'
+      'popularity':
+        'sortfield': 'popularity'# Popularitaet
+        'type': 'integervalue'
 
 # Kategorien, die in den einzelnen Normdaten indexiert werden
 # Unter index werden die Recherchefelder aufgefuehrt, in dem der Inhalt der

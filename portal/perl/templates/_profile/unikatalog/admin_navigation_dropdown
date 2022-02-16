@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 
-<h1 class="display-5">[% msg.maketext("Administration") %]</h1>
+<h4>[% msg.maketext("Administration") %]</h4>
 
 <ul class="list-unstyled components">
   <li class="[% IF layout_param.active_submenu == "admin_overview" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">[% msg.maketext("Übersicht") %]</a></li>

@@ -34,6 +34,7 @@ use Benchmark ':hireswallclock';
 use Encode qw/decode_utf8 encode_utf8/;
 use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
+use Scalar::Util qw(reftype); 
 use Search::Xapian;
 use Storable;
 use String::Tokenizer;
@@ -585,17 +586,24 @@ sub create_document {
             # Bibliogr. Feldinhalte mit Zeichenketten
             if ($convconfig->get('sorting')->{$field}->{type} eq "stringfield"){
 		my $content = "";
-		if ($subfield){
-		    foreach my $item_ref (@{$record_ref->{$basefield}}){
-			if ($item_ref->{subfield} eq $subfield){
-			    $content = $item_ref->{content};
-			    last;
+
+		if (reftype($record_ref->{$basefield}) eq "ARRAY"){
+		    if ($subfield){
+			foreach my $item_ref (@{$record_ref->{$basefield}}){
+			    if ($item_ref->{subfield} eq $subfield){
+				$content = $item_ref->{content};
+				last;
+			    }
 			}
 		    }
+		    else {
+			$content = (defined $record_ref->{$field}[0]{content})?$record_ref->{$field}[0]{content}:"";
+		    }
 		}
-		else {
-		    $content = (defined $record_ref->{$field}[0]{content})?$record_ref->{$field}[0]{content}:"";
+		elsif (reftype($record_ref->{$basefield}) eq "SCALAR"){
+		    $content = $record_ref->{$field};
 		}
+		
                 next unless ($content);
                 
                 if (defined $convconfig->get('sorting')->{$field}{filter}){
@@ -625,16 +633,22 @@ sub create_document {
             # Bibliogr. Feldinhalte mit Integerwerten
             elsif ($convconfig->get('sorting')->{$field}->{type} eq "integerfield"){
 		my $content = "";
-		if ($subfield){
-		    foreach my $item_ref (@{$record_ref->{$basefield}}){
-			if ($item_ref->{subfield} eq $subfield){
-			    $content = $item_ref->{content};
-			    last;
+
+		if (reftype($record_ref->{$basefield}) eq "ARRAY"){
+		    if ($subfield){
+			foreach my $item_ref (@{$record_ref->{$basefield}}){
+			    if ($item_ref->{subfield} eq $subfield){
+				$content = $item_ref->{content};
+				last;
+			    }
 			}
 		    }
+		    else {
+			$content = (defined $record_ref->{$field}[0]{content})?$record_ref->{$field}[0]{content}:"";
+		    }
 		}
-		else {
-		    $content = (defined $record_ref->{$field}[0]{content})?$record_ref->{$field}[0]{content}:"";
+		elsif (reftype($record_ref->{$basefield}) eq "SCALAR"){
+		    $content = $record_ref->{$field};
 		}
 
                 next unless ($content);
@@ -665,17 +679,23 @@ sub create_document {
             # Integerwerte jenseits der bibliogr. Felder, also z.B. popularity
             elsif ($convconfig->get('sorting')->{$field}->{type} eq "integervalue"){
                 my $fieldcontent = 0 ;
-		if ($subfield){
-		    foreach my $item_ref (@{$record_ref->{$basefield}}){
-			if ($item_ref->{subfield} eq $subfield){
-			    $fieldcontent = $item_ref->{content};
-			    last;
+
+		if (reftype($record_ref->{$basefield}) eq "ARRAY"){		
+		    if ($subfield){
+			foreach my $item_ref (@{$record_ref->{$basefield}}){
+			    if ($item_ref->{subfield} eq $subfield){
+				$fieldcontent = $item_ref->{content};
+				last;
+			    }
 			}
 		    }
+		    else {
+			$fieldcontent = (defined $record_ref->{$field}[0]{content})?$record_ref->{$field}[0]{content}:0;		    
+		    }
 		}
-		else {
-		    $fieldcontent = (defined $record_ref->{$field}[0]{content})?$record_ref->{$field}[0]{content}:0;		    
-		}		
+		elsif (reftype($record_ref->{$basefield}) eq "SCALAR"){
+		    $fieldcontent = $record_ref->{$field};
+		}
 		
                 my ($content) = $fieldcontent=~m/^(-?\d+)/;
 

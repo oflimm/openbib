@@ -647,6 +647,11 @@
 					background-color: lightgrey;
 				    }
     
+
+    img.ob-fulltext_status {
+	padding-left:5px;
+	padding-top:0.4em;
+    }
     
     .ob-fulltitle {
 	margin-top: 10px;
@@ -2483,9 +2488,17 @@ a.card-link, a.card-link:hover {
 }
 
 @media (min-width: 576px) {
+    
+    
     .ob-jumbotron {
+	padding: 4rem 2rem;
+    }
+
+    #image-area .ob-jumbotron {
+	padding: 0px;
 	padding-top: 4rem;
     }
+    
 }
 
 @media screen and (max-width:480px) {

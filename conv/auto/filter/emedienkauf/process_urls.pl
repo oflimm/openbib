@@ -9,31 +9,84 @@ use strict;
 
 while (<>){
     my $record_ref = decode_json $_;
-    my $fields_ref = $record_ref->{fields};
     
     # Uebertragung der URLs in andere Katagorie
     #
-    # Link zum Volltext:
+    # Link in content von 4662
+    # Zugriffsstatus in subfield von 4662
+    # Beschreibungstext in content von 4663
     #
-    # Uebertragen in Titelfeld fuer E-Medien T4120
-    # Analog zu angereicherten Link zu E-Medien in E4120
+    # Eintraege von 4662 und 4663 bilden eine Multgruppe (Zuordnung via mult)   
     #
-    # Markierung von URLs nach Typ in Subfield
+    # Ausnahme Links zu Inhaltsvereichnissen
+    # Link zum Inhaltsverzeichnis in content von 4110 analog
+    # zu angereicherten Links zu Inhaltsverzeichnissen in E4110
     #
-    #  : Unbekannt
-    # a: Freier Zugriff    
-    # b: Eingeschraenkter Zugriff
-    # c: Kein Zugriff
+    # Zugriffstatus
+    #
+    # '' : Keine Ampel
+    # ' ': Unbestimmt g oder y oder r
+    # 'f': Unbestimmt, aber Volltext Zugriff g oder y (fulltext)
+    # 'g': Freier Zugriff (green)
+    # 'y': Eingeschraenkter Zugriff (yellow)
+    # 'r': Kein Zugriff (red)
+
+    my $mult_ref = {};
+
+    $mult_ref->{'4662'} = 1;
     
-    if (defined $fields_ref->{'0662'}) {
-	foreach my $item_ref (@{$fields_ref->{'0662'}}){
-	    $record_ref->{fields}{'4120'} = [
-		{
-		    mult     => 1,
-		    subfield => 'b',
-		    content  => $item_ref->{content},
-		},
-		];
+    if (defined $record_ref->{fields}{'0662'}) {
+	my $fulltext_done = 0;
+	
+	foreach my $item_ref (@{$record_ref->{fields}{'0662'}}){
+	    my $mult        = $mult_ref->{'4662'}++;
+	    my $url         = $item_ref->{content};
+
+	    # Link zum Cover ggf. anhand URL erkennen.
+	    if ($url =~m/cover/){
+		my $description = "Umschlag";
+		push @{$record_ref->{fields}{'4662'}}, {
+		    mult     => $mult,
+		    subfield => '',,
+		    content  => $url,
+		};
+		
+		push @{$record_ref->{fields}{'4663'}}, {
+		    mult     => $mult,
+		    subfield => '',
+		    content  => $description,
+		};
+
+		next;
+	    }
+
+	    # Ab hier potentieller Link zum lizensierten E-Book im Volltext
+	    my $description = "E-Book im Volltext";
+	    my $access      = "y"; # yellow
+	    
+	    push @{$record_ref->{fields}{'4662'}}, {
+		mult     => $mult,
+		subfield => $access,
+		content  => $url,
+	    };
+	    
+	    push @{$record_ref->{fields}{'4663'}}, {
+		mult     => $mult,
+		subfield => '',
+		content  => $description,
+	    };
+
+	    # Nur ersten Link als Volltext-Link verwenden.
+	    if (!$fulltext_done) { 
+		$record_ref->{fields}{'4120'} = [
+		    {
+			mult     => 1,
+			subfield => $access,
+			content  => $url,
+		    },
+		    ];
+		$fulltext_done = 1;
+	    }
 	}
     }
 

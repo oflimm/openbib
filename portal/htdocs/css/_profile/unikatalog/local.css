@@ -249,7 +249,13 @@
 
 
     .ob-bottominfo {
+	padding-top: 20px;
 	padding-right: 10px;
+    }
+
+    .ob-title_wikipedia_articles {
+	padding: 15px;
+//	background-color: lightgrey !important ;	
     }
     
     .ob-page_footer {

@@ -61,6 +61,27 @@
   END ;
   title      = msg.maketext("Titel-Information: [_1] in Katalog [_2]",recordname,dbdesc)
 
+    fulltext_availability  = "";
+    fulltext_icon = config.get('ezb_unknown_img');
+    fulltext_desc  = "Volltext";
+
+    IF normdata.${'T4120'}.first.subfield == "g";
+      fulltext_availability = "lawngreen";
+      fulltext_icon = config.get('ezb_green_img');
+      fulltext_desc = msg.maketext("Volltext mit freiem Zugang");;
+    ELSIF normdata.${'T4120'}.first.subfield == "y";
+      fulltext_availability = "yellow";
+      fulltext_icon = config.get('ezb_yellow_img');
+      fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
+    ELSIF normdata.${'T4120'}.first.subfield == "f";
+      fulltext_icon = config.get('ezb_green_yellow_img');
+      fulltext_desc = msg.maketext("Volltext mit unbekanntem Zugang");;
+    ELSE ;
+      fulltext_icon = config.get('ezb_unknown_img');
+      fulltext_desc = msg.maketext("Unbekannter Zugang");;
+    END;
+
+
 -%]
 
 <!--               <script type="text/javascript">
@@ -188,7 +209,7 @@ Zugriff nur im <a href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medi
 
 [% IF fulltext %]
 	    <div class="pe-1">	    
-              <a class="btn btn-primary pe-2" href="[% fulltext %]" target="_blank" title="[% msg.maketext("Volltext") %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Volltext") %]</span></a>
+              <a class="btn btn-primary pe-2" href="[% fulltext %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Volltext") %]</span><img class="ps-2" src="[% fulltext_icon %]"/></a>
 	    </div>
 [% END %]
 

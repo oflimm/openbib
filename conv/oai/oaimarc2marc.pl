@@ -104,7 +104,6 @@ sub parse_titset {
     foreach my $element (@elements){
 	# Get element subtree as string
 	$marc_record = join '', map { $_->sprint } $element;
-	$marc_record = encode_utf8($marc_record);
 
 	# Cleanup
 

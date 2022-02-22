@@ -77,7 +77,7 @@ my $twig= XML::Twig->new(
  );
 
 
-$twig->parsefile($inputfile);
+$twig->safe_parsefile($inputfile);
 
 close(MARC21);
 
@@ -109,6 +109,7 @@ sub parse_titset {
 	# Cleanup
 
 	$marc_record=~s/marc\:leader/leader/g;
+	$marc_record=~s/marc\:controlfield/controlfield/g;
 	$marc_record=~s/marc\:record/record/g;
 	$marc_record=~s/marc\:subfield/subfield/g;
 	$marc_record=~s/marc\:datafield/datafield/g;
@@ -121,6 +122,8 @@ sub parse_titset {
 	return;
     }
 
+    print STDERR "Record in String\n";
+    
     open(my $fh, "<", \$marc_record);
     my $batch = MARC::Batch->new( 'XML', $fh );
     # Fallback to UTF8

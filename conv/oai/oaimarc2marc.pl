@@ -122,8 +122,6 @@ sub parse_titset {
 	return;
     }
 
-    print STDERR "Record in String\n";
-    
     open(my $fh, "<", \$marc_record);
     my $batch = MARC::Batch->new( 'XML', $fh );
     # Fallback to UTF8

@@ -48,7 +48,7 @@ use Encode qw /decode_utf8 encode_utf8/;
 use OpenBib::Conv::Common::Util;
 use OpenBib::Config;
 
-our $mexidn  =  1;
+our $counter  =  1;
 
 my ($inputfile);
 
@@ -104,6 +104,7 @@ sub parse_titset {
     foreach my $element (@elements){
 	# Get element subtree as string
 	$marc_record = join '', map { $_->sprint } $element;
+	$marc_record = encode_utf8($marc_record);
 
 	# Cleanup
 
@@ -121,33 +122,44 @@ sub parse_titset {
 	return;
     }
 
-    open(my $fh, "<", \$marc_record);
-    my $batch = MARC::Batch->new( 'XML', $fh );
-    # Fallback to UTF8
+    eval {
+	open(my $fh, "<", \$marc_record);
+	my $batch = MARC::Batch->new( 'XML', $fh );
+	# Fallback to UTF8
+	
+	# Recover from errors
+	$batch->strict_off();
+	$batch->warnings_off();
+	
+	# Fallback to UTF8
+	MARC::Charset->assume_unicode(1);
+	# Ignore Encoding Errors
+	MARC::Charset->ignore_errors(1);
+	
+	while (my $record = $batch->next() ){
+	    # Delete Record ID if available
+	    my $id_field = $record->field('001');
+	    $record->delete_field($id_field) if ($id_field);
+	    
+	    # Set OAI ID as Record ID
+	    my $field = MARC::Field->new('001',$id);
+	    $record->insert_fields_ordered($field);
+	    
+	    print MARC21 $record->as_usmarc();
+	}
+	
+	close($fh);
+    };
     
-    # Recover from errors
-    $batch->strict_off();
-    $batch->warnings_off();
-    
-    # Fallback to UTF8
-    MARC::Charset->assume_unicode(1);
-    # Ignore Encoding Errors
-    MARC::Charset->ignore_errors(1);
-    
-    while (my $record = $batch->next() ){
-	# Delete Record ID if available
-	my $id_field = $record->field('001');
-	$record->delete_field($id_field) if ($id_field);
-
-	# Set OAI ID as Record ID
-	my $field = MARC::Field->new('001',$id);
-	$record->insert_fields_ordered($field);
-
-	print MARC21 $record->as_usmarc();
+    if ($@){
+	print STDERR "Error: $@\n"; 
     }
 
-    close($fh);
-    
+    if ($counter % 10000 == 0){
+	print STDERR "$counter records done\n";
+    }
+
+    $counter++;
     # Release memory of processed tree
     # up to here
     $t->purge();

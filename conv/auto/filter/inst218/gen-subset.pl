@@ -75,7 +75,7 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-my $subset = new OpenBib::Catalog::Subset("inst001",$pool);
+my $subset = new OpenBib::Catalog::Subset("${pool}master",$pool);
 $subset->identify_by_field_content('holding',([ { field => '0014', content => '^J ' } ]));
 $subset->write_set;
 

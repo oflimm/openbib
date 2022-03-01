@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Users::Circulations
 #
-#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2022 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -78,12 +78,77 @@ sub show_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # Shared args
+
+
+    # Dispatched Ards
+    my $view           = $self->param('view');
+    my $userid         = $self->param('userid');
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
     my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
 
-    $logger->errog("Handler is obsolete");
+    unless ($config->get('active_ils')){
+	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellunge, Vormerkungen, usw.) sind aktuell systemweit deaktiviert."));	
+    }
+    
+    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
 
-    return $self->print_warning($msg->maketext("Diese Funktion wird nicht mehr unterstützt"));	
+    if (!$self->authorization_successful){
+        if ($self->param('representation') eq "html"){
+            return $self->tunnel_through_authenticator('POST');            
+        }
+        else  {
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
+        }
+    }
+    
+    my ($loginname,$password,$access_token) = $user->get_credentials();
+
+    my $database              = $sessionauthenticator;
+    
+    my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
+
+    $logger->debug("Loginname: $loginname");
+
+    my $account_ref = $ils->get_accountinfo($loginname);
+#    my $items_ref = $ils->get_items($loginname);
+#    my $fees_ref  = $ils->get_fees($loginname);
+
+    if ($logger->is_debug){
+	$logger->debug("Got account: ".YAML::Dump($account_ref));
+#	$logger->debug("Got fees: ".YAML::Dump($fees_ref));
+#	$logger->debug("Got fees: ".YAML::Dump($fees_ref));
+    }
+    
+    my $authenticator = $session->get_authenticator;
+
+    if ($logger->is_debug){
+	$logger->debug("Trying to renew loans for user $loginname in ils for $database");
+    }
+    
+    # TT-Data erzeugen
+    my $ttdata={
+        authenticator => $authenticator,
+        loginname  => $loginname,
+        password   => $password,
+
+	account    => $account_ref,
+#        items      => $items_ref,
+#        fees       => $fees_ref,
+
+	database   => $database,
+    };
+    
+    return $self->print_page($config->{tt_users_circulations_tname},$ttdata);
 }
 
 sub show_record {

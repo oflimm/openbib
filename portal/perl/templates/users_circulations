@@ -1,5 +1,31 @@
-[%- IF representation == '' || representation == 'html' -%]
-[%- PROCESS common/subtemplate name="users_circulations_html" -%]
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+     'page_title' = 'Bibliothekskonto'
+
+      'main_template' = 'users_circulations_html'
+      'sidebar_template' = 'users_navigation'
+
+      'active_menu' = 'users'
+      'active_submenu' = 'circulations'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = username
+	     url  = '#'
+	  },
+	  {
+	     desc = msg.maketext('Bibliothekskonto')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
 [%- ELSIF representation == 'rdf' -%]
 [%- PROCESS common/subtemplate name="users_circulations_rdf" -%]
 [%- ELSIF representation == 'json' -%]

@@ -2,7 +2,7 @@
 #
 #  OpenBib::ILS::Backend::USBWS
 #
-#  Dieses File ist (C) 2021 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2021-2022 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -171,29 +171,59 @@ sub get_items {
 
     my $orders_ref       = $self->get_orders($username);
     my $reservations_ref = $self->get_reservations($username);
-    my $loans_ref      = $self->get_loans($username);    
+    my $loans_ref        = $self->get_loans($username);    
 
     if (defined $orders_ref->{no_orders}){
 	$response_ref->{no_orders} = $orders_ref->{no_orders};
     }
     elsif (defined $orders_ref->{items}){
-	push @{$response_ref->{items}}, @{$orders_ref->{items}};
+	push @{$response_ref->{orders}}, @{$orders_ref->{items}};
     }
 
     if (defined $reservations_ref->{no_reservations}){
 	$response_ref->{no_reservations} = $reservations_ref->{no_reservations};
     }
     elsif (defined $reservations_ref->{items}){
-	push @{$response_ref->{items}}, @{$reservations_ref->{items}};
+	push @{$response_ref->{reservations}}, @{$reservations_ref->{items}};
     }
     
     if (defined $loans_ref->{no_loans}){
 	$response_ref->{no_loans} = $loans_ref->{no_loans};
     }
     elsif (defined $loans_ref->{items}){
-	push @{$response_ref->{items}}, @{$loans_ref->{items}};
+	push @{$response_ref->{loans}}, @{$loans_ref->{items}};
     }
         
+    return $response_ref;
+}
+
+# Accountinformationen
+sub get_accountinfo {
+    my ($self,$username) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $database = $self->get_database;
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+    
+    my $response_ref = {};
+
+    if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
+
+	$logger->debug("Getting Circulation info via USB-SOAP");
+
+	my $request_types_ref = [
+	    {
+		type   => 'KURZKONTO',
+		status => 2,
+	    },
+	    ];
+	
+	$response_ref = $self->send_account_request({ username => $username, types => $request_types_ref});
+    }
+    
     return $response_ref;
 }
 
@@ -1922,10 +1952,35 @@ sub send_account_request {
 		    error => "error",
 		    error_description => $itemlist->{NotOK},
 		};
-		next ;
+		return $response_ref ;
 	    }
-	    
-	    if ( %{$itemlist->{Konto}} && ($type_ref->{type} eq "AUSLEIHEN" || $type_ref->{type} eq "BESTELLUNGEN" || $type_ref->{type} eq "VORMERKUNGEN")){
+	    elsif (defined $itemlist->{Konto} && defined $itemlist->{Konto}{NotOK}){
+		$response_ref = {
+		    error => "error",
+		    error_description => $itemlist->{Konto}{NotOK},
+		};
+		return $response_ref ;
+	    }
+
+	    if ( $type_ref->{type} eq "KURZKONTO" ){
+		eval {
+		$response_ref->{username}          = $itemlist->{KurzKonto}{BenutzerNummer};
+		$response_ref->{fullname}          = $itemlist->{KurzKonto}{FullName};
+		$response_ref->{num_orders}        = $itemlist->{KurzKonto}{BsAnz};
+		$response_ref->{num_reservations}  = $itemlist->{KurzKonto}{VmAnz};
+		$response_ref->{num_loans}         = $itemlist->{KurzKonto}{AvAnz};
+		$response_ref->{amount_fees}       = $itemlist->{KurzKonto}{Soll};				
+		};
+
+		if ($@){
+		    $response_ref = {
+			error => "error",
+			error_description => "Kein Zugriff auf das Benutzerkonto",
+		    };
+		    return $response_ref ;		    
+		}
+	    }
+	    elsif ( ($type_ref->{type} eq "AUSLEIHEN" || $type_ref->{type} eq "BESTELLUNGEN" || $type_ref->{type} eq "VORMERKUNGEN") &&  %{$itemlist->{Konto}} ){
 		
 		if (defined $itemlist->{Konto}{KeineVormerkungen}){
 		    if ($logger->is_debug){

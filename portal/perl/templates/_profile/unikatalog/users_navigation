@@ -132,12 +132,18 @@
 <p/>
 
 <div class="card">
-<div class="card-header">[% msg.maketext("Benutzerkonto") %]: <span class="ob-nav_description">[% authenticator.description %]</span></div>
+<div class="card-header">[% msg.maketext("Bibliothekskonto") %]</div>
 
 <div class="card-body">
 
 <nav class="navbar bg-light ob-sidebar">
  <ul class="navbar-nav">
+[%   IF layout_param.active_submenu == "circulations" %]
+      <li class="nav-item active"><strong>[% msg.maketext("Übersicht") %]</strong></li>
+[%   ELSE %]
+      <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %].html?l=[% lang %]">[% msg.maketext("Übersicht") %]</a></li>
+[%   END %]
+ 
 [%   IF layout_param.active_submenu == "loans" %]
       <li class="nav-item active"><strong>[% msg.maketext("Ausleihen") %]</strong></li>
 [%   ELSE %]

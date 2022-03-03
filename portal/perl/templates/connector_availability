@@ -62,9 +62,9 @@
 <size>[% num_of_available_records %]</size>
 [% FOREACH record IN available_recordlist.get_records %]
 <catalogue>
-[%- FOREACH item_location IN record.get_locations -%]
+[% FOREACH item_location IN record.get_locations -%]
   <isil>[% item_location %]</isil>
-[% END %]  
+[% END -%]  
   <name>[% record.database %]</name>
   <id>[% record.id %]</id>
   <description>[% locinfo.get('identifier').${item_location}.description %]</description>

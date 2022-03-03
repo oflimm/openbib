@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2022-02-01 08:20+0100\n"
+"PO-Revision-Date: 2022-03-03 11:36+0100\n"
 "Last-Translator: openbib <flimm@openbib.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -342,8 +342,8 @@ msgstr "${category}"
 #: ../templates/_profile/unikatalog/subjects_record_html:59
 #: ../templates/_profile/unikatalog/subjects_record_include:74
 #: ../templates/_profile/unikatalog/titles_fields_html:30
-#: ../templates/_profile/unikatalog/titles_record_html_categories:637
-#: ../templates/_profile/unikatalog/titles_record_html_categories:670
+#: ../templates/_profile/unikatalog/titles_record_html_categories:664
+#: ../templates/_profile/unikatalog/titles_record_html_categories:697
 #: ../templates/_profile/unikatalog/titles_record_include:48
 #: ../templates/_profile/unikatalog/titles_record_mobile_categories:238
 #: ../templates/_profile/unikatalog/titles_record_mobile_categories:269
@@ -471,7 +471,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen_yaml4/titles_record_html:366
 #: ../templates/_profile/sammlungen_yaml4/titles_record_html~:366
 #: ../templates/_profile/sammlungen_yaml4/titles_record_include:242
-#: ../templates/_profile/unikatalog/titles_record_html:394
+#: ../templates/_profile/unikatalog/titles_record_html:417
 #: ../templates/_profile/usbintern/_database/inst001/titles_record_html:358
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html:366
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html~:366
@@ -768,10 +768,10 @@ msgstr ""
 #: ../templates/_profile/unikatalog/users_litlists_record_edit_html:99
 #: ../templates/_profile/unikatalog/users_litlists_record_sidebar:44
 #: ../templates/_profile/unikatalog/users_preferences_html:139
-#: ../templates/_profile/unikatalog/users_preferences_html:162
-#: ../templates/_profile/unikatalog/users_preferences_html:218
-#: ../templates/_profile/unikatalog/users_preferences_html:253
-#: ../templates/_profile/unikatalog/users_preferences_html:286
+#: ../templates/_profile/unikatalog/users_preferences_html:163
+#: ../templates/_profile/unikatalog/users_preferences_html:219
+#: ../templates/_profile/unikatalog/users_preferences_html:254
+#: ../templates/_profile/unikatalog/users_preferences_html:287
 #: ../templates/_profile/unikatalog/users_preferences_html:33
 #: ../templates/_profile/unikatalog/users_record_edit_html:93
 #: ../templates/_profile/unikatalog/users_tags_edit_html:31
@@ -1565,7 +1565,7 @@ msgstr ""
 #: ../templates/_profile/bootstrap5/_view/unikatalog/titles_record_html:204
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/titles_record_html:204
 #: ../templates/_profile/kug/_view/kugproto/titles_record_html:191
-#: ../templates/_profile/unikatalog/titles_record_html:210
+#: ../templates/_profile/unikatalog/titles_record_html:233
 msgid "APA"
 msgstr "APA"
 
@@ -1652,7 +1652,7 @@ msgstr "Cancel"
 #: ../templates/_profile/kug_yaml4/users_preferences_html:363
 #: ../templates/_profile/rheinlandbib_yaml4/users_preferences_html:365
 #: ../templates/_profile/sammlungen_yaml4/users_preferences_html:365
-#: ../templates/_profile/unikatalog/users_preferences_html:273
+#: ../templates/_profile/unikatalog/users_preferences_html:274
 #: ../templates/_profile/yaml4/users_preferences_html:365
 #: ../templates/users_preferences_html:273
 msgid "Abgleich zu BibSonomy"
@@ -1704,7 +1704,7 @@ msgstr ""
 #: ../templates/_profile/unikatalog/_view/ilias/mainnavigation_html:221
 #: ../templates/_profile/unikatalog/mainnavigation_html:118
 #: ../templates/_profile/unikatalog/mainnavigation_html:221
-#: ../templates/_profile/unikatalog/users_navigation_dropdown:104
+#: ../templates/_profile/unikatalog/users_navigation_dropdown:105
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/corporate_banner:19
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/corporate_banner:19
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/corporate_banner:19
@@ -2093,9 +2093,9 @@ msgstr "Actions"
 #: ../templates/_profile/unikatalog/databases_rss_record_html:51
 #: ../templates/_profile/unikatalog/servers_html:22
 #: ../templates/_profile/unikatalog/servers_record_html:35
-#: ../templates/_profile/unikatalog/users_preferences_html:188
-#: ../templates/_profile/unikatalog/users_preferences_html:199
-#: ../templates/_profile/unikatalog/users_preferences_html:210
+#: ../templates/_profile/unikatalog/users_preferences_html:189
+#: ../templates/_profile/unikatalog/users_preferences_html:200
+#: ../templates/_profile/unikatalog/users_preferences_html:211
 #: ../templates/_profile/unikatalog/viewadmin_views_record_edit_html:52
 #: ../templates/_profile/unikatalog/viewadmin_views_record_html:42
 #: ../templates/_profile/unikatalog/views_html:21
@@ -2678,7 +2678,7 @@ msgstr "All hits"
 #: ../templates/_profile/kug_yaml4/users_preferences_html:388
 #: ../templates/_profile/rheinlandbib_yaml4/users_preferences_html:387
 #: ../templates/_profile/sammlungen_yaml4/users_preferences_html:387
-#: ../templates/_profile/unikatalog/users_preferences_html:297
+#: ../templates/_profile/unikatalog/users_preferences_html:298
 #: ../templates/_profile/yaml4/users_preferences_html:387
 #: ../templates/users_preferences_html:297
 msgid "Alle getaggten Titel jetzt zu BibSonomy &uuml;bertragen"
@@ -3239,7 +3239,7 @@ msgstr "So:"
 #: ../templates/_profile/kug/_view/kugproto/search_facet:1052
 #: ../templates/_profile/kug/_view/kugproto/titles_record_html_categories:173
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:859
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1069
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1076
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:889
 #: ../templates/_profile/sammlungen/_view/jesuiten/titles_fields_record_html:49
 #: ../templates/_profile/sammlungen/_view/muenzenproto/search_facet:883
@@ -3263,7 +3263,7 @@ msgstr "Ancient Greek"
 #: ../templates/_profile/kug/_view/kugproto/search_facet:1075
 #: ../templates/_profile/kug/_view/kugproto/titles_record_html_categories:196
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:882
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1092
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1099
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:912
 #: ../templates/_profile/sammlungen/_view/jesuiten/titles_fields_record_html:72
 #: ../templates/_profile/sammlungen/_view/muenzenproto/search_facet:906
@@ -3454,8 +3454,8 @@ msgstr "On"
 #: ../templates/_profile/unikatalog/reviews_edit:199
 #: ../templates/_profile/unikatalog/reviews_edit_html:199
 #: ../templates/_profile/unikatalog/titles_popular_html:250
-#: ../templates/_profile/unikatalog/titles_record_html:200
-#: ../templates/_profile/unikatalog/titlist_item_html_short:448
+#: ../templates/_profile/unikatalog/titles_record_html:223
+#: ../templates/_profile/unikatalog/titlist_item_html_short:479
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/titlist_item_html_short:324
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/titlist_item_html_short:324
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/titlist_item_html_short:324
@@ -3518,7 +3518,7 @@ msgstr "Send to BibSonomy"
 #: ../templates/_profile/sammlungen_yaml4/titles_record_html~:272
 #: ../templates/_profile/sammlungen_yaml4/titles_record_include:135
 #: ../templates/_profile/sammlungen_yaml4/titles_record_include:284
-#: ../templates/_profile/unikatalog/titles_record_html:291
+#: ../templates/_profile/unikatalog/titles_record_html:314
 #: ../templates/_profile/usbintern/_database/inst001/titles_record_html:264
 #: ../templates/_profile/usbportal/titles_record_include:130
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html:267
@@ -4482,8 +4482,8 @@ msgstr "Show"
 #: ../templates/_profile/rheinlandbib_yaml4/search_facet:506
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:837
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:839
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1047
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1049
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1054
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1056
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:867
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:869
 #: ../templates/_profile/sammlungen/_view/jesuiten/titles_fields_record_html:27
@@ -4522,15 +4522,10 @@ msgstr "Show"
 msgid "Arabisch"
 msgstr "Arabic"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:110
-msgid "Archiv"
-msgstr "Archive"
-
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/home_html:48
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/home_html:68
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/info_metrics_html:390
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/mainnavigation_html:71
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_record:16
 msgid "Archive"
 msgstr "Archives"
 
@@ -4559,7 +4554,7 @@ msgstr "Archived"
 #: ../templates/_profile/kug/_view/kugproto/search_facet:1031
 #: ../templates/_profile/kug/_view/kugproto/titles_record_html_categories:152
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:838
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1048
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1055
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:868
 #: ../templates/_profile/sammlungen/_view/jesuiten/titles_fields_record_html:28
 #: ../templates/_profile/sammlungen/_view/muenzenproto/search_facet:862
@@ -4720,7 +4715,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen_yaml4/titles_record_html:346
 #: ../templates/_profile/sammlungen_yaml4/titles_record_html~:346
 #: ../templates/_profile/sammlungen_yaml4/titles_record_include:220
-#: ../templates/_profile/unikatalog/titles_record_html:375
+#: ../templates/_profile/unikatalog/titles_record_html:398
 #: ../templates/_profile/usbintern/_database/inst001/titles_record_html:338
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html:346
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html~:346
@@ -4961,7 +4956,7 @@ msgstr "Circulation options"
 #: ../templates/_profile/sammlungen_yaml4/titles_record_html~:263
 #: ../templates/_profile/sammlungen_yaml4/titles_record_include:122
 #: ../templates/_profile/sammlungen_yaml4/titles_record_include:144
-#: ../templates/_profile/unikatalog/titles_record_html:282
+#: ../templates/_profile/unikatalog/titles_record_html:305
 #: ../templates/_profile/usbintern/_database/inst001/titles_record_html:255
 #: ../templates/_profile/usbportal/titles_record_include:70
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html:254
@@ -4995,9 +4990,9 @@ msgstr "Loan/Copies"
 #: ../templates/_profile/sammlungen_yaml4/users_circulations_renew_loans:39
 #: ../templates/_profile/sammlungen_yaml4/users_navigation:65
 #: ../templates/_profile/sammlungen_yaml4/users_navigation:67
-#: ../templates/_profile/unikatalog/users_navigation:142
-#: ../templates/_profile/unikatalog/users_navigation:144
-#: ../templates/_profile/unikatalog/users_navigation_dropdown:68
+#: ../templates/_profile/unikatalog/users_navigation:148
+#: ../templates/_profile/unikatalog/users_navigation:150
+#: ../templates/_profile/unikatalog/users_navigation_dropdown:69
 #: ../templates/_profile/yaml4/users_circulations_borrows_html:39
 #: ../templates/_profile/yaml4/users_circulations_borrows_ics:84
 #: ../templates/_profile/yaml4/users_circulations_renew_loans:39
@@ -5107,9 +5102,16 @@ msgstr "Loan system (LIVIVO)"
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/home_html:45
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/home_html:65
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/mainnavigation_html:68
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_record:7
 msgid "Aussteller"
 msgstr "Issuer"
+
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:240
+msgid "Ausstellort"
+msgstr "Place of issue"
+
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:37
+msgid "Ausstellungsort"
+msgstr "Place of issue"
 
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/home_html:47
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/home_html:67
@@ -5594,7 +5596,7 @@ msgstr ""
 #: ../templates/_profile/kug_yaml4/users_preferences_html:298
 #: ../templates/_profile/rheinlandbib_yaml4/users_preferences_html:305
 #: ../templates/_profile/sammlungen_yaml4/users_preferences_html:305
-#: ../templates/_profile/unikatalog/users_preferences_html:195
+#: ../templates/_profile/unikatalog/users_preferences_html:196
 #: ../templates/_profile/yaml4/users_preferences_html:305
 #: ../templates/users_preferences_html:195
 msgid "Bei der Eingabe von Personen"
@@ -5604,13 +5606,13 @@ msgstr "As you enter persons"
 #: ../templates/_profile/kug_yaml4/users_preferences_html:312
 #: ../templates/_profile/rheinlandbib_yaml4/users_preferences_html:319
 #: ../templates/_profile/sammlungen_yaml4/users_preferences_html:319
-#: ../templates/_profile/unikatalog/users_preferences_html:207
+#: ../templates/_profile/unikatalog/users_preferences_html:208
 #: ../templates/_profile/yaml4/users_preferences_html:319
 #: ../templates/users_preferences_html:207
 msgid "Bei der Eingabe von Schlagworten"
 msgstr "As you enter subjects"
 
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:178
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:243
 msgid "Bei der Gesamtkontoverlängerung ist ein unerwarteter Fehler aufgetreten"
 msgstr ""
 
@@ -5670,7 +5672,7 @@ msgstr ""
 "The search engine is not case sensitive, so it doesn't matter if you   type "
 "in upper or lower case."
 
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:272
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:337
 msgid ""
 "Bei der Verlängerung des Mediums ist ein unerwarteter Fehler aufgetreten"
 msgstr ""
@@ -5829,7 +5831,6 @@ msgstr "User defined"
 #: ../templates/_profile/bootstrap5/users_navigation:130
 #: ../templates/_profile/rheinlandbib_yaml4/users_navigation:80
 #: ../templates/_profile/sammlungen_yaml4/users_navigation:60
-#: ../templates/_profile/unikatalog/users_navigation:135
 #: ../templates/_profile/yaml4/users_navigation:80
 #: ../templates/users_navigation:130
 msgid "Benutzerkonto"
@@ -6379,7 +6380,7 @@ msgstr "Description of profession"
 #: ../templates/_profile/unikatalog/clusters_record_html:20
 #: ../templates/_profile/unikatalog/databases_html:32
 #: ../templates/_profile/unikatalog/databases_record_html:20
-#: ../templates/_profile/unikatalog/locations_html:66
+#: ../templates/_profile/unikatalog/locations_html:134
 #: ../templates/_profile/unikatalog/orgunits_html:21
 #: ../templates/_profile/unikatalog/orgunits_record_html:24
 #: ../templates/_profile/unikatalog/profiles_html:22
@@ -6638,7 +6639,7 @@ msgstr "Description"
 #: ../templates/_profile/sammlungen_yaml4/litlists_record_html_as_text:26
 #: ../templates/_profile/sammlungen_yaml4/titles_record_html_categories:316
 #: ../templates/_profile/sammlungen_yaml4/titles_record_mobile_categories:274
-#: ../templates/_profile/unikatalog/titles_record_html_categories:675
+#: ../templates/_profile/unikatalog/titles_record_html_categories:702
 #: ../templates/_profile/unikatalog/titles_record_include:53
 #: ../templates/_profile/unikatalog/titles_record_mobile_categories:274
 #: ../templates/_profile/usbintern/_database/inst001/circulation:189
@@ -6766,7 +6767,7 @@ msgstr "Please confirm your registration"
 #: ../templates/_profile/unikatalog/titles_record_holdings_html:62
 #: ../templates/_profile/unikatalog/titles_record_holdings_include:15
 #: ../templates/_profile/unikatalog/titles_record_holdings_include:62
-#: ../templates/_profile/unikatalog/titles_record_html:284
+#: ../templates/_profile/unikatalog/titles_record_html:307
 #: ../templates/_profile/usbintern/_database/inst001/titles_record_html:257
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/holding:47
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/holding:47
@@ -6961,9 +6962,8 @@ msgstr ""
 #: ../templates/_profile/sammlungen_yaml4/users_navigation:75
 #: ../templates/_profile/sammlungen_yaml4/users_navigation:77
 #: ../templates/_profile/sammlungen_yaml4/users_preferences_html:127
-#: ../templates/_profile/unikatalog/users_navigation:152
-#: ../templates/_profile/unikatalog/users_navigation:154
-#: ../templates/_profile/unikatalog/users_navigation_dropdown:70
+#: ../templates/_profile/unikatalog/users_navigation:158
+#: ../templates/_profile/unikatalog/users_navigation:160
 #: ../templates/_profile/yaml4/users_circulations_borrows_ics:86
 #: ../templates/_profile/yaml4/users_circulations_orders_html:39
 #: ../templates/_profile/yaml4/users_navigation:95
@@ -7037,7 +7037,7 @@ msgstr "Delete preferred locations"
 #: ../templates/_profile/unikatalog/reviews_edit:216
 #: ../templates/_profile/unikatalog/reviews_edit_html:216
 #: ../templates/_profile/unikatalog/reviews_record_html:69
-#: ../templates/_profile/unikatalog/titles_record_html:346
+#: ../templates/_profile/unikatalog/titles_record_html:369
 #: ../templates/_profile/usbintern/_database/inst001/titles_record_html:318
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html:326
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html~:326
@@ -7074,7 +7074,7 @@ msgstr "Rating"
 #: ../templates/_profile/sammlungen_yaml4/titles_record_html~:274
 #: ../templates/_profile/sammlungen_yaml4/titles_record_include:138
 #: ../templates/_profile/sammlungen_yaml4/titles_record_include:178
-#: ../templates/_profile/unikatalog/titles_record_html:293
+#: ../templates/_profile/unikatalog/titles_record_html:316
 #: ../templates/_profile/usbintern/_database/inst001/titles_record_html:266
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html:270
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html~:270
@@ -7107,7 +7107,7 @@ msgstr "Ratings/reviews"
 #: ../templates/_profile/sammlungen_yaml4/titles_record_html:360
 #: ../templates/_profile/sammlungen_yaml4/titles_record_html~:360
 #: ../templates/_profile/sammlungen_yaml4/titles_record_include:236
-#: ../templates/_profile/unikatalog/titles_record_html:388
+#: ../templates/_profile/unikatalog/titles_record_html:411
 #: ../templates/_profile/usbintern/_database/inst001/titles_record_html:352
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html:360
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html~:360
@@ -7150,7 +7150,7 @@ msgstr "BibKey"
 #: ../templates/_profile/unikatalog/cartitems_html_full:56
 #: ../templates/_profile/unikatalog/litlists_record_html_full:24
 #: ../templates/_profile/unikatalog/titles_record_html_images:35
-#: ../templates/_profile/unikatalog/users_preferences_html:264
+#: ../templates/_profile/unikatalog/users_preferences_html:265
 #: ../templates/_profile/yaml4/_database/openlibrary/titles_record_html_images:32
 #: ../templates/_profile/yaml4/cartitems_html_full:56
 #: ../templates/_profile/yaml4/litlists_record_html_full:24
@@ -7178,7 +7178,7 @@ msgstr "BibSonomy Tags"
 #: ../templates/_profile/kug_yaml4/users_preferences_html:372
 #: ../templates/_profile/rheinlandbib_yaml4/users_preferences_html:374
 #: ../templates/_profile/sammlungen_yaml4/users_preferences_html:374
-#: ../templates/_profile/unikatalog/users_preferences_html:283
+#: ../templates/_profile/unikatalog/users_preferences_html:284
 #: ../templates/_profile/yaml4/users_preferences_html:374
 #: ../templates/users_preferences_html:282
 msgid "BibSonomy-API-Key"
@@ -7188,7 +7188,7 @@ msgstr "BibSonomy API-Key"
 #: ../templates/_profile/kug_yaml4/users_preferences_html:367
 #: ../templates/_profile/rheinlandbib_yaml4/users_preferences_html:369
 #: ../templates/_profile/sammlungen_yaml4/users_preferences_html:369
-#: ../templates/_profile/unikatalog/users_preferences_html:278
+#: ../templates/_profile/unikatalog/users_preferences_html:279
 #: ../templates/_profile/yaml4/users_preferences_html:369
 #: ../templates/users_preferences_html:277
 msgid "BibSonomy-API-User"
@@ -7197,7 +7197,7 @@ msgstr "BibSonomy API-User"
 #: ../templates/_profile/bootstrap5/_view/unikatalog/titles_record_html:208
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/titles_record_html:208
 #: ../templates/_profile/kug/_view/kugproto/titles_record_html:194
-#: ../templates/_profile/unikatalog/titles_record_html:214
+#: ../templates/_profile/unikatalog/titles_record_html:237
 msgid "BibTeX"
 msgstr "BibTeX"
 
@@ -7311,6 +7311,10 @@ msgstr "Information about location instead of URL"
 msgid "Bibliothek"
 msgstr "Library"
 
+#: ../templates/_profile/unikatalog/home_html:252
+msgid "Bibliotheken"
+msgstr "Libraries"
+
 #: ../templates/_profile/bootstrap5/admin_locations_record_html:19
 #: ../templates/_profile/bootstrap5/locations_record_html:19
 #: ../templates/_profile/bootstrap5/locations_record_mobile:52
@@ -7337,6 +7341,12 @@ msgstr "Library information"
 #: ../templates/admin_databases_record_html:23
 msgid "Bibliotheksinformationen statt URL"
 msgstr "Library information instead of URL"
+
+#: ../templates/_profile/unikatalog/users_navigation:135
+#: ../templates/_profile/unikatalog/users_navigation_dropdown:65
+#: ../templates/users_circulations:21
+msgid "Bibliothekskonto"
+msgstr "Library account"
 
 #: ../templates/_profile/rheinlandbib_yaml4/info_tutorials:55
 #: ../templates/_profile/sammlungen_yaml4/info_tutorials:55
@@ -7595,15 +7605,25 @@ msgstr "Please enter your term"
 msgid "Blättern nach"
 msgstr "Browse by"
 
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:500
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:21
+msgid "Briefaussteller"
+msgstr "Issuer of letter"
+
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:65
 msgid "Briefdetails"
 msgstr "Letter details"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:518
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:525
 msgid "Briefe"
 msgstr "Letters"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:677
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:501
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:29
+msgid "Briefempfänger"
+msgstr "Addressee of letter"
+
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:684
 msgid "Briefspezifika"
 msgstr "Letter specifics"
 
@@ -7692,7 +7712,7 @@ msgstr "Bookbinder/Workshop"
 #: ../templates/_profile/bootstrap5/_view/unikatalog/titles_record_html_categories:531
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/titles_record_html_categories:531
 #: ../templates/_profile/kug/_view/kugproto/titles_record_html_categories:534
-#: ../templates/_profile/unikatalog/titles_record_html_categories:557
+#: ../templates/_profile/unikatalog/titles_record_html_categories:584
 msgid "Bände"
 msgstr "Volumes"
 
@@ -7824,7 +7844,7 @@ msgstr ""
 #: ../templates/_profile/rheinlandbib_yaml4/authority_search_facet:545
 #: ../templates/_profile/rheinlandbib_yaml4/search_facet:505
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:841
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1051
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1058
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:871
 #: ../templates/_profile/sammlungen/_view/jesuiten/titles_fields_record_html:31
 #: ../templates/_profile/sammlungen/_view/muenzenproto/search_facet:865
@@ -8429,6 +8449,7 @@ msgstr "Database recommendations"
 #: ../templates/_profile/sammlungen_yaml4/views_html:61
 #: ../templates/_profile/unikatalog/admin_profiles_html:88
 #: ../templates/_profile/unikatalog/admin_views_html:102
+#: ../templates/_profile/unikatalog/home_html:244
 #: ../templates/_profile/unikatalog/profiles_html:22
 #: ../templates/_profile/unikatalog/views_html:21
 #: ../templates/_profile/yaml4/admin_profiles_html:126
@@ -8459,7 +8480,7 @@ msgstr "DataBaseInformationSystem (DBIS)"
 
 #: ../templates/_profile/bootstrap5/admin_databases_record_edit_html:119
 #: ../templates/_profile/rheinlandbib_yaml4/admin_databases_record_edit:159
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:613
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:620
 #: ../templates/_profile/sammlungen_yaml4/admin_databases_record_edit:159
 #: ../templates/_profile/unikatalog/admin_databases_record_edit_html:119
 #: ../templates/_profile/yaml4/admin_databases_record_edit:159
@@ -8522,6 +8543,7 @@ msgstr "Dating from"
 #: ../templates/_profile/rheinlandbib_yaml4/templates_revisions_html:63
 #: ../templates/_profile/rheinlandbib_yaml4/templates_revisions_record_html:61
 #: ../templates/_profile/rheinlandbib_yaml4/users_templates_record_edit:126
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:252
 #: ../templates/_profile/sammlungen_yaml4/admin_templates_record_edit:127
 #: ../templates/_profile/sammlungen_yaml4/admin_templates_record_html:109
 #: ../templates/_profile/sammlungen_yaml4/templates_revisions_html:63
@@ -8713,7 +8735,6 @@ msgstr "Your list of interest is empty"
 msgid "Derzeit werden folgende externe Recherchequellen angeboten:"
 msgstr "The following external services  are currently being offered:"
 
-#: ../templates/_database/gentzbriefe/titlist_item_html_short:252
 #: ../templates/_profile/bootstrap/_view/kubikoeln/titlist_item_html_short:358
 #: ../templates/_profile/sammlungen/_view/digitalis/titles_record_html:86
 #: ../templates/_profile/sammlungen/_view/totenzettel/titles_record_html:86
@@ -8777,9 +8798,9 @@ msgstr "Details"
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:844
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:845
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:857
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1054
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1055
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1067
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1061
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1062
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1074
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:874
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:875
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:887
@@ -8899,7 +8920,7 @@ msgstr "German"
 #: ../templates/_profile/unikatalog/litlists_record_html_full:241
 #: ../templates/_profile/unikatalog/titles_record_fields_html:103
 #: ../templates/_profile/unikatalog/titles_record_fields_include:103
-#: ../templates/_profile/unikatalog/titles_record_html:241
+#: ../templates/_profile/unikatalog/titles_record_html:264
 #: ../templates/_profile/usbintern/_database/inst001/titles_record_html:222
 #: ../templates/_profile/usbportal/titles_record_include:48
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html:220
@@ -9021,8 +9042,9 @@ msgstr ""
 "The login with your specified username and password has failed too often. "
 "The account is locked. Please request a new password via 'Forgot password'."
 
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:131
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:216
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:100
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:196
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:281
 #: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:173
 #: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:305
 #: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:426
@@ -9194,7 +9216,7 @@ msgstr ""
 #: ../templates/_profile/rheinlandbib_yaml4/authority_search_facet:581
 #: ../templates/_profile/rheinlandbib_yaml4/search_facet:541
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:925
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1135
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1142
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:955
 #: ../templates/_profile/sammlungen/_view/kartenkatalog/search_facet.neu:158
 #: ../templates/_profile/sammlungen/_view/kartenkatalog/search_facet:158
@@ -9393,8 +9415,7 @@ msgstr "Services at the university"
 msgid "Dienstgrad"
 msgstr "Grade"
 
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:100
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:86
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:165
 msgid "Diese Funktion wird nicht mehr unterstützt"
 msgstr ""
 
@@ -9586,7 +9607,7 @@ msgstr "Titles with this ISBN are not available in any other catalog."
 #: ../templates/_profile/unikatalog/litlists_record_html_full:238
 #: ../templates/_profile/unikatalog/titles_record_fields_html:99
 #: ../templates/_profile/unikatalog/titles_record_fields_include:99
-#: ../templates/_profile/unikatalog/titles_record_html:237
+#: ../templates/_profile/unikatalog/titles_record_html:260
 #: ../templates/_profile/usbintern/_database/inst001/titles_record_html:218
 #: ../templates/_profile/usbportal/titles_record_include:45
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html:216
@@ -9793,9 +9814,9 @@ msgstr "Printer/Publisher"
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/home_html:49
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/home_html:69
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/mainnavigation_html:72
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:649
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_record:25
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:206
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:498
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:656
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:199
 msgid "Druckpublikationen"
 msgstr "Print publications"
 
@@ -10291,7 +10312,7 @@ msgstr ""
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:67
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:73
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:83
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:73
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:74
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:107
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:107
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:107
@@ -10350,7 +10371,7 @@ msgstr "RVK"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:68
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:74
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:84
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:74
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:75
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:108
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:108
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:108
@@ -10415,7 +10436,7 @@ msgstr "Topic"
 #: ../templates/_profile/unikatalog/visible_categories_title_article:63
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:79
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:87
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:76
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:77
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:117
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:117
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:117
@@ -10490,7 +10511,7 @@ msgstr "Full text of TOC"
 #: ../templates/_profile/unikatalog/visible_categories_title_article:64
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:80
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:88
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:77
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:78
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:118
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:118
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:118
@@ -10581,7 +10602,7 @@ msgstr "Wikipedia article (french)"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:65
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:71
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:81
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:71
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:72
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:105
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:105
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:105
@@ -10682,7 +10703,7 @@ msgstr "Edit your review"
 #: ../templates/_profile/sammlungen_yaml4/titles_record_html:371
 #: ../templates/_profile/sammlungen_yaml4/titles_record_html~:371
 #: ../templates/_profile/sammlungen_yaml4/titles_record_include:247
-#: ../templates/_profile/unikatalog/titles_record_html:399
+#: ../templates/_profile/unikatalog/titles_record_html:422
 #: ../templates/_profile/usbintern/_database/inst001/titles_record_html:363
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html:371
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html~:371
@@ -10714,7 +10735,7 @@ msgstr "Edit your review"
 #: ../templates/_profile/sammlungen_yaml4/titles_record_html:372
 #: ../templates/_profile/sammlungen_yaml4/titles_record_html~:372
 #: ../templates/_profile/sammlungen_yaml4/titles_record_include:248
-#: ../templates/_profile/unikatalog/titles_record_html:400
+#: ../templates/_profile/unikatalog/titles_record_html:423
 #: ../templates/_profile/usbintern/_database/inst001/titles_record_html:364
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html:372
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html~:372
@@ -10840,7 +10861,7 @@ msgstr "A topic with this name already exists."
 #: ../templates/_profile/rheinlandbib_yaml4/titles_record_html:202
 #: ../templates/_profile/rheinlandbib_yaml4/titles_record_html~:203
 #: ../templates/_profile/sammlungen/_view/digitalis/titles_record_html:95
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:302
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:345
 #: ../templates/_profile/sammlungen/_view/jesuiten/titles_record_html:299
 #: ../templates/_profile/sammlungen/_view/testsammlung/titles_record_html:290
 #: ../templates/_profile/sammlungen/_view/usbbibliographie/titles_record_html:105
@@ -10852,7 +10873,7 @@ msgstr "A topic with this name already exists."
 #: ../templates/_profile/sammlungen_yaml4/titles_record_html~:203
 #: ../templates/_profile/unikatalog/titles_record_fields_html:83
 #: ../templates/_profile/unikatalog/titles_record_fields_include:83
-#: ../templates/_profile/unikatalog/titles_record_html:173
+#: ../templates/_profile/unikatalog/titles_record_html:196
 #: ../templates/_profile/usbintern/_database/inst001/titles_record_html:203
 #: ../templates/_profile/yaml4/titles_record_html:203
 #: ../templates/_profile/yaml4/titles_record_html~:203
@@ -10945,7 +10966,7 @@ msgstr "An order for the requested medium was not successful!"
 msgid "Eine Bestellung ist nicht moeglich."
 msgstr "Order impossible"
 
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:164
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:229
 msgid "Eine Gesamtkontoverlängerung durch Sie ist leider nicht möglich"
 msgstr "A renewal of your whole account is not possible"
 
@@ -10958,7 +10979,7 @@ msgstr ""
 "A cancellation of your reservation for the requested medium was not "
 "successful!"
 
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:257
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:322
 msgid "Eine Verlängerung durch Sie ist leider nicht möglich"
 msgstr "A renewal is not possible"
 
@@ -11336,21 +11357,20 @@ msgstr "Elise Richter in Wiener Bilder issue 38, 1907"
 msgid "Empfehlungen"
 msgstr "Recommendations"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:310
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:364
 msgid "Empfohlene Zitation:"
 msgstr ""
 
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/home_html:46
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/home_html:66
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/mainnavigation_html:69
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_record:10
 msgid "Empfänger"
 msgstr "Recipient"
 
 #: ../templates/_profile/bootstrap5/_view/unikatalog/titles_record_html:209
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/titles_record_html:209
 #: ../templates/_profile/kug/_view/kugproto/titles_record_html:195
-#: ../templates/_profile/unikatalog/titles_record_html:215
+#: ../templates/_profile/unikatalog/titles_record_html:238
 msgid "EndNote"
 msgstr "EndNote"
 
@@ -11411,9 +11431,9 @@ msgstr "End"
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:849
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:850
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:851
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1059
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1060
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1061
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1066
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1067
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1068
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:879
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:880
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:881
@@ -11533,7 +11553,7 @@ msgstr "English"
 #: ../templates/_profile/unikatalog/litlists_record_html_full:246
 #: ../templates/_profile/unikatalog/titles_record_fields_html:109
 #: ../templates/_profile/unikatalog/titles_record_fields_include:109
-#: ../templates/_profile/unikatalog/titles_record_html:247
+#: ../templates/_profile/unikatalog/titles_record_html:270
 #: ../templates/_profile/usbintern/_database/inst001/titles_record_html:228
 #: ../templates/_profile/usbportal/titles_record_include:53
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html:226
@@ -11772,7 +11792,7 @@ msgstr "Discover other titles using:"
 #: ../templates/_profile/sammlungen/_view/digitalis/titlist_item_html_short:370
 #: ../templates/_profile/sammlungen/_view/digitalis/titlist_item_html_short:375
 #: ../templates/_profile/sammlungen/_view/digitalis/titlist_item_html_short:380
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:508
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:515
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:433
 #: ../templates/_profile/sammlungen/_view/jesuiten/titlist_item_html_short:350
 #: ../templates/_profile/sammlungen/_view/jesuiten/titlist_item_html_short:355
@@ -11873,9 +11893,9 @@ msgstr "Discover other titles using:"
 #: ../templates/_profile/unikatalog/search_facet:451
 #: ../templates/_profile/unikatalog/titles_popular_html:252
 #: ../templates/_profile/unikatalog/titles_popular_html:255
-#: ../templates/_profile/unikatalog/titlist_item_html_short:463
-#: ../templates/_profile/unikatalog/titlist_item_html_short:468
-#: ../templates/_profile/unikatalog/titlist_item_html_short:472
+#: ../templates/_profile/unikatalog/titlist_item_html_short:494
+#: ../templates/_profile/unikatalog/titlist_item_html_short:499
+#: ../templates/_profile/unikatalog/titlist_item_html_short:503
 #: ../templates/_profile/unikatalog/users_litlists_html:86
 #: ../templates/_profile/unikatalog/users_searchlocations_edit_html:138
 #: ../templates/_profile/unikatalog/users_searchlocations_edit_html:70
@@ -12269,7 +12289,7 @@ msgstr "Places of publication"
 #: ../templates/_profile/sammlungen_yaml4/litlists_record_html_as_text:30
 #: ../templates/_profile/sammlungen_yaml4/titles_record_html_categories:320
 #: ../templates/_profile/sammlungen_yaml4/titles_record_mobile_categories:278
-#: ../templates/_profile/unikatalog/titles_record_html_categories:679
+#: ../templates/_profile/unikatalog/titles_record_html_categories:706
 #: ../templates/_profile/unikatalog/titles_record_include:57
 #: ../templates/_profile/unikatalog/titles_record_mobile_categories:278
 #: ../templates/_profile/yaml4/_database/bibsonomy/titles_record_html_categories:292
@@ -12395,10 +12415,7 @@ msgstr "Advanced search mask"
 #: ../templates/_profile/sammlungen/_view/digitalis/mainnavigation_html:64
 #: ../templates/_profile/sammlungen/_view/digitalis/subnavigation:28
 #: ../templates/_profile/sammlungen/_view/digitalis/subnavigation:30
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/home_html:53
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/home_html:72
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/mainnavigation_html:63
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:3
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/subnavigation:28
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/subnavigation:30
 #: ../templates/_profile/sammlungen/_view/jesuiten/home_html:43
@@ -12755,7 +12772,7 @@ msgstr "Right now there's no RSS-Feed for new titles"
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/search_facet:1175
 #: ../templates/_profile/bootstrap5/search_facet:1153
 #: ../templates/_profile/kug/_view/kugproto/search_facet:1169
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1158
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1165
 #: ../templates/_profile/unikatalog/search_facet:1176
 #: ../templates/search_facet:1153
 msgid "Es ist keine Recherche-Eingrenzung möglich."
@@ -12882,7 +12899,7 @@ msgid ""
 "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
 msgstr "You either didn't enter a username or less than two passwords "
 
-#: ../modules/OpenBib/Handler/PSGI.pm:1340
+#: ../modules/OpenBib/Handler/PSGI.pm:1338
 msgid "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
 msgstr "No hits available in the catalog for your search request"
 
@@ -12951,7 +12968,7 @@ msgid "Es wurden noch keine Server definiert."
 msgstr "No servers defined yet."
 
 #: ../templates/_profile/bootstrap5/locations_html:81
-#: ../templates/_profile/unikatalog/locations_html:81
+#: ../templates/_profile/unikatalog/locations_html:151
 #: ../templates/locations_html:81
 msgid "Es wurden noch keine Standorte definiert."
 msgstr "No locations defined yet."
@@ -13153,7 +13170,7 @@ msgstr "For the most recent articles of this journal we offer an %1overview%2."
 #: ../templates/_profile/sammlungen_yaml4/titles_record_html:300
 #: ../templates/_profile/sammlungen_yaml4/titles_record_html~:300
 #: ../templates/_profile/sammlungen_yaml4/titles_record_include:173
-#: ../templates/_profile/unikatalog/titles_record_html:320
+#: ../templates/_profile/unikatalog/titles_record_html:343
 #: ../templates/_profile/usbintern/_database/inst001/titles_record_html:292
 #: ../templates/_profile/usbportal/titles_record_include:99
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html:300
@@ -13557,8 +13574,8 @@ msgstr "Filter options all titles"
 #: ../templates/_profile/rheinlandbib_yaml4/search_facet:504
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:852
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:853
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1062
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1063
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1069
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1070
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:882
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:883
 #: ../templates/_profile/sammlungen/_view/jesuiten/titles_fields_record_html:42
@@ -13652,7 +13669,7 @@ msgstr "Please send questions and feedback to:"
 #: ../templates/_profile/unikatalog/litlists_record_html_full:251
 #: ../templates/_profile/unikatalog/titles_record_fields_html:115
 #: ../templates/_profile/unikatalog/titles_record_fields_include:115
-#: ../templates/_profile/unikatalog/titles_record_html:253
+#: ../templates/_profile/unikatalog/titles_record_html:276
 #: ../templates/_profile/usbintern/_database/inst001/titles_record_html:234
 #: ../templates/_profile/usbportal/titles_record_include:58
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html:232
@@ -13721,9 +13738,9 @@ msgstr "French Wikipedia"
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:854
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:855
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:856
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1064
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1065
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1066
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1071
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1072
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1073
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:884
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:885
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:886
@@ -13840,7 +13857,6 @@ msgstr "Mrs."
 #: ../templates/_profile/rheinlandbib_yaml4/searchforms_record_authority:149
 #: ../templates/_profile/rheinlandbib_yaml4/searchforms_record_query:77
 #: ../templates/_profile/rheinlandbib_yaml4/users_preferences_html:177
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:12
 #: ../templates/_profile/sammlungen/_view/jesuiten/searchforms_record_query:12
 #: ../templates/_profile/sammlungen/_view/kartenkatalog/searchforms_record_query:12
 #: ../templates/_profile/sammlungen/_view/muenzenproto/searchforms_record_query:119
@@ -14079,6 +14095,10 @@ msgstr ""
 "password of you choice. To prohibit automated abuse we use a so called "
 "%1CAPTCHA%2. Therefore you also have to enter the two distorted words "
 "correctly. Then confirm your input with <b>Register</b>."
+
+#: ../templates/_profile/unikatalog/home_html:183
+msgid "Geben Sie hier Ihre Suchbegriffe ein"
+msgstr "Please enter your search terms"
 
 #: ../templates/_profile/bootstrap5/users_circulations_check_campus_order_html:277
 #: ../templates/_profile/bootstrap5/users_circulations_check_ilias_order_html:277
@@ -14431,8 +14451,8 @@ msgstr "Browse all available %1free and licensed journals%2 by subject."
 #: ../templates/_profile/rheinlandbib_yaml4/search_facet:486
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:860
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:861
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1070
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1071
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1077
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1078
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:890
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:891
 #: ../templates/_profile/sammlungen/_view/jesuiten/titles_fields_record_html:50
@@ -14665,7 +14685,7 @@ msgstr "Exclusion of liability"
 #: ../templates/_profile/bootstrap5/_view/unikatalog/titles_record_html:205
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/titles_record_html:205
 #: ../templates/_profile/kug/_view/kugproto/titles_record_html:192
-#: ../templates/_profile/unikatalog/titles_record_html:211
+#: ../templates/_profile/unikatalog/titles_record_html:234
 msgid "Harvard"
 msgstr "Harvard"
 
@@ -14708,8 +14728,8 @@ msgstr "Main title"
 #: ../templates/_profile/kug/_view/kugproto/titles_record_html_categories:177
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:862
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:863
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1072
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1073
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1079
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1080
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:892
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:893
 #: ../templates/_profile/sammlungen/_view/jesuiten/titles_fields_record_html:52
@@ -14982,7 +15002,7 @@ msgstr "Help"
 #: ../templates/_profile/rheinlandbib_yaml4/persons_record_include:73
 #: ../templates/_profile/rheinlandbib_yaml4/rssfeeds_html:49
 #: ../templates/_profile/rheinlandbib_yaml4/users_registrations:47
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1155
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1162
 #: ../templates/_profile/sammlungen_yaml4/_database/wikisource_de/persons_record_html:137
 #: ../templates/_profile/sammlungen_yaml4/_view/muenzen/search_facet:496
 #: ../templates/_profile/sammlungen_yaml4/_view/richter/users_registrations:47
@@ -15577,7 +15597,7 @@ msgstr "Id"
 #: ../templates/_profile/unikatalog/admin_locations_html:35
 #: ../templates/_profile/unikatalog/admin_locations_html:75
 #: ../templates/_profile/unikatalog/admin_locations_record_edit_html:48
-#: ../templates/_profile/unikatalog/locations_html:66
+#: ../templates/_profile/unikatalog/locations_html:134
 #: ../templates/_profile/yaml4/admin_locations_html:108
 #: ../templates/_profile/yaml4/admin_locations_html:71
 #: ../templates/_profile/yaml4/admin_locations_record_edit:94
@@ -16149,7 +16169,7 @@ msgstr "OpenBib currently offers the following types of RSS-Feeds:"
 #: ../templates/_profile/sammlungen_yaml4/titles_record_html~:271
 #: ../templates/_profile/sammlungen_yaml4/titles_record_include:132
 #: ../templates/_profile/sammlungen_yaml4/titles_record_include:269
-#: ../templates/_profile/unikatalog/titles_record_html:290
+#: ../templates/_profile/unikatalog/titles_record_html:313
 #: ../templates/_profile/usbintern/_database/inst001/titles_record_html:263
 #: ../templates/_profile/usbportal/titles_record_include:104
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html:264
@@ -16271,7 +16291,7 @@ msgstr "In your list of interest"
 #: ../templates/_profile/kug_yaml4/users_preferences_html:340
 #: ../templates/_profile/rheinlandbib_yaml4/users_preferences_html:343
 #: ../templates/_profile/sammlungen_yaml4/users_preferences_html:343
-#: ../templates/_profile/unikatalog/users_preferences_html:245
+#: ../templates/_profile/unikatalog/users_preferences_html:246
 #: ../templates/_profile/yaml4/users_preferences_html:343
 #: ../templates/users_preferences_html:245
 msgid "In der Recherchemaske"
@@ -16319,7 +16339,7 @@ msgstr ""
 #: ../templates/_profile/kug_yaml4/users_preferences_html:345
 #: ../templates/_profile/rheinlandbib_yaml4/users_preferences_html:348
 #: ../templates/_profile/sammlungen_yaml4/users_preferences_html:348
-#: ../templates/_profile/unikatalog/users_preferences_html:250
+#: ../templates/_profile/unikatalog/users_preferences_html:251
 #: ../templates/_profile/yaml4/users_preferences_html:348
 #: ../templates/users_preferences_html:250
 msgid "In der Trefferliste"
@@ -16329,7 +16349,7 @@ msgstr "In the result list"
 #: ../templates/_profile/kug_yaml4/users_preferences_html:284
 #: ../templates/_profile/rheinlandbib_yaml4/users_preferences_html:291
 #: ../templates/_profile/sammlungen_yaml4/users_preferences_html:291
-#: ../templates/_profile/unikatalog/users_preferences_html:184
+#: ../templates/_profile/unikatalog/users_preferences_html:185
 #: ../templates/_profile/yaml4/users_preferences_html:291
 #: ../templates/users_preferences_html:184
 msgid "In der einfachen Recherche bzw. dem freien Suchfeld"
@@ -16454,8 +16474,8 @@ msgstr "In simple search or free search field"
 #: ../templates/_profile/unikatalog/reviews_edit_html:199
 #: ../templates/_profile/unikatalog/titles_popular_html:250
 #: ../templates/_profile/unikatalog/titles_popular_include:168
-#: ../templates/_profile/unikatalog/titles_record_html:184
-#: ../templates/_profile/unikatalog/titlist_item_html_short:430
+#: ../templates/_profile/unikatalog/titles_record_html:207
+#: ../templates/_profile/unikatalog/titlist_item_html_short:461
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/titlist_item_html_short:324
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/titlist_item_html_short:324
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/titlist_item_html_short:324
@@ -16572,6 +16592,10 @@ msgstr ""
 #: ../templates/_profile/yaml4/_database/bibsonomy/titlist_item_html_short:221
 msgid "In lokalen Katalogen verf&uuml;gbar"
 msgstr "Available in local catalogs"
+
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:234
+msgid "Incipit"
+msgstr ""
 
 #: ../templates/_profile/bootstrap5/classifications_record_include:28
 #: ../templates/_profile/bootstrap5/corporatebodies_record_include:31
@@ -16782,6 +16806,10 @@ msgstr "Information"
 #: ../templates/_profile/sammlungen/_view/muenzenproto/home_html:73
 msgid "Informationen zu Provenienzen und Anzahl der Münzen"
 msgstr "Information about provenances and number of coins"
+
+#: ../templates/_profile/unikatalog/home_html:254
+msgid "Informationen zu allen Bibliotheken an der Universität."
+msgstr "Information about all libraries at the University of Cologne."
 
 #: ../templates/_profile/bootstrap5/home_html_bottom_center:33
 #: ../templates/_profile/rheinlandbib_yaml4/home_html_bottom_center:30
@@ -17090,9 +17118,10 @@ msgstr "Move user generated content to new login"
 #: ../templates/_profile/unikatalog/titles_popular_html:19
 #: ../templates/_profile/unikatalog/titles_popular_include:21
 #: ../templates/_profile/unikatalog/titles_recent_by_database_html:15
-#: ../templates/_profile/unikatalog/titles_record_html:195
+#: ../templates/_profile/unikatalog/titles_record_html:16
+#: ../templates/_profile/unikatalog/titles_record_html:218
 #: ../templates/_profile/unikatalog/titlist_item_html_short:24
-#: ../templates/_profile/unikatalog/titlist_item_html_short:442
+#: ../templates/_profile/unikatalog/titlist_item_html_short:473
 #: ../templates/_profile/unikatalog/titlist_item_mobile_short:23
 #: ../templates/_profile/unikatalog/users_litlists_record_edit_html:15
 #: ../templates/_profile/unikatalog/users_litlists_record_html:15
@@ -17438,7 +17467,7 @@ msgstr "Inventory number"
 #: ../templates/_profile/sammlungen_yaml4/litlists_record_html_as_text:29
 #: ../templates/_profile/sammlungen_yaml4/titles_record_html_categories:319
 #: ../templates/_profile/sammlungen_yaml4/titles_record_mobile_categories:277
-#: ../templates/_profile/unikatalog/titles_record_html_categories:678
+#: ../templates/_profile/unikatalog/titles_record_html_categories:705
 #: ../templates/_profile/unikatalog/titles_record_include:56
 #: ../templates/_profile/unikatalog/titles_record_mobile_categories:277
 #: ../templates/_profile/yaml4/_database/bibsonomy/titles_record_html_categories:291
@@ -17498,8 +17527,8 @@ msgstr "Inventory number     "
 #: ../templates/_profile/rheinlandbib_yaml4/search_facet:503
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:865
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:866
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1075
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1076
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1082
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1083
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:895
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:896
 #: ../templates/_profile/sammlungen/_view/jesuiten/titles_fields_record_html:55
@@ -17572,8 +17601,8 @@ msgstr "Icelandic"
 #: ../templates/_profile/rheinlandbib_yaml4/search_facet:491
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:867
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:868
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1077
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1078
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1084
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1085
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:897
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:898
 #: ../templates/_profile/sammlungen/_view/jesuiten/titles_fields_record_html:57
@@ -17939,7 +17968,7 @@ msgstr "JSON cannot be parsed"
 #: ../templates/_profile/unikatalog/servers_html:40
 #: ../templates/_profile/unikatalog/servers_record_html:36
 #: ../templates/_profile/unikatalog/templates_revisions_record_delete_confirm_html:18
-#: ../templates/_profile/unikatalog/titles_record_html:403
+#: ../templates/_profile/unikatalog/titles_record_html:426
 #: ../templates/_profile/unikatalog/users_litlists_record_delete_confirm_html:18
 #: ../templates/_profile/unikatalog/users_litlists_record_edit_html:83
 #: ../templates/_profile/unikatalog/users_litlists_record_sidebar:28
@@ -18195,8 +18224,8 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:415
 #: ../templates/_profile/sammlungen/_view/digitalis/subnavigation:72
 #: ../templates/_profile/sammlungen/_view/digitalis/subnavigation:74
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:491
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:58
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:490
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:46
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/subnavigation:74
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/subnavigation:76
 #: ../templates/_profile/sammlungen/_view/jesuiten/searchforms_record_query:149
@@ -18499,7 +18528,7 @@ msgstr "Century"
 #: ../templates/_profile/rheinlandbib_yaml4/authority_search_facet:536
 #: ../templates/_profile/rheinlandbib_yaml4/search_facet:496
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:869
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1079
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1086
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:899
 #: ../templates/_profile/sammlungen/_view/jesuiten/titles_fields_record_html:59
 #: ../templates/_profile/sammlungen/_view/muenzenproto/search_facet:893
@@ -19525,7 +19554,7 @@ msgid "Kein Eintrag"
 msgstr "No entry"
 
 #: ../templates/_profile/bootstrap5/titles_record_html:115
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:301
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:344
 #: ../templates/titles_record_html:115
 msgid "Kein Titel"
 msgstr "No title"
@@ -19534,8 +19563,8 @@ msgstr "No title"
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/titles_record_html:434
 #: ../templates/_profile/bootstrap5/titles_record_html:337
 #: ../templates/_profile/kug/_view/kugproto/titles_record_html:419
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:320
-#: ../templates/_profile/unikatalog/titles_record_html:440
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:378
+#: ../templates/_profile/unikatalog/titles_record_html:463
 #: ../templates/titles_record_html:337
 msgid "Kein Zugriff"
 msgstr "No access"
@@ -20281,6 +20310,7 @@ msgstr "Partner"
 #: ../templates/_profile/bootstrap5/titles_record_html_modals:53
 #: ../templates/_profile/bootstrap5/titles_record_html_modals:76
 #: ../templates/_profile/bootstrap5/titles_record_html_modals:96
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:369
 #: ../templates/_profile/unikatalog/titles_record_html_modals:116
 #: ../templates/_profile/unikatalog/titles_record_html_modals:29
 #: ../templates/_profile/unikatalog/titles_record_html_modals:53
@@ -20339,7 +20369,7 @@ msgstr "User group"
 #: ../templates/_profile/unikatalog/admin_locations_html:75
 #: ../templates/_profile/unikatalog/admin_locations_record_edit_html:58
 #: ../templates/_profile/unikatalog/databases_record_html:21
-#: ../templates/_profile/unikatalog/locations_html:66
+#: ../templates/_profile/unikatalog/locations_html:134
 #: ../templates/_profile/yaml4/admin_databases_record_edit:77
 #: ../templates/_profile/yaml4/admin_databases_record_html:65
 #: ../templates/_profile/yaml4/databases_record_html:63
@@ -20361,6 +20391,7 @@ msgstr "Short description"
 #: ../templates/_profile/rheinlandbib_yaml4/cartitems_html_actions:16
 #: ../templates/_profile/rheinlandbib_yaml4/litlists_record_include:55
 #: ../templates/_profile/rheinlandbib_yaml4/users_litlists_record_edit:72
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:222
 #: ../templates/_profile/sammlungen_yaml4/_view/inst404abklatsch/searchforms_record_query:87
 #: ../templates/_profile/sammlungen_yaml4/_view/richter/cartitems_html_actions:16
 #: ../templates/_profile/sammlungen_yaml4/_view/richter/users_litlists_record_edit:72
@@ -20643,8 +20674,8 @@ msgstr "Artist"
 #: ../templates/_profile/unikatalog/admin_roles_html:75
 #: ../templates/_profile/unikatalog/admin_servers_html:126
 #: ../templates/_profile/unikatalog/admin_templates_html:96
-#: ../templates/_profile/unikatalog/titlist_item_html_short:463
-#: ../templates/_profile/unikatalog/titlist_item_html_short:468
+#: ../templates/_profile/unikatalog/titlist_item_html_short:494
+#: ../templates/_profile/unikatalog/titlist_item_html_short:499
 #: ../templates/_profile/unikatalog/viewadmin_roles_html:74
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/titlist_item_html_short:326
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/titlist_item_html_short:329
@@ -21505,9 +21536,9 @@ msgstr "LDAP"
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:870
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:871
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:872
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1080
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1081
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1082
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1087
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1088
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1089
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:900
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:901
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:902
@@ -21887,7 +21918,7 @@ msgstr "Newest 50 catalog entries"
 #: ../templates/_profile/sammlungen_yaml4/titles_record_html~:269
 #: ../templates/_profile/sammlungen_yaml4/titles_record_include:129
 #: ../templates/_profile/sammlungen_yaml4/titles_record_include:170
-#: ../templates/_profile/unikatalog/titles_record_html:288
+#: ../templates/_profile/unikatalog/titles_record_html:311
 #: ../templates/_profile/usbintern/_database/inst001/titles_record_html:261
 #: ../templates/_profile/usbportal/titles_record_include:96
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html:261
@@ -22015,7 +22046,7 @@ msgstr "Corresponding literature via Wikipedia"
 #: ../templates/_profile/rheinlandbib_yaml4/titles_record_html_actions:44
 #: ../templates/_profile/rheinlandbib_yaml4/titles_record_include:384
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:417
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:493
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:492
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:418
 #: ../templates/_profile/sammlungen/_view/kartenkatalog/search_facet.neu:98
 #: ../templates/_profile/sammlungen/_view/kartenkatalog/search_facet:98
@@ -22284,7 +22315,7 @@ msgstr "Literature lists"
 #: ../templates/_profile/sammlungen_yaml4/users_preferences_html:276
 #: ../templates/_profile/sammlungen_yaml4/users_preferences_html:288
 #: ../templates/_profile/unikatalog/users_preferences_html:157
-#: ../templates/_profile/unikatalog/users_preferences_html:174
+#: ../templates/_profile/unikatalog/users_preferences_html:175
 #: ../templates/_profile/yaml4/users_preferences_html:276
 #: ../templates/_profile/yaml4/users_preferences_html:288
 #: ../templates/users_preferences_html:157
@@ -22423,7 +22454,7 @@ msgstr "Local"
 #: ../templates/_profile/sammlungen_yaml4/litlists_record_html_as_text:28
 #: ../templates/_profile/sammlungen_yaml4/titles_record_html_categories:318
 #: ../templates/_profile/sammlungen_yaml4/titles_record_mobile_categories:276
-#: ../templates/_profile/unikatalog/titles_record_html_categories:677
+#: ../templates/_profile/unikatalog/titles_record_html_categories:704
 #: ../templates/_profile/unikatalog/titles_record_include:55
 #: ../templates/_profile/unikatalog/titles_record_mobile_categories:276
 #: ../templates/_profile/yaml4/_database/bibsonomy/titles_record_html_categories:290
@@ -22560,7 +22591,7 @@ msgstr "Local location mark  "
 #: ../templates/_profile/unikatalog/titles_record_html_actions:51
 #: ../templates/_profile/unikatalog/titles_record_html_actions:74
 #: ../templates/_profile/unikatalog/titlist_options:26
-#: ../templates/_profile/unikatalog/users_preferences_html:299
+#: ../templates/_profile/unikatalog/users_preferences_html:300
 #: ../templates/_profile/unikatalog/users_tags_html:54
 #: ../templates/_profile/unikatalog/users_tags_names_record_html:65
 #: ../templates/_profile/unikatalog/viewadmin_users_html:25
@@ -22760,8 +22791,8 @@ msgstr "Go"
 #: ../templates/_profile/unikatalog/admin_templates_record_edit_html:88
 #: ../templates/_profile/unikatalog/admin_topics_record_edit_html:85
 #: ../templates/_profile/unikatalog/admin_views_record_edit_html:144
-#: ../templates/_profile/unikatalog/titles_record_html:375
-#: ../templates/_profile/unikatalog/titlist_item_html_short:472
+#: ../templates/_profile/unikatalog/titles_record_html:398
+#: ../templates/_profile/unikatalog/titlist_item_html_short:503
 #: ../templates/_profile/unikatalog/topics_record_mapping_html:95
 #: ../templates/_profile/unikatalog/users_litlists_html:86
 #: ../templates/_profile/unikatalog/users_litlists_record_edit_html:103
@@ -22853,7 +22884,7 @@ msgstr "Would you like to refine your search request?"
 #: ../templates/_profile/bootstrap5/_view/unikatalog/titles_record_html:206
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/titles_record_html:206
 #: ../templates/_profile/kug/_view/kugproto/titles_record_html:193
-#: ../templates/_profile/unikatalog/titles_record_html:212
+#: ../templates/_profile/unikatalog/titles_record_html:235
 msgid "MLA"
 msgstr "MLA"
 
@@ -22934,7 +22965,7 @@ msgstr "Mappings"
 #: ../templates/_profile/unikatalog/litlists_record_html_full:238
 #: ../templates/_profile/unikatalog/titles_record_fields_html:99
 #: ../templates/_profile/unikatalog/titles_record_fields_include:99
-#: ../templates/_profile/unikatalog/titles_record_html:237
+#: ../templates/_profile/unikatalog/titles_record_html:260
 #: ../templates/_profile/usbintern/_database/inst001/titles_record_html:218
 #: ../templates/_profile/usbportal/titles_record_include:45
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html:216
@@ -23052,7 +23083,6 @@ msgstr "Media number"
 #: ../templates/_profile/rheinlandbib_yaml4/search_facet:179
 #: ../templates/_profile/rheinlandbib_yaml4/search_title_field:23
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:412
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:488
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:413
 #: ../templates/_profile/sammlungen/_view/kartenkatalog/search_facet.neu:93
 #: ../templates/_profile/sammlungen/_view/kartenkatalog/search_facet:93
@@ -23675,6 +23705,10 @@ msgstr ""
 #: ../templates/_profile/unikatalog/authority_search_facet:84
 #: ../templates/_profile/unikatalog/authority_search_facet:95
 #: ../templates/_profile/unikatalog/cartitems_html:88
+#: ../templates/_profile/unikatalog/home_html:231
+#: ../templates/_profile/unikatalog/home_html:239
+#: ../templates/_profile/unikatalog/home_html:247
+#: ../templates/_profile/unikatalog/home_html:255
 #: ../templates/_profile/unikatalog/newsflash:35
 #: ../templates/_profile/unikatalog/search_facet:204
 #: ../templates/_profile/unikatalog/search_facet:215
@@ -23697,7 +23731,7 @@ msgstr ""
 #: ../templates/_profile/unikatalog/searchforms_record_bottom_left:77
 #: ../templates/_profile/unikatalog/searchforms_record_bottom_right:32
 #: ../templates/_profile/unikatalog/searchforms_record_query:250
-#: ../templates/_profile/unikatalog/titles_record_html:221
+#: ../templates/_profile/unikatalog/titles_record_html:244
 #: ../templates/_profile/unikatalog/titles_record_html_actions:525
 #: ../templates/_profile/yaml4/authority_search_facet:106
 #: ../templates/_profile/yaml4/authority_search_facet:117
@@ -24004,8 +24038,8 @@ msgstr "Message"
 #: ../templates/_profile/sammlungen_yaml4/titles_popular_html:291
 #: ../templates/_profile/sammlungen_yaml4/titlist_item_html_short:280
 #: ../templates/_profile/unikatalog/titles_popular_html:250
-#: ../templates/_profile/unikatalog/titles_record_html:184
-#: ../templates/_profile/unikatalog/titlist_item_html_short:430
+#: ../templates/_profile/unikatalog/titles_record_html:207
+#: ../templates/_profile/unikatalog/titlist_item_html_short:461
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/titlist_item_html_short:324
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/titlist_item_html_short:324
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/titlist_item_html_short:324
@@ -25200,7 +25234,7 @@ msgstr ""
 #: ../templates/_profile/unikatalog/litlists_record_include:75
 #: ../templates/_profile/unikatalog/servers_html:40
 #: ../templates/_profile/unikatalog/servers_record_html:37
-#: ../templates/_profile/unikatalog/titles_record_html:404
+#: ../templates/_profile/unikatalog/titles_record_html:427
 #: ../templates/_profile/unikatalog/users_litlists_record_edit_html:83
 #: ../templates/_profile/unikatalog/users_litlists_record_sidebar:28
 #: ../templates/_profile/unikatalog/viewadmin_roles_record_html:43
@@ -25521,9 +25555,9 @@ msgstr "New"
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:848
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:858
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:874
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1058
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1068
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1084
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1065
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1075
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1091
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:878
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:888
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:904
@@ -25768,7 +25802,7 @@ msgstr "New login"
 #: ../templates/_profile/sammlungen_yaml4/titles_record_html:323
 #: ../templates/_profile/sammlungen_yaml4/titles_record_html~:323
 #: ../templates/_profile/sammlungen_yaml4/titles_record_include:197
-#: ../templates/_profile/unikatalog/titles_record_html:343
+#: ../templates/_profile/unikatalog/titles_record_html:366
 #: ../templates/_profile/usbintern/_database/inst001/titles_record_html:315
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html:323
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html~:323
@@ -26080,7 +26114,7 @@ msgstr "Non-commercial nature of this web site"
 #: ../templates/_profile/kug/_view/kugproto/search_facet:1066
 #: ../templates/_profile/kug/_view/kugproto/titles_record_html_categories:187
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:873
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1083
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1090
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:903
 #: ../templates/_profile/sammlungen/_view/jesuiten/titles_fields_record_html:63
 #: ../templates/_profile/sammlungen/_view/muenzenproto/search_facet:897
@@ -26140,9 +26174,9 @@ msgstr "Low German"
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:846
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:847
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:875
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1056
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1057
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1085
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1063
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1064
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1092
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:876
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:877
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:905
@@ -26366,7 +26400,7 @@ msgstr "Classification"
 msgid "Notations-Datei"
 msgstr "Classification-File"
 
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:220
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:285
 #: ../modules/OpenBib/Handler/PSGI/Users/Circulations/CampusOrders.pm:133
 #: ../modules/OpenBib/Handler/PSGI/Users/Circulations/IliasOrders.pm:131
 #: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:177
@@ -26668,11 +26702,19 @@ msgstr "OLWS DB-name in the local system"
 msgid "OLWS Zugriffs-URL"
 msgstr "OLWS target URL"
 
+#: ../templates/_profile/unikatalog/users_navigation_dropdown:71
+msgid "Offene Bestellungen"
+msgstr "Open Orders"
+
 #: ../templates/_profile/kug_yaml4/users_preferences_html:105
 #: ../templates/_profile/rheinlandbib_yaml4/users_preferences_html:105
 #: ../templates/_profile/sammlungen_yaml4/users_preferences_html:105
 #: ../templates/_profile/yaml4/users_preferences_html:105
 msgid "Offene Geb&uuml;hren"
+msgstr "Remaining fees"
+
+#: ../templates/_profile/unikatalog/users_navigation_dropdown:72
+msgid "Offene Gebühren"
 msgstr "Remaining fees"
 
 #: ../templates/_profile/bootstrap5/litlists_record_include:75
@@ -26845,6 +26887,14 @@ msgid ""
 "abgespeichert und in externe Systeme hochgeladen werden."
 msgstr ""
 
+#: ../templates/_profile/unikatalog/home_html:246
+msgid "Online-Zugang zu allen Datenbanken an der Universität."
+msgstr ""
+
+#: ../templates/_profile/unikatalog/home_html:238
+msgid "Online-Zugriff auf alle Elektronischen Zeitschriften an der Universität"
+msgstr ""
+
 #: ../templates/_profile/rheinlandbib_yaml4/std_header_html:88
 #: ../templates/_profile/sammlungen_yaml4/std_header_html:88
 #: ../templates/_profile/yaml4/std_header_html:88
@@ -26987,6 +27037,7 @@ msgstr "Organizational units of this profile"
 #: ../templates/_profile/bootstrap5/viewadmin_users_record_html:32
 #: ../templates/_profile/rheinlandbib_yaml4/admin_users_record_edit:74
 #: ../templates/_profile/rheinlandbib_yaml4/admin_users_record_html:75
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:246
 #: ../templates/_profile/sammlungen_yaml4/admin_users_record_edit:74
 #: ../templates/_profile/sammlungen_yaml4/admin_users_record_html:75
 #: ../templates/_profile/unikatalog/admin_users_record_html:32
@@ -27604,6 +27655,7 @@ msgstr "Permanent Link to This Entry"
 #: ../templates/_profile/rheinlandbib_yaml4/search_title_field:19
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:405
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:481
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:218
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:405
 #: ../templates/_profile/sammlungen/_view/jesuiten/subnavigation:49
 #: ../templates/_profile/sammlungen/_view/kartenkatalog/search_facet.neu:86
@@ -27972,7 +28024,7 @@ msgstr ""
 #: ../templates/_profile/rheinlandbib_yaml4/authority_search_facet:540
 #: ../templates/_profile/rheinlandbib_yaml4/search_facet:500
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:876
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1086
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1093
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:906
 #: ../templates/_profile/sammlungen/_view/jesuiten/titles_fields_record_html:66
 #: ../templates/_profile/sammlungen/_view/muenzenproto/search_facet:900
@@ -28601,8 +28653,8 @@ msgstr "Protocol"
 #: ../templates/_profile/kug_yaml4/searchforms_record_query:52
 #: ../templates/_profile/rheinlandbib_yaml4/search_title_field:44
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:413
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:489
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:103
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:488
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:110
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:414
 #: ../templates/_profile/sammlungen/_view/jesuiten/searchforms_record_query:52
 #: ../templates/_profile/sammlungen/_view/jesuiten/titles_record_html:174
@@ -28790,7 +28842,7 @@ msgstr "Examine the spelling of your search terms."
 #: ../templates/_profile/unikatalog/persons_record_include:46
 #: ../templates/_profile/unikatalog/reviews_edit:230
 #: ../templates/_profile/unikatalog/reviews_edit_html:230
-#: ../templates/_profile/unikatalog/titles_record_html:362
+#: ../templates/_profile/unikatalog/titles_record_html:385
 #: ../templates/_profile/usbintern/_database/inst001/titles_record_html:331
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html:339
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html~:339
@@ -29354,7 +29406,7 @@ msgstr "Search for %1 journals/series in %2 catalogs"
 #: ../templates/_profile/sammlungen_yaml4/users_preferences_html:277
 #: ../templates/_profile/sammlungen_yaml4/users_preferences_html:339
 #: ../templates/_profile/unikatalog/users_preferences_html:158
-#: ../templates/_profile/unikatalog/users_preferences_html:232
+#: ../templates/_profile/unikatalog/users_preferences_html:233
 #: ../templates/_profile/yaml4/users_preferences_html:277
 #: ../templates/_profile/yaml4/users_preferences_html:339
 #: ../templates/users_preferences_html:158
@@ -29646,7 +29698,8 @@ msgstr "Reconstruction"
 msgid "Relevanz"
 msgstr "relevance"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:586
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:496
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:593
 msgid "Repräsentationen Originale"
 msgstr "Representations originals"
 
@@ -29697,8 +29750,8 @@ msgstr "Revisions"
 #: ../templates/_profile/unikatalog/reviews_edit:228
 #: ../templates/_profile/unikatalog/reviews_edit_html:228
 #: ../templates/_profile/unikatalog/reviews_record_html:70
-#: ../templates/_profile/unikatalog/titles_record_html:358
-#: ../templates/_profile/unikatalog/titles_record_html:372
+#: ../templates/_profile/unikatalog/titles_record_html:381
+#: ../templates/_profile/unikatalog/titles_record_html:395
 #: ../templates/_profile/usbintern/_database/inst001/titles_record_html:329
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html:337
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html~:337
@@ -29897,8 +29950,8 @@ msgstr "Role name is already in use."
 #: ../templates/_profile/rheinlandbib_yaml4/search_facet:495
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:877
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:878
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1087
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1088
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1094
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1095
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:907
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:908
 #: ../templates/_profile/sammlungen/_view/jesuiten/titles_fields_record_html:67
@@ -30132,7 +30185,8 @@ msgid "Sammlung"
 msgstr "Collection"
 
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/info_sammlung:19
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:620
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:497
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:627
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/subnavigation:111
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:130
 msgid "Sammlung Herterich"
@@ -30447,6 +30501,8 @@ msgstr "Subjects in displayed titles"
 #: ../templates/_profile/kug/_view/kugproto/mainnavigation_html_modals:6
 #: ../templates/_profile/sammlungen/_view/kartenkatalog/titlist_item_html_short:318
 #: ../templates/_profile/sammlungen/_view/kartenkatalog/titlist_item_html_short:326
+#: ../templates/_profile/unikatalog/mainnavigation_html:105
+#: ../templates/_profile/unikatalog/mainnavigation_html:58
 #: ../templates/_profile/unikatalog/mainnavigation_html_modals:14
 #: ../templates/_profile/unikatalog/mainnavigation_html_modals:24
 #: ../templates/_profile/unikatalog/mainnavigation_html_modals:32
@@ -30495,7 +30551,7 @@ msgstr "Close"
 #: ../templates/_profile/rheinlandbib_yaml4/authority_search_facet:537
 #: ../templates/_profile/rheinlandbib_yaml4/search_facet:497
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:881
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1091
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1098
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:911
 #: ../templates/_profile/sammlungen/_view/jesuiten/titles_fields_record_html:71
 #: ../templates/_profile/sammlungen/_view/muenzenproto/search_facet:905
@@ -30608,6 +30664,10 @@ msgstr "Since"
 #: ../templates/common/navitembar:25
 msgid "Seite:"
 msgstr "Page:"
+
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:258
+msgid "Seiten"
+msgstr "Pages"
 
 #: ../templates/_profile/bootstrap5/users_circulations_check_campus_order_html:222
 #: ../templates/_profile/bootstrap5/users_circulations_check_campus_order_html:236
@@ -30750,6 +30810,12 @@ msgstr "Self registration"
 #: ../templates/_profile/sammlungen/_view/jesuiten/titles_record_html:174
 msgid "Selektionskennzeichen"
 msgstr ""
+
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/home_html:53
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/home_html:72
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:3
+msgid "Selektive Suche"
+msgstr "Selective search"
 
 #: ../templates/_profile/bootstrap/_view/kubibooks/searchforms_record_query:111
 #: ../templates/_profile/bootstrap/_view/kubikoeln/searchforms_record_query:164
@@ -31401,8 +31467,9 @@ msgstr ""
 #: ../modules/OpenBib/Handler/PSGI/Titles/Tag.pm:147
 #: ../modules/OpenBib/Handler/PSGI/Titles/Tag.pm:267
 #: ../modules/OpenBib/Handler/PSGI/Titles/Tag.pm:324
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:141
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:230
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:110
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:206
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:295
 #: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Borrows.pm:109
 #: ../modules/OpenBib/Handler/PSGI/Users/Circulations/CampusOrders.pm:151
 #: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Fees.pm:110
@@ -31824,7 +31891,7 @@ msgstr "Library-Code"
 #: ../templates/_profile/unikatalog/admin_statistics_query_html:45
 #: ../templates/_profile/unikatalog/searchforms_record_query:125
 #: ../templates/_profile/unikatalog/titles_popular_html:245
-#: ../templates/_profile/unikatalog/titlist_item_html_short:419
+#: ../templates/_profile/unikatalog/titlist_item_html_short:450
 #: ../templates/_profile/unikatalog/users_circulations_borrows_html:25
 #: ../templates/_profile/unikatalog/users_circulations_cancel_order_confirm_html:114
 #: ../templates/_profile/unikatalog/users_circulations_check_campus_order_html:155
@@ -32162,8 +32229,8 @@ msgstr "Order by"
 #: ../templates/_profile/rheinlandbib_yaml4/search_facet:493
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:879
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:880
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1089
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1090
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1096
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1097
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:909
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:910
 #: ../templates/_profile/sammlungen/_view/jesuiten/titles_fields_record_html:69
@@ -32407,7 +32474,7 @@ msgstr "Language icon for %1"
 #: ../templates/_profile/rheinlandbib_yaml4/users_templates_html:64
 #: ../templates/_profile/rheinlandbib_yaml4/users_templates_record_edit:75
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:414
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:490
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:489
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:415
 #: ../templates/_profile/sammlungen/_view/jesuiten/subnavigation:58
 #: ../templates/_profile/sammlungen/_view/kartenkatalog/search_facet.neu:95
@@ -32573,7 +32640,7 @@ msgstr "City"
 msgid "Staedte"
 msgstr "Cities"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:541
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:548
 msgid "Stand 2021"
 msgstr ""
 
@@ -32770,7 +32837,7 @@ msgstr "Location"
 #: ../templates/_profile/sammlungen_yaml4/litlists_record_html_as_text:27
 #: ../templates/_profile/sammlungen_yaml4/titles_record_html_categories:317
 #: ../templates/_profile/sammlungen_yaml4/titles_record_mobile_categories:275
-#: ../templates/_profile/unikatalog/titles_record_html_categories:676
+#: ../templates/_profile/unikatalog/titles_record_html_categories:703
 #: ../templates/_profile/unikatalog/titles_record_include:54
 #: ../templates/_profile/unikatalog/titles_record_mobile_categories:275
 #: ../templates/_profile/yaml4/_database/bibsonomy/titles_record_html_categories:289
@@ -33549,7 +33616,8 @@ msgstr "Edit information about location"
 #: ../templates/titles_record_same_records:15
 #: ../templates/titles_record_similar_records:15 ../templates/topics:28
 #: ../templates/topics_mappings:29 ../templates/topics_mappings_record:29
-#: ../templates/topics_record:29 ../templates/users_circulations_borrows:13
+#: ../templates/topics_record:29 ../templates/users_circulations:13
+#: ../templates/users_circulations_borrows:13
 #: ../templates/users_circulations_cancel_order:13
 #: ../templates/users_circulations_cancel_order_confirm:13
 #: ../templates/users_circulations_cancel_reservation:13
@@ -33944,6 +34012,10 @@ msgstr "Search request"
 msgid "Suchanfragen"
 msgstr "Search request"
 
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:12
+msgid "Suchbegriff(e)"
+msgstr "Search terms"
+
 #: ../templates/_profile/bootstrap/_view/eds/mainnavigation_html:151
 #: ../templates/_profile/bootstrap/_view/games/mainnavigation_html:152
 #: ../templates/_profile/bootstrap/_view/kubibooks/mainnavigation_html:143
@@ -34215,7 +34287,7 @@ msgstr "Search for journals"
 #: ../templates/_profile/rheinlandbib_yaml4/searchforms_record_simple:328
 #: ../templates/_profile/rheinlandbib_yaml4/searchforms_record_simple:421
 #: ../templates/_profile/sammlungen/_view/digitalis/breadcrumbs_html:20
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:124
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:70
 #: ../templates/_profile/sammlungen/_view/jesuiten/breadcrumbs_html:20
 #: ../templates/_profile/sammlungen/_view/jesuiten/searchforms_record_query:174
 #: ../templates/_profile/sammlungen/_view/kartenkatalog/breadcrumbs_html:20
@@ -34677,8 +34749,11 @@ msgstr "Search engine"
 
 #: ../templates/_profile/bootstrap5/admin_databases_record_edit_html:51
 #: ../templates/_profile/unikatalog/admin_databases_record_edit_html:51
-#: ../templates/admin_databases_record_edit_html:46
 msgid "Suchmaschinen für Indexierung"
+msgstr ""
+
+#: ../templates/admin_databases_record_edit_html:46
+msgid "Suchmaschinen für lokale Indexierung"
 msgstr ""
 
 #: ../templates/_profile/bootstrap/_view/kubibooks/searchforms_record_query:146
@@ -35083,8 +35158,6 @@ msgstr "Systems"
 #: ../templates/_profile/sammlungen/_view/digitalis/titles_fields_record:23
 #: ../templates/_profile/sammlungen/_view/digitalis/titles_fields_record:26
 #: ../templates/_profile/sammlungen/_view/digitalis/titles_fields_record:29
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_record:19
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_record:28
 #: ../templates/_profile/sammlungen/_view/jesuiten/titles_fields_record:38
 #: ../templates/_profile/sammlungen/_view/jesuiten/titles_fields_record:41
 #: ../templates/_profile/sammlungen/_view/kartenkatalog/titles_fields_record:23
@@ -35098,6 +35171,11 @@ msgstr "Systems"
 #: ../templates/titles_fields_record:29
 msgid "T${field}"
 msgstr ""
+
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_record:28
+#, fuzzy
+msgid "T${field}-gentzbriefe"
+msgstr "Sender"
 
 #: ../templates/_profile/sammlungen_yaml4/_view/provenienzen/authority_search_facet:99
 msgid "T-PRO Besitzkennzeichen"
@@ -35335,7 +35413,7 @@ msgstr "Title-ID, secondary"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:51
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:57
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:67
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:57
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:58
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:91
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:91
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:91
@@ -35414,7 +35492,7 @@ msgstr "Added entry"
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:37
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:48
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:147
-#: ../templates/_profile/unikatalog/visible_categories_title:41
+#: ../templates/_profile/unikatalog/visible_categories_title:40
 #: ../templates/_profile/unikatalog/visible_categories_title_article:51
 #: ../templates/_profile/unikatalog/visible_categories_title_journal:49
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:24
@@ -35630,10 +35708,10 @@ msgstr "Person"
 #: ../templates/_database/gentzbriefe/visible_categories_title:16
 #: ../templates/_database/gentzbriefe/visible_categories_title_ab1:18
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:16
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_record:7
 msgid "T0100-gentzbriefe"
 msgstr "Sender"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:21
 #: ../templates/_profile/sammlungen_yaml4/_database/gentzdigital/visible_categories_title:16
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/clouds_person_html:51
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/clouds_person_html:70
@@ -35790,6 +35868,7 @@ msgstr "Cast"
 #: ../templates/_database/gentzbriefe/visible_categories_title:17
 #: ../templates/_database/gentzbriefe/visible_categories_title_ab1:19
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:17
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_record:10
 msgid "T0101-gentzbriefe"
 msgstr "Recipient"
 
@@ -36033,7 +36112,6 @@ msgstr "Director"
 msgid "T0200-gentzbriefe"
 msgstr "Archive"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:29
 #: ../templates/_profile/sammlungen_yaml4/_database/gentzdigital/visible_categories_title:17
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/clouds_corporatebody_html:51
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/clouds_corporatebody_html:70
@@ -36706,7 +36784,7 @@ msgstr "Same obverse stamp as"
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:49
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:52
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:81
-#: ../templates/_profile/unikatalog/visible_categories_title:46
+#: ../templates/_profile/unikatalog/visible_categories_title:45
 #: ../templates/_profile/unikatalog/visible_categories_title_article:55
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:18
 #: ../templates/_profile/unikatalog/visible_categories_title_mono:37
@@ -36847,7 +36925,6 @@ msgstr "Other title information"
 msgid "T0335-einbaende"
 msgstr "Description of motive"
 
-#: ../templates/_database/gentzbriefe/visible_categories_title:23
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:20
 msgid "T0335-gentzbriefe"
 msgstr "Incipit reference publication"
@@ -37610,7 +37687,7 @@ msgstr "Short title"
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:58
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:36
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:46
-#: ../templates/_profile/unikatalog/visible_categories_title:29
+#: ../templates/_profile/unikatalog/visible_categories_title:28
 #: ../templates/_profile/unikatalog/visible_categories_title_article:38
 #: ../templates/_profile/unikatalog/visible_categories_title_journal:37
 #: ../templates/_profile/unikatalog/visible_categories_title_mono:28
@@ -37692,7 +37769,7 @@ msgstr "Edition"
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:59
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:41
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:152
-#: ../templates/_profile/unikatalog/visible_categories_title:34
+#: ../templates/_profile/unikatalog/visible_categories_title:33
 #: ../templates/_profile/unikatalog/visible_categories_title_article:43
 #: ../templates/_profile/unikatalog/visible_categories_title_journal:42
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:17
@@ -37875,7 +37952,7 @@ msgstr "Die-Axis"
 #: ../templates/_profile/sammlungen_yaml4/search_title_field:50
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:37
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:47
-#: ../templates/_profile/unikatalog/visible_categories_title:30
+#: ../templates/_profile/unikatalog/visible_categories_title:29
 #: ../templates/_profile/unikatalog/visible_categories_title_article:39
 #: ../templates/_profile/unikatalog/visible_categories_title_journal:38
 #: ../templates/_profile/unikatalog/visible_categories_title_mono:29
@@ -37914,7 +37991,6 @@ msgstr "Place of publication"
 msgid "T0410-gentzbriefe"
 msgstr "Sent location normalized"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:48
 #: ../templates/_profile/sammlungen_yaml4/_database/gentzdigital/visible_categories_title:18
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/clouds_0410_html:51
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/clouds_0410_html:70
@@ -38026,7 +38102,7 @@ msgstr "Place of birth"
 #: ../templates/_profile/sammlungen_yaml4/search_title_field:51
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:38
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:48
-#: ../templates/_profile/unikatalog/visible_categories_title:31
+#: ../templates/_profile/unikatalog/visible_categories_title:30
 #: ../templates/_profile/unikatalog/visible_categories_title_article:40
 #: ../templates/_profile/unikatalog/visible_categories_title_journal:39
 #: ../templates/_profile/unikatalog/visible_categories_title_mono:30
@@ -38057,10 +38133,10 @@ msgstr "Publisher"
 #: ../templates/_database/gentzbriefe/visible_categories_title:20
 #: ../templates/_database/gentzbriefe/visible_categories_title_ab2:16
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:23
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_record:16
 msgid "T0412-gentzbriefe"
 msgstr "Archives"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:84
 #: ../templates/_profile/sammlungen_yaml4/_database/gentzdigital/visible_categories_title:20
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/searchforms_record_query:151
 msgid "T0412-gentzdigital"
@@ -38132,7 +38208,7 @@ msgstr "Origin"
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:63
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:47
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:95
-#: ../templates/_profile/unikatalog/visible_categories_title:40
+#: ../templates/_profile/unikatalog/visible_categories_title:39
 #: ../templates/_profile/unikatalog/visible_categories_title_article:50
 #: ../templates/_profile/unikatalog/visible_categories_title_journal:48
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:23
@@ -38202,7 +38278,7 @@ msgstr "Delivery"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:71
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:81
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:89
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:78
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:79
 #: ../templates/_profile/yaml4/visible_categories_title:119
 #: ../templates/visible_categories_title:119
 msgid "T0422"
@@ -38228,7 +38304,7 @@ msgstr "Year of publication / first volume"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:72
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:82
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:90
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:79
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:80
 #: ../templates/_profile/yaml4/visible_categories_title:120
 #: ../templates/visible_categories_title:120
 msgid "T0423"
@@ -38293,7 +38369,7 @@ msgstr "Year of publication / last volume"
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:64
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:40
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:98
-#: ../templates/_profile/unikatalog/visible_categories_title:33
+#: ../templates/_profile/unikatalog/visible_categories_title:32
 #: ../templates/_profile/unikatalog/visible_categories_title_article:42
 #: ../templates/_profile/unikatalog/visible_categories_title_journal:41
 #: ../templates/_profile/unikatalog/visible_categories_title_mono:32
@@ -38328,6 +38404,7 @@ msgstr "Year of publication"
 #: ../templates/_database/gentzbriefe/visible_categories_title:19
 #: ../templates/_database/gentzbriefe/visible_categories_title_ab1:21
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:25
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_record:19
 msgid "T0424-gentzbriefe"
 msgstr "Sent date original"
 
@@ -38405,7 +38482,7 @@ msgstr "Date of death"
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:65
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:39
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:50
-#: ../templates/_profile/unikatalog/visible_categories_title:32
+#: ../templates/_profile/unikatalog/visible_categories_title:31
 #: ../templates/_profile/unikatalog/visible_categories_title_article:41
 #: ../templates/_profile/unikatalog/visible_categories_title_journal:40
 #: ../templates/_profile/unikatalog/visible_categories_title_mono:31
@@ -38551,7 +38628,7 @@ msgstr "Dating"
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:66
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:51
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:52
-#: ../templates/_profile/unikatalog/visible_categories_title:43
+#: ../templates/_profile/unikatalog/visible_categories_title:42
 #: ../templates/_profile/unikatalog/visible_categories_title_article:54
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:17
 #: ../templates/_profile/unikatalog/visible_categories_title_mono:34
@@ -38727,8 +38804,8 @@ msgstr "Profession"
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:60
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:161
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:55
-#: ../templates/_profile/unikatalog/visible_categories_title:39
-#: ../templates/_profile/unikatalog/visible_categories_title:44
+#: ../templates/_profile/unikatalog/visible_categories_title:38
+#: ../templates/_profile/unikatalog/visible_categories_title:43
 #: ../templates/_profile/unikatalog/visible_categories_title_article:48
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:20
 #: ../templates/_profile/unikatalog/visible_categories_title_journal:47
@@ -38927,7 +39004,7 @@ msgstr "Diameter"
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:70
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:61
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:54
-#: ../templates/_profile/unikatalog/visible_categories_title:45
+#: ../templates/_profile/unikatalog/visible_categories_title:44
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:21
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:27
 #: ../templates/_profile/unikatalog/visible_categories_title_mono:36
@@ -39031,7 +39108,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:71
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:55
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:36
-#: ../templates/_profile/unikatalog/visible_categories_title:52
+#: ../templates/_profile/unikatalog/visible_categories_title:51
 #: ../templates/_profile/unikatalog/visible_categories_title_article:22
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:21
 #: ../templates/_profile/unikatalog/visible_categories_title_mono:43
@@ -39075,6 +39152,10 @@ msgstr "Mourner"
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:37
 msgid "T0461"
 msgstr ""
+
+#: ../templates/_database/gentzbriefe/visible_categories_title:23
+msgid "T0462-gentzbriefe"
+msgstr "Incipit"
 
 #: ../templates/_database/jesuiten/visible_categories_title:35
 msgid "T0470-jesuiten"
@@ -39157,7 +39238,7 @@ msgstr "Type Collection Herterich"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:94
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:104
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:112
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:101
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:102
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:61
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:61
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:61
@@ -39282,7 +39363,7 @@ msgstr "General note, unstructured"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:50
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:56
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:66
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:56
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:57
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:90
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:90
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:90
@@ -39618,7 +39699,7 @@ msgstr "Other title information note"
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:77
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:50
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:149
-#: ../templates/_profile/unikatalog/visible_categories_title:42
+#: ../templates/_profile/unikatalog/visible_categories_title:41
 #: ../templates/_profile/unikatalog/visible_categories_title_article:53
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:16
 #: ../templates/_profile/unikatalog/visible_categories_title_mono:33
@@ -40605,7 +40686,7 @@ msgstr "Split note for serials"
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:88
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:42
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:153
-#: ../templates/_profile/unikatalog/visible_categories_title:35
+#: ../templates/_profile/unikatalog/visible_categories_title:34
 #: ../templates/_profile/unikatalog/visible_categories_title_article:44
 #: ../templates/_profile/unikatalog/visible_categories_title_journal:43
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:18
@@ -41613,7 +41694,7 @@ msgstr "Type of copy"
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:109
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:61
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:62
-#: ../templates/_profile/unikatalog/visible_categories_title:47
+#: ../templates/_profile/unikatalog/visible_categories_title:46
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:69
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:75
 #: ../templates/_profile/unikatalog/visible_categories_title_mono:38
@@ -41695,7 +41776,7 @@ msgstr "ISBN"
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:100
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:111
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:41
-#: ../templates/_profile/unikatalog/visible_categories_title:49
+#: ../templates/_profile/unikatalog/visible_categories_title:48
 #: ../templates/_profile/unikatalog/visible_categories_title_article:49
 #: ../templates/_profile/unikatalog/visible_categories_title_journal:51
 #: ../templates/_profile/unikatalog/visible_categories_title_mono:40
@@ -41770,7 +41851,7 @@ msgstr "DOI"
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:101
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:110
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:155
-#: ../templates/_profile/unikatalog/visible_categories_title:48
+#: ../templates/_profile/unikatalog/visible_categories_title:47
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:70
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:76
 #: ../templates/_profile/unikatalog/visible_categories_title_mono:39
@@ -41973,7 +42054,7 @@ msgstr "ISBN source"
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:103
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:56
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:57
-#: ../templates/_profile/unikatalog/visible_categories_title:53
+#: ../templates/_profile/unikatalog/visible_categories_title:52
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:16
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:22
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:34
@@ -42000,6 +42081,7 @@ msgid "T0590"
 msgstr "Title source"
 
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:32
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_record:25
 msgid "T0590-gentzbriefe"
 msgstr "Printed publications"
 
@@ -42068,7 +42150,7 @@ msgstr "Released"
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:43
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:143
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:60
-#: ../templates/_profile/unikatalog/visible_categories_title:36
+#: ../templates/_profile/unikatalog/visible_categories_title:35
 #: ../templates/_profile/unikatalog/visible_categories_title_article:45
 #: ../templates/_profile/unikatalog/visible_categories_title_journal:44
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:19
@@ -42173,7 +42255,7 @@ msgstr "Source description"
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:105
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:44
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:49
-#: ../templates/_profile/unikatalog/visible_categories_title:37
+#: ../templates/_profile/unikatalog/visible_categories_title:36
 #: ../templates/_profile/unikatalog/visible_categories_title_article:46
 #: ../templates/_profile/unikatalog/visible_categories_title_journal:45
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:20
@@ -42203,7 +42285,6 @@ msgstr "Publication place of source"
 msgid "T0594-gentzbriefe"
 msgstr "Publication type"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:94
 #: ../templates/_profile/sammlungen_yaml4/_database/gentzdigital/visible_categories_title:22
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/searchforms_record_query:160
 msgid "T0594-gentzdigital"
@@ -42274,7 +42355,7 @@ msgstr "Landscape of origin"
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:106
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:45
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:154
-#: ../templates/_profile/unikatalog/visible_categories_title:38
+#: ../templates/_profile/unikatalog/visible_categories_title:37
 #: ../templates/_profile/unikatalog/visible_categories_title_article:47
 #: ../templates/_profile/unikatalog/visible_categories_title_journal:46
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:21
@@ -42708,7 +42789,7 @@ msgstr "Footnote computer file"
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:110
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:53
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:82
-#: ../templates/_profile/unikatalog/visible_categories_title:50
+#: ../templates/_profile/unikatalog/visible_categories_title:49
 #: ../templates/_profile/unikatalog/visible_categories_title_article:56
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:19
 #: ../templates/_profile/unikatalog/visible_categories_title_mono:41
@@ -42803,7 +42884,7 @@ msgstr "System requirements"
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:111
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:54
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:160
-#: ../templates/_profile/unikatalog/visible_categories_title:51
+#: ../templates/_profile/unikatalog/visible_categories_title:50
 #: ../templates/_profile/unikatalog/visible_categories_title_article:57
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:20
 #: ../templates/_profile/unikatalog/visible_categories_title_mono:42
@@ -42889,7 +42970,7 @@ msgstr "Electronic location / access"
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:112
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:112
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:109
-#: ../templates/_profile/unikatalog/visible_categories_title:54
+#: ../templates/_profile/unikatalog/visible_categories_title:53
 #: ../templates/_profile/unikatalog/visible_categories_title_article:58
 #: ../templates/_profile/unikatalog/visible_categories_title_journal:52
 #: ../templates/_profile/unikatalog/visible_categories_title_mono:44
@@ -43016,7 +43097,7 @@ msgstr "Title in variant spelling"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:73
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:83
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:91
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:80
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:81
 #: ../templates/_profile/yaml4/visible_categories_title:121
 #: ../templates/visible_categories_title:121
 msgid "T0671"
@@ -43113,7 +43194,7 @@ msgstr "Publisher/Printer"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:66
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:72
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:82
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:72
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:73
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:106
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:106
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:106
@@ -43243,7 +43324,7 @@ msgstr "Provenance"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:54
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:60
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:70
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:60
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:61
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:94
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:94
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:94
@@ -43365,10 +43446,10 @@ msgstr "Involved in cover"
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:116
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:89
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:44
-#: ../templates/_profile/unikatalog/visible_categories_title:28
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:49
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:55
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:65
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:56
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:89
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:89
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:89
@@ -43469,7 +43550,7 @@ msgstr "Transcription"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:53
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:59
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:69
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:59
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:60
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:93
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:93
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:93
@@ -43503,7 +43584,6 @@ msgstr "Type"
 msgid "T0800-gentzbriefe"
 msgstr "Type of letter"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:112
 #: ../templates/_profile/sammlungen_yaml4/_database/gentzdigital/visible_categories_title:24
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/search_facet:177
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/search_title_field:17
@@ -43591,7 +43671,7 @@ msgstr "Accordance"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:55
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:61
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:71
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:61
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:62
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:95
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:95
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:95
@@ -43673,7 +43753,7 @@ msgstr "Subject headings"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:56
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:62
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:72
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:62
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:63
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:96
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:96
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:96
@@ -43755,7 +43835,7 @@ msgstr "Subject headings"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:57
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:63
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:73
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:63
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:64
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:97
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:97
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:97
@@ -43837,7 +43917,7 @@ msgstr "Subject headings"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:58
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:64
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:74
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:64
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:65
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:98
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:98
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:98
@@ -43919,7 +43999,7 @@ msgstr "Subject headings"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:59
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:65
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:75
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:65
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:66
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:99
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:99
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:99
@@ -44001,7 +44081,7 @@ msgstr "Subject headings"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:60
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:66
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:76
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:66
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:67
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:100
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:100
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:100
@@ -44083,7 +44163,7 @@ msgstr "Subject headings"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:61
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:67
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:77
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:67
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:68
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:101
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:101
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:101
@@ -44165,7 +44245,7 @@ msgstr "Subject headings"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:62
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:68
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:78
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:68
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:69
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:102
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:102
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:102
@@ -44247,7 +44327,7 @@ msgstr "Subject headings"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:63
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:69
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:79
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:69
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:70
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:103
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:103
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:103
@@ -44329,7 +44409,7 @@ msgstr "Subject headings"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:64
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:70
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:80
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:70
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:71
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:104
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:104
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:104
@@ -44371,7 +44451,7 @@ msgstr "Subject headings"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:74
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:84
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:92
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:81
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:82
 #: ../templates/_profile/yaml4/visible_categories_title:122
 #: ../templates/visible_categories_title:122
 msgid "T1024"
@@ -44525,7 +44605,7 @@ msgstr "Remark"
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:128
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:113
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:187
-#: ../templates/_profile/unikatalog/visible_categories_title:55
+#: ../templates/_profile/unikatalog/visible_categories_title:54
 #: ../templates/_profile/unikatalog/visible_categories_title_article:59
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:77
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:85
@@ -44584,7 +44664,7 @@ msgstr ""
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:75
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:85
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:93
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:82
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:83
 #: ../templates/_profile/yaml4/visible_categories_title:123
 #: ../templates/visible_categories_title:123
 msgid "T1701"
@@ -44636,7 +44716,7 @@ msgstr "Corporate body"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:76
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:86
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:94
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:83
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:84
 #: ../templates/_profile/yaml4/visible_categories_title:124
 #: ../templates/visible_categories_title:124
 msgid "T2086"
@@ -44699,7 +44779,7 @@ msgstr "Selection mark: language"
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:129
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:114
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:102
-#: ../templates/_profile/unikatalog/visible_categories_title:56
+#: ../templates/_profile/unikatalog/visible_categories_title:55
 #: ../templates/_profile/unikatalog/visible_categories_title_article:60
 #: ../templates/_profile/unikatalog/visible_categories_title_journal:53
 #: ../templates/_profile/unikatalog/visible_categories_title_mono:45
@@ -44792,7 +44872,7 @@ msgstr "External URL"
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:130
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:115
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:103
-#: ../templates/_profile/unikatalog/visible_categories_title:57
+#: ../templates/_profile/unikatalog/visible_categories_title:56
 #: ../templates/_profile/unikatalog/visible_categories_title_article:61
 #: ../templates/_profile/unikatalog/visible_categories_title_journal:54
 #: ../templates/_profile/unikatalog/visible_categories_title_mono:46
@@ -44927,7 +45007,7 @@ msgstr "Fulltext-URL"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:77
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:87
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:95
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:84
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:85
 #: ../templates/_profile/yaml4/all_categories_title:137
 #: ../templates/_profile/yaml4/visible_categories_title:125
 #: ../templates/all_categories_title:137
@@ -44957,7 +45037,7 @@ msgstr "Wikipedia article (german)"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:78
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:88
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:96
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:85
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:86
 #: ../templates/_profile/yaml4/all_categories_title:138
 #: ../templates/_profile/yaml4/visible_categories_title:126
 #: ../templates/all_categories_title:138
@@ -44987,7 +45067,7 @@ msgstr "Wikipedia article (english)"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:79
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:89
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:97
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:86
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:87
 #: ../templates/_profile/yaml4/all_categories_title:139
 #: ../templates/_profile/yaml4/visible_categories_title:127
 #: ../templates/all_categories_title:139
@@ -45030,7 +45110,7 @@ msgstr "Wikipedia article (french)"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:93
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:103
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:111
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:100
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:101
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:124
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:124
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:124
@@ -45077,7 +45157,7 @@ msgstr "Rights information"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:91
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:101
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:109
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:98
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:99
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:122
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:122
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:122
@@ -45123,7 +45203,7 @@ msgstr "Price"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:92
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:102
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:110
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:99
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:100
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:123
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:123
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:123
@@ -45195,8 +45275,8 @@ msgstr "Currency"
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:90
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:86
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:98
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:75
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:87
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:76
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:88
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:116
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:116
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:116
@@ -45237,7 +45317,7 @@ msgstr "Username"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:81
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:91
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:99
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:88
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:89
 #: ../templates/_profile/yaml4/visible_categories_title:129
 #: ../templates/visible_categories_title:129
 msgid "T4230"
@@ -45367,7 +45447,7 @@ msgstr "Availability"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:52
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:58
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:68
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:58
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:59
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:92
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:92
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:92
@@ -45443,7 +45523,7 @@ msgstr "Type"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:82
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:92
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:100
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:89
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:90
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/visible_categories_title:119
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/visible_categories_title:119
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/visible_categories_title:119
@@ -45506,7 +45586,7 @@ msgstr "Separate collection portal"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:83
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:93
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:101
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:90
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:91
 #: ../templates/_profile/yaml4/visible_categories_title:131
 #: ../templates/visible_categories_title:131
 msgid "T4700"
@@ -45537,7 +45617,7 @@ msgstr "Classification (Institutes of UoC)"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:84
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:94
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:102
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:91
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:92
 #: ../templates/_profile/yaml4/visible_categories_title:132
 #: ../templates/visible_categories_title:132
 msgid "T4702"
@@ -45568,7 +45648,7 @@ msgstr "Subject headings (Institutes of UoC)"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:85
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:95
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:103
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:92
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:93
 #: ../templates/_profile/yaml4/visible_categories_title:133
 #: ../templates/visible_categories_title:133
 msgid "T4712"
@@ -45594,7 +45674,7 @@ msgstr "Flag: Economy"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:86
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:96
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:104
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:93
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:94
 #: ../templates/_profile/yaml4/visible_categories_title:134
 #: ../templates/visible_categories_title:134
 msgid "T4715"
@@ -45620,7 +45700,7 @@ msgstr "Flag: EDZ"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:87
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:97
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:105
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:94
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:95
 #: ../templates/_profile/yaml4/visible_categories_title:135
 #: ../templates/visible_categories_title:135
 msgid "T4717"
@@ -45724,7 +45804,7 @@ msgstr "# of superordinate titles"
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:149
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:140
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:193
-#: ../templates/_profile/unikatalog/visible_categories_title:60
+#: ../templates/_profile/unikatalog/visible_categories_title:59
 #: ../templates/_profile/unikatalog/visible_categories_title_article:67
 #: ../templates/_profile/unikatalog/visible_categories_title_journal:57
 #: ../templates/_profile/unikatalog/visible_categories_title_mono:49
@@ -45814,7 +45894,7 @@ msgstr "# of superordinate titles"
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:150
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:139
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:192
-#: ../templates/_profile/unikatalog/visible_categories_title:59
+#: ../templates/_profile/unikatalog/visible_categories_title:58
 #: ../templates/_profile/unikatalog/visible_categories_title_article:66
 #: ../templates/_profile/unikatalog/visible_categories_title_journal:56
 #: ../templates/_profile/unikatalog/visible_categories_title_mono:48
@@ -45860,7 +45940,7 @@ msgstr "Go to superordinate title"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:88
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:98
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:106
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:95
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:96
 #: ../templates/_profile/yaml4/all_categories_title:151
 #: ../templates/_profile/yaml4/visible_categories_title:136
 #: ../templates/all_categories_title:151
@@ -45890,7 +45970,7 @@ msgstr "BibKey"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:89
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:99
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:107
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:96
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:97
 #: ../templates/_profile/yaml4/all_categories_title:152
 #: ../templates/_profile/yaml4/visible_categories_title:137
 #: ../templates/all_categories_title:152
@@ -45918,7 +45998,7 @@ msgstr "BibKey-Base"
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:90
 #: ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:100
 #: ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:108
-#: ../templates/_profile/unikatalog/visible_categories_title_supplement:97
+#: ../templates/_profile/unikatalog/visible_categories_title_supplement:98
 #: ../templates/_profile/yaml4/visible_categories_title:138
 #: ../templates/visible_categories_title:138
 msgid "T5055"
@@ -45990,7 +46070,7 @@ msgstr "WorkKey-Base"
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:153
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:145
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:197
-#: ../templates/_profile/unikatalog/visible_categories_title:58
+#: ../templates/_profile/unikatalog/visible_categories_title:57
 #: ../templates/_profile/unikatalog/visible_categories_title_article:65
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:95
 #: ../templates/_profile/unikatalog/visible_categories_title_journal:55
@@ -46130,8 +46210,6 @@ msgstr ""
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/titlist_item_html_short:440
 #: ../templates/_profile/kug/_view/kugproto/titles_record_html:177
 #: ../templates/_profile/kug/_view/kugproto/titlist_item_html_short:376
-#: ../templates/_profile/unikatalog/titles_record_html:195
-#: ../templates/_profile/unikatalog/titlist_item_html_short:442
 msgid "TOC"
 msgstr "TOC"
 
@@ -46158,7 +46236,7 @@ msgstr ""
 #: ../templates/_profile/rheinlandbib_yaml4/search_facet:182
 #: ../templates/_profile/rheinlandbib_yaml4/search_title_field:28
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:416
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:492
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:491
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:417
 #: ../templates/_profile/sammlungen/_view/kartenkatalog/search_facet.neu:97
 #: ../templates/_profile/sammlungen/_view/kartenkatalog/search_facet:97
@@ -47430,7 +47508,7 @@ msgstr "Search tips"
 #: ../templates/_profile/unikatalog/litlists_record_include:35
 #: ../templates/_profile/unikatalog/tags_include:29
 #: ../templates/_profile/unikatalog/titles_record:35
-#: ../templates/_profile/unikatalog/titles_record_html:367
+#: ../templates/_profile/unikatalog/titles_record_html:390
 #: ../templates/_profile/unikatalog/usage_navigation:10
 #: ../templates/_profile/unikatalog/usage_navigation:8
 #: ../templates/_profile/unikatalog/users_circulations_fees_html:43
@@ -47904,7 +47982,7 @@ msgstr "Title data"
 #: ../templates/_profile/sammlungen_yaml4/users_titles_record_searchindex_html:15
 #: ../templates/_profile/unikatalog/titles_record_fields_html:49
 #: ../templates/_profile/unikatalog/titles_record_fields_include:49
-#: ../templates/_profile/unikatalog/titles_record_html:60
+#: ../templates/_profile/unikatalog/titles_record_html:62
 #: ../templates/_profile/unikatalog/users_titles_record_searchindex_html:15
 #: ../templates/_profile/usbintern/_database/inst001/titles_record_html:51
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html:35
@@ -48058,7 +48136,6 @@ msgstr "Title list"
 #: ../templates/_profile/rheinlandbib_yaml4/_view/filme/searchforms_record_query:77
 #: ../templates/_profile/rheinlandbib_yaml4/admin_statistics_query_html:79
 #: ../templates/_profile/rheinlandbib_yaml4/searchforms_record_query:87
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:38
 #: ../templates/_profile/sammlungen/_view/jesuiten/searchforms_record_query:22
 #: ../templates/_profile/sammlungen/_view/testsammlung/searchforms_record_query:22
 #: ../templates/_profile/sammlungen/_view/usbbibliographie/searchforms_record_query:22
@@ -48186,7 +48263,8 @@ msgstr "Top 20 titles"
 msgid "Topogr. Schlagwort"
 msgstr "Topogr. subject heading"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:556
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:495
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:563
 msgid "Transkriptionen Originale"
 msgstr "Transcriptions originals"
 
@@ -48345,7 +48423,7 @@ msgstr "Resultlist"
 #: ../templates/_profile/rheinlandbib_yaml4/search_facet:538
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:387
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:922
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1132
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1139
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:463
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:387
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:952
@@ -48485,9 +48563,9 @@ msgstr ""
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:840
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:843
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:883
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1050
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1053
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1093
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1057
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1060
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1100
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:870
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:873
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:913
@@ -48584,6 +48662,7 @@ msgstr "Tutorials to specific subjects:"
 #: ../templates/_profile/rheinlandbib_yaml4/cartitems_html_actions:106
 #: ../templates/_profile/rheinlandbib_yaml4/cartitems_html_actions:69
 #: ../templates/_profile/rheinlandbib_yaml4/locations_html:109
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:499
 #: ../templates/_profile/sammlungen_yaml4/_view/maxbruch/searchforms_record_query:206
 #: ../templates/_profile/sammlungen_yaml4/_view/provenienzen/search_facet:194
 #: ../templates/_profile/sammlungen_yaml4/_view/provenienzen/searchforms_record_query:118
@@ -48615,7 +48694,7 @@ msgstr "Tutorials to specific subjects:"
 #: ../templates/_profile/unikatalog/cartitems_html_actions:123
 #: ../templates/_profile/unikatalog/cartitems_html_actions:164
 #: ../templates/_profile/unikatalog/info_metrics_html:19
-#: ../templates/_profile/unikatalog/locations_html:66
+#: ../templates/_profile/unikatalog/locations_html:134
 #: ../templates/_profile/unikatalog/searchforms_record_query:202
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/searchforms_record_query:179
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/searchforms_record_query:179
@@ -48704,7 +48783,7 @@ msgstr "Types"
 #: ../templates/_profile/rheinlandbib_yaml4/authority_search_facet:538
 #: ../templates/_profile/rheinlandbib_yaml4/search_facet:498
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:884
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1094
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1101
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:914
 #: ../templates/_profile/sammlungen/_view/jesuiten/titles_fields_record_html:74
 #: ../templates/_profile/sammlungen/_view/muenzenproto/search_facet:908
@@ -48793,6 +48872,7 @@ msgstr "URI without view"
 #: ../templates/_profile/rheinlandbib_yaml4/admin_databases_record_edit:106
 #: ../templates/_profile/rheinlandbib_yaml4/admin_databases_record_html:68
 #: ../templates/_profile/rheinlandbib_yaml4/databases_record_html:66
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:227
 #: ../templates/_profile/sammlungen_yaml4/admin_databases_html:95
 #: ../templates/_profile/sammlungen_yaml4/admin_databases_record_edit:106
 #: ../templates/_profile/sammlungen_yaml4/admin_databases_record_html:68
@@ -48874,6 +48954,11 @@ msgstr ""
 "fields</i> is activated or not, the following operators or symbols can be "
 "used:"
 
+#: ../templates/_profile/unikatalog/titles_record_html:81
+#: ../templates/_profile/unikatalog/titlist_item_html_short:383
+msgid "Unbekannter Zugang"
+msgstr "Unknown access"
+
 #: ../templates/_profile/rheinlandbib_yaml4/searchforms_record_options:4
 #: ../templates/_profile/sammlungen_yaml4/searchforms_record_options:4
 #: ../templates/_profile/yaml4/searchforms_record_options:4
@@ -48915,8 +49000,8 @@ msgstr "AND-relation in a search field"
 #: ../templates/_profile/rheinlandbib_yaml4/search_facet:489
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:864
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:885
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1074
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1095
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1081
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1102
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:894
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:915
 #: ../templates/_profile/sammlungen/_view/jesuiten/titles_fields_record_html:54
@@ -48993,7 +49078,6 @@ msgstr "Invalid session"
 #: ../templates/_profile/kug/_view/kugproto/search_title_combined_include:43
 #: ../templates/_profile/unikatalog/_view/ilias/home_html:48
 #: ../templates/_profile/unikatalog/_view/ilias/mainnavigation_html:307
-#: ../templates/_profile/unikatalog/home_html:183
 #: ../templates/_profile/unikatalog/mainnavigation_html:307
 #: ../templates/_profile/unikatalog/search_title_combined_include:45
 msgid "Unikatalog (Bücher, E-Medien, Aufsätze &amp; mehr) und USB Website"
@@ -49099,6 +49183,10 @@ msgstr ""
 "different name. Your profile definitions and search field settings will   "
 "remain stored for future searches."
 
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:231
+msgid "Unterschiede in den Briefinformationen"
+msgstr ""
+
 #: ../templates/_profile/kug/_view/openlibrary/home_html_bottom_left:26
 #: ../templates/_profile/kug_yaml4/_view/openlibrary/home_html_bottom_left:22
 msgid "Ursprung"
@@ -49166,7 +49254,7 @@ msgstr "Author"
 #: ../templates/_profile/rheinlandbib_yaml4/authority_search_facet:200
 #: ../templates/_profile/rheinlandbib_yaml4/search_facet:184
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:418
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:494
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:493
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:419
 #: ../templates/_profile/sammlungen/_view/kartenkatalog/search_facet.neu:99
 #: ../templates/_profile/sammlungen/_view/kartenkatalog/search_facet:99
@@ -49384,8 +49472,8 @@ msgstr "Load Sharing in OpenBib"
 #: ../templates/_profile/unikatalog/titles_record_fields_include:60
 #: ../templates/_profile/unikatalog/titles_record_holdings_html:46
 #: ../templates/_profile/unikatalog/titles_record_holdings_include:46
-#: ../templates/_profile/unikatalog/titles_record_html:107
-#: ../templates/_profile/unikatalog/titlist_item_html_short:402
+#: ../templates/_profile/unikatalog/titles_record_html:130
+#: ../templates/_profile/unikatalog/titlist_item_html_short:433
 #: ../templates/_profile/usbintern/_database/inst001/titles_record_html:179
 #: ../templates/_profile/yaml4/_database/inst412card/titlist_item_html_short:335
 #: ../templates/_profile/yaml4/_database/instzs/titlist_item_html_short:337
@@ -49451,7 +49539,7 @@ msgstr "Subject headings of this title in other catalogs"
 #: ../templates/_profile/rheinlandbib_yaml4/authority_search_facet:587
 #: ../templates/_profile/rheinlandbib_yaml4/search_facet:547
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:931
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1141
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1148
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:961
 #: ../templates/_profile/sammlungen/_view/kartenkatalog/search_facet.neu:164
 #: ../templates/_profile/sammlungen/_view/kartenkatalog/search_facet:164
@@ -49919,9 +50007,9 @@ msgstr "Complete title"
 #: ../templates/_profile/rheinlandbib_yaml4/titles_record_html_categories:325
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:72
 #: ../templates/_profile/sammlungen_yaml4/_view/provenienzen/titles_record_html_categories:325
-#: ../templates/_profile/unikatalog/titles_record_html:189
-#: ../templates/_profile/unikatalog/titles_record_html_categories:643
-#: ../templates/_profile/unikatalog/titlist_item_html_short:436
+#: ../templates/_profile/unikatalog/titles_record_html:212
+#: ../templates/_profile/unikatalog/titles_record_html_categories:670
+#: ../templates/_profile/unikatalog/titlist_item_html_short:467
 #: ../templates/_profile/yaml4/_database/dreierpda/titles_record_html_categories:241
 #: ../templates/_profile/yaml4/_database/inst323/titles_record_html_categories:375
 #: ../templates/_profile/yaml4/_database/inst404card/titles_record_html_categories:326
@@ -49935,18 +50023,19 @@ msgstr "Full text"
 #: ../templates/_profile/bootstrap5/_view/unikatalog/titlist_item_html_short:350
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/titlist_item_html_short:350
 #: ../templates/_profile/kug/_view/kugproto/titlist_item_html_short:280
-#: ../templates/_profile/unikatalog/titlist_item_html_short:350
 msgid "Volltext mit beschränktem Zugang"
 msgstr "Full text with restricted access"
 
 #: ../templates/_profile/bootstrap5/_view/unikatalog/titlist_item_html_short:347
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/titlist_item_html_short:347
 #: ../templates/_profile/kug/_view/kugproto/titlist_item_html_short:277
-#: ../templates/_profile/unikatalog/titlist_item_html_short:347
+#: ../templates/_profile/unikatalog/titles_record_html:71
+#: ../templates/_profile/unikatalog/titlist_item_html_short:373
 msgid "Volltext mit freiem Zugang"
 msgstr "Full text with free access"
 
-#: ../templates/_profile/unikatalog/titlist_item_html_short:352
+#: ../templates/_profile/unikatalog/titles_record_html:78
+#: ../templates/_profile/unikatalog/titlist_item_html_short:380
 msgid "Volltext mit unbekanntem Zugang"
 msgstr "Full text with restricted access"
 
@@ -49988,8 +50077,8 @@ msgstr "Full title"
 #: ../templates/_profile/rheinlandbib_yaml4/admin_sessions_archived_search_form:65
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:544
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:651
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:754
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:861
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:761
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:868
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:547
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:653
 #: ../templates/_profile/sammlungen/_view/muenzenproto/search_facet:568
@@ -50115,9 +50204,9 @@ msgstr "Reservation not possible"
 #: ../templates/_profile/sammlungen_yaml4/users_circulations_reservations_html:39
 #: ../templates/_profile/sammlungen_yaml4/users_navigation:70
 #: ../templates/_profile/sammlungen_yaml4/users_navigation:72
-#: ../templates/_profile/unikatalog/users_navigation:147
-#: ../templates/_profile/unikatalog/users_navigation:149
-#: ../templates/_profile/unikatalog/users_navigation_dropdown:69
+#: ../templates/_profile/unikatalog/users_navigation:153
+#: ../templates/_profile/unikatalog/users_navigation:155
+#: ../templates/_profile/unikatalog/users_navigation_dropdown:70
 #: ../templates/_profile/yaml4/users_circulations_borrows_ics:85
 #: ../templates/_profile/yaml4/users_circulations_make_reservation:39
 #: ../templates/_profile/yaml4/users_circulations_reservations_html:39
@@ -50166,6 +50255,10 @@ msgstr "Reservation period"
 #: ../templates/viewadmin_users_record_html:23
 msgid "Vorname"
 msgstr "First name"
+
+#: ../templates/_profile/unikatalog/users_preferences_html:160
+msgid "Vorschläge"
+msgstr ""
 
 #: ../templates/_profile/bootstrap5/info_11:49
 #: ../templates/_profile/rheinlandbib_yaml4/info_11:49
@@ -50259,7 +50352,7 @@ msgstr "When"
 #: ../templates/_profile/sammlungen_yaml4/titles_record_html:375
 #: ../templates/_profile/sammlungen_yaml4/titles_record_html~:375
 #: ../templates/_profile/sammlungen_yaml4/titles_record_include:251
-#: ../templates/_profile/unikatalog/titles_record_html:403
+#: ../templates/_profile/unikatalog/titles_record_html:426
 #: ../templates/_profile/usbintern/_database/inst001/titles_record_html:367
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html:375
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html~:375
@@ -50346,7 +50439,7 @@ msgstr "Website"
 #: ../templates/_profile/kug_yaml4/_database/wiso/circulation:174
 #: ../templates/_profile/kug_yaml4/_database/zbmed/circulation:53
 #: ../templates/_profile/rheinlandbib_yaml4/circulation:55
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:323
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:381
 #: ../templates/_profile/sammlungen_yaml4/_database/artmann/circulation:165
 #: ../templates/_profile/sammlungen_yaml4/_database/dante/circulation:165
 #: ../templates/_profile/sammlungen_yaml4/_database/dirksen/circulation:165
@@ -50360,7 +50453,7 @@ msgstr "Website"
 #: ../templates/_profile/unikatalog/error_html:5
 #: ../templates/_profile/unikatalog/locations_record_mailorders_mail_success_html:38
 #: ../templates/_profile/unikatalog/logout_html:21
-#: ../templates/_profile/unikatalog/titles_record_html:443
+#: ../templates/_profile/unikatalog/titles_record_html:466
 #: ../templates/_profile/unikatalog/users_circulations_cancel_order_html:24
 #: ../templates/_profile/unikatalog/users_circulations_cancel_reservation_html:24
 #: ../templates/_profile/unikatalog/users_circulations_mail_default_mail_success_html:24
@@ -51078,6 +51171,10 @@ msgstr "Real name"
 msgid "Wirkungsdaten"
 msgstr "Vita"
 
+#: ../templates/_profile/unikatalog/home_html:230
+msgid "Wissenslandkarten entdecken, erkunden, erforschen"
+msgstr ""
+
 #: ../templates/_database/dbis/classifications_html:21
 #: ../templates/_database/ezb/classifications_html:20
 #: ../templates/_profile/bootstrap/_database/dbis/classifications_html:21
@@ -51634,6 +51731,7 @@ msgstr "Libraryinfo-URL"
 #: ../templates/_profile/kug/_view/kugproto/search_facet:1177
 #: ../templates/_profile/kug/_view/kugproto/search_title_combined_html:41
 #: ../templates/_profile/unikatalog/_view/ilias/search_title_combined_html:35
+#: ../templates/_profile/unikatalog/home_html:228
 #: ../templates/_profile/unikatalog/search_facet:1184
 #: ../templates/_profile/unikatalog/search_title_combined_html:41
 msgid "Yewno"
@@ -51675,14 +51773,14 @@ msgstr ""
 #: ../templates/_profile/bootstrap5/_view/unikatalog/titles_record_html_categories:530
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/titles_record_html_categories:530
 #: ../templates/_profile/kug/_view/kugproto/titles_record_html_categories:533
-#: ../templates/_profile/unikatalog/titles_record_html_categories:556
+#: ../templates/_profile/unikatalog/titles_record_html_categories:583
 msgid "Zeige"
 msgstr "Show"
 
 #: ../templates/_profile/bootstrap5/_view/unikatalog/titles_record_html_categories:518
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/titles_record_html_categories:518
 #: ../templates/_profile/kug/_view/kugproto/titles_record_html_categories:521
-#: ../templates/_profile/unikatalog/titles_record_html_categories:544
+#: ../templates/_profile/unikatalog/titles_record_html_categories:571
 msgid "Zeige Überordnung"
 msgstr "Show super title"
 
@@ -51705,8 +51803,8 @@ msgstr "Show super title"
 #: ../templates/_profile/rheinlandbib_yaml4/_view/filme/searchforms_record_query:163
 #: ../templates/_profile/rheinlandbib_yaml4/searchforms_record_query:220
 #: ../templates/_profile/rheinlandbib_yaml4/searchforms_record_query:224
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:70
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:74
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:58
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:62
 #: ../templates/_profile/sammlungen/_view/jesuiten/searchforms_record_query:161
 #: ../templates/_profile/sammlungen/_view/jesuiten/searchforms_record_query:165
 #: ../templates/_profile/sammlungen/_view/muenzenproto/searchforms_record_query:193
@@ -51774,6 +51872,7 @@ msgstr "Timespan"
 msgid "Zeitraum der Datierung"
 msgstr "Year range of dating"
 
+#: ../templates/_profile/unikatalog/home_html:236
 #: ../templates/_profile/usbportal/_view/zbkunst/visible_categories_location:39
 #: ../templates/_profile/usbportal/visible_categories_location:40
 msgid "Zeitschriften"
@@ -51849,7 +51948,7 @@ msgstr "Temporary name"
 #: ../templates/_profile/bootstrap5/_view/unikatalog/titles_record_html:201
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/titles_record_html:201
 #: ../templates/_profile/kug/_view/kugproto/titles_record_html:188
-#: ../templates/_profile/unikatalog/titles_record_html:207
+#: ../templates/_profile/unikatalog/titles_record_html:230
 msgid "Zitat"
 msgstr "Citation"
 
@@ -51880,6 +51979,10 @@ msgstr "Citation"
 #: ../templates/search_title_combined_include:105
 msgid "Zu Ihrer Suchanfrage konnten keine Treffer gefunden werden."
 msgstr "No titles available for your search request"
+
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_record_html:41
+msgid "Zu diesem Register gibt es keine Einträge"
+msgstr ""
 
 #: ../templates/_profile/bootstrap5/templates_revisions_html:35
 #: ../templates/_profile/unikatalog/templates_revisions_html:35
@@ -52130,6 +52233,13 @@ msgstr "Access denied."
 #: ../templates/users_record_edit_html:54 ../templates/users_record_html:22
 msgid "Zugriff auf alle Portale"
 msgstr "Access to all portals"
+
+#: ../templates/_profile/unikatalog/titles_record_html:75
+#: ../templates/_profile/unikatalog/titlist_item_html_short:377
+msgid ""
+"Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer "
+"möglich"
+msgstr ""
 
 #: ../templates/titles_record_preprocess:3
 #: ../templates/titles_record_preprocess:4
@@ -52648,9 +52758,9 @@ msgstr "ordered from supplier"
 #: ../templates/_profile/rheinlandbib_yaml4/searchforms_record_query:224
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:544
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:651
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:754
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:861
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:74
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:761
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:868
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:62
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:547
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:653
 #: ../templates/_profile/sammlungen/_view/jesuiten/searchforms_record_query:165
@@ -53366,12 +53476,12 @@ msgstr "by author"
 msgid "nach Beruf / Weltanschauung"
 msgstr "by profession/point of world"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:977
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:984
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/search_facet:301
 msgid "nach Briefaussteller"
 msgstr "by issuer of letter"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1004
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1011
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/search_facet:325
 msgid "nach Briefempfänger"
 msgstr "by addressee of letter"
@@ -53438,7 +53548,7 @@ msgstr "by ID"
 #: ../templates/_profile/rheinlandbib_yaml4/users_tags_names_record_html:109
 #: ../templates/_profile/rheinlandbib_yaml4/users_tags_names_record_html:110
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:501
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:711
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:718
 #: ../templates/_profile/sammlungen/_view/muenzenproto/titlist_options:15
 #: ../templates/_profile/sammlungen/_view/muenzenproto/titlist_options:16
 #: ../templates/_profile/sammlungen/_view/totenzettel/search_facet:501
@@ -53565,7 +53675,7 @@ msgstr "by artist"
 #: ../templates/_profile/rheinlandbib_yaml4/authority_search_facet:427
 #: ../templates/_profile/rheinlandbib_yaml4/search_facet:387
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:740
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:950
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:957
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:770
 #: ../templates/_profile/sammlungen/_view/muenzenproto/search_facet:764
 #: ../templates/_profile/sammlungen/_view/testsammlung/search_facet:857
@@ -53702,7 +53812,7 @@ msgstr "by print media location"
 #: ../templates/_profile/bootstrap5/search_facet:892
 #: ../templates/_profile/kug_yaml4/search_facet:488
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:686
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:896
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:903
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:688
 #: ../templates/_profile/sammlungen/_view/muenzenproto/search_facet:710
 #: ../templates/_profile/sammlungen/_view/muenzenproto/search_facet:818
@@ -53801,7 +53911,7 @@ msgstr "by location mark"
 #: ../templates/_profile/rheinlandbib_yaml4/authority_search_facet:500
 #: ../templates/_profile/rheinlandbib_yaml4/search_facet:460
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:821
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1031
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:1038
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:851
 #: ../templates/_profile/sammlungen/_view/muenzenproto/search_facet:845
 #: ../templates/_profile/sammlungen/_view/testsammlung/search_facet:938
@@ -53853,7 +53963,7 @@ msgstr "by year of death"
 #: ../templates/_profile/rheinlandbib_yaml4/authority_search_facet:379
 #: ../templates/_profile/rheinlandbib_yaml4/search_facet:339
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:659
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:869
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:876
 #: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:517
 #: ../templates/_profile/sammlungen_yaml4/_view/inst404abklatsch/search_facet:315
 #: ../templates/_profile/sammlungen_yaml4/_view/provenienzen/authority_search_facet:145
@@ -53898,7 +54008,7 @@ msgstr "by tag name"
 #: ../templates/_profile/rheinlandbib_yaml4/authority_search_facet:403
 #: ../templates/_profile/rheinlandbib_yaml4/search_facet:363
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:713
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:923
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:930
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:743
 #: ../templates/_profile/sammlungen/_view/muenzenproto/search_facet:737
 #: ../templates/_profile/sammlungen/_view/testsammlung/search_facet:830
@@ -54034,7 +54144,7 @@ msgstr "by topogr. subject heading"
 #: ../templates/_profile/kug_yaml4/search_facet:364
 #: ../templates/_profile/rheinlandbib_yaml4/authority_search_facet:283
 #: ../templates/_profile/rheinlandbib_yaml4/search_facet:267
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:683
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:690
 #: ../templates/_profile/sammlungen/_view/testsammlung/search_facet:749
 #: ../templates/_profile/sammlungen/_view/usbbibliographie/search_facet:402
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/search_facet:205
@@ -54234,7 +54344,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen_yaml4/search_facet:209
 #: ../templates/_profile/unikatalog/authority_search_facet:249
 #: ../templates/_profile/unikatalog/search_facet:526
-#: ../templates/_profile/unikatalog/titlist_item_html_short:476
+#: ../templates/_profile/unikatalog/titlist_item_html_short:507
 #: ../templates/_profile/yaml4/authority_search_facet:249
 #: ../templates/_profile/yaml4/search_facet:233
 #: ../templates/authority_search_facet:249 ../templates/search_facet:591
@@ -54267,7 +54377,7 @@ msgstr "online"
 #: ../templates/_profile/kug/_view/usbwiso/titlist_item_html_short:409
 #: ../templates/_profile/sammlungen/_view/testsammlung/titlist_item_html_short:361
 #: ../templates/_profile/sammlungen/_view/usbbibliographie/titlist_item_html_short:340
-#: ../templates/_profile/unikatalog/titlist_item_html_short:476
+#: ../templates/_profile/unikatalog/titlist_item_html_short:507
 #: ../templates/titlist_item_html_short:400
 msgid "online "
 msgstr "online"
@@ -54520,7 +54630,7 @@ msgstr "powered by"
 #: ../templates/_profile/sammlungen_yaml4/titles_record_include:202
 #: ../templates/_profile/unikatalog/reviews_edit:218
 #: ../templates/_profile/unikatalog/reviews_edit_html:218
-#: ../templates/_profile/unikatalog/titles_record_html:349
+#: ../templates/_profile/unikatalog/titles_record_html:372
 #: ../templates/_profile/usbintern/_database/inst001/titles_record_html:320
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html:328
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html~:328
@@ -54560,7 +54670,7 @@ msgstr "bad"
 #: ../templates/_profile/sammlungen_yaml4/titles_record_include:208
 #: ../templates/_profile/unikatalog/reviews_edit:224
 #: ../templates/_profile/unikatalog/reviews_edit_html:224
-#: ../templates/_profile/unikatalog/titles_record_html:355
+#: ../templates/_profile/unikatalog/titles_record_html:378
 #: ../templates/_profile/usbintern/_database/inst001/titles_record_html:326
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html:334
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html~:334
@@ -54638,7 +54748,7 @@ msgstr "Portal-Administrator"
 #: ../templates/_profile/rheinlandbib_yaml4/titles_html:77
 #: ../templates/_profile/rheinlandbib_yaml4/users_tags_html:82
 #: ../templates/_profile/rheinlandbib_yaml4/users_tags_names_record_html:99
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:70
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_query:58
 #: ../templates/_profile/sammlungen/_view/jesuiten/searchforms_record_query:161
 #: ../templates/_profile/sammlungen/_view/kartenkatalog/search_title_combined_html:95
 #: ../templates/_profile/sammlungen/_view/kartenkatalog/titles_html:33
@@ -54979,7 +55089,8 @@ msgstr "User generated public literature lists"
 msgid "Über den KUG"
 msgstr "About KUG"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:525
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:494
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:532
 msgid "Überlieferung"
 msgstr "Written record"
 
@@ -55061,6 +55172,9 @@ msgstr "Copy"
 #: ../templates/_profile/unikatalog/admin_navigation:22
 #: ../templates/_profile/unikatalog/admin_navigation:24
 #: ../templates/_profile/unikatalog/admin_navigation_dropdown:18
+#: ../templates/_profile/unikatalog/users_navigation:142
+#: ../templates/_profile/unikatalog/users_navigation:144
+#: ../templates/_profile/unikatalog/users_navigation_dropdown:68
 #: ../templates/_profile/unikatalog/viewadmin_navigation:24
 #: ../templates/_profile/unikatalog/viewadmin_navigation:26
 #: ../templates/_profile/unikatalog/viewadmin_navigation_dropdown:18
@@ -55095,9 +55209,8 @@ msgstr "Overviews"
 #: ../templates/_profile/sammlungen_yaml4/users_circulations_reminders_html:39
 #: ../templates/_profile/sammlungen_yaml4/users_navigation:80
 #: ../templates/_profile/sammlungen_yaml4/users_navigation:82
-#: ../templates/_profile/unikatalog/users_navigation:157
-#: ../templates/_profile/unikatalog/users_navigation:159
-#: ../templates/_profile/unikatalog/users_navigation_dropdown:71
+#: ../templates/_profile/unikatalog/users_navigation:163
+#: ../templates/_profile/unikatalog/users_navigation:165
 #: ../templates/_profile/yaml4/users_circulations_borrows_ics:87
 #: ../templates/_profile/yaml4/users_circulations_reminders_html:39
 #: ../templates/_profile/yaml4/users_navigation:100
@@ -55110,6 +55223,9 @@ msgstr "Overdue/Fees"
 #: ../templates/users_circulations_reminders:21
 msgid "Überzogene Medien - Gebühren"
 msgstr "Overdue/Fees"
+
+#~ msgid "Archiv"
+#~ msgstr "Archive"
 
 #~ msgid "Herkunft"
 #~ msgstr "Origin"

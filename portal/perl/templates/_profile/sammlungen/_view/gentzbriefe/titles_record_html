@@ -282,7 +282,8 @@
     <!-- Begin: ob-fulltext_info -->
     <div role="tabpanel" class="tab-pane fade-in" aria-labelledby="fulltext_info" id="ob-fulltext_info">
       <div class="p-3">
-	[% normdata.${"T6053"}.first.content %]
+	[% fulltext = normdata.${"T6053"}.first.content ; fulltext = highlightquery(searchquery,fulltext) %]
+	[% fulltext %]
 
 [%
    download_url = "";

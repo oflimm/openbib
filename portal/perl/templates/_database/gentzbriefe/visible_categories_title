@@ -20,7 +20,7 @@
                 'T0412', # msg.maketext("T0412-gentzbriefe") Handschriftl. Ueberlieferung
                 'T0433', # msg.maketext("T0433-gentzbriefe") Format/Umfang
                 'T0594', # msg.maketext("T0594-gentzbriefe") Druckorte
-                'T0335', # msg.maketext("T0335-gentzbriefe") Incipit  
+                'T0462', # msg.maketext("T0462-gentzbriefe") Incipit  
                 'T0800', # msg.maketext("T0800-gentzbriefe") Brieftyp
                 'T0425', # msg.maketext("T0425") 
                 'T1664', # msg.maketext("T1664") 

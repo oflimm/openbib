@@ -58,7 +58,14 @@
 [%  END %]
 [% END %]
 
+
     map.setCenter (lonLatCenter, zoom);
+    
+     $("#map_canvas").on("wheel mousewheel DOMMouseScroll", function(e){
+         e.stopPropagation();
+         return true;
+    });
+
 </script>
 
 [%# USE dumper;dumper.dump(locations)%]

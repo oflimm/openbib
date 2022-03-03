@@ -356,15 +356,6 @@ while (my $jsonline = <IN>){
 	}
     }
     
-    ### reference_publication_incipit -> 0335
-    if ($item_ref->{reference_publication_incipit}){
-	push @{$title_ref->{fields}{'0335'}}, {
-	    mult     => 1,
-	    subfield => '',
-	    content => $item_ref->{reference_publication_incipit},
-	}
-    }
-
     ### incipit -> 0336
     if ($item_ref->{incipit}){
 	push @{$title_ref->{fields}{'0336'}}, {
@@ -374,94 +365,6 @@ while (my $jsonline = <IN>){
 	}
     }
     
-    ### printed_publications -> 0590
-    if (defined $item_ref->{printed_publications} && @{$item_ref->{printed_publications}}){
-	my $pubmult = 1;
-	foreach my $publication (@{$item_ref->{printed_publications}}){
-	    push @{$title_ref->{fields}{'0590'}}, {
-		mult     => $pubmult++,
-		subfield => '',
-		content => $publication,
-	    };
-	}
-    }
-
-    ### reference_publication/_nested:printed_publication_print_editor -> 0591
-    if (defined $item_ref->{reference_publication} && defined $item_ref->{reference_publication}{'_nested:printed_publication__print_editors'}){
-	
-	my $print_editors = $item_ref->{reference_publication}{'_nested:printed_publication__print_editors'};
-
-	if ($print_editors){
-	    foreach my $editor_ref (@{$item_ref->{reference_publication}{'_nested:printed_publication__print_editors'}}){
-		if ($editor_ref->{print_editor}){
-		    my $content = $editor_ref->{print_editor};
-		    
-		    if ($item_ref->{reference_publication}{print_additional_info}){
-			$content.="; [".$item_ref->{reference_publication}{print_additional_info}."]";
-		    }
-		    
-		    push @{$title_ref->{fields}{'0591'}}, {
-			mult     => 1,
-			subfield => '',
-			content => $content,
-		    }		    
-		}
-	    }
-	}
-    }
-
-
-    ### reference_publication/print_locations -> 0592
-    if (defined $item_ref->{reference_publication} && defined $item_ref->{reference_publication}{'print_locations'}){
-	my $print_locations = $item_ref->{reference_publication}{'print_locations'};
-
-	push @{$title_ref->{fields}{'0592'}}, {
-	    mult     => 1,
-	    subfield => '',
-	    content => $print_locations,
-	} if ($print_locations);		    
-    }
-
-    ### reference_publication/print_publication_type -> 0593
-    if (defined $item_ref->{reference_publication} && defined $item_ref->{reference_publication}{'print_publication_type'}){
-	my $print_type = $item_ref->{reference_publication}{'print_publication_type'}{'de-DE'};
-
-	push @{$title_ref->{fields}{'0593'}}, {
-	    mult     => 1,
-	    subfield => '',
-	    content => $print_type,
-	} if ($print_type);		    
-    }
-
-    ### reference_publication/print_publication_type -> 0594
-    if (defined $item_ref->{reference_publication} && defined $item_ref->{reference_publication}{'print_publication_type'}){
-	my $print_type = $item_ref->{reference_publication}{'print_publication_type'}{'de-DE'};
-
-	push @{$title_ref->{fields}{'0593'}}, {
-	    mult     => 1,
-	    subfield => '',
-	    content => $print_type,
-	} if ($print_type);		    
-    }
-    
-    ### reference_publication_date -> 0595
-    if ($item_ref->{reference_publication_date}){
-	push @{$title_ref->{fields}{'0595'}}, {
-	    mult     => 1,
-	    subfield => '',
-	    content => $item_ref->{reference_publication_date},
-	}
-    }
-
-    ### reference_publication_page -> 0443
-    if ($item_ref->{reference_publication_page}){
-	push @{$title_ref->{fields}{'0433'}}, {
-	    mult     => 1,
-	    subfield => '',
-	    content => $item_ref->{reference_publication_page},
-	}
-    }
-
     ### based_on -> 0451
     if ($item_ref->{based_on}){
 	push @{$title_ref->{fields}{'0451'}}, {
@@ -649,41 +552,53 @@ while (my $jsonline = <IN>){
     }
 
     ### _nested:gentz_letter__doublets -> Multgruppe 460ff
-    my $doublets_mult = 1;
-    if (defined $item_ref->{'_nested:gentz_letter__doublets'} && @{$item_ref->{'_nested:gentz_letter__doublets'}}){
-	foreach my $subitem_ref (@{$item_ref->{'_nested:gentz_letter__doublets'}}){
-	    push @{$title_ref->{fields}{'0460'}}, {
-		mult     => $doublets_mult,
+    my $printed_publications_mult = 1;
+    if (defined $item_ref->{'printed_publications'} && @{$item_ref->{'printed_publications'}}){
+	foreach my $subitem_ref (@{$item_ref->{'printed_publications'}}){
+	    push @{$title_ref->{fields}{'0590'}}, {
+		mult     => $printed_publications_mult++,
 		subfield => '',
-		content => $subitem_ref->{doublet_publication}{print_title},
-	    } if ($subitem_ref->{doublet_publication}{print_title});
+		content => $subitem_ref->{text_register},
+	    } if (defined $subitem_ref->{text_register});
+	    
+	    push @{$title_ref->{fields}{'0460'}}, {
+		mult     => $printed_publications_mult,
+		subfield => '',
+		content => $subitem_ref->{print_title},
+	    } if ($subitem_ref->{print_title});
 	    
 	    push @{$title_ref->{fields}{'0461'}}, {
-		mult     => $doublets_mult,
+		mult     => $printed_publications_mult,
 		subfield => '',
-		content => $subitem_ref->{page_doublet},
-	    } if ($subitem_ref->{page_doublet});
-	    
+		content => $subitem_ref->{print_publication_page},
+	    } if ($subitem_ref->{print_publication_page});
+
+	    # frueher in 0335
 	    push @{$title_ref->{fields}{'0462'}}, {
-		mult     => $doublets_mult,
+		mult     => $printed_publications_mult,
 		subfield => '',
-		content => $subitem_ref->{incipit_doublet},
-	    } if ($subitem_ref->{incipit_doublet});
+		content => $subitem_ref->{print_publication_incipit},
+	    } if ($subitem_ref->{print_publication_incipit});
 
 	    push @{$title_ref->{fields}{'0463'}}, {
-		mult     => $doublets_mult,
+		mult     => $printed_publications_mult,
 		subfield => '',
-		content => $subitem_ref->{sent_location_doublet},
-	    } if ($subitem_ref->{sent_location_doublet});
+		content => $subitem_ref->{print_publication_location},
+	    } if ($subitem_ref->{print_publication_location});
 
 	    push @{$title_ref->{fields}{'0464'}}, {
-		mult     => $doublets_mult,
+		mult     => $printed_publications_mult,
 		subfield => '',
-		content => $subitem_ref->{doublet_publication}{print_locations},
-	    } if ($subitem_ref->{doublet_publication}{print_locations});
-	    
+		content => $subitem_ref->{print_locations},
+	    } if ($subitem_ref->{print_locations});
 
-	    $doublets_mult++;
+	    push @{$title_ref->{fields}{'0465'}}, {
+		mult     => $printed_publications_mult,
+		subfield => '',
+		content => $subitem_ref->{print_publication_date},
+	    } if ($subitem_ref->{print_publication_date});
+	    	    
+	    $printed_publications_mult++;
 	}
     } 
     
@@ -832,13 +747,6 @@ while (my $jsonline = <IN>){
 		if ($item_ref->{archive}{name}){
 		    $is_herterich_archiv = 1;
 		}
-		
-		if (defined $item_ref->{reference_publication} && ! defined $item_ref->{reference_publication}{print_title} && ! @${$item_ref->{'_nested:gentz_letter__doublets'}}){
-		    $is_herterich_ungedruckt = 1;
-		}
-		if (defined $item_ref->{reference_publication} && $item_ref->{reference_publication}{print_title} || @${$item_ref->{'_nested:gentz_letter__doublets'}}){
-		    $is_herterich_gedruckt = 1;
-		}
 	    }
 	    
 	};
@@ -849,31 +757,13 @@ while (my $jsonline = <IN>){
 		subfield => '',
 		content => 'Daten erhoben am Original',
 	    }
-	}
-	# # 4700: Sammlungsschwerpunkt
-	# if ($is_herterich_ungedruckt){
-	#     push @{$title_ref->{fields}{'4700'}}, {
-	# 	content => 'Ungedruckt',
-	#     }
-	# }
-	# if ($is_herterich_gedruckt){
-	#     push @{$title_ref->{fields}{'4700'}}, {
-	# 	content => 'Gedruckt',
-	#     }
-	# }
-	# if ($is_herterich_archiv){
-	#     push @{$title_ref->{fields}{'4700'}}, {
-	# 	content => 'Archiv',
-	#     }
-	# }
-	
+	}	
     }
     
     # Auswertung Kategorie 'Druckpublikationen'
     
     my $is_druck_mehrfach = 0;
     my $is_druck_archiv = 0;
-    my $is_referenz_publikation = 0;
     my $is_druckpublikation = 0;
     
     {
@@ -885,22 +775,18 @@ while (my $jsonline = <IN>){
 		}
 	    }
 	    
-	    if (defined $item_ref->{reference_publication}){
-		$is_referenz_publikation = 1;
-		
-	    }
-
 	    if ($item_ref->{archive}{name}){
 		$is_druck_archiv = 1;
 	    }
 
-	    if (defined $item_ref->{'_nested:gentz_letter__doublets'} && @${$item_ref->{'_nested:gentz_letter__doublets'}}){
-		foreach my $subitem_ref (@${$item_ref->{'_nested:gentz_letter__doublets'}}){
-		    if ($subitem_ref->{'doublet_publication'}){			
-			$is_druck_mehrfach = 1;
-		    }
-		}
-	    } 	    
+	    # if (defined $item_ref->{'printed_publications'} && @${$item_ref->{'printed_publications'}}){
+	    # 	foreach my $subitem_ref (@${$item_ref->{'printed_publications'}}){
+		    
+	    # 	    if ($subitem_ref->{'doublet_publication'}){			
+	    # 		$is_druck_mehrfach = 1;
+	    # 	    }
+	    # 	}
+	    # } 	    
 	};
 
 	# 0434: Sonstige Angaben
@@ -911,21 +797,6 @@ while (my $jsonline = <IN>){
 		content => 'Daten erhoben am Druck',
 	    }
 	}
-	# if ($is_druck_mehrfach){
-	#     push @{$title_ref->{fields}{'0434'}}, {
-	# 	content => 'Mehrfach gedruckt',
-	#     }
-	# }
-	# if ($is_druck_archiv){
-	#     push @{$title_ref->{fields}{'0434'}}, {
-	# 	content => 'Archiv',
-	#     }
-	# }
-	# if ($is_referenz_publikation){
-	#     push @{$title_ref->{fields}{'0434'}}, {
-	# 	content => 'Referenzpublikation',
-	#     }
-	# }
 	
     }
 
@@ -935,13 +806,11 @@ while (my $jsonline = <IN>){
     my $is_handschriftlich = 0;
 
     {
-	if ($is_referenz_publikation || $is_druck_mehrfach){
+	if (defined $item_ref->{'printed_publications'} && @{$item_ref->{'printed_publications'}}){
 	    $is_gedruckt = 1;
 	}
 	
 	if ($is_gedruckt){
-
-	    $logger->debug("Referenzpub:".YAML::Dump($item_ref->{reference_publication}));
 	    push @{$title_ref->{fields}{'0470'}}, {
 		mult     => 1,
 		subfield => '',

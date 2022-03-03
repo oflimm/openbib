@@ -50,9 +50,12 @@
     map.setCenter (lonLat, zoom);
 
     $("#map_canvas").on("wheel mousewheel DOMMouseScroll", function(e){
-     e.stopPropagation();
-     return true;
-   });
+         if (e.shiftKey) {
+         }else {
+         e.stopPropagation(); 
+         }
+         return true;
+    });
 </script>
 
 

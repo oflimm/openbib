@@ -80,6 +80,12 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
+my $lang_map_ref = {
+    'deutsch' => 'ger',
+	'englisch' => 'eng',
+	'französisch' => 'fre',
+};
+
 our $have_titleid_ref = {};
 
 open (TITLE,         ">:raw","meta.title");
@@ -495,10 +501,12 @@ while (my $jsonline = <IN>){
 
     ### language -> 0015
     if ($item_ref->{language}{'de-DE'}){
+	my $lang = (defined $lang_map_ref->{$item_ref->{language}{'de-DE'}})?$lang_map_ref->{$item_ref->{language}{'de-DE'}}:$item_ref->{language}{'de-DE'};
+	
 	push @{$title_ref->{fields}{'0015'}}, {
 	    mult     => 1,
 	    subfield => '',
-	    content => $item_ref->{language}{'de-DE'},
+	    content => $lang,
 	}
     }
 

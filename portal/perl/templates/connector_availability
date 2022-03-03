@@ -67,7 +67,9 @@
 [% END -%]  
   <name>[% record.database %]</name>
   <id>[% record.id %]</id>
+[% FOREACH item_location IN record.get_locations -%]
   <description>[% locinfo.get('identifier').${item_location}.description %]</description>
+[% END -%]  
   <permalink>http://[% servername %][% path_prefix %]/[% config.get('databases_loc')%]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]</permalink>
 </catalogue>
 [% END %]

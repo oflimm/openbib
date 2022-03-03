@@ -45,6 +45,8 @@ use OpenBib::Common::Util;
 use OpenBib::L10N;
 use OpenBib::Search::Util;
 use OpenBib::Session;
+use OpenBib::SearchQuery;
+use OpenBib::Search::Factory;
 
 use base 'OpenBib::Handler::PSGI';
 
@@ -86,12 +88,6 @@ sub show_collection {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
-
-    my $client_ip="";
-    
-    if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
-        $client_ip=$1;
-    }
 
     my $viewdb_lookup_ref = {};
     foreach my $viewdb ($config->get_viewdbs($view)){
@@ -135,17 +131,6 @@ sub show_collection_by_isbn {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
-
-    my $client_ip="";
-    
-    if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
-        $client_ip=$1;
-    }
-
-    my $viewdb_lookup_ref = {};
-    foreach my $viewdb ($config->get_viewdbs($view)){
-        $viewdb_lookup_ref->{$viewdb}=1;
-    }
     
     $id =~s/^(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)$/$1$2$3$4$5$6$7$8$9$10/g;
     $id =~s/^(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)$/$1$2$3$4$5$6$7$8$9$10$11$12$13/g;
@@ -164,49 +149,21 @@ sub show_collection_by_isbn {
             field    => 'T0540',
             content  => $id,
         });
-        
-        my $enrichment = new OpenBib::Enrichment;
-    
-        # 1.) Ist dieser Titel im KUG vorhanden? ja/nein
-        # 2.) Wo ist er vorhanden (Katalogname/ID/PermaLink)
-        
-        
-        # DBI: "select distinct id,dbname from all_isbn where isbn=?";
-        my $alltitles = $enrichment->get_schema->resultset('AllTitleByIsbn')->search_rs(
-            {
-                isbn => $isbn,
-            },
-            {
-                group_by => ['tstamp','isbn','dbname','titleid','location','titlecache'],
-            }
-                
-        );
-        
-        while (my $title = $alltitles->next){
-            my $id         = $title->titleid;
-            my $database   = $title->dbname;
-            my $titlecache = $title->titlecache;
-            my $location   = $title->location;
-            
-            # Verfuegbarkeit ist immer im Kontext des Views zu sehen!
-            if ($viewdb_lookup_ref->{$database}){
-                $logger->debug("Adding Title with ID $id in DB $database");
-                
-                if ($titlecache){
-		    my $record = new OpenBib::Record::Title({ id => $id, database => $database})->set_fields_from_json($titlecache);
-		    $record->set_locations([$location]);
-		    
-                    $recordlist->add($record);
-                }
-                else {
-		    my $record = new OpenBib::Record::Title({ id => $id, database => $database})->load_brief_record();
-		    $record->set_locations([$location]);
 
-                    $recordlist->add($record);
-                }
-            }
-        }
-        
+	my @databases = $config->get_dbs_of_view($view);
+
+	my $searchprofile = $config->get_searchprofile_or_create(\@databases);
+
+	my $searchquery  = new OpenBib::SearchQuery({ view => $view, config => $config });
+
+	$searchquery->set_searchfield('isbn',$isbn);
+	$searchquery->set_searchprofile($searchprofile);
+
+	my $searcher = OpenBib::Search::Factory->create_searcher({ view => $view, searchquery => $searchquery, options => { facets => 'none', page => 1, num => 1000 }  });
+
+	$searcher->search();
+
+	$recordlist = $searcher->get_records;
     }
     else {
         $error = "ISBN not valid";
@@ -242,12 +199,6 @@ sub show_collection_by_bibkey {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
-
-    my $client_ip="";
-    
-    if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
-        $client_ip=$1;
-    }
 
     my $viewdb_lookup_ref = {};
     foreach my $viewdb ($config->get_viewdbs($view)){

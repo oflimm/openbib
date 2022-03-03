@@ -7808,13 +7808,6 @@ convtab:
             'ft0334': 1
           facet:
             'custom2': 1
-      '0335':         # reference_publication_incipit
-        '':
-          index:
-            'ft0335': 1
-            'title': 1
-            'titlestring': 1
-            'freesearch': 1
       '0340':         # PSTAnsetzung
         '':
           index:
@@ -7895,6 +7888,21 @@ convtab:
         '':
           index:
             'source': 1
+            'freesearch': 1
+      '0462':         # print_publication_incipit
+        '':
+          index:
+            'ft0462': 1
+            'freesearch': 1
+      '0463':         # print_publication_location
+        '':
+          index:
+            'ft0463': 1
+            'freesearch': 1
+      '0465':         # print_publication_date
+        '':
+          index:
+            'ft0465': 1
             'freesearch': 1
       '0470': # Facette Ueberlieferung
         '':

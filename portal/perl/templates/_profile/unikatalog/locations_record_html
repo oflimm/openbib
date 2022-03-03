@@ -48,6 +48,11 @@
 
     marker.icon.imageDiv.title = "[% locationinfo.description.replace('"','\'') %]";
     map.setCenter (lonLat, zoom);
+
+    $("#map_canvas").on("wheel mousewheel DOMMouseScroll", function(e){
+     e.stopPropagation();
+     return true;
+   });
 </script>
 
 

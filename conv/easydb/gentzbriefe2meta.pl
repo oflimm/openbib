@@ -702,7 +702,7 @@ while (my $jsonline = <IN>){
 	    push @{$title_ref->{fields}{'0334'}}, {
 		mult     => 1,
 		subfield => '',
-		content => 'Xerokopie (USB), identifizert',
+		content => 'Xerokopie (USB), identifiziert',
 	    }
 	}
 	else {

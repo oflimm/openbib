@@ -328,24 +328,28 @@ sub show_record {
             'person'         => {
                 resultset => 'TitlePerson',
                 field => 'person_fields.field',
+                fieldcontent => 'person_fields.content',
                 select => 'person_fields.content',
                 join => ['personid', { 'personid' => 'person_fields' }],
             },
             'corporatebody'  => {
                 resultset => 'TitleCorporatebody',
                 field => 'corporatebody_fields.field',
+                fieldcontent => 'corporatebody_fields.content',
                 select => 'corporatebody_fields.content',
                 join => ['corporatebodyid', { 'corporatebodyid' => 'corporatebody_fields' }],
             },
             'subject'        => {
                 resultset => 'TitleSubject',
                 field => 'subject_fields.field',
+                fieldcontent => 'subject_fields.content',
                 select => 'subject_fields.content',
                 join => ['subjectid', { 'subjectid' => 'subject_fields' }],
             },
             'classification' => {
                 resultset => 'TitleClassification',
                 field => 'classification_fields.field',
+                fieldcontent => 'classification_fields.content',
                 select => 'classification_fields.content',
                 join => ['classificationid', { 'classificationid' => 'classification_fields' }],
             },
@@ -387,12 +391,20 @@ sub show_record {
 		}
 		);            
 	}
-	else {	
+	else {
+
+	    my $where_ref = {
+		$table_type{$table}{field} => 800, # Ansetzungsform		
+		    'me.field'   => $field,
+	    };
+	    
+	    if ($start){
+		$start = decode_utf8($start);
+		$where_ref->{$table_type{$table}{fieldcontent}} = { -ilike => "$start\%" };
+	    }
+
 	    $contents = $schema->resultset($table_type{$table}{resultset})->search_rs(
-		{
-		    $table_type{$table}{field} => 800, # Ansetzungsform
-			'me.field' => $field
-		},
+		$where_ref,
 		{
 		    select   => [$table_type{$table}{select}],
 		    group_by => $table_type{$table}{select},
@@ -404,10 +416,7 @@ sub show_record {
 	    $hits = $contents->count;
 	    
 	    $contents = $schema->resultset($table_type{$table}{resultset})->search_rs(
-		{
-		    $table_type{$table}{field} => 800, # Ansetzungsform
-			'me.field' => $field
-		},
+		$where_ref,
 		{
 		    select   => [$table_type{$table}{select}],
 		    group_by => $table_type{$table}{select},

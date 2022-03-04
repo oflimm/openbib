@@ -149,32 +149,33 @@
      IF src.item('printed_publications') ;
         printpub = src.item('printed_publications');
 
-        FOREACH item IN printpub ;
+        FOREACH thisitem IN printpub ;
 
-           title    = item.standard.${"de-DE"};
-           location = item.print_locations;
-           type     = item.print_publication_type.${"de-DE"};
-           url      = item.digitized_version_url;
-           year     = item.print_publication_year;
-           date     = item.print_publication_date;
-	   page     = item.print_publication_page ;
-	   incipit  = item.print_publication_incipit;
+           title    = thisitem.standard.${"de-DE"};
+           location = thisitem.print_locations;
+           type     = thisitem.print_publication_type.${"de-DE"};
+           url      = thisitem.digitized_version_url;
+           year     = thisitem.print_publication_year;
+           date     = thisitem.print_publication_date;
+	   page     = thisitem.print_publication_page ;
+	   incipit  = thisitem.print_publication_incipit;
 
            person   = [];
 
-           FOREACH print_editor IN item('_nested:printed_publication__print_editors');
+           FOREACH this_editor IN thisitem.item('_nested:printed_publication__print_editors');
 
-             person.push("${print_editor.print_editor} (Hrsg.)");
+             person.push("${this_editor.print_editor} (Hrsg.)");
            END;
 
-           FOREACH print_author IN item('_nested:printed_publication__print_authors');
+           FOREACH this_author IN thisitem.item('_nested:printed_publication__print_authors');
 
-             person.push("${print_author.print_author}");
+             person.push("${this_author.print_author}");
            END;
 
            IF (title) ;
 	
-             thisitem =  {
+             newitem =  {
+	       person   = person
 	       title    = title	     
 	       location = location
 	       type     = type
@@ -185,7 +186,7 @@
 	       url      = url
 	     };
 
-             publist.push(thisitem);
+             publist.push(newitem);
 	   END;
 	END;
      END;

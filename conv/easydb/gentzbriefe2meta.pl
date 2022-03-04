@@ -683,11 +683,11 @@ while (my $jsonline = <IN>){
 	# Todo: Im Export noch keine Inhalte zum Auswerten von is_digitalisat vorhanden!
 	
 	eval {
-	    if (defined $item_ref->{'hardcopy_herterich'} && $item_ref->{'hardcopy_herterich'}{'de-DE'} eq "Papier"){
+	    if (defined $item_ref->{'hardcopy_herterich'} && ( $item_ref->{'hardcopy_herterich'}{'de-DE'} eq "Papier" ||  $item_ref->{'hardcopy_herterich'}{'de-DE'} eq "beides" )){
 		$is_papierkopie_usb = 1;
 	    }
 	    
-	    if (defined $item_ref->{'hardcopy_herterich'} && $item_ref->{'hardcopy_herterich'}{'de-DE'} eq "Mikrofilm (digitalisiert)"){
+	    if (defined $item_ref->{'hardcopy_herterich'} && ( $item_ref->{'hardcopy_herterich'}{'de-DE'} eq "Mikrofilm (digitalisiert)"  ||  $item_ref->{'hardcopy_herterich'}{'de-DE'} eq "beides" )){
 		$is_mikrofilm_digitalisiert = 1;
 	    }
 	    

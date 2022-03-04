@@ -1763,6 +1763,7 @@ a.ext {
 }
 
 .ob-highlight_searchterm {
+    background: yellow;
     color:#990000;
 }
 

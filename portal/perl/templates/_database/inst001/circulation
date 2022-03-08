@@ -20,7 +20,7 @@
 </thead>
 <tbody>
 [%# USE dumper;dumper.dump(circulation)%]
-[% FOREACH thiscirculation IN sort_circulation(circulation) %]
+[% FOREACH thiscirculation IN circulation %]
 [%-
 
      department = thiscirculation.department;

@@ -45,7 +45,7 @@
 </ul>
 [% END%]
 
-<!-- [% current_profile %] - View: [% searchprofileid_of_books %] - ARTICLES [% searchprofileid_of_articles %] - Web [% searchprofileid_of_web %] -->
+<!-- AKTUELL [% current_profile %] - BOOKS [% searchprofileid_of_books %] - ARTICLES [% searchprofileid_of_articles %] - Web [% searchprofileid_of_web %] -->
 
 <script>
 $(document).ready(function(){
@@ -112,7 +112,7 @@ $(document).ready(function(){
 	    }
 [% ELSIF current_profile == searchprofileid_of_articles || current_profile == searchprofileid_of_web  %]
     $("#ob-searchresult_books_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-searchresult_books_loading\" />"); 
-    $.get("[% path_prefix %]/[% config.get('search_loc') %].include?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp','facets'] }) %];page=1;facets=none;profile=[% searchprofileid_of_books %];[% searchquery.to_cgi_querystring({ exclude = ['profile'] }) %]",
+    $.get("[% path_prefix %]/[% config.get('search_loc') %].include?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp','facets'] }) %];page=1;profile=[% searchprofileid_of_books %];[% searchquery.to_cgi_querystring({ exclude = ['profile'] }) %]",
         function (txt){
             $("#ob-searchresult_tab_books").html(txt);
             $("#ob-searchresult_books_loading").hide();

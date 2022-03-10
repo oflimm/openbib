@@ -33,6 +33,7 @@
   <li class="nav-item" role="presentation">
     <a class="nav-link[% IF current_profile == searchprofileid_of_articles %] active[% END %]" role="tab" data-bs-toggle="tab" href="#ob-searchresult_tab_articles" id="ob-searchresult_articles_li">[% msg.maketext("Aufsätze &amp; Mehr") %]</a>
   </li>
+[% IF 0 == 1 %]  
   <li class="nav-item" role="presentation">
     <a class="nav-link[% IF current_profile == searchprofileid_of_web %] active[% END %]" role="tab" data-bs-toggle="tab" href="#ob-searchresult_tab_web" id="ob-searchresult_web_li">[% msg.maketext("Webseite") %]</a>
   </li>
@@ -40,6 +41,7 @@
   <li class="nav-item" role="presentation">
     <a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-searchresult_tab_yewno" id="ob-searchresult_yewno_li">[% msg.maketext("Yewno") %]</a>
   </li>
+[% END %]  
 </ul>
 [% END%]
 
@@ -48,6 +50,7 @@
 <script>
 $(document).ready(function(){
 
+[% IF 0 == 1 %]
 [% IF current_profile == searchprofileid_of_web %]
 	    var numhits_web = $("#numhits_web").text();
 	    if (numhits_web){
@@ -70,6 +73,7 @@ $(document).ready(function(){
      	       $("#ob-searchresult_web_li").append(" (0)");
 	    }
         });
+[% END %]
 [% END %]
 
 [% IF current_profile == searchprofileid_of_articles %]
@@ -141,6 +145,7 @@ $(document).ready(function(){
 [% END %]
 </div>
 
+[% IF 0 == 1 %]
 <div role="tabpanel" id="ob-searchresult_tab_web" class="tab-pane fade-in row [% IF current_profile == searchprofileid_of_web %]active[% END %] flex-md-row">
 [% IF current_profile == searchprofileid_of_web %]
 [% PROCESS common/subtemplate name="search_title_combined_include" %]
@@ -163,6 +168,7 @@ languages: ["deu"], // available languages eng,zho,deu
 </script>
 
 </div>
+[% END %]
 [% END %]
 
 </div>

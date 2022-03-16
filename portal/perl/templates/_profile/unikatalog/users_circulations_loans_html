@@ -22,7 +22,7 @@
 <div class="table-responsive">
 <table class="table table-striped table-hover">
 <thead>
-<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Verl&auml;ngerungen") %]</th><th>[% msg.maketext("Ausleihfrist") %]</th></tr>
+<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Ausgabeort") %]</th><th>[% msg.maketext("Verl&auml;ngerungen") %]</th><th>[% msg.maketext("Ausleihfrist") %]</th></tr>
 </thead>
 <tbody>
 [%- FOREACH loan = loans.items -%]
@@ -30,6 +30,8 @@
 <tr>
 <td><i><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% loan.edition %].html?l=[% lang %]">[% loan.about %]</a></i></td>
 <td>[% loan.label %]</td>
+<td>[% loan.department.about %]</td>
+<td>[% loan.pickup_location.about %]</td>
 <td>[% loan.renewals %]</td>
 <td>[% loan.starttime %]-[% loan.endtime %]</td>
 </tr>

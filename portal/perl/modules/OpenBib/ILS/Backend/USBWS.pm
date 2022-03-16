@@ -2036,6 +2036,13 @@ sub send_account_request {
 			};
 		    }
 		    
+		    if ($item_ref->{LesesaalNr} >= 0 && $item_ref->{LesesaalTxt} ){
+			$this_response_ref->{pickup_location} = {
+			    about => $item_ref->{LesesaalTxt},
+			    id => $item_ref->{LesesaalNr}
+			}
+		    }
+		    
 		    if ($type_ref->{type} eq "AUSLEIHEN"){
 			$this_response_ref->{starttime} = $item_ref->{Datum};
 			$this_response_ref->{endtime}   = $item_ref->{RvDatum};
@@ -2047,9 +2054,6 @@ sub send_account_request {
 		    }
 		    elsif ($type_ref->{type} eq "BESTELLUNGEN"){
                         # Todo: Fernleihbestellungen erkennung und zurueckgeben
-			if ($item_ref->{LesesaalTxt} && $this_response_ref->{department}{about}){
-			    $this_response_ref->{department}{about}.=" / ".$item_ref->{LesesaalTxt};
-			}
 			$this_response_ref->{starttime} = $item_ref->{Datum};
 			$this_response_ref->{endtime}   = $item_ref->{RvDatum};
 		    }

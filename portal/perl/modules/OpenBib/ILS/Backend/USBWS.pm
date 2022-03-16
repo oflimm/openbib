@@ -1037,7 +1037,7 @@ sub renew_loans {
 	$response_ref = {
 	    "code" => 403,
 		"error" => "renew loans failed",
-		"error_description" => $result_ref->{OpacBestellung}{NotOK},
+		"error_description" => $result_ref->{GesamtVerlaengerung}{NotOK},
 	};
 	
 	if ($logger->is_debug){

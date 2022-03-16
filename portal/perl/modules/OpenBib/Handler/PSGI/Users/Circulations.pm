@@ -37,6 +37,7 @@ use utf8;
 use DBI;
 use Digest::MD5;
 use Email::Valid;
+use HTML::Entities;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use SOAP::Lite;
@@ -222,7 +223,12 @@ sub renew_loans {
     }
     
     if ($response_renew_loans_ref->{error}){
-	return $self->print_warning($msg->maketext("Eine Gesamtkontoverlängerung durch Sie ist leider nicht möglich"));
+	if ($response_renew_loans_ref->{error_description}){
+	    return $self->print_warning(encode_entities($response_renew_loans_ref->{error_description}));
+	}
+	else {
+	    return $self->print_warning($msg->maketext("Eine Gesamtkontoverlängerung durch Sie ist leider nicht möglich"));
+	}
     }
     elsif ($response_renew_loans_ref->{successful}){
 	# TT-Data erzeugen
@@ -312,7 +318,7 @@ sub renew_single_loan {
     
     if ($response_renew_single_loan_ref->{error}){
 	if ($response_renew_single_loan_ref->{error_description}){
-	    return $self->print_warning($response_renew_single_loan_ref->{error_description});
+	    return $self->print_warning(encode_entities($response_renew_single_loan_ref->{error_description}));
 	}
 	else {
 	    return $msg->maketext("Eine Verlängerung durch Sie ist leider nicht möglich");

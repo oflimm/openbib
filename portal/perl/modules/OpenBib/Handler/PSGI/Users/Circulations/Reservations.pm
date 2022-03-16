@@ -37,6 +37,7 @@ use utf8;
 use DBI;
 use Digest::MD5;
 use Email::Valid;
+use HTML::Entities;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use SOAP::Lite;
@@ -256,7 +257,7 @@ sub create_record {
 	}
 	
 	if ($response_make_reservation_ref->{error}){
-            return $self->print_warning($response_make_reservation_ref->{error_description});
+            return $self->print_warning(encode_entities($response_make_reservation_ref->{error_description}));
 	}
 	elsif ($response_make_reservation_ref->{successful}){
 	    # TT-Data erzeugen

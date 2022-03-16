@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Users::Circulations::Orders
 #
-#  Dieses File ist (C) 2004-2021 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2022 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -37,6 +37,7 @@ use utf8;
 use DBI;
 use Digest::MD5;
 use Email::Valid;
+use HTML::Entities;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use SOAP::Lite;
@@ -214,7 +215,7 @@ sub create_record {
 	}
 	
 	if ($response_check_order_ref->{error}){
-            return $self->print_warning($response_check_order_ref->{error_description});
+            return $self->print_warning(encode_entities($response_check_order_ref->{error_description}));
 	}
 	elsif ($response_check_order_ref->{successful}){
 	    # TT-Data erzeugen
@@ -240,7 +241,7 @@ sub create_record {
 	}
 	
 	if ($response_make_order_ref->{error}){
-            return $self->print_warning($response_make_order_ref->{error_description});
+            return $self->print_warning(encode_entities($response_make_order_ref->{error_description}));
 	}
 	elsif ($response_make_order_ref->{successful}){
 	    # TT-Data erzeugen
@@ -349,10 +350,10 @@ sub delete_record {
     
     if ($response_cancel_order_ref->{error}){
 	if (defined $response_cancel_order_ref->{error_description}){
-	    return $self->print_warning($response_cancel_order_ref->{error_description});
+	    return $self->print_warning(encode_entities($response_cancel_order_ref->{error_description}));
 	}
 	else {
-	    return $self->print_warning($msg->maketext("Eine Stornierung der Vormerkung für dieses Mediums durch Sie ist leider nicht möglich"));
+	    return $self->print_warning($msg->maketext("Eine Stornierung der Bestellung für dieses Medium durch Sie ist leider nicht möglich"));
 	}
     }
     elsif ($response_cancel_order_ref->{successful}){

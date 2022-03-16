@@ -2036,7 +2036,7 @@ sub send_account_request {
 			};
 		    }
 		    
-		    if ($item_ref->{LesesaalNr} >= 0 && $item_ref->{LesesaalTxt} ){
+		    if (defined $item_ref->{LesesaalNr} && $item_ref->{LesesaalNr} >= 0 && $item_ref->{LesesaalTxt} ){
 			$this_response_ref->{pickup_location} = {
 			    about => $item_ref->{LesesaalTxt},
 			    id => $item_ref->{LesesaalNr}

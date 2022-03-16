@@ -812,7 +812,7 @@ var typeChart[% idsuffix %] = new Chart(type_ctx[% idsuffix %], {
     }
 });
 
-var yearslider = document.getElementById('ob-yearSlider[% idsuffix %]');
+var yearslider[% idsuffix %] = document.getElementById('ob-yearSlider[% idsuffix %]');
 
 noUiSlider.create(yearslider[% idsuffix %], {
     start: [[% minyear %], [% maxyear %]],

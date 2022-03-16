@@ -95,10 +95,6 @@ sub show_collection {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
-
-    unless ($config->get('active_ils')){
-	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellunge, Vormerkungen, usw.) sind aktuell systemweit deaktiviert."));	
-    }
     
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
 

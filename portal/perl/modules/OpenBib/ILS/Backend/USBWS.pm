@@ -1969,7 +1969,15 @@ sub send_account_request {
 		$response_ref->{num_orders}        = $itemlist->{KurzKonto}{BsAnz};
 		$response_ref->{num_reservations}  = $itemlist->{KurzKonto}{VmAnz};
 		$response_ref->{num_loans}         = $itemlist->{KurzKonto}{AvAnz};
-		$response_ref->{amount_fees}       = $itemlist->{KurzKonto}{Soll};				
+		$response_ref->{amount_fees}       = $itemlist->{KurzKonto}{Soll};
+
+		if (defined $itemlist->{KurzKonto}{Sperre}){
+		    $response_ref->{is_locked} = {
+			about => $itemlist->{KurzKonto}{SperrVermerk},
+			id    => $itemlist->{KurzKonto}{Sperre},
+		    };
+		}
+		
 		};
 
 		if ($@){

@@ -269,6 +269,11 @@
  </div><!-- End: resultitems -->
 </div><!-- End: resultlist -->
 
+[% IF src.item('printed_publication_notes') %]
+<p class="pt-3 ml-1 pl-2 alert alert-secondary">
+<strong>[% msg.maketext("Zusätzliche Information:") %]</strong> [% src.item('printed_publication_notes') %]
+</p>
+[% END %]
 	    </div>
 	  </div>
 	</div>

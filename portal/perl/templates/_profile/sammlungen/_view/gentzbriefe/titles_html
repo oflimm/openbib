@@ -1,0 +1,99 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[%- ebook_i18n      = msg.maketext("E-Book") -%]
+[%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
+[%- popularity_i18n = msg.maketext("Popularität") -%]
+
+
+<p/>
+
+
+<style>
+[data-toggle="collapse"] {
+  cursor: pointer;
+}
+
+@media screen and (min-width:768px) { #ob-search_refine{ display: block!important;visibility:visible!important; } }
+
+</style>
+
+<div class="row flex-md-row-reverse">
+
+  <div id="ob-search_refine" class="col-xs-6 col-md-3 collapse" style="border-left: 1px solid #dbdbdb;">
+
+[% PROCESS common/subtemplate name="titles_navigation" %]
+
+  </div><!-- End: col-3 -->
+
+  <div class="col-md-9">
+
+<!-- Beginn Result Item -->
+[%-
+    request_base    = "num=${qopts.get_option('num')};srt=relevance_desc;page=1;" ;
+    start_range     = nav.current_page*qopts.get_option('num')-qopts.get_option('num') + 1;
+    end_range       = nav.current_page*qopts.get_option('num');
+    IF end_range >= hits ;
+       end_range       = hits;
+    END;
+
+    query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
+-%]
+
+    <div class="ob-resultlist">
+  <div class="ob-resultheader pb-4">
+    <div class="left">
+      <div class="navbar navbar-default d-block d-md-none pl-0 mt-0" style="z-index: 1"><!-- only visible in xs-->
+        <div class="container-fluid pl-0">
+          <button class="btn btn-primary navbar-btn" data-toggle="collapse" data-target="#ob-search_refine">
+           <i class="fa fa-filter"></i> [% msg.maketext("Filtern") %]
+          </button>
+       </div>
+     </div>
+     <div class="left d-none d-lg-block mt-2">
+[% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b>[% hits %]</b>
+    </div>
+    </div>
+    <div class="right mt-2">
+        <form method="get" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% layout_param.database %]/titles.html"> 
+          <input type="hidden" name="page" value="1" />
+[%- FOREACH qparam IN query.param -%]
+[%-   IF qparam != 'srt' && qparam != 'srto' && qparam != 'page' %]
+          <input type="hidden" name="[% qparam %]" value="[% query.param(qparam) %]" />
+[%-   END -%]
+[%- END -%]
+
+[% PROCESS common/subtemplate name="titlist_options" this_loc=config.get('search_loc') %]
+        </form>
+    </div>
+  </div>
+  
+      <div class="ob-resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+[%- FOREACH record IN recordlist.get_records -%]
+[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 database=record.database %] 
+[%- END -%]
+        <div class="ob-footer">
+[% PROCESS common/subtemplate name="pagination" %]
+           <div class="ob-resulttime">
+<!-- in: [% resulttime %] [% msg.maketext("Sekunden") %] -->
+           </div>
+        </div>
+
+      </div> <!-- resultitems -->
+    </div> <!-- resultlist -->
+
+  </div><!-- End: col -->
+
+
+
+</div><!-- End: row -->

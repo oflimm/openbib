@@ -23,7 +23,7 @@
 <div class="table-responsive">
 <table class="table table-striped table-hover">
 <thead>
-<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Verl&auml;ngerungen") %]</th><th>[% msg.maketext("Ausleihfrist") %]</th></tr>
+<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Verl&auml;ngerungen") %]</th><th>[% msg.maketext("Ausleihfrist") %]</th><th>[% msg.maketext("Aktion") %]</th></tr>
 </thead>
 <tbody>
 [%- FOREACH loan = loans.items -%]
@@ -31,7 +31,7 @@
 <td>
  <i>[% loan.about %]</i>
 [% IF loan.info || loan.renewable_remark %] 
-<br/> ([% IF loan.info %][% loan.info %][% END %] [% IF loan.renewable_remark %][% loan.renewable_remark %][% END %])
+<br/> ([% IF loan.info %][% loan.info %][% END %] [% IF loan.emergency_remark %][% loan.emergency_remark %][% END %]  [% IF loan.renewable_remark %][% loan.renewable_remark %][% END %])
 [% END %]
 </td>
 <td>
@@ -45,6 +45,13 @@
 <td>[% loan.department.about %][% IF loan.pickup_location.about %] / [% loan.pickup_location.about %][% END %]</td>
 <td>[% loan.renewals %]</td>
 <td>[% loan.starttime %]-[% loan.endtime %]</td>
+<td>
+[% IF loan.renewable %]
+<a class="btn btn-primary" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.name %]/[% config.get('circulations_loc') %]/renew_single_loans?unit=[% loan.department.id %];holdingid=[% loan.item %]" title="[% msg.maketext("Verlängerung durchführen") %]">[% msg.maketext("Verlängerung durchführen") %]</a>
+[% ELSE %]
+[% msg.maketext("Keine Aktion möglich") %]
+[% END %]
+</td>
 </tr>
 [% END %]
 </tbody>

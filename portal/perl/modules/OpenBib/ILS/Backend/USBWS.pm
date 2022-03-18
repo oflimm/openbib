@@ -2012,6 +2012,11 @@ sub send_account_request {
 		    next;
 		}
 
+		
+		if (defined $itemlist->{Konto}{KontoVlBarAnz}){
+		    $response_ref->{num_renewables} = $itemlist->{Konto}{KontoVlBarAnz};
+		}
+		
 		my $all_items_ref = [];
 		
 		foreach my $nr (sort keys %{$itemlist->{Konto}}){

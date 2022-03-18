@@ -2069,10 +2069,15 @@ sub send_account_request {
 			if ($item_ref->{VlBar} eq "1"){
 			    $this_response_ref->{renewable} = 1;
 			}
+			
 			if (defined $item_ref->{VlText}){
 			    $this_response_ref->{renewable_remark} = $item_ref->{VlText};
 			}
 
+			if (defined $item_ref->{Star}){
+			    $this_response_ref->{emergency_remark} = $item_ref->{Star};
+			}
+			
 			# Infotext?
 			if (defined $item_ref->{Text}){
 			    $this_response_ref->{info} = $item_ref->{Text};

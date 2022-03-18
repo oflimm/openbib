@@ -17,7 +17,21 @@
 <h1 class="display-4">[% msg.maketext("Sie haben keine Ausleihen getätigt.") %]</h1>
 </div>
 [% ELSE  %]
-<h4>[% msg.maketext("Ausleihen") %]</h4>
+<h4>[% msg.maketext("Ihre Ausleihen") %]</h4>
+
+[% IF loans.num_renewables %]
+<p>
+[% msg.maketext("Eine Verlängerung der Leihfrist ist derzeit bei [_1] Medien möglich.",loans.num_renewables) %]
+</p>
+<p>
+<a class="btn btn-primary" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.name %]/[% config.get('circulations_loc') %]/renew_loans" title="[% msg.maketext("Gesamtkonto verl&auml;ngern") %]">[% msg.maketext("Gesamtkonto-Verl&auml;ngerung") %]</a>
+</p>
+[% ELSE %]
+<p>
+[% msg.maketext("Eine Verlängerung der Leihfrist ist derzeit bei keinem der von Ihnen ausgeliehenen Medien möglich.") %]
+</p>
+[% END %]
+
 
 [%# USE dumper;dumper.dump(loans) %]
 <div class="table-responsive">
@@ -57,10 +71,6 @@
 </tbody>
 </table>
 </div>
-
-<p>
-<a class="btn btn-primary" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.name %]/[% config.get('circulations_loc') %]/renew_loans" title="[% msg.maketext("Gesamtkonto verl&auml;ngern") %]">[% msg.maketext("Gesamtkonto-Verl&auml;ngerung") %]</a>
-</p>
 
 <p/>
 [% loan_url = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/${config.get('databases_loc')}/id/${authenticator.name}/${config.get('circulations_loc')}/id/loans.ics" %]

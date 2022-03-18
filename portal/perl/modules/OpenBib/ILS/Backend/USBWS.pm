@@ -2022,7 +2022,12 @@ sub send_account_request {
 		foreach my $item_ref (@$all_items_ref){
 		    my @titleinfo = ();
 		    push @titleinfo, $item_ref->{Verfasser} if ($item_ref->{Verfasser});
-		    push @titleinfo, $item_ref->{Titel} if ($item_ref->{Titel});
+		    if ($item_ref->{Titel}){
+			push @titleinfo, $item_ref->{Titel} 
+		    }
+		    elsif ($item_ref->{MedienNummer}){
+			push @titleinfo, $item_ref->{MedienNummer}; 
+		    }
 		    
 		    my $about = join(': ',@titleinfo);
 		    
@@ -2054,6 +2059,25 @@ sub send_account_request {
 		    if ($type_ref->{type} eq "AUSLEIHEN"){
 			$this_response_ref->{starttime} = $item_ref->{Datum};
 			$this_response_ref->{endtime}   = $item_ref->{RvDatum};
+
+			# Zurueckgefordert?
+			if ($item_ref->{Rueckgef} eq "J"){
+			    $this_response_ref->{reclaimed} = 1;
+			}
+
+			# Verlaengerbar?
+			if ($item_ref->{VlBar} eq "1"){
+			    $this_response_ref->{renewable} = 1;
+			}
+			if (defined $item_ref->{VlText}){
+			    $this_response_ref->{renewable_remark} = $item_ref->{VlText};
+			}
+
+			# Infotext?
+			if (defined $item_ref->{Text}){
+			    $this_response_ref->{info} = $item_ref->{Text};
+			}
+			
 		    }
 		    elsif ($type_ref->{type} eq "VORMERKUNGEN"){
 			$this_response_ref->{starttime} = $item_ref->{Datum};
@@ -2100,6 +2124,13 @@ sub send_account_request {
 		    my $gebuehr = $item_ref->{Gebuehr};
 		    $gebuehr=~s/\,/./;
 
+		    if ($item_ref->{EntlZweig} >= 0 && $item_ref->{EntlZweigTxt}){
+			$this_response_ref->{department} = {
+			    id => $item_ref->{EntlZweig},
+			    about => $item_ref->{EntlZweigTxt},
+			};
+		    }
+		    
 		    my @titleinfo = ();
 		    push @titleinfo, $item_ref->{Verfasser} if ($item_ref->{Verfasser});
 		    push @titleinfo, $item_ref->{Titel} if ($item_ref->{Titel});

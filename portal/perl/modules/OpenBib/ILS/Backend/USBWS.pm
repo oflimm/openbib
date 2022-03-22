@@ -2098,6 +2098,11 @@ sub send_account_request {
                         # Todo: Fernleihbestellungen erkennung und zurueckgeben
 			$this_response_ref->{starttime} = $item_ref->{Datum};
 			$this_response_ref->{endtime}   = $item_ref->{RvDatum};
+
+			# Infotext?
+			if (defined $item_ref->{Text}){
+			    $this_response_ref->{info} = $item_ref->{Text};
+			}			
 		    }
 
 		    push @{$response_ref->{items}}, $this_response_ref;

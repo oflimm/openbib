@@ -2223,7 +2223,7 @@ sub send_account_request {
 		    $this_response_ref->{amount} = $gebuehr. "EUR";
 
 		    $this_response_ref->{about}   = $description;
-		    $this_response_ref->{type}    = $item_ref->{Text};
+		    $this_response_ref->{reason}  = $item_ref->{Text};
 		    $this_response_ref->{edition} = $item_ref->{Titlecatkey},
 		    $this_response_ref->{item}    = $item_ref->{MedienNummer},
 

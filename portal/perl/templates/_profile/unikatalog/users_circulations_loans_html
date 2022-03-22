@@ -58,7 +58,7 @@
 </td>
 <td>[% loan.department.about %][% IF loan.pickup_location.about %] / [% loan.pickup_location.about %][% END %]</td>
 <td>[% loan.renewals %]</td>
-<td>[% loan.starttime %]-[% loan.endtime %]</td>
+<td>[% IF loan.emergency_remark %]<span style="font-weight:bold;color:red;">[% END %][% loan.starttime %]-[% loan.endtime %][% IF loan.emergency_remark %]</span>[% END %]</td>
 <td>
 [% IF loan.renewable %]
 <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.name %]/[% config.get('circulations_loc') %]/renew_single_loans?unit=[% loan.department.id %];holdingid=[% loan.item %]" title="[% msg.maketext("Verlängerung durchführen") %]">[% msg.maketext("Verlängerung durchführen") %]</a>

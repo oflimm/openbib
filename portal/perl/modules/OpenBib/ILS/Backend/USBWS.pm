@@ -1050,24 +1050,56 @@ sub renew_loans {
     elsif ($result_ref->{GesamtVerlaengerung}{'0'}{OK}){
 	$response_ref->{"successful"} = 1;
 	
-	foreach my $resultid (sort keys %{$result_ref->{GesamtVerlaengerung}}){
-	    if ($resultid == 0){
-		$response_ref->{num_successful_renewals} = $result_ref->{GesamtVerlaengerung}{$resultid}{AnzPos};
-		$response_ref->{num_failed_renewals} = $result_ref->{GesamtVerlaengerung}{$resultid}{AnzNeg};
+	my $all_items_ref = [];
+	
+	foreach my $nr (sort keys %{$result_ref->{GesamtVerlaengerung}}){
+	    if ($nr == 0){
+		$response_ref->{num_successful_renewals} = $result_ref->{GesamtVerlaengerung}{$nr}{AnzPos};
+		$response_ref->{num_failed_renewals}     = $result_ref->{GesamtVerlaengerung}{$nr}{AnzNeg};
 	    }
 	    else {
-		push @{$response_ref->{"items"}}, {
-		    holdingid       => $result_ref->{GesamtVerlaengerung}{$resultid}{MedienNummer},
-		    author          => $result_ref->{GesamtVerlaengerung}{$resultid}{Verfasser},
-		    title           => $result_ref->{GesamtVerlaengerung}{$resultid}{Titel},
-		    renewal_message => $result_ref->{GesamtVerlaengerung}{$resultid}{Ergebnismeldung},
-		    location_mark   => $result_ref->{GesamtVerlaengerung}{$resultid}{Signatur},
-		    department_id   => $result_ref->{GesamtVerlaengerung}{$resultid}{EntleihZweig},
-		    department_desc => $result_ref->{GesamtVerlaengerung}{$resultid}{EntleihZweigTxt},
-		    reminder_level  => $result_ref->{GesamtVerlaengerung}{$resultid}{MahnStufe},
+		push @$all_items_ref, $result_ref->{GesamtVerlaengerung}{$nr};
+	    }
+	}
 
+	foreach my $item_ref (@$all_items_ref){
+	    my @titleinfo = ();
+	    push @titleinfo, $item_ref->{Verfasser} if ($item_ref->{Verfasser});
+	    if ($item_ref->{Titel}){
+		push @titleinfo, $item_ref->{Titel} 
+	    }
+	    elsif ($item_ref->{MedienNummer}){
+		push @titleinfo, $item_ref->{MedienNummer}; 
+	    }
+	    
+	    my $about = join(': ',@titleinfo);
+	    
+	    my $label     = $item_ref->{Signatur};
+	
+	    my $this_response_ref = {
+		about           => $about,
+		edition         => $item_ref->{Titlecatkey},
+		item            => $item_ref->{MedienNummer},
+		label           => $label,
+		renewal_message => $item_ref->{Ergebnismeldung},
+		reminder_level  => $item_ref->{MahnStufe},		
+	    };
+
+	    if ($item_ref->{EntlZweig} >= 0 && $item_ref->{EntlZweigTxt}){
+		$this_response_ref->{department} = {
+		    id => $item_ref->{EntlZweig},
+		    about => $item_ref->{EntlZweigTxt},
 		};
 	    }
+	    
+	    if (defined $item_ref->{LesesaalNr} && $item_ref->{LesesaalNr} >= 0 && $item_ref->{LesesaalTxt} ){
+		$this_response_ref->{pickup_location} = {
+		    about => $item_ref->{LesesaalTxt},
+		    id => $item_ref->{LesesaalNr}
+		}
+	    }
+	    
+	    push @{$response_ref->{items}}, $this_response_ref;	    
 	}
 
 	if ($logger->is_debug){
@@ -1195,13 +1227,47 @@ sub renew_single_loan {
     # result-hash: First element (0) is overview followed by itemlist
     elsif ($result_ref->{EinzelVerlaengerung}{OK}){
 	$response_ref->{"successful"} = 1;
+
+	my $item_ref = $result_ref->{EinzelVerlaengerung};
 	
-	$response_ref->{"message"}   = $result_ref->{EinzelVerlaengerung}{OK};
-	$response_ref->{"holdingid"} = $result_ref->{EinzelVerlaengerung}{MedienNummer};	
-	$response_ref->{"author"}    = $result_ref->{EinzelVerlaengerung}{Verfasser};
-	$response_ref->{"title"}     = $result_ref->{EinzelVerlaengerung}{Titel};
-	$response_ref->{"location_mark"} = $result_ref->{EinzelVerlaengerung}{Signatur};
-	$response_ref->{"new_date"}  = $result_ref->{EinzelVerlaengerung}{LeihfristendeNeu};
+	my @titleinfo = ();
+	push @titleinfo, $item_ref->{Verfasser} if ($item_ref->{Verfasser});
+	if ($item_ref->{Titel}){
+	    push @titleinfo, $item_ref->{Titel} 
+	}
+	elsif ($item_ref->{MedienNummer}){
+	    push @titleinfo, $item_ref->{MedienNummer}; 
+	}
+	    
+	my $about = join(': ',@titleinfo);
+	
+	my $label     = $item_ref->{Signatur};
+	
+	$response_ref->{about}           = $about;
+	$response_ref->{edition}         = $item_ref->{Titlecatkey};
+	$response_ref->{item}            = $item_ref->{MedienNummer};
+	$response_ref->{label}           = $label;
+	$response_ref->{info}            = $item_ref->{OK};	
+	$response_ref->{num_renewals}    = $item_ref->{AnzVl};	
+	$response_ref->{renewal_message} = $item_ref->{Ergebnismeldung};
+	$response_ref->{reminder_level}  = $item_ref->{MahnStufe};
+	
+
+	if ($item_ref->{EntlZweig} >= 0 && $item_ref->{EntlZweigTxt}){
+	    $response_ref->{department} = {
+		id => $item_ref->{EntlZweig},
+		about => $item_ref->{EntlZweigTxt},
+	    };
+	}
+	    
+	if (defined $item_ref->{LesesaalNr} && $item_ref->{LesesaalNr} >= 0 && $item_ref->{LesesaalTxt} ){
+	    $response_ref->{pickup_location} = {
+		about => $item_ref->{LesesaalTxt},
+		id => $item_ref->{LesesaalNr}
+	    }
+	}
+
+	$response_ref->{"endtime"}  = $item_ref->{LeihfristendeNeu};
 	
 	if ($logger->is_debug){
 	    $response_ref->{debug} = $result_ref;

@@ -15,15 +15,13 @@
 [%# USE dumper; dumper.dump(renew_loans) %]
 
 <div class="card mt-5 mb-5 me-5">
-<div class="card-header">[% msg.maketext("Gesamtkontoverlängerung") %]</div>
+<div class="card-header">[% msg.maketext("Ergebnis der Gesamtkontoverlängerung") %]</div>
 <div class="card-body">
-
-<h5>[% msg.maketext("Ergebnis") %]</h5>
 
 <div class="table-responsive table-flippable">
 <table class="table">
 <thead>
-<tr><th>[% msg.maketext("Erfolgreich") %]</th><th>[% msg.maketext("Fehlgeschlagen") %]</th></tr>
+<tr><th>[% msg.maketext("Durchgeführte Verlängerungen") %]</th><th>[% msg.maketext("Abgelehnte Verlängerungen") %]</th></tr>
 </thead>
 <tbody>
 <tr><td style="color: green;">[% renew_loans.num_successful_renewals %]</td><td style="color: red;">[% renew_loans.num_failed_renewals %]</td></tr>
@@ -32,27 +30,33 @@
 </div>
 
 [% IF renew_loans.items.size > 0 %]
-<h5>[% msg.maketext("Medien") %]</h5>
+<h5>[% msg.maketext("Ausleihen") %]</h5>
 
 <div class="table-responsive">
 <table class="table table-striped table-hover">
 <thead>
-<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Zweigstelle") %]</th><th>[% msg.maketext("Mahnstufe") %]</th><th>[% msg.maketext("Hinweis") %]</th></tr>
+<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %] / [% msg.maketext("Bestellnr.") %]</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Leihfristende") %]</th></tr>
 </thead>
 <tbody>
 [%- FOREACH loan = renew_loans.items -%]
 
 <tr>
-<td><i>
-[% IF loan.author || loan.title %]
-[% IF loan.author %][% loan.author %][% IF loan.title %]: [% END %][% END %][% IF loan.title %][% loan.title %][% END %]
+<td>
+<i>[% loan.about %]</i>
+[% IF loan.renewal_message %] 
+<br/> ([% loan.renewal_message %])
 [% END %]
-</i>
 </td>
-<td>[% loan.location_mark %]</td>
-<td>[% loan.department_desc %]</td>
-<td>[% loan.reminder_level %]</td>
-<td>[% loan.renewal_message %]</td>
+<td>
+[%#- Die Signatur wird nur dann ausgeben, falls sie nicht Teil der Mediennummer ist -%]
+[% IF loan.label && loan.item && NOT loan.item.match(loan.label) %]
+[% loan.label %][% IF loan.item %]&nbsp;/&nbsp;[% loan.item %][% END %]
+[% ELSIF loan.item %]
+[% loan.item %]
+[% END %]
+</td>
+<td>[% loan.department.about %][% IF loan.pickup_location.about %] / [% loan.pickup_location.about %][% END %]</td>
+<td>[% loan.endtime %]</td>
 </tr>
 [% END %]
 </tbody>

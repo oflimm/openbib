@@ -94,8 +94,8 @@
 <div class="card-body">
 
 <ul>
-<li>[% msg.maketext("USB-Aktuell") %] [% msg.maketext("Tagesaktuelle Mitteilungen zu kurzfristigen Schließungen, Störungen usw.") %]</li>
-<li>[% msg.maketext("USB-Info") %] [% msg.maketext("Allgemeine Informationen zum Dienstleistungsangebot der USB.") %]</li>
+<li><a href="https://lists.ub.uni-koeln.de/mailman/listinfo/usb-aktuell" target="_blank">[% msg.maketext("USB-Aktuell") %]</a><br/>[% msg.maketext("Tagesaktuelle Mitteilungen zu kurzfristigen Schließungen, Störungen usw.") %]</li>
+<li><a href="https://www.ub.uni-koeln.de/res/newsletter/index_ger.html" target="_blank">[% msg.maketext("USB-Info") %]</a><br/>[% msg.maketext("Allgemeine Informationen zum Dienstleistungsangebot der USB.") %]</li>
 </ul>
 
 </div>
@@ -107,7 +107,7 @@
 <div class="card-header">[% msg.maketext("Anschaffungsvorschläge") %]</div>
 <div class="card-body">
 
-<p>[% msg.maketext("Sie benötigen ein Buch, das Sie bei uns nicht finden können? Machen Sie einen Anschaffungsvorschlag.") %]</p>
+<p>[% msg.maketext("Sie benötigen ein Buch, das Sie bei uns nicht finden können? Machen Sie einen") %] <a href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/anschaffungsvorschlag/index_ger.html" target="_blank">[% msg.maketext("Anschaffungsvorschlag.") %]</a></p>
 
 </div>
 </div>
@@ -119,7 +119,7 @@
 <div class="card-body">
 
 <p>
-[% msg.maketext("Sie bestellen, wir bezahlen und liefern. Weitere Informationen »") %]
+[% msg.maketext("Sie bestellen, wir bezahlen und liefern.") %] <a href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/anschaffungsvorschlag/index_ger.html" target="_blank">[% msg.maketext("Weitere Informationen »") %]</a>
 </p>
 
 </div>

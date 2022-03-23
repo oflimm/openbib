@@ -4579,6 +4579,7 @@
 ../templates/_profile/unikatalog/topics_record_html
 ../templates/_profile/unikatalog/topics_record_mapping_html
 ../templates/_profile/unikatalog/usage_navigation
+../templates/_profile/unikatalog/users_circulations_html
 ../templates/_profile/unikatalog/users_circulations_borrows_html
 ../templates/_profile/unikatalog/users_circulations_cancel_order_confirm_html
 ../templates/_profile/unikatalog/users_circulations_cancel_order_html

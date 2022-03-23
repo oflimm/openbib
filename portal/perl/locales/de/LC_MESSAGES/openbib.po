@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2022-03-03 11:37+0100\n"
+"PO-Revision-Date: 2022-03-23 10:46+0100\n"
 "Last-Translator: openbib <flimm@openbib.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -332,7 +332,7 @@ msgstr "${category}"
 #: ../templates/_profile/unikatalog/libraries_html:101
 #: ../templates/_profile/unikatalog/libraries_include:59
 #: ../templates/_profile/unikatalog/litlists_record_html_full:221
-#: ../templates/_profile/unikatalog/locations_record_html:76
+#: ../templates/_profile/unikatalog/locations_record_html:84
 #: ../templates/_profile/unikatalog/locations_record_include:122
 #: ../templates/_profile/unikatalog/locations_record_mobile:101
 #: ../templates/_profile/unikatalog/persons_record_html:130
@@ -1675,6 +1675,10 @@ msgstr "API"
 msgid "Abbruch"
 msgstr "Abbruch"
 
+#: ../templates/_profile/unikatalog/users_circulations_renew_loans_html:24
+msgid "Abgelehnte Verlängerungen"
+msgstr "Abgelehnte Verlängerungen"
+
 #: ../templates/_profile/bootstrap5/users_preferences_html:273
 #: ../templates/_profile/kug_yaml4/users_preferences_html:363
 #: ../templates/_profile/rheinlandbib_yaml4/users_preferences_html:365
@@ -1731,7 +1735,7 @@ msgstr ""
 #: ../templates/_profile/unikatalog/_view/ilias/mainnavigation_html:221
 #: ../templates/_profile/unikatalog/mainnavigation_html:118
 #: ../templates/_profile/unikatalog/mainnavigation_html:221
-#: ../templates/_profile/unikatalog/users_navigation_dropdown:105
+#: ../templates/_profile/unikatalog/users_navigation_dropdown:109
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/corporate_banner:19
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/corporate_banner:19
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/corporate_banner:19
@@ -1806,7 +1810,7 @@ msgstr "Abspeichern"
 #: ../templates/_profile/sammlungen_yaml4/_view/richter/searchforms_record_query:177
 #: ../templates/_profile/sammlungen_yaml4/searchforms_record_query:177
 #: ../templates/_profile/sammlungen_yaml4/users_preferences_html:241
-#: ../templates/_profile/unikatalog/searchforms_record_query:145
+#: ../templates/_profile/unikatalog/searchforms_record_query:203
 #: ../templates/_profile/unikatalog/users_preferences_html:117
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/searchforms_record_query:129
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/searchforms_record_query:129
@@ -1943,8 +1947,9 @@ msgstr "Akademischer Grad"
 
 #: ../templates/_profile/bootstrap5/users_circulations_orders_html:26
 #: ../templates/_profile/bootstrap5/users_circulations_reservations_html:24
-#: ../templates/_profile/unikatalog/users_circulations_orders_html:26
-#: ../templates/_profile/unikatalog/users_circulations_reservations_html:24
+#: ../templates/_profile/unikatalog/users_circulations_loans_html:40
+#: ../templates/_profile/unikatalog/users_circulations_orders_html:31
+#: ../templates/_profile/unikatalog/users_circulations_reservations_html:34
 #: ../templates/users_circulations_orders_html:26
 #: ../templates/users_circulations_reservations_html:24
 msgid "Aktion"
@@ -3097,6 +3102,10 @@ msgstr "Allgemeine Hinweise zum KUG"
 msgid "Allgemeine Informationen"
 msgstr "Allgemeine Informationen"
 
+#: ../templates/_profile/unikatalog/users_circulations_html:98
+msgid "Allgemeine Informationen zum Dienstleistungsangebot der USB."
+msgstr "Allgemeine Informationen zum Dienstleistungsangebot der USB."
+
 #: ../templates/_profile/bootstrap5/admin_databases_record_edit_html:18
 #: ../templates/_profile/unikatalog/admin_databases_record_edit_html:18
 #: ../templates/admin_databases_record_edit_html:18
@@ -4084,6 +4093,10 @@ msgstr ""
 "     Erfassung im Katalog lediglich die 10-stellige ISBN bekannt\n"
 "     war."
 
+#: ../templates/_profile/unikatalog/users_circulations_html:107
+msgid "Anschaffungsvorschläge"
+msgstr "Anschaffungsvorschläge"
+
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/info_ansprechpartner:19
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/subnavigation:127
 msgid "Ansprechpartner"
@@ -4826,6 +4839,10 @@ msgstr "Aufrufe in OpenBib"
 msgid "Aufs&auml;tze"
 msgstr "Aufs&auml;tze"
 
+#: ../templates/_profile/unikatalog/users_circulations_html:55
+msgid "Aufsatzbestellungen"
+msgstr "Aufsatzbestellungen"
+
 #: ../templates/_database/dbis/classifications_html:18
 #: ../templates/_profile/bootstrap/_database/dbis/classifications_html:18
 #: ../templates/_profile/kug_yaml4/_database/dbis/classifications_html:84
@@ -4857,6 +4874,10 @@ msgstr "Aufsätze &amp; Mehr"
 #: ../templates/_profile/unikatalog/search_title_combined_html:34
 msgid "Aufsätze &amp; Mehr"
 msgstr "Aufsätze &amp; Mehr"
+
+#: ../templates/_profile/unikatalog/users_circulations_html:49
+msgid "Aufsätze: Fernleihen"
+msgstr "Aufsätze: Fernleihen"
 
 #: ../templates/_profile/bootstrap5/admin_clusters_html:98
 #: ../templates/_profile/bootstrap5/admin_servers_html:121
@@ -5036,9 +5057,11 @@ msgstr "Ausleihe/Exemplare"
 #: ../templates/_profile/sammlungen_yaml4/users_circulations_renew_loans:39
 #: ../templates/_profile/sammlungen_yaml4/users_navigation:65
 #: ../templates/_profile/sammlungen_yaml4/users_navigation:67
-#: ../templates/_profile/unikatalog/users_navigation:148
-#: ../templates/_profile/unikatalog/users_navigation:150
-#: ../templates/_profile/unikatalog/users_navigation_dropdown:69
+#: ../templates/_profile/unikatalog/users_circulations_html:38
+#: ../templates/_profile/unikatalog/users_circulations_renew_loans_html:33
+#: ../templates/_profile/unikatalog/users_navigation:152
+#: ../templates/_profile/unikatalog/users_navigation:154
+#: ../templates/_profile/unikatalog/users_navigation_dropdown:71
 #: ../templates/_profile/yaml4/users_circulations_borrows_html:39
 #: ../templates/_profile/yaml4/users_circulations_borrows_ics:84
 #: ../templates/_profile/yaml4/users_circulations_renew_loans:39
@@ -5055,7 +5078,6 @@ msgstr "Ausleihen"
 #: ../templates/_profile/sammlungen_yaml4/users_circulations_borrows_html:67
 #: ../templates/_profile/sammlungen_yaml4/users_circulations_borrows_ics:117
 #: ../templates/_profile/unikatalog/users_circulations_borrows_html:25
-#: ../templates/_profile/unikatalog/users_circulations_loans_html:25
 #: ../templates/_profile/yaml4/users_circulations_borrows_html:67
 #: ../templates/_profile/yaml4/users_circulations_borrows_ics:117
 #: ../templates/users_circulations_borrows_html:25
@@ -5151,7 +5173,7 @@ msgstr "Ausleihsystem (LIVIVO)"
 msgid "Aussteller"
 msgstr "Aussteller"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:240
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:241
 msgid "Ausstellort"
 msgstr "Ausstellort"
 
@@ -5662,12 +5684,12 @@ msgstr "Bei der Eingabe von Personen"
 msgid "Bei der Eingabe von Schlagworten"
 msgstr "Bei der Eingabe von Schlagworten"
 
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:243
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:245
 msgid "Bei der Gesamtkontoverlängerung ist ein unerwarteter Fehler aufgetreten"
 msgstr ""
 
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:373
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Reservations.pm:376
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:374
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Reservations.pm:377
 msgid ""
 "Bei der Stornierung der Vormerkung ist ein unerwarteter Fehler aufgetreten"
 msgstr ""
@@ -5723,7 +5745,7 @@ msgstr ""
 "Bei der Suche wird nicht zwischen Gro&szlig;- und\n"
 "        Kleinschreibung unterschieden."
 
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:337
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:339
 msgid ""
 "Bei der Verlängerung des Mediums ist ein unerwarteter Fehler aufgetreten"
 msgstr ""
@@ -5841,6 +5863,12 @@ msgstr "Beliebte Münzen"
 msgid "Bemerkung"
 msgstr "Bemerkung"
 
+#: ../templates/_profile/unikatalog/users_circulations_reservations_html:27
+msgid ""
+"Benachrichtigungen per E-Mail: kostenlos<br/>Benachrichtigungen per Brief: "
+"Portogebühr für einen Standardbrief"
+msgstr ""
+
 #: ../templates/_profile/bootstrap5/admin_sessions_active_html:23
 #: ../templates/_profile/rheinlandbib_yaml4/admin_sessions_active_html:66
 #: ../templates/_profile/sammlungen_yaml4/admin_sessions_active_html:66
@@ -5879,6 +5907,10 @@ msgstr "Benutzer"
 #: ../templates/_profile/yaml4/searchforms_record_profile:12
 msgid "Benutzerdefiniert"
 msgstr "Benutzerdefiniert"
+
+#: ../templates/_profile/unikatalog/users_circulations_html:118
+msgid "Benutzergesteuerte Erwerbung"
+msgstr ""
 
 #: ../templates/_profile/bootstrap5/_view/unikatalog/users_navigation:135
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/users_navigation:135
@@ -6434,7 +6466,7 @@ msgstr "Berufsbezeichnung"
 #: ../templates/_profile/unikatalog/clusters_record_html:20
 #: ../templates/_profile/unikatalog/databases_html:32
 #: ../templates/_profile/unikatalog/databases_record_html:20
-#: ../templates/_profile/unikatalog/locations_html:134
+#: ../templates/_profile/unikatalog/locations_html:77
 #: ../templates/_profile/unikatalog/orgunits_html:21
 #: ../templates/_profile/unikatalog/orgunits_record_html:24
 #: ../templates/_profile/unikatalog/profiles_html:22
@@ -6444,7 +6476,6 @@ msgstr "Berufsbezeichnung"
 #: ../templates/_profile/unikatalog/servers_record_html:21
 #: ../templates/_profile/unikatalog/topics_html:34
 #: ../templates/_profile/unikatalog/topics_record_mapping_html:83
-#: ../templates/_profile/unikatalog/users_circulations_fees_html:43
 #: ../templates/_profile/unikatalog/users_circulations_reminders_html:43
 #: ../templates/_profile/unikatalog/viewadmin_roles_html:37
 #: ../templates/_profile/unikatalog/viewadmin_roles_html:59
@@ -6891,14 +6922,14 @@ msgstr "Bestehende Sessions"
 #: ../templates/_profile/bootstrap5/users_circulations_orders_html:26
 #: ../templates/_profile/rheinlandbib_yaml4/users_circulations_orders_html:63
 #: ../templates/_profile/sammlungen_yaml4/users_circulations_orders_html:63
-#: ../templates/_profile/unikatalog/users_circulations_orders_html:26
+#: ../templates/_profile/unikatalog/users_circulations_orders_html:31
 #: ../templates/_profile/yaml4/users_circulations_orders_html:63
 #: ../templates/users_circulations_orders_html:26
 msgid "Bestelldatum"
 msgstr "Bestelldatum"
 
-#: ../templates/_database/inst001/circulation:177
-#: ../templates/_database/inst001/circulation:198
+#: ../templates/_database/inst001/circulation:182
+#: ../templates/_database/inst001/circulation:203
 msgid "Bestellen"
 msgstr "Bestellen"
 
@@ -6919,6 +6950,12 @@ msgstr "Bestellformular"
 #: ../templates/users_circulations_mail_kmbcopy:18
 msgid "Bestellformular KMB-Dokumentlieferdienst"
 msgstr ""
+
+#: ../templates/_profile/unikatalog/users_circulations_loans_html:40
+#: ../templates/_profile/unikatalog/users_circulations_orders_html:31
+#: ../templates/_profile/unikatalog/users_circulations_renew_loans_html:38
+msgid "Bestellnr."
+msgstr "Bestellnr."
 
 #: ../templates/_profile/bootstrap5/users_circulations_check_campus_order_html:267
 #: ../templates/_profile/bootstrap5/users_circulations_check_ilias_order_html:267
@@ -7016,8 +7053,9 @@ msgstr ""
 #: ../templates/_profile/sammlungen_yaml4/users_navigation:75
 #: ../templates/_profile/sammlungen_yaml4/users_navigation:77
 #: ../templates/_profile/sammlungen_yaml4/users_preferences_html:127
-#: ../templates/_profile/unikatalog/users_navigation:158
-#: ../templates/_profile/unikatalog/users_navigation:160
+#: ../templates/_profile/unikatalog/users_navigation:162
+#: ../templates/_profile/unikatalog/users_navigation:164
+#: ../templates/_profile/unikatalog/users_navigation_dropdown:73
 #: ../templates/_profile/yaml4/users_circulations_borrows_ics:86
 #: ../templates/_profile/yaml4/users_circulations_orders_html:39
 #: ../templates/_profile/yaml4/users_navigation:95
@@ -7631,7 +7669,7 @@ msgstr "Bitte geben Sie eine alte und neue Kennung ein."
 msgid "Bitte geben Sie einen Suchbegriff ein."
 msgstr "Bitte geben Sie einen Suchbegriff ein."
 
-#: ../modules/OpenBib/Handler/PSGI/Login.pm:459
+#: ../modules/OpenBib/Handler/PSGI/Login.pm:481
 msgid "Bitte melden Sie sich mit Ihrer registrierten E-Mail-Adresse an"
 msgstr "Bitte melden Sie sich mit Ihrer registrierten E-Mail-Adresse an"
 
@@ -7789,6 +7827,10 @@ msgstr "Bücher &amp; Mehr"
 msgid "Bücher &amp; Mehr"
 msgstr "Bücher &amp; Mehr"
 
+#: ../templates/_profile/unikatalog/users_circulations_html:16
+msgid "Bücher: Ausleihen / Fernleihen"
+msgstr ""
+
 #: ../templates/_profile/kug_yaml4/_database/inst001/visible_categories_corporatebody:16
 msgid "C0010"
 msgstr "GND"
@@ -7879,7 +7921,7 @@ msgstr "Titel"
 msgid "Campus-Lieferdienst"
 msgstr ""
 
-#: ../templates/_database/inst001/circulation:432
+#: ../templates/_database/inst001/circulation:437
 msgid "Campuslieferdienst"
 msgstr ""
 
@@ -8621,7 +8663,7 @@ msgstr "Datierung von"
 #: ../templates/_profile/rheinlandbib_yaml4/templates_revisions_html:63
 #: ../templates/_profile/rheinlandbib_yaml4/templates_revisions_record_html:61
 #: ../templates/_profile/rheinlandbib_yaml4/users_templates_record_edit:126
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:252
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:253
 #: ../templates/_profile/sammlungen_yaml4/admin_templates_record_edit:127
 #: ../templates/_profile/sammlungen_yaml4/admin_templates_record_html:109
 #: ../templates/_profile/sammlungen_yaml4/templates_revisions_html:63
@@ -8631,7 +8673,6 @@ msgstr "Datierung von"
 #: ../templates/_profile/unikatalog/admin_templates_record_html:68
 #: ../templates/_profile/unikatalog/templates_revisions_html:21
 #: ../templates/_profile/unikatalog/templates_revisions_record_html:18
-#: ../templates/_profile/unikatalog/users_circulations_fees_html:43
 #: ../templates/_profile/unikatalog/users_circulations_reminders_html:43
 #: ../templates/_profile/unikatalog/users_templates_record_edit_html:75
 #: ../templates/_profile/yaml4/admin_templates_record_edit:127
@@ -9122,7 +9163,7 @@ msgstr ""
 "      relevanten Suchbegriffe mit Leerzeichen getrennt ohne\n"
 "      zus&auml;tzliche Operatoren eingeben k&ouml;nnen."
 
-#: ../modules/OpenBib/Handler/PSGI/Login.pm:447
+#: ../modules/OpenBib/Handler/PSGI/Login.pm:469
 msgid ""
 "Die Anmeldung mit Ihrem angegebenen Benutzernamen und Passwort ist zu oft "
 "fehlgeschlagen. Das Account ist gesperrt. Bitte fordern Sie ein neues "
@@ -9132,14 +9173,13 @@ msgstr ""
 "fehlgeschlagen. Das Account ist gesperrt. Bitte fordern Sie ein neues "
 "Passwort über 'Passwort vergessen' an."
 
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:100
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:196
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:281
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:173
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:305
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:426
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Reservations.pm:183
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Reservations.pm:312
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:193
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:283
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:174
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:306
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:427
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Reservations.pm:184
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Reservations.pm:313
 msgid ""
 "Die Ausleihfunktionen (Bestellunge, Vormerkungen, usw.) sind aktuell "
 "systemweit deaktiviert."
@@ -9238,6 +9278,10 @@ msgstr ""
 msgid "Die Kölner Jesuitenbibliothek"
 msgstr "Die Kölner Jesuitenbibliothek"
 
+#: ../templates/_profile/unikatalog/users_circulations_renew_single_loan_html:23
+msgid "Die Leihfrist des folgenden Mediums wurde verlängert"
+msgstr "Die Leihfrist des folgenden Mediums wurde verlängert"
+
 #: ../templates/_profile/sammlungen_yaml4/_view/richter/info_portal:83
 msgid ""
 "Die Motivation dieses Portals ist die Demonstration einer wesentlichen\n"
@@ -9261,10 +9305,10 @@ msgstr "Die Resource wurde nicht korrekt mit Datenbankname spezifiziert."
 #: ../modules/OpenBib/Handler/PSGI/CorporateBodies.pm:122
 #: ../modules/OpenBib/Handler/PSGI/Persons.pm:122
 #: ../modules/OpenBib/Handler/PSGI/Subjects.pm:126
-#: ../modules/OpenBib/Handler/PSGI/Titles.pm:518
-#: ../modules/OpenBib/Handler/PSGI/Titles.pm:788
-#: ../modules/OpenBib/Handler/PSGI/Titles.pm:891
-#: ../modules/OpenBib/Handler/PSGI/Users/Titles.pm:440
+#: ../modules/OpenBib/Handler/PSGI/Titles.pm:519
+#: ../modules/OpenBib/Handler/PSGI/Titles.pm:789
+#: ../modules/OpenBib/Handler/PSGI/Titles.pm:892
+#: ../modules/OpenBib/Handler/PSGI/Users/Titles.pm:441
 msgid "Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."
 msgstr "Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."
 
@@ -9530,7 +9574,7 @@ msgstr "Dienste an der Universit&auml;t"
 msgid "Dienstgrad"
 msgstr "Dienstgrad"
 
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:165
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:162
 msgid "Diese Funktion wird nicht mehr unterstützt"
 msgstr ""
 
@@ -9936,7 +9980,7 @@ msgstr "Drucker/Verleger/Verlag"
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/mainnavigation_html:72
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:498
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:656
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:199
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:200
 msgid "Druckpublikationen"
 msgstr "Druckpublikationen"
 
@@ -9979,6 +10023,10 @@ msgstr ""
 "      Titeln bestimmt. Dadurch bekommt der Nutzer weitere Titel\n"
 "      angezeigt, die von anderen Nutzern im Kontext des aktuellen\n"
 "      Titels für interessant befunden wurden."
+
+#: ../templates/_profile/unikatalog/users_circulations_renew_loans_html:24
+msgid "Durchgeführte Verlängerungen"
+msgstr ""
 
 #: ../templates/_database/bibsonomy/titlist_item_html_short:22
 #: ../templates/_database/dbis/titlist_item_html_short:24
@@ -10354,6 +10402,10 @@ msgstr "E-Mail"
 msgid "E-Mail-Adresse"
 msgstr "E-Mail-Adresse"
 
+#: ../templates/_profile/unikatalog/users_circulations_html:82
+msgid "E-Mail-Adresse eintragen bzw. ändern"
+msgstr ""
+
 #: ../templates/_profile/bootstrap5/_view/unikatalog/#search_facet#:588
 #: ../templates/_profile/bootstrap5/_view/unikatalog/search_facet:588
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/search_facet:588
@@ -10371,7 +10423,7 @@ msgstr "E-Medien Quelle"
 msgid "E-Medien Quellen"
 msgstr "E-Medien Quellen"
 
-#: ../templates/_database/inst001/circulation:457
+#: ../templates/_database/inst001/circulation:462
 msgid "E-Semesterapparat"
 msgstr ""
 
@@ -10990,7 +11042,7 @@ msgstr "Ein Themenbebiet diesen Namens existiert bereits."
 #: ../templates/_profile/rheinlandbib_yaml4/titles_record_html:202
 #: ../templates/_profile/rheinlandbib_yaml4/titles_record_html~:203
 #: ../templates/_profile/sammlungen/_view/digitalis/titles_record_html:95
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:345
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:352
 #: ../templates/_profile/sammlungen/_view/jesuiten/titles_record_html:299
 #: ../templates/_profile/sammlungen/_view/testsammlung/titles_record_html:290
 #: ../templates/_profile/sammlungen/_view/usbbibliographie/titles_record_html:105
@@ -11100,12 +11152,19 @@ msgstr ""
 msgid "Eine Bestellung ist nicht moeglich."
 msgstr "Eine Bestellung ist nicht moeglich."
 
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:229
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:230
 msgid "Eine Gesamtkontoverlängerung durch Sie ist leider nicht möglich"
 msgstr "Eine Gesamtkontoverlängerung durch Sie ist leider nicht möglich"
 
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:355
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Reservations.pm:359
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:356
+msgid ""
+"Eine Stornierung der Bestellung für dieses Medium durch Sie ist leider nicht "
+"möglich"
+msgstr ""
+"Eine Stornierung der Bestellung für dieses Medium durch Sie ist leider nicht "
+"möglich"
+
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Reservations.pm:360
 msgid ""
 "Eine Stornierung der Vormerkung für dieses Mediums durch Sie ist leider "
 "nicht möglich"
@@ -11113,7 +11172,18 @@ msgstr ""
 "Eine Stornierung der Vormerkung für dieses Mediums durch Sie ist leider "
 "nicht möglich"
 
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:322
+#. (loans.num_renewables)
+#: ../templates/_profile/unikatalog/users_circulations_loans_html:24
+msgid "Eine Verlängerung der Leihfrist ist derzeit bei %1 Medien möglich."
+msgstr "Eine Verlängerung der Leihfrist ist derzeit bei %1 Medien möglich."
+
+#: ../templates/_profile/unikatalog/users_circulations_loans_html:31
+msgid ""
+"Eine Verlängerung der Leihfrist ist derzeit bei keinem der von Ihnen "
+"ausgeliehenen Medien möglich."
+msgstr ""
+
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:324
 msgid "Eine Verlängerung durch Sie ist leider nicht möglich"
 msgstr "Eine Verlängerung durch Sie ist leider nicht möglich"
 
@@ -11127,7 +11197,7 @@ msgstr ""
 "Eine Vormerkung auf das von Ihnen gew&uuml;nsche\n"
 "Medium ist leider nicht m&ouml;glich!"
 
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Reservations.pm:231
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Reservations.pm:232
 msgid "Eine Vormerkung dieses Mediums durch Sie ist leider nicht möglich"
 msgstr "Eine Vormerkung dieses Mediums durch Sie ist leider nicht möglich"
 
@@ -11249,7 +11319,7 @@ msgstr "Eingrenzen"
 #: ../templates/_profile/sammlungen/_view/testsammlung/searchforms_record_query:141
 #: ../templates/_profile/sammlungen/_view/usbbibliographie/searchforms_record_query:141
 #: ../templates/_profile/sammlungen_yaml4/_view/filme/searchforms_record_query:165
-#: ../templates/_profile/unikatalog/searchforms_record_query:232
+#: ../templates/_profile/unikatalog/searchforms_record_query:248
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/searchforms_record_query:216
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/searchforms_record_query:216
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/searchforms_record_query:216
@@ -11356,8 +11426,12 @@ msgstr ""
 msgid "Einzelne Bibliotheken"
 msgstr "Einzelne Bibliotheken"
 
+#: ../templates/_profile/unikatalog/users_navigation:147
+#: ../templates/_profile/unikatalog/users_navigation_dropdown:69
+msgid "Einzelne Übersichten"
+msgstr "Einzelne Übersichten"
+
 #: ../templates/_profile/bootstrap5/users_circulations_renew_single_loan_html:18
-#: ../templates/_profile/unikatalog/users_circulations_renew_single_loan_html:18
 #: ../templates/users_circulations_renew_single_loan:21
 #: ../templates/users_circulations_renew_single_loan_html:18
 msgid "Einzelverlängerung"
@@ -11493,7 +11567,7 @@ msgstr "Elise Richter in Wiener Bilder Nr. 38, 1907"
 msgid "Empfehlungen"
 msgstr "Empfehlungen"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:364
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:371
 msgid "Empfohlene Zitation:"
 msgstr ""
 
@@ -12173,6 +12247,10 @@ msgstr "Entferntes Passwort"
 msgid "Entferntes Verzeichnis"
 msgstr "Entferntes Verzeichnis"
 
+#: ../templates/_profile/unikatalog/users_circulations_fees_html:27
+msgid "Entstehungsdatum"
+msgstr "Entstehungsdatum"
+
 #: ../templates/_profile/bootstrap5/admin_statistics_view_session_graph_html:38
 #: ../templates/_profile/rheinlandbib_yaml4/admin_statistics_view_session_graph_html:67
 #: ../templates/_profile/sammlungen_yaml4/admin_statistics_view_session_graph_html:67
@@ -12198,7 +12276,6 @@ msgstr ""
 "Entwicklung der Session-Zahl in den einzelnen Sichten nach Tagen eines Monats"
 
 #: ../templates/_profile/bootstrap5/users_circulations_renew_loans_html:26
-#: ../templates/_profile/unikatalog/users_circulations_renew_loans_html:26
 #: ../templates/users_circulations_renew_loans_html:26
 msgid "Erfolgreich"
 msgstr "Erfolgreich"
@@ -12226,8 +12303,6 @@ msgstr "Erfolgreiche Aktion"
 #: ../templates/_profile/bootstrap5/users_circulations_renew_single_loan_html:21
 #: ../templates/_profile/rheinlandbib_yaml4/admin_users_search_html:41
 #: ../templates/_profile/sammlungen_yaml4/admin_users_search_html:41
-#: ../templates/_profile/unikatalog/users_circulations_renew_loans_html:21
-#: ../templates/_profile/unikatalog/users_circulations_renew_single_loan_html:21
 #: ../templates/_profile/yaml4/admin_users_search_html:41
 #: ../templates/admin_users_search:43
 #: ../templates/users_circulations_renew_loans_html:21
@@ -12235,6 +12310,10 @@ msgstr "Erfolgreiche Aktion"
 #: ../templates/viewadmin_users_search:43
 msgid "Ergebnis"
 msgstr "Ergebnis"
+
+#: ../templates/_profile/unikatalog/users_circulations_renew_loans_html:18
+msgid "Ergebnis der Gesamtkontoverlängerung"
+msgstr "Ergebnis der Gesamtkontoverlängerung"
 
 #: ../templates/_profile/bootstrap5/info_help:628
 #: ../templates/_profile/bootstrap5/info_help:80
@@ -12289,6 +12368,7 @@ msgstr ""
 #: ../templates/_profile/sammlungen_yaml4/searchforms_record_options:3
 #: ../templates/_profile/sammlungen_yaml4/users_preferences_html:256
 #: ../templates/_profile/unikatalog/search_facet:726
+#: ../templates/_profile/unikatalog/searchforms_record_query:63
 #: ../templates/_profile/unikatalog/users_circulations_cancel_order_confirm_html:98
 #: ../templates/_profile/unikatalog/users_circulations_check_campus_order_html:230
 #: ../templates/_profile/unikatalog/users_circulations_check_ilias_order_html:230
@@ -12908,6 +12988,10 @@ msgstr "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach Verfasser"
 msgid "Es existiert noch kein genereller RSS-Feed f&uuml;r Neuaufnahmen"
 msgstr "Es existiert noch kein genereller RSS-Feed f&uuml;r Neuaufnahmen"
 
+#: ../templates/_profile/unikatalog/users_circulations_fees_html:48
+msgid "Es ist ein unerwarteter Fehler aufgetreten"
+msgstr ""
+
 #: ../templates/_profile/bootstrap/_view/kubikoeln/search_facet:1165
 #: ../templates/_profile/bootstrap5/_view/unikatalog/#search_facet#:1175
 #: ../templates/_profile/bootstrap5/_view/unikatalog/search_facet:1175
@@ -13112,7 +13196,7 @@ msgid "Es wurden noch keine Server definiert."
 msgstr "Es wurden noch keine Server definiert."
 
 #: ../templates/_profile/bootstrap5/locations_html:81
-#: ../templates/_profile/unikatalog/locations_html:151
+#: ../templates/_profile/unikatalog/locations_html:94
 #: ../templates/locations_html:81
 msgid "Es wurden noch keine Standorte definiert."
 msgstr "Es wurden noch keine Standorte definiert."
@@ -13122,7 +13206,7 @@ msgstr "Es wurden noch keine Standorte definiert."
 msgid "Es wurden noch keine Themengebiete definiert"
 msgstr "Es wurden noch keine Themengebiete definiert"
 
-#: ../modules/OpenBib/Handler/PSGI/Titles.pm:566
+#: ../modules/OpenBib/Handler/PSGI/Titles.pm:567
 msgid "Es wurden zuwenige Parameter übergeben."
 msgstr "Es wurden zuwenige Parameter übergeben."
 
@@ -13506,7 +13590,6 @@ msgid "Fehlerbeschreibung"
 msgstr "Fehlerbeschreibung"
 
 #: ../templates/_profile/bootstrap5/users_circulations_renew_loans_html:26
-#: ../templates/_profile/unikatalog/users_circulations_renew_loans_html:26
 #: ../templates/users_circulations_renew_loans_html:26
 msgid "Fehlgeschlagen"
 msgstr "Fehlgeschlagen"
@@ -13546,14 +13629,18 @@ msgstr "Felder in der erweiterten Suche"
 #: ../templates/_profile/bootstrap5/users_circulations_orders_html:36
 #: ../templates/_profile/rheinlandbib_yaml4/users_circulations_orders_html:83
 #: ../templates/_profile/sammlungen_yaml4/users_circulations_orders_html:83
-#: ../templates/_profile/unikatalog/users_circulations_orders_html:36
 #: ../templates/_profile/yaml4/users_circulations_orders_html:83
 #: ../templates/users_circulations_orders_html:36
 msgid "Fernleihbestellung"
 msgstr "Fernleihbestellung"
 
+#: ../templates/_profile/unikatalog/users_circulations_orders_html:59
+msgid "Fernleihbestellung nicht stornierbar!"
+msgstr "Fernleihbestellung nicht stornierbar!"
+
 #: ../templates/_profile/rheinlandbib_yaml4/info_tutorials:58
 #: ../templates/_profile/sammlungen_yaml4/info_tutorials:58
+#: ../templates/_profile/unikatalog/users_circulations_orders_html:44
 #: ../templates/_profile/yaml4/info_tutorials:58 ../templates/info_tutorials:58
 msgid "Fernleihe"
 msgstr "Fernleihe"
@@ -14358,8 +14445,7 @@ msgstr "Geburtsorte"
 #: ../templates/_profile/rheinlandbib_yaml4/users_circulations_reminders_html:82
 #: ../templates/_profile/sammlungen_yaml4/users_circulations_reminders_html:122
 #: ../templates/_profile/sammlungen_yaml4/users_circulations_reminders_html:82
-#: ../templates/_profile/unikatalog/users_circulations_fees_html:292
-#: ../templates/_profile/unikatalog/users_circulations_fees_html:43
+#: ../templates/_profile/unikatalog/users_circulations_fees_html:27
 #: ../templates/_profile/unikatalog/users_circulations_reminders_html:290
 #: ../templates/_profile/unikatalog/users_circulations_reminders_html:43
 #: ../templates/_profile/yaml4/users_circulations_reminders_html:122
@@ -14370,6 +14456,18 @@ msgstr "Geburtsorte"
 #: ../templates/users_circulations_reminders_html:43
 msgid "Gebühr"
 msgstr "Gebühr"
+
+#: ../templates/_profile/unikatalog/users_circulations_fees_html:22
+#: ../templates/_profile/unikatalog/users_navigation:167
+#: ../templates/_profile/unikatalog/users_navigation:169
+#: ../templates/_profile/unikatalog/users_navigation_dropdown:74
+#: ../templates/users_circulations_fees:21
+msgid "Gebühren"
+msgstr "Gebühren"
+
+#: ../templates/_profile/unikatalog/users_circulations_html:64
+msgid "Gebührenkonto"
+msgstr "Gebührenkonto"
 
 #: ../templates/_profile/bootstrap5/admin_users_search_html:20
 #: ../templates/_profile/bootstrap5/viewadmin_users_search_html:20
@@ -14430,7 +14528,7 @@ msgstr "Gesamte Rheinlandbib"
 #: ../templates/_profile/sammlungen_yaml4/users_circulations_borrows_html:63
 #: ../templates/_profile/sammlungen_yaml4/users_circulations_borrows_ics:112
 #: ../templates/_profile/unikatalog/users_circulations_borrows_html:42
-#: ../templates/_profile/unikatalog/users_circulations_loans_html:42
+#: ../templates/_profile/unikatalog/users_circulations_loans_html:27
 #: ../templates/_profile/yaml4/users_circulations_borrows_html:63
 #: ../templates/_profile/yaml4/users_circulations_borrows_ics:112
 #: ../templates/users_circulations_borrows_html:42
@@ -14449,7 +14547,7 @@ msgstr "Gesamtkonto verl&auml;ngern"
 #: ../templates/_profile/sammlungen_yaml4/users_circulations_renew_loans:40
 #: ../templates/_profile/sammlungen_yaml4/users_circulations_renew_loans:56
 #: ../templates/_profile/unikatalog/users_circulations_borrows_html:42
-#: ../templates/_profile/unikatalog/users_circulations_loans_html:42
+#: ../templates/_profile/unikatalog/users_circulations_loans_html:27
 #: ../templates/_profile/yaml4/users_circulations_borrows_html:63
 #: ../templates/_profile/yaml4/users_circulations_borrows_ics:112
 #: ../templates/_profile/yaml4/users_circulations_renew_loans:40
@@ -14460,7 +14558,6 @@ msgid "Gesamtkonto-Verl&auml;ngerung"
 msgstr "Gesamtkonto-Verl&auml;ngerung"
 
 #: ../templates/_profile/bootstrap5/users_circulations_renew_loans_html:18
-#: ../templates/_profile/unikatalog/users_circulations_renew_loans_html:18
 #: ../templates/users_circulations_renew_loans:21
 #: ../templates/users_circulations_renew_loans_html:18
 msgid "Gesamtkontoverlängerung"
@@ -14476,6 +14573,9 @@ msgstr "Gesamtverzeichnis Briefe von und an Friedrich Gentz"
 #: ../templates/_profile/bootstrap/_database/ezb/search_title_item_html:151
 #: ../templates/_profile/kug_yaml4/_database/dbis/search_title_item_html:99
 #: ../templates/_profile/kug_yaml4/_database/ezb/search_title_item_html:98
+#: ../templates/_profile/unikatalog/users_navigation:142
+#: ../templates/_profile/unikatalog/users_navigation:144
+#: ../templates/_profile/unikatalog/users_navigation_dropdown:68
 #: ../templates/_profile/yaml4/_database/dbis/search_title_item_html:60
 msgid "Gesamtübersicht"
 msgstr "Gesamtübersicht"
@@ -14681,6 +14781,10 @@ msgstr ""
 #: ../templates/search_facet:1067
 msgid "Griechisch"
 msgstr "Griechisch"
+
+#: ../templates/_profile/unikatalog/users_circulations_fees_html:27
+msgid "Grund"
+msgstr "Grund"
 
 #: ../templates/_profile/rheinlandbib_yaml4/users_circulations_make_order:57
 #: ../templates/_profile/rheinlandbib_yaml4/users_circulations_make_reservation:69
@@ -15138,6 +15242,9 @@ msgstr "Hier suchen Sie in der Sammlung"
 #: ../templates/_profile/sammlungen_yaml4/_view/filme/corporate_banner:21
 #: ../templates/_profile/sammlungen_yaml4/info_navigation:2
 #: ../templates/_profile/unikatalog/info_navigation:2
+#: ../templates/_profile/unikatalog/users_circulations_html:24
+#: ../templates/_profile/unikatalog/users_circulations_html:26
+#: ../templates/_profile/unikatalog/users_circulations_html:28
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/corporate_banner:18
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/corporate_banner:21
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/corporate_banner:18
@@ -15201,7 +15308,6 @@ msgstr "Hilfe"
 #: ../templates/_profile/unikatalog/info_other_portals:39
 #: ../templates/_profile/unikatalog/login_circulation:47
 #: ../templates/_profile/unikatalog/search_facet:1173
-#: ../templates/_profile/unikatalog/users_circulations_renew_loans_html:40
 #: ../templates/_profile/usbintern/users_registrations:47
 #: ../templates/_profile/yaml4/_database/wikisource_de/persons_record_html:137
 #: ../templates/_profile/yaml4/info_11:47
@@ -15486,7 +15592,7 @@ msgstr "IP-Adresse"
 #: ../templates/_profile/sammlungen_yaml4/searchforms_record_query:137
 #: ../templates/_profile/sammlungen_yaml4/users_preferences_html:207
 #: ../templates/_profile/unikatalog/admin_statistics_query_html:43
-#: ../templates/_profile/unikatalog/searchforms_record_query:105
+#: ../templates/_profile/unikatalog/searchforms_record_query:138
 #: ../templates/_profile/unikatalog/users_circulations_check_campus_order_html:163
 #: ../templates/_profile/unikatalog/users_circulations_check_ilias_order_html:163
 #: ../templates/_profile/unikatalog/users_preferences_html:83
@@ -15538,7 +15644,7 @@ msgstr "ISBN"
 #: ../templates/_profile/sammlungen_yaml4/searchforms_record_query:147
 #: ../templates/_profile/sammlungen_yaml4/users_preferences_html:226
 #: ../templates/_profile/unikatalog/admin_statistics_query_html:44
-#: ../templates/_profile/unikatalog/searchforms_record_query:115
+#: ../templates/_profile/unikatalog/searchforms_record_query:148
 #: ../templates/_profile/unikatalog/users_circulations_check_campus_order_html:171
 #: ../templates/_profile/unikatalog/users_circulations_check_ilias_order_html:171
 #: ../templates/_profile/unikatalog/users_preferences_html:102
@@ -15781,7 +15887,7 @@ msgstr "Id"
 #: ../templates/_profile/unikatalog/admin_locations_html:35
 #: ../templates/_profile/unikatalog/admin_locations_html:75
 #: ../templates/_profile/unikatalog/admin_locations_record_edit_html:48
-#: ../templates/_profile/unikatalog/locations_html:134
+#: ../templates/_profile/unikatalog/locations_html:77
 #: ../templates/_profile/yaml4/admin_locations_html:108
 #: ../templates/_profile/yaml4/admin_locations_html:71
 #: ../templates/_profile/yaml4/admin_locations_record_edit:94
@@ -15828,6 +15934,14 @@ msgid ""
 "in der Regel innerhalb von 3 Arbeitstagen 14 Tage lang für Sie bereit."
 msgstr ""
 
+#: ../templates/_profile/unikatalog/users_circulations_html:28
+msgid "Ihr Bibliotheksausweis ist abgelaufen."
+msgstr ""
+
+#: ../templates/_profile/unikatalog/users_circulations_html:24
+msgid "Ihr Bibliotheksausweis ist gesperrt."
+msgstr ""
+
 #: ../templates/_profile/bootstrap5/users_passwords_success_html:17
 #: ../templates/_profile/rheinlandbib_yaml4/users_passwords_success:48
 #: ../templates/_profile/sammlungen_yaml4/_view/richter/users_passwords_success:48
@@ -15838,6 +15952,14 @@ msgstr ""
 #: ../templates/users_passwords_success_html:17
 msgid "Ihr Passwort wurde an Sie verschickt."
 msgstr "Ihr Passwort wurde an Sie verschickt."
+
+#: ../templates/_profile/unikatalog/users_circulations_cancel_order_confirm_html:39
+msgid ""
+"Ihr Stornierungsauftrag wird per E-Mail- an unsere Ausleihabteilung "
+"übermittelt. Sobald das Medium von uns aus dem Abholregal geholt wurde, "
+"führen wir die Stornierung im Ausleihsystem durch. Erst danach verschwindet "
+"die Bestellung aus Ihrem Konto."
+msgstr ""
 
 #: ../templates/_profile/bootstrap5/info_help:465
 #: ../templates/_profile/rheinlandbib_yaml4/info_help:465
@@ -15863,6 +15985,10 @@ msgstr ""
 "insbesondere Benutzernummern der USB oder der Institute, die eine\n"
 "Online-Ausleihe betreiben."
 
+#: ../templates/_profile/unikatalog/users_circulations_loans_html:20
+msgid "Ihre Ausleihen"
+msgstr "Ihre Ausleihen"
+
 #: ../templates/_profile/bootstrap5/users_circulations_mail_default_mail_success_html:20
 #: ../templates/_profile/unikatalog/users_circulations_mail_default_mail_success_html:20
 #: ../templates/users_circulations_mail_default_mail_success_html:20
@@ -15870,6 +15996,10 @@ msgid ""
 "Ihre Bestellung liegt nach 1 – 2 Arbeitstagen an der Lesesaalausgabe im 1. "
 "OG für Sie zur Einsicht bereit."
 msgstr ""
+
+#: ../templates/_profile/unikatalog/users_circulations_orders_html:20
+msgid "Ihre Bestellungen"
+msgstr "Ihre Bestellungen"
 
 #: ../templates/_profile/bootstrap5/cartitems_mail_html:25
 #: ../templates/_profile/rheinlandbib_yaml4/cartitems_mail:57
@@ -15881,11 +16011,11 @@ msgstr ""
 msgid "Ihre Eingabe"
 msgstr "Ihre Eingabe"
 
-#: ../modules/OpenBib/Handler/PSGI/Login.pm:455
+#: ../modules/OpenBib/Handler/PSGI/Login.pm:477
 msgid "Ihre Kennung ist nicht zur Nutzung dieses Portals zugelassen."
 msgstr "Ihre Kennung ist nicht zur Nutzung dieses Portals zugelassen."
 
-#: ../modules/OpenBib/Handler/PSGI/Login.pm:457
+#: ../modules/OpenBib/Handler/PSGI/Login.pm:479
 msgid ""
 "Ihre Kennung ist nicht zur Nutzung dieses Portals zugelassen. Wrong "
 "authenticator"
@@ -15944,6 +16074,10 @@ msgstr ""
 #: ../templates/cartitems_mail_success:47
 msgid "Ihre Merkliste wurde an Sie per Mail versendet."
 msgstr "Ihre Merkliste wurde an Sie per Mail versendet."
+
+#: ../templates/_profile/unikatalog/users_circulations_reservations_html:20
+msgid "Ihre Vormerkungen"
+msgstr "Ihre Vormerkungen"
 
 #: ../templates/_profile/bootstrap5/users_migration_success_html:17
 #: ../templates/_profile/rheinlandbib_yaml4/users_migration_success_html:55
@@ -16458,7 +16592,7 @@ msgstr ""
 "     oder anderen Stellen in OpenBib werden verschiedene bildliche\n"
 "     Funktionselemente verwendet. Es sind dies:"
 
-#: ../templates/_database/inst001/circulation:388
+#: ../templates/_database/inst001/circulation:393
 msgid "In den Lesesaal bestellen"
 msgstr "In den Lesesaal bestellen"
 
@@ -16852,7 +16986,7 @@ msgstr ""
 msgid "In lokalen Katalogen verf&uuml;gbar"
 msgstr "In lokalen Katalogen verf&uuml;gbar"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:234
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:235
 msgid "Incipit"
 msgstr ""
 
@@ -17366,7 +17500,7 @@ msgstr "Inhalte zu neuer Kennung verschieben"
 #: ../templates/_profile/unikatalog/litlists_record_include:15
 #: ../templates/_profile/unikatalog/reviews_edit:48
 #: ../templates/_profile/unikatalog/reviews_edit_html:48
-#: ../templates/_profile/unikatalog/searchforms_record_query:175
+#: ../templates/_profile/unikatalog/searchforms_record_query:98
 #: ../templates/_profile/unikatalog/tags_html:15
 #: ../templates/_profile/unikatalog/tags_include:15
 #: ../templates/_profile/unikatalog/tags_names_record_html:15
@@ -17535,7 +17669,7 @@ msgstr "Institut"
 #: ../templates/_profile/unikatalog/search_person:75
 #: ../templates/_profile/unikatalog/search_subject:75
 #: ../templates/_profile/unikatalog/searchforms_record_authority_html:135
-#: ../templates/_profile/unikatalog/searchforms_record_query:43
+#: ../templates/_profile/unikatalog/searchforms_record_query:158
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/searchforms_record_query:43
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/searchforms_record_query:43
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/searchforms_record_query:43
@@ -18639,7 +18773,6 @@ msgstr ""
 #: ../templates/_profile/unikatalog/clouds_navigation:35
 #: ../templates/_profile/unikatalog/clouds_navigation:37
 #: ../templates/_profile/unikatalog/search_facet:433
-#: ../templates/_profile/unikatalog/searchforms_record_query:212
 #: ../templates/_profile/unikatalog/subnavigation:74
 #: ../templates/_profile/unikatalog/subnavigation:76
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/searchforms_record_query:196
@@ -19815,7 +19948,7 @@ msgid "Kein Eintrag"
 msgstr "Kein Eintrag"
 
 #: ../templates/_profile/bootstrap5/titles_record_html:115
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:344
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:351
 #: ../templates/titles_record_html:115
 msgid "Kein Titel"
 msgstr "Kein Titel"
@@ -19824,7 +19957,7 @@ msgstr "Kein Titel"
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/titles_record_html:434
 #: ../templates/_profile/bootstrap5/titles_record_html:337
 #: ../templates/_profile/kug/_view/kugproto/titles_record_html:419
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:378
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:385
 #: ../templates/_profile/unikatalog/titles_record_html:463
 #: ../templates/titles_record_html:337
 msgid "Kein Zugriff"
@@ -19992,6 +20125,10 @@ msgstr "Keine"
 #: ../templates/circulation_mobile:64
 msgid "Keine Aktion m&ouml;glich"
 msgstr "Keine Aktion m&ouml;glich"
+
+#: ../templates/_profile/unikatalog/users_circulations_loans_html:66
+msgid "Keine Aktion möglich"
+msgstr "Keine Aktion möglich"
 
 #: ../templates/_profile/bootstrap5/rssfeeds_html:53
 #: ../templates/_profile/unikatalog/rssfeeds_html:53
@@ -20321,7 +20458,7 @@ msgstr "Kompletter Tag"
 #: ../templates/_profile/sammlungen_yaml4/search_title_field:42
 #: ../templates/_profile/sammlungen_yaml4/searchforms_record_query:167
 #: ../templates/_profile/unikatalog/admin_statistics_query_html:46
-#: ../templates/_profile/unikatalog/searchforms_record_query:135
+#: ../templates/_profile/unikatalog/searchforms_record_query:43
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/searchforms_record_query:119
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/searchforms_record_query:119
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/searchforms_record_query:119
@@ -20578,7 +20715,7 @@ msgstr "Kooperationspartner"
 #: ../templates/_profile/bootstrap5/titles_record_html_modals:53
 #: ../templates/_profile/bootstrap5/titles_record_html_modals:76
 #: ../templates/_profile/bootstrap5/titles_record_html_modals:96
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:369
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:376
 #: ../templates/_profile/unikatalog/titles_record_html_modals:116
 #: ../templates/_profile/unikatalog/titles_record_html_modals:29
 #: ../templates/_profile/unikatalog/titles_record_html_modals:53
@@ -20636,7 +20773,7 @@ msgstr "Kundengruppe"
 #: ../templates/_profile/unikatalog/admin_locations_html:75
 #: ../templates/_profile/unikatalog/admin_locations_record_edit_html:58
 #: ../templates/_profile/unikatalog/databases_record_html:21
-#: ../templates/_profile/unikatalog/locations_html:134
+#: ../templates/_profile/unikatalog/locations_html:77
 #: ../templates/_profile/yaml4/admin_databases_record_edit:77
 #: ../templates/_profile/yaml4/admin_databases_record_html:65
 #: ../templates/_profile/yaml4/databases_record_html:63
@@ -20658,7 +20795,7 @@ msgstr "Kurzbeschreibung"
 #: ../templates/_profile/rheinlandbib_yaml4/cartitems_html_actions:16
 #: ../templates/_profile/rheinlandbib_yaml4/litlists_record_include:55
 #: ../templates/_profile/rheinlandbib_yaml4/users_litlists_record_edit:72
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:222
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:223
 #: ../templates/_profile/sammlungen_yaml4/_view/inst404abklatsch/searchforms_record_query:87
 #: ../templates/_profile/sammlungen_yaml4/_view/richter/cartitems_html_actions:16
 #: ../templates/_profile/sammlungen_yaml4/_view/richter/users_litlists_record_edit:72
@@ -22135,8 +22272,15 @@ msgstr ""
 "Leider konnten zu Ihrer Suchanfrage keine geeigneten Fachdatenbanken\n"
 "gefunden werden."
 
+#: ../templates/_profile/unikatalog/users_circulations_loans_html:40
+msgid "Leihfrist"
+msgstr "Leihfrist"
+
 #: ../templates/_profile/rheinlandbib_yaml4/users_circulations_reminders_html:82
 #: ../templates/_profile/sammlungen_yaml4/users_circulations_reminders_html:82
+#: ../templates/_profile/unikatalog/users_circulations_orders_html:44
+#: ../templates/_profile/unikatalog/users_circulations_renew_loans_html:38
+#: ../templates/_profile/unikatalog/users_circulations_renew_single_loan_html:45
 #: ../templates/_profile/yaml4/users_circulations_reminders_html:82
 msgid "Leihfristende"
 msgstr "Leihfristende"
@@ -22246,6 +22390,10 @@ msgstr "Link zum Normdatensatz"
 #: ../templates/users_tags_names_html:16
 msgid "Liste"
 msgstr "Liste"
+
+#: ../templates/_profile/unikatalog/users_circulations_orders_html:23
+msgid "Liste Ihrer bestellten Bücher (ohne Aufsatzbestellungen)."
+msgstr ""
 
 #: ../templates/_profile/bootstrap5/litlists_record_html:128
 #: ../templates/_profile/bootstrap5/litlists_record_html_tabs:128
@@ -23170,7 +23318,6 @@ msgid "MLA Zitat"
 msgstr "MLA Zitat"
 
 #: ../templates/_profile/bootstrap5/users_circulations_renew_loans_html:40
-#: ../templates/_profile/unikatalog/users_circulations_renew_loans_html:40
 #: ../templates/users_circulations_renew_loans_html:40
 msgid "Mahnstufe"
 msgstr ""
@@ -23299,7 +23446,6 @@ msgid "MedPilot"
 msgstr "MedPilot"
 
 #: ../templates/_profile/bootstrap5/users_circulations_renew_loans_html:35
-#: ../templates/_profile/unikatalog/users_circulations_renew_loans_html:35
 #: ../templates/users_circulations_renew_loans_html:35
 msgid "Medien"
 msgstr "Medien"
@@ -23409,7 +23555,6 @@ msgid "Medientyp"
 msgstr "Medientyp"
 
 #: ../templates/_profile/bootstrap5/users_circulations_renew_single_loan_html:26
-#: ../templates/_profile/unikatalog/users_circulations_renew_single_loan_html:26
 #: ../templates/users_circulations_renew_single_loan_html:26
 msgid "Medium"
 msgstr ""
@@ -24004,7 +24149,7 @@ msgstr ""
 #: ../templates/_profile/unikatalog/searchforms_record_authority_html:160
 #: ../templates/_profile/unikatalog/searchforms_record_bottom_left:77
 #: ../templates/_profile/unikatalog/searchforms_record_bottom_right:32
-#: ../templates/_profile/unikatalog/searchforms_record_query:250
+#: ../templates/_profile/unikatalog/searchforms_record_query:268
 #: ../templates/_profile/unikatalog/titles_record_html:244
 #: ../templates/_profile/unikatalog/titles_record_html_actions:525
 #: ../templates/_profile/yaml4/authority_search_facet:106
@@ -24060,6 +24205,10 @@ msgstr ""
 #: ../templates/titles_record_html_actions:649
 msgid "Mehr"
 msgstr "Mehr"
+
+#: ../templates/_profile/unikatalog/searchforms_record_query:69
+msgid "Mehr Suchoptionen"
+msgstr "Mehr Suchoptionen"
 
 #: ../templates/_profile/bootstrap5/home_html_bottom_center:16
 #: ../templates/_profile/rheinlandbib_yaml4/home_html_bottom_center:15
@@ -26298,7 +26447,6 @@ msgid "Neues Anmeldeziel anlegen"
 msgstr "Neues Anmeldeziel anlegen"
 
 #: ../templates/_profile/bootstrap5/users_circulations_renew_single_loan_html:31
-#: ../templates/_profile/unikatalog/users_circulations_renew_single_loan_html:31
 #: ../templates/users_circulations_renew_single_loan_html:31
 msgid "Neues Ausleihdatum"
 msgstr "Neues Ausleihdatum"
@@ -26377,6 +26525,10 @@ msgstr "Neues Template einrichten"
 #: ../templates/admin_topics_html:23
 msgid "Neues Themengebiet anlegen"
 msgstr "Neues Themengebiet anlegen"
+
+#: ../templates/_profile/unikatalog/users_circulations_html:93
+msgid "Newsletterverwaltung"
+msgstr "Newsletterverwaltung"
 
 #: ../templates/_profile/bootstrap5/_view/unikatalog/search_more_tips:5
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/search_more_tips:5
@@ -26640,7 +26792,7 @@ msgstr "Normdaten-Recherche"
 #: ../templates/_profile/unikatalog/search_corporatebody:75
 #: ../templates/_profile/unikatalog/search_person:75
 #: ../templates/_profile/unikatalog/search_subject:75
-#: ../templates/_profile/unikatalog/searchforms_record_query:87
+#: ../templates/_profile/unikatalog/searchforms_record_query:128
 #: ../templates/_profile/unikatalog/users_preferences_html:78
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/searchforms_record_query:79
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/searchforms_record_query:79
@@ -26690,14 +26842,14 @@ msgstr "Notationen"
 msgid "Notations-Datei"
 msgstr "Notations-Datei"
 
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:285
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:287
 #: ../modules/OpenBib/Handler/PSGI/Users/Circulations/CampusOrders.pm:133
 #: ../modules/OpenBib/Handler/PSGI/Users/Circulations/IliasOrders.pm:131
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:177
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:309
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:430
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Reservations.pm:187
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Reservations.pm:316
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:178
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:310
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:431
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Reservations.pm:188
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Reservations.pm:317
 msgid "Notwendige Parameter nicht besetzt"
 msgstr ""
 
@@ -26992,7 +27144,7 @@ msgstr "OLWS DB-Name im Lokalsystem"
 msgid "OLWS Zugriffs-URL"
 msgstr "OLWS Zugriffs-URL"
 
-#: ../templates/_profile/unikatalog/users_navigation_dropdown:71
+#: ../templates/_profile/unikatalog/users_circulations_html:39
 msgid "Offene Bestellungen"
 msgstr "Offene Bestellungen"
 
@@ -27003,7 +27155,7 @@ msgstr "Offene Bestellungen"
 msgid "Offene Geb&uuml;hren"
 msgstr "Offene Geb&uuml;hren"
 
-#: ../templates/_profile/unikatalog/users_navigation_dropdown:72
+#: ../templates/_profile/unikatalog/users_circulations_html:68
 msgid "Offene Gebühren"
 msgstr "Offene Gebühren"
 
@@ -27329,7 +27481,7 @@ msgstr "Organisationseinheiten dieses Profils"
 #: ../templates/_profile/bootstrap5/viewadmin_users_record_html:32
 #: ../templates/_profile/rheinlandbib_yaml4/admin_users_record_edit:74
 #: ../templates/_profile/rheinlandbib_yaml4/admin_users_record_html:75
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:246
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:247
 #: ../templates/_profile/sammlungen_yaml4/admin_users_record_edit:74
 #: ../templates/_profile/sammlungen_yaml4/admin_users_record_html:75
 #: ../templates/_profile/unikatalog/admin_users_record_html:32
@@ -27911,6 +28063,10 @@ msgstr "Passwort vergessen?"
 msgid "Passwort wiederholt"
 msgstr "Passwort wiederholt"
 
+#: ../templates/_profile/unikatalog/users_circulations_html:84
+msgid "Passwort ändern"
+msgstr "Passwort ändern"
+
 #: ../templates/_profile/bootstrap5/info_help:971
 #: ../templates/_profile/kug_yaml4/info_help:873
 #: ../templates/_profile/rheinlandbib_yaml4/info_help:971
@@ -27947,7 +28103,7 @@ msgstr "Permanenter Link zu diesem Titel"
 #: ../templates/_profile/rheinlandbib_yaml4/search_title_field:19
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:405
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:481
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:218
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:219
 #: ../templates/_profile/sammlungen/_view/jesuiten/search_facet:405
 #: ../templates/_profile/sammlungen/_view/jesuiten/subnavigation:49
 #: ../templates/_profile/sammlungen/_view/kartenkatalog/search_facet.neu:86
@@ -27995,6 +28151,7 @@ msgstr "Permanenter Link zu diesem Titel"
 #: ../templates/_profile/unikatalog/authority_search_facet:190
 #: ../templates/_profile/unikatalog/search_facet:423
 #: ../templates/_profile/unikatalog/search_facet:993
+#: ../templates/_profile/unikatalog/searchforms_record_query:23
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html:104
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html:92
 #: ../templates/_profile/yaml4/_database/einbaende/titles_record_html~:104
@@ -28183,7 +28340,6 @@ msgstr "Person/Körperschaft"
 #: ../templates/_profile/unikatalog/search_person:75
 #: ../templates/_profile/unikatalog/search_subject:75
 #: ../templates/_profile/unikatalog/searchforms_record_authority_html:127
-#: ../templates/_profile/unikatalog/searchforms_record_query:33
 #: ../templates/_profile/unikatalog/subnavigation:79
 #: ../templates/_profile/unikatalog/subnavigation:81
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/searchforms_record_query:33
@@ -28275,6 +28431,14 @@ msgstr "Personen-Information: %1 in Katalog %2"
 #: ../templates/viewadmin_users_record_html:15
 msgid "Personendaten"
 msgstr "Personendaten"
+
+#: ../templates/_profile/unikatalog/users_circulations_html:81
+msgid "Persönliche Angaben anzeigen"
+msgstr ""
+
+#: ../templates/_profile/unikatalog/users_circulations_html:77
+msgid "Persönliche Daten"
+msgstr "Persönliche Daten"
 
 #: ../templates/_profile/bootstrap5/home_html_bottom_right:42
 #: ../templates/_profile/kug_yaml4/_view/kug/home_html_bottom_right:36
@@ -28693,6 +28857,10 @@ msgstr "Portal Administration"
 msgid "Portraitart"
 msgstr "Portraitart"
 
+#: ../templates/_profile/unikatalog/users_circulations_reservations_html:45
+msgid "Position"
+msgstr "Position"
+
 #: ../templates/_profile/bootstrap5/info_help:671
 #: ../templates/_profile/kug_yaml4/info_help:577
 #: ../templates/_profile/rheinlandbib_yaml4/info_help:671
@@ -28980,7 +29148,7 @@ msgstr "Protokoll"
 #: ../templates/_profile/sammlungen_yaml4/search_title_field:44
 #: ../templates/_profile/unikatalog/search_facet:431
 #: ../templates/_profile/unikatalog/search_facet:911
-#: ../templates/_profile/unikatalog/searchforms_record_query:52
+#: ../templates/_profile/unikatalog/searchforms_record_query:212
 #: ../templates/_profile/yaml4/search_title_field:44
 #: ../templates/search_facet:413 ../templates/search_title_field:46
 #: ../templates/searchforms_record_query:51
@@ -29928,6 +30096,7 @@ msgstr "Regisseur"
 #: ../templates/_profile/sammlungen_yaml4/_view/zpe/subnavigation:46
 #: ../templates/_profile/sammlungen_yaml4/_view/zpe/titles_fields_record_html:43
 #: ../templates/_profile/sammlungen_yaml4/subnavigation:39
+#: ../templates/_profile/unikatalog/searchforms_record_query:194
 #: ../templates/_profile/unikatalog/subnavigation:44
 #: ../templates/_profile/yaml4/subnavigation:39
 #: ../templates/search_title_field:31 ../templates/subnavigation:44
@@ -29984,6 +30153,10 @@ msgstr "Registrieren"
 #: ../templates/_profile/rheinlandbib_yaml4/searchforms_record_simple:557
 msgid "Registriertes Passwort vergessen?"
 msgstr "Registriertes Passwort vergessen?"
+
+#: ../templates/_profile/unikatalog/searchforms_record_query:108
+msgid "Reihe/Band/Quelle"
+msgstr "Reihe/Band/Quelle"
 
 #: ../templates/_profile/sammlungen/_view/jesuiten/info_rekonstruktion:13
 msgid "Rekonstruktion"
@@ -30730,7 +30903,6 @@ msgstr "Schlagwort-Information: %1 in Katalog %2"
 #: ../templates/_profile/unikatalog/search_person:75
 #: ../templates/_profile/unikatalog/search_subject:75
 #: ../templates/_profile/unikatalog/searchforms_record_authority_html:143
-#: ../templates/_profile/unikatalog/searchforms_record_query:77
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/searchforms_record_query:69
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/searchforms_record_query:69
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/searchforms_record_query:69
@@ -30766,6 +30938,10 @@ msgstr "Schlagworte"
 #: ../templates/_profile/yaml4/_database/bibsonomy/search_title_item_html:85
 msgid "Schlagworte in den angezeigten Titeln"
 msgstr "Schlagworte in den angezeigten Titeln"
+
+#: ../templates/_profile/unikatalog/searchforms_record_query:53
+msgid "Schlagwörter"
+msgstr "Schlagwörter"
 
 #: ../templates/_database/muenzen/titles_record_html_modals:31
 #: ../templates/_database/muenzen/titles_record_html_modals:43
@@ -30965,7 +31141,7 @@ msgstr "Seit"
 msgid "Seite:"
 msgstr "Seite:"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:258
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:259
 msgid "Seiten"
 msgstr "Seiten"
 
@@ -31144,7 +31320,6 @@ msgstr "Selektive Suche"
 #: ../templates/_profile/sammlungen_yaml4/searchforms_record_query:197
 #: ../templates/_profile/sammlungen_yaml4/users_preferences_html:246
 #: ../templates/_profile/unikatalog/admin_statistics_query_html:47
-#: ../templates/_profile/unikatalog/searchforms_record_query:165
 #: ../templates/_profile/unikatalog/users_preferences_html:122
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/searchforms_record_query:149
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/searchforms_record_query:149
@@ -31404,6 +31579,17 @@ msgstr ""
 "aktuelle Version auf diesem System nicht eingefroren und in eine offiziell "
 "bekanntgegebene und &ouml;ffentliche finale Testphase &uuml;bergegangen ist."
 
+#. ("<a href=\"https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/anschaffungsvorschlag/index_ger.html\" target=\"_blank\">","</a>")
+#: ../templates/_profile/unikatalog/users_circulations_html:110
+msgid ""
+"Sie benötigen ein Buch, das Sie bei uns nicht finden können? Machen Sie "
+"einen %1Anschaffungsvorschlag%2."
+msgstr ""
+
+#: ../templates/_profile/unikatalog/users_circulations_html:122
+msgid "Sie bestellen, wir bezahlen und liefern. Weitere Informationen »"
+msgstr ""
+
 #: ../modules/OpenBib/Handler/PSGI/Users/Circulations/CampusOrders.pm:158
 #: ../modules/OpenBib/Handler/PSGI/Users/Circulations/IliasOrders.pm:162
 msgid ""
@@ -31414,6 +31600,23 @@ msgstr ""
 #: ../modules/OpenBib/Handler/PSGI.pm:928
 msgid "Sie greifen auf eine nicht autorisierte Session zu"
 msgstr "Sie greifen auf eine nicht autorisierte Session zu"
+
+#: ../templates/_profile/unikatalog/users_circulations_html:26
+msgid ""
+"Sie haben das Gebührenlimit erreicht. Bitte zahlen Sie Ihre offenen Gebühren."
+msgstr ""
+
+#: ../templates/_profile/unikatalog/users_circulations_loans_html:17
+msgid "Sie haben derzeit keine Ausleihen."
+msgstr "Sie haben derzeit keine Ausleihen."
+
+#: ../templates/_profile/unikatalog/users_circulations_reservations_html:17
+msgid "Sie haben derzeit keine Vormerkungen."
+msgstr "Sie haben derzeit keine Vormerkungen."
+
+#: ../templates/_profile/unikatalog/users_circulations_orders_html:17
+msgid "Sie haben derzeit keine offenen Bestellungen."
+msgstr "Sie haben derzeit keine offenen Bestellungen."
 
 #: ../templates/_profile/bootstrap5/orgunits_record_html:44
 #: ../templates/_profile/rheinlandbib_yaml4/orgunits_record_html:87
@@ -31458,7 +31661,7 @@ msgstr ""
 "Sie haben entweder kein Passwort eingegeben oder die beiden Passworte "
 "stimmen nicht überein"
 
-#: ../modules/OpenBib/Handler/PSGI/Login.pm:445
+#: ../modules/OpenBib/Handler/PSGI/Login.pm:467
 msgid "Sie haben entweder kein Passwort oder keinen Benutzernamen eingegeben"
 msgstr "Sie haben entweder kein Passwort oder keinen Benutzernamen eingegeben"
 
@@ -31492,7 +31695,6 @@ msgstr "Sie haben in diesem Profil noch keine Organisationseinheiten angelegt."
 #: ../templates/_profile/sammlungen_yaml4/users_circulations_borrows_html:59
 #: ../templates/_profile/sammlungen_yaml4/users_circulations_borrows_ics:95
 #: ../templates/_profile/unikatalog/users_circulations_borrows_html:17
-#: ../templates/_profile/unikatalog/users_circulations_loans_html:17
 #: ../templates/_profile/yaml4/users_circulations_borrows_html:59
 #: ../templates/_profile/yaml4/users_circulations_borrows_ics:95
 #: ../templates/users_circulations_borrows_html:17
@@ -31508,7 +31710,6 @@ msgstr "Sie haben keine Berechtigung dieses Template zu ändern!"
 #: ../templates/_profile/bootstrap5/users_circulations_orders_html:17
 #: ../templates/_profile/rheinlandbib_yaml4/users_circulations_orders_html:59
 #: ../templates/_profile/sammlungen_yaml4/users_circulations_orders_html:59
-#: ../templates/_profile/unikatalog/users_circulations_orders_html:17
 #: ../templates/_profile/yaml4/users_circulations_orders_html:59
 #: ../templates/users_circulations_orders_html:17
 msgid "Sie haben keine Bestellungen get&auml;tigt."
@@ -31530,7 +31731,6 @@ msgstr "Sie haben keine Titel ausgew&auml;hlt."
 #: ../templates/_profile/bootstrap5/users_circulations_reservations_html:17
 #: ../templates/_profile/rheinlandbib_yaml4/users_circulations_reservations_html:59
 #: ../templates/_profile/sammlungen_yaml4/users_circulations_reservations_html:59
-#: ../templates/_profile/unikatalog/users_circulations_reservations_html:17
 #: ../templates/_profile/yaml4/users_circulations_reservations_html:59
 #: ../templates/users_circulations_reservations_html:17
 msgid "Sie haben keine Vormerkungen getätigt."
@@ -31608,8 +31808,8 @@ msgstr ""
 "und dann &uuml;ber die entsprechenden\n"
 "      Icons ausdrucken, speichern oder als E-Mail versenden."
 
-#: ../modules/OpenBib/Handler/PSGI/Login.pm:450
-#: ../modules/OpenBib/Handler/PSGI/Login.pm:453
+#: ../modules/OpenBib/Handler/PSGI/Login.pm:472
+#: ../modules/OpenBib/Handler/PSGI/Login.pm:475
 msgid ""
 "Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht "
 "erfolgreich authentifiziert werden"
@@ -31789,9 +31989,9 @@ msgstr ""
 #: ../modules/OpenBib/Handler/PSGI/Titles/Tag.pm:147
 #: ../modules/OpenBib/Handler/PSGI/Titles/Tag.pm:267
 #: ../modules/OpenBib/Handler/PSGI/Titles/Tag.pm:324
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:110
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:206
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:295
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:107
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:203
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:297
 #: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Borrows.pm:109
 #: ../modules/OpenBib/Handler/PSGI/Users/Circulations/CampusOrders.pm:151
 #: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Fees.pm:110
@@ -31799,14 +31999,14 @@ msgstr ""
 #: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Loans.pm:109
 #: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Mail.pm:116
 #: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Mail.pm:178
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:110
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:195
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:330
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:451
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:111
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:196
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:331
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:452
 #: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Reminders.pm:109
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Reservations.pm:110
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Reservations.pm:208
-#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Reservations.pm:337
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Reservations.pm:111
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Reservations.pm:209
+#: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Reservations.pm:338
 #: ../modules/OpenBib/Handler/PSGI/Users/LitLists.pm:399
 #: ../modules/OpenBib/Handler/PSGI/Users/Tags/Names.pm:385
 #: ../modules/OpenBib/Handler/PSGI/Users/Tags/Names.pm:446
@@ -32217,24 +32417,23 @@ msgstr "Sigel"
 #: ../templates/_profile/unikatalog/_database/zbmed/holding:48
 #: ../templates/_profile/unikatalog/acquisition_collection_item_short:208
 #: ../templates/_profile/unikatalog/admin_statistics_query_html:45
-#: ../templates/_profile/unikatalog/searchforms_record_query:125
+#: ../templates/_profile/unikatalog/searchforms_record_query:118
 #: ../templates/_profile/unikatalog/titles_popular_html:245
 #: ../templates/_profile/unikatalog/titlist_item_html_short:450
 #: ../templates/_profile/unikatalog/users_circulations_borrows_html:25
 #: ../templates/_profile/unikatalog/users_circulations_cancel_order_confirm_html:114
 #: ../templates/_profile/unikatalog/users_circulations_check_campus_order_html:155
 #: ../templates/_profile/unikatalog/users_circulations_check_ilias_order_html:155
-#: ../templates/_profile/unikatalog/users_circulations_fees_html:43
-#: ../templates/_profile/unikatalog/users_circulations_loans_html:25
+#: ../templates/_profile/unikatalog/users_circulations_loans_html:40
 #: ../templates/_profile/unikatalog/users_circulations_mail_default_html:91
 #: ../templates/_profile/unikatalog/users_circulations_mail_handset_html:89
 #: ../templates/_profile/unikatalog/users_circulations_mail_kmb_html:161
 #: ../templates/_profile/unikatalog/users_circulations_mail_kmbcopy_html:124
-#: ../templates/_profile/unikatalog/users_circulations_orders_html:26
+#: ../templates/_profile/unikatalog/users_circulations_orders_html:31
 #: ../templates/_profile/unikatalog/users_circulations_reminders_html:43
-#: ../templates/_profile/unikatalog/users_circulations_renew_loans_html:40
-#: ../templates/_profile/unikatalog/users_circulations_renew_single_loan_html:31
-#: ../templates/_profile/unikatalog/users_circulations_reservations_html:24
+#: ../templates/_profile/unikatalog/users_circulations_renew_loans_html:38
+#: ../templates/_profile/unikatalog/users_circulations_renew_single_loan_html:37
+#: ../templates/_profile/unikatalog/users_circulations_reservations_html:34
 #: ../templates/_profile/unikatalog/users_preferences_html:107
 #: ../templates/_profile/usbintern/_database/inst001/circulation:33
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/circulation:29
@@ -33057,7 +33256,11 @@ msgstr ""
 #: ../templates/_profile/unikatalog/_database/zbmed/holding:48
 #: ../templates/_profile/unikatalog/databases_record_html:26
 #: ../templates/_profile/unikatalog/search_facet:429
-#: ../templates/_profile/unikatalog/users_circulations_orders_html:26
+#: ../templates/_profile/unikatalog/users_circulations_fees_html:27
+#: ../templates/_profile/unikatalog/users_circulations_loans_html:40
+#: ../templates/_profile/unikatalog/users_circulations_orders_html:31
+#: ../templates/_profile/unikatalog/users_circulations_renew_loans_html:38
+#: ../templates/_profile/unikatalog/users_circulations_reservations_html:34
 #: ../templates/_profile/usbintern/_database/inst001/circulation:33
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/circulation:29
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/holding:47
@@ -34122,7 +34325,8 @@ msgstr "Statistiken"
 #: ../templates/_profile/unikatalog/clusters_record_html:21
 #: ../templates/_profile/unikatalog/servers_html:22
 #: ../templates/_profile/unikatalog/servers_record_html:22
-#: ../templates/_profile/unikatalog/users_circulations_orders_html:26
+#: ../templates/_profile/unikatalog/users_circulations_orders_html:44
+#: ../templates/_profile/unikatalog/users_circulations_renew_single_loan_html:41
 #: ../templates/_profile/unikatalog/users_record_edit_html:79
 #: ../templates/_profile/yaml4/admin_clusters_html:109
 #: ../templates/_profile/yaml4/admin_clusters_html:72
@@ -34150,6 +34354,10 @@ msgstr "Statistiken"
 #: ../templates/users_record_edit_html:78
 msgid "Status"
 msgstr "Status"
+
+#: ../templates/_profile/unikatalog/users_circulations_reservations_html:45
+msgid "Status: vorgemerkt an"
+msgstr ""
 
 #: ../templates/_profile/sammlungen_yaml4/_view/portrait/search_title_field:48
 msgid "Stecher/Lithograph"
@@ -34193,7 +34401,6 @@ msgstr "Steckbrief des Katalogs"
 #: ../templates/_profile/bootstrap5/users_circulations_reservations_html:24
 #: ../templates/_profile/rheinlandbib_yaml4/users_circulations_reservations_html:63
 #: ../templates/_profile/sammlungen_yaml4/users_circulations_reservations_html:63
-#: ../templates/_profile/unikatalog/users_circulations_reservations_html:24
 #: ../templates/_profile/yaml4/users_circulations_reservations_html:63
 #: ../templates/users_circulations_reservations_html:24
 msgid "Stelle"
@@ -34242,6 +34449,8 @@ msgstr "Sterbeorte"
 
 #: ../templates/_profile/bootstrap5/users_circulations_cancel_order_confirm_html:182
 #: ../templates/_profile/unikatalog/users_circulations_cancel_order_confirm_html:182
+#: ../templates/_profile/unikatalog/users_circulations_orders_html:61
+#: ../templates/_profile/unikatalog/users_circulations_reservations_html:60
 #: ../templates/users_circulations_cancel_order_confirm_html:182
 msgid "Stornieren"
 msgstr "Stornieren"
@@ -34736,7 +34945,7 @@ msgstr "Suche nach Zeitschriften"
 #: ../templates/_profile/unikatalog/search_subject:75
 #: ../templates/_profile/unikatalog/search_title_combined_include:47
 #: ../templates/_profile/unikatalog/searchforms_record_authority_html:156
-#: ../templates/_profile/unikatalog/searchforms_record_query:246
+#: ../templates/_profile/unikatalog/searchforms_record_query:264
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/searchforms_record_query:225
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/searchforms_record_query:225
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/searchforms_record_query:225
@@ -35112,7 +35321,7 @@ msgstr ""
 #: ../templates/_profile/unikatalog/admin_navigation:180
 #: ../templates/_profile/unikatalog/admin_navigation_dropdown:119
 #: ../templates/_profile/unikatalog/searchforms_record_authority_html:148
-#: ../templates/_profile/unikatalog/searchforms_record_query:238
+#: ../templates/_profile/unikatalog/searchforms_record_query:256
 #: ../templates/_profile/unikatalog/users_searchprofiles_record_html:26
 #: ../templates/_profile/yaml4/admin_navigation:159
 #: ../templates/_profile/yaml4/search_history:80
@@ -40829,7 +41038,7 @@ msgstr "Angaben zum Inhalt"
 #: ../templates/_profile/sammlungen_yaml4/all_categories_title:86
 #: ../templates/_profile/sammlungen_yaml4/users_preferences_html:217
 #: ../templates/_profile/sammlungen_yaml4/visible_categories_title:83
-#: ../templates/_profile/unikatalog/searchforms_record_query:185
+#: ../templates/_profile/unikatalog/searchforms_record_query:244
 #: ../templates/_profile/unikatalog/users_preferences_html:93
 #: ../templates/_profile/unikatalog/visible_categories_title.usbportal:180
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:43
@@ -46640,6 +46849,11 @@ msgstr "Tag"
 msgid "Tag in allen Titeln ändern"
 msgstr "Tag in allen Titeln ändern"
 
+#: ../templates/_profile/unikatalog/users_circulations_html:97
+msgid ""
+"Tagesaktuelle Mitteilungen zu kurzfristigen Schließungen, Störungen usw."
+msgstr ""
+
 #: ../templates/_profile/rheinlandbib_yaml4/info_tutorials:71
 #: ../templates/_profile/sammlungen_yaml4/info_tutorials:71
 #: ../templates/_profile/yaml4/info_tutorials:71 ../templates/info_tutorials:71
@@ -46871,6 +47085,10 @@ msgstr "Team Gentz Online"
 msgid "Teilbestand von Katalog"
 msgstr "Teilbestand von Katalog"
 
+#: ../templates/_profile/unikatalog/users_circulations_html:83
+msgid "Telefonnummer eintragen bzw. ändern"
+msgstr ""
+
 #: ../templates/_profile/bootstrap5/admin_templates_record_html:18
 #: ../templates/_profile/rheinlandbib_yaml4/admin_templates_record_html:62
 #: ../templates/_profile/sammlungen_yaml4/admin_templates_record_html:62
@@ -47012,7 +47230,7 @@ msgstr "Templates zuordnen"
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/searchforms_record_profile:35
 #: ../templates/_profile/bootstrap5/searchforms_record_profile:35
 #: ../templates/_profile/kug/_view/kugproto/searchforms_record_profile:35
-#: ../templates/_profile/unikatalog/searchforms_record_profile:35
+#: ../templates/_profile/unikatalog/searchforms_record_profile:36
 msgid "Testkatalog: E-Medien USB-Katalog"
 msgstr "Testkatalog: E-Medien USB-Katalog"
 
@@ -47277,7 +47495,7 @@ msgstr "Thematische Integration weiterer Quellen"
 #: ../templates/_profile/unikatalog/authority_search_facet:194
 #: ../templates/_profile/unikatalog/search_facet:428
 #: ../templates/_profile/unikatalog/search_facet:672
-#: ../templates/_profile/unikatalog/searchforms_record_query:66
+#: ../templates/_profile/unikatalog/searchforms_record_query:226
 #: ../templates/_profile/unikatalog/topics_html:34
 #: ../templates/_profile/unikatalog/topics_record_mapping_html:83
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/searchforms_record_query:53
@@ -47847,7 +48065,6 @@ msgstr "Tipps zur Suche"
 #: ../templates/_profile/unikatalog/titles_record_html:390
 #: ../templates/_profile/unikatalog/usage_navigation:10
 #: ../templates/_profile/unikatalog/usage_navigation:8
-#: ../templates/_profile/unikatalog/users_circulations_fees_html:43
 #: ../templates/_profile/unikatalog/users_circulations_reminders_html:43
 #: ../templates/_profile/unikatalog/users_litlists_record_edit_html:126
 #: ../templates/_profile/unikatalog/users_litlists_record_html:48
@@ -48405,15 +48622,16 @@ msgstr "Titelaktionen"
 #: ../templates/_profile/unikatalog/users_circulations_cancel_order_confirm_html:61
 #: ../templates/_profile/unikatalog/users_circulations_check_campus_order_html:108
 #: ../templates/_profile/unikatalog/users_circulations_check_ilias_order_html:108
-#: ../templates/_profile/unikatalog/users_circulations_loans_html:25
+#: ../templates/_profile/unikatalog/users_circulations_fees_html:27
+#: ../templates/_profile/unikatalog/users_circulations_loans_html:40
 #: ../templates/_profile/unikatalog/users_circulations_mail_default_html:43
 #: ../templates/_profile/unikatalog/users_circulations_mail_handset_html:41
 #: ../templates/_profile/unikatalog/users_circulations_mail_kmb_html:103
 #: ../templates/_profile/unikatalog/users_circulations_mail_kmbcopy_html:83
-#: ../templates/_profile/unikatalog/users_circulations_orders_html:26
-#: ../templates/_profile/unikatalog/users_circulations_renew_loans_html:40
-#: ../templates/_profile/unikatalog/users_circulations_renew_single_loan_html:31
-#: ../templates/_profile/unikatalog/users_circulations_reservations_html:24
+#: ../templates/_profile/unikatalog/users_circulations_orders_html:31
+#: ../templates/_profile/unikatalog/users_circulations_renew_loans_html:38
+#: ../templates/_profile/unikatalog/users_circulations_renew_single_loan_html:29
+#: ../templates/_profile/unikatalog/users_circulations_reservations_html:34
 #: ../templates/_profile/yaml4/users_circulations_borrows_html:67
 #: ../templates/_profile/yaml4/users_circulations_borrows_ics:117
 #: ../templates/_profile/yaml4/users_circulations_orders_html:63
@@ -48492,7 +48710,7 @@ msgstr "Titelliste"
 #: ../templates/_profile/sammlungen_yaml4/admin_statistics_query_html:79
 #: ../templates/_profile/sammlungen_yaml4/searchforms_record_query:87
 #: ../templates/_profile/unikatalog/admin_statistics_query_html:38
-#: ../templates/_profile/unikatalog/searchforms_record_query:23
+#: ../templates/_profile/unikatalog/searchforms_record_query:33
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/searchforms_record_query:23
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/searchforms_record_query:23
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/searchforms_record_query:23
@@ -49035,8 +49253,8 @@ msgstr "Tutorien zu einzelnen Themen:"
 #: ../templates/_profile/unikatalog/cartitems_html_actions:123
 #: ../templates/_profile/unikatalog/cartitems_html_actions:164
 #: ../templates/_profile/unikatalog/info_metrics_html:19
-#: ../templates/_profile/unikatalog/locations_html:134
-#: ../templates/_profile/unikatalog/searchforms_record_query:202
+#: ../templates/_profile/unikatalog/locations_html:77
+#: ../templates/_profile/unikatalog/searchforms_record_query:185
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/searchforms_record_query:179
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/searchforms_record_query:179
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/searchforms_record_query:179
@@ -49216,7 +49434,7 @@ msgstr "URI ohne View"
 #: ../templates/_profile/rheinlandbib_yaml4/admin_databases_record_edit:106
 #: ../templates/_profile/rheinlandbib_yaml4/admin_databases_record_html:68
 #: ../templates/_profile/rheinlandbib_yaml4/databases_record_html:66
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:227
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:228
 #: ../templates/_profile/sammlungen_yaml4/admin_databases_html:95
 #: ../templates/_profile/sammlungen_yaml4/admin_databases_record_edit:106
 #: ../templates/_profile/sammlungen_yaml4/admin_databases_record_html:68
@@ -49235,6 +49453,14 @@ msgstr "URI ohne View"
 #: ../templates/databases_record_html:24
 msgid "URL"
 msgstr "URL"
+
+#: ../templates/_profile/unikatalog/users_circulations_html:97
+msgid "USB-Aktuell"
+msgstr "USB-Aktuell"
+
+#: ../templates/_profile/unikatalog/users_circulations_html:98
+msgid "USB-Info"
+msgstr "USB-Info"
 
 #: ../templates/_profile/bootstrap/_view/games/home_html_bottom_right:15
 msgid "USK Altersfreigaben"
@@ -49432,7 +49658,7 @@ msgstr "Ungültige Session"
 msgid "Unikatalog (Bücher, E-Medien, Aufsätze &amp; mehr) und USB Website"
 msgstr ""
 
-#: ../modules/OpenBib/Handler/PSGI/Login.pm:462
+#: ../modules/OpenBib/Handler/PSGI/Login.pm:484
 #: ../modules/OpenBib/Handler/PSGI/Users/Registrations.pm:402
 msgid "Unspezifischer Fehler-Code"
 msgstr "Unspezifischer Fehler-Code"
@@ -49540,7 +49766,7 @@ msgstr ""
 "Profildefinitionen und Suchfeldeinstellungen bleiben gespeichert, auch für\n"
 "zukünftige Recherchen."
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:231
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:232
 msgid "Unterschiede in den Briefinformationen"
 msgstr ""
 
@@ -49674,7 +49900,6 @@ msgstr "Verkn&uuml;pfungen mehrerer Suchfelder"
 #: ../templates/_profile/bootstrap5/users_circulations_borrows_html:25
 #: ../templates/_profile/bootstrap5/users_circulations_loans_html:25
 #: ../templates/_profile/unikatalog/users_circulations_borrows_html:25
-#: ../templates/_profile/unikatalog/users_circulations_loans_html:25
 #: ../templates/users_circulations_borrows_html:25
 #: ../templates/users_circulations_loans_html:25
 msgid "Verl&auml;ngerungen"
@@ -49711,7 +49936,7 @@ msgstr "Verl&auml;ngerungen"
 #: ../templates/_profile/sammlungen_yaml4/_view/umschlaege/subnavigation:59
 #: ../templates/_profile/sammlungen_yaml4/search_title_field:8
 #: ../templates/_profile/sammlungen_yaml4/searchforms_record_query:187
-#: ../templates/_profile/unikatalog/searchforms_record_query:155
+#: ../templates/_profile/unikatalog/searchforms_record_query:168
 #: ../templates/_profile/unikatalog/users_circulations_cancel_order_confirm_html:90
 #: ../templates/_profile/unikatalog/users_circulations_mail_default_html:68
 #: ../templates/_profile/unikatalog/users_circulations_mail_handset_html:66
@@ -49778,6 +50003,22 @@ msgstr "Verlinkung und Lastverteilung in OpenBib"
 #: ../templates/_profile/yaml4/info_help:102 ../templates/info_help:102
 msgid "Verlinkung und Lastverteilung von OpenBib"
 msgstr "Verlinkung und Lastverteilung von OpenBib"
+
+#: ../templates/_profile/unikatalog/users_circulations_renew_single_loan_html:42
+msgid "Verlängerung"
+msgstr "Verlängerung"
+
+#: ../templates/_profile/unikatalog/users_circulations_renew_single_loan_html:18
+msgid "Verlängerung der Leihfrist"
+msgstr ""
+
+#: ../templates/_profile/unikatalog/users_circulations_loans_html:64
+msgid "Verlängerung durchführen"
+msgstr ""
+
+#: ../templates/_profile/unikatalog/users_circulations_loans_html:40
+msgid "Verlängerungen"
+msgstr "Verlängerungen"
 
 #: ../templates/_database/bibsonomy/titlist_item_html_short:344
 #: ../templates/_database/dbis/titlist_item_html_short:346
@@ -50525,6 +50766,10 @@ msgstr "Vorherige Seite"
 msgid "Vorheriger Titel"
 msgstr "Vorheriger Titel"
 
+#: ../templates/_profile/unikatalog/users_circulations_reservations_html:34
+msgid "Vormerkdatum"
+msgstr "Vormerkdatum"
+
 #: ../templates/_profile/bootstrap5/users_circulations_make_reservation_html:16
 #: ../templates/_profile/rheinlandbib_yaml4/users_circulations_make_reservation:55
 #: ../templates/_profile/sammlungen_yaml4/users_circulations_make_reservation:55
@@ -50565,9 +50810,10 @@ msgstr "Vormerkung nicht m&ouml;glich"
 #: ../templates/_profile/sammlungen_yaml4/users_circulations_reservations_html:39
 #: ../templates/_profile/sammlungen_yaml4/users_navigation:70
 #: ../templates/_profile/sammlungen_yaml4/users_navigation:72
-#: ../templates/_profile/unikatalog/users_navigation:153
-#: ../templates/_profile/unikatalog/users_navigation:155
-#: ../templates/_profile/unikatalog/users_navigation_dropdown:70
+#: ../templates/_profile/unikatalog/users_circulations_html:40
+#: ../templates/_profile/unikatalog/users_navigation:157
+#: ../templates/_profile/unikatalog/users_navigation:159
+#: ../templates/_profile/unikatalog/users_navigation_dropdown:72
 #: ../templates/_profile/yaml4/users_circulations_borrows_ics:85
 #: ../templates/_profile/yaml4/users_circulations_make_reservation:39
 #: ../templates/_profile/yaml4/users_circulations_reservations_html:39
@@ -50580,7 +50826,6 @@ msgstr "Vormerkungen"
 #: ../templates/_profile/bootstrap5/users_circulations_reservations_html:24
 #: ../templates/_profile/rheinlandbib_yaml4/users_circulations_reservations_html:63
 #: ../templates/_profile/sammlungen_yaml4/users_circulations_reservations_html:63
-#: ../templates/_profile/unikatalog/users_circulations_reservations_html:24
 #: ../templates/_profile/yaml4/users_circulations_reservations_html:63
 #: ../templates/users_circulations_reservations_html:24
 msgid "Vormerkungsfrist"
@@ -50762,8 +51007,8 @@ msgstr "WebOPAC-URL"
 #: ../templates/_profile/kug/_view/kug/searchforms_record_profile:56
 #: ../templates/_profile/kug/_view/kugproto/search_title_combined_html:37
 #: ../templates/_profile/kug/_view/kugproto/searchforms_record_profile:34
-#: ../templates/_profile/unikatalog/search_title_combined_html:37
-#: ../templates/_profile/unikatalog/searchforms_record_profile:34
+#: ../templates/_profile/unikatalog/search_title_combined_html:38
+#: ../templates/_profile/unikatalog/searchforms_record_profile:35
 msgid "Webseite"
 msgstr "Webseite"
 
@@ -50812,7 +51057,7 @@ msgstr "Webseite"
 #: ../templates/_profile/kug_yaml4/_database/wiso/circulation:174
 #: ../templates/_profile/kug_yaml4/_database/zbmed/circulation:53
 #: ../templates/_profile/rheinlandbib_yaml4/circulation:55
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:381
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:388
 #: ../templates/_profile/sammlungen_yaml4/_database/artmann/circulation:165
 #: ../templates/_profile/sammlungen_yaml4/_database/dante/circulation:165
 #: ../templates/_profile/sammlungen_yaml4/_database/dirksen/circulation:165
@@ -50837,8 +51082,8 @@ msgstr "Webseite"
 #: ../templates/_profile/unikatalog/users_circulations_make_ilias_order_html:24
 #: ../templates/_profile/unikatalog/users_circulations_make_order_html:30
 #: ../templates/_profile/unikatalog/users_circulations_make_reservation_html:30
-#: ../templates/_profile/unikatalog/users_circulations_renew_loans_html:63
-#: ../templates/_profile/unikatalog/users_circulations_renew_single_loan_html:49
+#: ../templates/_profile/unikatalog/users_circulations_renew_loans_html:67
+#: ../templates/_profile/unikatalog/users_circulations_renew_single_loan_html:53
 #: ../templates/_profile/unikatalog/users_migration_success_html:19
 #: ../templates/_profile/unikatalog/users_passwords_success_html:19
 #: ../templates/_profile/usbintern/_database/inst001/circulation:165
@@ -52155,7 +52400,7 @@ msgstr "Bibliotheksinfo-URL"
 #: ../templates/_profile/unikatalog/_view/ilias/search_title_combined_html:35
 #: ../templates/_profile/unikatalog/home_html:228
 #: ../templates/_profile/unikatalog/search_facet:1184
-#: ../templates/_profile/unikatalog/search_title_combined_html:41
+#: ../templates/_profile/unikatalog/search_title_combined_html:42
 msgid "Yewno"
 msgstr ""
 
@@ -52265,8 +52510,8 @@ msgstr "Zeige Überordnung"
 #: ../templates/_profile/sammlungen_yaml4/_view/wikisource/searchforms_record_query:145
 #: ../templates/_profile/sammlungen_yaml4/searchforms_record_query:234
 #: ../templates/_profile/sammlungen_yaml4/searchforms_record_query:238
-#: ../templates/_profile/unikatalog/searchforms_record_query:224
-#: ../templates/_profile/unikatalog/searchforms_record_query:229
+#: ../templates/_profile/unikatalog/searchforms_record_query:84
+#: ../templates/_profile/unikatalog/searchforms_record_query:89
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/searchforms_record_query:208
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/searchforms_record_query:212
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/searchforms_record_query:208
@@ -52403,7 +52648,7 @@ msgstr "Zitat"
 msgid "Zu Ihrer Suchanfrage konnten keine Treffer gefunden werden."
 msgstr "Zu Ihrer Suchanfrage konnten keine Treffer gefunden werden."
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_record_html:41
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_record_html:78
 msgid "Zu diesem Register gibt es keine Einträge"
 msgstr ""
 
@@ -52939,8 +53184,11 @@ msgstr ""
 "Sie in weiteren externen Informationsquellen (Datenbanken,\n"
 "Verbundkataloge) recherchieren."
 
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:274
+msgid "Zusätzliche Information:"
+msgstr "Zusätzliche Information:"
+
 #: ../templates/_profile/bootstrap5/users_circulations_renew_loans_html:40
-#: ../templates/_profile/unikatalog/users_circulations_renew_loans_html:40
 #: ../templates/users_circulations_renew_loans_html:40
 msgid "Zweigstelle"
 msgstr "Zweigstelle"
@@ -53221,7 +53469,7 @@ msgstr "bestellt beim Lieferanten"
 #: ../templates/_profile/sammlungen_yaml4/searchforms_record_query:238
 #: ../templates/_profile/unikatalog/search_facet:769
 #: ../templates/_profile/unikatalog/search_facet:876
-#: ../templates/_profile/unikatalog/searchforms_record_query:229
+#: ../templates/_profile/unikatalog/searchforms_record_query:89
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/searchforms_record_query:212
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/searchforms_record_query:212
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/searchforms_record_query:212
@@ -55209,7 +55457,7 @@ msgstr "Portal-Administrator"
 #: ../templates/_profile/unikatalog/search_title_combined_include:210
 #: ../templates/_profile/unikatalog/search_title_combined_mobile:31
 #: ../templates/_profile/unikatalog/search_title_item_html:53
-#: ../templates/_profile/unikatalog/searchforms_record_query:224
+#: ../templates/_profile/unikatalog/searchforms_record_query:84
 #: ../templates/_profile/unikatalog/tags_names_record_html:39
 #: ../templates/_profile/unikatalog/titles_html:33
 #: ../templates/_profile/unikatalog/users_tags_html:38
@@ -55598,9 +55846,6 @@ msgstr "Übernehmen"
 #: ../templates/_profile/unikatalog/admin_navigation:22
 #: ../templates/_profile/unikatalog/admin_navigation:24
 #: ../templates/_profile/unikatalog/admin_navigation_dropdown:18
-#: ../templates/_profile/unikatalog/users_navigation:142
-#: ../templates/_profile/unikatalog/users_navigation:144
-#: ../templates/_profile/unikatalog/users_navigation_dropdown:68
 #: ../templates/_profile/unikatalog/viewadmin_navigation:24
 #: ../templates/_profile/unikatalog/viewadmin_navigation:26
 #: ../templates/_profile/unikatalog/viewadmin_navigation_dropdown:18
@@ -55610,6 +55855,22 @@ msgstr "Übernehmen"
 #: ../templates/viewadmin_navigation:26
 msgid "Übersicht"
 msgstr "Übersicht"
+
+#: ../templates/_profile/unikatalog/users_circulations_reservations_html:23
+msgid ""
+"Übersicht Ihrer Vormerkungen. Wir benachrichtigen Sie, sobald eine "
+"Vormerkung für Sie bereitliegt."
+msgstr ""
+
+#: ../templates/_profile/unikatalog/users_circulations_html:35
+msgid "Übersicht über Ihre Ausleihen, Bestellungen und Vormerkungen."
+msgstr ""
+
+#: ../templates/_profile/unikatalog/users_circulations_html:52
+msgid ""
+"Übersicht über die Zeitschriftenartikel und Abschnitte aus Büchern, die Sie "
+"als Kopie über die Fernleihe bestellt haben."
+msgstr ""
 
 #: ../templates/_profile/sammlungen/_view/usbbibliographie/clouds_classification:18
 #: ../templates/_profile/sammlungen/_view/usbbibliographie/clouds_corporatebody:18
@@ -55635,8 +55896,6 @@ msgstr "Übersichten"
 #: ../templates/_profile/sammlungen_yaml4/users_circulations_reminders_html:39
 #: ../templates/_profile/sammlungen_yaml4/users_navigation:80
 #: ../templates/_profile/sammlungen_yaml4/users_navigation:82
-#: ../templates/_profile/unikatalog/users_navigation:163
-#: ../templates/_profile/unikatalog/users_navigation:165
 #: ../templates/_profile/yaml4/users_circulations_borrows_ics:87
 #: ../templates/_profile/yaml4/users_circulations_reminders_html:39
 #: ../templates/_profile/yaml4/users_navigation:100
@@ -55645,7 +55904,6 @@ msgstr "Übersichten"
 msgid "Überziehungen / Gebühren"
 msgstr "Überziehungen / Gebühren"
 
-#: ../templates/users_circulations_fees:21
 #: ../templates/users_circulations_reminders:21
 msgid "Überzogene Medien - Gebühren"
 msgstr "Überzogene Medien - Gebühren"

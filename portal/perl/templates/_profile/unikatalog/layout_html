@@ -16,6 +16,28 @@
 
 <body>
 
+<!-- Modals -->
+[%   PROCESS common/subtemplate name="cartitems_html_modals" %]
+
+[% IF show_modal_template && NOT hide_detail && NOT hide_hit %]
+
+[%   PROCESS common/subtemplate name=show_modal_template %]
+
+<script>
+$('#normdataModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var formaturl = button.data('formaturl') // Extract info from data-* attributes
+  var formattitle = button.data('formattitle') // Extract info from data-* attributes
+  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+  var modal = $(this)
+  modal.find('.modal-body').html('<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>');
+  modal.find('.modal-title').text(formattitle)
+  modal.find('.modal-body').load(formaturl);
+})
+</script>
+[% END %]
+
   <div class="wrapper container-fluid">
 
     [% PROCESS common/subtemplate name="corporate_banner" start=1 %]
@@ -88,27 +110,6 @@
     </div>
     <!-- END Bootstrap-Cookie-Alert -->
 
-<!-- Modals -->
-[%   PROCESS common/subtemplate name="cartitems_html_modals" %]
-
-[% IF show_modals && NOT hide_detail && NOT hide_hit %]
-
-[%   PROCESS common/subtemplate name="titles_record_html_modals" %]
-
-<script>
-$('#normdataModal').on('show.bs.modal', function (event) {
-  var button = $(event.relatedTarget) // Button that triggered the modal
-  var formaturl = button.data('formaturl') // Extract info from data-* attributes
-  var formattitle = button.data('formattitle') // Extract info from data-* attributes
-  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-  var modal = $(this)
-  modal.find('.modal-body').html('<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>');
-  modal.find('.modal-title').text(formattitle)
-  modal.find('.modal-body').load(formaturl);
-})
-</script>
-[% END %]
 
 <script type="text/javascript" src="/js/cookiealert.js"></script>
 <script type="text/javascript" src="/js/htmx.min.js"></script>

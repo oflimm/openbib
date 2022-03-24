@@ -160,7 +160,301 @@ sub authenticate {
 # Circulation
 ######################################################################
 
-# Bestellunge, Vormerkungen und Ausleihen in einer Abfrage
+sub update_email {
+    my ($self,$username,$email) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $database = $self->get_database;
+    my $config   = $self->get_config;
+
+    my $response_ref = {};
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    $logger->debug("Renew loans via USB-SOAP");
+
+    unless ($username){
+	$response_ref =  {
+	    error => "missing parameter",
+	};
+
+	return $response_ref;
+    }
+    
+    my @args = ($username,$email);
+	    
+    my $uri = "urn:/Account";
+	    
+    if ($circinfotable->get($database)->{circdb} ne "sisis"){
+	$uri = "urn:/Account_inst";
+    }
+	        
+    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));    
+    
+    my $result_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('usbws_url'));
+	my $result = $soap->set_mail(@args);
+	
+	unless ($result->fault) {
+	    $result_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    
+	    $response_ref = {
+		error => $result->faultcode,
+		error_description => $result->faultstring,
+	    };
+	    
+	    return $response_ref;
+
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$config->get('usbws_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
+	};
+	
+	return $response_ref;
+    }
+
+    # Allgemeine Fehler
+    if (defined $result_ref->{BenutzerDatenRewr} && defined $result_ref->{BenutzerDatenRewr}{NotOK}){
+	$response_ref = {
+	    "code" => 400,
+		"error" => "error",
+		"error_description" => $result_ref->{BenutzerDatenRewr}{NotOK},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+
+    if (defined $result_ref->{BenutzerDatenRewr} && defined $result_ref->{BenutzerDatenRewr}{OKMsg} ){
+	$response_ref = {
+	    "successful" => 1,
+		"message" => $result_ref->{BenutzerDatenRewr}{OKMsg},
+	};
+    }
+    
+    return $result_ref;
+}
+
+sub update_phone {
+    my ($self,$username,$phone) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $database = $self->get_database;
+    my $config   = $self->get_config;
+
+    my $response_ref = {};
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    $logger->debug("Renew loans via USB-SOAP");
+
+    unless ($username){
+	$response_ref =  {
+	    error => "missing parameter",
+	};
+
+	return $response_ref;
+    }
+    
+    my @args = ($username,$phone);
+	    
+    my $uri = "urn:/Account";
+	    
+    if ($circinfotable->get($database)->{circdb} ne "sisis"){
+	$uri = "urn:/Account_inst";
+    }
+	        
+    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));    
+    
+    my $result_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('usbws_url'));
+	my $result = $soap->set_telefon(@args);
+	
+	unless ($result->fault) {
+	    $result_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    
+	    $response_ref = {
+		error => $result->faultcode,
+		error_description => $result->faultstring,
+	    };
+	    
+	    return $response_ref;
+
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$config->get('usbws_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
+	};
+	
+	return $response_ref;
+    }
+
+    # Allgemeine Fehler
+    if (defined $result_ref->{BenutzerDatenRewr} && defined $result_ref->{BenutzerDatenRewr}{NotOK}){
+	$response_ref = {
+	    "code" => 400,
+		"error" => "error",
+		"error_description" => $result_ref->{BenutzerDatenRewr}{NotOK},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+
+    if (defined $result_ref->{BenutzerDatenRewr} && defined $result_ref->{BenutzerDatenRewr}{OKMsg} ){
+	$response_ref = {
+	    "successful" => 1,
+		"message" => $result_ref->{BenutzerDatenRewr}{OKMsg},
+	};
+    }
+    
+    return $result_ref;
+}
+
+sub update_password {
+    my ($self,$username,$oldpassword,$newpassword) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $database = $self->get_database;
+    my $config   = $self->get_config;
+
+    my $response_ref = {};
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    $logger->debug("Renew loans via USB-SOAP");
+
+    unless ($username || $oldpassword || $newpassword){
+	$response_ref =  {
+	    error => "missing parameter",
+	};
+
+	return $response_ref;
+    }
+    
+    my @args = ($username,$oldpassword,$newpassword);
+	    
+    my $uri = "urn:/Account";
+	    
+    if ($circinfotable->get($database)->{circdb} ne "sisis"){
+	$uri = "urn:/Account_inst";
+    }
+	        
+    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));    
+    
+    my $result_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('usbws_url'));
+	my $result = $soap->set_passwd(@args);
+	
+	unless ($result->fault) {
+	    $result_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    
+	    $response_ref = {
+		error => $result->faultcode,
+		error_description => $result->faultstring,
+	    };
+	    
+	    return $response_ref;
+
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$config->get('usbws_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
+	};
+	
+	return $response_ref;
+    }
+
+    # Allgemeine Fehler
+    if (defined $result_ref->{BenutzerDatenRewr} && defined $result_ref->{BenutzerDatenRewr}{NotOK}){
+	$response_ref = {
+	    "code" => 400,
+		"error" => "error",
+		"error_description" => $result_ref->{BenutzerDatenRewr}{NotOK},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+
+    if (defined $result_ref->{BenutzerDatenRewr} && defined $result_ref->{BenutzerDatenRewr}{OKMsg} ){
+	$response_ref = {
+	    "successful" => 1,
+		"message" => $result_ref->{BenutzerDatenRewr}{OKMsg},
+	};
+    }
+    
+    return $result_ref;
+}
+
+# Bestellungen, Vormerkungen und Ausleihen in einer Abfrage
 sub get_items {
     my ($self,$username) = @_;
 
@@ -225,6 +519,204 @@ sub get_accountinfo {
     }
     
     return $response_ref;
+}
+
+# Accountinformationen
+sub get_address {
+    my ($self,$username) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $database = $self->get_database;
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+    
+    my $response_ref = {};
+
+    if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
+
+	$logger->debug("Getting Circulation info via USB-SOAP");
+
+	my $request_types_ref = [
+	    {
+		type   => 'ADRESSE',
+		status => 2,
+	    },
+	    ];
+	
+	$response_ref = $self->send_account_request({ username => $username, types => $request_types_ref});
+    }
+    
+    return $response_ref;
+}
+
+# Artikelbestellungen
+sub get_article_orders {
+    my ($self,$username,$start,$count) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $database = $self->get_database;
+    my $config   = $self->get_config;
+
+    my $response_ref = {};
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    $logger->debug("Renew loans via USB-SOAP");
+
+    unless ($username){
+	$response_ref =  {
+	    error => "missing parameter",
+	};
+
+	return $response_ref;
+    }
+    
+    my @args = ('38','sisis',$username,$start,$count);
+	    
+    my $uri = "urn:/M3account";
+	    
+    $logger->debug("Trying connection to uri $uri at ".$config->get('zflws_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));    
+    
+    my $result_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('zflws_url'));
+	my $result = $soap->show_m3account(@args);
+	
+	unless ($result->fault) {
+	    $result_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    
+	    $response_ref = {
+		error => $result->faultcode,
+		error_description => $result->faultstring,
+	    };
+	    
+	    return $response_ref;
+
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$config->get('usbws_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem bei der Verbindung zum ZFL-System",
+	};
+	
+	return $response_ref;
+    }
+
+
+    $response_ref = {
+	    "code" => 405,
+		"error" => "unknown error",
+		"error_description" => "Unbekannter Fehler",
+	};
+
+    if ($logger->is_debug){
+	$response_ref->{debug} = $result_ref;
+    }
+
+    return $response_ref;    
+}
+
+# Fernleihbestellungen
+sub get_zfl_orders {
+    my ($self,$username,$start,$count) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $database = $self->get_database;
+    my $config   = $self->get_config;
+
+    my $response_ref = {};
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    $logger->debug("Renew loans via USB-SOAP");
+
+    unless ($username){
+	$response_ref =  {
+	    error => "missing parameter",
+	};
+
+	return $response_ref;
+    }
+    
+    my @args = ('38','sisis',$username,$start,$count);
+	    
+    my $uri = "urn:/M3account";
+	    
+    $logger->debug("Trying connection to uri $uri at ".$config->get('zflws_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));    
+    
+    my $result_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('zflws_url'));
+	my $result = $soap->show_zflaccount(@args);
+	
+	unless ($result->fault) {
+	    $result_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    
+	    $response_ref = {
+		error => $result->faultcode,
+		error_description => $result->faultstring,
+	    };
+	    
+	    return $response_ref;
+
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$config->get('usbws_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem bei der Verbindung zum ZFL-System",
+	};
+	
+	return $response_ref;
+    }
+
+
+    $response_ref = {
+	    "code" => 405,
+		"error" => "unknown error",
+		"error_description" => "Unbekannter Fehler",
+	};
+
+    if ($logger->is_debug){
+	$response_ref->{debug} = $result_ref;
+    }
+
+    return $response_ref;    
 }
 
 # Bestellungen
@@ -2028,7 +2520,35 @@ sub send_account_request {
 		return $response_ref ;
 	    }
 
-	    if ( $type_ref->{type} eq "KURZKONTO" ){
+	    if ( $type_ref->{type} eq "ADRESSE" ){
+		eval {
+		    $response_ref->{salutation}        = $itemlist->{BenutzerDaten}{Anrede};
+		    $response_ref->{username}          = $itemlist->{BenutzerDaten}{BenutzerNummer};
+		    $response_ref->{fullname}          = $itemlist->{BenutzerDaten}{FullName};
+		    $response_ref->{startdate}         = $itemlist->{BenutzerDaten}{DatumAufnahme};
+		    $response_ref->{enddate}           = $itemlist->{BenutzerDaten}{AusweisEnde};
+		    $response_ref->{birthdate}         = $itemlist->{BenutzerDaten}{GeburtsDatum};
+		    $response_ref->{street}            = $itemlist->{BenutzerDaten}{Strasse1};
+		    $response_ref->{street2}           = $itemlist->{BenutzerDaten}{Strasse2};
+		    $response_ref->{city}              = $itemlist->{BenutzerDaten}{Ort1};
+		    $response_ref->{city2}             = $itemlist->{BenutzerDaten}{Ort2};
+		    $response_ref->{citycode}          = $itemlist->{BenutzerDaten}{Plz1};
+		    $response_ref->{citycode2}         = $itemlist->{BenutzerDaten}{Plz2};
+		    $response_ref->{phone}             = $itemlist->{BenutzerDaten}{Telefon1};
+		    $response_ref->{phone2}            = $itemlist->{BenutzerDaten}{Telefon2};
+		    $response_ref->{email}             = $itemlist->{BenutzerDaten}{Email1};
+		    $response_ref->{email2}            = $itemlist->{BenutzerDaten}{Email2};
+		};
+
+		if ($@){
+		    $response_ref = {
+			error => "error",
+			error_description => "Kein Zugriff auf das Benutzerkonto",
+		    };
+		    return $response_ref ;		    
+		}
+	    }
+	    elsif ( $type_ref->{type} eq "KURZKONTO" ){
 		eval {
 		$response_ref->{username}          = $itemlist->{KurzKonto}{BenutzerNummer};
 		$response_ref->{fullname}          = $itemlist->{KurzKonto}{FullName};

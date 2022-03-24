@@ -104,7 +104,7 @@ sub show_collection {
 
     if (!$self->authorization_successful || $database ne $sessionauthenticator){
         if ($self->param('representation') eq "html"){
-            return $self->tunnel_through_authenticator('POST');            
+            return $self->tunnel_through_authenticator('GET');            
         }
         else  {
             return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
@@ -129,18 +129,18 @@ sub show_collection {
     
     my $authenticator=$session->get_authenticator;
 
-    # Anreicherung mit Informationen zum Titel
+    # # Anreicherung mit Informationen zum Titel
 
-    foreach my $item_ref (@{$fees_ref->{items}}){
-	# Parse Information
-	next if (!$item_ref->{item});
+    # foreach my $item_ref (@{$fees_ref->{items}}){
+    # 	# Parse Information
+    # 	next if (!$item_ref->{item});
 
-	my $titleid = $item_ref->{edition};
+    # 	my $titleid = $item_ref->{edition};
 	
-	my $fields = OpenBib::Record::Title->new({ database => $database, id => $titleid})->load_brief_record->get_fields;
+    # 	my $fields = OpenBib::Record::Title->new({ database => $database, id => $titleid})->load_brief_record->get_fields;
 
-	$item_ref->{fields} = $fields;
-    }
+    # 	$item_ref->{fields} = $fields;
+    # }
     
     # TT-Data erzeugen
     

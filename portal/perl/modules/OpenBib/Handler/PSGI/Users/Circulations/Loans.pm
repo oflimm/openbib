@@ -103,7 +103,7 @@ sub show_collection {
 
     if (!$self->authorization_successful || $database ne $sessionauthenticator){
         if ($self->param('representation') eq "html"){
-            return $self->tunnel_through_authenticator('POST');            
+            return $self->tunnel_through_authenticator('GET');            
         }
         else  {
             return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));

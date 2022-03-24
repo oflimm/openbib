@@ -23,6 +23,8 @@
 [% IF address.street2 || address.citycode2 || address.city2 %]
 <tr><th>[% msg.maketext("Zweitanschrift") %]</th><td>[% address.street2 %]<br/>[% address.citycode2 %] [% address.city2 %]</td></tr>
 [% END %]
+<tr><th>[% msg.maketext("Telefon-Nummer") %]</th><td>[% IF address.phone %][% address.phone %][% ELSE %][% msg.maketext("keine angegeben") %][% END %]</td></tr>
+<tr><th>[% msg.maketext("E-Mail Adresse") %]</th><td>[% address.email %]</td></tr>
 </tbody>
 </table>
 </div>
@@ -44,7 +46,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
 
-      <form method="POST" action="[% path_prefix%]/[% config.get("users_loc")%]/id/[% user.ID %]/[% config.get("databases_loc") %]/id/[% database %]/[% config.get("circulations_loc")%]">
+      <form method="post" action="[% path_prefix%]/[% config.get("users_loc")%]/id/[% user.ID %]/[% config.get("databases_loc") %]/id/[% database %]/[% config.get("circulations_loc") %]">
 	<input type="hidden" name="field" value="password" />
 
 	<div class="modal-header">
@@ -97,7 +99,7 @@
       -%]
       
       [% IF NOT is_smail %]      
-      <form method="POST" action="[% path_prefix%]/[% config.get("users_loc")%]/id/[% user.ID %]/[% config.get("databases_loc") %]/id/[% database %]/[% config.get("circulations_loc")%]">
+      <form method="post" action="[% path_prefix%]/[% config.get("users_loc")%]/id/[% user.ID %]/[% config.get("databases_loc") %]/id/[% database %]/[% config.get("circulations_loc")%]">
       [% END %]	
 	<input type="hidden" name="field" value="email" />
 
@@ -157,7 +159,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
 
-      <form method="POST" action="[% path_prefix%]/[% config.get("users_loc")%]/id/[% user.ID %]/[% config.get("databases_loc") %]/id/[% database %]/[% config.get("circulations_loc")%]">
+      <form method="post" action="[% path_prefix%]/[% config.get("users_loc")%]/id/[% user.ID %]/[% config.get("databases_loc") %]/id/[% database %]/[% config.get("circulations_loc") %]">
 	<input type="hidden" name="field" value="phone" />
 
 	<div class="modal-header">

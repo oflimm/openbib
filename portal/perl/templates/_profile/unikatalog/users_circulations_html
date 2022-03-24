@@ -12,6 +12,7 @@
 #######################################################################
 -%]
 
+
 <div class="card">
 <div class="card-header">[% msg.maketext("Bücher: Ausleihen / Fernleihen") %]</div>
 <div class="card-body">
@@ -78,10 +79,10 @@
 <div class="card-body">
 
 <ul>
-<li>[% msg.maketext("Persönliche Angaben anzeigen") %]</li>
-<li>[% msg.maketext("E-Mail-Adresse eintragen bzw. ändern") %]</li>
-<li>[% msg.maketext("Telefonnummer eintragen bzw. ändern") %]</li>
-<li>[% msg.maketext("Passwort ändern") %]</li>
+<li><a href="#" data-bs-toggle="modal" data-bs-target="#addressModal">[% msg.maketext("Persönliche Angaben anzeigen") %]</a></li>
+<li><a href="#" data-bs-toggle="modal" data-bs-target="#emailModal">[% msg.maketext("E-Mail-Adresse eintragen bzw. ändern") %]</li></a>
+<li><a href="#" data-bs-toggle="modal" data-bs-target="#phoneModal">[% msg.maketext("Telefonnummer eintragen bzw. ändern") %]</a></li>
+<li><a href="#" data-bs-toggle="modal" data-bs-target="#passwordModal">[% msg.maketext("Passwort ändern") %]</a></li>
 </ul>
 
 </div>

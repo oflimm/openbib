@@ -1,0 +1,196 @@
+<!-- Start: Adressinformationen anzeigen -->
+<div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="addressModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addressModalLabel">[% msg.maketext("Persönliche Angaben") %]</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
+        </button>
+      </div>
+      <div class="modal-body" id="address">
+
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+<tbody>
+<tr><th>[% msg.maketext("Anrede") %]</th><td>[% address.salutation %]</td></tr>
+<tr><th>[% msg.maketext("Name") %]</th><td>[% address.fullname %]</td></tr>
+<tr><th>[% msg.maketext("Geburtsdatum") %]</th><td>[% address.birthdate %]</td></tr>
+<tr><th>[% msg.maketext("Anmeldung am") %]</th><td>[% address.startdate %]</td></tr>
+<tr><th>[% msg.maketext("Ausweis gültig bis") %]</th><td>[% address.enddate %]</td></tr>
+[% IF address.street || address.citycode || address.city %]
+<tr><th>[% msg.maketext("Postanschrift") %]</th><td>[% address.street %]<br/>[% address.citycode %] [% address.city %]</td></tr>
+[% END %]
+[% IF address.street2 || address.citycode2 || address.city2 %]
+<tr><th>[% msg.maketext("Zweitanschrift") %]</th><td>[% address.street2 %]<br/>[% address.citycode2 %] [% address.city2 %]</td></tr>
+[% END %]
+</tbody>
+</table>
+</div>
+
+<p>
+[% msg.maketext("Die Anschrift hat sich geändert? Korrektur am Schalter Bibliotheksausweise & Fernleihrückgabe im EG. Bitte bringen Sie mit: Personalausweis oder Meldebescheinigung vom Bürgeramt.") %]
+</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End: Adressinformationen anzeigen -->
+
+<!-- Start: Passwort aendern -->
+<div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+
+      <form method="POST" action="[% path_prefix%]/[% config.get("users_loc")%]/id/[% user.ID %]/[% config.get("databases_loc") %]/id/[% database %]/[% config.get("circulations_loc")%]">
+	<input type="hidden" name="field" value="password" />
+
+	<div class="modal-header">
+          <h5 class="modal-title" id="passwordModalLabel">[% msg.maketext("Passwort ändern") %]</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
+          </button>
+	</div>
+	<div class="modal-body" id="password">
+	  
+	  <div class="form-floating mb-3">
+            <input class="form-control" type="password" name="oldpassword" id="oldpassword" value="" size="20" />
+            <label for="oldpassword">[% msg.maketext("Derzeitiges Passwort") %]</label>
+	  </div>
+	  
+	  <div class="form-floating mb-3">
+            <input class="form-control" type="password" pattern="(?=.*\d)(?=.*[a-zA-Z]).{6,}" name="password1" id="password1" value="" size="20" />
+            <label for="password1">[% msg.maketext("Neues Passwort") %] *</label>
+	  </div>
+	  
+	  
+	  <div class="form-floating mb-3">
+            <input class="form-control" type="password" name="password2" id="password2" value="" size="20" />
+            <label for="password2">[% msg.maketext("Passwort bestätigen") %]</label>
+	  </div>
+
+	  <p style="color: red; font-size:0.8em;">* [% msg.maketext("genau 6 Stellen, nur Zahlen und lateinische Buchstaben, ohne Umlaute und ß, mindestens eine Zahl und ein Klein- oder Großbuchstabe") %]</p>
+	  
+	  
+	</div>
+	<div class="modal-footer">
+          <button type="submit" class="btn btn-primary mb-2">[% msg.maketext("Änderung speichern") %]</button>
+	  
+          <button type="button" class="btn btn-primary mb-2" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>
+	</div>
+      </form>      
+    </div>
+  </div>
+</div>
+<!-- End: Passwort aendern -->
+
+<!-- Start: E-Mail aendern -->
+<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="emailModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      [%-
+      IF address.username.match('^A') && address.email.match('@smail.uni-koeln.de');
+      is_smail = 1;
+
+      END;
+      -%]
+      
+      [% IF NOT is_smail %]      
+      <form method="POST" action="[% path_prefix%]/[% config.get("users_loc")%]/id/[% user.ID %]/[% config.get("databases_loc") %]/id/[% database %]/[% config.get("circulations_loc")%]">
+      [% END %]	
+	<input type="hidden" name="field" value="email" />
+
+	<div class="modal-header">
+          <h5 class="modal-title" id="emailModalLabel">[% IF address.email %][% msg.maketext("E-Mail-Adresse ändern") %][% ELSE %][% msg.maketext("E-Mail-Adresse eintragen") %][% END %]</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
+          </button>
+	</div>
+	<div class="modal-body" id="email">
+[% IF is_smail %]
+
+<table>
+<tr><th>[% msg.maketext("E-Mail-Adresse") %]</th><td>[% address.email %]</td></tr>
+</table>
+
+<p>
+  [% msg.maketext("Die S-Mail-Adresse wird automatisch eingetragen und kann nicht überschrieben werden. Weiterleitung an private E-Mail-Adresse:") %]
+</p>
+<p>
+  <a href="http://mailportal.uni-koeln.de" target="_blank">http://mailportal.uni-koeln.de</a>
+</p>
+[% ELSE %]
+	  <div class="form-floating mb-3">
+            <span class="form-control">[% IF address.email %][% address.email %][% ELSE %][% msg.maketext("kein Eintrag") %][% END %]</span>
+            <label>[% msg.maketext("Derzeitige E-Mail-Adresse") %]</label>
+	  </div>
+	  
+	  <div class="form-floating mb-3">
+            <input class="form-control" type="text" name="email1" id="email1" value="" size="20" />
+            <label for="email1">[% msg.maketext("Neue E-Mail-Adresse") %]</label>
+	  </div>
+	  
+	  
+	  <div class="form-floating mb-3">
+            <input class="form-control" type="text" name="email2" id="email2" value="" size="20" />
+            <label for="email2">[% msg.maketext("E-Mail-Adresse bestätigen") %]</label>
+	  </div>
+[% END %]
+	  
+	</div>
+	<div class="modal-footer">
+      [% IF NOT is_smail %]      	  
+          <button type="submit" class="btn btn-primary mb-2">[% msg.maketext("Änderung speichern") %]</button>
+      [% END %]
+          <button type="button" class="btn btn-primary mb-2" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>
+	</div>
+      [% IF NOT is_smail %]      
+      </form>
+      [% END %]
+    </div>
+  </div>
+</div>
+<!-- End: E-Mail aendern -->
+
+<!-- Start: Telefonnummer aendern -->
+<div class="modal fade" id="phoneModal" tabindex="-1" role="dialog" aria-labelledby="phoneModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+
+      <form method="POST" action="[% path_prefix%]/[% config.get("users_loc")%]/id/[% user.ID %]/[% config.get("databases_loc") %]/id/[% database %]/[% config.get("circulations_loc")%]">
+	<input type="hidden" name="field" value="phone" />
+
+	<div class="modal-header">
+          <h5 class="modal-title" id="phoneModalLabel">[% IF address.phone %][% msg.maketext("Telefonnummer ändern") %][% ELSE %][% msg.maketext("Telefonnummer eintragen") %][% END %]</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
+          </button>
+	</div>
+	<div class="modal-body" id="phone">
+	  
+	  <div class="form-floating mb-3">
+            <span class="form-control">[% IF address.phone %][% address.phone %][% ELSE %][% msg.maketext("kein Eintrag") %][% END %]</span>
+            <label>[% msg.maketext("Derzeitige Telefonnummer") %]</label>
+	  </div>
+	  
+	  <div class="form-floating mb-3">
+            <input class="form-control" type="text" name="phone1" id="phone1" value="" size="20" />
+            <label for="phone1">[% msg.maketext("Neue Telefonnummer") %]</label>
+	  </div>
+	  
+	  
+	  <div class="form-floating mb-3">
+            <input class="form-control" type="text" name="phone2" id="phone2" value="" size="20" />
+            <label for="phone2">[% msg.maketext("Telefonnummer bestätigen") %]</label>
+	  </div>
+	  
+	</div>
+	<div class="modal-footer">
+          <button type="submit" class="btn btn-primary mb-2">[% msg.maketext("Änderung speichern") %]</button>
+	  
+          <button type="button" class="btn btn-primary mb-2" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>
+	</div>
+      </form>      
+    </div>
+  </div>
+</div>
+<!-- End: Telefonnummer aendern -->

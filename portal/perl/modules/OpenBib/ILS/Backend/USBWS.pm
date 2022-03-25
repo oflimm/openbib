@@ -59,6 +59,7 @@ use OpenBib::User;
 # Authentication
 ######################################################################
 
+# Authentifizierung
 sub authenticate {
     my ($self,$arg_ref) = @_;
 
@@ -461,7 +462,7 @@ sub get_items {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $response_ref = ();
+    my $response_ref = {};
 
     my $orders_ref       = $self->get_orders($username);
     my $reservations_ref = $self->get_reservations($username);
@@ -2893,13 +2894,13 @@ Dieses Backend stellt die Methoden zur Authentifizierung, Ausleihe und Mediensta
 
  my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
 
- my $userid = $ils->authenticate({ viewname => 'kug', username => 'abc', password => '123' });
+ my $result_ref = $ils->authenticate({ username => 'abc', password => '123' });
 
- if ($userid > 0){
-    # Erfolgreich authentifiziert und Userid in $userid gespeichert
+ if (defined $result_ref->{failure}){
+    # Authentifizierungsfehler. Fehlercode in $result_ref->{failure}
  }
  else {
-    # $userid ist Fehlercode
+    # Erfolgreich authentifiziert. Nutzerinformationen in $result_ref->{userinfo}
  }
 
 
@@ -2910,6 +2911,98 @@ Dieses Backend stellt die Methoden zur Authentifizierung, Ausleihe und Mediensta
 =item new
 
 Erzeugung des Objektes
+
+=item authenticate
+
+Authentifizierung am ILS
+
+=item update_email
+
+Aktualisierung der Mail-Adress im ILS
+
+=item update_phone
+
+Aktualisierung der Telefonnummer im ILS
+
+=item update_password
+
+Aktualisierung des Passworts im ILS
+
+=item get_items
+
+Bestellungen, Vormerkungen und Ausleihen in einer Abfrage aus dem ILS holen
+
+=item get_accountinfo
+
+Zusammenfassung des Nutzers aus ILS holen (Zahl Ausleihen, Vormerkunge, etc.)
+
+=item get_address
+
+Adressinformationen des Nutzer aus dem ILS holen
+
+=item get_article_orders
+
+Artikel-Fernleihbestellung aus dem ILS oder Medea holen
+
+=item get_zfl_orders
+
+Buch-Fernleihbestellungen aus dem ILS oder ZFL holen
+
+=item get_orders
+
+Liste der Bestellungen eines Nutzers aus dem ILS holen
+
+=item get_reservations
+
+Liste der Vormerkungen eines Nutzers aus dem ILS holen
+
+=item get_fees
+
+Liste der Gebuehren eines Nutzers aus dem ILS holen
+
+=item get_loans
+
+Liste der Ausleihen eines Nutzers aus dem ILS holen
+
+=item make_reservation
+
+Eine Vormerkung im ILS taetigen
+
+=item cancel_reservation
+
+Eine getaetigte Vormerkung im ILS stornieren
+
+=item make_order
+
+Eine Bestellung im ILS taetigen
+
+=item cancel_order
+
+Eine Bestellung im ILS oder per Mail stornieren
+
+=item renew_loans
+
+Eine Gesamtkontoverlaengerung im ILS durchfuehren
+
+=item renew_single_loan
+
+Die Verlaengerung eines einzelnen Mediums im ILS durchfuehren
+
+=item get_mediastatus
+
+Liste der Exemplare mit Ausleihinformationen aus dem ILS holen
+
+=item get_timestamp
+
+Hilfsmethode: Aktuellen Timestamp generieren
+
+=item check_order
+
+Bestellung ueberpruefen
+
+=item check_reservation
+
+Vormerkung ueberpruefen
 
 =back
 

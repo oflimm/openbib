@@ -2871,9 +2871,11 @@ sub resolve_msg {
 
 # Definition der USBWS:
 #
-# /opt/ip/var/cgi-intern/loan.pl
+# /opt/ips/var/cgi-intern/account.pl
+# /opt/ips/var/cgi-intern/loan.pl
 # /opt/ips/usr/perl/USB/SOAP/S***s/Loan.pm
 # /opt/ips/usr/config/gateway_usb/ubkloan.xml
+# /opt/ips/usr/templates/appltemplates/USB/template.accountxml.tpl
 # /opt/ips/usr/templates/appltemplates/USB/template.loanxml.tpl
 # /opt/ips/usr/templates/appltemplates/USB/template.loan.tpl
 

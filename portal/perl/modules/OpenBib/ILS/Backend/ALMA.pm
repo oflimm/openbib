@@ -364,7 +364,7 @@ Dieses Backend stellt die Methoden zur Authentifizierung, Ausleihe und Mediensta
 
  my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
 
-my $result_ref = $ils->authenticate({ username => 'abc', password => '123' });
+ my $result_ref = $ils->authenticate({ username => 'abc', password => '123' });
 
  if (defined $result_ref->{failure}){
     # Authentifizierungsfehler. Fehlercode in $result_ref->{failure}

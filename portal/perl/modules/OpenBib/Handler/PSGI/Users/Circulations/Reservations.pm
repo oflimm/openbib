@@ -200,7 +200,7 @@ sub create_record {
 	$logger->debug("Auth successful: ".$self->authorization_successful." - Authenticator: $sessionauthenticator");
     }
     
-    if (!$self->authorization_successful || $userid ne $sessionuserid){
+    if (!$self->authorization_successful){
         $logger->debug("Authenticator: $sessionauthenticator");
 
         if ($self->param('representation') eq "html"){
@@ -328,7 +328,7 @@ sub delete_record {
 	$logger->debug("Auth successful: ".$self->authorization_successful." - Authenticator: $sessionauthenticator");
     }
     
-    if (!$self->authorization_successful || $userid ne $sessionuserid){
+    if (!$self->authorization_successful){
         $logger->debug("Authenticator: $sessionauthenticator");
 
         if ($self->param('representation') eq "html"){

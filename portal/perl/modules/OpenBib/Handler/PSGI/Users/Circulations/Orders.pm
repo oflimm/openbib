@@ -190,7 +190,7 @@ sub create_record {
 	$logger->debug("Auth successful: ".$self->authorization_successful." - Authenticator: $sessionauthenticator");
     }
     
-    if (!$self->authorization_successful || $userid ne $sessionuserid){
+    if (!$self->authorization_successful){
         if ($self->param('representation') eq "html"){
             return $self->tunnel_through_authenticator('POST');            
         }
@@ -322,7 +322,7 @@ sub delete_record {
 	$logger->debug("Auth successful: ".$self->authorization_successful." - Authenticator: $sessionauthenticator");
     }
     
-    if (!$self->authorization_successful || $userid ne $sessionuserid){
+    if (!$self->authorization_successful){
         $logger->debug("Authenticator: $sessionauthenticator");
 
         if ($self->param('representation') eq "html"){
@@ -443,7 +443,7 @@ sub confirm_delete_record {
 	$logger->debug("Auth successful: ".$self->authorization_successful." - Authenticator: $sessionauthenticator");
     }
     
-    if (!$self->authorization_successful || $userid ne $sessionuserid){
+    if (!$self->authorization_successful){
         $logger->debug("Authenticator: $sessionauthenticator");
 
         if ($self->param('representation') eq "html"){

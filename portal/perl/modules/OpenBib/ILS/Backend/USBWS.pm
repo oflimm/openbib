@@ -255,7 +255,7 @@ sub update_email {
 	};
     }
     
-    return $result_ref;
+    return $response_ref;
 }
 
 sub update_phone {
@@ -353,7 +353,7 @@ sub update_phone {
 	};
     }
     
-    return $result_ref;
+    return $response_ref;
 }
 
 sub update_password {
@@ -451,7 +451,7 @@ sub update_password {
 	};
     }
     
-    return $result_ref;
+    return $response_ref;
 }
 
 # Bestellungen, Vormerkungen und Ausleihen in einer Abfrage

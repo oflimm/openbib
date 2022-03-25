@@ -36,9 +36,9 @@
 <p>[% msg.maketext("Übersicht über Ihre Ausleihen, Bestellungen und Vormerkungen.") %]</p>
 
 <ul>
-<li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.name %]/[% config.get('circulations_loc') %]/id/loans.html?l=[% lang %]">[% msg.maketext("Ausleihen") %]</a>: [% account.num_loans %]</li>
-<li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.name %]/[% config.get('circulations_loc') %]/id/orders.html?l=[% lang %]">[% msg.maketext("Offene Bestellungen") %]</a>: [% account.num_orders %]</li>
-<li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.name %]/[% config.get('circulations_loc') %]/id/reservations.html?l=[% lang %]">[% msg.maketext("Vormerkungen") %]</a>: [% account.num_reservations %]</li>
+<li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/loans.html?l=[% lang %]">[% msg.maketext("Ausleihen") %]</a>: [% account.num_loans %]</li>
+<li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/orders.html?l=[% lang %]">[% msg.maketext("Offene Bestellungen") %]</a>: [% account.num_orders %]</li>
+<li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/reservations.html?l=[% lang %]">[% msg.maketext("Vormerkungen") %]</a>: [% account.num_reservations %]</li>
 </ul>
 
 </div>
@@ -66,7 +66,7 @@
 <div class="card-body">
 
 <ul>
-<li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.name %]/[% config.get('circulations_loc') %]/id/fees.html?l=[% lang %]">[% msg.maketext("Offene Gebühren") %]</a>: EUR [% account.amount_fees %]</li>
+<li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/fees.html?l=[% lang %]">[% msg.maketext("Offene Gebühren") %]</a>: EUR [% account.amount_fees %]</li>
 </ul>
 
 </div>

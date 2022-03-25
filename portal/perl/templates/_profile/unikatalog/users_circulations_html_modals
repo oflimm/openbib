@@ -46,7 +46,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
 
-      <form method="post" action="[% path_prefix%]/[% config.get("users_loc")%]/id/[% user.ID %]/[% config.get("databases_loc") %]/id/[% database %]/[% config.get("circulations_loc") %]">
+      <form method="post" action="[% path_prefix%]/[% config.get("users_loc")%]/id/[% user.ID %]/[% config.get("circulations_loc") %]">
 	<input type="hidden" name="field" value="password" />
 
 	<div class="modal-header">
@@ -57,18 +57,18 @@
 	<div class="modal-body" id="password">
 	  
 	  <div class="form-floating mb-3">
-            <input class="form-control" type="password" name="oldpassword" id="oldpassword" value="" size="20" />
+            <input class="form-control" type="password" name="oldpassword" id="oldpassword" value="" size="6" />
             <label for="oldpassword">[% msg.maketext("Derzeitiges Passwort") %]</label>
 	  </div>
 	  
 	  <div class="form-floating mb-3">
-            <input class="form-control" type="password" pattern="(?=.*\d)(?=.*[a-zA-Z]).{6,}" name="password1" id="password1" value="" size="20" />
+            <input class="form-control" type="password" pattern="(?=.*\d)(?=.*[a-zA-Z]).{6,}" name="password1" id="password1" value="" size="6" maxlength="6" />
             <label for="password1">[% msg.maketext("Neues Passwort") %] *</label>
 	  </div>
 	  
 	  
 	  <div class="form-floating mb-3">
-            <input class="form-control" type="password" name="password2" id="password2" value="" size="20" />
+            <input class="form-control" type="password" name="password2" id="password2" value="" size="6" maxlength="6" />
             <label for="password2">[% msg.maketext("Passwort bestätigen") %]</label>
 	  </div>
 
@@ -99,7 +99,7 @@
       -%]
       
       [% IF NOT is_smail %]      
-      <form method="post" action="[% path_prefix%]/[% config.get("users_loc")%]/id/[% user.ID %]/[% config.get("databases_loc") %]/id/[% database %]/[% config.get("circulations_loc")%]">
+      <form method="post" action="[% path_prefix%]/[% config.get("users_loc")%]/id/[% user.ID %]/[% config.get("circulations_loc")%]">
       [% END %]	
 	<input type="hidden" name="field" value="email" />
 
@@ -159,7 +159,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
 
-      <form method="post" action="[% path_prefix%]/[% config.get("users_loc")%]/id/[% user.ID %]/[% config.get("databases_loc") %]/id/[% database %]/[% config.get("circulations_loc") %]">
+      <form method="post" action="[% path_prefix%]/[% config.get("users_loc")%]/id/[% user.ID %]/[% config.get("circulations_loc") %]">
 	<input type="hidden" name="field" value="phone" />
 
 	<div class="modal-header">

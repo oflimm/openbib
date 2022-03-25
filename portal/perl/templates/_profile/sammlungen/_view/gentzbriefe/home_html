@@ -87,7 +87,7 @@
 <div class="card mt-5 mb-0 h-100">
 <div class="card-header pb-2 text-center ob-bg-secondary"><i class="fas fa-info fa-2x"></i></div>
 <div class="card-body p-0 ob-bg-secondary">
-<h5 class="card-title p-3 mt-4 text-center">[% msg.maketext("Editorial") %]</h5>
+<h5 class="card-title p-3 mt-4 text-center">[% msg.maketext("Zur Entstehung des Verzeichnisses") %]</h5>
 <a class="btn btn-primary ml-3" href="[% path_prefix %]/[% config.get('info_loc') %]/editorial.html?l=[% lang %]">Mehr</a></div>
 </div>
 </div>
@@ -129,13 +129,13 @@
 
 <div class="row">
 <div class="col-md-6 pl-0 pr-0 text-center">
-  <img class="img-fluid" src="/images/openbib/views/gentzbriefe/gentz-timeline.png" alt="Timeline Wallraf" />
+  <img class="img-fluid" src="/images/openbib/views/gentzbriefe/4_Teaserkachel_Zeitleiste_Startseite.png" alt="Timeline Wallraf" />
 </div>
 <div class="col-md-6 pl-5 pr-5 mt-5 pb-3">
-<h4>Timeline</h4>
+<h4>Protagonist in Zeiten des Umbruchs</h4>
 
 <p>
-Entdecken Sie über unsere Timeline interaktiv das Leben und Wirken Friedrich von Gentz
+Die Französische Revolution (1789) erschütterte die politische, soziale und wirtschaftliche Ordnung Europas. Diese Zeitleiste gibt einen Überblick zu Leben und Wirken des Friedrich Gentz in Zeiten einschneidender Veränderungen und Transformationsprozesse in der westeuropäischen Geschichte.
 </p>
 
 <a class="btn btn-primary mt-5" href="[% path_prefix %]/[% config.get('info_loc') %]/timeline.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a>
@@ -147,22 +147,14 @@ Entdecken Sie über unsere Timeline interaktiv das Leben und Wirken Friedrich vo
 <div class="col-md-6 pl-5 pr-5 mt-5 pb-3">
 <h4>Die Bedeutung der Sammlung Herterich</h4>
 <p>
-Text Text Text
-Text Text Text
-Text Text Text
-Text Text Text
-</p>
-
-<h5>
-PLUS: Bibliographie
-</h5>
+Der studierte Historiker und Kölner SPD-Politiker Günter Herterich (1939–2014) hat seit 1987 eine reiche Materialsammlung rund um das Leben und Wirken des Friedrich Gentz, bestehend aus dessen Briefen, Tagebüchern, Werken und deren Übersetzung in andere Sprachen, Beiträgen in Periodika und Enzyklopädien [...]
 
 <a class="btn btn-primary mt-5" href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a>
 
 </div>
 
 <div class="col-md-6 pl-0 pr-0 text-center">
-  <img class="img-fluid" src="/images/openbib/views/gentzbriefe/gentz-1.png" alt="Bedeutung der Sammlung" />
+  <img class="img-fluid" src="/images/openbib/views/gentzbriefe/5_Teaser_Startseite_Bedeutung_Sammlung_Herterich.png" alt="Bedeutung der Sammlung" />
 </div>
 
 </div><!-- End: row -->
@@ -176,13 +168,15 @@ PLUS: Bibliographie
 <h4>Über Modern Academic Publishing (MAP)</h4>
 
 <p>
-Text Text Text
-Text Text Text
-Text Text Text
-Text Text Text
-</p>
+MAP (Modern Academic Publishing) steht für die Erprobung unterschiedlicher digitaler <a href="https://neuere-geschichte.phil-fak.uni-koeln.de/personal/universitaetsprofessorinnen/gersmann-prof-dr-gudrun" target="_blank">Publikations- und Wissensvermittlungsformate</a> zu den <a href="https://neuere-geschichte.phil-fak.uni-koeln.de/personal/universitaetsprofessorinnen/gersmann-prof-dr-gudrun/forschung" target="_blank">Forschungsschwerpunkten</a> am <a href="https://neuere-geschichte.phil-fak.uni-koeln.de/personal/universitaetsprofessorinnen/gersmann-prof-dr-gudrun" target="_blank">Lehrstuhl für die Geschichte der Frühen Neuzeit</a> an der Uni Köln. Je nach Projekt kooperieren wir mit verschiedenen Partnern. MAP ist als <a href="https://fnzkoeln.hypotheses.org/4028" target="_blank">Wissenschaftsmarke</a> eingetragen und geschützt.</p>
 
+<p> Unter <a href="https://mapublishing-data.uni-koeln.de/"
+target="_blank">MAP-Data</a> bilden wir die bisherigen Projekte im
+Kontext der Veröffentlichung von Forschungsdaten ab.</p>
+
+<!--
 <a class="btn btn-primary mt-5" href="[% path_prefix %]/[% config.get('info_loc') %]/map.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a>
+-->
 
 </div>
 </div><!-- End: row -->

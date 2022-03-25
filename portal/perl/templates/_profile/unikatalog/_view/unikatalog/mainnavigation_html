@@ -55,10 +55,12 @@
   <div class="collapse navbar-collapse" id="navbarToggler">
 
      <div id="navbar-dismiss" class="float-end text-white" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fas fa-window-close fa-2x p-1"></i>
+        <button type="button" class="btn-close" aria-label="[% msg.maketext("Schließen") %]">
+     
+<!--            <i class="fas fa-window-close fa-2x p-1"></i> -->
      </div>
 
-     <div class="navbar-heading ob-bg text-white p-1 pb-0 mb-2">
+     <div class="sidebar-heading p-1 pb-0 mb-2">
             <h3>Menu</h3>
      </div>
 
@@ -102,10 +104,12 @@
   <div class="collapse navbar-collapse" id="userToggler">
 
      <div id="navbar-user-dismiss" class="float-end text-white" data-bs-toggle="collapse" data-bs-target="#userToggler" aria-controls="userToggler" aria-expanded="false" aria-label="Toggle user account">
-            <i class="fas fa-window-close fa-2x p-1"></i>
+        <button type="button" class="btn-close" aria-label="[% msg.maketext("Schließen") %]">
+     
+<!--            <i class="fas fa-window-close fa-2x p-1"></i> -->
      </div>
 
-     <div class="navbar-heading ob-bg text-white p-1 pb-0 mb-2">
+     <div class="sidebar-heading p-1 pb-0 mb-2">
             <h3>[% msg.maketext("Mein Konto") %]</h3>
      </div>
 
@@ -121,7 +125,7 @@
                 </li>
       [% END %]
     [%  ELSE %]
-           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %] p-1"><a class="nav-link btn btn-primary ms-1 me-1" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Anmelden") %]</a></li>
+           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %] p-1"><a class="nav-link btn btn-primary ms-1 me-1" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Mein Konto") %] | [% msg.maketext("Anmelden") %]</a></li>
     
            <li class="nav-item">
 <div class="card">
@@ -221,7 +225,7 @@
            <li class="nav-item[% IF layout_param.active_menu == "loginout" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %];purge_private_userinfo=1">[% msg.maketext("Abmelden") %]</a></li>
       [% END %]
     [%  ELSE %]
-           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]"><span class="d-none d-md-block">[% msg.maketext("Anmelden") %]</span></a></li>
+           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]"><span class="d-none d-md-block">[% msg.maketext("Mein Konto") %] | [% msg.maketext("Anmelden") %]</span></a></li>
     [%  END %]
 [%     END %]
 

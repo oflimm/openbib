@@ -20,8 +20,20 @@
 </thead>
 <tbody>
 [%# USE dumper;dumper.dump(circulation)%]
-[% FOREACH thiscirculation IN circulation %]
 [%-
+   # First pass
+   FOREACH thiscirculation IN circulation ;
+     IF thiscirculation.location_mark.match('#$') ; # LBS-Exemplare: Mediennummer statt Signatur anzeigen
+       thiscirculation.location_mark = thiscirculation.holdingid ;
+     END;
+
+     IF thiscirculation.remark && NOT thiscirculation.remark.match('^\(.*\)$') ; # z.B. 16L7924 (FussNoten=Kopie)
+       thiscirculation.remark = "(${thiscirculation.remark})";
+     END ;
+   END;
+
+   # Second pass
+   FOREACH thiscirculation IN sort_circulation(circulation) ;
 
      department = thiscirculation.department;
      storage    = thiscirculation.storage;
@@ -124,13 +136,6 @@
        title = normdata.${"T0310"}.first.content ;
     END ;
 
-    IF thiscirculation.location_mark.match('#$') ; # LBS-Exemplare: Mediennummer statt Signatur anzeigen
-      thiscirculation.location_mark = thiscirculation.holdingid ;
-    END;
-
-    IF thiscirculation.remark && NOT thiscirculation.remark.match('^\(.*\)$') ; # z.B. 16L7924 (FussNoten=Kopie)
-       thiscirculation.remark = "(${thiscirculation.remark})";
-    END ;
 
 -%]
 <tr><td><strong>[% standort_with_url %]</strong></td>

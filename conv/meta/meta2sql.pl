@@ -150,6 +150,7 @@ my %indexed_holding             = ();
 my %titleid_exists             = ();
 
 if ($reducemem) {
+    $logger->info("### $database: Reducing memory usage");
     tie %indexed_person,        'MLDBM', "./indexed_person.db"
         or die "Could not tie indexed_person.\n";
 
@@ -197,6 +198,10 @@ if ($reducemem) {
 
     tie %titleid_exists,    "MLDBM", "./titleid_exists.db"
         or die "Could not tie titleid_exists.\n";
+}
+
+if ($scheme){
+    $logger->info("### $database: Using scheme $scheme");
 }
 
 # Verbindung zur SQL-Datenbank herstellen

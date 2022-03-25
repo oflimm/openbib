@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Users::Circulations::Reservations
 #
-#  Dieses File ist (C) 2004-2021 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2022 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -37,6 +37,7 @@ use utf8;
 use DBI;
 use Digest::MD5;
 use Email::Valid;
+use HTML::Entities;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use SOAP::Lite;
@@ -84,7 +85,6 @@ sub show_collection {
     # Dispatched Args
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
-    my $database       = $self->param('database');
 
     # Shared Args
     my $query          = $self->query();
@@ -101,15 +101,18 @@ sub show_collection {
     my $servername     = $self->param('servername');
 
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
+    my $sessionuserid        = $user->get_userid_of_session($session->{ID});
 
-    if (!$self->authorization_successful || $database ne $sessionauthenticator){
+    if (!$self->authorization_successful || $userid ne $sessionuserid){
         if ($self->param('representation') eq "html"){
-            return $self->tunnel_through_authenticator('POST');            
+            return $self->tunnel_through_authenticator('GET');            
         }
         else  {
             return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
         }
     }
+
+    my $database = $sessionauthenticator;
     
     my ($loginname,$password,$access_token) = $user->get_credentials();
 
@@ -150,7 +153,7 @@ sub create_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $database       = $self->param('database');
+    my $userid         = $self->param('userid');
 
     # Shared Args
     my $query          = $self->query();
@@ -189,16 +192,16 @@ sub create_record {
     
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
 
-    my $userid = $user->get_userid_of_session($session->{ID});
+    my $sessionuserid = $user->get_userid_of_session($session->{ID});
     
-    $self->param('userid',$userid);
+    $self->param('userid',$sessionuserid);
     
     if ($logger->debug){
-	$logger->debug("Auth successful: ".$self->authorization_successful." - Db: $database - Authenticator: $sessionauthenticator");
+	$logger->debug("Auth successful: ".$self->authorization_successful." - Authenticator: $sessionauthenticator");
     }
     
-    if (!$self->authorization_successful || $database ne $sessionauthenticator){
-        $logger->debug("Database: $database - Authenticator: $sessionauthenticator");
+    if (!$self->authorization_successful){
+        $logger->debug("Authenticator: $sessionauthenticator");
 
         if ($self->param('representation') eq "html"){
 #            return $self->tunnel_through_authenticator('POST',$authenticatorid);
@@ -211,7 +214,7 @@ sub create_record {
 
     my ($username,$password,$access_token) = $user->get_credentials();
 
-    $database              = $sessionauthenticator;
+    my $database              = $sessionauthenticator;
 
     my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
 
@@ -256,7 +259,7 @@ sub create_record {
 	}
 	
 	if ($response_make_reservation_ref->{error}){
-            return $self->print_warning($response_make_reservation_ref->{error_description});
+            return $self->print_warning(encode_entities($response_make_reservation_ref->{error_description}));
 	}
 	elsif ($response_make_reservation_ref->{successful}){
 	    # TT-Data erzeugen
@@ -283,7 +286,7 @@ sub delete_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $database       = $self->param('database');
+    my $userid         = $self->param('userid');
 
     # Shared Args
     my $query          = $self->query();
@@ -317,17 +320,16 @@ sub delete_record {
     }
     
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
-
-    my $userid = $user->get_userid_of_session($session->{ID});
+    my $sessionuserid        = $user->get_userid_of_session($session->{ID});
     
-    $self->param('userid',$userid);
+    $self->param('userid',$sessionuserid);
     
     if ($logger->debug){
-	$logger->debug("Auth successful: ".$self->authorization_successful." - Db: $database - Authenticator: $sessionauthenticator");
+	$logger->debug("Auth successful: ".$self->authorization_successful." - Authenticator: $sessionauthenticator");
     }
     
-    if (!$self->authorization_successful || $database ne $sessionauthenticator){
-        $logger->debug("Database: $database - Authenticator: $sessionauthenticator");
+    if (!$self->authorization_successful || $userid ne $sessionuserid){
+        $logger->debug("Authenticator: $sessionauthenticator");
 
         if ($self->param('representation') eq "html"){
 #            return $self->tunnel_through_authenticator('POST',$authenticatorid);
@@ -340,7 +342,7 @@ sub delete_record {
 
     my ($username,$password,$access_token) = $user->get_credentials();
 
-    $database              = $sessionauthenticator;
+    my $database              = $sessionauthenticator;
 
     my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
 
@@ -392,14 +394,12 @@ __END__
 
 =head1 NAME
 
-OpenBib::Handler::PSGI::Users::Circulations::Reservations - Vormerkungen
+OpenBib::Handler::PSGI::Users::Circulations::Reservations - Benutzerkonto: Vormerkungen
 
 =head1 DESCRIPTION
 
-Das mod_perl-Modul OpenBib::UserPrefs bietet dem Benutzer des 
-Suchportals einen Einblick in das jeweilige Benutzerkonto und gibt
-eine Aufstellung der ausgeliehenen, vorgemerkten sowie ueberzogenen
-Medien.
+Das Modul implementiert fuer den Benutzer des Suchportals die
+Vormerkfunktionen
 
 =head1 AUTHOR
 

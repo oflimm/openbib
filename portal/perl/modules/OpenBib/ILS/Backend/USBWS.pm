@@ -2,7 +2,7 @@
 #
 #  OpenBib::ILS::Backend::USBWS
 #
-#  Dieses File ist (C) 2021 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2021-2022 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -59,6 +59,7 @@ use OpenBib::User;
 # Authentication
 ######################################################################
 
+# Authentifizierung
 sub authenticate {
     my ($self,$arg_ref) = @_;
 
@@ -160,41 +161,563 @@ sub authenticate {
 # Circulation
 ######################################################################
 
-# Bestellunge, Vormerkungen und Ausleihen in einer Abfrage
+sub update_email {
+    my ($self,$username,$email) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $database = $self->get_database;
+    my $config   = $self->get_config;
+
+    my $response_ref = {};
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    $logger->debug("Renew loans via USB-SOAP");
+
+    unless ($username){
+	$response_ref =  {
+	    error => "missing parameter",
+	};
+
+	return $response_ref;
+    }
+    
+    my @args = ($username,$email);
+	    
+    my $uri = "urn:/Account";
+	    
+    if ($circinfotable->get($database)->{circdb} ne "sisis"){
+	$uri = "urn:/Account_inst";
+    }
+	        
+    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));    
+    
+    my $result_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('usbws_url'));
+	my $result = $soap->set_mail(@args);
+	
+	unless ($result->fault) {
+	    $result_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    
+	    $response_ref = {
+		error => $result->faultcode,
+		error_description => $result->faultstring,
+	    };
+	    
+	    return $response_ref;
+
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$config->get('usbws_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
+	};
+	
+	return $response_ref;
+    }
+
+    # Allgemeine Fehler
+    if (defined $result_ref->{BenutzerDatenRewr} && defined $result_ref->{BenutzerDatenRewr}{NotOK}){
+	$response_ref = {
+	    "code" => 400,
+		"error" => "error",
+		"error_description" => $result_ref->{BenutzerDatenRewr}{NotOK},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+
+    if (defined $result_ref->{BenutzerDatenRewr} && defined $result_ref->{BenutzerDatenRewr}{OKMsg} ){
+	$response_ref = {
+	    "successful" => 1,
+		"message" => $result_ref->{BenutzerDatenRewr}{OKMsg},
+	};
+    }
+    
+    return $response_ref;
+}
+
+sub update_phone {
+    my ($self,$username,$phone) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $database = $self->get_database;
+    my $config   = $self->get_config;
+
+    my $response_ref = {};
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    $logger->debug("Renew loans via USB-SOAP");
+
+    unless ($username){
+	$response_ref =  {
+	    error => "missing parameter",
+	};
+
+	return $response_ref;
+    }
+    
+    my @args = ($username,$phone);
+	    
+    my $uri = "urn:/Account";
+	    
+    if ($circinfotable->get($database)->{circdb} ne "sisis"){
+	$uri = "urn:/Account_inst";
+    }
+	        
+    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));    
+    
+    my $result_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('usbws_url'));
+	my $result = $soap->set_telefon(@args);
+	
+	unless ($result->fault) {
+	    $result_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    
+	    $response_ref = {
+		error => $result->faultcode,
+		error_description => $result->faultstring,
+	    };
+	    
+	    return $response_ref;
+
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$config->get('usbws_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
+	};
+	
+	return $response_ref;
+    }
+
+    # Allgemeine Fehler
+    if (defined $result_ref->{BenutzerDatenRewr} && defined $result_ref->{BenutzerDatenRewr}{NotOK}){
+	$response_ref = {
+	    "code" => 400,
+		"error" => "error",
+		"error_description" => $result_ref->{BenutzerDatenRewr}{NotOK},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+
+    if (defined $result_ref->{BenutzerDatenRewr} && defined $result_ref->{BenutzerDatenRewr}{OKMsg} ){
+	$response_ref = {
+	    "successful" => 1,
+		"message" => $result_ref->{BenutzerDatenRewr}{OKMsg},
+	};
+    }
+    
+    return $response_ref;
+}
+
+sub update_password {
+    my ($self,$username,$oldpassword,$newpassword) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $database = $self->get_database;
+    my $config   = $self->get_config;
+
+    my $response_ref = {};
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    $logger->debug("Renew loans via USB-SOAP");
+
+    unless ($username || $oldpassword || $newpassword){
+	$response_ref =  {
+	    error => "missing parameter",
+	};
+
+	return $response_ref;
+    }
+    
+    my @args = ($username,$oldpassword,$newpassword);
+	    
+    my $uri = "urn:/Account";
+	    
+    if ($circinfotable->get($database)->{circdb} ne "sisis"){
+	$uri = "urn:/Account_inst";
+    }
+	        
+    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));    
+    
+    my $result_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('usbws_url'));
+	my $result = $soap->set_passwd(@args);
+	
+	unless ($result->fault) {
+	    $result_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    
+	    $response_ref = {
+		error => $result->faultcode,
+		error_description => $result->faultstring,
+	    };
+	    
+	    return $response_ref;
+
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$config->get('usbws_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
+	};
+	
+	return $response_ref;
+    }
+
+    # Allgemeine Fehler
+    if (defined $result_ref->{BenutzerDatenRewr} && defined $result_ref->{BenutzerDatenRewr}{NotOK}){
+	$response_ref = {
+	    "code" => 400,
+		"error" => "error",
+		"error_description" => $result_ref->{BenutzerDatenRewr}{NotOK},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+
+    if (defined $result_ref->{BenutzerDatenRewr} && defined $result_ref->{BenutzerDatenRewr}{OKMsg} ){
+	$response_ref = {
+	    "successful" => 1,
+		"message" => $result_ref->{BenutzerDatenRewr}{OKMsg},
+	};
+    }
+    
+    return $response_ref;
+}
+
+# Bestellungen, Vormerkungen und Ausleihen in einer Abfrage
 sub get_items {
     my ($self,$username) = @_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $response_ref = ();
+    my $response_ref = {};
 
     my $orders_ref       = $self->get_orders($username);
     my $reservations_ref = $self->get_reservations($username);
-    my $loans_ref      = $self->get_loans($username);    
+    my $loans_ref        = $self->get_loans($username);    
 
     if (defined $orders_ref->{no_orders}){
 	$response_ref->{no_orders} = $orders_ref->{no_orders};
     }
     elsif (defined $orders_ref->{items}){
-	push @{$response_ref->{items}}, @{$orders_ref->{items}};
+	push @{$response_ref->{orders}}, @{$orders_ref->{items}};
     }
 
     if (defined $reservations_ref->{no_reservations}){
 	$response_ref->{no_reservations} = $reservations_ref->{no_reservations};
     }
     elsif (defined $reservations_ref->{items}){
-	push @{$response_ref->{items}}, @{$reservations_ref->{items}};
+	push @{$response_ref->{reservations}}, @{$reservations_ref->{items}};
     }
     
     if (defined $loans_ref->{no_loans}){
 	$response_ref->{no_loans} = $loans_ref->{no_loans};
     }
     elsif (defined $loans_ref->{items}){
-	push @{$response_ref->{items}}, @{$loans_ref->{items}};
+	push @{$response_ref->{loans}}, @{$loans_ref->{items}};
     }
         
     return $response_ref;
+}
+
+# Accountinformationen
+sub get_accountinfo {
+    my ($self,$username) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $database = $self->get_database;
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+    
+    my $response_ref = {};
+
+    if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
+
+	$logger->debug("Getting Circulation info via USB-SOAP");
+
+	my $request_types_ref = [
+	    {
+		type   => 'KURZKONTO',
+		status => 2,
+	    },
+	    ];
+	
+	$response_ref = $self->send_account_request({ username => $username, types => $request_types_ref});
+    }
+    
+    return $response_ref;
+}
+
+# Accountinformationen
+sub get_address {
+    my ($self,$username) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $database = $self->get_database;
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+    
+    my $response_ref = {};
+
+    if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
+
+	$logger->debug("Getting Circulation info via USB-SOAP");
+
+	my $request_types_ref = [
+	    {
+		type   => 'ADRESSE',
+		status => 2,
+	    },
+	    ];
+	
+	$response_ref = $self->send_account_request({ username => $username, types => $request_types_ref});
+    }
+    
+    return $response_ref;
+}
+
+# Artikelbestellungen
+sub get_article_orders {
+    my ($self,$username,$start,$count) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $database = $self->get_database;
+    my $config   = $self->get_config;
+
+    my $response_ref = {};
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    $logger->debug("Renew loans via USB-SOAP");
+
+    unless ($username){
+	$response_ref =  {
+	    error => "missing parameter",
+	};
+
+	return $response_ref;
+    }
+    
+    my @args = ('38','sisis',$username,$start,$count);
+	    
+    my $uri = "urn:/M3account";
+	    
+    $logger->debug("Trying connection to uri $uri at ".$config->get('zflws_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));    
+    
+    my $result_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('zflws_url'));
+	my $result = $soap->show_m3account(@args);
+	
+	unless ($result->fault) {
+	    $result_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    
+	    $response_ref = {
+		error => $result->faultcode,
+		error_description => $result->faultstring,
+	    };
+	    
+	    return $response_ref;
+
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$config->get('usbws_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem bei der Verbindung zum ZFL-System",
+	};
+	
+	return $response_ref;
+    }
+
+
+    $response_ref = {
+	    "code" => 405,
+		"error" => "unknown error",
+		"error_description" => "Unbekannter Fehler",
+	};
+
+    if ($logger->is_debug){
+	$response_ref->{debug} = $result_ref;
+    }
+
+    return $response_ref;    
+}
+
+# Fernleihbestellungen
+sub get_zfl_orders {
+    my ($self,$username,$start,$count) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $database = $self->get_database;
+    my $config   = $self->get_config;
+
+    my $response_ref = {};
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    $logger->debug("Renew loans via USB-SOAP");
+
+    unless ($username){
+	$response_ref =  {
+	    error => "missing parameter",
+	};
+
+	return $response_ref;
+    }
+    
+    my @args = ('38','sisis',$username,$start,$count);
+	    
+    my $uri = "urn:/M3account";
+	    
+    $logger->debug("Trying connection to uri $uri at ".$config->get('zflws_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));    
+    
+    my $result_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('zflws_url'));
+	my $result = $soap->show_zflaccount(@args);
+	
+	unless ($result->fault) {
+	    $result_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    
+	    $response_ref = {
+		error => $result->faultcode,
+		error_description => $result->faultstring,
+	    };
+	    
+	    return $response_ref;
+
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$config->get('usbws_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem bei der Verbindung zum ZFL-System",
+	};
+	
+	return $response_ref;
+    }
+
+
+    $response_ref = {
+	    "code" => 405,
+		"error" => "unknown error",
+		"error_description" => "Unbekannter Fehler",
+	};
+
+    if ($logger->is_debug){
+	$response_ref->{debug} = $result_ref;
+    }
+
+    return $response_ref;    
 }
 
 # Bestellungen
@@ -1007,7 +1530,7 @@ sub renew_loans {
 	$response_ref = {
 	    "code" => 403,
 		"error" => "renew loans failed",
-		"error_description" => $result_ref->{OpacBestellung}{NotOK},
+		"error_description" => $result_ref->{GesamtVerlaengerung}{NotOK},
 	};
 	
 	if ($logger->is_debug){
@@ -1020,24 +1543,56 @@ sub renew_loans {
     elsif ($result_ref->{GesamtVerlaengerung}{'0'}{OK}){
 	$response_ref->{"successful"} = 1;
 	
-	foreach my $resultid (sort keys %{$result_ref->{GesamtVerlaengerung}}){
-	    if ($resultid == 0){
-		$response_ref->{num_successful_renewals} = $result_ref->{GesamtVerlaengerung}{$resultid}{AnzPos};
-		$response_ref->{num_failed_renewals} = $result_ref->{GesamtVerlaengerung}{$resultid}{AnzNeg};
+	my $all_items_ref = [];
+	
+	foreach my $nr (sort keys %{$result_ref->{GesamtVerlaengerung}}){
+	    if ($nr == 0){
+		$response_ref->{num_successful_renewals} = $result_ref->{GesamtVerlaengerung}{$nr}{AnzPos};
+		$response_ref->{num_failed_renewals}     = $result_ref->{GesamtVerlaengerung}{$nr}{AnzNeg};
 	    }
 	    else {
-		push @{$response_ref->{"items"}}, {
-		    holdingid       => $result_ref->{GesamtVerlaengerung}{$resultid}{MedienNummer},
-		    author          => $result_ref->{GesamtVerlaengerung}{$resultid}{Verfasser},
-		    title           => $result_ref->{GesamtVerlaengerung}{$resultid}{Titel},
-		    renewal_message => $result_ref->{GesamtVerlaengerung}{$resultid}{Ergebnismeldung},
-		    location_mark   => $result_ref->{GesamtVerlaengerung}{$resultid}{Signatur},
-		    department_id   => $result_ref->{GesamtVerlaengerung}{$resultid}{EntleihZweig},
-		    department_desc => $result_ref->{GesamtVerlaengerung}{$resultid}{EntleihZweigTxt},
-		    reminder_level  => $result_ref->{GesamtVerlaengerung}{$resultid}{MahnStufe},
+		push @$all_items_ref, $result_ref->{GesamtVerlaengerung}{$nr};
+	    }
+	}
 
+	foreach my $item_ref (@$all_items_ref){
+	    my @titleinfo = ();
+	    push @titleinfo, $item_ref->{Verfasser} if ($item_ref->{Verfasser});
+	    if ($item_ref->{Titel}){
+		push @titleinfo, $item_ref->{Titel} 
+	    }
+	    elsif ($item_ref->{MedienNummer}){
+		push @titleinfo, $item_ref->{MedienNummer}; 
+	    }
+	    
+	    my $about = join(': ',@titleinfo);
+	    
+	    my $label     = $item_ref->{Signatur};
+	
+	    my $this_response_ref = {
+		about           => $about,
+		edition         => $item_ref->{Titlecatkey},
+		item            => $item_ref->{MedienNummer},
+		label           => $label,
+		renewal_message => $item_ref->{Ergebnismeldung},
+		reminder_level  => $item_ref->{MahnStufe},		
+	    };
+
+	    if ($item_ref->{EntlZweig} >= 0 && $item_ref->{EntlZweigTxt}){
+		$this_response_ref->{department} = {
+		    id => $item_ref->{EntlZweig},
+		    about => $item_ref->{EntlZweigTxt},
 		};
 	    }
+	    
+	    if (defined $item_ref->{LesesaalNr} && $item_ref->{LesesaalNr} >= 0 && $item_ref->{LesesaalTxt} ){
+		$this_response_ref->{pickup_location} = {
+		    about => $item_ref->{LesesaalTxt},
+		    id => $item_ref->{LesesaalNr}
+		}
+	    }
+	    
+	    push @{$response_ref->{items}}, $this_response_ref;	    
 	}
 
 	if ($logger->is_debug){
@@ -1165,13 +1720,47 @@ sub renew_single_loan {
     # result-hash: First element (0) is overview followed by itemlist
     elsif ($result_ref->{EinzelVerlaengerung}{OK}){
 	$response_ref->{"successful"} = 1;
+
+	my $item_ref = $result_ref->{EinzelVerlaengerung};
 	
-	$response_ref->{"message"}   = $result_ref->{EinzelVerlaengerung}{OK};
-	$response_ref->{"holdingid"} = $result_ref->{EinzelVerlaengerung}{MedienNummer};	
-	$response_ref->{"author"}    = $result_ref->{EinzelVerlaengerung}{Verfasser};
-	$response_ref->{"title"}     = $result_ref->{EinzelVerlaengerung}{Titel};
-	$response_ref->{"location_mark"} = $result_ref->{EinzelVerlaengerung}{Signatur};
-	$response_ref->{"new_date"}  = $result_ref->{EinzelVerlaengerung}{LeihfristendeNeu};
+	my @titleinfo = ();
+	push @titleinfo, $item_ref->{Verfasser} if ($item_ref->{Verfasser});
+	if ($item_ref->{Titel}){
+	    push @titleinfo, $item_ref->{Titel} 
+	}
+	elsif ($item_ref->{MedienNummer}){
+	    push @titleinfo, $item_ref->{MedienNummer}; 
+	}
+	    
+	my $about = join(': ',@titleinfo);
+	
+	my $label     = $item_ref->{Signatur};
+	
+	$response_ref->{about}           = $about;
+	$response_ref->{edition}         = $item_ref->{Titlecatkey};
+	$response_ref->{item}            = $item_ref->{MedienNummer};
+	$response_ref->{label}           = $label;
+	$response_ref->{info}            = $item_ref->{OK};	
+	$response_ref->{num_renewals}    = $item_ref->{AnzVl};	
+	$response_ref->{renewal_message} = $item_ref->{Ergebnismeldung};
+	$response_ref->{reminder_level}  = $item_ref->{MahnStufe};
+	
+
+	if ($item_ref->{EntlZweig} >= 0 && $item_ref->{EntlZweigTxt}){
+	    $response_ref->{department} = {
+		id => $item_ref->{EntlZweig},
+		about => $item_ref->{EntlZweigTxt},
+	    };
+	}
+	    
+	if (defined $item_ref->{LesesaalNr} && $item_ref->{LesesaalNr} >= 0 && $item_ref->{LesesaalTxt} ){
+	    $response_ref->{pickup_location} = {
+		about => $item_ref->{LesesaalTxt},
+		id => $item_ref->{LesesaalNr}
+	    }
+	}
+
+	$response_ref->{"endtime"}  = $item_ref->{LeihfristendeNeu};
 	
 	if ($logger->is_debug){
 	    $response_ref->{debug} = $result_ref;
@@ -1922,10 +2511,71 @@ sub send_account_request {
 		    error => "error",
 		    error_description => $itemlist->{NotOK},
 		};
-		next ;
+		return $response_ref ;
 	    }
-	    
-	    if ( %{$itemlist->{Konto}} && ($type_ref->{type} eq "AUSLEIHEN" || $type_ref->{type} eq "BESTELLUNGEN" || $type_ref->{type} eq "VORMERKUNGEN")){
+	    elsif (defined $itemlist->{Konto} && defined $itemlist->{Konto}{NotOK}){
+		$response_ref = {
+		    error => "error",
+		    error_description => $itemlist->{Konto}{NotOK},
+		};
+		return $response_ref ;
+	    }
+
+	    if ( $type_ref->{type} eq "ADRESSE" ){
+		eval {
+		    $response_ref->{salutation}        = $itemlist->{BenutzerDaten}{Anrede};
+		    $response_ref->{username}          = $itemlist->{BenutzerDaten}{BenutzerNummer};
+		    $response_ref->{fullname}          = $itemlist->{BenutzerDaten}{FullName};
+		    $response_ref->{startdate}         = $itemlist->{BenutzerDaten}{DatumAufnahme};
+		    $response_ref->{enddate}           = $itemlist->{BenutzerDaten}{AusweisEnde};
+		    $response_ref->{birthdate}         = $itemlist->{BenutzerDaten}{GeburtsDatum};
+		    $response_ref->{street}            = $itemlist->{BenutzerDaten}{Strasse1};
+		    $response_ref->{street2}           = $itemlist->{BenutzerDaten}{Strasse2};
+		    $response_ref->{city}              = $itemlist->{BenutzerDaten}{Ort1};
+		    $response_ref->{city2}             = $itemlist->{BenutzerDaten}{Ort2};
+		    $response_ref->{citycode}          = $itemlist->{BenutzerDaten}{Plz1};
+		    $response_ref->{citycode2}         = $itemlist->{BenutzerDaten}{Plz2};
+		    $response_ref->{phone}             = $itemlist->{BenutzerDaten}{Telefon1};
+		    $response_ref->{phone2}            = $itemlist->{BenutzerDaten}{Telefon2};
+		    $response_ref->{email}             = $itemlist->{BenutzerDaten}{Email1};
+		    $response_ref->{email2}            = $itemlist->{BenutzerDaten}{Email2};
+		};
+
+		if ($@){
+		    $response_ref = {
+			error => "error",
+			error_description => "Kein Zugriff auf das Benutzerkonto",
+		    };
+		    return $response_ref ;		    
+		}
+	    }
+	    elsif ( $type_ref->{type} eq "KURZKONTO" ){
+		eval {
+		$response_ref->{username}          = $itemlist->{KurzKonto}{BenutzerNummer};
+		$response_ref->{fullname}          = $itemlist->{KurzKonto}{FullName};
+		$response_ref->{num_orders}        = $itemlist->{KurzKonto}{BsAnz};
+		$response_ref->{num_reservations}  = $itemlist->{KurzKonto}{VmAnz};
+		$response_ref->{num_loans}         = $itemlist->{KurzKonto}{AvAnz};
+		$response_ref->{amount_fees}       = $itemlist->{KurzKonto}{Soll};
+
+		if (defined $itemlist->{KurzKonto}{Sperre}){
+		    $response_ref->{is_locked} = {
+			about => $itemlist->{KurzKonto}{SperrVermerk},
+			id    => $itemlist->{KurzKonto}{Sperre},
+		    };
+		}
+		
+		};
+
+		if ($@){
+		    $response_ref = {
+			error => "error",
+			error_description => "Kein Zugriff auf das Benutzerkonto",
+		    };
+		    return $response_ref ;		    
+		}
+	    }
+	    elsif ( ($type_ref->{type} eq "AUSLEIHEN" || $type_ref->{type} eq "BESTELLUNGEN" || $type_ref->{type} eq "VORMERKUNGEN") &&  %{$itemlist->{Konto}} ){
 		
 		if (defined $itemlist->{Konto}{KeineVormerkungen}){
 		    if ($logger->is_debug){
@@ -1949,6 +2599,11 @@ sub send_account_request {
 		    next;
 		}
 
+		
+		if (defined $itemlist->{Konto}{KontoVlBarAnz}){
+		    $response_ref->{num_renewables} = $itemlist->{Konto}{KontoVlBarAnz};
+		}
+		
 		my $all_items_ref = [];
 		
 		foreach my $nr (sort keys %{$itemlist->{Konto}}){
@@ -1959,7 +2614,12 @@ sub send_account_request {
 		foreach my $item_ref (@$all_items_ref){
 		    my @titleinfo = ();
 		    push @titleinfo, $item_ref->{Verfasser} if ($item_ref->{Verfasser});
-		    push @titleinfo, $item_ref->{Titel} if ($item_ref->{Titel});
+		    if ($item_ref->{Titel}){
+			push @titleinfo, $item_ref->{Titel} 
+		    }
+		    elsif ($item_ref->{MedienNummer}){
+			push @titleinfo, $item_ref->{MedienNummer}; 
+		    }
 		    
 		    my $about = join(': ',@titleinfo);
 		    
@@ -1981,9 +2641,40 @@ sub send_account_request {
 			};
 		    }
 		    
+		    if (defined $item_ref->{LesesaalNr} && $item_ref->{LesesaalNr} >= 0 && $item_ref->{LesesaalTxt} ){
+			$this_response_ref->{pickup_location} = {
+			    about => $item_ref->{LesesaalTxt},
+			    id => $item_ref->{LesesaalNr}
+			}
+		    }
+		    
 		    if ($type_ref->{type} eq "AUSLEIHEN"){
 			$this_response_ref->{starttime} = $item_ref->{Datum};
 			$this_response_ref->{endtime}   = $item_ref->{RvDatum};
+
+			# Zurueckgefordert?
+			if ($item_ref->{Rueckgef} eq "J"){
+			    $this_response_ref->{reclaimed} = 1;
+			}
+
+			# Verlaengerbar?
+			if ($item_ref->{VlBar} eq "1"){
+			    $this_response_ref->{renewable} = 1;
+			}
+			
+			if (defined $item_ref->{VlText}){
+			    $this_response_ref->{renewable_remark} = $item_ref->{VlText};
+			}
+
+			if (defined $item_ref->{Star}){
+			    $this_response_ref->{emergency_remark} = $item_ref->{Star};
+			}
+			
+			# Infotext?
+			if (defined $item_ref->{Text}){
+			    $this_response_ref->{info} = $item_ref->{Text};
+			}
+			
 		    }
 		    elsif ($type_ref->{type} eq "VORMERKUNGEN"){
 			$this_response_ref->{starttime} = $item_ref->{Datum};
@@ -1992,11 +2683,13 @@ sub send_account_request {
 		    }
 		    elsif ($type_ref->{type} eq "BESTELLUNGEN"){
                         # Todo: Fernleihbestellungen erkennung und zurueckgeben
-			if ($item_ref->{LesesaalTxt} && $this_response_ref->{department}{about}){
-			    $this_response_ref->{department}{about}.=" / ".$item_ref->{LesesaalTxt};
-			}
 			$this_response_ref->{starttime} = $item_ref->{Datum};
 			$this_response_ref->{endtime}   = $item_ref->{RvDatum};
+
+			# Infotext?
+			if (defined $item_ref->{Text}){
+			    $this_response_ref->{info} = $item_ref->{Text};
+			}			
 		    }
 
 		    push @{$response_ref->{items}}, $this_response_ref;
@@ -2033,6 +2726,13 @@ sub send_account_request {
 		    my $gebuehr = $item_ref->{Gebuehr};
 		    $gebuehr=~s/\,/./;
 
+		    if ($item_ref->{EntlZweig} >= 0 && $item_ref->{EntlZweigTxt}){
+			$this_response_ref->{department} = {
+			    id => $item_ref->{EntlZweig},
+			    about => $item_ref->{EntlZweigTxt},
+			};
+		    }
+		    
 		    my @titleinfo = ();
 		    push @titleinfo, $item_ref->{Verfasser} if ($item_ref->{Verfasser});
 		    push @titleinfo, $item_ref->{Titel} if ($item_ref->{Titel});
@@ -2044,7 +2744,7 @@ sub send_account_request {
 		    $this_response_ref->{amount} = $gebuehr. "EUR";
 
 		    $this_response_ref->{about}   = $description;
-		    $this_response_ref->{type}    = $item_ref->{Text};
+		    $this_response_ref->{reason}  = $item_ref->{Text};
 		    $this_response_ref->{edition} = $item_ref->{Titlecatkey},
 		    $this_response_ref->{item}    = $item_ref->{MedienNummer},
 
@@ -2171,9 +2871,11 @@ sub resolve_msg {
 
 # Definition der USBWS:
 #
-# /opt/ip/var/cgi-intern/loan.pl
+# /opt/ips/var/cgi-intern/account.pl
+# /opt/ips/var/cgi-intern/loan.pl
 # /opt/ips/usr/perl/USB/SOAP/S***s/Loan.pm
 # /opt/ips/usr/config/gateway_usb/ubkloan.xml
+# /opt/ips/usr/templates/appltemplates/USB/template.accountxml.tpl
 # /opt/ips/usr/templates/appltemplates/USB/template.loanxml.tpl
 # /opt/ips/usr/templates/appltemplates/USB/template.loan.tpl
 
@@ -2194,13 +2896,13 @@ Dieses Backend stellt die Methoden zur Authentifizierung, Ausleihe und Mediensta
 
  my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
 
- my $userid = $ils->authenticate({ viewname => 'kug', username => 'abc', password => '123' });
+ my $result_ref = $ils->authenticate({ username => 'abc', password => '123' });
 
- if ($userid > 0){
-    # Erfolgreich authentifiziert und Userid in $userid gespeichert
+ if (defined $result_ref->{failure}){
+    # Authentifizierungsfehler. Fehlercode in $result_ref->{failure}
  }
  else {
-    # $userid ist Fehlercode
+    # Erfolgreich authentifiziert. Nutzerinformationen in $result_ref->{userinfo}
  }
 
 
@@ -2211,6 +2913,98 @@ Dieses Backend stellt die Methoden zur Authentifizierung, Ausleihe und Mediensta
 =item new
 
 Erzeugung des Objektes
+
+=item authenticate
+
+Authentifizierung am ILS
+
+=item update_email
+
+Aktualisierung der Mail-Adress im ILS
+
+=item update_phone
+
+Aktualisierung der Telefonnummer im ILS
+
+=item update_password
+
+Aktualisierung des Passworts im ILS
+
+=item get_items
+
+Bestellungen, Vormerkungen und Ausleihen in einer Abfrage aus dem ILS holen
+
+=item get_accountinfo
+
+Zusammenfassung des Nutzers aus ILS holen (Zahl Ausleihen, Vormerkunge, etc.)
+
+=item get_address
+
+Adressinformationen des Nutzer aus dem ILS holen
+
+=item get_article_orders
+
+Artikel-Fernleihbestellung aus dem ILS oder Medea holen
+
+=item get_zfl_orders
+
+Buch-Fernleihbestellungen aus dem ILS oder ZFL holen
+
+=item get_orders
+
+Liste der Bestellungen eines Nutzers aus dem ILS holen
+
+=item get_reservations
+
+Liste der Vormerkungen eines Nutzers aus dem ILS holen
+
+=item get_fees
+
+Liste der Gebuehren eines Nutzers aus dem ILS holen
+
+=item get_loans
+
+Liste der Ausleihen eines Nutzers aus dem ILS holen
+
+=item make_reservation
+
+Eine Vormerkung im ILS taetigen
+
+=item cancel_reservation
+
+Eine getaetigte Vormerkung im ILS stornieren
+
+=item make_order
+
+Eine Bestellung im ILS taetigen
+
+=item cancel_order
+
+Eine Bestellung im ILS oder per Mail stornieren
+
+=item renew_loans
+
+Eine Gesamtkontoverlaengerung im ILS durchfuehren
+
+=item renew_single_loan
+
+Die Verlaengerung eines einzelnen Mediums im ILS durchfuehren
+
+=item get_mediastatus
+
+Liste der Exemplare mit Ausleihinformationen aus dem ILS holen
+
+=item get_timestamp
+
+Hilfsmethode: Aktuellen Timestamp generieren
+
+=item check_order
+
+Bestellung ueberpruefen
+
+=item check_reservation
+
+Vormerkung ueberpruefen
 
 =back
 

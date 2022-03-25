@@ -249,7 +249,13 @@
 
 
     .ob-bottominfo {
+	padding-top: 20px;
 	padding-right: 10px;
+    }
+
+    .ob-title_wikipedia_articles {
+	padding: 15px;
+//	background-color: lightgrey !important ;	
     }
     
     .ob-page_footer {
@@ -647,6 +653,11 @@
 					background-color: lightgrey;
 				    }
     
+
+    img.ob-fulltext_status {
+	padding-left:5px;
+	padding-top:0.4em;
+    }
     
     .ob-fulltitle {
 	margin-top: 10px;
@@ -2043,6 +2054,7 @@ a.ext {
 }
 
 .ob-highlight_searchterm {
+    background: yellow;
     color:#990000;
 }
 
@@ -2483,9 +2495,17 @@ a.card-link, a.card-link:hover {
 }
 
 @media (min-width: 576px) {
+    
+    
     .ob-jumbotron {
+	padding: 4rem 2rem;
+    }
+
+    #image-area .ob-jumbotron {
+	padding: 0px;
 	padding-top: 4rem;
     }
+    
 }
 
 @media screen and (max-width:480px) {

@@ -31,7 +31,9 @@
 <optgroup label="[% msg.maketext("Suchradius") %]">
 <option value="[% searchprofileid_of_books %]"[%- IF prevprofile == searchprofileid_of_books && NOT checked_profile -%] selected[%- checked_profile = 1 ; END -%]>[% msg.maketext("Bücher & Mehr") %]</option>
 <option value="[% searchprofileid_of_eds %]"[%- IF prevprofile == searchprofileid_of_eds && NOT checked_profile -%] selected[%-  checked_profile = 1 ; END -%]>[% msg.maketext("Aufsätze & Mehr") %]</option>
+[% IF 0 == 1 %]
 <option value="[% searchprofileid_of_website %]"[%- IF prevprofile == searchprofileid_of_website && NOT checked_profile -%] selected[%-  checked_profile = 1 ; END -%]>[% msg.maketext("Webseite") %]</option>
 <option value="[% searchprofileid_of_usbebooks %]"[%- IF prevprofile == searchprofileid_of_usbebooks && NOT checked_profile -%] selected[%-  checked_profile = 1 ; END -%]>[% msg.maketext("Testkatalog: E-Medien USB-Katalog") %]</option>
+[% END %]
 </optgroup>
 </select>

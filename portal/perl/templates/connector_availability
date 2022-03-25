@@ -60,15 +60,16 @@
 
 <availability>
 <size>[% num_of_available_records %]</size>
-[% FOREACH record IN available_recordlist.get_records ;
-
-   item_location = record.get_locations.first;
-%]
+[% FOREACH record IN available_recordlist.get_records %]
 <catalogue>
+[% FOREACH item_location IN record.get_locations -%]
   <isil>[% item_location %]</isil>
+[% END -%]  
   <name>[% record.database %]</name>
   <id>[% record.id %]</id>
+[% FOREACH item_location IN record.get_locations -%]
   <description>[% locinfo.get('identifier').${item_location}.description %]</description>
+[% END -%]  
   <permalink>http://[% servername %][% path_prefix %]/[% config.get('databases_loc')%]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]</permalink>
 </catalogue>
 [% END %]

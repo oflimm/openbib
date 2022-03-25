@@ -33,10 +33,10 @@
 <div class="card mt-5 mb-5 me-5">
 <div class="card-header">[% msg.maketext("Bestellung stornieren") %]</div>
 <div class="card-body">
- <form  method="POST" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/orders">
+ <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/orders">
 
 <div class="alert alert-info">
-Aufgrund interner Abläufe in der USB werden zum Zeitpunkt der Bestellung bereits Auftragszettel in unserem Magazin für die Bereitstellung der Medien gedruckt wegen derer eine Stornierung im Bibliotheksystem selbst nicht mehr möglich ist. Durch diese Stornierungsmöglichkeit hier werden Mitteilungen zur manuellen Stornierung an unsere Mitarbeiter geschickt. Aus diesem Grund tauchen hier stornierte Bestellungen vorläufig weiterhin in Ihrem Benutzerkonto auf! 
+[% msg.maketext("Ihr Stornierungsauftrag wird per E-Mail- an unsere Ausleihabteilung übermittelt. Sobald das Medium von uns aus dem Abholregal geholt wurde, führen wir die Stornierung im Ausleihsystem durch. Erst danach verschwindet die Bestellung aus Ihrem Konto.") %]
 </div>
 
      <input type="hidden" name="_method" value="DELETE" />

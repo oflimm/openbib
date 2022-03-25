@@ -1,4 +1,4 @@
-<div id="yewno-person-widget" style="height:420px;width:259px;"></div> <!-- position this where you want the widget to show up -->
+<div id="yewno-person-widget" style="height:420px;width:100%;"></div> <!-- position this where you want the widget to show up -->
 <script>
 new YewnoDiscoverWidget({
 containerElementSelector: "#yewno-person-widget",

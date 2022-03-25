@@ -17,7 +17,7 @@
 <div class="card mt-5 mb-5 me-5">
 <div class="card-header">[% msg.maketext("Auswahl") %]</div>
 <div class="card-body">
- <form  method="POST" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/reservations">
+ <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/reservations">
    <input type="hidden" name="validtarget"   value="[% database %]" />
    <input type="hidden" name="holdingid"     value="[% holdingid  %]" />
    <input type="hidden" name="titleid"       value="[% titleid  %]" />

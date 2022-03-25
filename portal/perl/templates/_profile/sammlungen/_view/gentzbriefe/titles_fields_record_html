@@ -25,23 +25,6 @@
 
 <h2>[% field_description %]</h2>
 
-[% IF browselist.size > 0 %]
-<ul class="list-group">
-[% FOREACH item IN browselist %]
-[%  IF searchfield %]
-<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% query_args_base %];[% config.get('searchfield').${searchfield}.prefix %]=[% uri_escape(item) %]">[% item %]</a></li>
-[%  ELSE %]
-<li class="list-group-item">[% item %]</li>
-[%  END %]
-[% END %]
-</ul>
-
-[% ELSE %]
-
-<div class="alert alert-secondary">[% msg.maketext("Zu diesem Register gibt es keine Einträge")%]</div>
-
-[% END %]
-
 [%  IF field != 'year' %]
 <div class="ob-alphabetic_index">
 <p>
@@ -78,5 +61,24 @@
 <p/>
 </div>
 [%  END %]
+
+[% IF browselist.size > 0 %]
+<ul class="list-group">
+[% FOREACH item IN browselist %]
+[%  IF searchfield %]
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% query_args_base %];[% config.get('searchfield').${searchfield}.prefix %]=[% uri_escape(item) %]">[% item %]</a></li>
+[%  ELSE %]
+<li class="list-group-item">[% item %]</li>
+[%  END %]
+[% END %]
+</ul>
+
+[% ELSE %]
+
+<div class="alert alert-secondary">[% msg.maketext("Zu diesem Register gibt es keine Einträge")%]</div>
+
+[% END %]
+
+<p/>
 
 [% PROCESS common/subtemplate name="pagination" %]

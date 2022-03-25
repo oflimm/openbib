@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Login
 #
-#  Dieses File ist (C) 2004-2019 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2022 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -114,8 +114,15 @@ sub show_form {
     # in die Benutzereinstellungen gesprungen
     if ($user->{ID} && !$validtarget){
 
-        my $redirecturl = "$path_prefix/$config->{users_loc}/id/[% user.ID %]/preferences.html?l=$lang";
-        
+        my $redirecturl = "$path_prefix/$config->{users_loc}/id/$user->{ID}/preferences.html?l=$lang";
+
+	my $session_authenticatortype = $user->get_targettype_of_session($session->{ID});
+
+	# Got authorized by ils, then show circulation overview
+	if ($session_authenticatortype eq "ils"){
+	    $redirecturl = "$path_prefix/$config->{users_loc}/id/$user->{ID}/circulations.html?l=$lang";
+	}
+
         if ($scheme eq "https"){
             $redirecturl ="https://$servername$redirecturl";
         }
@@ -220,8 +227,15 @@ sub authenticate {
 	    return $self->print_warning($reason,$code);
 	}
 	
-        my $redirecturl = "$path_prefix/$config->{users_loc}/id/[% user.ID %]/preferences.html?l=$lang";
-        
+        my $redirecturl = "$path_prefix/$config->{users_loc}/id/$user->{ID}/preferences.html?l=$lang";
+
+	my $session_authenticatortype = $user->get_targettype_of_session($session->{ID});
+	
+	# Got authorized by ils, then show circulation overview
+	if ($session_authenticatortype eq "ils"){
+	    $redirecturl = "$path_prefix/$config->{users_loc}/id/$user->{ID}/circulations.html?l=$lang";
+	}
+
         if ($scheme eq "https"){
             $redirecturl ="https://$servername$redirecturl";
         }
@@ -354,6 +368,14 @@ sub authenticate {
 	
 	$redirecturl
 	    = "$path_prefix/$config->{users_loc}/id/$userid/preferences.html?l=$lang";
+
+	my $authenticatorinfo_ref = $config->get_authenticator_by_id($authenticatorid);
+
+	# Got authorized by ils, then show circulation overview
+	if ($authenticatorinfo_ref->{type} eq "ils"){
+	    $redirecturl = "$path_prefix/$config->{users_loc}/id/$userid/circulations.html?l=$lang";
+	}
+
 	
 	if ($scheme eq "https"){
 	    $redirecturl ="https://$servername$redirecturl";

@@ -934,6 +934,7 @@ sub print_warning {
     my $self      = shift;
     my $warning   = shift;
     my $warningnr = shift || 1;
+    my $returnurl = shift;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -942,8 +943,9 @@ sub print_warning {
     my $config         = $self->param('config');
     
     my $ttdata = {
-        err_nr  => $warningnr,
-        err_msg => $warning,
+        err_nr    => $warningnr,
+        err_msg   => $warning,
+	returnurl => $returnurl,
     };
 
     $ttdata = $self->add_default_ttdata($ttdata);
@@ -955,6 +957,7 @@ sub print_info {
     my $self = shift;
     my $info   = shift;
     my $infonr = shift || 1;
+    my $returnurl = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -963,8 +966,9 @@ sub print_info {
     my $config         = $self->param('config');
 
     my $ttdata = {
-        info_msg => $info,
-        info_nr  => $infonr,
+        info_msg  => $info,
+        info_nr   => $infonr,
+	returnurl => $returnurl,
     };
 
     return $self->print_page($config->{tt_info_message_tname},$ttdata);

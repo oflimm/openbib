@@ -511,7 +511,7 @@
 	position: absolute;
 	top: 0;
 	left: 0px;
-	/* width: 500px; */
+	width: 300px;
 	font-size: 1.2em;
 /*  font-weight: bold; 
        padding: 5px; */
@@ -1719,7 +1719,7 @@ a.ext {
 /*    padding: 5px;
     padding-left:4px;
     height: auto; */
-    width: 9em;
+/*    width: 9em; */
     background: green;    
     color: #fff;
 /*    border-radius: 2px;
@@ -1735,7 +1735,7 @@ a.ext {
 /*    padding: 5px;
     width: 6em;
     height: 42px; */
-    width: 9em;
+    /* width: 9em;*/ 
     background: orange;
     color: #fff;
 /*    border-radius: 2px;
@@ -1763,6 +1763,7 @@ a.ext {
 }
 
 .ob-highlight_searchterm {
+    background: yellow;
     color:#990000;
 }
 

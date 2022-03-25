@@ -99,7 +99,7 @@
 <div class="card-header">[% msg.maketext("ILIAS-Bestellung") %]</div>
 <div class="card-body">
 
- <form  method="POST" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/iliasorders">
+ <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/iliasorders">
  
      <input type="hidden" name="unit_desc"   value="[% unit_desc |uri %]" />
      <input type="hidden" name="unit"        value="[% unit %]" />

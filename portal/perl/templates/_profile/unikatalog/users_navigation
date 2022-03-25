@@ -132,32 +132,44 @@
 <p/>
 
 <div class="card">
-<div class="card-header">[% msg.maketext("Benutzerkonto") %]: <span class="ob-nav_description">[% authenticator.description %]</span></div>
+<div class="card-header">[% msg.maketext("Bibliothekskonto") %]</div>
 
 <div class="card-body">
 
 <nav class="navbar bg-light ob-sidebar">
  <ul class="navbar-nav">
-[%   IF layout_param.active_submenu == "loans" %]
-      <li class="nav-item active"><strong>[% msg.maketext("Ausleihen") %]</strong></li>
+[%   IF layout_param.active_submenu == "circulations" %]
+      <li class="nav-item active"><strong>[% msg.maketext("Gesamtübersicht") %]</strong></li>
 [%   ELSE %]
-      <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.name %]/[% config.get('circulations_loc') %]/id/loans.html?l=[% lang %]">[% msg.maketext("Ausleihen") %]</a></li>
+      <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %].html?l=[% lang %]">[% msg.maketext("Gesamtübersicht") %]</a></li>
+[%   END %]
+
+      <li class="nav-item">[% msg.maketext("Einzelne Übersichten") %]
+        <ul>
+
+
+[%   IF layout_param.active_submenu == "loans" %]
+      <li class="nav-item active"><strong class="ps-3">[% msg.maketext("Ausleihen") %]</strong></li>
+[%   ELSE %]
+      <li class="nav-item"><a class="nav-link ps-3" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/loans.html?l=[% lang %]">[% msg.maketext("Ausleihen") %]</a></li>
 [%   END %]
 [%   IF layout_param.active_submenu == "reservations" %]
-      <li class="nav-item active"><strong>[% msg.maketext("Vormerkungen") %]</strong></li>
+      <li class="nav-item active"><strong class="ps-3">[% msg.maketext("Vormerkungen") %]</strong></li>
 [%   ELSE %]
-      <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.name %]/[% config.get('circulations_loc') %]/id/reservations.html?l=[% lang %]">[% msg.maketext("Vormerkungen") %]</a></li>
+      <li class="nav-item"><a class="nav-link ps-3" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/reservations.html?l=[% lang %]">[% msg.maketext("Vormerkungen") %]</a></li>
 [%   END %]
 [%   IF layout_param.active_submenu == "orders" %]
-      <li class="nav-item active"><strong>[% msg.maketext("Bestellungen") %]</strong></li>
+      <li class="nav-item active"><strong class="ps-3">[% msg.maketext("Bestellungen") %]</strong></li>
 [%   ELSE %]
-      <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.name %]/[% config.get('circulations_loc') %]/id/orders.html?l=[% lang %]">[% msg.maketext("Bestellungen") %]</a></li>
+      <li class="nav-item"><a class="nav-link ps-3" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/orders.html?l=[% lang %]">[% msg.maketext("Bestellungen") %]</a></li>
 [%   END %]
 [%   IF layout_param.active_submenu == "fees" %]
-      <li class="nav-item active"><strong>[% msg.maketext("Überziehungen / Gebühren") %]</strong></li>
+      <li class="nav-item active"><strong class="ps-3">[% msg.maketext("Gebühren") %]</strong></li>
 [%   ELSE %]
-      <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% authenticator.name %]/[% config.get('circulations_loc') %]/id/fees.html?l=[% lang %]">[% msg.maketext("Überziehungen / Gebühren") %]</a></li>
+      <li class="nav-item"><a class="nav-link ps-3" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/fees.html?l=[% lang %]">[% msg.maketext("Gebühren") %]</a></li>
 [%   END %]
+    </ul>
+   </li>
 </ul>
 </nav>
 </div>

@@ -468,6 +468,7 @@ sub show_record {
             
             litlists          => $litlists_ref,
             highlightquery    => \&highlightquery,
+	    sort_circulation => \&sort_circulation,
         };
 
         if ($config->{benchmark}) {
@@ -1074,6 +1075,19 @@ sub highlightquery {
     }
     
     return $content;
+}
+
+sub sort_circulation {
+    my $array_ref = shift;
+
+    # Schwartz'ian Transform
+        
+    my @sorted = map { $_->[0] }
+    sort { $a->[1] cmp $b->[1] }
+    map { [$_, sprintf("%03d:%s:%s:%s",$_->{department_id},$_->{department},$_->{storage},$_->{location_mark})] }
+    @{$array_ref};
+        
+    return \@sorted;
 }
 
 1;

@@ -12,7 +12,7 @@
        used_fields.push( "<b>${fieldname}</b>: ${fieldcontent}" );
     END;
 
-    show_modals = 1;
+    show_modal_template = "titles_record_html_modals";
     
     layout_param = {
      'page_title' = "Titel anzeigen"

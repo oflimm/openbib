@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Users::Circulations
 #
-#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2022 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -34,9 +34,12 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
+use Email::Valid;
 use DBI;
 use Digest::MD5;
 use Email::Valid;
+use Encode qw/decode_utf8 encode_utf8/;
+use HTML::Entities;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use SOAP::Lite;
@@ -64,6 +67,7 @@ sub setup {
         'renew_loans'           => 'renew_loans',
         'renew_single_loan'     => 'renew_single_loan',
         'show_collection'       => 'show_collection',
+        'update_ilsaccount'     => 'update_ilsaccount',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
@@ -78,13 +82,248 @@ sub show_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # Shared args
+
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $userid         = $self->param('userid');
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
     my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+    
+    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
 
-    $logger->errog("Handler is obsolete");
+    if (!$self->authorization_successful){
+        if ($self->param('representation') eq "html"){
+            return $self->tunnel_through_authenticator('POST');            
+        }
+        else  {
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
+        }
+    }
+    
+    my ($loginname,$password,$access_token) = $user->get_credentials();
 
-    return $self->print_warning($msg->maketext("Diese Funktion wird nicht mehr unterstützt"));	
+    my $database              = $sessionauthenticator;
+    
+    my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
+
+    $logger->debug("Loginname: $loginname");
+
+    my $account_ref = $ils->get_accountinfo($loginname);
+    my $address_ref = $ils->get_address($loginname);
+
+#    my $items_ref = $ils->get_items($loginname);
+#    my $fees_ref  = $ils->get_fees($loginname);
+
+    if ($logger->is_debug){
+	$logger->debug("Got account: ".YAML::Dump($account_ref));
+#	$logger->debug("Got fees: ".YAML::Dump($fees_ref));
+#	$logger->debug("Got fees: ".YAML::Dump($fees_ref));
+    }
+    
+    my $authenticator = $session->get_authenticator;
+
+    if ($logger->is_debug){
+	$logger->debug("Trying to renew loans for user $loginname in ils for $database");
+    }
+    
+    # TT-Data erzeugen
+    my $ttdata={
+        authenticator => $authenticator,
+        loginname  => $loginname,
+        password   => $password,
+
+	account    => $account_ref,
+	address    => $address_ref,
+#        items      => $items_ref,
+#        fees       => $fees_ref,
+
+	database   => $database,
+    };
+    
+    return $self->print_page($config->{tt_users_circulations_tname},$ttdata);
 }
+
+sub update_ilsaccount {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $userid         = $self->param('userid');
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input('get_input_definition_ilsaccount');
+
+    my $field          = $input_data_ref->{field};
+    
+    my $oldpassword    = $input_data_ref->{oldpassword};
+    my $password1      = $input_data_ref->{password1};
+    my $password2      = $input_data_ref->{password2};
+    my $email1         = $input_data_ref->{email1};
+    my $email2         = $input_data_ref->{email2};
+    my $phone1         = $input_data_ref->{phone1};
+    my $phone2         = $input_data_ref->{phone2};
+
+    # Aktive Aenderungen des Nutzerkontos
+    unless ($config->get('active_ils')){
+	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellunge, Vormerkungen, usw.) sind aktuell systemweit deaktiviert."),1,"$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}");	
+    }
+    
+    if (!$field){
+        my $code   = -1;
+	my $reason = $msg->maketext("Es wurde keine Information uebergeben welches Feld aktualisiert werden soll");
+	
+	return $self->print_warning($msg->maketext($reason),$code,"$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}");
+    }
+    
+    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
+
+    if (!$self->authorization_successful){
+        if ($self->param('representation') eq "html"){
+            return $self->tunnel_through_authenticator('POST');            
+        }
+        else  {
+            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
+        }
+    }
+    
+    my ($loginname,$password,$access_token) = $user->get_credentials();
+
+    my $database              = $sessionauthenticator;
+    
+    my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
+
+    my $authenticator = $session->get_authenticator;
+
+    if ($logger->is_debug){
+	$logger->debug("Trying to update field $field for user $loginname in ils for $database");
+    }
+
+    my $response_ref;
+    
+    if ($field eq "password"){
+    
+	if (!$oldpassword || !$password1 || !$password2) {
+	    my $code   = -1;
+	    my $reason = $msg->maketext("Bitte füllen Sie alle drei Passwort-Felder aus.");
+	    
+	    return $self->print_warning($msg->maketext($reason),$code,"$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}");
+	}
+	elsif ($password1 ne $password2){
+	    my $code   = -1;
+	    my $reason = $msg->maketext("Die beiden neuen Passwörter, die Sie eingegeben haben, stimmen nicht überein.");
+	    
+	    return $self->print_warning($msg->maketext($reason),$code,"$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}");
+	}
+	elsif (length(decode_utf8($oldpassword)) != 6 ){
+	    my $code   = -1;
+	    my $reason = $msg->maketext("Ihr neues Passwort muss 6-stellig sein.");
+	    
+	    return $self->print_warning($msg->maketext($reason),$code,"$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}");
+	}
+	elsif ($password1 !~ /^[a-zA-Z0-9]+$/ or $password1 !~ /[0-9]/ or $password1 !~ /[a-zA-Z]/){
+	    my $code   = -1;
+	    my $reason = $msg->maketext("Bitte geben Sie ein Passwort ein, welches den Vorgaben entspricht.");
+	    
+	    return $self->print_warning($msg->maketext($reason),$code,"$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}");
+	}
+
+	$response_ref = $ils->update_password($loginname,$password1);
+
+	if ($response_ref->{error}) {
+	    my $code   = -1;
+	    my $reason = $response_ref->{error_description};
+	    
+	    return $self->print_warning($msg->maketext($reason),$code,"$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}");
+	}
+	
+    }
+    elsif ($field eq "email"){
+    
+	if ($email1 eq "" || $email1 ne $email2) {
+	    my $code   = -1;
+	    my $reason = $msg->maketext("Sie haben entweder kein Mail-Adresse eingegeben oder die beiden Mail-Adressen stimmen nicht überein");
+	    
+	    return $self->print_warning($msg->maketext($reason),$code,"$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}");
+	}
+
+	if (! Email::Valid->address($email1)) {
+	    my $code   = -1;
+	    my $reason = $msg->maketext("Die Syntax der eingegebenen E-Mail-Adresse ist ungültig.");
+	    
+	    return $self->print_warning($msg->maketext($reason),$code,"$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}");
+	}		
+	
+	$response_ref = $ils->update_email($loginname,$email1);
+
+	if ($response_ref->{error}) {
+	    my $code   = -1;
+	    my $reason = $response_ref->{error_description};
+	    
+	    return $self->print_warning($msg->maketext($reason),$code,"$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}");
+	}
+
+    }
+    elsif ($field eq "phone"){
+    
+	if ($phone1 ne $phone2) {
+	    my $code   = -1;
+	    my $reason = $msg->maketext("Sie haben entweder keine Telefon-Nummer eingegeben oder die beiden Telefon-Nummern stimmen nicht überein");
+	    
+	    return $self->print_warning($msg->maketext($reason),$code,"$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}");
+	}
+
+	$response_ref = $ils->update_phone($loginname,$phone1);
+
+	if ($response_ref->{error}) {
+	    my $code   = -1;
+	    my $reason = $response_ref->{error_description};
+	    
+	    return $self->print_warning($msg->maketext($reason),$code,"$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}");
+	}
+	
+    }
+    
+    
+    if ($self->param('representation') eq "html"){
+	my $reason = $response_ref->{message} || "Aktion erfolgreich.";
+	
+	return $self->print_info($msg->maketext($reason),1,"$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}");
+#        $self->return_baseurl;
+#        return;
+    }
+    else {
+	return $self->print_json($response_ref);
+    }
+
+    return;
+}
+
 
 sub show_record {
     my $self = shift;
@@ -109,7 +348,6 @@ sub renew_loans {
     # Dispatched Args
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
-    my $database       = $self->param('database');
 
     # Shared Args
     my $query          = $self->query();
@@ -133,7 +371,7 @@ sub renew_loans {
     
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
 
-    if (!$self->authorization_successful || $database ne $sessionauthenticator){
+    if (!$self->authorization_successful){
         if ($self->param('representation') eq "html"){
             return $self->tunnel_through_authenticator('POST');            
         }
@@ -144,7 +382,7 @@ sub renew_loans {
     
     my ($loginname,$password,$access_token) = $user->get_credentials();
 
-    $database              = $sessionauthenticator;
+    my $database              = $sessionauthenticator;
     
     my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
 
@@ -161,7 +399,12 @@ sub renew_loans {
     }
     
     if ($response_renew_loans_ref->{error}){
-	return $self->print_warning($msg->maketext("Eine Gesamtkontoverlängerung durch Sie ist leider nicht möglich"));
+	if ($response_renew_loans_ref->{error_description}){
+	    return $self->print_warning(encode_entities($response_renew_loans_ref->{error_description}));
+	}
+	else {
+	    return $self->print_warning($msg->maketext("Eine Gesamtkontoverlängerung durch Sie ist leider nicht möglich"));
+	}
     }
     elsif ($response_renew_loans_ref->{successful}){
 	# TT-Data erzeugen
@@ -188,7 +431,6 @@ sub renew_single_loan {
     # Dispatched Args
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
-    my $database       = $self->param('database');
 
     # Shared Args
     my $query          = $self->query();
@@ -222,7 +464,7 @@ sub renew_single_loan {
     
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
 
-    if (!$self->authorization_successful || $database ne $sessionauthenticator){
+    if (!$self->authorization_successful){
         if ($self->param('representation') eq "html"){
             return $self->tunnel_through_authenticator('POST');            
         }
@@ -233,7 +475,7 @@ sub renew_single_loan {
     
     my ($loginname,$password,$access_token) = $user->get_credentials();
 
-    $database              = $sessionauthenticator;
+    my $database              = $sessionauthenticator;
     
     my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
 
@@ -251,7 +493,7 @@ sub renew_single_loan {
     
     if ($response_renew_single_loan_ref->{error}){
 	if ($response_renew_single_loan_ref->{error_description}){
-	    return $self->print_warning($response_renew_single_loan_ref->{error_description});
+	    return $self->print_warning(encode_entities($response_renew_single_loan_ref->{error_description}));
 	}
 	else {
 	    return $msg->maketext("Eine Verlängerung durch Sie ist leider nicht möglich");
@@ -272,6 +514,79 @@ sub renew_single_loan {
 	return $self->print_warning($msg->maketext("Bei der Verlängerung des Mediums ist ein unerwarteter Fehler aufgetreten"));
     }
 }
+
+sub return_baseurl {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view')           || '';
+    my $database       = $self->param('database')       || '';
+    my $userid         = $self->param('userid')         || '';
+
+    # Shared Args
+    my $config         = $self->param('config');
+    my $path_prefix    = $self->param('path_prefix');
+
+#    my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/$config->{databases_loc}/id/$database/$config->{circulations_loc}.html";
+    my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/$config->{circulations_loc}.html";
+
+    # TODO GET?
+    $self->header_add('Content-Type' => 'text/html');
+    $self->redirect($new_location);
+
+    return;
+}
+
+sub get_input_definition_ilsaccount {
+    my $self=shift;
+    
+    return {
+	field => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+	},
+	oldpassword => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+	},
+	password1 => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+	},
+	password2 => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+	email1 => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+	},
+	email2 => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+	},
+	phone1 => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+	},
+	phone2 => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+    };
+}
+
 
 1;
 __END__

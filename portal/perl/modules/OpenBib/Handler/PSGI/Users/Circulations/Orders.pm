@@ -85,7 +85,6 @@ sub show_collection {
     # Dispatched Args
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
-    my $database       = $self->param('database');
 
     # Shared Args
     my $query          = $self->query();
@@ -102,8 +101,9 @@ sub show_collection {
     my $servername     = $self->param('servername');
 
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
+    my $sessionuserid        = $user->get_userid_of_session($session->{ID});
 
-    if (!$self->authorization_successful || $database ne $sessionauthenticator){
+    if (!$self->authorization_successful || $userid ne $sessionuserid){
         if ($self->param('representation') eq "html"){
             return $self->tunnel_through_authenticator('GET');            
         }
@@ -112,6 +112,8 @@ sub show_collection {
         }
     }
 
+    my $database = $sessionauthenticator;
+    
     my ($loginname,$password,$access_token) = $user->get_credentials();
 
     my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
@@ -150,7 +152,7 @@ sub create_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $database       = $self->param('database');
+    my $userid         = $self->param('userid');
     
     # Shared Args
     my $query          = $self->query();
@@ -180,15 +182,15 @@ sub create_record {
     
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
 
-    my $userid = $user->get_userid_of_session($session->{ID});
+    my $sessionuserid = $user->get_userid_of_session($session->{ID});
     
-    $self->param('userid',$userid);
+    $self->param('userid',$sessionuserid);
     
     if ($logger->debug){
-	$logger->debug("Auth successful: ".$self->authorization_successful." - Db: $database - Authenticator: $sessionauthenticator");
+	$logger->debug("Auth successful: ".$self->authorization_successful." - Authenticator: $sessionauthenticator");
     }
     
-    if (!$self->authorization_successful || $database ne $sessionauthenticator){
+    if (!$self->authorization_successful || $userid ne $sessionuserid){
         if ($self->param('representation') eq "html"){
             return $self->tunnel_through_authenticator('POST');            
         }
@@ -199,7 +201,7 @@ sub create_record {
 
     my ($username,$password,$access_token) = $user->get_credentials();
     
-    $database              = $sessionauthenticator;
+    my $database              = $sessionauthenticator;
 
     my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
 
@@ -268,7 +270,7 @@ sub delete_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $database       = $self->param('database');
+    my $userid         = $self->param('userid');
 
     # Shared Args
     my $query          = $self->query();
@@ -312,16 +314,16 @@ sub delete_record {
     
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
 
-    my $userid = $user->get_userid_of_session($session->{ID});
+    my $sessionuserid = $user->get_userid_of_session($session->{ID});
     
-    $self->param('userid',$userid);
+    $self->param('userid',$sessionuserid);
     
     if ($logger->debug){
-	$logger->debug("Auth successful: ".$self->authorization_successful." - Db: $database - Authenticator: $sessionauthenticator");
+	$logger->debug("Auth successful: ".$self->authorization_successful." - Authenticator: $sessionauthenticator");
     }
     
-    if (!$self->authorization_successful || $database ne $sessionauthenticator){
-        $logger->debug("Database: $database - Authenticator: $sessionauthenticator");
+    if (!$self->authorization_successful || $userid ne $sessionuserid){
+        $logger->debug("Authenticator: $sessionauthenticator");
 
         if ($self->param('representation') eq "html"){
 #            return $self->tunnel_through_authenticator('POST',$authenticatorid);
@@ -334,7 +336,7 @@ sub delete_record {
 
     my ($username,$password,$access_token) = $user->get_credentials();
 
-    $database              = $sessionauthenticator;
+    my $database              = $sessionauthenticator;
 
     my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
 
@@ -358,7 +360,7 @@ sub delete_record {
     }
     elsif ($response_cancel_order_ref->{successful}){
 	# TT-Data erzeugen
-	my $ttdata={
+	my $ttdata = {
 	    userid        => $userid,
 	    database      => $database,
 	    unit          => $unit,
@@ -393,7 +395,7 @@ sub confirm_delete_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $database       = $self->param('database');
+    my $userid         = $self->param('userid');
 
     # Shared Args
     my $query          = $self->query();
@@ -433,16 +435,16 @@ sub confirm_delete_record {
     
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
 
-    my $userid = $user->get_userid_of_session($session->{ID});
+    my $sessionuserid = $user->get_userid_of_session($session->{ID});
     
-    $self->param('userid',$userid);
+    $self->param('userid',$sessionuserid);
     
     if ($logger->debug){
-	$logger->debug("Auth successful: ".$self->authorization_successful." - Db: $database - Authenticator: $sessionauthenticator");
+	$logger->debug("Auth successful: ".$self->authorization_successful." - Authenticator: $sessionauthenticator");
     }
     
-    if (!$self->authorization_successful || $database ne $sessionauthenticator){
-        $logger->debug("Database: $database - Authenticator: $sessionauthenticator");
+    if (!$self->authorization_successful || $userid ne $sessionuserid){
+        $logger->debug("Authenticator: $sessionauthenticator");
 
         if ($self->param('representation') eq "html"){
 #            return $self->tunnel_through_authenticator('POST',$authenticatorid);
@@ -455,7 +457,7 @@ sub confirm_delete_record {
 
     my ($username,$password,$access_token) = $user->get_credentials();
 
-    $database              = $sessionauthenticator;
+    my $database              = $sessionauthenticator;
 
     my $record = new OpenBib::Record::Title({ database => $database, id => $titleid });
     $record->load_brief_record;
@@ -483,14 +485,12 @@ __END__
 
 =head1 NAME
 
-OpenBib::Circulation - Benutzerkonto
+OpenBib::Handler::PSGI::Users::Circultation::Orders - Benutzerkonto: Bestellungen
 
 =head1 DESCRIPTION
 
-Das mod_perl-Modul OpenBib::UserPrefs bietet dem Benutzer des 
-Suchportals einen Einblick in das jeweilige Benutzerkonto und gibt
-eine Aufstellung der ausgeliehenen, vorgemerkten sowie ueberzogenen
-Medien.
+Das Modul implementiert fuer den Benutzer des Suchportals die
+Bestellfunktionen
 
 =head1 AUTHOR
 

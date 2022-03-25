@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Users::Circulations::Loans
 #
-#  Dieses File ist (C) 2004-2013 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2022 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -83,7 +83,6 @@ sub show_collection {
     # Dispatched Args
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
-    my $database       = $self->param('database');
 
     # Shared Args
     my $query          = $self->query();
@@ -100,8 +99,9 @@ sub show_collection {
     my $servername     = $self->param('servername');
 
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
+    my $sessionuserid        = $user->get_userid_of_session($session->{ID});
 
-    if (!$self->authorization_successful || $database ne $sessionauthenticator){
+    if (!$self->authorization_successful || $userid ne $sessionuserid){
         if ($self->param('representation') eq "html"){
             return $self->tunnel_through_authenticator('GET');            
         }
@@ -110,7 +110,7 @@ sub show_collection {
         }
     }
 
-    $database = $sessionauthenticator ;
+    my $database = $sessionauthenticator ;
     
     my ($loginname,$password,$access_token) = $user->get_credentials();
 
@@ -131,12 +131,12 @@ sub show_collection {
     # TT-Data erzeugen
     my $ttdata={
         authenticator => $authenticator,
-        loginname  => $loginname,
-        password   => $password,
+        loginname     => $loginname,
+        password      => $password,
 	
-        loans    => $loans_ref,
+        loans         => $loans_ref,
         
-        database   => $database,
+        database      => $database,
     };
     
     return $self->print_page($config->{tt_users_circulations_loans_tname},$ttdata);

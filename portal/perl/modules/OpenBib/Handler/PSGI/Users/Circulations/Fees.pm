@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Users::Circulations::Fees
 #
-#  Dieses File ist (C) 2004-2021 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2022 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -84,7 +84,6 @@ sub show_collection {
     # Dispatched Args
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
-    my $database       = $self->param('database');
 
     # Shared Args
     my $query          = $self->query();
@@ -101,8 +100,9 @@ sub show_collection {
     my $servername     = $self->param('servername');
 
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
+    my $sessionuserid        = $user->get_userid_of_session($session->{ID});
 
-    if (!$self->authorization_successful || $database ne $sessionauthenticator){
+    if (!$self->authorization_successful || $userid ne $sessionuserid){
         if ($self->param('representation') eq "html"){
             return $self->tunnel_through_authenticator('GET');            
         }
@@ -113,7 +113,7 @@ sub show_collection {
     
     my ($loginname,$password,$access_token) = $user->get_credentials();
 
-    $database              = $user->get_targetdb_of_session($session->{ID});
+    my $database = $sessionauthenticator;
 
     my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
 
@@ -128,30 +128,17 @@ sub show_collection {
     }
     
     my $authenticator=$session->get_authenticator;
-
-    # # Anreicherung mit Informationen zum Titel
-
-    # foreach my $item_ref (@{$fees_ref->{items}}){
-    # 	# Parse Information
-    # 	next if (!$item_ref->{item});
-
-    # 	my $titleid = $item_ref->{edition};
-	
-    # 	my $fields = OpenBib::Record::Title->new({ database => $database, id => $titleid})->load_brief_record->get_fields;
-
-    # 	$item_ref->{fields} = $fields;
-    # }
     
     # TT-Data erzeugen
     
     my $ttdata={
         authenticator => $authenticator,
-        loginname  => $loginname,
-        password   => $password,
+        loginname     => $loginname,
+        password      => $password,
 	
-        fees       => $fees_ref,
+        fees          => $fees_ref,
 
-        database   => $database,        
+        database      => $database,        
     };
       
     return $self->print_page($config->{tt_users_circulations_fees_tname},$ttdata);

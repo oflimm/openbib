@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Users::Circulations::Mail
 #
-#  Dieses File ist (C) 2020-2021 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2020-2022 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -81,7 +81,7 @@ sub show_form {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $database       = $self->param('database');
+    my $userid         = $self->param('userid');
     my $mailtype       = $self->strip_suffix($self->param('mailtype'));
     
     # Shared Args
@@ -107,8 +107,10 @@ sub show_form {
     
 	# Nutzer muss am richtigen Target authentifiziert sein    
 	my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
+	my $sessionuserid        = $user->get_userid_of_session($session->{ID});
+
 	
-	if (!$self->authorization_successful || $database ne $sessionauthenticator){
+	if (!$self->authorization_successful || $userid ne $sessionuserid){
 	    if ($self->param('representation') eq "html"){
 		return $self->tunnel_through_authenticator('GET');            
 	    }
@@ -143,7 +145,7 @@ sub mail_form {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $database       = $self->param('database');
+    my $userid         = $self->param('userid');
     my $mailtype       = $self->strip_suffix($self->param('mailtype'));
     
     # Shared Args
@@ -169,8 +171,9 @@ sub mail_form {
 	
 	# Nutzer muss am richtigen Target authentifiziert sein    
 	my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
+	my $sessionuserid        = $user->get_userid_of_session($session->{ID});
 	
-	if (!$self->authorization_successful || $database ne $sessionauthenticator){
+	if (!$self->authorization_successful || $userid ne $sessionuserid){
 	    if ($self->param('representation') eq "html"){
 		return $self->tunnel_through_authenticator('POST');            
 	    }
@@ -205,7 +208,7 @@ sub show_handset {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $database       = $self->param('database');
+    my $userid         = $self->param('userid');
     
     # Shared Args
     my $query          = $self->query();
@@ -224,16 +227,21 @@ sub show_handset {
 
     # CGI Args
     my $scope          = $input_data_ref->{'scope'}; # defines sender, recipient via portal.yml
+    my $database       = $input_data_ref->{'dbname'};
     my $titleid        = $input_data_ref->{'titleid'};
     my $label          = $input_data_ref->{'label'};
     my $location       = $input_data_ref->{'location'};
     
     $logger->debug("Dispatched to show_handset");
     
-    if (!$titleid || !$scope || !$label || !$location){
+    if (!$titleid || !$scope || !$label || !$location || !$database){
 	return $self->print_warning("Zuwenige Parameter übergeben");
     }
-    
+
+    if (!$config->db_exists($database)){
+	return $self->print_warning("Datenbank existiert nicht");
+    }
+
     # Zentrale Ueberpruefung der Authentifizierung bereits in show_form
         
     my ($loginname,$password,$access_token) = $user->get_credentials();
@@ -264,7 +272,7 @@ sub show_default {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $database       = $self->param('database');
+    my $userid         = $self->param('userid');
     
     # Shared Args
     my $query          = $self->query();
@@ -283,16 +291,21 @@ sub show_default {
 
     # CGI Args
     my $scope          = $input_data_ref->{'scope'}; # defines sender, recipient via portal.yml
+    my $database       = $input_data_ref->{'dbname'};
     my $titleid        = $input_data_ref->{'titleid'};
     my $label          = $input_data_ref->{'label'};
     my $location       = $input_data_ref->{'location'};
 
     $logger->debug("Dispatched to show_default");
     
-    if (!$titleid || !$scope || !$label || !$location){
+    if (!$titleid || !$scope || !$label || !$location || !$database){
 	return $self->print_warning("Zuwenige Parameter übergeben");
     }
 
+    if (!$config->db_exists($database)){
+	return $self->print_warning("Datenbank existiert nicht");
+    }
+    
     # Zentrale Ueberpruefung der Authentifizierung bereits in show_form
         
     my ($loginname,$password,$access_token) = $user->get_credentials();
@@ -323,7 +336,7 @@ sub show_kmb {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $database       = $self->param('database');
+    my $userid         = $self->param('userid');
     
     # Shared Args
     my $query          = $self->query();
@@ -342,16 +355,21 @@ sub show_kmb {
 
     # CGI Args
     my $scope          = $input_data_ref->{'scope'}; # defines sender, recipient via portal.yml
+    my $database       = $input_data_ref->{'dbname'};
     my $titleid        = $input_data_ref->{'titleid'};
     my $label          = $input_data_ref->{'label'};
     my $location       = $input_data_ref->{'location'};
 
     $logger->debug("Dispatched to show_handset");
     
-    if (!$titleid || !$scope || !$label || !$location){
+    if (!$titleid || !$scope || !$label || !$location || !$database){
 	return $self->print_warning("Zuwenige Parameter übergeben");
     }
 
+    if (!$config->db_exists($database)){
+	return $self->print_warning("Datenbank existiert nicht");
+    }
+    
     # Zentrale Ueberpruefung der Authentifizierung bereits in show_form
         
     my ($loginname,$password,$access_token) = $user->get_credentials();
@@ -382,7 +400,7 @@ sub show_kmbcopy {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $database       = $self->param('database');
+    my $userid         = $self->param('userid');
     
     # Shared Args
     my $query          = $self->query();
@@ -401,16 +419,21 @@ sub show_kmbcopy {
 
     # CGI Args
     my $scope          = $input_data_ref->{'scope'}; # defines sender, recipient via portal.yml
+    my $database       = $input_data_ref->{'dbname'};
     my $titleid        = $input_data_ref->{'titleid'};
     my $label          = $input_data_ref->{'label'};
     my $location       = $input_data_ref->{'location'};
 
     $logger->debug("Dispatched to show_handset");
     
-    if (!$titleid || !$scope || !$label || !$location){
+    if (!$titleid || !$scope || !$label || !$location || !$database){
 	return $self->print_warning("Zuwenige Parameter übergeben");
     }
 
+    if (!$config->db_exists($database)){
+	return $self->print_warning("Datenbank existiert nicht");
+    }
+    
     # Zentrale Ueberpruefung der Authentifizierung bereits in show_form
         
     my ($loginname,$password,$access_token) = $user->get_credentials();
@@ -441,7 +464,7 @@ sub mail_handset {
     
     # Dispatched Args
     my $view           = $self->param('view')           || '';
-    my $database       = $self->param('database')       || '';
+    my $userid         = $self->param('userid')       || '';
 
     # Shared Args
     my $query          = $self->query();
@@ -460,6 +483,7 @@ sub mail_handset {
 
     # CGI Args
     my $scope          = $input_data_ref->{'scope'}; # defines sender, recipient via portal.yml
+    my $database       = $input_data_ref->{'dbname'};
     my $titleid        = $input_data_ref->{'titleid'};
     my $label          = $input_data_ref->{'label'};
     my $location       = $input_data_ref->{'location'};
@@ -468,10 +492,14 @@ sub mail_handset {
     
     $logger->debug("Dispatched to show_handset");
     
-    if (!$titleid || !$label || !$scope || !$location){
+    if (!$titleid || !$label || !$scope || !$location || !$database){
 	return $self->print_warning("Zuwenige Parameter übergeben");
     }
 
+    if (!$config->db_exists($database)){
+	return $self->print_warning("Datenbank existiert nicht");
+    }
+    
     # Zentrale Ueberpruefung der Authentifizierung bereits in show_form
     
     my ($accountname,$password,$access_token) = $user->get_credentials();
@@ -568,7 +596,7 @@ sub mail_kmb {
     
     # Dispatched Args
     my $view           = $self->param('view')           || '';
-    my $database       = $self->param('database')       || '';
+    my $userid         = $self->param('userid')       || '';
 
     # Shared Args
     my $query          = $self->query();
@@ -587,6 +615,7 @@ sub mail_kmb {
 
     # CGI Args
     my $scope          = $input_data_ref->{'scope'}; # defines sender, recipient via portal.yml
+    my $database       = $input_data_ref->{'dbname'};
     my $titleid        = $input_data_ref->{'titleid'};
     my $label          = $input_data_ref->{'label'};
     my $location       = $input_data_ref->{'location'};
@@ -598,10 +627,14 @@ sub mail_kmb {
     
     $logger->debug("Dispatched to show_kmb");
     
-    if (!$titleid || !$label || !$scope || !$location){
+    if (!$titleid || !$label || !$scope || !$location || !$database){
 	return $self->print_warning("Zuwenige Parameter übergeben");
     }
 
+    if (!$config->db_exists($database)){
+	return $self->print_warning("Datenbank existiert nicht");
+    }
+    
     # Zentrale Ueberpruefung der Authentifizierung bereits in show_form
     
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
@@ -697,7 +730,7 @@ sub mail_kmbcopy {
     
     # Dispatched Args
     my $view           = $self->param('view')           || '';
-    my $database       = $self->param('database')       || '';
+    my $userid         = $self->param('userid')         || '';
 
     # Shared Args
     my $query          = $self->query();
@@ -716,6 +749,7 @@ sub mail_kmbcopy {
 
     # CGI Args
     my $scope          = $input_data_ref->{'scope'}; # defines sender, recipient via portal.yml
+    my $database       = $input_data_ref->{'dbname'};
     my $titleid        = $input_data_ref->{'titleid'};
     my $label          = $input_data_ref->{'label'};
     my $location       = $input_data_ref->{'location'};
@@ -738,10 +772,14 @@ sub mail_kmbcopy {
     
     $logger->debug("Dispatched to show_kmbcopy");
     
-    if (!$titleid || !$label || !$scope || !$location){
+    if (!$titleid || !$label || !$scope || !$location || !$database){
 	return $self->print_warning("Zuwenige Parameter übergeben");
     }
 
+    if (!$config->db_exists($database)){
+	return $self->print_warning("Datenbank existiert nicht");
+    }
+    
     if (!$confirm){
 	return $self->print_warning("Bitte akzeptieren Sie die Allgemeinen Geschäftsbedingungen.");
     }
@@ -889,7 +927,7 @@ sub mail_default {
     
     # Dispatched Args
     my $view           = $self->param('view')           || '';
-    my $database       = $self->param('database')       || '';
+    my $userid         = $self->param('userid')         || '';
 
     # Shared Args
     my $query          = $self->query();
@@ -908,6 +946,7 @@ sub mail_default {
 
     # CGI Args
     my $scope          = $input_data_ref->{'scope'}; # defines sender, recipient via portal.yml
+    my $database       = $input_data_ref->{'dbname'};
     my $titleid        = $input_data_ref->{'titleid'};
     my $label          = $input_data_ref->{'label'};
     my $location       = $input_data_ref->{'location'};
@@ -917,10 +956,14 @@ sub mail_default {
 
     $logger->debug("Dispatched to show_default");
     
-    if (!$titleid || !$label || !$scope || !$location){
+    if (!$titleid || !$label || !$scope || !$location || !$database){
 	return $self->print_warning("Zuwenige Parameter übergeben");
     }
 
+    if (!$config->db_exists($database)){
+	return $self->print_warning("Datenbank existiert nicht");
+    }
+    
     # Zentrale Ueberpruefung der Authentifizierung bereits in show_form
     
     my ($accountname,$password,$access_token) = $user->get_credentials();
@@ -1014,6 +1057,11 @@ sub get_input_definition {
     my $self=shift;
     
     return {
+        dbname => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
         titleid => {
             default  => '',
             encoding => 'utf8',

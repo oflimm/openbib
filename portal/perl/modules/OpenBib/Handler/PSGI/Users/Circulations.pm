@@ -38,6 +38,7 @@ use Email::Valid;
 use DBI;
 use Digest::MD5;
 use Email::Valid;
+use Encode qw/decode_utf8 encode_utf8/;
 use HTML::Entities;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
@@ -83,7 +84,7 @@ sub show_collection {
 
 
 
-    # Dispatched Ards
+    # Dispatched Args
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
 
@@ -162,7 +163,6 @@ sub update_ilsaccount {
     # Dispatched Args
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
-    my $database       = $self->param('database');
 
     # Shared Args
     my $query          = $self->query();
@@ -203,7 +203,7 @@ sub update_ilsaccount {
     
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
 
-    if (!$self->authorization_successful || $database ne $sessionauthenticator){
+    if (!$self->authorization_successful){
         if ($self->param('representation') eq "html"){
             return $self->tunnel_through_authenticator('POST');            
         }
@@ -214,7 +214,7 @@ sub update_ilsaccount {
     
     my ($loginname,$password,$access_token) = $user->get_credentials();
 
-    $database              = $sessionauthenticator;
+    my $database              = $sessionauthenticator;
     
     my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
 
@@ -311,11 +311,14 @@ sub update_ilsaccount {
     
     
     if ($self->param('representation') eq "html"){
-        $self->return_baseurl;
-        return;
+	my $reason = $response_ref->{message} || "Aktion erfolgreich.";
+	
+	return $self->print_info($msg->maketext($reason),1,"$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}");
+#        $self->return_baseurl;
+#        return;
     }
     else {
-	return $self->print_json({ success => 1 });
+	return $self->print_json($response_ref);
     }
 
     return;
@@ -345,7 +348,6 @@ sub renew_loans {
     # Dispatched Args
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
-    my $database       = $self->param('database');
 
     # Shared Args
     my $query          = $self->query();
@@ -369,7 +371,7 @@ sub renew_loans {
     
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
 
-    if (!$self->authorization_successful || $database ne $sessionauthenticator){
+    if (!$self->authorization_successful){
         if ($self->param('representation') eq "html"){
             return $self->tunnel_through_authenticator('POST');            
         }
@@ -380,7 +382,7 @@ sub renew_loans {
     
     my ($loginname,$password,$access_token) = $user->get_credentials();
 
-    $database              = $sessionauthenticator;
+    my $database              = $sessionauthenticator;
     
     my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
 
@@ -429,7 +431,6 @@ sub renew_single_loan {
     # Dispatched Args
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
-    my $database       = $self->param('database');
 
     # Shared Args
     my $query          = $self->query();
@@ -463,7 +464,7 @@ sub renew_single_loan {
     
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
 
-    if (!$self->authorization_successful || $database ne $sessionauthenticator){
+    if (!$self->authorization_successful){
         if ($self->param('representation') eq "html"){
             return $self->tunnel_through_authenticator('POST');            
         }
@@ -474,7 +475,7 @@ sub renew_single_loan {
     
     my ($loginname,$password,$access_token) = $user->get_credentials();
 
-    $database              = $sessionauthenticator;
+    my $database              = $sessionauthenticator;
     
     my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
 

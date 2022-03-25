@@ -3019,6 +3019,14 @@
 
 #####################################################################
 # User Circulation-Resource/Repraesentation
+- # users_loc/circulations_loc: Update Passwords/E-Mail/Phone
+   module: 'OpenBib::Handler::PSGI::Users::Circulations'
+   rule: '/portal/:view/users/id/:userid/circulations[post]'
+   runmode: 'update_ilsaccount'
+- # users_loc/circulations_loc: Update Passwords/E-Mail/Phone
+   module: 'OpenBib::Handler::PSGI::Users::Circulations'
+   rule: '/portal/:view/users/id/:userid/circulations[put]'
+   runmode: 'update_ilsaccount'
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations'
    rule: '/portal/:view/users/id/:userid/circulations[get]'
@@ -3030,7 +3038,7 @@
      - rdf
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Loans'
-   rule: '/portal/:view/users/id/:userid/databases/id/:database/circulations/id/loans[get]'
+   rule: '/portal/:view/users/id/:userid/circulations/id/loans[get]'
    runmode: 'show_collection'
    representations:
      - none
@@ -3039,10 +3047,10 @@
      - rdf
      - ics
    args:
-     'restrict_db_to_view': 1
+     'restrict_db_to_view': 0
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Orders'
-   rule: '/portal/:view/users/id/:userid/databases/id/:database/circulations/id/orders[get]'
+   rule: '/portal/:view/users/id/:userid/circulations/id/orders[get]'
    runmode: 'show_collection'
    representations:
      - none
@@ -3050,10 +3058,21 @@
      - json
      - rdf
    args:
-     'restrict_db_to_view': 1
+     'restrict_db_to_view': 0
+- # users/circulations_loc:
+   module: 'OpenBib::Handler::PSGI::Users::Circulations::ArticleOrders'
+   rule: '/portal/:view/users/id/:userid/circulations/id/articleorders[get]'
+   runmode: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   args:
+     'restrict_db_to_view': 0
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Reservations'
-   rule: '/portal/:view/users/id/:userid/databases/id/:database/circulations/id/reservations[get]'
+   rule: '/portal/:view/users/id/:userid/circulations/id/reservations[get]'
    runmode: 'show_collection'
    representations:
      - none
@@ -3061,10 +3080,10 @@
      - json
      - rdf
    args:
-     'restrict_db_to_view': 1
+     'restrict_db_to_view': 0
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Fees'
-   rule: '/portal/:view/users/id/:userid/databases/id/:database/circulations/id/fees[get]'
+   rule: '/portal/:view/users/id/:userid/circulations/id/fees[get]'
    runmode: 'show_collection'
    representations:
      - none
@@ -3072,7 +3091,7 @@
      - json
      - rdf
    args:
-     'restrict_db_to_view': 1
+     'restrict_db_to_view': 0
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations'
    rule: '/portal/:view/users/id/:userid/circulations/id/:circulationid[get]'
@@ -3080,69 +3099,69 @@
 
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Mail'
-   rule: '/portal/:view/databases/id/:database/circulations/id/mail/:mailtype[get]'
+   rule: '/portal/:view/users/id/:userid/circulations/id/mail/:mailtype[get]'
    runmode: 'show_form'
    representations:
      - none
      - html
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Mail'
-   rule: '/portal/:view/databases/id/:database/circulations/id/mail/:mailtype[post]'
+   rule: '/portal/:view/users/id/:userid/circulations/id/mail/:mailtype[post]'
    runmode: 'mail_form'
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations'
-   rule: '/portal/:view/users/id/:userid/databases/id/:database/circulations/renew_loans[get]'
+   rule: '/portal/:view/users/id/:userid/circulations/renew_loans[get]'
    representations:
      - none
      - html
    runmode: 'renew_loans'
    args:
-     'restrict_db_to_view': 1
+     'restrict_db_to_view': 0
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations'
-   rule: '/portal/:view/users/id/:userid/databases/id/:database/circulations/renew_single_loan[get]'
+   rule: '/portal/:view/users/id/:userid/circulations/renew_single_loan[get]'
    representations:
      - none
      - html
    runmode: 'renew_single_loan'
    args:
-     'restrict_db_to_view': 1
+     'restrict_db_to_view': 0
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Orders'
-   rule: '/portal/:view/databases/id/:database/circulations/id/orders[post]'
+   rule: '/portal/:view/users/id/:userid/circulations/id/orders[post]'
    runmode: 'create_record'
    args:
-     'restrict_db_to_view': 1
+     'restrict_db_to_view': 0
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::CampusOrders'
-   rule: '/portal/:view/databases/id/:database/circulations/id/campusorders[post]'
+   rule: '/portal/:view/users/id/:userid/circulations/id/campusorders[post]'
    runmode: 'create_record'
    args:
-     'restrict_db_to_view': 1
+     'restrict_db_to_view': 0
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::IliasOrders'
-   rule: '/portal/:view/databases/id/:database/circulations/id/iliasorders[post]'
+   rule: '/portal/:view/users/id/:userid/circulations/id/iliasorders[post]'
    runmode: 'create_record'
    args:
-     'restrict_db_to_view': 1
+     'restrict_db_to_view': 0
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Orders'
-   rule: '/portal/:view/databases/id/:database/circulations/id/orders[delete]'
+   rule: '/portal/:view/users/id/:userid/circulations/id/orders[delete]'
    runmode: 'delete_record'
    args:
-     'restrict_db_to_view': 1
+     'restrict_db_to_view': 0
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Reservations'
-   rule: '/portal/:view/databases/id/:database/circulations/id/reservations[post]'
+   rule: '/portal/:view/users/id/:userid/circulations/id/reservations[post]'
    runmode: 'create_record'
    args:
-     'restrict_db_to_view': 1
+     'restrict_db_to_view': 0
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Reservations'
-   rule: '/portal/:view/databases/id/:database/circulations/id/reservations[delete]'
+   rule: '/portal/:view/users/id/:userid/circulations/id/reservations[delete]'
    runmode: 'delete_record'
    args:
-     'restrict_db_to_view': 1
+     'restrict_db_to_view': 0
 
 #####################################################################
 # Admin User Rights Roles-Resource/Repraesentation

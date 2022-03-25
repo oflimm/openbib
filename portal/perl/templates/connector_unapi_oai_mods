@@ -81,29 +81,13 @@
                     <mods:roleTerm type="code" authority="marcrelator"
                         authorityURI="http://id.loc.gov/vocabulary/relators"
                         valueURI="http://id.loc.gov/vocabulary/relators/aut">aut</mods:roleTerm>
-                    [%- ELSIF item.supplement.match('Urheb') %]
-                    <mods:roleTerm type="code" authority="marcrelator"
-                        authorityURI="http://id.loc.gov/vocabulary/relators"
-                        valueURI="http://id.loc.gov/vocabulary/relators/aut">aut</mods:roleTerm>
-                    [%- ELSIF item.supplement.match('Hrsg') %]
-                    <mods:roleTerm type="code" authority="marcrelator"
-                        authorityURI="http://id.loc.gov/vocabulary/relators"
-                        valueURI="http://id.loc.gov/vocabulary/relators/edt">edt</mods:roleTerm>
-                    [%- ELSIF item.supplement.match('Übers') %]
-                    <mods:roleTerm type="code" authority="marcrelator"
-                        authorityURI="http://id.loc.gov/vocabulary/relators"
-                        valueURI="http://id.loc.gov/vocabulary/relators/trl">trl</mods:roleTerm>
-                    [%- ELSIF item.supplement.match('Bearb') %]
-                    <mods:roleTerm type="code" authority="marcrelator"
-                        authorityURI="http://id.loc.gov/vocabulary/relators"
-                        valueURI="http://id.loc.gov/vocabulary/relators/edt">edt</mods:roleTerm>
                     [%- ELSE %]
                     <mods:roleTerm type="code" authority="marcrelator"
-                        authorityURI="http://id.loc.gov/vocabulary/relators"
-                        valueURI="http://id.loc.gov/vocabulary/relators/oth">oth</mods:roleTerm>
+                     authorityURI="http://id.loc.gov/vocabulary/relators"
+                     valueURI="http://id.loc.gov/vocabulary/relators/[%-item.role_code %]">[%- item.role_code %]</mods:roleTerm>
+                    [%- END %]
                     [%- IF item.supplement %]
                     <mods:roleTerm type="text">[%- item.supplement | replace('¬', '') %]</mods:roleTerm>
-                    [%- END %]
                     [%- END %]
                 </mods:role>
             </mods:name>
@@ -143,9 +127,12 @@
             </mods:name>
             [%- END -%]
             [%- END -%]
-            [%- IF normdata.${"T0331"} %]
+            [%- IF main_title_data %]
             <mods:titleInfo>
-                <mods:title>[% normdata.${"T0331"}.first.content %]</mods:title>
+                [%- IF main_title_data.non_sort %]
+                <mods:nonSort>[% main_title_data.non_sort %]</mods:nonSort>
+                [%- END %]
+                <mods:title>[% main_title_data.main_title %]</mods:title>
             [%- FOREACH item IN normdata.${"T0335"} %]
             <mods:subTitle>[% item.content %]</mods:subTitle>
             [%- END %]
@@ -278,18 +265,23 @@
             [%- IF provenance_data %]
             <mods:note type="ownership">[%- provenance_data -%]</mods:note>
             [%-END %]
-            [%- FOREACH uniform_publisher IN uniform_publisher_list %]
-            [%- IF uniform_publisher.gnd -%]
-            <mods:note type="statement of responsibility">Publisher||[%- uniform_publisher.publisher_name %][%- IF
-                uniform_publisher.publisher_place %] ([%- uniform_publisher.publisher_place -%])[%- END
-                %]||http://d-nb.info/gnd/[% uniform_publisher.gnd %]</mods:note>
+            [%- IF normdata.${"T0359"} -%]
+            [%- FOREACH resp_statement IN normdata.${"T0359"} %]
+            <mods:note type="statement of responsibility">[%- resp_statement.content %]</mods:note>
             [%- END %]
             [%- END %]
-            [%- FOREACH item IN normdata.${"T4700"} %]
-            <mods:classification authority="DE-38">[% item.content %]</mods:classification>
-            [%- END %]
-            [%- IF normdata.${"T4718"}.first.content == "rheinland" %]
-            <mods:classification authority="DE-38">Sammlung Rheinland</mods:classification>
+            [%- IF normdata.${"T4700"} || normdata.${"T4718"} %]
+            <mods:holdingSimple>
+                <mods:copyInformation>
+                    <form authority="marcform">electronic</form>
+                    [%- FOREACH item IN normdata.${"T4700"} %]
+                     <subLocation>[% item.content %]</subLocation>
+                    [%- END %]
+                    [%- FOREACH item IN normdata.${"T4718"} %]
+                    <subLocation>[% item.content %]</subLocation>
+                     [%- END %]
+                </mods:copyInformation>
+            </mods:holdingSimple>
             [%- END %]
             [%- rswk_list = {} %]
             [%- FOREACH rswk_item IN rswk_keyword_list %]

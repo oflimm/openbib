@@ -49,6 +49,7 @@ use OpenBib::Session;
 use Data::Dumper;
 use JSON::XS;
 
+
 use base 'OpenBib::Handler::PSGI';
 
 # Run at startup
@@ -105,6 +106,7 @@ sub show {
         my $contained_works        = [];
         my $provenance_data        = [];
         my $date_values            = undef;
+        my $main_title_data             = undef; 
         if ($unapiid) {
             my ( $database, $idn, $record );
 
@@ -116,6 +118,9 @@ sub show {
 
                 $record = new OpenBib::Record::Title(
                     { database => $database, id => $idn } )->load_full_record;
+                $main_title_data = $self->get_main_title_data( $record, $database );
+                
+                
                 $title_list = $self->collect_title_data( $record, $database );
                 $contained_works =
                   $self->collect_contained_works( $record, $database );
@@ -143,6 +148,7 @@ sub show {
 
             my $ttdata = {
                 record                 => $record,
+                main_title_data        => $main_title_data,
                 title_list             => $title_list,
                 personlist             => $personlist,
                 corporation_list       => $corporation_list,
@@ -268,6 +274,27 @@ sub show {
     }
 }
 
+sub get_main_title_data {
+    my $self          = shift;
+    my $record        = shift;
+    my $database      = shift;
+    my $title_data    = {};
+    if ( length( $record->get_fields->{T0331}) ) {
+        my $title_content = $record->get_fields->{T0331}[0]->{content};
+        if (rindex($title_content, decode_utf8("¬"), 0) != -1){
+           (my $first, my $rest) = split (' ', $title_content, 2); 
+            $title_data->{"main_title"} = $rest;
+            $title_data->{"non_sort"} = $first;
+        }else {
+            my $title_content = $record->get_fields->{T0331}[0]->{content};
+            $title_data->{"main_title"} = $title_content;
+        }
+        return $title_data;
+    }
+    return undef;
+
+}
+
 sub collect_title_data {
     my $self          = shift;
     my $record        = shift;
@@ -275,6 +302,7 @@ sub collect_title_data {
     my $already_added = [];
     my $title_list    = [];
 
+    
     #Weiterer/Alternativer Titel
     if ( length( $record->get_fields->{T0370} ) ) {
         foreach my $title_item ( @{ $record->get_fields->{T0370} } ) {
@@ -591,6 +619,7 @@ sub collect_person_data {
             my $person_item = {
                 namedata => $self->generate_name_data( $person->{content} ),
                 gnd   => $self->get_gnd_for_person( $person->{id}, $database ),
+                role_code => $self->get_role_code_for_person($person->{supplement},$person_sub_list->{field}),
                 field => $person_sub_list->{field},
                 supplement => $person->{supplement}
             };
@@ -599,6 +628,35 @@ sub collect_person_data {
     }
     return $personlist;
 
+}
+
+sub get_role_code_for_person {
+    my $self      = shift;
+    my $supplement = shift;
+    my $field = shift;
+
+    if ($field eq "T0100"){
+        # Author
+        if (! defined $supplement){
+            return "aut"
+        }
+    }
+    if ($supplement =~m/Hrsg/) { return "edt";}
+    elsif ($supplement =~m/Übers/) { return "trl";}
+    elsif ($supplement =~m/Adressat/) { return "rcp";}
+    elsif ($supplement =~m/Bearb/) { return "edt";}
+    elsif ($supplement =~m/Fotograf/) { return "pht";}
+    elsif ($supplement =~m/Gutachter/) { return "rev";}
+    elsif ($supplement =~m/Ill/) { return "ill";}
+    elsif ($supplement =~m/Interviewer/) { return "ivr";}
+    elsif ($supplement =~m/Interviewter/) { return "ive";}
+    elsif ($supplement =~m/Kartograph/) { return "ctg";}
+    elsif ($supplement =~m/Übers/) { return "trl";}
+    elsif ($supplement =~m/Kommentator/) { return "cmm";}
+    elsif ($supplement =~m/Red/) { return "red";}
+    else {
+        return "oth";
+    }
 }
 
 sub get_gnd_for_person {
@@ -851,6 +909,12 @@ sub generate_name_data {
     else {
         $namedata->{given_name} = $displayname;
         $namedata->{given_name} =~ s/^\s+|\s+$//g;
+    }
+    $namedata->{displayname}  = $namedata->{given_name}; " " . $namedata->{termsOfAddress};
+    if ($namedata->{family_name}) {
+        $namedata->{displayname} .= " " . $namedata->{family_name}
+    }if ($namedata->{termsOfAddress}) {
+        $namedata->{displayname} .= " &lt;" . $namedata->{termsOfAddress} . "&gt;"
     }
     return $namedata;
 

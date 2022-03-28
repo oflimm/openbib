@@ -7762,7 +7762,7 @@ convtab:
           index:
             'source': 1
             'freesearch': 1
-      '0100':
+      '0100': # # Briefaussteller
         '':
           index:
             'ft0100': 1
@@ -7770,7 +7770,7 @@ convtab:
             'freesearch': 1
           facet:
             'person': 1
-      '0101':
+      '0101': # Briefempfaenger
         '':
           index:
             'ft0101': 1
@@ -7808,6 +7808,10 @@ convtab:
             'ft0334': 1
           facet:
             'custom2': 1
+      '0336': # Incipit
+        '':
+          index:
+            'freesearch': 1
       '0340':         # PSTAnsetzung
         '':
           index:
@@ -7838,11 +7842,12 @@ convtab:
             'title': 1
             'titlestring': 1
             'freesearch': 1
-      '0410':         # Auflage
+      '0410':         # Ausstellungsort
         '':
           index:
             'place': 1
             'ft0410': 1
+            'freesearch': 1
       '0412':         # Verlag
         '':
           index:
@@ -7852,7 +7857,7 @@ convtab:
         '':
           index:
             'person': 1
-      '0424':
+      '0424': # Datum
         '':
           index:
             'year': 1
@@ -7898,6 +7903,10 @@ convtab:
         '':
           index:
             'ft0463': 1
+            'freesearch': 1
+      '0464':         # print_locations
+        '':
+          index:
             'freesearch': 1
       '0465':         # print_publication_date
         '':
@@ -7959,6 +7968,7 @@ convtab:
         '':
           index:
             'ft0590': 1
+            'freesearch': 1
       '0594':
         '':
           index:
@@ -8235,6 +8245,10 @@ convtab:
         '':
           index:
             'bkey': 1
+            'freesearch': 1
+      '6053': # Transkription
+        '':
+          index:
             'freesearch': 1
   gentzdigital:
     inverted_title:

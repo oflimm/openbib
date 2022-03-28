@@ -17,7 +17,7 @@
 <div class="card-body">
 
 [% IF title || author %]<p>
-[% IF author %][% author%]: [% END %][% IF title %][% title %][% END %]
+[% IF author %][% author%]: [% END %][% IF title %][% title %][% END %][% IF holdingid %] ([% holdingid %])[% END %]
 </p>
 [% END %]
 

@@ -458,6 +458,12 @@ while (my $jsonline = <IN>){
 		content => $subitem_ref->{collection_herterich_type}{'de-DE'},
 	    } if ($subitem_ref->{collection_herterich_type});
 
+	    push @{$title_ref->{fields}{'0492'}}, {
+		mult     => $herterich_mult,
+		subfield => '',
+		content => $subitem_ref->{collection_herterich_images},
+	    } if ($subitem_ref->{collection_herterich_images});
+	    
 	    $herterich_mult++;
 	}
     }    

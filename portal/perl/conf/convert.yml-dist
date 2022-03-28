@@ -7904,10 +7904,6 @@ convtab:
           index:
             'ft0463': 1
             'freesearch': 1
-      '0464':         # print_locations
-        '':
-          index:
-            'freesearch': 1
       '0465':         # print_publication_date
         '':
           index:

@@ -47,13 +47,19 @@
 <p/>
 
 <div class="card">
-<div class="card-header">[% msg.maketext("Aufsätze: Fernleihen") %]</div>
+<div class="card-header">[% msg.maketext("Fernleihkonto") %]</div>
 <div class="card-body">
 
-<p>[% msg.maketext("Übersicht über die Zeitschriftenartikel und Abschnitte aus Büchern, die Sie als Kopie über die Fernleihe bestellt haben.") %]</p>
+<p> [% msg.maketext("Übersicht über die Bücher, die Sie über die Fernleihe bestellt haben sowie ihren aktuellen Bearbeitungsstatus.") %]</a></p>
 
 <ul>
-<li>[% msg.maketext("Aufsatzbestellungen") %]</li>
+<li><a href="https://usb-koeln.devel.digibib.net/account/ill/books/orderlist" target="fernleihkonto_aufsaetze">[% msg.maketext("Buchbestellungen") %]</a></li>
+</ul>
+
+<p> [% msg.maketext("Übersicht über die Zeitschriftenartikel und Abschnitte aus Büchern, die Sie als Kopie über die Fernleihe bestellt haben sowie ihren aktuellen Bearbeitungsstatus.") %]</a></p>
+
+<ul>
+<li><a href="https://usb-koeln.devel.digibib.net/account/ill/articles/orderlist" target="fernleihkonto_aufsaetze">[% msg.maketext("Aufsatzbestellungen") %]</a></li>
 </ul>
 
 </div>

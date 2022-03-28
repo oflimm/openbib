@@ -152,7 +152,7 @@
         FOREACH thisitem IN printpub ;
 
            title    = thisitem.standard.${"de-DE"};
-           location = thisitem.print_locations;
+           location = thisitem.print_publication_location;
            type     = thisitem.print_publication_type.${"de-DE"};
            url      = thisitem.digitized_version_url;
            year     = thisitem.print_publication_year;
@@ -223,43 +223,36 @@
 	    <strong>[% msg.maketext("Kurztitel") %]:</strong> [% publist_entry.title %]
          </p>
 
-[% IF publist_entry.url %]
-<p>
-<strong>[% msg.maketext("URL") %]:</strong> <a href="[% publist_entry.url %]" target="_blank">[% publist_entry.url %]</a>
-</p>
-[% END %]
-
-<h5 class="mt-4">[% msg.maketext("Unterschiede in den Briefinformationen") %]</h5>
-[% IF publist_entry.incipit %]
-<p>
-<strong>[% msg.maketext("Incipit") %]:</strong> [% publist_entry.incipit %]
-</p>
-[% END %]
-
-[% IF publist_entry.reference_location %]
-<p>
-<strong>[% msg.maketext("Ausstellort") %]:</strong> [% publist_entry.reference_location %]
-</p>
-[% END %]
-
-[% IF publist_entry.location %]
-<p>
-<strong>[% msg.maketext("Ort") %]:</strong> [% publist_entry.location %]
-</p>
-[% END %]
-
-[% IF publist_entry.date %]
-<p>
-<strong>[% msg.maketext("Datum") %]:</strong> [% publist_entry.date %]
-</p>
-[% END %]
-
 [% IF publist_entry.page %]
 <p>
 <strong>[% msg.maketext("Seiten") %]:</strong> [% publist_entry.page %]
 </p>
 [% END %]
 
+[% IF publist_entry.url %]
+<p>
+<strong>[% msg.maketext("URL") %]:</strong> <a href="[% publist_entry.url %]" target="_blank">[% publist_entry.url %]</a>
+</p>
+[% END %]
+
+<h5 class="mt-4">[% msg.maketext("Briefinformationen") %]</h5>
+[% IF publist_entry.incipit %]
+<p>
+<strong>[% msg.maketext("Incipit") %]:</strong> [% publist_entry.incipit %]
+</p>
+[% END %]
+
+[% IF publist_entry.location %]
+<p>
+<strong>[% msg.maketext("Ausstellort") %]:</strong> [% publist_entry.location %]
+</p>
+[% END %]
+
+[% IF publist_entry.date %]
+<p>
+<strong>[% msg.maketext("Briefdatum") %]:</strong> [% publist_entry.date %]
+</p>
+[% END %]
 
 </div><!-- End: titleinfo -->
       </div><!-- End: brieftitle -->

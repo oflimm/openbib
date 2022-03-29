@@ -101,7 +101,6 @@
 <div class="card-body">
 
 <ul>
-<li><a href="https://lists.ub.uni-koeln.de/mailman/listinfo/usb-aktuell" target="_blank">[% msg.maketext("USB-Aktuell") %]</a><br/>[% msg.maketext("Tagesaktuelle Mitteilungen zu kurzfristigen Schließungen, Störungen usw.") %]</li>
 <li><a href="https://www.ub.uni-koeln.de/res/newsletter/index_ger.html" target="_blank">[% msg.maketext("USB-Info") %]</a><br/>[% msg.maketext("Allgemeine Informationen zum Dienstleistungsangebot der USB.") %]</li>
 </ul>
 

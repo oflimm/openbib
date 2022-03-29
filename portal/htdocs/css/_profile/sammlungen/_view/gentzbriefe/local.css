@@ -89,10 +89,14 @@
 	padding-right: 10px;
     }
     
-    a, a:hover{
+    a, a:hover {
 	color: #253746;
     }
 
+    a.exturl {
+	text-decoration: underline;	
+    }
+    
     .page-item .page-link {
 	color: #253746;
     }

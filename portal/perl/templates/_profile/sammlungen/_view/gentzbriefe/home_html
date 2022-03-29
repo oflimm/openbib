@@ -95,7 +95,7 @@
 <div class="card mt-5 mb-0 h-100">
 <div class="card-header pb-2 text-center ob-bg-secondary"><i class="fas fa-info fa-2x"></i></div>
 <div class="card-body p-0 ob-bg-secondary">
-<h5 class="card-title p-3 mt-4 text-center">[% msg.maketext("Informationen zum Briefverzeichnis") %]</h5>
+<h5 class="card-title p-3 mt-4 text-center">[% msg.maketext("Informationen zur Nutzung") %]</h5>
 <!--<p class="card-text">Vita, Hinweise, Quellen</p> -->
 <a class="btn btn-primary ml-3" href="[% path_prefix %]/[% config.get('info_loc') %]/verzeichnis.html?l=[% lang %]">Mehr</a></div>
 </div>

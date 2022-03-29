@@ -147,7 +147,7 @@ Die Französische Revolution (1789) erschütterte die politische, soziale und wi
 <div class="col-md-6 pl-5 pr-5 mt-5 pb-3">
 <h4>Die Bedeutung der Sammlung Herterich</h4>
 <p>
-Der studierte Historiker und Kölner SPD-Politiker Günter Herterich (1939–2014) hat seit 1987 eine reiche Materialsammlung rund um das Leben und Wirken des Friedrich Gentz, bestehend aus dessen Briefen, Tagebüchern, Werken und deren Übersetzung in andere Sprachen, Beiträgen in Periodika und Enzyklopädien [...]
+Der studierte Historiker und Kölner SPD-Politiker Günter Herterich (1939–2014) hat seit 1987 eine reiche Materialsammlung rund um das Leben und Wirken des Friedrich Gentz, bestehend aus dessen Briefen, Tagebüchern, Werken und deren Übersetzung in andere Sprachen, Beiträgen in Periodika und Enzyklopädien [...]</p>
 
 <a class="btn btn-primary mt-5" href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a>
 

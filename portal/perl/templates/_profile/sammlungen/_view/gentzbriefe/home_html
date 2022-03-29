@@ -161,7 +161,7 @@ Der studierte Historiker und Kölner SPD-Politiker Günter Herterich (1939–201
 
 
 <div class="row">
-<div class="col-md-6 pl-0 pr-0 text-center ob-bg-secondary">
+<div class="col-md-6 pl-0 pr-0 text-center" style="background-image: linear-gradient(45deg, yellow 0%, orange 60%)">
   <img class="img-fluid" src="/images/openbib/views/gentzbriefe/gentz-2bg.png" alt="MAP" />
 </div>
 <div class="col-md-6 pl-5 pr-5 mt-5 pb-3">

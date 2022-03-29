@@ -98,7 +98,7 @@ Format: TT.MM.JJJJ
 
 <div class="form-check mt-3 mb-4">
 <input class="form-check-input" type="checkbox" name="confirmation" id="confirmation" />
-<label for="confirmation">[% msg.maketext("Hiermit erkenne ich die Gebühren- und Nutzungsordnungen an.") %]</label>
+<label for="confirmation">Hiermit erkenne ich die <a class="exturl" href="https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/regelung/index_ger.html" target="_blank">Gebühren- und Nutzungsordnungen</a> an.</label>
 </div>
 
 

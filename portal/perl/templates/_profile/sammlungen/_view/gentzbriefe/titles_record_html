@@ -363,7 +363,7 @@ function copy_to_clipboard(formatid) {
 <div class="alert alert-secondary mt-2">
 <h5>[% msg.maketext("Empfohlene Zitation:") %]</h5>
 
-<div id="gentzbriefe_citation">[% src.item('citation') %]</div>
+<div id="gentzbriefe_citation">[% src.item('citation') %] [[% USE date; date.format(date.now, '%d.%m.%Y', 'de_DE') %]].</div>
 
 <!--
 <button type="button" onclick="copy_to_clipboard('gentzbriefe_citation')" class="btn btn-primary mt-2">[% msg.maketext("Kopieren") %]</button>

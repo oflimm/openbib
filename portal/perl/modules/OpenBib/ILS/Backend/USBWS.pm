@@ -274,6 +274,228 @@ sub register_librarycard {
     return $response_ref;
 }
 
+sub authenticate_uccard {
+    my ($self,$arg_ref) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $database = $self->get_database;
+    my $config   = $self->get_config;
+
+    my $response_ref = {};
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    $logger->debug("authenticate uccard user via USB-SOAP");
+
+    unless ($arg_ref->{ucusername} && $arg_ref->{ucpassword}){
+	$response_ref =  {
+	    error => "missing parameter",
+	};
+
+	return $response_ref;
+    }
+    
+    my @args = ($arg_ref->{ucusername},$arg_ref->{ucpassword});
+	    
+    my $uri = "urn:/Account";
+	    
+    if ($circinfotable->get($database)->{circdb} ne "sisis"){
+	$uri = "urn:/Account_inst";
+    }
+	        
+    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));    
+    
+    my $result_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('usbws_url'));
+	my $result = $soap->uccard_login(@args);
+	
+	unless ($result->fault) {
+	    $result_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    
+	    $response_ref = {
+		error => $result->faultcode,
+		error_description => $result->faultstring,
+	    };
+	    
+	    return $response_ref;
+
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$config->get('usbws_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
+	};
+	
+	return $response_ref;
+    }
+
+    # Allgemeine Fehler
+    if (!defined $result_ref->{OK} && !$result_ref->{OK}){
+	$response_ref = {
+	    "code" => 400,
+		"error" => "authentication error",
+		"error_description" => "Keine Authentifizierung möglich",
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+
+    # Keine Nutzernummer zurueckgeliefert
+    if (!defined $result_ref->{BenutzerNummer} && !defined $result_ref->{MatrikelNummer}){
+	$response_ref = {
+	    "code" => 400,
+		"error" => "error",
+		"error_description" => "Couldn't lookup username or student id in library system",
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+
+    $response_ref = {
+	"successful" => 1,
+	    "username"     => $result_ref->{BenutzerNummer},
+	    "ucusername"   => $result_ref->{MatrikelNummer},
+    };
+    
+    return $response_ref;
+}
+
+sub activate_uccard {
+    my ($self,$arg_ref) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $database = $self->get_database;
+    my $config   = $self->get_config;
+
+    my $response_ref = {};
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    $logger->debug("authenticate uccard user via USB-SOAP");
+
+    unless ($arg_ref->{ucusername} && $arg_ref->{password1}){
+	$response_ref =  {
+	    error => "missing parameter",
+	};
+
+	return $response_ref;
+    }
+    
+    my @args = ($arg_ref->{ucusername},$arg_ref->{password1});
+	    
+    my $uri = "urn:/Account";
+	    
+    if ($circinfotable->get($database)->{circdb} ne "sisis"){
+	$uri = "urn:/Account_inst";
+    }
+	        
+    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));    
+    
+    my $result_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('usbws_url'));
+	my $result = $soap->uccard_activate(@args);
+	
+	unless ($result->fault) {
+	    $result_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    
+	    $response_ref = {
+		error => $result->faultcode,
+		error_description => $result->faultstring,
+	    };
+	    
+	    return $response_ref;
+
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$config->get('usbws_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
+	};
+	
+	return $response_ref;
+    }
+
+    # Allgemeine Fehler
+    if (!defined $result_ref->{OK} && !$result_ref->{OK}){
+	$response_ref = {
+	    "code" => 400,
+		"error" => "authentication error",
+		"error_description" => "Keine Aktivierung möglich",
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+
+    # Keine Nutzernummer zurueckgeliefert
+    if (!defined $result_ref->{BenutzerNummer}){
+	$response_ref = {
+	    "code" => 400,
+		"error" => "error",
+		"error_description" => "Couldn't lookup new username in library system",
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+
+    $response_ref = {
+	"successful" => 1,
+	    "username"    => $result_ref->{BenutzerNummer},
+    };
+    
+    return $response_ref;
+}
 
 
 ######################################################################

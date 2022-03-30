@@ -17,11 +17,11 @@
 <tr><th>[% msg.maketext("Geburtsdatum") %]</th><td>[% address.birthdate %]</td></tr>
 <tr><th>[% msg.maketext("Anmeldung am") %]</th><td>[% address.startdate %]</td></tr>
 <tr><th>[% msg.maketext("Ausweis gültig bis") %]</th><td>[% address.enddate %]</td></tr>
-[% IF address.street || address.citycode || address.city %]
-<tr><th>[% msg.maketext("Postanschrift") %]</th><td>[% address.street %]<br/>[% address.citycode %] [% address.city %]</td></tr>
+[% IF address.street || address.zip || address.city %]
+<tr><th>[% msg.maketext("Postanschrift") %]</th><td>[% address.street %]<br/>[% address.zip %] [% address.city %]</td></tr>
 [% END %]
-[% IF address.street2 || address.citycode2 || address.city2 %]
-<tr><th>[% msg.maketext("Zweitanschrift") %]</th><td>[% address.street2 %]<br/>[% address.citycode2 %] [% address.city2 %]</td></tr>
+[% IF address.street2 || address.zip2 || address.city2 %]
+<tr><th>[% msg.maketext("Zweitanschrift") %]</th><td>[% address.street2 %]<br/>[% address.zip2 %] [% address.city2 %]</td></tr>
 [% END %]
 <tr><th>[% msg.maketext("Telefon-Nummer") %]</th><td>[% IF address.phone %][% address.phone %][% ELSE %][% msg.maketext("keine angegeben") %][% END %]</td></tr>
 <tr><th>[% msg.maketext("E-Mail Adresse") %]</th><td>[% address.email %]</td></tr>

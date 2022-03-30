@@ -101,9 +101,10 @@ sub show {
 
     # TT-Data erzeugen
     my $ttdata={
-        recaptcha  => $recaptcha,
+	use_captcha => 0,
+        recaptcha   => $recaptcha,
         
-        lang       => $queryoptions->get_option('l'),
+        lang        => $queryoptions->get_option('l'),
     };
     
     return $self->print_page($config->{tt_users_librarycard_registrations_tname},$ttdata);

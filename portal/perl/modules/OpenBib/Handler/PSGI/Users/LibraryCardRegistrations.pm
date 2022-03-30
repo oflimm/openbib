@@ -286,8 +286,8 @@ sub register {
     elsif ($register_ref->{successful}){
 	# TT-Data erzeugen
 	my $ttdata={
-	    register   => $register_ref,
-	    userdata   => $input_data_ref,
+	    registration   => $register_ref,
+	    userdata       => $input_data_ref,
 	};
 	
 	$ttdata = $self->add_default_ttdata($ttdata);

@@ -202,7 +202,7 @@ sub register_librarycard {
 	my $soap = SOAP::Lite
 	    -> uri($uri)
 	    -> proxy($config->get('usbws_url'));
-	my $result = $soap->set_mail(@args);
+	my $result = $soap->register_user(@args);
 	
 	unless ($result->fault) {
 	    $result_ref = $result->result;

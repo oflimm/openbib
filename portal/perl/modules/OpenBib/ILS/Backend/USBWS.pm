@@ -158,6 +158,125 @@ sub authenticate {
 }
 
 ######################################################################
+# Registration/Activation
+######################################################################
+
+sub register_librarycard {
+    my ($self,$arg_ref) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $database = $self->get_database;
+    my $config   = $self->get_config;
+
+    my $response_ref = {};
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    $logger->debug("Renew loans via USB-SOAP");
+
+    unless ($arg_ref->{salutation} && $arg_ref->{forename} && $arg_ref->{surname} && $arg_ref->{birthdate} && $arg_ref->{street} && $arg_ref->{zip} && $arg_ref->{city} && $arg_ref->{email} && $arg_ref->{password1}){
+	$response_ref =  {
+	    error => "missing parameter",
+	};
+
+	return $response_ref;
+    }
+    
+    my @args = ($arg_ref->{salutation},$arg_ref->{forename},$arg_ref->{surname},$arg_ref->{birthdate},$arg_ref->{street},$arg_ref->{zip},$arg_ref->{city},"","","",$arg_ref->{email},$arg_ref->{password1});
+	    
+    my $uri = "urn:/Account";
+	    
+    if ($circinfotable->get($database)->{circdb} ne "sisis"){
+	$uri = "urn:/Account_inst";
+    }
+	        
+    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));    
+    
+    my $result_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('usbws_url'));
+	my $result = $soap->set_mail(@args);
+	
+	unless ($result->fault) {
+	    $result_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    
+	    $response_ref = {
+		error => $result->faultcode,
+		error_description => $result->faultstring,
+	    };
+	    
+	    return $response_ref;
+
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$config->get('usbws_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
+	};
+	
+	return $response_ref;
+    }
+
+    # Allgemeine Fehler
+    if (defined $result_ref->{ErrorText}){
+	$response_ref = {
+	    "code" => 400,
+		"error" => "error",
+		"error_description" => $result_ref->{ErrorText},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+
+    # Keine Nutzernummer zurueckgeliefert
+    if (defined $result_ref->{BenutzerDatenInsr} && !defined $result_ref->{BenutzerDatenInsr}{BenutzerNummer}){
+	$response_ref = {
+	    "code" => 400,
+		"error" => "error",
+		"error_description" => "No account created",
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+
+    $response_ref = {
+	"successful" => 1,
+	    "message"     => $result_ref->{BenutzerDatenInsr}{OKMsg},
+	    "username"    => $result_ref->{BenutzerDatenInsr}{BenutzerNummer},
+	    "paymentdate" => $result_ref->{BenutzerDatenInsr}{JahresEntgeltDatum},
+    };
+    
+    return $response_ref;
+}
+
+
+
+######################################################################
 # Circulation
 ######################################################################
 
@@ -2533,8 +2652,8 @@ sub send_account_request {
 		    $response_ref->{street2}           = $itemlist->{BenutzerDaten}{Strasse2};
 		    $response_ref->{city}              = $itemlist->{BenutzerDaten}{Ort1};
 		    $response_ref->{city2}             = $itemlist->{BenutzerDaten}{Ort2};
-		    $response_ref->{citycode}          = $itemlist->{BenutzerDaten}{Plz1};
-		    $response_ref->{citycode2}         = $itemlist->{BenutzerDaten}{Plz2};
+		    $response_ref->{zip}               = $itemlist->{BenutzerDaten}{Plz1};
+		    $response_ref->{zip2}              = $itemlist->{BenutzerDaten}{Plz2};
 		    $response_ref->{phone}             = $itemlist->{BenutzerDaten}{Telefon1};
 		    $response_ref->{phone2}            = $itemlist->{BenutzerDaten}{Telefon2};
 		    $response_ref->{email}             = $itemlist->{BenutzerDaten}{Email1};

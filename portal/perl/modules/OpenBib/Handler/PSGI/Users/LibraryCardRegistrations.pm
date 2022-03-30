@@ -140,7 +140,7 @@ sub register {
     my $surname             = $input_data_ref->{surname}      || '';
     my $birthdate           = $input_data_ref->{birthdate}    || '';
     my $street              = $input_data_ref->{street}       || '';
-    my $citycode            = $input_data_ref->{citycode}     || '';
+    my $zip                 = $input_data_ref->{zip}          || '';
     my $city                = $input_data_ref->{city}         || '';
     my $email               = $input_data_ref->{email}        || '';
     my $password1           = $input_data_ref->{password1}    || '';
@@ -150,8 +150,10 @@ sub register {
     my $recaptcha_challenge = $input_data_ref->{'recaptcha_challenge_field'};
     my $recaptcha_response  = $input_data_ref->{'g-recaptcha-response'};
 
+    my $use_captcha = 0;
+    
     # Admin darf auch ohne Captcha, z.B. per JSON API, Nutzer registrieren
-    if (!$user->is_admin){
+    if ($use_captcha && !$user->is_admin){
 	my $recaptcha = Captcha::reCAPTCHA->new;
 	
 	# Wenn der Request ueber einen Proxy kommt, dann urspruengliche
@@ -215,7 +217,7 @@ sub register {
         return $self->print_warning($reason,$code);
     }
 
-    if (! ($street  && $citycode && $city)){
+    if (! ($street  && $zip && $city)){
         my $code   = -5;
 	my $reason = $self->get_error_message($code);
         return $self->print_warning($reason,$code);
@@ -344,6 +346,16 @@ sub get_input_definition {
     my $self=shift;
     
     return {
+        dbname => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        salutation => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
         forename => {
             default  => '',
             encoding => 'none',
@@ -364,7 +376,7 @@ sub get_input_definition {
             encoding => 'none',
             type     => 'scalar',
         },
-        citycode => {
+        zip => {
             default  => '',
             encoding => 'none',
             type     => 'scalar',

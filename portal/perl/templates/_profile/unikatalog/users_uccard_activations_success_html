@@ -1,0 +1,35 @@
+[%#-
+#######################################################################
+#
+# Templatename: registrations_success
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe einer Meldung bei erfolgreicher Selbstregistrierung
+#
+#######################################################################
+-%]
+
+<div class="ob-jumbotron">
+
+<h1 class="display-4">[% msg.maketext("Vielen Dank für Ihre Anmeldung!") %]</h1>
+
+</p>
+
+<p class="lead">
+[% msg.maketext("Die folgende Benutzernummer auf der Rückseite Ihrer UCCard wurde erfolgreich freigeschaltet.") %]: <strong>[% activations.username %]</strong>
+</p>
+
+<p>[% msg.maketext("Ihre UCCard fungiert daher ab sofort auch als Bibliotheksausweis.") %]</p>
+
+<p>[% msg.maketext("Bitte merken Sie sich Ihr Passwort gut, da Sie es zusammen mit der Benutzernummer") %]</p>
+
+<p>[% msg.maketext("Falls diese Nummer nicht mit der Ausweisnummer übereinstimmt, die auf der Rückseite Ihrer UCCard in Klarschrift und als Barcode aufgedruckt ist, wenden Sie sich bitte an unsere ") %]<a href="[% cms_links.anmeldung %]">[% msg.maketext("Anmeldung") %]</a>
+
+<a class="btn btn-primary mb-2" href="[% path_prefix%]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Weiter zur Anmeldung am Portal") %]</a>
+
+</p>
+
+</div>

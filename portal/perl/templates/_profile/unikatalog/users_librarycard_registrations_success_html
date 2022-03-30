@@ -24,27 +24,27 @@
 <table class="table table-striped table-hover">
 <tbody>
 <tr>
-  <th>[% msg.maketext("Name") </th>
+  <th>[% msg.maketext("Name") %]</th>
   <td>[% userinfo.forename %] [% userinfo.surname%]</td>
 </tr>
 <tr>
-  <th>[% msg.maketext("Geburtsdatum") </th>
+  <th>[% msg.maketext("Geburtsdatum") %]</th>
   <td>[% userinfo.birthdate %]</td>
 </tr>
 <tr>
-  <th>[% msg.maketext("Anschrift") </th>
+  <th>[% msg.maketext("Anschrift") %]</th>
   <td>[% userinfo.street %]<br/>[% userinfo.zip %] [% userinfo.city %]</td>
 </tr>
 <tr>
-  <th>[% msg.maketext("E-Mail-Adresse") </th>
+  <th>[% msg.maketext("E-Mail-Adresse") %]</th>
   <td>[% userinfo.email %]</td>
 </tr>
 <tr>
-  <th>[% msg.maketext("Anmeldung am") </th>
+  <th>[% msg.maketext("Anmeldung am") %]</th>
   <td>[% registration.paydate %]</td>
 </tr>
 <tr>
-  <th>[% msg.maketext("Ihre vorläufige Benutzernummer lautet") </th>
+  <th>[% msg.maketext("Ihre vorläufige Benutzernummer lautet") %]</th>
   <td><strong>[% registration.username %]</strong></td>
 </tr>
 </tbody>

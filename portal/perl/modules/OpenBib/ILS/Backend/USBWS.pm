@@ -409,7 +409,7 @@ sub activate_uccard {
 	return $response_ref;
     }
     
-    my @args = ($arg_ref->{ucusername},$arg_ref->{password1});
+    my @args = ($arg_ref->{studentid},$arg_ref->{password1});
 	    
     my $uri = "urn:/Account";
 	    

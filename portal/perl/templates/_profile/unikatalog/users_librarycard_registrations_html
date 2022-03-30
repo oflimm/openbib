@@ -103,13 +103,14 @@ Format: TT.MM.JJJJ
 <label for="confirmation">Hiermit erkenne ich die <a class="exturl" href="https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/regelung/index_ger.html" target="_blank">Gebühren- und Nutzungsordnungen</a> an.</label>
 </div>
 
-
+[% IF use_captcha %]
 <div class="form-floating mb-3">
 [%- IF config.${"recaptcha_public_key"} -%]
 [%- recaptcha_options = { lang => lang, theme => 'white' } -%]
 [% recaptcha.get_html_v2(config.${"recaptcha_public_key"},'',1,recaptcha_options) %]
 [%- END -%]
 </div>
+[% END %]
 
 <p>
 [% msg.maketext("Mit * gekennzeichnete Felder sind Pflichtfelder und müssen ausgefüllt werden.") %]

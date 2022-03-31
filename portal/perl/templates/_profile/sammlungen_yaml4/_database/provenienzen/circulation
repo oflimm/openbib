@@ -30,7 +30,7 @@
 [% IF Aquisition == 0 %]
 <table class="ym-full">
 <thead>
-<tr align="center"><th>[% msg.maketext("Bibliothek") %]</th><th>QR-Code</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Ausleihstatus") %]</th><th>[% msg.maketext("Ausleihsystem") %]</th></tr>
+<tr align="center"><th>[% msg.maketext("Bibliothek") %]</th><th>QR-Code</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Ausleihsystem") %]</th></tr>
 </thead>
 <tbody>
 [% FOREACH thiscirculation IN circulation %]
@@ -166,8 +166,6 @@ thiscirculation.Signatur = thiscirculation.Signatur.replace('^ARCH/','');
 <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %];mnr=[% thiscirculation.Mediennr %]">Provenienzen</a>
 [% END %]
 </td>
-<td><strong>[%- IF thiscirculation.Status == 'bestellbar' -%]ausleihbar[% ELSIF
-thiscirculation.Status == 'entliehen' && thiscirculation.Rueckgabe != '31.12.9999' && thiscirculation.Rueckgabe != '1.1.1753' %]entliehen<br/>bis [% thiscirculation.Rueckgabe %][%- ELSE -%][% thiscirculation.Status %][%- END -%]</strong></td>
 <td class="circurl">
 [%
      IF thiscirculation.Ausleihurl %]

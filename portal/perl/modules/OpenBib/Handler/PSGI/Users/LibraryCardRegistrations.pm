@@ -150,6 +150,10 @@ sub register {
     my $recaptcha_challenge = $input_data_ref->{'recaptcha_challenge_field'};
     my $recaptcha_response  = $input_data_ref->{'g-recaptcha-response'};
 
+    unless ($config->get('active_ils')){
+	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellunge, Vormerkungen, Online-Anmeldung, UCCard Freischaltung usw.) sind aktuell systemweit deaktiviert."));	
+    }
+    
     my $use_captcha = 0;
     
     # Admin darf auch ohne Captcha, z.B. per JSON API, Nutzer registrieren

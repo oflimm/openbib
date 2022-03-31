@@ -138,8 +138,11 @@ sub authenticate {
     my $username            = $input_data_ref->{ucusername}     || '';    
     my $password            = $input_data_ref->{ucpassword}     || '';
     my $dbname              = $input_data_ref->{dbname}       || '';
-    # Salutation
-
+    
+    unless ($config->get('active_ils')){
+	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellunge, Vormerkungen, Online-Anmeldung, UCCard Freischaltung usw.) sind aktuell systemweit deaktiviert."));	
+    }
+    
     if (!$username){
         my $code   = -1;
 	my $reason = $self->get_error_message($code);
@@ -232,6 +235,9 @@ sub activate {
     my $password2           = $input_data_ref->{password2}    || '';
     my $confirmation        = $input_data_ref->{confirmation} || '';
 
+    unless ($config->get('active_ils')){
+	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellunge, Vormerkungen, Online-Anmeldung, UCCard Freischaltung usw.) sind aktuell systemweit deaktiviert."));	
+    }
 
     if ($confirmation != 1){
         my $code   = -4;

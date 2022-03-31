@@ -506,6 +506,41 @@
    runmode: 'show_session'
 
 #####################################################################
+# UCCardActivations-Resource/Repraesentation
+
+- # registrations_loc:
+   module: 'OpenBib::Handler::PSGI::Users::UCCardActivations'
+   rule: '/portal/:view/users/uccard_activations[get]'
+   representations:
+     - none
+     - html
+   runmode: 'show'
+- # registrations_loc:
+   module: 'OpenBib::Handler::PSGI::Users::UCCardActivations'
+   rule: '/portal/:view/users/uccard_login[post]'
+   runmode: 'authenticate'
+
+- # registrations_loc:
+   module: 'OpenBib::Handler::PSGI::Users::UCCardActivations'
+   rule: '/portal/:view/users/uccard_activations[post]'
+   runmode: 'activate'
+
+#####################################################################
+# LibraryCardRegistrations-Resource/Repraesentation
+
+- # registrations_loc:
+   module: 'OpenBib::Handler::PSGI::Users::LibraryCardRegistrations'
+   rule: '/portal/:view/users/librarycard_registrations[get]'
+   representations:
+     - none
+     - html
+   runmode: 'show'
+- # registrations_loc:
+   module: 'OpenBib::Handler::PSGI::Users::LibraryCardRegistrations'
+   rule: '/portal/:view/users/librarycard_registrations[post]'
+   runmode: 'register'
+
+#####################################################################
 # Registrations-Resource/Repraesentation
 
 - # registrations_loc:

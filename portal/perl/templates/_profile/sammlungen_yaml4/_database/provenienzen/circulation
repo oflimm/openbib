@@ -26,7 +26,7 @@
 
 %]
 <p />
-[%# USE dumper;dumper.dump(dbinfo)%]
+[%# USE dumper;dumper.dump(circulations)%]
 [% IF Aquisition == 0 %]
 <table class="ym-full">
 <thead>
@@ -35,7 +35,7 @@
 <tbody>
 [% FOREACH thiscirculation IN circulation %]
 [%-
-  thiscirculation.Ausleihurl = "${thiscirculation.Ausleihurl}?referrer=KUG&service=search&db=UBKSLNP&query=ID=${record.id}";
+  thiscirculation.Ausleihurl = "https://www.ub.uni-koeln.de/usbportal?referrer=KUG&service=search&db=UBKSLNP&query=ID=${record.id}";
 
      IF     thiscirculation.Zweigstelle == 0 ;
 
@@ -171,7 +171,7 @@ thiscirculation.Status == 'entliehen' && thiscirculation.Rueckgabe != '31.12.999
 <td class="circurl">
 [%
      IF thiscirculation.Ausleihurl %]
-   <img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=550;url=[% uri_escape(thiscirculation.Ausleihurl) %]">[% msg.maketext("Weiter") %]</a>
+   <img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% thiscirculation.Ausleihurl %]">[% msg.maketext("Weiter") %]</a>
 [%   ELSE %]
 [%      IF thiscirculation.Statuscode != 0 ;
             IF thiscirculation.Gruppe.Name.match("Handapparat") %]

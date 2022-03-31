@@ -114,6 +114,8 @@
        library_isil = "DE-38-448";
     ELSIF thiscirculation.Standort.match('Philosophisches Seminar');
        library_isil = "DE-38-401";
+    ELSIF thiscirculation.Standort.match('Hauptabt');
+       library_isil = "DE-38";
     END ;
 
     thiscirculation.Standort = thiscirculation.Standort.replace('^inst[0-9][0-9][0-9] +\((.+)\)','$1') ;

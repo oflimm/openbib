@@ -118,7 +118,6 @@ sub register {
     
     # Dispatched Args
     my $view           = $self->param('view')           || '';
-    my $registrationid = $self->strip_suffix($self->param('registrationid')) || '';
 
     # Shared Args
     my $query          = $self->query();
@@ -329,7 +328,7 @@ sub get_error_message {
          -9 => $msg->maketext("Bitte bestätigen Sie Ihr Passwort."),
         -10 => $msg->maketext("Die beiden Passwörter, die Sie eingegeben haben, stimmen nicht überein."),
         -11 => $msg->maketext("Bitte erkennen Sie die Gebühren- und Nutzungsordnungen an."),
-        -12 => $msg->maketext("Bitte gebene sie den Katalognamen an."),
+        -12 => $msg->maketext("Der Katalogname fehlt."),
 	-13 => $msg->maketext("Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte [_1]zurück[_2] und versuchen Sie es erneut.","<a href=\"$path_prefix/$config->{users_loc}/$config->{librarycard_registrations_loc}.html\">","</a>"),
 	);
 

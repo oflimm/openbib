@@ -3095,17 +3095,6 @@
    args:
      'restrict_db_to_view': 0
 - # users/circulations_loc:
-   module: 'OpenBib::Handler::PSGI::Users::Circulations::ArticleOrders'
-   rule: '/portal/:view/users/id/:userid/circulations/id/articleorders[get]'
-   runmode: 'show_collection'
-   representations:
-     - none
-     - html
-     - json
-     - rdf
-   args:
-     'restrict_db_to_view': 0
-- # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Reservations'
    rule: '/portal/:view/users/id/:userid/circulations/id/reservations[get]'
    runmode: 'show_collection'

@@ -380,7 +380,7 @@ sub authenticate_uccard {
     $response_ref = {
 	"successful" => 1,
 	    "username"     => $result_ref->{BenutzerNummer},
-	    "ucusername"   => $result_ref->{MatrikelNummer},
+	    "studentid"    => $result_ref->{MatrikelNummer},
     };
     
     return $response_ref;
@@ -399,7 +399,7 @@ sub activate_uccard {
     
     my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
 
-    $logger->debug("authenticate uccard user via USB-SOAP");
+    $logger->debug("Activate UCCard user via USB-SOAP");
 
     unless ($arg_ref->{ucusername} && $arg_ref->{password1}){
 	$response_ref =  {

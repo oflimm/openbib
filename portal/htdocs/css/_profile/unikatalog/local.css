@@ -190,6 +190,10 @@
 	color: #253746;
     }
 
+    a.inturl, a.exturl {
+	text-decoration: underline;
+    }
+    
     .ob-person {
 	display: block; /* line-break after */
     }
@@ -539,11 +543,21 @@
 	color: #000;
     }
     
-    #fulltitleModal {
-        z-index: 20000;
-
+    #fulltitleModal .modal-backdrop {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: -1;
+	background-color: #000000;
     }
+    
 
+    #addressModal {
+        z-index: 1600;
+    }
+    
     #fulltitleModal .modal-dialog {
         margin-top: 0;
         margin-right: 0;

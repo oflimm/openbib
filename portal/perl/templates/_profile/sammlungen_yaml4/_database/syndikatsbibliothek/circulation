@@ -69,9 +69,9 @@
 
         IF thiscirculation.Abteilungscode == 3 ;
            IF thiscirculation.Status == "bestellbar" ;
-              thiscirculation.Status = "<a href=\"http://www.ub.uni-koeln.de/bibliothek/zeiten/index_ger.html\" target=\"_blank\">LBS EWA</a> / ausleihbar";
+              thiscirculation.Status = "<a href=\"https://www.ub.uni-koeln.de/lernen_arbeiten/arbeitenusb/oeffnungszeiten/index_ger.html\" target=\"_blank\">LBS EWA</a> / ausleihbar";
            ELSIF thiscirculation.Status == "entliehen" ;
-              thiscirculation.Status = "<a href=\"http://www.ub.uni-koeln.de/bibliothek/zeiten/index_ger.html\" target=\"_blank\">LBS EWA</a> / entliehen";
+              thiscirculation.Status = "<a href=\"https://www.ub.uni-koeln.de/lernen_arbeiten/arbeitenusb/oeffnungszeiten/index_ger.html\" target=\"_blank\">LBS EWA</a> / entliehen";
            END ;
         ELSIF thiscirculation.Abteilungscode == 4 || thiscirculation.Abteilungscode == 7 ; 
            thiscirculation.Status = "EWA LS / Pr&auml;senzbestand";
@@ -143,7 +143,7 @@
 [% ELSIF thiscirculation.Standort.match('Archäologisches Instsitut') %]
 <a href="http://www.ub.uni-koeln.de/bibliotheken/38_427/" target="_blank"><b>&Ouml;ffungszeiten</b></a>
 [% ELSE %]
-<a href="http://www.ub.uni-koeln.de/bibliothek/zeiten/index_ger.html" target="_blank"><b>&Ouml;ffungszeiten</b></a>
+<a href="https://www.ub.uni-koeln.de/lernen_arbeiten/arbeitenusb/oeffnungszeiten/index_ger.html" target="_blank"><b>&Ouml;ffungszeiten</b></a>
 [% END %]
 </td>
 [%-

@@ -19,7 +19,7 @@
 
   available_authenticator_types = {};
   FOREACH authenticator IN available_authenticators ;
-     available_authenticator_types.${authenticator.type} = 1;
+     available_authenticator_types.${authenticator.type} = authenticator.id;
   END;
   
   #USE dumper;dumper.dump(available_authenticators);dumper.dump(available_authenticator_types);
@@ -125,7 +125,7 @@
 
 </form>
 
-<p><a href="">[% msg.maketext("»Passwort vergessen?") %]</a></p>
+<p><a class="inturl" href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('passwords_loc') %].html?l=[% lang %];authenticatorid=[% available_authenticator_types.${"ils"} %]">[% msg.maketext("»Passwort vergessen?") %]</a></p>
 
 <h5>[% msg.maketext("Sie haben noch keinen Bibliotheksausweis?") %]</h5>
 <ul>
@@ -271,7 +271,7 @@
 </div>
 
 <div>
-<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('registrations_loc') %].html">[% msg.maketext("Registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('passwords_loc') %].html?l=[% lang %]">[% msg.maketext("Passwort vergessen oder Konto gesperrt?") %]</a>
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('registrations_loc') %].html">[% msg.maketext("Registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('passwords_loc') %].html?l=[% lang %];authenticatorid=[% available_authenticator_types.${"self"} %]">[% msg.maketext("Passwort vergessen oder Konto gesperrt?") %]</a>
 </div>
 
 <p/>
@@ -285,6 +285,7 @@
     </div>
   </div>
 </div>
+
 [% END %]
 
          </div><!-- End: login_targets -->

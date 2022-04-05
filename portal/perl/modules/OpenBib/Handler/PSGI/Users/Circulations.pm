@@ -119,8 +119,8 @@ sub show_collection {
 
     $logger->debug("Loginname: $loginname");
 
-    my $account_ref = $ils->get_accountinfo($loginname);
-    my $address_ref = $ils->get_address($loginname);
+    my $account_ref  = $ils->get_accountinfo($loginname);
+    my $userdata_ref = $ils->get_userdata($loginname);
 
 #    my $items_ref = $ils->get_items($loginname);
 #    my $fees_ref  = $ils->get_fees($loginname);
@@ -144,7 +144,7 @@ sub show_collection {
         password   => $password,
 
 	account    => $account_ref,
-	address    => $address_ref,
+	userdata   => $userdata_ref,
 #        items      => $items_ref,
 #        fees       => $fees_ref,
 
@@ -253,7 +253,7 @@ sub update_ilsaccount {
 	    return $self->print_warning($msg->maketext($reason),$code,"$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}");
 	}
 
-	$response_ref = $ils->update_password($loginname,$password1);
+	$response_ref = $ils->update_password($loginname,$oldpassword,$password1);
 
 	if ($response_ref->{error}) {
 	    my $code   = -1;

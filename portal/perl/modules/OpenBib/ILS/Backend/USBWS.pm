@@ -796,6 +796,106 @@ sub update_password {
     return $response_ref;
 }
 
+# Hinweis: Die reset_passwd-Methode in den USBWS musste in Abwandlung der set_passwd-Methode dort neu hinzugefuegt werden
+
+sub reset_password {
+    my ($self,$username,$newpassword) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $database = $self->get_database;
+    my $config   = $self->get_config;
+
+    my $response_ref = {};
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    $logger->debug("Renew loans via USB-SOAP");
+
+    unless ($username || $newpassword){
+	$response_ref =  {
+	    error => "missing parameter",
+	};
+
+	return $response_ref;
+    }
+    
+    my @args = ($username,$newpassword);
+	    
+    my $uri = "urn:/Account";
+	    
+    if ($circinfotable->get($database)->{circdb} ne "sisis"){
+	$uri = "urn:/Account_inst";
+    }
+	        
+    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));    
+    
+    my $result_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('usbws_url'));
+	my $result = $soap->reset_passwd(@args);
+	
+	unless ($result->fault) {
+	    $result_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    
+	    $response_ref = {
+		error => $result->faultcode,
+		error_description => $result->faultstring,
+	    };
+	    
+	    return $response_ref;
+
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$config->get('usbws_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
+	};
+	
+	return $response_ref;
+    }
+
+    # Allgemeine Fehler
+    if (defined $result_ref->{BenutzerDatenRewr} && defined $result_ref->{BenutzerDatenRewr}{NotOK}){
+	$response_ref = {
+	    "code" => 400,
+		"error" => "error",
+		"error_description" => $result_ref->{BenutzerDatenRewr}{NotOK},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+
+    if (defined $result_ref->{BenutzerDatenRewr} && defined $result_ref->{BenutzerDatenRewr}{OKMsg} ){
+	$response_ref = {
+	    "successful" => 1,
+		"message" => $result_ref->{BenutzerDatenRewr}{OKMsg},
+	};
+    }
+    
+    return $response_ref;
+}
+
 # Bestellungen, Vormerkungen und Ausleihen in einer Abfrage
 sub get_items {
     my ($self,$username) = @_;
@@ -864,7 +964,7 @@ sub get_accountinfo {
 }
 
 # Accountinformationen
-sub get_address {
+sub get_userdata {
     my ($self,$username) = @_;
 
     # Log4perl logger erzeugen

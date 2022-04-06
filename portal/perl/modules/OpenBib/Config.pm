@@ -2,7 +2,7 @@
 #
 #  OpenBib::Config
 #
-#  Dieses File ist (C) 2004-2021 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2022 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -5656,6 +5656,154 @@ sub get_scopes {
     }
 
     return sort keys %$scopes_ref;
+}
+
+sub new_authtoken {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $authkey      = exists $arg_ref->{authkey}
+        ? $arg_ref->{authkey}              : undef;
+
+    my $mixedbag_ref = exists $arg_ref->{mixed_bag}
+        ? $arg_ref->{mixed_bag}            : {};
+
+    my $viewname     = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}             : undef;
+
+    my $type         = exists $arg_ref->{type}
+        ? $arg_ref->{type}                 : undef;
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+    
+    my $viewinfo = $self->get_viewinfo->single({ viewname => $viewname });
+
+    my $viewid;
+
+    if ($viewinfo){
+        $viewid = $viewinfo->id;
+    }
+
+    # Struktur von mixed_bag in JSON-String zur Speicherung umwandeln
+    my $mixedbag_json = "{}";
+    
+    eval {
+	$mixedbag_json= JSON::XS->new->utf8->canonical->encode($mixedbag_ref);
+    };
+    
+    if ($@){
+	$logger->error("Canonical Encoding failed: ".YAML::Dump($mixedbag_ref));
+    }
+    
+    # Ggf. schon existierendes  loeschen
+    $self->get_schema->resultset('Authtoken')->search({ authkey => $authkey, type => $type, viewid => $viewid})->delete;
+   
+    # DBI: "insert into userregistration values (?,NULL,?,?)"
+    my $newauthtoken = $self->get_schema->resultset('Authtoken')->create({
+        id        => \'uuid_generate_v4()',
+	viewid    => $viewid,
+        tstamp    => \'NOW()',
+        authkey   => $authkey,
+        mixed_bag  => $mixedbag_json,
+    });
+    
+    return $newauthtoken->id;
+}
+
+sub get_authtoken {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $id             = exists $arg_ref->{id}
+        ? $arg_ref->{id}                   : undef;
+    my $authkey      = exists $arg_ref->{authkey}
+        ? $arg_ref->{authkey}              : undef;
+    my $viewname       = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}             : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return unless ($id);
+
+    my $viewinfo = $self->get_viewinfo->single({ viewname => $viewname });
+
+    my $viewid;
+
+    if ($viewinfo){
+        $viewid = $viewinfo->id;
+    }
+
+    my $where_ref = { id => $id, viewid => $viewid };
+
+    if ($authkey){
+       $where_ref->{authkey} = $authkey;
+    }
+
+    my $authtokeninfo = $self->get_schema->resultset('Authtoken')->single(
+        $where_ref,
+    );
+
+    my $mixed_bag_ref;
+    
+    if ($authtokeninfo){
+        eval {
+           $authkey        = $authtokeninfo->authkey;
+           $mixed_bag_ref  = decode_json $authtokeninfo->mixed_bag;
+           $viewid         = $authtokeninfo->viewid->id;
+        };
+
+        if ($@){
+           $logger->error($@);
+           return;
+        }
+    }
+    
+    my $authtoken_info_ref = {
+        authkey    => $authkey,
+        mixed_bag  => $mixed_bag_ref,
+        viewid     => $viewid,
+    };
+    
+    return $authtoken_info_ref;
+}
+
+sub del_authtoken {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $id             = exists $arg_ref->{id}
+        ? $arg_ref->{id}                   : undef;
+    my $authkey      = exists $arg_ref->{authkey}
+        ? $arg_ref->{authkey}              : undef;
+    my $viewname       = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}             : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $viewinfo = $self->get_viewinfo->single({ viewname => $viewname });
+
+    my $viewid;
+
+    if ($viewinfo){
+        $viewid = $viewinfo->id;
+    }
+
+    my $where_ref = { id => $id, viewid => $viewid };
+
+    if ($authkey){
+       $where_ref->{authkey} = $authkey;
+    }
+
+    my $authtokeninfo = $self->get_schema->resultset('Authtoken')->search(
+        $where_ref,
+    )->delete_all;
+    
+    return;
 }
     
 sub cleanup_pg_content {

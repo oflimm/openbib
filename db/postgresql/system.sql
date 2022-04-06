@@ -2,6 +2,9 @@
 /*-------------- OpenBib System tables ------------*/
 /*-------------------------------------------------*/
 
+CREATE EXTENSION pgcrypto;
+CREATE EXTENSION "uuid-ossp";
+
 /* General configuration                           */
 /* ----------------------------------------------- */
 
@@ -237,7 +240,8 @@ CREATE TABLE sessioninfo (
 
  bibsonomy_user TEXT,
  bibsonomy_key  TEXT,
- bibsonomy_sync TEXT
+ bibsonomy_sync TEXT,
+ datacache      TEXT
 );
 
 drop table IF EXISTS session_cartitem;
@@ -351,7 +355,7 @@ CREATE TABLE userinfo (
 
 -- Additional unspecified content - json encoded --
 
- mixed_bag jsonb
+ mixed_bag      JSONB
  
 );
 
@@ -448,6 +452,21 @@ CREATE TABLE registration (
 
   username            TEXT,
   password            TEXT
+);
+
+DROP TABLE IF EXISTS authtoken;
+CREATE TABLE authtoken (
+  id                  UUID,
+  tstamp              TIMESTAMP,
+
+  viewid              BIGINT,
+  type                TEXT,
+
+  authkey             TEXT,
+  
+-- Additional unspecified content - json encoded --
+
+  mixed_bag           JSONB
 );
 
 DROP TABLE IF EXISTS authenticatorinfo;

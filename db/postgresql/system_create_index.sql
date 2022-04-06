@@ -1,5 +1,3 @@
-CREATE EXTENSION pgcrypto;
-
 ALTER TABLE databaseinfo ADD PRIMARY KEY (id);
 ALTER TABLE databaseinfo ADD CONSTRAINT uq_databaseinfo_dbname UNIQUE (dbname);
 ALTER TABLE databaseinfo ADD CONSTRAINT fk_databaseinfo_db FOREIGN KEY (parentdbid) REFERENCES databaseinfo (id);
@@ -194,6 +192,12 @@ CREATE INDEX user_db_userid ON user_db (userid);
 CREATE INDEX user_db_dbid ON user_db (dbid);
 
 ALTER TABLE registration ADD PRIMARY KEY (id);
+
+ALTER TABLE authtoken ADD PRIMARY KEY (id);
+ALTER TABLE authtoken ADD CONSTRAINT fk_authtoken_view FOREIGN KEY (viewid) REFERENCES viewinfo (id);
+CREATE INDEX authtoken_authkey ON authtoken (authkey);
+CREATE INDEX authtoken_type ON authtoken (type);
+CREATE INDEX authtoken_tstamp ON authtoken (tstamp);
 
 ALTER TABLE authenticatorinfo ADD PRIMARY KEY (id);
 CREATE INDEX authenticatorinfo_name ON authenticatorinfo (name);

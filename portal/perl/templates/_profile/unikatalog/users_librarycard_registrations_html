@@ -24,7 +24,7 @@
 <h4>[% msg.maketext("Allgemeine Angaben zu Ihrer Person") %]</h4>
 
 <div class="form-floating mt-3">
-<select class="form-control" name="salutation" id="salutation">
+<select class="form-select" name="salutation" id="salutation">
 <option value="none" selected="selected">[% msg.maketext("Bitte auswählen") %]</option>
 <option value="Frau">[% msg.maketext("Frau") %]</option>
 <option value="Frau Dr.">[% msg.maketext("Frau Dr.") %]</option>

@@ -42,7 +42,7 @@ yesno = {
 </div>
 
 <div class="form-floating mb-3">
-  <select class="form-control" name="active" id="active">
+  <select class="form-select" name="active" id="active">
     <option value="true" [%- IF rssinfo.active == 1 -%]selected[%- END -%]>[% msg.maketext("Ja") %]</option>
     <option value="false" [%- IF rssinfo.active == 0 -%]selected[%- END -%]>[% msg.maketext("Nein") %]</option></select>
   </select>

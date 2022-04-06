@@ -33,7 +33,7 @@
 </div>
 
 <div class="form-floating mb-3">
-<select class="form-control" name="type">
+<select class="form-select" name="type">
   <option value="1">[% msg.maketext("&ouml;ffentlich") %]</option>
   <option value="2">[% msg.maketext("privat") %]</option>
 </select>
@@ -41,7 +41,7 @@
 </div>
 
 <div class="form-floating mb-3">
-<select class="form-control" name="topics" multiple="multiple" size="5">
+<select class="form-select" name="topics" multiple="multiple" size="5">
 
 [% FOREACH topic IN topics %]
 <option value="[% topic.id %]">[% topic.name %][% IF topic.description%] ([% topic.description %])[% END %]</option>

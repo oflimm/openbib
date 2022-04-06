@@ -33,7 +33,7 @@
 </div>
 
 <div class="form-floating mb-3">
-  <select class="form-control" id="views" name="views" multiple="multiple" size="20">
+  <select class="form-select" id="views" name="views" multiple="multiple" size="20">
 [% FOREACH singleview IN viewinfos %]
 <option value="[% singleview.viewname %]" [% IF selected_views.${singleview.viewname} %]selected="selected"[% END %]>[% singleview.viewname %]: [% singleview.description %]</option>
 [% END %]

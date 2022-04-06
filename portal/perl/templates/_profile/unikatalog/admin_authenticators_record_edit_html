@@ -33,7 +33,7 @@
 </div>
 
 <div class="form-floating mb-3">
-  <select class="form-control" name="type" id="type">
+  <select class="form-select" name="type" id="type">
     <option value="self" [% IF authenticatorinfo.type == 'self' %]selected="selected"[% END %]>[% msg.maketext("Selbstregistrierung") %]</option>
     <option value="ldap" [% IF authenticatorinfo.type == 'ldap' %]selected="selected"[% END %]>[% msg.maketext("LDAP") %]</option>
     <option value="olws" [% IF authenticatorinfo.type == 'olws' %]selected="selected"[% END %]>[% msg.maketext("OLWS") %]</option>
@@ -51,7 +51,7 @@
 %]
 
 <div class="form-floating mb-3">
-  <select class="form-control" name="views" multiple="multiple" size="20" id="views">
+  <select class="form-select" name="views" multiple="multiple" size="20" id="views">
 [% FOREACH thisview IN config.get_viewinfo_overview %]  
     <option value="[% thisview.viewname %]" [% IF selected_views.${thisview.viewname} %]selected="selected"[% END %]>[% thisview.viewname %] - [% thisview.description %]</option>
 [% END %]

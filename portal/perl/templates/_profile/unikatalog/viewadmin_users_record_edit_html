@@ -72,7 +72,7 @@
 <h3 class="display-5">[% msg.maketext("Rolle zuordnen") %]</h3>
 
 <div class="form-floating mb-3">
-<select class="form-control" name="roles" multiple="multiple" size="5">
+<select class="form-select" name="roles" multiple="multiple" size="5">
 [% FOREACH role IN roles %]
   <option value="[% role.id %]"[% IF userinfo.role.${role.rolename} %] selected="selected"[% END %]>[% role.description %]</option>
 [% END %]
@@ -95,7 +95,7 @@
 <h3 class="display-5">[% msg.maketext("Templates zuordnen") %]</h3>
 
 <div class="form-floating mb-3">
-<select class="form-control" name="templates" multiple="multiple" size="15">
+<select class="form-select" name="templates" multiple="multiple" size="15">
 [% FOREACH template IN templates %]
   <option value="[% template.id %]"[% IF userinfo.template.${template.id} %] selected="selected"[% END %]>[% template.viewname %] - [% template.templatename %] - [% template.templatelang %]</option>
 [% END %]

@@ -51,7 +51,7 @@
 <p/>
 
 <div class="form-floating mb-3">
-<select class="form-control" name="authenticatorid">
+<select class="form-select" name="authenticatorid">
 [%- FOREACH authenticator IN available_authenticators -%]
 [%-   NEXT IF authenticator.type != 'olws' -%]
 <option value="[% authenticator.id %]" [% IF authenticator.id == authenticatorid %]selected="selected"[% END %]>[% authenticator.description %]</option>
@@ -100,7 +100,7 @@
 <p/>
 
 <div class="form-floating mb-3">
-<select class="form-control" name="authenticatorid">
+<select class="form-select" name="authenticatorid">
 [%- FOREACH authenticator IN available_authenticators -%]
 [%-   NEXT IF authenticator.type != 'ils' -%]
 <option value="[% authenticator.id %]" [% IF authenticator.id == authenticatorid %]selected="selected"[% END %]>[% authenticator.description %]</option>
@@ -158,7 +158,7 @@
 <p/>
 
 <div class="form-floating mb-3">
-<select class="form-control" name="authenticatorid">
+<select class="form-select" name="authenticatorid">
 [%- FOREACH authenticator IN available_authenticators -%]
 [%-   NEXT IF authenticator.type != 'paia' -%]
 <option value="[% authenticator.id %]" [% IF authenticator.id == authenticatorid %]selected="selected"[% END %]>[% authenticator.description %]</option>
@@ -207,7 +207,7 @@
 <p/>
 
 <div class="form-floating mb-3">
-<select class="form-control" name="authenticatorid">
+<select class="form-select" name="authenticatorid">
 [%- FOREACH authenticator IN available_authenticators -%]
 [%-   NEXT IF authenticator.type != 'ldap' -%]
 <option value="[% authenticator.id %]" [% IF authenticator.id == authenticatorid %]selected="selected"[% END %]>[% authenticator.description %]</option>

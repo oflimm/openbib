@@ -23,7 +23,7 @@
 
 <!--
 <div class="form-floating mb-3 mt-4">
-  <select class="form-control" name="bag_title" id="bag_title">
+  <select class="form-select" name="bag_title" id="bag_title">
        <option value="none" [% IF userinfo.mixed_bag.bag_title.first == 'none' %]selected[% END %]>[% msg.maketext("Keine") %]</option>
        <option value="mr" [% IF userinfo.mixed_bag.bag_title.first == "mr" %]selected[% END %]>[% msg.maketext("Herr") %]</option>
        <option value="mrs" [% IF userinfo.mixed_bag.bag_title.first == "mrs" %]selected[% END %]>[% msg.maketext("Frau") %]</option>
@@ -165,7 +165,7 @@
 <input type="hidden" name="_method"    value="PUT" />
 
 <div class="form-floating mb-3">
-<select class="form-control" name="roles" multiple="multiple" size="5">
+<select class="form-select" name="roles" multiple="multiple" size="5">
 [% FOREACH role IN user.get_all_roles %]
   <option value="[% role.id %]"[% IF userinfo.role.${role.rolename} %] selected="selected"[% END %]>[% role.description %]</option>
 [% END %]
@@ -190,7 +190,7 @@
 <input type="hidden" name="_method"    value="PUT" />
 
 <div class="form-floating mb-3">
-<select class="form-control" name="templates" multiple="multiple" size="15">
+<select class="form-select" name="templates" multiple="multiple" size="15">
 [% FOREACH template IN user.get_all_templates %]
   <option value="[% template.id %]"[% IF userinfo.template.${template.id} %] selected="selected"[% END %]>[% template.viewname %] - [% template.templatename %] - [% template.templatelang %]</option>
 [% END %]

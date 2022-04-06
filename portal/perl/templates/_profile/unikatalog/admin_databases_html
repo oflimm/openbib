@@ -42,7 +42,7 @@
 
 <!--
 <div class="form-floating mb-3">
-  <select class="form-control" name="system" id="system">
+  <select class="form-select" name="system" id="system">
 [% FOREACH source_system IN config.get('source_systems').keys.sort %]
        <option value="[% source_system %]">[% source_system %]</option>
 [% END %]
@@ -61,7 +61,7 @@
 </div>
 -->
 <div class="form-floating mb-3">
-  <select class="form-control" name="active" id="active">
+  <select class="form-select" name="active" id="active">
      <option value="true">[% msg.maketext("Ja") %]</option>
      <option value="false" selected>[% msg.maketext("Nein") %]</option>
   </select>

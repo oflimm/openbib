@@ -22,7 +22,7 @@
 
 <!--
 <div class="form-floating mb-3 mt-4">
-  <select class="form-control" name="bag_title" id="bag_title">
+  <select class="form-select" name="bag_title" id="bag_title">
        <option value="none" [% IF userinfo.mixed_bag.bag_title.first == 'none' %]selected[% END %]>[% msg.maketext("Keine") %]</option>
        <option value="mr" [% IF userinfo.mixed_bag.bag_title.first == "mr" %]selected[% END %]>[% msg.maketext("Herr") %]</option>
        <option value="mrs" [% IF userinfo.mixed_bag.bag_title.first == "mrs" %]selected[% END %]>[% msg.maketext("Frau") %]</option>

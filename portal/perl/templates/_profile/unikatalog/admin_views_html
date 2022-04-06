@@ -39,7 +39,7 @@
 </div>
 
 <div class="form-floating mb-3">
-<select class="form-control" id="profilename" name="profilename">
+<select class="form-select" id="profilename" name="profilename">
 [% FOREACH profile IN config.get_profileinfo_overview.all %]
   <option value="[% profile.profilename %]">[% profile.description %]</option>
 [% END %]
@@ -48,7 +48,7 @@
 </div>
 
 <div class="form-floating mb-3">
-<select class="form-control" id="active" name="active">
+<select class="form-select" id="active" name="active">
 <option value="true">[% msg.maketext("Ja") %]</option>
 <option value="false">[% msg.maketext("Nein") %]</option>
 </select>

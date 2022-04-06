@@ -32,7 +32,7 @@
 </div>
 
 <div class="form-floating mb-3">
-  <select class="form-control" name="status" id="status">
+  <select class="form-select" name="status" id="status">
      <option value="">[% msg.maketext("Keiner") %]</option>
      <option value="updating">[% msg.maketext("Aktualisieren") %]</option>
      <option value="updating_done" selected>[% msg.maketext("Fertig mit Aktualisierung") %]</option>
@@ -42,7 +42,7 @@
 </div>
 
 <div class="form-floating mb-3">
-  <select class="form-control" name="active" id="active">
+  <select class="form-select" name="active" id="active">
      <option value="true">[% msg.maketext("Ja") %]</option>
      <option value="false" selected>[% msg.maketext("Nein") %]</option>
   </select>

@@ -44,7 +44,7 @@
 <input type="hidden" name="titleid"           value="[% record.get_encoded_id %]" />
 <input type="hidden" name="dbname"            value="[% record.database %]" />
 <div class="form-floating mb-3">
-<select class="form-control" name="litlistid" id="litlistid">[% FOREACH litlist IN userlitlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>
+<select class="form-select" name="litlistid" id="litlistid">[% FOREACH litlist IN userlitlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>
 <label for="litlistid">[% msg.maketext("Name") %]</label>
 </div>
 
@@ -67,7 +67,7 @@
 </div>
 
 <div class="form-floating mb-3">
-<select class="form-control" name="type" id="type"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select>
+<select class="form-select" name="type" id="type"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select>
 <label for="type">[% msg.maketext("Sichtbarkeit") %]</label>
 </div>
 
@@ -124,7 +124,7 @@
 </div>
 
 <div class="form-floating mb-3">
-<select class="form-control" name="type" id="tags_type">
+<select class="form-select" name="type" id="tags_type">
   <option value="1">[% msg.maketext("&ouml;ffentlich") %]</option>
   <option value="2">[% msg.maketext("privat") %]</option>
 </select>
@@ -220,7 +220,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 </div>
 
 <div class="form-floating mb-3">
-<select class="form-control" name="type">
+<select class="form-select" name="type">
   <option value="1" [% IF private_tags.first.type == 1 %]selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option>
   <option value="2" [% IF private_tags.first.type == 2 %]selected="selected"[% END %]>[% msg.maketext("privat") %]</option>
 </select>

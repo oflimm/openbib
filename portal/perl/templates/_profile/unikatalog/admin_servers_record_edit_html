@@ -33,7 +33,7 @@
 </div>
 
 <div class="form-floating mb-3">
-  <select class="form-control" name="status" id="status">
+  <select class="form-select" name="status" id="status">
      <option value="updatable" [% IF serverinfo.status == 'updatable' %]selected="selected"[% END %]>[% msg.maketext("Aktualisierbar") %]</option>
      <option value="updating" [% IF serverinfo.status == 'updating' %]selected="selected"[% END %]>[% msg.maketext("Aktualisieren") %]</option>
      <option value="updated" [% IF serverinfo.status == 'updated' %]selected="selected"[% END %]>[% msg.maketext("Fertig mit Aktualisierung") %]</option>
@@ -43,7 +43,7 @@
 </div>
 
 <div class="form-floating mb-3">
-  <select class="form-control" name="clusterid" id="clusterid">
+  <select class="form-select" name="clusterid" id="clusterid">
      <option value="updatable">[% msg.maketext("Aktualisierbar") %]</option>
 [%  FOREACH clusterinfo IN config.get_clusterinfo_overview.all %]
      <option value="[% clusterinfo.id %]" [% IF serverinfo.clusterid.id == clusterinfo.id %]selected="selected"[% END %]>[% clusterinfo.description %]</option>
@@ -53,7 +53,7 @@
 </div>
 
 <div class="form-floating mb-3">
-  <select class="form-control" name="active" id="active">
+  <select class="form-select" name="active" id="active">
      <option value="true" [%- IF serverinfo.active -%]selected="selected"[%- END -%]>[% msg.maketext("Ja") %]</option>
      <option value="false" [%- IF NOT serverinfo.active -%]selected="selected"[%- END -%]>[% msg.maketext("Nein") %]</option>
   </select>

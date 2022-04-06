@@ -18,7 +18,7 @@
 <h1 class="display-5">[% msg.maketext("RSS-Einstellungen &auml;ndern") %]</h1>
 
 <div class="form-floating mb-3">
-<select class="form-control" name="rssfeeds" id="rssfeeds" multiple="multiple" size="10">
+<select class="form-select" name="rssfeeds" id="rssfeeds" multiple="multiple" size="10">
 [% FOREACH singlefeed IN allrssfeeds %]
 [% feedid = singlefeed.feedid %]
 [% NEXT IF singlefeed.type != 1 %]
@@ -29,7 +29,7 @@
 </div>
 
 <div class="form-floating mb-3">
-<select class="form-control" name="primrssfeed" id="primrssfeed">
+<select class="form-select" name="primrssfeed" id="primrssfeed">
 [% FOREACH singlefeed IN allrssfeeds %]
 [% feedid = singlefeed.feedid %]
 [% NEXT IF singlefeed.type != 1 %]

@@ -19,19 +19,19 @@
 </div>
 
 <div class="form-floating mb-3">
-<select class="form-control" name="type" id="type"><option value="1" [% IF litlist.properties.type == 1%] selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option><option value="2"[% IF litlist.properties.type == 2 %] selected="selected"[% END %]>[% msg.maketext("privat") %]</option></select>
+<select class="form-select" name="type" id="type"><option value="1" [% IF litlist.properties.type == 1%] selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option><option value="2"[% IF litlist.properties.type == 2 %] selected="selected"[% END %]>[% msg.maketext("privat") %]</option></select>
 <label for="type">[% msg.maketext("Sichtbarkeit") %]</label>
 </div>
 
 [%- IF userrole.${"librarian"} || userrole.${"lecturer"} -%]
 <div class="form-floating mb-3">
-<select class="form-control" name="lecture" id="lecture"><option value="1" [% IF litlist.properties.lecture == 1%] selected="selected"[% END %]>[% msg.maketext("Ja") %]</option><option value="0"[% IF litlist.properties.lecture == 0 %] selected="selected"[% END %]>[% msg.maketext("Nein") %]</option></select>
+<select class="form-select" name="lecture" id="lecture"><option value="1" [% IF litlist.properties.lecture == 1%] selected="selected"[% END %]>[% msg.maketext("Ja") %]</option><option value="0"[% IF litlist.properties.lecture == 0 %] selected="selected"[% END %]>[% msg.maketext("Nein") %]</option></select>
 <label for="lecture">[% msg.maketext("Offiziell") %]</label>
 </div>
 [%- END -%]
 
 <div class="form-floating mb-3">
-<select class="form-control" name="topics" id="topics" multiple="multiple" size="5">
+<select class="form-select" name="topics" id="topics" multiple="multiple" size="5">
 
 [% FOREACH topic IN topics %]
 <option value="[% topic.id %]" [% IF litlist.properties.topic_selected.${topic.id} %] selected="selected"[% END %]>[% topic.name | truncate(40) %]</option>

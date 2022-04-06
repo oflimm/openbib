@@ -46,7 +46,7 @@
 </div>
 
 <div class="form-floating mb-3">
-  <select class="form-control" name="type" id="type">
+  <select class="form-select" name="type" id="type">
 [% FOREACH location_type IN config.get('location_types') %]
        <option value="[% location_type %]">[% location_type %]</option>
 [% END %]

@@ -39,7 +39,7 @@
 </div>
 
 <div class="form-floating mb-3">
-  <select class="form-control" name="type" id="type">
+  <select class="form-select" name="type" id="type">
     <option value="self">[% msg.maketext("Selbstregistrierung") %]</option>
     <option value="ldap">[% msg.maketext("LDAP") %]</option>
     <option value="olws">[% msg.maketext("OLWS") %]</option>
@@ -49,7 +49,7 @@
 </div>
 
 <div class="form-floating mb-3">
-  <select class="form-control" name="views" multiple="multiple" size="5" id="views">
+  <select class="form-select" name="views" multiple="multiple" size="5" id="views">
 [% FOREACH thisview IN config.get_viewinfo_overview %]  
     <option value="[% thisview.viewname %]">[% thisview.viewname %] - [% thisview.description %]</option>
 [% END %]

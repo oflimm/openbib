@@ -41,7 +41,7 @@
 <h1 class="display-5">[% msg.maketext("Katalogauswahl der Organisationseinheit") %]</h1>
 
 <div class="form-floating mb-3">
-<select class="form-control" id="databases" name="databases" multiple="multiple" size="20">
+<select class="form-select" id="databases" name="databases" multiple="multiple" size="20">
 [% FOREACH singledb IN activedbs.all %]
 <option value="[% singledb.dbname %]"[% IF orgunitdb_map.${singledb.dbname} %] selected="selected"[% END %]>[% singledb.dbname %]: [% singledb.description | truncate(100) %]</option>
 [% END %]
@@ -50,7 +50,7 @@
 </div>
 
 <div class="form-floating mb-3">
-<select class="form-control" id="own_index" name="own_index">
+<select class="form-select" id="own_index" name="own_index">
 <option value="1" [% IF orgunitinfo.own_index %]selected="selected"[% END %]>[% msg.maketext("Ja") %]</option>
 <option value="0" [% IF NOT orgunitinfo.own_index %]selected="selected"[% END %]>[% msg.maketext("Nein") %]</option>
 </select>

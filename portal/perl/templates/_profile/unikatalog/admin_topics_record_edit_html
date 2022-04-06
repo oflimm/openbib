@@ -96,7 +96,7 @@
 <h1 class="display-5">[% msg.maketext("Themengebiet(e) der Basisklassifikation zuordnen") %]</h1>
 
 <div class="form-floating mb-3">
-<select class="form-control" name="classifications" id="classifications" multiple="multiple" size="10">
+<select class="form-select" name="classifications" id="classifications" multiple="multiple" size="10">
 [%
    classification_selected = {};
    FOREACH classification IN user.get_classifications_of_topic({ type => 'bk', topicid => topic.id});
@@ -124,7 +124,7 @@
 <h1 class="display-5">[% msg.maketext("Themengebiet(e) der EZB zuordnen") %]</h1>
 
 <div class="form-floating mb-3">
-<select class="form-control" name="classifications" id="classifications" multiple="multiple" size="10">
+<select class="form-select" name="classifications" id="classifications" multiple="multiple" size="10">
 [%-
    classification_selected = {};
    FOREACH classification IN user.get_classifications_of_topic({ type => 'ezb', topicid => topic.id});
@@ -151,7 +151,7 @@
 <h1 class="display-5">[% msg.maketext("Themengebiet(e) von DBIS zuordnen") %]</h1>
 
 <div class="form-floating mb-3">
-<select class="form-control" name="classifications" id="classifications" multiple="multiple" size="10">
+<select class="form-select" name="classifications" id="classifications" multiple="multiple" size="10">
 [%-
    classification_selected = {};
    FOREACH classification IN user.get_classifications_of_topic({ type => 'dbis', topicid => topic.id});
@@ -178,7 +178,7 @@
 <h1 class="display-5">[% msg.maketext("Themengebiet(e) der Regensburger Verbundklassifikation zuordnen") %]</h1>
 
 <div class="form-floating mb-3">
-<select class="form-control" name="classifications" id="classifications" multiple="multiple" size="10">
+<select class="form-select" name="classifications" id="classifications" multiple="multiple" size="10">
 [%
    classification_selected = {};
    FOREACH classification IN user.get_classifications_of_topic({ type => 'rvk', topicid => topic.id});
@@ -206,7 +206,7 @@
 <h1 class="display-5">[% msg.maketext("Themengebiet(e) der DDC zuordnen") %]</h1>
 
 <div class="form-floating mb-3">
-<select class="form-control" name="classifications" id="classifications" multiple="multiple" size="10">
+<select class="form-select" name="classifications" id="classifications" multiple="multiple" size="10">
 [%
    classification_selected = {};
    FOREACH classification IN user.get_classifications_of_topic({ type => 'ddc', topicid => topic.id});
@@ -234,7 +234,7 @@
 <h1 class="display-5">[% msg.maketext("Themengebiet(e) der LoC Classification zuordnen") %]</h1>
 
 <div class="form-floating mb-3">
-<select class="form-control" name="classifications" id="classifications" multiple="multiple" size="10">
+<select class="form-select" name="classifications" id="classifications" multiple="multiple" size="10">
 [%
    classification_selected = {};
    FOREACH classification IN user.get_classifications_of_topic({ type => 'lcc', topicid => topic.id});

@@ -28,7 +28,7 @@
 <form method="post" action="[% path_prefix %]/[% config.get('templates_loc') %]" >
 
 <div class="form-floating mb-3">
-  <select class="form-control" name="templatelang" id="templatelang">
+  <select class="form-select" name="templatelang" id="templatelang">
      <option value="de">[% msg.maketext("Deutsch") %]</option>
      <option value="en">[% msg.maketext("Englisch") %]</option>
   </select>
@@ -36,7 +36,7 @@
 </div>
 
 <div class="form-floating mb-3">
-  <select class="form-control" name="templatename" id="templatename">
+  <select class="form-select" name="templatename" id="templatename">
 [% FOREACH templatename IN all_templates.keys.sort %]    
      <option value="[% templatename %]">[% templatename %]</option>
 [% END %]
@@ -45,7 +45,7 @@
 </div>
 
 <div class="form-floating mb-3">
-  <select class="form-control" name="viewname" id="viewname">
+  <select class="form-select" name="viewname" id="viewname">
 [% FOREACH viewinfo IN config.get_viewinfo_overview %]    
      <option value="[% viewinfo.viewname %]">[% viewinfo.viewname %]: [% viewinfo.description %]</option>
 [% END %]

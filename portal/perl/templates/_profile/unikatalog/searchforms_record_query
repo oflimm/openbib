@@ -174,7 +174,7 @@
     this_searchfield = 'mediatypestring';
  -%]
 <div class="form-floating mb-3">
-<select class="form-control" id="[% cgiparam %]" name="[% cgiparam %]">
+<select class="form-select" id="[% cgiparam %]" name="[% cgiparam %]">
 <option value="" selected="selected">Keiner ausgewählt</option>
 <option value="Aufsatz">Aufsatz</option>
 <option value="Digital">Digital</option>
@@ -217,7 +217,7 @@
     this_searchfield = 'topic';
  -%]
 <div class="form-floating mb-3">
-<select class="form-control" id="[% cgiparam %]" name="[% cgiparam %]">
+<select class="form-select" id="[% cgiparam %]" name="[% cgiparam %]">
 <option value="" selected="selected">Keines ausgewählt</option>
 [% FOREACH topic IN user.get_topics %]
 <option value="[% topic.id %]">[% topic.name %]</option>

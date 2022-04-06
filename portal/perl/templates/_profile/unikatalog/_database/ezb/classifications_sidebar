@@ -33,7 +33,7 @@
 </div>
 
 <div class="form-floating mb-3">
-  <select class="form-control" id="cln" name="cln">
+  <select class="form-select" id="cln" name="cln">
     <option value="" [% IF classification_name == 'all' %]selected="selected"[% END %]>[% msg.maketext("Alle Fachgebiete") %]</option>
 
 [%- FOREACH classification IN classifications -%]

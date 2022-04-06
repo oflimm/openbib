@@ -94,7 +94,7 @@
 <h5>[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> in die bestehende Literaturliste &uuml;bernehmen: ") %]</h5>
 
 <div class="form-floating mb-3">
-<select class="form-control" name="litlistid" id="litlistid">
+<select class="form-select" name="litlistid" id="litlistid">
 [% FOREACH litlist IN litlists %]
   <option value="[% litlist.id %]">[% litlist.title %]</option>
 [% END %]
@@ -116,7 +116,7 @@
 </div>
 
 <div class="form-floating mb-3">
-<select class="form-control" name="littype" id="littype">
+<select class="form-select" name="littype" id="littype">
   <option value="1">[% msg.maketext("&ouml;ffentlich") %]</option>
   <option value="2">[% msg.maketext("privat") %]</option>
 </select>
@@ -157,7 +157,7 @@
 </div>
 
 <div class="form-floating mb-3">
-<select class="form-control" name="tags_type" id="tags_type">
+<select class="form-select" name="tags_type" id="tags_type">
   <option value="1">[% msg.maketext("&ouml;ffentlich") %]</option>
   <option value="2">[% msg.maketext("privat") %]</option>
 </select>

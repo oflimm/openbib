@@ -401,8 +401,6 @@ Präsenzbestand
 
 [%############### ANFANG CAMPUSLIEFERDIENST ######### %]
 [% ELSIF scan_dienst == "campus" %]
-[%############### ENDE CAMPUSLIEFERDIENST ######### %]
-
 [%  IF thiscirculation.department_id.match('^(0|4)$') && username.match('^(B|S)') %]
 [%    
       subdomain = "";
@@ -423,7 +421,7 @@ Präsenzbestand
 [%    IF thiscirculation.availability != 'vermisst' %]
 [%      IF config.get('active_ils') %]
 <p>
- <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.id %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/campusorders">
+ <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/campusorders">
    <input type="hidden" name="l"             value="[% lang %]" />
    <input type="hidden" name="validtarget"   value="[% database %]" />
    <input type="hidden" name="label"         value="[% thiscirculation.location_mark |uri  %]" />
@@ -441,6 +439,7 @@ Präsenzbestand
 
 [%    END %]
 [%  END %]
+[%############### ENDE CAMPUSLIEFERDIENST ######### %]
 
 [%############### ANFANG ILIAS ######### %]
 [% ELSIF scan_dienst == "ilias" %]
@@ -448,7 +447,7 @@ Präsenzbestand
 [%    IF thiscirculation.availability != 'vermisst' %]
 [%      IF config.get('active_ils') %]
 <p>
- <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.id %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/iliasorders">
+ <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/iliasorders">
    <input type="hidden" name="l"             value="[% lang %]" />
    <input type="hidden" name="validtarget"   value="[% database %]" />
    <input type="hidden" name="label"         value="[% thiscirculation.location_mark |uri  %]" />

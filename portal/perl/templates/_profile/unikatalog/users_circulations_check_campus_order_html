@@ -104,13 +104,14 @@
      <input type="hidden" name="unit_desc"   value="[% unit_desc |uri %]" />
      <input type="hidden" name="unit"        value="[% unit %]" />
      <input type="hidden" name="titleid"     value="[% titleid %]" />
+     <input type="hidden" name="validtarget" value="[% validtarget %]" />
+     <input type="hidden" name="title"       value="[% title | uri %]" />
 
 <legend class="mt-2">[% msg.maketext("Titelangaben") %]</legend>
 
 [% IF title %]
 <div class="form-floating mb-3">
       <span class="form-control">[% title %]</span>
-      <input type="hidden" name="title"   value="[% title | uri %]" />
       <label for="title">Titel</label>
 </div>
 [% END %]
@@ -254,8 +255,9 @@
 
 <legend class="mt-2">[% msg.maketext("Weitere Angaben zur Bestellung") %]</legend>
 
+[%# USE dumper;dumper.dump(userinfo)%]
 <div class="form-floating mb-3">
-      <span class="form-control">[% realname %]</span>
+      <span class="form-control">[% userinfo.fullname %]</span>
       <label for="username">[% msg.maketext("Nachname, Vorname") %] (*):</label>
 </div>
 

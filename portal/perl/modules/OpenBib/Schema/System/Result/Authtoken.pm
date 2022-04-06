@@ -1,12 +1,12 @@
 use utf8;
-package OpenBib::Schema::System::Result::Registration;
+package OpenBib::Schema::System::Result::Authtoken;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
 =head1 NAME
 
-OpenBib::Schema::System::Result::Registration
+OpenBib::Schema::System::Result::Authtoken
 
 =cut
 
@@ -15,32 +15,23 @@ use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<registration>
+=head1 TABLE: C<authtoken>
 
 =cut
 
-__PACKAGE__->table("registration");
+__PACKAGE__->table("authtoken");
 
 =head1 ACCESSORS
 
 =head2 id
 
-  data_type: 'text'
+  data_type: 'uuid'
   is_nullable: 0
+  size: 16
 
 =head2 tstamp
 
   data_type: 'timestamp'
-  is_nullable: 1
-
-=head2 username
-
-  data_type: 'text'
-  is_nullable: 1
-
-=head2 password
-
-  data_type: 'text'
   is_nullable: 1
 
 =head2 viewid
@@ -49,19 +40,36 @@ __PACKAGE__->table("registration");
   is_foreign_key: 1
   is_nullable: 1
 
+=head2 type
+
+  data_type: 'text'
+  is_nullable: 1
+
+=head2 authkey
+
+  data_type: 'text'
+  is_nullable: 1
+
+=head2 mixed_bag
+
+  data_type: 'jsonb'
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "text", is_nullable => 0 },
+  { data_type => "uuid", is_nullable => 0, size => 16 },
   "tstamp",
   { data_type => "timestamp", is_nullable => 1 },
-  "username",
-  { data_type => "text", is_nullable => 1 },
-  "password",
-  { data_type => "text", is_nullable => 1 },
   "viewid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
+  "type",
+  { data_type => "text", is_nullable => 1 },
+  "authkey",
+  { data_type => "text", is_nullable => 1 },
+  "mixed_bag",
+  { data_type => "jsonb", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -100,7 +108,7 @@ __PACKAGE__->belongs_to(
 
 
 # Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-04-05 08:40:55
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Kyd/IgSbYVkx32XaNWDB4Q
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:iILV0WtXkAlsGX6xhcAt+w
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

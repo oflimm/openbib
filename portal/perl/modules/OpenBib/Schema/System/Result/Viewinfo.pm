@@ -174,6 +174,21 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 authtokens
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::Authtoken>
+
+=cut
+
+__PACKAGE__->has_many(
+  "authtokens",
+  "OpenBib::Schema::System::Result::Authtoken",
+  { "foreign.viewid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 profileid
 
 Type: belongs_to
@@ -330,8 +345,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-06-23 13:29:14
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:iiETvVf9/2c9nFWaoZ6ZaA
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-04-05 08:40:55
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:f1DZBSfoohKVUkK/uDYrIA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

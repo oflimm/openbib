@@ -85,6 +85,11 @@ __PACKAGE__->table("sessioninfo");
   data_type: 'text'
   is_nullable: 1
 
+=head2 datacache
+
+  data_type: 'jsonb'
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -117,6 +122,8 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 1 },
   "bibsonomy_sync",
   { data_type => "text", is_nullable => 1 },
+  "datacache",
+  { data_type => "jsonb", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -254,8 +261,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-06-23 13:29:14
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:qUI5eljhABmqjoS2NOtgDA
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-04-05 08:40:55
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:jGk95HTOFS6f9aKgLFPG8A
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

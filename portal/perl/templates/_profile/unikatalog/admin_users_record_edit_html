@@ -62,7 +62,7 @@
 [%# USE dumper;dumper.dump(views)%]
 <div class="form-floating mb-3">
 [%   IF userinfo.username != 'admin' %]
-<select class="form-control" name="viewid" size="15">
+<select class="form-select" name="viewid">
   <option value="" [% IF NOT userinfo.viewname %] selected="selected"[% END %]>[% msg.maketext("Zugriff auf alle Portale") %]</option>
 [% FOREACH thisview IN views %]
   <option value="[% thisview.id %]"[% IF userinfo.viewname == thisview.viewname %] selected="selected"[% END %]>[% thisview.viewname %] - [% thisview.description %]</option>

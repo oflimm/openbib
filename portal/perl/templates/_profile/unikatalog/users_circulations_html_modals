@@ -12,19 +12,19 @@
 <div class="table-responsive">
 <table class="table table-striped table-hover">
 <tbody>
-<tr><th>[% msg.maketext("Anrede") %]</th><td>[% address.salutation %]</td></tr>
-<tr><th>[% msg.maketext("Name") %]</th><td>[% address.fullname %]</td></tr>
-<tr><th>[% msg.maketext("Geburtsdatum") %]</th><td>[% address.birthdate %]</td></tr>
-<tr><th>[% msg.maketext("Anmeldung am") %]</th><td>[% address.startdate %]</td></tr>
-<tr><th>[% msg.maketext("Ausweis gültig bis") %]</th><td>[% address.enddate %]</td></tr>
-[% IF address.street || address.zip || address.city %]
-<tr><th>[% msg.maketext("Postanschrift") %]</th><td>[% address.street %]<br/>[% address.zip %] [% address.city %]</td></tr>
+<tr><th>[% msg.maketext("Anrede") %]</th><td>[% userdata.salutation %]</td></tr>
+<tr><th>[% msg.maketext("Name") %]</th><td>[% userdata.fullname %]</td></tr>
+<tr><th>[% msg.maketext("Geburtsdatum") %]</th><td>[% userdata.birthdate %]</td></tr>
+<tr><th>[% msg.maketext("Anmeldung am") %]</th><td>[% userdata.startdate %]</td></tr>
+<tr><th>[% msg.maketext("Ausweis gültig bis") %]</th><td>[% userdata.enddate %]</td></tr>
+[% IF userdata.street || userdata.zip || userdata.city %]
+<tr><th>[% msg.maketext("Postanschrift") %]</th><td>[% userdata.street %]<br/>[% userdata.zip %] [% userdata.city %]</td></tr>
 [% END %]
-[% IF address.street2 || address.zip2 || address.city2 %]
-<tr><th>[% msg.maketext("Zweitanschrift") %]</th><td>[% address.street2 %]<br/>[% address.zip2 %] [% address.city2 %]</td></tr>
+[% IF userdata.street2 || userdata.zip2 || userdata.city2 %]
+<tr><th>[% msg.maketext("Zweitanschrift") %]</th><td>[% userdata.street2 %]<br/>[% userdata.zip2 %] [% userdata.city2 %]</td></tr>
 [% END %]
-<tr><th>[% msg.maketext("Telefon-Nummer") %]</th><td>[% IF address.phone %][% address.phone %][% ELSE %][% msg.maketext("keine angegeben") %][% END %]</td></tr>
-<tr><th>[% msg.maketext("E-Mail Adresse") %]</th><td>[% address.email %]</td></tr>
+<tr><th>[% msg.maketext("Telefon-Nummer") %]</th><td>[% IF userdata.phone %][% userdata.phone %][% ELSE %][% msg.maketext("keine angegeben") %][% END %]</td></tr>
+<tr><th>[% msg.maketext("E-Mail Adresse") %]</th><td>[% userdata.email %]</td></tr>
 </tbody>
 </table>
 </div>
@@ -92,7 +92,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       [%-
-      IF address.username.match('^A') && address.email.match('@smail.uni-koeln.de');
+      IF userdata.username.match('^A') && userdata.email.match('@smail.uni-koeln.de');
       is_smail = 1;
 
       END;
@@ -104,7 +104,7 @@
 	<input type="hidden" name="field" value="email" />
 
 	<div class="modal-header">
-          <h5 class="modal-title" id="emailModalLabel">[% IF address.email %][% msg.maketext("E-Mail-Adresse ändern") %][% ELSE %][% msg.maketext("E-Mail-Adresse eintragen") %][% END %]</h5>
+          <h5 class="modal-title" id="emailModalLabel">[% IF userdata.email %][% msg.maketext("E-Mail-Adresse ändern") %][% ELSE %][% msg.maketext("E-Mail-Adresse eintragen") %][% END %]</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
           </button>
 	</div>
@@ -112,7 +112,7 @@
 [% IF is_smail %]
 
 <table>
-<tr><th>[% msg.maketext("E-Mail-Adresse") %]</th><td>[% address.email %]</td></tr>
+<tr><th>[% msg.maketext("E-Mail-Adresse") %]</th><td>[% userdata.email %]</td></tr>
 </table>
 
 <p>
@@ -123,7 +123,7 @@
 </p>
 [% ELSE %]
 	  <div class="form-floating mb-3">
-            <span class="form-control">[% IF address.email %][% address.email %][% ELSE %][% msg.maketext("kein Eintrag") %][% END %]</span>
+            <span class="form-control">[% IF userdata.email %][% userdata.email %][% ELSE %][% msg.maketext("kein Eintrag") %][% END %]</span>
             <label>[% msg.maketext("Derzeitige E-Mail-Adresse") %]</label>
 	  </div>
 	  
@@ -163,14 +163,14 @@
 	<input type="hidden" name="field" value="phone" />
 
 	<div class="modal-header">
-          <h5 class="modal-title" id="phoneModalLabel">[% IF address.phone %][% msg.maketext("Telefonnummer ändern") %][% ELSE %][% msg.maketext("Telefonnummer eintragen") %][% END %]</h5>
+          <h5 class="modal-title" id="phoneModalLabel">[% IF userdata.phone %][% msg.maketext("Telefonnummer ändern") %][% ELSE %][% msg.maketext("Telefonnummer eintragen") %][% END %]</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
           </button>
 	</div>
 	<div class="modal-body" id="phone">
 	  
 	  <div class="form-floating mb-3">
-            <span class="form-control">[% IF address.phone %][% address.phone %][% ELSE %][% msg.maketext("kein Eintrag") %][% END %]</span>
+            <span class="form-control">[% IF userdata.phone %][% userdata.phone %][% ELSE %][% msg.maketext("kein Eintrag") %][% END %]</span>
             <label>[% msg.maketext("Derzeitige Telefonnummer") %]</label>
 	  </div>
 	  

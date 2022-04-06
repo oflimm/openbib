@@ -81,7 +81,7 @@ sub create_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $database       = $self->param('database');
+    my $userid         = $self->param('userid');
     
     # Shared Args
     my $query          = $self->query();
@@ -128,22 +128,25 @@ sub create_record {
     unless ($config->get('active_campusorder')){
 	return $self->print_warning($msg->maketext("Der Campuslieferdienst ist aktuell systemweit deaktiviert."));	
     }
-	    
+
+    if ($logger->is_debug){
+	$logger->debug("Input: ".YAML::Dump($input_data_ref));
+    }
+    
     unless ($validtarget && $label && $unit >= 0 && $titleid){
 	return $self->print_warning($msg->maketext("Notwendige Parameter nicht besetzt")." (validtarget: $validtarget, label:$label, unit:$unit)");
     }
     
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
+    my $sessionuserid        = $user->get_userid_of_session($session->{ID});
 
-    my $userid = $user->get_userid_of_session($session->{ID});
-    
-    $self->param('userid',$userid);
+    $self->param('userid',$sessionuserid);
     
     if ($logger->debug){
-	$logger->debug("Auth successful: ".$self->authorization_successful." - Db: $database - Authenticator: $sessionauthenticator");
+	$logger->debug("Auth successful: ".$self->authorization_successful." - Authenticator: $sessionauthenticator");
     }
     
-    if (!$self->authorization_successful || $database ne $sessionauthenticator){
+    if (!$self->authorization_successful || $userid ne $sessionuserid){
         if ($self->param('representation') eq "html"){
             return $self->tunnel_through_authenticator('POST');            
         }
@@ -158,31 +161,13 @@ sub create_record {
 	return $self->print_warning($msg->maketext("Sie gehören nicht zu den autorisierten Nutzergruppen für den Campuslieferdienst"));
     }
     
-    $database              = $sessionauthenticator;
+    my $database              = $sessionauthenticator;
 
     my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
 
     my $authenticator = $session->get_authenticator;
 
-    my $userinfo_ref = $user->get_info($user->{ID});
-
-    my $realname = "";
-
-    if ($userinfo_ref->{nachname} || $userinfo_ref->{vorname}){
-	if ($userinfo_ref->{nachname}){
-	    $realname = $userinfo_ref->{nachname};
-	}
-
-	if ($userinfo_ref->{vorname}){
-	    $realname = $realname.", ".$userinfo_ref->{vorname};
-	}
-
-    }
-
-    my $email = "";
-    if ($userinfo_ref->{email}){
-	$email = $userinfo_ref->{email};
-    }
+    my $userinfo_ref = $ils->get_userdata($accountname);
 
     my $record = new OpenBib::Record::Title({ database => $database, id => $titleid });
     $record->load_full_record;
@@ -202,7 +187,6 @@ sub create_record {
 	    coporation     => $corporation,
 	    publisher      => $publisher,
 	    year           => $year,
-	    realname       => $realname,
 	    numbering      => $numbering,
 	    label          => $label,
 	    isbn           => $isbn,
@@ -214,9 +198,7 @@ sub create_record {
 	    pages          => $pages,
 	    refid          => $refid,
 	    userid         => $userid,
-	    accountname    => $accountname,
 	    receipt        => $receipt,
-	    email          => $userinfo_ref->{email},
 	    remark         => $remark,
 	    unit           => $unit,
 	    unit_desc      => $unit_desc,
@@ -233,7 +215,7 @@ sub create_record {
 	    return $self->print_warning("Bitte geben Sie die gewünschten Seiten an.");
 	}
 	
-	if (!$email){
+	if (!$userinfo_ref->{email}){
 	    return $self->print_warning("Zur Nutzung des Campuslieferdienstes ist eine E-Mail-Adresse in Ihrem Bibliothekskonto erforderlich.");
 	}
 	
@@ -302,7 +284,7 @@ sub create_record {
 	elsif ($isbn){
 	    my $online_media = $self->check_online_media({ view => 'uni', isbn => $isbn});
 
-	    if ($online_media->size() > 0){
+	    if ($online_media->get_size() > 0){
 		
 		# TT-Data erzeugen
 		my $ttdata={
@@ -318,9 +300,12 @@ sub create_record {
 	    }
 
 	}
+
+	# Wesentliche Informationen zur Identitaet des Bestellers werden nicht per Webformular entgegen genommen,
+	# sondern aus dem Bibliothekskonto des Nutzers via $userinfo_ref.
 	
 	# Production
-	# my $response_make_campus_order_ref = $ils->make_campus_order({ title => $title, titleid => $titleid, author => $author, coporation => $corporation, publisher => $publisher, year => $year, numbering => $numbering, label => $label, isbn => $isbn, issn => $issn, articleauthor => $articleauthor, articletitle => $articletitle, volume => $volume, issue => $issue, pages => $pages, refid => $refid, userid => $accountname, username => $realname, receipt => $receipt, email => $email, remark => $remark, unit => $unit, location => $unit_desc, domain => $domain, subdomain => $subdomain });
+	# my $response_make_campus_order_ref = $ils->make_campus_order({ title => $title, titleid => $titleid, author => $author, coporation => $corporation, publisher => $publisher, year => $year, numbering => $numbering, label => $label, isbn => $isbn, issn => $issn, articleauthor => $articleauthor, articletitle => $articletitle, volume => $volume, issue => $issue, pages => $pages, refid => $refid, userid => $userinfo_ref->{username}, username => $userinfo_ref->{fullname}, receipt => $receipt, email => $userinfo_ref->{email}, remark => $remark, unit => $unit, location => $unit_desc, domain => $domain, subdomain => $subdomain });
 
 	# Test
 	my $response_make_campus_order_ref = {
@@ -364,6 +349,11 @@ sub get_input_definition {
             encoding => 'utf8',
             type     => 'scalar',
         },
+        title => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
         label => {
             default  => '',
             encoding => 'utf8',
@@ -380,7 +370,7 @@ sub get_input_definition {
             type     => 'scalar',
         },
         unit => {
-            default  => '',
+            default  => 0,
             encoding => 'utf8',
             type     => 'scalar',
         },

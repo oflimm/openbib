@@ -562,14 +562,26 @@
 #####################################################################
 # Passwort-Resource/Repraesentation
 
-- # registrations_loc:
+- # passwords_loc:
    module: 'OpenBib::Handler::PSGI::Users::Passwords'
    rule: '/portal/:view/users/passwords[get]'
    representations:
      - none
      - html
    runmode: 'show_collection'
-- # registrations_loc:
+- # passwords_loc:
+   module: 'OpenBib::Handler::PSGI::Users::Passwords'
+   rule: '/portal/:view/users/passwords/tokens[post]'
+   runmode: 'create_token'
+- # passwords_loc:
+   module: 'OpenBib::Handler::PSGI::Users::Passwords'
+   rule: '/portal/:view/users/passwords/tokens/id/:tokenid[get]'
+   representations:
+     - none
+     - html
+     - json
+   runmode: 'verify_token'
+- # passwords_loc:
    module: 'OpenBib::Handler::PSGI::Users::Passwords'
    rule: '/portal/:view/users/passwords[post]'
    runmode: 'create_record'

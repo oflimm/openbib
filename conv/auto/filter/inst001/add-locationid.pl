@@ -159,6 +159,18 @@ while (<HOLDING>){
         }
     }
 
+    foreach my $isil_ref (@{$holding_ref->{fields}{'3330'}}){
+        if ($isil_ref->{content} =~m/^(\d\d\d)$/){
+            push @{$element_ref}, "DE-38-$1";
+        }
+        elsif ($isil_ref->{content} eq "Kn 3"){
+	    push @{$element_ref}, "DE-Kn3";
+	}
+        elsif ($isil_ref->{content}){
+	    push @{$element_ref}, "DE-".$isil_ref->{content};
+	}
+    }
+    
     $title_locationid{$titleid} = $element_ref if (@$element_ref);
 }
 

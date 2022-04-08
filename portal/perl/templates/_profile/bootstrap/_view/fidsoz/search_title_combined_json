@@ -186,7 +186,7 @@
 
      meta = metainformation
 
-     records = records  PublicationYear: 'year'
+     records = records
 
      facets = {
          availability   = facets.availability

@@ -18,7 +18,8 @@
   <option value="year_asc"[%- IF query.param('srt') == 'year_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]&nbsp;&uarr;</option>
   <option value="person_asc"[%- IF query.param('srt') == 'person_asc' %] selected="selected"[%- END -%]>[% msg.maketext("nach Person") %]</option>
   <option value="title_asc"[%- IF query.param('srt') == 'title_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
-<!--  <option value="order_asc"[%- IF query.param('srt') == 'order_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Z&auml;hlung") %]</option> -->
+  <option value="order_asc"[%- IF query.param('srt') == 'order_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Z&auml;hlung") %]&nbsp;&uarr;</option>
+  <option value="order_asc"[%- IF query.param('srt') == 'order_desc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Z&auml;hlung") %]&nbsp;&darr;</option>
   <option value="mark_asc"[%- IF query.param('srt') == 'mark_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Signatur") %]&nbsp;&uarr;</option>
   <option value="mark_desc"[%- IF query.param('srt') == 'mark_desc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Signatur") %]&nbsp;&darr;</option>
 </select>

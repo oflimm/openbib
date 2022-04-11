@@ -53,13 +53,34 @@
 <tbody>
 [%  FOREACH thisholding IN holding %]
 <tr align="center"><td><strong>
-[%-  IF thisholding.${"X4000"}.content && thisholding.${"X4001"}.content -%]
+[%-
+
+        isil      = "";
+	isil_desc = "";
+	sigel     = thisholding.${"X3330"}.content;
+	
+        IF sigel.match('^[0-9][0-9][0-9]$');	  
+	  isil = "DE-38-${sigel}";
+        ELSIF sigel.match('^Kn 3$');	  
+	  isil = "DE-Kn3";
+	ELSE ;
+	  isil = "DE-${sigel}";
+	END ;
+
+        IF isil;
+          isil_desc = locinfo.identifier.${isil}.description;
+        END;
+-%]
+
+[%-  IF isil_desc -%]
+<a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% isil %].html?l=[% lang %]">[% isil_desc %]</a>
+[%-  ELSIF thisholding.${"X4000"}.content && thisholding.${"X4001"}.content -%]
 [%-    IF dbinfo.get('locationid').${record.database} %]
 <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.get('locationid').${record.database} %].html?l=[% lang %]">
 [%-    ELSE -%]
 <a href="[% thisholding.${"X4001"}.content %]" target="_blank">
 [%-    END -%]
-[% thisholding.${"X4000"}.content.full %]</a>
+[%     thisholding.${"X4000"}.content.full %]</a>
 [%-  ELSE -%]
 [% thisholding.${"X4000"}.content.full %]
 [%-  END -%]

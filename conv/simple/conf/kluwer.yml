@@ -16,7 +16,7 @@ csv:
 uniqueidfield: 'ID'
 
 category_split_chars:
-  'person': '\s+/\s+'
+  'person': '\s+\/\s+'
 
 # Personen
 person:

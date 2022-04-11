@@ -341,6 +341,99 @@ sub get_profile {
     return $prevprofile;
 }
 
+sub get_datacache {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $current_cache;
+
+    # DBI: "select profile from sessionprofile where sessionid = ?"
+    my $sessioninfo = $self->get_schema->resultset('Sessioninfo')->single({ sessionid => $self->{ID} });
+
+    if ($sessioninfo){
+        $current_cache =$sessioninfo->datacache;
+    }
+
+    my $current_ref = {};
+    
+    eval {
+	if ($current_cache){
+	    $current_ref = decode_json $current_cache;
+	}
+    };
+
+    if ($@){
+	$logger->error($@);
+    }
+    
+    return $current_ref;
+}
+
+sub set_datacache_item {
+    my ($self,$key,$data_ref)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Zuerst aktuelle Informationen holen ...
+    my $current_ref = $self->get_datacache;
+
+    # ... dort aktuellen Inhalt via key hinzufuegen
+    $current_ref->{$key} = $data_ref;
+
+
+    # ... und schliesslich wieder zurueckschreiben
+    my $sessioninfo = $self->get_schema->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} });
+
+    if ($sessioninfo){
+	my $json = "{}"; # Leerer JSON-String als default
+	eval {
+	    $json = encode_json $current_ref;
+	};
+	
+        $sessioninfo->update({ datacache => $json });
+    }
+
+    return;
+}
+
+sub set_datacache {
+    my ($self,$data_ref)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $sessioninfo = $self->get_schema->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} });
+
+    if ($sessioninfo){
+	my $json = "{}"; # Leerer JSON-String als default
+	eval {
+	    $json = encode_json $data_ref;
+	};
+	
+        $sessioninfo->update({ datacache => $json });
+    }
+
+    return;
+}
+
+sub clear_datacache {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $sessioninfo = $self->get_schema->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} });
+
+    if ($sessioninfo){
+        $sessioninfo->update({ datacache => "{}" });
+    }
+
+    return;
+}
+
 sub get_id {
     my $self = shift;
 

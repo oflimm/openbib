@@ -16,7 +16,8 @@ csv:
 uniqueidfield: 'ID'
 
 category_split_chars:
-  'person': '\s+\/\s+'
+  'Autor(en)name': '\s+\/\s+'
+  'Herausgeber': '\s+\/\s+'
 
 # Personen
 person:

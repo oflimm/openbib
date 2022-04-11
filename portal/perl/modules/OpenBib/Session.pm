@@ -371,7 +371,7 @@ sub get_datacache {
     return $current_ref;
 }
 
-sub set_datacache_item {
+sub set_datacache_by_key {
     my ($self,$key,$data_ref)=@_;
 
     # Log4perl logger erzeugen
@@ -380,6 +380,11 @@ sub set_datacache_item {
     # Zuerst aktuelle Informationen holen ...
     my $current_ref = $self->get_datacache;
 
+    # Reset auf leeren Hashref, wenn andere Datenstruktur im datacache
+    unless (ref($current_ref) eq "HASH"){
+	$current_ref = {};
+    }
+    
     # ... dort aktuellen Inhalt via key hinzufuegen
     $current_ref->{$key} = $data_ref;
 

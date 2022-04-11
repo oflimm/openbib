@@ -580,11 +580,10 @@ FOREACH field IN normdata;
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').subid.prefix;
 
-         zeige = msg.maketext('Zeige');
-         baende = msg.maketext('Bände');
+         baendeanzeigen = msg.maketext('Bände/Stücktitel anzeigen');
 	 
          localurl  = "${path_prefix}/${config.get('search_loc')}.html?page=1;num=20;srt=order_asc;profile=${searchprofileid_of_database};${searchprefix}=${record.id}";
-         content   = "<a class=\"btn btn-primary\" href=\"${localurl}\">${zeige} ${content} ${baende}</a>";
+         content   = "<a class=\"btn btn-primary\" href=\"${localurl}\">${content} ${baendeanzeigen}</a>";
          IF NOT content_map.${'T5002'} ;
 	    content_map.${'T5002'} = [];
 	 END;

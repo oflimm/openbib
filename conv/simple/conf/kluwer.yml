@@ -1,0 +1,47 @@
+# Encoding der Daten
+#encoding: iso-8859-1
+encoding: utf8
+
+# Tracelevel
+tracelevel:
+
+# CSV-Parameter
+csv:
+  'eol': "\n"
+  'sep_char': "\t"
+  'quote_char': '"'
+  'escape_char': '"'
+
+# Eindeutigen Titel-ID kann erst spater aus dem URL bestimmt werden
+uniqueidfield: 'ID'
+
+category_split_chars:
+  'person': '\s+/\s+'
+
+# Personen
+person:
+  'Autor(en)name': '0100'        # Verfasser
+
+# Koerperschaften
+corporatebody:
+  'Herausgeber': '0200'        # Herausgeber
+  
+# Systematik
+classification: 
+  'Fachbereich': '0700' # Fachbereich
+  
+# Schlagworte
+subject:
+
+# Titel
+title:
+  'Titel der Ressource': '0331'
+  'Print Identifier': '0540'
+  'publishingyear': '0425'
+  'Verlag': '0412'
+  'Zugriffs-URL': '0662'
+  'Umfang': '0433'
+  'Name der Reihe': '0451'
+  'Datum erste Print-Veröffentlichung': '0425'
+  'Edition/Auflage': '0403'
+

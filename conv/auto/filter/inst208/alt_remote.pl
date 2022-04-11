@@ -39,6 +39,6 @@ my $konvdir       = $config->{'conv_dir'};
 
 my $pool          = $ARGV[0];
 
-print "### $pool: Extrahiere der Daten von $pool aus inst${pool}master\n";
+print "### $pool: Extrahiere der Daten von $pool aus ${pool}master\n";
 
 system("$rootdir/filter/$pool/gen-subset.pl $pool");

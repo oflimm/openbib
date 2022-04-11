@@ -252,7 +252,9 @@ Zugriff nur im <a href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medi
 
 </div><!-- End Row Details -->
 
-[%   PROCESS common/subtemplate name="titles_record_html_bottom" %]
+<div class="ob-bottominfo"><!-- Begin Bottominfo -->
+[%   PROCESS common/subtemplate name="titles_record_html_bottom" database=record.database %]
+</div><!-- End: Bottom Info -->
 
 </div><!-- End Fulltitle -->
 

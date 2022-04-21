@@ -11,7 +11,33 @@
 #
 #######################################################################
 -%]
+<p class="mt-5">
+[%-
 
+   valid_ilias_request = 0;
+
+   refid  = query.param('REF_ID');
+   userid = query.param('USR_ID');
+   ts     = query.param('TS');
+   email  = query.param('EMAIL');
+   token  = query.param('ILTOKEN');
+
+   IF refid && userid && ts && email && token ;
+     data = "${refid}${userid}${ts}${email}";
+     verification_result = cgiapp.verify_gpg_data(data,token);
+
+     IF verification_result && verification_result.validity == "GOOD" ;
+        session.set_datacache_by_key('ilias',{ refid = refid, userid = userid, ts = ts, email = email, token = token });
+
+        valid_ilias_request = 1;
+     END;
+   END;
+
+-%]
+
+[% IF NOT valid_ilias_request %]
+[%   PROCESS common/subtemplate name="error_html" error_msg=msg.maketext("Sie haben keinen Zugriff zu dieser Seite.") %]
+[% ELSE %]
 <div class="alert alert-info m-5">
 <h1 class="display-5">[% msg.maketext("Bestellung von Dokumenten für Elektronische Semesterapparate in ILIAS") %]</h1>
 
@@ -90,3 +116,4 @@ Titel, die bereits in elektronischer Form vorliegen (E-Books, E-Journals etc.), 
 
 </div>
 
+[% END # valid_ilias_request %]

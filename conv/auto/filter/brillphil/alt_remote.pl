@@ -52,4 +52,4 @@ system("cd $pooldir/$pool ; rm meta.* ");
 print "### $pool: Heilen der Daten mit yaz-marcdump $filename\n";
 system("cd $pooldir/$pool ; /usr/bin/yaz-marcdump -o marc  -t utf8 $filename > ${filename}.tmp ; mv -f ${filename}.tmp $filename");
 print "### $pool: Konvertierung von $filename\n";
-system("cd $pooldir/$pool; $marc2metaexe --database=$pool --encoding='UTF-8' --inputfile=$filename ; gzip meta.*");
+system("cd $pooldir/$pool; $marc2metaexe --database=$pool --encoding='MARC-8' --inputfile=$filename ; gzip meta.*");

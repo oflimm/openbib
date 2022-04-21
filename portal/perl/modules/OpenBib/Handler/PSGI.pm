@@ -38,10 +38,12 @@ use Log::Log4perl qw(get_logger :levels);
 use List::MoreUtils qw(none any);
 use Benchmark ':hireswallclock';
 use Encode qw(decode_utf8 encode_utf8);
+use Crypt::GPG;
 use HTML::Escape qw/escape_html/;
 use HTTP::Negotiate;
 use HTTP::BrowserDetect;
 use JSON::XS;
+use MIME::Base64;
 use Template;
 use URI::Escape;
 use XML::RSS;
@@ -2334,5 +2336,32 @@ sub ip_from_local_network {
 
     return $ip_from_local_network;
 }
+
+sub verify_gpg_data {
+    my ($self,$data,$verification_token)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $gpg = new Crypt::GPG;
+
+    $gpg->gpgbin('/usr/bin/gpg'); # The GnuPG executable
+
+    if ($logger->is_debug){
+	$logger->debug("Verifying data $data with token $verification_token");
+    }
+    
+    $verification_token = decode_base64($verification_token);
+
+    my ($plaintext, $sig) = $gpg->verify($verification_token, $data);
+
+    if ($logger->is_debug){
+	$logger->debug("Verification result: $plaintext with validity ".$sig->validity());
+    }
+
+    # Return Crypt::GPG::Signature object with methods validity, time, keyid and trusted
+    return $sig;
+}
+
 
 1;

@@ -1052,6 +1052,10 @@ sub search {
 
     my $total_hits  = $self->param('total_hits') || 0 ;
     my $resultcount = $searcher->get_resultcount || 0 ;
+    my $autocorrected_terms = $searcher->get_autocorrected_terms || [] ;
+    my $autosuggested_terms = $searcher->get_autosuggested_terms || [] ;
+    my $date_range_start = $searcher->get_date_range_start || 0 ;
+    my $date_range_end = $searcher->get_date_range_start || 0 ;
     
     $self->param('searchtime',$resulttime);
     $self->param('nav',$nav);
@@ -1059,6 +1063,10 @@ sub search {
     $self->param('recordlist',$recordlist);
     $self->param('hits',$searcher->get_resultcount);
     $self->param('total_hits',$total_hits + $resultcount);
+    $self->param('autocorrected_terms',$total_hits + $resultcount);
+    $self->param('autosuggested_terms',$total_hits + $resultcount);
+    $self->param('date_range_start',$total_hits + $resultcount);
+    $self->param('date_range_end',$total_hits + $resultcount);
 
     return;
 }

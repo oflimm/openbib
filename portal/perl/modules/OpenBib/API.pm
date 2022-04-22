@@ -217,6 +217,32 @@ sub get_resultcount {
     return $self->{resultcount};
 }
 
+sub get_autocorrected_terms {
+    my $self = shift;
+    
+    return $self->{autocorrect};
+}
+
+sub get_autosuggested_terms {
+    my $self = shift;
+    
+    return $self->{autosuggest};
+}
+
+sub get_date_range_start {
+    my $self = shift;
+
+    return $self->{date_range_start};
+}
+
+sub get_date_range_end {
+    my $self = shift;
+
+    return $self->{date_range_end};
+}
+
+}
+
 sub DESTROY {
     my $self = shift;
 

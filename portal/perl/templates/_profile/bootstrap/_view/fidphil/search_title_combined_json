@@ -93,6 +93,10 @@
       num         = qopts.get_option('num')
       page        = nav.current_page
       ips_user    = queryoptions.get_option('ips_user')
+      autocorrected_terms = autocorrected_terms
+      autosuggested_terms = autosuggested_terms
+      date_range_start = date_range_start
+      date_range_end = date_range_end
    };
 
  IF nav.current_page < nav.last_page ;

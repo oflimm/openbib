@@ -982,6 +982,20 @@ sub search {
     $self->process_facets($json_result_ref);
         
     my $resultcount = $json_result_ref->{SearchResult}{Statistics}{TotalHits};
+	my $autocorrect = undef;
+	my $autosuggest = undef;
+	my $date_range_start = undef;
+	my $date_range_end = undef;
+	if (exists $json_result_ref->{SearchResult}{AutoCorrectedTerms}){
+		$autocorrect = $json_result_ref->{SearchResult}{AutoCorrectedTerms};
+	}
+	if (exists $json_result_ref->{SearchResult}{AutoSuggestedTerms}){
+		$autosuggest = $json_result_ref->{SearchResult}{AutoSuggestedTerms};
+	}
+	if (exists $json_result_ref->{SearchResult}{AvailableCriteria}->{DateRange}){
+		$date_range_start = $json_result_ref->{SearchResult}{AvailableCriteria}->{DateRange}->{MinDate}
+		$date_range_end = $json_result_ref->{SearchResult}{AvailableCriteria}->{DateRange}->{MaxDate}
+	}
 
     if ($logger->is_debug){
          $logger->info("Found ".$resultcount." titles");
@@ -997,7 +1011,17 @@ sub search {
     }
 
     $self->{resultcount} = $resultcount;
-    $self->{_matches}     = \@matches;
+    if ($autocorrect){
+		$self->{autocorrect} = $autocorrect;
+	}
+	if ($autosuggest){
+		$self->{autosuggest} = $autosuggest;
+	}
+	if ($date_range_start && $date_range_end){
+		$self->{date_range_start} = $date_range_start;
+		$self->{date_range_end} = $date_range_end;
+	}
+	$self->{_matches}     = \@matches;
     
     return $self;
 }

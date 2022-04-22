@@ -31,6 +31,11 @@
 
         valid_ilias_request = 1;
      END;
+   ELSE ;
+     session_cache = session.get_datacache ;     
+     IF session_cache.ilias.defined ;
+       valid_ilias_request = 1;
+     END;
    END;
 
 -%]

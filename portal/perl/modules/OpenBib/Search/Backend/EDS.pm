@@ -128,13 +128,13 @@ sub get_autosuggested_terms {
 sub get_date_range_start {
     my $self = shift;
 
-    return $self>get_api->get_date_range_start;
+    return $self->get_api->get_date_range_start;
 }
 
 sub get_date_range_end {
     my $self = shift;
 
-    return $self>get_api->get_date_range_end;
+    return $self->get_api->get_date_range_end;
 }
 
 sub get_facets {

@@ -198,8 +198,8 @@ sub send_search_request {
     # Pagination parameters
     my $page              = $queryoptions->get_option('page');
     my $num               = $queryoptions->get_option('num');
-	my $autocorrect = $queryoptions->get_option('autocorrect');
-    my $autosuggest = $queryoptions->get_option('autosuggest');
+	my $autocorrect       = $queryoptions->get_option('autocorrect');
+    my $autosuggest       = $queryoptions->get_option('autosuggest');
 
     my $from              = ($page - 1)*$num;
 

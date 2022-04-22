@@ -241,8 +241,6 @@ sub get_date_range_end {
     return $self->{date_range_end};
 }
 
-}
-
 sub DESTROY {
     my $self = shift;
 

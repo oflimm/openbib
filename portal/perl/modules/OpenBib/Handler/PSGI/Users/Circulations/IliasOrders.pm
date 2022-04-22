@@ -80,7 +80,6 @@ sub create_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $database       = $self->param('database');
     
     # Shared Args
     my $query          = $self->query();
@@ -98,7 +97,7 @@ sub create_record {
     my $input_data_ref = $self->parse_valid_input();
 
     # CGI Args
-    my $validtarget    = $input_data_ref->{'validtarget'};
+    my $database       = $input_data_ref->{'database'};
     my $titleid        = $input_data_ref->{'titleid'};
     my $label          = $input_data_ref->{'label'};
     my $unit_desc      = $input_data_ref->{'unit_desc'};
@@ -124,69 +123,30 @@ sub create_record {
     my $confirm        = $input_data_ref->{'confirm'};
    
     unless ($config->get('active_ils')){
-	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellungen, Vormerkungen, Campuslieferdienst usw.) sind aktuell systemweit deaktiviert."));	
-    }
-	    
-    unless ($validtarget && $label && $unit >= 0 && $titleid){
-	return $self->print_warning($msg->maketext("Notwendige Parameter nicht besetzt")." (validtarget: $validtarget, label:$label, unit:$unit)");
+	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellungen, Vormerkungen, Campuslieferdienst, E-Semesterapparat usw.) sind aktuell systemweit deaktiviert."));	
     }
 
-    my $refid = $queryoptions->get_option('refid');
+    unless ($database && $label && $unit >= 0 && $titleid){
+	return $self->print_warning($msg->maketext("Notwendige Parameter nicht besetzt"));
+    }
+
+    my $refid = "";
+
+    my $session_cache = $session->get_datacache;
+    
+
+    if (defined $session_cache->{'ilias'} && defined $session_cache->{ilias}{refid}){
+	$refid = $session_cache->{ilias}{refid};
+    }
 
     unless ($refid){
 	return $self->print_warning($msg->maketext("Fehler bei der Übertragung der ILIAS Kurs-ID."));
     }
-    
-    my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
-
-    my $userid = $user->get_userid_of_session($session->{ID});
-    
-    $self->param('userid',$userid);
-    
-    if ($logger->debug){
-	$logger->debug("Auth successful: ".$self->authorization_successful." - Db: $database - Authenticator: $sessionauthenticator");
-    }
-    
-    if (!$self->authorization_successful || $database ne $sessionauthenticator){
-        if ($self->param('representation') eq "html"){
-            return $self->tunnel_through_authenticator('POST');            
-        }
-        else  {
-            return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));
-        }
-    }
-
-    my ($accountname,$password,$access_token) = $user->get_credentials();
-
-    unless ($accountname =~ m/^(B|S)/){
-	return $self->print_warning($msg->maketext("Sie gehören nicht zu den autorisierten Nutzergruppen für den Campuslieferdienst"));
-    }
-    
-    $database              = $sessionauthenticator;
-
+        
     my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
 
-    my $authenticator = $session->get_authenticator;
-
-    my $userinfo_ref = $user->get_info($user->{ID});
-
-    my $realname = "";
-
-    if ($userinfo_ref->{nachname} || $userinfo_ref->{vorname}){
-	if ($userinfo_ref->{nachname}){
-	    $realname = $userinfo_ref->{nachname};
-	}
-
-	if ($userinfo_ref->{vorname}){
-	    $realname = $realname.", ".$userinfo_ref->{vorname};
-	}
-
-    }
-
-    my $email = "";
-    if ($userinfo_ref->{email}){
-	$email = $userinfo_ref->{email};
-    }
+    my $email       = $session_cache->{ilias}{email};
+    my $accountname = $session_cache->{ilias}{userid};
 
     my $record = new OpenBib::Record::Title({ database => $database, id => $titleid });
     $record->load_full_record;
@@ -196,17 +156,14 @@ sub create_record {
 	
 	# TT-Data erzeugen
 	my $ttdata={
-	    userinfo       => $userinfo_ref,
 	    record         => $record,
 	    database       => $database,
-	    validtarget    => $validtarget,
 	    title          => $title,
 	    titleid        => $titleid,
 	    author         => $author,
 	    coporation     => $corporation,
 	    publisher      => $publisher,
 	    year           => $year,
-	    realname       => $realname,
 	    numbering      => $numbering,
 	    label          => $label,
 	    isbn           => $isbn,
@@ -217,10 +174,9 @@ sub create_record {
 	    issue          => $issue,
 	    pages          => $pages,
 	    refid          => $refid,
-	    userid         => $userid,
 	    accountname    => $accountname,
 	    receipt        => $receipt,
-	    email          => $userinfo_ref->{email},
+	    email          => $email,
 	    remark         => $remark,
 	    unit           => $unit,
 	    unit_desc      => $unit_desc,
@@ -273,7 +229,7 @@ sub create_record {
 	    return $self->print_warning("Fehler bei der Übertragung des Titels.");
 	}
 		
-	my $response_make_ilias_order_ref = $ils->make_ilias_order({ title => $title, titleid => $titleid, author => $author, coporation => $corporation, publisher => $publisher, year => $year, numbering => $numbering, label => $label, isbn => $isbn, issn => $issn, articleauthor => $articleauthor, articletitle => $articletitle, volume => $volume, issue => $issue, pages => $pages, refid => $refid, userid => $accountname, username => $realname, receipt => $receipt, email => $email, remark => $remark, unit => $unit, location => $unit_desc, domain => $domain, subdomain => $subdomain });
+	my $response_make_ilias_order_ref = $ils->make_ilias_order({ title => $title, titleid => $titleid, author => $author, coporation => $corporation, publisher => $publisher, year => $year, numbering => $numbering, label => $label, isbn => $isbn, issn => $issn, articleauthor => $articleauthor, articletitle => $articletitle, volume => $volume, issue => $issue, pages => $pages, refid => $refid, userid => $accountname, username => $accountname, receipt => $receipt, email => $email, remark => $remark, unit => $unit, location => $unit_desc, domain => $domain, subdomain => $subdomain });
 
 	if ($logger->is_debug){
 	    $logger->debug("Result make_order:".YAML::Dump($response_make_ilias_order_ref));	
@@ -288,8 +244,7 @@ sub create_record {
 		database      => $database,
 		unit          => $unit,
 		label         => $label,
-		validtarget   => $validtarget,
-		ilias_order  => $response_make_ilias_order_ref,
+		ilias_order   => $response_make_ilias_order_ref,
 	    };
 	    
 	    return $self->print_page($config->{tt_users_circulations_make_ilias_order_tname},$ttdata);

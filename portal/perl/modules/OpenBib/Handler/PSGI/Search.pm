@@ -1126,6 +1126,10 @@ sub print_resultitem {
         
 #        lastquery       => $request->querystring,
         resulttime      => $self->param('searchtime'),
+        autocorrected_terms  => $self->param('autocorrected_terms'),
+        autosuggested_terms  => $self->param('autosuggested_terms'),
+        date_range_start     => $self->param('date_range_start'),
+        date_range_end        => $self->param('date_range_end'),
 
 	highlightquery  => \&highlightquery,
     };

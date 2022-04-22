@@ -1063,10 +1063,10 @@ sub search {
     $self->param('recordlist',$recordlist);
     $self->param('hits',$searcher->get_resultcount);
     $self->param('total_hits',$total_hits + $resultcount);
-    $self->param('autocorrected_terms',$total_hits + $resultcount);
-    $self->param('autosuggested_terms',$total_hits + $resultcount);
-    $self->param('date_range_start',$total_hits + $resultcount);
-    $self->param('date_range_end',$total_hits + $resultcount);
+    $self->param('autocorrected_terms',$autocorrected_terms);
+    $self->param('autosuggested_terms',$autosuggested_terms);
+    $self->param('date_range_start',$date_range_start);
+    $self->param('date_range_end',$date_range_end);
 
     return;
 }

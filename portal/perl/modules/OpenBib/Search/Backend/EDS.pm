@@ -113,6 +113,30 @@ sub get_resultcount {
     return $self->get_api->get_resultcount;
 }
 
+sub get_autocorrected_terms {
+    my $self = shift;
+    
+    return $self->get_api->get_autocorrected_terms;
+}
+
+sub get_autosuggested_terms {
+     my $self = shift;
+    
+    return $self->get_api->get_autosuggested_terms;
+}
+
+sub get_date_range_start {
+    my $self = shift;
+
+    return $self>get_api->get_date_range_start;
+}
+
+sub get_date_range_end {
+    my $self = shift;
+
+    return $self>get_api->get_date_range_end;
+}
+
 sub get_facets {
     my $self=shift;
 

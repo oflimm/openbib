@@ -1055,7 +1055,7 @@ sub search {
     my $autocorrected_terms = $searcher->get_autocorrected_terms || [] ;
     my $autosuggested_terms = $searcher->get_autosuggested_terms || [] ;
     my $date_range_start = $searcher->get_date_range_start || 0 ;
-    my $date_range_end = $searcher->date_range_end || 0 ;
+    my $date_range_end = $searcher->get_date_range_end || 0 ;
     
     $self->param('searchtime',$resulttime);
     $self->param('nav',$nav);

@@ -252,16 +252,21 @@
 </div>
 [% END %]
 
-<legend class="mt-2">[% msg.maketext("Weitere Angaben zur Bestellung") %]</legend>
+<legend class="mt-2">[% msg.maketext("Weitere Angaben zur Bestellung (übernommen aus Ilias)") %]</legend>
 
 <div class="form-floating mb-3">
-      <span class="form-control">[% realname %]</span>
-      <label for="username">[% msg.maketext("Nachname, Vorname") %] (*):</label>
+      <span class="form-control">[% session_cache.ilias.refid %]</span>
+      <label for="username">[% msg.maketext("Kurs-ID") %]:</label>
 </div>
 
 <div class="form-floating mb-3">
-      <span class="form-control">[% userinfo.email %]</span>
-      <label for="email">[% msg.maketext("E-Mail") %] (*):</label>
+      <span class="form-control">[% session_cache.ilias.userid %]</span>
+      <label for="username">[% msg.maketext("Kennung") %]:</label>
+</div>
+
+<div class="form-floating mb-3">
+      <span class="form-control">[% session_cache.ilias.email %]</span>
+      <label for="email">[% msg.maketext("E-Mail") %]:</label>
 </div>
 
 <legend class="mt-2">[% msg.maketext("Bestellquittung") %]</legend>

@@ -993,8 +993,8 @@ sub search {
 		$autosuggest = $json_result_ref->{SearchResult}{AutoSuggestedTerms};
 	}
 	if (exists $json_result_ref->{SearchResult}{AvailableCriteria}->{DateRange}){
-		$date_range_start = $json_result_ref->{SearchResult}{AvailableCriteria}->{DateRange}->{MinDate}
-		$date_range_end = $json_result_ref->{SearchResult}{AvailableCriteria}->{DateRange}->{MaxDate}
+		$date_range_start = $json_result_ref->{SearchResult}{AvailableCriteria}->{DateRange}->{MinDate};
+		$date_range_end = $json_result_ref->{SearchResult}{AvailableCriteria}->{DateRange}->{MaxDate};
 	}
 
     if ($logger->is_debug){

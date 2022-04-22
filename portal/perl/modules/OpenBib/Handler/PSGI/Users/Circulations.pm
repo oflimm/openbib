@@ -334,7 +334,7 @@ sub show_record {
     # Shared args
     my $msg            = $self->param('msg');
 
-    $logger->errog("Handler is obsolete");
+    $logger->error("Handler is obsolete");
 
     return $self->print_warning($msg->maketext("Diese Funktion wird nicht mehr unterstützt"));	
 }

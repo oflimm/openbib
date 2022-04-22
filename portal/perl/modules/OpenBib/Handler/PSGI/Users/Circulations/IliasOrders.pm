@@ -181,7 +181,8 @@ sub create_record {
 	    unit           => $unit,
 	    unit_desc      => $unit_desc,
 	    domain         => $domain,
-	    subdomain      => $subdomain	    
+	    subdomain      => $subdomain,
+	    session_cache  => $session_cache,
 	};
 	
 	return $self->print_page($config->{tt_users_circulations_check_ilias_order_tname},$ttdata);
@@ -257,7 +258,7 @@ sub get_input_definition {
     my $self=shift;
     
     return {
-        validtarget => {
+        database => {
             default  => '',
             encoding => 'utf8',
             type     => 'scalar',

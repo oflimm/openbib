@@ -251,25 +251,7 @@
      zaehlung = "";
      
      # Zaehlung Anfang Titel
-     IF is_schriftenreihe;
-       IF item.${'T0456'}.first.content;
-          zaehlung = item.${'T0456'}.first.content;
-	  IF zaehlung == title ;
-	     title = "";
-	  END;
-	  IF NOT item.${'T0451'}.first.content.match("; ${zaehlung}$");
-            title = "${zaehlung}. ${title}";
-	  END; 
-       ELSIF item.${'T0455'}.first.content;
-          zaehlung = item.${'T0455'}.first.content;
-	  IF zaehlung == title ;
-	     title = "";
-	  END;
-	  IF NOT item.${'T0451'}.first.content.match("; ${zaehlung}$");
-            title = "${zaehlung}. ${title}";
-	  END; 
-      END;
-     ELSIF is_mehrbaendig;
+     IF is_mehrbaendig;
        IF item.${'T0090'}.first.content;
           zaehlung = item.${'T0090'}.first.content;
 	  IF zaehlung == title ;

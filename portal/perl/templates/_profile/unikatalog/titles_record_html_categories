@@ -220,6 +220,27 @@ FOREACH item IN normdata.${'T4120'} ;
    END;
 END;
 
+# Paketnamen entsprechend: https://intern.ub.uni-koeln.de/usbwiki/index.php/Anreicherung_von_IMX-Importdateien
+
+licensed_pakete = [
+   'ZDB-2-SWI', 'ZDB-2-SNA', 'ZDB-2-STI', 'ZDB-2-SGR', 'ZDB-2-SEP', 'ZDB-2-SBE', 'ZDB-2-CMS', 'ZDB-2-PHA', 'ZDB-2-SMA', 'ZDB-2-MGE', 'ZDB-2-SZR', 'ZDB-2-BUM', 'ZDB-2-ECF', 'ZDB-2-SCS', 'ZDB-2-ESA', 'ZDB-5-WEB', 'ZDB-5-WMS', 'ZDB-5-WMW', 'ZDB-13-SOC', 'ZDB-14-DLO', 'ZDB-18-BEO', 'ZDB-18-BOH', 'ZDB-18-BST', 'ZDB-15-ACM', 'ZDB-16-Hanser-EBA', 'hbzebo_ebahanser', 'ZDB-18-Nomos-NRW', 'ZDB-18-Nomos-VDI-NRW', 'hbzebo_nrwnomos', 'ZDB-149-HCB', 'ZDB-162-Bloom-EBA', 'hbzebo_ebabloomsbury', 'ZDB-605-Preselect', 'hbzebo_preselect', 'ZDB-196-Meiner-EBA', 'hbzebo_ebameiner' ];
+
+FOREACH item IN normdata.${'T0078'} ;
+  FOREACH paket IN licensed_pakete ;
+    IF item.content == paket;
+      is_licensed = 1;
+    END;
+  END;
+END;
+
+FOREACH item IN normdata.${'T1209'} ;
+  FOREACH paket IN licensed_pakete ;
+    IF item.content == paket;
+      is_licensed = 1;
+    END;
+  END;
+END;
+
 content_map = {};
 
 FOREACH field IN normdata;
@@ -359,7 +380,7 @@ FOREACH field IN normdata;
 #            content    = "&nbsp;${previssues.0}--&gt;: <a href=\"${localurl}\">${previssues.1}</a>";
 #         END ;
           
-    CASE "T0540";
+    CASE [ "T0540" "T0541" ];
          content   = "${highlightquery(searchquery,content)}";
          IF NOT content_map.${'T0540'} ;
 	    content_map.${'T0540'} = [];

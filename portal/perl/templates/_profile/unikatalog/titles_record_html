@@ -170,7 +170,7 @@ $(document).ready(function(){
 
 [% IF is_licensed %]
 <div class="alert alert-info">
-Zugriff nur im <a href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/nutzungshinweise/">Netz der Universität Köln</a> bzw. für autorisierte Benutzer. Die <a href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/besonderheiten/">Druck- und Downloadmöglichkeiten</a> variieren je nach Anbieter.
+Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/nutzungshinweise/">Netz der Universität Köln</a> bzw. für autorisierte Benutzer. Die <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/besonderheiten/">Druck- und Downloadmöglichkeiten</a> variieren je nach Anbieter.
 </div>
 [% END %]
 

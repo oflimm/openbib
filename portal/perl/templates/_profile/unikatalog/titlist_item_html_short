@@ -257,7 +257,7 @@
 	  IF zaehlung == title ;
 	     title = "";
 	  END;
-	  IF NOT item.${'T0451'}.first.content.match("; ${zaehlung}");
+	  IF NOT item.${'T0451'}.first.content.match("; ${zaehlung}$");
             title = "${zaehlung}. ${title}";
 	  END; 
        ELSIF item.${'T0455'}.first.content;
@@ -265,7 +265,7 @@
 	  IF zaehlung == title ;
 	     title = "";
 	  END;
-	  IF NOT item.${'T0451'}.first.content.match("; ${zaehlung}");
+	  IF NOT item.${'T0451'}.first.content.match("; ${zaehlung}$");
             title = "${zaehlung}. ${title}";
 	  END; 
       END;

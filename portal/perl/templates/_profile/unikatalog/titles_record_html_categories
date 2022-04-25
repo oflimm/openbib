@@ -606,7 +606,7 @@ FOREACH field IN normdata;
          END ;
 
          localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
-         content   = "<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${super_title}</span></a>";
+         content   = "<a href=\"${localurl}\">${super_title}</a>";
          IF NOT content_map.${'T5005'} ;
 	    content_map.${'T5005'} = [];
 	 END;

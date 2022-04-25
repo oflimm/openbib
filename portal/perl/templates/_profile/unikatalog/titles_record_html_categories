@@ -47,7 +47,7 @@
       searchprofileid_of_database = config.get_searchprofile_of_database(record.database) ;
    END ;
 
-   IF normdata.${'T4400'}.first.content == 'online' && NOT normdata.${"T0662"}.first.content && NOT normdata.${"T2662"}.first.content;
+   IF 0 == 1 && normdata.${'T4400'}.first.content == 'online' && NOT normdata.${"T4662"}.first.content ;
      currently_unavailable = 1;
    END;
 

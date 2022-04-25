@@ -85,17 +85,17 @@
 
   [%- TRY -%]
     [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/_profile/$sysprofile/_view/$view/openbib.css" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/_profile/$sysprofile/_view/$view/openbib.css" %]" media="all" />
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/_profile/$sysprofile/_view/$view/openbib.css" %]?ver=20220425" media="all" />
   [%- CATCH -%]        
     [%- TRY -%]
       [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/_profile/$sysprofile/openbib.css" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/_profile/$sysprofile/openbib.css" %]" media="all" />
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/_profile/$sysprofile/openbib.css" %]?ver=20220425" media="all" />
     [%- CATCH -%]
       [%- TRY -%]
         [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/_view/$view/openbib.css" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/_view/$view/openbib.css" %]" media="all" />
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/_view/$view/openbib.css" %]?ver=20220425" media="all" />
       [%- CATCH -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/openbib.css" %]" media="all" />
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/openbib.css" %]?ver=20220425" media="all" />
       [%- END -%]
     [%- END -%]
   [%- END -%]

@@ -102,7 +102,7 @@ unlink "${database}.opp";
 
 system("echo \"*:*:*:$config->{'dbuser'}:$config->{'dbpasswd'}\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
 
-system("$pg_dump -U $config->{'dbuser'} -C -c $database | $gzip > $tmpdir/pool.sql.gz");
+system("$pg_dump -U $config->{'dbuser'} -F c -b -f  pool.dump $database");
 
 if (! -d "$config->{'base_dir'}/ft/xapian/index/$database"){
     print STDERR "Indexverzeichnis existiert nicht\n";
@@ -111,14 +111,14 @@ if (! -d "$config->{'base_dir'}/ft/xapian/index/$database"){
 
 system("cd $config->{'base_dir'}/ft/xapian/index/$database ; tar czf $tmpdir/index.tgz *");
 
-if (! -f "$tmpdir/pool.sql.gz" || ! -f "$tmpdir/index.tgz"){
+if (! -f "$tmpdir/pool.dump" || ! -f "$tmpdir/index.tgz"){
     $logger->error("Dump von Katalog oder Index existiert nicht. Cleanup.");
-    unlink  "$tmpdir/pool.sql.gz";
+    unlink  "$tmpdir/pool.dump";
     unlink  "$tmpdir/index.tgz";
     exit;
 }
 
-system("tar --directory=$tmpdir -cf ./${database}.opp pool.sql.gz index.tgz ; rm $tmpdir/pool.sql.gz $tmpdir/index.tgz");
+system("tar --directory=$tmpdir -cf ./${database}.opp pool.dump index.tgz ; rm $tmpdir/pool.dump $tmpdir/index.tgz");
 
 
 sub print_help {

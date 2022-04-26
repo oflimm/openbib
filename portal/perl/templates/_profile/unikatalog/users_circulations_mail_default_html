@@ -25,9 +25,9 @@
   publisher = fields.${"T0412"}.first.content;
 
   year      = fields.${"T0425"}.first.content;
-  IF fields.${"T0424"}.defined;
-    year      = fields.${"T0424"}.first.content;  
-  END;
+  # IF fields.${"T0424"}.defined;
+  #   year      = fields.${"T0424"}.first.content;  
+  # END;
 
   titleid   = record.id;
   

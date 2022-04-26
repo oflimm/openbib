@@ -168,7 +168,11 @@ $(document).ready(function(){
 
 [%   PROCESS common/subtemplate name="titles_record_html_categories" %]
 
-[% IF is_licensed %]
+[% IF is_oa %]
+<div class="alert alert-info">
+Open Access. Im Internet weltweit frei verfügbar
+</div>
+[% ELSIF is_licensed %]
 <div class="alert alert-info">
 Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/nutzungshinweise/">Netz der Universität Köln</a> bzw. für autorisierte Benutzer. Die <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/besonderheiten/">Druck- und Downloadmöglichkeiten</a> variieren je nach Anbieter.
 </div>

@@ -50,9 +50,9 @@
   publisher = pubplace.join(' : ');
   
   year      = fields.${"T0425"}.first.content;
-  IF fields.${"T0424"}.defined;
-    year      = fields.${"T0424"}.first.content;  
-  END;
+  # IF fields.${"T0424"}.defined;
+  #   year      = fields.${"T0424"}.first.content;  
+  # END;
 
   super = "";
   # 1. Ueberordnung?

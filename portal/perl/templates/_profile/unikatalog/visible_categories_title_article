@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: visible_categories_titset
+# Templatename: visible_categories_title_article
 #
 # Typ         : Subtemplate
 #
@@ -39,7 +39,7 @@
                 #'T0410', # msg.maketext("T0410") Verlagsort
                 'T0412', # msg.maketext("T0412") Verlag
                 'T0425', # msg.maketext("T0425") ErschJahr
-                'T0424', # msg.maketext("T0424") ErschJahr/Ansetzung
+                #'T0424', # msg.maketext("T0424") ErschJahr/Ansetzung
                 'T0405', # msg.maketext("T0405") Erscheinungsverlauf
                 'T0523', # msg.maketext("T0523") Erscheinungsweise
                 'T0591', # msg.maketext("T0591") Verfasser Quelle

@@ -723,15 +723,15 @@ convtab:
       '0424':
         '':
           index:
-            'year': 1
-            'yearstring': 1
-            'freesearch': 1
+            'year': 100
+            'yearstring': 100
+            'freesearch': 100
       '0425':
         '':
           index:
-            'year': 1
-            'yearstring': 1
-            'freesearch': 1
+            'year': 100
+            'yearstring': 100
+            'freesearch': 100
           facet:
             'year': 1
       '0426':
@@ -2708,15 +2708,15 @@ convtab:
       '0424':
         '':
           index:
-            'year': 1
-            'yearstring': 1
-            'freesearch': 1
+            'year': 100
+            'yearstring': 100
+            'freesearch': 100
       '0425':
         '':
           index:
-            'year': 1
-            'yearstring': 1
-            'freesearch': 1
+            'year': 100
+            'yearstring': 100
+            'freesearch': 100
           facet:
             'year': 1
       '0426':

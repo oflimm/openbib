@@ -270,6 +270,147 @@ sub make_campus_order {
     return $response_ref;    
 }
 
+sub make_pda_order {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $title            = exists $arg_ref->{title}
+        ? $arg_ref->{title}           : undef;
+    
+    my $katkey           = exists $arg_ref->{titleid}  # Katkey
+        ? $arg_ref->{titleid}         : undef;
+
+    my $database         = exists $arg_ref->{database} # PDA Katalogname
+        ? $arg_ref->{database}        : undef;
+
+    my $author           = exists $arg_ref->{author}
+        ? $arg_ref->{author}          : undef;
+    
+    my $corporation      = exists $arg_ref->{corporation}
+        ? $arg_ref->{corporation}     : undef;
+    
+    my $publisher        = exists $arg_ref->{publisher}
+        ? $arg_ref->{publisher}       : undef;
+    
+    my $year             = exists $arg_ref->{year}
+        ? $arg_ref->{year}            : undef;
+    
+    my $isbn             = exists $arg_ref->{isbn}
+        ? $arg_ref->{isbn}            : undef;
+    
+    my $price            = exists $arg_ref->{price}
+        ? $arg_ref->{price}           : undef;
+
+    my $classification   = exists $arg_ref->{classification}
+        ? $arg_ref->{classification}  : undef;
+        
+    my $userid          = exists $arg_ref->{userid}
+        ? $arg_ref->{userid}          : undef;
+    
+    my $username        = exists $arg_ref->{username}
+        ? $arg_ref->{username}        : undef;
+    
+    my $reservation     = exists $arg_ref->{reservation}
+        ? $arg_ref->{reservation}     : undef;
+
+    my $receipt         = exists $arg_ref->{receipt}
+        ? $arg_ref->{receipt}         : undef;
+    
+    my $email           = exists $arg_ref->{email}
+        ? $arg_ref->{email}           : undef;
+            
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config   = $self->get_config;
+
+    my $response_ref = {};
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    $logger->debug("Making order via USB-SOAP");
+
+    unless ($username && $katkey && $database){
+	$response_ref =  {
+	    error => "missing parameter",
+	};
+
+	return $response_ref;
+    }
+
+    my $pda_id = $database.":".$katkey;
+    
+    my @args = ($title, $pda_id, $author, $corporation, $publisher, $year, $isbn, $price, $classification, $userid, $username, $reservation, $receipt, $email);
+	    
+    my $uri = "urn:/PDA";
+	        
+    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));    
+    
+    my $result_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('usbws_url'));
+	my $result = $soap->submit_pda(@args);
+	
+	unless ($result->fault) {
+	    $result_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    
+	    $response_ref = {
+		error => $result->faultcode,
+		error_description => $result->faultstring,
+	    };
+	    
+	    return $response_ref;
+
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$config->get('usbws_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem bei der Verbindung",
+	};
+	
+	return $response_ref;
+    }
+
+    if (defined $result_ref->{OK}){
+	$response_ref = {
+	    "successful" => 1,
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+
+    $response_ref = {
+	    "code" => 405,
+		"error" => "unknown error",
+		"error_description" => "Unbekannter Fehler",
+	};
+
+    if ($logger->is_debug){
+	$response_ref->{debug} = $result_ref;
+    }
+
+    return $response_ref;    
+}
+
 sub make_ilias_order {
     my ($self,$arg_ref) = @_;
 

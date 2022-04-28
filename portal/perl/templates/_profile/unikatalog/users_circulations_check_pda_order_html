@@ -1,3 +1,36 @@
+[%#-
+#######################################################################
+#
+# Templatename: users_circulations_check_pda_order_html
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ueberpruefung einer Bestellung im Buchhandel mit PDA
+#
+#######################################################################
+-%]
+
+<div class="card mt-5 mb-5 me-5">
+<div class="card-header">[% msg.maketext("Neuanschaffung") %]</div>
+<div class="card-body">
+[% IF NOT userinfo.username.match("^([ABCKRSTVW]|I00011011#7)") %]
+
+<p>[% msg.maketext("Ihre Benutzergruppe ist nicht für diese Funktion zugelassen.") %]</p>
+
+[%   IF userinfo.username.match("^9") %]
+<p>[% msg.maketext("Sie besitzen derzeit noch eine vorläufige Benutzernummer, mit der Sie lediglich Medien aus dem Bestand der USB Köln bestellen oder vormerken können.") %]</p>
+
+<p>[% msg.maketext("Für alle anderen Funktionen benötigen Sie einen Bibliotheksausweis, den Sie an unserem Schalter <strong>Bibliotheksausweise &amp; Fernleihrückgabe</strong> im EG erhalten.") %]</p>
+[%   ELSE %]
+<p>[% msg.maketext("Sofern Sie Fragen haben, wenden Sie sich bitte an") %] <a href="mailto:mediateam@ub.uni-koeln.de">mediateam@ub.uni-koeln.de</a></p>
+[%   END %]
+[% ELSIF NOT userinfo.email %]
+<p>[% msg.maketext("Bitte tragen Sie Ihre E-Mail-Adresse in Ihrem Bibliothekskonto unter <strong>Persönliche Daten</strong> ein. Eine Benachrichtigung über das eingetroffene Buch ist ansonsten nicht möglich.") %]</p>
+
+<a class="btn btn-primary mt-3 mb-3" href="[% path_prefix%]/[% config.get("users_loc") %]/id/[% user.ID %]/[% config.get("circulations_loc") %].html?l=[% lang %]">[% msg.maketext("E-Mail-Adresse eintragen") %]</a>
+[% ELSE %]
 [%-
 
   fields       = record.get_fields;
@@ -223,6 +256,8 @@
 <button type="submit" class="btn btn-primary mb-2 mt-4">[% msg.maketext("Kostenfrei bestellen") %]</button>
 
 </form>
+
+[% END %]
 
 </div>
 </div>

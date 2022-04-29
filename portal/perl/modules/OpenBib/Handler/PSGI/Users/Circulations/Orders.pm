@@ -459,10 +459,13 @@ sub confirm_delete_record {
 
     my $database              = $sessionauthenticator;
 
+    my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
+    
     my $record = new OpenBib::Record::Title({ database => $database, id => $titleid });
+    
     $record->load_brief_record;
 
-    my $userinfo_ref = $user->get_info($user->{ID});
+    my $userinfo_ref = $ils->get_userdata($username);
     
     my $ttdata={
 	database  => $database,

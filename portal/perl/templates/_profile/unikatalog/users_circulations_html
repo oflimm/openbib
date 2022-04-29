@@ -113,7 +113,9 @@
 <div class="card-header">[% msg.maketext("Anschaffungsvorschläge") %]</div>
 <div class="card-body">
 
-<p>[% msg.maketext("Sie benötigen ein Buch, das Sie bei uns nicht finden können? Machen Sie einen") %] <a href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/anschaffungsvorschlag/index_ger.html" target="_blank">[% msg.maketext("Anschaffungsvorschlag.") %]</a></p>
+<p>[% msg.maketext("Sie benötigen ein Buch, das Sie bei uns nicht finden können? Machen Sie einen Anschaffungsvorschlag.") %]</p>
+
+<a class="btn btn-primary mt-2 mb-1" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/suggestions.html?l=[% lang %]">[% msg.maketext("Anschaffungsvorschlag") %]</a>
 
 </div>
 </div>
@@ -125,7 +127,14 @@
 <div class="card-body">
 
 <p>
-[% msg.maketext("Sie bestellen, wir bezahlen und liefern.") %] <a href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/anschaffungsvorschlag/index_ger.html" target="_blank">[% msg.maketext("Weitere Informationen »") %]</a>
+[% msg.maketext("Sie bestellen, wir bezahlen und liefern.") %]
+</p>
+
+<p>
+[% msg.maketext('Bei Ihrer Suche erscheint der Hinweis: "Buchhandel- Neuanschaffung möglich"?') %]
+</p>
+<p>
+[% msg.maketext('Unser USB-Portal hält ständig Neuerscheinungen zum Direktkauf im Angebot. Erscheint bei Ihrem Suchbegriff ein Titel mit dem Hinweis  "Buchhandel - Neuanschaffung möglich", können Sie mit wenigen Klicks eine Bestellung durchführen. Dann schaffen wir diesen Titel für die USB an und benachrichtigen Sie, sobald er geliefert wurde. Mit Patron-Driven-Acquisition geht das ganz leicht.') %]
 </p>
 
 </div>

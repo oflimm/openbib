@@ -38,7 +38,8 @@
             [%- IF normdata.${"T1024"} %]
             [%- FOREACH number IN normdata.${"T1024"} -%]
             [%- IF number.content.match('ZDB') %]
-            <mods:identifier type="zdb">[%- number.content.replace('ZDB', '')%]</mods:identifier>
+            [%- zdb_id = number.content.replace('ZDB', '') %];
+            <mods:identifier type="zdb">[%- zdb_id%]</mods:identifier>
             [%- END -%]
             [%- END -%]
             [%- END -%]
@@ -61,9 +62,15 @@
             <mods:identifier type="HBZ_UEB">[% super_data.fields.${'0010'}.first.content -%]</mods:identifier>
             [%- END -%]
             [%- END -%]
+            [%- IF (normdata.${"T0036"}.first.content == "p" || normdata.${"T0036"}.first.content =="z") %]
+            <mods:recordInfo>
+                <mods:recordIdentifier source="zdb">[% zdb_id %]</mods:recordIdentifier>
+            </mods:recordInfo>
+            [%- ELSE %]
             <mods:recordInfo>
                 <mods:recordIdentifier source="DE-38">[% record.id %]</mods:recordIdentifier>
             </mods:recordInfo>
+            [%- END %]
             [%- IF personlist && personlist.size -%]
             [%- FOREACH item IN personlist %]
             <mods:name type="personal" [%- IF item.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/"

@@ -212,44 +212,76 @@ sub create_record {
     
     my $userinfo_ref = $ils->get_userdata($accountname);
 
-
-    unless ($accountname =~ m/^([ABCKRSTVW]|I00011011#7)/){
-	return $self->print_warning($msg->maketext("Ihre Benutzergruppe ist nicht für diese Funktion zugelassen."));
-    }
-		
-    if (!$userinfo_ref->{email}){
-	return $self->print_warning("Zur Nutzung der Bestellung über den Buchhandel ist eine E-Mail-Adresse in Ihrem Bibliothekskonto erforderlich.");
-    }
+    my $email = $userinfo_ref->{email};
     
+    if (!$email){
+	return $self->print_warning("Für einen Anschaffungsvorschlag ist eine E-Mail-Adresse in Ihrem Bibliothekskonto erforderlich.");
+    }
+
+    my $current_date = strftime("%d.%m.%Y, %H:%M Uhr", localtime);
+    $current_date    =~ s!^\s!0!;
+
+    # TT-Data erzeugen    
+    my $ttdata={
+        view         => $view,
+	userinfo     => $userinfo_ref,
+	current_date => $current_date,
+	title        => $title,
+	author       => $author,
+	corporation  => $corporation,
+	publisher    => $publisher,
+	year         => $year,
+	isbn         => $isbn,
+	reservation  => $reservation,
+	receipt      => $receipt,
 	
-    # Wesentliche Informationen zur Identitaet des Bestellers werden nicht per Webformular entgegen genommen,
-    # sondern aus dem Bibliothekskonto des Nutzers via $userinfo_ref.
-    
-    # Production
-    #my $response_make_suggestion_ref = $ils->make_suggestion({ title => $title, titleid => $titleid, database => $database, author => $author, coporation => $corporation, publisher => $publisher, year => $year, isbn => $isbn, price => $price, classification => $classification, userid => $userinfo_ref->{username}, username => $userinfo_ref->{fullname}, reservation => $reservation, receipt => $receipt, email => $userinfo_ref->{email}});
-
-    # Test
-    my $response_make_suggestion_ref = {
-	successful => 1,
+        config       => $config,
+        user         => $user,
+        msg          => $msg,
     };
-    	
-    if ($logger->is_debug){
-	$logger->debug("Result make_order:".YAML::Dump($response_make_suggestion_ref));	
-    }
     
-    if ($response_make_suggestion_ref->{error}){
-	return $self->print_warning($response_make_suggestion_ref->{error_description});
-    }
-    elsif ($response_make_suggestion_ref->{successful}){
-	# TT-Data erzeugen
-	my $ttdata={
-	    database   => $database,
-	    suggestion  => $response_make_suggestion_ref,
-	};
-	
-	return $self->print_page($config->{tt_users_circulations_suggestion_success_tname},$ttdata);
-	
-    }		
+    my $anschreiben="";
+    my $afile = "an." . $$;
+
+    my $maintemplate = Template->new({
+        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+            INCLUDE_PATH   => $config->{tt_include_path},
+            ABSOLUTE       => 1,
+        }) ],
+        #        ABSOLUTE      => 1,
+        #        INCLUDE_PATH  => $config->{tt_include_path},
+        # Es ist wesentlich, dass OUTPUT* hier und nicht im
+        # Template::Provider definiert wird
+        RECURSION      => 1,
+        OUTPUT_PATH   => '/tmp',
+        OUTPUT        => $afile,
+    });
+
+    $maintemplate->process($config->{tt_users_circulations_suggestions_mail_body_tname}, $ttdata ) || do { 
+        $logger->error($maintemplate->error());
+        $self->header_add('Status',400); # server error
+        return;
+    };
+
+    my $mail_to = $config->{mail}{scope}{suggestion}{recipient};
+    
+    # Fuer Tests erstmal deaktiviert...
+    # if ($receipt){
+    # 	$mail_to.=",$email";
+    # }
+    
+    my $anschfile="/tmp/" . $afile;
+
+    Email::Stuffer->to($mail_to)
+	->from($config->{mail}{scope}{suggestion}{sender})
+	->subject("Neuanschaffungsvorschlag")
+	->text_body(read_binary($anschfile))
+	->send;
+    
+    unlink $anschfile;
+        
+    return $self->print_page($config->{tt_users_circulations_suggestion_success_tname},$ttdata);
+
 }
 
 sub get_input_definition {

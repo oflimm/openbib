@@ -38,7 +38,7 @@
             [%- IF normdata.${"T1024"} %]
             [%- FOREACH number IN normdata.${"T1024"} -%]
             [%- IF number.content.match('ZDB') %]
-            [%- zdb_id = number.content.replace('ZDB', '') %];
+            [%- zdb_id = number.content.replace('ZDB', '') %]
             <mods:identifier type="zdb">[%- zdb_id%]</mods:identifier>
             [%- END -%]
             [%- END -%]

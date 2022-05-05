@@ -268,6 +268,11 @@ sub get_input_definition {
             encoding => 'utf8',
             type     => 'scalar',
         },
+        title => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
         label => {
             default  => '',
             encoding => 'utf8',
@@ -286,7 +291,7 @@ sub get_input_definition {
         unit => {
             default  => '',
             encoding => 'utf8',
-            type     => 'scalar',
+            type     => 'integer',
         },
         receipt => {
             default  => '',

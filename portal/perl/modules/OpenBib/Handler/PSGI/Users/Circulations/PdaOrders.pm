@@ -99,30 +99,18 @@ sub create_record {
     my $input_data_ref = $self->parse_valid_input();
 
     # CGI Args
-    my $database       = $input_data_ref->{'database'};
-    my $titleid        = $input_data_ref->{'titleid'};
-    my $label          = $input_data_ref->{'label'};
-    my $unit_desc      = $input_data_ref->{'unit_desc'};
-    my $domain         = $input_data_ref->{'domain'};
-    my $subdomain      = $input_data_ref->{'subdomain'};
-    my $receipt        = $input_data_ref->{'receipt'};
-    my $unit           = $input_data_ref->{'unit'};
     my $title          = $input_data_ref->{'title'};
+    my $titleid        = $input_data_ref->{'titleid'};
+    my $database       = $input_data_ref->{'database'};
     my $author         = $input_data_ref->{'author'};
-    my $volume         = $input_data_ref->{'volume'};
-    my $source         = $input_data_ref->{'source'};
-    my $articleauthor  = $input_data_ref->{'articleauthor'};
-    my $articletitle   = $input_data_ref->{'artitletitle'};
-    my $issue          = $input_data_ref->{'issue'};
-    my $pages          = $input_data_ref->{'pages'};
-    my $remark         = $input_data_ref->{'remark'};
-    my $year           = $input_data_ref->{'year'};
-    my $numbering      = $input_data_ref->{'numbering'};
-    my $issn           = $input_data_ref->{'issn'};
-    my $isbn           = $input_data_ref->{'isbn'};
-    my $publisher      = $input_data_ref->{'publisher'};
     my $corporation    = $input_data_ref->{'corporation'};
-    my $refid          = $input_data_ref->{'refid'};
+    my $publisher      = $input_data_ref->{'publisher'};
+    my $year           = $input_data_ref->{'year'};
+    my $isbn           = $input_data_ref->{'isbn'};
+    my $price          = $input_data_ref->{'price'};
+    my $classification = $input_data_ref->{'classification'};
+    my $reservation    = $input_data_ref->{'reservation'};
+    my $receipt        = $input_data_ref->{'receipt'};
     my $confirm        = $input_data_ref->{'confirm'};
    
     unless ($config->get('active_pdaorder')){
@@ -157,14 +145,10 @@ sub create_record {
 
     my ($accountname,$password,$access_token) = $user->get_credentials();
 
-    unless ($accountname =~ m/^([ABCKRSTVW]|I00011011#7)/){
-	return $self->print_warning($msg->maketext("Sie gehören nicht zu den autorisierten Nutzergruppen für PDA Neuanschaffungen"));
-    }
-    
-    my $ils = OpenBib::ILS::Factory->create_ils({ database => $sessionauthenticator });
-
     my $authenticator = $session->get_authenticator;
 
+    my $ils = OpenBib::ILS::Factory->create_ils({ database => $sessionauthenticator });
+    
     my $userinfo_ref = $ils->get_userdata($accountname);
 
     my $record = new OpenBib::Record::Title({ database => $database, id => $titleid });
@@ -186,122 +170,44 @@ sub create_record {
     else {
 	$logger->debug("Making pda order");
 
-	if (!$pages){
-	    return $self->print_warning("Bitte geben Sie die gewünschten Seiten an.");
+	unless ($accountname =~ m/^([ABCKRSTVW]|I00011011#7)/){
+	    return $self->print_warning($msg->maketext("Ihre Benutzergruppe ist nicht für diese Funktion zugelassen."));
 	}
-	
+		
 	if (!$userinfo_ref->{email}){
-	    return $self->print_warning("Zur Nutzung des Campuslieferdienstes ist eine E-Mail-Adresse in Ihrem Bibliothekskonto erforderlich.");
+	    return $self->print_warning("Zur Nutzung der Bestellung über den Buchhandel ist eine E-Mail-Adresse in Ihrem Bibliothekskonto erforderlich.");
 	}
 	
 	if (!$titleid){
 	    return $self->print_warning("Fehler bei der Übertragung der Datensatz-ID.");
 	}
 	
-	if (!$label){
-	    return $self->print_warning("Fehler bei der Übertragung der Signatur.");
-	}
-	
-	if (!$title){
-	    return $self->print_warning("Fehler bei der Übertragung des Titels.");
-	}
-	
-	# Ueberpruefen auf elektronische Verfuegbarkeit via JOP
-	if ($issn){
-	    my $jopquery = new OpenBib::SearchQuery;
-	    
-	    $jopquery->set_searchfield('issn',$issn) if ($issn);
-	    $jopquery->set_searchfield('volume',$volume) if ($volume);
-	    $jopquery->set_searchfield('issue',$issue) if ($issue);
-	    $jopquery->set_searchfield('pages',$pages) if ($pages);
-	    $jopquery->set_searchfield('date',$year) if ($year);
-	    
-	    if ($title){
-		$jopquery->set_searchfield('genre','article');
-	    }
-	    elsif ($volume){
-		$jopquery->set_searchfield('genre','article');
-	    }
-	    else {
-		$jopquery->set_searchfield('genre','journal');
-	    }
-	    
-	    # bibid set via portal.yml
-	    my $api = OpenBib::API::HTTP::JOP->new({ searchquery => $jopquery });
-	    
-	    my $search = $api->search();
-	    
-	    my $result_ref = $search->get_search_resultlist;
-	    
-	    my $jop_online = 0;
-	    
-	    foreach my $item_ref (@$result_ref){
-		if ($item_ref->{type} eq "online" && $item_ref->{state} =~m/^(0|2)$/){ # nur gruene und gelbe Titel beruecksichtigen, d.h. im Zweifelsfall wird die Bestellung durchgelassen
-		    $jop_online = 1;
-		}	    
-	    }
-	    
-	    if ($jop_online){
-		# TT-Data erzeugen
-		my $ttdata={
-		    database      => $database,
-		    unit          => $unit,
-		    label         => $label,
-		    jop_online    => $jop_online,
-		    jop           => $result_ref,
-		};
-		
-		return $self->print_page($config->{tt_users_circulations_make_campus_order_tname},$ttdata);
-	    }
-	}
-	# Ueberpruefen auf elektronische Verfuegbarkeit an der UzK (KUG)	
-	elsif ($isbn){
-	    my $online_media = $self->check_online_media({ view => 'uni', isbn => $isbn});
-
-	    if ($online_media->get_size() > 0){
-		
-		# TT-Data erzeugen
-		my $ttdata={
-		    database      => $database,
-		    unit          => $unit,
-		    label         => $label,
-		    uzk_online    => 1,
-		    online_media  => $online_media,
-		};
-		
-		return $self->print_page($config->{tt_users_circulations_make_campus_order_tname},$ttdata);
-	    }
-
-	}
-
 	# Wesentliche Informationen zur Identitaet des Bestellers werden nicht per Webformular entgegen genommen,
 	# sondern aus dem Bibliothekskonto des Nutzers via $userinfo_ref.
 	
 	# Production
-	# my $response_make_campus_order_ref = $ils->make_campus_order({ title => $title, titleid => $titleid, author => $author, coporation => $corporation, publisher => $publisher, year => $year, numbering => $numbering, label => $label, isbn => $isbn, issn => $issn, articleauthor => $articleauthor, articletitle => $articletitle, volume => $volume, issue => $issue, pages => $pages, refid => $refid, userid => $userinfo_ref->{username}, username => $userinfo_ref->{fullname}, receipt => $receipt, email => $userinfo_ref->{email}, remark => $remark, unit => $unit, location => $unit_desc, domain => $domain, subdomain => $subdomain });
+	#my $response_make_pda_order_ref = $ils->make_pda_order({ title => $title, titleid => $titleid, database => $database, author => $author, coporation => $corporation, publisher => $publisher, year => $year, isbn => $isbn, price => $price, classification => $classification, userid => $userinfo_ref->{username}, username => $userinfo_ref->{fullname}, reservation => $reservation, receipt => $receipt, email => $userinfo_ref->{email}});
 
 	# Test
-	my $response_make_campus_order_ref = {
+	my $response_make_pda_order_ref = {
 	    successful => 1,
 	};
     	
 	if ($logger->is_debug){
-	    $logger->debug("Result make_order:".YAML::Dump($response_make_campus_order_ref));	
+	    $logger->debug("Result make_order:".YAML::Dump($response_make_pda_order_ref));	
 	}
 	
-	if ($response_make_campus_order_ref->{error}){
-            return $self->print_warning($response_make_campus_order_ref->{error_description});
+	if ($response_make_pda_order_ref->{error}){
+            return $self->print_warning($response_make_pda_order_ref->{error_description});
 	}
-	elsif ($response_make_campus_order_ref->{successful}){
+	elsif ($response_make_pda_order_ref->{successful}){
 	    # TT-Data erzeugen
 	    my $ttdata={
-		database      => $database,
-		unit          => $unit,
-		label         => $label,
-		campus_order  => $response_make_campus_order_ref,
+		database   => $database,
+		pda_order  => $response_make_pda_order_ref,
 	    };
 	    
-	    return $self->print_page($config->{tt_users_circulations_make_campus_order_tname},$ttdata);
+	    return $self->print_page($config->{tt_users_circulations_make_pda_order_tname},$ttdata);
 	    
 	}		
     }
@@ -311,7 +217,7 @@ sub get_input_definition {
     my $self=shift;
     
     return {
-        database => {
+        title => {
             default  => '',
             encoding => 'utf8',
             type     => 'scalar',
@@ -321,82 +227,27 @@ sub get_input_definition {
             encoding => 'utf8',
             type     => 'scalar',
         },
-        title => {
+        database => {
             default  => '',
             encoding => 'utf8',
             type     => 'scalar',
         },
-        label => {
+        author => {
             default  => '',
             encoding => 'utf8',
             type     => 'scalar',
         },
-        unit_desc => {
+        corporation => {
             default  => '',
             encoding => 'utf8',
             type     => 'scalar',
         },
-        email => {
-            default  => '',
-            encoding => 'utf8',
-            type     => 'scalar',
-        },
-        unit => {
+        publisher => {
             default  => 0,
             encoding => 'utf8',
             type     => 'scalar',
         },
-        receipt => {
-            default  => '',
-            encoding => 'utf8',
-            type     => 'scalar',
-        },
-        remark => {
-            default  => '',
-            encoding => 'utf8',
-            type     => 'scalar',
-        },
-        period => {
-            default  => '',
-            encoding => 'utf8',
-            type     => 'scalar',
-        },
-        source => {
-            default  => '',
-            encoding => 'utf8',
-            type     => 'scalar',
-        },
-        articleauthor => {
-            default  => '',
-            encoding => 'utf8',
-            type     => 'scalar',
-        },
-        articletitle => {
-            default  => '',
-            encoding => 'utf8',
-            type     => 'scalar',
-        },
-        volume => {
-            default  => '',
-            encoding => 'utf8',
-            type     => 'scalar',
-        },
-        issue => {
-            default  => '',
-            encoding => 'utf8',
-            type     => 'scalar',
-        },
-        pages => {
-            default  => '',
-            encoding => 'utf8',
-            type     => 'scalar',
-        },
         year => {
-            default  => '',
-            encoding => 'utf8',
-            type     => 'scalar',
-        },
-        realname => {
             default  => '',
             encoding => 'utf8',
             type     => 'scalar',
@@ -406,22 +257,22 @@ sub get_input_definition {
             encoding => 'utf8',
             type     => 'scalar',
         },
-        issn => {
+        price => {
             default  => '',
             encoding => 'utf8',
             type     => 'scalar',
         },
-        numbering => {
+        classification => {
             default  => '',
             encoding => 'utf8',
             type     => 'scalar',
         },
-        domain => {
+        reservation => {
             default  => '',
             encoding => 'utf8',
             type     => 'scalar',
         },
-        subdomain => {
+        receipt => {
             default  => '',
             encoding => 'utf8',
             type     => 'scalar',
@@ -439,14 +290,11 @@ __END__
 
 =head1 NAME
 
-OpenBib::Circulation - Benutzerkonto
+OpenBib::Handler::PSGI::Users::Circulation::PdaOrders - Bestellungen im Buchhandel via PDA
 
 =head1 DESCRIPTION
 
-Das mod_perl-Modul OpenBib::UserPrefs bietet dem Benutzer des 
-Suchportals einen Einblick in das jeweilige Benutzerkonto und gibt
-eine Aufstellung der ausgeliehenen, vorgemerkten sowie ueberzogenen
-Medien.
+Mit diesem Handler werden Bestellungen im Buchhandel via PDA ermoeglicht.
 
 =head1 AUTHOR
 

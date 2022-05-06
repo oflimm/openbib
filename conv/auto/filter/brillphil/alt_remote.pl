@@ -48,8 +48,8 @@ my $pool          = $ARGV[0];
 my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 
 my $filename      = $dbinfo->titlefile;
-system("cd $pooldir/$pool ; rm meta.* ");
+system("cd $pooldir/$pool ; rm meta.* final-pool.mrc ");
 print "### $pool: Heilen der Daten mit yaz-marcdump $filename\n";
-system("cd $pooldir/$pool ; /usr/bin/yaz-marcdump -o marc  -t utf8 $filename > ${filename}.tmp ; mv -f ${filename}.tmp $filename");
+system("cd $pooldir/$pool ; /usr/bin/yaz-marcdump -o marc  $filename | uconv -x any-nfd > final-pool.mrc");
 print "### $pool: Konvertierung von $filename\n";
-system("cd $pooldir/$pool; $marc2metaexe --database=$pool --inputfile=$filename ; gzip meta.*");
+system("cd $pooldir/$pool; $marc2metaexe --database=$pool --format='MARC21' --inputfile=final-pool.mrc ; gzip meta.*");

@@ -13,6 +13,7 @@ FOREACH database IN searchprofile_databases ;
          id                = database
          description       = dbinfo.get('dbnames').${database}.full
          description_short = dbinfo.get('dbnames').${database}.short
+         schema            = dbinfo.get('schema').${database}
          url               = dbinfo.get('urls').${database}                          
       };
 

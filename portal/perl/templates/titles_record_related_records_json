@@ -24,6 +24,7 @@ FOREACH related_record IN related_records.sort({order = 'asc', type = 'title'}).
              id                = thisdatabase
              description       = dbinfo.get('dbnames').${thisdatabase}.full
              description_short = dbinfo.get('dbnames').${thisdatabase}.short
+             schema            = dbinfo.get('schema').${record.database}
              url               = dbinfo.get('urls').${thisdatabase}                          
       }
       fields = item      
@@ -53,7 +54,7 @@ metainformation = {
 json_output = {
     link = {
         rel = 'self'
-        href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${database}/${config.get('titles_loc')}/id/${titleid}/related_records.json?${cgiapp.to_cgi_querystring}"
+        href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${database}/${config.get('titles_loc')}/id/${record.get_encoded_id}/related_records.json?${cgiapp.to_cgi_querystring}"
     }
 
     meta    = metainformation

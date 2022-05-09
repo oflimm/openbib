@@ -12,6 +12,7 @@ FOREACH item IN config.get_viewdbs(viewinfo.viewname).sort ;
           dbname = item
           description       = dbinfo.get('dbnames').${item}.full
           description_short = dbinfo.get('dbnames').${item}.short
+          schema = dbinfo.get('schema').${item}
 });
 END ;
 

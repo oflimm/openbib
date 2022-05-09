@@ -186,6 +186,12 @@ __PACKAGE__->table("databaseinfo");
   is_foreign_key: 1
   is_nullable: 1
 
+=head2 schema
+
+  data_type: 'text'
+  default_value: (empty string)
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -256,6 +262,8 @@ __PACKAGE__->add_columns(
   { data_type => "bigint", default_value => 0, is_nullable => 1 },
   "parentdbid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
+  "schema",
+  { data_type => "text", default_value => "", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -447,8 +455,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-04-05 08:40:55
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:JlSwxvSz4rU3OodZQF3rhw
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-05-09 08:22:46
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:eaXqymP/9TvkILakvisZXQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

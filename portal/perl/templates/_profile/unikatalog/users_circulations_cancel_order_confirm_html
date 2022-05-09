@@ -127,7 +127,7 @@
 
 %]
 
-[% USE dumper;dumper.dump(userinfo) %]
+[%# USE dumper;dumper.dump(userinfo) %]
 <legend class="mt-2">[% msg.maketext("Weitere Angaben zur Stornierung") %]</legend>
 
 <div class="form-floating mb-3">

@@ -16,6 +16,7 @@ CREATE TABLE databaseinfo (
  description TEXT,
  shortdesc   TEXT,
  system      TEXT, 
+ schema      TEXT, 
  dbname      TEXT,
  sigel       TEXT,
  url         TEXT,

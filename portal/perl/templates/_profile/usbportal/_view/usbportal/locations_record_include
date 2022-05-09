@@ -5254,6 +5254,8 @@ no_journals = {
 
 IF NOT no_journals.exists("${sigel}") ;
    locationinfo.fields.${"Zeitschriften"} = [ { content = "Zeitschriftenliste dieser Bibliothek als <a href=\"http://unikatalog.ub.uni-koeln.de/zeitschriftenlisten/zeitschriften-${sigel}-all.pdf\">e-Book</a>" } ];
+ELSIF sigel == '141';
+   locationinfo.fields.${"Zeitschriften"} = [ { content = "Zeitschriftenliste dieser Bibliothek als <a href=\"http://unikatalog.ub.uni-koeln.de/zeitschriftenlisten/zeitschriften-587-all.pdf\">e-Book</a>" } ];
 END ;
 
 IF sigel != 'ARTES' ;

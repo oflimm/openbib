@@ -18,6 +18,7 @@
 <tr><th>[% msg.maketext("Beschreibung") %]</th><td>[% databaseinfo.description %]</td></tr>
 <tr><th>[% msg.maketext("Kurzbeschreibung") %]</th><td>[% databaseinfo.shortdesc %]</td></tr>
 <tr><th>[% msg.maketext("System") %]</th><td>[% databaseinfo.system %]</td></tr>
+<tr><th>[% msg.maketext("Metadaten Schema") %]</th><td>[% databaseinfo.schema %]</td></tr>
 <tr><th>[% msg.maketext("Sigel") %]</th><td>[% databaseinfo.sigel %]</td></tr>
 <tr><th>[% msg.maketext("URL") %]</th><td>[% databaseinfo.url %]</td></tr>
 <tr><th>[% msg.maketext("Bibliotheksinformationen statt URL") %]</th><td>[%- IF databaseinfo.use_libinfo == 1 -%][% msg.maketext("Ja") %][% END %][%- IF databaseinfo.use_libinfo == 0 -%][% msg.maketext("Nein") %][% END %]</td></tr>

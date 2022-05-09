@@ -37,7 +37,7 @@ title:
   'metadata/oai_dc:dc/dc:language': '0516'
   'metadata/oai_dc:dc/dc:source': '0508'
   'metadata/oai_dc:dc/dc:date': '0425'
-  "metadata/oai_dc:dc/dc:relation[starts-with(.,'http')]": '0662'
+  "metadata/oai_dc:dc/dc:identifier[starts-with(.,'http')]": '0662'
 
 defaultmediatype: 'Digital'
 

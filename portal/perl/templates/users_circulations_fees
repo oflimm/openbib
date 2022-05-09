@@ -1,6 +1,6 @@
 [%- IF representation == '' || representation == 'html' ;
     layout_param = {
-     'page_title' = 'Überzogene Medien / Gebühren'
+     'page_title' = 'Gebühren'
 
       'main_template' = 'users_circulations_fees_html'
       'sidebar_template' = 'users_navigation'
@@ -18,7 +18,7 @@
 	     url  = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/preferences.html?l=${lang}"
 	  },
 	  {
-	     desc = msg.maketext('Überzogene Medien - Gebühren')
+	     desc = msg.maketext('Gebühren')
 	     url  = '#'
 	     current = 1
 	  }

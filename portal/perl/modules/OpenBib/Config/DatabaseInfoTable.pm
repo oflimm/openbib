@@ -106,8 +106,8 @@ sub load {
     my $dbinfos = $self->get_schema->resultset('Databaseinfo')->search_rs(
         undef,
         {
-            select => ['me.dbname','me.description','me.shortdesc','me.sigel','me.url','locationid.identifier','locationid.type'],
-            as     => ['thisdbname','thisdescription','thisshortdesc','thissigel','thisurl','thislocationid','thislocationtype'],
+            select => ['me.dbname','me.description','me.shortdesc','me.sigel','me.url','me.schema','locationid.identifier','locationid.type'],
+            as     => ['thisdbname','thisdescription','thisshortdesc','thissigel','thisurl','thisschema','thislocationid','thislocationtype'],
             join   => ['locationid'],
             result_class => 'DBIx::Class::ResultClass::HashRefInflator',
         }
@@ -119,6 +119,7 @@ sub load {
         my $dbname       = $dbinfo->{thisdbname};
         my $sigel        = $dbinfo->{thissigel}       || '';
         my $url          = $dbinfo->{thisurl}         || '';
+        my $schema       = $dbinfo->{thisschema}      || '';
         my $locationid   = $dbinfo->{thislocationid};
         my $locationtype = $dbinfo->{thislocationtype};
         
@@ -149,8 +150,16 @@ sub load {
             short => $shortdesc,
         };
 
+        #####################################################################
+        ## Wandlungstabelle  Name SQL-Datenbank <-> URL
+	
         $self->{dbinfo}{urls}{$dbname}        = $url;
 
+        #####################################################################
+        ## Wandlungstabelle  Name SQL-Datenbank <-> Metadaten Schema
+	
+        $self->{dbinfo}{schema}{$dbname}      = $schema;
+	
         if (defined $locationtype && defined $locationid){
             $self->{dbinfo}{locationid}{$dbname}  = $locationid;
         }

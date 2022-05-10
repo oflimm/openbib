@@ -3319,7 +3319,8 @@ sub to_abstract_fields_marc21 {
     #   source_year    : Quelle Jahr
     #
     # pages     : Kollation
-    # series    : Gesamttitelangabe 0451
+    # series    : Gesamttitel
+    # series_volume : Zaehlung Gesamttitel
     # edition   : Auflage
     # type      : Medientyp (article,book,periodical)
 
@@ -3407,8 +3408,17 @@ sub to_abstract_fields_marc21 {
     $abstract_fields_ref->{language} = (defined $field_ref->{T0041} && defined $field_ref->{T0041}[0]{a})?$field_ref->{T0041}[0]{a}:
 	(defined $field_ref->{T0516})?$field_ref->{T0516}[0]{content}:'';
 
-    # Series
-    $abstract_fields_ref->{series} = (exists $field_ref->{T0490} && defined $field_ref->{T0490}[0]{a})?$field_ref->{T0490}[0]{a}:'';
+    # (1st) Series
+    foreach my $category (qw/T0490 T0440/){
+        next if (!defined $field_ref->{$category});
+        foreach my $part_ref (@{$field_ref->{$category}}){
+	    $abstract_fields_ref->{series} = $part_ref->{a} if (defined $part_ref->{a});
+	    $abstract_fields_ref->{series_volume} = $part_ref->{v} if (defined $part_ref->{v});
+
+	    last if (defined $abstract_fields_ref->{series});
+	}
+	last if (defined $abstract_fields_ref->{series});
+    }
     
     # Mediatyp
     if ($abstract_fields_ref->{issn}){

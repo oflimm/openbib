@@ -123,6 +123,10 @@ sub new {
     
     $self->{client}        = $ua;
 
+    my $dbinfotable        = OpenBib::Config::DatabaseInfoTable->new;
+
+    $self->{dbinfo}        = $dbinfotable->{dbinfo};
+    
     if (defined $database){
         $self->{database} = $database;
     }
@@ -1396,7 +1400,6 @@ sub load_circulation {
     }
 
     my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
-    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->new;
 
     if ($logger->is_debug){
         $logger->debug(YAML::Dump($circinfotable->{circinfo}));
@@ -2976,6 +2979,34 @@ sub to_apa_citation {
 sub to_abstract_fields {
     my ($self) = @_;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $database = $self->{database};
+
+    my $schema   = $self->{dbinfo}{schema}{$database} || '';
+
+    if ($schema eq "mab2"){
+	$logger->debug("Abstract fields from mab2");
+	return $self->to_abstract_fields_mab2;
+    }
+    elsif ($schema eq "marc21"){
+	$logger->debug("Abstract fields from marc21");	
+	return $self->to_abstract_fields_marc21;
+    }
+
+    $logger->debug("Abstract fields: No schema available (DB: $database, Schema: $schema)");
+    
+    # Otherwise no data
+    return {};
+}
+
+sub to_abstract_fields_mab2 {
+    my ($self) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
     my $abstract_fields_ref = {};
 
     # Definition sprechender Feldnamen mit deren Inhalten
@@ -3248,6 +3279,244 @@ sub to_abstract_fields {
     $abstract_fields_ref->{edition} = (exists $self->{_fields}->{T0403})?$self->{_fields}->{T0403}[0]{content}:'';
         
 
+    
+    return $abstract_fields_ref;
+}
+
+sub to_abstract_fields_marc21 {
+    my ($self) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $abstract_fields_ref = {};
+
+    # Definition sprechender Feldnamen mit deren Inhalten
+    #
+    # authors[] : Verfasser 0100/0101
+    # editors[] : Herausgeber anhand Supplement
+    # corp[]    : Koerperschaften 0200
+    # creator[] : Urheber 0201
+    # keywords[]: Schlagworte
+    # edition   : Auflage
+    # publisher : Verlag
+    # place     : Verlagsort
+    # title     : Titel
+    # titlesup  : Zusatz zum Sachtitel
+    # year      : Erscheinungsjahr
+    # isbn      : ISBN
+    # issn      : ISSN
+    # language  : Sprache
+    # urls[]    : URLs
+    # abstract  : Abstrakt
+    #
+    # source    : Quelle Gesamtangabe
+    #
+    # aufgesplittet in:
+    #   source_pages   : Quelle Seitenangabe
+    #   source_journal : Quelle Zeitschriftentitel
+    #   source_volume  : Quelle Bandnr
+    #   source_year    : Quelle Jahr
+    #
+    # pages     : Kollation
+    # series    : Gesamttitelangabe 0451
+    # edition   : Auflage
+    # type      : Medientyp (article,book,periodical)
+
+    my $field_ref = $self->to_custom_field_scheme_1;
+    
+    # Verfasser und Herausgeber konstruieren
+    my $authors_ref=[];
+    my $editors_ref=[];
+    foreach my $category (qw/T0100 T0700 T0900/){
+        next if (!defined $field_ref->{$category});
+        foreach my $part_ref (@{$field_ref->{$category}}){
+            if (defined $part_ref->{e} && $part_ref->{e} =~ /Hrsg/){
+                push @$editors_ref, $part_ref->{a} if (defined $part_ref->{a});
+            }
+            else{
+                push @$authors_ref, $part_ref->{a} if (defined $part_ref->{a});
+            }
+        }
+    }
+
+    $abstract_fields_ref->{authors} = $authors_ref;
+    $abstract_fields_ref->{editors} = $editors_ref;
+
+    # Urheber und Koerperschaften konstruieren
+    my $corp_ref=[];
+    my $creator_ref=[];
+    foreach my $category (qw/T0110 T0710/){
+        next if (!defined $field_ref->{$category});
+        foreach my $part_ref (@{$field_ref->{$category}}){
+	    push @$corp_ref, $part_ref->{a} if (defined $part_ref->{a});
+        }
+    }
+
+    foreach my $category (qw/T0910/){
+        next if (!defined $field_ref->{$category});
+        foreach my $part_ref (@{$field_ref->{$category}}){
+	    push @$creator_ref, $part_ref->{a} if (defined $part_ref->{a});
+        }
+    }
+
+    $abstract_fields_ref->{corp} = $corp_ref;
+    $abstract_fields_ref->{creator} = $creator_ref;
+    
+    # Schlagworte
+    my $keywords_ref=[];
+    foreach my $category (qw/T0600 T0610 T0648 T0650 T0651 T0655 T0688/){
+        next if (!defined $field_ref->{$category});
+        foreach my $part_ref (@{$field_ref->{$category}}){
+            push @$keywords_ref, $part_ref->{a} if (defined $part_ref->{a});
+        }
+    }
+
+    $abstract_fields_ref->{keywords} = $keywords_ref;
+    
+    # Auflage
+    $abstract_fields_ref->{edition} = (defined $field_ref->{T0250}  && defined $field_ref->{T0250}[0]{a})?$field_ref->{T0250}[0]{a}:'';
+
+    # Verleger
+    $abstract_fields_ref->{publisher} = (defined $field_ref->{T0260} && defined $field_ref->{T0260}[0]{b})?$field_ref->{T0260}[0]{b}:'';
+
+    # Verlagsort
+    $abstract_fields_ref->{place} = (defined $field_ref->{T0260} && defined $field_ref->{T0260}[0]{a})?$field_ref->{T0260}[0]{a}:'';
+
+    # Titel
+    $abstract_fields_ref->{title} = (defined $field_ref->{T0245} && defined $field_ref->{T0245}[0]{a})?$field_ref->{T0245}[0]{a}:'';
+
+    # Zusatz zum Titel
+    $abstract_fields_ref->{titlesup} = (defined $field_ref->{T0245} && defined $field_ref->{T0245}[0]{b})?$field_ref->{T0245}[0]{b}:'';
+#    Folgende Erweiterung um titlesup ist nuetzlich, laeuft aber der
+#    Bibkey-Bildung entgegen
+#    if ($title && $titlesup){
+#        $title = "$title : $titlesup";
+#    }
+
+    # Jahr
+    $abstract_fields_ref->{year} = (defined $field_ref->{T0260} && defined $field_ref->{T0260}[0]{c})?$field_ref->{T0260}[0]{c}:(defined $field_ref->{T0264} && defined $field_ref->{T0264}[0]{c})?$field_ref->{T0264}[0]{c}:'';
+
+    # ISBN
+    $abstract_fields_ref->{isbn} = (defined $field_ref->{T0020} && defined $field_ref->{T0020}[0]{a})?$field_ref->{T0020}[0]{a}:'';
+
+    # ISSN
+    $abstract_fields_ref->{issn} = (defined $field_ref->{T0022} && defined $field_ref->{T0022}[0]{a})?$field_ref->{T0022}[0]{a}:'';
+
+    # Sprache
+    $abstract_fields_ref->{language} = (defined $field_ref->{T0041} && defined $field_ref->{T0041}[0]{a})?$field_ref->{T0041}[0]{a}:
+	(defined $field_ref->{T0516})?$field_ref->{T0516}[0]{content}:'';
+
+    # Series
+    $abstract_fields_ref->{series} = (exists $field_ref->{T0490} && defined $field_ref->{T0490}[0]{a})?$field_ref->{T0490}[0]{a}:'';
+    
+    # Mediatyp
+    if ($abstract_fields_ref->{issn}){
+	if (@{$abstract_fields_ref->{authors}}){
+	    $abstract_fields_ref->{type} = 'article';
+	}
+	elsif ($abstract_fields_ref->{title}){
+	    if ($abstract_fields_ref->{source}){
+		$abstract_fields_ref->{type} = 'article';
+	    }
+	    else {
+		$abstract_fields_ref->{type} = 'periodical';
+	    }
+	}
+    }
+    elsif ($abstract_fields_ref->{isbn}){
+	if ($abstract_fields_ref->{title}){
+	    $abstract_fields_ref->{type} = 'book';
+	}
+    }
+    elsif ($abstract_fields_ref->{series}){
+	if ($abstract_fields_ref->{title}){
+	    $abstract_fields_ref->{type} = 'article';
+	}
+	else {
+	    $abstract_fields_ref->{type} = 'magazine';
+	}
+    }
+    elsif ($abstract_fields_ref->{title}){
+	$abstract_fields_ref->{type} = 'book';
+    }
+
+    # Zugriffsart (online=Digital / E-Resource)
+    $abstract_fields_ref->{availability} = (exists $field_ref->{T4400})?$field_ref->{T4400}[0]{content} :'';
+
+    # Todo: Ab hier noch zu mappen!!! 20220509
+	
+    # URL
+    my $urls_ref=[];
+    foreach my $category (qw/T0856/){
+        next if (!defined $field_ref->{$category});
+        foreach my $part_ref (@{$field_ref->{$category}}){           	    
+	    my $thisdesc = (defined $part_ref->{'3'})?$part_ref->{'3'}:(defined $part_ref->{z})?$part_ref->{z}:"";
+
+	    if ($thisdesc =~m/DOI/){
+		$abstract_fields_ref->{onlineurl} = $part_ref->{u};
+		$abstract_fields_ref->{availability} = "online";
+	    }
+	    elsif ($thisdesc =~m/Volltext/){
+		$abstract_fields_ref->{onlineurl} = $part_ref->{u};
+		$abstract_fields_ref->{availability} = "online";
+	    }
+	    
+	    push @$urls_ref, {
+		url => $part_ref->{content},
+		desc => $thisdesc,
+	    };
+        }
+    }
+
+    # Only one URL, so this must be digital...
+    if (@$urls_ref == 1){
+	$abstract_fields_ref->{onlineurl} = $urls_ref->[0]{url};	
+    }
+
+    $abstract_fields_ref->{urls} = $urls_ref;
+
+    # Abstract
+    $abstract_fields_ref->{abstract} = (defined $field_ref->{T0520} && defined $field_ref->{T0520}[0]{a})?$field_ref->{T0520}[0]{a}:'';
+
+    # Source
+
+
+    my $article_source = ($abstract_fields_ref->{source})?$abstract_fields_ref->{source}:$abstract_fields_ref->{series};
+
+    if (defined $field_ref->{T0773}){
+	foreach my $part_ref (@{$field_ref->{T0773}}){
+	    $abstract_fields_ref->{source_journal} = $part_ref->{t} if (defined $part_ref->{t});
+	    if (defined $part_ref->{g}){
+		($abstract_fields_ref->{source_volume}) = $part_ref->{g} =~m/(Vol\. \d+)/;
+		($abstract_fields_ref->{source_pages}) = $part_ref->{g} =~m/(p\. \d+-\d+)/; 
+		($abstract_fields_ref->{source_issue}) = $part_ref->{g} =~m/(no\. \d+)/; 
+	    }
+	    
+	    if (defined $part_ref->{d} && $part_ref->{d} =~m/\d\d\d\d/){
+		($abstract_fields_ref->{source_year}) = $part_ref->{d} =~m/(\d\d\d\d)/;
+	    }
+	}
+	if (defined $field_ref->{T0773}[0]{t}){
+	    $abstract_fields_ref->{source} = $field_ref->{T0773}[0]{t};
+	    if (defined $field_ref->{T0773}[0]{g}){
+		$abstract_fields_ref->{source}.= ": ".$field_ref->{T0773}[0]{g};
+	    }
+	    if (defined $field_ref->{T0773}[0]{d}){
+		$abstract_fields_ref->{source}.= " (".$field_ref->{T0773}[0]{d}.")";
+	    }
+	}
+    }
+
+    # Pages
+    $abstract_fields_ref->{pages} = (exists $field_ref->{T0300})?$field_ref->{T0300}[0]{a}:'';
+
+    # Edition
+    $abstract_fields_ref->{edition} = (exists $field_ref->{T0250})?$field_ref->{T0250}[0]{a}:'';
+        
+    if ($logger->is_debug){
+	$logger->debug(YAML::Dump($abstract_fields_ref));
+    }
     
     return $abstract_fields_ref;
 }

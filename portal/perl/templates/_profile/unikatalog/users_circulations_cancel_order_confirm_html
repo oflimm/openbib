@@ -142,6 +142,7 @@
       <label for="username">[% msg.maketext("Name") %]:</label>
 </div>
 
+<!--
 <div class="form-floating mb-3">
       <select name="remark" id="remark" class="form-control" size="1" style="width:15em;">
         <option value="">[ Bitte wählen Sie aus ]</option>
@@ -156,6 +157,7 @@
      </select>
       <label class="form-floating mb-3-text" for="remark">[% msg.maketext("Stornogrund") %]:</label>
 </div>
+-->
 
 <p/>
 

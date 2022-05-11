@@ -82,6 +82,52 @@
 
 <div class="container pb-5">
 
+<div class="row justify-content-end">
+
+<div class="col-md-3 pl-1 pr-1 pb-2">
+<div class="card mt-5 mb-0 h-100">
+<div class="card-header pb-2 text-center ob-bg-secondary"><i class="fas fa-info fa-2x"></i></div>
+<div class="card-body p-0 ob-bg-secondary">
+<h5 class="card-title p-3 mt-4 text-center">[% msg.maketext("Zur Entstehung des Verzeichnisses") %]</h5>
+<a class="btn btn-primary ml-3" href="[% path_prefix %]/[% config.get('info_loc') %]/editorial.html?l=[% lang %]">Mehr</a></div>
+</div>
+</div>
+<div class="col-md-3 pl-1 pr-1 pb-2">
+<div class="card mt-5 mb-0 h-100">
+<div class="card-header pb-2 text-center ob-bg-secondary"><i class="fas fa-info fa-2x"></i></div>
+<div class="card-body p-0 ob-bg-secondary">
+<h5 class="card-title p-3 mt-4 text-center">[% msg.maketext("Informationen zur Nutzung") %]</h5>
+<!--<p class="card-text">Vita, Hinweise, Quellen</p> -->
+<a class="btn btn-primary ml-3" href="[% path_prefix %]/[% config.get('info_loc') %]/verzeichnis.html?l=[% lang %]">Mehr</a></div>
+</div>
+</div>
+
+<div class="col-md-3 pl-1 pr-1 pb-2">
+<div class="card mt-5 mb-0 h-100">
+<div class="card-header pb-2 text-center ob-bg-tertiary"><i class="fas fa-list-ul fa-2x"></i></div>
+<div class="card-body p-0 ob-bg-tertiary">
+<h5 class="card-title p-3 mt-4 text-center">[% msg.maketext("Gesamtverzeichnis Briefe von und an Friedrich Gentz") %]</h5>
+<!-- <p class="card-text">Ansprechpartner, "Team Gentz"</p> -->
+<a class="btn btn-primary ml-3" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/[% config.get('titles_loc') %].html?l=[% lang %];facets=mediatype,year,provenance,person,corporatebody,language,custom1,custom2,custom3,custom4,custom5">Mehr</a></div>
+</div>
+</div>
+
+<div class="col-md-3 pl-1 pr-1 pb-2">
+<div class="card mt-5 mb-0 h-100">
+<div class="card-header pb-2 text-center ob-bg-secondary"><i class="fab fa-hubspot fa-2x"></i></div>
+<div class="card-body p-0 ob-bg-secondary">
+<h5 class="card-title p-3 mt-4 text-center">[% msg.maketext("Korrespondenznetzwerke um 1800: Zur Bedeutung des Friedrich Gentz") %]</h5>
+<!-- <p class="card-text">Ansprechpartner, "Team Gentz"</p> -->
+<a class="btn btn-primary ml-3" href="[% path_prefix %]/[% config.get('info_loc') %]/netzwerk.html?l=[% lang %]">Mehr</a></div>
+</div>
+</div>
+
+
+</div>
+</div>
+
+<div class="container mt-5">
+
 [% config.get_templatetext('home',view,lang) %]
 
 </div><!-- End: container -->

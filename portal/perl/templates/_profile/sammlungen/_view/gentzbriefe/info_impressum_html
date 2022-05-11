@@ -12,30 +12,5 @@
 #######################################################################
 -%]
 
-<h3>[% msg.maketext("Impressum") %]</h3>
+[% config.get_templatetext('info_impressum',view,lang) %]
 
-
-<h4>Inhaltlich verantwortlich</h4>
-
-<p>
-Lehrstuhl für die Geschichte der Frühen Neuzeit<br/>
-Universität zu Köln<br/>
-Historisches Institut<br/>
-Albertus-Magnus-Platz<br/>
-50923 Köln<br/>
-Kontakt: fruehe-neuzeit[at]uni-koeln.de<br/>
-Tel.: +49 (0)221 470-5760<br/>
-</p>
-
-<h4>Datenhaltung, technischer Betrieb und Programmierung</h4>
-
-<p>
-Dezernat 1: IT-Dienste<br/>
-Universitäts- und Stadtbibliothek<br/>
-Universitätsstraße 33<br/>
-50931 Köln<br/>
-</p>
-
-<p>
-Der Webauftritt von Gentz digital: Verzeichnis der Briefe von und an Friedrich Gentz (1764-1832) unterliegt dem <a href="https://www.ub.uni-koeln.de/res/impressum/index_ger.html" target="_blank">Impressum der Universitäts- und Stadtbibliothek Köln.</a>
-</p>

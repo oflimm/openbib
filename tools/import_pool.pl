@@ -117,11 +117,17 @@ system("/usr/bin/createdb -U $config->{'dbuser'} -E UTF-8 -O $config->{'dbuser'}
 
 system("cd $tmpdir ; $pg_restore -U $config->{'dbuser'} -d $database pool.dump");
 
-if (!-d "$config->{'base_dir'}/ft/xapian/index/$database"){
-    mkdir "$config->{'base_dir'}/ft/xapian/index/$database";
+if (-d "$config->{'base_dir'}/ft/xapian/index/$database"){
+    unlink "$config->{'base_dir'}/ft/xapian/index/$database/*";
+    rmdir "$config->{'base_dir'}/ft/xapian/index/$database";
 }
 
-system("cd $config->{'base_dir'}/ft/xapian/index/$database ; tar xzf $tmpdir/index.tgz");
+if (-d "$config->{'base_dir'}/ft/xapian/index/${database}_authority"){
+    unlink "$config->{'base_dir'}/ft/xapian/index/${database}_authority/*";
+    rmdir "$config->{'base_dir'}/ft/xapian/index/${database}_authority";
+}
+
+system("cd $config->{'base_dir'}/ft/xapian/index/ ; tar xzf $tmpdir/index.tgz");
 
 sub print_help {
     print << "ENDHELP";

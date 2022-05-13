@@ -69,19 +69,9 @@
      title = normdata.${"T0310"}.first.content ;
   END ;
 
-  barcode = record.id;
-  
-  IF thisholding.${"X1203"}.content;
-    barcode = thisholding.${"X1203"}.content ;
-  END;
-
-  qrcode_title = uri_escape(title);
-  
-#  qrcode_url = "${path_prefix}/${config.get('connector_qrcode_loc')}?text=${qrcode_title} :: ${uri_escape(thisholding.${"X4000"}.content.short)} :: ${uri_escape(thisholding.${"X0016"}.content)} :: ${uri_escape(thisholding.${"X0014"}.content)}";
-
 -%]
 <td><a href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% thisholding.${"X4000"}.content.short | uri %] :: [% thisholding.${"X0016"}.content | uri %] :: [% thisholding.${"X0014"}.content | uri %]" title="Titel :: Bibliothek :: Standort :: Signatur" data-bs-toggle="modal" data-bs-target="#qrcodeModal" data-formattitle="QR-Code" data-formaturl="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% thisholding.${"X4000"}.content.short | uri %] :: [% thisholding.${"X0016"}.content | uri %] :: [% thisholding.${"X0014"}.content | uri %]"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" /></a></td>
-[%   IF have_standort %]<td>[% thisholding.${"X0016"}.content %]</td>[% END %]<td><strong><span class="ob-mark">[% thisholding.${"X0014"}.content %]</span></strong>[% IF barcode %]<br/>(Barcode: [% barcode %])[% END %]</td>[% IF have_bestandsverlauf %]<td>[% IF thisholding.${"X1200"} %][% thisholding.${"X1200"}.content %] [% END %][% thisholding.${"X1204"}.content %]</td>[% END %]</tr>
+[%   IF have_standort %]<td>[% thisholding.${"X0016"}.content %]</td>[% END %]<td><strong><span class="ob-mark">[% thisholding.${"X0014"}.content %]</span></strong></td>[% IF have_bestandsverlauf %]<td>[% IF thisholding.${"X1200"} %][% thisholding.${"X1200"}.content %] [% END %][% thisholding.${"X1204"}.content %][% IF thisholding.${"X1203"} %] ([% thisholding.${"X1203"}.content %])[% END %]</td>[% END %]</tr>
 [% END %]
 </tbody>
 </table>

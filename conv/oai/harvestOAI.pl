@@ -180,6 +180,10 @@ while( my $rec = next_record($response) ) {
     #     next;
     # }
 
+    if ($rec->is_deleted){
+	next;
+    }
+    
     print OUT "<record>\n";
 
     eval {
@@ -188,17 +192,13 @@ while( my $rec = next_record($response) ) {
 
         print OUT " $header_string \n";
     };
-    if ($rec->is_deleted){
-        print OUT " <is_deleted>1</is_deleted>\n";
-    }
-    else {
-        eval {
-            my $metadata_string = $rec->metadata->dom->toString;
-            $metadata_string=~s/^<\?xml.*?>//;
-            print OUT $metadata_string,"\n";
-        };
-    }
 
+    eval {
+	my $metadata_string = $rec->metadata->dom->toString;
+	$metadata_string=~s/^<\?xml.*?>//;
+	print OUT $metadata_string,"\n";
+    };
+    
     eval {
 	my $about_string = $rec->{about}[0]->dom->toString;
 	

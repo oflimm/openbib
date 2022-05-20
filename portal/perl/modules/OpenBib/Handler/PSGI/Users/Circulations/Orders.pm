@@ -297,8 +297,6 @@ sub delete_record {
     my $date            = ($query->param('date'           ))?$query->param('date'):undef;
     my $receipt         = ($query->param('receipt'        ))?$query->param('receipt'):undef;
     my $remark          = ($query->param('remark'         ))?$query->param('remark'):undef;
-    my $username_full   = ($query->param('username_full'  ))?$query->param('username_full'):undef;
-    my $email           = ($query->param('email'          ))?$query->param('email'):undef;
     
     $holdingid = uri_unescape($holdingid);
     
@@ -343,7 +341,16 @@ sub delete_record {
     my $authenticator = $session->get_authenticator;
 
     $logger->debug("Canceling order for $holdingid in unit $unit for $username");
-	
+    
+    my $userinfo_ref = $ils->get_userdata($username);
+
+    my $username_full = $userinfo_ref->{fullname} || 'Kein Name vorhanden';
+    my $email         = $userinfo_ref->{email};
+
+    if ($receipt && !$email){
+	return $self->print_warning($msg->maketext("Es existiert keine E-Mail-Addresse für eine Kopie der Stornierungs-Mail an Sie."));
+    }
+    
     my $response_cancel_order_ref = $ils->cancel_order({ title => $title, author => $author, holdingid => $holdingid, unit => $unit, unitname => $unitname, date => $date, username => $username, username_full => $username_full, email => $email, remark => $remark, receipt => $receipt });
     
     if ($logger->is_debug){
@@ -459,10 +466,13 @@ sub confirm_delete_record {
 
     my $database              = $sessionauthenticator;
 
+    my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
+    
     my $record = new OpenBib::Record::Title({ database => $database, id => $titleid });
+    
     $record->load_brief_record;
 
-    my $userinfo_ref = $user->get_info($user->{ID});
+    my $userinfo_ref = $ils->get_userdata($username);
     
     my $ttdata={
 	database  => $database,

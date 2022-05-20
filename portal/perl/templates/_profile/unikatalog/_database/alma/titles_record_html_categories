@@ -510,6 +510,21 @@ FOREACH field IN normdata;
            content_map.${'Zusammenfassung'}.push(content);
 	 END;
 
+    CASE "T0856";
+         content = thisfield.${'3'};
+	 url     = thisfield.${'u'};
+
+         IF NOT content ;
+	   content = url;
+	 END;
+	 
+	 content   = "<a href=\"${url}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,content)}</a>";         
+
+         IF NOT content_map.${'URL'} ;
+	    content_map.${'URL'} = [];
+	 END;
+         content_map.${'URL'}.push(content);
+
     CASE ;
          content   = highlightquery(searchquery,item.content);
          IF NOT content_map.${category} ;

@@ -401,6 +401,11 @@ sub get_input_definition {
             encoding => 'none',
             type     => 'scalar',
         },
+        schema => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
         dbname => {
             default  => '',
             encoding => 'none',

@@ -23,6 +23,7 @@
     active      = databaseinfo.active
     dbname      = databaseinfo.dbname
     system      = databaseinfo.system
+    schema      = databaseinfo.schema
     sigel       = databaseinfo.sigel
     url         = databaseinfo.url
   };

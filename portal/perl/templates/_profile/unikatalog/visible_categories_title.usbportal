@@ -95,7 +95,7 @@
                 'T0413', # msg.maketext("T0413") Drucker
                 'T0414', # msg.maketext("T0414") ?
                 'T0415', # msg.maketext("T0415") ?
-                'T0424', # msg.maketext("T0424") ErschJahr/Ansetzung
+                '#T0424', # msg.maketext("T0424") ErschJahr/Ansetzung
                 'T0440', # msg.maketext("T0440") ?
                 'T0441', # msg.maketext("T0441") ?
                 'T0442', # msg.maketext("T0442") ?

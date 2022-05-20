@@ -25,6 +25,7 @@
              id                = thisdatabase
              description       = dbinfo.get('dbnames').${thisdatabase}.full
              description_short = dbinfo.get('dbnames').${thisdatabase}.short
+             schema            = dbinfo.get('schema').${thisdatabase}
              url               = dbinfo.get('urls').${thisdatabase}                          
       }
       fields = item      

@@ -1708,6 +1708,9 @@ sub parse_valid_input {
 		
 		$input_params_ref->{$param} = $value;
             }
+	    elsif ($type eq "integer"){
+		$input_params_ref->{$param} = ($query->param($param) >= 0)?$query->param($param):$default;
+            }
             elsif ($type eq "bool"){
                 $input_params_ref->{$param} = ($query->param($param))?escape_html($query->param($param)):$default;
             }

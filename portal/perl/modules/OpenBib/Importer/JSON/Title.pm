@@ -715,7 +715,7 @@ sub process_mab {
                 my $mult            = $item_ref->{mult};
                 my $corporatebodyid = $item_ref->{id};
                 my $titleid    = $id;
-                my $supplement = "";
+                my $supplement = $item_ref->{supplement};
                 
                 #                 # Feld 1802 wird als 0200 behandelt
                 #                 if ($field eq "1802") {

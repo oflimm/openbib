@@ -27,7 +27,24 @@
 
 <p>[% msg.maketext("") %]</p>
 [% ELSIF uzk_online # Online Bestand, daher keine Bestellung, nur Hinweis %]
-xxx
+
+<p>[% msg.maketext(Der gewünschte Titel ist online verfügbar) %]:</p>
+
+[%-
+
+  online_ids = online_media.to_ids;
+  online_titleid = online_ids.first.id;
+  online_db = online_ids.first.database
+
+-%]
+
+[% IF online_titleid && online_db %]
+<a href="[% path_prefix%]/[% config.get('databases_loc') %]/id/[% online_db %]/[% config.get('titles_loc') %]/id/[% online_titleid %].html?l=[% lang %]"[% msg.maketext("E-Book im Volltext") %]
+[% ELSE %]
+[% msg.maketext("Es konnte kein Link zum Titel bestimmt werden.") %]
+[% END %]
+
+
 [% ELSE # Bestellung abgeschickt %]
 <div class="jumbotron mt-3">
 

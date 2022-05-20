@@ -6,7 +6,7 @@
 #
 #  Konverierung von MARC-Daten in das Meta-Format
 #
-#  Dieses File ist (C) 2009-2016 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2009-2022 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -42,6 +42,8 @@ use DBI;
 use MARC::Batch;
 use MARC::Charset 'marc8_to_utf8';
 use MARC::File::XML;
+use MARC::File::MARC21;
+use Unicode::Normalize 'normalize';
 use YAML::Syck;
 use JSON::XS qw(encode_json);
 use Log::Log4perl qw(get_logger :levels);
@@ -50,7 +52,7 @@ use OpenBib::Config;
 use OpenBib::Enrichment;
 use OpenBib::Conv::Common::Util;
 
-my ($inputfile,$configfile,$database,$use_milid,$globalencoding,$use_xml,$format,$loglevel);
+our ($inputfile,$configfile,$database,$use_milid,$globalencoding,$use_xml,$format,$loglevel);
 
 &GetOptions(
     "database=s"      => \$database,
@@ -1426,24 +1428,6 @@ close(HOLDING);
 
 close(DAT);
 
-sub konv {
-    my $content = shift;
-
-    $content=~s/\s*[.,:\/]\s*$//g;
-    $content=~s/&/&amp;/g;
-    $content=~s/</&lt;/g;
-    $content=~s/>/&gt;/g;
-    # Buchstabenersetzungen Grundbuchstabe plus Diaeresis
-    $content=~s/u\x{0308}/ü/g;
-    $content=~s/a\x{0308}/ä/g;
-    $content=~s/o\x{0308}/ö/g;
-    $content=~s/U\x{0308}/Ü/g;
-    $content=~s/A\x{0308}/Ä/g;
-    $content=~s/O\x{0308}/Ö/g;
-
-    return $content;
-}
-
 sub get_linkage_fields {
     my $arg_ref = shift;
 
@@ -1590,4 +1574,33 @@ sub safe_next {
     }
 
     return $record;
+}
+
+sub konv {
+    my $content = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Pre: $content");
+    
+    $content = decode_utf8($content) if ($globalencoding eq "UTF-8");
+
+#    $content=normalize('D',$content);
+
+#    $logger->debug("Pre Hex: ");
+    $content=~s/\s*[.,:\/]\s*$//g;
+    $content=~s/&/&amp;/g;
+    $content=~s/</&lt;/g;
+    $content=~s/>/&gt;/g;
+    # Buchstabenersetzungen Grundbuchstabe plus Diaeresis    
+    $content=~s/u\x{0308}/ü/g;
+    $content=~s/a\x{0308}/ä/g;
+    $content=~s/o\x{0308}/ö/g;
+    $content=~s/U\x{0308}/Ü/g;
+    $content=~s/A\x{0308}/Ä/g;
+    $content=~s/O\x{0308}/Ö/g;
+
+    $logger->debug("Post: $content");
+    return $content;
 }

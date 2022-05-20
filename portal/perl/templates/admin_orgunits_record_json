@@ -24,6 +24,7 @@ FOREACH db IN orgunitdbs ;
     id                = db
     description       = dbinfo.get('dbnames').${db}.full
     description_short = dbinfo.get('dbnames').${db}.short
+    schema            = dbinfo.get('schema').${db}
     url               = dbinfo.get('urls').${db}                          
   };
   databases.push(thisdatabase);

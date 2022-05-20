@@ -14,6 +14,7 @@ thisrecord = {
                 id                = record.database
                 description       = dbinfo.get('dbnames').${record.database}.full
                 description_short = dbinfo.get('dbnames').${record.database}.short
+                schema            = dbinfo.get('schema').${record.database}
                 url               = dbinfo.get('urls').${record.database}                          
            }
            fields      = record.get_fields(msg)

@@ -50,9 +50,9 @@
   publisher = pubplace.join(' : ');
   
   year      = fields.${"T0425"}.first.content;
-  IF fields.${"T0424"}.defined;
-    year      = fields.${"T0424"}.first.content;  
-  END;
+  # IF fields.${"T0424"}.defined;
+  #   year      = fields.${"T0424"}.first.content;  
+  # END;
 
   super = "";
   # 1. Ueberordnung?
@@ -99,11 +99,12 @@
 <div class="card-header">[% msg.maketext("ILIAS-Bestellung") %]</div>
 <div class="card-body">
 
- <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/iliasorders">
+ <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/ilias/[% config.get('circulations_loc') %]/id/iliasorders">
  
      <input type="hidden" name="unit_desc"   value="[% unit_desc |uri %]" />
      <input type="hidden" name="unit"        value="[% unit %]" />
      <input type="hidden" name="titleid"     value="[% titleid %]" />
+     <input type="hidden" name="database"    value="[% database %]" />
 
 <legend class="mt-2">[% msg.maketext("Titelangaben") %]</legend>
 

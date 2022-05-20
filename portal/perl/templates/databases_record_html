@@ -20,6 +20,7 @@
 <tr><td><b>[% msg.maketext("Beschreibung") %]</b></td><td>[% databaseinfo.description %]</td></tr>
 <tr><td><b>[% msg.maketext("Kurzbeschreibung") %]</b></td><td>[% databaseinfo.shortdesc %]</td></tr>
 <tr><td><b>[% msg.maketext("System") %]</b></td><td>[% databaseinfo.system %]</td></tr>
+<tr><td><b>[% msg.maketext("Metadaten Schema") %]</b></td><td>[% databaseinfo.schema %]</td></tr>
 <tr><td><b>[% msg.maketext("Sigel") %]</b></td><td>[% databaseinfo.sigel %]</td></tr>
 <tr><td><b>[% msg.maketext("URL") %]</b></td><td><a href="[% databaseinfo.url %]" target="_blank">[% databaseinfo.url %]</a></td></tr>
 [% IF databaseinfo.locationid.identifier %]

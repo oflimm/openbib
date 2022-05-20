@@ -691,6 +691,12 @@
      - json
      - include
    runmode: 'show'
+- # connector_openurl_loc: 
+   module: 'OpenBib::Handler::PSGI::Connector::OpenURL'
+   rule: '/portal/:view/connector/openurl'
+   runmode: 'show'
+   args:
+      disable_content_negotiation: 1
 # Legacy URI - Ab v2.4 kann jeder URL direkt gebookmarkt werden
 # Die Rueckwaertskompatabilitaet wird durch URL-Rewriting und 301er
 # Redirects direkt im Apache gewaehrleistet
@@ -3128,10 +3134,10 @@
      - rdf
    args:
      'restrict_db_to_view': 0
-- # users/circulations_loc:
-   module: 'OpenBib::Handler::PSGI::Users::Circulations'
-   rule: '/portal/:view/users/id/:userid/circulations/id/:circulationid[get]'
-   runmode: 'show_record'
+# - # users/circulations_loc:
+#    module: 'OpenBib::Handler::PSGI::Users::Circulations'
+#    rule: '/portal/:view/users/id/:userid/circulations/id/:circulationid[get]'
+#    runmode: 'show_record'
 
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Mail'
@@ -3176,7 +3182,13 @@
      'restrict_db_to_view': 0
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::IliasOrders'
-   rule: '/portal/:view/users/id/:userid/circulations/id/iliasorders[post]'
+   rule: '/portal/:view/users/id/ilias/circulations/id/iliasorders[post]'
+   runmode: 'create_record'
+   args:
+     'restrict_db_to_view': 0
+- # users/circulations_loc:
+   module: 'OpenBib::Handler::PSGI::Users::Circulations::PdaOrders'
+   rule: '/portal/:view/users/id/:userid/circulations/id/pdaorders[post]'
    runmode: 'create_record'
    args:
      'restrict_db_to_view': 0
@@ -3184,6 +3196,23 @@
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Orders'
    rule: '/portal/:view/users/id/:userid/circulations/id/orders[delete]'
    runmode: 'delete_record'
+   args:
+     'restrict_db_to_view': 0
+- # users/circulations_loc:
+   module: 'OpenBib::Handler::PSGI::Users::Circulations::Suggestions'
+   rule: '/portal/:view/users/id/:userid/circulations/id/suggestions[get]'
+   runmode: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   args:
+     'restrict_db_to_view': 0
+- # users/circulations_loc:
+   module: 'OpenBib::Handler::PSGI::Users::Circulations::Suggestions'
+   rule: '/portal/:view/users/id/:userid/circulations/id/suggestions[post]'
+   runmode: 'create_record'
    args:
      'restrict_db_to_view': 0
 - # users/circulations_loc:

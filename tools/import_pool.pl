@@ -87,7 +87,10 @@ my $config     = OpenBib::Config->new;
 my $tmpdir     = "/opt/openbib/autoconv/data/$database";
 
 my $pg_dump    = "/usr/bin/pg_dump";
+my $pg_restore = "/usr/bin/pg_restore";
 my $psql       = "/usr/bin/psql";
+my $dropdb     = "/usr/bin/dropdb";
+my $createpool = "/opt/openbib/bin/createpool.pl";
 my $gzip       = "/bin/gzip";
 my $tar        = "/bin/tar";
 
@@ -102,20 +105,29 @@ if (!-d $tmpdir){
 
 system("tar --directory=$tmpdir -xf $filename");
 
-if (! -f "$tmpdir/pool.sql.gz" || ! -f "$tmpdir/index.tgz"){
+if (! -f "$tmpdir/pool.dump" || ! -f "$tmpdir/index.tgz"){
     $logger->error("Dump von Katalog oder Index existiert nicht");
     exit;
 }
 
 system("echo \"*:*:*:$config->{'dbuser'}:$config->{'dbpasswd'}\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
 
-system("cd $tmpdir ; $gzip -dc pool.sql.gz | $psql -U $config->{'dbuser'}  $database");
+system("$dropdb -U $config->{'dbuser'}  $database");
+system("/usr/bin/createdb -U $config->{'dbuser'} -E UTF-8 -O $config->{'dbuser'} $database");
 
-if (!-d "$config->{'base_dir'}/ft/xapian/index/$database"){
-    mkdir "$config->{'base_dir'}/ft/xapian/index/$database";
+system("cd $tmpdir ; $pg_restore -U $config->{'dbuser'} -d $database pool.dump");
+
+if (-d "$config->{'base_dir'}/ft/xapian/index/$database"){
+    unlink "$config->{'base_dir'}/ft/xapian/index/$database/*";
+    rmdir "$config->{'base_dir'}/ft/xapian/index/$database";
 }
 
-system("cd $config->{'base_dir'}/ft/xapian/index/$database ; tar xzf $tmpdir/index.tgz");
+if (-d "$config->{'base_dir'}/ft/xapian/index/${database}_authority"){
+    unlink "$config->{'base_dir'}/ft/xapian/index/${database}_authority/*";
+    rmdir "$config->{'base_dir'}/ft/xapian/index/${database}_authority";
+}
+
+system("cd $config->{'base_dir'}/ft/xapian/index/ ; tar xzf $tmpdir/index.tgz");
 
 sub print_help {
     print << "ENDHELP";

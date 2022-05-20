@@ -123,6 +123,10 @@ sub new {
     
     $self->{client}        = $ua;
 
+    my $dbinfotable        = OpenBib::Config::DatabaseInfoTable->new;
+
+    $self->{dbinfo}        = $dbinfotable->{dbinfo};
+    
     if (defined $database){
         $self->{database} = $database;
     }
@@ -1396,7 +1400,6 @@ sub load_circulation {
     }
 
     my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
-    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->new;
 
     if ($logger->is_debug){
         $logger->debug(YAML::Dump($circinfotable->{circinfo}));
@@ -1981,33 +1984,33 @@ sub to_endnote {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $fields_ref = $self->to_abstract_fields();
+
     my $endnote_category_map_ref = {
-        'T0100' => '%A',    # Author
-        'T0101' => '%A',    # Person
-        'T0103' => '%A',    # Celebr. Person 
-        'T0200' => '%C',    # Corporate Author
-        'T0331' => '%T',    # Title of the article or book
-        'T0451' => '%S',    # Title of the serie
-        'T0590' => '%J',    # Journal containing the article
-#        '3'     => '%B',    # Journal Title (refer: Book containing article)
-        'T0519' => '%R',    # Report, paper, or thesis type
-        'T0455' => '%V',    # Volume 
-        'T0089' => '%N',    # Number with volume
-#        '7'     => '%E',    # Editor of book containing article
-#        '8'     => '%P',    # Page number(s)
-        'T0412' => '%I',    # Issuer. This is the publisher
-        'T0410' => '%C',    # City where published. This is the publishers address
-        'T0425' => '%D',    # Date of publication
-        'T0424' => '%D',    # Date of publication
+        'authors' => '%A',   # Author
+        'editors' => '%A',   # Person
+        'corp'    => '%C',   # Corporate Author
+        'creator' => '%C',   # Corporate Creator
+        'title'   => '%T',   # Title of the article or book
+        'series' => '%S',    # Title of the serie
+        'source_journal' => '%J',    # Journal containing the article
+        'T0519'   => '%R',   # Report, paper, or thesis type
+        'source_volume' => '%V',    # Volume 
+        'volume'  => '%N',    # Number with volume
+#        '7'      => '%E',    # Editor of book containing article
+        'pages'     => '%P',  # Page number(s)
+        'publisher' => '%I',  # Issuer. This is the publisher
+        'place' => '%C',    # City where published. This is the publishers address
+        'year' => '%D',    # Date of publication
 #        '11'    => '%O',    # Other information which is printed after the reference
 #        '12'    => '%K',    # Keywords used by refer to help locate the reference
 #        '13'    => '%L',    # Label used to number references when the -k flag of refer is used
-        'T0540' => '%X',    # Abstract. This is not normally printed in a reference
-        'T0543' => '%X',    # Abstract. This is not normally printed in a reference
-        'T0750' => '%X',    # Abstract. This is not normally printed in a reference
+        'isbn' => '%X',    # Abstract. This is not normally printed in a reference
+        'issn' => '%X',    # Abstract. This is not normally printed in a reference
+        'abstract' => '%X',    # Abstract. This is not normally printed in a reference
 #        '15'    => '%W',    # Where the item can be found (physical location of item)
-        'T0433' => '%Z',    # Pages in the entire document. Tib reserves this for special use
-        'T0403' => '%7',    # Edition
+        'pages' => '%Z',    # Pages in the entire document. Tib reserves this for special use
+        'edition' => '%7',    # Edition
 #        '17'    => '%Y',    # Series Editor
     };
 
@@ -2015,12 +2018,19 @@ sub to_endnote {
 
     # Titelkategorien
     foreach my $category (keys %{$endnote_category_map_ref}) {
-        if (exists $self->{_fields}{$category}) {
-            foreach my $content_ref (@{$self->{_fields}{$category}}){                
-                my $content = $endnote_category_map_ref->{$category}." ".$content_ref->{content};
-                
-                if ($category eq "T0331" && exists $self->{_fields}{"T0335"}){
-                    $content.=" : ".$self->{_fields}{"T0335"}[0]{content};
+        if (defined $fields_ref->{$category} && $fields_ref->{$category}) {
+	    if ($category =~m/(authors|editors|corp|creator)/){
+		foreach my $field_content (@{$fields_ref->{$category}}){
+		    my $content = $endnote_category_map_ref->{$category}." ".$field_content;
+		    push @{$endnote_ref}, $content;
+
+		}
+	    }
+	    else {
+                my $content = $endnote_category_map_ref->{$category}." ".$fields_ref->{$category};
+		
+                if ($category eq "title" && defined $fields_ref->{"titlesup"}){
+                    $content.=" : ".$fields_ref->{"titlesup"};
                 }
                 
                 push @{$endnote_ref}, $content;
@@ -2048,83 +2058,98 @@ sub to_bibsonomy_post {
     my $utf8               = exists $arg_ref->{utf8}
         ? $arg_ref->{utf8}               : 0;
 
+    my $fields_ref = $self->to_abstract_fields();
+    
     my $doc = XML::LibXML::Document->new();
     my $root = $doc->createElement('bibsonomy');
     $doc->setDocumentElement($root);
     my $post = $doc->createElement('post');
     $root->appendChild($post);
     my $bibtex = $doc->createElement('bibtex');
-    
+
     # Verfasser und Herausgeber konstruieren
     my $authors_ref=[];
     my $editors_ref=[];
-    foreach my $category (qw/T0100 T0101/){
-        next if (!exists $self->{_fields}->{$category});
-        foreach my $part_ref (@{$self->{_fields}->{$category}}){
-            if ($part_ref->{supplement} =~ /Hrsg/){
-                push @$editors_ref, utf2bibtex($part_ref->{content},$utf8);
-            }
-            else {
-                push @$authors_ref, utf2bibtex($part_ref->{content},$utf8);
-            }
-        }
+
+    if (defined $fields_ref->{authors} && @{$fields_ref->{authors}}){
+	$authors_ref = $fields_ref->{authors};
     }
+
+    if (defined $fields_ref->{editors} && @{$fields_ref->{editors}}){
+	$editors_ref = $fields_ref->{editor};
+    }
+    
     my $author = join(' and ',@$authors_ref);
     my $editor = join(' and ',@$editors_ref);
 
+    $author = utf2bibtex($author,$utf8);
+    $editor = utf2bibtex($editor,$utf8);
+    
     # Schlagworte
     my $keywords_ref=[];
-    foreach my $category (qw/T0710 T0902 T0907 T0912 T0917 T0922 T0927 T0932 T0937 T0942 T0947/){
-        next if (!exists $self->{_fields}->{$category});
-        foreach my $part_ref (@{$self->{_fields}->{$category}}){
-            push @$keywords_ref, utf2bibtex($part_ref->{content},$utf8);
-        }
+
+    if (defined $fields_ref->{keywords} && @{$fields_ref->{keywords}}){
+	$keywords_ref = $fields_ref->{keywords};
     }
+    
     my $keyword = join(' ; ',@$keywords_ref);
+
+    $keyword = utf2bibtex($keyword,$utf8);
     
     # Auflage
-    my $edition   = (exists $self->{_fields}->{T0403})?utf2bibtex($self->{_fields}->{T0403}[0]{content},$utf8):'';
+    my $edition   = (defined $fields_ref->{edition})?utf2bibtex($fields_ref->{edition},$utf8):'';
 
     # Verleger
-    my $publisher = (exists $self->{_fields}->{T0412})?utf2bibtex($self->{_fields}->{T0412}[0]{content},$utf8):'';
+    my $publisher = (defined $fields_ref->{publisher})?utf2bibtex($fields_ref->{publisher},$utf8):'';
 
     # Verlagsort
-    my $address   = (exists $self->{_fields}->{T0410})?utf2bibtex($self->{_fields}->{T0410}[0]{content},$utf8):'';
+    my $place = (defined $fields_ref->{place})?utf2bibtex($fields_ref->{place},$utf8):'';
 
     # Titel
-    my $title     = (exists $self->{_fields}->{T0331})?utf2bibtex($self->{_fields}->{T0331}[0]{content},$utf8):'';
+    my $title = (defined $fields_ref->{title})?utf2bibtex($fields_ref->{title},$utf8):'';
 
     # Zusatz zum Titel
-    my $titlesup  = (exists $self->{_fields}->{T0335})?utf2bibtex($self->{_fields}->{T0335}[0]{content},$utf8):'';
+    my $titlesup = (defined $fields_ref->{titlesup})?utf2bibtex($fields_ref->{titlesup},$utf8):'';
 
-    #    Folgende Erweiterung um titlesup ist nuetzlich, laeuft aber der
-    #    Bibkey-Bildung entgegen
-
+#    Folgende Erweiterung um titlesup ist nuetzlich, laeuft aber der
+#    Bibkey-Bildung entgegen
 #    if ($title && $titlesup){
 #        $title = "$title : $titlesup";
 #    }
 
     # Jahr
-    my $year      = (exists $self->{_fields}->{T0425})?utf2bibtex($self->{_fields}->{T0425}[0]{content},$utf8):'';
+    my $year = (defined $fields_ref->{year})?utf2bibtex($fields_ref->{year},$utf8):'';
 
     # ISBN
-    my $isbn      = (exists $self->{_fields}->{T0540})?utf2bibtex($self->{_fields}->{T0540}[0]{content},$utf8):'';
+    my $isbn = (defined $fields_ref->{isbn})?utf2bibtex($fields_ref->{isbn},$utf8):'';
 
     # ISSN
-    my $issn      = (exists $self->{_fields}->{T0543})?utf2bibtex($self->{_fields}->{T0543}[0]{content},$utf8):'';
+    my $issn = (defined $fields_ref->{issn})?utf2bibtex($fields_ref->{issn},$utf8):'';
 
     # Sprache
-    my $language  = (exists $self->{_fields}->{T0516})?utf2bibtex($self->{_fields}->{T0516}[0]{content},$utf8):'';
+    my $language = (defined $fields_ref->{language})?utf2bibtex($fields_ref->{language},$utf8):'';
+
+    # (1st) URL
+    my $url = (defined $fields_ref->{urls})?utf2bibtex($fields_ref->{urls}[0]{url},$utf8):'';
 
     # Abstract
-    my $abstract  = (exists $self->{_fields}->{T0750})?utf2bibtex($self->{_fields}->{T0750}[0]{content},$utf8):'';
+    my $abstract = (defined $fields_ref->{abstract})?utf2bibtex($fields_ref->{abstract},$utf8):'';
 
-    # URL
-    my $url       = (exists $self->{_fields}->{T0662})?utf2bibtex($self->{_fields}->{T0662}[0]{content},$utf8):'';
+    # Pages
+    my $pages = (defined $fields_ref->{pages})?utf2bibtex($fields_ref->{pages},$utf8):'';
+    
+    # Source Journal
+    my $source_journal = (defined $fields_ref->{source_journal})?utf2bibtex($fields_ref->{source_journal},$utf8):'';
 
-    # Origin
-    my $origin    = (exists $self->{_fields}->{T0590})?utf2bibtex($self->{_fields}->{T0590}[0]{content},$utf8):'';
+    # Source Volume
+    my $source_volume = (defined $fields_ref->{source_volume})?utf2bibtex($fields_ref->{source_volume},$utf8):'';
 
+    # Source Pages
+    my $source_pages = (defined $fields_ref->{source_pages})?utf2bibtex($fields_ref->{source_pages},$utf8):'';
+
+    # Source Year
+    my $source_year = (defined $fields_ref->{source_year})?utf2bibtex($fields_ref->{source_year},$utf8):'';
+    
     if ($author){
         $bibtex->setAttribute("author",$author);
     }
@@ -2137,8 +2162,8 @@ sub to_bibsonomy_post {
     if ($publisher){
         $bibtex->setAttribute("publisher",$publisher);
     }
-    if ($address){
-        $bibtex->setAttribute("address",$address);
+    if ($place){
+        $bibtex->setAttribute("address",$place);
     }
     if ($title){
         $bibtex->setAttribute("title",$title);
@@ -2165,63 +2190,40 @@ sub to_bibsonomy_post {
         $bibtex->setAttribute("abstract",$abstract);
     }
 
-    if ($origin){
+    if ($source_journal){
+	# Journal
+	$bibtex->setAttribute("journal",$source_journal);
+
         # Pages
-        if ($origin=~/ ; (S\. *\d+.*)$/){
-            $bibtex->setAttribute("pages",$1);
-        }
-        elsif ($origin=~/, (S\. *\d+.*)$/){
-            $bibtex->setAttribute("pages",$1);
+        if ($source_pages){
+	    $bibtex->setAttribute("pages",$source_pages);
         }
 
-        # Journal and/or Volume
-        if ($origin=~/^(.+?) ; (.*?) ; S\. *\d+.*$/){
-            my $journal = $1;
-            my $volume  = $2;
-
-            $journal =~ s/ \/ .*$//;
-            $bibtex->setAttribute("journal",$journal);
-            $bibtex->setAttribute("volume",$volume);
+        # Volume
+        if ($source_volume){
+	    $bibtex->setAttribute("volume",$source_volume);
         }
-        elsif ($origin=~/^(.+?)\. (.*?), (\d\d\d\d), S\. *\d+.*$/){
-            my $journal = $1;
-            my $volume  = $2;
-            my $year    = $3;
 
-            $journal =~ s/ \/ .*$//;
-            $bibtex->setAttribute("journal",$journal);
-            $bibtex->setAttribute("volume",$volume);
-        }
-        elsif ($origin=~/^(.+?)\. (.*?), S\. *\d+.*$/){
-            my $journal = $1;
-            my $volume  = $2;
-
-            $journal =~ s/ \/ .*$//;
-            $bibtex->setAttribute("journal",$journal);
-            $bibtex->setAttribute("volume",$volume);
-        }
-        elsif ($origin=~/^(.+?) ; (.*?), S\. *\d+.*$/){
-            my $journal = $1;
-            my $volume  = $2;
-
-            $journal =~ s/ \/ .*$//;
-            $bibtex->setAttribute("journal",$journal);
-            $bibtex->setAttribute("volume",$volume);
-        }
-        elsif ($origin=~/^(.*?) ; S\. *\d+.*$/){
-            my $journal = $1;
-
-            $journal =~ s/ \/ .*$//;
-            $bibtex->setAttribute("journal",$journal);
-        }
+        # Year
+        if ($source_year){
+	    $bibtex->setAttribute("year",$source_year);
+        }	
     }
-
+    else {
+	if ($year){
+	    $bibtex->setAttribute("year",$year);
+	}
+	if ($pages){
+	    $bibtex->setAttribute("paes",$pages);
+	}
+    }
+    
     my $identifier=substr($author,0,4).substr($title,0,4).$year;
     $identifier=~s/[^A-Za-z0-9]//g;
 
     $bibtex->setAttribute("bibtexKey",$identifier);
 
-    if ($origin){
+    if ($source_journal){
         $bibtex->setAttribute("entrytype",'article');
     }
     elsif ($isbn){
@@ -2245,47 +2247,52 @@ sub to_bibtex {
 
     my $bibtex_ref=[];
 
+    my $fields_ref = $self->to_abstract_fields();
+    
     # Verfasser und Herausgeber konstruieren
     my $authors_ref=[];
     my $editors_ref=[];
-    foreach my $category (qw/T0100 T0101/){
-        next if (!exists $self->{_fields}->{$category});
-        foreach my $part_ref (@{$self->{_fields}->{$category}}){
-            if ($part_ref->{supplement} =~ /Hrsg/){
-                push @$editors_ref, utf2bibtex($part_ref->{content},$utf8);
-            }
-            else {
-                push @$authors_ref, utf2bibtex($part_ref->{content},$utf8);
-            }
-        }
+
+    if (defined $fields_ref->{authors} && @{$fields_ref->{authors}}){
+	$authors_ref = $fields_ref->{authors};
     }
+
+    if (defined $fields_ref->{editors} && @{$fields_ref->{editors}}){
+	$editors_ref = $fields_ref->{editor};
+    }
+    
     my $author = join(' and ',@$authors_ref);
     my $editor = join(' and ',@$editors_ref);
 
+    $author = utf2bibtex($author,$utf8);
+    $editor = utf2bibtex($editor,$utf8);
+    
     # Schlagworte
     my $keywords_ref=[];
-    foreach my $category (qw/T0710 T0902 T0907 T0912 T0917 T0922 T0927 T0932 T0937 T0942 T0947/){
-        next if (!exists $self->{_fields}->{$category});
-        foreach my $part_ref (@{$self->{_fields}->{$category}}){
-            push @$keywords_ref, utf2bibtex($part_ref->{content},$utf8);
-        }
+
+    if (defined $fields_ref->{keywords} && @{$fields_ref->{keywords}}){
+	$keywords_ref = $fields_ref->{keywords};
     }
+    
     my $keyword = join(' ; ',@$keywords_ref);
+
+    $keyword = utf2bibtex($keyword,$utf8);
     
     # Auflage
-    my $edition   = (exists $self->{_fields}->{T0403})?utf2bibtex($self->{_fields}->{T0403}[0]{content},$utf8):'';
+    my $edition   = (defined $fields_ref->{edition})?utf2bibtex($fields_ref->{edition},$utf8):'';
 
     # Verleger
-    my $publisher = (exists $self->{_fields}->{T0412})?utf2bibtex($self->{_fields}->{T0412}[0]{content},$utf8):'';
+    my $publisher = (defined $fields_ref->{publisher})?utf2bibtex($fields_ref->{publisher},$utf8):'';
 
     # Verlagsort
-    my $address   = (exists $self->{_fields}->{T0410})?utf2bibtex($self->{_fields}->{T0410}[0]{content},$utf8):'';
+    my $place = (defined $fields_ref->{place})?utf2bibtex($fields_ref->{place},$utf8):'';
 
     # Titel
-    my $title     = (exists $self->{_fields}->{T0331})?utf2bibtex($self->{_fields}->{T0331}[0]{content},$utf8):'';
+    my $title = (defined $fields_ref->{title})?utf2bibtex($fields_ref->{title},$utf8):'';
 
     # Zusatz zum Titel
-    my $titlesup  = (exists $self->{_fields}->{T0335})?utf2bibtex($self->{_fields}->{T0335}[0]{content},$utf8):'';
+    my $titlesup = (defined $fields_ref->{titlesup})?utf2bibtex($fields_ref->{titlesup},$utf8):'';
+
 #    Folgende Erweiterung um titlesup ist nuetzlich, laeuft aber der
 #    Bibkey-Bildung entgegen
 #    if ($title && $titlesup){
@@ -2293,26 +2300,38 @@ sub to_bibtex {
 #    }
 
     # Jahr
-    my $year      = (exists $self->{_fields}->{T0425})?utf2bibtex($self->{_fields}->{T0425}[0]{content},$utf8):'';
+    my $year = (defined $fields_ref->{year})?utf2bibtex($fields_ref->{year},$utf8):'';
 
     # ISBN
-    my $isbn      = (exists $self->{_fields}->{T0540})?utf2bibtex($self->{_fields}->{T0540}[0]{content},$utf8):'';
+    my $isbn = (defined $fields_ref->{isbn})?utf2bibtex($fields_ref->{isbn},$utf8):'';
 
     # ISSN
-    my $issn      = (exists $self->{_fields}->{T0543})?utf2bibtex($self->{_fields}->{T0543}[0]{content},$utf8):'';
+    my $issn = (defined $fields_ref->{issn})?utf2bibtex($fields_ref->{issn},$utf8):'';
 
     # Sprache
-    my $language  = (exists $self->{_fields}->{T0516})?utf2bibtex($self->{_fields}->{T0516}[0]{content},$utf8):'';
+    my $language = (defined $fields_ref->{language})?utf2bibtex($fields_ref->{language},$utf8):'';
 
-    # URL
-    my $url       = (exists $self->{_fields}->{T0662})?utf2bibtex($self->{_fields}->{T0662}[0]{content},$utf8):'';
+    # (1st) URL
+    my $url = (defined $fields_ref->{urls})?utf2bibtex($fields_ref->{urls}[0]{url},$utf8):'';
 
     # Abstract
-    my $abstract  = (exists $self->{_fields}->{T0750})?utf2bibtex($self->{_fields}->{T0750}[0]{content},$utf8):'';
+    my $abstract = (defined $fields_ref->{abstract})?utf2bibtex($fields_ref->{abstract},$utf8):'';
 
-    # Origin
-    my $origin    = (exists $self->{_fields}->{T0590})?utf2bibtex($self->{_fields}->{T0590}[0]{content},$utf8):'';
+    # Pages
+    my $pages = (defined $fields_ref->{pages})?utf2bibtex($fields_ref->{pages},$utf8):'';
+    
+    # Source Journal
+    my $source_journal = (defined $fields_ref->{source_journal})?utf2bibtex($fields_ref->{source_journal},$utf8):'';
 
+    # Source Volume
+    my $source_volume = (defined $fields_ref->{source_volume})?utf2bibtex($fields_ref->{source_volume},$utf8):'';
+
+    # Source Pages
+    my $source_pages = (defined $fields_ref->{source_pages})?utf2bibtex($fields_ref->{source_pages},$utf8):'';
+
+    # Source Year
+    my $source_year = (defined $fields_ref->{source_year})?utf2bibtex($fields_ref->{source_year},$utf8):'';
+    
     if ($author){
         push @$bibtex_ref, "author    = \"$author\"";
     }
@@ -2325,14 +2344,11 @@ sub to_bibtex {
     if ($publisher){
         push @$bibtex_ref, "publisher = \"$publisher\"";
     }
-    if ($address){
-        push @$bibtex_ref, "address   = \"$address\"";
+    if ($place){
+        push @$bibtex_ref, "address   = \"$place\"";
     }
     if ($title){
         push @$bibtex_ref, "title     = \"$title\"";
-    }
-    if ($year){
-        push @$bibtex_ref, "year      = \"$year\"";
     }
     if ($isbn){
         push @$bibtex_ref, "ISBN      = \"$isbn\"";
@@ -2353,55 +2369,32 @@ sub to_bibtex {
         push @$bibtex_ref, "abstract  = \"$abstract\"";
     }
 
-    if ($origin){
+    if ($source_journal){
+	# Journal
+	push @$bibtex_ref, "journal   = \"$source_journal\"";
+
         # Pages
-        if ($origin=~/ ; (S\. *\d+.*)$/){
-            push @$bibtex_ref, "pages     = \"$1\"";
-        }
-        elsif ($origin=~/, (S\. *\d+.*)$/){
-            push @$bibtex_ref, "pages     = \"$1\"";
+        if ($source_pages){
+            push @$bibtex_ref, "pages     = \"$source_pages\"";
         }
 
-        # Journal and/or Volume
-        if ($origin=~/^(.+?) ; (.*?) ; S\. *\d+.*$/){
-            my $journal = $1;
-            my $volume  = $2;
-
-            $journal =~ s/ \/ .*$//;
-            push @$bibtex_ref, "journal   = \"$journal\"";
-            push @$bibtex_ref, "volume    = \"$volume\"";
+        # Volume
+        if ($source_volume){
+            push @$bibtex_ref, "volume    = \"$source_volume\"";
         }
-        elsif ($origin=~/^(.+?)\. (.*?), (\d\d\d\d), S\. *\d+.*$/){
-            my $journal = $1;
-            my $volume  = $2;
-            my $year    = $3;
 
-            $journal =~ s/ \/ .*$//;
-            push @$bibtex_ref, "journal   = \"$journal\"";
-            push @$bibtex_ref, "volume    = \"$volume\"";
-        }
-        elsif ($origin=~/^(.+?)\. (.*?), S\. *\d+.*$/){
-            my $journal = $1;
-            my $volume  = $2;
-
-            $journal =~ s/ \/ .*$//;
-            push @$bibtex_ref, "journal   = \"$journal\"";
-            push @$bibtex_ref, "volume    = \"$volume\"";
-        }
-        elsif ($origin=~/^(.+?) ; (.*?), S\. *\d+.*$/){
-            my $journal = $1;
-            my $volume  = $2;
-
-            $journal =~ s/ \/ .*$//;
-            push @$bibtex_ref, "journal   = \"$journal\"";
-            push @$bibtex_ref, "volume    = \"$volume\"";
-        }
-        elsif ($origin=~/^(.*?) ; S\. *\d+.*$/){
-            my $journal = $1;
-
-            $journal =~ s/ \/ .*$//;
-            push @$bibtex_ref, "journal   = \"$journal\"";
-        }
+        # Year
+        if ($source_year){
+            push @$bibtex_ref, "year    = \"$source_year\"";
+        }	
+    }
+    else {
+	if ($year){
+	    push @$bibtex_ref, "year      = \"$year\"";
+	}
+	if ($pages){
+	    push @$bibtex_ref, "pages     = \"$pages\"";
+	}
     }
 
     my $identifier=substr($author,0,4).substr($title,0,4).$year;
@@ -2409,7 +2402,7 @@ sub to_bibtex {
 
     my $bibtex="";
 
-    if ($origin){
+    if ($source_journal){
         unshift @$bibtex_ref, "\@article {$identifier";
         $bibtex=join(",\n",@$bibtex_ref);
         $bibtex="$bibtex}";
@@ -2976,6 +2969,34 @@ sub to_apa_citation {
 sub to_abstract_fields {
     my ($self) = @_;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $database = $self->{database};
+
+    my $schema   = $self->{dbinfo}{schema}{$database} || '';
+
+    if ($schema eq "mab2"){
+	$logger->debug("Abstract fields from mab2");
+	return $self->to_abstract_fields_mab2;
+    }
+    elsif ($schema eq "marc21"){
+	$logger->debug("Abstract fields from marc21");	
+	return $self->to_abstract_fields_marc21;
+    }
+
+    $logger->debug("Abstract fields: No schema available (DB: $database, Schema: $schema)");
+    
+    # Otherwise no data
+    return {};
+}
+
+sub to_abstract_fields_mab2 {
+    my ($self) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
     my $abstract_fields_ref = {};
 
     # Definition sprechender Feldnamen mit deren Inhalten
@@ -3248,6 +3269,254 @@ sub to_abstract_fields {
     $abstract_fields_ref->{edition} = (exists $self->{_fields}->{T0403})?$self->{_fields}->{T0403}[0]{content}:'';
         
 
+    
+    return $abstract_fields_ref;
+}
+
+sub to_abstract_fields_marc21 {
+    my ($self) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $abstract_fields_ref = {};
+
+    # Definition sprechender Feldnamen mit deren Inhalten
+    #
+    # authors[] : Verfasser 0100/0101
+    # editors[] : Herausgeber anhand Supplement
+    # corp[]    : Koerperschaften 0200
+    # creator[] : Urheber 0201
+    # keywords[]: Schlagworte
+    # edition   : Auflage
+    # publisher : Verlag
+    # place     : Verlagsort
+    # title     : Titel
+    # titlesup  : Zusatz zum Sachtitel
+    # year      : Erscheinungsjahr
+    # isbn      : ISBN
+    # issn      : ISSN
+    # language  : Sprache
+    # urls[]    : URLs
+    # abstract  : Abstrakt
+    #
+    # source    : Quelle Gesamtangabe
+    #
+    # aufgesplittet in:
+    #   source_pages   : Quelle Seitenangabe
+    #   source_journal : Quelle Zeitschriftentitel
+    #   source_volume  : Quelle Bandnr
+    #   source_year    : Quelle Jahr
+    #
+    # pages     : Kollation
+    # series    : Gesamttitel
+    # series_volume : Zaehlung Gesamttitel
+    # edition   : Auflage
+    # type      : Medientyp (article,book,periodical)
+
+    my $field_ref = $self->to_custom_field_scheme_1;
+    
+    # Verfasser und Herausgeber konstruieren
+    my $authors_ref=[];
+    my $editors_ref=[];
+    foreach my $category (qw/T0100 T0700 T0900/){
+        next if (!defined $field_ref->{$category});
+        foreach my $part_ref (@{$field_ref->{$category}}){
+            if (defined $part_ref->{e} && $part_ref->{e} =~ /Hrsg/){
+                push @$editors_ref, $part_ref->{a} if (defined $part_ref->{a});
+            }
+            else{
+                push @$authors_ref, $part_ref->{a} if (defined $part_ref->{a});
+            }
+        }
+    }
+
+    $abstract_fields_ref->{authors} = $authors_ref;
+    $abstract_fields_ref->{editors} = $editors_ref;
+
+    # Urheber und Koerperschaften konstruieren
+    my $corp_ref=[];
+    my $creator_ref=[];
+    foreach my $category (qw/T0110 T0710/){
+        next if (!defined $field_ref->{$category});
+        foreach my $part_ref (@{$field_ref->{$category}}){
+	    push @$corp_ref, $part_ref->{a} if (defined $part_ref->{a});
+        }
+    }
+
+    foreach my $category (qw/T0910/){
+        next if (!defined $field_ref->{$category});
+        foreach my $part_ref (@{$field_ref->{$category}}){
+	    push @$creator_ref, $part_ref->{a} if (defined $part_ref->{a});
+        }
+    }
+
+    $abstract_fields_ref->{corp} = $corp_ref;
+    $abstract_fields_ref->{creator} = $creator_ref;
+    
+    # Schlagworte
+    my $keywords_ref=[];
+    foreach my $category (qw/T0600 T0610 T0648 T0650 T0651 T0655 T0688/){
+        next if (!defined $field_ref->{$category});
+        foreach my $part_ref (@{$field_ref->{$category}}){
+            push @$keywords_ref, $part_ref->{a} if (defined $part_ref->{a});
+        }
+    }
+
+    $abstract_fields_ref->{keywords} = $keywords_ref;
+    
+    # Auflage
+    $abstract_fields_ref->{edition} = (defined $field_ref->{T0250}  && defined $field_ref->{T0250}[0]{a})?$field_ref->{T0250}[0]{a}:'';
+
+    # Verleger
+    $abstract_fields_ref->{publisher} = (defined $field_ref->{T0260} && defined $field_ref->{T0260}[0]{b})?$field_ref->{T0260}[0]{b}:'';
+
+    # Verlagsort
+    $abstract_fields_ref->{place} = (defined $field_ref->{T0260} && defined $field_ref->{T0260}[0]{a})?$field_ref->{T0260}[0]{a}:'';
+
+    # Titel
+    $abstract_fields_ref->{title} = (defined $field_ref->{T0245} && defined $field_ref->{T0245}[0]{a})?$field_ref->{T0245}[0]{a}:'';
+
+    # Zusatz zum Titel
+    $abstract_fields_ref->{titlesup} = (defined $field_ref->{T0245} && defined $field_ref->{T0245}[0]{b})?$field_ref->{T0245}[0]{b}:'';
+#    Folgende Erweiterung um titlesup ist nuetzlich, laeuft aber der
+#    Bibkey-Bildung entgegen
+#    if ($title && $titlesup){
+#        $title = "$title : $titlesup";
+#    }
+
+    # Jahr
+    $abstract_fields_ref->{year} = (defined $field_ref->{T0260} && defined $field_ref->{T0260}[0]{c})?$field_ref->{T0260}[0]{c}:(defined $field_ref->{T0264} && defined $field_ref->{T0264}[0]{c})?$field_ref->{T0264}[0]{c}:'';
+
+    # ISBN
+    $abstract_fields_ref->{isbn} = (defined $field_ref->{T0020} && defined $field_ref->{T0020}[0]{a})?$field_ref->{T0020}[0]{a}:'';
+
+    # ISSN
+    $abstract_fields_ref->{issn} = (defined $field_ref->{T0022} && defined $field_ref->{T0022}[0]{a})?$field_ref->{T0022}[0]{a}:'';
+
+    # Sprache
+    $abstract_fields_ref->{language} = (defined $field_ref->{T0041} && defined $field_ref->{T0041}[0]{a})?$field_ref->{T0041}[0]{a}:
+	(defined $field_ref->{T0516})?$field_ref->{T0516}[0]{content}:'';
+
+    # (1st) Series
+    foreach my $category (qw/T0490 T0440/){
+        next if (!defined $field_ref->{$category});
+        foreach my $part_ref (@{$field_ref->{$category}}){
+	    $abstract_fields_ref->{series} = $part_ref->{a} if (defined $part_ref->{a});
+	    $abstract_fields_ref->{series_volume} = $part_ref->{v} if (defined $part_ref->{v});
+
+	    last if (defined $abstract_fields_ref->{series});
+	}
+	last if (defined $abstract_fields_ref->{series});
+    }
+    
+    # Mediatyp
+    if ($abstract_fields_ref->{issn}){
+	if (@{$abstract_fields_ref->{authors}}){
+	    $abstract_fields_ref->{type} = 'article';
+	}
+	elsif ($abstract_fields_ref->{title}){
+	    if ($abstract_fields_ref->{source}){
+		$abstract_fields_ref->{type} = 'article';
+	    }
+	    else {
+		$abstract_fields_ref->{type} = 'periodical';
+	    }
+	}
+    }
+    elsif ($abstract_fields_ref->{isbn}){
+	if ($abstract_fields_ref->{title}){
+	    $abstract_fields_ref->{type} = 'book';
+	}
+    }
+    elsif ($abstract_fields_ref->{series}){
+	if ($abstract_fields_ref->{title}){
+	    $abstract_fields_ref->{type} = 'article';
+	}
+	else {
+	    $abstract_fields_ref->{type} = 'magazine';
+	}
+    }
+    elsif ($abstract_fields_ref->{title}){
+	$abstract_fields_ref->{type} = 'book';
+    }
+
+    # Zugriffsart (online=Digital / E-Resource)
+    $abstract_fields_ref->{availability} = (exists $field_ref->{T4400})?$field_ref->{T4400}[0]{content} :'';
+
+    # Todo: Ab hier noch zu mappen!!! 20220509
+	
+    # URL
+    my $urls_ref=[];
+    foreach my $category (qw/T0856/){
+        next if (!defined $field_ref->{$category});
+        foreach my $part_ref (@{$field_ref->{$category}}){           	    
+	    my $thisdesc = (defined $part_ref->{'3'})?$part_ref->{'3'}:(defined $part_ref->{z})?$part_ref->{z}:"";
+
+	    if ($thisdesc =~m/DOI/){
+		$abstract_fields_ref->{onlineurl} = $part_ref->{u};
+		$abstract_fields_ref->{availability} = "online";
+	    }
+	    elsif ($thisdesc =~m/Volltext/){
+		$abstract_fields_ref->{onlineurl} = $part_ref->{u};
+		$abstract_fields_ref->{availability} = "online";
+	    }
+	    
+	    push @$urls_ref, {
+		url => $part_ref->{content},
+		desc => $thisdesc,
+	    };
+        }
+    }
+
+    # Only one URL, so this must be digital...
+    if (@$urls_ref == 1){
+	$abstract_fields_ref->{onlineurl} = $urls_ref->[0]{url};	
+    }
+
+    $abstract_fields_ref->{urls} = $urls_ref;
+
+    # Abstract
+    $abstract_fields_ref->{abstract} = (defined $field_ref->{T0520} && defined $field_ref->{T0520}[0]{a})?$field_ref->{T0520}[0]{a}:'';
+
+    # Source
+
+
+    my $article_source = ($abstract_fields_ref->{source})?$abstract_fields_ref->{source}:$abstract_fields_ref->{series};
+
+    if (defined $field_ref->{T0773}){
+	foreach my $part_ref (@{$field_ref->{T0773}}){
+	    $abstract_fields_ref->{source_journal} = $part_ref->{t} if (defined $part_ref->{t});
+	    if (defined $part_ref->{g}){
+		($abstract_fields_ref->{source_volume}) = $part_ref->{g} =~m/(Vol\. \d+)/;
+		($abstract_fields_ref->{source_pages}) = $part_ref->{g} =~m/(p\. \d+-\d+)/; 
+		($abstract_fields_ref->{source_issue}) = $part_ref->{g} =~m/(no\. \d+)/; 
+	    }
+	    
+	    if (defined $part_ref->{d} && $part_ref->{d} =~m/\d\d\d\d/){
+		($abstract_fields_ref->{source_year}) = $part_ref->{d} =~m/(\d\d\d\d)/;
+	    }
+	}
+	if (defined $field_ref->{T0773}[0]{t}){
+	    $abstract_fields_ref->{source} = $field_ref->{T0773}[0]{t};
+	    if (defined $field_ref->{T0773}[0]{g}){
+		$abstract_fields_ref->{source}.= ": ".$field_ref->{T0773}[0]{g};
+	    }
+	    if (defined $field_ref->{T0773}[0]{d}){
+		$abstract_fields_ref->{source}.= " (".$field_ref->{T0773}[0]{d}.")";
+	    }
+	}
+    }
+
+    # Pages
+    $abstract_fields_ref->{pages} = (exists $field_ref->{T0300})?$field_ref->{T0300}[0]{a}:'';
+
+    # Edition
+    $abstract_fields_ref->{edition} = (exists $field_ref->{T0250})?$field_ref->{T0250}[0]{a}:'';
+        
+    if ($logger->is_debug){
+	$logger->debug(YAML::Dump($abstract_fields_ref));
+    }
     
     return $abstract_fields_ref;
 }

@@ -23,9 +23,9 @@
   publisher = fields.${"T0412"}.first.content;
 
   year      = fields.${"T0425"}.first.content;
-  IF fields.${"T0424"}.defined;
-    year      = fields.${"T0424"}.first.content;  
-  END;
+  # IF fields.${"T0424"}.defined;
+  #   year      = fields.${"T0424"}.first.content;  
+  # END;
 
   titleid   = record.id;
   
@@ -127,6 +127,7 @@
 
 %]
 
+[%# USE dumper;dumper.dump(userinfo) %]
 <legend class="mt-2">[% msg.maketext("Weitere Angaben zur Stornierung") %]</legend>
 
 <div class="form-floating mb-3">
@@ -136,11 +137,12 @@
 </div>
 
 <div class="form-floating mb-3">
-      <span class="form-control">[% name %]</span>
-      <input type="hidden" name="username" value="[% name %]" />
+      <span class="form-control">[% userinfo.fullname %]</span>
+      <input type="hidden" name="username" value="[% userinfo.fullname %]" />
       <label for="username">[% msg.maketext("Name") %]:</label>
 </div>
 
+<!--
 <div class="form-floating mb-3">
       <select name="remark" id="remark" class="form-control" size="1" style="width:15em;">
         <option value="">[ Bitte wählen Sie aus ]</option>
@@ -155,29 +157,22 @@
      </select>
       <label class="form-floating mb-3-text" for="remark">[% msg.maketext("Stornogrund") %]:</label>
 </div>
+-->
 
 <p/>
 
 <legend class="mt-2">[% msg.maketext("Stornierungsquittung") %]</legend>
-<div class="form-check">
 
-      <input class="form-check-input" type="checkbox" name="receipt"/>
+<div class="mb-2">
+      <input class="form-check-input" type="checkbox" name="receipt" id="receipt" value="yes" />
       <label class="form-check-label" for="receipt">[% msg.maketext("Ja, ich möchte eine Kopie dieser Stornierung als E-Mail erhalten") %].</label>
 </div>
 
-[% IF email %]
-<div class="form-floating mb-3">
-      <span class="form-control">[% email %]</span>
-      <input type="hidden" name="email" value="[% email %]" />
-      <label for="email">[% msg.maketext("E-Mail") %]:</label>
-</div>
-[% ELSE %]
 <div class="form-floating mb-3">
       <span class="form-control">[% userinfo.email %]</span>
-      <input class="form-control" type="hidden" name="email" value="[% userinfo.email %]" maxlength="60" size="37" /> 
-      <label for="email">[% msg.maketext("E-Mail") %]</label>
+      <input type="hidden" name="email" value="[% userinfo.email %]" />
+      <label for="email">[% msg.maketext("E-Mail") %]:</label>
 </div>
-[% END %]
 
 <button type="submit" class="btn btn-primary mb-2 mt-4">[% msg.maketext("Stornieren") %]</button>
 

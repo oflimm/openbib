@@ -48,7 +48,7 @@ use OpenBib::Search::Util;
 use OpenBib::Session;
 use Data::Dumper;
 use JSON::XS;
-
+use utf8;
 
 use base 'OpenBib::Handler::PSGI';
 
@@ -106,7 +106,7 @@ sub show {
         my $contained_works        = [];
         my $provenance_data        = [];
         my $date_values            = undef;
-        my $main_title_data             = undef; 
+        my $main_title_data        = undef;
         if ($unapiid) {
             my ( $database, $idn, $record );
 
@@ -118,9 +118,9 @@ sub show {
 
                 $record = new OpenBib::Record::Title(
                     { database => $database, id => $idn } )->load_full_record;
-                $main_title_data = $self->get_main_title_data( $record, $database );
-                
-                
+                $main_title_data =
+                  $self->get_main_title_data( $record, $database );
+
                 $title_list = $self->collect_title_data( $record, $database );
                 $contained_works =
                   $self->collect_contained_works( $record, $database );
@@ -133,9 +133,12 @@ sub show {
                 $rswk_keyword_list =
                   $self->collect_rswk_data( $record, $database );
                 $provenance_data = undef;
-                my $provenance_elements = $self->collect_provenance_data( $record, $database );
-                if (@{$provenance_elements} != 0){
-                    $provenance_data =JSON::XS->new->latin1->encode( $provenance_elements);
+                my $provenance_elements =
+                  $self->collect_provenance_data( $record, $database );
+
+                if ( @{$provenance_elements} != 0 ) {
+                    $provenance_data =
+                      JSON::XS->new->latin1->encode($provenance_elements);
                 }
                 $date_values = $self->get_date_values( $record, $database );
 
@@ -193,11 +196,12 @@ sub show {
 
             # Dann Ausgabe des neuen Headers
             my $is_valid_title = 0;
-            foreach my $val (values %{$record->get_fields}) { 
-                 if(@{$val}){
+            foreach my $val ( values %{ $record->get_fields } ) {
+                if ( @{$val} ) {
                     $is_valid_title = 1;
                 }
             }
+
             # if (!$is_valid_title){
             #     $self->header_add( 'Status', 400 );    # server error
             #     return "Der Katkey $idn existiert nicht";
@@ -262,9 +266,7 @@ sub show {
 
         # Dann Ausgabe des neuen Headers
         $self->header_add( 'Content-Type', 'application/xml' );
-   
-      
-        
+
         $template->process( $templatename, $ttdata ) || do {
             $logger->error( $template->error() );
             $self->header_add( 'Status', 400 );    # server error
@@ -275,17 +277,18 @@ sub show {
 }
 
 sub get_main_title_data {
-    my $self          = shift;
-    my $record        = shift;
-    my $database      = shift;
-    my $title_data    = {};
-    if ( length( $record->get_fields->{T0331}) ) {
+    my $self       = shift;
+    my $record     = shift;
+    my $database   = shift;
+    my $title_data = {};
+    if ( length( $record->get_fields->{T0331} ) ) {
         my $title_content = $record->get_fields->{T0331}[0]->{content};
-        if (rindex($title_content, decode_utf8("¬"), 0) != -1){
-           (my $first, my $rest) = split (' ', $title_content, 2); 
+        if ( rindex( $title_content, decode_utf8("¬"), 0 ) != -1 ) {
+            ( my $first, my $rest ) = split( ' ', $title_content, 2 );
             $title_data->{"main_title"} = $rest;
-            $title_data->{"non_sort"} = $first;
-        }else {
+            $title_data->{"non_sort"}   = $first;
+        }
+        else {
             my $title_content = $record->get_fields->{T0331}[0]->{content};
             $title_data->{"main_title"} = $title_content;
         }
@@ -302,7 +305,6 @@ sub collect_title_data {
     my $already_added = [];
     my $title_list    = [];
 
-    
     #Weiterer/Alternativer Titel
     if ( length( $record->get_fields->{T0370} ) ) {
         foreach my $title_item ( @{ $record->get_fields->{T0370} } ) {
@@ -479,54 +481,57 @@ sub get_date_values() {
         $date_values->{"date_norm"} =
           $record->get_fields->{T0425}[0]->{content};
     }
-    unless ( $record->get_fields->{T0425} ) {
-        if ( $record->get_fields->{T0089} ) {
-            my $date_value = undef;
-            if (
-                index( $record->get_fields->{T0089}[0]->{content}, "." ) != -1 )
-            {
-                my @splitted_string =
-                  split( '\.', $record->get_fields->{T0089}[0]->{content} );
-                $date_value = $splitted_string[-1];
-            }
-            else {
-                $date_value = $record->get_fields->{T0089}[0]->{content};
-            }
-            if ( index( $date_value, "\/" ) != -1 ) {
-                unless ( $date_values->{"start_date"} ) {
 
-                    if ( index( $date_value, "(" ) == -1 ) {
-                        my @splitted_date = split( '\/', $date_value );
-                        $date_values->{"start_date"} = $splitted_date[0];
-                        $date_values->{"end_date"}   = $splitted_date[1];
-                        if (   length( $date_values->{"start_date"} ) == 4
-                            && length( $date_values->{"end_date"} ) == 2 )
-                        {
-                            $date_values->{"end_date"} =
-                              substr( $date_values->{"start_date"}, 0, 2 )
-                              . $date_values->{"end_date"};
-                        }
-                    }
-                }
-            }
+  #this is probably not necessary since we do no process dates of volumes
+  # unless ( $record->get_fields->{T0425} ) {
+  #     if ( $record->get_fields->{T0089} ) {
+  #         my $date_value = undef;
+  #         if (
+  #             index( $record->get_fields->{T0089}[0]->{content}, "." ) != -1 )
+  #         {
+  #             my @splitted_string =
+  #               split( '\.', $record->get_fields->{T0089}[0]->{content} );
+  #             $date_value = $splitted_string[-1];
+  #         }
+  #         else {
+  #             $date_value = $record->get_fields->{T0089}[0]->{content};
+  #         }
+  #         if ( index( $date_value, "\/" ) != -1 ) {
+  #             unless ( $date_values->{"start_date"} ) {
 
-            #special cases like 10,10(1771/2003)1994 1594159
-            unless ( $date_values->{"date_norm"} ) {
-                unless ( index( $date_value, "(" ) != -1 ) {
-                    $date_values->{"date_norm"} = $date_value;
-                }
-                else {
-                    if ( $record->get_fields->{T0024}[0]->{content}
-                        && length( $record->get_fields->{T0024}[0]->{content} )
-                        == 4 )
-                    {
-                        $date_values->{"date_norm"} =
-                          $record->get_fields->{T0024}[0]->{content};
-                    }
-                }
-            }
-        }
-    }
+    #                 if ( index( $date_value, "(" ) == -1 ) {
+    #                     my @splitted_date = split( '\/', $date_value );
+    #                     $date_values->{"start_date"} = $splitted_date[0];
+    #                     $date_values->{"end_date"}   = $splitted_date[1];
+    #                     if (   length( $date_values->{"start_date"} ) == 4
+    #                         && length( $date_values->{"end_date"} ) == 2 )
+    #                     {
+    #                         $date_values->{"end_date"} =
+    #                           substr( $date_values->{"start_date"}, 0, 2 )
+    #                           . $date_values->{"end_date"};
+    #                     }
+    #                 }
+    #             }
+    #         }
+
+   #         #special cases like 10,10(1771/2003)1994 1594159
+   #         unless ( $date_values->{"date_norm"} ) {
+   #             unless ( index( $date_value, "(" ) != -1 ) {
+   #                 $date_values->{"date_norm"} = $date_value;
+   #             }
+   #             else {
+   #                 if ( $record->get_fields->{T0024}[0]->{content}
+   #                     && length( $record->get_fields->{T0024}[0]->{content} )
+   #                     == 4 )
+   #                 {
+   #                     $date_values->{"date_norm"} =
+   #                       $record->get_fields->{T0024}[0]->{content};
+   #                 }
+   #             }
+   #         }
+   #     }
+   # }
+
     if ( $date_values->{"date"} eq $date_values->{"date_norm"} ) {
         delete( $date_values->{"date"} );
     }
@@ -618,9 +623,11 @@ sub collect_person_data {
         foreach my $person ( @{ $person_sub_list->{values} } ) {
             my $person_item = {
                 namedata => $self->generate_name_data( $person->{content} ),
-                gnd   => $self->get_gnd_for_person( $person->{id}, $database ),
-                role_code => $self->get_role_code_for_person($person->{supplement},$person_sub_list->{field}),
-                field => $person_sub_list->{field},
+                gnd => $self->get_gnd_for_person( $person->{id}, $database ),
+                role_codes => $self->get_role_codes_for_person(
+                    $person->{supplement}, $person_sub_list->{field}
+                ),
+                field      => $person_sub_list->{field},
                 supplement => $person->{supplement}
             };
             push( @{$personlist}, $person_item );
@@ -630,33 +637,114 @@ sub collect_person_data {
 
 }
 
-sub get_role_code_for_person {
-    my $self      = shift;
+sub get_role_codes_for_person {
+    my $self       = shift;
     my $supplement = shift;
-    my $field = shift;
+    my $field      = shift;
+    my @role_codes = ();
+    my @roles      = ();
+    if ( defined $supplement ) {
+        @roles = split('] ', $supplement );
+    }
+    if ( !@roles && $field eq "T0100" ) {
+        push( @role_codes, "aut" );
+    }
+    if ( @roles ) {
+  
+        foreach my $role (@roles) {
+            $role =~ s/^\s+|\s+$//g;
+            if ($role =~ m/\]$/){
+            }else {
+                $role = $role .']';
+            }
 
-    if ($field eq "T0100"){
-        # Author
-        if (! defined $supplement){
-            return "aut"
+            if ( $role =~ m/Hrsg.]/ || $role =~ m/Herausgeber/ ) {
+                push( @role_codes, "edt" );
+            }
+            elsif ( $role =~ m/Autor]/ || $role =~ m/Verfasser]/ ) {
+                push( @role_codes, "aut" );
+            }
+
+            # Dubious author [dub]
+            elsif ( $role =~ m/Angebl. Verf.]/ ) { return "dub"; }
+            elsif ( $role =~ m/Übers.]/ || $role =~ m/Übersetzer/ ) {
+                push( @role_codes, "trl" );
+            }
+            elsif ( $role =~ m/Adressat]/ ) { push( @role_codes, "rcp" ); }
+
+            #elsif ($supplement =~m/Bearb/) { return "edt";}
+            #elsif ($supplement =~m/Begr/) { return "edt";}
+            elsif ( $role =~ m/Drehbuchautor]/ ) { push( @role_codes, "aus" ); }
+            elsif ( $role =~ m/Erzähler]/ )     { push( @role_codes, "nrt" ); }
+            elsif ( $role =~ m/Erzähler]/ )     { push( @role_codes, "nrt" ); }
+            elsif ( $role =~ m/Filmregisseur]/ ) { push( @role_codes, "fmd" ); }
+            elsif ( $role =~ m/Gefeierter]/ )    { push( @role_codes, "hnr" ); }
+            elsif ( $role =~ m/Gutachter]/ )     { push( @role_codes, "rev" ); }
+            elsif ( $role =~ m/Ill.]/ || $role =~ m/Illustrator]/ ) {
+                push( @role_codes, "aut" );
+                return "ill";
+            }
+            elsif ( $role =~ m/Interviewer]/ )  { push( @role_codes, "ivr" ); }
+            elsif ( $role =~ m/Interviewter]/ ) { push( @role_codes, "ive" ); }
+            elsif ( $role =~ m/Kartograph]/ )   { push( @role_codes, "ctg" ); }
+            elsif ($role =~ m/Kommentator]/
+                || $role =~ m/Kommentarverfasser]/ )
+            {
+                push( @role_codes, "aut" );
+                return "cmm";
+            }
+            elsif ( $role =~ m/Komponist]/ )    { push( @role_codes, "cmp" ); }
+            elsif ( $role =~ m/Mitwirkender]/ ) { push( @role_codes, "ctb" ); }
+
+            #elsif ($supplement =~m/Mutmaßl. Verf/) { return "trl";}
+            elsif ( $role =~ m/Red.]/ )          { push( @role_codes, "red" ); }
+            elsif ( $role =~ m/Produzent]/ )    { push( @role_codes, "pro" ); }
+            elsif ( $role =~ m/Schauspieler]/ ) { push( @role_codes, "act" ); }
+
+            #elsif ($supplement =~m/Stecher/) { return "red";}
+            elsif ( $role =~ m/Übers.]/ || $role =~ m/Übersetzer]/ ) {
+                push( @role_codes, "trl" );
+            }
+            elsif ( $role =~ m/Veranstalter]/ ) {
+                push( @role_codes, "orm" );
+            }
+            elsif ( $role =~ m/Verfasser einer Einleitung]/ ) {
+                push( @role_codes, "win" );
+            }
+            elsif ( $role =~ m/Verfasser eines Nachworts]/ ) {
+                push( @role_codes, "aft" );
+            }
+            elsif ( $role =~ m/Verfasser eines Geleitwortes]/ ) {
+                push( @role_codes, "aut" );
+            }
+            elsif ( $role =~ m/Verfasser eines Postscriptums]/ ) {
+                push( @role_codes, "aut" );
+            }
+            elsif ( $role =~ m/Verfasser eines Vorworts]/ ) {
+                push( @role_codes, "wpr" );
+            }
+            elsif ( $role =~ m/Verfasser von ergänzendem Text]/ ) {
+                push( @role_codes, "wst" );
+            }
+            elsif ( $role =~ m/Widmender]/ ) {
+                push( @role_codes, "dto" );
+            }
+            elsif ( $role =~ m/Widmungsempfänger]/ ) {
+                push( @role_codes, "dte" );
+            }
+            elsif ( $role =~ m/Zusammenstellender]/ ) {
+                push( @role_codes, "com" );
+            }
+
+            #elsif ($supplement =~m/Zeichner/) { return "red";}
+            else {
+                push( @role_codes, $role );
+            }
         }
+
     }
-    if ($supplement =~m/Hrsg/) { return "edt";}
-    elsif ($supplement =~m/Übers/) { return "trl";}
-    elsif ($supplement =~m/Adressat/) { return "rcp";}
-    elsif ($supplement =~m/Bearb/) { return "edt";}
-    elsif ($supplement =~m/Fotograf/) { return "pht";}
-    elsif ($supplement =~m/Gutachter/) { return "rev";}
-    elsif ($supplement =~m/Ill/) { return "ill";}
-    elsif ($supplement =~m/Interviewer/) { return "ivr";}
-    elsif ($supplement =~m/Interviewter/) { return "ive";}
-    elsif ($supplement =~m/Kartograph/) { return "ctg";}
-    elsif ($supplement =~m/Übers/) { return "trl";}
-    elsif ($supplement =~m/Kommentator/) { return "cmm";}
-    elsif ($supplement =~m/Red/) { return "red";}
-    else {
-        return "oth";
-    }
+    return \@role_codes;
+
 }
 
 sub get_gnd_for_person {
@@ -731,7 +819,7 @@ sub collect_place_data {
     my $record     = shift;
     my $place_list = [];
     my $mult_values =
-    $self->get_all_mult_values( $record->get_fields->{T0410} );
+      $self->get_all_mult_values( $record->get_fields->{T0410} );
 
     foreach my $mult_value ( @{$mult_values} ) {
         my $currentPlaceObject = {};
@@ -910,11 +998,14 @@ sub generate_name_data {
         $namedata->{given_name} = $displayname;
         $namedata->{given_name} =~ s/^\s+|\s+$//g;
     }
-    $namedata->{displayname}  = $namedata->{given_name}; " " . $namedata->{termsOfAddress};
-    if ($namedata->{family_name}) {
-        $namedata->{displayname} .= " " . $namedata->{family_name}
-    }if ($namedata->{termsOfAddress}) {
-        $namedata->{displayname} .= " &lt;" . $namedata->{termsOfAddress} . "&gt;"
+    $namedata->{displayname} = $namedata->{given_name};
+    " " . $namedata->{termsOfAddress};
+    if ( $namedata->{family_name} ) {
+        $namedata->{displayname} .= " " . $namedata->{family_name};
+    }
+    if ( $namedata->{termsOfAddress} ) {
+        $namedata->{displayname} .=
+          " &lt;" . $namedata->{termsOfAddress} . "&gt;";
     }
     return $namedata;
 

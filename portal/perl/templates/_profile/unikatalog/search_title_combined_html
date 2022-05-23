@@ -42,8 +42,9 @@
     <a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-searchresult_tab_yewno" id="ob-searchresult_yewno_li">[% msg.maketext("Yewno") %]</a>
   </li>
 [% END %]  
-</ul>
+
 [% END%]
+</ul>
 
 <!-- AKTUELL [% current_profile %] - BOOKS [% searchprofileid_of_books %] - ARTICLES [% searchprofileid_of_articles %] - Web [% searchprofileid_of_web %] -->
 

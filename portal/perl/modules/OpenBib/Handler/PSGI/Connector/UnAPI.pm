@@ -644,18 +644,19 @@ sub get_role_codes_for_person {
     my @role_codes = ();
     my @roles      = ();
     if ( defined $supplement ) {
-        @roles = split('] ', $supplement );
+        @roles = split( '] ', $supplement );
     }
     if ( !@roles && $field eq "T0100" ) {
         push( @role_codes, "aut" );
     }
-    if ( @roles ) {
-  
+    if (@roles) {
+
         foreach my $role (@roles) {
             $role =~ s/^\s+|\s+$//g;
-            if ($role =~ m/\]$/){
-            }else {
-                $role = $role .']';
+            if ( $role =~ m/\]$/ ) {
+            }
+            else {
+                $role = $role . ']';
             }
 
             if ( $role =~ m/Hrsg.]/ || $role =~ m/Herausgeber/ ) {
@@ -665,15 +666,17 @@ sub get_role_codes_for_person {
                 push( @role_codes, "aut" );
             }
 
-            # Dubious author [dub]
-            elsif ( $role =~ m/Angebl. Verf.]/ ) { return "dub"; }
+            # Attributed name [att]
+            elsif ( $role =~ m/Angebl. Verf.]/ ) { return "att"; }
             elsif ( $role =~ m/Übers.]/ || $role =~ m/Übersetzer/ ) {
                 push( @role_codes, "trl" );
             }
             elsif ( $role =~ m/Adressat]/ ) { push( @role_codes, "rcp" ); }
 
-            #elsif ($supplement =~m/Bearb/) { return "edt";}
-            #elsif ($supplement =~m/Begr/) { return "edt";}
+            elsif ( $supplement =~ m/Bearb.]/ ) { return "edt"; }
+
+            #oth$$3Begründer eines Werkes
+            elsif ( $supplement =~ m/Begr.]/ )   { return "oth"; }
             elsif ( $role =~ m/Drehbuchautor]/ ) { push( @role_codes, "aus" ); }
             elsif ( $role =~ m/Erzähler]/ )     { push( @role_codes, "nrt" ); }
             elsif ( $role =~ m/Erzähler]/ )     { push( @role_codes, "nrt" ); }
@@ -696,12 +699,12 @@ sub get_role_codes_for_person {
             elsif ( $role =~ m/Komponist]/ )    { push( @role_codes, "cmp" ); }
             elsif ( $role =~ m/Mitwirkender]/ ) { push( @role_codes, "ctb" ); }
 
-            #elsif ($supplement =~m/Mutmaßl. Verf/) { return "trl";}
-            elsif ( $role =~ m/Red.]/ )          { push( @role_codes, "red" ); }
+            elsif ( $supplement =~ m/Mutmaßl. Verf.]/ ) { return "att"; }
+            elsif ( $role =~ m/Red.]/ ) { push( @role_codes, "red" ); }
             elsif ( $role =~ m/Produzent]/ )    { push( @role_codes, "pro" ); }
             elsif ( $role =~ m/Schauspieler]/ ) { push( @role_codes, "act" ); }
 
-            #elsif ($supplement =~m/Stecher/) { return "red";}
+            elsif ( $supplement =~ m/Stecher]/ ) { return "egr"; }
             elsif ( $role =~ m/Übers.]/ || $role =~ m/Übersetzer]/ ) {
                 push( @role_codes, "trl" );
             }
@@ -715,10 +718,10 @@ sub get_role_codes_for_person {
                 push( @role_codes, "aft" );
             }
             elsif ( $role =~ m/Verfasser eines Geleitwortes]/ ) {
-                push( @role_codes, "aut" );
+                push( @role_codes, "aui" );
             }
             elsif ( $role =~ m/Verfasser eines Postscriptums]/ ) {
-                push( @role_codes, "aut" );
+                push( @role_codes, "wst" );
             }
             elsif ( $role =~ m/Verfasser eines Vorworts]/ ) {
                 push( @role_codes, "wpr" );
@@ -736,9 +739,9 @@ sub get_role_codes_for_person {
                 push( @role_codes, "com" );
             }
 
-            #elsif ($supplement =~m/Zeichner/) { return "red";}
+            elsif ( $supplement =~ m/Zeichner/ ) { return "red"; }
             else {
-                push( @role_codes, $role );
+                push( @role_codes, "oth" );
             }
         }
 
@@ -790,12 +793,71 @@ sub collect_corporation_data {
                 namedata => $corp->{content},
                 gnd => $self->get_gnd_for_corporation( $corp->{id}, $database ),
                 field      => $corp_sub_list->{field},
+                role_codes => $self->get_role_codes_for_corporation(
+                    $corp->{supplement}, $corp_sub_list->{field}
+                ),
                 supplement => $corp->{supplement}
             };
             push( @{$corporation_list}, $corp_item );
         }
     }
     return $corporation_list;
+}
+
+sub get_role_codes_for_corporation {
+
+    my $self       = shift;
+    my $supplement = shift;
+    my $field      = shift;
+    my @role_codes = ();
+    my @roles      = ();
+
+    if ( defined $supplement ) {
+        @roles = split( '] ', $supplement );
+    }
+    if (@roles) {
+
+        foreach my $role (@roles) {
+            $role =~ s/^\s+|\s+$//g;
+            if ( $role =~ m/\]$/ ) {
+            }
+            else {
+                $role = $role . ']';
+            }
+            if ( $role =~ m/Herausgebendes Organ]/ ) {
+                push( @role_codes, "isb" );
+            }
+            elsif ( $role =~ m/Veranstalter]/ ) {
+                push( @role_codes, "orm" );
+            }
+            elsif ( $role =~ m/Gastgebende Institution]/ ) {
+                push( @role_codes, "his" );
+            }
+            elsif ( $role =~ m/Geregelte Gebietskörperschaft]/ ) {
+                push( @role_codes, "jug" );
+            }
+            elsif ( $role =~ m/Normerlassende Gebietskörperschaft]/ ) {
+                push( @role_codes, "enj" );
+            }
+            elsif ( $role =~ m/Vertragspartner]/ ) {
+                push( @role_codes, "ctr" );
+            }
+            elsif ( $role =~ m/Widmungsempfänger]/ ) {
+                push( @role_codes, "dte" );
+            }
+            else {
+                push( @role_codes, "oth" );
+            }
+        }
+
+    }
+
+    #there might be organizations with no role code
+    else {
+        push( @role_codes, "oth" );
+    }
+    return \@role_codes;
+
 }
 
 sub get_gnd_for_corporation {

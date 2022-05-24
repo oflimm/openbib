@@ -1,11 +1,10 @@
-<h1 class="document_title">OpenURL-Resolver der USB K&ouml;ln</h1>
+<h1 class="document_title">OpenURL-Resolver des Portals [% config.get_viewdesc_from_viewname(view) %]</h1>
  <p>
  Über den OpenURL-Resolver kann aus einer beliebigen externen Anwendung heraus die Verfügbarkeitsrecherche
- des Suchportals der USB K&ouml;ln gestartet werden. 
+ des Suchportals [% config.get_viewdesc_from_viewname(view) %] gestartet werden. 
  Basis des Aufrufs ist ein GET- oder POST-Request, in dem die bibliographischen Daten des gesuchten Dokumentes in der 
  OpenURL-Syntax (<a href="https://oclc-research.github.io/OpenURL-Frozen/docs/pdf/openurl-01.pdf" target="_blank">Version 0.1</a> oder
- <a href="https://groups.niso.org/higherlogic/ws/public/download/14833/z39_88_2004_r2010.pdf" target="_blank">Version 1.0</a> 
- ) an den Resolver übergeben werden.  
+ <a href="https://groups.niso.org/higherlogic/ws/public/download/14833/z39_88_2004_r2010.pdf" target="_blank">Version 1.0</a>) an den Resolver übergeben werden.  
  </p>
 
 
@@ -13,13 +12,13 @@
 
  <h4>Beispiel</h4>
  <p>
- <a href="https://[% servername %][% path_prefix %]/[% config.get('connector_openurl_loc') %]?sid=FIZTechnik:INSPEC&genre=article&pid=%3Cauthor%3ED+Stauffer%3C%2Fauthor%3E&atitle=Computer+simulations+of+cellular+automata&volume=24&issue=5&pages=909-927&title=Journal+of+Physics+A&issn=0305-4470&date=1991" target="_blank">https://[% servername %][% path_prefix %]/[% config.get('connector_openurl_loc') %]?sid=FIZTechnik:INSPEC&genre=article&pid=%3Cauthor%3ED+Stauffer%3C%2Fauthor%3E&atitle=Computer+simulations+of+cellular+automata&volume=24&issue=5&pages=909-927&title=Journal+of+Physics+A&issn=0305-4470&date=1991</a>
+ <a href="[% scheme %]://[% servername %][% path_prefix %]/[% config.get('connector_openurl_loc') %]?sid=FIZTechnik:INSPEC&genre=article&pid=%3Cauthor%3ED+Stauffer%3C%2Fauthor%3E&atitle=Computer+simulations+of+cellular+automata&volume=24&issue=5&pages=909-927&title=Journal+of+Physics+A&issn=0305-4470&date=1991" target="_blank">[% scheme %]://[% servername %][% path_prefix %]/[% config.get('connector_openurl_loc') %]?sid=FIZTechnik:INSPEC&genre=article&pid=%3Cauthor%3ED+Stauffer%3C%2Fauthor%3E&atitle=Computer+simulations+of+cellular+automata&volume=24&issue=5&pages=909-927&title=Journal+of+Physics+A&issn=0305-4470&date=1991</a>
 </p>
 
  <h4>Parameter</h4>
  
  <ul style="list-style-type:disc;">
-  <li><b>BASE-URL:</b> https://[% servername %][% path_prefix %]/[% config.get('connector_openurl_loc') %]</li>&nbsp;
+  <li><b>BASE-URL:</b> [% scheme %]://[% servername %][% path_prefix %]/[% config.get('connector_openurl_loc') %]</li>&nbsp;
   <li><b>ORIGIN-DESCRIPTION:</b> sid='Vendor-ID':'Datenbank-ID'<br>
    <i>z.B.:</i> sid=FIZTechnik:INSPEC</li>
   <li><b>OBJECT-METADATA-ZONE:</b></br>
@@ -58,7 +57,7 @@
 
  <h4>Beispiel</h4>
  <p>
- <a href="https://[% servername %][% path_prefix %]/[% config.get('connector_openurl_loc') %]?url_ver=Z39.88-2004&sid=FIZTechnik:INSPEC&rft.genre=article&rft.aulast=Stauffer&rft.auinit=D&rft.atitle=Computer+simulations+of+cellular+automata&rft.volume=24&rft.issue=5&rft.pages=909-927&rft.title=Journal+of+Physics+A&rft.issn=0305-4470&rft.date=1991" target="_blank">https://[% servername %][% path_prefix %]/[% config.get('connector_openurl_loc') %]?url_ver=Z39.88-2004&sid=FIZTechnik:INSPEC&rft.genre=article&rft.aulast=Stauffer&rft.auinit=D&rft.atitle=Computer+simulations+of+cellular+automata&rft.volume=24&rft.issue=5&rft.pages=909-927&rft.title=Journal+of+Physics+A&rft.issn=0305-4470&rft.date=1991</a>
+ <a href="[% scheme %]://[% servername %][% path_prefix %]/[% config.get('connector_openurl_loc') %]?url_ver=Z39.88-2004&sid=FIZTechnik:INSPEC&rft.genre=article&rft.aulast=Stauffer&rft.auinit=D&rft.atitle=Computer+simulations+of+cellular+automata&rft.volume=24&rft.issue=5&rft.pages=909-927&rft.title=Journal+of+Physics+A&rft.issn=0305-4470&rft.date=1991" target="_blank">[% scheme %]://[% servername %][% path_prefix %]/[% config.get('connector_openurl_loc') %]?url_ver=Z39.88-2004&sid=FIZTechnik:INSPEC&rft.genre=article&rft.aulast=Stauffer&rft.auinit=D&rft.atitle=Computer+simulations+of+cellular+automata&rft.volume=24&rft.issue=5&rft.pages=909-927&rft.title=Journal+of+Physics+A&rft.issn=0305-4470&rft.date=1991</a>
 </p>
 
  <h4>Dokumentation</h4>

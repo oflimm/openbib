@@ -1,0 +1,74 @@
+<h1 class="document_title">OpenURL-Resolver der USB K&ouml;ln</h1>
+ <p>
+ Über den OpenURL-Resolver kann aus einer beliebigen externen Anwendung heraus die Verfügbarkeitsrecherche
+ des Suchportals der USB K&ouml;ln gestartet werden. 
+ Basis des Aufrufs ist ein GET- oder POST-Request, in dem die bibliographischen Daten des gesuchten Dokumentes in der 
+ OpenURL-Syntax (<a href="https://oclc-research.github.io/OpenURL-Frozen/docs/pdf/openurl-01.pdf" target="_blank">Version 0.1</a> oder
+ <a href="https://groups.niso.org/higherlogic/ws/public/download/14833/z39_88_2004_r2010.pdf" target="_blank">Version 1.0</a> 
+ ) an den Resolver übergeben werden.  
+ </p>
+
+
+ <h3>Schnittstellenbeschreibung (OpenURL Version 0.1)</h3>
+
+ <h4>Beispiel</h4>
+ <p>
+ <a href="[% scheme %]://[% servername %][% path_prefix %]/[% config.get('connector_openurl_loc') %]?sid=FIZTechnik:INSPEC&genre=article&pid=%3Cauthor%3ED+Stauffer%3C%2Fauthor%3E&atitle=Computer+simulations+of+cellular+automata&volume=24&issue=5&pages=909-927&title=Journal+of+Physics+A&issn=0305-4470&date=1991" target="_blank">[% scheme %]://[% servername %][% path_prefix %]/[% config.get('connector_openurl_loc') %]?sid=FIZTechnik:INSPEC&genre=article&pid=%3Cauthor%3ED+Stauffer%3C%2Fauthor%3E&atitle=Computer+simulations+of+cellular+automata&volume=24&issue=5&pages=909-927&title=Journal+of+Physics+A&issn=0305-4470&date=1991</a>
+</p>
+
+ <h4>Parameter</h4>
+ 
+ <ul style="list-style-type:disc;">
+  <li><b>BASE-URL:</b> [% scheme %]://[% servername %][% path_prefix %]/[% config.get('connector_openurl_loc') %]</li>&nbsp;
+  <li><b>ORIGIN-DESCRIPTION:</b> sid='Vendor-ID':'Datenbank-ID'<br>
+   <i>z.B.:</i> sid=FIZTechnik:INSPEC</li>
+  <li><b>OBJECT-METADATA-ZONE:</b></br>
+   <ul style="list-style-type:disc;">
+    <li>genre='book|journal|conference|article|preprint|proceeding|bookitem'<br>
+     <i>z.B.:</i> genre=article</li>&nbsp;
+    <li>aulast='Nachname des 1. Autors'<br>
+     <i>z.B.:</i> aulast=Stauffer</li>&nbsp;
+    <li>aufirst='Vorname des 1. Autors' <i>oder alternativ:</i> auinit='Initialen des 1. Autors'<br>
+     <i>z.B.:</i> aufirst=Dietrich <i>oder:</i> auinit=D<p>
+     <i>Hinweis: Falls Nachname und Vorname nicht in getrennten Feldern geliefert werden k&ouml;nnen, muss der komplette 
+     Name des Autors im Tag &lt;author&gt; innerhalb der LOCAL-IDENTIFIER-ZONE geliefert werden, d.h.:</i><p>
+     pid=&lt;location&gt;'Campus'&lt;/location&gt;&lt;author&gt;'Name des Autors'&lt;/author&gt;<p>
+     <i>z.B.:</i> pid=&lt;location&gt;38&lt;/location&gt;&lt;author&gt;D. Stauffer&lt;/author&gt;<br>
+     <i>bzw. URL-encoded:</i> pid=%3Clocation%3E290%3C%2Flocation%3E%3Cauthor%3ED. Stauffer%3C%2Fauthor%3E
+     </li>&nbsp;
+    <li>title='Titel der Zeitschrift, des Buches oder Konferenzbandes'<br>
+     <i>z.B.:</i> title=Journal of Physics A</li>
+    <li>atitle='Titel des Aufsatzes'<br>
+     <i>z.B.:</i> atitle=Computer simulations of cellular automata</li>
+    <li>issn='ISSN' <i>bzw.</i> isbn='ISBN'<br>
+     <i>z.B.:</i> issn=0305-4470</li>&nbsp;
+    <li>date='Jahrgang bzw. Erscheinungsjahr'<br>
+     <i>z.B.:</i> date=1991</li>&nbsp;
+    <li>volume='Band'<br>
+     <i>z.B.:</i> volume=24</li>&nbsp;
+    <li>issue='Heft'<br>
+     <i>z.B.:</i> issue=5</li>&nbsp;
+    <li>pages='Anfangs- und Endseite des Artikels' <i>oder alternativ:</i> spage='Anfangsseite' <i>und</i> epage='Endseite'<br>
+     <i>z.B.:</i> pages=909-927 <i>oder:</i> spage==909&amp;epage=927</li>&nbsp;
+   </ul>
+  </li>
+ </ul>
+
+ <h3>Schnittstellenbeschreibung (OpenURL Version 1.0)</h3>
+
+ <h4>Beispiel</h4>
+ <p>
+ <a href="[% scheme %]://[% servername %][% path_prefix %]/[% config.get('connector_openurl_loc') %]?url_ver=Z39.88-2004&sid=FIZTechnik:INSPEC&rft.genre=article&rft.aulast=Stauffer&rft.auinit=D&rft.atitle=Computer+simulations+of+cellular+automata&rft.volume=24&rft.issue=5&rft.pages=909-927&rft.title=Journal+of+Physics+A&rft.issn=0305-4470&rft.date=1991" target="_blank">[% scheme %]://[% servername %][% path_prefix %]/[% config.get('connector_openurl_loc') %]?url_ver=Z39.88-2004&sid=FIZTechnik:INSPEC&rft.genre=article&rft.aulast=Stauffer&rft.auinit=D&rft.atitle=Computer+simulations+of+cellular+automata&rft.volume=24&rft.issue=5&rft.pages=909-927&rft.title=Journal+of+Physics+A&rft.issn=0305-4470&rft.date=1991</a>
+</p>
+
+ <h4>Dokumentation</h4>
+ 
+ <ul style="list-style-type:disc;">
+  <li><a href="http://www.niso.org/apps/group_public/project/details.php?project_id=82" target="_blank">NISO Standard 
+   Z39.88-2004</a></li>
+  <li><a href="http://www.openurl.info/registry/docs/implementation_guidelines/" target="_blank">Implementation 
+   Guidelines</a></li>
+ </ul>
+ &nbsp;<br>
+
+ </blockquote>

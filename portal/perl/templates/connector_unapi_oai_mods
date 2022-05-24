@@ -107,32 +107,13 @@
             <mods:name type="corporate" [%- IF item.gnd -%] authority="gnd" authorityURI="http://d-nb.info/gnd/"
                 valueURI="http://d-nb.info/gnd/[% item.gnd %]" [%END%]>
                 <mods:namePart>[% item.namedata %]</mods:namePart>
+                [%- FOREACH role_code IN item.role_codes %]
                 <mods:role>
-                    [%- IF item.field == "T0200" %]
                     <mods:roleTerm type="code" authority="marcrelator"
                         authorityURI="http://id.loc.gov/vocabulary/relators"
-                        valueURI="http://id.loc.gov/vocabulary/relators/aut">aut</mods:roleTerm>
-                    [%- ELSIF item.supplement.match('Hrsg') %]
-                    <mods:roleTerm type="code" authority="marcrelator"
-                        authorityURI="http://id.loc.gov/vocabulary/relators"
-                        valueURI="http://id.loc.gov/vocabulary/relators/edt">edt</mods:roleTerm>
-                    [%- ELSIF item.supplement.match('Übers') %]
-                    <mods:roleTerm type="code" authority="marcrelator"
-                        authorityURI="http://id.loc.gov/vocabulary/relators"
-                        valueURI="http://id.loc.gov/vocabulary/relators/trl">trl</mods:roleTerm>
-                    [%- ELSIF item.supplement.match('Bearb') %]
-                    <mods:roleTerm type="code" authority="marcrelator"
-                        authorityURI="http://id.loc.gov/vocabulary/relators"
-                        valueURI="http://id.loc.gov/vocabulary/relators/edt">edt</mods:roleTerm>
-                    [%- ELSE %]
-                    <mods:roleTerm type="code" authority="marcrelator"
-                        authorityURI="http://id.loc.gov/vocabulary/relators"
-                        valueURI="http://id.loc.gov/vocabulary/relators/oth">oth</mods:roleTerm>
-                    [%- IF item.supplement %]
-                    <mods:roleTerm type="text">[%- item.supplement %] | replace('¬', '') %]</mods:roleTerm>
-                    [%- END %]
-                    [%- END %]
+                        valueURI="http://id.loc.gov/vocabulary/relators/aut">[%- role_code -%]</mods:roleTerm>
                 </mods:role>
+                [%- END -%]
             </mods:name>
             [%- END -%]
             [%- END -%]

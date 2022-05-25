@@ -247,6 +247,8 @@ in: [% resulttime %] [% msg.maketext("Sekunden") %]
 [% END %]
 
 <script>
+$("#ob-searchresult_[% current_tab %]_count").html(" <img src=\"/images/openbib/loading.gif\" id=\"ob-searchresult_[% current_tab %]_loading\" />");
+
 $(document).ready(function(){
         var numhits_[% current_tab %] = $("#numhits_[% current_tab %]").text();
         if (numhits_[% current_tab %]){

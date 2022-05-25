@@ -18,6 +18,8 @@
 #   separate_facets = 1 ;
 # END;
  separate_facets = 0 ;
+
+ current_tab = query.param('tab');
 %]
 <p/>
 
@@ -32,6 +34,7 @@
     <input type="hidden" name="srt"        value="relevance_desc" />
     <input type="hidden" name="st"         value="1" />
     <input type="hidden" name="lt"         value="[% qopts.lt %]" />
+    <input type="hidden" name="tab"        value="[% current_tab %]" />
     <input type="hidden" name="profile"    value="[% searchquery.get_searchprofile %]" />
 <!--
 [% IF idsuffix == '_books' %]    
@@ -242,6 +245,20 @@ in: [% resulttime %] [% msg.maketext("Sekunden") %]
 
 <p/>
 [% END %]
+
+<script>
+$("#ob-searchresult_[% current_tab %]_count").html(" <img src=\"/images/openbib/loading.gif\" id=\"ob-searchresult_[% current_tab %]_loading\" />");
+
+$(document).ready(function(){
+        var numhits_[% current_tab %] = $("#numhits_[% current_tab %]").text();
+        if (numhits_[% current_tab %]){
+            $("#ob-searchresult_[% current_tab %]_count").html(" ("+numhits_[% current_tab %]+")");
+        }
+        else {
+            $("#ob-searchresult_[% current_tab %]_count").html(" (0)");
+        }
+});
+</script>
 
   </div><!-- End: col -->
 </div><!-- End: row -->

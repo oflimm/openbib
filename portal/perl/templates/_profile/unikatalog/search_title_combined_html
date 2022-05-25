@@ -25,151 +25,100 @@
 
 </style>
 
+[%
+
+ current_tab = query.param('tab');
+
+%]
 
 <ul class="nav nav-tabs ps-2" id="ob-searchresult_tabs" role="tablist">
   <li class="nav-item" role="presentation">
-    <a class="nav-link[% IF current_profile != searchprofileid_of_articles && current_profile != searchprofileid_of_web %] active[% END %]" role="tab" data-bs-toggle="tab" href="#ob-searchresult_tab_books" id="ob-searchresult_books_li">[% msg.maketext("Bücher &amp; Mehr") %]</a>
+    <a class="nav-link[% IF current_tab == "books" %] active[% END %]" [% IF current_tab != "books" %]hx-indicator="#spinner" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp','facets'] }) %];page=1;profile=[% searchprofileid_of_books %];tab=books;[% searchquery.to_cgi_querystring({ exclude = ['profile'] }) %]" hx-target="#ob-searchresult_tab_books" hx-trigger="load"[% END %] role="tab" data-bs-toggle="tab" href="#ob-searchresult_tab_books" id="ob-searchresult_books_li">[% msg.maketext("Bücher &amp; Mehr") %]<span id="ob-searchresult_books_count">[% IF current_tab == 'books' %] ([% hits %])[% ELSE %] <img src="/images/openbib/loading.gif" id="ob-searchresult_[% current_tab %]_loading" />[% END %]</span></a>
   </li>
   <li class="nav-item" role="presentation">
-    <a class="nav-link[% IF current_profile == searchprofileid_of_articles %] active[% END %]" role="tab" data-bs-toggle="tab" href="#ob-searchresult_tab_articles" id="ob-searchresult_articles_li">[% msg.maketext("Aufsätze &amp; Mehr") %]</a>
+    <a class="nav-link[% IF current_tab == "articles" %] active[% END %]" [% IF current_tab != "articles" %]hx-indicator="#spinner" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp','facets'] }) %];page=1;profile=[% searchprofileid_of_articles %];tab=articles;[% searchquery.to_cgi_querystring({ exclude = ['profile'] }) %]" hx-target="#ob-searchresult_tab_articles" hx-trigger="load"[% END %] role="tab" data-bs-toggle="tab" href="#ob-searchresult_tab_articles" id="ob-searchresult_articles_li">[% msg.maketext("Aufsätze &amp; Mehr") %]<span id="ob-searchresult_articles_count">[% IF current_tab == 'articles' %] ([% hits %])[% ELSE %] <img src="/images/openbib/loading.gif" id="ob-searchresult_[% current_tab %]_loading" />[% END %]</span></a>
   </li>
-[% IF 0 == 1 %]  
-  <li class="nav-item" role="presentation">
-    <a class="nav-link[% IF current_profile == searchprofileid_of_web %] active[% END %]" role="tab" data-bs-toggle="tab" href="#ob-searchresult_tab_web" id="ob-searchresult_web_li">[% msg.maketext("Webseite") %]</a>
-  </li>
-[% IF searchquery.get_searchfield('freesearch').val && NOT searchquery.get_searchfield('freesearch').val.match(':') %]
-  <li class="nav-item" role="presentation">
-    <a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-searchresult_tab_yewno" id="ob-searchresult_yewno_li">[% msg.maketext("Yewno") %]</a>
-  </li>
-[% END %]  
-
-[% END%]
 </ul>
 
-<!-- AKTUELL [% current_profile %] - BOOKS [% searchprofileid_of_books %] - ARTICLES [% searchprofileid_of_articles %] - Web [% searchprofileid_of_web %] -->
-
-<script>
-$(document).ready(function(){
-
-[% IF 0 == 1 %]
-[% IF current_profile == searchprofileid_of_web %]
-	    var numhits_web = $("#numhits_web").text();
-	    if (numhits_web){
-	       $("#ob-searchresult_web_li").append(" ("+numhits_web+")");
-	    }
-	    else {
-     	       $("#ob-searchresult_web_li").append(" (0)");
-	    }
-[% ELSE %]
-    $("#ob-searchresult_web_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-searchresult_web_loading\" />"); 
-    $.get("[% path_prefix %]/[% config.get('search_loc') %].include?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp','facets'] }) %];page=1;profile=[% searchprofileid_of_web %];[% searchquery.to_cgi_querystring({ exclude = ['profile'] }) %]",
-        function (txt){
-            $("#ob-searchresult_tab_web").html(txt);
-            $("#ob-searchresult_web_loading").hide();
-	    var numhits_web = $("#numhits_web").text();
-	    if (numhits_web){
-	       $("#ob-searchresult_web_li").append(" ("+numhits_web+")");
-	    }
-	    else {
-     	       $("#ob-searchresult_web_li").append(" (0)");
-	    }
-        });
-[% END %]
-[% END %]
-
-[% IF current_profile == searchprofileid_of_articles %]
-	    var numhits_articles = $("#numhits_articles").text();
-	    if (numhits_articles){
-	       $("#ob-searchresult_articles_li").append(" ("+numhits_articles+")");
-	    }
-	    else {
-     	       $("#ob-searchresult_articles_li").append(" (0)");
-	    }
-[% ELSE %]
-    $("#ob-searchresult_articles_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-searchresult_articles_loading\" />"); 
-    $.get("[% path_prefix %]/[% config.get('search_loc') %].include?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp','facets'] }) %];page=1;profile=[% searchprofileid_of_articles %];[% searchquery.to_cgi_querystring({ exclude = ['profile'] }) %]",
-        function (txt){
-            $("#ob-searchresult_tab_articles").html(txt);
-            $("#ob-searchresult_articles_loading").hide();
-	    var numhits_articles = $("#numhits_articles").text();
-	    if (numhits_articles){
-	       $("#ob-searchresult_articles_li").append(" ("+numhits_articles+")");
-	    }
-	    else {
-     	       $("#ob-searchresult_articles_li").append(" (0)");
-	    }
-
-        });
-[% END %]
-
-
-[% IF current_profile == searchprofileid_of_books && ( current_profile != searchprofileid_of_articles || current_profile != searchprofileid_of_web ) %]
-	    var numhits_books = $("#numhits_books").text();
-	    if (numhits_books){
-	       $("#ob-searchresult_books_li").append(" ("+numhits_books+")");
-	    }
-	    else {
-     	       $("#ob-searchresult_books_li").append(" (0)");
-	    }
-[% ELSIF current_profile == searchprofileid_of_articles || current_profile == searchprofileid_of_web  %]
-    $("#ob-searchresult_books_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-searchresult_books_loading\" />"); 
-    $.get("[% path_prefix %]/[% config.get('search_loc') %].include?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp','facets'] }) %];page=1;profile=[% searchprofileid_of_books %];[% searchquery.to_cgi_querystring({ exclude = ['profile'] }) %]",
-        function (txt){
-            $("#ob-searchresult_tab_books").html(txt);
-            $("#ob-searchresult_books_loading").hide();
-	    var numhits_books = $("#numhits_books").text();
-	    if (numhits_books){
-	       $("#ob-searchresult_books_li").append(" ("+numhits_books+")");
-	    }
-	    else {
-     	       $("#ob-searchresult_books_li").append(" (0)");
-	    }
-        });
-[% END %]
-
-
-});
-
-</script>
+<!-- AKTUELL [% current_profile %] - BOOKS [% searchprofileid_of_books %] - ARTICLES [% searchprofileid_of_articles %]  -->
 
 <div class="tab-content pt-3">
 
+<div id="spinner" class="d-flex justify-content-center htmx-indicator spinner-large" style="width: 100vw!important;">
+<div class="lds-dual-ring pt-5"></div>
+</div>
+
+<!-- See: https://loading.io/css/ CC0 -->
+<style>
+
+
+.lds-dual-ring {
+  display: inline-block;
+}
+
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;  
+  border-radius: 50%;
+  border: 6px solid #000;
+  border-color: #000 transparent #000 transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner-large {
+	 position: absolute !important;
+         width: 100%;
+	 height: 100%;
+}
+
+.spinner-small {
+	 position: relative;
+         width: 80px;
+	 height: 80px;
+}
+
+.htmx-indicator {
+         display: block;  
+         background-color: #eee;
+	 z-index: -999 !important;
+
+         opacity:0;
+         transition: opacity 500ms ease-in;
+	
+}
+.htmx-request .htmx-indicator{
+        z-index: 10000 !important;
+        opacity:0.7;
+}
+.htmx-request.htmx-indicator{
+        z-index: 10000 !important;
+        opacity:0.7;
+}
+</style>
+
+
 <div role="tabpanel" id="ob-searchresult_tab_books" class="tab-pane fade-in row [% IF current_profile == searchprofileid_of_books || ( current_profile != searchprofileid_of_articles && current_profile != searchprofileid_of_web ) %] active[% END %] flex-md-row">
-[% IF current_profile == searchprofileid_of_books || ( current_profile != searchprofileid_of_articles && current_profile != searchprofileid_of_web ) %]
-[% PROCESS common/subtemplate name="search_title_combined_include" separate_facets=1 %]
+[% IF current_tab == "books" %]
+[% PROCESS common/subtemplate name="search_title_combined_include" %]
 [% END %]
 </div>
 
 <div role="tabpanel" id="ob-searchresult_tab_articles" class="tab-pane fade-in row [% IF current_profile == searchprofileid_of_articles %]active[% END %] flex-md-row">
-[% IF current_profile == searchprofileid_of_articles %]
+[% IF current_tab == "articles" %]
 [% PROCESS common/subtemplate name="search_title_combined_include" %]
 [% END %]
 </div>
 
-[% IF 0 == 1 %]
-<div role="tabpanel" id="ob-searchresult_tab_web" class="tab-pane fade-in row [% IF current_profile == searchprofileid_of_web %]active[% END %] flex-md-row">
-[% IF current_profile == searchprofileid_of_web %]
-[% PROCESS common/subtemplate name="search_title_combined_include" %]
-[% END %]
-</div>
-
-[% IF searchquery.get_searchfield('freesearch').val && NOT searchquery.get_searchfield('freesearch').val.match(':') %]
-<div role="tabpanel" id="ob-searchresult_tab_yewno" class="tab-pane fade-in row flex-md-row">
-
-<div id="yewno-widget" style="height:420px;width:820px;"></div> <!-- position this where you want the widget to show up -->
-
-<script>
-new YewnoDiscoverWidget({
-height: 420,
-width: 820,
-containerElementSelector: "#yewno-widget",
-query: "[% searchquery.get_searchfield('freesearch').val.replace('"',' ') | html %]",
-languages: ["deu"], // available languages eng,zho,deu
-});
-</script>
-
-</div>
-[% END %]
-[% END %]
 
 </div>

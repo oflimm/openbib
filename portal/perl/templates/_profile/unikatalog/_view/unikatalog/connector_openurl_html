@@ -1,10 +1,11 @@
-<h1 class="document_title">OpenURL-Resolver des Portals [% config.get_viewdesc_from_viewname(view) %]</h1>
+<h1 class="document_title">OpenURL-Resolver der USB K&ouml;ln</h1>
  <p>
  Über den OpenURL-Resolver kann aus einer beliebigen externen Anwendung heraus die Verfügbarkeitsrecherche
- des Suchportals [% config.get_viewdesc_from_viewname(view) %] gestartet werden. 
+ des Suchportals der USB K&ouml;ln gestartet werden. 
  Basis des Aufrufs ist ein GET- oder POST-Request, in dem die bibliographischen Daten des gesuchten Dokumentes in der 
  OpenURL-Syntax (<a href="https://oclc-research.github.io/OpenURL-Frozen/docs/pdf/openurl-01.pdf" target="_blank">Version 0.1</a> oder
- <a href="https://groups.niso.org/higherlogic/ws/public/download/14833/z39_88_2004_r2010.pdf" target="_blank">Version 1.0</a>) an den Resolver übergeben werden.  
+ <a href="https://groups.niso.org/higherlogic/ws/public/download/14833/z39_88_2004_r2010.pdf" target="_blank">Version 1.0</a> 
+ ) an den Resolver übergeben werden.  
  </p>
 
 

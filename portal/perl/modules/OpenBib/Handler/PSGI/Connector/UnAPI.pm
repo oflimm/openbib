@@ -144,7 +144,7 @@ sub show {
 
             }
 
-            if ( !$record->record_exists ) {
+            if ( !$record || !$record->record_exists ) {
                 $self->header_add( 'Status', 404 );    # not found
                 return;
             }
@@ -1061,7 +1061,6 @@ sub generate_name_data {
         $namedata->{given_name} =~ s/^\s+|\s+$//g;
     }
     $namedata->{displayname} = $namedata->{given_name};
-    " " . $namedata->{termsOfAddress};
     if ( $namedata->{family_name} ) {
         $namedata->{displayname} .= " " . $namedata->{family_name};
     }

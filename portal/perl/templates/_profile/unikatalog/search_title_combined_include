@@ -246,6 +246,18 @@ in: [% resulttime %] [% msg.maketext("Sekunden") %]
 <p/>
 [% END %]
 
+<script>
+$(document).ready(function(){
+        var numhits_[% current_tab %] = $("#numhits_[% current_tab %]").text();
+        if (numhits_[% current_tab %]){
+            $("#ob-searchresult_[% current_tab %]_count").html(" ("+numhits_[% current_tab %]+")");
+        }
+        else {
+            $("#ob-searchresult_[% current_tab %]_count").html(" (0)");
+        }
+});
+</script>
+
   </div><!-- End: col -->
 </div><!-- End: row -->
 [% ELSE %]

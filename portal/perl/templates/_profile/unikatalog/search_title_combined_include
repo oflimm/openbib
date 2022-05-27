@@ -230,7 +230,7 @@ $(document).ready(function(){
 [%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 database=record.database %] 
 [%- END -%]
 <div class="ob-footer">
-[% PROCESS common/subtemplate name="pagination" %]
+[% PROCESS common/subtemplate name="search_pagination" %]
 <div class="ob-resulttime">
 in: [% resulttime %] [% msg.maketext("Sekunden") %]
 </div>
@@ -247,8 +247,6 @@ in: [% resulttime %] [% msg.maketext("Sekunden") %]
 [% END %]
 
 <script>
-$("#ob-searchresult_[% current_tab %]_count").html(" <img src=\"/images/openbib/loading.gif\" id=\"ob-searchresult_[% current_tab %]_loading\" />");
-
 $(document).ready(function(){
         var numhits_[% current_tab %] = $("#numhits_[% current_tab %]").text();
         if (numhits_[% current_tab %]){

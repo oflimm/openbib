@@ -205,6 +205,7 @@ sub gen_searchargs_1_0 {
     $searchargs_ref->{'isbn'} = [];
     $searchargs_ref->{'issn'} = [];
     $searchargs_ref->{'year'} = [];
+    $searchargs_ref->{'pages'} = [];
 
     push @{$searchargs_ref->{'isbn'}}, $input_data_ref->{'rft.isbn'} if ($input_data_ref->{'rft.isbn'});
 
@@ -220,7 +221,7 @@ sub gen_searchargs_1_0 {
     
     # Pagerange?
     if ($input_data_ref->{'rft.pages'}){
-	push @{$searchargs_ref->{'source'}}, $input_data_ref->{'rft.pages'}
+	push @{$searchargs_ref->{'pages'}}, $input_data_ref->{'rft.pages'}
     }
     elsif ($input_data_ref->{'rft.spage'} || $input_data_ref->{'rft.epage'}){
 	my $pages = "";
@@ -228,7 +229,7 @@ sub gen_searchargs_1_0 {
 	$pages = $input_data_ref->{'rft.spage'} if ($input_data_ref->{'rft.spage'});
 	$pages.= "=".$input_data_ref->{'rft.epage'} if ($input_data_ref->{'rft.epage'});
 						   
-	push @{$searchargs_ref->{'source'}}, $pages;
+	push @{$searchargs_ref->{'pages'}}, $pages;
     }
 
     if ($logger->is_debug){
@@ -315,7 +316,7 @@ sub gen_searchargs_0_1 {
     
     # Pagerange?
     if ($input_data_ref->{'pages'}){
-	push @{$searchargs_ref->{'source'}}, $input_data_ref->{'pages'}
+	push @{$searchargs_ref->{'pages'}}, $input_data_ref->{'pages'}
     }
     elsif ($input_data_ref->{'spage'} || $input_data_ref->{'epage'}){
 	my $pages = "";
@@ -323,7 +324,7 @@ sub gen_searchargs_0_1 {
 	$pages = $input_data_ref->{'spage'} if ($input_data_ref->{'spage'});
 	$pages.= "=".$input_data_ref->{'epage'} if ($input_data_ref->{'epage'});
 						   
-	push @{$searchargs_ref->{'source'}}, $pages;
+	push @{$searchargs_ref->{'pages'}}, $pages;
     }
 
     if ($logger->is_debug){

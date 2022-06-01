@@ -87,7 +87,7 @@
 [%# USE dumper;dumper.dump(dbinfo)%]
 [%- END -%]
 
-<h2 class="ps-2">Verfügbarkeitsrecherche</h2>
+<h2 class="pl-2">Verfügbarkeitsrecherche</h2>
 
 [%
   artikel = 0;
@@ -96,7 +96,7 @@
   END ;
 %]
 
-<p class="ps-3"><i>
+<p class="pl-3"><i>
 [% IF artikel %]
 [% query.param('tit') %][% IF query.param('per') %] / [% query.param('per') %][% END %]<br/>
 In: [% query.param('jrnl') %][% IF query.param('vol') %] Vol. [% query.param('vol') %][% END %][% IF query.param('year') %] ([% query.param('year') %])[% END %][% IF query.param('issue') %] Nr. [% query.param('issue') %][% END %][% IF query.param('src') %] S. [% query.param('src') %][% END %]<br/>

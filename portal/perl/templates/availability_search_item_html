@@ -13,15 +13,22 @@
 -%]
 [%- PROCESS common/subtemplate name="local_config" -%] 
 <!-- begin: result item -->
-[%- dbdesc   = dbinfo.get('dbnames').${database}.full -%]
+[%-
+    headerdesc   = "";
+    IF viewname ;
+       headerdesc = config.get_viewdesc_from_viewname(viewname);
+    ELSIF database ;
+       headerdesc = dbinfo.get('dbnames').${database}.full;
+    END;
+-%]
 
 <div class="ob-resultlist">
   <div class="ob-resultheader">
     <div class="ob-category_header text-white">
-     [% dbdesc | truncate(config.get('maxlength_dbname')) %]
+     [% headerdesc %]
     </div><!-- /.ob-category_header -->
     <div class="ob-hits">
-[% msg.maketext("Treffer") %]&nbsp;[% hits %]
+    [% hits %]&nbsp;[% msg.maketext("Treffer") %]
     </div><!-- /.ob-hits -->
   </div><!-- /.ob-resultheader -->
 [% IF hits > 0 %]

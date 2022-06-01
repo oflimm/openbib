@@ -11,7 +11,12 @@
 
  <h3>Schnittstellenbeschreibung (OpenURL Version 0.1)</h3>
 
- <h4>Beispiel</h4>
+ <h4>Beispiel: Zeitschrift</h4>
+ <p>
+ <a href="[% scheme %]://[% servername %][% path_prefix %]/[% config.get('connector_openurl_loc') %]?sid=FIZTechnik:INSPEC&genre=journal&title=Journal+of+Physics+A&issn=0305-4470" target="_blank">[% scheme %]://[% servername %][% path_prefix %]/[% config.get('connector_openurl_loc') %]?sid=FIZTechnik:INSPEC&genre=journal&title=Journal+of+Physics+A&issn=0305-4470</a>
+</p>
+
+ <h4>Beispiel: Artikel</h4>
  <p>
  <a href="[% scheme %]://[% servername %][% path_prefix %]/[% config.get('connector_openurl_loc') %]?sid=FIZTechnik:INSPEC&genre=article&pid=%3Cauthor%3ED+Stauffer%3C%2Fauthor%3E&atitle=Computer+simulations+of+cellular+automata&volume=24&issue=5&pages=909-927&title=Journal+of+Physics+A&issn=0305-4470&date=1991" target="_blank">[% scheme %]://[% servername %][% path_prefix %]/[% config.get('connector_openurl_loc') %]?sid=FIZTechnik:INSPEC&genre=article&pid=%3Cauthor%3ED+Stauffer%3C%2Fauthor%3E&atitle=Computer+simulations+of+cellular+automata&volume=24&issue=5&pages=909-927&title=Journal+of+Physics+A&issn=0305-4470&date=1991</a>
 </p>

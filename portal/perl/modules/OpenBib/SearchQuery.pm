@@ -631,6 +631,7 @@ sub set_searchfield {
     my $logger = get_logger();
 
     my $contentnorm  = OpenBib::Common::Util::normalize({
+	field     => $fieldname,
         content   => $content,
         searchreq => 1,
     });

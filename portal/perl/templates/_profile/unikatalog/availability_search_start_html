@@ -91,7 +91,7 @@
 
 [%
   artikel = 0;
-  IF query.param('jrnl') && query.param('tit');
+  IF query.param('typ') == 'article' || (query.param('jrnl') && query.param('tit'));
     artikel = 1;
   END ;
 %]
@@ -102,7 +102,8 @@
 In: [% query.param('jrnl') %][% IF query.param('vol') %] Vol. [% query.param('vol') %][% END %][% IF query.param('year') %] ([% query.param('year') %])[% END %][% IF query.param('issue') %] Nr. [% query.param('issue') %][% END %][% IF query.param('src') %] S. [% query.param('src') %][% END %]<br/>
 [% IF query.param('issn') %]ISSN: [% query.param('issn') %][% END %]
 [% ELSE %]
-[% IF query.param('per') %][% query.param('per') %]:[% END %][% IF query.param('tit') %] [% query.param('tit') %][% END %][% IF query.param('year') %] [% query.param('year') %][% END %]<br/>
-[% IF query.param('issn') %]ISBN: [% query.param('isbn') %][% END %]
+[% IF query.param('per') %][% query.param('per') %]:[% END %][% IF query.param('tit') %] [% query.param('tit') %][% END %][% IF query.param('year') %] [% query.param('year') %][% END %]
+[% IF query.param('ibsn') %]<br/>ISBN: [% query.param('isbn') %][% END %]
+[% IF query.param('issn') %]<br/>ISSN: [% query.param('issn') %][% END %]
 [% END %]
 </i></p>

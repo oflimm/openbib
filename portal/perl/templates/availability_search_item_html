@@ -1,0 +1,45 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_item
+#
+# Typ         : Mastertemplate (2/3)
+#
+# Aufgabe:
+#
+# Ausgabe der Suchergebnisse *eines* Katalogs
+#
+#######################################################################
+-%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
+<!-- begin: result item -->
+[%- dbdesc   = dbinfo.get('dbnames').${database}.full -%]
+
+<div class="ob-resultlist">
+  <div class="ob-resultheader">
+    <div class="ob-category_header text-white">
+     [% dbdesc | truncate(config.get('maxlength_dbname')) %]
+    </div><!-- /.ob-category_header -->
+    <div class="ob-hits">
+[% msg.maketext("Treffer") %]&nbsp;[% hits %]
+    </div><!-- /.ob-hits -->
+  </div><!-- /.ob-resultheader -->
+[% IF hits > 0 %]
+  <div class="resultdrilldown">
+
+  </div><!-- /.resultdrilldown -->
+[% END %]
+  <div class="ob-resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+[%- FOREACH record IN recordlist.get_records -%]
+[%    PROCESS common/subtemplate name="availability_search_titlist_item_html" database=record.database %] 
+[%- END -%]
+    <div class="ob-footer">
+    </div><!-- /.ob-footer -->
+  </div><!-- /.ob-resultitems -->
+  <div class="ob-resultfooter">
+&nbsp;
+  </div><!-- /.ob-resultfooter -->
+
+</div><!-- /.ob-resultlist -->
+<p/>
+<!-- end: result item -->

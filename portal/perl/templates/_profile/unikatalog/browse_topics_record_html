@@ -28,11 +28,16 @@
 
 <h4>[% msg.maketext("Katalogtitel nach Bibliothekssystematik") %]</h4>
 
+[%# USE dumper;dumper.dump(thisbklist) %]
+
 <ul class="list-group">
 [% FOREACH classification IN user.get_classifications_of_topic({ type => 'bk', topicid => topicid}) %]
-<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('browse_loc') %]/bks/id/[% classification %]">[% bks.${classification} %]</a> / [% classification %] ([% thisbklist.${classification}%] Titel)</li>
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('browse_loc') %]/bks/id/[% classification %]">[% bks.${classification} %]</a> / [% classification %]</li>
 [% END %]
 </ul>
+
+<div class="alert alert-info">[% msg.maketext("Hinweis: Hier finden Sie nur die Titel, die nach einer Bibliothekssystematik klassifiziert wurden. Recherchieren Sie mit Suchbegriffen, um alle relevanten Titel zu finden!") %]
+</div>
 
 <p />
 

@@ -103,8 +103,8 @@ sub show_search {
     unless (defined $availability_search_ref->{$view}){
 	return $self->print_error("Für dieses Portal bieten wir keine Verfügbarkeitsrecherche an.")
     }
-
-    $logger->debug("Veruegbarkeitsrecherche exisitiert fuer diesens View");
+    
+    $logger->debug("Verfuegbarkeitsrecherche exisitiert fuer diesen View");
 
     $self->SUPER::show_search;
 }
@@ -134,9 +134,18 @@ sub show_search_result {
     my $availability_search_ref = $config->get('availability_search');
     
     # Recherche ueber einzelne Datenbanken
-    if (defined $availability_search_ref->{$view} && @{$availability_search_ref->{$view}}){
+    if (defined $availability_search_ref->{$view} && %{$availability_search_ref->{$view}}){
+
+	my $searchquery = $self->param('searchquery');
+
+	my $type = "default";
+
+	if ($searchquery->get_searchfield('mediatype')){
+	    my $mediatype = $searchquery->get_searchfield('mediatype')->{val};
+	    $type = $mediatype if (defined $availability_search_ref->{$view}{$mediatype});
+	}
 	
-	foreach my $target_ref (@{$availability_search_ref->{$view}}) {
+	foreach my $target_ref (@{$availability_search_ref->{$view}{$type}}) {
 	    $self->param('viewname',''); # Entfernen fuer dieses Target
 	    $self->param('database',''); # Entfernen fuer dieses Target
 	    

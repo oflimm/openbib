@@ -176,6 +176,8 @@ sub gen_searchargs_1_0 {
     $searchargs_ref->{'volume'} = [];
     $searchargs_ref->{'issue'} = [];
 
+    push @{$searchargs_ref->{'mediatype'}}, $genre if ($genre);
+
     # simple: title is title
     if ($genre =~m/^(book|conference|journal)$/){
 	push @{$searchargs_ref->{'title'}}, $input_data_ref->{'rft.title'} if ($input_data_ref->{'rft.title'});
@@ -265,6 +267,8 @@ sub gen_searchargs_0_1 {
 	    push @{$searchargs_ref->{'person'}}, $1;
 	}
     }
+
+    push @{$searchargs_ref->{'mediatype'}}, $genre if ($genre);    
 
     $searchargs_ref->{'title'} = [];
     $searchargs_ref->{'source'} = [];

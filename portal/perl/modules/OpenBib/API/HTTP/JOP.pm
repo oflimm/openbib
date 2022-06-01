@@ -51,6 +51,8 @@ use YAML ();
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::SearchQuery;
+use OpenBib::Record::Title;
+use OpenBib::RecordList::Title;
 
 use base qw(OpenBib::API::HTTP);
 
@@ -161,10 +163,11 @@ sub search {
 	    '4' => 'red', # Nicht vorhanden
 	    '10' => 'unknown', # Unbekannt (ZDB-ID unbekannt, ISSN unbekannt, Bibliothek unbekannt)
     };
-    
-    foreach my $electronic_node ($root->findnodes('/OpenURLResponseXML/Full/ElectronicData/ResultList/Result')) {
-        my $singleitem_ref = {} ;
 
+    foreach my $electronic_node ($root->findnodes('/OpenURLResponseXML/Full/ElectronicData/ResultList/Result')) {
+
+	my $singleitem_ref = {};
+	
         my $state                      = $electronic_node->findvalue('@state');
 
 	next if ($state == -1 || $state == 10);
@@ -185,7 +188,7 @@ sub search {
         $singleitem_ref->{nali}        = $electronic_node->findvalue('Additionals/Additional[@type="nali"]');
         $singleitem_ref->{moving_wall} = $electronic_node->findvalue('Additionals/Additional[@type="moving_wall"]');
 
-        push @{$result_ref}, $singleitem_ref;
+	push @$result_ref, $singleitem_ref;	
 	$search_count++;
     }
 
@@ -213,8 +216,8 @@ sub search {
 	$singleitem_ref->{holding_comment} = $print_node->findvalue('Holding_comment');
 	$singleitem_ref->{holding_gaps}    = $print_node->findvalue('HoldingGaps');
 	
-	
-        push @{$result_ref}, $singleitem_ref;
+
+	push @$result_ref, $singleitem_ref;
 	$search_count++;
     }
 
@@ -237,10 +240,79 @@ sub get_search_resultlist {
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
-    my @matches = $self->matches;
     
-    return \@matches;
+    my $recordlist = OpenBib::RecordList::Title->new;
+    
+    my $result_id = 1;
+
+    foreach my $result_ref ($self->matches){
+	my $fields_ref = {};
+	
+	# Gesamtresponse in jop_source
+	push @{$fields_ref->{'jop_source'}}, {
+	    content => $result_ref
+	};
+
+	if ($result_ref->{title}){
+	    push @{$fields_ref->{'T0331'}}, {
+		content => $result_ref->{title},
+	    };	    
+	}
+
+	if ($result_ref->{location_mark}){
+	    push @{$fields_ref->{'X0014'}}, {
+		content => $result_ref->{location_mark},
+	    };	    
+	}
+
+	if ($result_ref->{accessurl} && $result_ref->{accesslevel} eq "article"){
+	    if ($result_ref->{access} eq "green"){
+		push @{$fields_ref->{'T4120'}}, {
+		    content => $result_ref->{accessurl},
+		    subfield => "g",
+		}
+	    }
+	    elsif ($result_ref->{access} eq "yellow"){
+		push @{$fields_ref->{'T4120'}}, {
+		    content => $result_ref->{accessurl},
+		    subfield => "y",
+		    };
+	    }
+	    else { # unbestimmt
+		push @{$fields_ref->{'T4120'}}, {
+		    content => $result_ref->{accessurl},
+		    subfield => " ",
+		};
+	    }
+	}
+	elsif ($result_ref->{accessurl} && $result_ref->{accesslevel} eq "homepage"){
+	    push @{$fields_ref->{'T0662'}}, {
+		content => $result_ref->{accessurl},
+		subfield => "",
+		mult => 1,
+	    };
+	    push @{$fields_ref->{'T0663'}}, {
+		content => "Homepage",
+		subfield => "",
+		mult => 1,
+	    };
+	}
+	
+	if ($result_ref->{type}){
+	    push @{$fields_ref->{'T0800'}}, {
+		content => $result_ref->{type},
+	    };	    
+	}
+	
+	
+	my $record = new OpenBib::Record::Title({ database => 'jop', id => $result_id++ });
+    	
+	$record->set_fields_from_storable($fields_ref);
+	
+	$recordlist->add($record);
+    }
+    
+    return $recordlist;
 }
 
 sub parse_query {
@@ -277,6 +349,26 @@ sub parse_query {
 
     foreach my $field (keys %{$api_searchfield_ref}){
         my $searchtermstring = (defined $searchquery->get_searchfield($field)->{val})?$searchquery->get_searchfield($field)->{val}:'';
+
+	# genre mandatory
+	if ($field eq "genre" && $searchtermstring eq ""){
+	    my $issn = (defined $searchquery->get_searchfield('issn')->{val})?$searchquery->get_searchfield('issn')->{val}:'';
+	    my $title = (defined $searchquery->get_searchfield('title')->{val})?$searchquery->get_searchfield('title')->{val}:'';
+	    my $volume = (defined $searchquery->get_searchfield('volume')->{val})?$searchquery->get_searchfield('volume')->{val}:'';
+
+	    if ($issn){
+		if ($title){
+		    $searchtermstring='article';
+		}
+		elsif ($volume){
+		    $searchtermstring='article';		    
+		}
+		else {
+		    $searchtermstring='journal';		    
+		}
+	    }
+	}
+	
         if ($searchtermstring){ 
             # Alle besetzten Parameter 1:1 uebernehmen
             push @searchstrings, $field."=".$searchtermstring;

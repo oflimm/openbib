@@ -134,38 +134,37 @@ sub show_search_result {
     my $availability_search_ref = $config->get('availability_search');
     
     # Recherche ueber einzelne Datenbanken
-    if (defined $availability_search_ref->{$view}{databases}){
+    if (defined $availability_search_ref->{$view} && @{$availability_search_ref->{$view}}){
 	
-	foreach my $database (@{$availability_search_ref->{$view}{databases}}) {
-	    $self->param('database',$database);
+	foreach my $target_ref (@{$availability_search_ref->{$view}}) {
+	    $self->param('viewname',''); # Entfernen fuer dieses Target
+	    
+	    if ($target_ref->{type} eq "database"){
+		my $database = $target_ref->{name};
+		
+		$self->param('database',$database);
+		
+		$self->rewrite_searchterms();
+		
+		$logger->debug("Searching in DB $database");
+		
+		$self->search({database => $database});
+		
+		$logger->debug("Searching in DB $database done");
+	    }
+	    elsif ($target_ref->{type} eq "view"){
+		my $searchprofile_of_view = $config->get_searchprofile_of_view($target_ref->{name});
+		
+		$self->rewrite_searchterms();
 
-	    $self->rewrite_searchterms($database);
-	    
-	    $logger->debug("Searching in DB $database");
-	    
-	    $self->search({database => $database});
+		my $searchquery = $self->param('searchquery');
+		$searchquery->set_searchprofile($searchprofile_of_view);
+		$self->param('searchquery',$searchquery);
 
-	    $logger->debug("Searching in DB $database done");
-	    
-	    my $seq_content_searchresult = $self->print_resultitem({templatename => $config->{tt_availability_search_item_tname}});
-	    
-	    $logger->debug("Result: $seq_content_searchresult");
-	    $writer->write(encode_utf8($seq_content_searchresult));
-	}
-    }
-    
-    # Recherche ueber einzelne Views (= Zusammenstellungen von Datenbanken)
-    if (0 == 1 && defined $availability_search_ref->{$view}{views}){
-	
-	foreach my $viewname (@{$availability_search_ref->{$view}{views}}) {
-
-	    my $searchprofile_of_view = $config->get_searchprofile_of_view($viewname);
-	    
-	    my $searchquery = $self->param('searchquery');
-	    $searchquery->set_searchprofile($searchprofile_of_view);
-	    $self->param('searchquery');
-	    
-	    $self->search();
+		$self->param('viewname',$target_ref->{name});
+		
+		$self->search();
+	    }
 	    
 	    my $seq_content_searchresult = $self->print_resultitem({templatename => $config->{tt_availability_search_item_tname}});
 	    
@@ -300,23 +299,50 @@ sub rewrite_searchterms {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $searchterm_mapping_ref = {
-	'inst001' => {
-	    'issn' => 'issn',
-	},
-	
-    };
-    
+        
     my $searchquery   = $self->param('searchquery');
     my $database      = $self->param('database');
     my $searchprofile = $self->param('searchprofile');
     
-    if ($database eq "uzkzeitschriften"){
-	my $new_searchquery = new OpenBib::SearchQuery;
+    my $new_searchquery = new OpenBib::SearchQuery;
+    
+    $new_searchquery->set_searchprofile($searchprofile);
+
+    if ($database eq "eds"){
+	my @src = ();
+	if ($searchquery->get_searchfield('journal')){
+	    push @src, $searchquery->get_searchfield('journal')->{val};
+	}
+	if ($searchquery->get_searchfield('volume')){
+	    push @src, $searchquery->get_searchfield('volume')->{val};
+	}
+	if ($searchquery->get_searchfield('issue')){
+	    push @src, $searchquery->get_searchfield('issue')->{val};
+	}
+	if ($searchquery->get_searchfield('pages')){
+	    push @src, $searchquery->get_searchfield('pages')->{val};
+	}
+	if ($searchquery->get_searchfield('year')){
+	    push @src, $searchquery->get_searchfield('year')->{val};
+	}
+
+	if ($searchquery->get_searchfield('title')){
+	    $new_searchquery->set_searchfield('title',$searchquery->get_searchfield('title')->{val});
+	}
 	
-	$new_searchquery->set_searchprofile($searchprofile);
+	if ($searchquery->get_searchfield('person')){
+	    $new_searchquery->set_searchfield('person',$searchquery->get_searchfield('person')->{val});
+	}
+
+	if ($searchquery->get_searchfield('issn')){
+	    $new_searchquery->set_searchfield('issn',$searchquery->get_searchfield('issn')->{val});
+	}
 	
+	if (@src){
+	    $new_searchquery->set_searchfield('source',join(' ',@src));
+	}	
+    }
+    else {
 	if ($searchquery->get_searchfield('journal') || $searchquery->get_searchfield('volume')){
 	    if ($searchquery->get_searchfield('issn')){
 		$new_searchquery->set_searchfield('issn',$searchquery->get_searchfield('issn')->{val});
@@ -325,14 +351,21 @@ sub rewrite_searchterms {
 		$new_searchquery->set_searchfield('title',$searchquery->get_searchfield('journal')->{val});
 	    }
 	}
-
+	elsif ($searchquery->get_searchfield('isbn') || $searchquery->get_searchfield('title')){
+	    if ($searchquery->get_searchfield('isbn')){
+		$new_searchquery->set_searchfield('isbn',$searchquery->get_searchfield('isbn')->{val});
+	    }
+	    else {
+		$new_searchquery->set_searchfield('title',$searchquery->get_searchfield('title')->{val});
+	    }
+	}
+	
 	if ($logger->is_debug){
 	    $logger->debug($new_searchquery->to_json);
 	}
-
-	$self->param('searchquery',$new_searchquery);
     }
-
+    
+    $self->param('searchquery',$new_searchquery);
 
     return;
 }

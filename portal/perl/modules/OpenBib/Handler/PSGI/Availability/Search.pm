@@ -138,6 +138,7 @@ sub show_search_result {
 	
 	foreach my $target_ref (@{$availability_search_ref->{$view}}) {
 	    $self->param('viewname',''); # Entfernen fuer dieses Target
+	    $self->param('database',''); # Entfernen fuer dieses Target
 	    
 	    if ($target_ref->{type} eq "database"){
 		my $database = $target_ref->{name};

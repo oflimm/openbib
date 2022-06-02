@@ -173,7 +173,7 @@
   <a class="navbar-brand d-md-none" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">
     <h1 class="ms-0">Universität zu Köln</h1>
   </a>
-  <div class="d-flex justify-content-end">
+  <div id="ob-header_navbarmenu_small" class="d-flex justify-content-end">
     <span class="d-lg-none me-4 p-1" data-bs-toggle="collapse" data-bs-target="#userToggler" aria-controls="userToggler" aria-expanded="false" aria-label="Toggle user controls"><i class="fas fa-user fa-2x"></i></span>
     <span class="d-lg-none p-1" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-bars fa-2x"></i></span>
   </div>
@@ -206,7 +206,7 @@
     </ul> -->
 [% END # End: suppress_unauthorized %]
 
-    <ul class="nav navbar-nav flex-row justify-content-between ms-auto me-3 text-white">
+    <ul id="ob-header_navbarmenu" class="nav navbar-nav flex-row justify-content-between ms-auto me-3 text-white">
            <li class="nav-item[% IF layout_param.active_menu == "collection" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %]</a></li>
 
 [%     IF config.get_viewauthenticators(view) %]
@@ -304,7 +304,7 @@
     <div class="row">    
         <div class="col">
             <div class="input-group">
-                <input required="required" id="to_focus" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Unikatalog (Bücher, E-Medien, Aufsätze &amp; mehr) und USB Website") %]" />
+                <input required="required" id="to_focus" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Unikatalog - Bücher, E-Medien, Aufsätze &amp; mehr") %]" />
                 <span class="input-group-btn ps-1">
                     <button class="btn btn-primary" type="submit"><span class="fas fa-search d-md-none"></span><span class="d-none d-md-block font-weight-bold">[% msg.maketext("Suchen") %]</span></button>
                     <span class="btn btn-primary fas fa-cog d-md-none" data-bs-toggle="collapse" data-bs-target="#search_options" aria-expanded="false"></span>

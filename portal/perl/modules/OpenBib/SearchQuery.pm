@@ -724,7 +724,7 @@ sub get_dbis_recommendations {
     my $alltermsstring = join (" ",@allterms);
 
     $logger->debug("Terms: $alltermsstring");
-    my $url="http://suche.suub.uni-bremen.de/cgi-bin/CiXbase/brewis/CiXbase_search?act=search&LAN=DE&CLUSTER=3&index=L&n_dtyp=1L&n_rtyp=ceEdX&PRECISION=220&RELEVANCE=45&dtyp=DE&term=$alltermsstring";
+    my $url="https://suche.suub.uni-bremen.de/cgi-bin/CiXbase/brewis/CiXbase_search?act=search&LAN=DE&CLUSTER=3&index=L&n_dtyp=1L&n_rtyp=ceEdX&PRECISION=220&RELEVANCE=45&dtyp=DE&term=$alltermsstring";
     
     my $response = LWP::UserAgent->new->get($url)->decoded_content(charset => 'utf8');
 

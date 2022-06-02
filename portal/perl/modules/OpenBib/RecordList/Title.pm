@@ -228,6 +228,8 @@ sub to_rss {
         ? $arg_ref->{channel_title}        : '';
     my $view              = exists $arg_ref->{view}
         ? $arg_ref->{view}                 : 'openbib';
+    my $scheme            = exists $arg_ref->{scheme}
+        ? $arg_ref->{scheme}               : 'https';
     my $servername        = exists $arg_ref->{servername}
         ? $arg_ref->{servername}           : '127.0.0.1';
     my $path_prefix       = exists $arg_ref->{path_prefix}
@@ -302,7 +304,7 @@ sub to_rss {
         
         $rss->add_item(
             title       => $title,
-            link        => "http://".$servername.$path_prefix."/".$config->{databases_loc}."/id/".$record->{database}."/".$config->{titles_loc}."/id/".$record->{id}.".html",
+            link        => "$scheme://".$servername.$path_prefix."/".$config->{databases_loc}."/id/".$record->{database}."/".$config->{titles_loc}."/id/".$record->{id}.".html",
             description => $desc
         );
     }

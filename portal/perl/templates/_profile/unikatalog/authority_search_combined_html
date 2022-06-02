@@ -13,8 +13,6 @@
 -%]
 [%- PROCESS common/subtemplate name="local_config" -%] 
 
-<p/>
-
 [% IF hits > 0 %]
 <div  id="ob-searchresult_authority" class="row flex-md-row">
   <div class="col-xs-6 col-md-3 d-none d-md-block">

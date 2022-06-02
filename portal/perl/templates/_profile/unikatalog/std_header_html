@@ -79,20 +79,22 @@
 
     <!-- Leaflet for OSM CSS -->
     <link rel="stylesheet" href="/js/leaflet-1.7.1/leaflet.css">
-    
+
+  [% css_ver = "20220602" %]
+
   [%- TRY -%]
     [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/_profile/$sysprofile/_view/$view/openbib.css" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/_profile/$sysprofile/_view/$view/openbib.css" %]" media="all" />
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/_profile/$sysprofile/_view/$view/openbib.css" %]?ver=[% css_ver %]" media="all" />
   [%- CATCH -%]        
     [%- TRY -%]
       [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/_profile/$sysprofile/openbib.css" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/_profile/$sysprofile/openbib.css" %]" media="all" />
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/_profile/$sysprofile/openbib.css" %]?ver=[% css_ver %]" media="all" />
     [%- CATCH -%]
       [%- TRY -%]
         [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/_view/$view/openbib.css" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/_view/$view/openbib.css" %]" media="all" />
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/_view/$view/openbib.css" %]?ver=[% css_ver %]" media="all" />
       [%- CATCH -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/openbib.css" %]" media="all" />
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/openbib.css" %]?ver=[% css_ver %]" media="all" />
       [%- END -%]
     [%- END -%]
   [%- END -%]

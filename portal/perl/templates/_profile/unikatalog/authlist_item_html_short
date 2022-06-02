@@ -1,0 +1,74 @@
+[%#-
+#######################################################################
+#
+# Templatename: titlist_item
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Einzelner Eintrag in einer Liste (Kurztitel)
+#
+#
+# Erhaelt neben Default-Objekten (config, session usw.)
+#
+# record
+# dbinfo 
+#
+#######################################################################
+-%]
+<!-- Anfang einzelner Treffer -->
+[%-
+     ebook_i18n      = msg.maketext("E-Book");
+     toc_i18n        = msg.maketext("Inhaltsverzeichnis");
+     popularity_i18n = msg.maketext("Popularität");
+     
+     item   = record.get_fields;
+     listid = record.listid;
+
+     super = "";
+     # 1. Ueberordnung?
+     IF item.${'T5005'}.first.content;
+        super = from_json(item.${'T5005'}.first.content);
+     END;
+
+     # Normdateneintrag konstruieren
+     main_entry = "" ;
+
+     FOREACH part IN item.${'P0800'} ;
+       main_entry = part.content;
+     END ;
+     FOREACH part IN item.${'C0800'} ;
+       main_entry = part.content;
+     END ;
+     FOREACH part IN item.${'S0800'} ;
+       main_entry = part.content;
+     END ;
+
+     dbdesc   = dbinfo.get('dbnames').${record.database}.full;
+     dburl    = dbinfo.get('urls').${record.database};
+
+-%]
+    <div class="ob-item d-flex flex-row[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+      <div class="ob-numbering">[% start_range+loop.count - 1 %]</div>
+      <div class="ob-thumbnail">
+      </div>
+      <div class="ob-brieftitle ps-3 pt-3">
+[%# USE dumper;dumper.dump(item) %]
+         [% IF record.id && record.database %]<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get("${item.type}s_loc") %]/id/[% record.id %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% main_entry %]</span></strong></a>[% END %]
+[% IF multiple_dbs == 1 %]
+         <br /><img style="vertical-align:text-bottom;padding:1px;" src="[% config.get('home_small_img') %]" alt="[% msg.maketext("Katalog") %]" title="[% msg.maketext("Katalog") %]"/>
+[%-   IF dbinfo.get('locationid').${record.database} %]
+         <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.get('locationid').${record.database} %]">
+[%-   ELSE -%]
+         <a href="[% dburl %]" target="_blank">
+[%-   END -%]
+[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></i>&nbsp;[%- IF titleinfo -%][ [% titleinfo %] ][%- END -%]
+[% ELSE %]
+[%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
+[% END %]      
+      </div>
+      <div class="ob-titlemark"></div>
+      <div class="ob-titleactions"></div>
+    </div>
+<!-- Ende einzelner Treffer -->

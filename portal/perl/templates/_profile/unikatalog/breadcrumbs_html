@@ -26,24 +26,24 @@
 [% END %]
 
 [% IF layout_param.representations %]
-<li class="ms-auto d-none d-md-block">
+<li class="ms-auto d-none d-md-block text-black">
 [%- FOREACH this_representation IN layout_param.representations ;
 
       IF this_representation.type == 'csv'
       -%]
-<a class="ob-representation_csv" href="[% this_representation.url %]"><img src="/images/openbib/csv.png" alt="CSV" /></a>&nbsp;
+<a class="ob-representation_csv ps-2" href="[% this_representation.url %]">CSV</a>&nbsp;
       [%-
       ELSIF this_representation.type == 'json'
       -%]
-<a class="ob-representation_json" href="[% this_representation.url %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a class="ob-representation_json ps-2" href="[% this_representation.url %]">{JSON}</a>&nbsp;
       [%-
       ELSIF this_representation.type == 'rss' ;
       -%]
-<a class="ob-representation_rss" href="[% this_representation.url %]"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a>
+<a class="ob-representation_rss ps-2" href="[% this_representation.url %]"><i class="fas fa-rss"></i></a>
       [%-
       ELSIF this_representation.type == 'dfg' ;
       -%]
-<a href="[% this_representation.url %]" target="dfgviewer"><img src="/images/openbib/dfgviewer.png" alt="DFG-Viewer" /></a>
+<a class="ob-reprensentation_dfg ps-2" href="[% this_representation.url %]" target="dfgviewer"><img src="/images/openbib/dfgviewer.png" alt="DFG-Viewer" /></a>
       [%-
       END ; 
    END -%]

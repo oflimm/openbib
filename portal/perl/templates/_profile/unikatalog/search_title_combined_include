@@ -19,7 +19,6 @@
 # END;
  separate_facets = 0 ;
 
- current_tab = query.param('tab');
 %]
 <p/>
 

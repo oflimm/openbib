@@ -18,8 +18,6 @@
 <form method="post" action="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/id/[% userinfo.id %]" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="_method"    value="PUT" />
 
-<div class="form-group">
-
 <!-- Beispiel: Ablage von weiteren Informationen in mixed_bag -->
 [%# USE dumper;dumper.dump(userinfo.mixed_bag)%]
 
@@ -120,12 +118,10 @@
 [%   END %]
 [% END %]
 
-</div>
-
 </form>
 
-</div>
-</div>
+</div><!-- End card-body -->
+</div><!-- End card -->
 
 <p />
 
@@ -157,35 +153,6 @@
 
 [% END %]
 [%# USE dumper;dumper.dump(userinfo)%]
-<!--
-<h1>[% msg.maketext("Einstellungen") %]</h1>
-
-<form method="post" action="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/id/[% userinfo.id %]/rights/[% config.get('views_loc') %]">
-<input type="hidden" name="_method"    value="PUT" />
-
-<h1 class="display-5">[% msg.maketext("View zuordnen") %]</h1>
-
-<div class="form-group">
-<label for="views">[% msg.maketext("Views") %]</label>
-<select class="form-control" name="view" size="15">
-[% FOREACH thisview IN views %]
-  <option value="[% thisview.viewname %]"[% IF userinfo.viewname == thisview.viewname %] selected="selected"[% END %]>[% thisview.viewname %] - [% thisview.description %]</option>
-[% END %]
-</select>
-</div>
-
-<button class="btn btn-primary mb-2 type="submit">[% msg.maketext("Los") %]</button>
-
-</form>
-
-
-<form method="post" action="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/id/[% userinfo.id %]/rights/[% config.get('views_loc') %]">
-<input type="hidden" name="_method"    value="PUT" />
-<input type="hidden" name="view"       value="" />
-<button class="btn btn-primary mb-2 type="submit">[% msg.maketext("Nutzer für alle Views freigeben") %]</button>
-
-</form>
--->
 
 <p/>
 

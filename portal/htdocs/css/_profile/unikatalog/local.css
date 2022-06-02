@@ -342,6 +342,10 @@
 	color: #000;
     }
 
+    .text-strong {
+	font-weight: bold;
+    }
+    
     /* Navbar flyin left */
     #navbarToggler, #userToggler {
 	background-color: #fff;
@@ -1382,6 +1386,11 @@
 	border-bottom:2px solid #ddd;
     }
 */
+
+    .ob-facets_authority {
+	padding: 0px;
+	padding-top: 12px;
+    }
     
     #ob-facets_all_toggle img, #ob-facets_dbinfo_toggle img, .ob-responsive_toggle_button {
 	display: none;

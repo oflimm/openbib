@@ -64,10 +64,6 @@
           {
 	     type = 'json'
 	     url  = "${path_prefix}/${config.get('authority_loc')}/${config.get('search_loc')}.json?${cgi_querystring}"
-	  },
-	  {
-	     type = 'rss'
-	     url  = "${path_prefix}/${config.get('authority_loc')}/${config.get('search_loc')}.rss?${cgi_querystring}"
 	  }
 
        ];

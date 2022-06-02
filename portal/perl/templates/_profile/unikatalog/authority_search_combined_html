@@ -15,36 +15,13 @@
 
 <p/>
 
-<div class="row">
 [% IF hits > 0 %]
-  <div class="col-md-4">
+<div  id="ob-searchresult_authority" class="row flex-md-row">
+  <div class="col-xs-6 col-md-3 d-none d-md-block">
 [% PROCESS common/subtemplate name="authority_search_facet" %]
-[% ELSE %]
-[%
-   IF NOT viewdbs ;
-       viewdbs = config.get_dbs_of_view(view);
-   END ;
-   IF NOT prevprofile ;
-       prevprofile = session.get_profile ;
-   END ;
-   IF NOT searchprofileid_of_view ;
-      searchprofileid_of_view  = config.get_searchprofile_of_view(view) ;
-   END ;
-   IF NOT searchprofileid_of_sysprofile ;
-      searchprofileid_of_sysprofile = config.get_searchprofile_of_systemprofile(view);
-   END ;
-
-%]
-
-[%   IF viewdbs.size == 1 %]  
-<div class="ob-facets">
-[% PROCESS common/subtemplate name="search_radius" %]
-</div>
-[%   END %]
   </div>
-[% END %]
 
-  <div class="col-md-8">
+  <div class="col-md-9">
 
 [% IF spelling_suggestion.resultlist %]
 [%    suggestion = searchquery.get_spelling_suggestion %]
@@ -53,7 +30,6 @@
 [%     END %]
 [% END %]
 
-[% IF hits > 0 %]
 <!-- Beginn Result Item -->
 [%-
     request_base    = "num=${queryoptions.get_option('num')};srt=relevance_desc;page=1;" ;
@@ -67,11 +43,11 @@
 -%]
 
 <div class="ob-resultlist">
-  <div class="ob-resultheader">
-    <div class="left">
+  <div class="ob-resultheader pb-4">
+    <div class="left d-none d-lg-block mt-2">
 [% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b>[% hits %]</b>
     </div>
-    <div class="right">
+    <div class="right mt-2">
 <form method="get" action="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]">
 <input type="hidden" name="page" value="1" />
 
@@ -103,9 +79,4 @@
 </div>
 
 [% END %]
-<p/>
-
-  </div>
-
-</div>
 

@@ -98,6 +98,7 @@ function update_gnd (){
 <input type="hidden" name="srt"        value="authority_asc" />
 <input type="hidden" name="st"         value="3" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
+<input type="hidden" name="profile"    value="[% searchprofileid_of_books %]" />
 
 <h1 class="display-5">[% msg.maketext("Normdaten") %]</h1>
 

@@ -42,13 +42,13 @@
 <label for="parentdbid">[% msg.maketext("Teilbestand von Katalog") %]</label>
 </div>
 
-<div class="form-floating mb-3">
-<select class="form-select" id="searchengines" name="searchengines" multiple="multiple" size="3">
+<div class="mb-3">
+  <label class="form-label" for="searchengines">[% msg.maketext("Suchmaschinen für Indexierung") %]</label>
+  <select class="form-select" id="searchengines" name="searchengines" multiple="multiple" size="3">
 [% FOREACH this_backend IN config.get('local_search_backends') %]
-<option value="[% this_backend.name %]"[% IF searchengine_map.${this_backend.name} %] selected="selected"[% END %]>[% this_backend.desc %]</option>
+    <option value="[% this_backend.name %]"[% IF searchengine_map.${this_backend.name} %] selected="selected"[% END %]>[% this_backend.desc %]</option>
 [% END %]
-</select>
-<label for="searchengines">[% msg.maketext("Suchmaschinen für Indexierung") %]</label>
+  </select>
 </div>
 
 

@@ -71,13 +71,13 @@
 
 <h3 class="display-5">[% msg.maketext("Rolle zuordnen") %]</h3>
 
-<div class="form-floating mb-3">
+<div class="mb-3">
+<label class="form-label" for="roles">[% msg.maketext("Rollen") %]</label>
 <select class="form-select" name="roles" multiple="multiple" size="5">
 [% FOREACH role IN roles %]
   <option value="[% role.id %]"[% IF userinfo.role.${role.rolename} %] selected="selected"[% END %]>[% role.description %]</option>
 [% END %]
 </select>
-<label for="roles">[% msg.maketext("Rollen") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Los") %]</button>
@@ -94,13 +94,13 @@
 
 <h3 class="display-5">[% msg.maketext("Templates zuordnen") %]</h3>
 
-<div class="form-floating mb-3">
+<div class="mb-3">
+<label class="form-label" for="templates">[% msg.maketext("Templates") %]</label>
 <select class="form-select" name="templates" multiple="multiple" size="15">
 [% FOREACH template IN templates %]
   <option value="[% template.id %]"[% IF userinfo.template.${template.id} %] selected="selected"[% END %]>[% template.viewname %] - [% template.templatename %] - [% template.templatelang %]</option>
 [% END %]
 </select>
-<label for="templates">[% msg.maketext("Templates") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2 type="submit">[% msg.maketext("Los") %]</button>

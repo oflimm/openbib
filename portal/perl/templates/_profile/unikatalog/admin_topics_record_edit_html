@@ -95,7 +95,8 @@
 
 <h1 class="display-5">[% msg.maketext("Themengebiet(e) der Basisklassifikation zuordnen") %]</h1>
 
-<div class="form-floating mb-3">
+<div class="mb-3">
+<label class="form-label" for="classifications">[% msg.maketext("Themengebiete") %]</label>
 <select class="form-select" name="classifications" id="classifications" multiple="multiple" size="10">
 [%
    classification_selected = {};
@@ -107,7 +108,6 @@
 <option value="[% bk.classification %]" [% IF classification_selected.${bk.classification}  %]selected="selected"[% END %]>[% bk.classification %] [% bk.desc %]</option>
 [% END %]
 </select>
-<label for="classifications">[% msg.maketext("Themengebiete") %]</label>
 </div>
 
 [%# USE dumper;dumper.dump(classification_selected)%]
@@ -123,7 +123,8 @@
 
 <h1 class="display-5">[% msg.maketext("Themengebiet(e) der EZB zuordnen") %]</h1>
 
-<div class="form-floating mb-3">
+<div class="mb-3">
+<label class="form-label" for="classifications">[% msg.maketext("Themengebiete") %]</label>
 <select class="form-select" name="classifications" id="classifications" multiple="multiple" size="10">
 [%-
    classification_selected = {};
@@ -135,7 +136,6 @@
 <option value="[% ezb_topic.name %]" [% IF classification_selected.${ezb_topic.name}  %]selected="selected"[% END %]>[% ezb_topic.name %] [% ezb_topic.desc | truncate(100)%]</option>
 [% END %]
 </select>
-<label for="classifications">[% msg.maketext("Themengebiete") %]</label>
 </div>
 
 <button type="submit" name="do_change" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>
@@ -150,7 +150,8 @@
 
 <h1 class="display-5">[% msg.maketext("Themengebiet(e) von DBIS zuordnen") %]</h1>
 
-<div class="form-floating mb-3">
+<div class="mb-3">
+<label class="form-label" for="classifications">[% msg.maketext("Themengebiete") %]</label>
 <select class="form-select" name="classifications" id="classifications" multiple="multiple" size="10">
 [%-
    classification_selected = {};
@@ -162,7 +163,6 @@
 <option value="[% dbis_topic.name %]"[% IF classification_selected.${dbis_topic.name}  %] selected="selected"[% END %]>[% dbis_topic.name %] [% dbis_topic.desc %]</option>
 [% END %]
 </select>
-<label for="classifications">[% msg.maketext("Themengebiete") %]</label>
 </div>
 
 <button type="submit" name="do_change" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>
@@ -177,7 +177,8 @@
 
 <h1 class="display-5">[% msg.maketext("Themengebiet(e) der Regensburger Verbundklassifikation zuordnen") %]</h1>
 
-<div class="form-floating mb-3">
+<div class="mb-3">
+<label class="form-label" for="classifications">[% msg.maketext("Themengebiete") %]</label>
 <select class="form-select" name="classifications" id="classifications" multiple="multiple" size="10">
 [%
    classification_selected = {};
@@ -189,7 +190,6 @@
 <option value="[% rvk.classification %]" [% IF classification_selected.${rvk.classification}  %]selected="selected"[% END %]>[% rvk.classification %] [% rvk.desc %]</option>
 [% END %]
 </select>
-<label for="classifications">[% msg.maketext("Themengebiete") %]</label>
 </div>
 
 [%# USE dumper;dumper.dump(classification_selected)%]
@@ -205,7 +205,8 @@
 
 <h1 class="display-5">[% msg.maketext("Themengebiet(e) der DDC zuordnen") %]</h1>
 
-<div class="form-floating mb-3">
+<div class="mb-3">
+<label class="form-label" for="classifications">[% msg.maketext("Themengebiete") %]</label>
 <select class="form-select" name="classifications" id="classifications" multiple="multiple" size="10">
 [%
    classification_selected = {};
@@ -217,7 +218,6 @@
 <option value="[% ddc.classification %]" [% IF classification_selected.${ddc.classification}  %]selected="selected"[% END %]>[% ddc.classification %]</option>
 [% END %]
 </select>
-<label for="classifications">[% msg.maketext("Themengebiete") %]</label>
 </div>
 
 [%# USE dumper;dumper.dump(classification_selected)%]
@@ -233,7 +233,8 @@
 
 <h1 class="display-5">[% msg.maketext("Themengebiet(e) der LoC Classification zuordnen") %]</h1>
 
-<div class="form-floating mb-3">
+<div class="mb-3">
+<label class="form-label" for="classifications">[% msg.maketext("Themengebiete") %]</label>
 <select class="form-select" name="classifications" id="classifications" multiple="multiple" size="10">
 [%
    classification_selected = {};
@@ -247,7 +248,6 @@
 
 [% END %]
 </select>
-<label for="classifications">[% msg.maketext("Themengebiete") %]</label>
 </div>
 
 [%# USE dumper;dumper.dump(classification_selected)%]

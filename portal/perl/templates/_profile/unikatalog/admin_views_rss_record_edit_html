@@ -17,7 +17,8 @@
 
 <h1 class="display-5">[% msg.maketext("RSS-Einstellungen &auml;ndern") %]</h1>
 
-<div class="form-floating mb-3">
+<div class="mb-3">
+<label class="form-label" for="rssfeeds">[% msg.maketext("RSS-Feed zu diesem View") %]</label>
 <select class="form-select" name="rssfeeds" id="rssfeeds" multiple="multiple" size="10">
 [% FOREACH singlefeed IN allrssfeeds %]
 [% feedid = singlefeed.feedid %]
@@ -25,7 +26,6 @@
 <option value="[% feedid %]" [% IF viewrssfeed.${feedid} %]selected="selected"[% END %]>[% singlefeed.dbname %]: [% dbinfo.get('dbnames').${singlefeed.dbname}.full |truncate(60) %]</option>
 [% END %]
 </select>
-<label for="rssfeeds">[% msg.maketext("RSS-Feed zu diesem View") %]</label>
 </div>
 
 <div class="form-floating mb-3">

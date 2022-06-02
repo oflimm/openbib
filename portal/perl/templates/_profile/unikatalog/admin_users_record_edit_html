@@ -164,13 +164,13 @@
 <form method="post" action="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/id/[% userinfo.id %]/rights/[% config.get('roles_loc') %]">
 <input type="hidden" name="_method"    value="PUT" />
 
-<div class="form-floating mb-3">
+<div class="mb-3">
+<label class="form-label" for="roles">[% msg.maketext("Rollen") %]</label>
 <select class="form-select" name="roles" multiple="multiple" size="5">
 [% FOREACH role IN user.get_all_roles %]
   <option value="[% role.id %]"[% IF userinfo.role.${role.rolename} %] selected="selected"[% END %]>[% role.description %]</option>
 [% END %]
 </select>
-<label for="roles">[% msg.maketext("Rollen") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Los") %]</button>
@@ -189,13 +189,13 @@
 <form method="post" action="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/id/[% userinfo.id %]/rights/[% config.get('templates_loc') %]">
 <input type="hidden" name="_method"    value="PUT" />
 
-<div class="form-floating mb-3">
+<div class="mb-3">
+<label class="form-label" for="templates">[% msg.maketext("Templates") %]</label>
 <select class="form-select" name="templates" multiple="multiple" size="15">
 [% FOREACH template IN user.get_all_templates %]
   <option value="[% template.id %]"[% IF userinfo.template.${template.id} %] selected="selected"[% END %]>[% template.viewname %] - [% template.templatename %] - [% template.templatelang %]</option>
 [% END %]
 </select>
-<label for="templates">[% msg.maketext("Templates") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2 type="submit">[% msg.maketext("Los") %]</button>

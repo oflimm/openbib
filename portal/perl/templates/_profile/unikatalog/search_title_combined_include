@@ -95,7 +95,7 @@
 
 <div id="ob-sidebar[% idsuffix %]" class="bg-light border-end min-vh-100 collapse navbar-collapse pb-5" aria-expanded="false">
   <div id="sidebar-dismiss[% idsuffix %]" class="float-end d-md-none text-white" data-bs-toggle="collapse" data-bs-target="#ob-sidebar[% idsuffix %]" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-    <i class="fas fa-window-close fa-2x p-1"></i>
+      <button type="button" class="btn-close" aria-label="[% msg.maketext("Schließen") %]">
   </div>
   
   <div class="sidebar-heading ob-bg text-white p-1 pb-0 mb-2 d-md-none">

@@ -16,7 +16,8 @@
    catalog_has_authorities = config.get('source_systems').${config.get_system_of_db(record.database)}.has_authorities;
    
    resourceurl             = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('classifications_loc')}/id/${record.id}";
-   
+
+   bks = config.load_bk;
 -%]
 
 <div class="ob-category_header">[% dbinfo.get('dbnames').${database}.short %]</div>
@@ -39,6 +40,12 @@ FOREACH category IN categories;
     content = item.content;
 
     SWITCH category;
+
+    CASE "N0800";
+         IF bks.defined(content);
+	   bk_desc = bks.${content};
+	   content = "${content} (${bk_desc})";
+	 END;
 
     CASE "N5000";
          searchterm    = record.id;

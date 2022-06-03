@@ -53,6 +53,7 @@
 
 globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
 rswkswt_done      = {};
+extsubj_done      = {};
 
 #USE dumper;dumper.dump(normdata);
 
@@ -558,9 +559,9 @@ FOREACH field IN normdata;
 
          localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-         NEXT IF rswkswt_done.${thiscontent} == 1;
+         NEXT IF extsubj_done.${thiscontent} == 1;
 	 content       = "<a href=\"${localurl}\">${content}</a>";
-         rswkswt_done.${thiscontent} = 1;
+         extsubj_done.${thiscontent} = 1;
          IF NOT content_map.${'E4300'} ;
 	    content_map.${'E4300'} = [];
 	 END;
@@ -571,8 +572,6 @@ FOREACH field IN normdata;
 
          thiscontent = item.content;
 
-         NEXT IF rswkswt_done.${thiscontent} == 1;
-
          searchterm    = uri_escape(item.content);
          searchprefix  = config.get('searchfield').subjectstring.prefix;
 
@@ -581,6 +580,8 @@ FOREACH field IN normdata;
 
          normdataicon = "";
 
+         NEXT IF rswkswt_done.${thiscontent} == 1;
+	 
          IF thisid && catalog_has_authorities;
             normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Schlagwort-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#normdataModal\" data-formattitle=\"Schlagwortdaten\" data-formaturl=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
          END;

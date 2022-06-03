@@ -6,6 +6,6 @@ query: ["[% normset.${"P0800"}.first.content.replace('"',' ').split(', ').revers
 height: 259,
 shouldCenter: true,
 showDefinitions: true,
-languages: [[% IF lang == 'de' %]"deu"[% ELSE %]"eng"[% END %]], // available languages eng,zho,deu
+languages: ["eng"], // available languages eng,zho,deu
 });
 </script>

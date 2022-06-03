@@ -27,7 +27,7 @@
       <button type="button" class="btn-close" aria-label="[% msg.maketext("Schließen") %]">
   </div>
   
-  <div class="sidebar-heading ob-bg text-white p-1 pb-0 mb-2 d-md-none">
+  <div class="sidebar-heading p-1 pb-0 mb-2 d-md-none">
     <h3>[% msg.maketext("Filtern") %]</h3>
   </div>
   

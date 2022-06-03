@@ -43,12 +43,12 @@ function update_collection(yourform, checked, item) {
 [% IF recordlist.get_size > 0 %]
       <div id="ob-sidebar" class="bg-light border-end min-vh-100 collapse navbar-collapse" aria-expanded="false">
 
-           <div id="sidebar-dismiss" class="float-end" data-bs-toggle="collapse" data-bs-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fas fa-arrow-left"></i>
+           <div id="sidebar-dismiss" class="float-end text-white" data-bs-toggle="collapse" data-bs-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+             <button type="button" class="btn-close" aria-label="[% msg.maketext("Schließen") %]">
            </div>
 
-           <div class="sidebar-heading">
-              <h3>Aktionen</h3>
+           <div class="sidebar-heading p-1 pb-0 mb-2">
+              <h3>Menu</h3>
            </div>
 
            <div class="sidebar-content overflow-auto h-100">

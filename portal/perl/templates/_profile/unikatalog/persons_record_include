@@ -66,6 +66,31 @@ FOREACH field IN normset;
 
     SWITCH category;
 
+    CASE "P0550";
+       categoryout = "Beruf";
+       
+       IF NOT content_map.${categoryout} ;
+         content_map.${categoryout} = [];
+       END;
+       content_map.${categoryout}.push(content);
+
+    CASE "P0548";
+       categoryout = "Lebensdaten";
+       
+       IF NOT content_map.${categoryout} ;
+         content_map.${categoryout} = [];
+       END;
+       content_map.${categoryout}.push(content);
+
+    CASE "P0808";
+       categoryout = "Wikipedia";
+
+       content = "<a href=\"${content}\" target=\"_blank\">${content}</a>";
+       IF NOT content_map.${categoryout} ;
+         content_map.${categoryout} = [];
+       END;
+       content_map.${categoryout}.push(content);
+
     CASE "P0806";
          SWITCH subfield ;
             CASE "a";
@@ -124,7 +149,7 @@ FOREACH field IN normset;
          searchterm    = record.id;
          searchprefix  = config.get('searchfield').personid.prefix;
 
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base};page=1;db=${database};fs=${searchprefix}:${searchterm}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base};page=1;fdb=${database};fs=${searchprefix}:${searchterm}";
          desc      = msg.maketext("Titel ist in diesem Katalog mit der Person verknüpft");
          IF content > 1 ;
              desc      = msg.maketext("Titel sind in diesem Katalog mit der Person verknüpft");

@@ -42,6 +42,6 @@
 	         'P0313', # msg.maketext("P0313") Website
 	         'P0314', # msg.maketext("P0314") Ort
 
-	         'P5000', # msg.maketext("P5000") Anzahl Titel
+	         #'P5000', # msg.maketext("P5000") Anzahl Titel
 	         ];
 %]

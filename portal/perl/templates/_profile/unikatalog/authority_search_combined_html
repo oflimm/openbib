@@ -13,6 +13,32 @@
 -%]
 [%- PROCESS common/subtemplate name="local_config" -%] 
 
+<style>
+[data-bs-toggle="collapse"] {
+  cursor: pointer;
+}
+
+//@media screen and (min-width:768px) { #ob-sidebar { display: block!important;visibility:visible!important; } }
+
+</style>
+
+<div id="ob-sidebar" class="bg-light border-end min-vh-100 collapse navbar-collapse pb-5" aria-expanded="false">
+  <div id="sidebar-dismiss" class="float-end d-md-none text-white" data-bs-toggle="collapse" data-bs-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+      <button type="button" class="btn-close" aria-label="[% msg.maketext("Schließen") %]">
+  </div>
+  
+  <div class="sidebar-heading ob-bg text-white p-1 pb-0 mb-2 d-md-none">
+    <h3>[% msg.maketext("Filtern") %]</h3>
+  </div>
+  
+  <div class="sidebar-content overflow-auto h-100 ps-1">
+    
+[% IF hits > 0 %]
+[% PROCESS common/subtemplate name="authority_search_facet" facet_prefix="sidebar" %]
+[% END %]
+  </div>
+</div><!-- End: sidebar -->
+
 [% IF hits > 0 %]
 <div  id="ob-searchresult_authority" class="row flex-md-row">
   <div class="col-xs-6 col-md-3 d-none d-md-block">
@@ -42,8 +68,17 @@
 
 <div class="ob-resultlist">
   <div class="ob-resultheader pb-4">
-    <div class="left d-none d-lg-block mt-2">
+    <div class="left">
+      <div class="navbar navbar-default d-block d-md-none ps-0 mt-0" style="z-index: 1"><!-- only visible in xs-->
+        <div class="container-fluid ps-0">
+          <button class="btn btn-primary navbar-btn" data-bs-toggle="collapse" data-bs-target="#ob-sidebar">
+            <i class="fa fa-sliders-h"></i> [% msg.maketext("Filtern") %]
+          </button>
+	</div>
+      </div>
+      <div class="left d-none d-lg-block mt-2">
 [% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b>[% hits %]</b>
+      </div>
     </div>
     <div class="right mt-2">
 <form method="get" action="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]">

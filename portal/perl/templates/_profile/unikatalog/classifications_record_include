@@ -19,11 +19,11 @@
    
 -%]
 
+<div class="ob-category_header">[% dbinfo.get('dbnames').${database}.short %]</div>
+
 <div class="details ob-authority_record row"><!-- Begin Details -->
 <!-- Person begins here -->
 <div class="categories col-md-12"><!-- Begin Categories -->
-
-<div class="ob-category_header">[% dbinfo.get('dbnames').${database}.short %]</div>
 
 <h4>[% msg.maketext("Index-Eintrag (Normdaten)") %]</h4>
 

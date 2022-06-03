@@ -117,7 +117,7 @@
 <!-- <script src="/js/bootstrap-material-design.min.js"></script> -->
 
 <!-- Then static OpenBib JS -->
-<script src="/js/_profile/bootstrap/openbib.js"></script> 
+<script src="/js/_profile/unikatalog/openbib.js"></script> 
 
 <!-- And finally yewno -->
 <script src="https://static.yewno.com/assets/widget/yewno.min.js"></script>

@@ -16,7 +16,7 @@
 -%]
 [%# USE dumper;dumper.dump(locations)%]
 
-<h3>[% msg.maketext("Standorte der Bibliotheken an der UzK") %]</h3>
+<h3>[% msg.maketext("Standorte der Bibliotheken") %]</h3>
 
 [% PROCESS common/subtemplate name="locations_osm" init_location = ''  %]
 

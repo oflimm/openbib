@@ -232,7 +232,7 @@ END;
          localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base};page=1;fdb=${database};${searchprefix}=${searchterm}";
          desc      = msg.maketext("Titel ist in diesem Katalog mit der Person verknüpft");
          IF content > 1 ;
-             desc      = msg.maketext("Titel sind in diesem Katalog mit der Klassifikation verknüpft");
+             desc      = msg.maketext("Titel sind in diesem Katalog mit der Person verknüpft");
          END;
          content   = "<a href=\"${localurl}\">${content} ${desc}</a>";
 -%]

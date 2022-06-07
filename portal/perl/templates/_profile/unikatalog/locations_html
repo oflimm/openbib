@@ -16,7 +16,7 @@
 -%]
 [%# USE dumper;dumper.dump(locations)%]
 
-<h3>[% msg.maketext("Standorte") %]</h3>
+<h3>[% msg.maketext("Standorte der Bibliotheken an der UzK") %]</h3>
 
 <style>
 

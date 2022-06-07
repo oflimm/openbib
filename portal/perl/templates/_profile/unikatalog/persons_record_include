@@ -257,6 +257,66 @@ END;
 
 </div><!-- End Categories -->
 
+<!-- DBpedia Definition -->
+[%
+    article_name = "";
+
+    IF normset.${"P0808"}.first.content.match('https?://.+?\.wikipedia.org/wiki/');
+      article_name = normset.${"P0808"}.first.content.replace('https?://.+?\.wikipedia.org/wiki/',''); 
+    END;
+    
+    IF NOT article_name ;
+      article_name = normset.${"P0800"}.first.content.replace('"','').split(', ').reverse.join('_');
+    END;
+
+    dbpedia_result = {};
+
+    IF article_name ;
+       dbpedia_result = record.enrich_dbpedia(article_name);
+    END;
+
+    dbpedia_abstract = "";
+
+    dbpedia_resource_name = "http://dbpedia.org/resource/${article_name}";
+    dbpedia_resource = dbpedia_result.${dbpedia_resource_name};
+
+    IF dbpedia_resource.defined('http://dbpedia.org/ontology/abstract') ;
+      FOREACH abstract IN dbpedia_resource.${"http://dbpedia.org/ontology/abstract"};
+         IF abstract.lang == lang ;
+	    dbpedia_abstract = abstract.value;
+	    last;
+	 END;
+      END;
+    ELSIF dbpedia_resource.defined('http://dbpedia.org/ontology/wikiPageRedirects') && dbpedia_resource.${'http://dbpedia.org/ontology/wikiPageRedirects'}.first.value.match('http://dbpedia.org/resource/');
+      article_name = dbpedia_resource.${'http://dbpedia.org/ontology/wikiPageRedirects'}.first.value.replace('http://dbpedia.org/resource/',''); 
+
+      dbpedia_result = record.enrich_dbpedia(article_name);
+
+      dbpedia_resource_name = "http://dbpedia.org/resource/${article_name}";
+      dbpedia_resource = dbpedia_result.${dbpedia_resource_name};
+
+      IF dbpedia_resource.defined('http://dbpedia.org/ontology/abstract') ;
+        FOREACH abstract IN dbpedia_resource.${"http://dbpedia.org/ontology/abstract"};
+          IF abstract.lang == lang ;
+	    dbpedia_abstract = abstract.value;
+	    last;
+          END;
+        END;
+
+      END;
+
+    END;
+
+%]
+
+[% IF dbpedia_abstract %]
+<h4 class="mt-2">[% msg.maketext("Wikipedia") %] ([% lang %])</h4>
+
+<p>
+[% dbpedia_abstract %]
+</p>
+[% END %]
+
 <h4 class="mt-2">[% msg.maketext("Konzepte aus Yewno Discover") %] <a href="https://yewno.ub.uni-koeln.de" target="_blank"><i class="far fa-question-circle"></i></h4>
 
 <div class="images"><!-- Begin Images -->

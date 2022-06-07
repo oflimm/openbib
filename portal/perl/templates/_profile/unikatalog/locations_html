@@ -225,7 +225,7 @@
     float:left;
     width:22px;
     height:22px;
-    background-image: url('https://www.ub.uni-koeln.de/e12502/e12523/e33478/e40351/gps_ger.png');
+    background-image: url('[% scheme %]://[% servername %]/images/openbib/osm/gps_ger.png');
     background-repeat: no-repeat;
     background-position: 1px 1px;
     background-color: #fff;
@@ -1244,17 +1244,17 @@
 /*lokal*/
 
 .fullscreen-icon {
-    background-image: url(https://www.ub.uni-koeln.de/e12502/e12523/e33478/e40293/if_fullscreen_118670_ger.png);
+    background-image: url([% scheme %]://[% servername %]/images/openbib/osm/if_fullscreen_118670_ger.png);
 }
 
 .leaflet-retina .fullscreen-icon {
-    background-image: url(https://www.ub.uni-koeln.de/e12502/e12523/e33478/e40293/if_fullscreen_118670_ger.png
+    background-image: url([% scheme %]://[% servername %]/images/openbib/osm/if_fullscreen_118670_ger.png);
 }
     .fullscreen-icon {
-        background-image: url(https://www.ub.uni-koeln.de/e12502/e12523/e33478/e40293/if_fullscreen_118670_ger.png);
+	background-image: url([% scheme %]://[% servername %]/images/openbib/osm/if_fullscreen_118670_ger.png);
     }
     .leaflet-retina .fullscreen-icon {
-        background-image: url(https://www.ub.uni-koeln.de/e12502/e12523/e33478/e40293/if_fullscreen_118670_ger.png);
+	background-image: url([% scheme %]://[% servername %]/images/openbib/osm/if_fullscreen_118670_ger.png);
         background-size: 26px 26px;
     }
     
@@ -1298,7 +1298,7 @@
     <div id="mapDiv"></div>
     <div id="suchleiste"><span id="tb_cont"><input type="search" list="theDataList" placeholder="Bibliothek finden.." name="fname" id="suche" /><span onclick="clearSearch()" style="top: 0px;" id="clear_input">X</span></span>
     </div>
-    <img src="https://www.ub.uni-koeln.de/e12502/e12523/e33478/e40292/if_filter_299094_ger.png" id="filterImg" onclick="showFilterPanel()"></img>
+    <img src="[% scheme %]://[% servername %]/images/openbib/osm/if_filter_299094_ger.png" id="filterImg" onclick="showFilterPanel()"></img>
     <div id="filterPanel" style="display: none;">
         <div id="einstellungen"></div>
     </div>
@@ -2678,7 +2678,7 @@
 	var startY;
 	var startX;
 
-	var dragicon = 'https://www.ub.uni-koeln.de/e12502/e12523/e33478/e40291/dragger_ger.png';
+	var dragicon = '[% scheme %]://[% servername %]/images/openbib/osm/dragger_ger.png';
 
 	// die activeArea verlegt en Mittelpunkt der Karte und berechnet Overlays mit ein
 	var activearea = "position: 'absolute', top: '50px', left: '50px', right: '50px', height: '200px'";
@@ -2805,15 +2805,15 @@
 	// Marker-Symbole initialisieren
 	function initIcons() {
 	    greenIc = L.icon({
-		iconUrl: 'https://www.ub.uni-koeln.de/res/pins/pin_lindgruen.png',
+		iconUrl: '[% scheme %]://[% servername %]/images/openbib/osm/pin_lindgruen.png',
 		iconSize: [19, 29],
 	    });
 	    redIc = L.icon({
-		iconUrl: 'https://www.ub.uni-koeln.de/res/pins/pin_pink.png',
+		iconUrl: '[% scheme %]://[% servername %]/images/openbib/osm/pin_pink.png',
 		iconSize: [19, 29],
 	    });
 	    greyIc = L.icon({
-		iconUrl: 'https://www.ub.uni-koeln.de/res/pins/pin_grau.png',
+		iconUrl: '[% scheme %]://[% servername %]/images/openbib/osm/pin_grau.png',
 		iconSize: [19, 29],
 	    });
 	}
@@ -3548,7 +3548,7 @@
 	 * HTML-code für Einstellungen
 	 */
 	function loadEinstellungen() {
-	    $('#einstellungen').html('<span id="einstellungen"><div class="shadowbox"><div id="flexSelect"><select id="institutsChoice"></select></div><br><div id="flexSelect1"><select id="artSelect"></select></div></div><div class="shadowbox"><label><input type="checkbox" id="geoeffnet">Nur geöffnete Bibliotheken anzeigen</label><br><label><input type="checkbox" id="showMarkerText">Namen anzeigen</label></div><div class="shadowbox"><h4 style="text-align: center">Bibliotheksbesuch planen</h4><img src="https://www.ub.uni-koeln.de/e12502/e12523/e33478/e35646/cal_ger.png"/><select id="tageChoice"></select><span id="textZeitWahl" style="padding: 7px"></span><br><img src="https://www.ub.uni-koeln.de/e12502/e12523/e33478/e35645/clock_ger.png"/><input type="range" class="slider" min="360" max="1439" step="15" id="rangevalue"></div><hr><br><button type="button" id="btnZuruecksetzen">Alles Zurücksetzen</button><br></span>');
+	    $('#einstellungen').html('<span id="einstellungen"><div class="shadowbox"><div id="flexSelect"><select id="institutsChoice"></select></div><br><div id="flexSelect1"><select id="artSelect"></select></div></div><div class="shadowbox"><label><input type="checkbox" id="geoeffnet">Nur geöffnete Bibliotheken anzeigen</label><br><label><input type="checkbox" id="showMarkerText">Namen anzeigen</label></div><div class="shadowbox"><h4 style="text-align: center">Bibliotheksbesuch planen</h4><img src="[% scheme %]://[% servername %]/images/openbib/osm/cal_ger.png"/><select id="tageChoice"></select><span id="textZeitWahl" style="padding: 7px"></span><br><img src="[% scheme %]://[% servername %]/images/openbib/osm/clock_ger.png"/><input type="range" class="slider" min="360" max="1439" step="15" id="rangevalue"></div><hr><br><button type="button" id="btnZuruecksetzen">Alles Zurücksetzen</button><br></span>');
 	}
 
 	function showInfo() {
@@ -5114,7 +5114,7 @@
             L.control.custom({
                 position: 'bottomleft',
                 id: 'informationMobile',
-                content: '<img id="dragicon" src="https://www.ub.uni-koeln.de/e12502/e12523/e33478/e40291/dragger_ger.png" height="18" width="120" onclick="dragiconClicked()"/><div class="bib_contentMobile" id="bib_content"></div>',
+                content: '<img id="dragicon" src="[% scheme %]://[% servername %]/images/openbib/osm/dragger_ger.png" height="18" width="120" onclick="dragiconClicked()"/><div class="bib_contentMobile" id="bib_content"></div>',
             }).addTo(map);
         }
 
@@ -5150,10 +5150,11 @@
 
 		init('', '');
 		
-        document.getElementsByClassName('leaflet-control-zoom-fullscreen')[0].innerHTML = "<img src='https://www.ub.uni-koeln.de/e12502/e12523/e33478/e40293/if_fullscreen_118670_ger.png' style='height: 24px; padding-top: 3px;'/>";
+        document.getElementsByClassName('leaflet-control-zoom-fullscreen')[0].innerHTML = "<img src='[% scheme %]://[% servername %]/images/openbib/osm/if_fullscreen_118670_ger.png' style='height: 24px; padding-top: 3px;'/>";
 		
         resize();
     }
+
 </script>
 
 <div class="mt-3">

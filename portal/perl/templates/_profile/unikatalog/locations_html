@@ -5295,7 +5295,7 @@
 %]
 [% FOREACH desc IN institute_map.keys.sort %]
      [% NEXT IF NOT desc.match('^Lern') %]
-	<li>[% IF institute_map.${desc}.url %]<a href="[% scheme %]://[% servername %][% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF 0 == 1 && institute_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
+	<li>[% IF institute_map.${desc}.url %]<a href="[% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF 0 == 1 && institute_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
 

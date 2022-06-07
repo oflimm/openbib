@@ -275,16 +275,17 @@ END;
        dbpedia_result = record.enrich_dbpedia(article_name);
     END;
 
-    dbpedia_abstract = "";
+    dbpedia_abstract = {};
 
     dbpedia_resource_name = "http://dbpedia.org/resource/${article_name}";
     dbpedia_resource = dbpedia_result.${dbpedia_resource_name};
 
     IF dbpedia_resource.defined('http://dbpedia.org/ontology/abstract') ;
       FOREACH abstract IN dbpedia_resource.${"http://dbpedia.org/ontology/abstract"};
-         IF abstract.lang == lang ;
-	    dbpedia_abstract = abstract.value;
-	    last;
+         IF abstract.lang == 'de' ;
+	    dbpedia_abstract.de = abstract.value;
+         ELSIF abstract.lang == 'en' ;
+	    dbpedia_abstract.en = abstract.value;
 	 END;
       END;
     ELSIF dbpedia_resource.defined('http://dbpedia.org/ontology/wikiPageRedirects') && dbpedia_resource.${'http://dbpedia.org/ontology/wikiPageRedirects'}.first.value.match('http://dbpedia.org/resource/');
@@ -297,23 +298,36 @@ END;
 
       IF dbpedia_resource.defined('http://dbpedia.org/ontology/abstract') ;
         FOREACH abstract IN dbpedia_resource.${"http://dbpedia.org/ontology/abstract"};
-          IF abstract.lang == lang ;
-	    dbpedia_abstract = abstract.value;
-	    last;
-          END;
+         IF abstract.lang == 'de' ;
+	    dbpedia_abstract.de = abstract.value;
+         ELSIF abstract.lang == 'en' ;
+	    dbpedia_abstract.en = abstract.value;
+	 END;
         END;
 
       END;
 
     END;
 
+    other_lang = "";
+    IF lang == 'de';
+      other_lang = 'en';
+    ELSIF lang == 'en';
+      other_lang = 'de';
+    END;
 %]
 
-[% IF dbpedia_abstract %]
+[% IF dbpedia_abstract.${lang} %]
 <h4 class="mt-2">[% msg.maketext("Wikipedia") %] ([% lang %])</h4>
 
 <p>
-[% dbpedia_abstract %]
+[% dbpedia_abstract.${lang} %]
+</p>
+[% ELSIF dbpedia_abstract.${other_lang} %]
+<h4 class="mt-2">[% msg.maketext("Wikipedia") %] ([% other_lang %])</h4>
+
+<p>
+[% dbpedia_abstract.${other_lang} %]
 </p>
 [% END %]
 

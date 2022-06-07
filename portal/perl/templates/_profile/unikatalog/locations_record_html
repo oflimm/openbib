@@ -1,76 +1,142 @@
-[%#-
-#######################################################################
-#
-# Templatename: locations_record
-#
-# Typ         : Mastertemplate       
-#
-# Aufgabe:
-#
-# Ausgabe eines Standortes
-#
-#######################################################################
--%]
-
-[% PROCESS common/subtemplate name="visible_categories_location" %]
-
-[%# USE dumper;dumper.dump(locationinfo.fields)%]
-
-<h3>[% IF locationinfo.type == 'ISIL' %][% msg.maketext("Bibliotheksinformationen") %]: [% END %][% locationinfo.description %]</h3>
-
 [%- IF locationinfo.fields.${"L0280"}.first.content -%]
 
-<p>
-<div id="map_canvas" style="width: 100%; height: 300px"></div>
-</p>
-
-<script src="https://openlayers.org/api/OpenLayers.js"></script>
-
-<script type="text/javascript">
-    map = new OpenLayers.Map("map_canvas");
-    map.addLayer(new OpenLayers.Layer.OSM());
-
-    var lonLat = new OpenLayers.LonLat( [% locationinfo.fields.${"L0280"}.first.content.split(',').reverse.join(',') %] ).transform(
-            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
-            map.getProjectionObject() // to Spherical Mercator Projection
-          );
-
-    var zoom=16;
-
-    var markers = new OpenLayers.Layer.Markers( "Markers" );
-    map.addLayer(markers);
-
-    var size = new OpenLayers.Size(32,32);
-    var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
-    var icon = new OpenLayers.Icon('https://kug.ub.uni-koeln.de/images/openbib/blue-marker.png',size,offset);
-    var marker = new OpenLayers.Marker(lonLat,icon);
-    markers.addMarker(marker);
-
-    marker.icon.imageDiv.title = "[% locationinfo.description.replace('"','\'') %]";
-    map.setCenter (lonLat, zoom);
-
-    $("#map_canvas").on("wheel mousewheel DOMMouseScroll", function(e){
-         if (e.shiftKey) {
-         }else {
-         e.stopPropagation(); 
-         }
-         return true;
-    });
-</script>
-
+[% PROCESS common/subtemplate name="locations_osm" init_location = locationinfo.identifier  %]
 
 [% END %]
-[%# USE dumper;dumper.dump(locationinfo)%]
-<div class="table-responsive">
+
+<div class="table-responsive mt-2">
 <table class="table table-striped table-hover">
 [%-
+
+PROCESS common/subtemplate name="visible_categories_location";
+
+thisdbname = config.get_databases_of_isil(locationinfo.identifier).first;
+
+sigel = locationinfo.identifier.replace('DE-38-','');
+
+IF NOT thisdbname ;
+  thisdbname = "inst${sigel}";
+END;
+
+IF sigel == '123';
+  recent_litlists1 = user.get_recent_litlists({database = 'inst123', view = view});
+  recent_litlists2 = user.get_recent_litlists({database = 'inst218', view = view});
+  recent_litlists = recent_litlists1.merge(recent_litlists2);
+ELSIF sigel == '401';
+  recent_litlists = user.get_recent_litlists({ userid = 7703 });
+ELSE ;
+  recent_litlists = user.get_recent_litlists({database = thisdbname, view = view});
+END;
+
+litlist_content = [];
+
+IF recent_litlists.size > 0;
+  litlist_content.push("<ul>");
+  FOREACH litlist IN recent_litlists;
+    lecturestring = "" ;
+    IF litlist.lecture ;
+       lectureinfo   = "Offizielle Literaturliste des Instituts/Seminars";
+       lecturestring = "&nbsp;<img src=\"https://search.ub.uni-koeln.de${config.get('university_img')}\" title=\"${lectureinfo}\" alt=\"${lectureinfo}\" style=\"vertical-align:bottom\" />";
+    ELSE ;
+       lectureinfo   = "Öffentliche Literaturliste von Nutzern";
+       lecturestring = "&nbsp;<img src=\"https://search.ub.uni-koeln.de${config.get('persons_img')}\" title=\"${lectureinfo}\" alt=\"${lectureinfo}\" style=\"vertical-align:bottom\" />";
+    END ;
+    litlist_content.push("<li><a href=\"https://www.ub.uni-koeln.de/usbportal?service=search&kugview=38_${sigel}%7Ckug&fs=litlistid:${litlist.id}\">${litlist.title}</a> (${litlist.itemcount} Titel)${lecturestring}</li>");
+  END;
+  litlist_content.push("</ul>");
+ELSE;
+  litlist_content.push("Es wurden noch keine Literaturlisten mit Titeln dieses Kataloges angelegt.");
+END;
+
+IF sigel == '123';
+  recent_tags1 = user.get_recent_tags({database = 'inst123'});
+  recent_tags2 = user.get_recent_tags({database = 'inst218'});
+  recent_tags = recent_tags1.merge(recent_tags2);
+ELSE ;
+  recent_tags = user.get_recent_tags({database = thisdbname});
+END;
+
+tags_content = [];
+
+recent_tags = [] ;
+
+IF recent_tags.size > 0;
+  tags_content.push("<ul>");
+  FOREACH tag IN recent_tags;
+    IF tag.tag ;
+      tags_content.push("<li><a target=\"kug\" href=\"http://kug.ub.uni-koeln.de/portal/kug/tags/names/id/${tag.tag}.html?l=de\">${tag.tag}</a></li>");
+    END ;
+  END;
+  tags_content.push("</ul>");
+ELSE;
+  tags_content.push("F&uuml;r Titel in diesem Katalog wurden noch keine Tags vergeben");
+END;
+
+no_journals = {
+                 '009' = 1
+                 '112' = 1
+                 '124' = 1
+                 '141' = 1 # Gesis
+                 '155' = 1
+                 '158' = 1
+                 '159' = 1
+                 '227' = 1
+                 '235' = 1
+                 '236' = 1
+                 '302' = 1
+                 '317' = 1
+                 '326' = 1
+                 '460' = 1
+                 '462' = 1
+                 '463' = 1
+                 '464' = 1
+                 '466' = 1
+                 '467' = 1
+              };
+
+IF NOT no_journals.exists("${sigel}") ;
+   locationinfo.fields.${"Zeitschriften"} = [ { content = "Zeitschriftenliste dieser Bibliothek als <a href=\"http://unikatalog.ub.uni-koeln.de/zeitschriftenlisten/zeitschriften-${sigel}-all.pdf\">e-Book</a>" } ];
+ELSIF sigel == '141';
+   locationinfo.fields.${"Zeitschriften"} = [ { content = "Zeitschriftenliste dieser Bibliothek als <a href=\"http://unikatalog.ub.uni-koeln.de/zeitschriftenlisten/zeitschriften-587-all.pdf\">e-Book</a>" } ];
+END ;
+
+IF sigel != 'ARTES' ;
+  locationinfo.fields.${"Die 5 zuletzt angelegten Literaturlisten"} = [ { content = litlist_content.join("\n") } ];
+  locationinfo.fields.${"Die 5 zuletzt vergebenen Tags"} = [ { content = tags_content.join("\n") } ];
+END;
+
+trclass = "even" ;
+
+
 FOREACH category IN categories;
+    IF category == 'Bestand';
+       contentarray = [];
+       IF locationinfo.fields.${"L0120"}.first.content ;
+          thiscontent = locationinfo.fields.${"L0120"}.first.content;
+          contentarray.push("Monographien: ${thiscontent}");
+       END;
+       IF locationinfo.fields.${"L0130"}.first.content ;
+          thiscontent = locationinfo.fields.${"L0130"}.first.content;
+          contentarray.push("Zeitschriften: ${thiscontent}");
+       END;
+       IF locationinfo.fields.${"L0140"}.first.content ;
+          thiscontent = locationinfo.fields.${"L0140"}.first.content;
+          contentarray.push("Lfd. Zeitschriften: ${thiscontent}");
+       END;
+       IF contentarray.size > 0;
+          content = contentarray.join(" / ");
+          locationinfo.fields.${"Bestand"} = [ { content = content } ];
+       ELSE ;
+         NEXT;
+       END;
+    END;
 
     IF locationinfo.fields.${category} ;
       FOREACH item IN locationinfo.fields.$category;
         content  = item.content;
         mult     = item.mult;
         subfield = item.subfield;
+
 
         # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
         # in Config.pm fuer die entsprechende Datenbank definiert
@@ -87,3 +153,11 @@ FOREACH category IN categories;
 END ;-%]
 </table>
 </div>
+
+<p style="font-size:0.8em;">
+<b>Hinweis:</b> Diese Informationen beruhen auf Selbstangaben der
+Campusbibliotheken und entsprechen dem uns jeweils zuletzt mitgeteilten
+Stand. Bitte wenden Sie sich bei etwaigen Unstimmigkeiten direkt an
+die jeweilige Bibliothek.
+</p>
+

@@ -5,7 +5,7 @@ containerElementSelector: "#yewno-person-widget",
 query: ["[% normset.${"P0800"}.first.content.replace('"',' ').split(', ').reverse.join(' ') %]"], // add your search engine's URL search params
 height: 259,
 shouldCenter: true,
-showDefinitions: true,
+showDefinitions: false,
 languages: ["eng"], // available languages eng,zho,deu
 });
 </script>

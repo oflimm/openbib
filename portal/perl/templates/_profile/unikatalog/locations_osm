@@ -1126,7 +1126,7 @@
     margin-left: 10px;
     margin-top: 10px;
 
-    max-width: 220px;
+    max-width: 240px;
 }
 
 #filterImg {
@@ -1179,7 +1179,7 @@
 }
 
 #map {
-    height: 463px;
+    height: 500px;
     width: 100%;
     font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;
 
@@ -3528,7 +3528,7 @@
 	 * HTML-code für Einstellungen
 	 */
 	function loadEinstellungen() {
-	    $('#einstellungen').html('<span id="einstellungen"><div class="shadowbox"><div id="flexSelect"><select id="institutsChoice"></select></div><br><div id="flexSelect1"><select id="artSelect"></select></div></div><div class="shadowbox"><label><input type="checkbox" id="geoeffnet">Nur geöffnete Bibliotheken anzeigen</label><br><label><input type="checkbox" id="showMarkerText">Namen anzeigen</label></div><div class="shadowbox"><h4 style="text-align: center">Bibliotheksbesuch planen</h4><img src="[% scheme %]://[% servername %]/images/openbib/osm/cal_ger.png"/><select id="tageChoice"></select><span id="textZeitWahl" style="padding: 7px"></span><br><img src="[% scheme %]://[% servername %]/images/openbib/osm/clock_ger.png"/><input type="range" class="slider" min="360" max="1439" step="15" id="rangevalue"></div><hr><br><button type="button" id="btnZuruecksetzen">Alles Zurücksetzen</button><br></span>');
+	    $('#einstellungen').html('<span id="einstellungen"><div class="shadowbox"><div id="flexSelect"><select id="institutsChoice"></select></div><br><div id="flexSelect1"><select id="artSelect"></select></div></div><div class="shadowbox"><label><input type="checkbox" id="geoeffnet">Nur geöffnete Bibliotheken anzeigen</label><br><label><input type="checkbox" id="showMarkerText">Namen anzeigen</label></div><div class="shadowbox"><h4 style="text-align: center">Bibliotheksbesuch planen</h4><img src="[% scheme %]://[% servername %]/images/openbib/osm/cal_ger.png"/><select id="tageChoice"></select><span id="textZeitWahl" style="padding: 7px"></span><br/><br/>Uhrzeit:<br/> <input type="range" class="slider" min="360" max="1439" step="15" id="rangevalue"></div><hr><br><button type="button" id="btnZuruecksetzen">Alles Zurücksetzen</button><br></span>');
 	}
 
 	function showInfo() {

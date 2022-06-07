@@ -517,7 +517,7 @@ FOREACH field IN normdata;
          content     = "<a href=\"${localurl}\">${content}</a>";
          IF bkdesc ;
             content   = "${content} (${bkdesc})" ;
-         END ;
+         END ; 
          IF NOT content_map.${'E4100'} ;
 	    content_map.${'E4100'} = [];
 	 END;
@@ -612,7 +612,16 @@ FOREACH field IN normdata;
 
          icons     = "<span>${normdataicon}</span>";
 
-         content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement} ${icons}";
+         bkdesc = "";
+         IF item.content.match('\d\d\.\d\d');         
+           bkresult      = bklookup.${item.content};
+	   IF bkresult ;
+	      bkdesc = "(${bkresult})";
+	   END;
+         END;
+
+         content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${bkdesc} ${item.supplement} ${icons}";
+	 
          IF NOT content_map.${'T0700'} ;
 	    content_map.${'T0700'} = [];
 	 END;

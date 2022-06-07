@@ -2245,6 +2245,9 @@ sub to_bibtex {
     my $utf8               = exists $arg_ref->{utf8}
         ? $arg_ref->{utf8}               : 0;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
     my $bibtex_ref=[];
 
     my $fields_ref = $self->to_abstract_fields();
@@ -2253,14 +2256,18 @@ sub to_bibtex {
     my $authors_ref=[];
     my $editors_ref=[];
 
+    if ($logger->is_debug){
+	$logger->debug("Fields: ".YAML::Dump($fields_ref));
+    }
+
     if (defined $fields_ref->{authors} && @{$fields_ref->{authors}}){
 	$authors_ref = $fields_ref->{authors};
     }
 
     if (defined $fields_ref->{editors} && @{$fields_ref->{editors}}){
-	$editors_ref = $fields_ref->{editor};
+	$editors_ref = $fields_ref->{editors};
     }
-    
+
     my $author = join(' and ',@$authors_ref);
     my $editor = join(' and ',@$editors_ref);
 
@@ -3268,7 +3275,9 @@ sub to_abstract_fields_mab2 {
     # Edition
     $abstract_fields_ref->{edition} = (exists $self->{_fields}->{T0403})?$self->{_fields}->{T0403}[0]{content}:'';
         
-
+    if ($logger->is_debug){
+	$logger->debug("Abstract Fields: ".YAML::Dump($abstract_fields_ref));
+    }
     
     return $abstract_fields_ref;
 }

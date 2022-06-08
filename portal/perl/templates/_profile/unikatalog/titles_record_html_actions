@@ -490,6 +490,7 @@ $(document).ready(function(){
 </div>
 <!-- Ende Verwandte Themen -->
 
+[% IF 0 == 1 %]
 <!-- Anfang Verschiedenes -->
 <div id="ob-misc" class="accordion"><!-- Begin Verschiedenes -->
 
@@ -512,6 +513,7 @@ $(document).ready(function(){
 </div>
 </div>
 </div>
+[% END %]
 
 <!-- </div><!-- End ob-record_title_discover_toggle_do -->
 </div><!-- End card-body -->
@@ -644,3 +646,5 @@ title %]</span></strong></a>, <span class="ob-publisher">[% publisher %]</span> 
 <!-- </div><!-- End ob-record_title_history_toggle_do -->
 </div><!-- End Session-Historie -->
 [% END %]
+
+

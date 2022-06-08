@@ -85,7 +85,7 @@ $('#qrcodeModal').on('show.bs.modal', function (event) {
     <button class="btn btn-primary sidebar-toggler mt-3" type="button" data-bs-toggle="collapse" data-bs-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-arrow-right"></i> [% IF layout_param.sidebar_template_description %][% layout_param.sidebar_template_description %][% ELSE %]Navigation[% END %]</button>
   [%   END %]
   
-      <div id="ob-sidebar" class=" border-end min-vh-100 collapse navbar-collapse" aria-expanded="false">
+      <div id="ob-sidebar" class="border-end min-vh-100 collapse navbar-collapse" aria-expanded="false">
            <div id="sidebar-dismiss" class="float-end text-white" data-bs-toggle="collapse" data-bs-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <button type="button" class="btn-close me-2" data-bs-dismiss="modal" aria-label="Schließen">
         </button>
@@ -95,7 +95,7 @@ $('#qrcodeModal').on('show.bs.modal', function (event) {
               <h3>[% IF layout_param.sidebar_template_description %][% layout_param.sidebar_template_description %][% ELSE %]Navigation[% END %]</h3>
            </div>
 
-           <div class="sidebar-content overflow-auto h-100">
+           <div class="sidebar-content overflow-auto">
         [% PROCESS common/subtemplate name=layout_param.sidebar_template %]
 
            <div class="sidebar-footer">

@@ -397,6 +397,10 @@
         transition: width .8s ease;
     } */
 
+    .sidebar-content {
+	height: calc(100vh - 48px);
+    }
+    
     .sidebar-heading {
 	border-bottom: 1px solid #dee2e6;
 	border-top-left-radius: calc(.3rem - 1px);

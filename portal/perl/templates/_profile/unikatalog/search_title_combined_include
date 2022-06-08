@@ -95,11 +95,11 @@
       <button type="button" class="btn-close" aria-label="[% msg.maketext("Schließen") %]">
   </div>
   
-  <div class="sidebar-heading ob-bg text-white p-1 pb-0 mb-2 d-md-none">
-    <h3>[% msg.maketext("Filtern") %]</h3>
+  <div class="sidebar-heading p-1 pb-0 mb-2 d-md-none">
+    <h3>[% msg.maketext("Suchergebnis filtern") %]</h3>
   </div>
   
-  <div class="sidebar-content overflow-auto h-100 ps-1">
+  <div class="sidebar-content overflow-auto ps-1">
     
 [% IF hits > 0 %]
 [% IF separate_facets %]
@@ -113,7 +113,7 @@ $(document).ready(function(){
 </script>
 
 <div id="ob-separate_facets_sidebar">
-<h4>[% msg.maketext("Suchergebnis filtern") %]</h4>
+<h4 class="d-none d-md-block">[% msg.maketext("Suchergebnis filtern") %]</h4>
 
 <h5>[% msg.maketext("Die Filter-Kriterien werden bestimmt") %]</h5>
 
@@ -132,6 +132,10 @@ $(document).ready(function(){
 </div>
 [%   END %]
 [% END %]
+           <div class="sidebar-footer">
+             <button type="button" class="btn btn-primary text-end"  data-bs-toggle="collapse" data-bs-target="#ob-sidebar[% idsuffix %]">[% msg.maketext("Schließen") %]</button>
+           </div>
+
   </div>
 </div><!-- End: sidebar -->
 
@@ -151,7 +155,7 @@ $(document).ready(function(){
 });
 </script>
 <div id="ob-separate_facets_main">
-<h4>[% msg.maketext("Suchergebnis filtern") %]</h4>
+<h4 class="d-none d-md-block">[% msg.maketext("Suchergebnis filtern") %]</h4>
 
 <h5>[% msg.maketext("Die Filter-Kriterien werden bestimmt") %]</h5>
 

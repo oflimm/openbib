@@ -399,7 +399,7 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(
 
 [% PROCESS common/subtemplate name="search_radius" %]
 
-<h4>[% msg.maketext("Suchergebnis filtern") %]</h4>
+<h4 class="d-none d-md-block">[% msg.maketext("Suchergebnis filtern") %]</h4>
 
 <!-- <div class="card">
 <div class="card-header"><span id="ob-facets_all_toggle[% idsuffix %]">[% msg.maketext("Treffermenge eingrenzen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>

@@ -40,7 +40,7 @@
 
        <ul>
 [%  
-    institute_map = {};
+    institution_map = {};
     FOREACH location IN locations ;
      NEXT IF (is_blacklisted.${location.identifier});
      fakultaet      = location.fields.${"L0015"}.first.content;
@@ -73,7 +73,7 @@
      arbeitsplaetze = location.fields.${"L0270"}.first.content;
      zeiten         = 'wg. Corona geschlossen' ; # location.fields.${"L0110"}.first.content;
 
-     institute_map.${description} = {
+     institution_map.${description} = {
         sigel => sigel,
 	sigel_path => sigel_path,
         arbeitsplaetze => arbeitsplaetze,
@@ -82,8 +82,8 @@
    END;
   
 %]
-[% FOREACH desc IN institute_map.keys.sort %]
-	<li>[% IF institute_map.${desc}.url %]<a href="[% scheme %]://[% servername %][% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF 0 == 1 && institute_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
+[% FOREACH desc IN institution_map.keys.sort %]
+	<li>[% IF institution_map.${desc}.url %]<a href="[% scheme %]://[% servername %][% institution_map.${desc}.url %]">[% END %][% desc %][% IF institution_map.${desc}.sigel %] ([% institution_map.${desc}.sigel %])[% END %][% IF institution_map.${desc}.url %]</a>[% END %][% IF institution_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institution_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
       </ul>
@@ -109,7 +109,7 @@
 
        <ul>
 [%  
-    institute_map = {};
+    institution_map = {};
     FOREACH location IN locations ;
      NEXT IF (is_blacklisted.${location.identifier});
      fakultaet      = location.fields.${"L0015"}.first.content;
@@ -147,7 +147,7 @@
      arbeitsplaetze = location.fields.${"L0270"}.first.content;
      zeiten         = 'wg. Corona geschlossen'; #location.fields.${"L0110"}.first.content;
 
-     institute_map.${description} = {
+     institution_map.${description} = {
         sigel => sigel,
 	sigel_path => sigel_path,
         arbeitsplaetze => arbeitsplaetze,
@@ -156,15 +156,15 @@
    END;
   
 %]
-[% FOREACH desc IN institute_map.keys.sort %]
+[% FOREACH desc IN institution_map.keys.sort %]
      [% NEXT IF NOT desc.match('^Lern') %]
-	<li>[% IF institute_map.${desc}.url %]<a href="[% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF 0 == 1 && institute_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
+	<li>[% IF institution_map.${desc}.url %]<a href="[% institution_map.${desc}.url %]">[% END %][% desc %][% IF institution_map.${desc}.sigel %] ([% institution_map.${desc}.sigel %])[% END %][% IF institution_map.${desc}.url %]</a>[% END %][% IF institution_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institution_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
 
-[% FOREACH desc IN institute_map.keys.sort %]
+[% FOREACH desc IN institution_map.keys.sort %]
      [% NEXT IF desc.match('^Lern') %]
-	<li>[% IF institute_map.${desc}.url %]<a href="[% scheme %]://[% servername %][% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF 0 == 1 && institute_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
+	<li>[% IF institution_map.${desc}.url %]<a href="[% scheme %]://[% servername %][% institution_map.${desc}.url %]">[% END %][% desc %][% IF institution_map.${desc}.sigel %] ([% institution_map.${desc}.sigel %])[% END %][% IF institution_map.${desc}.url %]</a>[% END %][% IF institution_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institution_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
        </ul>
@@ -188,7 +188,7 @@
 
     <ul>
 [%  
-    institute_map = {};
+    institution_map = {};
     FOREACH location IN locations ;
      NEXT IF (is_blacklisted.${location.identifier});
      fakultaet      = location.fields.${"L0015"}.first.content;
@@ -219,7 +219,7 @@
      arbeitsplaetze = location.fields.${"L0270"}.first.content;
      zeiten         = 'wg. Corona geschlossen';#location.fields.${"L0110"}.first.content;
 
-     institute_map.${description} = {
+     institution_map.${description} = {
         sigel => sigel,
 	sigel_path => sigel_path,
         arbeitsplaetze => arbeitsplaetze,
@@ -228,8 +228,8 @@
    END;
   
 %]
-[% FOREACH desc IN institute_map.keys.sort %]
-	<li>[% IF institute_map.${desc}.url %]<a href="[% scheme %]://[% servername %][% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF 0 == 1 && institute_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
+[% FOREACH desc IN institution_map.keys.sort %]
+	<li>[% IF institution_map.${desc}.url %]<a href="[% scheme %]://[% servername %][% institution_map.${desc}.url %]">[% END %][% desc %][% IF institution_map.${desc}.sigel %] ([% institution_map.${desc}.sigel %])[% END %][% IF institution_map.${desc}.url %]</a>[% END %][% IF institution_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institution_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
 </ul>
@@ -254,7 +254,7 @@
 
 <ul>
 [%  
-    institute_map = {};
+    institution_map = {};
     FOREACH location IN locations ;
      NEXT IF (is_blacklisted.${location.identifier});
      fakultaet      = location.fields.${"L0015"}.first.content;
@@ -285,7 +285,7 @@
      arbeitsplaetze = location.fields.${"L0270"}.first.content;
      zeiten         = 'wg. Corona geschlossen'; #location.fields.${"L0110"}.first.content;
 
-     institute_map.${description} = {
+     institution_map.${description} = {
         sigel => sigel,
 	sigel_path => sigel_path,
         arbeitsplaetze => arbeitsplaetze,
@@ -294,8 +294,8 @@
    END;
   
 %]
-[% FOREACH desc IN institute_map.keys.sort %]
-	<li>[% IF institute_map.${desc}.url %]<a href="[% scheme %]://[% servername %][% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF 0 == 1 && institute_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
+[% FOREACH desc IN institution_map.keys.sort %]
+	<li>[% IF institution_map.${desc}.url %]<a href="[% scheme %]://[% servername %][% institution_map.${desc}.url %]">[% END %][% desc %][% IF institution_map.${desc}.sigel %] ([% institution_map.${desc}.sigel %])[% END %][% IF institution_map.${desc}.url %]</a>[% END %][% IF institution_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institution_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
 </ul>
@@ -319,7 +319,7 @@
 
 <ul>
 [%  
-    institute_map = {};
+    institution_map = {};
     FOREACH location IN locations ;
      NEXT IF (is_blacklisted.${location.identifier});
      fakultaet      = location.fields.${"L0015"}.first.content;
@@ -350,7 +350,7 @@
      arbeitsplaetze = location.fields.${"L0270"}.first.content;
      zeiten         = 'wg. Corona geschlossen';#location.fields.${"L0110"}.first.content;
 
-     institute_map.${description} = {
+     institution_map.${description} = {
         sigel => sigel,
 	sigel_path => sigel_path,
         arbeitsplaetze => arbeitsplaetze,
@@ -359,8 +359,8 @@
    END;
   
 %]
-[% FOREACH desc IN institute_map.keys.sort %]
-	<li>[% IF institute_map.${desc}.url %]<a href="[% scheme %]://[% servername %][% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF 0 == 1 && institute_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
+[% FOREACH desc IN institution_map.keys.sort %]
+	<li>[% IF institution_map.${desc}.url %]<a href="[% scheme %]://[% servername %][% institution_map.${desc}.url %]">[% END %][% desc %][% IF institution_map.${desc}.sigel %] ([% institution_map.${desc}.sigel %])[% END %][% IF institution_map.${desc}.url %]</a>[% END %][% IF institution_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institution_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
 </ul>
@@ -384,7 +384,7 @@
 
          <ul>
 [%  
-    institute_map = {};
+    institution_map = {};
     FOREACH location IN locations ;
      NEXT IF (is_blacklisted.${location.identifier});
      fakultaet      = location.fields.${"L0015"}.first.content;
@@ -415,7 +415,7 @@
      arbeitsplaetze = location.fields.${"L0270"}.first.content;
      zeiten         = 'wg. Corona geschlossen'; #location.fields.${"L0110"}.first.content;
 
-     institute_map.${description} = {
+     institution_map.${description} = {
         sigel => sigel,
 	sigel_path => sigel_path,
         arbeitsplaetze => arbeitsplaetze,
@@ -424,8 +424,8 @@
    END;
   
 %]
-[% FOREACH desc IN institute_map.keys.sort %]
-	<li>[% IF institute_map.${desc}.url %]<a href="[% scheme %]://[% servername %][% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF 0 == 1 && institute_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
+[% FOREACH desc IN institution_map.keys.sort %]
+	<li>[% IF institution_map.${desc}.url %]<a href="[% scheme %]://[% servername %][% institution_map.${desc}.url %]">[% END %][% desc %][% IF institution_map.${desc}.sigel %] ([% institution_map.${desc}.sigel %])[% END %][% IF institution_map.${desc}.url %]</a>[% END %][% IF institution_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institution_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
     </ul>

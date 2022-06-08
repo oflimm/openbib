@@ -97,7 +97,11 @@ $('#qrcodeModal').on('show.bs.modal', function (event) {
 
            <div class="sidebar-content overflow-auto h-100">
         [% PROCESS common/subtemplate name=layout_param.sidebar_template %]
-	   </div>
+
+           <div class="sidebar-footer">
+             <button type="button" class="btn btn-primary text-end"  data-bs-toggle="collapse" data-bs-target="#ob-sidebar">[% msg.maketext("Schließen") %]</button>
+           </div>
+         </div>
       </div>
    [% END %]
    <!-- End: Sidebar -->

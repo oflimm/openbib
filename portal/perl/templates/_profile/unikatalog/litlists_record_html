@@ -43,7 +43,7 @@
     <div class="right">
 <form method="get" action="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]">
 
-[% PROCESS common/subtemplate name="titlist_options" this_loc="${path_prefix}/${config.get('litlists_loc')}/id/${litlist.properties.id}" no_relevance=1%]
+[% PROCESS common/subtemplate name="titlist_options" this_loc="${path_prefix}/${config.get('litlists_loc')}/id/${litlist.properties.id}" no_relevance=1 no_htmx=1 %]
 
 </form>
     </div>
@@ -70,6 +70,18 @@
 [% ELSIF format == 'full' %]
 
 [% PROCESS common/subtemplate name="litlists_record_html_full" %]
+
+[% ELSIF format == 'apa' %]
+
+[% PROCESS common/subtemplate name="litlists_record_html_as_apa" %]
+
+[% ELSIF format == 'harvard' %]
+
+[% PROCESS common/subtemplate name="litlists_record_html_as_harvard" %]
+
+[% ELSIF format == 'mla' %]
+
+[% PROCESS common/subtemplate name="litlists_record_html_as_mla" %]
 
 [%- END # Ende Alles -%]
 

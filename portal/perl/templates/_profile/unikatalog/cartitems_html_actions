@@ -1,8 +1,6 @@
 [% IF NOT hide_options %]
 <div class="ob-cartitems ob-reuse_data"><!-- Begin Reuse -->
 
-<h4>[% msg.maketext("Diese Merkliste") %]</h4>
-
 <div id="ob-title_actions" class="accordion"><!-- Begin Litlist -->
 
   <div class="card">

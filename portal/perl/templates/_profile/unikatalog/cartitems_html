@@ -47,8 +47,8 @@ function update_collection(yourform, checked, item) {
              <button type="button" class="btn-close" aria-label="[% msg.maketext("Schließen") %]">
            </div>
 
-           <div class="sidebar-heading p-1 pb-0 mb-2">
-              <h3>Menu</h3>
+           <div class="sidebar-heading p-1 ps-3 pb-0 mb-2">
+              <h3>[% msg.maketext("Diese Merkliste") %]</h3>
            </div>
 
            <div class="sidebar-content overflow-auto h-100">
@@ -59,7 +59,13 @@ function update_collection(yourform, checked, item) {
 %]
 [% PROCESS common/subtemplate name="cartitems_html_actions" %]
 
+             <div class="sidebar-footer">
+               <button type="button" class="btn btn-primary text-end"  data-bs-toggle="collapse" data-bs-target="#ob-sidebar">[% msg.maketext("Schließen") %]</button>
+             </div>
+
            </div> <!-- End sidebar-content -->
+
+
       </div><!-- End sidebar -->
 [% END %]    
 

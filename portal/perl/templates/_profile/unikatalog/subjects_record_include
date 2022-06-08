@@ -83,6 +83,7 @@ END;
 
 <div class="table-responsive">
 <table class="table table-striped table-hover ob-normdata_fields">
+<!--
 [%-
 
     IF normset.${'S5000'};
@@ -99,11 +100,10 @@ END;
          content   = "<a href=\"${localurl}\">${content} ${desc}</a>";
 -%]
 <tr><th class="ob-field">[% msg.maketext("S5000") %]</th><td>[% content %]</td></tr>
-[%- END -%]
+[%- END -%] -->
 [% IF normset.defined('S0010') %]
 [% gnd = normset.${'S0010'}.first.content %]
 <tr><th class="ob-field">Dt.&nbsp;Nationalbibliothek</th><td><a href="http://d-nb.info/gnd/[% gnd %]" target="_blank">Normdatensatz</a></td></tr>
-<!-- <tr><th class="ob-field">Wikipedia (de)</th><td><a href="http://tools.wmflabs.org/persondata/redirect/gnd/de/[% gnd %]" target="_blank">Artikel</a></td></tr> -->
 [% END %]
 [% IF activefeed.4 && catalog_has_authorities ;
 

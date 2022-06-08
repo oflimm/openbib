@@ -221,6 +221,7 @@ END;
 
 <div class="table-responsive">
 <table class="table table-striped table-hover ob-normdata_fields">
+<!--
 [%-
 
     IF normset.${'P5000'};
@@ -237,7 +238,7 @@ END;
          content   = "<a href=\"${localurl}\">${content} ${desc}</a>";
 -%]
 <tr><th class="ob-field">[% msg.maketext("S5000") %]</th><td>[% content %]</td></tr>
-[%- END -%]
+[%- END -%] -->
 [% IF normset.defined('P0010') %]
 [% gnd = normset.${'P0010'}.first.content %]
 <tr><th class="ob-field">Dt.&nbsp;Nationalbibliothek</th><td><a href="http://d-nb.info/gnd/[% gnd %]" target="_blank">Normdatensatz</a></td></tr>

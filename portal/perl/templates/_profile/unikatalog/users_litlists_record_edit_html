@@ -85,7 +85,8 @@
 </div>
 [%- END -%]
 
-<div class="form-floating mb-3">
+<div class="mb-3">
+<label class="form-label" for="topics">Ordnen Sie Ihre Literaturliste thematisch ein</label>
 <select class="form-select" name="topics" id="topics" multiple="multiple" size="5">
 
 [% FOREACH topic IN topics %]
@@ -93,7 +94,6 @@
 [% END %]
 
 </select>
-<label for="topics">Ordnen Sie Ihre Literaturliste thematisch ein</label>
 </div>
 
 <button type="submit" name="do_changelist" class="btn btn-primary mb-2">[% msg.maketext("&Auml;ndern") %]</button>

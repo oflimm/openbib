@@ -477,12 +477,12 @@
 	
 [% IF user_owns_litlist %]
 	    <div class="pe-1">
-	      <a class="ob-delete btn btn-primary pe-2" href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/items/id/[% listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("L&ouml;schen") %]</span></a>
+	      <a class="btn btn-primary pe-2" href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/items/id/[% listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><i class="fas fa-trash"></i> <span class="d-none d-sm-inline">[% msg.maketext("L&ouml;schen") %]</span></a>
 	    </div>
 [% END %]
 [% IF parameter.private_tags %]
 	    <div class="pe-1">
-	      <a class="ob-collection btn btn-primary pe-2" href="[% path_prefix %]/[% config.get('tags_loc') %]/[% parameter.tag %]?titleid=[% record.get_encoded_id %];dbname=[% record.database %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("L&ouml;schen") %]</span></a>
+	      <a class="ob-collection btn btn-primary pe-2" href="[% path_prefix %]/[% config.get('tags_loc') %]/[% parameter.tag %]?titleid=[% record.get_encoded_id %];dbname=[% record.database %]" title="[% msg.maketext("Entfernen") %]"><i class="fas fa-trash"></i> <span class="d-none d-sm-inline">[% msg.maketext("L&ouml;schen") %]</span></a>
 	    </div>
 [% END %]
 [% IF with_cartitems_delete %]

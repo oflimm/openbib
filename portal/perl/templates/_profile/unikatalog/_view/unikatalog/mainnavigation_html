@@ -206,8 +206,12 @@
           [% msg.maketext("Suche") %]
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></li>      	  
-          <li><a href="#" data-bs-toggle="modal" data-bs-target="#searchhistoryModal" data-formaturl="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a></li>
+          <li>
+	   <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#searchformsadvancedModal" data-formaturl="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.include?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
+	  </li>
+          <li>
+	   <a class="drowdown-item" href="#" data-bs-toggle="modal" data-bs-target="#searchhistoryModal" data-formaturl="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
+	  </li>
         </ul>
       </li>
 
@@ -338,7 +342,7 @@
        	      [% PROCESS common/subtemplate name="searchforms_record_profile" %]
             </li> -->
             <li class="list-group-item pe-1 pt-3" style="border: none" >
-             <a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
+             <a href="#" data-bs-toggle="modal" data-bs-target="#searchformsadvancedModal" data-formaturl="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.include?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
 	    </li>      	  
             <li class="list-group-item pe-1 pt-3" style="border: none" >
 	     <a href="#" data-bs-toggle="modal" data-bs-target="#searchhistoryModal" data-formaturl="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>

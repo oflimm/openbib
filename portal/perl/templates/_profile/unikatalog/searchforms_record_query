@@ -1,7 +1,5 @@
 [%- searchfield = config.get('searchfield') -%]
 
-<h1 class="display-5">[% msg.maketext("Erweiterte Suche") %]</h1>
-
 [%# USE dumper;dumper.dump(available_searchfields)%]
 
 [% IF available_searchfields.freesearch.active %]
@@ -262,10 +260,6 @@
 
 <div class="pe-1">
 <button class="btn btn-primary" type="submit">[% msg.maketext("Suchen") %]</button>
-</div>
-
-<div class="pe-1">
-    <button class="btn btn-primary sidebar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-arrow-right"></i> <span class="d-none d-sm-inline">[% msg.maketext("Mehr") %]</span></button>
 </div>
 
 </div>

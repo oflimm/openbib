@@ -60,11 +60,12 @@
 <!--            <i class="fas fa-window-close fa-2x p-1"></i> -->
      </div>
 
-     <div class="sidebar-heading p-1 pb-0 mb-2">
+     <div class="sidebar-heading p-1 ps-3 pb-0 mb-2">
             <h3>Menu</h3>
      </div>
 
-    <ul class="list-unstyled components">
+     <div class="sidebar-content overflow-auto">
+        <ul class="list-unstyled components">
 
      [% lang_desc = {
        'en' = "English"
@@ -97,6 +98,12 @@
     [% END %]
     		
             </ul>
+
+           <div class="sidebar-footer">
+             <button type="button" class="btn btn-primary text-end"  data-bs-toggle="collapse" data-bs-target="#navbarToggler">[% msg.maketext("Schließen") %]</button>
+           </div>
+
+	</div><!-- End: sidebar-content -->
   
   </div>
 
@@ -109,11 +116,13 @@
 <!--            <i class="fas fa-window-close fa-2x p-1"></i> -->
      </div>
 
-     <div class="sidebar-heading p-1 pb-0 mb-2">
+     <div class="sidebar-heading p-1 ps-3 pb-0 mb-2">
             <h3>[% msg.maketext("Mein Konto") %]</h3>
      </div>
 
-    <ul class="list-unstyled components">
+     <div class="sidebar-content overflow-auto">
+
+       <ul class="list-unstyled components">
 <!--           <li class="nav-item[% IF layout_param.active_menu == "collection" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %]</a></li> -->
 
 [%     IF config.get_viewauthenticators(view) %]
@@ -158,7 +167,13 @@
      %]
 
     		
-            </ul>
+         </ul>
+
+         <div class="sidebar-footer">
+             <button type="button" class="btn btn-primary text-end"  data-bs-toggle="collapse" data-bs-target="#userToggler">[% msg.maketext("Schließen") %]</button>
+         </div>
+
+      </div> <!-- End sidebar-content -->
   
   </div>
 

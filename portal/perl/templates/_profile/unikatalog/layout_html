@@ -19,6 +19,19 @@
 <!-- Modals -->
 [%   PROCESS common/subtemplate name="cartitems_html_modals" %]
 
+[%   PROCESS common/subtemplate name="search_history_html_modals" %]
+
+<script>
+$('#searchhistoryModal').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var formaturl = button.data('formaturl') // Extract info from data-* attributes
+  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+  var modal = $(this)
+  modal.find('.modal-body').load(formaturl);
+})
+</script>
+
 [% IF show_modal_template && NOT hide_detail && NOT hide_hit %]
 
 [%   PROCESS common/subtemplate name=show_modal_template %]

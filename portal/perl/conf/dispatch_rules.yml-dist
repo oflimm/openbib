@@ -57,6 +57,7 @@
    rule: '/portal/:view/search/history[get]'
    representations:
      - none
+     - include
      - html
    runmode: 'show'
 - # Resource: search_loc

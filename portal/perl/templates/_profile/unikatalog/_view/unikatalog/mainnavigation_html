@@ -268,7 +268,7 @@
 <div class="navbottom ps-4 row">
 
       <div class="col-md-9 mx-auto brandname">
-        <a href="[% path_prefix %]/home"><span class="d-sm-none">Universitätskatalog <b style="color: orange">Prototyp</b></span><span class="d-none d-sm-block">Kölner Universitätskatalog <b style="color: orange">Prototyp (Pre-Alpha)</b></span></a>
+        <a href="[% path_prefix %]/home"><span class="d-sm-none">Universitätskatalog <b style="color: orange">Prototyp</b></span><span class="d-none d-sm-block">Kölner Universitätskatalog <b style="color: orange">Prototyp (Alpha)</b></span></a>
       </div>
       
        <div class="col-md-3 text-end d-none d-md-block">

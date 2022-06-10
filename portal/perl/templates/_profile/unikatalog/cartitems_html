@@ -39,6 +39,13 @@ function update_collection(yourform, checked, item) {
 
 </style>
 
+[% IF NOT user.ID %]
+<div class="alert alert-info">
+
+[% msg.maketext("Diese Merkliste verfällt nach Ablauf der Sitzung, da Sie als Gast angemeldet sind. Um die Datensätze dauerhaft in Ihrem persönlichen Profil zu speichern, müssen Sie sich mit Ihrer Benutzernummer anmelden.") %]
+
+</div>
+[% END %]
 
 [% IF recordlist.get_size > 0 %]
       <div id="ob-sidebar" class="bg-light border-end min-vh-100 collapse navbar-collapse" aria-expanded="false">

@@ -1,0 +1,20 @@
+[%#-
+#######################################################################
+#
+# Templatename: users_circulations_make_pda_order_html
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe einer Meldung bei erfolgreicher Bestellung im Buchhandel mit PDA
+#
+#######################################################################
+-%]
+<div class="ob-jumbotron mt-3">
+
+<h1 class="display-4">[% msg.maketext("Ihr Anschaffungsvorschlag wurde erfolgreich an uns übermittelt.") %]</h1>
+
+<p class="lead">[% msg.maketext("Die Bereitstellungszeit beträgt ca. 1 Woche. Sie erhalten von uns eine <strong>Nachricht per E-Mail</strong>, sobald der Titel als E-Book freigeschaltet ist oder Sie das Printexemplar zur Ausleihe abholen können.") %]</p>
+
+</div>

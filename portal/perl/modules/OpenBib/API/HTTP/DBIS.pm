@@ -213,7 +213,7 @@ sub get_titles_record {
 	$logger->info($response->code . ' - ' . $response->message);
 	return $record;
     }
-    
+
     my $parser = XML::LibXML->new();
     my $tree   = $parser->parse_string($response->content);
     my $root   = $tree->getDocumentElement;
@@ -234,7 +234,7 @@ sub get_titles_record {
     my $access_type = $type_mapping_ref->{$access_info_ref->{id}};
     
     my $db_type_ref = [];
-    my @db_type_nodes = $root->findnodes('/dbis_page/list_dbs/db_type_infos/db_type_info');
+    my @db_type_nodes = $root->findnodes('/dbis_page/details/db_type_infos/db_type_info');
     my $mult = 1;
     foreach my $db_type_node (@db_type_nodes){
         my $this_db_type_ref = {};
@@ -284,7 +284,7 @@ sub get_titles_record {
     
     my $hints   =  $root->findvalue('/dbis_page/details/hints');
     my $content =  $root->findvalue('/dbis_page/details/content');
-    my $instructions =  $root->findvalue('/dbis_page/details/instructions');
+    my $instruction =  $root->findvalue('/dbis_page/details/instruction');
     my $publisher =  $root->findvalue('/dbis_page/details/publisher');
     my $report_periods =  $root->findvalue('/dbis_page/details/report_periods');
     my $appearence =  $root->findvalue('/dbis_page/details/appearence');
@@ -359,8 +359,10 @@ sub get_titles_record {
         $mult++;
     }
     
-    $record->set_field({field => 'T0501', subfield => '', mult => $mult, content => $instructions}) if ($instructions);
+    $record->set_field({field => 'T0511', subfield => '', mult => $mult, content => $instruction}) if ($instruction);
 
+    $record->set_field({field => 'T0510', subfield => '', mult => $mult, content => $hints}) if ($hints);
+    
     $record->set_holding([]);
     $record->set_circulation([]);
 

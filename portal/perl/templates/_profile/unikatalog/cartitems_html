@@ -42,7 +42,7 @@ function update_collection(yourform, checked, item) {
 [% IF NOT user.ID %]
 <div class="alert alert-info">
 
-[% msg.maketext("Diese Merkliste verfällt nach Ablauf der Sitzung, da Sie als Gast angemeldet sind. Um die Datensätze dauerhaft in Ihrem persönlichen Profil zu speichern, müssen Sie sich mit Ihrer Benutzernummer anmelden.") %]
+[% msg.maketext("Diese Merkliste verfällt nach Ablauf der Sitzung, da Sie nicht angemeldet sind. Um die Datensätze dauerhaft in Ihrem persönlichen Profil zu speichern, müssen Sie sich mit Ihrer Kennung - entweder Ihre Benutzernummer oder Mail-Adresse - anmelden.") %]
 
 </div>
 [% END %]

@@ -1,9 +1,5 @@
 <div class="ob-reuse_data"><!-- Begin Reuse -->
 
-<style>
-</style>
-
-
 [%
 
   normdata = record.get_fields;
@@ -378,20 +374,7 @@ $(document).ready(function(){
 
 
 <!-- Anfang Tags -->
-
-    <script>
-$(document).ready(function(){
-
-    $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/bibsonomy/[% config.get('subjects_loc') %].include?l=[% lang %];bibkey=[% record.to_bibkey %];subjects=[% record.to_tags %]",
-          function (txt){
-            $("#ob-bibsonomy_tags_content").html(txt); 
-    });
-
-});
-
-    </script>
-
-
+[% IF all_tags.size > 0 %]
 <div id="ob-available_tags" class="accordion"><!-- Begin Vorhandene tags -->
   <div class="card">
     <div class="card-header" id="headingAvailableTags">
@@ -405,23 +388,24 @@ $(document).ready(function(){
     <div id="collapseAvailableTags" class="collapse" aria-labelledby="headingAvailableTags" data-parent="#ob-available_tags">
       <div class="card-body">
 [% IF all_tags.size > 0 %]      
-      <h5>Von Nutzern vergeben</h5>
+      <h5>[% msg.maketext("Von Nutzern vergeben") %]</h5>
 [% alltags_cloud %]
-[% IF username && private_tags_of_tit.size > 0 %]
-<br />davon eigene Tags:
-[%- FOREACH tag IN private_tags_of_tit -%]
+[%   IF username && private_tags_of_tit.size > 0 %]
+<br />[% msg.maketext("davon eigene Tags") %]
+[%-    FOREACH tag IN private_tags_of_tit -%]
 <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags/id/[% tag.id %].html">[% tag.name %]</a>&nbsp;
-[%- END -%]
+[%-    END -%]
+[%   END %]
+<p/>
+[% ELSE %]
+[% msg.maketext("Dieser Titel wurde noch nicht getaggt") %]
 [% END %]
 <p/>
+</div>
+</div>
+</div>
+</div>
 [% END %]
-      <h5>Aus Bibsonomy</h5>
-<span id="ob-bibsonomy_tags_content"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/bibsonomy/[% config.get('subjects_loc') %].html?l=[% lang %];bibkey=[% record.to_bibkey %];subjects=[% record.to_tags | uri %]">Suchen?</a></span>
-<p/>
-</div>
-</div>
-</div>
-</div>
 <!-- Ende Tags -->
 
 <!-- Anfang Verwandte Verfasser -->

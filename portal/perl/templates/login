@@ -37,10 +37,8 @@
     };
 -%]
 [%- PROCESS common/subtemplate name="layout_html" -%]
-[%- ELSIF representation == 'rdf' -%]
-[%- PROCESS common/subtemplate name="admin_views_rss_record_rdf" -%]
-[%- ELSIF representation == 'json' -%]
-[%- PROCESS common/subtemplate name="admin_views_rss_record_json" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="login_include" -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]
 [%- END -%]

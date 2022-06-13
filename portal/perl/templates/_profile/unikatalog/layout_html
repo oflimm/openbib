@@ -39,7 +39,7 @@
 <script>
   // Flushing existing content with pure JS
   const genericModal = document.getElementById('genericModal')
-  genericModal.addEventListener('hide.bs.modal', event => {
+  genericModal.addEventListener('hidden.bs.modal', event => {
   // Update the modal's content.
   const modalTitle = genericModal.querySelector('#genericModalLabel')
   const modalBody  = genericModal.querySelector('#generic_message')

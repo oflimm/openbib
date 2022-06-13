@@ -79,3 +79,5 @@
 [% ELSE %]
 [% msg.maketext("Sie haben noch keine Suchanfragen gestellt.") %]
 [% END %]
+
+<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Suchhistorie") %]</div>

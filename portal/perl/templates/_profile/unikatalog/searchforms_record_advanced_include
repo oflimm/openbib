@@ -45,3 +45,5 @@
 [% PROCESS common/subtemplate name="searchforms_record_authority_include" %]
   </div>
 </div>
+
+<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Erweiterte Suche") %]</div>

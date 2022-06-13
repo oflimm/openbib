@@ -290,3 +290,5 @@
          </div><!-- End: login_targets -->
 
 <p/>
+
+<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Mein Konto") %] | [% msg.maketext("Anmelden") %]</div>

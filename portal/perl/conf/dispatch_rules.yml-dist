@@ -3369,6 +3369,7 @@
    runmode: 'show_form'
    representations:
      - none
+     - include
      - html
 - # login_loc:
    send_new_cookie: 1

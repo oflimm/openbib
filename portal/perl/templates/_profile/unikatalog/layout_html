@@ -115,8 +115,26 @@ $('#qrcodeModal').on('show.bs.modal', function (event) {
   [%   IF NOT layout_param.sidebar_button_in_main_template %]
     <button class="btn btn-primary sidebar-toggler mt-3" type="button" data-bs-toggle="collapse" data-bs-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-arrow-right"></i> [% IF layout_param.sidebar_template_description %][% layout_param.sidebar_template_description %][% ELSE %]Navigation[% END %]</button>
   [%   END %]
-  
-      <div id="ob-sidebar" class="border-end min-vh-100 collapse navbar-collapse" aria-expanded="false">
+
+      <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
+
+        <div class="offcanvas-header">
+	  <h3 class="offcanvas-title" id="offcanvasSidebarLabel">[% IF layout_param.sidebar_template_description %][% layout_param.sidebar_template_description %][% ELSE %]Navigation[% END %]</h3>
+	  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+	</div>
+	<div class="offcanvas-body">
+	  <div>
+            [% PROCESS common/subtemplate name=layout_param.sidebar_template %]
+	  </div>
+
+	  <div class="offcanvas-footer">
+            <button type="button" class="btn btn-primary text-end"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar">[% msg.maketext("Schließen") %]</button>
+          </div>
+	</div>
+      </div>
+
+[% IF 0 == 1 %]
+      
            <div id="sidebar-dismiss" class="float-end text-white" data-bs-toggle="collapse" data-bs-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <button type="button" class="btn-close me-2" data-bs-dismiss="modal" aria-label="Schließen">
         </button>
@@ -133,7 +151,8 @@ $('#qrcodeModal').on('show.bs.modal', function (event) {
              <button type="button" class="btn btn-primary text-end"  data-bs-toggle="collapse" data-bs-target="#ob-sidebar">[% msg.maketext("Schließen") %]</button>
            </div>
          </div>
-      </div>
+  </div>
+  [% END # 0 == 1 %]
    [% END %]
    <!-- End: Sidebar -->
 

@@ -121,7 +121,7 @@
                 </li>
       [% END %]
     [%  ELSE %]
-           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %] p-1"><a class="nav-link btn btn-primary ms-1 me-1" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Anmelden") %]</a></li>
+           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %] p-1"><a class="nav-link btn btn-primary ms-1 me-1" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" data-formattitle="[% msg.maketext("Anmelden") %]" data-formaturl="[% path_prefix %]/[% config.get('login_loc') %].include?l=[% lang %]">[% msg.maketext("Anmelden") %]</a></li>
     
            <li class="nav-item">
 <div class="card">
@@ -188,10 +188,10 @@
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <li>
-	   <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#searchformsadvancedModal" data-formaturl="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.include?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
+	   <a class="dropdown-item" href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.include?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" data-formattitle="[% msg.maketext("Erweiterte Suche") %]" data-formaturl="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.include?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
 	  </li>
           <li>
-  	   <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#searchhistoryModal" data-formaturl="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
+	   <a class="drowdown-item" href="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" data-formattitle="[% msg.maketext("Suchhistorie") %]" data-formaturl="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
 	  </li>
         </ul>
       </li>
@@ -225,7 +225,7 @@
            <li class="nav-item[% IF layout_param.active_menu == "loginout" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %];purge_private_userinfo=1">[% msg.maketext("Abmelden") %]</a></li>
       [% END %]
     [%  ELSE %]
-           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]"><span class="d-none d-md-block">[% msg.maketext("Anmelden") %]</span></a></li>
+           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" data-formattitle="[% msg.maketext("Anmelden") %]" data-formaturl="[% path_prefix %]/[% config.get('login_loc') %].include?l=[% lang %]"><span class="d-none d-md-block">[% msg.maketext("Anmelden") %]</span></a></li>
     [%  END %]
 [%     END %]
 
@@ -324,13 +324,10 @@
        	      [% PROCESS common/subtemplate name="searchforms_record_profile" %]
             </li> -->
             <li class="list-group-item pe-1 pt-3" style="border: none" >
-             <a href="#" data-bs-toggle="modal" data-bs-target="#searchformsadvancedModal" data-formaturl="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.include?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
+             <a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" data-formattitle="[% msg.maketext("Erweiterte Suche") %]" data-formaturl="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.include?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
 	    </li>      	  
-            <li class="list-group-item  pe-1 pt-3" style="border: none" >
-	    <a  href="[% path_prefix %]/[% config.get('browse_loc') %]/[% config.get('topics_loc') %].html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a>
-	    </li>
             <li class="list-group-item pe-1 pt-3" style="border: none" >
-	     <a href="#" data-bs-toggle="modal" data-bs-target="#searchhistoryModal" data-formaturl="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
+	     <a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" data-formattitle="[% msg.maketext("Suchhistorie") %]" data-formaturl="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
 	   </li>
          </ul>
     </div><!-- col -->

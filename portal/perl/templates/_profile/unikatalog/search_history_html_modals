@@ -6,7 +6,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
       </div>
       <div class="modal-body" id="searchhistory_message">
-[% msg.maketext("Es konnten keine Recherchen bestimmt werden.") %]
+      <div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>

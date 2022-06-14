@@ -228,6 +228,7 @@ sub get_titles_record {
     my $type_mapping_ref = {
 	'access_0'    => 'g', # green
 	'access_2'    => 'y', # yellow
+	'access_3'    => 'y', # yellow
 	'access_500'  => 'n', # national license
     };
     
@@ -588,9 +589,11 @@ sub get_search_resultlist {
 
     my @matches = $self->matches;
     
-    foreach my $match_ref (@matches) {        
-        $logger->debug("Record: ".$match_ref );
-
+    foreach my $match_ref (@matches) {
+        if ($logger->is_debug){
+	    $logger->debug("Record: ".YAML::Dump($match_ref) );
+	}
+	
         my $access_info = $self->{_access_info}{$match_ref->{access}};
         
         my $record = new OpenBib::Record::Title({id => $match_ref->{id}, database => 'dbis', generic_attributes => { access => $access_info }});

@@ -170,6 +170,20 @@ FOREACH field IN normdata;
 	 END;
          content_map.${'Erscheinungsform'}.push(content);
 
+    CASE "T0523";
+	 
+         IF NOT content_map.${'Berichtszeitraum'} ;
+	    content_map.${'Berichtszeitraum'} = [];
+	 END;
+         content_map.${'Berichtszeitraum'}.push(content);
+
+    CASE "T0412";
+	 
+         IF NOT content_map.${'Verlag'} ;
+	    content_map.${'Verlag'} = [];
+	 END;
+         content_map.${'Verlag'}.push(content);
+
     CASE "T0800";
 	 
          IF NOT content_map.${'Datenbank-Typ'} ;

@@ -119,3 +119,5 @@ END;
 </div><!-- End Details / row -->
 
 </div>
+
+<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Klassifikations-Information") %]</div>

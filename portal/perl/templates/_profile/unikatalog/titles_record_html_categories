@@ -336,7 +336,7 @@ FOREACH field IN normdata;
          normdataicon = "";
 
          IF thisid && catalog_has_authorities ;
-            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Personen-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#normdataModal\" data-formattitle=\"Personendaten\" data-formaturl=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Personen-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
          END;
 
          icons     = "<span>${normdataicon}</span>";
@@ -360,7 +360,7 @@ FOREACH field IN normdata;
          normdataicon = "";
 
          IF thisid && catalog_has_authorities ;
-            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"K&ouml;rperschafts-Information\"  data-bs-toggle=\"modal\" data-bs-target=\"#normdataModal\" data-formattitle=\"Körperschaftsdaten\" data-formaturl=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"K&ouml;rperschafts-Information\"  data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
          END;
 
          icons     = "<span>${normdataicon}</span>";
@@ -583,7 +583,7 @@ FOREACH field IN normdata;
          NEXT IF rswkswt_done.${thiscontent} == 1;
 	 
          IF thisid && catalog_has_authorities;
-            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Schlagwort-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#normdataModal\" data-formattitle=\"Schlagwortdaten\" data-formaturl=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Schlagwort-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
          END;
 
          icons     = "<span>${normdataicon}</span";
@@ -607,7 +607,7 @@ FOREACH field IN normdata;
          normdataicon = "";
 
          IF thisid && catalog_has_authorities ;
-            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Systematik-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#normdataModal\" data-formattitle=\"Systematikdaten\" data-formaturl=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Systematik-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
          END;
 
          icons     = "<span>${normdataicon}</span>";

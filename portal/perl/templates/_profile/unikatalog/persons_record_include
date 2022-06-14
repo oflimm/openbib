@@ -340,3 +340,5 @@ END;
 
 </div><!-- End row -->
 </div><!-- End Details -->
+
+<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Personen-Information") %]</div>

@@ -136,11 +136,15 @@ FOREACH field IN normdata;
 
     CASE "T0750";
 
-         IF NOT content_map.${'Inhalt'} ;
-	    content_map.${'Inhalt'} = [];
+         IF lang == 'de' ;
+           content_map.${'Inhalt'} = [];	 
+           content_map.${'Inhalt'}.push(content);
+	 ELSIF lang == 'en' && normdata.defined("T0751");
+	   content_eng = normdata.${"T0751"}.first.content;
+           content_map.${'Inhalt'} = [];	 
+           content_map.${'Inhalt'}.push(content_eng);
 	 END;
-         content_map.${'Inhalt'}.push(content);
-
+	 
     CASE "T0511";
 
          IF NOT content_map.${'Anleitung'} ;

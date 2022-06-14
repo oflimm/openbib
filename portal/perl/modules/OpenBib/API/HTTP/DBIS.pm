@@ -287,6 +287,7 @@ sub get_titles_record {
     
     my $hints   =  $root->findvalue('/dbis_page/details/hints');
     my $content =  $root->findvalue('/dbis_page/details/content');
+    my $content_eng =  $root->findvalue('/dbis_page/details/content_eng');
     my $instruction =  $root->findvalue('/dbis_page/details/instruction');
     my $publisher =  $root->findvalue('/dbis_page/details/publisher');
     my $report_periods =  $root->findvalue('/dbis_page/details/report_periods');
@@ -350,6 +351,8 @@ sub get_titles_record {
     
     $record->set_field({field => 'T0750', subfield => '', mult => 1, content => $content}) if ($content);
 
+    $record->set_field({field => 'T0751', subfield => '', mult => 1, content => $content_eng}) if ($content_eng);
+    
     $record->set_field({field => 'T0412', subfield => '', mult => 1, content => $publisher}) if ($publisher);
 
     $record->set_field({field => 'T0523', subfield => '', mult => 1, content => $report_periods}) if ($report_periods);

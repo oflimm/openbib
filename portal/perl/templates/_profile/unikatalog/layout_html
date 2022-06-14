@@ -41,30 +41,18 @@
   const genericModal = document.getElementById('genericModal')
   genericModal.addEventListener('hidden.bs.modal', event => {
   // Update the modal's content.
-  const modalTitle = genericModal.querySelector('#genericModalLabel')
-  const modalBody  = genericModal.querySelector('#generic_message')
+    const modalTitle = genericModal.querySelector('#genericModalLabel')
+    const modalBody  = genericModal.querySelector('#generic_message')
 
-  modalTitle.textContent = ''
-  modalBody.innerHTML    = '<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>'
+    modalTitle.textContent = ''
+    modalBody.innerHTML    = '<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>'
   });
+
 </script>
 
 [% IF show_modal_template && NOT hide_detail && NOT hide_hit %]
 
 [%   PROCESS common/subtemplate name=show_modal_template %]
-
-<script>
-$('#qrcodeModal').on('show.bs.modal', function (event) {
-  var button = $(event.relatedTarget) // Button that triggered the modal
-  var formaturl = button.data('formaturl') // Extract info from data-* attributes
-  var formattitle = button.data('formattitle') // Extract info from data-* attributes
-  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-  var modal = $(this)
-  modal.find('.modal-title').text(formattitle)
-  modal.find('.modal-qrcode').html('<img src="'+formaturl+'"/>');  
-})
-</script>
 
 [% END %]
 

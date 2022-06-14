@@ -127,9 +127,9 @@ function copy_to_clipboard(formatid) {
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
         </button>
       </div>
-      <div class="modal-body" id="qrcode_citation">
+      <div class="modal-body">
 
-        <div class="modal-qrcode text-center">
+        <div class="modal-qrcode text-center" id="qrcode_message">
         </div>
 
         <p class="text-center">Titel :: Bibliothek :: Standort :: Signatur</p>
@@ -142,3 +142,21 @@ function copy_to_clipboard(formatid) {
     </div>
   </div>
 </div>
+<script>
+  // qrCode
+  var qrcodeModal = document.getElementById('qrcodeModal')
+  qrcodeModal.addEventListener('show.bs.modal', event => {
+    var button = event.relatedTarget
+
+    const title = button.getAttribute('data-bs-modaltitle')
+    var url   = button.getAttribute('data-bs-modalurl')
+    
+    // Update the modal's content.
+    var modalTitle = qrcodeModal.querySelector('#qrcodeModalLabel')
+    var modalBody  = qrcodeModal.querySelector('#qrcode_message')
+
+    modalTitle.textContent = title
+    modalBody.innerHTML    = '<img src="'+url+'"/>'
+  });
+
+</script>

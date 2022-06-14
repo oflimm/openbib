@@ -103,8 +103,9 @@ sub new {
     
     my $access_national        = exists $arg_ref->{access_national}
         ? $arg_ref->{access_national}         : 0;
-    
-    my $colors  = $access_green + $access_yellow*4 + $access_yellow*8 + $access_red*32;
+
+    # access_yellow = Hochschulnetz = online (4) + CD/DVD (8) + eingeschraenkt (32) = 44
+    my $colors  = $access_green*1 + $access_yellow*4 + $access_yellow*8 + $access_yellow*32;
     my $ocolors = $access_ppu*8 + $access_national*32;
 
     $logger->debug("green: $access_green ; yellow: $access_yellow ; red: $access_red ; ppu: $access_ppu ; national: $access_national");
@@ -229,6 +230,7 @@ sub get_titles_record {
 	'access_0'    => 'g', # green
 	'access_2'    => 'y', # yellow
 	'access_3'    => 'y', # yellow
+	'access_5'    => 'y', # yellow	    
 	'access_500'  => 'n', # national license
     };
     

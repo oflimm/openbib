@@ -47,7 +47,6 @@
     modalTitle.textContent = ''
     modalBody.innerHTML    = '<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>'
   });
-
 </script>
 
 [% IF show_modal_template && NOT hide_detail && NOT hide_hit %]

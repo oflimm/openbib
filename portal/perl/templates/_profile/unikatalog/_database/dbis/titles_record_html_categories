@@ -136,12 +136,11 @@ FOREACH field IN normdata;
 
     CASE "T0750";
 
-         IF lang == 'de' ;
-           content_map.${'Inhalt'} = [];	 
-           content_map.${'Inhalt'}.push(content);
-	 ELSIF lang == 'en' && normdata.defined("T0751");
+         content_map.${'Inhalt'} = [];	 
+         content_map.${'Inhalt'}.push(content);
+	 IF lang == 'en' && normdata.defined("T0751");
 	   content_eng = normdata.${"T0751"}.first.content;
-           content_map.${'Inhalt'} = [];	 
+           content_map.${'Inhalt'} = [];
            content_map.${'Inhalt'}.push(content_eng);
 	 END;
 	 
@@ -194,6 +193,20 @@ FOREACH field IN normdata;
 	    content_map.${'Datenbank-Typ'} = [];
 	 END;
          content_map.${'Datenbank-Typ'}.push(content);
+
+    CASE "T0540";
+	 
+         IF NOT content_map.${'ISBN'} ;
+	    content_map.${'ISBN'} = [];
+	 END;
+         content_map.${'ISBN'}.push(content);
+
+    CASE "T0425";
+	 
+         IF NOT content_map.${'Erscheinungsjahr'} ;
+	    content_map.${'Erscheinungsjahr'} = [];
+	 END;
+         content_map.${'Erscheinungsjahr'}.push(content);
 
     CASE ;
          content   = highlightquery(searchquery,item.content);

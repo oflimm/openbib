@@ -31,6 +31,7 @@
       'g' = config.get('dbis_green_img')
       'y' = config.get('dbis_yellow_img')
       'n' = config.get('dbis_de_img')
+      'l' = config.get('dbis_yellow_red_img')
       'r' = config.get('dbis_red_img')
    };
 

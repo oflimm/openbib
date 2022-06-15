@@ -226,11 +226,21 @@ sub get_titles_record {
     $access_info_ref->{desc}       = $root->findvalue('/dbis_page/details/db_access_info/db_access');
     $access_info_ref->{desc_short} = $root->findvalue('/dbis_page/details/db_access_info/db_access_short_text');
 
+    # Zugriffstatus
+    #
+    # '' : Keine Ampel
+    # ' ': Unbestimmt g oder y oder r
+    # 'f': Unbestimmt, aber Volltext Zugriff g oder y (fulltext)
+    # 'g': Freier Zugriff (green)
+    # 'y': Lizensierter Zugriff (yellow)
+    # 'l': Unbestimmt Eingeschraenkter Zugriff y oder r (limited)
+    # 'r': Kein Zugriff (red)
+    
     my $type_mapping_ref = {
 	'access_0'    => 'g', # green
 	'access_2'    => 'y', # yellow
 	'access_3'    => 'y', # yellow
-	'access_5'    => 'y', # yellow	    
+	'access_5'    => 'l', # yellow red
 	'access_500'  => 'n', # national license
     };
     

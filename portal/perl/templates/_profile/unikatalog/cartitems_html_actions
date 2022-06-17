@@ -1,39 +1,39 @@
 [% IF NOT hide_options %]
 <div class="ob-cartitems ob-reuse_data"><!-- Begin Reuse -->
-
-<div id="ob-title_actions" class="accordion"><!-- Begin Litlist -->
-
-  <div class="card">
-    <div class="card-header" id="headingActions">
-      <h5 class="mb-0">
-        <a class="card-link" href="#collapseActions" data-bs-toggle="collapse" data-bs-target="#collapseActions" aria-expanded="true" aria-controls="collapseActions">
-          [% msg.maketext("Aktionen") %]
-        </a>
-      </h5>
-    </div>
-
-    <div id="collapseActions" class="collapse show" aria-labelledby="headingActions" data-parent="#ob-title_actions">
-      <div class="card-body">
-
-<div class="pt-2">
-<i class="fas fa-print"></i><a class="ps-2" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/print?format=full" target="printLoI" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Merkliste drucken") %]</a>
-</div>
-
-<div class="pt-2 pb-2">
-<i class="fas fa-download"></i><a class="ps-2" href="#" data-bs-toggle="modal" data-bs-target="#cartitemsSaveModal">[% msg.maketext("Merkliste speichern") %]</a>
-</div>
-
+  
+  <div id="ob-title_actions" class="accordion"><!-- Begin Litlist -->
+    
+    <div class="card">
+      <div class="card-header" id="headingActions">
+	<h5 class="mb-0">
+          <a class="card-link" href="#collapseActions" data-bs-toggle="collapse" data-bs-target="#collapseActions" aria-expanded="true" aria-controls="collapseActions">
+            [% msg.maketext("Aktionen") %]
+          </a>
+	</h5>
+      </div>
+      
+      <div id="collapseActions" class="collapse show" aria-labelledby="headingActions" data-parent="#ob-title_actions">
+	<div class="card-body">
+	  
+	  <div class="pt-2">
+	    <i class="fas fa-print"></i><a class="ps-2" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/print?format=full" target="printLoI" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Merkliste drucken") %]</a>
+	  </div>
+	  
+	  <div class="pt-2 pb-2">
+	    <i class="fas fa-download"></i><a class="ps-2" href="#" data-bs-toggle="modal" data-bs-target="#cartitemsSaveModal">[% msg.maketext("Merkliste speichern") %]</a>
+	  </div>
+	  
 [% IF user.ID %]
-<div class="pt-2">
-<i class="far fa-envelope"></i><a class="ps-2" href="#" data-bs-toggle="modal" data-bs-target="#cartitemsMailModal">[% msg.maketext("Merkliste als E-Mail") %]</a>
-</div>
+	  <div class="pt-2">
+	    <i class="far fa-envelope"></i><a class="ps-2" href="#" data-bs-toggle="modal" data-bs-target="#cartitemsMailModal">[% msg.maketext("Merkliste als E-Mail") %]</a>
+	  </div>
 [% END %]
 
 
-</div>
-</div>
-</div>
-</div>
+	</div>
+      </div>
+    </div>
+  </div>
 
 <div id="ob-formats" class="accordion"><!-- Begin Formats -->
 
@@ -48,26 +48,26 @@
 
     <div id="collapseFormats" class="collapse show" aria-labelledby="headingFormats" data-parent="#ob-formats">
       <div class="card-body">
+	<p />
+	<a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?format=short"[%- IF format == 'short' -%]class="ob-selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>,  <a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?format=Text" [%- IF format == 'Text'-%]class="ob-selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?format=BibTeX" [%- IF format == 'BibTeX'-%]class="ob-selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?format=EndNote" [%- IF format == 'EndNote'-%]class="ob-selected_item"[%- END -%]>EndNote</a>, <a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?format=apa" [%- IF format == 'apa'-%]class="ob-selected_item"[%- END -%]>APA Zitat</a>, <a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?format=harvard" [%- IF format == 'harvard'-%]class="ob-selected_item"[%- END -%]>Harvard Zitat</a>, <a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?format=mla" [%- IF format == 'mla'-%]class="ob-selected_item"[%- END -%]>MLA Zitat</a>
 <p />
-<a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?format=short"[%- IF format == 'short' -%]class="ob-selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>,  <a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?format=Text" [%- IF format == 'Text'-%]class="ob-selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?format=BibTeX" [%- IF format == 'BibTeX'-%]class="ob-selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?format=EndNote" [%- IF format == 'EndNote'-%]class="ob-selected_item"[%- END -%]>EndNote</a>, <a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?format=apa" [%- IF format == 'apa'-%]class="ob-selected_item"[%- END -%]>APA Zitat</a>, <a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?format=harvard" [%- IF format == 'harvard'-%]class="ob-selected_item"[%- END -%]>Harvard Zitat</a>, <a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?format=mla" [%- IF format == 'mla'-%]class="ob-selected_item"[%- END -%]>MLA Zitat</a>
-<p />
-</div>
-</div>
-</div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <p/>
 
-[% IF extended_actions == 1 %]
+[% IF format == 'short' %]
 
 <h4>[% msg.maketext("Ausgewählte Titel") %]</h4>
 
 
-<p />
+  <p />
 
 [%    IF config.get('litlists') %]
 <div id="ob-litlists" class="accordion"><!-- Begin Litlist -->
-
+  
   <div class="card">
     <div class="card-header" id="headingLitlists">
       <h5 class="mb-0">
@@ -76,32 +76,32 @@
         </a>
       </h5>
     </div>
-
+    
     <div id="collapseLitlists" class="collapse" aria-labelledby="headingLitlists" data-parent="#ob-litlists">
       <div class="card-body">
 [% 
-      litlists = [] ;
-      IF user.ID ;
-          litlists = user.get_litlists({ view => view });
-      END ;
+       litlists = [] ;
+       IF user.ID ;
+           litlists = user.get_litlists({ view => view });
+       END ;
 
-      IF litlists.size > 0 ;
+       IF litlists.size > 0 ;
 %]
 <p/>
 
 <h5>[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> in die bestehende Literaturliste &uuml;bernehmen: ") %]</h5>
 
 <div class="form-floating mb-3">
-<select class="form-select" name="litlistid" id="litlistid">
-[% FOREACH litlist IN litlists %]
-  <option value="[% litlist.id %]">[% litlist.title %]</option>
-[% END %]
-</select>
-<label for="litlistid">[% msg.maketext("Name") %]</label>
+  <select class="form-select" name="litlistid" id="litlistid">
+[%       FOREACH litlist IN litlists %]
+    <option value="[% litlist.id %]">[% litlist.title %]</option>
+[%       END %]
+  </select>
+  <label for="litlistid">[% msg.maketext("Name") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2" type="submit" name="do_litlists_addentry" value="1">[% msg.maketext("Los") %]</button>
-[%    END %]
+[%     END # litlists.size %]
 <p/>
 <hr/>
 <p/>
@@ -109,30 +109,30 @@
 <h5>[% msg.maketext("Anlegen einer neuen Literaturliste: ") %]</h5>
 
 <div class="form-floating mb-3">
-<input class="form-control" type="text" name="title" id="title" size="20" />
-<label for="title">[% msg.maketext("Name") %]</label>
+  <input class="form-control" type="text" name="title" id="title" size="20" />
+  <label for="title">[% msg.maketext("Name") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<select class="form-select" name="littype" id="littype">
-  <option value="1">[% msg.maketext("&ouml;ffentlich") %]</option>
-  <option value="2">[% msg.maketext("privat") %]</option>
-</select>
-<label for="littype">[% msg.maketext("Typ") %]</label>
+  <select class="form-select" name="littype" id="littype">
+    <option value="1">[% msg.maketext("&ouml;ffentlich") %]</option>
+    <option value="2">[% msg.maketext("privat") %]</option>
+  </select>
+  <label for="littype">[% msg.maketext("Typ") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2" type="submit" name="do_addlitlist" value="1">[% msg.maketext("Los") %]</button>
-[% END %]
-</div> <!-- End: card-body -->
+[%     END#% config.litlists %]
+      </div> <!-- End: card-body -->
 
-</div> <!-- End: Listlist do -->
-</div><!-- End: Listlist -->
+    </div> <!-- End: Listlist do -->
+  </div><!-- End: Listlist -->
 </div>
 
-[%# IF user.ID %]
+[% IF user.ID %]
 [% username = user.get_username %]
 <div id="ob-tagging" class="accordion"><!-- Begin: Tagging -->
-
+  
   <div class="card">
     <div class="card-header" id="headingTagging">
       <h5 class="mb-0">
@@ -141,34 +141,34 @@
         </a>
       </h5>
     </div>
-
+    
     <div id="collapseTagging" class="collapse" aria-labelledby="headingTagging" data-parent="#ob-tagging">
       <div class="card-body">
-<p/>
-[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> mit diesen Tags versehen:") %]
+	<p/>
+	[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> mit diesen Tags versehen:") %]
 
-<h5>[% msg.maketext("Eingabe neuer Tags") %]</h5>
+	<h5>[% msg.maketext("Eingabe neuer Tags") %]</h5>
 
-<div class="form-floating mb-3">
-<input class="form-control" type="text" name="tags" value="" size="20" maxlength="200" id="tags"/>
-<label for"tags">[% msg.maketext("Tags") %]</label>
-</div>
+	<div class="form-floating mb-3">
+	  <input class="form-control" type="text" name="tags" value="" size="20" maxlength="200" id="tags"/>
+	  <label for"tags">[% msg.maketext("Tags") %]</label>
+	</div>
 
-<div class="form-floating mb-3">
-<select class="form-select" name="tags_type" id="tags_type">
-  <option value="1">[% msg.maketext("&ouml;ffentlich") %]</option>
-  <option value="2">[% msg.maketext("privat") %]</option>
-</select>
-<label for="tags_type">[% msg.maketext("Typ") %]</label>
-</div>
-
-<button class="btn btn-primary mt-1 mb-2" type="submit" name="do_addtags" value="1">[% msg.maketext("Hinzuf&uuml;gen") %]</button>
+	<div class="form-floating mb-3">
+	  <select class="form-select" name="tags_type" id="tags_type">
+	    <option value="1">[% msg.maketext("&ouml;ffentlich") %]</option>
+	    <option value="2">[% msg.maketext("privat") %]</option>
+	  </select>
+	  <label for="tags_type">[% msg.maketext("Typ") %]</label>
+	</div>
+	
+	<button class="btn btn-primary mt-1 mb-2" type="submit" name="do_addtags" value="1">[% msg.maketext("Hinzuf&uuml;gen") %]</button>
 
 [% private_tags = user.get_private_tags({ username => username  }) %]
 
-<p/>
+	<p/>
 
-<h5>[% msg.maketext("Übernahme eigener Tags") %]</h5>
+	<h5>[% msg.maketext("Übernahme eigener Tags") %]</h5>
 
 <!-- Beginn Tag-Cloud -->
 [%
@@ -184,7 +184,7 @@
 %]
 
 [%-   IF private_tags.size > 0 -%]
-<ol class="ob-cloud">
+	<ol class="ob-cloud">
 [%-     FOREACH thisitem IN private_tags -%]
 [%        item      = thisitem.name;
           itemcount = thisitem.count;
@@ -195,19 +195,20 @@
 <li class="[% itemclass %]"><span>[% msg.maketext("[_1] Titel sind
 verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'tags'); return false;" class="tag" style="display: inline; cursor: pointer;" onMouseOver="oldColor=this.style.backgroundColor; this.style.backgroundColor='lightblue';" onMouseOut="this.style.backgroundColor=oldColor;" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
 [%      END %]
-</ol>
+	</ol>
 [%    ELSE %]
 [% msg.maketext("Bisher haben Sie noch keine Tags vergeben.") %]
 [%    END %]
 
-</div><!-- End: Tagging do -->
-</div><!-- End: Tagging -->
-[%# END %]
+      </div><!-- End: Tagging do -->
+    </div><!-- End: Tagging -->
+[%  END  # user.ID %]
 
-[%   END %]
 
-</div>  <!-- End: card-body -->
+  </div>  <!-- End: card-body -->
 </div>  <!-- End: card -->
+
+[% END %]
 
 <p/>
 

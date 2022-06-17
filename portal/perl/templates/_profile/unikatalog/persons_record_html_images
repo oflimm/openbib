@@ -1,11 +1,17 @@
 <div id="yewno-person-widget" style=”height:259px;width:100%;”></div>
 <script>
-new YewnoDiscoverWidget({
+new YewnoRelate({
 containerElementSelector: "#yewno-person-widget",
 query: ["[% normset.${"P0800"}.first.content.replace('"',' ').split(', ').reverse.join(' ') %]"], // add your search engine's URL search params
 height: 259,
 shouldCenter: true,
-showDefinitions: false,
+showDefinitions: true,
+definitionCount: 10,
+linkDiscover: true,
+//clickThrough: false,
+//onNodeSelection:  function (label){
+//  this.update(label);
+//},
 languages: ["eng"], // available languages eng,zho,deu
 });
 </script>

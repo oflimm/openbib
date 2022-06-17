@@ -16,19 +16,19 @@
       <div class="card-body">
 
 <div class="pt-2">
-<img src="[% config.get_icon('save',view,sysprofile) %]" alt="[% msg.maketext("Abspeichern") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/save?format=Text" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a>
+<i class="fas fa-print"></i><a class="ps-2" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/print?format=full" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Merkliste drucken") %]</a>
 </div>
 
+[%# IF user.ID %]
 <div class="pt-2">
-<img src="[% config.get_icon('print',view,sysprofile) %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/print?format=short" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a>
+<i class="far fa-envelope"></i><a class="ps-2" href="#" data-bs-toggle="modal" data-bs-target="#cartitemsMailModal">[% msg.maketext("Als Mail verschicken") %]</a>
+</div>
+[%# END %]
+
+<div class="pt-2 pb-2">
+<i class="fas fa-download"></i><a class="ps-2" href="#" data-bs-toggle="modal" data-bs-target="#cartitemsSaveModal">[% msg.maketext("Merkliste speichern") %]</a>
 </div>
 
-[% IF user.ID %]
-<div class="pt-2">
-<img src="[% config.get_icon('mail',view,sysprofile) %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/mail?format=Text" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a><br/>
-</div>
-[% END %]
-<p />
 
 </div>
 </div>

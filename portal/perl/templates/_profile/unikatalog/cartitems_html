@@ -48,32 +48,29 @@ function update_collection(yourform, checked, item) {
 [% END %]
 
 [% IF recordlist.get_size > 0 %]
-      <div id="ob-sidebar" class="bg-light border-end min-vh-100 collapse navbar-collapse" aria-expanded="false">
+      <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
 
-           <div id="sidebar-dismiss" class="float-end text-white" data-bs-toggle="collapse" data-bs-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-             <button type="button" class="btn-close" aria-label="[% msg.maketext("Schließen") %]">
-           </div>
-
-           <div class="sidebar-heading p-1 ps-3 pb-0 mb-2">
-              <h3>[% msg.maketext("Diese Merkliste") %]</h3>
-           </div>
-
-           <div class="sidebar-content overflow-auto h-100">
-
+        <div class="offcanvas-header">
+	  <h3 class="offcanvas-title" id="offcanvasSidebarLabel"><h3>[% msg.maketext("Diese Merkliste") %]</h3>
+	  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+	</div>
+	<div class="offcanvas-body">
+	  <div>
 [%   IF format == 'short' ;
         extended_actions=1;
      END ;
 %]
-[% PROCESS common/subtemplate name="cartitems_html_actions" %]
+            [% PROCESS common/subtemplate name="cartitems_html_actions" %]
+ 	  
+	  </div>
 
-             <div class="sidebar-footer">
-               <button type="button" class="btn btn-primary text-end"  data-bs-toggle="collapse" data-bs-target="#ob-sidebar">[% msg.maketext("Schließen") %]</button>
-             </div>
+	  <div class="offcanvas-footer">
+            <button type="button" class="btn btn-primary text-end"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar">[% msg.maketext("Schließen") %]</button>
+          </div>
+	</div>
+      </div>
 
-           </div> <!-- End sidebar-content -->
 
-
-      </div><!-- End sidebar -->
 [% END %]    
 
    <div class="maincontent" >
@@ -106,7 +103,7 @@ function update_collection(yourform, checked, item) {
 [% END %]
 
 <div class="pe-1">
-    <button class="btn btn-primary sidebar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-arrow-right"></i> <span class="d-none d-sm-inline">[% msg.maketext("Mehr") %]</span></button>
+    <button class="btn btn-primary sidebar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar"><i class="fas fa-arrow-right"></i> <span class="d-none d-sm-inline">[% msg.maketext("Mehr") %]</span></button>
 </div>
 
 </div>

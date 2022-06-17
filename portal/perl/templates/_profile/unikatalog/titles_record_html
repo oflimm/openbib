@@ -226,10 +226,11 @@ Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_auslei
 	    </div>
 [% END %]
 
+<!--
 	    <div class="pe-1">
 	      <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/to_bibsonomy" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy"><i class="fas fa-share-alt"></i> <span class="d-none d-sm-inline">BibSonomy</span></a>
 	    </div>       
-
+-->
 	    <div class="pe-1">
  <div class="dropdown">
    <button class="btn btn-primary dropdown-toggle" type="button" id="citationMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

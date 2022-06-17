@@ -40,6 +40,24 @@ function update_collection(yourform, checked, item) {
 
 <form method="post" action="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]">
 
+      <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
+
+        <div class="offcanvas-header">
+	  <h3 class="offcanvas-title" id="offcanvasSidebarLabel">[% msg.maketext("Merkliste") %]</h3>
+	  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+	</div>
+	<div class="offcanvas-body">
+	  <div>
+            [% PROCESS common/subtemplate name="cartitems_html_actions" %]
+	  </div>
+
+	  <div class="offcanvas-footer">
+            <button type="button" class="btn btn-primary text-end"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar">[% msg.maketext("Schließen") %]</button>
+          </div>
+	</div>
+      </div>
+  
+  
   <div class="maincontent" >
 
 [% IF NOT user.ID %]

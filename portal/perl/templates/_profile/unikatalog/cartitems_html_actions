@@ -58,7 +58,7 @@
 
 <p/>
 
-[% IF format == 'short' %]
+[% IF user.ID && format == 'short' %]
 
 <h4>[% msg.maketext("Ausgewählte Titel") %]</h4>
 
@@ -129,7 +129,7 @@
   </div><!-- End: Listlist -->
 </div>
 
-[% IF user.ID %]
+[%# IF user.ID %]
 [% username = user.get_username %]
 <div id="ob-tagging" class="accordion"><!-- Begin: Tagging -->
   
@@ -202,7 +202,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 
       </div><!-- End: Tagging do -->
     </div><!-- End: Tagging -->
-[%  END  # user.ID %]
+[%#  END  # user.ID %]
 
 
   </div>  <!-- End: card-body -->

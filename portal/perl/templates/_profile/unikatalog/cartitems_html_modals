@@ -36,7 +36,7 @@
 	    
 	  </div>
 	  <div class="modal-footer">
-	    <button class="btn btn-primary pe-3" type="submit">[% msg.maketext("Speichern") %]</button>
+	    <button class="btn btn-primary pe-3" data-bs-dismiss="modal" onclick="submitForm()">[% msg.maketext("Speichern") %]</button>
 	    
             <button type="button" class="btn btn-primary" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>	
 	  </div>

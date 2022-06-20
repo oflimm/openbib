@@ -42,43 +42,42 @@
     </div>
     <div id="collapseOLWS" class="collapse" aria-labelledby="headingOLWS" data-parent="#login_targets">
       <div class="card-body">
-<form method="post" action="[% IF config.get('use_https') %]https://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded">
+        <form method="post" action="[% IF config.get('use_https') %]https://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded">
 
 [% IF redirect_to %]
-<input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
+          <input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
 [% END %]
 
-<p/>
+          <p/>
 
-<div class="form-floating mb-3">
-<select class="form-select" name="authenticatorid">
+          <div class="form-floating mb-3">
+            <select class="form-select" name="authenticatorid">
 [%- FOREACH authenticator IN available_authenticators -%]
 [%-   NEXT IF authenticator.type != 'olws' -%]
-<option value="[% authenticator.id %]" [% IF authenticator.id == authenticatorid %]selected="selected"[% END %]>[% authenticator.description %]</option>
+              <option value="[% authenticator.id %]" [% IF authenticator.id == authenticatorid %]selected="selected"[% END %]>[% authenticator.description %]</option>
 [%- END -%]
-</select>
-<label for="authenticator">[% msg.maketext("mit") %]:</label>
-</div>
+           </select>
+           <label for="authenticator">[% msg.maketext("mit") %]:</label>
+         </div>
 
-<div class="form-floating mb-3">
-<input class="form-control" type="text" name="username" id="username" value="[% username %]" />
-<label for="username">[% msg.maketext("Benutzernummer") %]</label>
-</div>
+         <div class="form-floating mb-3">
+           <input class="form-control" type="text" name="username" id="username" value="[% username %]" />
+           <label for="username">[% msg.maketext("Benutzernummer") %]</label>
+         </div>
 
-<div class="form-floating mb-3">
-<input class="form-control" type="password" name="password" id="password" />
-<label for="password"/>[% msg.maketext("Passwort") %]</label>
-</div>
+         <div class="form-floating mb-3">
+           <input class="form-control" type="password" name="password" id="password" />
+           <label for="password"/>[% msg.maketext("Passwort") %]</label>
+         </div>
 
-<p/>
+         <p/>
 
-<button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Anmelden") %]</button>
+         <button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Anmelden") %]</button>
 
-</form>
-      </div>
-    </div>
-  </div>
-</div>
+       </form>
+     </div>
+   </div>
+ </div>
 [% END %]
 [% IF available_authenticator_types.${"ils"} %]	 
   <div class="card">
@@ -136,7 +135,6 @@
  </div>
     </div>
   </div>
-</div>
 [% END %]
 [% IF available_authenticator_types.${"paia"} %]	 
   <div class="card">
@@ -185,7 +183,6 @@
       </div>
     </div>
   </div>
-</div>
 [% END %]
 [% IF available_authenticator_types.${"ldap"} %]	 
   <div class="card">
@@ -234,7 +231,6 @@
       </div>
     </div>
   </div>
-</div>
 [% END %]
 [% IF available_authenticator_types.${"self"} %]	 
   <div class="card">
@@ -284,10 +280,8 @@
       </div>
     </div>
   </div>
-</div>
 
 [% END %]
-
          </div><!-- End: login_targets -->
         </div><!-- End: ob-jumbotron -->
 

@@ -77,7 +77,6 @@
       </div>
     </div>
   </div>
-</div>
 [% END %]
 [% IF available_authenticator_types.${"ils"} %]	 
   <div class="card">
@@ -135,7 +134,6 @@
  </div>
     </div>
   </div>
-</div>
 [% END %]
 [% IF available_authenticator_types.${"paia"} %]	 
   <div class="card">
@@ -184,7 +182,6 @@
       </div>
     </div>
   </div>
-</div>
 [% END %]
 [% IF available_authenticator_types.${"ldap"} %]	 
   <div class="card">
@@ -233,7 +230,6 @@
       </div>
     </div>
   </div>
-</div>
 [% END %]
 [% IF available_authenticator_types.${"self"} %]	 
   <div class="card">
@@ -283,7 +279,6 @@
       </div>
     </div>
   </div>
-</div>
 
 [% END %]
 

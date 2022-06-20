@@ -477,6 +477,10 @@ sub get_record {
 	
     }
 
+    if ($logger->is_debug){
+	$logger->debug("Post Fulltext URLs: ".YAML::Dump($fields_ref));
+    }
+    
     # BibEntity
     {
 	foreach my $thisfield (keys %{$json_result_ref->{Record}{RecordInfo}{BibRecord}{BibEntity}}){
@@ -559,6 +563,10 @@ sub get_record {
 	    
 	}
     }
+
+    if ($logger->is_debug){
+	$logger->debug("Post BibEntity: ".YAML::Dump($fields_ref));
+    }
     
     { # BibRelationships
 	if (defined $json_result_ref->{Record}{RecordInfo}{BibRecord} && defined $json_result_ref->{Record}{RecordInfo}{BibRecord}{BibRelationships}){
@@ -588,14 +596,14 @@ sub get_record {
 			
 			foreach my $thisfield (keys %{$partof_item->{BibEntity}}){
 			    
-			    # if ($thisfield eq "Titles"){
-			    # 	foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
-			    # 	    push @{$fields_ref->{'T0451'}}, {
-			    # 		content => $item->{TitleFull}
-			    # 	    } if (!$self->have_field_content('T0451',$item->{TitleFull} ));
+			    if ($thisfield eq "Titles"){
+			    	foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
+			    	    push @{$fields_ref->{'T0451'}}, {
+			    		content => $item->{TitleFull}
+			    	    } if (!$self->have_field_content('T0451',$item->{TitleFull}) && !$self->have_field_content('T0331',$item->{TitleFull}));
 				    
-			    # 	}
-			    # }
+			    	}
+			    }
 			    
 			    if ($thisfield eq "Dates"){
 				foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
@@ -670,6 +678,10 @@ sub get_record {
 	    }
 	}
     }
+
+    if ($logger->is_debug){
+	$logger->debug("Post BibRelationships: ".YAML::Dump($fields_ref));
+    }
     
     # Todo: 
     # Jahr und Heft nicht verwenden, wenn DbId = edsarx
@@ -717,6 +729,10 @@ sub get_record {
 		$data =~ s{&amp;amp;}{&amp;}g;                             # z.B. pdx:0209854
 
 		$logger->debug("Item - Label:$label - Name:$name Data:$data");
+
+		if ($name =~ /^(Title|TitleSource|TitleSourceBook)$/){
+		    next if ($self->have_field_content('T0331',$data));
+		}
 		
 		if ($name =~ /^(Title|Author|Language|Abstract|AbstractNonEng|TitleSource|TitleSourceBook|Publisher|DatePubCY|ISBN|ISSN|TypeDocument)$/) {
 
@@ -930,6 +946,11 @@ sub get_record {
 	}
 	
     }
+
+    if ($logger->is_debug){
+	$logger->debug("Post Items: ".YAML::Dump($fields_ref));
+    }
+
     
     $record->set_fields_from_storable($fields_ref);
     
@@ -1354,7 +1375,7 @@ sub process_matches {
 		foreach my $item (@{$match->{RecordInfo}{BibRecord}{BibEntity}{$thisfield}}){
 		    push @{$fields_ref->{'T0331'}}, {
 			content => $item->{TitleFull}
-		    } if ($item->{Type} eq "main");
+		    } if ($item->{Type} eq "main" && !$self->have_field_content('T0331',$item->{TitleFull}));
 		    
 		}
 	    }
@@ -1366,10 +1387,12 @@ sub process_matches {
 		foreach my $item (@{$match->{RecordInfo}{BibRecord}{BibRelationships}{HasContributorRelationships}}){
 #		    $logger->debug("DebugRelationShips".YAML::Dump($item));
 		    if (defined $item->{PersonEntity} && defined $item->{PersonEntity}{Name} && defined $item->{PersonEntity}{Name}{NameFull}){
+
+			next if ($self->have_field_content('P0100',$item->{PersonEntity}{Name}{NameFull}) );
 			
 			push @{$fields_ref->{'P0100'}}, {
 			    content => $item->{PersonEntity}{Name}{NameFull},
-			}; 
+			};
 			
 			push @{$fields_ref->{'PC0001'}}, {
 			    content => $item->{PersonEntity}{Name}{NameFull},
@@ -1389,7 +1412,7 @@ sub process_matches {
 				foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
 				    push @{$fields_ref->{'T0451'}}, {
 					content => $item->{TitleFull}
-				    };
+				    }  if (!$self->have_field_content('T0451',$item->{TitleFull}) && !$self->have_field_content('T0331',$item->{TitleFull}));
 				    
 				}
 			    }
@@ -1398,7 +1421,7 @@ sub process_matches {
 				foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
 				    push @{$fields_ref->{'T0425'}}, {
 					content => $item->{'Y'}
-				    };
+				    } if(!$self->have_field_content('T0425',$item->{TitleFull})); 
 				    
 				}
 			    }

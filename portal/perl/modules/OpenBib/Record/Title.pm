@@ -1903,6 +1903,37 @@ sub set_fields_from_json {
     return $self;
 }
 
+sub set_record_from_json {
+    my ($self,$json_string)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # (Re-)Initialisierung
+    delete $self->{_exists}         if (exists $self->{_exists});
+    delete $self->{_fields}         if (exists $self->{_fields});
+    delete $self->{_holding}        if (exists $self->{_holding});
+    delete $self->{_circulation}    if (exists $self->{_circulation});
+
+    my $json_ref = {};
+
+    eval {
+#        $json_ref = JSON::XS::decode_json decode_utf8($json_string);
+        $json_ref = JSON::XS::decode_json $json_string;
+    };
+        
+    if ($@){
+        $logger->error("Can't decode JSON string $json_string");
+    }
+    else {
+        $self->{_fields}  = $json_ref->{fields};
+	$self->{id}       = $json_ref->{id};
+	$self->{database} = $json_ref->{database};
+    }
+
+    return $self;
+}
+
 sub to_bibkey {
     my ($self) = @_;
 
@@ -3725,9 +3756,17 @@ sub from_hash {
 sub record_exists {
     my ($self) = @_;
 
-    my @categories = grep { /^[TX]/ } keys %{$self->{_fields}};
+    my @categories = grep { /^[PCTX]/ } keys %{$self->{_fields}};
+
+    return 0 if (!@categories);
     
-    return (@categories)?1:0;
+    my $record_exists = 0;
+    
+    foreach my $field (@categories){
+	$record_exists = 1 if (@{$self->{_fields}{$field}});
+    }
+    
+    return $record_exists;
 }
 
 sub set_record_exists {
@@ -3826,6 +3865,22 @@ sub from_json {
     }
         
     return $self;
+}
+
+sub set_status {
+    my ($self,$status,$value) = @_;
+
+    $self->{_status}{$status} = $value;
+
+    return $self;
+}
+
+sub get_status {
+    my ($self,$status) = @_;
+
+    return 0 if (!defined $self->{_status} && !defined $self->{_status}{$status});
+    
+    return $self->{_status}{$status};
 }
 
 sub set_id {

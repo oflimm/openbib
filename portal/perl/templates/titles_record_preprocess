@@ -68,5 +68,10 @@
         ELSIF pda_hide_detail.defined(edsdb) && NOT user.has_role('uzk') && NOT user.has_role('student') && NOT user.has_role('erwerbung') && NOT user.has_role('usb') && NOT user.has_role('librarian') && NOT user.is_admin && NOT user.is_viewadmin ;
             hide_detail = 1;
         END;
-     END;     
+     END;
+
+     record_exists     = record.record_exists ;
+
+     record_from_cache = record.get_status('from_cache');
+
 -%]

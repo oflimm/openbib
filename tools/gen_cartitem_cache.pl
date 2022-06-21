@@ -101,9 +101,7 @@ my $db_map_ref = {
 	'instzs' => 'instzs',
 	'koelnzeitung' => 'koelnzeitung',
 	'nationallizenzen' => 'nationallizenzen',
-	'rheinabt' => 'inst001',
-
-	
+	'rheinabt' => 'inst001',	
 	'inst006' => 'inst006master',
 	'inst102' => 'inst102master',
 	'inst103' => 'inst103master',
@@ -189,11 +187,20 @@ while (my $item = $cartitems->next()){
     my $database = $item->get_column('dbname');    
 
     if (defined $db_map_ref->{$database}){
-	my $cached_title = OpenBib::Record::Title->new({ id => $titleid, database => $db_map_ref->{$database}, config => $config })->load_brief_record->set_database($database)->to_json;
+	my $new_record = OpenBib::Record::Title->new({ id => $titleid, database => $db_map_ref->{$database}, config => $config })->load_brief_record->set_database($database);
 	
-	if ($cached_title){
-	    $item->update({ titlecache => $cached_title });
-	    print STDERR "Cache hinzugefuegt fuer DB $database - ID $titleid\n";	    
+	# Wenn existent, aktualisieren mit neuen Daten
+	if ($new_record->record_exists){
+	    my $new_titlecache = $new_record->to_json;
+	    
+	    if ($new_titlecache){
+		$item->update({ titlecache => $new_titlecache, comment => 'new from title' });
+		print STDERR "Cache aktualisiert fuer DB $database - ID $titleid mit aktuellen Titeldaten\n";	    
+	    }
+	}
+	# Fehler
+	else {
+	    print STDERR "Fehler DB $database - ID $titleid\n";	    
 	}
     }
     else {

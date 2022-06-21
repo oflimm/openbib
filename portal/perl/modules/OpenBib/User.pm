@@ -4327,9 +4327,36 @@ sub get_litlistentries {
         my $tstamp     = $litlistitem->tstamp;
         my $comment    = $litlistitem->comment;
         my $titlecache = $litlistitem->titlecache;
-        
-        my $record = ($titleid && $database)?OpenBib::Record::Title->new({id =>$titleid, database => $database, date => $tstamp, listid => $listid, comment => $comment, config => $config })->load_brief_record:OpenBib::Record::Title->new({ date => $tstamp, listid => $listid, comment => $comment, config => $config })->set_fields_from_json($titlecache);
-        
+
+        my $record;
+	my $record_exists = 0;
+
+	# Titel per DB/ID referenziert. Existiert der Titel noch?
+	if ($titleid && $database){
+	    $record = OpenBib::Record::Title->new({id =>$titleid, database => $database, date => $tstamp, listid => $listid, comment => $comment, config => $config })->load_brief_record;
+            $record_exists = $record->record_exists;
+
+	    $logger->debug("Trying DB: $database / ID: $titleid : Records Exists? $record_exists");
+        }
+
+        # Anderenfalls Titel ist gecached?
+        if (!$record_exists && $titlecache ){
+           $record = OpenBib::Record::Title->new({ date => $tstamp, listid => $listid, comment => $comment, config => $config })->set_record_from_json($titlecache);
+            $record->set_status('from_cache',1);
+            $record_exists = $record->record_exists;
+	    $logger->debug("Trying titlecache $titlecache : Records Exists? $record_exists");
+        }
+
+        # Weder ind DB vorhanden, noch gecached? Dann leerer Record
+        if (!$record_exists && $titleid && $database){
+	    $record = OpenBib::Record::Title->new({id => $titleid, database => $database, date => $tstamp, listid => $listid, comment => $comment, config => $config });
+	    $logger->debug("Record with DB: $database / ID: $titleid is empty");
+        }
+        elsif (!$record_exists) {
+           $record = OpenBib::Record::Title->new({ date => $tstamp, listid => $listid, comment => $comment, config => $config });
+	   $logger->debug("Record without DB / ID is empty");
+        }
+
         $recordlist->add($record);
     }
     

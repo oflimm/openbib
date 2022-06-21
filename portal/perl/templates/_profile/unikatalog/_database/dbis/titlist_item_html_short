@@ -438,7 +438,7 @@
 [% END %]
 
 [% IF record_from_cache %]
-          <br/><b>[% msg.maketext("Der Titel wurde im Katalog gelöscht. Sie sehen die ursprünglichen Informationen.") %]</b>
+          <br/><i class="fas fa-exclamation"></i><b class="ps-2">[% msg.maketext("Der Titel wurde im Katalog gelöscht. Sie sehen die ursprünglichen Informationen.") %]</b>
 [% END %]
 	
 [% ELSE # record_exists %]

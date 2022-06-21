@@ -97,12 +97,12 @@ function update_collection(yourform, checked, item) {
 
 [% IF format != "short" %]
 <div class="pe-1">
-  <a class="btn btn-primary sidebar-toggler" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]"><i class="fas fa-arrow-left"></i> <span class="d-none d-sm-inline">[% msg.maketext("Standard-Format") %]</span></a>
+  <a class="btn btn-primary sidebar-toggler" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]"><i class="fas fa-arrow-left"></i> <span>[% msg.maketext("Standard-Format") %]</span></a>
 </div>
 [% END %]
 
 <div class="pe-1">
-  <button class="btn btn-primary sidebar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar"><i class="fas fa-arrow-right"></i> <span class="d-none d-sm-inline">[% msg.maketext("Mehr") %]</span></button>
+  <button class="btn btn-primary sidebar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar"><i class="fas fa-arrow-right"></i> <span>[% msg.maketext("Mehr") %]</span></button>
 </div><!-- End: fulltitle-actions -->
 
 [% ELSE %]

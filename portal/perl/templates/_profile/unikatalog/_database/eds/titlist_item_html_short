@@ -404,8 +404,6 @@
 [%# USE dumper;dumper.dump(dbinfo) %]
         <div class="ob-titleinfo ps-2 mt-4">
 	
-[% IF record.record_exists %]
-
 [% IF NOT hide_hit %]	
          <span class="ob-person">[% person %]</span>
 	 <strong><span class="ob-title">[% IF record_from_cache %][% title %][% ELSE %]<a href="[% detail_url %]">[% title %]</a>[% END %]</span></strong>
@@ -440,11 +438,6 @@
           <br/><i class="fas fa-exclamation"></i><b class="ps-2">[% msg.maketext("Der Titel wurde im Katalog gelöscht. Sie sehen die ursprünglichen Informationen.") %]</b>
 [% END %]
 	
-[% ELSE # record_exists %]
-
-<div class="alert alert-info mt-5">[% msg.maketext("Dieser Titel existiert nicht mehr im Katalog!") %]</div>
-
-[% END # record_exists %]
         </div> <!-- end: titleinfo -->
         <div class="ob-titlemark ps-2 d-flex d-none d-md-block">[% IF signatur %][% msg.maketext("Signatur") %]: <span>[% signatur | truncate(config.get('maxlength_mark')) %]</span>[% END %]
         </div>

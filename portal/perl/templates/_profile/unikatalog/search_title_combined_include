@@ -209,7 +209,7 @@ $(document).ready(function(){
 [%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 database=record.database %] 
 [%- END -%]
 <div class="ob-footer">
-[% PROCESS common/subtemplate name="search_pagination" %]
+
 <div class="ob-resulttime">
 in: [% resulttime %] [% msg.maketext("Sekunden") %]
 </div>
@@ -227,6 +227,9 @@ in: [% resulttime %] [% msg.maketext("Sekunden") %]
 
   </div><!-- End: col -->
 </div><!-- End: row -->
+
+[% PROCESS common/subtemplate name="search_pagination" %]
+
 [% ELSE %]
   <div class="ob-no_hits">
     <h1>[% msg.maketext("Zu Ihrer Suchanfrage konnten keine Treffer gefunden werden.") %]</h1>

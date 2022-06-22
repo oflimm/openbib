@@ -69,7 +69,7 @@
 
 [%# USE dumper;dumper.dump(recordlist.generic_attributes)%]
 
-<div class="row">
+<div class="row p-2">
 <h2>[% msg.maketext("Elektronische Zeitschriften der Universität zu Köln") %]</h2>
 
 [% IF classification_desc %]

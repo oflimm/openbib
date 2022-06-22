@@ -1570,7 +1570,7 @@
 	/*    padding-bottom: 10px; */
     }
 
-    .ob-fixed-bottom {
+    .ob-fixed_bottom {
 	position: fixed;
 	
 	bottom: 0;

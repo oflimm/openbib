@@ -182,12 +182,12 @@
 
 
     a, a:hover {
-	text-decoration-color: #253746;;
+/*	text-decoration-color: #253746;; */
 	text-decoration-thickness: .125em;
 	text-underline-offset: 1.5px;
 	text-decoration-style: solid;
 	
-	color: #253746;
+	/*color: #253746; */
     }
 
     a.inturl, a.exturl {
@@ -465,6 +465,10 @@
 	border-top: 3px solid orange;
     }
 
+    header .nav-link:focus, header .nav-link:hover {
+	color: #fff;
+    }
+    
     .nav-link {
 	display: block;
 	padding: 0.4rem 0.5rem;

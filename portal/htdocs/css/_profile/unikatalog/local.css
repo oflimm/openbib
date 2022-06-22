@@ -767,7 +767,7 @@
     }
 
     .ob-page_title {
-	font-size: 1.2em;
+	font-size: 1.5em;
 	/* margin-left: 20px; */
 	font-weight: bold; 
     }
@@ -1570,7 +1570,15 @@
 	/*    padding-bottom: 10px; */
     }
 
-    .ob-pagination {
+    .ob-search_pagination {
+	position: fixed;
+	
+	bottom: 0;
+
+	z-index: 1030;
+    }
+    
+    .ob-pagination {	
 	padding-top: 10px;
 	padding-bottom: 10px;
 	text-align: center; 

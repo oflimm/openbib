@@ -730,9 +730,9 @@ sub get_record {
 
 		$logger->debug("Item - Label:$label - Name:$name Data:$data");
 
-		if ($name =~ /^(Title|TitleSource|TitleSourceBook)$/){
-		    next if ($self->have_field_content('T0331',$data));
-		}
+		# if ($name =~ /^(Title|TitleSource|TitleSourceBook)$/){
+		#     next if ($self->have_field_content('T0331',$data));
+		# }
 		
 		if ($name =~ /^(Title|Author|Language|Abstract|AbstractNonEng|TitleSource|TitleSourceBook|Publisher|DatePubCY|ISBN|ISSN|TypeDocument)$/) {
 

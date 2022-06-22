@@ -182,14 +182,23 @@
 
 
     a, a:hover {
+	text-decoration-color: #253746;
+	text-decoration-thickness: .125em;
+	text-underline-offset: 1.5px;
+	text-decoration-style: solid;
+	
+	color: #253746; 
+    }
+
+    .uzk15__mainfooter a, .uzk15__mainfooter a:hover {
 /*	text-decoration-color: #253746;; */
 	text-decoration-thickness: .125em;
 	text-underline-offset: 1.5px;
 	text-decoration-style: solid;
 	
-	/*color: #253746; */
+	color: #fff!important;
     }
-
+    
     a.inturl, a.exturl {
 	text-decoration: underline;
     }

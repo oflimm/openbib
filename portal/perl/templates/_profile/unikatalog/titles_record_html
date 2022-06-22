@@ -242,11 +242,6 @@ Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_auslei
  </div>
              </div>
 
-<div class="pe-1">
-    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-control="offcanvasSidebar"><i class="fas fa-arrow-right"></i> <span>[% msg.maketext("Mehr") %]</span></button>
-</div>
-
-
 </div><!-- End ob-fulltitle_actions -->
 
 </div><!-- End ob-fulltitle -->
@@ -261,6 +256,8 @@ Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_auslei
 </div><!-- End Fulltitle -->
 
 <!--</div>--><!-- End record -->
+
+<a href="#" class="ob-floating_button sidebar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar"><i class="fas fa-plus fa-2x"></i></a>
 
 [% ELSE %]
 [% detail_url = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.get_encoded_id}.html?l=${lang}" %]

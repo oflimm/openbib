@@ -90,20 +90,19 @@ function update_collection(yourform, checked, item) {
 <div class="d-flex ob-fulltitle_actions">
 
 [% IF format == 'short' %]
-<div class="pe-1">
+<div class="pe-1 pb-2 pt-2">
   <button class="btn btn-primary" type="submit" name="do_cartitems_delentry" value="1"><i class="fas fa-trash"></i> [% msg.maketext("Ausgewählte Titel löschen") %]</button>
 </div>
 [% END %]
 
 [% IF format != "short" %]
-<div class="pe-1">
+
+<div class="pe-1 pb-2">
   <a class="btn btn-primary sidebar-toggler" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]"><i class="fas fa-arrow-left"></i> <span>[% msg.maketext("Standard-Format") %]</span></a>
 </div>
 [% END %]
 
-<div class="pe-1">
-  <button class="btn btn-primary sidebar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar"><i class="fas fa-arrow-right"></i> <span>[% msg.maketext("Mehr") %]</span></button>
-</div><!-- End: fulltitle-actions -->
+<a href="#" class="ob-floating_button sidebar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar"><i class="fas fa-plus fa-2x"></i></a>
 
 [% ELSE %]
 <div class="ob-jumbotron">

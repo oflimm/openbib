@@ -87,7 +87,7 @@
   [% IF layout_param.sidebar_template && NOT layout_param.sidebar_template.match('^users_') %]
 
   [%   IF NOT layout_param.sidebar_button_in_main_template %]
-     <a href="#" class="ob-floating_button sidebar-toggler" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar"><i class="fas fa-plus fa-2x"></i></a>
+    <button class="btn btn-primary sidebar-toggler mt-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar"><i class="fas fa-arrow-right"></i> <span class="d-none d-sm-inline">[% IF layout_param.sidebar_template_description %][% layout_param.sidebar_template_description %][% ELSE %]Navigation[% END %]</span></button>
   [%   END %]
 
       <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">

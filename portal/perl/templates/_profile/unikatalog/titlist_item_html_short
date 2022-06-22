@@ -404,7 +404,7 @@
 [%# USE dumper;dumper.dump(dbinfo) %]
         <div class="ob-titleinfo ps-2 mt-4">
 	
-[% IF record.record_exists %]
+[% IF record.record_exists || hide_hit %]
 
 [% IF NOT hide_hit %]	
          <span class="ob-person">[% person %]</span>

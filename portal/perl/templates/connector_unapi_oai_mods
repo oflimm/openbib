@@ -152,8 +152,8 @@
                 [%- FOREACH place IN place_list %]
                 <mods:place>
                     [%- IF place.place_rda %]
-                    <mods:placeTerm authorityURI="http://d-nb.info/gnd/"
-                    valueURI="http://d-nb.info/gnd/[% place.place_rda.gnd %]" type="text" lang="deu">[% place.place_rda.place_name %]</mods:placeTerm>
+                    <mods:placeTerm [%- IF place.place_rda.gnd -%] authorityURI="http://d-nb.info/gnd/"
+                    valueURI="http://d-nb.info/gnd/[% place.place_rda.gnd %]" [%END%] type="text" lang="deu">[% place.place_rda.place_name %]</mods:placeTerm>
                     [%- END %]
                     [%- IF place.place_norm %]
                     <mods:placeTerm type="text">[% place.place_norm.place_name %]</mods:placeTerm>

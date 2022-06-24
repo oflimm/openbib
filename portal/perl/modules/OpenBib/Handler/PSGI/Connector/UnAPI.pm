@@ -447,28 +447,42 @@ sub collect_rswk_data {
     my $rswk_data = [];
 
     if ( length( $record->get_fields->{T0902} ) ) {
+        my $array_data = [];
         foreach my $rswk_item ( @{ $record->get_fields->{T0902} } ) {
-        push( @{$rswk_data}, construct_rswk_item($rswk_item, $database) );
-    }
+        push( @{$array_data}, $self->construct_rswk_item($rswk_item, $database) );
+        }
+        push( @{$rswk_data}, $array_data) ;
+    
     }
     if ( length( $record->get_fields->{T0907} ) ) {
+         my $array_data = [];
         foreach my $rswk_item ( @{ $record->get_fields->{T0907} } ) {
-        push( @{$rswk_data}, construct_rswk_item($rswk_item, $database) );
-    }
+        push( @{$array_data}, $self->construct_rswk_item($rswk_item, $database) );
+        }
+        push( @{$rswk_data}, $array_data) ;
     }
     if ( length( $record->get_fields->{T0912} ) ) {
+         my $array_data = [];
         foreach my $rswk_item ( @{ $record->get_fields->{T0912} } ) {
-        push( @{$rswk_data}, construct_rswk_item($rswk_item),$database );
-    }
+        push( @{$array_data}, $self->construct_rswk_item($rswk_item, $database) );
+        }
+        push( @{$rswk_data}, $array_data) ;
+    
     }
     if ( length( $record->get_fields->{T0917} ) ) {
+        my $array_data = [];
         foreach my $rswk_item ( @{ $record->get_fields->{T0917} } ) {
-        push( @{$rswk_data}, construct_rswk_item($rswk_item,$database) );
-    }}
+        push( @{$array_data}, $self->construct_rswk_item($rswk_item, $database) );
+        }
+        push( @{$rswk_data}, $array_data) ;
+    }
     if ( length( $record->get_fields->{T0922} ) ) {
+        my $array_data = [];
         foreach my $rswk_item ( @{ $record->get_fields->{T0922} } ) {
-        push( @{$rswk_data}, construct_rswk_item($rswk_item,$database) );
-    }}
+        push( @{$array_data}, $self->construct_rswk_item($rswk_item, $database) );
+        }
+        push( @{$rswk_data}, $array_data) ;
+    }
     return $rswk_data;
 }
 
@@ -478,7 +492,7 @@ sub construct_rswk_item {
     my $database = shift;
     my $rswk_elem = {};
     $rswk_elem->{content} = $rswk_input_item->{content};
-    $rswk_elem->{gnd} = get_gnd_for_subject($rswk_input_item->{id}, $database);
+    $rswk_elem->{gnd} = $self->get_gnd_for_subject($rswk_input_item->{id}, $database);
     return $rswk_elem;
 
 }
@@ -925,12 +939,18 @@ sub collect_place_data {
     my $self       = shift;
     my $record     = shift;
     my $place_list = [];
-    my $mult_values =
-      $self->get_all_mult_values( $record->get_fields->{T0410} );
+    my $mult_values = [];
+    if ( length( $record->get_fields->{T7676} )) {
+        $mult_values=$self->get_all_mult_values( $record->get_fields->{T7676} );
+    } else {
+         $mult_values=$self->get_all_mult_values( $record->get_fields->{T0410} );
+    }
+    my $has_rda = 0;
 
     foreach my $mult_value ( @{$mult_values} ) {
         my $currentPlaceObject = {};
         if ( length( $record->get_fields->{T7676} ) ) {
+            $has_rda = 1;
             foreach my $place_rda_data ( @{ $record->get_fields->{T7676} } ) {
                 if ( $place_rda_data->{mult} == $mult_value ) {
                     if ( $place_rda_data->{subfield} eq "g" ) {
@@ -955,30 +975,33 @@ sub collect_place_data {
             }
 
         }
-        if ( length( $record->get_fields->{T0410} ) ) {
-            foreach my $place ( @{ $record->get_fields->{T0410} } ) {
-                if ( $place->{mult} == $mult_value ) {
-                    $currentPlaceObject->{"place_free"}->{place_name} =
-                      $place->{content},;
-                }
-            }
-        }
-
-        if ( length( $record->get_fields->{T0673} ) ) {
+        if ( length( $record->get_fields->{T0673} && !$has_rda ) ) {
             foreach my $place ( @{ $record->get_fields->{T0673} } ) {
                 if ( $place->{mult} == $mult_value ) {
                     $currentPlaceObject->{"place_norm"}->{place_name} =
-                      $place->{content},;
+                      $place->{content};
                 }
             }
         }
+        
+        if ( length( $record->get_fields->{T0410} ) && !$has_rda ) {
+            foreach my $place ( @{ $record->get_fields->{T0410} } ) {
+                if ( $place->{mult} == $mult_value ) {
+                    if ($place->{content} ne $currentPlaceObject->{"place_norm"} ){
+                    $currentPlaceObject->{"place_free"}->{place_name} =
+                    $place->{content};
+                    }
+                }
+            }
+        }
+      
 
         $place_list->[$mult_value] = $currentPlaceObject;
+        $has_rda =0
     }
 
     my @filtered_place_list = grep( defined, @{$place_list} );
     return \@filtered_place_list;
-
 }
 
 sub get_all_mult_values {

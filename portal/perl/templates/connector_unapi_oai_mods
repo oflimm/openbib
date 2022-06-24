@@ -164,8 +164,13 @@
                 </mods:place>
                 [%- END %]
                 [%- END %]
+                [%- publisher_list = {} %]
                 [%- FOREACH item IN normdata.${"T0412"} %]
+                [%- value = item.content %]
+                [%- UNLESS publisher_list.$value == 'True' %]
+                [%- publisher_list.$value = 'True' %]
                 <mods:publisher>[% item.content %]</mods:publisher>
+                [%- END %]
                 [%- END %]
                 [%- type_is_set = "false" %]
                 [%- IF (normdata.${"T0036"}.first.content =="m" || normdata.${"T0036"}.first.content =="s") &&

@@ -59,16 +59,16 @@
                 #'T4410', # msg.maketext("T4410") Allgemeiner (Medien)Typ
                 #'T0800', # msg.maketext("T0800") Art/Inhalt Medienart z.B. 'a', daher irrelevant fuer Nutzer
                 'T0710', # msg.maketext("T0710") Schlagwort
-                'T0902', # msg.maketext("T0902") Schlagwort
-                'T0907', # msg.maketext("T0907") Schlagwort
-                'T0912', # msg.maketext("T0912") Schlagwort
-                'T0917', # msg.maketext("T0917") Schlagwort
-                'T0922', # msg.maketext("T0922") Schlagwort
-                'T0927', # msg.maketext("T0927") Schlagwort
-                'T0932', # msg.maketext("T0932") Schlagwort
-                'T0937', # msg.maketext("T0937") Schlagwort
-                'T0942', # msg.maketext("T0942") Schlagwort
-                'T0947', # msg.maketext("T0947") Schlagwort
+                #'T0902', # msg.maketext("T0902") Schlagwort
+                #'T0907', # msg.maketext("T0907") Schlagwort
+                #'T0912', # msg.maketext("T0912") Schlagwort
+                #'T0917', # msg.maketext("T0917") Schlagwort
+                #'T0922', # msg.maketext("T0922") Schlagwort
+                #'T0927', # msg.maketext("T0927") Schlagwort
+                #'T0932', # msg.maketext("T0932") Schlagwort
+                #'T0937', # msg.maketext("T0937") Schlagwort
+                #'T0942', # msg.maketext("T0942") Schlagwort
+                #'T0947', # msg.maketext("T0947") Schlagwort
                 'E4300', # msg.maketext("E4300") Schlagwort Extern
                 'T0700', # msg.maketext("T0700") Notation
                 #'E4100', # msg.maketext("E4100") Basisklassifikation

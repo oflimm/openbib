@@ -272,12 +272,14 @@
             [%- END %]
             [%- rswk_list = {} %]
             [%- FOREACH rswk_item IN rswk_keyword_list %]
+            <mods:subject authorityURI="http://d-nb.info/gnd/">
             [%- FOREACH item IN rswk_item %]
             [%- value = item.content %]
             [%- UNLESS rswk_list.$value == 'True' %]
             [%- rswk_list.$value = 'True' %]
-            <mods:classification authority="RSWK">[% value %]</mods:classification>
+               <mods:topic valueURI="http://d-nb.info/gnd/[% title.gnd %]">[% item.content %]</mods:topic>
             [%- END %]
+            </mods:subject>
             [%- END %]
             [%- END %]
             [%- IF normdata.${"T0710"} %]

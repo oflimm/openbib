@@ -105,6 +105,7 @@ sub show {
         my $uniform_publisher_list = [];
         my $contained_works        = [];
         my $provenance_data        = [];
+        my $related_zdb_titles      = [];
         my $date_values            = undef;
         my $main_title_data        = undef;
         if ($unapiid) {
@@ -128,6 +129,7 @@ sub show {
                 $corporation_list =
                   $self->collect_corporation_data( $record, $database );
                 $place_list = $self->collect_place_data( $record, $database );
+                $related_zdb_titles = $self->collect_related_zdb_titles( $record, $database );
                 $uniform_publisher_list =
                   $self->collect_publisher_data( $record, $database );
                 $rswk_keyword_list =
@@ -445,21 +447,58 @@ sub collect_rswk_data {
     my $rswk_data = [];
 
     if ( length( $record->get_fields->{T0902} ) ) {
-        push( @{$rswk_data}, $record->get_fields->{T0902} );
+        foreach my $rswk_item ( @{ $record->get_fields->{T0902} } ) {
+        push( @{$rswk_data}, construct_rswk_item($rswk_item, $database) );
+    }
     }
     if ( length( $record->get_fields->{T0907} ) ) {
-        push( @{$rswk_data}, $record->get_fields->{T0907} );
+        foreach my $rswk_item ( @{ $record->get_fields->{T0907} } ) {
+        push( @{$rswk_data}, construct_rswk_item($rswk_item, $database) );
+    }
     }
     if ( length( $record->get_fields->{T0912} ) ) {
-        push( @{$rswk_data}, $record->get_fields->{T0912} );
+        foreach my $rswk_item ( @{ $record->get_fields->{T0912} } ) {
+        push( @{$rswk_data}, construct_rswk_item($rswk_item),$database );
+    }
     }
     if ( length( $record->get_fields->{T0917} ) ) {
-        push( @{$rswk_data}, $record->get_fields->{T0917} );
-    }
+        foreach my $rswk_item ( @{ $record->get_fields->{T0917} } ) {
+        push( @{$rswk_data}, construct_rswk_item($rswk_item,$database) );
+    }}
     if ( length( $record->get_fields->{T0922} ) ) {
-        push( @{$rswk_data}, $record->get_fields->{T0922} );
-    }
+        foreach my $rswk_item ( @{ $record->get_fields->{T0922} } ) {
+        push( @{$rswk_data}, construct_rswk_item($rswk_item,$database) );
+    }}
     return $rswk_data;
+}
+
+sub construct_rswk_item {
+    my $self      = shift;
+    my $rswk_input_item = shift;
+    my $database = shift;
+    my $rswk_elem = {};
+    $rswk_elem->{content} = $rswk_input_item->{content};
+    $rswk_elem->{gnd} = get_gnd_for_subject($rswk_input_item->{id}, $database);
+    return $rswk_elem;
+
+}
+
+sub get_gnd_for_subject {
+    my $self      = shift;
+    my $subject_id = shift;
+    my $database  = shift;
+    my $record    = OpenBib::Record::Subject->new(
+        { database => $database, id => $subject_id } )->load_full_record;
+    if ( length( $record->{_fields}->{S0010} ) ) {
+        my $gnd_entry = $record->{_fields}->{S0010}->[0]->{content};
+        if ($gnd_entry =~ /\(DE-588\)/) {
+            $gnd_entry =~ s/\(DE-588\)//;
+        }
+        $gnd_entry =~ s/^\s+|\s+$//g;
+        return $gnd_entry;
+    }
+    return "";
+
 }
 
 sub get_date_values() {
@@ -876,6 +915,12 @@ sub get_gnd_for_corporation {
 
 }
 
+sub collect_related_zdb_titles {
+    my $self       = shift;
+    my $record     = shift;
+    return [];
+}
+
 sub collect_place_data {
     my $self       = shift;
     my $record     = shift;
@@ -1071,5 +1116,5 @@ sub generate_name_data {
     return $namedata;
 
 }
-
+    
 1;

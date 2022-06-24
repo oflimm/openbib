@@ -191,18 +191,15 @@ $(function () {
     <div class="row pt-1 pb-0">     
       <div class="col collapse d-md-block p-0" id="search_options">
        
-         <ul class="list-group flex-row flex-wrap justify-content-md-center justify-content-sm-left">
+         <ul class="list-group flex-row flex-wrap justify-content-center">
 <!--            <li class="list-group-item pe-1" style="border: none" >
        	      [% PROCESS common/subtemplate name="searchforms_record_profile" %]
             </li> -->
             <li class="list-group-item pe-1 pt-3" style="border: none" >
-             <a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
+             <a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" data-formattitle="[% msg.maketext("Erweiterte Suche") %]" data-formaturl="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.include?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
 	    </li>      	  
-            <li class="list-group-item  pe-1 pt-3" style="border: none" >
-              <a  href="[% path_prefix %]/[% config.get('browse_loc') %]/[% config.get('topics_loc') %].html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a>
-	    </li>
             <li class="list-group-item pe-1 pt-3" style="border: none" >
-	     <a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
+	     <a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" data-formattitle="[% msg.maketext("Suchhistorie") %]" data-formaturl="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
 	   </li>
          </ul>
     </div><!-- col -->

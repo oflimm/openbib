@@ -21,7 +21,7 @@ Um dieses Repository zu nutzen muss folgende Zeile in die Datei
 eingefügt werden:
 
 # OpenBib
-deb http://kug.ub.uni-koeln.de/debian wheezy main
+deb http://packages.ub.uni-koeln.de/debian buster main
 
 Danach wird die aktuelle Pakete-Datenbank aktualisiert:
 

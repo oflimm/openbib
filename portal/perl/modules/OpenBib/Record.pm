@@ -39,6 +39,7 @@ use DBI;
 use Encode 'decode_utf8';
 use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
+use LWP::UserAgent;
 use SOAP::Lite;
 use Storable;
 use URI::Escape;
@@ -444,6 +445,46 @@ sub set_fields {
 
 
 #     }
+
+sub enrich_dbpedia {
+    my ($self,$article)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = $self->get_config;
+    
+    my $enrich_data_ref = {};
+
+    if ($article){
+	# Default-URI
+	my $url = $config->get('dbpedia_base');
+	
+	$url.="${article}.json";
+	
+	$logger->debug("DBPedia-URL: $url ");
+	
+	my $ua = new LWP::UserAgent;
+	$ua->agent("OpenBib/1.0");
+	$ua->timeout(10);
+	my $request = new HTTP::Request('GET', $url);
+	my $response = $ua->request($request);
+	
+	my $content = $response->content;
+	
+	if ($content){
+	    $logger->debug("DBpedia: Result for article $article: ".$content);
+	    eval {
+		$enrich_data_ref = JSON::XS::decode_json($content);
+	    };
+	    if ($@){
+		$logger->error($@);
+	    }
+	}
+    }
+
+    return $enrich_data_ref;
+}
 
 sub get_client {
     my ($self) = @_;

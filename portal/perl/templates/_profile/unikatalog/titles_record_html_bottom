@@ -2,7 +2,7 @@
 <div class="ob-title_wikipedia_articles">
 [%- IF normdata.${"E4200"} || normdata.${"E4201"} || normdata.${"E4202"} %]
 <p class="wikipediamashup">
-<img src="[% config.get_icon('wikipedia',view,sysprofile) %]" alt="[% msg.maketext("Mashup mit Wikipedia") %]" /> [% msg.maketext("Dieses Buch ist in Wikipedia erw&auml;hnt unter") %]:&nbsp;
+<i class="fab fa-wikipedia-w"></i> [% msg.maketext("Dieses Buch ist in Wikipedia erw&auml;hnt unter") %]:&nbsp;
 [%-   IF normdata.${"E4200"} %]
 [%-     FOREACH item IN normdata.${"E4200"}-%]
 [%        redirect_url = "http://de.wikipedia.org/wiki/${item.content}" %]

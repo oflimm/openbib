@@ -16,6 +16,10 @@
           "issn"      = msg.maketext("ISSN")
 	  "gnd"      = "GND"	
           "database"   = msg.maketext("Katalog")
+          "journal"   = msg.maketext("Zeitschrift")
+          "volume"   = msg.maketext("Band")
+          "issue"   = msg.maketext("Heft")
+          "pages"   = msg.maketext("Seiten")
           "content" = msg.maketext("Inhalt")
           "person" = msg.maketext("Person")
           "corporatebody" = msg.maketext("K&ouml;rperschaft")

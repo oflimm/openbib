@@ -144,6 +144,10 @@ sub show_collection {
         format            => $format,
 
         recordlist        => $recordlist,
+
+	highlightquery    => \&highlightquery,
+	sort_circulation => \&sort_circulation,
+	
     };
     
     return $self->print_page($config->{tt_cartitems_tname},$ttdata);
@@ -246,6 +250,9 @@ sub show_record {
         record         => $record,
         query          => $query,
         qopts          => $queryoptions->get_options,
+
+	highlightquery    => \&highlightquery,
+	sort_circulation => \&sort_circulation,	
         
     };
     
@@ -276,23 +283,27 @@ sub create_record {
     my $location       = $self->param('location');
 
     # CGI Args
-    my $do_cartitems_delentry  = $query->param('do_cartitems_delentry')  || '';
-    my $do_litlists_addentry     = $query->param('do_litlists_addentry')     || '';
-    my $do_addlitlist           = $query->param('do_addlitlist')           || '';
-    my $do_addtags              = $query->param('do_addtags')              || '';
+    my $do_cartitems_save       = $query->param('do_cartitems_save')     || '';
+    my $do_cartitems_delentry   = $query->param('do_cartitems_delentry') || '';
+    my $do_litlists_addentry    = $query->param('do_litlists_addentry')  || '';
+    my $do_addlitlist           = $query->param('do_addlitlist')         || '';
+    my $do_addtags              = $query->param('do_addtags')            || '';
 
-    my $tags                    = $query->param('tags')                    || '';
-    my $tags_type               = $query->param('tags_type')               || 1;
-    my $litlistid               = $query->param('litlistid')               || '';
-    my $title                   = $query->param('title')                   || '';
-    my $littype                 = $query->param('littype')                 || 1;
+    my $tags                    = $query->param('tags')                  || '';
+    my $tags_type               = $query->param('tags_type')             || 1;
+    my $litlistid               = $query->param('litlistid')             || '';
+    my $title                   = $query->param('title')                 || '';
+    my $littype                 = $query->param('littype')               || 1;
 
     if (!$self->authorization_successful){
         return $self->print_authorization_error();
     }
 
     # Process WWW-UI-Shortcuts
-    if ($do_cartitems_delentry || $do_litlists_addentry || $do_addlitlist || $do_addtags ) {
+    if ($do_cartitems_save) {
+	return $self->save_collection;
+    }
+    elsif ($do_cartitems_delentry || $do_litlists_addentry || $do_addlitlist || $do_addtags ) {
 
         # Shortcut: Delete multiple items via POST
         if ($query->param('do_cartitems_delentry')) {
@@ -317,7 +328,6 @@ sub create_record {
             $self->tunnel_through_authenticator('POST');
             return;
         }
-        
         
         if ($do_litlists_addentry) {
             my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid, view => $view});
@@ -414,7 +424,10 @@ sub create_record {
 		cartitem_id => $new_titleid,
 		input_data  => $input_data_ref,
 		view        => $view,
-		userid      => $userid,		
+		userid      => $userid,
+		highlightquery    => \&highlightquery,
+		sort_circulation => \&sort_circulation,
+		
 	    };
 	    
             return $self->print_page($config->{tt_cartitems_add_tname},$ttdata);
@@ -476,6 +489,9 @@ sub update_record {
 	cartitem_id => $itemid,
 	input_data  => $input_data_ref,
 	view        => $view,
+	highlightquery    => \&highlightquery,
+	sort_circulation => \&sort_circulation,
+
     };
     
     return $self->print_page($config->{tt_cartitems_add_tname},$ttdata);    
@@ -574,6 +590,9 @@ sub print_collection {
         id         => $id,
         database   => $database,
         recordlist => $recordlist,
+
+	highlightquery    => \&highlightquery,
+	sort_circulation => \&sort_circulation,
     };
         
     return $self->print_page($config->{tt_cartitems_print_tname},$ttdata);
@@ -628,10 +647,14 @@ sub save_collection {
         qopts       => $queryoptions->get_options,		
         format      => $format,
         recordlist  => $recordlist,
+
+	highlightquery    => \&highlightquery,
+	sort_circulation => \&sort_circulation,
+	
     };
     
     $self->param('content_type','text/plain');
-    $self->header_add("Content-Disposition" => "attachment;filename=\"kugliste.txt\"");
+    $self->header_add("Content-Disposition" => "attachment;filename=\"merkliste.txt\"");
     return $self->print_page($config->{tt_cartitems_save_plain_tname},$ttdata);
 
 }
@@ -689,6 +712,10 @@ sub mail_collection {
         titleid     => $id,
         database    => $database,
         recordlist  => $recordlist,
+
+	highlightquery    => \&highlightquery,
+	sort_circulation => \&sort_circulation,
+	
     };
     
     return $self->print_page($config->{tt_cartitems_mail_tname},$ttdata);
@@ -762,6 +789,10 @@ sub mail_collection_send {
         config      => $config,
         user        => $user,
         msg         => $msg,
+
+	highlightquery    => \&highlightquery,
+	sort_circulation => \&sort_circulation,
+	
     };
 
     my $maildata="";
@@ -814,8 +845,9 @@ sub mail_collection_send {
     my $afile = "an." . $$;
 
     my $mainttdata = {
-		      msg => $msg,
-		     };
+	msg => $msg,
+	
+    };
 
     my $maintemplate = Template->new({
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
@@ -990,5 +1022,54 @@ sub get_items_in_collection {
     return $session->get_items_in_collection();
 }
 
+
+sub highlightquery {
+    my ($searchquery,$content) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
     
+    # Highlight Query
+
+    return $content unless ($searchquery);
+    
+    my $term_ref = $searchquery->get_searchterms();
+
+    return $content if (scalar(@$term_ref) <= 0);
+
+    if ($logger->is_debug){
+        $logger->debug("Terms: ".YAML::Dump($term_ref));
+    }
+    
+    my $terms = join("|", grep /^\w{3,}/ ,@$term_ref);
+
+    return $content if (!$terms);
+    
+    if ($logger->is_debug){
+        $logger->debug("Term_ref: ".YAML::Dump($term_ref)."\nTerms: $terms");
+        $logger->debug("Content vor: ".$content);
+    }
+    
+    $content=~s/\b($terms)/<span class="ob-highlight_searchterm">$1<\/span>/ig unless ($content=~/http/);
+
+    if ($logger->is_debug){
+        $logger->debug("Content nach: ".$content);
+    }
+    
+    return $content;
+}
+
+sub sort_circulation {
+    my $array_ref = shift;
+
+    # Schwartz'ian Transform
+        
+    my @sorted = map { $_->[0] }
+    sort { $a->[1] cmp $b->[1] }
+    map { [$_, sprintf("%03d:%s:%s:%s",$_->{department_id},$_->{department},$_->{storage},$_->{location_mark})] }
+    @{$array_ref};
+        
+    return \@sorted;
+}
+
 1;

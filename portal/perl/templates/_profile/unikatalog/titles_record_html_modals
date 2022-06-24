@@ -119,23 +119,6 @@ function copy_to_clipboard(formatid) {
     </div>
   </div>
 </div>
-<div class="modal fade" id="normdataModal" tabindex="-1" role="dialog" aria-labelledby="normdataModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="normdataModalLabel">[% msg.maketext("Normdaten") %]</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
-        </button>
-      </div>
-      <div class="modal-body" id="normdata_citation">
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>
-      </div>
-    </div>
-  </div>
-</div>
 <div class="modal fade" id="qrcodeModal" tabindex="-1" role="dialog" aria-labelledby="qrcodeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -144,9 +127,9 @@ function copy_to_clipboard(formatid) {
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
         </button>
       </div>
-      <div class="modal-body" id="qrcode_citation">
+      <div class="modal-body">
 
-        <div class="modal-qrcode text-center">
+        <div class="modal-qrcode text-center" id="qrcode_message">
         </div>
 
         <p class="text-center">Titel :: Bibliothek :: Standort :: Signatur</p>
@@ -159,3 +142,21 @@ function copy_to_clipboard(formatid) {
     </div>
   </div>
 </div>
+<script>
+  // qrCode
+  var qrcodeModal = document.getElementById('qrcodeModal')
+  qrcodeModal.addEventListener('show.bs.modal', event => {
+    var button = event.relatedTarget
+
+    const title = button.getAttribute('data-bs-modaltitle')
+    var url   = button.getAttribute('data-bs-modalurl')
+    
+    // Update the modal's content.
+    var modalTitle = qrcodeModal.querySelector('#qrcodeModalLabel')
+    var modalBody  = qrcodeModal.querySelector('#qrcode_message')
+
+    modalTitle.textContent = title
+    modalBody.innerHTML    = '<img src="'+url+'"/>'
+  });
+
+</script>

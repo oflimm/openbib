@@ -19,7 +19,6 @@
 # END;
  separate_facets = 0 ;
 
- current_tab = query.param('tab');
 %]
 <p/>
 
@@ -61,14 +60,11 @@
        	      [% PROCESS common/subtemplate name="searchforms_record_profile" %]
               </li> -->
             <li class="list-group-item pe-1 pt-3" style="border: none" >
-              <a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
+             <a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.include?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
 	    </li>      	  
-            <li class="list-group-item  pe-1 pt-3" style="border: none" >
-              <a  href="[% path_prefix %]/[% config.get('browse_loc') %]/[% config.get('topics_loc') %].html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a>
-	    </li>
             <li class="list-group-item pe-1 pt-3" style="border: none" >
-	      <a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
-	    </li>
+	     <a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
+	   </li>
           </ul>
 	</div><!-- col -->
       </div><!-- row -->
@@ -94,50 +90,33 @@
 
 </style>
 
-<div id="ob-sidebar[% idsuffix %]" class="bg-light border-end min-vh-100 collapse navbar-collapse pb-5" aria-expanded="false">
-  <div id="sidebar-dismiss[% idsuffix %]" class="float-end d-md-none text-white" data-bs-toggle="collapse" data-bs-target="#ob-sidebar[% idsuffix %]" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-    <i class="fas fa-window-close fa-2x p-1"></i>
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar[% idsuffix %]" aria-labelledby="offcanvasSidebarLabel">
+
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title" id="offcanvasSidebarLabel[% idsuffix %]">[% msg.maketext("Suchergebnis filtern") %]</h3>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
-  
-  <div class="sidebar-heading ob-bg text-white p-1 pb-0 mb-2 d-md-none">
-    <h3>[% msg.maketext("Filtern") %]</h3>
-  </div>
-  
-  <div class="sidebar-content overflow-auto h-100 ps-1">
-    
+  <div class="offcanvas-body">
+    <div>
 [% IF hits > 0 %]
-[% IF separate_facets %]
-<script>
-$(document).ready(function(){
-   $.get("[% path_prefix %]/[% config.get('search_loc') %]/facets.include?[% cgiapp.to_cgi_querystring({ exclude = ['page','facets','num','page']}) %];facets=location,availability,person,year,subject;facet_prefix=sidebar",
-     function (txt){
-        $("#ob-separate_facets_sidebar").html(txt);
-   });
-});
-</script>
 
-<div id="ob-separate_facets_sidebar">
-<h4>[% msg.maketext("Suchergebnis filtern") %]</h4>
+[% PROCESS common/subtemplate name="search_facet" facet_prefix="sidebar" offcanvas=1 %]
 
-<h5>[% msg.maketext("Die Filter-Kriterien werden bestimmt") %]</h5>
-
-<div class="text-center">
-<i class="fas fa-circle-notch fa-spin fa-4x"></i>
-</div>
-
-</div>
-[% ELSE %]
-[% PROCESS common/subtemplate name="search_facet" facet_prefix="sidebar" %]
-[% END %]
 [% ELSE %]
 [%   IF viewdbs.size == 1 %]  
 <div class="ob-facets">
-[% PROCESS common/subtemplate name="search_radius" %]
+  [% PROCESS common/subtemplate name="search_radius" %]
 </div>
 [%   END %]
 [% END %]
+    </div>
+    
+    <div class="offcanvas-footer">
+      <button type="button" class="btn btn-primary text-end"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar[% idsuffix %]">[% msg.maketext("Schließen") %]</button>
+    </div>
   </div>
-</div><!-- End: sidebar -->
+</div>
+
 
 [% IF hits > 0 %]
 <div id="ob-searchresult[% idsuffix %]" class="row flex-md-row">
@@ -155,7 +134,7 @@ $(document).ready(function(){
 });
 </script>
 <div id="ob-separate_facets_main">
-<h4>[% msg.maketext("Suchergebnis filtern") %]</h4>
+<h4 class="d-none d-md-block">[% msg.maketext("Suchergebnis filtern") %]</h4>
 
 <h5>[% msg.maketext("Die Filter-Kriterien werden bestimmt") %]</h5>
 
@@ -204,7 +183,7 @@ $(document).ready(function(){
     <div class="left">
       <div class="navbar navbar-default d-block d-md-none ps-0 mt-0" style="z-index: 1"><!-- only visible in xs-->
         <div class="container-fluid ps-0">
-          <button class="btn btn-primary navbar-btn" data-bs-toggle="collapse" data-bs-target="#ob-sidebar[% idsuffix %]">
+          <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar[% idsuffix %]">
             <i class="fa fa-sliders-h"></i> [% msg.maketext("Filtern") %]
           </button>
 	</div>
@@ -230,7 +209,7 @@ $(document).ready(function(){
 [%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 database=record.database %] 
 [%- END -%]
 <div class="ob-footer">
-[% PROCESS common/subtemplate name="pagination" %]
+
 <div class="ob-resulttime">
 in: [% resulttime %] [% msg.maketext("Sekunden") %]
 </div>
@@ -246,22 +225,11 @@ in: [% resulttime %] [% msg.maketext("Sekunden") %]
 <p/>
 [% END %]
 
-<script>
-$("#ob-searchresult_[% current_tab %]_count").html(" <img src=\"/images/openbib/loading.gif\" id=\"ob-searchresult_[% current_tab %]_loading\" />");
-
-$(document).ready(function(){
-        var numhits_[% current_tab %] = $("#numhits_[% current_tab %]").text();
-        if (numhits_[% current_tab %]){
-            $("#ob-searchresult_[% current_tab %]_count").html(" ("+numhits_[% current_tab %]+")");
-        }
-        else {
-            $("#ob-searchresult_[% current_tab %]_count").html(" (0)");
-        }
-});
-</script>
-
   </div><!-- End: col -->
 </div><!-- End: row -->
+
+[% PROCESS common/subtemplate name="search_pagination" %]
+
 [% ELSE %]
   <div class="ob-no_hits">
     <h1>[% msg.maketext("Zu Ihrer Suchanfrage konnten keine Treffer gefunden werden.") %]</h1>
@@ -272,3 +240,14 @@ $(document).ready(function(){
 [% END %]
 
 
+<script>
+$(document).ready(function(){
+        var numhits_[% current_tab %] = $("#numhits_[% current_tab %]").text();
+        if (numhits_[% current_tab %]){
+            $("#ob-searchresult_[% current_tab %]_count").html(" ("+numhits_[% current_tab %]+")");
+        }
+        else {
+            $("#ob-searchresult_[% current_tab %]_count").html(" (0)");
+        }
+});
+</script>

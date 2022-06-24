@@ -50,13 +50,13 @@
    END;
 %]
 
-<div class="form-floating mb-3">
+<div class="mb-3">
+  <label class="form-label" for="views">[% msg.maketext("Views") %]</label>
   <select class="form-select" name="views" multiple="multiple" size="20" id="views">
 [% FOREACH thisview IN config.get_viewinfo_overview %]  
     <option value="[% thisview.viewname %]" [% IF selected_views.${thisview.viewname} %]selected="selected"[% END %]>[% thisview.viewname %] - [% thisview.description %]</option>
 [% END %]
   </select>
-<label for="views">[% msg.maketext("Views") %]</label>
 </div>
 
 <button type="submit" name="do_change" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>

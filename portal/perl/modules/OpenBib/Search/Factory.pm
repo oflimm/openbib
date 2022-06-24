@@ -40,6 +40,7 @@ use OpenBib::Search::Backend::Solr;
 use OpenBib::Search::Backend::EZB;
 use OpenBib::Search::Backend::EDS;
 use OpenBib::Search::Backend::GVI;
+use OpenBib::Search::Backend::JOP;
 use OpenBib::Search::Backend::Xapian;
 
 sub create_searcher {
@@ -93,6 +94,9 @@ sub create_searcher {
         elsif ($system eq "Backend: GVI"){
             $sb = "gvi";
         }
+        elsif ($system eq "Backend: JOP"){
+            $sb = "jop";
+        }
         else {
 	    $sb = $config->get_searchengine_of_view($view) || $config->{default_local_search_backend};
         }
@@ -123,6 +127,9 @@ sub create_searcher {
     }
     elsif ($sb eq "gvi"){        
         return new OpenBib::Search::Backend::GVI($arg_ref);
+    }
+    elsif ($sb eq "jop"){        
+        return new OpenBib::Search::Backend::JOP($arg_ref);
     }
     else {
         $logger->fatal("Couldn't dispatch to any Search Backend");

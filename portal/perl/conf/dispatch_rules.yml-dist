@@ -30,6 +30,18 @@
      - mobile
    runmode: 'show_search'
 - # Resource: search_loc
+   module: 'OpenBib::Handler::PSGI::Availability::Search'
+   rule: '/portal/:view/availability/search'
+   representations:
+     - none
+     - html
+     - include
+     - json
+     - rdf
+     - rss
+     - mobile
+   runmode: 'show_search'
+- # Resource: search_loc
    module: 'OpenBib::Handler::PSGI::Authority::Search'
    rule: '/portal/:view/authority/search'
    representations:
@@ -45,6 +57,7 @@
    rule: '/portal/:view/search/history[get]'
    representations:
      - none
+     - include
      - html
    runmode: 'show'
 - # Resource: search_loc
@@ -3356,6 +3369,7 @@
    runmode: 'show_form'
    representations:
      - none
+     - include
      - html
 - # login_loc:
    send_new_cookie: 1

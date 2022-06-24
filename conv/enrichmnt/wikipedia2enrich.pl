@@ -7,7 +7,7 @@
 #  Extrahierung relevanter Artikel und der darin genannten Literatur
 #  fuer eine Anreicherung per ISBN
 #
-#  Dieses File ist (C) 2008-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2022 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -39,6 +39,10 @@ use Encode;
 use Business::ISBN;
 use Encode qw/decode_utf8/;
 use Getopt::Long;
+use IO::File;
+use IO::Uncompress::Gunzip;
+use IO::Uncompress::Bunzip2;
+use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use URI::Escape;
 use XML::Twig;
@@ -50,12 +54,12 @@ use OpenBib::Common::Util;
 
 use vars qw($isbn_ref);
 use vars qw($article_isbn_ref);
-use vars qw($counter);
+use vars qw($count);
 
 # Autoflush
 $|=1;
 
-my ($help,$importyml,$lang,$filename,$logfile);
+my ($help,$init,$import,$inputfile,$jsonfile,$related,$lang,$logfile,$loglevel);
 
 my $lang2article_cat_ref = {
     'de' => '4200',
@@ -69,24 +73,31 @@ my $lang2isbn_origin_ref = {
     'fr' => '3',
 };
 
-&GetOptions("help"       => \$help,
-            "import-yml" => \$importyml,
-            "lang=s"     => \$lang,
-	    "filename=s" => \$filename,
-            "logfile=s"  => \$logfile,
+&GetOptions("help"        => \$help,
+            "init"        => \$init,
+            "import"      => \$import,
+            "related"     => \$related,
+            "lang=s"      => \$lang,
+	    "inputfile=s" => \$inputfile,
+	    "jsonfile=s"  => \$jsonfile,
+	    "relatedfile=s"  => \$relatedfile,
+            "loglevel=s"   => \$loglevel,
+            "logfile=s"   => \$logfile,
 	    );
 
 
-if (!$lang || !$filename || !exists $lang2article_cat_ref->{$lang} || !exists $lang2isbn_origin_ref->{$lang}){
+if (!$lang || !$inputfile || !exists $lang2article_cat_ref->{$lang}){
    print_help();
 }
 
 my $config = new OpenBib::Config;
 
 $logfile=($logfile)?$logfile:"/var/log/openbib/wikipedia-enrichmnt-$lang.log";
+$loglevel=($loglevel)?$loglevel:"INFO";
+$jsonfile=($jsonfile)?$jsonfile:"$inputfile.json";
 
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=INFO, LOGFILE, Screen
+log4perl.rootLogger=$loglevel, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append
@@ -106,92 +117,106 @@ my $logger = get_logger();
 my $enrichment = new OpenBib::Enrichment;
 
 # Zuerst alle Anreicherungen loeschen
-# Origin 30 = Wikipedia-DE
+# Origin 30 = Wikipedia
+
+my $origin = 30;
+
+$logger->debug("Origin: $origin");
+
+my $input_io;
+
+if ($inputfile =~/\.gz$/){
+    $input_io = IO::Uncompress::Gunzip->new($inputfile);
+}
+elsif ($inputfile =~/\.bz2$/){
+    $input_io = IO::Uncompress::Bunzip2->new($inputfile);
+}
+else {
+    $input_io = IO::File->new($inputfile);
+}
+
 
 $article_isbn_ref = {};
 
-if ($importyml){
-    YAML::LoadFile($filename);
+my $twig= XML::Twig->new(
+    TwigHandlers => {
+	"/mediawiki/siteinfo" => \&parse_siteinfo,
+        "/mediawiki/page"     => \&parse_page,
+    },
+    );
+
+
+if ($init){
+    $logger->info("Loeschen der bisherigen Daten");
+    
+    $enrichment->init_enriched_content({ field => $lang2article_cat_ref->{$lang}, origin => $origin });
+    $enrichment->get_schema->resultset('RelatedTitleByIsbn')->search_rs({ origin => $lang2isbn_origin_ref->{$lang} })->delete if ($related);
+
+}
+
+our $count=1;
+
+our $article_tuple_count = 1;
+
+our $enrich_data_by_isbn_ref = [];
+
+$isbn_ref = {};
+
+if ($importjson){
+    if (! -e $jsonfile){
+        $logger->error("JSON-Datei $jsonfile existiert nicht");
+        exit;
+    }
+    open(JSON,$jsonfile);
+
+    $logger->info("Einlesen und -laden der neuen Daten");
+
+    while (<JSON>){
+        my $item_ref = decode_json($_);
+
+        push @{$enrich_data_by_isbn_ref},   $item_ref if (defined $item_ref->{isbn});
+        $subject_tuple_count++;
+        
+        if ($count % 1000 == 0){
+            $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
+            $enrich_data_by_isbn_ref   = [];
+        }
+        $count++;
+    }
+
+    $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
+    
+    $logger->info("$subject_tuple_count Schlagwort-Tupel eingefuegt");
+
+    if ($jsonfile){
+        close(JSON);
+    }
+    
 }
 else {
-    $enrichment->get_schema->resultset('EnrichedContentByIsbn')->search_rs({ field => $lang2article_cat_ref->{$lang}, origin => 30 })->delete;
-
-    my $twig= XML::Twig->new(
-        TwigHandlers => {
-            "/mediawiki/siteinfo" => \&parse_siteinfo,
-            "/mediawiki/page" => \&parse_page,
-        },
-    );
-    
-    $isbn_ref = {};
-    $counter  = 1;
-    
-    $logger->info("Datei $filename einlesen");
-    
-    $twig->safe_parsefile($filename);
-    #$twig->parsefile($filename);
-    
-    $logger->info("In yml-Datei speichern");
-    
-    YAML::DumpFile("wikipedia-isbn-$lang.yml",$isbn_ref);
-}
-
-$logger->info("In Datenbank speichern");
-
-$enrichment->get_schema->resultset('RelatedTitleByIsbn')->search_rs({ origin => $lang2isbn_origin_ref->{$lang} })->delete;
-
-my %related_done = ();
-
-my $related_isbn_id = 1;
-
-foreach my $isbn (keys %$isbn_ref){
-    my $indicator=1;
-    my %related_isbn= ();
-
-    # Artikelnamen anreichern
-    my $populate_article_names_ref = [];
-    foreach my $articlename (@{$isbn_ref->{$isbn}}){
-        push @$populate_article_names_ref, {
-            isbn => $isbn,
-            field => $lang2article_cat_ref->{$lang},
-            content => $articlename,
-        };
-            
-        %related_isbn = (%related_isbn,%{$article_isbn_ref->{"$articlename"}}) if (keys %{$article_isbn_ref->{"$articlename"}}); 
+    if ($jsonfile){
+        open(JSON,">$jsonfile");
     }
-    $enrichment->get_schema->resultset('EnrichedContentByIsbn')->populate($populate_article_names_ref);
 
-    # b) Related ISBNs anreichern
+    $logger->info("Einlesen und speichern der neuen Daten");
 
-    my $populate_related_isbn_ref = [];
-    if (keys %related_isbn){
-        my $isbnstring=join(':',sort keys %related_isbn);
-
-        foreach my $isbn (keys %related_isbn){
-            push @$populate_related_isbn_ref, {
-                id => $related_isbn_id, 
-                isbn => $isbn,
-                origin => 1,
-            };
-        }
-
-        # Schon bearbeitet?
-        next if ($related_done{$isbnstring});
-
-        $related_isbn_id++;
-
-        $enrichment->get_schema->resultset('RelatedTitleByIsbn')->populate($populate_related_isbn_ref);
-
-        $related_done{$isbnstring} = 1;
+    $twig->safe_parse($input_io);
+    
+    $logger->info("$count done");
+    
+    if ($jsonfile){
+        close(JSON);
     }
-}
 
+}
 
 $logger->info("Ende und aus");
 
 sub parse_page {
     my($t, $page)= @_;
 
+    $logger->debug("Parsing page");
+    
     my $id       = $page->first_child('id')->text() if ($page->first_child('id')->text());
     my $title    = $page->first_child('title')->text() if ($page->first_child('title')->text());
 
@@ -201,8 +226,10 @@ sub parse_page {
 
     my $content  = $revision->first_child('text')->text() if ($revision->first_child('text')->text());
 
+    my @isbns = ();
+
     # Zuerst 10-Stellige ISBN's
-    while ($content=~m/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/g){
+    while ($content=~m/ISBN\|?\s?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/g){
         my @result= ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13);
         my $isbn=join('',@result);
 
@@ -221,12 +248,14 @@ sub parse_page {
             content  => $isbn,
         });
 
+	# Merken fuer Related
         $article_isbn_ref->{"$title"}{"$isbn"}=1;
 
+	push @isbns, $isbn;
     }
 
     # Dann 13-Stellige ISBN's
-    while ($content=~m/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/g){
+    while ($content=~m/ISBN\|?\s?(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/g){
         my @result= ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13);
         my $isbn=join('',@result);
 
@@ -245,19 +274,45 @@ sub parse_page {
             content  => $isbn,
         });
 
+	# Merken fuer Related
         $article_isbn_ref->{"$title"}{"$isbn"}=1;
+
+	push @isbns, $isbn;
     }
 
-    foreach my $isbn (keys %{$article_isbn_ref->{"$title"}}){
-       push @{$isbn_ref->{"$isbn"}}, $title;
+    if (@isbns){
+	my @unique_isbns    = grep { ! $seen_terms{$_} ++ } @isbns;
+
+	# Merken fuer Related
+	foreach my $isbn (@unique_isbns){
+	    push @{$isbn_ref->{"$isbn"}}, $title;	    
+	}
+
+	foreach my $isbn (@unique_isbns){
+	    my $item_ref = {
+		isbn     => $isbn,
+		origin   => $origin,
+		field    => $lang2article_cat_ref->{$lang},
+		subfield => '',
+		content  => $title,
+	    };
+	    
+	    print JSON encode_json($item_ref),"\n" if ($jsonfile);
+	    
+	    push @{$enrich_data_by_isbn_ref}, $item_ref;
+	    $article_tuple_count++;	    
+	}	
     }
 
-
-    if ($counter % 1000 == 0){
-        $logger->info("$counter done");
+    if ($count % 1000 == 0){
+	$logger->info("$count done");
+	if ($import){
+	    $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
+	    $enrich_data_by_isbn_ref   = [];
+	}
     }
-
-    $counter++;
+        
+    $count++;
     
     # Release memory of processed tree
     # up to here
@@ -285,7 +340,7 @@ wikipedia2enrich.pl - Einspielen von Wikipedia-Artikeln in Anreicherungs-DB
    Optionen:
    -help                 : Diese Informationsseite
        
-   --filename=...        : Dateiname des wikipedia-Dumps im XML-Format
+   --inputfile=...       : Dateiname des wikipedia-Dumps im XML-Format
    --logfile=...         : Name der Log-Datei
    --lang=\[de\|en\|fr\]     : Sprache
 

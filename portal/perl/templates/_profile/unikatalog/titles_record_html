@@ -73,6 +73,9 @@
       fulltext_availability = "yellow";
       fulltext_icon = config.get('ezb_yellow_img');
       fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
+    ELSIF normdata.${'T4120'}.first.subfield == "l";
+      fulltext_icon = config.get('ezb_yellow_red_img');
+      fulltext_desc = msg.maketext("Volltext mit eingeschränkten Zugang");;
     ELSIF normdata.${'T4120'}.first.subfield == "f";
       fulltext_icon = config.get('ezb_green_yellow_img');
       fulltext_desc = msg.maketext("Volltext mit unbekanntem Zugang");;
@@ -208,7 +211,7 @@ Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_auslei
 <div class="d-flex ob-fulltitle_actions">
 
    <div class="pe-1">
-         <a  class="btn btn-primary" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" hx-headers='{"Content-Type": "application/xml+html"}' href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><i class="far fa-bookmark"></i> <span class="d-none d-sm-inline">[% msg.maketext("Merken") %]</span></a>
+         <a  class="btn btn-primary" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" hx-headers='{"Content-Type": "application/xml+html"}' href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><i class="far fa-bookmark"></i> <span>[% msg.maketext("Merken") %]</span></a>
   </div>
 
 [% IF fulltext %]
@@ -224,13 +227,8 @@ Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_auslei
 [% END %]
 
 	    <div class="pe-1">
-	      <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/to_bibsonomy" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy"><i class="fas fa-share-alt"></i> <span class="d-none d-sm-inline">BibSonomy</span></a>
-	    </div>       
-
-	    <div class="pe-1">
  <div class="dropdown">
    <button class="btn btn-primary dropdown-toggle" type="button" id="citationMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-<!--  <button class="btn btn-primary dropdown-toggle" type="button" id="citationMenuButton" data-bs-toggle="dropdown"> -->
     <i class="fas fa-quote-right"></i> [% msg.maketext("Zitat") %]
   </button>
   <ul class="dropdown-menu" aria-labelledby="citationMenuButton">
@@ -243,10 +241,9 @@ Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_auslei
   </ul>
  </div>
              </div>
-
-<div class="pe-1">
-    <button class="btn btn-primary sidebar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-arrow-right"></i> <span class="d-none d-sm-inline">[% msg.maketext("Mehr") %]</span></button>
-</div>
+	     <div class="pe-1">
+	       <a href="#" class="ob-sidebar_button sidebar-toggler d-none d-md-block" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar"><i class="fas fa-plus fa-2x"></i></a>	     
+	     </div>
 
 
 </div><!-- End ob-fulltitle_actions -->
@@ -263,6 +260,8 @@ Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_auslei
 </div><!-- End Fulltitle -->
 
 <!--</div>--><!-- End record -->
+
+<a href="#" class="ob-floating_sidebar_button sidebar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar"><i class="fas fa-plus fa-2x"></i></a>
 
 [% ELSE %]
 [% detail_url = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.get_encoded_id}.html?l=${lang}" %]

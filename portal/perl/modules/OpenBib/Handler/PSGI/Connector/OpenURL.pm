@@ -134,15 +134,20 @@ sub show {
     my $searchfield_ref = $config->get('searchfield');
     
     foreach my $field (keys %$openbib_searchargs_ref){
-
-	$searchargs.=";".$searchfield_ref->{$field}{prefix}."=".join(' ',@{$openbib_searchargs_ref->{$field}});
+	my @this_searchargs = @{$openbib_searchargs_ref->{$field}}; 
+	if ($#this_searchargs == 0 ){
+	    $searchargs.=";".$searchfield_ref->{$field}{prefix}."=".$this_searchargs[0];
+	}
+	else {
+	    $searchargs.=";".$searchfield_ref->{$field}{prefix}."=".join(' ',@this_searchargs);
+	}
     }
 
     if ($logger->is_debug){
 	$logger->debug("Internal OpenBib OpenURL Search-Args-String: $searchargs");
     }
     
-    return $self->redirect("$path_prefix/$config->{search_loc}.html?l=de$searchargs");
+    return $self->redirect("$path_prefix/availability/$config->{search_loc}.html?l=de$searchargs");
 }
 
 sub gen_searchargs_1_0 {
@@ -167,23 +172,28 @@ sub gen_searchargs_1_0 {
 
     $searchargs_ref->{'title'} = [];
     $searchargs_ref->{'source'} = [];
+    $searchargs_ref->{'journal'} = [];
+    $searchargs_ref->{'volume'} = [];
+    $searchargs_ref->{'issue'} = [];
+
+    push @{$searchargs_ref->{'mediatype'}}, $genre if ($genre);
 
     # simple: title is title
     if ($genre =~m/^(book|conference|journal)$/){
-	push @{$searchargs_ref->{'title'}}, $input_data_ref->{'rft.title'} if (defined $input_data_ref->{'rft.title'});
+	push @{$searchargs_ref->{'title'}}, $input_data_ref->{'rft.title'} if ($input_data_ref->{'rft.title'});
     }
     # more complex
     elsif ($genre =~m/^(article|bookitem|preprint|proceeding)$/){
 	# title is title of source 	
-	push @{$searchargs_ref->{'source'}}, $input_data_ref->{'rft.title'} if (defined $input_data_ref->{'rft.title'});
+	push @{$searchargs_ref->{'journal'}}, $input_data_ref->{'rft.title'} if ($input_data_ref->{'rft.title'});
 	# atitle is title of work
-	push @{$searchargs_ref->{'title'}}, $input_data_ref->{'rft.atitle'} if (defined $input_data_ref->{'rft.atitle'});
+	push @{$searchargs_ref->{'title'}}, $input_data_ref->{'rft.atitle'} if ($input_data_ref->{'rft.atitle'});
 
     }
     # perhaps no genre?
     elsif ($input_data_ref->{'rft.title'} && $input_data_ref->{'rft.atitle'}) {
 	# title is title of source 	
-	push @{$searchargs_ref->{'source'}}, $input_data_ref->{'rft.title'};
+	push @{$searchargs_ref->{'journal'}}, $input_data_ref->{'rft.title'};
 	# atitle is title of work
 	push @{$searchargs_ref->{'title'}}, $input_data_ref->{'rft.atitle'};
     }
@@ -197,6 +207,7 @@ sub gen_searchargs_1_0 {
     $searchargs_ref->{'isbn'} = [];
     $searchargs_ref->{'issn'} = [];
     $searchargs_ref->{'year'} = [];
+    $searchargs_ref->{'pages'} = [];
 
     push @{$searchargs_ref->{'isbn'}}, $input_data_ref->{'rft.isbn'} if ($input_data_ref->{'rft.isbn'});
 
@@ -206,13 +217,13 @@ sub gen_searchargs_1_0 {
 
     push @{$searchargs_ref->{'year'}}, $input_data_ref->{'rft.date'} if ($input_data_ref->{'rft.date'});
 
-    push @{$searchargs_ref->{'source'}}, $input_data_ref->{'rft.volume'} if ($input_data_ref->{'rft.volume'});
+    push @{$searchargs_ref->{'volume'}}, $input_data_ref->{'rft.volume'} if ($input_data_ref->{'rft.volume'});
 
-    push @{$searchargs_ref->{'source'}}, $input_data_ref->{'rft.issue'} if ($input_data_ref->{'rft.issue'});
+    push @{$searchargs_ref->{'issue'}}, $input_data_ref->{'rft.issue'} if ($input_data_ref->{'rft.issue'});
     
     # Pagerange?
     if ($input_data_ref->{'rft.pages'}){
-	push @{$searchargs_ref->{'source'}}, $input_data_ref->{'rft.pages'}
+	push @{$searchargs_ref->{'pages'}}, $input_data_ref->{'rft.pages'}
     }
     elsif ($input_data_ref->{'rft.spage'} || $input_data_ref->{'rft.epage'}){
 	my $pages = "";
@@ -220,7 +231,7 @@ sub gen_searchargs_1_0 {
 	$pages = $input_data_ref->{'rft.spage'} if ($input_data_ref->{'rft.spage'});
 	$pages.= "=".$input_data_ref->{'rft.epage'} if ($input_data_ref->{'rft.epage'});
 						   
-	push @{$searchargs_ref->{'source'}}, $pages;
+	push @{$searchargs_ref->{'pages'}}, $pages;
     }
 
     if ($logger->is_debug){
@@ -251,31 +262,36 @@ sub gen_searchargs_0_1 {
     }
 
     # still not author? then look at pid
-    if (!defined $searchargs_ref->{'per'}){
+    if (!@{$searchargs_ref->{'person'}}){
 	if ($input_data_ref->{pid} =~m{<author>(.*)</author>}){
 	    push @{$searchargs_ref->{'person'}}, $1;
 	}
     }
 
+    push @{$searchargs_ref->{'mediatype'}}, $genre if ($genre);    
+
     $searchargs_ref->{'title'} = [];
     $searchargs_ref->{'source'} = [];
+    $searchargs_ref->{'journal'} = [];
+    $searchargs_ref->{'volume'} = [];
+    $searchargs_ref->{'issue'} = [];
 
     # simple: title is title
     if ($genre =~m/^(book|conference|journal)$/){
-	push @{$searchargs_ref->{'title'}}, $input_data_ref->{title} if (defined $input_data_ref->{title});
+	push @{$searchargs_ref->{'title'}}, $input_data_ref->{title} if ($input_data_ref->{title});
     }
     # more complex
     elsif ($genre =~m/^(article|bookitem|preprint|proceeding)$/){
 	# title is title of source 	
-	push @{$searchargs_ref->{'source'}}, $input_data_ref->{'title'} if (defined $input_data_ref->{title});
+	push @{$searchargs_ref->{'journal'}}, $input_data_ref->{'title'} if ($input_data_ref->{title});
 	# atitle is title of work
-	push @{$searchargs_ref->{'title'}}, $input_data_ref->{'atitle'} if (defined $input_data_ref->{'atitle'});
+	push @{$searchargs_ref->{'title'}}, $input_data_ref->{'atitle'} if ($input_data_ref->{'atitle'});
 
     }
     # perhaps no genre?
     elsif ($input_data_ref->{title} && $input_data_ref->{atitle}) {
 	# title is title of source 	
-	push @{$searchargs_ref->{'source'}}, $input_data_ref->{'title'};
+	push @{$searchargs_ref->{'journal'}}, $input_data_ref->{'title'};
 	# atitle is title of work
 	push @{$searchargs_ref->{'title'}}, $input_data_ref->{'atitle'};
     }
@@ -290,21 +306,21 @@ sub gen_searchargs_0_1 {
     $searchargs_ref->{'issn'} = [];
     $searchargs_ref->{'year'} = [];
 
-    push @{$searchargs_ref->{'isbn'}}, $input_data_ref->{'isbn'} if (defined $input_data_ref->{'isbn'});
+    push @{$searchargs_ref->{'isbn'}}, $input_data_ref->{'isbn'} if ($input_data_ref->{'isbn'});
 
-    push @{$searchargs_ref->{'issn'}}, $input_data_ref->{'issn'} if (defined $input_data_ref->{'issn'});
+    push @{$searchargs_ref->{'issn'}}, $input_data_ref->{'issn'} if ($input_data_ref->{'issn'});
 
-    push @{$searchargs_ref->{'issn'}}, $input_data_ref->{'eissn'} if (defined $input_data_ref->{'eissn'});
+    push @{$searchargs_ref->{'issn'}}, $input_data_ref->{'eissn'} if ($input_data_ref->{'eissn'});
 
-    push @{$searchargs_ref->{'year'}}, $input_data_ref->{'date'} if (defined $input_data_ref->{'date'});
+    push @{$searchargs_ref->{'year'}}, $input_data_ref->{'date'} if ($input_data_ref->{'date'});
 
-    push @{$searchargs_ref->{'source'}}, $input_data_ref->{'volume'} if (defined $input_data_ref->{'volume'});
+    push @{$searchargs_ref->{'volume'}}, $input_data_ref->{'volume'} if ($input_data_ref->{'volume'});
 
-    push @{$searchargs_ref->{'source'}}, $input_data_ref->{'issue'} if (defined $input_data_ref->{'issue'});
+    push @{$searchargs_ref->{'issue'}}, $input_data_ref->{'issue'} if ($input_data_ref->{'issue'});
     
     # Pagerange?
     if ($input_data_ref->{'pages'}){
-	push @{$searchargs_ref->{'source'}}, $input_data_ref->{'pages'}
+	push @{$searchargs_ref->{'pages'}}, $input_data_ref->{'pages'}
     }
     elsif ($input_data_ref->{'spage'} || $input_data_ref->{'epage'}){
 	my $pages = "";
@@ -312,7 +328,7 @@ sub gen_searchargs_0_1 {
 	$pages = $input_data_ref->{'spage'} if ($input_data_ref->{'spage'});
 	$pages.= "=".$input_data_ref->{'epage'} if ($input_data_ref->{'epage'});
 						   
-	push @{$searchargs_ref->{'source'}}, $pages;
+	push @{$searchargs_ref->{'pages'}}, $pages;
     }
 
     if ($logger->is_debug){

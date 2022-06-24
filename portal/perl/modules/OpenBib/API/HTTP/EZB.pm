@@ -858,6 +858,12 @@ sub parse_query {
                     content => $searchtermstring
                 };
             }
+            elsif ($field eq "issn" && $searchtermstring) {
+                push @searchterms, {
+                    field   => 'IS',
+                    content => $searchtermstring
+                };
+            }
         }
     }
 

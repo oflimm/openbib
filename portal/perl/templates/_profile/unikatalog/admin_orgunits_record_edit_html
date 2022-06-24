@@ -40,13 +40,13 @@
 
 <h1 class="display-5">[% msg.maketext("Katalogauswahl der Organisationseinheit") %]</h1>
 
-<div class="form-floating mb-3">
+<div class="mb-3">
+<label class="form-label" for="databases">[% msg.maketext("Kataloge") %]</label>
 <select class="form-select" id="databases" name="databases" multiple="multiple" size="20">
 [% FOREACH singledb IN activedbs.all %]
 <option value="[% singledb.dbname %]"[% IF orgunitdb_map.${singledb.dbname} %] selected="selected"[% END %]>[% singledb.dbname %]: [% singledb.description | truncate(100) %]</option>
 [% END %]
 </select>
-<label for="databases">[% msg.maketext("Kataloge") %]</label>
 </div>
 
 <div class="form-floating mb-3">

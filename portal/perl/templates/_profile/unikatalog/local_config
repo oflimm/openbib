@@ -74,12 +74,14 @@
 
    idsuffix = "";
 
+   current_tab = query.param('tab');
+   
    IF current_profile == searchprofileid_of_articles;
      idsuffix = "_articles" ;
-   ELSIF current_profile == searchprofileid_of_web;
-     idsuffix = "_web";
+     current_tab = 'articles';
    ELSE;
      idsuffix = "_books";
+     current_tab = 'books';   
    END;
 
 -%]

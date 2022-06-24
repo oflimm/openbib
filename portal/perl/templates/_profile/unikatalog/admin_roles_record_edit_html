@@ -32,13 +32,13 @@
 <label for="description">[% msg.maketext("Beschreibung") %]</label>
 </div>
 
-<div class="form-floating mb-3">
+<div class="mb-3">
+  <label class="form-label" for="views">Einschränkung auf View</label>
   <select class="form-select" id="views" name="views" multiple="multiple" size="20">
 [% FOREACH singleview IN viewinfos %]
 <option value="[% singleview.viewname %]" [% IF selected_views.${singleview.viewname} %]selected="selected"[% END %]>[% singleview.viewname %]: [% singleview.description %]</option>
 [% END %]
   </select>
-<label for="views">Einschränkung auf View</label>
 </div>
 
 <div class="form-floating mb-3">

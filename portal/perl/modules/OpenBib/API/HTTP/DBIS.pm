@@ -103,8 +103,9 @@ sub new {
     
     my $access_national        = exists $arg_ref->{access_national}
         ? $arg_ref->{access_national}         : 0;
-    
-    my $colors  = $access_green + $access_yellow*4 + $access_yellow*8 + $access_red*32;
+
+    # access_yellow = Hochschulnetz = online (4) + CD/DVD (8) + eingeschraenkt (32) = 44
+    my $colors  = $access_green*1 + $access_yellow*4 + $access_yellow*8 + $access_yellow*32;
     my $ocolors = $access_ppu*8 + $access_national*32;
 
     $logger->debug("green: $access_green ; yellow: $access_yellow ; red: $access_red ; ppu: $access_ppu ; national: $access_national");
@@ -213,7 +214,7 @@ sub get_titles_record {
 	$logger->info($response->code . ' - ' . $response->message);
 	return $record;
     }
-    
+
     my $parser = XML::LibXML->new();
     my $tree   = $parser->parse_string($response->content);
     my $root   = $tree->getDocumentElement;
@@ -225,16 +226,28 @@ sub get_titles_record {
     $access_info_ref->{desc}       = $root->findvalue('/dbis_page/details/db_access_info/db_access');
     $access_info_ref->{desc_short} = $root->findvalue('/dbis_page/details/db_access_info/db_access_short_text');
 
+    # Zugriffstatus
+    #
+    # '' : Keine Ampel
+    # ' ': Unbestimmt g oder y oder r
+    # 'f': Unbestimmt, aber Volltext Zugriff g oder y (fulltext)
+    # 'g': Freier Zugriff (green)
+    # 'y': Lizensierter Zugriff (yellow)
+    # 'l': Unbestimmt Eingeschraenkter Zugriff y oder r (limited)
+    # 'r': Kein Zugriff (red)
+    
     my $type_mapping_ref = {
 	'access_0'    => 'g', # green
 	'access_2'    => 'y', # yellow
+	'access_3'    => 'y', # yellow
+	'access_5'    => 'l', # yellow red
 	'access_500'  => 'n', # national license
     };
     
     my $access_type = $type_mapping_ref->{$access_info_ref->{id}};
     
     my $db_type_ref = [];
-    my @db_type_nodes = $root->findnodes('/dbis_page/list_dbs/db_type_infos/db_type_info');
+    my @db_type_nodes = $root->findnodes('/dbis_page/details/db_type_infos/db_type_info');
     my $mult = 1;
     foreach my $db_type_node (@db_type_nodes){
         my $this_db_type_ref = {};
@@ -284,10 +297,13 @@ sub get_titles_record {
     
     my $hints   =  $root->findvalue('/dbis_page/details/hints');
     my $content =  $root->findvalue('/dbis_page/details/content');
-    my $instructions =  $root->findvalue('/dbis_page/details/instructions');
+    my $content_eng =  $root->findvalue('/dbis_page/details/content_eng');
+    my $instruction =  $root->findvalue('/dbis_page/details/instruction');
     my $publisher =  $root->findvalue('/dbis_page/details/publisher');
     my $report_periods =  $root->findvalue('/dbis_page/details/report_periods');
     my $appearence =  $root->findvalue('/dbis_page/details/appearence');
+    my $isbn =  $root->findvalue('/dbis_page/details/isbn');
+    my $year =  $root->findvalue('/dbis_page/details/year');
 
     my @subjects_nodes =  $root->findnodes('/dbis_page/details/subjects/subject');
 
@@ -347,11 +363,17 @@ sub get_titles_record {
     
     $record->set_field({field => 'T0750', subfield => '', mult => 1, content => $content}) if ($content);
 
+    $record->set_field({field => 'T0751', subfield => '', mult => 1, content => $content_eng}) if ($content_eng);
+    
     $record->set_field({field => 'T0412', subfield => '', mult => 1, content => $publisher}) if ($publisher);
 
     $record->set_field({field => 'T0523', subfield => '', mult => 1, content => $report_periods}) if ($report_periods);
 
     $record->set_field({field => 'T0508', subfield => '', mult => 1, content => $appearence}) if ($appearence);
+
+    $record->set_field({field => 'T0540', subfield => '', mult => 1, content => $isbn}) if ($isbn);
+
+    $record->set_field({field => 'T0425', subfield => '', mult => 1, content => $year}) if ($year);
     
     $mult=1;
     if ($access_info_ref->{desc_short}){
@@ -359,8 +381,10 @@ sub get_titles_record {
         $mult++;
     }
     
-    $record->set_field({field => 'T0501', subfield => '', mult => $mult, content => $instructions}) if ($instructions);
+    $record->set_field({field => 'T0511', subfield => '', mult => $mult, content => $instruction}) if ($instruction);
 
+    $record->set_field({field => 'T0510', subfield => '', mult => $mult, content => $hints}) if ($hints);
+    
     $record->set_holding([]);
     $record->set_circulation([]);
 
@@ -586,9 +610,11 @@ sub get_search_resultlist {
 
     my @matches = $self->matches;
     
-    foreach my $match_ref (@matches) {        
-        $logger->debug("Record: ".$match_ref );
-
+    foreach my $match_ref (@matches) {
+        if ($logger->is_debug){
+	    $logger->debug("Record: ".YAML::Dump($match_ref) );
+	}
+	
         my $access_info = $self->{_access_info}{$match_ref->{access}};
         
         my $record = new OpenBib::Record::Title({id => $match_ref->{id}, database => 'dbis', generic_attributes => { access => $access_info }});

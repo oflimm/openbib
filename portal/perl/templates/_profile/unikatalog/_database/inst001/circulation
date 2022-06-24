@@ -139,7 +139,7 @@
 
 -%]
 <tr><td><strong>[% standort_with_url %]</strong></td>
-<td><a href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% standort | uri %] :: [% thiscirculation.location_mark | uri %][% IF thiscirculation.remark %] [% thiscirculation.remark | uri %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur" data-bs-toggle="modal" data-bs-target="#qrcodeModal" data-formattitle="QR-Code" data-formaturl="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% standort | uri %] :: [% thiscirculation.location_mark | uri %][% IF thiscirculation.remark %] [% thiscirculation.remark | uri %][% END %]"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" /></a></td>
+<td><a href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% standort | uri %] :: [% thiscirculation.location_mark | uri %][% IF thiscirculation.remark %] [% thiscirculation.remark | uri %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur" data-bs-toggle="modal" data-bs-target="#qrcodeModal" data-bs-modaltitle="QR-Code" data-bs-modalurl="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% standort | uri %] :: [% thiscirculation.location_mark | uri %][% IF thiscirculation.remark %] [% thiscirculation.remark | uri %][% END %]"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" /></a></td>
 [%-
 
 thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','');
@@ -148,7 +148,7 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
 <td><strong>[% thiscirculation.location_mark %]</strong>
 [% IF thiscirculation.remark %] [% thiscirculation.remark %][% END %]
 [% IF thiscirculation.boundcollection == "Y" %]<img src="/USB/img/bindeeinheit.gif" width="28px" height="26px" title="Dieser Titel ist Teil einer Bindeeinheit, die verschiedene Medien zusammenfasst." alt="Bindeeinheit" style="vertical-align:middle;" />[% END %]
-[% IF NOT thiscirculation.department_id.match('^(19|20|325|405|420|422|423|425|431|134|108|125|222|465|119|314|315|317)$') # Mediennummer fuer Zweigstellen 19, 20, 405, ... immer unterdruecken %]
+[% IF NOT thiscirculation.department_id.match('^(19|20|204|212|213|214|217|219|223|228|230|308|319|321|325|328|403|405|420|422|423|425|431|134|108|125|222|465|119|314|315|317)$') # Mediennummer fuer Zweigstellen 19, 20, 405, ... immer unterdruecken %]
 [%   IF thiscirculation.location_mark != thiscirculation.holdingid # Anzeige der Mediennummer fuer USB-Treffer, falls ungleich Signatur %] 
 [%     IF NOT thiscirculation.location_mark.match('^(JUR|BWL|VERSW)$') %]
 <br /><span style="color:silver">[% thiscirculation.holdingid %]</span>

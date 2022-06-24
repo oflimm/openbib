@@ -143,11 +143,6 @@ function update_gnd (){
 <label for="autocomplete_[% cgiparam %]">[% msg.maketext("Schlagworte") %]</label>
 </div>
 
-<div class="form-floating mb-3">
-[% PROCESS common/subtemplate name="searchforms_record_profile" %]
-<label for="[% cgiparam %]">[% msg.maketext("Suchprofil") %]</label>
-</div>
-
 <p/>
 
 <div class="d-flex ob-fulltitle_actions">

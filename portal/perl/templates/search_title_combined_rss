@@ -13,7 +13,8 @@
 -%]
 [%-
 
-channel_link        = "${path_prefix}/${config.get('search_loc')}.rss?${searchquery.to_cgi_params};${queryoptions.to_cgi_params}";
+search_args         = cgiapp.to_cgi_querystring();
+channel_link        = "${scheme}://${servername}${path_prefix}/${config.get('search_loc')}.rss?${search_args}";
 channel_description = "RSS Feed Ihrer Suchanfrage" ;
 channel_title       = "RSS Feed Ihrer Suchanfrage" ;
 
@@ -32,6 +33,6 @@ FOREACH record IN recordlist.get_records ;
     END;
 END;
 
-recordlist.to_rss({ path_prefix = path_prefix, servername = servername, view = view, channel_title = channel_title, channel_link = channel_link  });
+recordlist.to_rss({ scheme = scheme, path_prefix = path_prefix, servername = servername, view = view, channel_title = channel_title, channel_link = channel_link  });
 
 -%]

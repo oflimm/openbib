@@ -1090,13 +1090,15 @@ sub print_resultitem {
     my $representation = $self->param('representation');
     my $content_type   = $self->param('content_type') || $config->{'content_type_map_rev'}{$representation} || 'text/html';
     my $database       = $self->param('database') || '';
+    my $viewname       = $self->param('viewname') || '';    
     
     my $searchquery  = $self->param('searchquery');
 
     # TT-Data erzeugen
     my $ttdata={
         database        => $database,
-        
+        viewname        => $viewname,
+	
         searchquery     => $searchquery,
         
         qopts           => $queryoptions->get_options,
@@ -1125,6 +1127,8 @@ sub print_resultitem {
     $ttdata = $self->add_default_ttdata($ttdata);
 
     my $content = "";
+
+    $logger->debug("Trying template $templatename");
     
     $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
         database     => $database, # Template ist fuer joined-search nicht datenbankabhaengig (=''), aber fuer sequential search
@@ -1132,7 +1136,8 @@ sub print_resultitem {
         profile      => $ttdata->{sysprofile},
         templatename => $templatename,
     });
-    
+
+    $logger->debug("Cascaded template $templatename");
     # Start der Ausgabe mit korrektem Header
     # $r->content_type($ttdata->{content_type});
     
@@ -1151,7 +1156,6 @@ sub print_resultitem {
     
     if ($logger->is_debug && defined $self->param('recordlist')){
 	$logger->debug("Printing Result item");
-	$logger->debug("Recordlist: ".YAML::Dump($self->param('recordlist')->to_ids));
     }
     
     $itemtemplate->process($templatename, $ttdata) || do {

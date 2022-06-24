@@ -1903,6 +1903,37 @@ sub set_fields_from_json {
     return $self;
 }
 
+sub set_record_from_json {
+    my ($self,$json_string)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # (Re-)Initialisierung
+    delete $self->{_exists}         if (exists $self->{_exists});
+    delete $self->{_fields}         if (exists $self->{_fields});
+    delete $self->{_holding}        if (exists $self->{_holding});
+    delete $self->{_circulation}    if (exists $self->{_circulation});
+
+    my $json_ref = {};
+
+    eval {
+#        $json_ref = JSON::XS::decode_json decode_utf8($json_string);
+        $json_ref = JSON::XS::decode_json $json_string;
+    };
+        
+    if ($@){
+        $logger->error("Can't decode JSON string $json_string");
+    }
+    else {
+        $self->{_fields}  = $json_ref->{fields};
+	$self->{id}       = $json_ref->{id};
+	$self->{database} = $json_ref->{database};
+    }
+
+    return $self;
+}
+
 sub to_bibkey {
     my ($self) = @_;
 
@@ -2245,6 +2276,9 @@ sub to_bibtex {
     my $utf8               = exists $arg_ref->{utf8}
         ? $arg_ref->{utf8}               : 0;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
     my $bibtex_ref=[];
 
     my $fields_ref = $self->to_abstract_fields();
@@ -2253,14 +2287,18 @@ sub to_bibtex {
     my $authors_ref=[];
     my $editors_ref=[];
 
+    if ($logger->is_debug){
+	$logger->debug("Fields: ".YAML::Dump($fields_ref));
+    }
+
     if (defined $fields_ref->{authors} && @{$fields_ref->{authors}}){
 	$authors_ref = $fields_ref->{authors};
     }
 
     if (defined $fields_ref->{editors} && @{$fields_ref->{editors}}){
-	$editors_ref = $fields_ref->{editor};
+	$editors_ref = $fields_ref->{editors};
     }
-    
+
     my $author = join(' and ',@$authors_ref);
     my $editor = join(' and ',@$editors_ref);
 
@@ -3268,7 +3306,9 @@ sub to_abstract_fields_mab2 {
     # Edition
     $abstract_fields_ref->{edition} = (exists $self->{_fields}->{T0403})?$self->{_fields}->{T0403}[0]{content}:'';
         
-
+    if ($logger->is_debug){
+	$logger->debug("Abstract Fields: ".YAML::Dump($abstract_fields_ref));
+    }
     
     return $abstract_fields_ref;
 }
@@ -3716,9 +3756,17 @@ sub from_hash {
 sub record_exists {
     my ($self) = @_;
 
-    my @categories = grep { /^[TX]/ } keys %{$self->{_fields}};
+    my @categories = grep { /^[PCTX]/ } keys %{$self->{_fields}};
+
+    return 0 if (!@categories);
     
-    return (@categories)?1:0;
+    my $record_exists = 0;
+    
+    foreach my $field (@categories){
+	$record_exists = 1 if (@{$self->{_fields}{$field}});
+    }
+    
+    return $record_exists;
 }
 
 sub set_record_exists {
@@ -3817,6 +3865,22 @@ sub from_json {
     }
         
     return $self;
+}
+
+sub set_status {
+    my ($self,$status,$value) = @_;
+
+    $self->{_status}{$status} = $value;
+
+    return $self;
+}
+
+sub get_status {
+    my ($self,$status) = @_;
+
+    return 0 if (!defined $self->{_status} && !defined $self->{_status}{$status});
+    
+    return $self->{_status}{$status};
 }
 
 sub set_id {

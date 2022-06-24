@@ -11,15 +11,24 @@
 #
 #######################################################################
 -%]
+[%-
+
+   catalog_has_authorities = config.get('source_systems').${config.get_system_of_db(record.database)}.has_authorities;
+   
+   resourceurl             = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('persons_loc')}/id/${record.id}";
+   
+-%]
 
 <div class="details ob-authority_record"><!-- Begin Details -->
 <!-- Person begins here -->
 
+<div class="ob-category_header">[% dbinfo.get('dbnames').${database}.short %]</div>
+
 <div class="row">
 
-<div class="categories col-md-6"><!-- Begin Categories -->
+<div class="categories col-md-12"><!-- Begin Categories -->
 
-<div class="ob-category_header">[% dbinfo.get('dbnames').${database}.short %]</div>
+<h4>[% msg.maketext("Index-Eintrag (Normdaten)") %]</h4>
 
 <div class="table-responsive">
 <table class="table table-striped table-hover">
@@ -63,6 +72,31 @@ FOREACH field IN normset;
     categoryout = category;
 
     SWITCH category;
+
+    CASE "P0550";
+       categoryout = "Beruf";
+       
+       IF NOT content_map.${categoryout} ;
+         content_map.${categoryout} = [];
+       END;
+       content_map.${categoryout}.push(content);
+
+    CASE "P0548";
+       categoryout = "Lebensdaten";
+       
+       IF NOT content_map.${categoryout} ;
+         content_map.${categoryout} = [];
+       END;
+       content_map.${categoryout}.push(content);
+
+    CASE "P0808";
+       categoryout = "Wikipedia";
+
+       content = "<a href=\"${content}\" target=\"_blank\">${content}</a>";
+       IF NOT content_map.${categoryout} ;
+         content_map.${categoryout} = [];
+       END;
+       content_map.${categoryout}.push(content);
 
     CASE "P0806";
          SWITCH subfield ;
@@ -122,7 +156,7 @@ FOREACH field IN normset;
          searchterm    = record.id;
          searchprefix  = config.get('searchfield').personid.prefix;
 
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base};page=1;db=${database};fs=${searchprefix}:${searchterm}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base};page=1;fdb=${database};fs=${searchprefix}:${searchterm}";
          desc      = msg.maketext("Titel ist in diesem Katalog mit der Person verknüpft");
          IF content > 1 ;
              desc      = msg.maketext("Titel sind in diesem Katalog mit der Person verknüpft");
@@ -179,8 +213,44 @@ END;
 [% IF normset.defined('P0010') && normset.${'P0010'}.first.content.match('DE-588') %]
 [% gnd = normset.${'P0010'}.first.content.replace('\(DE-588\)','') %]
 <tr><th class="ob-field">Dt.&nbsp;Nationalbibliothek</td><th><a href="http://d-nb.info/gnd/[% gnd %]" target="_blank">Normdatensatz</a></td></tr>
-<!-- <tr><th class="ob-field">Wikipedia (de)</th><td><a href="http://tools.wmflabs.org/persondata/redirect/gnd/de/[% gnd %]" target="_blank">Artikel</a></td></tr> -->
 [% END %]
+</table>
+</div>
+
+<h4>[% msg.maketext("Weiterführende Links") %]</h4>
+
+<div class="table-responsive">
+<table class="table table-striped table-hover ob-normdata_fields">
+<!--
+[%-
+
+    IF normset.${'P5000'};
+         content = normset.${'P5000'}.first.content;
+	 
+         searchterm    = record.id;
+         searchprefix  = config.get('searchfield').subjectid.prefix;
+
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base};page=1;fdb=${database};${searchprefix}=${searchterm}";
+         desc      = msg.maketext("Titel ist in diesem Katalog mit der Person verknüpft");
+         IF content > 1 ;
+             desc      = msg.maketext("Titel sind in diesem Katalog mit der Person verknüpft");
+         END;
+         content   = "<a href=\"${localurl}\">${content} ${desc}</a>";
+-%]
+<tr><th class="ob-field">[% msg.maketext("S5000") %]</th><td>[% content %]</td></tr>
+[%- END -%] -->
+[% IF normset.defined('P0010') %]
+[% gnd = normset.${'P0010'}.first.content %]
+<tr><th class="ob-field">Dt.&nbsp;Nationalbibliothek</th><td><a href="http://d-nb.info/gnd/[% gnd %]" target="_blank">Normdatensatz</a></td></tr>
+[% END %]
+[% IF activefeed.4 && catalog_has_authorities ;
+
+      subscribe = msg.maketext("Feed abonnieren");
+      rssfeed = "<a href=\"http://${servername}${resourceurl}/titles/recent.rss?l=${lang}\" target=\"_blank\" title=\"RSS-Feed: Titel zur Person\"><img src=\"${config.get_icon('rssfeed',view,sysprofile)}\" alt=\"RSS-Icon\" /> ${subscribe}</a>" ;
+%]
+<tr><th class="ob-field">RSS</th><td><a href="http://d-nb.info/gnd/[% gnd %]" target="_blank">[% rssfeed %]</td></tr>
+[% END %]
+<tr><th class="ob-field">API Formate</th><td><a href="[% resourceurl %].json?l=[% lang %]" target="_blank">JSON</td></tr>
 </table>
 </div>
 
@@ -188,9 +258,87 @@ END;
 
 </div><!-- End Categories -->
 
-<div class="images col-md-6"><!-- Begin Images -->
+<!-- DBpedia Definition -->
+[%
+    article_name = "";
+
+    IF normset.${"P0808"}.first.content.match('https?://.+?\.wikipedia.org/wiki/');
+      article_name = normset.${"P0808"}.first.content.replace('https?://.+?\.wikipedia.org/wiki/',''); 
+    END;
+    
+    IF NOT article_name ;
+      article_name = normset.${"P0800"}.first.content.replace('"','').split(', ').reverse.join('_');
+    END;
+
+    dbpedia_result = {};
+
+    IF article_name ;
+       dbpedia_result = record.enrich_dbpedia(article_name);
+    END;
+
+    dbpedia_abstract = {};
+
+    dbpedia_resource_name = "http://dbpedia.org/resource/${article_name}";
+    dbpedia_resource = dbpedia_result.${dbpedia_resource_name};
+
+    IF dbpedia_resource.defined('http://dbpedia.org/ontology/abstract') ;
+      FOREACH abstract IN dbpedia_resource.${"http://dbpedia.org/ontology/abstract"};
+         IF abstract.lang == 'de' ;
+	    dbpedia_abstract.de = abstract.value;
+         ELSIF abstract.lang == 'en' ;
+	    dbpedia_abstract.en = abstract.value;
+	 END;
+      END;
+    ELSIF dbpedia_resource.defined('http://dbpedia.org/ontology/wikiPageRedirects') && dbpedia_resource.${'http://dbpedia.org/ontology/wikiPageRedirects'}.first.value.match('http://dbpedia.org/resource/');
+      article_name = dbpedia_resource.${'http://dbpedia.org/ontology/wikiPageRedirects'}.first.value.replace('http://dbpedia.org/resource/',''); 
+
+      dbpedia_result = record.enrich_dbpedia(article_name);
+
+      dbpedia_resource_name = "http://dbpedia.org/resource/${article_name}";
+      dbpedia_resource = dbpedia_result.${dbpedia_resource_name};
+
+      IF dbpedia_resource.defined('http://dbpedia.org/ontology/abstract') ;
+        FOREACH abstract IN dbpedia_resource.${"http://dbpedia.org/ontology/abstract"};
+         IF abstract.lang == 'de' ;
+	    dbpedia_abstract.de = abstract.value;
+         ELSIF abstract.lang == 'en' ;
+	    dbpedia_abstract.en = abstract.value;
+	 END;
+        END;
+
+      END;
+
+    END;
+
+    other_lang = "";
+    IF lang == 'de';
+      other_lang = 'en';
+    ELSIF lang == 'en';
+      other_lang = 'de';
+    END;
+%]
+
+[% IF dbpedia_abstract.${lang} %]
+<h4 class="mt-2">[% msg.maketext("Wikipedia") %] ([% lang %])</h4>
+
+<p>
+[% dbpedia_abstract.${lang} %]
+</p>
+[% ELSIF dbpedia_abstract.${other_lang} %]
+<h4 class="mt-2">[% msg.maketext("Wikipedia") %] ([% other_lang %])</h4>
+
+<p>
+[% dbpedia_abstract.${other_lang} %]
+</p>
+[% END %]
+
+<h4 class="mt-2">[% msg.maketext("Konzepte aus Yewno Discover") %] <a href="https://yewno.ub.uni-koeln.de" target="_blank"><i class="far fa-question-circle"></i></a></h4>
+
+<div class="images"><!-- Begin Images -->
 [% PROCESS common/subtemplate name="persons_record_html_images" %]
 </div><!-- End Images -->
 
 </div><!-- End row -->
 </div><!-- End Details -->
+
+<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Personen-Information") %]</div>

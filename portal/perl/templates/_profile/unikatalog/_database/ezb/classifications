@@ -9,7 +9,9 @@
       'sidebar_template' = 'classifications_sidebar'
       #'sidebar_template_description' = msg.maketext("Spezifische Suche")
       'sidebar_button_in_main_template' = 1
-      
+
+      'without_navigation_search' = 1
+
       'database' = database
 
       'active_menu' = 'dbis'

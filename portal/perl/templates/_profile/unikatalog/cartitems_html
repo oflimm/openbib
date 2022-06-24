@@ -27,7 +27,6 @@ function update_collection(yourform, checked, item) {
 // -->
 </script>
 
-<form method="post" action="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]">
 
 <!-- begin: Layout with collapsable sidebar -->
 <style>
@@ -39,62 +38,80 @@ function update_collection(yourform, checked, item) {
 
 </style>
 
+<form method="post" action="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]">
 
-[% IF recordlist.get_size > 0 %]
-      <div id="ob-sidebar" class="bg-light border-end min-vh-100 collapse navbar-collapse" aria-expanded="false">
+      <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
 
-           <div id="sidebar-dismiss" class="float-end" data-bs-toggle="collapse" data-bs-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fas fa-arrow-left"></i>
-           </div>
+        <div class="offcanvas-header">
+	  <h3 class="offcanvas-title" id="offcanvasSidebarLabel">[% msg.maketext("Merkliste") %]</h3>
+	  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+	</div>
+	<div class="offcanvas-body">
+	  <div>
+            [% PROCESS common/subtemplate name="cartitems_html_actions" %]
+	  </div>
 
-           <div class="sidebar-heading">
-              <h3>Aktionen</h3>
-           </div>
+	  <div class="offcanvas-footer">
+            <button type="button" class="btn btn-primary text-end"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar">[% msg.maketext("Schließen") %]</button>
+          </div>
+	</div>
+      </div>
+  
+  
+  <div class="maincontent" >
 
-           <div class="sidebar-content overflow-auto h-100">
+[% IF NOT user.ID %]
+<div class="alert alert-info">
 
-[%   IF format == 'short' ;
-        extended_actions=1;
-     END ;
-%]
-[% PROCESS common/subtemplate name="cartitems_html_actions" %]
+[% msg.maketext("Diese Merkliste verfällt nach Ablauf der Sitzung, da Sie nicht angemeldet sind. Um die Datensätze dauerhaft in Ihrem persönlichen Profil zu speichern, müssen Sie sich mit Ihrer Kennung - entweder Ihre Benutzernummer oder Mail-Adresse - anmelden.") %]
 
-           </div> <!-- End sidebar-content -->
-      </div><!-- End sidebar -->
-[% END %]    
-
-   <div class="maincontent" >
+</div>
+[% END %]
 
 [% IF recordlist.get_size > 0 %]
 [%   IF format == 'short' %]
-  [%-  PROCESS common/subtemplate name="cartitems_html_short"  show_bibsonomy=1 -%]
+[%-  PROCESS common/subtemplate name="cartitems_html_short" -%]
 [%   ELSIF format == 'full' %]
-  [%-  PROCESS common/subtemplate name="cartitems_html_full" show_bibsonomy=1 -%]
+[%-  PROCESS common/subtemplate name="cartitems_html_full" -%]
 [%   ELSIF format == 'Text' %]
-  [%-  PROCESS common/subtemplate name="cartitems_html_as_text" show_bibsonomy=1 -%]
+[%-  PROCESS common/subtemplate name="cartitems_html_as_text" -%]
 [%   ELSIF format == 'BibTeX' %]
-  [%-  PROCESS common/subtemplate name="cartitems_html_as_bibtex" show_bibsonomy=1 -%]
+[%-  PROCESS common/subtemplate name="cartitems_html_as_bibtex" -%]
 [%   ELSIF format == 'EndNote' %]
-  [%-  PROCESS common/subtemplate name="cartitems_html_as_endnote" show_bibsonomy=1 -%]
+[%-  PROCESS common/subtemplate name="cartitems_html_as_endnote" -%]
+[%   ELSIF format == 'apa' %]
+[%-  PROCESS common/subtemplate name="cartitems_html_as_apa" -%]
+[%   ELSIF format == 'harvard' %]
+[%-  PROCESS common/subtemplate name="cartitems_html_as_harvard" -%]
+[%   ELSIF format == 'mla' %]
+[%-  PROCESS common/subtemplate name="cartitems_html_as_mla" -%]
 [%   END %]
 
-<div class="d-flex ob-fulltitle_actions">
+<div class="d-flex ob-fulltitle_actions pb-3 pt-3">
+
+[% IF format == 'short' %]
+<div class="pe-1">
+  <button class="btn btn-primary" type="submit" name="do_cartitems_delentry" value="1"><i class="fas fa-trash"></i> [% msg.maketext("Ausgewählte Titel löschen") %]</button>
+</div>
+[% END %]
+
+[% IF format != "short" %]
 
 <div class="pe-1">
-<button class="btn btn-primary" type="submit" name="do_cartitems_delentry" value="1"><i class="fas fa-trash"></i> [% msg.maketext("Ausgewählte Titel löschen") %]</button>
+  <a class="btn btn-primary sidebar-toggler" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]"><i class="fas fa-arrow-left"></i> <span>[% msg.maketext("Standard-Format") %]</span></a>
 </div>
+[% END %]
+
+<a href="#" class="ob-floating_sidebar_button sidebar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar"><i class="fas fa-plus fa-2x"></i></a>
 
 <div class="pe-1">
-    <button class="btn btn-primary sidebar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-arrow-right"></i> <span class="d-none d-sm-inline">[% msg.maketext("Mehr") %]</span></button>
-</div>
-
+  <a href="#" class="ob-sidebar_button sidebar-toggler d-none d-md-block" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar"><i class="fas fa-plus fa-2x"></i></a>
 </div>
 
 [% ELSE %]
-         <div class="ob-jumbotron">
-<h1 class="display-4">[% msg.maketext("Derzeit ist Ihre Merkliste leer") %]</h1>
-         </div>
+<div class="ob-jumbotron">
+  <h1 class="display-4">[% msg.maketext("Derzeit ist Ihre Merkliste leer") %]</h1>
+</div>
 [% END %]
-      </div><!-- End maincontent -->
-   </div><!-- End row -->	
+</div><!-- End maincontent -->
 </form>

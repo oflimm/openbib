@@ -23,6 +23,7 @@
 
    catalog_has_authorities = config.get('source_systems').${config.get_system_of_db(record.database)}.has_authorities;
 -%]
+
 [% IF format == "full" %]
 
 
@@ -52,7 +53,8 @@
    END;
 
 globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
-rswkswt_done      = {};
+swt_done          = {};
+extsubj_done      = {};
 
 #USE dumper;dumper.dump(normdata);
 
@@ -294,6 +296,48 @@ END;
 
 content_map = {};
 
+
+FOREACH field IN [ "T0902", "T0907", "T0912", "T0917", "T0922", "T0927", "T0932", "T0937", "T0942", "T0947" ];
+
+    rswk_data = [];
+
+    IF normdata.defined(field);
+
+      FOREACH item IN normdata.${field} ;
+         thisid     = item.id;
+
+         thiscontent = item.content;
+
+         searchterm    = uri_escape(item.content);
+         searchprefix  = config.get('searchfield').subjectstring.prefix;
+
+         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('subjects_loc')}/id/${thisid}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         normdataicon = "";
+
+         IF thisid && catalog_has_authorities;
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Schlagwort-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+         END;
+
+         content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement} ${normdataicon}";
+	 rswk_data.push(content);
+      END;
+
+    IF rswk_data ;
+      IF NOT content_map.${'T0710'} ;
+        content_map.${'T0710'} = [];
+      END;
+
+      new_swtstring = rswk_data.join(' / ');
+
+      content_map.${'T0710'}.push(new_swtstring);
+    END ;
+    END;
+
+
+END;
+
 FOREACH field IN normdata;
 
   category = field.key ;
@@ -335,7 +379,7 @@ FOREACH field IN normdata;
          normdataicon = "";
 
          IF thisid && catalog_has_authorities ;
-            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Personen-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#normdataModal\" data-formattitle=\"Personendaten\" data-formaturl=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Personen-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
          END;
 
          icons     = "<span>${normdataicon}</span>";
@@ -359,7 +403,7 @@ FOREACH field IN normdata;
          normdataicon = "";
 
          IF thisid && catalog_has_authorities ;
-            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"K&ouml;rperschafts-Information\"  data-bs-toggle=\"modal\" data-bs-target=\"#normdataModal\" data-formattitle=\"Körperschaftsdaten\" data-formaturl=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"K&ouml;rperschafts-Information\"  data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
          END;
 
          icons     = "<span>${normdataicon}</span>";
@@ -516,7 +560,7 @@ FOREACH field IN normdata;
          content     = "<a href=\"${localurl}\">${content}</a>";
          IF bkdesc ;
             content   = "${content} (${bkdesc})" ;
-         END ;
+         END ; 
          IF NOT content_map.${'E4100'} ;
 	    content_map.${'E4100'} = [];
 	 END;
@@ -558,20 +602,20 @@ FOREACH field IN normdata;
 
          localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-         NEXT IF rswkswt_done.${thiscontent} == 1;
+         NEXT IF extsubj_done.${thiscontent} == 1;
 	 content       = "<a href=\"${localurl}\">${content}</a>";
-         rswkswt_done.${thiscontent} = 1;
+         extsubj_done.${thiscontent} = 1;
          IF NOT content_map.${'E4300'} ;
 	    content_map.${'E4300'} = [];
 	 END;
          content_map.${'E4300'}.push(content);
+
+    CASE [ "T0710" ];
+         IF record.database == 'inst001';
+           thisid     = item.id;
+         END;
 	 
-    CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];
-         thisid     = item.id;
-
          thiscontent = item.content;
-
-         NEXT IF rswkswt_done.${thiscontent} == 1;
 
          searchterm    = uri_escape(item.content);
          searchprefix  = config.get('searchfield').subjectstring.prefix;
@@ -581,15 +625,17 @@ FOREACH field IN normdata;
 
          normdataicon = "";
 
+         NEXT IF swt_done.${thiscontent} == 1;
+	 
          IF thisid && catalog_has_authorities;
-            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Schlagwort-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#normdataModal\" data-formattitle=\"Schlagwortdaten\" data-formaturl=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Schlagwort-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
          END;
 
-         icons     = "<span>${normdataicon}</span";
+         icons     = "<span>${normdataicon}</span>";
 
          content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement} ${icons}";
-         rswkswt_done.${thiscontent} = 1;
-         IF NOT content_map.${'T0710'} ;
+         swt_done.${thiscontent} = 1;
+         IF NOT content_map.${'T0710'};
 	    content_map.${'T0710'} = [];
 	 END;
          content_map.${'T0710'}.push(content);
@@ -606,12 +652,21 @@ FOREACH field IN normdata;
          normdataicon = "";
 
          IF thisid && catalog_has_authorities ;
-            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Systematik-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#normdataModal\" data-formattitle=\"Systematikdaten\" data-formaturl=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Systematik-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
          END;
 
          icons     = "<span>${normdataicon}</span>";
 
-         content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement} ${icons}";
+         bkdesc = "";
+         IF item.content.match('\d\d\.\d\d');         
+           bkresult      = bklookup.${item.content};
+	   IF bkresult ;
+	      bkdesc = "(${bkresult})";
+	   END;
+         END;
+
+         content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${bkdesc} ${item.supplement} ${icons}";
+	 
          IF NOT content_map.${'T0700'} ;
 	    content_map.${'T0700'} = [];
 	 END;
@@ -700,7 +755,6 @@ display_types = {
    'T0710' => 'list',
    'T0700' => 'list',   
 };
-
 
 FOREACH category IN categories;
 

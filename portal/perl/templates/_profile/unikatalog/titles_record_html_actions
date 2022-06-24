@@ -1,9 +1,5 @@
 <div class="ob-reuse_data"><!-- Begin Reuse -->
 
-<style>
-</style>
-
-
 [%
 
   normdata = record.get_fields;
@@ -16,6 +12,34 @@
 %]
 
 <h5>[% msg.maketext("Dieser Titel") %]</h5>
+
+
+<div id="ob-title_actions" class="accordion"><!-- Begin Litlist -->
+  
+  <div class="card">
+    <div class="card-header" id="headingActions">
+      <h5 class="mb-0">
+        <a class="card-link" href="#collapseActions" data-toggle="collapse" data-target="#collapseActions" aria-expanded="true" aria-controls="collapseActions">
+          [% msg.maketext("Aktionen") %]
+        </a>
+      </h5>
+    </div>
+    
+    <div id="collapseActions" class="collapse show" aria-labelledby="headingActions" data-parent="#ob-title_actions">
+      <div class="card-body">
+			
+	<div class="pt-2">
+	  <i class="fas fa-print"></i><a class="ps-2" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/print.html?l=[% lang %];format=full" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a>
+	</div>
+
+	<div class="pt-2">
+	  <i class="fas fa-share-alt"></i><a class="ps-2" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/to_bibsonomy.html?l=[% lang %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a>
+	</div>
+	
+      </div>
+    </div>
+  </div>
+</div>
 
 [% IF config.get('litlists') %]
 <div id="ob-litlists" class="accordion"><!-- Begin Litlist -->
@@ -378,20 +402,7 @@ $(document).ready(function(){
 
 
 <!-- Anfang Tags -->
-
-    <script>
-$(document).ready(function(){
-
-    $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/bibsonomy/[% config.get('subjects_loc') %].include?l=[% lang %];bibkey=[% record.to_bibkey %];subjects=[% record.to_tags %]",
-          function (txt){
-            $("#ob-bibsonomy_tags_content").html(txt); 
-    });
-
-});
-
-    </script>
-
-
+[% IF all_tags.size > 0 %]
 <div id="ob-available_tags" class="accordion"><!-- Begin Vorhandene tags -->
   <div class="card">
     <div class="card-header" id="headingAvailableTags">
@@ -405,23 +416,24 @@ $(document).ready(function(){
     <div id="collapseAvailableTags" class="collapse" aria-labelledby="headingAvailableTags" data-parent="#ob-available_tags">
       <div class="card-body">
 [% IF all_tags.size > 0 %]      
-      <h5>Von Nutzern vergeben</h5>
+      <h5>[% msg.maketext("Von Nutzern vergeben") %]</h5>
 [% alltags_cloud %]
-[% IF username && private_tags_of_tit.size > 0 %]
-<br />davon eigene Tags:
-[%- FOREACH tag IN private_tags_of_tit -%]
+[%   IF username && private_tags_of_tit.size > 0 %]
+<br />[% msg.maketext("davon eigene Tags") %]
+[%-    FOREACH tag IN private_tags_of_tit -%]
 <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags/id/[% tag.id %].html">[% tag.name %]</a>&nbsp;
-[%- END -%]
+[%-    END -%]
+[%   END %]
+<p/>
+[% ELSE %]
+[% msg.maketext("Dieser Titel wurde noch nicht getaggt") %]
 [% END %]
 <p/>
+</div>
+</div>
+</div>
+</div>
 [% END %]
-      <h5>Aus Bibsonomy</h5>
-<span id="ob-bibsonomy_tags_content"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/bibsonomy/[% config.get('subjects_loc') %].html?l=[% lang %];bibkey=[% record.to_bibkey %];subjects=[% record.to_tags | uri %]">Suchen?</a></span>
-<p/>
-</div>
-</div>
-</div>
-</div>
 <!-- Ende Tags -->
 
 <!-- Anfang Verwandte Verfasser -->
@@ -490,6 +502,7 @@ $(document).ready(function(){
 </div>
 <!-- Ende Verwandte Themen -->
 
+[% IF 0 == 1 %]
 <!-- Anfang Verschiedenes -->
 <div id="ob-misc" class="accordion"><!-- Begin Verschiedenes -->
 
@@ -512,6 +525,7 @@ $(document).ready(function(){
 </div>
 </div>
 </div>
+[% END %]
 
 <!-- </div><!-- End ob-record_title_discover_toggle_do -->
 </div><!-- End card-body -->
@@ -644,3 +658,5 @@ title %]</span></strong></a>, <span class="ob-publisher">[% publisher %]</span> 
 <!-- </div><!-- End ob-record_title_history_toggle_do -->
 </div><!-- End Session-Historie -->
 [% END %]
+
+

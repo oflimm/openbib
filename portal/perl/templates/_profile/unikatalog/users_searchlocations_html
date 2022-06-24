@@ -31,7 +31,7 @@ function update_fak(yourform, checked, fak) {
 
 <h1 class="display-5">[% msg.maketext("Bevorzugte Standorte definieren") %]</h1>
 
-[% USE dumper;dumper.dump(checkedloc)%]
+[%# USE dumper;dumper.dump(checkedloc)%]
 [%# USE dumper;dumper.dump(config.get_orgunitinfo_overview(profile)) %]
 
 <p />

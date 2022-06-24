@@ -45,7 +45,7 @@
     <div id="collapseFormats" class="collapse" aria-labelledby="headingFormats" data-parent="#ob-formats">
       <div class="card-body">
 <p>
-<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit?format=short" [%- IF format == 'short' -%]class="ob-selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit?format=Text" [%- IF format == 'Text'-%]class="ob-selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit?format=BibTeX" [%- IF format == 'BibTeX'-%]class="ob-selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit?format=EndNote" [%- IF format == 'EndNote'-%]class="ob-selected_item"[%- END -%]>EndNote</a> 
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit?format=short" [%- IF format == 'short' -%]class="ob-selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit?format=Text" [%- IF format == 'Text'-%]class="ob-selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit?format=BibTeX" [%- IF format == 'BibTeX'-%]class="ob-selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit?format=EndNote" [%- IF format == 'EndNote'-%]class="ob-selected_item"[%- END -%]>EndNote</a>, <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit?format=apa" [%- IF format == 'apa'-%]class="ob-selected_item"[%- END -%]>APA Zitat</a>, <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit?format=harvard" [%- IF format == 'harvard'-%]class="ob-selected_item"[%- END -%]>Harvard Zitat</a>, <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit?format=mla" [%- IF format == 'mla'-%]class="ob-selected_item"[%- END -%]>MLA Zitat</a> 
 </p>
 </div>
 </div>
@@ -85,7 +85,8 @@
 </div>
 [%- END -%]
 
-<div class="form-floating mb-3">
+<div class="mb-3">
+<label class="form-label" for="topics">Ordnen Sie Ihre Literaturliste thematisch ein</label>
 <select class="form-select" name="topics" id="topics" multiple="multiple" size="5">
 
 [% FOREACH topic IN topics %]
@@ -93,7 +94,6 @@
 [% END %]
 
 </select>
-<label for="topics">Ordnen Sie Ihre Literaturliste thematisch ein</label>
 </div>
 
 <button type="submit" name="do_changelist" class="btn btn-primary mb-2">[% msg.maketext("&Auml;ndern") %]</button>
@@ -125,13 +125,10 @@
     <div class="left">
 [% litlist.recordlist.get_size %] [% msg.maketext("Titel") %]
     </div>
-    <div class="right">
-<form method="get" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/edit.html">
-<input type="hidden" name="l" value="[% lang %]" />
+    <div class="right pb-1">
 
-[% PROCESS common/subtemplate name="titlist_options" this_loc="${path_prefix}/${config.get('litlists_loc')}/id/${litlist.properties.id}" no_relevance=1 %]
+[% PROCESS common/subtemplate name="titlist_options" this_loc="${path_prefix}/${config.get('users_loc')}/id/${user.ID}/${config.get('litlists_loc')}/id/${litlist.properties.id}/edit" no_relevance=1 no_htmx=1 %]
 
-</form>
     </div>
   </div>
   
@@ -156,6 +153,18 @@
 [% ELSIF format == 'full' %]
 
 [% PROCESS common/subtemplate name="litlists_record_html_full" %]
+
+[% ELSIF format == 'apa' %]
+
+[% PROCESS common/subtemplate name="litlists_record_html_as_apa" %]
+
+[% ELSIF format == 'harvard' %]
+
+[% PROCESS common/subtemplate name="litlists_record_html_as_harvard" %]
+
+[% ELSIF format == 'mla' %]
+
+[% PROCESS common/subtemplate name="litlists_record_html_as_mla" %]
 
 [%- END # Ende Alles -%]
 

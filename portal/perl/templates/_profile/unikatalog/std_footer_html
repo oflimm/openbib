@@ -59,7 +59,7 @@
       </span>
       <span class="uzk15__invisible">Youtube</span>
      </a>
-     <a href="/rss"> 
+     <a href="https://www.ub.uni-koeln.de/rss"> 
       <span class="uzk15__icon"> 
        <svg class="uzk15__svg-linkedin">
         <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#rss" />

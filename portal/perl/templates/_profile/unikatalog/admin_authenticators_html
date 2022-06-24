@@ -48,13 +48,13 @@
 <label for="type">[% msg.maketext("Typ") %]</label>
 </div>
 
-<div class="form-floating mb-3">
+<div class="mb-3">
+  <label class="form-label" for="views">[% msg.maketext("Views") %]</label>
   <select class="form-select" name="views" multiple="multiple" size="5" id="views">
 [% FOREACH thisview IN config.get_viewinfo_overview %]  
     <option value="[% thisview.viewname %]">[% thisview.viewname %] - [% thisview.description %]</option>
 [% END %]
   </select>
-<label for="views">[% msg.maketext("Views") %]</label>
 </div>
 
 

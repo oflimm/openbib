@@ -52,19 +52,15 @@
 <!-- Targs: [% USE dumper; dumper.dump(layout_param) %] -->
 
 
-  <div class="collapse navbar-collapse" id="navbarToggler">
-
-     <div id="navbar-dismiss" class="float-end text-white" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-        <button type="button" class="btn-close" aria-label="[% msg.maketext("Schließen") %]">
-     
-<!--            <i class="fas fa-window-close fa-2x p-1"></i> -->
-     </div>
-
-     <div class="sidebar-heading p-1 pb-0 mb-2">
-            <h3>Menu</h3>
-     </div>
-
-    <ul class="list-unstyled components">
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar_hamburger" aria-labelledby="offcanvasSidebarLabel">
+  
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title" id="offcanvasSidebarLabel_hamburger">[% msg.maketext("Menu") %]</h3>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="ps-2">
+      <ul class="list-unstyled components">
 
      [% lang_desc = {
        'en' = "English"
@@ -96,58 +92,59 @@
                </li>
     [% END %]
     		
-            </ul>
-  
+      </ul>
+      
+    </div>
+    
+    <div class="offcanvas-footer">
+      <button type="button" class="btn btn-primary text-end"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar_hamburger">[% msg.maketext("Schließen") %]</button>
+    </div>
   </div>
+</div>
 
 
-  <div class="collapse navbar-collapse" id="userToggler">
-
-     <div id="navbar-user-dismiss" class="float-end text-white" data-bs-toggle="collapse" data-bs-target="#userToggler" aria-controls="userToggler" aria-expanded="false" aria-label="Toggle user account">
-        <button type="button" class="btn-close" aria-label="[% msg.maketext("Schließen") %]">
-     
-<!--            <i class="fas fa-window-close fa-2x p-1"></i> -->
-     </div>
-
-     <div class="sidebar-heading p-1 pb-0 mb-2">
-            <h3>[% msg.maketext("Mein Konto") %]</h3>
-     </div>
-
-    <ul class="list-unstyled components">
-<!--           <li class="nav-item[% IF layout_param.active_menu == "collection" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %]</a></li> -->
-
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar_user" aria-labelledby="offcanvasSidebarLabel">
+  
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title" id="offcanvasSidebarLabel_user">[% msg.maketext("Mein Konto") %]</h3>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div>
+      <ul class="list-unstyled components">
+	  
 [%     IF config.get_viewauthenticators(view) %]
     [%  IF username %]
       [% IF NOT suppress_unauthorized %]
            <li class="nav-item[% IF layout_param.active_menu == "loginout" %] active[% END %] p-2"><a class="nav-link btn btn-primary ms-1 me-1" href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %];purge_private_userinfo=1">[% msg.maketext("Abmelden") %]</a></li>
-                <li class="nav-item">
+           <li class="nav-item">
           [% PROCESS common/subtemplate name="users_navigation" start=1 %]
-                </li>
+           </li>
       [% END %]
     [%  ELSE %]
-           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %] p-1"><a class="nav-link btn btn-primary ms-1 me-1" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Mein Konto") %] | [% msg.maketext("Anmelden") %]</a></li>
+           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %] p-1"><a class="nav-link btn btn-primary ms-1 me-1" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]" data-bs-toggle="modal"  data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('login_loc') %].include?l=[% lang %]">[% msg.maketext("Mein Konto") %] | [% msg.maketext("Anmelden") %]</a></li>
     
            <li class="nav-item">
-<div class="card">
+	     <div class="card mt-2">
 
-<div class="card-header"><span class="ob-nav_description">Anonym</span></div>
-
-<div class="card-body">
-
-<nav class="navbar bg-light ob-sidebar">
-
-
- <ul class="navbar-nav">
+	       <div class="card-header"><span class="ob-nav_description">Anonym</span></div>
+	       
+	       <div class="card-body">
+		 
+		 <nav class="navbar bg-light ob-sidebar">
+		   
+		   
+		   <ul class="navbar-nav">
 [% IF layout_param.active_submenu == "listofinterest" %]
-  <li class="nav-item active"><strong>[% msg.maketext("Merkliste") %]</strong></li>
+                      <li class="nav-item active"><strong>[% msg.maketext("Merkliste") %]</strong></li>
 [% ELSE %]
-  <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get("cartitems_loc") %].html?l=[% lang %]">[% msg.maketext("Merkliste") %]</a></li>
+                      <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get("cartitems_loc") %].html?l=[% lang %]">[% msg.maketext("Merkliste") %]</a></li>
 [% END %]
-</ul>
-</nav>
-</div>
-</div>
-</li>
+		   </ul>
+		 </nav>
+	       </div>
+	     </div>
+	   </li>
     [%  END %]
 [%     END %]
 
@@ -157,10 +154,15 @@
      }
      %]
 
-    		
-            </ul>
-  
+    	   
+      </ul>
+
+      <div class="offcanvas-footer">
+        <button type="button" class="btn btn-primary text-end"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar_user">[% msg.maketext("Schließen") %]</button>
+      </div>
+    </div>
   </div>
+</div>
 
 <header>
 <nav class="navbar navbar-expand-lg ps-2">
@@ -177,9 +179,9 @@
   <a class="navbar-brand d-md-none" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">
     <h1 class="ms-0">Universität zu Köln</h1>
   </a>
-  <div class="d-flex justify-content-end">
-    <span class="d-lg-none me-4 p-1" data-bs-toggle="collapse" data-bs-target="#userToggler" aria-controls="userToggler" aria-expanded="false" aria-label="Toggle user controls"><i class="fas fa-user fa-2x"></i></span>
-    <span class="d-lg-none p-1" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-bars fa-2x"></i></span>
+  <div id="ob-header_navbarmenu_small" class="d-flex justify-content-end">
+    <span class="d-lg-none me-4 p-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar_user" aria-controls="offcanvasSidebar"><i class="fas fa-user fa-2x"></i></span>
+    <span class="d-lg-none p-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar_hamburger" aria-controls="offcanvasSidebar"><i class="fas fa-bars fa-2x"></i></span>
   </div>
   <div class="collapse navbar-collapse"">
 <!--    <a class="navbar-brand" href="#">Hidden brand</a> -->
@@ -191,8 +193,12 @@
           [% msg.maketext("Suche") %]
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></li>      	  
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]" class="navlink">[% msg.maketext("Suchhistorie") %]</a></li>
+          <li>
+	   <a class="dropdown-item" href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.include?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.include?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
+	  </li>
+          <li>
+	   <a class="drowdown-item" href="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
+	  </li>
         </ul>
       </li>
 
@@ -202,7 +208,6 @@
           [% msg.maketext("Browsen") %]
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('browse_loc') %]/[% config.get('topics_loc') %].html?l=[% lang %]" class="navlink">[% msg.maketext("Themengebiete") %]</a></li>      	  
           <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('browse_loc') %]/bks.html?l=[% lang %]" class="navlink">[% msg.maketext("Basis-Klassifikation") %]</a></li>      	  
         </ul>
       </li>
@@ -210,7 +215,7 @@
     </ul> -->
 [% END # End: suppress_unauthorized %]
 
-    <ul class="nav navbar-nav flex-row justify-content-between ms-auto me-3 text-white">
+    <ul id="ob-header_navbarmenu" class="nav navbar-nav flex-row justify-content-between ms-auto me-3 text-white">
            <li class="nav-item[% IF layout_param.active_menu == "collection" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %]</a></li>
 
 [%     IF config.get_viewauthenticators(view) %]
@@ -225,7 +230,7 @@
            <li class="nav-item[% IF layout_param.active_menu == "loginout" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %];purge_private_userinfo=1">[% msg.maketext("Abmelden") %]</a></li>
       [% END %]
     [%  ELSE %]
-           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]"><span class="d-none d-md-block">[% msg.maketext("Mein Konto") %] | [% msg.maketext("Anmelden") %]</span></a></li>
+           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]"  data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('login_loc') %].include?l=[% lang %]"><span class="d-none d-md-block">[% msg.maketext("Mein Konto") %] | [% msg.maketext("Anmelden") %]</span></a></li>
     [%  END %]
 [%     END %]
 
@@ -269,7 +274,7 @@
 <div class="navbottom ps-4 row">
 
       <div class="col-md-9 mx-auto brandname">
-        <a href="[% path_prefix %]/home"><span class="d-sm-none">Universitätskatalog <b style="color: orange">Prototyp</b></span><span class="d-none d-sm-block">Kölner Universitätskatalog <b style="color: orange">Prototyp (Pre-Alpha)</b></span></a>
+        <a href="[% path_prefix %]/home"><span class="d-sm-none">Universitätskatalog <b style="color: orange">Prototyp</b></span><span class="d-none d-sm-block">Kölner Universitätskatalog <b style="color: orange">Prototyp (Alpha)</b></span></a>
       </div>
       
        <div class="col-md-3 text-end d-none d-md-block">
@@ -308,7 +313,7 @@
     <div class="row">    
         <div class="col">
             <div class="input-group">
-                <input required="required" id="to_focus" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Unikatalog (Bücher, E-Medien, Aufsätze &amp; mehr) und USB Website") %]" />
+                <input required="required" id="to_focus" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Unikatalog - Bücher, E-Medien, Aufsätze &amp; mehr") %]" />
                 <span class="input-group-btn ps-1">
                     <button class="btn btn-primary" type="submit"><span class="fas fa-search d-md-none"></span><span class="d-none d-md-block font-weight-bold">[% msg.maketext("Suchen") %]</span></button>
                     <span class="btn btn-primary fas fa-cog d-md-none" data-bs-toggle="collapse" data-bs-target="#search_options" aria-expanded="false"></span>
@@ -319,18 +324,15 @@
     <div class="row pt-1 pb-0">     
       <div class="col collapse d-md-block p-0" id="search_options">
        
-         <ul class="list-group flex-row flex-wrap justify-content-md-center justify-content-sm-left">
+         <ul class="list-group flex-row flex-wrap justify-content-center">
 <!--            <li class="list-group-item pe-1" style="border: none" >
        	      [% PROCESS common/subtemplate name="searchforms_record_profile" %]
             </li> -->
             <li class="list-group-item pe-1 pt-3" style="border: none" >
-             <a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
+             <a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.include?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
 	    </li>      	  
-            <li class="list-group-item  pe-1 pt-3" style="border: none" >
-	    <a  href="[% path_prefix %]/[% config.get('browse_loc') %]/[% config.get('topics_loc') %].html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a>
-	    </li>
             <li class="list-group-item pe-1 pt-3" style="border: none" >
-	     <a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
+	     <a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
 	   </li>
          </ul>
     </div><!-- col -->

@@ -36,6 +36,6 @@ bklist = bklist.sort;
 
 <ul class="list-group">
 [% FOREACH bk IN bklist %]
-<li class="list-group-item">[% bk %] / <a href="[% path_prefix %]/[% config.get('browse_loc') %]/bks/id/[% bk %].html?l=[% lang %]">[% bks.${bk} %]</a></li>
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('browse_loc') %]/bks/id/[% bk %].html?l=[% lang %]">[% bk %]: [% bks.${bk} %]</a></li>
 [% END %]
 </ul>

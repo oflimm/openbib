@@ -588,14 +588,14 @@ sub get_record {
 			
 			foreach my $thisfield (keys %{$partof_item->{BibEntity}}){
 			    
-			    if ($thisfield eq "Titles"){
-				foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
-				    push @{$fields_ref->{'T0451'}}, {
-					content => $item->{TitleFull}
-				    } if (!$self->have_field_content('T0451',$item->{TitleFull} ));
+			    # if ($thisfield eq "Titles"){
+			    # 	foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
+			    # 	    push @{$fields_ref->{'T0451'}}, {
+			    # 		content => $item->{TitleFull}
+			    # 	    } if (!$self->have_field_content('T0451',$item->{TitleFull} ));
 				    
-				}
-			    }
+			    # 	}
+			    # }
 			    
 			    if ($thisfield eq "Dates"){
 				foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){

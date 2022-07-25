@@ -101,6 +101,8 @@
        library_isil = "DE-38-448";
      ELSIF standort.match('Philosophisches Seminar');
        library_isil = "DE-38-401";
+     ELSIF standort.match('Fachbibliothek Chemie');
+       library_isil = "DE-38-507";
      END ;
 
      IF standort.match('Historisches Institut \/ Osteuropäische Geschichte');

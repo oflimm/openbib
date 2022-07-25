@@ -105,6 +105,7 @@ sub show {
         my $uniform_publisher_list = [];
         my $contained_works        = [];
         my $provenance_data        = [];
+        my $related_zdb_titles      = [];
         my $date_values            = undef;
         my $main_title_data        = undef;
         if ($unapiid) {
@@ -128,6 +129,7 @@ sub show {
                 $corporation_list =
                   $self->collect_corporation_data( $record, $database );
                 $place_list = $self->collect_place_data( $record, $database );
+                $related_zdb_titles = $self->collect_related_zdb_titles( $record, $database );
                 $uniform_publisher_list =
                   $self->collect_publisher_data( $record, $database );
                 $rswk_keyword_list =
@@ -445,21 +447,72 @@ sub collect_rswk_data {
     my $rswk_data = [];
 
     if ( length( $record->get_fields->{T0902} ) ) {
-        push( @{$rswk_data}, $record->get_fields->{T0902} );
+        my $array_data = [];
+        foreach my $rswk_item ( @{ $record->get_fields->{T0902} } ) {
+        push( @{$array_data}, $self->construct_rswk_item($rswk_item, $database) );
+        }
+        push( @{$rswk_data}, $array_data) ;
+    
     }
     if ( length( $record->get_fields->{T0907} ) ) {
-        push( @{$rswk_data}, $record->get_fields->{T0907} );
+         my $array_data = [];
+        foreach my $rswk_item ( @{ $record->get_fields->{T0907} } ) {
+        push( @{$array_data}, $self->construct_rswk_item($rswk_item, $database) );
+        }
+        push( @{$rswk_data}, $array_data) ;
     }
     if ( length( $record->get_fields->{T0912} ) ) {
-        push( @{$rswk_data}, $record->get_fields->{T0912} );
+         my $array_data = [];
+        foreach my $rswk_item ( @{ $record->get_fields->{T0912} } ) {
+        push( @{$array_data}, $self->construct_rswk_item($rswk_item, $database) );
+        }
+        push( @{$rswk_data}, $array_data) ;
+    
     }
     if ( length( $record->get_fields->{T0917} ) ) {
-        push( @{$rswk_data}, $record->get_fields->{T0917} );
+        my $array_data = [];
+        foreach my $rswk_item ( @{ $record->get_fields->{T0917} } ) {
+        push( @{$array_data}, $self->construct_rswk_item($rswk_item, $database) );
+        }
+        push( @{$rswk_data}, $array_data) ;
     }
     if ( length( $record->get_fields->{T0922} ) ) {
-        push( @{$rswk_data}, $record->get_fields->{T0922} );
+        my $array_data = [];
+        foreach my $rswk_item ( @{ $record->get_fields->{T0922} } ) {
+        push( @{$array_data}, $self->construct_rswk_item($rswk_item, $database) );
+        }
+        push( @{$rswk_data}, $array_data) ;
     }
     return $rswk_data;
+}
+
+sub construct_rswk_item {
+    my $self      = shift;
+    my $rswk_input_item = shift;
+    my $database = shift;
+    my $rswk_elem = {};
+    $rswk_elem->{content} = $rswk_input_item->{content};
+    $rswk_elem->{gnd} = $self->get_gnd_for_subject($rswk_input_item->{id}, $database);
+    return $rswk_elem;
+
+}
+
+sub get_gnd_for_subject {
+    my $self      = shift;
+    my $subject_id = shift;
+    my $database  = shift;
+    my $record    = OpenBib::Record::Subject->new(
+        { database => $database, id => $subject_id } )->load_full_record;
+    if ( length( $record->{_fields}->{S0010} ) ) {
+        my $gnd_entry = $record->{_fields}->{S0010}->[0]->{content};
+        if ($gnd_entry =~ /\(DE-588\)/) {
+            $gnd_entry =~ s/\(DE-588\)//;
+        }
+        $gnd_entry =~ s/^\s+|\s+$//g;
+        return $gnd_entry;
+    }
+    return "";
+
 }
 
 sub get_date_values() {
@@ -876,16 +929,28 @@ sub get_gnd_for_corporation {
 
 }
 
+sub collect_related_zdb_titles {
+    my $self       = shift;
+    my $record     = shift;
+    return [];
+}
+
 sub collect_place_data {
     my $self       = shift;
     my $record     = shift;
     my $place_list = [];
-    my $mult_values =
-      $self->get_all_mult_values( $record->get_fields->{T0410} );
+    my $mult_values = [];
+    if ( length( $record->get_fields->{T7676} )) {
+        $mult_values=$self->get_all_mult_values( $record->get_fields->{T7676} );
+    } else {
+         $mult_values=$self->get_all_mult_values( $record->get_fields->{T0410} );
+    }
+    my $has_rda = 0;
 
     foreach my $mult_value ( @{$mult_values} ) {
         my $currentPlaceObject = {};
         if ( length( $record->get_fields->{T7676} ) ) {
+            $has_rda = 1;
             foreach my $place_rda_data ( @{ $record->get_fields->{T7676} } ) {
                 if ( $place_rda_data->{mult} == $mult_value ) {
                     if ( $place_rda_data->{subfield} eq "g" ) {
@@ -910,30 +975,33 @@ sub collect_place_data {
             }
 
         }
-        if ( length( $record->get_fields->{T0410} ) ) {
-            foreach my $place ( @{ $record->get_fields->{T0410} } ) {
-                if ( $place->{mult} == $mult_value ) {
-                    $currentPlaceObject->{"place_free"}->{place_name} =
-                      $place->{content},;
-                }
-            }
-        }
-
-        if ( length( $record->get_fields->{T0673} ) ) {
+        if ( length( $record->get_fields->{T0673} && !$has_rda ) ) {
             foreach my $place ( @{ $record->get_fields->{T0673} } ) {
                 if ( $place->{mult} == $mult_value ) {
                     $currentPlaceObject->{"place_norm"}->{place_name} =
-                      $place->{content},;
+                      $place->{content};
                 }
             }
         }
+        
+        if ( length( $record->get_fields->{T0410} ) && !$has_rda ) {
+            foreach my $place ( @{ $record->get_fields->{T0410} } ) {
+                if ( $place->{mult} == $mult_value ) {
+                    if ($place->{content} ne $currentPlaceObject->{"place_norm"} ){
+                    $currentPlaceObject->{"place_free"}->{place_name} =
+                    $place->{content};
+                    }
+                }
+            }
+        }
+      
 
         $place_list->[$mult_value] = $currentPlaceObject;
+        $has_rda =0
     }
 
     my @filtered_place_list = grep( defined, @{$place_list} );
     return \@filtered_place_list;
-
 }
 
 sub get_all_mult_values {
@@ -1071,5 +1139,5 @@ sub generate_name_data {
     return $namedata;
 
 }
-
+    
 1;

@@ -151,17 +151,26 @@
                 [%- IF place_list && place_list.size %]
                 [%- FOREACH place IN place_list %]
                 <mods:place>
-                    [%- IF place.place_norm %]
-                    <mods:placeTerm type="text" lang="deu">[% place.place_norm.place_name %]</mods:placeTerm>
+                    [%- IF place.place_rda %]
+                    <mods:placeTerm [%- IF place.place_rda.gnd -%] authorityURI="http://d-nb.info/gnd/"
+                    valueURI="http://d-nb.info/gnd/[% place.place_rda.gnd %]" [%END%] type="text" lang="deu">[% place.place_rda.place_name %]</mods:placeTerm>
                     [%- END %]
-                    [%- IF place.place_free && place.place_free.place_name != place.place_norm.place_name %]
-                    <mods:placeTerm type="text">[% place.place_free.place_name %]</mods:placeTerm>
+                    [%- IF place.place_norm %]
+                    <mods:placeTerm type="text">[% place.place_norm.place_name %]</mods:placeTerm>
+                    [%- END %]
+                    [%- IF place.place_free %]
+                    <mods:placeTerm type="text">[% place.place_free.place_name%]</mods:placeTerm>
                     [%- END %]
                 </mods:place>
                 [%- END %]
                 [%- END %]
+                [%- publisher_list = {} %]
                 [%- FOREACH item IN normdata.${"T0412"} %]
+                [%- value = item.content %]
+                [%- UNLESS publisher_list.$value == 'True' %]
+                [%- publisher_list.$value = 'True' %]
                 <mods:publisher>[% item.content %]</mods:publisher>
+                [%- END %]
                 [%- END %]
                 [%- type_is_set = "false" %]
                 [%- IF (normdata.${"T0036"}.first.content =="m" || normdata.${"T0036"}.first.content =="s") &&
@@ -187,24 +196,23 @@
                 [%- END %]
                 [%- END %]
                 [%- IF date_values.start_date %]
-                <mods:dateIssued keyDate="yes" encoding="iso8601" point="start">[%- date_values.start_date %]
-                </mods:dateIssued>
+                <mods:dateIssued keyDate="yes" encoding="iso8601" point="start">[%- date_values.start_date %]</mods:dateIssued>
                 [%- END %]
                 [%- IF date_values.end_date %]
-                <mods:dateIssued encoding="iso8601" point="end">[% date_values.end_date %]</mods:dateIssued>
+                <mods:dateIssued encoding="iso8601" point="end">[%- date_values.end_date -%]</mods:dateIssued>
                 [%- IF date_values.date_norm %]
-                <mods:dateIssued>[%- date_values.date_norm %]</mods:dateIssued>
+                <mods:dateIssued>[%- date_values.date_norm -%]</mods:dateIssued>
                 [%- END %]
                 [%- IF date_values.date %]
-                <mods:dateIssued>[%- date_values.date%]</mods:dateIssued>
+                <mods:dateIssued>[%- date_values.date -%]</mods:dateIssued>
                 [%- END %]
                 [%- END %]
                 [%- UNLESS date_values.start_date %]
                 [%- IF date_values.date_norm %]
-                <mods:dateIssued keyDate="yes" encoding="iso8601">[% date_values.date_norm%]</mods:dateIssued>
+                <mods:dateIssued keyDate="yes" encoding="iso8601">[%- date_values.date_norm%]</mods:dateIssued>
                 [%- END %]
                 [%- IF date_values.date %]
-                <mods:dateIssued>[% date_values.date %]</mods:dateIssued>
+                <mods:dateIssued>[%- date_values.date %]</mods:dateIssued>
                 [%- END %]
                 [%- END %]
                 [%- IF normdata.${"T0405"} %]
@@ -271,13 +279,13 @@
             </mods:holdingSimple>
             [%- END %]
             [%- rswk_list = {} %]
-            [%- FOREACH rswk_item IN rswk_keyword_list %]
-            [%- FOREACH item IN rswk_item %]
-            [%- value = item.content %]
-            [%- UNLESS rswk_list.$value == 'True' %]
-            [%- rswk_list.$value = 'True' %]
-            <mods:classification authority="RSWK">[% value %]</mods:classification>
+            [%- IF rswk_keyword_list %]
+            [%- FOREACH rswk_single_list IN rswk_keyword_list %]
+            <mods:subject authorityURI="http://d-nb.info/gnd/">
+            [%- FOREACH rswk_item IN rswk_single_list %]
+            <mods:topic valueURI="http://d-nb.info/gnd/[% rswk_item.gnd %]">[% rswk_item.content %]</mods:topic>
             [%- END %]
+            </mods:subject>
             [%- END %]
             [%- END %]
             [%- IF normdata.${"T0710"} %]

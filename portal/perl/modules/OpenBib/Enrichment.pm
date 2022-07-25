@@ -646,6 +646,7 @@ sub get_common_holdings {
         my $title            = "";
         my $title_supplement = "";
         my $year             = "";
+        my $edition          = "";
         foreach my $location (@{$locations_ref}){
             if (defined $all_by_matchkey{$matchkey}{$location}){
                 my @signaturen = ();
@@ -672,6 +673,11 @@ sub get_common_holdings {
                                 $year=$record->{T0425}[0]{content};
                             }
                         }
+                        if (!$edition){
+                            if (defined $record->{T0403}[0]{content}){
+                                $edition=$record->{T0403}[0]{content};
+                            }
+                        }
                         
                         foreach my $signature_ref (@{$record->{X0014}}){
                             push @signaturen, $signature_ref->{content};
@@ -696,6 +702,7 @@ sub get_common_holdings {
         $this_item_ref->{title}            = $title;
         $this_item_ref->{title_supplement} = $title_supplement;
         $this_item_ref->{year}             = $year;
+        $this_item_ref->{edition}          = $edition;
 
         if ($logger->is_debug){
             $logger->debug(YAML::Dump($this_item_ref));

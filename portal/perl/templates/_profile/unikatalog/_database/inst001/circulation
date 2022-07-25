@@ -56,7 +56,12 @@
           standort = standort.replace('^Hauptabt.* \/ .*','Hauptabteilung');
        END;
      END ;
-     
+
+     # Fix: Greinstr. wird auch bei HF ausgegeben ( 5 == FB Chemie )
+     IF thiscirculation.department_id != 5 && availability_info.match('(Fachbibl. Chemie, Greinstr. 4)');
+        availability_info = availability_info.replace('\(Fachbibl. Chemie, Greinstr. 4\)','');
+     END;
+
      IF standort.match('Handapp.');
        IF thiscirculation.department_id.match('^(0|6|10|15)$');
           standort = "Handapp." ; #.replace('^(.*Handapp\.).*','$1'); # Handapp. der Hauptabteilung und FBs: Namen verbergen, z.B. ID=6445402

@@ -44,8 +44,7 @@ use HTTP::BrowserDetect;
 use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Config;
-use OpenBib::Session;
-use OpenBib::User;
+use OpenBib::Statistics;
 
 our ($help,$logfile,$loglevel,$limit,$from,$to);
 

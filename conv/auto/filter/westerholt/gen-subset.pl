@@ -76,7 +76,7 @@ Log::Log4perl::init(\$log4Perl_config);
 my $logger = get_logger();
 
 my $subset = new OpenBib::Catalog::Subset("inst001",$pool);
-$subset->identify_by_field_content('title',([ { field => '4700', content => '^Sammlung Fritz von Westerholt' },{ category => '4700', content => '^Sammlung Westerholt' },{ category => '4700', content => '^Sammlung Wilhelmine von Westerholt' } ]));
+$subset->identify_by_field_content('title',([ { field => '4700', content => '^Sammlung Fritz von Westerholt' },{ field => '4700', content => '^Sammlung Westerholt' },{ field => '4700', content => '^Sammlung Wilhelmine von Westerholt' } ]));
 $subset->write_set;
 
 sub print_help {

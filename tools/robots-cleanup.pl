@@ -40,6 +40,7 @@ use warnings;
 use Getopt::Long;
 use Date::Manip;
 use DBI;
+use HTTP::BrowserDetect;
 use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Config;
@@ -97,7 +98,7 @@ my $where_ref = {
 
 my $options_ref = {
     select   => ['sid.id','me.content','sid.createtime'],
-    as       => ['thisid','thisua','thiscreattime'],
+    as       => ['thisid','thisua','thiscreatetime'],
     group_by => ['sid.id','me.content','sid.createtime'],
     order_by => ['createtime asc'],
     join     => ['sid'],
@@ -123,24 +124,54 @@ else {
     };
 }
 
-my $sessions = $statistics->get_schema->resultset('Sessioninfo')->search(
+my $sessions = $statistics->get_schema->resultset('Eventlog')->search(
     $where_ref,
     $options_ref,
 );
 
 my $count = 1;
-foreach my $sessioninfo ($sessions->all){
-  my $sessionID  = $sessioninfo->thisid;
-  my $createtime = $sessioninfo->thiscreatetime;
-  my $ua         = $sessioninfo->thisua;
+foreach my $session ($sessions->all){
+  my $sessionID  = $session->get_column('thisid');
+  my $createtime = $session->get_column('thiscreatetime');
+  my $ua         = $session->get_column('thisua');
 
   $logger->info("$sessionID - $createtime - $ua");
-  
-  if ($count % 10000 == 0){
-      $logger->error("Purged $count sessions");
+
+  my $browser = HTTP::BrowserDetect->new($ua);
+
+  if ($browser->robot()){
+      # Rudimentaere Session-Informationen uebertragen
+      my $sessioninfo = $statistics->get_schema->resultset('Sessioninfo')->search_rs(
+	  {
+	      sessionid => $sessionID,
+	  }
+	  )->single;
+
+      if ($sessioninfo){
+	  $logger->debug("Trying to clear data for robot sessionID $sessionID");
+	    
+	  eval {
+	      $sessioninfo->eventlogs->delete;
+	      $sessioninfo->eventlogjsons->delete;
+	      $sessioninfo->searchfields->delete;
+	      $sessioninfo->searchterms->delete;
+	      $sessioninfo->titleusages->delete;
+	      $sessioninfo->delete;
+	  };
+	  
+	  if ($@){
+	      $logger->fatal("Problem clearing robot session $sessionID: $@");
+	  }
+	  else {
+	      $logger->debug("Done");
+	      $count++;
+	  }
+      }      
   }
-  
-  $count++;
+
+  if ($count % 10000 == 0){
+      $logger->error("Purged $count robot sessions");
+  }
 }
 
 sub print_help {

@@ -96,11 +96,10 @@ my $where_ref = {
 };
 
 my $options_ref = {
-    select   => ['sid.id','me.content','sid.createtime'],
+    select   => ['sid','content','createtime'],
     as       => ['thisid','thisua','thiscreatetime'],
 #    group_by => ['sid.id','me.content','sid.createtime'],
 #    order_by => ['createtime asc'],
-    join     => ['sid'],
     result_class => 'DBIx::Class::ResultClass::HashRefInflator',
 };
     
@@ -111,16 +110,16 @@ if ($limit){
 if ($from && $to){
     $where_ref = {
 	-and => [
-	     'sid.createtime' => { '<' => $to },
-	     'sid.createtime' => { '>' => $from },
+	     'createtime' => { '<' => $to },
+	     'createtime' => { '>' => $from },
 	    ],
-        'me.type' => 101,	    
+        'type' => 101,	    
     };
 }
 else {
     $where_ref = { 
-	'sid.createtime' => { '<' => $expiretimedate },
-        'me.type' => 101,
+	'createtime' => { '<' => $expiretimedate },
+        'type' => 101,
     };
 }
 

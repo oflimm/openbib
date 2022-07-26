@@ -39,7 +39,7 @@ use warnings;
 
 use Getopt::Long;
 use Date::Manip;
-use DBI;
+use DBIx::Class::ResultClass::HashRefInflator;
 use HTTP::BrowserDetect;
 use Log::Log4perl qw(get_logger :levels);
 
@@ -101,6 +101,7 @@ my $options_ref = {
 #    group_by => ['sid.id','me.content','sid.createtime'],
 #    order_by => ['createtime asc'],
     join     => ['sid'],
+    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
 };
     
 if ($limit){
@@ -130,9 +131,9 @@ my $sessions = $statistics->get_schema->resultset('Eventlog')->search(
 
 my $count = 1;
 while (my $session = $sessions->next()){
-  my $sessionID  = $session->get_column('thisid');
-  my $createtime = $session->get_column('thiscreatetime');
-  my $ua         = $session->get_column('thisua');
+  my $sessionID  = $session->{'thisid'};
+  my $createtime = $session->{'thiscreatetime'};
+  my $ua         = $session->{'thisua'};
 
   $logger->info("$sessionID - $createtime - $ua");
 

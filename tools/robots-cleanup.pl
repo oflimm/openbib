@@ -150,11 +150,26 @@ while (my $session = $sessions->next()){
 	  $logger->debug("Trying to clear data for robot sessionID $sessionID");
 	    
 	  eval {
-	      $robotsession->eventlogs->delete;
-	      $robotsession->eventlogjsons->delete;
-	      $robotsession->searchfields->delete;
-	      $robotsession->searchterms->delete;
-	      $robotsession->titleusages->delete;
+	      if ($robotsession->eventlogs){
+		  $logger->debug("Deleting eventlogs");
+		  $robotsession->eventlogs->delete ;
+	      }
+	      if ($robotsession->eventlogjsons){
+		  $logger->debug("Deleting eventlogjsons");
+		  $robotsession->eventlogjsons->delete;
+	      }
+	      if ($robotsession->searchfields){
+		  $logger->debug("Deleting searchfields");
+		  $robotsession->searchfields->delete;
+	      }
+	      if ($robotsession->searchterms){
+		  $logger->debug("Deleting searchterms");
+		  $robotsession->searchterms->delete;
+	      }
+	      if ($robotsession->titleusages){
+		  $logger->debug("Deleting titleusages");
+		  $robotsession->titleusages->delete;
+	      }
 	      $robotsession->delete;
 	  };
 	  

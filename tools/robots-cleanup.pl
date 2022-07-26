@@ -96,10 +96,10 @@ my $where_ref = {
 };
 
 my $options_ref = {
-    select   => ['sid','content','createtime'],
-    as       => ['thisid','thisua','thiscreatetime'],
-#    group_by => ['sid.id','me.content','sid.createtime'],
-#    order_by => ['createtime asc'],
+    select   => ['sid','content','tstamp'],
+    as       => ['thisid','thisua','thiststamp'],
+#    group_by => ['sid.id','me.content','sid.tstamp'],
+#    order_by => ['tstamp asc'],
     result_class => 'DBIx::Class::ResultClass::HashRefInflator',
 };
     
@@ -110,15 +110,15 @@ if ($limit){
 if ($from && $to){
     $where_ref = {
 	-and => [
-	     'createtime' => { '<' => $to },
-	     'createtime' => { '>' => $from },
+	     'tstamp' => { '<' => $to },
+	     'tstamp' => { '>' => $from },
 	    ],
         'type' => 101,	    
     };
 }
 else {
     $where_ref = { 
-	'createtime' => { '<' => $expiretimedate },
+	'tstamp' => { '<' => $expiretimedate },
         'type' => 101,
     };
 }
@@ -131,10 +131,10 @@ my $sessions = $statistics->get_schema->resultset('Eventlog')->search(
 my $count = 1;
 while (my $session = $sessions->next()){
   my $sessionID  = $session->{'thisid'};
-  my $createtime = $session->{'thiscreatetime'};
+  my $tstamp     = $session->{'thiststamp'};
   my $ua         = $session->{'thisua'};
 
-  $logger->info("$sessionID - $createtime - $ua");
+  $logger->info("$sessionID - $tstamp - $ua");
 
   my $browser = HTTP::BrowserDetect->new($ua);
 

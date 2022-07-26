@@ -98,8 +98,8 @@ my $where_ref = {
 my $options_ref = {
     select   => ['sid.id','me.content','sid.createtime'],
     as       => ['thisid','thisua','thiscreatetime'],
-    group_by => ['sid.id','me.content','sid.createtime'],
-    order_by => ['createtime asc'],
+#    group_by => ['sid.id','me.content','sid.createtime'],
+#    order_by => ['createtime asc'],
     join     => ['sid'],
 };
     

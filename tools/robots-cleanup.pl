@@ -129,7 +129,7 @@ my $sessions = $statistics->get_schema->resultset('Eventlog')->search(
 );
 
 my $count = 1;
-foreach my $session ($sessions->all){
+while (my $session = $sessions->next()){
   my $sessionID  = $session->get_column('thisid');
   my $createtime = $session->get_column('thiscreatetime');
   my $ua         = $session->get_column('thisua');
@@ -140,22 +140,22 @@ foreach my $session ($sessions->all){
 
   if ($browser->robot()){
       # Rudimentaere Session-Informationen uebertragen
-      my $sessioninfo = $statistics->get_schema->resultset('Sessioninfo')->search_rs(
+      my $robotsession = $statistics->get_schema->resultset('Sessioninfo')->search_rs(
 	  {
-	      sessionid => $sessionID,
+	      id => $sessionID,
 	  }
 	  )->single;
 
-      if ($sessioninfo){
+      if ($robotsession){
 	  $logger->debug("Trying to clear data for robot sessionID $sessionID");
 	    
 	  eval {
-	      $sessioninfo->eventlogs->delete;
-	      $sessioninfo->eventlogjsons->delete;
-	      $sessioninfo->searchfields->delete;
-	      $sessioninfo->searchterms->delete;
-	      $sessioninfo->titleusages->delete;
-	      $sessioninfo->delete;
+	      $robotsession->eventlogs->delete;
+	      $robotsession->eventlogjsons->delete;
+	      $robotsession->searchfields->delete;
+	      $robotsession->searchterms->delete;
+	      $robotsession->titleusages->delete;
+	      $robotsession->delete;
 	  };
 	  
 	  if ($@){

@@ -36,6 +36,7 @@ use DBIx::Class::ResultClass::HashRefInflator;
 use Benchmark ':hireswallclock';
 use Digest::MD5;
 use Encode qw(decode_utf8 encode_utf8);
+use HTTP::BrowserDetect;
 use JSON::XS qw(encode_json decode_json);
 use Log::Log4perl qw(get_logger :levels);
 use Storable;
@@ -1100,19 +1101,29 @@ sub save_eventlog_to_statisticsdb {
 
     my $view = $self->{view};
 
-#     eval {
-#         $view = $self->get_schema->resultset('Eventlog')->search_rs(
-#             {
-#                 'sid.sessionid' => $self->{ID},
-#                 'me.type' => 100,
-#             },
-#             {
-#                 select => 'me.content',
-#                 as     => 'thisview',
-#                 join => 'sid'
-#             }
-#         )->single->get_column('thisview');
-#     };
+    my $useragent = "";
+
+    eval {
+        $useragent = $self->get_schema->resultset('Eventlog')->search_rs(
+            {
+                'sid.sessionid' => $self->{ID},
+                'me.type' => 101,
+            },
+            {
+                select => 'me.content',
+                as     => 'thisua',
+                join => 'sid'
+            }
+        )->single->get_column('thisua');
+    };
+
+    # Ignore robots
+    my $browser = HTTP::BrowserDetect->new($useragent);
+
+    if ($browser->robot()){
+       $logger->info("Not saving session ".$self->{ID}." to statisticsdb with useragent $useragent");
+       return;
+    }
 
     # Rudimentaere Session-Informationen uebertragen
     my $sessioninfo = $self->get_schema->resultset('Sessioninfo')->search_rs(

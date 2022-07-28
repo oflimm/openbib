@@ -93,7 +93,7 @@ my $outputcsv = Text::CSV_XS->new ({
 
 my $out_ref = [];
 
-push @{$out_ref}, ('id','tstamp_create','tstamp_update','Person/Körperschaft','AST','Titel','Zusatz','Auflage','Verlag','Jahr','Gesamttitel','Band','ISBN','ISSN','BibKey','WorkKey','Signatur');
+push @{$out_ref}, ('id','tstamp_create','tstamp_update','Person/Körperschaft','AST','Titel','Zusatz','Auflage','Verlag','Jahr','Gesamttitel','Band','ISBN','ISSN','BibKey','WorkKey','Signatur','ISIL');
 
 $outputcsv->print($out,$out_ref);
 
@@ -119,6 +119,7 @@ while (my $title=$titles->next){
     my @bibkey     = ();
     my @workkey    = ();
     my @signatur   = ();
+    my @locations  = ();
 
     foreach my $item_ref (@{$titlecache_ref->{PC0001}}){
         push @pers_korp, cleanup_content($item_ref->{content});
@@ -178,12 +179,16 @@ while (my $title=$titles->next){
     foreach my $item_ref (@{$titlecache_ref->{T0451}}){
         push @gt, cleanup_content($item_ref->{content});
     }
+    
     foreach my $item_ref (@{$titlecache_ref->{X0014}}){
         push @signatur, cleanup_content($item_ref->{content});
     }
 
-    
-    push @{$out_ref}, ($title->id,$title->tstamp_create,$title->tstamp_update,join(' ; ',@pers_korp),join(' ; ',@ast),join(' ; ',@titel),join(' ; ',@zusatz),join(' ; ',@auflage),join(' ; ',@verlag),join(' ; ',@jahr),join(' ; ',@gt),join(' ; ',uniq @band),,join(' ; ',uniq @isbn),,join(' ; ',uniq @issn),,join(' ; ',uniq @bibkey),,join(' ; ',uniq @workkey),join(' ; ',@signatur));    
+    foreach my $location (@{$titlecache_ref->{locations}}){
+        push @locations, $location;
+    }
+        
+    push @{$out_ref}, ($title->id,$title->tstamp_create,$title->tstamp_update,join(' ; ',@pers_korp),join(' ; ',@ast),join(' ; ',@titel),join(' ; ',@zusatz),join(' ; ',@auflage),join(' ; ',@verlag),join(' ; ',@jahr),join(' ; ',@gt),join(' ; ',uniq @band),join(' ; ',uniq @isbn),join(' ; ',uniq @issn),join(' ; ',uniq @bibkey),join(' ; ',uniq @workkey),join(' ; ',@signatur)),join(' ; ',uniq @locations);    
 
     $outputcsv->print($out,$out_ref);
 

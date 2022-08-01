@@ -30,8 +30,8 @@
 
 use 5.008001;
 
-#use warnings;
-#use strict;
+use warnings;
+use strict;
 
 use utf8;
 use Encode;
@@ -59,7 +59,7 @@ use vars qw($count);
 # Autoflush
 $|=1;
 
-my ($help,$init,$import,$inputfile,$jsonfile,$related,$lang,$logfile,$loglevel);
+my ($help,$init,$importjson,$inputfile,$jsonfile,$related,$relatedfile,$lang,$logfile,$loglevel);
 
 my $lang2article_cat_ref = {
     'de' => '4200',
@@ -75,7 +75,7 @@ my $lang2isbn_origin_ref = {
 
 &GetOptions("help"        => \$help,
             "init"        => \$init,
-            "import"      => \$import,
+            "import"      => \$importjson,
             "related"     => \$related,
             "lang=s"      => \$lang,
 	    "inputfile=s" => \$inputfile,
@@ -86,7 +86,7 @@ my $lang2isbn_origin_ref = {
 	    );
 
 
-if (!$lang || !$inputfile || !exists $lang2article_cat_ref->{$lang}){
+if (!$lang || (!$inputfile && !$jsonfile) || !exists $lang2article_cat_ref->{$lang}){
    print_help();
 }
 
@@ -125,16 +125,17 @@ $logger->debug("Origin: $origin");
 
 my $input_io;
 
-if ($inputfile =~/\.gz$/){
-    $input_io = IO::Uncompress::Gunzip->new($inputfile);
+if ($inputfile){
+    if ($inputfile =~/\.gz$/){
+	$input_io = IO::Uncompress::Gunzip->new($inputfile);
+    }
+    elsif ($inputfile =~/\.bz2$/){
+	$input_io = IO::Uncompress::Bunzip2->new($inputfile);
+    }
+    else {
+	$input_io = IO::File->new($inputfile);
+    }
 }
-elsif ($inputfile =~/\.bz2$/){
-    $input_io = IO::Uncompress::Bunzip2->new($inputfile);
-}
-else {
-    $input_io = IO::File->new($inputfile);
-}
-
 
 $article_isbn_ref = {};
 
@@ -167,7 +168,7 @@ if ($importjson){
         $logger->error("JSON-Datei $jsonfile existiert nicht");
         exit;
     }
-    open(JSON,$jsonfile);
+    open(JSON,"<",$jsonfile);
 
     $logger->info("Einlesen und -laden der neuen Daten");
 
@@ -175,9 +176,9 @@ if ($importjson){
         my $item_ref = decode_json($_);
 
         push @{$enrich_data_by_isbn_ref},   $item_ref if (defined $item_ref->{isbn});
-        $subject_tuple_count++;
         
         if ($count % 1000 == 0){
+	    $logger->info("Imported $count items");
             $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
             $enrich_data_by_isbn_ref   = [];
         }
@@ -186,11 +187,9 @@ if ($importjson){
 
     $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
     
-    $logger->info("$subject_tuple_count Schlagwort-Tupel eingefuegt");
+    $logger->info("$count Schlagwort-Tupel eingefuegt");
 
-    if ($jsonfile){
-        close(JSON);
-    }
+    close(JSON);
     
 }
 else {
@@ -331,6 +330,7 @@ sub parse_page {
     }
     
     if (@isbns){
+	my %seen_terms = ();
 	my @unique_isbns    = grep { ! $seen_terms{$_} ++ } @isbns;
 
 	# Merken fuer Related
@@ -356,7 +356,7 @@ sub parse_page {
 
     if ($count % 1000 == 0){
 	$logger->info("$count done");
-	if ($import){
+	if ($importjson){
 	    $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
 	    $enrich_data_by_isbn_ref   = [];
 	}

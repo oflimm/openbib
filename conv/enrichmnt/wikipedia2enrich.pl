@@ -229,7 +229,7 @@ sub parse_page {
     my @isbns = ();
 
     # Zuerst 10-Stellige ISBN's
-    while ($content=~m/ISBN\|?\s?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/g){
+    while ($content=~m/ISBN\s*\|?\s*(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/g){
         my @result= ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13);
         my $isbn=join('',@result);
 
@@ -254,8 +254,33 @@ sub parse_page {
 	push @isbns, $isbn;
     }
 
+    while ($content=~m/isbn\s*=\s*(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/g){
+        my @result= ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13);
+        my $isbn=join('',@result);
+
+        my $isbn10 = Business::ISBN->new($isbn);
+
+        if (defined $isbn10 && $isbn10->is_valid){
+           $isbn = $isbn10->as_isbn13->as_string;
+
+        }
+        else {
+            next;
+        }
+
+        $isbn = OpenBib::Common::Util::normalize({
+            field => 'T0540',
+            content  => $isbn,
+        });
+
+	# Merken fuer Related
+        $article_isbn_ref->{"$title"}{"$isbn"}=1;
+
+	push @isbns, $isbn;
+    }
+    
     # Dann 13-Stellige ISBN's
-    while ($content=~m/ISBN\|?\s?(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/g){
+    while ($content=~m/ISBN\s*\|?\s*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/g){
         my @result= ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13);
         my $isbn=join('',@result);
 
@@ -280,6 +305,31 @@ sub parse_page {
 	push @isbns, $isbn;
     }
 
+    while ($content=~m/isbn\s*=\s*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/g){
+        my @result= ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13);
+        my $isbn=join('',@result);
+
+        my $isbn13 = Business::ISBN->new($isbn);
+
+        if (defined $isbn13 && $isbn13->is_valid){
+           $isbn = $isbn13->as_isbn13->as_string;
+
+        }
+        else {
+            next;
+        }
+
+        $isbn = OpenBib::Common::Util::normalize({
+            field    => 'T0540',
+            content  => $isbn,
+        });
+
+	# Merken fuer Related
+        $article_isbn_ref->{"$title"}{"$isbn"}=1;
+
+	push @isbns, $isbn;
+    }
+    
     if (@isbns){
 	my @unique_isbns    = grep { ! $seen_terms{$_} ++ } @isbns;
 

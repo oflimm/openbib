@@ -909,6 +909,50 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 <!-- End classification facet -->
 <!-- Begin provenance facet -->
 [%         IF config.get('facets').provenance && facets.defined('provenance') && facets.provenance.size > 0 %]
+
+[%-
+  collection_map = {
+   'Sammlung Ferdinand Franz Wallraf' => 'http://wallraf.ub.uni-koeln.de/'
+   'Sammlung Dante - Sammlung Wilhelm Reiners' => 'http://dante.ub.uni-koeln.de/'
+   'Sammlung Eugen Schmalenbach' => 'http://schmalenbach.ub.uni-koeln.de/'
+   'Sammlung Evangelische Bibliothek' => 'http://www.ub.uni-koeln.de/sammlungen/ebk/'
+   'Sammlung Fachbibliothek Medienkultur und Theater' => 'http://www.ub.uni-koeln.de/bibliotheken/fb/'
+   'Sammlung Fachbibliothek Schmalenbach' => 'http://www.ub.uni-koeln.de/bibliotheken/fb/'
+   'Sammlung Ferdinand Franz Wallraf' => 'http://wallraf.ub.uni-koeln.de/'
+   'Sammlung Franz Thorbecke' => 'http://www.ub.uni-koeln.de/sammlungen/thorbecke/'
+   'Sammlung Franz Weinkauff' => 'http://weinkauff.ub.uni-koeln.de/'
+   'Sammlung Fred Bänfer' => 'http://www.ub.uni-koeln.de/sammlungen/baenfer/'
+   'Sammlung Friedrich Wilhelm Bäumker' => 'http://baeumker.ub.uni-koeln.de/'
+   'Sammlung Fritz von Westerholt' => 'http://www.ub.uni-koeln.de/sammlungen/westerholt/'
+   'Sammlung Gertrud von Le Fort' => 'http://lefort.ub.uni-koeln.de/'
+   'Sammlung Gertrud von Le Fort' => 'http://lefort.ub.uni-koeln.de/'
+   'Sammlung Gymnasialbibliothek' => 'http://gymnasialbibliothek.ub.uni-koeln.de/'
+   'Sammlung Günter Herterich' => 'http://www.ub.uni-koeln.de/sammlungen/gentz/'
+   'Sammlung H. C. Artmann - Sammlung Karl-Heinz Knupfer' => ''
+   'Sammlung Hanns-Theo Schmitz-Otto' => 'http://schmitzotto.ub.uni-koeln.de/'
+   'Sammlung Heinrich Erkes' => 'https://www.ub.uni-koeln.de/sammlungen/islandica/'
+   'Sammlung Herbert von Dirksen' => 'http://dirksen.ub.uni-koeln.de/'
+   'Sammlung Hermann Heinrich Becker' => 'http://becker.ub.uni-koeln.de/'
+   'Sammlung Islandica' => 'https://www.ub.uni-koeln.de/sammlungen/islandica/'
+   'Sammlung Jürgen Scholle' => 'http://www.ub.uni-koeln.de/sammlungen/scholle/'
+   'Sammlung Kölnische Bibliotheksgesellschaft' => 'http://www.koelnische-bibliotheksgesellschaft.de/'
+   'Sammlung Otto Wolff' => 'http://wolff.ub.uni-koeln.de/'
+   'Sammlung Poetica' => 'http://poetica.ub.uni-koeln.de/'
+   'Sammlung Syndikatsbibliothek' => 'http://syndikatsbibliothek.ub.uni-koeln.de/'
+   'Sammlung Thomas a Kempis' => 'http://kempis.ub.uni-koeln.de/'
+   'Sammlung Westerholt' => 'http://www.ub.uni-koeln.de/sammlungen/westerholt/'
+   'Sammlung Wilhelm Alff' => 'http://www.ub.uni-koeln.de/sammlungen/alff/'
+   'Sammlung Wilhelmine von Westerholt' => 'http://www.ub.uni-koeln.de/sammlungen/westerholt/'
+   'Sammlung Gustav von Mevissen' => 'http://mevissen.ub.uni-koeln.de/'
+   'Sammlung Melanie von Mevissen' => 'http://mevissen.ub.uni-koeln.de/'
+   'Sammlung Mathilde von Mevissen' => 'http://mevissen.ub.uni-koeln.de/'
+   'Sammlung Rudolf Hilferding' => 'http://hilferding.ub.uni-koeln.de/'
+   'Sammlung Digitale Schutzumschläge' => 'https://umschlagsammlung.ub.uni-koeln.de/'
+  }
+
+-%]
+
+
         <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-provenance[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Provenienz") %] 
         </h4>
@@ -925,7 +969,7 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
     searchprefix  = config.get('searchfield').provenancestring.prefix;
     filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>[% IF searchterm.match('^\d\d\.\d\d') %] [% bklookup.${searchterm} %][% END %]  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1 %]</span></li>
+<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>[% IF collection_map.defined(termitem.0) %] <a class="ps-2" title="USB [% msg.maketext("Sammlungsportal") %] [% termitem.0 %]" target="_blank" href="[% collection_map.${termitem.0} %]"><i class="fas fa-archway"></i></a>[% END %] <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1 %]</span></li>
 [%             END %]
 [% IF facets.provenance.size > 5 %]
 </div>

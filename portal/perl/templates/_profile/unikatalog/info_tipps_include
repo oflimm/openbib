@@ -1,0 +1,166 @@
+<h1>Tipps zum Unikatalog</h1>
+<p>An der Universität zu Köln gibt es ca. 150 Bibliotheken. Deren Bestände werden zum größten Teil im <a href="/portal/unikatalog/home.html?l=de">Unikatalog</a> zusammengefasst.</p>
+
+<h2>Das USB-Portal verstehen</h2>
+
+<div id="basic_info" class="accordion">
+
+  <div class="card">
+    <div class="card-header" id="headingBooks">
+      <h5 class="mb-0">
+	<a class="card-link collapsed" href="#collapseBooks" data-bs-toggle="collapse" data-bs-target="#collapseBooks" aria-expanded="false" aria-controls="collapseBooks">
+          [% msg.maketext("Bücher &amp; mehr (an der Uni Köln vorhanden)") %]
+	</a>
+      </h5>
+    </div>
+    <div id="collapseBooks" class="collapse" aria-labelledby="headingBooks" data-parent="#basic_infos">
+      <div class="card-body">
+
+	<h4>was?</h4>      
+	<p>Bücher und Zeitschriften aus allen ca. 150 Bibliotheken an der Uni Köln werden nach der Suche im Reiter Bücher &amp; mehr angezeigt - außerdem der elektronische Bestand an E-Books und E-Journals. Zusätzlich werden noch viele frei im Netz verfügbare E-Books und Digitalisate durchsucht.</p>
+
+	<p><a href="/portal/unikatalog/databases.html?l=de">Liste mit allen Inhalten</a></p>
+
+	<h4>wie?</h4>
+	
+	<p>Jeder Suchtreffer zeigt an, in welcher Bibliothek das Buch oder die Zeitschrift zu finden ist. Nach einem Klick auf den Titel werden alle Details und der Ausleihstatus angezeigt.</p>      
+	<p>Ein Klick auf den Standort bringt Informationen zur jeweiligen Bibliothek, wie Adresse, Öffnungszeiten, Lageplan und ob sie ausleiht oder eine Präsenzbibliothek ist.</p>
+
+	<h4>Tipps</h4>
+	
+	<p>Über die Suchfilter können Sie auch einen bestimmten Standort auswählen. Nur noch Treffer dieser Bibliothek werden herausgefiltert und angezeigt.</p>
+	
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="card">
+    <div class="card-header" id="headingArticles">
+      <h5 class="mb-0">
+	<a class="card-link collapsed" href="#collapseArticles" data-bs-toggle="collapse" data-bs-target="#collapseArticles" aria-expanded="false" aria-controls="collapseArticles">
+          [% msg.maketext("Aufsätze &amp; mehr (Nachweis)") %]
+	</a>
+      </h5>
+    </div>
+    <div id="collapseArticles" class="collapse" aria-labelledby="headingArticles" data-parent="#basic_infos">
+      <div class="card-body">
+
+	<p>Anders als bei Bücher &amp; mehr durchsuchen Sie nicht, was vor Ort in den Bibliotheken vorhanden ist, sondern finden Nachweise, dass diese Literatur existiert.</p>
+	
+	<p>Nachweise von einigen hundert Millionen Artikeln aus Zeitschriften, Zeitungen, Büchern u. Ä. aus zahlreichen Datenbanken, Repositorien, freien wissenschaftlichen Suchmaschinen etc. fließen hier ein.</p>
+
+	<p><a target="_blank" href="/portal/https://www.ub.uni-koeln.de/IPS?SERVICE=TEMPLATE&amp;SUBSERVICE=GOTO&amp;LOCATION=USB&amp;DEST_SUBSERVICE=INFO_DBGROUP&amp;DEST_VIEW=USB:Kataloge&amp;DEST_LC=6">Liste mit allen enthaltenen Datenbanken</a></p>
+
+	<h4>wie?</h4>
+	
+	<p>Ein Teil der Artikel steht als elektronischer Volltext zur Verfügung.</p>
+
+	<table>
+	  <tr><td><img alt="grün = im Web frei zugänglich" src=" /images/openbib/ezb/green.gif"/></td><td>grün = im Web frei zugänglich</td></tr>
+	  <tr><td><img alt="gelb = Zugriff nur aus dem Hochschulnetz" src=" /images/openbib/ezb/yellow.gif"/></td><td>gelb = Zugriff nur aus dem Hochschulnetz</td></tr>
+	</table>
+
+	<p>Wie Sie ansonsten an die Literatur kommen, prüfen Sie über den Button <em>Verfügbarkeit ermitteln</em>.</p>
+
+	<h4>Tipps</h4>
+	
+	<p>In den Filtern können Sie durch <em>Zeige nur Treffer mit Volltext</em> nur noch elektronisch zugängliche Titel sehen.</p>
+
+	<p>Oder wählen Sie zum Beispiel <em>Academic Journals</em> als Publikationstyp und Sie sehen nur noch Treffer, die aus wissenschaftlichen Zeitschriften stammen.</p>
+	
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2 class="pt-3 pb-1">Expert:innen suchen mit</h2>
+
+<div id="expert_search" class="accordion">
+
+  <div class="card">
+    <div class="card-header" id="headingWildcards">
+      <h5 class="mb-0">
+	<a class="card-link collapsed" href="#collapseWildcards" data-bs-toggle="collapse" data-bs-target="#collapseWildcards" aria-expanded="false" aria-controls="collapseWildcards">
+          [% msg.maketext("Sternchen *") %]
+	</a>
+      </h5>
+    </div>
+    <div id="collapseWildcards" class="collapse" aria-labelledby="headingWildcards" data-parent="#expert_search">
+      <div class="card-body">
+	
+	<ul>
+	  <li>ersetzt beliebig viele Zeichen</li>
+	  <li>berücksichtigt Varianten</li>
+	  <li>macht verschiedene Wortendungen möglich</li>
+	</ul>
+
+	<p>
+	  Beispiel: National* für Nationalität, Nationalsozialismus, Nationalstolz, nationales...
+	</p>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" id="headingPhrase">
+      <h5 class="mb-0">
+	<a class="card-link collapsed" href="#collapsePhrase" data-bs-toggle="collapse" data-bs-target="#collapsePhrase" aria-expanded="false" aria-controls="collapsePhrase">
+          [% msg.maketext("Phrasensuche \" \"") %]
+	</a>
+      </h5>
+    </div>
+    <div id="collapsePhrase" class="collapse" aria-labelledby="headingPhrase" data-parent="#expert_search">
+      <div class="card-body">
+
+	<ul>
+	  <li>Suche nach zusammenhängenden Wortfolgen</li>
+	  <li>schränkt die Treffermenge bei sehr allgemeinen Wörtern im Titel ein&nbsp;</li>
+	</ul>
+	
+	<p>Beispiel: "Geschichte der deutschen Literatur"</p>
+	
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" id="headingAdvanced">
+      <h5 class="mb-0">
+	<a class="card-link collapsed" href="#collapseAdvanced" data-bs-toggle="collapse" data-bs-target="#collapseAdvanced" aria-expanded="false" aria-controls="collapseAdvanced">
+          [% msg.maketext("Erweiterte Suche") %]
+	</a>
+      </h5>
+    </div>
+    <div id="collapseAdvanced" class="collapse" aria-labelledby="headingAdvanced" data-parent="#expert_search">
+      <div class="card-body">
+
+	<p>ermöglicht gezielte Suche in einzelnen Feldern</p>
+	
+	<ul>
+	  <li>kompletter Titel</li>
+	  <li>Inhaltsverzeichnisse können durchsucht werden</li>
+	  <li>Verlag</li>
+	  <li>Institutionen</li>
+	  <li>...</li>
+	</ul>
+	
+	<p>ermöglicht außerdem die gezielte Suche in einem der Standard-Suchprofile</p>
+
+	<ul>
+	  <li>Bücher und mehr</li>
+	  <li>Aufsätze und mehr</li>
+	  
+	</ul>
+
+	<p>sowie eigenen Suchprofilen, die Sie unter <em>Suchraum</em> in Ihrem Konto definiert haben.</p> 
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<p class="pt-3">Weitere Tipps erhalten Sie in unseren Recherche-Kursen. <a target="_blank" class="exturl" href="https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/kurse/index_ger.html">Zum Kursangebot</a></p>
+

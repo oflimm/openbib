@@ -258,8 +258,8 @@ sub show_record {
     # TT-Data erzeugen
     my $ttdata={
         user_owns_litlist => $user_owns_litlist,
-        topics       => $topics_ref,
-        thistopics   => $litlist_topics_ref,
+        topics         => $topics_ref,
+        thistopics     => $litlist_topics_ref,
         query          => $query,
         qopts          => $queryoptions->get_options,
         userrole       => $userrole_ref,
@@ -267,6 +267,7 @@ sub show_record {
         litlist        => $singlelitlist,
         other_litlists => $other_litlists_of_user,
         targettype     => $targettype,
+        litlistid      => $litlistid,
     };
     
     return $self->print_page($config->{tt_users_litlists_record_tname},$ttdata);
@@ -356,6 +357,7 @@ sub show_record_form {
         litlist        => $singlelitlist,
         other_litlists => $other_litlists_of_user,
         targettype     => $targettype,
+        litlistid      => $litlistid,
     };
     
     return $self->print_page($config->{tt_users_litlists_record_edit_tname},$ttdata);

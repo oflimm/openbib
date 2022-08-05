@@ -143,6 +143,21 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 locationinfo_occupancies
+
+Type: has_many
+
+Related object: L<OpenBib::Schema::System::Result::LocationinfoOccupancy>
+
+=cut
+
+__PACKAGE__->has_many(
+  "locationinfo_occupancies",
+  "OpenBib::Schema::System::Result::LocationinfoOccupancy",
+  { "foreign.locationid" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 user_searchlocations
 
 Type: has_many
@@ -189,8 +204,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-05-09 08:22:46
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:mlrf6VJB5T2ZzJzoSPjKTg
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-08-05 11:12:06
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:NgnsfZusgd1SPqZMBcabPg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

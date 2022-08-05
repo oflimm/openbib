@@ -1,12 +1,12 @@
 use utf8;
-package OpenBib::Schema::System::Result::ViewLocation;
+package OpenBib::Schema::System::Result::LocationinfoOccupancy;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
 =head1 NAME
 
-OpenBib::Schema::System::Result::ViewLocation
+OpenBib::Schema::System::Result::LocationinfoOccupancy
 
 =cut
 
@@ -15,11 +15,11 @@ use warnings;
 
 use base 'DBIx::Class::Core';
 
-=head1 TABLE: C<view_location>
+=head1 TABLE: C<locationinfo_occupancy>
 
 =cut
 
-__PACKAGE__->table("view_location");
+__PACKAGE__->table("locationinfo_occupancy");
 
 =head1 ACCESSORS
 
@@ -28,19 +28,36 @@ __PACKAGE__->table("view_location");
   data_type: 'bigint'
   is_auto_increment: 1
   is_nullable: 0
-  sequence: 'view_location_id_seq'
-
-=head2 viewid
-
-  data_type: 'bigint'
-  is_foreign_key: 1
-  is_nullable: 0
+  sequence: 'locationinfo_occupancy_id_seq'
 
 =head2 locationid
 
   data_type: 'bigint'
   is_foreign_key: 1
   is_nullable: 0
+
+=head2 tstamp
+
+  data_type: 'timestamp'
+  is_nullable: 1
+
+=head2 num_entries
+
+  data_type: 'integer'
+  default_value: 0
+  is_nullable: 1
+
+=head2 num_exits
+
+  data_type: 'integer'
+  default_value: 0
+  is_nullable: 1
+
+=head2 num_occupancy
+
+  data_type: 'integer'
+  default_value: 0
+  is_nullable: 1
 
 =cut
 
@@ -50,25 +67,19 @@ __PACKAGE__->add_columns(
     data_type         => "bigint",
     is_auto_increment => 1,
     is_nullable       => 0,
-    sequence          => "view_location_id_seq",
+    sequence          => "locationinfo_occupancy_id_seq",
   },
-  "viewid",
-  { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "locationid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
+  "tstamp",
+  { data_type => "timestamp", is_nullable => 1 },
+  "num_entries",
+  { data_type => "integer", default_value => 0, is_nullable => 1 },
+  "num_exits",
+  { data_type => "integer", default_value => 0, is_nullable => 1 },
+  "num_occupancy",
+  { data_type => "integer", default_value => 0, is_nullable => 1 },
 );
-
-=head1 PRIMARY KEY
-
-=over 4
-
-=item * L</id>
-
-=back
-
-=cut
-
-__PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
@@ -87,24 +98,9 @@ __PACKAGE__->belongs_to(
   { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
-=head2 viewid
-
-Type: belongs_to
-
-Related object: L<OpenBib::Schema::System::Result::Viewinfo>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "viewid",
-  "OpenBib::Schema::System::Result::Viewinfo",
-  { id => "viewid" },
-  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
-);
-
 
 # Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-08-05 11:12:06
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:NPmrWvXZtxSk8N3lQJEVlg
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:oPLp2DyS9YxGNRxyrRqmbQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

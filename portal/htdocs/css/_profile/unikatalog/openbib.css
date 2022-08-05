@@ -29,7 +29,7 @@
 	border-radius: 0.25rem;
 	transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     }
-    
+33    
     @media (prefers-reduced-motion: reduce) {
 	.badge {
 	    transition: none;
@@ -186,6 +186,10 @@
 	text-decoration-style: solid;
 	text-decoration: underline;
 	color: #253746;
+    }
+
+    .occupancyContainer {
+	max-width: 600px;
     }
     
     #ob-maincontent {

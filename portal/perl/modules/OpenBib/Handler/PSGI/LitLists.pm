@@ -67,6 +67,10 @@ sub setup {
     $self->start_mode('show_collection');
     $self->run_modes(
         'show_record'                              => 'show_record',
+        'save_record'                              => 'save_record',
+        'mail_record'                              => 'mail_record',
+        'mail_record_send'                         => 'mail_record_send',
+        'print_record'                             => 'print_record',	
         'show_collection'                          => 'show_collection',
         'show_collection_recent'                   => 'show_collection_recent',
         'show_collection_by_topic'                 => 'show_collection_by_topic',
@@ -631,6 +635,427 @@ sub show_record {
     };
     
     return $self->print_page($config->{tt_litlists_record_tname},$ttdata);
+}
+
+
+sub print_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    # Dispatches Args
+    my $view           = $self->param('view');
+    my $userid         = $self->param('userid');
+    my $litlistid      = $self->strip_suffix($self->decode_id($self->param('litlistid')));
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+    
+    # CGI Args
+    my $format                  = $query->param('format')                || '';
+    
+    # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
+    # die Session nicht authentifiziert ist
+
+    $logger->info("SessionID: $session->{ID}");
+    
+    my $username=$user->get_username();
+
+    my $litlist_is_public = $user->litlist_is_public({litlistid => $litlistid});
+    my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
+
+    my $userrole_ref = $user->get_roles_of_user($user->{ID}) if ($user_owns_litlist);
+
+    if (!$litlist_is_public && !$user_owns_litlist){            
+	return $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
+    }
+
+    my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid, view => $view});
+        
+    my $targettype    = $user->get_targettype_of_session($session->{ID});
+        
+    my $singlelitlist = {
+        id         => $litlistid,
+        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $queryoptions->get_option('srto'), sorttype => $queryoptions->get_option('srt'), view => $view}),
+        properties => $litlist_properties_ref,
+    };
+        
+        
+    # Thematische Einordnung
+        
+    my $litlist_topics_ref   = $user->get_topics_of_litlist({id => $litlistid});
+    my $other_litlists_of_user = $user->get_other_litlists({litlistid => $litlistid, view => $view});
+    
+    # TT-Data erzeugen
+    my $ttdata={
+        user_owns_litlist => $user_owns_litlist,
+        thistopics     => $litlist_topics_ref,
+        query          => $query,
+        qopts          => $queryoptions->get_options,
+        userrole       => $userrole_ref,
+        format         => $format,
+        litlist        => $singlelitlist,
+        other_litlists => $other_litlists_of_user,
+        targettype     => $targettype,
+
+	highlightquery    => \&highlightquery,
+	sort_circulation => \&sort_circulation,
+    };
+        
+    return $self->print_page($config->{tt_litlists_record_print_tname},$ttdata);
+}
+
+sub save_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    # Dispatched_args
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+    my $id             = $self->strip_suffix($self->decode_id($self->param('titleid')));
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+
+    # CGI Args
+    my $format                  = $query->param('format')                || '';
+    
+    # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
+    # die Session nicht authentifiziert ist
+
+    $logger->info("SessionID: $session->{ID}");
+
+    my $username=$user->get_username();
+    
+    my $recordlist = new OpenBib::RecordList::Title();
+    
+    if ($id && $database) {
+        $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $id}));
+    }
+    else {
+        $recordlist = $self->get_items_in_collection()
+    }
+    
+    $recordlist->load_full_records;
+    
+    # TT-Data erzeugen
+    my $ttdata={
+        qopts       => $queryoptions->get_options,		
+        format      => $format,
+        recordlist  => $recordlist,
+
+	highlightquery    => \&highlightquery,
+	sort_circulation => \&sort_circulation,
+	
+    };
+    
+    $self->param('content_type','text/plain');
+    $self->header_add("Content-Disposition" => "attachment;filename=\"merkliste.txt\"");
+    return $self->print_page($config->{tt_cartitems_save_plain_tname},$ttdata);
+
+}
+
+sub mail_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+    my $id             = $self->strip_suffix($self->decode_id($self->param('titleid')));
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+
+    # CGI Args
+    my $format                  = $query->param('format')                || '';
+
+    # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
+    # die Session nicht authentifiziert ist
+
+    $logger->info("SessionID: $session->{ID}");
+
+    my $username=$user->get_username();
+    
+    my $recordlist = new OpenBib::RecordList::Title();
+    
+    if ($id && $database) {
+        $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $id}));
+    }
+    else {
+        $recordlist = $self->get_items_in_collection()
+    }
+    
+    $recordlist->load_full_records;
+    
+    # TT-Data erzeugen
+    my $ttdata={
+        qopts       => $queryoptions->get_options,				
+        format      => $format,
+
+        username    => $username,
+        titleid     => $id,
+        database    => $database,
+        recordlist  => $recordlist,
+
+	highlightquery    => \&highlightquery,
+	sort_circulation => \&sort_circulation,
+	
+    };
+    
+    return $self->print_page($config->{tt_cartitems_mail_tname},$ttdata);
+}
+
+sub mail_record_send {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view')           || '';
+    my $database       = $self->param('database');
+    my $id             = $self->strip_suffix($self->decode_id($self->param('titleid')));
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');    
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');    
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+   
+    # CGI Args
+    my $email     = ($query->param('email'))?$query->param('email'):'';
+    my $subject   = ($query->param('subject'))?$query->param('subject'):'Ihre Merkliste';
+    $id        = $query->param('id');
+    my $mail      = $query->param('mail');
+    $database  = $query->param('db');
+    my $format    = $query->param('format')||'full';
+
+    # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
+    # die Session nicht authentifiziert ist
+    if ($email eq "") {
+        return $self->print_warning($msg->maketext("Sie haben keine Mailadresse eingegeben."));
+    }
+
+    unless (Email::Valid->address($email)) {
+        return $self->print_warning($msg->maketext("Sie haben eine ungültige Mailadresse eingegeben."));
+    }	
+
+    my $sysprofile= $config->get_profilename_of_view($view);
+
+    my $recordlist = new OpenBib::RecordList::Title();
+    
+    if ($id && $database) {
+        $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $id}));
+    }
+    else {
+        $recordlist = $self->get_items_in_collection();
+    }
+
+    $recordlist->load_full_records;
+    
+    # TT-Data erzeugen
+    
+    my $ttdata={
+        view        => $view,
+        sysprofile  => $sysprofile,
+        stylesheet  => $stylesheet,
+        sessionID   => $session->{ID},
+	qopts       => $queryoptions->get_options,
+        format      => $format,
+        recordlist  => $recordlist,
+        
+        config      => $config,
+        user        => $user,
+        msg         => $msg,
+
+	highlightquery    => \&highlightquery,
+	sort_circulation => \&sort_circulation,
+	
+    };
+
+    my $maildata="";
+    my $ofile="merkliste-" . $$ .".txt";
+
+    my $datatemplate = Template->new({
+        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+            INCLUDE_PATH   => $config->{tt_include_path},
+            ABSOLUTE       => 1,
+        }) ],
+        #        ABSOLUTE      => 1,
+        #        INCLUDE_PATH  => $config->{tt_include_path},
+        # Es ist wesentlich, dass OUTPUT* hier und nicht im
+        # Template::Provider definiert wird
+        RECURSION      => 1,
+        OUTPUT_PATH   => '/tmp',
+        OUTPUT        => $ofile,
+    });
+  
+
+    my $mimetype="text/html";
+    my $filename="kug-merkliste";
+    my $datatemplatename=$config->{tt_cartitems_mail_html_tname};
+
+    $logger->debug("Using view $view in profile $sysprofile");
+    
+    if ($format eq "short" || $format eq "full") {
+        $filename.=".html";
+    }
+    else {
+        $mimetype="text/plain";
+        $filename.=".txt";
+        $datatemplatename=$config->{tt_cartitems_mail_plain_tname};
+    }
+
+    $datatemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
+        view         => $ttdata->{view},
+        profile      => $ttdata->{sysprofile},
+        templatename => $datatemplatename,
+    });
+
+    $logger->debug("Using database/view specific Template $datatemplatename");
+    
+    $datatemplate->process($datatemplatename, $ttdata) || do {
+        $logger->error($datatemplate->error());
+        $self->header_add('Status',400); # server error
+        return;
+    };
+  
+    my $afile = "an." . $$;
+
+    my $mainttdata = {
+	msg => $msg,
+	
+    };
+
+    my $maintemplate = Template->new({
+        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+            INCLUDE_PATH   => $config->{tt_include_path},
+            ABSOLUTE       => 1,
+        }) ],
+        #        ABSOLUTE      => 1,
+        #        INCLUDE_PATH  => $config->{tt_include_path},
+        # Es ist wesentlich, dass OUTPUT* hier und nicht im
+        # Template::Provider definiert wird
+        RECURSION      => 1,
+        OUTPUT_PATH   => '/tmp',
+        OUTPUT        => $afile,
+    });
+
+    my $messagetemplatename = $config->{tt_cartitems_mail_message_tname};
+    
+    $messagetemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
+        view         => $ttdata->{view},
+        profile      => $ttdata->{sysprofile},
+        templatename => $messagetemplatename,
+    });
+
+    $logger->debug("Using database/view specific Template $messagetemplatename");
+
+    $maintemplate->process($messagetemplatename, $mainttdata ) || do { 
+    };
+    
+    my $anschfile="/tmp/" . $afile;
+    my $mailfile ="/tmp/" . $ofile;
+    
+    Email::Stuffer->to($email)
+	->from($config->{contact_email})
+	->subject($subject)
+	->text_body(read_binary($anschfile))
+	->attach_file($mailfile)
+	->send;
+
+    unlink $anschfile;
+    unlink $mailfile;
+
+    return $self->print_page($config->{tt_cartitems_mail_success_tname},$ttdata);
+}
+
+sub highlightquery {
+    my ($searchquery,$content) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    # Highlight Query
+
+    return $content unless ($searchquery);
+    
+    my $term_ref = $searchquery->get_searchterms();
+
+    return $content if (scalar(@$term_ref) <= 0);
+
+    if ($logger->is_debug){
+        $logger->debug("Terms: ".YAML::Dump($term_ref));
+    }
+    
+    my $terms = join("|", grep /^\w{3,}/ ,@$term_ref);
+
+    return $content if (!$terms);
+    
+    if ($logger->is_debug){
+        $logger->debug("Term_ref: ".YAML::Dump($term_ref)."\nTerms: $terms");
+        $logger->debug("Content vor: ".$content);
+    }
+    
+    $content=~s/\b($terms)/<span class="ob-highlight_searchterm">$1<\/span>/ig unless ($content=~/http/);
+
+    if ($logger->is_debug){
+        $logger->debug("Content nach: ".$content);
+    }
+    
+    return $content;
+}
+
+sub sort_circulation {
+    my $array_ref = shift;
+
+    # Schwartz'ian Transform
+        
+    my @sorted = map { $_->[0] }
+    sort { $a->[1] cmp $b->[1] }
+    map { [$_, sprintf("%03d:%s:%s:%s",$_->{department_id},$_->{department},$_->{storage},$_->{location_mark})] }
+    @{$array_ref};
+        
+    return \@sorted;
 }
 
 sub get_input_definition {

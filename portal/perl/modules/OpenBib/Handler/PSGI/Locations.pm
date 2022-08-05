@@ -36,6 +36,7 @@ use utf8;
 
 use Benchmark ':hireswallclock';
 use Encode qw(decode_utf8);
+use Date::Manip;
 use DBI;
 use JSON::XS;
 use List::MoreUtils qw(none any);
@@ -128,6 +129,9 @@ sub show_record {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
+    my $from = "";
+    my $to   = "";
+
     if ( $locationid ){ # Valide Informationen etc.
         my $search_args_ref = {};
         
@@ -142,6 +146,18 @@ sub show_record {
         my $locationinfo_ref = {};
         
         if ($locationinfo){
+
+	    my $date      = ParseDate("now");
+	    my $timestamp = UnixDate($date,"%Y-%m-%d");
+
+	    unless ($from) {
+		$from = "$timestamp 00:00:00";
+	    }
+
+	    unless ($to) {
+		$to   = "$timestamp 23:59:50";
+	    }
+
             $locationinfo_ref = {
                 id          => $locationinfo->id,
                 identifier  => $locationinfo->identifier,
@@ -149,6 +165,7 @@ sub show_record {
                 shortdesc   => $locationinfo->shortdesc,
                 type        => $locationinfo->type,
                 fields      => $config->get_locationinfo_fields($locationid),
+                occupancy   => $config->get_locationinfo_occupancy($locationid,$from,$to),
             };
 
             if ($logger->is_debug){

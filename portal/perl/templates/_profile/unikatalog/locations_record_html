@@ -4,6 +4,28 @@
 
 [% END %]
 
+[%
+
+   current_occupancy = locationinfo.occupancy.last;
+   max_occupancy = 1000;
+   max_green  = 700;
+   max_yellow = 900;
+
+   IF current_occupancy.num_occupancy < max_green;
+     current_color = "green";
+   ELSIF current_occupancy.num_occupancy < max_yellow ;
+     current_color = "yellow";
+   ELSE ;
+     current_color = "red";      
+   END;
+
+%]
+
+[% IF current_occupancy %]
+[%# USE dumper;dumper.dump(current_occupancy)%]
+<h3 class="pt-2 pb-2">Aktuelle Besucherzahl: <span style="color:[% current_color %];font-weight:bold;">[% current_occupancy.num_occupancy %]</span> / [% max_occupancy %]</h3>
+[% END %]
+
 <div class="table-responsive mt-2">
 <table class="table table-striped table-hover">
 [%-
@@ -161,3 +183,82 @@ Stand. Bitte wenden Sie sich bei etwaigen Unstimmigkeiten direkt an
 die jeweilige Bibliothek.
 </p>
 
+[% IF current_occupancy %]
+<h3>Zahl der Besucher heute</h3>
+
+[%
+      occupancycount = {};
+      FOREACH occupancy_thisitem IN locationinfo.occupancy;
+        item      = occupancy_thisitem.tstamp;
+        itemcount = occupancy_thisitem.num_occupancy;
+
+        IF itemcount < 0 ;
+	   itemcount = 0;
+	END;
+        occupancycount.${item} = itemcount;
+      END;
+
+      occupancy_labels = [];
+      occupancy_itemcounts = [];
+      FOREACH occupancy_label IN occupancycount.keys.sort ;
+        occupancy_labels.push("'${occupancy_label}'");
+	occupancy_itemcounts.push(occupancycount.${occupancy_label});
+
+      END;
+
+%]
+
+<div class="occupancyContainer d-flex justify-content-center pb-5">
+<canvas id="occupancyChart"></canvas>
+</div>
+
+<script>
+var occupancy_ctx = document.getElementById('occupancyChart');
+var occupancyChart = new Chart(occupancy_ctx, {
+    type: 'bar',
+    data: {    
+        labels: [[% occupancy_labels.join(',') %]],
+        datasets: [{
+            label: 'Besucherzahl',
+            data: [[% occupancy_itemcounts.join(',') %]],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            xAxes: [{
+	        scaleLabel: {
+	            display: true,
+                    labelString: 'Uhrzeit (Stunde)',
+                },
+                type: 'time',
+                time: {
+                    unit: 'hour',
+                    displayFormats: {
+                       millisecond: 'HH:mm:ss.SSS',
+                       second: 'HH:mm:ss',
+                       minute: 'HH:mm',
+                       hour: 'HH'
+		    },
+                },
+		ticks: {
+		    min: '00:00:00',
+		    max: '23:59:00',
+                    beginAtZero: true,
+		},
+            }],
+
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+</script>
+
+
+[% END %]

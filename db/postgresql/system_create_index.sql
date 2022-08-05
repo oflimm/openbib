@@ -26,6 +26,10 @@ CREATE INDEX locationinfo_fields_subfield ON locationinfo_fields (subfield);
 CREATE INDEX locationinfo_fields_mult ON locationinfo_fields (mult);
 CREATE INDEX locationinfo_fields_content ON locationinfo_fields (content);
 
+ALTER TABLE locationinfo_occupancy ADD CONSTRAINT fk_locationinfo_occupancy FOREIGN KEY (locationid) REFERENCES locationinfo (id);
+CREATE INDEX locationinfo_occupancy_locationid ON locationinfo_occupancy (locationid);
+CREATE INDEX locationinfo_occupancy_tstamp ON locationinfo_occupancy (tstamp);
+
 ALTER TABLE rssinfo ADD PRIMARY KEY (id);
 ALTER TABLE rssinfo ADD CONSTRAINT fk_rssinfo_db FOREIGN KEY (dbid) REFERENCES databaseinfo (id);
 CREATE INDEX rssinfo_type ON rssinfo (type);

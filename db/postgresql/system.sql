@@ -81,6 +81,17 @@ create table locationinfo_fields (
  content_norm  TEXT
 );
 
+drop table IF EXISTS locationinfo_occupancy;
+create table locationinfo_occupancy (
+ id            BIGSERIAL,
+ locationid    BIGINT      NOT NULL,
+
+ tstamp        TIMESTAMP,
+ num_entries   INT DEFAULT 0,
+ num_exits     INT DEFAULT 0,
+ num_occupancy INT DEFAULT 0
+);
+
 drop table IF EXISTS rssinfo;
 create table rssinfo (
  id            BIGSERIAL,

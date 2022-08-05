@@ -53,8 +53,8 @@
         item      = occupancy_thisitem.tstamp;
         itemcount = occupancy_thisitem.num_occupancy;
 
-        IF itemcount < 0 ;
-	   itemcount = 0;
+        IF itemcount <= 0 ;
+	   NEXT;
 	END;
         occupancycount.${item} = itemcount;
       END;

@@ -1362,6 +1362,63 @@ sub get_locationinfo_fields {
     return $locationinfo_ref;
 }
 
+sub get_locationinfo_occupancy {
+    my $self        = shift;
+    my $locationid  = shift;
+    my $from        = shift;
+    my $to          = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return {} if (!$locationid);
+
+    my ($atime,$btime,$timeall);
+        
+    if ($self->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    my $occupancy_ref= [];
+
+    my $locationoccupancy = $self->get_schema->resultset('LocationinfoOccupancy')->search_rs(
+        {
+            'locationid.identifier' => $locationid,
+            -and => [ 'me.tstamp' => { '>=' => $from },
+		      'me.tstamp' => { '<=' => $to },
+		],
+        },
+        {
+#            select => ['me.tstamp','me.num_entries','me.num_exits','me.num_occupancy'].
+#            as => ['tstamp','num_entries','num_exits','num_occupancy'].
+            join => ['locationid'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
+        }
+    );
+
+    while (my $item = $locationoccupancy->next()){
+        my $tstamp         =  $item->{tstamp};
+        my $num_entry      =  $item->{num_entries}     || 0;
+        my $num_exit       =  $item->{num_exits}      || 0;
+        my $num_occupancy  =  $item->{num_occupancy} || 0;
+
+        push @{$occupancy_ref}, {
+            tstamp        => $tstamp,
+            num_entry     => $num_entry,
+            num_exit      => $num_exit,
+            num_occupancy => $num_occupancy,
+        };
+    }
+
+    if ($self->{benchmark}) {
+	my $btime=new Benchmark;
+	my $timeall=timediff($btime,$atime);
+	$logger->info("Zeit fuer das Holen der Informationen ist ".timestr($timeall));
+    }
+
+    return $occupancy_ref;
+}
+
 sub get_locationinfo_overview {
     my $self   = shift;
     

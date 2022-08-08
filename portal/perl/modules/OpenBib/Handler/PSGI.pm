@@ -1053,11 +1053,11 @@ sub print_page {
             LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
                 INCLUDE_PATH   => $config->{tt_include_path},
                 ABSOLUTE       => 1,
-                STAT_TTL => 60,  # one minute
+                STAT_TTL => 120,  # two minutes
+		COMPILE_DIR => '/tmp/ttc',
             }) ],
-            COMPILE_EXT => '.ttc',
-            COMPILE_DIR => '/tmp/ttc',
-            STAT_TTL => 60,  # one minute
+            STAT_TTL => 120,  # two minutes
+	    COMPILE_DIR => '/tmp/ttc',
             OUTPUT         => \$content,    # Output geht in Scalar-Ref
             RECURSION      => 1,
         });

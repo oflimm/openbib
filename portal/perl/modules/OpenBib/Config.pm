@@ -1381,6 +1381,26 @@ sub get_locationinfo_occupancy {
 
     my $occupancy_ref= [];
 
+    my $memc_key = "config:locationinfo_occupancy:$locationid:$from:$to";
+
+    if ($self->{memc}){
+        my $occupancy_ref = $self->{memc}->get($memc_key);
+
+	if ($occupancy_ref){
+	    if ($logger->is_debug){
+		$logger->debug("Got locationinfo_occupancy for key $memc_key from memcached");
+	    }
+
+            if ($self->{benchmark}) {
+                my $btime=new Benchmark;
+                my $timeall=timediff($btime,$atime);
+                $logger->info("Zeit fuer das Holen der gecacheten Informationen ist ".timestr($timeall));
+            }
+
+	    return $occupancy_ref if (defined $occupancy_ref);
+	}
+    }
+
     my $locationoccupancy = $self->get_schema->resultset('LocationinfoOccupancy')->search_rs(
         {
             'locationid.identifier' => $locationid,
@@ -1398,8 +1418,8 @@ sub get_locationinfo_occupancy {
 
     while (my $item = $locationoccupancy->next()){
         my $tstamp         =  $item->{tstamp};
-        my $num_entry      =  $item->{num_entries}     || 0;
-        my $num_exit       =  $item->{num_exits}      || 0;
+        my $num_entry      =  $item->{num_entries}   || 0;
+        my $num_exit       =  $item->{num_exits}     || 0;
         my $num_occupancy  =  $item->{num_occupancy} || 0;
 
         push @{$occupancy_ref}, {
@@ -1408,6 +1428,10 @@ sub get_locationinfo_occupancy {
             num_exit      => $num_exit,
             num_occupancy => $num_occupancy,
         };
+    }
+
+    if ($self->{memc}){
+	$self->{memc}->set($memc_key,$occupancy_ref,$self->{memcached_expiration}{'config:locationinfo_occupancy'});
     }
 
     if ($self->{benchmark}) {

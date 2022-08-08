@@ -34,9 +34,9 @@
 <div class="card h-100 text-center">
 <div class="card-header"><h4>[% msg.maketext("Aktuelle Besucherzahl") %]</h4></div>
 
-<div class="card-body pb-5">
+<div class="card-body  d-flex align-items-center justify-content-center">
 
-<div class="display-1" style="margin-top:100px;"><span style="color:[% current_color %];font-weight:bold;">[% current_occupancy.num_occupancy %]</span> / [% max_occupancy %]</div>
+<div class="display-1"><span style="color:[% current_color %];font-weight:bold;">[% current_occupancy.num_occupancy %]</span> / [% max_occupancy %]</div>
 
 </div>
 </div>

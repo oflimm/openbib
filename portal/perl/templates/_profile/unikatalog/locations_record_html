@@ -19,8 +19,8 @@
      current_color = "red";      
    END;
 
-   IF current_occupancy < 0 ;
-     current_occupancy = 0;
+   IF current_occupancy.num_occupancy < 0 ;
+     current_occupancy.num_occupancy = 0;
    END ;
 %]
 

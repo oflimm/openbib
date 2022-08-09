@@ -1561,9 +1561,9 @@ sub to_cgi_params {
         }
     }
 
-    #if ($logger->is_debug){
-    #    $logger->debug("Got cgiparams ".YAML::Dump(\@cgiparams));
-    #}
+    if ($logger->is_debug){
+        $logger->debug("Got cgiparams ".YAML::Dump(\@cgiparams));
+    }
 
     return @cgiparams;
 }
@@ -1978,19 +1978,28 @@ sub check_http_basic_authentication {
 sub tunnel_through_authenticator {
     my ($self,$method,$authenticatorid) = @_;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
     my $config   = $self->param('config');
     my $view     = $self->param('view');    
     my $location = $self->param('location');    
     my $args     = $self->to_cgi_querystring;
 
+    # Args? Append Method
     if ($args){
-        $location.="?$args";
+        $location.="?$args" if ($method eq "POST");
         if ($method){
             $location.=";_method=$method";
         }
     }
+    # Else? Set Method    
     elsif ($method) {
         $location.="?_method=$method";
+    }
+
+    if ($logger->is_debug){
+	$logger->debug("Tunnelling to location $location with args $args");
     }
     
     my $return_uri = uri_escape($location);

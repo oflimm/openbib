@@ -66,11 +66,51 @@ sub setup {
         'mail_form'       => 'mail_form',
         'show_form'       => 'show_form',
         'dispatch_to_representation'           => 'dispatch_to_representation',
+        'dispatch_to_user'                     => 'dispatch_to_user',
     );
 
     # Use current path as template path,
     # i.e. the template is in the same directory as this script
 #    $self->tmpl_path('./');
+}
+
+sub dispatch_to_user {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatches Args
+    my $view           = $self->param('view');
+    my $mailtype       = $self->strip_suffix($self->param('mailtype'));
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+
+    if (! $user->{ID}){
+        return $self->tunnel_through_authenticator;            
+    }
+    else {
+
+	my $args = $self->to_cgi_querystring;
+
+        my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}/id/mail/${mailtype}.html?$args";
+
+	$logger->debug("Redirecting to user location $new_location");
+        
+	return $self->redirect($new_location,303);
+    }
+
+    return;
 }
 
 sub show_form {
@@ -226,7 +266,7 @@ sub show_handset {
     my $input_data_ref = $self->parse_valid_input();
 
     # CGI Args
-    my $scope          = $input_data_ref->{'scope'}; # defines sender, recipient via portal.yml
+    my $realm          = $input_data_ref->{'realm'}; # defines sender, recipient via portal.yml
     my $database       = $input_data_ref->{'dbname'};
     my $titleid        = $input_data_ref->{'titleid'};
     my $label          = $input_data_ref->{'label'};
@@ -234,7 +274,7 @@ sub show_handset {
     
     $logger->debug("Dispatched to show_handset");
     
-    if (!$titleid || !$scope || !$label || !$location || !$database){
+    if (!$titleid || !$realm || !$label || !$location || !$database){
 	return $self->print_warning("Zuwenige Parameter übergeben");
     }
 
@@ -253,7 +293,7 @@ sub show_handset {
     
     # TT-Data erzeugen
     my $ttdata={
-	scope      => $scope,
+	realm      => $realm,
 	userinfo   => $userinfo_ref,
 	title_location   => $location, # Standort = Zweigstelle / Abteilung
 	label      => $label,    # Signatur
@@ -290,7 +330,7 @@ sub show_default {
     my $input_data_ref = $self->parse_valid_input();
 
     # CGI Args
-    my $scope          = $input_data_ref->{'scope'}; # defines sender, recipient via portal.yml
+    my $realm          = $input_data_ref->{'realm'}; # defines sender, recipient via portal.yml
     my $database       = $input_data_ref->{'dbname'};
     my $titleid        = $input_data_ref->{'titleid'};
     my $label          = $input_data_ref->{'label'};
@@ -298,7 +338,7 @@ sub show_default {
 
     $logger->debug("Dispatched to show_default");
     
-    if (!$titleid || !$scope || !$label || !$location || !$database){
+    if (!$titleid || !$realm || !$label || !$location || !$database){
 	return $self->print_warning("Zuwenige Parameter übergeben");
     }
 
@@ -317,7 +357,7 @@ sub show_default {
     
     # TT-Data erzeugen
     my $ttdata={
-	scope      => $scope,
+	realm      => $realm,
 	userinfo   => $userinfo_ref,
 	title_location   => $location, # Standort = Zweigstelle / Abteilung
 	label      => $label,    # Signatur
@@ -354,15 +394,15 @@ sub show_kmb {
     my $input_data_ref = $self->parse_valid_input();
 
     # CGI Args
-    my $scope          = $input_data_ref->{'scope'}; # defines sender, recipient via portal.yml
+    my $realm          = $input_data_ref->{'realm'}; # defines sender, recipient via portal.yml
     my $database       = $input_data_ref->{'dbname'};
     my $titleid        = $input_data_ref->{'titleid'};
     my $label          = $input_data_ref->{'label'};
     my $location       = $input_data_ref->{'location'};
 
-    $logger->debug("Dispatched to show_handset");
+    $logger->debug("Dispatched to show_kmb");
     
-    if (!$titleid || !$scope || !$label || !$location || !$database){
+    if (!$titleid || !$realm || !$label || !$location || !$database){
 	return $self->print_warning("Zuwenige Parameter übergeben");
     }
 
@@ -381,7 +421,7 @@ sub show_kmb {
     
     # TT-Data erzeugen
     my $ttdata={
-	scope      => $scope,
+	realm      => $realm,
 	userinfo   => $userinfo_ref,
 	label      => $label, # Signatur
 	title_location   => $location, # Standort = Zweigstelle / Abteilung
@@ -418,15 +458,15 @@ sub show_kmbcopy {
     my $input_data_ref = $self->parse_valid_input();
 
     # CGI Args
-    my $scope          = $input_data_ref->{'scope'}; # defines sender, recipient via portal.yml
+    my $realm          = $input_data_ref->{'realm'}; # defines sender, recipient via portal.yml
     my $database       = $input_data_ref->{'dbname'};
     my $titleid        = $input_data_ref->{'titleid'};
     my $label          = $input_data_ref->{'label'};
     my $location       = $input_data_ref->{'location'};
 
-    $logger->debug("Dispatched to show_handset");
+    $logger->debug("Dispatched to show_kmbcopy");
     
-    if (!$titleid || !$scope || !$label || !$location || !$database){
+    if (!$titleid || !$realm || !$label || !$location || !$database){
 	return $self->print_warning("Zuwenige Parameter übergeben");
     }
 
@@ -445,7 +485,7 @@ sub show_kmbcopy {
     
     # TT-Data erzeugen
     my $ttdata={
-	scope      => $scope,
+	realm      => $realm,
 	userinfo   => $userinfo_ref,
 	label      => $label, # Signatur
 	title_location   => $location, # Standort = Zweigstelle / Abteilung
@@ -482,7 +522,7 @@ sub mail_handset {
     my $input_data_ref = $self->parse_valid_input();
 
     # CGI Args
-    my $scope          = $input_data_ref->{'scope'}; # defines sender, recipient via portal.yml
+    my $realm          = $input_data_ref->{'realm'}; # defines sender, recipient via portal.yml
     my $database       = $input_data_ref->{'dbname'};
     my $titleid        = $input_data_ref->{'titleid'};
     my $label          = $input_data_ref->{'label'};
@@ -490,9 +530,10 @@ sub mail_handset {
     my $receipt        = $input_data_ref->{'receipt'};
     my $remark         = $input_data_ref->{'remark'};
     
-    $logger->debug("Dispatched to show_handset");
+    $logger->debug("Dispatched to mail_handset");
     
-    if (!$titleid || !$label || !$scope || !$location || !$database){
+    if (!$titleid || !$label || !$realm || !$location || !$database){
+	$logger->debug("titleid $titleid / label $label / realm $realm / location $location / database $database");
 	return $self->print_warning("Zuwenige Parameter übergeben");
     }
 
@@ -510,7 +551,7 @@ sub mail_handset {
     
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
-        if (!defined $config->get('mail')->{scope}{$scope}) {
+        if (!defined $config->get('mail')->{realm}{$realm}) {
         return $self->print_warning($msg->maketext("Eine Bestellung ist nicht moeglich."));
     }
 
@@ -533,7 +574,7 @@ sub mail_handset {
 	userinfo    => $userinfo_ref,
 	record      => $record,
 	
-	scope       => $scope,
+	realm       => $realm,
         label       => $label,
 	title_location    => $location, # Standort = Zweigstelle / Abteilung
 	email       => $accountemail,
@@ -568,7 +609,7 @@ sub mail_handset {
         return;
     };
 
-    my $mail_to = $config->{mail}{scope}{$scope}{recipient};
+    my $mail_to = $config->{mail}{realm}{$realm}{recipient};
     
     # Fuer Tests erstmal deaktiviert...
     # if ($receipt){
@@ -578,8 +619,8 @@ sub mail_handset {
     my $anschfile="/tmp/" . $afile;
 
     Email::Stuffer->to($mail_to)
-	->from($config->{mail}{scope}{$scope}{sender})
-	->subject("Bestellung aus Handapparat per Mail ($scope)")
+	->from($config->{mail}{realm}{$realm}{sender})
+	->subject("Bestellung aus Handapparat per Mail ($realm)")
 	->text_body(read_binary($anschfile))
 	->send;
     
@@ -614,7 +655,7 @@ sub mail_kmb {
     my $input_data_ref = $self->parse_valid_input();
 
     # CGI Args
-    my $scope          = $input_data_ref->{'scope'}; # defines sender, recipient via portal.yml
+    my $realm          = $input_data_ref->{'realm'}; # defines sender, recipient via portal.yml
     my $database       = $input_data_ref->{'dbname'};
     my $titleid        = $input_data_ref->{'titleid'};
     my $label          = $input_data_ref->{'label'};
@@ -625,9 +666,9 @@ sub mail_kmb {
     my $email          = $input_data_ref->{'email'};
     my $pickup_location= $input_data_ref->{'pickup_location'};
     
-    $logger->debug("Dispatched to show_kmb");
+    $logger->debug("Dispatched to mail_kmb");
     
-    if (!$titleid || !$label || !$scope || !$location || !$database){
+    if (!$titleid || !$label || !$realm || !$location || !$database){
 	return $self->print_warning("Zuwenige Parameter übergeben");
     }
 
@@ -639,7 +680,7 @@ sub mail_kmb {
     
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
-        if (!defined $config->get('mail')->{scope}{$scope}) {
+        if (!defined $config->get('mail')->{realm}{$realm}) {
         return $self->print_warning($msg->maketext("Eine Bestellung ist nicht moeglich."));
     }
 
@@ -662,7 +703,7 @@ sub mail_kmb {
 	record      => $record,
 	database    => $database,
 	
-	scope       => $scope,
+	realm       => $realm,
         label       => $label,
 	title_location    => $location, # Standort = Zweigstelle / Abteilung
 	email       => $email,
@@ -698,7 +739,7 @@ sub mail_kmb {
         return;
     };
 
-    my $mail_to = $config->{mail}{scope}{$scope}{recipient};
+    my $mail_to = $config->{mail}{realm}{$realm}{recipient};
     
     # Fuer Tests erstmal deaktiviert...
     # if ($receipt){
@@ -711,9 +752,9 @@ sub mail_kmb {
     
     Email::Stuffer->to($mail_to)
 	->from("no-reply\@ub.uni-koeln.de")
-	->reply_to($config->{mail}{scope}{$scope}{sender})
+	->reply_to($config->{mail}{realm}{$realm}{sender})
 	->header("Content-Type" => 'text/plain; charset="utf-8"')
-	->subject("KMB-Bestellung: $pickup_location ($scope)")
+	->subject("KMB-Bestellung: $pickup_location ($realm)")
 	->text_body(read_binary($anschfile))
 	->send;
     
@@ -748,7 +789,7 @@ sub mail_kmbcopy {
     my $input_data_ref = $self->parse_valid_input();
 
     # CGI Args
-    my $scope          = $input_data_ref->{'scope'}; # defines sender, recipient via portal.yml
+    my $realm          = $input_data_ref->{'realm'}; # defines sender, recipient via portal.yml
     my $database       = $input_data_ref->{'dbname'};
     my $titleid        = $input_data_ref->{'titleid'};
     my $label          = $input_data_ref->{'label'};
@@ -770,9 +811,9 @@ sub mail_kmbcopy {
     my $confirm        = $input_data_ref->{'confirm'};
     my $numbering      = $input_data_ref->{'numbering'};
     
-    $logger->debug("Dispatched to show_kmbcopy");
+    $logger->debug("Dispatched to mail_kmbcopy");
     
-    if (!$titleid || !$label || !$scope || !$location || !$database){
+    if (!$titleid || !$label || !$realm || !$location || !$database){
 	return $self->print_warning("Zuwenige Parameter übergeben");
     }
 
@@ -826,7 +867,7 @@ sub mail_kmbcopy {
 
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
-        if (!defined $config->get('mail')->{scope}{$scope}) {
+        if (!defined $config->get('mail')->{realm}{$realm}) {
         return $self->print_warning($msg->maketext("Eine Bestellung ist nicht moeglich."));
     }
 
@@ -849,7 +890,7 @@ sub mail_kmbcopy {
 	record        => $record,
 	database      => $database,
 	
-	scope         => $scope,
+	realm         => $realm,
         label         => $label,
 	source        => $source,
 	articleauthor => $articleauthor,
@@ -895,7 +936,7 @@ sub mail_kmbcopy {
         return;
     };
 
-    my $mail_to = $config->{mail}{scope}{$scope}{recipient};
+    my $mail_to = $config->{mail}{realm}{$realm}{recipient};
     
     # Fuer Tests erstmal deaktiviert...
     # if ($receipt){
@@ -908,9 +949,9 @@ sub mail_kmbcopy {
     
     Email::Stuffer->to($mail_to)
 	->from("no-reply\@ub.uni-koeln.de")
-	->reply_to($config->{mail}{scope}{$scope}{sender})
+	->reply_to($config->{mail}{realm}{$realm}{sender})
 	->header("Content-Type" => 'text/plain; charset="utf-8"')
-	->subject("KMB-Dokumentenlieferdienst - $label ($scope)")
+	->subject("KMB-Dokumentenlieferdienst - $label ($realm)")
 	->text_body(read_binary($anschfile))
 	->send;
     
@@ -945,7 +986,7 @@ sub mail_default {
     my $input_data_ref = $self->parse_valid_input();
 
     # CGI Args
-    my $scope          = $input_data_ref->{'scope'}; # defines sender, recipient via portal.yml
+    my $realm          = $input_data_ref->{'realm'}; # defines sender, recipient via portal.yml
     my $database       = $input_data_ref->{'dbname'};
     my $titleid        = $input_data_ref->{'titleid'};
     my $label          = $input_data_ref->{'label'};
@@ -954,9 +995,9 @@ sub mail_default {
     my $remark         = $input_data_ref->{'remark'};
     my $period         = $input_data_ref->{'period'};
 
-    $logger->debug("Dispatched to show_default");
+    $logger->debug("Dispatched to mail_default");
     
-    if (!$titleid || !$label || !$scope || !$location || !$database){
+    if (!$titleid || !$label || !$realm || !$location || !$database){
 	return $self->print_warning("Zuwenige Parameter übergeben");
     }
 
@@ -974,7 +1015,7 @@ sub mail_default {
     
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
-        if (!defined $config->get('mail')->{scope}{$scope}) {
+        if (!defined $config->get('mail')->{realm}{$realm}) {
         return $self->print_warning($msg->maketext("Eine Bestellung ist nicht moeglich."));
     }
 
@@ -997,7 +1038,7 @@ sub mail_default {
 	userinfo    => $userinfo_ref,
 	record      => $record,
 	
-	scope       => $scope,
+	realm       => $realm,
         label       => $label,
 	title_location    => $location, # Standort = Zweigstelle / Abteilung
 	email       => $accountemail,
@@ -1033,7 +1074,7 @@ sub mail_default {
         return;
     };
 
-    my $mail_to = $config->{mail}{scope}{$scope}{recipient};
+    my $mail_to = $config->{mail}{realm}{$realm}{recipient};
     
     # Fuer Tests erstmal deaktiviert...
     # if ($receipt){
@@ -1043,8 +1084,8 @@ sub mail_default {
     my $anschfile="/tmp/" . $afile;
 
     Email::Stuffer->to($mail_to)
-	->from($config->{mail}{scope}{$scope}{sender})
-	->subject("Bestellung per Mail ($scope)")
+	->from($config->{mail}{realm}{$realm}{sender})
+	->subject("Bestellung per Mail ($realm)")
 	->text_body(read_binary($anschfile))
 	->send;
     
@@ -1082,7 +1123,7 @@ sub get_input_definition {
             encoding => 'utf8',
             type     => 'scalar',
         },
-        scope => {
+        realm => {
             default  => '',
             encoding => 'utf8',
             type     => 'scalar',

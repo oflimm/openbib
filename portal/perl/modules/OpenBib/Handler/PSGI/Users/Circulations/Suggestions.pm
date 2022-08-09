@@ -263,7 +263,7 @@ sub create_record {
         return;
     };
 
-    my $mail_to = $config->{mail}{scope}{suggestion}{recipient};
+    my $mail_to = $config->{mail}{realm}{suggestion}{recipient};
     
     # Fuer Tests erstmal deaktiviert...
     # if ($receipt){
@@ -273,7 +273,7 @@ sub create_record {
     my $anschfile="/tmp/" . $afile;
 
     Email::Stuffer->to($mail_to)
-	->from($config->{mail}{scope}{suggestion}{sender})
+	->from($config->{mail}{realm}{suggestion}{sender})
 	->subject("Neuanschaffungsvorschlag")
 	->text_body(read_binary($anschfile))
 	->send;

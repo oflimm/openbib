@@ -864,6 +864,51 @@
    rule: '/portal/:view/litlists/id/:litlistid[get]'
    runmode: 'show_record'
 
+- # users/litlists_loc:
+   module: 'OpenBib::Handler::PSGI::LitLists'
+   rule: '/portal/:view/litlists/id/:litlistid/save[get]'
+   runmode: 'save_record'
+   representations:
+     - none
+     - html
+   args:
+      users_loc: 'litlists'
+- # users/litlists_loc:
+   module: 'OpenBib::Handler::PSGI::LitLists'
+   rule: '/portal/:view/litlists/id/:litlistid/mail[get]'
+   runmode: 'mail_record'
+   representations:
+     - none
+     - html
+   args:
+      users_loc: 'litlists'
+- # users/litlists_loc:
+   module: 'OpenBib::Handler::PSGI::LitLists'
+   rule: '/portal/:view/litlists/id/:litlistid/print[get]'
+   runmode: 'print_record'
+   representations:
+     - none
+     - html
+   args:
+      users_loc: 'litlists'
+
+- # users/litlists_loc:
+   module: 'OpenBib::Handler::PSGI::LitLists'
+   rule: '/portal/:view/users/id/:userid/litlists/id/:litlistid/print[get]'
+   runmode: 'print_record'
+   representations:
+     - none
+     - html
+
+- # users_loc/litlists_loc: Update Record
+   module: 'OpenBib::Handler::PSGI::LitLists'
+   rule: '/portal/:view/litlists/id/:litlistid/mail[post]'
+   runmode: 'mail_record_send'
+- # users_loc/litlists_loc: Update Record
+   module: 'OpenBib::Handler::PSGI::Users::LitLists'
+   rule: '/portal/:view/users/id/:userid/litlists/id/:litlistid/mail[post]'
+   runmode: 'mail_record_send'
+
 - # Resource: users_loc/litlists_loc: Anzeige einer Literaturliste (oeffentlich/privat)
    module: 'OpenBib::Handler::PSGI::Users::LitLists'
    rule: '/portal/:view/users/id/:userid/litlists/id/:litlistid[get]'
@@ -3151,6 +3196,13 @@
 #    module: 'OpenBib::Handler::PSGI::Users::Circulations'
 #    rule: '/portal/:view/users/id/:userid/circulations/id/:circulationid[get]'
 #    runmode: 'show_record'
+
+- # users/circulations_loc: Resource-Finder-URL
+   module: 'OpenBib::Handler::PSGI::Users::Circulations::Mail'
+   rule: '/portal/:view/users/id/me/circulations/id/mail/:mailtype[get]'
+   runmode: 'dispatch_to_user'
+   args:
+      disable_content_negotiation: 1
 
 - # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Mail'

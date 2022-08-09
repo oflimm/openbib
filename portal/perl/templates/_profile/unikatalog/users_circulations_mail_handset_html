@@ -35,8 +35,9 @@
 <div class="card-body">
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/mail/handset">
  
-     <input type="hidden" name="scope"       value="[% scope %]" />
+     <input type="hidden" name="realm"       value="[% realm %]" />
      <input type="hidden" name="location"    value="[% title_location %]" />
+     <input type="hidden" name="dbname"      value="[% database %]" />
 
 <legend class="mt-2">[% msg.maketext("Titelangaben") %]</legend>
 

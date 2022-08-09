@@ -41,11 +41,11 @@ builder {
 #        [ qw(Environment Response Timer Memory Profiler::NYTProf)
 #      ];
 
-    enable 'HTMLMinify', opt => {remove_comments => 1, remove_newlines => 1};
+#    enable 'HTMLMinify', opt => {remove_comments => 1, remove_newlines => 1};
 
-    enable "Deflater",
-      content_type => ['application/json','text/html','text/plain','text/csv','application/rdf+xml'],
-      vary_user_agent => 1;
+#    enable "Deflater",
+#      content_type => ['application/json','text/html','text/plain','text/csv','application/rdf+xml'],
+#      vary_user_agent => 1;
     
     $cgiapp;
 };

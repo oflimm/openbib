@@ -207,7 +207,7 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
 	  scope = "usb";
 	END;
 %]
-&nbsp;<a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.id %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/handset.html?l=[% lang %];dbname=[% database %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];location=[% standort |uri %];scope=[% scope %]">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
+&nbsp;<a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/handset.html?l=[% lang %];dbname=[% database %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];location=[% standort |uri %];scope=[% scope %]">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
 [%    END %]
 [%   ELSE %]
 [% availability_info %]

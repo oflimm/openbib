@@ -186,7 +186,7 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
 [%    bestellscheinparts = availability_info.match('^.* (\(.*\))'); %]
 <br/><em>Bitte füllen Sie einen konventionellen Bestellschein aus</em><br/>[% bestellscheinparts.first %]<br/>
 [%    IF config.get('active_ils') %]
-&nbsp;<a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.id %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/default?l=[% lang %];dbname=[% database %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];location=[% standort |uri %];realm=usb">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
+&nbsp;<a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('users_loc') %]/[% IF user.ID %]id/[% user.id %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/default?l=[% lang %];dbname=[% database %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];location=[% standort |uri %];realm=usb">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
 [%    END %]
 [%############### HANDAPPARAT ################# %]
 [% ELSIF standort.match('Handapp.') %]
@@ -207,7 +207,7 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
 	  realm = "usb";
 	END;
 %]
-&nbsp;<a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/handset.html?l=[% lang %];dbname=[% database %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];location=[% standort |uri %];realm=[% realm %]">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
+&nbsp;<a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('users_loc') %]/[% IF user.ID %]id/[% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/handset.html?l=[% lang %];dbname=[% database %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];location=[% standort |uri %];realm=[% realm %]">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
 [%    END %]
 [%   ELSE %]
 [% availability_info %]
@@ -331,7 +331,7 @@ Präsenzbestand
 [%############### ANFANG MEDIENSTATUSAKTIONEN ######### %]
 [%############### BESTELLBUTTON ######### %]
 [% IF thiscirculation.availability.match('^(order)$') %]
- <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.id %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/orders">
+ <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/[% IF user.ID %]id/[% user.id %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/orders">
    <input type="hidden" name="validtarget"   value="[% database %]" />
    <input type="hidden" name="holdingid"     value="[% thiscirculation.holdingid  %]" />
    <input type="hidden" name="unit"          value="[% thiscirculation.department_id %]" />
@@ -376,7 +376,7 @@ Präsenzbestand
        END;
 %]
 
- <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.id %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/reservations">
+ <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/[% IF user.ID %]id/[% user.id %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/reservations">
    <input type="hidden" name="validtarget"   value="[% database %]" />
    <input type="hidden" name="holdingid"     value="[% thiscirculation.holdingid  %]" />
    <input type="hidden" name="titleid"       value="[% record.id %]" />
@@ -397,7 +397,7 @@ Präsenzbestand
 [%   IF NOT standort.match('(Museum für Angewandte Kunst|Graphische Sammlung|Schwarze Lade)') # Bestellfunktionen fuer KMB-Bestand im MAKK, WRM (Graphische Sammlung) und DSL unterdruecken %]
 [%#     IF config.get('active_ils') %]
 <br/><span style="color: red"> Die Nutzung der Lesesäle ist momentan nur nach Terminvereinbarung möglich.</span>
-<p><a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.id %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/kmb.html?l=[% lang %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];dbname=[% database %];location=[% standort |uri %];realm=kmb">[% msg.maketext("In den Lesesaal bestellen") %]</a></p> 
+<p><a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('users_loc') %]/[% IF user.ID %]id/[% user.id %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/kmb.html?l=[% lang %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];dbname=[% database %];location=[% standort |uri %];realm=kmb">[% msg.maketext("In den Lesesaal bestellen") %]</a></p> 
 <p>
 <b>KMB-Dokumentlieferdienst:</b><br/>
 <a href="https://www.subito-doc.de/" target="_blank">Aufsatzbestellung</a>

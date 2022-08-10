@@ -19,7 +19,7 @@
 	<h4>was?</h4>      
 	<p>Bücher und Zeitschriften aus allen ca. 150 Bibliotheken an der Uni Köln werden nach der Suche im Reiter Bücher &amp; mehr angezeigt - außerdem der elektronische Bestand an E-Books und E-Journals. Zusätzlich werden noch viele frei im Netz verfügbare E-Books und Digitalisate durchsucht.</p>
 
-	<p><a href="/portal/unikatalog/databases.html?l=de">Liste mit allen Inhalten</a></p>
+	<p><a href="[% path_prefix %]/[% config.get('databases_loc') %].html?l=de">Liste mit allen Inhalten</a></p>
 
 	<h4>wie?</h4>
 	
@@ -50,7 +50,7 @@
 	
 	<p>Nachweise von einigen hundert Millionen Artikeln aus Zeitschriften, Zeitungen, Büchern u. Ä. aus zahlreichen Datenbanken, Repositorien, freien wissenschaftlichen Suchmaschinen etc. fließen hier ein.</p>
 
-	<p><a target="_blank" href="/portal/info/quellen.html?l=de">Liste mit allen enthaltenen Datenbanken</a></p>
+	<p><a target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/quellen.html?l=de">Liste mit allen enthaltenen Datenbanken</a></p>
 
 	<h4>wie?</h4>
 	

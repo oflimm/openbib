@@ -130,12 +130,10 @@
       <label class="form-floating mb-3-text" for="remark">[% msg.maketext("Bemerkung") %]:</label>
 </div>
 
-<p/>
-
 <legend class="mt-2">[% msg.maketext("Bestellquittung") %]</legend>
-<div class="form-check">
 
-      <input class="form-check-input" type="checkbox" name="receipt"/>
+<div class="form-check mt-2 mb-2">
+      <input class="form-check-input" type="checkbox" value="" name="receipt" id="receipt"/>
       <label class="form-check-label" for="receipt">[% msg.maketext("Ja, ich möchte eine Kopie dieser Bestellung als E-Mail erhalten") %].</label>
 </div>
 

@@ -277,9 +277,9 @@ Die fälligen Entgelte sind unmittelbar nach Eingang der Rechnung zu überweisen
 </p>
 
 <legend class="mt-2">[% msg.maketext("Einverständniserklärung") %] (*)</legend>
-<div class="form-check">
 
-      <input class="form-check-input" type="checkbox" name="confirm"/>
+<div class="form-check mt-2 mb-2">
+      <input class="form-check-input" type="checkbox" name="confirm" id="confirm"/>
       <label class="form-check-label" for="confirm">[% msg.maketext("Ja, Ich akzeptiere die Allgemeinen Geschäftsbedingungen für den KMB-Dokumentlieferdienst") %]</label>
 </div>
 

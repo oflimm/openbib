@@ -1,0 +1,125 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchform_bottom
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe Unten-Links
+#
+#######################################################################
+-%]
+<div id="ob-searchform_bottom" class="content"><!-- Begin searchform_bottom -->
+
+[% IF config.get('bix') %]
+<!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
+  <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
+[% END %]
+
+          <div class="row">
+            <div class="col-md-4 mt-2">
+[% PROCESS common/subtemplate name="home_html_bottom_left" %]
+            </div>
+            <div class="col-md-4 mt-2">
+[% PROCESS common/subtemplate name="home_html_bottom_center" %]
+            </div>
+            <div class="col-md-4 mt-2">
+[% PROCESS common/subtemplate name="home_html_bottom_right" %]
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4 mt-2">
+
+<div class="card h-100">
+<div class="card-header"><h4>[% msg.maketext("USK Altersfreigaben") %]</h4></div>
+
+<div class="card-body">
+
+[%
+      usk_funcargs = { id => 'games-0517', type => 14 } ;
+      usk_resultlist = statistics.get_result(usk_funcargs);
+
+      uskcount = {};
+      FOREACH usk_thisitem IN usk_resultlist;
+        item      = usk_thisitem.item;
+        itemcount = usk_thisitem.count;
+        uskcount.${item} = itemcount;
+      END;
+
+      usk_labels = [];
+      usk_itemcounts = [];
+      FOREACH usk_label IN uskcount.keys.sort ;
+        usk_labels.push("'${usk_label}'");
+	usk_itemcounts.push(uskcount.${usk_label});
+
+      END;
+%]
+
+<canvas id="uskChart" width="400" height="400"></canvas>
+<script>
+var usk_ctx = document.getElementById('uskChart');
+var uskChart = new Chart(usk_ctx, {
+    type: 'doughnut',
+    data: {    
+        labels: [[% usk_labels.join(',') %]],
+        datasets: [{
+            label: 'Zahl der Spiele',
+            data: [[% usk_itemcounts.join(',') %]],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(77, 166, 255, 0.5)',
+                'rgba(218, 165, 32, 0.5)',
+                'rgba(175, 0, 42, 0.5)'		
+	    ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(77, 166, 255, 1)',
+                'rgba(218, 165, 32, 1)',
+                'rgba(175, 0, 42, 1)'		
+	    ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+	layout: {
+            padding: {
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 100
+            }
+        }
+
+	
+    }
+});
+</script>
+
+
+</div>
+</div>
+
+
+            </div>
+            <div class="col-md-4 mt-2">
+
+            </div>
+            <div class="col-md-4 mt-2">
+
+            </div>
+          </div>
+
+</div><!-- End searchform_bottom -->

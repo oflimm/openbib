@@ -16,16 +16,19 @@
 <div class="row">
 <div class="col-md-12 ps-4 pe-4">
 
-<h4>[% msg.maketext("Merkliste im APA-Zitierstil") %]</h4>
+<h3>[% IF title %][% title %][% ELSE %][% msg.maketext("Merkliste im APA-Zitierstil") %][% END %]</h3>
 
-<pre>
 [% END %]
 [%- FOREACH record IN recordlist.load_full_records.get_records -%]
-[% record.to_apa_citation %]
 
+[%   IF data_only %]
+[%     record.to_apa_citation %]
+[%   ELSE %]
+<p>[%     record.to_apa_citation %]</p>
+[%   END %]
 [% END -%]
 [% IF NOT data_only %]
-</pre>
+
 </div>
 </div>
 [% END %]

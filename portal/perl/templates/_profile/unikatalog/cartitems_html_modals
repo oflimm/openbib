@@ -1,3 +1,36 @@
+<div class="modal fade" id="cartitemsPrintModal" tabindex="-1" role="dialog" aria-labelledby="cartitemsPrintModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+	<form method="GET" action="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/print" target="_blank">
+	  <div class="modal-header">
+            <h5 class="modal-title" id="cartitemsPrintModalLabel">[% msg.maketext("Merkliste drucken") %]</h5>
+	  </div>
+	  <div class="modal-body" id="cartitem_savemessage">
+	    
+	    <div class="form-floating mb-3">
+	      <select class="form-select" name="format" id="format_print">
+		<option value="short">[% msg.maketext("Kurzübersicht") %]</option>
+		<option value="full">[% msg.maketext("Vollanzeige") %]</option>
+		<option value="Text">[% msg.maketext("Einfacher Text") %]</option>
+		<option value="BibTeX">[% msg.maketext("BibTeX (z.B. Citavi)") %]</option>
+		<option value="EndNote">[% msg.maketext("EndNote") %]</option>
+		<option value="apa">[% msg.maketext("Zitat: APA") %]</option>
+		<option value="harvard">[% msg.maketext("Zitat: Harvard") %]</option>    
+		<option value="mla">[% msg.maketext("Zitat: MLA") %]</option>    
+	      </select>
+	      <label for="format_mail">[% msg.maketext("Ausgabeformat") %]</label>
+	    </div>
+	    
+	  </div>
+	  <div class="modal-footer">
+	    <button class="btn btn-primary pe-3" data-bs-dismiss="modal" onclick="submitForm()">[% msg.maketext("Drucken") %]</button>
+	    
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>	
+	  </div>
+	</form>
+      </div>
+  </div>
+</div>
 <div class="modal fade" id="cartitemsModal" tabindex="-1" role="dialog" aria-labelledby="cartitemsModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">

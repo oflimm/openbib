@@ -19,7 +19,10 @@
 <!-- Titlelist begins here -->
 <div class="ob-resultlist">
   <div class="row ps-2">
-    <div class="col-md-6 d-flex justify-content-start">
+[% IF title %]
+    <h3>[% title %] ([% recordlist.get_size %]  [% msg.maketext("Titel") %])</h3>
+[% END %]
+    <div class="col-md-6 d-flex justify-content-start ob-cartitems_allselection">
        <input type="checkbox" name="collection" value="select" onclick="update_collection(this.form, this.checked,'collection_item')" />&nbsp;<b>[% msg.maketext("Alle Eintr&auml;ge ausw&auml;hlen") %]</b>
     </div>
     <div class="col-md-6 d-flex justify-content-end">

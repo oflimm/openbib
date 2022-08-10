@@ -21,7 +21,7 @@
 <!-- Titlelist begins here -->
 <div class="ob-resultlist">
   <div class="ob-resultheader">
-    <h3>[% IF title %][% title %][% ELSE %][% msg.maketext("Merkliste") %][% END %] ([% recordlist.get_size %]  [% msg.maketext("Titel") %])
+    <h3>[% IF title %][% title %][% ELSE %][% msg.maketext("Merkliste") %][% END %]</h3>
   </div>
 
   <div class="ob-resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">

@@ -200,6 +200,22 @@ sub get_titles_record {
     
     my $url="http://rzblx10.uni-regensburg.de/dbinfo/detail.php?colors=".((defined $self->{colors})?$self->{colors}:"")."&ocolors=".((defined $self->{ocolors})?$self->{ocolors}:"")."&lett=f&titel_id=$id&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&lang=".((defined $self->{lang})?$self->{lang}:"")."&xmloutput=1";
 
+    my $memc_key = "dbis:title:$url";
+
+    my $memc = $config->get_memc;
+    
+    if ($memc){
+        my $record = $memc->get($memc_key);
+
+	if ($record){
+	    if ($logger->is_debug){
+		$logger->debug("Got record for key $memc_key from memcached");
+	    }
+
+	    return $record if (defined $record);
+	}
+    }
+    
     $logger->debug("Request: $url");
 
     my $request = HTTP::Request->new('GET' => $url);
@@ -388,6 +404,10 @@ sub get_titles_record {
     $record->set_holding([]);
     $record->set_circulation([]);
 
+    if ($memc){
+	$memc->set($memc_key,$record,$config->{memcached_expiration}{'dbis:title'});
+    }
+    
     return $record;
 }
 
@@ -397,11 +417,31 @@ sub get_classifications {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = $self->get_config;
     my $ua     = $self->get_client;
     
     my $url="http://rzblx10.uni-regensburg.de/dbinfo/fachliste.php?colors=$self->{colors}&ocolors=$self->{ocolors}&bib_id=$self->{dbis_bibid}&lett=l&lang=$self->{lang}&xmloutput=1";
 
     my $classifications_ref = [];
+
+    my $memc_key = "dbis:classifications:$url";
+
+    my $memc = $config->get_memc;
+    
+    $logger->debug("Memc: ".$memc);
+    $logger->debug("Memcached: ".$config->{memcached});    
+    
+    if ($memc){
+        my $classifications_ref = $memc->get($memc_key);
+
+	if ($classifications_ref){
+	    if ($logger->is_debug){
+		$logger->debug("Got classifications for key $memc_key from memcached");
+	    }
+
+	    return $classifications_ref if (defined $classifications_ref);
+	}
+    }
     
     $logger->debug("Request: $url");
 
@@ -458,6 +498,10 @@ sub get_classifications {
         $logger->debug(YAML::Dump($classifications_ref));
     }
 
+    if ($memc){
+	$memc->set($memc_key,$classifications_ref,$config->{memcached_expiration}{'dbis:classifications'});
+    }
+    
     return $classifications_ref;
 }
 
@@ -471,7 +515,8 @@ sub search {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config       = $self->get_config;
+    my $config = $self->get_config;
+
     my $searchquery  = $self->get_searchquery;
     my $queryoptions = $self->get_queryoptions;
 
@@ -496,6 +541,28 @@ sub search {
     $self->parse_query($searchquery);
 
     my $url="http://rzblx10.uni-regensburg.de/dbinfo/dbliste.php?bib_id=$self->{bibid}&colors=$self->{colors}&ocolors=$self->{ocolors}&lett=k&".$self->querystring."&hits_per_page=$num&offset=$offset&lang=$self->{lang}&xmloutput=1";
+
+    my $memc_key = "dbis:search:bib_id=$url";
+
+    my $memc = $config->get_memc;
+    
+    if ($memc){
+        my $result_ref = $memc->get($memc_key);
+
+	if (defined $result_ref->{_matches}){
+	    if ($logger->is_debug){
+		$logger->debug("Got search result for key $memc_key from memcached");
+	    }
+
+	    $self->{resultcount}   = $result_ref->{resultcount};
+	    $self->{_access_info}  = $result_ref->{_access_info};
+	    $self->{_db_type}      = $result_ref->{_db_type};
+	    $self->{_matches}      = $result_ref->{_matches};
+
+	    return $self; 
+	}
+    }
+
     
     my $titles_ref = [];
     
@@ -591,6 +658,19 @@ sub search {
 	$logger->debug("Results found: $search_count");
 	$logger->debug(YAML::Dump($dbs_ref));
     }
+
+    if ($memc){
+	my $result_ref = {
+	    'resultcount'  => $search_count,
+	    '_access_info' => $access_info_ref,
+	    '_db_type'     => $db_type_ref,
+	    '_matches'     => $dbs_ref,
+	};
+
+	$logger->debug("Storing search result to memcached to $memc_key");
+	$memc->set($memc_key,$result_ref,$config->{memcached_expiration}{'dbis:search'});
+    }
+
     
     $self->{resultcount}   = $search_count;
     $self->{_access_info}  = $access_info_ref;

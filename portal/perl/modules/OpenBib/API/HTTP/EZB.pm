@@ -174,10 +174,10 @@ sub get_titles_record {
 
     # Set defaults
     my $id       = exists $arg_ref->{id}
-    ? $arg_ref->{id}        : '';
+             ? $arg_ref->{id}        : '';
 
     my $database = exists $arg_ref->{database}
-        ? $arg_ref->{database}  : 'dbis';
+        ? $arg_ref->{database}  : 'ezb';
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -187,48 +187,85 @@ sub get_titles_record {
 
     my $record = new OpenBib::Record::Title({ database => $self->{database}, id => $id });
 
+    my $memc = $config->get_memc;
+	    
     # Referenzierung mit zdbid? Dann zuerst die EZB-ID bestimmen
 
     if ($id=~m/^zdb:(.+?)$/){
 	my $zdbid=$1;
+
+	my $jourid = "";
 	
 	my $url="http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?colors=$self->{colors}&bibid=$self->{bibid}&jq_type1=ZD&jq_term1=$zdbid&hits_per_page=1&offset=0&lang=de&xmloutput=1";
 
-	$logger->debug("Lookup-URL: $url");
+	my $memc_key = "ezb:title:$url";
 	
-	my $request = HTTP::Request->new('GET' => $url);
-	
-	my $response = $ua->request($request);
-	
-	if ($logger->is_debug){
-	    $logger->debug("Response: ".$response->content);
-	}
-	
-	if (!$response->is_success) {
-	    $logger->info($response->code . ' - ' . $response->message);
-	    return $record;
-	}
-	
-	my $parser = XML::LibXML->new();
-	my $tree   = $parser->parse_string($response->content);
-	my $root   = $tree->getDocumentElement;
-
-	my $jourid = "";
-	foreach my $journal_node ($root->findnodes('/ezb_page/ezb_alphabetical_list_searchresult/alphabetical_order/journals/journal')){
-	    $jourid = $journal_node->findvalue('@jourid');
-	    last;
+	if ($memc){
+	    $jourid = $memc->get($memc_key);	    
 	}
 
-	return $record unless ($jourid);
-
-	$logger->debug("Found EZB-ID $jourid for ZDB-ID $zdbid");
+	if (!$jourid){
 	
+	    $logger->debug("Lookup-URL: $url");
+	    
+	    my $request = HTTP::Request->new('GET' => $url);
+	    
+	    my $response = $ua->request($request);
+	    
+	    if ($logger->is_debug){
+		$logger->debug("Response: ".$response->content);
+	    }
+	    
+	    if (!$response->is_success) {
+		$logger->info($response->code . ' - ' . $response->message);
+		return $record;
+	    }
+	    
+	    my $parser = XML::LibXML->new();
+	    my $tree   = $parser->parse_string($response->content);
+	    my $root   = $tree->getDocumentElement;
+	    
+	    foreach my $journal_node ($root->findnodes('/ezb_page/ezb_alphabetical_list_searchresult/alphabetical_order/journals/journal')){
+		$jourid = $journal_node->findvalue('@jourid');
+		last;
+	    }
+	    
+	    return $record unless ($jourid);
+	    
+	    $logger->debug("Found EZB-ID $jourid for ZDB-ID $zdbid");
+	    
+	    if ($memc){
+		$memc->set($memc_key,$jourid,$config->{memcached_expiration}{'ezb:title'});
+	    }
+	}
+
 	$id = $jourid;
     }
     
     my $url="http://rzblx1.uni-regensburg.de/ezeit/detail.phtml?colors=".((defined $arg_ref->{colors})?$arg_ref->{colors}:$config->{ezb_colors})."&bibid=".((defined $arg_ref->{bibid})?$arg_ref->{bibid}:$config->{ezb_bibid})."&lang=".((defined $arg_ref->{lang})?$arg_ref->{lang}:"de")."&jour_id=$id&xmloutput=1";
         
     my $titles_ref = [];
+
+    my $memc_key = "ezb:title:$url";
+
+    $logger->debug("Memc: ".$memc);
+    $logger->debug("Memcached: ".$config->{memcached});    
+    
+    if ($memc){
+        my $fields_ref = $memc->get($memc_key);
+
+	if ($fields_ref){
+	    if ($logger->is_debug){
+		$logger->debug("Got fields for key $memc_key from memcached");
+	    }
+
+	    $record->set_fields($fields_ref);
+	    $record->set_holding([]);
+	    $record->set_circulation([]);
+	    
+	    return $record if (defined $record);
+	}
+    }
     
     $logger->debug("Request: $url");
 
@@ -479,6 +516,10 @@ sub get_titles_record {
     $record->set_holding([]);
     $record->set_circulation([]);
 
+    if ($memc){
+	$memc->set($memc_key,$record->get_fields,$config->{memcached_expiration}{'ezb:title'});
+    }
+    
     return $record;
 }
 
@@ -577,11 +618,31 @@ sub get_classifications {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = $self->get_config;
     my $ua     = $self->get_client;
 
     my $url="http://rzblx1.uni-regensburg.de/ezeit/fl.phtml?colors=$self->{colors}&bibid=$self->{bibid}&lang=$self->{lang}&xmloutput=1";
 
     my $classifications_ref = [];
+
+    my $memc_key = "ezb:classifications:$url";
+
+    my $memc = $config->get_memc;
+    
+    $logger->debug("Memc: ".$memc);
+    $logger->debug("Memcached: ".$config->{memcached});    
+    
+    if ($memc){
+        my $classifications_ref = $memc->get($memc_key);
+
+	if ($classifications_ref){
+	    if ($logger->is_debug){
+		$logger->debug("Got classifications for key $memc_key from memcached");
+	    }
+
+	    return $classifications_ref;
+	}
+    }
     
     $logger->debug("Request: $url");
 
@@ -633,6 +694,10 @@ sub get_classifications {
         $logger->debug(YAML::Dump($classifications_ref));
     }
 
+    if ($memc){
+	$memc->set($memc_key,$classifications_ref,$config->{memcached_expiration}{'ezb:classifications'});
+    }
+    
     return $classifications_ref;
 }
 
@@ -673,6 +738,25 @@ sub search {
     my $url="http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?colors=$self->{colors}&bibid=$self->{bibid}&sc=$self->{sc}&lc=$self->{lc}&sindex=$self->{sindex}&".$self->querystring."&hits_per_page=$num&offset=$offset&lang=".((defined $self->{lang})?$self->{lang}:"de")."&xmloutput=1";
 
     my $titles_ref = [];
+
+    my $memc_key = "ezb:search:$url";
+
+    my $memc = $config->get_memc;
+    
+    if ($memc){
+        my $result_ref = $memc->get($memc_key);
+
+	if (defined $result_ref->{_matches}){
+	    if ($logger->is_debug){
+		$logger->debug("Got search result for key $memc_key from memcached");
+	    }
+
+	    $self->{resultcount}   = $result_ref->{resultcount};
+	    $self->{_matches}      = $result_ref->{_matches};
+
+	    return $self; 
+	}
+    }
     
     $logger->debug("Request: $url");
 
@@ -781,6 +865,16 @@ sub search {
     }
 
     $logger->debug("Found $search_count titles");
+
+    if ($memc){
+	my $result_ref = {
+	    'resultcount'  => $search_count,
+	    '_matches'     => $journals_ref,
+	};
+
+	$logger->debug("Storing search result to memcached to $memc_key");
+	$memc->set($memc_key,$result_ref,$config->{memcached_expiration}{'ezb:search'});
+    }
     
     $self->{resultcount}   = $search_count;
     $self->{_matches}      = $journals_ref;

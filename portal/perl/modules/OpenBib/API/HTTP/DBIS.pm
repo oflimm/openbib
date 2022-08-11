@@ -205,12 +205,16 @@ sub get_titles_record {
     my $memc = $config->get_memc;
     
     if ($memc){
-        my $record = $memc->get($memc_key);
+        my $fields_ref = $memc->get($memc_key);
 
-	if ($record){
+	if ($fields_ref){
 	    if ($logger->is_debug){
-		$logger->debug("Got record for key $memc_key from memcached");
+		$logger->debug("Got fields for key $memc_key from memcached");
 	    }
+
+	    $record->set_fields($fields_ref);
+	    $record->set_holding([]);
+	    $record->set_circulation([]);
 
 	    return $record if (defined $record);
 	}
@@ -405,7 +409,7 @@ sub get_titles_record {
     $record->set_circulation([]);
 
     if ($memc){
-	$memc->set($memc_key,$record,$config->{memcached_expiration}{'dbis:title'});
+	$memc->set($memc_key,$record->get_fields,$config->{memcached_expiration}{'dbis:title'});
     }
     
     return $record;
@@ -542,7 +546,7 @@ sub search {
 
     my $url="http://rzblx10.uni-regensburg.de/dbinfo/dbliste.php?bib_id=$self->{bibid}&colors=$self->{colors}&ocolors=$self->{ocolors}&lett=k&".$self->querystring."&hits_per_page=$num&offset=$offset&lang=$self->{lang}&xmloutput=1";
 
-    my $memc_key = "dbis:search:bib_id=$url";
+    my $memc_key = "dbis:search:$url";
 
     my $memc = $config->get_memc;
     

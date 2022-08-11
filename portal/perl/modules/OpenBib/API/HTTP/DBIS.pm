@@ -216,7 +216,7 @@ sub get_titles_record {
 	    $record->set_holding([]);
 	    $record->set_circulation([]);
 
-	    return $record if (defined $record);
+	    return $record;
 	}
     }
     

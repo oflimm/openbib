@@ -781,7 +781,7 @@ display_types = {
    'T0662' => 'list',
    'T0710' => 'list',
    'T0700' => 'list',
-   'Hinweis' => 'list',
+   'Hinweise' => 'list',
 };
 
 FOREACH category IN categories;

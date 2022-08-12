@@ -18,7 +18,57 @@
 
 <h3>[% msg.maketext("Standorte der Bibliotheken") %]</h3>
 
-[% PROCESS common/subtemplate name="locations_osm" init_location = ''  %]
+<p>
+<div id="map_canvas_all" style="width: 100%; height: 500px"></div>
+</p>
+
+<script src="https://openlayers.org/api/OpenLayers.js"></script>
+
+<script type="text/javascript">
+    var map = new OpenLayers.Map("map_canvas_all");
+    map.addLayer(new OpenLayers.Layer.OSM());
+
+    var lonLatCenter = new OpenLayers.LonLat( 6.928751,50.925755[% locationinfo.fields.${"L0280"}.first.content.split(',').reverse.join(',') %] ).transform(
+            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+            map.getProjectionObject() // to Spherical Mercator Projection
+          );
+
+    var zoom=14;
+
+    var markers = new OpenLayers.Layer.Markers( "Markers" );
+    map.addLayer(markers);
+
+[% FOREACH location IN locations %]
+[%  coordinates = location.fields.${"L0280"}.first.content.split(',').reverse.join(',') %]
+[%  NEXT IF NOT coordinates %]
+[%  IF coordinates %]
+    var lonLat[% location.id %] = new OpenLayers.LonLat( [% coordinates %] ).transform(
+            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+            map.getProjectionObject() // to Spherical Mercator Projection
+          );
+
+    var size[% location.id %] = new OpenLayers.Size(25,41);
+    var offset[% location.id %] = new OpenLayers.Pixel(-(size[% location.id %].w/2), -size[% location.id %].h);
+    var icon[% location.id %] = new OpenLayers.Icon('[% scheme %]://[% servername %]/js/leaflet-1.7.1/images/marker-icon.png',size[% location.id %],offset[% location.id %]);
+
+    var marker[% location.id %] = new OpenLayers.Marker(lonLat[% location.id %],icon[% location.id %]); 
+    markers.addMarker(marker[% location.id %]);
+    marker[% location.id %].icon.imageDiv.title = "[% location.description.replace('"','\'') %]";
+[%  END %]
+[% END %]
+
+
+    map.setCenter (lonLatCenter, zoom);
+    
+     $("#map_canvas_all").on("wheel mousewheel DOMMouseScroll", function(e){
+         if (e.shiftKey) {
+         }else {
+         e.stopPropagation();
+         }
+         return true;
+    });
+
+</script>
 
 <div class="mt-3">
 
@@ -65,7 +115,7 @@
      url = '';
 
      IF identifier.match('^DE-38$') || identifier.match('^DE-38-HWA$') || identifier.match('^DE-38-\d\d\d$');
-        url = "${path_prefix}/${config.get('locations_loc')}/id/${identifier}.html?l=${lang}";
+        url = "${path_prefix}/${config.get('locations_loc')}/id/${identifier}";
 
      END;
   
@@ -83,7 +133,7 @@
   
 %]
 [% FOREACH desc IN institution_map.keys.sort %]
-	<li>[% IF institution_map.${desc}.url %]<a href="[% scheme %]://[% servername %][% institution_map.${desc}.url %]">[% END %][% desc %][% IF institution_map.${desc}.sigel %] ([% institution_map.${desc}.sigel %])[% END %][% IF institution_map.${desc}.url %]</a>[% END %][% IF institution_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institution_map.${desc}.arbeitsplaetze %][% END %]</li>
+	<li>[% IF institution_map.${desc}.url %]<a href="[% scheme %]://[% servername %][% institution_map.${desc}.url %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% institution_map.${desc}.url %].include?l=[% lang %]">[% END %][% desc %][% IF institution_map.${desc}.sigel %] ([% institution_map.${desc}.sigel %])[% END %][% IF institution_map.${desc}.url %]</a>[% END %][% IF institution_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institution_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
       </ul>

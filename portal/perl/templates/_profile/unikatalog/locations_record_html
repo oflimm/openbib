@@ -1,6 +1,42 @@
 [%- IF locationinfo.fields.${"L0280"}.first.content -%]
 
-[% PROCESS common/subtemplate name="locations_osm" init_location = locationinfo.identifier  %]
+<p>
+<div id="map_canvas_single" style="width: 100%; height: 300px"></div>
+</p>
+
+<script src="https://openlayers.org/api/OpenLayers.js"></script>
+
+<script type="text/javascript">
+    map = new OpenLayers.Map("map_canvas_single");
+    map.addLayer(new OpenLayers.Layer.OSM());
+
+    var lonLat = new OpenLayers.LonLat( [% locationinfo.fields.${"L0280"}.first.content.split(',').reverse.join(',') %] ).transform(
+            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+            map.getProjectionObject() // to Spherical Mercator Projection
+          );
+
+    var zoom=16;
+
+    var markers = new OpenLayers.Layer.Markers( "Markers" );
+    map.addLayer(markers);
+
+    var size = new OpenLayers.Size(25,41);
+    var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+    var icon = new OpenLayers.Icon('[% scheme %]://[% servername %]/js/leaflet-1.7.1/images/marker-icon.png',size,offset);
+    var marker = new OpenLayers.Marker(lonLat,icon);
+    markers.addMarker(marker);
+
+    marker.icon.imageDiv.title = "[% locationinfo.description.replace('"','\'') %]";
+    map.setCenter (lonLat, zoom);
+
+    $("#map_canvas_single").on("wheel mousewheel DOMMouseScroll", function(e){
+         if (e.shiftKey) {
+         }else {
+         e.stopPropagation(); 
+         }
+         return true;
+    });
+</script>
 
 [% END %]
 

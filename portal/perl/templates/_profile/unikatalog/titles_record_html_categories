@@ -680,7 +680,34 @@ FOREACH field IN normdata;
 	    content_map.${'T1600'} = [];
 	 END;
          content_map.${'T1600'}.push(content);
-	 
+
+    CASE "T1770" ;
+         thismult      = item.mult ;
+         thiscontent   = item.content ;
+
+         FOREACH thisitem IN normdata.${"T1781"} ;
+           IF thisitem.mult == thismult ;
+              url  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}hbzid=${thisitem.content}";
+              thiscontent = "<a href=\"${url}\">${thiscontent}</a>";
+           END ;
+         END ;
+
+         FOREACH thisitem IN normdata.${"T1768"} ;
+           IF thisitem.mult == thismult ;
+	      thisitem.content = thisitem.content.replace('Beil\.','Beilage');
+	      thisitem.content = thisitem.content.replace('Vorg\.','Vorgänger');	      
+	      thisitem.content = thisitem.content.replace('Forts\.','Fortsetzung');	      
+	      thisitem.content = thisitem.content.replace('Online-Ausg\.','Online-Ausgabe');
+              thiscontent = "${thisitem.content} ${thiscontent}";
+           END ;
+         END ;
+
+         IF NOT content_map.${'Hinweis'} ;
+	    content_map.${'Hinweis'} = [];
+	 END;
+         content_map.${'Hinweis'}.push(thiscontent);
+
+
     CASE "T4500";
          # Dummy-Eintrag, damit dieser Eintrag nicht vom higlightquery
          # erwischt wird
@@ -753,7 +780,8 @@ END;
 display_types = {
    'T0662' => 'list',
    'T0710' => 'list',
-   'T0700' => 'list',   
+   'T0700' => 'list',
+   'Hinweis' => 'list',
 };
 
 FOREACH category IN categories;

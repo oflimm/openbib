@@ -239,6 +239,12 @@
          title = item.${'T0310'}.first.content;
      END;
 
+     # Mit Unterreihe
+     IF item.${'T0360'}.first.content;
+         unterreihe = item.${'T0360'}.first.content;
+	 title = "${title} / ${unterreihe}";
+     END;
+
      is_schriftenreihe = 0;
      is_mehrbaendig    = 0;
 

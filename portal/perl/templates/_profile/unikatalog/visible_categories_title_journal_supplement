@@ -21,7 +21,7 @@
                 'T0451', # msg.maketext("T0451") GesTit Vorl
                 'T0590', # msg.maketext("T0590") HSTQuelle
                 'T0585', # msg.maketext("T0585") ISSN der Quelle
-                'Hinweis', # msg.maketext("Hinweis") Hinweis
+                'Hinweise', # msg.maketext("Hinweise") Hinweise
 #                'T0600', # msg.maketext("T0600") Bemerkung
                 'T0407', # msg.maketext("T0407") Massstab
                 'T0434', # msg.maketext("T0434") Sonst. Angaben

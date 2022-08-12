@@ -702,10 +702,10 @@ FOREACH field IN normdata;
            END ;
          END ;
 
-         IF NOT content_map.${'Hinweis'} ;
-	    content_map.${'Hinweis'} = [];
+         IF NOT content_map.${'Hinweise'} ;
+	    content_map.${'Hinweise'} = [];
 	 END;
-         content_map.${'Hinweis'}.push(thiscontent);
+         content_map.${'Hinweise'}.push(thiscontent);
 
 
     CASE "T4500";

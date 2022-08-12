@@ -186,7 +186,7 @@
      url = '';
 
      IF identifier.match('^DE-38-\d\d\d.?$');
-        url = "${path_prefix}/${config.get('locations_loc')}/id/${identifier}.html?l=${lang}";
+        url = "${path_prefix}/${config.get('locations_loc')}/id/${identifier}";
      END;
 
      IF location.type == 'Generic' && gebaeude ;
@@ -214,7 +214,7 @@
 
 [% FOREACH desc IN institution_map.keys.sort %]
      [% NEXT IF desc.match('^Lern') %]
-	<li>[% IF institution_map.${desc}.url %]<a href="[% scheme %]://[% servername %][% institution_map.${desc}.url %]">[% END %][% desc %][% IF institution_map.${desc}.sigel %] ([% institution_map.${desc}.sigel %])[% END %][% IF institution_map.${desc}.url %]</a>[% END %][% IF institution_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institution_map.${desc}.arbeitsplaetze %][% END %]</li>
+	<li>[% IF institution_map.${desc}.url %]<a href="[% scheme %]://[% servername %][% institution_map.${desc}.url %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% institution_map.${desc}.url %].include?l=[% lang %]">[% END %][% desc %][% IF institution_map.${desc}.sigel %] ([% institution_map.${desc}.sigel %])[% END %][% IF institution_map.${desc}.url %]</a>[% END %][% IF institution_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institution_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
        </ul>
@@ -262,7 +262,7 @@
      url = '';
 
      IF identifier.match('^DE-38-\d\d\d$');
-        url = "${path_prefix}/${config.get('locations_loc')}/id/${identifier}.html?l=${lang}";
+        url = "${path_prefix}/${config.get('locations_loc')}/id/${identifier}";
      END;
 
      description    = location.description ;
@@ -279,7 +279,7 @@
   
 %]
 [% FOREACH desc IN institution_map.keys.sort %]
-	<li>[% IF institution_map.${desc}.url %]<a href="[% scheme %]://[% servername %][% institution_map.${desc}.url %]">[% END %][% desc %][% IF institution_map.${desc}.sigel %] ([% institution_map.${desc}.sigel %])[% END %][% IF institution_map.${desc}.url %]</a>[% END %][% IF institution_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institution_map.${desc}.arbeitsplaetze %][% END %]</li>
+	<li>[% IF institution_map.${desc}.url %]<a href="[% scheme %]://[% servername %][% institution_map.${desc}.url %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% institution_map.${desc}.url %].include?l=[% lang %]">[% END %][% desc %][% IF institution_map.${desc}.sigel %] ([% institution_map.${desc}.sigel %])[% END %][% IF institution_map.${desc}.url %]</a>[% END %][% IF institution_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institution_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
 </ul>
@@ -328,7 +328,7 @@
      url = '';
 
      IF identifier.match('^DE-38-\d\d\d$');
-        url = "${path_prefix}/${config.get('locations_loc')}/id/${identifier}.html?l=${lang}";
+        url = "${path_prefix}/${config.get('locations_loc')}/id/${identifier}";
      END;
 
      description    = location.description ;
@@ -345,7 +345,7 @@
   
 %]
 [% FOREACH desc IN institution_map.keys.sort %]
-	<li>[% IF institution_map.${desc}.url %]<a href="[% scheme %]://[% servername %][% institution_map.${desc}.url %]">[% END %][% desc %][% IF institution_map.${desc}.sigel %] ([% institution_map.${desc}.sigel %])[% END %][% IF institution_map.${desc}.url %]</a>[% END %][% IF institution_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institution_map.${desc}.arbeitsplaetze %][% END %]</li>
+	<li>[% IF institution_map.${desc}.url %]<a href="[% scheme %]://[% servername %][% institution_map.${desc}.url %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% institution_map.${desc}.url %].include?l=[% lang %]">[% END %][% desc %][% IF institution_map.${desc}.sigel %] ([% institution_map.${desc}.sigel %])[% END %][% IF institution_map.${desc}.url %]</a>[% END %][% IF institution_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institution_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
 </ul>
@@ -393,7 +393,7 @@
      url = '';
 
      IF identifier.match('^DE-38-\d\d\d$');
-        url = "${path_prefix}/${config.get('locations_loc')}/id/${identifier}.html?l=${lang}";
+        url = "${path_prefix}/${config.get('locations_loc')}/id/${identifier}";
      END;
 
      description    = location.description ;
@@ -410,7 +410,7 @@
   
 %]
 [% FOREACH desc IN institution_map.keys.sort %]
-	<li>[% IF institution_map.${desc}.url %]<a href="[% scheme %]://[% servername %][% institution_map.${desc}.url %]">[% END %][% desc %][% IF institution_map.${desc}.sigel %] ([% institution_map.${desc}.sigel %])[% END %][% IF institution_map.${desc}.url %]</a>[% END %][% IF institution_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institution_map.${desc}.arbeitsplaetze %][% END %]</li>
+	<li>[% IF institution_map.${desc}.url %]<a href="[% scheme %]://[% servername %][% institution_map.${desc}.url %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% institution_map.${desc}.url %].include?l=[% lang %]">[% END %][% desc %][% IF institution_map.${desc}.sigel %] ([% institution_map.${desc}.sigel %])[% END %][% IF institution_map.${desc}.url %]</a>[% END %][% IF institution_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institution_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
 </ul>
@@ -458,7 +458,7 @@
      url = '';
 
      IF identifier.match('^DE-38-\d\d\d$');
-        url = "${path_prefix}/${config.get('locations_loc')}/id/${identifier}.html?l=${lang}";
+        url = "${path_prefix}/${config.get('locations_loc')}/id/${identifier}";
      END;
 
      description    = location.description ;
@@ -475,7 +475,7 @@
   
 %]
 [% FOREACH desc IN institution_map.keys.sort %]
-	<li>[% IF institution_map.${desc}.url %]<a href="[% scheme %]://[% servername %][% institution_map.${desc}.url %]">[% END %][% desc %][% IF institution_map.${desc}.sigel %] ([% institution_map.${desc}.sigel %])[% END %][% IF institution_map.${desc}.url %]</a>[% END %][% IF institution_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institution_map.${desc}.arbeitsplaetze %][% END %]</li>
+	<li>[% IF institution_map.${desc}.url %]<a href="[% scheme %]://[% servername %][% institution_map.${desc}.url %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% institution_map.${desc}.url %].include?l=[% lang %]">[% END %][% desc %][% IF institution_map.${desc}.sigel %] ([% institution_map.${desc}.sigel %])[% END %][% IF institution_map.${desc}.url %]</a>[% END %][% IF institution_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institution_map.${desc}.arbeitsplaetze %][% END %]</li>
 
 [% END %]
     </ul>

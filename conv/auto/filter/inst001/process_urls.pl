@@ -32,7 +32,8 @@ while (<>){
     # ' ': Unbestimmt g oder y oder r
     # 'f': Unbestimmt, aber Volltext Zugriff g oder y (fulltext)
     # 'g': Freier Zugriff (green)
-    # 'y': Eingeschraenkter Zugriff (yellow)
+    # 'y': Lizensierter Zugriff (yellow)
+    # 'l': Unbestimmt Eingeschraenkter Zugriff y oder r (limited)
     # 'r': Kein Zugriff (red)
 
     my $mult_ref = {};

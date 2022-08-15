@@ -657,8 +657,8 @@ FOREACH field IN normdata;
 
          icons     = "<span>${normdataicon}</span>";
 
-         bkdesc = "";
-         IF item.content.match('\d\d\.\d\d');         
+         bkdesc = ""; 
+        IF item.content.match('\d\d\.\d\d');         
            bkresult      = bklookup.${item.content};
 	   IF bkresult ;
 	      bkdesc = "(${bkresult})";
@@ -688,7 +688,7 @@ FOREACH field IN normdata;
          FOREACH thisitem IN normdata.${"T1781"} ;
            IF thisitem.mult == thismult ;
               url  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}hbzid=${thisitem.content}";
-              thiscontent = "<a href=\"${url}\">${thiscontent}</a>";
+              thiscontent = "<a href=\"${url}\" class=\"inturl\">${thiscontent}</a>";
            END ;
          END ;
 

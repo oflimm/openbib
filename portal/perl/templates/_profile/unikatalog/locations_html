@@ -19,7 +19,7 @@
 <h3>[% msg.maketext("Standorte der Bibliotheken") %]</h3>
 
 <p>
-<div id="map_canvas_all" style="width: 100%; height: 500px"></div>
+<div id="map_canvas_all" style="width: 100%; height: 500px; position:relative;"></div>
 </p>
 
 <script src="https://openlayers.org/api/OpenLayers.js"></script>

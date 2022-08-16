@@ -1,3 +1,5 @@
+<h3>[% locationinfo.description %]</h3>
+
 [%- IF locationinfo.fields.${"L0280"}.first.content -%]
 
 <p>

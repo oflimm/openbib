@@ -116,6 +116,7 @@ sub cgiapp_init {
     }
 
     $self->param('remote_ip',$remote_ip);
+    $self->param('servername',$r->get_server_name);
     
     my $sessionID    = $r->cookies->{sessionID} || '';
 
@@ -151,7 +152,6 @@ sub cgiapp_init {
     my $queryoptions = OpenBib::QueryOptions->new({ query => $r, session => $session });
 
     $self->param('qopts',$queryoptions);
-    $self->param('servername',$r->get_server_name);
 
     if ($config->{benchmark}) {
         $btime=new Benchmark;
@@ -1988,7 +1988,7 @@ sub tunnel_through_authenticator {
 
     # Args? Append Method
     if ($args){
-        $location.="?$args" if ($method eq "POST");
+        $location.="?$args" if ($method eq "POST"); # 
         if ($method){
             $location.=";_method=$method";
         }
@@ -2046,7 +2046,8 @@ sub set_cookie {
     my $logger = get_logger();
 
     my $config = $self->param('config');
-
+    my $servername = $self->param('servername');
+    
     if (!($name || $value)){
         $logger->debug("Invalid cookie parameters for cookie: $name / value: $value");
         return;
@@ -2057,10 +2058,11 @@ sub set_cookie {
     $logger->debug("Adding cookie $name to $value");
     
     my $cookie = CGI::Cookie->new(
-        -name    => $name,
-        -value   => $value,
-        -expires => '+24h',
-        -path    => $config->{base_loc},
+        -name     => $name,
+        -value    => $value,
+        -expires  => '+24h',
+        -path     => $config->{base_loc},
+	-domain   => $servername,
 	-httponly => 1,
 	-samesite => "Strict",
     );

@@ -144,10 +144,10 @@
   </div><!-- /.container-fluid -->
 
   <!-- START Bootstrap-Cookie-Alert -->
-  <div class="alert text-center cookiealert" role="alert">
-    <b>Um unsere Webseite für Sie optimal zu gestalten und fortlaufend verbessern zu können, verwenden wir Cookies. Durch die weitere Nutzung der Webseite stimmen Sie der Verwendung von Cookies zu. Weitere Informationen zu Cookies erhalten Sie in unserer <a href="[% path_prefix %]/[% config.get('info_loc') %]/datenschutz.html?l=[% lang %]">Datenschutzerklärung</a>. Unser Impressum finden Sie <a href="[% path_prefix %]/[% config.get('info_loc') %]/impressum.html?l=[% lang %]">hier</a>.</b>
+  <div class="alert text-center cookiealert ob-bg" role="alert">
+    <b>Um unsere Webseite für Sie optimal zu gestalten und fortlaufend verbessern zu können, verwenden wir Cookies. Durch die weitere Nutzung der Webseite stimmen Sie der Verwendung von Cookies zu. Weitere Informationen zu Cookies erhalten Sie in unserer <a class="inturl" href="[% path_prefix %]/[% config.get('info_loc') %]/datenschutz.html?l=[% lang %]">Datenschutzerklärung</a>. Unser Impressum finden Sie <a class="inturl" href="[% path_prefix %]/[% config.get('info_loc') %]/impressum.html?l=[% lang %]">hier</a>.</b>
 
-      <button type="button" class="btn btn-primary btn-sm acceptcookies" aria-label="Close">
+      <button type="button" class="btn btn-primary btn-sm acceptcookies mt-3" aria-label="Close">
         Ich stimme der Verwendung von Cookies zu.
       </button>
     </div>

@@ -40,6 +40,7 @@ use OpenBib::Search::Backend::Solr;
 use OpenBib::Search::Backend::EZB;
 use OpenBib::Search::Backend::EDS;
 use OpenBib::Search::Backend::GVI;
+use OpenBib::Search::Backend::Gesis;
 use OpenBib::Search::Backend::JOP;
 use OpenBib::Search::Backend::Xapian;
 
@@ -94,6 +95,9 @@ sub create_searcher {
         elsif ($system eq "Backend: GVI"){
             $sb = "gvi";
         }
+        elsif ($system eq "Backend: Gesis"){
+            $sb = "gesis";
+        }
         elsif ($system eq "Backend: JOP"){
             $sb = "jop";
         }
@@ -127,6 +131,9 @@ sub create_searcher {
     }
     elsif ($sb eq "gvi"){        
         return new OpenBib::Search::Backend::GVI($arg_ref);
+    }
+    elsif ($sb eq "gesis"){        
+        return new OpenBib::Search::Backend::Gesis($arg_ref);
     }
     elsif ($sb eq "jop"){        
         return new OpenBib::Search::Backend::JOP($arg_ref);

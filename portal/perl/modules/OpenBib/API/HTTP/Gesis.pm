@@ -207,32 +207,32 @@ sub send_search_request {
     my $ua     = $self->get_client;
     
     $self->parse_query($searchquery);
-    
-    my $facets_ref = {};
-    
-    # foreach my $facet (keys %{$config->{facets}}){
-    #     $facets_ref->{"facet_$facet"} = {
-    #         terms => {
-    #             field => "facet_$facet",
-    #             size => 25,
-    #         }
-    #     };
-    
-    #         my $thisfilterstring = $querystring->{filter}{"facet_$facet"};
-    #         if ($thisfilterstring){
-    #             push @{$facets_ref->{$facet}{facet_filter}}, { term => { "facet_$facet" =>  $thisfilterstring }};
-    #         }
 
+    my $facets_ref = {};
+
+    foreach my $facet (keys %{$config->{elasticsearch_facet_field}{gesis}}){
+        $facets_ref->{"$facet"} = {
+            terms => {
+                field => $config->{elasticsearch_facet_field}{gesis}{$facet},
+                size  => 25,
+            }
+        };
+    }
+	
     # Facetten filtern
-    
-    #     foreach my $filter (keys %{$querystring->{filter}}){
-    #         $facets_ref->{$filter}{facet_filter}{term} = {
-    #             "${filter}string" => $querystring->{filter}{$filter},
-    #         };
-    #     }    
+	
+    # foreach my $filter (keys %{$querystring->{filter}}){
+    # 	$facets_ref->{$filter}{facet_filter}{term} = {
+    # 	    "${filter}string" => $querystring->{filter}{$filter},
+    # 	};
+    # }    
     
     my $query_ref  = $self->get_query;
     my $filter_ref = $self->get_filter;
+
+    if ($logger->is_debug){
+	$logger->debug("Filter: ".YAML::Dump($filter_ref));
+    }
     
     my $sort_ref = [];
     
@@ -250,10 +250,10 @@ sub send_search_request {
     }
 
     my $body_ref = {
-#	aggregations => $facets_ref,
+	aggregations => $facets_ref,
 	from   => $from,
 	size   => $num,
-#	sort   => $sort_ref,
+	sort   => $sort_ref,
     };
 
     if ($self->have_filter){
@@ -747,9 +747,9 @@ sub parse_query {
     if (@{$searchquery->get_filter}){
         $filter_ref = [ ];
         foreach my $thisfilter_ref (@{$searchquery->get_filter}){
-            my $field = $elasticsearch_filter_field_ref->{$thisfilter_ref->{field}};
+            my $field = $elasticsearch_filter_field_ref->{gesis}{$thisfilter_ref->{field}};
             my $term  = $thisfilter_ref->{term};
-#            $term=~s/_/ /g;
+
             
             $logger->debug("Facet: $field / Term: $term (Filter-Field: ".$thisfilter_ref->{field}.")");
 

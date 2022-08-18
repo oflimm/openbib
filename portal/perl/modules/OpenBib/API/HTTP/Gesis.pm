@@ -439,7 +439,6 @@ sub match2fields {
 	    'issn'       => "T0543",
 	    'source'     => "T0590",
 	    'publisher'  => "T0412",
-	    'portal_url' => "T0662",
 	    'date'       => "T0425",
 	    'abstract'   => "T0750",
 	    'format'     => "T0435",
@@ -712,6 +711,22 @@ sub match2fields {
 		$mult_url++;
 	    }
 	}
+    }
+
+    if ($match_ref->{_source}{portal_url}){
+	push @{$fields_ref->{'T0662'}}, {
+	    content  => $match_ref->{_source}{portal_url},
+	    subfield => '',
+	    mult     => $mult_url,
+	};
+	
+	push @{$fields_ref->{'T0663'}}, {
+	    content  => "Portal URL",
+	    subfield => '',
+	    mult     => $mult_url,
+	};
+	
+	$mult_url++;
     }
     
     

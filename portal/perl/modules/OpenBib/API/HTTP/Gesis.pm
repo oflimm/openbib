@@ -129,7 +129,8 @@ sub send_retrieve_request {
 	'query' => { bool => { must => { match => { _id => $id}}}},
     };
 
-    my $encoded_json = encode_utf8(encode_json($json_query_ref));
+    # my $encoded_json = encode_utf8(encode_json($json_query_ref));
+    my $encoded_json = encode_json($json_query_ref);
 
     if ($logger->is_debug){
 	$logger->debug("Gesis JSON Query: $encoded_json");
@@ -238,13 +239,18 @@ sub send_search_request {
     
     $logger->debug("Sorting with $sorttype and order $sortorder");
 
-#    if ($sorttype eq "relevance"){
-        push @$sort_ref, { "_score" => { order => 'desc' }};
-#    }
-#    else {
-#	push @$sort_ref, { "sort_$sorttype" => { order => $sortorder }};
-#    }
+    # my $sortconf = $config->get('elasticsearch_facet_field')->{gesis};
+    
+    # if (defined $sortconf->{$sorttype}){
+    # 	push @$sort_ref, { "$sortconf->{$sorttype}{field}" => { order => $sortorder }};
+    # }
+    # else { # Default by relevance
+    #     push @$sort_ref, { "_score" => { order => 'desc' }};
+    # }
 
+    # Always sort by relevance
+    push @$sort_ref, { "_score" => { order => 'desc' }};
+    
     if ($logger->is_debug){
 	$logger->debug("Sort ".YAML::Dump($sort_ref));
     }
@@ -256,20 +262,14 @@ sub send_search_request {
 	sort   => $sort_ref,
     };
 
+    $body_ref->{query} = {
+	bool => $query_ref,
+    };
+    
     if ($self->have_filter){
-	$body_ref->{query} = {
-	    bool => {
-		must  => $query_ref,
-		filter => $filter_ref, 
-	    }
-	}; 
+	$body_ref->{query}{bool}{filter} = $filter_ref;
     }
     else {
-	$body_ref->{query} = {
-	    bool => {
-		must  => $query_ref,
-	    }
-	};
     }
     
     if ($logger->is_debug){
@@ -280,7 +280,8 @@ sub send_search_request {
 
     my $header = ['Content-Type' => 'application/json; charset=UTF-8'];
 
-    my $encoded_json = encode_utf8(encode_json($body_ref));
+#    my $encoded_json = encode_utf8(encode_json($body_ref));
+    my $encoded_json = encode_json($body_ref);    
 
     $logger->debug("ElasticSearch JSON Query: $encoded_json");
 
@@ -440,12 +441,16 @@ sub match2fields {
 	    'publisher'  => "T0412",
 	    'portal_url' => "T0662",
 	    'date'       => "T0425",
-	    
+	    'abstract'   => "T0750",
+	    'format'     => "T0435",
+	    'coverage'   => "T0433",
+	    'data_source' => "T0590",	    	    
     };
     
     my $fields_ref = {};
     
-    my $have_person_ref = {};
+    my $have_person_ref  = {};
+    my $have_subject_ref = {};
     
     # Gesamtresponse in gesis_source
     push @{$fields_ref->{'gesis_source'}}, {
@@ -543,6 +548,34 @@ sub match2fields {
 	    };
 	}
     }
+
+    if ($match_ref->{_source}{contributor}){
+	if (ref $match_ref->{_source}{contributor} eq "ARRAY"){
+	    my $mult = 1;
+	    foreach my $content (@{$match_ref->{_source}{contributor}}){
+		push @{$fields_ref->{'T0201'}}, {
+		    content  => $content,
+		    subfield => '',
+		    mult     => $mult++,
+		};
+		
+		push @{$fields_ref->{'PC0001'}}, {
+		    content  => $content,
+		};
+	    }
+	}
+	else {
+	    push @{$fields_ref->{'T0201'}}, {
+		content  => $match_ref->{_source}{contributor},
+		subfield => '',
+		mult     => 1,
+	    };
+	    
+	    push @{$fields_ref->{'PC0001'}}, {
+		content  => $match_ref->{_source}{contributor},
+	    };
+	}
+    }
     
     if ($match_ref->{_source}{person}){
 	if (ref $match_ref->{_source}{person} eq "ARRAY"){
@@ -580,6 +613,108 @@ sub match2fields {
 	}
     }
 
+    # Schlagworte
+    if ($match_ref->{_source}{topic}){
+	if (ref $match_ref->{_source}{topic} eq "ARRAY"){
+	    my $mult = 1;
+	    foreach my $content (@{$match_ref->{_source}{topic}}){
+		next if (defined $have_subject_ref->{$content});
+		
+		$logger->debug("topic: $content");
+		push @{$fields_ref->{'T0710'}}, {
+		    content  => $content,
+		    subfield => '',
+		    mult     => $mult++,
+		};
+		
+		$have_subject_ref->{$content} = 1;
+	    }
+	}
+	else {
+	    $logger->debug("topic single: ".$match_ref->{_source}{topic});
+	    unless (defined $have_subject_ref->{$match_ref->{_source}{topic}}){
+		
+		push @{$fields_ref->{'T0710'}}, {
+		    content  => $match_ref->{_source}{topic},
+		    subfield => '',
+		    mult     => 1,
+		};
+		
+		$have_subject_ref->{$match_ref->{_source}{topic}} = 1;
+		
+	    }
+	    
+	}
+    }
+
+    if ($match_ref->{_source}{topic_en}){
+	if (ref $match_ref->{_source}{topic_en} eq "ARRAY"){
+	    my $mult = 1;
+	    foreach my $content (@{$match_ref->{_source}{topic_en}}){
+		next if (defined $have_subject_ref->{$content});
+		
+		$logger->debug("topic_en: $content");
+		push @{$fields_ref->{'T0710'}}, {
+		    content  => $content,
+		    subfield => '',
+		    mult     => $mult++,
+		};
+		
+		$have_subject_ref->{$content} = 1;
+	    }
+	}
+	else {
+	    $logger->debug("topic_en single: ".$match_ref->{_source}{topic_en});
+	    unless (defined $have_subject_ref->{$match_ref->{_source}{topic_en}}){
+		
+		push @{$fields_ref->{'T0710'}}, {
+		    content  => $match_ref->{_source}{topic_en},
+		    subfield => '',
+		    mult     => 1,
+		};
+		
+		$have_subject_ref->{$match_ref->{_source}{topic_en}} = 1;
+		
+	    }
+	    
+	}
+    }
+
+    my $mult_url = 1;
+    
+    # URLs
+    if ($match_ref->{_source}{links}){
+	if (ref $match_ref->{_source}{links} eq "ARRAY"){
+
+	    foreach my $content_ref (@{$match_ref->{_source}{links}}){
+		
+		push @{$fields_ref->{'T0662'}}, {
+		    content  => $content_ref->{link},
+		    subfield => '',
+		    mult     => $mult_url,
+		};
+
+		push @{$fields_ref->{'T0663'}}, {
+		    content  => $content_ref->{label},
+		    subfield => '',
+		    mult     => $mult_url,
+		};
+
+
+		if ($match_ref->{_source}{fulltext}){
+		    push @{$fields_ref->{'T4120'}}, {
+			content  => $content_ref->{link},
+			subfield => 'f',
+			mult     => $mult_url,
+		    };
+		}
+
+		$mult_url++;
+	    }
+	}
+    }
+    
+    
     return $fields_ref;
 }
 
@@ -647,13 +782,11 @@ sub parse_query {
     my $config = $self->get_config;
 
     my $searchfield_mapping_ref = {
-	'freesearch' => '_all',
-	    'person' => 'person',
-	    'personstring' => 'person',	    
-	    'corporatebody' => 'coreEditor',
-	    'corporatebodystring' => 'coreEditor',
-	    'mediatype' => 'type', 	    
-	    'mediatypestring' => 'type', 
+	'freesearch'              => '_all',
+	    'mediatype'           => 'type', 	    
+	    'mediatypestring'     => 'type',
+	    'year'                => 'date', 	    
+	    'yearstring'          => 'date', 	    
     };
     
     # Aufbau des elasticsearchquerystrings
@@ -670,62 +803,101 @@ sub parse_query {
         'OR'      => 'OR ',
     };
 
-    my $query_ref = [];
+    my $query_ref        = {};
+    
+    my $must_query_ref   = [];
+    my $should_query_ref = [];    
     
     foreach my $field (keys %{$config->{searchfield}}){
-        my $searchtermstring = (defined $searchquery->get_searchfield($field)->{norm})?$searchquery->get_searchfield($field)->{norm}:'';
+        my $searchtermstring = (defined $searchquery->get_searchfield($field)->{val})?$searchquery->get_searchfield($field)->{val}:'';
         my $searchtermop     = (defined $searchquery->get_searchfield($field)->{bool} && defined $ops_ref->{$searchquery->get_searchfield($field)->{bool}})?$ops_ref->{$searchquery->get_searchfield($field)->{bool}}:'';
         if ($searchtermstring) {
-            # Freie Suche einfach uebernehmen
-            if ($field eq "freesearch" && $searchtermstring) {
-                my @searchterms = split('\s+',$searchtermstring);
-                
-#                  if (@searchterms > 1){
-#                      push @{$query_ref->{freesearch}},'-and';
-#                      push @{$query_ref->{freesearch}},@searchterms;
-#                  }
-#                  else {
-#                      $query_ref->{freesearch} = $searchtermstring;
-                #                  }
-                
-#                 foreach my $term (@searchterms){
-#                     push @elasticsearchquerystrings, $config->{searchfield}{$field}{prefix}.":$term";
-#                 }
 
-                push @$query_ref, {
-		    match => {
-			$searchfield_mapping_ref->{$field} => $searchtermstring,
-		    },
-
-		};
-            }
-            # Titelstring mit _ ersetzten
-            elsif (($field eq "titlestring" || $field eq "mark") && $searchtermstring) {
-                my @chars = split("",$searchtermstring);
-                my $newsearchtermstring = "";
-                foreach my $char (@chars){
-                    if ($char ne "*"){
-                        $char=~s/\W/_/g;
-                    }
-                    $newsearchtermstring.=$char;
-                }
-
-                push @$query_ref, {
-		    match => {
-			$searchfield_mapping_ref->{$field} => $newsearchtermstring,
-		    },
-
-		};
-            }
-            # Sonst Operator und Prefix hinzufuegen
-            elsif ($searchtermstring) {
-                push @$query_ref, {
-		    match => {
-			$searchfield_mapping_ref->{$field} => $searchtermstring,
-		    },
-		};
-            }
-
+	    # $searchtermstring = encode_utf8($searchtermstring);
+	    
+	    # Suchbegriff auf mehrere Felder verteilt
+	    if ($field=~m/person/){
+		if ($field =~m/string$/){
+		    push @$should_query_ref, {
+			match_phrase => {
+			    person     => $searchtermstring,
+			},
+		    };
+		    push @$should_query_ref, {
+			match_phrase => {
+			    coreAuthor => $searchtermstring,
+			},
+		    };
+		}
+		else {
+		    push @$must_query_ref, {
+			match => {
+			    person     => $searchtermstring,
+			    coreAuthor => $searchtermstring,
+			},
+		    };
+		}		
+	    }
+	    elsif ($field=~m/corporatebody/){
+		if ($field =~m/string$/){
+		    push @$should_query_ref, {
+			match_phrase => {
+			    contributor => $searchtermstring,
+			},
+		    };
+		    push @$should_query_ref, {
+			match_phrase => {
+			    coreEditor  => $searchtermstring,
+			},
+		    };
+		}
+		else {
+		    push @$must_query_ref, {
+			match => {
+			    coreEditor  => $searchtermstring,
+			    contributor => $searchtermstring,
+			},
+		    };
+		}		
+	    }
+	    elsif ($field=~m/subject/){
+		if ($field =~m/string$/){
+		    push @$should_query_ref, {
+			match_phrase => {
+			    topic    => $searchtermstring,
+			},
+		    };
+		    push @$should_query_ref, {
+			match_phrase => {
+			    topic_en => $searchtermstring,
+			},
+		    };
+		}
+		else {
+		    push @$must_query_ref, {
+			match => {
+			    topic    => $searchtermstring,
+			    topic_en => $searchtermstring,
+			},
+		    };
+		}		
+	    }
+	    else {	    
+		if ($field =~m/string$/){
+		    push @$must_query_ref, {
+			match_phrase => {
+			    $searchfield_mapping_ref->{$field} => $searchtermstring,
+			},
+		    };
+		}
+		else {
+		    push @$must_query_ref, {
+			match => {
+			    $searchfield_mapping_ref->{$field} => $searchtermstring,
+			},
+		    };
+		}
+	    }
             # Innerhalb einer freien Suche wird Standardmaessig UND-Verknuepft
             # Nochmal explizites Setzen von +, weil sonst Wildcards innerhalb mehrerer
             # Suchterme ignoriert werden.
@@ -733,7 +905,14 @@ sub parse_query {
         }
     }
 
+    if (@$should_query_ref){
+	$query_ref->{should} = $should_query_ref;
+    }
 
+    if (@$must_query_ref){
+	$query_ref->{must} = $must_query_ref;
+    }
+    
     # Filter
 
     my $filter_ref;

@@ -370,7 +370,7 @@
       fulltext_icon = config.get('ezb_yellow_img');
       fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
     ELSIF item.${'T4120'}.first.subfield == "f";
-      fulltext_icon = config.get('ezb_green_yellow_img');
+      fulltext_icon = config.get('ezb_unknown_img');
       fulltext_desc = msg.maketext("Volltext mit unbekanntem Zugang");;
     ELSE ;
       fulltext_icon = config.get('ezb_unknown_img');

@@ -276,6 +276,15 @@ sub send_search_request {
 	$logger->debug("Request body ".YAML::Dump($body_ref));
     }
 
+    if ($config->{benchmark}) {
+	my $stime        = new Benchmark;
+	my $stimeall     = timediff($stime,$atime);
+	my $timespan   = timestr($stimeall,"nop");
+	$timespan      =~s/(\d+\.\d+) .*/$1/;
+	
+	$logger->info("Zeit fuer das Preprocessing der Suche $timespan");
+    }
+    
     my $url = $config->get('gesis')->{'search_url'};
 
     my $header = ['Content-Type' => 'application/json; charset=UTF-8'];
@@ -299,6 +308,15 @@ sub send_search_request {
     
     if ($@){
 	$logger->error('Decoding error: '.$@);
+    }
+
+    if ($config->{benchmark}) {
+	my $stime        = new Benchmark;
+	my $stimeall     = timediff($stime,$atime);
+	my $timespan   = timestr($stimeall,"nop");
+	$timespan      =~s/(\d+\.\d+) .*/$1/;
+	
+	$logger->info("Zeit fuer das Preprocessing und die Suche $timespan");
     }
     
     return $results;

@@ -53,13 +53,13 @@
 <p> [% msg.maketext("Übersicht über die Bücher, die Sie über die Fernleihe bestellt haben sowie ihren aktuellen Bearbeitungsstatus.") %]</a></p>
 
 <ul>
-<li><a href="https://usb-koeln.devel.digibib.net/account/ill/books/orderlist" target="fernleihkonto_aufsaetze">[% msg.maketext("Buchbestellungen") %]</a></li>
+<li><a href="https://usb-koeln.digibib.net/account/ill/books/orderlist" target="fernleihkonto_aufsaetze">[% msg.maketext("Buchbestellungen") %]</a></li>
 </ul>
 
 <p> [% msg.maketext("Übersicht über die Zeitschriftenartikel und Abschnitte aus Büchern, die Sie als Kopie über die Fernleihe bestellt haben sowie ihren aktuellen Bearbeitungsstatus.") %]</a></p>
 
 <ul>
-<li><a href="https://usb-koeln.devel.digibib.net/account/ill/articles/orderlist" target="fernleihkonto_aufsaetze">[% msg.maketext("Aufsatzbestellungen") %]</a></li>
+<li><a href="https://usb-koeln.digibib.net/account/ill/articles/orderlist" target="fernleihkonto_aufsaetze">[% msg.maketext("Aufsatzbestellungen") %]</a></li>
 </ul>
 
 </div>

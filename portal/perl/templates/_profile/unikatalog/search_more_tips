@@ -6,8 +6,8 @@
 	<div class="card-body">
 	  [% msg.maketext("Bestellen Sie Literatur aus anderen Bibliotheken per Fernleihe: ") %]
 	  <ul style="margin-top:0.5em;">
-            <li><a href="https://usb-koeln.devel.digibib.net/ill/books" target="monofernleihsuche">Buch bestellen</a></li>
-            <li><a href="https://usb-koeln.devel.digibib.net/ill/articles">Zeitschriftenartikel bestellen</a></li>
+            <li><a href="https://usb-koeln.digibib.net/ill/books" target="monofernleihsuche">Buch bestellen</a></li>
+            <li><a href="https://usb-koeln.digibib.net/ill/articles">Zeitschriftenartikel bestellen</a></li>
           </ul>
 	</div>
       </div>

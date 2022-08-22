@@ -612,7 +612,7 @@ sub search {
         foreach my $db_node ($dbs_node->findnodes('db')) {
             $i++;
             # DBIS-Suche verfuegt ueber kein Paging
-            next if ($i <= $offset || $i > $offset+$page*$num);
+            next if ($i <= $offset || $i > $page*$num);
             
             my $single_db_ref = {};
 

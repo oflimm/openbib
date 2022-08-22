@@ -17,7 +17,7 @@ my $cgiapp = sub {
     Log::Log4perl->init($config->{log4perl_path});
     
     my $app = OpenBib::Handler::PSGI::Dispatch->as_psgi(
-#        debug      => 1,
+       #  debug      => 1,
         args_to_new => {
             QUERY      => OpenBib::Request->new($env),
         });
@@ -41,8 +41,10 @@ builder {
 #        [ qw(Environment Response Timer Memory Profiler::NYTProf)
 #      ];
 
+# Aktivierung von HTMLMinify fuehrt zu Einbussen bei der Performance wegen exzessiver Aufrufe des RegExp-Moduls         
 #    enable 'HTMLMinify', opt => {remove_comments => 1, remove_newlines => 1};
 
+# Aktivierung von Deflater fuehrt dazu, dass Streaming in Search.pm bei text/html nicht mehr funktioniert! 
 #    enable "Deflater",
 #      content_type => ['application/json','text/html','text/plain','text/csv','application/rdf+xml'],
 #      vary_user_agent => 1;

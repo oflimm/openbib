@@ -4590,12 +4590,12 @@ sub get_topics {
             id           => $topic->id,
             name         => $topic->name,
             description  => $topic->description,
-            litlistcount => $self->get_number_of_litlists_by_topic({topicid => $topic->id}),
         };
     }
 
     return $topics_ref;
 }
+
 
 sub get_topics_of_litlist {
     my ($self,$arg_ref)=@_;
@@ -5030,14 +5030,37 @@ sub get_items_in_collection {
 
         $logger->debug("Processing Item $listid with DB: $database ID: $titleid / Record: $titlecache");
 
-        if ($titlecache) {
-            my $record = new OpenBib::Record::Title({listid => $listid, date => $tstamp, comment => $comment, config => $config });
-            $record->from_json($titlecache);
-            $recordlist->add($record);
+        my $record;
+	my $record_exists = 0;
+
+	# Titel per DB/ID referenziert. Laden aus der DB
+	if ($titleid && $database){
+	    $record = OpenBib::Record::Title->new({id =>$titleid, database => $database, date => $tstamp, listid => $listid, comment => $comment, config => $config })->load_brief_record;
+            $record_exists = $record->record_exists;
+
+	    $logger->debug("Trying DB: $database / ID: $titleid : Records Exists? $record_exists");
         }
-        elsif ($database && $titleid){
-            $recordlist->add(new OpenBib::Record::Title({ database => $database, id => $titleid, listid => $listid, date => $tstamp, comment => $comment, config => $config })->load_brief_record);
+
+        # Titel nicht in DB aber gecached?
+        if (!$record_exists && $titlecache){
+	    $record = OpenBib::Record::Title->new({ date => $tstamp, listid => $listid, comment => $comment, config => $config })->set_record_from_json($titlecache);
+            $record->set_status('from_cache',1);
+
+            $record_exists = $record->record_exists;
+	    $logger->debug("Trying titlecache $titlecache : Records Exists? $record_exists");
         }
+
+        # Weder in DB vorhanden, noch gecached? Dann leerer Record
+        if (!$record_exists && $titleid && $database){
+	    $record = OpenBib::Record::Title->new({id => $titleid, database => $database, date => $tstamp, listid => $listid, comment => $comment, config => $config });
+	    $logger->debug("Record with DB: $database / ID: $titleid is empty");
+        }
+        elsif (!$record_exists) {
+           $record = OpenBib::Record::Title->new({ date => $tstamp, listid => $listid, comment => $comment, config => $config });
+	   $logger->debug("Record without DB / ID is empty");
+        }
+
+        $recordlist->add($record);
     }
     
     return $recordlist;

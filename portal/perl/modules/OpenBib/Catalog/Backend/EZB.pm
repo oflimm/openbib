@@ -82,7 +82,7 @@ Elektronischen Zeitschriftenbibliothek (EZB) in Regensburg zugegriffen werden.
 
  use OpenBib::DBIS;
 
- my $dbis = OpenBib::DBIS->new({});
+ my $dbis = OpenBib::EZB->new({});
 
 =head1 METHODS
 

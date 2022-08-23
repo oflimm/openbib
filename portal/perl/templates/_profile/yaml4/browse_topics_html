@@ -67,9 +67,11 @@
    thisclassifications = user.get_classifications_of_topic({ type => 'bk', topicid => topic.id});
    FOREACH classification IN thisclassifications;
      titlecount = titlecount + thisbklist.${classification};
-  END ;
+   END ;
+   litlistcount = user.get_number_of_litlists_by_topic({topicid => $topic.id});
+
 %]
-<li><a style="font-weight:bold;font-size:1.2em;" href="[% path_prefix %]/[% config.get('browse_loc') %]/topics/id/[% topic.id %].html?l=[% lang %]">[% topic.name %]</a> ([% msg.maketext("[_1] Titel in [_2] Gruppen, [_3] Literaturlisten",titlecount,thisclassifications.size,topic.litlistcount.public) %])</li>
+<li><a style="font-weight:bold;font-size:1.2em;" href="[% path_prefix %]/[% config.get('browse_loc') %]/topics/id/[% topic.id %].html?l=[% lang %]">[% topic.name %]</a> ([% msg.maketext("[_1] Titel in [_2] Gruppen, [_3] Literaturlisten",titlecount,thisclassifications.size,litlistcount.public) %])</li>
 [% END %]
 </ul>
 

@@ -4575,6 +4575,16 @@ sub get_topics {
   
     my $logger = get_logger();
 
+    my $memc_key = "config:topics";
+
+    if ($self->{memc}){
+        my $topics_ref = $self->{memc}->get($memc_key);
+
+	if ($topics_ref){
+	    return $topics_ref;
+	}
+    }
+
     # DBI: "select * from topics order by name"
     my $topics = $self->get_schema->resultset('Topic')->search_rs(
         undef,        
@@ -4591,6 +4601,10 @@ sub get_topics {
             name         => $topic->name,
             description  => $topic->description,
         };
+    }
+
+    if ($self->{memc}){
+	$self->{memc}->set($memc_key,$topics_ref,$self->{memcached_expiration}{$memc_key});
     }
 
     return $topics_ref;

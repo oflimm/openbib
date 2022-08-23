@@ -42,6 +42,7 @@ use LWP::UserAgent;
 use Storable;
 use JSON::XS;
 use URI::Escape;
+use WWW::Curl::Easy;
 use YAML ();
 
 use OpenBib::Config;
@@ -82,11 +83,14 @@ sub new {
 
     bless ($self, $class);
 
-    my $ua = LWP::UserAgent->new();
-    $ua->agent('USB Koeln/1.0');
-    $ua->timeout(30);
+    my $curl = WWW::Curl::Easy->new;
+    $self->{client}        = $curl;
+    
+    # my $ua = LWP::UserAgent->new();
+    # $ua->agent('USB Koeln/1.0');
+    # $ua->timeout(30);
 
-    $self->{client}        = $ua;
+    # $self->{client}        = $ua;
         
     $self->{sessionID} = $sessionID;
 
@@ -124,39 +128,65 @@ sub send_retrieve_request {
 
     my $url = $config->get('gesis')->{'search_url'};
 
-    my $header = ['Content-Type' => 'application/json; charset=UTF-8'];
+    # my $header = ['Content-Type' => 'application/json; charset=UTF-8'];
+    # my $json_query_ref = {
+    # 	'query' => { bool => { must => { match => { _id => $id}}}},
+    # };
+
+    # # my $encoded_json = encode_utf8(encode_json($json_query_ref));
+    # my $encoded_json = encode_json($json_query_ref);
+
+    # if ($logger->is_debug){
+    # 	$logger->debug("Gesis JSON Query: $encoded_json");
+    # }
+    
+    # my $request = HTTP::Request->new('POST',$url,$header,$encoded_json);
+    
+    # my $response = $ua->request($request);
+
+    # if ($logger->is_debug()){
+    # 	$logger->debug("Request URL: $url");
+    # }
+    
+    # if ($logger->is_debug){
+    # 	$logger->debug("Response: ".$response->content);
+    # }
+    
+    # if (!$response->is_success && $response->code != 400) {
+    # 	$logger->info($response->code . ' - ' . $response->message);
+    # 	return;
+    # }
+
     my $json_query_ref = {
-	'query' => { bool => { must => { match => { _id => $id}}}},
+    	'query' => { bool => { must => { match => { _id => $id}}}},
     };
 
-    # my $encoded_json = encode_utf8(encode_json($json_query_ref));
     my $encoded_json = encode_json($json_query_ref);
 
     if ($logger->is_debug){
 	$logger->debug("Gesis JSON Query: $encoded_json");
     }
-    
-    my $request = HTTP::Request->new('POST',$url,$header,$encoded_json);
-    
-    my $response = $ua->request($request);
 
-    if ($logger->is_debug()){
-	$logger->debug("Request URL: $url");
-    }
+    $ua->setopt(WWW::Curl::Easy::CURLOPT_HEADER(), 0);
+    $ua->setopt(WWW::Curl::Easy::CURLOPT_URL(), $url);
+    $ua->setopt(WWW::Curl::Easy::CURLOPT_HTTPHEADER(), ['Content-Type: application/json; charset=UTF-8']);
+    $ua->setopt(WWW::Curl::Easy::CURLOPT_POST(), 1);
+    $ua->setopt(WWW::Curl::Easy::CURLOPT_POSTFIELDS(), $encoded_json);
+
+
+    my $response;
+    $ua->setopt(WWW::Curl::Easy::CURLOPT_WRITEDATA(), \$response);
     
-    if ($logger->is_debug){
-	$logger->debug("Response: ".$response->content);
-    }
-    
-    if (!$response->is_success && $response->code != 400) {
-	$logger->info($response->code . ' - ' . $response->message);
-	return;
+    my $retcode = $ua->perform;
+    if ($retcode != 0) {
+	$logger->error('Decoding error: '.$ua->errbuf.' with code '.$retcode);
     }
 
+    
     my $json_result_ref = {};
     
     eval {
-	$json_result_ref = decode_json $response->content;
+	$json_result_ref = decode_json $response;
     };
     
     if ($@){
@@ -287,23 +317,47 @@ sub send_search_request {
     
     my $url = $config->get('gesis')->{'search_url'};
 
-    my $header = ['Content-Type' => 'application/json; charset=UTF-8'];
-
-#    my $encoded_json = encode_utf8(encode_json($body_ref));
     my $encoded_json = encode_json($body_ref);    
 
     $logger->debug("ElasticSearch JSON Query: $encoded_json");
 
-    my $request = HTTP::Request->new('POST',$url,$header,$encoded_json);
-    
-    my $response = $ua->request($request);
+    $ua->setopt(WWW::Curl::Easy::CURLOPT_HEADER(), 0);
+    $ua->setopt(WWW::Curl::Easy::CURLOPT_URL(), $url);
+    $ua->setopt(WWW::Curl::Easy::CURLOPT_HTTPHEADER(), ['Content-Type: application/json; charset=UTF-8']);
+    $ua->setopt(WWW::Curl::Easy::CURLOPT_POST(), 1);
+    $ua->setopt(WWW::Curl::Easy::CURLOPT_POSTFIELDS(), $encoded_json);
 
-    $logger->debug("Result: ".$response->content);
+
+    my $response;
+    $ua->setopt(WWW::Curl::Easy::CURLOPT_WRITEDATA(), \$response);
+    
+    my $retcode = $ua->perform;
+    if ($retcode != 0) {
+	$logger->error('Decoding error: '.$ua->errbuf.' with code '.$retcode);
+    }
+
+    
+    # my $header = ['Content-Type' => 'application/json; charset=UTF-8'];
+
+
+    # my $encoded_json = encode_json($body_ref);    
+
+    # $logger->debug("ElasticSearch JSON Query: $encoded_json");
+
+    # my $request = HTTP::Request->new('POST',$url,$header,$encoded_json);
+    
+    # my $response = $ua->request($request);
+
+    $logger->debug("Result: ".$response);
 
     my $results = {};
     
+    # eval {
+    # 	$results = decode_json $response->content;
+    # };
+
     eval {
-	$results = decode_json $response->content;
+	$results = decode_json $response;
     };
     
     if ($@){

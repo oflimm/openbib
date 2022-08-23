@@ -76,11 +76,13 @@ sub new {
         _config                => $config,
     };
 
-    $logger->debug("Creating");
-
-    $logger->debug(ref($self->{_config}));
-    $logger->debug($self->{_config});
-
+    if ($logger->is_debug){    
+	$logger->debug("Creating");
+	
+	$logger->debug(ref($self->{_config}));
+	$logger->debug($self->{_config});
+    }
+    
     foreach my $searchfield (keys %{$config->{searchfield}}){
         $self->{_searchquery}{$searchfield} = {
             norm => '',
@@ -157,7 +159,9 @@ sub set_from_psgi_request {
 
     $self->{_searchquery} = {};
 
-    $logger->debug("Paramstring: ".$self->{r}->args);
+    if ($logger->is_debug){
+	$logger->debug("Paramstring: ".$self->{r}->args);
+    }
 
     my @param_names = $query->param;
 
@@ -456,8 +460,7 @@ sub to_cgi_params {
     }
     
     foreach my $param (keys %{$self->{_searchquery}}){
-        $logger->debug("Type ",ref($self->{_searchquery}));
-        $logger->debug("Param-Type ",ref($self->{_searchquery}->{$param}));
+
         if ($self->{_searchquery}->{$param}{val} && !exists $exclude_ref->{$param}){
 
             my $base_param   = $param;
@@ -475,8 +478,10 @@ sub to_cgi_params {
                 val    => $self->{_searchquery}->{$param}{bool}
             };
 
-            $logger->debug("Unescaped: ".$self->{_searchquery}->{$param}{val});
-            $logger->debug("Escaped: ".uri_escape_utf8($self->{_searchquery}->{$param}{val}));
+	    if ($logger->is_debug){
+		$logger->debug("Unescaped: ".$self->{_searchquery}->{$param}{val});
+		$logger->debug("Escaped: ".uri_escape_utf8($self->{_searchquery}->{$param}{val}));
+	    }
 
             # Kein Escaping notwendig, da Parameter bereits beim Erzeugen des SearchQuery-Objektes
             # escaped werden.									
@@ -1233,8 +1238,10 @@ sub save  {
         $query_obj_string = unpack "H*", Storable::freeze($self);
     }
 
-    $logger->debug("Query Object: ".$query_obj_string);
-
+    if ($logger->is_debug){    
+	$logger->debug("Query Object: ".$query_obj_string);
+    }
+    
     # DBI: "select queryid from queries where query = ? and sessionid = ?"
     my $searchquery = $self->get_schema->resultset('Query')->search(
         {
@@ -1268,8 +1275,10 @@ sub save  {
         $logger->debug("Query already exists: $query_obj_string");
     }
 
-    $logger->debug("SearchQuery has id ".$self->get_id) if (defined $self->get_id);
-    
+    if ($logger->is_debug){
+      $logger->debug("SearchQuery has id ".$self->get_id) if (defined $self->get_id);
+    }
+  
     return $self;
 }
 

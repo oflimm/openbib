@@ -2416,10 +2416,11 @@ sub get_system_of_db {
         },
         {
             select => ['system'],
-        }
+	    result_class => 'DBIx::Class::ResultClass::HashRefInflator', 
+	}
     )->first;
 
-    return ($system)?$system->system:'';
+    return ($system)?$system->{system}:'';
 }
 
 sub get_infomatrix_of_active_databases {
@@ -2576,7 +2577,23 @@ sub load_bk {
     $YAML::Syck::ImplicitTyping  = 1;
     $YAML::Syck::ImplicitUnicode = 1;
 
-    return YAML::Syck::LoadFile("/opt/openbib/conf/bk.yml");
+    my $memc_key = "config:bk";
+
+    if ($self->{memc}){
+        my $classification_ref = $self->{memc}->get($memc_key);
+
+	if ($classification_ref){
+	    return $classification_ref;
+	}
+    }
+
+    my $classification_ref = YAML::Syck::LoadFile("/opt/openbib/conf/bk.yml");
+
+    if ($self->{memc}){
+	$self->{memc}->set($memc_key,$classification_ref,$self->{memcached_expiration}{$memc_key});
+    }
+
+    return $classification_ref;
 }
 
 sub load_rvk {
@@ -2585,7 +2602,22 @@ sub load_rvk {
     $YAML::Syck::ImplicitTyping  = 1;
     $YAML::Syck::ImplicitUnicode = 1;
 
-    return YAML::Syck::LoadFile("/opt/openbib/conf/rvk.yml");
+    my $memc_key = "config:rvk";
+
+    if ($self->{memc}){
+        my $classification_ref = $self->{memc}->get($memc_key);
+
+	if ($classification_ref){
+	    return $classification_ref;
+	}
+    }
+
+    my $classification_ref = YAML::Syck::LoadFile("/opt/openbib/conf/rvk.yml");				     
+    if ($self->{memc}){
+	$self->{memc}->set($memc_key,$classification_ref,$self->{memcached_expiration}{$memc_key});
+    }
+
+    return $classification_ref;
 }
 
 sub load_ddc {
@@ -2594,7 +2626,23 @@ sub load_ddc {
     $YAML::Syck::ImplicitTyping  = 1;
     $YAML::Syck::ImplicitUnicode = 1;
 
-    return YAML::Syck::LoadFile("/opt/openbib/conf/ddc.yml");
+    my $memc_key = "config:ddc";
+
+    if ($self->{memc}){
+        my $classification_ref = $self->{memc}->get($memc_key);
+
+	if ($classification_ref){
+	    return $classification_ref;
+	}
+    }
+
+    my $classification_ref = YAML::Syck::LoadFile("/opt/openbib/conf/ddc.yml");
+
+    if ($self->{memc}){
+	$self->{memc}->set($memc_key,$classification_ref,$self->{memcached_expiration}{$memc_key});
+    }
+
+    return $classification_ref;
 }
 
 sub load_lcc {
@@ -2603,7 +2651,23 @@ sub load_lcc {
     $YAML::Syck::ImplicitTyping  = 1;
     $YAML::Syck::ImplicitUnicode = 1;
 
-    return YAML::Syck::LoadFile("/opt/openbib/conf/lcc.yml");
+    my $memc_key = "config:lcc";
+
+    if ($self->{memc}){
+        my $classification_ref = $self->{memc}->get($memc_key);
+
+	if ($classification_ref){
+	    return $classification_ref;
+	}
+    }
+
+    my $classification_ref = YAML::Syck::LoadFile("/opt/openbib/conf/lcc.yml");
+
+    if ($self->{memc}){
+	$self->{memc}->set($memc_key,$classification_ref,$self->{memcached_expiration}{$memc_key});
+    }
+
+    return $classification_ref;
 }
 
 sub get_geoposition {

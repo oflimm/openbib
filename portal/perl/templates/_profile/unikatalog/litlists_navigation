@@ -33,6 +33,7 @@
 [% ELSE %]
    <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('litlists_loc') %]/recent.html?l=[% lang %];num=20">[% msg.maketext("Zuletzt angelegt") %]</a></li>
 [% END %]
+[% IF 0 == 1 %]
 [% IF layout_param.active_submenu == "litlists_topics" %]
   <li class="nav-item active"><strong>[% msg.maketext("Themengebiete") %]</strong></li>
 [% ELSE %]
@@ -54,7 +55,7 @@
     </ul>
   </li>
 [% END %]
-
+[% END # 0 == 1 %]
  </ul>
 </nav>
 </div>

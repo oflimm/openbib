@@ -117,7 +117,7 @@ sub new {
 	    $result = $es->indices->put_mapping(
 		index => $indexname,
 		body => {
-		    properties => $config->{elasticsearch_index_mappings}{properties},
+		    properties => $config->{elasticsearch_index_mappings}{local}{properties},
 		}	
 		);
 	    

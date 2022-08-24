@@ -612,7 +612,7 @@ sub parse_query {
     if (@{$searchquery->get_filter}){
         $filter_ref = [ ];
         foreach my $thisfilter_ref (@{$searchquery->get_filter}){
-            my $field = $elasticsearch_filter_field_ref->{$thisfilter_ref->{field}};
+            my $field = $elasticsearch_filter_field_ref->{local}{$thisfilter_ref->{field}};
             my $term  = $thisfilter_ref->{term};
 #            $term=~s/_/ /g;
             

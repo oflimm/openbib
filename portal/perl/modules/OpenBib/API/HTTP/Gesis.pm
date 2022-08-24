@@ -885,9 +885,9 @@ sub parse_query {
     my $elasticsearchfilterstring  = "";
 
     my $ops_ref = {
-        'AND'     => 'AND ',
-        'AND NOT' => 'NOT ',
-        'OR'      => 'OR ',
+        'AND'     => 'AND',
+        'AND NOT' => 'NOT',
+        'OR'      => 'OR',
     };
 
     my $query_ref        = {};
@@ -968,6 +968,15 @@ sub parse_query {
 			},
 		    };
 		}		
+	    }
+	    elsif ($field=~m/freesearch/){
+		push @$must_query_ref, {
+		    query_string => {
+			query    => $searchtermstring,
+			default_operator => $searchtermop,
+			fields => ["_all","title^10","topic^7","abstract^3","source^3","title.partial^0.4","topic.partial^0.3","abstract.partial^0.2","content.partial^0.4","full_text^0.1"],
+		    },
+		};
 	    }
 	    else {	    
 		if ($field =~m/string$/){

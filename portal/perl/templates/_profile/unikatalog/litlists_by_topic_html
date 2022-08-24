@@ -15,7 +15,7 @@
 [%# USE dumper;dumper.dump(topics)%]
 <ul class="list-group">
 [%- FOREACH topic IN topics ;
-        litlistcount = user.get_number_of_litlists_by_topic({topicid => $topic.id});
+        litlistcount = user.get_number_of_litlists_by_topic({topicid => topic.id});
 -%]
 <li class="list-group-item"><a <a href="[% path_prefix %]/[% config.get('litlists_loc') %]/[% config.get('topics_loc') %]/id/[% topic.id %].html?l=[% lang %]">[% topic.name %]</a> ([% msg.maketext("[_1] Listen",litlistcount.public) %])</li>
 [% END %]

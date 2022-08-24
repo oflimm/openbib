@@ -19,7 +19,7 @@
 [% IF showtopics.defined %]
 <ul class="topiclist">
 [%- FOREACH topic IN topics ;
-        litlistcount = user.get_number_of_litlists_by_topic({topicid => $topic.id});
+        litlistcount = user.get_number_of_litlists_by_topic({topicid => topic.id});
 -%]
 <li><a <a href="[% path_prefix %]/[% config.get('litlists_loc') %]/[% config.get('topics_loc') %]/id/[% topic.id %].html?l=[% lang %]">[% topic.name %]</a> ([% msg.maketext("[_1] Listen",litlistcount.public) %])</li>
 [% END %]

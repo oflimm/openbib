@@ -728,56 +728,59 @@ unless ($incremental || $searchengineonly){
 
     $postgresdbh->do("ALTER database $databasetmp RENAME TO $database");
 
-    $logger->info("### $database: Temporaeren Suchindex aktivieren");
+    unless ($nosearchengine){
+	$logger->info("### $database: Temporaeren Suchindex aktivieren");
 
-    if ($database && -e "$config->{autoconv_dir}/filter/$database/alt_move_searchengine.pl"){
-	$logger->info("### $database: Verwende Plugin alt_move_searchengine.pl");
-	system("$config->{autoconv_dir}/filter/$database/alt_move_searchengine.pl $database");
-    }
-    else {
+	if ($database && -e "$config->{autoconv_dir}/filter/$database/alt_move_searchengine.pl"){
+	    $logger->info("### $database: Verwende Plugin alt_move_searchengine.pl");
+	    system("$config->{autoconv_dir}/filter/$database/alt_move_searchengine.pl $database");
+	}
+	else {
+	    if ($use_searchengine_ref->{"xapian"}){
+		if (-d "$config->{xapian_index_base_path}/$database"){
+		    system("mv $config->{xapian_index_base_path}/$database $config->{xapian_index_base_path}/${database}tmp2");
+		}
+		
+		system("mv $config->{xapian_index_base_path}/$databasetmp $config->{xapian_index_base_path}/$database");
+		
+		if (-d "$config->{xapian_index_base_path}/${database}tmp2"){
+		    system("rm $config->{xapian_index_base_path}/${database}tmp2/* ; rmdir $config->{xapian_index_base_path}/${database}tmp2");
+		}
+	    }
+	    
+	    if ($use_searchengine_ref->{"elasticsearch"}){
+		$es_indexer->drop_alias($database,$es_indexname);
+		$es_indexer->create_alias($database,$es_new_indexname);
+		#$es_indexer->drop_index($es_indexname);
+	    }
+	    
+	}
+	$logger->info("### $database: Temporaeren Normdaten-Suchindex aktivieren");
+	
 	if ($use_searchengine_ref->{"xapian"}){
-	    if (-d "$config->{xapian_index_base_path}/$database"){
-		system("mv $config->{xapian_index_base_path}/$database $config->{xapian_index_base_path}/${database}tmp2");
+	    if (-d "$config->{xapian_index_base_path}/${authority}tmp2"){
+		system("rm $config->{xapian_index_base_path}/${authority}tmp2/* ; rmdir $config->{xapian_index_base_path}/${authority}tmp2");
 	    }
 	    
-	    system("mv $config->{xapian_index_base_path}/$databasetmp $config->{xapian_index_base_path}/$database");
+	    if (-d "$config->{xapian_index_base_path}/$authority"){
+		system("mv $config->{xapian_index_base_path}/$authority $config->{xapian_index_base_path}/${authority}tmp2");
+	    }
 	    
-	    if (-d "$config->{xapian_index_base_path}/${database}tmp2"){
-		system("rm $config->{xapian_index_base_path}/${database}tmp2/* ; rmdir $config->{xapian_index_base_path}/${database}tmp2");
+	    system("mv $config->{xapian_index_base_path}/$authoritytmp $config->{xapian_index_base_path}/$authority");
+	    
+	    if (-d "$config->{xapian_index_base_path}/${authority}tmp2"){
+		system("rm $config->{xapian_index_base_path}/${authority}tmp2/* ; rmdir $config->{xapian_index_base_path}/${authority}tmp2");
 	    }
 	}
-
+	
 	if ($use_searchengine_ref->{"elasticsearch"}){
-	    $es_indexer->drop_alias($database,$es_indexname);
-	    $es_indexer->create_alias($database,$es_new_indexname);
-	    #$es_indexer->drop_index($es_indexname);
+	    $es_indexer->drop_alias("authority_$database",$es_authority_indexname);
+	    $es_indexer->create_alias("authority_$database",$es_new_authority_indexname);
+	    #$es_indexer->drop_index($es_authority_indexname);
 	}
 
     }
-    $logger->info("### $database: Temporaeren Normdaten-Suchindex aktivieren");
-
-    if ($use_searchengine_ref->{"xapian"}){
-	if (-d "$config->{xapian_index_base_path}/${authority}tmp2"){
-	    system("rm $config->{xapian_index_base_path}/${authority}tmp2/* ; rmdir $config->{xapian_index_base_path}/${authority}tmp2");
-	}
-	
-	if (-d "$config->{xapian_index_base_path}/$authority"){
-	    system("mv $config->{xapian_index_base_path}/$authority $config->{xapian_index_base_path}/${authority}tmp2");
-	}
-
-	system("mv $config->{xapian_index_base_path}/$authoritytmp $config->{xapian_index_base_path}/$authority");
-	
-	if (-d "$config->{xapian_index_base_path}/${authority}tmp2"){
-	    system("rm $config->{xapian_index_base_path}/${authority}tmp2/* ; rmdir $config->{xapian_index_base_path}/${authority}tmp2");
-	}
-    }
-
-    if ($use_searchengine_ref->{"elasticsearch"}){
-	$es_indexer->drop_alias("authority_$database",$es_authority_indexname);
-	$es_indexer->create_alias("authority_$database",$es_new_authority_indexname);
-	#$es_indexer->drop_index($es_authority_indexname);
-    }
-
+    
     if ($old_database_exists){
 	$postgresdbh->do("drop database ${database}tmp2");
     }

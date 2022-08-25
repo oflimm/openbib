@@ -83,6 +83,14 @@
 
     </style>
 
+   <!-- Begin: Maincontent -->
+    <div  [% IF layout_param.css_id %]id="[% layout_param.css_id %]" [% END %]>
+      <div id="ob-maincontent" >
+        [% PROCESS common/subtemplate name=layout_param.main_template %]
+      </div>
+    </div>
+    <!-- End: Maincontent -->      
+
    <!-- Begin: Sidebar -->
   [% IF layout_param.sidebar_template && NOT layout_param.sidebar_template.match('^users_') %]
 
@@ -130,14 +138,6 @@
   [% END # 0 == 1 %]
    [% END %]
    <!-- End: Sidebar -->
-
-   <!-- Begin: Maincontent -->
-    <div  [% IF layout_param.css_id %]id="[% layout_param.css_id %]" [% END %]>
-      <div id="ob-maincontent" >
-        [% PROCESS common/subtemplate name=layout_param.main_template %]
-      </div>
-    </div>
-    <!-- End: Maincontent -->      
 
     [% PROCESS common/subtemplate name="std_footer" %]
 

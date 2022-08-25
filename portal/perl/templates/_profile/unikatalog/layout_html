@@ -96,7 +96,7 @@
 
   [%   IF NOT layout_param.sidebar_button_in_main_template %]
         <a href="#" class="ob-floating_sidebar_button sidebar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar"><i class="fas fa-plus fa-2x"></i></a>
-        <a href="#" class="ob-sidebar_button sidebar-toggler d-none d-md-block" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar"><i class="fas fa-plus fa-2x"></i></a>
+        <a href="#" class="ob-sidebar_button sidebar-toggler d-none d-md-block mt-3 mb-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar"><i class="fas fa-plus fa-2x"></i></a>
   [%   END %]
 
       <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">

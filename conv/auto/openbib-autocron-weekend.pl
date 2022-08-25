@@ -460,7 +460,7 @@ sub threadC {
 
     $logger->info("### Master: inst132master");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst132master'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, nosearchengine => 1, databases => ['inst132master'] });
 
     ##############################
     
@@ -472,7 +472,7 @@ sub threadC {
 
     $logger->info("### Master: MEKUTH-Masterkataloge");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst429master','inst448master'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, nosearchengine => 1, databases => ['inst429master','inst448master'] });
 
     ##############################
     
@@ -484,7 +484,7 @@ sub threadC {
 
     $logger->info("### Master: VWL-Masterkataloge");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst103master','inst105master','inst113master','inst128master','inst146master','inst157master','inst166master'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, nosearchengine => 1, databases => ['inst103master','inst105master','inst113master','inst128master','inst146master','inst157master','inst166master'] });
 
     ##############################
 
@@ -508,14 +508,14 @@ sub threadC {
     
     $logger->info("### Kataloge mit offiziellen Literaturliste muessen immer komplett aktualisiert werden");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst123master','inst123master','inst218master','inst401master'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, nosearchengine => 1, databases => ['inst123master','inst123master','inst218master','inst401master'] });
     autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst123','inst123','inst218','inst401'] });
 
     ##############################
 
     $logger->info("### Master: inst420master und -retro");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst420master','inst420retro'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, nosearchengine => 1, databases => ['inst420master','inst420retro'] });
 
     ##############################
     
@@ -527,7 +527,7 @@ sub threadC {
 
     $logger->info("### Sonstige Master-Institutskataloge");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['inst006master','inst102master','inst108master','inst110master','inst118master','inst119master','inst125master','inst134master','inst136master','inst156master','inst201master','inst207master','inst208master','inst215master','inst302master','inst323master','inst401master','inst404master','inst405master','inst406master','inst407master','inst409master','inst410master','inst411master','inst412master','inst413master','inst414master','inst416master','inst418master','inst419master','inst426master','inst427master','inst428master','inst430master','inst431master','inst432master','inst434master','inst437master','inst438master','inst444master','inst445master','inst460master','inst461master','inst464master','inst466master','inst467master','inst468master','inst501master','inst514master','inst526master','inst622master','inst623master'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, nosearchengine => 1, databases => ['inst006master','inst102master','inst108master','inst110master','inst118master','inst119master','inst125master','inst134master','inst136master','inst156master','inst201master','inst207master','inst208master','inst215master','inst302master','inst323master','inst401master','inst404master','inst405master','inst406master','inst407master','inst409master','inst410master','inst411master','inst412master','inst413master','inst414master','inst416master','inst418master','inst419master','inst426master','inst427master','inst428master','inst430master','inst431master','inst432master','inst434master','inst437master','inst438master','inst444master','inst445master','inst460master','inst461master','inst464master','inst466master','inst467master','inst468master','inst501master','inst514master','inst526master','inst622master','inst623master'] });
 
     ##############################
     
@@ -609,6 +609,9 @@ sub autoconvert {
     my $updatemaster    = exists $arg_ref->{updatemaster}
         ? $arg_ref->{updatemaster}          : 0;
 
+    my $nosearchengine  = exists $arg_ref->{nosearchengine}
+        ? $arg_ref->{nosearchengine}        : 0;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -618,6 +621,7 @@ sub autoconvert {
     push @ac_cmd, "-gen-mex" if ($genmex);
     push @ac_cmd, "-incremental" if ($incremental);
     push @ac_cmd, "-update-master" if ($updatemaster);
+    push @ac_cmd, "-no-searchengine" if ($nosearchengine);
 
     my $ac_cmd_base = join(' ',@ac_cmd);
 

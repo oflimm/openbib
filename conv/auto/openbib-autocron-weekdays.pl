@@ -484,6 +484,9 @@ sub autoconvert {
     my $updatemaster    = exists $arg_ref->{updatemaster}
         ? $arg_ref->{updatemaster}          : 0;
 
+    my $nosearchengine  = exists $arg_ref->{nosearchengine}
+        ? $arg_ref->{nosearchengine}        : 0;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -493,7 +496,9 @@ sub autoconvert {
     push @ac_cmd, "-gen-mex" if ($genmex);
     push @ac_cmd, "-incremental" if ($incremental);
     push @ac_cmd, "-update-master" if ($updatemaster);
+    push @ac_cmd, "-no-searchengine" if ($nosearchengine);
 
+    
     my $ac_cmd_base = join(' ',@ac_cmd);
 
     my @databases = ();

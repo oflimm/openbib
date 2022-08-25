@@ -49,7 +49,7 @@ use OpenBib::Catalog;
 use OpenBib::Catalog::Factory;
 use OpenBib::Index::Factory;
 
-my ($database,$sync,$scheme,$help,$keepfiles,$sb,$logfile,$loglevel,$updatemaster,$incremental,$reducemem,$searchengineonly);
+my ($database,$sync,$scheme,$help,$keepfiles,$sb,$logfile,$loglevel,$updatemaster,$incremental,$reducemem,$searchengineonly,$nosearchengine);
 
 &GetOptions("database=s"      => \$database,
             "logfile=s"       => \$logfile,
@@ -60,7 +60,8 @@ my ($database,$sync,$scheme,$help,$keepfiles,$sb,$logfile,$loglevel,$updatemaste
             "incremental"     => \$incremental,
             "reduce-mem"      => \$reducemem,
             "scheme=s"        => \$scheme,
-            "searchengine-only"      => \$searchengineonly,
+            "no-searchengine"    => \$nosearchengine,	    
+            "searchengine-only"  => \$searchengineonly,
 	    "search-backend=s" => \$sb,
 	    "help"            => \$help
 	    );
@@ -412,7 +413,7 @@ unless ($searchengineonly){
 my $use_searchengine_ref = {};
 
 # Zu nutzende lokale Suchmaschinen-Backends bestimmen
-{
+unless ($nosearchengine){
     if ($sb){
 	$use_searchengine_ref->{$sb} = 1;
     }
@@ -424,6 +425,7 @@ my $use_searchengine_ref = {};
 
 }
 
+$logger->info(YAML::Dump($use_searchengine_ref));
 # Suchmaschinen-Index fuer Titel aufbauen
 
 my $es_indexer;

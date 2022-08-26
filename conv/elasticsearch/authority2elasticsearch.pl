@@ -6,7 +6,7 @@
 #
 #  Basis: authority2xapian.pl
 #
-#  Dieses File ist (C) 2013-2021 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2013-2022 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -46,11 +46,12 @@ use OpenBib::Config;
 use OpenBib::Index::Factory;
 use OpenBib::Common::Util;
 
-my ($database,$help,$logfile,$withsorting,$withpositions,$loglevel,$indexname,$authtype);
+my ($database,$help,$logfile,$withsorting,$withpositions,$loglevel,$indexname,$withalias,$authtype);
 
 &GetOptions(
     "database=s"       => \$database,
     "indexname=s"      => \$indexname,
+    "with-alias"       => \$withalias,
     "authority-type=s" => \$authtype,
     "logfile=s"        => \$logfile,
     "loglevel=s"       => \$loglevel,
@@ -123,6 +124,21 @@ my @authority_files = (
 my $conv_config = new OpenBib::Conv::Config({dbname => $database});
 
 $logger->info("### POOL $database: Creating index $indexname");
+
+my $old_indexname;
+
+if ($withalias){
+    my $es_indexer = OpenBib::Index::Factory->create_indexer({ sb => 'elasticsearch', database => $database, index_type => 'readwrite' });
+    
+    $old_indexname = $es_indexer->get_aliased_index("${database}_authority");
+    
+    $indexname = ($old_indexname eq "${database}_authority_a")?"${database}_authority_b":"${database}_authority_a";
+
+    $logger->info("Indexing with alias");
+    $logger->info("Old index for ${database}_authority: $old_indexname");
+    $logger->info("New index for ${database}_authority: $indexname");    
+}
+
 
 my $atime = new Benchmark;
 
@@ -234,13 +250,20 @@ foreach my $authority_file_ref (@authority_files){
                 }
             }
         }
+
         
         close(SEARCHENGINE);
     }
+
     
 }
 
-
+if ($withalias){
+    # Aliases umswitchen
+    $logger->info("Switching alias");	    
+    $indexer->drop_alias($database,$old_indexname);
+    $indexer->create_alias($database,$indexname);
+}
 
 my $btime      = new Benchmark;
 my $timeall    = timediff($btime,$atime);

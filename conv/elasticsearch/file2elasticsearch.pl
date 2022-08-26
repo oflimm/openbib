@@ -4,7 +4,7 @@
 #
 #  file2elasticsearch.pl
 #
-#  Dieses File ist (C) 2007-2016 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2013-2022 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -96,14 +96,18 @@ if (!$database){
 
 $logger->info("### POOL $database");
 
-my $es_indexname;
+my $old_indexname;
 
 if ($withalias){
     my $es_indexer = OpenBib::Index::Factory->create_indexer({ sb => 'elasticsearch', database => $database, index_type => 'readwrite' });
     
-    $es_indexname = $es_indexer->get_aliased_index($database);
+    $old_indexname = $es_indexer->get_aliased_index($database);
     
-    $indexname = ($es_indexname eq "${database}_a")?"${database}_b":"${database}_a";
+    $indexname = ($old_indexname eq "${database}_a")?"${database}_b":"${database}_a";
+
+    $logger->info("Indexing with alias");
+    $logger->info("Old index for $database: $old_indexname");
+    $logger->info("New index for $database: $indexname");    
 }
 
 open(SEARCHENGINE, "<:raw","searchengine.json"  ) || die "SEARCHENGINE konnte nicht geoeffnet werden";
@@ -165,7 +169,8 @@ my $atime = new Benchmark;
 
 	if ($withalias){
 	    # Aliases umswitchen
-	    $indexer->drop_alias($database,$es_indexname);
+	    $logger->info("Switching alias");	    
+	    $indexer->drop_alias($database,$old_indexname);
 	    $indexer->create_alias($database,$indexname);
 	}
     }
@@ -173,8 +178,6 @@ my $atime = new Benchmark;
 }
 
 close(SEARCHENGINE);
-
-
 
 my $btime      = new Benchmark;
 my $timeall    = timediff($btime,$atime);

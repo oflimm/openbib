@@ -96,19 +96,21 @@ if (!$database){
 
 $logger->info("### POOL $database");
 
+my $es_indexname;
+
+if ($withalias){
+    my $es_indexer = OpenBib::Index::Factory->create_indexer({ sb => 'elasticsearch', database => $database, index_type => 'readwrite' });
+    
+    $es_indexname = $es_indexer->get_aliased_index($database);
+    
+    $indexname = ($es_indexname eq "${database}_a")?"${database}_b":"${database}_a";
+}
+
 open(SEARCHENGINE, "<:raw","searchengine.json"  ) || die "SEARCHENGINE konnte nicht geoeffnet werden";
 
 my $atime = new Benchmark;
 
 {
-
-    if ($withalias){
-	my $es_indexer = OpenBib::Index::Factory->create_indexer({ sb => 'elasticsearch', database => $database, index_type => 'readwrite' });
-
-	my $es_indexname = $es_indexer->get_aliased_index($database);
-		
-	$indexname = ($es_indexname eq "${database}_a")?"${database}_b":"${database}_a";
-    }
     
     $logger->info("Migration der Titelsaetze");
     
@@ -160,11 +162,18 @@ my $atime = new Benchmark;
             
             $count++;
         }
+
+	if ($withalias){
+	    # Aliases umswitchen
+	    $indexer->drop_alias($database,$es_indexname);
+	    $indexer->create_alias($database,$indexname);
+	}
     }
     
 }
 
 close(SEARCHENGINE);
+
 
 
 my $btime      = new Benchmark;

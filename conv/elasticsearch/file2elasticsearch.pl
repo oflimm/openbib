@@ -169,9 +169,10 @@ my $atime = new Benchmark;
 
 	if ($withalias){
 	    # Aliases umswitchen
-	    $logger->info("Switching alias");	    
+	    $logger->info("Switching alias and dropping old index $old_indexname");
 	    $indexer->drop_alias($database,$old_indexname);
 	    $indexer->create_alias($database,$indexname);
+	    $indexer->drop_index($old_indexname);
 	}
     }
     

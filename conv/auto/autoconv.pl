@@ -751,7 +751,7 @@ unless ($incremental || $searchengineonly){
 	    if ($use_searchengine_ref->{"elasticsearch"}){
 		$es_indexer->drop_alias($database,$es_indexname);
 		$es_indexer->create_alias($database,$es_new_indexname);
-		#$es_indexer->drop_index($es_indexname);
+		$es_indexer->drop_index($es_indexname);
 	    }
 	    
 	}

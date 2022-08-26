@@ -44,11 +44,12 @@ use OpenBib::Config;
 use OpenBib::Index::Factory;
 use OpenBib::Common::Util;
 
-my ($database,$indexname,$help,$logfile,$withsorting,$withpositions,$loglevel,$indexpath,$incremental,$deletefile);
+my ($database,$indexname,$help,$logfile,$withsorting,$withpositions,$loglevel,$indexpath,$incremental,$withalias,$deletefile);
 
 &GetOptions(
     "database=s"      => \$database,
     "indexname=s"     => \$indexname,
+    "with-alias"      => \$withalias,
     "logfile=s"       => \$logfile,
     "loglevel=s"      => \$loglevel,
     "with-sorting"    => \$withsorting,
@@ -101,6 +102,14 @@ my $atime = new Benchmark;
 
 {
 
+    if ($withalias){
+	my $es_indexer = OpenBib::Index::Factory->create_indexer({ sb => 'elasticsearch', database => $database, index_type => 'readwrite' });
+
+	my $es_indexname = $es_indexer->get_aliased_index($database);
+		
+	$indexname = ($es_indexname eq "${database}_a")?"${database}_b":"${database}_a";
+    }
+    
     $logger->info("Migration der Titelsaetze");
     
     my $count = 1;

@@ -1584,7 +1584,7 @@ sub konv {
 
     $logger->debug("Pre: $content");
     
-    $content = decode_utf8($content) if ($globalencoding eq "UTF-8");
+    $content = decode_utf8($content) if (defined $globalencoding && $globalencoding eq "UTF-8");
 
 #    $content=normalize('D',$content);
 

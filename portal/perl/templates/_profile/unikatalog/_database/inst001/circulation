@@ -298,6 +298,8 @@ Präsenzbestand
 Präsenzbestand
 [%     ELSIF thiscirculation.department_id.match('^(19|222)$') %]
 Präsenzbestand
+[%     ELSIF thiscirculation.location_mark.match('^ZBM/') %]
+Bestände zur Zeit nicht verfügbar
 [%     ELSIF thiscirculation.department_id.match('^(420)$') %]
 [%       IF standort.match('Magazin') %]
 Bitte nutzen Sie das <a href="https://neuere-geschichte.phil-fak.uni-koeln.de/bibliothek/benutzung/ausleihmodalitaeten/bestellformular">Bestellformular</a>.

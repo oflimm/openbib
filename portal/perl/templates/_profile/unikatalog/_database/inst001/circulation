@@ -419,7 +419,7 @@ Präsenzbestand
 
 [%############### ANFANG CAMPUSLIEFERDIENST ######### %]
 [% ELSIF scan_dienst == "campus" %]
-[%  IF thiscirculation.department_id.match('^(0|4)$') && username.match('^(B|S)') %]
+[%  IF thiscirculation.department_id.match('^(0|4)$') && username.match('^(B|S)') && NOT thiscirculation.location_mark.match('^ZBM/') %]
 [%    
       subdomain = "";
       IF thiscirculation.availability.match('^(lent)$') ;

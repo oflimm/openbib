@@ -48,7 +48,7 @@
 <div class="table-responsive">
 <table class="table table-striped table-hover">
 <thead>
-<tr align="center"><th>[% msg.maketext("Bibliothek") %]</th><th>QR-Code</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Signatur") %]</th>[% IF have_bestandsverlauf %]<th>[% msg.maketext("Bestand") %]</th>[% END %]</tr>
+<tr><th>[% msg.maketext("Bibliothek") %]</th><th>QR-Code</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Signatur") %]</th>[% IF have_bestandsverlauf %]<th>[% msg.maketext("Bestand") %]</th>[% END %]</tr>
 </thead>
 <tbody>
 [%  FOREACH thisholding IN holding %]
@@ -142,6 +142,13 @@ END;
 <br/><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %];mnr=[% thisholding.${"X0014"}.content |uri %]">Provenienzen</a>
 [% END %]
 </td>
+[%-
+   # ZBM-Meldung kurzern
+   IF thisholding.${"X1203"}.content.match('vormals 38M; Bestände zur Zeit nicht einsehbar oder bestellbar') ;
+     thisholding.${"X1203"}.content = "Bestände zur Zeit nicht verfügbar";
+   END;
+
+-%]
 <td><strong><span class="ob-mark">[% thisholding.${"X0014"}.content %]</span></strong></td>[% IF have_bestandsverlauf %]<td>[% IF thisholding.${"X1200"} %][% thisholding.${"X1200"}.content %] [% END %][% thisholding.${"X1204"}.content %][% IF thisholding.${"X1203"} %] ([% thisholding.${"X1203"}.content %])[% END %]     
 [% IF NOT normdata.${"T5002"}.first.content && thisholding.${"X0014"}.content.match('^ZTG') %]
 <img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% Ausleihurl %]">[% msg.maketext("Weiter") %]</a>

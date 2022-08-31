@@ -4,7 +4,7 @@
 #
 #  authority2xapian.pl
 #
-#  Dieses File ist (C) 2013-2016 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2013-2022 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -47,7 +47,7 @@ use Search::Xapian;
 use YAML::Syck;
 use OpenBib::Config;
 use OpenBib::Index::Factory;
-use OpenBib::Common::Util;
+use OpenBib::Normalizer;
 
 my ($database,$help,$logfile,$withsorting,$withpositions,$loglevel,$indexpath,$incremental,$authtype);
 
@@ -136,7 +136,9 @@ system("rm $indexpath/*");
 
 my $atime = new Benchmark;
 
-my $indexer = OpenBib::Index::Factory->create_indexer({ database => $database, create_index => 1, index_type => 'readwrite', index_path => $indexpath });
+my $normalizer = OpenBib::Normalizer->new;
+
+my $indexer = OpenBib::Index::Factory->create_indexer({ database => $database, create_index => 1, index_type => 'readwrite', index_path => $indexpath, normalizer => $normalizer });
 
 $indexer->set_stopper;
 $indexer->set_termgenerator;

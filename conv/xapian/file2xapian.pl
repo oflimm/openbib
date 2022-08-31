@@ -47,7 +47,7 @@ use Search::Xapian;
 use YAML::Syck;
 use OpenBib::Config;
 use OpenBib::Index::Factory;
-use OpenBib::Common::Util;
+use OpenBib::Normalizer;
 
 my ($database,$help,$logfile,$withsorting,$withpositions,$loglevel,$indexpath,$incremental,$deletefile);
 
@@ -126,8 +126,10 @@ my $atime = new Benchmark;
         if ($incremental){
             $create_index = 0;
         }
-        
-        my $indexer = OpenBib::Index::Factory->create_indexer({ database => $database, create_index => $create_index, index_type => 'readwrite', index_path => $indexpath });
+
+	my $normalizer = OpenBib::Normalizer->new;
+	        
+        my $indexer = OpenBib::Index::Factory->create_indexer({ database => $database, create_index => $create_index, index_type => 'readwrite', index_path => $indexpath, normalizer => $normalizer });
 
         if ($incremental){
             $logger->info("Loeschen der obsoleten Titelsaetze");

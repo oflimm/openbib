@@ -67,6 +67,9 @@ sub new {
 
     my $indexpath        = exists $arg_ref->{index_path}
         ? $arg_ref->{index_path}                     : undef;
+
+    my $normalizer       = exists $arg_ref->{normalizer}
+        ? $arg_ref->{normalizer}                     : OpenBib::Normalizer->new();
     
     my $self = { };
 
@@ -89,7 +92,7 @@ sub new {
 
         {   # get locationid and save to object
             my $locationid = $config->get_locationid_of_database($database);
-            my $locationid_norm =  OpenBib::Common::Util::normalize({ content => $locationid});
+            my $locationid_norm =  $normalizer->normalize({ content => $locationid});
             $locationid_norm=~s/\W/_/g;
             $self->{_locationid}      = $locationid;
             $self->{_locationid_norm} = $locationid_norm;
@@ -105,6 +108,10 @@ sub new {
     ($searchprofile)?$config->{xapian_index_base_path}."/_searchprofile/".$searchprofile:'';
         
     $logger->debug("Creating Xapian DB-Object for database $self->{_database}");
+
+    if ($normalizer){
+	$self->{_normalizer} =  $normalizer;
+    }
     
     eval {
         if ($indextype eq "readwrite" && $createindex){
@@ -137,7 +144,8 @@ sub get_index {
 sub set_stopper {
     my $self         = shift;
 
-    my $config = $self->{config};
+    my $config     = $self->{config};
+    my $normalizer = $self->{_normalizer};
     
     my $stopwordfile = shift || $config->{stopword_filename};
 
@@ -147,7 +155,7 @@ sub set_stopper {
         open(SW,$stopwordfile);
         while (my $stopword=<SW>){
             chomp $stopword ;
-            $stopword = OpenBib::Common::Util::normalize({
+            $stopword = $normalizer->normalize({
                 content  => $stopword,
             });
             
@@ -235,6 +243,10 @@ sub create_document {
     my $withpositions = exists $arg_ref->{with_positions}
         ? $arg_ref->{with_positions}        : 1;
 
+    my $normalizer    = exists $arg_ref->{normalizer}
+    ? $arg_ref->{normalizer}          :
+	($self->{_normalizer})?$self->{_normalizer}:OpenBib::Normalizer->new;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -306,7 +318,7 @@ sub create_document {
                         $normcontent = $normalize_cache{$normalize_cache_id};
                     }
                     else {
-                        $normcontent = OpenBib::Common::Util::normalize({ field => $field, content => $content, option => $option_ref, type => $config->{searchfield}{$searchfield}{type} });
+                        $normcontent = $normalizer->normalize({ field => $field, content => $content, option => $option_ref, type => $config->{searchfield}{$searchfield}{type} });
                         $normalize_cache{$normalize_cache_id} = $normcontent;
                     }
                     
@@ -358,7 +370,7 @@ sub create_document {
                         $normcontent = $normalize_cache{$normalize_cache_id};
                     }
                     else {
-                        $normcontent = OpenBib::Common::Util::normalize({ field => $field, content => $content, option => $option_ref, type => $config->{searchfield}{$searchfield}{type} });
+                        $normcontent = $normalizer->normalize({ field => $field, content => $content, option => $option_ref, type => $config->{searchfield}{$searchfield}{type} });
                         $normalize_cache{$normalize_cache_id} = $normcontent;
                     }
                     
@@ -395,7 +407,7 @@ sub create_document {
                             $normcontent = $normalize_cache{$normalize_cache_id};
                         }
                         else {
-                            $normcontent = OpenBib::Common::Util::normalize({ field => $field, content => $additionalcontent, option => $option_ref, type => $config->{searchfield}{$searchfield}{type} });
+                            $normcontent = $normalizer->normalize({ field => $field, content => $additionalcontent, option => $option_ref, type => $config->{searchfield}{$searchfield}{type} });
                             $normalize_cache{$normalize_cache_id} = $normcontent;
                         }
                         
@@ -446,7 +458,7 @@ sub create_document {
                         $normcontent = $normalize_cache{$normalize_cache_id};
                     }
                     else {
-                        $normcontent = OpenBib::Common::Util::normalize({ field => $field, content => $content, option => $option_ref, type => $config->{searchfield}{$searchfield}{type} });
+                        $normcontent = $normalizer->normalize({ field => $field, content => $content, option => $option_ref, type => $config->{searchfield}{$searchfield}{type} });
                         $normalize_cache{$normalize_cache_id} = $normcontent;
                     }
                     
@@ -484,7 +496,7 @@ sub create_document {
                             $normcontent = $normalize_cache{$normalize_cache_id};
                         }
                         else {
-                            $normcontent = OpenBib::Common::Util::normalize({ field => $field, content => $additionalcontent, option => $option_ref, type => $config->{searchfield}{$searchfield}{type} });
+                            $normcontent = $normalizer->normalize({ field => $field, content => $additionalcontent, option => $option_ref, type => $config->{searchfield}{$searchfield}{type} });
                             $normalize_cache{$normalize_cache_id} = $normcontent;
                         }
                         
@@ -608,7 +620,7 @@ sub create_document {
                     }
                 }
                 
-                $content = OpenBib::Common::Util::normalize({
+                $content = $normalizer->normalize({
                     content   => $content,
                     type      => 'string',
                 });

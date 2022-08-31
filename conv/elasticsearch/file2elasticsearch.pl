@@ -31,7 +31,6 @@ use utf8;
 
 use Benchmark ':hireswallclock';
 use DB_File;
-use DBI;
 use Encode qw(decode_utf8 encode_utf8);
 use MLDBM qw(DB_File Storable);
 use Storable ();
@@ -42,7 +41,10 @@ use Search::Elasticsearch;
 use YAML::Syck;
 use OpenBib::Config;
 use OpenBib::Index::Factory;
-use OpenBib::Common::Util;
+use OpenBib::Normalizer;
+
+#use Devel::Leak::Object qw{ GLOBAL_bless };
+#$Devel::Leak::Object::TRACKSOURCELINES = 1;
 
 my ($database,$indexname,$help,$logfile,$withsorting,$withpositions,$loglevel,$indexpath,$incremental,$withalias,$deletefile);
 
@@ -126,8 +128,10 @@ my $atime = new Benchmark;
         if ($incremental){
             $create_index = 0;
         }
-        
-        my $indexer = OpenBib::Index::Factory->create_indexer({ sb => 'elasticsearch', database => $database, indexname => $indexname, create_index => $create_index, index_type => 'readwrite' });
+
+	my $normalizer = OpenBib::Normalizer->new;
+               
+        my $indexer = OpenBib::Index::Factory->create_indexer({ sb => 'elasticsearch', database => $database, indexname => $indexname, create_index => $create_index, index_type => 'readwrite', normalizer => $normalizer });
 
 	if ($logger->is_debug){
 	    $logger->debug("Indexer: ".YAML::Dump($indexer));
@@ -147,12 +151,13 @@ my $atime = new Benchmark;
         
         $indexer->set_stopper;
         $indexer->set_termgenerator;
-        
+	
         my $atime = new Benchmark;
-        while (my $searchengine=<SEARCHENGINE>) {            
-            my $document = OpenBib::Index::Document->new()->from_json($searchengine);
-
-            my $doc = $indexer->create_document({ document => $document, with_sorting => $withsorting, with_positions => $withpositions });
+        while (my $searchengine=<SEARCHENGINE>) {
+	    my $document = OpenBib::Index::Document->new()->from_json($searchengine);
+	    
+	    my $doc = $indexer->create_document({ document => $document, with_sorting => $withsorting, normalizer => $normalizer });
+	    
             $indexer->create_record($doc);
             
             if ($count % 1000 == 0) {
@@ -163,7 +168,7 @@ my $atime = new Benchmark;
                 $atime         = new Benchmark;
                 $logger->info("$database: 1000 ($count) Saetze indexiert in $resulttime Sekunden");
             }
-            
+
             $count++;
         }
 
@@ -202,3 +207,4 @@ file2elasticsearch.pl - Datenbank-Konnektor zum Aufbau eines Elasticsearch-Index
 ENDHELP
     exit;
 }
+

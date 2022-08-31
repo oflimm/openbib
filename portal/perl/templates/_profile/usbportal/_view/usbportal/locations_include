@@ -5321,7 +5321,8 @@ var semesterZeit = [
      END;
 
      IF location.type == 'Generic' && gebaeude ;
-        url = "https://lageplan.uni-koeln.de/#!${gebaeude}";
+        url = "https://wiso.uni-koeln.de/de/fakultaet/wiso-library-and-campus-service/arbeitsplaetze" ;
+        # url = "https://lageplan.uni-koeln.de/#!${gebaeude}";
      END;
 
      description    = location.description ;

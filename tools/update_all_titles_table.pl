@@ -6,7 +6,7 @@
 #  Aktualisierung der all_titles_by-Tabellen, in der die ISBN's, ISSN's,
 #  BibKeys und WorkKeys aller Titel in allen Kataloge nachgewiesen sind.
 #
-#  Dieses File ist (C) 2008-2016 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2022 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -48,7 +48,7 @@ use DB_File;
 use OpenBib::Config;
 use OpenBib::Enrichment;
 use OpenBib::Catalog;
-use OpenBib::Common::Util;
+use OpenBib::Normalizer;
 use OpenBib::Statistics;
 use OpenBib::Search::Util;
 
@@ -70,6 +70,7 @@ $chars_to_replace = qr/$chars_to_replace/;
 
 my $config     = new OpenBib::Config;
 my $enrichment = new OpenBib::Enrichment;
+my $normalizer = new OpenBib::Normalizer;
 
 my ($database,$help,$logfile,$incremental,$bulkinsert,$keepfiles,$withtitlecache,$deletefilename,$insertfilename,$reducemem);
 
@@ -368,7 +369,7 @@ ALLTITLECONTROL
         }
         
         # Normierung als String
-        $thisisbn = OpenBib::Common::Util::normalize({
+        $thisisbn = $normalizer->normalize({
             field => 'T0540',
             content  => $thisisbn,
         });
@@ -583,7 +584,7 @@ ALLTITLECONTROL
 
         if ($thisissn){
             # Normierung als String
-            $thisissn = OpenBib::Common::Util::normalize({
+            $thisissn = $normalizer->normalize({
                 field => 'T0543',
                 content  => $thisissn,
             });

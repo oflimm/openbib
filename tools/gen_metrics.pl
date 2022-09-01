@@ -48,13 +48,14 @@ use OpenBib::Record::Title;
 use OpenBib::Search::Util;
 use OpenBib::User;
 
-my ($type,$database,$profile,$field,$view,$help,$num,$logfile);
+my ($type,$database,$profile,$field,$view,$help,$num,$logfile,$loglevel);
 
 &GetOptions("type=s"          => \$type,
             "database=s"      => \$database,
             "profile=s"       => \$profile,
             "view=s"          => \$view,
-            "profile=s"       => \$profile,
+            "loglevel=s"      => \$loglevel,
+            "logfile=s"      => \$logfile,	    
             "field=s"         => \$field,
             "num=s"           => \$num,
 	    "help"            => \$help
@@ -66,7 +67,8 @@ if ($help){
 
 $num=($num)?$num:200;
 
-$logfile=($logfile)?$logfile:'/var/log/openbib/gen_metrics.log';
+$logfile  = ($logfile)?$logfile:'/var/log/openbib/gen_metrics.log';
+$loglevel = ($loglevel)?$loglevel:'INFO';
 
 my $log4Perl_config = << "L4PCONF";
 log4perl.rootLogger=INFO, LOGFILE, Screen

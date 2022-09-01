@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2022-03-28 14:21+0100\n"
+"PO-Revision-Date: 2022-04-08 11:14+0100\n"
 "Last-Translator: openbib <flimm@openbib.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -47601,7 +47601,7 @@ msgstr "# of superordinate titles"
 #: ../templates/all_categories_title:149
 #: ../templates/visible_categories_title:140
 msgid "T5002"
-msgstr "# of dependent titles"
+msgstr "Dependent titles"
 
 #: ../templates/_profile/sammlungen_yaml4/_database/pruessen/visible_categories_title:120
 msgid "T5003"

@@ -156,7 +156,7 @@ my $atime = new Benchmark;
         while (my $searchengine=<SEARCHENGINE>) {
 	    my $document = OpenBib::Index::Document->new()->from_json($searchengine);
 	    
-	    my $doc = $indexer->create_document({ document => $document, with_sorting => $withsorting, normalizer => $normalizer });
+	    my $doc = $indexer->create_document({ document => $document, with_sorting => $withsorting });
 	    
             $indexer->create_record($doc);
             

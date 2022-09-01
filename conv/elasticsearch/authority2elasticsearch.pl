@@ -44,7 +44,7 @@ use Search::Elasticsearch;
 use YAML::Syck;
 use OpenBib::Config;
 use OpenBib::Index::Factory;
-use OpenBib::Common::Util;
+use OpenBib::Normalizer;
 
 my ($database,$help,$logfile,$withsorting,$withpositions,$loglevel,$indexname,$withalias,$authtype);
 
@@ -142,7 +142,9 @@ if ($withalias){
 
 my $atime = new Benchmark;
 
-my $indexer = OpenBib::Index::Factory->create_indexer({ database => $database, create_index => 1, index_type => 'readwrite', sb => 'elasticsearch', indexname => $indexname });
+my $normalizer = OpenBib::Normalizer->new;
+
+my $indexer = OpenBib::Index::Factory->create_indexer({ database => $database, create_index => 1, index_type => 'readwrite', sb => 'elasticsearch', indexname => $indexname, normalizer => $normalizer });
 
 #$indexer->set_stopper;
 #$indexer->set_termgenerator;

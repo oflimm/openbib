@@ -438,10 +438,10 @@ if ($use_searchengine_ref->{"elasticsearch"}){
     $es_indexer = OpenBib::Index::Factory->create_indexer({ sb => 'elasticsearch', database => $database, index_type => 'readwrite' });
 
     $es_indexname = $es_indexer->get_aliased_index($database);
-    $es_authority_indexname = $es_indexer->get_aliased_index("authority_$database");
+    $es_authority_indexname = $es_indexer->get_aliased_index("${database}_authority");
 		
     $es_new_indexname = ($es_indexname eq "${database}_a")?"${database}_b":"${database}_a";
-    $es_new_authority_indexname = ($es_authority_indexname eq "authority_${database}_a")?"authority_${database}_b":"authority_${database}_a";
+    $es_new_authority_indexname = ($es_authority_indexname eq "${database}_authority_a")?"${database}_authority_b":"${database}_authority_a";
 }
 
 {
@@ -774,9 +774,9 @@ unless ($incremental || $searchengineonly){
 	}
 	
 	if ($use_searchengine_ref->{"elasticsearch"}){
-	    $es_indexer->drop_alias("authority_$database",$es_authority_indexname);
-	    $es_indexer->create_alias("authority_$database",$es_new_authority_indexname);
-	    #$es_indexer->drop_index($es_authority_indexname);
+	    $es_indexer->drop_alias("${database}_authority",$es_authority_indexname);
+	    $es_indexer->create_alias("${database}_authority",$es_new_authority_indexname);
+	    $es_indexer->drop_index($es_authority_indexname);
 	}
 
     }

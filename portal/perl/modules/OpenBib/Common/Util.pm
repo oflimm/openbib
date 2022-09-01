@@ -1201,8 +1201,10 @@ sub normalize {
             
             # Verbundene Terme splitten
             $content=~s/(\w)\"(\w)/$1 $2/g;
-            $content=~s/(\w)\x{02ba}(\w)/$1 $2/g; # Hartes Zeichen Slavistik
-            $content=~s/(\w)\x{201d}(\w)/$1 $2/g; # Hartes Zeichen Slavistik
+
+            # memory leak with these regexp https://github.com/Perl/perl5/issues/17218
+            #$content=~s/(\w)\x{02ba}(\w)/$1 $2/g; # Hartes Zeichen Slavistik
+            #$content=~s/(\w)\x{201d}(\w)/$1 $2/g; # Hartes Zeichen Slavistik
             $content=~s/(\w)-(\w)/$1 $2/g;
             $content=~s/(\w)'(\w)/$1 $2/g;
             

@@ -64,6 +64,7 @@ use OpenBib::Importer::JSON::Classification;
 use OpenBib::Importer::JSON::Subject;
 use OpenBib::Importer::JSON::Holding;
 use OpenBib::Importer::JSON::Title;
+use OpenBib::Normalizer;
 
 my %char_replacements = (
     
@@ -327,6 +328,8 @@ my $storage_ref = {
     'titleid_exists'              => \%titleid_exists,
 };
 
+my $normalizer = OpenBib::Normalizer->new;
+
 my $actions_map_ref = {};
 
 foreach my $type (keys %{$stammdateien_ref}) {
@@ -398,6 +401,7 @@ foreach my $type (keys %{$stammdateien_ref}) {
             storage         => $storage_ref,
             database        => $database,
 	    scheme          => $scheme,
+	    normalizer      => $normalizer,
         });
         
         while (my $jsonline=<IN>){
@@ -488,6 +492,7 @@ if (-f "meta.holding"){
         storage         => $storage_ref,
         database        => $database,
 	scheme          => $scheme,
+	normalizer      => $normalizer,
     });
     
     while (my $jsonline=<IN>) {
@@ -722,6 +727,7 @@ my $importer = OpenBib::Importer::JSON::Title->new({
     local_enrichmnt => $local_enrichmnt,
     storage         => $storage_ref,
     scheme          => $scheme,
+    normalizer      => $normalizer,
 });
 
 while (my $jsonline=<IN>){

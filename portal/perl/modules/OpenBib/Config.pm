@@ -3202,24 +3202,26 @@ sub get_memc {
        return $self->{memc};
     }
 
-    # Verbindung zu Memchached herstellen
-    my $memc = new Cache::Memcached::Fast(
-	$self->{memcached},        
-	compress_methods => [
-            sub { ${$_[1]} = Compress::LZ4::compress(${$_[0]})   },
-            sub { ${$_[1]} = Compress::LZ4::decompress(${$_[0]}) },
-        ],
-	);
+    # # Verbindung zu Memchached herstellen
+    # my $memc = new Cache::Memcached::Fast(
+    # 	$self->{memcached},        
+    # 	compress_methods => [
+    #         sub { ${$_[1]} = Compress::LZ4::compress(${$_[0]})   },
+    #         sub { ${$_[1]} = Compress::LZ4::decompress(${$_[0]}) },
+    #     ],
+    # 	);
 
-    if (!$memc->set('isalive',1)){
-        $logger->fatal("Unable to connect to memcached");
-    }
+    # if (!$memc->set('isalive',1)){
+    #     $logger->fatal("Unable to connect to memcached");
+    # }
 
-    $self->{memc} = $memc;
+    # $self->{memc} = $memc;
 
-    $logger->debug("Stored ".$self->{memc});
+    # $logger->debug("Stored ".$self->{memc});
 
-    return $memc;
+    # return $memc;
+
+    return;				      
 }
 
 sub connectMemcached {
@@ -3234,15 +3236,13 @@ sub connectMemcached {
     }
 
     # Verbindung zu Memchached herstellen
-    my $memc = new Cache::Memcached::Fast(
+    $self->{memc} = new Cache::Memcached::Fast(
 	$self->{memcached},        
 	compress_methods => [
             sub { ${$_[1]} = Compress::LZ4::compress(${$_[0]})   },
             sub { ${$_[1]} = Compress::LZ4::decompress(${$_[0]}) },
         ],
 	);
-
-    $self->{memc} = $memc;
 
     $logger->debug("Storing ".$self->{memc});
 

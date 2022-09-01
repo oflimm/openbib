@@ -16,7 +16,7 @@ PATH=/sbin:/usr/sbin:/bin:/usr/bin
 
 case "$1" in
     start)
-        starman --user openbib --port 8008 --workers 20 --backlog 4096 -D --error-log /var/log/openbib/starman.log --pid /var/log/openbib/starman.pid /opt/openbib/conf/portal.psgi
+        starman --user openbib --port 8008 --workers 30 --backlog 4096 -D --error-log /var/log/openbib/starman.log --pid /var/log/openbib/starman.pid /opt/openbib/conf/portal.psgi
         ;;
     reload|force-reload)
         echo "Error: argument '$1' not supported" >&2

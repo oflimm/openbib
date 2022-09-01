@@ -49,6 +49,7 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Schema::DBI;
 use OpenBib::Schema::System;
+use OpenBib::Normalizer;
 
 sub new {
     my ($class,$arg_ref) = @_;
@@ -127,6 +128,8 @@ sub set_from_psgi_request {
     
     my $query = $self->{r};
 
+    my $normalizer = new OpenBib::Normalizer;
+    
     my ($indexterm,$indextermnorm,$indextype);
 
     my $legacy_bool_op_ref = {
@@ -226,7 +229,7 @@ sub set_from_psgi_request {
                         my $last   = $3;
                         
                         #                    $logger->debug("Fullstring IN: $string");
-                        my $string_norm = OpenBib::Common::Util::normalize({
+                        my $string_norm = $normalizer->normalize({
                             content   => $string,
                             type      => 'string',
                         });
@@ -246,7 +249,7 @@ sub set_from_psgi_request {
                     $logger->debug("Filter Option: ".YAML::Dump($config->{'searchfield'}{$searchfield}{option}));
                 }
                 
-                $thissearchfield_norm_content = OpenBib::Common::Util::normalize({
+                $thissearchfield_norm_content = $normalizer->normalize({
                     option    => $config->{'searchfield'}{$searchfield}{option},
                     content   => $thissearchfield_norm_content,
                     type      => $config->{'searchfield'}{$searchfield}{type},
@@ -289,7 +292,7 @@ sub set_from_psgi_request {
 	    
             my $string  = $term;
             
-            $string = OpenBib::Common::Util::normalize({
+            $string = $normalizer->normalize({
                 content   => $string,
                 type      => 'string',
             });
@@ -323,7 +326,7 @@ sub set_from_psgi_request {
     $self->{searchindex}         = ($query->param('searchindex'))?escape_html($query->param('searchindex')):'';
     
     if ($indexterm){
-        $indextermnorm  = OpenBib::Common::Util::normalize({
+        $indextermnorm  = $normalizer->normalize({
            content   => $indextermnorm,
            searchreq => 1,
         });
@@ -398,12 +401,14 @@ sub set_filter {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+
+    my $normalizer = new OpenBib::Normalizer;
     
     if ($field && $term){
 
 	my $string  = $term;
 	
-	$string = OpenBib::Common::Util::normalize({
+	$string = $normalizer->normalize({
 	    content   => $string,
 	    type      => 'string',
 						   });
@@ -635,7 +640,9 @@ sub set_searchfield {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $contentnorm  = OpenBib::Common::Util::normalize({
+    my $normalizer = new OpenBib::Normalizer;
+    
+    my $contentnorm  = $normalizer->normalize({
 	field     => $fieldname,
         content   => $content,
         searchreq => 1,
@@ -837,7 +844,9 @@ sub get_spelling_suggestion {
     }
                           
     my $atime=new Benchmark;
-                          
+
+    my $normalizer = new OpenBib::Normalizer;
+    
     # Bestimmung moeglicher Rechtschreibvorschlaege fuer die einzelnen Begriffe
     foreach my $term (@{$searchterms_ref}){
         # Nur Vorschlaege sammeln, wenn der Begriff nicht im Woerterbuch vorkommt
@@ -851,7 +860,7 @@ sub get_spelling_suggestion {
         my $sorted_suggestions_ref = [];
 
         if (defined $dbh){
-            my $this_term = OpenBib::Common::Util::normalize({
+            my $this_term = $normalizer->normalize({
                 content   => $term,
                 searchreq => 1,
             });
@@ -861,7 +870,7 @@ sub get_spelling_suggestion {
             # Verwende die 5 besten Vorschlaege
             foreach my $suggested_term (@aspell_suggestions[0..4]){
                 next unless ($suggested_term);
-                my $suggested_term = OpenBib::Common::Util::normalize({
+                my $suggested_term = $normalizer->normalize({
                     content   => $suggested_term,
                     searchreq => 1,
                 });

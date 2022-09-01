@@ -42,9 +42,9 @@ use Log::Log4perl qw(get_logger :levels);
 use YAML::Syck;
 
 use OpenBib::API::HTTP::BibSonomy;
-use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::File;
+use OpenBib::Normalizer;
 use OpenBib::Schema::System;
 use OpenBib::Schema::System::Singleton;
 use OpenBib::Record::Title;
@@ -1980,10 +1980,12 @@ sub add_tags {
     # Splitten der Tags
     my @taglist = split('\s+',$tags);
 
+    my $normalizer = new OpenBib::Normalizer;
+    
     foreach my $tagname (@taglist){
 
         # Normierung
-        $tagname = OpenBib::Common::Util::normalize({
+        $tagname = $normalizer->normalize({
             content  => $tagname,
             tagging  => 1,
         });
@@ -2144,13 +2146,15 @@ sub rename_tag {
   
     my $logger = get_logger();
 
+    my $normalizer = new OpenBib::Normalizer;
+    
     # Normierung
-    $from = OpenBib::Common::Util::normalize({
+    $from = $normalizer->normalize({
         content  => $from,
         tagging  => 1,
     });
 
-    $to = OpenBib::Common::Util::normalize({
+    $to = $normalizer->normalize({
         content  => $to,
         tagging  => 1,
     });

@@ -47,7 +47,6 @@ use XML::LibXML;
 use YAML ();
 
 use OpenBib::Catalog::Factory;
-use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Config::File;
 use OpenBib::Config::CirculationInfoTable;
@@ -59,6 +58,7 @@ use OpenBib::Schema::Enrichment;
 use OpenBib::Schema::DBI;
 use OpenBib::ILS::Factory;
 use OpenBib::L10N;
+use OpenBib::Normalizer;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Person;
 use OpenBib::Record::CorporateBody;
@@ -99,6 +99,9 @@ sub new {
     
     my $sessionID  = exists $arg_ref->{sessionID}
         ? $arg_ref->{sessionID}      : undef;
+
+    my $normalizer = exists $arg_ref->{normalizer}
+    ? $arg_ref->{normalizer}         : OpenBib::Normalizer->new;
     
 
     my $generic_attributes = exists $arg_ref->{generic_attributes}
@@ -115,6 +118,10 @@ sub new {
 
     $self->{_config}          = $config;
 
+    if ($normalizer){
+	$self->{_normalizer}  =  $normalizer;
+    }
+    
     $logger->debug("Stage 1");
     
     my $ua = LWP::UserAgent->new();
@@ -363,10 +370,15 @@ sub enrich_content {
     my $viewname = exists $arg_ref->{viewname}
         ? $arg_ref->{viewname}        : '';
 
+    my $normalizer    = exists $arg_ref->{normalizer}
+    ? $arg_ref->{normalizer}          :
+	($self->{_normalizer})?$self->{_normalizer}:OpenBib::Normalizer->new;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
     my $config = $self->get_config;
+
 
     my ($atime,$btime,$timeall);
         
@@ -507,7 +519,7 @@ sub enrich_content {
         foreach my $issn_ref (@issn_refs){
             my $thisissn = $issn_ref->{content};
             
-            push @issn_refs_tmp, OpenBib::Common::Util::normalize({
+            push @issn_refs_tmp, $normalizer->normalize({
                 field => 'T0543',
                 content  => $thisissn,
             });
@@ -1940,6 +1952,8 @@ sub to_bibkey {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $normalizer = $self->{_normalizer};
+    
     my $bibkey_record_ref = {
         'T0100' => $self->{_fields}->{'T0100'},
         'T0101' => $self->{_fields}->{'T0101'},
@@ -1947,7 +1961,7 @@ sub to_bibkey {
         'T0425' => $self->{_fields}->{'T0425'},
     };
 
-    return ($self->has_field('T5050'))?$self->get_field({field => 'T5050', mult => 1}):OpenBib::Common::Util::gen_bibkey({ fields => $bibkey_record_ref});
+    return ($self->has_field('T5050'))?$self->get_field({field => 'T5050', mult => 1}):$normalizer->gen_bibkey({ fields => $bibkey_record_ref});
 }
 
 sub to_normalized_isbn13 {
@@ -1956,6 +1970,8 @@ sub to_normalized_isbn13 {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $normalizer = $self->{_normalizer};
+    
     my $thisisbn = ($self->has_field("T0540"))?$self->{_fields}{"T0540"}[0]{content}:"";
 
     $logger->debug("ISBN: $thisisbn");
@@ -1968,7 +1984,7 @@ sub to_normalized_isbn13 {
         $thisisbn = $isbn->as_isbn13->as_string;
     }
     
-    $thisisbn = OpenBib::Common::Util::normalize({
+    $thisisbn = $normalizer->normalize({
         field => 'T0540',
         content  => $thisisbn,
     });
@@ -1979,6 +1995,8 @@ sub to_normalized_isbn13 {
 sub get_sortfields {
     my ($self) = @_;
 
+    my $normalizer = $self->{_normalizer};
+    
     my $person_field = $self->get_field({ field => 'PC0001' });
     my $title_field  = $self->get_field({ field => 'T0331' });
     my $year_field   = $self->get_field({ field => 'T0425' });
@@ -1987,16 +2005,16 @@ sub get_sortfields {
         $year_field   = $self->get_field({ field => 'T0424' });
     }
 
-    my $srt_person = OpenBib::Common::Util::normalize({
+    my $srt_person = $normalizer->normalize({
         content => $person_field->[0]{content}
     });
     
-    my $srt_title  =  OpenBib::Common::Util::normalize({
+    my $srt_title  =  $normalizer->normalize({
         content => $title_field->[0]{content},
         field   => 'T0331',
     });
     
-    my $srt_year   =  OpenBib::Common::Util::normalize({
+    my $srt_year   =  $normalizer->normalize({
         content => $year_field->[0]{content},
         field   => 'T0425',
         type    => 'integer',
@@ -3655,13 +3673,15 @@ sub to_custom_field_scheme_1 {
 sub to_tags {
     my ($self) = @_;
 
+    my $normalizer = $self->{_normalizer};
+    
     # Schlagworte
     my $keywords_ref=[];
     foreach my $category (qw/T0710 T0902 T0907 T0912 T0917 T0922 T0927 T0932 T0937 T0942 T0947/){
         next if (!exists $self->{_fields}->{$category});
         foreach my $part_ref (@{$self->{_fields}->{$category}}){
             foreach my $content_part (split('\s+',$part_ref->{content})){
-                push @$keywords_ref, OpenBib::Common::Util::normalize({
+                push @$keywords_ref, $normalizer->normalize({
                     strip_first_stopword => 1,
                     tagging              => 1,
                     content              => $content_part,
@@ -3782,7 +3802,9 @@ sub to_drilldown_term {
 
     my $config = $self->get_config;
 
-    $term = OpenBib::Common::Util::normalize({
+    my $normalizer = $self->{_normalizer};
+    
+    $term = $normalizer->normalize({
         content   => $term,
         searchreq => 1,
     });

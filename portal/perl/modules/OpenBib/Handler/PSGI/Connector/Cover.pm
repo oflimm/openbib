@@ -143,6 +143,8 @@ sub process_vlb {
 sub id2isbnX {
     my ($self,$id) = @_;
 
+    my $normalizer = $self->param('normalizer');
+
     my $isbn13="";
     my $isbn10="";
         
@@ -153,12 +155,12 @@ sub id2isbnX {
         $isbn13 = $isbnXX->as_isbn13->as_string;
         $isbn10 = $isbnXX->as_isbn10->as_string;
         
-        $isbn13 = OpenBib::Common::Util::normalize({
+        $isbn13 = $normalizer->normalize({
             field => 'T0540',
             content  => $isbn13,
         });
         
-        $isbn10 = OpenBib::Common::Util::normalize({
+        $isbn10 = $normalizer->normalize({
             field => 'T0540',
             content  => $isbn10,
         });

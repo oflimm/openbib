@@ -131,9 +131,11 @@ sub show_collection_by_isbn {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
+    my $normalizer     = $self->param('normalizer');
     
     $id =~s/^(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)$/$1$2$3$4$5$6$7$8$9$10/g;
     $id =~s/^(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)$/$1$2$3$4$5$6$7$8$9$10$11$12$13/g;
+
     
     # Normierung auf ISBN13
     my $isbnXX     = Business::ISBN->new($id);
@@ -145,7 +147,7 @@ sub show_collection_by_isbn {
     if (defined $isbnXX && $isbnXX->is_valid){
         $id = $isbnXX->as_isbn13->as_string;
     
-        my $isbn = OpenBib::Common::Util::normalize({
+        my $isbn = $normalizer->normalize({
             field    => 'T0540',
             content  => $id,
         });

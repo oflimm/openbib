@@ -133,6 +133,7 @@ sub new {
 
 	my $bulk = $es->bulk_helper(
 	    index => $indexname,
+	    max_count => 2000,
 	    );
 
 	$self->{_backend} = $es;

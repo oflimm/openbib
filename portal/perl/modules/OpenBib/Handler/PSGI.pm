@@ -64,6 +64,7 @@ use OpenBib::SearchQuery;
 use OpenBib::Search::Factory;
 use OpenBib::Template::Provider;
 use OpenBib::User;
+use OpenBib::Normalizer;
 
 use Scalar::Util;
 
@@ -130,6 +131,9 @@ sub cgiapp_init {
     if ($sessionID ne $session->{ID}){
         $self->set_cookie('sessionID',$session->{ID}) ;
     }
+
+    my $normalizer   = OpenBib::Normalizer->new();
+    $self->param('normalizer',$normalizer);
     
     my $user         = OpenBib::User->new({sessionID => $session->{ID}, config => $config});
     $self->param('user',$user);
@@ -2272,7 +2276,9 @@ sub check_online_media {
     
     my $searchquery = new OpenBib::SearchQuery();
 
-    $isbn = OpenBib::Common::Util::normalize({ field => 'T0540', content => $isbn });
+    my $normalizer = $self->param('normalizer');
+    
+    $isbn = $normalizer->normalize({ field => 'T0540', content => $isbn });
     
     $searchquery->set_searchfield('isbn',$isbn,'AND');
     $searchquery->set_filter({ field => 'favail', term => 'online'});

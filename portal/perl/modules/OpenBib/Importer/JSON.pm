@@ -40,11 +40,11 @@ use Log::Log4perl qw(get_logger :levels);
 use YAML ();
 use Business::ISBN;
 
-use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Conv::Config;
 use OpenBib::Container;
 use OpenBib::Index::Document;
+use OpenBib::Normalizer;
 
 my %char_replacements = (
     
@@ -74,6 +74,9 @@ sub new {
 
     my $scheme    = exists $arg_ref->{scheme}
         ? $arg_ref->{scheme}         : ""; # eg. marc
+
+    my $normalizer       = exists $arg_ref->{normalizer}
+        ? $arg_ref->{normalizer}          : OpenBib::Normalizer->new();
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -102,6 +105,10 @@ sub new {
         $self->{storage}       = $storage;
         $logger->debug("Setting storage");
     }
+
+    if ($normalizer){
+	$self->{_normalizer} =  $normalizer;
+    }
     
     # Serials
     $self->{'serialid'} = 1;
@@ -127,6 +134,8 @@ sub process {
 
     my $database    = $self->{database};
 
+    my $normalizer = $self->{_normalizer};
+    
     $logger->debug("Processing JSON: $json");
 
     # Cleanup

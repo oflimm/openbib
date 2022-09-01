@@ -64,6 +64,9 @@ sub new {
     my $createindex      = exists $arg_ref->{create_index}
         ? $arg_ref->{create_index}                  : undef;
 
+    my $normalizer       = exists $arg_ref->{normalizer}
+        ? $arg_ref->{normalizer}                    : OpenBib::Normalizer->new();
+    
     my $self = { };
 
     bless ($self, $class);
@@ -85,7 +88,7 @@ sub new {
 
         {   # get locationid and save to object
             my $locationid = $config->get_locationid_of_database($database);
-            my $locationid_norm =  OpenBib::Common::Util::normalize({ content => $locationid});
+            my $locationid_norm =  $normalizer->normalize({ content => $locationid});
             $locationid_norm=~s/\W/_/g;
             $self->{_locationid}      = $locationid;
             $self->{_locationid_norm} = $locationid_norm;
@@ -94,6 +97,10 @@ sub new {
 
     $logger->debug("Creating elasticsearch DB-Object for database $self->{_database}");
 
+    if ($normalizer){
+	$self->{_normalizer} =  $normalizer;
+    }
+    
     my $solr_base = $config->get('solr')->{base_url};
     
     eval {
@@ -222,6 +229,10 @@ sub create_document {
     my $document    = exists $arg_ref->{document}
         ? $arg_ref->{document}        : undef;
 
+    my $normalizer    = exists $arg_ref->{normalizer}
+    ? $arg_ref->{normalizer}          :
+	($self->{_normalizer})?$self->{_normalizer}:OpenBib::Normalizer->new;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -297,7 +308,7 @@ sub create_document {
 		}
 	    }
 	    
-	    $content = OpenBib::Common::Util::normalize({
+	    $content = $normalizer->normalize({
 		content   => $content,
 		type      => 'string',
 							});

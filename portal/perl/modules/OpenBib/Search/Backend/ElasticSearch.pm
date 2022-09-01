@@ -40,7 +40,6 @@ use String::Tokenizer;
 use YAML ();
 
 use OpenBib::Config;
-use OpenBib::Common::Util;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
 use OpenBib::SearchQuery;
@@ -49,7 +48,7 @@ use OpenBib::QueryOptions;
 use base qw(OpenBib::Search);
 
 sub get_relevant_terms {
-    my ($arg_ref) = @_;
+    my ($self,$arg_ref) = @_;
     
     # Set defaults
     my $category_ref       = exists $arg_ref->{categories}
@@ -64,6 +63,8 @@ sub get_relevant_terms {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $normalizer = $self->{_normalizer};
+	
     my $fulltermsem_ref={};
     my $fullterm_ref=[];
 
@@ -90,7 +91,7 @@ sub get_relevant_terms {
                         $cmpterm  = $thisterm_ref->{contentnorm};
                     }
                     else {
-                        $cmpterm  = OpenBib::Common::Util::normalize({
+                        $cmpterm  = $normalizer->normalize({
                             field => $category,
                             content  => $thisterm,
                         });

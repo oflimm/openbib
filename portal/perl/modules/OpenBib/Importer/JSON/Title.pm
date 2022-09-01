@@ -46,6 +46,7 @@ use OpenBib::Config;
 use OpenBib::Conv::Config;
 use OpenBib::Container;
 use OpenBib::Index::Document;
+use OpenBib::Normalizer;
 
 use base 'OpenBib::Importer::JSON';
 
@@ -70,6 +71,8 @@ sub new {
         ? $arg_ref->{addmediatype}        : 0;
     my $local_enrichmnt   = exists $arg_ref->{local_enrichmnt}
         ? $arg_ref->{local_enrichmnt}     : 0;
+    my $normalizer       = exists $arg_ref->{normalizer}
+        ? $arg_ref->{normalizer}          : OpenBib::Normalizer->new();
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -116,6 +119,10 @@ sub new {
         $logger->debug("Setting storage");
     }
 
+    if ($normalizer){
+	$self->{_normalizer} =  $normalizer;
+    }
+    
     # Serials
     $self->{'stats_enriched_language'} = 0;
     $self->{'title_title_serialid'} = 1;
@@ -156,6 +163,7 @@ sub process_mab {
 #    my $config      = OpenBib::Config->new;
 #    my $storage     = OpenBib::Container->instance;
     my $database    = $self->{database};
+    my $normalizer  = $self->{_normalizer};
 
     $logger->debug("Processing JSON: $json");
 
@@ -296,7 +304,7 @@ sub process_mab {
                     
                     # ISBN13 fuer Anreicherung merken
                     
-                    push @{$enrichmnt_isbns_ref}, OpenBib::Common::Util::normalize({
+                    push @{$enrichmnt_isbns_ref}, $normalizer->normalize({
                         field    => "T0540",
                         content  => $isbn->as_isbn13->as_string,
                     });
@@ -309,7 +317,7 @@ sub process_mab {
     foreach my $field ('0543') {
         if (defined $fields_ref->{$field}) {
             foreach my $item_ref (@{$fields_ref->{$field}}) {
-                push @{$enrichmnt_issns_ref}, OpenBib::Common::Util::normalize({
+                push @{$enrichmnt_issns_ref}, $normalizer->normalize({
                     field    => "T0543",
                     content  => $item_ref->{content},
                 });
@@ -375,7 +383,7 @@ sub process_mab {
 	
 	$mult_lang = 1;
         foreach my $item_ref (@{$fields_ref->{'0015'}}){
-            my $valid_lang = OpenBib::Common::Util::normalize_lang($item_ref->{content});
+            my $valid_lang = $normalizer->normalize_lang($item_ref->{content});
             if (defined $valid_lang){
                 $valid_language_available = 1;
                 push @{$fields_ref->{'4301'}}, {
@@ -428,7 +436,7 @@ sub process_mab {
         
         if ($lang[3]){ # reliable!
             
-            $langcode = OpenBib::Common::Util::normalize_lang($lang[1]);
+            $langcode = $normalizer->normalize_lang($lang[1]);
             
         }
 
@@ -916,9 +924,9 @@ sub process_mab {
             $bibkey_record_ref->{'T0425'} = $fields_ref->{'0424'};
         }
 
-        my $bibkey_base = OpenBib::Common::Util::gen_bibkey_base({ fields => $bibkey_record_ref});
+        my $bibkey_base = $normalizer->gen_bibkey_base({ fields => $bibkey_record_ref});
 
-        $bibkey      = ($bibkey_base)?OpenBib::Common::Util::gen_bibkey({ bibkey_base => $bibkey_base }):"";
+        $bibkey      = ($bibkey_base)?$normalizer->gen_bibkey({ bibkey_base => $bibkey_base }):"";
         
         if ($bibkey) {
             push @{$fields_ref->{'5050'}}, {
@@ -956,7 +964,7 @@ sub process_mab {
             'T4400' => $fields_ref->{'4400'}, # Zugriff: online
         };
 
-        my @workkeys = OpenBib::Common::Util::gen_workkeys({ fields => $workkey_record_ref});
+        my @workkeys = $normalizer->gen_workkeys({ fields => $workkey_record_ref});
 
         my $mult = 1;
         foreach my $workkey (@workkeys) {
@@ -1476,6 +1484,7 @@ sub process_marc {
 #    my $config      = OpenBib::Config->new;
 #    my $storage     = OpenBib::Container->instance;
     my $database    = $self->{database};
+    my $normalizer  = $self->{_normalizer};
 
     $logger->debug("Processing JSON: $json");
 
@@ -1617,7 +1626,7 @@ sub process_marc {
 			
 			# ISBN13 fuer Anreicherung merken
 			
-			push @{$enrichmnt_isbns_ref}, OpenBib::Common::Util::normalize({
+			push @{$enrichmnt_isbns_ref}, $normalizer->normalize({
 			    field    => "T0540",
 			    content  => $isbn->as_isbn13->as_string,
 										       });
@@ -1632,7 +1641,7 @@ sub process_marc {
         if (defined $fields_ref->{$field}) {
             foreach my $item_ref (@{$fields_ref->{$field}}) {
 		if ($item_ref->{subfield} eq "a"){
-		    push @{$enrichmnt_issns_ref}, OpenBib::Common::Util::normalize({
+		    push @{$enrichmnt_issns_ref}, $normalizer->normalize({
 			field    => "T0543",
 			content  => $item_ref->{content},
 										   });
@@ -1686,7 +1695,7 @@ sub process_marc {
 	
 	$mult_lang = 1;
         foreach my $item_ref (@{$fields_ref->{'0041'}}){
-            my $valid_lang = OpenBib::Common::Util::normalize_lang($item_ref->{content});
+            my $valid_lang = $normalizer->normalize_lang($item_ref->{content});
             if (defined $valid_lang){
                 $valid_language_available = 1;
                 push @{$fields_ref->{'4301'}}, {
@@ -1736,7 +1745,7 @@ sub process_marc {
         
         if ($lang[3]){ # reliable!
             
-            $langcode = OpenBib::Common::Util::normalize_lang($lang[1]);
+            $langcode = $normalizer->normalize_lang($lang[1]);
             
         }
 
@@ -2218,7 +2227,7 @@ sub process_marc {
         }
     }
 
-	    # Todo: Bibkey-Generierung mit MARC-Records
+    # Todo: Bibkey-Generierung mit MARC-Records
 	    
     # Bibkey-Kategorie 5050 wird *immer* angereichert, wenn alle relevanten Kategorien enthalten sind. Die Invertierung ist konfigurabel
 
@@ -2237,9 +2246,9 @@ sub process_marc {
 #             $bibkey_record_ref->{'T0425'} = $fields_ref->{'0424'};
 #         }
 
-#         my $bibkey_base = OpenBib::Common::Util::gen_bibkey_base({ fields => $bibkey_record_ref});
+#         my $bibkey_base = $normalizer->gen_bibkey_base({ fields => $bibkey_record_ref});
 
-#         $bibkey      = ($bibkey_base)?OpenBib::Common::Util::gen_bibkey({ bibkey_base => $bibkey_base }):"";
+#         $bibkey      = ($bibkey_base)?$normalizer->gen_bibkey({ bibkey_base => $bibkey_base }):"";
         
 #         if ($bibkey) {
 #             push @{$fields_ref->{'5050'}}, {
@@ -2277,7 +2286,7 @@ sub process_marc {
 #             'T4400' => $fields_ref->{'4400'}, # Zugriff: online
 #         };
 
-#         my @workkeys = OpenBib::Common::Util::gen_workkeys({ fields => $workkey_record_ref});
+#         my @workkeys = $normalizer->gen_workkeys({ fields => $workkey_record_ref});
 
 #         my $mult = 1;
 #         foreach my $workkey (@workkeys) {

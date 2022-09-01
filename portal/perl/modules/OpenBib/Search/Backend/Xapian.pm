@@ -40,16 +40,16 @@ use String::Tokenizer;
 use YAML ();
 
 use OpenBib::Config;
-use OpenBib::Common::Util;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
 use OpenBib::SearchQuery;
 use OpenBib::QueryOptions;
+use OpenBib::Normalizer;
 
 use base qw(OpenBib::Search);
 
 sub get_relevant_terms {
-    my ($arg_ref) = @_;
+    my ($self,$arg_ref) = @_;
     
     # Set defaults
     my $category_ref       = exists $arg_ref->{categories}
@@ -64,6 +64,8 @@ sub get_relevant_terms {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $normalizer = $self->{_normalizer};
+    
     my $fulltermsem_ref={};
     my $fullterm_ref=[];
 
@@ -90,7 +92,7 @@ sub get_relevant_terms {
                         $cmpterm  = $thisterm_ref->{contentnorm};
                     }
                     else {
-                        $cmpterm  = OpenBib::Common::Util::normalize({
+                        $cmpterm  = $normalizer->normalize({
                             field => $category,
                             content  => $thisterm,
                         });
@@ -135,6 +137,7 @@ sub search {
     my $config       = $self->get_config;
     my $searchquery  = $self->get_searchquery;
     my $queryoptions = $self->get_queryoptions;
+    my $normalizer   = $self->{_normalizer};
 
     # Used Parameters
     my $sorttype          = (defined $self->{_options}{srt})?$self->{_options}{srt}:$queryoptions->get_option('srt');
@@ -299,7 +302,7 @@ sub search {
         open(SW,$config->{stopword_filename});
         while (my $stopword=<SW>){
             chomp $stopword ;
-            $stopword = OpenBib::Common::Util::normalize({
+            $stopword = $normalizer->normalize({
                 content  => $stopword,
             });
             push @stopwords, $stopword;
@@ -968,7 +971,8 @@ sub get_indexterms {
     my $logger = get_logger();
 
     $logger->debug("Getting indexterms for id $id in database $database");
-    my $config = $self->get_config;
+    my $config       = $self->get_config;
+    my $normalizer   = $self->{_normalizer};
 
     my $dbh = undef;
     
@@ -988,7 +992,7 @@ sub get_indexterms {
     $qp->add_prefix('id', 'Q');
     $qp->set_default_op(Search::Xapian::OP_AND);
 
-    $id = OpenBib::Common::Util::normalize({ content => $id, type => 'id'});
+    $id = $normalizer->normalize({ content => $id, type => 'id'});
     
     my $enq  = $dbh->enquire("Q$id"); #$qp->parse_query("id:$id"));
 
@@ -1029,7 +1033,8 @@ sub get_values {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = $self->get_config;
+    my $config       = $self->get_config;
+    my $normalizer   = $self->{_normalizer};
 
     my $dbh = undef;
     
@@ -1057,7 +1062,7 @@ sub get_values {
     $qp->add_prefix('id', 'Q');
     $qp->set_default_op(Search::Xapian::OP_AND);
 
-    $id = OpenBib::Common::Util::normalize({ content => $id, type => 'id'});
+    $id = $normalizer->normalize({ content => $id, type => 'id'});
 
     my $enq  = $dbh->enquire($qp->parse_query("id:$id"));
 
@@ -1098,7 +1103,8 @@ sub get_data {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = $self->get_config;
+    my $config       = $self->get_config;
+    my $normalizer   = $self->{_normalizer};
 
     my $dbh = undef;
     
@@ -1126,7 +1132,7 @@ sub get_data {
     $qp->add_prefix('id', 'Q');
     $qp->set_default_op(Search::Xapian::OP_AND);
 
-    $id = OpenBib::Common::Util::normalize({ content => $id, type => 'id'});
+    $id = $normalizer->normalize({ content => $id, type => 'id'});
     
     my $enq  = $dbh->enquire($qp->parse_query("id:$id"));
 
@@ -1152,7 +1158,8 @@ sub parse_query {
 
     my $config       = $self->get_config;
     my $queryoptions = $self->get_queryoptions;
-
+    my $normalizer   = $self->{_normalizer};
+    
     # Used Parameters
     # Keinen Value range Prozessor?
     my $novrp = $queryoptions->get_option('novrp');
@@ -1281,7 +1288,7 @@ sub parse_query {
 	    }
 	    my $prefix = $config->{searchfield}{'locationstring'}{prefix};
 
-	    @viewlocations = map { "$prefix:".OpenBib::Common::Util::normalize({
+	    @viewlocations = map { "$prefix:".$normalizer->normalize({
                 content   => $_,
                 type      => 'string',
             }) } @viewlocations;

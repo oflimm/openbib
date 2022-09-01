@@ -33,6 +33,7 @@ no warnings 'redefine';
 use utf8;
 
 use Benchmark ':hireswallclock';
+use Business::ISBN;
 use DBI;
 use Digest::MD5 qw(md5_hex);
 use Encode qw/decode_utf8 encode_utf8/;
@@ -1307,6 +1308,306 @@ sub normalize_lang {
     return;
 }
 
+sub gen_bibkey_base {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $fields_ref  = exists $arg_ref->{fields}
+        ? $arg_ref->{fields}             : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return "" unless (defined $fields_ref);
+
+    if ($logger->is_debug){
+        $logger->debug("Trying to generate bibkey with fields: ".YAML::Dump($fields_ref));
+    }
+    
+    # Nur Bibkeys mit allen relevanten Informationen sinnvoll!
+    
+    return "" unless ( (defined $fields_ref->{'T0100'} || defined $fields_ref->{'T0101'} ) && defined $fields_ref->{'T0331'} && defined $fields_ref->{'T0425'} );
+    
+    # Verfasser und Herausgeber konstruieren
+    my $authors_ref=[];
+    my $editors_ref=[];
+    foreach my $field (qw/T0100 T0101/){
+        next if (!exists $fields_ref->{$field});
+        foreach my $part_ref (@{$fields_ref->{$field}}){
+            next unless (defined $part_ref->{content});
+            
+            my $single_person = lc($part_ref->{content});
+            $single_person    =~ s/[^0-9\p{L}\. ]+//g;
+            my ($lastname,$firstname) = split(/\s+/,$single_person);
+
+            if (defined $firstname){
+                if ($firstname eq $lastname){
+                    $single_person    = $lastname;
+                }
+                else {
+                    $single_person    = substr($firstname,0,1).".".$lastname;
+                }
+            }
+            else {
+                $single_person    = $lastname;
+            }
+
+            if (defined $part_ref->{supplement} && $part_ref->{supplement} =~ /Hrsg/){
+                push @$editors_ref, $single_person;
+            }
+            else {
+                push @$authors_ref, $single_person;
+            }
+        }
+    }
+
+    my $persons_ref=(defined $authors_ref && @$authors_ref)?$authors_ref:
+    (defined $editors_ref && @$editors_ref)?$editors_ref:[];
+
+    my $author = "";
+    $author    = "[".join(",", sort(@$persons_ref))."]" if (defined $persons_ref && @$persons_ref);
+
+    # Titel
+    my $title  = (defined $fields_ref->{T0331})?lc($fields_ref->{T0331}[0]{content}):"";
+    
+    $title     =~ s/[^0-9\p{L}\x{C4}]+//g if ($title);
+
+    # Jahr
+    my $year   = (defined $fields_ref->{T0425})?$fields_ref->{T0425}[0]{content}:undef;
+
+    $year      =~ s/[^0-9]+//g if ($year);
+
+    if ($logger->is_debug){
+        $logger->debug("Got title: $title / author: $author / year: $year");
+    }
+    
+    if ($author && $title && $year){
+        return $title." ".$author." ".$year;
+    }
+    else {
+        return "";
+    }
+}
+
+sub gen_bibkey {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $fields_ref    = exists $arg_ref->{fields}
+        ? $arg_ref->{fields}               : undef;
+
+    my $bibkey_base   = exists $arg_ref->{bibkey_base}
+        ? $arg_ref->{bibkey_base}          : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if ($fields_ref){
+        $bibkey_base = $self->gen_bibkey_base({fields => $fields_ref});
+    }
+    
+    if ($bibkey_base){
+        return "1".md5_hex(encode_utf8($bibkey_base));
+    }
+    else {
+        return "";
+    }
+}
+
+sub gen_bibkey_from_marc {
+    my ($self,$record,$encoding) = @_;
+
+    my $persons_ref = [];
+    my $year_ref    = [];
+    my $title_ref   = [];
+    
+    foreach my $fieldno ('100','700'){
+	foreach my $field ($record->field($fieldno)){
+	    my $person = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
+	    
+	    push @$persons_ref, {
+		content => $person,
+	    }
+	}
+    }
+    
+    foreach my $field ($record->field('260')){
+	my $year = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('c')):decode_utf8($field->as_string('c'));
+	
+	push @$year_ref, {
+	    content => $year,
+	};
+    }
+    
+    foreach my $field ($record->field('245')){
+	my $title = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):decode_utf8($field->as_string('a'));
+	
+	push @$title_ref, {
+	    content => $title,
+	};
+    }
+    
+    my $fields_ref = {
+	'T0331' => $title_ref,
+	'T0425' => $year_ref,
+	'T0100' => $persons_ref,
+    };
+    
+    my $bibkey = $self->gen_bibkey({ fields => $fields_ref });
+
+    return $bibkey;
+}
+
+sub gen_workkeys {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $fields_ref  = exists $arg_ref->{fields}
+        ? $arg_ref->{fields}             : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return () unless (defined $fields_ref);
+
+    if ($logger->is_debug){
+        $logger->debug("Trying to generate workkey with fields: ".YAML::Dump($fields_ref));
+    }
+
+    my @workkeys = ();
+    
+    # Verfasser und Herausgeber konstruieren
+    my $authors_ref=[];
+    my $editors_ref=[];
+    foreach my $field (qw/T0100 T0101/){
+        next if (!exists $fields_ref->{$field});
+        foreach my $part_ref (@{$fields_ref->{$field}}){
+            my $single_person = lc($part_ref->{content});
+            $single_person    =~ s/[^0-9\p{L}\. ]+//g;
+            my ($lastname,$firstname) = split(/\s+/,$single_person);
+
+            if (defined $firstname){
+                if ($firstname eq $lastname){
+                    $single_person    = $lastname;
+                }
+                else {
+                    $single_person    = substr($firstname,0,1).".".$lastname;
+                }
+            }
+            else {
+                $single_person    = $lastname;
+            }
+
+            if (exists $part_ref->{supplement} && $part_ref->{supplement} =~ /Hrsg/){
+                push @$editors_ref, $single_person;
+            }
+            else {
+                push @$authors_ref, $single_person;
+            }
+        }
+    }
+
+    my $persons_ref=(@$authors_ref)?$authors_ref:
+    (@$editors_ref)?$editors_ref:[];
+
+    foreach my $person (@$persons_ref){
+        foreach my $field (qw/T0304 T0331/){
+            next if (!exists $fields_ref->{$field});
+            foreach my $part_ref (@{$fields_ref->{$field}}){
+                my $title = lc($part_ref->{content});
+
+                if ($field eq "T0304"){
+                    $title =~s/\s+\&lt;.+\&gt;\s*$//;
+                }
+
+                # Titel
+                $title  =~ s/[^0-9\p{L}\x{C4}]+//g if ($title);
+
+                # Verlag ??? oder nur Fehlerquelle???
+                my $publisher = (defined $fields_ref->{T0412})?lc($fields_ref->{T0412}[0]{content}):"";
+                $publisher    =~ s/[^0-9\p{L}\x{C4}]+//g if ($publisher);
+
+                # Auflage
+#                my $editionstring = (defined $fields_ref->{T0403})?$fields_ref->{T0403}[0]{content}:"";
+#                my ($edition) = $editionstring =~ m/^\D*(\d+)/;
+
+                # Jahr
+                my $editionstring   = (defined $fields_ref->{T0425})?$fields_ref->{T0425}[0]{content}:
+                    (defined $fields_ref->{T0424})?$fields_ref->{T0424}:"";                
+                my ($edition) = $editionstring =~ m/^\D*(\d\d\d\d)/;
+                
+                if ($edition){
+                    $edition = sprintf "%04d",$edition;
+
+                }
+                else {
+                    $edition = "0001";
+                }       
+
+                my $language = (defined $fields_ref->{T4301})?lc($fields_ref->{T4301}[0]{content}):"";
+
+                $edition = $edition.$language;
+                
+                my $is_online=0;
+
+                foreach my $part_ref (@{$fields_ref->{'T4400'}}){
+                    if ($part_ref->{content} eq "online"){
+                        $is_online=1;
+                        last;
+                    }
+                }
+
+                if ($is_online){
+                    $edition = $edition."online";
+                }
+                
+                if ($logger->is_debug){
+                    $logger->debug("Got title: $title / person: $person / publisher: $publisher");
+                }
+                
+                if ($person && $title && $publisher){
+#                    push @workkeys, $title." [".$person."] ".$publisher." <".$edition.">";
+                    push @workkeys, $title." [".$person."] <".$edition.">";
+                }
+            }
+        }
+    }
+
+    return @workkeys;
+}
+
+sub to_isbn13 {
+    my ($self,$thisisbn) = @_;
+
+    return undef unless (defined $thisisbn);
+    
+    # Normierung auf ISBN13
+    my $isbn     = Business::ISBN->new($thisisbn);
+    
+    if (defined $isbn && $isbn->is_valid){
+        $thisisbn = $isbn->as_isbn13->as_string;
+    }
+    
+    $thisisbn = $self->normalize({
+        field    => 'T0540',
+        content  => $thisisbn,
+    });
+
+    return $thisisbn;
+}
+
+sub to_issn {
+    my ($self,$thisissn) = @_;
+
+    return undef unless (defined $thisissn);
+    
+    $thisissn = $self->normalize({
+        field    => 'T0543',
+        content  => $thisissn,
+    });
+
+    return $thisissn;
+}
 
 1;
 __END__

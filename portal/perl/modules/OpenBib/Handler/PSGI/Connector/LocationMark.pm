@@ -44,7 +44,6 @@ use Cache::Memcached::Fast;
 use DBI;
 use Encode qw(decode_utf8);
 
-use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
@@ -311,13 +310,15 @@ sub show_via_searchengine {
     
     my $searchquery = OpenBib::SearchQuery->new({view => $view, session => $session});
 
-    $location = OpenBib::Common::Util::normalize({
+    my $normalizer = $self->param('normalizer');
+
+    $location = $normalizer->normalize({
         content   => $location,
         type      => 'string',
         searchreq => 1,
     });
 
-    my $base_norm = OpenBib::Common::Util::normalize({
+    my $base_norm = $normalizer->normalize({
         content   => $base,
         type      => 'string',
         searchreq => 1,

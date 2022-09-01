@@ -43,11 +43,11 @@ use YAML ();
 
 use OpenBib::SearchQuery;
 use OpenBib::QueryOptions;
-use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Record::Title;
 use OpenBib::Catalog::Factory;
 use OpenBib::Container;
+use OpenBib::Normalizer;
 
 sub new {
     my ($class,$arg_ref) = @_;
@@ -76,6 +76,9 @@ sub new {
 
     my $queryoptions       = exists $arg_ref->{queryoptions}
         ? $arg_ref->{queryoptions}            : OpenBib::QueryOptions->new;
+
+    my $normalizer         = exists $arg_ref->{normalizer}
+    ? $arg_ref->{normalizer}                  : OpenBib::Normalizer->new;
     
     my $self = { };
 
@@ -91,6 +94,10 @@ sub new {
         $self->{_database}      = $database;
     }
 
+    if ($normalizer){
+	$self->{_normalizer}    =  $normalizer;
+    }
+    
     if ($authority){
         $self->{_authority}     = $authority;
     }

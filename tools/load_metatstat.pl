@@ -5,7 +5,7 @@
 #
 #  Einladen von Metastat-Ausleihdaten
 #
-#  Dieses File ist (C) 2016 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2016-2022 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -42,7 +42,7 @@ use DBIx::Class::ResultClass::HashRefInflator;
 
 use OpenBib::Enrichment;
 use OpenBib::Statistics;
-use OpenBib::Common::Util;
+use OpenBib::Normalizer;
 
 my ($filename,$date,$help,$logfile);
 
@@ -70,7 +70,8 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-my $enrichmnt=OpenBib::Enrichment->new;
+my $enrichmnt  = OpenBib::Enrichment->new;
+my $normalizer = OpenBib::Normalizer->new;
 
 unless (-e $filename){
     $logger->error("Datei $filename existiert nicht");
@@ -119,9 +120,9 @@ while (<IN>){
         }
 
 	# Normierung als String
-        $isbn = OpenBib::Common::Util::normalize({
-            field => 'T0540',
-            content  => $isbn,
+        $isbn = $normalizer->normalize({
+            field   => 'T0540',
+            content => $isbn,
         });
 
     }

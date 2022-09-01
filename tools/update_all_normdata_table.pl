@@ -6,7 +6,7 @@
 #  Aktualisierung der all_normdata-Tabelle, in der die Ansetzungsformen
 #  einzelner Normdatenarten aller Kataloge nachgewiesen sind.
 #
-#  Dieses File ist (C) 2008-2009 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2022 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -40,7 +40,7 @@ use Getopt::Long;
 use YAML;
 
 use OpenBib::Config;
-use OpenBib::Common::Util;
+use OpenBib::Normalizer;
 use OpenBib::Statistics;
 use OpenBib::Search::Util;
 
@@ -76,6 +76,8 @@ Log::Log4perl::init(\$log4Perl_config);
 
 # Log4perl logger erzeugen
 my $logger = get_logger();
+
+my $normalizer = new OpenBib::Normalizer;
 
 my @databases=();
 
@@ -114,7 +116,7 @@ foreach my $database (@databases){
     my $aut_insertcount = 0;
     while (my $result=$request->fetchrow_hashref()){
         my $content     = $result->{content};
-        my $normcontent = OpenBib::Common::Util::normalize({
+        my $normcontent = $normalizer->normalize({
             content  => $content,
         });
 
@@ -134,7 +136,7 @@ foreach my $database (@databases){
     my $swt_insertcount = 0;
     while (my $result=$request->fetchrow_hashref()){
         my $content     = $result->{content};
-        my $normcontent = OpenBib::Common::Util::normalize({
+        my $normcontent = $normalizer->normalize({
             content  => $content,
         });
 

@@ -3,7 +3,7 @@
 #
 #  analyze_titleusage.pl
 #
-#  Dieses File ist (C) 2006-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2022 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -32,9 +32,9 @@ use DBI;
 use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
 use YAML;
-use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Enrichment;
+use OpenBib::Normalizer;;
 use OpenBib::Statistics;
 use OpenBib::Search::Util;
 use OpenBib::Record::Title;
@@ -70,7 +70,8 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-my $config=new OpenBib::Config();
+my $config     = new OpenBib::Config();
+my $normalizer = new OpenBib::Normalizer;
 
 unless ($statisticsdbname){
     $statisticsdbname = $config->{statisticsdbname};
@@ -113,7 +114,7 @@ foreach my $item ($isbns->all){
         $processed_isbn13 = $isbnXX->as_isbn13->as_string;
     }
 
-    $processed_isbn13 = OpenBib::Common::Util::normalize({
+    $processed_isbn13 = $normalizer->normalize({
         field => 'T0540',
         content  => $processed_isbn13,
     });

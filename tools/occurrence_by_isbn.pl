@@ -6,7 +6,7 @@
 #
 #  Vorkommen eines Titels nach ISBN in einem Katalog
 #
-#  Dieses File ist (C) 2016 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2016-2022 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -32,6 +32,7 @@ use warnings;
 
 use OpenBib::Config;
 use OpenBib::Enrichment;
+use OpenBib::Normalizer;
 
 use Business::ISBN;
 use DBIx::Class::ResultClass::HashRefInflator;
@@ -41,9 +42,9 @@ use Benchmark ':hireswallclock';
 use DBI;
 use Getopt::Long;
 use YAML::Syck;
-use OpenBib::Common::Util;
 
 my $config      = OpenBib::Config->new;
+my $normalizer  = OpenBib::Normalizer->new;
 
 my ($database,$filename,$help,$logfile,$loglevel);
 
@@ -113,7 +114,7 @@ while (my $thisisbn=<IN>){
 	$logger->debug("ISBN $thisisbn hat aber zumindest die Form einer ISBN. Verarbeitet.");
     }
 
-    $thisisbn = OpenBib::Common::Util::normalize({
+    $thisisbn = $normalizer->normalize({
         field => 'T0540',
         content  => $thisisbn,
     });

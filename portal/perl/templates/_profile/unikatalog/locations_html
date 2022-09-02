@@ -206,11 +206,10 @@
    END;
   
 %]
-[% FOREACH desc IN institution_map.keys.sort %]
-     [% NEXT IF NOT desc.match('^Lern') %]
-	<li>[% IF institution_map.${desc}.url %]<a href="[% institution_map.${desc}.url %]">[% END %][% desc %][% IF institution_map.${desc}.sigel %] ([% institution_map.${desc}.sigel %])[% END %][% IF institution_map.${desc}.url %]</a>[% END %][% IF institution_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institution_map.${desc}.arbeitsplaetze %][% END %]</li>
 
-[% END %]
+<!-- Lernraeme der Wiso als ein statischer Eintrag -->
+
+	<li><a href="https://wiso.uni-koeln.de/de/fakultaet/wiso-library-and-campus-service/arbeitsplaetze" target="_blank">WiSo Lern- und Arbeitsräume</a></li>
 
 [% FOREACH desc IN institution_map.keys.sort %]
      [% NEXT IF desc.match('^Lern') %]

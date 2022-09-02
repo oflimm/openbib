@@ -486,6 +486,89 @@ sub enrich_dbpedia {
     return $enrich_data_ref;
 }
 
+sub enrich_unpaywall {
+    my ($self,$doi)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = $self->get_config;
+    
+    my $enrich_data_ref = {};
+
+    if ($doi){
+
+	if ($doi=~m{http.*?doi.org/(.+?)$}){
+	    $doi = $1;
+	}
+    
+	# Default-URI
+	my $url  = $config->get('unpaywall_base');
+	my $user = $config->get('unpaywall_user');
+	
+	$url.="${doi}?email=${user}";
+	
+	$logger->debug("UnPayWall-URL: $url ");
+	
+	my $ua = new LWP::UserAgent;
+	$ua->agent("OpenBib/1.0");
+	$ua->timeout(10);
+	my $request = new HTTP::Request('GET', $url);
+	my $response = $ua->request($request);
+	
+	my $content = $response->content;
+	
+	if ($content){
+	    my $unpaywall_ref;
+	    $logger->debug("UnPayWall: Result for DOI $doi: ".$content);
+	    eval {
+		$unpaywall_ref = JSON::XS::decode_json($content);
+
+		my $best_oa_location_ref = $unpaywall_ref->{'best_oa_location'};
+		my $results_ref          = $unpaywall_ref->{'results'};
+
+		$enrich_data_ref->{'unpaywall_source'} = $unpaywall_ref;
+
+		if ($logger->is_debug){
+		    $logger->debug(YAML::Dump($unpaywall_ref));
+		}
+
+		my $besturl = "";
+		if (defined $best_oa_location_ref){
+
+		    if ($best_oa_location_ref->{'url_for_pdf'}){			
+			$besturl = $best_oa_location_ref->{'url_for_pdf'};
+		    }
+		    elsif ($best_oa_location_ref->{'url_for_landing_page'}){
+			$besturl = $best_oa_location_ref->{'url_for_landing_page'};
+		    }
+		    elsif ($best_oa_location_ref->{'url'}){
+			$besturl = $best_oa_location_ref->{'url'};
+		    }
+		}
+
+		if (!$besturl && ref($results_ref) eq "ARRAY"){
+		    foreach my $result_ref (@$results_ref){
+			if ($result_ref->{'free_fulltext_url'} && $result_ref->{'is_free_to_read'}){
+
+			    $besturl = $result_ref->{'free_fulltext_url'};			
+			    last;
+			}
+		    }
+		}
+
+		$enrich_data_ref->{'green_url'} = $besturl;
+
+	    };
+	    if ($@){
+		$logger->error($@);
+	    }
+	}
+    }
+
+    return $enrich_data_ref;
+}
+
 sub get_client {
     my ($self) = @_;
 

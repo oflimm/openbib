@@ -658,40 +658,40 @@ sub enrich_related_records {
 	$locationdigest=$md5digest->hexdigest;
     }
     
-    my $memc_key = "record:title:enrich_related:$locationdigest:$profilename:$viewname:$num:$self->{database}:$self->{id}";
+    # my $memc_key = "record:title:enrich_related:$locationdigest:$profilename:$viewname:$num:$self->{database}:$self->{id}";
     
-    if ($config->{memc}){
-        my $related_recordlist = $self->get_related_records;
+    # if ($config->{memc}){
+    #     my $related_recordlist = $self->get_related_records;
         
-        my $cached_records = $config->{memc}->get($memc_key);
+    #     my $cached_records = $config->{memc}->get($memc_key);
 
-        if ($cached_records){
-	    if ($logger->is_debug){
-		$logger->debug("Got related records for key $memc_key from memcached ".YAML::Dump($cached_records));
-	    }
+    #     if ($cached_records){
+    # 	    if ($logger->is_debug){
+    # 		$logger->debug("Got related records for key $memc_key from memcached ".YAML::Dump($cached_records));
+    # 	    }
 	                
-            if ($config->{benchmark}) {
-                my $btime=new Benchmark;
-                my $timeall=timediff($btime,$atime);
-                $logger->info("Zeit fuer das Holen der gecacheten Informationen ist ".timestr($timeall));
-            }
+    #         if ($config->{benchmark}) {
+    #             my $btime=new Benchmark;
+    #             my $timeall=timediff($btime,$atime);
+    #             $logger->info("Zeit fuer das Holen der gecacheten Informationen ist ".timestr($timeall));
+    #         }
 
-            $related_recordlist->from_serialized_reference($cached_records);
+    #         $related_recordlist->from_serialized_reference($cached_records);
 
-            if ($config->{benchmark}) {
-                $btime=new Benchmark;
-                $timeall=timediff($btime,$atime);
-                $logger->info("Zeit fuer : Bestimmung von cached Enrich-Informationen ist ".timestr($timeall));
-                undef $atime;
-                undef $btime;
-                undef $timeall;
-            }
+    #         if ($config->{benchmark}) {
+    #             $btime=new Benchmark;
+    #             $timeall=timediff($btime,$atime);
+    #             $logger->info("Zeit fuer : Bestimmung von cached Enrich-Informationen ist ".timestr($timeall));
+    #             undef $atime;
+    #             undef $btime;
+    #             undef $timeall;
+    #         }
      
-            $self->set_related_records($related_recordlist);
+    #         $self->set_related_records($related_recordlist);
 
-            return $self;
-        }
-    }
+    #         return $self;
+    #     }
+    # }
     
     
     if (!exists $self->{enrich_schema}){
@@ -855,11 +855,11 @@ sub enrich_related_records {
             $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles/Similar Titles/Related Titles w/o load_brief_records ist ".timestr($timeall));
         }
 
-        if ($config->{memc}){
-            my $related_records_ref = $related_recordlist->to_serialized_reference;
-            $logger->debug("Storing ".YAML::Dump($related_records_ref));
-            $config->{memc}->set($memc_key,$related_records_ref,$config->{memcached_expiration}{'record:title:enrich_related'});
-        }
+        # if ($config->{memc}){
+        #     my $related_records_ref = $related_recordlist->to_serialized_reference;
+        #     $logger->debug("Storing ".YAML::Dump($related_records_ref));
+        #     $config->{memc}->set($memc_key,$related_records_ref,$config->{memcached_expiration}{'record:title:enrich_related'});
+        # }
         
         $self->set_related_records($related_recordlist);
 

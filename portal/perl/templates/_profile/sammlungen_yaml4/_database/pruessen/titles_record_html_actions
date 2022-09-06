@@ -292,7 +292,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 <!-- Ende Empfehlungen -->
 
 <!-- Anfang Thematisch relevante Titel (Wikipedia) -->
-[% IF related_records.get_size > 0 %]
+[% IF 0 == 1 && related_records.get_size > 0 %]
 <div class="ob-related"><!-- Begin thematisch Relevant -->
 <div class="ob-headline">Literaturanalyse in der Wikipedia</div>
 

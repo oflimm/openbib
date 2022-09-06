@@ -1,17 +1,21 @@
+use utf8;
 package OpenBib::Schema::Enrichment::Result::AllTitleByBibkey;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+OpenBib::Schema::Enrichment::Result::AllTitleByBibkey
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-OpenBib::Schema::Enrichment::Result::AllTitleByBibkey
+=head1 TABLE: C<all_titles_by_bibkey>
 
 =cut
 
@@ -71,8 +75,8 @@ __PACKAGE__->add_columns(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2016-02-25 15:01:05
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:6V01AXlR6TvLztVilgzJXA
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-09-06 15:56:52
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:1gL9sgIJMGf40tukIRoLPQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

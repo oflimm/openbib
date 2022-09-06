@@ -1,17 +1,21 @@
+use utf8;
 package OpenBib::Schema::Enrichment::Result::LivesearchData;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+OpenBib::Schema::Enrichment::Result::LivesearchData
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-OpenBib::Schema::Enrichment::Result::LivesearchData
+=head1 TABLE: C<livesearch_data>
 
 =cut
 
@@ -54,8 +58,8 @@ __PACKAGE__->add_columns(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2016-02-25 15:01:05
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:pNSbzZ9ba46G4btCWSyvug
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-09-06 15:56:52
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:YU5Gu51h1Ngkfjxya3zcMQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

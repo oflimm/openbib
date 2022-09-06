@@ -47,6 +47,7 @@ create table enriched_content_by_title (
 --  identification keys --
 drop table IF EXISTS all_titles_by_isbn;
 create table all_titles_by_isbn (
+ id            BIGSERIAL,
  isbn          VARCHAR(13)  NOT NULL,
  dbname        VARCHAR(25)  NOT NULL,
  titleid       VARCHAR(255) NOT NULL,
@@ -57,6 +58,7 @@ create table all_titles_by_isbn (
 
 drop table IF EXISTS all_titles_by_issn;
 create table all_titles_by_issn (
+ id            BIGSERIAL,
  issn          VARCHAR(8)   NOT NULL,
  dbname        VARCHAR(25)  NOT NULL,
  titleid       VARCHAR(255) NOT NULL,
@@ -67,6 +69,7 @@ create table all_titles_by_issn (
 
 drop table IF EXISTS all_titles_by_bibkey;
 create table all_titles_by_bibkey (
+ id            BIGSERIAL,
  bibkey        VARCHAR(33) NOT NULL,
  dbname        VARCHAR(25) NOT NULL,
  titleid       VARCHAR(255) NOT NULL,
@@ -109,6 +112,15 @@ create table work_by_isbn (
 drop table IF EXISTS related_titles_by_isbn;
 create table related_titles_by_isbn (
  id            VARCHAR(255) NOT NULL,
+ isbn          VARCHAR(13)  NOT NULL,
+ origin        SMALLINT
+);
+
+-- Wikipedia Article --
+drop table IF EXISTS wikiarticles_by_isbn;
+create table wikiarticles_by_isbn (
+ id            BIGSERIAL,
+ article       TEXT, 
  isbn          VARCHAR(13)  NOT NULL,
  origin        SMALLINT
 );

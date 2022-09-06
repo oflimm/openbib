@@ -69,6 +69,12 @@ CREATE INDEX relatedtitles_id ON related_titles_by_isbn (id);
 
 -------------------------------------------------
 
+ALTER TABLE wikiarticles_by_isbn ADD PRIMARY KEY (id);
+CREATE INDEX wikiarticles_isbn ON wikiarticles_by_isbn (isbn);
+CREATE INDEX wikiarticles_article ON wikiarticles_by_isbn (article);
+
+-------------------------------------------------
+
 CREATE INDEX livesearchdata_fs ON livesearch_data (fs);
 CREATE INDEX livesearchdata_dbname ON livesearch_data (dbname);
 CREATE INDEX livesearchdata_content ON livesearch_data (content);

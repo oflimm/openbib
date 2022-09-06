@@ -332,7 +332,7 @@ END;
 
 %]
 
-[% have_isbn %]
+[% IF have_isbn %]
 <script>
 $(document).ready(function(){
     $("#ob-related_nojs").hide();

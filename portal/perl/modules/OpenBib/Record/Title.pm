@@ -37,6 +37,7 @@ use Benchmark ':hireswallclock';
 use Business::ISBN;
 use DBIx::Class::ResultClass::HashRefInflator;
 use DBI;
+use Digest::MD5;
 use Encode 'decode_utf8';
 use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
@@ -622,11 +623,14 @@ sub enrich_related_records {
     my ($self, $arg_ref) = @_;
 
     my $profilename = exists $arg_ref->{profilename}
-        ? $arg_ref->{profilename}        : '';
+        ? $arg_ref->{profilename}           : '';
     
     my $viewname = exists $arg_ref->{viewname}
-        ? $arg_ref->{viewname}           : '';
+        ? $arg_ref->{viewname}              : '';
 
+    my $locations_ref = exists $arg_ref->{locations}
+        ? $arg_ref->{locations}             : [];
+    
     my $blacklisted_locations_ref = exists $arg_ref->{blacklisted_locations}
         ? $arg_ref->{blacklisted_locations} : [];
 
@@ -644,7 +648,17 @@ sub enrich_related_records {
         $atime=new Benchmark;
     }
 
-    my $memc_key = "record:title:enrich_related:$profilename:$viewname:$num:$self->{database}:$self->{id}";
+    my $locationdigest = "";
+
+    if (@$locations_ref){
+	my $md5digest=Digest::MD5->new();
+	
+	$md5digest->add(join('', sort @$locations_ref));
+			
+	$locationdigest=$md5digest->hexdigest;
+    }
+    
+    my $memc_key = "record:title:enrich_related:$locationdigest:$profilename:$viewname:$num:$self->{database}:$self->{id}";
     
     if ($config->{memc}){
         my $related_recordlist = $self->get_related_records;
@@ -689,8 +703,7 @@ sub enrich_related_records {
 
     my @filter_databases = ($profilename)?$config->get_profiledbs($profilename):
         ($viewname)?$config->get_viewdbs($viewname):();
-
-    
+        
     if ($config->{benchmark}) {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);
@@ -727,31 +740,32 @@ sub enrich_related_records {
         }
         
         my $titles_found_ref = {}; # Ein Titel kann ueber verschiedenen ISBNs erreicht werden. Das laesst sich nicht trivial via SQL loesen, daher haendisch                    
-        
-        my $related_ids = $self->{enrich_schema}->resultset('RelatedTitleByIsbn')->search_rs(
-            {
-                isbn    => { -in => $this_isbns->as_query },
-            },
-            {
-                columns => ['id'],
-                group_by => ['id'],
-            }
-        );
+        # Finde abstrakte ids fuer Wikipedia-Artikel, in denen die ISBNs des Titels genannt sind
+	my $related_ids = $self->{enrich_schema}->resultset('WikiarticleByIsbn')->search_rs(
+	    {
+		isbn    => { -in => $this_isbns->as_query },
+	    },
+	    {
+		columns => ['article'],
+		group_by => ['article'],
+	    }
+	    );
         
         if ($logger->is_debug){                        
-            $logger->debug("Found ".($related_ids->count)." related isbns");
+            $logger->debug("Found ".($related_ids->count)." related ids");
         }
-        
-        my $related_isbns = $self->{enrich_schema}->resultset('RelatedTitleByIsbn')->search_rs(
-            {
-                isbn      => { -not_in => $this_isbns->as_query },
-                id        => { -in => $related_ids->as_query },
-            },
-            {
-                columns => ['isbn'],
-                group_by => ['isbn'],
-            }
-        );
+	
+	# Finde alle thematisch zusammenhaengende ISBNs, die in den gefundenen Wikipedia-Artikeln (ueber die abstrakte ID) referenziert werden unter Auslassung der ISBNs des aktuellen Titelsatzes
+	my $related_isbns = $self->{enrich_schema}->resultset('WikiarticleByIsbn')->search_rs(
+	    {
+		isbn      => { -not_in => $this_isbns->as_query },
+		article   => { -in => $related_ids->as_query },
+	    },
+	    {
+		columns => ['isbn'],
+		group_by => ['isbn'],
+	    }
+	    );
         
         if ($logger->is_debug){            
             $logger->debug("Found ".($related_isbns->count)." isbns");
@@ -760,11 +774,20 @@ sub enrich_related_records {
         my $where_ref = {
             isbn    => { -in => $related_isbns->as_query },
         };
-            
+
+	# Filtern nach Standortmarkierungen
+	if (@$locations_ref){
+            $where_ref = {
+                isbn      => { -in => $related_isbns->as_query },
+                location  => { -in => $locations_ref },
+            };
+	}
+
+	# Filtern nach Katalogen
         if (@filter_databases){
             $where_ref = {
                 isbn    => { -in => $related_isbns->as_query },
-                dbname => \@filter_databases,
+                dbname  => { -in => \@filter_databases },
             };
         }
 
@@ -776,19 +799,25 @@ sub enrich_related_records {
         my $titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
             $where_ref,
             {
-                group_by => ['dbname','isbn','location','tstamp','titleid','titlecache'],
+		select   => ['dbname','location','titleid','titlecache','isbn'],
+                group_by => ['dbname','location','titleid','titlecache','isbn'],
                 result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-                rows => $num,
             }
         );
-        
+
+	if ($logger->is_debug){
+	    $logger->debug(YAML::Dump($where_ref));
+	}
+
+	my $count = 1;
+	
         while (my $titleitem = $titles->next) {
             my $id         = $titleitem->{titleid};
             my $database   = $titleitem->{dbname};
             my $location   = $titleitem->{location};
             my $titlecache = $titleitem->{titlecache};
 
-            next if (defined $titles_found_ref->{"$database:$id:$location"});
+            next if (defined $titles_found_ref->{"$database:$id"});
             
             my $ctime;
             my $dtime;
@@ -814,7 +843,10 @@ sub enrich_related_records {
                     $logger->info("Zeit fuer : Bestimmung von Kurztitel-Information des Titels ist ".timestr($timeall));
             }
             
-            $titles_found_ref->{"$database:$id:$location"} = 1;
+            $titles_found_ref->{"$database:$id"} = 1;
+
+	    last if ($count >= $num);
+	    $count++;
         }
         
         if ($config->{benchmark}) {

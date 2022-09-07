@@ -333,17 +333,6 @@ END;
 %]
 
 [% IF have_isbn %]
-<script>
-$(document).ready(function(){
-    $("#ob-related_nojs").hide();
-    $("#collapseRelated .card-body").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-related_loading\" />"); 
-    $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/related_records.include?l=[% lang %]",
-        function (txt){
-            $("#collapseRelated .card-body").html(txt);
-            $("#ob-related_loading").hide();
-        });
-});
-</script>
 
 <!-- Anfang Thematisch relevante Titel (Wikipedia) -->
 <div id="ob-related" class="accordion"><!-- Begin thematisch Relevant -->
@@ -351,7 +340,7 @@ $(document).ready(function(){
   <div class="card">
     <div class="card-header" id="headingRelated">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseRelated" data-bs-toggle="collapse" data-bs-target="#collapseRelated" aria-expanded="false" aria-controls="collapseRelated">
+        <a class="card-link" hx-get="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/related_records.include?l=[% lang %]" hx-indicator="#spinner" hx-target="#collapseRelated" href="#collapseRelated" data-bs-toggle="collapse" data-bs-target="#collapseRelated" aria-expanded="false" aria-controls="collapseRelated">
           [% msg.maketext("Literaturanalyse in der Wikipedia") %]
         </a>
       </h5>
@@ -360,9 +349,8 @@ $(document).ready(function(){
     <div id="collapseRelated" class="collapse" aria-labelledby="headingRelated" data-parent="#ob-related">
       <div class="card-body">
 
-   <p id="ob-related_nojs">
-   <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/related_records.html?l=[% lang %]">Thematisch relevante Titel anzeigen?</a>
-   </p>   
+    <img src="/images/openbib/loading.gif" id="ob-related_loading" />
+
      </div>
 </div>
 </div>

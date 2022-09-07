@@ -61,9 +61,9 @@
 
         edsdb = record.id.match('^(.+)::').first;
 
-        IF eds_hide_hit.defined(edsdb) && NOT user.has_role('uzk') && NOT user.has_role('student') && NOT user.is_admin && NOT user.is_viewadmin ;
+        IF eds_hide_hit.defined(edsdb) && NOT user.has_role('uzk') && NOT user.has_role('usb') && NOT user.has_role('student') && NOT user.is_admin && NOT user.is_viewadmin ;
             hide_hit = 1;
-        ELSIF eds_hide_detail.defined(edsdb) && NOT user.has_role('uzk') && NOT user.has_role('student') && NOT user.is_admin && NOT user.is_viewadmin ;
+        ELSIF eds_hide_detail.defined(edsdb) && NOT user.has_role('uzk') && NOT user.has_role('student') && NOT user.has_role('usb') && NOT user.is_admin && NOT user.is_viewadmin ;
 	    hide_detail = 1;
         ELSIF pda_hide_detail.defined(edsdb) && NOT user.has_role('uzk') && NOT user.has_role('student') && NOT user.has_role('erwerbung') && NOT user.has_role('usb') && NOT user.has_role('librarian') && NOT user.is_admin && NOT user.is_viewadmin ;
             hide_detail = 1;

@@ -11,6 +11,29 @@
 #
 #######################################################################
 -%]
+[%-
+
+   searchfields = [];
+
+   IF searchquery.get_searchfield('roleid').val;
+     roleid = searchquery.get_searchfield('roleid').val;
+     searchfields.push("roleid=${roleid}");
+   END;
+
+   IF searchquery.get_searchfield('surname').val;
+     surname = searchquery.get_searchfield('surname').val;
+     searchfields.push("surname=${surname}");
+   END;
+
+   IF searchquery.get_searchfield('commonname').val;
+     commonname = searchquery.get_searchfield('commonname').val;
+     searchfields.push("commonname=${commonname}");
+   END;
+
+   query_args_base = searchfields.join(';');
+
+   start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
+-%]
 
 [%# USE dumper;dumper.dump(userlist)%]
 <!-- Userlist begins here -->
@@ -20,13 +43,13 @@
 [% msg.maketext("Gefundene Nutzer") %]
     </div>
     <div class="right ob-hits">
-[% userlist.size %]  [% msg.maketext("Nutzer") %]
+[% hits %]  [% msg.maketext("Nutzer") %]
     </div>
   </div>
   <div class="ob-resultitems fullwidth">
 [% FOREACH singleuser IN userlist %]
     <div class="ob-item d-flex flex-row">
-      <div class="ob-numbering">[% loop.count %]</div>
+      <div class="ob-numbering">[% start_range+loop.count - 1 %]</div>
       <div class="ob-thumbnail pt-5 ms-5 pe-2 me-0 d-none d-md-block">
          <i class="fas fa-user fa-3x" style="display: inline-block;"></i>      
       </div> 
@@ -58,6 +81,9 @@
     </div>
 <!-- Ende einzelner Treffer -->
 [%- END -%]
+    <div class="ob-footer">
+[% PROCESS common/subtemplate name="pagination" %]    
+    </div>
   </div>
 </div>
 <!-- Titlelist ends here -->

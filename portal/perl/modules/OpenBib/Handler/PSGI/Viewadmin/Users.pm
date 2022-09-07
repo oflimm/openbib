@@ -239,15 +239,15 @@ sub show_search {
     my $config         = $self->param('config');
     my $msg            = $self->param('msg');
     my $user           = $self->param('user');
+    my $queryoptions   = $self->param('qopts');
 
-    # CGI Args
-    my $args_ref = {};
-    $args_ref->{roleid}     = $query->param('roleid') if ($query->param('roleid'));
-    $args_ref->{username}   = $query->param('username') if ($query->param('username'));
-    $args_ref->{surname}    = $query->param('surname') if ($query->param('surname'));
-    $args_ref->{commonname} = $query->param('commonname') if ($query->param('commonname'));
-    $args_ref->{viewname}   = $view;
-    
+    # CGI / JSON input
+    my $input_data_ref = $self->parse_valid_input();
+
+    if (!$input_data_ref->{roleid} && !$input_data_ref->{username} && !$input_data_ref->{surname} && !$input_data_ref->{commonname}){
+        return $self->print_warning($msg->maketext("Bitte geben Sie einen Suchbegriff ein."));
+    }
+
     if (!$user->user_exists_in_view({ viewname => $view, userid => $user->{ID}})){
         return $self->print_authorization_error();
     }
@@ -256,15 +256,40 @@ sub show_search {
         return $self->print_authorization_error();
     }
 
-    if (!$args_ref->{roleid} && !$args_ref->{username} && !$args_ref->{surname} && !$args_ref->{commonname}){
-        return $self->print_warning($msg->maketext("Bitte geben Sie einen Suchbegriff ein."));
-    }
+    my $searchquery = new OpenBib::SearchQuery;
+    
+    # CGI Args
+    $searchquery->set_searchfield('roleid', $input_data_ref->{'roleid'}) if ($input_data_ref->{'roleid'});
+    $searchquery->set_searchfield('username', $input_data_ref->{'username'}) if ($input_data_ref->{'username'});
+    $searchquery->set_searchfield('surname', $input_data_ref->{'surname'}) if ($input_data_ref->{'surname'});
+    $searchquery->set_searchfield('commonname', $input_data_ref->{'commonname'}) if ($input_data_ref->{'commonname'});
 
-    my $userlist_ref = $user->search($args_ref);
+    my $args_ref = {};
+    
+    $args_ref->{searchquery}  = $searchquery;
+    $args_ref->{queryoptions} = $queryoptions;
+    $args_ref->{viewname}     = $view;
+    
+    # Pagination parameters
+    my $page              = ($queryoptions->get_option('page'))?$queryoptions->get_option('page'):1;
+    my $num               = ($queryoptions->get_option('num'))?$queryoptions->get_option('num'):20;
+    
+    my $result_ref = $user->search($args_ref);
 
+    my $nav = Data::Pageset->new({
+	'total_entries'    => $result_ref->{hits},
+            'entries_per_page' => $queryoptions->get_option('num'),
+            'current_page'     => $queryoptions->get_option('page'),
+            'mode'             => 'slide',
+				 });
+    
     # TT-Data erzeugen
     my $ttdata={
-        userlist   => $userlist_ref,
+	hits         => $result_ref->{hits},
+        userlist     => $result_ref->{users},
+	nav          => $nav,
+	searchquery  => $searchquery,
+	queryoptions => $queryoptions,
     };
     
     return $self->print_page($config->{tt_viewadmin_users_search_tname},$ttdata);
@@ -333,6 +358,39 @@ sub update_record {
         $logger->debug("Weiter zum Record");
         return $self->show_record;
     }    
+}
+
+sub get_input_definition {
+    my $self=shift;
+    
+    return {
+	viewname => {
+            default  => undef,
+            encoding => 'none',
+            type     => 'scalar',
+        },
+	roleid => {
+            default  => undef,
+            encoding => 'none',
+            type     => 'scalar',
+        },
+	username => {
+            default  => undef,
+            encoding => 'none',
+            type     => 'scalar',
+        },
+	surname => {
+            default  => undef,
+            encoding => 'none',
+            type     => 'scalar',
+        },
+	commonname => {
+            default  => undef,
+            encoding => 'none',
+            type     => 'scalar',
+        },
+
+    };
 }
 
 1;

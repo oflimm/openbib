@@ -6886,28 +6886,75 @@ sub search {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
-    my $roleid                 = exists $arg_ref->{roleid}
-        ? $arg_ref->{roleid}              : undef;
-    my $username               = exists $arg_ref->{username}
-        ? $arg_ref->{username}            : undef;
-    my $surname                = exists $arg_ref->{surname}
-        ? $arg_ref->{surname}             : undef;
-    my $commonname             = exists $arg_ref->{commonname}
-        ? $arg_ref->{commonname}          : undef;
     my $viewname               = exists $arg_ref->{viewname}
         ? $arg_ref->{viewname}          : undef;
-
+    my $queryoptions           = exists $arg_ref->{queryoptions}
+        ? $arg_ref->{queryoptions}      : undef;
+    my $searchquery            = exists $arg_ref->{searchquery}
+        ? $arg_ref->{searchquery}       : undef;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = $self->get_config;
+    
+    my $sorttype  = $queryoptions->get_option('srt');
+    my $sortorder = $queryoptions->get_option('srto'); 
+
+    # Wenn srto in srt enthalten, dann aufteilen
+    if ($sorttype =~m/^([^_]+)_([^_]+)$/){
+        $sorttype=$1;
+        $sortorder=$2;
+        $logger->debug("srt Option split: srt = $1, srto = $2");
+    }
+
+    # Pagination parameters
+    my $page              = ($queryoptions->get_option('page'))?$queryoptions->get_option('page'):1;
+    my $num               = ($queryoptions->get_option('num'))?$queryoptions->get_option('num'):20;
+
+    my $offset = $page*$num-$num;
+
+    my $roleid     = $searchquery->get_searchfield('roleid')->{val};
+    my $username   = $searchquery->get_searchfield('username')->{val};
+    my $surname    = $searchquery->get_searchfield('surname')->{val};
+    my $commonname = $searchquery->get_searchfield('commonname')->{val};
+    
     my @found_userids = ();
+
+    my $resultcount = 0;
+    
     if ($roleid) {
+	my $count_where_ref = {
+	    roleid => $roleid,
+	};
+
+	my $where_ref = {
+	    'me.roleid' => $roleid,
+	};
+	
+	if ($viewname) {
+	    eval {
+		my $viewid = $config->get_viewinfo->single({ viewname => $viewname })->id;
+		$count_where_ref->{viewid} = $viewid;
+		$where_ref->{viewid}       = $viewid;		
+	    };
+        }
+	
         # DBI: "select userid from user_role where roleid=?"
+        $resultcount = $self->get_schema->resultset('UserRole')->search(
+	    $count_where_ref,
+        )->count;
+
         my $userroles = $self->get_schema->resultset('UserRole')->search(
-            {
-                roleid => $roleid,
-            }
-        );
+	    $where_ref,
+	    {
+		order_by => ['userid.username ASC'],
+		join   => ['userid'],
+		offset => $offset,
+		rows   => $num,
+	    }
+	    );
+	
         foreach my $userrole ($userroles->all){
             my $userid = $userrole->get_column('userid');
               push @found_userids, $userid;
@@ -6927,7 +6974,16 @@ sub search {
             $where_ref->{vorname} = { '~' => $surname };
         }
 
-        my $users = $self->get_schema->resultset('Userinfo')->search($where_ref);
+        if ($viewname) {
+	    eval {
+		my $viewid = $config->get_viewinfo->single({ viewname => $viewname })->id;
+		$where_ref->{viewid} = $viewid;
+	    };
+        }
+	
+        my $resultcount = $self->get_schema->resultset('Userinfo')->search($where_ref)->count;
+	
+        my $users = $self->get_schema->resultset('Userinfo')->search($where_ref,{ rows => $num, offset => $offset, order_by => ['username'] });
         foreach my $user ($users->all){
             my $userid = $user->get_column('id');
             push @found_userids, $userid;
@@ -6949,7 +7005,10 @@ sub search {
 	push @$userlist_ref, $userinfo;
     }
 
-    return $userlist_ref;
+    return {
+	'hits'  => $resultcount,
+	    'users' => $userlist_ref,
+    };
 }
 
 sub migrate_ugc {

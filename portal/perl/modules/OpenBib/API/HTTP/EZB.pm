@@ -282,187 +282,199 @@ sub get_titles_record {
 	return $record;
     }
 
-    my $parser = XML::LibXML->new();
-    my $tree   = $parser->parse_string($response->content);
-    my $root   = $tree->getDocumentElement;
+    eval {
+	my $content = $response->content;
 
-    my $title     =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/title');
-    my $publisher =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/publisher');
-    my @zdb_nodes =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/detail/ZDB_number');
+	$content =~s/^.+?<\?xml/<\?xml/sm;
 
-    my $zdb_node_ref = {};
-    
-    foreach my $zdb_node (@zdb_nodes){
-        $zdb_node_ref->{ZDB_number}{url} = $zdb_node->findvalue('@url');
-        $zdb_node_ref->{ZDB_number}{content} = $zdb_node->textContent;
-    }
-
-    my @classifications_nodes =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/detail/subjects/subject');
-
-    my $classifications_ref = [];
-
-    foreach my $classification_node (@classifications_nodes){
-        push @{$classifications_ref}, $classification_node->textContent;
-    }
-
-    my @subjects_nodes =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/detail/keywords/keyword');
-
-    my $subjects_ref = [];
-
-    foreach my $subject_node (@subjects_nodes){
-        push @{$subjects_ref}, $subject_node->textContent;
-    }
-
-    my @homepages_nodes =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/detail/homepages/homepage');
-
-    my $homepages_ref = [];
-
-    foreach my $homepage_node (@homepages_nodes){
-        push @{$homepages_ref}, $homepage_node->textContent;
-    }
-    
-    my $firstvolume =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/first_fulltext_issue/first_volume');
-    my $firstdate   =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/first_fulltext_issue/first_date');
-    my $appearence  =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/appearence');
-    my $costs       =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/costs');
-    my $remarks     =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/remarks');
-    my $journal_color  =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/journal_color/@color');
-    
-    my @periods =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/periods/period');
-
-    my @issns =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/detail/P_ISSNs/P_ISSN');
-
-    my $issns_ref = [];
-
-    foreach my $issn_node (@issns){
-        push @{$issns_ref}, $issn_node->textContent;
-    }
-    
-    $record->set_field({field => 'T0331', subfield => '', mult => 1, content => $title}) if ($title);
-    $record->set_field({field => 'T0412', subfield => '', mult => 1, content => $publisher}) if ($publisher);
-
-    my $erscheinungsverlauf = "";
-
-    if ($firstvolume){
-	$erscheinungsverlauf.="Jg. $firstvolume";
-    }
-    if ($firstdate){
-	$erscheinungsverlauf.=" ($firstdate)";
-    }
-
-    if ($erscheinungsverlauf){
-        $record->set_field({field => 'T0405', subfield => '', mult => 1, content => $erscheinungsverlauf});
-    }
-    
-    if ($zdb_node_ref->{ZDB_number}{url}){
-        $record->set_field({field => 'T0662', subfield => '', mult => 1, content => $zdb_node_ref->{ZDB_number}{url}})
-    }
-    if ($zdb_node_ref->{ZDB_number}{content}){
-        $record->set_field({field => 'T0663', subfield => '', mult => 1, content => $zdb_node_ref->{ZDB_number}{content}}) ;
-    }
-    else {
-        $record->set_field({field => 'T0663', subfield => '', mult => 1, content => 'Weiter zur Zeitschrift' }) ;
-    }
-
-    my $mult=1;
-    foreach my $classification (@$classifications_ref){
-        $record->set_field({field => 'T0700', subfield => '', mult => $mult, content => $classification});
-        $mult++;
-    }
-
-    $mult=1;
-    foreach my $subject (@$subjects_ref){
-        $record->set_field({field => 'T0710', subfield => '', mult => $mult, content => $subject});
-        $mult++;
-    }
-
-    $mult=1;
-    foreach my $issn (@$issns_ref){
-        $record->set_field({field => 'T0543', subfield => '', mult => $mult, content => $issn});
-        $mult++;
-    }
+	if ($logger->is_debug){
+	    $logger->debug("Cleanedup content: $content");
+	}
+	my $parser = XML::LibXML->new();
+	my $tree   = $parser->parse_string($content);
+	my $root   = $tree->getDocumentElement;
 	
-    $record->set_field({field => 'T0523', subfield => '', mult => 1, content => $appearence}) if ($appearence);
-    $record->set_field({field => 'T0511', subfield => '', mult => 1, content => $costs}) if ($costs);
-    $record->set_field({field => 'T0501', subfield => '', mult => 1, content => $remarks}) if ($remarks);
+	my $title     =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/title');
+	my $publisher =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/publisher');
+	my @zdb_nodes =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/detail/ZDB_number');
 
-    my $type_mapping_ref = {
-	'green'    => 'g', # green
-	'yellow'   => 'y', # yellow
-	'red'      => 'r', # red
+	my $zdb_node_ref = {};
+	
+	foreach my $zdb_node (@zdb_nodes){
+	    $zdb_node_ref->{ZDB_number}{url} = $zdb_node->findvalue('@url');
+	    $zdb_node_ref->{ZDB_number}{content} = $zdb_node->textContent;
+	}
+
+	my @classifications_nodes =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/detail/subjects/subject');
+
+	my $classifications_ref = [];
+
+	foreach my $classification_node (@classifications_nodes){
+	    push @{$classifications_ref}, $classification_node->textContent;
+	}
+
+	my @subjects_nodes =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/detail/keywords/keyword');
+
+	my $subjects_ref = [];
+
+	foreach my $subject_node (@subjects_nodes){
+	    push @{$subjects_ref}, $subject_node->textContent;
+	}
+
+	my @homepages_nodes =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/detail/homepages/homepage');
+
+	my $homepages_ref = [];
+
+	foreach my $homepage_node (@homepages_nodes){
+	    push @{$homepages_ref}, $homepage_node->textContent;
+	}
+	
+	my $firstvolume =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/first_fulltext_issue/first_volume');
+	my $firstdate   =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/first_fulltext_issue/first_date');
+	my $appearence  =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/appearence');
+	my $costs       =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/costs');
+	my $remarks     =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/remarks');
+	my $journal_color  =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/journal_color/@color');
+	
+	my @periods =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/periods/period');
+
+	my @issns =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/detail/P_ISSNs/P_ISSN');
+
+	my $issns_ref = [];
+
+	foreach my $issn_node (@issns){
+	    push @{$issns_ref}, $issn_node->textContent;
+	}
+	
+	$record->set_field({field => 'T0331', subfield => '', mult => 1, content => $title}) if ($title);
+	$record->set_field({field => 'T0412', subfield => '', mult => 1, content => $publisher}) if ($publisher);
+
+	my $erscheinungsverlauf = "";
+
+	if ($firstvolume){
+	    $erscheinungsverlauf.="Jg. $firstvolume";
+	}
+	if ($firstdate){
+	    $erscheinungsverlauf.=" ($firstdate)";
+	}
+
+	if ($erscheinungsverlauf){
+	    $record->set_field({field => 'T0405', subfield => '', mult => 1, content => $erscheinungsverlauf});
+	}
+	
+	if ($zdb_node_ref->{ZDB_number}{url}){
+	    $record->set_field({field => 'T0662', subfield => '', mult => 1, content => $zdb_node_ref->{ZDB_number}{url}})
+	}
+	if ($zdb_node_ref->{ZDB_number}{content}){
+	    $record->set_field({field => 'T0663', subfield => '', mult => 1, content => $zdb_node_ref->{ZDB_number}{content}}) ;
+	}
+	else {
+	    $record->set_field({field => 'T0663', subfield => '', mult => 1, content => 'Weiter zur Zeitschrift' }) ;
+	}
+
+	my $mult=1;
+	foreach my $classification (@$classifications_ref){
+	    $record->set_field({field => 'T0700', subfield => '', mult => $mult, content => $classification});
+	    $mult++;
+	}
+
+	$mult=1;
+	foreach my $subject (@$subjects_ref){
+	    $record->set_field({field => 'T0710', subfield => '', mult => $mult, content => $subject});
+	    $mult++;
+	}
+
+	$mult=1;
+	foreach my $issn (@$issns_ref){
+	    $record->set_field({field => 'T0543', subfield => '', mult => $mult, content => $issn});
+	    $mult++;
+	}
+	
+	$record->set_field({field => 'T0523', subfield => '', mult => 1, content => $appearence}) if ($appearence);
+	$record->set_field({field => 'T0511', subfield => '', mult => 1, content => $costs}) if ($costs);
+	$record->set_field({field => 'T0501', subfield => '', mult => 1, content => $remarks}) if ($remarks);
+
+	my $type_mapping_ref = {
+	    'green'    => 'g', # green
+		'yellow'   => 'y', # yellow
+		'red'      => 'r', # red
+	};
+
+	my $access_type = $type_mapping_ref->{$journal_color};
+
+	$logger->debug("journal_color: $journal_color ; access_type: $access_type");
+
+	if ($logger->is_debug){
+	    $logger->debug("Homepages: ".YAML::Dump($homepages_ref));
+	}
+
+	my $mult_fulltext = 1;
+	foreach my $homepage (@$homepages_ref){
+	    $record->set_field({field => 'T4120', subfield => $access_type, mult => $mult_fulltext++, content => $homepage });
+
+	    #        $record->set_field({field => 'T2662', subfield => '', mult => 1, content => $homepage});
+	}
+
+	$mult = 1;
+	foreach my $period (@periods){
+	    my $color = $period->findvalue('journal_color/@color');
+	    
+	    $logger->debug("Color: $color");
+
+	    my $image = $config->get('dbis_green_yellow_red_img');
+	    
+	    if    ($color == 'green'){
+		$image = $config->get('dbis_green_img');
+		$access_type = "g";
+	    }
+	    elsif ($color == 'yellow'){
+		$image = $config->get('dbis_yellow_img');
+		$access_type = "y";
+	    }
+	    elsif ($color == 3){
+		$image = $config->get('dbis_green_yellow_img');
+		$access_type = "f"; # fulltext available
+	    }
+	    elsif ($color == 'red'){
+		$image = $config->get('dbis_red_img');
+		$access_type = "r";	    
+	    }
+	    elsif ($color == 5){
+		$image = $config->get('dbis_green_green_red_img');
+	    }
+	    elsif ($color == 6){
+		$image = $config->get('dbis_yellow_red_img');
+		$access_type = "y";	    
+	    }
+
+	    my $label = $period->findvalue('label');
+
+	    $label=~s/\s+/ /g;
+	    
+	    my $warpto_link = $period->findvalue('warpto_link/@url');
+	    my $readme_link = $period->findvalue('readme_link/@url');
+
+	    $warpto_link = uri_unescape($warpto_link);
+	    
+	    if ($logger->is_debug){
+		$logger->debug("L: $label WL: $warpto_link RL: $readme_link");
+	    }
+
+	    #	$record->set_field({field => 'T0663', subfield => '', mult => $mult, content => "<img src=\"$image\" alt=\"$color\"/> $label" });
+
+	    
+	    $record->set_field({field => 'T4120', subfield => $access_type, mult => $mult_fulltext++, content => $warpto_link });
+	    
+	    $record->set_field({field => 'T0662', subfield => '', mult => $mult, content => $readme_link });
+	    $record->set_field({field => 'T0663', subfield => '', mult => $mult, content => "ReadMe: $label" });
+	    $mult++;
+	}
+
+
     };
 
-    my $access_type = $type_mapping_ref->{$journal_color};
-
-    $logger->debug("journal_color: $journal_color ; access_type: $access_type");
-
-    if ($logger->is_debug){
-	$logger->debug("Homepages: ".YAML::Dump($homepages_ref));
+    if ($@){
     }
-
-    my $mult_fulltext = 1;
-    foreach my $homepage (@$homepages_ref){
-	$record->set_field({field => 'T4120', subfield => $access_type, mult => $mult_fulltext++, content => $homepage });
-
-#        $record->set_field({field => 'T2662', subfield => '', mult => 1, content => $homepage});
-    }
-
-    $mult = 1;
-    foreach my $period (@periods){
-	my $color = $period->findvalue('journal_color/@color');
-	
-	$logger->debug("Color: $color");
-
-	my $image = $config->get('dbis_green_yellow_red_img');
-	
-	if    ($color == 'green'){
-	    $image = $config->get('dbis_green_img');
-	    $access_type = "g";
-	}
-	elsif ($color == 'yellow'){
-	    $image = $config->get('dbis_yellow_img');
-	    $access_type = "y";
-	}
-	elsif ($color == 3){
-	    $image = $config->get('dbis_green_yellow_img');
-	    $access_type = "f"; # fulltext available
-	}
-	elsif ($color == 'red'){
-	    $image = $config->get('dbis_red_img');
-	    $access_type = "r";	    
-	}
-	elsif ($color == 5){
-	    $image = $config->get('dbis_green_green_red_img');
-	}
-	elsif ($color == 6){
-	    $image = $config->get('dbis_yellow_red_img');
-	    $access_type = "y";	    
-	}
-
-	my $label = $period->findvalue('label');
-
-	$label=~s/\s+/ /g;
-	
-	my $warpto_link = $period->findvalue('warpto_link/@url');
-	my $readme_link = $period->findvalue('readme_link/@url');
-
-	$warpto_link = uri_unescape($warpto_link);
-	
-	if ($logger->is_debug){
-	    $logger->debug("L: $label WL: $warpto_link RL: $readme_link");
-	}
-
-#	$record->set_field({field => 'T0663', subfield => '', mult => $mult, content => "<img src=\"$image\" alt=\"$color\"/> $label" });
-
-	
-	$record->set_field({field => 'T4120', subfield => $access_type, mult => $mult_fulltext++, content => $warpto_link });
-	
-	$record->set_field({field => 'T0662', subfield => '', mult => $mult, content => $readme_link });
-	$record->set_field({field => 'T0663', subfield => '', mult => $mult, content => "ReadMe: $label" });
-	$mult++;
-    }
-
-
     # # Readme-Informationen verarbeiten
 
 

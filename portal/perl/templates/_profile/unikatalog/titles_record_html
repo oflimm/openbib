@@ -264,6 +264,56 @@ Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_auslei
   </ul>
  </div>
              </div>
+[% IF record.database == 'eds' # Verfuegbarkeit ermitteln %]
+[%-
+    journal = "";
+    title   = "";
+    volume  = "";
+    issue   = "";
+    year    = "";
+    issn    = "";
+    isbn    = "";
+    doi     = "";
+    person  = "";
+
+    IF normdata.${"T0100"} ;
+      person = normdata.${"T0100"}.first.content ;
+    END;
+
+    IF normdata.${"T0331"} ;
+      title = normdata.${"T0331"}.first.content ;
+    END;
+
+    IF normdata.${"T0585"} ;
+      issn   = normdata.${"T0585"}.first.content ;
+    END;
+
+    IF normdata.${"T0089"} ;
+       volume = normdata.${"T0089"}.first.content ;
+    END;
+
+    IF normdata.${"T0376"} ;
+       journal = normdata.${"T0376"}.first.content ;
+    END;
+
+    IF normdata.${"T0425"} ;
+       year = normdata.${"T0451"}.first.content ;
+    END;
+
+    IF normdata.${"T0596"} ;
+      FOREACH item IN normdata.${"T0596"} ;
+        IF item.subfield == 'h';
+	   issue = item.content ;
+	END;
+      END;
+    END;
+
+-%]
+	    <div class="pe-1">	    
+              <a class="btn btn-primary pe-2" href="[% path_prefix %]/availability/search.html?issn=[% issn %];jrnl=[% journal %];vol=[% volume %];issue=[% issue %];tit=[% title %];per=[% person %]" target="_blank" title="[% msg.maketext("Verfügbarkeit ermitteln") %]"><i class="fas fa-search"></i> <span class="d-none d-sm-inline">[% msg.maketext("Verfügbarkeit") %]</span></a>
+	    </div>
+[% END %]
+	     
 	     <div class="pe-1">
 	       <a href="#" class="ob-sidebar_button sidebar-toggler d-none d-md-block" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar"><i class="fas fa-plus fa-2x"></i></a>	     
 	     </div>

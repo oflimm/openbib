@@ -338,6 +338,8 @@ FOREACH field IN [ "T0902", "T0907", "T0912", "T0917", "T0922", "T0927", "T0932"
 
 END;
 
+have_doi = {};
+
 FOREACH field IN normdata;
 
   category = field.key ;
@@ -475,7 +477,10 @@ FOREACH field IN normdata;
          IF NOT content_map.${'T0552'} ;
 	    content_map.${'T0552'} = [];
 	 END;
-         content_map.${'T0552'}.push(content);
+	 IF NOT have_doi.defined(content) ;
+           content_map.${'T0552'}.push(content);
+	 END;
+	 have_doi.${content} = 1;
 
 #    CASE [ "T0531" "T0533" ];
 #         IF content.match("---&gt;: ") ;

@@ -236,7 +236,7 @@ sub send_search_request {
 	push @search_options, "expander=fulltext";
     }
     elsif ($showft) {
-	push @search_options, "limiter=FT:y";
+	push @search_options, "limiter=FT1:y"; # Ehemals FT:y
     }
 
     push @search_options, "resultsperpage=$num" if ($num);
@@ -311,6 +311,30 @@ sub get_record {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = $self->get_config;
+
+    my $record = new OpenBib::Record::Title({ database => $database, id => $id });
+    
+    my $memc_key = "eds:title:$database:$id";
+
+    my $memc = $config->get_memc;
+    
+    if ($memc){
+        my $fields_ref = $memc->get($memc_key);
+
+	if ($fields_ref){
+	    if ($logger->is_debug){
+		$logger->debug("Got fields for key $memc_key from memcached");
+	    }
+
+	    $record->set_fields($fields_ref);
+	    $record->set_holding([]);
+	    $record->set_circulation([]);
+
+	    return $record;
+	}
+    }
+        
     $self->connect_eds;
 
     my $json_result_ref = $self->send_retrieve_request($arg_ref);
@@ -321,8 +345,6 @@ sub get_record {
 
 	$json_result_ref = $self->send_retrieve_request($arg_ref);		
     }
-
-    my $record = new OpenBib::Record::Title({ database => $database, id => $id });
 
     my $fields_ref = ();
 
@@ -509,13 +531,15 @@ sub get_record {
 		}
 	    }
 	    
-	    # z.B. DOI in 0010
+	    # DOI in 0552
 	    if ($thisfield eq "Identifiers"){
 		foreach my $item (@{$json_result_ref->{Record}{RecordInfo}{BibRecord}{BibEntity}{$thisfield}}){
+		    next unless ($item->{Type} eq "doi");
 		    
-		    push @{$fields_ref->{'T0010'}}, {
-			content => $item->{Value}
-		    } if (!$self->have_field_content('T0010',$item->{Value} ));
+		    push @{$fields_ref->{'T0552'}}, {
+			subfield => '', 			
+			content  => $item->{Value}
+		    } if (!$self->have_field_content('T0552',$item->{Value} ));
 		}
 	    }
 	    
@@ -859,6 +883,11 @@ sub get_record {
 		    my $i = 2;
 		    foreach my $url (@urls) {
 			if ($url =~ /doi\.org/) {
+			    my ($doi) = $url =~m/doi\.org\/(.+)$/ ;
+			    push @{$fields_ref->{'T0552'}}, {
+				subfield => '', 
+				content  => $doi
+			    };
 			    push @{$fields_ref->{'T0662'}}, {
 				subfield => '', 
 				mult     => $link_mult, 
@@ -935,6 +964,10 @@ sub get_record {
     
     $record->set_holding([]);
     $record->set_circulation([]);
+
+    if ($memc){
+	$memc->set($memc_key,$fields_ref,$config->{memcached_expiration}{'eds:title'});
+    }
     
     return $record;
 }

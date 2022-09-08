@@ -46,6 +46,7 @@
                 'T0540', # msg.maketext("T0540") ISBN
                 'T0553', # msg.maketext("T0553") ArtikelNr. als 13-stellige ISBN
                 'T0543', # msg.maketext("T0543") ISSN
+                'T0552', # msg.maketext("T0552") Identifier/DOI
                 'T0652', # msg.maketext("T0652") EDV Material
                 'T0655', # msg.maketext("T0655") EDV Adress
                 'T0451', # msg.maketext("T0451") GesTit Vorl

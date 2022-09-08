@@ -51,25 +51,10 @@
 
    doi = "";
 
-   IF normdata.defined("T0663") ;
-     mult = 0;
-     FOREACH item IN normdata.${"T0663"} ;
-        IF item.content == "DOI" ;
-	  mult = item.mult;
-	  LAST;
-	END;
-     END ;
-
-     IF mult ;
-       FOREACH item IN normdata.${"T0662"} ;
-         IF item.mult == mult;
- 	   doi = item.content;
-	   LAST;
-	 END;
-       END ;
-     END;
+   IF normdata.defined("T0552") ;
+     doi = normdata.${"T0552"}.first.content;
    END ;
-
+   
    unpaywall = {};
 
    thanks_to_unpaywall = 0;

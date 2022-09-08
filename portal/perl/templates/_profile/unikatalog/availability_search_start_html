@@ -107,3 +107,18 @@ In: [% query.param('jrnl') %][% IF query.param('vol') %] Vol. [% query.param('vo
 [% IF query.param('issn') %]<br/>ISSN: [% query.param('issn') %][% END %]
 [% END %]
 </i></p>
+
+[% IF NOT query.param('issn') && NOT query.param('isbn') %]
+
+<div class="alert alert-info m-2">
+
+Es steht kein eindeutiges Identfizierungsmerkmal (ISBN, ISSN etc.) für
+das gesuchte Dokument zur Verfügung. Das Ergebnis der
+Verfügbarkeitsrecherche enthält daher möglicherweise keine oder
+unpassende Treffer.  Bitte recherchieren Sie den Buch-
+bzw. Zeitschriftentitel sicherheitshalber noch einmal im Unikatalog,
+bevor Sie eine Fernleihbestellung aufgeben.
+
+</div>
+
+[% END %]

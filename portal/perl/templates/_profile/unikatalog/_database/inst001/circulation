@@ -73,8 +73,10 @@
      # Bestimmung department_url
      library_isil = "";
 
-     IF standort.match('Hauptabt.') || standort.match('Humanwiss. Abteilung') ;
+     IF standort.match('Hauptabt.') ;
        library_isil = "DE-38";
+     ELSIF standort.match('Humanwiss. Abteilung') ;
+       library_isil = "DE-38-HWA";     
      ELSIF thiscirculation.department_id.match('^[0-9][0-9][0-9]');
        kuerzel = thiscirculation.department_id.match("^([0-9][0-9][0-9])").first ;
        IF kuerzel ;

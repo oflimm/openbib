@@ -1,10 +1,10 @@
 # Versionsnummer
-version: OpenBib 3.1
+version: OpenBib 3.2
 
 # Unter dieser IP wird der lokale Server angesprochen
 local_ip: 127.0.0.1
 
-postgresql_version: '110000' # 11.0.0
+postgresql_version: '111200' # 11.12.0
 
 # Einstellungen fuer den Zugriff auf die Katalog-Datenbanken
 dbimodule: Pg
@@ -63,23 +63,27 @@ statisticsdbsingleton: 0
 
 # Aktivierung und selektives Debugging verschiedener Funktionalitaeten
 debug_ils: 0
-active_campusorder: 0
 active_ils: 0
+active_campusorder: 0
+active_pdaorder: 0
 active_login: 1 # Legacy: Ersetzt durch Definition von Login-Zielen in View-Config
 active_statisticsdb: 1
 newsflash: 1
+
+# Preislimit fuer Neuanschaffungen durch PDA 
+pda_limit_cent: 100
 
 # Sollen Performance-Benchmarks durchgefuehrt werden
 benchmark: 0
 
 # Einstellungen fuer Memcached
 
-# memcached:
-#   servers:
-#      - address: '127.0.0.1:22122' # Nutcracker
-#   compress_threshold: 10000
-#   namespace: 'ob:'
-#   ketama_points: 150
+memcached:
+  servers:
+     - address: '127.0.0.1:11211'
+  compress_threshold: 10000
+  namespace: 'ob:'
+  ketama_points: 150
 
 memcached_expiration:
   'record:title:full': 3600
@@ -94,22 +98,33 @@ memcached_expiration:
   'config:locationinfo_overview': 43200
   'config:viewinfo_overview': 43200
   'config:locationinfo_fields': 43200
+  'config:locationinfo_occupancy': 240
+  'config:topics': 3600
+  'config:bk': 43200
+  'config:rvk': 43200
+  'config:ddc': 43200
+  'config:lcc': 43200
   'config:viewdbs': 43200
   'config:viewlocations': 43200
   'config:searchprofile_dbs': 43200
   'handler:connector_locationmark': 43200
   'eds:authtoken': 3600
   'eds:sessiontoken': 3600  
+  'eds:title': 3600
+  'eds:search': 3600      
+  'dbis:classifications': 3600
+  'dbis:title': 3600
+  'dbis:search': 3600
+  'ezb:classifications': 3600
+  'ezb:title': 3600
+  'ezb:search': 3600
 
 # Parameter fuer USBWS ILS-Anbindung
+
 usbws_url: ''
 usbwsmail_url: ''
 usbauth_url: ''
 usbauth_masterpass: ''
-
-debug_ils: 0
-active_ils: 0
-active_campusorder: 0
 
 # Local networks/IP ranges to recognize access to licensed media
 local_networks:
@@ -144,6 +159,9 @@ authenticator:
       port: 3003
       remoteuser: baz
       dbname: 'catalogname'
+  paia:
+    inst001:
+      base_url: ''
 
 olws:
   default:
@@ -154,10 +172,10 @@ olws:
     circdb: 'catalogname'
 
 mail:
-  scope:
-    myscope:
-      recipient: 'myscope@foo.bar'
-      sender: 'myscope@baz.bar'
+  realm:
+    myrealm:
+      recipient: 'myrealm@foo.bar'
+      sender: 'myrealm@baz.bar'
 
 kmb_bankverbindung_html: ""
 
@@ -190,6 +208,10 @@ location_types:
   - ISIL
   - Generic
 
+metadata_schema:
+  - mab2
+  - marc21
+
 source_systems:
   Sisis:
      has_authorities: 1
@@ -214,6 +236,12 @@ source_systems:
   'Backend: BibSonomy':
      has_authorities: 0
   'Backend: EDS':
+     has_authorities: 0
+  'Backend: GVI':
+     has_authorities: 0
+  'Backend: Gesis':
+     has_authorities: 0
+  'Backend: JOP':
      has_authorities: 0
   Anderes:
      has_authorities: 0
@@ -259,6 +287,7 @@ connector_paia_loc: connector/paia
 connector_livesearch_loc: connector/livesearch
 connector_locationmark_loc: connector/sykasignatur
 # Legacy URI - Ab v2.4 kann jeder URL direkt gebookmarkt werden
+connector_openurl_loc: connector/openurl
 connector_qrcode_loc: connector/qrcode
 connector_rss_loc: connector/rss
 connector_seealso_loc: connector/seealso
@@ -297,6 +326,7 @@ cartitems_loc: cartitems
 home_loc: home
 index_loc: index
 info_loc: info
+librarycard_registrations_loc: librarycard_registrations
 login_loc: login
 logout_loc: logout
 mailcollection_loc: mailcollection
@@ -310,6 +340,8 @@ searchforms_loc: searchforms
 searchlocations_loc: searchlocations
 searchprofiles_loc: searchprofiles
 serveractive_loc: server_is_active
+uccard_activations_loc: uccard_activations
+uccard_login_loc: uccard_login
 #userreviews_loc: review
 
 
@@ -505,6 +537,9 @@ tt_clouds_0412_tname: clouds_0412
 # Jesuiten
 tt_clouds_yearofaddition_tname: clouds_yearofaddition
 tt_clouds_placeofpublication_tname: clouds_placeofpublication
+tt_clouds_provenanceperson_tname: clouds_provenanceperson
+tt_clouds_provenancecorporatebody_tname: clouds_provenancecorporatebody
+tt_clouds_publisherprinter_tname: clouds_publisherprinter
 
 tt_cartitems_mail_html_tname: cartitems_mail_html
 tt_cartitems_mail_message_tname: cartitems_mail_message
@@ -523,6 +558,7 @@ tt_connector_daia_tname: connector_daia
 tt_connector_paia_tname: connector_paia
 tt_connector_paia_auth_tname: connector_paia_auth
 tt_connector_paia_core_tname: connector_paia_core
+tt_connector_openurl_tname: connector_openurl
 tt_connector_locationmark_titlist_tname: connector_locationmark_titlist
 tt_connector_rss_item_tname: connector_rss_item
 tt_connector_similarpersons_tname: connector_similarpersons
@@ -588,6 +624,11 @@ tt_users_passwords_mail_body_tname: users_passwords_mail_body
 tt_users_passwords_success_tname: users_passwords_success
 tt_users_passwords_tname: users_passwords
 
+tt_users_passwords_tokenmail_body_tname: users_passwords_tokenmail_body
+tt_users_passwords_tokenmail_success_tname: users_passwords_tokenmail_success
+tt_users_passwords_verifytoken_tname: users_passwords_verifytoken
+tt_users_passwords_token_success_tname: users_passwords_token_success
+
 tt_persons_record_tname: persons_record
 tt_persons_record_titles_recent_tname: persons_record_titles_recent
 
@@ -595,6 +636,13 @@ tt_users_registrations_confirmation_tname: users_registrations_confirmation
 tt_users_registrations_mail_message_tname: users_registrations_mail_message
 tt_users_registrations_success_tname: users_registrations_success
 tt_users_registrations_tname: users_registrations
+
+tt_users_librarycard_registrations_success_tname: users_librarycard_registrations_success
+tt_users_librarycard_registrations_tname: users_librarycard_registrations
+
+tt_users_uccard_activations_confirmation_tname: users_uccard_activations_confirmation
+tt_users_uccard_activations_success_tname: users_uccard_activations_success
+tt_users_uccard_activations_tname: users_uccard_activations
 
 tt_users_reviews_tname: users_reviews
 tt_users_reviews_record_edit_tname: users_reviews_record_edit
@@ -611,6 +659,10 @@ tt_authorization_error_tname: authorization_error
 tt_authority_search_combined_tname: authority_search_combined
 tt_authority_search_end_tname: authority_search_end
 tt_authority_search_start_tname: authority_search_start
+
+tt_availability_search_end_tname: availability_search_end
+tt_availability_search_start_tname: availability_search_start
+tt_availability_search_item_tname: availability_search_item
 
 tt_search_classification_tname: search_classification
 tt_search_corporatebody_tname: search_corporatebody
@@ -666,6 +718,7 @@ tt_topics_record_mapping_tname: topics_record_mapping
 tt_topics_record_tname: topics_record
 tt_topics_tname: topics
 
+tt_users_circulations_tname: users_circulations
 tt_users_circulations_loans_tname: users_circulations_loans
 tt_users_circulations_make_order_tname: users_circulations_make_order
 tt_users_circulations_check_order_tname: users_circulations_check_order
@@ -673,11 +726,18 @@ tt_users_circulations_make_campus_order_tname: users_circulations_make_campus_or
 tt_users_circulations_check_campus_order_tname: users_circulations_check_campus_order
 tt_users_circulations_make_ilias_order_tname: users_circulations_make_ilias_order
 tt_users_circulations_check_ilias_order_tname: users_circulations_check_ilias_order
+tt_users_circulations_make_pda_order_tname: users_circulations_make_pda_order
+tt_users_circulations_check_pda_order_tname: users_circulations_check_pda_order
 tt_users_circulations_make_reservation_tname: users_circulations_make_reservation
 tt_users_circulations_check_reservation_tname: users_circulations_check_reservation
+tt_users_circulations_suggestions_tname: users_circulations_suggestions
+tt_users_circulations_suggestions_success_tname: users_circulations_suggestions_success
+tt_users_circulations_suggestions_mail_body_tname: users_circulations_suggestions_mail_body
 tt_users_circulations_cancel_reservation_tname: users_circulations_cancel_reservation
 tt_users_circulations_cancel_order_tname: users_circulations_cancel_order
 tt_users_circulations_cancel_order_confirm_tname: users_circulations_cancel_order_confirm
+tt_users_circulations_articleorders_tname: users_circulations_articleorders
+tt_users_circulations_zflorders_tname: users_circulations_zflorders
 tt_users_circulations_orders_tname: users_circulations_orders
 tt_users_circulations_fees_tname: users_circulations_fees
 tt_users_circulations_reminders_tname: users_circulations_reminders
@@ -793,6 +853,10 @@ tt_info_faq_tname: info_faq
 tt_info_systematik_tname: info_systematik
 # Gentz Briefe
 tt_info_netzwerk_tname: info_netzwerk
+tt_info_leitmedium_tname: info_leitmedium
+tt_info_forschung_tname: info_forschung
+tt_info_welt_tname: info_welt
+tt_info_orientforum_tname: info_orientforum
 tt_info_map_tname: info_map
 tt_info_editorial_tname: info_editorial
 tt_info_timeline_tname: info_timeline
@@ -808,6 +872,8 @@ tt_info_digitalisierung_tname: info_digitalisierung
 tt_info_provenienz_tname: info_provenienz
 tt_info_mitarbeiter_tname: info_mitarbeiter
 tt_info_kooperationspartner_tname: info_kooperationspartner
+# Unikatalog
+tt_info_tipps_tname: info_tipps
 
 css_loc: /css
 
@@ -822,8 +888,8 @@ contact_email: no-reply@foo.bar
 # Bibliothek NRW: In die Funktionen Monographien-Fernleihe 
 # sowie elektr. Aufsatz/Zeitschriftenlieferungen (Medea) 
 # fuer den entsprechenden Standort (hier 038)
-hbzmonofernleih_exturl: http://www.ub.uni-koeln.de/usbportal?service=search&dbgroup=DeutschlandKataloge
-hbzzeitfernleih_exturl: http://www.ub.uni-koeln.de/usbportal?service=search&dbgroup=Zeitschriften
+hbzmonofernleih_exturl: ''
+hbzzeitfernleih_exturl: ''
 
 # Externer Link zur Elektronischen ZeitschriftenBibliothek (EZB)
 # fuer den entsprechenden Standort (hier USBK)
@@ -843,12 +909,17 @@ dbis_colors: 45
 # 8 (Pay-per-use) + 32 (DFG Nationallizenz)
 dbis_ocolors: 32
 
+# DBPedia Base-URL
+dbpedia_base: 'https://dbpedia.org/data/'
+
+# UnPayWall
+unpaywall_base: 'https://api.unpaywall.org/v2/'
+unpaywall_user: ''
+
 # ContentDM-Default-Server
 
-cdm_base: 'http://www.ub.uni-koeln.de/'
-cdm_path: 'cdm4/json_gateway.php?collection=all&start=1&maxrecs=10&field0=identi&mode0=exact&string0='
-
-# Externer Link zur Cover-Scan Anreicherung (ISBNINHERE wird durch ISBN ersetzt)
+cdm_base: ''
+cdm_path: ''
 
 coverscans_exturl: https://covers.openlibrary.org/b/isbn/ISBNINHERE-S.jpg
 coverscans_full_exturl: https://covers.openlibrary.org/b/isbn/ISBNINHERE-M.jpg
@@ -883,7 +954,7 @@ tt_include_path: /opt/openbib/templates
 # Maps incoming content-types to internal representations
 content_type_map:
  'application/rdf+xml': 'rdf'
-# 'application/xml': 'rss'
+ 'application/rss+xml': 'rss'
  'application/xml': 'xml'
  'application/mods+xml': 'mods'
  'text/rdf+n3': 'n3'
@@ -897,7 +968,7 @@ content_type_map:
 # Maps internal representations to outgoing content-types
 content_type_map_rev:
  'rdf': 'application/rdf+xml'
- 'rss': 'application/xml'
+ 'rss': 'application/rss+xml'
  'xml': 'application/xml'
  'n3': 'text/rdf+n3'
  'html': 'text/html'
@@ -908,6 +979,25 @@ content_type_map_rev:
  'txt': 'text/plain'
  'csv': 'text/csv'
  'mods': 'application/xml'
+
+# Verfuegbarkeitsrecherche
+# Zuordnung: Viewname -> Liste der Kataloge/Views
+availability_search:
+  'unikatalog':
+    'default':
+      - type: database
+        name: ezb    
+      - type: view
+        name: uni
+    'article':
+      - type: database
+        name: eds    
+      - type: database
+        name: ezb    
+      - type: view
+        name: uni
+#    - type: database
+#      name: jop
 
 # Suchprefixe in der Rercherche fuer die internen Felder person, title usw.
 # Zuordnung: Interner Bezeichnung -> Suchprefix
@@ -1005,6 +1095,18 @@ searchfield:
      'type': 'ft'
   'user': # for BibSonomy 
      'prefix': 'user'
+     'type': 'ft'
+  'volume': 
+     'prefix': 'vol'
+     'type': 'ft'
+  'issue': 
+     'prefix': 'iss'
+     'type': 'ft'
+  'journal': 
+     'prefix': 'jrnl'
+     'type': 'ft'
+  'pages': 
+     'prefix': 'pgs'
      'type': 'ft'
   'year': # fest inkl. prefix
      'prefix': 'year'
@@ -1176,6 +1278,15 @@ searchfield:
   't0428':
      'prefix': 't0428'
      'type': 'integer'
+  't0462':
+     'prefix': 't0462'
+     'type': 'ft'
+  't0463':
+     'prefix': 't0463'
+     'type': 'ft'
+  't0465':
+     'prefix': 't0465'
+     'type': 'ft'
   't0508':
      'prefix': 't0508'
      'type': 'ft'
@@ -1184,6 +1295,9 @@ searchfield:
      'type': 'ft'
   't0533':
      'prefix': 't0533'
+     'type': 'ft'
+  't0590':
+     'prefix': 't0590'
      'type': 'ft'
   't0600':
      'prefix': 't0600'
@@ -1334,6 +1448,21 @@ searchfield:
   'ft0428':
      'prefix': 'ft0428'
      'type': 'string'
+  'ft0462':
+     'prefix': 'ft0462'
+     'type': 'string'
+  'ft0463':
+     'prefix': 'ft0463'
+     'type': 'string'
+  'ft0465':
+     'prefix': 'ft0465'
+     'type': 'string'
+  'ft0470':
+     'prefix': 'ft0470'
+     'type': 'string'
+  'ft0471':
+     'prefix': 'ft0471'
+     'type': 'string'
   'ft0434':
      'prefix': 'ft0434'
      'type': 'string'
@@ -1345,6 +1474,9 @@ searchfield:
      'type': 'string'
   'ft0533':
      'prefix': 'ft0533'
+     'type': 'string'
+  'ft0590':
+     'prefix': 'ft0590'
      'type': 'string'
   'ft0619':
      'prefix': 'ft0619'
@@ -1413,27 +1545,67 @@ searchfield:
      'prefix': 'ft4804'
      'type': 'string'
 
+gesis:
+  search_url: 'https://search.gesis.org/searchengine'
+
 # Einstellungen fuer SOLR Suchindex
 
 solr:
-  base_url: 'http://localhost:8983/solr/openbib'
-  search_url: 'http://localhost:8983/solr/openbib/select'
+# Backend-Specific  
+  local: # Lokale Indexierung mit Solr
+    base_url: ''
+    search_url: ''
+  gvi:   # Zugriff auf Solr Index des GVI
+    base_url: ''
+    search_url: ''
 
+    
 solr_filter_field:
-  fsubj: facet_subject
-  fcls: facet_classification
-  fper: facet_person
-  fyear: facet_year
-  ftyp: facet_mediatype
-  flang: facet_language
-  fcorp: facet_corporatebody
-  fdb: facet_database
-  ftag: facet_tag
-  flitlist: facet_litlist
-  floc: facet_location
-  favail: facet_availability
-  topic: facet_topic
-  fprov: facet_provenance
+  local:
+    fsubj: facet_subject
+    fcls: facet_classification
+    fper: facet_person
+    fyear: facet_year
+    ftyp: facet_mediatype
+    flang: facet_language
+    fcorp: facet_corporatebody
+    fdb: facet_database
+    ftag: facet_tag
+    flitlist: facet_litlist
+    floc: facet_location
+    favail: facet_availability
+    topic: facet_topic
+    fprov: facet_provenance
+  gvi:
+    fsubj: subject_all_facet
+    fper: author_facet
+    fyear: publish_date
+    ftyp: material_pubform
+
+# https://github.com/gemeinsamerverbuendeindex/gvi/blob/develop/solr_config/schema.xml
+
+solr_searchfield_mapping:    
+  gvi: 
+    'freesearch': 'allfields'
+    'person': 'author'
+    'corporatebody': 'author'	    
+    'title': 'title'
+    'titlestring': 'title_phrase'
+    'publisher': 'publisher'
+    'zdbid': 'zdb_id'
+    'isbn': 'isbn'
+    'issn': 'issn'
+    'year': 'publish_date'
+    'content': 'summary'
+    'subject': 'subject_all'
+
+solr_facet_mapping:    
+  gvi: 
+    'person': 'author_facet'
+    'subject': 'subject_all_facet'
+    'year': 'publish_date'
+    'mediatype': 'material_pubform'
+
 
 # Einstellungen fuer EDS Suchindex
 
@@ -1490,650 +1662,687 @@ eds_reverse_sort_mapping:
 # Einstellungen fuer ElasticSearch Suchindex
 
 elasticsearch:
-  userinfo: 'openbib:TopSecret'
+  userinfo: ''
   nodes:
     - '127.0.0.1:9200'
   cxn_pool: 'Sniff'
   use_merged_index: 1
 
 elasticsearch_index_mappings:
-  properties:
-    listitem:
+  local:
+    properties:
+      listitem:
          type: 'object'
          enabled: 'false'
-    popularity:
+      popularity:
          type: 'integer'
-    db:
+      db:
          type: 'keyword'
          index: 'true'
          #analyze: 'default'
-    id:
+      id:
          type: 'keyword'
          index: 'true'
          #analyze: 'default'
-    hbzid:
+      hbzid:
          type: 'keyword'
          index: 'true'
          #analyze: 'default'
-    zdbid:
+      zdbid:
          type: 'keyword'
          index: 'true'
          #analyze: 'default'
-    personid:
+      personid:
          type: 'keyword'
          index: 'true'
          #analyze: 'default'
-    corporatebodyid:
+      corporatebodyid:
          type: 'keyword'
          index: 'true'
          #analyze: 'default'
-    classificationid:
+      classificationid:
          type: 'keyword'
          index: 'true'
          #analyze: 'default'
-    subjectid:
+      subjectid:
          type: 'keyword'
          index: 'true'
          #analyze: 'default'
-    subid:
+      subid:
          type: 'keyword'
          index: 'true'
          #analyze: 'default'
-    gnd:
+      gnd:
          type: 'keyword'
          index: 'true'
          #analyze: 'default'
-    freesearch:
+      freesearch:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    person:
+      person:
          type: 'text'
          index: 'true'
         # boost: 20
          #analyze: 'default'
-    title:
+      title:
          type: 'text'
          index: 'true'
         # boost: 20
          #analyze: 'default'
-    subject:
+      subject:
          type: 'text'
          index: 'true'
          #boost: 20
          #analyze: 'default'
-    corporatebody:
+      corporatebody:
          type: 'text'
          index: 'true'
          #boost: 20
          #analyze: 'default'
-    classification:
+      classification:
          type: 'text'
          index: 'true'
          #boost: 20
          #analyze: 'default'
-    mark:
+      mark:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    publisher:
+      publisher:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    provenance:
+      provenance:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    hss:
+      hss:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    isbn:
+      isbn:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    issn:
+      issn:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    mediatype:
+      mediatype:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    authoritytype:
+      authoritytype:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    content:
+      content:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    place:
+      place:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    source:
+      source:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    tag:
+      tag:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    toc:
+      toc:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    reg:
+      reg:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    user:
+      user:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    year:
+      year:
          type: 'integer'
          index: 'true'
          #analyze: 'default'
-    subid:
+      subid:
          type: 'keyword'
          index: 'true'
          #analyze: 'default'
-    topic:
+      topic:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    titlestring:
+      titlestring:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    tagstring:
+      tagstring:
          type: 'keyword'
          index: 'true'
          #analyze: 'default'
-    litliststring:
+      litliststring:
          type: 'keyword'
          index: 'true'
          #analyze: 'default'
-    availabilitystring:
+      availabilitystring:
          type: 'keyword'
          index: 'true'
          #analyze: 'default'
-    subjectstring:
+      subjectstring:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    yearstring:
+      yearstring:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    languagestring:
+      languagestring:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    classificationstring:
+      classificationstring:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    personstring:
+      personstring:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    corporatebodystring:
+      corporatebodystring:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    mediatypestring:
+      mediatypestring:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    markstring:
+      markstring:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    placestring:
+      placestring:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    publisherstring:
+      publisherstring:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    provenancestring:
+      provenancestring:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    sourcestring:
+      sourcestring:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    dbstring:
+      dbstring:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    locationstring:
+      locationstring:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    bibkey:
+      bibkey:
          type: 'keyword'
          index: 'true'
          #analyze: 'default'
-    t0016:
+      t0016:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0100:
+      t0100:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0101:
+      t0101:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0102:
+      t0102:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0103:
+      t0103:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0200:
+      t0200:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0201:
+      t0201:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0304:
+      t0304:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0334:
+      t0334:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0335:
+      t0335:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0338:
+      t0338:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0341:
+      t0341:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0342:
+      t0342:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0343:
+      t0343:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0344:
+      t0344:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0345:
+      t0345:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0346:
+      t0346:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0351:
+      t0351:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0352:
+      t0352:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0353:
+      t0353:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0354:
+      t0354:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0355:
+      t0355:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0356:
+      t0356:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0407:
+      t0407:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0410:
+      t0410:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0411:
+      t0411:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0412:
+      t0412:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0413:
+      t0413:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0425:
+      t0425:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0426:
+      t0426:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0427:
+      t0427:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0428:
+      t0428:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0531:
+      t0462:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0533:
+      t0463:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0619:
+      t0465:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0700:
+      t0531:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0710:
+      t0533:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t0720:
+      t0590:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t4100:
+      t0619:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t4300:
+      t0700:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t4306:
+      t0710:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t4307:
+      t0720:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t4308:
+      t4100:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t4310:
+      t4300:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t4311:
+      t4306:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t4312:
+      t4307:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t4313:
+      t4308:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t4314:
+      t4310:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t4315:
+      t4311:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    t4316:
+      t4312:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t4313:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t4314:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t4315:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t4316:
          type: 'text'
          index: 'true'
          #analyze: 'default'
 
-    ft0016:
+      ft0016:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0100:
+      ft0100:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0101:
+      ft0101:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0102:
+      ft0102:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0103:
+      ft0103:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0200:
+      ft0200:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0201:
+      ft0201:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0304:
+      ft0304:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0334:
+      ft0334:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0335:
+      ft0335:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0338:
+      ft0338:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0341:
+      ft0341:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0342:
+      ft0342:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0343:
+      ft0343:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0344:
+      ft0344:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0345:
+      ft0345:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0346:
+      ft0346:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0351:
+      ft0351:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0352:
+      ft0352:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0353:
+      ft0353:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0354:
+      ft0354:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0355:
+      ft0355:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0356:
+      ft0356:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0407:
+      ft0407:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0410:
+      ft0410:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0411:
+      ft0411:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0412:
+      ft0412:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0413:
+      ft0413:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0425:
+      ft0425:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0426:
+      ft0426:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0427:
+      ft0427:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0428:
+      ft0428:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0434:
+      ft0434:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0470:
+      ft0462:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0517:
+      ft0463:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0531:
+      ft0465:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0533:
+      ft0470:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0619:
+      ft0471:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0700:
+      ft0517:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0710:
+      ft0531:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft0720:
+      ft0533:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft4100:
+      ft0590:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft4300:
+      ft0619:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft4306:
+      ft0700:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft4307:
+      ft0710:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft4308:
+      ft0720:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft4310:
+      ft4100:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft4311:
+      ft4300:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft4312:
+      ft4306:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft4313:
+      ft4307:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft4314:
+      ft4308:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft4315:
+      ft4310:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft4316:
+      ft4311:
          type: 'text'
          index: 'true'
          #analyze: 'default'
-    ft4700:
+      ft4312:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft4313:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft4314:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft4315:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft4316:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft4700:
          type: 'text'
          index: 'true'
          #analyze: 'default'
@@ -2286,53 +2495,99 @@ elasticsearch_index_mappings:
          type: 'keyword'
          index: 'true'
          #analyze: 'default'
-	 
+
 elasticsearch_filter_field:
-  fsubj: facet_subject
-  fcls: facet_classification
-  fper: facet_person
-  fyear: facet_year
-  ftyp: facet_mediatype
-  flang: facet_language
-  fcorp: facet_corporatebody
-  fdb: facet_database
-  ftag: facet_tag
-  flitlist: facet_litlist
-  floc: facet_location
-  favail: facet_availability
-  topic: facet_topic
-  fprov: facet_provenance
+  local:
+    fsubj: facet_subject
+    fcls: facet_classification
+    fper: facet_person
+    fyear: facet_year
+    ftyp: facet_mediatype
+    flang: facet_language
+    fcorp: facet_corporatebody
+    fdb: facet_database
+    ftag: facet_tag
+    flitlist: facet_litlist
+    floc: facet_location
+    favail: facet_availability
+    topic: facet_topic
+    fprov: facet_provenance
+  gesis:
+    ftyp: 'type.keyword'
+    fsubj: 'topic.keyword'
+    fper: 'person.keyword'
+    fyear: 'date.keyword'
+    fprov: 'data_source.keyword'
 
 elasticsearch_sorttype_value:
-  'person':
-     field: 'sort_person'
-     category: 'PC0001'
-     type: 'stringcategory'
-  'title':
-     field: 'sort_title'
-     category: 'T0331'
-     type: 'stringcategory'
-  'order':
-     field: 'sort_order'
-     category: 'T5001'
-     type: 'integercategory'
-  'year':
-     field: 'sort_year'
-     category: 'T0425'
-     type: 'integercategory'
-  'publisher':
-     field: 'sort_publisher'
-     category: 'T0412'
-     type: 'stringcategory'
-  'mark':
-     field: 'sort_mark'
-     category: 'X0014'
-     type: 'stringcategory'
-  'popularity':
-     field: 'sort_popularity'
-     category: 'popularity'
-     type: 'integervalue'
+  local:
+    'person':
+      field: 'sort_person'
+      category: 'PC0001'
+      type: 'stringcategory'
+    'title':
+      field: 'sort_title'
+      category: 'T0331'
+      type: 'stringcategory'
+    'order':
+      field: 'sort_order'
+      category: 'T5001'
+      type: 'integercategory'
+    'year':
+      field: 'sort_year'
+      category: 'T0425'
+      type: 'integercategory'
+    'publisher':
+      field: 'sort_publisher'
+      category: 'T0412'
+      type: 'stringcategory'
+    'mark':
+      field: 'sort_mark'
+      category: 'X0014'
+      type: 'stringcategory'
+    'popularity':
+      field: 'sort_popularity'
+      category: 'popularity'
+      type: 'integervalue'
+  gesis:
+    'person':
+      field: 'person_sort'
+      category: 'PC0001'
+      type: 'stringcategory'
 
+elasticsearch_facet_field:
+  local:
+    subject: facet_subject
+    classification: facet_classification
+    person: facet_person
+    year: facet_year
+    mediatype: facet_mediatype
+    language: facet_language
+    corporatebody: facet_corporatebody
+    database: facet_database
+    tag: facet_tag
+    litlist: facet_litlist
+    location: facet_location
+    availability: facet_availability
+    topic: facet_topic
+    provenance: facet_provenance
+    custom0: facet_custom0
+    custom1: facet_custom1
+    custom2: facet_custom2
+    custom3: facet_custom3
+    custom4: facet_custom4
+    custom5: facet_custom5
+    custom6: facet_custom6
+    custom7: facet_custom7
+    custom8: facet_custom8
+    custom9: facet_custom9
+  gesis:
+    mediatype: type
+    person: 'person.keyword'
+    year: 'date.keyword'
+    subject: 'topic.keyword'
+    provenance: 'data_source.keyword'
+ 
 # Einstellungen fuer Xapian Suchindex
 
 xapian_index_base_path: /opt/openbib/ft/xapian/index
@@ -2499,6 +2754,9 @@ xapian_search:
   'fplace':
      'prefix': 'E9'
      'type': 'default'
+  'fsrc':
+     'prefix': 'G1'
+     'type': 'default'
 
   # Einzelne Kategorieinhalte (Volltext)
   't0016':
@@ -2597,6 +2855,15 @@ xapian_search:
   't0428':
      'prefix': 'T0428'
      'type': 'boolean'
+  't0462':
+     'prefix': 'T0462'
+     'type': 'boolean'
+  't0463':
+     'prefix': 'T0463'
+     'type': 'boolean'
+  't0465':
+     'prefix': 'T0465'
+     'type': 'boolean'
   't0508':
      'prefix': 'T0508'
      'type': 'default'
@@ -2605,6 +2872,9 @@ xapian_search:
      'type': 'default'
   't0533':
      'prefix': 'T0533'
+     'type': 'default'
+  't0590':
+     'prefix': 'T0590'
      'type': 'default'
   't0600':
      'prefix': 'T0600'
@@ -2751,6 +3021,21 @@ xapian_search:
   'ft0434':
      'prefix': 'FT0434'
      'type': 'default'
+  'ft0462':
+     'prefix': 'FT0462'
+     'type': 'boolean'
+  'ft0463':
+     'prefix': 'FT0463'
+     'type': 'boolean'
+  'ft0465':
+     'prefix': 'FT0465'
+     'type': 'boolean'
+  'ft0470':
+     'prefix': 'FT0470'
+     'type': 'default'
+  'ft0471':
+     'prefix': 'FT0471'
+     'type': 'default'
   'ft0517':
      'prefix': 'FT0517'
      'type': 'default'
@@ -2759,6 +3044,9 @@ xapian_search:
      'type': 'default'
   'ft0533':
      'prefix': 'FT0533'
+     'type': 'default'
+  'ft0590':
+     'prefix': 'FT0590'
      'type': 'default'
   'ft0619':
      'prefix': 'FT0619'
@@ -2931,6 +3219,17 @@ dbis_yellow_img: /images/openbib/dbis/z2.gif
 dbis_red_img: /images/openbib/dbis/z-ppu.gif
 dbis_yellow_red_img: /images/openbib/dbis/z5.gif
 dbis_de_img: /images/openbib/dbis/z-de.gif
+dbis_ppu_img: /images/openbib/dbis/z-ppu.gif
+ezb_green_img: /images/openbib/ezb/green.gif
+ezb_green_euro_img: /images/openbib/ezb/green_euro.gif
+ezb_green_on_red_img: /images/openbib/ezb/green_on_red.gif
+ezb_yellow_img: /images/openbib/ezb/yellow.gif
+ezb_login_video2brain_img: /images/openbib/ezb/login_video2brain.gif
+ezb_pdf_img: /images/openbib/ezb/pdf.gif
+ezb_red_img: /images/openbib/ezb/red.gif
+ezb_yellow_red_img: /images/openbib/ezb/yellow_red.gif
+ezb_green_yellow_red_img: /images/openbib/ezb/green_yellow_red.gif
+ezb_unknown_img: /images/openbib/ezb/unknown.gif
 delete_img: /images/openbib/cancel.png
 delete_small_img: /images/openbib/cancel-16px.png
 follow_img: /images/openbib/solidrightarrow.png
@@ -3186,7 +3485,7 @@ bibsonomy_api_key: ''
 bibsonomy_api_user: ''
 
 # Journaltocs
-journaltocs_api_user: 'portal@foo.bar'
+journaltocs_api_user: ''
 
 # Zugriffsinformationen fuer die LibraryThing-APIs
 librarything_api_key: ''
@@ -3265,6 +3564,7 @@ representation:
    'csv': 'text/csv'
    'txt': 'text/plain'
    'mods': 'application/mods+xml'
+   'rss': 'application/rss+xml'
 
 # Default Query-Options (Session)
 queryoptions:
@@ -3329,8 +3629,8 @@ queryoptions:
     value: 0
     storage: none
 
-# Generierte BestOf-Daten
-best_of:
+# Generierte Metriken, aktuell nur Methode zur Cloudgenerierung
+metrics:
   3:
     cloud: log
   4:
@@ -3430,6 +3730,30 @@ categorymapping:
     T0594: 1
     T0412: 1
     T0410: 1
+  gentzbriefe:
+    T0100: 1
+    T0101: 1
+    T0200: 1
+    T0334: 1
+    T0336: 1
+    T0410: 1
+    T0412: 1
+    T0413: 1
+    T0433: 1
+    T0424: 1
+    T0451: 1    
+    T0462: 1
+    T0480: 1    
+    T0482: 1    
+    T0490: 1    
+    T0491: 1    
+    T0492: 1    
+    T0523: 1
+    T0525: 1
+    T0590: 1
+    T0594: 1
+    T0800: 1
+    T1664: 1
   inst404abklatsch:
     T0200: 1
     T0331: 1
@@ -3447,6 +3771,7 @@ categorymapping:
     T0509: 1
     T0525: 1
   jesuiten:
+    T0412: 1
     T0470: 1
     T0471: 1
     T0472: 1
@@ -3612,6 +3937,8 @@ auto_roles:
       - 'student'
     '^B\d\d\d\d\d\d\d\d\#.$':
       - 'uzk'
+    '^C\d\d\d\d\d\d\d\d\#.$':
+      - 'stadt'
     '^.+?\@smail.uni-koeln.de$':
       - 'student'
 

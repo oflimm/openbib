@@ -12,29 +12,6 @@
 #######################################################################
 -%]
 
-<!--
-<script>
-$(function () {
-    var image_div = $('#ob-startpage .landing-page-img');
-    var backgrounds = [
-      'url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/uni-hauptgebaeude-blur.jpg)', 
-      'url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/uni-hauptgebaeude-oil.jpg)', 
-      'url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/kugproto_startpages-oil.jpg)'];
-    var current = 0;
-
-    function nextBackground() {
-        image_div.css(
-            'background-image',
-        backgrounds[current = ++current % backgrounds.length]);
-
-        setTimeout(nextBackground, 5000);
-    }
-    setTimeout(nextBackground, 500);
-    image_div.css('background-image', backgrounds[0]);
-});
-</script>
--->
-
 <style>
 @media all
 {
@@ -115,19 +92,20 @@ $(function () {
 }
 
 .image-1 {
-  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/Treppenhaus02_V2.jpg);
+  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/unikatalog/Magazinansicht01_V2.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   }
 
 .image-2 {
-  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/Magazinansicht01_V2.jpg);
+  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/unikatalog/AnsichtUniversitaetsstrasseV2b.png);
   background-repeat: no-repeat;
   background-size: cover;
   }
 
 .image-3 {
-  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/AnsichtUniversitaetsstrasseV2b.png);
+  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/unikatalog/Magnus_Froschperspektive_30.jpg);
+  background-position: 10% 10%;
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -137,18 +115,16 @@ $(function () {
 @media only screen and (max-width: 800px) {
 
 .image-1 {
-  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/Treppenhaus02_V2_500px.jpg);
+  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/unikatalog/Magazinansicht01_V2_500px.jpg);
 
   }
 
 .image-2 {
-  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/Magazinansicht01_V2_500px.jpg);
-
+  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/unikatalog/AnsichtUniversitaetsstrasseV2_500px.jpg);
   }
 
 .image-3 {
-  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/AnsichtUniversitaetsstrasseV2_500px.jpg);
-
+  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/unikatalog/Magnus_Froschperspektive_30_500px.jpg);
 }
 
 

@@ -298,6 +298,10 @@ Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_auslei
       issn   = normdata.${"T0585"}.first.content ;
     END;
 
+    IF normdata.${"T0540"} ;
+      isbn   = normdata.${"T0540"}.first.content ;
+    END;
+
     IF normdata.${"T0089"} ;
        volume = normdata.${"T0089"}.first.content ;
     END;

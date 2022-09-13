@@ -275,9 +275,19 @@ Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_auslei
     isbn    = "";
     doi     = "";
     person  = "";
-
+    aufirst = "";    
+    aulast  = "";    
+    pages   = "";
+    spage   = "";
+    openurltype = "article";
+    
     IF normdata.${"T0100"} ;
       person = normdata.${"T0100"}.first.content ;
+      personparts = person.split(', ');
+      aulast = personparts.first;
+      IF personparts ;
+        aufirst = personparts.pop;
+      END;
     END;
 
     IF normdata.${"T0331"} ;
@@ -297,7 +307,7 @@ Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_auslei
     END;
 
     IF normdata.${"T0425"} ;
-       year = normdata.${"T0451"}.first.content ;
+       year = normdata.${"T0425"}.first.content ;
     END;
 
     IF normdata.${"T0596"} ;
@@ -305,12 +315,23 @@ Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_auslei
         IF item.subfield == 'h';
 	   issue = item.content ;
 	END;
+        IF item.subfield == 's';
+   	   IF item.content.match('-');
+	      pages = item.content ;
+	      pages = pages.replace('S. ','');
+              spage = pages.split('-').first;
+	   ELSE ;
+	      spage = item.content ;
+	      spage = spage.replace('S. ','');	      
+	   END ;
+	END;
       END;
     END;
 
 -%]
 	    <div class="pe-1">	    
-              <a class="btn btn-primary pe-2" href="[% path_prefix %]/availability/search.html?issn=[% issn %];jrnl=[% journal %];vol=[% volume %];issue=[% issue %];tit=[% title %];per=[% person %]" target="_blank" title="[% msg.maketext("Verfügbarkeit ermitteln") %]"><i class="fas fa-search"></i> <span class="d-none d-sm-inline">[% msg.maketext("Verfügbarkeit") %]</span></a>
+<!--              <a class="btn btn-primary pe-2" href="[% path_prefix %]/availability/search.html?issn=[% issn %];jrnl=[% journal %];vol=[% volume %];issue=[% issue %];tit=[% title %];per=[% person %]" target="_blank" title="[% msg.maketext("Verfügbarkeit ermitteln") %]"><i class="fas fa-search"></i> <span class="d-none d-sm-inline">[% msg.maketext("Verfügbarkeit") %]</span></a> -->
+              <a class="btn btn-primary pe-2" href="https://usb-koeln.digibib.net/openurl?genre=[% openurltype %]&isbn=[% isbn %]&issn=[% issn %]&title=[% journal %]&volume=[% volume %]&issue=[% issue %]&date=[% year %]&atitle=[% title %]&aufirst=[% aufirst %]&aulast=[% aulast %]&spage=[% spage %]&pages=[% pages %]&sid=EBSCO:Academic%20Search%20Ultimate&pid=%3Clocation%3E038%3C%2Flocation%3E" target="_blank" title="[% msg.maketext("Verfügbarkeit ermitteln") %]"><i class="fas fa-search"></i> <span class="d-none d-sm-inline">[% msg.maketext("Verfügbarkeit") %]</span></a>
 	    </div>
 [% END %]
 	     

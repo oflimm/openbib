@@ -132,8 +132,8 @@
      END ;
    END; # End ISSN
    
-   IF normdata.defined("T4120") && normdata.${"T4120"}.first.subfield == " " && best_color ;
-     normdata.${"T4120"}.first.subfield = best_color;
+   IF normdata.defined('T4120') && normdata.${'T4120'}.first.subfield == " " && best_color ;
+     normdata.${'T4120'}.first.subfield = best_color;
    END;
   
 

@@ -132,11 +132,7 @@
      END ;
    END; # End ISSN
    
-   IF normdata.defined('T4120') && normdata.${'T4120'}.first.subfield == " " && best_color ;
-     normdata.${'T4120'}.first.subfield = best_color;
-   END;
   
-
   # E-Book/Inhaltsverzeichnis vorhanden
   fulltext  = normdata.${'T4120'}.first.content ;
   toc       = normdata.${'T4110'}.first.content ;

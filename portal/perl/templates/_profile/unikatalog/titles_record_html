@@ -103,11 +103,9 @@
 	     journal_color = jop_source.access ;
 	  END ;
 
-          NEXT IF best_color == "g" ;
-          NEXT IF best_color == "y" ;
 	  IF journal_color    == "green" ;
 	     best_color = "g";
-          ELSIF journal_color == "yellow" ;
+          ELSIF journal_color == "yellow" && best_color != "g";
 	     best_color = "y";
           END ;
 	# Print: Collect all print locations for output

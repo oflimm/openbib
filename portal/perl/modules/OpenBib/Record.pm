@@ -45,11 +45,13 @@ use Storable;
 use URI::Escape;
 use YAML ();
 
+use OpenBib::API::HTTP::JOP;
 use OpenBib::Config;
 use OpenBib::Config::File;
 use OpenBib::Schema::Catalog;
 use OpenBib::Schema::Enrichment;
 use OpenBib::Schema::Enrichment::Singleton;
+use OpenBib::SearchQuery;
 
 sub get_schema {
     my $self = shift;
@@ -566,6 +568,71 @@ sub enrich_unpaywall {
 	}
     }
 
+    return $enrich_data_ref;
+}
+
+sub enrich_jop {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $issn         = exists $arg_ref->{issn}
+        ? $arg_ref->{issn}             : '';
+
+    my $volume       = exists $arg_ref->{volume}
+        ? $arg_ref->{volume}           : '';
+
+    my $issue        = exists $arg_ref->{issue}
+        ? $arg_ref->{issue}            : '';
+
+    my $pages        = exists $arg_ref->{pages}
+        ? $arg_ref->{pages}            : '';
+
+    my $year         = exists $arg_ref->{year}
+        ? $arg_ref->{year}             : '';
+
+    my $title        = exists $arg_ref->{title}
+        ? $arg_ref->{title}            : '';
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = $self->get_config;
+
+    my $enrich_data_ref = {};
+
+    if ($issn){
+	my $jopquery = new OpenBib::SearchQuery;
+	
+	$jopquery->set_searchfield('issn',$issn) if ($issn);
+	$jopquery->set_searchfield('volume',$volume) if ($volume);
+	$jopquery->set_searchfield('issue',$issue) if ($issue);
+	$jopquery->set_searchfield('pages',$pages) if ($pages);
+	$jopquery->set_searchfield('date',$year) if ($year);
+	
+	if ($title){
+	    $jopquery->set_searchfield('genre','article');
+	}
+	elsif ($volume){
+	    $jopquery->set_searchfield('genre','article');
+	}
+	else {
+	    $jopquery->set_searchfield('genre','journal');
+	}
+	
+	# bibid set via portal.yml
+	my $api = OpenBib::API::HTTP::JOP->new({ searchquery => $jopquery });
+	
+	my $search = $api->search();
+	
+	eval {
+	    $enrich_data_ref = $search->get_search_resultlist;
+	};
+
+	if ($@){
+	    $logger->error($@);
+	}
+    }
+    
     return $enrich_data_ref;
 }
 

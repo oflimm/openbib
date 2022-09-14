@@ -153,11 +153,11 @@
     fulltext_icon = config.get('ezb_unknown_img');
     fulltext_desc  = "Volltext";
 
-    IF normdata.${'T4120'}.first.subfield == "g";
+    IF normdata.${'T4120'}.first.subfield == "g" || best_color == "g";
       fulltext_availability = "lawngreen";
       fulltext_icon = config.get('ezb_green_img');
       fulltext_desc = msg.maketext("Volltext mit freiem Zugang");;
-    ELSIF normdata.${'T4120'}.first.subfield == "y";
+    ELSIF normdata.${'T4120'}.first.subfield == "y" || best_color == "y";
       fulltext_availability = "yellow";
       fulltext_icon = config.get('ezb_yellow_img');
       fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
@@ -198,8 +198,6 @@ $(document).ready(function(){
 [% IF NOT hide_detail && NOT hide_hit %]
 
 <div class="content"><!-- Begin Fulltitle -->
-
-JOP Best Color [% best_color %]
 
 <div class="ob-category_header">
 [%-  IF is_freemedia -%]

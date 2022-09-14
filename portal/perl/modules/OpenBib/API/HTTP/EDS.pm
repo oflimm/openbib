@@ -382,7 +382,18 @@ sub get_record {
     
     # Volltextlinks
     {
-	
+
+
+	# Zugriffstatus
+	#
+	# '' : Keine Ampel
+	# ' ': Unbestimmt g oder y oder r
+	# 'f': Unbestimmt, aber Volltext Zugriff g oder y (fulltext)
+	# 'g': Freier Zugriff (green)
+	# 'y': Lizensierter Zugriff (yellow)
+	# 'l': Unbestimmt Eingeschraenkter Zugriff y oder r (limited)
+	# 'r': Kein Zugriff (red)
+		
 	my $url = "";
 	
 	eval { 	
@@ -391,7 +402,7 @@ sub get_record {
 	
 	if ($url) { # ID=bth:94617232
 	    push @{$fields_ref->{'T4120'}}, {
-		subfield => 'b', # Eingeschraenkter Zugang / yellow
+		subfield => 'y', # Eingeschraenkter Zugang / yellow
 		mult     => $link_mult, 
 		content  => $url};
 	    
@@ -417,7 +428,7 @@ sub get_record {
 	    
 	    if ($available == 1 && $json_result_ref->{'Record'}{PLink}) {
 		push @{$fields_ref->{'T4120'}}, {
-		    subfield => 'b', # Eingeschraenkter Zugang / yellow
+		    subfield => 'y', # Eingeschraenkter Zugang / yellow
 		    mult     => $link_mult, 
 		    content  => $json_result_ref->{'Record'}{PLink}};
 		
@@ -455,21 +466,30 @@ sub get_record {
 		$url =~ s!(.*)\#\?$!$1!; # OAIster: "#?" am Ende entfernen, z.B. ID=edsoai:edsoai.859893876 ; ID=edsoai:edsoai.690666320
 		$url =~ s!(http://etheses.bham.ac.uk/[^/]+/).*ThumbnailVersion.*\.pdf!$1!; # Sonderanpassung fuer etheses.bham.ac.uk, z.B. ID=edsoai:edsoai.690666320
 
+		my $color    = "g";
+                my $linktext = "Volltext";
+		if ($json_result_ref->{Header}{DbId} eq "edsoai") {
+		    $color = " " ; # urspruenglich green_on_red / Volltext eventuell nicht zugänglich (s. Hinweise)
+		    $linktext = "Volltext eventuell nicht zugänglich (s. Hinweise)";
+		}
+		
 		push @{$fields_ref->{'T4120'}}, {
-		    subfield => 'a', # Freier Zugang / gruen 
+		    subfield => $color,
 		    mult     => $link_mult, 
-		    content  => $url};
+		    content  => $url
+		};
 		
 		push @{$fields_ref->{'T0662'}}, {
 		    subfield => '', 
-		    mult => $link_mult, 
-		    content => $url};
+		    mult     => $link_mult, 
+		    content  => $url
+		};
 		
 		push @{$fields_ref->{'T0663'}}, {
 		    subfield => '', 
-		    mult => $link_mult, 
-		    content => "Volltext"};
-		# Todo: Zugriffstatus 'green' hinzufuegen
+		    mult     => $link_mult, 
+		    content  => $linktext
+		};
 		$link_mult++;
 	    }
 	}
@@ -481,22 +501,25 @@ sub get_record {
 	    my $url = "http://gateway.isiknowledge.com/gateway/Gateway.cgi?&GWVersion=2&SrcAuth=EBSCO&SrcApp=EDS&DestLinkType=CitingArticles&KeyUT=" . $json_result_ref->{Header}{An} . "&DestApp=WOS";
 
 	    push @{$fields_ref->{'T4120'}}, {
-		subfield => 'b', # Eingeschraenkter Zugang / yellow
+		subfield => 'y', # Eingeschraenkter Zugang / yellow
 		mult     => $link_mult, 
-		content  => $url};
+		content  => $url
+	    };
 	    
 	    push @{$fields_ref->{'T0662'}}, {
 		subfield => '', 
 		mult     => $link_mult, 
-		content  => $url};
+		content  => $url
+	    };
+	    
 	    push @{$fields_ref->{'T0663'}}, {
 		subfield => '', 
 		mult => $link_mult, 
-		content => "Citing Articles (via Web of Science)"};
+		content => "Citing Articles (via Web of Science)"
+	    };
 	    # Todo: Zugriffstatus 'yellow' hinzufuegen
 	    $link_mult++;
 	}
-	
     }
 
     # BibEntity
@@ -819,7 +842,7 @@ sub get_record {
 		    if ($json_result_ref->{Header}{DbId} =~ /^(edsfis|edswao)$/) { # z.B. ID=edswao:edswao.035502584
 
 			push @{$fields_ref->{'T4120'}}, {
-			    subfield => 'a', # Freier Zugang / green
+			    subfield => 'g', # Freier Zugang / green
 			    mult     => $link_mult, 
 			    content  => $url};
 			
@@ -836,7 +859,7 @@ sub get_record {
 			# SSOAR, BASE, OLC, ...: Volltext-Link auslesen, z.B. ID=edsbas:edsbas.ftunivdortmund.oai.eldorado.tu.dortmund.de.2003.30139, ID=edsgoc:edsgoc.197587160X
 			if ($url && $url !~ /gesis\.org\/sowiport/) { # Sowiport-Links funktionieren nicht mehr, z.B. ID=edsgsl:edsgsl.793796
 			    push @{$fields_ref->{'T4120'}}, {
-				subfield => 'b', # Eingeschraenkter Zugang / yellow
+				subfield => 'y', # Eingeschraenkter Zugang / yellow
 				mult     => $link_mult, 
 				content  => $url};
 			    
@@ -931,7 +954,7 @@ sub get_record {
 				$thisfield_ref->{availability} = $availability;
 			    }
 
-			    my $availability_map_ref = {green => 'a', yellow => 'b', unknown => ''};
+			    my $availability_map_ref = {green => 'g', yellow => 'y', unknown => ' '};
 			    push @{$fields_ref->{'T4120'}}, {
 				subfield => $availability_map_ref->{$availability}, # Dynamisch
 				mult     => $link_mult, 
@@ -1365,7 +1388,7 @@ sub process_matches {
 	    my $availability = '';
 	    if (defined $match->{FullText}{Text} && defined $match->{FullText}{Text}{Availability}){
 		if ($match->{FullText}{Text}{Availability}){
-		    $availability = 'b';
+		    $availability = 'y';
 		}
 		
 	    }

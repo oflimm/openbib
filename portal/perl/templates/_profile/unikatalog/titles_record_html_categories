@@ -22,6 +22,7 @@
    END;
 
    catalog_has_authorities = config.get('source_systems').${config.get_system_of_db(record.database)}.has_authorities;
+   
 -%]
 
 [% IF format == "full" %]
@@ -199,7 +200,7 @@ IF normdata.${'T4662'}.defined ;
    normdata.${'T2662'}.delete;
    normdata.${'T2663'} = [];
    normdata.${'T2663'}.delete;   
-ELSE;
+ELSIF record.database != 'eds'; # EDS hat kein Preprocessing von Links
    normdata.${'T0662'} = [];
    normdata.${'T0663'} = [];
    normdata.${'T2662'} = [];
@@ -791,12 +792,21 @@ FOREACH field IN normdata;
  END;
 END;
 
+# Lokale JOP Druckausgaben hinzufuegen
+IF jop_print_locations ;
+    content_map.${'Druckausgabe'} = [];
+    FOREACH jop_print_location IN jop_print_locations;
+      content_map.${'Druckausgabe'}.push(jop_print_location);
+    END ;
+END;
+
 display_types = {
    'T0501' => 'list',
    'T0662' => 'list',
    'T0710' => 'list',
    'T0700' => 'list',
    'Hinweise' => 'list',
+   'Druckausgabe' => 'list',   
 };
 
 FOREACH category IN categories;

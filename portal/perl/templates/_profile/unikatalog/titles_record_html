@@ -43,12 +43,15 @@
     END;
   END;
 
-  bibkey = record.to_bibkey ;
-  isbn   = normdata.${"T0540"}.first.content.replace('-','') ;
-  IF NOT isbn ;
+   bibkey = record.to_bibkey ;
+   isbn   = normdata.${"T0540"}.first.content.replace('-','') ;
+   IF NOT isbn ;
       isbn   = normdata.${"T0553"}.first.content.replace('-','') ;
-  END ;
+   END ;
 
+
+   # Enrich unpaywall
+   
    doi = "";
 
    IF normdata.defined("T0552") ;
@@ -71,6 +74,70 @@
        }] ;
      END;
    END;
+
+   # Enrich jop
+   issn = "";
+
+   IF normdata.defined("T0543");
+     issn = normdata.${"T0543"}.first.content ;
+   ELSIF normdata.defined("T0585");
+     issn = normdata.${"T0585"}.first.content ;
+   END ;
+
+   best_color = "";
+
+   jop_print_locations = [];
+   
+   IF issn && record.database == "eds";
+
+     jop = record.enrich_jop({ issn = issn });
+
+     joplist = jop.to_serialized_reference ;
+
+     FOREACH joprecord IN joplist ;
+        jop_source = joprecord.fields.jop_source.first.content;
+
+        # Electronic: Find best access level to specify fulltext link in 4120
+	IF jop_source.type == "online";
+          IF jop_source.access ;
+	     journal_color = jop_source.access ;
+	  END ;
+
+          NEXT IF best_color == "g" ;
+          NEXT IF best_color == "y" ;
+	  IF journal_color    == "green" ;
+	     best_color = "g";
+          ELSIF journal_color == "yellow" ;
+	     best_color = "y";
+          END ;
+	# Print: Collect all print locations for output
+        ELSIF jop_source.type == 'print' ;
+	   print_locations = [];
+	   IF jop_source.location ;
+	     print_locations.push(jop_source.location);
+	   END ;
+	   IF jop_source.location_mark ;
+	     this_signatur = jop_source.location_mark ;
+	     this_signatur = "Signatur: ${this_signatur}";
+	     print_locations.push(this_signatur);
+	   END ;
+	   IF jop_source.period ;
+	     this_bestand = jop_source.period ;
+	     this_bestand = "Bestand: ${this_bestand}";
+	     print_locations.push(this_bestand);
+	   END ;
+
+           jop_print_location = print_locations.join(', ');
+
+	   jop_print_locations.push(jop_print_location);
+	END ;
+     END ;
+   END; # End ISSN
+   
+   IF normdata.${"T4120"}.first.subfield == " " && best_color ;
+     normdata.${"T4120"}.first.subfield = best_color;
+   END;
+  
 
   # E-Book/Inhaltsverzeichnis vorhanden
   fulltext  = normdata.${'T4120'}.first.content ;
@@ -109,16 +176,6 @@
 
 
 -%]
-
-<!--               <script type="text/javascript">
-                        $(function(){
-
-                                // Tabs
-                                $('#ob-additional_title_info').tabs();
-                                        
-                        });
-                </script>
--->
 
 <script>
 $(document).ready(function(){

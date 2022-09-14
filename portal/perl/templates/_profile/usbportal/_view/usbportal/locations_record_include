@@ -5169,7 +5169,8 @@ var semesterZeit = [
 PROCESS common/subtemplate name="visible_categories_location";
 
 no_litlists = {
-   'DE-38-201' = 1
+   'DE-38-ARTES' = 1
+   'DE-38-201' = 1   
 };
 
 thisdbname = config.get_databases_of_isil(locationinfo.identifier).first;
@@ -5262,8 +5263,11 @@ ELSIF sigel == '141';
    locationinfo.fields.${"Zeitschriften"} = [ { content = "Zeitschriftenliste dieser Bibliothek als <a href=\"http://unikatalog.ub.uni-koeln.de/zeitschriftenlisten/zeitschriften-587-all.pdf\">e-Book</a>" } ];
 END ;
 
-IF sigel != 'ARTES' ;
+IF NOT no_litlists.defined(locationinfo.identifier) ;
   locationinfo.fields.${"Die 5 zuletzt angelegten Literaturlisten"} = [ { content = litlist_content.join("\n") } ];
+END ;
+
+IF sigel != 'ARTES' ;  
   locationinfo.fields.${"Die 5 zuletzt vergebenen Tags"} = [ { content = tags_content.join("\n") } ];
 END;
 

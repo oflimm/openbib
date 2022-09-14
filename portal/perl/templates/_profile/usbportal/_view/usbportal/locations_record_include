@@ -5168,6 +5168,10 @@ var semesterZeit = [
 
 PROCESS common/subtemplate name="visible_categories_location";
 
+no_litlists = {
+   'DE-38-201' = 1
+};
+
 thisdbname = config.get_databases_of_isil(locationinfo.identifier).first;
 
 sigel = locationinfo.identifier.replace('DE-38-','');
@@ -5182,7 +5186,7 @@ IF sigel == '123';
   recent_litlists = recent_litlists1.merge(recent_litlists2);
 ELSIF sigel == '401';
   recent_litlists = user.get_recent_litlists({ userid = 7703 });
-ELSE ;
+ELSIF NOT no_litlists.defined(locationinfo.identifier) ;
   recent_litlists = user.get_recent_litlists({database = thisdbname, view = view});
 END;
 

@@ -27,6 +27,10 @@
 [% END # show_count %]
 
 [% IF query.param('show_graph') == 1 %]
+
+<script src="https://search.ub.uni-koeln.de/js/Chart.bundle.min.js"></script>
+
+
 <h4>[% msg.maketext("Zahl der Besucher heute") %]</h4>
 
 [%

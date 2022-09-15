@@ -22,9 +22,7 @@
 [%# USE dumper;dumper.dump(current_occupancy)%]
 
 [% IF query.param('show_count') == 1 %]
-<h4>[% msg.maketext("Aktuelle Besucherzahl") %]</h4></div>
-
-<div class="display-1"><span style="color:[% current_color %];font-weight:bold;">[% current_occupancy.num_occupancy %]</span> / [% max_occupancy %]</div>
+<h4>[% msg.maketext("Aktuelle Besucherzahl") %]: <span style="color:[% current_color %];font-weight:bold;">[% current_occupancy.num_occupancy %]</span> / [% max_occupancy %]</h4>
 
 [% END # show_count %]
 

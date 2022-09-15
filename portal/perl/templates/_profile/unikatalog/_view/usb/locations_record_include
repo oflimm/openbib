@@ -22,7 +22,7 @@
 [%# USE dumper;dumper.dump(current_occupancy)%]
 
 [% IF query.param('show_count') == 1 %]
-[% msg.maketext("Aktuelle Besucherzahl") %]: <span style="font-weight:bold;">[% current_occupancy.num_occupancy %]</span> / [% max_occupancy %]
+[% msg.maketext("Aktuelle Zahl der Besucher*innen") %]: <span style="font-weight:bold;">[% current_occupancy.num_occupancy %]</span> / [% max_occupancy %]
 
 [% END # show_count %]
 
@@ -31,7 +31,7 @@
 <script src="https://search.ub.uni-koeln.de/js/Chart.bundle.min.js"></script>
 
 
-<h4>[% msg.maketext("Zahl der Besucher heute") %]</h4>
+<h4>[% msg.maketext("Zahl der Besucher*innen heute") %]</h4>
 
 [%
       occupancycount = {};

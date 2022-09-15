@@ -211,6 +211,8 @@ ELSIF record.database != 'eds'; # EDS hat kein Preprocessing von Links
    normdata.${'T2663'}.delete;
 END;
 
+# Preprocessing lizensiert oder OA
+
 # Lizensierter Volltext oder OA? (Ausgabe Zugriffshinweis)
 is_licensed = 0;
 is_oa = 0;
@@ -224,6 +226,8 @@ FOREACH item IN normdata.${'T4120'} ;
       LAST;
    END;
 END;
+
+# Preprocessing der lizensierten und OA Pakete
 
 # Paketnamen entsprechend: https://intern.ub.uni-koeln.de/usbwiki/index.php/Anreicherung_von_IMX-Importdateien
 
@@ -297,6 +301,7 @@ END;
 
 content_map = {};
 
+# Preprocessing der RSWK Schlagworte
 
 FOREACH field IN [ "T0902", "T0907", "T0912", "T0917", "T0922", "T0927", "T0932", "T0937", "T0942", "T0947" ];
 
@@ -338,6 +343,8 @@ FOREACH field IN [ "T0902", "T0907", "T0912", "T0917", "T0922", "T0927", "T0932"
 
 
 END;
+
+# Preprocessing spezielle Kategorien
 
 have_doi = {};
 
@@ -471,6 +478,12 @@ FOREACH field IN normdata;
 	 END;
          content_map.${'T0433'}.push(content);
 
+    CASE "T0501" ;
+         IF NOT content_map.${'Hinweise'} ;
+	    content_map.${'Hinweise'} = [];
+	 END;
+         content_map.${'Hinweise'}.push(content);
+	 
     CASE "T0552" ;
          IF content.match('/'); # Versuch Nicht-DOIs in 0552 auszufiltern
 	   content = "<a href=\"https://doi.org/${content}\" target=\"_blank\" class=\"exturl\">${content}</a>";

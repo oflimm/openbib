@@ -255,9 +255,18 @@ Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_auslei
 </div>
 [% END %]
 
-<h5 class="pb-2"><i class="fa fa-arrow-down"></i> <a href="#title_supplemental_information" data-bs-toggle="collapse" data-bs-target="#title_supplemental_information" aria-expanded="false" aria-controls="title_supplemental_information" >Weitere Informationen</a></h5>
+ <div id="ob-supplemental_information" class="accordion">
+  <div class="card">
+    <div class="card-header" id="headingSupplementalInformation">
+      <h5 class="mb-0">
+        <a class="card-link collapsed" href="#collapseSupplementalInformation" data-bs-toggle="collapse" data-bs-target="#collapseSupplementalInformation" aria-expanded="false" aria-controls="collapseSupplementalInformation">
+          [% msg.maketext("Weitere Informationen") %]
+        </a>
+      </h5>
+    </div>
+    <div id="collapseSupplementalInformation" class="collapse" aria-labelledby="headingSupplementalInformation" data-parent="#ob-supplemental_information">
+      <div class="card-body">
 
-<div id="title_supplemental_information" class="collapse">
 [%-
      IF record_type == 'mono';
        PROCESS common/subtemplate name="visible_categories_title_mono_supplement";
@@ -271,8 +280,13 @@ Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_auslei
 -%]
 
 [%   PROCESS common/subtemplate name="titles_record_html_categories" %]
-</div>
 
+
+     </div>
+   </div>
+  </div>
+ </div> <!-- End ob-supplemental_information -->
+ 
 [% ELSE %]
 <h2>[% msg.maketext("Ein Titel mit dieser ID ist nicht (mehr) in diesem Katalog vorhanden.") %]</h2>
 [% END %]
@@ -282,7 +296,7 @@ Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_auslei
 [% END %]
 
 
-<div class="d-flex ob-fulltitle_actions">
+<div class="d-flex ob-fulltitle_actions mt-4">
 
    <div class="pe-1">
          <a  class="btn btn-primary" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" hx-headers='{"Content-Type": "application/xml+html"}' href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><i class="far fa-bookmark"></i> <span>[% msg.maketext("Merken") %]</span></a>

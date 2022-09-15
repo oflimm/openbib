@@ -75,22 +75,98 @@
      END;
    END;
 
-   # Enrich jop
-   issn = "";
+    # Query Parameter q_ fuer JOP und OpenURL bestimmen
 
-   IF normdata.defined("T0543");
-     issn = normdata.${"T0543"}.first.content ;
-   ELSIF normdata.defined("T0585");
-     issn = normdata.${"T0585"}.first.content ;
-   END ;
+    q_journal = "";
+    q_title   = "";
+    q_volume  = "";
+    q_issue   = "";
+    q_year    = "";
+    q_issn    = "";
+    q_isbn    = "";
+    q_doi     = "";
+    q_person  = "";
+    q_aufirst = "";    
+    q_aulast  = "";    
+    q_pages   = "";
+    q_spage   = "";
+    q_openurltype = "article";
+    
+    IF normdata.${"T0100"} ;
+      q_person = normdata.${"T0100"}.first.content ;
+      personparts = q_person.split(', ');
+      q_aulast = personparts.first;
+      IF personparts ;
+        q_aufirst = personparts.pop;
+      END;
+    END;
+
+    IF normdata.${"T0331"} ;
+      q_title = normdata.${"T0331"}.first.content ;
+    END;
+
+    IF normdata.${"T0585"} ;
+      q_issn   = normdata.${"T0585"}.first.content ;
+    ELSIF normdata.defined("T0543");
+      q_issn   = normdata.${"T0543"}.first.content ;
+    END;
+
+    IF normdata.${"T0540"} ;
+      q_isbn   = normdata.${"T0540"}.first.content ;
+    END;
+
+    IF normdata.${"T0089"} ;
+       q_volume = normdata.${"T0089"}.first.content ;
+    END;
+
+    IF normdata.${"T0376"} ;
+       q_journal = normdata.${"T0376"}.first.content ;
+    END;
+
+    IF normdata.${"T0425"} ;
+       q_year = normdata.${"T0425"}.first.content ;
+    END;
+
+    IF normdata.${"T0596"} ;
+      FOREACH item IN normdata.${"T0596"} ;
+        IF item.subfield == 'h';
+	   q_issue = item.content ;
+	END;
+        IF item.subfield == 's';
+   	   IF item.content.match('-');
+	      q_pages = item.content ;
+	      q_pages = q_pages.replace('S. ','');
+              q_spage = q_pages.split('-').first;
+	   ELSE ;
+	      q_spage = item.content ;
+	      q_spage = spage.replace('S. ','');	      
+	   END ;
+	END;
+      END;
+    END;
+
+   # Enrich jop
 
    best_color = "";
 
    jop_print_locations = [];
    
-   IF issn && record.database == "eds";
+   IF q_issn && record.database == "eds";
+     jop_args = {
+        issn   = q_issn
+	volume = q_volume
+	issue  = q_issue
+	pages  = q_pages
+	year   = q_year
+     };
 
-     jop = record.enrich_jop({ issn = issn });
+     IF q_journal ;
+        jop_args.genre = "article";
+     ELSE; 
+        jop_args.genre = "journal";
+     END;
+
+     jop = record.enrich_jop(jop_args);
 
      joplist = jop.to_serialized_reference ;
 
@@ -330,77 +406,9 @@ Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_auslei
  </div>
              </div>
 [% IF record.database == 'eds' # Verfuegbarkeit ermitteln %]
-[%-
-    journal = "";
-    title   = "";
-    volume  = "";
-    issue   = "";
-    year    = "";
-    issn    = "";
-    isbn    = "";
-    doi     = "";
-    person  = "";
-    aufirst = "";    
-    aulast  = "";    
-    pages   = "";
-    spage   = "";
-    openurltype = "article";
-    
-    IF normdata.${"T0100"} ;
-      person = normdata.${"T0100"}.first.content ;
-      personparts = person.split(', ');
-      aulast = personparts.first;
-      IF personparts ;
-        aufirst = personparts.pop;
-      END;
-    END;
-
-    IF normdata.${"T0331"} ;
-      title = normdata.${"T0331"}.first.content ;
-    END;
-
-    IF normdata.${"T0585"} ;
-      issn   = normdata.${"T0585"}.first.content ;
-    END;
-
-    IF normdata.${"T0540"} ;
-      isbn   = normdata.${"T0540"}.first.content ;
-    END;
-
-    IF normdata.${"T0089"} ;
-       volume = normdata.${"T0089"}.first.content ;
-    END;
-
-    IF normdata.${"T0376"} ;
-       journal = normdata.${"T0376"}.first.content ;
-    END;
-
-    IF normdata.${"T0425"} ;
-       year = normdata.${"T0425"}.first.content ;
-    END;
-
-    IF normdata.${"T0596"} ;
-      FOREACH item IN normdata.${"T0596"} ;
-        IF item.subfield == 'h';
-	   issue = item.content ;
-	END;
-        IF item.subfield == 's';
-   	   IF item.content.match('-');
-	      pages = item.content ;
-	      pages = pages.replace('S. ','');
-              spage = pages.split('-').first;
-	   ELSE ;
-	      spage = item.content ;
-	      spage = spage.replace('S. ','');	      
-	   END ;
-	END;
-      END;
-    END;
-
--%]
 	    <div class="pe-1">	    
 <!--              <a class="btn btn-primary pe-2" href="[% path_prefix %]/availability/search.html?issn=[% issn %];jrnl=[% journal %];vol=[% volume %];issue=[% issue %];tit=[% title %];per=[% person %]" target="_blank" title="[% msg.maketext("Verfügbarkeit ermitteln") %]"><i class="fas fa-search"></i> <span class="d-none d-sm-inline">[% msg.maketext("Verfügbarkeit") %]</span></a> -->
-              <a class="btn btn-primary pe-2" href="https://usb-koeln.digibib.net/openurl?genre=[% openurltype %]&isbn=[% isbn %]&issn=[% issn %]&title=[% journal %]&volume=[% volume %]&issue=[% issue %]&date=[% year %]&atitle=[% title %]&aufirst=[% aufirst %]&aulast=[% aulast %]&spage=[% spage %]&pages=[% pages %]&sid=EBSCO:Academic%20Search%20Ultimate&pid=%3Clocation%3E038%3C%2Flocation%3E" target="_blank" title="[% msg.maketext("Verfügbarkeit ermitteln") %]"><i class="fas fa-search"></i> <span class="d-none d-sm-inline">[% msg.maketext("Verfügbarkeit") %]</span></a>
+              <a class="btn btn-primary pe-2" href="https://usb-koeln.digibib.net/openurl?genre=[% q_openurltype %]&isbn=[% q_isbn %]&issn=[% q_issn %]&title=[% q_journal %]&volume=[% q_volume %]&issue=[% q_issue %]&date=[% q_year %]&atitle=[% q_title %]&aufirst=[% q_aufirst %]&aulast=[% q_aulast %]&spage=[% q_spage %]&pages=[% q_pages %]&sid=EBSCO:Academic%20Search%20Ultimate&pid=%3Clocation%3E038%3C%2Flocation%3E" target="_blank" title="[% msg.maketext("Verfügbarkeit ermitteln") %]"><i class="fas fa-search"></i> <span class="d-none d-sm-inline">[% msg.maketext("Verfügbarkeit") %]</span></a>
 	    </div>
 [% END %]
 	     

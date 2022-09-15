@@ -6,10 +6,13 @@
    max_yellow = 900;
 
    IF current_occupancy.num_occupancy < max_green;
+     image         = "https://search.ub.uni-koeln.de/images/openbib/ezb/green.gif";
      current_color = "green";
    ELSIF current_occupancy.num_occupancy < max_yellow ;
+     image         = "https://search.ub.uni-koeln.de/images/openbib/ezb/yellow.gif";
      current_color = "yellow";
    ELSE ;
+     image         = "https://search.ub.uni-koeln.de/images/openbib/ezb/red.gif";   
      current_color = "red";      
    END;
 
@@ -22,7 +25,7 @@
 [%# USE dumper;dumper.dump(current_occupancy)%]
 
 [% IF query.param('show_count') == 1 %]
-[% msg.maketext("Aktuelle Zahl der Besucher*innen") %]: <span style="font-weight:bold;">[% current_occupancy.num_occupancy %]</span> / [% max_occupancy %]
+[% msg.maketext("Aktuelle Zahl der Besucher*innen") %]: <span style="font-weight:bold;">[% current_occupancy.num_occupancy %]</span> / [% max_occupancy %] <img src="[% image %]" />
 
 [% END # show_count %]
 

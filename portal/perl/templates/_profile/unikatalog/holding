@@ -55,8 +55,10 @@
 isil      = "";
 isil_desc = "";
 sigel     = thisholding.${"X3330"}.content;
-	
-IF sigel.match('^[0-9][0-9][0-9]$');	  
+
+IF sigel.match('^587$');
+  isil = "DE-587";
+ELSIF sigel.match('^[0-9][0-9][0-9]$');	  
   isil = "DE-38-${sigel}";
 ELSIF sigel.match('^Kn 3$');	  
   isil = "DE-Kn3";
@@ -71,44 +73,13 @@ IF  normset.${"T0310"}.first.content ;
    title = normset.${"T0310"}.first.content ;
 END ;
 
-standort = thisholding.${"X0016"}.content;
-
 IF thisholding.${"X3330"}.content.match('^38$');
-  IF thisholding.${"X0014"}.content.match('^FHM ') ;
-    standort = "USB-Freihandmagazin (1. OG)";
-  ELSIF thisholding.${"X0014"}.content.match('^EWA Z') ;
-    standort = "HWA-Magazin, Gronewaldstr. 2<br/>(Kopierausleihe über die LS-Theke möglich)";
+  IF thisholding.${"X0014"}.content.match('^EWA Z') ;
     isil = "DE-38-HWA";
   ELSIF thisholding.${"X0014"}.content.match('^EWA-LS-Theke') ;
-    standort = "Humanwissenschaftliche Abteilung, Lesesaaltheke, Gronewaldstr. 2 (sofort einsehbar)";
     isil = "DE-38-HWA";    
   ELSIF thisholding.${"X0014"}.content.match('^(EWA-LS|EWALS) ') ;
-    standort = "Lesesaal Humanwissenschaft, Gronewaldstr. 2";
     isil = "DE-38-HWA";    
-  ELSIF thisholding.${"X0014"}.content.match('^(HP|HP-LS) ') || thisholding.${"X0014"}.content.match('^HP-LS ') ;
-    standort = "Lesesaal Heilpädagogik, Frangenheimstr. 4";
-  ELSIF thisholding.${"X0014"}.content.match('^USB-Zeitschr.-Stelle ') ;
-    standort = "USB-Lesesaal (1. OG): Hefte des aktuellen Jahrgangs unter der angegebenen P-Nummer (z.B. P1234, sofort einsehbar)";
-  ELSIF thisholding.${"X0014"}.content.match('^USB-Zeitschr.-Lesesaal ') ;
-    standort = "USB-Lesesaal (1. OG): Hefte des aktuellen Jahrgangs unter der angegebenen Fachgruppe (sofort einsehbar)";
-  ELSIF thisholding.${"X0014"}.content.match('^LS ') ;
-    standort = "USB-Lesesaal (1. OG, sofort einsehbar)";
-  ELSIF thisholding.${"X0014"}.content.match('^KS V') ;
-    standort = "USB-Magazin (Ausleihe nur in den Lesesaal), Bitte füllen Sie einen konventionellen Bestellschein aus (erhältlich an der Auskunft und der Lesesaal-Theke im 1. OG)";
-  ELSIF thisholding.${"X0014"}.content.match('^KS ') ;
-    standort = "USB-Katalogsaal (2. OG, sofort einsehbar)";
-  ELSIF thisholding.${"X0014"}.content.match('^EDZ ') ;
-    standort = "USB-Lesesaal (1. OG): Europäisches Dokumentationszentrum (sofort einsehbar)";
-  ELSIF thisholding.${"X0014"}.content.match('^FC ') ;
-    standort = "Fachbibliothek Chemie, Greinstr. 4 (sofort einsehbar)";
-  ELSIF thisholding.${"X0014"}.content.match('^FBV ') ;
-    standort = "Fachbibliothek Versicherungswissenschaft, Kerpener Str. 30 (sofort einsehbar)";
-  ELSIF thisholding.${"X0014"}.content.match('^B ') ;
-    standort = "ausgelagerter Bestand. Lieferzeit ca. 14. Tage (ausleihbar nach Bestellung)";
-  ELSIF thisholding.${"X0014"}.content.match('^ZTG') ;
-    standort = "Zeitungsbestand. USB-Magazin (ausleihbar nach Online-Bestellung)";
-  ELSIF thisholding.${"X0014"}.content.match('^P ') ;
-    standort = "Zeitschriftenlesesaal (1.OG) (sofort einsehbar)";
   END;
 END;
 

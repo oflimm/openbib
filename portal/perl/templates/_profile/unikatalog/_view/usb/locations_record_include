@@ -25,7 +25,7 @@
 [%# USE dumper;dumper.dump(current_occupancy)%]
 
 [% IF query.param('show_count') == 1 %]
-[% msg.maketext("Besucher*innen aktuell") %]: <span style="font-weight:bold;">[% current_occupancy.num_occupancy %]</span> / [% max_occupancy %] <img src="[% image %]" style="padding-left:10px;"/> <span style="float:right; color:white !important;"><a class="besuchsverlauf" href="/besucherzahlen/">[% msg.maketext("Besucher*innen heute") %] &gt; &gt;</a></span>
+[% msg.maketext("Besucher*innen aktuell") %]: <span style="font-weight:bold;">[% current_occupancy.num_occupancy %]</span> / [% max_occupancy %] <img src="[% image %]" style="padding-left:10px;"/> <span style="float:right;"><a class="besuchsverlauf" href="/besucherzahlen/">[% msg.maketext("Besucher*innen heute") %] &gt; &gt;</a></span>
 
 [% END # show_count %]
 

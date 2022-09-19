@@ -363,8 +363,8 @@ sub cgiapp_prerun {
        # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
        # zu verwenden
        
-       my $method          = $r->param('_method') || '';
-       my $confirm         = $r->param('confirm') || 0;
+       my $method          = ($r->param('_method'))?escape_html($r->param('_method')):'';
+       my $confirm         = ($r->param('confirm'))?escape_html($r->param('confirm')):0;
        
        if ($method eq "DELETE" || $r->method eq "DELETE"){
            $logger->debug("Deletion shortcut");
@@ -488,12 +488,12 @@ sub negotiate_content {
                     }
                     
                     $args="?l=".$self->param('lang');
-                    if ($r->escaped_args()){
-                        $args="$args;".$r->escaped_args();
+                    if ($self->to_cgi_querystring()){
+                        $args="$args;".$self->to_cgi_querystring();
                     }
                 }
                 else {
-                    $args="?".$r->escaped_args();
+                    $args="?".$self->to_cgi_querystring();
                 }
 
                 my $path = "";
@@ -528,7 +528,7 @@ sub negotiate_content {
                 
                 my $args = "?l=".$self->param('lang');
                 
-                $args=$args.";".$r->escaped_args() if ($r->escaped_args());
+                $args=$args.";".$self->to_cgi_querystring() if ($self->to_cgi_querystring());
 
                 my $dispatch_url = $self->param('scheme')."://".$self->param('servername').$self->param('path').$args;
             
@@ -546,7 +546,7 @@ sub negotiate_content {
         }
         else {
             $logger->debug("No additional negotiation necessary");
-            $logger->debug("Current URL is ".$self->param('path')." with args ".$r->escaped_args());
+            $logger->debug("Current URL is ".$self->param('path')." with args ".$self->to_cgi_querystring());
         }
     }
     else {
@@ -711,8 +711,8 @@ sub personalize_uri {
             
             $dispatch_url .=$path;
             
-            if ($r->escaped_args()){
-                $dispatch_url.="?".$r->escaped_args();
+            if ($self->to_cgi_querystring()){
+                $dispatch_url.="?".$self->to_cgi_querystring();
             }
 
             $logger->debug("Dispatching to $dispatch_url");
@@ -752,8 +752,8 @@ sub personalize_uri {
             
             $dispatch_url .=$path;
             
-            if ($r->escaped_args()){
-                $dispatch_url.="?".$r->escaped_args();
+            if ($self->to_cgi_querystring()){
+                $dispatch_url.="?".$self->to_cgi_querystring();
             }
 
             $logger->debug("Dispatching to $dispatch_url");

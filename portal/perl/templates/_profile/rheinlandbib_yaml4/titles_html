@@ -79,11 +79,7 @@
     <div class="right">
 <form method="get" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/titles.html">
 <input type="hidden" name="page" value="1" />
-[%- FOREACH qparam IN query.param -%]
-[%-   IF qparam != 'srt' && qparam != 'srto' && qparam != 'page' %]
-<input type="hidden" name="[% qparam %]" value="[% query.param(qparam) %]" />
-[%-   END -%]
-[%- END -%]
+[% cgiapp.to_cgi_hidden_input({ exclude = ['srt','srto','page'] }) %]
 
 [% PROCESS common/subtemplate name="titlist_options" this_loc=config.get('search_loc') %]
 </form>

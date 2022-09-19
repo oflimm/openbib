@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: virtualsearch_result_start
+# Templatename: availability_search_start_html
 #
 # Typ         : Mastertemplate (1/3)
 #
@@ -98,13 +98,13 @@
 
 <p class="ps-3"><i>
 [% IF artikel %]
-[% query.param('tit') %][% IF query.param('per') %] / [% query.param('per') %][% END %]<br/>
-In: [% query.param('jrnl') %][% IF query.param('vol') %] Vol. [% query.param('vol') %][% END %][% IF query.param('year') %] ([% query.param('year') %])[% END %][% IF query.param('issue') %] Nr. [% query.param('issue') %][% END %][% IF query.param('src') %] S. [% query.param('src') %][% END %]<br/>
-[% IF query.param('issn') %]ISSN: [% query.param('issn') %][% END %]
+[% escape_html(query.param('tit')) %][% IF query.param('per') %] / [% escape_html(query.param('per')) %][% END %]<br/>
+In: [% escape_html(query.param('jrnl')) %][% IF query.param('vol') %] Vol. [% escape_html(query.param('vol')) %][% END %][% IF query.param('year') %] ([% escape_html(query.param('year')) %])[% END %][% IF query.param('issue') %] Nr. [% escape_html(query.param('issue')) %][% END %][% IF query.param('src') %] S. [% escape_html(query.param('src')) %][% END %]<br/>
+[% IF query.param('issn') %]ISSN: [% escape_html(query.param('issn')) %][% END %]
 [% ELSE %]
-[% IF query.param('per') %][% query.param('per') %]:[% END %][% IF query.param('tit') %] [% query.param('tit') %][% END %][% IF query.param('year') %] [% query.param('year') %][% END %]
-[% IF query.param('ibsn') %]<br/>ISBN: [% query.param('isbn') %][% END %]
-[% IF query.param('issn') %]<br/>ISSN: [% query.param('issn') %][% END %]
+[% IF query.param('per') %][% escape_html(query.param('per')) %]:[% END %][% IF query.param('tit') %] [% escape_html(query.param('tit')) %][% END %][% IF query.param('year') %] [% escape_html(query.param('year')) %][% END %]
+[% IF query.param('ibsn') %]<br/>ISBN: [% escape_html(query.param('isbn')) %][% END %]
+[% IF query.param('issn') %]<br/>ISSN: [% escape_html(query.param('issn')) %][% END %]
 [% END %]
 </i></p>
 

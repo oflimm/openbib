@@ -1229,6 +1229,11 @@ sub add_default_ttdata {
         return $json_ref;
     };
 
+    $ttdata->{'escape_html'}     = sub {
+        my $string = shift;
+        return ($string)?escape_html(decode_utf8(uri_unescape($string))):'';
+    };
+
     $ttdata->{'uri_escape'}     = sub {
         my $string = shift;
         return uri_escape_utf8($string);

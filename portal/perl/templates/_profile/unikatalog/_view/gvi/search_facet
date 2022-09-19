@@ -13,7 +13,7 @@
 [% 
       IF NOT facet_prefix ;
         IF query.param('facet_prefix') ;
-         facet_prefix = query.param('facet_prefix');
+         facet_prefix = escape_html(query.param('facet_prefix'));
 	ELSE ;
          facet_prefix = "dd";
 	END;

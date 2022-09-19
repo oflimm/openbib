@@ -523,6 +523,9 @@ sub get_record {
     }
 
     # BibEntity
+    
+    my $pagerange = "";
+    
     {
 	foreach my $thisfield (keys %{$json_result_ref->{Record}{RecordInfo}{BibRecord}{BibEntity}}){
 	    
@@ -588,8 +591,6 @@ sub get_record {
 		    }
 		}
 		
-		my $pagerange = "";
-		
 		$pagerange = $startpage if ($startpage);
 		$pagerange .= " - $endpage" if ($endpage);
 		
@@ -606,8 +607,14 @@ sub get_record {
 	    
 	}
     }
-    
-    { # BibRelationships
+
+    # BibRelationships
+
+    my $issue   = "";    
+    my $volume  = "";
+    my $journal = "";
+    my $year    = "";
+    { 
 	if (defined $json_result_ref->{Record}{RecordInfo}{BibRecord} && defined $json_result_ref->{Record}{RecordInfo}{BibRecord}{BibRelationships}){
 	    
 	    
@@ -637,6 +644,7 @@ sub get_record {
 			    
 			    if ($thisfield eq "Titles"){
 			    	foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
+				    $journal = $item->{TitleFull};
 			    	    push @{$fields_ref->{'T0376'}}, {
 			    		content => $item->{TitleFull}
 			    	    } if (!$self->have_field_content('T0376',$item->{TitleFull} ));
@@ -646,6 +654,7 @@ sub get_record {
 			    
 			    if ($thisfield eq "Dates"){
 				foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
+				    $year = $item->{'Y'};
 				    push @{$fields_ref->{'T0425'}}, {
 					content => $item->{'Y'}
 				    } if (!$self->have_field_content('T0425',$item->{Y} ));
@@ -659,6 +668,8 @@ sub get_record {
 				    my $value = $item->{Value};
 				    
 				    if ($value && $type eq "volume"){
+					$volume = $value;
+					
 					push @{$fields_ref->{'T0089'}}, {
 					    content => $value,
 					} if (!$self->have_field_content('T0089',$value ));
@@ -668,6 +679,7 @@ sub get_record {
 					} if (!$self->have_field_content('T0596b',$value ));
 				    }
 				    elsif ($value && $type eq "issue"){
+					$issue = $value;
 					push @{$fields_ref->{'T0596'}}, {
 					    content => $value,
 					    subfield => "h",
@@ -982,6 +994,34 @@ sub get_record {
 	}
 	
     }
+
+    # Spezifische Angaben, dann wird TitleSource (0590) ersetzt.
+    if ($journal && $pagerange){
+	my @contents = ();
+	push @contents, $journal;
+
+	my $thiscontent = "";
+	if ($year){
+	    $thiscontent = "($year)";
+	}
+
+	if ($issue){
+	    $thiscontent .= " Nr. $issue";
+	}
+
+	if ($thiscontent){
+	    push @contents, $thiscontent;
+	}
+
+	push @contents, $pagerange;
+
+	$fields_ref->{"T0590"} = [{
+	    content => join(', ',@contents),
+		mult => 1,
+		subfield => "",
+				  }];
+    }
+
     
     $record->set_fields_from_storable($fields_ref);
     

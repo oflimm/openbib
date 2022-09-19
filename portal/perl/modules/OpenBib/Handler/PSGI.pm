@@ -481,7 +481,7 @@ sub negotiate_content {
                 if (!$r->param('l')){
                     if ($session->{lang}){
                         $logger->debug("Sprache definiert durch Cookie: ".$session->{lang});
-                        $self->param('lang',$session->{lang});
+                        $self->param('lang',$self->cleanup_lang($session->{lang}));
                     }
                     else {
                         $self->negotiate_language;
@@ -520,7 +520,7 @@ sub negotiate_content {
                 
                 if ($session->{lang}){
                     $logger->debug("Sprache definiert durch Cookie: ".$session->{lang});
-                    $self->param('lang',$session->{lang});
+                    $self->param('lang',$self->cleanup_lang($session->{lang}));
                 }
                 else {
                     $self->negotiate_language;
@@ -589,7 +589,7 @@ sub alter_negotiated_language {
     # alterantiv Korrektur der ausgehandelten Sprache wenn durch cookie festgelegt
     elsif ($session->{lang}){
         $logger->debug("Korrektur der ausgehandelten Sprache durch Cookie: ".$session->{lang});
-        $self->param('lang',$session->{lang});
+        $self->param('lang',$self->cleanup_lang($session->{lang}));
     }
 
     return;
@@ -1540,25 +1540,51 @@ sub to_cgi_params {
             next unless ($r->param($param));
             $logger->debug("Processing $param");
             if (exists $arg_ref->{change}->{$param}){
-                push @cgiparams, {
-                    param => $param,
-                    val   => decode_utf8(uri_unescape($arg_ref->{change}->{$param})),
-                };
-            }
+		my $value = $arg_ref->{change}->{$param};
+
+		if ($param eq "l"){
+		    $value = $self->cleanup_lang($value);
+		}
+		else {
+		    $value = escape_html(decode_utf8(uri_unescape($value)))
+		}
+		
+		push @cgiparams, {
+			param => $param,
+			val   => $value,
+		};
+	    }
             elsif (! exists $exclude_ref->{$param}){
                 my @values = $r->param($param);
                 if (@values){
                     foreach my $value (@values){
+
+			if ($param eq "l"){
+			    $value = $self->cleanup_lang($value);
+			}
+			else {
+			    $value = escape_html(decode_utf8(uri_unescape($value)))
+			}
+			
                         push @cgiparams, {
                             param => $param,
-                            val   => decode_utf8(uri_unescape($value)),
+                            val   => $value,
                         };
                     }
                 }
                 else {
+		    my $value = $r->param($param);
+		    
+		    if ($param eq "l"){
+			$value = $self->cleanup_lang($value);
+		    }
+		    else {
+			$value = escape_html(decode_utf8(uri_unescape($value)))
+		    }
+
                     push @cgiparams, {
                         param => $param,
-                        val => decode_utf8(uri_unescape($r->param($param))),
+                        val => $value,
                     };
                 }
             }

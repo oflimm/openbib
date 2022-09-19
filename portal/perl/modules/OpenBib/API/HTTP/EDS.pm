@@ -445,6 +445,40 @@ sub get_record {
 		$link_mult++;
 	    }
 	}
+
+	my @links = ();
+	
+	eval {
+	    @links = @{$json_result_ref->{'Record'}{'FullText'}{'Links'}};
+	};
+
+	if (@links){
+	    foreach my $link_ref (@links){
+		my $url = (defined $link_ref->{'Url'})?$link_ref->{'Url'}:'';
+
+		if (defined $link_ref->{'Type'} && $link_ref->{'Type'} =~m/^(ebook|pdflink|other)$/){
+		    push @{$fields_ref->{'T4120'}}, {
+			subfield => 'y', # Eingeschraenkter Zugang / yellow
+			mult     => $link_mult, 
+			content  => $url,
+		    };
+		    
+		    push @{$fields_ref->{'T0662'}}, {
+			subfield => '', 
+			mult     => $link_mult, 
+			content  => $url,
+		    };
+		    
+		    push @{$fields_ref->{'T0663'}}, {
+			subfield => '', 
+			mult     => $link_mult, 
+			content  => "Volltext"
+		    };
+		    # Todo: Zugriffstatus 'yellow' hinzufuegen
+		    $link_mult++;
+		}
+	    }
+	}
 	
 	# arXiv, DOAJ und OAIster: Publikationstyp einfuegen und CustomLink auslesen
 	if ($json_result_ref->{Header}{DbId} =~ /^(edsarx|edsdoj|edsoai)$/) {
@@ -1424,6 +1458,41 @@ sub process_matches {
 	# $logger->debug("Processing Record ".YAML::Dump($json_result_ref->{SearchResult}{Data}{Records}));
 
 	# Volltextlinks
+	my @links     = ();
+	my $link_mult = 1;
+	
+	eval {
+	    @links = @{$json_result_ref->{'Record'}{'FullText'}{'Links'}};
+	};
+
+	if (@links){
+	    foreach my $link_ref (@links){
+		my $url = (defined $link_ref->{'Url'})?$link_ref->{'Url'}:'';
+
+		if (defined $link_ref->{'Type'} && $link_ref->{'Type'} =~m/^(ebook|pdflink|other)$/){
+		    push @{$fields_ref->{'T4120'}}, {
+			subfield => 'y', # Eingeschraenkter Zugang / yellow
+			mult     => $link_mult, 
+			content  => $url,
+		    };
+		    
+		    push @{$fields_ref->{'T0662'}}, {
+			subfield => '', 
+			mult     => $link_mult, 
+			content  => $url,
+		    };
+		    
+		    push @{$fields_ref->{'T0663'}}, {
+			subfield => '', 
+			mult     => $link_mult, 
+			content  => "Volltext"
+		    };
+		    # Todo: Zugriffstatus 'yellow' hinzufuegen
+		    $link_mult++;
+		}
+	    }
+	}
+	
 	if (defined $match->{FullText} && defined $match->{FullText}{CustomLinks}){
 	    my $availability = '';
 	    if (defined $match->{FullText}{Text} && defined $match->{FullText}{Text}{Availability}){

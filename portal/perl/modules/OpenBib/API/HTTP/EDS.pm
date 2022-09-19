@@ -734,7 +734,7 @@ sub get_record {
 		ItemLanguage    => 'T0516',
 		Abstract        => 'T0750',
 		AbstractNonEng  => 'T0750',
-		TitleSource     => 'T0451',
+		TitleSource     => 'T0590',
 		TitleSourceBook => 'T0451',
 		Publisher       => 'T0419',
 		DatePubCY       => 'T0425',

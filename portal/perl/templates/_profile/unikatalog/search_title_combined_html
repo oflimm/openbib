@@ -11,6 +11,7 @@
 #
 #######################################################################
 -%]
+
 [%- PROCESS common/subtemplate name="local_config" -%] 
 
 <p/>
@@ -117,7 +118,6 @@
 
 </style>
 
-
 <div role="tabpanel" id="ob-searchresult_tab_books" class="tab-pane fade-in row [% IF current_tab == "books" || current_profile == searchprofileid_of_books || ( current_profile != searchprofileid_of_articles && current_profile != searchprofileid_of_web ) %] active[% END %] flex-md-row">
 [% IF current_tab == "books" %]
 [% PROCESS common/subtemplate name="search_title_combined_include" %]
@@ -129,6 +129,5 @@
 [% PROCESS common/subtemplate name="search_title_combined_include" %]
 [% END %]
 </div>
-
 
 </div>

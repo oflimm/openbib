@@ -332,9 +332,6 @@ sub rewrite_searchterms {
 	if ($searchquery->get_searchfield('pages')){
 	    push @src, $searchquery->get_searchfield('pages')->{val};
 	}
-	if ($searchquery->get_searchfield('year')){
-	    push @src, $searchquery->get_searchfield('year')->{val};
-	}
 
 	if ($searchquery->get_searchfield('title')){
 	    $new_searchquery->set_searchfield('title',$searchquery->get_searchfield('title')->{val});

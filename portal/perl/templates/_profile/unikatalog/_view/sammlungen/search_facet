@@ -1322,18 +1322,3 @@ languages: ["deu"], // available languages eng,zho,deu
 [% END %]
 
 
-[% IF current_tab == 'books' && ( query.param('fs') || query.param('tit') ) # Start Elib %]
-<div class="ob-facets ob-facets_dbinfo">
-
-<!-- Anfang Elib DBIS-Empfehlungen -->
-
-<div class="ob-category_header">[% msg.maketext("Datenbank-Empfehlungen") %]</div>
-
-<!-- Begin Elib DBIS-Empfehlungen -->
-<div id="ob-dbis_recommendations" class="pt-3" hx-get="[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/titles/recommendations.include?l=[% lang %];fs=[% searchquery.get_searchtermstring %]" hx-swap="outerHTML" hx-trigger="load">
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/titles/recommendations.html?l=[% lang %];fs=[% searchquery.get_searchtermstring %]">[% msg.maketext("Weiter zu den Datenbank-Empfehlungen") %]</a>
-</div>
-<!-- Ende Elib DBIS-Empfehlungen -->
-
-</div>
-[% END # End Elib %]

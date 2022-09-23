@@ -312,7 +312,7 @@
      publisher = item.${'T0412'}.first.content;
 
      # Ejahr konstruieren
-     yearofpub = item.${'T0425'}.first.content;
+     yearofpub = item.${'T0002'}.first.content;
 
      availability = item.${'T4400'}.first.content;
 

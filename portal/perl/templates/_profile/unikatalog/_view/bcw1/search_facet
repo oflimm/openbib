@@ -568,7 +568,7 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(
 <!-- End database facet -->
 
 <!-- Begin availability facet -->
-[%         IF facets.defined('availability') && facets.availability.size > 0 %]
+[%         IF 0 == 1 && facets.defined('availability') && facets.availability.size > 0 %]
         <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-availability[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Verfügbarkeit") %] 
         </h4>
@@ -608,7 +608,7 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(
 <!-- End availability facet -->
 
 <!-- Begin favlocation facet -->
-[%         IF facets.defined('favlocation') && facets.favlocation.size > 0 %]
+[%         IF 0 == 1 && facets.defined('favlocation') && facets.favlocation.size > 0 %]
         <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-favlocation[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Mein Suchraum") %] 
         </h4>
@@ -636,7 +636,7 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(
 <!-- End favlocation facet -->
 
 <!-- Begin elocation facet -->
-[%         IF facets.defined('elocation') && facets.elocation.size > 0 %]
+[%         IF 0 == 1 && facets.defined('elocation') && facets.elocation.size > 0 %]
         <h4 class="ob-facet-title [% IF facets.elocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-bs-toggle="collapse" data-bs-target="#group-elocation[% idsuffix %]" aria-expanded=[% IF facets.elocation.size > 0 %]"false"[% ELSE %]"true"[% END %]>
            [% msg.maketext("E-Medien Quelle") %] 
         </h4>
@@ -664,7 +664,7 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(
 <!-- End elocation facet -->
 
 <!-- Begin printlocation facet -->
-[%         IF facets.defined('printlocation') && facets.printlocation.size > 0 %]
+[%         IF 0 == 1 && facets.defined('printlocation') && facets.printlocation.size > 0 %]
         <h4 class="ob-facet-title [% IF facets.printlocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-bs-toggle="collapse" data-bs-target="#group-location[% idsuffix %]" aria-expanded=[% IF facets.location.size > 0 %]"false"[% ELSE %]"true"[% END %]>
            [% msg.maketext("Print-Medien Standort") %] 
         </h4>

@@ -12,28 +12,6 @@
 #######################################################################
 -%]
 
-<!--
-<script>
-$(function () {
-    var image_div = $('#ob-startpage .landing-page-img');
-    var backgrounds = [
-      'url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/uni-hauptgebaeude-blur.jpg)', 
-      'url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/uni-hauptgebaeude-oil.jpg)', 
-      'url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/kugproto_startpages-oil.jpg)'];
-    var current = 0;
-
-    function nextBackground() {
-        image_div.css(
-            'background-image',
-        backgrounds[current = ++current % backgrounds.length]);
-
-        setTimeout(nextBackground, 5000);
-    }
-    setTimeout(nextBackground, 500);
-    image_div.css('background-image', backgrounds[0]);
-});
-</script>
--->
 
 <style>
 @media all
@@ -87,7 +65,8 @@ $(function () {
 }
 
 #image-area {
-  position: relative;	
+  position: relative;
+  height: 600px;
 }
 
 .animated-image {

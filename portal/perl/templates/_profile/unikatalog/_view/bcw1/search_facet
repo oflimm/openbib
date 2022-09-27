@@ -607,72 +607,17 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(
 [%         END %]
 <!-- End availability facet -->
 
-<!-- Begin favlocation facet -->
-[%         IF 0 == 1 && facets.defined('favlocation') && facets.favlocation.size > 0 %]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-favlocation[% idsuffix %]" aria-expanded="true">
-           [% msg.maketext("Mein Suchraum") %] 
-        </h4>
-        <ul id="group-favlocation[% idsuffix %]" class="list-group in collapse show">
-[%             FOREACH termitem IN facets.favlocation ;
 
- %]
-[% IF facets.favlocation.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_favlocation_[% database %]_toggle[% idsuffix %]"></span>
-<div id="[% facet_prefix %]_favlocation_[% database %][% idsuffix %]">
-[% END %]
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').locationstring.prefix;
-    filterstring  = "${searchprefix}:${searchterm}";
--%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% locinfo.get('identifier').${termitem.0}.description %]</a> <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1 %]</span></li>
-[%             END %]
-[% IF facets.favlocation.size > 5 %]
-</div>
-[% END %]
-</ul>
-<p/>
-[%         END %]
-<!-- End favlocation facet -->
-
-<!-- Begin elocation facet -->
-[%         IF 0 == 1 && facets.defined('elocation') && facets.elocation.size > 0 %]
-        <h4 class="ob-facet-title [% IF facets.elocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-bs-toggle="collapse" data-bs-target="#group-elocation[% idsuffix %]" aria-expanded=[% IF facets.elocation.size > 0 %]"false"[% ELSE %]"true"[% END %]>
-           [% msg.maketext("E-Medien Quelle") %] 
-        </h4>
-        <ul id="group-elocation[% idsuffix %]" class="list-group in collapse [% IF facets.elocation.size <= 0 %]show[% END %]">
-[%             FOREACH termitem IN facets.elocation ;
-
- %]
-[% IF facets.elocation.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_elocation_[% database %]_toggle[% idsuffix %]"></span>
-<div id="[% facet_prefix %]_elocation_[% database %][% idsuffix %]">
-[% END %]
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').locationstring.prefix;
-    filterstring  = "${searchprefix}:${searchterm}";
--%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% locinfo.get('identifier').${termitem.0}.description %]</a> <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1 %]</span></li>
-[%             END %]
-[% IF facets.elocation.size > 5 %]
-</div>
-[% END %]
-</ul>
-<p/>
-[%         END %]
-<!-- End elocation facet -->
-
-<!-- Begin printlocation facet -->
-[%         IF 0 == 1 && facets.defined('printlocation') && facets.printlocation.size > 0 %]
-        <h4 class="ob-facet-title [% IF facets.printlocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-bs-toggle="collapse" data-bs-target="#group-location[% idsuffix %]" aria-expanded=[% IF facets.location.size > 0 %]"false"[% ELSE %]"true"[% END %]>
+<!-- Begin location facet -->
+[%         IF facets.defined('location') && facets.location.size > 0 %]
+        <h4 class="ob-facet-title [% IF facets.location.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-bs-toggle="collapse" data-bs-target="#group-location[% idsuffix %]" aria-expanded=[% IF facets.location.size > 0 %]"false"[% ELSE %]"true"[% END %]>
            [% msg.maketext("Print-Medien Standort") %] 
         </h4>
         <ul id="group-location[% idsuffix %]" class="list-group in collapse [% IF facets.location.size <= 0 %]show[% END %]">
-[%             FOREACH termitem IN facets.printlocation ;
+[%             FOREACH termitem IN facets.location ;
 
  %]
-[% IF facets.printlocation.size > 5 && loop.count == 5 %]
+[% IF facets.location.size > 5 && loop.count == 5 %]
 <span id="[% facet_prefix %]_location_[% database %]_toggle[% idsuffix %]"></span>
 <div id="[% facet_prefix %]_location_[% database %][% idsuffix %]">
 [% END %]
@@ -683,7 +628,7 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(
 -%]
 <li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% locinfo.get('identifier').${termitem.0}.description %]</a> <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1 %]</span></li>
 [%             END %]
-[% IF facets.printlocation.size > 5 %]
+[% IF facets.location.size > 5 %]
 </div>
 [% END %]
 </ul>

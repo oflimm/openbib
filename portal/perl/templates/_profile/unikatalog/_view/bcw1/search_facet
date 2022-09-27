@@ -610,10 +610,10 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(
 
 <!-- Begin location facet -->
 [%         IF facets.defined('location') && facets.location.size > 0 %]
-        <h4 class="ob-facet-title [% IF facets.location.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-bs-toggle="collapse" data-bs-target="#group-location[% idsuffix %]" aria-expanded=[% IF facets.location.size > 0 %]"false"[% ELSE %]"true"[% END %]>
-           [% msg.maketext("Print-Medien Standort") %] 
+        <h4 class="ob-facet-title [% IF facets.location.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-bs-toggle="collapse" data-bs-target="#group-location[% idsuffix %]" aria-expanded="true">
+           [% msg.maketext("Basecamp Wave") %] 
         </h4>
-        <ul id="group-location[% idsuffix %]" class="list-group in collapse [% IF facets.location.size <= 0 %]show[% END %]">
+        <ul id="group-location[% idsuffix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.location ;
 
  %]

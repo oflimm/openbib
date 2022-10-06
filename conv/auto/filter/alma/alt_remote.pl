@@ -50,4 +50,4 @@ my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->s
 my $filename      = $dbinfo->titlefile;
 print "### $pool: Konvertierung von $filename\n";
 system("cd $pooldir/$pool ; rm meta.* ");
-system("cd $pooldir/$pool; $marc2metaexe --database=$pool --inputfile=$filename ; gzip meta.*");
+system("cd $pooldir/$pool; $marc2metaexe --database=$pool --inputfile=$filename --configfile=/opt/openbib/conf/alma.yml; gzip meta.*");

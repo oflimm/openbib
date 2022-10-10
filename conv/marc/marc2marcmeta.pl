@@ -398,8 +398,51 @@ while (my $record = safe_next($batch)){
 	}
 	
 	# Exemplardaten
-	{ 
-	    if ($field_nr eq "0852"){
+	{
+	    if ($configfile && defined $convconfig->{localfields}{holdings}){
+		
+		my $localfields_ref = $convconfig->{localfields}{holdings};
+
+		if (defined $localfields_ref->{$field_nr}){
+		    $logger->info("Processing field $field_nr");
+		    
+		    my $holding_ref = {
+			'id'     => $mexid++,
+			    'fields' => {
+				'0004' =>
+				    [
+				     {
+					 mult     => 1,
+					 subfield => '',
+					 content  => $title_ref->{id},
+				     },
+				    ],
+			},
+		    };
+		    
+		    foreach my $subfield (keys %{$localfields_ref->{$field_nr}}){
+			$logger->info("Processing subfield $subfield");
+			my $destfield = $localfields_ref->{$field_nr}{$subfield};
+			my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string($subfield)):$field->as_string($subfield);
+
+			# Ggf. ID in Subfeld verwenden
+			if ($destfield eq "id"){
+			    $holding_ref->{id} = $content;
+			}
+			else {
+			    push @{$holding_ref->{fields}{$destfield}}, {
+				content  => cleanup($content),
+				subfield => '',
+				mult     => 1,
+			    };
+			}
+		    }
+		    
+		    print HOLDING encode_json $holding_ref,"\n";
+		}	    
+	    }
+
+	    elsif ($field_nr eq "0852"){
 		my $indicator_1 = $field->indicator(1);
 		my $indicator_2 = $field->indicator(2);
 		
@@ -465,49 +508,6 @@ while (my $record = safe_next($batch)){
 		print HOLDING encode_json $holding_ref,"\n";
 	    }
 	    
-	    if ($configfile && defined $convconfig->{localfields}{holdings}){
-		
-		#	    $logger->info("Processing local holding fields");
-		
-		my $localfields_ref = $convconfig->{localfields}{holdings};
-		
-		foreach my $localfield (keys %{$localfields_ref}){
-		    #		$logger->info("Processing field $localfield");
-		    
-		    foreach my $field ($record->field($localfield)){
-			
-			my $holding_ref = {
-			    'id'     => $mexid++,
-				'fields' => {
-				    '0004' =>
-					[
-					 {
-					     mult     => 1,
-					     subfield => '',
-					     content  => $title_ref->{id},
-					 },
-					],
-			    },
-			};
-			
-			foreach my $subfield (keys %{$localfields_ref->{$localfield}}){
-			    
-			    my $destfield = $localfields_ref->{$localfield}{$subfield};
-			    my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string($subfield)):$field->as_string($subfield);
-			    
-			    
-			    push @{$holding_ref->{fields}{$destfield}}, {
-				content  => cleanup($content),
-				subfield => '',
-				mult     => 1,
-			    };
-			    
-			}
-			
-			print HOLDING encode_json $holding_ref,"\n";
-		    }		
-		}	    
-	    }
 	}
 
 	

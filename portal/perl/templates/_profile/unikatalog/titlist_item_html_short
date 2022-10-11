@@ -465,7 +465,7 @@
 [% IF record_exists && record.id && record.database %]
 [%   IF NOT record_from_cache %]
             <div class="pe-1">
-              <a class="btn btn-primary pe-2" [% IF NOT hide_detail && NOT hide_hit %] href="[% detail_url %]"[% ELSE %]data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('login_loc') %].include?l=[% lang %];authenticatorid=1;redirect_to=[% this_search_url | uri %]" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %];redirect_to=[% uri_escape(this_search_url) %]"[% END %] alt="[% title %]" title="[% title %]">[% IF hide_hit || hide_detail %]<i class="fas fa-ban"></i>[% ELSE %]<i class="fas fa-eye"></i>[% END %] <span>Details</span></a>
+              <a class="btn btn-primary pe-2" [% IF NOT hide_detail && NOT hide_hit %] href="[% detail_url %]"[% ELSE %]data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('login_loc') %].include?l=[% lang %];authenticatorid=1;redirect_to=[% this_search_url | uri %]" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %];redirect_to=[% uri_escape(this_search_url) %]"[% END %] alt="[% IF NOT hide_hit %][% title %][% ELSE %][% hide_hit_msg %][% END %]" title="[% title %]">[% IF hide_hit || hide_detail %]<i class="fas fa-ban"></i>[% ELSE %]<i class="fas fa-eye"></i>[% END %] <span>Details</span></a>
             </div>
 [%   END # record_from_cache %]	    
 [% IF NOT with_cartitems_delete && NOT hide_hit && NOT record_from_cache %]

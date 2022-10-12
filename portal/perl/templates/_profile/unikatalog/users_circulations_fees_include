@@ -19,7 +19,6 @@
 <h1 class="display-4">[% msg.maketext("Es sind keine Gebühren angefallen.") %]</h1>
 </div>
 [% ELSIF fees.items %]
-<h4>[% msg.maketext("Gebühren") %]</h4>
 
 <div class="table-responsive">
 <table class="table table-striped table-hover">
@@ -47,3 +46,5 @@
 [% ELSE %]
 [% msg.maketext("Es ist ein unerwarteter Fehler aufgetreten") %]
 [% END %]
+
+<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Ihre offenen Gebühren") %]</div>

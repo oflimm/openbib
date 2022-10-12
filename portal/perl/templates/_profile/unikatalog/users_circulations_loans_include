@@ -17,7 +17,6 @@
 <h1 class="display-4">[% msg.maketext("Sie haben derzeit keine Ausleihen.") %]</h1>
 </div>
 [% ELSE  %]
-<h4>[% msg.maketext("Ihre Ausleihen") %]</h4>
 
 [% IF loans.num_renewables %]
 <p>
@@ -79,3 +78,5 @@ Ausgeliehene Medien im <a href="[% loan_url %]">iCalendar-Format</a> zur &Uuml;b
 
 [%# USE dumper;dumper.dump(authenticator)%]
 [% END %]
+
+<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Ihre Ausleihen") %]</div>

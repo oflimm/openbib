@@ -773,6 +773,20 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(
 [%         END %]
 <!-- End subject facet -->
 <!-- Begin year facet -->
+[% IF qopts.get_option('sb') == "eds" || searchprofileid_of_articles == searchquery.get_searchprofile %]
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-year[% idsuffix %]" aria-expanded="true">
+           [% msg.maketext("Erscheinungsjahr") %] 
+        </h4>
+
+        <div id="group-year[% idsuffix %]" class="in collapse show">
+
+         <p>
+           [% msg.maketext("Von") %]&nbsp;&nbsp;<input id="ob-yearSlider_from[% idsuffix %]" type="text" size="4" name="year_from" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input id="ob-yearSlider_to[% idsuffix %]" type="text" size="4" name="year_to" value="[% searchquery.get_searchfield("year_to").val %]" />&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Los"/>
+         </p>
+
+        </div>
+
+[% ELSE %]
 [%         IF config.get('facets').year && facets.defined('year') && facets.year.size > 0 %]
         <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-year[% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Erscheinungsjahr") %] 
@@ -931,6 +945,7 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 </p> -->
 
 [%         END %]
+[% END # EDS %]
 <!-- End year facet -->
 <!-- Begin classification facet -->
 [%         IF config.get('facets').classification && facets.defined('classification') && facets.classification.size > 0 %]

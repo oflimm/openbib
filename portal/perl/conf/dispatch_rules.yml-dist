@@ -3154,6 +3154,7 @@
    representations:
      - none
      - html
+     - include
      - json
      - rdf
      - ics
@@ -3166,6 +3167,7 @@
    representations:
      - none
      - html
+     - include
      - json
      - rdf
    args:
@@ -3177,6 +3179,7 @@
    representations:
      - none
      - html
+     - include
      - json
      - rdf
    args:
@@ -3188,6 +3191,7 @@
    representations:
      - none
      - html
+     - include
      - json
      - rdf
    args:

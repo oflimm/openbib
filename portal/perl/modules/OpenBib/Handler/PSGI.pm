@@ -2016,10 +2016,11 @@ sub tunnel_through_authenticator {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $config   = $self->param('config');
-    my $view     = $self->param('view');    
-    my $location = $self->param('location');    
-    my $args     = $self->to_cgi_querystring;
+    my $config      = $self->param('config');
+    my $view        = $self->param('view');    
+    my $location    = $self->param('location');    
+    my $path_prefix = $self->param('path_prefix');
+    my $args        = $self->to_cgi_querystring;
 
     # Args? Append Method
     if ($args){
@@ -2039,7 +2040,7 @@ sub tunnel_through_authenticator {
     
     my $return_uri = uri_escape($location);
     
-    my $new_location = "$config->{base_loc}/$view/$config->{login_loc}?authenticatorid=$authenticatorid;redirect_to=$return_uri";
+    my $new_location = "$path_prefix/$config->{login_loc}?authenticatorid=$authenticatorid;redirect_to=$return_uri";
     
     return $self->redirect($new_location,303);
 }

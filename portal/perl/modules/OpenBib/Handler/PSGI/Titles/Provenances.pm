@@ -39,10 +39,12 @@ use utf8;
 use Benchmark ':hireswallclock';
 use Encode qw(decode_utf8);
 use DBI;
+use HTML::Escape qw/escape_html/;
 use Log::Log4perl qw(get_logger :levels);
 use Data::Pageset;
 use POSIX;
 use Template;
+use URI::Escape;
 
 use OpenBib::Search::Util;
 use OpenBib::Common::Util;
@@ -88,7 +90,7 @@ sub show_collection {
     # Dispatched Args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $titleid        = $self->param('titleid');
+    my $titleid        = uri_unescape($self->param('titleid'));
 
     # Shared Args
     my $query          = $self->query();
@@ -102,7 +104,7 @@ sub show_collection {
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
 
-    my $provenanceid   = ($query->param('mnr'))?$query->param('mnr'):"";
+    my $provenanceid   = ($query->param('mnr'))?escape_html(decode_utf8(uri_unescape($query->param('mnr')))):"";
     
     return unless ($database && $titleid);
 

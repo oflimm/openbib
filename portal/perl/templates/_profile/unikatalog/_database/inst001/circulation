@@ -164,9 +164,9 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
 [%     END %]
 [%   END %]
 [% END %]
-[%# Signatur2 = Inventarnr bei manchen Instituten wird bewusst nicht ausgewertet #]
-[% IF have_provenance_for.${thiscirculation.holdingid} %]
-<br/><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %];mnr=[% uri_escape(thiscirculation.holdingid) %]">Provenienzen</a>
+
+[% IF have_provenance_for.defined(thiscirculation.holdingid) %]
+<br/><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %];mnr=[% uri_escape(thiscirculation.holdingid) %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.include?l=[% lang %];mnr=[% uri_escape(thiscirculation.holdingid) %]">Provenienzen</a>
 [% END %]
 </td>
 <td>

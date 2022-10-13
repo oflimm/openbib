@@ -139,12 +139,72 @@
         standort_with_url = standort;   
      END;
 
-    # Zusatz zum Sachtitel nicht enthalten abschneiden
-    title    = normdata.${"T0331"}.first.content ;
-    IF  normdata.${"T0310"}.first.content ;
-       title = normdata.${"T0310"}.first.content ;
-    END ;
+     # Titel konstruieren
+     title = normdata.${'T0331'}.first.content;
+     IF normdata.${'T0310'}.first.content;
+         title = normdata.${'T0310'}.first.content;
+     END;
 
+     # Mit Unterreihe
+     IF normdata.${'T0360'}.first.content ;
+         unterreihe = normdata.${'T0360'}.first.content;
+	 IF NOT title.match(" / ${unterreihe}");
+            title = "${title} / ${unterreihe}";
+	 END;
+     END;
+
+     is_schriftenreihe = 0;
+     is_mehrbaendig    = 0;
+
+     IF normdata.${'T0089'}.first.content;
+       is_mehrbaendig = 1;
+     ELSIF normdata.${'T0451'}.first.content;
+       is_schriftenreihe = 1;
+     END;
+
+     zaehlung = "";
+     
+     # Zaehlung Anfang Titel
+     IF is_mehrbaendig;
+       IF normdata.${'T0090'}.first.content;
+          zaehlung = normdata.${'T0090'}.first.content;
+	  IF zaehlung == title ;
+	     title = "";
+	  END;
+          title = "${zaehlung}. ${title}";
+       ELSIF normdata.${'T0089'}.first.content;
+          zaehlung = normdata.${'T0089'}.first.content;
+	  IF zaehlung == title ;
+	     title = "";
+	  END;
+          title = "${zaehlung}. ${title}";
+       END;     
+     END;
+     
+     super_title = "";
+
+     # Uebergeordneter Titel in Klammern (super_title)
+     IF is_schriftenreihe;
+       IF normdata.${'T0451'}.first.content;
+          super_title = normdata.${'T0451'}.first.content;
+       ELSIF super;
+         IF super.fields.${'0331'} ;
+            super_title   = super.fields.${'0331'}.first.content;
+         ELSIF super.fields.${'0451'} ;
+            super_title   = super.fields.${'0451'}.first.content;
+         END;
+       END;
+     ELSIF is_mehrbaendig;
+       IF super;
+         IF super.fields.${'0331'} ;
+            super_title   = super.fields.${'0331'}.first.content;
+	 END;
+       END;
+     END;
+
+     IF title && super_title ;
+        title = "${title} (${super_title})";
+     END;
 
 -%]
 <tr><td><strong>[% standort_with_url %]</strong></td>

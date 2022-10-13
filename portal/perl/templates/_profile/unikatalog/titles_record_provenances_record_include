@@ -1,0 +1,85 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editview
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Views
+#
+#######################################################################
+-%]
+
+[%
+   has_4312 = 0;
+
+   FOREACH provenance IN provenances ;
+     IF provenance.defined('T4312') ;
+       has_4312 = 1;
+     END;
+   END;
+%]
+
+<h3>Alle Provenienzen des Mediums [% provenanceid %]</h3>
+[%# USE dumper;dumper.dump(provenances)%]
+
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+<thead>
+<tr><th>Vorbesitzer</th><th>Provenienz</th><th>Sigel</th>[% IF has_4312 %]<th>Selektionskennzeichen</th>[% END %]</tr>
+</thead>
+<tbody>
+
+[%-
+    categories = [
+                'T4307', # msg.maketext("T4307") Vorbesitzer Koerperschaft
+                'T4308', # msg.maketext("T4308") Vorbesitzer Person
+                'T4309', # msg.maketext("T4309") Mediennummer
+                'T4310', # msg.maketext("T4310") Provenienz
+                'T4311', # msg.maketext("T4311") Sigel
+                'T4312', # msg.maketext("T4312") Selektionskennzeichen
+    ]
+-%]
+
+[% FOREACH provenance IN provenances ;
+
+     owner = [];
+
+     IF provenance.defined('T4307');
+       field = provenance.${'T4307'}.first ;
+       resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('corporatebodies_loc')}/id/${field.id}.html?l=${lang}";
+       owner.push("<a href=\"${resourceurl}\">${field.content}</a>");
+     END ;
+     IF provenance.defined('T4308');
+       field = provenance.${'T4308'}.first ;
+       resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('persons_loc')}/id/${field.id}.html?l=${lang}";
+       owner.push("<a href=\"${resourceurl}\">${field.content}</a>");
+     END;
+
+     ownerstring = owner.join(' / ');
+%]
+<tr>
+<td>
+[% ownerstring %]
+</td>
+<td>
+[% provenance.${'T4310'}.first.content %]
+</td>
+<td>
+[% provenance.${'T4311'}.first.content %]
+</td>
+[% IF has_4312 %]
+<td>
+[% provenance.${'T4312'}.first.content %]
+</td>
+[% END %]
+</tr>
+[% END %]
+
+</tbody>
+</table>
+</div>
+
+<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Provenienz-Informationen") %]</div>

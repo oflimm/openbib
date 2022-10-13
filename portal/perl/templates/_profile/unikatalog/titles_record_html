@@ -20,6 +20,15 @@
   holding         = record.get_holding ;
   circulation     = record.load_circulation.get_circulation ; 
 
+  # Provenienzen vorhanden?
+  have_provenance_for = {};
+
+  IF normdata.defined("T4309") ;
+    FOREACH item IN normdata.${"T4309"};
+      have_provenance_for.${item.content} = 1;
+    END;
+  END;
+
   all_locations = record.get_locations;
 
   # Filter locations

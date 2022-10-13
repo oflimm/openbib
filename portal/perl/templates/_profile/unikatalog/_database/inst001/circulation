@@ -165,9 +165,8 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
 [%   END %]
 [% END %]
 [%# Signatur2 = Inventarnr bei manchen Instituten wird bewusst nicht ausgewertet #]
-[% provenances = record.get_provenances_of_media(thiscirculation.holdingid) %]
-[% IF provenances.size > 0 %]
-<br/><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %];mnr=[% uri_escape(thiscirculation.holdingid) %]">Provenienzen</a>
+[% IF have_provenance_for.${thiscirculation.holdingid} %]
+<br/><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %];mnr=[% uri_escape(thiscirculation.holdingid) %]">Provenienzen</a>
 [% END %]
 </td>
 <td>

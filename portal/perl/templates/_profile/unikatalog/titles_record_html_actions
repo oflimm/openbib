@@ -620,16 +620,85 @@ $("#history_toggle").click(function(){
        person = "$person [...]" ;
      END ;
 
+     # Titel konstruieren
+     title = record_fields.${'T0331'}.first.content;
+     IF record_fields.${'T0310'}.first.content;
+         title = record_fields.${'T0310'}.first.content;
+     END;
+
+     # Mit Unterreihe
+     IF record_fields.${'T0360'}.first.content ;
+         unterreihe = record_fields.${'T0360'}.first.content;
+	 IF NOT title.match(" / ${unterreihe}");
+            title = "${title} / ${unterreihe}";
+	 END;
+     END;
+
+     is_schriftenreihe = 0;
+     is_mehrbaendig    = 0;
+
+     IF record_fields.${'T0089'}.first.content;
+       is_mehrbaendig = 1;
+     ELSIF record_fields.${'T0451'}.first.content;
+       is_schriftenreihe = 1;
+     END;
+
+     zaehlung = "";
+     
+     # Zaehlung Anfang Titel
+     IF is_mehrbaendig;
+       IF record_fields.${'T0090'}.first.content;
+          zaehlung = record_fields.${'T0090'}.first.content;
+	  IF zaehlung == title ;
+	     title = "";
+	  END;
+          title = "${zaehlung}. ${title}";
+       ELSIF record_fields.${'T0089'}.first.content;
+          zaehlung = record_fields.${'T0089'}.first.content;
+	  IF zaehlung == title ;
+	     title = "";
+	  END;
+          title = "${zaehlung}. ${title}";
+       END;     
+     END;
+     
+     # Verlage konstruieren
+     publisher = record_fields.${'T0412'}.first.content;
+
+     # Ejahr konstruieren
+     yearofpub = record_fields.${'T0425'}.first.content;
+
+     super_title = "";
+
+     # Uebergeordneter Titel in Klammern (super_title)
+     IF is_schriftenreihe;
+       IF record_fields.${'T0451'}.first.content;
+          super_title = record_fields.${'T0451'}.first.content;
+       ELSIF super;
+         IF super.fields.${'0331'} ;
+            super_title   = super.fields.${'0331'}.first.content;
+         ELSIF super.fields.${'0451'} ;
+            super_title   = super.fields.${'0451'}.first.content;
+         END;
+       END;
+     ELSIF is_mehrbaendig;
+       IF super;
+         IF super.fields.${'0331'} ;
+            super_title   = super.fields.${'0331'}.first.content;
+	 END;
+       END;
+     END;
+
+     IF title && super_title ;
+        title = "${title} (${super_title})";
+     END;
+
+     # Kein verwertbarer Titel oder Titel in titles_exclude, z.B. bei Ueberordnungen?
+     IF NOT title ;
+       title = "Keine Titelangabe vorhanden";
+     END;
+
 -%]
-[%# Titel konstruieren %]
-[%- title = record_fields.${'T0331'}.first.content -%]
-[%- IF record_fields.${'T0310'}.first.content -%]
-[%- title = record_fields.${'T0310'}.first.content -%]
-[%- END -%]
-[%# Verlage konstruieren %]
-[%- publisher = record_fields.${'T0412'}.first.content -%]
-[%# Ejahr konstruieren %]
-[%- yearofpub = record_fields.${'T0425'}.first.content -%]
 [% IF recent_titles.get_size > 5 && loop.count == 5 %]
 <span id="history_toggle"></span>
 <div id="history">

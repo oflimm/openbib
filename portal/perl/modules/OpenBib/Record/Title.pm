@@ -1167,7 +1167,7 @@ sub enrich_similar_records {
             my $location   = $titleitem->{location};
             my $titlecache = $titleitem->{titlecache};
 
-            next if (defined $have_title_ref->{"$database:$id:$location"});
+            next if (defined $have_title_ref->{"$database:$id"});
             
             $logger->debug("Found Title with location $location and id $id in database $database");
             
@@ -1183,7 +1183,7 @@ sub enrich_similar_records {
 	    $new_record->set_locations([$location]);
 	    $similar_recordlist->add($new_record);
 
-            $have_title_ref->{"$database:$id:$location"} = 1;
+            $have_title_ref->{"$database:$id"} = 1;
         }
         
         if ($config->{benchmark}) {
@@ -3960,6 +3960,8 @@ sub get_provenances_of_media {
 
     my $logger = get_logger();
 
+    $logger->debug("Getting provenances for $medianumber");
+    
     my $config = OpenBib::Config::File->instance;
     
     my $provenances_ref = [];

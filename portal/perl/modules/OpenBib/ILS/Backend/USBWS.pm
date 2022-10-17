@@ -2476,7 +2476,7 @@ sub get_mediastatus {
 			    content => $circ_ref->{LeihstatusText},
 			};
 		    }
-		    elsif ($circ_ref->{Leihstatus} =~m/^(LSEntliehen|LSEntliehenLE)$/){
+		    elsif ($circ_ref->{Leihstatus} =~m/^(LSEntliehen|LSEntliehenLE|LSEntliehenZWNoVM)$/){
 			my $this_unavailable_ref = {
 			    service => 'loan',
 			    content => $circ_ref->{LeihstatusText},

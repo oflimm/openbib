@@ -335,7 +335,7 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
 [%############### AUSLEIHBAR/BESTELLBAR ############################## %]
 [%   IF thiscirculation.availability.match('^(order|loan)$') %]
 [%     IF availability_info.match('\(') %]
-[%        textparts = availability_info.match('^(.*) (\(.*\))$') # Klammerzusatz (Anzahl der Vormerkungen, Fachbibl. XYZ) in neuer Zeile %]
+[%        textparts = availability_info.match('^(.*) (\(.*\).*?)$') # Klammerzusatz (Anzahl der Vormerkungen, Fachbibl. XYZ) in neuer Zeile %]
 [% textparts.first %]<br/>[% textparts.last %]
 [%     ELSE %]
 [%        availability_info %]
@@ -349,7 +349,7 @@ Bitte wenden Sie sich an die Fachbibliothek BWL.<br>E-Mail:<a href="mailto:bwl-b
 Präsenzbestand
 [%       ELSE %]
 [%         IF availability_info.match('\(') %]
-[%            textparts = availability_info.match('^(.*) (\(.*\))$') # Klammerzusatz (Anzahl der Vormerkungen, Fachbibl. XYZ) in neuer Zeile %]
+[%            textparts = availability_info.match('^(.*) (\(.*\).*?)$') # Klammerzusatz (Anzahl der Vormerkungen, Fachbibl. XYZ) in neuer Zeile %]
 [% textparts.first %]<br/>[% textparts.last %]
 [%         ELSE %]
 [%            availability_info %]
@@ -357,10 +357,10 @@ Präsenzbestand
 [%       END %]
 [%     ELSIF thiscirculation.location_mark.match('^(JUR|VERSW)') %]
 Präsenzbestand
-[%     ELSIF thiscirculation.department_id.match('^(19|222)$') %]
-Präsenzbestand
 [%     ELSIF thiscirculation.location_mark.match('^ZBM/') %]
 Bestände zur Zeit nicht verfügbar
+[%     ELSIF thiscirculation.department_id.match('^(19|222)$') %]
+Präsenzbestand
 [%     ELSIF thiscirculation.department_id.match('^(420)$') %]
 [%       IF standort.match('Magazin') %]
 Bitte nutzen Sie das <a href="https://neuere-geschichte.phil-fak.uni-koeln.de/bibliothek/benutzung/ausleihmodalitaeten/bestellformular">Bestellformular</a>.
@@ -372,7 +372,7 @@ Präsenzbestand
 Präsenzbestand
 [%       ELSE %]
 [%         IF availability_info.match('\(') %]
-[%            textparts = availability_info.match('^(.*) (\(.*\))$') # Klammerzusatz (Anzahl der Vormerkungen, Fachbibl. XYZ) in neuer Zeile %]
+[%            textparts = availability_info.match('^(.*) (\(.*\).*?)$') # Klammerzusatz (Anzahl der Vormerkungen, Fachbibl. XYZ) in neuer Zeile %]
 [% textparts.first %]<br/>[% textparts.last %]
 [%         ELSE %]
 [%            availability_info %]
@@ -380,7 +380,7 @@ Präsenzbestand
 [%       END %]
 [%     ELSE %]
 [%         IF availability_info.match('\(') %]
-[%            textparts = availability_info.match('^(.*) (\(.*\))$') # Klammerzusatz (Anzahl der Vormerkungen, Fachbibl. XYZ) in neuer Zeile %]
+[%            textparts = availability_info.match('^(.*) (\(.*\).*?)$') # Klammerzusatz (Anzahl der Vormerkungen, Fachbibl. XYZ) in neuer Zeile %]
 [% textparts.first %]<br/>[% textparts.last %]
 [%         ELSE %]
 [%            availability_info %]
@@ -428,7 +428,7 @@ Präsenzbestand
 
      IF thiscirculation.department_id == "0" && (standort.match('Lehrbuchsammlung') || record.id == 8224428);
        # Kein Vormerkbutton bei ausgeliehenen LBS-Ex., falls andere LBS-Ex. in ZW 0 verfuegbar sind
-       # Kein Vormerkbuttion bei bei ipads, falls andere Geraete verfuegbar sind (katkey: 8224428)
+       # Kein Vormerkbutton bei bei ipads, falls andere Geraete verfuegbar sind (katkey: 8224428)
        FOREACH checkcirculation IN circulation ;
          NEXT IF checkcirculation.department_id > 0 ;
          IF checkcirculation.availability.match('^(loan|order)$');

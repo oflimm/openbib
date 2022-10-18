@@ -5052,7 +5052,7 @@ var semesterZeit = [
         return [
 [%-
 
-   is_blacklisted = { 
+   is_denied = { 
                  'DE-38-103' = 1 
                  'DE-38-104' = 1 
                  'DE-38-105' = 1 
@@ -5084,7 +5084,7 @@ var semesterZeit = [
    koordinaten = [];
    
    FOREACH location IN locations ;
-    NEXT IF (is_blacklisted.${location.identifier});
+    NEXT IF (is_denied.${location.identifier});
 
     coordinates = location.fields.${"L0280"}.first.content.split(',').reverse.join(',');
     sigel       = location.identifier ;
@@ -5239,7 +5239,7 @@ var semesterZeit = [
 [%  
     institute_map = {};
     FOREACH location IN locations ;
-     NEXT IF (is_blacklisted.${location.identifier});
+     NEXT IF (is_denied.${location.identifier});
      fakultaet      = location.fields.${"L0015"}.first.content;
      coordinates    = location.fields.${"L0280"}.first.content.split(',').reverse.join(',');
 
@@ -5302,7 +5302,7 @@ var semesterZeit = [
 [%  
     institute_map = {};
     FOREACH location IN locations ;
-     NEXT IF (is_blacklisted.${location.identifier});
+     NEXT IF (is_denied.${location.identifier});
      fakultaet      = location.fields.${"L0015"}.first.content;
      coordinates    = location.fields.${"L0280"}.first.content.split(',').reverse.join(',');
 
@@ -5373,7 +5373,7 @@ var semesterZeit = [
 [%  
     institute_map = {};
     FOREACH location IN locations ;
-     NEXT IF (is_blacklisted.${location.identifier});
+     NEXT IF (is_denied.${location.identifier});
      fakultaet      = location.fields.${"L0015"}.first.content;
      coordinates    = location.fields.${"L0280"}.first.content.split(',').reverse.join(',');
 
@@ -5429,7 +5429,7 @@ var semesterZeit = [
 [%  
     institute_map = {};
     FOREACH location IN locations ;
-     NEXT IF (is_blacklisted.${location.identifier});
+     NEXT IF (is_denied.${location.identifier});
      fakultaet      = location.fields.${"L0015"}.first.content;
      coordinates    = location.fields.${"L0280"}.first.content.split(',').reverse.join(',');
 
@@ -5485,7 +5485,7 @@ var semesterZeit = [
 [%  
     institute_map = {};
     FOREACH location IN locations ;
-     NEXT IF (is_blacklisted.${location.identifier});
+     NEXT IF (is_denied.${location.identifier});
      fakultaet      = location.fields.${"L0015"}.first.content;
      coordinates    = location.fields.${"L0280"}.first.content.split(',').reverse.join(',');
 
@@ -5542,7 +5542,7 @@ var semesterZeit = [
 [%  
     institute_map = {};
     FOREACH location IN locations ;
-     NEXT IF (is_blacklisted.${location.identifier});
+     NEXT IF (is_denied.${location.identifier});
      fakultaet      = location.fields.${"L0015"}.first.content;
      coordinates    = location.fields.${"L0280"}.first.content.split(',').reverse.join(',');
 

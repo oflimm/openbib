@@ -115,8 +115,12 @@ sub authenticate {
                $user->reset_login_failure({ userid => $userid});
             }
 	}
+	else {
+	    $userid = -3;  # Status: wrong password
+	    return $userid;
+	}
     }
-    elsif (defined $result_ref->{failure} && $result_ref->{failure} < 0){
+    elsif (defined $result_ref->{failure} && $result_ref->{failure}{code} < 0){
 	$userid = -3;  # Status: wrong password
 	return $userid;
     }

@@ -70,6 +70,10 @@ sub authenticate {
     my $ils = OpenBib::ILS::Factory->create_ils({ database => $dbname });
 
     my $result_ref = $ils->authenticate({ username => $username, password => $password});
+
+    if ($logger->is_debug){
+	$logger->debug("Authentication result ".YAML::Dump($result_ref));
+    }
     
     my $max_login_failure = $config->get('max_login_failure');
 
@@ -101,7 +105,7 @@ sub authenticate {
 	}
 	elsif ($userid) {
 	    # User exists, so we can log failure
-	    if (defined $result_ref->{failure} && $result_ref->{failure} < 0){
+	    if (defined $result_ref->{failure} && $result_ref->{failure}{code} < 0){
 	       $user->add_login_failure({ userid => $userid});
                $userid = -3;  # Status: wrong password
 	       return $userid;

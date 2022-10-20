@@ -102,10 +102,11 @@ sub authenticate {
 
 	if ($userid && $login_failure > $max_login_failure){
 	    $userid = -2; # Status: max_login_failure reached
+	    return $userid;
 	}
 	elsif ($userid) {
 	    # User exists, so we can log failure
-	    if (defined $result_ref->{failure} && $result_ref->{failure}{code} < 0){
+	    if (defined $result_ref->{failure} && $result_ref->{failure}{code} <= 0){
 	       $user->add_login_failure({ userid => $userid});
                $userid = -3;  # Status: wrong password
 	       return $userid;
@@ -120,8 +121,18 @@ sub authenticate {
 	    return $userid;
 	}
     }
-    elsif (defined $result_ref->{failure} && $result_ref->{failure}{code} < 0){
+    elsif (defined $result_ref->{failure} && $result_ref->{failure}{code} <= 0){
 	$userid = -3;  # Status: wrong password
+	return $userid;
+    }
+    elsif (defined $result_ref->{failure}){
+	$userid = 0;  # Status: unspecified
+	return $userid;
+    }
+
+    # Ab hier nur weiter, wenn Authentifizierung positiv successful war!
+    unless (defined $result_ref->{successful} && $result_ref->{successful}){
+	$userid = 0;  # Status: unspecified
 	return $userid;
     }
     

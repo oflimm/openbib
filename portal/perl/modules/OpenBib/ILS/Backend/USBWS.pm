@@ -134,7 +134,7 @@ sub authenticate {
     
     $logger->debug("Response Username: ".$response_username);
 
-    unless (defined $response_username && $username eq $response_username){
+    if (!defined $response_username || $username ne $response_username){
 	$response_ref->{failure} = {
 	    error => 'wrong password',
 	    code => -3,  # Status: wrong password
@@ -2383,7 +2383,7 @@ sub get_mediastatus {
 
 		my $use_leihstatustext = 0; # sonst: Verwende Leihstatus
 
-		if ($use_leihstatustext){
+		if ($use_leihstatustext){ # INAKTIV
 		    if ($circ_ref->{LeihstatusText} =~m/Präsenzbestand/){
 			push @$available_ref, {
 			    service => 'presence',
@@ -2449,7 +2449,7 @@ sub get_mediastatus {
 			
 		    }
 		}
-		else { # verwende Leihstatus
+		else { # verwende Leihstatus AKTIV
 		    if ($circ_ref->{Leihstatus} =~m/^(LSNichtLeihbar)$/){
 			push @$available_ref, {
 			    service => 'presence',

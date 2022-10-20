@@ -813,7 +813,7 @@ sub reset_password {
 
     $logger->debug("Renew loans via USB-SOAP");
 
-    unless ($username || $newpassword){
+    unless ($username && $newpassword){
 	$response_ref =  {
 	    error => "missing parameter",
 	};

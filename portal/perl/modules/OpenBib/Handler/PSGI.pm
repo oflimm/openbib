@@ -613,7 +613,8 @@ sub process_uri {
     my $uri    = $r->request_uri;
     my $path   = $r->path;
     my $scheme = $r->scheme || 'http';
-    my $args   = $r->escaped_args;
+#    my $args   = $r->escaped_args;
+    my $args   = $self->to_cgi_querystring;
 
     my $forwarded_proto = $r->header('X-Forwarded-Proto');
 
@@ -2022,9 +2023,12 @@ sub tunnel_through_authenticator {
     my $path_prefix = $self->param('path_prefix');
     my $args        = $self->to_cgi_querystring;
 
+    if ($logger->is_debug){
+	$logger->debug("Tunnelling to base location $location");
+    }
+    
     # Args? Append Method
     if ($args){
-        $location.="?$args" if ($method eq "POST"); # 
         if ($method){
             $location.=";_method=$method";
         }

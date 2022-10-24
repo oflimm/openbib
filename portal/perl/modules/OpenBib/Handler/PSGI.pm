@@ -2042,7 +2042,7 @@ sub tunnel_through_authenticator {
     
     # Args? Append Method
     if ($args){
-	$redirect_uri.=$args;
+	$redirect_uri.="?".$args;
         if ($method){
             $redirect_uri.=";_method=$method";
         }

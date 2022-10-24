@@ -2016,20 +2016,29 @@ sub tunnel_through_authenticator {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
+
+    my $r           = $self->param('r');    
     my $config      = $self->param('config');
     my $view        = $self->param('view');    
     my $location    = $self->param('location');
+    my $scheme      = $self->param('scheme');
+    my $servername  = $self->param('servername');
     my $path        = $self->param('path');        
-    my $uri         = $self->param('uri');        
+    my $url         = $self->param('url');            
     my $path_prefix = $self->param('path_prefix');
     my $args        = $self->to_cgi_querystring;
 
+    my $uri    = $r->request_uri;
+
     if ($logger->is_debug){
-	$logger->debug("Tunnelling: path $path - uri $uri");
+	$logger->debug("Tunnelling: path $path - uri $uri - url $url");
 	$logger->debug("Tunnelling to path $path");    	
 	$logger->debug("Tunnelling to base location $location");
     }
+
+    # Construct redirect_uri
+
+#    my $redirect_uri = $scheme."://".$servername.
     
     # Args? Append Method
     if ($args){

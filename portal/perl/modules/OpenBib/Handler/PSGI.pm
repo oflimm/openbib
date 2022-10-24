@@ -2019,11 +2019,15 @@ sub tunnel_through_authenticator {
     
     my $config      = $self->param('config');
     my $view        = $self->param('view');    
-    my $location    = $self->param('location');    
+    my $location    = $self->param('location');
+    my $path        = $self->param('path');        
+    my $uri         = $self->param('uri');        
     my $path_prefix = $self->param('path_prefix');
     my $args        = $self->to_cgi_querystring;
 
     if ($logger->is_debug){
+	$logger->debug("Tunnelling: path $path - uri $uri");
+	$logger->debug("Tunnelling to path $path");    	
 	$logger->debug("Tunnelling to base location $location");
     }
     

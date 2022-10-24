@@ -385,6 +385,10 @@ sub authenticate {
     
     # Wenn Return_url existiert, dann wird dorthin gesprungen
     if ($redirect_to){
+	# Resource finger URL -> replace me with userid
+	if ($redirect_to=~m{/users/id/me}){
+	    $redirect_to=~s{/users/id/me}{/users/id/$userid};
+	}
         $redirecturl=$redirect_to;
     }
     

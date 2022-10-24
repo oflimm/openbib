@@ -2038,26 +2038,27 @@ sub tunnel_through_authenticator {
 
     # Construct redirect_uri
 
-#    my $redirect_uri = $scheme."://".$servername.
+    my $redirect_uri = $scheme."://".$servername.$path;
     
     # Args? Append Method
     if ($args){
+	$redirect_uri.=$args;
         if ($method){
-            $location.=";_method=$method";
+            $redirect_uri.=";_method=$method";
         }
     }
     # Else? Set Method    
     elsif ($method) {
-        $location.="?_method=$method";
+        $redirect_uri.="?_method=$method";
     }
 
     if ($logger->is_debug){
-	$logger->debug("Tunnelling to location $location with args $args");
+	$logger->debug("Tunnelling to $redirect_uri");
     }
     
-    my $return_uri = uri_escape($location);
+    $redirect_uri = uri_escape($redirect_uri);
     
-    my $new_location = "$path_prefix/$config->{login_loc}?authenticatorid=$authenticatorid;redirect_to=$return_uri";
+    my $new_location = "$path_prefix/$config->{login_loc}?authenticatorid=$authenticatorid;redirect_to=$redirect_uri";
     
     return $self->redirect($new_location,303);
 }

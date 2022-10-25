@@ -17,7 +17,7 @@ is_deleted: '//is_deleted'
 
 # Personen
 person:
-  'metadata/oai_dc:dc/dc:creator': '0100'        # Verfasser
+  'metadata/oai_dc:dc/datacite:creator': '0100'        # Verfasser
 
 # Koerperschaften
 corporatebody:
@@ -28,17 +28,20 @@ classification:
 
 # Schlagworte
 subject:
-  'metadata/oai_dc:dc/dc:subject': '0710'        # Schlagwort
+  'metadata/oai_dc:dc/datacite:subject': '0710'        # Schlagwort
 
 # Titel
 title:
-  'metadata/oai_dc:dc/dc:title': '0331'
-  'metadata/oai_dc:dc/dc:type': '0800'
+  'metadata/oai_dc:dc/datacite:title': '0331'
+  'metadata/oai_dc:dc/oaire:resourceType': '0800'
   'metadata/oai_dc:dc/dc:description': '0710'
   'metadata/oai_dc:dc/dc:format': '0435'
   'metadata/oai_dc:dc/dc:language': '0516'
   'metadata/oai_dc:dc/dc:source': '0508'
-  'metadata/oai_dc:dc/dc:date': '0425'
+  'metadata/oai_dc:dc/dc:relation': '0451'
+  'metadata/oai_dc:dc/datacite:date': '0425'
+  'metadata/oai_dc:dc/dc:identifierdoi': '0552'  
+  'metadata/oai_dc:dc/dc:relationisbn': '0540'  
   "metadata/oai_dc:dc/dc:identifier[starts-with(.,'http')]": '0662'
   "metadata/oai_dc:dc/dc:relation[starts-with(.,'http')]": '0662'
   "metadata/oai_dc:dc/dc:identifier[starts-with(.,'doi')]": '0501'
@@ -47,9 +50,9 @@ title:
 defaultmediatype: 'Digital'
 
 filter:
-  'metadata/oai_dc:dc/dc:date':
+  'metadata/oai_dc:dc/datacite:date':
      filter_match: "^(\d\d\d\d)"
   'metadata/oai_dc:dc/dc:description':
      filter_newline2br: 1
-  'metadata/oai_dc:dc/dc:title':
+  'metadata/oai_dc:dc/datacite:title':
      filter_newline2br: 1

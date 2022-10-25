@@ -435,7 +435,15 @@ Präsenzbestand
            vormerkbutton = 0 ;
          END;
        END;
-     END;    
+     ELSIF thiscirculation.department_id == "4";
+       # Kein Vormerkbutton in der HWA, wenn mindestens ein Exemplar bestellbar ist
+       FOREACH checkcirculation IN circulation ;
+         IF checkcirculation.department_id == 4 && checkcirculation.availability.match('^(loan|order)$');
+           vormerkbutton = 0 ;
+         END;
+       END;
+     END;
+
 %]
 [%   IF vormerkbutton  && config.get('active_ils') %]
 

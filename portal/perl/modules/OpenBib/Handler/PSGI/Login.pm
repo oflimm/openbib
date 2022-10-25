@@ -389,6 +389,8 @@ sub authenticate {
 	if ($redirect_to=~m{/users/id/me}){
 	    $redirect_to=~s{/users/id/me}{/users/id/$userid};
 	}
+	# Hashed escapen
+	$redirect_to=~s{#}{%23}g;
         $redirecturl=$redirect_to;
     }
     

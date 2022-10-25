@@ -457,6 +457,10 @@ sub negotiate_content {
     my $config  = $self->param('config');
     my $session = $self->param('session');
     
+    if ($logger->is_debug){
+	$logger->debug("r-Method: ".$r->method);
+    }
+    
     if (!$self->param('disable_content_negotiation')){
         $logger->debug("Doing content negotiation");
 
@@ -2042,10 +2046,12 @@ sub tunnel_through_authenticator {
     
     # Args? Append Method
     if ($args){
-	$redirect_uri.="?".$args;
+	$redirect_uri.="?";
         if ($method){
-            $redirect_uri.=";_method=$method";
+            $redirect_uri.="_method=$method";
         }
+	$redirect_uri.=";".$args;
+
     }
     # Else? Set Method    
     elsif ($method) {

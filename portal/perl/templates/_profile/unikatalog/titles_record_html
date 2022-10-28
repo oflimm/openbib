@@ -280,7 +280,25 @@ $(document).ready(function(){
 
 <div class="content"><!-- Begin Fulltitle -->
 
-<div class="ob-category_header">
+<div class="row flex-md-row-reverse"><!-- Begin Details -->
+
+<!-- <div class="col-xs-6 col-md-3 ob-titleimage"><!-- Begin Images -->
+<div class="col-md-3"><!-- Begin Images -->
+  <div class="ob-titleimage"><!-- Begin ob-titleimage -->
+[% PROCESS common/subtemplate name="titles_record_html_images" %]
+  </div><!-- End ob-titleimage -->
+</div><!-- End Col Images -->
+
+<!-- Title begins here -->
+<!-- <div class="col-md-9 categories ob-title_record"><!-- Begin Categories -->
+<div class="col-md-9"><!-- Begin Categories -->
+
+<div class="ob-title_record">
+
+ <div id="ob-main_information">
+  <div class="card">
+    <div class="card-header" id="headingMainInformation">
+      <h5 class="mb-0">        
 [%-  IF is_freemedia -%]
          [% locinfo.identifier.${"freemedia"}.description %]
 [%-  ELSIF is_licensedmedia -%]
@@ -294,21 +312,11 @@ $(document).ready(function(){
 [%-  ELSE %]
 [%     dbinfo.get('dbnames').${database}.short %]
 [%   END %]
-</div>
+      </h5>
+    </div>
+    <div id="collapseMainInformation">
+      <div class="card-body">
 
-<div class="row flex-md-row-reverse"><!-- Begin Details -->
-
-<!-- <div class="col-xs-6 col-md-3 ob-titleimage"><!-- Begin Images -->
-<div class="col-md-3"><!-- Begin Images -->
-  <div class="ob-titleimage"><!-- Begin ob-titleimage -->
-[% PROCESS common/subtemplate name="titles_record_html_images" %]
-  </div><!-- End ob-titleimage -->
-</div><!-- End Col Images -->
-
-<!-- Title begins here -->
-<!-- <div class="col-md-9 categories ob-title_record"><!-- Begin Categories -->
-<div class="col-md-9"><!-- Begin Categories -->
-  <div class="ob-title_record">
 [% IF record_exists %]
 [%# USE dumper;dumper.dump(normdata)%]
 [%-
@@ -339,8 +347,11 @@ Open Access. Im Internet weltweit frei verfügbar [% IF thanks_to_unpaywall %](v
 Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/nutzungshinweise/">Netz der Universität Köln</a> bzw. für autorisierte Benutzer. Die <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/besonderheiten/">Druck- und Downloadmöglichkeiten</a> variieren je nach Anbieter.
 </div>
 [% END %]
-
- <div id="ob-supplemental_information" class="accordion">
+     </div>
+   </div>
+  </div>
+ </div>
+ <div id="ob-supplemental_information" class="accordion mt-4">
   <div class="card">
     <div class="card-header" id="headingSupplementalInformation">
       <h5 class="mb-0">
@@ -369,9 +380,10 @@ Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_auslei
 
      </div>
    </div>
-  </div>
- </div> <!-- End ob-supplemental_information -->
- 
+  </div><!-- End ob-supplemental_information -->
+ </div><!-- End ob-title_record -->
+
+
 [% ELSE %]
 <h2>[% msg.maketext("Ein Titel mit dieser ID ist nicht (mehr) in diesem Katalog vorhanden.") %]</h2>
 [% END %]

@@ -309,7 +309,9 @@ $(document).ready(function(){
 [%      ELSIF locations.size > 1 %]
          [% msg.maketext('Verschiedene Standorte') %]
 [%      END %]
-[%-  ELSE %]
+[%-  ELSIF locinfo.identifier.${locations.first}.description %]
+         [% locinfo.identifier.${locations.first}.description %]
+[%   ELSE %]	 
 [%     dbinfo.get('dbnames').${database}.short %]
 [%   END %]
       </h5>

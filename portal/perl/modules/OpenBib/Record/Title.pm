@@ -228,9 +228,10 @@ sub load_full_record {
           $logger->debug("Got record from memcached: ".YAML::Dump($record));
       }
 
-      if (defined $record->{fields} && defined $record->{holdings}){
+      if (defined $record->{fields} && defined $record->{holdings} && defined $record->{locations}){
           $self->set_fields($record->{fields});
           $self->set_holding($record->{holdings});
+	  $self->set_locations($record->{locations});
           
           if ($config->{benchmark}) {
               $btime=new Benchmark;
@@ -274,7 +275,7 @@ sub load_full_record {
     $self->set_similar_records($similar_records);
 
     if ($config->{memc}){
-        $config->{memc}->set($memc_key,{ fields => $fields, holdings => $holdings },$config->{memcached_expiration}{'record:title:full'});
+        $config->{memc}->set($memc_key,{ fields => $fields, holdings => $holdings, locations => $locations_ref },$config->{memcached_expiration}{'record:title:full'});
         $logger->debug("Fetch record from db and store in memcached");
     }
     

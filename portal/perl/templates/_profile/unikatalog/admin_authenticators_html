@@ -44,6 +44,7 @@
     <option value="ldap">[% msg.maketext("LDAP") %]</option>
     <option value="olws">[% msg.maketext("OLWS") %]</option>
     <option value="paia">[% msg.maketext("PAIA") %]</option>
+    <option value="ils">[% msg.maketext("ILS") %]</option>    
   </select>
 <label for="type">[% msg.maketext("Typ") %]</label>
 </div>

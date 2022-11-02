@@ -501,6 +501,11 @@ sub get_input_definition {
             encoding => 'none',
             type     => 'bool',
         },
+        circtype => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
         circurl => {
             default  => '',
             encoding => 'none',

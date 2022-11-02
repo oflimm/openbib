@@ -1168,6 +1168,7 @@ sub get_dbinfo_overview {
 	    holdingfile => $item->holdingfile,
 	    autoconvert => $item->autoconvert,
 	    circ => $item->circ,
+            circtype => $item->circtype,
 	    circurl => $item->circurl,
 	    circwsurl => $item->circwsurl,
             circdb => $item->circdb,
@@ -5063,13 +5064,23 @@ sub get_id_of_selfreg_authenticator {
 }
 
 sub get_ils_of_database {
-    my ($self,$database)=@_;
-
-    my $ils = "usbws";
-
-    # todo
-
-    return $ils;
+    my ($self,$dbname) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    # DBI: "select circdb from databaseinfo where dbname = ?"
+    my $ils = $self->get_schema->resultset('Databaseinfo')->search(
+        {
+	    dbname => $dbname,
+        },
+        {
+            select => ['circtype'],
+	    result_class => 'DBIx::Class::ResultClass::HashRefInflator', 
+	}
+	)->first;
+    
+    return ($ils eq "alma")?'alma':'usbws';
 }
     
 sub get_searchprofile_or_create {

@@ -192,6 +192,11 @@ __PACKAGE__->table("databaseinfo");
   default_value: (empty string)
   is_nullable: 1
 
+=head2 circtype
+
+  data_type: 'text'
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -264,6 +269,8 @@ __PACKAGE__->add_columns(
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
   "schema",
   { data_type => "text", default_value => "", is_nullable => 1 },
+  "circtype",
+  { data_type => "text", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -455,8 +462,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-08-05 11:12:06
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:9y22HUXZyua7O6n4ZjI7qA
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-11-02 08:25:54
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:A5oWctdRlRdCSJqlbpLUtg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

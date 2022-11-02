@@ -39,6 +39,7 @@ use JSON::XS qw/decode_json/;
 use Log::Log4perl qw(get_logger :levels);
 use LWP::UserAgent;
 use MLDBM qw(DB_File Storable);
+use Net::LDAP;
 use SOAP::Lite;
 use Storable ();
 use YAML::Syck;
@@ -67,59 +68,180 @@ sub authenticate {
     my $userid = 0;
 
     my $config  = $self->get_config;
-    my $dbname  = $self->get('name');
+    my $dbname  = $self->get_database;
 
-    # Validate password for user
-    my $ua = LWP::UserAgent->new();
-    $ua->agent('USB Koeln/1.0');
-    $ua->timeout(30);
+    my $response_ref = {
+	database => $dbname,
+	ils => 'alma',
+    };
+    
+    my $sisauth_config;
+    
+    eval {
+	$sisauth_config = $config->{sisauth};
+    };
 
-    # Todo
-    
-    $logger->debug("Authentication successful");
-    
-    # Gegebenenfalls Benutzer lokal eintragen
-    $logger->debug("Save new user");
+    unless ($sisauth_config){
+	$response_ref->{failure} = {
+	    error => 'Missing or invalid query parameters',
+	    code => -3,  # Status: wrong password
+	};
 
-    my $user = new OpenBib::User;
+	return $response_ref;	
+    }
+
+    my @ldap_parameters = ($sisauth_config->{hostname});
+
+    foreach my $parameter ('scheme','port','verify','timeout','onerror','cafile'){
+	push @ldap_parameters, ($parameter,$sisauth_config->{$parameter}) if ($sisauth_config->{$parameter});
+
+    }
+
+    if ($logger->is_debug){
+	$logger->debug("Using Parameters ".YAML::Dump(\@ldap_parameters));
+    }
     
-    # Eintragen, wenn noch nicht existent
-    # USBWS-Kennungen werden NICHT an einen View gebunden, damit mit der gleichen Kennung verschiedene lokale Bibliothekssysteme genutzt werden koennen - spezifisch fuer die Universitaet zu Koeln
-    if (!$user->user_exists_in_view({ username => $username, authenticatorid => $self->get('id'), viewid => undef })) {
-	# Neuen Satz eintragen
-	$userid = $user->add({
-	    username        => $username,
-	    hashed_password => undef,
-	    authenticatorid => $self->get('id'),
-	    viewid          => undef,
-			     });
+    my $ldaps ;
+
+    eval {
+	$ldaps = Net::LDAP->new(@ldap_parameters);
+    };
+    
+    if ($@){
+	$logger->error("LDAP-Fehler: ".$@);
 	
-	$logger->debug("User added with new id $userid");
+	$response_ref->{failure} = {
+	    error => 'Missing or invalid query parameters',
+	    code => -3,  # Status: wrong password
+	};
+
+	return $response_ref;
+    }
+    
+    my $success = 0;
+
+    if (defined $ldaps) {
+	my $match_user = $sisauth_config->{match_user};
+	my $base_dn    = $sisauth_config->{base_dn};
+	
+	$match_user=~s/USER_NAME/$username/;
+	
+	$logger->debug("Checking $match_user in LDAP-Tree at base_dn $base_dn ");
+	
+	my $proxy_msg = $ldaps->bind(
+	    $sisauth_config->{proxy_binddn}, 
+	    password => $sisauth_config->{proxy_pw},
+	    );
+	
+	
+	if ($proxy_msg && $proxy_msg->code() == 0){
+	    if ($logger->is_debug){
+		$logger->debug("Proxy Authenticator LDAP: OK");
+		$logger->debug("Returned: ".YAML::Dump($proxy_msg));
+	    }
+	    
+	    my $result = $ldaps->search(
+		base   => $sisauth_config->{basedn},
+		filter => qq($match_user),
+		);
+	    
+	    if ($result && $result->code){
+		$logger->error("Error searching user $username: ".$result->error );
+		$response_ref->{failure} = {
+		    error => 'wrong password',
+		    code => -3,  # Status: wrong password
+		};
+		
+		return $response_ref;
+	    }
+	    
+	    my $userdn = "";	
+	    my $account_ref = {};
+	    
+	    if ($result && $result->count == 1) {	    
+		my $entry = $result->entry(0);
+		
+		$userdn = $entry->dn();
+
+		# Essential Data
+		$account_ref->{username} = $entry->get_value('USBportalName');
+		$account_ref->{fullname} = $entry->get_value('cn');
+		$account_ref->{surname}  = $entry->get_value('sn');
+		$account_ref->{forename} = $entry->get_value('givenName');
+		$account_ref->{email}    = $entry->get_value('USBEmailAdr');
+				
+		if ($logger->is_debug){
+		    $logger->debug(YAML::Dump($entry));
+		    
+		}
+	    }
+
+	    $logger->debug("Got userdn $userdn");
+	    
+	    if ($userdn){
+		my $user_msg = $ldaps->bind(
+		    $userdn,
+		    password => $password,
+		    );
+		
+		
+		if ($user_msg && $user_msg->code() == 0){
+		    $success = 1;
+
+		    # Store essential data
+		    $response_ref->{userinfo}{username} = $account_ref->{username};    
+		    $response_ref->{userinfo}{fullname} = $account_ref->{fullname};
+		    $response_ref->{userinfo}{surname}  = $account_ref->{surname};
+		    $response_ref->{userinfo}{forename} = $account_ref->{forename};
+		    $response_ref->{userinfo}{email}    = $account_ref->{email};
+		    
+		}
+	    }
+	    else {
+		$logger->debug("Received error ".$proxy_msg->code().": ".$proxy_msg->error());
+		$response_ref->{failure} = {
+		    error => 'wrong password',
+		    code => -3,  # Status: wrong password
+		};
+		
+		return $response_ref;
+	    }
+	}
+	else {
+	    $response_ref->{failure} = {
+		error => 'wrong password',
+		code => -3,  # Status: wrong password
+	    };
+	    
+	    return $response_ref;
+	}
     }
     else {
-	my $local_user = $config->get_schema->resultset('Userinfo')->search_rs(
-	    {
-		username        => $username,
-		viewid          => undef,
-		authenticatorid => $self->get('id'),
-	    },
-	    undef
-	    )->first;
+	$logger->error("LDAPS object NOT created");
+	$response_ref->{failure} = {
+	    error => 'wrong password',
+	    code => -3,  # Status: wrong password
+	};
 	
-	if ($local_user){
-	    $userid = $local_user->get_column('id');
-	}
-	
-	$logger->debug("User exists with id $userid");
-	
+	return $response_ref;
     }
+        
+    $logger->debug("Authentication via LDAP done");
     
-    # Benuzerinformationen eintragen
-    #$user->set_private_info($username,\%userinfo);
-    
-    #$logger->debug("Updated private user info");
+    if (!$success) {
+	$response_ref->{failure} = {
+	    error => 'wrong password',
+	    code => -3,  # Status: wrong password
+	};
+	
+	return $response_ref;
+    }
 
-    return $userid;
+    $logger->debug("Authentication successful");
+
+    $response_ref->{successful} = 1;
+
+    return $response_ref;
 }
 
 ######################################################################

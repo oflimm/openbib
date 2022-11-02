@@ -298,6 +298,167 @@ sub get_accountinfo {
     return $response_ref;
 }
 
+# Accountinformationen
+sub get_userdata {
+    my ($self,$username) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    my $config  = $self->get_config;
+    my $dbname  = $self->get_database;
+    
+    my $response_ref = {};
+        
+    unless ($circinfotable->has_circinfo($dbname) && defined $circinfotable->get($dbname)->{circ}) {
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem mit der Verbindung zum SIS",
+	};
+	
+	return $response_ref;
+    }
+	
+    $logger->debug("Getting Circulation info via SIS LDAP");
+        	
+    my $sisauth_config;
+    
+    eval {
+	$sisauth_config = $config->{sisauth};
+    };
+    
+    unless ($sisauth_config){
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem mit der Verbindung zum SIS",
+	};
+	
+	return $response_ref;
+    }
+	
+    my @ldap_parameters = ($sisauth_config->{hostname});
+    
+    foreach my $parameter ('scheme','port','verify','timeout','onerror','cafile'){
+	push @ldap_parameters, ($parameter,$sisauth_config->{$parameter}) if ($sisauth_config->{$parameter});
+	
+    }
+    
+    if ($logger->is_debug){
+	$logger->debug("Using Parameters ".YAML::Dump(\@ldap_parameters));
+    }
+    
+    my $ldaps ;
+    
+    eval {
+	$ldaps = Net::LDAP->new(@ldap_parameters);
+    };
+    
+    if ($@){
+	$logger->error("LDAP-Fehler: ".$@);
+	
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem mit der Verbindung zum SIS",
+	};
+	
+	return $response_ref;
+    }
+    
+    unless (defined $ldaps) {
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem mit der Verbindung zum SIS",
+	};
+
+	return $response_ref;
+    }
+    
+    my $match_user = $sisauth_config->{match_user};
+    my $base_dn    = $sisauth_config->{base_dn};
+    
+    $match_user=~s/USER_NAME/$username/;
+    
+    $logger->debug("Checking $match_user in LDAP-Tree at base_dn $base_dn ");
+    
+    my $proxy_msg = $ldaps->bind(
+	$sisauth_config->{proxy_binddn}, 
+	password => $sisauth_config->{proxy_pw},
+	);
+    
+
+    unless ($proxy_msg && $proxy_msg->code() == 0){
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem mit der Verbindung zum SIS",
+	};
+	$response_ref = {
+	    error => "user error",
+	    error_description => "Ausweisnummer konnte nicht gefunden werden",
+	};
+
+	return $response_ref;
+    }
+
+    
+    if ($logger->is_debug){
+	$logger->debug("Proxy Authenticator LDAP: OK");
+	$logger->debug("Returned: ".YAML::Dump($proxy_msg));
+    }
+    
+    my $result = $ldaps->search(
+	base   => $sisauth_config->{basedn},
+	filter => qq($match_user),
+	);
+
+    unless ($result && $result->code() == 0){
+	$response_ref = {
+	    error => "user error",
+	    error_description => "Ausweisnummer konnte nicht gefunden werden",
+	};
+	
+	return $response_ref;
+    }
+
+    unless ($result && $result->count == 1){
+	$response_ref = {
+	    error => "user error",
+	    error_description => "Ausweisnummer mehrfach vorhanden",
+	};
+	
+	return $response_ref;
+    }
+    
+    
+    my $entry = $result->entry(0);
+
+    $response_ref->{salutation}        = $entry->get_value('title');
+    $response_ref->{username}          = $entry->get_value('USBuserNumber');
+    $response_ref->{fullname}          = $entry->get_value('cn');
+    $response_ref->{startdate}         = $entry->get_value('USBaufdatum');
+    $response_ref->{enddate}           = $entry->get_value('USBawdatum');
+    $response_ref->{birthdate}         = $entry->get_value('USBgedatum');
+    $response_ref->{street}            = $entry->get_value('USBstr');
+    $response_ref->{street2}           = $entry->get_value('USBzstr');
+    $response_ref->{city}              = $entry->get_value('USBort');
+    $response_ref->{city2}             = $entry->get_value('USBzort');
+    $response_ref->{zip}               = $entry->get_value('USBplz');
+    $response_ref->{zip2}              = $entry->get_value('USBzplz');
+    $response_ref->{phone}             = $entry->get_value('USBtel');
+    $response_ref->{phone2}            = $entry->get_value('USBztel');
+    $response_ref->{email}             = $entry->get_value('USBEmailAdr');
+    $response_ref->{email2}            = $entry->get_value('USB2Emailadr');
+       
+    if ($logger->is_debug){
+	$logger->debug(YAML::Dump($entry));
+	
+    }
+    
+    return $response_ref;
+}
+
+
 sub get_address {
     my ($self,$username) = @_;
 

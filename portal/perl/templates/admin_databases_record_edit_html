@@ -210,7 +210,7 @@
 </div>
 
 <div class="form-group">
-<label for="cirtype">[% msg.maketext("Type der Anbindung") %]</label>
+<label for="cirtype">[% msg.maketext("Typ der Anbindung") %]</label>
   <select class="form-control" name="circtype" id="circtype">
     <option value="alma" [% IF databaseinfo.circ == "alma" %]selected[% END %]>[% msg.maketext("Alma") %]</option>
     <option value="daia" [% IF databaseinfo.circ == "daia" %]selected[% END %]>[% msg.maketext("DAIA") %]</option>

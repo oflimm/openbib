@@ -202,27 +202,34 @@
 <h1 class="display-5">[% msg.maketext("Ausleih-Einstellungen") %]</h1>
 
 <div class="form-group">
-<label for="cird">[% msg.maketext("Zugriff &uuml;ber DAIA") %]</label>
+<label for="cird">[% msg.maketext("Anbindung Ausleihsystem") %]</label>
   <select class="form-control" name="circ" id="circ">
     <option value="false" [% IF databaseinfo.circ == 0 %]selected[% END %]>[% msg.maketext("Nein") %]</option>
     <option value="true" [% IF databaseinfo.circ == 1 %]selected[% END %]>[% msg.maketext("Ja") %]</option>
   </select>
 </div>
 
-<!-- 
 <div class="form-group">
-<label for="host">[% msg.maketext("OLWS DB-Name im Lokalsystem") %]</label>
-<input class="form-control" type="text" name="circdb" id="circdb" value="[% databaseinfo.circdb %]" size="20" />
+<label for="cirtype">[% msg.maketext("Type der Anbindung") %]</label>
+  <select class="form-control" name="circtype" id="circtype">
+    <option value="alma" [% IF databaseinfo.circ == "alma" %]selected[% END %]>[% msg.maketext("Alma") %]</option>
+    <option value="daia" [% IF databaseinfo.circ == "daia" %]selected[% END %]>[% msg.maketext("DAIA") %]</option>
+    <option value="usbws" [% IF databaseinfo.circtype == "usbws" %]selected[% END %]>[% msg.maketext("USBWS") %]</option>
+  </select>
 </div>
--->
 
 <div class="form-group">
-<label for="circwsurl">[% msg.maketext("DAIA Zugriffs-URL") %]</label>
+<label for="host">[% msg.maketext("DB-Name im Lokalsystem (USBWS)") %]</label>
+<input class="form-control" type="text" name="circdb" id="circdb" value="[% databaseinfo.circdb %]" size="20" />
+</div>
+
+<div class="form-group">
+<label for="circwsurl">[% msg.maketext("Webservice-URL") %]</label>
 <input class="form-control" type="text" name="circwsurl" id="circwsurl" value="[% databaseinfo.circwsurl %]" size="20" />
 </div>
 
 <div class="form-group">
-<label for="circurl">[% msg.maketext("Externer WebOPAC-URL") %]</label>
+<label for="circurl">[% msg.maketext("URL Externer WebOPAC") %]</label>
 <input class="form-control" type="text" name="circurl" id="circurl" value="[% databaseinfo.circurl %]" size="20" />
 </div>
 

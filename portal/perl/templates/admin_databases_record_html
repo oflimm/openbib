@@ -40,8 +40,9 @@
 <tr><th>[% msg.maketext("Autokonvertierung (cron)") %]</th><td>[% IF databaseinfo.autoconvert == '0' %][% msg.maketext("Nein") %][% END %][% IF databaseinfo.autoconvert == '1' %][% msg.maketext("Ja") %][% END %]</td></tr>
 <tr><th></th><td></td></tr>
 <tr><th colspan="2" style="font-size:1.4em;">[% msg.maketext("Ausleih-Einstellungen") %]</th></tr>
-<tr><th>[% msg.maketext("Zugriff &uuml;ber OLWS") %]</th><td>[% IF databaseinfo.circ == '0' %][% msg.maketext("Nein") %][% END %][% IF databaseinfo.circ == '1' %][% msg.maketext("Ja") %][% END %]</td></tr>
-<tr><th>[% msg.maketext("OLWS DB-Name im Lokalsystem") %]</th><td>[% databaseinfo.circdb %]</td></tr>
-<tr><th>[% msg.maketext("OLWS Zugriffs-URL") %]</th><td>[% databaseinfo.circwsurl %]</td></tr>
-<tr><th>[% msg.maketext("WebOPAC-URL") %]</th><td>[% databaseinfo.circurl %]</td></tr>
+<tr><th>[% msg.maketext("Anbindung Ausleihsystem") %]</th><td>[% IF databaseinfo.circ == '0' %][% msg.maketext("Nein") %][% END %][% IF databaseinfo.circ == '1' %][% msg.maketext("Ja") %][% END %]</td></tr>
+<tr><th>[% msg.maketext("Typ der Anbindung") %]</th><td>[% IF databaseinfo.circtype == 'alma' %]ALMA[% ELSIF databaseinfo.circtype == 'usbws' %]USBWS[% ELSIF databaseinfo.circtype == 'daia' %]DAIA[% END%]</td></tr>
+<tr><th>[% msg.maketext("DB-Name im Lokalsystem (USBWS)") %]</th><td>[% databaseinfo.circdb %]</td></tr>
+<tr><th>[% msg.maketext("Webservice-URL") %]</th><td>[% databaseinfo.circwsurl %]</td></tr>
+<tr><th>[% msg.maketext("URL Externer WebOPAC") %]</th><td>[% databaseinfo.circurl %]</td></tr>
 </table>

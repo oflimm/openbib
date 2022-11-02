@@ -40,6 +40,7 @@ CREATE TABLE databaseinfo (
 
  autoconvert  BOOL,
  circ         BOOL,
+ circtype     TEXT,
  circurl      TEXT,
  circwsurl    TEXT,
  circdb       TEXT,

@@ -120,103 +120,7 @@ sub authenticate {
     
     my $success = 0;
 
-    if (defined $ldaps) {
-	my $match_user = $sisauth_config->{match_user};
-	my $base_dn    = $sisauth_config->{base_dn};
-	
-	$match_user=~s/USER_NAME/$username/;
-	
-	$logger->debug("Checking $match_user in LDAP-Tree at base_dn $base_dn ");
-	
-	my $proxy_msg = $ldaps->bind(
-	    $sisauth_config->{proxy_binddn}, 
-	    password => $sisauth_config->{proxy_pw},
-	    );
-	
-	
-	if ($proxy_msg && $proxy_msg->code() == 0){
-	    if ($logger->is_debug){
-		$logger->debug("Proxy Authenticator LDAP: OK");
-		$logger->debug("Returned: ".YAML::Dump($proxy_msg));
-	    }
-	    
-	    my $result = $ldaps->search(
-		base   => $sisauth_config->{basedn},
-		filter => qq($match_user),
-		);
-	    
-	    if ($result && $result->code){
-		$logger->error("Error searching user $username: ".$result->error );
-		$response_ref->{failure} = {
-		    error => 'wrong password',
-		    code => -3,  # Status: wrong password
-		};
-		
-		return $response_ref;
-	    }
-	    
-	    my $userdn = "";	
-	    my $account_ref = {};
-	    
-	    if ($result && $result->count == 1) {	    
-		my $entry = $result->entry(0);
-		
-		$userdn = $entry->dn();
-
-		# Essential Data
-		$account_ref->{username} = $entry->get_value('USBportalName');
-		$account_ref->{fullname} = $entry->get_value('cn');
-		$account_ref->{surname}  = $entry->get_value('sn');
-		$account_ref->{forename} = $entry->get_value('givenName');
-		$account_ref->{email}    = $entry->get_value('USBEmailAdr');
-				
-		if ($logger->is_debug){
-		    $logger->debug(YAML::Dump($entry));
-		    
-		}
-	    }
-
-	    $logger->debug("Got userdn $userdn");
-	    
-	    if ($userdn){
-		my $user_msg = $ldaps->bind(
-		    $userdn,
-		    password => $password,
-		    );
-		
-		
-		if ($user_msg && $user_msg->code() == 0){
-		    $success = 1;
-
-		    # Store essential data
-		    $response_ref->{userinfo}{username} = $account_ref->{username};    
-		    $response_ref->{userinfo}{fullname} = $account_ref->{fullname};
-		    $response_ref->{userinfo}{surname}  = $account_ref->{surname};
-		    $response_ref->{userinfo}{forename} = $account_ref->{forename};
-		    $response_ref->{userinfo}{email}    = $account_ref->{email};
-		    
-		}
-	    }
-	    else {
-		$logger->debug("Received error ".$proxy_msg->code().": ".$proxy_msg->error());
-		$response_ref->{failure} = {
-		    error => 'wrong password',
-		    code => -3,  # Status: wrong password
-		};
-		
-		return $response_ref;
-	    }
-	}
-	else {
-	    $response_ref->{failure} = {
-		error => 'wrong password',
-		code => -3,  # Status: wrong password
-	    };
-	    
-	    return $response_ref;
-	}
-    }
-    else {
+    unless (defined $ldaps) {
 	$logger->error("LDAPS object NOT created");
 	$response_ref->{failure} = {
 	    error => 'wrong password',
@@ -224,6 +128,105 @@ sub authenticate {
 	};
 	
 	return $response_ref;
+    }
+    
+    my $match_user = $sisauth_config->{match_user};
+    my $base_dn    = $sisauth_config->{base_dn};
+    
+    $match_user=~s/USER_NAME/$username/;
+    
+    $logger->debug("Checking $match_user in LDAP-Tree at base_dn $base_dn ");
+    
+    my $proxy_msg = $ldaps->bind(
+	$sisauth_config->{proxy_binddn}, 
+	password => $sisauth_config->{proxy_pw},
+	);
+    
+    
+    unless ($proxy_msg && $proxy_msg->code() == 0){
+	    $response_ref->{failure} = {
+		error => 'wrong password',
+		code => -3,  # Status: wrong password
+	    };
+	    
+	    return $response_ref;
+    }
+    
+    if ($logger->is_debug){
+	$logger->debug("Proxy Authenticator LDAP: OK");
+	$logger->debug("Returned: ".YAML::Dump($proxy_msg));
+    }
+    
+    my $result = $ldaps->search(
+	base   => $sisauth_config->{basedn},
+	filter => qq($match_user),
+	);
+
+    unless ($result && NOT $result->code){
+	$logger->error("Error searching user $username: ".$result->error );
+	$response_ref->{failure} = {
+	    error => 'wrong password',
+	    code => -3,  # Status: wrong password
+	};
+	
+	return $response_ref;
+    }
+	    
+    my $userdn = "";	
+    my $account_ref = {};
+    
+    unless ($result && $result->count == 1) {
+	$response_ref->{failure} = {
+	    error => 'wrong password',
+	    code => -3,  # Status: wrong password
+	};
+	
+	return $response_ref;
+    }
+	
+    my $entry = $result->entry(0);
+    
+    $userdn = $entry->dn();
+    
+    # Essential Data
+    $account_ref->{username} = $entry->get_value('USBportalName');
+    $account_ref->{fullname} = $entry->get_value('cn');
+    $account_ref->{surname}  = $entry->get_value('sn');
+    $account_ref->{forename} = $entry->get_value('givenName');
+    $account_ref->{email}    = $entry->get_value('USBEmailAdr');
+    
+    if ($logger->is_debug){
+	$logger->debug(YAML::Dump($entry));
+	
+    }
+    
+    $logger->debug("Got userdn $userdn");
+    
+    if ($userdn){
+	my $user_msg = $ldaps->bind(
+	    $userdn,
+	    password => $password,
+	    );
+	
+	
+	unless ($user_msg && $user_msg->code() == 0){
+	$response_ref->{failure} = {
+	    error => 'wrong password',
+	    code => -3,  # Status: wrong password
+	};
+	
+	return $response_ref;
+	}
+	    
+	$success = 1;
+	
+	# Store essential data
+	$response_ref->{userinfo}{username} = $account_ref->{username};    
+	$response_ref->{userinfo}{fullname} = $account_ref->{fullname};
+	$response_ref->{userinfo}{surname}  = $account_ref->{surname};
+	$response_ref->{userinfo}{forename} = $account_ref->{forename};
+	$response_ref->{userinfo}{email}    = $account_ref->{email};
+	
     }
         
     $logger->debug("Authentication via LDAP done");
@@ -388,7 +391,7 @@ sub get_userdata {
 	);
     
 
-    unless ($proxy_msg && $proxy_msg->code() == 0){
+    unless ($proxy_msg && NOT $proxy_msg->code()){
 	$response_ref = {
 	    error => "connection error",
 	    error_description => "Problem mit der Verbindung zum SIS",

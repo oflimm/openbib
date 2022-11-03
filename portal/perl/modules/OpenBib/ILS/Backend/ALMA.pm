@@ -162,7 +162,7 @@ sub authenticate {
 	filter => qq($match_user),
 	);
 
-    unless ($result && NOT $result->code){
+    unless ($result && ! $result->code){
 	$logger->error("Error searching user $username: ".$result->error );
 	$response_ref->{failure} = {
 	    error => 'wrong password',
@@ -391,7 +391,7 @@ sub get_userdata {
 	);
     
 
-    unless ($proxy_msg && NOT $proxy_msg->code()){
+    unless ($proxy_msg && ! $proxy_msg->code()){
 	$response_ref = {
 	    error => "connection error",
 	    error_description => "Problem mit der Verbindung zum SIS",
@@ -458,17 +458,6 @@ sub get_userdata {
 	
     }
     
-    return $response_ref;
-}
-
-
-sub get_address {
-    my ($self,$username) = @_;
-
-    my $response_ref = {};
-    
-    # todo
-
     return $response_ref;
 }
 
@@ -691,7 +680,7 @@ Bestellungen, Vormerkungen und Ausleihen in einer Abfrage aus dem ILS holen
 
 Zusammenfassung des Nutzers aus ILS holen (Zahl Ausleihen, Vormerkunge, etc.)
 
-=item get_address
+=item get_userdata
 
 Adressinformationen des Nutzer aus dem ILS holen
 

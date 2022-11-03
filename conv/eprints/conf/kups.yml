@@ -1,0 +1,12 @@
+# Encoding der Daten
+# encoding: iso-8859-1
+# encoding: utf8
+
+# Tracelevel
+tracelevel:
+
+# ID Prefix for backward compatability
+idprefix: 'oai:USBKOELN.ub.uni-koeln.de:'
+
+# base URL
+baseurl: 'https://kups.ub.uni-koeln.de/'

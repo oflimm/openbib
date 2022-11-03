@@ -33,51 +33,45 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-our (%autdubbuf,%kordubbuf,%swtdubbuf,%notdubbuf);
+use Text::Unidecode;
+
 our (%person,%corporatebody,%subject,%classification);
 our ($next_autid,$next_korid,$next_swtid,$next_notid) = (1,1,1,1);
-our ($next_person_id,$next_corporatebody_id,$next_subject_id,$next_classification_id) = (1,1,1,1);
 
-%autdubbuf = ();
-%kordubbuf = ();
-%swtdubbuf = ();
-%notdubbuf = ();
+our %german_umlauts = (
+    'Ä' => 'Ae',
+    'ä' => 'ae',
+    'Ö' => 'Oe',
+    'ö' => 'oe',
+    'Ü' => 'Ue',
+    'ü' => 'ue',
+    'ß' => 'ss', 
+    );
 
 %person         = ();
 %corporatebody  = ();
 %subject        = ();
 %classification = ();
 
-sub get_autidn {
-    my ($content)=@_;
-
-    if ($content=~/^\d+$/){
-        if (exists $autdubbuf{$content}){
-            return (-1)*$autdubbuf{$content};
-        }
-        else {
-            $autdubbuf{$content}=$next_autid;
-            $next_autid++;
-            return $autdubbuf{$content};
-        }
-    }
-    else {
-        return $autdubbuf{$content};
-    }   
-                              
-}
-
 sub get_person_id {
     my ($content)=@_;
 
     my $new = 0;
-    
-    if (exists $person{$content}){
 
+    # Verlinkt per GND?
+    if ($content =~m/DE-588/){
+	$content=~s/\(DE-588\)//;
+	
+	unless (exists $person{$content}){
+	    $person{$content}=$content;
+	    $new = 1;
+	}
+	
+	return ($person{$content},$new);
     }
-    else {
-        $person{$content}=$next_person_id;
-        $next_person_id++;
+    
+    unless (exists $person{$content}){
+        $person{$content}=normalize_id($content);
         $new = 1;
     }
 
@@ -96,13 +90,21 @@ sub get_corporatebody_id {
     my ($content)=@_;
 
     my $new = 0;
-    
-    if (exists $corporatebody{$content}){
 
+    # Verlinkt per GND?
+    if ($content =~m/DE-588/){
+	$content=~s/\(DE-588\)//;
+	
+	unless (exists $corporatebody{$content}){
+	    $corporatebody{$content}=$content;
+	    $new = 1;
+	}
+	
+	return ($corporatebody{$content},$new);
     }
-    else {
-        $corporatebody{$content}=$next_corporatebody_id;
-        $next_corporatebody_id++;
+    
+    unless (exists $corporatebody{$content}){
+        $corporatebody{$content}=normalize_id($content);
         $new = 1;
     }
 
@@ -121,18 +123,27 @@ sub get_subject_id {
     my ($content)=@_;
 
     my $new = 0;
-    
-    if (exists $subject{$content}){
 
+    # Verlinkt per GND?
+    if ($content =~m/DE-588/){
+	$content=~s/\(DE-588\)//;
+	
+	unless (exists $subject{$content}){
+	    $subject{$content}=$content;
+	    $new = 1;
+	}
+	
+	return ($subject{$content},$new);
     }
-    else {
-        $subject{$content}=$next_subject_id;
-        $next_subject_id++;
+    
+    unless (exists $subject{$content}){
+        $subject{$content}=normalize_id($content);
         $new = 1;
     }
 
     return ($subject{$content},$new);
 }
+
 
 sub set_subject_id {
     my ($id,$content)=@_;
@@ -146,13 +157,21 @@ sub get_classification_id {
     my ($content)=@_;
 
     my $new = 0;
-    
-    if (exists $classification{$content}){
 
+    # Verlinkt per GND?
+    if ($content =~m/DE-588/){
+	$content=~s/\(DE-588\)//;
+	
+	unless (exists $classification{$content}){
+	    $classification{$content}=$content;
+	    $new = 1;
+	}
+	
+	return ($classification{$content},$new);
     }
-    else {
-        $classification{$content}=$next_classification_id;
-        $next_classification_id++;
+    
+    unless (exists $classification{$content}){
+        $classification{$content}=normalize_id($content);
         $new = 1;
     }
 
@@ -167,44 +186,18 @@ sub set_classification_id {
     return;
 }
 
-
-sub get_koridn {
+sub normalize_id {
     my ($content)=@_;
 
-    if (exists $kordubbuf{$content}){
-        return (-1)*$kordubbuf{$content};
-    }
-    else {
-        $kordubbuf{$content}=$next_korid;
-        $next_korid++;
-        return $kordubbuf{$content};
-    }
-}
+    $content = lc($content);
 
-sub get_swtidn {
-    my ($content)=@_;
-
-    if (exists $swtdubbuf{$content}){
-        return (-1)*$swtdubbuf{$content};
-    }
-    else {
-        $swtdubbuf{$content}=$next_swtid;
-        $next_swtid++;
-        return $swtdubbuf{$content};
-    }
-}
-
-sub get_notidn {
-    my ($content)=@_;
-
-    if (exists $notdubbuf{$content}){
-        return (-1)*$notdubbuf{$content};
-    }
-    else {
-        $notdubbuf{$content}=$next_notid;
-        $next_notid++;
-        return $notdubbuf{$content};
-    }
+    $content=~s/([ÄäÖöÜüß])/$german_umlauts{$1}/g;
+    
+    $content=~s/\W/_/g;
+    $content=~s/__+/_/g;
+    $content=~s/_$//;
+    
+    return unidecode($content);
 }
 
 1;

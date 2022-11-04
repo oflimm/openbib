@@ -40,20 +40,27 @@ my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
 
-my $harvestoaiexe     = "$config->{'conv_dir'}/harvestOAI.pl";
-my $simplexml2metaexe = "$config->{'conv_dir'}/simplexml2meta.pl";
+my $wgetexe       = "/usr/bin/wget --auth-no-challenge -nH --cut-dirs=3";
+my $eprints2metaexe = "$config->{'conv_dir'}/eprints2meta.pl";
 
 my $pool          = $ARGV[0];
 
 my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 
-my $oaiurl        = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->titlefile;
+my $base_url =  $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/";
 
-print "### $pool: Datenabzug via OAI von $oaiurl\n";
-system("cd $pooldir/$pool ; rm meta.* ; rm pool*");
-system("cd $pooldir/$pool ; $harvestoaiexe -all --set=$pool --url=\"$oaiurl\" ");
+print "### $pool: Hole Exportdateien mit wget von $base_url\n";
 
-system("cd $pooldir/$pool ; echo '<recordlist>' > $pooldir/$pool/pool.dat ; cat pool-*.xml >> $pooldir/$pool/pool.dat ; echo '</recordlist>' >> $pooldir/$pool/pool.dat");
+my $httpauthstring="";
+if ($dbinfo->protocol eq "https" && $dbinfo->remoteuser ne "" && $dbinfo->remotepassword ne ""){
+    $httpauthstring=" --http-user=".$dbinfo->remoteuser." --http-passwd=".$dbinfo->remotepassword;
+}
+           
+system("cd $pooldir/$pool ; rm meta.* *.xml");
+system("$wgetexe $httpauthstring -P $pooldir/$pool/ $base_url".$dbinfo->titlefile." > /dev/null 2>&1 ");
+system("$wgetexe $httpauthstring -P $pooldir/$pool/ $base_url".$dbinfo->subjectfile." > /dev/null 2>&1 ");
 
-system("cd $pooldir/$pool; $simplexml2metaexe --inputfile=pool.dat --configfile=/opt/openbib/conf/${pool}.yml; gzip meta.*");
-system("rm $pooldir/$pool/pool.dat");
+system("ls -l $pooldir/$pool/");
+
+system("cd $pooldir/$pool; $eprints2metaexe --titlefile=".$dbinfo->titlefile." --subjectfile=".$dbinfo->subjectfile." --configfile=/opt/openbib/conf/${pool}.yml; gzip meta.*");
+

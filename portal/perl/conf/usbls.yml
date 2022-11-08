@@ -1,0 +1,32 @@
+'A':
+  desc: 'Allgemeines'
+'B':
+  desc: 'Buch-, Bibliotheks- und Informationswesen'
+'G':
+  desc: 'Geschichte'
+'GG':
+  desc: 'Geographie'
+'K':
+  desc: 'Kunstgeschichte, Musikwissenschaft'
+'L':
+  desc: 'Literaturwissenschaft'
+'MW':
+  desc: 'Medienwissenschaft'
+'N':
+  desc: 'Naturwissenschaft'
+'PH':
+  desc: 'Philosophie'
+'PP':
+  desc: 'Pädagogik'
+'PS':
+  desc: 'Psychologie'
+'R':
+  desc: 'Rechtswissenschaft'
+'RH':
+  desc: 'Rheinische Landeskunde'
+'T':
+  desc: 'Theologie,Religionswissenschaft'
+'V':
+  desc: 'Wirtschafts- und Sozialwissenschaften'
+'W':
+  desc: 'Wörterbücher'

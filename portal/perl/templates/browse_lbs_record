@@ -1,0 +1,45 @@
+[%- PROCESS common/subtemplate name="local_config" -%]
+[%-  usblbs = config.load_yaml('/opt/openbib/conf/usblbs.yml'); -%]
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+      'page_title' = "LBS-Systematik '${lbsid}' anzeigen"
+
+      'main_template' = 'browse_lbs_record_html'
+
+      'active_menu' = 'register'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Browsen')
+	     url  = "${path_prefix}/${config.get('browse_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Systematik der Lehrbuchsammlung')
+	     url  = "${path_prefix}/${config.get('browse_loc')}/lbs.html?l=${lang}"
+	  },
+	  {
+	     desc = "LBS Systematik: ${lbsid}"
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+      'representations' = [
+          {
+	     type = 'json'
+	     url  = "${path_prefix}/${config.get('browse_loc')}/${config.get('lbs_loc')}/id/${lbsid}.json?l=${lang}"
+	  },
+       ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="browse_lbs_record_json" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="browse_lbs_record_include" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

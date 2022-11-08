@@ -1,0 +1,134 @@
+'A':
+  desc: 'Volkswirtschaftslehre'
+  sub:
+    'AA':
+       desc: 'Allgemeine Volkswirtschaftslehre (Einführungen, Kompendien, Grundrisse)'
+    'AB':
+       desc: 'Geschichte der Volkswirtschaftslehre'
+    'AC':
+       desc: 'Forschungsmethoden der Volkswirtschaftslehre (u.a. Mathematik)'
+    'AD':
+       desc: 'Markt und Preis (Mikroökonomik), Wirtschaftssysteme'
+    'AE':
+       desc: 'Volkswirtschaftliche Gesamtrechnung (Makroökonomik)'
+    'AF':
+       desc: 'Raumforschung, Regionalplanung'
+    'AG':
+       desc: 'Entwicklungshilfewesen'
+    'AH':
+       desc: 'Wirtschaftsbewegung, Wirtschaftsbeobachtung'
+    'AJ':
+       desc: 'Geld und Währung, Zahlungs- und Kreditverkehr, Bank- und Börsenwesen'
+    'AK':
+       desc: 'Binnenhandel'
+    'AL':
+       desc: 'Außenwirtschaft'
+    'AM':
+       desc: 'Wirtschafts- und Sozialgeschichte und -beschreibung'
+    'AN':
+       desc: 'Wirtschaftspolitik'
+    'AO':
+       desc: 'Sozialpolitik'
+    'AP':
+       desc: 'Industrie, Gewerbe, Handwerk'
+    'AQ':
+       desc: 'Energiewirtschaft'
+    'AR':
+       desc: 'Land- und Forstwirtschaft'
+    'AS':
+       desc: 'Verkehrs- und Nachrichtenwesen'
+    'AT':
+       desc: 'Finanzwissenschaft'
+    'AU':
+       desc: 'Steuerlehre'
+    'AV':
+       desc: 'Privatversicherung'
+    'AW':
+       desc: 'Sozialversicherung'
+    'AX':
+       desc: 'Genossenschaftswesen'
+    'AY':
+       desc: 'Bevölkerungslehre'
+    'AZ':
+       desc: 'Wirtschafts- und Sozialstatistik'    
+'B':
+  desc: 'Betriebswirtschaftslehre'
+  sub:
+'C':
+  desc: 'Spezielle Betriebswirtschaftslehre'
+  sub:
+'DA-DO':
+  desc: 'Soziologie'
+  sub:
+'DP-DZ':
+  desc: 'Wirtschafts- und Sozialpädagogik'
+  sub:
+'EA-EQ':
+  desc: 'Informatik'
+  sub:
+'ER-EZ':
+  desc: 'Allgemeines'
+  sub:
+'F,G,H,J':
+  desc: 'Rechtswissenschaft'
+  sub:
+'KA-KE':
+  desc: 'Philosophie'
+  sub:
+'KF-KL':
+  desc: 'Psychologie'
+  sub:
+'KM-KZ':
+  desc: 'Pädagogik'
+  sub:
+'L':
+  desc: 'Allgemeine Sprach- und Literaturwissenschaft'
+  sub:
+'MA-MK':
+  desc: 'Musik'
+  sub:
+'ML-MZ':
+  desc: 'Kunst'
+  sub:
+'N':
+  desc: 'Germanistik'
+  sub:
+'O':
+  desc: 'Anglistik'
+  sub:
+'P':
+  desc: 'Romanistik'
+  sub:
+'Q':
+  desc: 'Übrige Sprachen'
+  sub:
+'RA-RS':
+  desc: 'Geschichte'
+  sub:
+'RT-RX':
+  desc: 'Politik'
+  sub:
+'RY-RZ':
+  desc: 'Ethnologie'
+  sub:
+'S':
+  desc: 'Medien- und Kommunikationswissenschaft'
+  sub:
+'T':
+  desc: 'Mathematik'
+  sub:
+'VA-VM':
+  desc: 'Physik'
+  sub:
+'VN-VZ':
+  desc: 'Chemie'
+  sub:
+'X':
+  desc: 'Biologie'
+  sub:
+'Y':
+  desc: 'Geowissenschaften'
+  sub:
+'Z':
+  desc: 'Theologie, Religionswissenschaft'
+  sub:

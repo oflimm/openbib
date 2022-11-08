@@ -1,0 +1,26 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_browsetit
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Inhalte einer Titel-Kategorie
+#
+#######################################################################
+-%]
+[%-
+
+  lbs_profileid = config.get_searchprofile_of_database('lehrbuchsmlg');
+
+-%]
+
+<h4>LBS Systematik: [% lbsid %] - [% usblbs.${lbsid}.desc %]</h4>
+
+<ul class="list-group mt-3 mb-3">
+[%- FOREACH lbssubid IN usblbs.${lbsid}.sub.keys.sort -%]
+<li class="list-group-item"><a style="font-weight:bold;font-size:1.2em;" href="[% path_prefix %]/[% config.get('search_loc') %].html?fmark=[% lbssubid %]*;srt=year_desc;profile=[% lbs_profileid %];l=[% lang%]">[% lbssubid %] - [% usblbs.${lbsid}.sub.${lbssubid}.desc %]</a></li>
+[% END %]
+</ul>

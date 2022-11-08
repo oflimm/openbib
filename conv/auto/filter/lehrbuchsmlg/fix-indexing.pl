@@ -20,7 +20,7 @@ while (<>){
 	    my $signatur = $item_ref->{content};
 
 	    if ($signatur =~m/^([A-Z][A-Z])(\d+?)\#\d+$/){ 
-		$signatur = sprintf "%s%06d",$1,$2;
+		$signatur = sprintf "%s%04d",$1,$2;
 		push @signaturen, $signatur;
 	    }
 	}

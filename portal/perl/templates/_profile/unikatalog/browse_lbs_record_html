@@ -21,6 +21,6 @@
 
 <ul class="list-group mt-3 mb-3">
 [%- FOREACH lbssubid IN usblbs.${lbsid}.sub.keys.sort -%]
-<li class="list-group-item"><a style="font-weight:bold;font-size:1.2em;" href="[% path_prefix %]/[% config.get('search_loc') %].html?fmark=[% lbssubid %]*;srt=year_desc;profile=[% lbs_profileid %];l=[% lang%]">[% lbssubid %] - [% usblbs.${lbsid}.sub.${lbssubid}.desc %]</a></li>
+<li class="list-group-item"><a style="font-weight:bold;font-size:1.2em;" href="[% path_prefix %]/[% config.get('search_loc') %].html?fmark=[% lbssubid %]*;srt=mark_asc;profile=[% lbs_profileid %];l=[% lang%]">[% lbssubid %] - [% usblbs.${lbsid}.sub.${lbssubid}.desc %]</a></li>
 [% END %]
 </ul>

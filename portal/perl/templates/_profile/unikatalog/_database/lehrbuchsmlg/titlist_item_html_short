@@ -316,12 +316,12 @@
 
      availability = item.${'T4400'}.first.content;
 
-     # Signaturen konstruieren
+     # vorgenullte Signaturen fuer Sortierung wieder entnullen
      signaturen = [];
      FOREACH part IN item.${'X0014'};
          thissignatur = part.content;
-         IF thissignatur.match('\#');
-	   thissignatur = thissignatur.split('\#').first;
+         IF thissignatur.match('^[A-Z][A-Z]0+');
+	   thissignatur = thissignatur.replace('^([A-Z][A-Z])0+([1-9][0-9]*)$','$1$2');
 	 END;
          signaturen.push(thissignatur);
      END;

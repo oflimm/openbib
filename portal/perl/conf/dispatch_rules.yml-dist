@@ -454,6 +454,20 @@
      - html
    runmode: 'show_record'
 - # Resource: browse_loc
+   module: 'OpenBib::Handler::PSGI::Browse::LBS'
+   rule: '/portal/:view/browse/lbs[get]'
+   representations:
+     - none
+     - html
+   runmode: 'show_collection'
+- # Resource: browse_loc
+   module: 'OpenBib::Handler::PSGI::Browse::LBS'
+   rule: '/portal/:view/browse/lbs/id/:lbsid[get]'
+   representations:
+     - none
+     - html
+   runmode: 'show_record'
+- # Resource: browse_loc
    module: 'OpenBib::Handler::PSGI::Browse::BK'
    rule: '/portal/:view/browse/bks[get]'
    representations:

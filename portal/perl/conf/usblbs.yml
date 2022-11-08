@@ -54,81 +54,633 @@
 'B':
   desc: 'Betriebswirtschaftslehre'
   sub:
+    'BA':
+       desc: 'Einführungen, Kompendien, Grundrisse'
+    'BB':
+       desc: 'Geschichte der Betriebswirtschaftslehre'
+    'BC':
+       desc: 'Operations Research, Unternehmensforschung, Entscheidungstheorie, Unternehmensplanung, Mathematische Methoden der BWL'
+    'BD':
+       desc: 'Unternehmensführung, Unternehmenspolitik, Management'
+    'BE':
+       desc: 'Unternehmensorganisation'
+    'BF':
+       desc: 'Unternehmensformen und -gestaltung, Unternehmensgründung'
+    'BG':
+       desc: 'Controlling'
+    'BH':
+       desc: 'Forschung und Entwicklung'
+    'BJ':
+       desc: 'Finanzierung und Investition'
+    'BK':
+       desc: 'Finanzierung und Investition'
+    'BL':
+       desc: 'Beschaffung, Materialwirtschaft, Lagerwesen, Logistik'
+    'BM':
+       desc: 'Produktion'
+    'BO':
+       desc: 'Wirtschaftsinformatik, Datenverarbeitung'
+    'BP':
+       desc: 'Absatz, Distribution, Marktforschung, Marketing'
+    'BQ':
+       desc: 'Werbung'
+    'BR':
+       desc: 'Personalwirtschaft, Personalführung, Personalmanagement, Arbeitswissenschaft'
+    'BT':
+       desc: 'Buchführung, Geschäftsbuchhaltung, Rechnungswesen allgemein'
+    'BU':
+       desc: 'Bilanz, Jahresabschluss'
+    'BV':
+       desc: 'Planungsrechnung, Kostenrechnung, Leistungsrechnung, Erfolgsrechnung'
+    'BW':
+       desc: 'Bewertung'
+    'BX':
+       desc: 'Betriebsanalyse, Betriebsvergleich, Kennzahlenrechnung'
+    'BY':
+       desc: 'Wirtschaftsrechnen, Finanzmathematik'
+    'BZ':
+       desc: 'Schriftverkehr, Büroorganisation'
 'C':
   desc: 'Spezielle Betriebswirtschaftslehre'
   sub:
+    'CA':
+       desc: 'Bankbetriebslehre'
+    'CB':
+       desc: 'Handelsbetriebslehre'
+    'CC':
+       desc: 'Industrie- und Handwerksbetriebslehre'
+    'CD':
+       desc: 'Wirtschaftsprüfungs- und Revisionswesen'
+    'CE':
+       desc: 'Betriebswirtschaftliche Steuerlehre'
+    'CF':
+       desc: 'Versicherungen und Versicherungsbetriebslehre'
+    'CG':
+       desc: 'Medienmanagement'
+    'CH':
+       desc: 'Genossenschaften, Genossenschaftsbetriebslehre'
+    'CK':
+       desc: 'Wirtschaftliche Warenlehre'
+    'CM':
+       desc: 'Betriebswirtschaftliche Statistik'
+    'CO':
+       desc: 'Betriebslehre öffentlicher Betriebe, Nonprofit-Organisation'
+    'CP':
+       desc: 'Gesundheitsökonomie'
 'DA-DO':
   desc: 'Soziologie'
   sub:
+    'DA':
+       desc: 'Allgemeine Soziologie (Einführungen, Kompendien, Grundrisse)'
+    'DB':
+       desc: 'Gesellschaftstheorie'
+    'DC':
+       desc: 'Spezielle Soziologien'
+    'DD':
+       desc: 'Soziologische Forschungsmethoden'
+    'DK':
+       desc: 'Wirtschafts- und Sozialpsychologie'
 'DP-DZ':
   desc: 'Wirtschafts- und Sozialpädagogik'
   sub:
+    'DP':
+       desc: 'Wirtschafts- und Sozialpädagogik (Einführungen, Grundrisse)'
+    'DS':
+       desc: 'Wirtschafts- und sozialwissenschaftliche Studien'
 'EA-EQ':
   desc: 'Informatik'
   sub:
+    'EA':
+       desc: 'Einführung in die Informatik (Effiziente Algorithmen, Datenstrukturen, Theoretische Informatik)'
+    'EB':
+       desc: 'Anwendungssoftware'
+    'EC':
+       desc: 'Praxis des Programmierens'
+    'ED':
+       desc: 'Betriebssysteme / verteilte Systeme'
+    'EE':
+       desc: 'Datenbanken'
+    'EF':
+       desc: 'Algorithmentheorie'
+    'EG':
+       desc: 'Künstliche Intelligenz'
+    'EH':
+       desc: 'Software Engineering / Systementwicklung'
+    'EK':
+       desc: 'Netze / Netzwerke'
+    'EL':
+       desc: 'Internet / World Wide Web'
+    'EM':
+       desc: 'Medieninformatik'
 'ER-EZ':
   desc: 'Allgemeines'
   sub:
+    'ER':
+       desc: 'Studium'
+    'ES':
+       desc: 'Wissenschaftliches Arbeiten'
 'F,G,H,J':
   desc: 'Rechtswissenschaft'
   sub:
+    'FA':
+       desc: 'Einführung in die Rechtswissenschaft'
+    'FB':
+       desc: 'Rechtsphilosophie'
+    'FC':
+       desc: 'Allgemeine Fallsammlungen, Examens- & Klausuranleitungen'
+    'FD':
+       desc: 'Deutsche Rechts- und Verfassungsgeschichte'
+    'FE':
+       desc: 'Deutsches Recht'
+    'FF':
+       desc: 'Römische Rechtsgeschichte'
+    'FG':
+       desc: 'Römisches Recht'
+    'FJ':
+       desc: 'Einführungen ins Bürgerliche Recht'
+    'FK':
+       desc: 'BGB-Kommentare'
+    'FL':
+       desc: 'Lehrbücher, Grundrisse und Hilfsmittel zum gesamten BGB'
+    'FM':
+       desc: 'Allgemeiner Teil des BGB'
+    'FN':
+       desc: 'Schuldrecht'
+    'FO':
+       desc: 'Sachenrecht'
+    'FP':
+       desc: 'Familienrecht'
+    'FQ':
+       desc: 'Erbrecht'
+    'FR':
+       desc: 'Nebengesetze'
+    'FS':
+       desc: 'Versicherungsrecht'
+    'FT':
+       desc: 'HGB-Kommentare'
+    'FU':
+       desc: 'Lehrbücher, Grundrisse und Hilfsmittel zum HGB'
+    'FV':
+       desc: 'Gesellschafts- und Genossenschaftsrecht'
+    'FW':
+       desc: 'Wertpapierrecht'
+    'FZ':
+       desc: 'Urheberrecht und gewerblicher Rechtsschutz'
+    'GG':
+       desc: 'ZPO-Kommentare'
+    'GH':
+       desc: 'Grundrisse, Lehrbücher und Hilfsmittel zum Zivilprozess und GVG'
+    'GJ':
+       desc: 'Zwangsvollstreckung und Konkurs'
+    'GM':
+       desc: 'Freiwillige Gerichtsbarkeit, Kostenrecht'
+    'GO':
+       desc: 'StGB-Kommentare'
+    'GP':
+       desc: 'Lehrbücher, Grundrisse und Hilfsmittel zum Strafrecht'
+    'GQ':
+       desc: 'Kriminalwissenschaften'
+    'GS':
+       desc: 'Strafvollzug'
+    'GT':
+       desc: 'StPO-Kommentare'
+    'GU':
+       desc: 'Lehrbücher, Grundrisse und Hilfsmittel zum Strafprozessrecht'
+    'GV':
+       desc: 'Jugendgerichtsbarkeit'
+    'HA':
+       desc: 'Allgemeine Werke und Hilfsmittel zum öffentlichen Recht im allgemeinen, Staats- und Verfassungsrecht'
+    'HB':
+       desc: 'Allgemeine Staatslehre'
+    'HC':
+       desc: 'Deutsches Staatsrecht'
+    'HD':
+       desc: 'Grundgesetz'
+    'HE':
+       desc: 'Grundrechte'
+    'HF':
+       desc: 'Bundesverfassungsgericht'
+    'HJ':
+       desc: 'Lehrbücher, Grundrisse und Hilfsmittel zum Verwaltungsrecht'
+    'HK':
+       desc: 'Verwaltungsrechtsschutz'
+    'HL':
+       desc: 'Polizei- und Ordnungsrecht'
+    'HM':
+       desc: 'Straßenverkehrsrecht'
+    'HN':
+       desc: 'Gemeinderecht, Baurecht'
+    'HQ':
+       desc: 'Sozialrecht'
+    'HR':
+       desc: 'Medienrecht'
+    'HS':
+       desc: 'Wirtschaftsrecht im allgemeinen'
+    'HT':
+       desc: 'Gewerberecht, Umweltrecht'
+    'HV':
+       desc: 'Kartellrecht'
+    'JA':
+       desc: 'Arbeitsrecht u. Beamtenrecht'
+    'JF':
+       desc: 'Kirchenrecht u. Europarecht'
+    'JG':
+       desc: 'Völkerrecht'
+    'JK':
+       desc: 'Internationales Privatrecht'
+    'JL':
+       desc: 'Rechtsvergleichung'
+    'JM':
+       desc: 'Ausländisches Recht'
+    'JZ':
+       desc: 'Juristische Wörterbücher'
 'KA-KE':
   desc: 'Philosophie'
   sub:
+    'KA':
+       desc: 'Einführungen und Gesamtdarstellungen'
+    'KB':
+       desc: 'Geschichte der Philosophie, philosophischer Richtungen und einzelner Probleme'
+    'KC':
+       desc: 'Einzelgebiete'
+    'KE':
+       desc: 'Texte und Interpretationen'
 'KF-KL':
   desc: 'Psychologie'
   sub:
+    'KF':
+       desc: 'Einführungen und Gesamtdarstellungen'
+    'KG':
+       desc: 'Allgemeine Psychologie'
+    'KH':
+       desc: 'Besondere Psychologie'
+    'KK':
+       desc: 'Angewandte Psychologie'
 'KM-KZ':
   desc: 'Pädagogik'
   sub:
+    'KM':
+       desc: 'Lexika, Einführungen, Gesamtdarstellungen'
+    'KP':
+       desc: 'Bildung und Erziehung (allgemeine Pädagogik)'
+    'KR':
+       desc: 'Unterricht (Didaktik, Methodik, Curriculum)'
+    'KS':
+       desc: 'Einzelne Fächer'
+    'KT':
+       desc: 'Geschichte der Pädagogik: Gesamtdarstellungen'
+    'KW':
+       desc: 'Einzelne Pädagogen: Texte und Sekundärliteratur'
+    'KZ':
+       desc: 'Hochschulpädagogik'
 'L':
   desc: 'Allgemeine Sprach- und Literaturwissenschaft'
   sub:
+    'LG':
+       desc: 'Allgemeine Sprachwissenschaft: Geschichte'
+    'LH':
+       desc: 'Allgemeine Sprachwissenschaft: Einführungen und Sprachtheorie'
+    'LL':
+       desc: 'Allgemeine Phonetik, Phonologie usw.'
+    'LN':
+       desc: 'Allgemeine Literaturwissenschaft: Einführungen und Literaturtheorien'
+    'LP':
+       desc: 'Einzelne Gattungen'
 'MA-MK':
   desc: 'Musik'
   sub:
+    'MA':
+       desc: 'Allgemeine Musikwissenschaft'
+    'MB':
+       desc: 'Spezielle Musikwissenschaft'
 'ML-MZ':
   desc: 'Kunst'
   sub:
+    'ML':
+       desc: 'Einführung, Hilfsmittel'
+    'MO':
+       desc: 'Theorie'
+    'MR':
+       desc: 'Geschichte'
 'N':
   desc: 'Germanistik'
   sub:
+    'NA':
+       desc: 'Allgemeines, Einführungen'
+    'NB':
+       desc: 'Fachdidaktik / Literaturdidaktik'
+    'NC':
+       desc: 'Sprachgeschichte (einschließlich Wortgeschichte, Etymologie, historische Grammatik)'
+    'ND':
+       desc: 'Gotisch'
+    'NE':
+       desc: 'Althochdeutsch'
+    'NF':
+       desc: 'Mittelhochdeutsch'
+    'NG':
+       desc: 'Neuhochdeutsch (einschließlich Phonetik, Wortbildung, Syntax)'
+    'NH':
+       desc: 'Deutsch als Fremdsprache'
+    'NJ':
+       desc: 'Stilistik, Poetik, Metrik'
+    'NM':
+       desc: 'Allgemeine Literaturgeschichte'
+    'NN':
+       desc: 'Einzelne Epochen'
+    'NO':
+       desc: 'Einzelne Gattungen'
+    'NP':
+       desc: 'Einzelne Motive'
+    'NR':
+       desc: 'Einzelne Autoren (Sekundärliteratur)'
+    'NS':
+       desc: 'Texte'
+    'NT':
+       desc: 'Nordistik'
+    'NU':
+       desc: 'Niederlandistik'
 'O':
   desc: 'Anglistik'
   sub:
+    'OA':
+       desc: 'Allgemeines, Einführungen'
+    'OC':
+       desc: 'Sprachgeschichte (einschließlich historische Grammatik, Satzgeschichte, Etymologie)'
+    'OG':
+       desc: 'Systematische Grammatik, Gegenwartssprache'
+    'OJ':
+       desc: 'Stilistik, Poetik, Metrik'
+    'OM':
+       desc: 'Literaturgeschichte und -kritik: Gesamtdarstellungen'
+    'ON':
+       desc: 'Einzelne Epochen'
+    'OO':
+       desc: 'Einzelne Gattungen'
+    'OR':
+       desc: 'Einzelne Autoren (Sekundärliteratur)'
+    'OS':
+       desc: 'Texte'
+    'OX':
+       desc: 'Amerikanische Literatur und Sprache'
 'P':
   desc: 'Romanistik'
   sub:
+    'PA':
+       desc: 'Romanistik allgemein (Einführungen/Romanische Sprach-, Literatur- und Kulturwissenschaft insgesamt)'
+    'PD':
+       desc: 'Fachdidaktik Romanistik (alle romanischen Sprachen)'
+    'PE':
+       desc: 'Französische Philologie (Allgemeines; auch Landeskunde, Kultur)'
+    'PF':
+       desc: 'Französisch (Sprachwissenschaft)'
+    'PG':
+       desc: 'Französisch (Literaturwissenschaft)'
+    'PJ':
+       desc: 'Italienische Philologie (Allgemeines; auch Landeskunde, Kultur)'
+    'PK':
+       desc: 'Italienisch (Sprachwissenschaft)'
+    'PL':
+       desc: 'Italienisch (Literaturwissenschaft)'
+    'PN':
+       desc: 'Spanische Philologie (Allgemeines; auch Landeskunde, Kultur)'
+    'PO':
+       desc: 'Spanisch (Sprachwissenschaft)'
+    'PP':
+       desc: 'Spanisch (Literaturwissenschaft)'
+    'PS':
+       desc: 'Portugiesische Philologie (Allgemeines; auch Landeskunde, Kultur)'
+    'PT':
+       desc: 'Portugiesisch (Sprachwissenschaft)'
+    'PU':
+       desc: 'Portugiesisch (Literaturwissenschaft)'
+    'PX':
+       desc: 'Lateinamerikanische Literaturwissenschaft'
+    'PZ':
+       desc: 'Übrige romanische Sprachen und Literaturen'
 'Q':
   desc: 'Übrige Sprachen'
   sub:
+    'QA':
+       desc: 'Slavistik im allgemeinen, Russisch'
+    'QB':
+       desc: 'Übrige slawische Sprachen'
+    'QC':
+       desc: 'Altkirchenslavisch'
+    'QD':
+       desc: 'Griechische Philologie (auch griech. u. latein. Philologie)'
+    'QE':
+       desc: 'Lateinische Philologie (s. auch QD)'
+    'QF':
+       desc: 'Indo-Iranische Sprachen'
+    'QL':
+       desc: 'Einzelne semitische Sprachen'
+    'QM':
+       desc: 'Judaistik'
+    'QN':
+       desc: 'Uralische Sprachen'
+    'QO':
+       desc: 'Altaistik'
+    'QP':
+       desc: 'Sino-Tibetisch'
+    'QR':
+       desc: 'Afrikanistik'
+    'QT':
+       desc: 'Austronesische Sprachen (Indonesisch usw.)'
 'RA-RS':
   desc: 'Geschichte'
   sub:
+    'RA':
+       desc: 'Einführung und Hilfsmittel, Weltgeschichte'
+    'RB':
+       desc: 'Ur- und Frühgeschichte'
+    'RD':
+       desc: 'Europäische Geschichte'
+    'RF':
+       desc: 'Altertum'
+    'RG':
+       desc: 'Allgemeine und deutsche Geschichte des Mittelalters'
+    'RH':
+       desc: 'Allgemeine Geschichte der Neuzeit'
+    'RJ':
+       desc: 'Allgemeine Geschichte des 20. Jahrhunderts'
+    'RK':
+       desc: 'Gesamtdarstellungen der deutschen Geschichte'
+    'RM':
+       desc: 'Deutsche Geschichte der Neuzeit (im ganzen und bis 1918)'
+    'RN':
+       desc: 'Deutsche Geschichte seit 1918'
+    'RR':
+       desc: 'Geschichte europäischer Staaten'
+    'RS':
+       desc: 'Geschichte außereuropäischer Erdteile und Staaten'
 'RT-RX':
   desc: 'Politik'
   sub:
+    'RT':
+       desc: 'Politik, Allgemeines'
+    'RU':
+       desc: 'Politische Ideen'
+    'RV':
+       desc: 'Politische Systeme einzelner Länder'
+    'RW':
+       desc: 'Europäische Gemeinschaft'
+    'RX':
+       desc: 'Internationale Politik'
 'RY-RZ':
   desc: 'Ethnologie'
   sub:
+    'RY':
+       desc: 'Allgemeine Ethnologie'
+    'RZ':
+       desc: 'Spezielle Ethnologie'
 'S':
   desc: 'Medien- und Kommunikationswissenschaft'
   sub:
+    'SC':
+       desc: 'Medien- und Kommunikationswissenschaft'
+    'ST':
+       desc: 'Film- und Theaterwissenschaften'
 'T':
   desc: 'Mathematik'
   sub:
+    'TA':
+       desc: 'Einführungen und Gesamtdarstellungen'
+    'TC':
+       desc: 'Algebra und Zahlentheorie'
+    'TG':
+       desc: 'Analysis, Funktionalanalysis, Zahlentheorie'
+    'TT':
+       desc: 'Geometrie, Topologie'
+    'TV':
+       desc: 'Wahrscheinlichkeitstheorie, Statistik, Numerik'
 'VA-VM':
   desc: 'Physik'
   sub:
+    'VA':
+       desc: 'Einführungen und Gesamtdarstellungen der Physik'
+    'VB':
+       desc: 'Mathematische Methoden, Computerphysik, Praktikum'
+    'VC':
+       desc: 'Klassische Physik'
+    'VD':
+       desc: 'Astronomie, Astrophysik'
+    'VJ':
+       desc: 'Relativitätstheorie, Gravitation'
+    'VK':
+       desc: 'Quantentheorie'
+    'VL':
+       desc: 'Atomphysik, Molekülphysik, Kernphysik'
+    'VM':
+       desc: 'Festkörperphysik, Werkstoffphysik'
 'VN-VZ':
   desc: 'Chemie'
   sub:
+    'VN':
+       desc: 'Einführungen und Gesamtdarstellungen'
+    'VQ':
+       desc: 'Physikalische Chemie'
+    'VU':
+       desc: 'Analytische Chemie, Praktika'
+    'VV':
+       desc: 'Anorganische Chemie'
+    'VX':
+       desc: 'Organische Chemie, Lehrbücher (allgemeine Darstellungen)'
 'X':
   desc: 'Biologie'
   sub:
+    'XA':
+       desc: 'Biologie, allgemein (Einführungen und Gesamtdarstellungen'
+    'XB':
+       desc: 'Statistik und Biometrie'
+    'XC':
+       desc: 'Biophysik, Biotechnologie'
+    'XD':
+       desc: 'Biochemie, Lehrbücher allgemein (allgemeine Darstellungen)'
+    'XE':
+       desc: 'Biochemie, Physiologie, Speziallehrbücher'
+    'XF':
+       desc: 'Zytologie, Zellbiologie, Immunbiologie'
+    'XG':
+       desc: 'Anatomie'
+    'XH':
+       desc: 'Genetik'
+    'XJ':
+       desc: 'Entwicklungsbiologie'
+    'XL':
+       desc: 'Verhaltensforschung'
+    'XM':
+       desc: 'Ökologie'
+    'XN':
+       desc: 'Symbiose und Parasitismus'
+    'XP':
+       desc: 'Mikroorganismen'
+    'XQ':
+       desc: 'Botanik, allgemein'
+    'XR':
+       desc: 'Botanik, speziell'
+    'XS':
+       desc: 'Zoologie, allgemein'
+    'XT':
+       desc: 'Zoologie, speziell'
+    'XU':
+       desc: 'Anthropologie'
+    'XV':
+       desc: 'Praktika, Botanik'
+    'XW':
+       desc: 'Praktika, Zoologie'
+    'XY':
+       desc: 'Bestimmungsbücher, Pflanzen'
+    'XZ':
+       desc: 'Bestimmungsbücher, Tiere'
 'Y':
   desc: 'Geowissenschaften'
   sub:
+    'YA':
+       desc: 'Geophysik, Meteorologie, Klimatologie'
+    'YD':
+       desc: 'Kristallographie, Mineralogie'
+    'YG':
+       desc: 'Bodenkunde, Gesteinskunde'
+    'YH':
+       desc: 'Geologie, Paläontologie'
+    'YN':
+       desc: 'Allgemeine Geografie'
+    'YO':
+       desc: 'Kartografie'
+    'YP':
+       desc: 'Geomorphologie'
+    'YQ':
+       desc: 'Hydrologie, Hydrografie'
+    'YR':
+       desc: 'Biogeografie'
+    'YT':
+       desc: 'Siedlungsgeografie, politische Geografie'
+    'YU':
+       desc: 'Wirtschaftsgeografie'
+    'YV':
+       desc: 'Länderkunde, allgemein'
+    'YW':
+       desc: 'Deutschland'
+    'YX':
+       desc: 'Europa'
+    'YY':
+       desc: 'Außereuropa'
 'Z':
   desc: 'Theologie, Religionswissenschaft'
   sub:
+    'ZA':
+       desc: 'Allgemeines'
+    'ZB':
+       desc: 'Bibelwissenschaft'
+    'ZC':
+       desc: 'Altes Testament'
+    'ZD':
+       desc: 'Neues Testament'
+    'ZE':
+       desc: 'Kirchengeschichte, Theologiegeschichte, Dogmengeschichte'
+    'ZF':
+       desc: 'Systematische Theologie'
+    'ZG':
+       desc: 'Praktische Theologie'
+    'ZH':
+       desc: 'Religionswissenschaften'

@@ -38,7 +38,7 @@
 <h4>[% msg.maketext("Medien in der Lehrbuchsammlung") %]</h4>
 
 <ul class="list-group mb-3">
-[% FOREACH classification IN usblbs_topics %]
+[% FOREACH classification IN usblbs_topics.sort %]
 <li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('browse_loc') %]/lbs/id/[% classification %]">[% usblbs.${classification}.desc %]</a></li>
 [% END %]
 </ul>
@@ -48,7 +48,7 @@
 <h4>[% msg.maketext("Medien im Lesesaal") %]</h4>
 
 <ul class="list-group mb-3">
-[% FOREACH classification IN usbls_topics %]
+[% FOREACH classification IN usbls_topics.sort %]
 <li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('browse_loc') %]/ls/id/[% classification %]">[% usbls.${classification}.desc %]</a></li>
 [% END %]
 </ul>

@@ -2117,59 +2117,59 @@
 'RH':
   desc: 'Rheinische Landeskunde'
   sub:
-    'RH1-':
+    'Rh1-':
        desc: 'Genealogie, Urkunden'
        start: 1 
        end: 53
-    'RH54-':
+    'Rh54-':
        desc: 'Atlanten'
        start: 54
        end: 59
-    'RH60-':
+    'Rh60-':
        desc: 'Archivalien'
        start: 60
        end: 149
-    'RH150-':
+    'Rh150-':
        desc: 'Heraldik, Numismatik'
        start: 150
        end: 304
-    'RH305-':
+    'Rh305-':
        desc: 'Ur- und Frühgeschichte'
        start: 305
        end: 309
-    'RH310-':
+    'Rh310-':
        desc: '"Denkwürdiger und nützlicher rheinischer Antiquarius"'
        start: 310
        end: 349
-    'RH350-':
+    'Rh350-':
        desc: 'Publikationen der Gesellschaft für Rheinische Geschichtskunde'
        start: 350 
        end: 364
-    'RH365-':
+    'Rh365-':
        desc: 'Geschichte, Kulturgeschichte'
        start: 365
        end: 609
-    'RH610-':
+    'Rh610-':
        desc: 'Ortsgeschichte (alphabetisch nach Orten)'
        start: 610
        end: 2701
-    'RH2702-':
+    'Rh2702-':
        desc: 'Kirchengeschichte'
        start: 2702
        end: 3999
-    'RH4000-':
+    'Rh4000-':
        desc: 'Bau- u. Kunstdenkmäler, Kunstgeschichte, Architektur'
        start: 4000
        end: 4979
-    'RH4980-':
+    'Rh4980-':
        desc: 'Musik'
        start: 4980
        end: 5009
-    'RH5010-':
+    'Rh5010-':
        desc: 'Geologie und Geographie'
        start: 5010
        end: 5499
-    'RH5500-':
+    'Rh5500-':
        desc: 'Flora und Fauna'
        start: 5500 
        end: 999999

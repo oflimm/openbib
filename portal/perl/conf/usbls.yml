@@ -93,1608 +93,3176 @@
   sub:
     'G1-':
        desc: 'Einführung'
+       start: 1
+       end: 249
     'G250-':
        desc: 'Diplomatika'
+       start: 250
+       end: 399
     'G400-':
        desc: 'Chronologie'
+       start: 400
+       end: 449
     'G450-':
        desc: 'Numismatik'
+       start: 450
+       end: 669
     'G670-':
        desc: 'Saphristik'
+       start: 670
+       end: 729
     'G730-':
        desc: 'Heraldik'
+       start: 730
+       end: 849
     'G850-':
        desc: 'Phaleristik'
+       start: 850
+       end: 899
     'G900-':
        desc: 'Genealogie'
+       start: 900
+       end: 1199
     'G1200-':
        desc: 'Lexika'
+       start: 1200
+       end: 1499
     'G1500-':
        desc: 'Ur- und Frühgeschichte'
+       start: 1500
+       end: 1549
     'G1550-':
        desc: 'Alte Geschichte'
+       start: 1550
+       end: 1749
     'G1750-':
        desc: 'Mittelalterliche Geschichte'
+       start: 1750
+       end: 1849
     'G1850-':
        desc: 'Neuere Geschichte'
+       start: 1850
+       end: 2399
     'G2400-':
        desc: 'Quellen zur Geschichte'
+       start: 2400
+       end: 3099
     'G3100-':
        desc: 'Regionalgeschichte'
+       start: 3100
+       end: 3299
     'G3300-':
        desc: 'Europäische Ländergeschichte'
+       start: 3300
+       end: 5899
     'G5900-':
        desc: 'Außereuropäische Ländergeschichte'
+       start: 5900
+       end: 7099
     'G7100-':
        desc: 'Jüdische Geschichte'
+       start: 7100
+       end: 7219
     'G7220-':
        desc: 'Kultur- und Sozialgeschichte'
+       start: 7220
+       end: 7999
     'G8000-':
        desc: 'Militärgeschichte'
+       start: 8000
+       end: 8999
     'G9000-':
        desc: 'Politikwissenschaft'
+       start: 9000
+       end: 999999
 'GG':
   desc: 'Geographie'
   sub:
     'GG1-':
        desc: 'Adressbücher, Taschenbücher'
+       start: 1
+       end: 99
     'GG100-':
        desc: 'Studienführer, Einführungen'
+       start: 100
+       end: 199
     'GG200-':
        desc: 'Sachlexika'
+       start: 200
+       end: 299
     'GG300-':
        desc: 'Fachwörterbücher'
+       start: 300
+       end: 399
     'GG400-':
        desc: 'Ortsnamenlexika'
+       start: 400
+       end: 1399
     'GG1400-':
        desc: 'Fachgeschichte, Methodik'
+       start: 1400
+       end: 1499
     'GG1500-':
        desc: 'Enzyklopädien, Handbücher'
+       start: 1500
+       end: 1999
     'GG2000-':
        desc: 'Einzelne Disziplinen'
+       start: 2000
+       end: 2099
     'GG2100-':
        desc: 'Geomorphologie'
+       start: 2100
+       end: 2199
     'GG2200-':
        desc: 'Hydrologie'
+       start: 2200
+       end: 2299
     'GG2300-':
        desc: 'Meteorologie'
+       start: 2300
+       end: 2399
     'GG2400-':
        desc: 'Biogeographie'
+       start: 2400
+       end: 2499
     'GG2500-':
        desc: 'Anthropogeographie'
+       start: 2500
+       end: 2899
     'GG2900-':
        desc: 'Historische Geographie'
+       start: 2900
+       end: 2999
     'GG3000-':
        desc: 'Allgemeine Länderkunde'
+       start: 3000
+       end: 3099
     'GG3100-':
        desc: 'Europa im Ganzen und größere Teile'
+       start: 3100
+       end: 3199
     'GG3200-':
        desc: 'Deutschland, Österreich, Schweiz'
+       start: 3200
+       end: 3499
     'GG3500-':
        desc: 'Übrige europäische Länder'
+       start: 3500
+       end: 3699
     'GG3700-':
        desc: 'Außereuropa'
+       start: 3700
+       end: 3999
     'GG4000-':
        desc: 'Kartographie, Fachgeschichte'
+       start: 4000
+       end: 4099
     'GG4100-':
        desc: 'Allgemeine Kartographie'
+       start: 4100
+       end: 4199
     'GG4200-':
        desc: 'Reine Kartographie'
+       start: 4200
+       end: 4499
     'GG4500-':
        desc: 'Thematische Kartographie'
+       start: 4500
+       end: 4999
     'GG5000-':
        desc: 'Weltatlanten'
+       start: 5000
+       end: 5099
     'GG5100-':
        desc: 'Physikalische Welt- bzw. Erdteilatlanten'
+       start: 5100
+       end: 5199
     'GG5200-':
        desc: 'Anthropogeographische Atlanten'
+       start: 5200
+       end: 5499
     'GG5500-':
        desc: 'Deutschland - Allgemein'
+       start: 5500
+       end: 5699
     'GG5700-':
        desc: 'Deutschland - Norden'
+       start: 5700
+       end: 5799
     'GG5800-':
        desc: 'Deutschland - Westen'
+       start: 5800
+       end: 5899
     'GG5900-':
        desc: 'Deutschland - Süden'
+       start: 5900
+       end: 5999
     'GG6000-':
        desc: 'Deutschland - Osten'
+       start: 6000
+       end: 6099
     'GG6100-':
        desc: 'Nordeuropa - Allgemein'
+       start: 6100
+       end: 6199
     'GG6200-':
        desc: 'Nordeuropa - Skandinavien'
+       start: 6200
+       end: 6299
     'GG6300-':
        desc: 'Westeuropa - Allgemein'
+       start: 6300
+       end: 6399
     'GG6400-':
        desc: 'Westeuropa - Britische Inseln'
+       start: 6400
+       end: 6599
     'GG6600-':
        desc: 'Westeuropa - Benelux'
+       start: 6600
+       end: 6699
     'GG6700-':
        desc: 'Westeuropa - Niederlande'
+       start: 6700
+       end: 6799
     'GG6800-':
        desc: 'Westeuropa - Frankreich'
+       start: 6800
+       end: 6899
     'GG6900-':
        desc: 'Mitteleuropa - Allgemein'
+       start: 6900
+       end: 6999
     'GG7000-':
        desc: 'Mitteleuropa - Alpenraum'
+       start: 7000
+       end: 7099
     'GG7100-':
        desc: 'Südeuropa - Allgemein'
+       start: 7100
+       end: 7199
     'GG7200-':
        desc: 'Südeuropa - Mittelmeerraum'
+       start: 7200
+       end: 7299
     'GG7300-':
        desc: 'Südeuropa - Balkan'
+       start: 7300
+       end: 7399
     'GG7400-':
        desc: 'Südeuropa - Iberische Halbinsel'
+       start: 7400
+       end: 7499
     'GG7500-':
        desc: 'Osteuropa - Allgemein'
+       start: 7500
+       end: 7599
     'GG7600-':
        desc: 'Osteuropa - Baltikum'
+       start: 7600
+       end: 7699
     'GG7700-':
        desc: 'Osteuropa - Russland'
+       start: 7700
+       end: 7749
     'GG7750-':
        desc: 'Osteuropa - Polen'
+       start: 7750
+       end: 7799
     'GG7800-':
        desc: 'Osteuropa - Sonstige Länder'
+       start: 7800
+       end: 7999
     'GG8000-':
        desc: 'Afrika - Allgemein'
+       start: 8000
+       end: 8099
     'GG8100-':
        desc: 'Nördliches Afrika'
+       start: 8100
+       end: 8199
     'GG8200-':
        desc: 'Westliches Afrika'
+       start: 8200
+       end: 8299
     'GG8300-':
        desc: 'Östliches Afrika'
+       start: 8300
+       end: 8399
     'GG8400-':
        desc: 'Zentralafrika'
+       start: 8400
+       end: 8499
     'GG8500-':
        desc: 'Südliches Afrika'
+       start: 8500
+       end: 8599
     'GG8600-':
        desc: 'Amerika - Allgemein'
+       start: 8600
+       end: 8699
     'GG8700-':
        desc: 'Nordamerika'
+       start: 8700
+       end: 8799
     'GG8800-':
        desc: 'Nordamerika - USA'
+       start: 8800
+       end: 8949
     'GG8950-':
        desc: 'Nordamerika - Kanada'
+       start: 8950
+       end: 8999
     'GG9000-':
        desc: 'Zentralamerika'
+       start: 9000
+       end: 9099
     'GG9100-':
        desc: 'Südamerika'
+       start: 9100
+       end: 9199
     'GG9200-':
        desc: 'Asien - Allgemein'
+       start: 9200
+       end: 9299
     'GG9300-':
        desc: 'Naher Osten'
+       start: 9300
+       end: 9499
     'GG9500-':
        desc: 'Zentralasien'
+       start: 9500
+       end: 9599
     'GG9600-':
        desc: 'Südasien'
+       start: 9600
+       end: 9699
     'GG9700-':
        desc: 'Südasien - Indien'
+       start: 9700
+       end: 9799
     'GG9800-':
        desc: 'Südostasien'
+       start: 9800
+       end: 9999
     'GG10000-':
        desc: 'Australien'
+       start: 10000
+       end: 10099
     'GG10100-':
        desc: 'Ozeanien'
+       start: 10100
+       end: 10199
     'GG10200-':
        desc: 'Polargebiete - Allgemein'
+       start: 10200
+       end: 10299
     'GG10300-':
        desc: 'Arktis'
+       start: 10300
+       end: 10399
     'GG10400-':
        desc: 'Antarktis'
+       start: 10400
+       end: 999999
 'K':
   desc: 'Kunstgeschichte, Musikwissenschaft'
   sub:
     'K1-':
        desc: 'Archäologie und Antike Kunst'
+       start: 1
+       end: 999
     'K1000-':
        desc: 'Nachschlagewerke und Enzyklopädien'
+       start: 1000
+       end: 1499
     'K1500-':
        desc: 'Bestands- und Werkkataloge'
+       start: 1500
+       end: 1699
     'K1700-':
        desc: 'Quellenschriften'
+       start: 1700
+       end: 1999
     'K2000-':
        desc: 'Kunsttheorie'
+       start: 2000
+       end: 2049
     'K2050-':
        desc: 'Kunstwissenschaft (Fach)'
+       start: 2050
+       end: 2099
     'K2100-':
        desc: 'Allg. Kunstgeschichte - Einführungen und Handbücher'
+       start: 2100
+       end: 2499
     'K2500-':
        desc: 'Einzelne Kunstgattungen'
+       start: 2500
+       end: 2999
     'K3000-':
        desc: 'Kunstgeschichte Deutschland'
+       start: 3000
+       end: 3999
     'K4000-':
        desc: 'Außereuropäische Kunstgeschichte'
+       start: 4000
+       end: 4049
     'K4050-':
        desc: 'Übrige europäische Kunstgeschichte'
+       start: 4050
+       end: 5999
     'K6000-':
        desc: 'Musikwissenschaft Allgemeines'
+       start: 6000
+       end: 6199
     'K6200-':
        desc: 'Biographische Nachschlagewerke Komponisten'
+       start: 6200
+       end: 6299
     'K6300-':
        desc: 'Biographische Nachschlagewerke Interpreten'
+       start: 6300
+       end: 6399
     'K6400-':
        desc: 'Musikwissenschaft und Teildisziplinen'
+       start: 6400
+       end: 6499
     'K6500-':
        desc: 'Regionale Musikwissenschaft'
+       start: 6500
+       end: 6699
     'K6700-':
        desc: 'Historische Musikwissenschaft'
+       start: 6700
+       end: 7399
     'K7400-':
        desc: 'Musikalische Gattungen'
+       start: 7400
+       end: 7899
     'K7900-':
        desc: 'Musikinstrumente'
+       start: 7900
+       end: 8099
     'K8100-':
        desc: 'Komponisten: Leben und Werk'
+       start: 8100
+       end: 999999
 'L':
   desc: 'Literaturwissenschaft'
   sub:
     'L1-':
        desc: 'Allgemeine Sprachwissenschaft'
+       start: 1
+       end: 299
     'L300-':
        desc: 'Allgemeine Indogermanistik'
+       start: 300
+       end: 499
     'L500-':
        desc: 'Allgemeine Literaturwissenschaft'
+       start: 500
+       end: 899
     'L900-':
        desc: 'Geschichte der Weltliteratur'
+       start: 900
+       end: 999
     'L1000-':
        desc: 'Klassische Philologie: Einführung, Geschichte'
+       start: 1000
+       end: 1099
     'L1100-':
        desc: 'Fachlexika'
+       start: 1100
+       end: 1299
     'L1300-':
        desc: 'Metrik'
+       start: 1300
+       end: 1359
     'L1360-':
        desc: 'Klassische Literaturgeschichte'
+       start: 1360
+       end: 1499
     'L1500-':
        desc: 'Texte'
+       start: 1500
+       end: 1599
     'L1600-':
        desc: 'Griechische Literatur bis Hellenismus'
+       start: 1600
+       end: 1699
     'L1700-':
        desc: 'Griechische Literatur ab Hellenismus'
+       start: 1700
+       end: 1799
     'L1800-':
        desc: 'Lateinische Literatur (Vorklassik und Klassik)'
+       start: 1800
+       end: 1899
     'L1900-':
        desc: 'Lateinische Literatur (Nachklassik und Mittelalter)'
+       start: 1900
+       end: 1999
     'L2000-':
        desc: 'Allgemeine Romanistik'
+       start: 2000
+       end: 2199
     'L2200-':
        desc: 'Französisch'
+       start: 2200
+       end: 3079
     'L3080-':
        desc: 'Italienisch'
+       start: 3080
+       end: 3199
     'L3200-':
        desc: 'Spanisch'
+       start: 3200
+       end: 3399
     'L3400-':
        desc: 'Katalanisch'
+       start: 3400
+       end: 3429
     'L3430-':
        desc: 'Portugiesisch'
+       start: 3430
+       end: 3464
     'L3465-':
        desc: 'Rätoromanisch'
+       start: 3465
+       end: 3468
     'L3469-':
        desc: 'Rumänisch'
+       start: 3469
+       end: 3499
     'L3500-':
        desc: 'Germanistik Allgemeines'
+       start: 3500
+       end: 3570
     'L3571-':
        desc: 'Sprachwissenschaft'
+       start: 3571
+       end: 3949
     'L3950-':
        desc: 'Literaturwissenschaft'
+       start: 3950
+       end: 4324
     'L4325-':
        desc: 'Gattungsgeschichte'
+       start: 4325
+       end: 4499
     'L4500-':
        desc: 'Deutschsprachige Regionalliteratur'
+       start: 4500
+       end: 4699
     'L4700-':
        desc: 'Literarische Primärtexte, Werkausgaben, Sekundärliteratur'
+       start: 4700
+       end: 6399
     'L6400-':
        desc: 'Niederlandistik'
+       start: 6400
+       end: 6499
     'L6500-':
        desc: 'Allgemeine Skandinavistik'
+       start: 6500
+       end: 6599
     'L6600-':
        desc: 'Altnordische / Isländische Literatur und Sprache'
+       start: 6600
+       end: 6699
     'L6700-':
        desc: 'Dänische Literatur und Sprache'
+       start: 6700
+       end: 6799
     'L6800-':
        desc: 'Norwegische Literatur und Sprache'
+       start: 6800
+       end: 6899
     'L6900-':
        desc: 'Schwedische Literatur und Sprache'
+       start: 6900
+       end: 6999
     'L7000-':
        desc: 'Anglistik: Einführung und Style manuals'
+       start: 7000
+       end: 7009
     'L7010-':
        desc: 'Englische Sprachwissenschaft'
+       start: 7010
+       end: 7239
     'L7240-':
        desc: 'Englische Literaturgeschichte allgemein'
+       start: 7240
+       end: 7414
     'L7415-':
        desc: 'Englische Lyrik'
+       start: 7415
+       end: 7454
     'L7455-':
        desc: 'Englische Dramatik'
+       start: 7455
+       end: 7465
     'L7466-':
        desc: 'Englische Prosa'
+       start: 7466
+       end: 7482
     'L7483-':
        desc: 'Regionale englischsprachige Literaturen (Irland, Kanada, Australien, etc.)'
+       start: 7483
+       end: 7499
     'L7500-':
        desc: 'Textausgaben vor Shakespeare'
+       start: 7500
+       end: 7559
     'L7560-':
        desc: 'Textausgaben Shakespeare'
+       start: 7560
+       end: 7599
     'L7600-':
        desc: 'Textausgaben nach Shakespeare'
+       start: 7600
+       end: 7799
     'L7800-':
        desc: 'Amerikanistik: Einführung und Sprachwissenschaft'
+       start: 7800
+       end: 7849
     'L7850-':
        desc: 'Amerikanische Literaturgeschichte allgemein'
+       start: 7850
+       end: 7870
     'L7871-':
        desc: 'Amerikanische Lyrik'
+       start: 7871
+       end: 7872
     'L7873-':
        desc: 'Amerikanische Dramatik'
+       start: 7873
+       end: 7873
     'L7874-':
        desc: 'Amerikanische Prosa'
+       start: 7874
+       end: 7875
     'L7876-':
        desc: 'Ethnische Literaturen (Hispanic, Asian-American etc.)'
+       start: 7876
+       end: 7899
     'L7900-':
        desc: 'Textausgaben'
+       start: 7900
+       end: 7999
     'L8000-':
        desc: 'Allgemeine Slawistik'
+       start: 8000
+       end: 8099
     'L8100-':
        desc: 'Russische Sprach- und Literaturwissenschaft'
+       start: 8100
+       end: 8299
     'L8300-':
        desc: 'Polnische Sprach- und Literaturwissenschaft'
+       start: 8300
+       end: 8354
     'L8355-':
        desc: 'Weitere slawische Sprachen'
+       start: 8355
+       end: 8499
     'L8500-':
        desc: 'Baltische und keltische Sprachen'
+       start: 8500
+       end: 8599
     'L8600-':
        desc: 'Indologie und Iranistik'
+       start: 8600
+       end: 9019
     'L9020-':
        desc: 'Handbuch der Orientalistik'
+       start: 9020
+       end: 9091
     'L9092-':
        desc: 'Judaistik, Arabistik, Ägyptologie'
+       start: 9092
+       end: 9299
     'L9300-':
        desc: 'Finnougrische Sprachen'
+       start: 9300
+       end: 9399
     'L9400-':
        desc: 'Altaistik'
+       start: 9400
+       end: 9599
     'L9600-':
        desc: 'Ostasiatische Sprachen und Literaturen'
+       start: 9600
+       end: 9699
     'L9700-':
        desc: 'Austrische und australische Sprachen'
+       start: 9700
+       end: 9799
     'L9800-':
        desc: 'Afrikanistik'
+       start: 9800
+       end: 999999
 'MW':
   desc: 'Medienwissenschaft'
   sub:
     'MW1-':
        desc: 'Kommunikationswissenschaft: Allgemeines'
+       start: 1
+       end: 150
     'MW151-':
        desc: 'Geschichte der Kommunikationswissenschaft'
+       start: 151
+       end: 200
     'MW201-':
        desc: 'Kommunikationstheorie'
+       start: 201
+       end: 400
     'MW401-':
        desc: 'Kommunikation und Gesellschaft'
+       start: 401
+       end: 500
     'MW501-':
        desc: 'Massenkommunikation, Massenmedien: Allgemeines'
+       start: 501
+       end: 650
     'MW651-':
        desc: 'Pressewesen'
+       start: 651
+       end: 750
     'MW751-':
        desc: 'Rundfunk allgemein'
+       start: 751
+       end: 1499
     'MW1500-':
        desc: 'Theater, Film: Allgemeines'
+       start: 1500
+       end: 1600
     'MW1601-':
        desc: 'Darstellende Künstler'
+       start: 1601
+       end: 1750
     'MW1751-':
        desc: 'Theater: Allgemeines'
+       start: 1751
+       end: 1900
     'MW1901-':
        desc: 'Ausbildung, Beruf, Organisation'
+       start: 1901
+       end: 2000
     'MW2001-':
        desc: 'Theatergeschichte'
+       start: 2001
+       end: 2100
     'MW2101-':
        desc: 'Theatereinrichtung, Bühnentechnik'
+       start: 2101
+       end: 2400
     'MW2401-':
        desc: 'Tanzkunst, Bewegungskunst'
+       start: 2401
+       end: 2450
     'MW2451-':
        desc: 'Kleinkunst, Kabarett, Revue'
+       start: 2451
+       end: 2999
     'MW3000-':
        desc: 'Film: Allgemeines'
+       start: 3000
+       end: 3150
     'MW3151-':
        desc: 'Systematische Filmwissenschaft'
+       start: 3151
+       end: 3200
     'MW3201-':
        desc: 'Filmgeschichte'
+       start: 3201
+       end: 3400
     'MW3401-':
        desc: 'Filmgattungen, Filmsparten'
+       start: 3401
+       end: 3600
     'MW3601-':
        desc: 'Fernsehen, Hörfunk'
+       start: 3600
+       end: 999999
 'N':
   desc: 'Naturwissenschaft'
   sub:
     'N200-':
        desc: 'Naturwissenschaft allgemein'
+       start: 200
+       end: 499
     'N500-':
        desc: 'Mathematik: Einführungen und Gesamtdarstellungen'
+       start: 500
+       end: 799
     'N800-':
        desc: 'Algebra und Zahlentheorie'
+       start: 800
+       end: 999
     'N1000-':
        desc: 'Geometrie, Topologie'
+       start: 1000
+       end: 1099
     'N1100-':
        desc: 'Analysis, Funktionsanalysis, Funktionentheorie'
+       start: 1100
+       end: 1299
     'N1300-':
        desc: 'Wahrscheinlichkeitstheorie, Statistik, Numerik'
+       start: 1300
+       end: 1499
     'N1500-':
        desc: 'Physik: Einführungen und Gesamtdarstellungen'
+       start: 1500
+       end: 1799
     'N1800-':
        desc: 'Mathematische Methoden, Computerphysik, Praktikum'
+       start: 1800
+       end: 1899
     'N1900-':
        desc: 'Klassische Physik'
+       start: 1900
+       end: 2499
     'N2500-':
        desc: 'Atomphysik, Molekülphysik, Kernphysik'
+       start: 2500
+       end: 2599
     'N2600-':
        desc: 'Quantenphysik'
+       start: 2600
+       end: 2649
     'N2650-':
        desc: 'Relativitätstheorie, Gravitation'
+       start: 2650
+       end: 2699
     'N2700-':
        desc: 'Festkörperphysik, Werkstoffphysik'
+       start: 2700
+       end: 2899
     'N2900-':
        desc: 'Astronomie, Astrophysik'
+       start: 2900
+       end: 3399
     'N3400-':
        desc: 'Chemie: Einführungen und Gesamtdarstellungen'
+       start: 3400
+       end: 3799
     'N3800-':
        desc: 'Physikalische Chemie'
+       start: 3800
+       end: 3899
     'N3900-':
        desc: 'Analytische Chemie, Praktika'
+       start: 3900
+       end: 3999
     'N4000-':
        desc: 'Anorganische Chemie'
+       start: 4000
+       end: 4099
     'N4100-':
        desc: 'Organische Chemie'
+       start: 4100
+       end: 4199
     'N4200-':
        desc: 'Technische Chemie'
+       start: 4200
+       end: 4499
     'N4500-':
        desc: 'Geowissenschaften: Einführungen und Gesamtdarstellungen'
+       start: 4500
+       end: 4599
     'N4600-':
        desc: 'Geophysik, Meteorologie, Klimatologie'
+       start: 4600
+       end: 4699
     'N4700-':
        desc: 'Kristallographie, Mineralogie'
+       start: 4700
+       end: 4899
     'N4900-':
        desc: 'Bodenkunde, Gesteinskunde'
+       start: 4900
+       end: 4999
     'N5000-':
        desc: 'Allgemeine Geologie'
+       start: 5000
+       end: 5099
     'N5100-':
        desc: 'Historische Geologie'
+       start: 5100
+       end: 5199
     'N5200-':
        desc: 'Regionale Geologie'
+       start: 5200
+       end: 5299
     'N5300-':
        desc: 'Lagerstättenkunde'
+       start: 5300
+       end: 5599
     'N5600-':
        desc: 'Biologie: Fortschrittsberichte'
+       start: 5600
+       end: 5699
     'N5700-':
        desc: 'Allgemeines'
+       start: 5700
+       end: 5899
     'N5900-':
        desc: 'Biochemie, Biophysik'
+       start: 5900
+       end: 6099
     'N6100-':
        desc: 'Genetik'
+       start: 6100
+       end: 6149
     'N6150-':
        desc: 'Zellbiologie, Entwicklungsbiologie'
+       start: 6150
+       end: 6199
     'N6200-':
        desc: 'Ökologie'
+       start: 6200
+       end: 6299
     'N6300-':
        desc: 'Mikrobiologie'
+       start: 6300
+       end: 6399
     'N6400-':
        desc: 'Biotechnologie'
+       start: 6400
+       end: 6499
     'N6500-':
        desc: 'Botanik'
+       start: 6500
+       end: 6699
     'N6700-':
        desc: 'Physiologie'
+       start: 6700
+       end: 6799
     'N6800-':
        desc: 'Soziologie'
+       start: 6800
+       end: 6899
     'N6900-':
        desc: 'Spezielle Botanik'
+       start: 6900
+       end: 7099
     'N7100-':
        desc: 'Angewandte Botanik'
+       start: 7100
+       end: 7199
     'N7200-':
        desc: 'Nutzpflanzen'
+       start: 7200
+       end: 7249
     'N7250-':
        desc: 'Zoologie'
+       start: 7250
+       end: 7399
     'N7400-':
        desc: 'Physiologie'
+       start: 7400
+       end: 7499
     'N7500-':
        desc: 'Verhaltensforschung'
+       start: 7500
+       end: 7599
     'N7600-':
        desc: 'Spezielle Zoologie'
+       start: 7600
+       end: 7899
     'N7900-':
        desc: 'Medizingrundlagen'
+       start: 7900
+       end: 7999
     'N8000-':
        desc: 'Technik: Allgemeines'
+       start: 8000
+       end: 8099
     'N8100-':
        desc: 'Maschinenbau, Energietechnik'
+       start: 8100
+       end: 8399
     'N8400-':
        desc: 'Werkstoffwissenschaften'
+       start: 8400
+       end: 8599
     'N8600-':
        desc: 'Elektrotechnik'
+       start: 8600
+       end: 8799
     'N8800-':
        desc: 'Prozesstechnik, Verfahrenstechnik, Fertigungstechnik'
+       start: 8800
+       end: 8899
     'N8900-':
        desc: 'Informatik'
+       start: 8900
+       end: 999999
 'PH':
   desc: 'Philosophie'
   sub:
     'PH1-':
        desc: 'Philosophie: Allgemeines'
+       start: 1
+       end: 200
     'PH201-':
        desc: 'Ausbildung, Beruf, Organisation'
+       start: 201
+       end: 250
     'PH251-':
        desc: 'Nichtwestliche Philosophie: Allgemeines'
+       start: 251
+       end: 300
     'PH301-':
        desc: 'Geschichte der westlichen Philosophie: Allgemeines'
+       start: 301
+       end: 400
     'PH401-':
        desc: 'Griechische Philosophie, Römische Philosophie'
+       start: 401
+       end: 450
     'PH451-':
        desc: 'Mittelalterliche Philosophie'
+       start: 451
+       end: 550
     'PH551-':
        desc: 'Neue westliche Philosophie'
+       start: 551
+       end: 650
     'PH651-':
        desc: 'Zeitgenössische westliche Philosophie'
+       start: 651
+       end: 800
     'PH801-':
        desc: 'Metaphysik, Ontologie'
+       start: 801
+       end: 850
     'PH851-':
        desc: 'Erkenntnistheorie'
+       start: 851
+       end: 1100
     'PH1101-':
        desc: 'Ethik'
+       start: 1101
+       end: 1150
     'PH1151-':
        desc: 'Ästhetik'
+       start: 1151
+       end: 1200
     'PH1201-':
        desc: 'Kulturphilosophie'
+       start: 1201
+       end: 1350
     'PH1351-':
        desc: 'Politische Philosophie'
+       start: 1351
+       end: 1400
     'PH1401-':
        desc: 'Naturphilosophie, Pseudophilosophie, Systematische Philosophie: Sonstiges'
+       start: 1401
+       end: 999999
 'PP':
   desc: 'Pädagogik'
   sub:
     'PP1-':
        desc: 'Geschichte der Pädagogik'
+       start: 1
+       end: 99
     'PP100-':
        desc: 'Vergleichende Pädagogik'
+       start: 100
+       end: 299
     'PP300-':
        desc: 'Einführungen'
+       start: 300
+       end: 399
     'PP400-':
        desc: 'Praktisches Unterrichtswesen, Didaktik, Methodik'
+       start: 400
+       end: 599
     'PP600-':
        desc: 'Erwachsenenbildung'
+       start: 600
+       end: 699
     'PP700-':
        desc: 'Spezielle historische Themen'
+       start: 700
+       end: 799
     'PP800-':
        desc: 'Klassiker der Pädagogik'
+       start: 800
+       end: 999999
 'PS':
   desc: 'Psychologie'
   sub:
     'PS1-':
        desc: 'Psychologie: Allgemeines'
+       start: 1
+       end: 150
     'PS151-':
        desc: 'Geschichte der Psychologie'
+       start: 151
+       end: 200
     'PS201-':
        desc: 'Philosophie und Theorie der Psychologie'
+       start: 201
+       end: 250
     'PS251-':
        desc: 'Methoden und Techniken der Psychologie'
+       start: 251
+       end: 300
     'PS301-':
        desc: 'Ausbildung, Beruf, Organisationen'
+       start: 301
+       end: 500
     'PS501-':
        desc: 'Psychologische Diagnostik'
+       start: 501
+       end: 600
     'PS601-':
        desc: 'Strömungen und Richtungen'
+       start: 601
+       end: 700
     'PS701-':
        desc: 'Strömungen und Psychoanalyse'
+       start: 701
+       end: 800
     'PS801-':
        desc: 'Allgemeine Psychologie: Allgemeines'
+       start: 801
+       end: 850
     'PS851-':
        desc: 'Kognition'
+       start: 851
+       end: 950
     'PS951-':
        desc: 'Wahrnehmungspsychologie'
+       start: 951
+       end: 1000
     'PS1001-':
        desc: 'Motivationspsychologie'
+       start: 1001
+       end: 1100
     'Ps1101-':
        desc: 'Bewusstseinszustände'
+       start: 1101
+       end: 1200
     'PS1201-':
        desc: 'Allgemeine Psychologie (Sprachpsychologie)'
+       start: 1201
+       end: 1250
     'PS1251-':
        desc: 'Psychophysiologie'
+       start: 1251
+       end: 1300
     'PS1301-':
        desc: 'Vergleichende Psychologie'
+       start: 1301
+       end: 1350
     'PS1351-':
        desc: 'Differentielle Psychologie'
+       start: 1351
+       end: 1450
     'PS1451-':
        desc: 'Entwicklungspsychologie'
+       start: 1451
+       end: 1550
     'PS1551-':
        desc: 'Sozialpsychologie'
+       start: 1551
+       end: 1650
     'PS1651-':
        desc: 'Klinische Psychologie'
+       start: 1651
+       end: 1750
     'PS1751-':
        desc: 'Behandlung, Rehabilitation'
+       start: 1751
+       end: 1950
     'PS1951-':
        desc: 'Ökologische Psychologie'
+       start: 1951
+       end: 2000
     'PS2001-':
        desc: 'Parapsychologie'
+       start: 2001
+       end: 2050
     'PS2051-':
        desc: 'Angewandte Psychologie'
+       start: 2051
+       end: 999999
 'R':
   desc: 'Rechtswissenschaft'
   sub:
     'R1-':
        desc: 'Rechtsquellen (Reich, Militärregierung u.Übergangszeit)'
+       start: 1
+       end: 199
     'R200-':
        desc: 'Rechtsquellen (Bundesrepublik)'
+       start: 200
+       end: 399
     'R400-':
        desc: 'Rechtsquellen (Länder)'
+       start: 400
+       end: 599
     'R600-':
        desc: 'Rechtsquellen (Städte)'
+       start: 600
+       end: 999
     'R1000-':
        desc: 'Allgemeine Zeitschriften und Reihen'
+       start: 1000
+       end: 1299
     'R1300-':
        desc: 'Allgemeine Gesetzweiser'
+       start: 1300
+       end: 1399
     'R1400-':
        desc: 'Abkürzungsverzeichnisse'
+       start: 1400
+       end: 1499
     'R1500-':
        desc: 'Sprachwörterbücher'
+       start: 1500
+       end: 1799
     'R1800-':
        desc: 'Berufs- und Behördenverzeichnisse'
+       start: 1800
+       end: 1899
     'R1900-':
        desc: 'Allgemeine Formularbücher'
+       start: 1900
+       end: 3999
     'R4000-':
        desc: 'Allgemeine Rechtslehre (Allgemeines, Rechtstheorie)'
+       start: 4000
+       end: 4399
     'R4400-':
        desc: 'Allgemeine Rechtslehre (Einführung in die Rechtswissenschaft)'
+       start: 4400
+       end: 4799
     'R4800-':
        desc: 'Allgemeine Rechtslehre (Handbücher)'
+       start: 4800
+       end: 4899
     'R4900-':
        desc: 'Allgemeine Rechtslehre (Begriffswörterbücher)'
+       start: 4900
+       end: 5199
     'R5200-':
        desc: 'Allgemeine Rechtslehre (Staatsbürgerkunde)'
+       start: 5200
+       end: 5299
     'R5300-':
        desc: 'Allgemeine Rechtslehre (Studium und Ausbildung)'
+       start: 5300
+       end: 5399
     'R5400-':
        desc: 'Allgemeine Rechtslehre (Datenverarbeitung, Automation, Dokumentation)'
+       start: 5400
+       end: 5999
     'R6000-':
        desc: 'Geschichte der Rechtswissenschaft'
+       start: 6000
+       end: 6299
     'R6300-':
        desc: 'Rechtsphilosophie'
+       start: 6300
+       end: 6599
     'R6600-':
        desc: 'Rechtssoziologie'
+       start: 6600
+       end: 8999
     'R9000-':
        desc: 'Allgemeine Rechtsgeschichte'
+       start: 9000
+       end: 9199
     'R9200-':
        desc: 'Römisches Recht (Quellen und Quellengeschichte)'
+       start: 9200
+       end: 9299
     'R9300-':
        desc: 'Römisches Recht (Geschichte)'
+       start: 9300
+       end: 9399
     'R9400-':
        desc: 'Römisches Recht (Privat-, Staats-, Verwaltungs- und Strafrecht)'
+       start: 9400
+       end: 9499
     'R9500-':
        desc: 'Römisches Recht (Pandektenrecht)'
+       start: 9500
+       end: 9599
     'R9600-':
        desc: 'Germanisches Recht'
+       start: 9600
+       end: 9699
     'R9700-':
        desc: 'Deutsches Recht (Quellen, Quellengeschichte,Wörterbücher)'
+       start: 9700
+       end: 9799
     'R9800-':
        desc: 'Deutsches Recht (Geschichte)'
+       start: 9800
+       end: 9899
     'R9900-':
        desc: 'Deutsches Recht (Privatrecht, öffentliches Recht)'
+       start: 9900
+       end: 9999
     'R10000-':
        desc: 'Europäisches Recht'
+       start: 10000
+       end: 11999
     'R12000-':
        desc: 'Allgemeine Entscheidungssammlungen zum deutschen Zivilrecht (Reichsgerichtshof)'
+       start: 12000
+       end: 12099
     'R12100-':
        desc: 'Allgemeine Entscheidungssammlungen zum deutschen Zivilrecht (Oberster Gerichtshof, Deutsches Obergericht, Bundesgerichtshof)'
+       start: 12100
+       end: 12299
     'R12300-':
        desc: 'Allgemeine Entscheidungssammlungen zum deutschen Zivilrecht (Oberlandesgerichte)'
+       start: 12300
+       end: 12699
     'R12700-':
        desc: 'NJW-Fundhefte zum Zivilrecht'
+       start: 12700
+       end: 12799
     'R12800-':
        desc: 'Zivilrecht (Zeitschriften und Reihen)'
+       start: 12800
+       end: 14999
     'R15000-':
        desc: 'Bürgerliches Recht (Allgemeines, Einführungen)'
+       start: 15000
+       end: 15199
     'R15200-':
        desc: 'Gesamtes BGB (Wegweiser)'
+       start: 15200
+       end: 15399
     'R15400-':
        desc: 'Gesamtes BGB (Kommentare)'
+       start: 15400
+       end: 15499
     'R15500-':
        desc: 'Gesamtes BGB (Lehrbücher)'
+       start: 15500
+       end: 15599
     'R15600-':
        desc: 'Gesamtes BGB (Mongraphien, Fallsammlungen)'
+       start: 15600
+       end: 15999
     'R16000-':
        desc: 'Allgemeiner Teil des BGB (Kommentare)'
+       start: 16000
+       end: 16099
     'R16100-':
        desc: 'Allgemeiner Teil des BGB (Lehrbücher)'
+       start: 16100
+       end: 16199
     'R16200-':
        desc: 'Allgemeiner Teil des BGB (Monographien, Fallsammlungen)'
+       start: 16200
+       end: 16499
     'R16500-':
        desc: 'Schuldrecht (Kommentare)'
+       start: 16500
+       end: 16599
     'R16600-':
        desc: 'Schuldrecht (Lehrbücher)'
+       start: 16600
+       end: 16699
     'R16700-':
        desc: 'Schuldrecht (Monographien, Fallsammlungen, Einzelgebiete)'
+       start: 16700
+       end: 17199
     'R17200-':
        desc: 'Sachenrecht (Kommentare)'
+       start: 17200
+       end: 17299
     'R17300-':
        desc: 'Sachenrecht (Lehrbücher)'
+       start: 17300
+       end: 17399
     'R17400-':
        desc: 'Sachenrecht (Monographien, Fallsammlungen)'
+       start: 17400
+       end: 17499
     'R17500-':
        desc: 'Sachenrecht (Einzelgebiete)'
+       start: 17500
+       end: 17999
     'R18000-':
        desc: 'Familienrecht (Kommentare)'
+       start: 18000
+       end: 18099
     'R18100-':
        desc: 'Familienrecht (Lehrbücher)'
+       start: 18100
+       end: 18199
     'R18200-':
        desc: 'Familienrecht (Monographien, Fallsammlungen)'
+       start: 18200
+       end: 18299
     'R18300-':
        desc: 'Familienrecht (Einzelgebiete)'
+       start: 18300
+       end: 18499
     'R18500-':
        desc: 'Erbrecht (Kommentare)'
+       start: 18500
+       end: 18599
     'R18600-':
        desc: 'Erbrecht (Lehrbücher)'
+       start: 18600
+       end: 18699
     'R18700-':
        desc: 'Erbrecht (Monographien, Fallsammlungen)'
+       start: 18700
+       end: 18799
     'R18800-':
        desc: 'Einführungsgesetz, Register zum BGB, Ergänzungsbände'
+       start: 18800
+       end: 18999
     'R19000-':
        desc: 'Haftung, Haftpflicht'
+       start: 19000
+       end: 21999
     'R22000-':
        desc: 'Handelsrecht insgesamt, Handelsgesetzbuch (Entscheidungssammlungen)'
+       start: 22000
+       end: 22199
     'R22200-':
        desc: 'Handelsrecht insgesamt, Handelsgesetzbuch (Lehrbücher, Monographien, Fallsammlungen, Kommentare)'
+       start: 22200
+       end: 22299
     'R22300-':
        desc: 'Steuerrecht'
+       start: 22300
+       end: 22499
     'R22500-':
        desc: 'Seehandelsrecht'
+       start: 22500
+       end: 22599
     'R22600-':
        desc: 'Gesellschaftsrecht (allgemein)'
+       start: 22600
+       end: 22699
     'R22700-':
        desc: 'Gesellschaftsrecht (Personengesellschaften)'
+       start: 22700
+       end: 22799
     'R22800-':
        desc: 'Gesellschaftsrecht (Aktiengesellschaften, Kommanditgesellschaften)'
+       start: 22800
+       end: 22899
     'R22900-':
        desc: 'Gesellschaftsrecht (GmbH)'
+       start: 22900
+       end: 22999
     'R23000-':
        desc: 'Gesellschaftsrecht (Genossenschaft)'
+       start: 23000
+       end: 23499
     'R23500-':
        desc: 'Bankrecht, Depotrecht, Börsenrecht, Kreditrecht'
+       start: 23500
+       end: 23799
     'R23800-':
        desc: 'Wertpapierrecht, Wechsel- und Scheckrecht, Sonstiges'
+       start: 23800
+       end: 24999
     'R25000-':
        desc: 'Urheberrecht und gewerblicher Rechtsschutz zusammen'
+       start: 25000
+       end: 25099
     'R25100-':
        desc: 'Urheberrecht, Verlagsrecht'
+       start: 25100
+       end: 25199
     'R25200-':
        desc: 'Gewerblicher Rechtsschutz (allgemein)'
+       start: 25200
+       end: 25299
     'R25300-':
        desc: 'Patentrecht'
+       start: 25300
+       end: 25399
     'R25400-':
        desc: 'Arbeitnehmerfindungsrecht'
+       start: 25400
+       end: 25499
     'R25500-':
        desc: 'Gebrauchsmuster- und Geschmacksmusterrecht'
+       start: 25500
+       end: 25599
     'R25600-':
        desc: 'Wettbewerbs- und Warenzeichenrecht, Zugabe- und Rabattrecht'
+       start: 25600
+       end: 25799
     'R25800-':
        desc: 'Kartellrecht, Recht der Wettbewerbsbeschränkungen'
+       start: 25800
+       end: 26999
     'R27000-':
        desc: 'Gerichtsverfassung, Verfahren in Zivilsachen (allgemein)'
+       start: 27000
+       end: 27099
     'R27100-':
        desc: 'Gerichtsverfassungsrecht'
+       start: 27100
+       end: 27199
     'R27200-':
        desc: 'Personen der Rechtspflege'
+       start: 27200
+       end: 27299
     'R27300-':
        desc: 'Zivilprozessrecht (Monographien)'
+       start: 27300
+       end: 27399
     'R27400-':
        desc: 'Zivilprozessrecht (Kommentare, Lehrbücher)'
+       start: 27400
+       end: 27599
     'R27600-':
        desc: 'Zwangsvollstreckung, Insolvenz- und Vergleichsrecht (allgemein)'
+       start: 27600
+       end: 27699
     'R27700-':
        desc: 'Zwangsvollstreckung, Vergleichsrecht, Schiedsgerichtsbarkeit'
+       start: 27700
+       end: 27799
     'R27800-':
        desc: 'Insolvenzrecht, Konkursrecht, Vergleichsrecht, Vergleichsordnung'
+       start: 27800
+       end: 27999
     'R28000-':
        desc: 'Freiwillige Gerichtsbarkeit, Personenstandsrecht'
+       start: 28000
+       end: 28199
     'R28200-':
        desc: 'Kostenrecht'
+       start: 28200
+       end: 29099
     'R29100-':
        desc: 'Strafrecht, Strafverfahrensrecht (Entscheidungssammlungen)'
+       start: 29100
+       end: 29199
     'R29200-':
        desc: 'Strafrecht, Strafverfahrensrecht (NJW-Fundhefte, Zeitschriften, Gesetzessammlungen)'
+       start: 29200
+       end: 29499
     'R29500-':
        desc: 'Strafrechtliche Nebengebiete'
+       start: 29500
+       end: 29999
     'R30000-':
        desc: 'Strafverfahrensrecht, Strafprozessordnung'
+       start: 30000
+       end: 30099
     'R30100-':
        desc: 'Jugendstrafrecht'
+       start: 30100
+       end: 30199
     'R30200-':
        desc: 'Strafvollzug, Untersuchungshaft'
+       start: 30200
+       end: 30299
     'R30300-':
        desc: 'Kriminologie'
+       start: 30300
+       end: 30399
     'R30400-':
        desc: 'Forensische Psychiatrie'
+       start: 30400
+       end: 30499
     'R30500-':
        desc: 'Forensische Medizin'
+       start: 30500
+       end: 32999
     'R33000-':
        desc: 'Staats- und Verwaltungsrecht (Entscheidungssammlungen, NJW-Fundhefte, Zeitschriften, Reihen)'
+       start: 33000
+       end: 33099
     'R33100-':
        desc: 'Staatsrecht: Zeitschriften, Reihen'
+       start: 33100
+       end: 33299
     'R33300-':
        desc: 'Staats- und Verwaltungsrecht (Verfassungs- und Gesetzessammlungen)'
+       start: 33300
+       end: 33399
     'R33400-':
        desc: 'Staats- und Verwaltungsrecht (Handbücher)'
+       start: 33400
+       end: 33499
     'R33500-':
        desc: 'Staats- und Verwaltungsrecht (Lehrbücher)'
+       start: 33500
+       end: 33799
     'R33800-':
        desc: 'Verfassungsgerichtsbarkeit'
+       start: 33800
+       end: 33899
     'R33900-':
        desc: 'Verwaltungsgerichtsbarkeit'
+       start: 33900
+       end: 33999
     'R34000-':
        desc: 'Informationsfreiheitsgesetz'
+       start: 34000
+       end: 34999
     'R35000-':
        desc: 'Staats- und Verfassungsrecht (allgemeine Staatslehre)'
+       start: 35000
+       end: 35099
     'R35100-':
        desc: 'Staats- und Verfassungsrecht (Grund- und Menschenrechte, Einzelfragen)'
+       start: 35100
+       end: 35499
     'R35500-':
        desc: 'Staatsrecht bis 1945'
+       start: 35500
+       end: 35699
     'R35700-':
        desc: 'Staatsrecht der BRD (allgemein, Entstehungsgeschichte)'
+       start: 35700
+       end: 35799
     'R35800-':
        desc: 'Staatsrecht der BRD (Grundgesetz, Kommentare, Lehrbücher)'
+       start: 35800
+       end: 35999
     'R36000-':
        desc: 'Staatsrecht der BRD (Bundestag, Bundesrat, Bundeswahlrecht)'
+       start: 36000
+       end: 36399
     'R36400-':
        desc: 'Staatsrecht der deutschen Länder (allgemein, Verfassungen)'
+       start: 36400
+       end: 36699
     'R36700-':
        desc: 'Staatsangehörigkeitsrecht'
+       start: 36700
+       end: 37999
     'R38000-':
        desc: 'Allgemeines und besonderes Verwaltungsrecht insgesamt'
+       start: 38000
+       end: 38199
     'R38200-':
        desc: 'Verwaltungsverfahren, Staatshaftung'
+       start: 38200
+       end: 38499
     'R38500-':
        desc: 'Öffentlicher Dienst (allgemein)'
+       start: 38500
+       end: 38599
     'R38600-':
        desc: 'Öffentlicher Dienst (Angestellte und Arbeiter)'
+       start: 38600
+       end: 38699
     'R38700-':
        desc: 'Öffentlicher Dienst (Beamte)'
+       start: 38700
+       end: 38799
     'R38800-':
        desc: 'Öffentlicher Dienst (Besoldungsrecht, Personalvertretungsgesetz)'
+       start: 38800
+       end: 38899
     'R38900-':
        desc: 'Öffentlicher Dienst (Disziplinarrecht, Sonstiges)'
+       start: 38900
+       end: 39199
     'R39200-':
        desc: 'Nachrichtendienst'
+       start: 39200
+       end: 39299
     'R39300-':
        desc: 'Allgemeines Polizeirecht, Ordnungsbehördenrecht, Waffenrecht'
+       start: 39300
+       end: 39399
     'R39400-':
        desc: 'Fremdenrecht, Ausländerrecht, Vereinsrecht, Orden, Titel, Ehrenzeichen'
+       start: 39400
+       end: 39499
     'R39500-':
        desc: 'Unterbringungsrecht, Gesundheitsrecht, Umweltrecht, Lebens- und Arzneimittelrecht'
+       start: 39500
+       end: 39999
     'R40000-':
        desc: 'Kommunalrecht, Landesverwaltungsrecht'
+       start: 40000
+       end: 40099
     'R40100-':
        desc: 'Hochschulrecht'
+       start: 40100
+       end: 40199
     'R40200-':
        desc: 'Kultusrecht, Schulrecht, Bibliotheksrecht'
+       start: 40200
+       end: 40299
     'R40300-':
        desc: 'Presserecht, Rundfunkrecht, Theaterrecht'
+       start: 40300
+       end: 40399
     'R40400-':
        desc: 'Allgemeines Baurecht, Architektenrecht, Raumordnung, Planungsrecht, Bodenordnungsrecht, Bundesbaugesetz'
+       start: 40400
+       end: 40699
     'R40700-':
        desc: 'Bauordnungsrecht, Bauordnung'
+       start: 40700
+       end: 40799
     'R40800-':
        desc: 'Baurecht (Sonstiges)'
+       start: 40800
+       end: 40999
     'R41000-':
        desc: 'Straßen- und Wegerecht, Wasserstraßenstrecht'
+       start: 41000
+       end: 41099
     'R41100-':
        desc: 'Natur- und Landschaftsschutz'
+       start: 41100
+       end: 41199
     'R41200-':
        desc: 'Wehrrecht'
+       start: 41200
+       end: 41299
     'R41300-':
        desc: 'Zivilschutz, Notstandsrecht, Sicherungsgesetze'
+       start: 41300
+       end: 41399
     'R41400-':
        desc: 'Datenschutz'
+       start: 41400
+       end: 41599
     'R41600-':
        desc: 'Ausbildungsförderungsgesetz'
+       start: 41600
+       end: 41699
     'R41700-':
        desc: 'Siedlungs- und Wohnungsbau'
+       start: 41700
+       end: 41799
     'R41800-':
        desc: 'Soziales Miet- und Wohnrecht, Wohngeldgesetz'
+       start: 41800
+       end: 42299
     'R42300-':
        desc: 'Sozialrecht (Zeitschriften, Entscheidungssammlungen, Gesetzessammlungen, Lehrbücher, Kommentare)'
+       start: 42300
+       end: 43499
     'R43500-':
        desc: 'Sozialgerichtsbarkeit'
+       start: 43500
+       end: 43599
     'R43600-':
        desc: 'Bundessozialhilfegesetz'
+       start: 43600
+       end: 43699
     'R43700-':
        desc: 'Jugendrecht, Jugendwohlfahrt, Jugendschutz'
+       start: 43700
+       end: 43799
     'R43800-':
        desc: 'Kriegsopferversorgung und sonstiges Schwerbeschädigtenrecht'
+       start: 43800
+       end: 43899
     'R43900-':
        desc: 'Flüchtlings- und Heimkehrerhilfe, Lastenausgleich'
+       start: 43900
+       end: 43999
     'R44000-':
        desc: 'Rückerstattung und Widergutmachung, Kriegsfolgengesetz, Sozialrecht (Sonstiges)'
+       start: 44000
+       end: 44199
     'R44200-':
        desc: 'Münz- und Meßwesen, Bundesstatistikgesetz, Feiertagsgesetz, Sonstiges'
+       start: 44200
+       end: 45999
     'R46000-':
        desc: 'Arbeitsrecht (Entscheidungssammlungen, NJW-Fundhefte, Zeitschriften)'
+       start: 46000
+       end: 46099
     'R46100-':
        desc: 'Arbeitsrecht (Kommentare, Texte, Lehrbücher)'
+       start: 46100
+       end: 46499
     'R46500-':
        desc: 'Arbeitsgerichtsbarkeit'
+       start: 46500
+       end: 46599
     'R46600-':
        desc: 'Arbeitsvertragsrecht'
+       start: 46600
+       end: 46699
     'R46700-':
        desc: 'Arbeitsschutz, Urlaub'
+       start: 46700
+       end: 46799
     'R46800-':
        desc: 'Kollektives Arbeitsrecht, Tarifrecht'
+       start: 46800
+       end: 46899
     'R46900-':
        desc: 'Betriebsverfassung, Mitbestimmung'
+       start: 46900
+       end: 46999
     'R47000-':
        desc: 'Gewinnbeteilugung, Arbeitsvermittlung, Arbeitslosenversicherung, Arbeitsförderung, Berufsbildung'
+       start: 47000
+       end: 47099
     'R47100-':
        desc: 'Arbeitnehmerüberlassung'
+       start: 47100
+       end: 47199
     'R47200-':
        desc: 'Schwarzarbeit'
+       start: 47200
+       end: 48999
     'R49000-':
        desc: 'Allgemeines Wirtschaftsrecht'
+       start: 49000
+       end: 49199
     'R49200-':
        desc: 'Wirtschaftsverfassung, Wirtschaftsverwaltungsrecht'
+       start: 49200
+       end: 49299
     'R49300-':
        desc: 'Außenwirtschaftsrecht'
+       start: 49300
+       end: 49399
     'R49400-':
        desc: 'Preisrecht'
+       start: 49400
+       end: 49499
     'R49500-':
        desc: 'Gewerberecht'
+       start: 49500
+       end: 49599
     'R49600-':
        desc: 'Handwerksrecht'
+       start: 49600
+       end: 49799
     'R49800-':
        desc: 'Bergrecht'
+       start: 49800
+       end: 49899
     'R49900-':
        desc: 'Energierecht'
+       start: 49900
+       end: 49999
     'R50000-':
        desc: 'Atom- und Strahlenschutzrecht'
+       start: 50000
+       end: 50099
     'R50100-':
        desc: 'Wasserrecht'
+       start: 50100
+       end: 50199
     'R50200-':
        desc: 'Fischereirecht'
+       start: 50200
+       end: 50299
     'R50300-':
        desc: 'Landwirtschaftsrecht'
+       start: 50300
+       end: 50399
     'R50400-':
        desc: 'Forstrecht, Jagdrecht'
+       start: 50400
+       end: 53999
     'R54000-':
        desc: 'Verkehrsrecht (allgemein)'
+       start: 54000
+       end: 54199
     'R54200-':
        desc: 'Straßenverkehrsrecht'
+       start: 54200
+       end: 54299
     'R54300-':
        desc: 'Luftrecht'
+       start: 54300
+       end: 54399
     'R54400-':
        desc: 'Seerecht'
+       start: 54400
+       end: 54499
     'R54500-':
        desc: 'Eisenbahnrecht, Postrecht'
+       start: 54500
+       end: 54599
     'R54600-':
        desc: 'Neue Medien'
+       start: 54600
+       end: 54699
     'R54700-':
        desc: 'Fremdenverkehr, Verkehrsrecht (Sonstiges)'
+       start: 54700
+       end: 59999
     'R60000-':
        desc: 'Kirchenrecht (Entscheidungssammlungen, Zeitschriften, Reihen, Rechtsquellen, Quellen, Konkordate)'
+       start: 60000
+       end: 60199
     'R60200-':
        desc: 'Kirchenrechtsgeschichte'
+       start: 60200
+       end: 60299
     'R60300-':
        desc: 'Kirchenrecht (Lehrbücher)'
+       start: 60300
+       end: 60799
     'R60800-':
        desc: 'Katholisches Kirchenrecht (Codex iuris canonici)'
+       start: 60800
+       end: 60899
     'R60900-':
        desc: 'Katholisches Kirchenrecht (Monographien. Lehrbücher)'
+       start: 60900
+       end: 61199
     'R61200-':
        desc: 'Evangelisches Kirchenrecht (Verfassungen, Rechtssammlungen, Evangelische Kirche Deutschlands)'
+       start: 61200
+       end: 61299
     'R61300-':
        desc: 'Evangelisches Kirchenrecht (Landeskirchen)'
+       start: 61300
+       end: 61399
     'R61400-':
        desc: 'Evangelisches Kirchenrecht (Monographien. Lehrbücher)'
+       start: 61400
+       end: 61999
     'R62000-':
        desc: 'Recht der DDR (Allgemeines, Rechtsquellen)'
+       start: 62000
+       end: 62099
     'R62100-':
        desc: 'Recht der DDR (Staatsrecht, Staatsverfassung, Staatsangehörigkeit)'
+       start: 62100
+       end: 62499
     'R62500-':
        desc: 'Recht der deutschen Wiedervereinigung (Verträge, Rechtsquellen, allgemeine Darstellungen, Vermögensgesetze, Eigentumsfragen)'
+       start: 62500
+       end: 62999
     'R63000-':
        desc: 'Völkerrecht (allgemeine Rechtsquellen, Materialsammlungen)'
+       start: 63000
+       end: 63199
     'R63200-':
        desc: 'Völkerrecht (einzelne Verträge)'
+       start: 63200
+       end: 63299
     'R63300-':
        desc: 'Völkerrecht (internationale Gerichtsbarkeit, allgemeine Handbücher, Wörterbücher)'
+       start: 63300
+       end: 63399
     'R63400-':
        desc: 'Völkerrecht (Lehrbücher)'
+       start: 63400
+       end: 63499
     'R63500-':
        desc: 'Recht der internationalen Beziehungen, Diplomatenrecht'
+       start: 63500
+       end: 63599
     'R63600-':
        desc: 'Völkerrechtliche Schutzrechte, Menschenrechte'
+       start: 63600
+       end: 63799
     'R63800-':
        desc: 'Weltraumrecht'
+       start: 63800
+       end: 63999
     'R64000-':
        desc: 'Internationale Organisationen, Pakt- und Blocksysteme (allgemein)'
+       start: 64000
+       end: 64299
     'R64300-':
        desc: 'Internationale Organisationen, Pakt- und Blocksysteme (Vereinte Nationen)'
+       start: 64300
+       end: 64499
     'R64500-':
        desc: 'Internationale Organisationen, Pakt- und Blocksysteme (Nato)'
+       start: 64500
+       end: 64599
     'R64600-':
        desc: 'Internationale Organisationen, Pakt- und Blocksysteme (Ostblock)'
+       start: 64600
+       end: 66999
     'R67000-':
        desc: 'Recht der Europäischen Gemeinschaften (Entscheidungssammlungen, Rechtsquellen, Verträge, Darstellungen)'
+       start: 67000
+       end: 67199
     'R67200-':
        desc: 'Recht der Europäischen Gemeinschaften (Handels- und Wirtschaftsrecht)'
+       start: 67200
+       end: 67299
     'R67300-':
        desc: 'Recht der Europäischen Gemeinschaften (gewerblicher Rechtsschutz)'
+       start: 67300
+       end: 67399
     'R67400-':
        desc: 'Recht der Europäischen Gemeinschaften (Arbeitsrecht)'
+       start: 67400
+       end: 67599
     'R67600-':
        desc: 'Recht der Europäischen Gemeinschaften (Sonstiges)'
+       start: 67600
+       end: 999999
 'RH':
   desc: 'Rheinische Landeskunde'
   sub:
-    'Rh1-':
+    'RH1-':
        desc: 'Genealogie, Urkunden'
-    'Rh54-':
+       start: 1 
+       end: 53
+    'RH54-':
        desc: 'Atlanten'
-    'Rh60-':
+       start: 54
+       end: 59
+    'RH60-':
        desc: 'Archivalien'
-    'Rh150-':
+       start: 60
+       end: 149
+    'RH150-':
        desc: 'Heraldik, Numismatik'
-    'Rh305-':
+       start: 150
+       end: 304
+    'RH305-':
        desc: 'Ur- und Frühgeschichte'
-    'Rh310-':
+       start: 305
+       end: 309
+    'RH310-':
        desc: '\"Denkwürdiger und nützlicher rheinischer Antiquarius\"'
-    'Rh350-':
+       start: 310
+       end: 349
+    'RH350-':
        desc: 'Publikationen der Gesellschaft für Rheinische Geschichtskunde'
+       start: 350 
+       end: 364
     'RH365-':
        desc: 'Geschichte, Kulturgeschichte'
-    'Rh610-':
+       start: 365
+       end: 609
+    'RH610-':
        desc: 'Ortsgeschichte (alphabetisch nach Orten)'
-    'Rh2702-':
+       start: 610
+       end: 2701
+    'RH2702-':
        desc: 'Kirchengeschichte'
-    'Rh4000-':
+       start: 2702
+       end: 3999
+    'RH4000-':
        desc: 'Bau- u. Kunstdenkmäler, Kunstgeschichte, Architektur'
-    'Rh4980-':
+       start: 4000
+       end: 4979
+    'RH4980-':
        desc: 'Musik'
-    'Rh5010-':
+       start: 4980
+       end: 5009
+    'RH5010-':
        desc: 'Geologie und Geographie'
-    'Rh5500-':
+       start: 5010
+       end: 5499
+    'RH5500-':
        desc: 'Flora und Fauna'
+       start: 5500 
+       end: 999999
 'T':
   desc: 'Theologie,Religionswissenschaft'
   sub:
     'T1-':
        desc: 'Geschichte der Theologie'
+       start: 1
+       end: 99
     'T100-':
        desc: 'Theologisches Studium'
+       start: 100
+       end: 199
     'T200-':
        desc: 'Enzyklopädien und Lexika'
+       start: 200
+       end: 449
     'T450-':
        desc: 'Biblwissenschaft: Ausgaben (Polyglotten, AT u. NT)'
+       start: 450
+       end: 799
     'T800-':
        desc: 'Exegese'
+       start: 800
+       end: 849
     'T850-':
        desc: 'Kommentare'
+       start: 850
+       end: 1109
     'T1110-':
        desc: 'Konkordanzen, Bibellexika'
+       start: 1110
+       end: 1399
     'T1400-':
        desc: 'Sprachliche Hilfsmittel (Wörterbücher / Grammatiken)'
+       start: 1400
+       end: 1499
     'T1500-':
        desc: 'Lehre und Geschichte (Hermeneutik, Einleitungswissenschaft)'
+       start: 1500
+       end: 1849
     'T1850-':
        desc: 'Biblische Theologie'
+       start: 1850
+       end: 1999
     'T2000-':
        desc: 'Biblische Zeitgeschichte, Geographie u. Archäologie'
+       start: 2000
+       end: 2199
     'T2200-':
        desc: 'Kirchengeschichte: Atlanten, Tabellen, Register u. ä. Hilfsmittel'
+       start: 2200
+       end: 2299
     'T2300-':
        desc: 'Gesamtdarstellungen'
+       start: 2300
+       end: 2449
     'T2450-':
        desc: 'Einzelne Zeitabschnitte'
+       start: 2450
+       end: 2599
     'T2600-':
        desc: 'Kirchengeschichte Deutschlands und anderer Länder'
+       start: 2600
+       end: 2699
     'T2700-':
        desc: 'Patristik; Scholastik: Hilfsmittel'
+       start: 2700
+       end: 2799
     'T2800-':
        desc: 'Patristik; Scholastik: Textausgaben'
+       start: 2800
+       end: 2869
     'T2870-':
        desc: 'Patristik; Scholastik: Geschichte der Patristik u. Scholastik'
+       start: 2870
+       end: 3099
     'T3100-':
        desc: 'Papstgeschichte'
+       start: 3100
+       end: 3199
     'T3200-':
        desc: 'Konziliengeschichte'
+       start: 3200
+       end: 3299
     'T3300-':
        desc: 'Ordens- und Klostergeschichte'
+       start: 3300
+       end: 3399
     'T3400-':
        desc: 'Hagiographie'
+       start: 3400
+       end: 3599
     'T3600-':
        desc: 'Systematische Theologie: Dogmatik'
+       start: 3600
+       end: 3899
     'T3900-':
        desc: 'Dogmengeschichte'
+       start: 3900
+       end: 4099
     'T4100-':
        desc: 'Konfessionskunde; Ökumenik'
+       start: 4100
+       end: 4249
     'T4250-':
        desc: 'Moraltheologie; Christliche Ethik'
+       start: 4250
+       end: 4399
     'T4400-':
        desc: 'Spiritualität; Mystik'
+       start: 4400
+       end: 4499
     'T4500-':
        desc: 'Praktische Theologie: Katechetik'
+       start: 4500
+       end: 4599
     'T4600-':
        desc: 'Homiletik; Seelsorge'
+       start: 4600
+       end: 4699
     'T4700-':
        desc: 'Liturgik'
+       start: 4700
+       end: 5199
     'T5200-':
        desc: 'Kirchenlied; Hymnologie'
+       start: 5200
+       end: 5399
     'T5400-':
        desc: 'Missionswissenschaft'
+       start: 5400
+       end: 5399
     'T5400-':
        desc: 'Diakonie'
+       start: 5400
+       end: 5599
     'T5600-':
        desc: 'Komparative Theologie'
+       start: 5600
+       end: 5599
     'T5600-':
        desc: 'Interreligiöse Beziehungen'
+       start: 5600
+       end: 5999
     'T6000-':
        desc: 'Religionswissenschaft Allgemeines: Gesamtdarstellungen; Lexika; Allg. Mythologie; Mehrere Religionen'
+       start: 6000
+       end: 6249
     'T6250-':
        desc: 'Religionen des Alten Orients'
+       start: 6250
+       end: 6299
     'T6300-':
        desc: 'Judentum'
+       start: 6300
+       end: 6399
     'T6400-':
        desc: 'Islam'
+       start: 6400
+       end: 6499
     'T6500-':
        desc: 'Asiatische Religionen; Buddhismus und Hinduismus'
+       start: 6500
+       end: 6599
     'T6600-':
        desc: 'Antike Mythologien (Griechenland/Rom)'
+       start: 6600
+       end: 6699
     'T6700-':
        desc: 'Mythologien anderer Kulturen'
+       start: 6700
+       end: 999999
 'V':
   desc: 'Wirtschafts- und Sozialwissenschaften'
   sub:
     'V1-':
        desc: 'Einführung in Studium und Beruf'
+       start: 1
+       end: 299
     'V300-':
        desc: 'Lern- und Arbeitstechniken im Studium'
+       start: 300
+       end: 1999
     'V2000-':
        desc: 'Wirtschafts- und sozialwissenschaftliche Sprachwörterbücher: Vielsprachig'
+       start: 2000
+       end: 2699
     'V2700-':
        desc: 'Englisch-Französisch-Deutsch'
+       start: 2700
+       end: 3299
     'V3300-':
        desc: 'Englisch-Deutsch'
+       start: 3300
+       end: 3899
     'V3900-':
        desc: 'Englisch-Französisch'
+       start: 3900
+       end: 4199
     'V4200-':
        desc: 'Englisch-Spanisch'
+       start: 4200
+       end: 4399
     'V4400-':
        desc: 'Französisch-Deutsch'
+       start: 4400
+       end: 5099
     'V5100-':
        desc: 'Griechisch-Deutsch'
+       start: 5100
+       end: 5299
     'V5300-':
        desc: 'Italienisch-Deutsch'
+       start: 5300
+       end: 5499
     'V5500-':
        desc: 'Portugiesisch-Deutsch'
+       start: 5500
+       end: 5699
     'V5700-':
        desc: 'Russisch-Deutsch'
+       start: 5700
+       end: 6199
     'V6200-':
        desc: 'Serbokroatisch-Deutsch'
+       start: 6200
+       end: 6299
     'V6300-':
        desc: 'Spanisch-Deutsch'
+       start: 6300
+       end: 6399
     'V6400-':
        desc: 'Sonstige Sprachen-Deutsch'
+       start: 6400
+       end: 6899
     'V6900-':
        desc: 'Fremdsprachige Wirtschaftskorrespondenz'
+       start: 6900
+       end: 7999
     'V8000-':
        desc: 'Handbücher - Deutsch'
+       start: 8000
+       end: 8499
     'V8500-':
        desc: 'Handbücher - Englisch'
+       start: 8500
+       end: 8799
     'V8800-':
        desc: 'Handbücher - Französisch'
+       start: 8800
+       end: 9099
     'V9100-':
        desc: 'Handbücher - Griechisch'
+       start: 9100
+       end: 9199
     'V9200-':
        desc: 'Handbücher - Italienisch'
+       start: 9200
+       end: 9399
     'V9400-':
        desc: 'Handbücher - Spanisch'
+       start: 9400
+       end: 10999
     'V11000-':
        desc: 'Volkswirtschaftstheorie: Einführungen, Grundrisse, Makroökonomie'
+       start: 11000
+       end: 11999
     'V12000-':
        desc: 'Markt-, Preis- und Produktionstheorie, Mikroökonomie'
+       start: 12000
+       end: 12499
     'V12500-':
        desc: 'Theorie der Einkommensverteilung'
+       start: 12500
+       end: 12699
     'V12700-':
        desc: 'Wachstumstheorie, Wirtschaftsentwicklung'
+       start: 12700
+       end: 12899
     'V12900-':
        desc: 'Geld- und Kredittheorie'
+       start: 12900
+       end: 13199
     'V13200-':
        desc: 'Außenwirtschaftstheorie'
+       start: 13200
+       end: 13399
     'V13400-':
        desc: 'Konsumtheorie'
+       start: 13400
+       end: 14499
     'V14500-':
        desc: 'Geschichte der volkswirtschaftlichen Lehrmeinungen: Allgemeine Darstellungen der Dogmengeschichte'
+       start: 14500
+       end: 14899
     'V14900-':
        desc: 'Originalwerke älterer Wirtschaftstheoretiker bis 1960'
+       start: 14900
+       end: 15499
     'V15500-':
        desc: 'Sozialismus, Grundlagen des sozialistischen Wirtschaftssystems'
+       start: 15500
+       end: 16999
     'V17000-':
        desc: 'Wirtschaftspolitik: Einführung, Grundrisse'
+       start: 17000
+       end: 17399
     'V17400-':
        desc: 'Wirtschaftssystem (Allgemein)'
+       start: 17400
+       end: 17599
     'V17600-':
        desc: 'Wirtschaftssystem (Marktwirtschaft)'
+       start: 17600
+       end: 17799
     'V17800-':
        desc: 'Wirtschaftssystem (Verwaltungswirtschaft, Zentralplanwirtschaft)'
+       start: 17800
+       end: 17999
     'V18000-':
        desc: 'Wettbewerbspolitik, Verbraucherpolitik'
+       start: 18000
+       end: 18199
     'V18200-':
        desc: 'Geld- und Währungspolitik, Kreditpolitik'
+       start: 18200
+       end: 18599
     'V18600-':
        desc: 'Konjunkturpolitik'
+       start: 18600
+       end: 18799
     'V18800-':
        desc: 'Handelspolitik (Binnenhandelspolitik)'
+       start: 18800
+       end: 18899
     'V18900-':
        desc: 'Handelspolitik (Außenwirtschaftspolitik)'
+       start: 18900
+       end: 19099
     'V19100-':
        desc: 'Entwicklungspolitik'
+       start: 19100
+       end: 19399
     'V19400-':
        desc: 'Regionalpolitik (Raumpolitik, Strukturpolitik)'
+       start: 19400
+       end: 19599
     'V19600-':
        desc: 'Regionalpolitik (Städtebau, Siedlungs- und Wohnungswesen)'
+       start: 19600
+       end: 19799
     'V19800-':
        desc: 'Regionalpolitik (Umweltforschung, Umweltschutz, Katastrophenschutz)'
+       start: 19800
+       end: 20999
     'V21000-':
        desc: 'Sozialpolitik: Lexika, Enzyklopädien, Handbücher'
+       start: 21000
+       end: 21299
     'V21300-':
        desc: 'Einführungen, Grundrisse'
+       start: 21300
+       end: 21599
     'V21600-':
        desc: 'Arbeitsmarkt, Arbeitspolitik, Gewerkschaft'
+       start: 21600
+       end: 21899
     'V21900-':
        desc: 'Betriebsverfassung, Mitbestimmung'
+       start: 21900
+       end: 22199
     'V22200-':
        desc: 'Einkommens- und Vermögenspolitik'
+       start: 22200
+       end: 22399
     'V22400-':
        desc: 'Einzelne Bereiche der Sozialpolitik, Sozialarbeit, Geschlechter'
+       start: 22400
+       end: 22799
     'V22800-':
        desc: 'Einzelne Berufe'
+       start: 22800
+       end: 23999
     'V24000-':
        desc: 'Wirtschafts- und Sozialgeschichte: Gesamtdarstellungen'
+       start: 24000
+       end: 24199
     'V24200-':
        desc: 'Einzelne Zeiträume (Antike)'
+       start: 24200
+       end: 24249
     'V24250-':
        desc: 'Einzelne Zeiträume (Mittelalter)'
+       start: 24250
+       end: 24299
     'V24300-':
        desc: 'Einzelne Zeiträume (Neuzeit)'
+       start: 24300
+       end: 24499
     'V24500-':
        desc: 'Einzelne Länder (Deutschland)'
+       start: 24500
+       end: 24799
     'V24800-':
        desc: 'Einzelne Länder (Ausland)'
+       start: 24800
+       end: 25999
     'V26000-':
        desc: 'Wirtschaftsorganisationen (International)'
+       start: 26000
+       end: 26099
     'V26100-':
        desc: 'Wirtschaftsorganisationen (Europa)'
+       start: 26100
+       end: 26299
     'V26300-':
        desc: 'Wirtschaftsorganisationen (Deutschland)'
+       start: 26300
+       end: 26399
     'V26400-':
        desc: 'Wirtschaftsorganisationen (Sonstige Länder)'
+       start: 26400
+       end: 26999
     'V27000-':
        desc: 'Wirtschaftsbeschreibung (International, Weltwirtschaft)'
+       start: 27000
+       end: 27199
     'V27200-':
        desc: 'Wirtschaftsbeschreibung (Europa)'
+       start: 27200
+       end: 27299
     'V27300-':
        desc: 'Wirtschaftsbeschreibung (Deutschland BRD, allgemein)'
+       start: 27300
+       end: 27499
     'V27500-':
        desc: 'Wirtschaftsbeschreibung (Deutschland, BRD, Bundesländer und Gemeinden)'
+       start: 27500
+       end: 27599
     'V27600-':
        desc: 'Wirtschaftsbeschreibung (Deutschland DDR und neue Bundesländer)'
+       start: 27600
+       end: 27799
     'V27800-':
        desc: 'Wirtschaftsbeschreibung (Erdteile)'
+       start: 27800
+       end: 27999
     'V28000-':
        desc: 'Wirtschaftsbeschreibung (Ländergemeinschaften)'
+       start: 28000
+       end: 28099
     'V28100-':
        desc: 'Wirtschaftsbeschreibung (Sonstige Länder)'
+       start: 28100
+       end: 29999
     'V30000-':
        desc: 'Landwirtschaft: Lexika, Enzyklopädien, Handbücher'
+       start: 30000
+       end: 30199
     'V30200-':
        desc: 'Landwirtschaftsgeschichte'
+       start: 30200
+       end: 30299
     'V30300-':
        desc: 'Landwirtschaftspolitik (allgemein)'
+       start: 30300
+       end: 30499
     'V30500-':
        desc: 'Landwirtschaftspolitik (Europäische Gemeinschaften)'
+       start: 30500
+       end: 30599
     'V30600-':
        desc: 'Landwirtschaftspolitik (Entwicklungsländer)'
+       start: 30600
+       end: 30699
     'V30700-':
        desc: 'Landwirtschaftspolitik (Sonstige Länder)'
+       start: 30700
+       end: 30799
     'V30800-':
        desc: 'Landwirtschaftliches Bildungswesen'
+       start: 30800
+       end: 30899
     'V30900-':
        desc: 'Landwirtschaftliche Betriebslehre'
+       start: 30900
+       end: 30999
     'V31000-':
        desc: 'Forstwirtschaft'
+       start: 31000
+       end: 31499
     'V31500-':
        desc: 'Energiewirtschaft: Allgemeines'
+       start: 31500
+       end: 31699
     'V31700-':
        desc: 'Einzelne Energieträger'
+       start: 31700
+       end: 32499
     'V32500-':
        desc: 'Industrie-, Gewerbe- und Handelspolitik: Lexika, Handbücher'
+       start: 32500
+       end: 32999
     'V33000-':
        desc: 'Verkehrswirtschaft: Lexika, Handbücher'
+       start: 33000
+       end: 33099
     'V33100-':
        desc: 'Allgemeines'
+       start: 33100
+       end: 33399
     'V33400-':
        desc: 'Verkehrsarten (Straßenverkehr)'
+       start: 33400
+       end: 33599
     'V33600-':
        desc: 'Verkehrsarten (Schienenverkehr)'
+       start: 33600
+       end: 33799
     'V33800-':
        desc: 'Verkehrsarten (Schiffsverkehr)'
+       start: 33800
+       end: 33999
     'V34000-':
        desc: 'Verkehrsarten (Luftverkehr)'
+       start: 34000
+       end: 34199
     'V34200-':
        desc: 'Verkehrsarten (Nachrichtenverkehr)'
+       start: 34200
+       end: 34299
     'V34300-':
        desc: 'Verkehrsarten (Fremdenverkehr)'
+       start: 34300
+       end: 34499
     'V34500-':
        desc: 'Verkehrsbetriebslehre'
+       start: 34500
+       end: 34999
     'V35000-':
        desc: 'Versicherungswesen: Lexika, Handbücher'
+       start: 35000
+       end: 35199
     'V35200-':
        desc: 'Allgemeines'
+       start: 35200
+       end: 35499
     'V35500-':
        desc: 'Privatversicherung: Allgemeines'
+       start: 35500
+       end: 35699
     'V35700-':
        desc: 'Lebensversicherung'
+       start: 35700
+       end: 35799
     'V35800-':
        desc: 'Private Krankenversicherung'
+       start: 35800
+       end: 35899
     'V35900-':
        desc: 'Haftpflichtversicherung'
+       start: 35900
+       end: 35999
     'V36000-':
        desc: 'Kraftfahrtversicherung'
+       start: 36000
+       end: 36099
     'V36100-':
        desc: 'Sonstige Sachversicherungen'
+       start: 36100
+       end: 36499
     'V36500-':
        desc: 'Sozialversicherungen: Allgemeines'
+       start: 36500
+       end: 36899
     'V36900-':
        desc: 'Sozialversicherungen: Altersversicherung'
+       start: 36900
+       end: 37199
     'V37200-':
        desc: 'Sozialversicherungen: Krankenversicherung'
+       start: 37200
+       end: 37299
     'V37300-':
        desc: 'Sozialversicherungen: Unfallversicherung'
+       start: 37300
+       end: 37399
     'V37400-':
        desc: 'Sozialversicherungen: Arbeitslosenversicherung'
+       start: 37400
+       end: 37498
     'V37499-':
        desc: 'Sozialversicherungen: Ausland'
+       start: 37499
+       end: 37799
     'V37800-':
        desc: 'Versicherungsbetriebslehre'
+       start: 37800
+       end: 38499
     'V38500-':
        desc: 'Genossenschaftswesen: Lexika, Handbücher'
+       start: 38500
+       end: 39999
     'V40000-':
        desc: 'Finanzwissenschaft: Einführung, Grundrisse, Finanztheorie, Finanzpolitik'
+       start: 40000
+       end: 40499
     'V40500-':
        desc: 'Öffentliche Finanzwirtschaft, Finanzausgleich, Kommunalwirtschaft'
+       start: 40500
+       end: 40999
     'V41000-':
        desc: 'Öffentlicher Haushalt, Haushaltsrecht'
+       start: 41000
+       end: 41999
     'V42000-':
        desc: 'Allgemeine Steuerlehre'
+       start: 42000
+       end: 42299
     'V42300-':
        desc: 'Allgemeines und deutsches Steuerrecht'
+       start: 42300
+       end: 42999
     'V43000-':
        desc: 'Internationales und ausländisches Steuerrecht'
+       start: 43000
+       end: 43199
     'V43200-':
        desc: 'Steuerverwaltungs-, Steuerstraf- und Steuerverfahrensrecht'
+       start: 43200
+       end: 43999
     'V44000-':
        desc: 'Einkommenssteuerrecht'
+       start: 44000
+       end: 44499
     'V44500-':
        desc: 'Lohnsteuerrecht'
+       start: 44500
+       end: 44599
     'V44600-':
        desc: 'Körperschaftssteuerrecht'
+       start: 44600
+       end: 44999
     'V45000-':
        desc: 'Bewertungs-, Vermögensteuer- und Grundsteuerrecht'
+       start: 45000
+       end: 45499
     'V45500-':
        desc: 'Gewerbesteuerrecht'
+       start: 45500
+       end: 45799
     'V45800-':
        desc: 'Erbschafts- und Schenkungssteuerrecht'
+       start: 45800
+       end: 45999
     'V46000-':
        desc: 'Umsatzsteuerrecht'
+       start: 46000
+       end: 46499
     'V46500-':
        desc: 'Sonstige Verkehrsteuer'
+       start: 46500
+       end: 46699
     'V46700-':
        desc: 'Zölle'
+       start: 46700
+       end: 47299
     'V47300-':
        desc: 'Betriebliche Steuerlehre (Allgemein)'
+       start: 47300
+       end: 47599
     'V47600-':
        desc: 'Betriebliche Steuerlehre (Besteuerung der Gesellschaften)'
+       start: 47600
+       end: 47799
     'V47800-':
        desc: 'Betriebliche Steuerlehre (Mehrwertsteuer im Betrieb)'
+       start: 47800
+       end: 48199
     'V48200-':
        desc: 'Betriebliche Steuerlehre (Steuerbilanz)'
+       start: 48200
+       end: 48999
     'V49000-':
        desc: 'Steuerberatung'
+       start: 49000
+       end: 50999
     'V51000-':
        desc: 'Statistik, Ökonometrie: Lexika, Handbücher'
+       start: 51000
+       end: 51199
     'V51200-':
        desc: 'Allgemeine Statistik, Einführungen'
+       start: 51200
+       end: 51699
     'V51700-':
        desc: 'Methodenlehre der Statistik (Allgemeines)'
+       start: 51700
+       end: 52199
     'V52200-':
        desc: 'Methodenlehre der Statistik (Mathematische Statistik, Wahrscheinlichkeitstheorie, Stichprobenverfahren)'
+       start: 52200
+       end: 52799
     'V52800-':
        desc: 'Methodenlehre der Statistik (Bevölkerungsstatistik, Wirtschaftsstatistik, amtliche Statistik)'
+       start: 52800
+       end: 53999
     'V54000-':
        desc: 'Ökonometrie, Wirtschaftsprognose'
+       start: 54000
+       end: 55999
     'V56000-':
        desc: 'Mathematische Methoden und Modelltheorie der Wirtschaftswissenschaft'
+       start: 56000
+       end: 56599
     'V56600-':
        desc: 'Systemforschung'
+       start: 56600
+       end: 56999
     'V57000-':
        desc: 'Entscheidungstheorie, Spieltheorie'
+       start: 57000
+       end: 57599
     'V57600-':
        desc: 'Unternehmensforschung (Operations Research)'
+       start: 57600
+       end: 58299
     'V58300-':
        desc: 'Mathematische Programmierung und Optimierung (Lineare Programmierung)'
+       start: 58300
+       end: 58699
     'V58700-':
        desc: 'Mathematische Programmierung und Optimierung (Nichtlineare und dynamische Programmierung)'
+       start: 58700
+       end: 58999
     'V59000-':
        desc: 'Netzplantechnik'
+       start: 59000
+       end: 59999
     'V60000-':
        desc: 'Kybernetik, Information'
+       start: 60000
+       end: 60299
     'V60300-':
        desc: 'Information, betriebliche Informationssysteme, Kommunikation, Unternehmensberatung'
+       start: 60300
+       end: 61999
     'V62000-':
        desc: 'Allgemeine Betriebswirtschaftslehre: Lexika, Enzyklopädien, Handbücher'
+       start: 62000
+       end: 62499
     'V62500-':
        desc: 'Einführungen, Grundrisse'
+       start: 62500
+       end: 63199
     'V63200-':
        desc: 'Geschichte der Betriebswirtschaft'
+       start: 63200
+       end: 63499
     'V63500-':
        desc: 'Unternehmensform, Unternehmensverfassung'
+       start: 63500
+       end: 63799
     'V63800-':
        desc: 'Organisation'
+       start: 63800
+       end: 64499
     'V64500-':
        desc: 'Unternehmensplanung (Allgemein)'
+       start: 64500
+       end: 64799
     'V64800-':
        desc: 'Unternehmensplanung (Planungsrechnung)'
+       start: 64800
+       end: 65399
     'V65400-':
        desc: 'Unternehmensführung (Allgemein)'
+       start: 65400
+       end: 65999
     'V66000-':
        desc: 'Unternehmensführung (Spezielle Führungsmethoden)'
+       start: 66000
+       end: 66099
     'V66100-':
        desc: 'Unternehmensführung (Spezielle Führungsaufgaben)'
+       start: 66100
+       end: 66199
     'V66200-':
        desc: 'Unternehmensführung (Interne Unternehmenskontrolle, interne Revision)'
+       start: 66200
+       end: 66799
     'V66800-':
        desc: 'Finanzierung, Investition (Allgemein)'
+       start: 66800
+       end: 67299
     'V67300-':
        desc: 'Finanzierung, Investition (Kapitalbeschaffung)'
+       start: 67300
+       end: 67399
     'V67400-':
        desc: 'Finanzierung, Investition (Unternehmensbewertung)'
+       start: 67400
+       end: 67499
     'V67500-':
        desc: 'Finanzierung, Investition (Investitionsplanung, -rechnung)'
+       start: 67500
+       end: 67999
     'V68000-':
        desc: 'Betriebliches Rechnungswesen (Lexika, Enzyklopädien, Handbücher)'
+       start: 68000
+       end: 68199
     'V68200-':
        desc: 'Betriebliches Rechnungswesen (Einführungen, Grundrisse)'
+       start: 68200
+       end: 68499
     'V68500-':
        desc: 'Buchhaltung, Finanzbuchhaltung'
+       start: 68500
+       end: 68999
     'V69000-':
        desc: 'Bilanz, Erfolgsrechnung'
+       start: 69000
+       end: 69499
     'V69500-':
        desc: 'Bilanzanalyse'
+       start: 69500
+       end: 69599
     'V69600-':
        desc: 'Revisions- und Treuhandwesen'
+       start: 69600
+       end: 69799
     'V69800-':
        desc: 'Inventur'
+       start: 69800
+       end: 69999
     'V70000-':
        desc: 'Kostenrechnung (Allgemein)'
+       start: 70000
+       end: 70599
     'V70600-':
        desc: 'Betriebsabrechnung, kurzfristige Erfolgsrechnung'
+       start: 70600
+       end: 70699
     'V70700-':
        desc: 'Kalkulation, Betriebsbuchhaltung'
+       start: 70700
+       end: 70799
     'V70800-':
        desc: 'Wertanalyse'
+       start: 70800
+       end: 71199
     'V71200-':
        desc: 'Betriebsstatistik, Betriebsanalyse und Betriebsvergleich'
+       start: 71200
+       end: 71499
     'V71500-':
        desc: 'Wirtschaftsrechnen, Finanzmathematik'
+       start: 71500
+       end: 71999
     'V72000-':
        desc: 'Produktions- und Kostentheorie'
+       start: 72000
+       end: 72399
     'V72400-':
        desc: 'Beschaffung, Lagerung, Materialwirtschaft'
+       start: 72400
+       end: 72999
     'V73000-':
        desc: 'Absatz (Allgemein, Marketing)'
+       start: 73000
+       end: 73799
     'V73800-':
        desc: 'Markt- und Absatzforschung'
+       start: 73800
+       end: 73999
     'V74000-':
        desc: 'Produkt- und Preispolitik'
+       start: 74000
+       end: 74199
     'V74200-':
        desc: 'Werbung, Public Relations'
+       start: 74200
+       end: 74599
     'V74600-':
        desc: 'Neuere Entwicklungen des Marketings'
+       start: 74600
+       end: 74999
     'V75000-':
        desc: 'Personalplanung, Personalpolitik'
+       start: 75000
+       end: 75399
     'V75400-':
        desc: 'Personalführung'
+       start: 75400
+       end: 75799
     'V75800-':
        desc: 'Betriebspsychologie'
+       start: 75800
+       end: 75899
     'V75900-':
        desc: 'Lohn, Gehalt'
+       start: 75900
+       end: 75999
     'V76000-':
        desc: 'Betriebliche Sozialleistung, Arbeitsschutz'
+       start: 76000
+       end: 76599
     'V76600-':
        desc: 'Arbeitswissenschaft'
+       start: 76600
+       end: 77999
     'V78000-':
        desc: 'Besondere Betriebswirtschaftslehre: Industriebetriebslehrer (Allgemein)'
+       start: 78000
+       end: 78299
     'V78300-':
        desc: 'Industriebetriebslehrer (Forschung, Entwicklung)'
+       start: 78300
+       end: 78399
     'V78400-':
        desc: 'Fertigungsplanung, Fertigungsentwicklung'
+       start: 78400
+       end: 78799
     'V78800-':
        desc: 'Rationalisierung, Fertigungsentwicklung'
+       start: 78800
+       end: 78999
     'V79000-':
        desc: 'Qualitätsverbesserung'
+       start: 79000
+       end: 79099
     'V79100-':
        desc: 'Spezielle Industrie- und Gewerbezweige'
+       start: 79100
+       end: 79999
     'V80000-':
        desc: 'Handelsbetriebslehre (Allgemein)'
+       start: 80000
+       end: 80299
     'V80300-':
        desc: 'Handelsbetriebslehre (Binnenhandel)'
+       start: 80300
+       end: 80399
     'V80400-':
        desc: 'Handelsbetriebslehre (Außenhandel)'
+       start: 80400
+       end: 80599
     'V80600-':
        desc: 'Handelsbetriebslehre (Warenkunde)'
+       start: 80600
+       end: 80799
     'V80800-':
        desc: 'Electronic Commerce'
+       start: 80800
+       end: 80999
     'V81000-':
        desc: 'Medienmanagement (Lexika, Handbücher, Einführungen, Grundrisse)'
+       start: 81000
+       end: 81099
     'V81100-':
        desc: 'Medienunternehmen'
+       start: 81100
+       end: 81199
     'V81200-':
        desc: 'Mediennutzung im unternehmerischen Umfeld'
+       start: 81200
+       end: 81399
     'V81400-':
        desc: 'Bankbetriebslehre (Lexika, Enzyklopädien, Handbücher)'
+       start: 81400
+       end: 81599
     'V81600-':
        desc: 'Bankbetriebslehre (Einführungen, Grundrisse)'
+       start: 81600
+       end: 81999
     'V82000-':
        desc: 'Bankgeschäfte (Allgemein)'
+       start: 82000
+       end: 82199
     'V82200-':
        desc: 'Kreditgeschäft'
+       start: 82200
+       end: 82299
     'V82300-':
        desc: 'Effektengeschäft, Kapitalanlage'
+       start: 82300
+       end: 82699
     'V82700-':
        desc: 'Auslandsgeschäft'
+       start: 82700
+       end: 83499
     'V83500-':
        desc: 'Betriebslehrer öffentlicher Betriebe'
+       start: 83500
+       end: 83799
     'V83800-':
        desc: 'Dienstleistungsmanagement'
+       start: 83800
+       end: 83999
     'V84000-':
        desc: 'Informatik, Datenverarbeitung (Einführung, Grundrisse)'
+       start: 84000
+       end: 86999
     'V87000-':
        desc: 'Datenverarbeitung im Betrieb'
+       start: 87000
+       end: 87999
     'V88000-':
        desc: 'Bürowirtschaft'
+       start: 88000
+       end: 89999
     'V90000-':
        desc: 'Wirtschafts- und Sozialpädagogik: Lexika, Handbücher'
+       start: 90000
+       end: 90199
     'V90200-':
        desc: 'Einführungen, Grundrisse'
+       start: 90200
+       end: 90499
     'V90500-':
        desc: 'Berufskunde, Berufsberatung'
+       start: 90500
+       end: 90799
     'V90800-':
        desc: 'Fachschulwesen, Lehrlingsausbildung, Berufsbildung'
+       start: 90800
+       end: 92999
     'V93000-':
        desc: 'Soziologie: Lexika, Handbücher'
+       start: 93000
+       end: 93299
     'V93300-':
        desc: 'Einführungen, Grundrisse'
+       start: 93300
+       end: 93999
     'V94000-':
        desc: 'Geschichte der Soziologie (Allgemeine Darstellungen)'
+       start: 94000
+       end: 94299
     'V94300-':
        desc: 'Geschichte der Soziologie (Originalwerke älterer Soziologen)'
+       start: 94300
+       end: 94699
     'V94700-':
        desc: 'Weltanschaulich geprägte Soziologie'
+       start: 94700
+       end: 94799
     'V94800-':
        desc: 'Methoden der Soziologie'
+       start: 94800
+       end: 95399
     'V95400-':
        desc: 'Bevölkerung allgemein. Soziale Gruppen. Familie. Geschlechterforschung'
+       start: 95400
+       end: 95499
     'V95500-':
        desc: 'Bevölkerung und Gruppen in einzelnen Ländern'
+       start: 95500
+       end: 95599
     'V95600-':
        desc: 'Politische Soziologie'
+       start: 95600
+       end: 95699
     'V95700-':
        desc: 'Rechtssoziologie'
+       start: 95700
+       end: 95799
     'V95800-':
        desc: 'Wirtschafts- und Industriesoziologie'
+       start: 95800
+       end: 96099
     'V96100-':
        desc: 'Mediensoziologie'
+       start: 96100
+       end: 96199
     'V96200-':
        desc: 'Freizeitsoziologie'
+       start: 96200
+       end: 96299
     'V96300-':
        desc: 'Religionssoziologie'
+       start: 96300
+       end: 96399
     'V96400-':
        desc: 'Kultursoziologie'
+       start: 96400
+       end: 999999
 'W':
   desc: 'Wörterbücher'
   sub:
     'W1-':
        desc: 'Wörterbücher
+       start: 1 
+       end: 999999

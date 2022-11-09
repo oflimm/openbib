@@ -25,6 +25,8 @@
 
 <h4>LS Systematik [% lsid %]: [% usbls.${lsid}.desc %]</h4>
 
+<p>Grundsignaturen und Untergebiete</p>
+
 <div class="table-responsive mt-3">
 <table class="table table-striped table-hover">
 [%- FOREACH lssubid IN sub_ordered_items.nsort -%]

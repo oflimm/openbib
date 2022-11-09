@@ -57,7 +57,7 @@ while (<HOLDING>){
 
 close(HOLDING);
 
-print STDERR "### lesesaal Anreicherung der Titel mit Systematik-Gruppen";
+print STDERR "### lesesaal Anreicherung der Titel mit Systematik-Gruppen\n";
 
 while (<>){
     my $title_ref = decode_json $_;

@@ -24,13 +24,41 @@
 
   bklist = bklist.sort;
 
+  usblbs      = config.load_yaml('/opt/openbib/conf/usblbs.yml');
+
+  usbls       = config.load_yaml('/opt/openbib/conf/usbls.yml');
+  
+  usblbs_topics = user.get_classifications_of_topic({ type => 'lbs', topicid => topicid});
+
+  usbls_topics  = user.get_classifications_of_topic({ type => 'ls', topicid => topicid});
+  
 %]
 
-<h4>[% msg.maketext("Katalogtitel nach Bibliothekssystematik") %]</h4>
+[% IF usblbs_topics.size > 0 %]
+<h4>[% msg.maketext("Medien in der Lehrbuchsammlung") %]</h4>
+
+<ul class="list-group mb-3">
+[% FOREACH classification IN usblbs_topics %]
+<li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('browse_loc') %]/lbs/id/[% classification %]">[% usblbs.${classification}.desc %]</a></li>
+[% END %]
+</ul>
+[% END %]
+
+[% IF usbls_topics.size > 0 %]
+<h4>[% msg.maketext("Medien im Lesesaal") %]</h4>
+
+<ul class="list-group mb-3">
+[% FOREACH classification IN usbls_topics %]
+<li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('browse_loc') %]/ls/id/[% classification %]">[% usbls.${classification}.desc %]</a></li>
+[% END %]
+</ul>
+[% END %]
+
+<h4>[% msg.maketext("Medien nach Bibliothekssystematik") %]</h4>
 
 [%# USE dumper;dumper.dump(thisbklist) %]
 
-<ul class="list-group">
+<ul class="list-group mb-3">
 [% FOREACH classification IN user.get_classifications_of_topic({ type => 'bk', topicid => topicid}) %]
 <li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('browse_loc') %]/bks/id/[% classification %]">[% bks.${classification} %]</a></li>
 [% END %]
@@ -95,7 +123,7 @@
 [% IF litlists.size > 0 %]
 <h4>[% msg.maketext("Literaturlisten") %]</h4>
 
-<ul class="list-group">
+<ul class="list-group mb-3">
 [% FOREACH thisitem IN litlists%]
 [% IF thisitem.itemcount %]
 <li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% thisitem.id %].html?l=[% lang %]">[% thisitem.title%]</a> ([% msg.maketext("[_1] Titel",thisitem.itemcount) %])[%- IF thisitem.lecture -%]&nbsp;<img src="[% config.get_icon('university',view,sysprofile) %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>

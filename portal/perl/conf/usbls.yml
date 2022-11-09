@@ -473,6 +473,7 @@
        desc: 'Archäologie und Antike Kunst'
        start: 1
        end: 999
+       heading: 'Kunstgeschichte'
     'K1000-':
        desc: 'Nachschlagewerke und Enzyklopädien'
        start: 1000
@@ -517,6 +518,7 @@
        desc: 'Musikwissenschaft Allgemeines'
        start: 6000
        end: 6199
+       heading: 'Musikwissenschaft'
     'K6200-':
        desc: 'Biographische Nachschlagewerke Komponisten'
        start: 6200
@@ -556,6 +558,7 @@
        desc: 'Allgemeine Sprachwissenschaft'
        start: 1
        end: 299
+       heading: 'Allgemeines'
     'L300-':
        desc: 'Allgemeine Indogermanistik'
        start: 300
@@ -572,6 +575,7 @@
        desc: 'Klassische Philologie: Einführung, Geschichte'
        start: 1000
        end: 1099
+       heading: 'Klassische Philologie'
     'L1100-':
        desc: 'Fachlexika'
        start: 1100
@@ -608,6 +612,7 @@
        desc: 'Allgemeine Romanistik'
        start: 2000
        end: 2199
+       heading: 'Romanistik'
     'L2200-':
        desc: 'Französisch'
        start: 2200
@@ -640,6 +645,7 @@
        desc: 'Germanistik Allgemeines'
        start: 3500
        end: 3570
+       heading: 'Germanistik'
     'L3571-':
        desc: 'Sprachwissenschaft'
        start: 3571
@@ -664,10 +670,12 @@
        desc: 'Niederlandistik'
        start: 6400
        end: 6499
+       heading: 'Niederlandistik'
     'L6500-':
        desc: 'Allgemeine Skandinavistik'
        start: 6500
        end: 6599
+       heading: 'Skandinavistik'
     'L6600-':
        desc: 'Altnordische / Isländische Literatur und Sprache'
        start: 6600
@@ -685,9 +693,10 @@
        start: 6900
        end: 6999
     'L7000-':
-       desc: 'Anglistik: Einführung und Style manuals'
+       desc: 'Einführung und Style manuals'
        start: 7000
        end: 7009
+       heading: 'Anglistik'
     'L7010-':
        desc: 'Englische Sprachwissenschaft'
        start: 7010
@@ -725,9 +734,10 @@
        start: 7600
        end: 7799
     'L7800-':
-       desc: 'Amerikanistik: Einführung und Sprachwissenschaft'
+       desc: 'Einführung und Sprachwissenschaft'
        start: 7800
        end: 7849
+       heading: 'Amerikanistik'
     'L7850-':
        desc: 'Amerikanische Literaturgeschichte allgemein'
        start: 7850
@@ -756,6 +766,7 @@
        desc: 'Allgemeine Slawistik'
        start: 8000
        end: 8099
+       heading: 'Slavistik'
     'L8100-':
        desc: 'Russische Sprach- und Literaturwissenschaft'
        start: 8100
@@ -772,6 +783,7 @@
        desc: 'Baltische und keltische Sprachen'
        start: 8500
        end: 8599
+       heading: 'Weitere Sprachfamilien'
     'L8600-':
        desc: 'Indologie und Iranistik'
        start: 8600
@@ -894,10 +906,12 @@
        desc: 'Naturwissenschaft allgemein'
        start: 200
        end: 499
+       heading: 'Allgemeine Nachschlagewerke'
     'N500-':
-       desc: 'Mathematik: Einführungen und Gesamtdarstellungen'
+       desc: 'Einführungen und Gesamtdarstellungen'
        start: 500
        end: 799
+       heading: 'Mathematik'
     'N800-':
        desc: 'Algebra und Zahlentheorie'
        start: 800
@@ -915,9 +929,10 @@
        start: 1300
        end: 1499
     'N1500-':
-       desc: 'Physik: Einführungen und Gesamtdarstellungen'
+       desc: 'Einführungen und Gesamtdarstellungen'
        start: 1500
        end: 1799
+       heading: 'Physik'
     'N1800-':
        desc: 'Mathematische Methoden, Computerphysik, Praktikum'
        start: 1800
@@ -947,9 +962,10 @@
        start: 2900
        end: 3399
     'N3400-':
-       desc: 'Chemie: Einführungen und Gesamtdarstellungen'
+       desc: 'Einführungen und Gesamtdarstellungen'
        start: 3400
        end: 3799
+       heading: 'Chemie'
     'N3800-':
        desc: 'Physikalische Chemie'
        start: 3800
@@ -971,9 +987,10 @@
        start: 4200
        end: 4499
     'N4500-':
-       desc: 'Geowissenschaften: Einführungen und Gesamtdarstellungen'
+       desc: 'Einführungen und Gesamtdarstellungen'
        start: 4500
        end: 4599
+       heading: 'Geowissenschaften'
     'N4600-':
        desc: 'Geophysik, Meteorologie, Klimatologie'
        start: 4600
@@ -1003,9 +1020,10 @@
        start: 5300
        end: 5599
     'N5600-':
-       desc: 'Biologie: Fortschrittsberichte'
+       desc: 'Fortschrittsberichte'
        start: 5600
        end: 5699
+       heading: 'Biologie'
     'N5700-':
        desc: 'Allgemeines'
        start: 5700
@@ -1079,9 +1097,10 @@
        start: 7900
        end: 7999
     'N8000-':
-       desc: 'Technik: Allgemeines'
+       desc: 'Allgemeines'
        start: 8000
        end: 8099
+       heading: 'Technik'
     'N8100-':
        desc: 'Maschinenbau, Energietechnik'
        start: 8100
@@ -2180,6 +2199,7 @@
        desc: 'Geschichte der Theologie'
        start: 1
        end: 99
+       heading: 'Allgemeines'
     'T100-':
        desc: 'Theologisches Studium'
        start: 100
@@ -2189,9 +2209,10 @@
        start: 200
        end: 449
     'T450-':
-       desc: 'Biblwissenschaft: Ausgaben (Polyglotten, AT u. NT)'
+       desc: 'Ausgaben (Polyglotten, AT u. NT)'
        start: 450
        end: 799
+       heading: 'Bibelwissenschaft'
     'T800-':
        desc: 'Exegese'
        start: 800
@@ -2221,9 +2242,10 @@
        start: 2000
        end: 2199
     'T2200-':
-       desc: 'Kirchengeschichte: Atlanten, Tabellen, Register u. ä. Hilfsmittel'
+       desc: 'Atlanten, Tabellen, Register u. ä. Hilfsmittel'
        start: 2200
        end: 2299
+       heading: 'Kirchengeschichte'
     'T2300-':
        desc: 'Gesamtdarstellungen'
        start: 2300
@@ -2265,9 +2287,10 @@
        start: 3400
        end: 3599
     'T3600-':
-       desc: 'Systematische Theologie: Dogmatik'
+       desc: 'Dogmatik'
        start: 3600
        end: 3899
+       heading: 'Systematische Theologie'
     'T3900-':
        desc: 'Dogmengeschichte'
        start: 3900
@@ -2285,9 +2308,10 @@
        start: 4400
        end: 4499
     'T4500-':
-       desc: 'Praktische Theologie: Katechetik'
+       desc: 'Katechetik'
        start: 4500
        end: 4599
+       heading: 'Praktische Theologie'
     'T4600-':
        desc: 'Homiletik; Seelsorge'
        start: 4600
@@ -2311,19 +2335,22 @@
     'T5600-':
        desc: 'Komparative Theologie'
        start: 5600
-       end: 5599
-    'T5600-':
+       end: 5699
+       heading: 'Komparative Theologie'
+    'T5700-':
        desc: 'Interreligiöse Beziehungen'
-       start: 5600
+       start: 5700
        end: 5999
     'T6000-':
        desc: 'Religionswissenschaft Allgemeines: Gesamtdarstellungen; Lexika; Allg. Mythologie; Mehrere Religionen'
        start: 6000
        end: 6249
+       heading: 'Religionswissenschaft: Allgemeines'
     'T6250-':
        desc: 'Religionen des Alten Orients'
        start: 6250
        end: 6299
+       heading: 'Religionswissenschaft: Einzelne Religionen'       
     'T6300-':
        desc: 'Judentum'
        start: 6300
@@ -2351,14 +2378,16 @@
        desc: 'Einführung in Studium und Beruf'
        start: 1
        end: 299
+       heading: 'Studium der Wirtschafts- und Sozialwissenschaften'
     'V300-':
        desc: 'Lern- und Arbeitstechniken im Studium'
        start: 300
        end: 1999
     'V2000-':
-       desc: 'Wirtschafts- und sozialwissenschaftliche Sprachwörterbücher: Vielsprachig'
+       desc: 'Vielsprachig'
        start: 2000
        end: 2699
+       heading: 'Wirtschafts- und sozialwissenschaftliche Sprachwörterbücher'
     'V2700-':
        desc: 'Englisch-Französisch-Deutsch'
        start: 2700
@@ -2415,6 +2444,7 @@
        desc: 'Handbücher - Deutsch'
        start: 8000
        end: 8499
+       heading: 'Allgemeine wirtschafts- und sozialwissenschaftliche Lexika, Enzyklopädien, Handbücher'
     'V8500-':
        desc: 'Handbücher - Englisch'
        start: 8500
@@ -2436,9 +2466,10 @@
        start: 9400
        end: 10999
     'V11000-':
-       desc: 'Volkswirtschaftstheorie: Einführungen, Grundrisse, Makroökonomie'
+       desc: 'Einführungen, Grundrisse, Makroökonomie'
        start: 11000
        end: 11999
+       heading: 'Volkswirtschaftstheorie'
     'V12000-':
        desc: 'Markt-, Preis- und Produktionstheorie, Mikroökonomie'
        start: 12000
@@ -2464,9 +2495,10 @@
        start: 13400
        end: 14499
     'V14500-':
-       desc: 'Geschichte der volkswirtschaftlichen Lehrmeinungen: Allgemeine Darstellungen der Dogmengeschichte'
+       desc: 'Allgemeine Darstellungen der Dogmengeschichte'
        start: 14500
        end: 14899
+       heading: 'Geschichte der volkswirtschaftlichen Lehrmeinungen'
     'V14900-':
        desc: 'Originalwerke älterer Wirtschaftstheoretiker bis 1960'
        start: 14900
@@ -2476,9 +2508,10 @@
        start: 15500
        end: 16999
     'V17000-':
-       desc: 'Wirtschaftspolitik: Einführung, Grundrisse'
+       desc: 'Einführung, Grundrisse'
        start: 17000
        end: 17399
+       heading: 'Wirtschaftspolitik'
     'V17400-':
        desc: 'Wirtschaftssystem (Allgemein)'
        start: 17400
@@ -2528,9 +2561,10 @@
        start: 19800
        end: 20999
     'V21000-':
-       desc: 'Sozialpolitik: Lexika, Enzyklopädien, Handbücher'
+       desc: 'Lexika, Enzyklopädien, Handbücher'
        start: 21000
        end: 21299
+       heading: 'Sozialpolitik'
     'V21300-':
        desc: 'Einführungen, Grundrisse'
        start: 21300
@@ -2556,9 +2590,10 @@
        start: 22800
        end: 23999
     'V24000-':
-       desc: 'Wirtschafts- und Sozialgeschichte: Gesamtdarstellungen'
+       desc: 'Gesamtdarstellungen'
        start: 24000
        end: 24199
+       heading: 'Wirtschafts- und Sozialgeschichte'
     'V24200-':
        desc: 'Einzelne Zeiträume (Antike)'
        start: 24200
@@ -2583,6 +2618,7 @@
        desc: 'Wirtschaftsorganisationen (International)'
        start: 26000
        end: 26099
+       heading: 'Wirtschaftsorganisationen, Wirtschaftsbeschreibung'
     'V26100-':
        desc: 'Wirtschaftsorganisationen (Europa)'
        start: 26100
@@ -2628,9 +2664,10 @@
        start: 28100
        end: 29999
     'V30000-':
-       desc: 'Landwirtschaft: Lexika, Enzyklopädien, Handbücher'
+       desc: 'Lexika, Enzyklopädien, Handbücher'
        start: 30000
        end: 30199
+       heading: 'Landwirtschaft'
     'V30200-':
        desc: 'Landwirtschaftsgeschichte'
        start: 30200
@@ -2664,21 +2701,24 @@
        start: 31000
        end: 31499
     'V31500-':
-       desc: 'Energiewirtschaft: Allgemeines'
+       desc: 'Allgemeines'
        start: 31500
        end: 31699
+       heading: 'Energiewirtschaft'
     'V31700-':
        desc: 'Einzelne Energieträger'
        start: 31700
        end: 32499
     'V32500-':
-       desc: 'Industrie-, Gewerbe- und Handelspolitik: Lexika, Handbücher'
+       desc: 'Lexika, Handbücher'
        start: 32500
        end: 32999
+       heading: 'Industrie-, Gewerbe- und Handelspolitik'
     'V33000-':
-       desc: 'Verkehrswirtschaft: Lexika, Handbücher'
+       desc: 'Lexika, Handbücher'
        start: 33000
        end: 33099
+       heading: 'Verkehrswirtschaft'
     'V33100-':
        desc: 'Allgemeines'
        start: 33100
@@ -2712,9 +2752,10 @@
        start: 34500
        end: 34999
     'V35000-':
-       desc: 'Versicherungswesen: Lexika, Handbücher'
+       desc: 'Lexika, Handbücher'
        start: 35000
        end: 35199
+       heading: 'Versicherungswesen'
     'V35200-':
        desc: 'Allgemeines'
        start: 35200
@@ -2772,13 +2813,15 @@
        start: 37800
        end: 38499
     'V38500-':
-       desc: 'Genossenschaftswesen: Lexika, Handbücher'
+       desc: 'Lexika, Handbücher'
        start: 38500
        end: 39999
+       heading: 'Genossenschaftswesen'
     'V40000-':
-       desc: 'Finanzwissenschaft: Einführung, Grundrisse, Finanztheorie, Finanzpolitik'
+       desc: 'Einführung, Grundrisse, Finanztheorie, Finanzpolitik'
        start: 40000
        end: 40499
+       heading: 'Finanzwissenschaft'       
     'V40500-':
        desc: 'Öffentliche Finanzwirtschaft, Finanzausgleich, Kommunalwirtschaft'
        start: 40500
@@ -2863,6 +2906,7 @@
        desc: 'Statistik, Ökonometrie: Lexika, Handbücher'
        start: 51000
        end: 51199
+       heading: 'Statistik, Ökonometrie'
     'V51200-':
        desc: 'Allgemeine Statistik, Einführungen'
        start: 51200
@@ -2887,6 +2931,7 @@
        desc: 'Mathematische Methoden und Modelltheorie der Wirtschaftswissenschaft'
        start: 56000
        end: 56599
+       heading: 'Mathematische Methoden der Wirtschaftswissenschaft'
     'V56600-':
        desc: 'Systemforschung'
        start: 56600
@@ -2920,9 +2965,10 @@
        start: 60300
        end: 61999
     'V62000-':
-       desc: 'Allgemeine Betriebswirtschaftslehre: Lexika, Enzyklopädien, Handbücher'
+       desc: 'Lexika, Enzyklopädien, Handbücher'
        start: 62000
        end: 62499
+       heading: 'Allgemeine Betriebswirtschaftslehre'
     'V62500-':
        desc: 'Einführungen, Grundrisse'
        start: 62500
@@ -3084,9 +3130,10 @@
        start: 76600
        end: 77999
     'V78000-':
-       desc: 'Besondere Betriebswirtschaftslehre: Industriebetriebslehrer (Allgemein)'
+       desc: 'Industriebetriebslehrer (Allgemein)'
        start: 78000
        end: 78299
+       heading: 'Besondere Betriebswirtschaftslehre'
     'V78300-':
        desc: 'Industriebetriebslehrer (Forschung, Entwicklung)'
        start: 78300
@@ -3184,9 +3231,10 @@
        start: 88000
        end: 89999
     'V90000-':
-       desc: 'Wirtschafts- und Sozialpädagogik: Lexika, Handbücher'
+       desc: 'Lexika, Handbücher'
        start: 90000
        end: 90199
+       heading: 'Wirtschafts- und Sozialpädagogik'
     'V90200-':
        desc: 'Einführungen, Grundrisse'
        start: 90200
@@ -3200,9 +3248,10 @@
        start: 90800
        end: 92999
     'V93000-':
-       desc: 'Soziologie: Lexika, Handbücher'
+       desc: 'Lexika, Handbücher'
        start: 93000
        end: 93299
+       heading: 'Soziologie'
     'V93300-':
        desc: 'Einführungen, Grundrisse'
        start: 93300

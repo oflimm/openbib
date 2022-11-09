@@ -2114,7 +2114,7 @@
        desc: 'Recht der Europäischen Gemeinschaften (Sonstiges)'
        start: 67600
        end: 999999
-'RH':
+'Rh':
   desc: 'Rheinische Landeskunde'
   sub:
     'Rh1-':

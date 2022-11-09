@@ -1,0 +1,28 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_browsetit
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Inhalte einer Titel-Kategorie
+#
+#######################################################################
+-%]
+
+<h4>[% msg.maketext("Systematischer Katalog des Lesesaals") %]</h4>
+
+<div class="alert alert-info">
+Im Systematischen Katalog finden Sie den kompletten Bestand des Lesesaals rein fachlich sortiert. Jedes Fachgebiet besitzt Untergebiete, deren Buchtitel in Kurzform aufgelistet sind. Genauere Angaben zum Titel und Bestand erhalten Sie im Vollformat.
+</div>
+
+<h5 class="mt-4">Fachgebiete</h5>
+
+<ul class="list-group mt-3 mb-3">
+[%- FOREACH lsid IN usbls.keys.sort -%]
+<li class="list-group-item"><a style="font-weight:bold;font-size:1.2em;" href="[% path_prefix %]/[% config.get('browse_loc') %]/ls/id/[% lsid %].html?l=[% lang %]">[% lsid %] - [% usbls.${lsid}.desc %]</a></li>
+[% END %]
+</ul>
+

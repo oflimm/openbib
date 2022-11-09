@@ -1,0 +1,26 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_browsetit
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Inhalte einer Titel-Kategorie
+#
+#######################################################################
+-%]
+[%-
+
+  ls_profileid = config.get_searchprofile_of_database('lesesaal');
+
+-%]
+
+<h4>LS Systematik: [% lsid %] - [% usbls.${lsid}.desc %]</h4>
+
+<ul class="list-group mt-3 mb-3">
+[%- FOREACH lssubid IN usbls.${lsid}.sub.keys.sort -%]
+<li class="list-group-item"><a style="font-weight:bold;font-size:1.2em;" href="[% path_prefix %]/[% config.get('search_loc') %].html?ft0351=[% lssubid %]*;srt=mark_asc;profile=[% ls_profileid %];l=[% lang%]">[% lssubid %] - [% usbls.${lsid}.sub.${lssubid}.desc %]</a></li>
+[% END %]
+</ul>

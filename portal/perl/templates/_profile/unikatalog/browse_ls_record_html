@@ -15,12 +15,19 @@
 
   ls_profileid = config.get_searchprofile_of_database('lesesaal');
 
+  sub_ordered_items = [];
+
+  FOREACH lssubid IN usbls.${lsid}.sub.keys ;
+     sub_ordered_items.push(usbls.${lsid}.sub.${lssubid}.start);
+  END;
+
 -%]
 
-<h4>LS Systematik: [% lsid %] - [% usbls.${lsid}.desc %]</h4>
+<h4>LS Systematik [% lsid %]: [% usbls.${lsid}.desc %]</h4>
 
 <ul class="list-group mt-3 mb-3">
-[%- FOREACH lssubid IN usbls.${lsid}.sub.keys.sort -%]
-<li class="list-group-item"><a style="font-weight:bold;font-size:1.2em;" href="[% path_prefix %]/[% config.get('search_loc') %].html?ft0351=[% lssubid %]*;srt=mark_asc;profile=[% ls_profileid %];l=[% lang%]">[% lssubid %] - [% usbls.${lsid}.sub.${lssubid}.desc %]</a></li>
+[%- FOREACH lssubid IN sub_ordered_items.nsort -%]
+[%-   lssubid = "${lsid}${lssubid}-"-%]
+<li class="list-group-item"><span style="font-weight:bold;font-size:1.2em;">[% lssubid %]</span> <a class="inturl ms-3" href="[% path_prefix %]/[% config.get('search_loc') %].html?ft0351=[% lssubid %]*;srt=mark_asc;profile=[% ls_profileid %];l=[% lang%]">[% usbls.${lsid}.sub.${lssubid}.desc %]</a></li>
 [% END %]
 </ul>

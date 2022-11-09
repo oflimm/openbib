@@ -18,7 +18,7 @@
 <h4>[% msg.maketext("Themengebiete") %]</h4>
 
 <p />
-<ul class="list-group">
+<ul class="list-group mb-3">
 [%- FOREACH topic IN user.get_topics -%]
 [% titlecount = 0 ;
    thisclassifications = user.get_classifications_of_topic({ type => 'bk', topicid => topic.id});

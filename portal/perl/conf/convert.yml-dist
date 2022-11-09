@@ -671,6 +671,10 @@ convtab:
             'title': 1
             'titlestring': 1
             'freesearch': 1
+      '0351':         # Fachgruppen-Markierung (Lesesaal)
+        '':
+          index:
+            'ft0351': 1
       '0359':       # Vorl. Verfasser Koerperschaft
         '':
           index:

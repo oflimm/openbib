@@ -184,12 +184,14 @@
   sub:
     'FA':
        desc: 'Einführung in die Rechtswissenschaft'
+       heading: 'Recht und Rechtswissenschaft'
     'FB':
        desc: 'Rechtsphilosophie'
     'FC':
        desc: 'Allgemeine Fallsammlungen, Examens- & Klausuranleitungen'
     'FD':
        desc: 'Deutsche Rechts- und Verfassungsgeschichte'
+       heading: 'Antikes Recht, Rechts- und Verfassungsgeschichte'
     'FE':
        desc: 'Deutsches Recht'
     'FF':
@@ -198,6 +200,7 @@
        desc: 'Römisches Recht'
     'FJ':
        desc: 'Einführungen ins Bürgerliche Recht'
+       heading: 'Privatrecht - Bürgerliches Recht'
     'FK':
        desc: 'BGB-Kommentare'
     'FL':
@@ -218,6 +221,7 @@
        desc: 'Versicherungsrecht'
     'FT':
        desc: 'HGB-Kommentare'
+       heading: 'Privatrecht - Handelsrecht und Nebengebiete'
     'FU':
        desc: 'Lehrbücher, Grundrisse und Hilfsmittel zum HGB'
     'FV':
@@ -228,28 +232,35 @@
        desc: 'Urheberrecht und gewerblicher Rechtsschutz'
     'GG':
        desc: 'ZPO-Kommentare'
+       heading: 'Gerichtsverfassung und Zivilprozessrecht'
     'GH':
        desc: 'Grundrisse, Lehrbücher und Hilfsmittel zum Zivilprozess und GVG'
     'GJ':
        desc: 'Zwangsvollstreckung und Konkurs'
     'GM':
        desc: 'Freiwillige Gerichtsbarkeit, Kostenrecht'
+       heading: 'Freiwillige Gerichtsbarkeit'
     'GO':
        desc: 'StGB-Kommentare'
+       heading: 'Strafrecht'
     'GP':
        desc: 'Lehrbücher, Grundrisse und Hilfsmittel zum Strafrecht'
     'GQ':
        desc: 'Kriminalwissenschaften'
     'GS':
        desc: 'Strafvollzug'
+       heading: 'Strafvollzug'
     'GT':
        desc: 'StPO-Kommentare'
+       heading: 'Strafprozessrecht'
     'GU':
        desc: 'Lehrbücher, Grundrisse und Hilfsmittel zum Strafprozessrecht'
     'GV':
        desc: 'Jugendgerichtsbarkeit'
+       heading: 'Jugendgerichtsbarkeit'
     'HA':
        desc: 'Allgemeine Werke und Hilfsmittel zum öffentlichen Recht im allgemeinen, Staats- und Verfassungsrecht'
+       heading: 'Öffentliches Recht im allgemeinen, Staats- und Verfassungsrecht'
     'HB':
        desc: 'Allgemeine Staatslehre'
     'HC':
@@ -262,6 +273,7 @@
        desc: 'Bundesverfassungsgericht'
     'HJ':
        desc: 'Lehrbücher, Grundrisse und Hilfsmittel zum Verwaltungsrecht'
+       heading: 'Verwaltungsrecht'
     'HK':
        desc: 'Verwaltungsrechtsschutz'
     'HL':
@@ -276,12 +288,14 @@
        desc: 'Medienrecht'
     'HS':
        desc: 'Wirtschaftsrecht im allgemeinen'
+       heading: 'Wirtschaftsrecht'
     'HT':
        desc: 'Gewerberecht, Umweltrecht'
     'HV':
        desc: 'Kartellrecht'
     'JA':
        desc: 'Arbeitsrecht u. Beamtenrecht'
+       heading: 'Verschiedenes'
     'JF':
        desc: 'Kirchenrecht u. Europarecht'
     'JG':

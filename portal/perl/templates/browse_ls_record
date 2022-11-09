@@ -22,7 +22,7 @@
 	     url  = "${path_prefix}/${config.get('browse_loc')}/ls.html?l=${lang}"
 	  },
 	  {
-	     desc = "LBS Systematik: ${lsid}"
+	     desc = "LS Systematik: ${lsid}"
 	     url  = '#'
 	     current = 1
 	  }

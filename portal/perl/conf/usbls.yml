@@ -885,7 +885,7 @@
        end: 3600
     'MW3601-':
        desc: 'Fernsehen, Hörfunk'
-       start: 3600
+       start: 3601
        end: 999999
 'N':
   desc: 'Naturwissenschaft'
@@ -1247,7 +1247,7 @@
        desc: 'Motivationspsychologie'
        start: 1001
        end: 1100
-    'Ps1101-':
+    'PS1101-':
        desc: 'Bewusstseinszustände'
        start: 1101
        end: 1200
@@ -3263,6 +3263,6 @@
   desc: 'Wörterbücher'
   sub:
     'W1-':
-       desc: 'Wörterbücher
+       desc: 'Wörterbücher'
        start: 1 
        end: 999999

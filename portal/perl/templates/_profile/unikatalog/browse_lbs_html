@@ -12,17 +12,22 @@
 #######################################################################
 -%]
 
-<h4>[% msg.maketext("Systematischer Katalog der Lehrbuchsammlung") %]</h4>
+<h3>[% msg.maketext("Systematischer Katalog der Lehrbuchsammlung") %]</h3>
 
 <div class="alert alert-info">
 Im Systematischen Katalog finden Sie den kompletten Bestand der Lehrbuchsammlung rein fachlich sortiert. Jedes Fachgebiet besitzt Untergebiete, deren Buchtitel in Kurzform aufgelistet sind. Genauere Angaben zum Titel und Bestand erhalten Sie im Vollformat.
 </div>
 
-<h5 class="mt-4">Fachgebiete</h5>
+<h4 class="mt-4">Fachgebiete</h4>
 
-<ul class="list-group mt-3 mb-3">
+<div class="table-responsive mt-3">
+<table class="table table-striped table-hover">
 [%- FOREACH lbsid IN usblbs.keys.sort -%]
-<li class="list-group-item"><a style="font-weight:bold;font-size:1.2em;" href="[% path_prefix %]/[% config.get('browse_loc') %]/lbs/id/[% lbsid %].html?l=[% lang %]">[% lbsid %] - [% usblbs.${lbsid}.desc %]</a></li>
+<tr>
+<th style="font-weight:bold;font-size:1.2em;" width="5%">[% lbsid %]</th>
+<td><a class="inturl ms-3" href="[% path_prefix %]/[% config.get('browse_loc') %]/lbs/id/[% lbsid %].html?l=[% lang %]">[% usblbs.${lbsid}.desc %]</a></td>
+</tr>
 [% END %]
-</ul>
+</table>
+</div>
 

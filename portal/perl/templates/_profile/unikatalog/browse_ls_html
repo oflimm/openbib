@@ -22,7 +22,7 @@ Im Systematischen Katalog finden Sie den kompletten Bestand des Lesesaals rein f
 
 <ul class="list-group mt-3 mb-3">
 [%- FOREACH lsid IN usbls.keys.sort -%]
-<li class="list-group-item"><a style="font-weight:bold;font-size:1.2em;" href="[% path_prefix %]/[% config.get('browse_loc') %]/ls/id/[% lsid %].html?l=[% lang %]">[% lsid %] - [% usbls.${lsid}.desc %]</a></li>
+<li class="list-group-item"><span style="font-weight:bold;font-size:1.2em;">[% lsid %]</span> <a class="inturl ms-3" href="[% path_prefix %]/[% config.get('browse_loc') %]/ls/id/[% lsid %].html?l=[% lang %]">[% usbls.${lsid}.desc %]</a></li>
 [% END %]
 </ul>
 

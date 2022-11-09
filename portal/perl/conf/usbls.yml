@@ -1,32 +1,1700 @@
 'A':
   desc: 'Allgemeines'
+  sub:
+    'A1-':
+       desc: 'Allgemeine Wissenschaftskunde'
+       start: 1
+       end: 189
+    'A190-':
+       desc: 'Allgemeine Lexika, Enzyklopädien'
+       start: 190
+       end: 399
+    'A400-':
+       desc: 'Allgemeine Lexika, Enzyklopädien - Einzelne Länder'
+       start: 400
+       end: 3999
+    'A4000-':
+       desc: 'Landeskunde - Deutschland'
+       start: 4000
+       end: 4699
+    'A4700-':
+       desc: 'Allgemeine Lexika und Handbücher über einzelne Länder'
+       start: 4700
+       end: 5999
+    'A6000-':
+       desc: 'Biographische Nachschlagewerke - International'
+       start: 6000
+       end:  6099
+    'A6100-':
+       desc: 'Biographische Nachschlagewerke - Deutschland'
+       start: 6100
+       end: 6599
+    'A6600-':
+       desc: 'Biographische Nachschlagewerke - Einzelne Länder'
+       start: 6600
+       end: 9199
+    'A9200-':
+       desc: 'Studienführer - Allgemein'
+       start: 9200
+       end: 9399
+    'A9400-':
+       desc: 'Medien- und Kommunikationswissenschaft, Publizistik'
+       start: 9400
+       end: 9460
+    'A9461-':
+       desc: 'Universitäten und Hochschulen'
+       start: 9461
+       end: 999999
 'B':
   desc: 'Buch-, Bibliotheks- und Informationswesen'
+  sub:
+    'B1-':
+       desc: 'Lexika und Handbücher'
+       start: 1
+       end: 59
+    'B60-':
+       desc: 'Bibliothekswesen'
+       start: 60
+       end: 99
+    'B100-':
+       desc: 'Informationsversorgung'
+       start: 100
+       end: 299
+    'B300-':
+       desc: 'Bibliothekarisches Grundwissen'
+       start: 300
+       end: 369
+    'B370-':
+       desc: 'Erschließung'
+       start: 370
+       end: 509
+    'B510-':
+       desc: 'Bibliotheksgeschichte'
+       start: 510
+       end: 699
+    'B700-':
+       desc: 'Bibliothekswesen - Einzelfragen'
+       start: 700
+       end: 799
+    'B800-':
+       desc: 'Buchwesen - Allgemeines'
+       start: 800
+       end: 959
+    'B960-':
+       desc: 'Buchhandel'
+       start: 960
+       end: 999
+    'B1000-':
+       desc: 'Bestandserhaltung, Konservierung'
+       start: 1000
+       end: 999999
 'G':
   desc: 'Geschichte'
+  sub:
+    'G1-':
+       desc: 'Einführung'
+    'G250-':
+       desc: 'Diplomatika'
+    'G400-':
+       desc: 'Chronologie'
+    'G450-':
+       desc: 'Numismatik'
+    'G670-':
+       desc: 'Saphristik'
+    'G730-':
+       desc: 'Heraldik'
+    'G850-':
+       desc: 'Phaleristik'
+    'G900-':
+       desc: 'Genealogie'
+    'G1200-':
+       desc: 'Lexika'
+    'G1500-':
+       desc: 'Ur- und Frühgeschichte'
+    'G1550-':
+       desc: 'Alte Geschichte'
+    'G1750-':
+       desc: 'Mittelalterliche Geschichte'
+    'G1850-':
+       desc: 'Neuere Geschichte'
+    'G2400-':
+       desc: 'Quellen zur Geschichte'
+    'G3100-':
+       desc: 'Regionalgeschichte'
+    'G3300-':
+       desc: 'Europäische Ländergeschichte'
+    'G5900-':
+       desc: 'Außereuropäische Ländergeschichte'
+    'G7100-':
+       desc: 'Jüdische Geschichte'
+    'G7220-':
+       desc: 'Kultur- und Sozialgeschichte'
+    'G8000-':
+       desc: 'Militärgeschichte'
+    'G9000-':
+       desc: 'Politikwissenschaft'
 'GG':
   desc: 'Geographie'
+  sub:
+    'GG1-':
+       desc: 'Adressbücher, Taschenbücher'
+    'GG100-':
+       desc: 'Studienführer, Einführungen'
+    'GG200-':
+       desc: 'Sachlexika'
+    'GG300-':
+       desc: 'Fachwörterbücher'
+    'GG400-':
+       desc: 'Ortsnamenlexika'
+    'GG1400-':
+       desc: 'Fachgeschichte, Methodik'
+    'GG1500-':
+       desc: 'Enzyklopädien, Handbücher'
+    'GG2000-':
+       desc: 'Einzelne Disziplinen'
+    'GG2100-':
+       desc: 'Geomorphologie'
+    'GG2200-':
+       desc: 'Hydrologie'
+    'GG2300-':
+       desc: 'Meteorologie'
+    'GG2400-':
+       desc: 'Biogeographie'
+    'GG2500-':
+       desc: 'Anthropogeographie'
+    'GG2900-':
+       desc: 'Historische Geographie'
+    'GG3000-':
+       desc: 'Allgemeine Länderkunde'
+    'GG3100-':
+       desc: 'Europa im Ganzen und größere Teile'
+    'GG3200-':
+       desc: 'Deutschland, Österreich, Schweiz'
+    'GG3500-':
+       desc: 'Übrige europäische Länder'
+    'GG3700-':
+       desc: 'Außereuropa'
+    'GG4000-':
+       desc: 'Kartographie, Fachgeschichte'
+    'GG4100-':
+       desc: 'Allgemeine Kartographie'
+    'GG4200-':
+       desc: 'Reine Kartographie'
+    'GG4500-':
+       desc: 'Thematische Kartographie'
+    'GG5000-':
+       desc: 'Weltatlanten'
+    'GG5100-':
+       desc: 'Physikalische Welt- bzw. Erdteilatlanten'
+    'GG5200-':
+       desc: 'Anthropogeographische Atlanten'
+    'GG5500-':
+       desc: 'Deutschland - Allgemein'
+    'GG5700-':
+       desc: 'Deutschland - Norden'
+    'GG5800-':
+       desc: 'Deutschland - Westen'
+    'GG5900-':
+       desc: 'Deutschland - Süden'
+    'GG6000-':
+       desc: 'Deutschland - Osten'
+    'GG6100-':
+       desc: 'Nordeuropa - Allgemein'
+    'GG6200-':
+       desc: 'Nordeuropa - Skandinavien'
+    'GG6300-':
+       desc: 'Westeuropa - Allgemein'
+    'GG6400-':
+       desc: 'Westeuropa - Britische Inseln'
+    'GG6600-':
+       desc: 'Westeuropa - Benelux'
+    'GG6700-':
+       desc: 'Westeuropa - Niederlande'
+    'GG6800-':
+       desc: 'Westeuropa - Frankreich'
+    'GG6900-':
+       desc: 'Mitteleuropa - Allgemein'
+    'GG7000-':
+       desc: 'Mitteleuropa - Alpenraum'
+    'GG7100-':
+       desc: 'Südeuropa - Allgemein'
+    'GG7200-':
+       desc: 'Südeuropa - Mittelmeerraum'
+    'GG7300-':
+       desc: 'Südeuropa - Balkan'
+    'GG7400-':
+       desc: 'Südeuropa - Iberische Halbinsel'
+    'GG7500-':
+       desc: 'Osteuropa - Allgemein'
+    'GG7600-':
+       desc: 'Osteuropa - Baltikum'
+    'GG7700-':
+       desc: 'Osteuropa - Russland'
+    'GG7750-':
+       desc: 'Osteuropa - Polen'
+    'GG7800-':
+       desc: 'Osteuropa - Sonstige Länder'
+    'GG8000-':
+       desc: 'Afrika - Allgemein'
+    'GG8100-':
+       desc: 'Nördliches Afrika'
+    'GG8200-':
+       desc: 'Westliches Afrika'
+    'GG8300-':
+       desc: 'Östliches Afrika'
+    'GG8400-':
+       desc: 'Zentralafrika'
+    'GG8500-':
+       desc: 'Südliches Afrika'
+    'GG8600-':
+       desc: 'Amerika - Allgemein'
+    'GG8700-':
+       desc: 'Nordamerika'
+    'GG8800-':
+       desc: 'Nordamerika - USA'
+    'GG8950-':
+       desc: 'Nordamerika - Kanada'
+    'GG9000-':
+       desc: 'Zentralamerika'
+    'GG9100-':
+       desc: 'Südamerika'
+    'GG9200-':
+       desc: 'Asien - Allgemein'
+    'GG9300-':
+       desc: 'Naher Osten'
+    'GG9500-':
+       desc: 'Zentralasien'
+    'GG9600-':
+       desc: 'Südasien'
+    'GG9700-':
+       desc: 'Südasien - Indien'
+    'GG9800-':
+       desc: 'Südostasien'
+    'GG10000-':
+       desc: 'Australien'
+    'GG10100-':
+       desc: 'Ozeanien'
+    'GG10200-':
+       desc: 'Polargebiete - Allgemein'
+    'GG10300-':
+       desc: 'Arktis'
+    'GG10400-':
+       desc: 'Antarktis'
 'K':
   desc: 'Kunstgeschichte, Musikwissenschaft'
+  sub:
+    'K1-':
+       desc: 'Archäologie und Antike Kunst'
+    'K1000-':
+       desc: 'Nachschlagewerke und Enzyklopädien'
+    'K1500-':
+       desc: 'Bestands- und Werkkataloge'
+    'K1700-':
+       desc: 'Quellenschriften'
+    'K2000-':
+       desc: 'Kunsttheorie'
+    'K2050-':
+       desc: 'Kunstwissenschaft (Fach)'
+    'K2100-':
+       desc: 'Allg. Kunstgeschichte - Einführungen und Handbücher'
+    'K2500-':
+       desc: 'Einzelne Kunstgattungen'
+    'K3000-':
+       desc: 'Kunstgeschichte Deutschland'
+    'K4000-':
+       desc: 'Außereuropäische Kunstgeschichte'
+    'K4050-':
+       desc: 'Übrige europäische Kunstgeschichte'
+    'K6000-':
+       desc: 'Musikwissenschaft Allgemeines'
+    'K6200-':
+       desc: 'Biographische Nachschlagewerke Komponisten'
+    'K6300-':
+       desc: 'Biographische Nachschlagewerke Interpreten'
+    'K6400-':
+       desc: 'Musikwissenschaft und Teildisziplinen'
+    'K6500-':
+       desc: 'Regionale Musikwissenschaft'
+    'K6700-':
+       desc: 'Historische Musikwissenschaft'
+    'K7400-':
+       desc: 'Musikalische Gattungen'
+    'K7900-':
+       desc: 'Musikinstrumente'
+    'K8100-':
+       desc: 'Komponisten: Leben und Werk'
 'L':
   desc: 'Literaturwissenschaft'
+  sub:
+    'L1-':
+       desc: 'Allgemeine Sprachwissenschaft'
+    'L300-':
+       desc: 'Allgemeine Indogermanistik'
+    'L500-':
+       desc: 'Allgemeine Literaturwissenschaft'
+    'L900-':
+       desc: 'Geschichte der Weltliteratur'
+    'L1000-':
+       desc: 'Klassische Philologie: Einführung, Geschichte'
+    'L1100-':
+       desc: 'Fachlexika'
+    'L1300-':
+       desc: 'Metrik'
+    'L1360-':
+       desc: 'Klassische Literaturgeschichte'
+    'L1500-':
+       desc: 'Texte'
+    'L1600-':
+       desc: 'Griechische Literatur bis Hellenismus'
+    'L1700-':
+       desc: 'Griechische Literatur ab Hellenismus'
+    'L1800-':
+       desc: 'Lateinische Literatur (Vorklassik und Klassik)'
+    'L1900-':
+       desc: 'Lateinische Literatur (Nachklassik und Mittelalter)'
+    'L2000-':
+       desc: 'Allgemeine Romanistik'
+    'L2200-':
+       desc: 'Französisch'
+    'L3080-':
+       desc: 'Italienisch'
+    'L3200-':
+       desc: 'Spanisch'
+    'L3400-':
+       desc: 'Katalanisch'
+    'L3430-':
+       desc: 'Portugiesisch'
+    'L3465-':
+       desc: 'Rätoromanisch'
+    'L3469-':
+       desc: 'Rumänisch'
+    'L3500-':
+       desc: 'Germanistik Allgemeines'
+    'L3571-':
+       desc: 'Sprachwissenschaft'
+    'L3950-':
+       desc: 'Literaturwissenschaft'
+    'L4325-':
+       desc: 'Gattungsgeschichte'
+    'L4500-':
+       desc: 'Deutschsprachige Regionalliteratur'
+    'L4700-':
+       desc: 'Literarische Primärtexte, Werkausgaben, Sekundärliteratur'
+    'L6400-':
+       desc: 'Niederlandistik'
+    'L6500-':
+       desc: 'Allgemeine Skandinavistik'
+    'L6600-':
+       desc: 'Altnordische / Isländische Literatur und Sprache'
+    'L6700-':
+       desc: 'Dänische Literatur und Sprache'
+    'L6800-':
+       desc: 'Norwegische Literatur und Sprache'
+    'L6900-':
+       desc: 'Schwedische Literatur und Sprache'
+    'L7000-':
+       desc: 'Anglistik: Einführung und Style manuals'
+    'L7010-':
+       desc: 'Englische Sprachwissenschaft'
+    'L7240-':
+       desc: 'Englische Literaturgeschichte allgemein'
+    'L7415-':
+       desc: 'Englische Lyrik'
+    'L7455-':
+       desc: 'Englische Dramatik'
+    'L7466-':
+       desc: 'Englische Prosa'
+    'L7483-':
+       desc: 'Regionale englischsprachige Literaturen (Irland, Kanada, Australien, etc.)'
+    'L7500-':
+       desc: 'Textausgaben vor Shakespeare'
+    'L7560-':
+       desc: 'Textausgaben Shakespeare'
+    'L7600-':
+       desc: 'Textausgaben nach Shakespeare'
+    'L7800-':
+       desc: 'Amerikanistik: Einführung und Sprachwissenschaft'
+    'L7850-':
+       desc: 'Amerikanische Literaturgeschichte allgemein'
+    'L7871-':
+       desc: 'Amerikanische Lyrik'
+    'L7873-':
+       desc: 'Amerikanische Dramatik'
+    'L7874-':
+       desc: 'Amerikanische Prosa'
+    'L7876-':
+       desc: 'Ethnische Literaturen (Hispanic, Asian-American etc.)'
+    'L7900-':
+       desc: 'Textausgaben'
+    'L8000-':
+       desc: 'Allgemeine Slawistik'
+    'L8100-':
+       desc: 'Russische Sprach- und Literaturwissenschaft'
+    'L8300-':
+       desc: 'Polnische Sprach- und Literaturwissenschaft'
+    'L8355-':
+       desc: 'Weitere slawische Sprachen'
+    'L8500-':
+       desc: 'Baltische und keltische Sprachen'
+    'L8600-':
+       desc: 'Indologie und Iranistik'
+    'L9020-':
+       desc: 'Handbuch der Orientalistik'
+    'L9092-':
+       desc: 'Judaistik, Arabistik, Ägyptologie'
+    'L9300-':
+       desc: 'Finnougrische Sprachen'
+    'L9400-':
+       desc: 'Altaistik'
+    'L9600-':
+       desc: 'Ostasiatische Sprachen und Literaturen'
+    'L9700-':
+       desc: 'Austrische und australische Sprachen'
+    'L9800-':
+       desc: 'Afrikanistik'
 'MW':
   desc: 'Medienwissenschaft'
+  sub:
+    'MW1-':
+       desc: 'Kommunikationswissenschaft: Allgemeines'
+    'MW151-':
+       desc: 'Geschichte der Kommunikationswissenschaft'
+    'MW201-':
+       desc: 'Kommunikationstheorie'
+    'MW401-':
+       desc: 'Kommunikation und Gesellschaft'
+    'MW501-':
+       desc: 'Massenkommunikation, Massenmedien: Allgemeines'
+    'MW651-':
+       desc: 'Pressewesen'
+    'MW751-':
+       desc: 'Rundfunk allgemein'
+    'MW1500-':
+       desc: 'Theater, Film: Allgemeines'
+    'MW1601-':
+       desc: 'Darstellende Künstler'
+    'MW1751-':
+       desc: 'Theater: Allgemeines'
+    'MW1901-':
+       desc: 'Ausbildung, Beruf, Organisation'
+    'MW2001-':
+       desc: 'Theatergeschichte'
+    'MW2101-':
+       desc: 'Theatereinrichtung, Bühnentechnik'
+    'MW2401-':
+       desc: 'Tanzkunst, Bewegungskunst'
+    'MW2451-':
+       desc: 'Kleinkunst, Kabarett, Revue'
+    'MW3000-':
+       desc: 'Film: Allgemeines'
+    'MW3151-':
+       desc: 'Systematische Filmwissenschaft'
+    'MW3201-':
+       desc: 'Filmgeschichte'
+    'MW3401-':
+       desc: 'Filmgattungen, Filmsparten'
+    'MW3601-':
+       desc: 'Fernsehen, Hörfunk'
 'N':
   desc: 'Naturwissenschaft'
+  sub:
+    'N200-':
+       desc: 'Naturwissenschaft allgemein'
+    'N500-':
+       desc: 'Mathematik: Einführungen und Gesamtdarstellungen'
+    'N800-':
+       desc: 'Algebra und Zahlentheorie'
+    'N1000-':
+       desc: 'Geometrie, Topologie'
+    'N1100-':
+       desc: 'Analysis, Funktionsanalysis, Funktionentheorie'
+    'N1300-':
+       desc: 'Wahrscheinlichkeitstheorie, Statistik, Numerik'
+    'N1500-':
+       desc: 'Physik: Einführungen und Gesamtdarstellungen'
+    'N1800-':
+       desc: 'Mathematische Methoden, Computerphysik, Praktikum'
+    'N1900-':
+       desc: 'Klassische Physik'
+    'N2500-':
+       desc: 'Atomphysik, Molekülphysik, Kernphysik'
+    'N2600-':
+       desc: 'Quantenphysik'
+    'N2650-':
+       desc: 'Relativitätstheorie, Gravitation'
+    'N2700-':
+       desc: 'Festkörperphysik, Werkstoffphysik'
+    'N2900-':
+       desc: 'Astronomie, Astrophysik'
+    'N3400-':
+       desc: 'Chemie: Einführungen und Gesamtdarstellungen'
+    'N3800-':
+       desc: 'Physikalische Chemie'
+    'N3900-':
+       desc: 'Analytische Chemie, Praktika'
+    'N4000-':
+       desc: 'Anorganische Chemie'
+    'N4100-':
+       desc: 'Organische Chemie'
+    'N4200-':
+       desc: 'Technische Chemie'
+    'N4500-':
+       desc: 'Geowissenschaften: Einführungen und Gesamtdarstellungen'
+    'N4600-':
+       desc: 'Geophysik, Meteorologie, Klimatologie'
+    'N4700-':
+       desc: 'Kristallographie, Mineralogie'
+    'N4900-':
+       desc: 'Bodenkunde, Gesteinskunde'
+    'N5000-':
+       desc: 'Allgemeine Geologie'
+    'N5100-':
+       desc: 'Historische Geologie'
+    'N5200-':
+       desc: 'Regionale Geologie'
+    'N5300-':
+       desc: 'Lagerstättenkunde'
+    'N5600-':
+       desc: 'Biologie: Fortschrittsberichte'
+    'N5700-':
+       desc: 'Allgemeines'
+    'N5900-':
+       desc: 'Biochemie, Biophysik'
+    'N6100-':
+       desc: 'Genetik'
+    'N6150-':
+       desc: 'Zellbiologie, Entwicklungsbiologie'
+    'N6200-':
+       desc: 'Ökologie'
+    'N6300-':
+       desc: 'Mikrobiologie'
+    'N6400-':
+       desc: 'Biotechnologie'
+    'N6500-':
+       desc: 'Botanik'
+    'N6700-':
+       desc: 'Physiologie'
+    'N6800-':
+       desc: 'Soziologie'
+    'N6900-':
+       desc: 'Spezielle Botanik'
+    'N7100-':
+       desc: 'Angewandte Botanik'
+    'N7200-':
+       desc: 'Nutzpflanzen'
+    'N7250-':
+       desc: 'Zoologie'
+    'N7400-':
+       desc: 'Physiologie'
+    'N7500-':
+       desc: 'Verhaltensforschung'
+    'N7600-':
+       desc: 'Spezielle Zoologie'
+    'N7900-':
+       desc: 'Medizingrundlagen'
+    'N8000-':
+       desc: 'Technik: Allgemeines'
+    'N8100-':
+       desc: 'Maschinenbau, Energietechnik'
+    'N8400-':
+       desc: 'Werkstoffwissenschaften'
+    'N8600-':
+       desc: 'Elektrotechnik'
+    'N8800-':
+       desc: 'Prozesstechnik, Verfahrenstechnik, Fertigungstechnik'
+    'N8900-':
+       desc: 'Informatik'
 'PH':
   desc: 'Philosophie'
+  sub:
+    'PH1-':
+       desc: 'Philosophie: Allgemeines'
+    'PH201-':
+       desc: 'Ausbildung, Beruf, Organisation'
+    'PH251-':
+       desc: 'Nichtwestliche Philosophie: Allgemeines'
+    'PH301-':
+       desc: 'Geschichte der westlichen Philosophie: Allgemeines'
+    'PH401-':
+       desc: 'Griechische Philosophie, Römische Philosophie'
+    'PH451-':
+       desc: 'Mittelalterliche Philosophie'
+    'PH551-':
+       desc: 'Neue westliche Philosophie'
+    'PH651-':
+       desc: 'Zeitgenössische westliche Philosophie'
+    'PH801-':
+       desc: 'Metaphysik, Ontologie'
+    'PH851-':
+       desc: 'Erkenntnistheorie'
+    'PH1101-':
+       desc: 'Ethik'
+    'PH1151-':
+       desc: 'Ästhetik'
+    'PH1201-':
+       desc: 'Kulturphilosophie'
+    'PH1351-':
+       desc: 'Politische Philosophie'
+    'PH1401-':
+       desc: 'Naturphilosophie, Pseudophilosophie, Systematische Philosophie: Sonstiges'
 'PP':
   desc: 'Pädagogik'
+  sub:
+    'PP1-':
+       desc: 'Geschichte der Pädagogik'
+    'PP100-':
+       desc: 'Vergleichende Pädagogik'
+    'PP300-':
+       desc: 'Einführungen'
+    'PP400-':
+       desc: 'Praktisches Unterrichtswesen, Didaktik, Methodik'
+    'PP600-':
+       desc: 'Erwachsenenbildung'
+    'PP700-':
+       desc: 'Spezielle historische Themen'
+    'PP800-':
+       desc: 'Klassiker der Pädagogik'
 'PS':
   desc: 'Psychologie'
+  sub:
+    'PS1-':
+       desc: 'Psychologie: Allgemeines'
+    'PS151-':
+       desc: 'Geschichte der Psychologie'
+    'PS201-':
+       desc: 'Philosophie und Theorie der Psychologie'
+    'PS251-':
+       desc: 'Methoden und Techniken der Psychologie'
+    'PS301-':
+       desc: 'Ausbildung, Beruf, Organisationen'
+    'PS501-':
+       desc: 'Psychologische Diagnostik'
+    'PS601-':
+       desc: 'Strömungen und Richtungen'
+    'PS701-':
+       desc: 'Strömungen und Psychoanalyse'
+    'PS801-':
+       desc: 'Allgemeine Psychologie: Allgemeines'
+    'PS851-':
+       desc: 'Kognition'
+    'PS951-':
+       desc: 'Wahrnehmungspsychologie'
+    'PS1001-':
+       desc: 'Motivationspsychologie'
+    'Ps1101-':
+       desc: 'Bewusstseinszustände'
+    'PS1201-':
+       desc: 'Allgemeine Psychologie (Sprachpsychologie)'
+    'PS1251-':
+       desc: 'Psychophysiologie'
+    'PS1301-':
+       desc: 'Vergleichende Psychologie'
+    'PS1351-':
+       desc: 'Differentielle Psychologie'
+    'PS1451-':
+       desc: 'Entwicklungspsychologie'
+    'PS1551-':
+       desc: 'Sozialpsychologie'
+    'PS1651-':
+       desc: 'Klinische Psychologie'
+    'PS1751-':
+       desc: 'Behandlung, Rehabilitation'
+    'PS1951-':
+       desc: 'Ökologische Psychologie'
+    'PS2001-':
+       desc: 'Parapsychologie'
+    'PS2051-':
+       desc: 'Angewandte Psychologie'
 'R':
   desc: 'Rechtswissenschaft'
+  sub:
+    'R1-':
+       desc: 'Rechtsquellen (Reich, Militärregierung u.Übergangszeit)'
+    'R200-':
+       desc: 'Rechtsquellen (Bundesrepublik)'
+    'R400-':
+       desc: 'Rechtsquellen (Länder)'
+    'R600-':
+       desc: 'Rechtsquellen (Städte)'
+    'R1000-':
+       desc: 'Allgemeine Zeitschriften und Reihen'
+    'R1300-':
+       desc: 'Allgemeine Gesetzweiser'
+    'R1400-':
+       desc: 'Abkürzungsverzeichnisse'
+    'R1500-':
+       desc: 'Sprachwörterbücher'
+    'R1800-':
+       desc: 'Berufs- und Behördenverzeichnisse'
+    'R1900-':
+       desc: 'Allgemeine Formularbücher'
+    'R4000-':
+       desc: 'Allgemeine Rechtslehre (Allgemeines, Rechtstheorie)'
+    'R4400-':
+       desc: 'Allgemeine Rechtslehre (Einführung in die Rechtswissenschaft)'
+    'R4800-':
+       desc: 'Allgemeine Rechtslehre (Handbücher)'
+    'R4900-':
+       desc: 'Allgemeine Rechtslehre (Begriffswörterbücher)'
+    'R5200-':
+       desc: 'Allgemeine Rechtslehre (Staatsbürgerkunde)'
+    'R5300-':
+       desc: 'Allgemeine Rechtslehre (Studium und Ausbildung)'
+    'R5400-':
+       desc: 'Allgemeine Rechtslehre (Datenverarbeitung, Automation, Dokumentation)'
+    'R6000-':
+       desc: 'Geschichte der Rechtswissenschaft'
+    'R6300-':
+       desc: 'Rechtsphilosophie'
+    'R6600-':
+       desc: 'Rechtssoziologie'
+    'R9000-':
+       desc: 'Allgemeine Rechtsgeschichte'
+    'R9200-':
+       desc: 'Römisches Recht (Quellen und Quellengeschichte)'
+    'R9300-':
+       desc: 'Römisches Recht (Geschichte)'
+    'R9400-':
+       desc: 'Römisches Recht (Privat-, Staats-, Verwaltungs- und Strafrecht)'
+    'R9500-':
+       desc: 'Römisches Recht (Pandektenrecht)'
+    'R9600-':
+       desc: 'Germanisches Recht'
+    'R9700-':
+       desc: 'Deutsches Recht (Quellen, Quellengeschichte,Wörterbücher)'
+    'R9800-':
+       desc: 'Deutsches Recht (Geschichte)'
+    'R9900-':
+       desc: 'Deutsches Recht (Privatrecht, öffentliches Recht)'
+    'R10000-':
+       desc: 'Europäisches Recht'
+    'R12000-':
+       desc: 'Allgemeine Entscheidungssammlungen zum deutschen Zivilrecht (Reichsgerichtshof)'
+    'R12100-':
+       desc: 'Allgemeine Entscheidungssammlungen zum deutschen Zivilrecht (Oberster Gerichtshof, Deutsches Obergericht, Bundesgerichtshof)'
+    'R12300-':
+       desc: 'Allgemeine Entscheidungssammlungen zum deutschen Zivilrecht (Oberlandesgerichte)'
+    'R12700-':
+       desc: 'NJW-Fundhefte zum Zivilrecht'
+    'R12800-':
+       desc: 'Zivilrecht (Zeitschriften und Reihen)'
+    'R15000-':
+       desc: 'Bürgerliches Recht (Allgemeines, Einführungen)'
+    'R15200-':
+       desc: 'Gesamtes BGB (Wegweiser)'
+    'R15400-':
+       desc: 'Gesamtes BGB (Kommentare)'
+    'R15500-':
+       desc: 'Gesamtes BGB (Lehrbücher)'
+    'R15600-':
+       desc: 'Gesamtes BGB (Mongraphien, Fallsammlungen)'
+    'R16000-':
+       desc: 'Allgemeiner Teil des BGB (Kommentare)'
+    'R16100-':
+       desc: 'Allgemeiner Teil des BGB (Lehrbücher)'
+    'R16200-':
+       desc: 'Allgemeiner Teil des BGB (Monographien, Fallsammlungen)'
+    'R16500-':
+       desc: 'Schuldrecht (Kommentare)'
+    'R16600-':
+       desc: 'Schuldrecht (Lehrbücher)'
+    'R16700-':
+       desc: 'Schuldrecht (Monographien, Fallsammlungen, Einzelgebiete)'
+    'R17200-':
+       desc: 'Sachenrecht (Kommentare)'
+    'R17300-':
+       desc: 'Sachenrecht (Lehrbücher)'
+    'R17400-':
+       desc: 'Sachenrecht (Monographien, Fallsammlungen)'
+    'R17500-':
+       desc: 'Sachenrecht (Einzelgebiete)'
+    'R18000-':
+       desc: 'Familienrecht (Kommentare)'
+    'R18100-':
+       desc: 'Familienrecht (Lehrbücher)'
+    'R18200-':
+       desc: 'Familienrecht (Monographien, Fallsammlungen)'
+    'R18300-':
+       desc: 'Familienrecht (Einzelgebiete)'
+    'R18500-':
+       desc: 'Erbrecht (Kommentare)'
+    'R18600-':
+       desc: 'Erbrecht (Lehrbücher)'
+    'R18700-':
+       desc: 'Erbrecht (Monographien, Fallsammlungen)'
+    'R18800-':
+       desc: 'Einführungsgesetz, Register zum BGB, Ergänzungsbände'
+    'R19000-':
+       desc: 'Haftung, Haftpflicht'
+    'R22000-':
+       desc: 'Handelsrecht insgesamt, Handelsgesetzbuch (Entscheidungssammlungen)'
+    'R22200-':
+       desc: 'Handelsrecht insgesamt, Handelsgesetzbuch (Lehrbücher, Monographien, Fallsammlungen, Kommentare)'
+    'R22300-':
+       desc: 'Steuerrecht'
+    'R22500-':
+       desc: 'Seehandelsrecht'
+    'R22600-':
+       desc: 'Gesellschaftsrecht (allgemein)'
+    'R22700-':
+       desc: 'Gesellschaftsrecht (Personengesellschaften)'
+    'R22800-':
+       desc: 'Gesellschaftsrecht (Aktiengesellschaften, Kommanditgesellschaften)'
+    'R22900-':
+       desc: 'Gesellschaftsrecht (GmbH)'
+    'R23000-':
+       desc: 'Gesellschaftsrecht (Genossenschaft)'
+    'R23500-':
+       desc: 'Bankrecht, Depotrecht, Börsenrecht, Kreditrecht'
+    'R23800-':
+       desc: 'Wertpapierrecht, Wechsel- und Scheckrecht, Sonstiges'
+    'R25000-':
+       desc: 'Urheberrecht und gewerblicher Rechtsschutz zusammen'
+    'R25100-':
+       desc: 'Urheberrecht, Verlagsrecht'
+    'R25200-':
+       desc: 'Gewerblicher Rechtsschutz (allgemein)'
+    'R25300-':
+       desc: 'Patentrecht'
+    'R25400-':
+       desc: 'Arbeitnehmerfindungsrecht'
+    'R25500-':
+       desc: 'Gebrauchsmuster- und Geschmacksmusterrecht'
+    'R25600-':
+       desc: 'Wettbewerbs- und Warenzeichenrecht, Zugabe- und Rabattrecht'
+    'R25800-':
+       desc: 'Kartellrecht, Recht der Wettbewerbsbeschränkungen'
+    'R27000-':
+       desc: 'Gerichtsverfassung, Verfahren in Zivilsachen (allgemein)'
+    'R27100-':
+       desc: 'Gerichtsverfassungsrecht'
+    'R27200-':
+       desc: 'Personen der Rechtspflege'
+    'R27300-':
+       desc: 'Zivilprozessrecht (Monographien)'
+    'R27400-':
+       desc: 'Zivilprozessrecht (Kommentare, Lehrbücher)'
+    'R27600-':
+       desc: 'Zwangsvollstreckung, Insolvenz- und Vergleichsrecht (allgemein)'
+    'R27700-':
+       desc: 'Zwangsvollstreckung, Vergleichsrecht, Schiedsgerichtsbarkeit'
+    'R27800-':
+       desc: 'Insolvenzrecht, Konkursrecht, Vergleichsrecht, Vergleichsordnung'
+    'R28000-':
+       desc: 'Freiwillige Gerichtsbarkeit, Personenstandsrecht'
+    'R28200-':
+       desc: 'Kostenrecht'
+    'R29100-':
+       desc: 'Strafrecht, Strafverfahrensrecht (Entscheidungssammlungen)'
+    'R29200-':
+       desc: 'Strafrecht, Strafverfahrensrecht (NJW-Fundhefte, Zeitschriften, Gesetzessammlungen)'
+    'R29500-':
+       desc: 'Strafrechtliche Nebengebiete'
+    'R30000-':
+       desc: 'Strafverfahrensrecht, Strafprozessordnung'
+    'R30100-':
+       desc: 'Jugendstrafrecht'
+    'R30200-':
+       desc: 'Strafvollzug, Untersuchungshaft'
+    'R30300-':
+       desc: 'Kriminologie'
+    'R30400-':
+       desc: 'Forensische Psychiatrie'
+    'R30500-':
+       desc: 'Forensische Medizin'
+    'R33000-':
+       desc: 'Staats- und Verwaltungsrecht (Entscheidungssammlungen, NJW-Fundhefte, Zeitschriften, Reihen)'
+    'R33100-':
+       desc: 'Staatsrecht: Zeitschriften, Reihen'
+    'R33300-':
+       desc: 'Staats- und Verwaltungsrecht (Verfassungs- und Gesetzessammlungen)'
+    'R33400-':
+       desc: 'Staats- und Verwaltungsrecht (Handbücher)'
+    'R33500-':
+       desc: 'Staats- und Verwaltungsrecht (Lehrbücher)'
+    'R33800-':
+       desc: 'Verfassungsgerichtsbarkeit'
+    'R33900-':
+       desc: 'Verwaltungsgerichtsbarkeit'
+    'R34000-':
+       desc: 'Informationsfreiheitsgesetz'
+    'R35000-':
+       desc: 'Staats- und Verfassungsrecht (allgemeine Staatslehre)'
+    'R35100-':
+       desc: 'Staats- und Verfassungsrecht (Grund- und Menschenrechte, Einzelfragen)'
+    'R35500-':
+       desc: 'Staatsrecht bis 1945'
+    'R35700-':
+       desc: 'Staatsrecht der BRD (allgemein, Entstehungsgeschichte)'
+    'R35800-':
+       desc: 'Staatsrecht der BRD (Grundgesetz, Kommentare, Lehrbücher)'
+    'R36000-':
+       desc: 'Staatsrecht der BRD (Bundestag, Bundesrat, Bundeswahlrecht)'
+    'R36400-':
+       desc: 'Staatsrecht der deutschen Länder (allgemein, Verfassungen)'
+    'R36700-':
+       desc: 'Staatsangehörigkeitsrecht'
+    'R38000-':
+       desc: 'Allgemeines und besonderes Verwaltungsrecht insgesamt'
+    'R38200-':
+       desc: 'Verwaltungsverfahren, Staatshaftung'
+    'R38500-':
+       desc: 'Öffentlicher Dienst (allgemein)'
+    'R38600-':
+       desc: 'Öffentlicher Dienst (Angestellte und Arbeiter)'
+    'R38700-':
+       desc: 'Öffentlicher Dienst (Beamte)'
+    'R38800-':
+       desc: 'Öffentlicher Dienst (Besoldungsrecht, Personalvertretungsgesetz)'
+    'R38900-':
+       desc: 'Öffentlicher Dienst (Disziplinarrecht, Sonstiges)'
+    'R39200-':
+       desc: 'Nachrichtendienst'
+    'R39300-':
+       desc: 'Allgemeines Polizeirecht, Ordnungsbehördenrecht, Waffenrecht'
+    'R39400-':
+       desc: 'Fremdenrecht, Ausländerrecht, Vereinsrecht, Orden, Titel, Ehrenzeichen'
+    'R39500-':
+       desc: 'Unterbringungsrecht, Gesundheitsrecht, Umweltrecht, Lebens- und Arzneimittelrecht'
+    'R40000-':
+       desc: 'Kommunalrecht, Landesverwaltungsrecht'
+    'R40100-':
+       desc: 'Hochschulrecht'
+    'R40200-':
+       desc: 'Kultusrecht, Schulrecht, Bibliotheksrecht'
+    'R40300-':
+       desc: 'Presserecht, Rundfunkrecht, Theaterrecht'
+    'R40400-':
+       desc: 'Allgemeines Baurecht, Architektenrecht, Raumordnung, Planungsrecht, Bodenordnungsrecht, Bundesbaugesetz'
+    'R40700-':
+       desc: 'Bauordnungsrecht, Bauordnung'
+    'R40800-':
+       desc: 'Baurecht (Sonstiges)'
+    'R41000-':
+       desc: 'Straßen- und Wegerecht, Wasserstraßenstrecht'
+    'R41100-':
+       desc: 'Natur- und Landschaftsschutz'
+    'R41200-':
+       desc: 'Wehrrecht'
+    'R41300-':
+       desc: 'Zivilschutz, Notstandsrecht, Sicherungsgesetze'
+    'R41400-':
+       desc: 'Datenschutz'
+    'R41600-':
+       desc: 'Ausbildungsförderungsgesetz'
+    'R41700-':
+       desc: 'Siedlungs- und Wohnungsbau'
+    'R41800-':
+       desc: 'Soziales Miet- und Wohnrecht, Wohngeldgesetz'
+    'R42300-':
+       desc: 'Sozialrecht (Zeitschriften, Entscheidungssammlungen, Gesetzessammlungen, Lehrbücher, Kommentare)'
+    'R43500-':
+       desc: 'Sozialgerichtsbarkeit'
+    'R43600-':
+       desc: 'Bundessozialhilfegesetz'
+    'R43700-':
+       desc: 'Jugendrecht, Jugendwohlfahrt, Jugendschutz'
+    'R43800-':
+       desc: 'Kriegsopferversorgung und sonstiges Schwerbeschädigtenrecht'
+    'R43900-':
+       desc: 'Flüchtlings- und Heimkehrerhilfe, Lastenausgleich'
+    'R44000-':
+       desc: 'Rückerstattung und Widergutmachung, Kriegsfolgengesetz, Sozialrecht (Sonstiges)'
+    'R44200-':
+       desc: 'Münz- und Meßwesen, Bundesstatistikgesetz, Feiertagsgesetz, Sonstiges'
+    'R46000-':
+       desc: 'Arbeitsrecht (Entscheidungssammlungen, NJW-Fundhefte, Zeitschriften)'
+    'R46100-':
+       desc: 'Arbeitsrecht (Kommentare, Texte, Lehrbücher)'
+    'R46500-':
+       desc: 'Arbeitsgerichtsbarkeit'
+    'R46600-':
+       desc: 'Arbeitsvertragsrecht'
+    'R46700-':
+       desc: 'Arbeitsschutz, Urlaub'
+    'R46800-':
+       desc: 'Kollektives Arbeitsrecht, Tarifrecht'
+    'R46900-':
+       desc: 'Betriebsverfassung, Mitbestimmung'
+    'R47000-':
+       desc: 'Gewinnbeteilugung, Arbeitsvermittlung, Arbeitslosenversicherung, Arbeitsförderung, Berufsbildung'
+    'R47100-':
+       desc: 'Arbeitnehmerüberlassung'
+    'R47200-':
+       desc: 'Schwarzarbeit'
+    'R49000-':
+       desc: 'Allgemeines Wirtschaftsrecht'
+    'R49200-':
+       desc: 'Wirtschaftsverfassung, Wirtschaftsverwaltungsrecht'
+    'R49300-':
+       desc: 'Außenwirtschaftsrecht'
+    'R49400-':
+       desc: 'Preisrecht'
+    'R49500-':
+       desc: 'Gewerberecht'
+    'R49600-':
+       desc: 'Handwerksrecht'
+    'R49800-':
+       desc: 'Bergrecht'
+    'R49900-':
+       desc: 'Energierecht'
+    'R50000-':
+       desc: 'Atom- und Strahlenschutzrecht'
+    'R50100-':
+       desc: 'Wasserrecht'
+    'R50200-':
+       desc: 'Fischereirecht'
+    'R50300-':
+       desc: 'Landwirtschaftsrecht'
+    'R50400-':
+       desc: 'Forstrecht, Jagdrecht'
+    'R54000-':
+       desc: 'Verkehrsrecht (allgemein)'
+    'R54200-':
+       desc: 'Straßenverkehrsrecht'
+    'R54300-':
+       desc: 'Luftrecht'
+    'R54400-':
+       desc: 'Seerecht'
+    'R54500-':
+       desc: 'Eisenbahnrecht, Postrecht'
+    'R54600-':
+       desc: 'Neue Medien'
+    'R54700-':
+       desc: 'Fremdenverkehr, Verkehrsrecht (Sonstiges)'
+    'R60000-':
+       desc: 'Kirchenrecht (Entscheidungssammlungen, Zeitschriften, Reihen, Rechtsquellen, Quellen, Konkordate)'
+    'R60200-':
+       desc: 'Kirchenrechtsgeschichte'
+    'R60300-':
+       desc: 'Kirchenrecht (Lehrbücher)'
+    'R60800-':
+       desc: 'Katholisches Kirchenrecht (Codex iuris canonici)'
+    'R60900-':
+       desc: 'Katholisches Kirchenrecht (Monographien. Lehrbücher)'
+    'R61200-':
+       desc: 'Evangelisches Kirchenrecht (Verfassungen, Rechtssammlungen, Evangelische Kirche Deutschlands)'
+    'R61300-':
+       desc: 'Evangelisches Kirchenrecht (Landeskirchen)'
+    'R61400-':
+       desc: 'Evangelisches Kirchenrecht (Monographien. Lehrbücher)'
+    'R62000-':
+       desc: 'Recht der DDR (Allgemeines, Rechtsquellen)'
+    'R62100-':
+       desc: 'Recht der DDR (Staatsrecht, Staatsverfassung, Staatsangehörigkeit)'
+    'R62500-':
+       desc: 'Recht der deutschen Wiedervereinigung (Verträge, Rechtsquellen, allgemeine Darstellungen, Vermögensgesetze, Eigentumsfragen)'
+    'R63000-':
+       desc: 'Völkerrecht (allgemeine Rechtsquellen, Materialsammlungen)'
+    'R63200-':
+       desc: 'Völkerrecht (einzelne Verträge)'
+    'R63300-':
+       desc: 'Völkerrecht (internationale Gerichtsbarkeit, allgemeine Handbücher, Wörterbücher)'
+    'R63400-':
+       desc: 'Völkerrecht (Lehrbücher)'
+    'R63500-':
+       desc: 'Recht der internationalen Beziehungen, Diplomatenrecht'
+    'R63600-':
+       desc: 'Völkerrechtliche Schutzrechte, Menschenrechte'
+    'R63800-':
+       desc: 'Weltraumrecht'
+    'R64000-':
+       desc: 'Internationale Organisationen, Pakt- und Blocksysteme (allgemein)'
+    'R64300-':
+       desc: 'Internationale Organisationen, Pakt- und Blocksysteme (Vereinte Nationen)'
+    'R64500-':
+       desc: 'Internationale Organisationen, Pakt- und Blocksysteme (Nato)'
+    'R64600-':
+       desc: 'Internationale Organisationen, Pakt- und Blocksysteme (Ostblock)'
+    'R67000-':
+       desc: 'Recht der Europäischen Gemeinschaften (Entscheidungssammlungen, Rechtsquellen, Verträge, Darstellungen)'
+    'R67200-':
+       desc: 'Recht der Europäischen Gemeinschaften (Handels- und Wirtschaftsrecht)'
+    'R67300-':
+       desc: 'Recht der Europäischen Gemeinschaften (gewerblicher Rechtsschutz)'
+    'R67400-':
+       desc: 'Recht der Europäischen Gemeinschaften (Arbeitsrecht)'
+    'R67600-':
+       desc: 'Recht der Europäischen Gemeinschaften (Sonstiges)'
 'RH':
   desc: 'Rheinische Landeskunde'
+  sub:
+    'Rh1-':
+       desc: 'Genealogie, Urkunden'
+    'Rh54-':
+       desc: 'Atlanten'
+    'Rh60-':
+       desc: 'Archivalien'
+    'Rh150-':
+       desc: 'Heraldik, Numismatik'
+    'Rh305-':
+       desc: 'Ur- und Frühgeschichte'
+    'Rh310-':
+       desc: '\"Denkwürdiger und nützlicher rheinischer Antiquarius\"'
+    'Rh350-':
+       desc: 'Publikationen der Gesellschaft für Rheinische Geschichtskunde'
+    'RH365-':
+       desc: 'Geschichte, Kulturgeschichte'
+    'Rh610-':
+       desc: 'Ortsgeschichte (alphabetisch nach Orten)'
+    'Rh2702-':
+       desc: 'Kirchengeschichte'
+    'Rh4000-':
+       desc: 'Bau- u. Kunstdenkmäler, Kunstgeschichte, Architektur'
+    'Rh4980-':
+       desc: 'Musik'
+    'Rh5010-':
+       desc: 'Geologie und Geographie'
+    'Rh5500-':
+       desc: 'Flora und Fauna'
 'T':
   desc: 'Theologie,Religionswissenschaft'
+  sub:
+    'T1-':
+       desc: 'Geschichte der Theologie'
+    'T100-':
+       desc: 'Theologisches Studium'
+    'T200-':
+       desc: 'Enzyklopädien und Lexika'
+    'T450-':
+       desc: 'Biblwissenschaft: Ausgaben (Polyglotten, AT u. NT)'
+    'T800-':
+       desc: 'Exegese'
+    'T850-':
+       desc: 'Kommentare'
+    'T1110-':
+       desc: 'Konkordanzen, Bibellexika'
+    'T1400-':
+       desc: 'Sprachliche Hilfsmittel (Wörterbücher / Grammatiken)'
+    'T1500-':
+       desc: 'Lehre und Geschichte (Hermeneutik, Einleitungswissenschaft)'
+    'T1850-':
+       desc: 'Biblische Theologie'
+    'T2000-':
+       desc: 'Biblische Zeitgeschichte, Geographie u. Archäologie'
+    'T2200-':
+       desc: 'Kirchengeschichte: Atlanten, Tabellen, Register u. ä. Hilfsmittel'
+    'T2300-':
+       desc: 'Gesamtdarstellungen'
+    'T2450-':
+       desc: 'Einzelne Zeitabschnitte'
+    'T2600-':
+       desc: 'Kirchengeschichte Deutschlands und anderer Länder'
+    'T2700-':
+       desc: 'Patristik; Scholastik: Hilfsmittel'
+    'T2800-':
+       desc: 'Patristik; Scholastik: Textausgaben'
+    'T2870-':
+       desc: 'Patristik; Scholastik: Geschichte der Patristik u. Scholastik'
+    'T3100-':
+       desc: 'Papstgeschichte'
+    'T3200-':
+       desc: 'Konziliengeschichte'
+    'T3300-':
+       desc: 'Ordens- und Klostergeschichte'
+    'T3400-':
+       desc: 'Hagiographie'
+    'T3600-':
+       desc: 'Systematische Theologie: Dogmatik'
+    'T3900-':
+       desc: 'Dogmengeschichte'
+    'T4100-':
+       desc: 'Konfessionskunde; Ökumenik'
+    'T4250-':
+       desc: 'Moraltheologie; Christliche Ethik'
+    'T4400-':
+       desc: 'Spiritualität; Mystik'
+    'T4500-':
+       desc: 'Praktische Theologie: Katechetik'
+    'T4600-':
+       desc: 'Homiletik; Seelsorge'
+    'T4700-':
+       desc: 'Liturgik'
+    'T5200-':
+       desc: 'Kirchenlied; Hymnologie'
+    'T5400-':
+       desc: 'Missionswissenschaft'
+    'T5400-':
+       desc: 'Diakonie'
+    'T5600-':
+       desc: 'Komparative Theologie'
+    'T5600-':
+       desc: 'Interreligiöse Beziehungen'
+    'T6000-':
+       desc: 'Religionswissenschaft Allgemeines: Gesamtdarstellungen; Lexika; Allg. Mythologie; Mehrere Religionen'
+    'T6250-':
+       desc: 'Religionen des Alten Orients'
+    'T6300-':
+       desc: 'Judentum'
+    'T6400-':
+       desc: 'Islam'
+    'T6500-':
+       desc: 'Asiatische Religionen; Buddhismus und Hinduismus'
+    'T6600-':
+       desc: 'Antike Mythologien (Griechenland/Rom)'
+    'T6700-':
+       desc: 'Mythologien anderer Kulturen'
 'V':
   desc: 'Wirtschafts- und Sozialwissenschaften'
+  sub:
+    'V1-':
+       desc: 'Einführung in Studium und Beruf'
+    'V300-':
+       desc: 'Lern- und Arbeitstechniken im Studium'
+    'V2000-':
+       desc: 'Wirtschafts- und sozialwissenschaftliche Sprachwörterbücher: Vielsprachig'
+    'V2700-':
+       desc: 'Englisch-Französisch-Deutsch'
+    'V3300-':
+       desc: 'Englisch-Deutsch'
+    'V3900-':
+       desc: 'Englisch-Französisch'
+    'V4200-':
+       desc: 'Englisch-Spanisch'
+    'V4400-':
+       desc: 'Französisch-Deutsch'
+    'V5100-':
+       desc: 'Griechisch-Deutsch'
+    'V5300-':
+       desc: 'Italienisch-Deutsch'
+    'V5500-':
+       desc: 'Portugiesisch-Deutsch'
+    'V5700-':
+       desc: 'Russisch-Deutsch'
+    'V6200-':
+       desc: 'Serbokroatisch-Deutsch'
+    'V6300-':
+       desc: 'Spanisch-Deutsch'
+    'V6400-':
+       desc: 'Sonstige Sprachen-Deutsch'
+    'V6900-':
+       desc: 'Fremdsprachige Wirtschaftskorrespondenz'
+    'V8000-':
+       desc: 'Handbücher - Deutsch'
+    'V8500-':
+       desc: 'Handbücher - Englisch'
+    'V8800-':
+       desc: 'Handbücher - Französisch'
+    'V9100-':
+       desc: 'Handbücher - Griechisch'
+    'V9200-':
+       desc: 'Handbücher - Italienisch'
+    'V9400-':
+       desc: 'Handbücher - Spanisch'
+    'V11000-':
+       desc: 'Volkswirtschaftstheorie: Einführungen, Grundrisse, Makroökonomie'
+    'V12000-':
+       desc: 'Markt-, Preis- und Produktionstheorie, Mikroökonomie'
+    'V12500-':
+       desc: 'Theorie der Einkommensverteilung'
+    'V12700-':
+       desc: 'Wachstumstheorie, Wirtschaftsentwicklung'
+    'V12900-':
+       desc: 'Geld- und Kredittheorie'
+    'V13200-':
+       desc: 'Außenwirtschaftstheorie'
+    'V13400-':
+       desc: 'Konsumtheorie'
+    'V14500-':
+       desc: 'Geschichte der volkswirtschaftlichen Lehrmeinungen: Allgemeine Darstellungen der Dogmengeschichte'
+    'V14900-':
+       desc: 'Originalwerke älterer Wirtschaftstheoretiker bis 1960'
+    'V15500-':
+       desc: 'Sozialismus, Grundlagen des sozialistischen Wirtschaftssystems'
+    'V17000-':
+       desc: 'Wirtschaftspolitik: Einführung, Grundrisse'
+    'V17400-':
+       desc: 'Wirtschaftssystem (Allgemein)'
+    'V17600-':
+       desc: 'Wirtschaftssystem (Marktwirtschaft)'
+    'V17800-':
+       desc: 'Wirtschaftssystem (Verwaltungswirtschaft, Zentralplanwirtschaft)'
+    'V18000-':
+       desc: 'Wettbewerbspolitik, Verbraucherpolitik'
+    'V18200-':
+       desc: 'Geld- und Währungspolitik, Kreditpolitik'
+    'V18600-':
+       desc: 'Konjunkturpolitik'
+    'V18800-':
+       desc: 'Handelspolitik (Binnenhandelspolitik)'
+    'V18900-':
+       desc: 'Handelspolitik (Außenwirtschaftspolitik)'
+    'V19100-':
+       desc: 'Entwicklungspolitik'
+    'V19400-':
+       desc: 'Regionalpolitik (Raumpolitik, Strukturpolitik)'
+    'V19600-':
+       desc: 'Regionalpolitik (Städtebau, Siedlungs- und Wohnungswesen)'
+    'V19800-':
+       desc: 'Regionalpolitik (Umweltforschung, Umweltschutz, Katastrophenschutz)'
+    'V21000-':
+       desc: 'Sozialpolitik: Lexika, Enzyklopädien, Handbücher'
+    'V21300-':
+       desc: 'Einführungen, Grundrisse'
+    'V21600-':
+       desc: 'Arbeitsmarkt, Arbeitspolitik, Gewerkschaft'
+    'V21900-':
+       desc: 'Betriebsverfassung, Mitbestimmung'
+    'V22200-':
+       desc: 'Einkommens- und Vermögenspolitik'
+    'V22400-':
+       desc: 'Einzelne Bereiche der Sozialpolitik, Sozialarbeit, Geschlechter'
+    'V22800-':
+       desc: 'Einzelne Berufe'
+    'V24000-':
+       desc: 'Wirtschafts- und Sozialgeschichte: Gesamtdarstellungen'
+    'V24200-':
+       desc: 'Einzelne Zeiträume (Antike)'
+    'V24250-':
+       desc: 'Einzelne Zeiträume (Mittelalter)'
+    'V24300-':
+       desc: 'Einzelne Zeiträume (Neuzeit)'
+    'V24500-':
+       desc: 'Einzelne Länder (Deutschland)'
+    'V24800-':
+       desc: 'Einzelne Länder (Ausland)'
+    'V26000-':
+       desc: 'Wirtschaftsorganisationen (International)'
+    'V26100-':
+       desc: 'Wirtschaftsorganisationen (Europa)'
+    'V26300-':
+       desc: 'Wirtschaftsorganisationen (Deutschland)'
+    'V26400-':
+       desc: 'Wirtschaftsorganisationen (Sonstige Länder)'
+    'V27000-':
+       desc: 'Wirtschaftsbeschreibung (International, Weltwirtschaft)'
+    'V27200-':
+       desc: 'Wirtschaftsbeschreibung (Europa)'
+    'V27300-':
+       desc: 'Wirtschaftsbeschreibung (Deutschland BRD, allgemein)'
+    'V27500-':
+       desc: 'Wirtschaftsbeschreibung (Deutschland, BRD, Bundesländer und Gemeinden)'
+    'V27600-':
+       desc: 'Wirtschaftsbeschreibung (Deutschland DDR und neue Bundesländer)'
+    'V27800-':
+       desc: 'Wirtschaftsbeschreibung (Erdteile)'
+    'V28000-':
+       desc: 'Wirtschaftsbeschreibung (Ländergemeinschaften)'
+    'V28100-':
+       desc: 'Wirtschaftsbeschreibung (Sonstige Länder)'
+    'V30000-':
+       desc: 'Landwirtschaft: Lexika, Enzyklopädien, Handbücher'
+    'V30200-':
+       desc: 'Landwirtschaftsgeschichte'
+    'V30300-':
+       desc: 'Landwirtschaftspolitik (allgemein)'
+    'V30500-':
+       desc: 'Landwirtschaftspolitik (Europäische Gemeinschaften)'
+    'V30600-':
+       desc: 'Landwirtschaftspolitik (Entwicklungsländer)'
+    'V30700-':
+       desc: 'Landwirtschaftspolitik (Sonstige Länder)'
+    'V30800-':
+       desc: 'Landwirtschaftliches Bildungswesen'
+    'V30900-':
+       desc: 'Landwirtschaftliche Betriebslehre'
+    'V31000-':
+       desc: 'Forstwirtschaft'
+    'V31500-':
+       desc: 'Energiewirtschaft: Allgemeines'
+    'V31700-':
+       desc: 'Einzelne Energieträger'
+    'V32500-':
+       desc: 'Industrie-, Gewerbe- und Handelspolitik: Lexika, Handbücher'
+    'V33000-':
+       desc: 'Verkehrswirtschaft: Lexika, Handbücher'
+    'V33100-':
+       desc: 'Allgemeines'
+    'V33400-':
+       desc: 'Verkehrsarten (Straßenverkehr)'
+    'V33600-':
+       desc: 'Verkehrsarten (Schienenverkehr)'
+    'V33800-':
+       desc: 'Verkehrsarten (Schiffsverkehr)'
+    'V34000-':
+       desc: 'Verkehrsarten (Luftverkehr)'
+    'V34200-':
+       desc: 'Verkehrsarten (Nachrichtenverkehr)'
+    'V34300-':
+       desc: 'Verkehrsarten (Fremdenverkehr)'
+    'V34500-':
+       desc: 'Verkehrsbetriebslehre'
+    'V35000-':
+       desc: 'Versicherungswesen: Lexika, Handbücher'
+    'V35200-':
+       desc: 'Allgemeines'
+    'V35500-':
+       desc: 'Privatversicherung: Allgemeines'
+    'V35700-':
+       desc: 'Lebensversicherung'
+    'V35800-':
+       desc: 'Private Krankenversicherung'
+    'V35900-':
+       desc: 'Haftpflichtversicherung'
+    'V36000-':
+       desc: 'Kraftfahrtversicherung'
+    'V36100-':
+       desc: 'Sonstige Sachversicherungen'
+    'V36500-':
+       desc: 'Sozialversicherungen: Allgemeines'
+    'V36900-':
+       desc: 'Sozialversicherungen: Altersversicherung'
+    'V37200-':
+       desc: 'Sozialversicherungen: Krankenversicherung'
+    'V37300-':
+       desc: 'Sozialversicherungen: Unfallversicherung'
+    'V37400-':
+       desc: 'Sozialversicherungen: Arbeitslosenversicherung'
+    'V37499-':
+       desc: 'Sozialversicherungen: Ausland'
+    'V37800-':
+       desc: 'Versicherungsbetriebslehre'
+    'V38500-':
+       desc: 'Genossenschaftswesen: Lexika, Handbücher'
+    'V40000-':
+       desc: 'Finanzwissenschaft: Einführung, Grundrisse, Finanztheorie, Finanzpolitik'
+    'V40500-':
+       desc: 'Öffentliche Finanzwirtschaft, Finanzausgleich, Kommunalwirtschaft'
+    'V41000-':
+       desc: 'Öffentlicher Haushalt, Haushaltsrecht'
+    'V42000-':
+       desc: 'Allgemeine Steuerlehre'
+    'V42300-':
+       desc: 'Allgemeines und deutsches Steuerrecht'
+    'V43000-':
+       desc: 'Internationales und ausländisches Steuerrecht'
+    'V43200-':
+       desc: 'Steuerverwaltungs-, Steuerstraf- und Steuerverfahrensrecht'
+    'V44000-':
+       desc: 'Einkommenssteuerrecht'
+    'V44500-':
+       desc: 'Lohnsteuerrecht'
+    'V44600-':
+       desc: 'Körperschaftssteuerrecht'
+    'V45000-':
+       desc: 'Bewertungs-, Vermögensteuer- und Grundsteuerrecht'
+    'V45500-':
+       desc: 'Gewerbesteuerrecht'
+    'V45800-':
+       desc: 'Erbschafts- und Schenkungssteuerrecht'
+    'V46000-':
+       desc: 'Umsatzsteuerrecht'
+    'V46500-':
+       desc: 'Sonstige Verkehrsteuer'
+    'V46700-':
+       desc: 'Zölle'
+    'V47300-':
+       desc: 'Betriebliche Steuerlehre (Allgemein)'
+    'V47600-':
+       desc: 'Betriebliche Steuerlehre (Besteuerung der Gesellschaften)'
+    'V47800-':
+       desc: 'Betriebliche Steuerlehre (Mehrwertsteuer im Betrieb)'
+    'V48200-':
+       desc: 'Betriebliche Steuerlehre (Steuerbilanz)'
+    'V49000-':
+       desc: 'Steuerberatung'
+    'V51000-':
+       desc: 'Statistik, Ökonometrie: Lexika, Handbücher'
+    'V51200-':
+       desc: 'Allgemeine Statistik, Einführungen'
+    'V51700-':
+       desc: 'Methodenlehre der Statistik (Allgemeines)'
+    'V52200-':
+       desc: 'Methodenlehre der Statistik (Mathematische Statistik, Wahrscheinlichkeitstheorie, Stichprobenverfahren)'
+    'V52800-':
+       desc: 'Methodenlehre der Statistik (Bevölkerungsstatistik, Wirtschaftsstatistik, amtliche Statistik)'
+    'V54000-':
+       desc: 'Ökonometrie, Wirtschaftsprognose'
+    'V56000-':
+       desc: 'Mathematische Methoden und Modelltheorie der Wirtschaftswissenschaft'
+    'V56600-':
+       desc: 'Systemforschung'
+    'V57000-':
+       desc: 'Entscheidungstheorie, Spieltheorie'
+    'V57600-':
+       desc: 'Unternehmensforschung (Operations Research)'
+    'V58300-':
+       desc: 'Mathematische Programmierung und Optimierung (Lineare Programmierung)'
+    'V58700-':
+       desc: 'Mathematische Programmierung und Optimierung (Nichtlineare und dynamische Programmierung)'
+    'V59000-':
+       desc: 'Netzplantechnik'
+    'V60000-':
+       desc: 'Kybernetik, Information'
+    'V60300-':
+       desc: 'Information, betriebliche Informationssysteme, Kommunikation, Unternehmensberatung'
+    'V62000-':
+       desc: 'Allgemeine Betriebswirtschaftslehre: Lexika, Enzyklopädien, Handbücher'
+    'V62500-':
+       desc: 'Einführungen, Grundrisse'
+    'V63200-':
+       desc: 'Geschichte der Betriebswirtschaft'
+    'V63500-':
+       desc: 'Unternehmensform, Unternehmensverfassung'
+    'V63800-':
+       desc: 'Organisation'
+    'V64500-':
+       desc: 'Unternehmensplanung (Allgemein)'
+    'V64800-':
+       desc: 'Unternehmensplanung (Planungsrechnung)'
+    'V65400-':
+       desc: 'Unternehmensführung (Allgemein)'
+    'V66000-':
+       desc: 'Unternehmensführung (Spezielle Führungsmethoden)'
+    'V66100-':
+       desc: 'Unternehmensführung (Spezielle Führungsaufgaben)'
+    'V66200-':
+       desc: 'Unternehmensführung (Interne Unternehmenskontrolle, interne Revision)'
+    'V66800-':
+       desc: 'Finanzierung, Investition (Allgemein)'
+    'V67300-':
+       desc: 'Finanzierung, Investition (Kapitalbeschaffung)'
+    'V67400-':
+       desc: 'Finanzierung, Investition (Unternehmensbewertung)'
+    'V67500-':
+       desc: 'Finanzierung, Investition (Investitionsplanung, -rechnung)'
+    'V68000-':
+       desc: 'Betriebliches Rechnungswesen (Lexika, Enzyklopädien, Handbücher)'
+    'V68200-':
+       desc: 'Betriebliches Rechnungswesen (Einführungen, Grundrisse)'
+    'V68500-':
+       desc: 'Buchhaltung, Finanzbuchhaltung'
+    'V69000-':
+       desc: 'Bilanz, Erfolgsrechnung'
+    'V69500-':
+       desc: 'Bilanzanalyse'
+    'V69600-':
+       desc: 'Revisions- und Treuhandwesen'
+    'V69800-':
+       desc: 'Inventur'
+    'V70000-':
+       desc: 'Kostenrechnung (Allgemein)'
+    'V70600-':
+       desc: 'Betriebsabrechnung, kurzfristige Erfolgsrechnung'
+    'V70700-':
+       desc: 'Kalkulation, Betriebsbuchhaltung'
+    'V70800-':
+       desc: 'Wertanalyse'
+    'V71200-':
+       desc: 'Betriebsstatistik, Betriebsanalyse und Betriebsvergleich'
+    'V71500-':
+       desc: 'Wirtschaftsrechnen, Finanzmathematik'
+    'V72000-':
+       desc: 'Produktions- und Kostentheorie'
+    'V72400-':
+       desc: 'Beschaffung, Lagerung, Materialwirtschaft'
+    'V73000-':
+       desc: 'Absatz (Allgemein, Marketing)'
+    'V73800-':
+       desc: 'Markt- und Absatzforschung'
+    'V74000-':
+       desc: 'Produkt- und Preispolitik'
+    'V74200-':
+       desc: 'Werbung, Public Relations'
+    'V74600-':
+       desc: 'Neuere Entwicklungen des Marketings'
+    'V75000-':
+       desc: 'Personalplanung, Personalpolitik'
+    'V75400-':
+       desc: 'Personalführung'
+    'V75800-':
+       desc: 'Betriebspsychologie'
+    'V75900-':
+       desc: 'Lohn, Gehalt'
+    'V76000-':
+       desc: 'Betriebliche Sozialleistung, Arbeitsschutz'
+    'V76600-':
+       desc: 'Arbeitswissenschaft'
+    'V78000-':
+       desc: 'Besondere Betriebswirtschaftslehre: Industriebetriebslehrer (Allgemein)'
+    'V78300-':
+       desc: 'Industriebetriebslehrer (Forschung, Entwicklung)'
+    'V78400-':
+       desc: 'Fertigungsplanung, Fertigungsentwicklung'
+    'V78800-':
+       desc: 'Rationalisierung, Fertigungsentwicklung'
+    'V79000-':
+       desc: 'Qualitätsverbesserung'
+    'V79100-':
+       desc: 'Spezielle Industrie- und Gewerbezweige'
+    'V80000-':
+       desc: 'Handelsbetriebslehre (Allgemein)'
+    'V80300-':
+       desc: 'Handelsbetriebslehre (Binnenhandel)'
+    'V80400-':
+       desc: 'Handelsbetriebslehre (Außenhandel)'
+    'V80600-':
+       desc: 'Handelsbetriebslehre (Warenkunde)'
+    'V80800-':
+       desc: 'Electronic Commerce'
+    'V81000-':
+       desc: 'Medienmanagement (Lexika, Handbücher, Einführungen, Grundrisse)'
+    'V81100-':
+       desc: 'Medienunternehmen'
+    'V81200-':
+       desc: 'Mediennutzung im unternehmerischen Umfeld'
+    'V81400-':
+       desc: 'Bankbetriebslehre (Lexika, Enzyklopädien, Handbücher)'
+    'V81600-':
+       desc: 'Bankbetriebslehre (Einführungen, Grundrisse)'
+    'V82000-':
+       desc: 'Bankgeschäfte (Allgemein)'
+    'V82200-':
+       desc: 'Kreditgeschäft'
+    'V82300-':
+       desc: 'Effektengeschäft, Kapitalanlage'
+    'V82700-':
+       desc: 'Auslandsgeschäft'
+    'V83500-':
+       desc: 'Betriebslehrer öffentlicher Betriebe'
+    'V83800-':
+       desc: 'Dienstleistungsmanagement'
+    'V84000-':
+       desc: 'Informatik, Datenverarbeitung (Einführung, Grundrisse)'
+    'V87000-':
+       desc: 'Datenverarbeitung im Betrieb'
+    'V88000-':
+       desc: 'Bürowirtschaft'
+    'V90000-':
+       desc: 'Wirtschafts- und Sozialpädagogik: Lexika, Handbücher'
+    'V90200-':
+       desc: 'Einführungen, Grundrisse'
+    'V90500-':
+       desc: 'Berufskunde, Berufsberatung'
+    'V90800-':
+       desc: 'Fachschulwesen, Lehrlingsausbildung, Berufsbildung'
+    'V93000-':
+       desc: 'Soziologie: Lexika, Handbücher'
+    'V93300-':
+       desc: 'Einführungen, Grundrisse'
+    'V94000-':
+       desc: 'Geschichte der Soziologie (Allgemeine Darstellungen)'
+    'V94300-':
+       desc: 'Geschichte der Soziologie (Originalwerke älterer Soziologen)'
+    'V94700-':
+       desc: 'Weltanschaulich geprägte Soziologie'
+    'V94800-':
+       desc: 'Methoden der Soziologie'
+    'V95400-':
+       desc: 'Bevölkerung allgemein. Soziale Gruppen. Familie. Geschlechterforschung'
+    'V95500-':
+       desc: 'Bevölkerung und Gruppen in einzelnen Ländern'
+    'V95600-':
+       desc: 'Politische Soziologie'
+    'V95700-':
+       desc: 'Rechtssoziologie'
+    'V95800-':
+       desc: 'Wirtschafts- und Industriesoziologie'
+    'V96100-':
+       desc: 'Mediensoziologie'
+    'V96200-':
+       desc: 'Freizeitsoziologie'
+    'V96300-':
+       desc: 'Religionssoziologie'
+    'V96400-':
+       desc: 'Kultursoziologie'
 'W':
   desc: 'Wörterbücher'
+  sub:
+    'W1-':
+       desc: 'Wörterbücher

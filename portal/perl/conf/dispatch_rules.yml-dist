@@ -468,6 +468,20 @@
      - html
    runmode: 'show_record'
 - # Resource: browse_loc
+   module: 'OpenBib::Handler::PSGI::Browse::LS'
+   rule: '/portal/:view/browse/ls[get]'
+   representations:
+     - none
+     - html
+   runmode: 'show_collection'
+- # Resource: browse_loc
+   module: 'OpenBib::Handler::PSGI::Browse::LS'
+   rule: '/portal/:view/browse/ls/id/:lsid[get]'
+   representations:
+     - none
+     - html
+   runmode: 'show_record'
+- # Resource: browse_loc
    module: 'OpenBib::Handler::PSGI::Browse::BK'
    rule: '/portal/:view/browse/bks[get]'
    representations:

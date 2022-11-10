@@ -37,12 +37,14 @@
 <h3 class="mb-4">[% user.get_topic({ id = topicid }).name %]</h3>
 
 [% IF usblbs_topics.size > 0 %]
-<h4>[% msg.maketext("Medien in der Lehrbuchsammlung") %]</h4>
+<h4>[% msg.maketext("Medien in der Lehrbuchsammlung") %] </h4>
 
 <ul class="list-group mb-3">
 [% FOREACH classification IN usblbs_topics.sort %]
 <li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('browse_loc') %]/lbs/id/[% classification %]">[% usblbs.${classification}.desc %]</a></li>
 [% END %]
+
+<li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('browse_loc') %]/lbs.html?l=[% lang %]">alle Fachgebiete</a></li>
 </ul>
 [% END %]
 
@@ -53,6 +55,7 @@
 [% FOREACH classification IN usbls_topics.sort %]
 <li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('browse_loc') %]/ls/id/[% classification %]">[% usbls.${classification}.desc %]</a></li>
 [% END %]
+<li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('browse_loc') %]/ls.html?l=[% lang %]">alle Fachgebiete</a></li>
 </ul>
 [% END %]
 
@@ -64,6 +67,7 @@
 [% FOREACH classification IN user.get_classifications_of_topic({ type => 'bk', topicid => topicid}) %]
 <li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('browse_loc') %]/bks/id/[% classification %]">[% bks.${classification} %]</a></li>
 [% END %]
+<li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('browse_loc') %]/bks.html?l=[% lang %]">alle Fachgebiete</a></li>
 </ul>
 
 <div class="alert alert-info">[% msg.maketext("Hinweis: Hier finden Sie nur die Titel, die nach einer Bibliothekssystematik klassifiziert wurden. Recherchieren Sie mit Suchbegriffen, um alle relevanten Titel zu finden!") %]
@@ -90,6 +94,7 @@
 <li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% searchprefix %]=[% searchterm %]">[% topic.desc %]</a> ([% msg.maketext("[_1] Zeitschriften",topic.count) %])</li>
 [%   END %]
 [% END %]
+<li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/ezb/[% config.get('classifications_loc') %].html?l=[% lang %]">alle Fachgebiete</a></li>
 </ul>
 
 <p />
@@ -116,8 +121,8 @@
 <li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=dbis;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% searchprefix %]=[% searchterm %]">[% topic.desc %]</a> ([% msg.maketext("[_1] Datenbanken",topic.count) %])</li>
 [%   END %]
 [% END %]
+<li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/[% config.get('classifications_loc') %].html?l=[% lang %]">alle Fachgebiete</a></li>
 </ul>
-
 <p />
 [% END %]
 

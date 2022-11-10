@@ -19,8 +19,12 @@ while (<>){
 	foreach my $item_ref (@{$index_ref->{'record'}{'X0014'}}){
 	    my $signatur = $item_ref->{content};
 
-	    if ($signatur =~m{^LS/([A-Za-z]+)(\d+?)$}){ 
+	    if ($signatur =~m{^LS/([A-Za-z]+)(\d+)$}){ 
 		$signatur = sprintf "LS/%s%06d",$1,$2;
+		push @signaturen, $signatur;
+	    }
+	    elsif ($signatur =~m{^LS/([A-Za-z]+)(\d+)(.+)$}){ 
+		$signatur = sprintf "LS/%s%06d%s",$1,$2,$3;
 		push @signaturen, $signatur;
 	    }
 	}

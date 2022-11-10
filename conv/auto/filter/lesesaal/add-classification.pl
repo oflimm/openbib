@@ -40,7 +40,7 @@ while (<HOLDING>){
 
     next unless ($titleid && $signatur);
 
-    if ($signatur =~m{LS/([A-Za-z]+)(\d+)$}){
+    if ($signatur =~m{LS/([A-Za-z]+)(\d+)}){
 	my $base   = $1;
 	my $number = $2;
 

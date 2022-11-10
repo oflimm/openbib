@@ -34,6 +34,8 @@
   
 %]
 
+<h3 class="mb-4">[% user.get_topic({ id = topicid }).name %]</h3>
+
 [% IF usblbs_topics.size > 0 %]
 <h4>[% msg.maketext("Medien in der Lehrbuchsammlung") %]</h4>
 

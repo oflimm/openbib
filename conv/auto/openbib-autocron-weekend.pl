@@ -84,6 +84,7 @@ my $denylist_ref = {
     'econbiz' => 1,
     'edz' => 1,
     'gentzdigital' => 1,
+    'gentzbriefe' => 1,
     'inst001' => 1,
     'inst006' => 1,
     'inst006master' => 1,
@@ -559,7 +560,7 @@ sub threadC {
     
     autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['alekiddr','digitalis','schatzbehalter'] });
 
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['gentzdigital'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['gentzdigital','gentzbriefe'] });
 
     system("$config->{'base_dir'}/bin/gen_metrics.pl --database=gentzdigital --type=5 --num=100");
         

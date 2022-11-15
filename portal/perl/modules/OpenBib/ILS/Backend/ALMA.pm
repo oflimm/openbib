@@ -34,7 +34,7 @@ use base qw(OpenBib::ILS);
 
 use Cache::Memcached::Fast;
 use Encode qw(decode_utf8 encode_utf8);
-use HTTP::Request::Common;
+use HTTP::Request;
 use JSON::XS qw/decode_json/;
 use Log::Log4perl qw(get_logger :levels);
 use LWP::UserAgent;
@@ -51,6 +51,40 @@ use OpenBib::Config::CirculationInfoTable;
 ######################################################################
 # Authentication
 ######################################################################
+
+sub new {
+    my ($class,$arg_ref) = @_;
+
+    # Set defaults
+    my $id        = exists $arg_ref->{id}
+        ? $arg_ref->{id}           : undef;
+
+    my $config    = exists $arg_ref->{config}
+        ? $arg_ref->{config}       : OpenBib::Config->new;
+
+    my $database  = exists $arg_ref->{database}
+        ? $arg_ref->{database}     : undef;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $ils_ref = $config->get_ils_of_database($database);
+
+    my $self = { };
+
+    bless ($self, $class);
+
+    my $ua = LWP::UserAgent->new();
+    $ua->agent('USB Koeln/1.0');
+    $ua->timeout(30);
+
+    $self->{client}   = $ua;    
+    $self->{database} = $database;    
+    $self->{ils}      = $ils_ref;
+    $self->{_config}  = $config;
+    
+    return $self;
+}
 
 sub authenticate {
     my ($self,$arg_ref) = @_;
@@ -189,11 +223,12 @@ sub authenticate {
     $userdn = $entry->dn();
     
     # Essential Data
-    $account_ref->{username} = $entry->get_value('USBportalName');
-    $account_ref->{fullname} = $entry->get_value('cn');
-    $account_ref->{surname}  = $entry->get_value('sn');
-    $account_ref->{forename} = $entry->get_value('givenName');
-    $account_ref->{email}    = $entry->get_value('USBEmailAdr');
+    $account_ref->{username}    = $entry->get_value('USBportalName');
+    $account_ref->{fullname}    = $entry->get_value('cn');
+    $account_ref->{surname}     = $entry->get_value('sn');
+    $account_ref->{forename}    = $entry->get_value('givenName');
+    $account_ref->{email}       = $entry->get_value('USBEmailAdr');
+    $account_ref->{alma_id}     = $entry->get_value('uid');    
     
     if ($logger->is_debug){
 	$logger->debug(YAML::Dump($entry));
@@ -221,11 +256,12 @@ sub authenticate {
 	$success = 1;
 	
 	# Store essential data
-	$response_ref->{userinfo}{username} = $account_ref->{username};    
-	$response_ref->{userinfo}{fullname} = $account_ref->{fullname};
-	$response_ref->{userinfo}{surname}  = $account_ref->{surname};
-	$response_ref->{userinfo}{forename} = $account_ref->{forename};
-	$response_ref->{userinfo}{email}    = $account_ref->{email};
+	$response_ref->{userinfo}{username}    = $account_ref->{username};    
+	$response_ref->{userinfo}{fullname}    = $account_ref->{fullname};
+	$response_ref->{userinfo}{surname}     = $account_ref->{surname};
+	$response_ref->{userinfo}{forename}    = $account_ref->{forename};
+	$response_ref->{userinfo}{email}       = $account_ref->{email};
+	$response_ref->{userinfo}{external_id} = $account_ref->{alma_id};	
 	
     }
         
@@ -583,11 +619,222 @@ sub renew_single_loan {
 
 sub get_mediastatus {
     my ($self,$titleid) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config    = $self->get_config;
+    my $database  = $self->get_database;
+    my $ua        = $self->get_client;
     
     my $response_ref = {};
     
-    # todo
+    unless ($database && $titleid){
+	$response_ref = {
+	    timestamp   => $self->get_timestamp,
+	    circulation => [],
+	    error       => "missing parameters",	    
+	};
+	
+	return $response_ref;
+    }
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+    my $locinfotable  = OpenBib::Config::LocationInfoTable->new;
 
+    my $items_ref = [];
+
+    # Ausleihinformationen der Exemplare
+    {
+	my $json_result_ref = {};
+
+	if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
+	    
+	    $logger->debug("Getting Circulation info via ALMA API");
+	    
+	    my $api_key = $config->get('alma')->{'api_key'};
+	    
+	    my $url     = $config->get('alma')->{'api_baseurl'}."/bibs/$titleid/holdings/ALL/items?limit=100&offset=0&expand=due_date&view=brief&apikey=$api_key&order_by=library,location,enum_a,enum_b&direction=asc";
+	    
+	    if ($logger->is_debug()){
+		$logger->debug("Request URL: $url");
+	    }
+	    
+	    my $request = HTTP::Request->new('GET' => $url);
+	    $request->header('accept' => 'application/json');
+	    
+	    my $response = $ua->request($request);
+	    
+	    if ($logger->is_debug){
+		$logger->debug("Response: ".$response->content);
+	    }
+	    
+	    if (!$response->is_success && $response->code != 400) {
+		$logger->info($response->code . ' - ' . $response->message);
+		return;
+	    }
+	    
+	    
+	    eval {
+		$json_result_ref = decode_json $response->content;
+	    };
+	    
+	    if ($@){
+		$logger->error('Decoding error: '.$@);
+	    }
+	    
+	    
+	}
+	
+	# Allgemeine Fehler
+	if (defined $json_result_ref->{'errorsExist'} && $json_result_ref->{'errorsExist'} eq "true" ){
+	    $response_ref = {
+		"code" => 400,
+		    "error" => "error",
+		    "error_description" => $json_result_ref->{'errorList'}{'error'}[0]{'errorMessage'},
+	    };
+	    
+	    if ($logger->is_debug){
+		$response_ref->{debug} = $json_result_ref;
+	    }
+	    
+	    return $response_ref;
+	}
+	
+	if (defined $json_result_ref->{'item'}) {
+	    
+	    foreach my $circ_ref (@{$json_result_ref->{'item'}}){
+		
+		$logger->debug(YAML::Dump($circ_ref));
+		
+		# Umwandeln
+		my $item_ref = {};
+		
+		if ($config->get('debug_ils')){
+		    $item_ref->{debug} = $json_result_ref
+		}
+
+		# Spezialanpassungen USB Koeln
+
+		# Ende Spezialanpassungen
+		
+		$item_ref->{'label'}           = $circ_ref->{'item_data'}{'alternative_call_number'}; # Signatur
+		$item_ref->{'barcode'}         = $circ_ref->{'item_data'}{'barcode'}; # Mediennummer Neu fuer Alma
+		$item_ref->{'id'}              = $circ_ref->{'item_data'}{'pid'}; # itemid
+		$item_ref->{'holding_id'}      = $circ_ref->{'holding_data'}{'holding_id'}; # holding Neu fuer Alma aber notwendig?
+		$item_ref->{'remark'}          = $circ_ref->{'item_data'}{'public_note'};
+		$item_ref->{'boundcollection'} = ""; # In Alma gibt es keine Bindeeinheiten
+
+		$item_ref->{'full_location'} = $circ_ref->{'item_data'}{'library'}{'desc'}." / ".$circ_ref->{'item_data'}{'location'}{'desc'};
+		
+		$item_ref->{'department'} = {
+		    content => $circ_ref->{'item_data'}{'library'}{'desc'},
+		    id      => $circ_ref->{'item_data'}{'library'}{'value'},
+		};
+		
+		$item_ref->{'storage'} = {
+		    content => $circ_ref->{'item_data'}{'location'}{'desc'},
+		    id      => $circ_ref->{'item_data'}{'location'}{'value'},
+		};
+
+		my $available_ref   = [];
+		my $unavailable_ref = [];
+
+		# See Configuration->Fulfillment->Physical Fulfillment->Item Policy (here: from sandbox for testing)
+		my $policy = $circ_ref->{'item_data'}{'policy'}{'value'}; # Ausleihkonditionen fuer dieses Item
+		
+		# Praesenzbestand
+		if ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && $policy == 8 ){ # 8 = NotForLoan
+		    push @$available_ref, {
+			service => 'presence',
+			content => "Präsenzbestand",
+		    };
+		}
+		# Bestell-/ausleihbar in den Lesesaal
+		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && $policy == 14 ){ # 14 = Reading Room
+		    push @$available_ref, {
+			service => 'order',
+			content => $circ_ref->{LeihstatusText},
+			limitation => "bestellbar (Nutzung nur im Lesesaal)",
+			type => 'Stationary',
+		    };
+		}
+		# Bestellbar
+		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1){ # todo
+		    push @$available_ref, {
+			service => 'order',
+			content => "bestellbar",
+		    };
+		}
+		# Ausleihbar vor Ort
+		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1){ # todo
+		    push @$available_ref, {
+			service => 'loan',
+			content => "ausleihbar",
+		    };
+		}
+		# Entliehen mit Vormerkmoeglichkeit
+		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 0){ # todo
+		    my $this_unavailable_ref = {
+			service => 'loan',
+			content => "entliehen",
+			expected => $circ_ref->{'item_data'}{'due_date'},
+		    };
+		    
+		    if ($circ_ref->{VormerkAnzahl} >= 0){
+			$this_unavailable_ref->{queue} = $circ_ref->{VormerkAnzahl} ;
+		    }
+		    
+		    push @$unavailable_ref, $this_unavailable_ref;
+		    
+		}
+		# Entliehen ohne Vormerkmoeglichkeit
+		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} =~m/^(LSEntliehenNoVM)$/){
+		    my $this_unavailable_ref = {
+			service => 'loan',
+			content => $circ_ref->{LeihstatusText},
+			expected => $circ_ref->{RueckgabeDatum},
+		    };
+
+		    # no queue = no reservation!
+		    push @$unavailable_ref, $this_unavailable_ref;
+		    
+		}
+		# Vermisst
+		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} =~m/^(LSVermisst)$/){
+		    my $this_unavailable_ref = {
+			service => 'loan',
+			content => $circ_ref->{LeihstatusText},
+			#			    expected => 'lost',
+		    };
+		    
+		    push @$unavailable_ref, $this_unavailable_ref;
+		    
+		}
+		
+		if (@$available_ref){
+		    $item_ref->{available} = $available_ref;
+		}
+		
+		if (@$unavailable_ref){
+		    $item_ref->{unavailable} = $unavailable_ref;
+		}
+		
+		push @$items_ref, $item_ref;
+	    }
+	    
+	}	    
+    }
+    
+    $response_ref = {
+	id          => $titleid,
+	database    => $database,
+	items       => $items_ref,
+	timestamp   => $self->get_timestamp,
+    };
+    
+    $logger->debug("Circ: ".YAML::Dump($response_ref));
+            
     return $response_ref;
 }
 
@@ -621,6 +868,11 @@ sub check_reservation {
     return $response_ref;
 }
 
+sub get_client {
+    my ($self) = @_;
+
+    return $self->{client};
+}
 
 1;
 __END__

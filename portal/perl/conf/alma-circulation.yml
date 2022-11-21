@@ -1,0 +1,23 @@
+# Beispiel: bestellbar MSSID: 999784200503
+'MAIN':                  # library code = department_id (ehemals Zweigstellen-Code)
+  'Stacks':              # location = storage (ehemals Abteilungsbeschreibung)
+    'order': 1           # order = bestellbar, wenn am Ort
+    'loan': 0            # loan  = generell vor Ort Ausleihbar, wenn am Ort 
+    'reservation': 1     # reservation = vormerkbar, wenn nicht am Ort
+    'pickup_locations':  # Reihenfolge der moeglichen Ausgabeorte mit ID und Beschreibungstext fuer die Ausgabe
+      - id: 1
+        desc: 'Ausleihtheke'
+      - id: 2
+        desc: 'Abholregal'
+# Beispiel: ausleihbar (vor Ort) MSSID: 999784200503
+'BIO':
+  'Science Stacks':      # location = storage (ehemals Abteilungsbeschreibung)
+    'order': 0           # order = bestellbar, wenn am Ort
+    'loan': 1            # loan  = generell vor Ort Ausleihbar, wenn am Ort 
+    'reservation': 0     # reservation = vormerkbar, wenn nicht am Ort
+# Beispiel: einsehbar (Praesenzbestand) MSSID: 99230194900650
+'DEUTZ':
+  'THK Präsenzbestand':  # location = storage (ehemals Abteilungsbeschreibung)
+    'order': 0           # order = bestellbar, wenn am Ort
+    'loan': 0            # loan  = generell vor Ort Ausleihbar, wenn am Ort 
+    'reservation': 0     # reservation = vormerkbar, wenn nicht am Ort

@@ -843,6 +843,7 @@ yearslider_to.addEventListener('change', function () {
 
         <ul class="list-group">
 [%             FOREACH termitem IN facets.year ;
+                  NEXT IF termitem.0 != 'ohne Jahr';
                   LAST IF loop.count > 25 ;
  %]
 [% IF facets.year.size > 5 && loop.count == 5 %]

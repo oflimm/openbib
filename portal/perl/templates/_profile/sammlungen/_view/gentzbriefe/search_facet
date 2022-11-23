@@ -844,21 +844,12 @@ yearslider_to.addEventListener('change', function () {
         <ul class="list-group">
 [%             FOREACH termitem IN facets.year ;
                   NEXT IF termitem.0 != 'ohne Jahr';
-                  LAST IF loop.count > 25 ;
- %]
-[% IF facets.year.size > 5 && loop.count == 5 %]
-<span id="dd_year_[% database %]_toggle"></span>
-<div id="dd_year_[% database %]">
-[% END %]
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').yearstring.prefix;
     filterstring  = "${searchprefix}:${searchterm}";
 -%]
 <li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>  <span class="badge badge-pill badge-secondary ml-auto">[% termitem.1 %]</span></li>
-[%             END %]
-[% IF facets.year.size > 5 %]
-</div>
 [% END %]
 </ul>
 </div><!-- group-year -->

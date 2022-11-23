@@ -667,13 +667,14 @@ while (my $jsonline = <IN>){
 		content => 'analog',
 	    }
 	}
-	if ($is_inhalt_ohne){
-	    push @{$title_ref->{fields}{'0517'}}, {
-		mult     => 1,
-		subfield => '',
-		content => 'untranskribiert',
-	    }
-	}
+	# Mail vom 28.10.22 untranskribiert entfernen
+	# if ($is_inhalt_ohne){
+	#     push @{$title_ref->{fields}{'0517'}}, {
+	# 	mult     => 1,
+	# 	subfield => '',
+	# 	content => 'untranskribiert',
+	#     }
+	# }
 
 	
     }

@@ -842,9 +842,9 @@ yearslider_to.addEventListener('change', function () {
 [% END %] 
 
         <ul class="list-group">
-[%             FOREACH termitem IN facets.year ;
+[%-             FOREACH termitem IN facets.year ;
                   NEXT IF termitem.0 != 'ohne Jahr';
-[%-
+
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').yearstring.prefix;
     filterstring  = "${searchprefix}:${searchterm}";

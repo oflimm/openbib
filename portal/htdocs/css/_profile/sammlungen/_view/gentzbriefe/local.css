@@ -93,7 +93,7 @@
 	color: #253746;
     }
 
-    a.exturl {
+    a.exturl, a.inturl {
 	text-decoration: underline;	
     }
     

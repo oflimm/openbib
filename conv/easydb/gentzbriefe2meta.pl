@@ -755,7 +755,8 @@ while (my $jsonline = <IN>){
 		}
 		
 	    }
-	    elsif (defined $item_ref->{contentdm_id}){
+	    
+	    if (defined $item_ref->{contentdm_id}){
 		$is_sammlung_herterich = 1;
 	    }
 
@@ -766,14 +767,6 @@ while (my $jsonline = <IN>){
 	    }
 	    
 	};
-
-	if ($is_sammlung_herterich){
-	    push @{$title_ref->{fields}{'4700'}}, {
-		mult     => 1,
-		subfield => '',
-		content => 'Daten erhoben am Original',
-	    }
-	}	
     }
     
     # Auswertung Kategorie 'Druckpublikationen'
@@ -781,6 +774,7 @@ while (my $jsonline = <IN>){
     my $is_druck_mehrfach = 0;
     my $is_druck_archiv = 0;
     my $is_druckpublikation = 0;
+    my $is_originalhandschrift = 0;
     
     {
 	
@@ -788,6 +782,12 @@ while (my $jsonline = <IN>){
 	    if (defined $item_ref->{based_on}){
 		if ($item_ref->{based_on}{'de-DE'} eq "Druckpublikation"){
 		    $is_druckpublikation = 1;
+		}
+	    }
+
+	    if (defined $item_ref->{based_on}){
+		if ($item_ref->{based_on}{'de-DE'} eq "Original"){
+		    $is_originalhandschrift = 1;
 		}
 	    }
 	    
@@ -813,7 +813,15 @@ while (my $jsonline = <IN>){
 		content => 'Daten erhoben am Druck',
 	    }
 	}
-	
+
+	if ($is_originalhandschrift){
+	    push @{$title_ref->{fields}{'4700'}}, {
+		mult     => 1,
+		subfield => '',
+		content => 'Daten erhoben am Original',
+	    }
+	}	
+
     }
 
     # Auswertung Kategorie Ueberlieferung

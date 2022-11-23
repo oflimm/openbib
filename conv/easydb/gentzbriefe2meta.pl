@@ -632,7 +632,8 @@ while (my $jsonline = <IN>){
 		}
 	    };
 	}
-	elsif (defined $item_ref->{'_nested:gentz_letter__transcriptions'} && @{$item_ref->{'_nested:gentz_letter__transcriptions'}}){
+	
+	if (defined $item_ref->{'_nested:gentz_letter__transcriptions'} && @{$item_ref->{'_nested:gentz_letter__transcriptions'}}){
 	    foreach my $subitem_ref (@{$item_ref->{'_nested:gentz_letter__transcriptions'}}){
 		if ($subitem_ref->{transscription_fulltext}){
 		    $is_inhalt_volltext = 1;

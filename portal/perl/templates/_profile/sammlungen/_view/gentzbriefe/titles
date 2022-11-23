@@ -18,14 +18,6 @@
              desc = msg.maketext('Start')
 	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
 	  },
-          {
-             desc = msg.maketext('Kataloge')
-	     url  = "${path_prefix}/${config.get('databases_loc')}.html?l=${lang}"
-	  },
-          {
-             desc = dbinfo.get('dbnames').${database}.short
-	     url  = "${path_prefix}/${config.get('databases_loc')}/id/${database}.html?l=${lang}"
-	  },
 	  {
 	     desc = msg.maketext('Alle Titel')
 	     url  = '#'

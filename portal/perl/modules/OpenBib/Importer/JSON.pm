@@ -224,7 +224,7 @@ sub process {
             if ($id && $field && defined $item_ref->{content} && length($item_ref->{content}) > 0) {
                 $item_ref->{content} = $self->cleanup_content($item_ref->{content});
                 # Abhaengige Feldspezifische Saetze erstellen und schreiben
-                push @{$self->{_columns_fields}}, [$self->{serialid},$id,$field,$item_ref->{mult},$item_ref->{subfield},$item_ref->{content}];
+                push @{$self->{_columns_fields}}, [$self->{serialid},$id,$field,$item_ref->{mult},$item_ref->{subfield},$item_ref->{content}] if (defined $item_ref->{content} && length($item_ref->{content}) > 0);
                 #push @{$self->{_columns_fields}}, ['',$id,$field,$item_ref->{mult},$item_ref->{subfield},$item_ref->{content}];
                 $self->{serialid}++;
             }

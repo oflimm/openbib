@@ -5823,9 +5823,10 @@ sub set_private_info {
         }
     )->update(
         {
-            nachname   => $userinfo_ref->{'surname'},
-            vorname    => $userinfo_ref->{'forename'},
-	    email      => $userinfo_ref->{'email'},
+            nachname     => $userinfo_ref->{'surname'},
+            vorname      => $userinfo_ref->{'forename'},
+	    email        => $userinfo_ref->{'email'},
+	    external_id  => $userinfo_ref->{'external_id'},
             # strasse    => '',
             # ort        => '',
             # plz        => '',
@@ -5861,6 +5862,7 @@ sub get_info {
 
     if ($userinfo){
         $userinfo_ref->{'id'}         = $userinfo->id;
+        $userinfo_ref->{'external_id'}= $userinfo->external_id;	
         $userinfo_ref->{'nachname'}   = $userinfo->nachname;
         $userinfo_ref->{'vorname'}    = $userinfo->vorname;
         $userinfo_ref->{'strasse'}    = $userinfo->strasse;

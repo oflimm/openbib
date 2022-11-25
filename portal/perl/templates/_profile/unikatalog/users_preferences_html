@@ -144,6 +144,7 @@
 
 <p/>
 
+[% IF 0 == 1 # Begin livesearch/autocompletion %]
 <div class="card">
 <div class="card-header">[% msg.maketext("Automatische Vorschl&auml;ge zur Suchanfrage") %]</div>
 <div class="card-body">
@@ -260,6 +261,7 @@
   </div>
 
 <p/>
+[% END # End livesearch/autocompletion %]
 
 <div class="card">
 <div class="card-header">[% msg.maketext("BibSonomy") %]</div>

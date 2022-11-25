@@ -27,8 +27,6 @@
 [%- PROCESS common/subtemplate name="error_rdf" -%]
 [%- ELSIF representation == 'json' -%]
 [%- PROCESS common/subtemplate name="error_json" -%]
-[%- ELSIF representation == 'rss' -%]
-[%- PROCESS common/subtemplate name="error_rss" -%]
 [%- ELSIF representation == 'include' -%]
 [%- PROCESS common/subtemplate name="error_include" -%]
 [%- ELSE -%]

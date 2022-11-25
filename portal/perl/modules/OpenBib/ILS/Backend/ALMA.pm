@@ -2,7 +2,7 @@
 #
 #  OpenBib::ILS::Backend::ALMA
 #
-#  Dieses File ist (C) 2021 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2021- Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -78,10 +78,13 @@ sub new {
     $ua->agent('USB Koeln/1.0');
     $ua->timeout(30);
 
-    $self->{client}   = $ua;    
-    $self->{database} = $database;    
-    $self->{ils}      = $ils_ref;
-    $self->{_config}  = $config;
+    my $circulation_config = $config->load_yaml('/opt/openbib/conf/alma-circulation.yml');
+    
+    $self->{client}       = $ua;    
+    $self->{database}     = $database;    
+    $self->{ils}          = $ils_ref;
+    $self->{_config}      = $config;
+    $self->{_circ_config} = $circulation_config;
     
     return $self;
 }
@@ -560,10 +563,165 @@ sub get_loans {
 sub make_reservation {
     my ($self,$arg_ref) = @_;
 
-    my $response_ref = {};
+    # Set defaults
+    my $username        = exists $arg_ref->{username}  # Nutzername im Bibliothekssystem
+        ? $arg_ref->{username}       : undef;
     
-    # todo
+    my $combinedid      = exists $arg_ref->{holdingid} # Alma: holdingid|item_id
+        ? $arg_ref->{holdingid}      : undef;
 
+    my $library         = exists $arg_ref->{unit}      # Alma: library
+        ? $arg_ref->{unit}           : undef;
+
+    my $pickup          = exists $arg_ref->{pickup_location} # Ausgabeort
+        ? $arg_ref->{pickup_location}       : undef;
+
+    my $mmsid           = exists $arg_ref->{titleid}  # Katkey fuer teilqualifizierte Vormerkung
+        ? $arg_ref->{titleid}           : undef;
+
+    my $type            = exists $arg_ref->{type}     # Typ (voll/teilqualifizierte Vormerkung) by_title/by_holding
+        ? $arg_ref->{type}              : undef;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $database = $self->get_database;
+    my $config   = $self->get_config;
+    my $ua       = $self->get_client;
+
+    my $response_ref = {};
+
+    my ($holdingid,$itemid) = split('|',$combinedid);
+    
+    unless ($username && $library && $mmsid && $pickup >= 0){
+	$response_ref =  {
+	    error => "missing parameter (username: $username - library: $library - mmsid: $mmsid - pickup location: $pickup)",
+	};
+
+	return $response_ref;
+    }
+
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    {
+	my $json_result_ref = {};
+	
+	if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
+	    
+	    $logger->debug("Making reservation via ALMA API");
+
+
+	    my $alma_userid = $self->get_externalid_of_user($username);
+
+	    unless ($alma_userid){
+		$response_ref =  {
+		    error => "No ALMA userid found",
+		};
+		
+		return $response_ref;
+	    }
+	    
+	    my $api_key = $config->get('alma')->{'api_key'};
+	    
+	    my $url     = "";
+
+	    if ($type eq "by_title"){ # Teilqualifizierte Vormerkung
+		$url = $config->get('alma')->{'api_baseurl'}."/bibs/$mmsid/request?apikey=$api_key&user_id=$alma_userid";
+	    }
+	    else {
+		unless ($holdingid && $itemid){
+		    $response_ref =  {
+			error => "missing parameter (username: $username - library: $library - mmsid: $mmsid - pickup location: $pickup)",
+		    };
+		    
+		    return $response_ref;
+		}
+		
+		$url = $config->get('alma')->{'api_baseurl'}."/bibs/$mmsid/holdings/$holdingid/items/$itemid/request?apikey=$api_key&user_id=$alma_userid";
+	    }
+	    
+	    if ($logger->is_debug()){
+		$logger->debug("Request URL: $url");
+	    }
+	    
+	    my $request = HTTP::Request->new('GET' => $url);
+	    $request->header('accept' => 'application/json');
+	    
+	    my $response = $ua->request($request);
+	    
+	    if ($logger->is_debug){
+		$logger->debug("Response: ".$response->content);
+	    }
+	    
+	    if (!$response->is_success && $response->code != 400) {
+		$logger->info($response->code . ' - ' . $response->message);
+		return;
+	    }
+	    
+	    eval {
+		$json_result_ref = decode_json $response->content;
+	    };
+	    
+	    if ($@){
+		$logger->error('Decoding error: '.$@);
+	    }
+	}
+	
+	# Allgemeine Fehler
+	if (defined $json_result_ref->{'errorsExist'} && $json_result_ref->{'errorsExist'} eq "true" ){
+	    $response_ref = {
+		"code" => 400,
+		    "error" => "error",
+		    "error_description" => $json_result_ref->{'errorList'}{'error'}[0]{'errorMessage'},
+	    };
+	    
+	    if ($logger->is_debug){
+		$response_ref->{debug} = $json_result_ref;
+	    }
+	    
+	    return $response_ref;
+	}
+
+	# Todo
+	
+        # Auswertung: Vormerkung nicht moeglich
+	if (1){
+	    $response_ref = {
+		"code" => 403,
+		    "error" => "already lent",
+		    "error_description" => $json_result_ref->{Vormerkung}{NotOK},
+	    };
+	    
+	    if ($logger->is_debug){
+		$response_ref->{debug} = $json_result_ref;
+	    }
+	    
+	    return $response_ref	
+	}
+	# oder: Vormerkung erfolgreich
+	elsif (1){
+	    $response_ref = {
+		"successful" => 1,
+		    "message"   => $json_result_ref->{Vormerkung}{OK},
+		    "author"    => $json_result_ref->{Vormerkung}{Verfasser},
+		    "title"     => $json_result_ref->{Vormerkung}{Titel},
+		    "holdingid" => $json_result_ref->{Vormerkung}{MedienNummer},
+	    };
+	    
+	    if ($logger->is_debug){
+		$response_ref->{debug} = $json_result_ref;
+	    }
+	    
+	    return $response_ref	
+	}
+    }
+
+    $response_ref = {
+	"code" => 400,
+	    "error" => "error",
+	    "error_description" => "General error",
+    };
+    
     return $response_ref;
 }
 
@@ -623,9 +781,10 @@ sub get_mediastatus {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config    = $self->get_config;
-    my $database  = $self->get_database;
-    my $ua        = $self->get_client;
+    my $config      = $self->get_config;
+    my $database    = $self->get_database;
+    my $ua          = $self->get_client;
+    my $circ_config = $self->get_circulation_config;
     
     my $response_ref = {};
     
@@ -718,24 +877,30 @@ sub get_mediastatus {
 
 		# Ende Spezialanpassungen
 		
-		$item_ref->{'label'}           = $circ_ref->{'item_data'}{'alternative_call_number'}; # Signatur
+		$item_ref->{'label'}           = $circ_ref->{'holding_data'}{'call_number'} || $circ_ref->{'item_data'}{'alternative_call_number'} || $circ_ref->{'item_data'}{'barcode'}; # Signatur
 		$item_ref->{'barcode'}         = $circ_ref->{'item_data'}{'barcode'}; # Mediennummer Neu fuer Alma
-		$item_ref->{'id'}              = $circ_ref->{'item_data'}{'pid'}; # itemid
-		$item_ref->{'holding_id'}      = $circ_ref->{'holding_data'}{'holding_id'}; # holding Neu fuer Alma aber notwendig?
-		$item_ref->{'remark'}          = $circ_ref->{'item_data'}{'public_note'};
+		$item_ref->{'id'}              = $circ_ref->{'holding_data'}{'holding_id'}."|".$circ_ref->{'item_data'}{'pid'}; # holdingid|itemid
+		$item_ref->{'remark'}          = $circ_ref->{'item_data'}{'description'};
 		$item_ref->{'boundcollection'} = ""; # In Alma gibt es keine Bindeeinheiten
 
-		$item_ref->{'full_location'} = $circ_ref->{'item_data'}{'library'}{'desc'}." / ".$circ_ref->{'item_data'}{'location'}{'desc'};
+		my $process_type  = $circ_ref->{'item_data'}{'process_type'};
 		
+		my $department    = $circ_ref->{'item_data'}{'library'}{'desc'};
+		my $department_id = $circ_ref->{'item_data'}{'library'}{'value'};
 		$item_ref->{'department'} = {
-		    content => $circ_ref->{'item_data'}{'library'}{'desc'},
-		    id      => $circ_ref->{'item_data'}{'library'}{'value'},
+		    content => $department,
+		    id      => $department_id,
 		};
+
+		my $storage    = $circ_ref->{'item_data'}{'location'}{'desc'};
+		my $storage_id = $circ_ref->{'item_data'}{'location'}{'value'};
 		
 		$item_ref->{'storage'} = {
-		    content => $circ_ref->{'item_data'}{'location'}{'desc'},
-		    id      => $circ_ref->{'item_data'}{'location'}{'value'},
+		    content => $storage,
+		    id      => $storage_id,
 		};
+
+		$item_ref->{'full_location'} = "$department / $storage";
 
 		my $available_ref   = [];
 		my $unavailable_ref = [];
@@ -743,42 +908,59 @@ sub get_mediastatus {
 		# See Configuration->Fulfillment->Physical Fulfillment->Item Policy (here: from sandbox for testing)
 		my $policy = $circ_ref->{'item_data'}{'policy'}{'value'}; # Ausleihkonditionen fuer dieses Item
 		
+		my $this_circ_conf = {};
+
+		if (defined $circ_config->{$department_id} && defined $circ_config->{$department_id}{$storage_id}){
+		    $this_circ_conf = $circ_config->{$department_id}{$storage_id};
+		}
+		else {
+		    $logger->error("Unknown status for department $department_id and storage $storage_id");
+		}
+
+		my $circulation_desk = 0; # Lesesaalausleihe
+
+		if (defined $this_circ_conf->{pickup_locations}){
+		    my ($ref) = grep { $_->{'desc'} =~m/Lesesaal/i } @{$this_circ_conf->{pickup_locations}};
+		    $circulation_desk = 1 if ($ref);
+		}
+		
 		# Praesenzbestand
-		if ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && $policy == 8 ){ # 8 = NotForLoan
+		if ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && !$this_circ_conf->{'loan'} && !$this_circ_conf->{'order'} && !$this_circ_conf->{'reservation'}){ # ggf. auch $policy = 8 = NotForLoan
 		    push @$available_ref, {
 			service => 'presence',
 			content => "Präsenzbestand",
 		    };
 		}
 		# Bestell-/ausleihbar in den Lesesaal
-		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && $policy == 14 ){ # 14 = Reading Room
+		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && $circulation_desk && $this_circ_conf->{'order'} ){ # ggf. auch $policy = 14 = Reading Room
 		    push @$available_ref, {
 			service => 'order',
-			content => $circ_ref->{LeihstatusText},
+			content => "bestellbar in Lesesaal",
 			limitation => "bestellbar (Nutzung nur im Lesesaal)",
 			type => 'Stationary',
 		    };
 		}
 		# Bestellbar
-		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1){ # todo
+		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1  && $this_circ_conf->{'order'}){ 
 		    push @$available_ref, {
 			service => 'order',
 			content => "bestellbar",
 		    };
 		}
 		# Ausleihbar vor Ort
-		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1){ # todo
+		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && $this_circ_conf->{'loan'}){ 
 		    push @$available_ref, {
 			service => 'loan',
 			content => "ausleihbar",
 		    };
 		}
 		# Entliehen mit Vormerkmoeglichkeit
-		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 0){ # todo
+		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 0 && $this_circ_conf->{'reservation'}){ 
 		    my $this_unavailable_ref = {
 			service => 'loan',
 			content => "entliehen",
-			expected => $circ_ref->{'item_data'}{'due_date'},
+			expected => $circ_ref->{'item_data'}{'expected_arrival_date'},
+#			expected => $circ_ref->{'item_data'}{'due_date'},
 		    };
 		    
 		    if ($circ_ref->{VormerkAnzahl} >= 0){
@@ -789,22 +971,23 @@ sub get_mediastatus {
 		    
 		}
 		# Entliehen ohne Vormerkmoeglichkeit
-		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} =~m/^(LSEntliehenNoVM)$/){
+		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 0 && !$this_circ_conf->{'reservation'}){
 		    my $this_unavailable_ref = {
 			service => 'loan',
-			content => $circ_ref->{LeihstatusText},
-			expected => $circ_ref->{RueckgabeDatum},
+			content => "entliehen",
+			expected => $circ_ref->{'item_data'}{'expected_arrival_date'},
+#			expected => $circ_ref->{'item_data'}{'due_date'},
 		    };
 
 		    # no queue = no reservation!
 		    push @$unavailable_ref, $this_unavailable_ref;
 		    
 		}
-		# Vermisst
-		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} =~m/^(LSVermisst)$/){
+		# 
+		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 0 ){
 		    my $this_unavailable_ref = {
 			service => 'loan',
-			content => $circ_ref->{LeihstatusText},
+			content => "entliehen",
 			#			    expected => 'lost',
 		    };
 		    
@@ -838,16 +1021,6 @@ sub get_mediastatus {
     return $response_ref;
 }
 
-sub get_timestamp {
-    my $self = shift;
-
-    my $response_ref = {};
-    
-    # todo
-
-    return $response_ref;
-}
-
 sub check_order {
     my ($self,$arg_ref) = @_;
 
@@ -872,6 +1045,24 @@ sub get_client {
     my ($self) = @_;
 
     return $self->{client};
+}
+
+sub get_circulation_config {
+    my ($self) = @_;
+
+    return $self->{_circ_config};
+}
+
+# Alma-ID fuer den Nuter username bestimmen (Bei Anmeldung am SIS in Feld external_id abgespeichert
+sub get_externalid_of_user {
+    my ($self,$username) = @_;
+
+    my $user = OpenBib::User->new;
+
+    my $externalid = $user->get_info($username)->{external_id};
+
+    
+    return ($externalid)?$externalid:undef;
 }
 
 1;

@@ -2563,7 +2563,7 @@ sub load_yaml {
     $YAML::Syck::ImplicitTyping  = 1;
     $YAML::Syck::ImplicitUnicode = 1;
 
-    my $yaml_ref;
+    my $yaml_ref = {};
 
     eval {
         $yaml_ref = YAML::Syck::LoadFile($filename);
@@ -5070,7 +5070,7 @@ sub get_ils_of_database {
     my $logger = get_logger();
     
     # DBI: "select circdb from databaseinfo where dbname = ?"
-    my $ils = $self->get_schema->resultset('Databaseinfo')->search(
+    my $dbinfo = $self->get_schema->resultset('Databaseinfo')->search(
         {
 	    dbname => $dbname,
         },
@@ -5079,6 +5079,10 @@ sub get_ils_of_database {
 	    result_class => 'DBIx::Class::ResultClass::HashRefInflator', 
 	}
 	)->first;
+
+    my $ils = $dbinfo->{circtype};
+    
+    $logger->debug("Got ILS ".$ils);
     
     return ($ils eq "alma")?'alma':'usbws';
 }

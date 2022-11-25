@@ -2543,18 +2543,6 @@ sub get_mediastatus {
 # Hilfsmethoden
 ######################################################################
 
-sub get_timestamp {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
-    my $timestamp = sprintf ( "%04d-%02d-%02dT%02d:%02d:%02dZ",
-                                   $year+1900,$mon+1,$mday,$hour,$min,$sec);
-    return $timestamp;
-}
-
 # Titelbestellung ueberpruefen => Ausgabeort bestimmen
 sub check_order {
     my ($self,$arg_ref) = @_;
@@ -3379,7 +3367,7 @@ Bestellungen, Vormerkungen und Ausleihen in einer Abfrage aus dem ILS holen
 
 Zusammenfassung des Nutzers aus ILS holen (Zahl Ausleihen, Vormerkunge, etc.)
 
-=item get_address
+=item get_userdata
 
 Adressinformationen des Nutzer aus dem ILS holen
 

@@ -209,6 +209,11 @@ __PACKAGE__->table("userinfo");
   data_type: 'text'
   is_nullable: 1
 
+=head2 external_id
+
+  data_type: 'text'
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -288,6 +293,8 @@ __PACKAGE__->add_columns(
   "login_failure",
   { data_type => "bigint", default_value => 0, is_nullable => 1 },
   "status",
+  { data_type => "text", is_nullable => 1 },
+  "external_id",
   { data_type => "text", is_nullable => 1 },
 );
 
@@ -582,8 +589,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-11-02 08:25:54
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:3CtZcdz8b0B3xvW2S7KF2w
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-11-14 10:29:34
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:sR9hZaDHrcwd7PZZC+s3Ug
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

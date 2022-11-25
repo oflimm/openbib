@@ -330,6 +330,7 @@ CREATE TABLE userinfo (
  authenticatorid BIGINT,
  username        TEXT,
  password        TEXT,
+ external_id     TEXT,
  token           TEXT,
  login_failure   BIGINT default 0,
  status          TEXT,

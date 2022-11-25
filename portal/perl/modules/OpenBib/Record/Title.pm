@@ -1473,6 +1473,9 @@ sub load_circulation {
 #		my $department_url = $mediastatus_ref->{items}[$i]{department}{href};
 
 		my $storage            = $mediastatus_ref->{items}[$i]{storage}{content};
+
+		my $barcode            = $mediastatus_ref->{items}[$i]{barcode};
+		
 		my $boundcollection    = $mediastatus_ref->{items}[$i]{boundcollection};
 		my $remark             = $mediastatus_ref->{items}[$i]{remark}; # z.B. Exemplarfussnote wie "Sachgruppe 22"
 
@@ -1508,6 +1511,7 @@ sub load_circulation {
 		    holdingid           => $holdingid,
 		    boundcollection     => $boundcollection,
 		    remark              => $remark,
+		    barcode             => $barcode,
 		};
 
 		push @$circulation_ref, $this_item_ref;

@@ -54,7 +54,7 @@ sub create_ils {
     my $ils = $config->get_ils_of_database($database);
 
     if ($logger->is_debug){
-        $logger->debug("Factory for database $database");
+        $logger->debug("Factory for database $database. Got ILS $ils");
     }
 
     return new OpenBib::ILS::Backend::USBWS($arg_ref)  if ($ils eq "usbws");

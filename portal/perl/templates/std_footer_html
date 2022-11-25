@@ -20,7 +20,7 @@
       <div class="col-md-6 mx-auto d-none d-lg-block"><b>[% config.get_viewdesc_from_viewname(view) %]</b> [% msg.maketext("ist ein Dienst der Universitäts- und Stadtbibliothek Köln") %]
       </div>
       <div class="col-md-6 mr-0 d-none d-block text-md-right text-sm-left">
-      <a href="https://www.ub.uni-koeln.de/ueber_uns/ansprechpartner/dezentralebibliotheken/index_ger.html" target="_blank">[% msg.maketext("Kontakt") %]</a>&nbsp;&nbsp;::&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('info_loc') %]/impressum.html?l=[% lang %]">[% msg.maketext("Impressum") %]</a>&nbsp;&nbsp;::&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('info_loc') %]/datenschutz.html?l=[% lang %]">Datenschutz</a>
+      <a href="https://www.ub.uni-koeln.de/ueber_uns/ansprechpartner/dezentralebibliotheken/index_ger.html" target="_blank">[% msg.maketext("Kontakt") %]</a>&nbsp;&nbsp;::&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('info_loc') %]/impressum.html?l=[% lang %]">[% msg.maketext("Impressum") %]</a>&nbsp;&nbsp;::&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('info_loc') %]/datenschutz.html?l=[% lang %]">[% msg.maketext("Datenschutz") %]</a>
       </div>
     </div>
 

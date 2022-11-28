@@ -15,7 +15,6 @@
 [% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
 
 <body id="ob-page_top">
-
 <!-- Modals -->
 [%   PROCESS common/subtemplate name="cartitems_html_modals" %]
 
@@ -249,21 +248,16 @@ $(document).ready(function(){
 
 [% IF layout_param.jump_top %]
 <script>
-var jumpToTopElement = document.getElementById("ob-jump_to_top");
-var pageTopElement = document.getElementById("ob-page_top");
-
-pageTopElement.onscroll = function() {scrollToTop()};
-
-function scrollToTop() {
-  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-    jumpToTopElement.style.display = "block";
-    alert("Block");
+$(window).on('scroll',function() {
+  const mainfooter = $('.uzk15__mainfooter');
+  const scrollHeight = window.outerHeight - (3 * window.outerHeight / 4);
+  const scrollBottom = mainfooter.innerHeight();
+  if (window.scrollY > scrollHeight && window.scrollY < (document.body.scrollHeight - window.innerHeight - scrollBottom + 20 ) ) { 
+    $('.ob-jump_top').addClass('active');
   } else {
-    jumpToTopElement.style.display = "none";
-        alert("none");
+    $('.ob-jump_top').removeClass('active')
   }
-      alert("OK");
-}
+})
 </script>
 
 <div class="ob-jump_top" id="ob-jump_to_top">

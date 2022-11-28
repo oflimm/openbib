@@ -1355,6 +1355,7 @@
     }
 
     .ob-jump_top, .ob-jump_top:hover {
+	display: none;
 	position: fixed;
 	bottom: 10px;
 	right: 20px;

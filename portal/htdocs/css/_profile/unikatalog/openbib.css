@@ -2220,5 +2220,22 @@ a.card-link, a.card-link:hover {
     header .navbottom .brandname {
 	padding-top: 9px;
     }
+
+    .ob-jump_top, .ob-jump_top:hover {
+	position: fixed;
+	bottom: 15px;
+	right: 5px;
+	z-index: 1030;
+	width:40px;
+	height:40px;
+	margin-top: -5px;
+	background-color:#253746;
+	color:#fff;
+	border-radius:40px; 
+	padding-top: 7px;
+	text-align:center;
+	box-shadow: 2px 2px 3px #999;
+    }
+
 }
 

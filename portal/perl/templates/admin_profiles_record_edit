@@ -21,7 +21,9 @@
       'active_menu' = 'admin'
       'active_submenu' = 'admin_profiles_record'
       'active_subsubmenu' = 'admin_profiles_record_main'
-      
+
+      'jump_top' = 1
+
       'breadcrumb' = [
           {
              desc = msg.maketext('Start')

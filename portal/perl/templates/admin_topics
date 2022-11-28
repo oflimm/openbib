@@ -24,7 +24,9 @@
 
       'active_menu' = 'admin'
       'active_submenu' = 'admin_topics'
-      
+
+      'jump_top' = 1
+
       'breadcrumb' = [
           {
              desc = msg.maketext('Start')

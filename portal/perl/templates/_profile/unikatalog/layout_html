@@ -14,7 +14,7 @@
 
 [% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
 
-<body>
+<body id="ob-page_top">
 
 <!-- Modals -->
 [%   PROCESS common/subtemplate name="cartitems_html_modals" %]
@@ -246,6 +246,30 @@ $(document).ready(function(){
 
 
 <!-- <script src="/js/uzk15/scripts.jQ.js"></script> -->
+
+[% IF layout_param.jump_top %]
+<script>
+var jumpToTopElement = document.getElementById("ob-jump_to_top");
+var pageTopElement = document.getElementById("ob-page_top");
+
+pageTopElement.onscroll = function() {scrollToTop()};
+
+function scrollToTop() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    jumpToTopElement.style.display = "block";
+    alert("Block");
+  } else {
+    jumpToTopElement.style.display = "none";
+        alert("none");
+  }
+      alert("OK");
+}
+</script>
+
+<div class="ob-jump_top" id="ob-jump_to_top">
+<a href="#ob-page_top" title="[% msg.maketext("Zum Anfang") %]"><i class="fas fa-chevron-up fa-2x"></i></a>
+</div>
+[% END %]
 
 </body>
 </html>

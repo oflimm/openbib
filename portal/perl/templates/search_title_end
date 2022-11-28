@@ -1,4 +1,8 @@
 [%- IF representation == '' || representation == 'html' -%]
+[%-   layout_param = {
+          jump_top = 1
+      }
+-%]
 [%- PROCESS common/subtemplate name="search_title_end_html" -%]
 [%- ELSIF representation == 'rss' -%]
 [%- ELSIF representation == 'include' -%]

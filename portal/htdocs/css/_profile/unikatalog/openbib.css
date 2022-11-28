@@ -1353,6 +1353,30 @@
 	text-align:center;
 	box-shadow: 2px 2px 3px #999;
     }
+
+    .ob-jump_top, .ob-jump_top:hover {
+	position: fixed;
+	bottom: 10px;
+	right: 20px;
+	z-index: 1030;
+	width:60px;
+	height:60px;
+	margin-top: -8px;
+	background-color:#253746;
+	color:#fff;
+	border-radius:50px; 
+	padding-top: 13px;
+	text-align:center;
+	box-shadow: 2px 2px 3px #999;
+    }
+
+    .ob-jump_top.active {
+	display: block;
+    }
+    
+    .ob-jump_top a {
+	color: #fff;
+    }
     
     .ob-fixed_bottom {
 	position: fixed;
@@ -1366,6 +1390,10 @@
 	padding-top: 10px;
 	padding-bottom: 10px;
 	text-align: center; 
+    }
+
+    .pagination {
+	margin-bottom: 20px;
     }
     
     .ob-pagination_firstpage, .ob-pagination_page, .ob-pagination_activepage, .ob-pagination_lastpage {

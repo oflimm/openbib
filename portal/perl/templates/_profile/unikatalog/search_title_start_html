@@ -73,7 +73,7 @@
 
 -%]
 
-  <body>
+  <body id="ob-page_top">
 
 <!-- Modals -->
 [%   PROCESS common/subtemplate name="cartitems_html_modals" %]

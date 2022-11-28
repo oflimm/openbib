@@ -30,6 +30,29 @@
 
 </div><!-- /.container-fluid -->
 
+[% IF layout_param.jump_top %]
+<script>
+var jumpToTopElement = document.getElementById("ob-jump_to_top");
+var pageTopElement = document.getElementById("ob-page_top");
+
+pageTopElement.onscroll = function() {scrollToTop()};
+
+function scrollToTop() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    jumpToTopElement.style.display = "block";
+    alert("Block");
+  } else {
+    jumpToTopElement.style.display = "none";
+        alert("none");
+  }
+      alert("OK");
+}
+</script>
+
+<div class="ob-jump_top" id="ob-jump_to_top">
+<a href="#ob-page_top" title="[% msg.maketext("Zum Anfang") %]"><i class="fas fa-chevron-up fa-2x"></i></a>
+</div>
+[% END %]
   
 </body>
 </html>

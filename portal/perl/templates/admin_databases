@@ -24,6 +24,8 @@
 
       'active_menu' = 'admin'
       'active_submenu' = 'admin_databases'
+
+      'jump_top' = 1
       
       'breadcrumb' = [
           {

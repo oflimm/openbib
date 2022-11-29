@@ -39,7 +39,7 @@
 
 <div class="tab-content pt-3">
 
-<div id="spinner" class="d-flex justify-content-center htmx-indicator spinner-large" style="width: 100vw!important;">
+<div id="spinner" class="d-flex justify-content-center htmx-indicator spinner-large">
 <img src="/images/openbib/uni-siegel-spinner.png" class="uzk-spinner"/>
 </div>
 
@@ -71,11 +71,19 @@
   }
 }
 
-
+/*
 .spinner-large {
 	 position: absolute !important;
          width: 100%;
 	 height: 100%;
+}
+*/
+
+.spinner-large {
+	 position: fixed !important;
+	 top: 0px;
+	 width: 100vw!important;
+	 height:100%;
 }
 
 .spinner-small {

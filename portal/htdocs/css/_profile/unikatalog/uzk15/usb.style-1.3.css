@@ -123,3 +123,15 @@ top: 1em;
 left: 1em;
 }
 
+.uzk15__sozpartner img {
+  border-radius: 7px;
+  border: 1px solid #3E566C;
+  background: white;
+}
+
+.uzk15__sozpartner img:hover{
+  border-radius: 7px;
+  border: 1px solid white;
+  fill: #253746;
+  -webkit-filter: invert(100%) !important;
+}

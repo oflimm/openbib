@@ -13190,10 +13190,15 @@ html[data-useragent*='BB10'] .uzk15__addresslist .uzk15__addressblock {
    -webkit-border-radius: 7px;
    -moz-border-radius: 7px;
    border-radius: 7px;
-   border: 1px solid transparent
+   border: 1px solid transparent;
 }
 
 .uzk15__mainfooter .uzk15__socialmedia a svg {
+   display: block;
+   fill: #fff
+}
+
+.uzk15__mainfooter .uzk15__socialmedia a img {
    display: block;
    fill: #fff
 }
@@ -13208,6 +13213,12 @@ html[data-useragent*='BB10'] .uzk15__addresslist .uzk15__addressblock {
 .uzk15__mainfooter .uzk15__socialmedia a:hover svg,
 .uzk15__mainfooter .uzk15__socialmedia a:focus svg,
 .uzk15__mainfooter .uzk15__socialmedia a:active svg {
+   fill: #253746
+}
+
+.uzk15__mainfooter .uzk15__socialmedia a:hover img,
+.uzk15__mainfooter .uzk15__socialmedia a:focus img,
+.uzk15__mainfooter .uzk15__socialmedia a:active img {
    fill: #253746
 }
 
@@ -13233,6 +13244,19 @@ html[data-useragent*='BB10'] .uzk15__addresslist .uzk15__addressblock {
    width: 1.875em;
    height: 1.875em;
    fill: #fff
+}
+
+.uzk15__mainfooter .uzk15__socialmedia .uzk15__sozpartner {
+   width: 1.875em;
+   height: 1.875em;
+   fill: #fff;
+}
+
+.uzk15__mainfooter .uzk15__socialmedia .uzk15__sozpartner {
+   width: 1.875em;
+   height: 1.875em;
+   color:
+   fill: #fff;
 }
 
 .uzk15__mainfooter .uzk15__socialmedia .uzk15__svg-storify {

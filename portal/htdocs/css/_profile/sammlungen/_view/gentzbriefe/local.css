@@ -1772,7 +1772,10 @@ a.ext {
     color:#990000;
 }
 
-
+.tooltip-inner {
+/*    background-color: #767171; */
+    background-color: #3e566c;
+}
 
 @media only screen and (max-width: 800px) {
      

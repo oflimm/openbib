@@ -278,7 +278,7 @@ $(document).ready(function(){
        </div>
 [% END %]
        <div class="ob-title_availability">
-[% IF availability == "validiert" %]<button class="btn btn-primary ob-availability_online mr-1"><i class="fas fa-check-double mr-2"></i><span class="d-none d-sm-inline">[% msg.maketext("validiert") %]</span></button>[% ELSIF availability == "Ersterhebung" %]<button class="btn btn-primary ob-availability_presence mr-1"><i class="fas fa-check mr-2"></i><span class="d-none d-sm-inline">[% msg.maketext("Ersterhebung") %]</span></button>[% END %]
+[% IF availability == "validiert" %]<button class="btn btn-primary ob-availability_online mr-1" data-toggle="tooltip" title="Daten nach zweitem Abgleich"><i class="fas fa-check-double mr-2"></i><span class="d-none d-sm-inline">[% msg.maketext("validiert") %]</span></button>[% ELSIF availability == "Ersterhebung" %]<button class="btn btn-primary ob-availability_presence mr-1" data-toggle="tooltip" title="Daten aus erster Materialsichtung"><i class="fas fa-check mr-2"></i><span class="d-none d-sm-inline">[% msg.maketext("Ersterhebung") %]</span></button>[% END %]
        </div>
       </div>
 

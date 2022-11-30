@@ -782,7 +782,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
             $sigel=~s!^38/!!;
 
 	    # Leere Saetze ignorieren
-	    if (!$signatur && !$standort && !$inventar && !$sigel){
+	    if (!$signatur && !$standort && !$inventar){
 		$k++;
 		next;
 	    }

@@ -59,13 +59,25 @@
       </span>
       <span class="uzk15__invisible">Youtube</span>
      </a>
-     <a href="https://www.ub.uni-koeln.de/rss"> 
-      <span class="uzk15__icon"> 
-       <svg class="uzk15__svg-linkedin">
-        <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#rss" />
-       </svg>
+<style>
+.uzk15__mainfooter .uzk15__socialmedia a.uzk15__mastodon {
+    background: #fff;
+}
+
+.uzk15__mainfooter .uzk15__socialmedia a.uzk15__mastodon:hover,
+.uzk15__mainfooter .uzk15__socialmedia a.uzk15__mastodon:focus,
+.uzk15__mainfooter .uzk15__socialmedia a.uzk15__mastodon:active
+{
+   fill: #253746
+}
+
+
+</style>
+     <a href="https://openbiblio.social/@unibibkoeln" class="uzk15__mastodon"> 
+      <span class="uzk15__sozpartner"> 
+       <img src="/images/openbib/uzk15/logo_mastodon.png" />
       </span>
-      <span class="uzk15__invisible">LinkedIn</span>
+      <span class="uzk15__invisible">Mastodon</span>
      </a>
     </div>
      <nav class="uzk15__footercolumn">

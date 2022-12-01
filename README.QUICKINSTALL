@@ -10,7 +10,7 @@ Die generelle Vorgehensweise bei der Schnell-Installation ist im Folgenden darge
 
 1.) Installation der notwendigen Infrastruktur
 
-OpenBib setzt auf einer LAPP-Infrastruktur (Linux, Apache, PostgreSQL, Perl) auf, die zusätzlich viele weitere Perl-Module sowie andere Programme umfasst.
+OpenBib setzt auf einer LLPP-Infrastruktur (Linux, Lighttpd, PostgreSQL, Perl) auf, die zusätzlich viele weitere Perl-Module sowie andere Programme umfasst.
 
 Um den Aufwand für die Installation so gering wie möglich zu halten, verwenden wir die Paketeverwaltung der Linux-Distribution Debian und stellen für notwendige Pakete, die selbst nicht in dieser Distribution vorhanden sind, diese in einem eigenen Repository zur Verfügung.
 
@@ -31,18 +31,7 @@ Zur Installation aller benötigten Pakete für die OpenBib-Infrastruktur muss nu
 
 apt-get install openbib-infrastructure
 
-1.1) Apache-Webserver
-
-Fuer die OpenBib-Installation des Apache-Webservers mit mod_perl-Unterstützung in der Version 2.x. wird folgendes benötigt:
-
-    * Verzeichnisname des DocumentRoot
-    * Verzeichnisname des conf.d-Verzeichnisses, in dem individuelle Apache-Konfigurationen abgelegt werden koennen 
-
-Zusätzlich ist nach der Installation das Modul apreq zu aktivieren:
-
-a2enmod apreq
-
-1.2) PostgreSQL-Server
+1.) PostgreSQL-Server
 
 Fuer die OpenBib-Installation wird folgendes benötigt:
 
@@ -69,8 +58,6 @@ Gehen Sie nun in das ausgecheckte git-Verzeichniss und passen folgende lokale Pf
 
 $documentroot
     Wo ist der Basis-Pfad fuer die Dokumente Ihres Apache-Webservers 
-$confd
-    Wo liegt das conf.d-Verzeichnis Ihres Apache-Webservers 
 
 Beide Pfade sind ohne abschliessenden '/' einzugeben.
 
@@ -110,10 +97,53 @@ Danach führen Sie bitte folgende Programme zur Erzeugung der grundlegenden Date
    4. /opt/openbib/bin/createstatistics.pl
    5. /opt/openbib/bin/createenrichmnt.pl 
 
-8.) Restarten Sie den Apache-Webserver
+8.) Restarten Sie den starman-Applikationsserver
+
+/etc/init.d/starman restart
 
 Danach sollten Sie eine funktionsfähige, aber rudimentäre OpenBib-Installation auf Ihrem Rechner vorfinden, die sie unter folgendem URL aufrufen koennen
 
-http://<lokaler.rechner>/portal/openbib/home
+http://127.0.0.1:8008/portal/openbib/home
 
+9.) Verbesserungen für Performance und Ausfallsicherheit
 
+9.1.) Vorschalten eines Webservers fuer die Auslieferung statischer Inhalte
+
+Damit der OpenBib-Applikationsserver starman nicht unötig mit der
+Auslieferung statischer Inhalte (CSS, JavaScript, Bilder) belastet
+wird, sollte ein leichtgewichtiger Webserver vorgeschaltet werden, der
+diese Inhalte ausliefert und per Proxy-Pass für den Pfad /portal die
+Anfragen auf starman unter 127.0.0.1:8008 weiter reicht.
+
+Mögliche Webserver sind lighttpd oder nginx.
+
+9.2.) Bildung eines Clusters und Vorschalten von haproxy
+
+Um nach 9.1.) die Performance und Ausfallsicherheit weiter zu erhöhen
+sollten in der Webadministration zwei Cluster mit idealerweise je 2
+Servern definiert werden. Ein Cluster beantwortet dann die
+Nutzer-Anfragen, das andere steht für die nächste Dateneinspielung
+bereit. Ist die Dateneinspielung fertig, dann tauschen die Cluster die
+Rolle und das zweite Cluster beantwortet nun die Nutzer-Anfragen,
+während das erste für die nächste Dateneinspielung bereit ist.
+
+Dazu wird ein haproxy vorgeschaltet und verteilt die Anfragen dann
+entsprechend auf die zugehörigen 4 Server. Der haproxy ist mit der
+OpenBib Infrastruktur per Webservice gekoppelt und erhält aus dieser
+die Information auf welche 2 Server er die Nutzer-Anfragen
+weiterleiten soll.
+
+9.3.) Verwendung von memcached
+
+Bei hohen Zugriffszahlen sollte aus Performance-Gründen immer die
+Anbindung an einen lokal laufenden memcached in der
+OpenBib-Konfigurationsdatei
+
+/opt/openbib/conf/portal.yml
+
+aktiviert werden.
+
+Im Clusterbetrieb wie in 9.2.) muss für memcached darüber hinaus
+zwingend ein Lastverteiler wie nutcracker vorgeschaltet werden, der
+aus den lokalen memcached der 4 Server eine einheitliche
+memcached-"Wolke" über alle Server bildet.

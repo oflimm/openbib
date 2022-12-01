@@ -222,7 +222,7 @@ Sie werden über den Eingang der Bestellung <b>nicht</b> gesondert benachrichtig
       <label for="email">[% msg.maketext("E-Mail") %] (*):</label>
 </div>
 
-<button type="submit" class="btn btn-primary mb-2 mt-4">[% msg.maketext("Auswahl") %]</button>
+<button type="submit" class="btn btn-primary mb-2 mt-4">[% msg.maketext("Bestellen") %]</button>
 
 </form>
 

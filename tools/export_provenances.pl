@@ -110,6 +110,8 @@ foreach my $title ($titles_with_provenances->all){
     my $record = OpenBib::Record::Title->new({ database => $database, id => $titleid, config => $config})->load_full_record;
 
     my $hbzid  = $record->get_field({ field => 'T0010', mult => 1});
+
+    my $harvard_citation = $record->to_harvard_citation;
     
     $logger->debug("Record: ".YAML::Dump($record->get_fields));
     
@@ -235,6 +237,7 @@ foreach my $title ($titles_with_provenances->all){
         $provenance_ref->{scan_id}            = $scan_id  if ($scan_id);
         $provenance_ref->{entry_year}         = $entry_year  if ($entry_year);
         $provenance_ref->{remark}             = $remark  if ($remark);
+        $provenance_ref->{title_citation}     = $harvard_citation  if ($harvard_citation);
 	
 	if ($logger->is_debug){
 	    $logger->debug(YAML::Dump($provenance_ref));

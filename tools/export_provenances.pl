@@ -1,11 +1,11 @@
 #!/usr/bin/perl
 #####################################################################
 #
-#  export_provenances..pl
+#  export_provenances.pl
 #
 #  Export der Provenienzen in ein JSON-Format
 #
-#  Dieses File ist (C) 2015-2016 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2015- Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -130,6 +130,9 @@ foreach my $title ($titles_with_provenances->all){
         my $incomplete    = $record->get_field({ field => 'T4312', mult => $mult});
         my $reference     = $record->get_field({ field => 'T4313', mult => $mult});
         my $former_mark   = $record->get_field({ field => 'T4314', mult => $mult});
+        my $scan_id       = $record->get_field({ field => 'T4315', mult => $mult});
+        my $entry_year    = $record->get_field({ field => 'T4316', mult => $mult});
+        my $remark        = $record->get_field({ field => 'T4317', mult => $mult});
 
         # Mark from Holdings
 
@@ -144,43 +147,50 @@ foreach my $title ($titles_with_provenances->all){
 
         # GND for collections
 
-        my $collection_gnd = "";
+        my $collection_gnd  = "";
+        my $collection_name = "";
 
         if ($record->has_field('T4306')){
             foreach my $field_ref (@{$record->get_field({ field => 'T4306'})}){
                 if ($field_ref->{mult} eq $mult){
                     my $subject = OpenBib::Record::Subject->new({database => $database, id => $field_ref->{id}, config => $config})->load_full_record;
                     
-                    my $this_subject_gnd = $subject->get_field({field => 'S0010', mult => 1});
+                    my $this_subject_gnd  = $subject->get_field({field => 'S0010', mult => 1});
+                    my $this_subject_name = $subject->get_field({field => 'S0800', mult => 1});
 		    
                     next unless (defined $this_subject_gnd);
 		    
-                    $collection_gnd = $this_subject_gnd;
+                    $collection_gnd  = $this_subject_gnd;
+                    $collection_name = $this_subject_name;
 		}
             }
         }
 
-        # GND for corporate bodies
+        # GND and name for corporate bodies
 
-        my $corp_gnd = "";
+        my $corp_gnd  = "";
+        my $corp_name = "";
 
         if ($record->has_field('T4307')){                    
             foreach my $field_ref (@{$record->get_field({ field => 'T4307'})}){
                 if ($field_ref->{mult} eq $mult){
                     my $corp = OpenBib::Record::CorporateBody->new({database => $database, id => $field_ref->{id}, config => $config})->load_full_record;
                     
-                    my $this_corp_gnd = $corp->get_field({field => 'C0010', mult => 1});
+                    my $this_corp_gnd  = $corp->get_field({field => 'C0010', mult => 1});
+                    my $this_corp_name = $corp->get_field({field => 'C0800', mult => 1});
 
                     next unless (defined $this_corp_gnd);
                     
-                    $corp_gnd = $this_corp_gnd;
+                    $corp_gnd  = $this_corp_gnd;
+		    $corp_name = $this_corp_name;
                 }
             }
         }
         
-        # GND for Persons
+        # GND and name for Persons
 
-        my $person_gnd = "";
+        my $person_gnd  = "";
+	my $person_name = "";
 
         if ($record->has_field('T4308')){
 
@@ -191,29 +201,41 @@ foreach my $title ($titles_with_provenances->all){
 
                     my $person = OpenBib::Record::Person->new({database => $database, id => $field_ref->{id}, config => $config})->load_full_record;
                     
-                    my $this_person_gnd = $person->get_field({field => 'P0010', mult => 1});
+                    my $this_person_gnd  = $person->get_field({field => 'P0010', mult => 1});
+                    my $this_person_name = $person->get_field({field => 'P0800', mult => 1});
 
+		    
                     next unless (defined $this_person_gnd);
                     
                     $logger->debug("Person-ID: ".$person->get_id." - $this_person_gnd");
                     
                     $person_gnd = $this_person_gnd;
+		    $person_name = $this_person_name;
                 }
             }
         }
-        
-        $provenance_ref->{hbzid}        = $hbzid if ($hbzid);
-        $provenance_ref->{medianumber}  = $medianumber if ($medianumber);
-        $provenance_ref->{tpro_description}  = $description if ($description);
-        $provenance_ref->{sigel}        = $sigel if ($sigel);
-        $provenance_ref->{incomplete}   = $incomplete if ($incomplete);
-        $provenance_ref->{reference}    = $reference  if ($reference);
-        $provenance_ref->{former_mark}  = $former_mark  if ($former_mark);
-        $provenance_ref->{current_mark} = $current_mark  if ($current_mark);
-        $provenance_ref->{collection_gnd}   = $collection_gnd  if ($collection_gnd);
-        $provenance_ref->{corporatebody_gnd}   = $corp_gnd  if ($corp_gnd);
-        $provenance_ref->{person_gnd}   = $person_gnd  if ($person_gnd);
 
+	$provenance_ref->{titleid}           = $titleid if ($titleid);
+        $provenance_ref->{hbzid}             = $hbzid if ($hbzid);
+        $provenance_ref->{medianumber}       = $medianumber if ($medianumber);
+        $provenance_ref->{tpro_description}  = $description if ($description);
+        $provenance_ref->{sigel}             = $sigel if ($sigel);
+        $provenance_ref->{incomplete}        = $incomplete if ($incomplete);
+        $provenance_ref->{reference}         = $reference  if ($reference);
+        $provenance_ref->{former_mark}       = $former_mark  if ($former_mark);
+        $provenance_ref->{current_mark}      = $current_mark  if ($current_mark);
+        $provenance_ref->{collection_gnd}    = $collection_gnd  if ($collection_gnd);
+        $provenance_ref->{corporatebody_gnd} = $corp_gnd  if ($corp_gnd);
+        $provenance_ref->{person_gnd}        = $person_gnd  if ($person_gnd);
+
+        $provenance_ref->{collection_name}    = $collection_name  if ($collection_name);
+        $provenance_ref->{corporatebody_name} = $corp_name  if ($corp_name);
+        $provenance_ref->{person_name}        = $person_name  if ($person_name);
+
+        $provenance_ref->{scan_id}            = $scan_id  if ($scan_id);
+        $provenance_ref->{entry_year}         = $entry_year  if ($entry_year);
+        $provenance_ref->{remark}             = $remark  if ($remark);
+	
 	if ($logger->is_debug){
 	    $logger->debug(YAML::Dump($provenance_ref));
 	}

@@ -331,26 +331,6 @@ sub get_input_definition {
             encoding => 'none',
             type     => 'scalar',
         },
-	strasse => {
-            default  => '',
-            encoding => 'none',
-            type     => 'scalar',
-        },
-	ort => {
-            default  => '',
-            encoding => 'none',
-            type     => 'scalar',
-        },
-	plz => {
-            default  => '',
-            encoding => 'none',
-            type     => 'scalar',
-        },
-	gebdatum => {
-            default  => '',
-            encoding => 'none',
-            type     => 'scalar',
-        },
 	email => {
             default  => '',
             encoding => 'none',

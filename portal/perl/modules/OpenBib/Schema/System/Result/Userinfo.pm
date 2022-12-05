@@ -55,47 +55,7 @@ __PACKAGE__->table("userinfo");
   data_type: 'text'
   is_nullable: 1
 
-=head2 strasse
-
-  data_type: 'text'
-  is_nullable: 1
-
-=head2 ort
-
-  data_type: 'text'
-  is_nullable: 1
-
-=head2 plz
-
-  data_type: 'text'
-  is_nullable: 1
-
-=head2 soll
-
-  data_type: 'text'
-  is_nullable: 1
-
-=head2 gut
-
-  data_type: 'text'
-  is_nullable: 1
-
-=head2 avanz
-
-  data_type: 'text'
-  is_nullable: 1
-
-=head2 branz
-
-  data_type: 'text'
-  is_nullable: 1
-
 =head2 bsanz
-
-  data_type: 'text'
-  is_nullable: 1
-
-=head2 vmanz
 
   data_type: 'text'
   is_nullable: 1
@@ -116,11 +76,6 @@ __PACKAGE__->table("userinfo");
   is_nullable: 1
 
 =head2 sperrdatum
-
-  data_type: 'text'
-  is_nullable: 1
-
-=head2 gebdatum
 
   data_type: 'text'
   is_nullable: 1
@@ -234,23 +189,7 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 1 },
   "vorname",
   { data_type => "text", is_nullable => 1 },
-  "strasse",
-  { data_type => "text", is_nullable => 1 },
-  "ort",
-  { data_type => "text", is_nullable => 1 },
-  "plz",
-  { data_type => "text", is_nullable => 1 },
-  "soll",
-  { data_type => "text", is_nullable => 1 },
-  "gut",
-  { data_type => "text", is_nullable => 1 },
-  "avanz",
-  { data_type => "text", is_nullable => 1 },
-  "branz",
-  { data_type => "text", is_nullable => 1 },
   "bsanz",
-  { data_type => "text", is_nullable => 1 },
-  "vmanz",
   { data_type => "text", is_nullable => 1 },
   "maanz",
   { data_type => "text", is_nullable => 1 },
@@ -259,8 +198,6 @@ __PACKAGE__->add_columns(
   "sperre",
   { data_type => "text", is_nullable => 1 },
   "sperrdatum",
-  { data_type => "text", is_nullable => 1 },
-  "gebdatum",
   { data_type => "text", is_nullable => 1 },
   "email",
   { data_type => "text", is_nullable => 1 },
@@ -589,8 +526,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-11-14 10:29:34
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:sR9hZaDHrcwd7PZZC+s3Ug
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-12-05 13:23:06
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:jAnK76sv+hJtF0Fa+3cGsw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

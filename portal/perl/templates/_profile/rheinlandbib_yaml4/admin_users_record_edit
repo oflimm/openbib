@@ -65,17 +65,6 @@
 [% IF userinfo.vorname %]
 <tr><td><b>[% msg.maketext("Vorname") %]:</b></td><td align="left">&nbsp;[% userinfo.vorname %]</td></tr>
 [% END %] 
-[% IF userinfo.gebdatum %]
-<tr><td><b>[% msg.maketext("Geburtsdatum") %]:</b></td><td align="left">&nbsp;[% userinfo.gebdatum %]</td></tr>
-[% END %] 
-[% IF userinfo.strasse %]
-<tr><td><b>[% msg.maketext("Strasse") %]:</b></td><td align="left">&nbsp;[% userinfo.strasse %]</td></tr>
-[% END %] 
-<tr><td><b>[% msg.maketext("Ort") %]:</b></td><td align="left">
-[% IF userinfo.plz %]
-&nbsp;[% userinfo.plz %]
-[% END %] 
-&nbsp;[% userinfo.ort %]</td></tr>
 [% IF userinfo.email %]
 <tr><td><b>[% msg.maketext("E-Mail") %]:</b></td><td align="left">&nbsp;[% userinfo.email %]</td></tr>
 [% END %]

@@ -90,11 +90,6 @@
 </div>
 
 <div class="form-floating mb-3">
-<input class="form-control" id="gebdatum" type="text" name="gebdatum" value="[% userinfo.gebdatum %]" size="30" maxlength="200" />
-<label for="gebdatum">[% msg.maketext("Geburtsdatum") %]</label>
-</div>
-
-<div class="form-floating mb-3">
 <span class="form-control" id="status">[% userinfo.status %]</span>
 <label for="status">[% msg.maketext("Status") %]</label>
 </div>

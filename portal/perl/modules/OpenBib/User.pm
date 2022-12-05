@@ -1170,7 +1170,6 @@ sub clear_cached_userdata {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # DBI: "update user set nachname = '', vorname = '', strasse = '', ort = '', plz = '', soll = '', gut = '', avanz = '', branz = '', bsanz = '', vmanz = '', maanz = '', vlanz = '', sperre = '', sperrdatum = '', gebdatum = '' where userid = ?"
     $self->get_schema->resultset('Userinfo')->single(
         {
             id => $self->{ID},
@@ -1178,20 +1177,8 @@ sub clear_cached_userdata {
     )->update({
         nachname => '',
         vorname  => '',
-        strasse  => '',
-        ort      => '',
-        plz      => 0,
-        soll     => '',
-        gut      => '',
-        avanz    => '',
-        branz    => '',
-        bsanz    => '',
-        vmanz    => '',
-        maanz    => '',
-        vlanz    => '',
         sperre   => '',
         sperrdatum => '',
-        gebdatum => '',
     });
 
     return;
@@ -5774,7 +5761,6 @@ sub delete_private_info {
   
     my $logger = get_logger();
 
-    # DBI: "update userinfo set nachname = '', vorname = '', strasse = '', ort = '', plz = '', soll = '', gut = '', avanz = '', branz = '', bsanz = '', vmanz = '', maanz = '', vlanz = '', sperre = '', sperrdatum = '', gebdatum = '' where id = ?"
     $self->get_schema->resultset('Userinfo')->single(
         {
             id => $self->{ID},
@@ -5783,20 +5769,8 @@ sub delete_private_info {
         {
             nachname   => '',
             vorname    => '',
-            strasse    => '',
-            ort        => '',
-            plz        => 0,
-            soll       => '',
-            gut        => '',
-            avanz      => '',
-            branz      => '',
-            bsanz      => '',
-            vmanz      => '',
-            maanz      => '',
-            vlanz      => '',
             sperre     => '',
             sperrdatum => '',
-            gebdatum   => '',
             token      => '',
         }
     );
@@ -5815,8 +5789,6 @@ sub set_private_info {
 	$logger->debug(YAML::Dump($userinfo_ref));
     }
     
-    # DBI: "update userinfo set nachname = ?, vorname = ?, strasse = ?, ort = ?, plz = ?, soll = ?, gut = ?, avanz = ?, branz = ?, bsanz = ?, vmanz = ?, maanz = ?, vlanz = ?, sperre = ?, sperrdatum = ?, gebdatum = ? where username = ?"
-    #      $userinfo_ref->{'Nachname'},$userinfo_ref->{'Vorname'},$userinfo_ref->{'Strasse'},$userinfo_ref->{'Ort'},$userinfo_ref->{'PLZ'},$userinfo_ref->{'Soll'},$userinfo_ref->{'Guthaben'},$userinfo_ref->{'Avanz'},$userinfo_ref->{'Branz'},$userinfo_ref->{'Bsanz'},$userinfo_ref->{'Vmanz'},$userinfo_ref->{'Maanz'},$userinfo_ref->{'Vlanz'},$userinfo_ref->{'Sperre'},$userinfo_ref->{'Sperrdatum'},$userinfo_ref->{'Geburtsdatum'},$username
     $self->get_schema->resultset('Userinfo')->single(
         {
             id => $self->get_userid_for_username($username),
@@ -5827,20 +5799,8 @@ sub set_private_info {
             vorname      => $userinfo_ref->{'forename'},
 	    email        => $userinfo_ref->{'email'},
 	    external_id  => $userinfo_ref->{'external_id'},
-            # strasse    => '',
-            # ort        => '',
-            # plz        => '',
-            # soll       => $userinfo_ref->{'Soll'},
-            # gut        => $userinfo_ref->{'Guthaben'},
-            # avanz      => $userinfo_ref->{'Avanz'},
-            # branz      => $userinfo_ref->{'Branz'},
-            # bsanz      => $userinfo_ref->{'Bsanz'},
-            # vmanz      => $userinfo_ref->{'Vmanz'},
-            # maanz      => $userinfo_ref->{'Maanz'},
-            # vlanz      => $userinfo_ref->{'Vlanz'},
             # sperre     => $userinfo_ref->{'Sperre'},
             # sperrdatum => $userinfo_ref->{'Sperrdatum'},
-            # gebdatum   => '',
         }
     );
 
@@ -5865,22 +5825,10 @@ sub get_info {
         $userinfo_ref->{'external_id'}= $userinfo->external_id;	
         $userinfo_ref->{'nachname'}   = $userinfo->nachname;
         $userinfo_ref->{'vorname'}    = $userinfo->vorname;
-        $userinfo_ref->{'strasse'}    = $userinfo->strasse;
-        $userinfo_ref->{'ort'}        = $userinfo->ort;
-        $userinfo_ref->{'plz'}        = $userinfo->plz;
-        $userinfo_ref->{'soll'}       = $userinfo->soll;
-        $userinfo_ref->{'gut'}        = $userinfo->gut;
-        $userinfo_ref->{'avanz'}      = $userinfo->avanz; # Ausgeliehene Medien
-        $userinfo_ref->{'branz'}      = $userinfo->branz; # Buchrueckforderungen
-        $userinfo_ref->{'bsanz'}      = $userinfo->bsanz; # Bestellte Medien
-        $userinfo_ref->{'vmanz'}      = $userinfo->vmanz; # Vormerkungen
-        $userinfo_ref->{'maanz'}      = $userinfo->maanz; # ueberzogene Medien
-        $userinfo_ref->{'vlanz'}      = $userinfo->vlanz; # Verlaengerte Medien
         $userinfo_ref->{'sperre'}     = $userinfo->sperre;
         $userinfo_ref->{'sperrdatum'} = $userinfo->sperrdatum;
         $userinfo_ref->{'email'}      = $userinfo->email;
 	$userinfo_ref->{'status'}     = $userinfo->status;
-        $userinfo_ref->{'gebdatum'}   = $userinfo->gebdatum;
         $userinfo_ref->{'username'}   = $userinfo->username;
         $userinfo_ref->{'password'}   = $userinfo->password;
         $userinfo_ref->{'masktype'}   = $userinfo->masktype;

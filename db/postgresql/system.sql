@@ -338,20 +338,8 @@ CREATE TABLE userinfo (
  /* User informatin from library system */
  nachname   TEXT,
  vorname    TEXT,
- strasse    TEXT,
- ort        TEXT,
- plz        TEXT,
- soll       TEXT,
- gut        TEXT,
- avanz      TEXT,
- branz      TEXT,
- bsanz      TEXT,
- vmanz      TEXT,
- maanz      TEXT,
- vlanz      TEXT,
  sperre     TEXT,
  sperrdatum TEXT,
- gebdatum   TEXT,
 
  email      TEXT,
 

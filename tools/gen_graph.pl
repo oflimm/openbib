@@ -140,7 +140,7 @@ $template->process("$graph/$type", $ttdata) || do {
 
 sub print_help {
     print << "ENDHELP";
-gen_bestof.pl - Erzeugen von Graphen aus Statistik-Daten
+gen_graph.pl - Erzeugen von Graphen aus Statistik-Daten
 
    Optionen:
    -help                 : Diese Informationsseite

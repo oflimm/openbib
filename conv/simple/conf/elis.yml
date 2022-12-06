@@ -1,5 +1,5 @@
 # Encoding der Daten
-# encoding: iso-8859-1
+#encoding: iso-8859-1
 # encoding: utf8
 
 # Tracelevel
@@ -8,7 +8,7 @@ tracelevel:
 # XPath-Parameter
 
 # Record-Selector
-recordselector: /recordlist/record
+recordselector: '//recordlist/record'
 
 # Feld der eindeutigen Titel-ID
 uniqueidfield: '//oaiProvenance:identifier'

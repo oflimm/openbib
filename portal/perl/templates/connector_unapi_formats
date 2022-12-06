@@ -9,4 +9,7 @@
 [% IF config.get('unAPI_formats').${"mods"} %]
   <format name="mods" type="application/xml" namespace_uri="http://www.loc.gov/mods/" docs="http://www.loc.gov/mods/" schema_location="http://www.loc.gov/standards/mods/mods.xsd"/>
 [% END %]
+[% IF config.get('unAPI_formats').${"mets"} %]
+  <format name="mets" type="application/xml" namespace_uri="http://www.loc.gov/METS/" docs="http://www.loc.gov/METS/" schema_location="http://www.loc.gov/mets/mets.xsd"/>
+[% END %]
 </formats>

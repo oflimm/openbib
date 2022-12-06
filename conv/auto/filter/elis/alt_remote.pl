@@ -56,4 +56,4 @@ system("cd $pooldir/$pool ; $harvestoaiexe -all --set=$pool --url=\"$oaiurl\" ")
 system("cd $pooldir/$pool ; echo '<recordlist>' > $pooldir/$pool/pool.dat ; cat pool-*.xml >> $pooldir/$pool/pool.dat ; echo '</recordlist>' >> $pooldir/$pool/pool.dat ; gzip pool-*xml");
 
 system("cd $pooldir/$pool; $simplexml2metaexe --inputfile=pool.dat --configfile=/opt/openbib/conf/${pool}.yml; gzip meta.*");
-system("rm $pooldir/$pool/pool.dat");
+#system("rm $pooldir/$pool/pool.dat");

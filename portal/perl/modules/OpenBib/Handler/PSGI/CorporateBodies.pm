@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::CorporateBodies.pm
 #
-#  Copyright 2009-2012 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2009-2020 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -64,7 +64,7 @@ sub show_record {
     # Dispatched Args
     my $view            = $self->param('view');
     my $database        = $self->param('database');
-    my $corporatebodyid = $self->strip_suffix($self->param('corporatebodyid'));
+    my $corporatebodyid = $self->strip_suffix($self->decode_id($self->param('corporatebodyid')));
 
     # Shared Args
     my $query          = $self->query();
@@ -87,7 +87,7 @@ sub show_record {
 
     if ($database && $corporatebodyid ){ # Valide Informationen etc.
         $logger->debug("ID: $corporatebodyid - DB: $database");
-        
+	
         my $record = OpenBib::Record::CorporateBody->new({database => $database, id => $corporatebodyid})->load_full_record;
         
         my $authenticatordb = $user->get_targetdb_of_session($session->{ID});

@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Subjects.pm
 #
-#  Copyright 2009-2011 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2009-2020 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -66,7 +66,7 @@ sub show_record {
     # Dispatched Args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $subjectid      = $self->strip_suffix($self->param('subjectid'));
+    my $subjectid      = $self->strip_suffix($self->decode_id($self->param('subjectid')));
 
     # Shared Args
     my $query          = $self->query();
@@ -90,7 +90,7 @@ sub show_record {
     if ($database && $subjectid ){ # Valide Informationen etc.
         $logger->debug("ID: $subjectid - DB: $database");
         
-        my $record = OpenBib::Record::Subject->new({database => $database, id => $subjectid})->load_full_record;
+	my $record = OpenBib::Record::Subject->new({database => $database, id => $subjectid})->load_full_record;
         
         my $authenticatordb = $user->get_targetdb_of_session($session->{ID});
 
@@ -156,7 +156,7 @@ sub show_collection {
     my $no_log        = $query->param('no_log')   || '';
 
     if ($database){ # Valide Informationen etc.
-        
+
         my $catalog_args_ref = OpenBib::Common::Util::query2hashref($query);
         $catalog_args_ref->{database} = $database if (defined $database);
         $catalog_args_ref->{l}        = $lang if (defined $lang);

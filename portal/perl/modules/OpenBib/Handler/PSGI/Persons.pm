@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Persons.pm
 #
-#  Copyright 2009-2012 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2009-2020 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -64,7 +64,7 @@ sub show_record {
     # Dispatched Args
     my $view           = $self->param('view');
     my $database       = $self->param('database');
-    my $personid       = $self->strip_suffix($self->param('personid'));
+    my $personid       = $self->strip_suffix($self->decode_id($self->param('personid')));
 
     # Shared Args
     my $query          = $self->query();
@@ -87,7 +87,7 @@ sub show_record {
 
     if ($database && $personid ){ # Valide Informationen etc.
         $logger->debug("ID: $personid - DB: $database");
-        
+
         my $record = OpenBib::Record::Person->new({database => $database, id => $personid})->load_full_record;
         
         my $authenticatordb = $user->get_targetdb_of_session($session->{ID});

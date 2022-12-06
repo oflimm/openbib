@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Classifications.pm
 #
-#  Copyright 2009-2012 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2009-2020 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -51,6 +51,7 @@ sub setup {
     $self->run_modes(
         'show_record'     => 'show_record',
         'show_collection' => 'show_collection',
+#	'show_warning'    => 'show_warning',
         'dispatch_to_representation'           => 'dispatch_to_representation',
     );
 
@@ -68,7 +69,7 @@ sub show_record {
     # Dispatched Args
     my $view             = $self->param('view');
     my $database         = $self->param('database');
-    my $classificationid = $self->strip_suffix($self->param('classificationid'));
+    my $classificationid = $self->strip_suffix($self->decode_id($self->param('classificationid')));
 
     # Shared Args
     my $query          = $self->query();

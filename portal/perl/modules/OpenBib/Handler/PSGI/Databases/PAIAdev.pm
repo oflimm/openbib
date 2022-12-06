@@ -812,6 +812,7 @@ sub notifications {  # to be implemented
     return decode_utf8(encode_json $response_ref);
 }
 
+# order or reservation
 sub request {
     my $self = shift;
 
@@ -903,7 +904,7 @@ sub request {
 	    my ($zw,$gsi)    = $doc_ref->{edition} =~m/\/items\/id\/(\d+):(.+?)$/;
 	    my ($katkey) = $doc_ref->{item} =~m/\/id\/(.+?)$/;
 
-	    my $confirmation = (defined $doc_ref->{confirmation})?$doc_ref->{confirmation}:undef;
+	    my $confirm = (defined $doc_ref->{confirm})?$doc_ref->{confirm}:undef;
 	    
 	    $logger->debug("Found zw: $zw gsi: $gsi katkey: $katkey");
 	    
@@ -917,8 +918,8 @@ sub request {
 		katkey       => $katkey,
 	    };
 
-	    if ($confirmation){
-		$this_title_ref->{confirmation} = $confirmation;
+	    if ($confirm){
+		$this_title_ref->{confirm} = $confirm;
 	    }
 	    
 	    push @$titles_ref, $this_title_ref;
@@ -937,17 +938,44 @@ sub request {
 	if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
 
 	    # first check order and get necessary location information about items
-	    my $check_result_ref = $self->check_order($database,$username,$exemplar_ref->{gsi},$exemplar_ref->{zw});	    
+	    my $check_order_result_ref = $self->check_order($database,$username,$exemplar_ref->{gsi},$exemplar_ref->{zw});	    
 
-	    if (defined($check_result_ref)) {
-		$logger->debug("Result: ".YAML::Dump($check_result_ref));
+	    if (defined($check_order_result_ref)) {
+		$logger->debug("Result: ".YAML::Dump($check_order_result_ref));
 
+		# media already lent, so continue with reservation
+		if (defined $check_order_result_ref->{OpacBestellung} && defined $check_order_result_ref->{OpacBestellung}{ErrorCode} && $check_order_result_ref->{OpacBestellung}{ErrorCode} eq "OpsOrderVomAnderemBenEntl"){
+		    
+		    # first reservation and get necessary location information about items
+		    my $check_reservation_result_ref = $self->check_reservation($database,$username,$exemplar_ref->{gsi},$exemplar_ref->{zw});	    
+		    
+		    if (defined($check_reservation_result_ref)) {
+			$logger->debug("Result: ".YAML::Dump($check_reservation_result_ref));
+			# error
+			if (defined $check_reservation_result_ref->{OpacReservation} && defined $check_reservation_result_ref->{OpacReservation}{ErrorCode} ){
+			    my $response_ref = {
+				"code" => 403,
+				    "error" => "access_denied",
+				    "error_description" => $check_reservation_result_ref->{OpacReservation}{NotOK},
+			    };
+			    
+			    if ($suppressresponsecodes){
+				$self->header_add('Status' => 200); # ok
+			    }
+			    else {
+				$self->header_add('Status' => 403); # forbidden
+			    }
+			    
+			    return decode_utf8(encode_json $response_ref);
+			}
+		    }
+		}	
 		# error
-		if (defined $check_result_ref->{OpacBestellung} && defined $check_result_ref->{OpacBestellung}{ErrorCode}){
+		elsif (defined $check_order_result_ref->{OpacBestellung} && defined $check_order_result_ref->{OpacBestellung}{ErrorCode} ){
 		    my $response_ref = {
 			"code" => 403,
 			"error" => "access_denied",
-			"error_description" => $check_result_ref->{OpacBestellung}{NotOK},
+			"error_description" => $check_order_result_ref->{OpacBestellung}{NotOK},
 		    };
 		    
 		    if ($suppressresponsecodes){
@@ -960,20 +988,20 @@ sub request {
 		    return decode_utf8(encode_json $response_ref);
 		}
 		else {
-		    # more then one location and without confirmation request
-		    if (scalar keys %{$check_result_ref->{OpacBestellung}} > 1 && !defined $exemplar_ref->{confirmation}){
+		    # more then one location and without confirm request
+		    if (scalar keys %{$check_order_result_ref->{OpacBestellung}} > 1 && !defined $exemplar_ref->{confirm}){
 			my $this_response_ref = {};
-			# Reject until confirmation is met
+			# Reject until confirm is met
 			$this_response_ref->{status}  = 5;
 			$this_response_ref->{error}   = "confirmation required";
 			$this_response_ref->{item}    = $exemplar_ref->{item};
 			$this_response_ref->{edition} = $exemplar_ref->{edition};
 			$this_response_ref->{requested} = $exemplar_ref->{edition};
 			
-			foreach my $ortid (keys %{$check_result_ref->{OpacBestellung}}){
+			foreach my $ortid (keys %{$check_order_result_ref->{OpacBestellung}}){
 			    push @{$this_response_ref->{"condition"}{"http://purl.org/ontology/paia#StorageCondition"}{"option"}}, {
 				id    => $ortid,
-				about => $check_result_ref->{OpacBestellung}{$ortid},
+				about => $check_order_result_ref->{OpacBestellung}{$ortid},
 			    };
 			}
 
@@ -981,16 +1009,16 @@ sub request {
 			push @{$response_ref->{doc}}, $this_response_ref;
 			
 		    }
-		    # more then one location, but with confirmation request
-		    elsif (scalar keys %{$check_result_ref->{OpacBestellung}} > 1 && defined $exemplar_ref->{confirmation}){
+		    # more then one location, but with confirm request
+		    elsif (scalar keys %{$check_order_result_ref->{OpacBestellung}} > 1 && defined $exemplar_ref->{confirm}){
 			# Check if confirmation is met
 
 			my $ausgabeort = -1;
 			
-			if (defined $exemplar_ref->{confirmation}{"http://purl.org/ontology/paia#StorageCondition"} && ref($exemplar_ref->{confirmation}{"http://purl.org/ontology/paia#StorageCondition"}) eq "ARRAY"){
-			    foreach my $ortid (keys %{$check_result_ref->{OpacBestellung}}){
-				foreach my $confirmation (@{$exemplar_ref->{confirmation}{"http://purl.org/ontology/paia#StorageCondition"}}){
-				    if ($ortid eq $confirmation){
+			if (defined $exemplar_ref->{confirm}{"http://purl.org/ontology/paia#StorageCondition"} && ref($exemplar_ref->{confirm}{"http://purl.org/ontology/paia#StorageCondition"}) eq "ARRAY"){
+			    foreach my $ortid (keys %{$check_order_result_ref->{OpacBestellung}}){
+				foreach my $confirm (@{$exemplar_ref->{confirm}{"http://purl.org/ontology/paia#StorageCondition"}}){
+				    if ($ortid eq $confirm){
 					$ausgabeort = $ortid;
 				    }
 				}
@@ -1040,7 +1068,7 @@ sub request {
 			# Place order
 			my $ausgabeort;
 
-			foreach my $ort (keys %{$check_result_ref->{OpacBestellung}}){
+			foreach my $ort (keys %{$check_order_result_ref->{OpacBestellung}}){
 			    $ausgabeort = $ort;
 			}
 			
@@ -1069,7 +1097,8 @@ sub request {
     }
     
     my $returnvalue;
-    
+
+    if ($response_ref){
     eval {
 	$returnvalue = encode_json $response_ref;    
     };
@@ -1077,7 +1106,22 @@ sub request {
     if ($@){
 	$logger->error($@);
     }
-    
+    }
+    else {
+	$response_ref = {
+	    "error" => "invalid_request",
+		"error_description" => "Malformed request",
+	};
+
+	$returnvalue = encode_json $response_ref;    
+
+	if ($suppressresponsecodes){
+	    $self->header_add('Status' => 200); # ok
+	}
+	else {
+	    $self->header_add('Status' => 400); # malformed
+	}
+    }
     $logger->debug("Returnvalue: ".$returnvalue);
     
     return $returnvalue;
@@ -1368,6 +1412,64 @@ sub check_order {
 	}
 	else {
 	    $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$circinfotable->get($database)->{circcheckurl}." konnte nicht erreicht werden :".$@);
+    }
+
+
+    return $result_ref;
+}
+
+sub check_reservation {
+    my ($self,$database,$username,$gsi,$zw) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    return unless ($username && $gsi && $zw);
+    
+    my $config         = $self->param('config');
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    $logger->debug("Checking order via USB-SOAP");
+	    
+    my @args = ($username,$gsi,$zw);
+	    
+    my $uri = "urn:/Loan";
+	    
+    if ($circinfotable->get($database)->{circdb} ne "sisis"){
+	$uri = "urn:/Loan_inst";
+    }
+	    
+    
+    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));
+    
+    my $result_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('usbws_url'));
+	my $result = $soap->check_reservation(@args);
+	
+	unless ($result->fault) {
+	    $result_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+	    $result_ref->{'OpacReservation'} = {
+		ErrorCode => $result->faultcode,
+		NotOK => $result->faultstring,
+	    };
 	}
     };
 	    

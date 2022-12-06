@@ -308,8 +308,11 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
         if ($scheme){
             $cmd.=" --scheme=$scheme";
         }
-	elsif ($config->get_system_of_db($database) eq "MARC"){
-	    $cmd.=" --scheme=marc";
+	else {
+	    my $dbschema = $config->get_databaseinfo->single({ dbname => $database })->schema ;
+	    if ($dbschema eq "marc21"){
+		$cmd.=" --scheme=marc";
+	    }
 	}
 	
         $logger->info("Executing in $rootdir/data/$database : $cmd");

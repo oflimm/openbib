@@ -90,11 +90,6 @@
 </div>
 
 <div class="form-group">
-<label for="gebdatum">[% msg.maketext("Geburtsdatum") %]</label>
-<input class="form-control" id="gebdatum" type="text" name="gebdatum" value="[% userinfo.gebdatum %]" size="30" maxlength="200" />
-</div>
-
-<div class="form-group">
 <label for="status">[% msg.maketext("Status") %]</label>
 <span class="form-control" id="status">[% userinfo.status %]</span>
 </div>

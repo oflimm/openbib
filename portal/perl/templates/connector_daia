@@ -155,7 +155,7 @@ FOREACH thisdoc IN items ;
 	   } ]
       }) ;
     ELSIF thiscirculation.LeihstatusText.match('entliehen') ;
-      unavailable_ref = {
+      this_unavailable_ref = {
                service  = 'loan'
 	       expected = thiscirculation.RueckgabeDatum
       };
@@ -165,7 +165,7 @@ FOREACH thisdoc IN items ;
       END;
       unavailable_ref.push(this_unavailable_ref) ;
     ELSIF thiscirculation.LeihstatusText.match('vermisst') ;
-      unavailable_ref = {
+      this_unavailable_ref = {
                service = 'loan'
       };
       unavailable_ref.push(this_unavailable_ref) ;

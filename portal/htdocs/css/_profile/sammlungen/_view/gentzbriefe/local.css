@@ -1863,6 +1863,10 @@ a.ext {
     -webkit-box-shadow: 2px 2px   2px #888;
     box-shadow: 2px 2px 2px #888;            */
     }
+
+    button .ob-availability_online:active {
+	background-color: orange;
+    }
     
     .ob-availability_lendable {
 	/*    margin-top: -3px; */
@@ -1880,6 +1884,11 @@ a.ext {
     -webkit-box-shadow: 2px 2px   2px #888;
     box-shadow: 2px 2px 2px #888;            */
     }
+
+    button .ob-availability_lendable:active {
+	background-color: #7dde7d;
+    }
+    
     .ob-availability_presence {
 	/*    margin-top: -3px; */
 	/*    float: right;  */

@@ -3,7 +3,6 @@
 
     #fulltitleModal {
         z-index: 20000;
-
     }
 
     #fulltitleModal .modal-dialog {
@@ -13,12 +12,23 @@
         margin-bottom: 0;
     }
 
+    .container-fluid {
+	padding-left: 0px;
+	padding-right: 0px;
+    }
 
+    #ob-searchform_bottom {
+	padding-left: 15px;
+	padding-right: 15px;	
+    }
+    
+    #ob-main_navbar {
+    }
     
 [aria-expanded="false"] > .expanded,
 [aria-expanded="true"] > .collapsed {
-  display: none;
-}
+    display: none;
+   }
 
     .navbar {
 	z-index: 1000;
@@ -34,6 +44,11 @@
     
     .navbar.ob-sidebar {
 	z-index: 0;
+    }
+
+    span.btn.btn-primary.fas.fa-cog.d-md-none {
+	padding-top: 0.6em;
+	padding-bottom: 0.6em;
     }
     
     .tab-content {

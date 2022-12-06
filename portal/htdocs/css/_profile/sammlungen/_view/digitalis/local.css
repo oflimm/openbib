@@ -183,15 +183,15 @@
 	border-color: #253746;
     }
 
-    bg-white {
+    .bg-white {
 	background-color: #fff;
     }
 
-    text-white {
+    .text-white {
 	color: #fff;
     }
 
-    text-black {
+    .text-black {
 	color: #000;
     }
     
@@ -1664,13 +1664,13 @@ a.ext {
 
 .ob-availability_online {
 /*    margin-top: -3px; */
-/*    float: right;  */
-/*    padding: 5px;
-    width: 6em;
+    float: right;
+    padding: 5px;
+/*    width: 6em;
     height: 42px; */
     width: 9em;
     background: #7dde7d;    
-    color: #fff;
+    color: #000;
 /*    border-radius: 2px;
     /*    font-size: 110%; */
 /*    font-weight: bold;
@@ -1812,7 +1812,7 @@ a.ext {
     height: 42px; */   
 	width: auto;
 	background: #7dde7d;    
-	color: #fff;
+	color: #000;
 	/*    border-radius: 2px;
     /*    font-size: 110%; * /
 /*    font-weight: bold;   

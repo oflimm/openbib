@@ -383,6 +383,11 @@
         transition: width .8s ease;
     } */
 
+    .sidebar-heading {
+	border-bottom: 1px solid #dee2e6;
+	border-top-left-radius: calc(.3rem - 1px);
+	border-top-right-radius: calc(.3rem - 1px);
+    }
     
     #ob-sidebar .sidebar-heading, #ob-sidebar_eds .sidebar-heading, #ob-sidebar_website .sidebar-heading, #ob-sidebar_default .sidebar-heading, {
 	

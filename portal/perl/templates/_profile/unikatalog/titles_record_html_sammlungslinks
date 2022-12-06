@@ -54,7 +54,7 @@ sammlungen = {
 FOREACH sammlungsvermerk IN normdata.${"T4700"} ;
      IF sammlungen.${sammlungsvermerk.content}.defined ;
         sammlungsurl = sammlungen.${sammlungsvermerk.content};
-        sammlungsvermerk.content = "<img style=\"vertical-align:bottom\" src=\"${config.get_icon('home',view,sysprofile)}\" alt=\"Home-Icon\" />&nbsp;<a href=\"${sammlungsurl}\" target=\"_blank\"><b>${sammlungsvermerk.content}</b></a>" ;
+        sammlungsvermerk.content = "<i class=\"me-2 fas fa-archway\"></i><a href=\"${sammlungsurl}\" target=\"_blank\"><b>${sammlungsvermerk.content}</b></a>" ;
      ELSE ;
         sammlungsvermerk.content = "${sammlungsvermerk.content} (Portal im Aufbau)" ;
      END ;

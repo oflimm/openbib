@@ -89,7 +89,7 @@ my $tar        = "/bin/tar";
 
 system("echo \"*:*:*:$config->{'systemdbuser'}:$config->{'systemdbpasswd'}\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
 
-system("$pg_dump -U $config->{'systemdbuser'} -c -T 'updatelog' -T 'session*' -T 'recordhistory' -T 'event*' -T 'queries' -T 'searchhistory' openbib_system | $gzip > system_tables.sql.gz");
+system("$pg_dump -U $config->{'systemdbuser'} -c -T 'updatelog*' -T 'session*' -T 'recordhistory*' -T 'event*' -T 'queries*' -T 'searchhistory*' openbib_system | $gzip > system_tables.sql.gz");
 
 sub print_help {
     print << "ENDHELP";

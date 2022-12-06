@@ -52,8 +52,8 @@ my ($logfile,$loglevel,$database,$inputfile,$configfile,$persistentnormdataids);
 &GetOptions(
     	    "database=s"              => \$database,
             "persistent-normdata-ids" => \$persistentnormdataids,
-	    "inputfile=s"          => \$inputfile,
-            "configfile=s"         => \$configfile,
+	    "inputfile=s"             => \$inputfile,
+            "configfile=s"            => \$configfile,
             "logfile=s"               => \$logfile,
             "loglevel=s"              => \$loglevel,
 	    );
@@ -106,11 +106,14 @@ open (CLASSIFICATION,">:raw","meta.classification");
 open (SUBJECT,       ">:raw","meta.subject");
 open (HOLDING,       ">:raw","meta.holding");
 
+$logger->info("### Record Selector: ".$convconfig->{recordselector});
+
 my $twig= XML::Twig::XPath->new(
-   TwigHandlers => {
-     "$convconfig->{recordselector}" => \&parse_record
-   }
- );
+    output_filter => 'safe',
+    TwigHandlers => {
+	"$convconfig->{recordselector}" => \&parse_record
+    }
+    );
 
 if ($persistentnormdataids){
     unless ($database){
@@ -252,7 +255,14 @@ if ($persistentnormdataids){
 our $counter = 0;
 our $mexidn  = 1;
 
-$twig->safe_parsefile($inputfile);
+
+eval {
+    $twig->safe_parsefile($inputfile);
+};
+
+if ($@){
+    $logger->error($@);
+}
 
 print STDERR "All $counter records converted\n";
 

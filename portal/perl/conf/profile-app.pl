@@ -14,7 +14,8 @@ use Path::Tiny qw(path);
  
 my $app  = do './portal.profile.psgi';
 my $test = Plack::Test->create($app);
-my $res  = $test->request( GET 'http://localhost:8008/portal/inst006/search.html?l=de;fs=programming+perl' );
+#my $res  = $test->request( GET 'http://localhost:8008/portal/unikatalog/search.html?l=de;fs=programming perl' );
+my $res  = $test->request( GET 'http://localhost:8008/portal/unikatalog/databases/id/inst001/titles/id/583239.html?l=de' );
  
 say 'ERROR: code is     ' . $res->code . ' instead of 200'   if $res->code != 200;
 say 'ERROR: messages is ' . $res->message . ' instead of OK' if $res->message ne 'OK';

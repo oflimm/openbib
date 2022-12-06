@@ -448,6 +448,8 @@ if (-e $titlefile){
             'fields' => {},
         };
 
+	$rawrec=~s/\x{ca}//g;
+
         my $rec = MAB2::Record::Base->new($rawrec);
 	if ($logger->is_debug){
 	    $logger->debug($rec->readable);
@@ -975,6 +977,7 @@ sub konv {
   $line=~s/\x{0089}//g;
   $line=~s/‡/ /g;
   $line=~s/^\|//;
+  $line=~s/\x{ca}//g;
   return $line;
 }
 

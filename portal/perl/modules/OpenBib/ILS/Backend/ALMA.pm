@@ -1034,10 +1034,162 @@ sub check_order {
 sub check_reservation {
     my ($self,$arg_ref) = @_;
 
-    my $response_ref = {};
+    # Set defaults
+    my $username        = exists $arg_ref->{username}  # Nutzername im Bibliothekssystem
+        ? $arg_ref->{username}       : undef;
     
-    # todo
+    my $combinedid      = exists $arg_ref->{holdingid} # Alma: holdingid|item_id
+        ? $arg_ref->{holdingid}      : undef;
 
+    my $library         = exists $arg_ref->{unit}      # Alma: library
+        ? $arg_ref->{unit}           : undef;
+
+    my $mmsid           = exists $arg_ref->{titleid}  # Katkey fuer teilqualifizierte Vormerkung
+        ? $arg_ref->{titleid}        : undef;
+
+    my $type            = exists $arg_ref->{type}     # Typ (voll/teilqualifizierte Vormerkung) by_title/by_holding
+        ? $arg_ref->{type}           : undef;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $database = $self->get_database;
+    my $config   = $self->get_config;
+    my $ua       = $self->get_client;
+
+    my $response_ref = {};
+
+    my ($holdingid,$itemid) = split('|',$combinedid);
+    
+    unless ($username && $library && ( $combinedid || $mmsid) ){
+	$response_ref =  {
+	    error => "missing parameter (username: $username - library: $library - mmsid: $mmsid / holdingid: $combinedid)",
+	};
+
+	return $response_ref;
+    }
+
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    {
+	my $json_result_ref = {};
+	
+	if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
+	    
+	    $logger->debug("Making reservation via ALMA API");
+
+
+	    my $alma_userid = $self->get_externalid_of_user($username);
+
+	    unless ($alma_userid){
+		$response_ref =  {
+		    error => "No ALMA userid found",
+		};
+		
+		return $response_ref;
+	    }
+	    
+	    my $api_key = $config->get('alma')->{'api_key'};
+	    
+	    my $url     = "";
+
+	    if ($type eq "by_title"){ # Teilqualifizierte Vormerkung
+		$url = $config->get('alma')->{'api_baseurl'}."/bibs/$mmsid/request-options?apikey=$api_key&user_id=$alma_userid";
+	    }
+	    else {
+		unless ($holdingid && $itemid){
+		    $response_ref =  {
+			error => "missing parameter (username: $username - library: $library - mmsid: $mmsid)",
+		    };
+		    
+		    return $response_ref;
+		}
+		
+		$url = $config->get('alma')->{'api_baseurl'}."/bibs/$mmsid/holdings/$holdingid/items/$itemid/request-options?apikey=$api_key&user_id=$alma_userid";
+	    }
+	    
+	    if ($logger->is_debug()){
+		$logger->debug("Request URL: $url");
+	    }
+	    
+	    my $request = HTTP::Request->new('GET' => $url);
+	    $request->header('accept' => 'application/json');
+	    
+	    my $response = $ua->request($request);
+	    
+	    if ($logger->is_debug){
+		$logger->debug("Response: ".$response->content);
+	    }
+	    
+	    if (!$response->is_success && $response->code != 400) {
+		$logger->info($response->code . ' - ' . $response->message);
+		return;
+	    }
+	    
+	    eval {
+		$json_result_ref = decode_json $response->content;
+	    };
+	    
+	    if ($@){
+		$logger->error('Decoding error: '.$@);
+	    }
+	}
+	
+	# Allgemeine Fehler
+	if (defined $json_result_ref->{'errorsExist'} && $json_result_ref->{'errorsExist'} eq "true" ){
+	    $response_ref = {
+		"code" => 400,
+		    "error" => "error",
+		    "error_description" => $json_result_ref->{'errorList'}{'error'}[0]{'errorMessage'},
+	    };
+	    
+	    if ($logger->is_debug){
+		$response_ref->{debug} = $json_result_ref;
+	    }
+	    
+	    return $response_ref;
+	}
+
+	# Todo
+	
+        # Auswertung: Vormerkung nicht moeglich
+	if (1){
+	    $response_ref = {
+		"code" => 403,
+		    "error" => "already lent",
+		    "error_description" => $json_result_ref->{Vormerkung}{NotOK},
+	    };
+	    
+	    if ($logger->is_debug){
+		$response_ref->{debug} = $json_result_ref;
+	    }
+	    
+	    return $response_ref	
+	}
+	# oder: Vormerkung erfolgreich
+	elsif (1){
+	    $response_ref = {
+		"successful" => 1,
+		    "message"   => $json_result_ref->{Vormerkung}{OK},
+		    "author"    => $json_result_ref->{Vormerkung}{Verfasser},
+		    "title"     => $json_result_ref->{Vormerkung}{Titel},
+		    "holdingid" => $json_result_ref->{Vormerkung}{MedienNummer},
+	    };
+	    
+	    if ($logger->is_debug){
+		$response_ref->{debug} = $json_result_ref;
+	    }
+	    
+	    return $response_ref	
+	}
+    }
+
+    $response_ref = {
+	"code" => 400,
+	    "error" => "error",
+	    "error_description" => "General error",
+    };
+    
     return $response_ref;
 }
 

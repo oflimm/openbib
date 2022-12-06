@@ -12,7 +12,7 @@
 [% item = similar_record.get_fields %]
 
 [% item_location = similar_record.get_locations.first %]
-[% similar_url = "${path_prefix}/${config.get('databases_loc')}/id/${similar_record.database}/${config.get('titles_loc')}/id/${similar_record.id}.html" %]
+[% similar_url = "${path_prefix}/${config.get('databases_loc')}/id/${similar_record.database}/${config.get('titles_loc')}/id/${similar_record.get_encoded_id}.html" %]
 [%# Titel konstruieren %]
 [%- title = item.${'T0331'}.first.content -%]
 [%- IF item.${'T0310'}.first.content -%]

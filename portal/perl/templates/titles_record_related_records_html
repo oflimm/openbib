@@ -25,7 +25,7 @@
 [% FOREACH related_record IN related_records.sort({order = 'asc', type = 'title'}).get_records %]
 [% item = related_record.get_fields %]
 [% item_location = related_record.get_locations.first %]
-[% related_url = "${path_prefix}/${config.get('databases_loc')}/id/${related_record.database}/${config.get('titles_loc')}/id/${related_record.id}.html?l=${lang}" %]
+[% related_url = "${path_prefix}/${config.get('databases_loc')}/id/${related_record.database}/${config.get('titles_loc')}/id/${related_record.get_encoded_id}.html?l=${lang}" %]
 [%# Titel konstruieren %]
 [%- title = item.${'T0331'}.first.content -%]
 [%- IF item.${'T0310'}.first.content -%]

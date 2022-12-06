@@ -24,7 +24,7 @@
 <ul class="list-group">
 [% FOREACH same_record IN same_records.get_records %]
 [% item_location = same_record.get_locations.first %]
-[% same_url = "${path_prefix}/${config.get('databases_loc')}/id/${same_record.database}/${config.get('titles_loc')}/id/${same_record.id}.html" %]
+[% same_url = "${path_prefix}/${config.get('databases_loc')}/id/${same_record.database}/${config.get('titles_loc')}/id/${same_record.get_encoded_id}.html" %]
 <li class="list-group-item"><a href="[% same_url %]">[% locinfo.get('identifier').${item_location}.description %]</a></li>
 [% END %]
 </ol>

@@ -117,7 +117,7 @@
        <li>
       
           
-              <a href="https://www.portal.uni-koeln.de/9468.html">Datenschutzerklärung</a>
+              <a href="[% path_prefix %]/info/datenschutz.html">Datenschutzerklärung</a>
            
           
               

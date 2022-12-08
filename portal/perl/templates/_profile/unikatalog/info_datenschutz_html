@@ -133,8 +133,7 @@ der KUG Nutzerdatenbank gelöscht. Es handelt sich um folgende
 Informationen:</p>
 
 <ul>
-<li>Personenbezogene Grunddaten: Nachname, Vorname und E-Mailadresse</li>
-<li>Personenbezogene Ausleihinformationen: Guthaben, Soll, Offene Gebühren, Ausgeliehene/Vorgemerkte/Bestellte Medien, bestehende Bibliothekskonto-Sperrung samt Begr&uuml;ndung und Sperrdatum)
+<li>Personenbezogene Grunddaten: Nachname, Vorname</li>
 </ul>
 
 <h4>Daten über die Nutzung des Dienstes</h4>
@@ -187,11 +186,16 @@ Dienste (Mashups)</h3>
 <h4>Coverbilder</h4>
 
 <p>Bei der Nutzung dieses Dienstes werden ggf. Coverbilder zu
-gefundener Literatur von einer externen Quelle - der OpenLibrary -
-eingebunden. Das Coverbild wird vom Webbrowser des Nutzers damit
-effektiv von den Web-Servern der OpenLibrary angefordert und
-hinterlässt ggf. dort personenbezogene Daten wie z.B. die IP-Adresse
-des Nutzers, Informationen zum verwendeten Webbrowser usw.</p>
+gefundener Literatur von einer externen Quelle - hier <a
+href="https://www.buchhandel.de/" target="_blank">VLB</a> -
+eingebunden. Das Coverbild wird für den Nutzers von der
+Recherche-Infrastrktur bei VLB unter Weitergabe des personenbezogenen
+Datums, der IP-Adresse des Nutzers, über den
+sog. X-Forwarded-For-Header angefordert. Die Recherche-Infrastruktur
+schirmt den Nutzer damit bestmöglich vor dem externen Dienst ab und
+stellt sicher, dass nicht weitere Daten über den Nutzer, wie
+z.B. Informationen zum verwendeten Web-Browser, ggf. Werbe-Cookies
+usw. an den externen Dienst übertragen werden.</p>
 
 <h4>Kartenmaterial</h4>
 
@@ -212,8 +216,9 @@ vorgenommen, um einen dort ggf. verfügbaren Volltext oder zumindest
 Textauszüge des Buches abzufragen und für den Nutzer a) die Art des
 möglichen Zugriffs zu signalisieren (Volltext, Auszug) und b) zu
 verlinken. Durch die Integration der Abfrage an Google in unseren
-Dienst werden ausser der IP-Adresse keine weiteren Informationen an
-Google weitergeleitet, wie z.B. Webbrowser, Cookies usw.</p>
+Dienst werden ausser der IP-Adresse (s.o.) keine weiteren
+Informationen an Google weitergeleitet, wie z.B. Webbrowser, Cookies
+usw.</p>
 
 <h4>Verlinkung zu korrespondieren Titel in Bibsonomy</h4>
 
@@ -230,7 +235,6 @@ Cookies usw.</p>
 <p>Nutzergenerierte Daten wie Merklisteneintr&auml;ge, Literaturlisten
 und Tags k&ouml;nnen durch den Nutzer jederzeit gel&ouml;scht
 werden.</p>
-
 
 <p>Ebenso ist es jedem angemeldeten Nutzer möglich seine Kennung in
 der Nutzerdatenbank der KUG Recherche-Infrastruktur mit allen

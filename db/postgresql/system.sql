@@ -316,6 +316,7 @@ CREATE TABLE searchhistory (
  queryid      BIGINT
 );
 
+-------------------------------------------------
 -- Users and user generated data               --   
 -------------------------------------------------
 
@@ -335,7 +336,7 @@ CREATE TABLE userinfo (
  login_failure   BIGINT default 0,
  status          TEXT,
  
- /* User informatin from library system */
+ /* User information from library system */
  nachname   TEXT,
  vorname    TEXT,
  sperre     TEXT,

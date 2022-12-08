@@ -20,12 +20,12 @@ Köln</a> mit dem dort genannten Verantwortlichen und
 Datenschutzbeauftragten.<p>
 
 <p>Im Folgenden werden datenschutzrechlich relevante Spezifika der
-Web-Portale - wie diesem - er&ouml;rtert, die mithilfe der KUG
+Web-Portale - wie diesem - er&ouml;rtert, die mithilfe der USB
 Recherche-Infrastruktur betrieben werden.</p>
 
 <h3>Web-Protokolle (Logdateien)</h3>
 
-<p>Anfragen von Endnutzern an die KUG Recherche-Infrastruktur werden
+<p>Anfragen von Endnutzern an die USB Recherche-Infrastruktur werden
 technisch von einem Lastverteiler (haproxy) auf verschiedene
 Web-Server im Backend verteilt, die sie beantworten.</p>
 
@@ -73,7 +73,7 @@ enf&auml;llt.</p>
 
 <h3>Cookies</h3>
 
-<p>Wir verwenden in den Recherche-Portalen der KUG
+<p>Wir verwenden in den Recherche-Portalen der USB
 Recherche-Infrastruktur so genannte Cookies. Cookies sind kleine
 Textdateien, die Ihr Browser auf Ihrem Rechner speichert und unserem
 Server schickt, wenn Sie unsere Seiten besuchen. Cookies richten auf
@@ -108,8 +108,8 @@ sog. Double-Opt-In Verfahren verwendet, bei dem Sie zun&auml;chst eine
 Bestätigungsmail mit einem Web-Link erhalten. Erst durch dessen Aufruf
 wird das Konto im Portal unter Ihrer E-Mail-Adresse angelegt.</p>
 
-<p>Grunds&auml;tzlich verwendet die KUG Recherche-Infrastruktur eine
-eigene Nutzerdatenbank (KUG Nutzerdatenbank), in der jeder Nutzer nach
+<p>Grunds&auml;tzlich verwendet die USB Recherche-Infrastruktur eine
+eigene Nutzerdatenbank (USB Nutzerdatenbank), in der jeder Nutzer nach
 erstmaliger Anmeldung mit einem Bibliotheksausweis oder nach
 Selbstregistrierung mit seiner E-Mailadresse eine interne Nutzernummer
 zugeweisen bekommt, unter der personenbezogene Basis-Informationen,
@@ -129,7 +129,7 @@ die Kopplung mit unserem Bibliothekssystem weitere Daten
 zwischengespeichert. Entweder sofort mit der Abmeldung des Nutzers
 oder automatisch nach spätestens 24 Stunden - falls diese nicht durch
 den Nutzer erfolgt - werden diese Informationen aus seinem Eintrag in
-der KUG Nutzerdatenbank gelöscht. Es handelt sich um folgende
+der USB Nutzerdatenbank gelöscht. Es handelt sich um folgende
 Informationen:</p>
 
 <ul>
@@ -154,7 +154,7 @@ des Dienstes benötigt. Dazu gehören u.a.</p>
 <p>Diese Informationen werden grunds&auml;tzlich <b>anonym und ohne
 Personenbezug</b> unter einer zuf&auml;llig erzeugten Sitzungs-ID
 (z.B. 354b5be395fe06ee0121ab87f364b218) für die Dauer einer Sitzung
-gespeichert und danach in einer eigenen KUG Statistikdatenbank
+gespeichert und danach in einer eigenen USB Statistikdatenbank
 archiviert. Hat sich der Nutzer am Dienst mit seiner Kennung
 angemeldet (eingeloggt), dann werden diese Daten temporär mit seiner
 Person verknüpft, stellen also personenbezogene Daten dar. Mit dem
@@ -163,7 +163,7 @@ anonymen Daten</b> werden, wie die eines nicht angemeldeten Nutzers,
 archiviert. </p>
 
 <p>Anhand dieser Informationen k&ouml;nnen die verschiedenen Dienste
-der KUG Recherche-Infrastruktur generell verbessert werden. So
+der USB Recherche-Infrastruktur generell verbessert werden. So
 k&ouml;nnen z.B. automatisiert Hilfestellungen für Nutzer gegeben
 werden - wie z.B. das Auffinden besonders populärer Titel zu einer
 Suchanfrage oder Hinweise auf thematisch relevante Empfehlungen zu
@@ -173,10 +173,10 @@ einem Titel.</p>
 
 <h4>Bibsonomy</h4>
 
-<p>Zur Übertragung von bibliographischen Daten aus der KUG
+<p>Zur Übertragung von bibliographischen Daten aus der USB
 Recherche-Infrastruktur an Bibsonomy - einem Social Bookmark und
 Publication Sharing Dienst - kann der Nutzer in Recherche-Portalen der
-KUG Recherche-Infrastruktur seinen Bibsonomy API Usernamen und Key
+USB Recherche-Infrastruktur seinen Bibsonomy API Usernamen und Key
 abspeichern.</p>
 
 
@@ -230,25 +230,25 @@ unseren Dienst werden ausser der IP-Adresse keine weiteren
 Informationen an Bibsonomy weitergeleitet, wie z.B. Webbrowser,
 Cookies usw.</p>
 
-<h3>Löschung aller Daten in der KUG Nutzerdatenbank</h3>
+<h3>Löschung aller Daten in der USB Nutzerdatenbank</h3>
 
 <p>Nutzergenerierte Daten wie Merklisteneintr&auml;ge, Literaturlisten
 und Tags k&ouml;nnen durch den Nutzer jederzeit gel&ouml;scht
 werden.</p>
 
 <p>Ebenso ist es jedem angemeldeten Nutzer möglich seine Kennung in
-der Nutzerdatenbank der KUG Recherche-Infrastruktur mit allen
+der Nutzerdatenbank der USB Recherche-Infrastruktur mit allen
 verbundenen Daten zu löschen. Dazu gehören auch alle
 Merklisteneinträge, Literaturlisten und Tags. Das ist sowohl für dort
 selbstregistrierte Nutzer möglich, wie auch für Nutzer, die sich dort
 mit der Nutzernummer ihres Bibliotheksausweis angemeldet haben.</p>
 
 <p>Eine Löschung der Kennung des Bibliotheksausweises in dem von der
-KUG Nutzerdatenbank separaten Bibliothekssystem ist nur bei einem
+USB Nutzerdatenbank separaten Bibliothekssystem ist nur bei einem
 Mitarbeiter der jeweiligen Bibliothek vor Ort möglich.</p>
 
 <p>Solange die Kennung eines Nutzers im Bibliothekssystem nicht
 gelöscht wurde, kann sich ein Nutzer - auch nach Löschung seiner Daten
-in der KUG Nutzerdatenbank - weiterhin an diesem Portal anmelden. Es
-wird bei der Anmeldung dann automatisch ein neuer Eintrag in der KUG
+in der USB Nutzerdatenbank - weiterhin an diesem Portal anmelden. Es
+wird bei der Anmeldung dann automatisch ein neuer Eintrag in der USB
 Nutzerdatenbank mit einer anderen lokalen Nutzer-ID erzeugt.</p>

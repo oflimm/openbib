@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2022-09-12 10:59+0100\n"
+"PO-Revision-Date: 2022-12-09 10:06+0100\n"
 "Last-Translator: openbib <flimm@openbib.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -28910,7 +28910,7 @@ msgstr "Media in Wikicommons"
 #: ../templates/_profile/yaml4/visible_categories_person:37
 #: ../templates/visible_categories_person:37
 msgid "P0312"
-msgstr "PND"
+msgstr "GND"
 
 #: ../templates/_database/jesuiten/visible_categories_person:38
 #: ../templates/_profile/bootstrap5/_view/unikatalog/visible_categories_person:42

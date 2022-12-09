@@ -84,7 +84,7 @@ FOREACH category IN categories;
          END;
 
          icons     = "<div class=\"float-right\">${normdataicon}</div>";
-         content   = "${icons}<a class=\"inturl\" href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         content   = "${icons}${highlightquery(searchquery,item.content)} ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
          thisid     = encode_id(item.id);
@@ -109,7 +109,7 @@ FOREACH category IN categories;
 
          icons     = "<div class=\"float-right\">${rssfeed}${normdataicon}</div>";
 
-         content   = "${icons}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         content   = "${icons}${highlightquery(searchquery,item.content)} ${item.supplement}";
 
     CASE "T0331";
          content   = "<b>${highlightquery(searchquery,content)}</b>";

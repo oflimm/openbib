@@ -79,7 +79,7 @@ FOREACH category IN categories;
 
          normdataicon = "";
 
-         IF thisid && catalog_has_authorities ;
+         IF thisid ;
             normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Personen-Information\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
          END;
 

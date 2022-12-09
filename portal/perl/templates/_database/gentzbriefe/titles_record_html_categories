@@ -114,6 +114,21 @@ FOREACH category IN categories;
     CASE "T0331";
          content   = "<b>${highlightquery(searchquery,content)}</b>";
 
+    CASE "T0410";
+           thiscontent = [];
+           FOREACH thisitem IN normdata.${"T2410"} ;
+             IF thisitem.subfield == 'a' ;
+                thiscontent.push("<a class=\"exturl\" href=\"${thisitem.content}\" target=\"_blank\">GeoNames</a>") ;
+             END ;
+             IF thisitem.subfield == 'b' ;
+                thiscontent.push("<a class=\"exturl\" href=\"${thisitem.content}\" target=\"_blank\">GND</a>") ;
+             END ;
+           END ;
+
+         IF thiscontent.size > 0;
+            content   = "${content} (${thiscontent.join(', ')})" ;
+         END;
+
 #    CASE [ "T0531" "T0533" ];
 #         IF content.match("---&gt;: ") ;
 #            previssues = content.split("---&gt;: ");

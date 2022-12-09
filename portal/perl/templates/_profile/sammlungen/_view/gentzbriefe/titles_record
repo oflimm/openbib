@@ -22,6 +22,8 @@
       'active_submenu' = 'database'
       'database' = databaseinfo.dbname
 
+      'show_modal_template' = "titles_record_html_modals"
+
       # 'active_menu' = ''
       'breadcrumb' = [
           {

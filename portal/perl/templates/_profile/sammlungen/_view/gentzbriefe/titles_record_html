@@ -52,6 +52,15 @@
     src = from_json(normdata.${"T0001"}.first.content);
   END;
 
+
+  IF src.defined("sent_location_original") ;
+      normdata.${"Ausstellort"} = [{
+         content  = src.${"sent_location_original"}
+	 mult     = 1
+ 	 subfield = ''
+      }];
+  END;
+
 -%]
 
 [% IF NOT hide_detail && NOT hide_hit %]

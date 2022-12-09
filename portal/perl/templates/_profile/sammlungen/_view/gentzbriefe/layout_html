@@ -48,6 +48,12 @@
   });
 </script>
 
+[% IF show_modal_template && NOT hide_detail && NOT hide_hit %]
+
+[%   PROCESS common/subtemplate name=show_modal_template %]
+
+[% END %]
+
 
   <div class="wrapper container-fluid">
 

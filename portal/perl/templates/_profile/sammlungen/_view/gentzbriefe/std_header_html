@@ -115,6 +115,7 @@
 <script src="/js/Chart.bundle.min.js"></script>
 <script src="/js/chartjs-plugin-annotation.min.js"></script>
 <script src="/js/nouislider.min.js"></script>
+<script src="/js/htmx.min.js"></script>
 
 <script type="text/javascript" src="/js/jquery-migrate-1.0.0.js"></script>
 <script type="text/javascript" src="/js/cloud-zoom.1.0.2a.min.js"></script>

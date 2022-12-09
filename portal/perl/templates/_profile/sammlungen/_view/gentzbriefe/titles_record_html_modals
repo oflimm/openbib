@@ -33,12 +33,12 @@ function copy_to_clipboard(formatid) {
         FOREACH thisitem IN normdata.${"T2410"} ;
              IF thisitem.subfield == 'a' ;
 %]	     
-            <tr><th>[% msg.maketext("GeoNames") %]</th><td><a class="exturl" href="${thisitem.content}" target=\"_blank\">[% thisitem.content %]</a></td></tr>
+            <tr><th>[% msg.maketext("GeoNames") %]</th><td><a class="exturl" href="[% thisitem.content %]" target=\"_blank\">[% thisitem.content %]</a></td></tr>
 [%
              END ;
              IF thisitem.subfield == 'b' ;
 %]	     
-            <tr><th>[% msg.maketext("GND") %]</th><td><a class="exturl" href="${thisitem.content}" target=\"_blank\">[% thisitem.content %]</a></td></tr>
+            <tr><th>[% msg.maketext("GND") %]</th><td><a class="exturl" href="[% thisitem.content %]" target=\"_blank\">[% thisitem.content %]</a></td></tr>
 [%	    
              END ;
            END;

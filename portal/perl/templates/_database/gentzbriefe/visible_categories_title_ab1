@@ -17,7 +17,7 @@
                 'T0451', # msg.maketext("T0451-gentzbriefe") Basisdaten erhoben am:
                 'T0100', # msg.maketext("T0100-gentzbriefe") Briefaussteller
                 'T0101', # msg.maketext("T0101-gentzbriefe") Briefempfaenger
-                'T0410', # msg.maketext("T0410-gentzbriefe") Ausstellungsort
+                'Ausstellort', # msg.maketext("T0410-gentzbriefe") Ausstellungsort
                 'T0424', # msg.maketext("T0424-gentzbriefe") Datum
                 'T0523', # msg.maketext("T0523-gentzbriefe") Praesentationsvermerk (presented_on)
                 'T0336', # msg.maketext("T0336-gentzbriefe") Incipit

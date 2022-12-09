@@ -114,6 +114,11 @@ FOREACH category IN categories;
     CASE "T0331";
          content   = "<b>${highlightquery(searchquery,content)}</b>";
 
+    CASE "Ausstellort";
+         normdataicon = "&nbsp;<a href=\"#\" title=\"Ausstellort normiert\" data-toggle=\"modal\" data-target=\"#locationModal\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+         icons     = "<div class=\"float-right\">${normdataicon}</div>";
+         content   = "${icons}${highlightquery(searchquery,item.content)}";
+
     CASE "T0410";
            thiscontent = [];
            FOREACH thisitem IN normdata.${"T2410"} ;

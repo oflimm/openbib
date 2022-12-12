@@ -55,6 +55,9 @@ FOREACH category IN categories;
 
     SWITCH category;
 
+    CASE "P0800";
+         categoryout = "Name";   
+
     CASE "P0806";
          SWITCH subfield ;
             CASE "a";

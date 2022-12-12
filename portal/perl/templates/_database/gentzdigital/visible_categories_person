@@ -13,7 +13,7 @@
 -%]
 [%# Ausgabekategorien %]
 [%- categories = [
-                 'P0800', # msg.maketext("P0800") Ansetzung
+                 'P0800', # msg.maketext("P0800") Name / Ansetzung
 	         'P0830', # msg.maketext("P0830") Verweisung
 	         'P0806', # msg.maketext("P0806") Daten zur Person
 

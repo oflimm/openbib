@@ -428,12 +428,6 @@ sub threadC {
 
     autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['alff','muenzen','totenzettel','umschlaege','zpe','kups','gdea','inst526earchive'] });
 
-    $logger->info("### gentzdigital");
-    
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['gentzdigital'] });
-    
-    system("$config->{'base_dir'}/bin/gen_metrics.pl --database=gentzdigital --type=5 --num=100");
-
     ##############################    
 
     $logger->info("### Master: inst301");

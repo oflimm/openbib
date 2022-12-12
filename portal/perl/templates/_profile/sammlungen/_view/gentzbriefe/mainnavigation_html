@@ -52,7 +52,7 @@
 <!-- Targs: [% USE dumper; dumper.dump(layout_param) %] -->
 
 <nav id="ob-navbar_top" class="navbar navbar-expand-lg navbar-light">
-  <a class="navbar-brand" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]"><span class="brand-title"><img src="/images/openbib/views/gentzbriefe/map-logo.png" class="img-fluid d-none d-sm-inline"  />Gentz digital</span></a> &nbsp;<span class="d-none d-lg-block text-white">Verzeichnis der Briefe von und an Friedrich Gentz (1764-1832)</span>
+  <a class="navbar-brand" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]"><span class="brand-title"><img src="/images/openbib/views/gentzbriefe/map-logo.png" class="img-fluid d-none d-sm-inline"  />Gentz digital</span></a> &nbsp;<span class="d-none d-lg-block text-white">[% msg.maketext("Verzeichnis der Briefe von und an Friedrich Gentz") %] (1764-1832)</span>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01,#ob-sidebar" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>

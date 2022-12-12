@@ -7684,7 +7684,7 @@ convtab:
       '0595': 1
       '2662': 1
       '4400': 1
-  gentzbriefe:
+  gentzdigital:
     listitemcat:
       'tag': 1
       'litlist': 1
@@ -8250,7 +8250,7 @@ convtab:
         '':
           index:
             'freesearch': 1
-  gentzdigital:
+  gentzdigital_legacy:
     inverted_title:
       'tag':
         '':

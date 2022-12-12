@@ -38,7 +38,7 @@
       [%-
       ELSIF this_representation.type == 'rss' ;
       -%]
-<a class="ob-representation_rss" href="[% this_representation.url %]">RSS</a>
+<a class="ob-representation_rss" href="[% this_representation.url %]"><i class="fas fa-rss"></i></a>
       [%-
       END ; 
    END -%]

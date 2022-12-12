@@ -332,11 +332,14 @@ END;
 </p>
 [% END %]
 
+[% IF config.get('active_yewno') %]
 <h4 class="mt-2">[% msg.maketext("Konzepte aus Yewno Discover") %] <a href="https://yewno.ub.uni-koeln.de" target="_blank"><i class="far fa-question-circle"></i></a></h4>
 
 <div class="images"><!-- Begin Images -->
 [% PROCESS common/subtemplate name="persons_record_html_images" %]
 </div><!-- End Images -->
+
+[% END # END active_yewno %]
 
 </div><!-- End row -->
 </div><!-- End Details -->

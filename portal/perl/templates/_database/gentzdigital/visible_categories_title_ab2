@@ -13,11 +13,11 @@
 -%]
 [%-# Ausgabekategorien -%]
 [%- categories = [
-                'T0412', # msg.maketext("T0412-gentzbriefe") Archiv
-                'T0413', # msg.maketext("T0413-gentzbriefe") Status		
-                'T1664', # msg.maketext("T1664-gentzbriefe") Archivangaben
-#                'T0433', # msg.maketext("T0433-gentzbriefe") Format und Umfang
-                'T0525', # msg.maketext("T0525-gentzbriefe") Besondere Ueberlieferung (transmission_type)
+                'T0412', # msg.maketext("T0412-gentzdigital") Archiv
+                'T0413', # msg.maketext("T0413-gentzdigital") Status		
+                'T1664', # msg.maketext("T1664-gentzdigital") Archivangaben
+#                'T0433', # msg.maketext("T0433-gentzdigital") Format und Umfang
+                'T0525', # msg.maketext("T0525-gentzdigital") Besondere Ueberlieferung (transmission_type)
                 ]
 
 -%]

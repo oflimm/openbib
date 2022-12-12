@@ -13,12 +13,12 @@
 -%]
 [%-# Ausgabekategorien -%]
 [%- categories = [
-                'T0490', # msg.maketext("T0490-gentzbriefe") Signatur
-                'T0491', # msg.maketext("T0491-gentzbriefe") Ordner/Mikrofilm
-                'T0492', # msg.maketext("T0492-gentzbriefe") Bildnummern (Mikrofilm)
-                'T0480', # msg.maketext("T0480-gentzbriefe") Transkriptionsentwurf: Autor
-                'T0482', # msg.maketext("T0482-gentzbriefe") Transkriptionsform
-                'T0334', # msg.maketext("T0334-gentzbriefe") Xerokopie des Originals
+                'T0490', # msg.maketext("T0490-gentzdigital") Signatur
+                'T0491', # msg.maketext("T0491-gentzdigital") Ordner/Mikrofilm
+                'T0492', # msg.maketext("T0492-gentzdigital") Bildnummern (Mikrofilm)
+                'T0480', # msg.maketext("T0480-gentzdigital") Transkriptionsentwurf: Autor
+                'T0482', # msg.maketext("T0482-gentzdigital") Transkriptionsform
+                'T0334', # msg.maketext("T0334-gentzdigital") Xerokopie des Originals
                 ]
 
 -%]

@@ -47,9 +47,9 @@ my $dbinfo = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 my $filename = $dbinfo->titlefile;
 
 print "### $pool: Metriken erstellen und cachen\n";
-system("/opt/openbib/bin/gen_metrics.pl --database=gentzbriefe --type=14 --field=0425");
-system("/opt/openbib/bin/gen_metrics.pl --database=gentzbriefe --type=14 --field=0800");
-system("/opt/openbib/bin/gen_metrics.pl --database=gentzbriefe --type=14 --field=0511");
-system("/opt/openbib/bin/gen_metrics.pl --database=gentzbriefe --type=14 --field=0200");
-system("/opt/openbib/bin/gen_metrics.pl --database=gentzbriefe --type=14 --field=0410");
-system("/opt/openbib/bin/gen_metrics.pl --database=gentzbriefe --type=14 --field=0015");
+system("/opt/openbib/bin/gen_metrics.pl --database=gentzdigital --type=14 --field=0425");
+system("/opt/openbib/bin/gen_metrics.pl --database=gentzdigital --type=14 --field=0800");
+system("/opt/openbib/bin/gen_metrics.pl --database=gentzdigital --type=14 --field=0511");
+system("/opt/openbib/bin/gen_metrics.pl --database=gentzdigital --type=14 --field=0200");
+system("/opt/openbib/bin/gen_metrics.pl --database=gentzdigital --type=14 --field=0410");
+system("/opt/openbib/bin/gen_metrics.pl --database=gentzdigital --type=14 --field=0015");

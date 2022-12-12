@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2022-12-12 10:22+0100\n"
+"PO-Revision-Date: 2022-12-12 14:37+0100\n"
 "Last-Translator: openbib <flimm@openbib.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -3195,7 +3195,7 @@ msgstr "General catalog information"
 #: ../templates/_profile/unikatalog/admin_databases_record_edit_html:213
 #: ../templates/admin_databases_record_edit_html:215
 msgid "Alma"
-msgstr ""
+msgstr "Alma"
 
 #: ../templates/_profile/kug_yaml4/info_help:122
 msgid ""
@@ -3602,9 +3602,8 @@ msgstr ""
 #: ../templates/_profile/unikatalog/admin_databases_record_html:43
 #: ../templates/admin_databases_record_edit_html:205
 #: ../templates/admin_databases_record_html:43
-#, fuzzy
 msgid "Anbindung Ausleihsystem"
-msgstr "Loan"
+msgstr "Connection ILS"
 
 #: ../templates/_database/einbaende/titles_record_html:267
 #: ../templates/_profile/bootstrap/_view/fidphil/titles_record_html:192
@@ -4795,9 +4794,8 @@ msgid "Art des Feeds"
 msgstr "Type of feed"
 
 #: ../templates/_profile/unikatalog/search_history_include:51
-#, fuzzy
 msgid "Artikel"
-msgstr "Author of article"
+msgstr "Article"
 
 #: ../templates/_profile/bootstrap5/info_feedback:37
 #: ../templates/_profile/bootstrap5/info_navigation:20
@@ -5506,7 +5504,7 @@ msgstr "Volume"
 
 #: ../templates/_profile/unikatalog/_view/bcw1/search_facet:556
 msgid "Basecamp Wave"
-msgstr ""
+msgstr "Basecamp Wave"
 
 #: ../templates/_profile/bootstrap/_view/eds/mainnavigation_html:81
 #: ../templates/_profile/bootstrap/_view/games/mainnavigation_html:81
@@ -7311,7 +7309,7 @@ msgstr "Orders"
 
 #: ../templates/_profile/unikatalog/_view/usb/locations_record_include:28
 msgid "Besucher*innen aktuell"
-msgstr ""
+msgstr "Current visitors"
 
 #: ../templates/_profile/bootstrap5/cartitems_mail_html:34
 #: ../templates/_profile/rheinlandbib_yaml4/cartitems_mail:65
@@ -8239,9 +8237,8 @@ msgid "Bände/Stücktitel anzeigen"
 msgstr "Show volumes"
 
 #: ../templates/_profile/unikatalog/search_history_include:55
-#, fuzzy
 msgid "Bücher"
-msgstr "Books &amp; more"
+msgstr "Books"
 
 #: ../templates/_profile/bootstrap5/_view/unikatalog/searchforms_record_profile:32
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/searchforms_record_profile:32
@@ -8262,9 +8259,8 @@ msgstr "Books &amp; more"
 
 #: ../templates/_profile/unikatalog/_view/unikatalog/home_html:160
 #: ../templates/_profile/unikatalog/_view/unikatalog/mainnavigation_html:319
-#, fuzzy
 msgid "Bücher, E-Medien, Aufsätze &amp; mehr"
-msgstr "University catalog - books, e-media, articles &amp; more"
+msgstr "Books, e-media, articles &amp; more"
 
 #: ../templates/_profile/unikatalog/users_circulations_html:17
 msgid "Bücher: Ausleihen / Fernleihen"
@@ -8516,7 +8512,7 @@ msgstr "Edit cluster"
 #: ../templates/_profile/unikatalog/admin_databases_record_edit_html:214
 #: ../templates/admin_databases_record_edit_html:216
 msgid "DAIA"
-msgstr ""
+msgstr "DAIA"
 
 #: ../templates/_profile/bootstrap5/admin_databases_record_edit_html:211
 msgid "DAIA Zugriffs-URL"
@@ -8570,9 +8566,8 @@ msgstr "DB-Name"
 #: ../templates/_profile/unikatalog/admin_databases_record_html:45
 #: ../templates/admin_databases_record_edit_html:222
 #: ../templates/admin_databases_record_html:45
-#, fuzzy
 msgid "DB-Name im Lokalsystem (USBWS)"
-msgstr "OLWS DB-name in the local system"
+msgstr "DB-name in the local system"
 
 #: ../templates/_profile/bootstrap5/topics_mappings_html:80
 #: ../templates/_profile/bootstrap5/topics_record_html:78
@@ -8890,9 +8885,8 @@ msgstr ""
 
 #: ../templates/_profile/unikatalog/_view/dante/home_html:225
 #: ../templates/_profile/unikatalog/_view/sammlungen/home_html:225
-#, fuzzy
 msgid "Das Portal"
-msgstr "Portal"
+msgstr "The Portal"
 
 #: ../templates/_profile/rheinlandbib_yaml4/titles_fields_record_html:61
 #: ../templates/_profile/sammlungen_yaml4/_view/richter/browse_title_html:69
@@ -9919,9 +9913,8 @@ msgstr ""
 
 #: ../templates/_profile/unikatalog/_view/dante/home_html:233
 #: ../templates/_profile/unikatalog/_view/sammlungen/home_html:233
-#, fuzzy
 msgid "Die Sammlungen"
-msgstr "My collection"
+msgstr "The collections"
 
 #: ../templates/_profile/bootstrap5/info_help:556
 #: ../templates/_profile/kug_yaml4/info_help:479
@@ -10627,9 +10620,8 @@ msgid "Dr."
 msgstr "Dr."
 
 #: ../templates/_profile/unikatalog/visible_categories_title_article_supplement:95
-#, fuzzy
 msgid "Druckausgabe"
-msgstr "Edition"
+msgstr "Print edition"
 
 #: ../templates/_profile/unikatalog/cartitems_html_modals:26
 #: ../templates/_profile/unikatalog/litlists_html_modals:26
@@ -14818,9 +14810,8 @@ msgstr "Firefox Search-Plugin"
 
 #: ../templates/_profile/unikatalog/_view/dante/home_html:241
 #: ../templates/_profile/unikatalog/_view/sammlungen/home_html:241
-#, fuzzy
 msgid "Forschung"
-msgstr "Proposals"
+msgstr "Research"
 
 #: ../templates/_profile/bootstrap5/info_help:1031
 #: ../templates/_profile/kug_yaml4/info_help:931
@@ -15319,7 +15310,7 @@ msgstr "For further searches we recommend the following databases."
 
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html_modals:41
 msgid "GND"
-msgstr ""
+msgstr "GND"
 
 #: ../templates/_profile/bootstrap5/users_migration_html:30
 #: ../templates/_profile/rheinlandbib_yaml4/users_migration_html:69
@@ -15521,9 +15512,8 @@ msgid "Genutzte Browser"
 msgstr "Used Browser"
 
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html_modals:36
-#, fuzzy
 msgid "GeoNames"
-msgstr "Name"
+msgstr "GeoNames"
 
 #: ../templates/_profile/bootstrap5/titles_dbis_recommendations_html:27
 #: ../templates/_profile/bootstrap5/titles_dbis_recommendations_include:24
@@ -17277,7 +17267,6 @@ msgstr ""
 "an authenticated user."
 
 #: ../templates/_profile/unikatalog/users_circulations_fees_include:50
-#, fuzzy
 msgid "Ihre offenen Gebühren"
 msgstr "Remaining fees"
 
@@ -20154,9 +20143,8 @@ msgstr "Japanese"
 
 #: ../templates/_profile/unikatalog/_view/dante/home_html:250
 #: ../templates/_profile/unikatalog/_view/sammlungen/home_html:250
-#, fuzzy
 msgid "Jenseits der USB"
-msgstr "Stock in the USB"
+msgstr "Beyond the USB"
 
 #: ../templates/_database/einbaende/titles_record_html:105
 #: ../templates/_database/einbaende/titles_record_html:93
@@ -21922,8 +21910,8 @@ msgstr "Move login"
 msgid "Konto-Migration"
 msgstr "Login migration"
 
-#: ../templates/_profile/unikatalog/persons_record_include:335
-#: ../templates/_profile/unikatalog/subjects_record_include:121
+#: ../templates/_profile/unikatalog/persons_record_include:336
+#: ../templates/_profile/unikatalog/subjects_record_include:123
 msgid "Konzepte aus Yewno Discover"
 msgstr "Concepts from Yewno Discover"
 
@@ -24778,18 +24766,16 @@ msgid "Medien"
 msgstr "Media"
 
 #: ../templates/_profile/unikatalog/browse_topics_record_html:52
-#, fuzzy
 msgid "Medien im Lesesaal"
-msgstr "Order into reading room"
+msgstr "Media in the reading room"
 
 #: ../templates/_profile/unikatalog/browse_topics_record_html:40
 msgid "Medien in der Lehrbuchsammlung"
-msgstr ""
+msgstr "Media in the Textbook Collection"
 
 #: ../templates/_profile/unikatalog/browse_topics_record_html:62
-#, fuzzy
 msgid "Medien nach Bibliothekssystematik"
-msgstr "Catalog title according to library classification"
+msgstr "Media according to library classification"
 
 #: ../templates/_profile/bootstrap5/subnavigation:53
 #: ../templates/_profile/bootstrap5/users_preferences_html:127
@@ -25164,6 +25150,10 @@ msgstr "Medium vs. Digital"
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:343
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:355
 #: ../templates/_profile/sammlungen/_view/digitalis/search_facet:367
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/home_html:101
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/home_html:111
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/home_html:121
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/home_html:92
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:186
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:197
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:208
@@ -28374,7 +28364,7 @@ msgstr "Authority search"
 
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html_modals:30
 msgid "Normierter Ort"
-msgstr ""
+msgstr "Normalized location"
 
 #: ../templates/_profile/bootstrap/_view/kubikoeln/searchforms_record_query:86
 #: ../templates/_profile/bootstrap5/_view/unikatalog/searchforms_record_query:87
@@ -30083,7 +30073,7 @@ msgstr "Persons ascending"
 msgid "Personen-Datei"
 msgstr "Person-File"
 
-#: ../templates/_profile/unikatalog/persons_record_include:344
+#: ../templates/_profile/unikatalog/persons_record_include:347
 msgid "Personen-Information"
 msgstr "Personal information"
 
@@ -30955,9 +30945,8 @@ msgstr "Provenance of digital objects"
 
 #: ../templates/_profile/unikatalog/titles_record_provenances_include:79
 #: ../templates/_profile/unikatalog/titles_record_provenances_record_include:85
-#, fuzzy
 msgid "Provenienz-Informationen"
-msgstr "Personal information"
+msgstr "Provenance information"
 
 #: ../templates/_profile/sammlungen/_view/jesuiten/clouds_navigation:62
 #: ../templates/_profile/sammlungen/_view/jesuiten/clouds_navigation:64
@@ -32640,7 +32629,7 @@ msgstr "Search subject"
 msgid "Schlagwort-Datei"
 msgstr "Subject headings-File"
 
-#: ../templates/_profile/unikatalog/subjects_record_include:131
+#: ../templates/_profile/unikatalog/subjects_record_include:135
 msgid "Schlagwort-Information"
 msgstr "Subject headings information"
 
@@ -35183,9 +35172,8 @@ msgid "Staedte"
 msgstr "Cities"
 
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:548
-#, fuzzy
 msgid "Stand 2022"
-msgstr "As of 2021"
+msgstr "As of 2022"
 
 #: ../templates/_profile/unikatalog/cartitems_html_actions:52
 #: ../templates/_profile/unikatalog/users_litlists_record_html_actions:108
@@ -37789,13 +37777,12 @@ msgstr "Classification"
 #: ../templates/_profile/unikatalog/browse_html:21 ../templates/browse_lbs:24
 #: ../templates/browse_lbs_record:21
 msgid "Systematik der Lehrbuchsammlung"
-msgstr ""
+msgstr "Classification of the Textbook Collection"
 
 #: ../templates/_profile/unikatalog/browse_html:22 ../templates/browse_ls:24
 #: ../templates/browse_ls_record:21
-#, fuzzy
 msgid "Systematik des Lesesaals"
-msgstr "Order into reading room"
+msgstr "Classification of the Reading room"
 
 #: ../templates/_profile/bootstrap5/admin_topics_html:65
 #: ../templates/_profile/bootstrap5/topics_html:34
@@ -37831,11 +37818,11 @@ msgstr "Classification"
 
 #: ../templates/_profile/unikatalog/browse_lbs_html:15
 msgid "Systematischer Katalog der Lehrbuchsammlung"
-msgstr ""
+msgstr "Systematic catalog of the textbook collection"
 
 #: ../templates/_profile/unikatalog/browse_ls_html:15
 msgid "Systematischer Katalog des Lesesaals"
-msgstr ""
+msgstr "Systematic catalog of the reading room"
 
 #: ../templates/_profile/rheinlandbib_yaml4/info_50:29
 #: ../templates/_profile/sammlungen_yaml4/info_50:29
@@ -42207,9 +42194,8 @@ msgid "T0461"
 msgstr ""
 
 #: ../templates/_database/gentzdigital/visible_categories_title:23
-#, fuzzy
 msgid "T0462-gentzdigital"
-msgstr "Handwritten record"
+msgstr "Incipit"
 
 #: ../templates/_database/jesuiten/visible_categories_title:35
 msgid "T0470-jesuiten"
@@ -42248,9 +42234,8 @@ msgid "T0491-gentzdigital"
 msgstr "Type Collection Herterich"
 
 #: ../templates/_database/gentzdigital/visible_categories_title_ab3:18
-#, fuzzy
 msgid "T0492-gentzdigital"
-msgstr "Handwritten record"
+msgstr "Image no. (Microfilm)"
 
 #: ../templates/_database/bestellungen/visible_categories_title:64
 #: ../templates/_database/inst001/visible_categories_title:60
@@ -43933,9 +43918,8 @@ msgid "T0523"
 msgstr "Frequency of publication"
 
 #: ../templates/_database/gentzdigital/visible_categories_title_ab1:22
-#, fuzzy
 msgid "T0523-gentzdigital"
-msgstr "Size/Extent of item"
+msgstr "Presentation note"
 
 #: ../templates/_database/bestellungen/visible_categories_title:76
 #: ../templates/_database/inst001/visible_categories_title:71
@@ -44033,9 +44017,8 @@ msgid "T0525"
 msgstr "Statements of source note"
 
 #: ../templates/_database/gentzdigital/visible_categories_title_ab2:20
-#, fuzzy
 msgid "T0525-gentzdigital"
-msgstr "Incipit"
+msgstr "Transmission type"
 
 #: ../templates/_profile/kug_yaml4/_database/inst450/visible_categories_title:31
 msgid "T0525-inst450"
@@ -50191,9 +50174,8 @@ msgid "Tag in allen Titeln ändern"
 msgstr "Change name of tag in all titles"
 
 #: ../templates/_profile/unikatalog/_view/usb/locations_record_include:28
-#, fuzzy
 msgid "Tagesübersicht"
-msgstr "Overview"
+msgstr "Daytime overview"
 
 #: ../templates/_profile/rheinlandbib_yaml4/info_tutorials:71
 #: ../templates/_profile/sammlungen_yaml4/info_tutorials:71
@@ -50944,15 +50926,13 @@ msgstr "Assign topics to EZB subjects"
 
 #: ../templates/_profile/unikatalog/admin_topics_record_html:234
 #: ../templates/admin_topics_record_edit_html:289
-#, fuzzy
 msgid "Themengebiet(e) der Lehrbuchsammlungs-Systematik zuordnen"
-msgstr "Assign topics to Library of Congress Classification"
+msgstr "Assign topics to Textbook Collection Classification"
 
 #: ../templates/_profile/unikatalog/admin_topics_record_html:263
 #: ../templates/admin_topics_record_edit_html:318
-#, fuzzy
 msgid "Themengebiet(e) der Lesesaal-Systematik zuordnen"
-msgstr "Assign topics to basic classification"
+msgstr "Assign topics to Reading room classification"
 
 #: ../templates/_profile/bootstrap5/admin_topics_record_edit_html:234
 #: ../templates/_profile/rheinlandbib_yaml4/admin_topics_record_edit:308
@@ -52750,7 +52730,7 @@ msgstr "Type %1 ist not defined"
 #: ../templates/admin_databases_record_edit_html:213
 #: ../templates/admin_databases_record_html:44
 msgid "Typ der Anbindung"
-msgstr ""
+msgstr "Type of connection"
 
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/info_metrics_html:19
 msgid "Typ der Briefe"
@@ -52932,7 +52912,6 @@ msgstr "URL"
 #: ../templates/_profile/unikatalog/admin_databases_record_html:47
 #: ../templates/admin_databases_record_edit_html:232
 #: ../templates/admin_databases_record_html:47
-#, fuzzy
 msgid "URL Externer WebOPAC"
 msgstr "External WebOPAC-URL"
 
@@ -52947,7 +52926,7 @@ msgstr "USB catalog: Book or journal titles"
 #: ../templates/_profile/unikatalog/admin_databases_record_edit_html:215
 #: ../templates/admin_databases_record_edit_html:217
 msgid "USBWS"
-msgstr ""
+msgstr "USBWS"
 
 #: ../templates/_profile/bootstrap/_view/games/home_html_bottom:37
 msgid "USK Altersfreigaben"
@@ -53861,6 +53840,10 @@ msgstr "Used categories"
 msgid "Verwendete Recherche-Art"
 msgstr "Used search type"
 
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/mainnavigation_html:55
+msgid "Verzeichnis der Briefe von und an Friedrich Gentz"
+msgstr "Index of letters from and to Friedrich Gentz"
+
 #: ../templates/_profile/rheinlandbib_yaml4/logout:47
 #: ../templates/_profile/sammlungen_yaml4/_view/richter/logout:47
 #: ../templates/_profile/sammlungen_yaml4/logout:47
@@ -54419,9 +54402,8 @@ msgid "Vormerkdatum"
 msgstr "Date of reservation"
 
 #: ../templates/_profile/unikatalog/users_circulations_check_reservation_html:80
-#, fuzzy
 msgid "Vormerken"
-msgstr "Reservations"
+msgstr "Reservation"
 
 #: ../templates/_profile/bootstrap5/users_circulations_make_reservation_html:16
 #: ../templates/_profile/rheinlandbib_yaml4/users_circulations_make_reservation:55
@@ -54528,7 +54510,7 @@ msgstr "Proposals"
 
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:294
 msgid "Vortranskription"
-msgstr ""
+msgstr "Pre transcription"
 
 #: ../templates/_profile/bootstrap5/info_11:49
 #: ../templates/_profile/rheinlandbib_yaml4/info_11:49
@@ -54663,9 +54645,8 @@ msgstr "Website"
 #: ../templates/_profile/unikatalog/admin_databases_record_html:46
 #: ../templates/admin_databases_record_edit_html:227
 #: ../templates/admin_databases_record_html:46
-#, fuzzy
 msgid "Webservice-URL"
-msgstr "Website"
+msgstr "Webservice-URL"
 
 #: ../templates/_database/inst001/holding.todo:95
 #: ../templates/_database/inst001/holding:128
@@ -55496,7 +55477,7 @@ msgstr "Knowledge maps discover, explore, investigate"
 
 #: ../templates/_profile/unikatalog/search_history_include:34
 msgid "Wo"
-msgstr ""
+msgstr "Where"
 
 #: ../templates/_database/dbis/classifications_html:21
 #: ../templates/_database/ezb/classifications_html:20
@@ -56128,7 +56109,6 @@ msgid "Zahl der Besucher heute"
 msgstr "Number of visitors today"
 
 #: ../templates/_profile/unikatalog/_view/usb/locations_record_include:37
-#, fuzzy
 msgid "Zahl der Besucher*innen heute"
 msgstr "Number of visitors today"
 
@@ -56803,9 +56783,8 @@ msgstr "Most recent articles published in this journal"
 
 #: ../templates/_profile/unikatalog/layout_html:264
 #: ../templates/_profile/unikatalog/search_title_end_html:48
-#, fuzzy
 msgid "Zum Anfang"
-msgstr "Start"
+msgstr "To the top"
 
 #: ../templates/_database/jesuiten/titles_record_html_images:31
 msgid "Zum Digitalisat"

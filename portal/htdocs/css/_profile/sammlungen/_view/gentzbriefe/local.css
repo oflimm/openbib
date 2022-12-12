@@ -1843,9 +1843,19 @@ a.ext {
     #ob-sidebar .card {
 	margin-right: 10px;
     }
+
+    #ob-startpage .landing-page-img {
+	background-position: 0% 40%;	
+    }
 }
 
 @media only screen and (max-width: 575px) {
+
+    #ob-startpage .landing-page-img {
+	background:url('/images/openbib/views/gentzbriefe/0_Headerbild_Startseite_J_B_Isabey_Wr_Kongress_1814_small.jpg') left 100% no-repeat;
+	background-position: 0% 0%;	
+	
+    }
 
     .ob-availability_online {
 	/*    margin-top: -3px; */

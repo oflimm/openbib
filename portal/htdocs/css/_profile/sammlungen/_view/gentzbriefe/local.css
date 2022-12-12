@@ -1857,6 +1857,11 @@ a.ext {
 	
     }
 
+    #ob-startpage .card {
+	margin-left: 2.5em;
+	margin-right: 2.5em;
+    }
+    
     .ob-availability_online {
 	/*    margin-top: -3px; */
 	/*    float: right;  */

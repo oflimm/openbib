@@ -199,6 +199,8 @@ CREATE TABLE updatelog (
  tstamp_start TIMESTAMP,
  duration     INTERVAL,
  title_count          INT,
+ title_count_xapian   INT,
+ title_count_es       INT,
  title_journalcount   INT,
  title_articlecount   INT,
  title_digitalcount   INT,

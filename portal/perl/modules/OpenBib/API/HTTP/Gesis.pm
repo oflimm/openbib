@@ -182,6 +182,9 @@ sub send_retrieve_request {
 	$logger->error('Decoding error: '.$ua->errbuf.' with code '.$retcode);
     }
 
+    if ($logger->is_debug){
+	$logger->debug("Gesis response: $response");
+    }
     
     my $json_result_ref = {};
     
@@ -394,7 +397,16 @@ sub get_record {
 
     my $record = new OpenBib::Record::Title({ database => $database, id => $id });
 
-    return $record if ($json_result_ref->{hits}{total} != 1);
+    if ($logger->is_debug){
+	$logger->debug("Gesis Hits: ".$json_result_ref->{hits}{total}{value});
+	$logger->debug("Gesis JSON response: ".YAML::Dump($json_result_ref));
+    }
+
+    return $record if ($json_result_ref->{hits}{total}{value} != 1);
+
+    if ($logger->is_debug){
+	$logger->debug("Mapping response fields");
+    }
     
     my $fields_ref = $self->match2fields($json_result_ref->{hits}{hits}[0]);
 

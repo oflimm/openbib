@@ -683,7 +683,7 @@ unless ($incremental || $searchengineonly){
         my ($count_in_file) = `wc -l $dumpfilename` =~m/(\d+)\s+/;
 
         if ($count_in_db != $count_in_file){
-            $logger->fatal("Problem mit $resultset: $count_in_file in Datei / $count_in_db in Datenbank");
+            $logger->fatal("Inkonsistenz Datenbank! Problem mit $resultset: $count_in_file in Datei / $count_in_db in Datenbank");
             $loading_error = 1;
         }
     }
@@ -893,6 +893,23 @@ if ($serverinfo && !$searchengineonly){
     $counter->{duration_stage_analyze} = $duration_stage_analyze;
     $counter->{duration_stage_update_enrichment} = $duration_stage_update_enrichment;
 
+    if ($use_searchengine_ref->{"xapian"}){
+	my $index = OpenBib::Index::Factory->create_indexer({ sb => 'xapian', database => $database});
+	$counter->{title_count_xapian} = $index->get_doccount;
+    }
+    else {
+	$counter->{title_count_xapian} = undef;
+    }
+    
+    if ($use_searchengine_ref->{"elasticsearch"}){
+	my $index = OpenBib::Index::Factory->create_indexer({ sb => 'elasticsearch', database => $database});
+	$counter->{title_count_es} = $index->get_doccount;
+    }
+    else {
+	$counter->{title_count_es} = undef;
+    }
+
+    $logger->info("### $database: doc counts PSQL (".$counter->{title_count}.") / Xapian (".$counter->{title_count_xapian}.") / ES (".$counter->{title_count_es}.")");
     if ($logger->is_debug){
 	$logger->debug(YAML::Dump($counter));
     }

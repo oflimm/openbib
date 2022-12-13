@@ -147,6 +147,16 @@ __PACKAGE__->table("updatelog");
   data_type: 'interval'
   is_nullable: 1
 
+=head2 title_count_xapian
+
+  data_type: 'integer'
+  is_nullable: 1
+
+=head2 title_count_es
+
+  data_type: 'integer'
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -203,6 +213,10 @@ __PACKAGE__->add_columns(
   { data_type => "interval", is_nullable => 1 },
   "duration_stage_analyze",
   { data_type => "interval", is_nullable => 1 },
+  "title_count_xapian",
+  { data_type => "integer", is_nullable => 1 },
+  "title_count_es",
+  { data_type => "integer", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -260,8 +274,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-12-05 13:23:06
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ud/U1d0SEkkIoimHGTtQNw
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-12-13 11:04:08
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:yfjmvw9yTtGJfrfxOUQ8Xw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

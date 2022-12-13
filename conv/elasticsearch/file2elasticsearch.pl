@@ -172,6 +172,10 @@ my $atime = new Benchmark;
             $count++;
         }
 
+	$indexer->get_index->flush;
+	
+	$logger->debug(($count - 1)." records processed");
+	
 	if ($withalias){
 	    # Aliases umswitchen
 	    $logger->info("Switching alias and dropping old index $old_indexname");

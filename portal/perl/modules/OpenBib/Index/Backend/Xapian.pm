@@ -772,6 +772,25 @@ sub delete_record {
     return $self;
 }
 
+sub get_doccount {
+    my ($self) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $count = -1;
+    
+    eval {
+	my $index = $self->get_index;
+        $count = $index->get_doccount;
+    };
+    
+    if ($@){
+        $logger->error($@);
+    }
+
+    return $count;
+}
 
 sub filter_force_signed_year {
     my ($self, $string) = @_;

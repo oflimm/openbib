@@ -136,6 +136,7 @@ sub new {
 	    max_count => 2000,
 	    );
 
+	$self->{_indexname} = $indexname;
 	$self->{_backend} = $es;
 	$self->{_index} = $bulk;
     };
@@ -778,6 +779,35 @@ sub delete_record {
     return $self;
 }
 
+sub get_indexname {
+    my $self = shift;
+
+    return (defined $self->{_indexname})?$self->{_indexname}:undef;
+}
+
+sub get_doccount {
+    my ($self,$indexname) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $count = -1;
+    
+    eval {
+	my $index = $self->get_backend;
+	my $indexname = ($indexname)?$indexname:$self->get_indexname;
+	
+	my $info = $index->count({ index => $indexname });
+
+        $count = $info->{count};
+    };
+    
+    if ($@){
+        $logger->error($@);
+    }
+
+    return $count;
+}
 
 sub filter_force_signed_year {
     my ($self, $string) = @_;

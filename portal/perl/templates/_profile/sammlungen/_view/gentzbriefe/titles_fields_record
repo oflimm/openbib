@@ -4,28 +4,28 @@
     IF field == '1664' ;
        field_description = msg.maketext("Provenienzen");
     ELSIF field == '0100' ;
-       field_description = msg.maketext("T0100-gentzbriefe"); # Briefaussteller
+       field_description = msg.maketext("T0100-gentzdigital"); # Briefaussteller
        searchfield = 'ft0100' ;
     ELSIF field == '0101' ;
-       field_description = msg.maketext("T0101-gentzbriefe"); # Briefempfaenger
+       field_description = msg.maketext("T0101-gentzdigital"); # Briefempfaenger
        searchfield = 'ft0101' ;
     ELSIF field == '0410' ;
        field_description = msg.maketext("Ausstellungsorte");
        searchfield = 'ft0410' ;
     ELSIF field == '0412' ;
-       field_description = msg.maketext("T0412-gentzbriefe");
+       field_description = msg.maketext("T0412-gentzdigital");
        searchfield = 'publisherstring' ;
     ELSIF field == '0424' ;
-       field_description = msg.maketext("T0424-gentzbriefe");
+       field_description = msg.maketext("T0424-gentzdigital");
        searchfield = 'yearstring' ;
     ELSIF field == '0425' ;
        field_description = msg.maketext("Jahre");
        searchfield = 'yearstring' ;
     ELSIF field == '0590' ;
-       field_description = msg.maketext("T0590-gentzbriefe");
+       field_description = msg.maketext("T0590-gentzdigital");
        searchfield = 'ft0590' ;
     ELSE ;
-       field_description = msg.maketext("T${field}-gentzbriefe");
+       field_description = msg.maketext("T${field}-gentzdigital");
     END ;
 
     layout_param = {

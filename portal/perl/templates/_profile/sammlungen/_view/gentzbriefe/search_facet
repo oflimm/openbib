@@ -455,7 +455,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
     </div>
 
     <div class="mt-1">
-    <i class="fas fa-caret-right"></i> <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzbriefe/[% config.get('titles_loc') %].html?l=[% lang %];facets=mediatype,year,provenance,person,corporatebody,language,custom1,custom2,custom3,custom4,custom5">[% msg.maketext("Alle Titel") %]</a>
+    <i class="fas fa-caret-right"></i> <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/[% config.get('titles_loc') %].html?l=[% lang %];facets=mediatype,year,provenance,person,corporatebody,language,custom1,custom2,custom3,custom4,custom5">[% msg.maketext("Alle Titel") %]</a>
     </div>
 
 

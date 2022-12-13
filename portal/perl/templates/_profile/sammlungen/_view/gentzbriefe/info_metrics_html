@@ -21,7 +21,7 @@
 <div class="card-body">
 
 [%
-      type_funcargs = { id => 'gentzbriefe-0800', type => 14 } ;
+      type_funcargs = { id => 'gentzdigital-0800', type => 14 } ;
       type_resultlist = statistics.get_result(type_funcargs);
 
       typecount = {};
@@ -103,7 +103,7 @@ var typeChart = new Chart(type_ctx, {
 <div class="card-body">
 
 [%
-      valid_funcargs = { id => 'gentzbriefe-0511', type => 14 } ;
+      valid_funcargs = { id => 'gentzdigital-0511', type => 14 } ;
       valid_resultlist = statistics.get_result(valid_funcargs);
 
       validcount = {};
@@ -185,7 +185,7 @@ var validChart = new Chart(valid_ctx, {
 <div class="card-body">
 
 [%
-      language_funcargs = { id => 'gentzbriefe-0015', type => 14 } ;
+      language_funcargs = { id => 'gentzdigital-0015', type => 14 } ;
       language_resultlist = statistics.get_result(language_funcargs);
 
       languagecount = {};
@@ -272,7 +272,7 @@ var languageChart = new Chart(language_ctx, {
 <div class="card-body">
 
 [%
-      year_funcargs = { id => 'gentzbriefe-0425', type => 14 } ;
+      year_funcargs = { id => 'gentzdigital-0425', type => 14 } ;
       year_resultlist = statistics.get_result(year_funcargs);
 
       yearcount = {};
@@ -330,7 +330,7 @@ var myChart = new Chart(ctx, {
 <div class="card-body">
 
 [%
-      place_funcargs = { id => 'gentzbriefe-0410', type => 14 } ;
+      place_funcargs = { id => 'gentzdigital-0410', type => 14 } ;
       place_resultlist = statistics.get_result(place_funcargs);
 
       placecount = {};
@@ -392,7 +392,7 @@ var myChart = new Chart(ctx, {
 <div class="card-body">
 
 [%
-      archive_funcargs = { id => 'gentzbriefe-0200', type => 14 } ;
+      archive_funcargs = { id => 'gentzdigital-0200', type => 14 } ;
       archive_resultlist = statistics.get_result(archive_funcargs);
 
       archivecount = {};

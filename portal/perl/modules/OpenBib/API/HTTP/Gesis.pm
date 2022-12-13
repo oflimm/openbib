@@ -430,7 +430,7 @@ sub search {
 
     $self->process_facets($json_result_ref);
 
-    my $resultcount = $json_result_ref->{hits}{total};
+    my $resultcount = $json_result_ref->{hits}{total}{value};
 	
     if ($logger->is_debug){
         $logger->debug("Results: ".YAML::Dump($json_result_ref));

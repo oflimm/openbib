@@ -18,56 +18,61 @@
 
 <h3>[% msg.maketext("Standorte der Bibliotheken") %]</h3>
 
+[%-
+
+   librariesloc = {};
+
+   FOREACH location IN locations ;
+     coordinates = location.fields.${"L0280"}.first.content ;
+     description = location.description ;
+     id          = location.identifier ;
+
+     NEXT IF NOT coordinates;
+     
+     IF NOT librariesloc.defined(coordinates);
+       librariesloc.${coordinates} = [];
+     END;
+
+     librariesloc.${coordinates}.push({ description = description, id = id});
+   END;
+
+-%]
 <p>
-<div id="map_canvas_all" style="width: 100%; height: 500px; position:relative;"></div>
+<div id="libraries_mapid" style="width: 100%; height: 500px; position:relative;"></div>
 </p>
 
-<script src="https://openlayers.org/api/OpenLayers.js"></script>
-
 <script type="text/javascript">
-    var map = new OpenLayers.Map("map_canvas_all");
-    map.addLayer(new OpenLayers.Layer.OSM());
+var librariesmap = L.map('libraries_mapid', {
+    scrollWheelZoom: false
+}).setView([50.933777, 6.939545], 13);
+L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+      }).addTo(librariesmap);
 
-    var lonLatCenter = new OpenLayers.LonLat( 6.928751,50.925755[% locationinfo.fields.${"L0280"}.first.content.split(',').reverse.join(',') %] ).transform(
-            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
-            map.getProjectionObject() // to Spherical Mercator Projection
-          );
 
-    var zoom=14;
+var libraries = [
+[% FOREACH coordinates IN librariesloc.keys %]
+              [[[% coordinates %]],[ 
 
-    var markers = new OpenLayers.Layer.Markers( "Markers" );
-    map.addLayer(markers);
-
-[% FOREACH location IN locations %]
-[%  coordinates = location.fields.${"L0280"}.first.content.split(',').reverse.join(',') %]
-[%  NEXT IF NOT coordinates %]
-[%  IF coordinates %]
-    var lonLat[% location.id %] = new OpenLayers.LonLat( [% coordinates %] ).transform(
-            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
-            map.getProjectionObject() // to Spherical Mercator Projection
-          );
-
-    var size[% location.id %] = new OpenLayers.Size(25,41);
-    var offset[% location.id %] = new OpenLayers.Pixel(-(size[% location.id %].w/2), -size[% location.id %].h);
-    var icon[% location.id %] = new OpenLayers.Icon('[% scheme %]://[% servername %]/js/leaflet-1.7.1/images/marker-icon.png',size[% location.id %],offset[% location.id %]);
-
-    var marker[% location.id %] = new OpenLayers.Marker(lonLat[% location.id %],icon[% location.id %]); 
-    markers.addMarker(marker[% location.id %]);
-    marker[% location.id %].icon.imageDiv.title = "[% location.description.replace('"','\'') %]";
-[%  END %]
+[%   FOREACH thisitem IN librariesloc.${coordinates} %]
+[ '[% thisitem.description.replace("'",'"') %]','[% thisitem.id %]' ],
+[%   END %]
+]],
 [% END %]
-
-
-    map.setCenter (lonLatCenter, zoom);
-    
-     $("#map_canvas_all").on("wheel mousewheel DOMMouseScroll", function(e){
-         if (e.shiftKey) {
-         }else {
-         e.stopPropagation();
-         }
-         return true;
-    });
-
+            ];
+	    
+for (var i = 0; i < libraries.length; i++) {
+  var marker = L.marker(libraries[i][0]).addTo(librariesmap);
+  var markerstring = "";
+  for (var j = 0; j < libraries[i][1].length; j++) {
+     markerstring = markerstring + '<a href="[% path_prefix%]/[% config.get('locations_loc') %]/id/'+libraries[i][1][j][1]+'.html?l=[% lang %]">'+libraries[i][1][j][0]+'</a>'
+     if (j < libraries[i][1].length -1){
+        markerstring = markerstring + ',<br/> ';
+     }
+  }
+  marker.bindPopup(markerstring);
+}
 </script>
 
 <div class="mt-3">

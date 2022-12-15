@@ -113,14 +113,18 @@
 <script src="/js/nouislider.min.js"></script>
 <script src="/js/htmx.min.js"></script>
 
-
 <!-- <script src="/js/bootstrap-material-design.min.js"></script> -->
+
+<!-- Leaflet for OSM -->
+<script src="/js/leaflet-1.7.1/leaflet.js"></script>
 
 <!-- Then static OpenBib JS -->
 <script src="/js/_profile/unikatalog/openbib.js"></script> 
 
+[% IF config.get('active_yewno') %]
 <!-- And finally yewno -->
 <script src="https://static.yewno.com/assets/widget/yewno.min.js"></script>
+[% END %]
 
     <title>[% IF layout_param.page_title %][% layout_param.page_title %][% ELSE %][% config.get_viewdesc_from_viewname(view) %][% END %]</title>
 

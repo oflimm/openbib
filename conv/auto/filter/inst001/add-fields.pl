@@ -175,7 +175,7 @@ while (<>){
                 $is_kuenstlerbuch = 1;
             }
 	    
-            if ($item->{content} =~m/^D[IKOPTX]$/ || $item->{content} eq "DKG"){
+            if ($item->{content} =~m/^D[IKOPTXYZ]$/ || $item->{content} eq "DKG"){
                 $is_dossier = 1;
             }        
 

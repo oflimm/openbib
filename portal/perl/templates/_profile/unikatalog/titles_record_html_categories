@@ -191,9 +191,21 @@ extsubj_done      = {};
 
 # Preprocessing
 
+# Angaben zum Inhalt 0517/0521 in 0517 zusammenfuehren
+
+IF normdata.defined('T0521');
+  IF NOT normdata.defined('T0517');
+    normdata.${'T0517'} = [] ;
+  END;
+
+  FOREACH item IN normdata.${'T0521'} ;
+    normdata.${'T0517'}.push(item);
+  END;
+END;
+
 # Switching processed links
 
-IF normdata.${'T4662'}.defined ;
+IF normdata.defined('T4662');
    normdata.${'T0662'} = normdata.${'T4662'};
    normdata.${'T0663'} = normdata.${'T4663'};
    normdata.${'T2662'} = [];

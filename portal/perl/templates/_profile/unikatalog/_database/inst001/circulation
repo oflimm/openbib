@@ -481,7 +481,6 @@ Präsenzbestand
 [% IF thiscirculation.department_id == '20' # KMB: Bestellbutton mit Sprung ins KuBi-Portal bzw. zur Bestellmaske, z.B. ID=inst001:7140497 %]
 [%   IF NOT standort.match('(Museum für Angewandte Kunst|Graphische Sammlung|Schwarze Lade)') # Bestellfunktionen fuer KMB-Bestand im MAKK, WRM (Graphische Sammlung) und DSL unterdruecken %]
 [%#     IF config.get('active_ils') %]
-<br/><span style="color: red"> Die Nutzung der Lesesäle ist momentan nur nach Terminvereinbarung möglich.</span>
 <p><a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/kmb.html?l=[% lang %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];dbname=[% database %];location=[% standort |uri %];realm=kmb">[% msg.maketext("In den Lesesaal bestellen") %]</a></p> 
 <p>
 <b>KMB-Dokumentlieferdienst:</b><br/>

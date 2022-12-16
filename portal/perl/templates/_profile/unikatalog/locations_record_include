@@ -8,9 +8,6 @@
      id_single          = locationinfo.identifier ;
 -%]
 
-<!-- Leaflet for OSM -->
-<script src="/js/leaflet-1.7.1/leaflet.js"></script>
-
 <p>
 <div id="libraries_single_mapid" style="width: 100%; height: 300px; position: relative;"></div>
 </p>
@@ -18,7 +15,7 @@
 <script type="text/javascript">
 var librariesmap_single = L.map('libraries_single_mapid', {
     scrollWheelZoom: false
-}).setView([[% coordinates_single %]], 13);
+}).setView([[% coordinates_single %]], 15);
 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 18,
         attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'

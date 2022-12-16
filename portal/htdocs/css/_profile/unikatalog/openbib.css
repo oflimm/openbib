@@ -547,6 +547,11 @@
 	color: #fff;
     }
 
+    #ob-startpage a:hover .card {
+	background-color: #253746;
+	color: #fff;
+    }
+
     .ob-searchbox li .dropdown-item {
 	color: #000;
     }

@@ -260,9 +260,11 @@ $(window).on('scroll',function() {
 })
 </script>
 
+<a href="#ob-page_top" title="[% msg.maketext("Zum Anfang") %]">
 <div class="ob-jump_top" id="ob-jump_to_top">
-<a href="#ob-page_top" title="[% msg.maketext("Zum Anfang") %]"><i class="fas fa-chevron-up fa-2x"></i></a>
+<i class="fas fa-chevron-up fa-2x"></i>
 </div>
+</a>
 [% END %]
 
 </body>

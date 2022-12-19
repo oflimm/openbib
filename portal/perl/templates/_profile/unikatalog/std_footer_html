@@ -19,9 +19,9 @@
   <div class="uzk15__mainwrapper">
    <div class="uzk15__grid_100">
     <p class="uzk15__autordatum">
-    <span>zuletzt geändert am 06.05.2020</span>
+    <span>[% msg.maketext("zuletzt geändert am") %] 06.05.2020</span>
     
-     <span>, Autor/in: Universitäts- und Stadtbibliothek Köln</span> 
+     <span>, [% msg.maketext("Autor/in") %]: [% msg.maketext("Universitäts- und Stadtbibliothek Köln") %]</span> 
     </p>
    </div>
   </div>
@@ -29,10 +29,10 @@
  <div class="uzk15__footersection3 usb__footersection2">
   <div class="uzk15__mainwrapper">
    <div class="uzk15__grid_100">
- <h2 class="uzk15__triggerhead">Universitäts- und Stadtbibliothek Köln</h2>
+ <h2 class="uzk15__triggerhead">[% msg.maketext("Universitäts- und Stadtbibliothek Köln") %]</h2>
 
     <div class="uzk15__columnlist uzk15__box">
-   <h2 class="uzk15__smallerheadlines">Social-Media-Kanäle der Universitäts- und Stadtbibliothek  Köln</h2> 
+   <h2 class="uzk15__smallerheadlines">[% msg.maketext("Social-Media-Kanäle der Universitäts- und Stadtbibliothek  Köln") %]</h2> 
     <div class="uzk15__socialmedia">
      <a href="https://www.facebook.com/usbkoeln" target="_blank">
       <span class="uzk15__icon uzk15__icon-facebook"> 
@@ -67,12 +67,12 @@
      </a>
     </div>
      <nav class="uzk15__footercolumn">
-      <h3 class="uzk15__invisible">Kontakt</h3> 
+      <h3 class="uzk15__invisible">[% msg.maketext("Kontakt") %]</h3> 
       <ul>
          <li>
       
           
-              <a href="https://www.ub.uni-koeln.de/suchen_ausleihen/fragen/index_ger.html">Kontakt</a>
+              <a href="https://www.ub.uni-koeln.de/suchen_ausleihen/fragen/index_ger.html">[% msg.maketext("Kontakt") %]</a>
            
           
               
@@ -82,7 +82,7 @@
          <li>
       
           
-              <a href="https://www.ub.uni-koeln.de/res/newsletter/index_ger.html">Newsletter</a>
+              <a href="https://www.ub.uni-koeln.de/res/newsletter/index_ger.html">[% msg.maketext("Newsletter") %]</a>
            
           
               
@@ -92,7 +92,7 @@
          <li>
       
           
-              <a href="https://www.ub.uni-koeln.de/res/impressum#e33277">Webredaktion</a>
+              <a href="https://www.ub.uni-koeln.de/res/impressum#e33277">[% msg.maketext("Webredaktion") %]</a>
            
           
               
@@ -102,12 +102,12 @@
       </ul>
      </nav>
      <nav class="uzk15__footercolumn">
-      <h3 class="uzk15__invisible">Impressum / Datenschutzerklärung</h3> 
+      <h3 class="uzk15__invisible">[% msg.maketext("Impressum / Datenschutzerklärung") %]</h3> 
       <ul>
        <li>
       
           
-              <a href="https://www.ub.uni-koeln.de/res/impressum/index_ger.html">Impressum</a>
+              <a href="https://www.ub.uni-koeln.de/res/impressum/index_ger.html">[% msg.maketext("Impressum") %]</a>
            
           
               
@@ -117,7 +117,7 @@
        <li>
       
           
-              <a href="[% path_prefix %]/info/datenschutz.html">Datenschutzerklärung</a>
+              <a href="[% path_prefix %]/info/datenschutz.html">[% msg.maketext("Datenschutzerklärung") %]</a>
            
           
               
@@ -128,17 +128,17 @@
      </nav>
   </div>
   <!--
-   <h2 class="uzk15__smallerheadlines">Unsere Partner machen uns stark!</h2> 
+   <h2 class="uzk15__smallerheadlines">[% msg.maketext("Unsere Partner machen uns stark!") %]</h2> 
     
     <div class="uzk15__partner">
 <a href="https://www.ub.uni-koeln.de/ueber_uns/kulturpartner/index_ger.html">
       <span class="uzk15__icon ">
        <img src="/images/openbib/uzk15/logo_wdr.png" />
       </span>
-      <span class="uzk15__invisible">Kulturpartner</span>
+      <span class="uzk15__invisible">[% msg.maketext("Kulturpartner") %]</span>
      </a>
     </div>
-     <h2 class="uzk15__smallerheadlines uzk15__bottom"><a href="https://www.ub.uni-koeln.de/ueber_uns/kulturpartner/index_ger.html">...und viele weitere Kulturpartner und Förderer.</a></h2>
+     <h2 class="uzk15__smallerheadlines uzk15__bottom"><a href="https://www.ub.uni-koeln.de/ueber_uns/kulturpartner/index_ger.html">[% msg.maketext("...und viele weitere Kulturpartner und Förderer.") %]</a></h2>
 -->
     
   </div>
@@ -167,44 +167,44 @@ $(document).ready(function(){
   <div class="uzk15__mainwrapper">
    <div class="uzk15__grid_100">
     <h2 class="uzk15__triggerhead footertrigger">
-     <span id="footertrigger" aria-expanded="false" aria-controls="footerbox" href="http://uni-koeln.de">Die Universität zu Köln</span>
+     <span id="footertrigger" aria-expanded="false" aria-controls="footerbox" href="http://uni-koeln.de">[% msg.maketext("Die Universität zu Köln") %]</span>
     </h2>
     <div class="uzk15__columnlist uzk15__hidebox" id="footerbox" aria-hidden="true">
      <nav class="uzk15__footercolumn">
-      <h3>Informationen für</h3>
+      <h3>[% msg.maketext("Informationen für") %]</h3>
       <ul>
-         <li><a href="http://www.portal.uni-koeln.de/studium.html">Studierende</a></li>
-         <li><a href="http://www.portal.uni-koeln.de/studieninteressierte.html">Studieninteressierte</a></li>
-         <li><a href="http://www.amgc.uni-koeln.de/">Promotion</a></li>
-         <li><a href="http://www.portal.uni-koeln.de/forschung.html">Forschung und Transfer</a></li>
-         <li><a href="http://www.international.uni-koeln.de/">International</a></li>
-         <li><a href="http://portal.uni-koeln.de/alumni-foerdernde.html">Alumni und Förderer</a></li>
-         <li><a href="http://portal.uni-koeln.de/presse-marketing.html">Presse und Marketing</a></li>
+         <li><a href="http://www.portal.uni-koeln.de/studium.html">[% msg.maketext("Studierende") %]</a></li>
+         <li><a href="http://www.portal.uni-koeln.de/studieninteressierte.html">[% msg.maketext("Studieninteressierte") %]</a></li>
+         <li><a href="http://www.amgc.uni-koeln.de/">[% msg.maketext("Promotion") %]</a></li>
+         <li><a href="http://www.portal.uni-koeln.de/forschung.html">[% msg.maketext("Forschung und Transfer") %]</a></li>
+         <li><a href="http://www.international.uni-koeln.de/">[% msg.maketext("International") %]</a></li>
+         <li><a href="http://portal.uni-koeln.de/alumni-foerdernde.html">[% msg.maketext("Alumni und Förderer") %]</a></li>
+         <li><a href="http://portal.uni-koeln.de/presse-marketing.html">[% msg.maketext("Presse und Marketing") %]</a></li>
       </ul>
      </nav>
      <nav class="uzk15__footercolumn">
-      <h3>Fakultäten</h3>
+      <h3>[% msg.maketext("Fakultäten") %]</h3>
       <ul>
-       <li><a href="http://www.wiso.uni-koeln.de/">Wirtschafts- und Sozialwissenschaften</a></li>
-       <li><a href="http://www.uni-koeln.de/jur-fak/www/index.shtml">Rechtswissenschaften</a></li>
-       <li><a href="http://www.medfak.uni-koeln.de/">Medizin</a></li>
-       <li><a href="http://www.uni-koeln.de/phil-fak/">Philosophie</a></li>
-       <li><a href="http://www.mathnat.uni-koeln.de/">Mathematik &amp; Naturwissenschaften</a></li>
-       <li><a href="http://www.hf.uni-koeln.de/">Humanwissenschaften</a></li>
+       <li><a href="http://www.wiso.uni-koeln.de/">[% msg.maketext("Wirtschafts- und Sozialwissenschaften") %]</a></li>
+       <li><a href="http://www.uni-koeln.de/jur-fak/www/index.shtml">[% msg.maketext("Rechtswissenschaften") %]</a></li>
+       <li><a href="http://www.medfak.uni-koeln.de/">[% msg.maketext("Medizin") %]</a></li>
+       <li><a href="http://www.uni-koeln.de/phil-fak/">[% msg.maketext("Philosophie") %]</a></li>
+       <li><a href="http://www.mathnat.uni-koeln.de/">[% msg.maketext("Mathematik &amp; Naturwissenschaften") %]</a></li>
+       <li><a href="http://www.hf.uni-koeln.de/">[% msg.maketext("Humanwissenschaften") %]</a></li>
       </ul>
      </nav>
      <nav class="uzk15__footercolumn">
-      <h3>Schnellzugriff</h3>
+      <h3>[% msg.maketext("Schnellzugriff") %]</h3>
       <ul>
-       <li><a href="https://www.ub.uni-koeln.de/index_ger.html">Universitäts- und Stadtbibliothek Köln</a></li>
+       <li><a href="https://www.ub.uni-koeln.de/index_ger.html">[% msg.maketext("Universitäts- und Stadtbibliothek Köln") %]</a></li>
        
-       <li><a href="http://www.portal.uni-koeln.de/universitaet.html">Universität</a></li>
-       <li><a href="http://verwaltung.uni-koeln.de/studsek/content/">Studierendensekretariat</a></li>
-       <li><a href="http://www.portal.uni-koeln.de/kontakt.html">Kontakt</a></li>
-       <li><a href="http://www.kstw.de/index.php?option=com_content&amp;view=article&amp;id=182&amp;Itemid=121&amp;lang=de">Mensa</a></li>
-       <li><a href="http://www.portal.uni-koeln.de/bibliotheken.html">Bibliothek</a></li>
-       <li><a href="http://www.portal.uni-koeln.de/termine.html">Terminkalender</a></li>
-       <li><a href="https://webmail.uni-koeln.de/login.php">Webmail</a></li>
+       <li><a href="http://www.portal.uni-koeln.de/universitaet.html">[% msg.maketext("Universität") %]</a></li>
+       <li><a href="http://verwaltung.uni-koeln.de/studsek/content/">[% msg.maketext("Studierendensekretariat") %]</a></li>
+       <li><a href="http://www.portal.uni-koeln.de/kontakt.html">[% msg.maketext("Kontakt") %]</a></li>
+       <li><a href="http://www.kstw.de/index.php?option=com_content&amp;view=article&amp;id=182&amp;Itemid=121&amp;lang=de">[% msg.maketext("Mensa") %]</a></li>
+       <li><a href="http://www.portal.uni-koeln.de/bibliotheken.html">[% msg.maketext("Bibliotheken") %]</a></li>
+       <li><a href="http://www.portal.uni-koeln.de/termine.html">[% msg.maketext("Terminkalender") %]</a></li>
+       <li><a href="https://webmail.uni-koeln.de/login.php">[% msg.maketext("Webmail") %]</a></li>
       </ul>
      </nav>
     </div>
@@ -214,7 +214,7 @@ $(document).ready(function(){
  <div class="uzk15__footersection4">
   <div class="uzk15__mainwrapper">
    <div class="uzk15__grid_100">
-    <h2 class="uzk15__smallerheadlines">Social-Media-Kanäle der Universität zu Köln</h2>
+    <h2 class="uzk15__smallerheadlines">[% msg.maketext("Social-Media-Kanäle der Universität zu Köln") %]</h2>
     <div class="uzk15__socialmedia">
      <a href="https://www.facebook.com/pages/Universit%C3%A4t-zu-K%C3%B6ln/180703865199">
       <span class="uzk15__icon uzk15__icon-facebook"> 
@@ -276,23 +276,23 @@ $(document).ready(function(){
      </a>
     </div>
   <div class="uzk15__copyright">
-   <small>© Universität zu Köln</small><br>
-   <a href="https://www.portal.uni-koeln.de/9468.html">Datenschutzerklärung</a><br>
+   <small>© [% msg.maketext("Universität zu Köln") %]</small><br>
+   <a href="https://www.portal.uni-koeln.de/9468.html">[% msg.maketext("Datenschutzerklärung") %]</a><br>
   </div>
   -->
   <!--
   <div class="uzk15__seperator"></div>
   <div class="uzk15__accreditation">
-   <h2 class="uzk15__smallerheadlines">Qualitätslabels der Universität zu Köln:</h2>
+   <h2 class="uzk15__smallerheadlines">[% msg.maketext("Qualitätslabels der Universität zu Köln:") %]</h2>
    <div class="uzk15__accreditationlist">
     <dl>
      <dt>    
-      <a href="https://portal.uni-koeln.de/13951.html"><abbr title="Total E-Quality">Total Equality Award</abbr></a>
+      <a href="https://portal.uni-koeln.de/13951.html"><abbr title="Total E-Quality">[% msg.maketext("Total Equality Award") %]</abbr></a>
       <a href="http://www.wiso.uni-koeln.de/21732.html"><abbr title="European Quality Improvement System">EQUIS</abbr></a>
       <a href="http://www.wiso.uni-koeln.de/30432.html"><abbr title="CEMS International Management">CEMS</abbr></a>
       <a href="http://www.aqas.de/"><abbr title="Akkreditierte Studienprogramme">AQAS</abbr></a>
-      <a href="http://www.charta-der-vielfalt.de/unterzeichner/unterzeichner-der-charta-der-vielfalt/zeige/universitaet-zu-koeln.html"><abbr title="Charta der Vielfalt">Charta der Vielfalt</abbr></a>
-      <a href="http://www.uni-koeln.de/img/dist/HRK-Audit-Zertifikat.jpg"><abbr title="Charta der Vielfalt">HRK-Audit Internationalisierung</abbr></a>
+      <a href="http://www.charta-der-vielfalt.de/unterzeichner/unterzeichner-der-charta-der-vielfalt/zeige/universitaet-zu-koeln.html"><abbr title="Charta der Vielfalt">[% msg.maketext("Charta der Vielfalt") %]</abbr></a>
+      <a href="http://www.uni-koeln.de/img/dist/HRK-Audit-Zertifikat.jpg"><abbr title="Charta der Vielfalt">[% msg.maketext("HRK-Audit Internationalisierung") %]</abbr></a>
      </dt>
      <dd>
      </dd>

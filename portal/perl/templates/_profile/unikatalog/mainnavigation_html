@@ -174,10 +174,10 @@
     
    </svg>
    </span>
-  <h1>Universität zu Köln</h1>
+  <h1>[% msg.maketext("Universität zu Köln") %]</h1>
  </a>
   <a class="navbar-brand d-md-none" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">
-    <h1 class="ms-0">Universität zu Köln</h1>
+    <h1 class="ms-0">[% msg.maketext("Universität zu Köln") %]</h1>
   </a>
   <div id="ob-header_navbarmenu_small" class="d-flex justify-content-end">
     <span class="d-lg-none me-4 p-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar_user" aria-controls="offcanvasSidebar"><i class="fas fa-user fa-2x"></i></span>

@@ -2,7 +2,7 @@
     layout_param = {
 
       'main_template' = 'info_quellen_html'
-      'sidebar_template' = 'subnavigation'
+#      'sidebar_template' = 'subnavigation'
 
       'active_menu' = 'info'
       'active_submenu' = 'quellen'

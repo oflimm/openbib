@@ -15,10 +15,10 @@
 <h3>[% msg.maketext("Systematischer Katalog der Lehrbuchsammlung") %]</h3>
 
 <div class="alert alert-info">
-Im Systematischen Katalog finden Sie den kompletten Bestand der Lehrbuchsammlung rein fachlich sortiert. Jedes Fachgebiet besitzt Untergebiete, deren Buchtitel in Kurzform aufgelistet sind. Genauere Angaben zum Titel und Bestand erhalten Sie im Vollformat.
+[% msg.maketext("Im Systematischen Katalog finden Sie den kompletten Bestand der Lehrbuchsammlung rein fachlich sortiert. Jedes Fachgebiet besitzt Untergebiete, deren Buchtitel in Kurzform aufgelistet sind. Genauere Angaben zum Titel und Bestand erhalten Sie im Vollformat.") %]
 </div>
 
-<h4 class="mt-4">Fachgebiete</h4>
+<h4 class="mt-4">[% msg.maketext("Fachgebiete") %]</h4>
 
 <div class="table-responsive mt-3">
 <table class="table table-striped table-hover">

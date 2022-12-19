@@ -181,7 +181,7 @@
   </a>
   <div id="ob-header_navbarmenu_small" class="d-flex justify-content-end">
     <span class="d-lg-none me-4 p-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar_user" aria-controls="offcanvasSidebar"><i class="fas fa-user fa-2x"></i></span>
-    <span class="d-lg-none p-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar_hamburger" aria-controls="offcanvasSidebar"><i class="fas fa-bars fa-2x"></i></span>
+    <span class="d-lg-none p-1 pe-2" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar_hamburger" aria-controls="offcanvasSidebar"><i class="fas fa-bars fa-2x"></i></span>
   </div>
   <div class="collapse navbar-collapse"">
 <!--    <a class="navbar-brand" href="#">Hidden brand</a> -->

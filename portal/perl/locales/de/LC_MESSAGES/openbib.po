@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2022-12-19 13:36+0100\n"
+"PO-Revision-Date: 2022-12-19 15:36+0100\n"
 "Last-Translator: openbib <flimm@openbib.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -12186,7 +12186,6 @@ msgstr "Einfacher Text"
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/info_literatur:15
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/info_quellen:15
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/info_sammlung:15
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/info_vita:15
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/subnavigation:103
 #: ../templates/_profile/sammlungen_yaml4/_view/frauenlektuere/subnavigation:22
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/info_benutzung:37
@@ -14568,6 +14567,8 @@ msgstr "Fachgebiet:"
 #: ../templates/_profile/unikatalog/_database/dbis/classifications_html:19
 #: ../templates/_profile/unikatalog/_database/dbis/visible_categories_title_supplement:16
 #: ../templates/_profile/unikatalog/_database/ezb/classifications_html:19
+#: ../templates/_profile/unikatalog/browse_lbs_html:21
+#: ../templates/_profile/unikatalog/browse_ls_html:21
 #: ../templates/_profile/yaml4/_database/ezb/classifications_html:37
 msgid "Fachgebiete"
 msgstr "Fachgebiete"
@@ -15718,7 +15719,6 @@ msgstr "Gefundene Nutzer"
 msgid "Gemerkt"
 msgstr "Gemerkt"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/info_vita:19
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/subnavigation:112
 msgid "Gentz-Vita"
 msgstr "Gentz-Vita"
@@ -17706,6 +17706,30 @@ msgid ""
 msgstr ""
 "Im Register werden sie unter dem Namen der Zeitschrift\n"
 "aufgef&uuml;hrt."
+
+#: ../templates/_profile/unikatalog/browse_lbs_html:18
+msgid ""
+"Im Systematischen Katalog finden Sie den kompletten Bestand der "
+"Lehrbuchsammlung rein fachlich sortiert. Jedes Fachgebiet besitzt "
+"Untergebiete, deren Buchtitel in Kurzform aufgelistet sind. Genauere Angaben "
+"zum Titel und Bestand erhalten Sie im Vollformat."
+msgstr ""
+"Im Systematischen Katalog finden Sie den kompletten Bestand der "
+"Lehrbuchsammlung rein fachlich sortiert. Jedes Fachgebiet besitzt "
+"Untergebiete, deren Buchtitel in Kurzform aufgelistet sind. Genauere Angaben "
+"zum Titel und Bestand erhalten Sie im Vollformat."
+
+#: ../templates/_profile/unikatalog/browse_ls_html:18
+msgid ""
+"Im Systematischen Katalog finden Sie den kompletten Bestand des Lesesaals "
+"rein fachlich sortiert. Jedes Fachgebiet besitzt Untergebiete, deren "
+"Buchtitel in Kurzform aufgelistet sind. Genauere Angaben zum Titel und "
+"Bestand erhalten Sie im Vollformat."
+msgstr ""
+"Im Systematischen Katalog finden Sie den kompletten Bestand des Lesesaals "
+"rein fachlich sortiert. Jedes Fachgebiet besitzt Untergebiete, deren "
+"Buchtitel in Kurzform aufgelistet sind. Genauere Angaben zum Titel und "
+"Bestand erhalten Sie im Vollformat."
 
 #: ../templates/_profile/bootstrap5/admin_databases_record_html:26
 #: ../templates/_profile/rheinlandbib_yaml4/admin_databases_record_html:72
@@ -36159,7 +36183,6 @@ msgstr "Standortinformationen bearbeiten"
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/info_team:11
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/info_timeline:11
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/info_verzeichnis:11
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/info_vita:11
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/info_welt:11
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/searchforms_record_advanced:14
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/titles:18

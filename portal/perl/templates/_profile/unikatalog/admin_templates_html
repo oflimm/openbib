@@ -73,7 +73,7 @@
 [%# USE dumper;dumper.dump(templateinfos)%]
 [% IF templateinfos.count > 0 %]
 
-<h3>[% msg.maketext("Bereits existierende Templates") %]</h3>
+<h3>[% msg.maketext("Bereits existierende Templates") %]:  [% templateinfos.count %]</h3>
 
 <div class="table-responsive">
 <table class="table table-striped table-hover">

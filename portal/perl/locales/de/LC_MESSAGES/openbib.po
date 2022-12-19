@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2022-12-19 10:13+0100\n"
+"PO-Revision-Date: 2022-12-19 11:06+0100\n"
 "Last-Translator: openbib <flimm@openbib.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -4154,6 +4154,10 @@ msgstr "Anmeldung über einen Verzeichnis-Dienst"
 #: ../templates/_profile/usbportal/_view/warenkorb_usb/login:71
 msgid "Anmeldung/Registrierung mit einer E-Mail-Adresse"
 msgstr "Anmeldung/Registrierung mit einer E-Mail-Adresse"
+
+#: ../templates/_profile/unikatalog/_view/unikatalog/mainnavigation_html:130
+msgid "Anonym"
+msgstr "Anonym"
 
 #: ../templates/_profile/bootstrap/_view/fidphil/users_record_edit_html:59
 #: ../templates/_profile/bootstrap5/admin_users_record_edit_html:32
@@ -22388,6 +22392,10 @@ msgstr "Kurzübersicht"
 #: ../templates/_profile/sammlungen/_view/jesuiten/info_fonds:13
 msgid "Kölner Gymnasial- und Stiftungsfonds"
 msgstr "Kölner Gymnasial- und Stiftungsfonds"
+
+#: ../templates/_profile/unikatalog/_view/unikatalog/mainnavigation_html:280
+msgid "Kölner Universitätskatalog"
+msgstr "Kölner Universitätskatalog"
 
 #: ../templates/_profile/bootstrap5/subnavigation:50
 #: ../templates/_profile/bootstrap5/users_circulations_cancel_order_confirm_html:82
@@ -53604,6 +53612,10 @@ msgstr "Unikatalog - Bücher, E-Medien, Aufsätze &amp; mehr"
 msgid "Universität"
 msgstr "Universität"
 
+#: ../templates/_profile/unikatalog/_view/unikatalog/mainnavigation_html:177
+#: ../templates/_profile/unikatalog/_view/unikatalog/mainnavigation_html:180
+#: ../templates/_profile/unikatalog/mainnavigation_html:177
+#: ../templates/_profile/unikatalog/mainnavigation_html:180
 #: ../templates/_profile/unikatalog/std_footer_html:279
 msgid "Universität zu Köln"
 msgstr "Universität zu Köln"

@@ -822,6 +822,10 @@ msgstr ""
 msgid "Anmeldung/Registrierung mit einer E-Mail-Adresse"
 msgstr ""
 
+#: ../templates/_profile/unikatalog/_view/unikatalog/mainnavigation_html:130
+msgid "Anonym"
+msgstr ""
+
 #: ../templates/_profile/bootstrap/_view/fidphil/users_record_edit_html:59 ../templates/_profile/bootstrap5/admin_users_record_edit_html:32 ../templates/_profile/bootstrap5/users_record_edit_html:31 ../templates/_profile/unikatalog/admin_users_record_edit_html:32 ../templates/_profile/unikatalog/users_circulations_html_modals:15 ../templates/_profile/unikatalog/users_librarycard_registrations_html:36 ../templates/_profile/unikatalog/users_record_edit_html:31 ../templates/admin_users_record_edit_html:26 ../templates/users_record_edit_html:25
 msgid "Anrede"
 msgstr ""
@@ -5576,6 +5580,10 @@ msgstr ""
 
 #: ../templates/_profile/sammlungen/_view/jesuiten/info_fonds:13
 msgid "Kölner Gymnasial- und Stiftungsfonds"
+msgstr ""
+
+#: ../templates/_profile/unikatalog/_view/unikatalog/mainnavigation_html:280
+msgid "Kölner Universitätskatalog"
 msgstr ""
 
 #: ../templates/_profile/bootstrap5/subnavigation:50 ../templates/_profile/bootstrap5/users_circulations_cancel_order_confirm_html:82 ../templates/_profile/bootstrap5/users_circulations_check_campus_order_html:130 ../templates/_profile/bootstrap5/users_circulations_check_ilias_order_html:130 ../templates/_profile/bootstrap5/users_circulations_mail_default_html:61 ../templates/_profile/bootstrap5/users_circulations_mail_handset_html:59 ../templates/_profile/bootstrap5/users_circulations_mail_kmb_html:121 ../templates/_profile/bootstrap5/users_circulations_mail_kmbcopy_html:101 ../templates/_profile/kug_yaml4/_database/inst001/corporatebodies_record_html:47 ../templates/_profile/rheinlandbib_yaml4/clouds_databases_record_html:65 ../templates/_profile/rheinlandbib_yaml4/corporatebodies_record_html:47 ../templates/_profile/sammlungen/_view/digitalis/subnavigation:50 ../templates/_profile/sammlungen/_view/digitalis/titles_fields_record:11 ../templates/_profile/sammlungen/_view/gentzbriefe/subnavigation:50 ../templates/_profile/sammlungen/_view/jesuiten/subnavigation:50 ../templates/_profile/sammlungen/_view/jesuiten/titles_fields_record:11 ../templates/_profile/sammlungen/_view/kartenkatalog/subnavigation:50 ../templates/_profile/sammlungen/_view/kartenkatalog/titles_fields_record:11 ../templates/_profile/sammlungen/_view/testsammlung/mainnavigation_html:163 ../templates/_profile/sammlungen/_view/testsammlung/subnavigation:50 ../templates/_profile/sammlungen/_view/testsammlung/titles_fields_record:11 ../templates/_profile/sammlungen_yaml4/_view/maxbruch/clouds_databases_record_html:65 ../templates/_profile/sammlungen_yaml4/_view/portrait/searchforms_record_query:93 ../templates/_profile/sammlungen_yaml4/_view/provenienzen/corporatebodies_record_html:47 ../templates/_profile/sammlungen_yaml4/_view/richter/corporatebodies_record_html:47 ../templates/_profile/sammlungen_yaml4/clouds_databases_record_html:65 ../templates/_profile/sammlungen_yaml4/corporatebodies_record_html:47 ../templates/_profile/unikatalog/subnavigation:50 ../templates/_profile/unikatalog/users_circulations_cancel_order_confirm_html:82 ../templates/_profile/unikatalog/users_circulations_check_campus_order_html:131 ../templates/_profile/unikatalog/users_circulations_check_ilias_order_html:131 ../templates/_profile/unikatalog/users_circulations_check_pda_order_html:168 ../templates/_profile/unikatalog/users_circulations_mail_default_html:62 ../templates/_profile/unikatalog/users_circulations_mail_handset_html:60 ../templates/_profile/unikatalog/users_circulations_mail_kmb_html:122 ../templates/_profile/unikatalog/users_circulations_mail_kmbcopy_html:102 ../templates/_profile/yaml4/corporatebodies_record_html:47 ../templates/corporatebodies_record:21 ../templates/subnavigation:50 ../templates/titles_fields_record:11 ../templates/users_circulations_cancel_order_confirm_html:80 ../templates/users_circulations_check_campus_order_html:130 ../templates/users_circulations_check_ilias_order_html:128 ../templates/users_circulations_check_pda_order_html:168 ../templates/users_circulations_mail_default_html:60 ../templates/users_circulations_mail_handset_html:58 ../templates/users_circulations_mail_kmb_html:120 ../templates/users_circulations_mail_kmbcopy_html:100
@@ -10944,7 +10952,7 @@ msgstr ""
 msgid "Universität"
 msgstr ""
 
-#: ../templates/_profile/unikatalog/std_footer_html:279
+#: ../templates/_profile/unikatalog/_view/unikatalog/mainnavigation_html:177 ../templates/_profile/unikatalog/_view/unikatalog/mainnavigation_html:180 ../templates/_profile/unikatalog/mainnavigation_html:177 ../templates/_profile/unikatalog/mainnavigation_html:180 ../templates/_profile/unikatalog/std_footer_html:279
 msgid "Universität zu Köln"
 msgstr ""
 

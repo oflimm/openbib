@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2022-12-19 08:54+0100\n"
+"PO-Revision-Date: 2022-12-19 10:26+0100\n"
 "Last-Translator: openbib <flimm@openbib.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -68,8 +68,8 @@ msgstr "${category}"
 #: ../templates/_database/einbaende/titles_record_html_categories:384
 #: ../templates/_database/ezb/titles_record_html_categories:275
 #: ../templates/_database/ezb/titles_record_html_categories:309
-#: ../templates/_database/gentzdigital/persons_record_html:133
-#: ../templates/_database/gentzdigital/persons_record_include:130
+#: ../templates/_database/gentzdigital/persons_record_html:136
+#: ../templates/_database/gentzdigital/persons_record_include:133
 #: ../templates/_database/gentzdigital/titles_record_html_categories:340
 #: ../templates/_database/gentzdigital/titles_record_html_categories:373
 #: ../templates/_database/gutenberg/titles_record_html_categories:280
@@ -355,8 +355,8 @@ msgstr "${category}"
 #: ../templates/_profile/unikatalog/libraries_html:101
 #: ../templates/_profile/unikatalog/libraries_include:59
 #: ../templates/_profile/unikatalog/litlists_record_html_full:223
-#: ../templates/_profile/unikatalog/locations_record_html:312
-#: ../templates/_profile/unikatalog/locations_record_include:311
+#: ../templates/_profile/unikatalog/locations_record_html:296
+#: ../templates/_profile/unikatalog/locations_record_include:295
 #: ../templates/_profile/unikatalog/locations_record_mobile:101
 #: ../templates/_profile/unikatalog/persons_record_html:130
 #: ../templates/_profile/unikatalog/persons_record_include:208
@@ -364,8 +364,8 @@ msgstr "${category}"
 #: ../templates/_profile/unikatalog/subjects_record_html:59
 #: ../templates/_profile/unikatalog/subjects_record_include:74
 #: ../templates/_profile/unikatalog/titles_fields_html:30
-#: ../templates/_profile/unikatalog/titles_record_html_categories:856
-#: ../templates/_profile/unikatalog/titles_record_html_categories:889
+#: ../templates/_profile/unikatalog/titles_record_html_categories:868
+#: ../templates/_profile/unikatalog/titles_record_html_categories:901
 #: ../templates/_profile/unikatalog/titles_record_include:48
 #: ../templates/_profile/unikatalog/titles_record_mobile_categories:238
 #: ../templates/_profile/unikatalog/titles_record_mobile_categories:269
@@ -1182,6 +1182,10 @@ msgstr "public"
 #: ../templates/_profile/yaml4/search_info:36 ../templates/search_info:36
 msgid "(Notation, Signatur, Titel-String):"
 msgstr "(classification, location mark, title string)"
+
+#: ../templates/_profile/unikatalog/std_footer_html:141
+msgid "...und viele weitere Kulturpartner und Förderer."
+msgstr "... and many other cultural partners and sponsors."
 
 #: ../templates/_profile/sammlungen_yaml4/_view/landschaft/clouds_classification_html:51
 #: ../templates/_profile/sammlungen_yaml4/_view/landschaft/clouds_classification_html:70
@@ -2448,8 +2452,8 @@ msgid "Aktualisierung"
 msgstr "Update"
 
 #: ../templates/_profile/unikatalog/_view/inst001/locations_record_include:32
-#: ../templates/_profile/unikatalog/locations_record_html:73
-#: ../templates/_profile/unikatalog/locations_record_include:72
+#: ../templates/_profile/unikatalog/locations_record_html:57
+#: ../templates/_profile/unikatalog/locations_record_include:56
 msgid "Aktuelle Besucherzahl"
 msgstr "Current number of visitors"
 
@@ -3397,6 +3401,10 @@ msgstr "Suitable age"
 #: ../templates/users_migration_html:43
 msgid "Altes Passwort"
 msgstr "Old password"
+
+#: ../templates/_profile/unikatalog/std_footer_html:181
+msgid "Alumni und Förderer"
+msgstr "Alumni and Benefactors"
 
 #: ../templates/_profile/sammlungen_yaml4/_view/umschlaege/clouds_databases_record_html:63
 #: ../templates/_profile/sammlungen_yaml4/_view/umschlaege/clouds_html:59
@@ -5467,6 +5475,10 @@ msgstr "Autoptic finding"
 msgid "Autor"
 msgstr "Author"
 
+#: ../templates/_profile/unikatalog/std_footer_html:24
+msgid "Autor/in"
+msgstr "Author"
+
 #: ../templates/_profile/sammlungen_yaml4/_view/umschlaege/clouds_databases_record_html:62
 #: ../templates/_profile/sammlungen_yaml4/_view/umschlaege/clouds_html:59
 #: ../templates/_profile/sammlungen_yaml4/_view/umschlaege/clouds_navigation:35
@@ -5563,7 +5575,7 @@ msgstr "Basic Classification"
 #: ../templates/_profile/unikatalog/topics_record_html:37
 #: ../templates/_profile/yaml4/browse_html:61
 #: ../templates/_profile/yaml4/topics_record_html:85 ../templates/browse_bks:22
-#: ../templates/browse_bks_record:20
+#: ../templates/browse_bks_record:22
 #: ../templates/browse_bks_record_databases:20 ../templates/browse_html:20
 #: ../templates/topics_mappings_html:36 ../templates/topics_record_html:37
 msgid "Basisklassifikation"
@@ -6949,7 +6961,7 @@ msgstr "Description"
 #: ../templates/_profile/unikatalog/_database/gvi/titles_record_html_categories:459
 #: ../templates/_profile/unikatalog/_database/marc21/titles_record_html_categories:606
 #: ../templates/_profile/unikatalog/cartitems_html_as_text:54
-#: ../templates/_profile/unikatalog/titles_record_html_categories:894
+#: ../templates/_profile/unikatalog/titles_record_html_categories:906
 #: ../templates/_profile/unikatalog/titles_record_include:53
 #: ../templates/_profile/unikatalog/titles_record_mobile_categories:274
 #: ../templates/_profile/usbintern/_database/inst001/circulation:189
@@ -7624,7 +7636,7 @@ msgstr "Information about location instead of URL"
 #: ../templates/_profile/unikatalog/_database/zbmed/holding:86
 #: ../templates/_profile/unikatalog/holding:124
 #: ../templates/_profile/unikatalog/holding:48
-#: ../templates/_profile/unikatalog/home_html:212
+#: ../templates/_profile/unikatalog/home_html:217
 #: ../templates/_profile/usbintern/_database/inst001/circulation:33
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/circulation:29
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/holding:47
@@ -7662,28 +7674,29 @@ msgid "Bibliothek"
 msgstr "Library"
 
 #: ../templates/_profile/unikatalog/_view/bcw1/home_html:229
-#: ../templates/_profile/unikatalog/_view/unikatalog/home_html:220
-#: ../templates/_profile/unikatalog/home_html:214
+#: ../templates/_profile/unikatalog/_view/unikatalog/home_html:227
+#: ../templates/_profile/unikatalog/home_html:223
+#: ../templates/_profile/unikatalog/std_footer_html:205
 msgid "Bibliotheken"
 msgstr "Libraries"
 
-#: ../templates/_profile/unikatalog/locations_html:297
+#: ../templates/_profile/unikatalog/locations_html:302
 msgid "Bibliotheken der Humanwissenschaftlichen Fakultät"
 msgstr "Libraries of the Faculty of Human Sciences"
 
-#: ../templates/_profile/unikatalog/locations_html:427
+#: ../templates/_profile/unikatalog/locations_html:432
 msgid "Bibliotheken der Mathematisch-Naturwissenschaftlichen Fakultät"
 msgstr "Libraries of the Faculty of Mathematics and Natural Sciences"
 
-#: ../templates/_profile/unikatalog/locations_html:362
+#: ../templates/_profile/unikatalog/locations_html:367
 msgid "Bibliotheken der Philosophischen Fakultät"
 msgstr "Libraries of the Faculty of Arts"
 
-#: ../templates/_profile/unikatalog/locations_html:231
+#: ../templates/_profile/unikatalog/locations_html:236
 msgid "Bibliotheken der Rechtswissenschaftlichen Fakultät"
 msgstr "Libraries of the Faculty of Law"
 
-#: ../templates/_profile/unikatalog/locations_html:153
+#: ../templates/_profile/unikatalog/locations_html:158
 msgid "Bibliotheken der Wirtschafts- u. Sozialwissenschaftlichen Fakultät"
 msgstr "Libraries of the Faculty of Economics and Social Sciences"
 
@@ -8168,11 +8181,11 @@ msgstr "List of letters"
 #: ../templates/_profile/yaml4/browse_topics_html:38
 #: ../templates/_profile/yaml4/browse_topics_record_html:40
 #: ../templates/browse:16 ../templates/browse_bks:18
-#: ../templates/browse_bks_record:16
+#: ../templates/browse_bks_record:18
 #: ../templates/browse_bks_record_databases:16 ../templates/browse_lbs:20
 #: ../templates/browse_lbs_record:17 ../templates/browse_ls:20
 #: ../templates/browse_ls_record:17 ../templates/browse_topics:16
-#: ../templates/browse_topics_record:17 ../templates/mainnavigation_html:77
+#: ../templates/browse_topics_record:19 ../templates/mainnavigation_html:77
 msgid "Browsen"
 msgstr "Browse"
 
@@ -8232,7 +8245,7 @@ msgid "Bände"
 msgstr "Volumes"
 
 #: ../templates/_profile/unikatalog/_database/gesis/titles_record_html_categories:717
-#: ../templates/_profile/unikatalog/titles_record_html_categories:766
+#: ../templates/_profile/unikatalog/titles_record_html_categories:778
 msgid "Bände/Stücktitel anzeigen"
 msgstr "Show volumes"
 
@@ -8358,9 +8371,13 @@ msgstr "Campus Delivery Service"
 
 #: ../templates/_database/inst001/circulation:438
 #: ../templates/_profile/unikatalog/_database/alma/circulation:523
-#: ../templates/_profile/unikatalog/_database/inst001/circulation:527
+#: ../templates/_profile/unikatalog/_database/inst001/circulation:526
 msgid "Campuslieferdienst"
 msgstr "Campus Delivery Service"
+
+#: ../templates/_profile/unikatalog/std_footer_html:294
+msgid "Charta der Vielfalt"
+msgstr "Charta der Vielfalt"
 
 #: ../templates/_database/jesuiten/titles_record_html_categories:166
 #: ../templates/_profile/bootstrap/_view/games/search_facet:876
@@ -9017,10 +9034,10 @@ msgstr "Type of database"
 #: ../templates/_profile/sammlungen_yaml4/profiles_html:62
 #: ../templates/_profile/sammlungen_yaml4/views_html:61
 #: ../templates/_profile/unikatalog/_view/bcw1/home_html:221
-#: ../templates/_profile/unikatalog/_view/unikatalog/home_html:215
+#: ../templates/_profile/unikatalog/_view/unikatalog/home_html:220
 #: ../templates/_profile/unikatalog/admin_profiles_html:88
 #: ../templates/_profile/unikatalog/admin_views_html:102
-#: ../templates/_profile/unikatalog/home_html:206
+#: ../templates/_profile/unikatalog/home_html:209
 #: ../templates/_profile/unikatalog/profiles_html:22
 #: ../templates/_profile/unikatalog/views_html:21
 #: ../templates/_profile/yaml4/admin_profiles_html:126
@@ -9083,6 +9100,8 @@ msgstr "Data sources for Articles &amp; more"
 msgid "Datenschutz"
 msgstr "Privacy policy"
 
+#: ../templates/_profile/unikatalog/std_footer_html:120
+#: ../templates/_profile/unikatalog/std_footer_html:280
 #: ../templates/info_datenschutz:13
 msgid "Datenschutzerklärung"
 msgstr "Privacy policy"
@@ -9997,6 +10016,10 @@ msgid ""
 msgstr ""
 "Your resultlist is so huge, that it is of no use to refine your result by "
 "facets."
+
+#: ../templates/_profile/unikatalog/std_footer_html:170
+msgid "Die Universität zu Köln"
+msgstr "The University of Cologne"
 
 #: ../modules/OpenBib/Handler/PSGI/Admin/Users/Migration.pm:151
 msgid "Die Ursprungs-Kennung existiert nicht."
@@ -11121,11 +11144,11 @@ msgstr "Sources of e-media"
 
 #: ../templates/_database/inst001/circulation:463
 #: ../templates/_profile/unikatalog/_database/alma/circulation:550
-#: ../templates/_profile/unikatalog/_database/inst001/circulation:554
+#: ../templates/_profile/unikatalog/_database/inst001/circulation:553
 msgid "E-Semesterapparat"
 msgstr "E-semester bookshelf"
 
-#: ../templates/_profile/unikatalog/_view/unikatalog/home_html:210
+#: ../templates/_profile/unikatalog/_view/unikatalog/home_html:213
 msgid "E-Zeitschriften"
 msgstr "E-Journals"
 
@@ -13365,7 +13388,7 @@ msgstr "Places of publication"
 #: ../templates/_profile/unikatalog/_database/gvi/titles_record_html_categories:463
 #: ../templates/_profile/unikatalog/_database/marc21/titles_record_html_categories:610
 #: ../templates/_profile/unikatalog/cartitems_html_as_text:58
-#: ../templates/_profile/unikatalog/titles_record_html_categories:898
+#: ../templates/_profile/unikatalog/titles_record_html_categories:910
 #: ../templates/_profile/unikatalog/titles_record_include:57
 #: ../templates/_profile/unikatalog/titles_record_mobile_categories:278
 #: ../templates/_profile/yaml4/_database/bibsonomy/titles_record_html_categories:292
@@ -14379,11 +14402,12 @@ msgstr "Subjects"
 #: ../templates/_profile/rheinlandbib_yaml4/searchforms_record_simple:252
 #: ../templates/_profile/rheinlandbib_yaml4/searchforms_record_simple:344
 #: ../templates/_profile/rheinlandbib_yaml4/searchforms_record_simple:437
+#: ../templates/_profile/unikatalog/std_footer_html:186
 #: ../templates/_profile/usbportal/searchforms_record_query:155
 msgid "Fakultäten"
 msgstr "Faculties"
 
-#: ../templates/_profile/unikatalog/locations_html:84
+#: ../templates/_profile/unikatalog/locations_html:89
 msgid "Fakultätsungebundene / Fakultätsübergreifende Bibliotheken"
 msgstr "Non-Faculty / Inter-Faculty Libraries"
 
@@ -14812,6 +14836,10 @@ msgstr "Firefox Search-Plugin"
 #: ../templates/_profile/unikatalog/_view/sammlungen/home_html:241
 msgid "Forschung"
 msgstr "Research"
+
+#: ../templates/_profile/unikatalog/std_footer_html:179
+msgid "Forschung und Transfer"
+msgstr "Research and Transfer"
 
 #: ../templates/_profile/bootstrap5/info_help:1031
 #: ../templates/_profile/kug_yaml4/info_help:931
@@ -15883,6 +15911,10 @@ msgstr "Funds"
 msgid "Gültigkeitsbereich"
 msgstr "Scope"
 
+#: ../templates/_profile/unikatalog/std_footer_html:295
+msgid "HRK-Audit Internationalisierung"
+msgstr "HRK-Audit Internationalisierung"
+
 #: ../templates/_profile/bootstrap5/admin_databases_record_edit_html:124
 #: ../templates/_profile/rheinlandbib_yaml4/admin_databases_record_edit:165
 #: ../templates/_profile/sammlungen_yaml4/admin_databases_record_edit:165
@@ -16519,6 +16551,10 @@ msgstr "Homepage"
 #: ../templates/_profile/yaml4/admin_authenticators_record_html:62
 msgid "Hostname"
 msgstr "Hostname"
+
+#: ../templates/_profile/unikatalog/std_footer_html:193
+msgid "Humanwissenschaften"
+msgstr "Human Sciences"
 
 #: ../templates/_profile/bootstrap5/searchforms_record_bottom_left:22
 #: ../templates/_profile/rheinlandbib_yaml4/searchforms_record_bottom_left:22
@@ -17469,6 +17505,7 @@ msgstr "Import-Settings"
 #: ../templates/_profile/sammlungen_yaml4/info_impressum_html:43
 #: ../templates/_profile/sammlungen_yaml4/std_footer_html:17
 #: ../templates/_profile/unikatalog/info_impressum_html:15
+#: ../templates/_profile/unikatalog/std_footer_html:110
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/std_footer_html:18
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/std_footer_html:18
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/std_footer_html:18
@@ -17485,6 +17522,10 @@ msgstr "Import-Settings"
 #: ../templates/std_footer_html:23 ../templates/std_footer_mobile:16
 msgid "Impressum"
 msgstr "Legal notice"
+
+#: ../templates/_profile/unikatalog/std_footer_html:105
+msgid "Impressum / Datenschutzerklärung"
+msgstr "Legal notice / Privacy protection statement"
 
 #: ../templates/_profile/bootstrap5/users_circulations_check_campus_order_html:179
 #: ../templates/_profile/bootstrap5/users_circulations_check_ilias_order_html:179
@@ -17695,7 +17736,7 @@ msgstr ""
 
 #: ../templates/_database/inst001/circulation:394
 #: ../templates/_profile/unikatalog/_database/alma/circulation:481
-#: ../templates/_profile/unikatalog/_database/inst001/circulation:485
+#: ../templates/_profile/unikatalog/_database/inst001/circulation:484
 msgid "In den Lesesaal bestellen"
 msgstr "Order into reading room"
 
@@ -18291,6 +18332,10 @@ msgstr "Info"
 msgid "Informationen"
 msgstr "Information"
 
+#: ../templates/_profile/unikatalog/std_footer_html:174
+msgid "Informationen für"
+msgstr "Informations for"
+
 #: ../templates/_profile/sammlungen/_view/muenzenproto/home_html:73
 msgid "Informationen zu Provenienzen und Anzahl der Münzen"
 msgstr "Information about provenances and number of coins"
@@ -18878,6 +18923,10 @@ msgstr "Integration of BibSonomy"
 msgid "Interaktives Tutorium"
 msgstr "Interactive tutorial"
 
+#: ../templates/_profile/unikatalog/std_footer_html:180
+msgid "International"
+msgstr "International"
+
 #: ../templates/_profile/bootstrap5/_view/unikatalog/admin_navigation_dropdown:151
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/admin_navigation_dropdown:151
 #: ../templates/_profile/bootstrap5/admin_navigation:229
@@ -18996,7 +19045,7 @@ msgstr "Inventory number"
 #: ../templates/_profile/unikatalog/_database/gvi/titles_record_html_categories:462
 #: ../templates/_profile/unikatalog/_database/marc21/titles_record_html_categories:609
 #: ../templates/_profile/unikatalog/cartitems_html_as_text:57
-#: ../templates/_profile/unikatalog/titles_record_html_categories:897
+#: ../templates/_profile/unikatalog/titles_record_html_categories:909
 #: ../templates/_profile/unikatalog/titles_record_include:56
 #: ../templates/_profile/unikatalog/titles_record_mobile_categories:277
 #: ../templates/_profile/yaml4/_database/bibsonomy/titles_record_html_categories:291
@@ -21837,6 +21886,9 @@ msgstr "Could not find what you were looking for?"
 #: ../templates/_profile/sammlungen_yaml4/std_footer_html:17
 #: ../templates/_profile/unikatalog/info_help:1029
 #: ../templates/_profile/unikatalog/info_help:104
+#: ../templates/_profile/unikatalog/std_footer_html:203
+#: ../templates/_profile/unikatalog/std_footer_html:70
+#: ../templates/_profile/unikatalog/std_footer_html:75
 #: ../templates/_profile/usbintern/_view/warenkorb_komplett/std_footer_html:18
 #: ../templates/_profile/usbintern/_view/warenkorb_uni/std_footer_html:18
 #: ../templates/_profile/usbintern/_view/warenkorb_usb/std_footer_html:18
@@ -21965,6 +22017,10 @@ msgstr "Correspondence networks: Current research"
 #: ../templates/users_circulations_check_pda_order_html:256
 msgid "Kostenfrei bestellen"
 msgstr "Order free of charge"
+
+#: ../templates/_profile/unikatalog/std_footer_html:138
+msgid "Kulturpartner"
+msgstr "Cultural partners"
 
 #: ../templates/_profile/bootstrap5/users_circulations_mail_kmbcopy_html:244
 #: ../templates/_profile/unikatalog/users_circulations_mail_kmbcopy_html:245
@@ -24170,7 +24226,7 @@ msgstr "Local"
 #: ../templates/_profile/unikatalog/_database/gvi/titles_record_html_categories:461
 #: ../templates/_profile/unikatalog/_database/marc21/titles_record_html_categories:608
 #: ../templates/_profile/unikatalog/cartitems_html_as_text:56
-#: ../templates/_profile/unikatalog/titles_record_html_categories:896
+#: ../templates/_profile/unikatalog/titles_record_html_categories:908
 #: ../templates/_profile/unikatalog/titles_record_include:55
 #: ../templates/_profile/unikatalog/titles_record_mobile_categories:276
 #: ../templates/_profile/yaml4/_database/bibsonomy/titles_record_html_categories:290
@@ -24752,6 +24808,10 @@ msgstr "Mash-Ups with Social Networking and External Services"
 msgid "Material"
 msgstr "Material"
 
+#: ../templates/_profile/unikatalog/std_footer_html:192
+msgid "Mathematik &amp; Naturwissenschaften"
+msgstr "Mathematics and Natural Sciences"
+
 #: ../templates/_profile/bootstrap5/info_help:624
 #: ../templates/_profile/rheinlandbib_yaml4/info_help:624
 #: ../templates/_profile/sammlungen_yaml4/info_help:624
@@ -24892,6 +24952,10 @@ msgstr "Medium"
 #: ../templates/_profile/bootstrap/_view/games/home_html_bottom_right:16
 msgid "Medium vs. Digital"
 msgstr "Medium vs. Digital"
+
+#: ../templates/_profile/unikatalog/std_footer_html:190
+msgid "Medizin"
+msgstr "Medicine"
 
 #: ../templates/_profile/bootstrap/_view/fidphil/titles_record_html_actions:638
 #: ../templates/_profile/bootstrap/_view/games/search_facet:186
@@ -25783,6 +25847,10 @@ msgstr ""
 #: ../templates/info_message_include:14
 msgid "Meldung"
 msgstr "Message"
+
+#: ../templates/_profile/unikatalog/std_footer_html:204
+msgid "Mensa"
+msgstr "Canteen"
 
 #: ../templates/_profile/unikatalog/_view/bcw1/mainnavigation_html:58
 #: ../templates/_profile/unikatalog/_view/unikatalog/mainnavigation_html:58
@@ -28099,6 +28167,10 @@ msgstr "Create new template"
 msgid "Neues Themengebiet anlegen"
 msgstr "Create new topic"
 
+#: ../templates/_profile/unikatalog/std_footer_html:85
+msgid "Newsletter"
+msgstr "Newsletter"
+
 #: ../templates/_profile/unikatalog/users_circulations_html:100
 msgid "Newsletterverwaltung"
 msgstr "Newsletter management"
@@ -29741,7 +29813,7 @@ msgstr "Permanent Link to This Entry"
 
 #: ../templates/_database/einbaende/titles_record_html:104
 #: ../templates/_database/einbaende/titles_record_html:92
-#: ../templates/_database/gentzdigital/persons_record_include:149
+#: ../templates/_database/gentzdigital/persons_record_include:152
 #: ../templates/_profile/bootstrap/_view/games/search_facet:405
 #: ../templates/_profile/bootstrap/_view/kubibooks/mainnavigation_html:69
 #: ../templates/_profile/bootstrap/_view/kubibooks/subnavigation:49
@@ -30134,6 +30206,10 @@ msgstr "Personal password"
 #: ../templates/_profile/unikatalog/users_librarycard_registrations_html:79
 msgid "Persönliches Passwort (genau 6 Zeichen)"
 msgstr "Personal password (exactly 6 characters)"
+
+#: ../templates/_profile/unikatalog/std_footer_html:191
+msgid "Philosophie"
+msgstr "Arts and Humanities"
 
 #: ../templates/_profile/bootstrap5/home_html_bottom_right:42
 #: ../templates/_profile/kug_yaml4/_view/kug/home_html_bottom_right:36
@@ -30600,6 +30676,10 @@ msgstr "Recommended Entries"
 msgid "Preis"
 msgstr "Price"
 
+#: ../templates/_profile/unikatalog/std_footer_html:182
+msgid "Presse und Marketing"
+msgstr "Press, Communications, Marketing"
+
 #: ../templates/_profile/rheinlandbib_yaml4/views_rss_record_html:70
 #: ../templates/_profile/sammlungen_yaml4/views_rss_record_html:70
 #: ../templates/_profile/yaml4/views_rss_record_html:70
@@ -30810,6 +30890,10 @@ msgstr "Project"
 #: ../templates/_profile/sammlungen_yaml4/_view/fotobuecher/subnavigation_project_items:15
 msgid "Projektmitarbeiter"
 msgstr "Team"
+
+#: ../templates/_profile/unikatalog/std_footer_html:178
+msgid "Promotion"
+msgstr "Conferral of a doctorate/PhD"
 
 #: ../templates/_profile/bootstrap5/admin_databases_record_edit_html:129
 #: ../templates/_profile/bootstrap5/admin_databases_record_html:27
@@ -31075,6 +31159,10 @@ msgstr "Publications"
 #: ../templates/_profile/unikatalog/titles_record_html_modals:126
 msgid "QR-Code"
 msgstr "QR-Code"
+
+#: ../templates/_profile/unikatalog/std_footer_html:286
+msgid "Qualitätslabels der Universität zu Köln:"
+msgstr "Quality Labels of University of Cologne:"
 
 #: ../templates/_profile/bootstrap/_view/games/search_facet:408
 #: ../templates/_profile/bootstrap/_view/kubikoeln/search_facet:420
@@ -31641,6 +31729,10 @@ msgstr "Search for %1 journals/series in %2 catalogs"
 #: ../templates/users_preferences_html:232
 msgid "Rechtschreibvorschläge"
 msgstr "Spelling suggestions"
+
+#: ../templates/_profile/unikatalog/std_footer_html:189
+msgid "Rechtswissenschaften"
+msgstr "Law"
 
 #: ../templates/_profile/bootstrap/_view/muenzen/mainnavigation_html:102
 #: ../templates/_profile/bootstrap/_view/muenzen/search_title_field:18
@@ -32858,6 +32950,10 @@ msgstr "Subject headings"
 #: ../templates/titles_record_html_modals:90
 msgid "Schließen"
 msgstr "Close"
+
+#: ../templates/_profile/unikatalog/std_footer_html:197
+msgid "Schnellzugriff"
+msgstr "Quick links"
 
 #: ../templates/_database/jesuiten/titles_record_html_categories:206
 #: ../templates/_profile/bootstrap/_view/games/search_facet:864
@@ -34589,6 +34685,14 @@ msgstr ""
 "As soon as the system has authenticated your login data successfully you can "
 "make use of the advantages of <b>My OpenBib</b>:"
 
+#: ../templates/_profile/unikatalog/std_footer_html:217
+msgid "Social-Media-Kanäle der Universität zu Köln"
+msgstr "Social media at University of Cologne"
+
+#: ../templates/_profile/unikatalog/std_footer_html:35
+msgid "Social-Media-Kanäle der Universitäts- und Stadtbibliothek  Köln"
+msgstr "Social media at University and City Library of Cologne"
+
 #: ../templates/_profile/unikatalog/users_circulations_check_pda_order_html:27
 #: ../templates/users_circulations_check_pda_order_html:27
 msgid "Sofern Sie Fragen haben, wenden Sie sich bitte an"
@@ -35407,7 +35511,7 @@ msgstr "Location"
 #: ../templates/_profile/unikatalog/_database/gvi/titles_record_html_categories:460
 #: ../templates/_profile/unikatalog/_database/marc21/titles_record_html_categories:607
 #: ../templates/_profile/unikatalog/cartitems_html_as_text:55
-#: ../templates/_profile/unikatalog/titles_record_html_categories:895
+#: ../templates/_profile/unikatalog/titles_record_html_categories:907
 #: ../templates/_profile/unikatalog/titles_record_include:54
 #: ../templates/_profile/unikatalog/titles_record_mobile_categories:275
 #: ../templates/_profile/yaml4/_database/bibsonomy/titles_record_html_categories:289
@@ -36142,11 +36246,11 @@ msgstr "Edit information about location"
 #: ../templates/authority_search_start_html:51
 #: ../templates/authorization_error:10
 #: ../templates/availability_search_start_html:53 ../templates/browse:12
-#: ../templates/browse_bks:14 ../templates/browse_bks_record:12
+#: ../templates/browse_bks:14 ../templates/browse_bks_record:14
 #: ../templates/browse_bks_record_databases:12 ../templates/browse_lbs:16
 #: ../templates/browse_lbs_record:13 ../templates/browse_ls:16
 #: ../templates/browse_ls_record:13 ../templates/browse_topics:12
-#: ../templates/browse_topics_record:13 ../templates/cartitems:11
+#: ../templates/browse_topics_record:15 ../templates/cartitems:11
 #: ../templates/cartitems_add:10 ../templates/cartitems_mail:11
 #: ../templates/classifications:16 ../templates/classifications_record:19
 #: ../templates/clouds:14 ../templates/clouds_classification:14
@@ -36580,9 +36684,21 @@ msgstr "Structure of collection"
 msgid "Struktur des Katalogbestandes als Wortwolken"
 msgstr "Catalogs structure as tag clouds"
 
+#: ../templates/_profile/unikatalog/std_footer_html:177
+msgid "Studieninteressierte"
+msgstr "Prospective Students"
+
+#: ../templates/_profile/unikatalog/std_footer_html:176
+msgid "Studierende"
+msgstr "Students"
+
 #: ../templates/_profile/unikatalog/users_uccard_activations_html:24
 msgid "Studierenden-Account"
 msgstr "Student account"
+
+#: ../templates/_profile/unikatalog/std_footer_html:202
+msgid "Studierendensekretariat"
+msgstr "Student Application and Registration Office"
 
 #: ../templates/_profile/sammlungen_yaml4/_view/muenzen/clouds_navigation:49
 #: ../templates/_profile/sammlungen_yaml4/_view/muenzen/clouds_navigation:51
@@ -37859,7 +37975,7 @@ msgstr ""
 
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_record:28
 #, fuzzy
-msgid "T${field}-gentzbriefe"
+msgid "T${field}-gentzdigital"
 msgstr "Sender"
 
 #: ../templates/_profile/sammlungen_yaml4/_view/provenienzen/authority_search_facet:99
@@ -38437,13 +38553,10 @@ msgstr "Author"
 msgid "T0100-einbaende"
 msgstr "Person"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:16
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_record:7
-msgid "T0100-gentzbriefe"
-msgstr "Sender"
-
 #: ../templates/_database/gentzdigital/visible_categories_title:16
 #: ../templates/_database/gentzdigital/visible_categories_title_ab1:18
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:16
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_record:7
 #: ../templates/_profile/sammlungen_yaml4/_database/gentzdigital/visible_categories_title:16
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/clouds_person_html:51
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/clouds_person_html:70
@@ -38602,13 +38715,10 @@ msgstr "Bookbinder/workshops"
 msgid "T0101-filme"
 msgstr "Cast"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:17
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_record:10
-msgid "T0101-gentzbriefe"
-msgstr "Recipient"
-
 #: ../templates/_database/gentzdigital/visible_categories_title:17
 #: ../templates/_database/gentzdigital/visible_categories_title_ab1:19
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:17
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_record:10
 msgid "T0101-gentzdigital"
 msgstr "Recipient"
 
@@ -38862,9 +38972,6 @@ msgid "T0200-filme"
 msgstr "Director"
 
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:18
-msgid "T0200-gentzbriefe"
-msgstr "Archive"
-
 #: ../templates/_profile/sammlungen_yaml4/_database/gentzdigital/visible_categories_title:17
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/clouds_corporatebody_html:51
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/clouds_corporatebody_html:70
@@ -39622,11 +39729,8 @@ msgstr "Same obverse stamp as"
 msgid "T0334"
 msgstr "Material type"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:19
-msgid "T0334-gentzbriefe"
-msgstr "Copy original"
-
 #: ../templates/_database/gentzdigital/visible_categories_title_ab3:21
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:19
 msgid "T0334-gentzdigital"
 msgstr "Copy original"
 
@@ -39751,9 +39855,6 @@ msgid "T0335-einbaende"
 msgstr "Description of motive"
 
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:20
-msgid "T0335-gentzbriefe"
-msgstr "Incipit reference publication"
-
 #: ../templates/_profile/sammlungen_yaml4/_database/gentzdigital/visible_categories_title:23
 msgid "T0335-gentzdigital"
 msgstr "Incipit reference publication"
@@ -39781,11 +39882,8 @@ msgstr "Title"
 msgid "T0335-zpe"
 msgstr "Table"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:21
-msgid "T0336-gentzbriefe"
-msgstr "Incipit"
-
 #: ../templates/_database/gentzdigital/visible_categories_title_ab1:23
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:21
 msgid "T0336-gentzdigital"
 msgstr "Incipit"
 
@@ -40914,12 +41012,9 @@ msgstr "Place of publication"
 msgid "T0410-einbaende"
 msgstr "Place of publication"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:22
-msgid "T0410-gentzbriefe"
-msgstr "Sent location normalized"
-
 #: ../templates/_database/gentzdigital/visible_categories_title:18
 #: ../templates/_database/gentzdigital/visible_categories_title_ab1:20
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:22
 #: ../templates/_profile/sammlungen_yaml4/_database/gentzdigital/visible_categories_title:18
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/clouds_0410_html:51
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/clouds_0410_html:70
@@ -41066,13 +41161,10 @@ msgstr "Place of birth"
 msgid "T0412"
 msgstr "Publisher"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:23
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_record:16
-msgid "T0412-gentzbriefe"
-msgstr "Archives"
-
 #: ../templates/_database/gentzdigital/visible_categories_title:20
 #: ../templates/_database/gentzdigital/visible_categories_title_ab2:16
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:23
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_record:16
 #: ../templates/_profile/sammlungen_yaml4/_database/gentzdigital/visible_categories_title:20
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/searchforms_record_query:151
 msgid "T0412-gentzdigital"
@@ -41184,11 +41276,8 @@ msgstr "Printer"
 msgid "T0413-einbaende"
 msgstr "Printer"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:24
-msgid "T0413-gentzbriefe"
-msgstr "Printer"
-
 #: ../templates/_database/gentzdigital/visible_categories_title_ab2:17
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:24
 msgid "T0413-gentzdigital"
 msgstr "Printer"
 
@@ -41376,13 +41465,10 @@ msgstr "Year of publication"
 msgid "T0424-einbaende"
 msgstr "Year of publication"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:25
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_record:19
-msgid "T0424-gentzbriefe"
-msgstr "Sent date original"
-
 #: ../templates/_database/gentzdigital/visible_categories_title:19
 #: ../templates/_database/gentzdigital/visible_categories_title_ab1:21
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:25
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_record:19
 #: ../templates/_profile/sammlungen_yaml4/_database/gentzdigital/visible_categories_title:19
 msgid "T0424-gentzdigital"
 msgstr "Sent date original"
@@ -41643,12 +41729,9 @@ msgstr "Dating"
 msgid "T0433"
 msgstr "Extent of item"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:26
-msgid "T0433-gentzbriefe"
-msgstr "Size/Extent of item"
-
 #: ../templates/_database/gentzdigital/visible_categories_title:21
 #: ../templates/_database/gentzdigital/visible_categories_title_ab2:19
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:26
 #: ../templates/_profile/sammlungen_yaml4/_database/gentzdigital/visible_categories_title:21
 msgid "T0433-gentzdigital"
 msgstr "Size/Extent of item"
@@ -42169,11 +42252,8 @@ msgstr ""
 msgid "T0451"
 msgstr "Series title"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:27
-msgid "T0451-gentzbriefe"
-msgstr "Base data from"
-
 #: ../templates/_database/gentzdigital/visible_categories_title_ab1:17
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:27
 msgid "T0451-gentzdigital"
 msgstr "Base data from"
 
@@ -42201,35 +42281,23 @@ msgstr "Incipit"
 msgid "T0470-jesuiten"
 msgstr "Place of publication"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:28
-msgid "T0480-gentzbriefe"
-msgstr "Creator of transcription"
-
 #: ../templates/_database/gentzdigital/visible_categories_title_ab3:19
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:28
 msgid "T0480-gentzdigital"
 msgstr "Creator of transcription"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:29
-msgid "T0482-gentzbriefe"
-msgstr "Type of transcription"
-
 #: ../templates/_database/gentzdigital/visible_categories_title_ab3:20
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:29
 msgid "T0482-gentzdigital"
 msgstr "Type of transcription"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:30
-msgid "T0490-gentzbriefe"
-msgstr "Collection Herterich"
-
 #: ../templates/_database/gentzdigital/visible_categories_title_ab3:16
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:30
 msgid "T0490-gentzdigital"
 msgstr "Collection Herterich"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:31
-msgid "T0491-gentzbriefe"
-msgstr "Type Collection Herterich"
-
 #: ../templates/_database/gentzdigital/visible_categories_title_ab3:17
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:31
 msgid "T0491-gentzdigital"
 msgstr "Type Collection Herterich"
 
@@ -45435,8 +45503,9 @@ msgstr "Title source"
 
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:32
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_record:25
-msgid "T0590-gentzbriefe"
-msgstr "Printed publications"
+#, fuzzy
+msgid "T0590-gentzdigital"
+msgstr "Collection Herterich"
 
 #: ../templates/_profile/sammlungen_yaml4/_database/pruessen/visible_categories_title:56
 msgid "T0590-pruessen"
@@ -45653,11 +45722,8 @@ msgstr "Source description"
 msgid "T0594"
 msgstr "Publication place of source"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:33
-msgid "T0594-gentzbriefe"
-msgstr "Publication type"
-
 #: ../templates/_database/gentzdigital/visible_categories_title:22
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:33
 #: ../templates/_profile/sammlungen_yaml4/_database/gentzdigital/visible_categories_title:22
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/searchforms_record_query:160
 msgid "T0594-gentzdigital"
@@ -47071,11 +47137,8 @@ msgstr "Type of publication"
 msgid "T0800-einbaende"
 msgstr "Type"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:34
-msgid "T0800-gentzbriefe"
-msgstr "Type of letter"
-
 #: ../templates/_database/gentzdigital/visible_categories_title:24
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:34
 #: ../templates/_profile/sammlungen_yaml4/_database/gentzdigital/visible_categories_title:24
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/search_facet:177
 #: ../templates/_profile/sammlungen_yaml4/_view/gentzdigital/search_title_field:17
@@ -48242,11 +48305,8 @@ msgstr "Remark"
 msgid "T1664"
 msgstr "Provenance"
 
-#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:35
-msgid "T1664-gentzbriefe"
-msgstr "Archive information"
-
 #: ../templates/_database/gentzdigital/visible_categories_title_ab2:18
+#: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_fields_html:35
 msgid "T1664-gentzdigital"
 msgstr "Archive information"
 
@@ -50569,6 +50629,10 @@ msgstr "Templates"
 msgid "Templates zuordnen"
 msgstr "Assign template"
 
+#: ../templates/_profile/unikatalog/std_footer_html:206
+msgid "Terminkalender"
+msgstr "Calendar"
+
 #: ../templates/_profile/bootstrap5/_view/unikatalog/searchforms_record_profile:35
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/searchforms_record_profile:35
 #: ../templates/_profile/bootstrap5/searchforms_record_profile:35
@@ -51117,7 +51181,7 @@ msgstr "Assign topics to DBIS subjects"
 #: ../templates/_profile/unikatalog/_view/ilias/mainnavigation_html:201
 #: ../templates/_profile/unikatalog/_view/ilias/mainnavigation_html:326
 #: ../templates/_profile/unikatalog/_view/marc21/search_title_combined_html:71
-#: ../templates/_profile/unikatalog/_view/unikatalog/home_html:205
+#: ../templates/_profile/unikatalog/_view/unikatalog/home_html:206
 #: ../templates/_profile/unikatalog/admin_navigation:340
 #: ../templates/_profile/unikatalog/admin_navigation:342
 #: ../templates/_profile/unikatalog/admin_navigation_dropdown:208
@@ -51203,7 +51267,7 @@ msgstr "Assign topics to DBIS subjects"
 #: ../templates/admin_topics_record_edit_html:292
 #: ../templates/admin_topics_record_edit_html:321 ../templates/browse_html:19
 #: ../templates/browse_topics:20 ../templates/browse_topics_html:18
-#: ../templates/browse_topics_record:21 ../templates/info_53:42
+#: ../templates/browse_topics_record:23 ../templates/info_53:42
 #: ../templates/litlists_by_single_topic:28
 #: ../templates/litlists_by_single_topic_include:16
 #: ../templates/litlists_by_single_topic_recent:29
@@ -51651,8 +51715,8 @@ msgstr "title in this catalog is connected to this classification"
 msgid "Titel ist in diesem Katalog mit der Körperschaft verknüpft"
 msgstr "title in this catalog is connected to this corporate body"
 
-#: ../templates/_database/gentzdigital/persons_record_html:115
-#: ../templates/_database/gentzdigital/persons_record_include:112
+#: ../templates/_database/gentzdigital/persons_record_html:118
+#: ../templates/_database/gentzdigital/persons_record_include:115
 #: ../templates/_profile/bootstrap/_view/kubikoeln/persons_record_include:132
 #: ../templates/_profile/bootstrap5/_view/unikatalog/persons_record_include:126
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/persons_record_include:126
@@ -51793,8 +51857,8 @@ msgstr "titles in this catalog are connected to this classification"
 msgid "Titel sind in diesem Katalog mit der Körperschaft verknüpft"
 msgstr "titles in this catalog are connected to this corporate body"
 
-#: ../templates/_database/gentzdigital/persons_record_html:117
-#: ../templates/_database/gentzdigital/persons_record_include:114
+#: ../templates/_database/gentzdigital/persons_record_html:120
+#: ../templates/_database/gentzdigital/persons_record_include:117
 #: ../templates/_profile/bootstrap/_view/kubikoeln/persons_record_include:134
 #: ../templates/_profile/bootstrap5/_view/unikatalog/persons_record_include:128
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/persons_record_include:128
@@ -52214,6 +52278,10 @@ msgstr "Top 20 titles"
 #: ../templates/_profile/sammlungen_yaml4/_view/muenzen/search_title_field:19
 msgid "Topogr. Schlagwort"
 msgstr "Topogr. subject heading"
+
+#: ../templates/_profile/unikatalog/std_footer_html:290
+msgid "Total Equality Award"
+msgstr "Total Equality Award"
 
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:495
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/search_facet:563
@@ -53155,6 +53223,20 @@ msgstr ""
 msgid "Unikatalog - Bücher, E-Medien, Aufsätze &amp; mehr"
 msgstr "University catalog - books, e-media, articles &amp; more"
 
+#: ../templates/_profile/unikatalog/std_footer_html:201
+msgid "Universität"
+msgstr "University"
+
+#: ../templates/_profile/unikatalog/std_footer_html:279
+msgid "Universität zu Köln"
+msgstr "University of Cologne"
+
+#: ../templates/_profile/unikatalog/std_footer_html:199
+#: ../templates/_profile/unikatalog/std_footer_html:24
+#: ../templates/_profile/unikatalog/std_footer_html:32
+msgid "Universitäts- und Stadtbibliothek Köln"
+msgstr "University and City Library of Cologne"
+
 #: ../templates/_profile/unikatalog/users_circulations_html:137
 msgid ""
 "Unser USB-Portal hält ständig Neuerscheinungen zum Direktkauf im Angebot. "
@@ -53169,6 +53251,10 @@ msgstr ""
 "purchase possible\", you can place an order with just a few clicks. We will "
 "then create this title for the USB and notify you as soon as it has been "
 "delivered. With Patron-Driven-Acquisition makes it easy."
+
+#: ../templates/_profile/unikatalog/std_footer_html:131
+msgid "Unsere Partner machen uns stark!"
+msgstr "Our partners make us strong!"
 
 #: ../modules/OpenBib/Handler/PSGI/Login.pm:490
 #: ../modules/OpenBib/Handler/PSGI/Users/LibraryCardRegistrations.pm:339
@@ -54185,7 +54271,7 @@ msgstr "Complete title"
 #: ../templates/_profile/unikatalog/_database/marc21/titlist_item_html_short:449
 #: ../templates/_profile/unikatalog/_view/bcw1/titlist_item_html_short:482
 #: ../templates/_profile/unikatalog/titles_record_html:406
-#: ../templates/_profile/unikatalog/titles_record_html_categories:862
+#: ../templates/_profile/unikatalog/titles_record_html_categories:874
 #: ../templates/_profile/unikatalog/titlist_item_html_short:479
 #: ../templates/_profile/yaml4/_database/dreierpda/titles_record_html_categories:241
 #: ../templates/_profile/yaml4/_database/inst323/titles_record_html_categories:375
@@ -54628,6 +54714,14 @@ msgstr "Web"
 #: ../templates/_profile/yaml4/admin_databases_record_html:91
 msgid "WebOPAC-URL"
 msgstr "WebOPAC-URL"
+
+#: ../templates/_profile/unikatalog/std_footer_html:207
+msgid "Webmail"
+msgstr "Webmail"
+
+#: ../templates/_profile/unikatalog/std_footer_html:95
+msgid "Webredaktion"
+msgstr "Online editing"
 
 #: ../templates/_profile/bootstrap5/_view/unikatalog/search_title_combined_html:37
 #: ../templates/_profile/bootstrap5/_view/unikatalog/searchforms_record_profile:34
@@ -55469,6 +55563,10 @@ msgstr "Real name"
 msgid "Wirkungsdaten"
 msgstr "Vita"
 
+#: ../templates/_profile/unikatalog/std_footer_html:188
+msgid "Wirtschafts- und Sozialwissenschaften"
+msgstr "Management, Economics and Social Sciences"
+
 #: ../templates/_profile/unikatalog/_view/bcw1/home_html:207
 #: ../templates/_profile/unikatalog/_view/dante/home_html:227
 #: ../templates/_profile/unikatalog/_view/sammlungen/home_html:227
@@ -56103,8 +56201,8 @@ msgid "Zahl Recherchen/Sessions"
 msgstr "Number of search requests / sessions"
 
 #: ../templates/_profile/unikatalog/_view/inst001/locations_record_include:46
-#: ../templates/_profile/unikatalog/locations_record_html:87
-#: ../templates/_profile/unikatalog/locations_record_include:86
+#: ../templates/_profile/unikatalog/locations_record_html:71
+#: ../templates/_profile/unikatalog/locations_record_include:70
 msgid "Zahl der Besucher heute"
 msgstr "Number of visitors today"
 
@@ -56143,7 +56241,7 @@ msgstr "Show only hits with full text"
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/titles_record_html_categories:518
 #: ../templates/_profile/kug/_view/kugproto/titles_record_html_categories:521
 #: ../templates/_profile/unikatalog/_database/gesis/titles_record_html_categories:705
-#: ../templates/_profile/unikatalog/titles_record_html_categories:754
+#: ../templates/_profile/unikatalog/titles_record_html_categories:766
 msgid "Zeige Überordnung"
 msgstr "Show super title"
 
@@ -56240,7 +56338,7 @@ msgid "Zeitschrift"
 msgstr "Journal"
 
 #: ../templates/_profile/unikatalog/_view/bcw1/home_html:213
-#: ../templates/_profile/unikatalog/home_html:201
+#: ../templates/_profile/unikatalog/home_html:202
 #: ../templates/_profile/usbportal/_view/zbkunst/visible_categories_location:39
 #: ../templates/_profile/usbportal/visible_categories_location:40
 msgid "Zeitschriften"
@@ -56781,7 +56879,7 @@ msgstr "Most recently created tags"
 msgid "Zuletzt in der Zeitschrift ver&ouml;ffentlichte Artikel"
 msgstr "Most recent articles published in this journal"
 
-#: ../templates/_profile/unikatalog/layout_html:264
+#: ../templates/_profile/unikatalog/layout_html:263
 #: ../templates/_profile/unikatalog/search_title_end_html:48
 msgid "Zum Anfang"
 msgstr "To the top"
@@ -59383,6 +59481,10 @@ msgstr "other OpenBib-Portals"
 msgid "wiederholt"
 msgstr "repeated"
 
+#: ../templates/_profile/unikatalog/std_footer_html:22
+msgid "zuletzt geändert am"
+msgstr "Last updated on"
+
 #: ../templates/_profile/unikatalog/login_html:127
 #: ../templates/_profile/unikatalog/login_include:126
 msgid "»Passwort vergessen?"
@@ -59818,6 +59920,66 @@ msgstr "Overdue/Fees"
 msgid "Überzogene Medien - Gebühren"
 msgstr "Overdue/Fees"
 
+#~ msgid "T0100-gentzbriefe"
+#~ msgstr "Sender"
+
+#~ msgid "T0101-gentzbriefe"
+#~ msgstr "Recipient"
+
+#~ msgid "T0200-gentzbriefe"
+#~ msgstr "Archive"
+
+#~ msgid "T0334-gentzbriefe"
+#~ msgstr "Copy original"
+
+#~ msgid "T0335-gentzbriefe"
+#~ msgstr "Incipit reference publication"
+
+#~ msgid "T0336-gentzbriefe"
+#~ msgstr "Incipit"
+
+#~ msgid "T0410-gentzbriefe"
+#~ msgstr "Sent location normalized"
+
+#~ msgid "T0412-gentzbriefe"
+#~ msgstr "Archives"
+
+#~ msgid "T0413-gentzbriefe"
+#~ msgstr "Printer"
+
+#~ msgid "T0424-gentzbriefe"
+#~ msgstr "Sent date original"
+
+#~ msgid "T0433-gentzbriefe"
+#~ msgstr "Size/Extent of item"
+
+#~ msgid "T0451-gentzbriefe"
+#~ msgstr "Base data from"
+
+#~ msgid "T0480-gentzbriefe"
+#~ msgstr "Creator of transcription"
+
+#~ msgid "T0482-gentzbriefe"
+#~ msgstr "Type of transcription"
+
+#~ msgid "T0490-gentzbriefe"
+#~ msgstr "Collection Herterich"
+
+#~ msgid "T0491-gentzbriefe"
+#~ msgstr "Type Collection Herterich"
+
+#~ msgid "T0590-gentzbriefe"
+#~ msgstr "Printed publications"
+
+#~ msgid "T0594-gentzbriefe"
+#~ msgstr "Publication type"
+
+#~ msgid "T0800-gentzbriefe"
+#~ msgstr "Type of letter"
+
+#~ msgid "T1664-gentzbriefe"
+#~ msgstr "Archive information"
+
 #~ msgid "Aufsätze &amp; mehr (Nachweis)"
 #~ msgstr "Articles &amp; more (Proof)"
 
@@ -59873,9 +60035,6 @@ msgstr "Overdue/Fees"
 
 #~ msgid "Sie müssen alle Pflichtfelder ausfüllen."
 #~ msgstr "You have to fill in all mandatory fields."
-
-#~ msgid "Aufsätze Philosophie"
-#~ msgstr "Essays Philosophy"
 
 #~ msgid ""
 #~ "Da Sie den Internet-Browser %1 verwenden, k&ouml;nnen\n"

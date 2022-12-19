@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2022-12-19 13:24+0100\n"
+"PO-Revision-Date: 2022-12-19 13:36+0100\n"
 "Last-Translator: openbib <flimm@openbib.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -605,7 +605,6 @@ msgstr "%1 titles"
 #: ../templates/_profile/sammlungen_yaml4/browse_topics_html:73
 #: ../templates/_profile/sammlungen_yaml4/info_53:55
 #: ../templates/_profile/sammlungen_yaml4/searchforms_record_simple:306
-#: ../templates/_profile/unikatalog/browse_topics_html:30
 #: ../templates/_profile/yaml4/browse_topics_html:74
 #: ../templates/_profile/yaml4/info_53:55
 #: ../templates/_profile/yaml4/searchforms_record_simple:306
@@ -57126,6 +57125,14 @@ msgstr "descending"
 #: ../templates/_profile/rheinlandbib_yaml4/mainnavigation:50
 msgid "admin"
 msgstr "Administrator"
+
+#: ../templates/_profile/unikatalog/browse_topics_record_html:124
+#: ../templates/_profile/unikatalog/browse_topics_record_html:47
+#: ../templates/_profile/unikatalog/browse_topics_record_html:58
+#: ../templates/_profile/unikatalog/browse_topics_record_html:70
+#: ../templates/_profile/unikatalog/browse_topics_record_html:97
+msgid "alle Fachgebiete"
+msgstr "all subjects"
 
 #: ../templates/_profile/rheinlandbib_yaml4/searchforms_record_options:3
 #: ../templates/_profile/sammlungen_yaml4/searchforms_record_options:3

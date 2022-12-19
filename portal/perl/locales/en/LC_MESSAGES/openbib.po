@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2022-12-12 14:37+0100\n"
+"PO-Revision-Date: 2022-12-19 08:54+0100\n"
 "Last-Translator: openbib <flimm@openbib.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -6350,7 +6350,7 @@ msgstr "Already existing templates"
 #: ../templates/_profile/yaml4/admin_topics_html:93
 #: ../templates/admin_topics_html:56
 msgid "Bereits existierende Themengebiete"
-msgstr "Already existing subjects"
+msgstr "Already existing topics"
 
 #: ../templates/_profile/bootstrap5/admin_views_html:71
 #: ../templates/_profile/rheinlandbib_yaml4/admin_views_html:111
@@ -13728,7 +13728,7 @@ msgstr "There already exists this template in this view"
 
 #: ../modules/OpenBib/Handler/PSGI/Admin/Topics.pm:229
 msgid "Es existiert bereits ein Themengebiet unter diesem Namen"
-msgstr "There already exists a subject with this name"
+msgstr "There already exists a topic with this name"
 
 #: ../modules/OpenBib/Handler/PSGI/Admin/Profiles.pm:187
 #: ../modules/OpenBib/Handler/PSGI/Admin/Views.pm:182
@@ -14100,7 +14100,7 @@ msgstr "No locations defined yet."
 #: ../templates/_profile/bootstrap5/topics_html:42
 #: ../templates/_profile/unikatalog/topics_html:42 ../templates/topics_html:42
 msgid "Es wurden noch keine Themengebiete definiert"
-msgstr "No subject areas defined yet"
+msgstr "No topcs defined yet"
 
 #: ../modules/OpenBib/Handler/PSGI/Titles.pm:567
 msgid "Es wurden zuwenige Parameter übergeben."
@@ -26324,7 +26324,7 @@ msgstr "Do you really want to delete template <b>%1</b>?"
 #: ../templates/_profile/unikatalog/admin_topics_record_delete_confirm_html:17
 #: ../templates/admin_topics_record_delete_confirm_html:17
 msgid "Möchten Sie wirklich das Themengebiet <b>%1</b> löschen?"
-msgstr "Do you really want to delete subject <b>%1</b>?"
+msgstr "Do you really want to delete topic <b>%1</b>?"
 
 #. (databaseinfo.dbname)
 #: ../templates/_profile/bootstrap5/admin_databases_record_delete_confirm_html:17
@@ -28097,7 +28097,7 @@ msgstr "Create new template"
 #: ../templates/_profile/yaml4/admin_topics_html:65
 #: ../templates/admin_topics_html:23
 msgid "Neues Themengebiet anlegen"
-msgstr "Create new subject"
+msgstr "Create new topic"
 
 #: ../templates/_profile/unikatalog/users_circulations_html:100
 msgid "Newsletterverwaltung"
@@ -50868,7 +50868,7 @@ msgstr "Subject-based Integration of other Sources"
 #: ../templates/search_title_field:36 ../templates/searchforms_record_query:60
 #: ../templates/topics_html:34 ../templates/topics_record_mapping_html:83
 msgid "Themengebiet"
-msgstr "Subject"
+msgstr "Topic"
 
 #: ../templates/_profile/bootstrap5/admin_topics_record_edit_html:68
 #: ../templates/_profile/bootstrap5/topics_record_mapping_html:76
@@ -50883,7 +50883,7 @@ msgstr "Subject"
 #: ../templates/admin_topics_record_edit_html:90
 #: ../templates/topics_record_mapping_html:76
 msgid "Themengebiet bearbeiten"
-msgstr "Edit subjects"
+msgstr "Edit topics"
 
 #: ../templates/_profile/bootstrap5/admin_topics_record_edit_html:96
 #: ../templates/_profile/bootstrap5/topics_record_mapping_html:114
@@ -50965,7 +50965,7 @@ msgstr "Assign topics to Regensburger Verbundklassifikation"
 #: ../templates/admin_topics_record_edit_html:174
 #: ../templates/topics_record_mapping_html:211
 msgid "Themengebiet(e) von DBIS zuordnen"
-msgstr "Assign DBIS subjects"
+msgstr "Assign topics to DBIS subjects"
 
 #: ../templates/_profile/bootstrap/_view/eds/mainnavigation_html:165
 #: ../templates/_profile/bootstrap/_view/eds/mainnavigation_html:179
@@ -51222,7 +51222,7 @@ msgstr "Assign DBIS subjects"
 #: ../templates/users_litlists_record_edit_html:20
 #: ../templates/users_litlists_record_html:23
 msgid "Themengebiete"
-msgstr "Subjects"
+msgstr "Topics"
 
 #: ../templates/_profile/sammlungen_yaml4/_view/kapsel/info_adenauer:37
 #: ../templates/_profile/sammlungen_yaml4/_view/kapsel/info_erster_weltkrieg:37
@@ -52974,7 +52974,7 @@ msgstr "To edit an already existing view please select the view name."
 msgid ""
 "Um einen bereits existierendes Themengebiet zu bearbeiten klicken Sie bitte "
 "auf den Namen."
-msgstr "To edit an already existing subject please select the subject name."
+msgstr "To edit an already existing topic please select the name."
 
 #: ../templates/_profile/unikatalog/_database/alma/visible_categories_title:39
 #: ../templates/_profile/unikatalog/_database/gvi/visible_categories_title:42

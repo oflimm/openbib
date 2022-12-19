@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2022-12-19 11:07+0100\n"
+"PO-Revision-Date: 2022-12-19 13:24+0100\n"
 "Last-Translator: openbib <flimm@openbib.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -30918,6 +30918,10 @@ msgstr "Conferral of a doctorate/PhD"
 msgid "Protokoll"
 msgstr "Protocol"
 
+#: ../templates/_profile/unikatalog/_view/unikatalog/mainnavigation_html:280
+msgid "Prototyp"
+msgstr "Prototype"
+
 #: ../templates/_profile/bootstrap/_view/games/search_facet:413
 #: ../templates/_profile/bootstrap/_view/kubibooks/searchforms_record_query:51
 #: ../templates/_profile/bootstrap/_view/kubikoeln/search_facet:425
@@ -53248,6 +53252,10 @@ msgstr "University of Cologne"
 #: ../templates/_profile/unikatalog/std_footer_html:32
 msgid "Universitäts- und Stadtbibliothek Köln"
 msgstr "University and City Library of Cologne"
+
+#: ../templates/_profile/unikatalog/_view/unikatalog/mainnavigation_html:280
+msgid "Universitätskatalog"
+msgstr "University Catalog"
 
 #: ../templates/_profile/unikatalog/users_circulations_html:137
 msgid ""

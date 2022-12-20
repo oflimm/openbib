@@ -126,7 +126,7 @@ for (var i = 0; i < libraries.length; i++) {
 
      url = '';
 
-     IF identifier.match('^DE-38$') || identifier.match('^DE-38-HWA$') || identifier.match('^DE-38-\d\d\d$') || identifier.match('DE-38-Kn3');
+     IF identifier.match('^DE-38$') || identifier.match('^DE-38-HWA$') || identifier.match('^DE-38-\d\d\d$') || identifier.match('DE-Kn3');
         url = "${path_prefix}/${config.get('locations_loc')}/id/${identifier}";
 
      END;

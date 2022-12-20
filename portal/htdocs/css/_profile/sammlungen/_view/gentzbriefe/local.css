@@ -276,6 +276,10 @@
     }
     
 
+    .navbar-nav .dropdown-menu {
+	background-color:  #767171;
+    }
+    
     .ob-searchbox .list-group-item {
 	background-color: transparent;
     }

@@ -20,9 +20,16 @@
 
 [%-
 
+   is_denied = {
+     'DE-Kn3-MAK' = 1,
+     'FMT' = 1
+   };
+
    librariesloc = {};
 
    FOREACH location IN locations ;
+     NEXT IF (is_denied.${location.identifier});
+   
      coordinates = location.fields.${"L0280"}.first.content ;
      description = location.description ;
      id          = location.identifier ;
@@ -97,7 +104,7 @@ for (var i = 0; i < libraries.length; i++) {
 [%  
     institution_map = {};
     FOREACH location IN locations ;
-     NEXT IF (is_blacklisted.${location.identifier});
+     NEXT IF (is_denied.${location.identifier});
      fakultaet      = location.fields.${"L0015"}.first.content;
      coordinates    = location.fields.${"L0280"}.first.content.split(',').reverse.join(',');
 
@@ -166,7 +173,7 @@ for (var i = 0; i < libraries.length; i++) {
 [%  
     institution_map = {};
     FOREACH location IN locations ;
-     NEXT IF (is_blacklisted.${location.identifier});
+     NEXT IF (is_denied.${location.identifier});
      fakultaet      = location.fields.${"L0015"}.first.content;
      coordinates    = location.fields.${"L0280"}.first.content.split(',').reverse.join(',');
 
@@ -244,7 +251,7 @@ for (var i = 0; i < libraries.length; i++) {
 [%  
     institution_map = {};
     FOREACH location IN locations ;
-     NEXT IF (is_blacklisted.${location.identifier});
+     NEXT IF (is_denied.${location.identifier});
      fakultaet      = location.fields.${"L0015"}.first.content;
      coordinates    = location.fields.${"L0280"}.first.content.split(',').reverse.join(',');
 
@@ -310,7 +317,7 @@ for (var i = 0; i < libraries.length; i++) {
 [%  
     institution_map = {};
     FOREACH location IN locations ;
-     NEXT IF (is_blacklisted.${location.identifier});
+     NEXT IF (is_denied.${location.identifier});
      fakultaet      = location.fields.${"L0015"}.first.content;
      coordinates    = location.fields.${"L0280"}.first.content.split(',').reverse.join(',');
 
@@ -375,7 +382,7 @@ for (var i = 0; i < libraries.length; i++) {
 [%  
     institution_map = {};
     FOREACH location IN locations ;
-     NEXT IF (is_blacklisted.${location.identifier});
+     NEXT IF (is_denied.${location.identifier});
      fakultaet      = location.fields.${"L0015"}.first.content;
      coordinates    = location.fields.${"L0280"}.first.content.split(',').reverse.join(',');
 
@@ -440,7 +447,7 @@ for (var i = 0; i < libraries.length; i++) {
 [%  
     institution_map = {};
     FOREACH location IN locations ;
-     NEXT IF (is_blacklisted.${location.identifier});
+     NEXT IF (is_denied.${location.identifier});
      fakultaet      = location.fields.${"L0015"}.first.content;
      coordinates    = location.fields.${"L0280"}.first.content.split(',').reverse.join(',');
 

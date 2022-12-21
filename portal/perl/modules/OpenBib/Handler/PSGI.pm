@@ -1556,7 +1556,9 @@ sub to_cgi_params {
 		    $value = $self->cleanup_lang($value);
 		}
 		else {
-		    $value = escape_html(decode_utf8(uri_unescape($value)))
+		    $value = escape_html(decode_utf8(uri_unescape($value)));
+		    # Anpassung/Ausnahme " fuer Phrasensuche
+		    $value =~s/&quot;/"/g;
 		}
 		
 		push @cgiparams, {
@@ -1573,7 +1575,9 @@ sub to_cgi_params {
 			    $value = $self->cleanup_lang($value);
 			}
 			else {
-			    $value = escape_html(decode_utf8(uri_unescape($value)))
+			    $value = escape_html(decode_utf8(uri_unescape($value)));
+			    # Anpassung/Ausnahme " fuer Phrasensuche
+			    $value =~s/&quot;/"/g;
 			}
 			
                         push @cgiparams, {
@@ -1589,7 +1593,9 @@ sub to_cgi_params {
 			$value = $self->cleanup_lang($value);
 		    }
 		    else {
-			$value = escape_html(decode_utf8(uri_unescape($value)))
+			$value = escape_html(decode_utf8(uri_unescape($value)));
+			# Anpassung/Ausnahme " fuer Phrasensuche
+			$value =~s/&quot;/"/g;
 		    }
 
                     push @cgiparams, {

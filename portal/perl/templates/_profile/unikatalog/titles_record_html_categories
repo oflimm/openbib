@@ -777,7 +777,7 @@ FOREACH field IN normdata;
 
          baendeanzeigen = msg.maketext('Bände/Stücktitel anzeigen');
 	 
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?page=1;num=20;srt=order_asc;profile=${searchprofileid_of_database};${searchprefix}=${record.id}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?page=1;num=20;srt=order_desc;profile=${searchprofileid_of_database};${searchprefix}=${record.id}";
          content   = "<a class=\"btn btn-primary\" href=\"${localurl}\">${content} ${baendeanzeigen}</a>";
          IF NOT content_map.${'T5002'} ;
 	    content_map.${'T5002'} = [];

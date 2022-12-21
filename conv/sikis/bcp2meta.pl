@@ -635,6 +635,19 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
                 };
                 
                 if ($useusbschema) {
+		    # Mapping
+		    #
+		    # 1200 (Bemerkung 1) -> 1200
+		    # 1201 (Erscheinungsverlauf positiv) -> 1204 (pos u. neg)
+		    # 1202 (Erscheinungsverlauf negativ) -> 1204 (pos u. neg)
+		    # 1203 (Bemerkung 2) -> 1203
+		    # 1204 (Signatur) -> 0014
+		    # 0012 (Sigel Besitzende Bibliothek) -> 3330
+
+		    # bisher ungemappt
+		    # 1205
+		    # 1212 (zusammengesetzte Angabe)
+		    
                     # Grundsignatur ZDB-Aufnahme
                     if ($line=~/^1204\.(\d\d\d):(.*$)/) {
                         my $zaehlung=$1;
@@ -680,6 +693,7 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
                             $maxmex=$zaehlung;
                         }
                     }
+		    
 
                     # if ($line=~/^1212\.(\d\d\d):(.*$)/) {
                     #     my $zaehlung=$1;
@@ -779,10 +793,12 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
             my $bemerk1  = $bemerkbuf1{$multkey};
             my $bemerk2  = $bemerkbuf2{$multkey};
             my $sigel    = $besbibbuf{$multkey};
-            $sigel=~s!^38/!!;
+	    my $erschpos = $erschverlbufpos{$multkey};
+	    my $erschneg = $erschverlbufneg{$multkey};
+            #$sigel=~s!^38/!!;
 
 	    # Leere Saetze ignorieren
-	    if (!$signatur && !$standort && !$inventar){
+	    if (!$signatur && !$standort && !$inventar && !$erschpos){
 		$k++;
 		next;
 	    }

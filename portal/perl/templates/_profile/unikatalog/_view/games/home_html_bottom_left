@@ -1,0 +1,68 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchform_bottom_left
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe Unten-Links
+#
+#######################################################################
+-%]
+<div class="card h-100">
+<div class="card-header"><h4>[% msg.maketext("Systeme") %]</h4></div>
+
+<div class="card-body bg-white">
+
+[%
+      funcargs = { id => 'games', type => 4 } ;
+      resultlist = statistics.get_result(funcargs);
+
+      systemcount = {};
+      FOREACH thisitem IN resultlist;
+        item      = thisitem.item;
+        itemcount = thisitem.count;
+        systemcount.${item} = itemcount;
+      END;
+
+      labels = [];
+      itemcounts = [];
+      FOREACH label IN systemcount.keys.sort ;
+        labels.push("'${label}'");
+	itemcounts.push(systemcount.${label});
+
+      END;
+%]
+
+<canvas id="systemChart" width="400" height="400"></canvas>
+<script>
+var ctx = document.getElementById('systemChart');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {    
+        labels: [[% labels.join(',') %]],
+        datasets: [{
+            label: 'Zahl der Spiele',
+            data: [[% itemcounts.join(',') %]],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+</script>
+
+
+</div>
+</div>

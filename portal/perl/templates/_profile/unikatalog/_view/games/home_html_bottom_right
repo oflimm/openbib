@@ -1,0 +1,93 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchform_bottom_left
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe Unten-Links
+#
+#######################################################################
+-%]
+
+<div class="card h-100">
+<div class="card-header"><h4>[% msg.maketext("Medium vs. Digital") %]</h4></div>
+
+<div class="card-body bg-white">
+
+[%
+      mtyp_funcargs = { id => 'games-4410', type => 14 } ;
+      mtyp_resultlist = statistics.get_result(mtyp_funcargs);
+
+      mtypcount = {};
+
+      FOREACH mtyp_thisitem IN mtyp_resultlist;
+        item      = mtyp_thisitem.item;
+        itemcount = mtyp_thisitem.count;
+        mtypcount.${item} = itemcount;
+      END;
+
+      mtyp_labels = [];
+      mtyp_itemcounts = [];
+      FOREACH mtyp_label IN mtypcount.keys.sort ;
+        mtyp_labels.push("'${mtyp_label}'");
+	mtyp_itemcounts.push(mtypcount.${mtyp_label});
+      END;
+%]
+
+<canvas id="mtypChart" width="400" height="400"></canvas>
+<script>
+var mtyp_ctx = document.getElementById('mtypChart');
+var mtypChart = new Chart(mtyp_ctx, {
+    type: 'doughnut',
+    data: {    
+        labels: [[% mtyp_labels.join(',') %]],
+        datasets: [{
+            label: 'Physisch vs. Digital',
+            data: [[% mtyp_itemcounts.join(',') %]],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(77, 166, 255, 0.5)',
+                'rgba(218, 165, 32, 0.5)',
+                'rgba(175, 0, 42, 0.5)'		
+	    ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(77, 166, 255, 1)',
+                'rgba(218, 165, 32, 1)',
+                'rgba(175, 0, 42, 1)'		
+	    ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+	layout: {
+            padding: {
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 100
+            }
+        }
+
+	
+    }
+});
+</script>
+
+
+</div>
+</div>
+

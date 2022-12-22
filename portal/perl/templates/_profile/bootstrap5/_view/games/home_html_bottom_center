@@ -1,0 +1,69 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchform_bottom_left
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe Unten-Links
+#
+#######################################################################
+-%]
+<div class="card h-100">
+<div class="card-header"><h4>[% msg.maketext("Medienarten") %]</h4></div>
+
+<div class="card-body">
+
+[%
+      type_funcargs = { id => 'games-0800', type => 14 } ;
+      type_resultlist = statistics.get_result(type_funcargs);
+
+      typecount = {};
+      FOREACH type_thisitem IN type_resultlist;
+        item      = type_thisitem.item;
+        itemcount = type_thisitem.count;
+        typecount.${item} = itemcount;
+      END;
+
+      type_labels = [];
+      type_itemcounts = [];
+      FOREACH type_label IN typecount.keys.sort ;
+        type_labels.push("'${type_label}'");
+	type_itemcounts.push(typecount.${type_label});
+
+      END;
+
+%]
+
+<canvas id="typeChart" width="400" height="400"></canvas>
+<script>
+var type_ctx = document.getElementById('typeChart');
+var typeChart = new Chart(type_ctx, {
+    type: 'bar',
+    data: {    
+        labels: [[% type_labels.join(',') %]],
+        datasets: [{
+            label: 'Zahl der Spiele',
+            data: [[% type_itemcounts.join(',') %]],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+</script>
+
+
+</div>
+</div>

@@ -1,0 +1,26 @@
+[%#-
+#######################################################################
+#
+# Templatename: visible_categories_title
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabekategorien fuer einen einzelnen Titelsatz
+#
+#######################################################################
+-%]
+[%-# Ausgabekategorien -%]
+[%- categories = [
+                'Titel', # msg.maketext("Titel")
+                'Plattform', # msg.maketext("Plattform")
+                'Typ', # msg.maketext("Typ")
+                'Jahr', # msg.maketext("Jahr")
+                'Genre', # msg.maketext("Genre")
+                'Publisher', # msg.maketext("Publisher")
+                'Alterseinstufung', # msg.maketext("Alterseinstufung") 
+                'EAN', # msg.maketext("EAN") 
+                ]
+
+-%]

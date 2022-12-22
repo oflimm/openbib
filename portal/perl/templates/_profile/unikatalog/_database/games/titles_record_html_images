@@ -1,0 +1,43 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showtitset_images
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabe des "Bilder"-Bereichs fuer einen
+# einzelnen Titelsatz
+#
+#######################################################################
+-%]
+[%
+
+     # Public Domain Icons from Evan Amos of 'The Vanamo Online Game Museum'
+     # via Wikimedia Commons
+     # https://commons.wikimedia.org/wiki/User:Evan-Amos
+     console_icon_map = {
+        'Xbox' = 'xboxclassic.jpg'
+	'Xbox 360' = 'xbox360.jpg'
+	'PS2' = 'ps2.jpg'
+	'PS3' = 'ps3.jpg'
+	'PS4' = 'ps4.jpg'
+	'PS' = 'ps1.jpg'
+	'PS Vita' = 'psvita.jpg'
+	'Nintendo DS' = 'nds.jpg'
+	'Nintendo 3DS' = '3ds.jpg'
+	'Nintendo GameCube' = 'gamecube.jpg'
+	'Xbox One' = 'xboxone.jpg'
+	'Nintendo Wii U' = 'wiiu.jpg'
+	'Nintendo Wii' = 'wii.jpg'
+	'Nintendo Switch' = 'switch.jpg'
+	'PSP' = 'psp.jpg'
+     };
+
+     platform = record.get_fields.${"T0700"}.first.content;
+
+%]
+<p>
+         [% IF console_icon_map.defined(platform) %]<img src="/images/openbib/views/games/[% console_icon_map.${platform }%]" title="[% platform %]" />[% ELSE %]&nbsp;[% END %]
+</p>

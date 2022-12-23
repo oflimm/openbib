@@ -14,7 +14,7 @@
 [%-# Ausgabekategorien -%]
 [%- categories = [
                 'Titel', # msg.maketext("Titel")
-                'Plattform', # msg.maketext("Plattform")
+                'System', # msg.maketext("System")
                 'Typ', # msg.maketext("Typ")
                 'Jahr', # msg.maketext("Jahr")
                 'Genre', # msg.maketext("Genre")

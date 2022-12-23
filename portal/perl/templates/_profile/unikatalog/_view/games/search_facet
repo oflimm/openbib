@@ -952,7 +952,7 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 <!-- Begin classification facet -->
 [%         IF config.get('facets').classification && facets.defined('classification') && facets.classification.size > 0 %]
         <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-classification[% idsuffix %]" aria-expanded="true">
-           [% msg.maketext("Plattform") %] 
+           [% msg.maketext("System") %] 
         </h4>
         <ul id="group-classification[% idsuffix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.classification ;

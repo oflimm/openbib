@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 <div class="card h-100">
-<div class="card-header"><h4>[% msg.maketext("Medienarten") %]</h4></div>
+<div class="card-header"><h4>[% msg.maketext("Medientyp") %]</h4></div>
 
 <div class="card-body bg-white">
 

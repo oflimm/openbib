@@ -66,10 +66,10 @@ FOREACH field IN normdata;
 
     CASE "T0700";
          content   = "${highlightquery(searchquery,content)}";
-         IF NOT content_map.${'Plattform'} ;
-	    content_map.${'Plattform'} = [];
+         IF NOT content_map.${'System'} ;
+	    content_map.${'System'} = [];
 	 END;
-         content_map.${'Plattform'}.push(content);
+         content_map.${'System'}.push(content);
 
     CASE "T0710";
          content   = "${highlightquery(searchquery,content)}";

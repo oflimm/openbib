@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 <div class="card h-100">
-<div class="card-header"><h4>[% msg.maketext("Systeme") %]</h4></div>
+<div class="card-header"><h4>[% msg.maketext("System") %]</h4></div>
 
 <div class="card-body bg-white">
 

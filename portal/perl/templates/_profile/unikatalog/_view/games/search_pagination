@@ -1,4 +1,4 @@
-<nav aria-label="Page navigation" class="ob-fixed_bottom">
+<nav aria-label="Page navigation">
 [%- forget_it = nav.pages_per_set(5)
 
 -%]

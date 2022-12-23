@@ -322,20 +322,8 @@ $(document).ready(function(){
 [% IF record_exists %]
 [%# USE dumper;dumper.dump(normdata)%]
 [%-
-     record_type = "" ; 
-     IF normdata.${'T4410'}.first.content.match('Monographie');
-       record_type = "mono";
-       PROCESS common/subtemplate name="visible_categories_title_mono";
-     ELSIF normdata.${'T4410'}.first.content.match('Zeitschrift/Serie');
-       record_type = "journal";        
-       PROCESS common/subtemplate name="visible_categories_title_journal";
-     ELSIF  normdata.${'T4410'}.first.content.match('Aufsatz');
-       record_type = "article";
-       PROCESS common/subtemplate name="visible_categories_title_article";
-     ELSE;
-       record_type = "default";
-       PROCESS common/subtemplate name="visible_categories_title";
-     END;
+     record_type = "default";
+     PROCESS common/subtemplate name="visible_categories_title";
 -%]
 
 [%   PROCESS common/subtemplate name="titles_record_html_categories" %]

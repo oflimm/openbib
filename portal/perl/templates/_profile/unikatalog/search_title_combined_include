@@ -146,7 +146,7 @@ $(document).ready(function(){
 </div>
 </div>
 [% ELSE %]
-[% PROCESS common/subtemplate name="search_facet" facet_prefix="main" %]
+[% PROCESS common/subtemplate name="search_facet" facet_prefix="main" offcanvas=0%]
 [% END %]
 [% ELSE %]
 [%   IF viewdbs.size == 1 %]  

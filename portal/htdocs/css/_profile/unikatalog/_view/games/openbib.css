@@ -220,6 +220,10 @@
 	color: #000;
     }
 
+    .offcanvas-body .ob-nav_description a, .offcanvas-body .ob-nav_description a:hover {
+	color: #000;
+    }
+    
     .page-item .page-link {
 	color: #253746;
     }

@@ -443,7 +443,7 @@
 [% mediatype = item.${'T0800'}.first.content %]
 [% IF mediatype == "DVD" || mediatype == "BluRay" || mediatype == "UMD" || mediatype == "CD" || mediatype == "GCD" || mediatype == "Flashcard" %]
  <i class="fas fa-dot-circle"></i>
-[% ELSIF mediatype == "eShop" || mediatype.match('Download') %]
+[% ELSIF mediatype.match("eShop") || mediatype.match('Download') %]
  <i class="fas fa-download"></i>
 [% END %]
 [% IF mediatype.match('PSN Plus') || mediatype.match('Gold') %]

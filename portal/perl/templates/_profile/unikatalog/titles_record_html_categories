@@ -280,7 +280,8 @@ licensed_pakete = [
    'hbzebo_preselect',
    'ZDB-196-Meiner-EBA',
    'hbzebo_ebameiner',
-   'ZDB-23-DGG-eba'
+   'ZDB-23-DGG-eba',
+   'ZDB-54-Duncker-EBA'
    ];
 
 oa_pakete = ['ZDB-2-SOB','ZDB-23-GOA'];

@@ -1,0 +1,175 @@
+[%- searchfield = config.get('searchfield') -%]
+
+[%# USE dumper;dumper.dump(available_searchfields)%]
+
+[% IF available_searchfields.freesearch.active %]
+[%- cgiparam = searchfield.freesearch.prefix ;
+    this_searchfield = 'freesearch';
+-%]
+<div class="form-floating mb-3">
+<input class="form-control" id="to_focus" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="to_focus">[% msg.maketext("Freie Suche") %]</label>
+</div>
+[% END %]
+
+[% IF available_searchfields.title.active %]
+[%- cgiparam = searchfield.title.prefix;
+    this_searchfield = 'title';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="[% cgiparam %]">[% msg.maketext("Titelworte") %]</label>
+</div>
+[% END %]
+
+[% IF available_searchfields.titlestring.active %]
+[%- cgiparam = searchfield.titlestring.prefix;
+    this_searchfield = 'titlestring';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="[% cgiparam %]">[% msg.maketext("Kompletter Titel") %]</label>
+</div>
+[% END %]
+
+[%- cgiparam = searchfield.classificationstring.prefix;
+    this_searchfield = 'classificationstring';
+ -%]
+<div class="form-floating mb-3">
+<select class="form-select" id="[% cgiparam %]" name="[% cgiparam %]">
+<option value="" selected="selected">Keines ausgewählt</option>
+<option value="Amiibo">Amiibo</option>
+<option value="Disney Infinity">Disney Infinity</option>
+<option value="LEGO Dimensions">LEGO Dimensions</option>
+<option value="Nintendo 3DS">Nintendo 3DS</option>
+<option value="Nintendo DS">Nintendo DS</option>
+<option value="Nintendo GameCube">Nintendo GameCube</option>
+<option value="Nintendo Switch">Nintendo Switch</option>
+<option value="Nintendo Wii">Nintendo Wii</option>
+<option value="Nintendo Wii U">Nintendo Wii U</option>
+<option value="PC">PC</option>
+<option value="PS">PS</option>
+<option value="PS2">PS2</option>
+<option value="PS3">PS3</option>
+<option value="PS4">PS4</option>
+<option value="PS5">PS5</option>
+<option value="PSP">PSP</option>
+<option value="PS Vita">PS Vita</option>
+<option value="Skylanders">Skylanders</option>
+<option value="StarLink">StarLink</option>
+<option value="Xbox">Xbox</option>
+<option value="Xbox 360">Xbox 360</option>
+<option value="Xbox One">Xbox One</option>
+<option value="Xbox Series">Xbox Series</option>
+</select>
+
+<label for="[% cgiparam %]">[% msg.maketext("System") %]</label>
+</div>
+
+[%- cgiparam = searchfield.mediatypestring.prefix;
+    this_searchfield = 'mediatypestring';
+ -%]
+<div class="form-floating mb-3">
+<select class="form-select" id="[% cgiparam %]" name="[% cgiparam %]">
+<option value="" selected="selected">Keines ausgewählt</option>
+<option value="BluRay">BluRay</option>
+<option value="CD">CD</option>
+<option value="DVD">DVD</option>
+<option value="EPIC Download">EPIC Download</option>
+<option value="Flashcard">Flashcard</option>
+<option value="GCD">GCD</option>
+<option value="GOG Download">GOG Download</option>
+<option value="Hardware">Hardware</option>
+<option value="NFC Figur">NFC Figur</option>
+<option value="Nintendo eShop">Nintendo eShop</option>
+<option value="Origin Download">Origin Download</option>
+<option value="PSN Download">PSN Download</option>
+<option value="PSN Plus Download">PSN Plus Download</option>
+<option value="Steam Download">Steam Download</option>
+<option value="UMD">UMD</option>
+<option value="Uplay Download">Uplay Download</option>
+<option value="Xbox Download">Xbox Download</option>
+<option value="Xbox Gold Download">Xbox Gold Download</option>
+</select>
+<label for="[% cgiparam %]">[% msg.maketext("Medium") %]</label>
+</div>
+
+[% IF available_searchfields.subject.active %]
+[%- cgiparam = searchfield.subject.prefix;
+    this_searchfield = 'subject';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Gattung") %]</label>
+</div>
+[% END %]
+
+[% IF available_searchfields.year.active %]
+[%- cgiparam      = searchfield.yearstring.prefix;
+    this_searchfield = 'yearstring';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="4" maxlength="4" />
+<label for="[% cgiparam %]">[% msg.maketext("Erscheinungsjahr") %]</label>
+</div>
+[% END %]
+
+<p>
+<a data-bs-toggle="collapse" href="#collapseAdditionalSearchOptions" role="button" aria-expanded="false" aria-controls="collapseAdditionalSearchOptions">
+    [% msg.maketext("Mehr Suchoptionen") %] >>
+</a>
+</p>
+
+<div class="collapse" id="collapseAdditionalSearchOptions">
+
+[%- cgiparam      = searchfield.year.prefix -%]
+[%- cgiparam_from = "${cgiparam}_from";
+    this_searchfield_from = 'year_from';
+ -%]
+[%- cgiparam_to   = "${cgiparam}_to";
+    this_searchfield_to = 'year_to';
+   -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam_from %]" type="text" name="[% cgiparam_from %]" value="[% searchquery.cgiparam_from.val | html %]" size="4" maxlength="4" />
+<label for="[% cgiparam_from %]">[% msg.maketext("Zeitraum") %] [% msg.maketext("von") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam_to %]" type="text" name="[% cgiparam_to %]" value="[% searchquery.cgiparam_to.val | html %]" size="4" maxlength="4" />
+<label for="[% cgiparam_to %]">[% msg.maketext("Zeitraum") %] [% msg.maketext("bis") %]</label>
+</div>
+
+[% IF available_searchfields.isbn.active %]
+[%- cgiparam = searchfield.isbn.prefix;
+    this_searchfield = 'isbn';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="[% cgiparam %]">[% msg.maketext("EAN") %]</label>
+</div>
+[% END %]
+
+[% IF available_searchfields.corporatebody.active %]
+[%- cgiparam = searchfield.corporatebody.prefix;
+    this_searchfield = 'corporatebody';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="[% cgiparam %]">[% msg.maketext("Verlag") %]</label>
+</div>
+[% END %]
+
+
+</div>
+
+<hr/>
+
+<p/>
+
+<div class="d-flex ob-fulltitle_actions">
+
+<div class="pe-1">
+<button class="btn btn-primary" type="submit">[% msg.maketext("Suchen") %]</button>
+</div>
+
+</div>

@@ -693,6 +693,34 @@ $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(
 <!-- End location facet -->
 [% END # keine Standorte %]
 
+<!-- Begin classification facet -->
+[%         IF config.get('facets').classification && facets.defined('classification') && facets.classification.size > 0 %]
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-classification[% idsuffix %]" aria-expanded="true">
+           [% msg.maketext("System") %] 
+        </h4>
+        <ul id="group-classification[% idsuffix %]" class="list-group in collapse show">
+[%             FOREACH termitem IN facets.classification ;
+                  LAST IF loop.count > 25 ;
+ %]
+[% IF facets.classification.size > 5 && loop.count == 5 %]
+<span id="[% facet_prefix %]_classification_[% database %]_toggle[% idsuffix %]"></span>
+<div id="[% facet_prefix %]_classification_[% database %][% idsuffix %]">
+[% END %]
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').classificationstring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %]  href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>[% IF searchterm.match('^\d\d\.\d\d') %]&nbsp;[% bklookup.${searchterm} %][% END %]  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1 %]</span></li>
+[%             END %]
+[% IF facets.classification.size > 5 %]
+</div>
+[% END %]
+</ul>
+<p/>
+[%         END %]
+<!-- End classification facet -->
+
 <!-- Begin mediatype facet -->
 [%         IF config.get('facets').mediatype && facets.defined('mediatype') && facets.mediatype.size > 0 %]
         <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-mediatype[% idsuffix %]" aria-expanded="true">
@@ -949,33 +977,6 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 [%         END %]
 [% END # EDS %]
 <!-- End year facet -->
-<!-- Begin classification facet -->
-[%         IF config.get('facets').classification && facets.defined('classification') && facets.classification.size > 0 %]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-classification[% idsuffix %]" aria-expanded="true">
-           [% msg.maketext("System") %] 
-        </h4>
-        <ul id="group-classification[% idsuffix %]" class="list-group in collapse show">
-[%             FOREACH termitem IN facets.classification ;
-                  LAST IF loop.count > 25 ;
- %]
-[% IF facets.classification.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_classification_[% database %]_toggle[% idsuffix %]"></span>
-<div id="[% facet_prefix %]_classification_[% database %][% idsuffix %]">
-[% END %]
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').classificationstring.prefix;
-    filterstring  = "${searchprefix}:${searchterm}";
--%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %]  href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>[% IF searchterm.match('^\d\d\.\d\d') %]&nbsp;[% bklookup.${searchterm} %][% END %]  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1 %]</span></li>
-[%             END %]
-[% IF facets.classification.size > 5 %]
-</div>
-[% END %]
-</ul>
-<p/>
-[%         END %]
-<!-- End classification facet -->
 <!-- Begin provenance facet -->
 [%         IF config.get('facets').provenance && facets.defined('provenance') && facets.provenance.size > 0 %]
 

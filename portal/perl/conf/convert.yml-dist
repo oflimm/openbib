@@ -9426,7 +9426,121 @@ convtab:
       '4400': 1
       '5005': 1
       '5050': 1
-      '5055': 1  
+    inverted_title:
+      'tag':
+        '':
+          index:
+            'tag': 1
+            'tagstring': 1
+            'freesearch': 1
+          facet:
+            'tag': 1      
+      'litlist':
+        '':
+          index:
+            'litlistid': 1
+            'litlist': 1
+            'litliststring': 1
+            'freesearch': 1
+          facet:
+            'litlist': 1
+      '4301':
+        'a':
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
+          facet:
+            'language': 1
+        'e':
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
+          facet:
+            'language': 1
+      '0100':
+        '':
+          index:
+            'ft0100': 1
+          facet:
+            'person': 1
+      '0101':
+        '':
+          index:
+            'ft0101': 1
+          facet:
+            'person': 1
+      '0102':
+        '':
+          index:
+            'ft0102': 1
+          facet:
+            'person': 1
+      '0103':
+        '':
+          index:
+            'ft0103': 1
+          facet:
+            'person': 1
+      '0110':
+        '':
+          facet:
+            'person': 1
+      '0111':
+        '':
+          facet:
+            'person': 1
+      '0112':
+        '':
+          facet:
+            'person': 1
+      '0200':
+        '':
+          facet:
+            'corporatebody': 1
+      '0310':         # AST
+        '':
+          index:
+            'title': 1
+            'freesearch': 1
+            'titlestring': 1
+      '0331':         # HST
+        '':
+          index:
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
+      '0425':
+        '':
+          index:
+            'year': 1
+            'yearstring': 1
+            'freesearch': 1
+          facet:
+            'year': 1
+      '0553':
+        '':
+          index:
+            'isbn': 1
+      '0700':
+        '':
+          index:
+            'classificationstring': 1
+          facet:
+            'classification': 1
+      '0710':
+        '':
+          facet:
+            'subject': 1
+      '0800':         # Medientyp
+        '':
+          index:
+            'mediatype': 1
+            'mediatypestring': 1
+            'freesearch': 1
+          facet:
+            'mediatype': 1
   portrait:
     inverted_title:
       'tag':

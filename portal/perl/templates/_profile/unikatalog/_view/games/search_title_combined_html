@@ -100,7 +100,7 @@
     <div>
 [% IF hits > 0 %]
 
-[% PROCESS common/subtemplate name="search_facet" facet_prefix="sidebar" offcanvas=1 %]
+[% PROCESS common/subtemplate name="search_facet" facet_prefix="sidebar" offcanvas=0 %]
 
 [% ELSE %]
 [%   IF viewdbs.size == 1 %]  

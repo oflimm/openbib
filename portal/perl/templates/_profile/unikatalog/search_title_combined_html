@@ -14,9 +14,6 @@
 
 [%- PROCESS common/subtemplate name="local_config" -%] 
 
-<p/>
-
-
 <style>
 [data-bs-toggle="collapse"] {
   cursor: pointer;
@@ -26,7 +23,7 @@
 
 </style>
 
-<ul class="nav nav-tabs ps-2" id="ob-searchresult_tabs" role="tablist">
+<ul class="nav nav-tabs ps-2 mt-2" id="ob-searchresult_tabs" role="tablist">
   <li class="nav-item" role="presentation">
     <a class="nav-link[% IF current_tab == "books" %] active[% END %]" [% IF current_tab != "books" || current_profile == searchprofileid_of_articles  %] hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp','facets'] }) %];page=1;profile=[% searchprofileid_of_books %];tab=books;[% searchquery.to_cgi_querystring({ exclude = ['profile'] }) %]" hx-target="#ob-searchresult_tab_books" hx-trigger="load"[% END %] role="tab" data-bs-toggle="tab" href="#ob-searchresult_tab_books" id="ob-searchresult_books_li">[% msg.maketext("Bücher &amp; Mehr") %]<span id="ob-searchresult_books_count">[% IF current_tab == 'books' %] ([% hits %])[% ELSE %] <img src="/images/openbib/loading.gif" id="ob-searchresult_[% current_tab %]_loading" />[% END %]</span></a>
   </li>
@@ -37,7 +34,7 @@
 
 <!-- AKTUELL [% current_profile %] - BOOKS [% searchprofileid_of_books %] - ARTICLES [% searchprofileid_of_articles %]  -->
 
-<div class="tab-content pt-3">
+<div class="tab-content">
 
 <div id="spinner" class="d-flex justify-content-center htmx-indicator spinner-large">
 <img src="/images/openbib/uni-siegel-spinner.png" class="uzk-spinner"/>

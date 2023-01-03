@@ -7,5 +7,6 @@ alter table userinfo drop column if exists avanz;
 alter table userinfo drop column if exists branz;
 alter table userinfo drop column if exists vmanz;
 alter table userinfo drop column if exists gebdatum;
-
-
+alter table userinfo drop column if exists bsanz;
+alter table userinfo drop column if exists maanz;
+alter table userinfo drop column if exists vlanz;

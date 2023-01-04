@@ -146,7 +146,7 @@
 <ul class="list-group mb-3">
 [% FOREACH thisitem IN litlists%]
 [% IF thisitem.itemcount %]
-<li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% thisitem.id %].html?l=[% lang %]">[% thisitem.title%]</a> ([% msg.maketext("[_1] Titel",thisitem.itemcount) %])[%- IF thisitem.lecture -%]&nbsp;<img src="[% config.get_icon('university',view,sysprofile) %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
+<li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% thisitem.id %].html?l=[% lang %]">[% thisitem.title%]</a> ([% msg.maketext("[_1] Titel",thisitem.itemcount) %])[%- IF thisitem.lecture -%]&nbsp;<img data-bs-toggle="tooltip" data-bs-placement="top" src="[% config.get_icon('university',view,sysprofile) %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
 [% ELSE %]
 <li class="list-group-item">[% thisitem.title%] ([% msg.maketext("[_1] Titel",thisitem.itemcount) %])[%- IF thisitem.lecture -%]&nbsp;<img src="[% config.get_icon('university,view,sysprofile') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
 [% END %]

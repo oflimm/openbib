@@ -127,6 +127,19 @@
 [% END %]
 
 [% litlists = user.get_public_litlists({ topicid => topicid, view => view}) %]
+[% # Preprocessing der Literaturlisten
+
+  processed_litlists = [];
+
+  FOREACH thisitem IN litlists;
+   IF thisitem.itemcount;
+     processed_litlists.push(thisitem);
+   END;
+  END;
+
+  litlists = processed_litlists;
+%]
+
 [% IF litlists.size > 0 %]
 <h4>[% msg.maketext("Literaturlisten") %]</h4>
 

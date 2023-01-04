@@ -292,6 +292,9 @@
         border-bottom-width: 5px;
     }
 
+    #ob-std_footer {
+	border-radius: 0;
+    }
     
     hr {
 	border-bottom-style: solid;

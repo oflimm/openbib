@@ -14,7 +14,7 @@
 <!-- begin: footer -->
 
 [% IF NOT hide_foot_banner %]
-<div class="card ob-bg text-white">
+<div class="card ob-bg text-white" id="ob-std_footer">
     <div class="card-body p-2">
       <div class="row">
       <div class="col-md-6 mx-auto d-none d-lg-block"><b>[% config.get_viewdesc_from_viewname(view) %]</b> [% msg.maketext("ist ein Demonstrationsportal zur Illustration neuer Funktionalitäten") %]

@@ -457,9 +457,10 @@
 
 [% END # record_exists %]
         </div> <!-- end: titleinfo -->
+[% IF locations.size == 1 # Signaturen nur anzeigen bei genau einem Standort %]
         <div class="ob-titlemark ps-2 d-flex d-none d-md-block">[% IF signatur %][% msg.maketext("Signatur") %]: <span>[% signatur | truncate(config.get('maxlength_mark')) %]</span>[% END %]
         </div>
-
+[% END # Signatur zu einzelnem Standort %]
 	<div class="ps-2 d-flex">
           <div class="d-flex ob-titleactions">
 [% IF record_exists && record.id && record.database %]

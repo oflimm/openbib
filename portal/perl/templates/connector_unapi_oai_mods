@@ -266,17 +266,16 @@
             [%- END %]
             [%- END %]
             [%- IF normdata.${"T4700"} || normdata.${"T4718"} %]
-            <mods:holdingSimple>
-                <mods:copyInformation>
-                    <form authority="marcform">electronic</form>
-                    [%- FOREACH item IN normdata.${"T4700"} %]
-                    <subLocation>[% item.content %]</subLocation>
-                    [%- END %]
-                    [%- FOREACH item IN normdata.${"T4718"} %]
-                    <subLocation>[% item.content %]</subLocation>
-                    [%- END %]
-                </mods:copyInformation>
-            </mods:holdingSimple>
+            <mods:location>
+                <mods:holdingSimple>
+                    <mods:copyInformation>
+                        <mods:form authority="marcform">electronic</mods:form>
+                        [%- FOREACH item IN normdata.${"T4700"} %]
+                        <mods:subLocation>[% item.content %]</mods:subLocation>
+                        [%- END %]
+                    </mods:copyInformation>
+                </mods:holdingSimple>
+            </mods:location>
             [%- END %]
             [%- rswk_list = {} %]
             [%- IF rswk_keyword_list %]

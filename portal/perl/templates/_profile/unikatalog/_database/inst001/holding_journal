@@ -58,35 +58,25 @@
           standort = "HWA-Magazin, Gronewaldstr. 2<br/>(Kopierausleihe über die LS-Theke möglich)";
           isil = "DE-38-HWA";
         ELSIF signatur.match('^EWA-LS-Theke') ;
-          standort = "Humanwissenschaftliche Abteilung, Lesesaaltheke, Gronewaldstr. 2 (sofort einsehbar)";
+          standort = "Lesesaal Humanwissenschaft, LS-Theke, Gronewaldstr. 2";
           isil = "DE-38-HWA";    
         ELSIF signatur.match('^(EWA-LS|EWALS) ') ;
           standort = "Lesesaal Humanwissenschaft, Gronewaldstr. 2";
           isil = "DE-38-HWA";    
         ELSIF signatur.match('^(HP|HP-LS) ') || signatur.match('^HP-LS ') ;
           standort = "Lesesaal Heilpädagogik, Frangenheimstr. 4";
-        ELSIF signatur.match('^USB-Zeitschr.-Stelle ') ;
-          standort = "USB-Lesesaal (1. OG): Hefte des aktuellen Jahrgangs unter der angegebenen P-Nummer (z.B. P1234, sofort einsehbar)";
-        ELSIF signatur.match('^USB-Zeitschr.-Lesesaal ') ;
-          standort = "USB-Lesesaal (1. OG): Hefte des aktuellen Jahrgangs unter der angegebenen Fachgruppe (sofort einsehbar)";
         ELSIF signatur.match('^LS ') ;
-          standort = "USB-Lesesaal (1. OG, sofort einsehbar)";
-        ELSIF signatur.match('^KS V') ;
+          standort = "USB-Lesesaal (1. OG)";
+        ELSIF signatur.match('^(KS V|KS/V)') ;
           standort = "USB-Magazin (Ausleihe nur in den Lesesaal), Bitte füllen Sie einen konventionellen Bestellschein aus (erhältlich an der Auskunft und der Lesesaal-Theke im 1. OG)";
         ELSIF signatur.match('^KS ') ;
-          standort = "USB-Katalogsaal (2. OG, sofort einsehbar)";
-        ELSIF signatur.match('^EDZ ') ;
-          standort = "USB-Lesesaal (1. OG): Europäisches Dokumentationszentrum (sofort einsehbar)";
-        ELSIF signatur.match('^FC ') ;
-          standort = "Fachbibliothek Chemie, Greinstr. 4 (sofort einsehbar)";
-        ELSIF signatur.match('^FBV ') ;
-          standort = "Fachbibliothek Versicherungswissenschaft, Kerpener Str. 30 (sofort einsehbar)";
+          standort = "USB-Katalogsaal (2. OG)";
         ELSIF signatur.match('^B ') ;
           standort = "ausgelagerter Bestand. Lieferzeit ca. 14. Tage (ausleihbar nach Bestellung)";
         ELSIF signatur.match('^ZTG') ;
-          standort = "Zeitungsbestand. USB-Magazin (ausleihbar nach Online-Bestellung)";
-       ELSIF signatur.match('^P ') ;
-          standort = "Zeitschriftenlesesaal (1.OG) (sofort einsehbar)";
+          standort = "Zeitungsbestand. USB-Magazin<br/>Bitte füllen Sie einen konventionellen Bestellschein aus (erhältlich an der Auskunft und der Lesesaal-Theke im 1. OG)";
+       ELSIF NOT signatur.match('\s') ;
+          standort = "USB-Magazin";
        END; # End: Standort nach Signaturanfang
     END; # End: Spezialbehandlung USB
 

@@ -71,6 +71,13 @@
     }
 
     /* Ende Custom Scrollbar */
+
+    /* Kein Box-shadow */
+    .btn, .btn:hover {
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+    }
     
     .ob-jumbotron {
 	padding: 2rem 1rem;

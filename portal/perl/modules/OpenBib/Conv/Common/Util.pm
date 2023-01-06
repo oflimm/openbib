@@ -61,21 +61,16 @@ sub get_person_id {
     # Verlinkt per GND?
     if ($content =~m/DE-588/){
 	$content=~s/\(DE-588\)//;
-	
-	unless (exists $person{$content}){
-	    $person{$content}=$content;
-	    $new = 1;
-	}
-	
-	return ($person{$content},$new);
     }
+
+    my $normalized_id = normalize_id($content);
     
-    unless (exists $person{$content}){
-        $person{$content}=normalize_id($content);
+    unless (exists $person{$normalized_id}){
+        $person{$normalized_id}=$normalized_id;
         $new = 1;
     }
 
-    return ($person{$content},$new);
+    return ($person{$normalized_id},$new);
 }
 
 sub set_person_id {
@@ -94,21 +89,16 @@ sub get_corporatebody_id {
     # Verlinkt per GND?
     if ($content =~m/DE-588/){
 	$content=~s/\(DE-588\)//;
-	
-	unless (exists $corporatebody{$content}){
-	    $corporatebody{$content}=$content;
-	    $new = 1;
-	}
-	
-	return ($corporatebody{$content},$new);
     }
+
+    my $normalized_id = normalize_id($content);
     
-    unless (exists $corporatebody{$content}){
-        $corporatebody{$content}=normalize_id($content);
+    unless (exists $corporatebody{$normalized_id}){
+        $corporatebody{$normalized_id}=$normalized_id;
         $new = 1;
     }
 
-    return ($corporatebody{$content},$new);
+    return ($corporatebody{$normalized_id},$new);
 }
 
 sub set_corporatebody_id {
@@ -127,21 +117,16 @@ sub get_subject_id {
     # Verlinkt per GND?
     if ($content =~m/DE-588/){
 	$content=~s/\(DE-588\)//;
-	
-	unless (exists $subject{$content}){
-	    $subject{$content}=$content;
-	    $new = 1;
-	}
-	
-	return ($subject{$content},$new);
     }
-    
-    unless (exists $subject{$content}){
-        $subject{$content}=normalize_id($content);
+
+    my $normalized_id = normalize_id($content);
+        
+    unless (exists $subject{$normalized_id}){
+        $subject{$normalized_id}=$normalized_id;
         $new = 1;
     }
 
-    return ($subject{$content},$new);
+    return ($subject{$normalized_id},$new);
 }
 
 
@@ -161,21 +146,16 @@ sub get_classification_id {
     # Verlinkt per GND?
     if ($content =~m/DE-588/){
 	$content=~s/\(DE-588\)//;
-	
-	unless (exists $classification{$content}){
-	    $classification{$content}=$content;
-	    $new = 1;
-	}
-	
-	return ($classification{$content},$new);
     }
-    
-    unless (exists $classification{$content}){
-        $classification{$content}=normalize_id($content);
+
+    my $normalized_id = normalize_id($content);
+
+    unless (exists $classification{$normalized_id}){
+        $classification{$normalized_id}=$normalized_id;
         $new = 1;
     }
 
-    return ($classification{$content},$new);
+    return ($classification{$normalized_id},$new);
 }
 
 sub set_classification_id {
@@ -217,53 +197,58 @@ verwendet werden.
 
  use OpenBib::Conv::Common::Util;
 
- print OpenBib::Conv::Common::Util::get_autidn("Doe, John")
+ print OpenBib::Conv::Common::Util::get_person_id("Doe, John")
 
- => 1
+ => doe_john
+
+ print OpenBib::Conv::Common::Util::get_person_id("Foo, Bar")
+
+ => foo_bar
+
+ print OpenBib::Conv::Common::Util::get_person_id("Baz, Bar")
+
+ => baz_bar
 
  print OpenBib::Conv::Common::Util::get_autidn("Foo, Bar")
 
- => 2
-
- print OpenBib::Conv::Common::Util::get_autidn("Baz, Bar")
-
- => 3
-
- print OpenBib::Conv::Common::Util::get_autidn("Foo, Bar")
-
- => 2
+ => foo_bar
 
 =head1 METHODS
 
 =over 4
 
-=item get_autid($name)
+=item get_person_id($name)
 
-Gibt in der Normdatenart Person die für die Ansetzungsform $name generierte numerische Identifikationsnummer
-zurück. Wenn $name noch nicht existiert, dann wird eine neue Nummer generiert und
-zurückgeliefert. Wenn $name bereits existiert, dann wird die gespeicherte Nummer
+Gibt in der Normdatenart Person die für die Ansetzungsform $name generierte ID
+zurück. Wenn $name noch nicht existiert, dann wird eine neue ID generiert und
+zurückgeliefert. Wenn $name bereits existiert, dann wird die gespeicherte ID
 zurückgeliefert.
 
-=item kor_autid($name)
+=item get_corporatebody_id($name)
 
-Gibt in der Normdatenart Körperschaft die für die Ansetzungsform $name generierte numerische Identifikationsnummer
-zurück. Wenn $name noch nicht existiert, dann wird eine neue Nummer generiert und
-zurückgeliefert. Wenn $name bereits existiert, dann wird die gespeicherte Nummer
+Gibt in der Normdatenart Körperschaft die für die Ansetzungsform $name generierte ID
+zurück. Wenn $name noch nicht existiert, dann wird eine neue ID generiert und
+zurückgeliefert. Wenn $name bereits existiert, dann wird die gespeicherte ID
 zurückgeliefert.
 
-=item get_swtid($name)
+=item get_subject_id($name)
 
-Gibt in der Normdatenart Schlagwort die für die Ansetzungsform $name generierte numerische Identifikationsnummer
-zurück. Wenn $name noch nicht existiert, dann wird eine neue Nummer generiert und
-zurückgeliefert. Wenn $name bereits existiert, dann wird die gespeicherte Nummer
+Gibt in der Normdatenart Schlagwort die für die Ansetzungsform $name generierte ID
+zurück. Wenn $name noch nicht existiert, dann wird eine neue ID generiert und
+zurückgeliefert. Wenn $name bereits existiert, dann wird die gespeicherte ID
 zurückgeliefert.
 
-=item get_notid($name)
 
-Gibt in der Normdatenart Notation die für die Ansetzungsform $name generierte numerische Identifikationsnummer
-zurück. Wenn $name noch nicht existiert, dann wird eine neue Nummer generiert und
-zurückgeliefert. Wenn $name bereits existiert, dann wird die gespeicherte Nummer
+=item get_classification_id($name)
+
+Gibt in der Normdatenart Notation die für die Ansetzungsform $name generierte ID
+zurück. Wenn $name noch nicht existiert, dann wird eine neue ID generiert und
+zurückgeliefert. Wenn $name bereits existiert, dann wird die gespeicherte ID
 zurückgeliefert.
+
+=item normalize($name)
+
+Hilfsmethode, die fuer einen gegebenen Namen eine daraus abgeleitete eindeutige ID generiert
 
 =back
 

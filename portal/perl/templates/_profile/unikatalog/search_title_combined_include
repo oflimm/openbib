@@ -192,7 +192,7 @@ $(document).ready(function(){
 	</div>
       </div>
       <div class="left d-none d-lg-block mt-2">
-[% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b id="numhits[% idsuffix %]">[% hits %]</b>
+[% msg.maketext("Treffer") %]&nbsp;<b>[% start_range.chunk(-3).join('.') %]-[% end_range.chunk(-3).join('.') %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b id="numhits[% idsuffix %]">[% hits.chunk(-3).join('.') %]</b>
       </div>
     </div>
     <div class="right mt-2">

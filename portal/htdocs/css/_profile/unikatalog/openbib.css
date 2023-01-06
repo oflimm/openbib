@@ -51,6 +51,27 @@
     
     /* Ende des Backports */
 
+    /* Custom Scrollbar */
+
+    /* width */
+    ::-webkit-scrollbar {
+	width: 4px;
+    }
+    /* Track */
+    ::-webkit-scrollbar-track {
+	background: #fff;
+    }
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+	background: #3e566c;
+    }
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+	background: #a0adb6;
+    }
+
+    /* Ende Custom Scrollbar */
+    
     .ob-jumbotron {
 	padding: 2rem 1rem;
 	margin-top: 1em;

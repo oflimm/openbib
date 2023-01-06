@@ -349,51 +349,6 @@ Open Access. Im Internet weltweit frei verfügbar [% IF thanks_to_unpaywall %](v
 Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/nutzungshinweise/">Netz der Universität Köln</a> bzw. für autorisierte Benutzer. Die <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/besonderheiten/">Druck- und Downloadmöglichkeiten</a> variieren je nach Anbieter.
 </div>
 [% END %]
-     </div>
-   </div>
-  </div>
- </div>
- <div id="ob-supplemental_information" class="accordion mt-4">
-  <div class="card">
-    <div class="card-header" id="headingSupplementalInformation">
-      <h5 class="mb-0">
-        <a class="card-link collapsed" href="#collapseSupplementalInformation" data-bs-toggle="collapse" data-bs-target="#collapseSupplementalInformation" aria-expanded="false" aria-controls="collapseSupplementalInformation">
-          [% msg.maketext("Weitere Informationen") %]
-        </a>
-      </h5>
-    </div>
-    <div id="collapseSupplementalInformation" class="collapse" aria-labelledby="headingSupplementalInformation" data-parent="#ob-supplemental_information">
-      <div class="card-body">
-
-[%-
-     IF record_type == 'mono';
-       PROCESS common/subtemplate name="visible_categories_title_mono_supplement";
-     ELSIF record_type == 'journal';
-       PROCESS common/subtemplate name="visible_categories_title_journal_supplement";
-     ELSIF record_type == 'article';
-       PROCESS common/subtemplate name="visible_categories_title_article_supplement";
-     ELSE;
-       PROCESS common/subtemplate name="visible_categories_title_supplement";
-     END;
--%]
-
-[%   PROCESS common/subtemplate name="titles_record_html_categories" %]
-
-
-     </div>
-   </div>
-  </div><!-- End ob-supplemental_information -->
- </div><!-- End ob-title_record -->
-
-
-[% ELSE %]
-<h2>[% msg.maketext("Ein Titel mit dieser ID ist nicht (mehr) in diesem Katalog vorhanden.") %]</h2>
-[% END %]
-
-[% IF config.get('unAPI') %]
-<abbr class="unapi-id" title="[% record.database %]:[% record.get_encoded_id %]"></abbr>
-[% END %]
-
 
 <div class="d-flex ob-fulltitle_actions mt-4">
 
@@ -441,6 +396,53 @@ Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_auslei
 
 
 </div><!-- End ob-fulltitle_actions -->
+
+     </div>
+   </div>
+  </div>
+ </div>
+ <div id="ob-supplemental_information" class="accordion mt-4">
+  <div class="card">
+    <div class="card-header" id="headingSupplementalInformation">
+      <h5 class="mb-0">
+        <a class="card-link collapsed" href="#collapseSupplementalInformation" data-bs-toggle="collapse" data-bs-target="#collapseSupplementalInformation" aria-expanded="false" aria-controls="collapseSupplementalInformation">
+          [% msg.maketext("Weitere Informationen") %]
+        </a>
+      </h5>
+    </div>
+    <div id="collapseSupplementalInformation" class="collapse" aria-labelledby="headingSupplementalInformation" data-parent="#ob-supplemental_information">
+      <div class="card-body">
+
+[%-
+     IF record_type == 'mono';
+       PROCESS common/subtemplate name="visible_categories_title_mono_supplement";
+     ELSIF record_type == 'journal';
+       PROCESS common/subtemplate name="visible_categories_title_journal_supplement";
+     ELSIF record_type == 'article';
+       PROCESS common/subtemplate name="visible_categories_title_article_supplement";
+     ELSE;
+       PROCESS common/subtemplate name="visible_categories_title_supplement";
+     END;
+-%]
+
+[%   PROCESS common/subtemplate name="titles_record_html_categories" %]
+
+
+     </div>
+   </div>
+  </div><!-- End ob-supplemental_information -->
+ </div><!-- End ob-title_record -->
+
+
+[% ELSE %]
+<h2>[% msg.maketext("Ein Titel mit dieser ID ist nicht (mehr) in diesem Katalog vorhanden.") %]</h2>
+[% END %]
+
+[% IF config.get('unAPI') %]
+<abbr class="unapi-id" title="[% record.database %]:[% record.get_encoded_id %]"></abbr>
+[% END %]
+
+
 
 </div><!-- End ob-fulltitle -->
 </div><!-- End Col Categories -->

@@ -1140,6 +1140,7 @@ sub add_default_ttdata {
     my $url            = $self->param('url');
     my $location       = $self->param('location');
     my $scheme         = $self->param('scheme');
+    my $remote_ip      = $self->param('remote_ip');
     my $representation = $self->param('representation') || 'html';
     my $content_type   = $self->param('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
     my $query          = $self->query();
@@ -1211,6 +1212,7 @@ sub add_default_ttdata {
     $ttdata->{'browser'}        = $browser;
     $ttdata->{'cgiapp'}         = $self;
     $ttdata->{'container'}      = $container;
+    $ttdata->{'remote_ip'}      = $remote_ip;
     
     # Helper functions
     $ttdata->{'to_json'}        = sub {

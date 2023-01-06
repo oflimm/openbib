@@ -181,6 +181,7 @@ $(document).ready(function(){
     query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
 -%]
 
+<!-- Remote IP: [% remote_ip %] -->
 <div class="ob-resultlist">
   <div class="ob-resultheader pb-4">
     <div class="left w-100">

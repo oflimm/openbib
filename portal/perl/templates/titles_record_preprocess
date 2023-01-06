@@ -68,6 +68,13 @@
         END;
      END;
 
+     # Im UzK Netz? Dann voller Zugriff auf EDS
+
+     IF remote_ip.match('^134.95.') ;
+        hide_hit = 0;
+	hide_detail = 0;
+     END;
+
      record_exists     = record.record_exists ;
 
      record_from_cache = record.get_status('from_cache');

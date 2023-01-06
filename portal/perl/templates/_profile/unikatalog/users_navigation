@@ -99,10 +99,12 @@
 [% END %]
 -->
 
+[% IF config.get('cache_external_password_for_ugc_migration') && NOT user.is_admin %]
 [% IF layout_param.active_submenu == "migration" %]
   <li class="nav-item active"><strong>[% msg.maketext("Konto-Migration") %]</strong></li>
 [% ELSE %]
   <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/migration.html?l=[% lang %]">[% msg.maketext("Konto-Migration") %]</a></li>
+[% END %]
 [% END %]
 
 [% IF NOT user.has_role('viewadmin',user.ID) %]

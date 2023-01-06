@@ -51,7 +51,9 @@
 
   <li class="[% IF layout_param.active_submenu == "userlocations" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchlocations_loc') %]/edit.html?l=[% lang %]">[% msg.maketext("Suchraum") %]</a></li>
 
+[% IF config.get('cache_external_password_for_ugc_migration') && NOT user.is_admin %]
   <li class="[% IF layout_param.active_submenu == "migration" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/migration.html?l=[% lang %]">[% msg.maketext("Konto-Migration") %]</a></li>
+[% END %]
 
 [% IF NOT user.has_role('viewadmin',user.ID) %]
   <li class="[% IF layout_param.active_submenu == "viewadmin_templates" %]active[% END %]"><a class="ob-dropdown_link"href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('templates_loc') %].html?l=[% lang %]">[% msg.maketext("Templates") %]</a></li>

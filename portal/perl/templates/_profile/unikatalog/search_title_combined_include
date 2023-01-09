@@ -184,15 +184,15 @@ $(document).ready(function(){
 <div class="ob-resultlist">
   <div class="ob-resultheader pb-4">
     <div class="left">
-      <div class="navbar navbar-default d-block d-md-none ps-0 mt-0" style="z-index: 1"><!-- only visible in xs-->
-        <div class="container-fluid ps-0">
+      <div class="navbar navbar-default">
+        <div class="container-fluid d-block d-md-none ps-0 mt-0" style="z-index: 1"><!-- only visible in xs-->
           <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar[% idsuffix %]">
             <i class="fa fa-sliders-h"></i> [% msg.maketext("Filtern") %]
           </button>
 	</div>
-      </div>
-      <div class="left d-none d-lg-block mt-2 w-100">
+        <div class="d-none d-lg-block mt-2">
 [% msg.maketext("Treffer") %]&nbsp;<b>[% start_range.chunk(-3).join('.') %]-[% end_range.chunk(-3).join('.') %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b id="numhits[% idsuffix %]">[% hits.chunk(-3).join('.') %]</b>
+        </div>
       </div>
     </div>
     <div class="right mt-2">

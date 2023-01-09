@@ -284,7 +284,7 @@ $(document).ready(function(){
 
 <!-- <div class="col-xs-6 col-md-3 ob-titleimage"><!-- Begin Images -->
 <div class="col-md-3"><!-- Begin Images -->
-  <div class="ob-titleimage"><!-- Begin ob-titleimage -->
+  <div class="ob-titleimage text-center"><!-- Begin ob-titleimage -->
 [% PROCESS common/subtemplate name="titles_record_html_images" %]
   </div><!-- End ob-titleimage -->
 </div><!-- End Col Images -->

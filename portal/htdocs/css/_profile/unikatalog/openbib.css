@@ -1408,7 +1408,7 @@
 	border-radius:50px; 
 	padding-top: 13px;
 	text-align:center;
-	box-shadow: 2px 2px 3px #999;
+	/* box-shadow: 2px 2px 3px #999; */
     }
 
     .ob-sidebar_button, .ob-sidebar_button:hover {
@@ -1420,7 +1420,7 @@
 	border-radius:40px; 
 	padding-top: 8px;
 	text-align:center;
-	box-shadow: 2px 2px 3px #999;
+	/* box-shadow: 2px 2px 3px #999; */
     }
 
     .ob-jump_top, .ob-jump_top:hover {
@@ -2029,7 +2029,7 @@ a.ext {
 	border-radius:50px; 
 	padding-top: 12px;
 	text-align:center;
-	box-shadow: 2px 2px 3px #999;
+	/* box-shadow: 2px 2px 3px #999; */
     }
 
     .ob-sidebar_button, .ob-sidebar_button:hover {
@@ -2040,7 +2040,7 @@ a.ext {
 	border-radius:50px; 
 	padding-top: 12px;
 	text-align:center;
-	box-shadow: 2px 2px 3px #999;
+	/* box-shadow: 2px 2px 3px #999; */
     }
 
     .ob-item .ob-brieftitle {

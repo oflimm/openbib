@@ -283,15 +283,9 @@ $(document).ready(function(){
 <div class="row flex-md-row-reverse"><!-- Begin Details -->
 
 <!-- <div class="col-xs-6 col-md-3 ob-titleimage"><!-- Begin Images -->
-<div class="col-md-3"><!-- Begin Images -->
-  <div class="ob-titleimage text-center"><!-- Begin ob-titleimage -->
-[% PROCESS common/subtemplate name="titles_record_html_images" %]
-  </div><!-- End ob-titleimage -->
-</div><!-- End Col Images -->
-
 <!-- Title begins here -->
 <!-- <div class="col-md-9 categories ob-title_record"><!-- Begin Categories -->
-<div class="col-md-9"><!-- Begin Categories -->
+<div class="col-md-12"><!-- Begin Categories -->
 
 <div class="ob-title_record">
 
@@ -319,6 +313,22 @@ $(document).ready(function(){
     <div id="collapseMainInformation">
       <div class="card-body">
 
+       <div class="d-md-none"><!-- Begin Images small screens-->
+        <div class="ob-titleimage text-center"><!-- Begin ob-titleimage -->
+[% PROCESS common/subtemplate name="titles_record_html_images" %]
+        </div><!-- End ob-titleimage -->
+       </div><!-- End Images -->
+	
+       <div id="MainInformationWrapper" class="d-flex flex-row-reverse justify-content-between">
+
+        <div class="d-none d-md-block"><!-- Begin Images big screens-->
+         <div class="ob-titleimage text-center ps-5 pe-2"><!-- Begin ob-titleimage -->
+[% PROCESS common/subtemplate name="titles_record_html_images" %]
+         </div><!-- End ob-titleimage -->
+        </div><!-- End Images -->
+	  
+	  
+	<div class="w-100"><!-- begin metadata left -->
 [% IF record_exists %]
 [%# USE dumper;dumper.dump(normdata)%]
 [%-
@@ -397,7 +407,10 @@ Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_auslei
 
 </div><!-- End ob-fulltitle_actions -->
 
-     </div>
+      </div><!-- End metadata left -->
+     </div><!-- End MainInformationWrapper -->
+
+     </div><!-- end card -->
    </div>
   </div>
  </div>

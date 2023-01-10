@@ -476,9 +476,7 @@ $("#history_toggle").click(function(){
          searchterm    = uri_escape(part.content);
          searchprefix  = config.get('searchfield').personstring.prefix;
 
-         globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
-
-         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+         persons.push(part.content);
          personslength = personslength+thislength ;
        ELSE ;
          truncatepers = 1 ;
@@ -494,9 +492,7 @@ $("#history_toggle").click(function(){
          searchterm    = uri_escape(part.content);
          searchprefix  = config.get('searchfield').personstring.prefix;
 
-         globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
-
-         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+         persons.push(part.content);
          personslength = personslength+thislength ;
        ELSE ;
          truncatepers = 1 ;
@@ -508,9 +504,7 @@ $("#history_toggle").click(function(){
          searchterm    = uri_escape(part.content);
          searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
-         globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
-
-         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+         persons.push(part.content);
          personslength = personslength+thislength ;
        ELSE ;
          truncatepers = 1 ;
@@ -522,9 +516,7 @@ $("#history_toggle").click(function(){
          searchterm    = uri_escape(part.content);
          searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
-         globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
-
-         persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+         persons.push(part.content);
          personslength = personslength+thislength ;
        ELSE ;
          truncatepers = 1 ;
@@ -618,7 +610,7 @@ $("#history_toggle").click(function(){
 				       <span id="history_toggle"></span>
 				       <div id="history">
 [% END %]
-<li class="list-group-item">[% IF person %][% person %]<br/>[% END %]<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% recent_record.database %]/[% config.get('titles_loc') %]/id/[% recent_record.id %].html"><strong><span class="ob-title">[%
+<li class="list-group-item">[% IF person %][% person %]<br/>[% END %]<a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% recent_record.database %]/[% config.get('titles_loc') %]/id/[% recent_record.id %].html"><strong><span class="ob-title">[%
 title %]</span></strong></a>, <span class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span></li>
 [% END %]
 [% IF recent_titles.get_size > 5 %]

@@ -726,25 +726,25 @@
 	width: 1990px;
     }
     .ob-cloud .fast-nicht-genutzt {
-	font-size: 0.7em;
+	font-size: 0.2em;
     }
     .ob-cloud .nicht-sehr-genutzt {
-	font-size: 1.0em;
+	font-size: 0.4em;
     }
     .ob-cloud .etwas-genutzt {
-	font-size: 1.3em;
+	font-size: 0.6em;
     }
     .ob-cloud .genutzt {
-	font-size: 1.5em;
+	font-size: 0.8em;
     }
     .ob-cloud .sehr-viel-genutzt {
-	font-size: 1.9em;
+	font-size: 1.0em;
     }
     .ob-cloud .ultra-genutzt {
-	font-size: 2.2em;
+	font-size: 1.2em;
     }
     .ob-cloud .am-meisten-genutzt {
-	font-size: 2.4em;
+	font-size: 1.4em;
     }
 
     .ob-representation {

@@ -1,5 +1,10 @@
 #!/usr/bin/perl
 
+use warnings;
+use strict;
+
+use utf8;
+
 use OpenBib::Catalog::Factory;
 use OpenBib::Config;
 
@@ -51,7 +56,7 @@ foreach my $thisdbistopic ($dbistopics->all){
             my @types = split(" ",$db_node->findvalue('@db_type_refs'));
             
             $single_db_ref->{db_types} = \@types;
-            $single_db_ref->{title}     = decode_utf8($db_node->textContent);
+            $single_db_ref->{title}     = $db_node->textContent;
             
             push @{$dbs_ref}, $single_db_ref;
         }

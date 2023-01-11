@@ -1534,9 +1534,11 @@
 	font-size: 1.4em;
 	font-weight: bold;
 
+/*
 	border-radius: .25rem;
 	-webkit-box-shadow: 5px 5px 2px #888;
 	box-shadow: 5px 5px 2px #888;
+*/
     }
 
     .ob-titleactions  img {

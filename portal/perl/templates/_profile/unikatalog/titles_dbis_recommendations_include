@@ -24,7 +24,7 @@
 
 [% FOREACH item IN dbr %]
 <dl class="ob-items">
-<dt class="ob-headline">[% item.dbistopic %] [% IF item.rank.match('\*\*\*') %]<img src="[% config.get_icon('3stars',view,sysprofile) %]" alt="[% msg.maketext("Hohe Relevanz") %]" title="[% msg.maketext("Hohe Relevanz") %]" />[% ELSIF item.rank.match('\*\*') %]<img src="[% config.get_icon('2stars',view,sysprofile) %]" alt="[% msg.maketext("Mittlere Relevanz") %]" title="[% msg.maketext("Mittlere Relevanz") %]" />[% ELSE %]<img src="[% config.get_icon('star',view,sysprofile) %]" alt="[% msg.maketext("Geringe Relevanz") %]" title="[% msg.maketext("Geringe Relevanz") %]" />[% END %]</dt>
+<dt class="ob-headline">[% item.dbistopic %] [% IF item.rank.match('\*\*\*') %]<i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>[% ELSIF item.rank.match('\*\*') %]<i class="far fa-star"></i><i class="far fa-star"></i>[% ELSE %]<i class="far fa-star"></i>[% END %]</dt>
 [%  FOREACH dbisdb IN item.databases %]
 <dd><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/titles/id/[% dbisdb.id%].html?l=[% lang %]">[% dbisdb.description %]</a></dd>
 [%  END %]

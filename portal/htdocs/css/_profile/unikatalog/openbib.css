@@ -1454,10 +1454,18 @@
 	color: #fff;
     }
 
-    .ob-field.more-button th {
+    .ob-field.ob-more_button th {
 	font-size: 1.2em;
     }
 
+    .ob-more_button {
+	font-size: 1.2em;
+    }
+
+    .ob-less_button {
+	font-size: 1.2em;
+    }
+    
     .ob-fixed_bottom {
 	position: fixed;
 	

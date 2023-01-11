@@ -34,7 +34,7 @@
 [%# USE dumper;dumper.dump(normdata)%]
 
 <script>
-$(document).on("click", ".more-button", function () {
+$(document).on("click", ".ob-more_button", function () {
 const supplemental_collection = document.getElementsByClassName("ob-field_supplemental");
 Array.prototype.forEach.call(supplemental_collection, function(element) {
   $(element.tagName).prop("hidden", false);
@@ -937,7 +937,7 @@ END;
 END;
 -%]
 [% IF show_more %]
-<tr class="ob-field more-button"><th colspan="2"><a href="#" class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></a></i></th></tr>
+<tr class="ob-field ob-more_button"><th colspan="2"><a href="#" class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></a></i></th></tr>
 [% END %]
 </table>
 

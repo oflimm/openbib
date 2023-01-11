@@ -124,7 +124,7 @@
 -%]
 [% IF processed_holding_by_sigel.keys > 0 %]
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped">
 <thead>
 <tr><th>[% msg.maketext("Bibliothek") %]</th><th>[% msg.maketext("Bestandsverlauf") %] ([% msg.maketext("Jahrgänge/Hefte/[Lücken]") %])</th></tr>
 </thead>

@@ -43,7 +43,7 @@
 
 [% IF holding.size > 0 %]
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped">
 <thead>
 <tr align="center"><th>[% msg.maketext("Bibliothek") %]</th><th>QR-Code</th>[% IF have_standort %]<th>[% msg.maketext("Standort") %]</th>[% END %]<th>[% msg.maketext("Signatur") %]</th>[% IF have_bestandsverlauf %]<th>[% msg.maketext("Bestand") %]</th>[% END %]</tr>
 </thead>

@@ -217,316 +217,21 @@
 [% searchquery.to_cgi_hidden_input({ exclude_filter = [ 'all' ], exclude = [ 'year_from','year_to' ] }) %]
 <!-- End -->
 
-<script type="text/javascript">
-$(document).ready(function(){
+<script>
+$(document).on("click", ".ob-more_button", function () {
+  $(this).siblings().prop("hidden",false);
+  $(this).prop("hidden",true);
+});
 
-// Begin Togglen / Facets Personen
-// Bild setzen
-$("#[% facet_prefix %]_person_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_person_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
-// Zuerst verstecken
-$("#[% facet_prefix %]_person_[% database %][% idsuffix %]").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_person_[% database %]_toggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_person_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_person_[% database %]_toggle[% idsuffix %]").html("");
- $("#[% facet_prefix %]_person_[% database %]_revtoggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_person_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-up\"></i> [% msg.maketext("Weniger") %]</a>")
-});
-$("#[% facet_prefix %]_person_[% database %]_revtoggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_person_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_person_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_person_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
- $("#[% facet_prefix %]_person_[% database %]_revtoggle[% idsuffix %]").html("");
-});
-// End Togglen / Facets Person
-
-// Begin Togglen / Facets Koerperschaften
-// Bild setzen
-$("#[% facet_prefix %]_corporatebody_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_corporatebody_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
-// Zuerst verstecken
-$("#[% facet_prefix %]_corporatebody_[% database %][% idsuffix %]").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_corporatebody_[% database %]_toggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_corporatebody_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_corporatebody_[% database %]_toggle[% idsuffix %]").html("");
- $("#[% facet_prefix %]_corporatebody_[% database %]_revtoggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_corporatebody_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-up\"></i> [% msg.maketext("Weniger") %]</a>")
-});
-$("#[% facet_prefix %]_corporatebody_[% database %]_revtoggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_corporatebody_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_corporatebody_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_corporatebody_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
- $("#[% facet_prefix %]_corporatebody_[% database %]_revtoggle[% idsuffix %]").html("");
-});
-// End Togglen / Facets Koerperschaften
-
-// Begin Togglen / Facets Schlagworte
-// Bild setzen
-$("#[% facet_prefix %]_subjects_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_subjects_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
-// Zuerst verstecken
-$("#[% facet_prefix %]_subjects_[% database %][% idsuffix %]").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_subjects_[% database %]_toggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_subjects_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_subjects_[% database %]_toggle[% idsuffix %]").html("");
- $("#[% facet_prefix %]_subjects_[% database %]_revtoggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_subjects_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-up\"></i> [% msg.maketext("Weniger") %]</a>")
-});
-$("#[% facet_prefix %]_subjects_[% database %]_revtoggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_subjects_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_subjects_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_subjects_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
- $("#[% facet_prefix %]_subjects_[% database %]_revtoggle[% idsuffix %]").html("");
-});
-// End Togglen / Facets Schlagworte
-
-// Begin Togglen / Facets Systematik
-// Bild setzen
-$("#[% facet_prefix %]_classification_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_classification_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
-// Zuerst verstecken
-$("#[% facet_prefix %]_classification_[% database %][% idsuffix %]").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_classification_[% database %]_toggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_classification_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_classification_[% database %]_toggle[% idsuffix %]").html("");
- $("#[% facet_prefix %]_classification_[% database %]_revtoggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_classification_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-up\"></i> [% msg.maketext("Weniger") %]</a>")
-});
-$("#[% facet_prefix %]_classification_[% database %]_revtoggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_classification_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_classification_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_classification_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
- $("#[% facet_prefix %]_classification_[% database %]_revtoggle[% idsuffix %]").html("");
-});
-// Begin Togglen / Facets Systematik
-
-// Begin Togglen / Facets Topics
-// Bild setzen
-$("#[% facet_prefix %]_topic_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_topic_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
-// Zuerst verstecken
-$("#[% facet_prefix %]_topic_[% database %][% idsuffix %]").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_topic_[% database %]_toggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_topic_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_topic_[% database %]_toggle[% idsuffix %]").html("");
- $("#[% facet_prefix %]_topic_[% database %]_revtoggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_topic_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-up\"></i> [% msg.maketext("Weniger") %]</a>")
-});
-$("#[% facet_prefix %]_topic_[% database %]_revtoggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_topic_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_topic_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_topic_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
- $("#[% facet_prefix %]_topic_[% database %]_revtoggle[% idsuffix %]").html("");
-});
-// End Togglen / Facets Topics
-
-// Begin Togglen / Facets Print Locations
-// Bild setzen
-$("#[% facet_prefix %]_location_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_location_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
-// Zuerst verstecken
-$("#[% facet_prefix %]_location_[% database %][% idsuffix %]").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_location_[% database %]_toggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_location_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_location_[% database %]_toggle[% idsuffix %]").html("");
- $("#[% facet_prefix %]_location_[% database %]_revtoggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_location_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-up\"></i> [% msg.maketext("Weniger") %]</a>")
-});
-$("#[% facet_prefix %]_location_[% database %]_revtoggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_location_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_location_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_location_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
- $("#[% facet_prefix %]_location_[% database %]_revtoggle[% idsuffix %]").html("");
-});
-// End Togglen / Facets Locations
-
-// Begin Togglen / Facets Emedia Locations
-// Bild setzen
-$("#[% facet_prefix %]_elocation_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_elocation_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
-// Zuerst verstecken
-$("#[% facet_prefix %]_elocation_[% database %][% idsuffix %]").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_elocation_[% database %]_toggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_elocation_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_elocation_[% database %]_toggle[% idsuffix %]").html("");
- $("#[% facet_prefix %]_elocation_[% database %]_revtoggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_elocation_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-up\"></i> [% msg.maketext("Weniger") %]</a>")
-});
-$("#[% facet_prefix %]_elocation_[% database %]_revtoggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_elocation_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_elocation_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_elocation_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
- $("#[% facet_prefix %]_elocation_[% database %]_revtoggle[% idsuffix %]").html("");
-});
-// End Togglen / Facets Emedia Locations
-
-// Begin Togglen / Facets Favourite Locations
-// Bild setzen
-$("#[% facet_prefix %]_favlocation_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_favlocation_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
-// Zuerst verstecken
-$("#[% facet_prefix %]_favlocation_[% database %][% idsuffix %]").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_favlocation_[% database %]_toggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_favlocation_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_favlocation_[% database %]_toggle[% idsuffix %]").html("");
- $("#[% facet_prefix %]_favlocation_[% database %]_revtoggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_favlocation_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-up\"></i> [% msg.maketext("Weniger") %]</a>")
-});
-$("#[% facet_prefix %]_favlocation_[% database %]_revtoggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_favlocation_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_favlocation_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_favlocation_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
- $("#[% facet_prefix %]_favlocation_[% database %]_revtoggle[% idsuffix %]").html("");
-});
-// End Togglen / Facets Favlocations
-
-// Begin Togglen / Facets Jahr
-// Bild setzen
-$("#[% facet_prefix %]_year_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_year_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
-// Zuerst verstecken
-$("#[% facet_prefix %]_year_[% database %][% idsuffix %]").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_year_[% database %]_toggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_year_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_year_[% database %]_toggle[% idsuffix %]").html("");
- $("#[% facet_prefix %]_year_[% database %]_revtoggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_year_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-up\"></i> [% msg.maketext("Weniger") %]</a>")
-});
-$("#[% facet_prefix %]_year_[% database %]_revtoggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_year_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_year_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_year_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
- $("#[% facet_prefix %]_year_[% database %]_revtoggle[% idsuffix %]").html("");
-});
-// End Togglen / Facets Year
-
-// Begin Togglen / Facets Medienart
-// Bild setzen
-$("#[% facet_prefix %]_mediatype_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_mediatype_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
-// Zuerst verstecken
-$("#[% facet_prefix %]_mediatype_[% database %][% idsuffix %]").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_mediatype_[% database %]_toggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_mediatype_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_mediatype_[% database %]_toggle[% idsuffix %]").html("");
- $("#[% facet_prefix %]_mediatype_[% database %]_revtoggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_mediatype_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-up\"></i> [% msg.maketext("Weniger") %]</a>")
-});
-$("#[% facet_prefix %]_mediatype_[% database %]_revtoggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_mediatype_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_mediatype_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_mediatype_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
- $("#[% facet_prefix %]_mediatype_[% database %]_revtoggle[% idsuffix %]").html("");
-});
-// End Togglen / Facets Mediatype
-
-// Begin Togglen / Facets Quellen
-// Bild setzen
-$("#[% facet_prefix %]_sources_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_sources_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
-// Zuerst verstecken
-$("#[% facet_prefix %]_sources_[% database %][% idsuffix %]").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_sources_[% database %]_toggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_sources_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_sources_[% database %]_toggle[% idsuffix %]").html("");
- $("#[% facet_prefix %]_sources_[% database %]_revtoggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_sources_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-up\"></i> [% msg.maketext("Weniger") %]</a>")
-});
-$("#[% facet_prefix %]_sources_[% database %]_revtoggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_sources_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_sources_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_sources_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
- $("#[% facet_prefix %]_sources_[% database %]_revtoggle[% idsuffix %]").html("");
-});
-// End Togglen / Facets Quellen
-
-// Begin Togglen / Facets Provenienz
-// Bild setzen
-$("#[% facet_prefix %]_provenance_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_provenance_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
-// Zuerst verstecken
-$("#[% facet_prefix %]_provenance_[% database %][% idsuffix %]").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_provenance_[% database %]_toggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_provenance_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_provenance_[% database %]_toggle[% idsuffix %]").html("");
- $("#[% facet_prefix %]_provenance_[% database %]_revtoggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_provenance_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-up\"></i> [% msg.maketext("Weniger") %]</a>")
-});
-$("#[% facet_prefix %]_provenance_[% database %]_revtoggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_provenance_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_provenance_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_provenance_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
- $("#[% facet_prefix %]_provenance_[% database %]_revtoggle[% idsuffix %]").html("");
-});
-// End Togglen / Facets Provenienz
-
-// Begin Togglen / Facets Sprache
-// Bild setzen
-$("#[% facet_prefix %]_language_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_language_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
-// Zuerst verstecken
-$("#[% facet_prefix %]_language_[% database %][% idsuffix %]").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_language_[% database %]_toggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_language_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_language_[% database %]_toggle[% idsuffix %]").html("");
- $("#[% facet_prefix %]_language_[% database %]_revtoggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_language_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-up\"></i> [% msg.maketext("Weniger") %]</a>")
-});
-$("#[% facet_prefix %]_language_[% database %]_revtoggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_language_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_language_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_language_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
- $("#[% facet_prefix %]_language_[% database %]_revtoggle[% idsuffix %]").html("");
-});
-// End Togglen / Facets Sprache
-
-// Begin Togglen / Facets Katalog
-// Bild setzen
-$("#[% facet_prefix %]_databases_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_databases_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
-// Zuerst verstecken
-$("#[% facet_prefix %]_databases_[% database %][% idsuffix %]").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_databases_[% database %]_toggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_databases_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_databases_[% database %]_toggle[% idsuffix %]").html("");
- $("#[% facet_prefix %]_databases_[% database %]_revtoggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_databases_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-up\"></i> [% msg.maketext("Weniger") %]</a>")
-});
-$("#[% facet_prefix %]_databases_[% database %]_revtoggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_databases_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_databases_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_databases_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
- $("#[% facet_prefix %]_databases_[% database %]_revtoggle[% idsuffix %]").html("");
-});
-// End Togglen / Facets Katalog
-
-
-// Begin Togglen / Facets Tags
-// Bild setzen
-$("#[% facet_prefix %]_tags_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_tags_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
-// Zuerst verstecken
-$("#[% facet_prefix %]_tags_[% database %][% idsuffix %]").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_tags_[% database %]_toggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_tags_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_tags_[% database %]_toggle[% idsuffix %]").html("");
- $("#[% facet_prefix %]_tags_[% database %]_revtoggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_tags_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-up\"></i> [% msg.maketext("Weniger") %]</a>")
-});
-$("#[% facet_prefix %]_tags_[% database %]_revtoggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_tags_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_tags_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_tags_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
- $("#[% facet_prefix %]_tags_[% database %]_revtoggle[% idsuffix %]").html("");
-});
-// Ende Togglen / Facets Tag
-
-// Begin Togglen / Facets Literaturliste
-// Bild setzen
-$("#[% facet_prefix %]_litlists_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_litlists_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
-// Zuerst verstecken
-$("#[% facet_prefix %]_litlists_[% database %][% idsuffix %]").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_litlists_[% database %]_toggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_litlists_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_litlists_[% database %]_toggle[% idsuffix %]").html("");
- $("#[% facet_prefix %]_litlists_[% database %]_revtoggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_litlists_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-up\"></i> [% msg.maketext("Weniger") %]</a>")
-});
-$("#[% facet_prefix %]_litlists_[% database %]_revtoggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_litlists_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_litlists_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_litlists_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
- $("#[% facet_prefix %]_litlists_[% database %]_revtoggle[% idsuffix %]").html("");
-});
-// Ende Togglen / Facets Literaturliste
-
-// Begin Togglen / Facets Verfuegbarkeit
-// Bild setzen
-$("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_availability_[% database %]_anchor[% idsuffix %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
-// Zuerst verstecken
-$("#[% facet_prefix %]_availability_[% database %][% idsuffix %]").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_availability_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").html("");
- $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_availability_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-up\"></i> [% msg.maketext("Weniger") %]</a>")
-});
-$("#[% facet_prefix %]_availability_[% database %]_revtoggle[% idsuffix %]").click(function(){
- $("#[% facet_prefix %]_availability_[% database %][% idsuffix %]").toggle();
- $("#[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]").html("<a href=\"#[% facet_prefix %]_availability_[% database %]_revanchor[% idsuffix %]\"><i class=\"fa fa-arrow-up\"></i> [% msg.maketext("Weniger") %]</a>")
- $("#[% facet_prefix %]_availability_[% database %]_revtoggle[% idsuffix %]").html("");
-});
-// Ende Togglen / Facets Verfuegbarkeit
-
+$(document).on("click", ".ob-less_button", function () {
+  var siblings = $(this).siblings();
+  for (i=0; i < siblings.length; i++ ) {
+    if (i>4){
+      $(siblings[i]).prop("hidden",true);
+    }
+  }
+  $('.ob-more_button').prop("hidden", false);
+  $(this).prop("hidden", true)
 });
 </script>
 
@@ -633,20 +338,16 @@ $("#[% facet_prefix %]_availability_[% database %]_revtoggle[% idsuffix %]").cli
 [%             FOREACH termitem IN facets.source ;
                   LAST IF loop.count > 25 ;
 %]
-[% IF facets.source.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_sources_[% database %]_toggle[% idsuffix %]"></span>
-<div id="[% facet_prefix %]_sources_[% database %][% idsuffix %]">
-[% END %]
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').sourcestring.prefix;
     filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+<li class="ob-facet-item" [% IF facets.source.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
 [%             END %]
 [% IF facets.source.size > 5 %]
-<span id="[% facet_prefix %]_sources_[% database %]_revtoggle[% idsuffix %]"></span>
-</div>
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
 [% END %]
 </ul>
 <p/>
@@ -663,20 +364,16 @@ $("#[% facet_prefix %]_availability_[% database %]_revtoggle[% idsuffix %]").cli
 [%             FOREACH termitem IN facets.database ;
                   LAST IF loop.count > 25 ;
 %]
-[% IF facets.database.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_databases_[% database %]_toggle[% idsuffix %]"></span>
-<div id="[% facet_prefix %]_databases_[% database %][% idsuffix %]">
-[% END %]
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').dbstring.prefix;
     filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% dbinfo.get('dbnames').${termitem.0}.short %]</a> <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+<li class="ob-facet-item" [% IF facets.database.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% dbinfo.get('dbnames').${termitem.0}.short %]</a> <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
 [%             END %]
 [% IF facets.database.size > 5 %]
-</div>
-<span id="[% facet_prefix %]_databases_[% database %]_revtoggle[% idsuffix %]"></span>
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
 [% END %]
 </ul>
 <p/>
@@ -704,20 +401,17 @@ $("#[% facet_prefix %]_availability_[% database %]_revtoggle[% idsuffix %]").cli
 [%             FOREACH termitem IN facets.availability ;
                   LAST IF loop.count > 25 ;
 %]
-[% IF facets.availability.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_availability_[% database %]_toggle[% idsuffix %]"></span>
-<div id="[% facet_prefix %]_availability_[% database %][% idsuffix %]">
-[% END %]
+
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').availabilitystring.prefix;
     filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% msg.maketext(searchterm) %]</a> <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+<li class="ob-facet-item" [% IF facets.availability.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% msg.maketext(searchterm) %]</a> <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
 [%             END %]
 [% IF facets.availability.size > 5 %]
-<span id="[% facet_prefix %]_availability_[% database %]_revtoggle[% idsuffix %]"></span>
-</div>
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
 [% END %]
 </ul>
 <p/>
@@ -733,20 +427,17 @@ $("#[% facet_prefix %]_availability_[% database %]_revtoggle[% idsuffix %]").cli
 [%             FOREACH termitem IN facets.favlocation ;
 
  %]
-[% IF facets.favlocation.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_favlocation_[% database %]_toggle[% idsuffix %]"></span>
-<div id="[% facet_prefix %]_favlocation_[% database %][% idsuffix %]">
-[% END %]
+
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').locationstring.prefix;
     filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% locinfo.get('identifier').${termitem.0}.description %]</a> <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+<li class="ob-facet-item" [% IF facets.favlocation.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% locinfo.get('identifier').${termitem.0}.description %]</a> <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
 [%             END %]
 [% IF facets.favlocation.size > 5 %]
-<span id="[% facet_prefix %]_favlocation_[% database %]_revtoggle[% idsuffix %]"></span>
-</div>
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
 [% END %]
 </ul>
 <p/>
@@ -762,20 +453,17 @@ $("#[% facet_prefix %]_availability_[% database %]_revtoggle[% idsuffix %]").cli
 [%             FOREACH termitem IN facets.elocation ;
 
  %]
-[% IF facets.elocation.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_elocation_[% database %]_toggle[% idsuffix %]"></span>
-<div id="[% facet_prefix %]_elocation_[% database %][% idsuffix %]">
-[% END %]
+
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').locationstring.prefix;
     filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% locinfo.get('identifier').${termitem.0}.description %]</a> <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+<li class="ob-facet-item" [% IF facets.elocation.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% locinfo.get('identifier').${termitem.0}.description %]</a> <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
 [%             END %]
 [% IF facets.elocation.size > 5 %]
-<span id="[% facet_prefix %]_elocation_[% database %]_revtoggle[% idsuffix %]"></span>
-</div>
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
 [% END %]
 </ul>
 <p/>
@@ -791,20 +479,17 @@ $("#[% facet_prefix %]_availability_[% database %]_revtoggle[% idsuffix %]").cli
 [%             FOREACH termitem IN facets.printlocation ;
 
  %]
-[% IF facets.printlocation.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_location_[% database %]_toggle[% idsuffix %]"></span>
-<div id="[% facet_prefix %]_location_[% database %][% idsuffix %]">
-[% END %]
+
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').locationstring.prefix;
     filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% locinfo.get('identifier').${termitem.0}.description %]</a> <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+<li class="ob-facet-item" [% IF facets.printlocation.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% locinfo.get('identifier').${termitem.0}.description %]</a> <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
 [%             END %]
-[% IF facets.printlocation.size > 5 %]
-<span id="[% facet_prefix %]_location_[% database %]_revtoggle[% idsuffix %]"></span>
-</div>
+[% IF facets.printocation.size > 5 %]
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
 [% END %]
 </ul>
 <p/>
@@ -820,20 +505,17 @@ $("#[% facet_prefix %]_availability_[% database %]_revtoggle[% idsuffix %]").cli
 [%             FOREACH termitem IN facets.mediatype ;
                   LAST IF loop.count > 25 ;
  %]
-[% IF facets.mediatype.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_mediatype_[% database %]_toggle[% idsuffix %]"></span>
-<div id="[% facet_prefix %]_mediatype_[% database %][% idsuffix %]">
-[% END %]
+
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').mediatypestring.prefix;
     filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a> <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+<li class="ob-facet-item" [% IF facets.mediatype.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a> <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
 [%             END %]
 [% IF facets.mediatype.size > 5 %]
-<span id="[% facet_prefix %]_mediatype_[% database %]_revtoggle[% idsuffix %]"></span>
-</div>
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
 [% END %]
 </ul>
 <p/>
@@ -848,25 +530,23 @@ $("#[% facet_prefix %]_availability_[% database %]_revtoggle[% idsuffix %]").cli
 [%             FOREACH termitem IN facets.topic ;
                   LAST IF loop.count > 25 ;
  %]
-[% IF facets.topic.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_topic_[% database %]_toggle[% idsuffix %]"></span>
-<div id="[% facet_prefix %]_topic_[% database %][% idsuffix %]">
-[% END %]
+
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').topic.prefix;
     filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% topic_map.${termitem.0} %]</a>  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+<li class="ob-facet-item" [% IF facets.topic.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% topic_map.${termitem.0} %]</a>  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
 [%             END %]
 [% IF facets.topic.size > 5 %]
-<span id="[% facet_prefix %]_topic_[% database %]_revtoggle[% idsuffix %]"></span>
-</div>
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
 [% END %]
 </ul>
 <p/>
 [%         END %]
 <!-- End topic facet -->
+
 <!-- Begin subject facet -->
 [%         IF config.get('facets').subject && facets.defined('subject') && facets.subject.size > 0 %]
         <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-subject[% idsuffix %]" aria-expanded="true">
@@ -875,21 +555,16 @@ $("#[% facet_prefix %]_availability_[% database %]_revtoggle[% idsuffix %]").cli
         <ul id="group-subject[% idsuffix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.subject ;
                   LAST IF loop.count > 25 ;
-%]
-[% IF facets.subject.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_subjects_[% database %]_toggle[% idsuffix %]"></span>
-<div id="[% facet_prefix %]_subjects_[% database %][% idsuffix %]">
-[% END %]
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').subjectstring.prefix;
-    filterstring  = "${searchprefix}:${searchterm}";
+
+                  searchterm    = termitem.0;
+                  searchprefix  = config.get('searchfield').subjectstring.prefix;
+                  filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a> <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+<li class="ob-facet-item" [% IF facets.subject.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a> <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
 [%             END %]
 [% IF facets.subject.size > 5 %]
-<span id="[% facet_prefix %]_subjects_[% database %]_revtoggle[% idsuffix %]"></span>
-</div>
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
 [% END %]
 </ul>
 <p/>
@@ -1044,20 +719,17 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 [%             FOREACH termitem IN facets.year ;
                   LAST IF loop.count > 25 ;
  %]
-[% IF facets.year.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_year_[% database %]_toggle[% idsuffix %]"></span>
-<div id="[% facet_prefix %]_year_[% database %][% idsuffix %]">
-[% END %]
+
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').yearstring.prefix;
     filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+<li class="ob-facet-item" [% IF facets.year.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
 [%             END %]
 [% IF facets.year.size > 5 %]
-<span id="[% facet_prefix %]_year_[% database %]_revtoggle[% idsuffix %]"></span>
-</div>
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
 [% END %]
 </ul>
 </div><!-- group-year -->
@@ -1080,20 +752,17 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 [%             FOREACH termitem IN facets.classification ;
                   LAST IF loop.count > 25 ;
  %]
-[% IF facets.classification.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_classification_[% database %]_toggle[% idsuffix %]"></span>
-<div id="[% facet_prefix %]_classification_[% database %][% idsuffix %]">
-[% END %]
+
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').classificationstring.prefix;
     filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %] [% IF searchterm.match('^\d\d\.\d\d') %]&nbsp;([% bklookup.${searchterm} %])[% END %]</a>  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+<li class="ob-facet-item" [% IF facets.classification.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %] [% IF searchterm.match('^\d\d\.\d\d') %]&nbsp;([% bklookup.${searchterm} %])[% END %]</a>  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
 [%             END %]
 [% IF facets.classification.size > 5 %]
-<span id="[% facet_prefix %]_classification_[% database %]_revtoggle[% idsuffix %]"></span>
-</div>
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
 [% END %]
 </ul>
 <p/>
@@ -1175,20 +844,17 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 [%             FOREACH termitem IN facets.provenance ;
                   LAST IF loop.count > 25 ;
  %]
-[% IF facets.provenance.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_provenance_[% database %]_toggle[% idsuffix %]"></span>
-<div id="[% facet_prefix %]_provenance_[% database %][% idsuffix %]">
-[% END %]
+
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').provenancestring.prefix;
     filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>[% IF collection_map.defined(termitem.0) %] <a class="ps-2" title="USB [% msg.maketext("Sammlungsportal") %] [% termitem.0 %]" target="_blank" href="[% collection_map.${termitem.0} %]"><i class="fas fa-archway"></i></a>[% END %] <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+<li class="ob-facet-item" [% IF facets.provenance.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>[% IF collection_map.defined(termitem.0) %] <a class="ps-2 pe-2" title="USB [% msg.maketext("Sammlungsportal") %] [% termitem.0 %]" target="_blank" href="[% collection_map.${termitem.0} %]"><i class="fas fa-archway"></i></a>[% END %] <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
 [%             END %]
 [% IF facets.provenance.size > 5 %]
-<span id="[% facet_prefix %]_provenance_[% database %]_revtoggle[% idsuffix %]"></span>
-</div>
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
 [% END %]
 </ul>
 <p/>
@@ -1203,20 +869,17 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 [%             FOREACH termitem IN facets.tag ;
                   LAST IF loop.count > 25 ;
  %]
-[% IF facets.tag.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_tags_[% database %]_toggle[% idsuffix %]"></span>
-<div id="[% facet_prefix %]_tags_[% database %][% idsuffix %]">
-[% END %]
+
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').tagstring.prefix;
     filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+<li class="ob-facet-item" [% IF facets.tag.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
 [%             END %]
 [% IF facets.tag.size > 5 %]
-<span id="[% facet_prefix %]_tags_[% database %]_revtoggle[% idsuffix %]"></span>
-</div>
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
 [% END %]
 </ul>
 <p/>
@@ -1231,20 +894,17 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 [%             FOREACH termitem IN facets.litlist ;
                   LAST IF loop.count > 25 ;
  %]
-[% IF facets.litlist.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_litlists_[% database %]_toggle[% idsuffix %]"></span>
-<div id="[% facet_prefix %]_litlists_[% database %][% idsuffix %]">
-[% END %]
+
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').litliststring.prefix;
     filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% searchterm |uri %][% END %]">[% termitem.0 %]</a>  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+<li class="ob-facet-item" [% IF facets.litlist.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% searchterm |uri %][% END %]">[% termitem.0 %]</a>  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
 [%             END %]
 [% IF facets.litlist.size > 5 %]
-<span id="[% facet_prefix %]_litlists_[% database %]_revtoggle[% idsuffix %]"></span>
-</div>
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
 [% END %]
 </ul>
 <p/>
@@ -1260,20 +920,17 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 [%             FOREACH termitem IN facets.person ;
                   LAST IF loop.count > 25 ;
 %]
-[% IF facets.person.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_person_[% database %]_toggle[% idsuffix %]"></span>
-<div id="[% facet_prefix %]_person_[% database %][% idsuffix %]">
-[% END %]
+
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').personstring.prefix;
     filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+<li class="ob-facet-item" [% IF facets.person.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
 [%             END %]
 [% IF facets.person.size > 5 %]
-<span id="[% facet_prefix %]_person_[% database %]_revtoggle[% idsuffix %]"></span>
-</div>
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
 [% END %]
 </ul>
 <p/>
@@ -1289,10 +946,7 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 [%             FOREACH termitem IN facets.language ;
                   LAST IF loop.count > 25 ;
  %]
-[% IF facets.language.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_language_[% database %]_toggle[% idsuffix %]"></span>
-<div id="[% facet_prefix %]_language_[% database %][% idsuffix %]">
-[% END %]
+
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').languagestring.prefix;
@@ -1364,11 +1018,11 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
     sprstring = spr.join(';');
 
 -%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% sprstring %]</a>  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+<li class="ob-facet-item" [% IF facets.language.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% sprstring %]</a>  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
 [%             END %]
 [% IF facets.language.size > 5 %]
-<span id="[% facet_prefix %]_language_[% database %]_revtoggle[% idsuffix %]"></span>
-</div>
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
 [% END %]
 </ul>
 <p/>
@@ -1384,20 +1038,17 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 [%             FOREACH termitem IN facets.corporatebody ;
                   LAST IF loop.count > 25 ;
 %]
-[% IF facets.corporatebody.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_corporatebody_[% database %]_toggle[% idsuffix %]"></span>
-<div id="[% facet_prefix %]_corporatebody_[% database %][% idsuffix %]">
-[% END %]
+
 [%-
     searchterm    = termitem.0;
     searchprefix  = config.get('searchfield').corporatebodystring.prefix;
     filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+<li class="ob-facet-item" [% IF facets.corporatebody.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
 [%             END %]
 [% IF facets.corporatebody.size > 5 %]
-<span id="[% facet_prefix %]_corporatebody_[% database %]_revtoggle[% idsuffix %]"></span>
-</div>
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
 [% END %]
 </ul>
 <p/>

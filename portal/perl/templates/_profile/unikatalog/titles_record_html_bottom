@@ -37,11 +37,11 @@
 
 <div class="tab-content pt-3">
 [% IF circulation.size > 0 %]
-<div role="tabpanel" class="tab-pane fade-in active" id="ob-circulation_info"><!-- Begin Circulation -->
+<div role="tabpanel" class="tab-pane fade-in active pb-3" id="ob-circulation_info"><!-- Begin Circulation -->
 [% PROCESS common/subtemplate name="circulation" %]
 </div><!-- End Circulation -->
 [% ELSIF holding.size > 0 %]
-<div role="tabpanel" class="tab-pane fade-in active" id="ob-holding_info"><!-- Begin Bestand -->
+<div role="tabpanel" class="tab-pane fade-in active pb-3" id="ob-holding_info"><!-- Begin Bestand -->
 [% PROCESS common/subtemplate name="holding" %]
 </div><!-- End Bestand -->
 [% END %]
@@ -57,14 +57,14 @@ $(document).ready(function(){
 });
 </script>
 
-<div role="tabpanel" class="tab-pane fade" id="ob-journaltocs"><!-- Begin Journaltocs -->
+<div role="tabpanel" class="tab-pane fade pb-3" id="ob-journaltocs"><!-- Begin Journaltocs -->
 [% msg.maketext("F&uuml;r die letzten in dieser Zeitschrift ver&ouml;ffentlichten Artikel bieten wir eine eine [_1]&Uuml;bersicht[_2] an.","<a href=\"${path_prefix}/${config.get('info_loc')}/journaltocs?id=${journaltocs_feed}\">","</a>") %]
 </div><!-- End Journaltocs -->
 [% END %]
 <!-- Begin: Reviews -->
 [% IF config.get('reviews') %]
 
-<div role="tabpanel" class="tab-pane fade" id="ob-reviews"><!-- Begin: Reviews -->
+<div role="tabpanel" class="tab-pane fade pb-3" id="ob-reviews"><!-- Begin: Reviews -->
 
 [% IF   username %]
 
@@ -157,11 +157,11 @@ href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method
 
 <!-- End: Reviews -->
 
-<div role="tabpanel" class="tab-pane fade" id="ob-same_records"><!-- Begin: Same records -->
+<div role="tabpanel" class="tab-pane fade pb-3" id="ob-same_records"><!-- Begin: Same records -->
    <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/same_records.html?l=[% lang %]">Titel in anderen Katalogen anzeigen?</a>
 </div><!-- End: Same Records -->
 
-<div role="tabpanel" class="tab-pane fade" id="ob-similar_records"><!-- Begin: Similar records -->
+<div role="tabpanel" class="tab-pane fade pb-3" id="ob-similar_records"><!-- Begin: Similar records -->
    <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/similar_records.html?l=[% lang %]">Titel in anderen Ausgaben anzeigen?</a>
 </div><!-- End: Similar Records -->
 

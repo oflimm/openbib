@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 [%-# Ausgabekategorien -%]
-[%- categories = [
+[%- supplemental_categories = [
                 'T0590', # msg.maketext("T0590") HSTQuelle
                 'T0585', # msg.maketext("T0585") ISSN der Quelle
 #                'T0600', # msg.maketext("T0600") Bemerkung

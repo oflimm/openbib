@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 [%-# Ausgabekategorien -%]
-[%- categories = [
+[%- supplemental_categories = [
                 'T0508', # msg.maketext("T0508") Quelle
                 'T0433', # msg.maketext("T0433") Kollation
                 'T0334', # msg.maketext("T0334") Material

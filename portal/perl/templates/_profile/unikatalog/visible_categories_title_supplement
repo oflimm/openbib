@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 [%-# Ausgabekategorien -%]
-[%- categories = [
+[%- supplemental_categories = [
                 'T0435', # msg.maketext("T0435") Format
                 'T0359', # msg.maketext("T0359") Vorl. Verfasser/Koerperschaft
                 'T0670', # msg.maketext("T0670") Sachtitel in abweichender Orthographie

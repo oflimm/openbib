@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: search_showtitset_categories
+# Templatename: titles_record_html_categories
 #
 # Typ         : Subtemplate
 #
@@ -32,6 +32,20 @@
 
 [%# USE dumper;dumper.dump(categories)%]
 [%# USE dumper;dumper.dump(normdata)%]
+
+<script>
+$(document).on("click", ".more-button", function () {
+const supplemental_collection = document.getElementsByClassName("ob-field_supplemental");
+Array.prototype.forEach.call(supplemental_collection, function(element) {
+  $(element.tagName).prop("hidden", false);
+});
+$(this).prop("hidden", true)
+
+const wikipedia_articles = document.getElementById("ob-title_wikipedia_articles");
+$(wikipedia_articles).prop("hidden", false)
+
+});
+</script>
 
 <div class="table-responsive">
 <table class="table table-striped table-hover ob-title_fields">
@@ -875,7 +889,84 @@ END;
 [%- IF currently_unavailable -%]
 <tr><th class="ob-field">[% msg.maketext("Volltext")%]</th><td>derzeit nicht verf&uuml;gbar (z.B. noch im Erwerbungsvorgang)</td></tr>
 [%- END -%]
+
+[%-
+
+  show_more = 0;
+
+  IF normdata.${"E4200"} || normdata.${"E4201"} || normdata.${"E4202"} ;
+    show_more = 1;
+  END;
+  
+  FOREACH category IN supplemental_categories;
+
+   # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+   # in Config.pm fuer die entsprechende Datenbank definiert
+   # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+   # kodiert.
+   thiscategory = category ;
+   IF config.get('categorymapping').${record.database}.$category ;
+     thiscategory = "${category}-${record.database}" ;
+   END;
+
+   IF content_map.${category}.first;
+      IF display_types.${category} == 'list' ;
+        IF content_map.${category}.size > 1 ;
+          content = "<ul>";
+          FOREACH thiscontent IN content_map.${category};
+	    content="${content}<li>${thiscontent}</li>";
+	  END;
+	  content = "${content}</ul>";
+	ELSE ;
+	  content = content_map.${category}.first;
+	END;
+      ELSE ;
+        content = content_map.${category}.join(' ; ');
+      END;
+
+      # Titel hervorheben
+      IF category == "T0331";
+        content = "<span class=\"ob-title\">${content}</span>";
+      END;
+
+      show_more = 1;
+-%]
+<tr class="ob-field_supplemental" hidden><th class="ob-field">[% msg.maketext("${thiscategory}") %]</th><td>[% content %]</td></tr>
+[%
+   END;
+END;
+-%]
+[% IF show_more %]
+<tr class="ob-field more-button"><th colspan="2"><a href="#" class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></a></i></th></tr>
+[% END %]
 </table>
+
+[%- IF normdata.${"E4200"} || normdata.${"E4201"} || normdata.${"E4202"} %]
+<div id="ob-title_wikipedia_articles" class="ob-title_wikipedia_articles" hidden>
+<p><i class="fab fa-wikipedia-w"></i> [% msg.maketext("Dieses Buch ist in Wikipedia erw&auml;hnt unter") %]:</p>
+<p class="wikipediamashup">
+[%-   IF normdata.${"E4200"} %]
+[%-     FOREACH item IN normdata.${"E4200"}-%]
+[%        redirect_url = "http://de.wikipedia.org/wiki/${item.content}" %]
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape(redirect_url) %]" class="ext" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
+[%-     END -%]
+[%-   END %]
+[%-   IF normdata.${"E4201"} %]
+[%-     FOREACH item IN normdata.${"E4201"}-%]
+[%        redirect_url = "http://en.wikipedia.org/wiki/${item.content}" %]
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape(redirect_url) %]" class="ext" title="[% msg.maketext("Englische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
+[%-     END -%]
+[%-   END %]
+[%-   IF normdata.${"E4202"} %]
+[%-     FOREACH item IN normdata.${"E4202"}-%]
+[%        redirect_url = "http://fr.wikipedia.org/wiki/${item.content}" %]
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape(redirect_url) %]" class="ext" title="[% msg.maketext("Franz&ouml;sische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
+[%-     END -%]
+[%-   END -%]
+</p>
+</div>
+[% END %]
+
 </div>
 [%# USE dumper;dumper.dump(content_map) %]
 [% ELSIF format == "BibTeX" %]

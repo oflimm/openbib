@@ -1014,7 +1014,8 @@
 	border: none;
 	border-bottom: 1px solid #fff;
     }
-  */  
+*/
+    
     .ob-cloud {
 	font-size: 150%;
     }
@@ -1452,7 +1453,11 @@
     .ob-jump_top a {
 	color: #fff;
     }
-    
+
+    .ob-field.more-button th {
+	font-size: 1.2em;
+    }
+
     .ob-fixed_bottom {
 	position: fixed;
 	

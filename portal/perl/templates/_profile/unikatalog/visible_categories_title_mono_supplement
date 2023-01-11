@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 [%-# Ausgabekategorien -%]
-[%- categories = [
+[%- supplemental_categories = [
                 'T0435', # msg.maketext("T0435") Format
                 'T0405', # msg.maketext("T0405") Erscheinungsverlauf
                 'T0523', # msg.maketext("T0523") Erscheinungsweise

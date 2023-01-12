@@ -15,7 +15,7 @@
 <h2>[% msg.maketext("Personendaten") %]</h2>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 [% IF userinfo.nachname %]
 <tr><th>[% msg.maketext("Nachname") %]</th><td align="left">&nbsp;[% userinfo.nachname %]</td></tr>
 [% END %] 
@@ -51,7 +51,7 @@
 <h3>[% msg.maketext("Einstellungen") %]</h3>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 
 [% roles_of_user = user.get_roles_of_user(userinfo.id) %]
 <tr>

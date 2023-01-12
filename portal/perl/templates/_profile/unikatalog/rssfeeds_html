@@ -28,7 +28,7 @@ dieser Seite aus und kopieren ihn in Ihr RSS-Leseprogramm.") %]
 
 [%          FOREACH thisitem IN rssfeedinfo.${category.description} %]
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 [%             IF thisitem.type == 'neuzugang' %]
 <tr><td><a
 href="http://[% servername %][% path_prefix %]/[% config.get('databases_loc') %]/id/[% thisitem.pool %]/[% config.get('titles_loc') %]/recent.rss?l=[% lang %]" target="_blank">[% thisitem.pooldesc %]</a></td></tr>
@@ -56,7 +56,7 @@ href="http://[% servername %][% path_prefix %]/[% config.get('databases_loc') %]
 [%     ELSE %]
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 [%       FOREACH thisitem IN rssfeedinfo.${category.description} %]
 
 [%# USE dumper;dumper.dump(thisitem)%]

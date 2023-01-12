@@ -84,7 +84,7 @@
 <h3>[% msg.maketext("Bereits existierende Rechner zur Lastverteilung") %]</h3>
 
 <div class="table-responsive text-nowrap">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <thead>
 <tr><th scope="col">[% msg.maketext("Id") %]</th><th scope="col">[% msg.maketext("IP-Adresse") %]</th><th scope="col">[% msg.maketext("Info") %]</th><th scope="col">[% msg.maketext("Beschreibung") %]</th><th scope="col">[% msg.maketext("Status") %]</th><th scope="col">[% msg.maketext("Cluster") %]</th><th scope="col">[% msg.maketext("Aktiv") %]</th><th scope="col"></th><th scope="col"></th><th scope="col"></th></tr>
 </thead>

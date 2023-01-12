@@ -43,7 +43,7 @@
 
 <div class="form-floating mb-3">
 <div class="table-responsive text-nowrap">
-<table id="rights" class="table table-striped table-hover">
+<table id="rights" class="table table-striped ">
 <thead>
 <tr><th>Gültigkeitsbereich</th><th>Erzeugen</th><th>Lesen</th><th>Ändern</th><th>Löschen</th></tr>
 </thead>

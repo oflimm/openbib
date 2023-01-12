@@ -21,7 +21,7 @@
 <h3>[% msg.maketext("Aufrufe externer Seiten &uuml;ber Weiterleitungen aus OpenBib") %]</h3>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <tr><th>[% msg.maketext("Anzahl Aufrufe von Nationallizenzen") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 503, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) %][% ret.number %]</b></td></tr>
 <tr><th>[% msg.maketext("Anzahl Aufrufe von E-Books / USB Koeln") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 502, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) %][% ret.number %]</b></td></tr>
 <tr><th>[% msg.maketext("Anzahl Aufrufe von E-Books / Gutenberg") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 504, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) %][% ret.number %]</b></td></tr>

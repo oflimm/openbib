@@ -84,7 +84,7 @@
 <h3>[% msg.maketext("Bereits existierende Kataloge") %]: [% config.get_number_of_dbs %]</h3>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <thead>
 <tr><th>[% msg.maketext("DB-Name") %]</th><th>[% msg.maketext("Info") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("Auto-Konv") %]</th><th>[% msg.maketext("Titel-Anzahl") %]</th></tr>
 </thead>

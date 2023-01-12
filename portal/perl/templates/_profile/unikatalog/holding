@@ -119,7 +119,7 @@ END;
 </div>
 [% ELSIF record_exists %]
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <thead>
 <tr align="center"><th>[% msg.maketext("Bibliothek") %]</th><th>QR-Code</th></tr>
 </thead>

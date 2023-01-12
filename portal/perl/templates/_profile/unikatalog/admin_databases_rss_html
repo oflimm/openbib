@@ -93,7 +93,7 @@ END ;
 <h3>[% msg.maketext("Bereits existierende RSS-Feeds") %]</h3>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <thead>
 <tr>
 <th>Id</th><th>[% msg.maketext("Art des Feeds") %]</th><!-- <td>Unter-Art</td><td>Beschreibung Unter-Art</td> --><th>[% msg.maketext("Aktiv") %]</th>

@@ -70,7 +70,7 @@
 <h3>[% msg.maketext("Bereits existierende Standorte") %]: [% config.get_number_of_locations %]</h3>
 [%# USE dumper;dumper.dump(locations)%]
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <thead>
 <tr><th>[% msg.maketext("Identifier") %]</th><th>[% msg.maketext("Typ") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("Kurzbeschreibung") %]</th></tr>
 </thead>

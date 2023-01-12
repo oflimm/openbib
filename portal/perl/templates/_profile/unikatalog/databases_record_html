@@ -15,7 +15,7 @@
 <h3>[% msg.maketext("Katalog") %]</h3>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td>[% databaseinfo.dbname %]</td></tr>
 <tr><td><b>[% msg.maketext("Beschreibung") %]</b></td><td>[% databaseinfo.description %]</td></tr>
 <tr><td><b>[% msg.maketext("Kurzbeschreibung") %]</b></td><td>[% databaseinfo.shortdesc %]</td></tr>

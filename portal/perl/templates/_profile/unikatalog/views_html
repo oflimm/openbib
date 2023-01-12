@@ -16,7 +16,7 @@
 <h3>[% msg.maketext("Views") %]</h3>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <thead>
 <tr><th>[% msg.maketext("Viewname") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("Profil") %]</th><th>[% msg.maketext("Datenbanken") %]</th><th>[% msg.maketext("Aktiv") %]</th></tr>
 </thead>

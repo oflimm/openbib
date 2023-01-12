@@ -69,7 +69,7 @@
 <h3>[% msg.maketext("Bereits existierende Literaturlisten") %]</h3>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <thead>
 <tr><th>[% msg.maketext("Titel der Literaturliste") %]</th><th>[% msg.maketext("Titelzahl") %]</th><th>[% msg.maketext("Sichtbarkeit") %]</th><th>[% msg.maketext("Themengebiete") %]</th><th>[% msg.maketext("Angelegt") %]</th><th></th></tr>
 </thead>

@@ -20,7 +20,7 @@
 <h3>[% msg.maketext("Allgemeine Informationen") %]</h3>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <tr><td><b>[% msg.maketext("Session") %]</b></td><td>[% thissession.id %]</td></tr>
 <tr><td><b>[% msg.maketext("Seit") %]</b></td><td>[% thissession.createtime %]</td></tr>
 <tr><td><b>[% msg.maketext("Anzahl Recherchen") %]</b></td><td>[% queries.size %]</td></tr>
@@ -33,7 +33,7 @@
 
 [%# USE dumper;dumper.dump(events)%]
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <thead>
 <tr><th>[% msg.maketext("Timestamp") %]</th><th>[% msg.maketext("Event") %]</th><th>[% msg.maketext("Inhalt") %]</th></th><th></th></tr>
 </thead>

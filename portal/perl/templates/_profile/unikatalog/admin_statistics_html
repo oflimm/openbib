@@ -17,7 +17,7 @@
 <h3>[% msg.maketext("Allgemeine Statistikdaten") %]</h3>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <tr><th>[% msg.maketext("Anzahl der Titels&auml;tze (Alle/Zeitschriften-Serien/Artikel/Online)") %]</th><td><b>[%- titcount = config.get_number_of_titles -%][% titcount.allcount %] / [% titcount.journalcount %] / [% titcount.articlecount %] / [% titcount.digitalcount %]</b></td><td></td></tr>
 <tr><th>[% msg.maketext("Anzahl der Kataloge (aktiv/gesamt)") %]</th><td><b>[% config.get_number_of_dbs %] / [% config.get_number_of_all_dbs %]</b></td><td></td></tr>
 <tr><th>[% msg.maketext("Anzahl der Spezialsichten (aktiv/gesamt)") %]</th><td><b>[% config.get_number_of_views %] / [% config.get_number_of_all_views %]</b></td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="[% config.get_icon('chart',view,sysprofile) %]" alt="Diagramm" />&nbsp;<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/view/session/graph.html">[% msg.maketext("Grafik") %]</a></td></tr>

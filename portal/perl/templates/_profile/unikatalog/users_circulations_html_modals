@@ -10,7 +10,7 @@
       <div class="modal-body" id="address">
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <tbody>
 <tr><th>[% msg.maketext("Anrede") %]</th><td>[% userdata.salutation %]</td></tr>
 <tr><th>[% msg.maketext("Name") %]</th><td>[% userdata.fullname %]</td></tr>

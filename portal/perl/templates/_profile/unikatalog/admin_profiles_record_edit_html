@@ -89,7 +89,7 @@
 <h3>[% msg.maketext("Bereits existierende Organisationseinheiten") %]</h3>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <thead>
 <tr><td><b>[% msg.maketext("Name") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>Nr</b></td><td><b>[% msg.maketext("Kataloge") %]</b></td><td></td></tr>
 </thead>

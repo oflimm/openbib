@@ -18,7 +18,7 @@
 <h3>[% msg.maketext("Anmeldeziele") %]</h3>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <thead>
 <tr><th>Id</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("Typ") %]</th></tr>
 </thead>

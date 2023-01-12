@@ -29,7 +29,7 @@
 <h4>[% msg.maketext("Index-Eintrag (Normdaten)") %]</h4>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover ob-normdata_fields">
+<table class="table table-striped ob-normdata_fields">
 
 [% PROCESS common/subtemplate name="visible_categories_subject" %]
 
@@ -82,7 +82,7 @@ END;
 <h4>[% msg.maketext("Weiterführende Links") %]</h4>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover ob-normdata_fields">
+<table class="table table-striped ob-normdata_fields">
 <!--
 [%-
 

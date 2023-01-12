@@ -1078,13 +1078,13 @@ sub print_page {
         }
         
         $template->process($templatename, $ttdata) || do {
-            $logger->fatal($template->error());
+            $logger->fatal($template->error()." url: $url");
             return "Fehler";
         };
     };
 
     if ($@){
-        $logger->fatal($@);
+        $logger->fatal($@." url: $url");
     }
 
 

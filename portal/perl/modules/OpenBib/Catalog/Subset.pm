@@ -512,7 +512,7 @@ sub get_title_hierarchy {
         $logger->info("### Ueberordnungen - neuer Durchlauf in Ebene $level");
         
         if ($level > 20){
-            print "### Ueberordnungen - Abbbruch ! Ebene $level erreicht\n";
+            print "### Ueberordnungen - Abbbruch ! Ebene $level erreicht fuer Titel ".join(";",keys %tmp_titleid_super)."\n";
             last;
         }    
         

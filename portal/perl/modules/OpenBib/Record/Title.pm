@@ -1361,7 +1361,7 @@ sub enrich_same_records {
             my $location   = $item->{location};
             my $titlecache = $item->{titlecache};
 
-            next if (defined $have_title_ref->{"$database:$id:$location"});
+            next if (defined $have_title_ref->{"$database:$id"});
 
 	    my $new_record;
 
@@ -1375,7 +1375,7 @@ sub enrich_same_records {
 	    $new_record->set_locations([$location]);
 	    $same_recordlist->add($new_record);
 
-            $have_title_ref->{"$database:$id:$location"} = 1;
+            $have_title_ref->{"$database:$id"} = 1;
         }
         
         if ($config->{benchmark}) {

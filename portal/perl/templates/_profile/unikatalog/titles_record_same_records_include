@@ -8,9 +8,16 @@
 <p class="alert-info p-1">[% msg.maketext("Titel mit der ISBN dieses Titels sind auch in folgenden anderen Katalogen vorhanden") %]:</p>
 
 <ul class="list-group">
-[% FOREACH same_record IN same_records.get_records %]
+[%
+   same_records_done = {};
+   
+   FOREACH same_record IN same_records.get_records ;
+    same_records_matchkey = "${same_record.database}:${same_record.id}";
+    NEXT IF same_records_done.defined(same_records_matchkey);
+    same_records_done.${same_records_matchkey} = 1;
+%]
 [% same_url = "${path_prefix}/${config.get('databases_loc')}/id/${same_record.database}/${config.get('titles_loc')}/id/${same_record.get_encoded_id}.html" %]
-<li class="list-group-item"><a href="[% same_url %]">[% dbinfo.get('dbnames').${same_record.database}.short %]</a></li>
+<li class="list-group-item"><i class="fas fa-database pe-2"></i><a href="[% same_url %]">[% dbinfo.get('dbnames').${same_record.database}.short %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

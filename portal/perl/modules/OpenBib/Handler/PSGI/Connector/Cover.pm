@@ -101,7 +101,7 @@ sub process_vlb {
         $logger->debug("ISBN von ID $id: ".YAML::Dump($isbn));
     }
 
-    my $redirect_url = "/images/openbib/no_img.png";
+    my $redirect_url = "/images/openbib/no_cover.png";
 
     my $api_config_ref = $config->{'covers'}{'vlb'};
 

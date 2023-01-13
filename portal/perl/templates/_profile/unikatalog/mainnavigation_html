@@ -46,7 +46,15 @@
 <!--
 -->
 
-[%- username = user.get_username -%]
+[%-
+   username = user.get_username
+
+   session_sort = "";
+   IF qopts.get_option('srt') && NOT qopts.get_option('srt').match('_') && qopts.get_option('srto') ;
+     session_sort = "${qopts.get_option('srt')}_${qopts.get_option('srto')}";
+   END;
+
+-%]
     <!-- begin: main navigation  -->
 
 <!-- Targs: [% USE dumper; dumper.dump(layout_param) %] -->
@@ -305,7 +313,7 @@
 <input type="hidden" name="page"       value="1" />
 <input type="hidden" name="l"          value="[% lang %]" />
 
-<input type="hidden" name="srt"        value="relevance_desc" />
+<input type="hidden" name="srt"        value="[% IF session_sort && session_sort.match('^[a-z]+_[a-z]+') %][% session_sort %][% ELSE %]relevance_desc[% END %]" />
 <input type="hidden" name="st"         value="1" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
 

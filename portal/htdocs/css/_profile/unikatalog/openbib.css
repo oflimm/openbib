@@ -239,6 +239,10 @@
     #ob-startpage #ob-maincontent .jumbotron {
 	margin-top: 0px;
     }
+
+    #ob-titlist_options a.text-strong {
+	font-size: 1.1em;
+    }
     
     .ob-nav_description a, .ob-nav_description a:hover {
 	color: #fff;

@@ -1,0 +1,49 @@
+[%-
+
+   records = [];
+
+   FOREACH record IN classifications ;
+
+      thisrecord = {
+           link = {
+                    rel = 'self'
+                    href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/ezb/${config.get('classifications_loc')}/id/${record.name}.json"
+           }
+           id       = record.name
+           database = {
+                link = {
+                       rel = 'self'
+                       href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/ezb.json"
+                }
+                id                = 'ezb'
+                description       = dbinfo.get('dbnames').ezb.full
+                description_short = dbinfo.get('dbnames').ezb.short
+           }
+           fields      = {
+	     name  = record.name
+	     desc  = record.desc
+	     count = record.count
+	   }
+      };
+      records.push(thisrecord);
+      
+     END;
+
+     classifications = {
+        link = {
+            rel = 'self'
+            href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/ezb/${config.get('classifications_loc')}.json"
+        }
+
+        meta = {
+	  source = "Elektronische Zeitschriftenbibliothek (EZB) Regensburg"
+	  source_url = "https://ezb.uni-regensburg.de/ezeit/about.phtml?lang=de"
+	}
+
+        records = records
+     
+     };
+     
+     to_json(classifications);
+
+-%]

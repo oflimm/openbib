@@ -745,10 +745,10 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 <!-- End year facet -->
 <!-- Begin classification facet -->
 [%         IF config.get('facets').classification && facets.defined('classification') && facets.classification.size > 0 %]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-classification[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-classification[% idsuffix %]" aria-expanded="false">
            [% msg.maketext("Systematik") %] 
         </h4>
-        <ul id="group-classification[% idsuffix %]" class="list-group in collapse show">
+        <ul id="group-classification[% idsuffix %]" class="list-group in collapse">
 [%             FOREACH termitem IN facets.classification ;
                   LAST IF loop.count > 25 ;
  %]
@@ -1031,10 +1031,10 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 
 <!-- Begin corporatebody facet -->
 [%         IF config.get('facets').corporatebody && facets.defined('corporatebody') && facets.corporatebody.size > 0 %]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-corporatebody[% idsuffix %]" aria-expanded="true">
-           [% msg.maketext("K&ouml;perschaft") %] 
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-corporatebody[% idsuffix %]" aria-expanded="false">
+           [% msg.maketext("Institution") %] 
         </h4>
-        <ul id="group-corporatebody[% idsuffix %]" class="list-group in collapse show">
+        <ul id="group-corporatebody[% idsuffix %]" class="list-group in collapse">
 [%             FOREACH termitem IN facets.corporatebody ;
                   LAST IF loop.count > 25 ;
 %]

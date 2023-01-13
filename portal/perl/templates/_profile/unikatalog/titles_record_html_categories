@@ -52,8 +52,13 @@ $(wikipedia_articles).prop("hidden", false)
 
 [%-
 
-   request_base = config.get('search_defaultparams');
-   request_base = "l=${lang};profile=${current_profile};${request_base}";
+    session_sort = "relevance_desc";
+    IF qopts.get_option('srt') && NOT qopts.get_option('srt').match('_') && qopts.get_option('srto') ;
+      session_sort = "${qopts.get_option('srt')}_${qopts.get_option('srto')}";
+    END;
+
+   request_base = "page=1;num=20;";
+   request_base = "l=${lang};profile=${current_profile};srt=${session_sort};${request_base}";
 
    IF NOT viewdbs ;
        viewdbs = config.get_dbs_of_view(view);

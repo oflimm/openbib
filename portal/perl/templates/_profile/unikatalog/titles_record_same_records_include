@@ -19,7 +19,9 @@
 [% same_url = "${path_prefix}/${config.get('databases_loc')}/id/${same_record.database}/${config.get('titles_loc')}/id/${same_record.get_encoded_id}.html" %]
 <li class="list-group-item"><i class="fas fa-database pe-2"></i><a href="[% same_url %]">[% dbinfo.get('dbnames').${same_record.database}.short %]</a></li>
 [% END %]
-</ol>
+</ul>
+
+
 [% ELSE %]
 <script>
     $("#ob-same_records_li").hide();

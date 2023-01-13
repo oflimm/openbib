@@ -213,6 +213,12 @@ sub get_session_options {
     my $options_ref = {};
     
     my $queryoptions_ref = $self->get_option_definition;
+
+    # Split srt
+    if ($self->get_option("srt") =~m/^([^_]+)_([^_]+)$/){
+	$self->set_option('srt',escape_html($1));
+	$self->set_option('srto',escape_html($2));
+    }
     
     foreach my $option (keys %$queryoptions_ref){
         if ($queryoptions_ref->{$option}->{storage} eq "session"){

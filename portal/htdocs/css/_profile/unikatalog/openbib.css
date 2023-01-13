@@ -243,7 +243,11 @@
     #ob-titlist_options a.text-strong {
 	font-size: 1.1em;
     }
-    
+
+    #dropdownMenuSort:after {
+	display: none;
+	
+    }
     .ob-nav_description a, .ob-nav_description a:hover {
 	color: #fff;
     }

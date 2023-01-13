@@ -17,7 +17,7 @@
 
 <!-- Beginn Result Item -->
 [%-
-    request_base    = "num=${qopts.get_option('num')};srt=relevance_desc;page=1;" ;
+    request_base    = "num=${qopts.get_option('num')};srt=year_desc;page=1;" ;
     start_range     = nav.current_page*qopts.get_option('num')-qopts.get_option('num') + 1;
     end_range       = nav.current_page*qopts.get_option('num');
     IF end_range >= hits ;

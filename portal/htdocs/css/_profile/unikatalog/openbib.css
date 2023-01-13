@@ -273,7 +273,13 @@
 	background-color: #506b86 !important ;
 	border-color: #253746;
     }
-    
+
+    .btn-primary.show  {
+	background-color: #506b86 !important ;
+	border-color: #253746;
+	box-shadow: none;
+    }
+	  
     .noUi-connect {
 	background: #3e566c;	
     }
@@ -1455,7 +1461,7 @@
 	border-radius:50px; 
 	padding-top: 13px;
 	text-align:center;
-	box-shadow: 2px 2px 3px #999;
+	/* box-shadow: 2px 2px 3px #999;*/
     }
 
     .ob-jump_top.active {

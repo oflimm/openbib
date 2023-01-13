@@ -80,7 +80,7 @@
     <!-- Leaflet for OSM CSS -->
     <link rel="stylesheet" href="/js/leaflet-1.7.1/leaflet.css">
 
-  [% css_ver = "20230110" %]
+  [% css_ver = "20230113" %]
 
   [%- TRY -%]
     [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/_profile/$sysprofile/_view/$view/openbib.css" -%]

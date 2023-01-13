@@ -174,7 +174,6 @@
     </div>
     <div class="row pt-1 pb-0">     
       <div class="col collapse d-md-block p-0" id="search_options">
-       Sort [% session_sort %]
          <ul class="list-group flex-row flex-wrap justify-content-center">
 <!--            <li class="list-group-item pe-1" style="border: none" >
        	      [% PROCESS common/subtemplate name="searchforms_record_profile" %]

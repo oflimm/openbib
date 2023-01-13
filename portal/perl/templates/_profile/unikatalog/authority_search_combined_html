@@ -50,13 +50,13 @@
 [% IF spelling_suggestion.resultlist %]
 [%    suggestion = searchquery.get_spelling_suggestion %]
 [%     IF suggestion%]
-[%        msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% path_prefix %]/[% search_loc %]?num=[% escape_html(query.param('num')) %];srt=relevance_desc;st=[% escape_html(query.param('st')) %]fs=[% suggestion %]">[% suggestion %]</b>
+[%        msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% path_prefix %]/[% search_loc %]?num=[% escape_html(query.param('num')) %];srt=year_desc;st=[% escape_html(query.param('st')) %]fs=[% suggestion %]">[% suggestion %]</b>
 [%     END %]
 [% END %]
 
 <!-- Beginn Result Item -->
 [%-
-    request_base    = "num=${queryoptions.get_option('num')};srt=relevance_desc;page=1;" ;
+    request_base    = "num=${queryoptions.get_option('num')};srt=title_asc;page=1;" ;
     start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
     end_range       = nav.current_page*queryoptions.get_option('num');
     IF end_range >= hits ;

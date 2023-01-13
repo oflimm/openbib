@@ -19,7 +19,7 @@
 # END;
  separate_facets = 0 ;
 
- session_sort = "";
+ session_sort = "year_desc";
  IF qopts.get_option('srt') && NOT qopts.get_option('srt').match('_') && qopts.get_option('srto') ;
     session_sort = "${qopts.get_option('srt')}_${qopts.get_option('srto')}";
  END;
@@ -35,7 +35,7 @@
     <input type="hidden" name="page"       value="1" />
     <input type="hidden" name="l"          value="[% lang %]" />
     
-    <input type="hidden" name="srt"        value="[% IF session_sort && session_sort.match('^[a-z]+_[a-z]+') %][% session_sort %][% ELSE %]relevance_desc[% END %]" />
+    <input type="hidden" name="srt"        value="[% session_sort %]" />
     <input type="hidden" name="st"         value="1" />
     <input type="hidden" name="lt"         value="[% qopts.lt %]" />
     <input type="hidden" name="tab"        value="[% current_tab %]" />
@@ -169,14 +169,14 @@ $(document).ready(function(){
 [% IF spelling_suggestion.resultlist %]
 [%    suggestion = searchquery.get_spelling_suggestion %]
 [%     IF suggestion%]
-[%        msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% path_prefix %]/[% search_loc %]?num=[% escape_html(query.param('num')) %];srt=relevance_desc;st=[% escape_html(query.param('st')) %]fs=[% suggestion %]">[% suggestion %]</b>
+[%        msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% path_prefix %]/[% search_loc %]?num=[% escape_html(query.param('num')) %];srt=year_desc;st=[% escape_html(query.param('st')) %]fs=[% suggestion %]">[% suggestion %]</b>
 [%     END %]
 [% END %]
 
 [% IF hits > 0 %]
 <!-- Beginn Result Item -->
 [%-
-    request_base    = "num=${queryoptions.get_option('num')};profile=${current_profile};srt=relevance_desc;page=1;" ;
+    request_base    = "num=${queryoptions.get_option('num')};profile=${current_profile};srt=${session_sort};page=1;" ;
     start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
     end_range       = nav.current_page*queryoptions.get_option('num');
     IF end_range >= hits ;

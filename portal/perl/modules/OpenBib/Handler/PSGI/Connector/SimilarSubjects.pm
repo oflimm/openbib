@@ -150,52 +150,99 @@ sub show {
     if ($type eq "tit" && $id){
         $logger->debug("Getting similar Subject Headings for Titleid $id");
 
-	my $sql_statement = << 'SQL';
-select title_subject.subjectid as thisid, content, count(*) as thiscount from title_subject
-INNER JOIN subject_fields ON title_subject.subjectid = subject_fields.subjectid
-where subject_fields.field = 800 and title_subject.subjectid IN
-(select distinct c2.subjectid
-from title_subject as c1
-left join title_subject as c2
-on c1.titleid=c2.titleid
-where c1.subjectid IN (select distinct subjectid from title_subject where titleid = ?) and
-c2.subjectid not in (select distinct subjectid from title_subject where titleid = ?))
-group by title_subject.subjectid, content
-having count(*) < 100
-order by count(*) DESC
-limit 15;
-SQL
-        my $request = $dbh->prepare($sql_statement);
-	
-	$request->execute($id,$id);
+        my $request = $dbh->prepare("select distinct subjectid as id from title_subject where titleid=?");
+        $request->execute($id);
 
-	while (my $result=$request->fetchrow_hashref){
-	    my $similarid       = $result->{thisid};
-	    my $similartitcount = $result->{thiscount};
-	    
-	    my $content = $result->{content};
-                    
-	    push @{$similar_subjects_ref}, {
-		id      => $similarid,
-		item    => $content,
-		count => $similartitcount,
-	    };            
+        my @swtids=();
+        my $swtid_lookup_ref = {}; 
+        while (my $result=$request->fetchrow_hashref){
+            $swtid_lookup_ref->{$result->{id}}=1;
+            push @swtids, $result->{id};
+        }
+
+        my %similar_done = ();
+        foreach my $swtid (@swtids){
             
+            my $titcount = OpenBib::Record::Subject->new({database=>$database, id => $swtid})->get_number_of_titles;
+
+            # Nur 'praezisere' Schlagworte werden analysiert
+            if ($titcount < 100){
+                #$request = $dbh->prepare("select distinct targetid as id from conn where sourcetype=1 and targettype=4 and targetid != ? and sourceid in (select sourceid from conn where sourcetype=1 and targettype=4 and targetid = ?)");
+                $request = $dbh->prepare("select distinct c2.subjectid as id, count(c2.titleid) as titcount from title_subject as c1 left join title_subject as c2 on c1.titleid=c2.titleid where c1.subjectid=? and c2.subjectid != ? group by c2.titleid,c2.subjectid");
+                $request->execute($swtid,$swtid);
+                
+                while (my $result=$request->fetchrow_hashref){
+                    my $similarid       = $result->{id};
+                    my $similartitcount = $result->{titcount};
+                    #my $similartitcount = OpenBib::Record::Subject->new({database=>$database, id => $similarid})->get_number_of_titles;
+                    
+                    # Wenn das zu einem Schlagwort benachbarte Schlagwort schon im
+                    # aktuellen Titel enthalten ist, dann ignorieren
+                    next if (exists $swtid_lookup_ref->{$similarid});
+                    
+                    # Counts bzgl verschiedener Schlagworte des aktuellen Titels werden alle gezaehlt
+                    if (!exists $tit_swt_count_ref->{$similarid}){
+                        $tit_swt_count_ref->{$similarid}=$similartitcount;
+                    }
+                    else {
+                        $tit_swt_count_ref->{$similarid}+=$similartitcount;
+                    }
+                    
+                    # Jetzt wurde gezaehlt, aber ein Eintrag muss nicht angelegt werden.
+                    if (exists $similar_done{$similarid}){
+                        next;
+                    }
+                    else {
+                        $similar_done{$similarid}=1;
+                    }
+                    
+                    my $record=OpenBib::Record::Subject->new({database=>$database});
+                    $record->load_name({dbh => $dbh, id=>$similarid});
+                    my $content=$record->name_as_string;
+                    
+                    push @{$similar_subjects_ref}, {
+                        id      => $similarid,
+                        item    => $content,
+                        #                    count   => $count,
+                    };            
+                }
+            }
+            
+            foreach my $single_subject_ref (@{$similar_subjects_ref}){
+                my $count=$tit_swt_count_ref->{$single_subject_ref->{id}}/2;
+                
+                $single_subject_ref->{count} = $count;
+                
+                if ($maxcount < $count){
+                    $maxcount = $count;
+                }
+                
+                if ($mincount > $count){
+                    $mincount = $count;
+                }
+            }
         }
     }
-    
-    my $sorted_similar_subjects_ref = OpenBib::Common::Util::gen_cloud_class({
+
+    $similar_subjects_ref = OpenBib::Common::Util::gen_cloud_class({
         items => $similar_subjects_ref, 
-        max   => $similar_subjects_ref->[0]->{count}, 
-        min   => $similar_subjects_ref->[-1]->{count}, 
+        min   => $mincount, 
+        max   => $maxcount, 
         type  => 'log'});
     
+    my $sorted_similar_subjects_ref ;
+    @{$sorted_similar_subjects_ref} = map { $_->[0] }
+            sort { $a->[1] cmp $b->[1] }
+                map { [$_, $_->{item}] }
+                    @{$similar_subjects_ref};
+
     my $ttdata = {
         record           => OpenBib::Record::Title->new({config => $config}),
         format           => $format,
         similar_subjects => $sorted_similar_subjects_ref,
         database         => $database,
     };
+
     return $self->print_page($config->{tt_connector_similarsubjects_tname},$ttdata);
 }
 

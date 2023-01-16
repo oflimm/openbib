@@ -256,6 +256,7 @@
 
 -%]
 
+<!-- URI Location: [% location %] -->
 <script>
 $(document).ready(function(){
     $("#ob-same_records_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-same_records_loading\" />"); 

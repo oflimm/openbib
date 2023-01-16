@@ -1,6 +1,4 @@
-<div class="ob-reuse_data"><!-- Begin Reuse -->
-
-[%
+[%-
 
   normdata = record.get_fields;
   
@@ -9,7 +7,24 @@
     private_tags        = user.get_private_tags_by_name({ userid => user.ID  }).first;
     private_tags_of_tit = user.get_private_tags_of_tit({ titleid => record.id, dbname => record.database, username => username  });
   END ;
-%]
+
+  all_tags = user.get_all_tags_of_tit({ titleid => record.id, dbname => record.database });
+
+
+  disable_similar_items = 0;
+
+  # Bestimmung anderer relevanter Titel nur mittels lokaler Kataloge moeglich
+  IF dbinfo.get('system').${record.database}.match('Backend');
+    disable_similar_items = 1; 
+  END;
+
+  IF all_tags.size <= 0 && litlists.size <= 0 && disable_similar_items ;
+    disable_discover_sources = 1;
+  END;
+-%]
+
+
+<div class="ob-reuse_data"><!-- Begin Reuse -->
 
   <h5 class="ps-3">[% msg.maketext("Dieser Titel") %]</h5>
 
@@ -174,8 +189,6 @@
 	    <p />
 [%  END %]
 [%
-
-   all_tags = user.get_all_tags_of_tit({ titleid => record.id, dbname => record.database });
 
    IF config.get('social_tagging') ;
 
@@ -391,6 +404,7 @@ END;
 [% END %]
 <!-- Ende Tags -->
 
+[% IF disable_similar_items %]
 <!-- Anfang Verwandte Verfasser -->
 
 <div class="accordion-item"><!-- Begin Verwandte Personen -->
@@ -429,6 +443,7 @@ END;
   </div>
 </div><!-- end: accordion-item -->
 <!-- Ende Verwandte Themen -->
+[% END # disable_similar_items %]
 
   </div><!-- end: accordion_discover_sources -->
 </div><!-- Ende Discover-Sources -->

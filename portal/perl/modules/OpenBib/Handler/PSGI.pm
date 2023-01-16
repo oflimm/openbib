@@ -642,6 +642,7 @@ sub process_uri {
     }
     else {
         $path =~s/^(\/[^\/]+)\/[^\/]+(\/.+)$/$1$2/;
+	$location_uri =~s/^(\/[^\/]+)\/[^\/]+(\/.+)$/$1$2/;
     }
 
     my $suffixes = join '|', keys %{$config->{content_type_map_rev}};
@@ -649,6 +650,9 @@ sub process_uri {
     
     $logger->debug("Suffixes: $suffixes");
     $logger->debug("Scheme: $scheme");
+    $logger->debug("Path: $path");
+    $logger->debug("Location_uri: $location_uri");
+    
 
     my $id;
 
@@ -670,7 +674,7 @@ sub process_uri {
     if ($args){
         $location.="?$args";
     }
-    
+
     $self->param('location',$location);
     $self->param('path_prefix',$path_prefix);
     $self->param('path',$path);
@@ -2045,6 +2049,7 @@ sub tunnel_through_authenticator {
     if ($logger->is_debug){
 	$logger->debug("Tunnelling: path $path - uri $uri - url $url");
 	$logger->debug("Tunnelling to path $path");    	
+	$logger->debug("Tunnelling to path $path_prefix");    	
 	$logger->debug("Tunnelling to base location $location");
     }
 

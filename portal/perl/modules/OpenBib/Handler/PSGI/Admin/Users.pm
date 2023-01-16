@@ -67,7 +67,6 @@ sub setup {
         'show_record_form'          => 'show_record_form',
         'show_search'               => 'show_search',
         'show_search_form'          => 'show_search_form',
-        'create_record'             => 'create_record',
         'update_record'             => 'update_record',
         'delete_record'             => 'delete_record',
         'confirm_delete_record'     => 'confirm_delete_record',
@@ -95,11 +94,8 @@ sub show_collection {
         return $self->print_authorization_error();
     }
 
-    my $viewinfo_ref = $config->get_viewinfo_overview();
-    
     # TT-Data erzeugen
     my $ttdata={
-	views      => $viewinfo_ref,
     };
     
     return $self->print_page($config->{tt_admin_users_tname},$ttdata);
@@ -182,73 +178,6 @@ sub show_record {
     return $self->print_page($config->{tt_admin_users_record_tname},$ttdata);
 }
 
-sub create_record {
-    my $self = shift;
-    
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Dispatched Args
-    my $view           = $self->param('view');
-
-    # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
-
-    # CGI / JSON input
-    my $input_data_ref = $self->parse_valid_input();
-
-    if (!$self->authorization_successful('right_create')){
-        return $self->print_authorization_error();
-    }
-
-    my $username         = $input_data_ref->{username};
-    my $password         = $input_data_ref->{password};
-    my $password_again   = $input_data_ref->{password_again};
-    my $viewid           = $input_data_ref->{viewid};
-
-    unless ($username && $viewid && $password && $password_again){
-	my $code   = -1;
-	my $reason = $msg->maketext("Es wurden nicht alle notwendigen Daten eingegeben");
-	return $self->print_warning($reason,$code);
-    }
-
-    unless ($password eq $password_again){
-	my $code   = -2;
-	my $reason = $msg->maketext("Die beiden eingegebenen Passworte stimmen nicht überein.");
-	return $self->print_warning($reason,$code);
-    }
-    
-    my $authenticator_self_ref = $config->get_authenticator_self;
-    
-    
-    # Wurde dieser Nutzername inzwischen bereits registriert?
-    if ($user->user_exists_in_view({ username => $username, viewid => $viewid, authenticatorid => $authenticator_self_ref->{id} })) {
-	my $code   = -3;
-	my $reason = $msg->maketext("Ein Nutzer mit dieser Kennung existiert bereits im angegebenen Portal.");
-	return $self->print_warning($reason,$code);
-    }
-    
-    # OK, neuer Nutzer -> eintragen
-    my $userid = $user->add({
-	username         => $username,
-	password         => $password,
-	viewid           => $viewid,
-	email            => $username,
-	authenticatorid  => $authenticator_self_ref->{id},
-	       });
-    
-    return $self->redirect("$path_prefix/$config->{admin_loc}/$config->{users_loc}/id/$userid/edit");
-}
-
 sub update_record {
     my $self = shift;
     
@@ -276,16 +205,7 @@ sub update_record {
     if (!$self->authorization_successful('right_update')){
         return $self->print_authorization_error();
     }
-
-    if ($logger->is_debug){
-	$logger->debug("Input Args: ".YAML::Dump($input_data_ref));
-    }
     
-    # Unnecessary args
-    delete $input_data_ref->{password_again};
-    delete $input_data_ref->{roleid};
-    delete $input_data_ref->{username};
-
     if (defined $input_data_ref->{mixed_bag}){
 	my $contentstring = {};
 	
@@ -495,12 +415,12 @@ sub get_input_definition {
             encoding => 'none',
             type     => 'scalar',
         },
-	password => {
+	surname => {
             default  => undef,
             encoding => 'none',
             type     => 'scalar',
         },
-	password_again => {
+	commonname => {
             default  => undef,
             encoding => 'none',
             type     => 'scalar',

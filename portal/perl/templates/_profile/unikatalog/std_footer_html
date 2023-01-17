@@ -29,7 +29,7 @@
  <div class="uzk15__footersection3 usb__footersection2">
   <div class="uzk15__mainwrapper">
    <div class="uzk15__grid_100">
- <h2 class="uzk15__triggerhead">[% msg.maketext("Universitäts- und Stadtbibliothek Köln") %]</h2>
+ <h2 class="uzk15__triggerhead"><a href="https://www.ub.uni-koeln.de/" target="_blank">[% msg.maketext("Universitäts- und Stadtbibliothek Köln") %]</a></h2>
 
     <div class="uzk15__columnlist uzk15__box">
    <h2 class="uzk15__smallerheadlines">[% msg.maketext("Social-Media-Kanäle der Universitäts- und Stadtbibliothek  Köln") %]</h2> 

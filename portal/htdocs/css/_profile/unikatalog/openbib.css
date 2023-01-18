@@ -116,6 +116,10 @@
 
     .ob-item-fulltitle active {
     }
+
+    hr.dropdown-divider {
+	border-bottom-width: 0px;
+    }
     
     /* cloudzoom*/
 
@@ -161,7 +165,8 @@
     }
 
     .col-md-12 {
-	padding-right: 10px;
+/*	padding-right: 10px; */
+	padding-right: 0px;
 	margin-right: 0px;
     }
 
@@ -289,7 +294,8 @@
 
     .ob-bottominfo {
 	padding-top: 20px;
-	padding-right: 10px;
+/*	padding-right: 10px; */
+	padding-right: 0px;
     }
 
     .ob-title_wikipedia_articles {
@@ -1999,10 +2005,12 @@ a.ext {
         padding-left: 0px;
     }
 
+/*    
     .ob-title_record {
-        margin-left: 15px;
+        margin-left: 15px; 
     }
-    
+*/
+	
     .ob-shortlink {
 	margin-left: 60px;
 	margin-right: 60px;
@@ -2028,6 +2036,14 @@ a.ext {
 }
 
 @media only screen and (max-width: 575px) {
+
+    .ob-resultlist {
+	padding-left: 0px;
+	padding-right: 0px;
+			  
+	margin-left: -5px;
+	margin-right: -10px;
+    }
 
     .ob-availability_online {
 	width: auto;

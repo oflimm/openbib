@@ -205,6 +205,9 @@
 </div>
 
 <div class="container pb-5">
+
+[% PROCESS common/subtemplate name="home_alert" %]
+
   <div class="row">
     <div class="col-md-3 ps-3 pe-1 pb-2">
      <a class="text-white" href="[% path_prefix %]/[% config.get('browse_loc') %]/[% config.get('topics_loc') %].html?l=[% lang %]">

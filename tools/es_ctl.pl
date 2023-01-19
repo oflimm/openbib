@@ -234,6 +234,73 @@ sub import {
     }
 }
 
+sub drop_index {
+    if (!$index){
+	$logger->error("Missing arg index");
+	exit;
+    }
+
+    if ($es->indices->exists( index => $index )){
+	my $result = $es->indices->delete( index => $index );
+	$logger->info("Index $index dropped");
+    }
+    else {
+	$logger->info("No such index $index");
+    }
+}
+
+sub drop_alias {
+    if (!$alias){
+	$logger->error("Missing arg alias");
+	exit;
+    }
+
+    my $result = $es->indices->get_alias( name => $alias );
+
+    if (keys %$result){
+	foreach my $oldindex (keys %$result){
+	    my $result = $es->indices->delete_alias(
+		name  => $alias,
+		index => $oldindex,
+		);
+	    $logger->info("Dropping alias $alias for index $oldindex");
+	}
+    }
+    else {
+	$logger->info("No such alias $alias");
+    }
+
+}
+
+sub set_alias {
+    if (!$alias || !$index){
+	$logger->error("Missing args alias or index");
+	exit;
+    }
+
+    drop_alias();
+    
+    my $result = $es->indices->put_alias(
+	    name  => $alias,
+	    index => $index,
+	    ) ;
+}
+
+sub doc_count {
+    if (!$index){
+	$logger->error("Missing arg index");
+	exit;
+    }
+
+    if ($es->indices->exists( index => $index )){
+	my $result = $es->count( index => $index );
+	$logger->info("Doc count for index $index is: ".$result->{count});
+    }
+    else {
+	$logger->info("No such index $index");
+    }
+}
+
 sub print_help {
     print << "ENDHELP";
 es_ctl.pl - Helper for Elasticsearch
@@ -256,11 +323,36 @@ Import index
    --inputfile=...       : Inputfile
    --alias=...           : set alias for index
 
+Drop index
+   --do=drop_index
+   --index=...           : Index
+
+Drop alias
+   --do=drop_alias
+   --alias=...           : Alias
+
+Set alias
+   --do=set_alias
+   --alias=...           : Alias
+   --index=...           : Index
+
+Show document count
+   --do=doc_count
+   --index=...           : Index
+
 e.g:
 
 ./es_ctl.pl --credential="foo:bar" --do=export --outputfile=index.json --index=index_a
 
 ./es_ctl.pl --credential="foo:bar" --do=import --inputfile=index.json --index=index_b --alias=index
+
+./es_ctl.pl --credential="foo:bar" --do=doc_count --index=index_b
+
+./es_ctl.pl --credential="foo:bar" --do=drop_index --index=index_b
+
+./es_ctl.pl --credential="foo:bar" --do=drop_alias --alias=index
+
+./es_ctl.pl --credential="foo:bar" --do=set_alias --alias=index --index=index_a
 
 ENDHELP
     exit;

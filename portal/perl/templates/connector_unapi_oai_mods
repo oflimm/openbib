@@ -160,11 +160,17 @@
                 [%- END %]
                 [%- END %]
                 [%- publisher_list = {} %]
+                [%- IF normdata.${"T0412"} %]
                 [%- FOREACH item IN normdata.${"T0412"} %]
                 [%- value = item.content %]
                 [%- UNLESS publisher_list.$value == 'True' %]
                 [%- publisher_list.$value = 'True' %]
                 <mods:publisher>[% item.content %]</mods:publisher>
+                [%- END %]
+                [%- END %]
+                [%- ELSIF super.fields.${'0412'}%]
+                [%- FOREACH item IN super.fields.${'0412'} %]
+                    <mods:publisher>[% item.content %]</mods:publisher>
                 [%- END %]
                 [%- END %]
                 [%- type_is_set = "false" %]

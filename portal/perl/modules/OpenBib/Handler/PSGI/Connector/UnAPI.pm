@@ -130,7 +130,11 @@ sub show {
                 $personlist = $self->collect_person_data( $record, $database );
                 $corporation_list =
                   $self->collect_corporation_data( $record, $database );
-                $place_list = $self->collect_place_data( $record, $database );
+                $place_list = $self->collect_place_data( $record, $database, 'record' );
+                if (! @{$place_list} ){
+                    $place_list = $self->collect_place_data( $record, $database, 'super' );
+                   
+                }
                 $related_zdb_titles = $self->collect_related_zdb_titles( $record, $database );
                 $uniform_publisher_list =
                   $self->collect_publisher_data( $record, $database );
@@ -329,7 +333,7 @@ sub get_super_title_data {
             $super_title_data = $decoded_super_field->{'fields'}{'0331'}[0]->{content};
          
             if ( rindex( $super_title_data, $non_sort_symbol, 0 ) != -1 ) {
-                $super_title_data =~ s/$non_sort_symbol//;
+                $super_title_data =~ s/¬//;
             }
             my $sub_title_content = $decoded_super_field->{'fields'}->{'0335'}[0]->{content};
             
@@ -984,20 +988,54 @@ sub collect_related_zdb_titles {
 sub collect_place_data {
     my $self       = shift;
     my $record     = shift;
+    my $database        = shift;
+    #mode = record / super
+    my $mode     = shift;
     my $place_list = [];
     my $mult_values = [];
-    if ( length( $record->get_fields->{T7676} )) {
-        $mult_values=$self->get_all_mult_values( $record->get_fields->{T7676} );
+    my $decoded_super_field;
+    # we have to ensure to get the right super record here!!
+    my $has_super_record = $record->get_fields->{T5005};
+
+    if ($mode eq 'super' && $has_super_record ) {
+
+        my $super_field = $record->get_field( { field => "T5005" } )->[0]->{"content"};
+        $super_field =~ s/\\"/"/g;
+        
+        eval { $decoded_super_field = decode_json encode_utf8($super_field); };
+    }
+    
+    my $rda_data;
+    my $place_data;
+    my $place_norm_data;
+    if ($mode eq 'super' && $has_super_record ) {
+        if (length( $decoded_super_field->{fields}->{'7676'})){
+            $rda_data = $decoded_super_field->{'fields'}->{'7676'};
+        }
+            $place_data = $decoded_super_field->{'fields'}->{'0410'};
+            $place_norm_data = $decoded_super_field->{'fields'}->{'0673'};
+        }
+    else {
+        if ( length( $record->get_fields->{T7676} )) {
+            $rda_data = $record->get_fields->{T7676};
+        }
+            $place_data = $record->get_fields->{T0410};
+            $place_norm_data = $record->get_fields->{T0673};
+        }
+    
+
+    if ( length( $rda_data )) {
+        $mult_values=$self->get_all_mult_values( $rda_data );
     } else {
-         $mult_values=$self->get_all_mult_values( $record->get_fields->{T0410} );
+        $mult_values=$self->get_all_mult_values($place_data);
     }
     my $has_rda = 0;
 
     foreach my $mult_value ( @{$mult_values} ) {
         my $currentPlaceObject = {};
-        if ( length( $record->get_fields->{T7676} ) ) {
+        if ( length(  $rda_data ) ) {
             $has_rda = 1;
-            foreach my $place_rda_data ( @{ $record->get_fields->{T7676} } ) {
+            foreach my $place_rda_data ( @{  $rda_data } ) {
                 if ( $place_rda_data->{mult} == $mult_value ) {
                     if ( $place_rda_data->{subfield} eq "g" ) {
                         $currentPlaceObject->{"place_rda"}->{place_name} =
@@ -1021,8 +1059,8 @@ sub collect_place_data {
             }
 
         }
-        if ( length( $record->get_fields->{T0673} && !$has_rda ) ) {
-            foreach my $place ( @{ $record->get_fields->{T0673} } ) {
+        if ( length( $place_norm_data && !$has_rda ) ) {
+            foreach my $place ( @{ $place_norm_data } ) {
                 if ( $place->{mult} == $mult_value ) {
                     $currentPlaceObject->{"place_norm"}->{place_name} =
                       $place->{content};
@@ -1030,8 +1068,8 @@ sub collect_place_data {
             }
         }
         
-        if ( length( $record->get_fields->{T0410} ) && !$has_rda ) {
-            foreach my $place ( @{ $record->get_fields->{T0410} } ) {
+        if ( length( $place_data) && !$has_rda ) {
+            foreach my $place ( @{ $place_data } ) {
                 if ( $place->{mult} == $mult_value ) {
                     if ($place->{content} ne $currentPlaceObject->{"place_norm"} ){
                     $currentPlaceObject->{"place_free"}->{place_name} =
@@ -1041,13 +1079,19 @@ sub collect_place_data {
             }
         }
       
-
+      
         $place_list->[$mult_value] = $currentPlaceObject;
         $has_rda =0
     }
+    
+    if (@{$place_list}){
+        my @filtered_place_list = grep( defined, @{$place_list} );
+        return \@filtered_place_list;
+    }
+    else {
+        return $place_list
+    }
 
-    my @filtered_place_list = grep( defined, @{$place_list} );
-    return \@filtered_place_list;
 }
 
 sub get_all_mult_values {
@@ -1104,7 +1148,7 @@ sub collect_publisher_data {
     my $self   = shift;
     my $record = shift;
     my $mult_values =
-      $self->get_all_mult_values( $record->get_fields->{T7677} );
+    $self->get_all_mult_values( $record->get_fields->{T7677} );
     my $uniform_publisher_list = [];
     foreach my $mult_value ( @{$mult_values} ) {
         my $currentObject = {};
@@ -1143,19 +1187,20 @@ sub generate_name_data {
     my $content_field = shift;
     my $namedata      = {};
     my $displayname   = $content_field;
-    $namedata->{displayname}    = $content_field;
+    $displayname =~ s/¬//;
+    $namedata->{displayname}    = $displayname;
     $namedata->{family_name}    = "";
     $namedata->{given_name}     = "";
     $namedata->{termsOfAddress} = "";
-    if (   index( $content_field, "&lt;" ) != -1
-        || index( $content_field, "<" ) != -1 )
+    if (   index( $displayname, "&lt;" ) != -1
+        || index( $displayname, "<" ) != -1 )
     {
         my @full_name_array = ();
-        if ( index( $content_field, "&lt;" ) ) {
-            @full_name_array = split( "&lt;", $content_field );
+        if ( index( $displayname, "&lt;" ) ) {
+            @full_name_array = split( "&lt;", $displayname );
         }
         else {
-            @full_name_array = split( "<", $content_field );
+            @full_name_array = split( "<", $displayname );
         }
         $displayname = $full_name_array[0];
         $displayname =~ s/^\s+//;

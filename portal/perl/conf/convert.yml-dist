@@ -42,7 +42,7 @@ convtab:
      #'0016': 1        # Standort (in holding vorhanden)
       '0027': 1        # Art des Werkes (V oder Leer = Verfasser, S=Sachtitelwerk, U=Urheberwerk)
      #'0028': 1        # Bandkennzeichen (Leer = Stuecktitel, B = Band, G = Gesamtwerk/Ueberordnung)
-      '0036': 1        # Erscheinungsform
+     #'0036': 1        # Erscheinungsform
       '0038': 1        # Veroeffentlichungsart
       '0042': 1        # Publikationsstatus
       '0150': 1        # HBZ Personen-ID

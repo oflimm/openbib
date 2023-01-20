@@ -108,6 +108,7 @@ sub show {
         my $related_zdb_titles      = [];
         my $date_values            = undef;
         my $main_title_data        = undef;
+        my $super_title            = undef;
         if ($unapiid) {
             my ( $database, $idn, $record );
 
@@ -121,7 +122,8 @@ sub show {
                     { database => $database, id => $idn } )->load_full_record;
                 $main_title_data =
                   $self->get_main_title_data( $record, $database );
-
+                $super_title =
+                  $self->get_super_title_data( $record, $database );
                 $title_list = $self->collect_title_data( $record, $database );
                 $contained_works =
                   $self->collect_contained_works( $record, $database );
@@ -154,6 +156,7 @@ sub show {
             my $ttdata = {
                 record                 => $record,
                 main_title_data        => $main_title_data,
+                super_title            => $super_title,
                 title_list             => $title_list,
                 personlist             => $personlist,
                 corporation_list       => $corporation_list,
@@ -283,9 +286,10 @@ sub get_main_title_data {
     my $record     = shift;
     my $database   = shift;
     my $title_data = {};
+    my $non_sort_symbol = decode_utf8("¬");
     if ( length( $record->get_fields->{T0331} ) ) {
         my $title_content = $record->get_fields->{T0331}[0]->{content};
-        if ( rindex( $title_content, decode_utf8("¬"), 0 ) != -1 ) {
+        if ( rindex( $title_content, $non_sort_symbol, 0 ) != -1 ) {
             ( my $first, my $rest ) = split( ' ', $title_content, 2 );
             $title_data->{"main_title"} = $rest;
             $title_data->{"non_sort"}   = $first;
@@ -296,7 +300,52 @@ sub get_main_title_data {
         }
         return $title_data;
     }
+    if ( $record->get_fields->{T5005} ) {
+        $title_data->{"main_title"} = $self->get_super_title_data( $record, $database );
+        my $volume_info = $record->get_fields->{T0089}[0]->{content};
+        if ($volume_info){
+            $title_data->{"main_title"} =  $title_data->{"main_title"}. " ($volume_info)" ;
+        }
+        return $title_data;
+    }
+
     return undef;
+
+}
+
+sub get_super_title_data {
+    my $self       = shift;
+    my $record     = shift;
+    my $database   = shift;
+    my $super_title_data;
+    my $non_sort_symbol = decode_utf8("¬");
+
+    if ( $record->get_fields->{T5005} ) {
+        my $super_field = $record->get_field( { field => "T5005" } )->[0]->{"content"};
+        $super_field =~ s/\\"/"/g;
+        my $decoded_super_field;
+        
+        eval { $decoded_super_field = decode_json encode_utf8($super_field); };
+            $super_title_data = $decoded_super_field->{'fields'}{'0331'}[0]->{content};
+         
+            if ( rindex( $super_title_data, $non_sort_symbol, 0 ) != -1 ) {
+                $super_title_data =~ s/$non_sort_symbol//;
+            }
+            my $sub_title_content = $decoded_super_field->{'fields'}->{'0335'}[0]->{content};
+            
+            if ($sub_title_content){
+               if ($super_title_data =~ /(\.|\?|\!|\,)$/){
+                    $super_title_data =  $super_title_data . " $sub_title_content";
+                }else {
+                     $super_title_data =  $super_title_data . ". $sub_title_content";                   
+                }
+            }
+            return $super_title_data;
+
+    }
+    return undef;
+
+
 
 }
 
@@ -630,20 +679,17 @@ sub collect_person_data {
     #Personendaten aus der Überordnung ziehen
     if ( scalar @{$persondata} == 0 ) {
 
-#wie kann JSON geparst werden
-#http://localhost:8008/portal/openbib/connector/unapi?id=rheinabt:84411&format=oai_mods
         if ( $record->get_fields->{T5005} ) {
             my $super_field =
               $record->get_field( { field => "T5005" } )->[0]->{"content"};
 
-            #my $decoded = decode_json(encode_utf8($super_field));
             #evtl. ecnode_utf8 rausnehmen
             my $decoded = {};
             $super_field =~ s/\\"/"/g;
             eval { $decoded = decode_json encode_utf8($super_field); };
             if ( $decoded->{"fields"}->{"0100"} ) {
                 my $person_item = {
-                    values => $decoded->{"0100"},
+                    values => $decoded->{"fields"}->{"0100"},
                     field  => "T0100"
                 };
                 push( @{$persondata}, $person_item );

@@ -121,11 +121,6 @@
                 <mods:subTitle>[% item.content %]</mods:subTitle>
                 [%- END %]
             </mods:titleInfo>
-            [%- ELSIF normdata.${"T0089"} && super.fields.${'0331'}.first.content %]
-            <mods:titleInfo>
-                <mods:title>[%- super.fields.${"0331"}.first.content %] / [% normdata.${"T0089"}.first.content %]
-                </mods:title>
-            </mods:titleInfo>
             [%- END %]
             [%- IF title_list && title_list.size %]
             [%-FOREACH title IN title_list %]
@@ -296,12 +291,7 @@
             [%- END %]
             [%- IF all_super %]
             [%- FOREACH super_item IN all_super %]
-            [%- super_data = from_json(super_item.content);
-            super_title = super_data.fields.${'0451'}.first.content;
-            IF super_data.fields.${'0331'}.first.content;
-            super_title = super_data.fields.${'0331'}.first.content;
-            END;
-            %]
+            [%- super_data = from_json(super_item.content);%]
             [%- IF super_data.fields.${'0036'}.first.content =="r" || normdata.${"T0036"} == "s" %]
             <mods:relatedItem type="series">
                 <mods:recordInfo>

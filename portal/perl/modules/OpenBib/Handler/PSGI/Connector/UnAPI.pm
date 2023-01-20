@@ -306,6 +306,9 @@ sub get_main_title_data {
     }
     if ( $record->get_fields->{T5005} ) {
         $title_data->{"main_title"} = $self->get_super_title_data( $record, $database );
+        if (! $title_data->{"main_title"}){
+            return undef;
+        }
         my $volume_info = $record->get_fields->{T0089}[0]->{content};
         if ($volume_info){
             $title_data->{"main_title"} =  $title_data->{"main_title"}. " ($volume_info)" ;
@@ -316,7 +319,7 @@ sub get_main_title_data {
     return undef;
 
 }
-
+# was tun, wenn mehrere Überordnungen vorliegen?
 sub get_super_title_data {
     my $self       = shift;
     my $record     = shift;
@@ -889,6 +892,33 @@ sub collect_corporation_data {
         };
         push( @{$corp_data}, $corp_item );
     }
+
+     if ( scalar @{$corp_data} == 0 ) {
+
+        if ( $record->get_fields->{T5005} ) {
+            my $super_field =
+              $record->get_field( { field => "T5005" } )->[0]->{"content"};
+
+            #evtl. ecnode_utf8 rausnehmen
+            my $decoded = {};
+            $super_field =~ s/\\"/"/g;
+            eval { $decoded = decode_json encode_utf8($super_field); };
+            if ( $decoded->{"fields"}->{"0200"} ) {
+                my $corp_item = {
+                    values => $decoded->{"fields"}->{"0200"},
+                    field  => "T0200"
+                };
+                push( @{$corp_data}, $corp_item );
+            }
+            if ( $decoded->{"fields"}->{"0201"} ) {
+                my $corp_item = {
+                    values => $decoded->{"fields"}->{"0201"},
+                    field  => "T0200"
+                };
+                push( @{$corp_data}, $corp_item );
+            }
+        }
+     }
 
     foreach my $corp_sub_list ( @{$corp_data} ) {
         foreach my $corp ( @{ $corp_sub_list->{values} } ) {

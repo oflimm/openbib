@@ -38,6 +38,9 @@ use YAML;
 
 our ($alias,$credential,$do,$dstindex,$srcindex,$host,$index,$inputfile,$outputfile,$help,$loglevel,$logfile);
 
+# Read credential from env
+$credential =  $ENV{'ES_CTL_CREDENTIAL'} || undef;
+
 &GetOptions("do=s"            => \$do,
 
             "host=s"          => \$host,

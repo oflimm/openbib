@@ -348,15 +348,20 @@ sub drop_alias {
 	exit;
     }
 
-    my $result = $es->indices->get_alias( name => $alias );
+    if ($es->indices->exists_alias( name => $alias )){
 
-    if (keys %$result){
-	foreach my $oldindex (keys %$result){
-	    my $result = $es->indices->delete_alias(
-		name  => $alias,
-		index => $oldindex,
-		);
-	    $logger->info("Dropping alias $alias for index $oldindex");
+	my $result = $es->indices->get_alias( name => $alias );
+	
+	$logger->debug(YAML::Dump($result));
+	
+	if (keys %$result){
+	    foreach my $oldindex (keys %$result){
+		my $result = $es->indices->delete_alias(
+		    name  => $alias,
+		    index => $oldindex,
+		    );
+		$logger->info("Dropping alias $alias for index $oldindex");
+	    }
 	}
     }
     else {
@@ -372,11 +377,14 @@ sub set_alias {
     }
 
     drop_alias();
-    
+
+    $logger->info("Setting alias $alias for index $index");
+
     my $result = $es->indices->put_alias(
 	    name  => $alias,
 	    index => $index,
-	    ) ;
+	) ;
+
 }
 
 sub doc_count {
@@ -452,7 +460,11 @@ e.g:
 
 ./es_ctl.pl --credential="foo:bar" --do=set_alias --alias=index --index=index_a
 
-export ES_CTL_CREDENTIAL="foo:bar" ; ./es_ctl.pl --do=list_indices
+export ES_CTL_CREDENTIAL="foo:bar"
+
+./es_ctl.pl --do=list_indices
+
+./es_ctl.pl --do=list_aliases
 
 ENDHELP
     exit;

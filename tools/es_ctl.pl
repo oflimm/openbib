@@ -452,6 +452,8 @@ e.g:
 
 ./es_ctl.pl --credential="foo:bar" --do=set_alias --alias=index --index=index_a
 
+export ES_CTL_CREDENTIAL="foo:bar" ; ./es_ctl.pl --do=list_indices
+
 ENDHELP
     exit;
 }

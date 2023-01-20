@@ -32,16 +32,19 @@ use warnings;
 use Getopt::Long;
 use JSON::XS qw/encode_json decode_json/;
 use Log::Log4perl qw(get_logger :levels);
+use LWP::UserAgent;
 use Search::Elasticsearch;
 use YAML;
 
-our ($alias,$credential,$do,$host,$index,$inputfile,$outputfile,$help,$loglevel,$logfile);
+our ($alias,$credential,$do,$dstindex,$srcindex,$host,$index,$inputfile,$outputfile,$help,$loglevel,$logfile);
 
 &GetOptions("do=s"            => \$do,
 
             "host=s"          => \$host,
             "credential=s"    => \$credential,
 	    "index=s"         => \$index,
+	    "dst-index=s"     => \$dstindex,
+	    "src-index=s"     => \$srcindex,
 	    "alias=s"         => \$alias,
 	    
 	    "inputfile=s"     => \$inputfile,
@@ -95,6 +98,9 @@ else {
 	);
 }
 
+our $ua = LWP::UserAgent->new();
+$ua->agent('USB Koeln/1.0');
+$ua->timeout(30);
 
 if (defined &{$do}){
     no strict 'refs';
@@ -234,6 +240,90 @@ sub import {
     }
 }
 
+sub list_indices {
+
+    if ($credential){
+	$host = "$credential\@$host";
+    }
+    
+    my $url = "http://$host/_cat/indices/";
+
+    $logger->debug("Request: $url");
+
+    my $request = HTTP::Request->new('GET' => $url);
+    
+    my $response = $ua->request($request);
+
+    if ($logger->is_debug){
+	$logger->debug("Response: ".$response->content);
+    }
+    
+    if (!$response->is_success) {
+	$logger->error($response->code . ' - ' . $response->message);
+	exit;
+    }
+    
+    $response = $response->content;
+
+    my @lines = sort split("\n",$response);
+
+    foreach my $line (@lines){
+	print $line,"\n";
+    }
+}
+
+sub list_aliases {
+
+    if ($credential){
+	$host = "$credential\@$host";
+    }
+    
+    my $url = "http://$host/_cat/aliases/";
+
+    $logger->debug("Request: $url");
+
+    my $request = HTTP::Request->new('GET' => $url);
+    
+    my $response = $ua->request($request);
+
+    if ($logger->is_debug){
+	$logger->debug("Response: ".$response->content);
+    }
+    
+    if (!$response->is_success) {
+	$logger->error($response->code . ' - ' . $response->message);
+	exit;
+    }
+    
+    $response = $response->content;
+
+    my @lines = sort split("\n",$response);
+
+    foreach my $line (@lines){
+	print $line,"\n";
+    }
+}
+
+sub rename_index {
+    if (!$srcindex || !$dstindex){
+	$logger->error("Missing args src-index oder dst-index");
+	exit;
+    }
+
+    if ($es->indices->exists( index => $dstindex )){
+	$logger->info("Destination index $dstindex exists. Drop this index first. Aborting...");
+	exit;
+    }
+
+    if ($es->indices->exists( index => $srcindex )){
+
+	$logger->info("Renaming index $srcindex to $dstindex not implemented yet");
+    }
+    else {
+	$logger->info("No such source index $srcindex");
+    }
+}
+
 sub drop_index {
     if (!$index){
 	$logger->error("Missing arg index");
@@ -326,6 +416,11 @@ Import index
 Drop index
    --do=drop_index
    --index=...           : Index
+
+Rename index
+   --do=rename_index
+   --index=...           : Index
+   --dst-index=...       : New Index
 
 Drop alias
    --do=drop_alias

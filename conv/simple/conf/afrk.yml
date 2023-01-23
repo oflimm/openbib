@@ -1,0 +1,54 @@
+# Encoding der Daten
+encoding: iso-8859-1
+#encoding: utf8
+
+# Tracelevel
+tracelevel:
+
+# CSV-Parameter
+csv:
+  'eol': "\n"
+  'sep_char': ';'
+  'quote_char': '"'
+  'escape_char': '"'
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: 'Identifier (= Freitext 3)'
+
+category_split_chars:
+  'Titel': ';'
+  'Autor, Herausgeber oder Institution': '\s*;\s*'
+
+# Personen
+person:
+  'Autor, Herausgeber oder Institution': '0100'        # Verfasser
+
+# Koerperschaften
+corporatebody:
+
+# Systematik
+classification: 
+  
+# Schlagworte
+subject:
+  'Schlagwörter': '0710'
+
+# Titel
+title:
+  'Titel': '0331'
+  'Auflage': '0403'
+  'ISBN': '0540'
+  'ISSN': '0543'
+  'Ort': '0410'
+  'Anzahl Seiten': '0433'
+  'Jahr ermittelt': '0425'
+  'Verlag': '0412'
+  'Online-Adresse': '0662'
+holding:
+  'Signatur (= Freitext 2)': '0014'
+  'Standort': '0016'
+  
+#filter:
+#  'releasedate_':
+#     filter_match: "^(\d\d\d\d)"
+

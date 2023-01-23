@@ -222,6 +222,11 @@
   fulltext  = normdata.${'T4120'}.first.content ;
   toc       = normdata.${'T4110'}.first.content ;
 
+  # Fix digitool-URLs
+
+  IF toc.match('digitool.hbz-nrw.de:1801');
+    toc.replace('digitool.hbz-nrw.de:1801','digitool.hbz-nrw.de');
+  END;
 
   recordname = normdata.${'T0331'}.first.content;
   IF normdata.${'PC0001'}.first.content ;

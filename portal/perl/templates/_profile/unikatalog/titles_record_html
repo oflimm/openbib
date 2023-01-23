@@ -223,9 +223,8 @@
   toc       = normdata.${'T4110'}.first.content ;
 
   # Fix digitool-URLs
-
   IF toc.match('digitool.hbz-nrw.de:1801');
-    toc.replace('digitool.hbz-nrw.de:1801','digitool.hbz-nrw.de');
+    toc = toc.replace('digitool.hbz-nrw.de:1801','digitool.hbz-nrw.de');
   END;
 
   recordname = normdata.${'T0331'}.first.content;

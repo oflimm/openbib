@@ -344,6 +344,11 @@
     fulltext  = item.${'T4120'}.first.content ;
     toc       = item.${'T4110'}.first.content ;
 
+    # Fix digitool-URLs
+    IF toc.match('digitool.hbz-nrw.de:1801');
+      toc = toc.replace('digitool.hbz-nrw.de:1801','digitool.hbz-nrw.de');
+    END;
+
     # DBIS/EZB? Dann umleiten
 
     IF fulltext.match('usbportal\?service=dbinfo&.*?id=\d+');

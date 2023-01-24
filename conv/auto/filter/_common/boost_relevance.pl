@@ -51,41 +51,45 @@ while (<>){
     
     foreach my $field (keys %{$index_ref}){
 	next unless (defined $searchfield_ref->{$field});
-
+	
 	foreach my $weight (keys %{$index_ref->{$field}}){
 	    my $this_terms_ref = $index_ref->{$field}{$weight} ;
 
-	    my $new_weight = 0;
-
+	    my $this_weight = $weight;
+	    
+	    my $new_weight  = 0;
+	    
 	    # Genereller Throttle fuer Baende
 	    {
 		if ($is_volume){
-		    $new_weight = int($weight * $throttle_volume_factor);
+		    $new_weight = int($this_weight * $throttle_volume_factor);
+		    $this_weight = $new_weight;
 		}
 	    }
 	    
 	    # Genereller Boost der letzten Erscheinungsjahre
 	    {
 		if (defined $data_year && $data_year >= $this_year - $boost_year_range1 ){
-		    $new_weight = int($weight * $boost_year_factor1);
+		    $new_weight = int($this_weight * $boost_year_factor1);
+		    $this_weight = $new_weight;		    
 		}
 		elsif (defined $data_year && $data_year >= $this_year - $boost_year_range2 ){
-		    $new_weight = int($weight * $boost_year_factor2);
+		    $new_weight = int($this_weight * $boost_year_factor2);
+		    $this_weight = $new_weight;
 		}
-	    }
-
-	    # Genereller Boost mit Popularitaet
-	    {
-		# Todo
 	    }
 	    
 	    # Genereller Boost mit Links zum Volltext
 	    {
 		if ($with_fulltext){
-		    $new_weight = int($weight * $boost_fulltext_factor);
+		    $new_weight = int($this_weight * $boost_fulltext_factor);
+		    $this_weight = $new_weight;
 		}
 	    }
-	    
+
+	    # Genereller Boost mit Popularitaet
+	    # Todo
+	    	    
 	    # Weight ggf neu setzen
 	    if ($new_weight && $weight ne $new_weight){
 		$index_ref->{$field}{$new_weight} = $this_terms_ref ;

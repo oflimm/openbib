@@ -832,15 +832,15 @@ sub process_mab {
     foreach my $field ('0710','0902','0907','0912','0917','0922','0927','0932','0937','0942','0947','4306') {
         if (defined $fields_ref->{$field}) {
             foreach my $item_ref (@{$fields_ref->{$field}}) {
-                # Verknuepfungsfelder werden ignoriert
-                $item_ref->{ignore} = 1;
-
                 my $mult       = $item_ref->{mult};                
                 my $subjectid  = $item_ref->{id};
                 my $titleid    = $id;
                 my $supplement = "";
                 
                 next unless $subjectid;
+
+                # Verknuepfungsfelder werden ignoriert
+                $item_ref->{ignore} = 1;
                 
                 if (defined $self->{storage}{listitemdata_subject}{$subjectid}){
                     $supplement = $self->cleanup_content($supplement);

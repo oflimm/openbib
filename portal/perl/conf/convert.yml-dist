@@ -215,79 +215,79 @@ convtab:
           index:
             'person': 1
             'personstring': 1
-            'freesearch': 1
+            'freesearch': 50
         ' ':
           index:
             'person': 1
             'personstring': 1
-            'freesearch': 1
+            'freesearch': 50
       '0830':         # Verweisform
         '':
           index:
             'person': 1
             'personstring': 1
-            'freesearch': 1
+            'freesearch': 50
         ' ':
           index:
             'person': 1
             'personstring': 1
-            'freesearch': 1
+            'freesearch': 50
     inverted_corporatebody:
       '0800':         # Ansetzung
         '':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
-            'freesearch': 1
+            'freesearch': 50
         ' ':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
-            'freesearch': 1
+            'freesearch': 50
       '0810':         # Verweisform
         '':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
-            'freesearch': 1
+            'freesearch': 40
         ' ':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
-            'freesearch': 1
+            'freesearch': 40
       '0812':         # Abkuerzung der Verweisform
         '':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
-            'freesearch': 1
+            'freesearch': 20
         ' ':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
-            'freesearch': 1
+            'freesearch': 20
       '0881':         # Abkuerzung der Ansetzung
         '':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
-            'freesearch': 1
+            'freesearch': 20
         ' ':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
-            'freesearch': 1
+            'freesearch': 20
       '0850':         # Frueherer/Spaeterer Name
         '':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
-            'freesearch': 1
+            'freesearch': 30
         ' ':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
-            'freesearch': 1
+            'freesearch': 30
     inverted_authority_corporatebody:
       '0800':         # Ansetzung
         '':
@@ -350,108 +350,108 @@ convtab:
           index:
             'mark': 1
             'markstring': 1
-            'freesearch': 1
+            'freesearch': 50
     inverted_classification:
       '0800':         # Ansetzung
         '':
           index:
             'classification': 1
             'classificationstring': 1
-            'freesearch': 1
+            'freesearch': 50
         ' ':
           index:
             'classification': 1
             'classificationstring': 1
-            'freesearch': 1
+            'freesearch': 50
       '0801':         # Ansetzung
         '':
           index:
             'classification': 1
             'classificationstring': 1
-            'freesearch': 1
+            'freesearch': 50
         ' ':
           index:
             'classification': 1
             'classificationstring': 1
-            'freesearch': 1
+            'freesearch': 50
       '0830':         # Stichwort
         '':
           index:
             'classification': 1
             'classificationstring': 1
-            'freesearch': 1
+            'freesearch': 20
         ' ':
           index:
             'classification': 1
             'classificationstring': 1
-            'freesearch': 1
+            'freesearch': 20
       '0840':         # Verweisform
         '':
           index:
             'classification': 1
             'classificationstring': 1
-            'freesearch': 1
+            'freesearch': 40
         ' ':
           index:
             'classification': 1
             'classificationstring': 1
-            'freesearch': 1
+            'freesearch': 40
     inverted_subject:
       '0800':         # Ansetzung
         '':
           index:
             'subject': 1
             'subjectstring': 1
-            'freesearch': 20
+            'freesearch': 50
         ' ':
           index:
             'subject': 1
             'subjectstring': 1
-            'freesearch': 20
+            'freesearch': 50
       '0830':         # Verweisform
         '':
           index:
             'subject': 1
             'subjectstring': 1
-            'freesearch': 1
+            'freesearch': 40
         ' ':
           index:
             'subject': 1
             'subjectstring': 1
-            'freesearch': 1
+            'freesearch': 40
       '0840':         # Verweisform
         '':
           index:
             'subject': 1
             'subjectstring': 1
-            'freesearch': 1
+            'freesearch': 40
         ' ':
           index:
             'subject': 1
             'subjectstring': 1
-            'freesearch': 1
+            'freesearch': 40
       '0850':         # Uebergeordnete Bezeichnung
         '':
           index:
             'subject': 1
             'subjectstring': 1
-            'freesearch': 1
+            'freesearch': 20
         ' ':
           index:
             'subject': 1
             'subjectstring': 1
-            'freesearch': 1
+            'freesearch': 20
       '0870':         # Frueher
         '':
           index:
             'subject': 1
             'subjectstring': 1
-            'freesearch': 1
+            'freesearch': 20
         ' ':
           index:
             'subject': 1
             'subjectstring': 1
-            'freesearch': 1
+            'freesearch': 20
     inverted_authority_subject:
       '0800':         # Ansetzung
         '':
@@ -561,11 +561,11 @@ convtab:
         '':
           index:
             'source': 1
-            'freesearch': 1
+            'freesearch': 30
       '0100':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'person': 1
             'personstring': 1
           facet:
@@ -573,7 +573,7 @@ convtab:
       '0101':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'person': 1
             'personstring': 1
           facet:
@@ -581,7 +581,7 @@ convtab:
       '0102':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'person': 1
             'personstring': 1
           facet:
@@ -589,7 +589,7 @@ convtab:
       '0103':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'person': 1
             'personstring': 1
           facet:
@@ -597,7 +597,7 @@ convtab:
       '0110':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'person': 1
             'personstring': 1
           facet:
@@ -605,7 +605,7 @@ convtab:
       '0111':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'person': 1
             'personstring': 1
           facet:
@@ -613,7 +613,7 @@ convtab:
       '0112':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'person': 1
             'personstring': 1
           facet:
@@ -621,7 +621,7 @@ convtab:
       '0200':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'corporatebody': 1
             'corporatebodystring': 1
           facet:
@@ -629,7 +629,7 @@ convtab:
       '0201':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'corporatebody': 1
             'corporatebodystring': 1
           facet:
@@ -639,13 +639,13 @@ convtab:
           index:
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 30
       '0310':         # AST
         '':
           index:
             'title': 1
             'freesearch': 1
-            'titlestring': 1
+            'titlestring': 30
       '0331':         # HST
         '':
           index:
@@ -658,19 +658,19 @@ convtab:
             'ft0335': 1
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 30
       '0340':         # PSTAnsetzung
         '':
           index:
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 30
       '0341':         # PSTVorlage
         '':
           index:
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 30
       '0351':         # Fachgruppen-Markierung (Lesesaal)
         '':
           index:
@@ -678,21 +678,21 @@ convtab:
       '0359':       # Vorl. Verfasser Koerperschaft
         '':
           index:
-            'person': 40
-            'corporatebody': 40
-            'freesearch': 40
+            'person': 50
+            'corporatebody': 50
+            'freesearch': 50
       '0361':       # Vorlage beigefuegtes Werk
         '':
           index:
-            'title': 40
-            'titlestring': 40
-            'freesearch': 40
+            'title': 10
+            'titlestring': 10
+            'freesearch': 10
       '0370':         # WST
         '':
           index:
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 30
       '0375':         # ZSTnorm
         '':
           index:
@@ -717,25 +717,25 @@ convtab:
           index:
             'year': 1
             'yearstring': 1
-            'freesearch': 1
+            'freesearch': 70
       '0423':
         '':
           index:
             'year': 1
             'yearstring': 1
-            'freesearch': 1
+            'freesearch': 70
       '0424':
         '':
           index:
-            'year': 100
-            'yearstring': 100
-            'freesearch': 100
+            'year': 70
+            'yearstring': 70
+            'freesearch': 70
       '0425':
         '':
           index:
-            'year': 100
-            'yearstring': 100
-            'freesearch': 100
+            'year': 70
+            'yearstring': 70
+            'freesearch': 70
           facet:
             'year': 1
       '0426':
@@ -743,7 +743,7 @@ convtab:
           index:
             'year': 1
             'yearstring': 1
-            'freesearch': 1
+            'freesearch': 70
       '0451':
         '':
           index:
@@ -761,63 +761,63 @@ convtab:
         '':      
           'index':
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 50
           'collapse':
             'isbn': 1
       '0541':  # ISBN falsch
         '': 
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 50
       '0543':          # ISSN
         '':
           index:
             'issn': 1
-            'freesearch': 1
+            'freesearch': 50
       '0544':         # ISSN falsch
         '':
           index:
             'issn': 1
-            'freesearch': 1
+            'freesearch': 50
       '0547':         # ISMN ala ISBN
         '':
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 50
       '0553':         # ISBN
         '':
           'index':
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 50
           'collapse':
             'isbn': 1
       '0585':         # ISSN Quelle
         '':
           index:
             'issn': 1
-            'freesearch': 1
+            'freesearch': 50
       '0590':
         '':
           index:
             'source': 1
-            'freesearch': 1
+            'freesearch': 50
       '0634':         # ISBN sekundaerform
         '':
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 50
       '0670':         # TitelOrth
         '':
           index:
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 30
       '0675':         # HSTmodern
         '':
           index:
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 30
       '0700':
         '':
           index:
@@ -831,52 +831,52 @@ convtab:
       '0740':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
       '0741':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
       '0742':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
       '0743':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
       '0744':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
       '0745':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
       '0746':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
       '0747':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
       '0750':         # Abstract
         '':
           index:
             'content': 1
-            'freesearch': 1
+            'freesearch': 10
       '0902':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
             'subjectstring': 1
           facet:
@@ -884,7 +884,7 @@ convtab:
       '0907':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
             'subjectstring': 1
           facet:
@@ -892,7 +892,7 @@ convtab:
       '0912':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
             'subjectstring': 1
           facet:
@@ -900,7 +900,7 @@ convtab:
       '0917':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
             'subjectstring': 1
           facet:
@@ -908,7 +908,7 @@ convtab:
       '0922':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
             'subjectstring': 1
           facet:
@@ -916,7 +916,7 @@ convtab:
       '0927':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
             'subjectstring': 1
           facet:
@@ -924,7 +924,7 @@ convtab:
       '0932':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
             'subjectstring': 1
           facet:
@@ -932,7 +932,7 @@ convtab:
       '0937':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
             'subjectstring': 1
           facet:
@@ -940,7 +940,7 @@ convtab:
       '0942':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
             'subjectstring': 1
           facet:
@@ -948,7 +948,7 @@ convtab:
       '0947':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
             'subjectstring': 1
           facet:
@@ -962,107 +962,107 @@ convtab:
         '':
           index:
             'issn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1551':         # ISSN_dat_r
         '':
           index:
             'issn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1552':         # ISSN_www_r
         '':
           index:
             'issn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1553':         # ISSN_pnt_r
         '':
           index:
             'issn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1567':         # ISSN_pnt_f
         '':
           index:
             'issn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1586':         # ISBN_dat_o 
         '':
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1587':         # ISBN_www_o 
         '':
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1588':         # ISBN_pnt_o 
         '':
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1590':         # ISBN_dat_r 
         '':
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1591':         # ISBN_www_r 
         '':
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1592':         # ISBN_pnt_r 
         '':
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1594':         # ISBN_dat_f 
         '':
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1595':         # ISBN_www_f 
         '':
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1596':         # ISBN_pnt_f 
         '':
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1780':         # ISBN RDA
         '':
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 50
       '1800':         # Nebeneintragung 1. Person
         '':
           index:
             'person': 1
-            'personstring': 1
+            'personstring': 40
             'freesearch': 1
       '1802':         # Nebeneintragung 2. Koerperschaft
         '':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
-            'freesearch': 1
+            'freesearch': 40
       '1804':         # Nebeneintragung 1. Titel EST
         '':
           index:
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 40
       '1805':         # Nebeneintragung 1. Titel Ansetzungsform
         '':
           index:
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 40
       '1806':         # Nebeneintragung 1. Titel in Mischform
         '':
           index:
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 40
       '4100':         # BK
         '':
           index:
@@ -1087,23 +1087,23 @@ convtab:
         '':
           index:
             'content': 1
-            'freesearch': 1
+            'freesearch': 40
       '4201':         # Wikipedia
         '':
           index:
             'content': 1
-            'freesearch': 1
+            'freesearch': 40
       '4202':         # Wikipedia
         '':
           index:
             'content': 1
-            'freesearch': 1
+            'freesearch': 40
       '4300':         # Fremde Schlagworte
         '':
           index:
             'subject': 20
             'subjectstring': 20
-            'freesearch': 20
+            'freesearch': 50
             'ft4300': 1
           facet:
             'subject': 1
@@ -1175,7 +1175,7 @@ convtab:
           index:
             'subject': 20
             'subjectstring': 20
-            'freesearch': 20
+            'freesearch': 50
           facet:
             'subject': 1
       '4726':         # EUROP KatNr.
@@ -2162,23 +2162,23 @@ convtab:
           index:
             'person': 1
             'personstring': 1
-            'freesearch': 1
+            'freesearch': 50
         ' ':
           index:
             'person': 1
             'personstring': 1
-            'freesearch': 1
+            'freesearch': 50
       '0830':         # Verweisform
         '':
           index:
             'person': 1
             'personstring': 1
-            'freesearch': 1
+            'freesearch': 50
         ' ':
           index:
             'person': 1
             'personstring': 1
-            'freesearch': 1
+            'freesearch': 50
     inverted_corporatebody:
       '0010':         # GND
         '':
@@ -2189,56 +2189,56 @@ convtab:
           index:
             'corporatebody': 1
             'corporatebodystring': 1
-            'freesearch': 1
+            'freesearch': 50
         ' ':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
-            'freesearch': 1
+            'freesearch': 50
       '0810':         # Verweisform
         '':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
-            'freesearch': 1
+            'freesearch': 40
         ' ':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
-            'freesearch': 1
+            'freesearch': 40
       '0812':         # Abkuerzung der Verweisform
         '':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
-            'freesearch': 1
+            'freesearch': 20
         ' ':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
-            'freesearch': 1
+            'freesearch': 20
       '0881':         # Abkuerzung der Ansetzung
         '':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
-            'freesearch': 1
+            'freesearch': 20
         ' ':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
-            'freesearch': 1
+            'freesearch': 20
       '0850':         # Frueherer/Spaeterer Name
         '':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
-            'freesearch': 1
+            'freesearch': 30
         ' ':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
-            'freesearch': 1
+            'freesearch': 30
     inverted_authority_corporatebody:
       '0010':         # GND
         '':
@@ -2309,45 +2309,45 @@ convtab:
           index:
             'classification': 1
             'classificationstring': 1
-            'freesearch': 1
+            'freesearch': 10
         '':
           index:
             'classification': 1
             'classificationstring': 1
-            'freesearch': 1
+            'freesearch': 50
       '0801':         # Ansetzung
         '':
           index:
             'classification': 1
             'classificationstring': 1
-            'freesearch': 1
+            'freesearch': 50
         ' ':
           index:
             'classification': 1
             'classificationstring': 1
-            'freesearch': 1
+            'freesearch': 50
       '0830':         # Stichwort
         '':
           index:
             'classification': 1
             'classificationstring': 1
-            'freesearch': 1
+            'freesearch': 20
         ' ':
           index:
             'classification': 1
             'classificationstring': 1
-            'freesearch': 1
+            'freesearch': 20
       '0840':         # Verweisform
         '':
           index:
             'classification': 1
             'classificationstring': 1
-            'freesearch': 1
+            'freesearch': 40
         ' ':
           index:
             'classification': 1
             'classificationstring': 1
-            'freesearch': 1
+            'freesearch': 40
     inverted_subject:
       '0010':         # GND
         '':
@@ -2358,56 +2358,56 @@ convtab:
           index:
             'subject': 1
             'subjectstring': 1
-            'freesearch': 20
+            'freesearch': 50
         ' ':
           index:
             'subject': 1
             'subjectstring': 1
-            'freesearch': 20
+            'freesearch': 50
       '0830':         # Verweisform
         '':
           index:
             'subject': 1
             'subjectstring': 1
-            'freesearch': 1
+            'freesearch': 40
         ' ':
           index:
             'subject': 1
             'subjectstring': 1
-            'freesearch': 1
+            'freesearch': 40
       '0840':         # Verweisform
         '':
           index:
             'subject': 1
             'subjectstring': 1
-            'freesearch': 1
+            'freesearch': 40
         ' ':
           index:
             'subject': 1
             'subjectstring': 1
-            'freesearch': 1
+            'freesearch': 40
       '0850':         # Uebergeordnete Bezeichnung
         '':
           index:
             'subject': 1
             'subjectstring': 1
-            'freesearch': 1
+            'freesearch': 20
         ' ':
           index:
             'subject': 1
             'subjectstring': 1
-            'freesearch': 1
+            'freesearch': 20
       '0870':         # Frueher
         '':
           index:
             'subject': 1
             'subjectstring': 1
-            'freesearch': 1
+            'freesearch': 20
         ' ':
           index:
             'subject': 1
             'subjectstring': 1
-            'freesearch': 1
+            'freesearch': 20
     inverted_authority_subject:
       '0010':         # GND
         '':
@@ -2418,12 +2418,12 @@ convtab:
           index:
             'subject': 1
             'subjectstring': 1
-            'freesearch': 20
+            'freesearch': 1
         ' ':
           index:
             'subject': 1
             'subjectstring': 1
-            'freesearch': 20
+            'freesearch': 1
       '0830':         # Verweisform
         '':
           index:
@@ -2511,7 +2511,7 @@ convtab:
           index:
             'mark': 1
             'markstring': 1
-            'freesearch': 1
+            'freesearch': 50
       '0065':         # RDA: Schlagwort (eher Medientyp...)
         '':
           index:
@@ -2532,7 +2532,7 @@ convtab:
         '':
           index:
             'source': 1
-            'freesearch': 1
+            'freesearch': 30
       '0100':
         '':
           index:
@@ -2595,7 +2595,7 @@ convtab:
           index:
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 30
       '0306':         # RDA: Manifestation verkoerperter Werke
         '':
           index:
@@ -2606,7 +2606,7 @@ convtab:
           index:
             'title': 1
             'freesearch': 1
-            'titlestring': 1
+            'titlestring': 30
       '0331':         # HST
         '':
           index:
@@ -2618,42 +2618,42 @@ convtab:
           index:
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 30
       '0340':         # PSTAnsetzung
         '':
           index:
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 30
       '0341':         # PSTVorlage
         '':
           index:
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 30
       '0343':         # RDA: Zusatz zum PST
         '':
           index:
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 30
       '0359':       # Vorl. Verfasser Koerperschaft
         '':
           index:
-            'person': 40
-            'corporatebody': 40
-            'freesearch': 40
+            'person': 50
+            'corporatebody': 50
+            'freesearch': 50
       '0360':       # Unterreihe
         '':
           index:
-            'title': 40
-            'freesearch': 40
+            'title': 20
+            'freesearch': 20
       '0361':       # Vorlage beigefuegtes Werk
         '':
           index:
-            'title': 40
-            'titlestring': 40
-            'freesearch': 40
+            'title': 20
+            'titlestring': 20
+            'freesearch': 20
       '0362':         # RDA Doppelung von 0306: Manifestation verkoerperter Werke
         '':
           index:
@@ -2670,12 +2670,12 @@ convtab:
           index:
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 30
       '0371':         # RDA: erster/frueherer Sachtitel
         '':
           index:
             'title': 1
-            'freesearch': 1
+            'freesearch': 30
       '0375':         # ZSTnorm
         '':
           index:
@@ -2702,38 +2702,38 @@ convtab:
           index:
             'year': 1
             'yearstring': 1
-            'freesearch': 1
+            'freesearch': 70
       '0423':
         '':
           index:
             'year': 1
             'yearstring': 1
-            'freesearch': 1
+            'freesearch': 70
       '0424':
         '':
           index:
-            'year': 100
-            'yearstring': 100
-            'freesearch': 100
+            'year': 70
+            'yearstring': 70
+            'freesearch': 70
       '0425':
         '':
           index:
-            'year': 100
-            'yearstring': 100
-            'freesearch': 100
+            'year': 70
+            'yearstring': 70
+            'freesearch': 70
           facet:
             'year': 1
       '0426':
         '':
           index:
             'year': 1
-            'yearstring': 1
-            'freesearch': 1
+            'yearstring': 70
+            'freesearch': 70
       '0451':
         '':
           index:
             'source': 1
-            'freesearch': 1
+            'freesearch': 30
       '0508':
         '':
           index:
@@ -2750,32 +2750,32 @@ convtab:
         '':
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 50
       '0541':         # ISBN falsch
         '':
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 50
       '0543':         # ISSN
         '':
           index:
             'issn': 1
-            'freesearch': 1
+            'freesearch': 50
       '0544':         # ISSN falsch
         '':
           index:
             'issn': 1
-            'freesearch': 1
+            'freesearch': 50
       '0547':         # ISMN ala ISBN
         '':
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 50
       '0553':         # ISBN
         '':
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 50
       '0572':         # zdbid
         '':
           index:
@@ -2784,29 +2784,29 @@ convtab:
         '':
           index:
             'issn': 1
-            'freesearch': 1
+            'freesearch': 50
       '0590':
         '':
           index:
             'source': 1
-            'freesearch': 1
+            'freesearch': 50
       '0634':         # ISBN sekundaerform
         '':
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 50
       '0670':         # TitelOrth
         '':
           index:
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 30
       '0675':         # HSTmodern
         '':
           index:
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 30
       '0688':         # RDA: Original-Verleger
         '':
           index:
@@ -2821,7 +2821,7 @@ convtab:
       '0710':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
             'subjectstring': 1
           facet:
@@ -2829,52 +2829,52 @@ convtab:
       '0740':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
       '0741':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
       '0742':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
       '0743':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
       '0744':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
       '0745':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
       '0746':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
       '0747':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
       '0750':         # Abstract
         '':
           index:
-            'content': 1
+            'content': 10
             'freesearch': 1
       '0902':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
             'subjectstring': 1
           facet:
@@ -2882,7 +2882,7 @@ convtab:
       '0907':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
             'subjectstring': 1
           facet:
@@ -2890,7 +2890,7 @@ convtab:
       '0912':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
             'subjectstring': 1
           facet:
@@ -2898,7 +2898,7 @@ convtab:
       '0917':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
             'subjectstring': 1
           facet:
@@ -2906,7 +2906,7 @@ convtab:
       '0922':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
             'subjectstring': 1
           facet:
@@ -2914,7 +2914,7 @@ convtab:
       '0927':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
             'subjectstring': 1
           facet:
@@ -2922,7 +2922,7 @@ convtab:
       '0932':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
             'subjectstring': 1
           facet:
@@ -2930,7 +2930,7 @@ convtab:
       '0937':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
             'subjectstring': 1
           facet:
@@ -2938,7 +2938,7 @@ convtab:
       '0942':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
             'subjectstring': 1
           facet:
@@ -2946,7 +2946,7 @@ convtab:
       '0947':
         '':
           index:
-            'freesearch': 1
+            'freesearch': 50
             'subject': 1
             'subjectstring': 1
           facet:
@@ -2960,107 +2960,107 @@ convtab:
         '':
           index:
             'issn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1551':         # ISSN_dat_r
         '':
           index:
             'issn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1552':         # ISSN_www_r
         '':
           index:
             'issn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1553':         # ISSN_pnt_r
         '':
           index:
             'issn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1567':         # ISSN_pnt_f
         '':
           index:
             'issn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1586':         # ISBN_dat_o 
         '':
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1587':         # ISBN_www_o 
         '':
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1588':         # ISBN_pnt_o 
         '':
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1590':         # ISBN_dat_r 
         '':
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1591':         # ISBN_www_r 
         '':
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1592':         # ISBN_pnt_r 
         '':
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1594':         # ISBN_dat_f 
         '':
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1595':         # ISBN_www_f 
         '':
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1596':         # ISBN_pnt_f 
         '':
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 30
       '1780':         # ISBN RDA
         '':
           index:
             'isbn': 1
-            'freesearch': 1
+            'freesearch': 50
       '1800':         # Nebeneintragung 1. Person
         '':
           index:
             'person': 1
             'personstring': 1
-            'freesearch': 1
+            'freesearch': 40
       '1802':         # Nebeneintragung 2. Koerperschaft
         '':
           index:
             'corporatebody': 1
             'corporatebodystring': 1
-            'freesearch': 1
+            'freesearch': 40
       '1804':         # Nebeneintragung 1. Titel EST
         '':
           index:
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 40
       '1805':         # Nebeneintragung 1. Titel Ansetzungsform
         '':
           index:
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 40
       '1806':         # Nebeneintragung 1. Titel in Mischform
         '':
           index:
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 40
       '4100':         # BK
         '':
           index:
@@ -3083,23 +3083,23 @@ convtab:
         '':
           index:
             'content': 1
-            'freesearch': 1
+            'freesearch': 40
       '4201':         # Wikipedia
         '':
           index:
             'content': 1
-            'freesearch': 1
+            'freesearch': 40
       '4202':         # Wikipedia
         '':
           index:
             'content': 1
-            'freesearch': 1
+            'freesearch': 40
       '4300':         # Fremde Schlagworte
         '':
           index:
             'subject': 20
             'subjectstring': 20
-            'freesearch': 20
+            'freesearch': 50
             'ft4300': 1
           facet:
             'subject': 1
@@ -3194,7 +3194,7 @@ convtab:
           index:
             'subject': 20
             'subjectstring': 20
-            'freesearch': 20
+            'freesearch': 50
           facet:
             'subject': 1
       '4726':         # EUROP KatNr.
@@ -3252,31 +3252,31 @@ convtab:
           index:
             'year': 1
             'yearstring': 1
-            'freesearch': 1
+            'freesearch': 50
       '7420':
         'c':
           index:
             'year': 1
             'yearstring': 1
-            'freesearch': 1
+            'freesearch': 50
       '7421':
         'c':
           index:
             'year': 1
             'yearstring': 1
-            'freesearch': 1
+            'freesearch': 50
       '7422':
         'c':
           index:
             'year': 1
             'yearstring': 1
-            'freesearch': 1
+            'freesearch': 50
       '7423':
         'c':
           index:
             'year': 1
             'yearstring': 1
-            'freesearch': 1
+            'freesearch': 50
   jesuiten:
     inverted_title:
       'tag':

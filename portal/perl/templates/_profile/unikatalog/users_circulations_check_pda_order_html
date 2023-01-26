@@ -132,9 +132,11 @@
 -%]
 
 [%# USE dumper;dumper.dump(super)%]
+<!--
 <div class="card mt-5 mb-5 me-5">
 <div class="card-header">[% msg.maketext("Neuanschaffung") %]</div>
 <div class="card-body">
+-->
 
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/pdaorders">
  

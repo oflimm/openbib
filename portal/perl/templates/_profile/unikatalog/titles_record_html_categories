@@ -672,10 +672,8 @@ FOREACH field IN normdata;
          content_map.${'E4300'}.push(content);
 
     CASE [ "T0710" ];
-         IF record.database == 'inst001';
-           thisid     = item.id;
-         END;
-	 
+         thisid     = item.id;
+
          thiscontent = item.content;
 
          searchterm    = uri_escape(item.content);

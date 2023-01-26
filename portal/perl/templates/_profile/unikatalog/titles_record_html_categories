@@ -301,7 +301,28 @@ licensed_pakete = [
    'hbzebo_ebameiner',
    'ZDB-23-DGG-eba',
    'ZDB-54-Duncker-EBA',
-   'hbzebo_ebaduncker'
+   'hbzebo_ebaduncker',
+   'ZDB-2-BSP',
+   'ZDB-2-SBL',
+   'ZDB-2-BUM',
+   'ZDB-2-CMS',
+   'ZDB-2-SCS',
+   'ZDB-2-EES',
+   'ZDB-2-ECF',
+   'ZDB-2-EDA',
+   'ZDB-2-ENE',
+   'ZDB-2-ENG',
+   'ZDB-2-HTY',
+   'ZDB-2-INR',
+   'ZDB-2-LCR',
+   'ZDB-2-LCM',
+   'ZDB-2-SMA',
+   'ZDB-2-SME',
+   'ZDB-2-PHA',
+   'ZDB-2-POS',
+   'ZDB-2-CWD',
+   'ZDB-2-REP',
+   'ZDB-2-SLS'
    ];
 
 oa_pakete = ['ZDB-2-SOB','ZDB-23-GOA'];

@@ -5,7 +5,18 @@
 -%]
 
 <div class="alert alert-info mb-5">
-[% IF NOT user.get_username.match("^([ABCKRSTVW]|I00011011#7)") %]
+[% IF NOT user.ID %]
+<p>
+[% msg.maketext("Bitte melden Sie sich mit Ihrem Bibliotheksausweis an, um eine Neunanschaffung über den Buchhandel zu tätigen.") %]
+</p>
+<p>
+[% msg.maketext("Eine Neuanschaffung ist möglich, wenn Ihr Bibliotheksausweis mit folgenden Buchstaben beginnet: A, B, C, K, R, S, T, V und W.") %]
+</p>
+[% redirect_url = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.id}.html?l=${lang}" %]
+ 
+<a class="btn btn-primary mt-2 mb-1" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('login_loc') %].include?l=[% lang %];authenticatorid=1;redirect_to=[% redirect_url | uri %]" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %];authenticatorid=1;redirect_to=[% redirect_url | uri %]">[% msg.maketext("Anmelden") %]</a> 
+
+[% ELSIF NOT user.get_username.match("^([ABCKRSTVW]|I00011011#7)") %]
 <p>
 [% msg.maketext("Ihre Benutzerkennung ist nicht dazu berechtigt eine Neunanschaffung über den Buchhandel zu tätigen.") %]
 </p>

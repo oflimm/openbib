@@ -654,9 +654,6 @@ sub process_mab {
     foreach my $field ('0100','0101','0102','0103','1800','4308') {
         if (defined $fields_ref->{$field}) {
             foreach my $item_ref (@{$fields_ref->{$field}}) {
-                # Verknuepfungsfelder werden ignoriert
-	        $item_ref->{ignore} = 1;
-
                 my $mult       = $item_ref->{mult};
                 my $personid   = $item_ref->{id};
                 my $titleid    = $id;
@@ -669,6 +666,9 @@ sub process_mab {
                 
                 next unless $personid;
                 
+                # Verknuepfungsfelder werden ignoriert
+	        $item_ref->{ignore} = 1;
+
                 if (defined $self->{storage}{listitemdata_person}{$personid}){
                     $supplement = $self->cleanup_content($supplement);
                     push @{$self->{_columns_title_person}}, [$self->{title_person_serialid},$field,$mult,$id,$personid,$supplement];
@@ -717,9 +717,6 @@ sub process_mab {
     foreach my $field ('0200','0201','1802','4307') {
         if (defined $fields_ref->{$field}) {
             foreach my $item_ref (@{$fields_ref->{$field}}) {
-                # Verknuepfungsfelder werden ignoriert
-                $item_ref->{ignore} = 1;
-
                 my $mult            = $item_ref->{mult};
                 my $corporatebodyid = $item_ref->{id};
                 my $titleid    = $id;
@@ -731,6 +728,9 @@ sub process_mab {
                 #                 }
                 
                 next unless $corporatebodyid;
+
+                # Verknuepfungsfelder werden ignoriert
+                $item_ref->{ignore} = 1;
                 
                 if (defined $self->{storage}{listitemdata_corporatebody}{$corporatebodyid}){
                     $supplement = $self->cleanup_content($supplement);

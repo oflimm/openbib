@@ -41,9 +41,9 @@
 </div>
 [%   END %]
 [% END %]
-   </div>
+    </div>
     
-   <div class="offcanvas-footer">
+    <div class="offcanvas-footer">
       <button type="button" class="btn btn-primary text-end"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar_authority">[% msg.maketext("Schließen") %]</button>
     </div>
   </div>
@@ -56,11 +56,11 @@
   </div>
 
   <div class="col-md-9">
-
+    
 [% IF spelling_suggestion.resultlist %]
 [%    suggestion = searchquery.get_spelling_suggestion %]
 [%     IF suggestion%]
-[%        msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% path_prefix %]/[% search_loc %]?num=[% escape_html(query.param('num')) %];srt=year_desc;st=[% escape_html(query.param('st')) %]fs=[% suggestion %]">[% suggestion %]</b>
+[%        msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% path_prefix %]/[% search_loc %]?num=[% escape_html(query.param('num')) %];srt=year_desc;st=[% escape_html(query.param('st')) %]fs=[% suggestion %]">[% suggestion %]</a></b>
 [%     END %]
 [% END %]
 
@@ -79,44 +79,51 @@
 <div class="ob-resultlist">
   <div class="ob-resultheader pb-4">
     <div class="left">
-      <div class="navbar navbar-default d-block d-md-none ps-0 mt-0" style="z-index: 1"><!-- only visible in xs-->
-        <div class="container-fluid ps-0">
-          <button class="btn btn-primary navbar-btn" data-bs-toggle="collapse" data-bs-target="#ob-sidebar">
+      <div class="container-fluid d-block d-md-none ps-0 mt-0" style="z-index: 1"><!-- only visible in xs-->
+        <div class="container-fluid ps-0 mt-2">
+          <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar[% idsuffix %]">
             <i class="fa fa-sliders-h"></i> [% msg.maketext("Filtern") %]
           </button>
 	</div>
-      </div>
-      <div class="left d-none d-lg-block mt-2">
-[% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b>[% hits %]</b>
+	<div class="d-none d-lg-block mt-2">
+[% msg.maketext("Treffer") %]&nbsp;<b>[% start_range.chunk(-3).join('.') %]-[% end_range.chunk(-3).join('.') %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b id="numhits[% idsuffix %]">[% hits.chunk(-3).join('.') %]</b>
+	</div>
       </div>
     </div>
     <div class="right mt-2">
-<form method="get" action="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]">
-<input type="hidden" name="page" value="1" />
+      <form method="get" action="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]">
+	<input type="hidden" name="page" value="1" />
+	<input type="hidden" name="l"    value="[% lang %]" />
 
-[% cgiapp.to_cgi_hidden_input({ exclude = ['page','srt','srto']}) %]
+[% cgiapp.to_cgi_hidden_input({ exclude = ['page','srt','srto','num']}) %]
 
 [% PROCESS common/subtemplate name="authlist_options" this_loc=config.get('search_loc') %]
-</form>
+      </form>
 
     </div>
-  </div>
+  </div><!-- End ob-resultheader -->
   <div class="ob-resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 [%- FOREACH record IN recordlist.get_records -%]
 [%    PROCESS common/subtemplate name="authlist_item_html_short" multiple_dbs=1 database=record.database %] 
 [%- END -%]
-  <div class="ob-resultfooter">
-[% PROCESS common/subtemplate name="search_pagination" %]
-    <div class="ob-resulttime">
+<div class="ob-footer">
+
+<div class="ob-resulttime">
   in: [% resulttime %] [% msg.maketext("Sekunden") %] 
-    </div>
+</div>
+</div><!-- End: ob-footer -->
+  </div><!-- End: ob-resultitems -->
+  <div class="ob-resultfooter">
+    &nbsp;
   </div>
 </div>
-<div class="ob-resultfooter">
-   &nbsp;
-</div>
-</div>
 <p/>
+
+  </div><!-- End: col -->
+</div><!-- End: row -->
+
+[% PROCESS common/subtemplate name="authority_search_pagination" %]
+
 [% ELSE %]
 <div class="ob-no_hits">
 <h1>[% msg.maketext("Zu Ihrer Suchanfrage konnten keine Treffer gefunden werden.") %]</h1>

@@ -73,7 +73,7 @@ $("#[% facet_prefix %]_database_[% database %]_toggle").click(function(){
         <ul id="group-database[% idsuffix %]" class="list-group in collapse show">
 [%
     filter_prefix_map = {
-          ${config.get('searchfield').locationstring.prefix} = msg.maketext("Standort")
+          ${config.get('searchfield').dbstring.prefix} = msg.maketext("Katalog")
 };
 
 %]
@@ -86,7 +86,7 @@ $("#[% facet_prefix %]_database_[% database %]_toggle").click(function(){
                        END;
                    END ;
 %]
-[% USE dumper;dumper.dump(category_map) %]
+[%# USE dumper;dumper.dump(category_map) %]
 <li class="ob-facet-item d-flex"><a href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude_filter = [ filter.val ] }) %]" title="[% msg.maketext("Entfernen") %]"><img style="vertical-align:bottom" src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /></a>&nbsp;[% filter_prefix_map.${filter.field} %]: [% IF filter.field == "fdb" %][% dbinfo.get('dbnames').${filter.term}.short %][% ELSIF filter.field == "floc" %][% locinfo.get('identifier').${filter.term}.description %][% ELSE %][% filter.term %][% END %]</li>
 [%             END %]
 </ul>

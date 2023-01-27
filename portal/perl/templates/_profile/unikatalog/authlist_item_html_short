@@ -54,7 +54,8 @@
 -%]
     <div class="ob-item d-flex flex-row[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
       <div class="ob-numbering">[% start_range+loop.count - 1 %]</div>
-      <div class="ob-thumbnail">
+      <div class="ob-thumbnail ms-5 mt-5">
+[% IF item.type == 'person' %]<i class="fas fa-user fa-3x"></i>[% ELSIF item.type == 'corporatebody' %]<i class="fas fa-users fa-3x"></i>[% ELSIF item.type == 'subject' %]<i class="fas fa-tag fa-3x"></i>[% ELSIF item.type == 'classification' %]<i class="fas fa-list fa-3x"></i>[% END %]
       </div>
       <div class="ob-brieftitle ps-3 pt-3">
         <div class="ob-titleinfo ps-2 mt-4">

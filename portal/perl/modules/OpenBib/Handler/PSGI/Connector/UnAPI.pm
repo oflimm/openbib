@@ -106,6 +106,7 @@ sub show {
         my $contained_works        = [];
         my $provenance_data        = [];
         my $related_zdb_titles      = [];
+        my $additional_physical_notes = [];
         my $date_values            = undef;
         my $main_title_data        = undef;
         my $super_title            = undef;
@@ -140,6 +141,9 @@ sub show {
                   $self->collect_publisher_data( $record, $database );
                 $rswk_keyword_list =
                   $self->collect_rswk_data( $record, $database );
+                
+                $additional_physical_notes =  $self->collect_physical_notes( $record, $database );
+
                 $provenance_data = undef;
                 my $provenance_elements =
                   $self->collect_provenance_data( $record, $database );
@@ -170,6 +174,7 @@ sub show {
                 date_values            => $date_values,
                 provenance_data        => $provenance_data,
                 contained_works        => $contained_works,
+                additional_physical_notes => $additional_physical_notes,
 
                 config => $config,
                 msg    => $msg,
@@ -1007,6 +1012,19 @@ sub get_gnd_for_corporation {
     }
     return "";
 
+}
+
+sub collect_physical_notes {
+    my $self       = shift;
+    my $record     = shift;
+    my $physical_note_list = [];
+    if ( $record->get_fields->{T0501} ) {
+        foreach my $physical_note ( @{ $record->get_fields->{T0501} } ) {
+            push( @{$physical_note_list}, $physical_note->{content} );
+     }
+    }
+     
+    return $physical_note_list;
 }
 
 sub collect_related_zdb_titles {

@@ -105,9 +105,11 @@ if ($inputfile){
 
 my $multcount_ref = {};
 
-my $persons_done_ref = {};
+my $persons_done_ref         = {};
 my $corporatebodies_done_ref = {};
-my $recipients_done_ref = {};
+my $classifications_done_ref = {};
+my $subjects_done_ref        = {};
+my $recipients_done_ref      = {};
 
 my $holding_id = 1;
 
@@ -127,12 +129,27 @@ while (my $jsonline = <$input_io>){
     $title_ref->{id} = $record_ref->{hbzId};	
     
     ### Gesamter Exportsatz -> 0001
-    push @{$title_ref->{fields}{'0001'}}, {
-	mult     => 1,
-	subfield => '',
-	content => $record_ref,
-    };
+    # push @{$title_ref->{fields}{'0001'}}, {
+    # 	mult     => 1,
+    # 	subfield => '',
+    # 	content => $record_ref,
+    # };
 
+
+    ### type -> 0800 HST
+    my $is_book = 0;
+    my $is_periodical = 0;
+    
+    if (defined $record_ref->{type}){
+	foreach my $type (@{$record_ref->{type}}){
+	    $is_book       = 1 if ($type eq "Book");
+	    $is_periodical = 1 if ($type eq "Periodical");
+
+	}
+    }
+
+    next unless ($is_book);
+    
     # Personen und Koerperschaften
     if (defined $record_ref->{contribution}){
 	
@@ -162,7 +179,7 @@ while (my $jsonline = <$input_io>){
 		if ($agent_type eq "Person"){
 		    $type = "person";
 		}
-		elsif ($agent_type eq "Person"){
+		elsif ($agent_type eq "CorporateBody"){
 		    $type = "corporatebody";
 		}
 	    }
@@ -274,8 +291,8 @@ while (my $jsonline = <$input_io>){
 			    content  => $contribution_ref->{agent}{dateOfDeath},
 			};		
 		    }
-		
-		    print PERSON encode_json $normrecord_ref, "\n";
+
+		    print CORPORATEBODY encode_json $normrecord_ref, "\n";
 		    
 		    $corporatebodies_done_ref->{$contributor_id} = 1;
 		}
@@ -296,11 +313,98 @@ while (my $jsonline = <$input_io>){
 	}
     }
 
-    # if (defined $record_ref->{subject}){
-    # 	foreach my $subject_ref (@{$record_ref->{subject}}){
-	    
-    # 	}
-    # }
+    if (defined $record_ref->{subject}){
+    	foreach my $item_ref (@{$record_ref->{subject}}){
+	    # Notationen
+	    if (defined $item_ref->{notation}){
+		my ($classification_id) = $item_ref->{source}{id} =~m{https://d-nb.info/gnd/(.+)$};
+		my $classification_mult = 1;
+		
+		if ($classification_id){
+		    if (!defined $classifications_done_ref->{$classification_id}){
+			
+			my $normrecord_ref = {
+			    'fields' => {},
+			};
+			
+			$normrecord_ref->{id} = $classification_id;
+			push @{$normrecord_ref->{fields}{'0800'}}, {
+			    mult     => 1,
+			    subfield => '',
+			    content  => $item_ref->{notation},
+			};
+			
+			if (defined $item_ref->{label}){
+			    push @{$normrecord_ref->{fields}{'0840'}}, {
+				mult     => 1,
+				subfield => '',
+				content  => $item_ref->{label},
+			    };
+			}
+
+			print CLASSIFICATION encode_json $normrecord_ref, "\n";
+		    
+			$classifications_done_ref->{$classification_id} = 1;	
+		    }
+		    
+		    
+		    my $new_category = "0700";
+		
+		    push @{$title_ref->{fields}{$new_category}}, {
+			content    => $item_ref->{notation},
+			mult       => $classification_mult,
+			subfield   => '',
+			id         => $classification_id,
+			supplement => '',
+		    };
+		
+		    $classification_mult++;
+		}
+
+	    }
+	    # Schlagworte
+	    elsif (defined $item_ref->{componentList}){
+		foreach my $subject_ref (@{$item_ref->{componentList}}){
+
+		    my $subject_id = $subject_ref->{gndIdentifier};
+		    my $subject_mult = 1;
+
+		    if ($subject_id){
+			if (!defined $subjects_done_ref->{$subject_id}){
+		    
+			    my $normrecord_ref = {
+				'fields' => {},
+			    };
+			    
+			    $normrecord_ref->{id} = $subject_id;
+			    push @{$normrecord_ref->{fields}{'0800'}}, {
+				mult     => 1,
+				subfield => '',
+				content  => $subject_ref->{label},
+			    };
+
+			    print SUBJECT encode_json $normrecord_ref, "\n";
+		    
+			    $subjects_done_ref->{$subject_id} = 1;	
+
+			}
+
+			my $new_category = "0710";
+			
+			push @{$title_ref->{fields}{$new_category}}, {
+			    content    => $subject_ref->{label},
+			    mult       => $subject_mult,
+			    subfield   => '',
+			    id         => $subject_id,
+			    supplement => '',
+			};
+			
+			$subject_mult++;
+		    }
+		}
+	    }
+    	}
+    }
     
     ### title -> 0331 HST
     if (defined $record_ref->{title}){
@@ -367,6 +471,18 @@ while (my $jsonline = <$input_io>){
 	}
     }
 
+    # hasVersion -> 0662 URL
+    if (defined $record_ref->{hasVersion}){
+	my $url_mult = 1;
+	foreach my $url_ref (@{$record_ref->{has_version}}){
+	    push @{$title_ref->{fields}{'0662'}}, {
+		mult     => $url_mult++,
+		subfield => '',
+		content => $url_ref->{id},
+	    };
+	}
+    }
+    
     # fulltextOnline -> 4120 Volltext-URL
     if (defined $record_ref->{fulltextOnline}){
 	my $fulltext_mult = 1;

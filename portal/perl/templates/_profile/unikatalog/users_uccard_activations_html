@@ -39,7 +39,7 @@
 
 </form>
 
-<img class="img-fluid mt-5 mb-5" src="/images/openbib/UCCard_Rueckseite2018_gelb_mit_Beschriftung_ori1080_ger.jpg" />
+<img class="img-fluid mt-5 mb-5" src="/images/openbib/UCCard_Rueckseite2018_gelb_mit_Beschriftung_ori1080_ger.jpg" alt="[% msg.maketext("Rückseite der UCCard") %]"/>
 
 <h4>[% msg.maketext("Probleme bei der Freischaltung") %]</h4>
 

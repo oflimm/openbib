@@ -193,7 +193,7 @@ $(document).ready(function(){
 
       <div class="ob-numbering">[% start_range+loop.count - 1 %]</div>
       <div class="ob-thumbnail">
-    [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>[% ELSE %]&nbsp;[% END %]
+    [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.get('coverscans_exturl').replace('ISBNINHERE', isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" alt="Cover-Scan"/></a>[% ELSE %]&nbsp;[% END %]
       </div>
       <div class="ob-brieftitle">
 [%# USE dumper;dumper.dump(item) %]

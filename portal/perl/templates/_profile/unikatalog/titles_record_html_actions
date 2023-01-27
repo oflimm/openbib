@@ -342,7 +342,7 @@ END;
   <div id="collapseRelated" class="accordion-collapse collapse" aria-labelledby="headingRelated" data-bs-parent="#ob-accordion_discover_sources">
     <div class="accordion-body">
 
-      <span id="ob-wikipedia_related_content"><img src="/images/openbib/loading.gif" id="ob-related_loading" /></span>
+      <span id="ob-wikipedia_related_content"><img src="/images/openbib/loading.gif" id="ob-related_loading" alt="[% msg.maketext("Inhalt wird geladen") %]"/></span>
 
     </div>
   </div>
@@ -417,7 +417,7 @@ END;
   <div id="collapseSimilarPersons" class="accordion-collapse collapse" aria-labelledby="headingSimilarPersons" data-bs-parent="#ob-accordion_discover_sources">
     <div class="accordion-body">
       
-      <span id="ob-similar_persons_content"> <img src="/images/openbib/loading.gif" /> </span>
+      <span id="ob-similar_persons_content"> <img src="/images/openbib/loading.gif" alt="[% msg.maketext("Inhalt wird geladen") %]"/> </span>
       
     </div>
   </div>
@@ -437,7 +437,7 @@ END;
   <div id="collapseSimilarSubjects" class="accordion-collapse collapse" aria-labelledby="headingSimilarSubjects" data-bs-parent="#ob-accordion_discover_sources">
     <div class="accordion-body">
 
-      <span id="ob-similar_subjects_content"> <img src="/images/openbib/loading.gif" /> </span>
+      <span id="ob-similar_subjects_content"> <img src="/images/openbib/loading.gif" alt="[% msg.maketext("Inhalt wird geladen") %]"/> </span>
 
     </div>
   </div>

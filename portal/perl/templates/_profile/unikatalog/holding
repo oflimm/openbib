@@ -111,7 +111,7 @@ END;
   END ;
 
 -%]
-<td><a href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% thisholding.${"X4000"}.content.short | uri %] :: [% thisholding.${"X0016"}.content | uri %] :: [% thisholding.${"X0014"}.content | uri %]" title="Titel :: Bibliothek :: Standort :: Signatur" data-bs-toggle="modal" data-bs-target="#qrcodeModal" data-formattitle="QR-Code" data-formaturl="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% thisholding.${"X4000"}.content.short | uri %] :: [% thisholding.${"X0016"}.content | uri %] :: [% thisholding.${"X0014"}.content | uri %]"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" /></a></td>
+<td><a href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% thisholding.${"X4000"}.content.short | uri %] :: [% thisholding.${"X0016"}.content | uri %] :: [% thisholding.${"X0014"}.content | uri %]" title="Titel :: Bibliothek :: Standort :: Signatur" data-bs-toggle="modal" data-bs-target="#qrcodeModal" data-formattitle="QR-Code" data-formaturl="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% thisholding.${"X4000"}.content.short | uri %] :: [% thisholding.${"X0016"}.content | uri %] :: [% thisholding.${"X0014"}.content | uri %]"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" alt="[% msg.maketext("QR-Code") %]"/></a></td>
 [%   IF have_standort %]<td>[% thisholding.${"X0016"}.content %]</td>[% END %]<td><strong><span class="ob-mark">[% thisholding.${"X0014"}.content %]</span></strong></td>[% IF have_bestandsverlauf %]<td>[% IF thisholding.${"X1200"} %][% thisholding.${"X1200"}.content %] [% END %][% thisholding.${"X1204"}.content %][% IF thisholding.${"X1203"} %] ([% thisholding.${"X1203"}.content %])[% END %]</td>[% END %]</tr>
 [% END %]
 </tbody>
@@ -140,7 +140,7 @@ END;
   END ;
 
 -%]
-<td><a class="ob-qrcode_preview" onclick="return false;" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% dbinfo.get('dbnames').${database}.short | uri %]" title="Titel :: Bibliothek"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" /></a></td>
+<td><a class="ob-qrcode_preview" onclick="return false;" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% dbinfo.get('dbnames').${database}.short | uri %]" title="Titel :: Bibliothek"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" alt="[% msg.maketext("QR-Code") %]"/></a></td>
 </tr>
 </tbody>
 </table>

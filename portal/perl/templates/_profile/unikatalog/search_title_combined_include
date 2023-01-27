@@ -49,16 +49,16 @@
       <div class="row">    
         <div class="col">
           <div class="input-group">
-            <input required="required" class="form-control" type="text" name="fs" value="[% searchquery.get_searchfield('freesearch').val | html %]" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Unikatalog (Bücher, E-Medien, Aufsätze &amp; mehr) und USB Website") %]" />
+            <input required="required" class="form-control" type="text" name="fs" value="[% searchquery.get_searchfield('freesearch').val | html %]" title="[% msg.maketext("Freie Suche") %]" placeholder="[% msg.maketext("Unikatalog (Bücher, E-Medien, Aufsätze &amp; mehr) und USB Website") %]" />
             <span class="input-group-btn ps-1">
               <button class="btn btn-primary" type="submit"><span class="fas fa-search d-md-none"></span><span class="d-none d-md-block font-weight-bold">[% msg.maketext("Suchen") %]</span></button>
-              <span class="btn btn-primary fas fa-cog d-md-none" data-bs-toggle="collapse" data-bs-target="#search_options" aria-expanded="false"></span>
+              <span class="btn btn-primary fas fa-cog d-md-none" data-bs-toggle="collapse" data-bs-target="#search_options[% idsuffix %]" aria-expanded="false"></span>
             </span>
           </div>
 	</div>
       </div>
       <div class="row pt-1 pb-0">     
-	<div class="col collapse d-md-block p-0" id="search_options">
+	<div class="col collapse d-md-block p-0" id="search_options[% idsuffix %]">
 	  
           <ul class="list-group flex-row flex-wrap justify-content-center">
 	    <!--            <li class="list-group-item pe-1" style="border: none" >
@@ -195,20 +195,14 @@ $(document).ready(function(){
             <i class="fa fa-sliders-h"></i> [% msg.maketext("Filtern") %]
           </button>
 	</div>
-        <div class="d-none d-lg-block mt-2">
+        <div class="d-none d-lg-block mt-2"	>
 [% msg.maketext("Treffer") %]&nbsp;<b>[% start_range.chunk(-3).join('.') %]-[% end_range.chunk(-3).join('.') %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b id="numhits[% idsuffix %]">[% hits.chunk(-3).join('.') %]</b>
         </div>
       </div>
     </div>
     <div class="right mt-2">
-      <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
-	<input type="hidden" name="page" value="1" />
-	<input type="hidden" name="l"    value="[% lang %]" />
-
-[% cgiapp.to_cgi_hidden_input({ exclude = ['page','srt','srto','num']}) %]
 
 [% PROCESS common/subtemplate name="titlist_options" this_loc=config.get('search_loc') %]
-      </form>
 
     </div>
   </div>

@@ -81,7 +81,7 @@
 
 [% IF config.get('deutsche_bibliotheksstatistik') %]
 <!-- DBS 'Zaehl-Pixel' USB - Kategorie: KUG-->
-<img src="http://dbspixel.hbz-nrw.de/count?id=AB038&amp;page=4" width="1" height="1" />
+<img src="http://dbspixel.hbz-nrw.de/count?id=AB038&amp;page=4" width="1" height="1" alt="[% msg.maketext("Zählpixel der DBS") %]"/>
 [% END %]
 
 [%# USE dumper;dumper.dump(dbinfo)%]

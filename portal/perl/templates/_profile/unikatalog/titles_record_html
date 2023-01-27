@@ -263,14 +263,14 @@
 <!-- URI Location: [% location %] -->
 <script>
 $(document).ready(function(){
-    $("#ob-same_records_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-same_records_loading\" />"); 
+    $("#ob-same_records_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-same_records_loading\" alt=\"[% msg.maketext("Inhalt wird geladen") %]\"/>"); 
     $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/same_records.include?l=[% lang %]",
         function (txt){
             $("#ob-same_records").html(txt);
             $("#ob-same_records_loading").hide();
         });
 
-    $("#ob-similar_records_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-similar_records_loading\" />"); 
+    $("#ob-similar_records_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-similar_records_loading\"  alt=\"[% msg.maketext("Inhalt wird geladen") %]\"/>"); 
     $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/similar_records.include?l=[% lang %]",
         function (txt){
             $("#ob-similar_records").html(txt);
@@ -377,7 +377,7 @@ Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_auslei
 
 [% IF fulltext %]
 	    <div class="pe-1">	    
-              <a class="btn btn-primary pe-2" href="[% fulltext %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Volltext") %]</span><img class="ps-2" src="[% fulltext_icon %]"/></a>
+              <a class="btn btn-primary pe-2" href="[% fulltext %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Volltext") %]</span><img class="ps-2" src="[% fulltext_icon %]"  alt="[% msg.maketext("Volltext") %]"/></a>
 	    </div>
 [% END %]
 
@@ -410,7 +410,7 @@ Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_auslei
 [% END %]
 	     
 	     <div class="pe-1">
-	       <a href="#" class="ob-sidebar_button sidebar-toggler d-none d-md-block" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar"><i class="fas fa-plus fa-2x"></i></a>	     
+	       <button class="ob-sidebar_button sidebar-toggler d-none d-md-block" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar" title="[% msg.maketext("Titelaktionen") %]"><i class="fas fa-plus fa-2x"></i></button>     
 	     </div>
 
 
@@ -449,7 +449,7 @@ Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_auslei
 
 <!--</div>--><!-- End record -->
 
-<a href="#" class="ob-floating_sidebar_button sidebar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar"><i class="fas fa-plus fa-2x"></i></a>
+<button class="ob-floating_sidebar_button sidebar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar" title="[% msg.maketext("Titelaktionen") %]"><i class="fas fa-plus fa-2x"></i></button>
 
 [% ELSE %]
 [% detail_url = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.get_encoded_id}.html?l=${lang}" %]

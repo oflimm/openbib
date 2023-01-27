@@ -27,12 +27,12 @@
    
 -%]
 
-<div class="dropdown" id="ob-titlist_options">
-  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuSort" data-bs-toggle="dropdown" aria-expanded="false">
+<div class="dropdown" id="ob-titlist_options[% idsuffix %]">
+  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuSort[% idsuffix %]" data-bs-toggle="dropdown" aria-expanded="false">
     [% IF sorttype_desc_map.defined(session_sort) %][% sorttype_desc_map.${session_sort} %][% ELSE %][% msg.maketext("Sortierung") %][% END %]<i class="fas fa-sort ps-2"></i>
   </button>
 
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenuSort">
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuSort[% idsuffix %]">
 [% IF NOT no_relevance %]  
     <li class="dropdown-item"><a class="w-100 [% IF query.param('srt') == 'relevance_desc' || session_sort == 'relevance_desc' %]text-strong[% END %]" [% IF NOT no_htmx %]hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% IF this_loc %][% this_loc %][% ELSE %][% path_prefix %]/[% config.get('search_loc') %][% END %].include?[% sort_args %];srt=relevance_desc"[% END %] href="[% IF this_loc %][% this_loc %][% ELSE %][% path_prefix %]/[% config.get('search_loc') %][% END %].html?[% sort_args %];srt=relevance_desc" title="[% msg.maketext("Relevanz") %]">[% msg.maketext("Relevanz") %]</a></li>
 [% END %]    

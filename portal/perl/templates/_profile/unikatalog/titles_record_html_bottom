@@ -18,20 +18,20 @@
 <div id="ob-additional_title_info"><!-- Begin Additional Title Info -->
 [%# USE dumper;dumper.dump(holding)%]
 
-<ul class="nav nav-tabs" role="tablist">
+<ul class="nav nav-tabs">
 [%   IF circulation.size > 0 %]
-<li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#ob-circulation_info">[% msg.maketext("Ausleihe/Exemplare") %]</a></li>
+<li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#ob-circulation_info">[% msg.maketext("Ausleihe/Exemplare") %]</a></li>
 [%   ELSIF holding.size > 0 %]
-<li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#ob-holding_info">[% msg.maketext("Bestand") %]</a></li>
+<li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#ob-holding_info">[% msg.maketext("Bestand") %]</a></li>
 [%   END %]
 
 [%   IF journaltocs_feed %]
-<li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-journaltocs">[% msg.maketext("Letzte Artikel") %]</a></li>
+<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#ob-journaltocs">[% msg.maketext("Letzte Artikel") %]</a></li>
 [%   END %]
-<li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-same_records" id="ob-same_records_li">[% msg.maketext("In anderen Katalogen") %]</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-similar_records" id="ob-similar_records_li">[% msg.maketext("Andere Ausgaben") %]</a></li>
+<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#ob-same_records" id="ob-same_records_li">[% msg.maketext("In anderen Katalogen") %]</a></li>
+<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#ob-similar_records" id="ob-similar_records_li">[% msg.maketext("Andere Ausgaben") %]</a></li>
 [%   IF config.get('reviews') %]
-<li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-reviews">[% msg.maketext("Bewertungen/Rezensionen") %]</a></li>
+<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#ob-reviews">[% msg.maketext("Bewertungen/Rezensionen") %]</a></li>
 [%   END %]
 </ul>
 

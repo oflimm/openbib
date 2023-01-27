@@ -242,7 +242,7 @@ $(document).on("click", ".ob-less_button", function () {
 <h5 class="d-none d-md-block">[% msg.maketext("Suchergebnis filtern") %]</h5>
 
 <!-- <div class="card">
-<div class="card-header"><span id="ob-facets_all_toggle[% idsuffix %]">[% msg.maketext("Treffermenge eingrenzen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div class="card-header"><span id="ob-facets_all_toggle[% idsuffix %][% facet_prefix %]">[% msg.maketext("Treffermenge eingrenzen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 
 <div class="card-body">
 <div id="ob-facets_all_toggle_do">
@@ -253,10 +253,10 @@ $(document).on("click", ".ob-less_button", function () {
 [% IF separate_refine %]
 [%# USE dumper;dumper.dump(have_filter)%]
 [%         IF searchquery.get_filter.size > 0 || queryoptions.get_option('searchft') || queryoptions.get_option('showft') %]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-database[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-database[% idsuffix %][% facet_prefix %]" aria-expanded="true">
            [% msg.maketext("Aktive Filter") %] 
         </h4>
-        <ul id="group-database[% idsuffix %]" class="list-group in collapse show">
+        <ul id="group-database[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
 [%
     filter_prefix_map = {
           ${config.get('searchfield').dbstring.prefix} = msg.maketext("Katalog")
@@ -313,10 +313,10 @@ $(document).on("click", ".ob-less_button", function () {
 [% IF qopts.get_option('sb') == "eds" || searchprofileid_of_articles == searchquery.get_searchprofile # Start EDS %]
 
 [% IF NOT searchquery.get_option('searchft') || NOT searchquery.get_option('showft') %]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-source[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-source[% idsuffix %][% facet_prefix %]" aria-expanded="true">
            [% msg.maketext("Volltexte") %] 
         </h4>
-        <ul id="group-source_fulltext" class="list-group in collapse show">
+        <ul id="group-source_fulltext[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
 
 [% IF NOT searchquery.get_option('searchft') %]
 <li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="searchft" value="[% IF NOT queryoptions.get_option('searchft') %]1[% ELSE %]0[% END %]" [% IF queryoptions.get_option('searchft') %] %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %];searchft=1" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %];searchft=1">[% msg.maketext("Auch Volltexte durchsuchen") %]</a></li>
@@ -331,10 +331,10 @@ $(document).on("click", ".ob-less_button", function () {
 
 <!-- Begin eds source facet -->
 [%         IF facets.defined('source') && facets.source.size > 0 # Start EDS Source%]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-source[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-source[% idsuffix %][% facet_prefix %]" aria-expanded="true">
            [% msg.maketext("Quelle") %] 
         </h4>
-        <ul id="group-source[% idsuffix %]" class="list-group in collapse show">
+        <ul id="group-source[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.source ;
                   LAST IF loop.count > 25 ;
 %]
@@ -357,10 +357,10 @@ $(document).on("click", ".ob-less_button", function () {
 
 <!-- Begin database facet -->
 [%         IF 1 == 0 && facets.defined('database') && facets.database.size > 0 %]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-database[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-database[% idsuffix %][% facet_prefix %]" aria-expanded="true">
            [% msg.maketext("Katalog") %] 
         </h4>
-        <ul id="group-database[% idsuffix %]" class="list-group in collapse show">
+        <ul id="group-database[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.database ;
                   LAST IF loop.count > 25 ;
 %]
@@ -382,10 +382,10 @@ $(document).on("click", ".ob-less_button", function () {
 
 <!-- Begin availability facet -->
 [%         IF facets.defined('availability') && facets.availability.size > 0 %]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-availability[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-availability[% idsuffix %][% facet_prefix %]" aria-expanded="true">
            [% msg.maketext("Verfügbarkeit") %] 
         </h4>
-        <ul id="group-availability[% idsuffix %]" class="list-group in collapse show">
+        <ul id="group-availability[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
 [%
     # Availability Types
     # msg.maketext("online")             Online
@@ -420,10 +420,10 @@ $(document).on("click", ".ob-less_button", function () {
 
 <!-- Begin favlocation facet -->
 [%         IF facets.defined('favlocation') && facets.favlocation.size > 0 %]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-favlocation[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-favlocation[% idsuffix %][% facet_prefix %]" aria-expanded="true">
            [% msg.maketext("Mein Suchraum") %] 
         </h4>
-        <ul id="group-favlocation[% idsuffix %]" class="list-group in collapse show">
+        <ul id="group-favlocation[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.favlocation ;
 
  %]
@@ -446,10 +446,10 @@ $(document).on("click", ".ob-less_button", function () {
 
 <!-- Begin elocation facet -->
 [%         IF facets.defined('elocation') && facets.elocation.size > 0 %]
-        <h4 class="ob-facet-title [% IF facets.elocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-bs-toggle="collapse" data-bs-target="#group-elocation[% idsuffix %]" aria-expanded=[% IF facets.elocation.size > 0 %]"false"[% ELSE %]"true"[% END %]>
+        <h4 class="ob-facet-title [% IF facets.elocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-bs-toggle="collapse" data-bs-target="#group-elocation[% idsuffix %][% facet_prefix %]" aria-expanded=[% IF facets.elocation.size > 0 %]"false"[% ELSE %]"true"[% END %]>
            [% msg.maketext("E-Medien Quelle") %] 
         </h4>
-        <ul id="group-elocation[% idsuffix %]" class="list-group in collapse [% IF facets.elocation.size <= 0 %]show[% END %]">
+        <ul id="group-elocation[% idsuffix %][% facet_prefix %]" class="list-group in collapse [% IF facets.elocation.size <= 0 %]show[% END %]">
 [%             FOREACH termitem IN facets.elocation ;
 
  %]
@@ -472,10 +472,10 @@ $(document).on("click", ".ob-less_button", function () {
 
 <!-- Begin printlocation facet -->
 [%         IF facets.defined('printlocation') && facets.printlocation.size > 0 %]
-        <h4 class="ob-facet-title [% IF facets.printlocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-bs-toggle="collapse" data-bs-target="#group-location[% idsuffix %]" aria-expanded=[% IF facets.location.size > 0 %]"false"[% ELSE %]"true"[% END %]>
+        <h4 class="ob-facet-title [% IF facets.printlocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-bs-toggle="collapse" data-bs-target="#group-location[% idsuffix %][% facet_prefix %]" aria-expanded=[% IF facets.location.size > 0 %]"false"[% ELSE %]"true"[% END %]>
            [% msg.maketext("Print-Medien Standort") %] 
         </h4>
-        <ul id="group-location[% idsuffix %]" class="list-group in collapse [% IF facets.location.size <= 0 %]show[% END %]">
+        <ul id="group-location[% idsuffix %][% facet_prefix %]" class="list-group in collapse [% IF facets.location.size <= 0 %]show[% END %]">
 [%             FOREACH termitem IN facets.printlocation ;
 
  %]
@@ -498,10 +498,10 @@ $(document).on("click", ".ob-less_button", function () {
 
 <!-- Begin mediatype facet -->
 [%         IF config.get('facets').mediatype && facets.defined('mediatype') && facets.mediatype.size > 0 %]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-mediatype[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-mediatype[% idsuffix %][% facet_prefix %]" aria-expanded="true">
            [% msg.maketext("Medientyp") %] 
         </h4>
-        <ul id="group-mediatype[% idsuffix %]" class="list-group in collapse show">
+        <ul id="group-mediatype[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.mediatype ;
                   LAST IF loop.count > 25 ;
  %]
@@ -523,10 +523,10 @@ $(document).on("click", ".ob-less_button", function () {
 <!-- End mediatype facet -->
 <!-- Begin topic facet -->
 [%         IF config.get('facets').topic && facets.defined('topic') && facets.topic.size > 0 %]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-topic[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-topic[% idsuffix %][% facet_prefix %]" aria-expanded="true">
            [% msg.maketext("Themengebiet") %] 
         </h4>
-        <ul id="group-topic[% idsuffix %]" class="list-group in collapse show">
+        <ul id="group-topic[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.topic ;
                   LAST IF loop.count > 25 ;
  %]
@@ -549,10 +549,10 @@ $(document).on("click", ".ob-less_button", function () {
 
 <!-- Begin subject facet -->
 [%         IF config.get('facets').subject && facets.defined('subject') && facets.subject.size > 0 %]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-subject[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-subject[% idsuffix %][% facet_prefix %]" aria-expanded="true">
            [% msg.maketext("Schlagwort") %] 
         </h4>
-        <ul id="group-subject[% idsuffix %]" class="list-group in collapse show">
+        <ul id="group-subject[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.subject ;
                   LAST IF loop.count > 25 ;
 
@@ -572,21 +572,21 @@ $(document).on("click", ".ob-less_button", function () {
 <!-- End subject facet -->
 <!-- Begin year facet -->
 [% IF qopts.get_option('sb') == "eds" || searchprofileid_of_articles == searchquery.get_searchprofile %]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-year[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-year[% idsuffix %][% facet_prefix %]" aria-expanded="true">
            [% msg.maketext("Erscheinungsjahr") %] 
         </h4>
 
-        <div id="group-year[% idsuffix %]" class="in collapse show">
+        <div id="group-year[% idsuffix %][% facet_prefix %]" class="in collapse show">
 
          <p>
-           [% msg.maketext("Von") %]&nbsp;&nbsp;<input id="ob-yearSlider_from[% idsuffix %]" type="text" size="4" name="year_from" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input id="ob-yearSlider_to[% idsuffix %]" type="text" size="4" name="year_to" value="[% searchquery.get_searchfield("year_to").val %]" />&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Los"/>
+           [% msg.maketext("Von") %]&nbsp;&nbsp;<input id="ob-yearSlider_from[% idsuffix %][% facet_prefix %]" type="text" size="4" title="[% msg.maketext("Eingabe Jahr von") %]" name="year_from" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input id="ob-yearSlider_to[% idsuffix %][% facet_prefix %]" type="text" size="4" title="[% msg.maketext("Eingabe Jahr bis") %]" name="year_to" value="[% searchquery.get_searchfield("year_to").val %]" />&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Los"/>
          </p>
 
         </div>
 
 [% ELSE %]
 [%         IF config.get('facets').year && facets.defined('year') && facets.year.size > 0 %]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-year[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-year[% idsuffix %][% facet_prefix %]" aria-expanded="true">
            [% msg.maketext("Erscheinungsjahr") %] 
         </h4>
 [%
@@ -623,19 +623,19 @@ $(document).on("click", ".ob-less_button", function () {
       END;
 
 %]
-<div id="group-year[% idsuffix %]" class="in collapse show">
+<div id="group-year[% idsuffix %][% facet_prefix %]" class="in collapse show">
 [% IF facets.year.size > 1 %]
-<canvas id="ob-yearChart-[% facet_prefix %][% idsuffix %]" width="300" height="200"></canvas>
+<canvas id="ob-yearChart-[% facet_prefix %][% idsuffix %][% facet_prefix %]" width="300" height="200"></canvas>
 
-<div id="ob-yearSlider[% idsuffix %]" class="m-4"></div>
+<div id="ob-yearSlider[% idsuffix %][% facet_prefix %]" class="m-4"></div>
 
 <p>
-[% msg.maketext("Von") %]&nbsp;&nbsp;<input id="ob-yearSlider_from[% idsuffix %]" type="text" size="4" name="year_from" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input id="ob-yearSlider_to[% idsuffix %]" type="text" size="4" name="year_to" value="[% searchquery.get_searchfield("year_to").val %]" />&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Los"/>
+[% msg.maketext("Von") %]&nbsp;&nbsp;<input id="ob-yearSlider_from[% idsuffix %][% facet_prefix %]" type="text" size="4" name="year_from" title="[% msg.maketext("Eingabe Jahr von") %]" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input id="ob-yearSlider_to[% idsuffix %][% facet_prefix %]" type="text" size="4" name="year_to" title="[% msg.maketext("Eingabe Jahr bis") %]" value="[% searchquery.get_searchfield("year_to").val %]" />&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Los"/>
 </p>
 
 <script>
-var type_ctx[% idsuffix %] = document.getElementById('ob-yearChart-[% facet_prefix %][% idsuffix %]');
-var typeChart[% idsuffix %] = new Chart(type_ctx[% idsuffix %], {
+var type_ctx[% idsuffix %][% facet_prefix %] = document.getElementById('ob-yearChart-[% facet_prefix %][% idsuffix %]');
+var typeChart[% idsuffix %][% facet_prefix %] = new Chart(type_ctx[% idsuffix %][% facet_prefix %], {
     type: 'bar',
     data: {    
         labels: [[% year_labels.join(',') %]],
@@ -677,9 +677,9 @@ var typeChart[% idsuffix %] = new Chart(type_ctx[% idsuffix %], {
 });
 
 [% IF 0 == 1 %]
-var yearslider[% idsuffix %] = document.getElementById('ob-yearSlider[% idsuffix %]');
+var yearslider[% idsuffix %][% facet_prefix %] = document.getElementById('ob-yearSlider[% idsuffix %][% facet_prefix %]');
 
-noUiSlider.create(yearslider[% idsuffix %], {
+noUiSlider.create(yearslider[% idsuffix %][% facet_prefix %], {
     start: [[% minyear %], [% maxyear %]],
     connect: true,
     range: {
@@ -688,26 +688,26 @@ noUiSlider.create(yearslider[% idsuffix %], {
     }
 });
 
-var yearslider_from[% idsuffix %] = document.getElementById('ob-yearSlider_from[% idsuffix %]');
-var yearslider_to[% idsuffix %]   = document.getElementById('ob-yearSlider_to[% idsuffix %]');
+var yearslider_from[% idsuffix %][% facet_prefix %] = document.getElementById('ob-yearSlider_from[% idsuffix %][% facet_prefix %]');
+var yearslider_to[% idsuffix %][% facet_prefix %]   = document.getElementById('ob-yearSlider_to[% idsuffix %][% facet_prefix %]');
 
-yearslider[% idsuffix %].noUiSlider.on('update', function (values, handle) {
+yearslider[% idsuffix %][% facet_prefix %].noUiSlider.on('update', function (values, handle) {
 
     var value = values[handle];
 
     if (handle) {
-        yearslider_to[% idsuffix %].value = Math.round(value);
+        yearslider_to[% idsuffix %][% facet_prefix %].value = Math.round(value);
     } else {
-        yearslider_from[% idsuffix %].value = Math.round(value);
+        yearslider_from[% idsuffix %][% facet_prefix %].value = Math.round(value);
     }
 });
 
-yearslider_from[% idsuffix %].addEventListener('change', function () {
-    yearslider[% idsuffix %].noUiSlider.set([this.value, null]);
+yearslider_from[% idsuffix %][% facet_prefix %].addEventListener('change', function () {
+    yearslider[% idsuffix %][% facet_prefix %].noUiSlider.set([this.value, null]);
 });
 
-yearslider_to[% idsuffix %].addEventListener('change', function () {
-    yearslider[% idsuffix %].noUiSlider.set([null, this.value]);
+yearslider_to[% idsuffix %][% facet_prefix %].addEventListener('change', function () {
+    yearslider[% idsuffix %][% facet_prefix %].noUiSlider.set([null, this.value]);
 });
 [% END %]
 
@@ -745,10 +745,10 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 <!-- End year facet -->
 <!-- Begin classification facet -->
 [%         IF config.get('facets').classification && facets.defined('classification') && facets.classification.size > 0 %]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-classification[% idsuffix %]" aria-expanded="false">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-classification[% idsuffix %][% facet_prefix %]" aria-expanded="false">
            [% msg.maketext("Systematik") %] 
         </h4>
-        <ul id="group-classification[% idsuffix %]" class="list-group in collapse">
+        <ul id="group-classification[% idsuffix %][% facet_prefix %]" class="list-group in collapse">
 [%             FOREACH termitem IN facets.classification ;
                   LAST IF loop.count > 25 ;
  %]
@@ -837,10 +837,10 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 -%]
 
 
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-provenance[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-provenance[% idsuffix %][% facet_prefix %]" aria-expanded="true">
            [% msg.maketext("Sammlungsportal") %]<i class="ms-2 fas fa-archway"></i>  / [% msg.maketext("Provenienz") %]
         </h4>
-        <ul id="group-provenance[% idsuffix %]" class="list-group in collapse show">
+        <ul id="group-provenance[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.provenance ;
                   LAST IF loop.count > 25 ;
  %]
@@ -862,10 +862,10 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 <!-- End provenance facet -->
 <!-- Begin tag facet -->
 [%         IF config.get('facets').tag && facets.defined('tag') && facets.tag.size > 0 %]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-tag[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-tag[% idsuffix %][% facet_prefix %]" aria-expanded="true">
            [% msg.maketext("Tags") %] 
         </h4>
-        <ul id="group-tag[% idsuffix %]" class="list-group in collapse show">
+        <ul id="group-tag[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.tag ;
                   LAST IF loop.count > 25 ;
  %]
@@ -887,10 +887,10 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 <!-- End tag facet -->
 <!-- Begin litlist facet -->
 [%         IF config.get('facets').litlist && facets.defined('litlist') && facets.litlist.size > 0 %]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-litlist[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-litlist[% idsuffix %][% facet_prefix %]" aria-expanded="true">
            [% msg.maketext("Literaturliste") %] 
         </h4>
-        <ul id="group-litlist[% idsuffix %]" class="list-group in collapse show">
+        <ul id="group-litlist[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.litlist ;
                   LAST IF loop.count > 25 ;
  %]
@@ -913,10 +913,10 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 
 <!-- Begin person facet -->
 [%         IF config.get('facets').person && facets.defined('person') && facets.person.size > 0 %]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-person[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-person[% idsuffix %][% facet_prefix %]" aria-expanded="true">
            [% msg.maketext("Person") %] 
         </h4>
-        <ul id="group-person[% idsuffix %]" class="list-group in collapse show">
+        <ul id="group-person[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.person ;
                   LAST IF loop.count > 25 ;
 %]
@@ -939,10 +939,10 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 
 <!-- Begin language facet -->
 [%         IF config.get('facets').language && facets.defined('language') && facets.language.size > 0 %]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-language[% idsuffix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-language[% idsuffix %][% facet_prefix %]" aria-expanded="true">
            [% msg.maketext("Sprache") %] 
         </h4>
-        <ul id="group-language[% idsuffix %]" class="list-group in collapse show">
+        <ul id="group-language[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.language ;
                   LAST IF loop.count > 25 ;
  %]
@@ -1031,10 +1031,10 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 
 <!-- Begin corporatebody facet -->
 [%         IF config.get('facets').corporatebody && facets.defined('corporatebody') && facets.corporatebody.size > 0 %]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-corporatebody[% idsuffix %]" aria-expanded="false">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-corporatebody[% idsuffix %][% facet_prefix %]" aria-expanded="false">
            [% msg.maketext("Institution") %] 
         </h4>
-        <ul id="group-corporatebody[% idsuffix %]" class="list-group in collapse">
+        <ul id="group-corporatebody[% idsuffix %][% facet_prefix %]" class="list-group in collapse">
 [%             FOREACH termitem IN facets.corporatebody ;
                   LAST IF loop.count > 25 ;
 %]
@@ -1103,12 +1103,12 @@ durch zus&auml;tzliche Worte weiter eingrenzen.") %]
 
 <div style="display: flex;flex-direction: column;">
 
-<div id="yewno-facet-widget[% idsuffix %]" style="height:400px;width:259px;"></div> <!-- position this where you want the widget to show up -->
+<div id="yewno-facet-widget[% idsuffix %][% facet_prefix %]" style="height:400px;width:259px;"></div> <!-- position this where you want the widget to show up -->
 <script>
 new YewnoDiscoverWidget({
 height: 420,
 width: 259,
-containerElementSelector: "#yewno-facet-widget[% idsuffix %]",
+containerElementSelector: "#yewno-facet-widget[% idsuffix %][% facet_prefix %]",
 query: "[% searchquery.get_searchfield('freesearch').val.replace('"',' ') | html %]",
 languages: ["deu"], // available languages eng,zho,deu
 });

@@ -14,7 +14,7 @@
 #######################################################################
 -%]
 
-<img src="/images/openbib/graph/yearly/sessions/years.png" />
+<img src="/images/openbib/graph/yearly/sessions/years.png" alt="[% msg.maketext("Diagramm") %]"/>
 
 
 [% IF year %]
@@ -39,7 +39,7 @@
 <tr><th>Entwicklung der Sessions nach Monaten eines Jahres</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 [%    FOREACH filename IN images %]
-<img src="[% filename %]" />
+<img src="[% filename %]" alt="[% msg.maketext("Diagramm") %]"/>
 [%    END %]
 </td></td>
 </table>
@@ -70,7 +70,7 @@
 <tr><th>Entwicklung der Sessions nach Tagen eines Monats</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 [%   FOREACH filename IN images %]
-<img src="[% filename %]" />
+<img src="[% filename %]" alt="[% msg.maketext("Diagramm") %]"/>
 <p />
 [%   END %]
 </td></td>

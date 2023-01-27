@@ -961,7 +961,7 @@ END;
 END;
 -%]
 [% IF show_more %]
-<tr class="ob-field ob-more_button"><th colspan="2"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></th></tr>
+<tr class="ob-field ob-more_button"><th><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></th><td></td></tr>
 [% END %]
 </table>
 

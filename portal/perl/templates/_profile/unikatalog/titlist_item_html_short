@@ -413,7 +413,7 @@
     [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]
     [% coverapi = config.get('covers').vlb %]
     [%# USE dumper;dumper.dump(coverapi)%]
-    <a href="[% coverapi.credits_url %]" target="_blank"><img src="[% path_prefix %]/[% config.get('connector_cover_loc') %]/vlb/[% isbn %]?size=s" title="[% coverapi.credits_text %]" /></a>[% ELSE %]&nbsp;[% END %]
+    <a href="[% coverapi.credits_url %]" target="_blank"><img src="[% path_prefix %]/[% config.get('connector_cover_loc') %]/vlb/[% isbn %]?size=s" title="[% coverapi.credits_text %]" alt="Cover-Scan"/></a>[% ELSE %]&nbsp;[% END %]
       </div>
 [% END %]      
       <div class="ob-brieftitle ps-4">
@@ -482,7 +482,7 @@
 
 [% IF fulltext %]
 	    <div class="pe-1">	    
-              <a class="btn btn-primary pe-2" href="[% fulltext %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Volltext") %]</span><img class="ob-fulltext_status" src="[% fulltext_icon %]"/></a>
+              <a class="btn btn-primary pe-2" href="[% fulltext %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Volltext") %]</span><img class="ob-fulltext_status" src="[% fulltext_icon %]" alt="[% msg.maketext("Volltext-Icon") %]"/></a>
 	    </div>
 [% END %]
 
@@ -519,7 +519,7 @@
           </div><!-- end ob-titleactions -->
 
 [% IF record_exists && record.id && record.database %]
-	   <div class="ms-auto ob-availability">[% IF availability == "online" %]<button class="btn btn-primary ob-availability_online mb-1 me-1 pe-2"><img src="[% config.get_icon('global',view,sysprofile) %]" alt="[% msg.maketext("online") %]" /><span  class="ps-1 d-none d-sm-inline">[% msg.maketext("online ") %]</span></button>[% ELSE %]<span id="availability_[% record.database %]_[% record.get_encoded_id %]" hx-get="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/availability?l=[% lang %]" hx-trigger="revealed"><img class="pe-2" src="/images/openbib/loading.gif" /></span>[% END %]
+	   <div class="ms-auto ob-availability">[% IF availability == "online" %]<button class="btn btn-primary ob-availability_online mb-1 me-1 pe-2"><img src="[% config.get_icon('global',view,sysprofile) %]" alt="[% msg.maketext("online") %]" /><span  class="ps-1 d-none d-sm-inline">[% msg.maketext("online ") %]</span></button>[% ELSE %]<span id="availability_[% record.database %]_[% record.get_encoded_id %]" hx-get="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/availability?l=[% lang %]" hx-trigger="revealed"><img class="pe-2" src="/images/openbib/loading.gif" alt="[% msg.maketext("Lade-Icon") %]"/></span>[% END %]
 	   </div>
 [% END # record_exists %]	   
 	</div><!-- end: flex -->

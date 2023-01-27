@@ -89,14 +89,14 @@ FOREACH field IN normset;
        END;
        content_map.${categoryout}.push(content);
 
-    CASE "P0808";
-       categoryout = "Wikipedia";
+    # CASE "P0808";
+    #    categoryout = "Wikipedia";
 
-       content = "<a href=\"${content}\" target=\"_blank\">${content}</a>";
-       IF NOT content_map.${categoryout} ;
-         content_map.${categoryout} = [];
-       END;
-       content_map.${categoryout}.push(content);
+    #    content = "<a href=\"${content}\" target=\"_blank\">${content}</a>";
+    #    IF NOT content_map.${categoryout} ;
+    #      content_map.${categoryout} = [];
+    #    END;
+    #    content_map.${categoryout}.push(content);
 
     CASE "P0806";
          SWITCH subfield ;

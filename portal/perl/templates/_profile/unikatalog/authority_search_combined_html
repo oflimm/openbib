@@ -50,7 +50,8 @@
 </div>
     
 [% IF hits > 0 %]
-<div  id="ob-searchresult_authority" class="row flex-md-row ms-3 me-3">
+<div id="ob-searchresult_authority_wrapper" class="row flex-md-row">
+<div id="ob-searchresult_authority" class="row flex-md-row ms-3 me-3">
   <div id="ob-search_refine_authority" class="col-xs-6 col-md-3 d-none d-md-block">
 [% PROCESS common/subtemplate name="authority_search_facet" %]
   </div>
@@ -124,6 +125,7 @@
 
 [% PROCESS common/subtemplate name="authority_search_pagination" %]
 
+</div><!-- End: ob-searchresult_autority_wrapper -->
 [% ELSE %]
 <div class="ob-no_hits">
 <h1>[% msg.maketext("Zu Ihrer Suchanfrage konnten keine Treffer gefunden werden.") %]</h1>

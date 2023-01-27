@@ -104,22 +104,6 @@ sub joined_search {
     my $content_searchresult = $self->print_resultitem({templatename => $templatename});
 
     $writer->write(encode_utf8($content_searchresult));
-
-    # Etwaige Kataloge, die nicht lokal vorliegen und durch ein API angesprochen werden
-    foreach my $database ($config->get_databases_of_searchprofile($searchquery->get_searchprofile)) {
-        my $system = $config->get_system_of_db($database);
-
-        if ($system =~ /^Backend/){
-            $self->param('database',$database);
-            
-            $self->search({database => $database});
-            
-            my $seq_content_searchresult = $self->print_resultitem({templatename => $config->{tt_search_title_item_tname}});
-
-            $writer->write(encode_utf8($seq_content_searchresult));
-        }
-    }
-
     
     return;
 }

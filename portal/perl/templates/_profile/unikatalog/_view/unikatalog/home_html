@@ -140,9 +140,9 @@
 </style>
 
 <div id="image-area">
-  <div class="animated-image image-1"></div>
-  <div class="animated-image image-2"></div>
-  <div class="animated-image image-3"></div>
+  <div class="animated-image image-1" alt="[% msg.maketext("Hintergrundbild Haupteingang Universität") %]"></div>
+  <div class="animated-image image-2" alt="[% msg.maketext("Hintergrundbild Ansicht der Universitäts- und Stadtbibliothek") %]"></div>
+  <div class="animated-image image-3" alt="[% msg.maketext("Hintergrundbild Ansicht Magazintrakt der USB") %]"></div>
 
 <div class="ob-jumbotron ob-jumbotron-fluid mb-0 landing-page-img ps-2">
 
@@ -164,7 +164,7 @@
     <div class="row">    
         <div class="col">
             <div class="input-group">
-                <input required="required" id="to_focus" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Bücher, E-Medien, Aufsätze &amp; mehr") %]" />
+                <input required="required" id="to_focus" class="form-control" type="text" name="fs" value="" title="[% msg.maketext("Freie Suche") %]" placeholder="[% msg.maketext("Bücher, E-Medien, Aufsätze &amp; mehr") %]" />
                 <span class="input-group-btn ps-1">
                     <button class="btn btn-primary" type="submit"><span class="fas fa-search d-md-none"></span><span class="d-none d-md-block font-weight-bold">[% msg.maketext("Suchen") %]</span></button>
                     <span class="btn btn-primary fas fa-cog d-md-none" data-bs-toggle="collapse" data-bs-target="#search_options" aria-expanded="false"></span>

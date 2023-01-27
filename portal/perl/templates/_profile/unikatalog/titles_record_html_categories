@@ -258,7 +258,7 @@ FOREACH item IN normdata.${'T4120'} ;
    END;
 END;
 
-# Preprocessing der lizensierten und OA Pakete
+# Preprocessing der lizensierten und OA Pakete fuer die Anzeige entsprechender Hinweise
 
 # Paketnamen entsprechend: https://intern.ub.uni-koeln.de/usbwiki/index.php/Anreicherung_von_IMX-Importdateien
 

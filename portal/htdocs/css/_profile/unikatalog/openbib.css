@@ -340,7 +340,7 @@
     hr {
 	border-bottom-style: solid;
 	border-bottom-color: #253746;
-        border-bottom-width: 5px;	
+        border-bottom-width: 1px;	
     }
     
 
@@ -350,6 +350,10 @@
 
     .ob-bg-secondary {
 	background-color: #253746;
+    }
+
+    .ob-bg-tertiary {
+	background-color: #90c4eb;
     }
     
     .ob-border {

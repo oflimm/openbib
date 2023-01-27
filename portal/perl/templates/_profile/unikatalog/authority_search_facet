@@ -1,4 +1,4 @@
-<div class="ob-facets ob-facets_all ob-facets_authority">
+<div class="ob-facets ob-facets_all ob-facets_authority sliding-sidebar">
 [% IF hits <= config.get('xapian_option').maxmatch %]
 
 <form method="get" action="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %].html">
@@ -48,13 +48,13 @@ $(document).ready(function(){
 
 // Begin Togglen / Facets Print Locations
 // Bild setzen
-$("#[% facet_prefix %]_location_[% database %]_toggle").html("<a href=\"#[% facet_prefix %]_location_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#[% facet_prefix %]_database_[% database %]_toggle").html("<a href=\"#[% facet_prefix %]_database_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
-$("#[% facet_prefix %]_location_[% database %]").hide();
+$("#[% facet_prefix %]_database_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
-$("#[% facet_prefix %]_location_[% database %]_toggle").click(function(){
- $("#[% facet_prefix %]_location_[% database %]").toggle();
- $("#[% facet_prefix %]_location_[% database %]_toggle").html("");
+$("#[% facet_prefix %]_database_[% database %]_toggle").click(function(){
+ $("#[% facet_prefix %]_database_[% database %]").toggle();
+ $("#[% facet_prefix %]_database_[% database %]_toggle").html("");
 });
 
 });
@@ -94,29 +94,27 @@ $("#[% facet_prefix %]_location_[% database %]_toggle").click(function(){
 [%        END %]
 [% END %]
 <!-- Begin database facet -->
-[%         IF facets.location.size > 0 %]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-location" aria-expanded="true">
-           [% msg.maketext("Standort") %] 
+[%         IF facets.database.size > 0 %]
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-database" aria-expanded="true">
+           [% msg.maketext("Katalog") %] 
         </h4>
 
-        <ul id="group-location" class="list-group in collapse show">
+        <ul id="group-database" class="list-group in collapse show">
 
-[%             FOREACH termitem IN facets.location ;
+[%             FOREACH termitem IN facets.database ;
+                  LAST IF loop.count > 25 ;
 
 %]
-[% IF facets.database.size > 5 && loop.count == 5 %]
-<span id="[% facet_prefix %]_location_[% database %]_toggle]"></span>
-<div id="[% facet_prefix %]_location_[% database %]">
-[% END %]
 [%-
     searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').locationstring.prefix;
+    searchprefix  = config.get('searchfield').databasestring.prefix;
     filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<li class="ob-facet-item d-flex"><a href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% locinfo.get('identifier').${termitem.0}.description %]</a> <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1 %]</span></li>
+<li class="ob-facet-item [% IF facets.mediatype.size > 5 && loop.count > 5 %]hidden[% END %]"><a href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% locinfo.get('identifier').${termitem.0}.description %]</a> <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1 %]</span></li>
 [%             END %]
 [% IF facets.database.size > 5 %]
-</div>
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
 [% END %]
 </ul>
 <p/>

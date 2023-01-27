@@ -15,11 +15,16 @@
 
    sort_args = cgiapp.to_cgi_querystring({ change = {'page' = 1 }, exclude = ['srt', 'srto'] });
 
+   sorttype_desc_map = {
+     name_asc = msg.maketext("Name aufsteigend")
+     name_desc = msg.maketext("Name absteigend")
+   };
+
 -%]
 
-<div class="dropdown">
+<div class="dropdown" id="ob-titlist_options">
   <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuSort" data-bs-toggle="dropdown" aria-expanded="false">
-    [% msg.maketext("Sortierung") %]
+    [% IF sorttype_desc_map.defined(session_sort) %][% sorttype_desc_map.${session_sort} %][% ELSE %][% msg.maketext("Sortierung") %][% END %]<i class="fas fa-sort ps-2"></i>
   </button>
 
   <ul class="dropdown-menu" aria-labelledby="dropdownMenuSort">

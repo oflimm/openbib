@@ -48,27 +48,36 @@
      dbdesc   = dbinfo.get('dbnames').${record.database}.full;
      dburl    = dbinfo.get('urls').${record.database};
 
+     normdata_loc = config.get("${item.type}s_loc");
+     resource_url = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${normdata_loc}/id/${record.get_encoded_id}" ;
+
 -%]
     <div class="ob-item d-flex flex-row[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
       <div class="ob-numbering">[% start_range+loop.count - 1 %]</div>
       <div class="ob-thumbnail">
       </div>
       <div class="ob-brieftitle ps-3 pt-3">
-[%# USE dumper;dumper.dump(item) %]
-         [% IF record.id && record.database %]<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get("${item.type}s_loc") %]/id/[% record.id %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% main_entry %]</span></strong></a>[% END %]
+        <div class="ob-titleinfo ps-2 mt-4">
+
+<!-- Item: [% USE dumper;dumper.dump(item) %] -->
+         [% IF record.id && record.database %]<a href="[% resource_url %].html?l=[% lang %]" alt="[% title %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% resource_url %].include?l=[% lang %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% main_entry %]</span></strong></a>[% END %]
 [% IF multiple_dbs == 1 %]
-         <br /><img style="vertical-align:text-bottom;padding:1px;" src="[% config.get('home_small_img') %]" alt="[% msg.maketext("Katalog") %]" title="[% msg.maketext("Katalog") %]"/>
-[%-   IF dbinfo.get('locationid').${record.database} %]
-         <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.get('locationid').${record.database} %]">
-[%-   ELSE -%]
+         <br /><i class="fas fa-database"></i>
          <a href="[% dburl %]" target="_blank">
-[%-   END -%]
 [% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></i>&nbsp;[%- IF titleinfo -%][ [% titleinfo %] ][%- END -%]
 [% ELSE %]
 [%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
 [% END %]      
+       </div> <!-- End titleinfo -->
+       <div class="ob-titlemark ps-2 d-flex d-none d-md-block">[% IF item.type %][% msg.maketext("Typ") %]: <span>[% IF item.type == 'person' %][% msg.maketext("Person") %][% ELSIF item.type == 'corporatebody' %][% msg.maketext("Körperschaft") %][% ELSIF item.type == 'subject' %][% msg.maketext("Schlagwort") %][% ELSIF item.type == 'classification' %][% msg.maketext("Notation") %][% END %]</span>[% END %]
+       </div>
+       <div class="ps-2 d-flex">
+        <div class="d-flex ob-titleactions">
+            <div class="pe-1">
+              <a class="btn btn-primary pe-2" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% resource_url %].include?l=[% lang %]" href="[% resource_url %].html?l=[% lang %]" alt="[% title %]" title="[% title %]"><i class="fas fa-eye"></i> <span>Details</span></a>
+            </div>      
+         </div>
+	</div>
       </div>
-      <div class="ob-titlemark"></div>
-      <div class="ob-titleactions"></div>
     </div>
 <!-- Ende einzelner Treffer -->

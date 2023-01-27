@@ -15,20 +15,42 @@
 [%- IF representation == 'html' -%]
 <p />
 
-      </div><!-- /.col -->
-    </div><!-- /.row -->
-
 
 [% PROCESS common/subtemplate name="std_footer" %]
 
 </div><!-- /.container-fluid -->
 
-  
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="/js/jquery-3.3.1.slim.min.js"></script>
-  <script src="/js/popper.min.js"></script>
-  <script src="/js/bootstrap.min.js"></script>
+  <!-- START Bootstrap-Cookie-Alert -->
+  <div class="alert text-center cookiealert ob-bg-secondary" role="alert">
+    <b>Um unsere Webseite für Sie optimal zu gestalten und fortlaufend verbessern zu können, verwenden wir Cookies. Durch die weitere Nutzung der Webseite stimmen Sie der Verwendung von Cookies zu. Weitere Informationen zu Cookies erhalten Sie in unserer <a class="inturl" href="[% path_prefix %]/[% config.get('info_loc') %]/datenschutz.html?l=[% lang %]">Datenschutzerklärung</a>. Unser Impressum finden Sie <a class="inturl" href="[% path_prefix %]/[% config.get('info_loc') %]/impressum.html?l=[% lang %]">hier</a>.</b>
 
+      <button type="button" class="btn btn-primary btn-sm acceptcookies mt-3 ob-bg" aria-label="Close">
+        Ich stimme der Verwendung von Cookies zu.
+      </button>
+    </div>
+    <!-- END Bootstrap-Cookie-Alert -->
+
+    <script type="text/javascript" src="/js/cookiealert.js"></script>
+
+[% IF layout_param.jump_top %]
+<script>
+$(window).on('scroll',function() {
+  const mainfooter = $('.uzk15__mainfooter');
+  const scrollHeight = window.outerHeight - (3 * window.outerHeight / 4);
+  const scrollBottom = mainfooter.innerHeight();
+  if (window.scrollY > scrollHeight && window.scrollY < (document.body.scrollHeight - window.innerHeight - scrollBottom + 20 ) ) { 
+    $('.ob-jump_top').addClass('active');
+  } else {
+    $('.ob-jump_top').removeClass('active')
+  }
+})
+</script>
+
+<div class="ob-jump_top" id="ob-jump_to_top">
+<a href="#ob-page_top" title="[% msg.maketext("Zum Anfang") %]"><i class="fas fa-chevron-up fa-2x"></i></a>
+</div>
+[% END %]
+  
 </body>
 </html>
 [% END %]

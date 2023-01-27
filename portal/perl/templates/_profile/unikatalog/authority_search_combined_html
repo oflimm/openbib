@@ -22,26 +22,36 @@
 
 </style>
 
-<div id="ob-sidebar" class="bg-light border-end min-vh-100 collapse navbar-collapse pb-5" aria-expanded="false">
-  <div id="sidebar-dismiss" class="float-end d-md-none text-white" data-bs-toggle="collapse" data-bs-target="#ob-sidebar" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-      <button type="button" class="btn-close" aria-label="[% msg.maketext("Schließen") %]">
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar_authority" aria-labelledby="offcanvasSidebarLabel">
+
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title" id="offcanvasSidebarLabel_authority">[% msg.maketext("Suchergebnis filtern") %]</h3>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
-  
-  <div class="sidebar-heading p-1 pb-0 mb-2 d-md-none">
-    <h3>[% msg.maketext("Filtern") %]</h3>
+  <div class="offcanvas-body">
+    <div>
+[% IF hits > 0 %]
+
+[% PROCESS common/subtemplate name="authority_search_facet" facet_prefix="sidebar" offcanvas=1 %]
+
+[% ELSE %]
+[%   IF viewdbs.size == 1 %]  
+<div class="ob-facets">
+  [% PROCESS common/subtemplate name="search_radius" %]
+</div>
+[%   END %]
+[% END %]
+   </div>
+    
+   <div class="offcanvas-footer">
+      <button type="button" class="btn btn-primary text-end"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar_authority">[% msg.maketext("Schließen") %]</button>
+    </div>
   </div>
-  
-  <div class="sidebar-content overflow-auto h-100 ps-1">
+</div>
     
 [% IF hits > 0 %]
-[% PROCESS common/subtemplate name="authority_search_facet" facet_prefix="sidebar" %]
-[% END %]
-  </div>
-</div><!-- End: sidebar -->
-
-[% IF hits > 0 %]
-<div  id="ob-searchresult_authority" class="row flex-md-row">
-  <div class="col-xs-6 col-md-3 d-none d-md-block">
+<div  id="ob-searchresult_authority" class="row flex-md-row ms-3 me-3">
+  <div id="ob-search_refine_authority" class="col-xs-6 col-md-3 d-none d-md-block">
 [% PROCESS common/subtemplate name="authority_search_facet" %]
   </div>
 
@@ -95,15 +105,16 @@
 [%- FOREACH record IN recordlist.get_records -%]
 [%    PROCESS common/subtemplate name="authlist_item_html_short" multiple_dbs=1 database=record.database %] 
 [%- END -%]
-  <div class="ob-footer">
-[% PROCESS common/subtemplate name="pagination" %]
+  <div class="ob-resultfooter">
+[% PROCESS common/subtemplate name="search_pagination" %]
     <div class="ob-resulttime">
-<!-- in: [% resulttime %] [% msg.maketext("Sekunden") %] -->
+  in: [% resulttime %] [% msg.maketext("Sekunden") %] 
     </div>
   </div>
 </div>
 <div class="ob-resultfooter">
    &nbsp;
+</div>
 </div>
 <p/>
 [% ELSE %]

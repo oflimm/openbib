@@ -81,8 +81,8 @@
 
 
 <div class="ob-resultlist">
-  <div class="ob-resultheader pb-4">
-    <div class="left d-none d-lg-block mt-2">
+  <div class="ob-resultheader">
+    <div class="left">
 [% msg.maketext("Treffer") %]&nbsp;[% start_range %]-[% end_range %]&nbsp;[% msg.maketext("von") %]&nbsp;[% hits %]
     </div><!-- /.ob-hits -->
   </div><!-- /.ob-resultheader -->

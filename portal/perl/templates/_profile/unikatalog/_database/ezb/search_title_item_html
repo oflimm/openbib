@@ -69,7 +69,7 @@
 
 [%# USE dumper;dumper.dump(recordlist.generic_attributes)%]
 
-<div class="row p-2">
+<div class="row flex-md-row p-2">
 <h2>[% msg.maketext("Elektronische Zeitschriften der Universität zu Köln") %]</h2>
 
 [% IF classification_desc %]
@@ -81,8 +81,8 @@
 [% IF recordlist.get_size > 0 %]
 
 <div class="ob-resultlist">
-  <div class="ob-resultheader pb-4">
-    <div class="left d-none d-lg-block mt-2">
+  <div class="ob-resultheader">
+    <div class="left">
 [% msg.maketext("Treffer") %]&nbsp;[% start_range %]-[% end_range %]&nbsp;[% msg.maketext("von") %]&nbsp;[% hits %]
     </div><!-- /.ob-hits -->
   </div><!-- /.ob-resultheader -->

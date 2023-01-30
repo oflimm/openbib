@@ -117,6 +117,11 @@
     .ob-item-fulltitle active {
     }
 
+    /* kein caret */
+    .dropdown-toggle::after {
+	display: none;
+    }
+    
     hr.dropdown-divider {
 	border-bottom-width: 0px;
     }

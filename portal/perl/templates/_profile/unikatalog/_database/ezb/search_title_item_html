@@ -69,6 +69,27 @@
 
 [%# USE dumper;dumper.dump(recordlist.generic_attributes)%]
 
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
+
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title" id="offcanvasSidebarLabel">[% msg.maketext("Suchen") %]</h3>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div>
+
+        [% PROCESS common/subtemplate database="ezb" name="classifications_sidebar" %]
+
+    </div>
+    
+    <div class="offcanvas-footer">
+      <button type="button" class="btn btn-primary text-end"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar">[% msg.maketext("Schließen") %]</button>
+    </div>
+  </div>
+</div>
+
+<div class="row flex-md-row"><!-- Wrapper for centered pagination -->
+
 <div class="row flex-md-row p-2">
   <div class="col-md-9">
 
@@ -92,8 +113,6 @@
 [%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=0 %] 
 [%- END -%]
     <div class="ob-footer">
-[% query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}); # "${request_base};${searchquery.to_cgi_params}" %]
-[% PROCESS common/subtemplate name="pagination" %]
       <div class="ob-resulttime">
 in: [% resulttime %] [% msg.maketext("Sekunden") %]
       </div><!-- /.ob-resulttime -->
@@ -112,13 +131,20 @@ in: [% resulttime %] [% msg.maketext("Sekunden") %]
   </div>  
 [% END %]
 
-   </div>
-   <div class="col-md-3">
+   </div><!-- End col-md-9 -->
+   <div class="col-md-3 d-none d-md-block">
 
         [% PROCESS common/subtemplate database="ezb" name="classifications_sidebar" %]
 
-  </div>
+  </div><!-- End col-md-3 -->
+
+</div><!-- End row -->
+
+<!-- end: result item -->
+
+<button class="ob-floating_sidebar_button_left ob-floating_sidebar_button sidebar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-control="offcanvasSidebar" title="[% msg.maketext("Suchen") %]"><i class="fas fa-search fa-2x"></i></button>
+
+[% query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}); # "${request_base};${searchquery.to_cgi_params}" %]
+[% PROCESS common/subtemplate name="pagination" %]
 
 </div>
-<p/>
-<!-- end: result item -->

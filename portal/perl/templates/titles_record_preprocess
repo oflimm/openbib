@@ -3,12 +3,8 @@
      hide_hit_msg    = msg.maketext("Zugriff nur nach Authentifizierung und für Hochschulangehörige");
      hide_detail_msg = msg.maketext("Zugriff nur nach Authentifizierung und für Hochschulangehörige");
 
-     pda_hide_detail = {};
-     pda_hide_detail_old = {
-      'dreierpda'     = 1
-      'roemkepda'     = 1
-      'vubpda'        = 1
-      'schweitzerpda' = 1
+     pda_hide_detail = {
+      'proquestpda'   = 1
      };
 
      # EDS/PDA Visibility

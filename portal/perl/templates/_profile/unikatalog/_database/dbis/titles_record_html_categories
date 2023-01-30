@@ -46,6 +46,25 @@
 
    END;
 
+   # Preprocessing lizensiert, OA oder Nationallizens
+
+   # Lizensierter Volltext oder OA? (Ausgabe Zugriffshinweis)
+   is_licensed = 0;
+   is_oa = 0;
+   is_national = 0;
+
+   FOREACH item IN normdata.${'T4120'} ;
+      IF item.subfield == "g";
+         is_oa = 1;
+         LAST;
+      ELSIF item.subfield == "y";
+         is_licensed = 1;
+         LAST;
+      ELSIF item.subfield == "n";
+         is_national = 1;
+         LAST;
+      END;
+   END;
 
 -%]
 [% IF format == "full" %]

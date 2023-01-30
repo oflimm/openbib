@@ -252,6 +252,9 @@
     ELSIF normdata.${'T4120'}.first.subfield == "f";
       fulltext_icon = config.get('ezb_green_yellow_img');
       fulltext_desc = msg.maketext("Volltext mit unbekanntem Zugang");;
+    ELSIF normdata.${'T4120'}.first.subfield == "n";
+      fulltext_icon = config.get('dbis_de_img');
+      fulltext_desc = msg.maketext("Volltext über Nationallizenz");;
     ELSE ;
       fulltext_icon = config.get('ezb_unknown_img');
       fulltext_desc = msg.maketext("Unbekannter Zugang");;
@@ -366,6 +369,17 @@ Open Access. Im Internet weltweit frei verfügbar [% IF thanks_to_unpaywall %](v
 [% ELSIF is_licensed %]
 <div class="alert alert-info">
 Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/nutzungshinweise/">Netz der Universität Köln</a> bzw. für autorisierte Benutzer. Die <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/besonderheiten/">Druck- und Downloadmöglichkeiten</a> variieren je nach Anbieter.
+</div>
+[% ELSIF is_national %]
+<div class="alert alert-info">
+<h5>Nationallizenzen der Deutschen Forschungsgemeinschaft</h5>
+
+<p>
+Sie ermöglichen Studierenden, Wissenschaftler:innen und wissenschaftlich interessierten Privatpersonen den Zugang zu Datenbanken, elektronischen Zeitschriften und Zeitungen sowie E-Books.
+</p>
+<p>
+Neben deutschlandweit frei zugänglichen elektronischen Publikationen gibt es auch Angebote, für die sich Einzelpersonen zur Nutzung registrieren können: <a class="exturl" href="https://www.nationallizenzen.de/ind_inform_registration">Infos zur Registrierung und Anmeldung von Privatpersonen</a>
+</p>
 </div>
 [% END %]
 

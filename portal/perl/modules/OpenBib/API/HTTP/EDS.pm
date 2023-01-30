@@ -194,6 +194,7 @@ sub send_search_request {
     my $drilldown         = $queryoptions->get_option('dd');
     my $searchft          = $queryoptions->get_option('searchft');
     my $showft            = $queryoptions->get_option('showft');
+    my $showft1           = $queryoptions->get_option('showft1');
 
     # Pagination parameters
     my $page              = $queryoptions->get_option('page');
@@ -236,6 +237,9 @@ sub send_search_request {
 	push @search_options, "expander=fulltext";
     }
     elsif ($showft) {
+	push @search_options, "limiter=FT:y";
+    }
+    elsif ($showft1) {
 	push @search_options, "limiter=FT1:y"; # Ehemals FT:y
     }
 

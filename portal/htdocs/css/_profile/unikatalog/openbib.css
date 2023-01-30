@@ -1905,7 +1905,8 @@ a.ext {
 
 .ob-availability_online {
     width: 9em;
-    background: #90c4eb;    
+/*    background: #90c4eb; */
+    background: #477ba2; /* Contrast: WCAG 2.1 */ 
     color: #fff;
 }
 

@@ -3,9 +3,7 @@
      hide_hit_msg    = msg.maketext("Zugriff nur nach Authentifizierung und für Hochschulangehörige");
      hide_detail_msg = msg.maketext("Zugriff nur nach Authentifizierung und für Hochschulangehörige");
 
-     pda_hide_detail = {
-      'proquestpda'   = 1
-     };
+     pda_hide_detail = { };
 
      # EDS/PDA Visibility
      hide_hit    = 0;

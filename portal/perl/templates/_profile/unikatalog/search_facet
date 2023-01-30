@@ -177,7 +177,7 @@
      exclude_args.push("profile");
      exclude_args.push("facets");
      exclude_args.push("searchft"); # EDS
-     exclude_args.push("showft1");  # EDS: limiter=FT1:y vs showft: limiter=FT:y
+     exclude_args.push("showft");  # EDS: limiter=FT:y vs showft1: limiter=FT1:y
    END;
    
    # Only once
@@ -252,7 +252,7 @@ $(document).on("click", ".ob-less_button", function () {
 
 [% IF separate_refine %]
 [%# USE dumper;dumper.dump(have_filter)%]
-[%         IF searchquery.get_filter.size > 0 || queryoptions.get_option('searchft') || queryoptions.get_option('showft1') %]
+[%         IF searchquery.get_filter.size > 0 || queryoptions.get_option('searchft') || queryoptions.get_option('showft') %]
         <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-database[% idsuffix %][% facet_prefix %]" aria-expanded="true">
            [% msg.maketext("Aktive Filter") %] 
         </h4>
@@ -284,9 +284,9 @@ $(document).on("click", ".ob-less_button", function () {
 
 [% END %]
 
-[% IF queryoptions.get_option('showft1') %]
+[% IF queryoptions.get_option('showft') %]
 
-<li class="ob-facet-item d-flex"><a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %];showft1=0" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %];showft1=0"><img style="vertical-align:bottom" src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" />&nbsp;[% msg.maketext("Zeige nur Treffer mit Volltext") %]</a></li>
+<li class="ob-facet-item d-flex"><a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %];showft=0" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %];showft=0"><img style="vertical-align:bottom" src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" />&nbsp;[% msg.maketext("Zeige nur Treffer mit Volltext") %]</a></li>
 
 [% END %]
 
@@ -301,7 +301,7 @@ $(document).on("click", ".ob-less_button", function () {
                    END ;
 %]
 [%# USE dumper;dumper.dump(category_map) %]
-<li class="ob-facet-item d-flex"><a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude_filter = [ filter.val ] }) %][% IF queryoptions.get_option('searchft') %];searchft=1[% END %][% IF queryoptions.get_option('showft1') %];showft1=1[% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude_filter = [ filter.val ] }) %][% IF queryoptions.get_option('searchft') %];searchft=1[% END %][% IF queryoptions.get_option('showft1') %];showft1=1[% END %]" title="[% msg.maketext("Entfernen") %]"><img style="vertical-align:bottom" src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" />&nbsp;[% filter_prefix_map.${filter.field} %]: [% IF filter.field == "fdb" %][% dbinfo.get('dbnames').${filter.term}.short %][% ELSIF filter.field == "floc" %][% locinfo.get('identifier').${filter.term}.description %][% ELSIF filter.field == "topic" %][% topic_map.${filter.term} %][% ELSE %][% filter.term %][% END %]</a></li>
+<li class="ob-facet-item d-flex"><a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude_filter = [ filter.val ] }) %][% IF queryoptions.get_option('searchft') %];searchft=1[% END %][% IF queryoptions.get_option('showft') %];showft=1[% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude_filter = [ filter.val ] }) %][% IF queryoptions.get_option('searchft') %];searchft=1[% END %][% IF queryoptions.get_option('showft') %];showft=1[% END %]" title="[% msg.maketext("Entfernen") %]"><img style="vertical-align:bottom" src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" />&nbsp;[% filter_prefix_map.${filter.field} %]: [% IF filter.field == "fdb" %][% dbinfo.get('dbnames').${filter.term}.short %][% ELSIF filter.field == "floc" %][% locinfo.get('identifier').${filter.term}.description %][% ELSIF filter.field == "topic" %][% topic_map.${filter.term} %][% ELSE %][% filter.term %][% END %]</a></li>
 [%             END %]
 </ul>
 
@@ -312,7 +312,7 @@ $(document).on("click", ".ob-less_button", function () {
 
 [% IF qopts.get_option('sb') == "eds" || searchprofileid_of_articles == searchquery.get_searchprofile # Start EDS %]
 
-[% IF NOT searchquery.get_option('searchft') || NOT searchquery.get_option('showft1') %]
+[% IF NOT searchquery.get_option('searchft') || NOT searchquery.get_option('showft') %]
         <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-source[% idsuffix %][% facet_prefix %]" aria-expanded="true">
            [% msg.maketext("Volltexte") %] 
         </h4>
@@ -322,8 +322,8 @@ $(document).on("click", ".ob-less_button", function () {
 <li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="searchft" value="[% IF NOT queryoptions.get_option('searchft') %]1[% ELSE %]0[% END %]" [% IF queryoptions.get_option('searchft') %] %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %];searchft=1" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %];searchft=1">[% msg.maketext("Auch Volltexte durchsuchen") %]</a></li>
 [% END %]
 
-[% IF NOT searchquery.get_option('showft1') %]
-<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="showft1" value="[% IF NOT queryoptions.get_option('showft1') %]1[% ELSE %]0[% END %]" [% IF queryoptions.get_option('showft1') %] %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %];showft1=1" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %];showft1=1">[% msg.maketext("Zeige nur Treffer mit Volltext") %]</a></li>
+[% IF NOT searchquery.get_option('showft') %]
+<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="showft" value="[% IF NOT queryoptions.get_option('showft') %]1[% ELSE %]0[% END %]" [% IF queryoptions.get_option('showft') %] %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %];showft=1" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %];showft=1">[% msg.maketext("Zeige nur Treffer mit Volltext") %]</a></li>
 [% END %]
         </ul>
 <p/>

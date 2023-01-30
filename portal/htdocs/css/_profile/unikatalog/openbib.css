@@ -2012,7 +2012,7 @@ a.ext {
     .col-md-9 {
 	margin-right: 0px;
 	padding-right: 10px;
-        padding-left: 15px;
+        padding-left: 0px;
     }
 
     .col-md-12 {
@@ -2067,7 +2067,7 @@ a.ext {
 	padding-left: 0px;
 	padding-right: 0px;
 			  
-	margin-left: -5px;
+	margin-left: 0px;
 	margin-right: -10px;
     }
 

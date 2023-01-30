@@ -1447,6 +1447,7 @@
 	border-radius:50px; 
 	padding-top: 5px;
 	text-align:center;
+	z-index: 1050
 	/* box-shadow: 2px 2px 3px #999; */
     }
 
@@ -1467,7 +1468,7 @@
 	position: fixed;
 	bottom: 10px;
 	right: 20px;
-	z-index: 1030;
+	z-index: 1050;
 	width:60px;
 	height:60px;
 	margin-top: -8px;
@@ -2055,6 +2056,10 @@ a.ext {
 	/* box-shadow: 2px 2px 3px #999; */
     }
 
+    .ob-floating_sidebar_button_left.ob-floating_sidebar_button, .ob-floating_sidebar_button_left.ob-floating_sidebar_button:hover {
+	right: 0;
+	left: 20px;
+    };
 
     #ob-startpage .landing-page-img {
 	height: 200px !important; 
@@ -2364,7 +2369,7 @@ a.card-link, a.card-link:hover {
 	position: fixed;
 	bottom: 15px;
 	right: 5px;
-	z-index: 1030;
+	z-index: 1050;
 	width:40px;
 	height:40px;
 	margin-top: -5px;

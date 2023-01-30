@@ -69,14 +69,14 @@
 
 [%# USE dumper;dumper.dump(recordlist.generic_attributes)%]
 
-<div class="row p-2">
+<div class="row flex-md-row p-2">
+  <div class="col-md-9">
 <h2>[% msg.maketext("Datenbanken der Universität zu Köln") %]</h2>
 
 [% IF classification_desc %]
 <h3>[% msg.maketext("Fachgebiet:") %] [% classification_desc %]</h3>
 [% END %]
 
-  <div class="col-md-9">
 [% IF recordlist.get_size > 0 %]
 
 

@@ -72,7 +72,7 @@ Format: TT.MM.JJJJ
 <h4>[% msg.maketext("Adresse für die Benachrichtung per E-Mail") %]</h4>
 
 <div class="form-floating mt-3 mb-4">
-<input class="form-control" type="text" name="email" id="email" value="" />
+<input class="form-control" type="text" name="email" id="email_username" value="" />
 <label for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>
 </div>
 
@@ -85,7 +85,7 @@ Format: TT.MM.JJJJ
 
 <div class="form-floating mt-3 mb-4">
 <input class="form-control" type="password" name="password2" id="password2" />
-<label for="password">[% msg.maketext("Passwort bestätigen") %]</label>
+<label for="password2">[% msg.maketext("Passwort bestätigen") %]</label>
 </div>
 
 <p>

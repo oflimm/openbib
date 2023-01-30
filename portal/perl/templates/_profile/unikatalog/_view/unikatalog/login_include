@@ -29,9 +29,9 @@
 
 	 <div id="login_targets">
 
-<ul class="nav nav-tabs" role="tablist">
-<li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#ob-login_ils">[% msg.maketext("Mit einem Benutzerausweis") %]</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-login_selfreg">[% msg.maketext("Mit einer E-Mail-Adresse") %]</a></li>
+<ul class="nav nav-tabs">
+<li class="nav-item"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#ob-login_ils">[% msg.maketext("Mit einem Benutzerausweis") %]</a></li>
+<li class="nav-item"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-login_selfreg">[% msg.maketext("Mit einer E-Mail-Adresse") %]</a></li>
 </ul>
 
 <div class="tab-content pt-3">
@@ -55,13 +55,13 @@
 
 
 <div class="form-floating mb-3">
-<input class="form-control" type="text" name="username" id="username" value="[% username %]" />
-<label for="username">[% msg.maketext("Benutzernummer") %]</label>
+<input class="form-control" type="text" name="username" id="username_ils" value="[% username %]" />
+<label for="username_ils">[% msg.maketext("Benutzernummer") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<input class="form-control" type="password" name="password" id="password" />
-<label for="password"/>[% msg.maketext("Passwort") %]</label>
+<input class="form-control" type="password" name="password" id="password_ils" />
+<label for="password_ils" />[% msg.maketext("Passwort") %]</label>
 </div>
 
 <p/>
@@ -98,13 +98,13 @@
 <p/>
 
 <div class="form-floating mb-3">
-<input class="form-control" type="text" name="username" id="email_username" value="[% username %]" />
-<label for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>
+<input class="form-control" type="text" name="username" id="email_username_selfreg" value="[% username %]" />
+<label for="email_username_selfreg">[% msg.maketext("E-Mail-Adresse") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<input class="form-control" type="password" name="password" id="email_username" />
-<label for="email_password"/>[% msg.maketext("Passwort") %]</label>
+<input class="form-control" type="password" name="password" id="email_password_selfreg" />
+<label for="email_password_selfreg"/>[% msg.maketext("Passwort") %]</label>
 </div>
 
 <div>

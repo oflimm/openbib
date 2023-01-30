@@ -623,6 +623,8 @@ sub search {
             $single_db_ref->{db_types} = \@types;
             $single_db_ref->{title}     = decode_utf8($db_node->textContent);
 
+            $single_db_ref->{url}       = $config->get("dbis_baseurl").$db_node->findvalue('@href');
+	    
             push @{$dbs_ref}, $single_db_ref;
         }
     }
@@ -692,14 +694,34 @@ sub get_search_resultlist {
     
     my $recordlist = new OpenBib::RecordList::Title;
 
+    # Zugriffstatus
+    #
+    # '' : Keine Ampel
+    # ' ': Unbestimmt g oder y oder r
+    # 'f': Unbestimmt, aber Volltext Zugriff g oder y (fulltext)
+    # 'g': Freier Zugriff (green)
+    # 'y': Lizensierter Zugriff (yellow)
+    # 'l': Unbestimmt Eingeschraenkter Zugriff y oder r (limited)
+    # 'r': Kein Zugriff (red)
+    
+    my $type_mapping_ref = {
+	'access_0'    => 'g', # green
+	'access_2'    => 'y', # yellow
+	'access_3'    => 'y', # yellow
+	'access_5'    => 'l', # yellow red
+	'access_500'  => 'n', # national license
+    };
+    
     my @matches = $self->matches;
     
     foreach my $match_ref (@matches) {
         if ($logger->is_debug){
 	    $logger->debug("Record: ".YAML::Dump($match_ref) );
 	}
-	
+
         my $access_info = $self->{_access_info}{$match_ref->{access}};
+
+	my $access_type = (defined $type_mapping_ref->{$match_ref->{access}})?$type_mapping_ref->{$match_ref->{access}}:'';
         
         my $record = new OpenBib::Record::Title({id => $match_ref->{id}, database => 'dbis', generic_attributes => { access => $access_info }});
 
@@ -707,6 +729,8 @@ sub get_search_resultlist {
         
         $record->set_field({field => 'T0331', subfield => '', mult => 1, content => $match_ref->{title}});
 
+        $record->set_field({field => 'T4120', subfield => $access_type, mult => 1, content => $match_ref->{url}});
+	
         my $mult = 1;
         if (defined $match_ref->{db_types}){
             foreach my $type (@{$match_ref->{db_types}}){

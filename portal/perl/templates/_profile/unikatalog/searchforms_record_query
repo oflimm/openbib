@@ -7,8 +7,8 @@
     this_searchfield = 'freesearch';
 -%]
 <div class="form-floating mb-3">
-<input class="form-control" id="to_focus" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
-<label for="to_focus">[% msg.maketext("Freie Suche") %]</label>
+<input class="form-control" id="to_focus_advanced" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="to_focus_advanced">[% msg.maketext("Freie Suche") %]</label>
 </div>
 [% END %]
 

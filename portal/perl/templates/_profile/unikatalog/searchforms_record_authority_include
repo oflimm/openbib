@@ -15,77 +15,77 @@
 
 <script type="text/javascript">
 function update_per (){
-  if ($("#autocomplete_per").val().length > 0){
-     $("#autocomplete_gnd").prop('disabled', true);	
-     $("#autocomplete_subj").prop('disabled', true);
-     $("#autocomplete_corp").prop('disabled', true);
-     $("#to_focus").prop('disabled', true);
+  if ($("#autocomplete_authority_per").val().length > 0){
+     $("#autocomplete_authority_gnd").prop('disabled', true);	
+     $("#autocomplete_authority_subj").prop('disabled', true);
+     $("#autocomplete_authority_corp").prop('disabled', true);
+     $("#to_focus_authority").prop('disabled', true);
   }
   else {
-     $("#autocomplete_gnd").prop('disabled',false);
-     $("#autocomplete_subj").prop('disabled',false);
-     $("#autocomplete_corp").prop('disabled',false);
-     $("#to_focus").prop('disabled',false);
+     $("#autocomplete_authority_gnd").prop('disabled',false);
+     $("#autocomplete_authority_subj").prop('disabled',false);
+     $("#autocomplete_authority_corp").prop('disabled',false);
+     $("#to_focus_authority").prop('disabled',false);
   }
 };
 
 function update_subj (){
-  if ($("#autocomplete_subj").val().length > 0){
-     $("#autocomplete_gnd").prop('disabled',true);
-     $("#autocomplete_per").prop('disabled', true);
-     $("#autocomplete_corp").prop('disabled', true);
-     $("#to_focus").prop('disabled', true);
+  if ($("#autocomplete_authority_subj").val().length > 0){
+     $("#autocomplete_authority_gnd").prop('disabled',true);
+     $("#autocomplete_authority_per").prop('disabled', true);
+     $("#autocomplete_authority_corp").prop('disabled', true);
+     $("#to_focus_authority").prop('disabled', true);
   }
   else {
-     $("#autocomplete_gnd").prop('disabled',false);
-     $("#autocomplete_per").prop('disabled',false);
-     $("#autocomplete_corp").prop('disabled',false);
-     $("#to_focus").prop('disabled',false);
+     $("#autocomplete_authority_gnd").prop('disabled',false);
+     $("#autocomplete_authority_per").prop('disabled',false);
+     $("#autocomplete_authority_corp").prop('disabled',false);
+     $("#to_focus_authority").prop('disabled',false);
   }
 };
 
 function update_corp (){
-  if ($("#autocomplete_corp").val().length > 0){
-     $("#autocomplete_gnd").prop('disabled',true);
-     $("#autocomplete_subj").prop('disabled', true);
-     $("#autocomplete_per").prop('disabled', true);
-     $("#to_focus").prop('disabled', true);
+  if ($("#autocomplete_authority_corp").val().length > 0){
+     $("#autocomplete_authority_gnd").prop('disabled',true);
+     $("#autocomplete_authority_subj").prop('disabled', true);
+     $("#autocomplete_authority_per").prop('disabled', true);
+     $("#to_focus_authority").prop('disabled', true);
   }
   else {
-     $("#autocomplete_gnd").prop('disabled',false);
-     $("#autocomplete_subj").prop('disabled',false);
-     $("#autocomplete_per").prop('disabled',false);
-     $("#to_focus").prop('disabled',false);
+     $("#autocomplete_authority_gnd").prop('disabled',false);
+     $("#autocomplete_authority_subj").prop('disabled',false);
+     $("#autocomplete_authority_per").prop('disabled',false);
+     $("#to_focus_authority").prop('disabled',false);
   }
 };
 
 function update_fs (){
-  if ($("#to_focus").val().length > 0){
-     $("#autocomplete_gnd").prop('disabled',true);
-     $("#autocomplete_subj").prop('disabled', true);
-     $("#autocomplete_per").prop('disabled', true);
-     $("#autocomplete_corp").prop('disabled', true);
+  if ($("#to_focus_authority").val().length > 0){
+     $("#autocomplete_authority_gnd").prop('disabled',true);
+     $("#autocomplete_authority_subj").prop('disabled', true);
+     $("#autocomplete_authority_per").prop('disabled', true);
+     $("#autocomplete_authority_corp").prop('disabled', true);
   }
   else {
-     $("#autocomplete_gnd").prop('disabled',false);
-     $("#autocomplete_subj").prop('disabled',false);
-     $("#autocomplete_per").prop('disabled',false);
-     $("#autocomplete_corp").prop('disabled',false);
+     $("#autocomplete_authority_gnd").prop('disabled',false);
+     $("#autocomplete_authority_subj").prop('disabled',false);
+     $("#autocomplete_authority_per").prop('disabled',false);
+     $("#autocomplete_authority_corp").prop('disabled',false);
   }
 };
 
 function update_gnd (){
-  if ($("#autocomplete_gnd").val().length > 0){
-     $("#autocomplete_subj").prop('disabled', true);
-     $("#autocomplete_per").prop('disabled', true);
-     $("#autocomplete_corp").prop('disabled', true);
-     $("#to_focus").prop('disabled', true);
+  if ($("#autocomplete_authority_gnd").val().length > 0){
+     $("#autocomplete_authority_subj").prop('disabled', true);
+     $("#autocomplete_authority_per").prop('disabled', true);
+     $("#autocomplete_authority_corp").prop('disabled', true);
+     $("#to_focus_authority").prop('disabled', true);
   }
   else {
-     $("#autocomplete_subj").prop('disabled',false);
-     $("#autocomplete_per").prop('disabled',false);
-     $("#autocomplete_corp").prop('disabled',false);
-     $("#to_focus").prop('disabled', false);
+     $("#autocomplete_authority_subj").prop('disabled',false);
+     $("#autocomplete_authority_per").prop('disabled',false);
+     $("#autocomplete_authority_corp").prop('disabled',false);
+     $("#to_focus_authority").prop('disabled', false);
   }
 };
 
@@ -106,8 +106,8 @@ function update_gnd (){
     this_searchfield = 'freesearch';
 -%]
 <div class="form-floating mb-3">
-<input class="form-control" onkeypress="update_[% cgiparam %]()" id="to_focus" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
-<label for="to_focus">[% msg.maketext("Freie Suche") %]</label>
+<input class="form-control" onkeypress="update_[% cgiparam %]()" id="to_focus_authority" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="to_focus_authority">[% msg.maketext("Freie Suche") %]</label>
 </div>
 [% END %]
 
@@ -115,32 +115,32 @@ function update_gnd (){
     this_searchfield = 'gnd';
  -%]
 <div class="form-floating mb-3">
-<input class="form-control" onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
-<label for="autocomplete_[% cgiparam %]">GND</label>
+<input class="form-control" onkeypress="update_[% cgiparam %]()" id="autocomplete_authority_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="autocomplete_authority_[% cgiparam %]">GND</label>
 </div>
 
 [%- cgiparam = config.searchfield.person.prefix;
     this_searchfield = 'person';
  -%]
 <div class="form-floating mb-3">
-<input class="form-control" onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Personen") %]</label>
+<input class="form-control" onkeypress="update_[% cgiparam %]()" id="autocomplete_authority_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="autocomplete_authority_[% cgiparam %]">[% msg.maketext("Personen") %]</label>
 </div>
 
 [%- cgiparam = config.searchfield.corporatebody.prefix;
     this_searchfield = 'corporatebody';
  -%]
 <div class="form-floating mb-3">
-<input class="form-control" onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Institutionen") %]</label>
+<input class="form-control" onkeypress="update_[% cgiparam %]()" id="autocomplete_authority_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="autocomplete_authority_[% cgiparam %]">[% msg.maketext("Institutionen") %]</label>
 </div>
 
 [%- cgiparam = config.searchfield.subject.prefix;
     this_searchfield = 'subject';
  -%]
 <div class="form-floating mb-3">
-<input class="form-control" onkeypress="update_[% cgiparam %]()" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Schlagworte") %]</label>
+<input class="form-control" onkeypress="update_[% cgiparam %]()" id="autocomplete_authority_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="autocomplete_authority_[% cgiparam %]">[% msg.maketext("Schlagworte") %]</label>
 </div>
 
 <p/>

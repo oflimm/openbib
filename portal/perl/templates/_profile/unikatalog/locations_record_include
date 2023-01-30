@@ -305,3 +305,5 @@ Campusbibliotheken und entsprechen dem uns jeweils zuletzt mitgeteilten
 Stand. Bitte wenden Sie sich bei etwaigen Unstimmigkeiten direkt an
 die jeweilige Bibliothek.
 </p>
+
+<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Bibliotheks-Information") %]</div>

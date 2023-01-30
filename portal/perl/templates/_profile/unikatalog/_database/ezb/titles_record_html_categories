@@ -40,7 +40,7 @@
      IF access_icon_ref.${access};
         access_icon = access_icon_ref.${access};
 
-        access_icon = "<img src=\"${access_icon}\" />";
+        access_icon = "<img src=\"${access_icon}\" alt=\"${access_icon}\" />";
      END;
 
    END;

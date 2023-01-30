@@ -106,7 +106,7 @@
 	</div>
 	<div class="offcanvas-body">
 	  <div>
-            [% PROCESS common/subtemplate name=layout_param.sidebar_template %]
+            [% PROCESS common/subtemplate sidebar_suffix="_sidebar" name=layout_param.sidebar_template %]
 	  </div>
 
 	  <div class="offcanvas-footer">

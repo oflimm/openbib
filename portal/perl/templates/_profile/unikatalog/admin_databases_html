@@ -105,13 +105,13 @@
 </td>
 <td>
 [% IF user.has_right({scope = 'admin_databases', right = 'right_update'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% catalog.dbname %]/edit.html?l=[% lang %]" title="[% catalog.description %]">[% catalog.description | truncate(70) %]</a>
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% catalog.dbname %]/edit.html?l=[% lang %]" title="[% catalog.description %]">[% catalog.description | truncate(70) %]</a>
 [% ELSIF user.has_right({scope = 'admin_databases', right = 'right_read'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% catalog.dbname %].html?l=[% lang %]" title="[% catalog.description %]">[% catalog.description | truncate (70) %]</a>
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% catalog.dbname %].html?l=[% lang %]" title="[% catalog.description %]">[% catalog.description | truncate (70) %]</a>
 [% END %]
 </td>
-<td align="center">[%- IF catalog.autoconvert == 1 -%][% msg.maketext("Ja") %][%- ELSE -%] [% msg.maketext("Nein") %][%- END -%]</td>
-<td align="right">[% IF catalog.system.match('Backend') %]extern[% ELSE %]<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% catalog.dbname %]/updates.html?l=[% lang %]" title="[% msg.maketext("Aktualisierung") %]">[% catalog.allcount %]</a>[% END %]</td></tr>
+<td>[%- IF catalog.autoconvert == 1 -%][% msg.maketext("Ja") %][%- ELSE -%] [% msg.maketext("Nein") %][%- END -%]</td>
+<td>[% IF catalog.system.match('Backend') %]extern[% ELSE %]<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% catalog.dbname %]/updates.html?l=[% lang %]" title="[% msg.maketext("Aktualisierung") %]">[% catalog.allcount %]</a>[% END %]</td></tr>
 [% END %]
 </tbody>
 </table>

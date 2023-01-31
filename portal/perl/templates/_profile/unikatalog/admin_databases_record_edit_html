@@ -15,7 +15,7 @@
 <form method="post" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% databaseinfo.dbname %]">
 <input type="hidden" name="_method"    value="PUT" />
 
-<h1 class="display-5">[% msg.maketext("Allgemeine Kataloginformationen") %]</h1>
+<h2>[% msg.maketext("Allgemeine Kataloginformationen") %]</h2>
 
 <div class="form-floating mb-3">
 <span class="form-control">[% databaseinfo.dbname %]</span>
@@ -61,13 +61,13 @@
 <label for="system">[% msg.maketext("System") %]</label>
 </div>
 
-<div class="form-group">
-<label for="schema">[% msg.maketext("Metadaten Schema") %]</label>
-  <select class="form-control" name="schema" id="system">
-[% FOREACH schema IN config.get('metadata_schema').keys.sort %]
+<div class="form-floating mb-3">
+  <select class="form-control" name="schema" id="schema">
+[% FOREACH schema IN config.get('metadata_schema').sort %]
        <option value="[% schema %]" [% IF databaseinfo.schema == schema %]selected[% END %]>[% schema %]</option>
 [% END %]
    </select>
+   <label for="schema">[% msg.maketext("Metadaten Schema") %]</label>
 </div>
 
 <div class="form-floating mb-3">
@@ -98,34 +98,31 @@
 <label for="active">[% msg.maketext("Aktiv") %]</label>
 </div>
 
+<h2>[% msg.maketext("Aktuelle Titelzahlen") %]</h2>
+
 <div class="form-floating mb-3">
-<span id="titles_in_db"> [% databaseinfo.allcount.chunk(-3).join('.') %]</span>
-<label for="titles_in_db">[% msg.maketext("Titel in Datenbank") %]</label>
+[% databaseinfo.allcount.chunk(-3).join('.') %] [% msg.maketext("Titel in Datenbank") %]
 </div>
 
 <div class="form-floating mb-3">
-<span id="journal_count">[% databaseinfo.journalcount.chunk(-3).join('.') %]</span>
-<label for="journal_count">&nbsp;&nbsp;[% msg.maketext("davon Zeitschriften/Serien") %]</label>
+[% databaseinfo.journalcount.chunk(-3).join('.') %] [% msg.maketext("davon Zeitschriften/Serien") %]
 </div>
 
 <div class="form-floating mb-3">
-<span id="article_count">[% databaseinfo.articlecount.chunk(-3).join('.') %]</span>
-<label for="article_count">&nbsp;&nbsp;[% msg.maketext("davon Artikel") %]</label>
+[% databaseinfo.articlecount.chunk(-3).join('.') %] [% msg.maketext("davon Artikel") %]
 </div>
 
 <div class="form-floating mb-3">
-<span id="digital_count">[% databaseinfo.digitalcount.chunk(-3).join('.') %]</span>
-<label for="digital_count">&nbsp;&nbsp;[% msg.maketext("davon Digital") %]</label>
+[% databaseinfo.digitalcount.chunk(-3).join('.') %] [% msg.maketext("davon Digital") %]
 </div>
 
 <div class="form-floating mb-3">
-<span id="doc_count">[% indexed_doc_count.chunk(-3).join('.') %]</span>
-<label for="doc_count">[% msg.maketext("Titel in Suchindex") %]</label>
+[% indexed_doc_count.chunk(-3).join('.') %] [% msg.maketext("Titel in Suchindex") %]
 </div>
 
 <p/>
 
-<h1 class="display-6">[% msg.maketext("Datenquelle") %]</h1>
+<h2>[% msg.maketext("Datenquelle") %]</h2>
 
 <div class="form-floating mb-3">
   <select class="form-select" name="protocol" id="protocol">
@@ -198,14 +195,14 @@
 
 <p />
 
-<h1 class="display-5">[% msg.maketext("Ausleih-Einstellungen") %]</h1>
+<h2>[% msg.maketext("Ausleih-Einstellungen") %]</h2>
 
 <div class="form-floating mb-3">
   <select class="form-select" name="circ" id="circ">
     <option value="false" [% IF databaseinfo.circ == 0 %]selected[% END %]>[% msg.maketext("Nein") %]</option>
     <option value="true" [% IF databaseinfo.circ == 1 %]selected[% END %]>[% msg.maketext("Ja") %]</option>
   </select>
-<label for="cird">[% msg.maketext("Anbindung Ausleihsystem") %]</label>
+<label for="circ">[% msg.maketext("Anbindung Ausleihsystem") %]</label>
 </div>
 
 <div class="form-floating mb-3">
@@ -214,12 +211,12 @@
     <option value="daia" [% IF databaseinfo.circ == "daia" %]selected[% END %]>[% msg.maketext("DAIA") %]</option>
     <option value="usbws" [% IF databaseinfo.circtype == "usbws" %]selected[% END %]>[% msg.maketext("USBWS") %]</option>
   </select>
-  <label for="cirtype">[% msg.maketext("Typ der Anbindung") %]</label>
+  <label for="circtype">[% msg.maketext("Typ der Anbindung") %]</label>
 </div>
 
 <div class="form-floating mb-3">
 <input class="form-control" type="text" name="circdb" id="circdb" value="[% databaseinfo.circdb %]" size="20" />
-<label for="host">[% msg.maketext("DB-Name im Lokalsystem (USBWS)") %]</label>
+<label for="circdb">[% msg.maketext("DB-Name im Lokalsystem (USBWS)") %]</label>
 </div>
 
 <div class="form-floating mb-3">
@@ -232,7 +229,7 @@
 <label for="circurl">[% msg.maketext("URL Externer WebOPAC") %]</label>
 </div>
 
-<h1 class="display-5">Neuen Katalog mit diesen Daten erzeugen</h1>
+<h2>Neuen Katalog mit diesen Daten erzeugen</h2>
 
 <div class="form-floating mb-3">
 <input class="form-control" type="text" name="newdbname" id="newdbname" value="" size="20" />

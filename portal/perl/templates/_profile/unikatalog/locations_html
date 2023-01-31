@@ -124,12 +124,7 @@ for (var i = 0; i < libraries.length; i++) {
 
      END;
 
-     url = '';
-
-     IF identifier.match('^DE-38$') || identifier.match('^DE-38-HWA$') || identifier.match('^DE-38-\d\d\d$') || identifier.match('DE-Kn3') || identifier.match('DE-38-AFRK');
-        url = "${path_prefix}/${config.get('locations_loc')}/id/${identifier}";
-
-     END;
+     url = "${path_prefix}/${config.get('locations_loc')}/id/${identifier}";
   
      description    = location.description ;
      arbeitsplaetze = location.fields.${"L0270"}.first.content;

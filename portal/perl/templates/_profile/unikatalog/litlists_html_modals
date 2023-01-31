@@ -5,10 +5,10 @@
 	  <div class="modal-header">
             <h5 class="modal-title" id="litlistsPrintModalLabel">[% msg.maketext("Literaturliste drucken") %]</h5>
 	  </div>
-	  <div class="modal-body" id="cartitem_savemessage">
+	  <div class="modal-body" id="litlist_printmessage">
 	    
 	    <div class="form-floating mb-3">
-	      <select class="form-select" name="format" id="format_print">
+	      <select class="form-select" name="format" id="litlist_format_print">
 		<option value="short">[% msg.maketext("Kurzübersicht") %]</option>
 		<option value="full">[% msg.maketext("Vollanzeige") %]</option>
 		<option value="Text">[% msg.maketext("Einfacher Text") %]</option>
@@ -18,7 +18,7 @@
 		<option value="harvard">[% msg.maketext("Zitat: Harvard") %]</option>    
 		<option value="mla">[% msg.maketext("Zitat: MLA") %]</option>    
 	      </select>
-	      <label for="format_mail">[% msg.maketext("Ausgabeformat") %]</label>
+	      <label for="litlist_format_mail">[% msg.maketext("Ausgabeformat") %]</label>
 	    </div>
 	    
 	  </div>
@@ -38,11 +38,11 @@
 	  <div class="modal-header">
             <h5 class="modal-title" id="litlistsSaveModalLabel">[% msg.maketext("Literaturliste speichern") %]</h5>
 	  </div>
-	  <div class="modal-body" id="cartitem_savemessage">
+	  <div class="modal-body" id="litlist_savemessage">
 	    
 	    
 	    <div class="form-floating mb-3">
-	      <select class="form-select" name="format" id="format_save">
+	      <select class="form-select" name="format" id="litlist_format_save">
 		<option value="Text">[% msg.maketext("Einfacher Text") %]</option>
 		<option value="BibTeX">[% msg.maketext("BibTeX (z.B. Citavi)") %]</option>
 		<option value="EndNote">[% msg.maketext("EndNote") %]</option>
@@ -50,7 +50,7 @@
 		<option value="harvard">[% msg.maketext("Zitat: Harvard") %]</option>    
 		<option value="mla">[% msg.maketext("Zitat: MLA") %]</option>    
 	      </select>
-	      <label for="format_mail">[% msg.maketext("Ausgabeformat") %]</label>
+	      <label for="litlist_format_mail">[% msg.maketext("Ausgabeformat") %]</label>
 	    </div>
 	    
 	  </div>
@@ -71,20 +71,20 @@
 	<div class="modal-header">
           <h5 class="modal-title" id="litlistsMailModalLabel">[% msg.maketext("Literaturliste per E-Mail versenden") %]</h5>
 	</div>
-	<div class="modal-body" id="cartitem_mailmessage">
+	<div class="modal-body" id="litlist_mailmessage">
 	  
 	  <div class="form-floating mb-3">
-	    <input class="form-control" type="text" name="subject" id="mail_subject" value=""/>
-	    <label for="mail_subject">[% msg.maketext("Betreff der E-Mail:") %]</label>
+	    <input class="form-control" type="text" name="subject" id="litlist_mail_subject" value=""/>
+	    <label for="litlist_mail_subject">[% msg.maketext("Betreff der E-Mail:") %]</label>
 	  </div>
 	  
 	  <div class="form-floating mb-3">
-	    <input class="form-control" type="text" name="email" id="mail_address" value=""/>
-	    <label for="mail_subject">[% msg.maketext("E-Mail-Adresse") %]</label>
+	    <input class="form-control" type="text" name="email" id="litlist_mail_address" value=""/>
+	    <label for="litlist_mail_subject">[% msg.maketext("E-Mail-Adresse") %]</label>
 	  </div>
 	  
 	  <div class="form-floating mb-3">
-	    <select class="form-select" name="format" id="format_mail">
+	    <select class="form-select" name="format" id="litlist_format_mail">
 	      <option value="Text">[% msg.maketext("Einfacher Text") %]</option>
 	      <option value="BibTeX">[% msg.maketext("BibTeX (z.B. Citavi)") %]</option>
 	      <option value="EndNote">[% msg.maketext("EndNote") %]</option>
@@ -92,7 +92,7 @@
 	      <option value="harvard">[% msg.maketext("Zitat: Harvard") %]</option>    
 	      <option value="mla">[% msg.maketext("Zitat: MLA") %]</option>    
 	    </select>
-	    <label for="format_mail">[% msg.maketext("Ausgabeformat") %]</label>
+	    <label for="litlist_format_mail">[% msg.maketext("Ausgabeformat") %]</label>
 	  </div>
 	  
 	</div>

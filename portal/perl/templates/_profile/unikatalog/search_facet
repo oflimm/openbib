@@ -570,23 +570,24 @@ $(document).on("click", ".ob-less_button", function () {
 <p/>
 [%         END %]
 <!-- End subject facet -->
+
 <!-- Begin year facet -->
 [% IF qopts.get_option('sb') == "eds" || searchprofileid_of_articles == searchquery.get_searchprofile %]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-year[% idsuffix %][% facet_prefix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-year[% facet_prefix %][% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Erscheinungsjahr") %] 
         </h4>
 
-        <div id="group-year[% idsuffix %][% facet_prefix %]" class="in collapse show">
+        <div id="group-year[% facet_prefix %][% idsuffix %]" class="in collapse show">
 
          <p>
-           [% msg.maketext("Von") %]&nbsp;&nbsp;<input id="ob-yearSlider_from[% idsuffix %][% facet_prefix %]" type="text" size="4" title="[% msg.maketext("Eingabe Jahr von") %]" name="year_from" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input id="ob-yearSlider_to[% idsuffix %][% facet_prefix %]" type="text" size="4" title="[% msg.maketext("Eingabe Jahr bis") %]" name="year_to" value="[% searchquery.get_searchfield("year_to").val %]" />&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Los"/>
+           [% msg.maketext("Von") %]&nbsp;&nbsp;<input id="ob-yearSlider_from[% facet_prefix %][% idsuffix %]" type="text" size="4" name="year_from" title="[% msg.maketext("Eingabe Jahr von") %]" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input id="ob-yearSlider_to[% facet_prefix %][% idsuffix %]" type="text" size="4" name="year_to" title="[% msg.maketext("Eingabe Jahr bis") %]" value="[% searchquery.get_searchfield("year_to").val %]" />&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Los"/>
          </p>
 
         </div>
 
 [% ELSE %]
 [%         IF config.get('facets').year && facets.defined('year') && facets.year.size > 0 %]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-year[% idsuffix %][% facet_prefix %]" aria-expanded="true">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-year[% facet_prefix %][% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Erscheinungsjahr") %] 
         </h4>
 [%
@@ -623,19 +624,19 @@ $(document).on("click", ".ob-less_button", function () {
       END;
 
 %]
-<div id="group-year[% idsuffix %][% facet_prefix %]" class="in collapse show">
+<div id="group-year[% facet_prefix %][% idsuffix %]" class="in collapse show">
 [% IF facets.year.size > 1 %]
-<canvas id="ob-yearChart-[% facet_prefix %][% idsuffix %][% facet_prefix %]" width="300" height="200"></canvas>
+<canvas id="ob-yearChart-[% facet_prefix %][% idsuffix %]" width="300" height="200"></canvas>
 
-<div id="ob-yearSlider[% idsuffix %][% facet_prefix %]" class="m-4"></div>
+<div id="ob-yearSlider[% facet_prefix %][% idsuffix %]" class="m-4"></div>
 
 <p>
-[% msg.maketext("Von") %]&nbsp;&nbsp;<input id="ob-yearSlider_from[% idsuffix %][% facet_prefix %]" type="text" size="4" name="year_from" title="[% msg.maketext("Eingabe Jahr von") %]" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input id="ob-yearSlider_to[% idsuffix %][% facet_prefix %]" type="text" size="4" name="year_to" title="[% msg.maketext("Eingabe Jahr bis") %]" value="[% searchquery.get_searchfield("year_to").val %]" />&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Los"/>
+[% msg.maketext("Von") %]&nbsp;&nbsp;<input id="ob-yearSlider_from[% facet_prefix %][% idsuffix %]" type="text" size="4" name="year_from" title="[% msg.maketext("Eingabe Jahr von") %]" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input id="ob-yearSlider_to[% facet_prefix %][% idsuffix %]" type="text" size="4" name="year_to" title="[% msg.maketext("Eingabe Jahr bis") %]" value="[% searchquery.get_searchfield("year_to").val %]" />&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Los"/>
 </p>
 
 <script>
-var type_ctx[% idsuffix %][% facet_prefix %] = document.getElementById('ob-yearChart-[% facet_prefix %][% idsuffix %]');
-var typeChart[% idsuffix %][% facet_prefix %] = new Chart(type_ctx[% idsuffix %][% facet_prefix %], {
+var type_ctx[% idsuffix %] = document.getElementById('ob-yearChart-[% facet_prefix %][% idsuffix %]');
+var typeChart[% idsuffix %] = new Chart(type_ctx[% idsuffix %], {
     type: 'bar',
     data: {    
         labels: [[% year_labels.join(',') %]],
@@ -677,9 +678,9 @@ var typeChart[% idsuffix %][% facet_prefix %] = new Chart(type_ctx[% idsuffix %]
 });
 
 [% IF 0 == 1 %]
-var yearslider[% idsuffix %][% facet_prefix %] = document.getElementById('ob-yearSlider[% idsuffix %][% facet_prefix %]');
+var yearslider[% idsuffix %] = document.getElementById('ob-yearSlider[% facet_prefix %][% idsuffix %]');
 
-noUiSlider.create(yearslider[% idsuffix %][% facet_prefix %], {
+noUiSlider.create(yearslider[% idsuffix %], {
     start: [[% minyear %], [% maxyear %]],
     connect: true,
     range: {
@@ -688,26 +689,26 @@ noUiSlider.create(yearslider[% idsuffix %][% facet_prefix %], {
     }
 });
 
-var yearslider_from[% idsuffix %][% facet_prefix %] = document.getElementById('ob-yearSlider_from[% idsuffix %][% facet_prefix %]');
-var yearslider_to[% idsuffix %][% facet_prefix %]   = document.getElementById('ob-yearSlider_to[% idsuffix %][% facet_prefix %]');
+var yearslider_from[% idsuffix %] = document.getElementById('ob-yearSlider_from[% facet_prefix %][% idsuffix %]');
+var yearslider_to[% idsuffix %]   = document.getElementById('ob-yearSlider_to[% facet_prefix %][% idsuffix %]');
 
-yearslider[% idsuffix %][% facet_prefix %].noUiSlider.on('update', function (values, handle) {
+yearslider[% idsuffix %].noUiSlider.on('update', function (values, handle) {
 
     var value = values[handle];
 
     if (handle) {
-        yearslider_to[% idsuffix %][% facet_prefix %].value = Math.round(value);
+        yearslider_to[% idsuffix %].value = Math.round(value);
     } else {
-        yearslider_from[% idsuffix %][% facet_prefix %].value = Math.round(value);
+        yearslider_from[% idsuffix %].value = Math.round(value);
     }
 });
 
-yearslider_from[% idsuffix %][% facet_prefix %].addEventListener('change', function () {
-    yearslider[% idsuffix %][% facet_prefix %].noUiSlider.set([this.value, null]);
+yearslider_from[% idsuffix %].addEventListener('change', function () {
+    yearslider[% idsuffix %].noUiSlider.set([this.value, null]);
 });
 
-yearslider_to[% idsuffix %][% facet_prefix %].addEventListener('change', function () {
-    yearslider[% idsuffix %][% facet_prefix %].noUiSlider.set([null, this.value]);
+yearslider_to[% idsuffix %].addEventListener('change', function () {
+    yearslider[% idsuffix %].noUiSlider.set([null, this.value]);
 });
 [% END %]
 
@@ -737,12 +738,190 @@ yearslider_to[% idsuffix %][% facet_prefix %].addEventListener('change', functio
 
 <!-- <p>
 
-[% msg.maketext("Von") %]&nbsp;&nbsp;<input type="text" size="4" name="year_from" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input type="text" size="4" name="year_to" value="[% searchquery.get_searchfield("year_to").val %]" />&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Los"/>
+[% msg.maketext("Von") %]&nbsp;&nbsp;<input type="text" size="4" name="year_from" title="[% msg.maketext("Eingabe Jahr von") %]" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input type="text" size="4" name="year_to" title="[% msg.maketext("Eingabe Jahr bis") %]" value="[% searchquery.get_searchfield("year_to").val %]" />&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Los"/>
 </p> -->
 
 [%         END %]
 [% END # EDS %]
 <!-- End year facet -->
+
+[% IF 0 == 1 %]
+<!-- Begin year facet -->
+[% IF qopts.get_option('sb') == "eds" || searchprofileid_of_articles == searchquery.get_searchprofile %]
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-year[% facet_prefix %][% idsuffix %]" aria-expanded="true">
+           [% msg.maketext("Erscheinungsjahr") %] 
+        </h4>
+
+        <div id="group-year[% facet_prefix %][% idsuffix %]" class="in collapse show">
+
+         <p>
+           [% msg.maketext("Von") %]&nbsp;&nbsp;<input id="ob-yearSlider_from[% facet_prefix %][% idsuffix %]" type="text" size="4" title="[% msg.maketext("Eingabe Jahr von") %]" name="year_from" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input id="ob-yearSlider_to[% facet_prefix %][% idsuffix %]" type="text" size="4" title="[% msg.maketext("Eingabe Jahr bis") %]" name="year_to" value="[% searchquery.get_searchfield("year_to").val %]" />&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Los"/>
+         </p>
+
+        </div>
+
+[% ELSE %]
+[%         IF config.get('facets').year && facets.defined('year') && facets.year.size > 0 %]
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-year[% facet_prefix %][% idsuffix %]" aria-expanded="true">
+           [% msg.maketext("Erscheinungsjahr") %] 
+        </h4>
+[%
+      minyear = 9999;
+      maxyear = -9999;
+      
+      yearcount = {};
+      FOREACH year_thisitem IN facets.year;
+        item      = year_thisitem.0;
+
+        itemmatch = item.match('(-?\d\d\d\d)');
+	IF itemmatch.0 ;
+	  item = itemmatch.0;
+	ELSE ;
+	   NEXT;
+	END;
+
+        itemcount = year_thisitem.1;
+        yearcount.${item} = itemcount;
+        IF item < minyear ;
+	   minyear = item;
+	END;
+	IF item > maxyear ;
+	   maxyear = item;
+        END;
+
+      END;
+
+      year_labels = [];
+      year_itemcounts = [];
+      FOREACH year_label IN yearcount.keys.sort ;
+        year_labels.push("'${year_label}'");
+        year_itemcounts.push(yearcount.${year_label});
+      END;
+
+%]
+<div id="group-year[% facet_prefix %][% idsuffix %]" class="in collapse show">
+[% IF facets.year.size > 1 %]
+<canvas id="ob-yearChart-[% facet_prefix %][% idsuffix %]" width="300" height="200"></canvas>
+
+<div id="ob-yearSlider[% facet_prefix %][% idsuffix %]" class="m-4"></div>
+
+<p>
+[% msg.maketext("Von") %]&nbsp;&nbsp;<input id="ob-yearSlider_from[% facet_prefix %][% idsuffix %]" type="text" size="4" name="year_from" title="[% msg.maketext("Eingabe Jahr von") %]" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input id="ob-yearSlider_to[% facet_prefix %][% idsuffix %]" type="text" size="4" name="year_to" title="[% msg.maketext("Eingabe Jahr bis") %]" value="[% searchquery.get_searchfield("year_to").val %]" />&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Los"/>
+</p>
+
+<script>
+var type_ctx[% facet_prefix %][% idsuffix %] = document.getElementById('ob-yearChart-[% facet_prefix %][% idsuffix %]');
+var typeChart[% facet_prefix %][% idsuffix %] = new Chart(type_ctx[% facet_prefix %][% idsuffix %], {
+    type: 'bar',
+    data: {    
+        labels: [[% year_labels.join(',') %]],
+        datasets: [{
+            label: 'Trefferzahl',
+            data: [[% year_itemcounts.join(',') %]],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1,
+            BarThickness: 8,
+        }],
+    },
+    options: {
+        legend: {
+           display: false
+        },
+        tooltips: {
+          callbacks: {
+             label: function(tooltipItem) {
+                  return tooltipItem.yLabel;
+             }
+          }
+        },
+        scales: {
+	   xAxes: [{
+                type: 'time',
+                time: {
+                    unit: 'year'
+                }
+           }],
+           yAxes: [{
+                ticks: {
+		    stepSize: 1,
+                    beginAtZero: true
+                }
+            }]
+        },	
+    }
+});
+
+[% IF 0 == 1 %]
+var yearslider[% facet_prefix %][% idsuffix %] = document.getElementById('ob-yearSlider[% facet_prefix %][% idsuffix %]');
+
+noUiSlider.create(yearslider[% facet_prefix %][% idsuffix %], {
+    start: [[% minyear %], [% maxyear %]],
+    connect: true,
+    range: {
+        'min': [% minyear %],
+        'max': [% maxyear %]
+    }
+});
+
+var yearslider_from[% facet_prefix %][% idsuffix %] = document.getElementById('ob-yearSlider_from[% facet_prefix %][% idsuffix %]');
+var yearslider_to[% facet_prefix %][% idsuffix %]   = document.getElementById('ob-yearSlider_to[% facet_prefix %][% idsuffix %]');
+
+yearslider[% facet_prefix %][% idsuffix %].noUiSlider.on('update', function (values, handle) {
+
+    var value = values[handle];
+
+    if (handle) {
+        yearslider_to[% facet_prefix %][% idsuffix %].value = Math.round(value);
+    } else {
+        yearslider_from[% facet_prefix %][% idsuffix %].value = Math.round(value);
+    }
+});
+
+yearslider_from[% facet_prefix %][% idsuffix %].addEventListener('change', function () {
+    yearslider[% facet_prefix %][% idsuffix %].noUiSlider.set([this.value, null]);
+});
+
+yearslider_to[% facet_prefix %][% idsuffix %].addEventListener('change', function () {
+    yearslider[% facet_prefix %][% idsuffix %].noUiSlider.set([null, this.value]);
+});
+[% END %]
+
+</script>
+
+[% END %] 
+
+        <ul class="list-group">
+[%             FOREACH termitem IN facets.year ;
+                  LAST IF loop.count > 25 ;
+ %]
+
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').yearstring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<li class="ob-facet-item" [% IF facets.year.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+[%             END %]
+[% IF facets.year.size > 5 %]
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
+[% END %]
+</ul>
+</div><!-- group-year -->
+<p/>
+
+<!-- <p>
+
+[% msg.maketext("Von") %]&nbsp;&nbsp;<input type="text" size="4" name="year_from"  title="[% msg.maketext("Eingabe Jahr von") %]" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input type="text" size="4" name="year_to"  title="[% msg.maketext("Eingabe Jahr bis") %]" value="[% searchquery.get_searchfield("year_to").val %]" />&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Los"/>
+</p> -->
+
+[%         END %]
+[% END # EDS %]
+<!-- End year facet -->
+
+[% END %]
+
 <!-- Begin classification facet -->
 [%         IF config.get('facets').classification && facets.defined('classification') && facets.classification.size > 0 %]
         <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-classification[% idsuffix %][% facet_prefix %]" aria-expanded="false">

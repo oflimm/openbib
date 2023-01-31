@@ -898,7 +898,8 @@
 	margin-left:4px;
 	margin-top: 5px;
 	padding:1px 5px;
-	color: gray;
+	/*	color: gray; */
+	color: #000; /* Contrast: WCAG 2.1 AA */ 
     }
 
     .ob-item .ob-dbis_availability {

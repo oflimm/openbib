@@ -94,7 +94,7 @@
 	  
 	  <div class="form-floating mb-3">
 	    <input class="form-control" type="text" name="email" id="mail_address" value=""/>
-	    <label for="mail_subject">[% msg.maketext("E-Mail-Adresse") %]</label>
+	    <label for="mail_address">[% msg.maketext("E-Mail-Adresse") %]</label>
 	  </div>
 	  
 	  <div class="form-floating mb-3">

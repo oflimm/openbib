@@ -1448,7 +1448,8 @@
 	border-radius:50px; 
 	padding-top: 5px;
 	text-align:center;
-	z-index: 1040
+	z-index: 1040;
+	border: none;
 	/* box-shadow: 2px 2px 3px #999; */
     }
 
@@ -1469,7 +1470,7 @@
 	position: fixed;
 	bottom: 10px;
 	left: 10px;
-	z-index: 1040;
+	z-index: 1035;
 	width:60px;
 	height:60px;
 	margin-top: -8px;
@@ -2363,8 +2364,7 @@ a.card-link, a.card-link:hover {
 }
 
 @media (min-width: 576px) {
-    
-    
+
     .ob-jumbotron {
 	padding: 4rem 2rem;
     }
@@ -2381,6 +2381,10 @@ a.card-link, a.card-link:hover {
 	font-size: 0.8em;
     }
 
+    .uzk15_header_separator {
+	border-bottom: solid 5px #90c4eb;
+    }
+            
     header .navbottom {
 	height: 50px;
     }
@@ -2393,7 +2397,7 @@ a.card-link, a.card-link:hover {
 	position: fixed;
 	bottom: 15px;
 	right: 5px;
-	z-index: 1040;
+	z-index: 1035;
 	width:40px;
 	height:40px;
 	margin-top: -5px;

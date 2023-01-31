@@ -14,7 +14,9 @@
 
 <script type="text/javascript">
 var librariesmap_single = L.map('libraries_single_mapid', {
-    scrollWheelZoom: false
+    scrollWheelZoom: false,
+    dragging: !L.Browser.mobile,
+    tap: false    
 }).setView([[% coordinates_single %]], 15);
 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 18,

@@ -18,7 +18,7 @@
 		<option value="harvard">[% msg.maketext("Zitat: Harvard") %]</option>    
 		<option value="mla">[% msg.maketext("Zitat: MLA") %]</option>    
 	      </select>
-	      <label for="format_mail">[% msg.maketext("Ausgabeformat") %]</label>
+	      <label for="format_print">[% msg.maketext("Ausgabeformat") %]</label>
 	    </div>
 	    
 	  </div>
@@ -56,7 +56,7 @@
 	    
 	    
 	    <div class="form-floating mb-3">
-	      <select class="form-select" name="format" id="format_mail">
+	      <select class="form-select" name="format" id="format_save">
 		<option value="Text">[% msg.maketext("Einfacher Text") %]</option>
 		<option value="BibTeX">[% msg.maketext("BibTeX (z.B. Citavi)") %]</option>
 		<option value="EndNote">[% msg.maketext("EndNote") %]</option>
@@ -64,7 +64,7 @@
 		<option value="harvard">[% msg.maketext("Zitat: Harvard") %]</option>    
 		<option value="mla">[% msg.maketext("Zitat: MLA") %]</option>    
 	      </select>
-	      <label for="format_mail">[% msg.maketext("Ausgabeformat") %]</label>
+	      <label for="format_save">[% msg.maketext("Ausgabeformat") %]</label>
 	    </div>
 	    
 	  </div>

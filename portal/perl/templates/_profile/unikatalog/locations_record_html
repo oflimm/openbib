@@ -38,7 +38,7 @@ var marker_single = L.marker([[% coordinates_single %]]).addTo(librariesmap_sing
    IF current_occupancy.num_occupancy < max_green;
      current_color = "green";
    ELSIF current_occupancy.num_occupancy < max_yellow ;
-     current_color = "yellow";
+     current_color = "#CB5A28";
    ELSE ;
      current_color = "red";      
    END;

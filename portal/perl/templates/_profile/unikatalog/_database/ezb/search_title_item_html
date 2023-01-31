@@ -142,7 +142,7 @@ in: [% resulttime %] [% msg.maketext("Sekunden") %]
 
 <!-- end: result item -->
 
-<button class="ob-floating_sidebar_button_left ob-floating_sidebar_button sidebar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-control="offcanvasSidebar" title="[% msg.maketext("Suchen") %]"><i class="fas fa-search fa-2x"></i></button>
+<button class="ob-floating_sidebar_button sidebar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-control="offcanvasSidebar" title="[% msg.maketext("Suchen") %]"><i class="fas fa-search fa-2x"></i></button>
 
 [% query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}); # "${request_base};${searchquery.to_cgi_params}" %]
 [% PROCESS common/subtemplate name="pagination" %]

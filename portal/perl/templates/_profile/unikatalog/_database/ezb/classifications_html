@@ -12,17 +12,17 @@
 #######################################################################
 -%]
 
-<h3>[% msg.maketext("Elektronische Zeitschriften der Universität zu Köln") %]</h3>
+<h3 class="pt-2">[% msg.maketext("Elektronische Zeitschriften der Universität zu Köln") %]</h3>
 
 <p/>
 
 <h5>[% msg.maketext("Fachgebiete") %]</h5>
 
     <div class="row flex-lg-row-reverse">
-      <div class="col-md-3">
+      <div class="col-md-3 d-none d-md-block">
         [% PROCESS common/subtemplate name=layout_param.sidebar_template %]
       </div>
-      <div class="col-md-9" >
+      <div class="col-md-9 ps-3" >
 
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#ob-ezb_list">[% msg.maketext("Liste") %]</a></li>
@@ -73,6 +73,8 @@
 </div>
 
 </div><!-- End: Tabcontent -->
+
+<button class="ob-floating_sidebar_button sidebar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-control="offcanvasSidebar" title="[% msg.maketext("Suchen") %]"><i class="fas fa-search fa-2x"></i></button>
 
       </div>
     </div>

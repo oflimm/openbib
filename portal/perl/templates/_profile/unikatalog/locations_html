@@ -50,7 +50,9 @@
 
 <script type="text/javascript">
 var librariesmap = L.map('libraries_mapid', {
-    scrollWheelZoom: false
+    scrollWheelZoom: false,
+    dragging: !L.Browser.mobile,
+    tap: false
 }).setView([50.933777, 6.939545], 13);
 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 18,

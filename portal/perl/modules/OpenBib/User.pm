@@ -1601,9 +1601,9 @@ sub get_titles_of_tag {
     };
     
     $attribute_ref = {
+	distinct => 1,
         select   => ['me.titleid','me.dbname'],
         as       => ['thistitleid','thisdbname'],
-        group_by => ['me.titleid','me.dbname','me.id','me.srt_title','me.srt_person','me.srt_year'],
     };
     
     if ($username) {

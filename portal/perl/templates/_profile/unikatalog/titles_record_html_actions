@@ -631,7 +631,7 @@ $(document).on("click", "#ob-record_title_history .ob-less_button", function () 
 <li class="list-group-item" [% IF  0 == 1 && recent_titles.get_size > 5 && loop.count > 5 %]hidden[% END %]>[% IF person %][% person %]<br/>[% END %]<a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% recent_record.database %]/[% config.get('titles_loc') %]/id/[% recent_record.id %].html"><strong><span class="ob-title">[%
 title %]</span></strong></a>, <span class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span></li>
 [% END %]
-[% IF recent_titles.get_size > 5 %]
+[% IF 0 == 1 && recent_titles.get_size > 5 %]
 <li class="list-group-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
 <li class="list-group-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
 [% END %]

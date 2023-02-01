@@ -25,26 +25,26 @@
 </div>
 
 <div class="form-floating mb-3">
-<span class="form-control"><img style="vertical-align: bottom;" src="/images/openbib/[% templateinfo.templatelang %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",templateinfo.templatelang) %]" /></span>
+<span class="form-control" id="templatelang"><img style="vertical-align: bottom;" src="/images/openbib/[% templateinfo.templatelang %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",templateinfo.templatelang) %]" /></span>
 <label for="templatelang">[% msg.maketext("Sprache") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<span class="form-control">[% templateinfo.viewid.viewname %]: [% templateinfo.viewid.description %]</span>
+<span class="form-control" id="viewname">[% templateinfo.viewid.viewname %]: [% templateinfo.viewid.description %]</span>
 <label for="viewname">[% msg.maketext("View") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<span class="form-control">[% templateinfo.templatename %]</span>
+<span class="form-control" id="templatename">[% templateinfo.templatename %]</span>
 <label for="templatename">[% msg.maketext("Name") %]</label>
 </div>
 
 <div class="form-floating mb-3">
 <!-- <label for="templatetext">[% msg.maketext("Text") %]</label> -->
-<textarea class="form-control" name="templatetext" id="templatetext" style="width:100%" rows="50">[% templateinfo.templatetext %]</textarea>
+<textarea class="form-control" name="templatetext" id="templatetext" aria-label="[% msg.maketext("Template-Text") %]" style="width:100%; height:25em;">[% templateinfo.templatetext %]</textarea>
 </div>
 
-<button type="submit" name="do_change" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>
+<button type="submit" name="do_change" class="btn btn-primary mb-2 ms-2">[% msg.maketext("Ändern") %]</button>
 
 &nbsp;&nbsp;&nbsp;
 
@@ -56,7 +56,7 @@
 
 [% IF templateinfo.templateinforevisions %]
 
-<h2>Revisionen</h2>
+<h2>[% msg.maketext("Revisionen") %]</h2>
 
 <p>
 [% msg.maketext("Anzahl") %]

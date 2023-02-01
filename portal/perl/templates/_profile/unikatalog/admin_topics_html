@@ -69,9 +69,9 @@
 <tr>
 <td>
 [%   IF user.has_right({scope = 'admin_topics', right = 'right_update'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('topics_loc') %]/id/[% topic.id %]/edit.html?l=[% lang %]">[% topic.name %]</a>
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('topics_loc') %]/id/[% topic.id %]/edit.html?l=[% lang %]">[% topic.name %]</a>
 [%   ELSIF user.has_right({scope = 'admin_topics', right = 'right_read'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('topics_loc') %]/id/[% topic.id %].html?l=[% lang %]">[% topic.name %]</a>
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('topics_loc') %]/id/[% topic.id %].html?l=[% lang %]">[% topic.name %]</a>
 [%   END %]
 </td>
 <td>[% FOREACH thisbk IN user.get_classifications_of_topic({ type => 'bk', topicid => topic.id}) %][% bks.${thisbk} %]<br/> [% END %]</td>

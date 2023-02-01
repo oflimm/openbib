@@ -45,34 +45,36 @@
 </div>
 
 [% IF authenticator.type == 'self' %]
-<div class="form-floating mb-3">
 [%   IF userinfo.username != 'admin' %]
+<div class="form-floating mb-3">
 <input class="form-control" id="password" type="text" name="password" value="" size="30" maxlength="200" />
 <label for="password">[% msg.maketext("Neues Passwort") %]</label>
-[% ELSE %]
-<span class="form-control" id="password">[% msg.maketext('Das Passwort des Administrators kann nur in seinen Accounteinstellungen geändert werden')%]</span>
-[% END %]
 </div>
+[%   ELSE %]
+<span>[% msg.maketext('Das Passwort des Administrators kann nur in seinen Accounteinstellungen geändert werden')%]</span>
+[%   END %]
 [% END %]
 
 <div class="form-floating mb-3">
 <span class="form-control" id="authenticator">[% authenticator.description %]</span>
 <label for="authenticator">[% msg.maketext("Authentifizierung") %]</label>
 </div>
+
 [%# USE dumper;dumper.dump(views)%]
-<div class="form-floating mb-3">
 [%   IF userinfo.username != 'admin' %]
-<select class="form-select" name="viewid">
+<div class="form-floating mb-3">
+<select class="form-select" name="viewid" id="view">
   <option value="" [% IF NOT userinfo.viewname %] selected="selected"[% END %]>[% msg.maketext("Zugriff auf alle Portale") %]</option>
 [% FOREACH thisview IN views %]
   <option value="[% thisview.id %]"[% IF userinfo.viewname == thisview.viewname %] selected="selected"[% END %]>[% thisview.viewname %] - [% thisview.description %]</option>
 [% END %]
 </select>
 <label for="view">[% msg.maketext("Portal") %]</label>
+</div>
 [% ELSE %]
 <span class="form-control" id="view">[% msg.maketext('Der Administrators ist immer für alle Portale freigeschaltet')%]</span>
 [% END %]
-</div>
+
 
 <div class="form-floating mb-3">
 <input class="form-control" id="nachname" type="text" name="nachname" value="[% userinfo.nachname %]" size="30" maxlength="200" />
@@ -128,13 +130,13 @@
 <form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/password" enctype="application/x-www-form-urlencoded">
 
 <div class="form-floating mb-3 mt-2">
-<input class="form-control" type="password" name="password1" value="" />
-<label for="password">[% msg.maketext("Passwort") %]</label>
+<input class="form-control" type="password" name="password1" id="change_password1" value="" />
+<label for="change_password1">[% msg.maketext("Passwort") %]</label>
 </div>
 
 <div class="form-floating mb-3 mt-2">
-<input class="form-control" type="password" name="password2" value="" />
-<label for="password">[% msg.maketext("Passwort wiederholt") %]</label>
+<input class="form-control" type="password" name="password2" id="change_password2" value="" />
+<label for="change_password2">[% msg.maketext("Passwort wiederholt") %]</label>
 </div>
 
 <button type="submit" class="btn btn-primary mb-2">[% msg.maketext("Passwort &auml;ndern") %]</button>
@@ -161,7 +163,7 @@
 
 <div class="mb-3">
 <label class="form-label" for="roles">[% msg.maketext("Rollen") %]</label>
-<select class="form-select" name="roles" multiple="multiple" size="5">
+<select class="form-select" name="roles" multiple="multiple" id="roles" size="5">
 [% FOREACH role IN user.get_all_roles %]
   <option value="[% role.id %]"[% IF userinfo.role.${role.rolename} %] selected="selected"[% END %]>[% role.description %]</option>
 [% END %]
@@ -178,7 +180,7 @@
 <p />
 
 <div class="card">
-<div class="card-header">[% msg.maketext("Templates zuordnen") %]</div>
+<div class="card-header">[% msg.maketext("Templates zuordnen") %] ([% msg.maketext("Viewname - Templatename - Sprache") %])</div>
 <div class="card-body">
 
 <form method="post" action="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/id/[% userinfo.id %]/rights/[% config.get('templates_loc') %]">
@@ -186,7 +188,7 @@
 
 <div class="mb-3">
 <label class="form-label" for="templates">[% msg.maketext("Templates") %]</label>
-<select class="form-select" name="templates" multiple="multiple" size="15">
+<select class="form-select" name="templates" multiple="multiple" id="templates" size="15">
 [% FOREACH template IN user.get_all_templates %]
   <option value="[% template.id %]"[% IF userinfo.template.${template.id} %] selected="selected"[% END %]>[% template.viewname %] - [% template.templatename %] - [% template.templatelang %]</option>
 [% END %]

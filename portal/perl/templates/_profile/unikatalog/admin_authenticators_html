@@ -88,9 +88,9 @@
  <td>[% target.name %]</td>
  <td>[%# USE dumper;dumper.dump(target)%]
 [%   IF user.has_right({scope = 'admin_authenticators', right = 'right_update'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('authenticators_loc') %]/id/[% target.id %]/edit.html?l=[% lang %]">[% target.description %]</a>
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('authenticators_loc') %]/id/[% target.id %]/edit.html?l=[% lang %]">[% target.description %]</a>
 [%   ELSIF user.has_right({scope = 'admin_authenticators', right = 'right_read'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('authenticators_loc') %]/id/[% target.id %].html?l=[% lang %]">[% target.description %]</a>
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('authenticators_loc') %]/id/[% target.id %].html?l=[% lang %]">[% target.description %]</a>
 [%   END %]
 </td>
  <td>[% target.type %]</td>

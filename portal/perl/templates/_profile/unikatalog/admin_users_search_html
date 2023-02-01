@@ -35,6 +35,7 @@
    start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
 -%]
 
+<div class="row d-flex flex-md-row">
 [%# USE dumper;dumper.dump(userlist)%]
 <!-- Userlist begins here -->
 <div class="ob-resultlist">
@@ -82,11 +83,12 @@
 <!-- Ende einzelner Treffer -->
 [%- END -%]
     <div class="ob-footer">
-[% PROCESS common/subtemplate name="pagination" %]    
     </div>
   </div>
 </div>
 <!-- Titlelist ends here -->
 
+[% PROCESS common/subtemplate name="pagination" %]    
 
+</div>
 [%# USE dumper;dumper.dump(userlist) %]

@@ -14,7 +14,9 @@
 #######################################################################
 -%]
 
+<div class="row d-flex flex-md-row">
 [% PROCESS common/subtemplate name="admin_statistics_paging_monthly" statisticsid="redirect" %] 
+</div>
 
 <p/>
 

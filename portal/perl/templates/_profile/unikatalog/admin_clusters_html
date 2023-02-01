@@ -76,9 +76,9 @@
 <td>[% clusterinfo.id %]</td>
 <td>
 [%   IF user.has_right({scope = 'admin_clusters', right = 'right_update'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %]/edit.html?l=[% lang %]">[% clusterinfo.description %]</a>
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %]/edit.html?l=[% lang %]">[% clusterinfo.description %]</a>
 [%   ELSIF user.has_right({scope = 'admin_clusters', right = 'right_read'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %].html?l=[% lang %]">[% clusterinfo.description %]</a>
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %].html?l=[% lang %]">[% clusterinfo.description %]</a>
 [%   END %]
 </td>
 <td>
@@ -93,7 +93,7 @@
 [% END %]
 </td>
 <td>[%-  IF clusterinfo.active == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td>
-<td align="center">
+<td>
 [%- IF user.has_right({scope = 'admin_clusters', right = 'right_update'}) -%]
 <form method="post" action="[% path_prefix %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %]"><input type="hidden" name="_method" value="PUT"/><input type="hidden" name="active" value="[% IF clusterinfo.active == 0 %]true[% ELSE %]false[% END %]"/><button type="submit" class="btn btn-primary mb-2">[% IF clusterinfo.active == 0 %][% msg.maketext("An") %][% ELSE %][% msg.maketext("Aus") %][% END %]</button></form>
 [%- END -%]

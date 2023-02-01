@@ -94,13 +94,13 @@
 <th scope="row">[% serverinfo.id %]</th>
 <td>
 [%   IF user.has_right({scope = 'admin_servers', right = 'right_update'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]/edit.html?l=[% lang %]">[% serverinfo.hostip %]</a>
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]/edit.html?l=[% lang %]">[% serverinfo.hostip %]</a>
 [%   ELSIF user.has_right({scope = 'admin_servers', right = 'right_read'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %].html?l=[% lang %]">[% serverinfo.hostip %]</a>
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %].html?l=[% lang %]">[% serverinfo.hostip %]</a>
 [%   END %]
 </td>
 <td>
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]/updates.html?l=[% lang %]"><img src="[% config.get_icon('chart',view,sysprofile) %]" alt="[% msg.maketext("Aktualisierung") %]" /></a>
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]/updates.html?l=[% lang %]"><img src="[% config.get_icon('chart',view,sysprofile) %]" alt="[% msg.maketext("Aktualisierung") %]" /></a>
 </td>
 <td>[% serverinfo.description %]</td>
 <td>
@@ -115,7 +115,7 @@
 [% END %]
 </td>
 <td>[% serverinfo.clusterid.description %]</td>
-<td align="center">[%- IF serverinfo.active == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td>
+<td>[%- IF serverinfo.active == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td>
 <td>
 [%   IF user.has_right({scope = 'admin_servers', right = 'right_update'}) %]
 <form method="post" action="[% path_prefix %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]"><input type="hidden" name="_method" value="PUT"/><input type="hidden" name="active" value="[% IF NOT serverinfo.active %]true[% ELSE %]false[% END %]"/><button class="btn btn-primary mb-2" type="submit">[% IF NOT serverinfo.active %][% msg.maketext("An") %][% ELSE %][% msg.maketext("Aus") %][% END %]</button></form></td>

@@ -1,5 +1,4 @@
-<div class="ob-listoptions">
-<center>
+<div class="ob-listoptions d-flex justify-content-center">
 [%-
 
   IF month == '01';
@@ -21,15 +20,14 @@
 
 -%]
 
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/[% statisticsid %].html?l=[% lang %]&year=[% year - 1 %]&month=[% month %]">[% month.replace('^0','') %].[% year - 1 %]</a>&nbsp;
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/[% statisticsid %].html?l=[% lang %]&year=[% year - 1 %]&month=[% month %]">[% month.replace('^0','') %].[% year - 1 %]</a>&nbsp;
 &nbsp;...&nbsp;
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/[% statisticsid %].html?l=[% lang %]&year=[% prev_year %]&month=[% prev_month %]">[% prev_month %].[% prev_year %]</a>&nbsp;
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/[% statisticsid %].html?l=[% lang %]&year=[% prev_year %]&month=[% prev_month %]">[% prev_month %].[% prev_year %]</a>&nbsp;
 
 &nbsp;<b>[% month.replace('^0','') %].[% year %]</b>&nbsp;
 
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/[% statisticsid %].html?l=[% lang %]&year=[% next_year %]&month=[% next_month %]">[% next_month %].[% next_year %]</a>&nbsp;
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/[% statisticsid %].html?l=[% lang %]&year=[% next_year %]&month=[% next_month %]">[% next_month %].[% next_year %]</a>&nbsp;
 &nbsp;...&nbsp;
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/[% statisticsid %].html?l=[% lang %]&year=[% year + 1 %]&month=[% month %]">[% month.replace('^0','') %].[% year + 1 %]</a>&nbsp;
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/[% statisticsid %].html?l=[% lang %]&year=[% year + 1 %]&month=[% month %]">[% month.replace('^0','') %].[% year + 1 %]</a>&nbsp;
 
-</center>
 </div>

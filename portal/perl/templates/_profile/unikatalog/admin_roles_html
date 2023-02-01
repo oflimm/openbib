@@ -64,9 +64,9 @@
 <td>
 [% IF roleinfo.rolename == 'admin' %][% roleinfo.rolename %][% ELSE %]
 [%   IF user.has_right({scope = 'admin_roles', right = 'right_update'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('roles_loc') %]/id/[% roleinfo.rolename %]/edit.html?l=[% lang %]">[% roleinfo.rolename %]</a>
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('roles_loc') %]/id/[% roleinfo.rolename %]/edit.html?l=[% lang %]">[% roleinfo.rolename %]</a>
 [%   ELSIF user.has_right({scope = 'admin_roles', right = 'right_read'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('roles_loc') %]/id/[% roleinfo.rolename %].html?l=[% lang %]">[% roleinfo.rolename %]</a>
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('roles_loc') %]/id/[% roleinfo.rolename %].html?l=[% lang %]">[% roleinfo.rolename %]</a>
 [%   END %]
 [% END %]
 </td>

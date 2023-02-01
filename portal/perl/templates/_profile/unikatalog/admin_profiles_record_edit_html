@@ -68,8 +68,8 @@
 </div>
 
 <div class="form-floating mb-3">
-<input class="form-control" type="text" name="description" id="description" size="20" />
-<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<input class="form-control" type="text" name="description" id="orgunit_description" size="20" />
+<label for="orgunit_description">[% msg.maketext("Beschreibung") %]</label>
 </div>
 
 <button type="submit" name="do_new" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>
@@ -95,7 +95,7 @@
 </thead>
 <tbody>
 [% FOREACH thisorgunit IN orgunits.all %]
-<tr><td>[% thisorgunit.orgunitname %]</td><td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %]/[% config.get('orgunits_loc') %]/id/[% thisorgunit.orgunitname %]/edit.html?l=[% lang %]">[% thisorgunit.description %]</a></td><td>[% thisorgunit.nr %]</td><td><ul>[% FOREACH item IN config.get_orgunitdbs(profileinfo.profilename,thisorgunit.orgunitname).sort %]<li>[% item %]: [% dbinfo.get('dbnames').${item}.full %]</li>[% END %]</ul></td></tr>
+<tr><td>[% thisorgunit.orgunitname %]</td><td><a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %]/[% config.get('orgunits_loc') %]/id/[% thisorgunit.orgunitname %]/edit.html?l=[% lang %]">[% thisorgunit.description %]</a></td><td>[% thisorgunit.nr %]</td><td><ul>[% FOREACH item IN config.get_orgunitdbs(profileinfo.profilename,thisorgunit.orgunitname).sort %]<li>[% item %]: [% dbinfo.get('dbnames').${item}.full %]</li>[% END %]</ul></td></tr>
 [% END %]
 </tbody>
 </table>

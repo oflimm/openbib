@@ -79,9 +79,9 @@
 <tr>
 <td>
 [%   IF user.has_right({scope = 'admin_locations', right = 'right_update'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %]/id/[% location.identifier %]/edit.html?l=[% lang %]">[% location.identifier %]</a>
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %]/id/[% location.identifier %]/edit.html?l=[% lang %]">[% location.identifier %]</a>
 [%   ELSIF user.has_right({scope = 'admin_locations', right = 'right_read'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %]/id/[% location.identifier %].html?l=[% lang %]">[% location.identifier %]</a>
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %]/id/[% location.identifier %].html?l=[% lang %]">[% location.identifier %]</a>
 [%   END %]
 </td>
 <td>[% location.type %]</td>

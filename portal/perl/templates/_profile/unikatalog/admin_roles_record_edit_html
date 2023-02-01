@@ -41,7 +41,6 @@
   </select>
 </div>
 
-<div class="form-floating mb-3">
 <div class="table-responsive text-nowrap">
 <table id="rights" class="table table-striped ">
 <thead>
@@ -50,16 +49,14 @@
 <tbody>
 [% FOREACH scope IN config.get_scopes %]
 <tr><td>[% scope %]</td>
-<td><input class="form-control" type="checkbox" name="[% scope %]|right_create" value="1" [% IF rights_of_role.${scope}.right_create %]checked="checked" [% END %]/></td>
-<td><input class="form-control" type="checkbox" name="[% scope %]|right_read"   value="1" [% IF rights_of_role.${scope}.right_read %]checked="checked" [% END %]/></td>
-<td><input class="form-control" type="checkbox" name="[% scope %]|right_update" value="1" [% IF rights_of_role.${scope}.right_update %]checked="checked" [% END %]/></td>
-<td><input class="form-control" type="checkbox" name="[% scope %]|right_delete" value="1" [% IF rights_of_role.${scope}.right_delete %]checked="checked" [% END %]/></td>
+<td><input type="checkbox" title="[% msg.maketext("Recht zu erzeugen") %]" name="[% scope %]|right_create" value="1" [% IF rights_of_role.${scope}.right_create %]checked="checked" [% END %]/></td>
+<td><input type="checkbox" title="[% msg.maketext("Recht zu lesen") %]" name="[% scope %]|right_read"   value="1" [% IF rights_of_role.${scope}.right_read %]checked="checked" [% END %]/></td>
+<td><input type="checkbox" title="[% msg.maketext("Recht zu ändern") %]" name="[% scope %]|right_update" value="1" [% IF rights_of_role.${scope}.right_update %]checked="checked" [% END %]/></td>
+<td><input type="checkbox" title="[% msg.maketext("Recht zu löschen") %]" name="[% scope %]|right_delete" value="1" [% IF rights_of_role.${scope}.right_delete %]checked="checked" [% END %]/></td>
 </tr>
 [% END %]
 </tbody>
 </table>
-</div>
-<label for="rights">Berechtigungen</label>
 </div>
 
 <button type="submit" name="do_change" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>

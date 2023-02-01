@@ -13,10 +13,6 @@
 #######################################################################
 -%]
 
-<form method="get" action="[% path_prefix %]/[% config.get('admin_loc') %]">
-<input type="hidden" name="do_editsession" value="1" />
-
-
 <h3>[% msg.maketext("Allgemeine Informationen") %]</h3>
 
 <div class="table-responsive">
@@ -52,7 +48,7 @@
      END;
 -%]
 <em>[% used_fields.join(' ; ') %]</em></a>
-</td><td align="center">(Treffer: [% thissearchquery.hits %] / Suchprofil: <a href="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/id/[% thissearchquery.searchprofile %]">[% thissearchquery.searchprofile %]</a>)</td></tr>
+</td><td>(Treffer: [% thissearchquery.hits %] / Suchprofil: <a href="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/id/[% thissearchquery.searchprofile %]">[% thissearchquery.searchprofile %]</a>)</td></tr>
 [%    CASE 10 %]
 <tr><td>[% event.tstamp %]</td><td>Einzeltreffer</td><td><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% event.content.database %]/[% config.get('titles_loc') %]/id/[% event.content.id %]">[% event.content.id %] in [% event.content.database %]</a></td><td></td></tr>
 [%    CASE 21 %]

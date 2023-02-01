@@ -62,9 +62,9 @@
 [%- IF searchquery.titlestring.val -%]
 &nbsp;[% searchquery.titlestring.bool %]&nbsp;HSTR: [% searchquery.titlestring.val %] 
 [%- END -%]
-</td><td align="center">(Treffer: [% searchquery.hits %] / Suchprofil: <a href="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/id/[% searchquery.searchprofile %]">[% searchquery.searchprofile %]</a>)</td></tr>
+</td><td>(Treffer: [% searchquery.hits %] / Suchprofil: <a class="inturl" href="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/id/[% searchquery.searchprofile %]">[% searchquery.searchprofile %]</a>)</td></tr>
 [%    CASE 10 %]
-<tr><td>[% event.tstamp %]</td><td>Einzeltreffer</td><td><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% event.content.database %]/[% config.get('titles_loc') %]/id/[% event.content.id %]">[% event.content.id %] in [% event.content.database %]</a></td><td></td></tr>
+<tr><td>[% event.tstamp %]</td><td>Einzeltreffer</td><td><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% event.content.database %]/[% config.get('titles_loc') %]/id/[% event.content.id %]">[% event.content.id %] in [% event.content.database %]</a></td><td></td></tr>
 [%    CASE 100 %]
 <tr><td>[% event.tstamp %]</td><td>View</td><td>[% event.content %]</td><td></td></tr>
 [%    CASE 101 %]

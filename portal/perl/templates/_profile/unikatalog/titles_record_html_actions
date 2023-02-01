@@ -99,8 +99,8 @@
   </div>
   
   <div class="form-floating mb-3">
-    <select class="form-select" name="type" id="type"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select>
-    <label for="type">[% msg.maketext("Sichtbarkeit") %]</label>
+    <select class="form-select" name="type" id="lit_type"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select>
+    <label for="lit_type">[% msg.maketext("Sichtbarkeit") %]</label>
   </div>
   
   <button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Los") %]</button>
@@ -245,11 +245,11 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 	      </div>
 
 	      <div class="form-floating mb-3">
-		<select class="form-select" name="type">
+		<select class="form-select" name="type" id="private_tags_type">
 		  <option value="1" [% IF private_tags.first.type == 1 %]selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option>
 		  <option value="2" [% IF private_tags.first.type == 2 %]selected="selected"[% END %]>[% msg.maketext("privat") %]</option>
 		</select>
-		<label for="type">[% msg.maketext("Typ:") %]</label>
+		<label for="private_tags_type">[% msg.maketext("Typ:") %]</label>
 	      </div>
 	      
 	      <button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Hinzuf&uuml;gen") %]</button>
@@ -390,9 +390,10 @@ END;
 <h5>[% msg.maketext("Von Nutzern vergeben") %]</h5>
 [% alltags_cloud %]
 [%   IF username && private_tags_of_tit.size > 0 %]
-<br />[% msg.maketext("davon eigene Tags") %]
+<br />[% msg.maketext("davon eigene Tags") %]:
+[%# USE dumper;dumper.dump(private_tags_of_tit)%]
 [%-    FOREACH tag IN private_tags_of_tit -%]
-<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags/id/[% tag.id %].html">[% tag.name %]</a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags/id/[% tag.id %].html">[% tag.tagname %]</a>&nbsp;
 [%-    END -%]
 [%   END %]
 [% ELSE %]
@@ -450,29 +451,35 @@ END;
 
 [% END %]
 
-<script type="text/javascript">
-$(document).ready(function(){
-
-// Begin Togglen / Einzeltreffer-Historie
-$("#history_toggle").html("<b>[<a href=\"#history_anchor\">[% msg.maketext("Mehr") %]</a>]</b>")
-// Zuerst verstecken
-$("#history").hide();
-// und bei Klick Sichtbarkeit togglen
-$("#history_toggle").click(function(){
- $("#history").toggle();
- $("#history_toggle").html("");
-});
-});
-</script>
-
 [% recent_titles = session.get_recently_selected_titles %]
 [% IF recent_titles.get_size > 0 %]
+
+[% IF 0 == 1 %]
+<script>
+$(document).on("click", "#ob-record_title_history .ob-more_button", function () {
+  $(this).siblings().prop("hidden",false);
+  $(this).prop("hidden",true);
+});
+
+$(document).on("click", "#ob-record_title_history .ob-less_button", function () {
+  var siblings = $(this).siblings();
+  for (i=0; i < siblings.length; i++ ) {
+    if (i>4){
+      $(siblings[i]).prop("hidden",true);
+    }
+  }
+  $('#ob-record_title_history .ob-more_button').prop("hidden", false);
+  $(this).prop("hidden", true)
+});
+</script>
+[% END %]
+
 <div class="ob-session_history"><!-- Begin Historie -->
   <h5 class="ps-3">[% msg.maketext("Diese Titel interessierten Sie bereits") %]</h5>
 
 <!-- <div id="ob-record_title_history_toggle_do"> -->
     <p/>
-    <ul class="list-group">
+    <ul class="list-group" id="ob-record_title_history">
 [% FOREACH recent_record IN recent_titles.get_records %]
 [%- record_fields = recent_record.get_fields -%]
 [%# USE dumper;dumper.dump(record_fields)%]
@@ -621,15 +628,12 @@ $("#history_toggle").click(function(){
      END;
 
 -%]
-[% IF recent_titles.get_size > 5 && loop.count == 5 %]
-				       <span id="history_toggle"></span>
-				       <div id="history">
-[% END %]
-<li class="list-group-item">[% IF person %][% person %]<br/>[% END %]<a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% recent_record.database %]/[% config.get('titles_loc') %]/id/[% recent_record.id %].html"><strong><span class="ob-title">[%
+<li class="list-group-item" [% IF  0 == 1 && recent_titles.get_size > 5 && loop.count > 5 %]hidden[% END %]>[% IF person %][% person %]<br/>[% END %]<a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% recent_record.database %]/[% config.get('titles_loc') %]/id/[% recent_record.id %].html"><strong><span class="ob-title">[%
 title %]</span></strong></a>, <span class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span></li>
 [% END %]
 [% IF recent_titles.get_size > 5 %]
-				       </div>
+<li class="list-group-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="list-group-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
 [% END %]
   </ul>
   <p/>

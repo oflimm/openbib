@@ -62,15 +62,17 @@
 [% FOREACH roleinfo IN roleinfos.all %]
 <tr>
 <td>
+[% roleinfo.rolename %]
+</td>
+<td>
 [% IF roleinfo.rolename == 'admin' %][% roleinfo.rolename %][% ELSE %]
 [%   IF user.has_right({scope = 'admin_roles', right = 'right_update'}) %]
-<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('roles_loc') %]/id/[% roleinfo.rolename %]/edit.html?l=[% lang %]">[% roleinfo.rolename %]</a>
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('roles_loc') %]/id/[% roleinfo.rolename %]/edit.html?l=[% lang %]">[% roleinfo.description %]</a>
 [%   ELSIF user.has_right({scope = 'admin_roles', right = 'right_read'}) %]
-<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('roles_loc') %]/id/[% roleinfo.rolename %].html?l=[% lang %]">[% roleinfo.rolename %]</a>
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('roles_loc') %]/id/[% roleinfo.rolename %].html?l=[% lang %]">[% roleinfo.description %]</a>
 [%   END %]
 [% END %]
 </td>
-<td>[% roleinfo.description %]</td>
 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 <td>[% IF roleinfo.rolename != 'admin' && user.has_right({scope = 'admin_roles', right = 'right_delete'}) %]<form method="post" action="[% path_prefix %]/[% config.get('roles_loc') %]/id/[% roleinfo.rolename %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><button type="submit" name="do_new" class="btn btn-primary mb-2">[% msg.maketext("L&ouml;schen") %]</button>
 </form>[% END %]

@@ -109,16 +109,16 @@
 <h5>[% msg.maketext("Anlegen einer neuen Literaturliste: ") %]</h5>
 
 <div class="form-floating mb-3">
-  <input class="form-control" type="text" name="title" id="title" size="20" />
-  <label for="title">[% msg.maketext("Name") %]</label>
+  <input class="form-control" type="text" name="title" id="lit_title" size="20" />
+  <label for="lit_title">[% msg.maketext("Name") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-  <select class="form-select" name="littype" id="littype">
+  <select class="form-select" name="littype" id="lit_type">
     <option value="1">[% msg.maketext("&ouml;ffentlich") %]</option>
     <option value="2">[% msg.maketext("privat") %]</option>
   </select>
-  <label for="littype">[% msg.maketext("Typ") %]</label>
+  <label for="lit_type">[% msg.maketext("Typ") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2" type="submit" name="do_addlitlist" value="1">[% msg.maketext("Los") %]</button>
@@ -150,8 +150,8 @@
 	<h5>[% msg.maketext("Eingabe neuer Tags") %]</h5>
 
 	<div class="form-floating mb-3">
-	  <input class="form-control" type="text" name="tags" value="" size="20" maxlength="200" id="tags"/>
-	  <label for"tags">[% msg.maketext("Tags") %]</label>
+	  <input class="form-control" type="text" name="tags" value="" size="20" maxlength="200" id="tags" aria-label="[% msg.maketext("Tags") %]" />
+	  <label for"tags" >[% msg.maketext("Tags") %]</label>
 	</div>
 
 	<div class="form-floating mb-3">

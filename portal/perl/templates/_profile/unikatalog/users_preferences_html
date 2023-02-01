@@ -59,38 +59,38 @@
 </div>
 
 <div class="form-check">
-<input class="form-check-input" type="checkbox" name="person"     value="1" [% IF searchfields.person.active %]checked="checked"[% END %]/>
+<input class="form-check-input" type="checkbox" name="person" id="person" value="1" [% IF searchfields.person.active %]checked="checked"[% END %]/>
 <label class="form-check-label" for="person">[% msg.maketext("Verfasser") %]</label>
 </div>
 
 <div class="form-check">
-<input class="form-check-input" type="checkbox" name="corporatebody"     value="1" [% IF searchfields.corporatebody.active %]checked="checked"[% END %]/>
+<input class="form-check-input" type="checkbox" name="corporatebody" id="corporatebody" value="1" [% IF searchfields.corporatebody.active %]checked="checked"[% END %]/>
 <label class="form-check-label" for="corporatebody">[% msg.maketext("K&ouml;rperschaft") %]</label>
 </div>
 
 <div class="form-check">
-<input class="form-check-input" type="checkbox" name="subject"     value="1" [% IF searchfields.subject.active %]checked="checked"[% END %]/>
+<input class="form-check-input" type="checkbox" name="subject" id="subject" value="1" [% IF searchfields.subject.active %]checked="checked"[% END %]/>
 <label class="form-check-label" for="subject">[% msg.maketext("Schlagwort") %]</label>
 </div>
 
 <div class="form-check">
-<input class="form-check-input" type="checkbox" name="classification"     value="1" [% IF searchfields.classification.active %]checked="checked"[% END %]/>
+<input class="form-check-input" type="checkbox" name="classification" id="classification" value="1" [% IF searchfields.classification.active %]checked="checked"[% END %]/>
 <label class="form-check-label" for="classification">[% msg.maketext("Notation") %]</label>
 </div>
 
 <div class="form-check">
-<input class="form-check-input" type="checkbox" name="isbn"     value="1" [% IF searchfields.isbn.active %]checked="checked"[% END %]/>
+<input class="form-check-input" type="checkbox" name="isbn" id="isbn" value="1" [% IF searchfields.isbn.active %]checked="checked"[% END %]/>
 <label class="form-check-label" for="isbn">[% msg.maketext("ISBN") %]</label>
 </div>
 
 <div class="form-check">
-<input class="form-check-input" type="checkbox" name="toc"     value="1" [% IF searchfields.toc.active %]checked="checked"[% END %]/>
+<input class="form-check-input" type="checkbox" name="toc" id="toc" value="1" [% IF searchfields.toc.active %]checked="checked"[% END %]/>
 <label class="form-check-label" for="toc">[% msg.maketext("Inhaltsverzeichnis") %]</label>
 </div>
 
 <div class="form-check">
-<input class="form-check-input" type="checkbox" name="hss"     value="1" [% IF searchfields.hss.active %]checked="checked"[% END %]/>
-<label class="form-check-label" for="toc">[% msg.maketext("T0519") %]</label>
+<input class="form-check-input" type="checkbox" name="hss" id="hss" value="1" [% IF searchfields.hss.active %]checked="checked"[% END %]/>
+<label class="form-check-label" for="hss">[% msg.maketext("T0519") %]</label>
 </div>
 
 </div><!-- end col-md-6 -->
@@ -98,37 +98,37 @@
 <div class="col-md-6">
 
 <div class="form-check">
-<input class="form-check-input" type="checkbox" name="issn"     value="1" [% IF searchfields.issn.active %]checked="checked"[% END %]/>
+<input class="form-check-input" type="checkbox" name="issn" id="issn" value="1" [% IF searchfields.issn.active %]checked="checked"[% END %]/>
 <label class="form-check-label" for="issn">[% msg.maketext("ISSN") %]</label>
 </div>
 
 <div class="form-check">
-<input class="form-check-input" type="checkbox" name="markstring"     value="1" [% IF searchfields.markstring.active %]checked="checked"[% END %]/>
+<input class="form-check-input" type="checkbox" name="markstring" id="markstring" value="1" [% IF searchfields.markstring.active %]checked="checked"[% END %]/>
 <label class="form-check-label" for="markstring">[% msg.maketext("Signatur") %]</label>
 </div>
 
 <div class="form-check">
-<input class="form-check-input" type="checkbox" name="titlestring"     value="1" [% IF searchfields.titlestring.active %]checked="checked"[% END %]/>
+<input class="form-check-input" type="checkbox" name="titlestring" id="titlestring" value="1" [% IF searchfields.titlestring.active %]checked="checked"[% END %]/>
 <label class="form-check-label" for="titlestring">[% msg.maketext("Titel-String") %]</label>
 </div>
 
 <div class="form-check">
-<input class="form-check-input" type="checkbox" name="content"     value="1" [% IF searchfields.content.active %]checked="checked"[% END %]/>
+<input class="form-check-input" type="checkbox" name="content" id="content" value="1" [% IF searchfields.content.active %]checked="checked"[% END %]/>
 <label class="form-check-label" for="content">[% msg.maketext("Abstrakt/Inhalt") %]</label>
 </div>
 
 <div class="form-check">
-<input class="form-check-input" type="checkbox" name="source"     value="1" [% IF searchfields.source.active %]checked="checked"[% END %]/>
+<input class="form-check-input" type="checkbox" name="source" id="source" value="1" [% IF searchfields.source.active %]checked="checked"[% END %]/>
 <label class="form-check-label" for="source">[% msg.maketext("Serie/Band/Quelle") %]</label>
 </div>
 
 <div class="form-check">
-<input class="form-check-input" type="checkbox" name="mediatype"     value="1" [% IF searchfields.mediatype.active %]checked="checked"[% END %]/>
+<input class="form-check-input" type="checkbox" name="mediatype" id="mediatype" value="1" [% IF searchfields.mediatype.active %]checked="checked"[% END %]/>
 <label class="form-check-label" for="mediatype">[% msg.maketext("Medienart") %]</label>
 </div>
 
 <div class="form-check">
-<input class="form-check-input" type="checkbox" name="year"     value="1" [% IF searchfields.year.active %]checked="checked"[% END %]/>
+<input class="form-check-input" type="checkbox" name="year" id="year" value="1" [% IF searchfields.year.active %]checked="checked"[% END %]/>
 <label class="form-check-label" for="year">[% msg.maketext("Erscheinungsjahr") %]</label>
 </div>
 

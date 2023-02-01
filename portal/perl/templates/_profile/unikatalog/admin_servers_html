@@ -93,16 +93,18 @@
 <tr [% IF serverinfo.active == 1 %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]>
 <th scope="row">[% serverinfo.id %]</th>
 <td>
-[%   IF user.has_right({scope = 'admin_servers', right = 'right_update'}) %]
-<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]/edit.html?l=[% lang %]">[% serverinfo.hostip %]</a>
-[%   ELSIF user.has_right({scope = 'admin_servers', right = 'right_read'}) %]
-<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %].html?l=[% lang %]">[% serverinfo.hostip %]</a>
-[%   END %]
+[% serverinfo.hostip %]
 </td>
 <td>
 <a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]/updates.html?l=[% lang %]"><img src="[% config.get_icon('chart',view,sysprofile) %]" alt="[% msg.maketext("Aktualisierung") %]" /></a>
 </td>
-<td>[% serverinfo.description %]</td>
+<td>
+[%   IF user.has_right({scope = 'admin_servers', right = 'right_update'}) %]
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]/edit.html?l=[% lang %]">[% serverinfo.description %]</a>
+[%   ELSIF user.has_right({scope = 'admin_servers', right = 'right_read'}) %]
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %].html?l=[% lang %]">[% serverinfo.description %]</a>
+[%   END %]
+</td>
 <td>
 [% IF serverinfo.status == 'updatable'%]
 [% msg.maketext("Aktualisierbar") %]

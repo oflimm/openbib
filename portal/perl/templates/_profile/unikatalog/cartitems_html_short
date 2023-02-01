@@ -23,7 +23,7 @@
     <h3>[% title %] ([% recordlist.get_size %]  [% msg.maketext("Titel") %])</h3>
 [% END %]
     <div class="col-md-6 d-flex justify-content-start ob-cartitems_allselection">
-       <input type="checkbox" name="collection" value="select" onclick="update_collection(this.form, this.checked,'collection_item')" />&nbsp;<b>[% msg.maketext("Alle Eintr&auml;ge ausw&auml;hlen") %]</b>
+       <input type="checkbox" name="collection" value="select" onclick="update_collection(this.form, this.checked,'collection_item')" aria-label="[% msg.maketext("Alle Eintr&auml;ge ausw&auml;hlen") %]" />&nbsp;<b>[% msg.maketext("Alle Eintr&auml;ge ausw&auml;hlen") %]</b>
     </div>
     <div class="col-md-6 d-flex justify-content-end">
 [%# PROCESS common/subtemplate name="titlist_options" this_loc=config.get('cartitems_loc') no_jn=1 no_relevance=1 %]

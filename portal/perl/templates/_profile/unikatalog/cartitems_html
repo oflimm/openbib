@@ -102,10 +102,10 @@ function update_collection(yourform, checked, item) {
 </div>
 [% END %]
 
-<a href="#" class="ob-floating_sidebar_button sidebar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar"><i class="fas fa-plus fa-2x"></i></a>
+<button class="ob-floating_sidebar_button sidebar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar" aria-label="[% msg.maketext("Mehr Aktionen") %]"><i class="fas fa-plus fa-2x"></i></button>
 
 <div class="pe-1">
-  <a href="#" class="ob-sidebar_button sidebar-toggler d-none d-md-block" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar"><i class="fas fa-plus fa-2x"></i></a>
+  <button class="ob-sidebar_button sidebar-toggler d-none d-md-block" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-control="offcanvasSidebar" aria-label="[% msg.maketext("Mehr Aktionen") %]"><i class="fas fa-plus fa-2x"></i></button>
 </div>
 
 [% ELSE %]

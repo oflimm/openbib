@@ -108,13 +108,13 @@
 <form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/password" enctype="application/x-www-form-urlencoded">
 
 <div class="form-floating mb-3 mt-2">
-<input class="form-control" type="password" name="password1" value="" />
-<label for="password">[% msg.maketext("Passwort") %]</label>
+<input class="form-control" type="password" name="password1" id="password1" value="" />
+<label for="password1">[% msg.maketext("Passwort") %]</label>
 </div>
 
 <div class="form-floating mb-3 mt-2">
-<input class="form-control" type="password" name="password2" value="" />
-<label for="password">[% msg.maketext("Passwort wiederholt") %]</label>
+<input class="form-control" type="password" name="password2" id="password2" value="" />
+<label for="password2">[% msg.maketext("Passwort wiederholt") %]</label>
 </div>
 
 <button type="submit" class="btn btn-primary mb-2">[% msg.maketext("Passwort &auml;ndern") %]</button>

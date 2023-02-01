@@ -498,7 +498,7 @@
 
 [% IF tagname %]
 	    <div class="pe-1">	    
-              <a href="[% path_prefix %]/[% config.get('tags_loc') %]/names/id/[% tagname %]" class="ob-tags">[% tagname %]</a>
+              <a class="btn btn-primary pe-2" href="[% path_prefix %]/[% config.get('tags_loc') %]/names/id/[% tagname %]"><i class="fas fa-search"></i> <span class="d-none d-sm-inline">[% tagname %]</span></a>
 	    </div>
 [% END %]
 	

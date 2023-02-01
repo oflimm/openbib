@@ -33,7 +33,7 @@
 </div>
 
 <div class="form-floating mb-3">
-<select class="form-select" name="type">
+<select class="form-select" name="type" id="type">
   <option value="1">[% msg.maketext("&ouml;ffentlich") %]</option>
   <option value="2">[% msg.maketext("privat") %]</option>
 </select>
@@ -42,7 +42,7 @@
 
 <div class="mb-3">
 <label class="form-label" for="topics">[% msg.maketext("Ordnen Sie Ihre Literaturliste thematisch ein") %]</label>
-<select class="form-select" name="topics" multiple="multiple" size="5">
+<select class="form-select" name="topics" multiple="multiple" size="5" id="topics">
 
 [% FOREACH topic IN topics %]
 <option value="[% topic.id %]">[% topic.name %][% IF topic.description%] ([% topic.description %])[% END %]</option>
@@ -75,7 +75,7 @@
 </thead>
 <tbody>
 [% FOREACH litlist IN litlists %]
-<tr><td><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit"><b>[% litlist.title %]</b></a>&nbsp;[%- IF litlist.lecture -%]&nbsp;<img src="[% config.get_icon('university',view,sysprofile) %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</td><td>[% litlist.itemcount %]</td><td>[% IF litlist.type == 1 %]
+<tr><td><a class="inturl" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]/edit"><b>[% litlist.title %]</b></a>&nbsp;[%- IF litlist.lecture -%]&nbsp;<img src="[% config.get_icon('university',view,sysprofile) %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</td><td>[% litlist.itemcount %]</td><td>[% IF litlist.type == 1 %]
 [% msg.maketext("&ouml;ffentlich") %]
 [% ELSE %] 
 [% msg.maketext("privat") %]

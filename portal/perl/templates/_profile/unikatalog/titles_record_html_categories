@@ -242,7 +242,7 @@ ELSIF record.database != 'eds'; # EDS hat kein Preprocessing von Links
    normdata.${'T2663'}.delete;
 END;
 
-# Preprocessing lizensiert oder OA
+# Preprocessing lizensiert, OA oder Nationallizens
 
 # Lizensierter Volltext oder OA? (Ausgabe Zugriffshinweis)
 is_licensed = 0;

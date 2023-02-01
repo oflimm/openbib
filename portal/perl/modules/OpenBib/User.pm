@@ -1573,7 +1573,6 @@ sub get_titles_of_tag {
     };
     
     my $attribute_ref = {
-        group_by => ['me.titleid','me.dbname']
     };
     
     if ($username) {

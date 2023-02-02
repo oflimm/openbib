@@ -87,10 +87,14 @@
 
 <button class="btn btn-primary mb-2 mt-4" type="submit">[% msg.maketext("&Auml;ndern") %]</button>
 
-[% IF authenticator.type == 'self' %]
 [%   IF userinfo.username != 'admin' %]
-<a class="btn btn-primary mb-2 mt-4" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/id/[% userinfo.id %]?_method=DELETE;confirm=1">[% msg.maketext("Kennung l&ouml;schen") %]</a>
+<a class="btn btn-primary mb-2 mt-4" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% userinfo.id %]?_method=DELETE;confirm=1">[% msg.maketext("Kennung l&ouml;schen") %]</a>
 [%   END %]
+
+[% IF authenticator.type != 'self' %]
+<div class="alert alert-info">
+[% msg.maketext("Bei <em>Kennung löschen</em> wird nur die Kennung in diesem Recherche-System mit alle zugehörigen Daten (u.a. Merklisten, Literaturlisten) gelöscht, nicht aber die Kennung im Bibliothekssystem.") %]
+</div>
 [% END %]
 
 </form>

@@ -5638,7 +5638,10 @@ sub wipe_account {
         # Zuerst werden die Datenbankprofile geloescht
         # DBI: "delete from profildb using profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid=profildb.profilid"
         $userinfo->user_searchprofiles->delete;
-    
+
+	# .. dann Standortprofile
+	$userinfo->user_searchlocations->delete;
+	
         # .. dann die Suchfeldeinstellungen
         # DBI: "delete from searchfield where userid = ?"
         $userinfo->searchfields->delete;

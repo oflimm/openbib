@@ -877,7 +877,10 @@ sub add {
 
     my $userid = $new_user->id;
 
-    my $viewname = $config->get_viewname_by_id($viewid);
+    # Viewname fuer auto_roles
+    # ILS-Nutzer sollen gleiche interne ID in allen Portalen haben. Daher ist dort
+    # viewid immer undef und es muss ein _default Eintrag verwendet werden
+    my $viewname = (defined $viewid)?$config->get_viewname_by_id($viewid):'_default';
 
     my $auto_roles_ref = $config->get('auto_roles');
     
@@ -5766,11 +5769,13 @@ sub delete_private_info {
         }
     )->update(
         {
-            nachname   => '',
-            vorname    => '',
-            sperre     => '',
-            sperrdatum => '',
-            token      => '',
+            nachname    => '',
+            vorname     => '',
+#            sperre      => '',
+            email       => '',	    
+#            sperrdatum  => '',
+            token       => '',
+            external_id => '',	    
         }
     );
    

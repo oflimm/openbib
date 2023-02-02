@@ -5640,7 +5640,7 @@ sub wipe_account {
         $userinfo->user_searchprofiles->delete;
 
 	# .. dann Standortprofile
-	$userinfo->user_searchlocations->delete;
+	$userinfo->search_related('user_searchlocations')->delete;
 	
         # .. dann die Suchfeldeinstellungen
         # DBI: "delete from searchfield where userid = ?"

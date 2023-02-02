@@ -92,7 +92,7 @@
 [%   END %]
 
 [% IF authenticator.type != 'self' %]
-<div class="alert alert-info mt-2">
+<div class="alert alert-info mt-4">
 [% msg.maketext("Bei <em>Kennung löschen</em> wird nur die Kennung in diesem Recherche-System mit alle zugehörigen Daten (u.a. Merklisten, Literaturlisten) gelöscht, nicht aber die Kennung im Bibliothekssystem.") %]
 </div>
 [% END %]

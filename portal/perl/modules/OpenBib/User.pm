@@ -5651,8 +5651,8 @@ sub wipe_account {
         $userinfo->tit_tags->delete;
 
         # .. dann die Literaturlisten
-#        $userinfo->litlists->litlist_topics->delete;
-#        $userinfo->litlists->litlistitems->delete;
+        $userinfo->litlists->search_related('litlist_topics')->delete;
+        $userinfo->litlists->search_related('litlistitems')->delete;
         $userinfo->litlists->delete;
 
         # .. dann die Reviewratings

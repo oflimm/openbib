@@ -132,41 +132,35 @@
 <p />
 [% END %]
 
+[% IF userinfo.role %]
 <div class="card">
 <div class="card-header">[% msg.maketext("Rollen-Zugeh&ouml;rigkeiten") %]</div>
 <div class="card-body">
-[% IF userinfo.role %]
 <ul class="list-group">
 [% FOREACH thisrole IN userinfo.role %]
 <li class="list-group-item">[% thisrole.value %] ([% thisrole.key %])</li>
 [% END %]
 </ul>
-[% ELSE %]
-Ihnen wurde bisher keine Rolle zugeordnet.
-[% END %]
 </div>
 </div>
 
 <p/>
+[% END %]
 
+[% templates_of_user = user.get_templates_of_user(userid).all %]
+[% IF templates_of_user %]
 <div class="card">
 <div class="card-header">[% msg.maketext("Zugeordnete Templates") %]</div>
 <div class="card-body">
-[% templates_of_user = user.get_templates_of_user(userid).all %]
-[% IF templates_of_user %]
 <ul class="list-group">
 [% FOREACH thistemplate IN templates_of_user %]
 [%# USE dumper;dumper.dump(thistemplate)%]
 <li class="list-group-item">View: [% thistemplate.templateid.viewid.description %]<br/>Template: [% thistemplate.templateid.templatename %]<br/>Sprache: [% thistemplate.templateid.templatelang %]</li>
 [% END %]
 </ul>
-[% ELSE %]
-Ihnen wurden bisher keine Templates zum Bearbeiten zugeordnet.
-[% END %]
-
 </div>
 </div>
 
 <p/>
-
+[% END %]
 

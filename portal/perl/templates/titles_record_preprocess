@@ -65,7 +65,7 @@
 
      # Im UzK Netz? Dann voller Zugriff auf EDS
 
-     IF remote_ip.match('^134.95.') ;
+     IF remote_ip.match('^(134\.95\.|172\.1[6-9]\.|172\.2[0-9]\.|172\.3[0-1]\.)') ;
         hide_hit = 0;
 	hide_detail = 0;
      END;

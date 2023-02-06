@@ -280,7 +280,7 @@ $(document).ready(function(){
 	  </li>       
 	  <li class="dropdown-item">
 	    <a href="http://www.portal.uni-koeln.de/universitaet.html">[% msg.maketext("Universität") %]</a></li>
-	  <li>
+	  <li class="dropdown-item">
 	    <a href="http://verwaltung.uni-koeln.de/studsek/content/">[% msg.maketext("Studierendensekretariat") %]</a>
 	  </li>
 	  <li class="dropdown-item">
@@ -292,7 +292,7 @@ $(document).ready(function(){
 	  <li class="dropdown-item">
 	    <a href="http://www.portal.uni-koeln.de/termine.html">[% msg.maketext("Terminkalender") %]</a>
 	  </li>
-	  <li>
+	  <li class="dropdown-item">
 	    <a href="https://webmail.uni-koeln.de/login.php">[% msg.maketext("Webmail") %]</a>
 	  </li>
 	</ul>

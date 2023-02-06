@@ -92,7 +92,7 @@
          <li>
       
           
-              <a href="https://www.ub.uni-koeln.de/res/impressum#e33277">[% msg.maketext("Webredaktion") %]</a>
+              <a href="https://www.ub.uni-koeln.de/events/index_ger.html">[% msg.maketext("Kulturprogramm") %]</a>
            
           
               

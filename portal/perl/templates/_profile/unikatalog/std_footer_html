@@ -147,7 +147,7 @@ $(document).ready(function(){
 	      <a href="http://www.portal.uni-koeln.de/studieninteressierte.html">[% msg.maketext("Studieninteressierte") %]</a>
 	    </li>
             <li>
-	      <a href="http://www.amgc.uni-koeln.de/">[% msg.maketext("Promotion") %]</a>
+	      <a href="http://amgc.uni-koeln.de/">[% msg.maketext("Promotion") %]</a>
 	    </li>
             <li>
 	      <a href="http://www.portal.uni-koeln.de/forschung.html">[% msg.maketext("Forschung und Transfer") %]</a>
@@ -202,9 +202,6 @@ $(document).ready(function(){
 	    </li>
 	    <li>
 	      <a href="http://www.kstw.de/index.php?option=com_content&amp;view=article&amp;id=182&amp;Itemid=121&amp;lang=de">[% msg.maketext("Mensa") %]</a>
-	    </li>
-	    <li>
-	      <a href="http://www.portal.uni-koeln.de/bibliotheken.html">[% msg.maketext("Bibliotheken") %]</a>
 	    </li>
 	    <li>
 	      <a href="http://www.portal.uni-koeln.de/termine.html">[% msg.maketext("Terminkalender") %]</a>

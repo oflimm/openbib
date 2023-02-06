@@ -131,90 +131,176 @@ $(document).ready(function(){
 
 [% IF 0 != 1 %]
 <div class="uzk15__footersection3">
-  <div class="uzk15__mainwrapper">
-    <div class="uzk15__grid_100">
-      <h2 class="uzk15__triggerhead w-100">
-	<a id="footertrigger" aria-expanded="false" aria-controls="footerbox">[% msg.maketext("Die Universität zu Köln") %]</a>
-      </h2>
-      <div class="uzk15__columnlist uzk15__hidebox" id="footerbox" aria-hidden="true">
-	<nav class="uzk15__footercolumn">
-	  <h3>[% msg.maketext("Informationen für") %]</h3>
-	  <ul>
-            <li>
-	      <a href="http://www.portal.uni-koeln.de/studium.html">[% msg.maketext("Studierende") %]</a>
-	    </li>
-            <li>
-	      <a href="http://www.portal.uni-koeln.de/studieninteressierte.html">[% msg.maketext("Studieninteressierte") %]</a>
-	    </li>
-            <li>
-	      <a href="http://amgc.uni-koeln.de/">[% msg.maketext("Promotion") %]</a>
-	    </li>
-            <li>
-	      <a href="http://www.portal.uni-koeln.de/forschung.html">[% msg.maketext("Forschung und Transfer") %]</a>
-	    </li>
-            <li>
-	      <a href="http://www.international.uni-koeln.de/">[% msg.maketext("International") %]</a>
-	    </li>
-            <li>
-	      <a href="http://portal.uni-koeln.de/alumni-foerdernde.html">[% msg.maketext("Alumni und Förderer") %]</a>
-	    </li>
-            <li>
-	      <a href="http://portal.uni-koeln.de/presse-marketing.html">[% msg.maketext("Presse und Marketing") %]</a>
-	    </li>
-	  </ul>
-	</nav>
-	<nav class="uzk15__footercolumn">
-	  <h3>[% msg.maketext("Fakultäten") %]</h3>
-	  <ul>
-	    <li>
-	      <a href="http://www.wiso.uni-koeln.de/">[% msg.maketext("Wirtschafts- und Sozialwissenschaften") %]</a>
-	    </li>
-	    <li>
-	      <a href="http://www.uni-koeln.de/jur-fak/www/index.shtml">[% msg.maketext("Rechtswissenschaften") %]</a>
-	    </li>
-	    <li>
-	      <a href="http://www.medfak.uni-koeln.de/">[% msg.maketext("Medizin") %]</a>
-	    </li>
-	    <li>
-	      <a href="http://www.uni-koeln.de/phil-fak/">[% msg.maketext("Philosophie") %]</a>
-	    </li>
-	    <li>
-	      <a href="http://www.mathnat.uni-koeln.de/">[% msg.maketext("Mathematik &amp; Naturwissenschaften") %]</a>
-	    </li>
-	    <li>
-	      <a href="http://www.hf.uni-koeln.de/">[% msg.maketext("Humanwissenschaften") %]</a>
-	    </li>
-	  </ul>
-	</nav>
-	<nav class="uzk15__footercolumn">
-	  <h3>[% msg.maketext("Schnellzugriff") %]</h3>
-	  <ul>
-	    <li>
-	      <a href="https://www.ub.uni-koeln.de/index_ger.html">[% msg.maketext("Universitäts- und Stadtbibliothek Köln") %]</a></li>
-       
-	    <li>
-	      <a href="http://www.portal.uni-koeln.de/universitaet.html">[% msg.maketext("Universität") %]</a></li>
-	    <li>
-	      <a href="http://verwaltung.uni-koeln.de/studsek/content/">[% msg.maketext("Studierendensekretariat") %]</a>
-	    </li>
-	    <li>
-	      <a href="http://www.portal.uni-koeln.de/kontakt.html">[% msg.maketext("Kontakt") %]</a>
-	    </li>
-	    <li>
-	      <a href="http://www.kstw.de/index.php?option=com_content&amp;view=article&amp;id=182&amp;Itemid=121&amp;lang=de">[% msg.maketext("Mensa") %]</a>
-	    </li>
-	    <li>
-	      <a href="http://www.portal.uni-koeln.de/termine.html">[% msg.maketext("Terminkalender") %]</a>
-	    </li>
-	    <li>
-	      <a href="https://webmail.uni-koeln.de/login.php">[% msg.maketext("Webmail") %]</a>
-	    </li>
-	  </ul>
-	</nav>
+  <div class="d-none d-md-block">
+    <div class="uzk15__mainwrapper">
+      <div class="uzk15__grid_100">
+	<h2 class="uzk15__triggerhead w-100">
+	  <a id="footertrigger" aria-expanded="false" aria-controls="footerbox">[% msg.maketext("Die Universität zu Köln") %]</a>
+	</h2>
+	<div class="uzk15__columnlist uzk15__hidebox" id="footerbox" aria-hidden="true">
+	  <nav class="uzk15__footercolumn">
+	    <h3 class="w-100">[% msg.maketext("Informationen für") %]</h3>
+	    <ul>
+              <li>
+		<a href="http://www.portal.uni-koeln.de/studium.html">[% msg.maketext("Studierende") %]</a>
+	      </li>
+              <li>
+		<a href="http://www.portal.uni-koeln.de/studieninteressierte.html">[% msg.maketext("Studieninteressierte") %]</a>
+	      </li>
+              <li>
+		<a href="http://amgc.uni-koeln.de/">[% msg.maketext("Promotion") %]</a>
+	      </li>
+              <li>
+		<a href="http://www.portal.uni-koeln.de/forschung.html">[% msg.maketext("Forschung und Transfer") %]</a>
+	      </li>
+              <li>
+		<a href="http://www.international.uni-koeln.de/">[% msg.maketext("International") %]</a>
+	      </li>
+              <li>
+		<a href="http://portal.uni-koeln.de/alumni-foerdernde.html">[% msg.maketext("Alumni und Förderer") %]</a>
+	      </li>
+              <li>
+		<a href="http://portal.uni-koeln.de/presse-marketing.html">[% msg.maketext("Presse und Marketing") %]</a>
+	      </li>
+	    </ul>
+	  </nav>
+	  <nav class="uzk15__footercolumn">
+	    <h3>[% msg.maketext("Fakultäten") %]</h3>
+	    <ul>
+	      <li>
+		<a href="http://www.wiso.uni-koeln.de/">[% msg.maketext("Wirtschafts- und Sozialwissenschaften") %]</a>
+	      </li>
+	      <li>
+		<a href="http://www.uni-koeln.de/jur-fak/www/index.shtml">[% msg.maketext("Rechtswissenschaften") %]</a>
+	      </li>
+	      <li>
+		<a href="http://www.medfak.uni-koeln.de/">[% msg.maketext("Medizin") %]</a>
+	      </li>
+	      <li>
+		<a href="http://www.uni-koeln.de/phil-fak/">[% msg.maketext("Philosophie") %]</a>
+	      </li>
+	      <li>
+		<a href="http://www.mathnat.uni-koeln.de/">[% msg.maketext("Mathematik &amp; Naturwissenschaften") %]</a>
+	      </li>
+	      <li>
+		<a href="http://www.hf.uni-koeln.de/">[% msg.maketext("Humanwissenschaften") %]</a>
+	      </li>
+	    </ul>
+	  </nav>
+	  <nav class="uzk15__footercolumn">
+	    <h3>[% msg.maketext("Schnellzugriff") %]</h3>
+	    <ul>
+	      <li>
+		<a href="https://www.ub.uni-koeln.de/index_ger.html">[% msg.maketext("Universitäts- und Stadtbibliothek Köln") %]</a></li>
+	      
+	      <li>
+		<a href="http://www.portal.uni-koeln.de/universitaet.html">[% msg.maketext("Universität") %]</a></li>
+	      <li>
+		<a href="http://verwaltung.uni-koeln.de/studsek/content/">[% msg.maketext("Studierendensekretariat") %]</a>
+	      </li>
+	      <li>
+		<a href="http://www.portal.uni-koeln.de/kontakt.html">[% msg.maketext("Kontakt") %]</a>
+	      </li>
+	      <li>
+		<a href="http://www.kstw.de/index.php?option=com_content&amp;view=article&amp;id=182&amp;Itemid=121&amp;lang=de">[% msg.maketext("Mensa") %]</a>
+	      </li>
+	      <li>
+		<a href="http://www.portal.uni-koeln.de/termine.html">[% msg.maketext("Terminkalender") %]</a>
+	      </li>
+	      <li>
+		<a href="https://webmail.uni-koeln.de/login.php">[% msg.maketext("Webmail") %]</a>
+	      </li>
+	    </ul>
+	  </nav>
+	</div>
       </div>
     </div>
-  </div>
+  </div><!-- End: d-none d-md-block -->
+  
+  <div class="d-md-none ps-2 pe-3">      
+    <div class="w-100 row d-md-flex">
+      <h2>
+	<a id="footertrigger" aria-expanded="false" aria-controls="footerbox">[% msg.maketext("Die Universität zu Köln") %]</a>
+      </h2>
+      
+      <div id="dropdown_information_for" class="dropdown">
+	<button id="dropdownMenu_information_for" class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">[% msg.maketext("Informationen für") %]</button>
+	<ul class="dropdown-menu" aria-labelledby="dropdownMenu_information_for">
+          <li class="dropdown-item">
+	    <a href="http://www.portal.uni-koeln.de/studium.html">[% msg.maketext("Studierende") %]</a>
+	  </li>
+          <li class="dropdown-item">
+	    <a href="http://www.portal.uni-koeln.de/studieninteressierte.html">[% msg.maketext("Studieninteressierte") %]</a>
+	  </li>
+          <li class="dropdown-item">
+	    <a href="http://amgc.uni-koeln.de/">[% msg.maketext("Promotion") %]</a>
+	  </li>
+          <li class="dropdown-item">
+	    <a href="http://www.portal.uni-koeln.de/forschung.html">[% msg.maketext("Forschung und Transfer") %]</a>
+	  </li>
+          <li class="dropdown-item">
+	    <a href="http://www.international.uni-koeln.de/">[% msg.maketext("International") %]</a>
+	  </li>
+          <li class="dropdown-item">
+	    <a href="http://portal.uni-koeln.de/alumni-foerdernde.html">[% msg.maketext("Alumni und Förderer") %]</a>
+	  </li>
+          <li class="dropdown-item">
+	    <a href="http://portal.uni-koeln.de/presse-marketing.html">[% msg.maketext("Presse und Marketing") %]</a>
+	  </li>
+	</ul>
+      </div>
+      <div id="dropdown_faculties" class="dropdown mt-2">
+	<button id="dropdownMenu_faculties" class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">[% msg.maketext("Fakultäten") %]</button>
+	<ul class="dropdown-menu" aria-labelledby="dropdownMenu_faculties">
+	  <li class="dropdown-item">
+	    <a href="http://www.wiso.uni-koeln.de/">[% msg.maketext("Wirtschafts- und Sozialwissenschaften") %]</a>
+	  </li>
+	  <li class="dropdown-item">
+	    <a href="http://www.uni-koeln.de/jur-fak/www/index.shtml">[% msg.maketext("Rechtswissenschaften") %]</a>
+	  </li>
+	  <li class="dropdown-item">
+	    <a href="http://www.medfak.uni-koeln.de/">[% msg.maketext("Medizin") %]</a>
+	  </li>
+	  <li class="dropdown-item">
+	    <a href="http://www.uni-koeln.de/phil-fak/">[% msg.maketext("Philosophie") %]</a>
+	  </li>
+	  <li class="dropdown-item">
+	    <a href="http://www.mathnat.uni-koeln.de/">[% msg.maketext("Mathematik &amp; Naturwissenschaften") %]</a>
+	  </li>
+	  <li class="dropdown-item">
+	    <a href="http://www.hf.uni-koeln.de/">[% msg.maketext("Humanwissenschaften") %]</a>
+	  </li>
+	</ul>
+      </div>
+      <div id="dropdown_quicklinks" class="dropdown mt-2 mb-2">
+	<button id="dropdownMenu_quicklinks" class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">[% msg.maketext("Schnellzugriff") %]</button>
+	<ul class="dropdown-menu" aria-labelledby="dropdownMenu_quicklinks">
+	  <li class="dropdown-item">
+	    <a href="https://www.ub.uni-koeln.de/index_ger.html">[% msg.maketext("Universitäts- und Stadtbibliothek Köln") %]</a>
+	  </li>       
+	  <li class="dropdown-item">
+	    <a href="http://www.portal.uni-koeln.de/universitaet.html">[% msg.maketext("Universität") %]</a></li>
+	  <li>
+	    <a href="http://verwaltung.uni-koeln.de/studsek/content/">[% msg.maketext("Studierendensekretariat") %]</a>
+	  </li>
+	  <li class="dropdown-item">
+	    <a href="http://www.portal.uni-koeln.de/kontakt.html">[% msg.maketext("Kontakt") %]</a>
+	  </li>
+	  <li class="dropdown-item">
+	    <a href="http://www.kstw.de/index.php?option=com_content&amp;view=article&amp;id=182&amp;Itemid=121&amp;lang=de">[% msg.maketext("Mensa") %]</a>
+	  </li>
+	  <li class="dropdown-item">
+	    <a href="http://www.portal.uni-koeln.de/termine.html">[% msg.maketext("Terminkalender") %]</a>
+	  </li>
+	  <li>
+	    <a href="https://webmail.uni-koeln.de/login.php">[% msg.maketext("Webmail") %]</a>
+	  </li>
+	</ul>
+      </div>
+    </div>
+  </div><!-- end d-md-none -->
 </div>
+
 <div class="uzk15__footersection4">
   <div class="uzk15__mainwrapper">
     <div class="uzk15__grid_100">

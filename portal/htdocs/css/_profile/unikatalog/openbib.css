@@ -262,6 +262,7 @@
 	display: none;
 	
     }
+    
     .ob-nav_description a, .ob-nav_description a:hover {
 	color: #fff;
     }
@@ -2330,6 +2331,25 @@ a.card-link, a.card-link:hover {
 	-o-background-size: 1.1em 1.1em;
 	background-size: 1.1em 1.1em;
 	background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE4LjEuMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9ImF1c2tsYXBwZW4iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHdpZHRoPSIyMHB4IiBoZWlnaHQ9IjIwcHgiIHZpZXdCb3g9IjAgMCAyMCAyMCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMjAgMjA7IiB4bWw6c3BhY2U9InByZXNlcnZlIiBmaWxsPSIjZmZmZmZmIj4KPHBvbHlnb24gaWQ9ImF1c2tsYXBwZW5fMV8iIHBvaW50cz0iMCw5LjggOC45LDEzLjkgMTEuMywxMy45IDIwLDkuOCAyMCw2LjEgMTcuOCw2LjEgMTAsOS44IDIuMSw2LjEgMCw2LjEgIi8+Cjwvc3ZnPgo=);
+}
+
+/* OpenBib modifications in uzk15-sections */ 
+#dropdown_information_for, #dropdown_faculties, #dropdown_quicklinks {
+    background: #fff;
+    color: #000;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+#dropdown_information_for .btn, #dropdown_faculties .btn, #dropdown_quicklinks .btn {
+    background: #fff;
+    color: #000;
+    font-weight: bold;
+}
+
+#dropdown_information_for .dropdown-item a, #dropdown_faculties .dropdown-item a, #dropdown_quicklinks .dropdown-item a {
+    background: #fff;
+    color: #000 !important;
 }
 
 @media all and (min-width: 992px) {

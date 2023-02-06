@@ -321,7 +321,7 @@
     <div class="row">    
         <div class="col">
             <div class="input-group">
-                <input required="required" id="to_focus" class="form-control" type="text" name="fs" value="" title="[% msg.maketext("Freie Suche") %]" placeholder="[% msg.maketext("Unikatalog - Bücher, E-Medien, Aufsätze &amp; mehr") %]" />
+                <input required="required" id="to_focus" class="form-control" type="search" name="fs" value="" title="[% msg.maketext("Freie Suche") %]" placeholder="[% msg.maketext("Unikatalog - Bücher, E-Medien, Aufsätze &amp; mehr") %]" />
                 <span class="input-group-btn ps-1">
                     <button class="btn btn-primary" type="submit"><span class="fas fa-search d-md-none"></span><span class="d-none d-md-block font-weight-bold">[% msg.maketext("Suchen") %]</span></button>
                     <span class="btn btn-primary fas fa-cog d-md-none" data-bs-toggle="collapse" data-bs-target="#search_options" aria-expanded="false"></span>

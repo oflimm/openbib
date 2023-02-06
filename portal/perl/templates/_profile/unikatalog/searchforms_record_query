@@ -7,7 +7,7 @@
     this_searchfield = 'freesearch';
 -%]
 <div class="form-floating mb-3">
-<input class="form-control" id="to_focus_advanced" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<input class="form-control" id="to_focus_advanced" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 <label for="to_focus_advanced">[% msg.maketext("Freie Suche") %]</label>
 </div>
 [% END %]
@@ -17,7 +17,7 @@
     this_searchfield = 'person';
  -%]
 <div class="form-floating mb-3">
-<input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<input class="form-control" id="autocomplete_[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 <label for="autocomplete_[% cgiparam %]">[% msg.maketext("Person") %]</label>
 </div>
 [% END %]
@@ -27,7 +27,7 @@
     this_searchfield = 'title';
  -%]
 <div class="form-floating mb-3">
-<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 <label for="[% cgiparam %]">[% msg.maketext("Titelworte") %]</label>
 </div>
 [% END %]
@@ -37,7 +37,7 @@
     this_searchfield = 'titlestring';
  -%]
 <div class="form-floating mb-3">
-<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 <label for="[% cgiparam %]">[% msg.maketext("Kompletter Titel") %]</label>
 </div>
 [% END %]
@@ -47,7 +47,7 @@
     this_searchfield = 'subject';
  -%]
 <div class="form-floating mb-3">
-<input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<input class="form-control" id="autocomplete_[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 <label for="autocomplete_[% cgiparam %]">[% msg.maketext("Schlagwörter") %]</label>
 </div>
 [% END %]
@@ -57,7 +57,7 @@
     this_searchfield = 'yearstring';
  -%]
 <div class="form-floating mb-3">
-<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="4" maxlength="4" />
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="4" maxlength="4" />
 <label for="[% cgiparam %]">[% msg.maketext("Erscheinungsjahr") %]</label>
 </div>
 [% END %]
@@ -78,12 +78,12 @@
     this_searchfield_to = 'year_to';
    -%]
 <div class="form-floating mb-3">
-<input class="form-control" id="[% cgiparam_from %]" type="text" name="[% cgiparam_from %]" value="[% searchquery.cgiparam_from.val | html %]" size="4" maxlength="4" />
+<input class="form-control" id="[% cgiparam_from %]" type="search" name="[% cgiparam_from %]" value="[% searchquery.cgiparam_from.val | html %]" size="4" maxlength="4" />
 <label for="[% cgiparam_from %]">[% msg.maketext("Zeitraum") %] [% msg.maketext("von") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<input class="form-control" id="[% cgiparam_to %]" type="text" name="[% cgiparam_to %]" value="[% searchquery.cgiparam_to.val | html %]" size="4" maxlength="4" />
+<input class="form-control" id="[% cgiparam_to %]" type="search" name="[% cgiparam_to %]" value="[% searchquery.cgiparam_to.val | html %]" size="4" maxlength="4" />
 <label for="[% cgiparam_to %]">[% msg.maketext("Zeitraum") %] [% msg.maketext("bis") %]</label>
 </div>
 
@@ -92,7 +92,7 @@
     this_searchfield = 'toc';
  -%]
 <div class="form-floating mb-3">
-<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 <label for="[% cgiparam %]">[% msg.maketext("Inhaltsverzeichnis") %]</label>
 </div>
 [% END %]
@@ -102,7 +102,7 @@
     this_searchfield = 'source';
  -%]
 <div class="form-floating mb-3">
-<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 <label for="[% cgiparam %]">[% msg.maketext("Reihe/Band/Quelle") %]</label>
 </div>
 [% END %]
@@ -112,7 +112,7 @@
     this_searchfield = 'markstring';
  -%]
 <div class="form-floating mb-3">
-<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 <label for="[% cgiparam %]">[% msg.maketext("Signatur") %]</label>
 </div>
 [% END %]
@@ -122,7 +122,7 @@
     this_searchfield = 'classificationstring';
  -%]
 <div class="form-floating mb-3">
-<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 <label for="[% cgiparam %]">[% msg.maketext("Notation") %]</label>
 </div>
 [% END %]
@@ -132,7 +132,7 @@
     this_searchfield = 'isbn';
  -%]
 <div class="form-floating mb-3">
-<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 <label for="[% cgiparam %]">[% msg.maketext("ISBN") %]</label>
 </div>
 [% END %]
@@ -142,7 +142,7 @@
     this_searchfield = 'issn';
  -%]
 <div class="form-floating mb-3">
-<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 <label for="[% cgiparam %]">[% msg.maketext("ISSN") %]</label>
 </div>
 [% END %]
@@ -152,7 +152,7 @@
     this_searchfield = 'corporatebody';
  -%]
 <div class="form-floating mb-3">
-<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 <label for="[% cgiparam %]">[% msg.maketext("Institutionen") %]</label>
 </div>
 [% END %]
@@ -162,7 +162,7 @@
     this_searchfield = 'publisher';
  -%]
 <div class="form-floating mb-3">
-<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 <label for="[% cgiparam %]">[% msg.maketext("Verlag") %]</label>
 </div>
 [% END %]
@@ -188,7 +188,7 @@
     this_searchfield = 'reg';
  -%]
 <div class="form-floating mb-3">
-<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 <label for="[% cgiparam %]">[% msg.maketext("Register") %]</label>
 </div>
 
@@ -197,7 +197,7 @@
     this_searchfield = 'content';
  -%]
 <div class="form-floating mb-3">
-<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 <label for="[% cgiparam %]">[% msg.maketext("Abstrakt/Inhalt") %]</label>
 </div>
 [% END %]
@@ -206,7 +206,7 @@
     this_searchfield = 'provenance';
  -%]
 <div class="form-floating mb-3">
-<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 <label for="[% cgiparam %]">[% msg.maketext("Provenienz") %]</label>
 </div>
 
@@ -229,7 +229,7 @@
     this_searchfield = 'gnd';
  -%]
 <div class="form-floating mb-3">
-<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 <label for="[% cgiparam %]">GND</label>
 </div>
 
@@ -238,7 +238,7 @@
     this_searchfield = 'hss';
  -%]
 <div class="form-floating mb-3">
-<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 <label for="[% cgiparam %]">[% msg.maketext("T0519") %]</label>
 </div>
 [% END %]

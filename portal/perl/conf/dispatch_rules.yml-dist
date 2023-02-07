@@ -444,6 +444,7 @@
    rule: '/portal/:view/browse/topics[get]'
    representations:
      - none
+     - include
      - html
    runmode: 'show_collection'
 - # Resource: browse_loc

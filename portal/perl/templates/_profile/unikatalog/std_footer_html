@@ -62,7 +62,7 @@
 	  <br/>
 	  <ul>
 	    <li>
-	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/index_ger.html" target="_blank">[% msg.maketext("Ausleihen oder einsehen") %]</a>
+	      <a target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/zugriff.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/zugriff.include?l=[% lang %]">[% msg.maketext("Ausleihen oder einsehen") %]</a>
 	    </li>
 	    
 	    <li>
@@ -142,7 +142,7 @@
 	  <button id="dropdownMenu_more_services" class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">[% msg.maketext("Weitere Services") %]</button>
 	  <ul class="dropdown-menu" aria-labelledby="dropdownMenu_more_services">
 	    <li class="dropdown-item">
-	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/index_ger.html" target="_blank">[% msg.maketext("Ausleihen oder einsehen") %]</a>
+	      <a target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/zugriff.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/zugriff.include?l=[% lang %]">[% msg.maketext("Ausleihen oder einsehen") %]</a>
 	    </li>
 	    
 	    <li class="dropdown-item">

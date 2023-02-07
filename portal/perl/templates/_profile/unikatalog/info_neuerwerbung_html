@@ -1,1 +1,1 @@
-[% config.get_templatetext('info_zugriff',view,lang) %]
+[% config.get_templatetext('info_neuerwerbung',view,lang) %]

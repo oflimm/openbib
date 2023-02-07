@@ -2359,6 +2359,10 @@ a.card-link, a.card-link:hover {
     color: #000 !important;
 }
 
+.uzk15__mainfooter #ob-essential_statements {
+    color: #fff;
+}
+
 .uzk15__mainfooter #ob-essential_statements a {
     display: inline;
 }

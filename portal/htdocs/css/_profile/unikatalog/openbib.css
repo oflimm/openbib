@@ -328,6 +328,10 @@
     .bg-color {
 	color: #fff;
     }
+
+    .ob-home_body {
+	background-color: #32475b;
+    }
     
     #ob-startpage {
 	margin-right: 0px;
@@ -556,6 +560,10 @@
     #ob-startpage .col-md-12 {
 	width: auto;
 	padding: 0px;
+    }
+
+    #image-area #ob-start_tiles {
+	padding-bottom: 5em !important;
     }
     
     #ob-search_tipps {

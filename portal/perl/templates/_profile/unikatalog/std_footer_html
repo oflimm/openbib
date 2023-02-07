@@ -47,7 +47,7 @@
 	  <br/>
 	  <ul>
 	    <li>
-	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/ueberregional/index_ger.html" target="_blank">[% msg.maketext("Alles rund um die Fernleihe") %]</a>
+	      <a target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/fernleihe.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/fernleihe.include?l=[% lang %]">[% msg.maketext("Alles rund um die Fernleihe") %]</a>
 	    </li>
 	    <li>
 	      <a target="_blank" href="https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/kurse/index_ger.html" target="_blank">[% msg.maketext("Recherchekurse der USB") %]</a>
@@ -128,7 +128,7 @@
 	  <button id="dropdownMenu_nothing_found" class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">[% msg.maketext("Nichts gefunden?!") %]</button>
 	  <ul class="dropdown-menu" aria-labelledby="dropdownMenu_nothing_found">
 	    <li class="dropdown-item">
-	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/ueberregional/index_ger.html" target="_blank">[% msg.maketext("Alles rund um die Fernleihe") %]</a>
+	      <a target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/fernleihe.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/fernleihe.include?l=[% lang %]">[% msg.maketext("Alles rund um die Fernleihe") %]</a>
 	    </li>
 	    <li class="dropdown-item">
 	      <a target="_blank" href="https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/kurse/index_ger.html" target="_blank">[% msg.maketext("Recherchekurse der USB") %]</a>

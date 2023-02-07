@@ -131,6 +131,7 @@
   }
 
 .image-3 {
+  background-position: 40% 10%;
   background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/unikatalog/Magnus_Froschperspektive_50_500px.jpg);
 }
 
@@ -204,7 +205,7 @@
 </div>
 </div>
 
-<div class="container pb-5">
+<div id="ob-start_tiles" class="container pb-5">
 
 [% PROCESS common/subtemplate name="home_alert" %]
 

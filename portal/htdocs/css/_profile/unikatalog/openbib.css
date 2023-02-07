@@ -2183,11 +2183,10 @@ body {
     font-family: OpenSansRegular,Arial,Helvetica,sans-serif;
 }
 
-header {
+header, footer {
     z-index:0 ;
     background-color: #32475b;
 }
-
 
 header nav svg {
     position:absolute;
@@ -2334,22 +2333,36 @@ a.card-link, a.card-link:hover {
 }
 
 /* OpenBib modifications in uzk15-sections */ 
-#dropdown_information_for, #dropdown_faculties, #dropdown_quicklinks {
+#dropdown_information_for, #dropdown_faculties, #dropdown_quicklinks, #dropdown_effective_search, #dropdown_nothing_found, #dropdown_more_services {
     background: #fff;
     color: #000;
     margin-left: 1em;
     margin-right: 1em;
 }
 
-#dropdown_information_for .btn, #dropdown_faculties .btn, #dropdown_quicklinks .btn {
+#dropdown_information_for .btn, #dropdown_faculties .btn, #dropdown_quicklinks .btn, #dropdown_effective_search .btn, #dropdown_nothing_found .btn, #dropdown_more_services .btn {
     background: #fff;
     color: #000;
     font-weight: bold;
 }
 
-#dropdown_information_for .dropdown-item a, #dropdown_faculties .dropdown-item a, #dropdown_quicklinks .dropdown-item a {
+#dropdown_information_for .dropdown-item a, #dropdown_faculties .dropdown-item a, #dropdown_quicklinks .dropdown-item a, #dropdown_effective_search a, #dropdown_nothing_found a, #dropdown_more_services a {
     background: #fff;
     color: #000 !important;
+}
+
+.uzk15__mainfooter #ob-essential_statements a {
+    display: inline;
+}
+
+.uzk15__mainfooter #ob-essential_statements_small a {
+    display: inline;
+}
+
+.uzk15__mainfooter .uzk15__footercolumn h3 {
+
+    display: inline;
+
 }
 
 @media all and (min-width: 992px) {

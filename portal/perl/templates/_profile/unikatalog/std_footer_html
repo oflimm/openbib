@@ -13,9 +13,167 @@
 -%]
 <!-- begin: footer -->
 
+[% footer_type = "info" # info | usb | uzk %]
+
 [% IF NOT hide_foot_banner %]
 <footer class="uzk15__mainfooter" role="contentinfo">
-[% IF 0 == 1  %]
+
+[% IF footer_type == "info" %]
+  
+<div class="w-100 pt-4">
+  <div class="uzk15__mainwrapper d-none d-md-block">
+    <div class="uzk15__grid_100">
+      <h2 class="uzk15__triggerhead w-100">
+	<a id="footertrigger" aria-expanded="false" aria-controls="footerbox">[% msg.maketext("Literatur suchen und finden") %]</a>
+      </h2>
+      <div class="uzk15__columnlist uzk15__hidebox" id="footerbox" aria-hidden="true">
+	<nav class="uzk15__footercolumn">
+	  <h3>[% msg.maketext("Effektiv suchen") %]</h3>
+	  <br/>
+	  <ul>
+            <li>
+	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/portalsuche/index_ger.html" target="_blank" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/tipps.include?l=[% lang %]">[% msg.maketext("Tipps zum Unikatalog") %]</a>
+	    </li>
+            <li>
+	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/index_ger.html" target="_blank">[% msg.maketext("Nach Datenbanken und E-Medien suchen") %]</a>
+	    </li>
+            <li>
+	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/fachinfos/index_ger.html" target="_blank">[% msg.maketext("In Ihrem Fachgebiet suchen") %]</a>
+	    </li>
+	  </ul>
+	</nav>
+	<nav class="uzk15__footercolumn">
+	  <h3>[% msg.maketext("Nichts gefunden?!") %]</h3>
+	  <br/>
+	  <ul>
+	    <li>
+	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/ueberregional/index_ger.html" target="_blank">[% msg.maketext("Alles rund um die Fernleihe") %]</a>
+	    </li>
+	    <li>
+	      <a target="_blank" href="https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/kurse/index_ger.html" target="_blank">[% msg.maketext("Recherchekurse der USB") %]</a>
+	    </li>
+	    <li>
+	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/anschaffungsvorschlag/index_ger.html" target="_blank">[% msg.maketext("Bücher zum Kauf vorschlagen") %]</a>
+	    </li>
+	  </ul>
+	</nav>
+	<nav class="uzk15__footercolumn">
+	  <h3>[% msg.maketext("Weitere Services") %]</h3>
+	  <br/>
+	  <ul>
+	    <li>
+	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/index_ger.html" target="_blank">[% msg.maketext("Ausleihen oder einsehen") %]</a>
+	    </li>
+	    
+	    <li>
+	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/neuerwerbungsliste/index_ger.html" target="_blank">[% msg.maketext("Neuerwerbungslisten abonnieren") %]</a>
+	    </li>
+	    
+	    <li>
+	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/fragen/index_ger.html" target="_blank">[% msg.maketext("Fragen Sie uns") %]</a>
+	    </li>
+          </ul>
+	</nav>
+      </div>
+    </div>
+    <div class="uzk15__grid_100 pb-4">
+      <div class="row">
+	<div class="col-md-6">
+	  <span style="font-size:0.9em;color:#fff;">[% msg.maketext("Der Kölner Universitätskatalog ist ein Dienst der Universitäts- und Stadtbibliothek Köln") %]</span>
+	</div>
+	<div id="ob-essential_statements" class="col-md-6 ps-3 justify-content-right">
+	  <a target="_blank" href="https://www.ub.uni-koeln.de/res/impressum/index_ger.html">[% msg.maketext("Impressum") %]</a>&nbsp;|&nbsp;<a target="_blank" href="[% path_prefix %]/info/datenschutz.html">[% msg.maketext("Datenschutzerklärung") %]</a> |  <a target="_blank" href="https://www.ub.uni-koeln.de/ueber_uns/socialmedia/index_ger.html">[% msg.maketext("Netiquette") %]</a>
+	</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-md-none ps-2 pe-3">      
+    <div class="w-100 row d-md-flex">
+      <h2>
+	[% msg.maketext("Literatur suchen und finden") %]
+      </h2>
+      
+      <div class="w-100 ps-0">
+
+	<!--	
+	<nav class="uzk15__footercolumn">
+	  <span class="uzk15__selectstyle">
+	    <select class="uzk15__footerselect">
+	      <option selected="selected" disabled="disabled" value="">[% msg.maketext("Effektiv suchen") %]</option>
+	      <option value="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/portalsuche/index_ger.html">[% msg.maketext("Tipps zum USB-Portal") %]</option>
+	      <option value="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/index_ger.html">[% msg.maketext("Nach Datenbanken und E-Medien suchen") %]</option>
+	      <option value="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/fachinfos/index_ger.html">[% msg.maketext("In Ihrem Fachgebiet suchen") %]</option>
+	    </select>
+	  </span>
+	  <p class="uzk15__headerstandardselect uzk15__customdropdowncontainer uzk15__linkdropdown"></p>
+	</nav>
+	-->
+	
+	<div id="dropdown_effective_search" class="dropdown">
+	  <button id="dropdownMenu_effective_search" class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">[% msg.maketext("Effektiv suchen") %]</button>
+	  <ul class="dropdown-menu" aria-labelledby="dropdownMenu_effective_search">
+            <li class="dropdown-item">
+	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/portalsuche/index_ger.html" target="_blank"  data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/tipps.include?l=[% lang %]">[% msg.maketext("Tipps zum Unikatalog") %]</a>
+	    </li>
+            <li class="dropdown-item">
+	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/index_ger.html" target="_blank">[% msg.maketext("Nach Datenbanken und E-Medien suchen") %]</a>
+	    </li>
+            <li class="dropdown-item">
+	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/fachinfos/index_ger.html" target="_blank">[% msg.maketext("In Ihrem Fachgebiet suchen") %]</a>
+	    </li>
+	  </ul>
+	</div>
+	<div id="dropdown_nothing_found" class="dropdown mt-2">
+	  <button id="dropdownMenu_nothing_found" class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">[% msg.maketext("Nichts gefunden?!") %]</button>
+	  <ul class="dropdown-menu" aria-labelledby="dropdownMenu_nothing_found">
+	    <li class="dropdown-item">
+	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/ueberregional/index_ger.html" target="_blank">[% msg.maketext("Alles rund um die Fernleihe") %]</a>
+	    </li>
+	    <li class="dropdown-item">
+	      <a target="_blank" href="https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/kurse/index_ger.html" target="_blank">[% msg.maketext("Recherchekurse der USB") %]</a>
+	    </li>
+	    <li class="dropdown-item">
+	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/anschaffungsvorschlag/index_ger.html" target="_blank">[% msg.maketext("Bücher zum Kauf vorschlagen") %]</a>
+	    </li>
+	  </ul>
+	</div>
+	<div id="dropdown_more_services" class="dropdown mt-2 mb-2">
+	  <button id="dropdownMenu_more_services" class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">[% msg.maketext("Weitere Services") %]</button>
+	  <ul class="dropdown-menu" aria-labelledby="dropdownMenu_more_services">
+	    <li class="dropdown-item">
+	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/index_ger.html" target="_blank">[% msg.maketext("Ausleihen oder einsehen") %]</a>
+	    </li>
+	    
+	    <li class="dropdown-item">
+	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/neuerwerbungsliste/index_ger.html" target="_blank">[% msg.maketext("Neuerwerbungslisten abonnieren") %]</a>
+	    </li>
+	    
+	    <li class="dropdown-item">
+	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/fragen/index_ger.html" target="_blank">[% msg.maketext("Fragen Sie uns") %]</a>
+	    </li>
+	  </ul>
+	</div>
+      </div>
+    </div>
+
+    <div class="uzk15__grid_100 pb-4 pt-2">
+      <div class="row">
+	<div class="col-md-6">
+	  <span style="font-size:0.9em;color:#fff;">[% msg.maketext("Der Kölner Universitätskatalog ist ein Dienst der Universitäts- und Stadtbibliothek Köln") %]</span>
+	</div>
+	<div id="ob-essential_statements_small" class="col-md-6">
+	  <a target="_blank" href="https://www.ub.uni-koeln.de/res/impressum/index_ger.html">[% msg.maketext("Impressum") %]</a>&nbsp;|&nbsp;<a target="_blank" href="[% path_prefix %]/info/datenschutz.html">[% msg.maketext("Datenschutzerklärung") %]</a> |  <a target="_blank" href="https://www.ub.uni-koeln.de/ueber_uns/socialmedia/index_ger.html">[% msg.maketext("Netiquette") %]</a>
+	</div>
+      </div>
+    </div>
+
+  </div><!-- end d-md-none -->  
+
+</div>
+[% END %]
+
+[% IF footer_type == "usb"  %]
 <!-- <div class="uzk15__footersection1">
   <div class="uzk15__mainwrapper">
    <div class="uzk15__grid_100">
@@ -71,13 +229,13 @@
 	  <h3 class="uzk15__invisible">[% msg.maketext("Kontakt") %]</h3> 
 	  <ul>
             <li>
-              <a href="https://www.ub.uni-koeln.de/suchen_ausleihen/fragen/index_ger.html">[% msg.maketext("Kontakt") %]</a>
+              <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/fragen/index_ger.html">[% msg.maketext("Kontakt") %]</a>
 	    </li>
             <li>
-              <a href="https://www.ub.uni-koeln.de/res/newsletter/index_ger.html">[% msg.maketext("Newsletter") %]</a>
+              <a target="_blank" href="https://www.ub.uni-koeln.de/res/newsletter/index_ger.html">[% msg.maketext("Newsletter") %]</a>
 	    </li>
             <li>
-              <a href="https://www.ub.uni-koeln.de/events/index_ger.html">[% msg.maketext("Kulturprogramm") %]</a>
+              <a target="_blank" href="https://www.ub.uni-koeln.de/events/index_ger.html">[% msg.maketext("Kulturprogramm") %]</a>
 	    </li>
 	  </ul>
 	</nav>
@@ -85,10 +243,10 @@
 	  <h3 class="uzk15__invisible">[% msg.maketext("Impressum / Datenschutzerklärung") %]</h3> 
 	  <ul>
 	    <li>
-              <a href="https://www.ub.uni-koeln.de/res/impressum/index_ger.html">[% msg.maketext("Impressum") %]</a>
+              <a target="_blank" href="https://www.ub.uni-koeln.de/res/impressum/index_ger.html">[% msg.maketext("Impressum") %]</a>
 	    </li>
 	    <li>
-              <a href="[% path_prefix %]/info/datenschutz.html">[% msg.maketext("Datenschutzerklärung") %]</a>
+              <a target="_blank" href="[% path_prefix %]/info/datenschutz.html">[% msg.maketext("Datenschutzerklärung") %]</a>
 	    </li>
 	  </ul>
 	</nav>
@@ -126,10 +284,22 @@ $(document).ready(function(){
                             $("#footertrigger").hasClass("uzk15__open") ? $("#footertrigger").attr("aria-expanded", "true") : $("#footertrigger").attr("aria-expanded", "false");
                             $("#footerbox").hasClass("uzk15__open") ? $("#footerbox").attr("aria-hidden", "false") : $("#footerbox").attr("aria-hidden", "true")
                         });
+
+
+                    $("#footertrigger_small").attr("aria-controls", "footerbox_small");
+                    $("#footertrigger_small").attr("aria-expanded", "false");
+                    $("#footerbox_small").hasClass("uzk15__open") ? $("#footerbox_small").attr("aria-hidden", "false") : $("#footerbox_small").attr("aria-hidden", "true");
+                    $("#footertrigger_small").on("click",
+                        function() {
+                            $("#footerbox_small, #footertrigger_small").toggleClass("uzk15__open");
+                            $("#footertrigger_small").hasClass("uzk15__open") ? $("#footertrigger_small").attr("aria-expanded", "true") : $("#footertrigger_small").attr("aria-expanded", "false");
+                            $("#footerbox_small").hasClass("uzk15__open") ? $("#footerbox_small").attr("aria-hidden", "false") : $("#footerbox_small").attr("aria-hidden", "true")
+                        });
+
 });
 </script>
 
-[% IF 0 != 1 %]
+[% IF footer_type == "uzk" %]
 <div class="uzk15__footersection3">
   <div class="d-none d-md-block">
     <div class="uzk15__mainwrapper">
@@ -142,25 +312,25 @@ $(document).ready(function(){
 	    <h3 class="w-100">[% msg.maketext("Informationen für") %]</h3>
 	    <ul>
               <li>
-		<a href="http://www.portal.uni-koeln.de/studium.html">[% msg.maketext("Studierende") %]</a>
+		<a target="_blank" href="http://www.portal.uni-koeln.de/studium.html">[% msg.maketext("Studierende") %]</a>
 	      </li>
               <li>
-		<a href="http://www.portal.uni-koeln.de/studieninteressierte.html">[% msg.maketext("Studieninteressierte") %]</a>
+		<a target="_blank" href="http://www.portal.uni-koeln.de/studieninteressierte.html">[% msg.maketext("Studieninteressierte") %]</a>
 	      </li>
               <li>
-		<a href="http://amgc.uni-koeln.de/">[% msg.maketext("Promotion") %]</a>
+		<a target="_blank" href="http://amgc.uni-koeln.de/">[% msg.maketext("Promotion") %]</a>
 	      </li>
               <li>
-		<a href="http://www.portal.uni-koeln.de/forschung.html">[% msg.maketext("Forschung und Transfer") %]</a>
+		<a target="_blank" href="http://www.portal.uni-koeln.de/forschung.html">[% msg.maketext("Forschung und Transfer") %]</a>
 	      </li>
               <li>
-		<a href="http://www.international.uni-koeln.de/">[% msg.maketext("International") %]</a>
+		<a target="_blank" href="http://www.international.uni-koeln.de/">[% msg.maketext("International") %]</a>
 	      </li>
               <li>
-		<a href="http://portal.uni-koeln.de/alumni-foerdernde.html">[% msg.maketext("Alumni und Förderer") %]</a>
+		<a target="_blank" href="http://portal.uni-koeln.de/alumni-foerdernde.html">[% msg.maketext("Alumni und Förderer") %]</a>
 	      </li>
               <li>
-		<a href="http://portal.uni-koeln.de/presse-marketing.html">[% msg.maketext("Presse und Marketing") %]</a>
+		<a target="_blank" href="http://portal.uni-koeln.de/presse-marketing.html">[% msg.maketext("Presse und Marketing") %]</a>
 	      </li>
 	    </ul>
 	  </nav>
@@ -168,22 +338,22 @@ $(document).ready(function(){
 	    <h3>[% msg.maketext("Fakultäten") %]</h3>
 	    <ul>
 	      <li>
-		<a href="http://www.wiso.uni-koeln.de/">[% msg.maketext("Wirtschafts- und Sozialwissenschaften") %]</a>
+		<a target="_blank" href="http://www.wiso.uni-koeln.de/">[% msg.maketext("Wirtschafts- und Sozialwissenschaften") %]</a>
 	      </li>
 	      <li>
-		<a href="http://www.uni-koeln.de/jur-fak/www/index.shtml">[% msg.maketext("Rechtswissenschaften") %]</a>
+		<a target="_blank" href="http://www.uni-koeln.de/jur-fak/www/index.shtml">[% msg.maketext("Rechtswissenschaften") %]</a>
 	      </li>
 	      <li>
-		<a href="http://www.medfak.uni-koeln.de/">[% msg.maketext("Medizin") %]</a>
+		<a target="_blank" href="http://www.medfak.uni-koeln.de/">[% msg.maketext("Medizin") %]</a>
 	      </li>
 	      <li>
-		<a href="http://www.uni-koeln.de/phil-fak/">[% msg.maketext("Philosophie") %]</a>
+		<a target="_blank" href="http://www.uni-koeln.de/phil-fak/">[% msg.maketext("Philosophie") %]</a>
 	      </li>
 	      <li>
-		<a href="http://www.mathnat.uni-koeln.de/">[% msg.maketext("Mathematik &amp; Naturwissenschaften") %]</a>
+		<a target="_blank" href="http://www.mathnat.uni-koeln.de/">[% msg.maketext("Mathematik &amp; Naturwissenschaften") %]</a>
 	      </li>
 	      <li>
-		<a href="http://www.hf.uni-koeln.de/">[% msg.maketext("Humanwissenschaften") %]</a>
+		<a target="_blank" href="http://www.hf.uni-koeln.de/">[% msg.maketext("Humanwissenschaften") %]</a>
 	      </li>
 	    </ul>
 	  </nav>
@@ -191,24 +361,24 @@ $(document).ready(function(){
 	    <h3>[% msg.maketext("Schnellzugriff") %]</h3>
 	    <ul>
 	      <li>
-		<a href="https://www.ub.uni-koeln.de/index_ger.html">[% msg.maketext("Universitäts- und Stadtbibliothek Köln") %]</a></li>
+		<a target="_blank" href="https://www.ub.uni-koeln.de/index_ger.html">[% msg.maketext("Universitäts- und Stadtbibliothek Köln") %]</a></li>
 	      
 	      <li>
-		<a href="http://www.portal.uni-koeln.de/universitaet.html">[% msg.maketext("Universität") %]</a></li>
+		<a target="_blank" href="http://www.portal.uni-koeln.de/universitaet.html">[% msg.maketext("Universität") %]</a></li>
 	      <li>
-		<a href="http://verwaltung.uni-koeln.de/studsek/content/">[% msg.maketext("Studierendensekretariat") %]</a>
+		<a target="_blank" href="http://verwaltung.uni-koeln.de/studsek/content/">[% msg.maketext("Studierendensekretariat") %]</a>
 	      </li>
 	      <li>
-		<a href="http://www.portal.uni-koeln.de/kontakt.html">[% msg.maketext("Kontakt") %]</a>
+		<a target="_blank" href="http://www.portal.uni-koeln.de/kontakt.html">[% msg.maketext("Kontakt") %]</a>
 	      </li>
 	      <li>
-		<a href="http://www.kstw.de/index.php?option=com_content&amp;view=article&amp;id=182&amp;Itemid=121&amp;lang=de">[% msg.maketext("Mensa") %]</a>
+		<a target="_blank" href="http://www.kstw.de/index.php?option=com_content&amp;view=article&amp;id=182&amp;Itemid=121&amp;lang=de">[% msg.maketext("Mensa") %]</a>
 	      </li>
 	      <li>
-		<a href="http://www.portal.uni-koeln.de/termine.html">[% msg.maketext("Terminkalender") %]</a>
+		<a target="_blank" href="http://www.portal.uni-koeln.de/termine.html">[% msg.maketext("Terminkalender") %]</a>
 	      </li>
 	      <li>
-		<a href="https://webmail.uni-koeln.de/login.php">[% msg.maketext("Webmail") %]</a>
+		<a target="_blank" href="https://webmail.uni-koeln.de/login.php">[% msg.maketext("Webmail") %]</a>
 	      </li>
 	    </ul>
 	  </nav>
@@ -220,32 +390,33 @@ $(document).ready(function(){
   <div class="d-md-none ps-2 pe-3">      
     <div class="w-100 row d-md-flex">
       <h2>
-	<a id="footertrigger" aria-expanded="false" aria-controls="footerbox">[% msg.maketext("Die Universität zu Köln") %]</a>
+	<a id="footertrigger_small" aria-expanded="false" aria-controls="footerbox_small">[% msg.maketext("Die Universität zu Köln") %]</a>
       </h2>
-      
+
+      <div class="uzk15__columnlist uzk15__hidebox" id="footerbox_small" aria-hidden="true">
       <div id="dropdown_information_for" class="dropdown">
 	<button id="dropdownMenu_information_for" class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">[% msg.maketext("Informationen für") %]</button>
 	<ul class="dropdown-menu" aria-labelledby="dropdownMenu_information_for">
           <li class="dropdown-item">
-	    <a href="http://www.portal.uni-koeln.de/studium.html">[% msg.maketext("Studierende") %]</a>
+	    <a target="_blank" href="http://www.portal.uni-koeln.de/studium.html">[% msg.maketext("Studierende") %]</a>
 	  </li>
           <li class="dropdown-item">
-	    <a href="http://www.portal.uni-koeln.de/studieninteressierte.html">[% msg.maketext("Studieninteressierte") %]</a>
+	    <a target="_blank" href="http://www.portal.uni-koeln.de/studieninteressierte.html">[% msg.maketext("Studieninteressierte") %]</a>
 	  </li>
           <li class="dropdown-item">
-	    <a href="http://amgc.uni-koeln.de/">[% msg.maketext("Promotion") %]</a>
+	    <a target="_blank" href="http://amgc.uni-koeln.de/">[% msg.maketext("Promotion") %]</a>
 	  </li>
           <li class="dropdown-item">
-	    <a href="http://www.portal.uni-koeln.de/forschung.html">[% msg.maketext("Forschung und Transfer") %]</a>
+	    <a target="_blank" href="http://www.portal.uni-koeln.de/forschung.html">[% msg.maketext("Forschung und Transfer") %]</a>
 	  </li>
           <li class="dropdown-item">
-	    <a href="http://www.international.uni-koeln.de/">[% msg.maketext("International") %]</a>
+	    <a target="_blank" href="http://www.international.uni-koeln.de/">[% msg.maketext("International") %]</a>
 	  </li>
           <li class="dropdown-item">
-	    <a href="http://portal.uni-koeln.de/alumni-foerdernde.html">[% msg.maketext("Alumni und Förderer") %]</a>
+	    <a target="_blank" href="http://portal.uni-koeln.de/alumni-foerdernde.html">[% msg.maketext("Alumni und Förderer") %]</a>
 	  </li>
           <li class="dropdown-item">
-	    <a href="http://portal.uni-koeln.de/presse-marketing.html">[% msg.maketext("Presse und Marketing") %]</a>
+	    <a target="_blank" href="http://portal.uni-koeln.de/presse-marketing.html">[% msg.maketext("Presse und Marketing") %]</a>
 	  </li>
 	</ul>
       </div>
@@ -253,49 +424,50 @@ $(document).ready(function(){
 	<button id="dropdownMenu_faculties" class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">[% msg.maketext("Fakultäten") %]</button>
 	<ul class="dropdown-menu" aria-labelledby="dropdownMenu_faculties">
 	  <li class="dropdown-item">
-	    <a href="http://www.wiso.uni-koeln.de/">[% msg.maketext("Wirtschafts- und Sozialwissenschaften") %]</a>
+	    <a target="_blank" href="http://www.wiso.uni-koeln.de/">[% msg.maketext("Wirtschafts- und Sozialwissenschaften") %]</a>
 	  </li>
 	  <li class="dropdown-item">
-	    <a href="http://www.uni-koeln.de/jur-fak/www/index.shtml">[% msg.maketext("Rechtswissenschaften") %]</a>
+	    <a target="_blank" href="http://www.uni-koeln.de/jur-fak/www/index.shtml">[% msg.maketext("Rechtswissenschaften") %]</a>
 	  </li>
 	  <li class="dropdown-item">
-	    <a href="http://www.medfak.uni-koeln.de/">[% msg.maketext("Medizin") %]</a>
+	    <a target="_blank" href="http://www.medfak.uni-koeln.de/">[% msg.maketext("Medizin") %]</a>
 	  </li>
 	  <li class="dropdown-item">
-	    <a href="http://www.uni-koeln.de/phil-fak/">[% msg.maketext("Philosophie") %]</a>
+	    <a target="_blank" href="http://www.uni-koeln.de/phil-fak/">[% msg.maketext("Philosophie") %]</a>
 	  </li>
 	  <li class="dropdown-item">
-	    <a href="http://www.mathnat.uni-koeln.de/">[% msg.maketext("Mathematik &amp; Naturwissenschaften") %]</a>
+	    <a target="_blank" href="http://www.mathnat.uni-koeln.de/">[% msg.maketext("Mathematik &amp; Naturwissenschaften") %]</a>
 	  </li>
 	  <li class="dropdown-item">
-	    <a href="http://www.hf.uni-koeln.de/">[% msg.maketext("Humanwissenschaften") %]</a>
+	    <a target="_blank" href="http://www.hf.uni-koeln.de/">[% msg.maketext("Humanwissenschaften") %]</a>
 	  </li>
 	</ul>
       </div>
       <div id="dropdown_quicklinks" class="dropdown mt-2 mb-2">
-	<button id="dropdownMenu_quicklinks" class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">[% msg.maketext("Schnellzugriff") %]</button>
+	<button id="dropdownMenu_quicklinks" class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">[% msg.maketext("Schnellzugriff") %]<span class="float-right"><i class="fas fas-search"></i></span></button>
 	<ul class="dropdown-menu" aria-labelledby="dropdownMenu_quicklinks">
 	  <li class="dropdown-item">
-	    <a href="https://www.ub.uni-koeln.de/index_ger.html">[% msg.maketext("Universitäts- und Stadtbibliothek Köln") %]</a>
+	    <a target="_blank" href="https://www.ub.uni-koeln.de/index_ger.html">[% msg.maketext("Universitäts- und Stadtbibliothek Köln") %]</a>
 	  </li>       
 	  <li class="dropdown-item">
-	    <a href="http://www.portal.uni-koeln.de/universitaet.html">[% msg.maketext("Universität") %]</a></li>
+	    <a target="_blank" href="http://www.portal.uni-koeln.de/universitaet.html">[% msg.maketext("Universität") %]</a></li>
 	  <li class="dropdown-item">
-	    <a href="http://verwaltung.uni-koeln.de/studsek/content/">[% msg.maketext("Studierendensekretariat") %]</a>
+	    <a target="_blank" href="http://verwaltung.uni-koeln.de/studsek/content/">[% msg.maketext("Studierendensekretariat") %]</a>
 	  </li>
 	  <li class="dropdown-item">
-	    <a href="http://www.portal.uni-koeln.de/kontakt.html">[% msg.maketext("Kontakt") %]</a>
+	    <a target="_blank" href="http://www.portal.uni-koeln.de/kontakt.html">[% msg.maketext("Kontakt") %]</a>
 	  </li>
 	  <li class="dropdown-item">
-	    <a href="http://www.kstw.de/index.php?option=com_content&amp;view=article&amp;id=182&amp;Itemid=121&amp;lang=de">[% msg.maketext("Mensa") %]</a>
+	    <a target="_blank" href="http://www.kstw.de/index.php?option=com_content&amp;view=article&amp;id=182&amp;Itemid=121&amp;lang=de">[% msg.maketext("Mensa") %]</a>
 	  </li>
 	  <li class="dropdown-item">
-	    <a href="http://www.portal.uni-koeln.de/termine.html">[% msg.maketext("Terminkalender") %]</a>
+	    <a target="_blank" href="http://www.portal.uni-koeln.de/termine.html">[% msg.maketext("Terminkalender") %]</a>
 	  </li>
 	  <li class="dropdown-item">
-	    <a href="https://webmail.uni-koeln.de/login.php">[% msg.maketext("Webmail") %]</a>
+	    <a target="_blank" href="https://webmail.uni-koeln.de/login.php">[% msg.maketext("Webmail") %]</a>
 	  </li>
 	</ul>
+      </div>
       </div>
     </div>
   </div><!-- end d-md-none -->
@@ -306,7 +478,7 @@ $(document).ready(function(){
     <div class="uzk15__grid_100">
       <h2 class="uzk15__smallerheadlines">[% msg.maketext("Social-Media-Kanäle der Universität zu Köln") %]</h2>
       <div class="uzk15__socialmedia">
-	<a href="https://www.facebook.com/pages/Universit%C3%A4t-zu-K%C3%B6ln/180703865199">
+	<a target="_blank" href="https://www.facebook.com/pages/Universit%C3%A4t-zu-K%C3%B6ln/180703865199">
 	  <span class="uzk15__icon uzk15__icon-facebook"> 
 	    <svg class="uzk15__svg-facebook">
               <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#fb" />
@@ -315,7 +487,7 @@ $(document).ready(function(){
 	  <span class="uzk15__invisible">Facebook</span>
 	</a>
 	
-	<a href="https://twitter.com/UniCologne"> 
+	<a target="_blank" href="https://twitter.com/UniCologne"> 
 	  <span class="uzk15__icon uzk15__icon-twitter"> 
 	    <svg class="uzk15__svg-twitter">
               <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#twitter" />
@@ -324,7 +496,7 @@ $(document).ready(function(){
 	  <span class="uzk15__invisible">Twitter</span>
 	</a>
 	
-	<a href="http://www.xing.com/net/universitaetzukoeln/"> 
+	<a target="_blank" href="http://www.xing.com/net/universitaetzukoeln/"> 
 	  <span class="uzk15__icon uzk15__icon-xing"> 
 	    <svg class="uzk15__svg-xing">
               <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#xing" />
@@ -333,7 +505,7 @@ $(document).ready(function(){
 	  <span class="uzk15__invisible">Xing</span>
 	</a>
 
-	<a href="http://www.youtube.com/user/UniversitaetzuKoeln"> 
+	<a target="_blank" href="http://www.youtube.com/user/UniversitaetzuKoeln"> 
 	  <span class="uzk15__icon uzk15__icon-youtube"> 
 	    <svg class="uzk15__svg-youtube">
               <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#youtube" />
@@ -342,7 +514,7 @@ $(document).ready(function(){
 	  <span class="uzk15__invisible">Youtube</span>
 	</a>
 	
-	<a href="https://www.linkedin.com/company/university-of-cologne?trk=biz-companies-cym"> 
+	<a target="_blank" href="https://www.linkedin.com/company/university-of-cologne?trk=biz-companies-cym"> 
 	  <span class="uzk15__icon"> 
 	    <svg class="uzk15__svg-linkedin">
               <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#linkedin" />
@@ -351,7 +523,7 @@ $(document).ready(function(){
 	  <span class="uzk15__invisible">LinkedIn</span>
 	</a>
 	
-	<a href="http://itunes.apple.com/de/institution/universitat-zu-koln/id426341691"> 
+	<a target="_blank" href="http://itunes.apple.com/de/institution/universitat-zu-koln/id426341691"> 
 	  <span class="uzk15__icon"> 
 	    <svg class="uzk15__svg-itunes">
               <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#itunes" />
@@ -360,7 +532,7 @@ $(document).ready(function(){
 	  <span class="uzk15__invisible">iTunes</span>
 	</a>
 	
-	<a href="https://instagram.com/universityofcologne/"> 
+	<a target="_blank" href="https://instagram.com/universityofcologne/"> 
 	  <span class="uzk15__icon"> 
 	    <svg class="uzk15__svg-itunes">
               <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#instagram" />
@@ -371,7 +543,7 @@ $(document).ready(function(){
       </div>
       <div class="uzk15__copyright">
 	<small>© [% msg.maketext("Universität zu Köln") %]</small><br/>
-	<a href="[% path_prefix %]/info/datenschutz.html">[% msg.maketext("Datenschutzerklärung") %]</a> <a href="https://www.ub.uni-koeln.de/res/impressum/index_ger.html">[% msg.maketext("Impressum") %]</a>
+	<a target="_blank" href="[% path_prefix %]/info/datenschutz.html">[% msg.maketext("Datenschutzerklärung") %]</a> <a target="_blank" href="https://www.ub.uni-koeln.de/res/impressum/index_ger.html">[% msg.maketext("Impressum") %]</a>
       </div>
 
       <div class="uzk15__seperator"></div>
@@ -380,12 +552,12 @@ $(document).ready(function(){
 	<div class="uzk15__accreditationlist">
 	  <dl>
 	    <dt>    
-	      <a href="https://portal.uni-koeln.de/13951.html"><abbr title="Total E-Quality">[% msg.maketext("Total Equality Award") %]</abbr></a>
-	      <a href="http://www.wiso.uni-koeln.de/21732.html"><abbr title="European Quality Improvement System">EQUIS</abbr></a>
-	      <a href="http://www.wiso.uni-koeln.de/30432.html"><abbr title="CEMS International Management">CEMS</abbr></a>
-	      <a href="http://www.aqas.de/"><abbr title="Akkreditierte Studienprogramme">AQAS</abbr></a>
-	      <a href="http://www.charta-der-vielfalt.de/unterzeichner/unterzeichner-der-charta-der-vielfalt/zeige/universitaet-zu-koeln.html"><abbr title="Charta der Vielfalt">[% msg.maketext("Charta der Vielfalt") %]</abbr></a>
-	      <a href="http://www.uni-koeln.de/img/dist/HRK-Audit-Zertifikat.jpg"><abbr title="Charta der Vielfalt">[% msg.maketext("HRK-Audit Internationalisierung") %]</abbr></a>
+	      <a target="_blank" href="https://portal.uni-koeln.de/13951.html"><abbr title="Total E-Quality">[% msg.maketext("Total Equality Award") %]</abbr></a>
+	      <a target="_blank" href="http://www.wiso.uni-koeln.de/21732.html"><abbr title="European Quality Improvement System">EQUIS</abbr></a>
+	      <a target="_blank" href="http://www.wiso.uni-koeln.de/30432.html"><abbr title="CEMS International Management">CEMS</abbr></a>
+	      <a target="_blank" href="http://www.aqas.de/"><abbr title="Akkreditierte Studienprogramme">AQAS</abbr></a>
+	      <a target="_blank" href="http://www.charta-der-vielfalt.de/unterzeichner/unterzeichner-der-charta-der-vielfalt/zeige/universitaet-zu-koeln.html"><abbr title="Charta der Vielfalt">[% msg.maketext("Charta der Vielfalt") %]</abbr></a>
+	      <a target="_blank" href="http://www.uni-koeln.de/img/dist/HRK-Audit-Zertifikat.jpg"><abbr title="Charta der Vielfalt">[% msg.maketext("HRK-Audit Internationalisierung") %]</abbr></a>
 	    </dt>
 	    <dd>
 	    </dd>

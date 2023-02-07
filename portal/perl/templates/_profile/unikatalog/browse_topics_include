@@ -1,0 +1,32 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_browsetit
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Inhalte einer Titel-Kategorie
+#
+#######################################################################
+-%]
+[%
+  thisbklist = statistics.get_result({id => view, type => 10}); 
+%]
+
+<p />
+<ul class="list-group mb-3">
+[%- FOREACH topic IN user.get_topics -%]
+[% titlecount = 0 ;
+   thisclassifications = user.get_classifications_of_topic({ type => 'bk', topicid => topic.id});
+   FOREACH classification IN thisclassifications;
+     titlecount = titlecount + thisbklist.${classification};
+   END ;
+   litlistcount = user.get_number_of_litlists_by_topic({topicid => topic.id});
+%]
+<li class="list-group-item"><a style="font-weight:bold;font-size:1.2em;" href="[% path_prefix %]/[% config.get('browse_loc') %]/topics/id/[% topic.id %].html?l=[% lang %]">[% topic.name %]</a></li>
+[% END %]
+</ul>
+
+<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Themengebiete") %]</div>

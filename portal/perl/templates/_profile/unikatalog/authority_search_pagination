@@ -1,6 +1,6 @@
 <nav aria-label="Page navigation" class="ob-fixed_bottom">
 [%- forget_it = nav.pages_per_set(5)
-
+    have_pagination = 1;
 -%]
 
   <ul class="pagination d-flex justify-content-center">

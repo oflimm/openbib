@@ -66,7 +66,7 @@
 	    </li>
 	    
 	    <li>
-	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/neuerwerbungsliste/index_ger.html" target="_blank">[% msg.maketext("Neuerwerbungslisten abonnieren") %]</a>
+	      <a target="_blank" href="[% path_prefix %]/info/neuerwerbung.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/neuerwerbung.include?l=[% lang %]">[% msg.maketext("Neuerwerbungslisten abonnieren") %]</a>
 	    </li>
 	    
 	    <li>
@@ -146,7 +146,7 @@
 	    </li>
 	    
 	    <li class="dropdown-item">
-	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/neuerwerbungsliste/index_ger.html" target="_blank">[% msg.maketext("Neuerwerbungslisten abonnieren") %]</a>
+	      <a target="_blank" href="[% path_prefix %]/info/neuerwerbung.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/neuerwerbung.include?l=[% lang %]">[% msg.maketext("Neuerwerbungslisten abonnieren") %]</a>
 	    </li>
 	    
 	    <li class="dropdown-item">

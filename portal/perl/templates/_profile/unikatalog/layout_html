@@ -14,7 +14,7 @@
 
 [% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
 
-<body id="ob-page_top">
+<body id="ob-page_top" [% IF layout_param.body_css_classes %]class="[% layout_param.body_css_classes %]" [% END %]>
 <!-- Modals -->
 [%   PROCESS common/subtemplate name="cartitems_html_modals" %]
 
@@ -94,8 +94,8 @@
   [% IF layout_param.sidebar_template && NOT layout_param.sidebar_template.match('^users_') %]
 
   [%   IF NOT layout_param.sidebar_button_in_main_template %]
-        <a href="#" class="ob-floating_sidebar_button sidebar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar"><i class="fas fa-plus fa-2x"></i></a>
-        <a href="#" class="ob-sidebar_button sidebar-toggler d-none d-md-block mt-3 mb-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar"><i class="fas fa-plus fa-2x"></i></a>
+        <button class="ob-floating_sidebar_button sidebar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-control="offcanvasSidebar" aria-label="[% msg.maketext("Mehr Aktionen") %]"><i class="fas fa-plus fa-2x"></i></button>
+        <button class="ob-sidebar_button sidebar-toggler d-none d-md-block mt-3 mb-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar" aria-label="[% msg.maketext("Mehr Aktionen") %]"><i class="fas fa-plus fa-2x"></i></button>
   [%   END %]
 
       <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
@@ -254,8 +254,10 @@ $(window).on('scroll',function() {
   const scrollBottom = mainfooter.innerHeight();
   if (window.scrollY > scrollHeight && window.scrollY < (document.body.scrollHeight - window.innerHeight - scrollBottom + 20 ) ) { 
     $('.ob-jump_top').addClass('active');
+    $('button.ob-floating_sidebar_button').addClass('ob-floating_sidebar_button_up');	
   } else {
     $('.ob-jump_top').removeClass('active')
+    $('button.ob-floating_sidebar_button').removeClass('ob-floating_sidebar_button_up');	    
   }
 })
 </script>

@@ -38,7 +38,7 @@
 	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/index_ger.html" target="_blank">[% msg.maketext("Nach Datenbanken und E-Medien suchen") %]</a>
 	    </li>
             <li>
-	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/fachinfos/index_ger.html" target="_blank">[% msg.maketext("In Ihrem Fachgebiet suchen") %]</a>
+	      <a target="_blank" href="[% path_prefix %]/[% config.get('browse_loc') %]/topics.html?l=[% lang %]" target="_blank" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('browse_loc') %]/topics.include?l=[% lang %]">[% msg.maketext("In Ihrem Fachgebiet suchen") %]</a>
 	    </li>
 	  </ul>
 	</nav>
@@ -120,7 +120,7 @@
 	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/index_ger.html" target="_blank">[% msg.maketext("Nach Datenbanken und E-Medien suchen") %]</a>
 	    </li>
             <li class="dropdown-item">
-	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/fachinfos/index_ger.html" target="_blank">[% msg.maketext("In Ihrem Fachgebiet suchen") %]</a>
+	      <a target="_blank" href="[% path_prefix %]/[% config.get('browse_loc') %]/topics.html?l=[% lang %]" target="_blank" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('browse_loc') %]/topics.include?l=[% lang %]">[% msg.maketext("In Ihrem Fachgebiet suchen") %]</a>
 	    </li>
 	  </ul>
 	</div>

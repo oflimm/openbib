@@ -82,7 +82,7 @@
 	  <span style="font-size:0.9em;color:#fff;">[% msg.maketext("Der Kölner Universitätskatalog ist ein Dienst der Universitäts- und Stadtbibliothek Köln") %]</span>
 	</div>
 	<div id="ob-essential_statements" class="col-md-6 ps-3 justify-content-right">
-	  <a target="_blank" href="https://www.ub.uni-koeln.de/res/impressum/index_ger.html">[% msg.maketext("Impressum") %]</a>&nbsp;|&nbsp;<a target="_blank" href="[% path_prefix %]/info/datenschutz.html">[% msg.maketext("Datenschutzerklärung") %]</a> |  <a target="_blank" href="https://www.ub.uni-koeln.de/ueber_uns/socialmedia/index_ger.html">[% msg.maketext("Netiquette") %]</a>
+	  <a target="_blank" href="https://www.ub.uni-koeln.de/res/impressum/index_ger.html">[% msg.maketext("Impressum") %]</a>&nbsp;|&nbsp;<a target="_blank" href="[% path_prefix %]/info/datenschutz.html" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/datenschutz.include?l=[% lang %]">[% msg.maketext("Datenschutzerklärung") %]</a> |  <a target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/netiquette.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/netiquette.include?l=[% lang %]">[% msg.maketext("Netiquette") %]</a>
 	</div>
       </div>
     </div>
@@ -163,7 +163,7 @@
 	  <span style="font-size:0.9em;color:#fff;">[% msg.maketext("Der Kölner Universitätskatalog ist ein Dienst der Universitäts- und Stadtbibliothek Köln") %]</span>
 	</div>
 	<div id="ob-essential_statements_small" class="col-md-6">
-	  <a target="_blank" href="https://www.ub.uni-koeln.de/res/impressum/index_ger.html">[% msg.maketext("Impressum") %]</a>&nbsp;|&nbsp;<a target="_blank" href="[% path_prefix %]/info/datenschutz.html">[% msg.maketext("Datenschutzerklärung") %]</a> |  <a target="_blank" href="https://www.ub.uni-koeln.de/ueber_uns/socialmedia/index_ger.html">[% msg.maketext("Netiquette") %]</a>
+	  <a target="_blank" href="https://www.ub.uni-koeln.de/res/impressum/index_ger.html">[% msg.maketext("Impressum") %]</a>&nbsp;|&nbsp;<a target="_blank" href="[% path_prefix %]/info/datenschutz.html" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/datenschutz.include?l=[% lang %]">[% msg.maketext("Datenschutzerklärung") %]</a> |  <a target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/netiquette.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/netiquette.include?l=[% lang %]">[% msg.maketext("Netiquette") %]</a>
 	</div>
       </div>
     </div>

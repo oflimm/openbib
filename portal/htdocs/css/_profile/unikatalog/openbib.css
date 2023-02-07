@@ -262,6 +262,10 @@
 	display: none;
 	
     }
+
+    .ob-display_none {
+	display: none;
+    }
     
     .ob-nav_description a, .ob-nav_description a:hover {
 	color: #fff;

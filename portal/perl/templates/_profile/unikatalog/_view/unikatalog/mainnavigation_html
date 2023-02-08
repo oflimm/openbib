@@ -175,16 +175,20 @@
 <header>
 <nav class="navbar navbar-expand-lg ps-2">
  
-  <a class="navbar-brand d-none d-md-block" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">
+  <span class="navbar-brand d-none d-md-block">
+  <a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">
   <span class="uzk15__icon-uzk">
    <svg>
     <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#uzk"></use>
     
    </svg>
    </span>
-  <h1>[% msg.maketext("Universität zu Köln") %]</h1>
- </a>
-  <a class="navbar-brand d-md-none" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">
+   </a>
+   <a href="https://www.ub.uni-koeln.de/" target="_blank">
+     <h1>[% msg.maketext("Universität zu Köln") %]</h1>
+   </a>
+  </span>
+  <a class="navbar-brand d-md-none" href="https://www.ub.uni-koeln.de/" target="_blank">
     <h1 class="ms-0">[% msg.maketext("Universität zu Köln") %]</h1>
   </a>
   <div id="ob-header_navbarmenu_small" class="d-flex justify-content-end">

@@ -293,9 +293,11 @@
       </div>
       
        <div class="col-md-3 text-end d-none d-md-block">
+<!--
         <a href="/">
          <img class="img-fluid" alt="Logo dieser Einrichtung" src="/images/openbib/uzk15/logo_usb_webrelaunch_2_133x133.jpg">
         </a>
+-->
 <!--       <span class="logowhitebg"></span> -->
        </div>
 </div>

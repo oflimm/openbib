@@ -184,11 +184,11 @@
    </svg>
    </span>
    </a>
-   <a href="https://www.ub.uni-koeln.de/" target="_blank">
+   <a href="https://www.uni-koeln.de/" target="_blank">
      <h1>[% msg.maketext("Universität zu Köln") %]</h1>
    </a>
   </span>
-  <a class="navbar-brand d-md-none" href="https://www.ub.uni-koeln.de/" target="_blank">
+  <a class="navbar-brand d-md-none" href="https://www.uni-koeln.de/" target="_blank">
     <h1 class="ms-0">[% msg.maketext("Universität zu Köln") %]</h1>
   </a>
   <div id="ob-header_navbarmenu_small" class="d-flex justify-content-end">

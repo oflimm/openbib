@@ -111,46 +111,46 @@
 	-->
 	
 	<div id="dropdown_effective_search" class="dropdown">
-	  <button id="dropdownMenu_effective_search" class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">[% msg.maketext("Effektiv suchen") %]</button>
+	  <button id="dropdownMenu_effective_search" class="btn dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">[% msg.maketext("Effektiv suchen") %]</button>
 	  <ul class="dropdown-menu" aria-labelledby="dropdownMenu_effective_search">
-            <li class="dropdown-item">
-	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/portalsuche/index_ger.html" target="_blank"  data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/tipps.include?l=[% lang %]">[% msg.maketext("Tipps zum Unikatalog") %]</a>
+            <li>
+	      <a class="dropdown-item" target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/portalsuche/index_ger.html" target="_blank"  data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/tipps.include?l=[% lang %]">[% msg.maketext("Tipps zum Unikatalog") %]</a>
 	    </li>
-            <li class="dropdown-item">
-	      <a target="_blank" href="[% path_prefix %]/info/medienarten.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/medienarten.include?l=[% lang %]">[% msg.maketext("Nach Datenbanken und E-Medien suchen") %]</a>
+            <li>
+	      <a class="dropdown-item" target="_blank" href="[% path_prefix %]/info/medienarten.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/medienarten.include?l=[% lang %]">[% msg.maketext("Nach Datenbanken und E-Medien suchen") %]</a>
 	    </li>
-            <li class="dropdown-item">
-	      <a target="_blank" href="[% path_prefix %]/[% config.get('browse_loc') %]/topics.html?l=[% lang %]" target="_blank" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('browse_loc') %]/topics.include?l=[% lang %]">[% msg.maketext("In Ihrem Fachgebiet suchen") %]</a>
+            <li>
+	      <a class="dropdown-item" target="_blank" href="[% path_prefix %]/[% config.get('browse_loc') %]/topics.html?l=[% lang %]" target="_blank" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('browse_loc') %]/topics.include?l=[% lang %]">[% msg.maketext("In Ihrem Fachgebiet suchen") %]</a>
 	    </li>
 	  </ul>
 	</div>
 	<div id="dropdown_nothing_found" class="dropdown mt-2">
-	  <button id="dropdownMenu_nothing_found" class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">[% msg.maketext("Nichts gefunden?!") %]</button>
+	  <button id="dropdownMenu_nothing_found" class="btn dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">[% msg.maketext("Nichts gefunden?!") %]</button>
 	  <ul class="dropdown-menu" aria-labelledby="dropdownMenu_nothing_found">
-	    <li class="dropdown-item">
-	      <a target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/fernleihe.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/fernleihe.include?l=[% lang %]">[% msg.maketext("Alles rund um die Fernleihe") %]</a>
+	    <li>
+	      <a class="dropdown-item" target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/fernleihe.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/fernleihe.include?l=[% lang %]">[% msg.maketext("Alles rund um die Fernleihe") %]</a>
 	    </li>
-	    <li class="dropdown-item">
-	      <a target="_blank" href="https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/kurse/index_ger.html" target="_blank">[% msg.maketext("Recherchekurse der USB") %]</a>
+	    <li>
+	      <a class="dropdown-item" target="_blank" href="https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/kurse/index_ger.html" target="_blank">[% msg.maketext("Recherchekurse der USB") %]</a>
 	    </li>
-	    <li class="dropdown-item">
-	      <a target="_blank" href="[% path_prefix %]/info/anschaffung.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/anschaffung.include?l=[% lang %]">[% msg.maketext("Bücher zum Kauf vorschlagen") %]</a>
+	    <li>
+	      <a class="dropdown-item" target="_blank" href="[% path_prefix %]/info/anschaffung.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/anschaffung.include?l=[% lang %]">[% msg.maketext("Bücher zum Kauf vorschlagen") %]</a>
 	    </li>
 	  </ul>
 	</div>
 	<div id="dropdown_more_services" class="dropdown mt-2 mb-2">
-	  <button id="dropdownMenu_more_services" class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">[% msg.maketext("Weitere Services") %]</button>
+	  <button id="dropdownMenu_more_services" class="btn dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">[% msg.maketext("Weitere Services") %]</button>
 	  <ul class="dropdown-menu" aria-labelledby="dropdownMenu_more_services">
-	    <li class="dropdown-item">
-	      <a target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/zugriff.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/zugriff.include?l=[% lang %]">[% msg.maketext("Ausleihen oder einsehen") %]</a>
+	    <li>
+	      <a class="dropdown-item" target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/zugriff.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/zugriff.include?l=[% lang %]">[% msg.maketext("Ausleihen oder einsehen") %]</a>
 	    </li>
 	    
-	    <li class="dropdown-item">
-	      <a target="_blank" href="[% path_prefix %]/info/neuerwerbung.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/neuerwerbung.include?l=[% lang %]">[% msg.maketext("Neuerwerbungslisten abonnieren") %]</a>
+	    <li>
+	      <a class="dropdown-item" target="_blank" href="[% path_prefix %]/info/neuerwerbung.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/neuerwerbung.include?l=[% lang %]">[% msg.maketext("Neuerwerbungslisten abonnieren") %]</a>
 	    </li>
 	    
-	    <li class="dropdown-item">
-	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/fragen/index_ger.html" target="_blank">[% msg.maketext("Fragen Sie uns") %]</a>
+	    <li>
+	      <a class="dropdown-item" target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/fragen/index_ger.html" target="_blank">[% msg.maketext("Fragen Sie uns") %]</a>
 	    </li>
 	  </ul>
 	</div>

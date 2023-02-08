@@ -88,8 +88,8 @@
     </div>
   </div>
 
-  <div class="d-md-none ps-2 pe-3">      
-    <div class="w-100 row d-md-flex">
+  <div class="d-md-none ps-2 pe-2">      
+    <div class="w-100 d-md-flex">
       <h2>
 	[% msg.maketext("Literatur suchen und finden") %]
       </h2>

@@ -4,7 +4,7 @@
       'main_template' = 'home_html'
       'without_navigation_search' = 1
       'css_id' = 'ob-startpage'
-#      'body_css_classes' = 'ob-home_body'
+      'body_css_classes' = 'ob-home_body'
 
     };
 -%]

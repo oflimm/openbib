@@ -139,19 +139,19 @@
         standort_with_url = standort;   
      END;
 
-     # Innenraum-Lageplan vorhanden?
+     # Innenraum-Plan vorhanden?
 
-     lageplan = "";
+     raumplan = "";
 
      IF library_isil.match('^DE-38$');
        IF standort.match('Lesesaal');
-         lageplan = "<a class=\"exturl\" href=\"https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/lesesaele/index_ger.html\" target=\"_blank\">im Gebäude</a>";
+         raumplan = "<a class=\"exturl\" href=\"https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/lesesaele/index_ger.html\" target=\"_blank\">Raumplan</a>";
        ELSIF standort.match('Lehrbuchsammlung');
-         lageplan = "<a class=\"exturl\" href=\"https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/lbs/index_ger.html\" target=\"_blank\">im Gebäude</a>";
+         raumplan = "<a class=\"exturl\" href=\"https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/lbs/index_ger.html\" target=\"_blank\">Raumplan</a>";
        END;
      ELSIF library_isil.match('^DE-38-HWA$');
        IF standort.match('Lesesaal Heilpädagogik');
-         lageplan = "<a class=\"exturl\" href=\"https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/lesesaal_heilpaedagogik/index_ger.html\" target=\"_blank\">im Gebäude</a>";
+         raumplan = "<a class=\"exturl\" href=\"https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/lesesaal_heilpaedagogik/index_ger.html\" target=\"_blank\">Raumplan</a>";
        END;
      END;
      # Titel konstruieren
@@ -222,7 +222,7 @@
      END;
 
 -%]
-<tr><td><i class="fas fa-map-marker-alt"></i> <strong>[% standort_with_url %]</strong> [% IF lageplan %]/ <i class="fas fa-map"></i> [% lageplan %][% END %]</td>
+<tr><td><i class="fas fa-map-marker-alt"></i> <strong>[% standort_with_url %]</strong> [% IF raumplan %]/ <i class="fas fa-map"></i> [% raumplan %][% END %]</td>
 <td><a href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% standort | uri %] :: [% thiscirculation.location_mark | uri %][% IF thiscirculation.remark %] [% thiscirculation.remark | uri %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur" data-bs-toggle="modal" data-bs-target="#qrcodeModal" data-bs-modaltitle="QR-Code" data-bs-modalurl="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% standort | uri %] :: [% thiscirculation.location_mark | uri %][% IF thiscirculation.remark %] [% thiscirculation.remark | uri %][% END %]"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" alt="QR-Code"/></a></td>
 [%-
 

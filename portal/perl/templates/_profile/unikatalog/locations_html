@@ -92,10 +92,64 @@ for (var i = 0; i < libraries.length; i++) {
 
 <div id="faculties" class="accordion mb-5">
   <div class="card">
+    <div class="card-header" id="headingUSB">
+      <h5 class="mb-0">
+        <a class="card-link collapsed" href="#collapseUSB" data-bs-toggle="collapse" data-bs-target="#collapseUSB" aria-expanded="false" aria-controls="collapseUSB">
+          [% msg.maketext("Universitäts- und Stadtbibliothek Köln (USB)") %]
+        </a>
+      </h5>
+    </div>
+    <div id="collapseUSB" class="collapse" aria-labelledby="headingUSB" data-parent="#faculties">
+      <div class="card-body">
+
+       <ul>
+[%  
+    institution_map = {};
+    FOREACH location IN locations ;
+     NEXT IF (is_denied.${location.identifier});
+     fakultaet      = location.fields.${"L0015"}.first.content;
+     coordinates    = location.fields.${"L0280"}.first.content.split(',').reverse.join(',');
+
+     NEXT IF (fakultaet != "usb");
+     NEXT IF (coordinates == "");
+
+     identifier     = location.identifier;
+
+     sigel          = location.fields.${"L0250"}.first.content;
+     sigel_path     = location.fields.${"L0250"}.first.content.replace('/','_');
+
+     url = "${path_prefix}/${config.get('locations_loc')}/id/${identifier}";
+  
+     description    = location.description ;
+     arbeitsplaetze = location.fields.${"L0270"}.first.content;
+     zeiten         = 'wg. Corona geschlossen' ; # location.fields.${"L0110"}.first.content;
+
+     institution_map.${description} = {
+        sigel => sigel,
+	sigel_path => sigel_path,
+        arbeitsplaetze => arbeitsplaetze,
+	url => url,
+     };        
+   END;
+  
+%]
+[% FOREACH desc IN institution_map.keys.sort %]
+	<li>[% IF institution_map.${desc}.url %]<a href="[% scheme %]://[% servername %][% institution_map.${desc}.url %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% institution_map.${desc}.url %].include?l=[% lang %]">[% END %][% desc %][% IF institution_map.${desc}.sigel %] ([% institution_map.${desc}.sigel %])[% END %][% IF institution_map.${desc}.url %]</a>[% END %][% IF institution_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institution_map.${desc}.arbeitsplaetze %][% END %]</li>
+
+[% END %]
+      </ul>
+
+
+      </div>
+    </div>
+  </div><!-- End Card -->
+
+<div id="faculties" class="accordion mb-5">
+  <div class="card">
     <div class="card-header" id="headingNoFaculty">
       <h5 class="mb-0">
         <a class="card-link collapsed" href="#collapseNoFaculty" data-bs-toggle="collapse" data-bs-target="#collapseNoFaculty" aria-expanded="false" aria-controls="collapseNoFaculty">
-          [% msg.maketext("Fakultätsungebundene / Fakultätsübergreifende Bibliotheken") %]
+          [% msg.maketext("Weitere Fakultätsungebundene / Fakultätsübergreifende Bibliotheken") %]
         </a>
       </h5>
     </div>

@@ -64,7 +64,7 @@
 
 <div class="form-floating mb-3">
 <input class="form-control" type="text" name="orgunitname" id="orgunitname" />
-<label for="orgunitname">[% msg.maketext("Name der Organisationseinheit") %]</label>[
+<label for="orgunitname">[% msg.maketext("Name der Organisationseinheit") %]</label>
 </div>
 
 <div class="form-floating mb-3">

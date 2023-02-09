@@ -5229,8 +5229,59 @@ var semesterZeit = [
 <div class="uzk15__grid_100" id="e23239">
 
  <div class="uzk15__akkordeon" role="tablist" aria-multiselectable="false">
-    
-      <h2 tabindex="0" class="uzk15__akkordeon-oeffner" aria-expanded="false" aria-selected="false" role="tab" aria-controls="akkordeon_oeffner23240_uzk15__akkordeon1-1" id="akkordeon_oeffner23240_uzk15__akkordeon1-titel1">Fakultätsungebundene / Fakultätsübergreifende Bibliotheken</h2>
+
+      <h2 tabindex="0" class="uzk15__akkordeon-oeffner" aria-expanded="false" aria-selected="false" role="tab" aria-controls="akkordeon_oeffner23240_uzk15__akkordeon1-0" id="akkordeon_oeffner23240_uzk15__akkordeon1-titel0">Universitäts- und Stadtbibliothek Köln (USB)</h2>
+      <div class="uzk15__akkordeon-inhalt" aria-hidden="true" role="tabpanel" aria-labelledby="akkordeon_oeffner23240_uzk15__akkordeon1-titel0" id="akkordeon_oeffner23240_uzk15__akkordeon1-0">
+   <div class="uzk15__editorblock">
+          
+    <div class="uzk15__editorblock">
+      <ul>
+[%  
+    institute_map = {};
+    FOREACH location IN locations ;
+     NEXT IF (is_denied.${location.identifier});
+     fakultaet      = location.fields.${"L0015"}.first.content;
+     coordinates    = location.fields.${"L0280"}.first.content.split(',').reverse.join(',');
+
+     NEXT IF (fakultaet != "usb");
+     NEXT IF (coordinates == "");
+
+     identifier     = location.identifier;
+
+     sigel          = location.fields.${"L0250"}.first.content;
+     sigel_path     = location.fields.${"L0250"}.first.content.replace('/','_');
+
+     url = '';
+
+     IF identifier.match('^DE-38$');
+        url = 'https://www.ub.uni-koeln.de/index_ger.html';
+     ELSIF identifier.match('^DE-38-HWA$');
+        url = 'https://www.ub.uni-koeln.de/ueber_uns/dach/hwa/index_ger.html';
+     END;
+  
+     description    = location.description ;
+     arbeitsplaetze = location.fields.${"L0270"}.first.content;
+     zeiten         = 'wg. Corona geschlossen' ; # location.fields.${"L0110"}.first.content;
+
+     institute_map.${description} = {
+        sigel => sigel,
+	sigel_path => sigel_path,
+        arbeitsplaetze => arbeitsplaetze,
+	url => url,
+     };        
+   END;
+  
+%]
+[% FOREACH desc IN institute_map.keys.sort %]
+	<li>[% IF institute_map.${desc}.url %]<a href="[% institute_map.${desc}.url %]">[% END %][% desc %][% IF institute_map.${desc}.sigel %] ([% institute_map.${desc}.sigel %])[% END %][% IF institute_map.${desc}.url %]</a>[% END %][% IF 0 == 1 && institute_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institute_map.${desc}.arbeitsplaetze %][% END %]</li>
+
+[% END %]
+      </ul>
+    </div><!-- End editorblock -->
+    </div><!-- End editorblock -->
+   </div><!-- End accordion Inhalt -->
+
+      <h2 tabindex="0" class="uzk15__akkordeon-oeffner" aria-expanded="false" aria-selected="false" role="tab" aria-controls="akkordeon_oeffner23240_uzk15__akkordeon1-1" id="akkordeon_oeffner23240_uzk15__akkordeon1-titel1">Weitere Fakultätsungebundene / Fakultätsübergreifende Bibliotheken</h2>
       <div class="uzk15__akkordeon-inhalt" aria-hidden="true" role="tabpanel" aria-labelledby="akkordeon_oeffner23240_uzk15__akkordeon1-titel1" id="akkordeon_oeffner23240_uzk15__akkordeon1-1">
    <div class="uzk15__editorblock">
           

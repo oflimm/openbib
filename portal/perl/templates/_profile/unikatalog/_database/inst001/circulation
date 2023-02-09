@@ -14,7 +14,7 @@
 <p />
 [%# USE dumper;dumper.dump(dbinfo)%]
 <div class="table-responsive">
-<table class="table table-striped">
+<table class="table table-striped table-flippable">
 <thead>
 <tr><th>[% msg.maketext("Standort") %]</th><th>QR</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Ausleihstatus") %]</th></tr>
 </thead>
@@ -134,11 +134,23 @@
      END ;
 
      IF department_url;
-        standort_with_url = "<a href=\"${department_url}\">${standort}</a>";
+        standort_with_url = "<a class=\"inturl\" href=\"${department_url}\">${standort}</a>";
      ELSE ;
         standort_with_url = standort;   
      END;
 
+     # Innenraum-Lageplan vorhanden?
+
+     lageplan = "";
+
+     IF library_isil.match('^DE-38$');
+       IF standort.match('Lesesaal');
+         lageplan = "<a class=\"exturl\" href=\"https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/lesesaele/index_ger.html\" target=\"_blank\">im Gebäude</a>";
+       ELSIF standort.match('Lehrbuchsammlung');
+         lageplan = "<a class=\"exturl\" href=\"https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/lbs/index_ger.html\" target=\"_blank\">im Gebäude</a>";
+       END;
+     ELSIF library_isil.match('^DE-38-HWA$');
+     END;
      # Titel konstruieren
      title = normdata.${'T0331'}.first.content;
      IF normdata.${'T0310'}.first.content;
@@ -207,7 +219,7 @@
      END;
 
 -%]
-<tr><td><strong>[% standort_with_url %]</strong></td>
+<tr><td><i class="fas fa-map-marker-alt"></i> <strong>[% standort_with_url %]</strong> [% IF lageplan %]/ <i class="fas fa-map"></i> [% lageplan %][% END %]</td>
 <td><a href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% standort | uri %] :: [% thiscirculation.location_mark | uri %][% IF thiscirculation.remark %] [% thiscirculation.remark | uri %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur" data-bs-toggle="modal" data-bs-target="#qrcodeModal" data-bs-modaltitle="QR-Code" data-bs-modalurl="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% standort | uri %] :: [% thiscirculation.location_mark | uri %][% IF thiscirculation.remark %] [% thiscirculation.remark | uri %][% END %]"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" alt="QR-Code"/></a></td>
 [%-
 

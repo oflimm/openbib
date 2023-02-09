@@ -150,6 +150,9 @@
          lageplan = "<a class=\"exturl\" href=\"https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/lbs/index_ger.html\" target=\"_blank\">im Gebäude</a>";
        END;
      ELSIF library_isil.match('^DE-38-HWA$');
+       IF standort.match('Lesesaal Heilpädagogik');
+         lageplan = "<a class=\"exturl\" href=\"https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/lesesaal_heilpaedagogik/index_ger.html\" target=\"_blank\">im Gebäude</a>";
+       END;
      END;
      # Titel konstruieren
      title = normdata.${'T0331'}.first.content;

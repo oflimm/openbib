@@ -385,6 +385,26 @@ function copy_to_clipboard(formatid) {
 </div>
 [% END %]
 
+[% IF src.item('license') %]
+<div class="alert alert-secondary mt-2">
+<h5>[% msg.maketext("Der Inhalt dieser Seite ist lizensiert unter:") %]</h5>
+[%
+   license_lang = "de-DE";
+   IF lang == "en";
+     license_lang = "en-US";
+   END;
+
+   license = src.item('license');
+%]
+<div>[% license.abbreviation %] - [% license.name.${license_lang} %]</div>
+
+<!--
+<button type="button" onclick="copy_to_clipboard('gentzbriefe_citation')" class="btn btn-primary mt-2">[% msg.maketext("Kopieren") %]</button>
+-->
+
+</div>
+[% END %]
+
 [% ELSE %]
 [% detail_url = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.get_encoded_id}.html?l=${lang}" %]
         <div class="jumbotron">

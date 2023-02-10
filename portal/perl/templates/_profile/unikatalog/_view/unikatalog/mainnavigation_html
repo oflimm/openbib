@@ -176,7 +176,7 @@
 <nav class="navbar navbar-expand-lg ps-2">
  
   <span class="navbar-brand d-none d-md-block">
-  <a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">
+  <a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]" title="Logo">
   <span class="uzk15__icon-uzk">
    <svg>
     <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#uzk"></use>
@@ -212,7 +212,7 @@
 	   <a class="drowdown-item" href="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
 	  </li>
           <li>
-	   <a class="drowdown-item" href="[% path_prefix %]/[% config.get('info_loc') %]/help.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/help.include?l=[% lang %]"><i class="fas fa-question-circle"></i></a>
+	   <a class="drowdown-item" href="[% path_prefix %]/[% config.get('info_loc') %]/help.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/help.include?l=[% lang %]" title="[% msg.maketext("Hilfe") %]"><i class="fas fa-question-circle"></i></a>
 	  </li>
         </ul>
       </li>
@@ -352,7 +352,7 @@
 	     <a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
 	   </li>
             <li class="list-group-item pe-1 pt-3" style="border: none" >
-	     <a href="[% path_prefix %]/[% config.get('info_loc') %]/help.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/help.include?l=[% lang %]"><i class="fas fa-question-circle"></i></a>
+	     <a href="[% path_prefix %]/[% config.get('info_loc') %]/help.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/help.include?l=[% lang %]" title="[% msg.maketext("Hilfe") %]"><i class="fas fa-question-circle"></i></a>
 	   </li>
          </ul>
     </div><!-- col -->

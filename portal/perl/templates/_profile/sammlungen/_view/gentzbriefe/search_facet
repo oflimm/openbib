@@ -183,7 +183,7 @@ $(document).ready(function(){
 
 // Begin Togglen / Facets Personen
 // Bild setzen
-$("#dd_person_[% database %]_toggle").html("<a href=\"#dd_person_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#dd_person_[% database %]_toggle").html("<a href=\"#dd_person_[% database %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_person_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -194,7 +194,7 @@ $("#dd_person_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Koerperschaften
 // Bild setzen
-$("#dd_corporatebody_[% database %]_toggle").html("<a href=\"#dd_corporatebody_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#dd_corporatebody_[% database %]_toggle").html("<a href=\"#dd_corporatebody_[% database %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_corporatebody_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -205,7 +205,7 @@ $("#dd_corporatebody_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Schlagworte
 // Bild setzen
-$("#dd_subjects_[% database %]_toggle").html("<a href=\"#dd_subjects_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#dd_subjects_[% database %]_toggle").html("<a href=\"#dd_subjects_[% database %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_subjects_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -216,7 +216,7 @@ $("#dd_subjects_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Systematik
 // Bild setzen
-$("#dd_classification_[% database %]_toggle").html("<a href=\"#dd_classification_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#dd_classification_[% database %]_toggle").html("<a href=\"#dd_classification_[% database %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_classification_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -227,7 +227,7 @@ $("#dd_classification_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Topics
 // Bild setzen
-$("#dd_topic_[% database %]_toggle").html("<a href=\"#dd_topic_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#dd_topic_[% database %]_toggle").html("<a href=\"#dd_topic_[% database %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_topic_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -238,7 +238,7 @@ $("#dd_topic_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Print Locations
 // Bild setzen
-$("#dd_location_[% database %]_toggle").html("<a href=\"#dd_location_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#dd_location_[% database %]_toggle").html("<a href=\"#dd_location_[% database %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_location_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -249,7 +249,7 @@ $("#dd_location_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Emedia Locations
 // Bild setzen
-$("#dd_elocation_[% database %]_toggle").html("<a href=\"#dd_elocation_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#dd_elocation_[% database %]_toggle").html("<a href=\"#dd_elocation_[% database %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_elocation_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -260,7 +260,7 @@ $("#dd_elocation_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Favourite Locations
 // Bild setzen
-$("#dd_favlocation_[% database %]_toggle").html("<a href=\"#dd_favlocation_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#dd_favlocation_[% database %]_toggle").html("<a href=\"#dd_favlocation_[% database %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_favlocation_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -271,7 +271,7 @@ $("#dd_favlocation_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Jahr
 // Bild setzen
-$("#dd_year_[% database %]_toggle").html("<a href=\"#dd_year_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#dd_year_[% database %]_toggle").html("<a href=\"#dd_year_[% database %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_year_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -282,7 +282,7 @@ $("#dd_year_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Medienart
 // Bild setzen
-$("#dd_mediatype_[% database %]_toggle").html("<a href=\"#dd_mediatype_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#dd_mediatype_[% database %]_toggle").html("<a href=\"#dd_mediatype_[% database %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_mediatype_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -293,7 +293,7 @@ $("#dd_mediatype_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Quellen
 // Bild setzen
-$("#dd_sources_[% database %]_toggle").html("<a href=\"#dd_sources_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#dd_sources_[% database %]_toggle").html("<a href=\"#dd_sources_[% database %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_sources_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -304,7 +304,7 @@ $("#dd_sources_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Medienart
 // Bild setzen
-$("#dd_provenance_[% database %]_toggle").html("<a href=\"#dd_provenance_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#dd_provenance_[% database %]_toggle").html("<a href=\"#dd_provenance_[% database %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_provenance_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -315,7 +315,7 @@ $("#dd_provenance_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Sprache
 // Bild setzen
-$("#dd_language_[% database %]_toggle").html("<a href=\"#dd_language_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#dd_language_[% database %]_toggle").html("<a href=\"#dd_language_[% database %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_language_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -327,7 +327,7 @@ $("#dd_language_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Katalog
 // Bild setzen
-$("#dd_databases_[% database %]_toggle").html("<a href=\"#dd_databases_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#dd_databases_[% database %]_toggle").html("<a href=\"#dd_databases_[% database %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_databases_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -340,7 +340,7 @@ $("#dd_databases_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Tags
 // Bild setzen
-$("#dd_tags_[% database %]_toggle").html("<a href=\"#dd_tags_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#dd_tags_[% database %]_toggle").html("<a href=\"#dd_tags_[% database %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_tags_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -352,7 +352,7 @@ $("#dd_tags_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Literaturliste
 // Bild setzen
-$("#dd_litlists_[% database %]_toggle").html("<a href=\"#dd_litlists_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#dd_litlists_[% database %]_toggle").html("<a href=\"#dd_litlists_[% database %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_litlists_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -364,7 +364,7 @@ $("#dd_litlists_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Facets Verfuegbarkeit
 // Bild setzen
-$("#dd_availability_[% database %]_toggle").html("<a href=\"#dd_availability_[% database %]_anchor\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
+$("#dd_availability_[% database %]_toggle").html("<a href=\"#dd_availability_[% database %]\"><i class=\"fa fa-arrow-down\"></i> [% msg.maketext("Mehr") %]</a>")
 // Zuerst verstecken
 $("#dd_availability_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -444,9 +444,9 @@ $("#dd_availability_[% database %]_toggle").click(function(){
         <div class="card-header p-0 border-0">
 	  
           <div id="search_wrapper" class="input-group input-group-lg shadow-sm" style="min-width: 100%">
-            <input id="freetext-input" class="form-control" type="text" name="fs" title="[% searchquery.get_searchfield('freesearch').val | html %]" value="[% searchquery.get_searchfield('freesearch').val.replace(" ",",") | html %]" placeholder="[% msg.maketext("Suchbegriff...") %]" data-role="tagsinput" />
+            <input id="freetext-input" class="form-control" type="text" name="fs" title="[% IF searchquery.get_searchfield('freesearch').val %][% searchquery.get_searchfield('freesearch').val | html %][% ELSE %]Suchbegriffe[% END %]" value="[% searchquery.get_searchfield('freesearch').val.replace(" ",",") | html %]" placeholder="[% msg.maketext("Suchbegriff...") %]" data-role="tagsinput" />
             <div class="input-group-append">
-              <button type="submit" class="input-group-text ob-bg ob-border">
+              <button type="submit" class="input-group-text ob-bg ob-border" aria-label="Suchanfrage abschicken">
                 <i class="fas fa-search text-white"></i>
               </button>
             </div>
@@ -758,7 +758,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
 <div id="ob-yearSlider" class="m-4"></div>
 
 <p>
-[% msg.maketext("Von") %]&nbsp;&nbsp;<input id="ob-yearSlider_from" type="text" size="4" name="year_from" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input id="ob-yearSlider_to" type="text" size="4" name="year_to" value="[% searchquery.get_searchfield("year_to").val %]" />&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Los"/>
+[% msg.maketext("Von") %]&nbsp;&nbsp;<input id="ob-yearSlider_from" type="text" size="4" name="year_from" title="[% msg.maketext("Jahr von") %]" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input id="ob-yearSlider_to" type="text" size="4" name="year_to"  title="[% msg.maketext("Jahr bis") %]" value="[% searchquery.get_searchfield("year_to").val %]" />&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Los"/>
 </p>
 
 <script>

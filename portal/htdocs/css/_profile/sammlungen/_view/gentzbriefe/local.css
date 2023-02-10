@@ -46,6 +46,11 @@
    }
 */
 
+    .breadcrumb-item.active {
+	color: #000;
+	font-weight: bold;
+    }
+    
     .select2-container .select2-selection--single { /* corresponding form-control in bootstrap */
 	display: block;
 	width: 100%;
@@ -209,11 +214,11 @@
 	border-color: #253746;
     }
 
-    bg-white {
+    .bg-white {
 	background-color: #fff;
     }
 
-    text-white {
+    .text-white {
 	color: #fff;
     }
 
@@ -257,8 +262,12 @@
 	color: #fff;
     }
 
-    #ob-navbar_top a, #ob-navbar_top a:hover {
+    #ob-navbar_top a {
 	color: #fff;
+    }
+
+    #ob-navbar_top a.dropdown-item:hover {
+	color: #000;
     }
 
     #ob-navbar_top a.active, #ob-navbar_top i {

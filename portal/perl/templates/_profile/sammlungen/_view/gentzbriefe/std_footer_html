@@ -18,13 +18,13 @@
     <div>
             <ul class="list-group list-group-horizontal flex-column flex-md-row justify-content-center">
                 <a class="navbar-brand" href="https://neuere-geschichte.phil-fak.uni-koeln.de/index.php?id=2176" title="Forschungsstelle Gentz" target="_blank">
-                    <img src="/images/openbib/views/logophilfak.gif"  height="50" class="d-inline-block align-top" alt="">
+                    <img src="/images/openbib/views/logophilfak.gif"  height="50" class="d-inline-block align-top" alt="Logo Philosophische Fakultät">
                 </a>
                 <a class="navbar-brand" href="https://www.ub.uni-koeln.de/" title="Universitäts- und Stadtbibliothek Köln" target="_blank">
-                    <img src="/images/openbib/views/muenzen/USB_logo_1500_transparent.png"  height="50" class="d-inline-block align-top" alt="">
+                    <img src="/images/openbib/views/muenzen/USB_logo_1500_transparent.png"  height="50" class="d-inline-block align-top" alt="Logo USB">
                 </a>
                 <a class="navbar-brand" href="https://www.uni-koeln.de/" title="Universität zu Köln" target="_blank">
-                    <img src="/images/openbib/views/muenzenproto/013_Unisiegel_plus_Schriftzug_DE.jpg"  height="50" class="d-inline-block align-top" alt="">
+                    <img src="/images/openbib/views/muenzenproto/013_Unisiegel_plus_Schriftzug_DE.jpg"  height="50" class="d-inline-block align-top" alt="Logo UzK">
                 </a> 
            </ul>
     </div>

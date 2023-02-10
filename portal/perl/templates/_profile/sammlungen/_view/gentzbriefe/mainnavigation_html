@@ -52,7 +52,7 @@
 <!-- Targs: [% USE dumper; dumper.dump(layout_param) %] -->
 
 <nav id="ob-navbar_top" class="navbar navbar-expand-lg navbar-light">
-  <a class="navbar-brand" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]"><span class="brand-title"><img src="/images/openbib/views/gentzbriefe/map-logo.png" class="img-fluid d-none d-sm-inline"  />Gentz digital</span></a> &nbsp;<span class="d-none d-lg-block text-white">[% msg.maketext("Verzeichnis der Briefe von und an Friedrich Gentz") %] (1764-1832)</span>
+  <a class="navbar-brand" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]"><span class="brand-title"><img src="/images/openbib/views/gentzbriefe/map-logo.png" class="img-fluid d-none d-sm-inline" alt="Logo Gentz digital" />Gentz digital</span></a> &nbsp;<span class="d-none d-lg-block text-white">[% msg.maketext("Verzeichnis der Briefe von und an Friedrich Gentz") %] (1764-1832)</span>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01,#ob-sidebar" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -86,7 +86,7 @@
 [%    END %]
 
                <li class="nav-item">		
-                   <div class="nav-link text-nowrap text-white"><a class="[% IF lang == 'de' %] active[% END %]" href="[% path %]?[% IF cgiapp.to_cgi_querystring({ exclude = ['l']}) %][% cgiapp.to_cgi_querystring({ exclude = ['l']}) %];l=de[% ELSE %]l=de[% END %]">de</a> | <a class="[% IF lang == 'en' %] active[% END %]" href="[% path %]?[% IF cgiapp.to_cgi_querystring({ exclude = ['l']}) %][% cgiapp.to_cgi_querystring({ exclude = ['l']}) %];l=en[% ELSE %]l=en[% END %]">en</a>  <img class="pr-1" src="/images/openbib/Globus_fuer_Sprache_24px.png" /></div>
+                   <div class="nav-link text-nowrap text-white"><a class="[% IF lang == 'de' %] active[% END %]" href="[% path %]?[% IF cgiapp.to_cgi_querystring({ exclude = ['l']}) %][% cgiapp.to_cgi_querystring({ exclude = ['l']}) %];l=de[% ELSE %]l=de[% END %]">de</a> | <a class="[% IF lang == 'en' %] active[% END %]" href="[% path %]?[% IF cgiapp.to_cgi_querystring({ exclude = ['l']}) %][% cgiapp.to_cgi_querystring({ exclude = ['l']}) %];l=en[% ELSE %]l=en[% END %]">en</a>  <img class="pr-1" src="/images/openbib/Globus_fuer_Sprache_24px.png" alt="Sprach-Icon" /></div>
                </li>    		
             </ul>
   
@@ -111,11 +111,11 @@
 	  
           <div id="search_wrapper_top" class="input-group input-group-lg shadow-sm" style="min-width: 100%">
             <div class="input-group-prepend">
-              <button type="submit" class="input-group-text ob-bg ob-border">
+              <button type="submit" class="input-group-text ob-bg ob-border" aria-label="Suche abschicken">
                 <i class="fas fa-search text-white"></i>
               </button>
             </div>
-            <input id="freetext-input" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Suchbegriff...") %]" required="" />
+            <input id="freetext-input_small" class="form-control" type="text" name="fs" value="" title="Suchbegriffe" placeholder="[% msg.maketext("Suchbegriff...") %]" required="" />
           </div>
         </div>
       </form>      

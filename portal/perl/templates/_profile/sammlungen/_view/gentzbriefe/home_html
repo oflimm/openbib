@@ -28,9 +28,9 @@
         <div class="card-header p-0 border-0">
 	  
           <div id="search_wrapper" class="input-group input-group-lg shadow-sm" style="min-width: 100%">
-            <input id="freetext-input" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Suchbegriff...") %]" required="" />
+            <input id="freetext-input" class="form-control" type="text" name="fs" value="" title="Suchbegriffe" placeholder="[% msg.maketext("Suchbegriff...") %]" required="" />
             <div class="input-group-append">
-              <button type="submit" class="input-group-text ob-bg ob-border">
+              <button type="submit" class="input-group-text ob-bg ob-border" aria-label="Suche abschicken">
                 <i class="fas fa-search text-white"></i>
               </button>
             </div>
@@ -39,8 +39,8 @@
     </div>
     <div class="d-md-flex justify-content-end d-none bg-transparent" style="width: 95%">
       <div class="btn-group btn-group-sm d-none d-md-block">
-              <a class="dropdown-toggle btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">[% msg.maketext("Register") %]</a>
-             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-toggle btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="#" id="navbarDropdownMenuLinkfull" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">[% msg.maketext("Register") %]</a>
+             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLinkfull">
                <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0425.html?l=[% lang %];page=1">[% msg.maketext("Jahre") %]</a></li>
                <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0100.html?l=[% lang %];page=1">[% msg.maketext("Aussteller") %]</a></li>
                <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0101.html?l=[% lang %];page=1">[% msg.maketext("Empfänger") %]</a></li>
@@ -59,8 +59,8 @@
     </div>
     <div class="d-flex justify-content-center d-md-none">
       <div class="btn-group btn-group-sm d-none d-md-block">
-              <a class="dropdown-toggle btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">[% msg.maketext("Register") %]</a>
-             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-toggle btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="#" id="navbarDropdownMenuLinksmall" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">[% msg.maketext("Register") %]</a>
+             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLinksmall">
                <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0425.html?l=[% lang %];page=1">[% msg.maketext("Jahre") %]</a></li>
                <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0100.html?l=[% lang %];page=1">[% msg.maketext("Aussteller") %]</a></li>
                <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0101.html?l=[% lang %];page=1">[% msg.maketext("Empfänger") %]</a></li>
@@ -106,7 +106,7 @@
 <div class="card mt-5 mb-0 h-100">
 <div class="card-header pb-2 text-center ob-bg-tertiary"><i class="fas fa-list-ul fa-2x"></i></div>
 <div class="card-body p-0 ob-bg-tertiary">
-<h5 class="card-title p-3 mt-4 text-center">[% msg.maketext("Gesamtverzeichnis Briefe von und an Friedrich Gentz") %]</h5>
+<h5 class="card-title p-3 mt-4 text-center text-black">[% msg.maketext("Gesamtverzeichnis Briefe von und an Friedrich Gentz") %]</h5>
 <!-- <p class="card-text">Ansprechpartner, "Team Gentz"</p> -->
 <a class="btn btn-primary ml-3" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/[% config.get('titles_loc') %].html?l=[% lang %];facets=mediatype,year,provenance,person,corporatebody,language,custom1,custom2,custom3,custom4,custom5">[% msg.maketext("Mehr") %]</a></div>
 </div>

@@ -78,46 +78,30 @@ FOREACH category IN categories;
         mult     = item.mult;
         subfield = item.subfield;
 
-
-
-        # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
-        # in Config.pm fuer die entsprechende Datenbank definiert
-        # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
-        # kodiert.
-        thiscategory = category ;
-        IF config.get('categorymapping').${libinfo.database}.$category ;
-          thiscategory = "${category}-${record.database}" ;
-        END;
 -%]
 [% IF category == 'L0015' %]
 <div class="form-floating mb-3" id="fields_[% category %]">
 <select class="form-select" name="fields_[% category %]_a_1" id="[% category %]"/><option value="">Keine</option><option value="usb"[%- IF content == "usb" -%] selected="selected"[%- END -%]>Universitäts- und Stadtbibliothek Köln</option><option value="ungeb"[%- IF content == "ungeb" -%] selected="selected"[%- END -%]>Fakultätsungebunden bzw -übergreifend</option><option value="wiso"[%- IF content == "wiso" -%] selected="selected"[%- END -%]>Wirtschafts- und Sozialwissenschaftliche Fakultät</option><option value="jura"[%- IF content == "jura" -%] selected="selected"[%- END -%]>Juristische Fakultät</option><option value="human"[%- IF content == "human" -%] selected="selected"[%- END -%]>Humanwississenschaftliche Fakultät</option><option value="phil"[%- IF content == "phil" -%] selected="selected"[%- END -%]>Philosophische Fakultät</option><option value="matnat"[%- IF content == "matnat" -%] selected="selected"[%- END -%]>Mathematisch-Naturwissenschaftliche Fakultät</option></select>
-<label for="[% category %]">[% msg.maketext("${thiscategory}") %]</label>
+<label for="[% category %]">[% msg.maketext("${category}") %]</label>
 </div>
 [% ELSE %]
-<div class="form-floating mb-3" id="fields_[% category %]">
-  <div id="fields_[% category %]_[% subfield %]_[% mult %]">
+  <div class="form-floating mb-3" id="fields_[% category %]_[% subfield %]_[% mult %]">
     <input class="form-control" type="text" name="fields_[% category %]_[% subfield %]_[% mult %]" id="field_[% category %]_[% subfield %]_[% mult %]" value="[% content | html %]" size="100"/>
-    <label for="field_[% category %]_[% subfield %]_[% mult %]">[% msg.maketext("${thiscategory}") %]<!-- <a href="#" id="add_fields_[% category %]_[% subfield %]_[% mult %]" onClick="add_field();return false;">[% msg.maketext("Neu") %]</a>--></label>
+    <label for="field_[% category %]_[% subfield %]_[% mult %]">[% msg.maketext("${category}") %]<!-- <a href="#" id="add_fields_[% category %]_[% subfield %]_[% mult %]" onClick="add_field();return false;">[% msg.maketext("Neu") %]</a>--></label>
   </div>
-</div>
 [% END %]
 [%-   END ;
      ELSE ;
-        thiscategory = category ;
-        IF config.get('categorymapping').${libinfo.database}.$category ;
-          thiscategory = "${category}-${record.database}" ;
-        END;
 %]
 [% IF category == 'L0015' %]
 <div class="form-floating mb-3" id="fields_[% category %]">
 <select class="form-select" name="fields_[% category %]_a_1" id="[% category %]"/><option value="">Keine</option><option value="ungeb"[%- IF content == "ungeb" -%] selected="selected"[%- END -%]>Fakultätsungebunden bzw. -übergreifend</option><option value="wiso"[%- IF content == "wiso" -%] selected="selected"[%- END -%]>Wirtschafts- und Sozialwissenschaftliche Fakultät</option><option value="jura"[%- IF content == "jura" -%] selected="selected"[%- END -%]>Juristische Fakultät</option><option value="human"[%- IF content == "human" -%] selected="selected"[%- END -%]>Humanwissenschaftliche Fakultät</option><option value="phil"[%- IF content == "phil" -%] selected="selected"[%- END -%]>Philosophische Fakultät</option><option value="matnat"[%- IF content == "matnat" -%] selected="selected"[%- END -%]>Mathematisch-Naturwissenschaftliche Fakultät</option></select>
-<label for="[% category %]">[% msg.maketext("${thiscategory}") %]</label>
+<label for="[% category %]">[% msg.maketext("${category}") %]</label>
 </div>
 [% ELSE %]
 <div class="form-floating mb-3" id="fields_[% category %]">
 <input class="form-control" type="text" name="fields_[% category %]_a_1" id="[% category %]" value="" size="100"/>
-<label for="[% category %]">[% msg.maketext("${thiscategory}") %]</label>
+<label for="[% category %]">[% msg.maketext("${category}") %]</label>
 </div>
 [% END %]
 [%-  END ;

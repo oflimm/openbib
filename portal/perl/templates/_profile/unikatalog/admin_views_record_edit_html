@@ -112,7 +112,7 @@
 
 
 <div class="form-floating mb-3">
-<textarea class="form-control" name="restrict_intranet" id="restrict_intranet" value="[% viewinfo.restrict_intranet %]" rows="5">[% viewinfo.restrict_intranet %]</textarea>
+<textarea class="form-control" style="width:100%; height:15em;" name="restrict_intranet" id="restrict_intranet" value="[% viewinfo.restrict_intranet %]" rows="5">[% viewinfo.restrict_intranet %]</textarea>
 <label for="restrict_intranet">[% msg.maketext("Einschränkung auf Intranet-IPs") %]</label>
 </div>
 

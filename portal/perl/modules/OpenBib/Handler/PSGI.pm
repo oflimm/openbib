@@ -1918,21 +1918,48 @@ sub print_authorization_error {
     my $self = shift;
 
     my $r           = $self->param('r');
+    my $scheme      = $self->param('scheme');
+    my $servername  = $self->param('servername');
+    my $location    = $self->param('location');
+    my $path        = $self->param('path');        
+    my $url         = $self->param('url');            
     my $path_prefix = $self->param('path_prefix');
     my $config      = $self->param('config');
+    my $view        = $self->param('view');    
     my $msg         = $self->param('msg');
+    my $args        = $self->to_cgi_querystring;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     if ($self->param('representation') eq "html"){
         # Aufruf-URL
-        my $return_uri  = uri_escape($r->request_uri);
-        my $login_url   = "$path_prefix/$config->{login_loc}?redirect_to=$return_uri";
-
-        # Return-URL in der Session abspeichern
-        
-        $logger->debug("Authorization error: Redirecting to $return_uri");
+	
+	my $uri    = $r->request_uri;
+	
+	if ($logger->is_debug){
+	    $logger->debug("Tunnelling: path $path - uri $uri - url $url");
+	    $logger->debug("Tunnelling to path $path");    	
+	    $logger->debug("Tunnelling to path $path_prefix");    	
+	    $logger->debug("Tunnelling to base location $location");
+	}
+	
+	# Construct redirect_uri
+	
+	my $redirect_uri = $scheme."://".$servername.$path;
+	
+	# Args? Append Method
+	if ($args){
+	    $redirect_uri.="?".$args;
+	}
+	
+	if ($logger->is_debug){
+	    $logger->debug("Redirect-URL is $redirect_uri");
+	}
+    
+	$redirect_uri = uri_escape($redirect_uri);
+	
+        my $login_url   = "$path_prefix/$config->{login_loc}?redirect_to=$redirect_uri";
 
         my $ttdata = {
             login_url => $login_url,

@@ -49,6 +49,6 @@ my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
 my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
 
 
-print "### $pool: Reduzierung auf Zeitschriften mit ZDBID in 572 und Standort USB Magazin\n";
+print "### $pool: Reduzierung auf Zeitschriften mit ZDBID in 572\n";
 
 system("cd $rootdir/data/$pool ; $rootdir/filter/$pool/filter_by_zdbid.pl < meta.title > meta.title.tmp ; mv -f meta.title.tmp meta.title");

@@ -1553,7 +1553,7 @@ sub to_cgi_params {
 
     if ($r->parameters){
         foreach my $param (keys %{$r->parameters}){
-            next unless ($r->param($param));
+#            next unless ($r->param($param));
             $logger->debug("Processing $param");
             if (exists $arg_ref->{change}->{$param}){
 		my $value = $arg_ref->{change}->{$param};

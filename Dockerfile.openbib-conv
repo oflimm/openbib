@@ -1,0 +1,17 @@
+FROM openbib-base-perl
+MAINTAINER oflimm <flimm@openbib.org>
+
+RUN apt-get update -qq && apt upgrade -y
+
+WORKDIR /
+
+RUN mkdir -p /var/log/openbib /opt/openbib/conf  /opt/openbib/ft/xapian/index /opt/openbib/conv
+
+COPY portal/perl/locales /opt/openbib/locales/
+
+COPY portal/perl/templates /opt/openbib/templates/
+
+WORKDIR /opt/openbib/
+
+COPY conv/*/*.pl conv/
+

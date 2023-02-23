@@ -17,14 +17,18 @@ uniqueidfield: 'Identifier (= Freitext 3)'
 
 category_split_chars:
   'Titel': ';'
-  'Autor, Herausgeber oder Institution': '\s*;\s*'
+  'Autor': '\s*;\s*'
+  'Herausgeber': '\s*;\s*'
+  'Institution': '\s*;\s*'
 
 # Personen
 person:
-  'Autor, Herausgeber oder Institution': '0100'        # Verfasser
+  'Autor': '0100'        # Verfasser
 
 # Koerperschaften
 corporatebody:
+  'Herausgeber': '0200'
+  'Institution': '0201'
 
 # Systematik
 classification: 

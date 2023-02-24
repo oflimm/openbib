@@ -9,7 +9,6 @@ insert into roleinfo values (3,'viewadmin','Portal-Administrator');
 /* Standard ist Admin-User mit ID 1 und Passwort 'StrengGeheim' */
 insert into userinfo (id,username,password,authenticatorid) values (1,'admin',crypt('StrengGeheim', gen_salt('bf', 4)),1);
 insert into user_role (userid,roleid) values (1,1);
-insert into user_authenticator (userid,authenticatorid) values (1,1);
 
 /* Standard-Profil ist openbib */
 insert into profileinfo (id,profilename,description) values (1,'bootstrap','OpenBib Beispiel-Portal');
@@ -19,7 +18,6 @@ insert into viewinfo (id,viewname,description,start_loc,servername,profileid,str
 insert into authenticator_view (viewid,authenticatorid) values (1,1);
 
 /* elib Datenbank Recommender */
-truncate table dbrtopic;
 insert into dbrtopic (id,topic,description) values
 (1, 'agr', 'Land- und Forstwirtschaft, Gartenbau, Fischereiwirtschaft, Hauswi'),
 (2, 'etn', 'Ethnologie (Volks- und Völkerkunde) '),
@@ -74,7 +72,6 @@ insert into dbrtopic (id,topic,description) values
 (51, 'arc', 'Archäologie'),
 (52, 'swl', 'Wirtschaftszweiglehren');
 
-truncate table dbistopic;
 insert into dbistopic (id,topic,description) values 
 (1,'OR','Orientalistik und sonstige Sprachen'),
 (2,'1','Physik'),
@@ -110,7 +107,6 @@ insert into dbistopic (id,topic,description) values
 (32,'54','Informations-, Buch- und Bibliothekswesen, Handschriftenkunde'),
 (33,'55','Wissenschaftskunde, Forschungs-, Hochschul-, Museumswesen');
 
-truncate table dbrtopic_dbistopic;
 insert into dbrtopic_dbistopic (dbrtopicid,dbistopicid) values
 (2,26),
 (3,26),

@@ -34,13 +34,18 @@ cp -a portal/perl/conf/dispatch_rules.yml-dist ~/openbib/conf/dispatch_rules.yml
 cp -a portal/perl/conf/portal.yml-docker ~/openbib/conf/
 cp -a portal/perl/conf/portal.log4perl ~/openbib/conf/
 
-# echo "Starting up"
+echo "Please configure config files in ~/openbib/conf/ appropriately"
 
-# docker-compose -f docker-compose.yml up -d
+echo "To startup containers use"
 
-# echo "Creating default databases"
+echo docker-compose -f docker-compose.yml up -d
 
-# docker exec -it openbib-master_openbib-web-perl_1 /opt/openbib/bin/createsystem.pl
-# docker exec -it openbib-master_openbib-web-perl_1 /opt/openbib/bin/createenrichmnt.pl
-# docker exec -it openbib-master_openbib-web-perl_1 /opt/openbib/bin/createstatistics.pl
-# docker exec -it openbib-master_openbib-web-perl_1 /etc/init.d/starman restart
+echo "To create default databases use"
+
+echo docker exec -it openbib-master_openbib-web-perl_1 /opt/openbib/bin/createsystem.pl
+echo docker exec -it openbib-master_openbib-web-perl_1 /opt/openbib/bin/createenrichmnt.pl
+echo docker exec -it openbib-master_openbib-web-perl_1 /opt/openbib/bin/createstatistics.pl
+
+echo "To start Webservice"
+
+echo docker exec -it openbib-master_openbib-web-perl_1 /etc/init.d/starman restart

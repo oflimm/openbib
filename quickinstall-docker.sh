@@ -30,6 +30,7 @@ mkdir -p ~/openbib/conf
 echo "Populating them"
 
 cp -a portal/perl/conf/portal.psgi ~/openbib/conf/
+cp -a portal/perl/conf/dispatch_rules.yml-dist ~/openbib/conf/dispatch_rules.yml
 cp -a portal/perl/conf/portal.yml-docker ~/openbib/conf/
 cp -a portal/perl/conf/portal.log4perl ~/openbib/conf/
 
@@ -42,3 +43,4 @@ cp -a portal/perl/conf/portal.log4perl ~/openbib/conf/
 # docker exec -it openbib-master_openbib-web-perl_1 /opt/openbib/bin/createsystem.pl
 # docker exec -it openbib-master_openbib-web-perl_1 /opt/openbib/bin/createenrichmnt.pl
 # docker exec -it openbib-master_openbib-web-perl_1 /opt/openbib/bin/createstatistics.pl
+# docker exec -it openbib-master_openbib-web-perl_1 /etc/init.d/starman restart

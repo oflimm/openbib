@@ -7,7 +7,9 @@ RUN apt-get install starman -y
 
 WORKDIR /
 
-RUN mkdir -p /var/log/openbib /opt/openbib/conf  /opt/openbib/ft/xapian/index /var/www/html
+RUN useradd -ms /bin/bash openbib && addgroup openbib www-data
+
+RUN mkdir -p /var/log/openbib /opt/openbib/conf  /opt/openbib/ft/xapian/index /var/www/html 
 
 COPY portal/starman/init.d/starman /etc/init.d/starman 
 
@@ -16,3 +18,6 @@ COPY portal/perl/locales /opt/openbib/locales/
 COPY portal/htdocs/ /var/www/html/
 
 COPY portal/perl/templates /opt/openbib/templates/
+
+RUN chown openbib.www-data /var/log/openbib
+

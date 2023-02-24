@@ -15,3 +15,5 @@ COPY portal/perl/templates templates/
 
 COPY conv/*/*.pl conv/
 
+WORKDIR /
+

@@ -9,7 +9,7 @@ services:
     depends_on:
       - postgres
     volumes:
-      - /home/openbib/openbib/conf:/opt/openbib/conf
+      - ~/openbib/conf:/opt/openbib/conf
       - xapiandata:/opt/openbib/ft/xapian/index
 
   openbib-web-perl:
@@ -24,7 +24,7 @@ services:
       - postgres:postgres
 
     volumes:
-      - /home/openbib/openbib/conf:/opt/openbib/conf
+      - ~/openbib/conf:/opt/openbib/conf
       - xapiandata:/opt/openbib/ft/xapian/index
     networks:
       - openbib

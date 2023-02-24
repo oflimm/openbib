@@ -17,7 +17,10 @@ COPY portal/perl/locales /opt/openbib/locales/
 
 COPY portal/htdocs/ /var/www/html/
 
+COPY portal/htdocs/images/openbib/ /usr/share/images/openbib/
+
 COPY portal/perl/templates /opt/openbib/templates/
 
 RUN chown openbib.www-data /var/log/openbib
+
 

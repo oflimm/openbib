@@ -8,6 +8,7 @@ docker volume create pgdata
 echo "Getting Elasticsearch"
 
 docker pull elasticsearch:7.17.9
+docker volume create esdata
 
 echo "Building OpenBib base image for perl"
 
@@ -20,6 +21,7 @@ docker build -t openbib-web-perl -f Dockerfile.openbib-web-perl .
 echo "Building OpenBib conv for converting and importing data"
 
 docker build -t openbib-conv -f Dockerfile.openbib-conv .
+docker volume create xapiandata
 
 echo "Building local mount bind directories in home-directory"
 

@@ -32,3 +32,13 @@ echo "Populating them"
 cp -a portal/perl/conf/portal.psgi ~/openbib/conf/
 cp -a portal/perl/conf/portal.yml-docker ~/openbib/conf/
 cp -a portal/perl/conf/portal.log4perl ~/openbib/conf/
+
+# echo "Starting up"
+
+# docker-compose -f docker-compose.yml up -d
+
+# echo "Creating default databases"
+
+# docker exec -it openbib-master_openbib-web-perl_1 /opt/openbib/bin/createsystem.pl
+# docker exec -it openbib-master_openbib-web-perl_1 /opt/openbib/bin/createenrichmnt.pl
+# docker exec -it openbib-master_openbib-web-perl_1 /opt/openbib/bin/createstatistics.pl

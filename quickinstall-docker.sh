@@ -7,7 +7,7 @@ docker volume create pgdata
 
 echo "Getting Elasticsearch"
 
-docker pull elasticsearch:7.17.9
+docker pull docker.elastic.co/elasticsearch/elasticsearch:7.17.9
 docker volume create esdata
 
 echo "Building OpenBib base image for perl"

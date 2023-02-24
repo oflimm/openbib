@@ -1,0 +1,66 @@
+version: "3"
+
+services:
+
+  openbib-conv:
+    tty: true
+    build: ./Dockerfile.openbib-conv
+    image: openbib-conv
+    depends_on:
+      - postgres
+    volumes:
+      - /home/openbib/openbib/conf:/opt/openbib/conf
+      - xapiandata:/opt/openbib/ft/xapian/index
+
+  openbib-web-perl:
+    tty: true
+    build: ./Dockerfile.openbib-web-perl
+    image: openbib-web-perl
+    depends_on:
+      - postgres
+    ports:
+      - 9999:8008
+    volumes:
+      - /home/openbib/openbib/conf:/opt/openbib/conf
+      - xapiandata:/opt/openbib/ft/xapian/index
+    networks:
+      - openbib
+      
+  postgres:
+    image: postgres:13.10-alpine
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: top_secret
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
+    environment:
+      - node.name=es01
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    # ports:
+    #   - 9200:9200
+    networks:
+      - openbib
+ 
+volumes:
+  pgdata:
+    external: true
+  xapiandata:
+    external: true
+  esdata:
+    external: true
+    
+networks:
+  openbib:
+    driver: bridge

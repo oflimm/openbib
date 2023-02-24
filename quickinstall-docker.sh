@@ -17,6 +17,10 @@ echo "Building OpenBib webapp image for perl"
 
 docker build -t openbib-web-perl -f Dockerfile.openbib-web-perl .
 
+echo "Building OpenBib conv for converting and importing data"
+
+docker build -t openbib-conv -f Dockerfile.openbib-conv .
+
 echo "Building local mount bind directories in home-directory"
 
 mkdir -p ~/openbib/conf

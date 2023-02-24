@@ -1,0 +1,18 @@
+FROM openbib-base-perl
+MAINTAINER oflimm <flimm@openbib.org>
+
+RUN apt-get update -qq && apt upgrade -y
+
+RUN apt-get install starman -y
+
+WORKDIR /
+
+RUN mkdir -p /var/log/openbib /opt/openbib/conf  /opt/openbib/ft/xapian/index /var/www/html
+
+COPY portal/starman/init.d/starman /etc/init.d/starman 
+
+COPY portal/perl/locales /opt/openbib/locales/
+
+COPY portal/htdocs/ /var/www/html/
+
+COPY portal/perl/templates /opt/openbib/templates/

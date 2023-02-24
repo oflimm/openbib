@@ -7,11 +7,11 @@ WORKDIR /
 
 RUN mkdir -p /var/log/openbib /opt/openbib/conf  /opt/openbib/ft/xapian/index /opt/openbib/conv
 
-COPY portal/perl/locales /opt/openbib/locales/
-
-COPY portal/perl/templates /opt/openbib/templates/
-
 WORKDIR /opt/openbib/
+
+COPY portal/perl/locales locales/
+
+COPY portal/perl/templates templates/
 
 COPY conv/*/*.pl conv/
 

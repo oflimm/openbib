@@ -36,11 +36,11 @@ use OpenBib::Config;
 my $config = OpenBib::Config->new;
 
 system("echo \"*:*:*:$config->{'systemdbuser'}:$config->{'systemdbpasswd'}\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
-system("/usr/bin/dropdb -U $config->{'systemdbuser'} $config->{systemdbname}");
-system("/usr/bin/createdb -U $config->{'systemdbuser'} -E UTF-8 -O $config->{'systemdbuser'} $config->{systemdbname}");
+system("/usr/bin/dropdb -U $config->{'systemdbuser'} -h $config->{'systemdbhost'} $config->{systemdbname}");
+system("/usr/bin/createdb -U $config->{'systemdbuser'} -h $config->{'systemdbhost'} -E UTF-8 -O $config->{'systemdbuser'} $config->{systemdbname}");
 
 # Einladen der Datenbankdefinitionen
 
-system("/usr/bin/psql -U $config->{'systemdbuser'} -f '$config->{'dbdesc_dir'}/postgresql/system.sql' $config->{systemdbname}");
-system("/usr/bin/psql -U $config->{'systemdbuser'} -f '$config->{'dbdesc_dir'}/postgresql/system_create_index.sql' $config->{systemdbname}");
-system("/usr/bin/psql -U $config->{'systemdbuser'} -f '$config->{'dbdesc_dir'}/postgresql/system_defaultinit.sql' $config->{systemdbname}");
+system("/usr/bin/psql -U $config->{'systemdbuser'} -h $config->{'systemdbhost'} -f '$config->{'dbdesc_dir'}/postgresql/system.sql' $config->{systemdbname}");
+system("/usr/bin/psql -U $config->{'systemdbuser'} -h $config->{'systemdbhost'} -f '$config->{'dbdesc_dir'}/postgresql/system_create_index.sql' $config->{systemdbname}");
+system("/usr/bin/psql -U $config->{'systemdbuser'} -h $config->{'systemdbhost'} -f '$config->{'dbdesc_dir'}/postgresql/system_defaultinit.sql' $config->{systemdbname}");

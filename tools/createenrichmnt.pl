@@ -36,11 +36,11 @@ use OpenBib::Config;
 my $config = OpenBib::Config->new;
 
 system("echo \"*:*:*:$config->{'enrichmntdbuser'}:$config->{'enrichmntdbpasswd'}\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
-system("/usr/bin/dropdb -U $config->{'enrichmntdbuser'} $config->{enrichmntdbname}");
-system("/usr/bin/createdb -U $config->{'enrichmntdbuser'} -E UTF-8 -O $config->{'enrichmntdbuser'} $config->{enrichmntdbname}");
+system("/usr/bin/dropdb -U $config->{'enrichmntdbuser'} -h $config->{'enrichmntdbhost'} $config->{enrichmntdbname}");
+system("/usr/bin/createdb -U $config->{'enrichmntdbuser'} -h $config->{'enrichmntdbhost'} -E UTF-8 -O $config->{'enrichmntdbuser'} $config->{enrichmntdbname}");
 
 # Einladen der Datenbankdefinitionen
 
-system("/usr/bin/psql -U $config->{'enrichmntdbuser'} -f '$config->{'dbdesc_dir'}/postgresql/enrichmnt.sql' $config->{enrichmntdbname}");
-system("/usr/bin/psql -U $config->{'enrichmntdbuser'} -f '$config->{'dbdesc_dir'}/postgresql/enrichmnt_create_index.sql' $config->{enrichmntdbname}");
+system("/usr/bin/psql -U $config->{'enrichmntdbuser'} -h $config->{'enrichmntdbhost'} -f '$config->{'dbdesc_dir'}/postgresql/enrichmnt.sql' $config->{enrichmntdbname}");
+system("/usr/bin/psql -U $config->{'enrichmntdbuser'} -h $config->{'enrichmntdbhost'} -f '$config->{'dbdesc_dir'}/postgresql/enrichmnt_create_index.sql' $config->{enrichmntdbname}");
 

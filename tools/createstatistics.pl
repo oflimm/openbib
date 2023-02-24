@@ -36,10 +36,10 @@ use OpenBib::Config;
 my $config = OpenBib::Config->new;
 
 system("echo \"*:*:*:$config->{'statisticsdbuser'}:$config->{'statisticsdbpasswd'}\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
-system("/usr/bin/dropdb -U $config->{'statisticsdbuser'} $config->{'statisticsdbname'}");
-system("/usr/bin/createdb -U $config->{'statisticsdbuser'} -E UTF-8 -O $config->{'statisticsdbuser'} $config->{'statisticsdbname'}");
+system("/usr/bin/dropdb -U $config->{'statisticsdbuser'} -h $config->{'statisticsdbhost'} $config->{'statisticsdbname'}");
+system("/usr/bin/createdb -U $config->{'statisticsdbuser'} -h $config->{'statisticsdbhost'} -E UTF-8 -O $config->{'statisticsdbuser'} $config->{'statisticsdbname'}");
 
 # Einladen der Datenbankdefinitionen
 
-system("/usr/bin/psql -U $config->{'statisticsdbuser'} -f '$config->{'dbdesc_dir'}/postgresql/statistics.sql' $config->{'statisticsdbname'}");
-system("/usr/bin/psql -U $config->{'statisticsdbuser'} -f '$config->{'dbdesc_dir'}/postgresql/statistics_create_index.sql' $config->{'statisticsdbname'}");
+system("/usr/bin/psql -U $config->{'statisticsdbuser'} -h $config->{'statisticsdbhost'} -f '$config->{'dbdesc_dir'}/postgresql/statistics.sql' $config->{'statisticsdbname'}");
+system("/usr/bin/psql -U $config->{'statisticsdbuser'} -h $config->{'statisticsdbhost'} -f '$config->{'dbdesc_dir'}/postgresql/statistics_create_index.sql' $config->{'statisticsdbname'}");

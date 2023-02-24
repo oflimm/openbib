@@ -42,11 +42,11 @@ my $config = OpenBib::Config->new;
 print "Creating Pool $pool\n";
 
 system("echo \"*:*:*:$config->{'dbuser'}:$config->{'dbpasswd'}\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
-system("/usr/bin/dropdb -U $config->{'dbuser'} $pool");
-system("/usr/bin/createdb -U $config->{'dbuser'} -E UTF-8 -O $config->{'dbuser'} $pool");
+system("/usr/bin/dropdb -U $config->{'dbuser'} -h $config->{'dbhost'} $pool");
+system("/usr/bin/createdb -U $config->{'dbuser'} -h $config->{'dbhost'} -E UTF-8 -O $config->{'dbuser'} $pool");
 
 # Einladen der Datenbankdefinitionen
 
-system("/usr/bin/psql -U $config->{'dbuser'} -f '$config->{'dbdesc_dir'}/postgresql/pool.sql' $pool");
-system("/usr/bin/psql -U $config->{'dbuser'} -f '$config->{'dbdesc_dir'}/postgresql/pool_create_index.sql' $pool");
+system("/usr/bin/psql -U $config->{'dbuser'} -h $config->{'dbhost'} -f '$config->{'dbdesc_dir'}/postgresql/pool.sql' $pool");
+system("/usr/bin/psql -U $config->{'dbuser'} -h $config->{'dbhost'} -f '$config->{'dbdesc_dir'}/postgresql/pool_create_index.sql' $pool");
 

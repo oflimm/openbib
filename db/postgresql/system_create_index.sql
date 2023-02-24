@@ -5,7 +5,7 @@ CREATE INDEX databaseinfo_dbname ON databaseinfo (dbname);
 CREATE INDEX databaseinfo_active ON databaseinfo (active);
 CREATE INDEX databaseinfo_description ON databaseinfo (description);
 CREATE INDEX databaseinfo_locationid ON databaseinfo (locationid);
-CREATE INDEX databaseinfo_scheme ON databaseinfo (scheme);
+CREATE INDEX databaseinfo_schema ON databaseinfo (schema);
 
 ALTER TABLE databaseinfo_searchengine ADD CONSTRAINT fk_databaseinfo_searchengine_database FOREIGN KEY (dbid) REFERENCES databaseinfo (id);
 CREATE INDEX databaseinfo_searchengine_database ON databaseinfo_searchengine (dbid);

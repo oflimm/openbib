@@ -8,9 +8,12 @@ services:
     image: openbib-conv
     depends_on:
       - postgres
+      - elasticsearch
     volumes:
       - ~/openbib/conf:/opt/openbib/conf
       - xapiandata:/opt/openbib/ft/xapian/index
+    networks:
+      - openbib
 
   openbib-web-perl:
     tty: true

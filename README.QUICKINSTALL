@@ -1,18 +1,164 @@
 README.QUICKINSTALL:
 
-Mit dem Skript quickinstall.pl kann die OpenBib-Portalsoftware ausgehend von einem ausgecheckten Verzeichnisbaum des entsprechenden git-Repositories in einer Standard-Konfiguration mit geringem Aufwand installiert werden.
+Die Software OpenBib lässt sich auf verschiedenen Wegen installieren
+und betreiben.
 
-Das Skript legt unter /opt/openbib eine Standard-Verzeichnisstruktur für OpenBib an und verlinkt dabei alle notwendigen Verzeichnisse bzw. Dateien in den ausgecheckten git-Baum, während andere -- typischerweise lokal anzupassende -- (Konfigurations-)Dateien einfach kopiert werden.
+Entweder als (derzeit noch experimentelle) Container-Lösung mit Docker
+oder auf einem bestehenden Debian-System.
 
-Der große Vorteil dieser Verlinkung in den git-Baum besteht darin, dass man auch nach der lokalen Installation durch ein einfaches cvs update von alle Fehlerbereinigungen und Erweiterungen lokal profitieren und auf dem aktuellen Stand bleiben kann.
+Der schnellste Weg ohne viel Know-How ein funktionierendes
+OpenBib-System zu installieren und sich einen Eindruck davon zu
+verschaffen ist der Weg über Docker. Besteht entsprechendes
+Administrator-Know-How, dann empfiehlt sich jedoch - gerade bei der
+Bereitstellung eines Produktionssystems - der Weg einer dedizierten
+Installation auf einem Debian-System (aktuell buster).
 
-Die generelle Vorgehensweise bei der Schnell-Installation ist im Folgenden dargestellt. Für weitere Informationen zu den einzelnen Punkten sei auf die ausführliche Beschreibung in den folgenden Kapiteln verwiesen.
+A) Installation als Docker-Container (experimentell)
+
+1.) Voraussetzungen
+
+Auf dem lokalen System wird die Installation von Docker und Docker
+Compose vorausgesetzt.
+
+Auf einem Debian-System lässt sich beides sehr schnell als
+Administrator installieren:
+
+apt install docker.io docker-compose
+
+Damit ein unpriviligierter lokal angemeldete Nutzer "abc" Zugriff auf
+Docker bekommt, muss dieser in die Gruppe docker eingetragen werden:
+
+groupadd abc docker
+
+Damit die neue Gruppenzugehörigkeit aktiv wird, muss sich der Nutzer
+danach entweder nochmals neu am System anmelden oder die Gruppe in der
+bestehenden Terminal-Fenster neu aktivieren:
+
+newgrp docker
+
+2.) Auschecken der aktuellen OpenBib-Version aus dem Repository
+
+git clone https://github.com/oflimm/openbib.git openbib-master
+
+Im aktuellen Verzeichnis befindet sich dann OpenBib im neu angelegten
+Verzeichnis openbib-master
+
+3.) Erzeugen der Container und Volumes
+
+Man wechselt nun in das Verzeichnis openbib-master und führt folgenden
+Befehl aus:
+
+./quickinstall-docker.sh
+
+Mit diesem Befehl werden die notwendigen Docker-Container neu gebaut
+bzw. vom öffentlichen Docker Repository geholt.
+
+Es sind dies:
+
+* openbib-base-perl: Basis-Container, der lokal über
+  Dockerfile.openbib-base-perl erzeugt wird
+
+* openbib-web-perl: OpenBib Web-Anwendung, die lokal über
+  Dockerfile.openbib-web-perl erzeugt wird
+
+* openbib-conv: Container zur Konvertierung sowie den Import von Daten
+  in OpenBib, der lokal über Dockerfile.openbib-conv erzeugt wird
+
+Dazu kommen die Standard-Container
+
+* PostgreSQL und
+* Elasticsearch
+
+Ebenso werden benannte Docker-Volumes angelegt, um persistent Daten ausserhalb der Container abspeichern zu können. Diese befinden sich lokal unter
+
+/var/lib/docker/volumes/
+
+und sind
+
+* pgdata für die Speicherung der PostgreSQL-Datenbanken im Container
+  unter /var/lib/postgresql/data
+
+* xapiandata für die Speicher der Xapian Suchindizes im Container
+  unter /opt/openbib/ft/xapian/index
+
+* esdata für die Speicher der Elasticsearch Suchindizes im Container
+  unter /usr/share/elasticsearch/data
+
+Eine Standardkonfiguration von OpenBib wird im Heimatverzeichnis des
+Nutzers unter ~/openbib/conf/ angelegt
+
+Sind die Container und Volumes erzeugt, dann gibt das Skript die
+Kommandos aus, die die Installation abschliessen.
+
+Zuvor kann die zentrale Konfigurationsdatei portal.yml angepasst
+werden, um z.B. mit Angabe der entsprechenden Credentials die
+Anbindung gewünschter Dienste zu ermöglichen (ReCaptcha, EDS, usw.)
+
+4.) Starten der Infrastruktur mit Docker Compose und Erzeugung relevanter Datenbanken
+
+Mit dem Kommando
+
+docker-compose up -d
+
+werden die Docker Container und damit die OpenBib Infrastruktur gestartet.
+
+Dazu wird die Datei docker-compose.yml verwendet, in der das
+Zusammenspiel der verschiedenen Container modelliert wird.
+
+Die System-, Anreicherung- und Statistikdatenbanken können nun erzeugt
+werden mit den Kommandos:
+
+docker exec -it openbib-master_openbib-web-perl_1 /opt/openbib/bin/createsystem.pl
+docker exec -it openbib-master_openbib-web-perl_1 /opt/openbib/bin/createenrichmnt.pl
+docker exec -it openbib-master_openbib-web-perl_1 /opt/openbib/bin/createstatistics.pl
+
+Schliesslich wird die Webanwendung gestartet:
+
+docker exec -it openbib-master_openbib-web-perl_1 /etc/init.d/starman restart
+
+Danach kann im lokalen Browser auf OpenBib unter der Adresse
+
+http://localhost:8008/portal/openbib/home
+
+zugegriffen werden.
+
+5) Import von Daten über openbib-conv
+
+Todo
+
+B) Dedizierte Installation auf einem Debian-System
+
+Mit dem Skript quickinstall.pl kann die OpenBib-Portalsoftware
+ausgehend von einem ausgecheckten Verzeichnisbaum des entsprechenden
+git-Repositories in einer Standard-Konfiguration mit geringem Aufwand
+installiert werden.
+
+Das Skript legt unter /opt/openbib eine Standard-Verzeichnisstruktur
+für OpenBib an und verlinkt dabei alle notwendigen Verzeichnisse
+bzw. Dateien in den ausgecheckten git-Baum, während andere --
+typischerweise lokal anzupassende -- (Konfigurations-)Dateien einfach
+kopiert werden.
+
+Der große Vorteil dieser Verlinkung in den git-Baum besteht darin,
+dass man auch nach der lokalen Installation durch ein einfaches cvs
+update von alle Fehlerbereinigungen und Erweiterungen lokal
+profitieren und auf dem aktuellen Stand bleiben kann.
+
+Die generelle Vorgehensweise bei der Schnell-Installation ist im
+Folgenden dargestellt. Für weitere Informationen zu den einzelnen
+Punkten sei auf die ausführliche Beschreibung in den folgenden
+Kapiteln verwiesen.
 
 1.) Installation der notwendigen Infrastruktur
 
-OpenBib setzt auf einer LLPP-Infrastruktur (Linux, Lighttpd, PostgreSQL, Perl) auf, die zusätzlich viele weitere Perl-Module sowie andere Programme umfasst.
+OpenBib setzt auf einer LLPP-Infrastruktur (Linux, Lighttpd,
+PostgreSQL, Perl) auf, die zusätzlich viele weitere Perl-Module sowie
+andere Programme umfasst.
 
-Um den Aufwand für die Installation so gering wie möglich zu halten, verwenden wir die Paketeverwaltung der Linux-Distribution Debian und stellen für notwendige Pakete, die selbst nicht in dieser Distribution vorhanden sind, diese in einem eigenen Repository zur Verfügung.
+Um den Aufwand für die Installation so gering wie möglich zu halten,
+verwenden wir die Paketeverwaltung der Linux-Distribution Debian und
+stellen für notwendige Pakete, die selbst nicht in dieser Distribution
+vorhanden sind, diese in einem eigenen Repository zur Verfügung.
 
 Um dieses Repository zu nutzen muss folgende Zeile in die Datei
 
@@ -27,7 +173,9 @@ Danach wird die aktuelle Pakete-Datenbank aktualisiert:
 
 apt-get update
 
-Zur Installation aller benötigten Pakete für die OpenBib-Infrastruktur muss nun lediglich das Meta-Paket openbib-infrastructure installiert werden.
+Zur Installation aller benötigten Pakete für die OpenBib-Infrastruktur
+muss nun lediglich das Meta-Paket openbib-infrastructure installiert
+werden.
 
 apt-get install openbib-infrastructure
 
@@ -35,15 +183,18 @@ apt-get install openbib-infrastructure
 
 Fuer die OpenBib-Installation wird folgendes benötigt:
 
-    * Benutzername und Passwort eines Nutzers in der Datenbank, der idealer-/einfacherweise maximale Rechte hat. 
+* Benutzername und Passwort eines Nutzers in der Datenbank, der
+  idealer-/einfacherweise maximale Rechte hat.
 
 2.) Auschecken der aktuellen OpenBib-Version aus dem Repository
 
-Die folgenden Schritte führen Sie als root aus. Legen Sie zunächst ein Verzeichnis /opt/git an
+Die folgenden Schritte führen Sie als root aus. Legen Sie zunächst ein
+Verzeichnis /opt/git an
 
 mkdir /opt/git
 
-und wechseln Sie dann in dieses Verzeichnis. Dort wird nun die aktuelle OpenBib-Version aus dem offiziellen Repository ausgecheckt. 
+und wechseln Sie dann in dieses Verzeichnis. Dort wird nun die
+aktuelle OpenBib-Version aus dem offiziellen Repository ausgecheckt.
 
 git clone https://github.com/oflimm/openbib.git openbib-master
 
@@ -54,14 +205,16 @@ ln -s openbib-master openbib-current
 
 3.) Anpassen von quickinstall.pl
 
-Gehen Sie nun in das ausgecheckte git-Verzeichniss und passen folgende lokale Pfadangaben im Skript quickinstall.pl an:
+Gehen Sie nun in das ausgecheckte git-Verzeichniss und passen folgende
+lokale Pfadangaben im Skript quickinstall.pl an:
 
 $documentroot
     Wo ist der Basis-Pfad fuer die Dokumente Ihres Apache-Webservers 
 
 Beide Pfade sind ohne abschliessenden '/' einzugeben.
 
-Danach erzeugen sie bitte mit touch die Datei .changed_config als Zeichen der erfolgen Konfigurationsänderung.
+Danach erzeugen sie bitte mit touch die Datei .changed_config als
+Zeichen der erfolgen Konfigurationsänderung.
 
   touch .changed_config
 
@@ -73,7 +226,10 @@ Rufen Sie nun das Programm quickinstall.pl auf:
 
 5.) Rechte ändern und Verzeichnisse anpassen
 
-Bisher wurden alle Anweisung als Nutzer root gemacht. Diesem gehören auch alle Dateien der OpenBib-Installation. Aus Sicherheitsgründen ist es sehr ratsam fortan tagtäglich unter einem unprivilegierten Nutzer openbib zu arbeiten. Diesem müssen dazu alle Dateien gehören:
+Bisher wurden alle Anweisung als Nutzer root gemacht. Diesem gehören
+auch alle Dateien der OpenBib-Installation. Aus Sicherheitsgründen ist
+es sehr ratsam fortan tagtäglich unter einem unprivilegierten Nutzer
+openbib zu arbeiten. Diesem müssen dazu alle Dateien gehören:
 
 chown -R openbib.www-data /opt/openbib
 chown -R openbib.www-data /opt/git
@@ -85,11 +241,14 @@ Bitte passen Sie nun die Datei
 
 /opt/openbib/conf/portal.yml
 
-entsprechend Ihren lokalen Gegebenheiten an. Insbesondere sind hier der lokale Rechnername sowie die Verbindungsparameter der PostgreSQL-Datenbanken abzuändern.
+entsprechend Ihren lokalen Gegebenheiten an. Insbesondere sind hier
+der lokale Rechnername sowie die Verbindungsparameter der
+PostgreSQL-Datenbanken abzuändern.
 
 7.) Datenbanken erzeugen
 
-Danach führen Sie bitte folgende Programme zur Erzeugung der grundlegenden Datenbanken aus:
+Danach führen Sie bitte folgende Programme zur Erzeugung der
+grundlegenden Datenbanken aus:
 
    1. /opt/openbib/bin/createconfig.pl
    2. /opt/openbib/bin/createsession.pl
@@ -101,7 +260,9 @@ Danach führen Sie bitte folgende Programme zur Erzeugung der grundlegenden Date
 
 /etc/init.d/starman restart
 
-Danach sollten Sie eine funktionsfähige, aber rudimentäre OpenBib-Installation auf Ihrem Rechner vorfinden, die sie unter folgendem URL aufrufen koennen
+Danach sollten Sie eine funktionsfähige, aber rudimentäre
+OpenBib-Installation auf Ihrem Rechner vorfinden, die sie unter
+folgendem URL aufrufen koennen
 
 http://127.0.0.1:8008/portal/openbib/home
 

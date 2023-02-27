@@ -8,7 +8,7 @@ postgresql_version: '111200' # 11.12.0
 
 # Einstellungen fuer den Zugriff auf die Katalog-Datenbanken
 dbimodule: Pg
-pgdbhost: localhost
+pgdbhost: postgres
 pgdbport: 5432
 pgdbname: postgres
 pgdbuser: root
@@ -16,7 +16,7 @@ pgdbpasswd: 'top_secret'
 
 # Einstellungen fuer den Zugriff auf die Katalog-Datenbanken
 dbimodule: Pg
-dbhost: localhost
+dbhost: postgres
 dbport: 5432
 dbuser: root
 dbpasswd: 'top_secret'
@@ -25,7 +25,7 @@ dboptions:
 
 # Einstellungen fuer den Zugriff auf die System-Datenbank
 systemdbimodule: Pg
-systemdbhost: localhost
+systemdbhost: postgres
 systemdbport: 5432
 systemdbname: openbib_system
 systemdbuser: root
@@ -37,7 +37,7 @@ archive_robots: 0
 
 # Einstellungen fuer den Zugriff auf die Enrichmnt-Datenbank
 enrichmntdbimodule: Pg
-enrichmntdbhost: localhost
+enrichmntdbhost: postgres
 enrichmntdbport: 5432
 enrichmntdbname: openbib_enrichmnt
 enrichmntdbuser: root
@@ -49,7 +49,7 @@ enrichmntdbsingleton: 0
 
 # Einstellungen fuer den Zugriff auf die Statistik-Datenbank
 statisticsdbimodule: Pg
-statisticsdbhost: localhost
+statisticsdbhost: postgres
 statisticsdbport: 5432
 statisticsdbname: openbib_statistics
 statisticsdbuser: root

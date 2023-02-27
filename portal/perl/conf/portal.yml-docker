@@ -1,0 +1,3944 @@
+# Versionsnummer
+version: OpenBib 3.1
+
+# Unter dieser IP wird der lokale Server angesprochen
+local_ip: 127.0.0.1
+
+postgresql_version: '111200' # 11.12.0
+
+# Einstellungen fuer den Zugriff auf die Katalog-Datenbanken
+dbimodule: Pg
+pgdbhost: localhost
+pgdbport: 5432
+pgdbname: postgres
+pgdbuser: root
+pgdbpasswd: 'top_secret'
+
+# Einstellungen fuer den Zugriff auf die Katalog-Datenbanken
+dbimodule: Pg
+dbhost: localhost
+dbport: 5432
+dbuser: root
+dbpasswd: 'top_secret'
+dboptions:
+  pg_enable_utf8: 1
+
+# Einstellungen fuer den Zugriff auf die System-Datenbank
+systemdbimodule: Pg
+systemdbhost: localhost
+systemdbport: 5432
+systemdbname: openbib_system
+systemdbuser: root
+systemdbpasswd: 'top_secret'
+systemdboptions:
+  pg_enable_utf8: 1
+systemdbsingleton: 0
+archive_robots: 0
+
+# Einstellungen fuer den Zugriff auf die Enrichmnt-Datenbank
+enrichmntdbimodule: Pg
+enrichmntdbhost: localhost
+enrichmntdbport: 5432
+enrichmntdbname: openbib_enrichmnt
+enrichmntdbuser: root
+enrichmntdbpasswd: 'top_secret'
+enrichmntdboptions:
+  pg_enable_utf8: 1
+enrichmntdbsingleton: 0
+
+
+# Einstellungen fuer den Zugriff auf die Statistik-Datenbank
+statisticsdbimodule: Pg
+statisticsdbhost: localhost
+statisticsdbport: 5432
+statisticsdbname: openbib_statistics
+statisticsdbuser: root
+statisticsdbpasswd: 'top_secret'
+statisticsdboptions:
+  pg_enable_utf8: 1
+statisticsdbsingleton: 0
+
+# Aktivierung und selektives Debugging verschiedener Funktionalitaeten
+debug_ils: 1
+active_campusorder: 0
+active_pdaorder: 0
+active_suggestion: 0
+active_ils: 0
+active_login: 1
+active_statisticsdb: 1
+active_yewno: 0
+newsflash: 1
+
+# Preislimit fuer Neuanschaffungen durch PDA 
+pda_limit_cent: 12000
+
+# Sollen Performance-Benchmarks durchgefuehrt werden
+benchmark: 1
+
+anon_hashkey: ''
+
+# Einstellungen fuer Redis
+redis:
+  server: 'redis:6379'
+  password: 'top_secret'
+
+
+# Einstellungen fuer Memcached
+memcached:
+  servers:
+     - address: '127.0.0.1:11211'
+  compress_threshold: 10000
+  connect_timeout: 0.4
+  ketama_points: 150
+  namespace: 'ob:'
+  
+memcached_expiration:
+  'record:title:full': 3600
+  'record:title:circulation': 240
+  'record:title:enrich_related': 3600
+  'record:title:enrich_similar': 3600
+  'record:title:enrich_same': 3600
+  'config:local_server_is_active_and_searchable': 5    
+  'config:databaseinfotable': 3600
+  'config:circulationinfotable': 3600
+  'config:locationinfotable': 3600
+  'config:dbinfo_overview': 3600
+  'config:locationinfo_overview': 3600
+  'config:viewinfo_overview': 3600
+  'config:locationinfo_fields': 3600
+  'config:locationinfo_occupancy': 240
+  'config:topics': 3600
+  'config:bk': 3600
+  'config:rvk': 3600
+  'config:ddc': 3600
+  'config:lcc': 3600
+  'config:viewdbs': 3600
+  'config:viewlocations': 3600
+  'config:searchprofile_dbs': 3600
+  'handler:connector_locationmark': 3600
+  'eds:authtoken': 3600
+  'eds:sessiontoken': 3600
+  'eds:title': 3600
+  'eds:search': 3600      
+  'dbis:classifications': 3600
+  'dbis:title': 3600
+  'dbis:search': 3600
+  'ezb:classifications': 3600
+  'ezb:title': 3600
+  'ezb:search': 3600
+
+# Cookies (ueberall vs. nur bei nutzerbezogenen Aktionen - nach Anmeldung, anonyme Merkliste,...)
+
+cookies_everywhere: 0
+
+# Konfiguration ILS-Anbindung
+
+cache_external_password_for_ugc_migration: 0
+
+# USBWS
+usbws_url: ''
+usbwsmail_url: ''
+usbauth_url: ''
+usbauth_masterpass: ''
+
+# ALMA
+sisauth:  
+  hostname: ''
+  basedn: ''
+  match_user: ''
+  proxy_binddn: ''
+  proxy_pw: ''
+  port: '636'
+  scheme: 'ldaps'
+  verify: 'none'
+  timeout: '1500'
+  onerror: 'undef'
+  cafile: ''
+
+alma: # Section alma API
+  api_baseurl: 'https://api-eu.hosted.exlibrisgroup.com/almaws/v1'
+  api_key: ''
+  
+# Local networks/IP ranges to recognize access to licensed media
+local_networks:
+  - '172.16.0.0/12' 
+  - '192.168.0.0/16' 
+
+youtube_api_key: ''
+
+# Authentifizierungs-Targets
+
+# authenticator:
+  
+mail:
+  realm:
+     foo:
+       recipient: 'foo@bar'
+       sender: 'foo@bar'
+
+# Einstellungen fuer ElasticSearch
+
+elasticsearch:
+  userinfo: ''
+  nodes:
+    - '127.0.0.1:9200'
+  cxn_pool: 'Sniff'
+
+gesis:
+  search_url: 'https://search.gesis.org/searchengine'
+  
+solr:
+# Backend-Specific  
+  local: # Lokale Indexierung mit Solr
+    base_url: ''
+    search_url: ''
+  gvi:   # Zugriff auf Solr Index des GVI
+    base_url: 'https://gvi.bsz-bw.de/solr/GVI'
+    search_url: 'https://gvi.bsz-bw.de/solr/GVI/select'
+    
+solr_filter_field:
+  local:
+    fsubj: facet_subject
+    fcls: facet_classification
+    fper: facet_person
+    fyear: facet_year
+    ftyp: facet_mediatype
+    flang: facet_language
+    fcorp: facet_corporatebody
+    fdb: facet_database
+    ftag: facet_tag
+    flitlist: facet_litlist
+    floc: facet_location
+    favail: facet_availability
+    topic: facet_topic
+    fprov: facet_provenance
+  gvi:
+    fsubj: subject_all_facet
+    fper: author_facet
+    fyear: publish_date
+    ftyp: material_pubform
+    
+# https://github.com/gemeinsamerverbuendeindex/gvi/blob/develop/solr_config/schema.xml
+
+solr_searchfield_mapping:    
+  gvi: 
+    'freesearch': 'allfields'
+    'person': 'author'
+    'corporatebody': 'author'	    
+    'title': 'title'
+    'titlestring': 'title_phrase'
+    'publisher': 'publisher'
+    'zdbid': 'zdb_id'
+    'isbn': 'isbn'
+    'issn': 'issn'
+    'year': 'publish_date'
+    'content': 'summary'
+    'subject': 'subject_all'
+    'source': 'collection' # K10PLUS, BVB, HEBIS, KOBV, OBV
+
+solr_facet_mapping:    
+  gvi: 
+    'person': 'author_facet'
+    'subject': 'subject_all_facet'
+    'year': 'publish_date'
+    'mediatype': 'material_pubform'
+    
+eds:
+  default_user: ''
+  default_password: ''
+  default_profile: 'newapi'
+  
+  base_url: 'https://adn-eds-api.ebscohost.com'
+  auth_url: 'https://adn-eds-api.ebscohost.com/authservice/rest/uidauth'
+  info_url: 'https://adn-eds-api.ebscohost.com/authservice/rest/info'
+  session_url: 'https://adn-eds-api.ebscohost.com/edsapi/rest/createsession'
+  search_url: 'https://adn-eds-api.ebscohost.com/edsapi/rest/search'
+  retrieve_url: 'https://adn-eds-api.ebscohost.com/edsapi/rest/retrieve'  
+
+eds_searchfield_mapping:
+  freesearch: 'TX'
+  person: 'AU'  
+  personstring: 'AU'  
+  title: 'TI'
+  titlestring: 'TI'  
+  subject: 'SU'
+  subjectstring: 'SU'
+  content: 'AB' # abstract
+  issn: 'IS'
+  isbn: 'IB'
+  year: 'DT'
+  journal: 'SO' # Zs-Titel
+  sourcestring: 'SO' # Zs-Titel
+
+eds_facet_mapping:
+  PublicationYear: 'year'
+  SourceType: 'mediatype'  
+  SubjectEDS: 'subject'
+  Journal: 'journal'
+  Publisher: 'publisher'
+  Language: 'language'
+  ContentProvider: 'source'
+
+eds_reverse_facet_mapping:
+  'fyear': PublicationYear
+  'ftyp': SourceType
+  'fsubj': SubjectEDS
+  'fjournal': Journal
+  'fpub': Publisher
+  'flang': Language
+  'fsrc': ContentProvider
+
+eds_resultfield_mapping:
+  'Titles:TitleFull': 'T0331'
+  person: 'AU'  
+  title: 'TI'
+  subject: 'SU'
+  content: 'AB' # abstract
+  issn: 'IS'
+  isbn: 'IB'
+
+eds_reverse_sort_mapping:
+  year_desc: 'date'
+  year_asc: 'date2'
+  relevance_desc: 'relevance'
+  person_asc: 'author'
+
+local_search_backends:
+  - name: 'xapian'
+    desc: 'Xapian'
+  - name: 'elasticsearch'
+    desc: 'Elasticsearch'
+#  - name: 'solr'
+#    desc: 'SOLR'
+  
+default_local_search_backend: xapian
+
+# Benutzer, Passwort und Default view fuer die Administration
+adminuser: admin
+adminpasswd: 'top_secret'
+
+defaultview: openbib
+
+# RSS-Typen
+rss_types:
+  neuerwerbung: 99
+  neuzugang: 1
+  neuzugang_nach_aut: 2
+  neuzugang_nach_kor: 3
+  neuzugang_nach_swt: 4
+  neuzugang_nach_sys: 5
+
+location_types:
+  - ISIL
+  - Generic
+
+metadata_schema:
+  - mab2
+  - marc21
+  
+source_systems:
+  Sisis:
+     has_authorities: 1
+  Aleph:
+     has_authorities: 0
+  Allegro:
+     has_authorities: 0
+  Aleph:
+     has_authorities: 0
+  Lars:
+     has_authorities: 0
+  OAI:
+     has_authorities: 0
+  MAB:
+     has_authorities: 0
+  MARC:
+     has_authorities: 0
+  'Backend: Z3950':
+     has_authorities: 0
+  'Backend: EZB':
+     has_authorities: 0
+  'Backend: DBIS':
+     has_authorities: 0
+  'Backend: BibSonomy':
+     has_authorities: 0
+  'Backend: EDS':
+     has_authorities: 0
+  'Backend: GVI':
+     has_authorities: 0
+  'Backend: Gesis':
+     has_authorities: 0
+  'Backend: JOP':
+     has_authorities: 0
+  Anderes:
+     has_authorities: 0
+
+     
+# Spracheinstellungen
+lang:
+  - de
+  - en
+
+# Basis-Pfad
+base_loc: /portal
+
+# Mapping der einzelnen Kompontenten zu ihren Zugriffs-URI's
+
+## Systmweite Resourcen, Aenderbar fuer Web-Administration
+admin_loc: admin
+authenticators_loc: authenticators
+authority_loc: authority
+databases_loc: databases
+views_loc: views
+locations_loc: locations
+profiles_loc: profiles
+orgunits_loc: orgunits
+sessions_loc: sessions
+searchprofiles_loc: searchprofiles
+users_loc: users
+roles_loc: roles
+rss_loc: rss
+rssfeeds_loc: rssfeeds
+statistics_loc: statistics
+servers_loc: servers
+templates_loc: templates
+clusters_loc: clusters
+topics_loc: topics
+viewadmin_loc: viewadmin
+
+## Konnektoren
+connector_availabilityimage_loc: connector/availabilityimage
+connector_availability_loc: connector/availability
+connector_cover_loc: connector/cover
+connector_daia_loc: connector/daia
+connector_paia_loc: connector/paia
+connector_livesearch_loc: connector/livesearch
+connector_locationmark_loc: connector/sykasignatur
+# Legacy URI - Ab v2.4 kann jeder URL direkt gebookmarkt werden
+connector_openurl_loc: connector/openurl
+connector_qrcode_loc: connector/qrcode
+connector_rss_loc: connector/rss
+connector_seealso_loc: connector/seealso
+connector_similarpersons_loc: connector/similarpersons
+connector_similarsubjects_loc: connector/similarsubjects
+connector_spellcheck_loc: connector/spellcheck
+connector_unapi_loc: connector/unapi
+
+## Resourcen mit dedizierten IDs
+classifications_loc: classifications
+clouds_loc: clouds
+corporatebodies_loc: corporatebodies
+databases_loc: databases
+locations_loc: locations
+litlists_loc: litlists
+litlists_public_loc: litlists
+litlists_public_topics_loc: litlists/topics
+litlists_public_users_loc: litlists/users
+persons_loc: persons
+reviews_loc: reviews
+subjects_loc: subjects
+tags_loc: tags
+titles_loc: titles
+topics_loc: topics
+users_loc: users
+
+## Allgemeine URIs
+#tags_loc: tags
+
+## Funktionelle URIs 
+browse_loc: browse
+circulations_loc: circulations
+preferences_loc: preferences
+collection_loc: collection
+cartitems_loc: cartitems
+home_loc: home
+index_loc: index
+info_loc: info
+librarycard_registrations_loc: librarycard_registrations
+login_loc: login
+logout_loc: logout
+mailcollection_loc: mailcollection
+migration_loc: migration
+passwords_loc: passwords
+redirect_loc: redirect
+registrations_loc: registrations
+search_history_loc: search/history
+search_loc: search
+searchforms_loc: searchforms
+searchprofiles_loc: searchprofiles
+searchlocations_loc: searchlocations
+serveractive_loc: server_is_active
+uccard_activations_loc: uccard_activations
+uccard_login_loc: uccard_login
+
+# Mapping der einzelnen Kompontenten zu ihren Templates
+tt_admin_authenticators_record_delete_confirm_tname: admin_authenticators_record_delete_confirm
+tt_admin_authenticators_record_edit_tname: admin_authenticators_record_edit
+tt_admin_authenticators_record_tname: admin_authenticators_record
+tt_admin_authenticators_tname: admin_authenticators
+tt_admin_clusters_record_delete_confirm_tname: admin_clusters_record_delete_confirm
+tt_admin_clusters_record_edit_tname: admin_clusters_record_edit
+tt_admin_clusters_record_consistency_tname: admin_clusters_record_consistency
+tt_admin_clusters_record_tname: admin_clusters_record
+tt_admin_clusters_tname: admin_clusters
+tt_admin_databases_record_delete_confirm_tname: admin_databases_record_delete_confirm
+tt_admin_databases_record_edit_tname: admin_databases_record_edit
+tt_admin_databases_record_tname: admin_databases_record
+tt_admin_databases_rss_record_delete_confirm_tname: admin_databases_rss_record_delete_confirm
+tt_admin_databases_rss_record_edit_tname: admin_databases_rss_record_edit
+tt_admin_databases_rss_record_tname: admin_databases_rss_record
+tt_admin_databases_rss_tname: admin_databases_rss
+tt_admin_databases_updates_tname: admin_databases_updates
+tt_admin_databases_tname: admin_databases
+tt_admin_locations_tname: admin_locations
+tt_admin_locations_record_delete_confirm_tname: admin_locations_record_delete_confirm
+tt_admin_locations_record_edit_tname: admin_locations_record_edit
+tt_admin_locations_record_tname: admin_locations_record
+tt_admin_orgunits_record_delete_confirm_tname: admin_orgunits_record_delete_confirm
+tt_admin_orgunits_record_edit_tname: admin_orgunits_record_edit
+tt_admin_orgunits_record_tname: admin_orgunits_record
+tt_admin_orgunits_tname: admin_orgunits
+tt_admin_profiles_record_delete_confirm_tname: admin_profiles_record_delete_confirm
+tt_admin_profiles_record_edit_tname: admin_profiles_record_edit
+tt_admin_profiles_record_tname: admin_profiles_record
+tt_admin_profiles_tname: admin_profiles
+tt_admin_searchprofiles_record_edit_tname: admin_searchprofiles_record_edit
+tt_admin_searchprofiles_record_tname: admin_searchprofiles_record
+tt_admin_searchprofiles_tname: admin_searchprofiles
+tt_admin_searchuser_tname: admin_searchuser
+tt_admin_servers_record_delete_confirm_tname: admin_servers_record_delete_confirm
+tt_admin_servers_record_edit_tname: admin_servers_record_edit
+tt_admin_servers_record_tname: admin_servers_record
+tt_admin_servers_tname: admin_servers
+tt_admin_servers_updates_tname: admin_servers_updates
+tt_admin_sessions_active_record_tname: admin_sessions_active_record
+tt_admin_sessions_active_tname: admin_sessions_active
+tt_admin_sessions_archived_record_tname: admin_sessions_archived_record
+tt_admin_sessions_archived_search_form_tname: admin_sessions_archived_search_form
+tt_admin_sessions_archived_search_tname: admin_sessions_archived_search
+tt_admin_statistics_access_query_graph_tname: admin_statistics_access_query_graph
+tt_admin_statistics_access_session_graph_tname: admin_statistics_access_session_graph
+tt_admin_statistics_access_title_graph_tname: admin_statistics_access_title_graph
+tt_admin_statistics_access_tname: admin_statistics_access
+tt_admin_statistics_browser_tname: admin_statistics_browser
+tt_admin_statistics_client_tname: admin_statistics_client
+tt_admin_statistics_query_tname: admin_statistics_query
+tt_admin_statistics_request_tname: admin_statistics_request
+tt_admin_statistics_redirect_tname: admin_statistics_redirect
+tt_admin_statistics_tname: admin_statistics
+tt_admin_statistics_view_query_graph_tname: admin_statistics_view_query_graph
+tt_admin_statistics_view_session_graph_tname: admin_statistics_view_session_graph
+tt_admin_statistics_view_tname: admin_statistics_view
+tt_admin_tname: admin
+tt_admin_templates_record_delete_confirm_tname: admin_templates_record_delete_confirm
+tt_admin_templates_record_edit_tname: admin_templates_record_edit
+tt_admin_templates_tname: admin_templates
+tt_admin_topics_record_edit_tname: admin_topics_record_edit
+tt_admin_topics_record_delete_confirm_tname: admin_topics_record_delete_confirm
+tt_admin_topics_mappings_record_tname: admin_topics_mappings_record
+tt_admin_topics_mappings_tname: admin_topics_mappings
+tt_admin_topics_record_tname: admin_topics_record
+tt_admin_topics_tname: admin_topics
+tt_admin_roles_record_delete_confirm_tname: admin_roles_record_delete_confirm
+tt_admin_roles_record_edit_tname: admin_roles_record_edit
+tt_admin_roles_record_tname: admin_roles_record
+tt_admin_roles_tname: admin_roles
+tt_admin_users_migration_tname: admin_users_migration
+tt_admin_users_migration_success_tname: admin_users_migration_success
+tt_admin_users_search_form_tname: admin_users_search_form
+tt_admin_users_search_tname: admin_users_search
+tt_admin_users_tname: admin_users
+tt_admin_users_record_tname: admin_users_record
+tt_admin_users_record_edit_tname: admin_users_record_edit
+tt_admin_users_record_delete_confirm_tname: admin_users_record_delete_confirm
+tt_admin_views_record_delete_confirm_tname: admin_views_record_delete_confirm
+tt_admin_views_record_edit_tname: admin_views_record_edit
+tt_admin_views_record_edit_tname: admin_views_record_edit
+tt_admin_views_record_tname: admin_views_record
+tt_admin_views_rss_record_edit_tname: admin_views_rss_record_edit
+tt_admin_views_rss_record_tname: admin_views_rss_record
+tt_admin_views_tname: admin_views
+tt_admin_templates_record_delete_confirm_tname: admin_templates_record_delete_confirm
+tt_admin_templates_record_edit_tname: admin_templates_record_edit
+tt_admin_templates_record_tname: admin_templates_record
+tt_admin_templates_tname: admin_templates
+
+tt_viewadmin_tname: viewadmin
+tt_viewadmin_roles_record_delete_confirm_tname: viewadmin_roles_record_delete_confirm
+tt_viewadmin_roles_record_edit_tname: viewadmin_roles_record_edit
+tt_viewadmin_roles_record_tname: viewadmin_roles_record
+tt_viewadmin_roles_tname: viewadmin_roles
+tt_viewadmin_users_search_form_tname: viewadmin_users_search_form
+tt_viewadmin_users_search_tname: viewadmin_users_search
+tt_viewadmin_users_tname: viewadmin_users
+tt_viewadmin_users_record_tname: viewadmin_users_record
+tt_viewadmin_users_record_edit_tname: viewadmin_users_record_edit
+tt_viewadmin_views_record_edit_tname: viewadmin_views_record_edit
+tt_viewadmin_views_record_tname: viewadmin_views_record
+
+tt_authenticators_tname: authenticators
+tt_authenticators_record_tname: authenticators_record
+tt_clusters_tname: clusters
+tt_clusters_record_tname: clusters_record
+tt_databases_tname: databases
+tt_databases_popular_tname: databases_popular
+tt_databases_record_tname: databases_record
+tt_databases_rss_tname: databases_rss
+tt_databases_rss_record_tname: databases_rss_record
+tt_locations_tname: locations 
+tt_locations_record_tname: locations_record
+tt_locations_record_mailorders_tname: locations_record_mailorders
+tt_locations_record_mailorders_mail_body_tname: locations_record_mailorders_mail_body
+tt_locations_record_mailorders_mail_success_tname: locations_record_mailorders_mail_success
+tt_orgunits_tname: orgunits 
+tt_orgunits_record_tname: orgunits_record
+tt_profiles_tname: profiles 
+tt_profiles_record_tname: profiles_record
+tt_searchprofiles_tname: searchprofiles 
+tt_searchprofiles_record_tname: searchprofiles_record
+tt_servers_tname: servers
+tt_servers_record_tname: servers_record
+tt_sessions_tname: sessions 
+tt_sessions_record_tname: sessions_record
+tt_statistics_tname: statistics 
+tt_statistics_record_tname: statistics_record
+tt_topics_tname: topics 
+tt_topics_record_tname: topics_record
+tt_topics_mappings_record_tname: topics_mappings_record
+tt_topics_mappings_tname: topics_mappings
+tt_roles_tname: roles
+tt_roles_record_tname: roles_record
+tt_users_tname: users 
+tt_users_migration_tname: users_migration
+tt_users_migration_success_tname: users_migration_success
+tt_users_record_tname: users_record
+tt_users_record_edit_tname: users_record_edit
+tt_views_tname: views 
+tt_views_record_tname: views_record
+tt_views_rss_record_tname: views_rss_record
+tt_templates_tname: templates
+tt_templates_record_tname: templates_record
+tt_templates_revisions_tname: templates_revisions
+tt_templates_revisions_record_tname: templates_revisions_record
+tt_templates_revisions_record_delete_confirm_tname: templates_revisions_record_delete_confirm
+
+tt_browse_tname: browse
+tt_browse_topics_tname: browse_topics
+tt_browse_topics_record_tname: browse_topics_record
+tt_browse_lbs_tname: browse_lbs
+tt_browse_lbs_record_tname: browse_lbs_record
+tt_browse_ls_tname: browse_ls
+tt_browse_ls_record_tname: browse_ls_record
+tt_browse_bks_tname: browse_bks
+tt_browse_bks_record_tname: browse_bks_record
+tt_browse_bks_record_databases_tname: browse_bks_record_databases
+
+tt_indexes_classification_tname: indexes_classification
+tt_indexes_corporatebody_tname: indexes_corporatebody
+tt_indexes_olws_tname: indexes_olws
+tt_indexes_person_tname: indexes_person
+tt_indexes_subject_tname: indexes_subject
+tt_indexes_title_tname: indexes_title
+tt_indexes_topic_tname: indexes_topic 
+
+tt_catalogue_loggedin_tname: catalogue_loggedin
+tt_catalogue_login_tname: catalogue_login
+tt_catalogue_logout_tname: catalogue_logout
+
+tt_classifications_record_tname: classifications_record
+tt_classifications_record_titles_recent_tname: classifications_record_titles_recent
+tt_classifications_tname: classifications
+
+tt_clouds_tname: clouds
+tt_clouds_classification_tname: clouds_classification
+tt_clouds_databases_tname: clouds_databases
+tt_clouds_databases_record_tname: clouds_databases_record
+tt_clouds_corporatebody_tname: clouds_corporatebody
+tt_clouds_litlist_tname: clouds_litlist
+tt_clouds_person_tname: clouds_person
+tt_clouds_searchterm_tname: clouds_searchterm
+tt_clouds_subject_tname: clouds_subject
+tt_clouds_tag_tname: clouds_tag
+tt_clouds_year_tname: clouds_year
+tt_clouds_0410_tname: clouds_0410
+tt_clouds_0412_tname: clouds_0412
+
+# Jesuiten
+tt_clouds_yearofaddition_tname: clouds_yearofaddition
+tt_clouds_placeofpublication_tname: clouds_placeofpublication
+tt_clouds_provenanceperson_tname: clouds_provenanceperson
+tt_clouds_provenancecorporatebody_tname: clouds_provenancecorporatebody
+tt_clouds_publisherprinter_tname: clouds_publisherprinter
+
+tt_cartitems_mail_html_tname: cartitems_mail_html
+tt_cartitems_mail_message_tname: cartitems_mail_message
+tt_cartitems_mail_plain_tname: cartitems_mail_plain
+tt_cartitems_mail_success_tname: cartitems_mail_success
+tt_cartitems_mail_tname: cartitems_mail
+tt_cartitems_print_tname: cartitems_print
+tt_cartitems_record_tname: cartitems_record
+tt_cartitems_save_html_tname: cartitems_save_html
+tt_cartitems_save_plain_tname: cartitems_save_plain
+tt_cartitems_tname: cartitems
+tt_cartitems_add_tname: cartitems_add
+
+tt_connector_availability_tname: connector_availability
+tt_connector_daia_tname: connector_daia
+tt_connector_paia_tname: connector_paia
+tt_connector_openurl_tname: connector_openurl
+tt_connector_paia_auth_tname: connector_paia_auth
+tt_connector_paia_core_tname: connector_paia_core
+tt_connector_livesearch_tname: connector_livesearch
+tt_connector_locationmark_titlist_tname: connector_locationmark_titlist
+tt_connector_rss_item_tname: connector_rss_item
+tt_connector_similarpersons_tname: connector_similarpersons
+tt_connector_similarsubjects_tname: connector_similarsubjects
+tt_connector_unapi_bibtex_tname: connector_unapi_bibtex
+tt_connector_unapi_formats_tname: connector_unapi_formats
+tt_connector_unapi_mets_tname: connector_unapi_mets
+tt_connector_unapi_mods_tname: connector_unapi_mods
+tt_connector_unapi_oai_dc_tname: connector_unapi_oai_dc
+
+tt_corporatebodies_record_tname: corporatebodies_record
+tt_corporatebodies_record_titles_recent_tname: corporatebodies_record_titles_recent
+
+tt_searchprofiles_session_tname: searchprofiles_session
+tt_error_tname: error
+tt_externaljump_tname: externaljump
+tt_home_tname: home
+
+tt_info_indexierung_tname: info_indexierung
+tt_info_terms_of_use_tname: info_terms_of_use
+tt_info_cardcatalogs_tname: info_cardcatalogs
+tt_info_feedback_tname: info_feedback
+tt_info_help_tname: info_help
+tt_info_credits_tname: info_credits
+tt_info_impressum_tname: info_impressum
+tt_info_journaltocs_tname: info_journaltocs
+tt_info_message_tname: info_message
+tt_info_other_portals_tname: info_other_portals
+tt_info_popular_databases_tname: info_popular_databases
+tt_info_project_tname: info_project
+tt_info_tname: info
+tt_info_tutorials_tname: info_tutorials
+tt_info_datenschutz_tname: info_datenschutz
+tt_info_versions_tname: info_versions
+tt_info_metrics_tname: info_metrics
+
+tt_library_tname: library
+
+tt_users_litlists_record_delete_confirm_tname: users_litlists_record_delete_confirm
+tt_litlists_by_single_topic_recent_tname: litlists_by_single_topic_recent
+tt_litlists_by_single_topic_tname: litlists_by_single_topic
+tt_litlists_by_single_user_tname: litlists_by_single_user
+tt_litlists_by_topic_tname: litlists_by_topic
+tt_litlists_by_user_tname: litlists_by_user
+tt_litlists_recent_tname: litlists_recent
+tt_litlists_tname: litlists
+tt_litlists_item_record_tname: litlists_item_record
+tt_users_litlists_item_record_tname: users_litlists_item_record
+tt_users_litlists_record_edit_tname: users_litlists_record_edit
+tt_litlists_item_tname: litlists_item
+tt_users_litlists_item_tname: users_litlists_item
+tt_litlists_record_tname: litlists_record
+tt_litlists_record_print_tname: litlists_record_print
+tt_litlists_record_mail_tname: litlists_record_mail
+tt_litlists_record_mail_send_tname: litlists_record_mail_send
+tt_litlists_record_save_tname: litlists_record_save
+
+tt_users_litlists_record_tname: users_litlists_record
+
+tt_login_circulation_tname: login_circulation
+tt_login_tname: login
+
+tt_logout_tname: logout
+
+tt_users_passwords_mail_body_tname: users_passwords_mail_body
+tt_users_passwords_success_tname: users_passwords_success
+tt_users_passwords_tname: users_passwords
+
+tt_users_passwords_tokenmail_body_tname: users_passwords_tokenmail_body
+tt_users_passwords_tokenmail_success_tname: users_passwords_tokenmail_success
+tt_users_passwords_verifytoken_tname: users_passwords_verifytoken
+tt_users_passwords_token_success_tname: users_passwords_token_success
+
+tt_persons_record_tname: persons_record
+tt_persons_record_titles_recent_tname: persons_record_titles_recent
+
+tt_users_registrations_confirmation_tname: users_registrations_confirmation
+tt_users_registrations_mail_message_tname: users_registrations_mail_message
+tt_users_registrations_success_tname: users_registrations_success
+tt_users_registrations_tname: users_registrations
+
+tt_users_librarycard_registrations_success_tname: users_librarycard_registrations_success
+tt_users_librarycard_registrations_tname: users_librarycard_registrations
+
+tt_users_uccard_activations_confirmation_tname: users_uccard_activations_confirmation
+tt_users_uccard_activations_success_tname: users_uccard_activations_success
+tt_users_uccard_activations_tname: users_uccard_activations
+
+tt_users_reviews_tname: users_reviews
+tt_users_reviews_record_edit_tname: users_reviews_record_edit
+tt_users_templates_tname: users_templates
+tt_users_templates_record_edit_tname: users_templates_record_edit
+tt_reviews_tname: reviews
+tt_reviews_by_isbn_tname: reviews_by_isbn
+tt_reviews_record_tname: reviews_record
+
+tt_rssfeeds_tname: rssfeeds
+
+tt_authorization_error_tname: authorization_error
+
+tt_authority_search_combined_tname: authority_search_combined
+tt_authority_search_end_tname: authority_search_end
+tt_authority_search_start_tname: authority_search_start
+
+tt_availability_search_end_tname: availability_search_end
+tt_availability_search_start_tname: availability_search_start
+tt_availability_search_item_tname: availability_search_item
+
+tt_search_classification_tname: search_classification
+tt_search_corporatebody_tname: search_corporatebody
+tt_search_separate_facets_tname: search_separate_facets
+tt_search_history_tname: search_history
+tt_search_person_tname: search_person
+tt_search_subject_tname: search_subject
+tt_search_title_combined_tname: search_title_combined
+tt_search_title_end_tname: search_title_end
+tt_search_title_item_tname: search_title_item
+tt_search_title_start_tname: search_title_start
+
+tt_searchforms_record_authority_tname: searchforms_record_authority
+tt_searchforms_record_advanced_tname: searchforms_record_advanced
+tt_searchforms_record_simple_tname: searchforms_record_simple
+
+tt_searchprofiles_tname: searchprofiles
+
+tt_subjects_tname: subjects
+tt_subjects_record_tname: subjects_record
+tt_subjects_record_titles_recent_tname: subjects_record_titles_recent
+
+tt_tags_recent_tname: tags_recent
+tt_tags_tname: tags
+tt_tags_names_recent_tname: tags_names_recent
+tt_tags_names_tname: tags_names
+tt_tags_names_record_tname: tags_names_record
+
+tt_titles_tname: titles
+tt_titles_form_tname: titles_form
+tt_titles_popular_by_database_tname: titles_popular_by_database
+tt_titles_popular_tname: titles_popular
+tt_titles_dbis_recommendations_tname: titles_dbis_recommendations
+tt_titles_fields_tname: titles_fields
+tt_titles_fields_record_tname: titles_fields_record
+tt_titles_recent_by_database_tname: titles_recent_by_database
+tt_titles_record_form_tname: titles_record_form
+tt_users_titles_record_searchindex_tname: users_titles_record_searchindex
+tt_titles_record_tname: titles_record
+tt_titles_record_availability_tname: titles_record_availability
+
+tt_titles_record_fields_tname: titles_record_fields
+tt_titles_record_holdings_tname: titles_record_holdings
+tt_titles_record_circulation_tname: titles_record_circulation
+
+tt_titles_record_related_records_tname: titles_record_related_records
+tt_titles_record_similar_records_tname: titles_record_similar_records
+tt_titles_record_same_records_tname: titles_record_same_records
+
+tt_titles_record_provenances_tname: titles_record_provenances
+
+tt_topics_record_mapping_tname: topics_record_mapping
+tt_topics_record_tname: topics_record
+tt_topics_tname: topics
+
+tt_users_circulations_tname: users_circulations
+tt_users_circulations_borrows_tname: users_circulations_borrows
+tt_users_circulations_loans_tname: users_circulations_loans
+tt_users_circulations_make_order_tname: users_circulations_make_order
+tt_users_circulations_check_order_tname: users_circulations_check_order
+tt_users_circulations_make_campus_order_tname: users_circulations_make_campus_order
+tt_users_circulations_check_campus_order_tname: users_circulations_check_campus_order
+tt_users_circulations_make_ilias_order_tname: users_circulations_make_ilias_order
+tt_users_circulations_check_ilias_order_tname: users_circulations_check_ilias_order
+tt_users_circulations_make_pda_order_tname: users_circulations_make_pda_order
+tt_users_circulations_check_pda_order_tname: users_circulations_check_pda_order
+tt_users_circulations_make_reservation_tname: users_circulations_make_reservation
+tt_users_circulations_check_reservation_tname: users_circulations_check_reservation
+tt_users_circulations_cancel_reservation_tname: users_circulations_cancel_reservation
+tt_users_circulations_suggestions_tname: users_circulations_suggestions
+tt_users_circulations_suggestions_success_tname: users_circulations_suggestions_success
+tt_users_circulations_suggestions_mail_body_tname: users_circulations_suggestions_mail_body
+tt_users_circulations_cancel_order_tname: users_circulations_cancel_order
+tt_users_circulations_cancel_order_confirm_tname: users_circulations_cancel_order_confirm
+tt_users_circulations_articleorders_tname: users_circulations_articleorders
+tt_users_circulations_zflorders_tname: users_circulations_zflorders
+tt_users_circulations_orders_tname: users_circulations_orders
+tt_users_circulations_fees_tname: users_circulations_fees
+tt_users_circulations_reminders_tname: users_circulations_reminders
+tt_users_circulations_renew_loans_tname: users_circulations_renew_loans
+tt_users_circulations_renew_single_loan_tname: users_circulations_renew_single_loan
+tt_users_circulations_reservations_tname: users_circulations_reservations
+tt_users_circulations_mail_default_tname: users_circulations_mail_default
+tt_users_circulations_mail_default_mail_body_tname: users_circulations_mail_default_mail_body
+tt_users_circulations_mail_default_mail_success_tname: users_circulations_mail_default_mail_success
+tt_users_circulations_mail_handset_tname: users_circulations_mail_handset
+tt_users_circulations_mail_handset_mail_body_tname: users_circulations_mail_handset_mail_body
+tt_users_circulations_mail_handset_mail_success_tname: users_circulations_mail_handset_mail_success
+tt_users_circulations_mail_digitisation_tname: users_circulations_mail_digitisation
+tt_users_circulations_mail_digitisation_mail_body_tname: users_circulations_mail_digitisation_mail_body
+tt_users_circulations_mail_digitisation_mail_success_tname: users_circulations_mail_digitisation_mail_success
+tt_users_circulations_mail_kmb_tname: users_circulations_mail_kmb
+tt_users_circulations_mail_kmb_mail_body_tname: users_circulations_mail_kmb_mail_body
+tt_users_circulations_mail_kmb_mail_success_tname: users_circulations_mail_kmb_mail_success
+tt_users_circulations_mail_kmbcopy_tname: users_circulations_mail_kmbcopy
+tt_users_circulations_mail_kmbcopy_mail_body_tname: users_circulations_mail_kmbcopy_mail_body
+tt_users_circulations_mail_kmbcopy_mail_success_tname: users_circulations_mail_kmbcopy_mail_success
+tt_users_circulations_mail_storno_tname: users_circulations_mail_storno
+tt_users_record_delete_confirm_tname: users_record_delete_confirm
+tt_users_litlists_tname: users_litlists
+tt_users_preferences_tname: users_preferences
+tt_users_searchprofiles_tname: users_searchprofiles
+tt_users_searchprofiles_record_edit_tname: users_searchprofiles_record_edit
+tt_users_searchprofiles_record_delete_confirm_tname: users_searchprofiles_record_delete_confirm
+tt_users_searchprofiles_record_tname: users_searchprofiles_record
+tt_users_searchlocations_tname: users_searchlocations
+tt_users_searchlocations_edit_tname: users_searchlocations_edit
+tt_users_searchlocations_delete_confirm_tname: users_searchlocations_delete_confirm
+tt_users_reviews_tname: users_reviews
+tt_users_roles_edit_tname: users_roles_edit
+tt_users_tags_tname: users_tags
+tt_users_tags_names_tname: users_tags_names
+tt_users_tags_record_edit_tname: users_tags_record_edit
+tt_users_tags_record_tname: users_tags_record
+tt_users_tags_names_record_tname: users_tags_names_record
+
+# Neuerwerbungslisten
+tt_acquisition_tname: acquisition
+tt_acquisition_types_tname: acquisition_types
+tt_acquisition_collection_tname: acquisition_collection
+tt_acquisition_index_tname: acquisition_index
+
+# Aleki DDR
+tt_info_sammlung_tname: info_sammlung
+# Abklatschsammlung
+tt_info_abklatsch_tname: info_abklatsch
+tt_info_datenerfassung_tname: info_datenerfassung
+# Einbandsammlung
+tt_info_redaktion_tname: info_redaktion
+tt_info_dokumentation_tname: info_dokumentation
+tt_info_bibliographie_tname: info_bibliographie
+tt_info_buchpaten_tname: info_buchpaten
+# Jesuiten
+tt_info_lam_tname: info_lam
+tt_info_fonds_tname: info_fonds
+tt_info_wrm_tname: info_wrm
+# Kapselkatalog
+tt_info_erster_weltkrieg_tname: info_erster_weltkrieg
+tt_info_flora_botanik_tname: info_flora_botanik
+tt_info_preussen_tname: info_preussen
+tt_info_kolping_tname: info_kolping
+# Richter-Bibliothek
+tt_info_richterbibliothek_heute_tname: info_richterbibliothek_heute
+tt_info_externe_nachweise_tname: info_externe_nachweise
+tt_info_buecherlisten_tname: info_buecherlisten
+tt_info_arbeitsablauf_tname: info_arbeitsablauf
+tt_info_internetquellen_tname: info_internetquellen
+tt_info_publikationen_tname: info_publikationen
+tt_info_ansprechpartner_tname: info_ansprechpartner
+tt_info_elise_richter_tname: info_elise_richter
+tt_info_helene_richter_tname: info_helene_richter
+tt_info_portal_tname: info_portal
+# Rheinlandbib
+tt_info_altenberg_tname: info_altenberg
+tt_info_bruehl_tname: info_bruehl
+tt_info_gaesdonck_tname: info_gaesdonck
+tt_info_koenigswinter_tname: info_koenigswinter
+tt_info_geistingen_tname: info_geistingen
+tt_info_gleuel_tname: info_gleuel
+tt_info_kempen_tname: info_kempen
+tt_info_olgkoeln_tname: info_olgkoeln
+tt_info_xanten_tname: info_xanten
+tt_info_zuelpich_tname: info_zuelpich
+tt_info_moenchengladbach_tname: info_moenchengladbach
+tt_info_kevelaer_tname: info_kevelaer
+tt_info_grevenbroich_tname: info_grevenbroich
+tt_info_wickrath_tname: info_wickrath
+tt_info_hennef_tname: info_hennef
+tt_info_herzogenrath_tname: info_herzogenrath
+tt_info_rheinischeabteilung_tname: info_rheinischeabteilung
+# Muenzsammlung
+tt_info_bestand_tname: info_bestand
+tt_info_staedte_tname: info_staedte
+# Pruessen
+tt_info_pruessen_tname: info_pruessen
+tt_info_erschliessung_tname: info_erschliessung
+tt_info_ausstellungen_tname: info_ausstellungen
+# Portraitsammlung
+tt_info_quellen_tname: info_quellen
+tt_info_unbekannte_portraits_tname: info_unbekannte_portraits
+tt_info_ausstellung_tname: info_ausstellung
+tt_info_faq_tname: info_faq
+# USB Bibliographie
+tt_info_systematik_tname: info_systematik
+# Gentz digital
+tt_info_einleitung_tname: info_einleitung
+tt_info_vita_tname: info_vita
+tt_info_literatur_tname: info_literatur
+tt_info_benutzung_tname: info_benutzung
+tt_info_team_tname: info_team
+# Gentz Briefe
+tt_info_netzwerk_tname: info_netzwerk
+tt_info_leitmedium_tname: info_leitmedium
+tt_info_forschung_tname: info_forschung
+tt_info_welt_tname: info_welt
+tt_info_orientforum_tname: info_orientforum
+tt_info_map_tname: info_map
+tt_info_editorial_tname: info_editorial
+tt_info_verzeichnis_tname: info_verzeichnis
+tt_info_timeline_tname: info_timeline
+# Fotobuecher
+tt_info_digitalisierung_tname: info_digitalisierung
+tt_info_provenienz_tname: info_provenienz
+tt_info_mitarbeiter_tname: info_mitarbeiter
+tt_info_kooperationspartner_tname: info_kooperationspartner
+# Unikatalog
+tt_info_tipps_tname: info_tipps
+tt_info_suchen_tname: info_suchen
+tt_info_medienarten_tname: info_medienarten
+tt_info_fernleihe_tname: info_fernleihe
+tt_info_anschaffung_tname: info_anschaffung
+tt_info_netiquette_tname: info_netiquette
+tt_info_zugriff_tname: info_zugriff
+tt_info_neuerwerbung_tname: info_neuerwerbung
+
+css_loc: /css
+
+# Programm zum Versenden von Mails
+mail_prog: /usr/bin/mailx
+
+# Email-Adressen fuer den Admin und generellen Kontakt
+admin_email: 'foo@bar'
+contact_email: 'foo@bar'
+
+# Externe Links zum direkten Einsprung in die Digitale
+# Bibliothek NRW: In die Funktionen Monographien-Fernleihe 
+# sowie elektr. Aufsatz/Zeitschriftenlieferungen (Medea) 
+# fuer den entsprechenden Standort (hier 038)
+hbzmonofernleih_exturl: ''
+hbzzeitfernleih_exturl: ''
+
+# Externer Link zur Elektronischen ZeitschriftenBibliothek (EZB)
+# fuer den entsprechenden Standort (hier USBK)
+ezb_exturl: http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?bibid=USBK&colors=7&lang=de&jq_type1=IS&jq_bool2=AND&jq_not2=+&jq_type2=KT&jq_bool3=AND&jq_not3=+&jq_type3=PU&jq_term3=&offset=-1&hits_per_page=50&search_journal=Suche+starten&Notations%5B%5D=all&selected_colors%5B%5D=1&selected_colors%5B%5D=2&selected_colors%5B%5D=4
+ezb_baseurl: http://rzblx1.uni-regensburg.de/ezeit/
+
+ezb_bibid: USBK
+ezb_colors: 3
+
+# Externer Link zum DatenBankInfoSystem (DBIS)
+dbis_exturl: http://www.bibliothek.uni-regensburg.de/dbinfo/?bib_id=usb_k
+dbis_baseurl: http://www.bibliothek.uni-regensburg.de/dbinfo/
+
+dbis_bibid: usb_k
+# 1 (frei) + 4 (Hochschulnetz online) + 8 (Hochschulnetz Citrix) + 32 (Hochschulnetz eingeschraenkt)
+dbis_colors: 45
+# 8 (Pay-per-use) + 32 (DFG Nationallizenz)
+dbis_ocolors: 32
+
+# DBPedia Base-URL
+dbpedia_base: 'https://dbpedia.org/data/'
+
+# UnPayWall
+unpaywall_base: 'https://api.unpaywall.org/v2/'
+unpaywall_user: ''
+
+# ContentDM-Default-Server
+
+cdm_base: ''
+cdm_path: ''
+
+# Externer Link zur Cover-Scan Anreicherung (ISBNINHERE wird durch ISBN ersetzt)
+coverscans_exturl: https://covers.openlibrary.org/b/isbn/ISBNINHERE-S.jpg
+coverscans_full_exturl: https://covers.openlibrary.org/b/isbn/ISBNINHERE-M.jpg
+coverscans_credits_exturl: https://www.openlibrary.org/
+coverscans_creditstext_exturl: 'Cover aus der OpenLibrary'
+
+#coverscans_exturl: http://covers.librarything.com/devkey/API_KEY/small/isbn/ISBNINHERE
+#coverscans_full_exturl: http://covers.librarything.com/devkey/API_KEY/large/isbn/ISBNINHERE
+#coverscans_credits_exturl: http://www.librarything.com/
+#coverscans_creditstext_exturl: 'Cover aus LibraryThing'
+
+covers:
+  vlb:
+    agent_id: "USB Koeln Cover API"
+    api_url: 'https://api.vlb.de/api/v1/cover'
+    api_user: ''
+    api_token: ''
+    credits_text: 'Cover von VLB'
+    credits_url: 'https://www.buchhandel.de/'
+
+# Pfad zur Konfigurationsdatei von Log4Perl
+log4perl_path: /opt/openbib/conf/portal.log4perl
+
+# Pfad zu den lokalisierten Message-Dateien
+locale_base_path: /opt/openbib/locales
+
+# Pfad zu den Portal-Templates (Template Toolkit)
+tt_include_path: /opt/openbib/templates
+
+# Content-Type Maps
+
+# Maps incoming content-types to representations
+content_type_map:
+ 'application/rdf+xml': 'rdf'
+ 'application/rdf+xml': 'xml'
+ 'application/mods+xml': 'mods'
+ 'application/mets+xml': 'mets'
+ 'text/rdf+n3': 'n3'
+ 'text/html': 'html'
+ 'text/plain': 'txt'
+ 'application/json': 'json'
+ 'text/calendar' : 'ics'
+ 'text/csv' : 'csv'
+ 'application/xml+html': 'include'
+
+# Maps represenations to outgoing content-types
+content_type_map_rev:
+ 'xml': 'application/rdf+xml'
+ 'rdf': 'application/rdf+xml'
+ 'rss': 'application/xml'
+ 'n3': 'text/rdf+n3'
+ 'html': 'text/html'
+ 'ics': 'text/calendar'
+ 'include': 'text/html'
+ 'json': 'application/json'
+ 'mobile': 'text/html'
+ 'txt': 'text/plain'
+ 'csv': 'text/csv'
+ 'mods': 'application/xml'
+ 'mets': 'application/mets+xml'
+
+# Verfuegbarkeitsrecherche
+# Zuordnung: Viewname -> Liste der Kataloge (typ-abhaengig)
+availability_search:
+  'unikatalog':
+    'default':
+      - type: database
+        name: ezb    
+      - type: view
+        name: uni
+    'article':
+      - type: database
+        name: eds    
+      - type: database
+        name: ezb    
+      - type: view
+        name: uni
+      - type: database
+        name: jop
+ 
+# Suchprefixe in der Rercherche fuer die internen Felder person, title usw.
+# Zuordnung: Interner Bezeichnung -> Suchprefix
+searchfield:
+  'db':
+     'prefix': 'db'
+     'type': 'string'
+  'id':
+     'prefix': 'id'
+     'type': 'id'
+  'hbzid':
+     'prefix': 'hbzid'
+     'type': 'id'
+  'zdbid':
+     'prefix': 'zdbid'
+     'type': 'id'
+  'personid':
+     'prefix': 'perid'
+     'type': 'id'
+  'corporatebodyid':
+     'prefix': 'corpid'
+     'type': 'id'
+  'classificationid':
+     'prefix': 'clnid'
+     'type': 'id'
+  'subjectid':
+     'prefix': 'subjid'
+     'type': 'id'
+  'gnd':
+     'prefix': 'gnd'
+     'type': 'id'
+  'freesearch':
+     'prefix': 'fs'
+     'type': 'ft'
+     'option':
+        'filter_isbn': 1
+        'filter_issn': 1
+  'person':
+     'prefix': 'per'
+     'type': 'ft'
+  'title':
+     'prefix': 'tit'
+     'type': 'ft'
+  'subject': 
+     'prefix': 'subj'
+     'type': 'ft'
+  'corporatebody':
+     'prefix': 'corp'
+     'type': 'ft'
+  'classification':
+     'prefix': 'cln'
+     'type': 'ft'
+  'mark': # Signatur
+     'prefix': 'mark'
+     'type': 'ft'
+  'publisher':
+     'prefix': 'publ'
+     'type': 'ft'
+  'provenance':
+     'prefix': 'prov'
+     'type': 'ft'
+  'hss':
+     'prefix': 'hss'
+     'type': 'ft'
+  'isbn':
+     'prefix': 'isbn'
+     'type': 'ft'
+     'option':
+        'filter_isbn': 1
+  'issn':
+     'prefix': 'issn'
+     'type': 'ft'
+     'option':
+        'filter_issn': 1
+  'mediatype':
+     'prefix': 'typ'
+     'type': 'ft'
+  'authoritytype':
+     'prefix': 'auth'
+     'type': 'ft'
+  'content': 
+     'prefix': 'cnt'
+     'type': 'ft'
+  'place': 
+     'prefix': 'place'
+     'type': 'ft'
+  'source': # gtquelle
+     'prefix': 'src'
+     'type': 'ft'
+  'tag': # 
+     'prefix': 'tag'
+     'type': 'ft'
+  'toc': # Inhaltsverzeichnis
+     'prefix': 'toc'
+     'type': 'ft'
+  'reg': # Register
+     'prefix': 'reg'
+     'type': 'ft'
+  'user': # for BibSonomy 
+     'prefix': 'user'
+     'type': 'ft'
+  'year': # fest inkl. prefix
+     'prefix': 'year'
+     'type': 'integer'
+  'volume':  # Band/Jahrgang
+     'prefix': 'vol'
+     'type': 'ft'
+  'issue':  # Heft/Ausgabe
+     'prefix': 'issue'
+     'type': 'ft'
+  'journal': # Zeitschrift
+     'prefix': 'jrnl'
+     'type': 'ft'
+  'pages':  # Seitenangaben
+     'prefix': 'pgs'
+     'type': 'ft'
+  'subid':
+     'prefix': 'fsub'
+     'type': 'id'
+  'topic': 
+     'prefix': 'topic'
+     'type': 'string'
+  'titlestring':
+     'prefix': 'ftit'
+     'type': 'string'
+     'option':
+       'strip_bracket_content': 1
+       'strip_first_stopword': 1
+  'tagstring':
+     'prefix': 'ftag'
+     'type': 'string'
+  'litliststring':
+     'prefix': 'flitlist'
+     'type': 'string'
+  'availabilitystring':
+     'prefix': 'favail'
+     'type': 'string'
+  'subjectstring':
+     'prefix': 'fsubj'
+     'type': 'string'
+  'yearstring':
+     'prefix': 'fyear'
+     'type': 'string'
+  'languagestring':
+     'prefix': 'flang'
+     'type': 'string'
+  'classificationstring':
+     'prefix': 'fcln'
+     'type': 'string'
+  'personstring':
+     'prefix': 'fper'
+     'type': 'string'
+  'corporatebodystring':
+     'prefix': 'fcorp'
+     'type': 'string'
+  'mediatypestring':
+     'prefix': 'ftyp'
+     'type': 'string'
+  'markstring':
+     'prefix': 'fmark'
+     'type': 'string' 
+  'placestring':
+     'prefix': 'fplace'
+     'type': 'string'
+  'publisherstring':
+     'prefix': 'fpubl'
+     'type': 'string'
+  'provenancestring':
+     'prefix': 'fprov'
+     'type': 'string'
+  'sourcestring': # 
+     'prefix': 'fsrc'
+     'type': 'string'
+  'dbstring':
+     'prefix': 'fdb'
+     'type': 'string'
+  'locationstring':
+     'prefix': 'floc'
+     'type': 'string'
+  'bibkey':
+     'prefix': 'bkey'
+     'type': 'string'
+
+  # Suche nach speziellen Kategorien (Volltext)
+  't0016':
+     'prefix': 't0016'
+     'type': 'ft'
+  't0100':
+     'prefix': 't0100'
+     'type': 'ft'
+  't0101':
+     'prefix': 't0101'
+     'type': 'ft'
+  't0102':
+     'prefix': 't0102'
+     'type': 'ft'
+  't0103':
+     'prefix': 't0103'
+     'type': 'ft'
+  't0200':
+     'prefix': 't0200'
+     'type': 'ft'
+  't0201':
+     'prefix': 't0201'
+     'type': 'ft'
+  't0304':
+     'prefix': 't0304'
+     'type': 'ft'
+  't0334':
+     'prefix': 't0334'
+     'type': 'ft'
+  't0335':
+     'prefix': 't0335'
+     'type': 'ft'
+  't0338':
+     'prefix': 't0338'
+     'type': 'ft'
+  't0341':
+     'prefix': 't0341'
+     'type': 'ft'
+  't0341':
+     'prefix': 't0341'
+     'type': 'ft'
+  't0342':
+     'prefix': 't0342'
+     'type': 'ft'
+  't0343':
+     'prefix': 't0343'
+     'type': 'ft'
+  't0344':
+     'prefix': 't0344'
+     'type': 'ft'
+  't0345':
+     'prefix': 't0345'
+     'type': 'ft'
+  't0346':
+     'prefix': 't0346'
+     'type': 'ft'
+  't0351':
+     'prefix': 't0351'
+     'type': 'ft'
+  't0352':
+     'prefix': 't0352'
+     'type': 'ft'
+  't0353':
+     'prefix': 't0353'
+     'type': 'ft'
+  't0354':
+     'prefix': 't0354'
+     'type': 'ft'
+  't0355':
+     'prefix': 't0355'
+     'type': 'ft'
+  't0356':
+     'prefix': 't0356'
+     'type': 'ft'
+  't0407':
+     'prefix': 't0407'
+     'type': 'ft'
+  't0410':
+     'prefix': 't0410'
+     'type': 'ft'
+  't0411':
+     'prefix': 't0411'
+     'type': 'ft'
+  't0412':
+     'prefix': 't0412'
+     'type': 'ft'
+  't0413':
+     'prefix': 't0413'
+     'type': 'ft'
+  't0425':
+     'prefix': 't0425'
+     'type': 'integer'
+  't0426':
+     'prefix': 't0426'
+     'type': 'integer'
+  't0427':
+     'prefix': 't0427'
+     'type': 'integer'
+  't0428':
+     'prefix': 't0428'
+     'type': 'integer'
+  't0462':
+     'prefix': 't0462'
+     'type': 'ft'
+  't0463':
+     'prefix': 't0463'
+     'type': 'ft'
+  't0465':
+     'prefix': 't0465'
+     'type': 'ft'
+  't0531':
+     'prefix': 't0531'
+     'type': 'ft'
+  't0533':
+     'prefix': 't0533'
+     'type': 'ft'
+  't0590':
+     'prefix': 't0590'
+     'type': 'ft'
+  't0619':
+     'prefix': 't0619'
+     'type': 'integer'
+  't0700':
+     'prefix': 't0700'
+     'type': 'ft'
+  't0710':
+     'prefix': 't0710'
+     'type': 'ft'
+  't0720':
+     'prefix': 't0720'
+     'type': 'ft'
+  't4100':
+     'prefix': 't4100'
+     'type': 'ft'
+  't4300':
+     'prefix': 't4300'
+     'type': 'ft'
+  't4306':
+     'prefix': 't4306'
+     'type': 'ft'
+  't4307':
+     'prefix': 't4307'
+     'type': 'ft'
+  't4308':
+     'prefix': 't4308'
+     'type': 'ft'
+  't4310':
+     'prefix': 't4310'
+     'type': 'ft'
+  't4311':
+     'prefix': 't4311'
+     'type': 'ft'
+  't4312':
+     'prefix': 't4312'
+     'type': 'ft'
+  't4313':
+     'prefix': 't4313'
+     'type': 'ft'
+  't4314':
+     'prefix': 't4314'
+     'type': 'ft'
+  't4315':
+     'prefix': 't4315'
+     'type': 'ft'
+  't4316':
+     'prefix': 't4316'
+     'type': 'ft'
+
+  # Suche nach speziellen Kategorien (String)
+  'ft0016':
+     'prefix': 'ft0016'
+     'type': 'string'
+  'ft0100':
+     'prefix': 'ft0100'
+     'type': 'string'
+  'ft0101':
+     'prefix': 'ft0101'
+     'type': 'string'
+  'ft0102':
+     'prefix': 'ft0102'
+     'type': 'string'
+  'ft0103':
+     'prefix': 'ft0103'
+     'type': 'string'
+  'ft0200':
+     'prefix': 'ft0200'
+     'type': 'string'
+  'ft0201':
+     'prefix': 'ft0201'
+     'type': 'string'
+  'ft0304':
+     'prefix': 'ft0304'
+     'type': 'string'
+  'ft0334':
+     'prefix': 'ft0334'
+     'type': 'string'
+  'ft0335':
+     'prefix': 'ft0335'
+     'type': 'string'
+  'ft0338':
+     'prefix': 'ft0338'
+     'type': 'string'
+  'ft0341':
+     'prefix': 'ft0341'
+     'type': 'string'
+  'ft0342':
+     'prefix': 'ft0342'
+     'type': 'string'
+  'ft0343':
+     'prefix': 'ft0343'
+     'type': 'string'
+  'ft0344':
+     'prefix': 'ft0344'
+     'type': 'string'
+  'ft0345':
+     'prefix': 'ft0345'
+     'type': 'string'
+  'ft0346':
+     'prefix': 'ft0346'
+     'type': 'string'
+  'ft0351':
+     'prefix': 'ft0351'
+     'type': 'string'
+  'ft0352':
+     'prefix': 'ft0352'
+     'type': 'string'
+  'ft0353':
+     'prefix': 'ft0353'
+     'type': 'string'
+  'ft0354':
+     'prefix': 'ft0354'
+     'type': 'string'
+  'ft0355':
+     'prefix': 'ft0355'
+     'type': 'string'
+  'ft0356':
+     'prefix': 'ft0356'
+     'type': 'string'
+  'ft0407':
+     'prefix': 'ft0407'
+     'type': 'string'
+  'ft0410':
+     'prefix': 'ft0410'
+     'type': 'string'
+  'ft0411':
+     'prefix': 'ft0411'
+     'type': 'string'
+  'ft0412':
+     'prefix': 'ft0412'
+     'type': 'string'
+  'ft0413':
+     'prefix': 'ft0413'
+     'type': 'string'
+  'ft0425':
+     'prefix': 'ft0425'
+     'type': 'string'
+  'ft0426':
+     'prefix': 'ft0426'
+     'type': 'string'
+  'ft0427':
+     'prefix': 'ft0427'
+     'type': 'string'
+  'ft0428':
+     'prefix': 'ft0428'
+     'type': 'string'
+  'ft0434':
+     'prefix': 'ft0434'
+     'type': 'string'
+  'ft0462':
+     'prefix': 'ft0462'
+     'type': 'string'
+  'ft0463':
+     'prefix': 'ft0463'
+     'type': 'string'
+  'ft0465':
+     'prefix': 'ft0465'
+     'type': 'string'
+  'ft0470':
+     'prefix': 'ft0470'
+     'type': 'string'
+  'ft0471':
+     'prefix': 'ft0471'
+     'type': 'string'
+  'ft0517':
+     'prefix': 'ft0517'
+     'type': 'string'
+  'ft0531':
+     'prefix': 'ft0531'
+     'type': 'string'
+  'ft0533':
+     'prefix': 'ft0533'
+     'type': 'string'
+  'ft0590':
+     'prefix': 'ft0590'
+     'type': 'string'
+  'ft0619':
+     'prefix': 'ft0619'
+     'type': 'integer'
+  'ft0700':
+     'prefix': 'ft0700'
+     'type': 'string'
+  'ft0710':
+     'prefix': 'ft0710'
+     'type': 'string'
+  'ft0720':
+     'prefix': 'ft0720'
+     'type': 'string'
+  'ft4100':
+     'prefix': 'ft4100'
+     'type': 'string'
+  'ft4300':
+     'prefix': 'ft4300'
+     'type': 'string'
+  'ft4306':
+     'prefix': 'ft4306'
+     'type': 'string'
+  'ft4307':
+     'prefix': 'ft4307'
+     'type': 'string'
+  'ft4308':
+     'prefix': 'ft4308'
+     'type': 'string'
+  'ft4310':
+     'prefix': 'ft4310'
+     'type': 'string'
+  'ft4311':
+     'prefix': 'ft4311'
+     'type': 'string'
+  'ft4312':
+     'prefix': 'ft4312'
+     'type': 'string'
+  'ft4313':
+     'prefix': 'ft4313'
+     'type': 'string'
+  'ft4314':
+     'prefix': 'ft4314'
+     'type': 'string'
+  'ft4315':
+     'prefix': 'ft4315'
+     'type': 'string'
+  'ft4316':
+     'prefix': 'ft4316'
+     'type': 'string'
+  'ft4700':
+     'prefix': 'ft4700'
+     'type': 'string'
+
+elasticsearch_index_mappings:
+  local:
+    properties:
+      listitem:
+         type: 'object'
+         enabled: 'false'
+      popularity:
+         type: 'integer'
+      db:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+      id:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+      hbzid:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+      zdbid:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+      personid:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+      corporatebodyid:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+      classificationid:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+      subjectid:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+      subid:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+      gnd:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+      freesearch:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      person:
+         type: 'text'
+         index: 'true'
+        # boost: 20
+         #analyze: 'default'
+      title:
+         type: 'text'
+         index: 'true'
+        # boost: 20
+         #analyze: 'default'
+      subject:
+         type: 'text'
+         index: 'true'
+         #boost: 20
+         #analyze: 'default'
+      corporatebody:
+         type: 'text'
+         index: 'true'
+         #boost: 20
+         #analyze: 'default'
+      classification:
+         type: 'text'
+         index: 'true'
+         #boost: 20
+         #analyze: 'default'
+      mark:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      publisher:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      provenance:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      hss:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      isbn:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      issn:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      mediatype:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      authoritytype:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      content:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      place:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      source:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      tag:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      toc:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      reg:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      user:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      year:
+         type: 'integer'
+         index: 'true'
+         #analyze: 'default'
+      subid:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+      topic:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      titlestring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      tagstring:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+      litliststring:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+      availabilitystring:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+      subjectstring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      yearstring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      languagestring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      classificationstring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      personstring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      corporatebodystring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      mediatypestring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      markstring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      placestring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      publisherstring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      provenancestring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      sourcestring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      dbstring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      locationstring:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      bibkey:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+      t0016:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0100:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0101:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0102:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0103:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0200:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0201:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0304:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0334:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0335:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0338:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0341:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0342:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0343:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0344:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0345:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0346:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0351:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0352:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0353:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0354:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0355:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0356:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0407:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0410:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0411:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0412:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0413:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0425:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0426:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0427:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0428:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0462:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0463:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0465:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0531:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0533:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0590:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0619:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0700:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0710:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t0720:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t4100:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t4300:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t4306:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t4307:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t4308:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t4310:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t4311:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t4312:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t4313:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t4314:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t4315:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      t4316:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+
+      ft0016:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0100:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0101:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0102:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0103:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0200:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0201:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0304:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0334:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0335:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0338:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0341:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0342:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0343:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0344:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0345:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0346:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0351:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0352:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0353:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0354:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0355:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0356:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0407:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0410:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0411:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0412:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0413:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0425:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0426:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0427:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0428:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0434:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0462:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0463:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0465:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0470:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0471:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0517:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0531:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0533:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0590:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0619:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0700:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0710:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft0720:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft4100:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft4300:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft4306:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft4307:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft4308:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft4310:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft4311:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft4312:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft4313:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft4314:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft4315:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft4316:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+      ft4700:
+         type: 'text'
+         index: 'true'
+         #analyze: 'default'
+
+    facet_database:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_availability:
+         type: 'keyword'
+         index: 'true'
+    #doc_values: 'true'
+         #analyze: 'default'
+    facet_person:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+    facet_corporatebody:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_subject:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_classification:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_year:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_tag:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_litlist:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_language:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_location:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_mediatype:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_topic:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_provenance:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_custom0:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_custom1:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_custom2:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_custom3:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_custom4:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_custom5:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_custom6:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_custom7:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_custom8:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+    facet_custom9:
+         type: 'keyword'
+         index: 'true'
+         #doc_values: 'true'
+         #analyze: 'default'
+
+    sort_person:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+    sort_title:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+    sort_order:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+    sort_year:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+    sort_publisher:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+    sort_mark:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+    sort_popularity:
+         type: 'keyword'
+         index: 'true'
+         #analyze: 'default'
+
+elasticsearch_filter_field:
+  local:
+    fsubj: facet_subject
+    fcls: facet_classification
+    fper: facet_person
+    fyear: facet_year
+    ftyp: facet_mediatype
+    flang: facet_language
+    fcorp: facet_corporatebody
+    fdb: facet_database
+    ftag: facet_tag
+    flitlist: facet_litlist
+    floc: facet_location
+    favail: facet_availability
+    topic: facet_topic
+    fprov: facet_provenance
+  gesis:
+    ftyp: 'type.keyword'
+    fsubj: 'topic.keyword'
+    fper: 'person.keyword'
+    fyear: 'date.keyword'
+    fprov: 'data_source.keyword'
+  
+
+elasticsearch_sorttype_value:
+  local:
+    'person':
+      field: 'sort_person'
+      category: 'PC0001'
+      type: 'stringcategory'
+    'title':
+      field: 'sort_title'
+      category: 'T0331'
+      type: 'stringcategory'
+    'order':
+      field: 'sort_order'
+      category: 'T5001'
+      type: 'integercategory'
+    'year':
+      field: 'sort_year'
+      category: 'T0425'
+      type: 'integercategory'
+    'publisher':
+      field: 'sort_publisher'
+      category: 'T0412'
+      type: 'stringcategory'
+    'mark':
+      field: 'sort_mark'
+      category: 'X0014'
+      type: 'stringcategory'
+    'popularity':
+      field: 'sort_popularity'
+      category: 'popularity'
+      type: 'integervalue'
+  gesis:
+    'person':
+      field: 'person_sort'
+      category: 'PC0001'
+      type: 'stringcategory'
+
+elasticsearch_facet_field:
+  local:
+    subject: facet_subject
+    classification: facet_classification
+    person: facet_person
+    year: facet_year
+    mediatype: facet_mediatype
+    language: facet_language
+    corporatebody: facet_corporatebody
+    database: facet_database
+    tag: facet_tag
+    litlist: facet_litlist
+    location: facet_location
+    availability: facet_availability
+    topic: facet_topic
+    provenance: facet_provenance
+    custom0: facet_custom0
+    custom1: facet_custom1
+    custom2: facet_custom2
+    custom3: facet_custom3
+    custom4: facet_custom4
+    custom5: facet_custom5
+    custom6: facet_custom6
+    custom7: facet_custom7
+    custom8: facet_custom8
+    custom9: facet_custom9
+  gesis:
+    mediatype: type
+    person: 'person.keyword'
+    year: 'date.keyword'
+    subject: 'topic.keyword'
+    provenance: 'data_source.keyword'
+      
+# xapian index basepath
+xapian_index_base_path: /opt/openbib/ft/xapian/index
+xapian_option:
+  maxmatch: 1000000
+  max_key_length: 240
+
+# Suchprefixe in Xapian fuer die Suchprefixe in der Rercherche
+# entsprechend searchfield_prefix
+# Zuordnung: Suchprefix ->  Xapian-Term/Posting-Prefix
+xapian_search:
+  'id':
+     'prefix': 'Q'
+     'type': 'boolean'
+  'bkey':
+     'prefix': 'B'
+     'type': 'boolean'
+  'perid':
+     'prefix': 'I1'
+     'type': 'boolean'
+  'corpid':
+     'prefix': 'I2'
+     'type': 'boolean'
+  'subjid':
+     'prefix': 'I3'
+     'type': 'boolean'
+  'clnid':
+     'prefix': 'I4'
+     'type': 'boolean'
+  'hbzid':
+     'prefix': 'I5'
+     'type': 'boolean'
+  'zdbid':
+     'prefix': 'I6'
+     'type': 'boolean'
+  'gnd':
+     'prefix': 'I7'
+     'type': 'boolean'
+
+  'fs':
+     'prefix': ''
+     'type': 'default'
+
+# Volltext
+  'per':
+     'prefix': 'X1'
+     'type': 'default'
+  'tit':
+     'prefix': 'X2'
+     'type': 'default'
+  'corp':
+     'prefix': 'X3'
+     'type': 'default'
+  'subj':
+     'prefix': 'X4'
+     'type': 'default'
+  'cln':
+     'prefix': 'X5'
+     'type': 'default'
+  'mark':
+     'prefix': 'X6'
+     'type': 'default'
+  'year':
+     'prefix': 'X7'
+     'type': 'boolean'
+  'isbn':
+     'prefix': 'X8'
+     'type': 'boolean'
+  'issn':
+     'prefix': 'X9'
+     'type': 'boolean'
+  'place':
+     'prefix': 'Y0'
+     'type': 'default'
+  'typ':
+     'prefix': 'Y1'
+     'type': 'boolean'
+  'cnt':
+     'prefix': 'Y2'
+     'type': 'default'
+  'src':
+     'prefix': 'Y3'
+     'type': 'default'
+  'tag':
+     'prefix': 'Y4'
+     'type': 'boolean'
+  'publ':
+     'prefix': 'Y5'
+     'type': 'default'
+  'toc':
+     'prefix': 'Y6'
+     'type': 'default'
+  'topic':
+     'prefix': 'Y7'
+     'type': 'default'
+  'auth':
+     'prefix': 'Y8'
+     'type': 'default'
+  'hss':
+     'prefix': 'Y9'
+     'type': 'default'
+  'prov':
+     'prefix': 'Z1'
+     'type': 'default'
+  'reg':
+     'prefix': 'Z2'
+     'type': 'default'
+
+  # String / Drilldowns
+  'fsubj':
+     'prefix': 'D1'
+     'type': 'default'
+  'fcln':
+     'prefix': 'D2'
+     'type': 'default'
+  'fper':
+     'prefix': 'D3'
+     'type': 'default'
+  'ftyp' :
+     'prefix': 'D4'
+     'type': 'default'
+  'fyear':
+     'prefix': 'D5'
+     'type': 'default'
+  'flang':
+     'prefix': 'D6'
+     'type': 'default'
+  'fcorp':
+     'prefix': 'D7'
+     'type': 'default'
+  'fdb':
+     'prefix': 'D8'
+     'type': 'default'
+  'ftit':
+     'prefix': 'D9'
+     'type': 'default'
+  'fmark':
+     'prefix': 'E1'
+     'type': 'default'
+  'fsub':
+     'prefix': 'E2'
+     'type': 'boolean'
+  'ftag':
+     'prefix': 'E3'
+     'type': 'default'
+  'flitlist':
+     'prefix': 'E4'
+     'type': 'default'
+  'fpubl':
+     'prefix': 'E5'
+     'type': 'default'
+  'floc':
+     'prefix': 'E6'
+     'type': 'default'
+  'favail':
+     'prefix': 'E7'
+     'type': 'default'
+  'fprov':
+     'prefix': 'E8'
+     'type': 'default'
+  'fplace':
+     'prefix': 'E9'
+     'type': 'default'
+
+  # Einzelne Kategorieinhalte (Volltext)
+  't0016':
+     'prefix': 'T0016'
+     'type': 'default'
+  't0100':
+     'prefix': 'T0100'
+     'type': 'default'
+  't0101':
+     'prefix': 'T0101'
+     'type': 'default'
+  't0102':
+     'prefix': 'T0102'
+     'type': 'default'
+  't0103':
+     'prefix': 'T0103'
+     'type': 'default'
+  't0200':
+     'prefix': 'T0200'
+     'type': 'default'
+  't0201':
+     'prefix': 'T0201'
+     'type': 'default'
+  't0304':
+     'prefix': 'T0304'
+     'type': 'default'
+  't0334':
+     'prefix': 'T0334'
+     'type': 'default'
+  't0335':
+     'prefix': 'T0335'
+     'type': 'default'
+  't0338':
+     'prefix': 'T0338'
+     'type': 'default'
+  't0341':
+     'prefix': 'T0341'
+     'type': 'default'
+  't0342':
+     'prefix': 'T0342'
+     'type': 'default'
+  't0343':
+     'prefix': 'T0343'
+     'type': 'default'
+  't0344':
+     'prefix': 'T0344'
+     'type': 'default'
+  't0345':
+     'prefix': 'T0345'
+     'type': 'default'
+  't0346':
+     'prefix': 'T0346'
+     'type': 'default'
+  't0351':
+     'prefix': 'T0351'
+     'type': 'default'
+  't0352':
+     'prefix': 'T0352'
+     'type': 'default'
+  't0353':
+     'prefix': 'T0353'
+     'type': 'default'
+  't0354':
+     'prefix': 'T0354'
+     'type': 'default'
+  't0355':
+     'prefix': 'T0355'
+     'type': 'default'
+  't0356':
+     'prefix': 'T0356'
+     'type': 'default'
+  't0407':
+     'prefix': 'T0407'
+     'type': 'default'
+  't0410':
+     'prefix': 'T0410'
+     'type': 'default'
+  't0411':
+     'prefix': 'T0411'
+     'type': 'default'
+  't0412':
+     'prefix': 'T0412'
+     'type': 'default'
+  't0413':
+     'prefix': 'T0413'
+     'type': 'default'
+  't0425':
+     'prefix': 'T0425'
+     'type': 'boolean'
+  't0426':
+     'prefix': 'T0426'
+     'type': 'boolean'
+  't0427':
+     'prefix': 'T0427'
+     'type': 'boolean'
+  't0428':
+     'prefix': 'T0428'
+     'type': 'boolean'
+  't0462':
+     'prefix': 'T0462'
+     'type': 'boolean'
+  't0463':
+     'prefix': 'T0463'
+     'type': 'boolean'
+  't0465':
+     'prefix': 'T0465'
+     'type': 'boolean'
+  't0531':
+     'prefix': 'T0531'
+     'type': 'default'
+  't0533':
+     'prefix': 'T0533'
+     'type': 'default'
+  't0590':
+     'prefix': 'T0590'
+     'type': 'default'
+  't0619':
+     'prefix': 'T0619'
+     'type': 'boolean'
+  't0710':
+     'prefix': 'T0710'
+     'type': 'default'
+  't0720':
+     'prefix': 'T0720'
+     'type': 'default'
+  't4100':
+     'prefix': 'T4100'
+     'type': 'default'
+  't4300':
+     'prefix': 'T4300'
+     'type': 'default'
+  't4306':
+     'prefix': 'T4306'
+     'type': 'default'
+  't4307':
+     'prefix': 'T4307'
+     'type': 'default'
+  't4308':
+     'prefix': 'T4308'
+     'type': 'default'
+  't4310':
+     'prefix': 'T4310'
+     'type': 'default'
+  't4311':
+     'prefix': 'T4311'
+     'type': 'default'
+  't4312':
+     'prefix': 'T4312'
+     'type': 'default'
+  't4313':
+     'prefix': 'T4313'
+     'type': 'default'
+  't4314':
+     'prefix': 'T4314'
+     'type': 'default'
+  't4315':
+     'prefix': 'T4315'
+     'type': 'default'
+  't4316':
+     'prefix': 'T4316'
+     'type': 'default'
+  # Einzelne Kategorieinhalte (String)
+  'ft0016':
+     'prefix': 'FT0016'
+     'type': 'default'
+  'ft0100':
+     'prefix': 'FT0100'
+     'type': 'default'
+  'ft0101':
+     'prefix': 'FT0101'
+     'type': 'default'
+  'ft0102':
+     'prefix': 'FT0102'
+     'type': 'default'
+  'ft0103':
+     'prefix': 'FT0103'
+     'type': 'default'
+  'ft0200':
+     'prefix': 'FT0200'
+     'type': 'default'
+  'ft0201':
+     'prefix': 'FT0201'
+     'type': 'default'
+  'ft0304':
+     'prefix': 'FT0304'
+     'type': 'default'
+  'ft0334':
+     'prefix': 'FT0334'
+     'type': 'default'
+  'ft0335':
+     'prefix': 'FT0335'
+     'type': 'default'
+  'ft0338':
+     'prefix': 'FT0338'
+     'type': 'default'
+  'ft0341':
+     'prefix': 'FT0341'
+     'type': 'default'
+  'ft0342':
+     'prefix': 'FT0342'
+     'type': 'default'
+  'ft0343':
+     'prefix': 'FT0343'
+     'type': 'default'
+  'ft0344':
+     'prefix': 'FT0344'
+     'type': 'default'
+  'ft0345':
+     'prefix': 'FT0345'
+     'type': 'default'
+  'ft0346':
+     'prefix': 'FT0346'
+     'type': 'default'
+  'ft0351':
+     'prefix': 'FT0351'
+     'type': 'default'
+  'ft0352':
+     'prefix': 'FT0352'
+     'type': 'default'
+  'ft0353':
+     'prefix': 'FT0353'
+     'type': 'default'
+  'ft0354':
+     'prefix': 'FT0354'
+     'type': 'default'
+  'ft0355':
+     'prefix': 'FT0355'
+     'type': 'default'
+  'ft0356':
+     'prefix': 'FT0356'
+     'type': 'default'
+  'ft0407':
+     'prefix': 'FT0407'
+     'type': 'default'
+  'ft0410':
+     'prefix': 'FT0410'
+     'type': 'default'
+  'ft0411':
+     'prefix': 'FT0411'
+     'type': 'default'
+  'ft0412':
+     'prefix': 'FT0412'
+     'type': 'default'
+  'ft0413':
+     'prefix': 'FT0413'
+     'type': 'default'
+  'ft0425':
+     'prefix': 'FT0425'
+     'type': 'boolean'
+  'ft0426':
+     'prefix': 'FT0426'
+     'type': 'boolean'
+  'ft0427':
+     'prefix': 'FT0427'
+     'type': 'boolean'
+  'ft0428':
+     'prefix': 'FT0428'
+     'type': 'boolean'
+  'ft0434':
+     'prefix': 'FT0434'
+     'type': 'default'
+  'ft0462':
+     'prefix': 'FT0462'
+     'type': 'boolean'
+  'ft0463':
+     'prefix': 'FT0463'
+     'type': 'boolean'
+  'ft0465':
+     'prefix': 'FT0465'
+     'type': 'boolean'
+  'ft0470':
+     'prefix': 'FT0470'
+     'type': 'default'
+  'ft0471':
+     'prefix': 'FT0471'
+     'type': 'default'
+  'ft0517':
+     'prefix': 'FT0517'
+     'type': 'default'
+  'ft0531':
+     'prefix': 'FT0531'
+     'type': 'default'
+  'ft0533':
+     'prefix': 'FT0533'
+     'type': 'default'
+  'ft0590':
+     'prefix': 'FT0590'
+     'type': 'default'
+  'ft0619':
+     'prefix': 'FT0619'
+     'type': 'boolean'
+  'ft0710':
+     'prefix': 'FT0710'
+     'type': 'default'
+  'ft0720':
+     'prefix': 'FT0720'
+     'type': 'default'
+  'ft4100':
+     'prefix': 'FT4100'
+     'type': 'default'
+  'ft4300':
+     'prefix': 'FT4300'
+     'type': 'default'
+  'ft4306':
+     'prefix': 'FT4306'
+     'type': 'default'
+  'ft4307':
+     'prefix': 'FT4307'
+     'type': 'default'
+  'ft4308':
+     'prefix': 'FT4308'
+     'type': 'default'
+  'ft4310':
+     'prefix': 'FT4310'
+     'type': 'default'
+  'ft4311':
+     'prefix': 'FT4311'
+     'type': 'default'
+  'ft4312':
+     'prefix': 'FT4312'
+     'type': 'default'
+  'ft4313':
+     'prefix': 'FT4313'
+     'type': 'default'
+  'ft4314':
+     'prefix': 'FT4314'
+     'type': 'default'
+  'ft4315':
+     'prefix': 'FT4315'
+     'type': 'default'
+  'ft4316':
+     'prefix': 'FT4316'
+     'type': 'default'
+  'ft4700':
+     'prefix': 'FT4700'
+     'type': 'default'
+
+xapian_facet_value:
+  subject: 1
+  classification: 2
+  person: 3
+  mediatype: 4
+  year: 5
+  language: 6
+  corporatebody: 7
+  database: 8
+  tag: 9
+  litlist: 10
+  location: 11
+  availability: 12
+  topic: 13
+  provenance: 14
+  custom1: 60
+  custom2: 61
+  custom3: 62
+  custom4: 63
+  custom5: 64
+  custom6: 65
+  custom7: 66
+  custom8: 67
+  custom9: 68
+  custom10: 69
+
+xapian_sorttype_value:
+  'person': 20
+  'title': 21
+  'order': 22
+  'year': 23
+  'publisher': 24
+  'mark': 25
+  'popularity': 26
+  'authority': 27
+  't0425': 28
+  'id': 29
+  'custom1': 30
+  'custom2': 31
+  'custom3': 32
+  'custom4': 33
+  'custom5': 34
+  'custom6': 35
+  'custom7': 36
+  'custom8': 37
+  'custom9': 38
+  'custom10': 39
+
+xapian_collapse_value:
+  'isbn': 40
+  'bibkey': 41
+
+# Standard-Eingabefelder fuer die Recherche
+default_searchfields:
+  'freesearch':
+    'active': 1
+  'title':
+    'active': 1
+  'person':
+    'active': 1
+  'corporatebody':
+    'active': 1
+  'subject':
+    'active': 1
+  'classification':
+    'active': 1
+  'isbn':
+    'active': 1
+  'issn':
+    'active': 1
+  'toc':
+    'active': 1
+  'topic':
+    'active': 1
+  'mediatype':
+    'active': 1
+  'hss':
+    'active': 1
+  'titlestring':
+    'active': 1
+  'content':
+    'active': 1
+  'markstring':
+    'active': 1
+  'source':
+    'active': 1
+  'year':
+    'active': 1
+  'publisher':
+    'active': 1
+
+search_defaultparams: 'page=1;num=20;'
+
+# Stopwort-Liste
+stopword_filename: /opt/openbib/ft/stopwords.txt
+
+# Pfade zum Document und Image Root
+document_root_path: /var/www/html
+image_root_path: /usr/share/images
+
+# Legacy: Verwendete Funktionsbilder
+books_img: /images/openbib/bookcase.png
+chart_img: /images/openbib/kchart.png
+courses_img: /images/openbib/courses.png
+csv_img: /images/openbib/csv.png
+dbis_green_img: /images/openbib/dbis/z0.gif
+dbis_yellow_img: /images/openbib/dbis/z2.gif
+dbis_red_img: /images/openbib/dbis/z-ppu.gif
+dbis_yellow_red_img: /images/openbib/dbis/z5.gif
+dbis_de_img: /images/openbib/dbis/z-de.gif
+dbis_ppu_img: /images/openbib/dbis/z-ppu.gif
+ezb_green_img: /images/openbib/ezb/green.gif
+ezb_green_euro_img: /images/openbib/ezb/green_euro.gif
+ezb_green_on_red_img: /images/openbib/ezb/green_on_red.gif
+ezb_yellow_img: /images/openbib/ezb/yellow.gif
+ezb_login_video2brain_img: /images/openbib/ezb/login_video2brain.gif
+ezb_pdf_img: /images/openbib/ezb/pdf.gif
+ezb_red_img: /images/openbib/ezb/red.gif
+ezb_yellow_red_img: /images/openbib/ezb/yellow_red.gif
+ezb_green_yellow_red_img: /images/openbib/ezb/green_yellow_red.gif
+ezb_unknown_img: /images/openbib/ezb/unknown.gif
+delete_img: /images/openbib/cancel.png
+delete_small_img: /images/openbib/cancel-16px.png
+follow_img: /images/openbib/solidrightarrow.png
+firefox_img: /images/openbib/firefox.png
+infotopic_img: /images/openbib/info.png
+info_img: /images/openbib/info_small.png
+global_img: /images/openbib/globus.png
+help_img: /images/openbib/help.png
+hint_img: /images/openbib/hint.png
+home_img: /images/openbib/home.png
+home_small_img: /images/openbib/home3.png
+lang_de_img: /images/openbib/de.gif
+lang_en_img: /images/openbib/en.gif
+listofinterest_img: /images/openbib/bookmark.png
+listofinterest_small_img: /images/openbib/bookmark-16px.png
+liststyle_cover_img: /images/openbib/view_detailed.png
+liststyle_list_img: /images/openbib/view_text.png
+mail_img: /images/openbib/3d-file-blue-mailbox.png
+tutorial_img: /images/openbib/kaboodle_ger.png
+tutorial_with_audio_img: /images/openbib/multimedia_ger.png
+news_img: /images/openbib/newsflash.png
+next_img: /images/openbib/next.gif
+no_next_img: /images/openbib/no_next.png
+no_previous_img: /images/openbib/no_previous.png
+note_img: /images/openbib/note.png
+openbib_img: /images/openbib/openbib-powered.png
+paperc_img: /images/openbib/paperc.png
+pdf_img: /images/openbib/pdf-document.png
+permalink_img: /images/openbib/3d-file-blue-permalink.png
+persons_img: /images/openbib/persons.png
+previous_img: /images/openbib/previous.png
+print_img: /images/openbib/3d-file-blue-printer.png
+provenances_img: /images/openbib/attach.png
+qrcode_img: /images/openbib/qrsymb.png
+rssfeed_img: /images/openbib/rssfeed.png
+save_img: /images/openbib/3d-file-blue-disk35.png
+search_img: /images/openbib/search.png
+search_small_img: /images/openbib/search_small.png
+share_img: /images/openbib/share.png
+share_small_img: /images/openbib/share-16px.png
+star_img: /images/openbib/star.png
+2stars_img: /images/openbib/2stars.png
+3stars_img: /images/openbib/3stars.png
+top20_img: /images/openbib/top20-12px.png
+thumbnail_img: /images/openbib/thumbnail.png
+tutorial_img: /images/openbib/tutorial.png
+toggle_show_img: /images/openbib/arrow-down.png
+toggle_hide_img: /images/openbib/arrow-up.png
+tool_img: /images/openbib/kcontrol.png
+wikipedia_img:  /images/openbib/wikipedia.png
+university_img:  /images/openbib/university.png
+
+# Aktuell
+iconset:
+  'default':
+    'books': /images/openbib/bookcase.png
+    'chart': /images/openbib/kchart.png
+    'courses': /images/openbib/courses.png
+    'csv': /images/openbib/csv.png
+    'dbis_green': /images/openbib/dbis/z0.gif
+    'dbis_yellow': /images/openbib/dbis/z2.gif
+    'dbis_red': /images/openbib/dbis/z-ppu.gif
+    'dbis_yellow_red': /images/openbib/dbis/z5.gif
+    'dbis_de': /images/openbib/dbis/z-de.gif
+    'delete': /images/openbib/cancel.png
+    'delete_small': /images/openbib/cancel-16px.png
+    'follow': /images/openbib/solidrightarrow.png
+    'firefox': /images/openbib/firefox.png
+    'infotopic': /images/openbib/info.png
+    'info': /images/openbib/info_small.png
+    'global': /images/openbib/globus.png
+    'help': /images/openbib/help.png
+    'hint': /images/openbib/hint.png
+    'home': /images/openbib/home.png
+    'home_small': /images/openbib/home3.png
+    'lang_de': /images/openbib/de.gif
+    'lang_en': /images/openbib/en.gif
+    'listofinterest': /images/openbib/bookmark.png
+    'listofinterest_small': /images/openbib/bookmark-16px.png
+    'liststyle_cover': /images/openbib/view_detailed.png
+    'liststyle_list': /images/openbib/view_text.png
+    'mail': /images/openbib/3d-file-blue-mailbox.png
+    'tutorial': /images/openbib/kaboodle_ger.png
+    'tutorial_with_audio': /images/openbib/multimedia_ger.png
+    'news': /images/openbib/newsflash.png
+    'next': /images/openbib/next.gif
+    'no_next': /images/openbib/no_next.png
+    'no_previous': /images/openbib/no_previous.png
+    'note': /images/openbib/note.png
+    'openbib': /images/openbib/openbib-powered.png
+    'paperc': /images/openbib/paperc.png
+    'pdf': /images/openbib/pdf-document.png
+    'permalink': /images/openbib/3d-file-blue-permalink.png
+    'persons': /images/openbib/persons.png
+    'previous': /images/openbib/previous.png
+    'print': /images/openbib/3d-file-blue-printer.png
+    'provenances': /images/openbib/attach.png
+    'qrcode': /images/openbib/qrsymb.png
+    'rssfeed': /images/openbib/rssfeed.png
+    'save': /images/openbib/3d-file-blue-disk35.png
+    'search': /images/openbib/search.png
+    'search_small': /images/openbib/search_small.png
+    'share': /images/openbib/share.png
+    'share_small': /images/openbib/share-16px.png
+    'star': /images/openbib/star.png
+    '2stars': /images/openbib/2stars.png
+    '3stars': /images/openbib/3stars.png
+    'top20': /images/openbib/top20-12px.png
+    'thumbnail': /images/openbib/thumbnail.png
+    'tutorial': /images/openbib/tutorial.png
+    'toggle_show': /images/openbib/arrow-down.png
+    'toggle_hide': /images/openbib/arrow-up.png
+    'tool': /images/openbib/kcontrol.png
+    'wikipedia':  /images/openbib/wikipedia.png
+    'university':  /images/openbib/university.png
+  'profile':
+    'bootstrap':
+      'availability_green': /images/openbib/availability_green.gif
+      'availability_red': /images/openbib/availability_red.gif
+      'availability_yellow': /images/openbib/availability_yellow.gif
+      'availability_yellow_red': /images/openbib/availability_yellow_red.gif
+      'availability_dfg': /images/openbib/availability_dfg.gif
+      'availability_unknown': /images/openbib/availability_unknown.gif
+      'books': /images/openbib/material/ic_local_library_24px.svg
+      'chart': /images/openbib/material/ic_poll_24px.svg
+      'delete_small': /images/openbib/material/ic_delete_24px.svg
+      'details': /images/openbib/material/ic_more_horiz_24px.svg
+      'follow': /images/openbib/material/ic_forward_24px.svg
+      'global': /images/openbib/material/ic_language_24px.svg
+      'info': /images/openbib/material/ic_info_outline_24px.svg
+      'listofinterest': /images/openbib/material/ic_star_border_24px.svg
+      'listofinterest_small': /images/openbib/material/ic_star_border_24px.svg
+      'listofinterest_small_selected': /images/openbib/material/ic_star_24px.svg
+      'mail': /images/openbib/material/ic_mail_outline_24px.svg
+      'person': /images/openbib/material/ic_person_24px.svg
+      'persons': /images/openbib/material/ic_people_24px.svg
+      'print': /images/openbib/material/ic_print_24px.svg
+      'rssfeed': /images/openbib/material/ic_rss_feed_24px.svg
+      'save': /images/openbib/material/ic_get_app_24px.svg
+      'search_small': /images/openbib/material/ic_search_24px.svg
+      'share': /images/openbib/material/ic_share_24px.svg
+      'share_small': /images/openbib/material/ic_share_24px.svg
+      'university':  /images/openbib/material/ic_account_balance_24px.svg
+      'borrowed': /images/openbib/material/ic_block_24px.svg
+      'presence': /images/openbib/material/ic_visibility_24px.svg
+      #'lendable': /images/openbib/material/ic_shopping_cart_24px.svg
+      'lendable': /images/openbib/material/ic_card_travel_24px.svg
+
+    'kug':
+      'availability_green': /images/openbib/availability_green.gif
+      'availability_red': /images/openbib/availability_red.gif
+      'availability_yellow': /images/openbib/availability_yellow.gif
+      'availability_yellow_red': /images/openbib/availability_yellow_red.gif
+      'availability_dfg': /images/openbib/availability_dfg.gif
+      'availability_unknown': /images/openbib/availability_unknown.gif
+      'books': /images/openbib/material/ic_local_library_24px.svg
+      'chart': /images/openbib/material/ic_poll_24px.svg
+      'delete_small': /images/openbib/material/ic_delete_24px.svg
+      'details': /images/openbib/material/ic_more_horiz_24px.svg
+      'follow': /images/openbib/material/ic_forward_24px.svg
+      'global': /images/openbib/material/ic_language_24px.svg
+      'info': /images/openbib/material/ic_info_outline_24px.svg
+      'listofinterest': /images/openbib/material/ic_star_border_24px.svg
+      'listofinterest_small': /images/openbib/material/ic_star_border_24px.svg
+      'listofinterest_small_selected': /images/openbib/material/ic_star_24px.svg
+      'mail': /images/openbib/material/ic_mail_outline_24px.svg
+      'person': /images/openbib/material/ic_person_24px.svg
+      'persons': /images/openbib/material/ic_people_24px.svg
+      'print': /images/openbib/material/ic_print_24px.svg
+      'rssfeed': /images/openbib/material/ic_rss_feed_24px.svg
+      'save': /images/openbib/material/ic_get_app_24px.svg
+      'search_small': /images/openbib/material/ic_search_24px.svg
+      'share': /images/openbib/material/ic_share_24px.svg
+      'share_small': /images/openbib/material/ic_share_24px.svg
+      'university':  /images/openbib/material/ic_account_balance_24px.svg
+      'borrowed': /images/openbib/material/ic_block_24px.svg
+      'presence': /images/openbib/material/ic_visibility_24px.svg
+      #'lendable': /images/openbib/material/ic_shopping_cart_24px.svg
+      'lendable': /images/openbib/material/ic_card_travel_24px.svg
+    'unikatalog':
+      'availability_green': /images/openbib/availability_green.gif
+      'availability_red': /images/openbib/availability_red.gif
+      'availability_yellow': /images/openbib/availability_yellow.gif
+      'availability_yellow_red': /images/openbib/availability_yellow_red.gif
+      'availability_dfg': /images/openbib/availability_dfg.gif
+      'availability_unknown': /images/openbib/availability_unknown.gif
+      'books': /images/openbib/material/ic_local_library_24px.svg
+      'chart': /images/openbib/material/ic_poll_24px.svg
+      'delete_small': /images/openbib/material/ic_delete_24px.svg
+      'details': /images/openbib/material/ic_more_horiz_24px.svg
+      'follow': /images/openbib/material/ic_forward_24px.svg
+      'global': /images/openbib/material/ic_language_24px.svg
+      'info': /images/openbib/material/ic_info_outline_24px.svg
+      'listofinterest': /images/openbib/material/ic_star_border_24px.svg
+      'listofinterest_small': /images/openbib/material/ic_star_border_24px.svg
+      'listofinterest_small_selected': /images/openbib/material/ic_star_24px.svg
+      'mail': /images/openbib/material/ic_mail_outline_24px.svg
+      'person': /images/openbib/material/ic_person_24px.svg
+      'persons': /images/openbib/material/ic_people_24px.svg
+      'print': /images/openbib/material/ic_print_24px.svg
+      'rssfeed': /images/openbib/material/ic_rss_feed_24px.svg
+      'save': /images/openbib/material/ic_get_app_24px.svg
+      'search_small': /images/openbib/material/ic_search_24px.svg
+      'share': /images/openbib/material/ic_share_24px.svg
+      'share_small': /images/openbib/material/ic_share_24px.svg
+      'university':  /images/openbib/material/ic_account_balance_24px.svg
+      'borrowed': /images/openbib/material/ic_block_24px.svg
+      'presence': /images/openbib/material/ic_visibility_24px.svg
+      #'lendable': /images/openbib/material/ic_shopping_cart_24px.svg
+      'lendable': /images/openbib/material/ic_card_travel_24px.svg
+      'university':  /images/openbib/university.png
+    'bootstrap5':
+      'availability_green': /images/openbib/availability_green.gif
+      'availability_red': /images/openbib/availability_red.gif
+      'availability_yellow': /images/openbib/availability_yellow.gif
+      'availability_yellow_red': /images/openbib/availability_yellow_red.gif
+      'availability_dfg': /images/openbib/availability_dfg.gif
+      'availability_unknown': /images/openbib/availability_unknown.gif
+      'books': /images/openbib/material/ic_local_library_24px.svg
+      'chart': /images/openbib/material/ic_poll_24px.svg
+      'delete_small': /images/openbib/material/ic_delete_24px.svg
+      'details': /images/openbib/material/ic_more_horiz_24px.svg
+      'follow': /images/openbib/material/ic_forward_24px.svg
+      'global': /images/openbib/material/ic_language_24px.svg
+      'info': /images/openbib/material/ic_info_outline_24px.svg
+      'listofinterest': /images/openbib/material/ic_star_border_24px.svg
+      'listofinterest_small': /images/openbib/material/ic_star_border_24px.svg
+      'listofinterest_small_selected': /images/openbib/material/ic_star_24px.svg
+      'mail': /images/openbib/material/ic_mail_outline_24px.svg
+      'person': /images/openbib/material/ic_person_24px.svg
+      'persons': /images/openbib/material/ic_people_24px.svg
+      'print': /images/openbib/material/ic_print_24px.svg
+      'rssfeed': /images/openbib/material/ic_rss_feed_24px.svg
+      'save': /images/openbib/material/ic_get_app_24px.svg
+      'search_small': /images/openbib/material/ic_search_24px.svg
+      'share': /images/openbib/material/ic_share_24px.svg
+      'share_small': /images/openbib/material/ic_share_24px.svg
+      'university':  /images/openbib/material/ic_account_balance_24px.svg
+      'borrowed': /images/openbib/material/ic_block_24px.svg
+      'presence': /images/openbib/material/ic_visibility_24px.svg
+      #'lendable': /images/openbib/material/ic_shopping_cart_24px.svg
+      'lendable': /images/openbib/material/ic_card_travel_24px.svg
+    'sammlungen':
+      'availability_green': /images/openbib/availability_green.gif
+      'availability_red': /images/openbib/availability_red.gif
+      'availability_yellow': /images/openbib/availability_yellow.gif
+      'availability_yellow_red': /images/openbib/availability_yellow_red.gif
+      'availability_dfg': /images/openbib/availability_dfg.gif
+      'availability_unknown': /images/openbib/availability_unknown.gif
+      'books': /images/openbib/material/ic_local_library_24px.svg
+      'chart': /images/openbib/material/ic_poll_24px.svg
+      'delete_small': /images/openbib/material/ic_delete_24px.svg
+      'details': /images/openbib/material/ic_more_horiz_24px.svg
+      'follow': /images/openbib/material/ic_forward_24px.svg
+      'global': /images/openbib/material/ic_language_24px.svg
+      'info': /images/openbib/material/ic_info_outline_24px.svg
+      'listofinterest': /images/openbib/material/ic_star_border_24px.svg
+      'listofinterest_small': /images/openbib/material/ic_star_border_24px.svg
+      'listofinterest_small_selected': /images/openbib/material/ic_star_24px.svg
+      'mail': /images/openbib/material/ic_mail_outline_24px.svg
+      'person': /images/openbib/material/ic_person_24px.svg
+      'persons': /images/openbib/material/ic_people_24px.svg
+      'print': /images/openbib/material/ic_print_24px.svg
+      'rssfeed': /images/openbib/material/ic_rss_feed_24px.svg
+      'save': /images/openbib/material/ic_get_app_24px.svg
+      'search_small': /images/openbib/material/ic_search_24px.svg
+      'share': /images/openbib/material/ic_share_24px.svg
+      'share_small': /images/openbib/material/ic_share_24px.svg
+      'university':  /images/openbib/material/ic_account_balance_24px.svg
+      'borrowed': /images/openbib/material/ic_block_24px.svg
+      'presence': /images/openbib/material/ic_visibility_24px.svg
+      #'lendable': /images/openbib/material/ic_shopping_cart_24px.svg
+      'lendable': /images/openbib/material/ic_card_travel_24px.svg
+
+# Anzahl der Spalten bei der Datenbankauswahlseite
+databasechoice_maxcolumn: 1
+
+# Verschiedene Pfadangaben
+autoconv_dir: /opt/openbib/autoconv
+base_dir: /opt/openbib
+conv_dir: /opt/openbib/conv
+dbdesc_dir: /opt/openbib/db
+tool_dir: /opt/openbib/bin
+
+# Zugriffsinformationen fuer das BibSonomy-API
+bibsonomy_api_key: ''
+bibsonomy_api_user: ''
+
+# Journaltocs
+journaltocs_api_user: 'foo@bar'
+
+# Zugriffsinformationen fuer die LibraryThing-APIs
+librarything_api_key: ''
+
+# Zugriffsinformationen fuer ReCaptcha
+recaptcha_user: ''
+recaptcha_public_key: ''
+recaptcha_private_key: ''
+
+# Zugriffsinformationen fuer recensio.net
+
+rezensionen_online_key: ''
+
+# Kurztiteltabelle verwenden?
+use_titlistitem_table: 1
+
+# Internes Serialisierungsformat, z.B. zur Ablage-Format in der Tabelle (json oder packed_storable)
+internal_serialize_type: 'json'
+
+# Maximale Laenge an Inhalt in Kurztitelliste, ab der Personen
+# gekuerzt werden soll
+maxlength_person: 100
+maxlength_title: 100
+maxlength_mark: 70
+maxlength_dbname: 70
+
+max_login_failure: 10
+
+# Grundsaetzlich https verwenden?
+use_https: 0
+
+# Testsystem
+testsystem: 0
+
+# Facets
+facets:
+  subject: 1
+  classification: 2
+  person: 3
+  year: 5
+  mediatype: 4
+  language: 6
+  corporatebody: 7
+  database: 8
+  tag: 9
+  litlist: 10
+  location: 11
+  availability: 12
+  topic: 13
+  provenance: 14
+  custom0: 60
+  custom1: 61
+  custom2: 62
+  custom3: 63
+  custom4: 64
+  custom5: 65
+  custom6: 66
+  custom7: 67
+  custom8: 68
+  custom9: 69
+# Repraesentationen
+
+representation:
+   'rdf+xml': 'application/rdf+xml'
+   'rdf+n3': 'application/rdf+n3'
+   'json': 'text/plain'
+   'bibtex': 'text/plain'
+   'refer': 'text/plain'
+   'mobile': 'text/html'
+   'html': 'text/html'
+   'ics': 'text/calendar'
+   'csv': 'text/csv'
+   'txt': 'text/plain'
+   'mods': 'application/mods+xml'
+   'mets': 'application/mets+xml'
+
+# Default Query-Options (Session)
+queryoptions:
+  clp: # Collapse via sorttype_value (title,authority,...)
+    value: ''
+    storage: none
+  facets: # Generate these facets instead of defaults
+    value: ''
+    storage: none
+  cutoff: # cutoff for facets
+    value: ''
+    storage: none
+  num:
+    value: 20
+    storage: session
+  page:
+    value: 1
+    storage: none
+  srt:
+    value: 'relevance'
+    storage: session
+  srto:
+    value: 'desc'
+    storage: session
+  srta:
+    value: 0
+    storage: none
+  profil:
+    value: ''
+    storage: none
+  novrp:
+    value: 0
+    storage: none
+  dop:
+    value: 'AND'
+    storage: none
+  lt:
+    value: 'cover'
+    storage: session
+  ips_user:
+    value: ''
+    storage: none
+  sm:
+    value: ''
+    storage: none
+  sb:
+    value: 'xapian'
+    storage: none
+  access_green:
+    value: 0
+    storage: none
+  access_yellow:
+    value: 0
+    storage: none
+  access_red:
+    value: 0
+    storage: none
+  access_national:
+    value: 0
+    storage: none
+  access_mask:
+    value: 0
+    storage: none
+  searchft: # EDS
+    value: 0
+    storage: none
+  showft:   # EDS
+    value: 0
+    storage: none
+  showft1:   # EDS
+    value: 0
+    storage: none
+  ajax:
+    value: 0
+    storage: none
+  refid:
+    value: ''
+    storage: session
+    validity_check: ilias_gpg
+    
+  'f[floc]':
+    value: 0
+    storage: session
+
+# Generierte BestOf-Daten
+metrics:
+  3:
+    cloud: log
+  4:
+    cloud: log
+  5:
+    cloud: log
+  6:
+    cloud: log
+  7:
+    cloud: log
+  8:
+    cloud: log
+  9:
+    cloud: log
+  12:
+    cloud: log
+  14:
+    cloud: log
+
+# Social-Tagging
+social_tagging: 1
+
+# Literaturlisten
+litlists: 1
+
+# Reviews/Ratings
+reviews: 0
+
+# Cover-Scans
+coverscans:
+  all: 1
+
+# Deutsche Bibliotheksstatistik
+deutsche_bibliotheksstatistik: 0
+
+# unAPI
+unAPI: 1
+unAPI_formats:
+  bibtex: 1
+  mods: 0
+  oai_dc: 1
+  mets: 1
+
+eventlogjson_type:
+  1: 1
+  10: 1
+
+# Katalogabhaengige Kategorie-Mappings
+categorymapping:
+  bestellungen:
+    T0002: 1
+    T0700: 1
+    T0710: 1
+  ebooks:
+    T0662: 1
+    T0663: 1
+  einbaende:
+    T0100: 1
+    T0101: 1
+    T0102: 1
+    T0200: 1
+    T0201: 1
+    T0304: 1
+    T0331: 1
+    T0335: 1
+    T0361: 1
+    T0370: 1
+    T0410: 1
+    T0413: 1
+    T0424: 1
+    T0425: 1
+    T0435: 1
+    T0501: 1
+    T0508: 1
+    T0700: 1
+    T0710: 1
+    T0750: 1
+    T0800: 1
+  filme:
+    T0101: 1
+    T0200: 1
+    T0700: 1
+    T0710: 1
+  gentzdigital:
+    T0100: 1
+    T0200: 1
+    T0335: 1
+    T0335: 1
+    T0433: 1
+    T0424: 1
+    T0800: 1
+    T0594: 1
+    T0412: 1
+    T0410: 1
+  gentzbriefe:
+    T0100: 1
+    T0101: 1
+    T0200: 1
+    T0334: 1
+    T0335: 1
+    T0336: 1
+    T0410: 1
+    T0412: 1
+    T0413: 1
+    T0433: 1
+    T0424: 1
+    T0451: 1    
+    T0480: 1    
+    T0482: 1    
+    T0490: 1    
+    T0491: 1    
+    T0523: 1
+    T0525: 1
+    T0594: 1
+    T0800: 1
+    T1664: 1
+  inst404abklatsch:
+    T0200: 1
+    T0331: 1
+    T0335: 1
+    T0410: 1
+    T0425: 1
+    T0710: 1
+    T1664: 1
+  inst450:
+    T0100: 1
+    T0101: 1
+    T0200: 1
+    T0201: 1
+    T0501: 1
+    T0509: 1
+    T0525: 1
+  jesuiten:
+    T0412: 1
+    T0470: 1
+    T0471: 1
+    T0472: 1
+  kapsel:
+    S0103: 1
+    N0102: 1
+  landschaft:
+    T0100: 1
+    T0200: 1
+    T0331: 1
+    T0334: 1
+    T0407: 1
+    T0425: 1
+    T0591: 1
+    T0594: 1
+    T0595: 1
+    T0700: 1
+    T0710: 1
+    T0750: 1
+  maxbruch:
+    T0100: 1
+    T0101: 1
+    T0331: 1
+    T0335: 1
+    T0410: 1
+    T0433: 1
+    T0440: 1
+    T0700: 1
+  muenzen:
+    T0100: 1
+    T0700: 1
+    T0710: 1
+    T0359: 1
+    T0010: 1
+    T0410: 1
+    T0425: 1
+    T0426: 1
+    T0427: 1
+    T0428: 1
+    T0800: 1
+    T0435: 1
+    T0433: 1
+    T0407: 1
+    T0332: 1
+    T0333: 1
+    T0334: 1
+    T0335: 1
+    T0336: 1
+    T0337: 1
+    T0338: 1
+    T0341: 1
+    T0342: 1
+    T0343: 1
+    T0351: 1
+    T0352: 1
+    T0353: 1
+    T0508: 1
+    T0531: 1
+    T0533: 1
+    T0600: 1
+    T0619: 1
+    T0662: 1
+    T0451: 1
+  nationallizenzen:
+    T0662: 1
+    T0663: 1
+  portrait:
+    T0100: 1
+    T0101: 1
+    T0102: 1
+    T0103: 1
+    T0200: 1
+    T0201: 1
+    T0331: 1
+    T0334: 1
+    T0424: 1
+    T0425: 1
+    T0501: 1
+    T0508: 1
+    T0559: 1
+    T0619: 1
+    T0662: 1
+    T0700: 1
+    T0710: 1
+    T0800: 1
+    T3000: 1
+    T3001: 1
+  richter:
+    T0501: 1
+  schatzbehalter:
+    T0015: 1
+    T0516: 1
+  totenzettel:
+    T0100: 1
+    T0101: 1
+    T0102: 1
+    T0103: 1
+    T0310: 1
+    T0331: 1
+    T0335: 1
+    T0370: 1
+    T0410: 1
+    T0411: 1
+    T0424: 1
+    T0425: 1
+    T0426: 1
+    T0433: 1
+    T0451: 1
+    T0595: 1
+    T0700: 1
+    T2662: 1
+    X0005: 1
+    X0014: 1
+    X0016: 1
+  umschlaege:
+    T0100: 1
+    T0200: 1
+    T0710: 1
+  wikisource_de:
+    T0101: 1
+  zpe:
+    T0100: 1
+    T0335: 1
+    T0501: 1
+    T0370: 1
+    T0410: 1
+    T0662: 1
+    T2662: 1
+    T0412: 1
+    T0413: 1
+    T0425: 1
+
+# Automatische Rollenzuordnung fuer Views anhand von Regex auf Nutzernamen
+auto_roles:
+  unikatalog:
+    '^.+?\@foo.bar$':
+      - 'librarian'
+    '^A\d\d\d\d\d\d\d\d\#.$':
+      - 'student'
+    '^B\d\d\d\d\d\d\d\d\#.$':
+      - 'uzk'
+    '^C\d\d\d\d\d\d\d\d\#.$':
+      - 'stadt'
+    '^.+?\@baz.bar$':
+      - 'student'
+  _default:
+    '^A\d\d\d\d\d\d\d\d\#.$':
+      - 'student'
+    '^B\d\d\d\d\d\d\d\d\#.$':
+      - 'uzk'
+    '^C\d\d\d\d\d\d\d\d\#.$':
+      - 'stadt'

@@ -5,13 +5,17 @@ RUN apt-get update -qq && apt upgrade -y
 
 WORKDIR /
 
-RUN mkdir -p /var/log/openbib /opt/openbib/conf  /opt/openbib/ft/xapian/index /opt/openbib/conv
+RUN mkdir -p /var/log/openbib /opt/openbib/conf  /opt/openbib/ft/xapian/index /opt/openbib/conv /opt/openbib/autoconv/bin /opt/openbib/autoconv/data /opt/openbib/autoconv/pools
 
 WORKDIR /opt/openbib/
 
 COPY portal/perl/locales locales/
 
 COPY portal/perl/templates templates/
+
+COPY conv/auto/*.pl autoconv/bin/
+
+COPY conv/auto/filter/ autoconv/filter/
 
 COPY conv/*/*.pl conv/
 

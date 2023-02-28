@@ -69,7 +69,9 @@ Dazu kommen die Standard-Container
 * PostgreSQL und
 * Elasticsearch
 
-Ebenso werden benannte Docker-Volumes angelegt, um persistent Daten ausserhalb der Container abspeichern zu können. Diese befinden sich lokal unter
+Ebenso werden benannte Docker-Volumes angelegt, um persistent Daten
+ausserhalb der Container abspeichern zu können. Diese befinden sich
+lokal unter
 
 /var/lib/docker/volumes/
 
@@ -94,25 +96,31 @@ Zuvor kann die zentrale Konfigurationsdatei portal.yml angepasst
 werden, um z.B. mit Angabe der entsprechenden Credentials die
 Anbindung gewünschter Dienste zu ermöglichen (ReCaptcha, EDS, usw.)
 
-4.) Starten der Infrastruktur mit Docker Compose und Erzeugung relevanter Datenbanken
+4.) Starten der Infrastruktur mit Docker Compose und Erzeugung
+relevanter Datenbanken
 
 Mit dem Kommando
 
 docker-compose up -d
 
-werden die Docker Container und damit die OpenBib Infrastruktur gestartet.
+werden alle notwendigen Docker Container und damit die OpenBib
+Infrastruktur gestartet.
 
 Dazu wird die Datei docker-compose.yml verwendet, in der das
 Zusammenspiel der verschiedenen Container modelliert wird.
 
-Die System-, Anreicherung- und Statistikdatenbanken können nun erzeugt
-werden mit den Kommandos:
+Insbesondere wird hier bereits starman gestartet, der Webdienst von
+OpenBib, ohne dass er aber bereits auf die notwendigen Tabellen in
+seinen verschiedenen Datenbanken zugreifen kann.
+
+Die System-, Anreicherung- und Statistikdatenbanken müssen daher nun
+einmalig erzeugt werden mit den Kommandos:
 
 docker exec -it openbib-master_openbib-web-perl_1 /opt/openbib/bin/createsystem.pl
 docker exec -it openbib-master_openbib-web-perl_1 /opt/openbib/bin/createenrichmnt.pl
 docker exec -it openbib-master_openbib-web-perl_1 /opt/openbib/bin/createstatistics.pl
 
-Schliesslich wird die Webanwendung gestartet:
+Schliesslich muss die Webanwendung neu gestartet werden:
 
 docker exec -it openbib-master_openbib-web-perl_1 /etc/init.d/starman restart
 
@@ -121,6 +129,13 @@ Danach kann im lokalen Browser auf OpenBib unter der Adresse
 http://localhost:8008/portal/openbib/home
 
 zugegriffen werden.
+
+Als Nutzer 'admin' mit dem Passwort 'top_secret' kann man sich dann an der
+Web-Oberfläche anmelden.
+
+Der Neustart von starman ist nur notwendig, wenn erstmalig die Datenbanken
+eingerichtet werden. Danach kann einfach docker-compose aufgerufen
+werden und die Infrastruktur läuft.
 
 5) Import von Daten über openbib-conv
 

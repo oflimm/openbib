@@ -2147,6 +2147,9 @@ sub set_cookie {
 
     my $config = $self->param('config');
     my $servername = $self->param('servername');
+
+    # Strip port from servername
+    $servername =~s/:\d+$//;
     
     if (!($name || $value)){
         $logger->debug("Invalid cookie parameters for cookie: $name / value: $value");
@@ -2155,7 +2158,7 @@ sub set_cookie {
 
     my $cookie_jar_ref = (defined $self->param('cookie_jar'))?$self->param('cookie_jar'):[];
 
-    $logger->debug("Adding cookie $name to $value");
+    $logger->debug("Adding cookie $name to $value for domain $servername");
     
     my $cookie = CGI::Cookie->new(
         -name     => $name,

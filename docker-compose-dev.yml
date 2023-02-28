@@ -1,0 +1,80 @@
+version: "3"
+
+services:
+
+  openbib-conv:
+    container_name: openbib-master_openbib-conv_1
+    tty: true
+    build: ./Dockerfile.openbib-conv
+    image: openbib-conv
+    depends_on:
+      - postgres
+      - elasticsearch
+    volumes:
+      - ~/openbib/conf:/opt/openbib/conf
+      - ~/openbib-master/portal/perl/templates:/opt/openbib/templates/
+      - ~/openbib-master/portal/perl/modules/OpenBib:/usr/share/perl5/OpenBib/
+      - xapiandata:/opt/openbib/ft/xapian/index
+    networks:
+      - openbib
+
+  openbib-web-perl:
+    container_name: openbib-master_openbib-web-perl_1  
+    tty: true
+    build: ./Dockerfile.openbib-web-perl
+    image: openbib-web-perl
+    command: /usr/bin/starman --user openbib --port 80 --workers 15 --backlog 4096 --error-log /var/log/openbib/starman.log --pid /var/log/openbib/starman.pid /opt/openbib/conf/portal.psgi
+    depends_on:
+      - postgres
+    ports:
+      - 80:80
+    links:
+      - postgres:postgres
+    volumes:
+      - ~/openbib/conf:/opt/openbib/conf
+      - ~/openbib-master/portal/perl/templates:/opt/openbib/templates/
+      - ~/openbib-master/portal/perl/modules/OpenBib:/usr/share/perl5/OpenBib/
+      - xapiandata:/opt/openbib/ft/xapian/index
+    networks:
+      - openbib
+      
+  postgres:
+    image: postgres:13.10-alpine
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: top_secret
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - openbib
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
+    environment:
+      - node.name=es01
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    # ports:
+    #   - 9200:9200
+    networks:
+      - openbib
+ 
+volumes:
+  pgdata:
+    external: true
+  xapiandata:
+    external: true
+  esdata:
+    external: true
+    
+networks:
+  openbib:
+    driver: bridge

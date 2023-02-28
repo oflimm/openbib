@@ -26,6 +26,7 @@ docker volume create xapiandata
 echo "Building local mount bind directories in home-directory"
 
 mkdir -p ~/openbib/conf
+mkdir -p ~/openbib/logs
 
 echo "Populating them"
 

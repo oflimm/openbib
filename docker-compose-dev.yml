@@ -12,6 +12,7 @@ services:
       - elasticsearch
     volumes:
       - ~/openbib/conf:/opt/openbib/conf
+      - ~/openbib/logs:/var/log/openbib/
       - ~/openbib-master/portal/perl/templates:/opt/openbib/templates/
       - ~/openbib-master/portal/perl/modules/OpenBib:/usr/share/perl5/OpenBib/
       - xapiandata:/opt/openbib/ft/xapian/index
@@ -32,6 +33,7 @@ services:
       - postgres:postgres
     volumes:
       - ~/openbib/conf:/opt/openbib/conf
+      - ~/openbib/logs:/var/log/openbib/
       - ~/openbib-master/portal/perl/templates:/opt/openbib/templates/
       - ~/openbib-master/portal/perl/modules/OpenBib:/usr/share/perl5/OpenBib/
       - xapiandata:/opt/openbib/ft/xapian/index

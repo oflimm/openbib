@@ -23,4 +23,4 @@ COPY portal/perl/templates /opt/openbib/templates/
 
 RUN chown openbib.www-data /var/log/openbib
 
-CMD /usr/bin/starman --port 8008 --workers 15 --backlog 4096 --error-log /var/log/openbib/starman.log --pid /var/log/openbib/starman.pid /opt/openbib/conf/portal.psgi
+CMD /usr/bin/starman --user openbib --port 8008 --workers 15 --backlog 4096 --error-log /var/log/openbib/starman.log --pid /var/log/openbib/starman.pid /opt/openbib/conf/portal.psgi

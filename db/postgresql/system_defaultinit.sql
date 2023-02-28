@@ -6,8 +6,8 @@ insert into roleinfo values (1,'admin','Administrator');
 insert into roleinfo values (2,'librarian','Bibliothekar');
 insert into roleinfo values (3,'viewadmin','Portal-Administrator');
 
-/* Standard ist Admin-User mit ID 1 und Passwort 'StrengGeheim' */
-insert into userinfo (id,username,password,authenticatorid) values (1,'admin',crypt('StrengGeheim', gen_salt('bf', 4)),1);
+/* Standard ist Admin-User mit ID 1 und Passwort 'top_secret' */
+insert into userinfo (id,username,password,authenticatorid) values (1,'admin',crypt('top_secret', gen_salt('bf', 4)),1);
 insert into user_role (userid,roleid) values (1,1);
 
 /* Standard-Profil ist openbib */

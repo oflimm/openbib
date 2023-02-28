@@ -7,8 +7,6 @@ RUN apt-get install starman -y
 
 WORKDIR /
 
-RUN useradd -ms /bin/bash openbib && addgroup openbib www-data
-
 RUN mkdir -p /var/log/openbib /opt/openbib/conf  /opt/openbib/ft/xapian/index /var/www/html 
 
 COPY portal/starman/init.d/starman /etc/init.d/starman 
@@ -21,6 +19,8 @@ COPY portal/htdocs/images/openbib/ /usr/share/images/openbib/
 
 COPY portal/perl/templates /opt/openbib/templates/
 
-RUN chown openbib.www-data /var/log/openbib
+RUN useradd -ms /bin/bash openbib && addgroup openbib www-data
+
+RUN chown -R openbib.www-data /var/log/openbib
 
 CMD /usr/bin/starman --user openbib --port 8008 --workers 15 --backlog 4096 --error-log /var/log/openbib/starman.log --pid /var/log/openbib/starman.pid /opt/openbib/conf/portal.psgi

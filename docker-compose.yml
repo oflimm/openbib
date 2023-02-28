@@ -3,7 +3,7 @@ version: "3"
 services:
 
   openbib-conv:
-    container_name: openbib-master_openbib-web-perl_1
+    container_name: openbib-master_openbib-conv_1
     tty: true
     build: ./Dockerfile.openbib-conv
     image: openbib-conv
@@ -17,7 +17,7 @@ services:
       - openbib
 
   openbib-web-perl:
-    container_name: openbib-master_openbib-conv_1  
+    container_name: openbib-master_openbib-web-perl_1  
     tty: true
     build: ./Dockerfile.openbib-web-perl
     image: openbib-web-perl

@@ -46,7 +46,7 @@ $(document).ready(function(){
 });
 </script>
 
-<div role="tabpanel" class="tab-pane fade active" id="ob-journaltocs"><!-- Begin Journaltocs -->
+<div role="tabpanel" class="tab-pane active" id="ob-journaltocs"><!-- Begin Journaltocs -->
 [% msg.maketext("F&uuml;r die letzten in dieser Zeitschrift ver&ouml;ffentlichten Artikel bieten wir eine eine [_1]&Uuml;bersicht[_2] an.","<a href=\"${path_prefix}/${config.get('info_loc')}/journaltocs?id=${journaltocs_feed}\">","</a>") %]
 </div><!-- End Journaltocs -->
 [% END %]

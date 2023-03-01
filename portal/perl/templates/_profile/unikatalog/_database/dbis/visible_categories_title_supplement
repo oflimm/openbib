@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 [%-# Ausgabekategorien -%]
-[%- categories = [
+[%- supplemental_categories = [
                 'Fachgebiete', # msg.maketext("Fachgebiete") Fachgebiete 0700
                 'Schlagwörter', # msg.maketext("Schlagwörter") Schlagwoerter 0710
                 'Erscheinungsform', # msg.maketext("Erscheinungsform") Erscheinungsform 0508

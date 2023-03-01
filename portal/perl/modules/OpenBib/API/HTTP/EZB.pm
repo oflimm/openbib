@@ -340,9 +340,15 @@ sub get_titles_record {
 
 	my @issns =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/detail/P_ISSNs/P_ISSN');
 
+	my @eissns =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/detail/E_ISSNs/E_ISSN');
+	
 	my $issns_ref = [];
 
 	foreach my $issn_node (@issns){
+	    push @{$issns_ref}, $issn_node->textContent;
+	}
+
+	foreach my $issn_node (@eissns){
 	    push @{$issns_ref}, $issn_node->textContent;
 	}
 	

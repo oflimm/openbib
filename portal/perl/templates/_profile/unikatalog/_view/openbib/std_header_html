@@ -46,7 +46,7 @@
 [% IF NOT config.strip_view_from_uri(view) %]
     <meta name="View"                content="[% view %]" />
 [% END %]
-<link href="/images/openbib/views/games/games-favicon.ico" rel="shortcut icon" />
+<link href="/images/openbib/favicon.ico" rel="shortcut icon" />
 
 [% IF view && primrssfeed %]
 <link rel="alternate" type="application/rss+xml" title="RDF-Datei" href="[% path_prefix %]/[% primrssfeed %]" />

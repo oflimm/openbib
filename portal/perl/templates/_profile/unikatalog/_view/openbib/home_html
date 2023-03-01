@@ -28,10 +28,7 @@
 }
 
 .image-1 {
-  background-color: #fff;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position-x: 24%;
+  background-color: #badff0;
   }
 
 }
@@ -43,7 +40,7 @@
 
 <div class="ob-jumbotron ob-jumbotron-fluid mb-0 landing-page-img ps-2">
 
-  <div class="container container-fluid" style="margin-top: 50px!important; min-width: 100%!important;">
+  <div class="container container-fluid" style="margin-top: 50px!important; min-width: 100%!important; min-height:100%!important;">
 
 <form id="ob-mainsearchform" method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
 

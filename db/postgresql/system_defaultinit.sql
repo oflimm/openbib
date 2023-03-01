@@ -1,5 +1,5 @@
 /* Standard ist Selbstregistrierung */
-insert into authenticatorinfo values(1,'','Registrierte E-Mail Adresse','self');
+insert into authenticatorinfo values(1,'selfreg','Registrierte E-Mail Adresse','self');
 
 /* Standard sind Rollen Admin und Bibliothekar */
 insert into roleinfo values (1,'admin','Administrator');
@@ -11,7 +11,7 @@ insert into userinfo (id,username,password,authenticatorid) values (1,'admin',cr
 insert into user_role (userid,roleid) values (1,1);
 
 /* Standard-Profil ist openbib */
-insert into profileinfo (id,profilename,description) values (1,'bootstrap','OpenBib Beispiel-Portal');
+insert into profileinfo (id,profilename,description) values (1,'unikatalog','Universitätskatalog');
 
 /* Standard-View ist openbib */
 insert into viewinfo (id,viewname,description,start_loc,servername,profileid,stripuri,active) values (1,'openbib','OpenBib Beispiel-Portal','','',1,'false','true');

@@ -13,11 +13,11 @@
 -%]
 [%-# Ausgabekategorien -%]
 [%- categories = [
-                'T0331', # msg.maketext("T0331") HST
-                'T4120', # msg.maketext("T4120") Zugang (Haupt-URL)
-		'T0405', # msg.maketext("T0405") Erster Ausgabe
-		'T0412', # msg.maketext("T0412") Verlag
-		'T0543', # msg.maketext("T0543") ISSN
+#                'Titel', # msg.maketext("Titel") HST
+                'Homepage', # msg.maketext("T4120") Homepage
+		'Volltext online seit', # msg.maketext("Volltext online seit") 0405 Erste Ausgabe
+		'Verlag', # msg.maketext("Verlag") Verlag
+		'ISSN', # msg.maketext("ISSN") 0663/0543 ISSN
                 'T0523', # msg.maketext("T0523") Erscheinungsform
                 'T0501', # msg.maketext("T0501") Verfuegbarkeit
                 'T0662', # msg.maketext("T0662") URLs

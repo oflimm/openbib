@@ -12,9 +12,9 @@
 #######################################################################
 -%]
 [%-# Ausgabekategorien -%]
-[%- categories = [
-                'T0700', # msg.maketext("T0700") Fachgebiete
-                'T0710', # msg.maketext("T0710") Schlagwoerter
+[%- supplemental_categories = [
+                'Fachgruppe(n)', # msg.maketext("Fachgruppe(n)") 0700 Fachgebiete
+                'Schlagwörter', # msg.maketext("Schlagwörter") 0710 Schlagwoerter
                 'T0511', # msg.maketext("T0511") Kosten
                 ]
 

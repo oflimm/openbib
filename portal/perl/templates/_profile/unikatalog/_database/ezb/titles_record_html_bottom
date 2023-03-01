@@ -1,5 +1,21 @@
 [% IF record_exists %]
 
+<div class="alert alert-info">
+  
+  <h5>[% msg.maketext("Lizenzrechtliche Hinweise") %]</h5> 
+  <p> 
+    Bitte beachten Sie die <a class="exturl" href="/suchen_ausleihen/suchen/medienarten/nutzungshinweise/index_ger.html#e20990">Nutzungsbedingungen</a> des Verlages bzw. Herausgebers.
+  </p>
+  <div class="powered">
+    
+    Ansprechpartner:<br/><a href="mailto:ezb@ub.uni-koeln.de">Team E-Zeitschriften</a><br/>
+    
+    <span style="font-size:0.8em;">
+      Powered by  <a class="exturl" href="http://ezb.uni-regensburg.de/ezeit/vascoda/vifa/link_de.php"  target="EZB">EZB</a>
+    </span>
+  </div>
+</div>
+
 [%- issn              = normdata.${"T0543"}.first.content ;
     IF issn ;
        journaltocs_feed  = "http://www.journaltocs.ac.uk/api/journals/${issn}?output=articles";

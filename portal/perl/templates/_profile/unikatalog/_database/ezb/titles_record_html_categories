@@ -503,10 +503,10 @@ FOREACH field IN normdata;
 	 
     CASE "T0511";
 
-         IF NOT content_map.${'Anleitung'} ;
-	    content_map.${'Anleitung'} = [];
+         IF NOT content_map.${'Kosten'} ;
+	    content_map.${'Kosten'} = [];
 	 END;
-         content_map.${'Anleitung'}.push(content);
+         content_map.${'Kosten'}.push(content);
 
     CASE "T0710";
 	 
@@ -515,19 +515,13 @@ FOREACH field IN normdata;
 	 END;
          content_map.${'Schlagwörter'}.push(content);
 
-    CASE "T0508";
+
+    CASE "T0523";
 	 
          IF NOT content_map.${'Erscheinungsform'} ;
 	    content_map.${'Erscheinungsform'} = [];
 	 END;
          content_map.${'Erscheinungsform'}.push(content);
-
-    CASE "T0523";
-	 
-         IF NOT content_map.${'Berichtszeitraum'} ;
-	    content_map.${'Berichtszeitraum'} = [];
-	 END;
-         content_map.${'Berichtszeitraum'}.push(content);
 
     CASE "T0412";
 	 
@@ -543,7 +537,7 @@ FOREACH field IN normdata;
 	 END;
          content_map.${'ISBN'}.push(content);
 
-    CASE "T0663";
+    CASE "T0543";
 	 
          IF NOT content_map.${'ISSN'} ;
 	    content_map.${'ISSN'} = [];

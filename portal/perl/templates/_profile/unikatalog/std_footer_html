@@ -50,7 +50,7 @@
 	      <a target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/fernleihe.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/fernleihe.include?l=[% lang %]">[% msg.maketext("Alles rund um die Fernleihe") %]</a>
 	    </li>
 	    <li>
-	      <a target="_blank" href="https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/kurse/index_ger.html" target="_blank">[% msg.maketext("Recherchekurse der USB") %]</a>
+	      <a target="_blank" href="https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/kurse/index_ger.html" target="_blank">[% msg.maketext("Kursangebot der USB") %]</a>
 	    </li>
 	    <li>
 	      <a target="_blank" href="[% path_prefix %]/info/anschaffung.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/anschaffung.include?l=[% lang %]">[% msg.maketext("Bücher zum Kauf vorschlagen") %]</a>
@@ -131,7 +131,7 @@
 	      <a class="dropdown-item" target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/fernleihe.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/fernleihe.include?l=[% lang %]">[% msg.maketext("Alles rund um die Fernleihe") %]</a>
 	    </li>
 	    <li>
-	      <a class="dropdown-item" target="_blank" href="https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/kurse/index_ger.html" target="_blank">[% msg.maketext("Recherchekurse der USB") %]</a>
+	      <a class="dropdown-item" target="_blank" href="https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/kurse/index_ger.html" target="_blank">[% msg.maketext("Kursangebot der USB") %]</a>
 	    </li>
 	    <li>
 	      <a class="dropdown-item" target="_blank" href="[% path_prefix %]/info/anschaffung.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/anschaffung.include?l=[% lang %]">[% msg.maketext("Bücher zum Kauf vorschlagen") %]</a>

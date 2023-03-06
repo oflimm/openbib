@@ -721,7 +721,7 @@ sub cleanup {
 
     # Cleanup UTF8
     # see: https://blog.famzah.net/2010/07/01/filter-a-character-sequence-leaving-only-valid-utf-8-characters/
-    $content =~ s/.*?((?:[\t\n\r\x20-\x7E])+|(?:\xD0[\x90-\xBF])+|(?:\xD1[\x80-\x8F])+|(?:\xC3[\x80-\xBF])+|).*?/$1/sg;
+#    $content =~ s/.*?((?:[\t\n\r\x20-\x7E])+|(?:\xD0[\x90-\xBF])+|(?:\xD1[\x80-\x8F])+|(?:\xC3[\x80-\xBF])+|).*?/$1/sg;
 
     $content=~s/\s*[.,:\/]\s*$//g;
     $content=~s/&/&amp;/g;

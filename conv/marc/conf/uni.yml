@@ -1,0 +1,14 @@
+localfields:
+  holdings:
+    '0944':
+       'd': 'id'
+       'h': '3330' # Permanent library subfield
+       's': '0014' # Item call number subfield
+       'k': '0016' # Permanent location subfield
+       'a': '0010' # Barcode subfield
+       'p': '0020' # Item policy subfield
+       'g': '0021' # Material type subfield
+       'e': '0022' # Item status subfield
+       'b': '0023' # Call number subfield
+       'm': '0024' # Current location subfield
+       'i': '0025' # Description subfield

@@ -46,6 +46,7 @@ use DBI;
 use BerkeleyDB;
 use JSON::XS qw(decode_json encode_json);
 use Log::Log4perl qw(get_logger :levels);
+use YAML::Syck;
 
 use OpenBib::Config;
 use OpenBib::Common::Util;
@@ -222,30 +223,31 @@ while (<DAT>){
 		    };
 		    
 		    # Cachen von Normdateninhalten
-		    if ($field_nr eq "0100" || $field_nr eq "0700"){
+		    if ($field eq "100" || $field eq "700"){
 			$person_data_ref->{$subfield_code} = $content;
 		    }
-		    elsif ($field_nr eq "0110" || $field_nr eq "0710"){
+		    elsif ($field eq "110" || $field eq "710"){
 			$corporatebody_data_ref->{$subfield_code} = $content;
 		    }
-		    elsif ($field_nr eq "0082"){
+		    elsif ($field eq "082"){
 			$classification_data_ref->{$subfield_code} = $content;
 		    }
-		    elsif ($field_nr eq "0650" || $field_nr eq "0650"){
+		    elsif ($field eq "650" || $field eq "650"){
 			$subject_data_ref->{$subfield_code} = $content;
 		    }
-		    elsif (defined $localfields_ref->{$field_nr}){
+
+		    if (defined $localfields_ref->{$field}){
 			$holding_data_ref->{$subfield_code} = $content;
 		    }
 		}
 	    }
 	    
 	    # Zusaetzlich ggf. Generierung der Normdaten
-	    
+
 	    # Verfasser
-	    if ($field_nr eq "0100" || $field_nr eq "0700"){
+	    if ($field eq "100" || $field eq "700"){
 		# Verfasser
-		my $linkage = $person_data_ref->{'6'} || "";
+		my $linkage   = $person_data_ref->{'6'} || "";
 		
 		my $content_a = $person_data_ref->{'a'} || ""; # Personal name
 		my $content_b = $person_data_ref->{'b'} || ""; # Numeration
@@ -283,8 +285,8 @@ while (<DAT>){
 		}		
 	    } # Ende Personen 
 	    # Koerperschaften
-	    elsif ($field_nr eq "0110" || $field_nr eq "0710"){
-		my $linkage = $corporatebody_data_ref->{'6'} || "";
+	    elsif ($field eq "110" || $field eq "710"){
+		my $linkage   = $corporatebody_data_ref->{'6'} || "";
 		
 		my $content_a = $corporatebody_data_ref->{'a'} || ""; # Name
 		
@@ -311,7 +313,7 @@ while (<DAT>){
 		}
 	    } # Ende Koerperschaften
 	    # Klassifikationen
-	    elsif ($field_nr eq "0082"){
+	    elsif ($field eq "082"){
 		my $linkage = $classification_data_ref->{'6'} || "";
 		
 		my $content = $classification_data_ref->{'a'} || ""; # Name
@@ -339,7 +341,7 @@ while (<DAT>){
 		}		
 	    } # Ende Klassifikationen
 	    # Schlagworte
-	    elsif ($field_nr eq "0650" || $field_nr eq "0650"){
+	    elsif ($field eq "650" || $field eq "650"){
 		my $linkage = $classification_data_ref->{'6'} || "";
 		
 		my $content_a = $subject_data_ref->{'a'} || ""; # Name
@@ -373,8 +375,8 @@ while (<DAT>){
 		}		
 	    } # Ende Subject
 	    # Exemplardaten
-	    elsif (defined $localfields_ref->{$field_nr}){
-		$logger->debug("Processing field $field_nr");
+	    elsif (defined $localfields_ref->{$field}){
+		$logger->debug("Processing field $field");
 		
 		my $holding_ref = {
 		    'id'     => $mexid++,
@@ -390,9 +392,9 @@ while (<DAT>){
 		    },
 		};
 		
-		foreach my $subfield (keys %{$localfields_ref->{$field_nr}}){
+		foreach my $subfield (keys %{$localfields_ref->{$field}}){
 		    $logger->debug("Processing subfield $subfield");
-		    my $destfield = $localfields_ref->{$field_nr}{$subfield};
+		    my $destfield = $localfields_ref->{$field}{$subfield};
 		    my $content = $holding_data_ref->{$subfield};
 		    
 		    # Ggf. ID in Subfeld verwenden
@@ -401,13 +403,17 @@ while (<DAT>){
 		    }
 		    else {
 			push @{$holding_ref->{fields}{$destfield}}, {
-			    content  => cleanup($content),
+			    content  => $normalizer->cleanup($content),
 			    subfield => '',
 			    mult     => 1,
 			};
 		    }
 		}
-		    
+
+		if ($logger->is_debug){
+		    $logger->debug(Dump($holding_ref));
+		}
+		
 		print HOLDING encode_json $holding_ref,"\n";
 	    }	    
 	    

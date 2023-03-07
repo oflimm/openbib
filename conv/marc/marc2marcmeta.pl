@@ -404,7 +404,7 @@ while (my $record = safe_next($batch)){
 		my $localfields_ref = $convconfig->{localfields}{holdings};
 
 		if (defined $localfields_ref->{$field_nr}){
-		    $logger->info("Processing field $field_nr");
+		    $logger->debug("Processing field $field_nr");
 		    
 		    my $holding_ref = {
 			'id'     => $mexid++,
@@ -421,7 +421,7 @@ while (my $record = safe_next($batch)){
 		    };
 		    
 		    foreach my $subfield (keys %{$localfields_ref->{$field_nr}}){
-			$logger->info("Processing subfield $subfield");
+			$logger->debug("Processing subfield $subfield");
 			my $destfield = $localfields_ref->{$field_nr}{$subfield};
 			my $content = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string($subfield)):$field->as_string($subfield);
 
@@ -555,9 +555,11 @@ while (my $record = safe_next($batch)){
     }
     
     print TITLE encode_json $title_ref, "\n";
+
+    if ($logger->is_debug){
+	$logger->debug(encode_json $title_ref);
+    }
     
-    $logger->debug(encode_json $title_ref);
-        
     if ( my @warnings = $batch->warnings() ) {
         $logger->error(join(' ; ',@warnings));
     }

@@ -11749,7 +11749,7 @@ convtab:
       '5050': 1
       '5055': 1
 
-  alma:
+  uni:
     store_full_record: 1
     local_enrichmnt:
       '4100': 1        # BK

@@ -55,13 +55,15 @@ use OpenBib::Conv::Common::Util;
 
 our (%person,%corporatebody,%subject,%classification);
 
-my ($inputfile,$configfile,$database,$loglevel);
+my ($inputfile,$configfile,$database,$loglevel,$help,$reducemem);
 
 &GetOptions(
     "database=s"      => \$database,
     "inputfile=s"     => \$inputfile,
     "configfile=s"    => \$configfile,
+    "reduce-mem"      => \$reducemem,
     "loglevel=s"      => \$loglevel,
+    "help"            => \$help,    
     );
 
 my $logfile = "/var/log/openbib/marcjson2marcmeta-${database}.log";
@@ -91,12 +93,8 @@ my $enrichmnt = new OpenBib::Enrichment;
 our $normalizer = new Normalizer;
 
 if (!$inputfile){
-    print << "HELP";
-marcxml2marcmeta.pl - Aufrufsyntax
-
-    marc2marcmeta.pl --inputfile=xxx --configfile=yyy
-HELP
-exit;
+    print_help();
+    exit;
 }
 
 # Ininitalisierung mit Config-Parametern
@@ -122,10 +120,12 @@ open (HOLDING,       ">:raw","meta.holding");
 # tie %classification, 'DB_File', "./classification.db", $flags, 0777, $db ;
 # tie %subject, 'DB_File', "./subject.db", $flags, 0777, $db ;
 
-tie %person, 'BerkeleyDB::Hash', -Filename      => "person.db";
-tie %corporatebody, 'BerkeleyDB::Hash', -Filename      => "corporatebody.db";
-tie %classification, 'BerkeleyDB::Hash', -Filename      => "classification.db";
-tie %subject, 'BerkeleyDB::Hash', -Filename      => "subject.db";
+if ($reducemem){
+    tie %person, 'BerkeleyDB::Hash', -Filename      => "person.db";
+    tie %corporatebody, 'BerkeleyDB::Hash', -Filename      => "corporatebody.db";
+    tie %classification, 'BerkeleyDB::Hash', -Filename      => "classification.db";
+    tie %subject, 'BerkeleyDB::Hash', -Filename      => "subject.db";
+}
 
 our $excluded_titles = 0;
 
@@ -632,6 +632,25 @@ sub add_subject {
     return;
 }
 
+sub print_help {
+    print << "HELP";
+marcjson2marcmeta.pl - Aufrufsyntax
+
+    marcjson2marcmeta.pl --inputfile=xxx --configfile=yyy
+
+      --inputfile=source.json      : Name der Eingabedatei
+      --configfile=pool.yml        : Name der Parametrisierungsdaei
+      --database=pool              : Name der Katalogdatenbank
+
+      -reduce-mem                  : Speichernutzungsreduzierung durch Auslagerungsdateien
+      
+Die Eingabedatei muss im MARC-IN-JSON Format vorliegen, wie es yaz-marcdump generiert:
+
+yaz-marcdump -o json source.mrc | jq -S -c . > source.json
+
+HELP
+
+}
 
 package Normalizer;
 

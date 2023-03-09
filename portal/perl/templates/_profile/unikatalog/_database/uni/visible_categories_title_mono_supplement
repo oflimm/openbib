@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: visible_categories_titset
+# Templatename: visible_categories_title_mono_supplement
 #
 # Typ         : Subtemplate
 #
@@ -14,6 +14,14 @@
 [%-# Ausgabekategorien -%]
 [%- supplemental_categories = [
                 'T0435', # msg.maketext("T0435") Format
+                'T0405', # msg.maketext("T0405") Erscheinungsverlauf
+                'T0523', # msg.maketext("T0523") Erscheinungsweise
+                'T0591', # msg.maketext("T0591") Verfasser Quelle
+                'T0594', # msg.maketext("T0594") ErschOrt Quelle
+                'T0595', # msg.maketext("T0595") ErschJahr Quelle
+#                'T0434', # msg.maketext("T0434") Ill_Angabe
+                'T0413', # msg.maketext("T0413") Drucker
+#                'T0035', # msg.maketext("T0035") ErschLand
                 'Verfasserangabe', # msg.maketext("Verfasserangabe") Vorl. Verfasser/Koerperschaft
                 'T0670', # msg.maketext("T0670") Sachtitel in abweichender Orthographie
                 'T0333', # msg.maketext("T0333") Zu erg. Urheber/HST Urheber
@@ -23,7 +31,9 @@
                 'T0365', # msg.maketext("T0365") Gemeins. Angaben
                 'T0369', # msg.maketext("T0369") Gemeins. Angaben Verfasser
                 'T0360', # msg.maketext("T0360") Vorl. Unterreihe
+                'T0590', # msg.maketext("T0590") HSTQuelle
                 'T0585', # msg.maketext("T0585") ISSN der Quelle
+#                'T0600', # msg.maketext("T0600") Bemerkung
                 'T0407', # msg.maketext("T0407") Massstab
                 'T0504', # msg.maketext("T0504") PST Fussnote
                 'T0505', # msg.maketext("T0505") WST Fussnote
@@ -57,20 +67,21 @@
                 #'T4410', # msg.maketext("T4410") Allgemeiner (Medien)Typ
                 #'T0800', # msg.maketext("T0800") Art/Inhalt Medienart z.B. 'a', daher irrelevant fuer Nutzer
                 'Schlagwort', # msg.maketext("Schlagwort") Schlagwort
-                'T0902', # msg.maketext("T0902") Schlagwort
-                'T0907', # msg.maketext("T0907") Schlagwort
-                'T0912', # msg.maketext("T0912") Schlagwort
-                'T0917', # msg.maketext("T0917") Schlagwort
-                'T0922', # msg.maketext("T0922") Schlagwort
-                'T0927', # msg.maketext("T0927") Schlagwort
-                'T0932', # msg.maketext("T0932") Schlagwort
-                'T0937', # msg.maketext("T0937") Schlagwort
-                'T0942', # msg.maketext("T0942") Schlagwort
-                'T0947', # msg.maketext("T0947") Schlagwort
+                #'T0902', # msg.maketext("T0902") Schlagwort
+                #'T0907', # msg.maketext("T0907") Schlagwort
+                #'T0912', # msg.maketext("T0912") Schlagwort
+                #'T0917', # msg.maketext("T0917") Schlagwort
+                #'T0922', # msg.maketext("T0922") Schlagwort
+                #'T0927', # msg.maketext("T0927") Schlagwort
+                #'T0932', # msg.maketext("T0932") Schlagwort
+                #'T0937', # msg.maketext("T0937") Schlagwort
+                #'T0942', # msg.maketext("T0942") Schlagwort
+                #'T0947', # msg.maketext("T0947") Schlagwort
                 'E4300', # msg.maketext("E4300") Schlagwort Extern
                 'Klassifikation', # msg.maketext("Klassifikation") Notation
                 #'E4100', # msg.maketext("E4100") Basisklassifikation
                 'E4102', # msg.maketext("E4102") KUG Themengebiet
+                'T1664', # msg.maketext("T1664") Provenienz
                 'T4220', # msg.maketext("T4220") Nutzer
                 'E4110', # msg.maketext("E4110") Inhaltsverzeichnis
                 'E4120', # msg.maketext("E4120") Ebook-URL
@@ -97,8 +108,7 @@
                 'T4211', # msg.maketext("T4211") Preis
                 'T4212', # msg.maketext("T4212") Waehrung
                 'T4210', # msg.maketext("T4210") Copyright-Information
-                'T0501', # msg.maketext("T0501") Fussnoten		
-                'Hinweis', # msg.maketext("Hinweis") Bemerkung
+                'Hinweise', # msg.maketext("Hinweise") Fussnoten		
                 ]
 
 -%]

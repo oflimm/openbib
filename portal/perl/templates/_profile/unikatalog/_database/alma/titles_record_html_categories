@@ -542,6 +542,7 @@ display_types = {
    'Hinweis'        => 'list',   
 };
 
+#USE dumper;dumper.dump(content_map);dumper.dump(categories);dumper.dump(record_type);
 
 FOREACH category IN categories;
 
@@ -561,7 +562,7 @@ FOREACH category IN categories;
       END;
 
       # Titel hervorheben
-      IF category == "T0331";
+      IF category == "Titel";
         content = "<span class=\"ob-title\">${content}</span>";
       END;
 -%]

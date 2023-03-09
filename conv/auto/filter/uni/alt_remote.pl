@@ -41,15 +41,18 @@ my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
 my $confdir       = $config->{'base_dir'}."/conf";
 my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
-my $marc2metaexe   = "$konvdir/marc2marcmeta.pl";
+my $marc2metaexe   = "$konvdir/marcjson2marcmeta.pl";
 
 my $pool          = $ARGV[0];
 
 my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 
 my $filename      = $dbinfo->titlefile;
-print "### $pool: Konvertierung von $filename\n";
+
 system("cd $pooldir/$pool ; rm meta.* ");
-print "### $pool: Heilen der Daten mit yaz-marcdump $filename\n";
-system("cd $pooldir/$pool ; /usr/bin/yaz-marcdump -o marc -t UTF-8 $filename > ${filename}.processed");
-system("cd $pooldir/$pool; $marc2metaexe --database=$pool --inputfile=${filename}.processed --configfile=/opt/openbib/conf/uni.yml; gzip meta.*");
+
+print "### $pool: Umwandlung von $filename in MARC-in-JSON via yaz-marcdump\n";
+system("cd $pooldir/$pool; yaz-marcdump -o json $filename  | jq -S -c . > ${filename}.processed");
+
+print "### $pool: Konvertierung von $filename\n";
+system("cd $pooldir/$pool; $marc2metaexe --database=$pool -reduce-mem --inputfile=${filename}.processed --configfile=/opt/openbib/conf/uni.yml; gzip meta.*");

@@ -6,7 +6,7 @@
 #
 #  Parallele Indexierung in verschiedenen Suchmaschinen
 #
-#  Dieses File ist (C) 2021 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2021-2023 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -40,7 +40,7 @@ use Parallel::ForkManager;
 
 use OpenBib::Config;
 
-my ($database,$indexname,$xapianindexname,$elasticsearchindexname,$help,@sb,$logfile,$loglevel,$incremental);
+my ($database,$indexname,$xapianindexname,$elasticsearchindexname,$help,@sb,$logfile,$loglevel,$incremental,$authority);
 
 &GetOptions("database=s"      => \$database,
 	    "indexname=s"     => \$indexname,
@@ -49,6 +49,7 @@ my ($database,$indexname,$xapianindexname,$elasticsearchindexname,$help,@sb,$log
             "logfile=s"       => \$logfile,
             "loglevel=s"      => \$loglevel,
             "incremental"     => \$incremental,
+            "authority"       => \$authority,
 	    "search-backend=s@" => \@sb,
 	    "help"            => \$help
 	    );
@@ -94,6 +95,18 @@ my $tooldir       = $config->{'tool_dir'};
 
 my $use_searchengine_ref = {};
 
+my $xapian_cmd = "$config->{'base_dir'}/conv/file2xapian.pl";
+my $es_cmd     = "$config->{'base_dir'}/conv/file2elasticsearch.pl";
+
+if ($authority){
+    $logger->info("### $database: Building authority index");
+    $xapian_cmd = "$config->{'base_dir'}/conv/authority2xapian.pl";
+    $es_cmd     = "$config->{'base_dir'}/conv/authority2elasticsearch.pl";
+}
+else {
+    $logger->info("### $database: Building catalog index");
+}
+
 # Zu nutzende lokale Suchmaschinen-Backends bestimmen
 {
     if (@sb){
@@ -124,7 +137,10 @@ INDEX_PART:
 	    my $indexpathtmp = $config->{xapian_index_base_path}."/$xapianindexname";
 	    $logger->info("### $database: Importing data into Xapian searchengine");
 	    
-	    my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl --loglevel=$loglevel -with-sorting -with-positions --database=$xapianindexname --indexpath=$indexpathtmp";
+	    my $cmd = "cd $rootdir/data/$database/ ; $xapian_cmd --loglevel=$loglevel -with-sorting -with-positions --database=$xapianindexname --indexpath=$indexpathtmp";
+	    if ($authority){
+		$cmd = "cd $rootdir/data/$database/ ; $xapian_cmd --loglevel=$loglevel -with-sorting -with-positions --database=$database --indexpath=$indexpathtmp";
+	    }
 	    
 	    if ($incremental){
 		$cmd.=" -incremental --deletefile=$rootdir/data/$database/title.delete";
@@ -139,8 +155,12 @@ INDEX_PART:
 	if ($searchengine eq "elasticsearch"){
 	    $logger->info("### $database: Importing data into ElasticSearch searchengine");
 	    
-	    my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2elasticsearch.pl --database=$database";
+	    my $cmd = "cd $rootdir/data/$database/ ; $es_cmd --database=$database";
 
+	    if ($authority){
+		$cmd = "cd $rootdir/data/$database/ ; $es_cmd --loglevel=$loglevel --database=$database";
+	    }
+	    
 	    if ($incremental){
 		$cmd.=" --indexname=$elasticsearchindexname -incremental --deletefile=$rootdir/data/$database/title.delete";
 	    }
@@ -176,10 +196,14 @@ index-in-parallel.pl - Parallele Indexierung in mehreren Suchmaschinen-Backends
    -help                 : Diese Informationsseite
        
    --database=...        : Angegebenen Katalog verwenden
-   --indexname=...       : Name des Index
+   --indexname=...       : Standard Name des Index fuer Xapian und Elasticsearch
+   --xapian-indexname=...: Name des Xapian Index
+   --es-indexname=...    : Name des Elasticsearch Index
    --loglevel=[DEBUG|..] : Loglevel aendern
    --logfile=...         : Logdateinamen aendern
    --search-backend=...  : Angabe mehrerer Suchmaschinen, in denen Indexiert werden soll
+
+   -authority            : Normdatenindizes erzeugen
 
 ENDHELP
     exit;

@@ -6,7 +6,7 @@
 #
 #  Automatische Konvertierung
 #
-#  Default: JSON-basiertes Metadaten-Format (angelehnt an MAB2)
+#  Default: JSON-basiertes Metadaten-Format (intern MAB2 oder MARC21)
 #
 #  Andere : Ueber Plugins/Filter realisierbar
 #
@@ -569,48 +569,68 @@ if ($use_searchengine_ref->{"elasticsearch"}){
 	system("$config->{autoconv_dir}/filter/$database/alt_searchengine_authority.pl $database");
     }
     else {
-	if ($use_searchengine_ref->{"xapian"}){
-	    my $authority_indexpathtmp = $config->{xapian_index_base_path}."/$authoritytmp";
+	my $num_searchengines = keys %$use_searchengine_ref;
+
+	if ($num_searchengines == 1){
+	
+	    if ($use_searchengine_ref->{"xapian"}){
+		my $authority_indexpathtmp = $config->{xapian_index_base_path}."/$authoritytmp";
+		
+		# Inkrementelle Aktualisierung der Normdatenindizes wird zunaechst nicht realisiert. Es werden immer anhand der aktuellen Daten alle Normdatenindizes neu erzeugt!!!
+		# Zukuenftig kann die inkrementelle Aktualisierung jedoch implementiert werden
+		
+		$logger->info("### $database: Importing authority data into Xapian searchengine");
+		
+		my $cmd = "$config->{'base_dir'}/conv/authority2xapian.pl --loglevel=$loglevel -with-sorting -with-positions --database=$database --indexpath=$authority_indexpathtmp";
+		
+		$logger->info("Executing: $cmd");
+		
+		system($cmd);
+	    }
 	    
-	    # Inkrementelle Aktualisierung der Normdatenindizes wird zunaechst nicht realisiert. Es werden immer anhand der aktuellen Daten alle Normdatenindizes neu erzeugt!!!
-	    # Zukuenftig kann die inkrementelle Aktualisierung jedoch implementiert werden
-	    #if ($incremental && $authority &&& $authoritytmp){
-	    #    system("rsync -av --delete $config->{xapian_index_base_path}/$authority/ $config->{xapian_index_base_path}/$authoritytmp/");
-	    #}
+	    # Elasticsearch
+	    if ($use_searchengine_ref->{"elasticsearch"}){
+		$logger->info("### $database: Importing authority data into ElasticSearch searchengine");
+		
+		my $cmd = "$config->{'base_dir'}/conv/authority2elasticsearch.pl --loglevel=$loglevel -with-sorting --database=$database";
+		
+		$cmd.=" --indexname=$es_new_authority_indexname";
+		
+		$logger->info("Executing: $cmd");
+		
+		system($cmd);
+		
+	    }
 	    
-	    $logger->info("### $database: Importing authority data into Xapian searchengine");
+	    # SOLR
+	    if ($use_searchengine_ref->{"solr"}){
+		$logger->info("### $database: Importing authority data into SOLR searchengine currently not supported");
+		$logger->info("### $database: Authority Data import to SOLR currently not supported");   
+		#	    my $cmd = "$config->{'base_dir'}/conv/authority2solr.pl --loglevel=$loglevel -with-sorting --database=$database";
+		#	    $logger->info("Executing: $cmd");
+		
+		#	    system($cmd);
+	    }
+	}
+	elsif ($num_searchengines > 1){
+	    my $cmd = "$rootdir/bin/index-in-parallel.pl --loglevel=$loglevel --database=$database -authority";
 	    
-	    my $cmd = "$config->{'base_dir'}/conv/authority2xapian.pl --loglevel=$loglevel -with-sorting -with-positions --database=$database --indexpath=$authority_indexpathtmp";
+	    $cmd.= " ".join(' ', map { $_ = "--search-backend=$_" } keys %$use_searchengine_ref);
+
+	    # Keine Inkrementellen Updates
+	    if ($use_searchengine_ref->{'xapian'}){
+		$cmd.= " --xapian-indexname=$authoritytmp";
+	    }
+	    if ($use_searchengine_ref->{'elasticsearch'}){
+		$cmd.= " --es-indexname=$es_new_authority_indexname";
+	    }
 	    
 	    $logger->info("Executing: $cmd");
 	    
 	    system($cmd);
 	}
+    }
 
-	# Elasticsearch
-	if ($use_searchengine_ref->{"elasticsearch"}){
-	    $logger->info("### $database: Importing authority data into ElasticSearch searchengine");
-	    
-	    my $cmd = "$config->{'base_dir'}/conv/authority2elasticsearch.pl --loglevel=$loglevel -with-sorting --database=$database";
-
-	    $cmd.=" --indexname=$es_new_authority_indexname";
-	    	    
-	    $logger->info("Executing: $cmd");
-	    
-	    system($cmd);
-
-	}
-
-    	# SOLR
-	if ($use_searchengine_ref->{"solr"}){
-	    $logger->info("### $database: Importing authority data into SOLR searchengine currently not supported");
-	    $logger->info("### $database: Authority Data import to SOLR currently not supported");   
-#	    my $cmd = "$config->{'base_dir'}/conv/authority2solr.pl --loglevel=$loglevel -with-sorting --database=$database";
-#	    $logger->info("Executing: $cmd");
-	    
-#	    system($cmd);
-	}
-}
     my $btime      = new Benchmark;
     my $timeall    = timediff($btime,$atime);
     my $resulttime = timestr($timeall,"nop");

@@ -13,14 +13,17 @@
        desc: 'Volkswirtschaftliche Gesamtrechnung (Makroökonomik)'
     'AF':
        desc: 'Raumforschung, Regionalplanung'
+       is_empty: 1
     'AG':
        desc: 'Entwicklungshilfewesen'
+       is_empty: 1
     'AH':
        desc: 'Wirtschaftsbewegung, Wirtschaftsbeobachtung'
     'AJ':
        desc: 'Geld und Währung, Zahlungs- und Kreditverkehr, Bank- und Börsenwesen'
     'AK':
        desc: 'Binnenhandel'
+       is_empty: 1
     'AL':
        desc: 'Außenwirtschaft'
     'AM':
@@ -31,12 +34,15 @@
        desc: 'Sozialpolitik'
     'AP':
        desc: 'Industrie, Gewerbe, Handwerk'
+       is_empty: 1
     'AQ':
        desc: 'Energiewirtschaft'
     'AR':
        desc: 'Land- und Forstwirtschaft'
+       is_empty: 1
     'AS':
        desc: 'Verkehrs- und Nachrichtenwesen'
+       is_empty: 1
     'AT':
        desc: 'Finanzwissenschaft'
     'AU':
@@ -45,10 +51,13 @@
        desc: 'Privatversicherung'
     'AW':
        desc: 'Sozialversicherung'
+       is_empty: 1
     'AX':
        desc: 'Genossenschaftswesen'
+       is_empty: 1
     'AY':
        desc: 'Bevölkerungslehre'
+       is_empty: 1
     'AZ':
        desc: 'Wirtschafts- und Sozialstatistik'    
 'B':

@@ -24,16 +24,22 @@
 <div class="table-responsive mt-3">
 <table class="table table-striped ">
 [%- FOREACH lbssubid IN usblbs.${lbsid}.sub.keys.sort -%]
-[%  NEXT IF usblbs.${lbsid}.sub.${lbssubid}.is_empty %]
 [% IF usblbs.${lbsid}.sub.${lbssubid}.defined('heading') %]
 <tr>
 <th style="font-weight:bold;font-size:1.2em;" colspan="2">[% usblbs.${lbsid}.sub.${lbssubid}.heading %]</th>
 </tr>
 [% END %]
+[%  IF usblbs.${lbsid}.sub.${lbssubid}.is_empty %]
+<tr>
+<th style="font-weight:bold;font-size:1.2em;" width="5%">[% lbssubid %]</th>
+<td><span class="ms-3">[% usblbs.${lbsid}.sub.${lbssubid}.desc %] | <i class="fas fa-ban"></i> keine Medien</span></td>
+</tr>
+[%  ELSE %]
 <tr>
 <th style="font-weight:bold;font-size:1.2em;" width="5%">[% lbssubid %]</th>
 <td><a class="inturl ms-3" href="[% path_prefix %]/[% config.get('search_loc') %].html?fmark=[% lbssubid %]*;srt=mark_asc;profile=[% lbs_profileid %];l=[% lang%]">[% usblbs.${lbsid}.sub.${lbssubid}.desc %]</a></td>
 </tr>
+[%  END %]
 [% END %]
 </table>
 </div>

@@ -24,6 +24,7 @@
 <div class="table-responsive mt-3">
 <table class="table table-striped ">
 [%- FOREACH lbssubid IN usblbs.${lbsid}.sub.keys.sort -%]
+[%  NEXT IF usblbs.${lbsid}.sub.${lbssubid}.is_empty %]
 [% IF usblbs.${lbsid}.sub.${lbssubid}.defined('heading') %]
 <tr>
 <th style="font-weight:bold;font-size:1.2em;" colspan="2">[% usblbs.${lbsid}.sub.${lbssubid}.heading %]</th>

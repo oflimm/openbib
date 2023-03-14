@@ -13,14 +13,17 @@
        desc: 'Volkswirtschaftliche Gesamtrechnung (Makroökonomik)'
     'AF':
        desc: 'Raumforschung, Regionalplanung'
+       is_empty: 1
     'AG':
        desc: 'Entwicklungshilfewesen'
+       is_empty: 1
     'AH':
        desc: 'Wirtschaftsbewegung, Wirtschaftsbeobachtung'
     'AJ':
        desc: 'Geld und Währung, Zahlungs- und Kreditverkehr, Bank- und Börsenwesen'
     'AK':
        desc: 'Binnenhandel'
+       is_empty: 1
     'AL':
        desc: 'Außenwirtschaft'
     'AM':
@@ -31,12 +34,15 @@
        desc: 'Sozialpolitik'
     'AP':
        desc: 'Industrie, Gewerbe, Handwerk'
+       is_empty: 1
     'AQ':
        desc: 'Energiewirtschaft'
     'AR':
        desc: 'Land- und Forstwirtschaft'
+       is_empty: 1
     'AS':
        desc: 'Verkehrs- und Nachrichtenwesen'
+       is_empty: 1
     'AT':
        desc: 'Finanzwissenschaft'
     'AU':
@@ -45,10 +51,13 @@
        desc: 'Privatversicherung'
     'AW':
        desc: 'Sozialversicherung'
+       is_empty: 1
     'AX':
        desc: 'Genossenschaftswesen'
+       is_empty: 1
     'AY':
        desc: 'Bevölkerungslehre'
+       is_empty: 1
     'AZ':
        desc: 'Wirtschafts- und Sozialstatistik'    
 'B':
@@ -58,6 +67,7 @@
        desc: 'Einführungen, Kompendien, Grundrisse'
     'BB':
        desc: 'Geschichte der Betriebswirtschaftslehre'
+       is_empty: 1
     'BC':
        desc: 'Operations Research, Unternehmensforschung, Entscheidungstheorie, Unternehmensplanung, Mathematische Methoden der BWL'
     'BD':
@@ -66,10 +76,12 @@
        desc: 'Unternehmensorganisation'
     'BF':
        desc: 'Unternehmensformen und -gestaltung, Unternehmensgründung'
+       is_empty: 1
     'BG':
        desc: 'Controlling'
     'BH':
        desc: 'Forschung und Entwicklung'
+       is_empty: 1
     'BJ':
        desc: 'Finanzierung und Investition'
     'BK':
@@ -96,10 +108,13 @@
        desc: 'Bewertung'
     'BX':
        desc: 'Betriebsanalyse, Betriebsvergleich, Kennzahlenrechnung'
+       is_empty: 1
     'BY':
        desc: 'Wirtschaftsrechnen, Finanzmathematik'
+       is_empty: 1
     'BZ':
        desc: 'Schriftverkehr, Büroorganisation'
+       is_empty: 1
 'C':
   desc: 'Spezielle Betriebswirtschaftslehre'
   sub:
@@ -109,8 +124,10 @@
        desc: 'Handelsbetriebslehre'
     'CC':
        desc: 'Industrie- und Handwerksbetriebslehre'
+       is_empty: 1
     'CD':
        desc: 'Wirtschaftsprüfungs- und Revisionswesen'
+       is_empty: 1
     'CE':
        desc: 'Betriebswirtschaftliche Steuerlehre'
     'CF':
@@ -121,10 +138,13 @@
        desc: 'Genossenschaften, Genossenschaftsbetriebslehre'
     'CK':
        desc: 'Wirtschaftliche Warenlehre'
+       is_empty: 1
     'CM':
        desc: 'Betriebswirtschaftliche Statistik'
+       is_empty: 1
     'CO':
        desc: 'Betriebslehre öffentlicher Betriebe, Nonprofit-Organisation'
+       is_empty: 1
     'CP':
        desc: 'Gesundheitsökonomie'
 'DA-DO':
@@ -147,6 +167,7 @@
        desc: 'Wirtschafts- und Sozialpädagogik (Einführungen, Grundrisse)'
     'DS':
        desc: 'Wirtschafts- und sozialwissenschaftliche Studien'
+       is_empty: 1
 'EA-EQ':
   desc: 'Informatik'
   sub:
@@ -158,6 +179,7 @@
        desc: 'Praxis des Programmierens'
     'ED':
        desc: 'Betriebssysteme / verteilte Systeme'
+       is_empty: 1
     'EE':
        desc: 'Datenbanken'
     'EF':
@@ -172,6 +194,7 @@
        desc: 'Internet / World Wide Web'
     'EM':
        desc: 'Medieninformatik'
+       is_empty: 1
 'ER-EZ':
   desc: 'Allgemeines'
   sub:
@@ -194,13 +217,16 @@
        heading: 'Antikes Recht, Rechts- und Verfassungsgeschichte'
     'FE':
        desc: 'Deutsches Recht'
+       is_empty: 1
     'FF':
        desc: 'Römische Rechtsgeschichte'
     'FG':
        desc: 'Römisches Recht'
+       is_empty: 1
     'FJ':
        desc: 'Einführungen ins Bürgerliche Recht'
        heading: 'Privatrecht - Bürgerliches Recht'
+       is_empty: 1
     'FK':
        desc: 'BGB-Kommentare'
     'FL':
@@ -217,8 +243,10 @@
        desc: 'Erbrecht'
     'FR':
        desc: 'Nebengesetze'
+       is_empty: 1
     'FS':
        desc: 'Versicherungsrecht'
+       is_empty: 1
     'FT':
        desc: 'HGB-Kommentare'
        heading: 'Privatrecht - Handelsrecht und Nebengebiete'
@@ -228,6 +256,7 @@
        desc: 'Gesellschafts- und Genossenschaftsrecht'
     'FW':
        desc: 'Wertpapierrecht'
+       is_empty: 1
     'FZ':
        desc: 'Urheberrecht und gewerblicher Rechtsschutz'
     'GG':
@@ -240,6 +269,7 @@
     'GM':
        desc: 'Freiwillige Gerichtsbarkeit, Kostenrecht'
        heading: 'Freiwillige Gerichtsbarkeit'
+       is_empty: 1
     'GO':
        desc: 'StGB-Kommentare'
        heading: 'Strafrecht'
@@ -271,6 +301,7 @@
        desc: 'Grundrechte'
     'HF':
        desc: 'Bundesverfassungsgericht'
+       is_empty: 1
     'HJ':
        desc: 'Lehrbücher, Grundrisse und Hilfsmittel zum Verwaltungsrecht'
        heading: 'Verwaltungsrecht'
@@ -280,19 +311,24 @@
        desc: 'Polizei- und Ordnungsrecht'
     'HM':
        desc: 'Straßenverkehrsrecht'
+       is_empty: 1
     'HN':
        desc: 'Gemeinderecht, Baurecht'
     'HQ':
        desc: 'Sozialrecht'
+       is_empty: 1
     'HR':
        desc: 'Medienrecht'
+       is_empty: 1
     'HS':
        desc: 'Wirtschaftsrecht im allgemeinen'
        heading: 'Wirtschaftsrecht'
     'HT':
        desc: 'Gewerberecht, Umweltrecht'
+       is_empty: 1
     'HV':
        desc: 'Kartellrecht'
+       is_empty: 1
     'JA':
        desc: 'Arbeitsrecht u. Beamtenrecht'
        heading: 'Verschiedenes'
@@ -304,10 +340,12 @@
        desc: 'Internationales Privatrecht'
     'JL':
        desc: 'Rechtsvergleichung'
+       is_empty: 1
     'JM':
        desc: 'Ausländisches Recht'
     'JZ':
        desc: 'Juristische Wörterbücher'
+       is_empty: 1
 'KA-KE':
   desc: 'Philosophie'
   sub:
@@ -352,6 +390,7 @@
   sub:
     'LG':
        desc: 'Allgemeine Sprachwissenschaft: Geschichte'
+       is_empty: 1
     'LH':
        desc: 'Allgemeine Sprachwissenschaft: Einführungen und Sprachtheorie'
     'LL':
@@ -397,6 +436,7 @@
        desc: 'Deutsch als Fremdsprache'
     'NJ':
        desc: 'Stilistik, Poetik, Metrik'
+       is_empty: 1
     'NM':
        desc: 'Allgemeine Literaturgeschichte'
     'NN':
@@ -405,6 +445,7 @@
        desc: 'Einzelne Gattungen'
     'NP':
        desc: 'Einzelne Motive'
+       is_empty: 1
     'NR':
        desc: 'Einzelne Autoren (Sekundärliteratur)'
     'NS':
@@ -451,6 +492,7 @@
        desc: 'Französisch (Literaturwissenschaft)'
     'PJ':
        desc: 'Italienische Philologie (Allgemeines; auch Landeskunde, Kultur)'
+       is_empty: 1
     'PK':
        desc: 'Italienisch (Sprachwissenschaft)'
     'PL':
@@ -463,6 +505,7 @@
        desc: 'Spanisch (Literaturwissenschaft)'
     'PS':
        desc: 'Portugiesische Philologie (Allgemeines; auch Landeskunde, Kultur)'
+       is_empty: 1
     'PT':
        desc: 'Portugiesisch (Sprachwissenschaft)'
     'PU':
@@ -626,6 +669,7 @@
        desc: 'Ökologie'
     'XN':
        desc: 'Symbiose und Parasitismus'
+       is_empty: 1
     'XP':
        desc: 'Mikroorganismen'
     'XQ':
@@ -636,16 +680,19 @@
        desc: 'Zoologie, allgemein'
     'XT':
        desc: 'Zoologie, speziell'
+       is_empty: 1
     'XU':
        desc: 'Anthropologie'
     'XV':
        desc: 'Praktika, Botanik'
+       is_empty: 1
     'XW':
        desc: 'Praktika, Zoologie'
     'XY':
        desc: 'Bestimmungsbücher, Pflanzen'
     'XZ':
        desc: 'Bestimmungsbücher, Tiere'
+       is_empty: 1
 'Y':
   desc: 'Geowissenschaften'
   sub:
@@ -677,8 +724,10 @@
        desc: 'Deutschland'
     'YX':
        desc: 'Europa'
+       is_empty: 1
     'YY':
        desc: 'Außereuropa'
+       is_empty: 1
 'Z':
   desc: 'Theologie, Religionswissenschaft'
   sub:

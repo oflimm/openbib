@@ -194,7 +194,19 @@ while (<DAT>){
     foreach my $field_ref (@{$record_ref->{fields}}){
 	foreach my $field (keys %$field_ref){
 	    next unless ($field =~m/^\d+$/); # Nur numerische Feldernummern verarbeiten
-	    next if ($field =~m/^00\d$/);
+
+	    my $field_nr = sprintf "%04d", $field;
+
+	    # Leader bearbeiten
+	    if ($field =~m/^00\d$/){
+		push @{$title_ref->{'fields'}{$field_nr}}, {
+		    subfield => '', 
+		    content  => $field_ref->{$field},
+		    mult     => 1,
+		};
+
+		next;
+	    }
 	    
 	    my $person_data_ref         = {};
 	    my $corporatebody_data_ref  = {};
@@ -202,7 +214,6 @@ while (<DAT>){
 	    my $classification_data_ref = {};
 	    my $holding_data_ref        = {};	    
 	    
-	    my $field_nr = sprintf "%04d", $field;
 	    
 	    $field_mult_ref->{$field_nr} = 1 unless (defined $field_mult_ref->{$field_nr});
 

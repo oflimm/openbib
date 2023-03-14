@@ -2756,8 +2756,9 @@ sub process_marc {
     my $create_tstamp = "1970-01-01 12:00:00";
     
     if (defined $fields_ref->{'0008'} && defined $fields_ref->{'0008'}[0]) {
-	my $createdate = substr($fields_ref->{'0008'}[0]{content},0,5);
-	my ($day,$month,$year) = $createdate =~m/(\d\d)(\d\d)(\d\d)/;
+	my $date = substr($fields_ref->{'0008'}[0]{content},0,5);
+
+	my ($year,$month,$day) = $date =~m/^(\d\d)(\d\d)(\d\d)$/;
 	if ($day && $month && $year){
 	    $year = ($year < 70)?$year + 2000:$year + 1900;	    
 	    $create_tstamp = "$year-$month-$day 12:00:00";
@@ -2767,7 +2768,11 @@ sub process_marc {
     my $update_tstamp = "1970-01-01 12:00:00"; 
     
     if (defined $fields_ref->{'0005'} && defined $fields_ref->{'0005'}[0]) {
-        $update_tstamp = $fields_ref->{'0005'}[0]{content};        
+	my $date = $fields_ref->{'0005'}[0]{content};
+	my ($year,$month,$day,$hour,$minute,$second) = $date =~m/^(\d\d\d\d)(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)/;
+	if ($year && $month && $day && $hour && $minute && $second){
+	    $update_tstamp = "$year-$month-$day $hour:$minute:$second";
+	}
     }
     
     # Primaeren Normdatensatz erstellen und schreiben

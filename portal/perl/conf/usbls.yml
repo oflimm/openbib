@@ -306,6 +306,7 @@
        desc: 'Nordeuropa - Allgemein'
        start: 6100
        end: 6199
+       is_empty: 1
     'GG6200-':
        desc: 'Nordeuropa - Skandinavien'
        start: 6200
@@ -342,6 +343,7 @@
        desc: 'Südeuropa - Allgemein'
        start: 7100
        end: 7199
+       is_empty: 1
     'GG7200-':
        desc: 'Südeuropa - Mittelmeerraum'
        start: 7200
@@ -390,10 +392,12 @@
        desc: 'Östliches Afrika'
        start: 8300
        end: 8399
+       is_empty: 1
     'GG8400-':
        desc: 'Zentralafrika'
        start: 8400
        end: 8499
+       is_empty: 1
     'GG8500-':
        desc: 'Südliches Afrika'
        start: 8500
@@ -450,6 +454,7 @@
        desc: 'Australien'
        start: 10000
        end: 10099
+       is_empty: 1
     'GG10100-':
        desc: 'Ozeanien'
        start: 10100
@@ -458,14 +463,17 @@
        desc: 'Polargebiete - Allgemein'
        start: 10200
        end: 10299
+       is_empty: 1
     'GG10300-':
        desc: 'Arktis'
        start: 10300
        end: 10399
+       is_empty: 1
     'GG10400-':
        desc: 'Antarktis'
        start: 10400
        end: 999999
+       is_empty: 1
 'K':
   desc: 'Kunstgeschichte, Musikwissenschaft'
   sub:

@@ -221,45 +221,28 @@
        title = "${title} ${d}";
      END;
      
-     IF item.${'T0310'}.first.content;
-         title = item.${'T0310'}.first.content;
+     IF item.${'T0246'}.first.${'a'}; # AST
+         title = item.${'T0246'}.first.${'a'};
      END;
+
+     band = item.${"T0245"}.first.${'n'};
+     gesamttitel = item.${"T0490"}.first.${'a'};
 
      is_schriftenreihe = 0;
      is_mehrbaendig    = 0;
 
-     IF item.${'T0089'}.first.content;
+     IF band;
        is_mehrbaendig = 1;
-     ELSIF item.${'T0451'}.first.content;
+     ELSIF gesamttitel;
        is_schriftenreihe = 1;
      END;
 
      zaehlung = "";
      
      # Zaehlung Anfang Titel
-     IF is_schriftenreihe;
-       IF item.${'T0456'}.first.content;
-          zaehlung = item.${'T0456'}.first.content;
-	  IF zaehlung == title ;
-	     title = "";
-	  END;
-          title = "${zaehlung}. ${title}";
-       ELSIF item.${'T0455'}.first.content;
-          zaehlung = item.${'T0455'}.first.content;
-	  IF zaehlung == title ;
-	     title = "";
-	  END;
-          title = "${zaehlung}. ${title}";
-       END;
-     ELSIF is_mehrbaendig;
-       IF item.${'T0090'}.first.content;
-          zaehlung = item.${'T0090'}.first.content;
-	  IF zaehlung == title ;
-	     title = "";
-	  END;
-          title = "${zaehlung}. ${title}";
-       ELSIF item.${'T0089'}.first.content;
-          zaehlung = item.${'T0089'}.first.content;
+     IF is_mehrbaendig;
+       IF band ;
+          zaehlung = band;
 	  IF zaehlung == title ;
 	     title = "";
 	  END;
@@ -271,19 +254,23 @@
 
      # Uebergeordneter Titel in Klammern (super_title)
      IF is_schriftenreihe;
-       IF item.${'T0451'}.first.content;
-          super_title = item.${'T0451'}.first.content;
+       IF gesamttitel;
+          super_title = gesamttitel;
+	  IF item.${'T0490'}.first.${'v'};
+            zaehlung = item.${'T0490'}.first.${'v'};
+	    super_title = "${super_title} ; ${zaehlung}";
+	  END;
        ELSIF super;
-         IF super.fields.${'0331'} ;
-            super_title   = super.fields.${'0331'}.first.content;
-         ELSIF super.fields.${'0451'} ;
-            super_title   = super.fields.${'0451'}.first.content;
+         IF super.fields.${'0245'}.first.${'a'} ;
+            super_title   = super.fields.${'0245'}.first.${'a'};
+         ELSIF super.fields.${'0490'}.first.${'a'} ;
+            super_title   = super.fields.${'0490'}.first.${'a'};
          END;
        END;
      ELSIF is_mehrbaendig;
        IF super;
-         IF super.fields.${'0331'} ;
-            super_title   = super.fields.${'0331'}.first.content;
+         IF super.fields.${'0245'}.first.${'a'} ;
+            super_title   = super.fields.${'0245'}.first.${'a'};
 	 END;
        END;
      END;
@@ -298,7 +285,7 @@
      END;
  
      # Auflage konstruieren
-     edition = item.${'T0403'}.first.content;
+     edition = item.${'T0250'}.first.${'a'};
 
      # Verlage konstruieren
      publisher = item.${'T0260'}.first.${'b'};
@@ -315,10 +302,11 @@
      # Signaturen konstruieren
      signaturen = [];
      FOREACH part IN item.${'X0014'};
-         signaturen.push("${part.content}");
+         sig = part.${'a'};
+         signaturen.push("${sig}");
      END;
      signatur = signaturen.sort.unique.join(' ; ');
-     isbn     = item.${"T0540"}.first.content.replace('-','') || item.${"T0553"}.first.content.replace('-','');
+     isbn     = item.${"T0020"}.first.${'a'};
      dbdesc   = dbinfo.get('dbnames').${record.database}.full;
      dburl    = dbinfo.get('urls').${record.database};
 

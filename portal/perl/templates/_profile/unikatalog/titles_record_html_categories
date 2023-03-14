@@ -536,7 +536,7 @@ FOREACH field IN normdata;
 	 END;
          content_map.${'T0433'}.push(content);
 
-    CASE "T0501" ;
+    CASE [ "T0501" "T0600" ] ;
          IF NOT content_map.${'Hinweise'} ;
 	    content_map.${'Hinweise'} = [];
 	 END;

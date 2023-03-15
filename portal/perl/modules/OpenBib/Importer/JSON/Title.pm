@@ -2770,7 +2770,9 @@ sub process_marc {
     if (defined $fields_ref->{'0005'} && defined $fields_ref->{'0005'}[0]) {
 	my $date = $fields_ref->{'0005'}[0]{content};
 	my ($year,$month,$day,$hour,$minute,$second) = $date =~m/^(\d\d\d\d)(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)/;
+	($hour,$minute,$second) = ("12","00","00") if ($hour > 23 || $minute > 59 || $second > 59);
 	if ($year && $month && $day && $hour && $minute && $second){
+
 	    $update_tstamp = "$year-$month-$day $hour:$minute:$second";
 	}
     }

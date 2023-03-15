@@ -1197,6 +1197,106 @@ if ($type == 14 && $field){
     }
 }
 
+# Typ 15 => Besetzungszahlen der Titel in der USB LS-Systematik
+if ($type == 15){
+
+    unless ($database){
+       $logger->error("Die Besetzungszahlen koennen nur fuer einen Katalog bestimmt werden. Ende.");
+       exit;
+    }
+
+    my $cls = $config->load_yaml('/opt/openbib/conf/usbls.yml');
+    
+    my $counter_ref = {};
+
+    foreach my $base (keys %$cls){
+       foreach my $group (keys %{$cls->{$base}{sub}}){
+         $counter_ref->{$group} = 0;
+       }
+    }
+
+    $logger->info("Generating Type 15 metrics for database $database");
+
+    my $catalog = new OpenBib::Catalog({ database => $database });
+
+    my $usage = $catalog->get_schema->resultset('Title')->search_rs(
+            {
+                'title_fields.field' => 351,
+            },
+            {
+                select   => ['title_fields.content', {'count' => 'title_fields.titleid'}],
+                as       => ['thiscontent','titlecount'],
+                join     => ['title_fields'],
+                group_by => ['title_fields.content'],
+                order_by => { -desc => \'count(title_fields.titleid)' },
+            }
+        );
+
+    foreach my $item ($usage->all){
+            my $content = $item->get_column('thiscontent');
+            my $count   = $item->get_column('titlecount');
+
+            $counter_ref->{$content} = $count;
+    }
+        
+    $statistics->cache_data({
+            type => 15,
+            id   => $database,
+            data => $counter_ref,
+    });
+
+}
+
+# Typ 16 => Besetzungszahlen der Titel in der USB LBS-Systematik
+if ($type == 16){
+
+    unless ($database){
+       $logger->error("Die Besetzungszahlen koennen nur fuer einen Katalog bestimmt werden. Ende.");
+       exit;
+    }
+
+    my $cls = $config->load_yaml('/opt/openbib/conf/usblbs.yml');
+    
+    my $counter_ref = {};
+
+    foreach my $base (keys %$cls){
+       foreach my $group (keys %{$cls->{$base}{sub}}){
+         $counter_ref->{$group} = 0;
+       }
+    }
+
+    $logger->info("Generating Type 16 metrics for database $database");
+
+    my $catalog = new OpenBib::Catalog({ database => $database });
+
+    my $usage = $catalog->get_schema->resultset('Title')->search_rs(
+            {
+                'title_fields.field' => 351,
+            },
+            {
+                select   => ['title_fields.content', {'count' => 'title_fields.titleid'}],
+                as       => ['thiscontent','titlecount'],
+                join     => ['title_fields'],
+                group_by => ['title_fields.content'],
+                order_by => { -desc => \'count(title_fields.titleid)' },
+            }
+        );
+
+    foreach my $item ($usage->all){
+            my $content = $item->get_column('thiscontent');
+            my $count   = $item->get_column('titlecount');
+
+            $counter_ref->{$content} = $count;
+    }
+        
+    $statistics->cache_data({
+            type => 16,
+            id   => $database,
+            data => $counter_ref,
+    });
+
+}
+
 sub gen_cloud_class {
     my ($arg_ref) = @_;
     
@@ -1282,6 +1382,9 @@ gen_metrics.pl - Erzeugen und Cachen von Metriken aus Katalog- oder Statistik-Da
   11 => Titel nach BK pro Katalog pro Sicht
   12 => Meistaufgerufene Literaturlisten
   13 => Meistaufgerufene Titel allgemein       
+  14 => Meistvorkommender Feldinhalt pro Datenbank
+  15 => Besetzungszahlen der Titel in der USB LS-Systematik
+  16 => Besetzungszahlen der Titel in der USB LBS-Systematik
 ENDHELP
     exit;
 }

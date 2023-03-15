@@ -2756,7 +2756,7 @@ sub process_marc {
     my $create_tstamp = "1970-01-01 12:00:00";
     
     if (defined $fields_ref->{'0008'} && defined $fields_ref->{'0008'}[0]) {
-	my $date = substr($fields_ref->{'0008'}[0]{content},0,5);
+	my $date = substr($fields_ref->{'0008'}[0]{content},0,6);
 
 	my ($year,$month,$day) = $date =~m/^(\d\d)(\d\d)(\d\d)$/;
 	if ($day && $month && $year){

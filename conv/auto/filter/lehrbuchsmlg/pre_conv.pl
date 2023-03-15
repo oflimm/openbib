@@ -39,8 +39,12 @@ my $konvdir       = $config->{'conv_dir'};
 
 my $pool          = $ARGV[0];
 
-print "### $pool: Exemplardaten korrigieren\n";
+print "### $pool: Fachgruppe anreichern\n";
 
+system("cd $rootdir/data/$pool ; cat meta.title | $rootdir/filter/$pool/add-classification.pl > meta.title.tmp");
+system("cd $rootdir/data/$pool ;  mv -f meta.title.tmp meta.title");
+
+print "### $pool: Exemplardaten korrigieren\n";
 
 system("$rootdir/filter/$pool/fix-holding.pl < $rootdir/data/$pool/meta.holding > $rootdir/data/$pool/meta.holding.tmp");
 system("mv -f $rootdir/data/$pool/meta.holding.tmp $rootdir/data/$pool/meta.holding");

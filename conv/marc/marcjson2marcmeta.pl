@@ -276,14 +276,13 @@ while (<DAT>){
 		    }
 		    
 		    $linkage=~s/\W+//g;
-		    
+
 		    # Und als neues Linkage-Feld uebernehmen
-		    
 		    push @{$title_ref->{'fields'}{$field_nr}}, {
 			subfield => '6', # Linkage-Subfield
 			content  => $linkage,
 			mult     => $field_mult_ref->{$field_nr},
-		    };
+		    } if ($linkage);
 		}
 		
 		# Beispiel 'Maximilian II'
@@ -291,7 +290,7 @@ while (<DAT>){
 		    $content_a = $content_a." ".$content_b;
 		}
 		
-		if ($content_a){
+		if ($linkage && $content_a){
 		    add_person($linkage,$content_0,$content_a,$content_c,$content_d);
 		}		
 	    } # Ende Personen 
@@ -308,18 +307,17 @@ while (<DAT>){
 		    $linkage = $content_a;
 		    
 		    $linkage=~s/\W+//g;
-		    
-		    # Und als neues Linkage-Feld uebernehmen
-		    
+
+		    # Und als neues Linkage-Feld uebernehmen		    
 		    push @{$title_ref->{'fields'}{$field_nr}}, {
 			subfield => '6', # Linkage-Subfield
 			content  => $linkage,
 			mult     => $field_mult_ref->{$field_nr},
-		    };
+		    } if ($linkage);
 		}
 		
 		
-		if ($content_a){
+		if ($linkage && $content_a){
 		    add_corporatebody($linkage,$content_a);
 		}
 	    } # Ende Koerperschaften
@@ -336,18 +334,17 @@ while (<DAT>){
 		    $linkage = $content;
 		    
 		    $linkage=~s/\W+//g;
-		    
-		    # Und als neues Linkage-Feld uebernehmen
-		    
+
+		    # Und als neues Linkage-Feld uebernehmen		    
 		    push @{$title_ref->{'fields'}{$field_nr}}, {
 			subfield => '6', # Linkage-Subfield
 			content  => $linkage,
 			mult     => $field_mult_ref->{$field_nr},
-		    };
+		    } if ($linkage);
 		}
 		
 		
-		if ($content){
+		if ($linkage && $content){
 		    add_classification($linkage,$content);
 		}		
 	    } # Ende Klassifikationen
@@ -378,10 +375,10 @@ while (<DAT>){
 			subfield => '6', # Linkage-Subfield
 			content  => $linkage,
 			mult     => $field_mult_ref->{$field_nr},
-		    };
+		    } if ($linkage);
 		}
 		
-		if ($content){
+		if ($linkage && $content){
 		    add_subject($linkage,$content);
 		}		
 	    } # Ende Subject

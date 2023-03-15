@@ -2772,7 +2772,15 @@ sub process_marc {
 	my ($year,$month,$day,$hour,$minute,$second) = $date =~m/^(\d\d\d\d)(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)/;
 
 	if ($year && $month && $day && $hour && $minute && $second){
-	    ($hour,$minute,$second) = ("12","00","00") if ($hour > 23 || $minute > 59 || $second > 59);
+	    # Abfangen von Datenfehlern
+	    $hour   = "12"   if ($hour > 23);
+	    $minute = "00"   if ($minute > 59);
+	    $second = "00"   if ($second > 59);
+	    
+	    $year   = "1970" if ($year < 1970);
+	    $month  = "01"   if ($month < 1 || $month > 12);
+	    $day    = "01"   if ($day < 1 || $day > 32);
+	    
 	    $update_tstamp = "$year-$month-$day $hour:$minute:$second";
 	}
     }

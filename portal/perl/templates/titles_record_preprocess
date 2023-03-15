@@ -14,42 +14,21 @@
      ELSIF record.database == 'eds';
        eds_hide_hit = {
          'edswah' = 1
-         'eoh'    = 1
-         'flh'    = 1
-         'f3h'    = 1
-         'fmh'    = 1
-         'geh'    = 1
-         'guh'    = 1
-         'edslns' = 1
-         'kah'    = 1
-         'mzh'    = 1
-         'phl'    = 1
-         'edspdh' = 1
-         'pdh'    = 1
-         'edspzh' = 1
-         'edspvh' = 1
-         'psyh'   = 1
-         'pdx'    = 1
-         'rih'    = 1
-         'edswsc' = 1
-         'edswss' = 1
-         'dfn'    = 1
+         'edsbds' = 1
         };
 
         eds_hide_detail = {
-         'edsarx' = 1
-         'edsgpr' = 1
-         'edszbw' = 1
-         '8gh'    = 1
-         'lxh'    = 1
-         'cmedm'  = 1
-         'edsoai' = 1
-         'edsgso' = 1
-         'edsgsl' = 1
-         'edsdoj' = 1
-         'edsoap' = 1
-         'edsrep' = 1
-         'edswao' = 1
+         'edsasp' = 1
+         'edsaks' = 1
+         'edsoad' = 1
+         'edspdh' = 1
+         'asn'    = 1
+         'h9h'    = 1
+         'h9i'    = 1
+         'h9j'    = 1
+         'h9k'    = 1
+         'h9m'    = 1
+         'psyh'   = 1
         };
 
         edsdb = record.id.match('^(.+)::').first;

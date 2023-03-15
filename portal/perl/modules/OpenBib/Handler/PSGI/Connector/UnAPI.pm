@@ -295,13 +295,13 @@ sub get_main_title_data {
     my $record     = shift;
     my $database   = shift;
     my $title_data = {};
-    my $non_sort_symbol = decode_utf8("¬");
     if ( length( $record->get_fields->{T0331} ) ) {
         my $title_content = $record->get_fields->{T0331}[0]->{content};
-        if ( rindex( $title_content, $non_sort_symbol, 0 ) != -1 ) {
-            ( my $first, my $rest ) = split( ' ', $title_content, 2 );
-            $title_data->{"main_title"} = $rest;
-            $title_data->{"non_sort"}   = $first;
+        if ( rindex( $title_content, "¬", 0 ) != -1 ) {
+            $title_content =~ s/¬//;
+            #( my $first, my $rest ) = split( ' ', $title_content, 2 );
+            $title_data->{"main_title"} = $title_content;
+            #$title_data->{"non_sort"}   = $first;
         }
         else {
             my $title_content = $record->get_fields->{T0331}[0]->{content};
@@ -309,17 +309,22 @@ sub get_main_title_data {
         }
         return $title_data;
     }
-    if ( $record->get_fields->{T5005} ) {
-        $title_data->{"main_title"} = $self->get_super_title_data( $record, $database );
-        if (! $title_data->{"main_title"}){
-            return undef;
-        }
-        my $volume_info = $record->get_fields->{T0089}[0]->{content};
-        if ($volume_info){
-            $title_data->{"main_title"} =  $title_data->{"main_title"}. " ($volume_info)" ;
-        }
-        return $title_data;
-    }
+    # if there is no title set we do not construct a title here
+    # title construction happens at the label level
+    # if ( $record->get_fields->{T5005} ) {
+    #     $title_data->{"main_title"} = $self->get_super_title_data( $record, $database );
+    #     if (! $title_data->{"main_title"}){
+    #         return undef;
+    #     }
+    #     if ( rindex( $title_data->{"main_title"}, "¬", 0 ) != -1 ) {
+    #         $title_data->{"main_title"} =~ s/¬//;
+    #     }
+    #     my $volume_info = $record->get_fields->{T0089}[0]->{content};
+    #     if ($volume_info){
+    #         $title_data->{"main_title"} =  $title_data->{"main_title"}. " ($volume_info)" ;
+    #     }
+    #     return $title_data;
+    # }
 
     return undef;
 

@@ -1,3 +1,35 @@
+[%-
+
+   fl_all_args = [];
+
+   fl_all_title = []; 
+   IF searchquery.get_searchfield('freesearch').val;
+     fl_all_title.push(searchquery.get_searchfield('freesearch').val);
+   END;
+   IF searchquery.get_searchfield('title').val;
+     fl_all_title.push(searchquery.get_searchfield('title').val);
+   END;
+   IF fl_all_title.size > 0;
+     fl_title = fl_all_title.join(' ');
+     fl_all_args.push("q-ti=${fl_title}");
+   END;
+   
+   IF searchquery.get_searchfield('person').val;
+     fl_person = searchquery.get_searchfield('person').val;
+     fl_all_args.push("q-au=${fl_person}");
+   END;
+
+   IF searchquery.get_searchfield('yearstring').val;
+     fl_year = searchquery.get_searchfield('yearstring').val;
+     fl_all_args.push("q-yr=${fl_year}");     
+   END;
+
+   IF searchquery.get_searchfield('isbn').val;
+     fl_isbn = searchquery.get_searchfield('isbn').val;
+     fl_all_args.push("q-ib=${fl_isbn}");     
+   END;
+
+-%]
 <div class="container pt-2 pb-5">
   <div class="row">
     <div class="col-md-4 ps-1 pe-1 pb-1">
@@ -6,8 +38,8 @@
 	<div class="card-body">
 	  [% msg.maketext("Bestellen Sie Literatur aus anderen Bibliotheken per Fernleihe: ") %]
 	  <ul style="margin-top:0.5em;">
-            <li><a href="https://usb-koeln.digibib.net/ill/books" target="monofernleihsuche">Buch bestellen</a></li>
-            <li><a href="https://usb-koeln.digibib.net/ill/articles">Zeitschriftenartikel bestellen</a></li>
+            <li><a href="https://usb-koeln.digibib.net/ill/books[% IF fl_all_args.size > 0 %]?[% fl_all_args.join('&') %][% END %]" target="monofernleihsuche">Buch bestellen</a></li>
+            <li><a href="https://usb-koeln.digibib.net/ill/articles[% IF fl_all_args.size > 0 %]?[% fl_all_args.join('&') %][% END %]">Zeitschriftenartikel bestellen</a></li>
           </ul>
 	</div>
       </div>

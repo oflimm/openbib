@@ -801,7 +801,7 @@ sub get_popular_records {
 	my @types  = split(" ",$db_node->findvalue('@db_type_refs'));
 	
 	my $db_types_ref = \@types;
-	my $title   = decode_utf8($db_node->textContent);
+	my $title   = $db_node->textContent;
 	
 	my $url     = $config->get("dbis_baseurl").$db_node->findvalue('@href');
 

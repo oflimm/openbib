@@ -334,8 +334,7 @@ sub get_main_title_data {
                 }
                 
                 if ( length( $record->get_fields->{T0331} ) ){
-                $title_data->{"part_name"} = "$super_type"
-                #$title_data->{"part_name"} = $record->get_fields->{T0331}[0]->{content};
+                    $title_data->{"part_name"} = $record->get_fields->{T0331}[0]->{content};
                 }
                 
                 if ( length( $record->get_fields->{T0090} ) ){

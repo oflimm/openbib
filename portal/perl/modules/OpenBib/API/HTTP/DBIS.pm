@@ -424,7 +424,7 @@ sub get_classifications {
     my $config = $self->get_config;
     my $ua     = $self->get_client;
     
-    my $url="http://rzblx10.uni-regensburg.de/dbinfo/fachliste.php?colors=$self->{colors}&ocolors=$self->{ocolors}&bib_id=$self->{dbis_bibid}&lett=l&lang=$self->{lang}&xmloutput=1";
+    my $url="http://rzblx10.uni-regensburg.de/dbinfo/fachliste.php?colors=$self->{colors}&ocolors=$self->{ocolors}&bib_id=$self->{bibid}&lett=l&lang=$self->{lang}&xmloutput=1";
 
     my $classifications_ref = [];
 
@@ -684,6 +684,163 @@ sub search {
     $self->{_matches}      = $dbs_ref;
     
     return $self;
+}
+
+# Spezifisch fuer DBIS
+sub get_popular_records {
+    my ($self,$gebiet) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = $self->get_config;
+    my $ua     = $self->get_client;
+    
+    my $url="http://rzblx10.uni-regensburg.de/dbinfo/dbliste.php?colors=$self->{colors}&ocolors=$self->{ocolors}&bib_id=$self->{bibid}&lett=f&gebiete=$gebiet&xmloutput=1";
+
+    my $recordlist = new OpenBib::RecordList::Title;
+
+    my $memc_key = "dbis:classifications:$url";
+
+    my $memc = $config->get_memc;
+    
+    $logger->debug("Memc: ".$memc);
+    $logger->debug("Memcached: ".$config->{memcached});    
+    
+    if ($memc){
+        my $recordlist_ref = $memc->get($memc_key);
+	
+	if ($recordlist_ref){
+	    if ($logger->is_debug){
+		$logger->debug("Got popular records for key $memc_key from memcached");
+	    }
+
+	    $recordlist->from_serialized_referende($recordlist_ref);
+	    return $recordlist;
+	}
+    }
+    
+    $logger->debug("Request: $url");
+
+    my $request = HTTP::Request->new('GET' => $url);
+    
+    my $response = $ua->request($request);
+
+    if ($logger->is_debug){
+	$logger->debug("Response: ".$response->content);
+    }
+    
+    if (!$response->is_success) {
+	$logger->info($response->code . ' - ' . $response->message);
+	return;
+    }
+
+#    my $response = $ua->get($url)->decoded_content(charset => 'utf8');
+
+    $logger->debug("Response: $response");
+    
+    my $parser = XML::LibXML->new();
+    my $tree   = $parser->parse_string($response->content);
+    my $root   = $tree->getDocumentElement;
+
+    my $access_info_ref = {};
+
+    my @access_info_nodes = $root->findnodes('/dbis_page/list_dbs/db_access_infos/db_access_info');
+
+    foreach my $access_info_node (@access_info_nodes){
+        my $id                              = $access_info_node->findvalue('@access_id');
+        $access_info_ref->{$id}{icon_url}   = $access_info_node->findvalue('@access_icon');
+        $access_info_ref->{$id}{desc_short} = $access_info_node->findvalue('db_access');
+        $access_info_ref->{$id}{desc}       = $access_info_node->findvalue('db_access_short_text');
+    }
+
+    my $db_type_ref = {};
+    my @db_type_nodes = $root->findnodes('/dbis_page/list_dbs/db_type_infos/db_type_info');
+    foreach my $db_type_node (@db_type_nodes){
+        my $id                          = $db_type_node->findvalue('@db_type_id');
+        $db_type_ref->{$id}{desc}       = $db_type_node->findvalue('db_type_long_text');
+        $db_type_ref->{$id}{desc_short} = $db_type_node->findvalue('db_type');
+        $db_type_ref->{$id}{desc}=~s/\|/<br\/>/g;
+    }
+
+    my $db_group_ref             = {};
+    my $dbs_ref                  = [];
+    my $have_group_ref           = {};
+    $db_group_ref->{group_order} = [];
+
+    # Zugriffstatus
+    #
+    # '' : Keine Ampel
+    # ' ': Unbestimmt g oder y oder r
+    # 'f': Unbestimmt, aber Volltext Zugriff g oder y (fulltext)
+    # 'g': Freier Zugriff (green)
+    # 'y': Lizensierter Zugriff (yellow)
+    # 'l': Unbestimmt Eingeschraenkter Zugriff y oder r (limited)
+    # 'r': Kein Zugriff (red)
+    
+    my $type_mapping_ref = {
+	'access_0'    => 'g', # green
+	'access_2'    => 'y', # yellow
+	'access_3'    => 'y', # yellow
+	'access_5'    => 'l', # yellow red
+	'access_500'  => 'n', # national license
+    };
+    
+    my $search_count = 0;
+
+    # Default: top_db in dbs
+    my @nodes = $root->findnodes('/dbis_page/list_dbs/dbs[@top_db=1]/db');
+
+    # Sonst top_db in db
+    @nodes = $root->findnodes('/dbis_page/list_dbs/dbs/db[@top_db=1]') unless (@nodes);
+    
+    foreach my $db_node (@nodes) {
+
+	my $id     = $db_node->findvalue('@title_id');
+	my $access = $db_node->findvalue('@access_ref');
+	my @types  = split(" ",$db_node->findvalue('@db_type_refs'));
+	
+	my $db_types_ref = \@types;
+	my $title   = decode_utf8($db_node->textContent);
+	
+	my $url     = $config->get("dbis_baseurl").$db_node->findvalue('@href');
+
+        my $access_info = $access_info_ref->{$access};
+	
+	my $access_type = (defined $type_mapping_ref->{$access})?$type_mapping_ref->{$access}:'';
+
+	$logger->debug("Access Type:".YAML::Dump($access_type));
+	my $record = new OpenBib::Record::Title({id => $id, database => 'dbis', generic_attributes => { access => $access_info }});
+	
+	$logger->debug("Title is $title");
+	
+	$record->set_field({field => 'T0331', subfield => '', mult => 1, content => $title});
+	
+	$record->set_field({field => 'T4120', subfield => $access_type, mult => 1, content => $url});
+	    
+	my $mult = 1;
+	if (@types){
+	    foreach my $type (@types){
+		my $dbtype       =  $db_type_ref->{$type}{desc};
+		my $dbtype_short =  $db_type_ref->{$type}{desc_short}; 
+		$record->set_field({field => 'T0517', subfield => '', mult => $mult, content => $dbtype});
+		$record->set_field({field => 'T0800', subfield => '', mult => $mult, content => $dbtype_short});
+		$mult++;
+	    }
+	}
+	
+	if ($logger->is_debug){
+	    $logger->debug("Adding Record with ".YAML::Dump($record->get_fields));
+	}
+	
+	$recordlist->add($record);	
+    }
+
+    if ($memc){
+	$memc->set($memc_key,$recordlist->to_serialized_reference,$config->{memcached_expiration}{'dbis:classifications'});
+    }
+    
+    return $recordlist;
 }
 
 sub get_search_resultlist {

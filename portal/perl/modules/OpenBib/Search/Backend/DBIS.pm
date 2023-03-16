@@ -45,6 +45,7 @@ use OpenBib::API::HTTP::DBIS;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Record::Title;
+use OpenBib::RecordList::Title;
 use OpenBib::Catalog::Factory;
 
 use base qw(OpenBib::Search);
@@ -100,11 +101,27 @@ sub get_records {
     
     my $classifications_ref = $catalog->get_classifications;
 
+    my $popular_records = new OpenBib::RecordList::Title;
+
+    my $searchquery = $self->{args}{searchquery};
+
+    my $gebiet = 0;
+
+    if (ref $searchquery eq "OpenBib::SearchQuery"){
+	$gebiet = $searchquery->get_searchfield('classification')->{val};
+    }
+    
+    if ($gebiet){
+	$popular_records = $self->get_api->get_popular_records($gebiet);
+    }
+    
     my $container = OpenBib::Container->instance;
 
     $container->register('classifications_dbis',$classifications_ref);
+    $container->register("popular_dbis_records_$gebiet",$popular_records->to_serialized_reference);    
 
     $logger->debug(YAML::Dump($classifications_ref));
+    $logger->debug("Popular".YAML::Dump($popular_records->to_serialized_reference));
     
     my $recordlist = $self->get_api->get_search_resultlist;
 

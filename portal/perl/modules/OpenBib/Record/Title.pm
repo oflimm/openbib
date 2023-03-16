@@ -1796,6 +1796,20 @@ sub set_holding {
     return;
 }
 
+sub set_generic_attributes {
+    my ($self,$attributes_ref)=@_;
+
+    $self->{generic_attributes} = $attributes_ref;
+
+    return;
+}
+
+sub get_generic_attributes {
+    my ($self)=@_;
+
+    return $self->{generic_attributes};
+}
+
 sub set_fields {
     my ($self,$fields_ref)=@_;
 
@@ -3790,7 +3804,8 @@ sub to_hash {
         'database'    => $self->{database},
         'fields'      => $self->{_fields},
         'items'       => $self->{_holding},
-        'circulation' => $self->{_circulation},
+	 'circulation' => $self->{_circulation},
+	 'generic_attributes' => $self->{generic_attributes},   
     };
 
     return $hash_ref;
@@ -3805,7 +3820,8 @@ sub from_hash {
     $self->set_fields($hash_ref->{fields});
     $self->set_holding($hash_ref->{items});
     $self->set_circulation($hash_ref->{circulation});
-
+    $self->set_generic_attributes($hash_ref->{generic_attributes});
+	
     return $self;
 }
     

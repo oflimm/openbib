@@ -294,8 +294,10 @@ sub get_main_title_data {
     my $self       = shift;
     my $record     = shift;
     my $database   = shift;
-    my $title_data = {};
-    if ( length( $record->get_fields->{T0331} ) ) {
+    my $title_data = undef;
+
+    if ( length( $record->get_fields->{T0331})  ) {
+        $title_data = {};
         my $title_content = $record->get_fields->{T0331}[0]->{content};
         if ( rindex( $title_content, "¬", 0 ) != -1 ) {
             $title_content =~ s/¬//;
@@ -307,26 +309,47 @@ sub get_main_title_data {
             my $title_content = $record->get_fields->{T0331}[0]->{content};
             $title_data->{"main_title"} = $title_content;
         }
-        return $title_data;
     }
-    # if there is no title set we do not construct a title here
-    # title construction happens at the label level
-    # if ( $record->get_fields->{T5005} ) {
-    #     $title_data->{"main_title"} = $self->get_super_title_data( $record, $database );
-    #     if (! $title_data->{"main_title"}){
-    #         return undef;
-    #     }
-    #     if ( rindex( $title_data->{"main_title"}, "¬", 0 ) != -1 ) {
-    #         $title_data->{"main_title"} =~ s/¬//;
-    #     }
-    #     my $volume_info = $record->get_fields->{T0089}[0]->{content};
-    #     if ($volume_info){
-    #         $title_data->{"main_title"} =  $title_data->{"main_title"}. " ($volume_info)" ;
-    #     }
-    #     return $title_data;
-    # }
 
-    return undef;
+    #[%- IF super.fields.${'0036'}.first.content == "t" || super.fields.${'0036'}.first.content == "n" %]
+    # Special Handling for volumes of multivolume works
+    if ( $record->get_fields->{T5005} ) {
+       
+        my $super_field = $record->get_field( { field => "T5005" } )->[0]->{"content"};
+        my $decoded_super_field;
+        
+        eval { $decoded_super_field = decode_json encode_utf8($super_field); };
+        
+            my $super_type = $decoded_super_field->{'fields'}{'0036'}[0]->{content};
+            
+            if ($super_type eq "t" || $super_type eq "n" ){
+                $title_data = {};
+                $title_data->{"main_title"} = $self->get_super_title_data( $record, $database );
+            
+                if (! $title_data->{"main_title"}){
+                    return undef;
+                }
+                if ( rindex( $title_data->{"main_title"}, "¬", 0 ) != -1 ) {
+                    $title_data->{"main_title"} =~ s/¬//;
+                }
+                
+                if ( length( $record->get_fields->{T0331} ) ){
+                $title_data->{"part_name"} = "$super_type"
+                #$title_data->{"part_name"} = $record->get_fields->{T0331}[0]->{content};
+                }
+                
+                if ( length( $record->get_fields->{T0090} ) ){
+                   $title_data->{"part_number"} = $record->get_fields->{T0090}[0]->{content};
+                } else { 
+                    if ( length( $record->get_fields->{T0089} ) ){
+                      $title_data->{"part_number"} = $record->get_fields->{T0089}[0]->{content};
+                    }
+                }
+        }
+
+    }
+   
+     return $title_data;
 
 }
 # was tun, wenn mehrere Überordnungen vorliegen?

@@ -26,8 +26,8 @@
                 'T0200', # msg.maketext("T0200") Urheber
                 'Institution', # msg.maketext("Institution") Koerperschaft
                 'Ausgabe', # msg.maketext("Ausgabe") Auflage T250a
-                'Ort/Verlag', # msg.maketext("Ort/Verlag") T260b/a
-                'Jahr', # msg.maketext("Jahr") T260c
+                'Ort/Verlag/Jahr', # msg.maketext("Ort/Verlag/Jahr") T260a/b/c
+                #'Jahr', # msg.maketext("Jahr") T260c
                 #'T0424', # msg.maketext("T0424") ErschJahr/Ansetzung
                 'T0508', # msg.maketext("T0508") Quelle
                 'Umfang', # msg.maketext("Umfang") T300a/b

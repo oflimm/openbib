@@ -14,7 +14,7 @@
 [%-# Ausgabekategorien -%]
 [%- categories = [
                 'T0310', # msg.maketext("T0310") AST  
-                'T0331', # msg.maketext("T0331") HST
+                'Titel', # msg.maketext("Titel") HST
                 #'T0335', # msg.maketext("T0335") Zusatz zum HST
                 'T0089', # msg.maketext("T0089") Bandangabe  
                 'T0304', # msg.maketext("T0304") EST 
@@ -35,9 +35,8 @@
                 'T0369', # msg.maketext("T0369") Gemeins. Angaben Verfasser
                 'T0360', # msg.maketext("T0360") Vorl. Unterreihe
                 'T0403', # msg.maketext("T0403") Auflage
-                #'T0410', # msg.maketext("T0410") Verlagsort
-                'T0412', # msg.maketext("T0412") Verlag
-                'T0425', # msg.maketext("T0425") ErschJahr
+                'Ort/Verlag/Jahr', # msg.maketext("Ort/Verlag/Jahr") T260a/b/c
+                #'Jahr', # msg.maketext("Jahr") T260c
                 #'T0424', # msg.maketext("T0424") ErschJahr/Ansetzung
                 'T0405', # msg.maketext("T0405") Erscheinungsverlauf
                 'T0523', # msg.maketext("T0523") Erscheinungsweise

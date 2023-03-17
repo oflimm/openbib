@@ -36,8 +36,8 @@
                 'T0369', # msg.maketext("T0369") Gemeins. Angaben Verfasser
                 'T0360', # msg.maketext("T0360") Vorl. Unterreihe
                 'Ausgabe', # msg.maketext("Ausgabe") Auflage T250a
-                'Ort/Verlag', # msg.maketext("Ort/Verlag") T260b/a
-                'Jahr', # msg.maketext("Jahr") T260c
+                'Ort/Verlag/Jahr', # msg.maketext("Ort/Verlag/Jahr") T260a/b/c
+                #'Jahr', # msg.maketext("Jahr") T260c
                 'T0405', # msg.maketext("T0405") Erscheinungsverlauf
                 'T0523', # msg.maketext("T0523") Erscheinungsweise
                 'T0591', # msg.maketext("T0591") Verfasser Quelle

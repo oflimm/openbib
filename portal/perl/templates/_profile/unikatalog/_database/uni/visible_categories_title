@@ -24,8 +24,8 @@
                 'Institution', # msg.maketext("Institution") Koerperschaft
                 'Ausgabe', # msg.maketext("Ausgabe") Auflage T250a
                 #'T0410', # msg.maketext("T0410") Verlagsort
-                'Ort/Verlag', # msg.maketext("Ort/Verlag") T260b/a
-                'Jahr', # msg.maketext("Jahr") T260c
+                'Ort/Verlag/Jahr', # msg.maketext("Ort/Verlag/Jahr") T260a/b/c
+                #'Jahr', # msg.maketext("Jahr") T260c
                 'T0424', # msg.maketext("T0424") ErschJahr/Ansetzung
                 'T0405', # msg.maketext("T0405") Erscheinungsverlauf
                 'T0523', # msg.maketext("T0523") Erscheinungsweise

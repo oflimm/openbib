@@ -343,31 +343,28 @@ FOREACH field IN normdata;
 	 END;
 
     CASE "T0245"; # HST
-         content = thisfield.${'a'} ;
-	 
-         IF thisfield.${'b'} ;
-	    title_supplement = thisfield.${'b'};
-	    content = "${content} : ${title_supplement}";
+         main_title = [];
+    
+         IF thisfield.${'a'} ;
+	   main_title.push(thisfield.${'a'});
 	 END;
 	 
-         IF content ;
+         IF thisfield.${'b'} ;
+	   main_title.push(thisfield.${'b'});	 
+	 END;
+
+         IF thisfield.${'c'} ;
+	   main_title.push(thisfield.${'c'});	 
+	 END;
+
+         IF main_title.size > 0 ;
+	   content = main_title.join(' ');
            content   = "<b>${highlightquery(searchquery,content)}</b>";
 
            IF NOT content_map.${'Titel'} ;
 	     content_map.${'Titel'} = [];
 	   END;
            content_map.${'Titel'}.push(content);
-	 END;
-
-         content = thisfield.${'c'} ;
-
-         IF content ;
-           content   = "${highlightquery(searchquery,content)}";
-	 
-           IF NOT content_map.${'Verfasserangabe'} ;
-	     content_map.${'Verfasserangabe'} = [];
-	   END;
-           content_map.${'Verfasserangabe'}.push(content);
 	 END;
 
     CASE "T0250"; # Auflage
@@ -381,35 +378,27 @@ FOREACH field IN normdata;
 	 END;
 
     CASE [ "T0260" "T0264" ]; # 
-         jahr = "";
-	 IF thisfield.${'c'} ;
-	   jahr = thisfield.${'c'};
-	 END;
-
-         ortverlag = [];
+         ortverlagjahr = [];
 
          IF thisfield.${'a'} ; # Ort
-	   ortverlag.push(thisfield.${'a'});
+	   ortverlagjahr.push(thisfield.${'a'});
 	 END;
 
          IF thisfield.${'b'} ; # Verlag
-           ortverlag.push(thisfield.${'b'});
-         END;
-	 
-         ortverlagcontent = ortverlag.join(' : ');
-
-         IF ortverlagcontent ;
-           IF NOT content_map.${'Ort/Verlag'} ;
-            content_map.${'Ort/Verlag'} = [];
-	   END;
-           content_map.${'Ort/Verlag'}.push(ortverlagcontent);
+           ortverlagjahr.push(thisfield.${'b'});
          END;
 
-         IF jahr ;
-           IF NOT content_map.${'Jahr'} ;
-             content_map.${'Jahr'} = [];
+	 IF thisfield.${'c'} ;
+           ortverlagjahr.push(thisfield.${'c'});	 
+	 END;
+
+         ortverlagjahrcontent = ortverlagjahr.join(' ');
+
+         IF ortverlagjahrcontent ;
+           IF NOT content_map.${'Ort/Verlag/Jahr'} ;
+            content_map.${'Ort/Verlag/Jahr'} = [];
 	   END;
-           content_map.${'Jahr'}.push(jahr);
+           content_map.${'Ort/Verlag/Jahr'}.push(ortverlagjahrcontent);
          END;
 
     CASE "T0300"; # 

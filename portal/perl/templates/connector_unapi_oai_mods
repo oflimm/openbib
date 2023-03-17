@@ -120,6 +120,12 @@
                 [%- FOREACH item IN normdata.${"T0335"} %]
                 <mods:subTitle>[% item.content %]</mods:subTitle>
                 [%- END %]
+                [%- IF main_title_data.part_name %]
+                <mods:partName>[% main_title_data.part_name %]</mods:partName>
+                [%- END %]
+                [%- IF main_title_data.part_number %]
+                <mods:partNumber>[% main_title_data.part_number %]</mods:partNumber>
+                [%- END %]
             </mods:titleInfo>
             [%- END %]
             [%- IF title_list && title_list.size %]

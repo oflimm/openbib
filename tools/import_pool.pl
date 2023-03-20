@@ -110,10 +110,14 @@ if (! -f "$tmpdir/pool.dump" || ! -f "$tmpdir/index.tgz"){
     exit;
 }
 
+$logger->info("Creating new database $database");
+
 system("echo \"*:*:*:$config->{'dbuser'}:$config->{'dbpasswd'}\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
 
 system("$dropdb -U $config->{'dbuser'}  $database");
 system("/usr/bin/createdb -U $config->{'dbuser'} -E UTF-8 -O $config->{'dbuser'} $database");
+
+$logger->info("Restoring SQL dump of database $database");
 
 system("cd $tmpdir ; $pg_restore -U $config->{'dbuser'} -d $database pool.dump");
 
@@ -126,6 +130,8 @@ if (-d "$config->{'base_dir'}/ft/xapian/index/${database}_authority"){
     unlink "$config->{'base_dir'}/ft/xapian/index/${database}_authority/*";
     rmdir "$config->{'base_dir'}/ft/xapian/index/${database}_authority";
 }
+
+$logger->info("Restoring Xapian index of database $database");
 
 system("cd $config->{'base_dir'}/ft/xapian/index/ ; tar xzf $tmpdir/index.tgz");
 

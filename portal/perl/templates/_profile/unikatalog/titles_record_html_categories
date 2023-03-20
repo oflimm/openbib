@@ -326,7 +326,8 @@ licensed_pakete = [
    'ZDB-2-POS',
    'ZDB-2-CWD',
    'ZDB-2-REP',
-   'ZDB-2-SLS'
+   'ZDB-2-SLS',
+   'ZDB-41-UTB-EBA'
    ];
 
 oa_pakete = ['ZDB-2-SOB','ZDB-23-GOA'];

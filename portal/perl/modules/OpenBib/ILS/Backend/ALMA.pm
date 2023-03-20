@@ -906,7 +906,16 @@ sub get_mediastatus {
 		my $unavailable_ref = [];
 
 		# See Configuration->Fulfillment->Physical Fulfillment->Item Policy (here: from sandbox for testing)
-		my $policy = $circ_ref->{'item_data'}{'policy'}{'value'}; # Ausleihkonditionen fuer dieses Item
+		my $policy      = $circ_ref->{'item_data'}{'policy'}{'value'}; # Ausleihkonditionen fuer dieses Item
+		my $policy_desc = $circ_ref->{'item_data'}{'policy'}{'desc'}; # Ausleihkonditionen fuer dieses Item
+
+		# Moeglich Werte fuer Policy:
+		#
+		# A: ausleihbar oder bestellbar
+		# X: nicht ausleihbar
+		# LBS: Lehrbuchsammlug ausleihbar
+
+		my $base_status = $circ_ref->{'item_data'}{'base_status'}{'value'}; # 1: Am Ort / 0: Nicht am Ort
 		
 		my $this_circ_conf = {};
 
@@ -925,14 +934,9 @@ sub get_mediastatus {
 		}
 		
 		# Praesenzbestand
-		if ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && !$this_circ_conf->{'loan'} && !$this_circ_conf->{'order'} && !$this_circ_conf->{'reservation'}){ # ggf. auch $policy = 8 = NotForLoan
-		    push @$available_ref, {
-			service => 'presence',
-			content => "Präsenzbestand",
-		    };
-		}
+#		if ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && !$this_circ_conf->{'loan'} && !$this_circ_conf->{'order'} && !$this_circ_conf->{'reservation'}){ # ggf. auch $policy = 8 = NotForLoan
 		# Bestell-/ausleihbar in den Lesesaal
-		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && $circulation_desk && $this_circ_conf->{'order'} ){ # ggf. auch $policy = 14 = Reading Room
+		if ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && $circulation_desk && $this_circ_conf->{'order'} ){ # ggf. auch $policy = 14 = Reading Room
 		    push @$available_ref, {
 			service => 'order',
 			content => "bestellbar in Lesesaal",
@@ -941,7 +945,7 @@ sub get_mediastatus {
 		    };
 		}
 		# Bestellbar
-		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1  && $this_circ_conf->{'order'}){ 
+		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1  && $this_circ_conf->{'order'} ){ 
 		    push @$available_ref, {
 			service => 'order',
 			content => "bestellbar",
@@ -952,6 +956,12 @@ sub get_mediastatus {
 		    push @$available_ref, {
 			service => 'loan',
 			content => "ausleihbar",
+		    };
+		}
+		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && $policy eq "X"){
+		    push @$available_ref, {
+			service => 'presence',
+			content => "Präsenzbestand",
 		    };
 		}
 		# Entliehen mit Vormerkmoeglichkeit

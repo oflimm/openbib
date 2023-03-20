@@ -1,6 +1,6 @@
-# Beispiel: bestellbar MSSID: 999784200503
-'MAIN':                  # library code = department_id (ehemals Zweigstellen-Code)
-  'main':                # location code = storage_id (ehemals Abteilungsbeschreibung)
+# Beispiel: bestellbar MSSID: 991032012949706476
+'38':                  # library code = department_id (ehemals Zweigstellen-Code)
+  '38-MAG':              # location code = storage_id (ehemals Abteilungsbeschreibung)
     'order': 1           # order = bestellbar, wenn am Ort
     'loan': 0            # loan  = generell vor Ort Ausleihbar, wenn am Ort 
     'reservation': 1     # reservation = vormerkbar, wenn nicht am Ort
@@ -9,15 +9,14 @@
         desc: 'Ausleihtheke'
       - id: 2
         desc: 'Abholregal'
-# Beispiel: ausleihbar (vor Ort) MSSID: 999784200503
-'BIO':
-  'biology':             # location code = storage_id (ehemals Abteilungsbeschreibung)
+# Beispiel: ausleihbar (vor Ort) MSSID: 991020012009706476
+  '38-SAB':              # location code = storage_id (ehemals Abteilungsbeschreibung)
     'order': 0           # order = bestellbar, wenn am Ort
     'loan': 1            # loan  = generell vor Ort Ausleihbar, wenn am Ort 
     'reservation': 0     # reservation = vormerkbar, wenn nicht am Ort
-# Beispiel: einsehbar (Praesenzbestand) MSSID: 99230194900650
-'DEUTZ':
-  '32':  # location = storage (ehemals Abteilungsbeschreibung)
+  '38-LBS':              # location code = storage_id (ehemals Abteilungsbeschreibung)
     'order': 0           # order = bestellbar, wenn am Ort
-    'loan': 0            # loan  = generell vor Ort Ausleihbar, wenn am Ort 
+    'loan': 1            # loan  = generell vor Ort Ausleihbar, wenn am Ort 
     'reservation': 0     # reservation = vormerkbar, wenn nicht am Ort
+# Einsehbar muss nicht parametrisiert werden, da policy = X (nicht ausleihbar) MSSID: 991032012949706476
+

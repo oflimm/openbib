@@ -80,7 +80,7 @@ create index title_fields_titleid on title_fields (titleid);
 create index title_fields_field on title_fields (field);
 create index title_fields_mult on title_fields (mult);
 create index title_fields_subfield on title_fields (subfield);
-create index title_fields_content on title_fields (content);
+create index title_fields_content on title_fields (substring(content,0,1000));
 
 -------------------------------------------------
 

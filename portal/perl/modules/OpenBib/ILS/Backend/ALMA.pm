@@ -812,7 +812,7 @@ sub get_mediastatus {
 	    
 	    my $api_key = $config->get('alma')->{'api_key'};
 	    
-	    my $url     = $config->get('alma')->{'api_baseurl'}."/bibs/$titleid/holdings/ALL/items?limit=100&offset=0&expand=due_date&view=brief&apikey=$api_key&order_by=library,location,enum_a,enum_b&direction=asc";
+	    my $url     = $config->get('alma')->{'api_baseurl'}."/bibs/$titleid/holdings/ALL/items?limit=100&offset=0&expand=due_date,due_date_policy,&view=brief&apikey=$api_key&order_by=library,location,enum_a,enum_b&direction=asc";
 	    
 	    if ($logger->is_debug()){
 		$logger->debug("Request URL: $url");
@@ -942,14 +942,14 @@ sub get_mediastatus {
 		    };
 		}
 		# Bestellbar
-		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1  && $this_circ_conf->{'order'} ){ 
+		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && $policy eq "A" && $this_circ_conf->{'order'} ){ 
 		    push @$available_ref, {
 			service => 'order',
 			content => "bestellbar",
 		    };
 		}
 		# Ausleihbar vor Ort
-		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && $this_circ_conf->{'loan'}){ 
+		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && $policy eq "A" && $this_circ_conf->{'loan'}){ 
 		    push @$available_ref, {
 			service => 'loan',
 			content => "ausleihbar",
@@ -970,10 +970,13 @@ sub get_mediastatus {
 #			expected => $circ_ref->{'item_data'}{'expected_arrival_date'},
 			expected => $circ_ref->{'item_data'}{'due_date'},
 		    };
-		    
+
+		    # Vormerk-Rang wird von Alma nicht geliefert
 		    if ($circ_ref->{VormerkAnzahl} >= 0){
 			$this_unavailable_ref->{queue} = $circ_ref->{VormerkAnzahl} ;
 		    }
+
+		    $this_unavailable_ref->{queue} = "Unbekannt";
 		    
 		    push @$unavailable_ref, $this_unavailable_ref;
 		    
